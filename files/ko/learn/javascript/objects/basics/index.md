@@ -5,7 +5,7 @@ slug: Learn/JavaScript/Objects/Basics
 
 {{LearnSidebar}}{{NextMenu("Learn/JavaScript/Objects/Object_prototypes", "Learn/JavaScript/Objects")}}
 
-In this article, we'll look at fundamental JavaScript object syntax, and revisit some JavaScript features that we've already seen earlier in the course, reiterating the fact that many of the features you've already dealt with are objects.
+이 글에서는 기본적인 자바스크립트 객체 구문을 살펴보고, 과정의 앞부분에서 이미 살펴본 자바스크립트 기능 중 상당수가 객체라는 사실을 다시 한 번 강조하면서 몇 가지 기능을 다시 살펴보겠습니다.
 
 <table>
   <tbody>
@@ -14,8 +14,8 @@ In this article, we'll look at fundamental JavaScript object syntax, and revisit
       <td>
         Basic computer literacy, a basic understanding of HTML and CSS,
         familiarity with JavaScript basics (see
-        <a href="/en-US/docs/Learn/JavaScript/First_steps">First steps</a> and
-        <a href="/en-US/docs/Learn/JavaScript/Building_blocks">Building blocks</a>).
+        <a href="/ko/docs/Learn/JavaScript/First_steps">First steps</a> and
+        <a href="/ko/docs/Learn/JavaScript/Building_blocks">Building blocks</a>).
       </td>
     </tr>
     <tr>
@@ -27,21 +27,19 @@ In this article, we'll look at fundamental JavaScript object syntax, and revisit
   </tbody>
 </table>
 
-## Object basics
+## 객체 기본 사항
 
-An object is a collection of related data and/or functionality.
-These usually consist of several variables and functions (which are called properties and methods when they are inside objects).
-Let's work through an example to understand what they look like.
+객체는 관련 데이터 및/또는 기능의 모음입니다. 일반적으로 여러 변수와 함수(객체 내부에 있는 경우 프로퍼티 및 메서드라고 함)로 구성됩니다. 예제를 통해 객체가 어떻게 생겼는지 이해해 보겠습니다.
 
-To begin with, make a local copy of our [oojs.html](https://github.com/mdn/learning-area/blob/main/javascript/oojs/introduction/oojs.html) file. This contains very little — a {{HTMLElement("script")}} element for us to write our source code into. We'll use this as a basis for exploring basic object syntax. While working with this example you should have your [developer tools JavaScript console](/en-US/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools#the_javascript_console) open and ready to type in some commands.
+먼저 [oojs.html](https://github.com/mdn/learning-area/blob/main/javascript/oojs/introduction/oojs.html) 파일의 로컬 복사본을 만듭니다. 여기에는 소스 코드를 작성하기 위한 {{HTMLElement("script")}} 요소만 포함되어 있습니다. 이 파일을 기본 객체 구문을 살펴보기 위한 기초로 사용할 것입니다. 이 예제를 작업하는 동안 개발자 도구 JavaScript 콘솔](/ko/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools#the_javascript_console) 을 열고 몇 가지 명령을 입력할 준비가 되어 있어야 합니다.
 
-As with many things in JavaScript, creating an object often begins with defining and initializing a variable. Try entering the following line below the JavaScript code that's already in your file, then saving and refreshing:
+자바스크립트의 다른 많은 작업과 마찬가지로 객체 생성은 변수를 정의하고 초기화하는 것으로 시작하는 경우가 많습니다. 파일에 이미 있는 JavaScript 코드 아래에 다음 줄을 입력한 다음 저장하고 새로고침하세요:
 
 ```js
 const person = {};
 ```
 
-Now open your browser's [JavaScript console](/en-US/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools#the_javascript_console), enter `person` into it, and press <kbd>Enter</kbd>/<kbd>Return</kbd>. You should get a result similar to one of the below lines:
+이제 브라우저의 [JavaScript 콘솔](/ko/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools#the_javascript_console) 을 열고 `person` 을 입력한 다음 <kbd>Enter</kbd>/<kbd>Return</kbd> 키를 누릅니다. 아래 줄 중 하나와 유사한 결과가 표시됩니다:
 
 ```
 [object Object]
@@ -49,8 +47,8 @@ Object { }
 { }
 ```
 
-Congratulations, you've just created your first object. Job done! But this is an empty object, so we can't really do much with it. Let's update the JavaScript object in our file to look like this:
-
+축하합니다, 방금 첫 번째 객체를 만들었습니다. 잘했어요! 하지만 이것은 빈 객체이므로 실제로 할 수 있는 일이 많지 않습니다. 파일에서 자바스크립트 객체를 다음과 같이 업데이트해 봅시다:
+객
 ```js
 const person = {
   name: ["Bob", "Smith"],
@@ -64,7 +62,7 @@ const person = {
 };
 ```
 
-After saving and refreshing, try entering some of the following into the JavaScript console on your browser devtools:
+저장하고 새로고침한 후 브라과저 개발자 도구의 JavaScript 콘솔에 다음 중 일부를 입력해 보세요:
 
 ```js
 person.name;
@@ -76,9 +74,9 @@ person.introduceSelf();
 // "Hi! I'm Bob."
 ```
 
-You have now got some data and functionality inside your object, and are now able to access them with some nice simple syntax!
+이제 객체 내부에 몇 가지 데이터와 기능이 생겼으며, 이제 간단한 구문으로 데이터와 기능에 액세스할 수 있습니다!
 
-So what is going on here? Well, an object is made up of multiple members, each of which has a name (e.g. `name` and `age` above), and a value (e.g. `['Bob', 'Smith']` and `32`). Each name/value pair must be separated by a comma, and the name and value in each case are separated by a colon. The syntax always follows this pattern:
+그럼 여기서 무슨 일이 일어나고 있을까요? 객체는 여러 멤버로 구성되며, 각 멤버는 이름(예: 위의 `name` 과 `age`)과 값(예: `['Bob', 'Smith']` 및 `32`)을 가집니다. 각 이름/값 쌍은 쉼표로 구분해야 하며, 각 경우의 이름과 값은 콜론으로 구분합니다. 구문은 항상 이 패턴을 따릅니다:
 
 ```js
 const objectName = {
@@ -88,9 +86,9 @@ const objectName = {
 };
 ```
 
-The value of an object member can be pretty much anything — in our person object we've got a number, an array, and two functions. The first two items are data items, and are referred to as the object's **properties**. The last two items are functions that allow the object to do something with that data, and are referred to as the object's **methods**.
+객체 멤버의 값은 거의 모든 것이 될 수 있습니다. 사람 객체에는 숫자, 배열, 함수 두 개가 있습니다. 처음 두 항목은 데이터 항목이며 객체의 **속성** 이라고 합니다. 마지막 두 항목은 객체가 해당 데이터로 어떤 작업을 수행할 수 있도록 하는 함수로, 객체의 **메서드** 라고 합니다.
 
-When the object's members are functions there's a simpler syntax. Instead of `bio: function ()` we can write `bio()`. Like this:
+객체의 멤버가 함수인 경우 더 간단한 구문이 있습니다. `bio: function ()` 대신 `bio()` 를 작성할 수 있습니다. 다음과 같이요:
 
 ```js
 const person = {
@@ -105,24 +103,24 @@ const person = {
 };
 ```
 
-From now on, we'll use this shorter syntax.
+이제부터는 이 짧은 구문을 사용하겠습니다.
 
-An object like this is referred to as an **object literal** — we've literally written out the object contents as we've come to create it. This is different compared to objects instantiated from classes, which we'll look at later on.
+이와 같은 객체를 **객체 리터럴** 이라고 하는데, 객체를 생성할 때 객체의 내용을 문자 그대로 적었습니다. 이는 나중에 살펴볼 클래스에서 인스턴스화된 객체와는 다릅니다.
 
-It is very common to create an object using an object literal when you want to transfer a series of structured, related data items in some manner, for example sending a request to the server to be put into a database. Sending a single object is much more efficient than sending several items individually, and it is easier to work with than an array, when you want to identify individual items by name.
+예를 들어 데이터베이스에 넣을 요청을 서버에 보내는 등 일련의 구조화된 관련 데이터 항목을 어떤 방식으로든 전송하려는 경우 객체 리터럴을 사용하여 객체를 생성하는 것이 매우 일반적입니다. 단일 객체를 전송하는 것이 여러 항목을 개별적으로 전송하는 것보다 훨씬 효율적이며, 이름으로 개별 항목을 식별하려는 경우 배열보다 작업하기가 더 쉽습니다.
 
-## Dot notation
+## 점 표기법
 
-Above, you accessed the object's properties and methods using **dot notation**. The object name (person) acts as the **namespace** — it must be entered first to access anything inside the object. Next you write a dot, then the item you want to access — this can be the name of a simple property, an item of an array property, or a call to one of the object's methods, for example:
+위에서 **점 표기법** 을 사용하여 객체의 프로퍼티와 메서드에 액세스했습니다. 객체 이름(person)은 **네임스페이스** 역할을 하므로 객체 내부의 모든 항목에 액세스하려면 앞에 입력해야 합니다. 그 다음에는 점 다음에 액세스하려는 항목(예를 들어 단순한 프로퍼티의 이름, 배열 프로퍼티의 항목 또는 객체의 메서드 중 하나에 에한 호출 등)을 작성합니다:
 
 ```js
 person.age;
 person.bio();
 ```
 
-### Objects as object properties
+### 객체 프로퍼티로서의 객체
 
-An object property can itself be an object. For example, try changing the `name` member from
+객체 프로퍼티는 그 자체로 객체가 될 수 있습니다. 예를 들어 `name` 멤버를
 
 ```js
 const person = {
@@ -130,7 +128,7 @@ const person = {
 };
 ```
 
-to
+다음처럼 바꿔 봅시다.
 
 ```js
 const person = {
@@ -142,54 +140,50 @@ const person = {
 };
 ```
 
-To access these items you just need to chain the extra step onto the end with another dot. Try these in the JS console:
+이러한 항목에 액세스하려면 추가 단계를 다른 점으로 끝에 연결하기만 하면 됩니다. JS 콘솔에서 시도해 보세요:
 
 ```js
 person.name.first;
 person.name.last;
 ```
 
-If you do this, you'll also need to go through your method code and change any instances of
+이 경우 메소드 코드를 살펴보고 다음과 같은 인스턴스가 있으면
 
 ```js
 name[0];
 name[1];
 ```
 
-to
+다음과 같이 변경해야 합니다.
 
 ```js
 name.first;
 name.last;
 ```
 
-Otherwise, your methods will no longer work.
+그렇지 않으면 방법이 더 이상 작동하지 않습니다.
 
-## Bracket notation
+## 대괄호 표기법
 
-Bracket notation provides an alternative way to access object properties.
-Instead of using [dot notation](#dot_notation) like this:
+대괄호 표기법은 객체 속성에 액세스하는 다른 방법을 제공합니다. 다음과 같이 [점 표기법](#dot_notation) 을 사용하는 대신:
 
 ```js
 person.age;
 person.name.first;
 ```
 
-You can instead use brackets:
+대괄호를 사용할 수 있습니다:
 
 ```js
 person["age"];
 person["name"]["first"];
 ```
 
-This looks very similar to how you access the items in an array, and it is basically the same thing — instead of using an index number to select an item, you are using the name associated with each member's value.
-It is no wonder that objects are sometimes called **associative arrays** — they map strings to values in the same way that arrays map numbers to values.
+이는 배열의 항목에 액세스하는 방식과 매우 유사하며, 기본적으로 인덱스 번호를 사용하여 항목을 선택하는 대신 각 멤버의 값과 연관된 이름을 사용한다는 점에서 동일합니다. 배열이 숫자를 값에 매핑하는 것과 같은 방식으로 문자열을 값에 매핑하는 객체를 **연관 배열** 이라고 부르는 것은 당연합니다.
 
-Dot notation is generally preferred over bracket notation because it is more succinct and easier to read.
-However there are some cases where you have to use brackets.
-For example, if an object property name is held in a variable, then you can't use dot notation to access the value, but you can access the value using bracket notation.
+일반적으로 점 표기법이 대괄호 표기법보다을더 간결하고 읽기 쉽기 때문에 점 표기법이 선호됩니다. 그러나 대괄호를 사용해야 하는 경우도 있습니다. 예를 들어 객체 속성 이름이 변수에 들어 있는 경우 점 표기법을 사용하여 값에 액세스할 수 없지만 대괄호 표기법을 사용하여 값에 액세스할 수 있습니다.
 
-In the example below, the `logProperty()` function can use `person[propertyName]` to retrieve the value of the property named in `propertyName`.
+아래 예제에서 `logProperty()` 함수는 `person[propertyName]`을 사용하여 `propertyName`에 지정된 속성 값을 찾을 수 있습니다.
 
 ```js
 const person = {
@@ -207,23 +201,23 @@ logProperty("age");
 // 32
 ```
 
-## Setting object members
+## 객체 멤버 설정하기
 
-So far we've only looked at retrieving (or **getting**) object members — you can also **set** (update) the value of object members by declaring the member you want to set (using dot or bracket notation), like this:
+지금까지는 객체 멤버를 검색(또는 **가져오기**)하는 방법만 살펴봤는데, 다음과 같이 설정하려는 멤버를 점 또는 대괄호 표기법을 사용하여 선언하여 객체 멤버의 값을 **설정** (업데이트)할 수도 있습니다:
 
 ```js
 person.age = 45;
 person["name"]["last"] = "Cratchit";
 ```
 
-Try entering the above lines, and then getting the members again to see how they've changed, like so:
+위의 줄을 입력한 다음 멤버를 다시 가져와서 다음과 같이 멤버가 어떻게 변경되었는지 확인합니다:
 
 ```js
 person.age;
 person["name"]["last"];
 ```
 
-Setting members doesn't just stop at updating the values of existing properties and methods; you can also create completely new members. Try these in the JS console:
+멤버 설정은 기존 프로퍼티와 메서드의 값을 업데이트하는 것에서 그치지 않고 완전히 새로운 멤버를 만들 수도 있습니다. JS 콘솔에서 다음과 같이 해보세요:
 
 ```js
 person["eyes"] = "hazel";
@@ -232,7 +226,7 @@ person.farewell = function () {
 };
 ```
 
-You can now test out your new members:
+이제 새 멤버를 테스트할 수 있습니다:
 
 ```js
 person["eyes"];
@@ -240,20 +234,20 @@ person.farewell();
 // "Bye everybody!"
 ```
 
-One useful aspect of bracket notation is that it can be used to set not only member values dynamically, but member names too. Let's say we wanted users to be able to store custom value types in their people data, by typing the member name and value into two text inputs. We could get those values like this:
+대괄호 표기법의 한 가지 유용한 측면은 멤버 값뿐만 아니라 멤버 이름도 동적으로 설정하는 데 사용할 수 있다는 점입니다. 사용자가 두 개의 텍스트 입력에 구성원 이름과 값을 입력하여 사용자 지정 값 유형을 사람 데이터에 저장할 수 있도록 하려고 한다고 가정해 보겠습니다. 다음과 같은 값을 얻을 수 있습니다:
 
 ```js
 const myDataName = nameInput.value;
 const myDataValue = nameValue.value;
 ```
 
-We could then add this new member name and value to the `person` object like this:
+그런 다음 이 새 멤버 이름과 값을 다음과 같이 `person` 객체에 추가할 수 있습니다:
 
 ```js
 person[myDataName] = myDataValue;
 ```
 
-To test this, try adding the following lines into your code, just below the closing curly brace of the `person` object:
+이를 테스트하려면 `person` 객체의 닫는 중괄호 바로 아래에 다음 줄을 코드에 추가해 보세요:
 
 ```js
 const myDataName = "height";
@@ -261,17 +255,17 @@ const myDataValue = "1.75m";
 person[myDataName] = myDataValue;
 ```
 
-Now try saving and refreshing, and entering the following into your text input:
+이제 저장하고 새로고침한 후 텍스트 입력란에 다음을 입력해 보세요:
 
 ```js
 person.height;
 ```
 
-Adding a property to an object using the method above isn't possible with dot notation, which can only accept a literal member name, not a variable value pointing to a name.
+이름을 가리키는 변수 값이 아닌 리터럴 멤버 이름만 허용하는 점 표기법에서는 위의 방법을 사용하여 객체에 프로퍼티를 추가할 수 없습니다.
 
-## What is "this"?
+## "this"란 무엇인가요?
 
-You may have noticed something slightly strange in our methods. Look at this one for example:
+저희 방식에서 약간 이상한 점을 발견하셨을 수도 있습니다. 예를 들어 이걸 보세요:
 
 ```js
 introduceSelf() {
@@ -279,11 +273,11 @@ introduceSelf() {
 }
 ```
 
-You are probably wondering what "this" is. The `this` keyword refers to the current object the code is being written inside — so in this case `this` is equivalent to `person`. So why not just write `person` instead?
+"this"가 무엇인지 궁금할 것입니다. `this` 키워드는 코드가 작성되고 있는 현재 객체를 가리키며, 이 경우 `this` 키워드는 `person` 에 해당합니다. 그렇다면 왜 그냥 `person` 이라고 쓰지 않을까요?
 
-Well, when you only have to create a single object literal, it's not so useful. But if you create more than one, `this` enables you to use the same method definition for every object you create.
+객체 리터럴을 하나만 생성해야 하는 경우에는 그렇게 유용하지 않습니다. 하지만 둘 이상을 생성하면 `this`를 써서 생성하는 모든 객체에 대해 동일한 메서드 정의를 사용할 수 있습니다.
 
-Let's illustrate what we mean with a simplified pair of person objects:
+단순화된 person 객체 쌍을 통해 그 의미를 설명해 보겠습니다:
 
 ```js
 const person1 = {
@@ -301,15 +295,15 @@ const person2 = {
 };
 ```
 
-In this case, `person1.introduceSelf()` outputs "Hi! I'm Chris."; `person2.introduceSelf()` on the other hand outputs "Hi! I'm Deepti.", even though the method's code is exactly the same in each case. This isn't hugely useful when you are writing out object literals by hand, but it will be essential when we start using **constructors** to create more than one object from a single object definition, and that's the subject of the next section.
+이 경우 `person1.introduceSelf()` 는 "Hi! I'm Chris."를 출력하고, 반면에  `person2.introduceSelf()` 는 "Hi! I'm Deepti."를 출력하지만 메서드의 코드는 각 경우에서 정확히 동일합니다. 이 기능은 객체 리터럴을 직접 작성할 때는 크게 유용하지 않지만, **생성자** 를 사용해 하나의 객체 정의에서 둘 이상의 객체를 생성하기 시작할 때 필수적이며, 다음 섹션의 주제입니다.
 
-## Introducing constructors
+## 생성자 소개
 
-Using object literals is fine when you only need to create one object, but if you have to create more than one, as in the previous section, they're seriously inadequate. We have to write out the same code for every object we create, and if we want to change some properties of the object - like adding a `height` property - then we have to remember to update every object.
+객체 리터럴을 사용하는 것은 객체를 하나만 생성해야 할 때는 괜찮지만, 이전 섹션에서처럼 둘 이상을 생성해야 하는 경우에는 매우 부적절합니다. 생성하는 모든 객체에 대해 동일한 코드를 작성해야 하고, `height` 프로퍼티를 추가하는 등 객체의 일부 프로퍼티를 변경하려면 모든 객체를 업데이트해야 합니다.
 
-We would like a way to define the "shape" of an object — the set of methods and the properties it can have — and then create as many objects as we like, just updating the values for the properties that are different.
+객체의 "형태"(메서드 집합과 객체가 가질 수 있는 속성)를 정의한 다음, 원하는 만큼 객체를 생성하고 다른 속성의 값만 업데이트하는 방법을 원합니다.
 
-The first version of this is just a function:
+첫 번째 버전은 그냥 함수입니다:
 
 ```js
 function createPerson(name) {
@@ -322,14 +316,14 @@ function createPerson(name) {
 }
 ```
 
-This function creates and returns a new object each time we call it. The object will have two members:
+이 함수는 호출할 때마다 새 객체를 생성하고 반환합니다. 객체에는 두 개의 멤버가 있습니다:
 
-- a property `name`
-- a method `introduceSelf()`.
+- 속성 `name`
+- 메서드 `introduceSelf()`.
 
-Note that `createPerson()` takes a parameter `name` to set the value of the `name` property, but the value of the `introduceSelf()` method will be the same for all objects created using this function. This is a very common pattern for creating objects.
+`createPerson()` 은 `name` 속성 값을 설정하기 위해 매개변수 `name` 을 받지만, 이 함수를 사용하여 생성된 모든 객체에 대해 `introduceSelf()` 메서드의 값은 동일합니다. 이는 객체를 생성할 때 매우 일반적인 패턴입니다.
 
-Now we can create as many objects as we like, reusing the definition:
+이제 정의를 재사용하여 원하는 만큼의 객체를 만들 수 있습니다:
 
 ```js
 const salva = createPerson("Salva");
@@ -343,14 +337,14 @@ frankie.introduceSelf();
 // "Hi! I'm Frankie."
 ```
 
-This works fine but is a bit long-winded: we have to create an empty object, initialize it, and return it. A better way is to use a **constructor**. A constructor is just a function called using the {{jsxref("operators/new", "new")}} keyword. When you call a constructor, it will:
+이 방법은 잘 작동하지만 빈 객체를 생성하고 초기화하여 반환해야 하므로 다소 시간이 오래 걸립니다. 더 나은 방법은 **생성자**. 를 사용하는 것입니다. 생성자는 {{jsxref("operators/new", "new")}}  키워드를 사용하여 호출되는 함수입니다. 생성자를 호출하면:
 
-- create a new object
-- bind `this` to the new object, so you can refer to `this` in your constructor code
-- run the code in the constructor
-- return the new object.
+- 새 객체를 생성합니다.
+- `this` 를 새 객체에 바인딩하여 생성자 코드에서 `this` 로 참조할 수 있도록 합니다.
+- 생성자 코드에서 코드를 실행합니다.
+- 새 객체를 반환합니다.
 
-Constructors, by convention, start with a capital letter and are named for the type of object they create. So we could rewrite our example like this:
+생성자는 관례에 따라 대문자로 시작하며 생성하는 객체 유형에 따라 이름이 지정됩니다. 따라서 예제를 다음과 같이 다시 작성할 수 있습니다:
 
 ```js
 function Person(name) {
@@ -361,7 +355,7 @@ function Person(name) {
 }
 ```
 
-To call `Person()` as a constructor, we use `new`:
+생성자로 `Person()` 을 호출하려면 `new` 를 사용합니다:
 
 ```js
 const salva = new Person("Salva");
@@ -375,43 +369,43 @@ frankie.introduceSelf();
 // "Hi! I'm Frankie."
 ```
 
-## You've been using objects all along
+## 계속 객체를 사용해 왔습니다.
 
-As you've been going through these examples, you have probably been thinking that the dot notation you've been using is very familiar. That's because you've been using it throughout the course! Every time we've been working through an example that uses a built-in browser API or JavaScript object, we've been using objects, because such features are built using exactly the same kind of object structures that we've been looking at here, albeit more complex ones than in our own basic custom examples.
+이 예제를 살펴보면서 여러분은 아마도 지금까지 사용해온 점 표기법이 매우 익숙하다고 생각했을 것입니다. 그도 그럴 것이 이 과정을 통해 계속 사용해왔기 때문입니다! 내장된 브라우저 API나 자바스크립트 객체를 사용하는 예제를 살펴볼 때마다 객체를 사용해왔는데, 이러한 기능은 기본 사용자 정의 예제보다 복잡하긴 하지만 여기서 살펴본 것과 똑같은 종류의 객체 구조를 사용하여 구축되기 때문입니다.
 
-So when you used string methods like:
+따라서 다음과 같은 문자열 메서드를 사용했을 때
 
 ```js
 myString.split(",");
 ```
 
-You were using a method available on a [`String`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) object. Every time you create a string in your code, that string is automatically created as an instance of `String`, and therefore has several common methods and properties available on it.
+[`String`](/ko/docs/Web/JavaScript/Reference/Global_Objects/String) 객체에서 사용할 수 있는 메서드를 사용하고 있었습니다. 코드에서 문자열을 생성할 때마다 해당 문자열은 자동으로 `String` 의 인스턴스로 생성되므로 몇 가지 일반적인 메서드와 속성을 사용할 수 있습니다.
 
-When you accessed the document object model using lines like this:
+다음과 같은 줄을 사용하여 문서 객체 모델에 액세스한 경우:
 
 ```js
 const myDiv = document.createElement("div");
 const myVideo = document.querySelector("video");
 ```
 
-You were using methods available on a [`Document`](/en-US/docs/Web/API/Document) object. For each webpage loaded, an instance of `Document` is created, called `document`, which represents the entire page's structure, content, and other features such as its URL. Again, this means that it has several common methods and properties available on it.
+[`Document`](/ko/docs/Web/API/Document) 객체에서 사용할 수 있는 메서드를 사용하고 있었습니다. 웹페이지가 로드될 때마다 전체 페이지의 구조, 콘텐츠 및 URL과 같은 기타 기능을 나타내는 `document` 라는 `Document` 인스턴스가 생성됩니다. 다시 말하지만, 이 인스턴스에는 몇 가지 일반적인 메서드와 속성을 사용할 수 있습니다.
 
-The same is true of pretty much any other built-in object or API you've been using — [`Array`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array), [`Math`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math), and so on.
+[`Array`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Array), [`Math`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Math) 등 기존에 사용하던 거의 모든 내장 객체나 API도 마찬가지입니다.
 
-Note that built in objects and APIs don't always create object instances automatically. As an example, the [Notifications API](/en-US/docs/Web/API/Notifications_API) — which allows modern browsers to fire system notifications — requires you to instantiate a new object instance using the constructor for each notification you want to fire. Try entering the following into your JavaScript console:
+기본 제공 객체와 API가 항상 객체 인스턴스를 자동으로 생성하는 것은 아닙니다. 예를 들어 최신 브라우저에서 시스템 알림을 실행할 수 있는 [Notifications API](/ko/docs/Web/API/Notifications_API) 의 경우, 실행하려는 각 알림에 대해 생성자를 사용하여 새 객체 인스턴스를 인스턴스화해야 합니다. 자바스크립트 콘솔에 다음을 입력해 보세요:
 
 ```js
 const myNotification = new Notification("Hello!");
 ```
 
-## Test your skills!
+## 실력을 테스트해 보세요!
 
-You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Object basics](/en-US/docs/Learn/JavaScript/Objects/Test_your_skills:_Object_basics).
+이 글을 끝까지 읽었지만 가장 중요한 정보를 기억할 수 있나요? 계속 진행하기 전에 이 정보를 잘 기억하고 있는지 확인할 수 있는 몇 가지 추가 테스트가 있으니, [실력을 테스트해 보세요!: 객체 기초](/ko/docs/Learn/JavaScript/Objects/Test_your_skills:_Object_basics) 를 참조하세요.
 
-## Summary
+## 요약
 
-Congratulations, you've reached the end of our first JS objects article — you should now have a good idea of how to work with objects in JavaScript — including creating your own simple objects. You should also appreciate that objects are very useful as structures for storing related data and functionality — if you tried to keep track of all the properties and methods in our `person` object as separate variables and functions, it would be inefficient and frustrating, and we'd run the risk of clashing with other variables and functions that have the same names. Objects let us keep the information safely locked away in their own package, out of harm's way.
+이제 간단한 객체 생성을 포함해 자바스크립트에서 객체로 작업하는 방법에 대해 잘 이해하셨을 것입니다. 또한 객체가 관련 데이터와 기능을 저장하는 구조로 매우 유용하다는 사실에 감사해야 합니다. `person` 객체의 모든 프로퍼티와 메서드를 별도의 변수와 함수로 추적하려고 하면 비효율적이고 답답할 뿐 아니라 이름이 같은 다른 변수 및 함수와 충돌할 위험에 처할 수 있습니다. 객체를 사용하면 정보를 자체 패키지에 안전하게 보관할 수 있습니다.
 
-In the next article we'll look at **prototypes**, which is the fundamental way that JavaScript lets an object inherit properties from other objects.
+다음 글에서는 자바스크립트에서 객체가 다른 객체로부터 속성을 상속할 수 있는 기본적인 방법인 **프로토타입** 에 대해 살펴보겠습니다.
 
 {{NextMenu("Learn/JavaScript/Objects/Object_prototypes", "Learn/JavaScript/Objects")}}
