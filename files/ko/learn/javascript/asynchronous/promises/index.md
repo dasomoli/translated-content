@@ -5,41 +5,40 @@ slug: Learn/JavaScript/Asynchronous/Promises
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/JavaScript/Asynchronous/Introducing", "Learn/JavaScript/Asynchronous/Implementing_a_promise-based_API", "Learn/JavaScript/Asynchronous")}}
 
-**Promises** are the foundation of asynchronous programming in modern JavaScript. A promise is an object returned by an asynchronous function, which represents the current state of the operation. At the time the promise is returned to the caller, the operation often isn't finished, but the promise object provides methods to handle the eventual success or failure of the operation.
+**프로미스** 는 최신 자바스크립트에서 비동기 프로그래밍의 기초입니다. 프로미스는 비동기 함수가 반환하는 객체로, 작업의 현재 상태를 나타냅니다. 프로미스가 호출자에게 반환될 당시에는 작업이 완료되지 않은 경우가 많지만, 프로미스 객체는 작업의 최종 성공 또는 실패를 처리하는 메서드를 제공합니다.
 
 <table>
   <tbody>
     <tr>
-      <th scope="row">Prerequisites:</th>
+      <th scope="row">사전 요구 사항:</th>
       <td>
-        Basic computer literacy, a reasonable understanding of JavaScript
-        fundamentals, including event handling.
+        기본적인 컴퓨터 활용 능력, 이벤트 처리를 포함한 JavaScript 기본 사항에 대한 합리적인 이해.
       </td>
     </tr>
     <tr>
-      <th scope="row">Objective:</th>
-      <td>To understand how to use promises in JavaScript.</td>
+      <th scope="row">목표:</th>
+      <td>자바스크립트에서 프로미스를 사용하는 방법을 이해합니다.</td>
     </tr>
   </tbody>
 </table>
 
-In the last article, we talked about the use of callbacks to implement asynchronous functions. With that design, you call the asynchronous function, passing in your callback function. The function returns immediately and calls your callback when the operation is finished.
+지난 글에서 비동기 함수를 구현하기 위해 콜백을 사용하는 방법에 대해 이야기했습니다. 이 설계에서는 콜백 함수를 전달하면서 비동기 함수를 호출합니다. 함수는 즉시 반환하고 작업이 완료되면 콜백을 호출합니다.
 
-With a promise-based API, the asynchronous function starts the operation and returns a {{jsxref("Promise")}} object. You can then attach handlers to this promise object, and these handlers will be executed when the operation has succeeded or failed.
+프로미스 기반 API를 사용하면 비동기 함수가 작업을 시작하고 {{jsxref("Promise")}} 객체를 반환합니다. 그런 다음 이 프로미스 객체에 핸들러를 연결할 수 있으며, 작업이 성공하거나 실패할 때 이러한 핸들러가 실행됩니다.
 
-## Using the fetch() API
+## fetch() API 사용하기
 
-> **Note:** In this article, we will explore promises by copying code samples from the page into your browser's JavaScript console. To set this up:
->
-> 1. open a browser tab and visit <https://example.org>
-> 2. in that tab, open the JavaScript console in your [browser's developer tools](/en-US/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools)
-> 3. when we show an example, copy it into the console. You will have to reload the page each time you enter a new example, or the console will complain that you have redeclared `fetchPromise`.
+> **참고:** 이 문서에서는 페이지에서 브라우저의 JavaScript 콘솔로 코드 샘플을 복사하여 프로미스를 살펴봅니다. 이를 설정하려면
 
-In this example, we'll download the JSON file from <https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json>, and log some information about it.
+> 1. 브라우저 탭을 열고 <https://example.org>
+> 2. 해당 탭에서 [브라우저의 개발자 도구](/ko/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools) 에서 JavaScript 콘솔을 엽니다.
+> 3. 예제가 표시되면 콘솔에 복사합니다. 새 예제를 입력할 때마다 페이지를 새로 고침해야 하며, 그렇지 않으면 콘솔에서 `fetchPromise`를 다시 선언했다고 불만을 표시합니다.
 
-To do this, we'll make an **HTTP request** to the server. In an HTTP request, we send a request message to a remote server, and it sends us back a response. In this case, we'll send a request to get a JSON file from the server. Remember in the last article, where we made HTTP requests using the {{domxref("XMLHttpRequest")}} API? Well, in this article, we'll use the {{domxref("fetch", "fetch()")}} API, which is the modern, promise-based replacement for `XMLHttpRequest`.
+이 예제에서는 <https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json> 에서 JSON 파일을 다운로드하고 이에 대한 몇 가지 정보를 기록하겠습니다.
 
-Copy this into your browser's JavaScript console:
+이를 위해 서버에 **HTTP 요청** 을 합니다. HTTP 요청에서는 원격 서버에 요청 메시지를 보내면 서버가 응답을 보냅니다. 이 경우 서버에서 JSON 파일을 가져오는 요청을 보내겠습니다. 지난 글에서 {{domxref("XMLHttpRequest")}} API를 사용하여 HTTP 요청을 했던 것을 기억하시나요? 이 글에서는 `XMLHttpRequest`를 대체하는 최신 프로미스 기반 API인 {{domxref("fetch", "fetch()")}} API를 사용하겠습니다.
+
+이 코드를 브라우저의 자바스크립트 콘솔에 복사하세요:
 
 ```js
 const fetchPromise = fetch('https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json');
@@ -53,14 +52,14 @@ fetchPromise.then((response) => {
 console.log("Started request…");
 ```
 
-Here we are:
+여기서 우리는:
 
-1. calling the `fetch()` API, and assigning the return value to the `fetchPromise` variable
-2. immediately after, logging the `fetchPromise` variable. This should output something like: `Promise { <state>: "pending" }`, telling us that we have a `Promise` object, and it has a `state` whose value is `"pending"`. The `"pending"` state means that the fetch operation is still going on.
-3. passing a handler function into the Promise's **`then()`** method. When (and if) the fetch operation succeeds, the promise will call our handler, passing in a {{domxref("Response")}} object, which contains the server's response.
-4. logging a message that we have started the request.
+1. `fetch()` API를 호출하고 반환값을 `fetchPromise` 변수에 할당합니다.
+2. 바로 뒤에 `fetchPromise` 변수를 로깅합니다. 이렇게 하면 다음과 같은 내용이 출력됩니다: `Promise { <state>: "pending" }`으로, `Promise` 개체가 있고 값이 `"pending"`인 `state`를 가지고 있음을 알려줍니다. `"pending"` 상태는 가져오기 작업이 아직 진행 중이라는 것을 의미합니다.
+3. 핸들러 함수를 프로미스의 **`then()`** 메서드에 전달합니다. 불러오기 작업이 성공하면(그리고 성공하면), 프로미스는 처리기를 호출하여 서버의 응답이 포함된 {{domxref("Response")}} 객체를 전달합니다.
+4. 요청을 시작했다는 메시지를 로깅합니다.
 
-The complete output should be something like:
+전체 출력은 다음과 같아야 합니다:
 
 ```plain
 Promise { <state>: "pending" }
@@ -68,15 +67,15 @@ Started request…
 Received response: 200
 ```
 
-Note that `Started request…` is logged before we receive the response. Unlike a synchronous function, `fetch()` returns while the request is still going on, enabling our program to stay responsive. The response shows the `200` (OK) [status code](/en-US/docs/Web/HTTP/Status), meaning that our request succeeded.
+`Started request…`은 응답을 받기 전에 기록된다는 점에 유의하세요. 동기식 함수와 달리 `fetch()`는 요청이 계속 진행되는 동안 반환되므로 프로그램이 계속 응답할 수 있습니다. 응답에는 `200` (OK) [상태 코드](/ko/docs/Web/HTTP/Status) 가 표시되며, 이는 요청이 성공했음을 의미합니다.
 
-This probably seems a lot like the example in the last article, where we added event handlers to the {{domxref("XMLHttpRequest")}} object. Instead of that, we're passing a handler into the `then()` method of the returned promise.
+이 예제는 {{domxref("XMLHttpRequest")}} 객체에 이벤트 핸들러를 추가했던 지난 글의 예제와 비슷해 보일 수 있습니다. 그 대신 반환된 프로미스의 `then()` 메서드에 핸들러를 전달합니다.
 
-## Chaining promises
+## 프로미스 연결
 
-With the `fetch()` API, once you get a `Response` object, you need to call another function to get the response data. In this case, we want to get the response data as JSON, so we would call the {{domxref("Response/json", "json()")}} method of the `Response` object. It turns out that `json()` is also asynchronous. So this is a case where we have to call two successive asynchronous functions.
+`fetch()` API를 사용하면 `Response` 객체를 가져온 후 다른 함수를 호출하여 응답 데이터를 가져와야 합니다. 이 경우 응답 데이터를 JSON으로 가져오고 싶으므로 `Response` 객체의 {{domxref("Response/json", "json()")}} 메서드를 호출합니다. `json()` 역시 비동기식이라는 것이 밝혀졌습니다. 따라서 두 개의 비동기 함수를 연속적으로 호출해야 하는 경우입니다.
 
-Try this:
+이렇게 해보세요:
 
 ```js
 const fetchPromise = fetch('https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json');
@@ -89,13 +88,13 @@ fetchPromise.then((response) => {
 });
 ```
 
-In this example, as before, we add a `then()` handler to the promise returned by `fetch()`. But this time, our handler calls `response.json()`, and then passes a new `then()` handler into the promise returned by `response.json()`.
+이 예제에서는 이전과 마찬가지로 `fetch()`가 반환한 프로미스에 `then()` 핸들러를 추가합니다. 하지만 이번에는 핸들러가 `response.json()`을 호출한 다음 `response.json()`이 반환한 프로미스에 새 `then()` 핸들러를 전달합니다.
 
-This should log "baked beans" (the name of the first product listed in "products.json").
+이렇게 하면 "baked beans"("products.json"에 나열된 첫 번째 제품의 이름)가 기록됩니다.
 
-But wait! Remember the last article, where we said that by calling a callback inside another callback, we got successively more nested levels of code? And we said that this "callback hell" made our code hard to understand? Isn't this just the same, only with `then()` calls?
+하지만 잠깐만요! 지난 글에서 다른 콜백 안에서 콜백을 호출하면 중첩된 코드 레벨이 연속적으로 증가한다고 말씀드렸던 것을 기억하시나요? 그리고 이 "콜백 지옥"이 코드를 이해하기 어렵게 만든다고 말씀드렸었죠? 이번에도 `then()` 호출만 다를 뿐 똑같지 않나요?
 
-It is, of course. But the elegant feature of promises is that _`then()` itself returns a promise, which will be completed with the result of the function passed to it_. This means that we can (and certainly should) rewrite the above code like this:
+물론 그렇습니다. 하지만 프로미스의 우아한 특징은 `then()` 자체가 프로미스를 반환하고, 이 프로미스는 전달된 함수의 결과로 완성된다는 점입니다. 즉, 위의 코드를 다음과 같이 다시 작성할 수 있으며, 당연히 그렇게 해야 합니다:
 
 ```js
 const fetchPromise = fetch('https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json');
@@ -107,9 +106,9 @@ fetchPromise
   });
 ```
 
-Instead of calling the second `then()` inside the handler for the first `then()`, we can _return_ the promise returned by `json()`, and call the second `then()` on that return value. This is called **promise chaining** and means we can avoid ever-increasing levels of indentation when we need to make consecutive asynchronous function calls.
+첫 번째 `then()`에 대한 핸들러 내부에서 두 번째 `then()`을 호출하는 대신 `json()`이 반환한 프로미스를 반환하고 그 반환값에 대해 두 번째 `then()`을 호출할 수 있습니다. 이를 **프로미스 체이닝** 라고 하며, 연속적인 비동기 함수 호출이 필요할 때 들여쓰기 수준이 계속 증가하는 것을 방지할 수 있습니다.
 
-Before we move on to the next step, there's one more piece to add. We need to check that the server accepted and was able to handle the request, before we try to read it. We'll do this by checking the status code in the response and throwing an error if it wasn't "OK":
+다음 단계로 넘어가기 전에 추가해야 할 부분이 하나 더 있습니다. 요청을 읽기 전에 서버가 요청을 수락하고 처리할 수 있는지 확인해야 합니다. 이를 위해 응답의 상태 코드를 확인하고 "OK"가 아닌 경우 오류를 발생시키면 됩니다:
 
 ```js
 const fetchPromise = fetch('https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json');
@@ -126,17 +125,17 @@ fetchPromise
   });
 ```
 
-## Catching errors
+## 오류 잡기
 
-This brings us to the last piece: how do we handle errors? The `fetch()` API can throw an error for many reasons (for example, because there was no network connectivity or the URL was malformed in some way) and we are throwing an error ourselves if the server returned an error.
+마지막으로 오류를 어떻게 처리할까요? `fetch()` API는 여러 가지 이유로 오류를 발생시킬 수 있으며(예: 네트워크 연결이 되지 않았거나 URL이 어떤 식으로든 잘못되었기 때문), 서버가 오류를 반환하면 저희도 오류를 발생시키고 있습니다.
 
-In the last article, we saw that error handling can get very difficult with nested callbacks, making us handle errors at every nesting level.
+지난 글에서 중첩 콜백을 사용하면 오류 처리가 매우 어려워져서 모든 중첩 수준에서 오류를 처리해야 한다는 것을 살펴보았습니다.
 
-To support error handling, `Promise` objects provide a {{jsxref("Promise/catch", "catch()")}} method. This is a lot like `then()`: you call it and pass in a handler function. However, while the handler passed to `then()` is called when the asynchronous operation _succeeds_, the handler passed to `catch()` is called when the asynchronous operation _fails_.
+오류 처리를 지원하기 위해 `Promise` 객체는 {{jsxref("Promise/catch", "catch()")}} 메서드를 제공합니다. 이 메서드는 `then()`과 매우 유사합니다. 이 메서드를 호출하고 핸들러 함수를 전달합니다. 하지만 `then()`로 전달된 핸들러는 비동기 연산이 성공할 때 호출되는 반면, `catch()`로 전달된 핸들러는 비동기 연산이 실패할 때 호출됩니다.
 
-If you add `catch()` to the end of a promise chain, then it will be called when any of the asynchronous function calls fails. So you can implement an operation as several consecutive asynchronous function calls, and have a single place to handle all errors.
+`catch()`를 프로미스 체인의 끝에 추가하면 비동기 함수 호출 중 하나라도 실패하면 호출됩니다. 따라서 하나의 연산을 여러 개의 연속적인 비동기 함수 호출로 구현하고 모든 오류를 처리할 수 있는 단일 위치를 가질 수 있습니다.
 
-Try this version of our `fetch()` code. We've added an error handler using `catch()`, and also modified the URL so the request will fail.
+이 버전의 `fetch()` 코드를 사용해 보세요. `catch()`를 사용하여 오류 처리기를 추가하고 요청이 실패하도록 URL도 수정했습니다.
 
 ```js
 const fetchPromise = fetch('bad-scheme://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json');
@@ -156,38 +155,38 @@ fetchPromise
   });
 ```
 
-Try running this version: you should see the error logged by our `catch()` handler.
+이 버전을 실행해 보세요. `catch()` 핸들러에 오류가 기록되는 것을 볼 수 있을 것입니다.
 
-## Promise terminology
+## 프로미스 용어
 
-Promises come with some quite specific terminology that it's worth getting clear about.
+프로미스에는 명확히 알아둘 필요가 있는 몇 가지 구체적인 용어가 있습니다.
 
-First, a promise can be in one of three states:
+첫째, 프로미스는 세 가지 상태 중 하나에 있을 수 있습니다:
 
-- **pending**: the promise has been created, and the asynchronous function it's associated with has not succeeded or failed yet. This is the state your promise is in when it's returned from a call to `fetch()`, and the request is still being made.
-- **fulfilled**: the asynchronous function has succeeded. When a promise is fulfilled, its `then()` handler is called.
-- **rejected**: the asynchronous function has failed. When a promise is rejected, its `catch()` handler is called.
+- **pending**(보류 중): 프로미스가 생성되었지만 연결된 비동기 함수가 아직 성공하거나 실패하지 않은 상태입니다. 이 상태는 `fetch()` 호출에서 프로미스가 반환되고 요청이 계속 진행 중일 때 프로미스의 상태입니다.
+- **fulfilled**(이행됨): 비동기 함수가 성공했습니다. 프라미스가 이행되면 `then()` 핸들러가 호출됩니다.
+- **rejected**(거부됨): 비동기 함수가 실패했습니다. 프로미스가 거부되면 해당 `catch()` 핸들러가 호출됩니다.
 
-Note that what "succeeded" or "failed" means here is up to the API in question: for example, `fetch()` considers a request successful if the server returned an error like [404 Not Found](/en-US/docs/Web/HTTP/Status/404), but not if a network error prevented the request being sent.
+여기서 "성공" 또는 "실패"의 의미는 해당 API에 따라 다릅니다. 예를 들어 `fetch()`는 서버가 [404 Not Found](/ko/docs/Web/HTTP/Status/404) 와 같은 오류를 반환하면 요청이 성공한 것으로 간주하지만 네트워크 오류로 인해 요청이 전송되지 않은 경우에는 요청이 성공하지 않은 것으로 간주합니다.
 
-Sometimes, we use the term **settled** to cover both **fulfilled** and **rejected**.
+때로는 **fulfilled**(이행됨)와 **rejected**(거부됨) 모두를 포괄하기 위해 **settled**(해결)라는 용어를 사용하기도 합니다.
 
-A promise is **resolved** if it is settled, or if it has been "locked in" to follow the state of another promise.
+프로미스가 해결되었거나 다른 프로미스의 상태를 따르도록 "고정"된 경우 프로미스가 **resolved**(해결)된 것으로 간주됩니다.
 
-The article [Let's talk about how to talk about promises](https://thenewtoys.dev/blog/2021/02/08/lets-talk-about-how-to-talk-about-promises/) gives a great explanation of the details of this terminology.
+[프로미스에 대해 이야기하는 방법에 대해 이야기해 봅시다](https://thenewtoys.dev/blog/2021/02/08/lets-talk-about-how-to-talk-about-promises/) 문서에서 이 용어에 대한 자세한 설명을 확인할 수 있습니다.
 
-## Combining multiple promises
+## 여러 개의 프로미스 결합하기
 
-The promise chain is what you need when your operation consists of several asynchronous functions, and you need each one to complete before starting the next one. But there are other ways you might need to combine asynchronous function calls, and the `Promise` API provides some helpers for them.
+프로미스 체인은 작업이 여러 개의 비동기 함수로 구성되어 있고 다음 작업을 시작하기 전에 각 함수가 완료되어야 할 때 필요한 것입니다. 하지만 비동기 함수 호출을 결합해야 하는 다른 방법도 있으며, `Promise` API는 이를 위한 몇 가지 헬퍼를 제공합니다
 
-Sometimes, you need all the promises to be fulfilled, but they don't depend on each other. In a case like that, it's much more efficient to start them all off together, then be notified when they have all fulfilled. The {{jsxref("Promise/all", "Promise.all()")}} method is what you need here. It takes an array of promises and returns a single promise.
+때로는 모든 프로미스가 이행되어야 하지만 서로 의존하지 않는 경우가 있습니다. 이런 경우에는 모든 프로미스를 함께 시작한 다음 모든 프로미스가 이행되면 알림을 받는 것이 훨씬 더 효율적입니다. 여기에 필요한 것이 바로 {{jsxref("Promise/all", "Promise.all()")}} 메서드입니다. 이 메서드는 프로미스의 배열을 받아 하나의 프로미스를 반환합니다.
 
-The promise returned by `Promise.all()` is:
+`Promise.all()`이 반환하는 프로미스는 다음과 같습니다:
 
-- fulfilled when and if _all_ the promises in the array are fulfilled. In this case, the `then()` handler is called with an array of all the responses, in the same order that the promises were passed into `all()`.
-- rejected when and if _any_ of the promises in the array are rejected. In this case, the `catch()` handler is called with the error thrown by the promise that rejected.
+- 배열의 모든 프로미스가 이행될 때 이행됩니다. 이 경우, `then()` 핸들러는 모든 응답의 배열과 함께 호출되며, 프로미스가 `all()`에 전달된 순서와 동일합니다.
+- 배열의 프로미스 중 하나라도 거부되는 경우 거부됩니다. 이 경우 `catch()` 핸들러는 거부된 프로미스가 던진 에러와 함께 호출됩니다.
 
-For example:
+예를 들어
 
 ```js
 const fetchPromise1 = fetch('https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json');
@@ -205,9 +204,9 @@ Promise.all([fetchPromise1, fetchPromise2, fetchPromise3])
   });
 ```
 
-Here, we're making three `fetch()` requests to three different URLs. If they all succeed, we will log the response status of each one. If any of them fail, then we're logging the failure.
+여기서는 세 개의 서로 다른 URL에 세 번의 `fetch()` 요청을 하고 있습니다. 모두 성공하면 각 요청의 응답 상태를 기록합니다. 하나라도 실패하면 실패를 기록합니다.
 
-With the URLs we've provided, all the requests should be fulfilled, although for the second, the server will return `404` (Not Found) instead of `200` (OK) because the requested file does not exist. So the output should be:
+제공한 URL을 사용하면 모든 요청이 완료되어야 하지만, 두 번째 요청의 경우 요청된 파일이 존재하지 않기 때문에 서버가 `200`(OK) 대신 `404`(Not Found)를 반환합니다. 따라서 출력은 다음과 같아야 합니다:
 
 ```plain
 https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json: 200
@@ -215,7 +214,7 @@ https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/not-
 https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json: 200
 ```
 
-If we try the same code with a badly formed URL, like this:
+다음과 같이 잘못 형성된 URL로 동일한 코드를 시도해 보겠습니다:
 
 ```js
 const fetchPromise1 = fetch('https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json');
@@ -233,13 +232,13 @@ Promise.all([fetchPromise1, fetchPromise2, fetchPromise3])
   });
 ```
 
-Then we can expect the `catch()` handler to run, and we should see something like:
+그러면 `catch()` 핸들러가 실행될 것으로 예상할 수 있으며 다음과 같은 내용이 표시될 것입니다:
 
 ```plain
 Failed to fetch: TypeError: Failed to fetch
 ```
 
-Sometimes, you might need any one of a set of promises to be fulfilled, and don't care which one. In that case, you want {{jsxref("Promise/any", "Promise.any()")}}. This is like `Promise.all()`, except that it is fulfilled as soon as any of the array of promises is fulfilled, or rejected if all of them are rejected:
+때로는 일련의 프로미스 중 하나만 이행해야 하고 어떤 프로미스가 이행되든 상관없을 수도 있습니다. 이 경우 {{jsxref("Promise/any", "Promise.any()")}} 가 필요합니다. 이 함수는 `Promise.all()`과 비슷하지만, 프로미스 배열 중 하나라도 이행되면 즉시 이행되고, 모든 프로미스가 거부되면 거부된다는 점이 다릅니다:
 
 ```js
 const fetchPromise1 = fetch('https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json');
@@ -255,13 +254,13 @@ Promise.any([fetchPromise1, fetchPromise2, fetchPromise3])
   });
 ```
 
-Note that in this case we can't predict which fetch request will complete first.
+이 경우 어떤 가져오기 요청이 먼저 완료될지 예측할 수 없다는 점에 유의하세요.
 
-These are just two of the extra `Promise` functions for combining multiple promises. To learn about the rest, see the {{jsxref("Promise")}} reference documentation.
+이는 여러 프로미스를 결합하기 위한 추가 프로미스 함수 중 두 가지에 불과합니다. 나머지에 대해 알아보려면 {{jsxref("Promise")}} 참조 문서를 참조하세요.
 
-## async and await
+## async 및 await
 
-The {{jsxref("Statements/async_function", "async")}} keyword gives you a simpler way to work with asynchronous promise-based code. Adding `async` at the start of a function makes it an async function:
+{{jsxref("Statements/async_function", "async")}} 키워드는 비동기 프로미스 기반 코드로 작업하는 더 간단한 방법을 제공합니다. 함수의 시작 부분에 `async`를 추가하면 비동기 함수가 됩니다:
 
 ```js
 async function myFunction() {
@@ -269,9 +268,9 @@ async function myFunction() {
 }
 ```
 
-Inside an async function, you can use the `await` keyword before a call to a function that returns a promise. This makes the code wait at that point until the promise is settled, at which point the fulfilled value of the promise is treated as a return value, or the rejected value is thrown.
+비동기 함수 내에서 프로미스를 반환하는 함수를 호출하기 전에 `await` 키워드를 사용할 수 있습니다. 이렇게 하면 코드가 프로미스가 정산될 때까지 해당 지점에서 대기하게 되며, 이 시점에서 프로미스의 이행된 값이 반환 값으로 처리되거나 거부된 값이 던져집니다.
 
-This enables you to write code that uses asynchronous functions but looks like synchronous code. For example, we could use it to rewrite our fetch example:
+이를 통해 비동기 함수를 사용하지만 동기 코드처럼 보이는 코드를 작성할 수 있습니다. 예를 들어 이 기능을 사용하여 가져오기 예제를 다시 작성할 수 있습니다:
 
 ```js
 async function fetchProducts() {
@@ -295,11 +294,11 @@ async function fetchProducts() {
 fetchProducts();
 ```
 
-Here, we are calling `await fetch()`, and instead of getting a `Promise`, our caller gets back a fully complete `Response` object, just as if `fetch()` were a synchronous function!
+여기서는 `await fetch()`를 호출하고 있는데, 호출자는 `Promise`를 가져오는 대신 `fetch()`가 동기식 함수인 것처럼 완전히 완전한 `Response` 객체를 반환받습니다!
 
-We can even use a `try...catch` block for error handling, exactly as we would if the code were synchronous.
+코드가 동기식일 때와 똑같이 오류 처리를 위해 `try...catch` 블록을 사용할 수도 있습니다.
 
-Note though that async functions always return a promise, so you can't do something like:
+하지만 비동기 함수는 항상 프로미스를 반환하므로 다음과 같은 작업을 수행할 수 없습니다:
 
 ```js example-bad
 async function fetchProducts() {
@@ -320,7 +319,7 @@ const promise = fetchProducts();
 console.log(promise[0].name);   // "promise" is a Promise object, so this will not work
 ```
 
-Instead, you'd need to do something like:
+대신 다음과 같은 작업을 수행해야 합니다:
 
 ```js
 async function fetchProducts() {
@@ -341,7 +340,7 @@ const promise = fetchProducts();
 promise.then((data) => console.log(data[0].name));
 ```
 
-Also, note that you can only use `await` inside an `async` function, unless your code is in a [JavaScript module](/en-US/docs/Web/JavaScript/Guide/Modules). That means you can't do this in a normal script:
+또한 코드가 [JavaScript 모듈](/ko/docs/Web/JavaScript/Guide/Modules) 에 있지 않는 한 `async` 함수 내에서만 `await`을 사용할 수 있다는 점에 유의하세요. 즉, 일반 스크립트에서는 이 작업을 수행할 수 없습니다:
 
 ```js
 try {
@@ -358,27 +357,27 @@ catch(error) {
 }
 ```
 
-You'll probably use `async` functions a lot where you might otherwise use promise chains, and they make working with promises much more intuitive.
+프로미스 체인을 사용하는 경우 `async` 함수를 많이 사용하게 될 것이며, 비동기 함수를 사용하면 프로미스 작업을 훨씬 더 직관적으로 할 수 있습니다.
 
-Keep in mind that just like a promise chain, `await` forces asynchronous operations to be completed in series. This is necessary if the result of the next operation depends on the result of the last one, but if that's not the case then something like `Promise.all()` will be more performant.
+프로미스 체인과 마찬가지로, `await`이 비동기 연산을 연속적으로 완료하도록 강제한다는 점에 유의하세요. 이는 다음 작업의 결과가 마지막 작업의 결과에 의존하는 경우에 필요하지만, 그렇지 않은 경우에는 `Promise.all()`과 같은 것이 더 성능이 좋습니다.
 
-## Conclusion
+## 결론
 
-Promises are the foundation of asynchronous programming in modern JavaScript. They make it easier to express and reason about sequences of asynchronous operations without deeply nested callbacks, and they support a style of error handling that is similar to the synchronous `try...catch` statement.
+프로미스는 최신 자바스크립트에서 비동기 프로그래밍의 기초입니다. 프로미스는 깊게 중첩된 콜백 없이 비동기 연산 시퀀스를 쉽게 표현하고 추론할 수 있게 해주며, 동기식 `try...catch` 문과 유사한 오류 처리 스타일을 지원합니다.
 
-The `async` and `await` keywords make it easier to build an operation from a series of consecutive asynchronous function calls, avoiding the need to create explicit promise chains, and allowing you to write code that looks just like synchronous code.
+`async` 및 `await` 키워드를 사용하면 일련의 연속적인 비동기 함수 호출에서 연산을 더 쉽게 구축할 수 있으므로 명시적인 프로미스 체인을 만들 필요가 없으며 동기 코드와 똑같이 보이는 코드를 작성할 수 있습니다.
 
-Promises work in the latest versions of all modern browsers; the only place where promise support will be a problem is in Opera Mini and IE11 and earlier versions.
+프로미스는 모든 최신 브라우저의 최신 버전에서 작동하며, 프로미스 지원이 문제가 되는 유일한 곳은 Opera Mini와 IE11 및 이전 버전입니다.
 
-We didn't touch on all features of promises in this article, just the most interesting and useful ones. As you start to learn more about promises, you'll come across more features and techniques.
+이 글에서는 프로미스의 모든 기능을 다루지 않고 가장 흥미롭고 유용한 기능만 다루었습니다. 프로미스에 대해 더 많이 배우기 시작하면 더 많은 기능과 기술을 접하게 될 것입니다.
 
-Many modern Web APIs are promise-based, including [WebRTC](/en-US/docs/Web/API/WebRTC_API), [Web Audio API](/en-US/docs/Web/API/Web_Audio_API), [Media Capture and Streams API](/en-US/docs/Web/API/Media_Capture_and_Streams_API), and many more.
+[WebRTC](/ko/docs/Web/API/WebRTC_API), [웹 오디오 API](/ko/docs/Web/API/Web_Audio_API), [미디어 캡처 및 스트림 API](/ko/docs/Web/API/Media_Capture_and_Streams_API) 등을 포함한 많은 최신 웹 API가 프로미스 기반입니다.
 
-## See also
+## 참조
 
-- [`Promise()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
-- [Using promises](/en-US/docs/Web/JavaScript/Guide/Using_promises)
-- [We have a problem with promises](https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html) by Nolan Lawson
-- [Let's talk about how to talk about promises](https://thenewtoys.dev/blog/2021/02/08/lets-talk-about-how-to-talk-about-promises/)
+- [`Promise()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+- [프로미스 사용하기](/ko/docs/Web/JavaScript/Guide/Using_promises)
+- 놀란 로슨의 [프로미스에 문제가 있습니다.](https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html)
+- [프로미스에 대해 이야기하는 방법에 대해 이야기해 봅시다](https://thenewtoys.dev/blog/2021/02/08/lets-talk-about-how-to-talk-about-promises/)
 
 {{PreviousMenuNext("Learn/JavaScript/Asynchronous/Introducing", "Learn/JavaScript/Asynchronous/Implementing_a_promise-based_API", "Learn/JavaScript/Asynchronous")}}
