@@ -5,41 +5,40 @@ slug: Learn/JavaScript/Asynchronous/Introducing
 
 {{LearnSidebar}}{{NextMenu("Learn/JavaScript/Asynchronous/Promises", "Learn/JavaScript/Asynchronous")}}
 
-In this article, we'll explain what asynchronous programming is, why we need it, and briefly discuss some of the ways asynchronous functions have historically been implemented in JavaScript.
+이 글에서는 비동기 프로그래밍이 무엇인지, 왜 비동기 프로그래밍이 필요한지 설명하고, 비동기 함수가 자바스크립트에서 역사적으로 구현된 몇 가지 방법에 대해 간략하게 설명합니다.
 
 <table>
   <tbody>
     <tr>
-      <th scope="row">Prerequisites:</th>
+      <th scope="row">사전 요구 사항:</th>
       <td>
-        Basic computer literacy, a reasonable understanding of JavaScript
-        fundamentals, including functions and event handlers.
+        기본적인 컴퓨터 활용 능력, 함수 및 이벤트 핸들러를 포함한 JavaScript 기본 사항에 대한 합리적인 이해.
       </td>
     </tr>
     <tr>
-      <th scope="row">Objective:</th>
+      <th scope="row">목표:</th>
       <td>
-        To gain familiarity with what asynchronous JavaScript is, how it differs from synchronous JavaScript, and why we need it.
+        비동기 자바스크립트가 무엇인지, 동기 자바스크립트와 어떻게 다른지, 왜 비동기 자바스크립트가 필요한지 숙지합니다.
       </td>
     </tr>
   </tbody>
 </table>
 
-Asynchronous programming is a technique that enables your program to start a potentially long-running task and still be able to be responsive to other events while that task runs, rather than having to wait until that task has finished. Once that task has finished, your program is presented with the result.
+비동기 프로그래밍은 잠재적으로 오래 실행될 수 있는 작업을 시작하면서도 해당 작업이 완료될 때까지 기다릴 필요 없이 해당 작업이 실행되는 동안 다른 이벤트에 계속 반응할 수 있도록 하는 기술입니다. 해당 작업이 완료되면 프로그램에 결과가 표시됩니다.
 
-Many functions provided by browsers, especially the most interesting ones, can potentially take a long time, and therefore, are asynchronous. For example:
+브라우저에서 제공하는 많은 기능, 특히 가장 흥미로운 기능은 잠재적으로 시간이 오래 걸릴 수 있으므로 비동기식입니다. 예를 들어
 
-- Making HTTP requests using {{domxref("fetch", "fetch()")}}
-- Accessing a user's camera or microphone using {{domxref("MediaDevices/getUserMedia", "getUserMedia()")}}
-- Asking a user to select files using {{domxref("window/showOpenFilePicker", "showOpenFilePicker()")}}
+- {{domxref("fetch", "fetch()")}} 를 사용한 HTTP 요청 만들기
+- {{domxref("MediaDevices/getUserMedia", "getUserMedia()")}} 를 사용하여 사용자의 카메라 또는 마이크에 액세스하기
+- {{domxref("window/showOpenFilePicker", "showOpenFilePicker()")}} 를 사용하여 사용자에게 파일 선택 요청하기
 
-So even though you may not have to _implement_ your own asynchronous functions very often, you are very likely to need to _use_ them correctly.
+따라서 비동기 함수를 자주 구현할 필요는 없더라도 올바르게 사용해야 할 가능성이 매우 높습니다.
 
-In this article, we'll start by looking at the problem with long-running synchronous functions, which make asynchronous programming a necessity.
+이 글에서는 비동기 프로그래밍을 필수로 만드는 장기 실행 동기 함수의 문제점을 살펴보는 것부터 시작하겠습니다.
 
-## Synchronous programming
+## 동기식 프로그래밍
 
-Consider the following code:
+다음 코드를 살펴봅시다:
 
 ```js
 const name = 'Miriam';
@@ -48,15 +47,15 @@ console.log(greeting);
 // "Hello, my name is Miriam!"
 ```
 
-This code:
+이 코드는:
 
-1. Declares a string called `name`.
-2. Declares another string called `greeting`, which uses `name`.
-3. Outputs the greeting to the JavaScript console.
+1. `name`이라는 문자열을 선언합니다.
+2. `name`을 사용하는 `greeting`이라는 또 다른 문자열을 선언합니다.
+3. 인사말을 자바스크립트 콘솔에 출력합니다.
 
-We should note here that the browser effectively steps through the program one line at a time, in the order we wrote it. At each point, the browser waits for the line to finish its work before going on to the next line. It has to do this because each line depends on the work done in the preceding lines.
+여기서 주목할 점은 브라우저는 프로그램을 작성한 순서대로 한 번에 한 줄씩 효과적으로 실행한다는 것입니다. 각 지점에서 브라우저는 다음 줄로 넘어가기 전에 해당 줄이 작업을 완료할 때까지 기다립니다. 각 줄은 이전 줄에서 수행한 작업에 따라 달라지기 때문에 이렇게 해야 합니다.
 
-That makes this a **synchronous program**. It would still be synchronous even if we called a separate function, like this:
+이것이 바로 **동기식 프로그램** 입니다. 이렇게 별도의 함수를 호출해도 여전히 동기식입니다:
 
 ```js
 function makeGreeting(name) {
@@ -69,13 +68,13 @@ console.log(greeting);
 // "Hello, my name is Miriam!"
 ```
 
-Here, `makeGreeting()` is a **synchronous function** because the caller has to wait for the function to finish its work and return a value before the caller can continue.
+호출자는 함수가 작업을 완료하고 값을 반환할 때까지 기다려야 계속할 수 있기 때문에 여기서 `makeGreeting()`은 **동기식 함수** 입니다.
 
-### A long-running synchronous function
+### 오래 실행되는 동기 함수
 
-What if the synchronous function takes a long time?
+동기 함수가 시간이 오래 걸리면 어떻게 될까요?
 
-The program below uses a very inefficient algorithm to generate multiple large prime numbers when a user clicks the "Generate primes" button. The higher the number of primes a user specifies, the longer the operation will take.
+아래 프로그램은 매우 비효율적인 알고리즘을 사용하여 사용자가 "Generate primes"(소수 생성) 버튼을 클릭할 때 여러 개의 큰 소수를 생성합니다. 사용자가 지정하는 소수의 수가 많을수록 연산 시간이 더 오래 걸립니다.
 
 ```html
 <label for="quota">Number of primes:</label>
@@ -127,13 +126,13 @@ document.querySelector('#reload').addEventListener('click', () => {
 
 {{EmbedLiveSample("A long-running synchronous function", 600, 120)}}
 
-Try clicking "Generate primes". Depending on how fast your computer is, it will probably take a few seconds before the program displays the "Finished!" message.
+"Generate primes"을 클릭해 보세요. 컴퓨터의 속도에 따라 프로그램에 "Finished!" 메시지가 표시되기까지 몇 초 정도 걸릴 수 있습니다.
 
-### The trouble with long-running synchronous functions
+### 장기 실행 동기 함수의 문제점
 
-The next example is just like the last one, except we added a text box for you to type in. This time, click "Generate primes", and try typing in the text box immediately after.
+다음 예제는 사용자가 입력할 텍스트 상자를 추가했다는 점을 제외하면 마지막 예제와 같습니다. 이번에는 "Generate primes"을 클릭하고 바로 뒤에 있는 텍스트 상자에 입력해 보세요.
 
-You'll find that while our `generatePrimes()` function is running, our program is completely unresponsive: you can't type anything, click anything, or do anything else.
+`generatePrimes()` 함수가 실행되는 동안 프로그램이 완전히 응답하지 않는 것을 알 수 있습니다. 아무 것도 입력하거나 클릭하거나 다른 작업을 할 수 없습니다.
 
 ```html hidden
 <label for="quota">Number of primes:</label>
@@ -196,23 +195,23 @@ document.querySelector('#reload').addEventListener('click', () => {
 
 {{EmbedLiveSample("The trouble with long-running synchronous functions", 600, 200)}}
 
-This is the basic problem with long-running synchronous functions. What we need is a way for our program to:
+이것이 장기 실행 동기 함수의 기본적인 문제입니다. 우리에게 필요한 것은 프로그램을 실행할 수 있는 방법입니다:
 
-1. Start a long-running operation by calling a function.
-2. Have that function start the operation and return immediately, so that our program can still be responsive to other events.
-3. Notify us with the result of the operation when it eventually completes.
+1. 함수를 호출하여 장기 실행 작업을 시작합니다.
+2. 해당 함수가 연산을 시작하고 즉시 반환하도록 하여 프로그램이 다른 이벤트에 계속 반응할 수 있도록 합니다.
+3. 연산이 완료되면 그 결과를 알려줍니다.
 
-That's precisely what asynchronous functions can do. The rest of this module explains how they are implemented in JavaScript.
+이것이 바로 비동기 함수가 할 수 있는 일입니다. 이 모듈의 나머지 부분에서는 비동기 함수가 자바스크립트에서 어떻게 구현되는지 설명합니다.
 
-## Event handlers
+## 이벤트 핸들러
 
-The description we just saw of asynchronous functions might remind you of event handlers, and if it does, you'd be right. Event handlers are really a form of asynchronous programming: you provide a function (the event handler) that will be called, not right away, but whenever the event happens. If "the event" is "the asynchronous operation has completed", then that event could be used to notify the caller about the result of an asynchronous function call.
+방금 살펴본 비동기 함수에 대한 설명은 이벤트 핸들러를 떠올리게 할 수 있으며, 그렇다면 맞을 것입니다. 이벤트 핸들러는 실제로 비동기 프로그래밍의 한 형태입니다. 즉시 호출되는 것이 아니라 이벤트가 발생할 때마다 호출될 함수(이벤트 핸들러)를 제공하는 것입니다. "이벤트"가 "비동기 작업이 완료됨"인 경우 해당 이벤트를 사용하여 호출자에게 비동기 함수 호출의 결과를 알릴 수 있습니다.
 
-Some early asynchronous APIs used events in just this way. The {{domxref("XMLHttpRequest")}} API enables you to make HTTP requests to a remote server using JavaScript. Since this can take a long time, it's an asynchronous API, and you get notified about the progress and eventual completion of a request by attaching event listeners to the `XMLHttpRequest` object.
+일부 초기 비동기 API는 이러한 방식으로 이벤트를 사용했습니다. {{domxref("XMLHttpRequest")}} API를 사용하면 JavaScript를 사용하여 원격 서버에 HTTP 요청을 할 수 있습니다. 이 작업은 시간이 오래 걸릴 수 있으므로 비동기 API이며, 이벤트 리스너를 `XMLHttpRequest` 객체에 연결하여 요청의 진행 상황과 최종 완료에 대한 알림을 받습니다.
 
-The following example shows this in action. Press "Click to start request" to send a request. We create a new {{domxref("XMLHttpRequest")}} and listen for its {{domxref("XMLHttpRequest/loadend_event", "loadend")}} event. The handler logs a "Finished!" message along with the status code.
+다음 예는 실제로 작동하는 모습을 보여줍니다. 요청을 보내려면 "Click to start request"을 누릅니다. 새 {{domxref("XMLHttpRequest")}} 를 생성하고 {{domxref("XMLHttpRequest/loadend_event", "loadend")}} 이벤트를 수신 대기합니다. 핸들러는 상태 코드와 함께 "Finished!" 메시지를 기록합니다.
 
-After adding the event listener we send the request. Note that after this, we can log "Started XHR request": that is, our program can continue to run while the request is going on, and our event handler will be called when the request is complete.
+이벤트 리스너를 추가한 후 요청을 전송합니다. 이 후 "Started XHR request"를 기록할 수 있습니다. 즉, 요청이 진행되는 동안 프로그램이 계속 실행될 수 있으며 요청이 완료되면 이벤트 핸들러가 호출된다는 점에 유의하세요.
 
 ```html
 <button id="xhr">Click to start request</button>
@@ -252,13 +251,13 @@ document.querySelector('#reload').addEventListener('click', () => {
 
 {{EmbedLiveSample("Event handlers", 600, 120)}}
 
-This is just like the [event handlers we've encountered in a previous module](/en-US/docs/Learn/JavaScript/Building_blocks/Events), except that instead of the event being a user action, such as the user clicking a button, the event is a change in the state of some object.
+이는 [이전 모듈에서 살펴본 이벤트 핸들러](/ko/docs/Learn/JavaScript/Building_blocks/Events) 와 비슷하지만, 사용자가 버튼을 클릭하는 것과 같은 사용자 액션이 아닌 일부 객체의 상태 변경이라는 점이 다릅니다.
 
-## Callbacks
+## 콜백
 
-An event handler is a particular type of callback. A callback is just a function that's passed into another function, with the expectation that the callback will be called at the appropriate time. As we just saw, callbacks used to be the main way asynchronous functions were implemented in JavaScript.
+이벤트 핸들러는 콜백의 특정 유형입니다. 콜백은 적절한 시점에 콜백이 호출될 것으로 기대하면서 다른 함수에 전달되는 함수일 뿐입니다. 방금 살펴본 것처럼 콜백은 자바스크립트에서 비동기 함수를 구현하는 주요 방식이었습니다.
 
-However, callback-based code can get hard to understand when the callback itself has to call functions that accept a callback. This is a common situation if you need to perform some operation that breaks down into a series of asynchronous functions. For example, consider the following:
+하지만 콜백 기반 코드는 콜백 자체가 콜백을 받는 함수를 호출해야 할 때 이해하기 어려울 수 있습니다. 이는 일련의 비동기 함수로 나뉘는 일부 연산을 수행해야 하는 경우 흔히 발생하는 상황입니다. 예를 들어 다음을 생각해 보세요:
 
 ```js
 function doStep1(init) {
@@ -284,7 +283,7 @@ function doOperation() {
 doOperation();
 ```
 
-Here we have a single operation that's split into three steps, where each step depends on the last step. In our example, the first step adds 1 to the input, the second adds 2, and the third adds 3. Starting with an input of 0, the end result is 6 (0 + 1 + 2 + 3). As a synchronous program, this is very straightforward. But what if we implemented the steps using callbacks?
+여기서는 단일 연산이 세 단계로 나뉘며, 각 단계는 마지막 단계에 따라 달라집니다. 이 예제에서 첫 번째 단계는 입력에 1을 더하고, 두 번째 단계는 2를 더하고, 세 번째 단계는 3을 더합니다. 0의 입력으로 시작하여 최종 결과는 6(0 + 1 + 2 + 3)입니다. 동기식 프로그램으로서 이것은 매우 간단합니다. 하지만 콜백을 사용하여 단계를 구현하면 어떨까요?
 
 ```js
 function doStep1(init, callback) {
@@ -315,10 +314,10 @@ function doOperation() {
 doOperation();
 ```
 
-Because we have to call callbacks inside callbacks, we get a deeply nested `doOperation()` function, which is much harder to read and debug. This is sometimes called "callback hell" or the "pyramid of doom" (because the indentation looks like a pyramid on its side).
+콜백 내부에서 콜백을 호출해야 하기 때문에 깊게 중첩된 `doOperation()` 함수를 얻게 되는데, 이는 읽고 디버깅하기가 훨씬 더 어렵습니다. 이를 "콜백 지옥" 또는 "파멸의 피라미드"라고 부르기도 합니다(들여쓰기가 옆으로 피라미드처럼 보이기 때문입니다).
 
-When we nest callbacks like this, it can also get very hard to handle errors: often you have to handle errors at each level of the "pyramid", instead of having error handling only once at the top level.
+이렇게 콜백을 중첩하면 최상위 수준에서 한 번만 오류를 처리하는 대신 "피라미드"의 각 수준에서 오류를 처리해야 하는 경우가 많아 오류 처리가 매우 어려워질 수 있습니다.
 
-For these reasons, most modern asynchronous APIs don't use callbacks. Instead, the foundation of asynchronous programming in JavaScript is the {{jsxref("Promise")}}, and that's the subject of the next article.
+이러한 이유로 대부분의 최신 비동기 API는 콜백을 사용하지 않습니다. 대신 자바스크립트 비동기 프로그래밍의 기초는 프로미스이며, 다음 글의 주제는 프로미스({{jsxref("Promise")}})입니다.
 
 {{NextMenu("Learn/JavaScript/Asynchronous/Promises", "Learn/JavaScript/Asynchronous")}}
