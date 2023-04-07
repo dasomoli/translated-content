@@ -5,56 +5,55 @@ slug: Learn/JavaScript/Asynchronous/Sequencing_animations
 
 {{LearnSidebar}}{{PreviousMenu("Learn/JavaScript/Asynchronous/Introducing_workers", "Learn/JavaScript/Asynchronous")}}
 
-In this assessment you'll update a page to play a series of animations in a sequence. To do this you'll use some of the techniques we learned in the [How to use Promises](/en-US/docs/Learn/JavaScript/Asynchronous/Promises) article.
+이 평가에서는 일련의 애니메이션을 순서대로 재생하도록 페이지를 업데이트합니다. 이를 위해 [프로미스 사용 방법](/ko/docs/Learn/JavaScript/Asynchronous/Promises) 문서에서 배운 몇 가지 기술을 사용할 것입니다.
 
 <table>
   <tbody>
     <tr>
-      <th scope="row">Prerequisites:</th>
+      <th scope="row">사전 요구 사항:</th>
       <td>
-        Basic computer literacy, a reasonable understanding of JavaScript
-        fundamentals, how to use promise-based APIs.
+        기본적인 컴퓨터 활용 능력, 자바스크립트 기본 사항에 대한 합리적인 이해, 프로미스 기반 API 사용 방법.
       </td>
     </tr>
     <tr>
-      <th scope="row">Objective:</th>
-      <td>To test understanding of how to use promise-based APIs.</td>
+      <th scope="row">목표:</th>
+      <td>프로미스 기반 API를 사용하는 방법에 대한 이해를 테스트합니다.</td>
     </tr>
   </tbody>
 </table>
 
-## Starting point
+## 시작 지점
 
-Make a local copy of the files at <https://github.com/mdn/learning-area/tree/main/javascript/asynchronous/sequencing-animations/start>. It contains four files:
+<https://github.com/mdn/learning-area/tree/main/javascript/asynchronous/sequencing-animations/start> 에서 파일의 로컬 복사본을 만듭니다. 여기에는 4개의 파일이 포함되어 있습니다:
 
 - alice.svg
 - index.html
 - main.js
 - style.css
 
-The only file you'll need to edit is "main.js".
+편집해야 하는 유일한 파일은 "main.js"입니다.
 
-If you open "index.html" in a browser you'll see three images arranged diagonally:
+브라우저에서 "index.html"을 열면 세 개의 이미지가 대각선으로 정렬된 것을 볼 수 있습니다:
 
 ![Screenshot of sequencing-animations assessment page](./sequencing-animations.png)
 
-The images are taken from our guide to [Using the Web Animations API](/en-US/docs/Web/API/Web_Animations_API/Using_the_Web_Animations_API).
+이미지는 [웹 애니메이션 API 사용](/ko/docs/Web/API/Web_Animations_API/Using_the_Web_Animations_API) 가이드에서 가져온 것입니다.
 
-## Project brief
+## 프로젝트 개요
 
-We want to update this page so we apply an animation to all three images, one after the other. So when the first has finished we animate the second, and when the second has finished we animate the third.
+이 페이지를 업데이트하여 세 개의 이미지 모두에 애니메이션을 차례로 적용하려고 합니다. 첫 번째 이미지가 완성되면 두 번째 이미지에 애니메이션을 적용하고, 두 번째 이미지가 완성되면 세 번째 이미지에 애니메이션을 적용하는 방식입니다.
 
-The animation is already defined in "main.js": it just rotates the image and shrinks it until it disappears.
+애니메이션은 이미 "main.js"에 정의되어 있습니다. 이미지를 회전하고 사라질 때까지 축소하기만 하면 됩니다.
 
-To give you more of an idea of how we want the page to work, [have a look at the finished example](https://mdn.github.io/learning-area/javascript/asynchronous/sequencing-animations/finished/). Note that the animations only run once: to see them run again, reload the page.
+페이지가 어떻게 작동하는지 더 자세히 알아보려면 [완성된 예제를 살펴보세요](https://mdn.github.io/learning-area/javascript/asynchronous/sequencing-animations/finished/). 애니메이션은 한 번만 실행되므로 애니메이션을 다시 보려면 페이지를 새로고침하세요.
 
-## Steps to complete
+## 완료 단계
 
-### Animating the first image
+### 첫 번째 이미지에 애니메이션 적용
 
-We're using the [Web Animations API](/en-US/docs/Web/API/Web_Animations_API) to animate the images, specifically the {{domxref("Element/animate", "element.animate()")}} method.
+이미지에 애니메이션을 적용하기 위해 [웹 애니메이션 API](/ko/docs/Web/API/Web_Animations_API), 특히 {{domxref("Element/animate", "element.animate()")}} 메서드를 사용하고 있습니다.
 
-Update "main.js" to add a call to `alice1.animate()`, like this:
+다음과 같이 "main.js"를 업데이트하여 `alice1.animate()` 호출을 추가합니다:
 
 ```js
 const aliceTumbling = [
@@ -75,34 +74,34 @@ const alice3 = document.querySelector("#alice3");
 alice1.animate(aliceTumbling, aliceTiming);
 ```
 
-Reload the page, and you should see the first image rotate and shrink.
+페이지를 새로고침하면 첫 번째 이미지가 회전 및 축소되는 것을 볼 수 있습니다.
 
-### Animating all the images
+### 모든 이미지에 애니메이션 적용
 
-Next, we want to animate `alice2` when `alice1` has finished, and `alice3` when `alice2` has finished.
+다음으로, `alice1`이 끝나면 `alice2`에 애니메이션을 적용하고 `alice2`가 끝나면 `alice3`에 애니메이션을 적용하겠습니다.
 
-The `animate()` method returns an {{domxref("Animation")}} object. This object has a `finished` property, which is a `Promise` that is fulfilled when the animation has finished playing. So we can use this promise to know when to start the next animation.
+`animate()` 메서드는 {{domxref("Animation")}} 객체를 반환합니다. 이 객체에는 애니메이션 재생이 완료되면 이행되는 `Promise`인 `finished` 프로퍼티가 있습니다. 따라서 이 프로미스를 사용하여 다음 애니메이션을 언제 시작할지 알 수 있습니다.
 
-We'd like you to try a few different ways to implement this, to reinforce different ways of using promises.
+프로미스를 사용하는 다양한 방법을 강화하기 위해 이를 구현하는 몇 가지 다른 방법을 시도해 보시기 바랍니다.
 
-1. First, implement something that works, but has the promise version of the "callback hell" problem we saw in our [discussion of using callbacks](/en-US/docs/Learn/JavaScript/Asynchronous/Introducing#callbacks).
+1. 먼저, [콜백 사용에 대한 논의](/ko/docs/Learn/JavaScript/Asynchronous/Introducing#callbacks) 에서 보았던 "콜백 지옥" 문제의 프로미스 버전이 있지만 작동하는 것을 구현합니다.
 
-2. Next, implement it as a [promise chain](/en-US/docs/Learn/JavaScript/Asynchronous/Promises#chaining_promises). Note that there are a few different ways you can write this, because of the different forms you can use for an [arrow function](/en-US/docs/Learn/JavaScript/Building_blocks/Functions#arrow_functions). Try some different forms. Which is the most concise? Which do you find the most readable?
+2. 다음으로, 이를 [프로미스 체인](/ko/docs/Learn/JavaScript/Asynchronous/Promises#chaining_promises) 으로 구현합니다. [화살표 함수](/ko/docs/Learn/JavaScript/Building_blocks/Functions#arrow_functions) 에 사용할 수 있는 형태가 다양하기 때문에 이를 작성할 수 있는 몇 가지 다른 방법이 있다는 점에 유의하세요. 몇 가지 다른 형태를 시도해 보세요. 어떤 것이 가장 간결할까요? 어떤 것이 가장 가독성이 높다고 생각하시나요?
 
-3. Finally, implement it using [`async` and `await`](/en-US/docs/Learn/JavaScript/Asynchronous/Promises#async_and_await).
+3. 마지막으로 [`async` 와 `await`](/ko/docs/Learn/JavaScript/Asynchronous/Promises#async_and_await) 를 사용해 구현합니다.
 
-Remember that `element.animate()` does _not_ return a `Promise`: it returns an `Animation` object with a `finished` property that is a `Promise`.
+`element.animate()`는 `Promise`를 반환하는 것이 아니라 `Promise`인 `finished` 프로퍼티를 가진 `Animation` 객체를 반환한다는 점을 기억하세요.
 
-## Assessment or further help
+## 평가 또는 추가 도움말
 
-If you would like your work assessed, or are stuck and want to ask for help:
+작업 평가를 받고 싶거나 막혀서 도움을 요청하고 싶은 경우:
 
-1. Put your work into an online shareable editor such as [CodePen](https://codepen.io/), [jsFiddle](https://jsfiddle.net/), or [Glitch](https://glitch.com/).
-2. Write a post asking for assessment and/or help at the [MDN Discourse forum Learning category](https://discourse.mozilla.org/c/mdn/learn/250). Your post should include:
+1. [CodePen](https://codepen.io/), [jsFiddle](https://jsfiddle.net/) 또는 [Glitch](https://glitch.com/) 와 같은 공유 가능한 온라인 편집기에 작업을 넣습니다.
+2. [MDN 담론 포럼 학습 카테고리](https://discourse.mozilla.org/c/mdn/learn/250) 에서 평가 및/또는 도움을 요청하는 게시물을 작성합니다. 게시물에는 다음이 포함되어야 합니다:
 
-   - A descriptive title such as "Assessment wanted for Sequencing animations".
-   - Details of what you have already tried, and what you would like us to do, e.g. if you are stuck and need help, or want an assessment.
-   - A link to the example you want assessed or need help with, in an online shareable editor (as mentioned in step 1 above). This is a good practice to get into — it's very hard to help someone with a coding problem if you can't see their code.
-   - A link to the actual task or assessment page, so we can find the question you want help with.
+   - "애니메이션 시퀀싱에 대한 평가 필요" 등의 설명이 포함된 제목.
+   - 이미 시도한 내용, 막혀서 도움이 필요하거나 평가가 필요한 경우와 같이 당사에 바라는 사항에 대한 세부 정보.
+   - 온라인 공유 가능한 편집기에서 평가받거나 도움이 필요한 예제에 대한 링크(위 1단계에서 설명한 대로). 코드를 볼 수 없다면 코딩 문제가 있는 사람을 도와주기가 매우 어렵기 때문에 이 방법을 사용하는 것이 좋습니다.
+   - 실제 과제 또는 평가 페이지로 연결되는 링크를 통해 도움을 원하는 문제를 찾을 수 있습니다.
 
 {{PreviousMenu("Learn/JavaScript/Asynchronous/Introducing_workers", "Learn/JavaScript/Asynchronous")}}
