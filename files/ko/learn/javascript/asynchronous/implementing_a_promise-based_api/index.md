@@ -5,35 +5,34 @@ slug: Learn/JavaScript/Asynchronous/Implementing_a_promise-based_API
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/JavaScript/Asynchronous/Promises", "Learn/JavaScript/Asynchronous/Introducing_workers", "Learn/JavaScript/Asynchronous")}}
 
-In the last article we discussed how to use APIs that return promises. In this article we'll look at the other side — how to _implement_ APIs that return promises. This is a much less common task than using promise-based APIs, but it's still worth knowing about.
+지난 글에서는 프로미스를 반환하는 API를 사용하는 방법에 대해 설명했습니다. 이번 글에서는 다른 측면, 즉 프로미스를 반환하는 API를 구현하는 방법을 살펴보겠습니다. 이는 프로미스 기반 API를 사용하는 것보다 훨씬 덜 일반적인 작업이지만 여전히 알아둘 가치가 있습니다.
 
 <table>
   <tbody>
     <tr>
-      <th scope="row">Prerequisites:</th>
+      <th scope="row">사전 요구 사항:</th>
       <td>
-        Basic computer literacy, a reasonable understanding of JavaScript
-        fundamentals, including event handling and the basics of promises.
+        기본적인 컴퓨터 활용 능력, 이벤트 처리 및 프로미스의 기초를 포함한 자바스크립트 기본 사항에 대한 합리적인 이해.
       </td>
     </tr>
     <tr>
-      <th scope="row">Objective:</th>
-      <td>To understand how to implement promise-based APIs.</td>
+      <th scope="row">목표:</th>
+      <td>프로미스 기반 API를 구현하는 방법을 이해합니다.</td>
     </tr>
   </tbody>
 </table>
 
-Generally, when you implement a promise-based API, you'll be wrapping an asynchronous operation, which might use events, or plain callbacks, or a message-passing model. You'll arrange for a `Promise` object to handle the success or failure of that operation properly.
+일반적으로 프로미스 기반 API를 구현할 때는 이벤트, 일반 콜백 또는 메시지 전달 모델을 사용할 수 있는 비동기 작업을 래핑하게 됩니다. `Promise` 객체가 해당 작업의 성공 또는 실패를 적절히 처리하도록 준비합니다.
 
-## Implementing an alarm() API
+## alarm() API 구현하기
 
-In this example we'll implement a promise-based alarm API, called `alarm()`. It will take as arguments the name of the person to wake up and a delay in milliseconds to wait before waking the person up. After the delay, the function will send a "Wake up!" message, including the name of the person we need to wake up.
+이 예제에서는 `alarm()`이라는 프로미스 기반 알람 API를 구현하겠습니다. 이 함수는 깨울 사람의 이름과 사람을 깨우기 전에 기다릴 지연 시간(밀리초)을 인자로 받습니다. 지연 시간이 지나면 함수는 깨워야 하는 사람의 이름을 포함하여 "일어나세요!" 메시지를 보냅니다.
 
-### Wrapping setTimeout()
+### setTimeout() 래핑하기
 
-We'll use the {{domxref("setTimeout()")}} API to implement our `alarm()` function. The `setTimeout()` API takes as arguments a callback function and a delay, given in milliseconds. When `setTimeout()` is called, it starts a timer set to the given delay, and when the time expires, it calls the given function.
+`alarm()` 함수를 구현하기 위해 {{domxref("setTimeout()")}} API를 사용하겠습니다. `setTimeout()` API는 콜백 함수와 밀리초 단위로 지정된 지연을 인자로 받습니다. `setTimeout()`이 호출되면 지정된 지연으로 설정된 타이머를 시작하고 시간이 만료되면 지정된 함수를 호출합니다.
 
-In the example below, we call `setTimeout()` with a callback function and a delay of 1000 milliseconds:
+아래 예시에서는 콜백 함수와 1000밀리초의 지연을 사용하여 `setTimeout()`을 호출합니다:
 
 ```html
 <button id="set-alarm">Set alarm</button>
@@ -61,15 +60,15 @@ button.addEventListener('click', setAlarm);
 
 {{EmbedLiveSample("Wrapping setTimeout()", 600, 100)}}
 
-### The Promise() constructor
+### Promise() 생성자
 
-Our `alarm()` function will return a `Promise` that is fulfilled when the timer expires. It will pass a "Wake up!" message into the `then()` handler, and will reject the promise if the caller supplies a negative delay value.
+`alarm()` 함수는 타이머가 만료될 때 이행되는 `Promise`를 반환합니다. 이 함수는 "Wake up!" 메시지를 `then()` 핸들러에 전달하고 호출자가 음수 지연 값을 제공하면 프로미스를 거부합니다.
 
-The key component here is the {{jsxref("Promise/Promise", "Promise()")}} constructor. The `Promise()` constructor takes a single function as an argument. We'll call this function the `executor`. When you create a new promise you supply the implementation of the executor.
+여기서 핵심 구성 요소는 {{jsxref("Promise/Promise", "Promise()")}} 생성자입니다. `Promise()` 생성자는 하나의 함수를 인자로 받습니다. 이 함수를 `executor`라고 부르겠습니다. 새 프로미스를 생성할 때 executor의 구현을 제공하면 됩니다.
 
-This executor function itself takes two arguments, which are both also functions, and which are conventionally called `resolve` and `reject`. In your executor implementation, you call the underlying asynchronous function. If the asynchronous function succeeds, you call `resolve`, and if it fails, you call `reject`. If the executor function throws an error, `reject` is called automatically. You can pass a single parameter of any type into `resolve` and `reject`.
+이 실행자 함수 자체는 두 개의 인수를 받는데, 둘 다 함수이며 일반적으로 `resolve` 및 `reject`라고 합니다. 실행자 구현에서는 기본 비동기 함수를 호출합니다. 비동기 함수가 성공하면 `resolve`를 호출하고, 실패하면 `reject`를 호출합니다. 실행자 함수가 오류를 던지면 자동으로 `reject` 함수가 호출됩니다. 모든 유형의 단일 매개변수를 `resolve`와 `reject`에 전달할 수 있습니다.
 
-So we can implement `alarm()` like this:
+따라서 다음과 같이 `alarm()`을 구현할 수 있습니다:
 
 ```js
 function alarm(person, delay) {
@@ -84,15 +83,15 @@ function alarm(person, delay) {
 }
 ```
 
-This function creates and returns a new `Promise`. Inside the executor for the promise, we:
+이 함수는 새 `Promise`를 생성하고 반환합니다. 프로미스에 대한 실행자 내부에서 우리는
 
-- check that `delay` is not negative, and throw an error if it is.
+- `delay`이 음수가 아닌지 확인하고 음수인 경우 오류를 발생시킵니다.
 
-- call `setTimeout()`, passing a callback and `delay`. The callback will be called when the timer expires, and in the callback we call `resolve`, passing in our `"Wake up!"` message.
+- 콜백 및 `delay`을 전달하면서 `setTimeout()`을 호출합니다. 타이머가 만료되면 콜백이 호출되고, 콜백에서 `resolve`를 호출하여 "Wake up!" 메시지를 전달합니다.
 
-## Using the alarm() API
+## alarm() API 사용하기
 
-This part should be quite familiar from the last article. We can call `alarm()`, and on the returned promise call `then()` and `catch()` to set handlers for promise fulfillment and rejection.
+이 부분은 지난 글에서 꽤 익숙할 것입니다. `alarm()`을 호출하고 반환된 프로미스에서 `then()` 및 `catch()`를 호출하여 프로미스 이행 및 거부에 대한 핸들러를 설정할 수 있습니다.
 
 ```html hidden
 <div>
@@ -146,11 +145,11 @@ button.addEventListener('click', () => {
 
 {{EmbedLiveSample("Using the alarm() API", 600, 160)}}
 
-Try setting different values for "Name" and "Delay". Try setting a negative value for "Delay".
+"Name"과 "Delay"에 다른 값을 설정해 보세요. "Delay"에 음수 값을 설정해 보세요.
 
-## Using async and await with the alarm() API
+## API alarm() API로 async 및 await 사용
 
-Since `alarm()` returns a `Promise`, we can do everything with it that we could do with any other promise: promise chaining, `Promise.all()`, and `async` / `await`:
+`alarm()`은 `Promise`를 반환하기 때문에 다른 프로미스로 할 수 있는 모든 것을 할 수 있습니다: 프로미스 체인, `Promise.all()`, `async` / `await`:
 
 ```html hidden
 <div>
@@ -208,9 +207,9 @@ button.addEventListener('click', async () => {
 
 {{EmbedLiveSample("Using async and await with the alarm() API", 600, 160)}}
 
-## See also
+## 참고 항목
 
-- [`Promise()` constructor](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/Promise)
-- [Using promises](/en-US/docs/Web/JavaScript/Guide/Using_promises)
+- [`Promise()` 생성자](/ko/docs/Web/JavaScript/Reference/Global_Objects/Promise/Promise)
+- [프로미스 사용하기](/ko/docs/Web/JavaScript/Guide/Using_promises)
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/JavaScript/Asynchronous/Promises", "Learn/JavaScript/Asynchronous/Introducing_workers", "Learn/JavaScript/Asynchronous")}}
