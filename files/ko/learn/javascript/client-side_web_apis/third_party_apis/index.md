@@ -5,46 +5,44 @@ slug: Learn/JavaScript/Client-side_web_APIs/Third_party_APIs
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/JavaScript/Client-side_web_APIs/Fetching_data", "Learn/JavaScript/Client-side_web_APIs/Drawing_graphics", "Learn/JavaScript/Client-side_web_APIs")}}
 
-The APIs we've covered so far are built into the browser, but not all APIs are. Many large websites and services such as Google Maps, Twitter, Facebook, PayPal, etc. provide APIs allowing developers to make use of their data (e.g. displaying your twitter stream on your blog) or services (e.g. using Facebook login to log in your users). This article looks at the difference between browser APIs and 3rd party APIs and shows some typical uses of the latter.
+지금까지 살펴본 API는 브라우저에 내장되어 있지만 모든 API가 내장되어 있는 것은 아닙니다. Google 지도, 트위터, 페이스북, 페이팔 등 많은 대형 웹사이트와 서비스는 개발자가 데이터(예: 블로그에 트위터 스트림 표시) 또는 서비스(예: 페이스북 로그인을 사용하여 사용자 로그인)를 사용할 수 있도록 API를 제공합니다. 이 도움말에서는 브라우저 API와 타사 API의 차이점을 살펴보고 후자의 일반적인 사용 사례를 소개합니다.
 
 <table>
   <tbody>
     <tr>
-      <th scope="row">Prerequisites:</th>
+      <th scope="row">전제 조건:</th>
       <td>
-        JavaScript basics (see
-        <a href="/en-US/docs/Learn/JavaScript/First_steps">first steps</a>,
-        <a href="/en-US/docs/Learn/JavaScript/Building_blocks"
-          >building blocks</a
+        자바스크립트 기초(
+        <a href="/ko/docs/Learn/JavaScript/First_steps">첫 번째 단계</a>,
+        <a href="/ko/docs/Learn/JavaScript/Building_blocks"
+          >빌딩 블록</a
         >,
-        <a href="/en-US/docs/Learn/JavaScript/Objects">JavaScript objects</a>),
-        the
-        <a href="/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction"
-          >basics of Client-side APIs</a
+        <a href="/ko/docs/Learn/JavaScript/Objects">자바스크립트 객체 참조</a>), 
+        <a href="/ko/docs/Learn/JavaScript/Client-side_web_APIs/Introduction"
+          >클라이언트 측 API의 기본 사항</a
         >
       </td>
     </tr>
     <tr>
-      <th scope="row">Objective:</th>
+      <th scope="row">목표:</th>
       <td>
-        To learn how third-party APIs work, and how to use them to enhance your
-        websites.
+        타사 API의 작동 방식과 이를 사용하여 웹사이트를 개선하는 방법을 배웁니다.
       </td>
     </tr>
   </tbody>
 </table>
 
-## What are third party APIs?
+## 타사 API란 무엇인가요?
 
-Third party APIs are APIs provided by third parties — generally companies such as Facebook, Twitter, or Google — to allow you to access their functionality via JavaScript and use it on your site. One of the most obvious examples is using mapping APIs to display custom maps on your pages.
+타사 API는 타사(일반적으로 Facebook, Twitter 또는 Google과 같은 회사)에서 제공하는 API로, JavaScript를 통해 해당 기능에 액세스하여 사이트에서 사용할 수 있도록 합니다. 가장 대표적인 예 중 하나는 매핑 API를 사용하여 페이지에 사용자 정의 지도를 표시하는 것입니다.
 
-Let's look at a [Simple Mapquest API example](https://github.com/mdn/learning-area/tree/main/javascript/apis/third-party-apis/mapquest), and use it to illustrate how third-party APIs differ from browser APIs.
+[간단한 Mapquest API 예제](https://github.com/mdn/learning-area/tree/main/javascript/apis/third-party-apis/mapquest) 를 살펴보고 이를 통해 타사 API가 브라우저 API와 어떻게 다른지 설명해 보겠습니다.
 
-> **Note:** You might want to just [get all our code examples](/en-US/docs/Learn#getting_our_code_examples) at once, in which case you can then just search the repo for the example files you need in each section.
+> **참고:** [모든 코드 예제를 한 번에 받고](/ko/docs/Learn#getting_our_code_examples) 싶을 수도 있는데, 이 경우 리포지토리에서 각 섹션에 필요한 예제 파일을 검색하면 됩니다.
 
-### They are found on third-party servers
+### 타사 서버에서 찾을 수 있습니다.
 
-Browser APIs are built into the browser — you can access them from JavaScript immediately. For example, the Web Audio API we [saw in the Introductory article](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction#how_do_apis_work) is accessed using the native {{domxref("AudioContext")}} object. For example:
+브라우저 API는 브라우저에 내장되어 있으므로 JavaScript에서 바로 액세스할 수 있습니다. 예를 들어, [소개 글에서 살펴본](/ko/docs/Learn/JavaScript/Client-side_web_APIs/Introduction#how_do_apis_work) 웹 오디오 API는 네이티브 {{domxref("AudioContext")}} 컨텍스트 객체를 사용하여 액세스합니다. 예를 들어
 
 ```js
 const audioCtx = new AudioContext();
@@ -55,7 +53,7 @@ const audioSource = audioCtx.createMediaElementSource(audioElement);
 // etc.
 ```
 
-Third party APIs, on the other hand, are located on third party servers. To access them from JavaScript you first need to connect to the API functionality and make it available on your page. This typically involves first linking to a JavaScript library available on the server via a {{htmlelement("script")}} element, as seen in our Mapquest example:
+반면 타사 API는 타사 서버에 위치합니다. 자바스크립트에서 액세스하려면 먼저 API 기능에 연결하여 페이지에서 사용할 수 있도록 설정해야 합니다. 여기에는 일반적으로 맵퀘스트 예시에서 볼 수 있듯이 {{htmlelement("script")}} 요소를 통해 서버에서 사용할 수 있는 JavaScript 라이브러리에 먼저 연결해야 합니다:
 
 ```html
 <script
@@ -66,7 +64,7 @@ Third party APIs, on the other hand, are located on third party servers. To acce
   href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css" />
 ```
 
-You can then start using the objects available in that library. For example:
+그런 다음 해당 라이브러리에서 사용 가능한 개체를 사용할 수 있습니다. 예를 들어
 
 ```js
 const map = L.mapquest.map('map', {
@@ -76,69 +74,69 @@ const map = L.mapquest.map('map', {
 });
 ```
 
-Here we are creating a variable to store the map information in, then creating a new map using the `mapquest.map()` method, which takes as its parameters the ID of a {{htmlelement("div")}} element you want to display the map in ('map'), and an options object containing the details of the particular map we want to display. In this case we specify the coordinates of the center of the map, a map layer of type `map` to show (created using the `mapquest.tileLayer()` method), and the default zoom level.
+여기서는 지도 정보를 저장할 변수를 만든 다음, 지도를 표시할 {{htmlelement("div")}} 요소의 ID('map')와 표시하려는 특정 지도의 세부 정보가 포함된 옵션 객체를 매개변수로 받는 `mapquest.map()` 메서드를 사용하여 새 지도를 만듭니다. 이 경우 지도의 중심 좌표, 표시할 지도 유형의 지도 레이어(`mapquest.tileLayer()` 메서드를 사용하여 생성), 기본 확대/축소 수준을 지정합니다.
 
-This is all the information the Mapquest API needs to plot a simple map. The server you are connecting to handles all the complicated stuff, like displaying the correct map tiles for the area being shown, etc.
+이것이 Mapquest API가 간단한 지도를 그리는 데 필요한 모든 정보입니다. 연결하려는 서버는 표시하려는 영역에 적합한 지도 타일을 표시하는 등의 복잡한 작업을 모두 처리합니다.
 
-> **Note:** Some APIs handle access to their functionality slightly differently, requiring the developer to make an HTTP request to a specific URL pattern to retrieve data. These are called [RESTful APIs — we'll show an example later on](#a_restful_api_%e2%80%94_nytimes).
+> **참고:** 일부 API는 기능에 대한 액세스를 약간 다르게 처리하므로 개발자가 데이터를 검색하기 위해 특정 URL 패턴으로 HTTP 요청을 해야 합니다. 이를 [RESTful API라고 하며, 나중에 예시를 보여드리겠습니다](#a_restful_api_%e2%80%94_nytimes).
 
-### They usually require API keys
+### 일반적으로 API 키가 필요합니다.
 
-Security for browser APIs tends to be handled by permission prompts, as [discussed in our first article](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction#they_have_additional_security_mechanisms_where_appropriate). The purpose of these is so that the user knows what is going on in the websites they visit and is less likely to fall victim to someone using an API in a malicious way.
+브라우저 API의 보안은 [첫 번째 글에서 설명](/ko/docs/Learn/JavaScript/Client-side_web_APIs/Introduction#they_have_additional_security_mechanisms_where_appropriate) 한 것처럼 권한 프롬프트에 의해 처리되는 경향이 있습니다. 이는 사용자가 방문하는 웹사이트에서 어떤 일이 일어나고 있는지 알 수 있도록 하여 악의적인 방식으로 API를 사용하는 사람의 피해를 줄이기 위한 것입니다.
 
-Third party APIs have a slightly different permissions system — they tend to use developer keys to allow developers access to the API functionality, which is more to protect the API vendor than the user.
+타사 API는 권한 시스템이 약간 다른데, 개발자가 API 기능에 액세스할 수 있도록 개발자 키를 사용하는 경향이 있으며, 이는 사용자보다는 API 공급업체를 보호하기 위한 것입니다.
 
-You'll find a line similar to the following in the Mapquest API example:
+Mapquest API 예제에서 다음과 유사한 줄을 찾을 수 있습니다:
 
 ```js
 L.mapquest.key = 'YOUR-API-KEY-HERE';
 ```
 
-This line specifies an API or developer key to use in your application — the developer of the application must apply to get a key, and then include it in their code to be allowed access to the API's functionality. In our example we've just provided a placeholder.
+이 줄은 애플리케이션에서 사용할 API 또는 개발자 키를 지정합니다. 애플리케이션 개발자가 키를 신청하여 받은 다음 코드에 포함시켜야 API의 기능에 대한 액세스가 허용됩니다. 이 예에서는 방금 플레이스홀더를 제공했습니다.
 
-> **Note:** When creating your own examples, you'll use your own API key in place of any placeholder.
+> **참고:** 자신만의 예시를 만들 때는 플레이스홀더 대신 고유한 API 키를 사용할 수 있습니다.
 
-Other APIs may require that you include the key in a slightly different way, but the pattern is relatively similar for most of them.
+다른 API는 약간 다른 방식으로 키를 포함해야 할 수도 있지만 대부분의 경우 패턴은 비교적 유사합니다.
 
-Requiring a key enables the API provider to hold users of the API accountable for their actions. When the developer has registered for a key, they are then known to the API provider, and action can be taken if they start to do anything malicious with the API (such as tracking people's location or trying to spam the API with loads of requests to stop it working, for example). The easiest action would be to just revoke their API privileges.
+키를 요구하면 API 제공업체가 API 사용자의 행동에 대해 책임을 물을 수 있습니다. 개발자가 키를 등록하면 API 제공업체에 알려지게 되고, 개발자가 API를 악의적으로 사용하기 시작하면(예: 사용자의 위치를 추적하거나 API 작동을 중지하기 위해 대량의 요청을 스팸으로 보내는 등) 조치를 취할 수 있습니다. 가장 쉬운 조치는 API 권한을 취소하는 것입니다.
 
-## Extending the Mapquest example
+## Mapquest 예제 확장하기
 
-Let's add some more functionality to the Mapquest example to show how to use some other features of the API.
+Mapquest 예제에 몇 가지 기능을 추가하여 API의 다른 기능을 사용하는 방법을 보여드리겠습니다.
 
-1. To start this section, make yourself a copy of the [mapquest starter file](https://github.com/mdn/learning-area/blob/main/javascript/apis/third-party-apis/mapquest/start/index.html), in a new directory. If you've already [cloned the examples repository](/en-US/docs/Learn#getting_our_code_examples), you'll already have a copy of this file, which you can find in the _javascript/apis/third-party-apis/mapquest/start_ directory.
-2. Next, you need to go to the [Mapquest developer site](https://developer.mapquest.com/), create an account, and then create a developer key to use with your example. (At the time of writing, it was called a "consumer key" on the site, and the key creation process also asked for an optional "callback URL". You don't need to fill in a URL here: just leave it blank.)
-3. Open up your starting file, and replace the API key placeholder with your key.
+1. 이 섹션을 시작하려면 새 디렉터리에 [mapquest 시작 파일](https://github.com/mdn/learning-area/blob/main/javascript/apis/third-party-apis/mapquest/start/index.html) 의 복사본을 만듭니다. [예제 리포지토리를 이미 복제](/ko/docs/Learn#getting_our_code_examples) 했다면 이 파일의 사본이 이미 있을 것이며, 이 파일은 _javascript/apis/third-party-apis/mapquest/start_ 디렉터리에서 찾을 수 있습니다.
+2. 다음으로 [Mapquest 개발자 사이트](https://developer.mapquest.com/) 로 이동하여 계정을 생성한 다음 예제에 사용할 개발자 키를 생성해야 합니다. (작성 당시 사이트에서는 이를 "consumer key"라고 불렀으며, 키 생성 과정에서 선택 사항인 "콜백 URL"도 요청했습니다. 여기에 URL을 입력할 필요는 없으며 그냥 비워 두세요.)
+3. 시작 파일을 열고 API 키 자리 표시자를 사용자 키로 바꿉니다.
 
-### Changing the type of map
+### 지도 유형 변경하기
 
-There are a number of different types of map that can be shown with the Mapquest API. To do this, find the following line:
+Mapquest API로 표시할 수 있는 지도 유형에는 여러 가지가 있습니다. 이렇게 하려면 다음 줄을 찾습니다:
 
 ```js
 layers: L.mapquest.tileLayer('map')
 ```
 
-Try changing `'map'` to `'hybrid'` to show a hybrid-style map. Try some other values too. The [`tileLayer` reference page](https://developer.mapquest.com/documentation/mapquest-js/v1.3/l-mapquest-tile-layer/) shows the different available options, plus a lot more information.
+하이브리드 스타일 맵을 표시하려면 `'map'`을 `'hybrid'`로 변경해 보세요. 다른 값도 사용해 보세요. [타일레이어 참조 페이지](https://developer.mapquest.com/documentation/mapquest-js/v1.3/l-mapquest-tile-layer/) 에는 사용 가능한 다양한 옵션과 더 많은 정보가 나와 있습니다.
 
-### Adding different controls
+### 다양한 컨트롤 추가하기
 
-The map has a number of different controls available; by default it just shows a zoom control. You can expand the controls available using the `map.addControl()` method; add this to your code:
+지도에는 다양한 컨트롤을 사용할 수 있지만 기본적으로 줌 컨트롤만 표시됩니다. `map.addControl()` 메서드를 사용하여 사용 가능한 컨트롤을 확장할 수 있으며, 이를 코드에 추가하세요:
 
 ```js
 map.addControl(L.mapquest.control());
 ```
 
-The [`mapquest.control()` method](https://developer.mapquest.com/documentation/mapquest-js/v1.3/l-mapquest-control/) just creates a simple full-featured control set, and it is placed in the top-right-hand corner by default. You can adjust the position by specifying an options object as a parameter for the control containing a `position` property, the value of which is a string specifying a position for the control. Try this, for example:
+[mapquest.control() 메서드](https://developer.mapquest.com/documentation/mapquest-js/v1.3/l-mapquest-control/) 는 모든 기능을 갖춘 간단한 컨트롤 세트를 생성하며, 기본적으로 오른쪽 상단에 배치됩니다. 컨트롤의 위치를 지정하는 문자열인 `position` 속성을 포함하는 옵션 개체를 컨트롤의 매개변수로 지정하여 위치를 조정할 수 있습니다. 예를 들어 이렇게 해 보세요:
 
 ```js
   map.addControl(L.mapquest.control({ position: 'bottomright' }));
 ```
 
-There are other types of control available, for example [`mapquest.searchControl()`](https://developer.mapquest.com/documentation/mapquest-js/v1.3/l-mapquest-search-control/) and [`mapquest.satelliteControl()`](https://developer.mapquest.com/documentation/mapquest-js/v1.3/l-mapquest-satellite-control/), and some are quite complex and powerful. Have a play around and see what you can come up with.
+다른 유형의 컨트롤(예: [`mapquest.searchControl()`](https://developer.mapquest.com/documentation/mapquest-js/v1.3/l-mapquest-search-control/), [`mapquest.satelliteControl()`](https://developer.mapquest.com/documentation/mapquest-js/v1.3/l-mapquest-satellite-control/))도 사용할 수 있으며, 일부는 매우 복잡하고 강력합니다. 직접 사용해보고 어떤 것이 가능한지 확인해 보세요.
 
-### Adding a custom marker
+### 사용자 정의 마커 추가하기
 
-Adding a marker (icon) at a certain point on the map is easy — you just use the [`L.marker()`](https://leafletjs.com/reference.html#marker) method (which seems to be documented in the related Leaflet.js docs). Add the following code to your example, again inside `window.onload`:
+지도의 특정 지점에 마커(아이콘)를 추가하는 방법은 간단합니다. [`L.marker()`](https://leafletjs.com/reference.html#marker) 메서드(관련 Leaflet.js 문서에 설명되어 있음)를 사용하기만 하면 됩니다. 예제에 `window.onload` 안에 다음 코드를 다시 추가합니다:
 
 ```js
 L.marker([53.480759, -2.242631], {
@@ -154,61 +152,61 @@ L.marker([53.480759, -2.242631], {
 .addTo(map);
 ```
 
-As you can see, this at its simplest takes two parameters, an array containing the coordinates at which to display the marker, and an options object containing an `icon` property that defines the icon to display at that point.
+보시다시피, 가장 간단하게는 마커를 표시할 좌표가 포함된 배열과 해당 지점에 표시할 아이콘을 정의하는 `icon` 속성이 포함된 옵션 객체라는 두 개의 매개변수가 필요합니다.
 
-The icon is defined using an [`mapquest.icons.marker()`](https://developer.mapquest.com/documentation/mapquest-js/v1.3/l-mapquest-icons/) method, which as you can see contains information such as color and size of marker.
+아이콘은 보시다시피 마커의 색상 및 크기와 같은 정보를 포함하는 [`mapquest.icons.marker()`](https://developer.mapquest.com/documentation/mapquest-js/v1.3/l-mapquest-icons/) 메서드를 사용하여 정의됩니다.
 
-Onto the end of the first method call we chain `.bindPopup('This is Manchester!')`, which defines content to display when the marker is clicked.
+첫 번째 메서드 호출의 끝에 마커를 클릭할 때 표시할 콘텐츠를 정의하는 `.bindPopup('This is Manchester!')`을 연결합니다.
 
-Finally, we chain `.addTo(map)` to the end of the chain to actually add the marker to the map.
+마지막으로 `.addTo(map)`를 체인의 끝에 연결하여 실제로 마커를 맵에 추가합니다.
 
-Have a play with the other options shown in the documentation and see what you can come up with! Mapquest provides some pretty advanced functionality, such as directions, searching, etc.
+문서에 나와 있는 다른 옵션들을 사용해보고 어떤 기능이 있는지 확인해 보세요! 맵퀘스트는 길 찾기, 검색 등과 같은 꽤 고급 기능을 제공합니다.
 
-> **Note:** If you have trouble getting the example to work, check your code against our [finished version](https://github.com/mdn/learning-area/blob/main/javascript/apis/third-party-apis/mapquest/finished/script.js).
+> **참고:** 예제가 작동하는 데 문제가 있는 경우, [완성된 버전](https://github.com/mdn/learning-area/blob/main/javascript/apis/third-party-apis/mapquest/finished/script.js) 과 코드를 비교해 보세요.
 
 ## A RESTful API — NYTimes
 
-Now let's look at another API example — the [New York Times API](https://developer.nytimes.com). This API allows you to retrieve New York Times news story information and display it on your site. This type of API is known as a **RESTful API** — instead of getting data using the features of a JavaScript library like we did with Mapquest, we get data by making HTTP requests to specific URLs, with data like search terms and other properties encoded in the URL (often as URL parameters). This is a common pattern you'll encounter with APIs.
+이제 또 다른 API 예제인 [New York Times API](https://developer.nytimes.com) 를 살펴보겠습니다. 이 API를 사용하면 뉴욕 타임즈 뉴스 기사 정보를 검색하여 사이트에 표시할 수 있습니다. 이러한 유형의 API를 **RESTful API** 라고 하는데, Mapquest에서 했던 것처럼 JavaScript 라이브러리의 기능을 사용하여 데이터를 가져오는 대신 검색어 및 기타 속성과 같은 데이터를 URL에 인코딩하여(종종 URL 매개변수로) 특정 URL에 HTTP 요청을 수행하여 데이터를 가져옵니다. 이는 API에서 흔히 접할 수 있는 패턴입니다.
 
-## An approach for using third-party APIs
+## 타사 API를 사용하기 위한 접근 방식
 
-Below we'll take you through an exercise to show you how to use the NYTimes API, which also provides a more general set of steps to follow that you can use as an approach for working with new APIs.
+아래에서는 NYTimes API를 사용하는 방법을 보여 드리는 연습을 통해 새로운 API로 작업할 때 접근 방식으로 사용할 수 있는 보다 일반적인 단계를 제공합니다.
 
-### Find the documentation
+### 문서 찾기
 
-When you want to use a third party API, it is essential to find out where the documentation is, so you can find out what features the API has, how you use them, etc. The New York Times API documentation is at <https://developer.nytimes.com/>.
+타사 API를 사용하려면 해당 API에 어떤 기능이 있는지, 어떻게 사용하는지 등을 알 수 있도록 문서가 어디에 있는지 찾는 것이 필수적입니다. 뉴욕타임즈 API 문서는 <https://developer.nytimes.com/> 에 있습니다.
 
-### Get a developer key
+### 개발자 키 받기
 
-Most APIs require you to use some kind of developer key, for reasons of security and accountability. To sign up for an NYTimes API key, following the instructions at <https://developer.nytimes.com/get-started>.
+대부분의 API는 보안 및 책임의 이유로 일종의 개발자 키를 사용해야 합니다. <https://developer.nytimes.com/get-started> 에서 안내에 따라 NYTimes API 키를 신청하세요.
 
-1. Let's request a key for the Article Search API — create a new app, selecting this as the API you want to use (fill in a name and description, toggle the switch under the "Article Search API" to the on position, and then click "Create").
-2. Get the API key from the resulting page.
-3. Now, to start the example off, make a copy of all the files in the [nytimes/start](https://github.com/mdn/learning-area/tree/main/javascript/apis/third-party-apis/nytimes/start) directory. If you've already [cloned the examples repository](/en-US/docs/Learn#getting_our_code_examples), you'll already have a copy of these files, which you can find in the _javascript/apis/third-party-apis/nytimes/start_ directory. Initially the `script.js` file contains a number of variables needed for the setup of the example; below we'll fill in the required functionality.
+1. 기사 검색 API에 대한 키를 요청해 보겠습니다. 새 앱을 만들고 이 앱을 사용하려는 API로 선택합니다(이름과 설명을 입력하고 "Article Search API" 아래의 스위치를 켜짐 위치로 전환한 다음 "Create"를 클릭합니다).
+2. 결과 페이지에서 API 키를 받습니다.
+3. 이제 예제를 시작하기 위해 [nytimes/start](https://github.com/mdn/learning-area/tree/main/javascript/apis/third-party-apis/nytimes/start) 디렉터리에 있는 모든 파일의 복사본을 만듭니다. [예제 리포지토리를 이미 복제](/ko/docs/Learn#getting_our_code_examples) 했다면 이러한 파일의 복사본이 이미 있을 것이며, 이 복사본은 _javascript/apis/third-party-apis/nytimes/start_ 디렉터리에서 찾을 수 있습니다. 처음에 `script.js` 파일에는 예제 설정에 필요한 여러 변수가 포함되어 있으며, 아래에서 필요한 기능을 채워 넣을 것입니다.
 
-The app will end up allowing you to type in a search term and optional start and end dates, which it will then use to query the Article Search API and display the search results.
+앱에서 검색어와 시작 및 종료 날짜(선택 사항)를 입력하면 이를 사용하여 기사 검색 API를 쿼리하고 검색 결과를 표시할 수 있습니다.
 
 ![A screenshot of a sample search query and search results as retrieved from the New York Article Search API.](nytimes-example.png)
 
-### Connect the API to your app
+### API를 앱에 연결하기
 
-First, you'll need to make a connection between the API and your app. In the case of this API, you need to include the API key as a [get](/en-US/docs/Web/HTTP/Methods/GET) parameter every time you request data from the service at the correct URL.
+먼저 API와 앱을 연결해야 합니다. 이 API의 경우 올바른 URL로 서비스에서 데이터를 요청할 때마다 API 키를 [get](/ko/docs/Web/HTTP/Methods/GET) 매개변수에 포함시켜야 합니다.
 
-1. Find the following line:
+1. 다음 줄을 찾습니다:
 
    ```js
    const key = 'INSERT-YOUR-API-KEY-HERE';
    ```
 
-   Replace the existing API key with the actual API key you got in the previous section.
+   기존 API 키를 이전 섹션에서 얻은 실제 API 키로 바꿉니다.
 
-2. Add the following line to your JavaScript, below the "`// Event listeners to control the functionality`" comment. This runs a function called `submitSearch()` when the form is submitted (the button is pressed).
+2. "`// Event listeners to control the functionality`" 주석 아래에 다음 줄을 JavaScript에 추가합니다. 그러면 양식이 제출될 때(버튼이 눌려질 때) `submitSearch()`라는 함수가 실행됩니다.
 
    ```js
    searchForm.addEventListener('submit', submitSearch);
    ```
 
-3. Now add the `submitSearch()` and `fetchResults()` function definitions, below the previous line:
+3. 이제 이전 줄 아래에 `submitSearch()` 및 `fetchResults()` 함수 정의를 추가합니다:
 
    ```js
    function submitSearch(e) {
@@ -233,31 +231,31 @@ First, you'll need to make a connection between the API and your app. In the cas
    }
    ```
 
-`submitSearch()` sets the page number back to 0 to begin with, then calls `fetchResults()`. This first calls [`preventDefault()`](/en-US/docs/Web/API/Event/preventDefault) on the event object, to stop the form actually submitting (which would break the example). Next, we use some string manipulation to assemble the full URL that we will make the request to. We start off by assembling the parts we deem as mandatory for this demo:
+`submitSearch()`는 페이지 번호를 0으로 다시 설정하여 시작한 다음 `fetchResults()`를 호출합니다. 이 함수는 먼저 이벤트 객체에서 [`preventDefault()`](/ko/docs/Web/API/Event/preventDefault) 를 호출하여 실제로 양식이 제출되는 것을 중지합니다(예제가 깨질 수 있음). 다음으로, 몇 가지 문자열 조작을 사용하여 요청할 전체 URL을 조립합니다. 이 데모에서 필수라고 생각되는 부분부터 조립해 보겠습니다:
 
-- The base URL (taken from the `baseURL` variable).
-- The API key, which has to be specified in the `api-key` URL parameter (the value is taken from the `key` variable).
-- The page number, which has to be specified in the `page` URL parameter (the value is taken from the `pageNumber` variable).
-- The search term, which has to be specified in the `q` URL parameter (the value is taken from the value of the `searchTerm` text {{htmlelement("input")}}).
-- The document type to return results for, as specified in an expression passed in via the `fq` URL parameter. In this case, we want to return articles.
+- 기본 URL(`baseURL` 변수에서 가져옴).
+- `api-key` URL 매개변수에 지정해야 하는 API 키(`key` 변수에서 값을 가져옴).
+- 페이지 번호: `page` URL 매개변수에 지정해야 하는 페이지 번호(`pageNumber` 변수에서 값을 가져옴).
+- 검색 용어는 `q` URL 매개변수에 지정해야 합니다(`searchTerm` 텍스트 {{htmlelement("input")}} 값에서 값을 가져옴).
+- `fq` URL 매개 변수를 통해 전달된 표현식에 지정된 대로 결과를 반환할 문서 유형입니다. 이 경우 문서를 반환하려고 합니다.
 
-Next, we use a couple of [`if ()`](/en-US/docs/Web/JavaScript/Reference/Statements/if...else) statements to check whether the `startDate` and `endDate` elements have had values filled in on them. If they do, we append their values to the URL, specified in `begin_date` and `end_date` URL parameters respectively.
+다음으로, 몇 개의 [`if ()`](/ko/docs/Web/JavaScript/Reference/Statements/if...else) 문을 사용하여 `startDate` 및 `endDate` 요소에 값이 채워져 있는지 확인합니다. 값이 채워져 있으면 해당 값을 `begin_date` 및 `end_date` URL 매개 변수에 각각 지정된 URL에 추가합니다.
 
-So, a complete URL would end up looking something like this:
+따라서 완전한 URL은 다음과 같이 표시됩니다:
 
 ```
 https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=YOUR-API-KEY-HERE&page=0&q=cats&fq=document_type:("article")&begin_date=20170301&end_date=20170312
 ```
 
-> **Note:** You can find more details of what URL parameters can be included at the [NYTimes developer docs](https://developer.nytimes.com/).
+> **참고:** 포함할 수 있는 URL 매개변수에 대한 자세한 내용은 [NYTimes 개발자 문서](https://developer.nytimes.com/) 에서 확인할 수 있습니다.
 
-> **Note:** The example has rudimentary form data validation — the search term field has to be filled in before the form can be submitted (achieved using the `required` attribute), and the date fields have `pattern` attributes specified, which means they won't submit unless their values consist of 8 numbers (`pattern="[0-9]{8}"`). See [Form data validation](/en-US/docs/Learn/Forms/Form_validation) for more details on how these work.
+> **참고:** 이 예시에는 기본적인 양식 데이터 유효성 검사가 포함되어 있습니다. 검색어 필드는 양식을 제출하기 전에 입력해야 하며(`required` 속성을 사용하여 달성), 날짜 필드에는 `pattern` 속성이 지정되어 있으므로 값이 8개의 숫자로 구성되지 않으면 제출되지 않습니다(`pattern="[0-9]{8}"`). 이러한 작동 방식에 대한 자세한 내용은 [양식 데이터 유효성 검사](/ko/docs/Learn/Forms/Form_validation) 를 참조하세요.
 
-### Requesting data from the API
+### API에서 데이터 요청하기
 
-Now we've constructed our URL, let's make a request to it. We'll do this using the [Fetch API](/en-US/docs/Web/API/Fetch_API/Using_Fetch).
+이제 URL을 만들었으니 요청을 해보겠습니다. [Fetch API](/ko/docs/Web/API/Fetch_API/Using_Fetch) 를 사용하여 요청하겠습니다.
 
-Add the following code block inside the `fetchResults()` function, just above the closing curly brace:
+닫는 중괄호 바로 위에 있는 `fetchResults()` 함수 안에 다음 코드 블록을 추가합니다:
 
 ```js
 // Use fetch() to make the request to the API
@@ -267,11 +265,11 @@ fetch(url)
   .catch((error) => console.error(`Error fetching data: ${error.message}`));
 ```
 
-Here we run the request by passing our `url` variable to [`fetch()`](/en-US/docs/Web/API/fetch), convert the response body to JSON using the [`json()`](/en-US/docs/Web/API/Response/json) function, then pass the resulting JSON to the `displayResults()` function so the data can be displayed in our UI. We also catch and log any errors that might be thrown.
+여기서는 `url` 변수를 [`fetch()`](/ko/docs/Web/API/fetch) 에 전달하여 요청을 실행하고, [`json()`](/ko/docs/Web/API/Response/json) 함수를 사용하여 응답 본문을 JSON으로 변환한 다음, 결과 JSON을 `displayResults()` 함수에 전달하여 UI에 데이터를 표시할 수 있도록 합니다. 또한 발생할 수 있는 모든 오류를 포착하고 기록합니다.
 
-### Displaying the data
+### 데이터 표시하기
 
-OK, let's look at how we'll display the data. Add the following function below your `fetchResults()` function.
+이제 데이터를 표시하는 방법을 살펴봅시다. `fetchResults()` 함수 아래에 다음 함수를 추가합니다.
 
 ```js
 function displayResults(json) {
@@ -325,31 +323,31 @@ function displayResults(json) {
 };
 ```
 
-There's a lot of code here; let's explain it step by step:
+여기에는 많은 코드가 있으므로 단계별로 설명하겠습니다:
 
-- The [`while`](/en-US/docs/Web/JavaScript/Reference/Statements/while) loop is a common pattern used to delete all of the contents of a DOM element, in this case, the {{htmlelement("section")}} element. We keep checking to see if the `<section>` has a first child, and if it does, we remove the first child. The loop ends when `<section>` no longer has any children.
-- Next, we set the `articles` variable to equal `json.response.docs` — this is the array holding all the objects that represent the articles returned by the search. This is done purely to make the following code a bit simpler.
-- The first [`if ()`](/en-US/docs/Web/JavaScript/Reference/Statements/if...else) block checks to see if 10 articles are returned (the API returns up to 10 articles at a time.) If so, we display the {{htmlelement("nav")}} that contains the _Previous 10_/_Next 10_ pagination buttons. If fewer than 10 articles are returned, they will all fit on one page, so we don't need to show the pagination buttons. We will wire up the pagination functionality in the next section.
-- The next `if ()` block checks to see if no articles are returned. If so, we don't try to display any — we create a {{htmlelement("p")}} containing the text "No results returned." and insert it into the `<section>`.
-- If some articles are returned, we, first of all, create all the elements that we want to use to display each news story, insert the right contents into each one, and then insert them into the DOM at the appropriate places. To work out which properties in the article objects contained the right data to show, we consulted the Article Search API reference (see [NYTimes APIs](https://developer.nytimes.com/apis)). Most of these operations are fairly obvious, but a few are worth calling out:
+- [`while`](/ko/docs/Web/JavaScript/Reference/Statements/while) 루프는 DOM 요소의 모든 내용(이 경우 {{htmlelement("section")}} 요소)을 삭제하는 데 사용되는 일반적인 패턴입니다. `<section>`에 첫 번째 자식이 있는지 계속 확인하고, 자식이 있으면 첫 번째 자식을 제거합니다. `<section>`에 더 이상 자식이 없으면 루프가 종료됩니다.
+- 다음으로, 검색에서 반환된 문서를 나타내는 모든 객체가 들어 있는 배열인 `json.response.docs`와 동일한 `articles` 변수를 설정합니다. 이는 순전히 다음 코드를 좀 더 간단하게 만들기 위한 것입니다.
+- 첫 번째 [`if ()`](/ko/docs/Web/JavaScript/Reference/Statements/if...else) 블록은 10개 문서가 반환되는지 확인합니다(API는 한 번에 최대 10개 문서까지 반환합니다.) 10개 문서가 반환되면 이전 10개/다음 10개 페이지 매김 버튼이 포함된 {{htmlelement("nav")}} 가 표시됩니다. 10개 미만의 문서가 반환되면 모두 한 페이지에 들어가므로 페이지 매김 버튼을 표시할 필요가 없습니다. 다음 섹션에서 페이지 매김 기능을 연결하겠습니다.
+- 다음 `if()` 블록은 반환된 문서가 없는지 확인합니다. 그렇다면 아무 것도 표시하지 않고 "No results returned."라는 텍스트가 포함된 {{htmlelement("p")}} 을 생성하여 `<section>`에 삽입합니다.
+- 일부 기사가 반환되면 먼저 각 뉴스 기사를 표시하는 데 사용할 모든 요소를 만들고 각 요소에 적절한 콘텐츠를 삽입한 다음 적절한 위치의 DOM에 삽입합니다. 기사 객체에서 어떤 속성에 표시하기에 적합한 데이터가 포함되어 있는지 파악하기 위해 기사 검색 API 참조를 참조했습니다([NYTimes APIs](https://developer.nytimes.com/apis) 참조). 이러한 작업의 대부분은 매우 당연한 것이지만 몇 가지를 언급할 가치가 있습니다:
 
-  - We used a [`for...of`](/en-US/docs/Web/JavaScript/Reference/Statements/for...of) loop to go through all the keywords associated with each article, and insert each one inside its own {{htmlelement("span")}}, inside a `<p>`. This was done to make it easy to style each one.
-  - We used an `if ()` block (`if (current.multimedia.length > 0) { }`) to check whether each article has any images associated with it, as some stories don't. We display the first image only if it exists; otherwise, an error would be thrown.
+  - [`for...of`](/ko/docs/Web/JavaScript/Reference/Statements/for...of) 루프를 사용하여 각 기사와 연관된 모든 키워드를 살펴보고 각 키워드를 자체 {{htmlelement("span")}} 안에 `<p>` 안에 삽입했습니다. 이렇게 하면 각각의 스타일을 쉽게 지정할 수 있습니다.
+  - 일부 스토리에는 이미지가 없는 경우도 있으므로 `if ()` 블록(`if (current.multimedia.length > 0) { }`)을 사용하여 각 기사에 연결된 이미지가 있는지 확인했습니다. 이미지가 있는 경우에만 첫 번째 이미지를 표시하고, 그렇지 않으면 오류가 발생합니다.
 
-### Wiring up the pagination buttons
+### 페이지 매김 버튼 연결하기
 
-To make the pagination buttons work, we will increment (or decrement) the value of the `pageNumber` variable, and then re-rerun the fetch request with the new value included in the page URL parameter. This works because the NYTimes API only returns 10 results at a time — if more than 10 results are available, it will return the first 10 (0-9) if the `page` URL parameter is set to 0 (or not included at all — 0 is the default value), the next 10 (10-19) if it is set to 1, and so on.
+페이지 매김 버튼이 작동하도록 하기 위해 `pageNumber` 변수의 값을 증가(또는 감소)시킨 다음 페이지 URL 매개변수에 포함된 새 값으로 가져오기 요청을 다시 실행합니다. 이는 NYTimes API가 한 번에 10개의 결과만 반환하기 때문에 작동하며, 10개 이상의 결과를 사용할 수 있는 경우 `page` URL 매개 변수가 0으로 설정된 경우 첫 번째 10개(0~9)(또는 전혀 포함되지 않은 경우 0이 기본값임), 1로 설정된 경우 다음 10개(10~19)를 반환하는 식으로 작동합니다.
 
-This allows us to write a simplistic pagination function.
+이를 통해 간단한 페이지 매김 함수를 작성할 수 있습니다.
 
-1. Below the existing [`addEventListener()`](/en-US/docs/Web/API/EventTarget/addEventListener) call, add these two new ones, which cause the `nextPage()` and `previousPage()` functions to be invoked when the relevant buttons are clicked:
+1. 기존 [`addEventListener()`](/ko/docs/Web/API/EventTarget/addEventListener) 호출 아래에 이 두 개의 새 함수를 추가하면 관련 버튼이 클릭될 때 `nextPage()` 및 `previousPage()` 함수가 호출됩니다:
 
    ```js
    nextBtn.addEventListener('click', nextPage);
    previousBtn.addEventListener('click', previousPage);
    ```
 
-2. Below your previous addition, let's define the two functions — add this code now:
+2. 이전에 추가한 함수 아래에 두 함수를 정의해 보겠습니다. 지금 이 코드를 추가하세요:
 
    ```js
    function nextPage(e) {
@@ -367,35 +365,35 @@ This allows us to write a simplistic pagination function.
    };
    ```
 
-   The first function increments the `pageNumber` variable, then run the `fetchResults()` function again to display the next page's results.
+   첫 번째 함수는 `pageNumber` 변수를 증가시킨 다음 `fetchResults()` 함수를 다시 실행하여 다음 페이지의 결과를 표시합니다.
 
-   The second function works nearly exactly the same way in reverse, but we also have to take the extra step of checking that `pageNumber` is not already zero before decrementing it — if the fetch request runs with a minus `page` URL parameter, it could cause errors. If the `pageNumber` is already 0, we [`return`](/en-US/docs/Web/JavaScript/Reference/Statements/return) out of the function — if we are already at the first page, we don't need to load the same results again.
+   두 번째 함수는 거의 동일한 방식으로 역순으로 작동하지만, `pageNumber`를 감소시키기 전에 `pageNumber`가 이미 0이 아닌지 확인하는 추가 단계를 수행해야 합니다. 마이너스 `page` URL 매개변수를 사용하여 가져오기 요청이 실행되면 오류가 발생할 수 있기 때문입니다. `pageNumber`가 이미 0이면 함수에서 [`return`](/ko/docs/Web/JavaScript/Reference/Statements/return) 되며, 이미 첫 번째 페이지에 있는 경우 동일한 결과를 다시 로드할 필요가 없습니다.
 
-> **Note:** You can find our [finished NYTimes API example code on GitHub](https://github.com/mdn/learning-area/blob/main/javascript/apis/third-party-apis/nytimes/finished/index.html) (also [see it running live here](https://mdn.github.io/learning-area/javascript/apis/third-party-apis/nytimes/finished/)).
+> **참고:** [완성된 NYTimes API 예제 코드는 GitHub에서](https://github.com/mdn/learning-area/blob/main/javascript/apis/third-party-apis/nytimes/finished/index.html) 찾을 수 있습니다([여기에서 실시간으로 실행되는 모습도 확인할 수 있습니다](https://mdn.github.io/learning-area/javascript/apis/third-party-apis/nytimes/finished/)).
 
-## YouTube example
+## YouTube 예제
 
-We also built another example for you to study and learn from — see our [YouTube video search example](https://mdn.github.io/learning-area/javascript/apis/third-party-apis/youtube/). This uses two related APIs:
+공부하고 배울 수 있는 또 다른 예제도 만들었습니다. [YouTube 동영상 검색 예제](https://mdn.github.io/learning-area/javascript/apis/third-party-apis/youtube/) 를 참조하세요. 여기에는 두 개의 관련 API가 사용됩니다:
 
-- The [YouTube Data API](https://developers.google.com/youtube/v3/docs/) to search for YouTube videos and return results.
-- The [YouTube IFrame Player API](https://developers.google.com/youtube/iframe_api_reference) to display the returned video examples inside IFrame video players so you can watch them.
+- YouTube 동영상을 검색하고 결과를 반환하는 [YouTube 데이터 API](https://developers.google.com/youtube/v3/docs/).
+- 반환된 동영상 예시를 IFrame 동영상 플레이어에 표시하여 시청할 수 있도록 하는 [YouTube IFrame 플레이어 API](https://developers.google.com/youtube/iframe_api_reference).
 
-This example is interesting because it shows two related third-party APIs being used together to build an app. The first one is a RESTful API, while the second one works more like Mapquest (with API-specific methods, etc.). It is worth noting however that both of the APIs require a JavaScript library to be applied to the page. The RESTful API has functions available to handle making the HTTP requests and returning the results.
+이 예제는 앱을 빌드하는 데 두 개의 관련 타사 API가 함께 사용되는 것을 보여주기 때문에 흥미롭습니다. 첫 번째는 RESTful API이고, 두 번째는 맵퀘스트와 비슷하게 작동합니다(API별 메서드 등 포함). 하지만 두 API 모두 페이지에 적용하려면 자바스크립트 라이브러리가 필요하다는 점에 유의할 필요가 있습니다. RESTful API에는 HTTP 요청을 처리하고 결과를 반환하는 데 사용할 수 있는 함수가 있습니다.
 
 ![A screenshot of a sample Youtube video search using two related APIs. The left side of the image has a sample search query using the YouTube Data API. The right side of the image displays the search results using the Youtube Iframe Player API.](youtube-example.png)
 
-We are not going to say too much more about this example in the article — [the source code](https://github.com/mdn/learning-area/tree/main/javascript/apis/third-party-apis/youtube) has detailed comments inserted inside it to explain how it works.
+이 글에서는 이 예제에 대해 더 이상 설명하지 않겠습니다. [소스 코드](https://github.com/mdn/learning-area/tree/main/javascript/apis/third-party-apis/youtube) 에는 작동 방식을 설명하는 자세한 주석이 삽입되어 있습니다.
 
-To get it running, you'll need to:
+이 예제를 실행하려면 다음을 수행해야 합니다:
 
-- Read the [YouTube Data API Overview](https://developers.google.com/youtube/v3/getting-started) documentation.
-- Make sure you visit the [Enabled APIs page](https://console.cloud.google.com/apis/enabled), and in the list of APIs, make sure the status is ON for the YouTube Data API v3.
-- Get an API key from [Google Cloud](https://cloud.google.com/).
-- Find the string `ENTER-API-KEY-HERE` in the source code, and replace it with your API key.
-- Run the example through a web server. It won't work if you just run it directly in the browser (i.e. via a `file://` URL).
+- [YouTube 데이터 API 개요](https://developers.google.com/youtube/v3/getting-started) 문서를 읽습니다.
+- [활성화된 API 페이지](https://console.cloud.google.com/apis/enabled) 로 이동하여 API 목록에서 YouTube 데이터 API v3의 상태가 켜짐으로 설정되어 있는지 확인합니다.
+- [Google 클라우드](https://cloud.google.com/) 에서 API 키를 받습니다.
+- 소스 코드에서 `ENTER-API-KEY-HERE` 문자열을 찾아 API 키로 바꿉니다.
+- 웹 서버를 통해 예제를 실행합니다. 브라우저에서 직접 실행하면 작동하지 않습니다(예: `file://` URL을 통해).
 
-## Summary
+## 요약
 
-This article has given you a useful introduction to using third-party APIs to add functionality to your websites.
+이 글에서는 타사 API를 사용하여 웹사이트에 기능을 추가하는 유용한 방법을 소개했습니다.
 
 {{PreviousMenuNext("Learn/JavaScript/Client-side_web_APIs/Fetching_data", "Learn/JavaScript/Client-side_web_APIs/Drawing_graphics", "Learn/JavaScript/Client-side_web_APIs")}}
