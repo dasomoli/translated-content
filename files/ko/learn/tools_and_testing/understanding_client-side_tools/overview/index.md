@@ -5,166 +5,165 @@ slug: Learn/Tools_and_testing/Understanding_client-side_tools/Overview
 
 {{LearnSidebar}}{{NextMenu("Learn/Tools_and_testing/Understanding_client-side_tools/Command_line", "Learn/Tools_and_testing/Understanding_client-side_tools")}}
 
-In this article, we provide an overview of modern web tooling, what kinds of tools are available and where you'll meet them in the lifecycle of web app development, and how to find help with individual tools.
+이 글에서는 최신 웹 도구에 대한 개요, 사용 가능한 도구의 종류, 웹 앱 개발 수명 주기에서 도구를 만날 수 있는 위치, 개별 도구에 대한 도움말을 찾는 방법에 대해 설명합니다.
 
 <table>
   <tbody>
     <tr>
-      <th scope="row">Prerequisites:</th>
+      <th scope="row">사전 요구 사항:</th>
       <td>
-        Familiarity with the core <a href="/en-US/docs/Learn/HTML">HTML</a>,
-        <a href="/en-US/docs/Learn/CSS">CSS</a>, and
-        <a href="/en-US/docs/Learn/JavaScript">JavaScript</a> languages.
+        핵심 <a href="/ko/docs/Learn/HTML">HTML</a>,
+        <a href="/ko/docs/Learn/CSS">CSS</a> 및
+        <a href="/ko/docs/Learn/JavaScript">JavaScript</a> 언어에 익숙해야 합니다.
       </td>
     </tr>
     <tr>
-      <th scope="row">Objective:</th>
+      <th scope="row">목표:</th>
       <td>
-        To understand what types of client-side tooling there are, and how to
-        find tools and get help with them.
+        클라이언트 측 도구에는 어떤 유형이 있는지, 도구를 찾고 도움을 받는 방법을 이해합니다.
       </td>
     </tr>
   </tbody>
 </table>
 
-## Overview of modern tooling
+## 최신 도구 개요
 
-Writing software for the web has become more sophisticated through the ages. Although it is still entirely reasonable to write HTML, CSS, and JavaScript "by hand" there is now a wealth of tools that developers can use to speed up the process of building a website, or app.
+웹용 소프트웨어 작성은 시간이 지남에 따라 더욱 정교해졌습니다. HTML, CSS, JavaScript를 '수작업'으로 작성하는 것이 여전히 합리적이지만, 이제 개발자가 웹사이트 또는 앱 구축 프로세스의 속도를 높이는 데 사용할 수 있는 다양한 도구가 있습니다.
 
-There are some extremely well-established tools that have become common "household names" amongst the development community, and new tools are being written and released every day to solve specific problems. You might even find yourself writing a piece of software to aid your own development process, to solve a specific problem that existing tools don't already seem to handle.
+개발 커뮤니티에서 흔히 '집안 이름'으로 불리는 매우 잘 알려진 도구도 있으며, 특정 문제를 해결하기 위해 매일 새로운 도구가 만들어지고 출시되고 있습니다. 기존 도구가 처리하지 못하는 특정 문제를 해결하기 위해 직접 개발 프로세스를 지원하는 소프트웨어를 작성할 수도 있습니다.
 
-It is easy to become overwhelmed by the sheer number of tools that can be included in a single project. Equally, a single configuration file for a tool like [Webpack](https://webpack.js.org/) can be hundreds of lines long, most of which are magical incantations that seem to do the job but which only a master engineer will fully understand!
+단일 프로젝트에 포함될 수 있는 도구의 수가 너무 많아서 압도당하기 쉽습니다. 또한 [Webpack](https://webpack.js.org/) 과 같은 도구의 단일 구성 파일은 수백 줄에 달할 수 있으며, 대부분은 기능을 수행하는 것처럼 보이지만 마스터 엔지니어만이 완전히 이해할 수 있는 마법의 주문과도 같습니다!
 
-From time to time, even the most experienced of web developers get stuck on a tooling problem; it is possible to waste hours attempting to get a tooling pipeline working before even touching a single line of application code. If you have found yourself struggling in the past, then don't worry — you are not alone.
+아무리 숙련된 웹 개발자라도 툴링 문제에 부딪히면 애플리케이션 코드를 한 줄도 건드리기 전에 툴링 파이프라인을 작동시키느라 몇 시간을 허비할 수 있습니다. 과거에 어려움을 겪은 적이 있다면 걱정하지 마세요. 여러분은 혼자가 아니니까요.
 
-In these articles, we won't answer every question about web tooling, but we will provide you with a useful starting point of understanding the fundamentals, which you can then build from. As with any complex topic, it is good to start small, and gradually work your way up to more advanced uses.
+이 글에서는 웹 툴링에 대한 모든 질문에 답하지는 않겠지만, 기본 사항을 이해하는 데 유용한 출발점을 제공하고 이를 바탕으로 빌드할 수 있습니다. 다른 복잡한 주제와 마찬가지로 작은 것부터 시작하여 점차 고급 사용법으로 나아가는 것이 좋습니다.
 
-## The modern tooling ecosystem
+## 최신 툴링 에코시스템
 
-Today's modern developer tooling ecosystem is huge, so it's useful to have a broad idea of what main problems the tools are solving. If you jump on your favorite search engine and look for "front-end developer tools" you're going to hit a huge spectrum of results ranging from text editors, to browsers, to the type of pens you can use to take notes.
+오늘날의 최신 개발자 도구 생태계는 방대하므로 도구가 어떤 주요 문제를 해결하고 있는지 폭넓게 파악하는 것이 유용합니다. 자주 사용하는 검색 엔진에서 '프런트엔드 개발자 도구'를 검색하면 텍스트 편집기부터 브라우저, 메모에 사용할 수 있는 펜 유형에 이르기까지 방대한 범위의 결과를 확인할 수 있을 것입니다.
 
-Though your choice of code editor is certainly a tooling choice, this series of articles will go beyond that, focusing on developer tools that help you produce web code more efficiently.
+코드 편집기를 선택하는 것도 분명 도구 선택이지만, 이 글 시리즈에서는 그 이상으로 웹 코드를 보다 효율적으로 작성하는 데 도움이 되는 개발자 도구에 초점을 맞출 것입니다.
 
-From a high-level perspective, you can put client-side tools into the following three broad categories of problems to solve:
+높은 수준의 관점에서 클라이언트 측 도구를 다음과 같이 크게 세 가지 범주로 분류하여 문제를 해결할 수 있습니다:
 
-- **Safety net** — Tools that are useful during your code development.
-- **Transformation** — Tools that transform code in some way, e.g. turning an intermediate language into JavaScript that a browser can understand.
-- **Post-development** — Tools that are useful after you have written your code, such as testing and deployment tools.
+- **안전망** — 코드 개발 중에 유용한 도구.
+- **변환** — 중간 언어를 브라우저가 이해할 수 있는 JavaScript로 변환하는 등 어떤 방식으로든 코드를 변환하는 도구입니다.
+- **개발 후** — 테스트 및 배포 도구와 같이 코드를 작성한 후에 유용한 도구입니다.
 
-Let's look at each one of these in more detail.
+각 도구에 대해 자세히 살펴보겠습니다.
 
-### Safety net
+### 안전망
 
-These are tools that make the code you write a little better.
+작성한 코드를 조금 더 나은 상태로 만들어주는 도구입니다.
 
-This part of the tooling should be specific to your own development environment, though it's not uncommon for companies to have some kind of policy or pre-baked configuration available to install so that all their developers are using the same processes.
+이러한 도구는 각자의 개발 환경에 맞게 선택해야 하지만, 회사에서 모든 개발자가 동일한 프로세스를 사용할 수 있도록 일종의 정책이나 미리 구워진 구성을 설치하는 경우도 드물지 않습니다.
 
-This includes anything that makes your development process easier for generating stable and reliable code. Safety net tooling should also help you either prevent mistakes or correct mistakes automatically without having to build your code from scratch each time.
+여기에는 안정적이고 신뢰할 수 있는 코드를 생성하기 위해 개발 프로세스를 더 쉽게 만드는 모든 것이 포함됩니다. 또한 안전망 도구는 매번 코드를 처음부터 빌드할 필요 없이 실수를 방지하거나 실수를 자동으로 수정하는 데 도움이 되어야 합니다.
 
-A few very common safety net tool types you will find being used by developers are as follows.
+개발자가 사용하는 몇 가지 일반적인 안전망 도구 유형은 다음과 같습니다.
 
-#### Linters
+#### 린터
 
-**Linters** are tools that check through your code and tell you about any errors that are present, what error types they are, and what code lines they are present on. Often linters can be configured to not only report errors, but also report any violations of a specified style guide that your team might be using (for example code that is using the wrong number of spaces for indentation, or using [template literals](/en-US/docs/Web/JavaScript/Reference/Template_literals) rather than regular string literals).
+**린터** 는 코드를 검사하여 존재하는 오류, 오류 유형 및 오류가 있는 코드 줄에 대해 알려주는 도구입니다. 종종 오류를 보고할 뿐만 아니라 팀에서 사용 중인 특정 스타일 가이드의 위반 사항(예: 들여쓰기에 잘못된 공백 수를 사용하거나 일반 문자열 리터럴이 아닌 [템플릿 리터럴](/ko/docs/Web/JavaScript/Reference/Template_literals) 을 사용하는 코드)도 보고하도록 린터를 구성할 수 있습니다.
 
-[ESLint](https://eslint.org/) is the industry standard JavaScript linter — a highly configurable tool for catching potential syntax errors and encouraging "best practices" throughout your code. Some companies and projects have also [shared their ESLint configs](https://www.npmjs.com/search?q=keywords:eslintconfig).
+[ESLint](https://eslint.org/) 는 업계 표준 JavaScript 린터로, 잠재적인 구문 오류를 포착하고 코드 전반에 걸쳐 '모범 사례'를 장려하기 위한 고도로 구성 가능한 도구입니다. 일부 기업과 프로젝트에서는 [ESLint 구성을 공유](https://www.npmjs.com/search?q=keywords:eslintconfig) 하기도 합니다.
 
-You can also find linting tools for other languages, such as [csslint](http://csslint.net/).
+[csslint](http://csslint.net/) 와 같은 다른 언어용 린팅 도구도 찾을 수 있습니다.
 
-Also well-worth looking at is [webhint](https://webhint.io/), a configurable, open-source linter for the web that surfaces best practices including approaches to accessibility, performance, cross-browser compatibility via [MDN's browser compatibility data](https://github.com/mdn/browser-compat-data), security, testing for PWAs, and more. It is available as a [Node.js command-line tool](https://webhint.io/docs/user-guide/) and a [VS Code extension](https://marketplace.visualstudio.com/items?itemName=webhint.vscode-webhint).
+또한 접근성, 성능, [MDN의 브라우저 호환성 데이터](https://github.com/mdn/browser-compat-data) 를 통한 브라우저 간 호환성, 보안, PWA 테스트 등에 대한 접근 방식을 포함한 모범 사례를 보여주는 구성 가능한 웹용 오픈 소스 린터인 [webhint](https://webhint.io/) 도 살펴볼 가치가 있습니다. [Node.js 명령줄 도구](https://webhint.io/docs/user-guide/) 와 [VS Code 확장](https://marketplace.visualstudio.com/items?itemName=webhint.vscode-webhint) 으로 사용할 수 있습니다.
 
-#### Source code control
+#### 소스 코드 제어
 
-Also known as **version control systems** (VCS), **source code control** is essential for backing work up and working in teams. A typical VCS involves having a local version of the code that you make changes to. You then "push" changes to a "master" version of the code inside a remote repository stored on a server somewhere. There is usually a way of controlling and coordinating what changes are made to the "master" copy of the code, and when, so a team of developers doesn't end up overwriting each other's work all the time.
+**버전 제어 시스템**(VCS)이라고도 하는 **소스 코드 제어** 는 작업을 백업하고 팀에서 작업하는 데 필수적입니다. 일반적인 VCS는 변경하는 코드의 로컬 버전을 보유하는 것을 포함합니다. 그런 다음 서버 어딘가에 저장된 원격 리포지토리에 있는 코드의 "master" 버전에 변경 사항을 "푸시"합니다. 일반적으로 코드의 "master" 사본에 어떤 변경 사항이 언제 적용될지 제어하고 조정하는 방법이 있으므로 개발자 팀이 서로의 작업을 항상 덮어쓰지 않게 됩니다.
 
-[Git](https://git-scm.com/) is the source code control system that most people use these days. It is primarily accessed via the command line but can be accessed via friendly user interfaces. With your code in a git repository, you can push it to your own server instance, or use a hosted source control website such as [GitHub](https://github.com/), [GitLab](https://about.gitlab.com/), or [BitBucket](https://bitbucket.org/product/features).
+[Git](https://git-scm.com/) 은 요즘 대부분의 사람들이 사용하는 소스 코드 제어 시스템입니다. 주로 명령줄을 통해 액세스하지만 친숙한 사용자 인터페이스를 통해서도 액세스할 수 있습니다. Git 리포지토리에 있는 코드를 자체 서버 인스턴스로 푸시하거나 [GitHub](https://github.com/), [GitLab](https://about.gitlab.com/) 또는 [BitBucket](https://bitbucket.org/product/features) 과 같은 호스팅된 소스 제어 웹사이트를 사용할 수 있습니다.
 
-We'll be using GitHub in this module. You can find more information about it at [Git and GitHub](/en-US/docs/Learn/Tools_and_testing/GitHub).
+이 모듈에서는 GitHub를 사용하겠습니다. 이에 대한 자세한 내용은 [Git 및 GitHub](/ko/docs/Learn/Tools_and_testing/GitHub) 에서 확인할 수 있습니다.
 
-#### Code formatters
+#### 코드 포맷터
 
-Code formatters are somewhat related to linters, except that rather than point out errors in your code, they usually tend to make sure your code is formatted correctly, according to your style rules, ideally automatically fixing errors that they find.
+코드 포맷터는 코드의 오류를 지적하기보다는 코드가 스타일 규칙에 따라 올바르게 포맷되었는지 확인하고, 발견한 오류를 자동으로 수정한다는 점에서 린터와 어느 정도 유사합니다.
 
-[Prettier](https://prettier.io/) is a very popular example of a code formatter, which we'll make use of later on in the module.
+이 모듈의 뒷부분에서 사용하게 될 코드 포맷터의 매우 유명한 예는 [Prettier](https://prettier.io/) 입니다.
 
-#### Bundlers/packagers
+#### 번들러/패키저
 
-These are tools that get your code ready for production, for example by "tree-shaking" to make sure only the parts of your code libraries that you are actually using are put into your final production code, or "minifying" to remove all the whitespace in your production code, making it as small as possible before it is uploaded to a server.
+코드 라이브러리에서 실제로 사용하는 부분만 최종 프로덕션 코드에 포함되도록 "트리 쉐이킹"하거나 프로덕션 코드에서 모든 공백을 제거하여 서버에 업로드하기 전에 가능한 한 작게 만드는 "축소"와 같이 코드를 프로덕션에 사용할 수 있도록 준비하는 도구입니다.
 
-[Parcel](https://parceljs.org/) is a particularly clever tool that fits into this category — it can do the above tasks, but also helps to package assets like HTML, CSS, and image files into convenient bundles that you can then go on to deploy, and also adds dependencies for you automatically whenever you try to use them. It can even handle some code transformation duties for you.
+[Parcel](https://parceljs.org/) 은 이 범주에 속하는 특히 영리한 도구로, 위의 작업을 수행할 수 있을 뿐만 아니라 HTML, CSS, 이미지 파일과 같은 에셋을 편리한 번들로 패키징하여 배포할 수 있도록 도와주고, 사용할 때마다 자동으로 종속성을 추가해줍니다. 심지어 일부 코드 변환 작업도 처리할 수 있습니다.
 
-[Webpack](https://webpack.js.org/) is another very popular packaging tool that does similar things.
+[Webpack](https://webpack.js.org/) 은 비슷한 기능을 하는 또 다른 인기 패키징 툴입니다.
 
-### Transformation
+### 변환
 
-This stage of your web app lifecycle typically allows you to code in either "future code" (such as the latest CSS or JavaScript features that might not have native support in browsers yet) or code using another language entirely, such as [TypeScript](https://www.typescriptlang.org/). Transformation tools will then generate browser-compatible code for you, to be used in production.
+웹 앱 라이프사이클의 이 단계에서는 일반적으로 "향후 코드"(예: 브라우저에서 아직 기본적으로 지원되지 않을 수 있는 최신 CSS 또는 JavaScript 기능)로 코딩하거나 [TypeScript](https://www.typescriptlang.org/) 와 같이 완전히 다른 언어를 사용하여 코딩할 수 있습니다. 그러면 변환 도구가 프로덕션 환경에서 사용할 수 있도록 브라우저 호환 코드를 생성합니다.
 
-Generally, web development is thought of as three languages: [HTML](/en-US/docs/Learn/HTML), [CSS](/en-US/docs/Learn/CSS), and [JavaScript](/en-US/docs/Learn/JavaScript), and there are transformation tools for all of these languages. Transformation offers two main benefits (amongst others):
+일반적으로 웹 개발은 세 가지 언어로 생각됩니다: [HTML](/ko/docs/Learn/HTML), [CSS](/ko/docs/Learn/CSS), [JavaScript](/ko/docs/Learn/JavaScript) 이며, 이 모든 언어를 위한 변환 도구가 있습니다. 변환은 두 가지 주요 이점을 제공합니다:
 
-1. The ability to write code using the latest language features and have that transformed into code that works on everyday devices. For example, you might want to write JavaScript using cutting-edge new language features, but still have your final production code work on older browsers that don't support those features. Good examples here include:
+1. 최신 언어 기능을 사용하여 코드를 작성하고 이를 일상적인 기기에서 작동하는 코드로 변환할 수 있습니다. 예를 들어, 최첨단 새 언어 기능을 사용하여 JavaScript를 작성하고 싶지만 최종 프로덕션 코드는 해당 기능을 지원하지 않는 구형 브라우저에서 작동하도록 할 수 있습니다. 다음과 같은 좋은 예가 있습니다:
 
-   - [Babel](https://babeljs.io/): A JavaScript compiler that allows developers to write their code using cutting-edge JavaScript, which Babel then takes and converts into old-fashioned JavaScript that more browsers can understand. Developers can also write and publish [plugins for Babel](https://babeljs.io/docs/en/plugins).
-   - [PostCSS](https://postcss.org/): Does the same kind of thing as Babel, but for cutting-edge CSS features. If there isn't an equivalent way to do something using older CSS features, PostCSS will install a JavaScript polyfill to emulate the CSS effect you want.
+   - [바벨](https://babeljs.io/): 개발자가 최신 자바스크립트를 사용하여 코드를 작성하면 바벨이 이를 가져와 더 많은 브라우저에서 이해할 수 있는 구식 자바스크립트로 변환하는 자바스크립트 컴파일러입니다. 개발자는 [바벨용 플러그인]](https://babeljs.io/docs/en/plugins) 을 작성하고 게시할 수도 있습니다.
+   - [PostCSS](https://postcss.org/): 바벨과 같은 종류의 작업을 수행하지만 최첨단 CSS 기능을 제공합니다. 이전 CSS 기능을 사용하여 동등한 작업을 수행할 수 있는 방법이 없는 경우 PostCSS는 자바스크립트 폴리필을 설치하여 원하는 CSS 효과를 에뮬레이트합니다.
 
-2. The option to write your code in an entirely different language and have it transformed into a web-compatible language. For example:
+2. 완전히 다른 언어로 코드를 작성하여 웹 호환 언어로 변환할 수 있는 옵션입니다. 예를 들어
 
-   - [Sass/SCSS](https://sass-lang.com/): This CSS extension allows you to use variables, nested rules, mixins, functions, and many other features, some of which are available in native CSS (such as variables), and some of which aren't.
-   - [TypeScript](https://www.typescriptlang.org/): TypeScript is a superset of JavaScript that offers a bunch of additional features. The TypeScript compiler converts TypeScript code to JavaScript when building for production.
-   - Frameworks such as [React](https://reactjs.org/), [Ember](https://emberjs.com/), and [Vue](https://vuejs.org/): Frameworks provide a lot of functionality for free and allow you to use it via custom syntax built on top of vanilla JavaScript. In the background, the framework's JavaScript code works hard to interpret this custom syntax and render it as a final web app.
+   - [Sass/SCSS](https://sass-lang.com/): 변수, 중첩 규칙, 믹스인, 함수 및 기타 여러 기능을 사용할 수 있는 CSS 확장 기능으로, 이 중 일부는 기본 CSS에서 사용할 수 있지만 일부는 그렇지 않습니다(예: 변수).
+   - [TypeScript](https://www.typescriptlang.org/): TypeScript는 다양한 추가 기능을 제공하는 JavaScript의 상위 집합입니다. TypeScript 컴파일러는 프로덕션용으로 빌드할 때 TypeScript 코드를 JavaScript로 변환합니다.
+   - [React](https://reactjs.org/), [Ember](https://emberjs.com/), [Vue](https://vuejs.org/) 와 같은 프레임워크: 프레임워크는 다양한 기능을 무료로 제공하며 바닐라 자바스크립트 위에 구축된 사용자 정의 구문을 통해 이를 사용할 수 있습니다. 프레임워크의 자바스크립트 코드는 백그라운드에서 이 사용자 지정 구문을 해석하고 최종 웹 앱으로 렌더링하기 위해 열심히 작업합니다.
 
-### Post development
+### 개발 후 지원
 
-Post-development tooling ensures that your software makes it to the web and continues to run. This includes the deployment processes, testing frameworks, auditing tools, and more.
+개발 후 툴링은 소프트웨어가 웹에 출시되고 계속 실행되도록 보장합니다. 여기에는 배포 프로세스, 테스트 프레임워크, 감사 도구 등이 포함됩니다.
 
-This stage of the development process is one that you want the least amount of active interaction with so that once it is configured, it runs mostly automatically, only popping up to say hello if something has gone wrong.
+개발 프로세스의 이 단계는 적극적인 상호 작용이 가장 적은 단계로, 일단 구성되면 대부분 자동으로 실행되며 문제가 발생했을 때만 팝업창을 띄워 인사말을 전합니다.
 
-#### Testing tools
+#### 테스트 도구
 
-These generally take the form of a tool that will automatically run tests against your code to make sure it is correct before you go any further (for example, when you attempt to push changes to a GitHub repo). This can include linting, but also more sophisticated procedures like unit tests, where you run part of your code, making sure they behave as they should.
+테스트 도구는 일반적으로 코드에 대해 자동으로 테스트를 실행하여 더 진행하기 전에 코드가 올바른지 확인하는 도구의 형태를 취합니다(예: GitHub 리포지토리에 변경 사항을 푸시하려고 할 때). 여기에는 린팅뿐만 아니라 코드의 일부를 실행하여 정상적으로 작동하는지 확인하는 단위 테스트와 같은 보다 정교한 절차도 포함될 수 있습니다.
 
-- Frameworks for writing tests include [Jest](https://jestjs.io/), [Mocha](https://mochajs.org/), and [Jasmine](https://jasmine.github.io/).
-- Automated test running and notification systems include [Travis CI](https://travis-ci.org/), [Jenkins](https://www.jenkins.io/), [Circle CI](https://circleci.com/), and [others](https://en.wikipedia.org/wiki/List_of_build_automation_software#Continuous_integration).
+- 테스트 작성을 위한 프레임워크에는 [Jest](https://jestjs.io/), [Mocha](https://mochajs.org/), [Jasmine](https://jasmine.github.io/) 등이 있습니다.
+- 자동화된 테스트 실행 및 알림 시스템에는 [Travis CI](https://travis-ci.org/), [Jenkins](https://www.jenkins.io/), [Circle CI](https://circleci.com/) [등](https://en.wikipedia.org/wiki/List_of_build_automation_software#Continuous_integration) 이 있습니다.
 
-#### Deployment tools
+#### 배포 도구
 
-Deployment systems allow you to get your website published, are available for both static and dynamic sites, and commonly tend to work alongside testing systems. For example, a typical toolchain will wait for you to push changes to a remote repo, run some tests to see if the changes are OK, and then if the tests pass, automatically deploy your app to a production site.
+배포 시스템을 사용하면 웹사이트를 게시할 수 있으며 정적 및 동적 사이트 모두에 사용할 수 있으며 일반적으로 테스트 시스템과 함께 작동하는 경향이 있습니다. 예를 들어, 일반적인 도구 체인은 변경 사항을 원격 리포지토리에 푸시하고 몇 가지 테스트를 실행하여 변경 사항이 정상인지 확인한 다음 테스트를 통과하면 자동으로 앱을 프로덕션 사이트에 배포합니다.
 
-[Netlify](https://www.netlify.com/) is one of the most popular deployment tools right now, but others include [Vercel](https://vercel.com/) and [GitHub Pages](https://pages.github.com/).
+현재 가장 인기 있는 배포 도구 중 하나는 [Netlify](https://www.netlify.com/) 이며, 다른 도구로는 [Vercel](https://vercel.com/) 과 [GitHub Pages](https://pages.github.com/) 가 있습니다.
 
-#### Others
+#### 기타 도구
 
-There are several other tool types available to use in the post-development stage, including [Code Climate](https://codeclimate.com/) for gathering code quality metrics, the [webhint browser extension](https://webhint.io/docs/user-guide/extensions/extension-browser/) for performing runtime analysis of cross-browser compatibility and other checks, [GitHub bots](https://probot.github.io/) for providing more powerful GitHub functionality, [Updown](https://updown.io/) for providing app uptime monitoring, and so many more!
+개발 후 단계에서 사용할 수 있는 다른 도구로는 코드 품질 메트릭을 수집하는 [Code Climate](https://codeclimate.com/), 브라우저 간 호환성 및 기타 검사에 대한 런타임 분석을 수행하는 [webhint 브라우저 확장 프로그램](https://webhint.io/docs/user-guide/extensions/extension-browser/), 더 강력한 GitHub 기능을 제공하는 [GitHub 봇]](https://probot.github.io/), 앱 가동 시간 모니터링을 제공하는 [Updown](https://updown.io/) 등 여러 가지가 있습니다!
 
-### Some thoughts about tooling types
+### 툴링 유형에 대한 몇 가지 생각
 
-There's certainly an order in which the different tooling types apply in the development lifecycle, but rest assured that you don't _have_ to have all of these in place to release a website. In fact, you don't need any of these. However, including some of these tools in your process will improve your own development experience and likely improve the overall quality of your code.
+개발 라이프사이클에서 다양한 도구 유형이 적용되는 순서는 확실히 있지만 웹사이트를 출시하기 위해 이 모든 것을 준비할 필요는 없으니 안심하세요. 사실 이 중 어느 것도 필요하지 않습니다. 하지만 이러한 도구 중 일부를 프로세스에 포함하면 개발 경험이 향상되고 코드의 전반적인 품질이 향상될 가능성이 높습니다.
 
-It often takes some time for new developer tools to settle down in their complexity. One of the best-known tools, Webpack, has a reputation for being overly complicated to work with, but in the latest major release, there was a huge push to simplify common usage so the configuration required is reduced down to an absolute minimum.
+새로운 개발자 도구는 그 복잡성 때문에 정착하는 데 시간이 걸리는 경우가 많습니다. 가장 잘 알려진 도구 중 하나인 Webpack은 작업하기가 지나치게 복잡하다는 평판이 있지만, 최신 주요 릴리스에서는 일반적인 사용법을 단순화하여 필요한 구성을 최소한으로 줄이려는 대대적인 노력이 있었습니다.
 
-There's definitely no silver bullet that will guarantee success with tools, but as your experience increases you'll find workflows that work _for you_ or for your team and their projects. Once all the kinks in the process are flattened out, your toolchain should be something you can forget about and it _should_ just work.
+도구의 성공을 보장하는 만병통치약은 없지만, 사용 경험이 쌓이면 본인 또는 팀과 프로젝트에 적합한 워크플로우를 찾을 수 있습니다. 프로세스의 모든 꼬임이 해결되면 도구 체인은 잊어버릴 수 있는 것이어야 하고, 그냥 작동해야 합니다.
 
-## How to choose and get help with a particular tool
+## 특정 도구를 선택하고 도움을 받는 방법
 
-Most tools tend to get written and released in isolation, so although there's almost certainly help available it's never in the same place or format. It can therefore be hard to find help with using a tool, or even to choose what tool to use. The knowledge about which are the best tools to use is a bit tribal, meaning that if you aren't already in the web community, it is hard to find out exactly which ones to go for! This is one reason we wrote this series of articles, to hopefully provide that first step that is hard to find otherwise.
+대부분의 도구는 개별적으로 작성되고 출시되는 경향이 있기 때문에 도움말이 거의 확실하게 제공되지만 동일한 위치나 형식으로 제공되지는 않습니다. 따라서 도구 사용에 대한 도움말을 찾거나 어떤 도구를 사용할지 선택하기가 어려울 수 있습니다. 어떤 도구를 사용하는 것이 가장 좋은지에 대한 지식은 부족마다 조금씩 다르기 때문에 웹 커뮤니티에 속해 있지 않다면 어떤 도구를 선택해야 할지 정확히 알기가 어렵습니다! 이것이 바로 저희가 이 일련의 글을 작성한 이유 중 하나이며, 다른 방법으로는 찾기 어려운 첫걸음을 내딛을 수 있기를 바랍니다.
 
-You'll probably need a combination of the following things:
+아마도 다음 사항의 조합이 필요할 것입니다:
 
-- Experienced teachers, mentors, fellow students, or colleagues that have some experience, have solved such problems before, and can give advice.
-- A useful specific place to search. General web searches for front-end developer tools are generally useless unless you already know the name of the tool you are searching for.
+- 경험이 있고, 이전에 이러한 문제를 해결한 경험이 있으며, 조언을 해줄 수 있는 선생님, 멘토, 동료 학생 또는 동료.
+- 검색할 수 있는 유용한 특정 장소. 프론트엔드 개발자 도구에 대한 일반적인 웹 검색은 검색하려는 도구의 이름을 이미 알고 있지 않는 한 일반적으로 쓸모가 없습니다.
 
-  - If you are using the npm package manager to manage your dependencies for example, it is a good idea to go to the [npm homepage](https://www.npmjs.com/) and search for the type of tool you are looking for, for example try searching for "date" if you want a date formatting utility, or "formatter" if you are searching for a general code formatter. Pay attention to the popularity, quality, and maintenance scores, and how recently the package was last updated. Also click through to the tool pages to find out how many monthly downloads a package has, and whether it has good documentation that you can use to figure out whether it does what you need it to do. Based on these criteria, the [date-fns library](https://www.npmjs.com/package/date-fns) looks like a good date formatting tool to use. You'll see this tool in action and learn more about package managers in general in Chapter 3 of this module.
-  - If you are looking for a plugin to integrate tool functionality into your code editor, look at the code editor's plugins/extensions page — see [VSCode extensions](https://marketplace.visualstudio.com/VSCode), for example. Have a look at the featured extensions on the front page, and again, try searching for the kind of extension you want (or the tool name, for example search for "ESLint" on the VSCode extensions page). When you get results, have a look at information such as how many stars or downloads the extension has, as an indicator of its quality.
+  - 예를 들어 종속성을 관리하기 위해 npm 패키지 관리자를 사용하는 경우 [npm 홈페이지](https://www.npmjs.com/) 로 이동하여 원하는 도구 유형을 검색하는 것이 좋습니다. 예를 들어 날짜 서식 지정 유틸리티가 필요한 경우 "date"를 검색하거나 일반 코드 서식 지정자를 검색하는 경우 "formatter"를 검색해 보세요. 인기도, 품질, 유지보수 점수, 패키지가 마지막으로 업데이트된 날짜에 주목하세요. 또한 도구 페이지를 클릭하여 패키지의 월간 다운로드 횟수와 패키지가 필요한 기능을 수행하는지 파악하는 데 사용할 수 있는 좋은 문서가 있는지 확인하세요. 이러한 기준에 따르면 [date-fns 라이브러리](https://www.npmjs.com/package/date-fns) 는 사용하기에 좋은 날짜 서식 지정 도구처럼 보입니다. 이 모듈의 3장에서 이 도구가 실제로 작동하는 모습을 보고 패키지 관리자에 대해 자세히 알아볼 수 있습니다.
+  - 도구 기능을 코드 편집기에 통합할 플러그인을 찾고 있다면 코드 편집기의 플러그인/확장 기능 페이지(예: [VSCode 확장 기능](https://marketplace.visualstudio.com/VSCode) 참조)를 살펴보세요. 첫 페이지에서 추천 확장 프로그램을 살펴본 다음 원하는 확장 프로그램의 종류(또는 도구 이름, 예를 들어 VSCode 확장 프로그램 페이지에서 "ESLint"로 검색)를 다시 검색해 보세요. 검색 결과가 나오면 확장 프로그램의 품질을 나타내는 지표인 별 개수나 다운로드 수와 같은 정보를 살펴보세요.
 
-- Development-related forums to ask questions on about what tools to use, for example [MDN Learn Discourse](https://discourse.mozilla.org/c/mdn/learn/250), or [Stack Overflow](https://stackoverflow.com/).
+- 개발 관련 포럼에서 어떤 도구를 사용할지 질문할 수 있습니다(예: [MDN 학습 토론](https://discourse.mozilla.org/c/mdn/learn/250) 또는 [스택 오버플로](https://stackoverflow.com/)).
 
-When you've chosen a tool to use, the first port of call should be the tool project homepage. This could be a full-blown website or it might be a single readme document in a code repository. The [date-fns docs](https://date-fns.org/docs/Getting-Started) for example are pretty good, complete, and easy to follow. Some documentation however can be rather technical and academic and not a good fit for your learning needs.
+사용할 도구를 선택했다면 가장 먼저 방문해야 할 곳은 도구 프로젝트 홈페이지입니다. 이 홈페이지는 완전한 웹사이트일 수도 있고 코드 리포지토리에 있는 하나의 사용 설명서 문서일 수도 있습니다. 예를 들어 [date-fns 문서](https://date-fns.org/docs/Getting-Started) 는 매우 훌륭하고 완벽하며 따라하기 쉽습니다. 그러나 일부 문서는 다소 기술적이고 학술적이어서 학습에 적합하지 않을 수 있습니다.
 
-Instead, you might want to find some dedicated tutorials on getting started with particular types of tools. A great starting place is to search websites like [CSS Tricks](https://css-tricks.com/), [Dev](https://dev.to/), [freeCodeCamp](https://www.freecodecamp.org/), and [Smashing Magazine](https://www.smashingmagazine.com/), as they're tailored to the web development industry.
+대신 특정 유형의 도구를 시작하기 위한 전용 튜토리얼을 찾아보는 것도 좋습니다. 웹 개발 업계에 특화된 [CSS 트릭](https://css-tricks.com/), [Dev](https://dev.to/), [freeCodeCamp](https://www.freecodecamp.org/), [스매싱 매거진](https://www.smashingmagazine.com/) 과 같은 웹사이트를 검색하는 것도 좋은 시작점입니다.
 
-Again, you'll probably go through several different tools as you search for the right ones for you, trying them out to see if they make sense, are well-supported, and do what you want them to do. This is fine — it is all good for learning, and the road will get smoother as you get more experience.
+다시 말하지만, 자신에게 적합한 도구를 검색하면서 여러 가지 도구를 사용해보고 이해가 되는지, 지원이 잘 되는지, 원하는 작업을 수행하는지 확인하게 될 것입니다. 이 모든 것이 학습에 도움이 되며, 경험이 쌓이면 그 길은 더 순조로워질 것입니다.
 
-## Summary
+## 요약
 
-That rounds off our gentle introduction to the topic of client-side web tooling, from a high level. Next up we provide you with a crash course on the command line, which is where a lot of tooling is invoked from. We'll take a look at what the command line can do and then try installing and using our first tool.
+이것으로 클라이언트 측 웹 도구에 대한 개괄적인 소개를 마쳤습니다. 다음에는 많은 툴링이 호출되는 명령줄에 대한 집중 강좌를 제공합니다. 명령줄로 무엇을 할 수 있는지 살펴본 다음 첫 번째 도구를 설치하여 사용해 보겠습니다.
 
 {{NextMenu("Learn/Tools_and_testing/Understanding_client-side_tools/Command_line", "Learn/Tools_and_testing/Understanding_client-side_tools")}}
