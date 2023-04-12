@@ -7,98 +7,97 @@ slug: Learn/JavaScript/Client-side_web_APIs/Client-side_storage
 
 {{PreviousMenu("Learn/JavaScript/Client-side_web_APIs/Video_and_audio_APIs", "Learn/JavaScript/Client-side_web_APIs")}}
 
-Modern web browsers support a number of ways for websites to store data on the user's computer — with the user's permission — then retrieve it when necessary. This lets you persist data for long-term storage, save sites or documents for offline use, retain user-specific settings for your site, and more. This article explains the very basics of how these work.
+최신 웹 브라우저는 웹사이트가 사용자의 허락을 받아 사용자의 컴퓨터에 데이터를 저장한 후 필요할 때 검색할 수 있는 다양한 방법을 지원합니다. 이를 통해 장기 저장을 위해 데이터를 보존하고, 오프라인 사용을 위해 사이트나 문서를 저장하고, 사이트에 대한 사용자별 설정을 유지하는 등의 작업을 수행할 수 있습니다. 이 문서에서는 이러한 기능이 어떻게 작동하는지에 대한 기본 사항을 설명합니다.
 
 <table>
   <tbody>
     <tr>
-      <th scope="row">Prerequisites:</th>
+      <th scope="row">사전 요구 사항:</th>
       <td>
-        JavaScript basics (see
-        <a href="/en-US/docs/Learn/JavaScript/First_steps">first steps</a>,
-        <a href="/en-US/docs/Learn/JavaScript/Building_blocks"
-          >building blocks</a
+        JavaScript 기초(
+        <a href="/ko/docs/Learn/JavaScript/First_steps">첫 번째 단계</a>,
+        <a href="/ko/docs/Learn/JavaScript/Building_blocks"
+          >빌딩 블록</a
         >,
-        <a href="/en-US/docs/Learn/JavaScript/Objects">JavaScript objects</a>),
-        the
-        <a href="/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction"
-          >basics of Client-side APIs</a
+        <a href="/ko/docs/Learn/JavaScript/Objects">JavaScript 객체</a> 참조),
+        <a href="/ko/docs/Learn/JavaScript/Client-side_web_APIs/Introduction"
+          >클라이언트 측 API의 기초</a
         >
       </td>
     </tr>
     <tr>
-      <th scope="row">Objective:</th>
+      <th scope="row">목표:</th>
       <td>
-        To learn how to use client-side storage APIs to store application data.
+        클라이언트 측 스토리지 API를 사용하여 애플리케이션 데이터를 저장하는 방법을 배웁니다.
       </td>
     </tr>
   </tbody>
 </table>
 
-## Client-side storage?
+## 클라이언트 측 스토리지?
 
-Elsewhere in the MDN learning area, we talked about the difference between [static sites](/en-US/docs/Learn/Server-side/First_steps/Client-Server_overview#static_sites) and [dynamic sites](/en-US/docs/Learn/Server-side/First_steps/Client-Server_overview#dynamic_sites). Most major modern websites are dynamic — they store data on the server using some kind of database (server-side storage), then run [server-side](/en-US/docs/Learn/Server-side) code to retrieve needed data, insert it into static page templates, and serve the resulting HTML to the client to be displayed by the user's browser.
+MDN 학습 영역의 다른 부분에서 [정적 사이트](/ko/docs/Learn/Server-side/First_steps/Client-Server_overview#static_sites) 와 [동적 사이트](/ko/docs/Learn/Server-side/First_steps/Client-Server_overview#dynamic_sites) 의 차이점에 대해 이야기했습니다. 대부분의 주요 최신 웹사이트는 일종의 데이터베이스(서버 측 스토리지)를 사용하여 서버에 데이터를 저장한 다음 [서버 측](/ko/docs/Learn/Server-side) 코드를 실행하여 필요한 데이터를 검색하고 정적 페이지 템플릿에 삽입한 다음 결과 HTML을 클라이언트에 제공하여 사용자의 브라우저에 표시합니다.
 
-Client-side storage works on similar principles, but has different uses. It consists of JavaScript APIs that allow you to store data on the client (i.e. on the user's machine) and then retrieve it when needed. This has many distinct uses, such as:
+클라이언트 측 저장소는 비슷한 원리로 작동하지만 용도는 다릅니다. 클라이언트 측 저장소는 데이터를 클라이언트(즉, 사용자 컴퓨터에)에 저장한 다음 필요할 때 검색할 수 있는 JavaScript API로 구성됩니다. 다음과 같이 다양한 용도로 사용됩니다:
 
-- Personalizing site preferences (e.g. showing a user's choice of custom widgets, color scheme, or font size).
-- Persisting previous site activity (e.g. storing the contents of a shopping cart from a previous session, remembering if a user was previously logged in).
-- Saving data and assets locally so a site will be quicker (and potentially less expensive) to download, or be usable without a network connection.
-- Saving web application generated documents locally for use offline
+- 사이트 기본 설정 개인화(예: 사용자가 선택한 사용자 지정 위젯, 색 구성표 또는 글꼴 크기 표시).
+- 이전 사이트 활동 유지(예: 이전 세션의 장바구니 콘텐츠 저장, 사용자가 이전에 로그인했는지 기억).
+- 데이터 및 자산을 로컬에 저장하여 사이트를 더 빠르게 다운로드하거나 네트워크 연결 없이도 사용할 수 있도록(잠재적으로 더 저렴한 비용으로) 합니다.
+- 웹 애플리케이션에서 생성된 문서를 로컬에 저장하여 오프라인에서 사용
 
-Often client-side and server-side storage are used together. For example, you could download a batch of music files (perhaps used by a web game or music player application), store them inside a client-side database, and play them as needed. The user would only have to download the music files once — on subsequent visits they would be retrieved from the database instead.
+클라이언트 측 스토리지와 서버 측 스토리지를 함께 사용하는 경우가 많습니다. 예를 들어, 웹 게임이나 음악 플레이어 애플리케이션에서 사용하는 음악 파일을 일괄적으로 다운로드하여 클라이언트 측 데이터베이스에 저장한 후 필요에 따라 재생할 수 있습니다. 사용자는 음악 파일을 한 번만 다운로드하면 되고, 이후 방문 시에는 데이터베이스에서 음악 파일이 검색됩니다.
 
-> **Note:** There are limits to the amount of data you can store using client-side storage APIs (possibly both per individual API and cumulatively); the exact limit varies depending on the browser and possibly based on user settings. See [Browser storage quotas and eviction criteria](/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria) for more information.
+> **참고:** 클라이언트 측 저장소 API를 사용하여 저장할 수 있는 데이터의 양에는 제한이 있습니다(개별 API당 및 누적 기준). 정확한 제한은 브라우저에 따라 다르며 사용자 설정에 따라 달라질 수 있습니다. 자세한 내용은 [브라우저 저장 용량 할당량 및 퇴거 기준](/ko/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria) 을 참조하세요.
 
-### Old school: Cookies
+### 올드 스쿨: 쿠키
 
-The concept of client-side storage has been around for a long time. Since the early days of the web, sites have used [cookies](/en-US/docs/Web/HTTP/Cookies) to store information to personalize user experience on websites. They're the earliest form of client-side storage commonly used on the web.
+클라이언트 측 저장소 개념은 오래전부터 존재해 왔습니다. 웹 초창기부터 사이트에서는 [쿠키](/ko/docs/Web/HTTP/Cookies) 를 사용하여 정보를 저장하고 웹사이트의 사용자 경험을 개인화했습니다. 쿠키는 웹에서 일반적으로 사용되는 가장 초기의 클라이언트 측 저장소 형태입니다.
 
-These days, there are easier mechanisms available for storing client-side data, therefore we won't be teaching you how to use cookies in this article. However, this does not mean cookies are completely useless on the modern-day web — they are still used commonly to store data related to user personalization and state, e.g. session IDs and access tokens. For more information on cookies see our [Using HTTP cookies](/en-US/docs/Web/HTTP/Cookies) article.
+요즘에는 클라이언트 측 데이터를 저장하는 더 쉬운 메커니즘이 있으므로 이 글에서는 쿠키 사용 방법을 설명하지 않습니다. 하지만 쿠키가 최신 웹에서 완전히 쓸모없다는 의미는 아니며, 여전히 세션 ID 및 액세스 토큰 등 사용자 개인화 및 상태와 관련된 데이터를 저장하는 데 쿠키가 일반적으로 사용됩니다. 쿠키에 대한 자세한 내용은 [HTTP 쿠키 사용](/ko/docs/Web/HTTP/Cookies) 문서를 참조하세요.
 
-### New school: Web Storage and IndexedDB
+### 새 학교: 웹 스토리지 및 IndexedDB
 
-The "easier" features we mentioned above are as follows:
+위에서 언급한 "더 쉬운" 기능은 다음과 같습니다:
 
-- The [Web Storage API](/en-US/docs/Web/API/Web_Storage_API) provides a mechanism for storing and retrieving smaller, data items consisting of a name and a corresponding value. This is useful when you just need to store some simple data, like the user's name, whether they are logged in, what color to use for the background of the screen, etc.
-- The [IndexedDB API](/en-US/docs/Web/API/IndexedDB_API) provides the browser with a complete database system for storing complex data. This can be used for things from complete sets of customer records to even complex data types like audio or video files.
+- [웹 스토리지 API](/ko/docs/Web/API/Web_Storage_API) 는 이름과 해당 값으로 구성된 더 작은 데이터 항목을 저장하고 검색할 수 있는 메커니즘을 제공합니다. 이는 사용자의 이름, 로그인 여부, 화면 배경에 사용할 색상 등과 같은 간단한 데이터만 저장해야 할 때 유용합니다.
+- [IndexedDB API](/ko/docs/Web/API/IndexedDB_API) 는 복잡한 데이터를 저장할 수 있는 완전한 데이터베이스 시스템을 브라우저에 제공합니다. 이는 전체 고객 기록 세트부터 오디오나 비디오 파일과 같은 복잡한 데이터 유형까지 다양한 용도로 사용할 수 있습니다.
 
-You'll learn more about these APIs below.
+아래에서 이러한 API에 대해 자세히 알아보세요.
 
-### The Cache API
+### 캐시 API
 
-The {{domxref("Cache")}} API is designed for storing HTTP responses to specific requests, and is very useful for doing things like storing website assets offline so the site can subsequently be used without a network connection. Cache is usually used in combination with the [Service Worker API](/en-US/docs/Web/API/Service_Worker_API), although it doesn't have to be.
+{{domxref("Cache")}} API는 특정 요청에 대한 HTTP 응답을 저장하기 위해 설계되었으며, 웹사이트 자산을 오프라인에 저장하여 나중에 네트워크 연결 없이 사이트를 사용할 수 있도록 하는 등의 작업을 수행하는 데 매우 유용합니다. 캐시는 일반적으로 [서비스 워커 API](/ko/docs/Web/API/Service_Worker_API) 와 함께 사용되지만 반드시 그럴 필요는 없습니다.
 
-The use of Cache and Service Workers is an advanced topic, and we won't be covering it in great detail in this article, although we will show an example in the [Offline asset storage](#offline_asset_storage) section below.
+캐시 및 서비스 워커의 사용은 고급 주제이므로 이 글에서는 자세히 다루지 않겠지만 아래의 [오프라인 자산 저장소](#offline_asset_storage) 섹션에서 예제를 보여드리겠습니다.
 
-## Storing simple data — web storage
+## 간단한 데이터 저장 - 웹 스토리지
 
-The [Web Storage API](/en-US/docs/Web/API/Web_Storage_API) is very easy to use — you store simple name/value pairs of data (limited to strings, numbers, etc.) and retrieve these values when needed.
+[웹 스토리지 API](/ko/docs/Web/API/Web_Storage_API) 는 간단한 이름/값 쌍의 데이터(문자열, 숫자 등으로 제한)를 저장하고 필요할 때 해당 값을 검색하는 등 사용이 매우 간편합니다.
 
-### Basic syntax
+### 기본 구문
 
-Let's show you how:
+방법을 보여드리겠습니다:
 
-1. First, go to our [web storage blank template](https://mdn.github.io/learning-area/javascript/apis/client-side-storage/web-storage/index.html) on GitHub (open this in a new tab).
-2. Open the JavaScript console of your browser's developer tools.
-3. All of your web storage data is contained within two object-like structures inside the browser: {{domxref("Window.sessionStorage", "sessionStorage")}} and {{domxref("Window.localStorage", "localStorage")}}. The first one persists data for as long as the browser is open (the data is lost when the browser is closed) and the second one persists data even after the browser is closed and then opened again. We'll use the second one in this article as it is generally more useful.
+1. 먼저 GitHub의 [웹 스토리지 빈 템플릿](https://mdn.github.io/learning-area/javascript/apis/client-side-storage/web-storage/index.html) 으로 이동합니다(새 탭에서 열기).
+2. 브라우저 개발자 도구의 JavaScript 콘솔을 엽니다.
+3. 모든 웹 스토리지 데이터는 브라우저 내부의 두 개의 객체형 구조, 즉 {{domxref("Window.sessionStorage", "sessionStorage")}} 와 {{domxref("Window.localStorage", "localStorage")}} 에 포함됩니다. 첫 번째는 브라우저가 열려 있는 동안 데이터를 유지하며(브라우저를 닫으면 데이터가 손실됨), 두 번째는 브라우저를 닫았다가 다시 연 후에도 데이터를 유지합니다. 이 글에서는 일반적으로 두 번째가 더 유용하므로 두 번째를 사용하겠습니다.
 
-   The {{domxref("Storage.setItem()")}} method allows you to save a data item in storage — it takes two parameters: the name of the item, and its value. Try typing this into your JavaScript console (change the value to your own name, if you wish!):
+   {{domxref("Storage.setItem()")}} 메서드를 사용하면 데이터 항목을 저장소에 저장할 수 있으며, 항목 이름과 값이라는 두 가지 매개 변수가 필요합니다. 자바스크립트 콘솔에 이 값을 입력해 보세요(원하는 경우 값을 원하는 이름으로 변경하세요!):
 
    ```js
    localStorage.setItem("name", "Chris");
    ```
 
-4. The {{domxref("Storage.getItem()")}} method takes one parameter — the name of a data item you want to retrieve — and returns the item's value. Now type these lines into your JavaScript console:
+4. {{domxref("Storage.getItem()")}} 메서드는 하나의 매개변수(검색하려는 데이터 항목의 이름)를 받아 항목의 값을 반환합니다. 이제 자바스크립트 콘솔에 다음 코드를 입력합니다:
 
    ```js
    let myName = localStorage.getItem("name");
    myName;
    ```
 
-   Upon typing in the second line, you should see that the `myName` variable now contains the value of the `name` data item.
+   두 번째 줄을 입력하면 이제 `myName` 변수에 `name` 데이터 항목의 값이 포함된 것을 볼 수 있습니다.
 
-5. The {{domxref("Storage.removeItem()")}} method takes one parameter — the name of a data item you want to remove — and removes that item out of web storage. Type the following lines into your JavaScript console:
+5. {{domxref("Storage.removeItem()")}} 메서드는 제거하려는 데이터 항목의 이름이라는 매개변수 하나를 받아 웹 스토리지에서 해당 항목을 제거합니다. 자바스크립트 콘솔에 다음 줄을 입력합니다:
 
    ```js
    localStorage.removeItem("name");
@@ -106,14 +105,14 @@ Let's show you how:
    myName;
    ```
 
-   The third line should now return `null` — the `name` item no longer exists in the web storage.
+   이제 세 번째 줄은 `null`을 반환해야 합니다. `name` 항목이 더 이상 웹 저장소에 존재하지 않습니다.
 
-### The data persists!
+### 데이터는 지속됩니다!
 
-One key feature of web storage is that the data persists between page loads (and even when the browser is shut down, in the case of `localStorage`). Let's look at this in action.
+웹 스토리지의 주요 기능 중 하나는 페이지가 로드될 때마다 데이터가 지속된다는 점입니다(`localStorage`의 경우 브라우저가 종료된 상태에서도). 실제로 어떻게 작동하는지 살펴봅시다.
 
-1. Open our web storage blank template again, but this time in a different browser to the one you've got this tutorial open in! This will make it easier to deal with.
-2. Type these lines into the browser's JavaScript console:
+1. 웹 스토리지 빈 템플릿을 다시 열되, 이번에는 이 튜토리얼을 열었던 브라우저와 다른 브라우저에서 열어보세요! 이렇게 하면 더 쉽게 처리할 수 있습니다.
+2. 브라우저의 자바스크립트 콘솔에 다음 줄을 입력합니다:
 
    ```js
    localStorage.setItem("name", "Chris");
@@ -121,37 +120,37 @@ One key feature of web storage is that the data persists between page loads (and
    myName;
    ```
 
-   You should see the name item returned.
+   이름 항목이 반환된 것을 볼 수 있을 것입니다.
 
-3. Now close down the browser and open it up again.
-4. Enter the following lines again:
+3. 이제 브라우저를 닫았다가 다시 엽니다.
+4. 다음 줄을 다시 입력합니다:
 
    ```js
    let myName = localStorage.getItem("name");
    myName;
    ```
 
-   You should see that the value is still available, even though the browser has been closed and then opened again.
+   브라우저를 닫았다가 다시 열어도 값을 계속 사용할 수 있는 것을 확인할 수 있습니다.
 
-### Separate storage for each domain
+### 각 도메인에 대한 별도의 저장소
 
-There is a separate data store for each domain (each separate web address loaded in the browser). You will see that if you load two websites (say google.com and amazon.com) and try storing an item on one website, it won't be available to the other website.
+각 도메인마다 별도의 데이터 저장소가 있습니다(브라우저에 로드되는 각각의 개별 웹 주소). 두 개의 웹사이트(예: google.com과 amazon.com)를 로드하고 한 웹사이트에 항목을 저장하려고 하면 다른 웹사이트에서는 해당 항목을 사용할 수 없는 것을 볼 수 있습니다.
 
-This makes sense — you can imagine the security issues that would arise if websites could see each other's data!
+웹사이트가 서로의 데이터를 볼 수 있다면 어떤 보안 문제가 발생할지 상상할 수 있습니다!
 
-### A more involved example
+### 좀 더 복잡한 예
 
-Let's apply this new-found knowledge by writing a working example to give you an idea of how web storage can be used. Our example will allow you to enter a name, after which the page will update to give you a personalized greeting. This state will also persist across page/browser reloads, because the name is stored in web storage.
+웹 스토리지를 어떻게 사용할 수 있는지에 대한 아이디어를 제공하기 위해 작업 예제를 작성하여 새로 알게 된 지식을 적용해 보겠습니다. 이 예제에서는 이름을 입력하면 페이지가 업데이트되어 개인화된 인사말을 제공합니다. 이름이 웹 스토리지에 저장되므로 페이지/브라우저를 다시 로드할 때에도 이 상태가 유지됩니다.
 
-You can find the example HTML at [personal-greeting.html](https://github.com/mdn/learning-area/blob/main/javascript/apis/client-side-storage/web-storage/personal-greeting.html) — this contains a website with a header, content, and footer, and a form for entering your name.
+예제 HTML은 [personal-greeting.html](https://github.com/mdn/learning-area/blob/main/javascript/apis/client-side-storage/web-storage/personal-greeting.html) 에서 찾을 수 있으며, 여기에는 헤더, 콘텐츠, 바닥글이 있는 웹사이트와 이름을 입력하는 양식이 포함되어 있습니다.
 
 ![A Screenshot of a website that has a header, content and footer sections. The header has a welcome text to the left-hand side and a button labelled 'forget' to the right-hand side. The content has an heading followed by a two paragraphs of dummy text. The footer reads 'Copyright nobody. Use the code as you like'.](web-storage-demo.png)
 
-Let's build up the example, so you can understand how it works.
+작동 원리를 이해할 수 있도록 예제를 구축해 보겠습니다.
 
-1. First, make a local copy of our [personal-greeting.html](https://github.com/mdn/learning-area/blob/main/javascript/apis/client-side-storage/web-storage/personal-greeting.html) file in a new directory on your computer.
-2. Next, note how our HTML references a JavaScript file called `index.js`, with a line like `<script src="index.js" defer></script>`. We need to create this and write our JavaScript code into it. Create an `index.js` file in the same directory as your HTML file.
-3. We'll start off by creating references to all the HTML features we need to manipulate in this example — we'll create them all as constants, as these references do not need to change in the lifecycle of the app. Add the following lines to your JavaScript file:
+1. 먼저 컴퓨터의 새 디렉터리에 [personal-greeting.html](https://github.com/mdn/learning-area/blob/main/javascript/apis/client-side-storage/web-storage/personal-greeting.html) 파일의 로컬 복사본을 만듭니다.
+2. 다음으로, HTML이 `<script src="index.js" defer></script>`와 같은 줄을 통해 `index.js`라는 JavaScript 파일을 참조하는 방식을 주목하세요. 이 파일을 생성하고 여기에 자바스크립트 코드를 작성해야 합니다. HTML 파일과 같은 디렉토리에 `index.js` 파일을 만듭니다.
+3. 이 예제에서 조작해야 하는 모든 HTML 기능에 대한 참조를 만드는 것부터 시작하겠습니다. 이러한 참조는 앱의 수명 주기 동안 변경할 필요가 없으므로 모두 상수로 만들겠습니다. 자바스크립트 파일에 다음 줄을 추가합니다:
 
    ```js
    // create needed constants
@@ -166,14 +165,14 @@ Let's build up the example, so you can understand how it works.
    const personalGreeting = document.querySelector(".personal-greeting");
    ```
 
-4. Next up, we need to include a small event listener to stop the form from actually submitting itself when the submit button is pressed, as this is not the behavior we want. Add this snippet below your previous code:
+4. 다음으로, 제출 버튼을 눌렀을 때 양식이 실제로 제출되지 않도록 작은 이벤트 리스너를 포함시켜야 하는데, 이는 우리가 원하는 동작이 아니기 때문입니다. 이전 코드 아래에 이 스니펫을 추가하세요:
 
    ```js
    // Stop the form from submitting when a button is pressed
    form.addEventListener("submit", (e) => e.preventDefault());
    ```
 
-5. Now we need to add an event listener, the handler function of which will run when the "Say hello" button is clicked. The comments explain in detail what each bit does, but in essence here we are taking the name the user has entered into the text input box and saving it in web storage using `setItem()`, then running a function called `nameDisplayCheck()` that will handle updating the actual website text. Add this to the bottom of your code:
+5. 이제 "Say hello" 버튼을 클릭할 때 핸들러 함수가 실행될 이벤트 리스너를 추가해야 합니다. 주석에 각 비트의 기능이 자세히 설명되어 있지만, 기본적으로 여기서는 사용자가 텍스트 입력 상자에 입력한 이름을 가져와 `setItem()`을 사용하여 웹 스토리지에 저장한 다음 실제 웹사이트 텍스트 업데이트를 처리하는 `nameDisplayCheck()`라는 함수를 실행하고 있습니다. 이 함수를 코드 하단에 추가하세요:
 
    ```js
    // run function when the 'Say hello' button is clicked
@@ -185,7 +184,7 @@ Let's build up the example, so you can understand how it works.
    });
    ```
 
-6. At this point we also need an event handler to run a function when the "Forget" button is clicked — this is only displayed after the "Say hello" button has been clicked (the two form states toggle back and forth). In this function we remove the `name` item from web storage using `removeItem()`, then again run `nameDisplayCheck()` to update the display. Add this to the bottom:
+6. 이 시점에서 "Forget" 버튼을 클릭했을 때 함수를 실행할 이벤트 핸들러도 필요합니다. 이 함수는 "Say hello" 버튼을 클릭한 후에만 표시됩니다(두 양식 상태가 앞뒤로 토글됨). 이 함수에서는 `removeItem()`을 사용하여 웹 스토리지에서 `name` 항목을 제거한 다음 `nameDisplayCheck()`를 다시 실행하여 디스플레이를 업데이트합니다. 이것을 하단에 추가합니다:
 
    ```js
    // run function when the 'Forget' button is clicked
@@ -197,7 +196,7 @@ Let's build up the example, so you can understand how it works.
    });
    ```
 
-7. It is now time to define the `nameDisplayCheck()` function itself. Here we check whether the name item has been stored in web storage by using `localStorage.getItem('name')` as a conditional test. If the name has been stored, this call will evaluate to `true`; if not, the call will evaluate to `false`. If the call evaluates to `true`, we display a personalized greeting, display the "forget" part of the form, and hide the "Say hello" part of the form. If the call evaluates to `false`, we display a generic greeting and do the opposite. Again, put the following code at the bottom:
+7. 이제 `nameDisplayCheck()` 함수 자체를 정의할 차례입니다. 여기서는 조건부 테스트로 `localStorage.getItem('name')`을 사용하여 이름 항목이 웹 스토리지에 저장되었는지 여부를 확인합니다. 이름이 저장되어 있으면 이 호출은 `true`으로 평가되고, 저장되어 있지 않으면 `false`으로 평가됩니다. 호출이 `true`로 평가되면 개인화된 인사말을 표시하고 양식의 "forget" 부분을 표시하고 양식의 "Say hello" 부분을 숨깁니다. 호출이 `false`으로 평가되면 일반 인사말을 표시하고 그 반대의 작업을 수행합니다. 다시 하단에 다음 코드를 넣습니다:
 
    ```js
    // define the nameDisplayCheck() function
@@ -223,58 +222,58 @@ Let's build up the example, so you can understand how it works.
    }
    ```
 
-8. Last but not least, we need to run the `nameDisplayCheck()` function when the page is loaded. If we don't do this, then the personalized greeting will not persist across page reloads. Add the following to the bottom of your code:
+8. 마지막으로, 페이지가 로드될 때 `nameDisplayCheck()` 함수를 실행해야 합니다. 이 작업을 수행하지 않으면 페이지를 다시 로드할 때 개인화된 인사말이 유지되지 않습니다. 코드 하단에 다음을 추가합니다:
 
    ```js
    nameDisplayCheck();
    ```
 
-Your example is finished — well done! All that remains now is to save your code and test your HTML page in a browser. You can see our [finished version running live here](https://mdn.github.io/learning-area/javascript/apis/client-side-storage/web-storage/personal-greeting.html).
+예제가 완성되었습니다 - 잘했습니다! 이제 코드를 저장하고 브라우저에서 HTML 페이지를 테스트하는 일만 남았습니다. [완성된 버전은 여기에서 실시간으로 실행](https://mdn.github.io/learning-area/javascript/apis/client-side-storage/web-storage/personal-greeting.html) 되는 것을 확인할 수 있습니다.
 
-> **Note:** There is another, slightly more complex example to explore at [Using the Web Storage API](/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API).
+> **참고:** [웹 스토리지 API 사용하기](/ko/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API) 에서 약간 더 복잡한 또 다른 예제를 살펴볼 수 있습니다.
 
-> **Note:** In the line `<script src="index.js" defer></script>` of the source for our finished version, the `defer` attribute specifies that the contents of the {{htmlelement("script")}} element will not execute until the page has finished loading.
+> **참고:** 완성된 버전 소스의 `<script src="index.js" defer></script>` 줄에서 `defer` 속성은 페이지 로딩이 완료될 때까지 {{htmlelement("script")}} 요소의 콘텐츠가 실행되지 않도록 지정합니다.
 
-## Storing complex data — IndexedDB
+## 복잡한 데이터 저장 - IndexedDB
 
-The [IndexedDB API](/en-US/docs/Web/API/IndexedDB_API) (sometimes abbreviated IDB) is a complete database system available in the browser in which you can store complex related data, the types of which aren't limited to simple values like strings or numbers. You can store videos, images, and pretty much anything else in an IndexedDB instance.
+[IndexedDB API](/ko/docs/Web/API/IndexedDB_API)(약칭 IDB)는 브라우저에서 사용할 수 있는 완전한 데이터베이스 시스템으로, 그 유형이 문자열이나 숫자와 같은 단순한 값에 국한되지 않는 복잡한 관련 데이터를 저장할 수 있습니다. 동영상, 이미지 등 거의 모든 종류의 데이터를 IndexedDB 인스턴스에 저장할 수 있습니다.
 
-The IndexedDB API allows you to create a database, then create object stores within that database.
-Object stores are like tables in a relational database, and each object store can contain a number of objects.
-To learn more about the IndexedDB API, see [Using IndexedDB](/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB).
+IndexedDB API를 사용하면 데이터베이스를 만든 다음 해당 데이터베이스 내에 객체 저장소를 만들 수 있습니다.
+객체 저장소는 관계형 데이터베이스의 테이블과 같으며 각 객체 저장소에는 여러 개의 객체가 포함될 수 있습니다.
+IndexedDB API에 대해 자세히 알아보려면 [IndexedDB 사용](/ko/docs/Web/API/IndexedDB_API/Using_IndexedDB) 을 참조하세요.
 
-However, this does come at a cost: IndexedDB is much more complex to use than the Web Storage API. In this section, we'll really only scratch the surface of what it is capable of, but we will give you enough to get started.
+그러나 여기에는 대가가 따릅니다. IndexedDB는 웹 스토리지 API보다 사용하기가 훨씬 더 복잡합니다. 이 섹션에서는 인덱싱된 데이터베이스의 기능 중 극히 일부만 소개하지만, 시작하기에 충분한 정보를 제공할 것입니다.
 
-### Working through a note storage example
+### 노트 스토리지 예제 살펴보기
 
-Here we'll run you through an example that allows you to store notes in your browser and view and delete them whenever you like, getting you to build it up for yourself and explaining the most fundamental parts of IDB as we go along.
+여기서는 브라우저에 노트를 저장하고 원할 때 언제든 보고 삭제할 수 있는 예제를 통해 직접 구축해보고 IDB의 가장 기본적인 부분을 설명해 드리겠습니다.
 
-The app looks something like this:
+앱은 다음과 같은 모습입니다:
 
 ![IndexDB notes demo screenshot with 4 sections. The first section is the header. The second section lists all the notes that have been created. It has two notes, each with a delete button. A third section is a form with 2 input fields for 'Note title' and 'Note text' and a button labeled 'Create new note'. The bottom section footer reads 'Copyright nobody. Use the code as you like'.](idb-demo.png)
 
-Each note has a title and some body text, each individually editable. The JavaScript code we'll go through below has detailed comments to help you understand what's going on.
+각 노트에는 제목과 본문 텍스트가 있으며, 각각 개별적으로 편집할 수 있습니다. 아래에서 살펴볼 JavaScript 코드에는 무슨 일이 벌어지고 있는지 이해하는 데 도움이 되는 자세한 주석이 있습니다.
 
-### Getting started
+### 시작하기
 
-1. First of all, make local copies of our [`index.html`](https://github.com/mdn/learning-area/blob/main/javascript/apis/client-side-storage/indexeddb/notes/index.html), [`style.css`](https://github.com/mdn/learning-area/blob/main/javascript/apis/client-side-storage/indexeddb/notes/style.css), and [`index-start.js`](https://github.com/mdn/learning-area/blob/main/javascript/apis/client-side-storage/indexeddb/notes/index-start.js) files into a new directory on your local machine.
-2. Have a look at the files. You'll see that the HTML defines a website with a header and footer, as well as a main content area that contains a place to display notes, and a form for entering new notes into the database. The CSS provides some styling to make it clearer what is going on. The JavaScript file contains five declared constants containing references to the {{htmlelement("ul")}} element the notes will be displayed in, the title and body {{htmlelement("input")}} elements, the {{htmlelement("form")}} itself, and the {{htmlelement("button")}}.
-3. Rename your JavaScript file to `index.js`. You are now ready to start adding code to it.
+1. 우선,  [`index.html`](https://github.com/mdn/learning-area/blob/main/javascript/apis/client-side-storage/indexeddb/notes/index.html), [`style.css`](https://github.com/mdn/learning-area/blob/main/javascript/apis/client-side-storage/indexeddb/notes/style.css), [`index-start.js`](https://github.com/mdn/learning-area/blob/main/javascript/apis/client-side-storage/indexeddb/notes/index-start.js) 파일의 로컬 복사본을 로컬 컴퓨터의 새 디렉터리에 만듭니다.
+2. 파일을 살펴보세요. HTML은 머리글과 바닥글이 있는 웹사이트와 노트를 표시할 장소가 포함된 메인 콘텐츠 영역, 데이터베이스에 새 노트를 입력하는 양식을 정의하고 있음을 알 수 있을 것입니다. CSS는 무슨 일이 일어나고 있는지 더 명확히 알 수 있도록 몇 가지 스타일링을 제공합니다. JavaScript 파일에는 노트가 표시될 {{htmlelement("ul")}} 요소, 제목과 본문 {{htmlelement("input")}} 요소, {{htmlelement("form")}} 자체, {{htmlelement("button")}} 에 대한 참조를 포함하는 5개의 선언된 상수가 포함되어 있습니다.
+3. JavaScript 파일의 이름을 `index.js`로 바꿉니다. 이제 코드를 추가할 준비가 되었습니다.
 
-### Database initial setup
+### 데이터베이스 초기 설정
 
-Now let's look at what we have to do in the first place, to actually set up a database.
+이제 실제로 데이터베이스를 설정하기 위해 가장 먼저 해야 할 일을 살펴봅시다.
 
-1. Below the constant declarations, add the following lines:
+1. 상수 선언 아래에 다음 줄을 추가합니다:
 
    ```js
    // Create an instance of a db object for us to store the open database in
    let db;
    ```
 
-   Here we are declaring a variable called `db` — this will later be used to store an object representing our database. We will use this in a few places, so we've declared it globally here to make things easier.
+   여기서는 `db`라는 변수를 선언하고 있는데, 이 변수는 나중에 데이터베이스를 나타내는 객체를 저장하는 데 사용됩니다. 이 변수는 나중에 데이터베이스를 나타내는 객체를 저장하는 데 사용됩니다.
 
-2. Next, add the following:
+2. 다음으로 다음을 추가합니다:
 
    ```js
    // Open our database; it is created if it doesn't already exist
@@ -282,13 +281,13 @@ Now let's look at what we have to do in the first place, to actually set up a da
    const openRequest = window.indexedDB.open("notes_db", 1);
    ```
 
-   This line creates a request to open version `1` of a database called `notes_db`. If this doesn't already exist, it will be created for you by subsequent code. You will see this request pattern used very often throughout IndexedDB. Database operations take time. You don't want to hang the browser while you wait for the results, so database operations are {{Glossary("asynchronous")}}, meaning that instead of happening immediately, they will happen at some point in the future, and you get notified when they're done.
+   이 줄은 `notes_db`라는 데이터베이스의 버전 `1`을 열기 위한 요청을 생성합니다. 이 데이터베이스가 아직 존재하지 않는 경우 후속 코드에서 생성됩니다. 이 요청 패턴은 IndexedDB 전체에서 매우 자주 사용되는 것을 볼 수 있습니다. 데이터베이스 작업에는 시간이 걸립니다. 결과를 기다리는 동안 브라우저를 중단하고 싶지 않기 때문에 데이터베이스 작업은 {{Glossary("asynchronous")}} 이며, 즉 즉시 수행되는 것이 아니라 미래의 어느 시점에 수행되고 완료되면 알림을 받습니다.
 
-   To handle this in IndexedDB, you create a request object (which can be called anything you like — we called it `openRequest` here, so it is obvious what it is for). You then use event handlers to run code when the request completes, fails, etc., which you'll see in use below.
+   IndexedDB에서 이 작업을 처리하려면 요청 객체를 생성합니다(원하는 대로 호출할 수 있습니다. 여기서는 `openRequest`라고 했으므로 용도가 분명합니다). 그런 다음 이벤트 핸들러를 사용하여 요청이 완료되거나 실패할 때 코드를 실행합니다(아래에서 사용 중임을 확인할 수 있습니다).
 
-   > **Note:** The version number is important. If you want to upgrade your database (for example, by changing the table structure), you have to run your code again with an increased version number, different schema specified inside the `upgradeneeded` handler (see below), etc. We won't cover upgrading databases in this tutorial.
+   > **참고:** 버전 번호가 중요합니다. 데이터베이스를 업그레이드하려면(예: 테이블 구조를 변경하는 등) 버전 번호를 늘리거나 `upgradeneeded` 처리기 내부에 다른 스키마를 지정하는 등의 방법으로 코드를 다시 실행해야 합니다(아래 참조). 이 튜토리얼에서는 데이터베이스 업그레이드를 다루지 않습니다.
 
-3. Now add the following event handlers just below your previous addition:
+3. 이제 이전에 추가한 바로 아래에 다음 이벤트 핸들러를 추가합니다.
 
    ```js
    // error handler signifies that the database didn't open successfully
@@ -308,11 +307,11 @@ Now let's look at what we have to do in the first place, to actually set up a da
    });
    ```
 
-   The {{domxref("IDBRequest/error_event", "error")}} event handler will run if the system comes back saying that the request failed. This allows you to respond to this problem. In our example, we just print a message to the JavaScript console.
+   시스템에서 요청이 실패했다는 메시지가 돌아오면 {{domxref("IDBRequest/error_event", "error")}} 이벤트 처리기가 실행됩니다. 이를 통해 이 문제에 대응할 수 있습니다. 이 예제에서는 자바스크립트 콘솔에 메시지를 인쇄하기만 하면 됩니다.
+   
+   요청이 성공적으로 반환되면, 즉 데이터베이스가 성공적으로 열리면 {{domxref("IDBRequest/success_event", "success")}} 이벤트 핸들러가 실행됩니다. 이 경우 열린 데이터베이스를 나타내는 객체가 {{domxref("IDBRequest.result", "openRequest.result")}} 속성에서 사용 가능해져 데이터베이스를 조작할 수 있습니다. 나중에 사용할 수 있도록 앞서 만든 `db` 변수에 저장합니다. 또한 {{HTMLElement("ul")}} 안에 데이터베이스의 데이터를 표시하는 `displayData()`라는 함수를 실행합니다. 지금 이 함수를 실행하면 페이지가 로드되는 즉시 데이터베이스에 이미 있는 노트가 표시됩니다. 나중에 `displayData()`가 정의된 것을 보실 수 있습니다.
 
-   The {{domxref("IDBRequest/success_event", "success")}} event handler will run if the request returns successfully, meaning the database was successfully opened. If this is the case, an object representing the opened database becomes available in the {{domxref("IDBRequest.result", "openRequest.result")}} property, allowing us to manipulate the database. We store this in the `db` variable we created earlier for later use. We also run a function called `displayData()`, which displays the data in the database inside the {{HTMLElement("ul")}}. We run it now so that the notes already in the database are displayed as soon as the page loads. You'll see `displayData()` defined later on.
-
-4. Finally for this section, we'll add probably the most important event handler for setting up the database: {{domxref("IDBOpenDBRequest/upgradeneeded_event", "upgradeneeded")}}. This handler runs if the database has not already been set up, or if the database is opened with a bigger version number than the existing stored database (when performing an upgrade). Add the following code, below your previous handler:
+4. 마지막으로 이 섹션에서는 데이터베이스를 설정하는 데 가장 중요한 이벤트 핸들러인 {{domxref("IDBOpenDBRequest/upgradeneeded_event", "upgradeneeded")}} 를 추가하겠습니다. 이 핸들러는 데이터베이스가 아직 설정되지 않았거나 기존 저장된 데이터베이스보다 더 큰 버전 번호로 데이터베이스를 열 경우(업그레이드를 수행할 때) 실행됩니다. 이전 핸들러 아래에 다음 코드를 추가합니다:
 
    ```js
    // Set up the database tables if this has not already been done
@@ -335,13 +334,13 @@ Now let's look at what we have to do in the first place, to actually set up a da
    });
    ```
 
-   This is where we define the schema (structure) of our database; that is, the set of columns (or fields) it contains. Here we first grab a reference to the existing database from the `result` property of the event's target (`e.target.result`), which is the `request` object. This is equivalent to the line `db = openRequest.result;` inside the `success` event handler, but we need to do this separately here because the `upgradeneeded` event handler (if needed) will run before the `success` event handler, meaning that the `db` value wouldn't be available if we didn't do this.
+   여기서 데이터베이스의 스키마(구조), 즉 데이터베이스에 포함된 열(또는 필드)의 집합을 정의합니다. 여기서는 먼저 `request` 객체인 이벤트 대상의 `result` 속성(`e.target.result`)에서 기존 데이터베이스에 대한 참조를 가져옵니다. 이는 `success` 이벤트 핸들러 내부의 `db = openRequest.result;` 줄과 동일하지만, `upgradeneeded` 이벤트 핸들러(필요한 경우)가 `success` 이벤트 핸들러보다 먼저 실행되므로 이 작업을 수행하지 않으면 `db` 값을 사용할 수 없으므로 여기서는 별도로 수행해야 합니다.
 
-   We then use {{domxref("IDBDatabase.createObjectStore()")}} to create a new object store inside our opened database called `notes_os`. This is equivalent to a single table in a conventional database system. We've given it the name notes, and also specified an `autoIncrement` key field called `id` — in each new record this will automatically be given an incremented value — the developer doesn't need to set this explicitly. Being the key, the `id` field will be used to uniquely identify records, such as when deleting or displaying a record.
+   그런 다음 {{domxref("IDBDatabase.createObjectStore()")}} 를 사용하여 열린 데이터베이스 내에 `notes_os`라는 새 객체 저장소를 만듭니다. 이것은 기존 데이터베이스 시스템에서 단일 테이블에 해당합니다. 여기에 notes라는 이름을 지정하고 `id`라는 `autoIncrement` 키 필드를 지정했습니다. 새 레코드가 생성될 때마다 자동으로 증가된 값이 주어지므로 개발자가 명시적으로 설정할 필요가 없습니다. 키가 되는 `id` 필드는 레코드를 삭제하거나 표시할 때와 같이 레코드를 고유하게 식별하는 데 사용됩니다.
 
-   We also create two other indexes (fields) using the {{domxref("IDBObjectStore.createIndex()")}} method: `title` (which will contain a title for each note), and `body` (which will contain the body text of the note).
+   또한 {{domxref("IDBObjectStore.createIndex()")}} 메서드를 사용해 `title`(각 노트의 제목을 포함)과 `body`(노트의 본문 텍스트를 포함)이라는 두 개의 다른 색인(필드)을 만듭니다.
 
-So with this database schema set up, when we start adding records to the database, each one will be represented as an object along these lines:
+이 데이터베이스 스키마가 설정되었으므로 데이터베이스에 레코드를 추가하기 시작하면 각 레코드는 이 라인을 따라 하나의 객체로 표시됩니다:
 
 ```json
 {
@@ -351,18 +350,18 @@ So with this database schema set up, when we start adding records to the databas
 }
 ```
 
-### Adding data to the database
+### 데이터베이스에 데이터 추가하기
 
-Now let's look at how we can add records to the database. This will be done using the form on our page.
+이제 데이터베이스에 레코드를 추가하는 방법을 살펴봅시다. 이 작업은 페이지의 양식을 사용하여 수행됩니다.
 
-Below your previous event handler, add the following line, which sets up a `submit` event handler that runs a function called `addData()` when the form is submitted (when the submit {{htmlelement("button")}} is pressed leading to a successful form submission):
+이전 이벤트 핸들러 아래에 다음 줄을 추가하여 양식이 제출될 때(제출 {{htmlelement("button")}} 을 눌러 양식 제출에 성공할 때) `addData()`라는 함수를 실행하는 `submit` 이벤트 핸들러를 설정합니다:
 
 ```js
 // Create a submit event handler so that when the form is submitted the addData() function is run
 form.addEventListener("submit", addData);
 ```
 
-Now let's define the `addData()` function. Add this below your previous line:
+이제 `addData()` 함수를 정의해 보겠습니다. 이전 줄 아래에 추가하세요:
 
 ```js
 // Define the addData() function
@@ -402,18 +401,18 @@ function addData(e) {
 }
 ```
 
-This is quite complex; breaking it down, we:
+이는 매우 복잡한 문제이므로 세분화하여 설명합니다:
 
-- Run {{domxref("Event.preventDefault()")}} on the event object to stop the form actually submitting in the conventional manner (this would cause a page refresh and spoil the experience).
-- Create an object representing a record to enter into the database, populating it with values from the form inputs. Note that we don't have to explicitly include an `id` value — as we explained earlier, this is auto-populated.
-- Open a `readwrite` transaction against the `notes_os` object store using the {{domxref("IDBDatabase.transaction()")}} method. This transaction object allows us to access the object store so we can do something to it, e.g. add a new record.
-- Access the object store using the {{domxref("IDBTransaction.objectStore()")}} method, saving the result in the `objectStore` variable.
-- Add the new record to the database using {{domxref("IDBObjectStore.add()")}}. This creates a request object, in the same fashion as we've seen before.
-- Add a bunch of event handlers to the `request` and the `transaction` objects to run code at critical points in the lifecycle. Once the request has succeeded, we clear the form inputs ready for entering the next note. Once the transaction has completed, we run the `displayData()` function again to update the display of notes on the page.
+- 이벤트 객체에서 {{domxref("Event.preventDefault()")}} 를 실행하여 기존 방식으로 양식이 실제로 제출되는 것을 중지합니다(이 경우 페이지 새로 고침이 발생하여 경험이 손상될 수 있음).
+- 데이터베이스에 입력할 레코드를 나타내는 객체를 생성하여 양식 입력값으로 채웁니다. 앞서 설명한 것처럼 `id` 값을 명시적으로 포함할 필요는 없습니다. 이 값은 자동으로 채워집니다.
+- {{domxref("IDBDatabase.transaction()")}} 메서드를 사용하여 `notes_os` 객체 저장소에 대한 `readwrite` 트랜잭션을 엽니다. 이 트랜잭션 객체를 사용하면 객체 저장소에 액세스하여 새 레코드를 추가하는 등의 작업을 수행할 수 있습니다.
+- {{domxref("IDBTransaction.objectStore()")}} 메서드를 사용하여 객체 저장소에 액세스하고 결과를 `objectStore` 변수에 저장합니다.
+- {{domxref("IDBObjectStore.add()")}} 를 사용하여 데이터베이스에 새 레코드를 추가합니다. 이렇게 하면 앞서 살펴본 것과 동일한 방식으로 요청 객체가 생성됩니다.
+- 라이프사이클의 중요한 지점에서 코드를 실행하기 위해 `request`과 `transaction` 객체에 여러 이벤트 핸들러를 추가합니다. 요청이 성공하면 다음 노트를 입력할 준비를 위해 양식 입력을 지웁니다. 트랜잭션이 완료되면 `displayData()` 함수를 다시 실행해 페이지의 노트 표시를 업데이트합니다.
 
-### Displaying the data
+### 데이터 표시
 
-We've referenced `displayData()` twice in our code already, so we'd probably better define it. Add this to your code, below the previous function definition:
+이미 코드에서 `displayData()` 함수를 두 번 참조했으므로 이 함수를 정의하는 것이 좋습니다. 이전 함수 정의 아래에 이 함수를 코드에 추가하세요:
 
 ```js
 // Define the displayData() function
@@ -476,19 +475,19 @@ function displayData() {
 }
 ```
 
-Again, let's break this down:
+다시 한 번 자세히 살펴보겠습니다:
 
-- First, we empty out the {{htmlelement("ul")}} element's content, before then filling it with the updated content. If you didn't do this, you'd end up with a huge list of duplicated content being added to with each update.
-- Next, we get a reference to the `notes_os` object store using {{domxref("IDBDatabase.transaction()")}} and {{domxref("IDBTransaction.objectStore()")}} like we did in `addData()`, except here we are chaining them together in one line.
-- The next step is to use the {{domxref("IDBObjectStore.openCursor()")}} method to open a request for a cursor — this is a construct that can be used to iterate over the records in an object store. We chain a `success` event handler onto the end of this line to make the code more concise — when the cursor is successfully returned, the handler is run.
-- We get a reference to the cursor itself (an {{domxref("IDBCursor")}} object) using `const cursor = e.target.result`.
-- Next, we check to see if the cursor contains a record from the datastore (`if (cursor){ }`) — if so, we create a DOM fragment, populate it with the data from the record, and insert it into the page (inside the `<ul>` element). We also include a delete button that, when clicked, will delete that note by running the `deleteItem()` function, which we will look at in the next section.
-- At the end of the `if` block, we use the {{domxref("IDBCursor.continue()")}} method to advance the cursor to the next record in the datastore, and run the content of the `if` block again. If there is another record to iterate to, this causes it to be inserted into the page, and then `continue()` is run again, and so on.
-- When there are no more records to iterate over, `cursor` will return `undefined`, and therefore the `else` block will run instead of the `if` block. This block checks whether any notes were inserted into the `<ul>` — if not, it inserts a message to say no note was stored.
+- 먼저 {{htmlelement("ul")}} 요소의 콘텐츠를 비운 다음 업데이트된 콘텐츠로 채웁니다. 이렇게 하지 않으면 업데이트할 때마다 중복된 콘텐츠가 엄청나게 많은 목록이 추가됩니다.
+- 다음으로, `addData()`에서 했던 것처럼 {{domxref("IDBDatabase.transaction()")}} 및 {{domxref("IDBTransaction.objectStore()")}}를 사용하여 `notes_os` 객체 저장소에 대한 참조를 가져옵니다(단, 여기서는 한 줄로 연결한다는 점이 다릅니다).
+- 다음 단계는 {{domxref("IDBObjectStore.openCursor()")}} 메서드를 사용하여 커서 요청을 여는 것입니다. 이 메서드는 객체 저장소의 레코드를 반복하는 데 사용할 수 있는 구조체입니다. 코드를 더 간결하게 만들기 위해 이 줄의 끝에 `success` 이벤트 핸들러를 연결하여 커서가 성공적으로 반환되면 핸들러가 실행됩니다.
+- `const cursor = e.target.result`를 사용하여 커서 자체({{domxref("IDBCursor")}} 객체)에 대한 참조를 가져옵니다.
+- 다음으로 커서에 데이터스토어의 레코드가 포함되어 있는지 확인합니다(`if (cursor){ }`) - 만약 그렇다면 DOM 조각을 생성하고 레코드의 데이터로 채운 다음 페이지에 삽입합니다(`<ul>` 요소 내부). 또한 삭제 버튼을 클릭하면 다음 섹션에서 살펴볼 `deleteItem()` 함수를 실행하여 해당 노트를 삭제하는 삭제 버튼도 포함합니다.
+- `if` 블록의 마지막에는 {{domxref("IDBCursor.continue()")}} 메서드를 사용해 데이터스토어의 다음 레코드로 커서를 이동하고 `if` 블록의 내용을 다시 실행합니다. 반복할 다른 레코드가 있으면 해당 레코드가 페이지에 삽입된 다음 `continue()`가 다시 실행되는 식으로 반복됩니다.
+- 반복할 레코드가 더 이상 없으면 `cursor`가 정의되지 않은 상태로 반환되므로 `if` 블록 대신 `else` 블록이 실행됩니다. 이 블록은 `<ul>`에 노트가 삽입되었는지 확인하고, 그렇지 않은 경우 노트가 저장되지 않았다는 메시지를 삽입합니다.
 
-### Deleting a note
+### 노트 삭제
 
-As stated above, when a note's delete button is pressed, the note is deleted. This is achieved by the `deleteItem()` function, which looks like so:
+위에서 설명한 것처럼 노트의 삭제 버튼을 누르면 노트가 삭제됩니다. 삭제는 다음과 같은 `deleteItem()` 함수를 통해 이루어집니다:
 
 ```js
 // Define the deleteItem() function
@@ -520,23 +519,23 @@ function deleteItem(e) {
 }
 ```
 
-- The first part of this could use some explaining — we retrieve the ID of the record to be deleted using `Number(e.target.parentNode.getAttribute('data-note-id'))` — recall that the ID of the record was saved in a `data-note-id` attribute on the `<li>` when it was first displayed. We do however need to pass the attribute through the global built-in [`Number()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number) object as it is of datatype string, and therefore wouldn't be recognized by the database, which expects a number.
-- We then get a reference to the object store using the same pattern we've seen previously, and use the {{domxref("IDBObjectStore.delete()")}} method to delete the record from the database, passing it the ID.
-- When the database transaction is complete, we delete the note's `<li>` from the DOM, and again do the check to see if the `<ul>` is now empty, inserting a note as appropriate.
+- 삭제할 레코드의 ID는 `Number(e.target.parentNode.getAttribute('data-note-id'))`를 사용하여 검색합니다. 레코드가 처음 표시될 때 `<li>`의 `data-note-id` 속성에 저장되었다는 점을 기억하세요. 그러나 이 속성은 데이터 유형이 문자열이므로 숫자를 기대하는 데이터베이스에서 인식하지 못하므로 글로벌 내장 [`Number()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Number) 객체를 통해 전달해야 합니다.
+- 그런 다음 앞에서 본 것과 동일한 패턴을 사용하여 객체 저장소에 대한 참조를 가져오고 {{domxref("IDBObjectStore.delete()")}} 메서드를 사용하여 ID를 전달하여 데이터베이스에서 레코드를 삭제합니다.
+- 데이터베이스 트랜잭션이 완료되면 DOM에서 노트의 `<li>`를 삭제하고 다시 한 번 `<ul>`이 비어 있는지 확인하여 적절하게 노트를 삽입합니다.
 
-So that's it! Your example should now work.
+여기까지입니다! 이제 예제가 작동합니다.
 
-If you are having trouble with it, feel free to [check it against our live example](https://mdn.github.io/learning-area/javascript/apis/client-side-storage/indexeddb/notes/) (see the [source code](https://github.com/mdn/learning-area/blob/main/javascript/apis/client-side-storage/indexeddb/notes/index.js) also).
+문제가 있으시다면 [라이브 예제와 비교해 확인](https://mdn.github.io/learning-area/javascript/apis/client-side-storage/indexeddb/notes/) 해 보세요([소스 코드](https://github.com/mdn/learning-area/blob/main/javascript/apis/client-side-storage/indexeddb/notes/index.js) 도 참조하세요).
 
-### Storing complex data via IndexedDB
+### IndexedDB를 통한 복잡한 데이터 저장
 
-As we mentioned above, IndexedDB can be used to store more than just text strings. You can store just about anything you want, including complex objects such as video or image blobs. And it isn't much more difficult to achieve than any other type of data.
+위에서 언급했듯이 IndexedDB는 단순한 텍스트 문자열 이상의 것을 저장하는 데 사용할 수 있습니다. 비디오나 이미지 블롭과 같은 복잡한 객체를 포함하여 원하는 거의 모든 것을 저장할 수 있습니다. 그리고 다른 유형의 데이터보다 훨씬 더 어렵지 않습니다.
 
-To demonstrate how to do it, we've written another example called [IndexedDB video store](https://github.com/mdn/learning-area/tree/main/javascript/apis/client-side-storage/indexeddb/video-store) (see it [running live here also](https://mdn.github.io/learning-area/javascript/apis/client-side-storage/indexeddb/video-store/)). When you first run the example, it downloads all the videos from the network, stores them in an IndexedDB database, and then displays the videos in the UI inside {{htmlelement("video")}} elements. The second time you run it, it finds the videos in the database and gets them from there instead before displaying them — this makes subsequent loads much quicker and less bandwidth-hungry.
+이를 수행하는 방법을 보여드리기 위해 [IndexedDB 비디오 스토어](https://github.com/mdn/learning-area/tree/main/javascript/apis/client-side-storage/indexeddb/video-store) 라는 또 다른 예제를 작성했습니다([여기에서도 실행 중인 예제](https://mdn.github.io/learning-area/javascript/apis/client-side-storage/indexeddb/video-store/) 참조). 이 예제를 처음 실행하면 네트워크에서 모든 비디오를 다운로드하여 IndexedDB 데이터베이스에 저장한 다음 {{htmlelement("video")}} 요소 내부의 UI에 비디오를 표시합니다. 두 번째로 실행하면 데이터베이스에서 동영상을 찾아서 표시하기 전에 거기에서 가져와서 표시하므로 후속 로드가 훨씬 빠르고 대역폭을 덜 소모합니다.
 
-Let's walk through the most interesting parts of the example. We won't look at it all — a lot of it is similar to the previous example, and the code is well-commented.
+이 예제에서 가장 흥미로운 부분을 살펴봅시다. 많은 부분이 이전 예제와 유사하며 코드에 주석이 잘 처리되어 있습니다.
 
-1. For this example, we've stored the names of the videos to fetch in an array of objects:
+1. 이 예제에서는 가져올 동영상의 이름을 객체 배열에 저장했습니다:
 
    ```js
    const videos = [
@@ -549,9 +548,9 @@ Let's walk through the most interesting parts of the example. We won't look at i
    ];
    ```
 
-2. To start with, once the database is successfully opened we run an `init()` function. This loops through the different video names, trying to load a record identified by each name from the `videos` database.
+2. 우선 데이터베이스가 성공적으로 열리면 `init()` 함수를 실행합니다. 이 함수는 여러 동영상 이름을 반복하여 각 이름으로 식별되는 레코드를 `videos` 데이터베이스에서 로드하려고 시도합니다.
 
-   If each video is found in the database (checked by seeing whether `request.result` evaluates to `true` — if the record is not present, it will be `undefined`), its video files (stored as blobs) and the video name are passed straight to the `displayVideo()` function to place them in the UI. If not, the video name is passed to the `fetchVideoFromNetwork()` function to, you guessed it, fetch the video from the network.
+   각 비디오가 데이터베이스에서 발견되면(`request.result`가 `true`로 평가되는지 확인하여 확인 - 레코드가 없으면 `undefined`) 해당 비디오 파일(블롭으로 저장됨)과 비디오 이름이 `displayVideo()` 함수에 바로 전달되어 UI에 배치됩니다. 그렇지 않은 경우, 비디오 이름은 네트워크에서 비디오를 가져오기 위해 `fetchVideoFromNetwork()` 함수에 전달됩니다.
 
    ```js
    function init() {
@@ -579,11 +578,11 @@ Let's walk through the most interesting parts of the example. We won't look at i
    }
    ```
 
-3. The following snippet is taken from inside `fetchVideoFromNetwork()` — here we fetch MP4 and WebM versions of the video using two separate {{domxref("fetch()")}} requests. We then use the {{domxref("Response.blob()")}} method to extract each response's body as a blob, giving us an object representation of the videos that can be stored and displayed later on.
+3. 다음 코드 조각은 `fetchVideoFromNetwork()` 내부에서 가져온 것으로, 여기서는 두 개의 개별 {{domxref("fetch()")}} 요청을 사용하여 MP4 및 WebM 버전의 비디오를 가져옵니다. 그런 다음 {{domxref("Response.blob()")}} 메서드를 사용하여 각 응답의 본문을 블롭으로 추출하여 나중에 저장하고 표시할 수 있는 비디오의 객체 표현을 제공합니다.
 
-   We have a problem here though — these two requests are both asynchronous, but we only want to try to display or store the video when both promises have fulfilled. Fortunately there is a built-in method that handles such a problem — {{jsxref("Promise.all()")}}. This takes one argument — references to all the individual promises you want to check for fulfillment placed in an array — and returns a promise which is fulfilled when all the individual promises are fulfilled.
+   이 두 요청은 모두 비동기적이지만 두 약속이 모두 이행되었을 때만 비디오를 표시하거나 저장하려고 한다는 문제가 있습니다. 다행히도 이러한 문제를 처리하는 내장 메서드인 {{jsxref("Promise.all()")}} 이 있습니다. 이 메서드는 하나의 인수(이행 여부를 확인하려는 모든 개별 프로미스에 대한 참조를 배열에 배치)를 받아 모든 개별 프로미스가 이행될 때 이행된 프로미스를 반환합니다.
 
-   Inside the `then()` handler for this promise, we call the `displayVideo()` function like we did before to display the videos in the UI, then we also call the `storeVideo()` function to store those videos inside the database.
+   이 프로미스에 대한 `then()` 핸들러 내부에서는 이전과 마찬가지로 `displayVideo()` 함수를 호출하여 UI에 동영상을 표시한 다음 `storeVideo()` 함수를 호출하여 해당 동영상을 데이터베이스에 저장합니다.
 
    ```js
    // Fetch the MP4 and WebM versions of the video using the fetch() function,
@@ -604,7 +603,7 @@ Let's walk through the most interesting parts of the example. We won't look at i
    });
    ```
 
-4. Let's look at `storeVideo()` first. This is very similar to the pattern you saw in the previous example for adding data to the database — we open a `readwrite` transaction and get a reference to our `videos_os` object store, create an object representing the record to add to the database, then add it using {{domxref("IDBObjectStore.add()")}}.
+4. 먼저 `storeVideo()`를 살펴봅시다. 이는 데이터베이스에 데이터를 추가하는 이전 예제에서 보았던 패턴과 매우 유사합니다. `readwrite` 트랜잭션을 열고 `videos_os` 객체 저장소에 대한 참조를 가져와서 데이터베이스에 추가할 레코드를 나타내는 객체를 만든 다음 {{domxref("IDBObjectStore.add()")}}를 사용하여 추가합니다.
 
    ```js
    // Define the storeVideo() function
@@ -624,7 +623,7 @@ Let's walk through the most interesting parts of the example. We won't look at i
    }
    ```
 
-5. Finally, we have `displayVideo()`, which creates the DOM elements needed to insert the video in the UI and then appends them to the page. The most interesting parts of this are those shown below — to actually display our video blobs in a `<video>` element, we need to create object URLs (internal URLs that point to the video blobs stored in memory) using the {{domxref("URL.createObjectURL()")}} method. Once that is done, we can set the object URLs to be the values of our {{htmlelement("source")}} element's `src` attributes, and it works fine.
+5. 마지막으로, UI에 비디오를 삽입하는 데 필요한 DOM 요소를 생성한 다음 페이지에 추가하는 `displayVideo()` 함수가 있습니다. 이 중 가장 흥미로운 부분은 아래에 표시된 부분으로, 실제로 비디오 블롭을 `<video>` 요소에 표시하려면 {{domxref("URL.createObjectURL()")}} 메서드를 사용하여 객체 URL(메모리에 저장된 비디오 블롭을 가리키는 내부 URL)을 생성해야 합니다. 이 작업이 완료되면 객체 URL을 {{htmlelement("source")}} 요소의 `src` 속성의 값으로 설정하면 정상적으로 작동합니다.
 
    ```js
    // Define the displayVideo() function
@@ -655,29 +654,29 @@ Let's walk through the most interesting parts of the example. We won't look at i
    }
    ```
 
-## Offline asset storage
+## 오프라인 자산 저장
 
-The above example already shows how to create an app that will store large assets in an IndexedDB database, avoiding the need to download them more than once. This is already a great improvement to the user experience, but there is still one thing missing — the main HTML, CSS, and JavaScript files still need to be downloaded each time the site is accessed, meaning that it won't work when there is no network connection.
+위의 예시에서는 이미 대용량 자산을 두 번 이상 다운로드할 필요 없이 인덱싱된 데이터베이스에 저장하는 앱을 만드는 방법을 보여주었습니다. 이는 이미 사용자 경험을 크게 개선한 것이지만 여전히 한 가지 아쉬운 점이 있습니다. 사이트에 액세스할 때마다 기본 HTML, CSS 및 JavaScript 파일을 다운로드해야 하므로 네트워크에 연결되어 있지 않을 때는 작동하지 않습니다.
 
 ![Firefox offline screen with an illustration of a cartoon character to the left-hand side holding a two-pin plug in its right hand and a two-pin socket in its left hand. On the right-hand side there is an Offline Mode message and a button labeled 'Try again'.](ff-offline.png)
 
-This is where [Service workers](/en-US/docs/Web/API/Service_Worker_API) and the closely-related [Cache API](/en-US/docs/Web/API/Cache) come in.
+바로 이 부분에서 [서비스 워커](/ko/docs/Web/API/Service_Worker_API) 와 밀접하게 관련된 [캐시 API](/ko/docs/Web/API/Cache) 가 등장합니다.
 
-A service worker is a JavaScript file that is registered against a particular origin (website, or part of a website at a certain domain) when it is accessed by a browser. When registered, it can control pages available at that origin. It does this by sitting between a loaded page and the network and intercepting network requests aimed at that origin.
+서비스 워커는 브라우저에서 웹사이트에 액세스할 때 특정 출처(웹사이트 또는 특정 도메인의 웹사이트 일부)에 대해 등록되는 JavaScript 파일입니다. 등록되면 해당 오리진에서 사용 가능한 페이지를 제어할 수 있습니다. 로드된 페이지와 네트워크 사이에 위치하여 해당 오리진으로 향하는 네트워크 요청을 가로채는 방식으로 이를 수행합니다.
 
-When it intercepts a request, it can do anything you wish to it (see [use case ideas](/en-US/docs/Web/API/Service_Worker_API#other_use_case_ideas)), but the classic example is saving the network responses offline and then providing those in response to a request instead of the responses from the network. In effect, it allows you to make a website work completely offline.
+요청을 가로채면 원하는 모든 작업을 수행할 수 있지만([사용 사례 아이디어](/ko/docs/Web/API/Service_Worker_API#other_use_case_ideas) 참조), 대표적인 예는 네트워크 응답을 오프라인으로 저장한 다음 요청에 대한 응답으로 네트워크의 응답 대신 제공하는 것입니다. 사실상 웹사이트를 완전히 오프라인으로 작동시킬 수 있습니다.
 
-The Cache API is another client-side storage mechanism, with a bit of a difference — it is designed to save HTTP responses, and so works very well with service workers.
+캐시 API는 또 다른 클라이언트 측 저장 메커니즘이지만 약간의 차이가 있는데, HTTP 응답을 저장하도록 설계되었기 때문에 서비스 워커와 매우 잘 작동합니다.
 
-### A service worker example
+### 서비스 워커 예시
 
-Let's look at an example, to give you a bit of an idea of what this might look like. We have created another version of the video store example we saw in the previous section — this functions identically, except that it also saves the HTML, CSS, and JavaScript in the Cache API via a service worker, allowing the example to run offline!
+예시를 통해 어떤 모습인지 조금이나마 이해할 수 있도록 예시를 살펴보겠습니다. 이전 섹션에서 살펴본 비디오 스토어 예제의 다른 버전을 만들었는데, 서비스 워커를 통해 캐시 API에 HTML, CSS 및 JavaScript를 저장하여 예제를 오프라인으로 실행할 수 있다는 점을 제외하면 동일한 기능을 수행합니다!
 
-See [IndexedDB video store with service worker running live](https://mdn.github.io/learning-area/javascript/apis/client-side-storage/cache-sw/video-store-offline/), and also [see the source code](https://github.com/mdn/learning-area/tree/main/javascript/apis/client-side-storage/cache-sw/video-store-offline).
+[서비스 워커가 실시간으로 실행되는 IndexedDB 비디오 스토어](https://mdn.github.io/learning-area/javascript/apis/client-side-storage/cache-sw/video-store-offline/) 를 참조하고 [소스 코드도 확인](https://github.com/mdn/learning-area/tree/main/javascript/apis/client-side-storage/cache-sw/video-store-offline) 하세요.
 
-#### Registering the service worker
+#### 서비스 워커 등록하기
 
-The first thing to note is that there's an extra bit of code placed in the main JavaScript file (see [index.js](https://github.com/mdn/learning-area/blob/main/javascript/apis/client-side-storage/cache-sw/video-store-offline/index.js)). First, we do a feature detection test to see if the `serviceWorker` member is available in the {{domxref("Navigator")}} object. If this returns true, then we know that at least the basics of service workers are supported. Inside here we use the {{domxref("ServiceWorkerContainer.register()")}} method to register a service worker contained in the `sw.js` file against the origin it resides at, so it can control pages in the same directory as it, or subdirectories. When its promise fulfills, the service worker is deemed registered.
+가장 먼저 주목해야 할 것은 기본 JavaScript 파일에 추가 코드가 있다는 것입니다([index.js](https://github.com/mdn/learning-area/blob/main/javascript/apis/client-side-storage/cache-sw/video-store-offline/index.js) 참조). 먼저 기능 감지 테스트를 수행하여 {{domxref("Navigator")}} 객체에서 `serviceWorker` 멤버를 사용할 수 있는지 확인합니다. 이 테스트가 참으로 반환되면 최소한 서비스 워커의 기본 기능이 지원된다는 것을 알 수 있습니다. 여기에서는 {{domxref("ServiceWorkerContainer.register()")}} 메서드를 사용하여 `sw.js` 파일에 포함된 서비스 워커를 해당 서비스 워커가 상주하는 오리진에 등록하여 동일한 디렉토리 또는 하위 디렉터리에 있는 페이지를 제어할 수 있도록 합니다. 프로미스가 이행되면 서비스 워커가 등록된 것으로 간주됩니다.
 
 ```js
 // Register service worker to control making site work offline
@@ -690,17 +689,17 @@ if ("serviceWorker" in navigator) {
 }
 ```
 
-> **Note:** The given path to the `sw.js` file is relative to the site origin, not the JavaScript file that contains the code. The service worker is at `https://mdn.github.io/learning-area/javascript/apis/client-side-storage/cache-sw/video-store-offline/sw.js`. The origin is `https://mdn.github.io`, and therefore the given path has to be `/learning-area/javascript/apis/client-side-storage/cache-sw/video-store-offline/sw.js`. If you wanted to host this example on your own server, you'd have to change this accordingly. This is rather confusing, but it has to work this way for security reasons.
+> **참고:** 지정된 `sw.js` 파일의 경로는 코드가 포함된 JavaScript 파일이 아니라 사이트 원본을 기준으로 합니다. 서비스 워커는 `https://mdn.github.io/learning-area/javascript/apis/client-side-storage/cache-sw/video-store-offline/sw.js` 에 있습니다. 오리진은 `https://mdn.github.io`이므로 지정된 경로는 `/learning-area/javascript/apis/client-side-storage/cache-sw/video-store-offline/sw.js`여야 합니다. 이 예제를 자체 서버에서 호스팅하려면 이 경로를 적절히 변경해야 합니다. 다소 혼란스럽지만 보안상의 이유로 이 방식으로 작동해야 합니다.
 
-#### Installing the service worker
+#### 서비스 워커 설치
 
-The next time any page under the service worker's control is accessed (e.g. when the example is reloaded), the service worker is installed against that page, meaning that it will start controlling it. When this occurs, an `install` event is fired against the service worker; you can write code inside the service worker itself that will respond to the installation.
+다음에 서비스 워커가 제어하는 페이지에 액세스할 때(예: 예제를 다시 로드할 때) 서비스 워커가 해당 페이지에 대해 설치되어 해당 페이지를 제어하기 시작합니다. 이 경우 서비스 워커에 대해 `install` 이벤트가 발생하므로 서비스 워커 자체 내부에서 설치에 응답하는 코드를 작성할 수 있습니다.
 
-Let's look at an example, in the [sw.js](https://github.com/mdn/learning-area/blob/main/javascript/apis/client-side-storage/cache-sw/video-store-offline/sw.js) file (the service worker). You'll see that the install listener is registered against `self`. This `self` keyword is a way to refer to the global scope of the service worker from inside the service worker file.
+[sw.js](https://github.com/mdn/learning-area/blob/main/javascript/apis/client-side-storage/cache-sw/video-store-offline/sw.js) 파일(서비스 워커)의 예를 살펴봅시다. 설치 리스너가 `self`에 대해 등록되어 있는 것을 볼 수 있습니다. 이 `self` 키워드는 서비스 워커 파일 내부에서 서비스 워커의 전역 범위를 참조하는 방법입니다.
 
-Inside the `install` handler, we use the {{domxref("ExtendableEvent.waitUntil()")}} method, available on the event object, to signal that the browser shouldn't complete installation of the service worker until after the promise inside it has fulfilled successfully.
+`install` 핸들러 내부에서는 이벤트 객체에서 사용할 수 있는 {{domxref("ExtendableEvent.waitUntil()")}} 메서드를 사용하여 내부의 프로미스가 성공적으로 이행될 때까지 브라우저가 서비스 워커의 설치를 완료해서는 안 된다는 신호를 보냅니다.
 
-Here is where we see the Cache API in action. We use the {{domxref("CacheStorage.open()")}} method to open a new cache object in which responses can be stored (similar to an IndexedDB object store). This promise fulfills with a {{domxref("Cache")}} object representing the `video-store` cache. We then use the {{domxref("Cache.addAll()")}} method to fetch a series of assets and add their responses to the cache.
+다음은 캐시 API가 실제로 작동하는 모습입니다. {{domxref("CacheStorage.open()")}} 메서드를 사용하여 응답을 저장할 수 있는 새 캐시 객체를 엽니다(IndexedDB 객체 저장소와 유사). 이 프로미스는 `video-store` 캐시를 나타내는 {{domxref("Cache")}} 객체로 이행됩니다. 그런 다음 {{domxref("Cache.addAll()")}} 메서드를 사용하여 일련의 에셋을 가져와서 해당 응답을 캐시에 추가합니다.
 
 ```js
 self.addEventListener("install", (e) => {
@@ -719,19 +718,20 @@ self.addEventListener("install", (e) => {
 });
 ```
 
-That's it for now, installation done.
+이제 설치가 완료되었습니다.
 
-#### Responding to further requests
+#### 추가 요청에 응답하기
 
-With the service worker registered and installed against our HTML page, and the relevant assets all added to our cache, we are nearly ready to go. There is only one more thing to do: write some code to respond to further network requests.
+서비스 워커가 HTML 페이지에 등록 및 설치되고 관련 에셋이 모두 캐시에 추가되었으므로 거의 모든 준비가 완료되었습니다. 남은 작업은 추가 네트워크 요청에 응답하는 코드를 작성하는 것뿐입니다.
 
-This is what the second bit of code in `sw.js` does. We add another listener to the service worker global scope, which runs the handler function when the `fetch` event is raised. This happens whenever the browser makes a request for an asset in the directory the service worker is registered against.
+이것이 `sw.js`의 두 번째 코드가 하는 일입니다. 서비스 워커 글로벌 범위에 다른 리스너를 추가하여 `fetch` 이벤트가 발생할 때 핸들러 함수를 실행합니다. 이는 브라우저가 서비스 워커가 등록된 디렉토리에 있는 에셋을 요청할 때마다 발생합니다.
 
-Inside the handler, we first log the URL of the requested asset. We then provide a custom response to the request, using the {{domxref("FetchEvent.respondWith()")}} method.
+핸들러 내부에서는 먼저 요청된 에셋의 URL을 기록합니다. 그런 다음 {{domxref("FetchEvent.respondWith()")}} 메서드를 사용하여 요청에 대한 사용자 정의 응답을 제공합니다.
 
 Inside this block, we use {{domxref("CacheStorage.match()")}} to check whether a matching request (i.e. matches the URL) can be found in any cache. This promise fulfills with the matching response if a match is found, or `undefined` if it isn't.
+이 블록 내부에서는 {{domxref("CacheStorage.match()")}} 를 사용하여 요청과 일치하는 요청(즉, URL과 일치하는 요청)을 캐시에서 찾을 수 있는지 확인합니다. 이 프로미스는 일치하는 요청이 발견되면 일치하는 응답으로 이행하고, 일치하지 않으면 `undefined`으로 이행합니다.
 
-If a match is found, we return it as the custom response. If not, we [fetch()](/en-US/docs/Web/API/fetch) the response from the network and return that instead.
+일치하는 항목이 발견되면 사용자 정의 응답으로 반환합니다. 그렇지 않은 경우 네트워크에서 응답을 [fetch()](/ko/docs/Web/API/fetch) 하여 대신 반환합니다.
 
 ```js
 self.addEventListener("fetch", (e) => {
@@ -742,29 +742,27 @@ self.addEventListener("fetch", (e) => {
 });
 ```
 
-And that is it for our service worker.
-There is a whole load more you can do with them — for a lot more detail, see the [service worker cookbook](https://github.com/mdn/serviceworker-cookbook).
-Many thanks to Paul Kinlan for his article [Adding a Service Worker and Offline into your Web App](https://developers.google.com/codelabs/pwa-training/pwa03--going-offline#0), which inspired this example.
+서비스 워커는 여기까지입니다. 서비스 워커로 할 수 있는 작업은 훨씬 더 많으며, 자세한 내용은 [서비스 워커 쿡북](https://github.com/mdn/serviceworker-cookbook) 을 참조하세요. 이 예제에 영감을 준 폴 킨란의 [웹 앱에 서비스 워커와 오프라인 추가하기](https://developers.google.com/codelabs/pwa-training/pwa03--going-offline#0) 문서에 감사드립니다.
 
-#### Testing the example offline
+#### 오프라인에서 예제 테스트하기
 
-To test our [service worker example](https://mdn.github.io/learning-area/javascript/apis/client-side-storage/cache-sw/video-store-offline/), you'll need to load it a couple of times to make sure it is installed. Once this is done, you can:
+[서비스 워커 예제](https://mdn.github.io/learning-area/javascript/apis/client-side-storage/cache-sw/video-store-offline/) 를 테스트하려면 예제가 설치되었는지 확인하기 위해 몇 번 로드해야 합니다. 이 작업이 완료되면 테스트할 수 있습니다:
 
-- Try unplugging your network/turning your Wi-Fi off.
-- Select _File > Work Offline_ if you are using Firefox.
-- Go to the devtools, then choose _Application > Service Workers_, then check the _Offline_ checkbox if you are using Chrome.
+- 네트워크 플러그를 뽑거나 Wi-Fi를 끕니다.
+- Firefox를 사용하는 경우 파일 > 오프라인으로 작업을 선택합니다.
+- 개발 도구로 이동한 다음 애플리케이션 > 서비스 워커를 선택한 다음 Chrome을 사용하는 경우 오프라인 확인란을 선택합니다.
 
-If you refresh your example page again, you should still see it load just fine. Everything is stored offline — the page assets in a cache, and the videos in an IndexedDB database.
+예제 페이지를 다시 새로 고치면 여전히 정상적으로 로드되는 것을 볼 수 있습니다. 페이지 자산은 캐시에, 동영상은 IndexedDB 데이터베이스에 저장되는 등 모든 것이 오프라인으로 저장됩니다.
 
-## Summary
+## 요약
 
-That's it for now. We hope you've found our rundown of client-side storage technologies useful.
+여기까지입니다. 클라이언트 측 스토리지 기술에 대한 요약이 도움이 되셨기를 바랍니다.
 
-## See also
+## 참고 항목
 
-- [Web storage API](/en-US/docs/Web/API/Web_Storage_API)
-- [IndexedDB API](/en-US/docs/Web/API/IndexedDB_API)
-- [Cookies](/en-US/docs/Web/HTTP/Cookies)
-- [Service worker API](/en-US/docs/Web/API/Service_Worker_API)
+- [웹 스토리지 API](/ko/docs/Web/API/Web_Storage_API)
+- [IndexedDB API](/ko/docs/Web/API/IndexedDB_API)
+- [쿠키](/ko/docs/Web/HTTP/Cookies)
+- [서비스 워커 API](/ko/docs/Web/API/Service_Worker_API)
 
 {{PreviousMenu("Learn/JavaScript/Client-side_web_APIs/Video_and_audio_APIs", "Learn/JavaScript/Client-side_web_APIs")}}
