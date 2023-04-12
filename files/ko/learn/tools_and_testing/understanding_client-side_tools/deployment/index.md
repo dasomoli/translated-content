@@ -5,68 +5,67 @@ slug: Learn/Tools_and_testing/Understanding_client-side_tools/Deployment
 
 {{LearnSidebar}}{{PreviousMenu("Learn/Tools_and_testing/Understanding_client-side_tools/Introducing_complete_toolchain", "Learn/Tools_and_testing/Understanding_client-side_tools")}}
 
-In the final article in our series, we take the example toolchain we built up in the previous article and add to it so that we can deploy our sample app. We push the code to GitHub, deploy it using Netlify, and even show you how to add a simple test into the process.
+시리즈의 마지막 글에서는 이전 글에서 구축한 예제 툴체인에 샘플 앱을 배포할 수 있도록 추가합니다. 코드를 GitHub에 푸시하고, Netlify를 사용하여 배포하고, 프로세스에 간단한 테스트를 추가하는 방법까지 보여드리겠습니다.
 
 <table>
   <tbody>
     <tr>
-      <th scope="row">Prerequisites:</th>
+      <th scope="row">전제 조건:</th>
       <td>
-        Familiarity with the core <a href="/en-US/docs/Learn/HTML">HTML</a>,
-        <a href="/en-US/docs/Learn/CSS">CSS</a>, and
-        <a href="/en-US/docs/Learn/JavaScript">JavaScript</a> languages.
+        핵심 <a href="/ko/docs/Learn/HTML">HTML</a>,
+        <a href="/ko/docs/Learn/CSS">CSS</a> 및
+        <a href="/ko/docs/Learn/JavaScript">JavaScript</a> 언어에 익숙해야 합니다.
       </td>
     </tr>
     <tr>
-      <th scope="row">Objective:</th>
+      <th scope="row">목표:</th>
       <td>
-        To finish working through our complete toolchain case study, focusing on
-        deploying the app.
+        앱 배포에 중점을 둔 전체 툴체인 사례 연구를 완료합니다.
       </td>
     </tr>
   </tbody>
 </table>
 
-## Post development
+## 개발 후
 
-There's potentially a large range of problems to be solved in this section of the project's lifecycle. As such, it's important to create a toolchain that handles these problems in a way that requires as little manual intervention as possible.
+프로젝트 라이프사이클의 이 단계에서는 해결해야 할 문제가 많을 수 있습니다. 따라서 가능한 한 수동 개입을 최소화하는 방식으로 이러한 문제를 처리하는 툴체인을 만드는 것이 중요합니다.
 
-Here's just a few things to consider for this particular project:
+다음은 이 특정 프로젝트에서 고려해야 할 몇 가지 사항입니다:
 
-- Generating a production build: Ensuring files are minimized, chunked, have tree-shaking applied, and that versions are "cache busted".
-- Running tests: These can range from "is this code formatted properly?" to "does this thing do what I expect?", and ensuring failing tests prevent deployment.
-- Actually deploying the updated code to a live URL: Or potentially a staging URL so it can be reviewed first.
+- 프로덕션 빌드 생성: 파일을 최소화하고, 청크하고, 트리 쉐이킹을 적용하고, 버전이 "캐시 버스트"되는지 확인합니다.
+- 테스트 실행: "이 코드의 형식이 제대로 되어 있는가?"부터 "이 코드가 내가 예상한 대로 작동하는가?"까지 다양한 테스트를 수행하며, 테스트에 실패하면 배포를 방지할 수 있습니다.
+- 업데이트된 코드를 실제 URL에 실제로 배포합니다: 또는 먼저 검토할 수 있도록 스테이징 URL에 배포할 수도 있습니다.
 
-> **Note:** Cache busting is a new term that we haven't met before in the module. This is the strategy of breaking a browser's own caching mechanism, which forces the browser to download a new copy of your code. Parcel (and indeed many other tools) will generate filenames that are unique to each new build. This unique filename "busts" your browser's cache, thereby making sure the browser downloads the fresh code each time an update is made to the deployed code.
+> **참고:** 캐시 버스팅은 이 모듈에서 처음 접하는 새로운 용어입니다. 이는 브라우저의 자체 캐싱 메커니즘을 파괴하여 브라우저가 코드의 새 사본을 다운로드하도록 하는 전략입니다. Parcel(그리고 실제로 다른 많은 도구)은 새 빌드마다 고유한 파일 이름을 생성합니다. 이 고유한 파일명은 브라우저의 캐시를 "파괴"하여 배포된 코드가 업데이트될 때마다 브라우저가 새로운 코드를 다운로드하도록 합니다.
 
-The above tasks also break down into further tasks; note that most web development teams will have their own terms and processes for at least some part of the post-development phase.
+위의 작업은 더 세부적인 작업으로 나뉘며, 대부분의 웹 개발팀은 개발 후 단계의 적어도 일부에 대해 자체적인 용어와 프로세스를 가지고 있습니다.
 
-For this project, we're going to use [Netlify](https://www.netlify.com/)'s wonderful static hosting offering to host our project. Netlify gives us hosting or more specifically, a URL to view your project online and to share it with your friends, family, and colleagues.
+이 프로젝트에서는 [Netlify](https://www.netlify.com/) 의 훌륭한 정적 호스팅 서비스를 사용하여 프로젝트를 호스팅할 것입니다. Netlify는 호스팅, 더 구체적으로는 프로젝트를 온라인으로 보고 친구, 가족 및 동료와 공유할 수 있는 URL을 제공합니다.
 
-Deploying to hosting tends to be at the tail-end of the project life cycle, but with services such as Netlify bringing down the cost of deployments (both in financial terms and also the time required to actually deploy) it's possible to deploy during development to either share work in progress or to have a pre-release for some other purpose.
+호스팅에 배포하는 것은 프로젝트 수명 주기의 마지막에 하는 경향이 있지만, Netlify와 같은 서비스를 사용하면 배포 비용(재정적 측면과 실제 배포에 필요한 시간 모두)을 낮출 수 있으므로 개발 중에 배포하여 진행 중인 작업을 공유하거나 다른 용도로 사전 릴리스를 할 수 있습니다.
 
-Netlify, amongst other things, also allows you to run pre-deployment tasks, which in our case means that all the production code build processes can be performed inside of Netlify and if the build is successful, the website changes will be deployed.
+무엇보다도 Netlify를 사용하면 사전 배포 작업을 실행할 수도 있는데, 이 경우 모든 프로덕션 코드 빌드 프로세스를 Netlify 내에서 수행할 수 있으며 빌드가 성공하면 웹사이트 변경 사항이 배포됩니다.
 
-Although Netlify offers a [drag and drop deployment service](https://app.netlify.com/drop), we are intending to trigger a new deployment to Netlify each time we push to a GitHub repo.
+Netlify는 [드래그 앤 드롭 배포 서비스](https://app.netlify.com/drop) 를 제공하지만, GitHub 리포지토리에 푸시할 때마다 Netlify에 새 배포를 트리거하려고 합니다.
 
-It's exactly these kinds of connected services that we would encourage you to look for when deciding on your own build toolchain. We can commit our code and push to GitHub and the updated code will automatically trigger the entire build routine. If all is well, we get a live change deployed automatically. The _only_ action we need to perform is that initial "push".
+자체 빌드 툴체인을 결정할 때 이러한 종류의 커넥티드 서비스를 고려하는 것이 좋습니다. 코드를 커밋하고 GitHub에 푸시하면 업데이트된 코드가 자동으로 전체 빌드 루틴을 트리거합니다. 모든 것이 잘되면 자동으로 라이브 변경 사항이 배포됩니다. 우리가 수행해야 하는 유일한 작업은 초기 "푸시"입니다.
 
-However, we do have to set these steps up, and we'll look at that now.
+하지만 이러한 단계를 설정해야 하므로 지금부터 살펴보겠습니다.
 
-## The build process
+## 빌드 프로세스
 
-Again, because we're using Parcel for development, the build option is extremely simple to add. Instead of running the server with `npx parcel src/index.html`, we can run it with `npx parcel build src/index.html` and Parcel will build everything ready for production instead of just running it for development and testing purposes. This includes doing minification and tree-shaking of code, and cache-busting on filenames.
+다시 말하지만, 개발용으로 Parcel을 사용하기 때문에 빌드 옵션은 매우 간단하게 추가할 수 있습니다. 서버를 `npx parcel src/index.html`로 실행하는 대신 `npx parcel build src/index.html`로 실행하면 개발 및 테스트 목적으로만 실행하는 것이 아니라 Parcel이 프로덕션에 사용할 수 있는 모든 것을 빌드합니다. 여기에는 코드의 축소 및 트리 쉐이킹, 파일 이름에 대한 캐시 버스팅이 포함됩니다.
 
-The newly-created production code is placed in a new directory called `dist`, which contains _all_ the files required to run the website, ready for you to upload to a server.
+새로 생성된 프로덕션 코드는 웹사이트 실행에 필요한 모든 파일이 포함된 `dist`라는 새 디렉터리에 배치되어 서버에 업로드할 준비가 됩니다.
 
-However, doing this step manually isn't our final aim — what we want is for the build to happen automatically and the result of the `dist` directory to be deployed live on our website.
+하지만 이 단계를 수동으로 수행하는 것이 최종 목표는 아니며, 빌드가 자동으로 수행되고 `dist` 디렉터리의 결과가 웹사이트에 실시간으로 배포되는 것을 원합니다.
 
-This is where our code, GitHub, and Netlify need to be set up to talk to one another, so that each time we update our GitHub code repository, Netlify will automatically pick up the changes, run the build tasks, and finally release a new update.
+따라서 코드, GitHub 및 Netlify가 서로 통신할 수 있도록 설정해야 하며, 이를 통해 GitHub 코드 저장소를 업데이트할 때마다 Netlify가 자동으로 변경 사항을 가져와 빌드 작업을 실행하고 마지막으로 새 업데이트를 릴리스할 수 있습니다.
 
-We're going to add the build command to our `package.json` file as an npm script, so that the command `npm run build` will trigger the build process. This step isn't necessary, but it is a good best practice to get into the habit of setting up — across all our projects, we can then rely on `npm run build` to always do the complete build step, without needing to remember the specific build command arguments for each project.
+`package.json` 파일에 빌드 명령을 npm 스크립트로 추가하여 `npm run build` 명령이 빌드 프로세스를 트리거하도록 하겠습니다. 이 단계가 반드시 필요한 것은 아니지만, 설정하는 습관을 들이면 모든 프로젝트에서 각 프로젝트의 특정 빌드 명령 인수를 기억할 필요 없이 항상 `npm run build`를 사용하여 전체 빌드 단계를 수행할 수 있으므로 좋은 모범 사례입니다.
 
-1. Open the `package.json` file in your project's root directory, and find the `scripts` property.
-2. We'll add a `build` command that we can run to build our code. Add the following line to your project now:
+1. 프로젝트의 루트 디렉터리에서 `package.json` 파일을 열고 `scripts` 속성을 찾습니다.
+2. 코드를 빌드하기 위해 실행할 수 있는 `build` 명령을 추가하겠습니다. 이제 프로젝트에 다음 줄을 추가합니다:
 
    ```json
    "scripts": {
@@ -75,15 +74,15 @@ We're going to add the build command to our `package.json` file as an npm script
    }
    ```
 
-   > **Note:** If the `scripts` property already has a command inside it, put a comma at the end of it. Keep the JSON valid.
+   > **참고:** `scripts` 속성에 이미 명령이 있는 경우 끝에 쉼표를 넣으세요. JSON을 유효하게 유지하세요.
 
-3. You should now be able to run the following command in the root of your project directory to run the production build step (first quit the running process with <kbd>Ctrl</kbd> + <kbd>C</kbd> if you need to):
+3. 이제 프로젝트 디렉터리 루트에서 다음 명령을 실행하여 프로덕션 빌드 단계를 실행할 수 있습니다(필요한 경우 먼저 <kbd>Ctrl</kbd> + <kbd>C</kbd>로 실행 중인 프로세스를 종료하세요):
 
    ```bash
    npm run build
    ```
 
-   This should give you an output like the following, showing you the production files that were created, how big they are, and how long they took to build:
+   그러면 다음과 같은 출력이 표시되며, 생성된 프로덕션 파일, 파일 크기 및 빌드에 걸린 시간을 확인할 수 있습니다:
 
    ```bash
    dist/src.99d8a31a.js.map       446.15 KB     63ms
@@ -97,111 +96,111 @@ We're going to add the build command to our `package.json` file as an npm script
    dist/index.html                    354 B    944ms
    ```
 
-   Try it now!
+   지금 사용해 보세요!
 
-For you to create your own instance of this project you will need to host this project's code in your own git repository. Our next step is to push the project to GitHub.
+이 프로젝트의 인스턴스를 직접 만들려면 이 프로젝트의 코드를 자체 Git 리포지토리에 호스팅해야 합니다. 다음 단계는 프로젝트를 GitHub에 푸시하는 것입니다.
 
-## Committing changes to GitHub
+## GitHub에 변경 사항 커밋하기
 
-This section will get you over the line to storing your code in a git repository, but it is a far cry from a git tutorial. There are many great tutorials and books available, and our [Git and GitHub](/en-US/docs/Learn/Tools_and_testing/GitHub) page is a good place to start.
+이 섹션에서는 코드를 Git 리포지토리에 저장하는 단계까지 안내하지만, Git 튜토리얼과는 거리가 멉니다. 훌륭한 튜토리얼과 책이 많이 있으며, [Git 및 GitHub](/ko/docs/Learn/Tools_and_testing/GitHub) 페이지는 시작하기 좋은 곳입니다.
 
-We initialized our working directory as a git working directory earlier on. A quick way to verify this is to run the following command:
+앞서 작업 디렉터리를 git 작업 디렉터리로 초기화했습니다. 이를 확인하는 빠른 방법은 다음 명령을 실행하는 것입니다:
 
 ```bash
 git status
 ```
 
-You should get a status report of what files are being tracked, what files are staged, and so on — all terms that are part of the git grammar. If you get the error `fatal: not a git repository` returned, then the working directory is not a git working directory and you'll need to initialise git using `git init`.
+어떤 파일이 추적되고 있는지, 어떤 파일이 스테이징되어 있는지 등 git 문법의 일부인 모든 용어에 대한 상태 보고서가 표시되어야 합니다. `fatal: not a git repository`가 오류가 반환되면 작업 디렉터리가 git 작업 디렉터리가 아니므로 `git init`을 사용하여 git을 초기화해야 합니다.
 
-Now we have three tasks ahead of us:
+이제 세 가지 작업이 남았습니다:
 
-- Add any changes we've made to the stage (a special name for the place that git will commit files from).
-- Commit the changes to the repository.
-- Push the changes to GitHub.
+- 스테이지(git이 파일을 커밋할 위치의 특별한 이름)에 변경한 내용을 추가합니다.
+- 리포지토리에 변경 사항을 커밋합니다.
+- 변경 사항을 GitHub에 푸시합니다.
 
-1. To add changes, run the following command:
+1. 변경 사항을 추가하려면 다음 명령을 실행합니다:
 
    ```bash
    git add .
    ```
 
-   Note the period at the end, it means "everything in this directory". The `git add .` command is a bit of a sledgehammer approach — it will add all local changes you've worked on in one go. If you want finer control over what you add, then use `git add -p` for an interactive process, or add individual files using `git add path/to/file`.
+   끝에 마침표는 "이 디렉터리에 있는 모든 것"을 의미합니다. `git add .` 명령은 작업한 모든 로컬 변경 내용을 한 번에 추가하므로 약간 망치 같은 접근 방식입니다. 추가하는 내용을 더 세밀하게 제어하고 싶다면 대화형 프로세스를 위해 `git add -p`를 사용하거나 `git add 대상경로/파일`을 사용하여 개별 파일을 추가하세요.
 
-2. Now all the code is staged, we can commit; run the following command:
+2. 이제 모든 코드가 스테이지되었으므로 커밋할 수 있습니다. 다음 명령을 실행하세요:
 
    ```bash
    git commit -m 'committing initial code'
    ```
 
-   > **Note:** Although you're free to write whatever you wish in the commit message, there's some useful tips around the web on good commit messages. Keep them short, concise, and descriptive, so they clearly describe what the change does.
+   > **참고:** 커밋 메시지에 원하는 내용을 자유롭게 작성할 수 있지만, 웹에서 좋은 커밋 메시지에 대한 몇 가지 유용한 팁을 찾을 수 있습니다. 커밋 메시지는 짧고 간결하며 설명적으로 작성하여 변경 내용을 명확하게 설명해야 합니다.
 
-3. Finally, the code needs to be pushed to your GitHub-hosted repository. Let's do that now.
+3. 마지막으로 코드를 GitHub 호스팅 리포지토리에 푸시해야 합니다. 지금 바로 해봅시다.
 
-   Over at GitHub, visit <https://github.com/new> and create your own repository to host this code.
+   GitHub(<https://github.com/new>)를 방문하여 이 코드를 호스팅할 리포지토리를 직접 만드세요.
 
-4. Give your repository a short, memorable name, without spaces in it (use hyphens to separate words), and a description, then click _Create repository_ at the bottom of the page.
+4. 리포지토리에 공백 없이 기억하기 쉬운 짧은 이름(하이픈을 사용하여 단어를 구분)과 설명을 입력한 다음 페이지 하단의 리포지토리 만들기를 클릭합니다.
 
-   You should now have a "remote" URL that points to your new GitHub repo.
+   이제 새 GitHub 리포지토리를 가리키는 "remote" URL이 생겼을 것입니다.
 
    ![GitHub screenshot showing remote URLs you can use to deploy code to a GitHub repo](github-quick-setup.png)
 
-5. This remote location needs to be added to our local git repository before we can push it up there, otherwise it won't be able to find it. You'll need to run a command with the following structure (use the provided HTTPS option for now — especially if you are new to GitHub — not the SSH option):
+5. 이 원격 위치를 로컬 Git 리포지토리에 추가해야 푸시할 수 있으며, 그렇지 않으면 찾을 수 없습니다. 다음 구조의 명령을 실행해야 합니다(특히 GitHub를 처음 사용하는 경우 SSH 옵션이 아닌 제공된 HTTPS 옵션을 사용하세요):
 
    ```bash
    git remote add github https://github.com/yourname/repo-name.git
    ```
 
-   So if your remote URL was `https://github.com/remy/super-website.git`, as in the screenshot above, your command would be
+   따라서 위의 스크린샷에서와 같이 원격 URL이 `https://github.com/remy/super-website.git` 인 경우 명령은 다음과 같습니다.
 
    ```bash
    git remote add github https://github.com/remy/super-website.git
    ```
 
-   Change the URL to your own repository, and run it now.
+   URL을 자신의 리포지토리로 변경하고 지금 실행하세요.
 
-6. Now we're ready to push our code to GitHub; run the following command now:
+6. 이제 코드를 GitHub에 푸시할 준비가 되었으니 다음 명령을 실행하세요:
 
    ```bash
    git push github main
    ```
 
-   At this point, you'll be prompted to enter a username and password before Git will allow the push to be sent. This is because we used the HTTPS option rather than the SSH option, as seen in the screenshot earlier. For this, you need your GitHub username and then — if you do not have two-factor authentication (2FA) turned on — your GitHub password. We would always encourage you to use 2FA if possible, but bear in mind that if you do, you'll also need to use a "personal access token". GitHub help pages has an [excellent and simple walkthrough covering how to get one](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+   이 시점에서 Git에서 푸시 전송을 허용하기 전에 사용자 이름과 비밀번호를 입력하라는 메시지가 표시됩니다. 이는 앞의 스크린샷에서 볼 수 있듯이 SSH 옵션이 아닌 HTTPS 옵션을 사용했기 때문입니다. 이를 위해서는 GitHub 사용자 이름과 2단계 인증(2FA)을 켜지 않은 경우 GitHub 비밀번호가 필요합니다. 가능하면 항상 2FA를 사용하는 것이 좋지만, 2FA를 사용하는 경우에는 '개인 액세스 토큰'도 사용해야 한다는 점에 유의하세요. GitHub 도움말 페이지에 [개인 액세스 토큰을 얻는 방법에 대한 훌륭하고 간단한 안내](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) 가 있습니다.
 
-> **Note:** If you are interested in using the SSH option, thereby avoiding the need to enter your username and password every time you push to GitHub, [this tutorial walks you through how](https://docs.github.com/en/authentication/connecting-to-github-with-ssh).
+> **참고:** SSH 옵션을 사용하여 GitHub에 푸시할 때마다 사용자 이름과 비밀번호를 입력할 필요가 없도록 하려면 [이 튜토리얼에서 방법을 안내해](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) 드립니다.
 
-This final command instructs git to push the code (aka publish) to the "remote" location that we called `github` (that's the repository hosted on github.com — we could have called it anything we like) using the branch `main`. We've not encountered branches at all, but the "main" branch is the default place for our work and it's what git starts on. It's also the default branch that Netlify will look for, which is convenient.
+이 마지막 명령은 브랜치 `main`을 사용하여 코드를 `github`(github.com에서 호스팅되는 리포지토리 - 원하는 이름으로 불러도 됨)이라고 부르는 "원격" 위치로 푸시(일명 게시)하도록 git에 지시합니다. 브랜치를 전혀 사용해 본 적은 없지만, "main" 브랜치는 우리 작업의 기본 위치이며 git이 시작되는 곳이기도 합니다. 또한 Netlify가 찾을 기본 브랜치이기도 해서 편리합니다.
 
-> **Note:** Until October 2020 the default branch on GitHub was `master`, which for various social reasons was switched to `main`. You should be aware that this older default branch may appear in various projects you encounter, but we'd suggest using `main` for your own projects.
+> **참고:** 2020년 10월까지 GitHub의 기본 브랜치는 `master` 브랜치였으나 여러 가지 사회적 이유로 `main` 브랜치로 전환되었습니다. 이 이전 기본 브랜치는 다양한 프로젝트에 표시될 수 있지만, 자신의 프로젝트에는 `main` 브랜치를 사용하는 것이 좋습니다.
 
-So with our project committed in git and pushed to our GitHub repository, the next step in the toolchain is to connect GitHub to Netlify so our project can be deployed live on the web!
+이제 프로젝트가 git에 커밋되고 GitHub 저장소에 푸시되었으므로 툴체인의 다음 단계는 프로젝트를 웹에 실시간으로 배포할 수 있도록 GitHub를 Netlify에 연결하는 것입니다!
 
-## Using Netlify for deployment
+## 배포를 위해 Netlify 사용
 
-Deploying from GitHub to Netlify is surprisingly simple once you know the steps, particularly with "static websites" such as this project.
+특히 이 프로젝트와 같은 "정적 웹 사이트"의 경우 단계를 알고 나면 GitHub에서 Netlify로 배포하는 것은 의외로 간단합니다.
 
-> **Note:** There are also a lot of [guides and tutorials on Netlify](https://www.netlify.com/blog/tags/tutorial/) to help you improve your development workflow.
+> **참고:** 개발 워크플로우를 개선하는 데 도움이 되는 많은 [가이드와 튜토리얼도 Netlify에](https://www.netlify.com/blog/tags/tutorial/) 있습니다.
 
-Let's get this done:
+시작해 보세요:
 
-1. Go to <https://app.netlify.com/start>.
-2. Press the GitHub button underneath the _Continuous Deployment_ heading. "Continuous Deployment" means that whenever the code repository changes, Netlify will (try) to deploy the code, thus it being "continuous".
+1. <https://app.netlify.com/start> 으로 이동합니다.
+2. 지속적 배포 제목 아래에 있는 GitHub 버튼을 누릅니다. "지속적 배포"는 코드 저장소가 변경될 때마다 Netlify가 코드를 배포하려고 시도하므로 "지속적"이라는 의미입니다.
 
    ![netlify deployment options, as described in the surrounding text](netlify-deploy.png)
 
-3. Depending on whether you authorized Netlify before, you might need to authorize Netlify with GitHub, and choose what account you want to authorize it for (if you have multiple GitHub accounts or orgs). Choose the one you pushed your project to.
-4. Netlify will prompt you with a list of the GitHub repositories it can find. Select your project repository and proceed to the next step.
-5. Since we've connected Netlify to our GitHub account and given it access to deploy the project repository, Netlify will ask _how_ to prepare the project for deployment and _what_ to deploy.
+3. 이전에 Netlify를 승인했는지 여부에 따라 GitHub에서 Netlify를 승인해야 할 수도 있으며, 승인할 계정을 선택해야 할 수도 있습니다(여러 GitHub 계정 또는 조직이 있는 경우). 프로젝트를 푸시한 계정을 선택합니다.
+4. Netlify가 찾을 수 있는 GitHub 리포지토리 목록을 표시합니다. 프로젝트 리포지토리를 선택하고 다음 단계로 진행합니다.
+5. Netlify를 GitHub 계정에 연결하고 프로젝트 리포지토리를 배포할 수 있는 액세스 권한을 부여했으므로 Netlify는 배포를 위해 프로젝트를 준비하는 방법과 배포할 내용을 묻습니다.
 
-   You should enter the command `npm run build` for the _Build command_, and specify the `dist` directory for the _Publish directory_ — this contains the code that we want to make public.
+   빌드 명령에 `npm run build` 명령을 입력하고, 게시 디렉터리에 공개하려는 코드가 포함된 `dist` 디렉터리를 지정해야 합니다.
 
-6. To finish up, click _Deploy site_.
+6. 완료하려면 사이트 배포를 클릭합니다.
 
    ![netlify distribution options, as described in the surrounding text](netlify-dist.png)
 
-7. After a short wait for the deployment to occur, you should get a URL that you can go to, to see your published site — try it out!
-8. And even better, whenever we make a change and _push_ the change to our remote git repository (on GitHub), this will trigger a notification to Netlify which will then run our specified build task and then deploy the resulting `dist` directory to our published site.
+7. 배포가 완료될 때까지 잠시 기다리면 게시된 사이트를 볼 수 있는 URL을 받게 됩니다. 지금 바로 시도해 보세요!
+8. 더 좋은 점은 변경을 수행하고 변경 사항을 원격 git 저장소(GitHub)에 푸시할 때마다 Netlify에 알림이 트리거되고 지정된 빌드 작업을 실행한 다음 결과 `dist` 디렉터리를 게시된 사이트에 배포한다는 점입니다.
 
-   Try it now — make a small change to your app, and then push it to GitHub using these commands:
+   지금 바로 시도해 보세요. 앱을 약간 변경한 다음 다음 명령을 사용하여 GitHub에 푸시하세요:
 
    ```bash
    git add .
@@ -209,37 +208,37 @@ Let's get this done:
    git push github main
    ```
 
-   You should see your published site update with the change — this might take a few minutes to publish, so have a little patience.
+   게시된 사이트가 변경 사항으로 업데이트되는 것을 볼 수 있을 것입니다. 게시하는 데 몇 분 정도 걸릴 수 있으므로 조금만 기다려주세요.
 
-That's it for Netlify. We can optionally change the name of the Netlify project or specify to use our own domain name, which Netlify offers some [excellent documentation](https://docs.netlify.com/) on.
+여기까지 Netlify에 대한 설명이 끝났습니다. 선택적으로 Netlify 프로젝트의 이름을 변경하거나 자체 도메인 이름을 사용하도록 지정할 수 있으며, 이에 대한 [훌륭한 문서](https://docs.netlify.com/) 도 Netlify에서 제공합니다.
 
-Now for one final link in our toolchain: a test to ensure our code works.
+이제 툴체인의 마지막 링크인 코드가 작동하는지 확인하는 테스트가 남았습니다.
 
-## Testing
+## 테스트
 
-Testing itself is a vast subject, even within the realm of front-end development. I'll show you how to add an initial test to your project and how to use the test to prevent or to allow the project deployment to happen.
+테스트 자체는 프론트엔드 개발 영역에서도 방대한 주제입니다. 프로젝트에 초기 테스트를 추가하는 방법과 테스트를 사용하여 프로젝트 배포를 방지하거나 허용하는 방법을 보여드리겠습니다.
 
-When approaching tests there are a good deal of ways to approach the problem:
+테스트에 접근할 때 문제에 접근하는 방법에는 여러 가지가 있습니다:
 
-- End-to-end testing, which involves your visitor clicking a thing and some other thing happening.
-- Integration testing, which basically says "does one block of code still work when connected to another block?"
-- Unit testing, where small and specific bits of functionality are tested to see if they do what they are supposed to do.
-- [And many more types](https://en.wikipedia.org/wiki/Functional_testing). Also, see our [cross browser testing module](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing) for a bunch of useful testing information
+- 엔드투엔드 테스트는 방문자가 무언가를 클릭하고 다른 일이 발생하는 것을 포함합니다.
+- 통합 테스트: 기본적으로 "한 코드 블록이 다른 블록에 연결되었을 때 여전히 작동하는가?"를 테스트합니다.
+- 단위 테스트: 작고 구체적인 기능을 테스트하여 해당 기능이 제대로 작동하는지 확인합니다.
+- [그 외에도 다양한 유형](https://en.wikipedia.org/wiki/Functional_testing) 이 있습니다. 또한 [크로스 브라우저 테스트 모듈](/ko/docs/Learn/Tools_and_testing/Cross_browser_testing) 에서 유용한 테스트 정보를 확인할 수 있습니다.
 
-Remember also that tests are not limited to JavaScript; tests can be run against the rendered DOM, user interactions, CSS, and even how a page looks.
+테스트는 자바스크립트에만 국한되지 않으며 렌더링된 DOM, 사용자 상호작용, CSS, 심지어 페이지가 어떻게 보이는지에 대해서도 테스트를 실행할 수 있다는 점도 기억하세요.
 
-However, for this project we're going to create a small test that will check the third-party NASA data feed and ensure it's in the correct format. If not, the test will fail and will prevent the project from going live. To do anything else would be beyond the scope of this module — testing is a huge subject that really requires its own separate module. We are hoping that this section will at least make you aware of the need for testing, and will plant the seed that inspires you to go and learn more.
+하지만 이 프로젝트에서는 타사 NASA 데이터 피드를 확인하고 올바른 형식인지 확인하는 작은 테스트를 만들겠습니다. 그렇지 않은 경우 테스트가 실패하고 프로젝트가 시작되지 않습니다. 다른 작업을 하는 것은 이 모듈의 범위를 벗어나는 것이므로 테스트는 별도의 모듈이 필요할 정도로 방대한 주제입니다. 이 섹션을 통해 최소한 테스트의 필요성을 인식하고 더 많은 것을 배우고자 하는 씨앗을 심을 수 있기를 바랍니다.
 
-Although the test for this project does not include a test framework, as with all things in the front-end development world, there are a slew of [framework options](https://www.npmjs.com/search?q=keywords%3Atesting).
+이 프로젝트의 테스트에는 테스트 프레임워크가 포함되어 있지 않지만, 프론트엔드 개발 세계의 모든 것과 마찬가지로 수많은 [프레임워크 옵션](https://www.npmjs.com/search?q=keywords%3Atesting) 이 있습니다.
 
-The test itself isn't what is important. What is important is how the failure or success is handled. Some deployment platforms will include a specific method for testing as part of their pipeline. Products like GitHub, GitLab, etc., all support running tests against individual commits.
+테스트 자체가 중요한 것은 아닙니다. 중요한 것은 실패 또는 성공이 처리되는 방식입니다. 일부 배포 플랫폼은 파이프라인의 일부로 특정 테스트 방법을 포함합니다. GitHub, GitLab 등과 같은 제품은 모두 개별 커밋에 대한 테스트 실행을 지원합니다.
 
-As this project is deploying to Netlify, and Netlify only asks about the build command, we will have to make the tests part of the build. If the test fails, the build fails, and Netlify won't deploy.
+이 프로젝트는 Netlify에 배포하는 프로젝트이고 Netlify는 빌드 명령에 대해서만 묻기 때문에 테스트를 빌드의 일부로 만들어야 합니다. 테스트가 실패하면 빌드가 실패하고 Netlify가 배포되지 않습니다.
 
-Let's get started.
+시작하겠습니다.
 
-1. Go to your `package.json` file and open it up.
-2. Find your `scripts` member, and update it so that it contains the following test and build commands:
+1. `package.json` 파일로 이동하여 엽니다.
+2. `scripts` 멤버를 찾아서 다음 테스트 및 빌드 명령이 포함되도록 업데이트합니다:
 
    ```json
    "scripts": {
@@ -249,41 +248,41 @@ Let's get started.
    }
    ```
 
-3. Now of course we need to add the test to our codebase; create a new directory in your root directory called tests:
+3. 이제 코드베이스에 테스트를 추가해야 하므로 루트 디렉터리에 tests라는 새 디렉터리를 생성합니다:
 
    ```bash
    mkdir tests
    ```
 
-4. Inside the new directory, create a test file:
+4. 새 디렉토리 안에 테스트 파일을 생성합니다:
 
    ```bash
    cd tests
    touch nasa-feed.test.js
    ```
 
-5. Open this file, and add the contents of [nasa-feed.test.js](https://raw.githubusercontent.com/remy/mdn-will-it-miss/master/tests/nasa-feed.test.js) to it:
-6. This test uses the axios package to fetch the data feed we want to test; to install this dependency, run the following command:
+5. 이 파일을 열고 [nasa-feed.test.js](https://raw.githubusercontent.com/remy/mdn-will-it-miss/master/tests/nasa-feed.test.js) 의 내용을 추가합니다:
+6. 이 테스트는 axios 패키지를 사용하여 테스트할 데이터 피드를 가져오며, 이 종속성을 설치하려면 다음 명령을 실행합니다:
 
    ```bash
    npm install --save-dev axios
    ```
 
-   We need to manually install axios because Parcel won't help us with this dependency. Our tests are outside of Parcel's view of our system — since Parcel never sees nor runs any of the test code, we're left to install the dependency ourselves.
+   Parcel이 이 종속성을 지원하지 않으므로 수동으로 axios를 설치해야 합니다. 테스트는 Parcel이 우리 시스템을 볼 수 없는 외부에 있으므로, Parcel은 테스트 코드를 보거나 실행하지 않으므로 종속성을 직접 설치해야 합니다.
 
-7. Now to manually run the test, from the command line we can run:
+7. 이제 수동으로 테스트를 실행하려면 명령줄에서 다음과 같이 실행할 수 있습니다:
 
    ```bash
    npm run test
    ```
 
-   The result, if successful, is … nothing. This is considered a success. In general, we only want tests to be noisy if there's something wrong. The test also exited with a special signal that tells the command line that it was successful — an exit signal of 0. If there's a failure the test fails with an exit code of 1 — this is a system-level value that says "something failed".
+   성공하면 결과는... 아무것도 없습니다. 이것은 성공으로 간주됩니다. 일반적으로 테스트는 문제가 있는 경우에만 노이즈가 발생하기를 원합니다. 또한 테스트는 명령줄에 성공했음을 알려주는 특별한 신호(종료 신호 0)와 함께 종료됩니다. 실패한 경우 테스트는 종료 코드 1과 함께 실패하며, 이는 시스템 수준 값으로 "무언가 실패했습니다"라는 의미입니다.
 
-   The `npm run test` command will use node to run all the files that are in the tests directory that end with `.js`.
+   `npm run test` 명령은 node를 사용하여 테스트 디렉터리에 있는 `.js`로 끝나는 모든 파일을 실행합니다.
 
-   In our build script, `npm run test` is called, then you see the string `&&` — this means "if the thing on the left succeeded (exited with zero), then do this thing on the right". So this translates into: if the tests pass, then build the code.
+   빌드 스크립트에서 `npm run test`를 호출하면 `&&` 문자열이 표시되는데, 이는 "왼쪽의 작업이 성공하면(0으로 종료되면) 오른쪽에서 이 작업을 수행한다"는 의미입니다. 즉, 테스트가 통과하면 코드를 빌드하라는 의미로 해석할 수 있습니다.
 
-8. You'll have to upload your new code to GitHub, using similar commands to what you used before:
+8. 이전에 사용한 것과 유사한 명령을 사용하여 새 코드를 GitHub에 업로드해야 합니다:
 
    ```bash
    git add .
@@ -291,27 +290,27 @@ Let's get started.
    git push github main
    ```
 
-   In some cases you might want to test the result of the built code (since this isn't quite the original code we wrote), so the test might need to be run after the build command. You'll need to consider all these individual aspects whilst you're working on your own projects.
+   경우에 따라 빌드된 코드의 결과를 테스트하고 싶을 수 있으므로(원래 작성한 코드가 아니므로) 빌드 명령 후에 테스트를 실행해야 할 수도 있습니다. 프로젝트를 진행하면서 이러한 모든 개별적인 측면을 고려해야 합니다.
 
-Now, finally, a minute or so after pushing, Netlify will deploy the project update. But only if it passes the test that was introduced.
+이제 마지막으로 푸시한 후 1분 정도 지나면 Netlify가 프로젝트 업데이트를 배포합니다. 하지만 앞서 소개한 테스트를 통과한 경우에만 배포됩니다.
 
-## Summary
+## 요약
 
-That's it for our sample case study, and for the module! We hope you found it useful. While there is a long way to go before you can consider yourself a client-side tooling wizard, we are hoping that this module has given you that first important step towards understanding client-side tooling, and the confidence to learn more and try out new things.
+여기까지 샘플 사례 연구와 모듈에 대한 설명이 끝났습니다! 도움이 되셨기를 바랍니다. 클라이언트 측 툴링 마법사라고 생각하기에는 아직 갈 길이 멀지만, 이 모듈을 통해 클라이언트 측 툴링을 이해하는 중요한 첫걸음을 내딛고 더 많은 것을 배우고 새로운 것을 시도해 볼 수 있는 자신감을 얻으셨기를 바랍니다.
 
-Let's summarize all the parts of the toolchain:
+이제 툴체인의 모든 부분을 요약해 보겠습니다:
 
-- Code quality and maintenance are performed by ESLint and Prettier. These tools are added as `devDependencies` to the project via `npm install --dev eslint prettier eslint-plugin-react` (the ESLint plugin is needed because this particular project uses React).
-- There are two configuration files that the code quality tools read: `.eslintrc` and `.prettierrc`.
-- During development, we use Parcel to handle our dependencies. `parcel src/index.html` is running in the background to watch for changes and to automatically build our source.
-- Deployment is handled by pushing our changes to GitHub (on the "main" branch), which triggers a build and deployment on Netlify to publish the project. For our instance this URL is [near-misses.netlify.com](https://near-misses.netlify.app/); you will have your own unique URL.
-- We also have a simple test that blocks the building and deployment of the site if the NASA API feed isn't giving us the correct data format.
+- 코드 품질 및 유지 관리는 ESLint와 Prettier가 수행합니다. 이러한 도구는 `npm install --dev eslint prettier eslint-plugin-react`를 통해 프로젝트에 `devDependency`로 추가됩니다(이 특정 프로젝트는 React를 사용하므로 ESLint 플러그인이 필요합니다).
+- 코드 품질 도구가 읽는 구성 파일은 `.eslintrc`와 `.prettierrc` 두 가지입니다.
+- 개발 중에는 Parcel을 사용하여 종속성을 처리하고, 변경 사항을 감시하고 소스를 자동으로 빌드하기 위해 백그라운드에서 `parcel src/index.html`을 실행합니다.
+- 배포는 변경 사항을 GitHub("main" 브랜치)에 푸시하여 처리하며, 이 푸시는 Netlify에서 빌드 및 배포를 트리거하여 프로젝트를 게시합니다. 이 예의 경우 이 URL은 [near-misses.netlify.com](https://near-misses.netlify.app/) 이며, 여러분은 고유한 URL을 갖게 됩니다.
+- 또한 NASA API 피드가 올바른 데이터 형식을 제공하지 않는 경우 사이트 빌드 및 배포를 차단하는 간단한 테스트도 있습니다.
 
-For those of you wanting a challenge, consider whether you can optimize some part of this toolchain. Some questions to ask yourself:
+도전을 원하시는 분들은 이 툴체인의 일부를 최적화할 수 있는지 고려해 보세요. 스스로에게 물어볼 몇 가지 질문이 있습니다:
 
-- Can [images be compressed](https://github.com/ralscha/parcel-plugin-compress) during the build step?
-- Could React be swapped out for [something smaller](https://preactjs.com/)?
-- Could you add more tests to prevent a bad build from deploying, such as [performance audits](https://web.dev/lighthouse-performance/)?
-- Could you set up a notification to let you know when a new deploy succeeded or failed?
+- 빌드 단계에서 [이미지를 압축할](https://github.com/ralscha/parcel-plugin-compress) 수 있는가?
+- React를 [더 작은 것](https://preactjs.com/) 으로 교체할 수 있을까요?
+- [성능 감사](https://web.dev/lighthouse-performance/) 와 같은 테스트를 추가하여 잘못된 빌드가 배포되는 것을 방지할 수 있나요?
+- 새 배포가 성공하거나 실패했을 때 알려주는 알림을 설정할 수 있나요?
 
 {{PreviousMenu("Learn/Tools_and_testing/Understanding_client-side_tools/Introducing_complete_toolchain", "Learn/Tools_and_testing/Understanding_client-side_tools")}}
