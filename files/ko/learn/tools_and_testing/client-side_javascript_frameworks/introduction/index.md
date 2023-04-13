@@ -5,88 +5,86 @@ slug: Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Introduction
 
 {{LearnSidebar}}{{NextMenu("Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Main_features", "Learn/Tools_and_testing/Client-side_JavaScript_frameworks")}}
 
-We begin our look at frameworks with a general overview of the area, looking at a brief history of JavaScript and frameworks, why frameworks exist and what they give us, how to start thinking about choosing a framework to learn, and what alternatives there are to client-side frameworks.
+자바스크립트와 프레임워크의 간략한 역사, 프레임워크가 존재하는 이유와 프레임워크가 우리에게 제공하는 것, 학습할 프레임워크를 선택하는 방법, 클라이언트 측 프레임워크에 대한 대안이 무엇인지 살펴보는 등 프레임워크에 대한 일반적인 개요로 프레임워크에 대해 살펴보기 시작합니다.
 
 <table>
   <tbody>
     <tr>
-      <th scope="row">Prerequisites:</th>
+      <th scope="row">전제 조건:</th>
       <td>
-        Familiarity with the core <a href="/en-US/docs/Learn/HTML">HTML</a>,
-        <a href="/en-US/docs/Learn/CSS">CSS</a>, and
-        <a href="/en-US/docs/Learn/JavaScript">JavaScript</a> languages.
+        핵심 <a href="/ko/docs/Learn/HTML">HTML</a>,
+        <a href="/ko/docs/Learn/CSS">CSS</a>,
+        <a href="/ko/docs/Learn/JavaScript">JavaScript</a> 언어에 익숙해야 합니다.
       </td>
     </tr>
     <tr>
-      <th scope="row">Objective:</th>
+      <th scope="row">목표:</th>
       <td>
-        To understand how client-side JavaScript frameworks came to exist, what
-        problems they solve, what alternatives there are, and how to go about
-        choosing one.
+        클라이언트 측 자바스크립트 프레임워크가 어떻게 생겨나게 되었는지, 어떤 문제를 해결하는지, 어떤 대안이 있는지, 어떻게 선택해야 하는지 이해합니다.
       </td>
     </tr>
   </tbody>
 </table>
 
-## A brief history
+## 간략한 역사
 
-When JavaScript debuted in 1996, it added occasional interactivity and excitement to a web that was, up until then, composed of static documents. The web became not just a place to _read things_, but to _do things_. JavaScript's popularity steadily increased. Developers who worked with JavaScript wrote tools to solve the problems they faced, and packaged them into reusable packages called **libraries**, so they could share their solutions with others. This shared ecosystem of libraries helped shape the growth of the web.
+1996년 자바스크립트가 처음 등장했을 때, 그때까지만 해도 정적인 문서로만 구성된 웹에 가끔씩 상호작용과 흥미를 더했습니다. 웹은 단순히 무언가를 읽는 공간이 아니라 무언가를 할 수 있는 공간이 되었습니다. 자바스크립트의 인기는 꾸준히 증가했습니다. 자바스크립트로 작업하는 개발자들은 직면한 문제를 해결하기 위한 도구를 작성하고 **라이브러리** 라는 재사용 가능한 패키지로 묶어 다른 사람들과 솔루션을 공유할 수 있었습니다. 이러한 공유 라이브러리 생태계는 웹의 성장에 큰 도움이 되었습니다.
 
-Now, JavaScript is an essential part of the web, [used on 95% of all websites](https://w3techs.com/technologies/details/cp-javascript), and the web is an essential part of modern life. Users write papers, manage their budgets, stream music, watch movies, and communicate with others over great distances instantaneously, with text, audio, or video chat. The web allows us to do things that used to be possible only in native applications installed on our computers. These modern, complex, interactive websites are often referred to as **web applications**.
+이제 자바스크립트는 [전체 웹사이트의 95%에서 사용되는](https://w3techs.com/technologies/details/cp-javascript) 웹의 필수 요소이며, 웹은 현대 생활의 필수 요소입니다. 사용자는 논문을 작성하고, 예산을 관리하고, 음악을 스트리밍하고, 영화를 감상하고, 텍스트, 오디오 또는 화상 채팅을 통해 먼 거리에 있는 사람들과 즉각적으로 소통합니다. 웹은 과거에는 컴퓨터에 설치된 기본 애플리케이션에서만 가능했던 일들을 가능하게 해줍니다. 이러한 현대적이고 복잡한 대화형 웹사이트를 흔히 **웹 애플리케이션** 이라고 합니다.
 
-The advent of modern JavaScript frameworks has made it much easier to build highly dynamic, interactive applications. A **framework** is a library that offers opinions about how software gets built. These opinions allow for predictability and homogeneity in an application; predictability allows the software to scale to an enormous size and still be maintainable; predictability and maintainability are essential for the health and longevity of software.
+최신 자바스크립트 프레임워크의 등장으로 고도로 동적인 대화형 애플리케이션을 훨씬 쉽게 구축할 수 있게 되었습니다. **프레임워크** 는 소프트웨어가 빌드되는 방식에 대한 의견을 제공하는 라이브러리입니다. 이러한 의견을 통해 애플리케이션의 예측 가능성과 동질성을 확보할 수 있으며, 예측 가능성은 소프트웨어가 엄청난 규모로 확장되더라도 유지 관리가 가능하도록 하며, 예측 가능성과 유지 관리성은 소프트웨어의 건전성과 수명을 위해 필수적입니다.
 
-JavaScript frameworks power much of the impressive software on the modern web – including many of the websites you likely use every day. MDN Web Docs, which you are currently reading this on, uses the React/ReactDOM framework to power its front end.
+자바스크립트 프레임워크는 여러분이 매일 사용하는 많은 웹사이트를 포함하여 최신 웹에서 인상적인 소프트웨어의 대부분을 지원합니다. 현재 이 글을 읽고 있는 MDN 웹 문서에서는 프런트엔드를 구동하기 위해 React/ReactDOM 프레임워크를 사용합니다.
 
-## What frameworks are out there?
+## 어떤 프레임워크가 있나요?
 
-There are many frameworks out there, but currently the "big four" are considered to be the following.
+많은 프레임워크가 있지만 현재 '빅 4'는 다음과 같은 프레임워크로 간주됩니다.
 
 ### Ember
 
-[Ember](https://emberjs.com/) was initially released in December 2011 as a continuation of work that started in the [SproutCore](https://en.wikipedia.org/wiki/SproutCore) project. It is an older framework that has fewer users than more modern alternatives such as React and Vue, but it still enjoys a fair amount of popularity due to its stability, community support, and some clever coding principles.
+[Ember](https://emberjs.com/) 는 2011년 12월에 [SproutCore](https://en.wikipedia.org/wiki/SproutCore) 프로젝트에서 시작된 작업의 연속으로 처음 출시되었습니다. 이 프레임워크는 React나 Vue와 같은 최신 대안에 비해 사용자 수가 적은 오래된 프레임워크이지만 안정성, 커뮤니티 지원, 몇 가지 영리한 코딩 원칙으로 인해 여전히 상당한 인기를 누리고 있습니다.
 
-[Start learning Ember](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_getting_started)
+[Ember 배우기 시작하기](/ko/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Ember_getting_started)
 
 ### Angular
 
-[Angular](https://angular.io) is an open-source web application framework led by the Angular Team at Google and by a community of individuals and corporations. It is a complete rewrite from the same team that built [AngularJS](https://angularjs.org/). Angular was officially released on the 14th of September 2016.
+[Angular](https://angular.io) 는 Google의 Angular 팀과 개인 및 기업 커뮤니티가 주도하는 오픈 소스 웹 애플리케이션 프레임워크입니다. [AngularJS](https://angularjs.org/) 를 구축한 팀이 완전히 재작성한 것입니다. Angular는 2016년 9월 14일에 공식적으로 출시되었습니다.
 
-Angular is a component-based framework which uses declarative HTML templates. At build time, transparently to developers, the framework's compiler translates the templates to optimized JavaScript instructions. Angular uses [TypeScript](https://www.typescriptlang.org/), a superset of JavaScript that we'll look at in a little more detail in the next chapter.
+Angular는 선언적 HTML 템플릿을 사용하는 컴포넌트 기반 프레임워크입니다. 빌드 시점에 프레임워크의 컴파일러는 개발자에게 투명하게 템플릿을 최적화된 JavaScript 명령어로 변환합니다. Angular는 다음 장에서 좀 더 자세히 살펴볼 JavaScript의 상위 집합인 [TypeScript](https://www.typescriptlang.org/) 를 사용합니다.
 
-[Start learning Angular](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_getting_started)
+[Angular 학습 시작하기](/ko/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Angular_getting_started)
 
 ### Vue
 
-After working on and learning from the original [AngularJS](https://angularjs.org/) project, Evan You released [Vue](https://vuejs.org/) in 2014. Vue is the youngest of the big four, but has enjoyed a recent uptick in popularity.
+원래 [AngularJS](https://angularjs.org/) 프로젝트에서 작업하고 배운 후, Evan You는 2014년에 [Vue](https://vuejs.org/) 를 출시했습니다. Vue는 빅4 중 막내이지만 최근 인기가 급상승하고 있습니다.
 
-Vue, like [AngularJS](https://angularjs.org/), extends HTML with some of its own code. Apart from that, it mainly relies on modern, standard JavaScript.
+Vue는 [AngularJS](https://angularjs.org/) 와 마찬가지로 일부 자체 코드로 HTML을 확장합니다. 그 외에도 주로 최신 표준 자바스크립트에 의존합니다.
 
-[Start learning Vue](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_getting_started)
+[Vue 배우기 시작하기](/ko/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_getting_started)
 
 ### React
 
-Facebook released [React](https://reactjs.org/) in 2013. By this point, it had already been using React to solve many of its problems internally. Technically, React itself is _not_ a framework; it's a library for rendering UI components. React is used in combination with _other_ libraries to make applications — React and [React Native](https://reactnative.dev/) enable developers to make mobile applications; React and [ReactDOM](https://reactjs.org/docs/react-dom.html) enable them to make web applications, etc.
+Facebook은 2013년에 [React](https://reactjs.org/) 를 출시했습니다. 이 시점에는 이미 내부적으로 많은 문제를 해결하기 위해 React를 사용하고 있었습니다. 엄밀히 말하면 React 자체는 프레임워크가 아니라 UI 컴포넌트를 렌더링하기 위한 라이브러리입니다. React는 다른 라이브러리와 함께 애플리케이션을 만드는 데 사용됩니다. 개발자는 React와 [React Native](https://reactnative.dev/) 를 사용해 모바일 애플리케이션을 만들 수 있고, React와 [ReactDOM](https://reactjs.org/docs/react-dom.html) 을 사용해 웹 애플리케이션 등을 만들 수 있습니다.
 
-Because React and ReactDOM are so often used together, React is colloquially understood as a JavaScript framework. As you read through this module, we will be working with that colloquial understanding.
+React와 ReactDOM은 자주 함께 사용되기 때문에, React는 구어체로 자바스크립트 프레임워크로 이해됩니다. 이 모듈을 읽으면서 우리는 이 구어체 이해를 바탕으로 작업할 것입니다.
 
-React extends JavaScript with HTML-like syntax, known as [JSX](https://reactjs.org/docs/introducing-jsx.html).
+React는 [JSX](https://reactjs.org/docs/introducing-jsx.html) 라고 알려진 HTML과 유사한 구문으로 JavaScript를 확장합니다.
 
-[Start learning React](/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_getting_started)
+[React 학습 시작하기](/ko/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_getting_started)
 
-## Why do frameworks exist?
+## 프레임워크는 왜 존재할까요?
 
-We've discussed the environment that inspired the creation of frameworks, but not really _why_ developers felt the need to make them. Exploring the why requires first examining the challenges of software development.
+프레임워크의 탄생에 영감을 준 환경에 대해서는 논의했지만, 개발자가 프레임워크를 만들어야 할 필요성을 느낀 이유는 설명하지 않았습니다. 그 이유를 알아보려면 먼저 소프트웨어 개발의 과제를 살펴볼 필요가 있습니다.
 
-Consider a common kind of application: A to-do list creator, which we'll look at implementing using a variety of frameworks in future chapters. This application should allow users to do things like render a list of tasks, add a new task, and delete a task; and it must do this while reliably tracking and updating the data underlying the application. In software development, this underlying data is known as state.
+일반적인 종류의 애플리케이션을 생각해 보세요: 향후 장에서 다양한 프레임워크를 사용하여 구현하는 방법을 살펴볼 할 일 목록 작성기를 예로 들어 보겠습니다. 이 애플리케이션은 사용자가 작업 목록을 렌더링하고, 새 작업을 추가하고, 작업을 삭제하는 등의 작업을 수행할 수 있어야 하며, 애플리케이션의 기반이 되는 데이터를 안정적으로 추적하고 업데이트하면서 이러한 작업을 수행할 수 있어야 합니다. 소프트웨어 개발에서 이러한 기본 데이터를 상태라고 합니다.
 
-Each of our goals is theoretically simple in isolation. We can iterate over the data to render it; we can add to an object to make a new task; we can use an identifier to find, edit, or delete a task. When we remember that the application has to let the user do _all_ of these things through the browser, some cracks start to show. **The real problem is this: every time we change our application's state, we need to update the UI to match.**
+각 목표는 이론적으로 개별적으로 보면 간단합니다. 데이터를 반복하여 렌더링하고, 개체에 추가하여 새 작업을 만들고, 식별자를 사용하여 작업을 찾거나 편집 또는 삭제할 수 있습니다. 애플리케이션이 사용자가 브라우저를 통해 이 모든 작업을 수행할 수 있도록 해야 한다는 점을 기억하면 몇 가지 균열이 나타나기 시작합니다. **진짜 문제는 애플리케이션의 상태를 변경할 때마다 UI도 그에 맞게 업데이트해야 한다는 점입니다.**
 
-We can examine the difficulty of this problem by looking at just _one_ feature of our to-do list app: rendering a list of tasks.
+할 일 목록 앱의 한 가지 기능인 작업 목록 렌더링만 살펴보더라도 이 문제가 얼마나 어려운지 알 수 있습니다.
 
-## The verbosity of DOM changes
+## DOM 변경의 장황함
 
-Building HTML elements and rendering them in the browser at the appropriate time takes a surprising amount of code. Let's say that our state is an array of objects structured like this:
+HTML 요소를 빌드하고 적절한 시점에 브라우저에서 렌더링하려면 의외로 많은 양의 코드가 필요합니다. 우리의 상태가 다음과 같이 구조화된 객체 배열이라고 가정해 봅시다:
 
 ```js
 const state = [
@@ -97,7 +95,7 @@ const state = [
 ];
 ```
 
-How do we show one of those tasks to our users? We want to represent each task as a list item – an HTML [`<li>`](/en-US/docs/Web/HTML/Element/li) element inside of an unordered list element (a [`<ul>`](/en-US/docs/Web/HTML/Element/ul)). How do we make it? That could look something like this:
+이러한 작업 중 하나를 사용자에게 어떻게 표시할까요? 각 작업을 목록 항목, 즉 정렬되지 않은 목록 요소([`<ul>`](/ko/docs/Web/HTML/Element/ul)) 안에 있는 HTML [`<li>`](/ko/docs/Web/HTML/Element/li) 요소로 표시하고 싶습니다. 어떻게 만들까요? 다음과 같은 형태가 될 수 있습니다:
 
 ```js
 function buildTodoItemEl(id, name) {
@@ -115,9 +113,9 @@ function buildTodoItemEl(id, name) {
 }
 ```
 
-Here, we use the [`document.createElement()`](/en-US/docs/Web/API/Document/createElement) method to make our `<li>`, and several more lines of code to create the properties and children it needs.
+여기서는 [`document.createElement()`](/ko/docs/Web/API/Document/createElement) 메서드를 사용하여 `<li>`를 만들고 몇 줄의 코드를 더 추가하여 필요한 프로퍼티와 자식을 생성합니다.
 
-The tenth line of the previous snippet references another build function: `buildDeleteButtonEl()`. It follows a similar pattern to the one we used to build a list item element:
+이전 코드조각의 열 번째 줄은 또 다른 빌드 함수인 `buildDeleteButtonEl()`을 참조합니다. 이 함수는 목록 항목 요소를 빌드할 때 사용한 것과 비슷한 패턴을 따릅니다:
 
 ```js
 function buildDeleteButtonEl(id) {
@@ -131,7 +129,7 @@ function buildDeleteButtonEl(id) {
 }
 ```
 
-This button doesn't do anything yet, but it will later once we decide to implement our delete feature. The code that will render our items on the page might read something like this:
+이 버튼은 아직 아무 작업도 수행하지 않지만 나중에 삭제 기능을 구현하기로 결정하면 수행하게 됩니다. 페이지에 항목을 렌더링하는 코드는 다음과 같을 수 있습니다:
 
 ```js
 function renderTodoList() {
@@ -148,28 +146,28 @@ function renderTodoList() {
 }
 ```
 
-We've now got well over thirty lines of code dedicated _just_ to the UI – _just_ to render something in the DOM – and at no point do we add classes that we could use later to style our list-items!
+이제 DOM에서 무언가를 렌더링하기 위해 UI에만 30줄이 넘는 코드가 생겼고, 나중에 목록 항목의 스타일을 지정하는 데 사용할 수 있는 클래스를 추가하지 않았습니다!
 
-Working directly with the DOM, as in this example, requires understanding many things about how the DOM works: how to make elements; how to change their properties; how to put elements inside of each other; how to get them on the page. None of this code actually handles user interactions, or addresses adding or deleting a task. If we add those features, we have to remember to update our UI at the right time and in the right way.
+이 예시에서처럼 DOM으로 직접 작업하려면 요소를 만드는 방법, 속성을 변경하는 방법, 요소를 서로 안에 넣는 방법, 페이지에 표시하는 방법 등 DOM의 작동 방식에 대해 많은 것을 이해해야 합니다. 이 코드 중 실제로 사용자 상호 작용을 처리하거나 작업 추가 또는 삭제를 처리하는 코드는 없습니다. 이러한 기능을 추가할 경우 적절한 시점에 적절한 방식으로 UI를 업데이트해야 한다는 점을 기억해야 합니다.
 
-JavaScript frameworks were created to make this kind of work a lot easier — they exist to provide a better _developer experience_. They don't bring brand-new powers to JavaScript; they give you easier access to JavaScript's powers so you can build for today's web.
+자바스크립트 프레임워크는 이러한 작업을 훨씬 쉽게 하기 위해 만들어졌으며, 더 나은 개발자 경험을 제공하기 위해 존재합니다. 자바스크립트 프레임워크는 자바스크립트에 새로운 기능을 추가하는 것이 아니라 오늘날의 웹에 맞게 빌드할 수 있도록 자바스크립트의 기능에 더 쉽게 액세스할 수 있게 해줍니다.
 
-If you want to see code samples from this section in action, you can check out a [working version of the app on CodePen](https://codepen.io/mxmason/pen/XWbPNmw), which also allows users to add and delete new tasks.
+이 섹션의 코드 샘플이 실제로 작동하는 모습을 보고 싶다면 [CodePen에서 작동 중인 앱 버전](https://codepen.io/mxmason/pen/XWbPNmw) 을 확인하실 수 있으며, 사용자가 새 작업을 추가하고 삭제할 수도 있습니다.
 
-Read more about the JavaScript used in this section:
+이 섹션에서 사용된 JavaScript에 대해 자세히 알아보세요:
 
-- [`document.createElement()`](/en-US/docs/Web/API/Document/createElement)
-- [`document.createTextNode()`](/en-US/docs/Web/API/Document/createTextNode)
-- [`document.createDocumentFragment()`](/en-US/docs/Web/API/Document/createDocumentFragment)
-- [`eventTarget.addEventListener()`](/en-US/docs/Web/API/EventTarget/addEventListener)
-- [`node.appendChild()`](/en-US/docs/Web/API/Node/appendChild)
-- [`node.removeChild()`](/en-US/docs/Web/API/Node/removeChild)
+- [`document.createElement()`](/ko/docs/Web/API/Document/createElement)
+- [`document.createTextNode()`](/ko/docs/Web/API/Document/createTextNode)
+- [`document.createDocumentFragment()`](/ko/docs/Web/API/Document/createDocumentFragment)
+- [`eventTarget.addEventListener()`](/ko/docs/Web/API/EventTarget/addEventListener)
+- [`node.appendChild()`](/ko/docs/Web/API/Node/appendChild)
+- [`node.removeChild()`](/ko/docs/Web/API/Node/removeChild)
 
-## Another way to build UIs
+## UI를 구축하는 또 다른 방법
 
-Every JavaScript framework offers a way to write user interfaces more _declaratively_. That is, they allow you to write code that describes how your UI should look, and the framework makes it happen in the DOM behind the scenes.
+모든 자바스크립트 프레임워크는 사용자 인터페이스를 보다 선언적으로 작성할 수 있는 방법을 제공합니다. 즉, UI가 어떻게 표시되어야 하는지 설명하는 코드를 작성하면 프레임워크가 뒤에서 DOM에서 이를 구현합니다.
 
-The vanilla JavaScript approach to building out new DOM elements in repetition was difficult to understand at a glance. By contrast, the following block of code illustrates the way you might use Vue to describe our list of tasks:
+새로운 DOM 요소를 반복적으로 구축하는 바닐라 자바스크립트 접근 방식은 한눈에 이해하기 어려웠습니다. 반면에 다음 코드 블록은 Vue를 사용하여 작업 목록을 설명하는 방법을 보여줍니다:
 
 ```html
 <ul>
@@ -180,141 +178,141 @@ The vanilla JavaScript approach to building out new DOM elements in repetition w
 </ul>
 ```
 
-That's it. This snippet reduces approximately thirty-two lines of code down to six lines. If the curly braces and `v-` attributes here are unfamiliar to you, that's okay; you'll learn about Vue-specific syntax later on in the module. The thing to take away here is that this code looks like the UI it represents, whereas the vanilla JavaScript code does not.
+여기까지입니다. 이 스니펫은 약 32줄의 코드를 6줄로 줄였습니다. 중괄호와 v- 속성이 익숙하지 않더라도 괜찮습니다. 모듈의 뒷부분에서 Vue 관련 구문에 대해 배우게 될 것이기 때문입니다. 여기서 주목해야 할 점은 이 코드는 UI처럼 보이지만 바닐라 자바스크립트 코드는 그렇지 않다는 점입니다.
 
-Thanks to Vue, we didn't have to write our own functions for building the UI; the framework will handle that for us in an optimized, efficient way. Our only role here was to describe to Vue what each item should look like. Developers who are familiar with Vue can quickly work out what is going on when they join our project. Vue is not alone in this: using a framework improves team as well as individual efficiency.
+Vue 덕분에 UI를 구축하기 위한 함수를 직접 작성할 필요가 없었고, 프레임워크가 최적화되고 효율적인 방식으로 이를 처리해 주었습니다. 저희의 유일한 역할은 각 항목이 어떤 모양이어야 하는지 Vue에 설명하는 것이었습니다. Vue에 익숙한 개발자는 프로젝트에 참여하면 무슨 일이 일어나고 있는지 빠르게 파악할 수 있습니다. 프레임워크를 사용하면 팀과 개인의 효율성이 향상됩니다.
 
-It's possible to do things _similar_ to this in vanilla JavaScript. [Template literal strings](/en-US/docs/Web/JavaScript/Reference/Template_literals) make it easy to write strings of HTML that represent what the final element would look like. That might be a useful idea for something as simple as our to-do list application, but it's not maintainable for large applications that manage thousands of records of data, and could render just as many unique elements in a user interface.
+바닐라 자바스크립트에서도 이와 유사한 작업을 수행할 수 있습니다. [템플릿 리터럴 문자열](/ko/docs/Web/JavaScript/Reference/Template_literals) 을 사용하면 최종 요소의 모양을 나타내는 HTML 문자열을 쉽게 작성할 수 있습니다. 이 방법은 할 일 목록 애플리케이션과 같은 간단한 애플리케이션에는 유용할 수 있지만, 수천 개의 데이터 레코드를 관리하는 대규모 애플리케이션에서는 유지 관리가 어렵고 사용자 인터페이스에 많은 고유 요소를 렌더링할 수 있습니다.
 
-## Other things frameworks give us
+## 프레임워크가 제공하는 다른 이점
 
-Let's look at some of the other advantages offered by frameworks. As we've alluded to before, the advantages of frameworks are achievable in vanilla JavaScript, but using a framework takes away all of the cognitive load of having to solve these problems yourself.
+프레임워크가 제공하는 다른 몇 가지 이점을 살펴봅시다. 앞서 언급했듯이 프레임워크의 장점은 바닐라 자바스크립트에서도 달성할 수 있지만, 프레임워크를 사용하면 이러한 문제를 직접 해결해야 하는 인지적 부하가 모두 사라집니다.
 
-### Tooling
+### 툴링
 
-Because each of the frameworks in this module have a large, active community, each framework's ecosystem provides tooling that improves the developer experience. These tools make it easy to add things like testing (to ensure that your application behaves as it should) or linting (to ensure that your code is error-free and stylistically consistent).
+이 모듈의 각 프레임워크에는 활발하게 활동하는 대규모 커뮤니티가 있기 때문에 각 프레임워크의 에코시스템은 개발자 경험을 개선하는 툴을 제공합니다. 이러한 도구를 사용하면 테스트(애플리케이션이 정상적으로 작동하는지 확인하기 위한) 또는 린팅(코드에 오류가 없고 스타일이 일관성 있게 유지되도록 하기 위한) 등의 기능을 쉽게 추가할 수 있습니다.
 
-> **Note:** If you want to find out more details about web tooling concepts, check out our [Client-side tooling overview](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Overview).
+> **참고:** 웹 도구 개념에 대해 더 자세히 알아보려면 [클라이언트 측 도구 개요](/ko/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Overview) 를 참조하세요.
 
-### Compartmentalization
+### 구획화
 
-Most major frameworks encourage developers to abstract the different parts of their user interfaces into _components_ — maintainable, reusable chunks of code that can communicate with one another. All the code related to a given component can live in one file (or a couple of specific files) so that you as a developer know exactly where to go to make changes to that component. In a vanilla JavaScript app, you'd have to create your own set of conventions to achieve this in an efficient, scalable way. Many JavaScript developers, if left to their own devices, could end up with all the code related to one part of the UI being spread out all over a file — or in another file altogether.
+대부분의 주요 프레임워크는 개발자가 사용자 인터페이스의 여러 부분을 서로 통신할 수 있는 유지 관리 및 재사용 가능한 코드 덩어리인 컴포넌트로 추상화하도록 권장합니다. 특정 컴포넌트와 관련된 모든 코드는 하나의 파일(또는 몇 개의 특정 파일)에 저장할 수 있으므로 개발자는 해당 컴포넌트를 변경하기 위해 어디로 이동해야 하는지 정확히 알 수 있습니다. 바닐라 자바스크립트 앱에서는 효율적이고 확장 가능한 방식으로 이를 달성하기 위해 자체적인 규칙 집합을 만들어야 합니다. 자바스크립트 개발자에게 맡기면 UI의 한 부분과 관련된 모든 코드가 파일 전체 또는 다른 파일에 분산되어 있을 수 있습니다.
 
-### Routing
+### 라우팅
 
-The most essential feature of the web is that it allows users to navigate from one page to another – it is, after all, a network of interlinked documents. When you follow a link on this very website, your browser communicates with a server and fetches new content to display for you. As it does so, the URL in your address bar changes. You can save this new URL and come back to the page later on, or share it with others so they can easily find the same page. Your browser remembers your navigation history and allows you to navigate back and forth, too. This is called **server-side routing**.
+웹의 가장 핵심적인 기능은 사용자가 한 페이지에서 다른 페이지로 이동할 수 있다는 것인데, 결국 웹은 서로 연결된 문서들의 네트워크입니다. 바로 이 웹사이트의 링크를 따라가면 브라우저가 서버와 통신하여 표시할 새 콘텐츠를 가져옵니다. 이 과정에서 주소 표시줄의 URL이 변경됩니다. 이 새 URL을 저장해 두었다가 나중에 다시 해당 페이지로 돌아오거나 다른 사람들과 공유하여 동일한 페이지를 쉽게 찾을 수 있습니다. 브라우저는 사용자의 탐색 기록을 기억하여 앞뒤로 이동할 수 있습니다. 이를 **서버 측 라우팅** 이라고 합니다.
 
-Modern web applications typically do not fetch and render new HTML files — they load a single HTML shell, and continually update the DOM inside it (referred to as **single page apps**, or **SPAs**) without navigating users to new addresses on the web. Each new pseudo-webpage is usually called a _view_, and by default, no routing is done.
+최신 웹 애플리케이션은 일반적으로 새로운 HTML 파일을 가져와 렌더링하지 않고 단일 HTML 셸을 로드하고 그 안에 있는 DOM을 지속적으로 업데이트합니다(**단일 페이지 앱** 또는 **SPA** 라고 함). 각각의 새로운 의사 웹 페이지를 일반적으로 "뷰"라고 하며, 기본적으로 라우팅은 수행되지 않습니다.
 
-When a SPA is complex enough, and renders enough unique views, it's important to bring routing functionality into your application. People are used to being able to link to specific pages in an application, travel forward and backward in their navigation history, etc., and their experience suffers when these standard web features are broken. When routing is handled by a client application in this fashion, it is aptly called **client-side routing**.
+SPA가 충분히 복잡하고 고유한 뷰를 충분히 렌더링하는 경우 라우팅 기능을 애플리케이션에 도입하는 것이 중요합니다. 사람들은 애플리케이션에서 특정 페이지로 링크하거나 탐색 기록을 앞뒤로 이동하는 등의 기능에 익숙하기 때문에 이러한 표준 웹 기능이 중단되면 사용자 경험이 저하됩니다. 이러한 방식으로 라우팅이 클라이언트 애플리케이션에서 처리되는 경우 이를 **클라이언트 측 라우팅** 이라고 합니다.
 
-It's _possible_ to make a router using the native capabilities of JavaScript and the browser, but popular, actively developed frameworks have companion libraries that make routing a more intuitive part of the development process.
+JavaScript와 브라우저의 기본 기능을 사용하여 라우터를 만들 수도 있지만, 활발하게 개발되고 있는 인기 있는 프레임워크에는 라우팅을 개발 프로세스에서 보다 직관적으로 처리할 수 있는 컴패니언 라이브러리가 있습니다.
 
-## Things to consider when using frameworks
+## 프레임워크 사용 시 고려해야 할 사항
 
-Being an effective web developer means using the most appropriate tools for the job. JavaScript frameworks make front-end application development easy, but they are not a silver bullet that will solve all problems. This section talks about some of the things you should consider when using frameworks. Bear in mind that you might not need a framework at all — beware that you don't end up using a framework just for the sake of it.
+효과적인 웹 개발자가 된다는 것은 작업에 가장 적합한 도구를 사용한다는 것을 의미합니다. 자바스크립트 프레임워크는 프런트엔드 애플리케이션 개발을 쉽게 만들어 주지만 모든 문제를 해결할 수 있는 만병통치약은 아닙니다. 이 섹션에서는 프레임워크를 사용할 때 고려해야 할 몇 가지 사항에 대해 설명합니다. 프레임워크가 전혀 필요하지 않을 수도 있다는 점을 염두에 두고 프레임워크만을 위해 프레임워크를 사용하지 않도록 주의하세요.
 
-### Familiarity with the tool
+### 도구에 대한 친숙함
 
-Just like vanilla JavaScript, frameworks take time to learn and have their quirks. Before you decide to use a framework for a project, be sure you have time to learn enough of its features for it to be useful to you rather than it working against you, and be sure that your teammates are comfortable with it as well.
+바닐라 자바스크립트와 마찬가지로 프레임워크도 배우는 데 시간이 걸리고 단점이 있습니다. 프로젝트에 프레임워크를 사용하기로 결정하기 전에 프레임워크가 자신에게 불리하게 작용하지 않고 유용하게 사용될 수 있도록 프레임워크의 기능을 충분히 익히고, 팀원들도 프레임워크에 익숙해졌는지 확인해야 합니다.
 
-### Overengineering
+### 과도한 엔지니어링
 
-If your web development project is a personal portfolio with a few pages, and those pages have little or no interactive capability, a framework (and all of its JavaScript) may not be necessary at all. That said, frameworks are not monolithic, and some of them are better suited to small projects than others. In an article for Smashing Magazine, Sarah Drasner writes about how [Vue can replace jQuery](https://www.smashingmagazine.com/2018/02/jquery-vue-javascript/) as a tool for making small portions of a webpage interactive.
+웹 개발 프로젝트가 몇 개의 페이지로 구성된 개인 포트폴리오이고 해당 페이지에 인터랙티브 기능이 거의 또는 전혀 없는 경우 프레임워크(및 모든 자바스크립트)가 전혀 필요하지 않을 수 있습니다. 하지만 프레임워크는 획일적인 것이 아니며, 일부 프레임워크는 다른 프레임워크보다 소규모 프로젝트에 더 적합합니다. 스매싱 매거진의 기사에서 사라 드라스너는 웹페이지의 작은 부분을 인터랙티브하게 만들기 위한 도구로 [Vue가 jQuery를 대체할 수 있는](https://www.smashingmagazine.com/2018/02/jquery-vue-javascript/) 방법에 대해 설명합니다.
 
-### Larger code base and abstraction
+### 더 큰 코드 기반과 추상화
 
-Frameworks allow you to write more declarative code – and sometimes _less_ code overall – by dealing with the DOM interactions for you, behind the scenes. This abstraction is great for your experience as a developer, but it isn't free. In order to translate what you write into DOM changes, frameworks have to run their own code, which in turn makes your final piece of software larger and more computationally expensive to operate.
+프레임워크를 사용하면 뒤에서 DOM 상호 작용을 처리하여 선언적 코드를 더 많이 작성할 수 있으며 때로는 전체 코드를 더 적게 작성할 수도 있습니다. 이러한 추상화는 개발자로서의 경험에 큰 도움이 되지만 무료는 아닙니다. 개발자가 작성한 내용을 DOM 변경 사항으로 변환하기 위해 프레임워크는 자체 코드를 실행해야 하므로 최종 소프트웨어의 크기가 커지고 운영 비용이 더 많이 듭니다.
 
-Some extra code is inevitable, and a framework that supports tree-shaking (removal of any code that isn't actually used in the app during the build process) will allow you to keep your applications small, but this is still a factor you need to keep in mind when considering your app's performance, especially on more network/storage-constrained devices, like mobile phones.
+일부 추가 코드는 불가피하며 트리 쉐이킹(빌드 과정에서 앱에서 실제로 사용되지 않는 코드 제거)을 지원하는 프레임워크를 사용하면 애플리케이션을 작게 유지할 수 있지만, 특히 휴대폰과 같이 네트워크/스토리지 제약이 많은 기기에서 앱의 성능을 고려할 때 여전히 염두에 두어야 할 요소입니다.
 
-The abstraction of frameworks affects not only your JavaScript but your relationship with the very nature of the web. No matter how you build for the web, the end result, the layer that your users ultimately interact with, is HTML. Writing your whole application in JavaScript can make you lose sight of HTML and the purpose of its various tags, and lead you to produce an HTML document that is un-semantic and inaccessible. In fact, it's possible to write a fragile application that depends entirely on JavaScript and will not function without it.
+프레임워크의 추상화는 자바스크립트뿐만 아니라 웹의 본질과의 관계에도 영향을 미칩니다. 웹용으로 어떻게 빌드하든 최종 결과물, 즉 사용자가 궁극적으로 상호 작용하는 계층은 HTML입니다. 전체 애플리케이션을 자바스크립트로 작성하면 HTML과 다양한 태그의 목적을 놓칠 수 있으며, 의미도 없고 접근성도 떨어지는 HTML 문서를 만들게 됩니다. 실제로 자바스크립트에 전적으로 의존하는 취약한 애플리케이션을 작성할 수 있으며, 자바스크립트가 없으면 작동하지 않을 수도 있습니다.
 
-Frameworks are not the source of our problems. With the wrong priorities, any application can be fragile, bloated, and inaccessible. Frameworks do, however, amplify our priorities as developers. If your priority is to make a complex web app, it's easy to do that. However, if your priorities don't carefully guard performance and accessibility, frameworks will amplify your fragility, your bloat, and your inaccessibility. Modern developer priorities, amplified by frameworks, have inverted the structure of the web in many places. Instead of a robust, content-first network of documents, the web now often puts JavaScript first and user experience last.
+프레임워크는 문제의 원인이 아닙니다. 우선순위가 잘못 설정되면 모든 애플리케이션은 취약하고 비대해지며 접근성이 떨어질 수 있습니다. 그러나 프레임워크는 개발자의 우선순위를 증폭시키기도 합니다. 복잡한 웹 앱을 만드는 것이 우선순위라면 그렇게 하기는 쉽습니다. 그러나 우선순위가 성능과 접근성을 신중하게 고려하지 않는다면 프레임워크는 취약성, 부피 증가, 접근성 저하를 증폭시킬 수 있습니다. 프레임워크에 의해 증폭된 현대 개발자의 우선순위는 웹의 구조를 여러 곳에서 뒤집어 놓았습니다. 이제 웹은 강력한 콘텐츠 우선의 문서 네트워크 대신 JavaScript를 우선시하고 사용자 경험은 뒷전으로 밀리는 경우가 많습니다.
 
-## Accessibility on a framework-driven web
+## 프레임워크 중심 웹에서의 접근성
 
-Let's build on what we said in the previous section, and talk a bit more about accessibility. Making user interfaces accessible always requires some thought and effort, and frameworks can complicate that process. You often have to employ advanced framework APIs to access native browser features like ARIA [live regions](/en-US/docs/Web/Accessibility/ARIA/ARIA_Live_Regions) or focus management.
+이전 섹션에서 언급한 내용을 바탕으로 접근성에 대해 좀 더 자세히 알아보겠습니다. 사용자 인터페이스를 접근 가능하게 만들려면 항상 약간의 생각과 노력이 필요하며, 프레임워크는 그 과정을 복잡하게 만들 수 있습니다. ARIA [라이브 지역](/ko/docs/Web/Accessibility/ARIA/ARIA_Live_Regions) 이나 포커스 관리와 같은 기본 브라우저 기능에 액세스하려면 고급 프레임워크 API를 사용해야 하는 경우가 많습니다.
 
-In some cases, framework applications create accessibility barriers that do not exist for traditional websites. The biggest example of this is in client-side routing, as mentioned earlier.
+어떤 경우에는 프레임워크 애플리케이션이 기존 웹사이트에는 존재하지 않는 접근성 장벽을 만들기도 합니다. 가장 큰 예는 앞서 언급한 것처럼 클라이언트 측 라우팅입니다.
 
-With traditional (server-side) routing, navigating the web has predictable results. The browser knows to set focus to the top of the page and assistive technologies will announce the title of the page. These things happen every time you navigate to a new page.
+기존(서버 측) 라우팅을 사용하면 웹을 탐색할 때 예측 가능한 결과를 얻을 수 있습니다. 브라우저는 페이지 상단에 초점을 설정하는 것을 알고 있으며 보조 기술이 페이지 제목을 알려줍니다. 이러한 일은 새 페이지로 이동할 때마다 발생합니다.
 
-With client-side routing, your browser is not loading new web pages, so it doesn't know that it should automatically adjust focus or announce a new page title. Framework authors have devoted immense time and labor to writing JavaScript that recreates these features, and even then, no framework has done so perfectly.
+클라이언트 측 라우팅을 사용하면 브라우저가 새 웹 페이지를 로드하지 않으므로 자동으로 초점을 조정하거나 새 페이지 제목을 알려야 한다는 것을 알지 못합니다. 프레임워크 개발자들은 이러한 기능을 재현하는 자바스크립트를 작성하는 데 엄청난 시간과 노력을 기울여 왔지만, 아직까지 완벽하게 구현한 프레임워크는 없습니다.
 
-The upshot is that you should consider accessibility from the very start of _every_ web project, but bear in mind that abstracted codebases that use frameworks are more likely to suffer from major accessibility issues if you don't.
+결론은 모든 웹 프로젝트를 시작할 때부터 접근성을 고려해야 하지만, 프레임워크를 사용하는 추상화된 코드베이스는 그렇지 않을 경우 주요 접근성 문제를 겪을 가능성이 높다는 점입니다.
 
-## How to choose a framework
+## H프레임워크 선택 방법
 
-Each of the frameworks discussed in this module takes different approaches to web application development. Each is regularly improving or changing, and each has its pros and cons. Choosing the right framework is a team- and project-dependent process, and you should do your own research to uncover what suits your needs. That said, we've identified a few questions you can ask in order to research your options more effectively:
+이 모듈에서 설명하는 각 프레임워크는 웹 애플리케이션 개발에 대해 서로 다른 접근 방식을 취합니다. 각 프레임워크는 정기적으로 개선 또는 변경되고 있으며 각 프레임워크마다 장단점이 있습니다. 올바른 프레임워크를 선택하는 것은 팀과 프로젝트에 따라 달라질 수 있으므로 직접 조사하여 필요에 맞는 프레임워크를 찾아야 합니다. 하지만 옵션을 더 효과적으로 조사하기 위해 몇 가지 질문을 해볼 수 있습니다:
 
-1. What browsers does the framework support?
-2. What domain-specific languages does the framework utilize?
-3. Does the framework have a strong community and good docs (and other support) available?
+1. 프레임워크는 어떤 브라우저를 지원하나요?
+2. 프레임워크는 어떤 도메인별 언어를 사용하나요?
+3. 프레임워크에 강력한 커뮤니티와 좋은 문서(및 기타 지원)가 있는가?
 
-The table in this section provides a glanceable summary of the current _browser support_ offered by each framework, as well as the **domain-specific languages** with which it can be used.
+이 섹션의 표에는 각 프레임워크가 제공하는 현재 브라우저 지원과 해당 프레임워크에서 사용할 수 있는 **도메인별 언어** 가 한눈에 보기 쉽게 요약되어 있습니다.
 
-Broadly, {{Glossary("DSL/Domain_specific_language", "domain-specific languages (DSLs)")}} are programming languages relevant in specific areas of software development. In the context of frameworks, DSLs are variations on JavaScript or HTML that make it easier to develop with that framework. Crucially, none of the frameworks _require_ a developer to use a specific DSL, but they have almost all been designed with a specific DSL in mind. Choosing not to employ a framework's preferred DSL will mean you miss out on features that would otherwise improve your developer experience.
+일반적으로 도메인별 언어({{Glossary("DSL/Domain_specific_language", "domain-specific languages (DSLs)")}})는 소프트웨어 개발의 특정 영역과 관련된 프로그래밍 언어입니다. 프레임워크의 맥락에서 DSL은 해당 프레임워크로 더 쉽게 개발할 수 있도록 해주는 JavaScript 또는 HTML의 변형입니다. 결정적으로, 어떤 프레임워크도 개발자가 특정 DSL을 사용하도록 요구하지는 않지만, 거의 모든 프레임워크가 특정 DSL을 염두에 두고 설계되었습니다. 프레임워크에서 선호하는 DSL을 사용하지 않으면 개발자 환경을 개선할 수 있는 기능을 놓치게 됩니다.
 
-You should seriously consider the support matrix and DSLs of a framework when making a choice for any new project. Mismatched browser support can be a barrier to your users; mismatched DSL support can be a barrier to you and your teammates.
+새 프로젝트를 위해 프레임워크를 선택할 때는 프레임워크의 지원 매트릭스와 DSL을 진지하게 고려해야 합니다. 일치하지 않는 브라우저 지원은 사용자에게 장애가 될 수 있고, 일치하지 않는 DSL 지원은 여러분과 팀원에게 장애가 될 수 있습니다.
 
-| Framework | Browser support                     | Preferred DSL | Supported DSLs         | Citation |
+| 프레임워크 | 브라우저 지원                     | 선호 DSL | 지원 DSL         | 인용 |
 | --------- | ----------------------------------- | ------------- | ---------------------- | -------- |
-| Angular   | Modern                              | TypeScript    | HTML-based; TypeScript | [official docs](https://angular.io/guide/browser-support) |
-| React     | Modern                              | JSX           | JSX; TypeScript        | [official docs](https://reactjs.org/docs/react-dom.html#browser-support) |
-| Vue       | Modern (IE9+ in Vue 2)              | HTML-based    | HTML-based, JSX, Pug   | [official docs](https://cli.vuejs.org/guide/browser-compatibility.html) |
-| Ember     | Modern (IE9+ in Ember version 2.18) | Handlebars    | Handlebars, TypeScript | [official docs](https://guides.emberjs.com/v3.3.0/templates/handlebars-basics/) |
+| Angular   | Modern                              | TypeScript    | HTML-based; TypeScript | [공식 문서](https://angular.io/guide/browser-support) |
+| React     | Modern                              | JSX           | JSX; TypeScript        | [공식 문서](https://reactjs.org/docs/react-dom.html#browser-support) |
+| Vue       | Modern (Vue 2의 IE9+)              | HTML-based    | HTML-based, JSX, Pug   | [공식 문서](https://cli.vuejs.org/guide/browser-compatibility.html) |
+| Ember     | Modern (Ember 버전 2.18의 IE9+) | Handlebars    | Handlebars, TypeScript | [공식 문서](https://guides.emberjs.com/v3.3.0/templates/handlebars-basics/) |
 
-> **Note:** DSLs we've described as "HTML-based" do not have official names. They are not really true DSLs, but they are non-standard HTML, so we believe they are worth highlighting.
+> **참고:** "HTML 기반"이라고 설명한 DSL은 공식 명칭이 없습니다. 실제 DSL은 아니지만 비표준 HTML이므로 강조할 가치가 있다고 생각합니다.
 
-### Does the framework have a strong community?
+### 프레임워크에 강력한 커뮤니티가 있나요?
 
-This is perhaps the hardest metric to measure because community size does not correlate directly to easy-to-access numbers. You can check a project's number of GitHub stars or weekly npm downloads to get an idea of its popularity, but sometimes the best thing to do is search a few forums or talk to other developers. It is not just about the community's size, but also how welcoming and inclusive it is, and how good the available documentation is.
+커뮤니티 규모는 접근하기 쉬운 수치와 직접적인 상관관계가 없기 때문에 측정하기 가장 어려운 지표일 수 있습니다. 프로젝트의 GitHub 별 개수나 주간 npm 다운로드 수를 확인하여 프로젝트의 인기를 파악할 수 있지만, 때로는 포럼을 검색하거나 다른 개발자와 대화하는 것이 가장 좋은 방법일 수도 있습니다. 커뮤니티의 규모뿐만 아니라 커뮤니티가 얼마나 환영하고 포용적인지, 제공되는 문서가 얼마나 좋은지도 중요한 요소입니다.
 
-### Opinions on the web
+### 웹상의 의견
 
-Don't just take our word on this matter — there are discussions all over the web. The Wikimedia Foundation recently chose to use Vue for its front-end, and posted a [request for comments (RFC) on framework adoption](https://phabricator.wikimedia.org/T241180). Eric Gardner, the author of the RFC, took time to outline the needs of the Wikimedia project and why certain frameworks were good choices for the team. This RFC serves as a great example of the kind of research you should do for yourself when planning to use a front-end framework.
+이 문제에 대해 저희의 말만 믿지 마세요. 웹 곳곳에서 논의가 진행되고 있습니다. 위키미디어 재단은 최근 프론트엔드에 Vue를 사용하기로 결정하고 [프레임워크 채택에 대한 의견 요청(RFC)](https://phabricator.wikimedia.org/T241180) 을 게시했습니다. RFC의 저자인 Eric Gardner는 위키미디어 프로젝트의 요구 사항과 특정 프레임워크가 팀에 적합한 이유를 설명하는 데 시간을 할애했습니다. 이 RFC는 프론트엔드 프레임워크 사용을 계획할 때 어떤 종류의 조사를 해야 하는지에 대한 좋은 예가 됩니다.
 
-The [State of JavaScript survey](https://stateofjs.com/) is a helpful collection of feedback from JavaScript developers. It covers many topics related to JavaScript, including data about both the use of frameworks and developer sentiment toward them. Currently, there are several years of data available, allowing you to get a sense of a framework's popularity.
+[자바스크립트 현황 설문조사](https://stateofjs.com/) 는 자바스크립트 개발자들의 피드백을 모아놓은 유용한 자료입니다. 여기에는 프레임워크 사용과 프레임워크에 대한 개발자의 정서에 대한 데이터를 포함하여 JavaScript와 관련된 많은 주제가 다뤄집니다. 현재 몇 년간의 데이터가 제공되어 프레임워크의 인기도를 파악할 수 있습니다.
 
-The Vue team has [exhaustively compared Vue to other popular frameworks](https://v2.vuejs.org/v2/guide/comparison.html). There may be some bias in this comparison (which they note), but it's a valuable resource nonetheless.
+Vue 팀은 [Vue를 다른 인기 프레임워크와 철저하게 비교](https://v2.vuejs.org/v2/guide/comparison.html) 했습니다. 이 비교에는 약간의 편견이 있을 수 있지만(팀에서도 언급하고 있습니다), 그럼에도 불구하고 귀중한 리소스입니다.
 
-## Alternatives to client-side frameworks
+## 클라이언트 측 프레임워크의 대안
 
-If you're looking for tools to expedite the web development process, and you know your project isn't going to require intensive client-side JavaScript, you could reach for one of a handful of other solutions for building the web:
+웹 개발 프로세스를 신속하게 처리할 수 있는 도구를 찾고 있고 프로젝트에 집중적인 클라이언트 측 JavaScript를 필요로 하지 않는다면 웹 구축을 위한 몇 가지 다른 솔루션 중 하나를 사용할 수 있습니다:
 
-- A content management system
-- Server-side rendering
-- A static site generator
+- 콘텐츠 관리 시스템
+- 서버 측 렌더링
+- 정적 사이트 생성기
 
-### Content management systems
+### 콘텐츠 관리 시스템
 
-**Content-management systems** (**CMSes**) are any tools that allow a user to create content for the web without directly writing code themselves. They're a good solution for large projects, especially projects that require input from content writers who have limited coding ability, or for programmers who want to save time. They do, however, require a significant amount of time to set up, and utilizing a CMS means that you surrender at least some measure of control over the final output of your website. For example: if your chosen CMS doesn't author accessible content by default, it's often difficult to improve this.
+**콘텐츠 관리 시스템**(**CMS**)은 사용자가 직접 코드를 작성하지 않고도 웹용 콘텐츠를 만들 수 있는 모든 도구입니다. 대규모 프로젝트, 특히 코딩 능력이 제한적인 콘텐츠 작성자의 의견이 필요한 프로젝트나 시간을 절약하려는 프로그래머에게 적합한 솔루션입니다. 하지만 설정하는 데 상당한 시간이 필요하며 CMS를 사용한다는 것은 웹사이트의 최종 결과물에 대한 통제권을 어느 정도 포기한다는 것을 의미합니다. 예를 들어, 선택한 CMS가 기본적으로 접근 가능한 콘텐츠를 작성하지 않는다면 이를 개선하기 어려운 경우가 많습니다.
 
-Popular examples include [Wordpress](https://wordpress.com/), [Joomla](https://www.joomla.org/), and [Drupal](https://www.drupal.org/).
+대표적인 예로는 [워드프레스](https://wordpress.com/), [줌라](https://www.joomla.org/), [드루팔](https://www.drupal.org/) 등이 있습니다.
 
-### Server-side rendering
+### 서버 측 렌더링
 
-**Server-side rendering** (**SSR**) is an application architecture in which it is the _server_'s job to render a single-page application. This is the opposite of _client-side rendering_, which is the most common and most straightforward way to build a JavaScript application. Server-side rendering is easier on the client's device because you're only sending a rendered HTML file to them, but it can be difficult to set up compared to a client-side-rendered application.
+**서버 측 렌더링**(**SSR**)은 단일 페이지 애플리케이션을 렌더링하는 것이 서버의 역할인 애플리케이션 아키텍처입니다. 이는 클라이언트 측 렌더링과 반대되는 개념으로, 자바스크립트 애플리케이션을 빌드하는 가장 일반적이고 가장 간단한 방법입니다. 서버 측 렌더링은 렌더링된 HTML 파일만 전송하기 때문에 클라이언트 기기에서 더 쉽지만 클라이언트 측 렌더링 애플리케이션에 비해 설정이 어려울 수 있습니다.
 
-All of the frameworks covered in this module support server-side rendering as well as client-side rendering. Check out [Next.js](https://nextjs.org/) for React, [Nuxt.js](https://nuxtjs.org/) for Vue (yes, it is confusing, and no, these projects are not related!), [FastBoot](https://github.com/ember-fastboot/ember-cli-fastboot) for Ember, and [Angular Universal](https://angular.io/guide/universal) for Angular.
+이 모듈에서 다루는 모든 프레임워크는 클라이언트 측 렌더링뿐만 아니라 서버 측 렌더링도 지원합니다. React의 경우 [Next.js](https://nextjs.org/), Vue의 경우 [Nuxt.js](https://nuxtjs.org/)(네, 헷갈리실 수 있지만 이 프로젝트들은 서로 관련이 없습니다!), Ember의 경우 [FastBoot](https://github.com/ember-fastboot/ember-cli-fastboot), Angular의 경우 [Angular Universal](https://angular.io/guide/universal) 을 확인해 보세요.
 
-> **Note:** Some SSR solutions are written and maintained by the community, whereas some are "official" solutions provided by the framework's maintainer.
+> **참고:** 일부 SSR 솔루션은 커뮤니티에서 작성 및 유지 관리하는 반면, 일부는 프레임워크의 유지 관리자가 제공하는 "공식" 솔루션입니다.
 
-### Static site generators
+### 정적 사이트 생성기
 
-Static site generators are programs that dynamically generate all the webpages of a multi-page website — including any relevant CSS or JavaScript — so that they can be published in any number of places. The publishing host could be a GitHub pages branch, a Netlify instance, or any private server of your choosing, for example. There are a number of advantages of this approach, mostly around performance (your user's device isn't building the page with JavaScript; it's already complete) and security (static pages have fewer attack vectors). These sites can still utilize JavaScript where they need to, but they are not _dependent_ upon it. Static site generators take time to learn, just like any other tool, which can be a barrier to your development process.
+정적 사이트 생성기는 여러 페이지로 구성된 웹사이트의 모든 웹페이지(관련 CSS 또는 JavaScript 포함)를 동적으로 생성하여 원하는 위치에 게시할 수 있도록 하는 프로그램입니다. 게시 호스트는 예를 들어 GitHub 페이지 브랜치, Netlify 인스턴스 또는 원하는 비공개 서버가 될 수 있습니다. 이 접근 방식에는 여러 가지 장점이 있는데, 주로 성능(사용자의 디바이스가 자바스크립트로 페이지를 빌드하는 것이 아니라 이미 완성된 페이지)과 보안(정적 페이지는 공격 경로가 적음)에 관한 것입니다. 이러한 사이트에서는 필요한 경우 JavaScript를 활용할 수 있지만 JavaScript에 종속되지는 않습니다. 정적 사이트 생성기는 다른 도구와 마찬가지로 학습하는 데 시간이 걸리며, 이는 개발 프로세스에 장애가 될 수 있습니다.
 
-Static sites can have as few or as many unique pages as you want. Just as frameworks empower you to quickly write client-side JavaScript applications, static site generators allow you a way to quickly create HTML files you would otherwise have written individually. Like frameworks, static site generators allow developers to write components that define common pieces of your web pages, and to compose those components together to create a final page. In the context of static site generators, these components are called **templates**. Web pages built by static site generators can even be home to framework applications: if you want one specific page of your statically-generated website to boot up a React application when your user visits it for example, you can do that.
+정적 사이트에는 원하는 만큼의 고유 페이지를 포함할 수 있습니다. 프레임워크를 통해 클라이언트 측 JavaScript 애플리케이션을 빠르게 작성할 수 있는 것처럼 정적 사이트 생성기를 사용하면 개별적으로 작성해야 하는 HTML 파일을 빠르게 생성할 수 있습니다. 프레임워크와 마찬가지로 정적 사이트 생성기를 사용하면 개발자는 웹 페이지의 공통 부분을 정의하는 구성 요소를 작성하고 이러한 구성 요소를 함께 구성하여 최종 페이지를 만들 수 있습니다. 정적 사이트 생성기의 맥락에서 이러한 구성 요소를 **템플릿** 이라고 합니다. 정적 사이트 생성기로 구축된 웹 페이지에는 프레임워크 애플리케이션이 포함될 수도 있습니다. 예를 들어 사용자가 웹사이트를 방문할 때 정적으로 생성된 웹사이트의 특정 페이지가 React 애플리케이션을 부팅하도록 하려는 경우 그렇게 할 수 있습니다.
 
-Static site generators have been around for quite a long time, and they have seen a bit of a revival in the recent history of the web. A handful of powerful options are now available, such as [Hugo](https://gohugo.io/), [Jekyll](https://jekyllrb.com/), [Eleventy](https://www.11ty.dev/), and [Gatsby](https://www.gatsbyjs.com/).
+정적 사이트 생성기는 꽤 오랫동안 사용되어 왔으며, 최근 웹 역사에서 약간의 부활을 보였습니다. 이제 [휴고](https://gohugo.io/), [지킬](https://jekyllrb.com/), [일레븐티](https://www.11ty.dev/), [개츠비](https://www.gatsbyjs.com/) 등 몇 가지 강력한 옵션을 사용할 수 있습니다.
 
-If you'd like to learn more about static site generators on the whole, check out Tatiana Mac's [Beginner's guide to Eleventy](https://www.tatianamac.com/posts/beginner-eleventy-tutorial-parti/). In the first article of the series, she explains what a static site generator is, and how it relates to other means of publishing web content.
+정적 사이트 생성기에 대해 전반적으로 자세히 알아보려면 타티아나 맥의 [초보자 가이드 Eleveny](https://www.tatianamac.com/posts/beginner-eleventy-tutorial-parti/) 를 확인하세요. 시리즈의 첫 번째 글에서는 정적 사이트 생성기가 무엇인지, 그리고 다른 웹 콘텐츠 게시 수단과의 관계에 대해 설명합니다.
 
-## Summary
+## 요약
 
-And that brings us to the end of our introduction to frameworks — we've not taught you any code yet, but hopefully we've given you a useful background on why you'd use frameworks in the first place and how to go about choosing one, and made you excited to learn more and get stuck in!
+이제 프레임워크에 대한 소개를 마쳤습니다. 아직 코드를 배운 것은 아니지만, 프레임워크를 사용하는 이유와 프레임워크를 선택하는 방법에 대한 유용한 배경 지식을 제공하고, 더 많은 것을 배우고 싶고 프레임워크에 빠져들고 싶다는 마음이 생겼기를 바랍니다.
 
-Our next article goes down to a lower level, looking at the specific kinds of features frameworks tend to offer, and why they work as they do.
+다음 글에서는 프레임워크가 제공하는 특정 기능의 종류와 프레임워크가 작동하는 이유에 대해 더 자세히 살펴보겠습니다.
 
 {{NextMenu("Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Main_features", "Learn/Tools_and_testing/Client-side_JavaScript_frameworks")}}
