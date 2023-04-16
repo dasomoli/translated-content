@@ -1,58 +1,57 @@
 ---
-title: JavaScript First Steps
+title: JavaScript 첫걸음
 slug: Learn/JavaScript/First_steps
 ---
 
 {{LearnSidebar}}
 
-In our first JavaScript module, we first answer some fundamental questions such as "what is JavaScript?", "what does it look like?", and "what can it do?", before moving on to taking you through your first practical experience of writing JavaScript. After that, we discuss some key building blocks in detail, such as variables, strings, numbers and arrays.
+첫 번째 자바스크립트 모듈에서는 "자바스크립트란 무엇인가요?", "어떻게 생겼나요?", "무엇을 할 수 있나요?"와 같은 기본적인 질문에 먼저 답한 다음, 자바스크립트 작성의 첫 번째 실제 경험을 안내합니다. 그런 다음 변수, 문자열, 숫자, 배열과 같은 몇 가지 주요 구성 요소에 대해 자세히 설명합니다.
 
 > **Callout:**
 >
-> #### Looking to become a front-end web developer?
+> #### 프론트엔드 웹 개발자가 되고 싶으신가요?
 >
-> We have put together a course that includes all the essential information you need to
-> work towards your goal.
+> 목표를 달성하는 데 필요한 모든 필수 정보가 포함된 강좌를 준비했습니다.
 >
-> [**Get started**](/en-US/docs/Learn/Front-end_web_developer)
+> [**시작하기**](/ko/docs/Learn/Front-end_web_developer)
 
-## Prerequisites
+## 전제 조건
 
-Before starting this module, you don't need any previous JavaScript knowledge, but you should have some familiarity with HTML and CSS. You are advised to work through the following modules before starting on JavaScript:
+이 모듈을 시작하기 전에 자바스크립트에 대한 사전 지식이 없어도 되지만, HTML과 CSS에 어느 정도 익숙해야 합니다. JavaScript를 시작하기 전에 다음 모듈을 먼저 살펴보는 것이 좋습니다:
 
-- [Getting started with the Web](/en-US/docs/Learn/Getting_started_with_the_web) (which includes a really [basic JavaScript introduction](/en-US/docs/Learn/Getting_started_with_the_web/JavaScript_basics)).
-- [Introduction to HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML).
-- [Introduction to CSS](/en-US/docs/Learn/CSS/First_steps).
+- [웹 시작하기](/ko/docs/Learn/Getting_started_with_the_web) (아주 [기본적인 JavaScript 소개](/ko/docs/Learn/Getting_started_with_the_web/JavaScript_basics) 포함).
+- [HTML 소개](/ko/docs/Learn/HTML/Introduction_to_HTML).
+- [CSS 소개](/ko/docs/Learn/CSS/First_steps).
 
-> **Note:** If you are working on a computer/tablet/other device where you don't have the ability to create your own files, you could try out (most of) the code examples in an online coding program such as [JSBin](https://jsbin.com/) or [Glitch](https://glitch.com/).
+> **참고:** 직접 파일을 만들 수 없는 컴퓨터/태블릿/기타 기기에서 작업하는 경우, [JSBin](https://jsbin.com/)이나 [Glitch](https://glitch.com/)와 같은 온라인 코딩 프로그램에서 코드 예제(대부분)를 사용해 볼 수 있습니다.
 
-## Guides
+## 가이드
 
-- [What is JavaScript?](/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript)
-  - : Welcome to the MDN beginner's JavaScript course! In this first article we will look at JavaScript from a high level, answering questions such as "what is it?", and "what is it doing?", and making sure you are comfortable with JavaScript's purpose.
-- [A first splash into JavaScript](/en-US/docs/Learn/JavaScript/First_steps/A_first_splash)
-  - : Now you've learned something about the theory of JavaScript, and what you can do with it, we are going to give you a crash course on the basic features of JavaScript via a completely practical tutorial. Here you'll build up a simple "Guess the number" game, step by step.
-- [What went wrong? Troubleshooting JavaScript](/en-US/docs/Learn/JavaScript/First_steps/What_went_wrong)
-  - : When you built up the "Guess the number" game in the previous article, you may have found that it didn't work. Never fear — this article aims to save you from tearing your hair out over such problems by providing you with some simple tips on how to find and fix errors in JavaScript programs.
-- [Storing the information you need — Variables](/en-US/docs/Learn/JavaScript/First_steps/Variables)
-  - : After reading the last couple of articles you should now know what JavaScript is, what it can do for you, how you use it alongside other web technologies, and what its main features look like from a high level. In this article, we will get down to the real basics, looking at how to work with the most basic building blocks of JavaScript — Variables.
-- [Basic math in JavaScript — numbers and operators](/en-US/docs/Learn/JavaScript/First_steps/Math)
-  - : At this point in the course, we discuss maths in JavaScript — how we can combine operators and other features to successfully manipulate numbers to do our bidding.
-- [Handling text — strings in JavaScript](/en-US/docs/Learn/JavaScript/First_steps/Strings)
-  - : Next, we'll turn our attention to strings — this is what pieces of text are called in programming. In this article, we'll look at all the common things that you really ought to know about strings when learning JavaScript, such as creating strings, escaping quotes in strings, and joining them together.
-- [Useful string methods](/en-US/docs/Learn/JavaScript/First_steps/Useful_string_methods)
-  - : Now we've looked at the very basics of strings, let's move up a gear and start thinking about what useful operations we can do on strings with built-in methods, such as finding the length of a text string, joining and splitting strings, substituting one character in a string for another, and more.
-- [Arrays](/en-US/docs/Learn/JavaScript/First_steps/Arrays)
-  - : In the final article of this module, we'll look at arrays — a neat way of storing a list of data items under a single variable name. Here we look at why this is useful, then explore how to create an array, retrieve, add, and remove items stored in an array, and more besides.
+- [자바스크립트란 무엇인가요?](/ko/docs/Learn/JavaScript/First_steps/What_is_JavaScript)
+  - : MDN 초급 자바스크립트 강좌에 오신 것을 환영합니다! 이 첫 번째 글에서는 "자바스크립트는 무엇인가요?", "자바스크립트는 무엇을 하나요?"와 같은 질문에 답하고 자바스크립트의 용도에 익숙해질 수 있도록 높은 수준에서 자바스크립트를 살펴볼 것입니다.
+- [자바스크립트 첫걸음](/ko/docs/Learn/JavaScript/First_steps/A_first_splash)
+  - : 이제 자바스크립트의 이론과 자바스크립트로 무엇을 할 수 있는지에 대해 배웠으니, 이제 완전히 실용적인 튜토리얼을 통해 자바스크립트의 기본 기능에 대해 알아볼 차례입니다. 여기서는 간단한 "숫자 맞추기" 게임을 단계별로 만들 것입니다.
+- [무엇이 잘못되었나요? 자바스크립트 문제 해결](/ko/docs/Learn/JavaScript/First_steps/What_went_wrong)
+  - : 이전 글에서 "숫자 맞추기" 게임을 만들었을 때 게임이 작동하지 않는 것을 발견했을 수 있습니다. 이 글에서는 자바스크립트 프로그램에서 오류를 찾고 수정하는 방법에 대한 몇 가지 간단한 팁을 제공하여 이러한 문제로 머리를 쥐어뜯지 않도록 도와드리고자 합니다.
+- [필요한 정보 저장하기 - 변수](/ko/docs/Learn/JavaScript/First_steps/Variables)
+  - : 지난 몇 개의 글을 읽으셨다면 이제 자바스크립트가 무엇인지, 자바스크립트가 무엇을 할 수 있는지, 다른 웹 기술과 함께 자바스크립트를 어떻게 사용하는지, 자바스크립트의 주요 기능은 어떤 것인지 대략적인 수준에서 이해하셨을 것입니다. 이번 글에서는 자바스크립트의 가장 기본적인 구성 요소인 변수를 다루는 방법을 살펴보며 진짜 기본으로 돌아가 보겠습니다.
+- [자바스크립트의 기본 수학 - 숫자와 연산자](/ko/docs/Learn/JavaScript/First_steps/Math)
+  - : 이 강좌의 이 시점에서는 연산자 및 기타 기능을 결합하여 원하는 대로 숫자를 성공적으로 조작하는 방법, 즉 자바스크립트의 수학에 대해 설명합니다.
+- [자바스크립트에서 텍스트 처리하기 - 문자열](/ko/docs/Learn/JavaScript/First_steps/Strings)
+  - : 다음으로, 프로그래밍에서 텍스트 조각이라고 부르는 문자열에 대해 알아볼 것입니다. 이 글에서는 문자열 생성, 문자열에서 따옴표 이스케이프, 문자열 결합 등 자바스크립트를 배울 때 문자열에 대해 알아야 할 모든 일반적인 사항을 살펴볼 것입니다.
+- [유용한 문자열 메서드](/ko/docs/Learn/JavaScript/First_steps/Useful_string_methods)
+  - : 이제 문자열의 기본 사항을 살펴보았으니 한 단계 더 나아가 텍스트 문자열의 길이 찾기, 문자열 결합 및 분할, 문자열의 한 문자를 다른 문자로 대체하는 등 내장된 메서드를 사용하여 문자열에서 수행할 수 있는 유용한 연산에 대해 생각해 보겠습니다.
+- [배열](/ko/docs/Learn/JavaScript/First_steps/Arrays)
+  - : 이 모듈의 마지막 글에서는 데이터 항목의 목록을 단일 변수 이름으로 저장하는 깔끔한 방법인 배열에 대해 살펴보겠습니다. 여기서는 배열이 유용한 이유를 살펴보고 배열을 만드는 방법, 배열에 저장된 항목을 검색, 추가, 제거하는 방법 등을 살펴봅니다.
 
-## Assessments
+## 평가
 
-The following assessment will test your understanding of the JavaScript basics covered in the guides above.
+다음 평가는 위 가이드에서 다룬 자바스크립트 기본 사항에 대한 이해도를 테스트합니다.
 
-- [Silly story generator](/en-US/docs/Learn/JavaScript/First_steps/Silly_story_generator)
-  - : In this assessment, you'll be tasked with taking some of the knowledge you've picked up in this module's articles and applying it to creating a fun app that generates random silly stories. Have fun!
+- [우스꽝스러운 스토리 생성기](/ko/docs/Learn/JavaScript/First_steps/Silly_story_generator)
+  - : 이 평가에서는 이 모듈의 글에서 배운 지식 중 일부를 무작위로 우스꽝스러운 스토리를 생성하는 재미있는 앱을 만드는 데 적용하는 과제를 수행하게 됩니다. 재미있게 해보세요!
 
-## See also
+## 참고 자료
 
-- [Learn JavaScript](https://learnjavascript.online/)
-  - : An excellent resource for aspiring web developers — Learn JavaScript in an interactive environment, with short lessons and interactive tests, guided by automated assessment. The first 40 lessons are free, and the complete course is available for a small one-time payment.
+- [자바스크립트 배우기](https://learnjavascript.online/)
+  - : 웹 개발자 지망생을 위한 훌륭한 리소스 - 자동화된 평가에 따라 안내되는 짧은 강의와 대화형 테스트를 통해 대화형 환경에서 JavaScript를 배워보세요. 처음 40개의 강의는 무료이며, 전체 강의는 소액의 일회성 결제로 이용할 수 있습니다.
