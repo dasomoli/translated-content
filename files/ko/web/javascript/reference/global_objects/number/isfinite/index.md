@@ -1,66 +1,65 @@
 ---
 title: Number.isFinite()
 slug: Web/JavaScript/Reference/Global_Objects/Number/isFinite
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Number.isFinite
 ---
 
 {{JSRef}}
 
-**`Number.isFinite()`** 메서드는 주어진 값이 유한수인지 판별합니다.
+The **`Number.isFinite()`** static method determines whether the passed value is a finite number — that is, it checks that a given value is a number, and the number is neither positive {{jsxref("Infinity")}}, negative `Infinity`, nor {{jsxref("NaN")}}.
 
 {{EmbedInteractiveExample("pages/js/number-isfinite.html")}}
 
-## 구문
+## Syntax
 
-```js
-    Number.isFinite(value)
+```js-nolint
+Number.isFinite(value)
 ```
 
-### 매개변수
+### Parameters
 
 - `value`
-  - : 유한수인지 판별할 값.
+  - : The value to be tested for finiteness.
 
-### 반환 값
+### Return value
 
-유한수 여부에 대한 {{jsxref("Boolean")}} 값.
+The boolean value `true` if the given value is a finite number. Otherwise `false`.
 
-## 설명
+## Examples
 
-전역 함수 {{jsxref("isFinite", "isFinite()")}}와 비교했을 때, `Number.isFinite()` 메서드는 매개변수를 숫자로 변환하지 않습니다. 즉 값이 숫자이며 동시에 유한수일 때만 `true`를 반환합니다.
-
-## 예제
+### Using isFinite()
 
 ```js
-Number.isFinite(Infinity);  // false
-Number.isFinite(NaN);       // false
+Number.isFinite(Infinity); // false
+Number.isFinite(NaN); // false
 Number.isFinite(-Infinity); // false
 
-Number.isFinite(0);         // true
-Number.isFinite(2e64);      // true
-
-Number.isFinite('0');       // false
-                            // 전역함수 isFinite('0')라면 true
-Number.isFinite(null);      // false
-                            // 전역함수 isFinite(null)라면 true
+Number.isFinite(0); // true
+Number.isFinite(2e64); // true
 ```
 
-## 폴리필
+### Difference between Number.isFinite() and global isFinite()
+
+In comparison to the global {{jsxref("isFinite", "isFinite()")}} function, this method doesn't first convert the parameter to a number. This means only values of the type number _and_ are finite return `true`, and non-numbers always return `false`.
 
 ```js
-if (Number.isFinite === undefined) Number.isFinite = function(value) {
-    return typeof value === 'number' && isFinite(value);
-}
+isFinite("0"); // true; coerced to number 0
+Number.isFinite("0"); // false
+isFinite(null); // true; coerced to number 0
+Number.isFinite(null); // false
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 메서드가 속한 {{jsxref("Number")}} 객체.
-- 전역 함수 {{jsxref("isFinite")}}.
+- [Polyfill of `Number.isFinite` in `core-js`](https://github.com/zloirock/core-js#ecmascript-number)
+- The {{jsxref("Number")}} object it belongs to
+- The global function {{jsxref("isFinite")}}

@@ -1,26 +1,36 @@
 ---
 title: Color picker tool
 slug: Web/CSS/CSS_Colors/Color_picker_tool
+page-type: guide
 ---
 
 {{CSSRef}}
 
-이 도구를 사용하면 웹용 사용자 정의 색상을 쉽게 만들고 조정하고 실험 할 수 있습니다. 또한 HEXA 색상, RGB (빨강 / 녹색 / 파랑) 및 HSL (색조 / 채도 / 밝기)를 비롯하여 [CSS](/ko/docs/Web/CSS) 에서 지원하는 다양한 [색상 형식](/ko/docs/Web/CSS/color_value) 간에 쉽게 변환 할 수 [있습니다](/ko/docs/Web/CSS/color_value) . RGB (rgba) 및 HSL (hsla) 형식에서도 알파 채널을 제어 할 수 있습니다.
+This tool makes it easy to create, adjust, and experiment with custom colors for the web. It also makes it easy to convert between various [color formats](/en-US/docs/Web/CSS/color_value) supported by [CSS](/en-US/docs/Web/CSS), including: HEXA colors, RGB (Red/Green/Blue) and HSL (Hue/Saturation/Lightness). Control over the alpha channel is also supported.
 
-색상을 정의하는 매개 변수를 조정하면 세 가지 표준 웹 CSS 형식으로 모두 표시됩니다. 또한 현재 선택한 색상을 기반으로 HSL 및 HSV 용 팔레트와 알파가 생성됩니다. "스포이드"스타일 색상 선택 도구 상자는 HSL 또는 HSV 형식으로 전환 할 수 있습니다. 도구의 바닥에있는 상자로 색상을 드래그하고 서로 위로 움직여 색상을 비교할 수 있습니다. 상대 Z 색인 값을 조정하여 서로를 앞뒤로 이동하십시오.
+As you adjust the parameters that define the color, it gets displayed in all three standard Web CSS formats. In addition, based on the currently-selected color, a palette for HSL and HSV, as well as alpha, is generated. The "eyedropper" style color picker box can be toggled between HSL or HSV format. You can also test colors and how they overlap one another by dragging them into the box at the bottom of the tool and moving them over one another. Adjust their relative Z index values to move them forward and behind one another.
 
-이 도구는 [HTML](/ko/docs/Web/HTML) 에 적용 할 완벽한 CSS 색상을 식별하는 데 도움을줍니다 .
+This tool will help you identify the perfect CSS colors to apply to your [HTML](/en-US/docs/Web/HTML).
 
 {{EmbedGHLiveSample("css-examples/tools/color-picker/", '100%', 900)}}
 
-위에서 작성한 생성 된 색상은 달리 명시하지 않는 한 CSS 및 HTML에서 색상이 사용되는 모든 위치에서 사용할 수 있습니다.
+The generated colors you create above can be used anywhere color is used in CSS and HTML, unless otherwise noted.
 
 ## See also
 
 For more on using color, see:
 
-- [Applying color to HTML elements using CSS](/ko/docs/Web/HTML/Applying_color)
-- [Fundamental text and font styling](/ko/docs/Learn/CSS/Styling_text/Fundamentals)
-- [Styling borders using CSS](/ko/docs/Learn/CSS/Styling_boxes/Borders)
-- [Changing background styles using CSS](/ko/docs/Learn/CSS/Styling_boxes/Backgrounds)
-- [Color and color contrast](/ko/docs/Learn/Accessibility/CSS_and_JavaScript#Color_and_color_contrast)
+- [Applying color to HTML elements using CSS](/en-US/docs/Web/CSS/CSS_Colors/Applying_color)
+- [Fundamental text and font styling](/en-US/docs/Learn/CSS/Styling_text/Fundamentals)
+- [Styling borders using CSS](/en-US/docs/Learn/CSS/Building_blocks/Backgrounds_and_borders)
+- [Changing background styles using CSS](/en-US/docs/Learn/CSS/Building_blocks/Backgrounds_and_borders)
+- [Color and color contrast](/en-US/docs/Learn/Accessibility/CSS_and_JavaScript#color_and_color_contrast)
+
+For additional tools, see:
+
+- [Border-image generator](/en-US/docs/Web/CSS/CSS_Backgrounds_and_Borders/Border-image_generator)
+  - : This interactive tool lets you visually create border images (the {{cssxref("border-image")}} property).
+- [Border-radius generator](/en-US/docs/Web/CSS/CSS_Backgrounds_and_Borders/Border-radius_generator)
+  - : This interactive tool lets you visually create rounded corners (the {{cssxref("border-radius")}} property).
+- [Box-shadow generator](/en-US/docs/Web/CSS/CSS_Backgrounds_and_Borders/Box-shadow_generator)
+  - : This interactive tool lets you visually create shadows behind elements (the {{cssxref("box-shadow")}} property).

@@ -1,41 +1,56 @@
 ---
-title: DOMContentLoaded
+title: "Window: DOMContentLoaded event"
+short-title: DOMContentLoaded
 slug: Web/API/Window/DOMContentLoaded_event
-original_slug: Web/Events/DOMContentLoaded
+page-type: web-api-event
+browser-compat: api.Window.DOMContentLoaded_event
 ---
+
 {{APIRef}}
 
-**`DOMContentLoaded`** 이벤트는 초기 HTML 문서를 완전히 불러오고 분석했을 때 발생합니다. 스타일 시트, 이미지, 하위 프레임의 로딩은 기다리지 않습니다.
+The **`DOMContentLoaded`** event fires when the HTML document has been completely parsed, and all deferred scripts (`<script defer src="…">` and `<script type="module">`) have downloaded and executed. It doesn't wait for other things like images, subframes, and async scripts to finish loading.
 
-| 확산               | 예                                                              |
-| ------------------ | --------------------------------------------------------------- |
-| 취소 가능          | 예 (although specified as a simple event that isn't cancelable) |
-| 인터페이스         | {{domxref("Event")}}                                    |
-| 이벤트 처리기 속성 | 아니오                                                          |
+`DOMContentLoaded` does not wait for stylesheets to load, however deferred scripts _do_ wait for stylesheets, and the `DOMContentLoaded` event is queued after deferred scripts. Also, scripts which aren't deferred or async (e.g. `<script>`) will wait for already-parsed stylesheets to load.
 
-`DOMContentLoaded`의 원본 대상은 다 불러온 {{domxref("Document")}}입니다. You can listen for this event on the `Window` interface to handle it in the capture or bubbling phases. For full details on this event please see the page on the Document: {{domxref("Document/DOMContentLoaded_event", "DOMContentLoaded")}} event.
+The original target for this event is the {{domxref("Document")}} that has loaded. You can listen for this event on the `Window` interface to handle it in the capture or bubbling phases. For full details on this event please see the page on the Document: {{domxref("Document/DOMContentLoaded_event", "DOMContentLoaded")}} event.
 
 A different event, {{domxref("Window/load_event", "load")}}, should be used only to detect a fully-loaded page. It is a common mistake to use `load` where `DOMContentLoaded` would be more appropriate.
 
-## 예제
+This event is not cancelable.
 
-### 기본 용도
+## Syntax
+
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
 
 ```js
-window.addEventListener('DOMContentLoaded', (event) => {
-    console.log('DOM fully loaded and parsed');
+addEventListener("DOMContentLoaded", (event) => {});
+
+onDOMContentLoaded = (event) => {};
+```
+
+## Event type
+
+A generic {{domxref("Event")}}.
+
+## Examples
+
+### Basic usage
+
+```js
+window.addEventListener("DOMContentLoaded", (event) => {
+  console.log("DOM fully loaded and parsed");
 });
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - Related events: {{domxref("Window/load_event", "load")}}, {{domxref("Document/readystatechange_event", "readystatechange")}}, {{domxref("Window/beforeunload_event", "beforeunload")}}, {{domxref("Window/unload_event", "unload")}}
 - This event on {{domxref("Document")}} targets: {{domxref("Document/DOMContentLoaded_event", "DOMContentLoaded")}}

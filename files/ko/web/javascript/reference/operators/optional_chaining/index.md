@@ -1,82 +1,206 @@
 ---
-title: Optional chaining
+title: Optional chaining (?.)
 slug: Web/JavaScript/Reference/Operators/Optional_chaining
+page-type: javascript-operator
+browser-compat: javascript.operators.optional_chaining
 ---
 
 {{JSSidebar("Operators")}}
 
-**optional chaining** 연산자 (**`?.`**) 는 체인의 각 참조가 유효한지 명시적으로 검증하지 않고, 연결된 객체 체인 내에 깊숙이 위치한 속성 값을 읽을 수 있다.
+The **optional chaining (`?.`)** operator accesses an object's property or calls a function. If the object accessed or function called using this operator is {{jsxref("undefined")}} or [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null), the expression short circuits and evaluates to {{jsxref("undefined")}} instead of throwing an error.
 
-`?.` 연산자는 `.` 체이닝 연산자와 유사하게 작동하지만, 만약 참조가 {{glossary("nullish")}} ({{JSxRef("null")}} 또는 {{JSxRef("undefined")}})이라면, 에러가 발생하는 것 대신에 표현식의 리턴 값은 `undefined`로 단락된다. 함수 호출에서 사용될 때, 만약 주어진 함수가 존재하지 않는다면, `undefined`를 리턴한다.
+{{EmbedInteractiveExample("pages/js/expressions-optionalchainingoperator.html", "taller")}}
 
-따라서 참조가 누락될 가능성이 있는 경우 연결된 속성으로 접근할 때 더 짧고 간단한 표현식이 생성된다. 어떤 속성이 필요한지에 대한 보증이 확실하지 않는 경우 객체의 내용을 탐색하는 동안 도움이 될 수 있다.
+## Syntax
 
-optional chaining은 선언되지 않은 루트 객체에 사용할 수 없지만, 정의되지 않은 루트 객체와는 함께 사용할 수 있다.
-
-{{EmbedInteractiveExample("pages/js/expressions-optionalchainingoperator.html")}}
-
-## 문법
-
-```js
-    obj?.prop
-    obj?.[expr]
-    arr?.[index]
-    func?.(args)
+```js-nolint
+obj.val?.prop
+obj.val?.[expr]
+obj.func?.(args)
 ```
 
-## 설명
+## Description
 
-optional chaining 연산자는 참조나 기능이 `undefined` 또는 `null`일 수 있을 때 연결된 객체의 값에 접근하는 단순화할 수 있는 방법을 제공한다.
+The `?.` operator is like the `.` chaining operator, except that instead of causing an error if a reference is [nullish](/en-US/docs/Glossary/Nullish) ([`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null) or {{JSxRef("undefined")}}), the expression short-circuits with a return value of `undefined`. When used with function calls, it returns `undefined` if the given function does not exist.
 
-예를 들어, 중첩된 구조를 가진 객체에서 `obj`가 있다. optional chaining이 없이 깊이 중첩된 하위 속성을 찾으려면, 다음과 같이 참조를 확인해야 한다:
+This results in shorter and simpler expressions when accessing chained properties when the possibility exists that a reference may be missing. It can also be helpful while exploring the content of an object when there's no known guarantee as to which properties are required.
+
+For example, consider an object `obj` which has a nested structure. Without
+optional chaining, looking up a deeply-nested subproperty requires validating the
+references in between, such as:
 
 ```js
-let nestedProp = obj.first && obj.first.second;
+const nestedProp = obj.first && obj.first.second;
 ```
 
-`obj.first`의 값은 `obj.first.second`의 값에 접근하기 전에 `null` (그리고 `undefined`)가 아니라는 점을 검증한다. 이는 만약에 `obj.first`를 테스트 없이 `obj.first.second` 에 직접 접근할 때 일어날 수 있는 에러를 방지한다.
+The value of `obj.first` is confirmed to be non-`null` (and
+non-`undefined`) before then accessing the value of
+`obj.first.second`. This prevents the error that would occur if you accessed
+`obj.first.second` directly without testing `obj.first`.
 
-그러나 optional chaining 연산자(`?.`)를 사용하여, `obj.first.second` 에 접근하기 전에 `obj.first`의 상태에 따라 명시적으로 테스트하거나 단락시키지 않아도 된다:
+This is an idiomatic pattern in JavaScript, but it gets verbose when the chain is long, and it's not safe. For example, if `obj.first` is a {{glossary("Falsy")}} value that's not `null` or `undefined`, such as `0`, it would still short-circuit and make `nestedProp` become `0`, which may not be desirable.
+
+With the optional chaining operator (`?.`), however, you don't have to
+explicitly test and short-circuit based on the state of `obj.first` before
+trying to access `obj.first.second`:
 
 ```js
-let nestedProp = obj.first?.second;
+const nestedProp = obj.first?.second;
 ```
 
-`.` 대신에 `?.` 연산자를 사용함으로써, 자바스크립트는 `obj.first.second`에 접근하기 전에 `obj.first`가 `null` 또는 `undefined`가 아니라는 것을 암묵적으로 확인하는 것을 알고 있다. 만약 `obj.first`가 `null` 또는 `undefined`이라면, 그 표현식은 자동으로 단락되어 `undefined`가 반환된다.
+By using the `?.` operator instead of just `.`, JavaScript knows
+to implicitly check to be sure `obj.first` is not `null` or
+`undefined` before attempting to access `obj.first.second`. If
+`obj.first` is `null` or `undefined`, the expression
+automatically short-circuits, returning `undefined`.
 
-이는 임시 변수가 실제로 생성되지 않는다는 점을 제외하고 다음과 동일하다.
+This is equivalent to the following, except that the temporary variable is in fact not
+created:
 
 ```js
-let temp = obj.first;
-let nestedProp = ((temp === null || temp === undefined) ? undefined : temp.second);
+const temp = obj.first;
+const nestedProp =
+  temp === null || temp === undefined ? undefined : temp.second;
 ```
 
-### 함수의 호출과 Optional chaining
+Optional chaining cannot be used on a non-declared root object, but can be used with a root object with value `undefined`.
 
-존재하지 않을 수 있는 매서드를 호출할 때, optional chaining을 사용할 수 있다. 예를 들어, 구현 기간이나 사용자 장치에서 사용할 수 없는 기능 때문에 메서드를 사용할 수 없는 API를 사용할 경우, 유용할 수 있다.
-
-함수 호출과 optional chaining을 사용함으로써 메서드를 찾을 수 없는 경우에 예외를 발생시키는 것 대신에 그 표현식은 자동으로 `undefined`를 반환한다:
-
-```js
-let result = someInterface.customMethod?.();
+```js example-bad
+undeclaredVar?.prop; // ReferenceError: undeclaredVar is not defined
 ```
 
-<div class="blockIndicator note"><p><strong>메모:</strong> 만약 속성에 해당 이름이 있지만 함수가 아니라면, <code>?.</code>의 사용은 여전히 예외를 발생시킨다. {{JSxRef("TypeError")}} exception (<code>x.y</code><code> is not a function</code>).</p></div>
+### Optional chaining with function calls
 
-<div class="blockIndicator note"><p><strong>메모:</strong> 만약 <code>someInterface</code> 자체가 <code>null</code>이나 <code>undefined</code>이면, <code>TypeError</code> 예외가 여전히 발생 할 것이다. <code>someInterface</code> 자체가 <code>null</code>이나 <code>undefined</code>으로 예상된다면, <code>?.</code>을 사용해야한다: <code>someInterface?.customMethod?.()</code></p></div>
+You can use optional chaining when attempting to call a method which may not exist.
+This can be helpful, for example, when using an API in which a method might be
+unavailable, either due to the age of the implementation or because of a feature which
+isn't available on the user's device.
 
-#### optional callbacks과 event handlers 다루기
-
-만약 객체에서 [destructuring assignment](/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#object_destructuring)로 callbacks 또는 fetch 메서드를 사용한다면, 그 존재 여부를 테스트하지 않으면 함수로 호출할 수 없는 존재 하지 않는 값을 가질 수 있다. `?.`을 사용하면, 다음 추가 테스트를 피할 수 있다:
+Using optional chaining with function calls causes the expression to automatically
+return `undefined` instead of throwing an exception if the method isn't
+found:
 
 ```js
-// Written as of ES2019
+const result = someInterface.customMethod?.();
+```
+
+However, if there is a property with such a name which is not a function, using `?.` will still raise a {{JSxRef("TypeError")}} exception "someInterface.customMethod is not a function".
+
+> **Note:** If `someInterface` itself is `null` or
+> `undefined`, a {{JSxRef("TypeError")}} exception will still be
+> raised ("someInterface is null"). If you expect that
+> `someInterface` itself may be `null` or `undefined`,
+> you have to use `?.` at this position as
+> well: `someInterface?.customMethod?.()`.
+
+`eval?.()` is the shortest way to enter [_indirect eval_](/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval#direct_and_indirect_eval) mode.
+
+### Optional chaining with expressions
+
+You can also use the optional chaining operator with [bracket notation](/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors#bracket_notation), which allows passing an expression as the property name:
+
+```js
+const nestedProp = obj?.["prop" + "Name"];
+```
+
+This is particularly useful for arrays, since array indices must be accessed with brackets.
+
+```js
+function printMagicIndex(arr) {
+  console.log(arr?.[42]);
+}
+
+printMagicIndex([0, 1, 2, 3, 4, 5]); // undefined
+printMagicIndex(); // undefined; if not using ?., this would throw
+```
+
+### Optional chaining not valid on the left-hand side of an assignment
+
+It is invalid to try to assign to the result of an optional chaining expression:
+
+```js example-bad
+const object = {};
+object?.property = 1; // SyntaxError: Invalid left-hand side in assignment
+```
+
+### Short-circuiting
+
+When using optional chaining with expressions, if the left operand is `null` or `undefined`, the expression will not be evaluated. For instance:
+
+```js
+const potentiallyNullObj = null;
+let x = 0;
+const prop = potentiallyNullObj?.[x++];
+
+console.log(x); // 0 as x was not incremented
+```
+
+Subsequent property accesses will not be evaluated either.
+
+```js
+const potentiallyNullObj = null;
+const prop = potentiallyNullObj?.a.b;
+// This does not throw, because evaluation has already stopped at
+// the first optional chain
+```
+
+This is equivalent to:
+
+```js
+const potentiallyNullObj = null;
+const prop =
+  potentiallyNullObj === null || potentiallyNullObj === undefined
+    ? undefined
+    : potentiallyNullObj.a.b;
+```
+
+However, this short-circuiting behavior only happens along one continuous "chain" of property accesses. If you [group](/en-US/docs/Web/JavaScript/Reference/Operators/Grouping) one part of the chain, then subsequent property accesses will still be evaluated.
+
+```js
+const potentiallyNullObj = null;
+const prop = (potentiallyNullObj?.a).b;
+// TypeError: Cannot read properties of undefined (reading 'b')
+```
+
+This is equivalent to:
+
+```js
+const potentiallyNullObj = null;
+const temp = potentiallyNullObj?.a;
+const prop = temp.b;
+```
+
+Except the `temp` variable isn't created.
+
+## Examples
+
+### Basic example
+
+This example looks for the value of the `name` property for the member
+`bar` in a map when there is no such member. The result is therefore
+`undefined`.
+
+```js
+const myMap = new Map();
+myMap.set("foo", { name: "baz", desc: "inga" });
+
+const nameBar = myMap.get("bar")?.name;
+```
+
+### Dealing with optional callbacks or event handlers
+
+If you use callbacks or fetch methods from an object with
+[a destructuring assignment](/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#object_destructuring), you may have non-existent values that you cannot call as
+functions unless you have tested their existence. Using `?.`, you can avoid this extra test:
+
+```js
+// Code written without optional chaining
 function doSomething(onContent, onError) {
   try {
-    // ... do something with the data
-  }
-  catch (err) {
-    if (onError) { // Testing if onError really exists
+    // Do something with the data
+  } catch (err) {
+    // Testing if onError really exists
+    if (onError) {
       onError(err.message);
     }
   }
@@ -87,100 +211,59 @@ function doSomething(onContent, onError) {
 // Using optional chaining with function calls
 function doSomething(onContent, onError) {
   try {
-   // ... do something with the data
-  }
-  catch (err) {
-    onError?.(err.message); // no exception if onError is undefined
+    // Do something with the data
+  } catch (err) {
+    onError?.(err.message); // No exception if onError is undefined
   }
 }
 ```
 
-### 표현식에서 Optional chaining
+### Stacking the optional chaining operator
 
-optional chaining 연산자를 속성에 표현식으로 접근할 때 대괄호 표기법([the bracket notation of the property accessor](/en-US/docs/Web/JavaScript/Reference/Operators/Property_Accessors#bracket_notation))을 사용할 수 있다:
-
-```js
-let nestedProp = obj?.['prop' + 'Name'];
-```
-
-### Optional chaining은 할당자 왼쪽에서 유효하지 않습니다.
+With nested structures, it is possible to use optional chaining multiple times:
 
 ```js
-let object = {};
-object?.property = 1; // Uncaught SyntaxError: Invalid left-hand side in assignment
-```
-
-### Optional chaining으로 배열 항목에 접근하기
-
-```js
-let arrayItem = arr?.[42];
-```
-
-## 예제
-
-### 기본 예제
-
-이 예제는 해당 멤버가 없을 때, map에서 멤버 bar의 `name`의 속성 값을 찾는다. 그러므로 결과는 `undefined`이다.
-
-```js
-let myMap = new Map();
-myMap.set("foo", {name: "baz", desc: "inga"});
-
-let nameBar = myMap.get("bar")?.name;
-```
-
-### 단락 평가
-
-표현식에서 optional chaining을 사용할 때, 만약 왼쪽에 있는 피연산자가 `null` or `undefined`인 경우, 그 표현식은 평가되지 않는다. 예들 들어:
-
-```js
-let potentiallyNullObj = null;
-let x = 0;
-let prop = potentiallyNullObj?.[x++];
-
-console.log(x); // 0  x는 증가하지 않음
-```
-
-### optional chaining 연산자 쌓기
-
-중첩된 구조에서는 optional chaining을 여러 번 사용할 수 있다:
-
-```js
-let customer = {
+const customer = {
   name: "Carl",
   details: {
     age: 82,
-    location: "Paradise Falls" // detailed address is unknown
-  }
+    location: "Paradise Falls", // Detailed address is unknown
+  },
 };
-let customerCity = customer.details?.address?.city;
+const customerCity = customer.details?.address?.city;
 
-// … this also works with optional chaining function call
-let duration = vacations.trip?.getTime?.();
+// This also works with optional chaining function call
+const customerName = customer.name?.getName?.(); // Method does not exist, customerName is undefined
 ```
 
-### 널 병합 연산자와 같이 사용하기
+### Combining with the nullish coalescing operator
 
-널 병합 연산자는 optional chaining를 사용한 후에 아무 값도 찾을 수 없을 때 기본 값을 주기 위해 사용될 수 있다:
+The [nullish coalescing operator](/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing) may be used after optional chaining in order to build a default value when none was found:
 
 ```js
-let customer = {
+function printCustomerCity(customer) {
+  const customerCity = customer?.city ?? "Unknown city";
+  console.log(customerCity);
+}
+
+printCustomerCity({
+  name: "Nathan",
+  city: "Paris",
+}); // "Paris"
+printCustomerCity({
   name: "Carl",
-  details: { age: 82 }
-};
-const customerCity = customer?.city ?? "Unknown city";
-console.log(customerCity); // Unknown city
+  details: { age: 82 },
+}); // "Unknown city"
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참고
+## See also
 
-- The {{JSxRef("Operators/Nullish_Coalescing_Operator", "Nullish Coalescing Operator", '', 1)}}
-- [TC39 proposals](https://github.com/tc39/proposals)
+- The [nullish coalescing operator](/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing)

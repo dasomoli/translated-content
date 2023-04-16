@@ -1,49 +1,57 @@
 ---
-title: IntersectionObserver.unobserve()
+title: "IntersectionObserver: unobserve() method"
+short-title: unobserve()
 slug: Web/API/IntersectionObserver/unobserve
+page-type: web-api-instance-method
+browser-compat: api.IntersectionObserver.unobserve
 ---
 
 {{APIRef("Intersection Observer API")}}
 
-{{domxref("IntersectionObserver")}}의 **`unobserve()`** 메서드는 특정 요소에 대한 가시성 변화 주시를 중단합니다.
+The {{domxref("IntersectionObserver")}} method
+**`unobserve()`** instructs the
+`IntersectionObserver` to stop observing the specified target
+element.
 
-## 구문
+## Syntax
 
-```js
-IntersectionObserver.unobserve(target);
+```js-nolint
+unobserve(target)
 ```
 
-### 매개변수
+### Parameters
 
 - `target`
-  - : 주시를 중단할 {{domxref("Element")}}입니다. 지정한 요소를 이미 주시하고 있지 않을 때는 아무것도 수행하지 않으며 예외도 발생하지 않습니다.
+  - : The {{domxref("Element")}} to cease observing. If the specified element isn't being
+    observed, this method does nothing and no exception is thrown.
 
-### 반환 값
+### Return value
 
-`undefined`.
+None ({{jsxref("undefined")}}).
 
-## 예제
+## Examples
 
-아래 코드는 감지기를 생성한 후 요소를 주시하고, 다시 주시를 해제하는 예제입니다.
+This snippet shows an observer being created, an element being observed, and then being
+unobserved.
 
 ```js
-var observer = new IntersectionObserver(callback);
+const observer = new IntersectionObserver(callback);
 observer.observe(document.getElementById("elementToObserve"));
 
-/* ... */
+// …
 
 observer.unobserve(document.getElementById("elementToObserve"));
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Intersection Observer API](/ko/docs/Web/API/Intersection_Observer_API)
+- [Intersection Observer API](/en-US/docs/Web/API/Intersection_Observer_API)
 - {{domxref("IntersectionObserver.observe()")}}

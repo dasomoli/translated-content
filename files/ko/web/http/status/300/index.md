@@ -1,28 +1,30 @@
 ---
 title: 300 Multiple Choices
 slug: Web/HTTP/Status/300
+page-type: http-status-code
+spec-urls: https://httpwg.org/specs/rfc9110.html#status.300
 ---
 
 {{HTTPSidebar}}
 
-HTTP **`300 Multiple Choices`** 리디렉션 상태 응답 코드는 요청에 가능한 응답이 두 개 이상 있음을 의미합니다.
-사용자 에이전트 또는 사용자는 둘 중 하나를 선택해야 합니다. 응답 중 하나를 선택하는 표준화된 방법이 없기 때문에 이
-응답 코드는 거의 사용되지 않습니다.
+The HTTP **`300 Multiple Choices`** redirect status response code indicates that the request has more than one possible response.
+The user-agent or the user should choose one of them.
+As there is no standardized way of choosing one of the responses, this response code is very rarely used.
 
-서버는 선호하는 선택 항목이 있는 경우 {{HTTPHeader("Location")}}를 생성해야 합니다.
+If the server has a preferred choice, it should generate a {{HTTPHeader("Location")}} header.
 
-## 상태
+## Status
 
 ```http
 300 Multiple Choices
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 같이 보기
+## See also
 
 - {{HTTPStatus("301")}} `Moved Permanently`
-- {{HTTPStatus("302")}} `Found`, 임시 리다이렉션
+- {{HTTPStatus("302")}} `Found`, the temporary redirect
 - {{HTTPStatus("308")}} `Permanent Redirect`

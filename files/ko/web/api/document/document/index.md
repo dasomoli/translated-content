@@ -1,21 +1,31 @@
 ---
-title: Document()
+title: "Document: Document() constructor"
+short-title: Document()
 slug: Web/API/Document/Document
+page-type: web-api-constructor
+browser-compat: api.Document.Document
 ---
+
 {{APIRef}}
 
-**`Document`** 생성자는 브라우저에 로드되고 페이지 컨텐츠로의 진입점으로써 제공되는 웹 페이지인 새로운 {{domxref("Document")}} 객체를 생성합니다.
+The **`Document`** constructor creates a new
+{{domxref("Document")}} object that is a web page loaded in the browser and serving as
+an entry point into the page's content.
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 new Document()
 ```
 
-## 명세
+### Parameters
+
+None.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

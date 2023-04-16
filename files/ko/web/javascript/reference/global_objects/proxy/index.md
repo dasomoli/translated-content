@@ -1,27 +1,29 @@
 ---
 title: Proxy
 slug: Web/JavaScript/Reference/Global_Objects/Proxy
+page-type: javascript-class
+browser-compat: javascript.builtins.Proxy
 ---
 
 {{JSRef}}
 
-`Proxy` 객체를 사용하면 한 객체에 대한 기본 작업을 가로채고 재정의하는 프록시를 만들 수 있습니다.
+The **`Proxy`** object enables you to create a proxy for another object, which can intercept and redefine fundamental operations for that object.
 
-## 설명
+## Description
 
-`Proxy` 객체를 사용하면 원래 `Object` 대신 사용할 수 있는 객체를 만들지만, 이 객체의 속성 가져오기, 설정 및 정의와 같은 기본 객체 작업을 재정의할 수 있습니다. 프록시 객체는 일반적으로 속성 액세스를 기록하고, 입력의 유효성을 검사하고, 형식을 지정하거나, 삭제하는 데 사용됩니다.
+The `Proxy` object allows you to create an object that can be used in place of the original object, but which may redefine fundamental `Object` operations like getting, setting, and defining properties. Proxy objects are commonly used to log property accesses, validate, format, or sanitize inputs, and so on.
 
-두 개의 매개변수를 사용하여 `Proxy`를 생성합니다.
+You create a `Proxy` with two parameters:
 
-- `target`: 프록시할 원본 객체
-- `handler`: 가로채는 작업과 가로채는 작업을 재정의하는 방법을 정의하는 객체입니다.
+- `target`: the original object which you want to proxy
+- `handler`: an object that defines which operations will be intercepted and how to redefine intercepted operations.
 
-예를 들어 아래 코드는 속성이 두 개뿐인 간단한 대상과 속성이 없는 훨씬 더 간단한 핸들러를 정의합니다.
+For example, this code creates a proxy for the `target` object.
 
 ```js
 const target = {
   message1: "hello",
-  message2: "everyone"
+  message2: "everyone",
 };
 
 const handler1 = {};
@@ -29,45 +31,45 @@ const handler1 = {};
 const proxy1 = new Proxy(target, handler1);
 ```
 
-핸들러가 비어 있기 때문에 이 프록시는 원래 대상처럼 작동합니다.
+Because the handler is empty, this proxy behaves just like the original target:
 
 ```js
 console.log(proxy1.message1); // hello
 console.log(proxy1.message2); // everyone
 ```
 
-프록시를 커스텀하기 위해 처리기 객체에 함수를 정의합니다.
+To customize the proxy, we define functions on the handler object:
 
 ```js
 const target = {
   message1: "hello",
-  message2: "everyone"
+  message2: "everyone",
 };
 
 const handler2 = {
   get(target, prop, receiver) {
     return "world";
-  }
+  },
 };
 
 const proxy2 = new Proxy(target, handler2);
 ```
 
-대상 객체의 속성 액세스를 가로채는 {{jsxref("Global_Objects/Proxy/Proxy/get", "get()")}} 처리기를 제공했습니다.
+Here we've provided an implementation of the {{jsxref("Global_Objects/Proxy/Proxy/get", "get()")}} handler, which intercepts attempts to access properties in the target.
 
-처리기 함수는 대상 객체에 대한 호출을 잡아내기 때문에 *트랩(traps)* 이라고도 부릅니다. 위의 `handler2`에 있는 매우 간단한 트랩은 모든 속성 접근자를 재정의합니다.
+Handler functions are sometimes called _traps_, presumably because they trap calls to the target object. The very simple trap in `handler2` above redefines all property accessors:
 
 ```js
 console.log(proxy2.message1); // world
 console.log(proxy2.message2); // world
 ```
 
-{{jsxref("Reflect")}} 클래스의 도움으로 일부 접근자에게 원래 동작을 제공하고 다른 접근자를 재정의할 수 있습니다.
+Proxies are often used with the {{jsxref("Reflect")}} object, which provides some methods with the same names as the `Proxy` traps. The `Reflect` methods provide the reflective semantics for invoking the corresponding [object internal methods](#object_internal_methods). For example, we can call `Reflect.get` if we don't wish to redefine the object's behavior:
 
 ```js
 const target = {
   message1: "hello",
-  message2: "everyone"
+  message2: "everyone",
 };
 
 const handler3 = {
@@ -85,63 +87,114 @@ console.log(proxy3.message1); // hello
 console.log(proxy3.message2); // world
 ```
 
-## 생성자
+The `Reflect` method still interacts with the object through object internal methods — it doesn't "de-proxify" the proxy if it's invoked on a proxy. If you use `Reflect` methods within a proxy trap, and the `Reflect` method call gets intercepted by the trap again, there may be infinite recursion.
 
-- {{jsxref("Global_Objects/Proxy/Proxy", "Proxy()")}}
-  - : 새 `Proxy` 객체를 생성합니다.
+### Terminology
 
-## 정적 메서드
+The following terms are used when talking about the functionality of proxies.
+
+- [handler](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy#handler_functions)
+  - : The object passed as the second argument to the `Proxy` constructor. It contains the traps which define the behavior of the proxy.
+- trap
+  - : The function that define the behavior for the corresponding [object internal method](#object_internal_methods). (This is analogous to the concept of _traps_ in operating systems.)
+- target
+  - : Object which the proxy virtualizes. It is often used as storage backend for the proxy. Invariants (semantics that remain unchanged) regarding object non-extensibility or non-configurable properties are verified against the target.
+- invariants
+  - : Semantics that remain unchanged when implementing custom operations. If your trap implementation violates the invariants of a handler, a {{jsxref("TypeError")}} will be thrown.
+
+### Object internal methods
+
+[Objects](/en-US/docs/Web/JavaScript/Data_structures#objects) are collections of properties. However, the language doesn't provide any machinery to _directly_ manipulate data stored in the object — rather, the object defines some internal methods specifying how it can be interacted with. For example, when you read `obj.x`, you may expect the following to happen:
+
+- The `x` property is searched up the [prototype chain](/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain) until it is found.
+- If `x` is a data property, the property descriptor's `value` attribute is returned.
+- If `x` is an accessor property, the getter is invoked, and the return value of the getter is returned.
+
+There isn't anything special about this process in the language — it's just because ordinary objects, by default, have a `[[Get]]` internal method that is defined with this behavior. The `obj.x` property access syntax simply invokes the `[[Get]]` method on the object, and the object uses its own internal method implementation to determine what to return.
+
+As another example, [arrays](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) differ from normal objects, because they have a magic [`length`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/length) property that, when modified, automatically allocates empty slots or removes elements from the array. Similarly, adding array elements automatically changes the `length` property. This is because arrays have a `[[DefineOwnProperty]]` internal method that knows to update `length` when an integer index is written to, or update the array contents when `length` is written to. Such objects whose internal methods have different implementations from ordinary objects are called _exotic objects_. `Proxy` enable developers to define their own exotic objects with full capacity.
+
+All objects have the following internal methods:
+
+| Internal method         | Corresponding trap                                                               |
+| ----------------------- | -------------------------------------------------------------------------------- |
+| `[[GetPrototypeOf]]`    | {{jsxref("Proxy/Proxy/getPrototypeOf", "getPrototypeOf()")}}                     |
+| `[[SetPrototypeOf]]`    | {{jsxref("Proxy/Proxy/setPrototypeOf", "setPrototypeOf()")}}                     |
+| `[[IsExtensible]]`      | {{jsxref("Proxy/Proxy/isExtensible", "isExtensible()")}}                         |
+| `[[PreventExtensions]]` | {{jsxref("Proxy/Proxy/preventExtensions", "preventExtensions()")}}               |
+| `[[GetOwnProperty]]`    | {{jsxref("Proxy/Proxy/getOwnPropertyDescriptor", "getOwnPropertyDescriptor()")}} |
+| `[[DefineOwnProperty]]` | {{jsxref("Proxy/Proxy/defineProperty", "defineProperty()")}}                     |
+| `[[HasProperty]]`       | {{jsxref("Proxy/Proxy/has", "has()")}}                                           |
+| `[[Get]]`               | {{jsxref("Proxy/Proxy/get", "get()")}}                                           |
+| `[[Set]]`               | {{jsxref("Proxy/Proxy/set", "set()")}}                                           |
+| `[[Delete]]`            | {{jsxref("Proxy/Proxy/deleteProperty", "deleteProperty()")}}                     |
+| `[[OwnPropertyKeys]]`   | {{jsxref("Proxy/Proxy/ownKeys", "ownKeys()")}}                                   |
+
+Function objects also have the following internal methods:
+
+| Internal method | Corresponding trap                                 |
+| --------------- | -------------------------------------------------- |
+| `[[Call]]`      | {{jsxref("Proxy/Proxy/apply", "apply()")}}         |
+| `[[Construct]]` | {{jsxref("Proxy/Proxy/construct", "construct()")}} |
+
+It's important to realize that all interactions with an object eventually boils down to the invocation of one of these internal methods, and that they are all customizable through proxies. This means almost no behavior (except certain critical invariants) is guaranteed in the language — everything is defined by the object itself. When you run [`delete obj.x`](/en-US/docs/Web/JavaScript/Reference/Operators/delete), there's no guarantee that [`"x" in obj`](/en-US/docs/Web/JavaScript/Reference/Operators/in) returns `false` afterwards — it depends on the object's implementations of `[[Delete]]` and `[[HasProperty]]`. A `delete obj.x` may log things to the console, modify some global state, or even define a new property instead of deleting the existing one, although these semantics should be avoided in your own code.
+
+All internal methods are called by the language itself, and are not directly accessible in JavaScript code. The {{jsxref("Reflect")}} namespace offers methods that do little more than call the internal methods, besides some input normalization/validation. In each trap's page, we list several typical situations when the trap is invoked, but these internal methods are called in _a lot_ of places. For example, array methods read and write to array through these internal methods, so methods like [`push()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push) would also invoke `get()` and `set()` traps.
+
+Most of the internal methods are straightforward in what they do. The only two that may be confusable are `[[Set]]` and `[[DefineOwnProperty]]`. For normal objects, the former invokes setters; the latter doesn't. (And `[[Set]]` calls `[[DefineOwnProperty]]` internally if there's no existing property or the property is a data property.) While you may know that the `obj.x = 1` syntax uses `[[Set]]`, and {{jsxref("Object.defineProperty()")}} uses `[[DefineOwnProperty]]`, it's not immediately apparent what semantics other built-in methods and syntaxes use. For example, [class fields](/en-US/docs/Web/JavaScript/Reference/Classes/Public_class_fields) use the `[[DefineOwnProperty]]` semantic, which is why setters defined in the superclass are not invoked when a field is declared on the derived class.
+
+## Constructor
+
+- {{jsxref("Proxy/Proxy", "Proxy()")}}
+  - : Creates a new `Proxy` object.
+
+> **Note:** There's no `Proxy.prototype` property, so `Proxy` instances do not have any special properties or methods.
+
+## Static methods
 
 - {{jsxref("Proxy.revocable()")}}
-  - : 취소 가능한 `Proxy` 객체를 생성합니다.
+  - : Creates a revocable `Proxy` object.
 
-## 예제들
+## Examples
 
-### 기본 예제
+### Basic example
 
-이 간단한 예에서는 속성 이름이 객체에 없으면 숫자 `37`을 기본값으로 반환합니다. {{jsxref("Global_Objects/Proxy/Proxy/get", "get()")}} 처리기를 사용합니다.
+In this simple example, the number `37` gets returned as the default value when the property name is not in the object. It is using the {{jsxref("Global_Objects/Proxy/Proxy/get", "get()")}} handler.
 
 ```js
 const handler = {
   get(obj, prop) {
-    return prop in obj ?
-      obj[prop] :
-      37;
-  }
+    return prop in obj ? obj[prop] : 37;
+  },
 };
 
 const p = new Proxy({}, handler);
 p.a = 1;
 p.b = undefined;
 
-console.log(p.a, p.b);
-//  1, undefined
+console.log(p.a, p.b); // 1, undefined
 
-console.log('c' in p, p.c);
-//  false, 37
+console.log("c" in p, p.c); // false, 37
 ```
 
-### No-op 포워딩 프록시
+### No-op forwarding proxy
 
-이 예에서는 기본 JavaScript 객체를 사용하여 프록시가 모든 작업을 대상 객체에게 전달합니다.
+In this example, we are using a native JavaScript object to which our proxy will forward all operations that are applied to it.
 
 ```js
 const target = {};
 const p = new Proxy(target, {});
 
-p.a = 37;
-//  대상 객체에게 작업 전달
+p.a = 37; // Operation forwarded to the target
 
-console.log(target.a);
-//  37
-//  (작업이 제대로 전달됨!)
+console.log(target.a); // 37 (The operation has been properly forwarded!)
 ```
 
-이 "no-op"는 일반 JavaScript 객체에 대해 작동하지만 DOM 요소, [`Map`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Map) 객체 또는 내부 슬롯이 있는 모든 기본 객체에는 작동하지 않습니다. 자세한 내용은 [프라이빗 속성 포워딩 없음](프라이빗_속성_포워딩_없음)을 참조하십시오.
+Note that while this "no-op" works for plain JavaScript objects, it does not work for native objects, such as DOM elements, [`Map`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) objects, or anything that has internal slots. See [no private property forwarding](#no_private_property_forwarding) for more information.
 
-### 프라이빗 속성 포워딩 없음
+### No private property forwarding
 
-프록시는 여전히 다른 ID를 가진 또 다른 객체로, 래핑된 객체와 외부 사이에서 작동하는 **프록시**일 뿐입니다. 따라서 프록시는 원래 객체의 [프라이빗 속성](/ko/docs/Web/JavaScript/Reference/Classes/Private_class_fields)에 직접 접근할 수 없습니다.
+A proxy is still another object with a different identity — it's a _proxy_ that operates between the wrapped object and the outside. As such, the proxy does not have direct access to the original object's [private properties](/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields).
 
 ```js
 class Secret {
@@ -156,30 +209,32 @@ class Secret {
 
 const aSecret = new Secret("123456");
 console.log(aSecret.secret); // [REDACTED]
-// no-op 포워딩 같지만...
+// Looks like a no-op forwarding...
 const proxy = new Proxy(aSecret, {});
 console.log(proxy.secret); // TypeError: Cannot read private member #secret from an object whose class did not declare it
 ```
 
-이는 프록시의 `get` 트랩이 호출될 때 `this` 값이 원래 `secret`이 아닌 `proxy`이므로 `#secret`에 액세스할 수 없기 때문입니다. 이 문제를 해결하려면 원래 `secret`을 `this`로 사용하세요.
+This is because when the proxy's `get` trap is invoked, the `this` value is the `proxy` instead of the original `secret`, so `#secret` is not accessible. To fix this, use the original `secret` as `this`:
 
 ```js
 const proxy = new Proxy(aSecret, {
   get(target, prop, receiver) {
-    // 기본적으로 'this'값이 다른
-    // Reflect.get(target, prop, receiver)처럼 보입니다.
+    // By default, it looks like Reflect.get(target, prop, receiver)
+    // which has a different value of `this`
     return target[prop];
   },
 });
 console.log(proxy.secret);
 ```
 
-메서드의 경우 메서드의 `this` 값도 원래 객체로 리디렉션해야 합니다.
+For methods, this means you have to redirect the method's `this` value to the original object as well:
 
 ```js
 class Secret {
   #x = 1;
-  x() { return this.#x; }
+  x() {
+    return this.#x;
+  }
 }
 
 const aSecret = new Secret();
@@ -197,276 +252,248 @@ const proxy = new Proxy(aSecret, {
 console.log(proxy.x());
 ```
 
-일부 기본 JavaScript 객체에는 JavaScript 코드에서 액세스할 수 없는 **[내부 슬롯](https://tc39.es/ecma262/#sec-object-internal-methods-and-internal-slots)** 이라는 속성이 있습니다. 예를 들어, [`Map`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Map) 객체에는 맵의 키-값 쌍을 저장하는 `[[MapData]]`라는 내부 슬롯이 있습니다. 따라서 맵에 대한 전달 프록시는 간단하게 만들 수 없습니다.
+Some native JavaScript objects have properties called _[internal slots](https://tc39.es/ecma262/#sec-object-internal-methods-and-internal-slots)_, which are not accessible from JavaScript code. For example, [`Map`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) objects have an internal slot called `[[MapData]]`, which stores the key-value pairs of the map. As such, you cannot trivially create a forwarding proxy for a map:
 
 ```js
 const proxy = new Proxy(new Map(), {});
 console.log(proxy.size); // TypeError: get size method called on incompatible Proxy
 ```
 
-이 문제를 해결하려면 위에 설명된 "`this`-recovering" 프록시를 사용해야 합니다.
+You have to use the "`this`-recovering" proxy illustrated above to work around this.
 
-### 검증
+### Validation
 
-프록시를 사용하면 객체에 대해 전달된 값을 쉽게 확인할 수 있습니다. 이 예제에서는 {{jsxref("Global_Objects/Proxy/Proxy/set", "set()")}} 처리기를 사용합니다.
+With a `Proxy`, you can easily validate the passed value for an object. This example uses the {{jsxref("Global_Objects/Proxy/Proxy/set", "set()")}} handler.
 
 ```js
 const validator = {
   set(obj, prop, value) {
-    if (prop === 'age') {
+    if (prop === "age") {
       if (!Number.isInteger(value)) {
-        throw new TypeError('The age is not an integer');
+        throw new TypeError("The age is not an integer");
       }
       if (value > 200) {
-        throw new RangeError('The age seems invalid');
+        throw new RangeError("The age seems invalid");
       }
     }
 
-    // 값을 저장하는 기본 동적
+    // The default behavior to store the value
     obj[prop] = value;
 
-    // 성공 표시
+    // Indicate success
     return true;
-  }
+  },
 };
 
 const person = new Proxy({}, validator);
 
 person.age = 100;
 console.log(person.age); // 100
-person.age = 'young';    // 예외 발생
-person.age = 300;        // 예외 발생
+person.age = "young"; // Throws an exception
+person.age = 300; // Throws an exception
 ```
 
-### 생성자 확장하기
+### Manipulating DOM nodes
 
-함수 프록시는 새 생성자로 생성자를 쉽게 확장할 수 있습니다. 이 예제에서는 {{jsxref("Global_Objects/Proxy/Proxy/construct", "construct()")}}과 {{jsxref("Global_Objects/Proxy/Proxy/apply", "apply()")}} 처리기를 사용합니다.
+In this example we use `Proxy` to toggle an attribute of two different elements: so when we set the attribute on one element, the attribute is unset on the other one.
+
+We create a `view` object which is a proxy for an object with a `selected` property. The proxy handler defines the {{jsxref("Proxy/Proxy/set", "set()")}} handler.
+
+When we assign an HTML element to `view.selected`, the element's `'aria-selected'` attribute is set to `true`. If we then assign a different element to `view.selected`, this element's `'aria-selected'` attribute is set to `true` and the previous element's `'aria-selected'` attribute is automatically set to `false`.
 
 ```js
-function extend(sup, base) {
-  base.prototype = Object.create(sup.prototype);
-  base.prototype.constructor = new Proxy(base, {
-    construct(target, args) {
-      const obj = Object.create(base.prototype);
-      this.apply(target, obj, args);
-      return obj;
+const view = new Proxy(
+  {
+    selected: null,
+  },
+  {
+    set(obj, prop, newval) {
+      const oldval = obj[prop];
+
+      if (prop === "selected") {
+        if (oldval) {
+          oldval.setAttribute("aria-selected", "false");
+        }
+        if (newval) {
+          newval.setAttribute("aria-selected", "true");
+        }
+      }
+
+      // The default behavior to store the value
+      obj[prop] = newval;
+
+      // Indicate success
+      return true;
     },
-    apply(target, that, args) {
-      sup.apply(that, args);
-      base.apply(that, args);
-    }
-  });
-  return base.prototype.constructor;
-}
+  },
+);
 
-const Person = function (name) {
-  this.name = name;
-};
+const item1 = document.getElementById("item-1");
+const item2 = document.getElementById("item-2");
 
-const Boy = extend(Person, function (name, age) {
-  this.age = age;
-});
-
-Boy.prototype.gender = 'M';
-
-const Peter = new Boy('Peter', 13);
-
-console.log(Peter.gender);  // "M"
-console.log(Peter.name);    // "Peter"
-console.log(Peter.age);     // 13
-```
-
-### DOM 노드 조작
-
-이 예에서는 `Proxy`를 사용하여 두 개의 다른 요소의 속성을 토글합니다. 따라서 한 요소에 속성을 설정하면 다른 요소에 속성이 설정되지 않습니다.
-
-`selected` 속성을 가진 객체에 대한 프록시인 `view` 객체를 생성합니다. 프록시 핸들러는 {{jsxref("Proxy/Proxy/set", "set()")}} 처리기를 정의합니다.
-
-`view.selected`에 HTML 요소를 할당하면 요소의 `'aria-selected'` 속성이 `true`로 설정됩니다. 그런 다음 `view.selected`에 다른 요소를 할당하면 이 요소의 `'aria-selected'` 속성이 `true`로 설정되고 이전 요소의 `'aria-selected'` 속성이 자동으로 `false`로 설정됩니다.
-
-```js
-const view = new Proxy({
-  selected: null,
-},
-{
-  set(obj, prop, newval) {
-    const oldval = obj[prop];
-
-    if (prop === 'selected') {
-      if (oldval) {
-        oldval.setAttribute('aria-selected', 'false');
-      }
-      if (newval) {
-        newval.setAttribute('aria-selected', 'true');
-      }
-    }
-
-    // 값을 저장하는기본 동작
-    obj[prop] = newval;
-
-    // 성공 표시
-    return true;
-  }
-});
-
-const item1 = document.getElementById('item-1');
-const item2 = document.getElementById('item-2');
-
-// item1 선택
+// select item1:
 view.selected = item1;
 
-console.log(`item1: ${item1.getAttribute('aria-selected')}`);
+console.log(`item1: ${item1.getAttribute("aria-selected")}`);
 // item1: true
 
-// item2를 선택하고 item1은 선택 해제
+// selecting item2 de-selects item1:
 view.selected = item2;
 
-console.log(`item1: ${item1.getAttribute('aria-selected')}`);
+console.log(`item1: ${item1.getAttribute("aria-selected")}`);
 // item1: false
 
-console.log(`item2: ${item2.getAttribute('aria-selected')}`);
+console.log(`item2: ${item2.getAttribute("aria-selected")}`);
 // item2: true
 ```
 
-### 값 수정 및 추가 속성
+### Value correction and an extra property
 
-`products` 프록시 객체는 전달된 값을 계산하고 필요한 경우 배열로 변환합니다. 또한 객체는 getter 및 setter 모두에게 `latestBrowser`라는 추가 속성을 지원합니다.
+The `products` proxy object evaluates the passed value and converts it to an array if needed. The object also supports an extra property called `latestBrowser` both as a getter and a setter.
 
 ```js
-const products = new Proxy({
-  browsers: ['Internet Explorer', 'Netscape']
-},
-{
-  get(obj, prop) {
-    // 추가 속성
-    if (prop === 'latestBrowser') {
-      return obj.browsers[obj.browsers.length - 1];
-    }
-
-    // 값을 저장하는 기본 동작
-    return obj[prop];
+const products = new Proxy(
+  {
+    browsers: ["Firefox", "Chrome"],
   },
-  set(obj, prop, value) {
-    // 추가 속성
-    if (prop === 'latestBrowser') {
-      obj.browsers.push(value);
+  {
+    get(obj, prop) {
+      // An extra property
+      if (prop === "latestBrowser") {
+        return obj.browsers[obj.browsers.length - 1];
+      }
+
+      // The default behavior to return the value
+      return obj[prop];
+    },
+    set(obj, prop, value) {
+      // An extra property
+      if (prop === "latestBrowser") {
+        obj.browsers.push(value);
+        return true;
+      }
+
+      // Convert the value if it is not an array
+      if (typeof value === "string") {
+        value = [value];
+      }
+
+      // The default behavior to store the value
+      obj[prop] = value;
+
+      // Indicate success
       return true;
-    }
-
-    // 값이 배열이 아닌 경우 배열로 변환
-    if (typeof value === 'string') {
-      value = [value];
-    }
-
-    // 값을 저장하는 기본 동작
-    obj[prop] = value;
-
-    // 성공 표시
-    return true;
-  }
-});
-
-console.log(products.browsers);
-//  ['Internet Explorer', 'Netscape']
-
-products.browsers = 'Firefox';
-// (실수로) 문자열을 넘겨줌
-
-console.log(products.browsers);
-//  ['Firefox'] <- 문제없이 값은 배열로 변환됨
-
-products.latestBrowser = 'Chrome';
+    },
+  },
+);
 
 console.log(products.browsers);
 //  ['Firefox', 'Chrome']
 
+products.browsers = "Safari";
+//  pass a string (by mistake)
+
+console.log(products.browsers);
+//  ['Safari'] <- no problem, the value is an array
+
+products.latestBrowser = "Edge";
+
+console.log(products.browsers);
+//  ['Safari', 'Edge']
+
 console.log(products.latestBrowser);
-//  'Chrome'
+//  'Edge'
 ```
 
-### 속성으로 배열 아이템 객체 찾기
+### Finding an array item object by its property
 
-이 프록시는 일부 유틸리티 기능으로 배열을 확장합니다. 보시다시피 {{jsxref("Object.defineProperties", "Object.defineProperties()")}}를 사용하지 않고도 속성을 유연하게 "정의"할 수 있습니다. 이 예제는 해당 셀로 테이블 행을 찾는 데 적용할 수 있습니다. 이 경우 대상은 {{domxref("HTMLTableElement.rows", "table.rows")}}가 됩니다.
+This proxy extends an array with some utility features. As you see, you can flexibly "define" properties without using {{jsxref("Object.defineProperties", "Object.defineProperties()")}}. This example can be adapted to find a table row by its cell. In that case, the target will be {{domxref("HTMLTableElement/rows", "table.rows")}}.
 
 ```js
-const products = new Proxy([
-  { name: 'Firefox', type: 'browser' },
-  { name: 'SeaMonkey', type: 'browser' },
-  { name: 'Thunderbird', type: 'mailer' }
-],
-{
-  get(obj, prop) {
-    // 값을 저장하는 기본 동작. prop은 보통 int
-    if (prop in obj) {
-      return obj[prop];
-    }
-
-    // product의 수를 가져옴. products.length에 대한 별칭
-    if (prop === 'number') {
-      return obj.length;
-    }
-
-    let result;
-    const types = {};
-
-    for (const product of obj) {
-      if (product.name === prop) {
-        result = product;
+const products = new Proxy(
+  [
+    { name: "Firefox", type: "browser" },
+    { name: "SeaMonkey", type: "browser" },
+    { name: "Thunderbird", type: "mailer" },
+  ],
+  {
+    get(obj, prop) {
+      // The default behavior to return the value; prop is usually an integer
+      if (prop in obj) {
+        return obj[prop];
       }
-      if (types[product.type]) {
-        types[product.type].push(product);
-      } else {
-        types[product.type] = [product];
+
+      // Get the number of products; an alias of products.length
+      if (prop === "number") {
+        return obj.length;
       }
-    }
 
-    // 이름으로 product 가져오기
-    if (result) {
-      return result;
-    }
+      let result;
+      const types = {};
 
-    // type으로 product 가져오기
-    if (prop in types) {
-      return types[prop];
-    }
+      for (const product of obj) {
+        if (product.name === prop) {
+          result = product;
+        }
+        if (types[product.type]) {
+          types[product.type].push(product);
+        } else {
+          types[product.type] = [product];
+        }
+      }
 
-    // types로 product 가져오기
-    if (prop === 'types') {
-      return Object.keys(types);
-    }
+      // Get a product by name
+      if (result) {
+        return result;
+      }
 
-    return undefined;
-  }
-});
+      // Get products by type
+      if (prop in types) {
+        return types[prop];
+      }
 
-console.log(products[0]);          // { name: 'Firefox', type: 'browser' }
-console.log(products['Firefox']);  // { name: 'Firefox', type: 'browser' }
-console.log(products['Chrome']);   // undefined
-console.log(products.browser);     // [{ name: 'Firefox', type: 'browser' }, { name: 'SeaMonkey', type: 'browser' }]
-console.log(products.types);       // ['browser', 'mailer']
-console.log(products.number);      // 3
+      // Get product types
+      if (prop === "types") {
+        return Object.keys(types);
+      }
+
+      return undefined;
+    },
+  },
+);
+
+console.log(products[0]); // { name: 'Firefox', type: 'browser' }
+console.log(products["Firefox"]); // { name: 'Firefox', type: 'browser' }
+console.log(products["Chrome"]); // undefined
+console.log(products.browser); // [{ name: 'Firefox', type: 'browser' }, { name: 'SeaMonkey', type: 'browser' }]
+console.log(products.types); // ['browser', 'mailer']
+console.log(products.number); // 3
 ```
 
-### 완전한 trap 예제
+### A complete traps list example
 
-교훈적인 목적으로 완전한 샘플 `traps` 목록을 생성하기 위해 이 유형의 작업에 특히 적합한 네이티브 객체가 아닌 [간단한 쿠키 프레임워크](https://reference.codeproject.com/dom/document/cookie/simple_document.cookie_framework)에 의해 생성된 전역 객체 `docCookies`를 프록시화하려고 합니다.
+Now in order to create a complete sample `traps` list, for didactic purposes, we will try to proxify a _non-native_ object that is particularly suited to this type of operation: the `docCookies` global object created by [a simple cookie framework](https://reference.codeproject.com/dom/document/cookie/simple_document.cookie_framework).
 
 ```js
 /*
-  const docCookies = ... 여기서 "docCookies"를 가져옵니다.
+  const docCookies = ... get the "docCookies" object here:
   https://reference.codeproject.com/dom/document/cookie/simple_document.cookie_framework
 */
 
 const docCookies = new Proxy(docCookies, {
   get(target, key) {
-    return target[key] || target.getItem(key) || undefined;
+    return target[key] ?? target.getItem(key) ?? undefined;
   },
   set(target, key, value) {
-    if (key in target) { return false; }
+    if (key in target) {
+      return false;
+    }
     return target.setItem(key, value);
   },
   deleteProperty(target, key) {
-    if (!(key in target)) { return false; }
+    if (!(key in target)) {
+      return false;
+    }
     return target.removeItem(key);
   },
   ownKeys(target) {
@@ -476,40 +503,42 @@ const docCookies = new Proxy(docCookies, {
     return key in target || target.hasItem(key);
   },
   defineProperty(target, key, descriptor) {
-    if (descriptor && 'value' in descriptor) {
+    if (descriptor && "value" in descriptor) {
       target.setItem(key, descriptor.value);
     }
     return target;
   },
   getOwnPropertyDescriptor(target, key) {
     const value = target.getItem(key);
-    return value ? {
-      value,
-      writable: true,
-      enumerable: true,
-      configurable: false,
-    } : undefined;
+    return value
+      ? {
+          value,
+          writable: true,
+          enumerable: true,
+          configurable: false,
+        }
+      : undefined;
   },
 });
 
-/* 쿠키 테스트 */
+/* Cookies test */
 
-console.log(docCookies.myCookie1 = 'First value');
-console.log(docCookies.getItem('myCookie1'));
+console.log((docCookies.myCookie1 = "First value"));
+console.log(docCookies.getItem("myCookie1"));
 
-docCookies.setItem('myCookie1', 'Changed value');
+docCookies.setItem("myCookie1", "Changed value");
 console.log(docCookies.myCookie1);
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - ["Proxies are awesome" Brendan Eich presentation at JSConf](https://www.youtube.com/watch?v=sClk6aB_CPk) ([slides](https://www.slideshare.net/BrendanEich/metaprog-5303821))
 - [Tutorial on proxies](https://web.archive.org/web/20171007221059/https://soft.vub.ac.be/~tvcutsem/proxies/)

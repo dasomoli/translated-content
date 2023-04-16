@@ -1,27 +1,39 @@
 ---
-title: Error.prototype.columnNumber
+title: "Error: columnNumber"
 slug: Web/JavaScript/Reference/Global_Objects/Error/columnNumber
+page-type: javascript-instance-data-property
+status:
+  - non-standard
+browser-compat: javascript.builtins.Error.columnNumber
 ---
 
 {{JSRef}} {{non-standard_header}}
 
-**`columnNumber`** 속성은 이 오류가 발생한 파일의 행의 열 번호를 포함합니다.
+The **`columnNumber`** data property of an {{jsxref("Error")}} instance contains the column number in the line of the file that raised this error.
 
-## 예제
+## Value
 
-### columnNumber 사용하기
+A positive integer.
+
+{{js_property_attributes(1, 0, 1)}}
+
+## Examples
+
+### Using columnNumber
 
 ```js
-var e = new Error('Could not parse input');
-throw e;
-console.log(e.columnNumber) // 0
+try {
+  throw new Error("Could not parse input");
+} catch (err) {
+  console.log(err.columnNumber); // 9
+}
 ```
 
-## 명세
+## Specifications
 
-표준의 일부가 아닙니다.
+Not part of any standard.
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

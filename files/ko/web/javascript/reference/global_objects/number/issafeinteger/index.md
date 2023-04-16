@@ -1,69 +1,71 @@
 ---
 title: Number.isSafeInteger()
 slug: Web/JavaScript/Reference/Global_Objects/Number/isSafeInteger
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Number.isSafeInteger
 ---
 
 {{JSRef}}
 
-**`Number.isSafeInteger()`** 메서드는 전달된 값이 안전한 정숫값인지 확인합니다.
+The **`Number.isSafeInteger()`** static method determines whether the provided value is a number that is a _safe integer_.
 
 {{EmbedInteractiveExample("pages/js/number-issafeinteger.html")}}
 
-안전한 정숫값이란 다음과 같습니다.
+## Syntax
 
-- IEEE-754 배정도수 형태로 정확히 표현될 수 있는 수이고
-- IEEE-754 표현에 맞게 반올림하는 다른 정수의 결과가 아닌 IEEE-754 표현.
-
-예를 들어, `2^53 - 1`은 안전한 정수입니다. 이 정수는 정확히 표현될 수 있으며, IEEE-754 반올림 모드에서 다른 정숫값이 이 값을 반올림하지 않습니다. 반면에, `2^53` 는 안전하지 않은 정수입니다. 이 정수는 정확히 IEEE-754로 표현될 수 있지만, 정수 `2^53 + 1`은 IEEE-754로 직접 표현될 수 없으며 가까운 수로 반올림하는 것과 0으로 반올림하는 것으로 `2^53`을 반올림합니다.
-
-안전한 정숫값은 `-(2^53 - 1)` 부터 `2^53 - 1` 사이의 모든 정수값으로 구성됩니다.
-
-## 구문
-
-```js
-    Number.isSafeInteger(testValue)
+```js-nolint
+Number.isSafeInteger(testValue)
 ```
 
-### 매개변수
+### Parameters
 
 - `testValue`
-  - : 안전한 정수인지 확인할 값.
+  - : The value to be tested for being a safe integer.
 
-### 반환 값
+### Return value
 
-주어진 값이 안전한 정숫값인지 나타내는 {{jsxref("Boolean")}}.
+The boolean value `true` if the given value is a number that is a safe integer. Otherwise `false`.
 
-## 예시
+## Description
+
+The safe integers consist of all integers from -(2<sup>53</sup> - 1) to 2<sup>53</sup> - 1, inclusive (±9,007,199,254,740,991). A safe integer is an integer that:
+
+- can be exactly represented as an IEEE-754 double precision number, and
+- whose IEEE-754 representation cannot be the result of rounding any other integer to fit the IEEE-754 representation.
+
+For example, 2<sup>53</sup> - 1 is a safe integer: it can be exactly represented, and no other integer rounds to it under any IEEE-754 rounding mode. In contrast, 2<sup>53</sup> is _not_ a safe integer: it can be exactly represented in IEEE-754, but the integer 2<sup>53</sup> + 1 can't be directly represented in IEEE-754 but instead rounds to 2<sup>53</sup> under round-to-nearest and round-to-zero rounding.
+
+Handling values larger or smaller than \~9 quadrillion with full precision requires using an [arbitrary precision arithmetic library](https://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic). See [What Every Programmer Needs to Know about Floating Point Arithmetic](https://floating-point-gui.de/) for more information on floating point representations of numbers.
+
+For larger integers, consider using the {{jsxref("BigInt")}} type.
+
+## Examples
+
+### Using isSafeInteger()
 
 ```js
-Number.isSafeInteger(3);                    // true
-Number.isSafeInteger(Math.pow(2, 53));      // false
-Number.isSafeInteger(Math.pow(2, 53) - 1);  // true
-Number.isSafeInteger(NaN);                  // false
-Number.isSafeInteger(Infinity);             // false
-Number.isSafeInteger('3');                  // false
-Number.isSafeInteger(3.1);                  // false
-Number.isSafeInteger(3.0);                  // true
+Number.isSafeInteger(3); // true
+Number.isSafeInteger(2 ** 53); // false
+Number.isSafeInteger(2 ** 53 - 1); // true
+Number.isSafeInteger(NaN); // false
+Number.isSafeInteger(Infinity); // false
+Number.isSafeInteger("3"); // false
+Number.isSafeInteger(3.1); // false
+Number.isSafeInteger(3.0); // true
 ```
 
-## 폴리필
-
-```js
-Number.isSafeInteger = Number.isSafeInteger || function (value) {
-   return Number.isInteger(value) && Math.abs(value) <= Number.MAX_SAFE_INTEGER;
-};
-```
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 메서드가 속한 {{jsxref("Number")}} 객체.
+- [Polyfill of `Number.isSafeInteger` in `core-js`](https://github.com/zloirock/core-js#ecmascript-number)
+- The {{jsxref("Number")}} object it belongs to.
 - {{jsxref("Number.MIN_SAFE_INTEGER")}}
 - {{jsxref("Number.MAX_SAFE_INTEGER")}}
+- {{jsxref("BigInt")}}

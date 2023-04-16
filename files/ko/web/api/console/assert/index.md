@@ -1,42 +1,59 @@
 ---
-title: console.assert()
+title: "console: assert() method"
+short-title: assert()
 slug: Web/API/console/assert
+page-type: web-api-instance-method
+browser-compat: api.console.assert
 ---
+
 {{APIRef("Console API")}}
 
-**`console.assert()`** 메서드는 주어진 가정이 거짓인 경우 콘솔에 오류 메시지를 출력합니다. 참인 경우, 아무것도 하지 않습니다.
+The **`console.assert()`** method writes an error message to
+the console if the assertion is false. If the assertion is true, nothing happens.
 
 {{AvailableInWorkers}}
 
-## 구문
+## Syntax
 
-```js
-console.assert(assertion, obj1 [, obj2, ..., objN]);
-console.assert(assertion, msg [, subst1, ..., substN]); // C-like message formatting
+```js-nolint
+assert(assertion, obj1)
+assert(assertion, obj1, obj2)
+assert(assertion, obj1, obj2, /* … ,*/ objN)
+
+assert(assertion, msg)
+assert(assertion, msg, subst1)
+assert(assertion, msg, subst1, /* … ,*/ substN)
 ```
 
-### 매개변수
+### Parameters
 
 - `assertion`
-  - : 아무 불리언 표현식. 거짓인 경우, 메시지를 콘솔에 출력합니다.
-- `obj1` ... `objN`
-  - : 출력에 사용할 JavaScript 객체. 각각의 문자열 표현은 입력한 순서대로 함께 출력됩니다.
+  - : Any boolean expression. If the assertion is false, the message is written to the
+    console.
+- `obj1` … `objN`
+  - : A list of JavaScript objects to output. The string representations of each of these
+    objects are appended together in the order listed and output.
 - `msg`
-  - : 0개 이상의 치환 문자열을 포함하는 JavaScript 문자열.
-- `subst1` ... `substN`
-  - : `msg` 매개변수의 치환 문자열에 대입할 JavaScript 객체. 이 매개변수를 사용하면 출력 형식을 추가로 제어할 수 있습니다.
+  - : A JavaScript string containing zero or more substitution strings.
+- `subst1` … `substN`
+  - : JavaScript objects with which to replace substitution strings within
+    `msg`. This parameter gives you additional control over the format of the
+    output.
 
-## 예제
+### Return value
 
-다음 예제는 객체와 가정을 함께 사용하는 법을 보입니다.
+None ({{jsxref("undefined")}}).
+
+## Examples
+
+The following code example demonstrates the use of a JavaScript object following the
+assertion:
 
 ```js
-const errorMsg = 'the # is not even';
-for (let number = 2; number <= 5; number += 1) {
-    console.log('the # is ' + number);
-    console.assert(number % 2 === 0, {number: number, errorMsg: errorMsg});
-    // or, using ES2015 object property shorthand:
-    // console.assert(number % 2 === 0, {number, errorMsg});
+const errorMsg = "the # is not even";
+for (let number = 2; number <= 5; number++) {
+  console.log(`the # is ${number}`);
+  console.assert(number % 2 === 0, "%o", { number, errorMsg });
 }
 // output:
 // the # is 2
@@ -47,12 +64,13 @@ for (let number = 2; number <= 5; number += 1) {
 // Assertion failed: {number: 5, errorMsg: "the # is not even"}
 ```
 
-자세한 내용은 {{domxref("console")}} 문서의 [콘솔에 텍스트 출력하기](/ko/docs/Web/API/console#콘솔에_텍스트_출력하기)를 참고하세요.
+See [Using string substitutions](/en-US/docs/Web/API/console#using_string_substitutions) in the documentation of {{domxref("console")}} for further
+details.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

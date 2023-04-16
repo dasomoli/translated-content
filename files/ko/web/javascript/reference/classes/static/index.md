@@ -1,107 +1,190 @@
 ---
 title: static
 slug: Web/JavaScript/Reference/Classes/static
+page-type: javascript-language-feature
+browser-compat: javascript.classes.static
 ---
 
 {{jsSidebar("Classes")}}
 
-**static** 키워드는 클래스의 정적 메서드를 정의합니다.
+The **`static`** keyword defines a [static method or field](/en-US/docs/Web/JavaScript/Reference/Classes#static_methods_and_fields) for a class, or a [static initialization block](/en-US/docs/Web/JavaScript/Reference/Classes/Static_initialization_blocks) (see the link for more information about this usage). Static properties cannot be directly accessed on instances of the class. Instead, they're accessed on the class itself.
 
-{{EmbedInteractiveExample("pages/js/classes-static.html")}}
+Static methods are often utility functions, such as functions to create or clone objects, whereas static properties are useful for caches, fixed-configuration, or any other data you don't need to be replicated across instances.
 
-## 문법
+> **Note:** In the context of classes, MDN Web Docs content uses the terms properties and [fields](/en-US/docs/Web/JavaScript/Reference/Classes/Public_class_fields) interchangeably.
 
-```
-    static methodName() { ... }
-```
+{{EmbedInteractiveExample("pages/js/classes-static.html", "taller")}}
 
-## 설명
+## Syntax
 
-정적 메서드는 클래스의 인스턴스 없이 호출이 가능하며 클래스가 인스턴스화되면 호출할 수 없다. 정적 메서드는 종종 어플리케이션의 유틸리티 함수를 만드는데 사용된다.
-
-## 정적 메서드의 호출
-
-#### 다른 정적 메서드에서의 호출
-
-동일한 클래스 내의 다른 정적 메서드 내에서 정적 메서드를 호출하는 경우 키워드 [`this`](/en-US/docs/Web/JavaScript/Reference/Operators/this)를 사용할 수 있다.
-
-```js
-class StaticMethodCall {
+```js-nolint
+class ClassWithStatic {
+  static staticField;
+  static staticFieldWithInitializer = value;
   static staticMethod() {
-    return 'Static method has been called';
-  }
-  static anotherStaticMethod() {
-    return this.staticMethod() + ' from another static method';
-  }
-}
-StaticMethodCall.staticMethod();
-// 'Static method has been called'
-
-StaticMethodCall.anotherStaticMethod();
-// 'Static method has been called from another static method'
-```
-
-### 클래스 생성자 및 다른 메서드에서의 호출
-
-정적 메서드가 비정적 메서드에서 키워드[`this`](/en-US/docs/Web/JavaScript/Reference/Operators/this) 를 써서는 직접적인 접근을 할 수 없다. 바른 호출 방법은 클래스 명칭을 쓰거나, 즉 `CLASSNAME.STATIC_METHOD_NAME()` 을 이용하거나 혹은 그 메서드를 생성자의 한 속성으로 부르는 것으로, 즉 `constructor` : `this.constructor.STATIC_METHOD_NAME()`를 이용한다.
-
-```js
-class StaticMethodCall {
-  constructor() {
-    console.log(StaticMethodCall.staticMethod());
-    // 'static method has been called.'
-
-    console.log(this.constructor.staticMethod());
-    // 'static method has been called.'
-  }
-
-  static staticMethod() {
-    return 'static method has been called.';
+    // …
   }
 }
 ```
 
-## 예제
+There are some additional syntax restrictions:
 
-아래 예제는 여러가지 내용을 설명합니다.
+- The name of a static property (field or method) cannot be `prototype`.
+- The name of a class field (static or instance) cannot be `constructor`.
 
-1. 어떻게 정적 메서드가 클래스에서 구현되는지
-2. 클래스의 정적 맴버가 서브클래스화 되는 것을 보여줍니다.
-3. 정적 메서드가 어떤 경우에 호출 될 수 있는지와 없는지를 설명합니다.
+## Description
+
+This page introduces public static properties of classes, which include static methods, static accessors, and static fields.
+
+- For private static features, see [private class features](/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields).
+- For instance features, see [methods definitions](/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions), [getter](/en-US/docs/Web/JavaScript/Reference/Functions/get), [setter](/en-US/docs/Web/JavaScript/Reference/Functions/set), and [public class fields](/en-US/docs/Web/JavaScript/Reference/Classes/Public_class_fields).
+
+Public static features are declared using the `static` keyword. They are added to the class constructor at the time of [class evaluation](/en-US/docs/Web/JavaScript/Reference/Classes#evaluation_order) using the [`[[DefineOwnProperty]]`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/defineProperty) semantic (which is essentially {{jsxref("Object.defineProperty()")}}). They are accessed again from the class constructor.
+
+Static methods are often utility functions, such as functions to create or clone instances. Public static fields are useful when you want a field to exist only once per class, not on every class instance you create. This is useful for caches, fixed-configuration, or any other data you don't need to be replicated across instances.
+
+Static field names can be [computed](/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer#computed_property_names). The `this` value in the computed expression is the `this` surrounding the class definition, and referring to the class's name is a {{jsxref("ReferenceError")}} because the class is not initialized yet. {{jsxref("Operators/await")}} and {{jsxref("Operators/yield")}} work as expected in this expression.
+
+Static fields can have an initializer. Static fields without initializers are initialized to `undefined`. Public static fields are not reinitialized on subclasses, but can be accessed via the prototype chain.
+
+```js
+class ClassWithStaticField {
+  static staticField;
+  static staticFieldWithInitializer = "static field";
+}
+
+class SubclassWithStaticField extends ClassWithStaticField {
+  static subStaticField = "subclass field";
+}
+
+console.log(Object.hasOwn(ClassWithStaticField, "staticField")); // true
+console.log(ClassWithStaticField.staticField); // undefined
+console.log(ClassWithStaticField.staticFieldWithInitializer); // "static field"
+console.log(SubclassWithStaticField.staticFieldWithInitializer); // "static field"
+console.log(SubclassWithStaticField.subStaticField); // "subclass field"
+```
+
+In the field initializer, [`this`](/en-US/docs/Web/JavaScript/Reference/Operators/this) refers to the current class (which you can also access through its name), and [`super`](/en-US/docs/Web/JavaScript/Reference/Operators/super) refers to the base class constructor.
+
+```js
+class ClassWithStaticField {
+  static baseStaticField = "base static field";
+  static anotherBaseStaticField = this.baseStaticField;
+
+  static baseStaticMethod() {
+    return "base static method output";
+  }
+}
+
+class SubClassWithStaticField extends ClassWithStaticField {
+  static subStaticField = super.baseStaticMethod();
+}
+
+console.log(ClassWithStaticField.anotherBaseStaticField); // "base static field"
+console.log(SubClassWithStaticField.subStaticField); // "base static method output"
+```
+
+The expression is evaluated synchronously. You cannot use {{jsxref("Operators/await")}} or {{jsxref("Operators/yield")}} in the initializer expression. (Think of the initializer expression as being implicitly wrapped in a function.)
+
+## Examples
+
+### Using static members in classes
+
+The following example demonstrates several things:
+
+1. How a static member (method or property) is defined on a class.
+2. That a class with a static member can be sub-classed.
+3. How a static member can and cannot be called.
 
 ```js
 class Triple {
-  static triple(n) {
-    n = n || 1; //비트연산이 아니어야 합니다.
+  static customName = "Tripler";
+  static description = "I triple any number you provide";
+  static calculate(n = 1) {
     return n * 3;
   }
 }
 
-class BiggerTriple extends Triple {
-  static triple(n) {
-    return super.triple(n) * super.triple(n);
+class SquaredTriple extends Triple {
+  static longDescription;
+  static description = "I square the triple of any number you provide";
+  static calculate(n) {
+    return super.calculate(n) * super.calculate(n);
   }
 }
 
-console.log(Triple.triple());        // 3
-console.log(Triple.triple(6));       // 18
-console.log(BiggerTriple.triple(3)); // 81
-var tp = new Triple();
-console.log(BiggerTriple.triple(3)); // 81 (부모의 인스턴스에 영향을 받지 않습니다.)
-console.log(tp.triple()); // 'tp.triple은 함수가 아닙니다.'.
-console.log(tp.constructor.triple(4)); // 12
+console.log(Triple.description); // 'I triple any number you provide'
+console.log(Triple.calculate()); // 3
+console.log(Triple.calculate(6)); // 18
+
+const tp = new Triple();
+
+console.log(SquaredTriple.calculate(3)); // 81 (not affected by parent's instantiation)
+console.log(SquaredTriple.description); // 'I square the triple of any number you provide'
+console.log(SquaredTriple.longDescription); // undefined
+console.log(SquaredTriple.customName); // 'Tripler'
+
+// This throws because calculate() is a static member, not an instance member.
+console.log(tp.calculate()); // 'tp.calculate is not a function'
 ```
 
-## 명세서
+### Calling static members from another static method
+
+In order to call a static method or property within another static method of the same class, you can use the [`this`](/en-US/docs/Web/JavaScript/Reference/Operators/this) keyword.
+
+```js
+class StaticMethodCall {
+  static staticProperty = "static property";
+  static staticMethod() {
+    return `Static method and ${this.staticProperty} has been called`;
+  }
+  static anotherStaticMethod() {
+    return `${this.staticMethod()} from another static method`;
+  }
+}
+StaticMethodCall.staticMethod();
+// 'Static method and static property has been called'
+
+StaticMethodCall.anotherStaticMethod();
+// 'Static method and static property has been called from another static method'
+```
+
+### Calling static members from a class constructor and other methods
+
+Static members are not directly accessible using the {{JSxRef("Operators/this", "this")}} keyword from
+non-static methods. You need to call them using the class name:
+`CLASSNAME.STATIC_METHOD_NAME()` /
+`CLASSNAME.STATIC_PROPERTY_NAME` or by calling the method as a property of
+the `constructor`: `this.constructor.STATIC_METHOD_NAME()` /
+`this.constructor.STATIC_PROPERTY_NAME`
+
+```js
+class StaticMethodCall {
+  constructor() {
+    console.log(StaticMethodCall.staticProperty); // 'static property'
+    console.log(this.constructor.staticProperty); // 'static property'
+    console.log(StaticMethodCall.staticMethod()); // 'static method has been called.'
+    console.log(this.constructor.staticMethod()); // 'static method has been called.'
+  }
+
+  static staticProperty = "static property";
+  static staticMethod() {
+    return "static method has been called.";
+  }
+}
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참고
+## See also
 
-- [`class` expression](/en-US/docs/Web/JavaScript/Reference/Operators/class)
-- [`class` declaration](/en-US/docs/Web/JavaScript/Reference/Statements/class)
+- [Using classes](/en-US/docs/Web/JavaScript/Guide/Using_classes)
 - [Classes](/en-US/docs/Web/JavaScript/Reference/Classes)
+- [Static initialization blocks](/en-US/docs/Web/JavaScript/Reference/Classes/Static_initialization_blocks)
+- {{jsxref("Statements/class", "class")}}

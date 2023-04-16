@@ -1,50 +1,53 @@
 ---
 title: WeakMap.prototype.delete()
 slug: Web/JavaScript/Reference/Global_Objects/WeakMap/delete
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.WeakMap.delete
 ---
 
 {{JSRef}}
 
-**`delete()`** 메서드는 {{jsxref("WeakMap")}} 객체에서 특정 요소를 제거합니다.
+The **`delete()`** method removes the specified element from a
+{{jsxref("WeakMap")}} object.
 
 {{EmbedInteractiveExample("pages/js/weakmap-prototype-delete.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 delete(key)
 ```
 
-### 매개변수
+### Parameters
 
 - `key`
-  - : `WeakMap` 객체에서 제거할 요소의 키입니다.
+  - : The key of the element to remove from the `WeakMap` object.
 
-### 반환 값
+### Return value
 
-`WeakMap` 겍체의 요소가 성공적으로 제거된 경우 `true`입니다. `WeakMap`에서 키를 찾을 수 없거나 키가 객체가 아닌 경우는 `false`입니다.
+`true` if an element in the `WeakMap` object has been removed successfully. `false` if the key is not found in the `WeakMap`. Always returns `false` if `key` is not an object or a [non-registered symbol](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol#shared_symbols_in_the_global_symbol_registry).
 
-## 예제
+## Examples
 
-### delete() 메서드 사용하기
+### Using the delete() method
 
 ```js
 const wm = new WeakMap();
-wm.set(window, 'foo');
+wm.set(window, "foo");
 
-wm.delete(window); // true 반환. 성공적으로 제거됨.
+wm.delete(window); // Returns true. Successfully removed.
 
-wm.has(window);    // false 반환. window 객체는 더이상 WeakMap에 있지않음.
+wm.has(window); // Returns false. The window object is no longer in the WeakMap.
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("WeakMap")}}

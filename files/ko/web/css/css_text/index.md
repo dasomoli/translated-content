@@ -1,16 +1,23 @@
 ---
 title: CSS Text
 slug: Web/CSS/CSS_Text
+page-type: css-module
+spec-urls:
+  - https://drafts.csswg.org/css-logical/
+  - https://drafts.csswg.org/css-text/
+  - https://drafts.csswg.org/css-text-4/
 ---
+
 {{CSSRef}}
 
-**CSS Text**는 줄 바꿈, 정돈 및 정렬, 공백 처리 및 텍스트 변환 같은 텍스트 조작을 수행하는 법을 정의하는 CSS 모듈입니다.
+**CSS Text** is a module of CSS that defines how to perform text manipulation, like line breaking, justification and alignment, white space handling, and text transformation.
 
-## 참고서
+## Reference
 
-### 속성
+### Properties
 
 - {{cssxref("hanging-punctuation")}}
+- {{cssxref("hyphenate-limit-chars")}}
 - {{cssxref("hyphens")}}
 - {{cssxref("letter-spacing")}}
 - {{cssxref("line-break")}}
@@ -26,6 +33,6 @@ slug: Web/CSS/CSS_Text
 - {{cssxref("word-break")}}
 - {{cssxref("word-spacing")}}
 
-## 명세
+## Specifications
 
 {{Specifications}}

@@ -1,130 +1,135 @@
 ---
 title: Service Worker API
 slug: Web/API/Service_Worker_API
+page-type: web-api-overview
+spec-urls: https://w3c.github.io/ServiceWorker/
 ---
 
-{{securecontext_header}}{{APIRef("Service Workers API")}}
+{{DefaultAPISidebar("Service Workers API")}}
 
-서비스 워커는 웹 응용 프로그램, 브라우저, 그리고 (사용 가능한 경우) 네트워크 사이의 프록시 서버 역할을 합니다. 서비스 워커의 개발 의도는 여러가지가 있지만, 그 중에서도 효과적인 오프라인 경험을 생성하고, 네트워크 요청을 가로채서 네트워크 사용 가능 여부에 따라 적절한 행동을 취하고, 서버의 자산을 업데이트할 수 있습니다. 또한 푸시 알림과 백그라운드 동기화 API로의 접근도 제공합니다.
+Service workers essentially act as proxy servers that sit between web applications, the browser, and the network (when available). They are intended, among other things, to enable the creation of effective offline experiences, intercept network requests and take appropriate action based on whether the network is available, and update assets residing on the server. They will also allow access to push notifications and background sync APIs.
 
-## 서비스 워커의 개념과 사용법
+## Service worker concepts and usage
 
-서비스 워커는 출처와 경로에 대해 등록하는 이벤트 기반 [워커](/ko/docs/Web/API/Worker)로서 JavaScript 파일의 형태를 갖고 있습니다. 서비스 워커는 연관된 웹 페이지/사이트를 통제하여 탐색과 리소스 요청을 가로채 수정하고, 리소스를 굉장히 세부적으로 캐싱할 수 있습니다. 이를 통해 웹 앱이 어떤 상황에서 어떻게 동작해야 하는지 완벽하게 바꿀 수 있습니다. (제일 대표적인 상황은 네트워크를 사용하지 못할 때입니다.)
+A service worker is an event-driven [worker](/en-US/docs/Web/API/Worker) registered against an origin and a path. It takes the form of a JavaScript file that can control the web-page/site that it is associated with, intercepting and modifying navigation and resource requests, and caching resources in a very granular fashion to give you complete control over how your app behaves in certain situations (the most obvious one being when the network is not available).
 
-서비스 워커는 워커 맥락에서 실행되기 때문에 DOM에 접근할 수 없습니다. 또한 앱을 구동하는 주 JavaScript와는 다른 스레드에서 동작하므로 연산을 가로막지 않습니다(논 블로킹). 서비스 워커는 온전히 비동기적으로 설계됐으며, 그로 인해 동기적 [XHR](/ko/docs/Web/API/XMLHttpRequest)이나 [웹 저장소](/ko/docs/Web/API/Web_Storage_API) 등의 API를 서비스 워커 내에서 사용할 수 없습니다.
+A service worker is run in a worker context: it therefore has no DOM access, and runs on a different thread to the main JavaScript that powers your app, so it is non-blocking. It is designed to be fully async; as a consequence, APIs such as synchronous [XHR](/en-US/docs/Web/API/XMLHttpRequest) and [Web Storage](/en-US/docs/Web/API/Web_Storage_API) can't be used inside a service worker.
 
-서비스 워커는 보안 상의 이유로 HTTPS에서만 동작합니다. 네트워크 요청을 수정할 수 있다는 점에서 중간자 공격에 굉장히 취약하기 때문입니다. 또한 Firefox에서는 사생활 보호 모드에서 Service Worker API에 접근할 수 없습니다.
+Service workers can't import JavaScript module dynamically, and [`import()`](/en-US/docs/Web/JavaScript/Reference/Operators/import#browser_compatibility) will throw if it is called in a service worker global scope.
+Static import using the [`import`](/en-US/docs/Web/JavaScript/Reference/Statements/import) statement is allowed.
 
-> **참고:** 서비스 워커는 모든 것을 세부적으로 통제할 수 있다는 점에서 [AppCache](http://alistapart.com/article/application-cache-is-a-douchebag) 등 오프라인이나 캐시의 이전 시도보다 우위를 점합니다. 서비스 워커는 개발자의 의도를 짐작하지 않으며, 예측과 빗나갔을 때 망가지지도 않기 때문입니다.
+Service workers only run over HTTPS, for security reasons. Most significantly, HTTP connections are susceptible to malicious code injection by {{Glossary("MitM", "man in the middle")}} attacks, and such attacks could be worse if allowed access to these powerful APIs. In Firefox, service worker APIs are also hidden and cannot be used when the user is in [private browsing mode](https://support.mozilla.org/en-US/kb/private-browsing-use-firefox-without-history).
 
-> **참고:** 서비스 워커는 응답을 기다린 후 성공 또는 실패 액션을 실행하는 경우가 많으므로 [프로미스](/ko/docs/Web/JavaScript/Reference/Global_Objects/Promise)를 적극적으로 사용합니다.
+> **Note:** On Firefox, for testing you can run service workers over HTTP (insecurely); simply check the **Enable Service Workers over HTTP (when toolbox is open)** option in the Firefox Devtools options/gear menu.
 
-### 등록
+> **Note:** Unlike previous attempts in this area such as [AppCache](https://alistapart.com/article/application-cache-is-a-douchebag/), service workers don't make assumptions about what you are trying to do, but then break when those assumptions are not exactly right. Instead, service workers give you much more granular control.
 
-서비스 워커는 {{domxref("ServiceWorkerContainer.register()")}} 메서드를 사용해 처음 등록합니다. 성공적으로 등록한 경우 클라이언트가 서비스 워커를 다운로드하고, 출처 전체에 대해 혹은 개발자가 지정한 특정 주소들에 대해서 서비스 워커의 설치와 활성화(아래 구획 참고)를 시도합니다.
+> **Note:** Service workers make heavy use of [promises](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), as generally they will wait for responses to come through, after which they will respond with a success or failure action. The promises architecture is ideal for this.
 
-### 다운로드, 설치, 활성화
+### Registration
 
-서비스 워커를 살펴보면 다음과 같은 생명주기를 볼 수 있습니다.
+A service worker is first registered using the {{DOMxRef("ServiceWorkerContainer.register()")}} method. If successful, your service worker will be downloaded to the client and attempt installation/activation (see below) for URLs accessed by the user inside the whole origin, or inside a subset specified by you.
 
-1. 다운로드
-2. 설치
-3. 활성화
+### Download, install and activate
 
-서비스 워커가 제어하는 사이트/페이지에 사용자가 처음 접근하는 순간 서비스 워커가 즉시 다운로드됩니다.
+At this point, your service worker will observe the following lifecycle:
 
-서비스 워커의 업데이트는 다음 경우에 발생합니다.
+1. Download
+2. Install
+3. Activate
 
-- 범위 내 페이지로의 탐색 발생
-- 서비스 워커에서 이벤트가 발생했는데, 서비스 워커를 이전 24시간 내에 다운로드하지 않은 경우
+The service worker is immediately downloaded when a user first accesses a service worker–controlled site/page.
 
-다운로드한 파일이 더 새로운 버전인 경우 서비스 워커의 설치를 시도합니다. 버전 비교는 기존 서비스 워커 파일과의 바이트 단위 비교 결과를 사용합니다. 이 페이지/사이트에서 서비스 워커를 처음 발견한 경우에도 "새로운 버전"으로 취급합니다.
+After that, it is updated when:
 
-기존 서비스 워커가 없으면 설치를 시도하고, 설치를 성공하면 활성화합니다.
+- A navigation to an in-scope page occurs.
+- An event is fired on the service worker and it hasn't been downloaded in the last 24 hours.
 
-기존에 서비스 워커가 존재하던 경우, 새로운 버전을 백그라운드에서 설치하지만 활성화는 아직 하지 않습니다. 이 시점의 워커를 **대기 중인 워커**라고 부릅니다. 대기 중인 워커는 이전 버전의 서비스 워커를 사용하는 페이지가 모두 닫힌 경우 활성화되어 **활성 워커**가 됩니다. {{DOMxRef("ServiceWorkerGlobalScope.skipWaiting()")}}을 사용해 활성화 절차를 더 빨리 시작할 수 있으며, 새로운 활성 워커는 {{DOMxRef("Clients.claim()")}}을 사용해 이전 페이지를 회수할 수 있습니다.
+Installation is attempted when the downloaded file is found to be new — either different to an existing service worker (byte-wise compared), or the first service worker encountered for this page/site.
 
-생명주기 중 발생하는 이벤트 중 하나는 {{domxref("ServiceWorkerGlobalScope/install_event", "install")}} 이벤트입니다. 이 이벤트의 대표적인 사용 방법은, 예를 들면 내장 저장소 API를 사용해 캐시를 만들고, 오프라인 상황에서 사용할 자산을 준비하는 등, 서비스 워커의 사용을 준비하는 것입니다.
+If this is the first time a service worker has been made available, installation is attempted, then after a successful installation, it is activated.
 
-{{domxref("ServiceWorkerGlobalScope/activate_event", "activate")}} 이벤트도 있습니다. `activate`의 시점에서는 과거의 캐시를 지우고, 구버전 서비스 워커에 관련된 항목을 청소하는 등 여러가지를 정리하기에 좋습니다.
+If there is an existing service worker available, the new version is installed in the background, but not yet activated — at this point it is called the _worker in waiting_. It is only activated when there are no longer any pages loaded that are still using the old service worker. As soon as there are no more pages to be loaded, the new service worker activates (becoming the _active worker_). Activation can happen sooner using {{DOMxRef("ServiceWorkerGlobalScope.skipWaiting()")}} and existing pages can be claimed by the active worker using {{DOMxRef("Clients.claim()")}}.
 
-서비스 워커는 {{domxref("FetchEvent")}} 이벤트를 사용해 요청에 응답할 수 있습니다. {{domxref("FetchEvent.respondWith()")}} 메서드를 사용해 요청에 대한 응답을 원하는 방식으로 자유롭게 바꾸세요.
+You can listen for the {{domxref("ServiceWorkerGlobalScope/install_event", "install")}} event; a standard action is to prepare your service worker for usage when this fires, for example by creating a cache using the built in storage API, and placing assets inside it that you'll want for running your app offline.
 
-> **참고:** `install`과 `activate` 이벤트 처리는 시간이 꽤 걸릴 수도 있기에, 서비스 워커 명세는 {{domxref("ExtendableEvent.waitUntil", "waitUntil()")}} 메서드를 제공합니다. `install`이나 `activate`에서 `waitUntil()`을 호출하면서 매개변수로 프로미스를 제공하면, 성공적으로 이행하기 전까지는 기능 이벤트가 발생하지 않습니다.
+There is also an {{domxref("ServiceWorkerGlobalScope/activate_event", "activate")}} event. The point where this event fires is generally a good time to clean up old caches and other things associated with the previous version of your service worker.
 
-기본적인 첫 서비스 워커를 차근차근 만드는 방법은 [서비스 워커 사용하기](/ko/docs/Web/API/Service_Worker_API/Using_Service_Workers)에서 읽어볼 수 있습니다.
+Your service worker can respond to requests using the {{DOMxRef("FetchEvent")}} event. You can modify the response to these requests in any way you want, using the {{DOMxRef("FetchEvent.respondWith()")}} method.
 
-## 다른 사용법 아이디어
+> **Note:** Because `install`/`activate` events could take a while to complete, the service worker spec provides a {{domxref("ExtendableEvent.waitUntil", "waitUntil()")}} method. Once it is called on `install` or `activate` events with a promise, functional events such as `fetch` and `push` will wait until the promise is successfully resolved.
 
-서비스 워커의 설계는 다음과 같은 용도로 사용하는 것도 감안했습니다.
+For a complete tutorial to show how to build up your first basic example, read [Using Service Workers](/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers).
 
-- 백그라운드 데이터 동기화.
-- 다른 출처에서의 리소스 요청을 응답.
-- 위치정보, 자이로 센서 등 계산에 높은 비용이 들어가는 다수의 페이지에서 함께 사용할 수 있도록 데이터 업데이트를 중앙화.
-- 개발 목적으로서 CoffeeScript, Less, CJS/AMD 모듈 등의 의존성 관리와 컴파일.
-- 백그라운드 서비스 훅.
-- 특정 URL 패턴에 기반한 사용자 지정 템플릿 제공.
-- 성능 향상. 사진 앨범의 다음 사진 몇 장처럼, 사용자가 필요로 할 것으로 생각되는 리소스의 프리페칭 등.
+## Other use case ideas
 
-미래의 서비스 워커는 웹 플랫폼이 네이티브 앱의 능력에 보다 근접하도록 여러 가지 유용한 기능을 수행할 수 있을 것입니다. 흥미롭게도 다른 명세에서도 서비스 워커 맥락을 사용할 수 있으며, 이미 다음과 같은 곳에서 사용하고 있습니다.
+Service workers are also intended to be used for such things as:
 
-- [백그라운드 동기화](https://github.com/slightlyoff/BackgroundSync): 아무 사용자도 사이트에 없을 때 서비스 워커를 가동해 캐시를 업데이트 하는 등의 작업을 수행.
-- [푸시 메시지에 반응](/ko/docs/Web/API/Push_API): 서비스 워커를 가동, 새로운 콘텐츠가 이용 가능하다는 메시지를 사용자에게 전송.
-- 특정 시간과 날짜에 반응.
-- 지오펜스 진입.
+- Background data synchronization.
+- Responding to resource requests from other origins.
+- Receiving centralized updates to expensive-to-calculate data such as geolocation or gyroscope, so multiple pages can make use of one set of data.
+- Client-side compiling and dependency management of CoffeeScript, less, CJS/AMD modules, etc. for development purposes.
+- Hooks for background services.
+- Custom templating based on certain URL patterns.
+- Performance enhancements, for example pre-fetching resources that the user is likely to need in the near future, such as the next few pictures in a photo album.
+- API mocking.
 
-## 인터페이스
+In the future, service workers will be able to do a number of other useful things for the web platform that will bring it closer towards native app viability. Interestingly, other specifications can and will start to make use of the service worker context, for example:
 
-- {{DOMxRef("Cache")}} {{Experimental_Inline}}
-  - : {{DOMxRef("ServiceWorker")}} 생명주기의 일부로서 캐시되는 {{domxref("Request")}} / {{domxref("Response")}} 객체 쌍의 저장소를 나타냅니다.
-- {{DOMxRef("CacheStorage")}} {{Experimental_Inline}}
-  - : {{DOMxRef("Cache")}} 객체의 저장소를 나타냅니다. {{DOMxRef("ServiceWorker")}}가 접근할 수 있는 모든 유명 캐시의 주 디렉토리를 제공하며, {{domxref("Cache")}} 객체를 가리키는 문자열 이름의 맵핑도 관리합니다.
-- {{DOMxRef("Client")}} {{Experimental_Inline}}
-  - : 서비스 워커 클라이언트의 범위를 나타냅니다. 서비스 워커 클라이언트는 브라우저 맥락에서의 문서이거나, 활성화된 워커가 제어하는 {{domxref("SharedWorker")}}입니다.
-- {{DOMxRef("Clients")}} {{Experimental_Inline}}
-  - : {{DOMxRef("Client")}} 객체의 목록을 나타냅니다. Clients는 현재 {{glossary("출처")}}의 활성 서비스 워커 클라이언트에 접근하는 주요 방법입니다.
-- {{DOMxRef("ExtendableEvent")}} {{Experimental_Inline}}
-  - : 서비스 워커 생명주기의 일부로서 {{DOMxRef("ServiceWorkerGlobalScope")}}에서 발생하는 `install`과 `activate` 이벤트의 지속시간을 늘립니다. 이로써 데이터베이스 스키마를 업그레이드하거나, 만료된 캐시 항목을 지우는 작업 등이 끝나기 전까지 {{DOMxRef("FetchEvent")}}와 같은 기능 이벤트가 {{DOMxRef("ServiceWorker")}}로 전달되지 않도록 합니다.
-- {{DOMxRef("ExtendableMessageEvent")}} {{Experimental_Inline}}
-  - : The event object of a {{event("message_(ServiceWorker)","message")}} event fired on a service worker (when a channel message is received on the {{DOMxRef("ServiceWorkerGlobalScope")}} from another context) — extends the lifetime of such events.
-- {{DOMxRef("FetchEvent")}} {{Experimental_Inline}}
-  - : The parameter passed into the {{DOMxRef("ServiceWorkerGlobalScope.onfetch")}} handler, `FetchEvent` represents a fetch action that is dispatched on the {{DOMxRef("ServiceWorkerGlobalScope")}} of a {{DOMxRef("ServiceWorker")}}. It contains information about the request and resulting response, and provides the {{DOMxRef("FetchEvent.respondWith", "FetchEvent.respondWith()")}} method, which allows us to provide an arbitrary response back to the controlled page.
-- {{DOMxRef("InstallEvent")}} {{Experimental_Inline}}
-  - : The parameter passed into the {{DOMxRef("ServiceWorkerGlobalScope.oninstall", "oninstall")}} handler, the `InstallEvent` interface represents an install action that is dispatched on the {{DOMxRef("ServiceWorkerGlobalScope")}} of a {{DOMxRef("ServiceWorker")}}. As a child of {{DOMxRef("ExtendableEvent")}}, it ensures that functional events such as {{DOMxRef("FetchEvent")}} are not dispatched during installation.
-- {{DOMxRef("NavigationPreloadManager")}} {{Experimental_Inline}}
+- [Background synchronization](https://github.com/WICG/background-sync): Start up a service worker even when no users are at the site, so caches can be updated, etc.
+- [Reacting to push messages](/en-US/docs/Web/API/Push_API): Start up a service worker to send users a message to tell them new content is available.
+- Reacting to a particular time & date.
+- Entering a geo-fence.
+
+## Interfaces
+
+- {{DOMxRef("Cache")}}
+  - : Represents the storage for {{DOMxRef("Request")}} / {{DOMxRef("Response")}} object pairs that are cached as part of the {{DOMxRef("ServiceWorker")}} life cycle.
+- {{DOMxRef("CacheStorage")}}
+  - : Represents the storage for {{DOMxRef("Cache")}} objects. It provides a master directory of all the named caches that a {{DOMxRef("ServiceWorker")}} can access, and maintains a mapping of string names to corresponding {{DOMxRef("Cache")}} objects.
+- {{DOMxRef("Client")}}
+  - : Represents the scope of a service worker client. A service worker client is either a document in a browser context or a {{DOMxRef("SharedWorker")}}, which is controlled by an active worker.
+- {{DOMxRef("Clients")}}
+  - : Represents a container for a list of {{DOMxRef("Client")}} objects; the main way to access the active service worker clients at the current origin.
+- {{DOMxRef("ExtendableEvent")}}
+  - : Extends the lifetime of the `install` and `activate` events dispatched on the {{DOMxRef("ServiceWorkerGlobalScope")}}, as part of the service worker lifecycle. This ensures that any functional events (like {{DOMxRef("FetchEvent")}}) are not dispatched to the {{DOMxRef("ServiceWorker")}}, until it upgrades database schemas, and deletes outdated cache entries, etc.
+- {{DOMxRef("ExtendableMessageEvent")}}
+  - : The event object of a {{domxref("ServiceWorkerGlobalScope/message_event", "message")}} event fired on a service worker (when a channel message is received on the {{DOMxRef("ServiceWorkerGlobalScope")}} from another context) — extends the lifetime of such events.
+- {{DOMxRef("FetchEvent")}}
+  - : The parameter passed into the {{DOMxRef("ServiceWorkerGlobalScope.fetch_event", "onfetch")}} handler, `FetchEvent` represents a fetch action that is dispatched on the {{DOMxRef("ServiceWorkerGlobalScope")}} of a {{DOMxRef("ServiceWorker")}}. It contains information about the request and resulting response, and provides the {{DOMxRef("FetchEvent.respondWith", "FetchEvent.respondWith()")}} method, which allows us to provide an arbitrary response back to the controlled page.
+- {{DOMxRef("InstallEvent")}} {{Deprecated_Inline}} {{Non-standard_Inline}}
+  - : The parameter passed into the {{DOMxRef("ServiceWorkerGlobalScope.install_event", "oninstall")}} handler, the `InstallEvent` interface represents an install action that is dispatched on the {{DOMxRef("ServiceWorkerGlobalScope")}} of a {{DOMxRef("ServiceWorker")}}. As a child of {{DOMxRef("ExtendableEvent")}}, it ensures that functional events such as {{DOMxRef("FetchEvent")}} are not dispatched during installation.
+- {{DOMxRef("NavigationPreloadManager")}}
   - : Provides methods for managing the preloading of resources with a service worker.
 - {{DOMxRef("Navigator.serviceWorker")}}
   - : Returns a {{DOMxRef("ServiceWorkerContainer")}} object, which provides access to registration, removal, upgrade, and communication with the {{DOMxRef("ServiceWorker")}} objects for the [associated document](https://html.spec.whatwg.org/multipage/browsers.html#concept-document-window).
-- {{DOMxRef("NotificationEvent")}} {{Experimental_Inline}}
-  - : The parameter passed into the {{DOMxRef("ServiceWorkerGlobalScope.onnotificationclick", "onnotificationclick")}} handler, the `NotificationEvent` interface represents a notification click event that is dispatched on the {{DOMxRef("ServiceWorkerGlobalScope")}} of a {{DOMxRef("ServiceWorker")}}.
-- {{DOMxRef("ServiceWorker")}} {{Experimental_Inline}}
+- {{DOMxRef("NotificationEvent")}}
+  - : The parameter passed into the {{DOMxRef("ServiceWorkerGlobalScope.notificationclick_event", "onnotificationclick")}} handler, the `NotificationEvent` interface represents a notification click event that is dispatched on the {{DOMxRef("ServiceWorkerGlobalScope")}} of a {{DOMxRef("ServiceWorker")}}.
+- {{DOMxRef("ServiceWorker")}}
   - : Represents a service worker. Multiple browsing contexts (e.g. pages, workers, etc.) can be associated with the same `ServiceWorker` object.
-- {{DOMxRef("ServiceWorkerContainer")}} {{Experimental_Inline}}
+- {{DOMxRef("ServiceWorkerContainer")}}
   - : Provides an object representing the service worker as an overall unit in the network ecosystem, including facilities to register, unregister, and update service workers, and access the state of service workers and their registrations.
 - {{DOMxRef("ServiceWorkerGlobalScope")}}
   - : Represents the global execution context of a service worker.
-- {{DOMxRef("ServiceWorkerMessageEvent")}} {{Deprecated_Inline}}
-  - : Represents a message sent to a {{DOMxRef("ServiceWorkerGlobalScope")}}. **Note that this interface is deprecated in modern browsers. Service worker messages will now use the {{DOMxRef("MessageEvent")}} interface, for consistency with other web messaging features.**
-- {{DOMxRef("ServiceWorkerRegistration")}} {{Experimental_Inline}}
+- {{DOMxRef("MessageEvent")}}
+  - : Represents a message sent to a {{DOMxRef("ServiceWorkerGlobalScope")}}.
+- {{DOMxRef("ServiceWorkerRegistration")}}
   - : Represents a service worker registration.
-- {{DOMxRef("ServiceWorkerState")}} {{Experimental_Inline}}
-  - : Associated with its [`ServiceWorker`](/ko/docs/Web/API/ServiceWorker)'s state.
-- {{DOMxRef("SyncEvent")}} {{Non-standard_Inline}}
+- {{DOMxRef("SyncEvent")}} {{Experimental_Inline}}
   - : The SyncEvent interface represents a sync action that is dispatched on the {{DOMxRef("ServiceWorkerGlobalScope")}} of a ServiceWorker.
-- {{DOMxRef("SyncManager")}} {{Non-standard_Inline}}
+- {{DOMxRef("SyncManager")}} {{Experimental_Inline}}
   - : Provides an interface for registering and listing sync registrations.
-- {{DOMxRef("WindowClient")}} {{Experimental_Inline}}
+- {{DOMxRef("WindowClient")}}
   - : Represents the scope of a service worker client that is a document in a browser context, controlled by an active worker. This is a special type of {{DOMxRef("Client")}} object, with some additional methods and properties available.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 같이 보기
+## See also
 
-- [ServiceWorker 쿡북](https://github.com/mdn/serviceworker-cookbook)
-- [서비스 워커 사용하기](/ko/docs/Web/API/Service_Worker_API/Using_Service_Workers)
-- [서비스 워커 기초 코드 예제](https://github.com/mdn/sw-test)
+- [ServiceWorker Cookbook](https://github.com/mdn/serviceworker-cookbook)
+- [Using Service Workers](/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers)
+- [Service workers basic code example](https://github.com/mdn/dom-examples/tree/main/service-worker/simple-service-worker)
 - [Is ServiceWorker ready?](https://jakearchibald.github.io/isserviceworkerready/)
 - {{jsxref("Promise")}}
-- [웹 워커 사용하기](/ko/docs/Web/API/Web_Workers_API/basic_usage)

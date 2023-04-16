@@ -1,11 +1,13 @@
 ---
-title: 전체 선택자
+title: Universal selectors
 slug: Web/CSS/Universal_selectors
+page-type: css-selector
+browser-compat: css.selectors.universal
 ---
 
-{{CSSRef("Selectors")}}
+{{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **전체 선택자**(`*`)는 모든 형태의 모든 요소를 선택합니다.
+The CSS **universal selector** (`*`) matches elements of any type.
 
 ```css
 /* Selects all elements */
@@ -14,26 +16,26 @@ slug: Web/CSS/Universal_selectors
 }
 ```
 
-CSS 3부터는 별표를 {{cssxref("CSS_Namespaces", "네임스페이스")}}와 함께 사용할 수 있습니다.
+The universal selector is a special [type selector](/en-US/docs/Web/CSS/Type_selectors) and can therefore be namespaced when using {{CSSXref("@namespace")}}. This is useful when dealing with documents containing multiple namespaces such as HTML with inline SVG or MathML, or XML that mixes multiple vocabularies.
 
-- `ns|*` - 네임스페이스 ns 안의 모든 요소 선택
-- `*|*` - 모든 요소 선택
-- `|*` - 네임스페이스 없는 모든 요소 선택
+- `ns|*` - matches all elements in namespace _ns_
+- `*|*` - matches all elements
+- `|*` - matches all elements without any declared namespace
 
-## 구문
+## Syntax
 
-```
+```css
 * { style properties }
 ```
 
-단순 선택자에서 별표는 선택사항입니다. 즉 `*.warning`과 `.warning`은 같습니다.
+The asterisk is optional with simple selectors. For instance, `*.warning` and `.warning` are equivalent.
 
-## 예제
+## Examples
 
 ### CSS
 
 ```css
-* [lang^=en] {
+* [lang^="en"] {
   color: green;
 }
 
@@ -46,7 +48,7 @@ CSS 3부터는 별표를 {{cssxref("CSS_Namespaces", "네임스페이스")}}와 
 }
 
 .floating {
-  float: left
+  float: left;
 }
 
 /* automatically clear the next sibling after a floating element */
@@ -66,14 +68,30 @@ CSS 3부터는 별표를 {{cssxref("CSS_Namespaces", "네임스페이스")}}와 
 </p>
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample('예제')}}
+{{EmbedLiveSample('Examples')}}
 
-## 명세
+### Namespaces
+
+In this example the selector will only match elements in the example namespace.
+
+```css
+@namespace example url(http://www.example.com);
+example|* {
+  color: blue;
+}
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- [CSS Selectors](/en-US/docs/Web/CSS/CSS_Selectors)
+- [Learn CSS: Selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors)

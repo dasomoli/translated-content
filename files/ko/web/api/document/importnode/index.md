@@ -1,52 +1,84 @@
 ---
-title: Document.importNode()
+title: "Document: importNode() method"
+short-title: importNode()
 slug: Web/API/Document/importNode
+page-type: web-api-instance-method
+browser-compat: api.Document.importNode
 ---
 
 {{APIRef("DOM")}}
 
-## 설명
+The {{domxref("Document")}} object's **`importNode()`** method creates a copy of a
+{{domxref("Node")}} or {{domxref("DocumentFragment")}} from another document, to be
+inserted into the current document later.
 
-현재 문서가 아닌 외부 문서의 노드를 복사하여 현재 문서에 넣을 수 있도록 해줍니다.
+The imported node is not yet included in the document tree. To include it, you need to
+call an insertion method such as {{domxref("Node.appendChild", "appendChild()")}} or
+{{domxref("Node.insertBefore", "insertBefore()")}} with a node that _is_
+currently in the document tree.
 
-## 문법
+Unlike {{domxref("document.adoptNode()")}}, the original node is not removed from its
+original document. The imported node is a clone of the original.
 
-```js
-var node = document.importNode(externalNode, deep);
+## Syntax
+
+```js-nolint
+importNode(externalNode)
+importNode(externalNode, deep)
 ```
 
-- `node`
-  - : 문서에 추가될 새로운 노드입니다. 새로운 노드가 문서 트리에 추가되기 전까지, 새로운 노드의 [parentNode](/ko/docs/DOM/Node.parentNode)는 null입니다.
-- `externalNode`
-  - : 다른 문서에서 가져올 노드입니다.
-- `deep`
-  - : 불리언 타입을 가지며, 다른 문서에서 노드를 가져올 때 노드의 자식 요소들을 포함하여 가져올 것인지에 대한 여부를 결정합니다.
+### Parameters
 
-## 예제
+- `externalNode`
+  - : The external {{domxref("Node")}} or {{domxref("DocumentFragment")}} to import into
+    the current document.
+- `deep` {{optional_inline}}
+
+  - : A boolean flag, whose default value is `false`,
+    which controls whether to include the entire DOM subtree
+    of the `externalNode` in the import.
+
+    - If `deep` is set to `true`, then
+      `externalNode` and all of its descendants are copied.
+    - If `deep` is set to `false`, then only
+      `externalNode` is imported — the new node has no children.
+
+### Return value
+
+The copied `importedNode` in the scope of the importing document.
+
+> **Note:** `importedNode`'s {{domxref("Node.parentNode")}} is `null`, since it has not yet been inserted into the document tree!
+
+## Examples
 
 ```js
-var iframe = document.getElementsByTagName("iframe")[0];
-var oldNode = iframe.contentDocument.getElementById("myNode");
-var newNode = document.importNode(oldNode, true);
+const iframe = document.querySelector("iframe");
+const oldNode = iframe.contentWindow.document.getElementById("myNode");
+const newNode = document.importNode(oldNode, true);
 document.getElementById("container").appendChild(newNode);
 ```
 
 ## Notes
 
-오리지널 노드는 오리지널 문서에서 삭제되지 않습니다. 추가된 노드는 오리지널 노드의 복사본입니다.
+Before they can be inserted into the current document, nodes from external documents should either be:
 
-Nodes from external documents should be cloned using [`document.importNode()`](/ko/docs/Web/API/Document/importNode) (or adopted using [`document.adoptNode()`](/ko/docs/Web/API/Document/adoptNode)) before they can be inserted into the current document. For more on the [`Node.ownerDocument`](/ko/docs/Web/API/Node/ownerDocument) issues, see the [W3C DOM FAQ](http://www.w3.org/DOM/faq.html#ownerdoc).
+- cloned using {{domXref("document.importNode()")}}; or
+- adopted using {{domXref("document.adoptNode()")}}.
 
-Firefox doesn't currently enforce this rule (it did for a while during the development of Firefox 3, but too many sites break when this rule is enforced). We encourage Web developers to fix their code to follow this rule for improved future compatibility.
+> **Note:** Although Firefox doesn't currently enforce this rule, we encourage you to follow this rule for improved future compatibility.
 
-## 명세서
+For more on the {{domXref("Node.ownerDocument")}} issues, see the W3C DOM FAQ.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 지원율
+## Browser compatibility
 
 {{Compat}}
 
-## 참고
+## See also
 
-- {{domxref("document.adoptNode()")}}
+- {{domxref("document.adoptNode()")}}, which behaves very similar to this method
+- {{domxref("Node.appendChild()")}}
+- {{domxref("Node.insertBefore()")}}

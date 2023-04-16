@@ -1,39 +1,41 @@
 ---
 title: PeriodicWave
 slug: Web/API/PeriodicWave
+page-type: web-api-interface
+browser-compat: api.PeriodicWave
 ---
 
 {{ APIRef("Web Audio API") }}
 
-**`PeriodicWave`** 인터페이스는 {{domxref("OscillatorNode")}}의 출력을 형성하는데 사용될 수 있는 주기적인 파형을 정의합니다.
+The **`PeriodicWave`** interface defines a periodic waveform that can be used to shape the output of an {{domxref("OscillatorNode")}}.
 
-`PeriodicWave`에는 입력도 출력도 없습니다; 이것은 {{domxref("OscillatorNode.setPeriodicWave()")}}를 호출할 때 사용자 정의 oscillator를 정의하기 위해 쓰입니다. `PeriodicWave` 그 자체는 {{domxref("BaseAudioContext.createPeriodicWave")}}에 의해 생성/반환됩니다.
+`PeriodicWave` has no inputs or outputs; it is used to define custom oscillators when calling {{domxref("OscillatorNode.setPeriodicWave()")}}. The `PeriodicWave` itself is created/returned by {{domxref("BaseAudioContext.createPeriodicWave")}}.
 
-## 생성자
+## Constructor
 
-- {{domxref("PeriodicWave.PeriodicWave()")}}
-  - : 모든 속성에 기본값을 사용하여 새로운 `PeriodicWave` 객체 인스턴스를 생성합니다. 만약 처음에 사용자 정의 속성 값을 설정하기를 원한다면, {{domxref("BaseAudioContext.createPeriodicWave")}} 팩토리 메서드를 대신 사용하세요.
+- {{domxref("PeriodicWave.PeriodicWave", "PeriodicWave()")}}
+  - : Creates a new `PeriodicWave` object instance using the default values for all properties. If you wish to establish custom property values at the outset, use the {{domxref("BaseAudioContext.createPeriodicWave")}} factory method instead.
 
-## 속성
+## Instance properties
 
-_없습니다; 또한, `PeriodicWave`는 어떠한 속성도 상속받지 않습니다._
+None; also, `PeriodicWave` doesn't inherit any properties.
 
-## 메서드
+## Instance methods
 
-_없습니다; 또한, `PeriodicWave`는 어떠한 메서드도 상속받지 않습니다._
+None; also, `PeriodicWave` doesn't inherit any methods.
 
-## 예제
+## Example
 
-간단한 사인파를 포함하는 `PeriodicWave` 객체를 어떻게 생성하는지 보여주는 간단한 예제 코드를 {{domxref("BaseAudioContext.createPeriodicWave")}}에서 확인해 보세요.
+See {{domxref("BaseAudioContext.createPeriodicWave")}} for simple example code that shows how to create a `PeriodicWave` object containing a simple sine wave.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Web Audio API 사용하기](/ko/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)
+- [Using the Web Audio API](/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)

@@ -1,29 +1,28 @@
 ---
 title: CSS Generated Content
 slug: Web/CSS/CSS_Generated_Content
+page-type: css-module
+spec-urls: https://drafts.csswg.org/css-content/
 ---
 
 {{CSSRef}}
 
-**CSS Generated Content**는 요소에 콘텐츠를 추가하는 방법을 정의하는 CSS 모듈입니다. 생성 콘텐츠는 익명의 대체 요소에 콘텐츠를 추가하거나 매우 제한된 상황에서 DOM 노드의 콘텐츠를 생성된 값으로 대체하는 데 사용될 수 있습니다.
-자세한 내용은 [생성 콘텐츠에 대한 안내 방법](/ko/docs/Learn/CSS/Howto/Generated_content) 을 참조하고 구현 정보는 {{cssxref("content")}} 와 {{cssxref("quotes")}} 속성을 참조하십시오.
+**CSS Generated Content** is a module of CSS that defines how to add content to an element. Generated content can be used to add content to anonymous replaced elements or replace the content of a DOM node in very limited circumstances with a generated value.
 
-## 참고서
+See the [how to guide for generated content](/en-US/docs/Learn/CSS/Howto/Generated_content) to learn more, and the {{cssxref("content")}} and {{cssxref("quotes")}} properties for implementation information.
 
-### 속성
+## Reference
+
+### Properties
 
 - {{cssxref("content")}}
 - {{cssxref("quotes")}}
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 같이 보기
+## See also
 
-- [CSS 생성 콘텐츠의 사용](/ko/docs/Learn/CSS/Howto/Generated_content)
-- {{cssxref("content")}}
-- {{cssxref("quotes")}}
-- {{cssxref("::before")}}
-- {{cssxref("::after")}}
-- {{cssxref("::marker")}}
+- [Using CSS generated content](/en-US/docs/Learn/CSS/Howto/Generated_content)
+- Pseudo-elements: {{cssxref("::before")}}, {{cssxref("::after")}}, {{cssxref("::marker")}}

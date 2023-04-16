@@ -1,25 +1,29 @@
 ---
-title: RTCPeerConnection.localDescription
+title: "RTCPeerConnection: localDescription property"
+short-title: localDescription
 slug: Web/API/RTCPeerConnection/localDescription
+page-type: web-api-instance-property
+browser-compat: api.RTCPeerConnection.localDescription
 ---
 
 {{APIRef("WebRTC")}}
 
-{{SeeCompatTable}}
-
-읽기 속성인 `RTCPeerConnection.localDescription`는 연결의 로컬 엔드에 대한 세션을 설명하는 {{domxref("RTCSessionDescription")}}를 반환합니다. 아직 설정이 안되어있다면, **null** 입니다.
+The read-only property **`RTCPeerConnection.localDescription`** returns an {{domxref("RTCSessionDescription")}} describing the session for the local end of the connection.
+If it has not yet been set, this is `null`.
 
 ## Syntax
 
-```js
-const sessionDescription = peerConnection.localDescription;
+```js-nolint
+const sessionDescription = peerConnection.localDescription
 ```
 
-기본적으로 반환 값은 해당 속성이 `null`이 아닐 때에만 {{domxref("RTCPeerConnection.pendingLocalDescription")}}의 값입니다. 그렇지 않은 경우에는 {{domxref("RTCPeerConnection.currentLocalDescription")}}의 값이 반환됩니다. 이 알고리즘 및 사용하는 이유에 대한 자세한 설명은 [Pending and current descriptions](/en-US/docs/Web/API/WebRTC_API/Connectivity#pending_and_current_descriptions)를 참조하십시오.
+On a more fundamental level, the returned value is the value of {{domxref("RTCPeerConnection.pendingLocalDescription")}} if that property isn't `null`;
+otherwise, the value of {{domxref("RTCPeerConnection.currentLocalDescription")}} is returned.
+See [Pending and current descriptions](/en-US/docs/Web/API/WebRTC_API/Connectivity#pending_and_current_descriptions) in the WebRTC Connectivity page for details on this algorithm and why it's used.
 
-## 예시
+## Example
 
-아래의 예시에서는 `localDescription`를 확인하고, {{domxref("RTCSessionDescription")}} 객체의 타입과 sdp필드를 담고있는 경고를 띄웁니다.
+This example looks at the `localDescription` and displays an alert containing the {{domxref("RTCSessionDescription")}} object's `type` and `sdp` fields.
 
 ```js
 const pc = new RTCPeerConnection();
@@ -27,22 +31,26 @@ const pc = new RTCPeerConnection();
 const sd = pc.localDescription;
 if (sd) {
   alert(`Local session: type='${sd.type}'; sdp description='${sd.sdp}'`);
-}
-else {
+} else {
   alert("No local session yet.");
 }
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
-- {{domxref("RTCPeerConnection.setLocalDescription()")}}, {{domxref("RTCPeerConnection.pendingLocalDescription")}}, {{domxref("RTCPeerConnection.currentLocalDescription")}}
-- {{domxref("RTCPeerConnection.setRemoteDescription()")}}, {{domxref("RTCPeerConnection.remoteDescription")}}, {{domxref("RTCPeerConnection.pendingRemoteDescription")}}, {{domxref("RTCPeerConnection.currentRemoteDescription")}}
-- [WebRTC](/ko/docs/Web/Guide/API/WebRTC)
+- {{domxref("RTCPeerConnection.setLocalDescription()")}},
+  {{domxref("RTCPeerConnection.pendingLocalDescription")}},
+  {{domxref("RTCPeerConnection.currentLocalDescription")}}
+- {{domxref("RTCPeerConnection.setRemoteDescription()")}},
+  {{domxref("RTCPeerConnection.remoteDescription")}},
+  {{domxref("RTCPeerConnection.pendingRemoteDescription")}},
+  {{domxref("RTCPeerConnection.currentRemoteDescription")}}
+- [WebRTC](/en-US/docs/Web/API/WebRTC_API)

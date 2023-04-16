@@ -1,17 +1,29 @@
 ---
 title: border-style
 slug: Web/CSS/border-style
+page-type: css-shorthand-property
+browser-compat: css.properties.border-style
 ---
+
 {{CSSRef}}
 
-**`border-style`** [CSS](/ko/docs/Web/CSS) [단축 속성](/ko/docs/Web/CSS/Shorthand_properties)은 요소 테두리 네 면의 스타일을 지정합니다.
+The **`border-style`** [shorthand](/en-US/docs/Web/CSS/Shorthand_properties) [CSS](/en-US/docs/Web/CSS) property sets the line style for all four sides of an element's border.
 
 {{EmbedInteractiveExample("pages/css/border-style.html")}}
 
-## 구문
+## Constituent properties
+
+This property is a shorthand for the following CSS properties:
+
+- [`border-bottom-style`](/en-US/docs/Web/CSS/border-bottom-style)
+- [`border-left-style`](/en-US/docs/Web/CSS/border-left-style)
+- [`border-right-style`](/en-US/docs/Web/CSS/border-right-style)
+- [`border-top-style`](/en-US/docs/Web/CSS/border-top-style)
+
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
 border-style: none;
 border-style: hidden;
 border-style: dotted;
@@ -23,118 +35,156 @@ border-style: ridge;
 border-style: inset;
 border-style: outset;
 
-/* 세로방향 | 가로방향 */
+/* top and bottom | left and right */
 border-style: dotted solid;
 
-/* 위 | 가로방향 | 아래 */
+/* top | left and right | bottom */
 border-style: hidden double dashed;
 
-/* 위 | 오른쪽 | 아래 | 왼쪽 */
+/* top | right | bottom | left */
 border-style: none solid dotted dashed;
 
-/* 전역 값 */
+/* Global values */
 border-style: inherit;
 border-style: initial;
+border-style: revert;
+border-style: revert-layer;
 border-style: unset;
 ```
 
-`border-style` 속성은 한 개에서 네 개의 값을 사용해 지정할 수 있습니다.
+The `border-style` property may be specified using one, two, three, or four values.
 
-- **한 개의 값**은 모든 네 면의 테두리 스타일을 설정합니다.
-- **두 개의 값**을 지정하면 첫 번째는 **위와 아래**, 두 번째는 **왼쪽과 오른쪽** 테두리 스타일을 설정합니다.
-- **세 개의 값**을 지정하면 첫 번째는 **위**, 두 번째는 **왼쪽과 오른쪽,** 세 번째 값은 **아래** 테두리 스타일을 설정합니다.
-- **네 개의 값**을 지정하면 각각 **상, 우, 하, 좌** 순서로 테두리 스타일을 지정합니다. (시계방향)
+- When **one** value is specified, it applies the same style to **all four sides**.
+- When **two** values are specified, the first style applies to the **top and bottom**, the second to the **left and right**.
+- When **three** values are specified, the first style applies to the **top**, the second to the **left and right**, the third to the **bottom**.
+- When **four** values are specified, the styles apply to the **top**, **right**, **bottom**, and **left** in that order (clockwise).
 
-각각의 값은 아래 목록 중 하나로 지정합니다.
+Each value is a keyword chosen from the list below.
 
-### 값
+### Values
 
 - `<line-style>`
 
-  - : 테두리의 스타일을 설명합니다. 다음 표의 값을 사용할 수 있습니다.
+  - : Describes the style of the border. It can have the following values:
 
-    | `none`   |     | `hidden` 키워드와 마찬가지로 테두리를 표시하지 않습니다. {{cssxref("background-image")}}를 지정하지 않았으면 해당 면의 {{cssxref("border-width")}} 계산값은 지정값을 무시하고 `0`이 됩니다. 표에서, 칸의 테두리 상쇄 시 `none`은 제일 낮은 우선순위를 가집니다. 따라서 주변 칸이 테두리를 가진다면 테두리를 그립니다.          |
-    | -------- | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | `hidden` |     | `none` 키워드와 마찬가지로 테두리를 표시하지 않습니다. Unless a {{cssxref("background-image")}}를 지정하지 않았으면 해당 면의 {{cssxref("border-width")}} 계산값은 지정값을 무시하고 `0`이 됩니다. 표에서, 칸의 테두리 상쇄 시 `hidden`은 제일 높은 우선순위를 가집니다. 따라서 주변 칸이 테두리를 가지더라도 그리지 않습니다. |
-    | `dotted` |     | 테두리를 둥근 점 여러개로 그립니다. 점 간격은 명세에서 지정하지 않으며 구현마다 다릅니다. 점의 반지름은 해당 면 {{cssxref("border-width")}}의 절반입니다.                                                                                                                                                                               |
-    | `dashed` |     | 테두리를 직사각형 여러개로 그립니다. 사각형의 크기와 길이는 명세에서 지정하지 않으며 구현마다 다릅니다.                                                                                                                                                                                                                                          |
-    | `solid`  |     | 테두리를 하나의 직선으로 그립니다.                                                                                                                                                                                                                                                                                                               |
-    | `double` |     | 테두리를 두 개의 평행한 직선으로 그립니다.                                                                                                                                                                                                                                                                                                       |
-    | `groove` |     | 테두리가 파인 것처럼 그립니다.`ridge`의 반대입니다.                                                                                                                                                                                                                                                                                              |
-    | `ridge`  |     | 테두리가 튀어나온 것처럼 그립니다. `groove`의 반대입니다.                                                                                                                                                                                                                                                                                        |
-    | `inset`  |     | 요소가 파인 것처럼 테두리를 그립니다.`outset`의 반대입니다. {{cssxref("border-collapse")}}가 `collapsed`인 칸에서는 `groove`와 동일합니다.                                                                                                                                                                                             |
-    | `outset` |     | 요소가 튀어나온 것처럼 그립니다. `inset`의 반대입니다. {{cssxref("border-collapse")}}가 `collapsed`인 칸에서는 `ridge`와 동일합니다.                                                                                                                                                                                                   |
+    - `none`
+      - : Like the `hidden` keyword, displays no border. Unless a {{cssxref("background-image")}} is set, the computed value of the same side's {{cssxref("border-width")}} will be `0`, even if the specified value is something else. In the case of table cell and border collapsing, the `none` value has the _lowest_ priority: if any other conflicting border is set, it will be displayed.
+    - `hidden`
+      - : Like the `none` keyword, displays no border. Unless a {{cssxref("background-image")}} is set, the computed value of the same side's {{cssxref("border-width")}} will be `0`, even if the specified value is something else. In the case of table cell and border collapsing, the `hidden` value has the _highest_ priority: if any other conflicting border is set, it won't be displayed.
+    - `dotted`
+      - : Displays a series of rounded dots. The spacing of the dots is not defined by the specification and is implementation-specific. The radius of the dots is half the computed value of the same side's {{cssxref("border-width")}}.
+    - `dashed`
+      - : Displays a series of short square-ended dashes or line segments. The exact size and length of the segments are not defined by the specification and are implementation-specific.
+    - `solid`
+      - : Displays a single, straight, solid line.
+    - `double`
+      - : Displays two straight lines that add up to the pixel size defined by {{cssxref("border-width")}}.
+    - `groove`
+      - : Displays a border with a carved appearance. It is the opposite of `ridge`.
+    - `ridge`
+      - : Displays a border with an extruded appearance. It is the opposite of `groove`.
+    - `inset`
+      - : Displays a border that makes the element appear embedded. It is the opposite of `outset`. When applied to a table cell with {{cssxref("border-collapse")}} set to `collapsed`, this value behaves like `groove`.
+    - `outset`
+      - : Displays a border that makes the element appear embossed. It is the opposite of `inset`. When applied to a table cell with {{cssxref("border-collapse")}} set to `collapsed`, this value behaves like `ridge`.
 
-### 형식 구문
+## Formal definition
+
+{{cssinfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 속성 값의 예시 표
+### All property values
 
-가능한 모든 값을 나열한 표입니다.
+Here is an example of all the property values.
 
 #### HTML
 
 ```html
-<table>
-  <tr>
-    <td class="b1">none</td>
-    <td class="b2">hidden</td>
-    <td class="b3">dotted</td>
-    <td class="b4">dashed</td>
-  </tr>
-  <tr>
-    <td class="b5">solid</td>
-    <td class="b6">double</td>
-    <td class="b7">groove</td>
-    <td class="b8">ridge</td>
-  </tr>
-  <tr>
-    <td class="b9">inset</td>
-    <td class="b10">outset</td>
-  </tr>
-</table>
+<pre class="b1">none</pre>
+<pre class="b2">hidden</pre>
+<pre class="b3">dotted</pre>
+<pre class="b4">dashed</pre>
+<pre class="b5">solid</pre>
+<pre class="b6">double</pre>
+<pre class="b7">groove</pre>
+<pre class="b8">ridge</pre>
+<pre class="b9">inset</pre>
+<pre class="b10">outset</pre>
 ```
 
 #### CSS
 
 ```css
-/* 테이블 스타일 */
-table {
-  border-width: 3px;
-  background-color: #52E396;
-}
-tr, td {
-  padding: 2px;
+pre {
+  height: 80px;
+  width: 120px;
+  margin: 20px;
+  padding: 20px;
+  display: inline-block;
+  background-color: palegreen;
+  border-width: 5px;
+  box-sizing: border-box;
 }
 
-/* border-style 예제 클래스 */
-.b1 {border-style:none;}
-.b2 {border-style:hidden;}
-.b3 {border-style:dotted;}
-.b4 {border-style:dashed;}
-.b5 {border-style:solid;}
-.b6 {border-style:double;}
-.b7 {border-style:groove;}
-.b8 {border-style:ridge;}
-.b9 {border-style:inset;}
-.b10 {border-style:outset;}
+/* border-style example classes */
+.b1 {
+  border-style: none;
+}
+
+.b2 {
+  border-style: hidden;
+}
+
+.b3 {
+  border-style: dotted;
+}
+
+.b4 {
+  border-style: dashed;
+}
+
+.b5 {
+  border-style: solid;
+}
+
+.b6 {
+  border-style: double;
+}
+
+.b7 {
+  border-style: groove;
+}
+
+.b8 {
+  border-style: ridge;
+}
+
+.b9 {
+  border-style: inset;
+}
+
+.b10 {
+  border-style: outset;
+}
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('속성_값의_예시_표', 300, 200)}}
+{{EmbedLiveSample('All_property_values', "1200", 450)}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 테두리 관련 CSS 단축 속성: {{Cssxref("border")}}, {{Cssxref("border-width")}}, {{Cssxref("border-color")}}, {{Cssxref("border-radius")}}
+- The border-related shorthand CSS properties: {{Cssxref("border")}}, {{Cssxref("border-width")}}, {{Cssxref("border-color")}}, {{Cssxref("border-radius")}}

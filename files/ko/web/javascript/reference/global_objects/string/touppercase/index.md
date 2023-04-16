@@ -1,50 +1,51 @@
 ---
 title: String.prototype.toUpperCase()
 slug: Web/JavaScript/Reference/Global_Objects/String/toUpperCase
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.String.toUpperCase
 ---
 
 {{JSRef}}
 
-**`toUpperCase()`** 메서드는 문자열을 대문자로 변환해 반환합니다.
+The **`toUpperCase()`** method returns the calling string value
+converted to uppercase (the value will be converted to a string if it isn't one).
 
-{{EmbedInteractiveExample("pages/js/string-touppercase.html")}}
+{{EmbedInteractiveExample("pages/js/string-touppercase.html","shorter")}}
 
-## 구문
+## Syntax
 
-```js
-str.toUpperCase()
+```js-nolint
+toUpperCase()
 ```
 
-### 반환 값
+### Return value
 
-대문자로 변환한 새로운 문자열.
+A new string representing the calling string converted to upper case.
 
-### 예외
+## Description
 
-- {{jsxref("TypeError")}}
-  - : {{jsxref("Function.prototype.call()")}} 등을 사용해 {{jsxref("null")}}이나 {{jsxref("undefined")}}에서 호출 시.
+The `toUpperCase()` method returns the value of the string converted to
+uppercase. This method does not affect the value of the string itself since JavaScript
+strings are immutable.
 
-## 설명
+## Examples
 
-`toUpperCase()` 메서드는 문자열을 대문자로 변환한 값을 반환합니다. JavaScript의 문자열은 불변하므로 원본 문자열에는 영향을 주지 않습니다.
-
-## 예제
-
-### 기본 사용법
+### Basic usage
 
 ```js
-console.log('alphabet'.toUpperCase()); // 'ALPHABET'
+console.log("alphabet".toUpperCase()); // 'ALPHABET'
 ```
 
-### 문자열이 아닌 `this`의 문자열 변환
+### Conversion of non-string `this` values to strings
 
-`toUpperCase()`의 `this`가 문자열이 아니고, `undefined`와 `null`도 아니면 자동으로 문자열로 변환합니다.
+This method will convert any non-string value to a string, when you set its
+`this` to a value that is not a string:
 
 ```js
 const a = String.prototype.toUpperCase.call({
-  toString: function toString() {
-    return 'abcdef';
-  }
+  toString() {
+    return "abcdef";
+  },
 });
 
 const b = String.prototype.toUpperCase.call(true);
@@ -53,15 +54,15 @@ const b = String.prototype.toUpperCase.call(true);
 console.log(a, b);
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("String.prototype.toLocaleLowerCase()")}}
 - {{jsxref("String.prototype.toLocaleUpperCase()")}}

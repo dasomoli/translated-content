@@ -1,30 +1,33 @@
 ---
 title: Math.random()
 slug: Web/JavaScript/Reference/Global_Objects/Math/random
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Math.random
 ---
+
 {{JSRef}}
 
-**`Math.random()`** 함수는 0 이상 1 미만의 구간에서 근사적으로 균일한(approximately uniform) 부동소숫점 의사난수를 반환하며, 이 값은 사용자가 원하는 범위로 변형할 수 있다. 난수 생성 알고리즘에 사용되는 초기값은 구현체가 선택하며, 사용자가 선택하거나 초기화할 수 없다.
+The **`Math.random()`** static method returns a floating-point, pseudo-random number that's greater than or equal to 0 and less than 1, with approximately uniform distribution over that range — which you can then scale to your desired range. The implementation selects the initial seed to the random number generation algorithm; it cannot be chosen or reset by the user.
 
-> **참고:** `Math.random()`은 암호학적으로 안전한 난수를 **제공하지 않으므로**, 보안과 관련된 어떤 것에도 이 함수를 사용해서는 안 된다. 그 대신 Web Crypto API의 {{domxref("RandomSource.getRandomValues()", "window.crypto.getRandomValues()")}} 메소드를 이용하여야 한다.
+> **Note:** `Math.random()` _does not_ provide cryptographically secure random numbers. Do not use them for anything related to security. Use the Web Crypto API instead, and more precisely the {{domxref("Crypto/getRandomValues", "window.crypto.getRandomValues()")}} method.
 
-## 문법
+{{EmbedInteractiveExample("pages/js/math-random.html")}}
 
-```js
-    Math.random()
+## Syntax
+
+```js-nolint
+Math.random()
 ```
 
-### 반환 값
+### Return value
 
-0 이상 1 미만의 부동소숫점 의사 난수.
+A floating-point, pseudo-random number between 0 (inclusive) and 1 (exclusive).
 
-## 예제
+## Examples
 
-### `Math.random()` 사용
+Note that as numbers in JavaScript are IEEE 754 floating point numbers with round-to-nearest-even behavior, the ranges claimed for the functions below (excluding the one for `Math.random()` itself) aren't exact. If extremely large bounds are chosen (2<sup>53</sup> or higher), it's possible in _extremely_ rare cases to reach the usually-excluded upper bound.
 
-JavaScript의 수(number)는 가까운 짝수로 반올림되는(round-to-nearest-even behavior) IEEE 754 부동소수점 실수이므로, 아래 함수들(`Math.random()` 자체에 대한 사항은 제외)에 명시된 범위는 정확하지 않음을 유의하라. 지나치게 큰 범위(2^53 이상)를 선택할 경우, _매우_ 드문 경우 원래 포함되어서는 안 될 최댓값이 포함되는 경우가 있다.
-
-### 0 이상 1 미만의 난수 생성하기
+### Getting a random number between 0 (inclusive) and 1 (exclusive)
 
 ```js
 function getRandom() {
@@ -32,9 +35,9 @@ function getRandom() {
 }
 ```
 
-### 두 값 사이의 난수 생성하기
+### Getting a random number between two values
 
-이 예제는 주어진 두 값 사이의 난수를 생성한다. 함수의 반환값은 `min`보다 크거나 같으며, `max`보다 작다.
+This example returns a random number between the specified values. The returned value is no lower than (and may possibly equal) `min`, and is less than (and not equal) `max`.
 
 ```js
 function getRandomArbitrary(min, max) {
@@ -42,36 +45,40 @@ function getRandomArbitrary(min, max) {
 }
 ```
 
-### 두 값 사이의 정수 난수 생성하기
+### Getting a random integer between two values
 
-이 예제는 주어진 두 값 사이의 **정수인** 난수를 생성한다. 반환값은 `min`(단, `min`이 정수가 아니면 `min`보다 큰 최소의 정수)보다 크거나 같으며, `max`보다 작다.
+This example returns a random _integer_ between the specified values. The value is no lower than `min` (or the next integer greater than `min` if `min` isn't an integer), and is less than (but not equal to) `max`.
 
 ```js
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
+  return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
 }
 ```
 
-> **참고:** 이 예제에서 `Math.round()`를 대신 사용하려고 할 수 있으나, 이렇게 하면 난수가 고르게 분포하지 않게 된다.
+> **Note:** It might be tempting to use [`Math.round()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/round) to accomplish that, but doing so would cause your random numbers to follow a non-uniform distribution, which may not be acceptable for your needs.
 
-### 최댓값을 포함하는 정수 난수 생성하기
+### Getting a random integer between two values, inclusive
 
-위의`getRandomInt()` 함수는 최솟값을 포함하지만, 최댓값은 포함하지 않는다. 최솟값과 최댓값을 모두 포함하는 결과가 필요할 경우, 아래의 `getRandomIntInclusive()` 함수를 사용할 수 있다.
+While the `getRandomInt()` function above is inclusive at the minimum, it's exclusive at the maximum. What if you need the results to be inclusive at both the minimum and the maximum? The `getRandomIntInclusive()` function below accomplishes that.
 
 ```js
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min; //최댓값도 포함, 최솟값도 포함
+  return Math.floor(Math.random() * (max - min + 1) + min); // The maximum is inclusive and the minimum is inclusive
 }
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- {{domxref("Crypto/getRandomValues", "window.crypto.getRandomValues()")}}

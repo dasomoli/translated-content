@@ -1,25 +1,33 @@
 ---
 title: Math.SQRT2
 slug: Web/JavaScript/Reference/Global_Objects/Math/SQRT2
+page-type: javascript-static-data-property
+browser-compat: javascript.builtins.Math.SQRT2
 ---
 
 {{JSRef}}
 
-**`Math.SQRT2`** 는 2의 제곱근을 나타내고 약 1.414 입니다:
+The **`Math.SQRT2`** static data property represents the square root of 2, approximately 1.414.
 
-<math display="block"><semantics><mrow><mstyle mathvariant="monospace"><mi>Math.SQRT2</mi></mstyle><mo>=</mo><msqrt><mn>2</mn></msqrt><mo>≈</mo><mn>1.414</mn></mrow><annotation encoding="TeX">\mathtt{\mi{Math.SQRT2}} = \sqrt{2} \approx 1.414</annotation></semantics></math>
+{{EmbedInteractiveExample("pages/js/math-sqrt2.html", "shorter")}}
+
+## Value
+
+<math display="block"><semantics><mrow><mi>𝙼𝚊𝚝𝚑.𝚂𝚀𝚁𝚃𝟸</mi><mo>=</mo><msqrt><mn>2</mn></msqrt><mo>≈</mo><mn>1.414</mn></mrow><annotation encoding="TeX">\mathtt{\mi{Math.SQRT2}} = \sqrt{2} \approx 1.414</annotation></semantics></math>
 
 {{js_property_attributes(0, 0, 0)}}
 
-## 설명
+## Description
 
-`SQRT2` 는 `Math`의 정적 메서드 이므로 만든 `Math` 객체의 메서드가 아니라 항상 `Math.SQRT2` 함수를 사용해야합니다. (`Math`는 생성자가 없습니다.)
+`Math.SQRT2` is a constant and a more performant equivalent to [`Math.sqrt(2)`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sqrt).
 
-## 예제
+Because `SQRT2` is a static property of `Math`, you always use it as `Math.SQRT2`, rather than as a property of a `Math` object you created (`Math` is not a constructor).
 
-### `Math.SQRT2`
+## Examples
 
-이 함수는 2의 제곱근을 반환합니다.
+### Using Math.SQRT2
+
+The following function returns the square root of 2:
 
 ```js
 function getRoot2() {
@@ -29,15 +37,15 @@ function getRoot2() {
 getRoot2(); // 1.4142135623730951
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
 - {{jsxref("Math.pow()")}}
 - {{jsxref("Math.sqrt()")}}

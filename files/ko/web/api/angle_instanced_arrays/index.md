@@ -1,52 +1,106 @@
 ---
 title: ANGLE_instanced_arrays
 slug: Web/API/ANGLE_instanced_arrays
+page-type: web-api-interface
+browser-compat: api.ANGLE_instanced_arrays
 ---
-{{APIRef ( "WebGL")}}
 
-이 **`ANGLE_instanced_arrays`**확장은 [WebGL API의](/ko/docs/Web/API/WebGL_API) 일부이며 동일한 객체 또는 동일한 객체 그룹을 같은 정점 데이터, 기본 개수 및 유형을 공유하는 경우 여러 번 그릴 수 있습니다.
+{{APIRef("WebGL")}}
 
-WebGL 확장은 {{domxref ( "WebGLRenderingContext.getExtension()")}} 메서드를 사용하여 사용할 수 있습니다. 자세한 내용 은 [WebGL 자습서의](/ko/docs/Web/API/WebGL_API/Tutorial) [Extensions 사용을](/ko/docs/Web/API/WebGL_API/Using_Extensions) 참조하십시오 .
+The **`ANGLE_instanced_arrays`** extension is part of the [WebGL API](/en-US/docs/Web/API/WebGL_API) and allows to draw the same object, or groups of similar objects multiple times, if they share the same vertex data, primitive count and type.
 
-> **참고:** **가용성 :** 이 확장은 {{domxref ( "WebGLRenderingContext", "WebGL1", "", 1)}} 컨텍스트에서만 사용할 수 있습니다. {{domxref ( "WebGL2RenderingContext", "WebGL2", "", 1)}}에서이 확장 기능은 기본적으로 WebGL2 컨텍스트에서 사용할 수 있으며 상수 및 메서드는 `ANGLE`접미사 없이 사용할 수 있습니다 ."ANGLE"이라는 이름에도 불구하고이 확장은 하드웨어가 ANGLE 라이브러리를 사용할 때 Windows에서만 지원하는 것이 아닌 모든 장치에서 작동합니다. "ANGLE"은이 확장이 ANGLE 라이브러리 작성자에 의해 작성되었음을 나타냅니다.
+WebGL extensions are available using the {{domxref("WebGLRenderingContext.getExtension()")}} method. For more information, see also [Using Extensions](/en-US/docs/Web/API/WebGL_API/Using_Extensions) in the [WebGL tutorial](/en-US/docs/Web/API/WebGL_API/Tutorial).
 
-## 상수
+> **Note:** This extension is only available to {{domxref("WebGLRenderingContext", "WebGL1", "", 1)}} contexts. In {{domxref("WebGL2RenderingContext", "WebGL2", "", 1)}}, the functionality of this extension is available on the WebGL2 context by default and the constants and methods are available without the "`ANGLE`" suffix.
+>
+> Despite the name "ANGLE", this extension works on any device if the hardware supports it and not just on Windows when using the ANGLE library. "ANGLE" just indicates that this extension has been written by the ANGLE library authors.
 
-이 확장은 {{domxref ( "WebGLRenderingContext.getVertexAttrib()", "gl.getVertexAttrib()")}} 메서드에서 사용할 수있는 하나의 새로운 상수를 제공합니다.
+## Constants
+
+This extension exposes one new constant, which can be used in the {{domxref("WebGLRenderingContext.getVertexAttrib()", "gl.getVertexAttrib()")}} method:
 
 - `ext.VERTEX_ATTRIB_ARRAY_DIVISOR_ANGLE`
-  - : {{domxref ( "WebGLRenderingContext.getVertexAttrib()", "gl.getVertexAttrib()")}}에서 `pname`매개 변수 로 사용될 때 인스턴스 렌더링에 사용되는 빈도 제수를 설명하는 {{domxref("GLint")}}를 반환합니다 .
+  - : Returns a {{domxref("WebGL_API/Types", "GLint")}} describing the frequency divisor used for instanced rendering when used in the {{domxref("WebGLRenderingContext.getVertexAttrib()", "gl.getVertexAttrib()")}} as the `pname` parameter.
 
-## 메서드
+## Instance methods
 
-이 확장은 세 가지 새로운 메서드를 노출합니다.
+This extension exposes three new methods.
 
-- {{domxref ( "ANGLE_instanced_arrays.drawArraysInstancedANGLE ()", "ext.drawArraysInstancedANGLE ()")}}
-  - : {{domxref ( "WebGLRenderingContext.drawArrays ()", "gl.drawArrays ()")}}와 동일하게 동작하지만 요소 범위의 인스턴스가 여러 개 실행되고 각 반복마다 인스턴스가 진행됩니다.
-- {{domxref ( "ANGLE_instanced_arrays.drawElementsInstancedANGLE ()", "ext.drawElementsInstancedANGLE ()")}}
-  - : {{domxref ( "WebGLRenderingContext.drawElements ()", "gl.drawElements ()")}}와 동일하게 동작하지만 요소 세트의 여러 인스턴스가 실행되고 각 세트간에 인스턴스가 진행됩니다.
-- {{domxref ( "ANGLE_instanced_arrays.vertexAttribDivisorANGLE ()", "ext.vertexAttribDivisorANGLE ()")}}
-  - : {{domxref ( "ANGLE_instanced_arrays.drawArraysInstancedANGLE ()", "ext.drawArraysInstancedANGLE ()")}} 및 {{domxref ( "ANGLE_instanced_arrays.drawElementsInstancedANGLE ()")}}로 여러 프리미티브 인스턴스를 렌더링 할 때 일반 정점 속성이 증가하는 비율을 수정합니다. , "ext.drawElementsInstancedANGLE ()")}}.
+- {{domxref("ANGLE_instanced_arrays.drawArraysInstancedANGLE()", "ext.drawArraysInstancedANGLE()")}}
+  - : Behaves identically to {{domxref("WebGLRenderingContext.drawArrays()", "gl.drawArrays()")}} except that multiple instances of the range of elements are executed, and the instance advances for each iteration.
+- {{domxref("ANGLE_instanced_arrays.drawElementsInstancedANGLE()", "ext.drawElementsInstancedANGLE()")}}
+  - : Behaves identically to {{domxref("WebGLRenderingContext.drawElements()", "gl.drawElements()")}} except that multiple instances of the set of elements are executed and the instance advances between each set.
+- {{domxref("ANGLE_instanced_arrays.vertexAttribDivisorANGLE()", "ext.vertexAttribDivisorANGLE()")}}
+  - : Modifies the rate at which generic vertex attributes advance when rendering multiple instances of primitives with {{domxref("ANGLE_instanced_arrays.drawArraysInstancedANGLE()", "ext.drawArraysInstancedANGLE()")}} and {{domxref("ANGLE_instanced_arrays.drawElementsInstancedANGLE()", "ext.drawElementsInstancedANGLE()")}}.
 
-## 예제
+## Examples
 
-확장 기능 사용 :
+The following example shows how to draw a given geometry multiple times with a single draw call.
+
+> **Warning:** The following is educational, not production level code. It should generally be avoided to construct data / buffers within the rendering loop or right before use.
 
 ```js
-var ext = gl.getExtension ( 'ANGLE_instanced_arrays');
+// enable the extension
+const ext = gl.getExtension("ANGLE_instanced_arrays");
+
+// binding the geometry buffer as usual
+gl.bindBuffer(gl.ARRAY_BUFFER, geometryVertexBuffer);
+gl.enableVertexAttribArray(vertexPositionAttributeLocation);
+gl.vertexAttribPointer(
+  vertexPositionAttributeLocation,
+  3,
+  gl.FLOAT,
+  false,
+  0,
+  0
+);
+
+// build position buffer
+const instancePositions = [];
+for (const instance of instances) {
+  instancePositions.push(
+    instance.position.x,
+    instance.position.y,
+    instance.position.z
+  );
+}
+const instancePositionBuffer = createWebGLBufferFromData(instancePositions);
+
+// binding the instance position buffer as you would with any attribute
+gl.bindBuffer(gl.ARRAY_BUFFER, instancePositionBuffer);
+gl.enableVertexAttribArray(instancePositionAttributeLocation);
+gl.vertexAttribPointer(
+  instancePositionAttributeLocation,
+  3,
+  gl.FLOAT,
+  false,
+  0,
+  0
+);
+
+// mark the attribute as instanced and advance it every single(1) instance rather than every vertex
+ext.vertexAttribDivisorANGLE(instancePositionAttributeLocation, 1);
+
+// draw geometry for each instance
+ext.drawArraysInstancedANGLE(
+  gl.TRIANGLES,
+  0,
+  numGeometryVertices,
+  instances.length
+);
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{domxref ( "WebGLRenderingContext.getExtension ()")}}
-- {{domxref ( "WebGL2RenderingContext.drawArraysInstanced ()")}}
-- {{domxref ( "WebGL2RenderingContext.drawElementsInstanced ()")}}
-- {{domxref ( "WebGL2RenderingContext.vertexAttribDivisor ()")}}
+- {{domxref("WebGLRenderingContext.getExtension()")}}
+- {{domxref("WebGL2RenderingContext.drawArraysInstanced()")}}
+- {{domxref("WebGL2RenderingContext.drawElementsInstanced()")}}
+- {{domxref("WebGL2RenderingContext.vertexAttribDivisor()")}}

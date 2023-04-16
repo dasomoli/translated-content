@@ -1,89 +1,111 @@
 ---
-title: 단축 속성
+title: Shorthand properties
 slug: Web/CSS/Shorthand_properties
+page-type: guide
 ---
-{{cssref}}
 
-**단축 속성**은 서로 다른 여러 가지 CSS 속성의 값을 지정할 수 있는 CSS 속성입니다. 단축 속성을 사용하면 간결한 (그리고 읽기도 좋은) 스타일 시트를 작성해 시간과 체력을 아낄 수 있습니다.
+{{CSSRef}}
 
-CSS 명세는 같은 주제를 가진 여러 공통 속성을 묶기 위해 단축 속성을 정의합니다. 가령 CSS {{cssxref("background")}} 속성은 {{cssxref("background-color")}}, {{cssxref("background-image")}}, {{cssxref("background-repeat")}}, {{cssxref("background-position")}} 값을 정의할 수 있는 단축 속성입니다. 마찬가지로, 가장 흔히 쓰이는 글꼴 관련 속성은 {{cssxref("font")}} 단축 속성으로, 박스 주위의 바깥 여백은 {{cssxref("margin")}} 단축 속성으로 지정할 수 있습니다.
+**_Shorthand properties_** are CSS properties that let you set the values of multiple other CSS properties simultaneously. Using a shorthand property, you can write more concise (and often more readable) style sheets, saving time and energy.
 
-## 까다로운 예외상황
+The CSS specification defines shorthand properties to group the definition of common properties acting on the same theme. For instance, the CSS {{cssxref("background")}} property is a shorthand property that's able to define the values of {{cssxref("background-color")}}, {{cssxref("background-image")}}, {{cssxref("background-repeat")}}, and {{cssxref("background-position")}}. Similarly, the most common font-related properties can be defined using the shorthand {{cssxref("font")}}, and the different margins around a box can be defined using the {{cssxref("margin")}} shorthand.
 
-단축 속성은 사용하기 매우 편리하지만, 염두해야 할 예외상황이 몇 가지 있습니다.
+## Tricky edge cases
 
-1. 단축 속성에 지정하지 않은 값은 초깃값이 됩니다. 별거 아닌 듯 보일 수 있지만, 사실 이전에 정의한 값도 초깃값으로 **재정의**합니다. 따라서,
+There are a few edge cases to keep in mind when using shorthand properties.
 
-    ```css
-    background-color: red;
-    background: url(images/bg.gif) no-repeat top right;
-    ```
+### Omitting properties
 
-    을 적한 요소의 배경 색은 `red`가 아니라, {{cssxref("background-color")}}의 기본값인 `transparent`가 됩니다. 두 번째 규칙이 우선하기 때문입니다.
+A value which is not specified is set to its initial value. That means that it **overrides** previously set values. For example:
 
-2. 개별 속성값만 상속할 수 있습니다. 빠진 값에는 초깃값을 대입하므로, 어떤 속성의 값을 상속받고자 단축 속성의 해당 부분을 비우는 것은 불가능합니다. `inherit` 키워드 역시 속성 값으로 온전히 사용해야 하며 값의 일부(`red inherit top right`처럼)로는 사용할 수 없습니다. 따라서 어떤 속성을 상속하고 싶다면 `inherit`을 지정한 본디 속성(longhand property)을 추가할 수밖에 없습니다.
-3. 단축 속성은 값의 순서를 되도록 제한하지 않습니다. 특히 각 값의 자료형이 서로 다르면 순서가 중요하지 않습니다. 하지만 일부 속성이 동일한 자료형의 값을 가질 수 있을 때는 잘 동작하지 않습니다. 이런 경우의 처리는 여러 범주로 나뉩니다:
+```css
+p {
+  background-color: red;
+  background: url(images/bg.gif) no-repeat left top;
+}
+```
 
-    1. {{cssxref("border-style")}}, {{cssxref("margin")}}, {{cssxref("padding")}}처럼 박스의 모서리와 관련된 속성을 다루는 단축 속성은 항상 같은 쪽의 모서리를 가리키는 1\~4 값 구문을 사용합니다:
+This will not set the color of the background to `red` but to the default value for {{cssxref("background-color")}}, which is `transparent`.
 
-        | ![border1.png](/files/3646/border1.png) | 1개 값 구문: `border-width: 1em` — 유일한 값이 모든 변을 나타냅니다.                                                                                     |
-        | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-        | ![border2.png](/files/3647/border2.png) | 2개 값 구문: `border-width: 1em 2em` — 첫 번째 값은 세로(상하)변을, 두 번째는 가로(좌우)변을 나타냅니다.                                                 |
-        | ![border3.png](/files/3648/border3.png) | 3개 값 구문: `border-width: 1em 2em 3em` — 첫 번째 값은 상변을, 두 번째는 가로변, 세 번째는 하변을 나타냅니다.                                           |
-        | ![border4.png](/files/3649/border4.png) | 4개 값 구문: `border-width: 1em 2em 3em 4em` — 네 값이 각각 상, 우, 하, 좌변을 나타냅니다. 상변에서 시작하여 시계 방향으로, 항상 같은 순서를 사용합니다. |
+Only the individual properties values can inherit. As missing values are replaced by their initial value, it is impossible to allow inheritance of individual properties by omitting them. The keyword `inherit` can be applied to a property, but only as a whole, not as a keyword for one value or another. That means that the only way to make some specific value to be inherited is to use the longhand property with the keyword `inherit`.
 
-    2. 비슷하게, {{cssxref("border-radius")}} 같은 박스의 꼭짓점과 관련된 속성을 다루는 단축 속성은 항상 같은 쪽의 꼭짓점을 가리키는 1-4-값 구문을 사용합니다:
+### Ordering properties
 
-        | ![corner1.png](/files/3650/corner1.png) | 1개 값 구문: `border-radius: 1em` — 유일한 값이 모든 귀를 나타냅니다.                                                                                                 |
-        | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-        | ![corner2.png](/files/3651/corner2.png) | 2개 값 구문: `border-radius: 1em 2em` — 첫 번째 값은 좌상 및 우하귀, 두 번째는 우상 및 좌하귀를 나타냅니다.                                                           |
-        | ![corner3.png](/files/3652/corner3.png) | 3개 값 구문: `border-radius: 1em 2em 3em` — 첫 번째 값은 좌상귀, 두 번째는 우상 및 좌하귀, 세 번째 값은 우하귀를 나타냅니다.                                          |
-        | ![corner4.png](/files/3653/corner4.png) | 4개 값 구문: `border-radius: 1em 2em 3em 4em` — 네 값은 각각 좌상, 우상, 우하 및 좌하귀를 나타냅니다. 좌상귀에서 시작하여 시계 방향으로, 항상 같은 순서를 사용합니다. |
+Shorthand properties try not to force a specific order for the values of the properties they replace. This works well when these properties use values of different types, as the order has no importance, but this does not work as easily when several properties can have identical values.
 
-## 배경 속성
+Two important cases here are:
 
-아래와 같은 속성을 가지는 배경은...
+- properties related to the edges of a box, like {{cssxref("border-style")}}, {{cssxref("margin")}} or {{cssxref("padding")}}
+- properties related to the corners of a box, like {{cssxref("border-radius")}}
+
+#### Edges of a box
+
+Shorthands handling properties related to edges of a box, like {{cssxref("border-style")}}, {{cssxref("margin")}} or {{cssxref("padding")}}, always use a consistent 1-to-4-value syntax representing those edges:
+
+- **1-value syntax:** `border-width: 1em` — The single value represents all edges: ![Box edges with one-value syntax](border1.png)
+
+- **2-value syntax:** `border-width: 1em 2em` — The first value represents the vertical, that is top and bottom, edges, the second the horizontal ones, that is the left and right ones: ![Box edges with two-value syntax](border2.png)
+
+- **3-value syntax:** `border-width: 1em 2em 3em` — The first value represents the top edge, the second, the horizontal, that is left and right, ones, and the third value the bottom edge: ![Box edges with three-value syntax](border3.png)
+
+- **4-value syntax:** `border-width: 1em 2em 3em 4em` — The four values represent the top, right, bottom and left edges respectively, always in that order, that is clock-wise starting at the top: ![Box edges with four-value syntax](border4.png) The initial letter of Top-Right-Bottom-Left matches the order of the consonant of the word _trouble_: TRBL. You can also remember it as the order that the hands would rotate on a clock: `1em` starts in the 12 o'clock position, then `2em` in the 3 o'clock position, then `3em` in the 6 o'clock position, and `4em` in the 9 o'clock position.
+
+#### Corners of a box
+
+Similarly, shorthands handling properties related to corners of a box, like {{cssxref("border-radius")}}, always use a consistent 1-to-4-value syntax representing those corners:
+
+- **1-value syntax:** `border-radius: 1em` — The single value represents all corners: ![Box corners with one-value syntax](corner1.png)
+
+- **2-value syntax:** `border-radius: 1em 2em` — The first value represents the top left and bottom right corner, the second the top right and bottom left ones: ![Box corners with two-value syntax](corner2.png)
+
+- **3-value syntax:** `border-radius: 1em 2em 3em` — The first value represents the top left corner, the second the top right and bottom left ones, and the third value the bottom right corner: ![Box corners with three-value syntax](corner3.png)
+
+- **4-value syntax:** `border-radius: 1em 2em 3em 4em` — The four values represent the top left, top right, bottom right and bottom left corners respectively, always in that order, that is clock-wise starting at the top left: ![Box corners with four-value syntax](corner4.png)
+
+## Background properties
+
+Consider a background with the following properties
 
 ```css
 background-color: #000;
 background-image: url(images/bg.gif);
 background-repeat: no-repeat;
-background-position: top right;
+background-position: left top;
 ```
 
-다음과 같이 선언 단 하나를 사용해서 단축할 수 있습니다.
+These four declarations can be shortened to just one:
 
 ```css
-background: #000 url(images/bg.gif) no-repeat top right;
+background: #000 url(images/bg.gif) no-repeat left top;
 ```
 
-(단축 형은 실제로 `background-attachment: scroll` 및 CSS3의 일부 부가 속성이 더해진 위 본디 속성과 같습니다.)
+(The shorthand form is actually the equivalent of the longhand properties above plus `background-attachment: scroll` and, in CSS3, some additional properties.)
 
-{{cssxref("background")}}에서 CSS3 속성을 포함한 더 자세한 정보를 확인할 수 있습니다.
+See {{cssxref("background")}} for more detailed information, including CSS3 properties.
 
-## 글꼴 속성
+## Font properties
 
-아래와 같은 속성을 가지는 글꼴은...
+Consider the following declarations:
 
 ```css
 font-style: italic;
 font-weight: bold;
-font-size: .8em;
+font-size: 0.8em;
 line-height: 1.2;
 font-family: Arial, sans-serif;
 ```
 
-다음처럼 단축할 수 있습니다.
+These 5 statements can be shortened to the following:
 
 ```css
-font: italic bold .8em/1.2 Arial, sans-serif;
+font: italic bold 0.8em/1.2 Arial, sans-serif;
 ```
 
-이 단축 선언은 실제로 `font-variant: normal` 및 `font-size-adjust: none` (CSS2.0 / CSS3), `font-stretch: normal` (CSS3)이 더해진 위 본디 속성과 같습니다.
+This shorthand declaration is actually equivalent to the longhand declarations above plus `font-variant: normal`, `font-size-adjust: none`, and `font-stretch: normal`.
 
-## 테두리 속성
+## Border properties
 
-테두리의 너비, 색상, 스타일을 하나의 선언으로 단축할 수 있습니다. 즉 아래와 같은 CSS를...
+With borders, the width, color, and style can be simplified into one declaration. For example, consider the following CSS:
 
 ```css
 border-width: 1px;
@@ -91,15 +113,15 @@ border-style: solid;
 border-color: #000;
 ```
 
-다음처럼 단축할 수 있습니다.
+It can be simplified as:
 
 ```css
 border: 1px solid #000;
 ```
 
-## 여백 속성
+## Margin and padding properties
 
-바깥과 안쪽 여백의 단축 속성도 똑같이 동작합니다. 바깥 여백, `margin` 속성은 한 개, 두 개, 세 개, 네 개의 값을 사용해 지정합니다. 아래 CSS 선언은...
+Shorthand versions of margin and padding values work similarly; the margin property allows for shorthand values to be specified using one, two, three, or four values. Consider the following CSS declarations:
 
 ```css
 margin-top: 10px;
@@ -108,19 +130,107 @@ margin-bottom: 10px;
 margin-left: 5px;
 ```
 
-다음의 네 값 구문 단축 속성을 사용한 선언과 같습니다. 방향이 시계 방향임을 기억하세요. 각 값은 위, 오른쪽, 아래, 왼쪽을 나타냅니다.
+They are the same as the following declaration using the four value shorthand. Note that the values are in clockwise order, beginning at the top: top, right, bottom, then left (TRBL, the consonants in "trouble").
 
 ```css
 margin: 10px 5px 10px 5px;
 ```
 
-바깥 여백의 한 개, 두 개, 세 개, 네 개 값 선언 규칙은 다음과 같습니다.
+Margin shorthand rules for one, two, three and four value declarations are:
 
-- **한 개의 값**은 모든 네 면의 여백을 설정합니다.
-- **두 개의 값**을 지정하면 첫 번째는 **위와 아래**, 두 번째는 **왼쪽과 오른쪽** 여백을 설정합니다.
-- **세 개의 값**을 지정하면 첫 번째는 **위**, 두 번째는 **왼쪽과 오른쪽,** 세 번째 값은 **아래** 여백을 설정합니다.
-- **네 개의 값**을 지정하면 각각 **상, 우, 하, 좌** 순서로 여백을 지정합니다. (시계방향)
+- When **one** value is specified, it applies the same margin to **all four sides**.
+- When **two** values are specified, the first margin applies to the **top and bottom**, the second to the **left and right**.
+- When **three** values are specified, the first margin applies to the **top**, the second to the **left and right**, the third to the **bottom**.
+- When **four** values are specified, the margins apply to the **top**, **right**, **bottom**, and **left** in that order (clockwise).
 
-## 같이 보기
+## Position properties
 
-- 단축 속성: {{cssxref("animation")}}, {{cssxref("background")}}, {{cssxref("border")}}, {{cssxref("border-bottom")}}, {{cssxref("border-color")}}, {{cssxref("border-left")}}, {{cssxref("border-radius")}}, {{cssxref("border-right")}}, {{cssxref("border-style")}}, {{cssxref("border-top")}}, {{cssxref("border-width")}}, {{cssxref("column-rule")}}, {{cssxref("columns")}}, {{cssxref("flex")}}, {{cssxref("flex-flow")}}, {{cssxref("font")}}, {{cssxref("grid")}}, {{cssxref("grid-area")}}, {{cssxref("grid-column")}}, {{cssxref("grid-row")}}, {{cssxref("grid-template")}}, {{cssxref("list-style")}}, {{cssxref("margin")}}, {{cssxref("offset")}}, {{cssxref("outline")}}, {{cssxref("overflow")}}, {{cssxref("padding")}}, {{cssxref("place-content")}}, {{cssxref("place-items")}}, {{cssxref("place-self")}}, {{cssxref("text-decoration")}}, {{cssxref("transition")}}
+With position, the shorthand versions of top, right, bottom and left can be simplified into one declaration. For example, consider the following CSS:
+
+```css
+top: 0;
+right: 20px;
+bottom: 0;
+left: 20px;
+```
+
+It can be simplified as:
+
+```css
+inset: 0 20px 0 20px;
+```
+
+Just like margins and paddings, the inset values are ordered clockwise - top, right, bottom, then left (TRBL).
+
+## The universal shorthand property
+
+CSS provides a universal shorthand property, {{cssxref("all")}}, which applies its value to every property in the document. Its purpose is to change the properties' inheritance model.
+
+See [Cascade and inheritance](/en-US/docs/Learn/CSS/Building_blocks/Cascade_and_inheritance) or [Introducing the CSS Cascade](/en-US/docs/Web/CSS/Cascade) for more information about how inheritance works in CSS.
+
+## See also
+
+- CSS key concepts:
+  - [CSS syntax](/en-US/docs/Web/CSS/Syntax)
+  - [At-rules](/en-US/docs/Web/CSS/At-rule)
+  - [Comments](/en-US/docs/Web/CSS/Comments)
+  - [Specificity](/en-US/docs/Web/CSS/Specificity)
+  - [Inheritance](/en-US/docs/Web/CSS/Inheritance)
+  - [Box model](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
+  - [Layout modes](/en-US/docs/Web/CSS/Layout_mode)
+  - [Visual formatting models](/en-US/docs/Web/CSS/Visual_formatting_model)
+  - [Margin collapsing](/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)
+  - Values
+    - [Initial values](/en-US/docs/Web/CSS/initial_value)
+    - [Computed values](/en-US/docs/Web/CSS/computed_value)
+    - [Used values](/en-US/docs/Web/CSS/used_value)
+    - [Actual values](/en-US/docs/Web/CSS/actual_value)
+  - [Value definition syntax](/en-US/docs/Web/CSS/Value_definition_syntax)
+  - [Replaced elements](/en-US/docs/Web/CSS/Replaced_element)
+- Shorthand properties:
+  - {{cssxref("all")}}
+  - {{cssxref("animation")}}
+  - {{cssxref("background")}}
+  - {{cssxref("border")}}
+  - {{cssxref("border-block-end")}}
+  - {{cssxref("border-block-start")}}
+  - {{cssxref("border-bottom")}}
+  - {{cssxref("border-color")}}
+  - {{cssxref("border-image")}}
+  - {{cssxref("border-inline-end")}}
+  - {{cssxref("border-inline-start")}}
+  - {{cssxref("border-left")}}
+  - {{cssxref("border-radius")}}
+  - {{cssxref("border-right")}}
+  - {{cssxref("border-style")}}
+  - {{cssxref("border-top")}}
+  - {{cssxref("border-width")}}
+  - {{cssxref("column-rule")}}
+  - {{cssxref("columns")}}
+  - {{cssxref("contain-intrinsic-size")}}
+  - {{cssxref("flex")}}
+  - {{cssxref("flex-flow")}}
+  - {{cssxref("font")}}
+  - {{cssxref("gap")}}
+  - {{cssxref("grid")}}
+  - {{cssxref("grid-area")}}
+  - {{cssxref("grid-column")}}
+  - {{cssxref("grid-row")}}
+  - {{cssxref("grid-template")}}
+  - {{cssxref("inset")}}
+  - {{cssxref("list-style")}}
+  - {{cssxref("margin")}}
+  - {{cssxref("mask")}}
+  - {{cssxref("offset")}}
+  - {{cssxref("outline")}}
+  - {{cssxref("overflow")}}
+  - {{cssxref("padding")}}
+  - {{cssxref("place-content")}}
+  - {{cssxref("place-items")}}
+  - {{cssxref("place-self")}}
+  - {{cssxref("scroll-margin")}}
+  - {{cssxref("scroll-padding")}}
+  - {{cssxref("scroll-timeline")}}
+  - {{cssxref("text-decoration")}}
+  - {{cssxref("text-emphasis")}}
+  - {{cssxref("transition")}}

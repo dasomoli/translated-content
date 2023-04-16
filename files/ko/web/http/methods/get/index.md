@@ -1,61 +1,61 @@
 ---
 title: GET
 slug: Web/HTTP/Methods/GET
+page-type: http-method
+browser-compat: http.methods.GET
 ---
 
 {{HTTPSidebar}}
 
-**HTTP `GET` 메서드**는 특정한 리소스를 가져오도록 요청합니다. `GET` 요청은 데이터를 가져올 때만 사용해야 합니다.
+The **HTTP `GET` method** requests a representation of the specified resource. Requests using `GET` should only be used to request data (they shouldn't include data).
 
-> **참고:** > `GET` 요청에 본문이나 페이로드가 담겨있으면 명세에는 금지되어있지 않지만, 의미가 정의되지 않아 기존에 존재하는 구현체에게 요청을 거부당할수 있습니다. 이러한 이유로 `GET` 요청에는 본문이나 페이로드를 담지 않는 것이 바람직합니다.
+> **Note:** Sending body/payload in a `GET` request may cause some existing implementations to reject the request — while not prohibited by the specification, the semantics are undefined. It is better to just avoid sending payloads in `GET` requests.
 
 <table class="properties">
   <tbody>
     <tr>
-      <th scope="row">요청에 본문 존재</th>
-      <td>아니오</td>
+      <th scope="row">Request has body</th>
+      <td>No</td>
     </tr>
     <tr>
-      <th scope="row">성공 응답에 본문 존재</th>
-      <td>예</td>
+      <th scope="row">Successful response has body</th>
+      <td>Yes</td>
     </tr>
     <tr>
-      <th scope="row">{{Glossary("Safe", "안전함")}}</th>
-      <td>예</td>
+      <th scope="row">{{Glossary("Safe/HTTP", "Safe")}}</th>
+      <td>Yes</td>
     </tr>
     <tr>
-      <th scope="row">{{Glossary("Idempotent", "멱등성")}}</th>
-      <td>예</td>
+      <th scope="row">{{Glossary("Idempotent")}}</th>
+      <td>Yes</td>
     </tr>
     <tr>
-      <th scope="row">
-        {{Glossary("Cacheable", "캐시 가능")}}
-      </th>
-      <td>예</td>
+      <th scope="row">{{Glossary("Cacheable")}}</th>
+      <td>Yes</td>
     </tr>
     <tr>
-      <th scope="row">HTML 양식에서 사용 가능</th>
-      <td>예</td>
+      <th scope="row">Allowed in HTML forms</th>
+      <td>Yes</td>
     </tr>
   </tbody>
 </table>
 
-## 구문
+## Syntax
 
-```
+```http
 GET /index.html
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [HTTP 헤더](/ko/docs/Web/HTTP/Headers)
+- [HTTP Headers](/en-US/docs/Web/HTTP/Headers)
 - {{HTTPHeader("Range")}}
-- {{httpmethod("POST")}}
+- {{HTTPMethod("POST")}}

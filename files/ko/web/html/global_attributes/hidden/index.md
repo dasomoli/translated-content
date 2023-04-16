@@ -1,36 +1,167 @@
 ---
 title: hidden
 slug: Web/HTML/Global_attributes/hidden
+page-type: html-attribute
+browser-compat: html.global_attributes.hidden
 ---
 
 {{HTMLSidebar("Global_attributes")}}
 
-**`hidden`** [전역 특성](/ko/docs/Web/HTML/Global_attributes)은 해당 요소가 아직, 또는 더 이상 관련이 없음을 나타내는 불리언 특성입니다. 브라우저는 `hidden` 속성을 설정한 요소를 렌더링 하지 않습니다.
+The **`hidden`** [global attribute](/en-US/docs/Web/HTML/Global_attributes) is an {{Glossary("enumerated")}} attribute indicating that the browser should not render the contents of the element. For example, it can be used to hide elements of the page that can't be used until the login process has been completed.
 
 {{EmbedInteractiveExample("pages/tabbed/attribute-hidden.html","tabbed-shorter")}}
 
-<p class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</p>
+## Description
 
-하나의 표시 방식에서만 숨기려 할 땐 `hidden` 특성이 적합하지 않습니다. 임의의 요소에 `hidden`을 추가하면, 그 요소는 시각적 방식 외에도 스크린 리더 등 다른 모든 표시 방식에서 숨겨집니다.
+The `hidden` attribute is used to indicate that the content of an element should not be presented to the user. This attribute can take any one of the following values:
 
-숨겨지지 않은 요소에서 숨겨진 요소로 연결해서는 안됩니다. 또한, 숨겨진 요소의 자손 요소는 여전히 활성 상태이므로, {{htmlelement("script")}} 요소를 실행할 수 있고 양식 요소도 제출할 수 있습니다. 그러나 스크립트와 요소는 다른 맥락에서 숨겨진 요소를 참조할 수 있습니다.
+- an empty string
+- the keyword `hidden`
+- the keyword `until-found`
 
-예를 들어, `hidden` 특성을 적용한 구획으로 링크하는 `href` 특성은 유효하지 않습니다. 콘텐츠가 사용할 수 없거나 더는 관련이 없으면 연결할 이유도 없기 때문입니다.
+There are two states associated with the `hidden` attribute: the _hidden_ state and the _hidden until found_ state.
 
-하지만, 숨겨진 설명문을 참조하기 위해 ARIA `aria-describedby` 특성을 사용하는 것은 괜찮습니다. 숨겨진 설명문 자체로는 쓸모가 없음을 나타내지만 특정 문맥, 즉 자신이 설명하는 요소에서 참조하는 경우 쓸모가 생깁니다.
+- An empty string, or the keyword `hidden`, set the element to the _hidden_ state. Additionally, invalid values set the element to the _hidden_ state.
 
-위와 유사하게, `hidden` 특성을 적용한 {{htmlelement("canvas")}} 요소는 스크립트로 작성한 그래픽 엔진에 의해 화면 외 버퍼로 쓰일 수 있고, 숨겨진 양식 요소도 `form` 특성을 통해 양식 컨트롤에서 참조할 수 있습니다.
+- The keyword `until-found` sets the element to the _hidden until found_ state.
 
-> **참고:** `hidden` 특성을 가진 요소의 CSS {{cssxref("display")}} 속성 값을 변경하면 특성으로 인한 동작을 재정의합니다. 예컨대 `display: flex`를 지정한 요소는 `hidden` 특성이 존재하더라도 화면에 보이게 됩니다.
+Thus, all the following set the element to the [_hidden_](#the_hidden_state) state:
 
-## 명세
+```html
+<span hidden>I'm hidden</span>
+<span hidden="hidden">I'm also hidden</span>
+<span hidden="something else">I'm hidden too!</span>
+```
+
+The following sets the element to the [_hidden until found_](#the_hidden_until_found_state) state:
+
+```html
+<span hidden="until-found">I'm hidden until found</span>
+```
+
+The `hidden` attribute must not be used to hide content just from one presentation. If something is marked hidden, it is hidden from all presentations, including, for instance, screen readers.
+
+Hidden elements shouldn't be linked from non-hidden elements. For example, it would be incorrect to use the `href` attribute to link to a section marked with the `hidden` attribute. If the content is not applicable or relevant, then there is no reason to link to it.
+
+It would be fine, however, to use the ARIA [`aria-describedby`](/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-describedby) attribute to refer to descriptions that are themselves hidden. While hiding the descriptions implies that they are not useful on their own, they could be written in such a way that they are useful in the specific context of being referenced from the element that they describe.
+
+Similarly, a canvas element with the `hidden` attribute could be used by a scripted graphics engine as an off-screen buffer, and a form control could refer to a hidden form element using its form attribute.
+
+Elements that are descendants of a hidden element are still active, which means that script elements can still execute and form elements can still submit.
+
+### The hidden state
+
+The _hidden_ state indicates that the element is not currently relevant to the page, or that it is being used to declare content for reuse by other parts of the page and should not be directly presented to the user. The browser will not render elements that are in the _hidden_ state.
+
+Web browsers may implement the _hidden_ state using `display: none`, in which case the element will not participate in page layout. This also means that changing the value of the CSS {{cssxref("display")}} property on an element in the _hidden_ state will overrides the state. For instance, elements styled `display: block` will be displayed despite the `hidden` attribute's presence.
+
+### The hidden until found state
+
+In the _hidden until found_ state, the element is hidden but its content will be accessible to the browser's "find in page" feature or to fragment navigation. When these features cause a scroll to an element in a _hidden until found_ subtree, the browser will:
+
+- fire a [`beforematch`](/en-US/docs/Web/API/Element/beforematch_event) event on the hidden element
+- remove the `hidden` attribute from the element
+- scroll to the element
+
+This enables a developer to collapse a section of content, but make it searchable and accessible via fragment navigation.
+
+Note that browsers typically implement _hidden until found_ using {{cssxref("content-visibility", "content-visibility: hidden")}}. This means that unlike elements in the _hidden_ state, elements in the _hidden until found_ state will have generated boxes, meaning that:
+
+- the element will participate in page layout
+- margin, borders, padding, and background for the element will be rendered.
+
+Also, the element needs to be affected by [layout containment](/en-US/docs/Web/CSS/CSS_Containment) in order to be revealed. This means that if the element in the _hidden until found_ state has a `display` value of `none`, `contents`, or `inline`, then the element will not be revealed by find in page or fragment navigation.
+
+## Examples
+
+### Using until-found
+
+In this example we have:
+
+- Three {{HTMLElement("div")}} elements. The first and the third are not hidden, while the second has `hidden="until-found"`and `id="until-found-box"` attributes.
+- A link whose target is the `"until-found-box"` fragment.
+
+The hidden until found element has a dotted red border and a gray background.
+
+We also have some JavaScript that listens for the `beforematch` event firing on the hidden until found element. The event handler changes the text content of the box.
+
+#### HTML
+
+```html
+<a href="#until-found-box">Go to hidden content</a>
+
+<div>I'm not hidden</div>
+<div id="until-found-box" hidden="until-found">Hidden until found</div>
+<div>I'm not hidden</div>
+```
+
+```html hidden
+<button id="reset">Reset</button>
+```
+
+#### CSS
+
+```css
+div {
+  height: 40px;
+  width: 300px;
+  border: 5px dashed black;
+  margin: 1rem 0;
+  padding: 1rem;
+  font-size: 2rem;
+}
+
+div#until-found-box {
+  color: red;
+  border: 5px dotted red;
+  background-color: lightgray;
+}
+```
+
+```css hidden
+#until-found-box {
+  scroll-margin-top: 200px;
+}
+```
+
+#### JavaScript
+
+```js
+const untilFound = document.querySelector("#until-found-box");
+untilFound.addEventListener(
+  "beforematch",
+  () => (untilFound.textContent = "I've been revealed!")
+);
+```
+
+```js hidden
+document.querySelector("#reset").addEventListener("click", () => {
+  document.location.hash = "";
+  document.location.reload();
+});
+```
+
+#### Result
+
+Note that although the content of the element is hidden, the element still has a generated box, occupying space in the layout and with background and borders rendered.
+
+Clicking the "Go to hidden content" button navigates to the hidden until found element. The `beforematch` event fires, the text content is updated, and the element content is displayed.
+
+To run the example again, click "Reset".
+
+{{EmbedLiveSample("Using until-found", "", 400)}}
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 모든 [전역 속성](/ko/docs/Web/HTML/Global_attributes).
+- {{DOMxRef("HTMLElement.hidden")}}
+- All [global attributes](/en-US/docs/Web/HTML/Global_attributes)
+- The [`aria-hidden`](/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-hidden) attribute
+- The [`beforematch`](/en-US/docs/Web/API/Element/beforematch_event) event

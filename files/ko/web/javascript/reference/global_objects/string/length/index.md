@@ -1,47 +1,94 @@
 ---
-title: String.length
+title: "String: length"
 slug: Web/JavaScript/Reference/Global_Objects/String/length
+page-type: javascript-instance-data-property
+browser-compat: javascript.builtins.String.length
 ---
 
 {{JSRef}}
 
-**`length`** 속성은 UTF-16 코드 유닛을 기준으로 문자열의 길이를 나타냅니다.
+The **`length`** data property of a {{jsxref("String")}} value contains the length of the string in UTF-16 code units.
 
-{{EmbedInteractiveExample("pages/js/string-length.html")}}
+{{EmbedInteractiveExample("pages/js/string-length.html", "shorter")}}
 
-## 설명
+## Value
 
-`length` 속성은 문자열 안의 코드 유닛 수를 반환합니다. JavaScript가 사용하는 문자열 형식인 [UTF-16](https://ko.wikipedia.org/wiki/UTF-16)은 대부분의 일반적인 문자를 표현하기 위해 하나의 16비트 코드 유닛을 사용합니다. 반면, 덜 쓰이는 문자를 표현하기 위해 2개의 코드 유닛을 사용해야 할 때도 있으므로 문자열 내에 있는 문자들의 실제 총 숫자가 `length` 속성이 반환하는 숫자와 일치하지 않을 수 있습니다.
+A non-negative integer.
 
-ECMAScript 2016 7판은 최대 길이를 `2^53 - 1`로 설정했습니다. 이전엔 명시된 최대 길이가 없었습니다.
+{{js_property_attributes(0, 0, 0)}}
 
-빈 문자열은 `length`가 0입니다.
+## Description
 
-정적 속성 `String.length`는 1을 반환합니다.
+This property returns the number of code units in the string. JavaScript uses [UTF-16](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#utf-16_characters_unicode_codepoints_and_grapheme_clusters) encoding, where each Unicode character may be encoded as one or two code units, so it's possible for the value returned by `length` to not match the actual number of Unicode characters in the string. For common scripts like Latin, Cyrillic, wellknown CJK characters, etc., this should not be an issue, but if you are working with certain scripts, such as emojis, [mathematical symbols](https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols), or obscure Chinese characters, you may need to account for the difference between code units and characters.
 
-## 예제
+The language specification requires strings to have a maximum length of 2<sup>53</sup> - 1 elements, which is the upper limit for [precise integers](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER). However, a string with this length needs 16384TiB of storage, which cannot fit in any reasonable device's memory, so implementations tend to lower the threshold, which allows the string's length to be conveniently stored in a 32-bit integer.
 
-### 일반적인 사용법
+- In V8 (used by Chrome and Node), the maximum length is 2<sup>29</sup> - 24 (\~1GiB). On 32-bit systems, the maximum length is 2<sup>28</sup> - 16 (\~512MiB).
+- In Firefox, the maximum length is 2<sup>30</sup> - 2 (\~2GiB). Before Firefox 65, the maximum length was 2<sup>28</sup> - 1 (\~512MiB).
+- In Safari, the maximum length is 2<sup>31</sup> - 1 (\~4GiB).
+
+For an empty string, `length` is 0.
+
+The static property `String.length` is unrelated to the length of strings. It's the [arity](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/length) of the `String` function (loosely, the number of formal parameters it has), which is 1.
+
+Since `length` counts code units instead of characters, if you want to get the number of characters, you can first split the string with its [iterator](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/@@iterator), which iterates by characters:
 
 ```js
-var x = 'Mozilla';
-var empty = '';
+function getCharacterLength(str) {
+  // The string iterator that is used here iterates over characters,
+  // not mere code units
+  return [...str].length;
+}
 
-console.log('Mozilla는 코드 유닛 ' + x.length + '개의 길이입니다.');
-/* "Mozilla는 코드 유닛 7개의 길이입니다." */
-
-console.log('빈 문자열은 ' + empty.length + '의 길이를 가집니다.');
-/* "빈 문자열은 0의 길이를 가집니다." */
+console.log(getCharacterLength("A\uD87E\uDC04Z")); // 3
 ```
 
-## 명세
+## Examples
+
+### Basic usage
+
+```js
+const x = "Mozilla";
+const empty = "";
+
+console.log(`${x} is ${x.length} code units long`);
+// Mozilla is 7 code units long
+
+console.log(`The empty string has a length of ${empty.length}`);
+// The empty string has a length of 0
+```
+
+### Strings with length not equal to the number of characters
+
+```js
+const emoji = "😄";
+console.log(emoji.length); // 2
+const adlam = "𞤲𞥋𞤣𞤫";
+console.log(adlam.length); // 8
+const formula = "∀𝑥∈ℝ,𝑥²≥0";
+console.log(formula.length); // 11
+```
+
+### Assigning to length
+
+Because string is a primitive, attempting to assign a value to a string's `length` property has no observable effect, and will throw in [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode).
+
+```js
+const myString = "bluebells";
+
+myString.length = 4;
+console.log(myString); // "bluebells"
+console.log(myString.length); // 9
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [JavaScript `String.length` and Internationalizing Web Applications](http://developer.teradata.com/blog/jasonstrimpel/2011/11/javascript-string-length-and-internationalizing-web-applications)
+- [JavaScript `String.length` and Internationalizing Web Applications](https://downloads.teradata.com/blog/jasonstrimpel/2011/11/javascript-string-length-and-internationalizing-web-applications)

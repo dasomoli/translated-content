@@ -1,53 +1,68 @@
 ---
 title: user-select
 slug: Web/CSS/user-select
+page-type: css-property
+browser-compat: css.properties.user-select
 ---
+
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`user-select`** 속성은 사용자가 텍스트를 선택할 수 있는지 지정합니다.
+The **`user-select`** [CSS](/en-US/docs/Web/CSS) property controls whether the user can select text. This doesn't have any effect on content loaded as part of a browser's user interface (its {{Glossary("Chrome", "chrome")}}), except in textboxes.
+
+{{EmbedInteractiveExample("pages/css/user-select.html")}}
+
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
 user-select: none;
 user-select: auto;
 user-select: text;
 user-select: contain;
 user-select: all;
 
-/* 전역 값 */
+/* Global values */
 user-select: inherit;
 user-select: initial;
+user-select: revert;
+user-select: revert-layer;
 user-select: unset;
 ```
 
-## 구문
+> **Note:** `user-select` is not an inherited property, though the initial `auto` value makes it behave like it is inherited most of the time. WebKit/Chromium-based browsers _do_ implement the property as inherited, which violates the behavior described in the spec, and this will bring some issues. Until now, Chromium has chosen to [fix the issues](https://chromium.googlesource.com/chromium/src/+/b01af0b296ecb855aac95c4ed335d188e6eac2de) to make the final behavior meet the specifications.
+
+### Values
 
 - `none`
-  - : 이 요소와 아래 요소의 텍스트를 선택하지 못하도록 막습니다. 단 {{domxref("Selection")}} 객체는 `none`인 요소(와 그 아래)를 포함할 수 있습니다.
-
+  - : The text of the element and its sub-elements is not selectable. Note that the {{domxref("Selection")}} object can contain these elements.
 - `auto`
-  - : `auto`의 사용값은 아래와 같이 결정됩니다.
-    - `::before`와 `::after` 의사 요소의 사용값은 `none`입니다.
-    - 편집 가능한 요소의 사용값은 `contain`입니다.
-    - 그렇지 않고, 부모 요소 `user-select`의 사용값이 `all`이면 이 요소의 사용값도 `all`입니다.
-    - 그렇지 않고, 부모 요소 `user-select`의 사용값이 `none`이면 이 요소의 사용값도 `none`입니다.
-    - 그렇지 않으면 사용값은 `text`입니다.
-- `text`
-  - : 사용자가 텍스트를 선택할 수 있습니다.
-- `all`
-  - : 요소의 콘텐츠가 원자적으로 선택됩니다. 즉 선택 범위는 이 요소와 그 아래의 자손 전체를 포함해야 하며 일부만 담을 수는 없습니다. 하위 요소에서 더블 클릭이나 콘텍스트 클릭이 발생한 경우, `all`을 지정한 조상 요소 중 제일 상위 요소를 선택합니다.
-- `contain`
-  - : 선택의 시작을 이 요소 안에서 한 경우, 범위가 요소 바깥으로 벗어날 수 없습니다.
 
-## 형식 정의
+  - : The used value of `auto` is determined as follows:
+
+    - On the `::before` and `::after` pseudo elements, the used value is `none`
+    - If the element is an editable element, the used value is `contain`
+    - Otherwise, if the used value of `user-select` on the parent of this element is `all`, the used value is `all`
+    - Otherwise, if the used value of `user-select` on the parent of this element is `none`, the used value is `none`
+    - Otherwise, the used value is `text`
+
+- `text`
+  - : The text can be selected by the user.
+- `all`
+  - : The content of the element shall be selected atomically: If a selection would contain part of the element, then the selection must contain the entire element including all its descendants. If a double-click or context-click occurred in sub-elements, the highest ancestor with this value will be selected.
+- `contain`
+  - : Enables selection to start within the element; however, the selection will be contained by the bounds of that element.
+
+> **Note:** CSS UI 4 [renames `user-select: element` to `contain`](https://github.com/w3c/csswg-drafts/commit/3f1d9db96fad8d9fc787d3ed66e2d5ad8cfadd05).
+
+## Formal definition
 
 {{CSSInfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
 ### HTML
 
@@ -61,33 +76,34 @@ user-select: unset;
 
 ```css
 .unselectable {
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10+ */
   user-select: none;
 }
 
 .all {
-  -moz-user-select: all;
   -webkit-user-select: all;
   -ms-user-select: all;
   user-select: all;
 }
 ```
 
-### 결과
+> **Note:** `-webkit-user-select: all;` doesn't work in Safari; use only "none" or "text", or else it will allow typing in the `<html>` container. See the [browser compatibility table](#browser-compatibility) for up-to-date information.
 
-{{EmbedLiveSample("예제")}}
+### Result
 
-## 명세
+{{EmbedLiveSample("Examples")}}
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{Cssxref("::selection")}} 의사 요소
-- JavaScript {{domxref("Selection")}} 객체.
+- [Polyfill for `user-select: contain`](https://github.com/github/user-select-contain-polyfill)
+- {{Cssxref("::selection")}} pseudo-element
+- The JavaScript {{domxref("Selection")}} object

@@ -1,103 +1,113 @@
 ---
-title: '<track>: 텍스트 트랙 삽입 요소'
+title: "<track>: The Embed Text Track element"
 slug: Web/HTML/Element/track
+page-type: html-element
+browser-compat: html.elements.track
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<track>` 요소**는 미디어 요소({{HTMLElement("audio")}}, {{HTMLElement("video")}})의 자식으로서, 자막 등 시간별 텍스트 트랙(시간 기반 데이터)를 지정할 때 사용합니다. 트랙은 [WebVTT](/ko/docs/Web/API/WebVTT_API)(Web Video Text Tracks, `.vtt` 파일) 또는 [Timed Text Markup Language(TTML)](https://w3c.github.io/ttml2/index.html)형식을 사용해야 합니다.
+The **`<track>`** [HTML](/en-US/docs/Web/HTML) element is used as a child of the media elements, {{HTMLElement("audio")}} and {{HTMLElement("video")}}. It lets you specify timed text tracks (or time-based data), for example to automatically handle subtitles. The tracks are formatted in [WebVTT format](/en-US/docs/Web/API/WebVTT_API) (`.vtt` files) — Web Video Text Tracks.
 
 {{EmbedInteractiveExample("pages/tabbed/track.html", "tabbed-standard")}}
-
-<p class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</p>
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
-      </th>
-      <td>없음</td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 콘텐츠</th>
-      <td>
-        없음. {{glossary("empty element", "빈 요소")}}입니다.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">태그 생략</th>
-      <td>여는 태그는 필수입니다. 닫는 태그는 존재해선 안됩니다.</td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 부모 요소</th>
-      <td>
-        미디어 요소. 다른
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
         >
-        자식보다 앞에 위치해야 합니다.
+      </th>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted content</th>
+      <td>None; it is a {{Glossary("void element")}}.</td>
+    </tr>
+    <tr>
+      <th scope="row">Tag omission</th>
+      <td>
+        As it is a void element, the start tag must be present and the end tag
+        must not be present.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>없음</td>
+      <th scope="row">Permitted parents</th>
+      <td>
+        <p>
+          A media element, {{HTMLElement("audio")}} or
+          {{HTMLElement("video")}}.
+        </p>
+      </td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
+          >No corresponding role</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>No <code>role</code> permitted</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLTrackElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
+## Attributes
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)을 포함합니다.
+This element includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-- {{htmlattrdef("default")}}
-  - : 사용자 설정이 다른 자막을 가리키지 않는다면 활성화할 기본 트랙을 나타냅니다. 하나의 미디어 요소 당 하나의 `<track>` 요소에만 사용할 수 있습니다.
-- {{htmlattrdef("kind")}}
+- `default`
+  - : This attribute indicates that the track should be enabled unless the user's preferences indicate that another track is more appropriate. This may only be used on one `track` element per media element.
+- `kind`
 
-  - : 텍스트 트랙의 종류. 생략할 경우 `subtitles`로 간주합니다. 유효하지 않은 값을 가진 경우 `metadata`로 간주합니다. (Chrome 52 미만에서는 `subtitles`) 가능한 키워드는 다음과 같습니다.
+  - : How the text track is meant to be used. If omitted the default kind is `subtitles`. If the attribute contains an invalid value, it will use `metadata` (Versions of Chrome earlier than 52 treated an invalid value as `subtitles`). The following keywords are allowed:
 
     - `subtitles`
 
-      - 자막은 시청자가 이해할 수 없는 언어에 대한 번역을 제공합니다. 예를 들면, 비영어권 시청자에게 영어 영상을 보여줄 때 제공할 대화문이나 텍스트 등입니다.
-      - 자막은 배경 설명과 같은 추가 콘텐츠를 포함할 수 있습니다. 예를 들면, 스타워즈 영화 오프닝 텍스트, 혹은 현재 장면의 날짜와 시간, 장소 등입니다.
+      - Subtitles provide translation of content that cannot be understood by the viewer. For example speech or text that is not English in an English language film.
+      - Subtitles may contain additional content, usually extra background information. For example the text at the beginning of the Star Wars films, or the date, time, and location of a scene.
 
     - `captions`
 
-      - 폐쇄자막은 오디오 트랜스크립션을 제공하며, 번역도 포함할 수 있습니다.
-      - 음악 신호, 소리 효과와 같은 비언어적 소리 효과도 나타낼 수 있습니다. 효과의 원인(음악, 글자, 등장인물...)도 설명할 수 있습니다.
-      - 음소거로 시청하는 경우와 청각 장애를 가진 시청자에게 적합합니다.
+      - Closed captions provide a transcription and possibly a translation of audio.
+      - It may include important non-verbal information such as music cues or sound effects. It may indicate the cue's source (e.g. music, text, character).
+      - Suitable for users who are deaf or when the sound is muted.
 
     - `descriptions`
 
-      - 비디오 콘텐츠의 텍스트 설명입니다.
-      - 비디오를 볼 수 없는 환경과 시각 장애를 가진 시청자에게 적합합니다.
+      - Textual description of the video content.
+      - Suitable for users who are blind or where the video cannot be seen.
 
     - `chapters`
 
-      - 챕터 타이틀은 미디어 리소스를 탐색할 때 사용합니다.
+      - Chapter titles are intended to be used when the user is navigating the media resource.
 
     - `metadata`
 
-      - 트랙을 스크립트가 사용합니다. 사용자에게 보이지 않습니다.
+      - Tracks used by scripts. Not visible to the user.
 
-- {{htmlattrdef("label")}}
-  - : 사용자가 읽을 수 있는 형태의 텍스트 트랙 제목. 브라우저에서 사용 가능한 트랙의 이름 목록을 생성할 때 사용합니다.
-- {{htmlattrdef("src")}}
-  - : 자막의 주소(`.vtt` 파일). 유효한 {{glossary("URL")}}이어야 합니다. 필수 특성이며, `<track>`의 부모 {{htmlelement("audio")}}/{{htmlelement("video")}} 요소에 [`crossorigin`](/ko/docs/Web/HTML/CORS_settings_attributes) 특성이 없다면 문서와 같은 {{glossary("origin", "출처")}}여야 합니다.
-- {{htmlattrdef("srclang")}}
-  - : 텍스트 트랙의 언어. 유효한 [IETF 언어 태그](https://ko.wikipedia.org/wiki/IETF_%EC%96%B8%EC%96%B4_%ED%83%9C%EA%B7%B8)여야 합니다. `kind` 특성이 `subtitle`인 경우 필수 항목입니다.
+- `label`
+  - : A user-readable title of the text track which is used by the browser when listing available text tracks.
+- `src`
+  - : Address of the track (`.vtt` file). Must be a valid URL. This attribute must be specified and its URL value must have the same origin as the document — unless the {{HTMLElement("audio")}} or {{HTMLElement("video")}} parent element of the `track` element has a [`crossorigin`](/en-US/docs/Web/HTML/Attributes/crossorigin) attribute.
+- `srclang`
+  - : Language of the track text data. It must be a valid [BCP 47](https://r12a.github.io/app-subtags/) language tag. If the `kind` attribute is set to `subtitles`, then `srclang` must be defined.
 
-## 사용 일람
+## Usage notes
 
-### 트랙 데이터 유형
+### Track data types
 
-`<track>` 요소가 미디어에 추가하는 데이터의 유형은 `kind` 특성으로 나타낼 수 있습니다. 사용자가 추가 데이터를 요청하는 경우, 브라우저는 `<track>` 요소가 가리키는 시간별 텍스트 데이터를 보여줍니다.
+The type of data that `track` adds to the media is set in the `kind` attribute, which can take values of `subtitles`, `captions`, `descriptions`, `chapters` or `metadata`. The element points to a source file containing timed text that the browser exposes when the user requests additional data.
 
-미디어 요소는 동일한 `kind`, `srclang`, `label`을 가진 `<track>`을 하나보다 많이 포함할 수 없습니다.
+A media element cannot have more than one `track` with the same `kind`, `srclang`, and `label`.
 
 ### Detecting cue changes
 
@@ -108,45 +118,41 @@ If the track _is_ associated with a media element, using the {{HTMLElement("trac
 ```js
 let textTrackElem = document.getElementById("texttrack");
 
-textTrackElem.addEventListener("cuechange", event => {
+textTrackElem.addEventListener("cuechange", (event) => {
   let cues = event.target.track.activeCues;
 });
 ```
 
-## 예제
+## Examples
 
 ```html
 <video controls poster="/images/sample.gif">
-   <source src="sample.mp4" type="video/mp4">
-   <source src="sample.ogv" type="video/ogv">
-   <track kind="captions" src="sampleCaptions.vtt" srclang="en">
-   <track kind="descriptions"
-     src="sampleDescriptions.vtt" srclang="en">
-   <track kind="chapters" src="sampleChapters.vtt" srclang="en">
-   <track kind="subtitles" src="sampleSubtitles_de.vtt" srclang="de">
-   <track kind="subtitles" src="sampleSubtitles_en.vtt" srclang="en">
-   <track kind="subtitles" src="sampleSubtitles_ja.vtt" srclang="ja">
-   <track kind="subtitles" src="sampleSubtitles_oz.vtt" srclang="oz">
-   <track kind="metadata" src="keyStage1.vtt" srclang="en"
-     label="Key Stage 1">
-   <track kind="metadata" src="keyStage2.vtt" srclang="en"
-     label="Key Stage 2">
-   <track kind="metadata" src="keyStage3.vtt" srclang="en"
-     label="Key Stage 3">
-   <!-- Fallback -->
-   ...
+  <source src="sample.mp4" type="video/mp4" />
+  <source src="sample.ogv" type="video/ogv" />
+  <track kind="captions" src="sampleCaptions.vtt" srclang="en" />
+  <track kind="descriptions" src="sampleDescriptions.vtt" srclang="en" />
+  <track kind="chapters" src="sampleChapters.vtt" srclang="en" />
+  <track kind="subtitles" src="sampleSubtitles_de.vtt" srclang="de" />
+  <track kind="subtitles" src="sampleSubtitles_en.vtt" srclang="en" />
+  <track kind="subtitles" src="sampleSubtitles_ja.vtt" srclang="ja" />
+  <track kind="subtitles" src="sampleSubtitles_oz.vtt" srclang="oz" />
+  <track kind="metadata" src="keyStage1.vtt" srclang="en" label="Key Stage 1" />
+  <track kind="metadata" src="keyStage2.vtt" srclang="en" label="Key Stage 2" />
+  <track kind="metadata" src="keyStage3.vtt" srclang="en" label="Key Stage 3" />
+  <!-- Fallback -->
+  …
 </video>
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [WebVTT 텍스트 트랙 형식](/ko/docs/HTML/WebVTT)
+- [WebVTT text track format](/en-US/docs/Web/API/WebVTT_API)
 - {{domxref("HTMLMediaElement.textTracks")}}

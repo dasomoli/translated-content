@@ -1,50 +1,55 @@
 ---
 title: backface-visibility
 slug: Web/CSS/backface-visibility
+page-type: css-property
+browser-compat: css.properties.backface-visibility
 ---
+
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`backface-visibility`** 속성은 요소의 뒷면이 사용자를 향할 때 보여야 하는지 지정합니다.
+The **`backface-visibility`** [CSS](/en-US/docs/Web/CSS) property sets whether the back face of an element is visible when turned towards the user.
 
 {{EmbedInteractiveExample("pages/css/backface-visibility.html")}}
 
-요소의 뒷면은 앞면의 거울상입니다. 2D 상태에서는 볼 수 없지만 변형을 통해 3D 공간에서 회전되면 노출될 수 있습니다. (2D 변형에는 원근이 없으므로 효과가 없습니다.)
+An element's back face is a mirror image of its front face. Though invisible in 2D, the back face can become visible when a transformation causes the element to be rotated in 3D space. (This property has no effect on 2D transforms, which have no perspective.)
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
 backface-visibility: visible;
 backface-visibility: hidden;
 
-/* 전역 값 */
+/* Global values */
 backface-visibility: inherit;
 backface-visibility: initial;
+backface-visibility: revert;
+backface-visibility: revert-layer;
 backface-visibility: unset;
 ```
 
-`backface-visibility` 속성은 다음 목록의 키워드 중 하나를 선택해 지정할 수 있습니다.
+The `backface-visibility` property is specified as one of the keywords listed below.
 
-### 값
+### Values
 
 - `visible`
-  - : 뒷면이 사용자를 향하면 보입니다.
+  - : The back face is visible when turned towards the user.
 - `hidden`
-  - : 뒷면이 사용자를 향해도 보이지 않습니다. 요소가 뒤를 향하면 사용자로부터 숨기는 것과 같습니다.
+  - : The back face is hidden, effectively making the element invisible when turned away from the user.
 
-## 형식 정의
+## Formal definition
 
 {{cssinfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 육면체의 뒷면 비교
+### Cube with transparent and opaque faces
 
-아래 예제는 투명한 뒷면의 육면체와 불투명한 뒷면의 육면체를 하나씩 보입니다.
+This example shows a cube with transparent faces, and one with opaque faces.
 
 #### HTML
 
@@ -67,9 +72,8 @@ backface-visibility: unset;
         </div>
       </div>
       <p>
-        Since all faces are partially transparent,
-        the back faces (2, 4, 5) are visible
-        through the front faces (1, 3, 6).
+        Since all faces are partially transparent, the back faces (2, 4, 5) are
+        visible through the front faces (1, 3, 6).
       </p>
     </td>
     <td>
@@ -83,10 +87,7 @@ backface-visibility: unset;
           <div class="face bottom">6</div>
         </div>
       </div>
-      <p>
-        The three back faces (2, 4, 5) are
-        hidden.
-      </p>
+      <p>The three back faces (2, 4, 5) are hidden.</p>
     </td>
   </tr>
 </table>
@@ -167,8 +168,10 @@ backface-visibility: unset;
 }
 
 /* Make the table a little nicer */
-th, p, td {
-  background-color: #EEEEEE;
+th,
+p,
+td {
+  background-color: #eeeeee;
   margin: 0px;
   padding: 6px;
   font-family: sans-serif;
@@ -176,18 +179,18 @@ th, p, td {
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('육면체의_뒷면_비교', '100%', 360)}}
+{{EmbedLiveSample('Cube_with_transparent_and_opaque_faces', '100%', 360)}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [CSS 변형 사용하기](/ko/docs/Web/CSS/CSS_Transforms/Using_CSS_transforms)
+- [Using CSS transforms](/en-US/docs/Web/CSS/CSS_Transforms/Using_CSS_transforms)

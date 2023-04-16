@@ -1,50 +1,59 @@
 ---
 title: Reflect.apply()
 slug: Web/JavaScript/Reference/Global_Objects/Reflect/apply
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Reflect.apply
 ---
 
 {{JSRef}}
 
-**`Reflect.apply()`** 정적 메서드는 대상 함수를 주어진 매개변수로 호출합니다.
+The **`Reflect.apply()`** static method calls a target function with arguments as specified.
 
 {{EmbedInteractiveExample("pages/js/reflect-apply.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 Reflect.apply(target, thisArgument, argumentsList)
 ```
 
-### 매개변수
+### Parameters
 
 - `target`
-  - : 호출할 대상 함수.
+  - : The target function to call.
 - `thisArgument`
-  - : 호출에서 `target`의 `this`로 사용할 값.
+  - : The value of `this` provided for the call to `target`.
 - `argumentsList`
-  - : `target`을 호출할 때 매개변수로 전달할 배열형 객체.
+  - : An [array-like object](/en-US/docs/Web/JavaScript/Guide/Indexed_collections#working_with_array-like_objects) specifying the arguments with which `target` should be called.
 
-### 반환 값
+### Return value
 
-주어진 `this` 값과 매개변수로 대상 함수를 호출한 결과.
+The result of calling the given `target` function with the specified `this` value and arguments.
 
-### 예외
+### Exceptions
 
-`target`이 호출 가능한 객체가 아니면 {{jsxref("TypeError")}}.
+- {{jsxref("TypeError")}}
+  - : Thrown if `target` is not a function or `argumentsList` is not an object.
 
-## 설명
+## Description
 
-ES5에서는 {{jsxref("Function.prototype.apply()")}} 메서드를 사용해, 함수를 호출할 때 `this` 값을 지정하거나 매개변수를 배열(또는 배열형 객체)에서 넘겨줄 수 있었습니다.
+`Reflect.apply()` provides the reflective semantic of a function call. That is, `Reflect.apply(target, thisArgument, argumentsList)` is semantically equivalent to:
 
 ```js
-Function.prototype.apply.call(Math.floor, undefined, [1.75]);
+Math.floor.apply(null, [1.75]);
+Reflect.apply(Math.floor, null, [1.75]);
 ```
 
-`Reflect.apply()` 메서드를 사용해 같은 작업을 더 쉽고 유려하게 수행할 수 있습니다.
+The only differences are:
 
-## 예제
+- `Reflect.apply()` takes the function to call as the `target` parameter instead of the `this` context.
+- `Reflect.apply()` throws if `argumentsList` is omitted instead of defaulting to calling with no parameters.
 
-### `Reflect.apply()` 사용하기
+`Reflect.apply()` invokes the `[[Call]]` [object internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods) of `target`.
+
+## Examples
+
+### Using Reflect.apply()
 
 ```js
 Reflect.apply(Math.floor, undefined, [1.75]);
@@ -53,22 +62,24 @@ Reflect.apply(Math.floor, undefined, [1.75]);
 Reflect.apply(String.fromCharCode, undefined, [104, 101, 108, 108, 111]);
 // "hello"
 
-Reflect.apply(RegExp.prototype.exec, /ab/, ['confabulation']).index;
+Reflect.apply(RegExp.prototype.exec, /ab/, ["confabulation"]).index;
 // 4
 
-Reflect.apply(''.charAt, 'ponies', [3]);
+Reflect.apply("".charAt, "ponies", [3]);
 // "i"
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `Reflect.apply` in `core-js`](https://github.com/zloirock/core-js#ecmascript-reflect)
 - {{jsxref("Reflect")}}
 - {{jsxref("Function.prototype.apply()")}}
+- [`Proxy`'s `apply` handler](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/apply)

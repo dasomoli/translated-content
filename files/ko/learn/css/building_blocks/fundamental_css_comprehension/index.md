@@ -1,13 +1,14 @@
 ---
-title: 기본적인 CSS 이해
+title: Fundamental CSS comprehension
 slug: Learn/CSS/Building_blocks/Fundamental_CSS_comprehension
 ---
 
-{{LearnSidebar}}{{PreviousMenu("Learn/CSS/Introduction_to_CSS/Debugging_CSS", "Learn/CSS/Introduction_to_CSS")}}
+{{LearnSidebar}}
+{{PreviousMenuNext("Learn/CSS/Building_blocks/Organizing", "Learn/CSS/Building_blocks/Creating_fancy_letterheaded_paper", "Learn/CSS/Building_blocks")}}
 
 You've covered a lot in this module, so it must feel good to have reached the end! The final step before you move on is to attempt the assessment for the module — this involves a number of related exercises that must be completed in order to create the final design — a business card/gamer card/social media profile.
 
-<table class="learn-box standard-table">
+<table>
   <tbody>
     <tr>
       <th scope="row">Prerequisites:</th>
@@ -29,10 +30,12 @@ You've covered a lot in this module, so it must feel good to have reached the en
 
 To get this assessment started, you should:
 
-- Go and grab the [HTML file for the exercise](https://github.com/mdn/learning-area/blob/master/css/introduction-to-css/fundamental-css-comprehension/index.html), and the [associated image file](https://github.com/mdn/learning-area/blob/master/css/introduction-to-css/fundamental-css-comprehension/chris.jpg), and save them in a new directory on your local computer. If you want to use your own image file and fill your own name in, you are welcome to — just make sure the image is square.
-- Grab the [CSS resources text file](https://github.com/mdn/learning-area/blob/master/css/introduction-to-css/fundamental-css-comprehension/style-resources.txt) — this contains a set of raw selectors and rulesets that you'll need to study and combine to answer part of this assessment.
+- Go and grab the [HTML file for the exercise](https://github.com/mdn/learning-area/blob/main/css/introduction-to-css/fundamental-css-comprehension/index.html), and the [associated image file](https://github.com/mdn/learning-area/blob/main/css/introduction-to-css/fundamental-css-comprehension/chris.jpg), and save them in a new directory on your local computer. If you want to use your own image file and fill your own name in, you are welcome to — just make sure the image is square.
+- Grab the [CSS resources text file](https://github.com/mdn/learning-area/blob/main/css/introduction-to-css/fundamental-css-comprehension/style-resources.txt) — this contains a set of raw selectors and rulesets that you'll need to study and combine to answer part of this assessment.
 
-> **참고:** Alternatively, you could use a site like [JSBin](http://jsbin.com/) or [Thimble](https://thimble.mozilla.org/) to do your assessment. You could paste the HTML and fill in the CSS into one of these online editors, and use [this URL](http://mdn.github.io/learning-area/css/introduction-to-css/fundamental-css-comprehension/chris.jpg) to point the `<img>` element to the image file. If the online editor you are using doesn't have a separate CSS panel, feel free to put it in a `<style>` element in the head of the document.
+Alternatively, you could use a site like [JSBin](https://jsbin.com/) or [Glitch](https://glitch.com/) to do your assessment. You could paste the HTML and fill in the CSS into one of these online editors, and use [this URL](https://mdn.github.io/learning-area/css/introduction-to-css/fundamental-css-comprehension/chris.jpg) to point the `<img>` element to the image file. If the online editor you are using doesn't have a separate CSS panel, feel free to put it in a `<style>` element in the head of the document.
+
+> **Note:** If you get stuck, then ask us for help — see the [Assessment or further help](#assessment_or_further_help) section at the bottom of this page.
 
 ## Project brief
 
@@ -53,7 +56,7 @@ Taking care of the selectors and rulesets provided in the CSS resource file:
   - Give the main card container a fixed width/height, solid background color, border, and border-radius (rounded corners!), amongst other things.
   - Give the header a background gradient that goes from darker to lighter, plus rounded corners that fit in with the rounded corners set on the main card container.
   - Give the footer a background gradient that goes from lighter to darker, plus rounded corners that fit in with the rounded corners set on the main card container.
-  - Float the image to the right so that it sticks to the right hand side of the main business card contents, and give it a max-height of 100% (a clever trick that ensures that it will grow/shrink to stay the same height as its parent container, regardless of what height it becomes.)
+  - [Float](/en-US/docs/Learn/CSS/CSS_layout/Floats) the image to the right so that it sticks to the right-hand side of the main business card contents, and give it a max-height of 100% (a clever trick that ensures that it will grow/shrink to stay the same height as its parent container, regardless of what height it becomes.)
 
 - Beware! There are two errors in the provided rulesets. Using any technique that you know, track these down and fix them before moving on.
 
@@ -66,7 +69,7 @@ New rulesets you need to write:
 - Write a ruleset that gives the `<p>` inside the footer an effective font size of 15px (but expressed in `em`s) and an appropriate line height to place it in the center of the footer's content box. Recall from earlier that the content box height should be 30px — this gives you all the numbers you need to calculate the line height.
 - As a last little touch, give the paragraph inside the `<article>` an appropriate padding value so that its left edge lines up with the `<h2>` and footer paragraph, and set its color to be fairly light so it is easy to read.
 
-> **참고:** Bear in mind that the second ruleset sets `font-size: 10px;` on the `<html>` element — this means that for any descendants of `<html>`, an em will be equal to 10px rather than 16px as it is by default. (This is of course, provided the descendants in question don't have any ancestors sitting in between them and `<html>` in the hierarchy that have a different `font-size` set on them. This could affect the values you need, although in this simple example this is not an issue.)
+> **Note:** Bear in mind that the second ruleset sets `font-size: 10px;` on the `<html>` element — this means that for any descendants of `<html>`, an em will be equal to 10px rather than 16px as it is by default. (This is of course, provided the descendants in question don't have any ancestors sitting in between them and `<html>` in the hierarchy that have a different `font-size` set on them. This could affect the values you need, although in this simple example this is not an issue.)
 
 Other things to think about:
 
@@ -84,8 +87,16 @@ The following screenshot shows an example of what the finished design should loo
 
 ![A view of the finished business card, show a reader header and footer, and a darker center panel containing the main details and image.](business-card.png)
 
-## Assessment
+## Assessment or further help
 
-If you are following this assessment as part of an organized course, you should be able to give your work to your teacher/mentor for marking. If you are self-learning, then you can get the marking guide fairly easily by asking on the [discussion thread about this exercise](https://discourse.mozilla.org/t/fundamental-css-comprehension-assessment/24682), or in the [#mdn](irc://irc.mozilla.org/mdn) IRC channel on [Mozilla IRC](https://wiki.mozilla.org/IRC). Try the exercise first — there is nothing to be gained by cheating!
+If you would like your work assessed or are stuck and want to ask for help:
 
-{{PreviousMenu("Learn/CSS/Introduction_to_CSS/Debugging_CSS", "Learn/CSS/Introduction_to_CSS")}}
+1. Put your work into an online shareable editor such as [CodePen](https://codepen.io/), [jsFiddle](https://jsfiddle.net/), or [Glitch](https://glitch.com/).
+2. Write a post asking for assessment and/or help at the [MDN Discourse forum Learning category](https://discourse.mozilla.org/c/mdn/learn/250). Your post should include:
+
+   - A descriptive title such as "Assessment wanted for Fundamental CSS comprehension".
+   - Details of what you have already tried and what you would like us to do; for example, tell us if you're stuck and need help or want an assessment.
+   - A link to the example you want assessed or need help with, in an online shareable editor (as mentioned in step 1 above). This is a good practice to get into — it's very hard to help someone with a coding problem if you can't see their code.
+   - A link to the actual task or assessment page, so we can find the question you want help with.
+
+{{PreviousMenuNext("Learn/CSS/Building_blocks/Organizing", "Learn/CSS/Building_blocks/Creating_fancy_letterheaded_paper", "Learn/CSS/Building_blocks")}}

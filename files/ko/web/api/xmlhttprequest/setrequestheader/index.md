@@ -1,38 +1,54 @@
 ---
-title: XMLHttpRequest.setRequestHeader()
+title: "XMLHttpRequest: setRequestHeader() method"
+short-title: setRequestHeader()
 slug: Web/API/XMLHttpRequest/setRequestHeader
+page-type: web-api-instance-method
+browser-compat: api.XMLHttpRequest.setRequestHeader
 ---
+
 {{APIRef('XMLHttpRequest')}}
 
-**XMLHttpRequest.setRequestHeader()** 메소드는 HTTP요청 헤더의 값을 설정합니다. 반드시 `setRequestHeader()`를 [`open()`](#open)뒤에 호출하여야 하며, 또한 `send()`가 호출되기 전에 호출해야 합니다. 만약 이 메소드가 같은 헤더에 대하여 여러번 호출이 되면, 그 값은 단일 요청 헤더에 병합됩니다.
+The {{domxref("XMLHttpRequest")}} method **`setRequestHeader()`** sets the value of an HTTP request header.
+When using `setRequestHeader()`, you must call it after calling {{domxref("XMLHttpRequest.open", "open()")}}, but before calling {{domxref("XMLHttpRequest.send", "send()")}}.
+If this method is called several times with the same header, the values are merged into one single request header.
 
-만약 이것을 이용해 {{HTTPHeader("Accept")}} 헤더를 설정하지 않으면, {{domxref("XMLHttpRequest.send", "send()")}}가 호출될 때 `Accept` 헤더가 `*/*`와 함께 전송됩니다.
+Each time you call `setRequestHeader()` after the first time you call it, the specified text is appended to the end of the existing header's content.
 
-보안상의 이유로, 어떤 헤더는 오직 사용자 에이전트에 의해서만 관리될 수 있습니다. 이 헤더는 {{Glossary("Forbidden_header_name", "forbidden header names", 1)}}와 {{Glossary("Forbidden_response_header_name", "forbidden response header names", 1)}}를 포함합니다.
+If no {{HTTPHeader("Accept")}} header has been set using this, an `Accept` header with the type `"*/*"` is sent with the request when {{domxref("XMLHttpRequest.send", "send()")}} is called.
 
-> **참고:** 여러분의 필드에 대해서, 상호교차(cross-domain) 요청시 "**not allowed by Access-Control-Allow-Headers in preflight response**" Exception이 나타날 수 있습니다. 이런 경우, "Access-Control-Allow-Headers"를 서버 측 응답 헤더에 설정하면 됩니다.
+For security reasons, there are several {{Glossary("Forbidden_header_name", "forbidden header names")}} whose values are controlled by the user agent. Any attempt to set a value for one of those headers from frontend JavaScript code will be ignored without warning or error.
 
-## 구문
+In addition, the [`Authorization`](/en-US/docs/Web/HTTP/Headers/Authorization) HTTP header may be added to a request, but will be removed if the request is redirected cross-origin.
 
-```js
-myReq.setRequestHeader(header, value);
+> **Note:** For your custom fields, you may encounter a "**not allowed by Access-Control-Allow-Headers in preflight response**" exception when you send requests across domains.
+> In this situation, you need to set up the {{HTTPHeader("Access-Control-Allow-Headers")}} in your response header at server side.
+
+## Syntax
+
+```js-nolint
+setRequestHeader(header, value)
 ```
 
-### 매개변수
+### Parameters
 
 - `header`
-  - : 설정 될 값을 가진 헤더의 이름
+  - : The name of the header whose value is to be set.
 - `value`
-  - : 헤더의 본문(body)에 설정될 값
+  - : The value to set as the body of the header.
 
-## 명세
+### Return value
+
+None ({{jsxref("undefined")}}).
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 더 보기
+## See also
 
-[Using XMLHttpRequest](/ko/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest)
+- [Using XMLHttpRequest](/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest)
+- [HTML in XMLHttpRequest](/en-US/docs/Web/API/XMLHttpRequest/HTML_in_XMLHttpRequest)

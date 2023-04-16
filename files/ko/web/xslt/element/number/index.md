@@ -1,14 +1,13 @@
 ---
-title: number
+title: <xsl:number>
 slug: Web/XSLT/Element/number
-original_slug: Web/XSLT/number
 ---
 
 {{ XsltRef() }}
 
-`<xsl:number>` 요소는 숫자를 연속으로 셉니다. 또한 숫자를 빠르게 구성하는(format) 데도 쓸 수 있습니다.
+The `<xsl:number>` element counts things sequentially. It can also be used to quickly format a number.
 
-### 구문
+### Syntax
 
 ```xml
 <xsl:number
@@ -23,60 +22,63 @@ original_slug: Web/XSLT/number
   grouping-size=NUMBER  />
 ```
 
-### 필수 속성
+### Required Attributes
 
-없음.
+None.
 
-### 선택 속성
+### Optional Attributes
 
 - `count`
-  - : 소스 트리에서 연속으로 셀 대상을 지정합니다. XPath 식을 씁니다.
+  - : Specifies what in the source tree should be numbered sequentially. It uses an XPath expression.
 - `level`
-  - : 일련번호를 만드는데 소스 트리의 수준을 어떻게 고려해야 하는 지를 정의합니다. 유효한 값은 `single`, `multiple`, `any` 세 가지. 기본값은 `single`입니다.
 
-    - `single` 목록의 항목대로 연속으로 형제 노드를 번호 매깁니다. 처리기는 `count` 속성과 일치하는 [`ancestor-or-self`](/ko/Transforming_XML_with_XSLT/Mozilla_XSLT%2f%2fXPath_Reference/Axes/ancestor-or-self) 축의 첫 번째 노드로 갑니다. 그리고 나서 역시 `count` 속성과 일치하는 앞선 형제(preceding siblings) 노드(있다면, 한 짝인 `from` 속성에 이르러 멈춤)를 모두 더하여 셉니다. 일치하지 않으면, sequence는 빈 목록입니다.
+  - : Defines how levels of the source tree should be considered in generating sequential numbers. It has three valid values: `single`, `multiple`, and `any`. The default value is `single`:
 
-    - `multiple` 노드의 계층 위치를 반영하는 복합 sequence로 노드를 셉니다. 예를 들어, 1.2.2.5 (포개진 형식은 `format` 속성(예, A.1.1)으로 지정할 수 있습니다). 처리기는 만약 있다면 `from` 속성에 이르러 멈추며 현재 노드와 현재 노드의 모든 [`ancestors`](/ko/Transforming_XML_with_XSLT/Mozilla_XSLT%2f%2fXPath_Reference/Axes/ancestor)를 조사합니다. 일치하지 않으면, sequence는 빈 목록입니다.
+    - `single`
+      - : Numbers sibling nodes sequentially, as in the items in a list. The processor goes to the first node in the [`ancestor-or-self`](/en-US/docs/Web/XPath/Axes#ancestor-or-self) axis that matches the `count` attribute and then counts that node plus all its preceding siblings (stopping when it reaches a match to the `from` attribute, if there is one) that also match the `count` attribute. If no match is found, the sequence will be an empty list.
+    - `multiple`
+      - : Numbers nodes as a composite sequence that reflects the hierarchic position of the node, e.g. 1.2.2.5. (The nested format can be specified with the `format` attribute, e.g. A.1.1). The processor looks at all [`ancestors`](/en-US/docs/Web/XPath/Axes#ancestor) of the current node and the current node itself, stopping when it reaches a match for the `from` attribute, if there is one. For each node in this list that matches the `count` attribute, the processor counts how many preceding matching siblings it has, and adds one for the node itself. If no match is found, the sequence will be an empty list.
+    - `any` (Not supported at this time.)
+      - : Numbers all matching nodes, regardless of level, sequentially. The [`ancestor`](/en-US/docs/Web/XPath/Axes#ancestor), [`self`](/en-US/docs/Web/XPath/Axes#self), and [`preceding`](/en-US/docs/Web/XPath/Axes#preceding) axes are all considered. The processor starts at the current node and proceeds in reverse document order, stopping if it reaches a match to any `from` attribute. If no match to the `count` attribute is found, the sequence will be an empty list. This level is not supported at this time.
 
-    - `any` (이번에 지원 안 함.) 수준을 무시하고 연속으로 일치하는 모든 노드를 셉니다. [`ancestor`](/ko/docs/Web/XPath/Axes/ancestor), [`self`](/ko/docs/Web/XPath/Axes/self), [`preceding`](/ko/docs/Web/XPath/Axes/preceding) 축을 모두 고려합니다. 처리기는 현재 노드에서 시작하여 `from` 속성과 일치할 때 멈추며 문서 역순으로 진행합니다. 발견한 `count` 속성과 일치하지 않으면, sequence는 빈 목록입니다. 이 수준은 이번에 지원하지 않습니다.
+- `from`
+  - : Specifies where the numbering should start or start over. The sequence begins with the first descendant of the node that matches the `from` attribute.
+- `value`
+  - : Applies a given format to a number. This is a quick way to format a user-supplied number (as opposed to a node sequence number) in any of the standard `<xsl:number>` formats.
+- `format`
 
-- from
-  - : 번호 매기기를 시작하거나 다시 시작하면 좋을 곳을 지정합니다. 순서는 `from` 특성과 일치하는 노드의 첫 번째 자손(descendant)에서 시작합니다.
-- value
-  - : 숫자에 주어진 형식을 적용합니다. 이것이 사용자 제공 숫자(노드 sequence 숫자와는 반대로)를 표준 `<xsl:number>` 형식으로 구성하는 빠른 방법입니다.
-- format
-  - : 만드는 숫자의 형식을 정의합니다.
+  - : Defines the format of the generated number:
 
-    - format="1"
-      - : 1 2 3 . . . (This is the only format supported at this time)
-    - format="01"
-      - : 01 02 03 . . . 09 10 11 . . .
-    - format="a"
-      - : a b c . . .y z aa ab . . .
-    - format="A"
-      - : A B C . . . Y Z AA AB . . .
-    - format="i"
-      - : i ii iii iv v . . .
-    - format="I"
-      - : I II III IV V . . .
+    - `format="1"`
+      - : `1 2 3 . . .` (This is the only format supported at this time)
+    - `format="01"`
+      - : `01 02 03 . . . 09 10 11 . . .`
+    - `format="a"`
+      - : `a b c . . .y z aa ab . . .`
+    - `format="A"`
+      - : `A B C . . . Y Z AA AB . . .`
+    - `format="i"`
+      - : `i ii iii iv v . . .`
+    - `format="I"`
+      - : `I II III IV V . . .`
 
-- lang (이번에는 지원 안 함)
-  - : 문자에 기반을 둔 번호 매기기 형식에 쓰면 좋을 언어의 알파벳을 지정합니다.
-- letter-value
-  - : 문자(letter)를 쓰는 번호 매김 열(sequence) 사이를 명확하게 합니다. 어떤 언어는 문자(letter)를 쓰는 하나 이상의 번호 매기기 시스템이 있습니다. 두 시스템이 같은 토큰으로 시작하면, 모호함이 생길 수 있습니다. 이 속성은 "`alphabetic`"나 "`traditional`" 값일 수 있습니다. 기본값은 "`alphabetic`"입니다.
-- grouping-separator
-  - : 어떤 문자를 그룹(예로 천 단위) 구분자로 쓰면 좋을지를 지정합니다. 기본값은 쉼표(`,`)입니다.
-- grouping-size
-  - : 숫자 그룹을 만드는 자릿수를 나타냅니다. 기본값은 "`3`"입니다.
+- `lang` (Not supported at this time.)
+  - : Specifies which language's alphabet should be used in letter-based numbering formats.
+- `letter-value`
+  - : Disambiguates between numbering sequences that use letters. Some languages have more than one numbering system that use letters. If both systems begin with the same token, ambiguity can arise. This attribute can have the value "`alphabetic`" or "`traditional`". The default is "`alphabetic`".
+- `grouping-separator`
+  - : Specifies what character should be used as the group (e.g. thousands) separator. The default is the comma (`,`).
+- `grouping-size`
+  - : Indicates the number of digits that make up a numeric group. The default value is "`3`".
 
-### 타입
+### Type
 
-명령, 템플릿 안에 나타남.
+Instruction, appears within a template.
 
-### 정의
+### Defined
 
-[XSLT section 7.7, Numbering](http://www.w3.org/TR/xslt#number)
+XSLT, section 7.7
 
-### Gecko 지원
+### Gecko support
 
-부분 지원. 위 해설을 보세요.
+Partial support. See comments above.

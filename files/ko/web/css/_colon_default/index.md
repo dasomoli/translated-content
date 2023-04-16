@@ -1,22 +1,31 @@
 ---
-title: ':default'
+title: ":default"
 slug: Web/CSS/:default
+page-type: css-pseudo-class
+browser-compat: css.selectors.default
 ---
+
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`:default`** [의사 클래스](/ko/docs/Web/CSS/Pseudo-classes)는 연관 요소 내에서의 기본값인 요소를 선택합니다.
+The **`:default`** [CSS](/en-US/docs/Web/CSS) [pseudo-class](/en-US/docs/Web/CSS/Pseudo-classes) selects form elements that are the default in a group of related elements.
 
-이 선택자는 [HTML Standard §4.16.3 Pseudo-classes](https://html.spec.whatwg.org/multipage/semantics-other.html#selector-default)에 정의되어 있듯 {{htmlelement("button")}}, [`<input type="checkbox">`](/ko/docs/Web/HTML/Element/input/checkbox), [`<input type="radio">`](/ko/docs/Web/HTML/Element/input/radio), {{htmlelement("option")}} 요소를 아래와 같은 경우에 선택합니다.
+{{EmbedInteractiveExample("pages/tabbed/pseudo-class-default.html", "tabbed-shorter")}}
 
-- 옵션 요소의 기본값은 `selected` 특성을 가진 제일 첫 요소, 즉 DOM 순서 기준으로 제일 앞의 활성화 옵션입니다. `multiple` 특성의 {{htmlelement("select")}}는 둘 이상의 `selected` 옵션을 가질 수도 있으므로, 모든 옵션이 `:default`로 선택됩니다.
-- `<input type="checkbox">`와 `<input type="radio">`는 `checked` 특성을 가지고 있으면 선택됩니다.
-- {{htmlelement("button")}}은 {{htmlelement("form")}} 요소의 [기본 제출 버튼](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#implicit-submission), 즉 DOM 순서 기준으로 양식에 속하는 제일 첫 `<button>`이면 선택됩니다. (`image`와 `submit`처럼, 양식을 제출하는 다른 {{htmlelement("input")}} 유형에도 적용됩니다.)
+What this selector matches is defined in [HTML Standard §4.16.3 Pseudo-classes](https://html.spec.whatwg.org/multipage/semantics-other.html#selector-default) — it may match the {{htmlelement("button")}}, [`<input type="checkbox">`](/en-US/docs/Web/HTML/Element/input/checkbox), [`<input type="radio">`](/en-US/docs/Web/HTML/Element/input/radio), and {{htmlelement("option")}} elements:
 
-## 구문
+- A default option element is the first one with the `selected` attribute, or the first enabled option in DOM order. `multiple` {{htmlelement("select")}}s can have more than one `selected` option, so all will match `:default`.
+- `<input type="checkbox">` and `<input type="radio">` match if they have the `checked` attribute.
+- {{htmlelement("button")}} matches if it is a {{htmlelement("form")}}'s [default submission button](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#implicit-submission): the first `<button>` in DOM order that belongs to the form. This also applies to {{htmlelement("input")}} types that submit forms, like `image` or `submit`.
 
-{{csssyntax}}
+## Syntax
 
-## 예제
+```css
+:default {
+  /* ... */
+}
+```
+
+## Examples
 
 ### HTML
 
@@ -24,16 +33,16 @@ slug: Web/CSS/:default
 <fieldset>
   <legend>Favorite season</legend>
 
-  <input type="radio" name="season" id="spring">
+  <input type="radio" name="season" id="spring" value="spring" />
   <label for="spring">Spring</label>
 
-  <input type="radio" name="season" id="summer" checked>
+  <input type="radio" name="season" id="summer" value="summer" checked />
   <label for="summer">Summer</label>
 
-  <input type="radio" name="season" id="fall">
+  <input type="radio" name="season" id="fall" value="fall" />
   <label for="fall">Fall</label>
 
-  <input type="radio" name="season" id="winter">
+  <input type="radio" name="season" id="winter" value="winter" />
   <label for="winter">Winter</label>
 </fieldset>
 ```
@@ -50,14 +59,20 @@ input:default + label {
 }
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample("예제")}}
+{{EmbedLiveSample("Examples")}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- [Web forms — Working with user data](/en-US/docs/Learn/Forms)
+- [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
+- Related HTML elements: {{htmlelement("button")}}, [`<input type="checkbox">`](/en-US/docs/Web/HTML/Element/input/checkbox), [`<input type="radio">`](/en-US/docs/Web/HTML/Element/input/radio), and {{htmlelement("option")}}

@@ -5,27 +5,27 @@ slug: Web/XPath/Functions/floor
 
 {{ XsltRef() }}
 
-`floor` 함수는 10진수를 평가하고 10진수보다 크지 않는(작거나 같은) 가장 큰 정수를 반환합니다.
+The `floor` function evaluates a decimal number and returns the largest integer less than or equal to the decimal number.
 
-### 구문
+### Syntax
 
 ```
-floor(number )
+floor( number )
 ```
 
-### 인수
+### Arguments
 
 - `number`
-  - : 평가할 10진수.
+  - : The decimal number to be evaluated.
 
-### 반환
+### Returns
 
-`number`보다 크지 않는 가장 큰 정수.
+The nearest integer less than or equal to `number`.
 
-### 정의
+### Defined
 
-[XPath 1.0 4.4](http://www.w3.org/TR/xpath#function-floor)
+[XPath 1.0 4.4](https://www.w3.org/TR/1999/REC-xpath-19991116/#function-floor)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

@@ -1,32 +1,32 @@
 ---
-title: Window.length
+title: "Window: length property"
+short-title: length
 slug: Web/API/Window/length
+page-type: web-api-instance-property
+browser-compat: api.Window.length
 ---
 
 {{ ApiRef() }}
 
-window의 frame 개수를 반환합니다. ({{HTMLElement("frame")}} 또는 {{HTMLElement("iframe")}} 요소들 중 하나)
+Returns the number of frames (either {{HTMLElement("frame")}} or
+{{HTMLElement("iframe")}} elements) in the window.
 
-## 신텍스
+## Value
 
-```js
-framesCount = window.length;
-```
+A number.
 
-- `framesCount` 는 frame의 개수이다.
-
-## 예제
+## Examples
 
 ```js
 if (window.length) {
-  // document의 subframes
+  // this is a document with subframes
 }
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

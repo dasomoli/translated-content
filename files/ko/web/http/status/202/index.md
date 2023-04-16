@@ -1,24 +1,32 @@
 ---
 title: 202 Accepted
 slug: Web/HTTP/Status/202
+page-type: http-status-code
+spec-urls: https://httpwg.org/specs/rfc9110.html#status.202
 ---
 
 {{HTTPSidebar}}
 
-HTTP **`202 Accepted`** 는 요청이 성공적으로 접수되었으나, 아직 해당 요청에 대해 처리 중이거나 처리 시작 전임을 의미합니다. 요청이 처리 중 실패할 수도 있기 때문에 요청은 실행될 수도 실행되지 않을수도 있습니다.
+The HyperText Transfer Protocol (HTTP) **`202 Accepted`**
+response status code indicates that the request has been accepted for processing, but
+the processing has not been completed; in fact, processing may not have started yet. The
+request might or might not eventually be acted upon, as it might be disallowed when
+processing actually takes place.
 
-이 상태 코드는 비확약적, 즉 HTTP가 나중에 요청 처리 결과를 나타내는 비동기 응답을 보낼 방법이 없다는 것을 의미합니다. 이는 다른 프로세스나 서버가 요청을 처리하는 경우 또는 일괄 처리를 위한 것입니다.
+202 is non-committal, meaning that there is no way for the HTTP to later send an
+asynchronous response indicating the outcome of processing the request. It is intended
+for cases where another process or server handles the request, or for batch processing.
 
-## 상태
+## Status
 
-```
+```http
 202 Accepted
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 같이 보기
+## See also
 
 - {{HTTPHeader("Accept")}}

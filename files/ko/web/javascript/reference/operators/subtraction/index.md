@@ -1,51 +1,78 @@
 ---
-title: 빼기 (-)
+title: Subtraction (-)
 slug: Web/JavaScript/Reference/Operators/Subtraction
+page-type: javascript-operator
+browser-compat: javascript.operators.subtraction
 ---
 
 {{jsSidebar("Operators")}}
 
-빼기 연산자(`-`)는 두 연산자의 차이를 구합니다.
+The **subtraction (`-`)** operator subtracts the two operands, producing their difference.
 
 {{EmbedInteractiveExample("pages/js/expressions-subtraction.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 x - y
 ```
 
-## 예제
+## Description
 
-### 뺄셈
+The `*` operator is overloaded for two types of operands: number and [BigInt](/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt). It first [coerces both operands to numeric values](/en-US/docs/Web/JavaScript/Data_structures#numeric_coercion) and tests the types of them. It performs BigInt subtraction if both operands becomes BigInts; otherwise, it performs number subtraction. A {{jsxref("TypeError")}} is thrown if one operand becomes a BigInt but the other becomes a number.
 
-```js
-5 - 3  // 2
-3 - 5  // -2
-```
+## Examples
 
-### 숫자가 아닌 경우
+### Subtraction with numbers
 
 ```js
-'foo' - 3 // NaN
+// Number - Number -> subtraction
+5 - 3; // 2
+
+// Number - Number -> subtraction
+3 - 5; // -2
 ```
 
-## 명세
+### Subtraction with non-numbers
+
+```js
+// String - Number -> subtraction
+"foo" - 3; // NaN; "foo" is converted to the number NaN
+
+// Number - String -> subtraction
+5 - "3"; // 2; "3" is converted to the number 3
+```
+
+### Subtraction with BigInts
+
+```js
+// BigInt - BigInt -> subtraction
+2n - 1n; // 1n
+```
+
+You cannot mix BigInt and number operands in subtraction.
+
+```js example-bad
+2n - 1; // TypeError: Cannot mix BigInt and other types, use explicit conversions
+2 - 1n; // TypeError: Cannot mix BigInt and other types, use explicit conversions
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [더하기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Addition)
-- [나누기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Division)
-- [곱하기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Multiplication)
-- [나머지 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Remainder)
-- [거듭제곱 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Exponentiation)
-- [증가 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Increment)
-- [감소 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Decrement)
-- [단항 부정 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Unary_negation)
-- [단항 플러스 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Unary_plus)
+- [Addition operator](/en-US/docs/Web/JavaScript/Reference/Operators/Addition)
+- [Division operator](/en-US/docs/Web/JavaScript/Reference/Operators/Division)
+- [Multiplication operator](/en-US/docs/Web/JavaScript/Reference/Operators/Multiplication)
+- [Remainder operator](/en-US/docs/Web/JavaScript/Reference/Operators/Remainder)
+- [Exponentiation operator](/en-US/docs/Web/JavaScript/Reference/Operators/Exponentiation)
+- [Increment operator](/en-US/docs/Web/JavaScript/Reference/Operators/Increment)
+- [Decrement operator](/en-US/docs/Web/JavaScript/Reference/Operators/Decrement)
+- [Unary negation operator](/en-US/docs/Web/JavaScript/Reference/Operators/Unary_negation)
+- [Unary plus operator](/en-US/docs/Web/JavaScript/Reference/Operators/Unary_plus)

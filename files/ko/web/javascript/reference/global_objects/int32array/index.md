@@ -1,69 +1,73 @@
 ---
 title: Int32Array
 slug: Web/JavaScript/Reference/Global_Objects/Int32Array
+page-type: javascript-class
+browser-compat: javascript.builtins.Int32Array
 ---
 
 {{JSRef}}
 
-**`Int32Array`** 형식화 배열(TypedArray)은 플랫폼의 바이트 순서를 따르는 2의 보수 32비트의 부호있는 정수
-배열입니다. 바이트 순서를 제어해야 하는 경우 대신 {{jsxref("DataView")}}를 사용합니다. 배열의 내용은 0으로 초기화됩니다.
-배열이 생성되면 객체의 메서드를 사용하거나 표준 배열 인덱스 구문(즉, 대괄호 표기법 사용)을 사용하여 배열의 요소를 참조할 수 있습니다.
+The **`Int32Array`** typed array represents an array of twos-complement 32-bit signed integers in the platform byte order. If control over byte order is needed, use {{jsxref("DataView")}} instead. The contents are initialized to `0`. Once established, you can reference elements in the array using the object's methods, or using standard array index syntax (that is, using bracket notation).
 
-## 생성자
+`Int32Array` is a subclass of the hidden {{jsxref("TypedArray")}} class.
 
-- {{jsxref("Global_Objects/Int32Array/Int32Array", "Int32Array()")}}
-  - : 새로운 `Int32Array` 객체를 생성합니다.
+## Constructor
 
-## 정적 속성
+- {{jsxref("Int32Array/Int32Array", "Int32Array()")}}
+  - : Creates a new `Int32Array` object.
 
-부모 {{jsxref("TypedArray")}}에서 정적 속성을 상속합니다.
+## Static properties
 
-- {{jsxref("TypedArray.BYTES_PER_ELEMENT", "Int32Array.BYTES_PER_ELEMENT")}}
-  - : 요소 크기의 숫자 값을 반환합니다. `Int32Array`의 경우 `4` 입니다.
-- {{jsxref("TypedArray.name", "Int32Array.name")}}
-  - : 생성자 이름을 문자열로 반환합니다. `Int32Array` 타입의 경우 `"Int32Array"`입니다.
+_Also inherits static properties from its parent {{jsxref("TypedArray")}}_.
 
-## 정적 메서드
+- {{jsxref("TypedArray/BYTES_PER_ELEMENT", "Int32Array.BYTES_PER_ELEMENT")}}
+  - : Returns a number value of the element size. `4` in the case of `Int32Array`.
 
-부모 {{jsxref("TypedArray")}}에서 정적 메서드를 상속합니다.
+## Static methods
 
-## 인스턴스 속성
+_Inherits static methods from its parent {{jsxref("TypedArray")}}_.
 
-부모 {{jsxref("TypedArray")}}에서 인스턴스 속성을 상속합니다.
+## Instance properties
 
-- {{jsxref("TypedArray.BYTES_PER_ELEMENT", "Int32Array.prototype.BYTES_PER_ELEMENT")}}
-  - : 요소 크기의 숫자 값을 반환합니다. `Int32Array`의 경우 `4` 입니다.
+_Also inherits instance properties from its parent {{jsxref("TypedArray")}}_.
 
-## 인스턴스 메서드
+These properties are defined on `Int32Array.prototype` and shared by all `Int32Array` instances.
 
-부모 {{jsxref("TypedArray")}}에서 인스턴스 메서드를 상속합니다.
+- {{jsxref("TypedArray/BYTES_PER_ELEMENT", "Int32Array.prototype.BYTES_PER_ELEMENT")}}
+  - : Returns a number value of the element size. `4` in the case of a `Int32Array`.
+- {{jsxref("Object/constructor", "Int32Array.prototype.constructor")}}
+  - : The constructor function that created the instance object. For `Int32Array` instances, the initial value is the {{jsxref("Int32Array/Int32Array", "Int32Array")}} constructor.
 
-## 예제
+## Instance methods
 
-### Int32Array을 생성하기 위한 각기 다른 여러 방법
+_Inherits instance methods from its parent {{jsxref("TypedArray")}}_.
+
+## Examples
+
+### Different ways to create an Int32Array
 
 ```js
-// 길이로부터 생성
+// From a length
 const int32 = new Int32Array(2);
 int32[0] = 42;
 console.log(int32[0]); // 42
 console.log(int32.length); // 2
 console.log(int32.BYTES_PER_ELEMENT); // 4
 
-// 배열로부터
+// From an array
 const x = new Int32Array([21, 31]);
 console.log(x[1]); // 31
 
-// 다른 TypedArray로부터
+// From another TypedArray
 const y = new Int32Array(x);
 console.log(y[0]); // 21
 
-// ArrayBuffer로부터
+// From an ArrayBuffer
 const buffer = new ArrayBuffer(32);
 const z = new Int32Array(buffer, 4, 4);
 console.log(z.byteOffset); // 4
 
-// 순회로부터
+// From an iterable
 const iterable = (function* () {
   yield* [1, 2, 3];
 })();
@@ -72,17 +76,17 @@ console.log(int32FromIterable);
 // Int32Array [1, 2, 3]
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [`core-js`에서 `Int32Array` 폴리필](https://github.com/zloirock/core-js#ecmascript-typed-arrays)
-- [JavaScript 형식화 배열](/ko/docs/Web/JavaScript/Typed_arrays)
+- [Polyfill of `Int32Array` in `core-js`](https://github.com/zloirock/core-js#ecmascript-typed-arrays)
+- [JavaScript typed arrays](/en-US/docs/Web/JavaScript/Typed_arrays)
 - {{jsxref("ArrayBuffer")}}
 - {{jsxref("DataView")}}

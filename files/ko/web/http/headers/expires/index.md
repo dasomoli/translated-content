@@ -1,15 +1,21 @@
 ---
 title: Expires
 slug: Web/HTTP/Headers/Expires
+page-type: http-header
+browser-compat: http.headers.Expires
 ---
 
 {{HTTPSidebar}}
 
-**`Expires`** 헤더는 응답이 더 이상 신선하지 않다고 판단할 날짜/시간을 포함합니다.
+The **`Expires`** HTTP header contains the date/time after which the
+response is considered expired.
 
-0과 같은, 유효하지 않은 날짜는 과거의 시간을 나타내어 리소스가 이미 만료되었음을 의미합니다.
+Invalid expiration dates with value 0 represent a date in the past and mean that the
+resource is already expired.
 
-응답 내에 "max-age" 혹은 "s-max-age" 디렉티브를 지닌 {{HTTPHeader("Cache-Control")}} 헤더가 존재할 경우, `Expires` 헤더는 무시됩니다.
+> **Note:** If there is a {{HTTPHeader("Cache-Control")}} header
+> with the `max-age` or `s-maxage` directive in the response,
+> the `Expires` header is ignored.
 
 <table class="properties">
   <tbody>
@@ -23,39 +29,39 @@ slug: Web/HTTP/Headers/Expires
     </tr>
     <tr>
       <th scope="row">
-        {{Glossary("Simple response header", "CORS-safelisted response-header")}}
+        {{Glossary("CORS-safelisted response header")}}
       </th>
       <td>yes</td>
     </tr>
   </tbody>
 </table>
 
-## 문법
+## Syntax
 
-```
+```http
 Expires: <http-date>
 ```
 
-## 디렉티브
+## Directives
 
 - \<http-date>
-  - : HTTP-date timestamp.
+  - : An HTTP-date timestamp.
 
-## 예제
+## Examples
 
-```
+```http
 Expires: Wed, 21 Oct 2015 07:28:00 GMT
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 참고할 내용
+## See also
 
 - {{HTTPHeader("Cache-Control")}}
 - {{HTTPHeader("Age")}}

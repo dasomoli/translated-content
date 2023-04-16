@@ -1,34 +1,33 @@
 ---
 title: CSS Flow Layout
 slug: Web/CSS/CSS_Flow_Layout
+page-type: guide
 ---
+
 {{CSSRef}}
 
-_일반적인 흐름 Normal Flow_, 또는 흐름 레이아웃 Flow Layout 은 그 레이아웃 변화가 있기 전까지 페이지 안의 블록 요소와 인라인 요소가 보여지는 방식 입니다. 흐름이란 본질적으로 레이아웃 아래 서로 같이 동작하고 서로에게 서로가 알려지는 것들의 집합 입니다. 만약에 어느 하나가 _흐름에서 벗어나면_ 그것은 독립적으로 동작하게 됩니다.
+_Normal Flow_, or Flow Layout, is the way that Block and Inline elements are displayed on a page before any changes are made to their layout. The flow is essentially a set of things that are all working together and know about each other in your layout. Once something is taken _out of flow_ it works independently.
 
-*일반적인 흐름*에서, **인라인** 요소들은 한줄러 늘어서 보여지게 되는데, 이는 문서의 [Writing Mode](/ko/docs/Web/CSS/CSS_Writing_Modes) 에 따라 문장 안의 단어들이 보여지는 방향을 따르게 됩니다. **블록** 요소들은 문서의 Writing Mode 에서의 단락이 하나씩 나눠져 보여지듯이 나타납니다. 그래서 영어에서는, 인라인 요소들은 왼쪽에서 시작하여 하나씩 보여지고, 블록 요소들은 맨 위에서부터 페이지를 따라 아래로 보여집니다.
+In normal flow, **inline** elements display in the inline direction, that is in the direction words are displayed in a sentence according to the [Writing Mode](/en-US/docs/Web/CSS/CSS_Writing_Modes) of the document. **Block** elements display one after the other, as paragraphs do in the Writing Mode of that document. In English therefore, inline elements display one after the other, starting on the left, and block elements start at the top and move down the page.
 
-## 기본적인 예
+## Basic Example
 
-아래의 예는 블록과 인라인 레벨 박스들을 설명합니다. 초록 테두리를 갖은 두개의 paragraph 요소들은 블록 레벨에 있어서 하나씩 위에서 아래로 나타납니다.
+The following example demonstrates Block and Inline Level boxes. The two paragraph elements with a green border are Block Level, displaying one under the other.
 
-첫번째 문장은 파란 바탕을 갖은 span 요소를 포함하고 있습니다. 이 요소는 인라인 레벨에 있으며 따라서 문장 내에 이어져 나타납니다.
+The first sentence also includes a span element with a blue background. This is inline level and therefore displays in place in the sentence.
 
 {{EmbedGHLiveSample("css-examples/layout/normal-flow.html", '100%', 720)}}
 
 ## Guides
 
-- [Block and Inline Layout in Normal Flow](/ko/docs/Web/CSS/CSS_Flow_Layout/Block_and_Inline_Layout_in_Normal_Flow)
-- [In Flow and Out of Flow](/ko/docs/Web/CSS/CSS_Flow_Layout/In_Flow_and_Out_of_Flow)
-- [Formatting Contexts Explained](/ko/docs/Web/CSS/CSS_Flow_Layout/Formatting_Contexts_Explained)
-- [Flow Layout and Writing Modes](/ko/docs/Web/CSS/CSS_Flow_Layout/Flow_Layout_and_Writing_Modes)
-- [Flow Layout and Overflow](/ko/docs/Web/CSS/CSS_Flow_Layout/Flow_Layout_and_Overflow)
+- [Block and Inline Layout in Normal Flow](/en-US/docs/Web/CSS/CSS_Flow_Layout/Block_and_Inline_Layout_in_Normal_Flow)
+- [In Flow and Out of Flow](/en-US/docs/Web/CSS/CSS_Flow_Layout/In_Flow_and_Out_of_Flow)
+- [Formatting Contexts Explained](/en-US/docs/Web/CSS/CSS_Flow_Layout/Intro_to_formatting_contexts)
+- [Flow Layout and Writing Modes](/en-US/docs/Web/CSS/CSS_Flow_Layout/Flow_Layout_and_Writing_Modes)
+- [Flow Layout and Overflow](/en-US/docs/Web/CSS/CSS_Flow_Layout/Flow_Layout_and_Overflow)
 
 ## Reference
 
 ### Glossary Entries
 
 - {{Glossary("Block/CSS", "Block (CSS)")}}
-
-1. [**CSS**](/ko/docs/Web/CSS)
-2. [**CSS Reference**](/ko/docs/Web/CSS/Reference)

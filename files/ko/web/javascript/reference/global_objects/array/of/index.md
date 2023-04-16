@@ -1,70 +1,93 @@
 ---
 title: Array.of()
 slug: Web/JavaScript/Reference/Global_Objects/Array/of
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Array.of
 ---
+
 {{JSRef}}
 
-**`Array.of()`** 메서드는 인자의 수나 유형에 관계없이 가변 인자를 갖는 새 `Array` 인스턴스를 만듭니다.
+The **`Array.of()`** static method creates a new `Array`
+instance from a variable number of arguments, regardless of number or type of the
+arguments.
 
-`Array.of()`와 `Array` 생성자의 차이는 정수형 인자의 처리 방법에 있습니다. `Array.of(7)`은 하나의 요소 `7`을 가진 배열을 생성하지만 `Array(7)`은 `length` 속성이 7인 빈 배열을 생성합니다.
+{{EmbedInteractiveExample("pages/js/array-of.html", "shorter")}}
 
-```js
-Array.of(7);       // [7]
-Array.of(1, 2, 3); // [1, 2, 3]
+## Syntax
 
-Array(7);          // [ , , , , , , ]
-Array(1, 2, 3);    // [1, 2, 3]
+```js-nolint
+Array.of()
+Array.of(element0)
+Array.of(element0, element1)
+Array.of(element0, element1, /* … ,*/ elementN)
 ```
 
-## 구문
-
-```js
-    Array.of(element0[, element1[, ...[, elementN]]])
-```
-
-### 매개변수
+### Parameters
 
 - `elementN`
-  - : 배열을 생성할 때 사용할 요소.
+  - : Elements used to create the array.
 
-### 반환 값
+### Return value
 
-새로운 {{jsxref("Array")}} 객체.
+A new {{jsxref("Array")}} instance.
 
-## 설명
+## Description
 
-이 함수는 ECMAScript 2015 표준 일부입니다. 자세한 정보는 [`Array.of`, `Array.from` 제안 사항](https://gist.github.com/rwaldron/1074126)과 [`Array.of` 폴리필](https://gist.github.com/rwaldron/3186576)에서 확인하실 수 있습니다.
-
-## 예제
+The difference between `Array.of()` and the [`Array()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Array) constructor is in the handling of single arguments: `Array.of(7)` creates an array with a single element, `7`, whereas `Array(7)` creates an empty array with a `length` property of `7`. (That implies an array of 7 empty slots, not slots with actual {{jsxref("undefined")}} values.)
 
 ```js
-Array.of(1);         // [1]
-Array.of(1, 2, 3);   // [1, 2, 3]
+Array.of(7); // [7]
+Array(7); // array of 7 empty slots
+
+Array.of(1, 2, 3); // [1, 2, 3]
+Array(1, 2, 3); // [1, 2, 3]
+```
+
+The `Array.of()` method is a generic factory method. For example, if a subclass of `Array` inherits the `of()` method, the inherited `of()` method will return new instances of the subclass instead of `Array` instances. In fact, the `this` value can be any constructor function that accepts a single argument representing the length of the new array, and the constructor will be called with the number of arguments passed to `of()`. The final `length` will be set again when all elements are assigned. If the `this` value is not a constructor function, the plain `Array` constructor is used instead.
+
+## Examples
+
+### Using Array.of()
+
+```js
+Array.of(1); // [1]
+Array.of(1, 2, 3); // [1, 2, 3]
 Array.of(undefined); // [undefined]
 ```
 
-## 폴리필
+### Calling of() on non-array constructors
 
-아래 코드를 다른 코드 이전에 포함하면 `Array.of`를 지원하지 않는 환경에서도 사용할 수 있습니다.
+The `of()` method can be called on any constructor function that accepts a single argument representing the length of the new array.
 
 ```js
-if (!Array.of) {
-  Array.of = function() {
-    return Array.prototype.slice.call(arguments);
-  };
+function NotArray(len) {
+  console.log("NotArray called with length", len);
 }
+
+console.log(Array.of.call(NotArray, 1, 2, 3));
+// NotArray called with length 3
+// NotArray { '0': 1, '1': 2, '2': 3, length: 3 }
+
+console.log(Array.of.call(Object)); // [Number: 0] { length: 0 }
 ```
 
-## 명세
+When the `this` value is not a constructor, a plain `Array` object is returned.
+
+```js
+console.log(Array.of.call({}, 1)); // [ 1 ]
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{jsxref("Array")}}
+- [Polyfill of `Array.of` in `core-js`](https://github.com/zloirock/core-js#ecmascript-array)
+- [`Array()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Array)
 - {{jsxref("Array.from()")}}
 - {{jsxref("TypedArray.of()")}}

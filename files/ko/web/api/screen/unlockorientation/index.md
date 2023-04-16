@@ -1,45 +1,68 @@
 ---
-title: window.screen.unlockOrientation
+title: "Screen: unlockOrientation() method"
+short-title: unlockOrientation()
 slug: Web/API/Screen/unlockOrientation
+page-type: web-api-instance-method
+status:
+  - deprecated
+browser-compat: api.Screen.unlockOrientation
 ---
 
-{{APIRef("CSSOM View")}}{{Deprecated_header}}
+{{APIRef("Screen Orientation API")}}{{Deprecated_Header}}
 
-**`Screen.unlockOrientation()`** 함수는 이전의 page나 앱을 통해 지정한 화면 고정 값들을 모두 제거 한다.
+The **`Screen.unlockOrientation()`** method removes all the
+previous screen locks set by the page/app. The {{DOMxRef("ScreenOrientation.unlock()")}}
+method should be used instead.
 
-> **참고:** 이 함수는 설치된 웹앱 또는 [full-screen mode](/ko/docs/Web/Guide/DOM/Using_full_screen_mode) 의 웹 페이지들에서 동작한다..
+> **Warning:** This feature is deprecated and should be avoided. Use the {{DOMxRef("ScreenOrientation.unlock()")}} method instead.
+
+> **Note:** This method only works for installed Web apps or for Web pages
+> in [fullscreen mode](/en-US/docs/Web/API/Fullscreen_API).
 
 ## Syntax
 
-```js
-var unlocked = window.screen.unlockOrientation();
+```js-nolint
+unlockOrientation()
 ```
+
+### Parameters
+
+None.
 
 ### Return value
 
-성공적으로 unlocked 된 경우 `true` 를 반환하며, 만약 방향이 unlock 될 수 없다면 `false` 를 반환한다.
+Returns `true` if the orientation was successfully unlocked or
+`false` if the orientation couldn't be unlocked.
 
-## Example
+## Examples
 
 ```js
-if (window.screen.unlockOrientation()) {
+const unlockOrientation =
+  screen.unlockOrientation ||
+  screen.mozUnlockOrientation ||
+  screen.msUnlockOrientation ||
+  (screen.orientation && screen.orientation.unlock);
+
+if (unlockOrientation()) {
   // orientation was unlocked
 } else {
   // orientation unlock failed
 }
 ```
 
-## 명세서
+## Specifications
 
-{{Specifications}}
+This feature is not part of any specification. It is no longer on track to becoming a standard.
 
-## 브라우저 호환성
+Use {{domxref("ScreenOrientation.unlock()")}} instead.
+
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- {{domxref("window.screen.orientation")}}
-- {{domxref("window.screen.lockOrientation()")}}
-- {{domxref("window.screen.onorientationchange")}}
-- [Managing screen orientation](/ko/docs/Managing_screen_orientation)
+- {{DOMxRef("Screen.orientation")}}
+- {{DOMxRef("Screen.lockOrientation()")}}
+- {{DOMxRef("Screen.orientationchange_event", "orientationchange")}} event
+- [Managing screen orientation](/en-US/docs/Web/API/CSS_Object_Model/Managing_screen_orientation)

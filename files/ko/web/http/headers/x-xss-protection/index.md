@@ -1,11 +1,25 @@
 ---
 title: X-XSS-Protection
 slug: Web/HTTP/Headers/X-XSS-Protection
+page-type: http-header
+status:
+  - non-standard
+browser-compat: http.headers.X-XSS-Protection
 ---
 
-{{HTTPSidebar}}
+{{HTTPSidebar}}{{Non-standard_header}}
 
-HTTP **`X-XSS-Protection`**헤더는 Internet Explorer, Chrome 및 Safari에서 제공하는 기능으로서, ({{Glossary("XSS")}}) 공격을 감지 할 때 페이지 로드를 중지시킬 수 있습니다. 최신 브라우저에서는 Inline Javascript(`'unsafe-inline')`사용을 못하게 하는 CSP(Content-Security-Policy) 보호기능이 있으나, 해당 기능을 지원하지 않는 구형 웹브라우저에서 사용자를 보호 할수 있는 기능을 제공할 수 있습니다.
+The HTTP **`X-XSS-Protection`** response header is a feature of Internet Explorer, Chrome and Safari that stops pages from loading when they detect reflected cross-site scripting ({{Glossary("Cross-site_scripting", "XSS")}}) attacks. These protections are largely unnecessary in modern browsers when sites implement a strong {{HTTPHeader("Content-Security-Policy")}} that disables the use of inline JavaScript (`'unsafe-inline'`).
+
+> **Warning:** Even though this feature can protect users of older web browsers that don't yet support {{Glossary("CSP")}}, in some cases, **XSS protection can create XSS vulnerabilities** in otherwise safe websites. See the section below for more information.
+
+> **Note:**
+>
+> - Chrome has [removed their XSS Auditor](https://chromestatus.com/feature/5021976655560704)
+> - Firefox has not, and [will not implement `X-XSS-Protection`](https://bugzil.la/528661)
+> - Edge has [retired their XSS filter](https://blogs.windows.com/windows-insider/2018/07/25/announcing-windows-10-insider-preview-build-17723-and-build-18204/)
+>
+> This means that if you do not need to support legacy browsers, it is recommended that you use [`Content-Security-Policy`](/en-US/docs/Web/HTTP/Headers/Content-Security-Policy) without allowing `unsafe-inline` scripts instead.
 
 <table class="properties">
   <tbody>
@@ -20,9 +34,9 @@ HTTP **`X-XSS-Protection`**헤더는 Internet Explorer, Chrome 및 Safari에서 
   </tbody>
 </table>
 
-## 문법
+## Syntax
 
-```
+```http
 X-XSS-Protection: 0
 X-XSS-Protection: 1
 X-XSS-Protection: 1; mode=block
@@ -30,19 +44,39 @@ X-XSS-Protection: 1; report=<reporting-uri>
 ```
 
 - 0
-  - : XSS 필터링을 비활성화합니다.
+  - : Disables XSS filtering.
 - 1
-  - : XSS 필터링을 사용합니다 (일반적으로 브라우저의 기본값입니다). 사이트 내에서 스크립팅 공격이 감지되면 브라우저는 안전하지 않은 영역을 제거 후에 렌더링을 하게 됩니다.
+  - : Enables XSS filtering (usually default in browsers). If a cross-site scripting attack is detected, the browser will sanitize the page (remove the unsafe parts).
 - 1; mode=block
-  - : XSS 필터링을 사용합니다. 공격이 탐지되면 안전하지 않는 영역을 제거하는게 아니라, 페이지 렌더링을 중단합니다.
-- 1; report=\<reporting-URI> (Chromium에서만 사용 가능)
-  - : XSS 필터링을 사용합니다. XSS 공격을 탐지하면 브라우저는 페이지 렌더링을 차단하고 위반 사항을 보고합니다. 이것은 CSP {{CSP ( "report-uri")}} 지시문의 기능을 사용하여 보고서를 보냅니다.
+  - : Enables XSS filtering. Rather than sanitizing the page, the browser will prevent rendering of the page if an attack is detected.
+- 1; report=\<reporting-URI> (Chromium only)
+  - : Enables XSS filtering. If a cross-site scripting attack is detected, the browser will sanitize the page and report the violation. This uses the functionality of the CSP {{CSP("report-uri")}} directive to send a report.
 
-## 예제
+## Vulnerabilities caused by XSS filtering
 
-XSS 공격을 감지하면 페이지로드를 차단합니다.
+Consider the following excerpt of HTML code for a webpage:
 
-```bash
+```html
+<script>
+  var productionMode = true;
+</script>
+<!-- [...] -->
+<script>
+  if (!window.productionMode) {
+    // Some vulnerable debug code
+  }
+</script>
+```
+
+This code is completely safe if the browser doesn't perform XSS filtering. However, if it does and the search query is `?something=%3Cscript%3Evar%20productionMode%20%3D%20true%3B%3C%2Fscript%3E`, the browser might execute the scripts in the page ignoring `<script>var productionMode = true;</script>` (thinking the server included it in the response because it was in the URI), causing `window.productionMode` to be evaluated to `undefined` and executing the unsafe debug code.
+
+Setting the `X-XSS-Protection` header to either `0` or `1; mode=block` prevents vulnerabilities like the one described above. The former would make the browser run all scripts and the latter would prevent the page from being processed at all (though this approach might be vulnerable to [side-channel attacks](https://portswigger.net/research/abusing-chromes-xss-auditor-to-steal-tokens) if the website is embeddable in an `<iframe>`).
+
+## Example
+
+Block pages from loading when they detect reflected XSS attacks:
+
+```http
 X-XSS-Protection: 1; mode=block
 ```
 
@@ -54,7 +88,7 @@ header("X-XSS-Protection: 1; mode=block");
 
 Apache (.htaccess)
 
-```bash
+```
 <IfModule mod_headers.c>
   Header set X-XSS-Protection "1; mode=block"
 </IfModule>
@@ -62,21 +96,21 @@ Apache (.htaccess)
 
 Nginx
 
-```bash
+```
 add_header "X-XSS-Protection" "1; mode=block";
 ```
 
-## 명세서
+## Specifications
 
-{{Specifications}}
+Not part of any specifications or drafts.
 
-## 지원 브라우저
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
 - {{HTTPHeader("Content-Security-Policy")}}
-- [Controlling the XSS Filter – Microsoft](https://blogs.msdn.microsoft.com/ieinternals/2011/01/31/controlling-the-xss-filter/)
-- [Understanding XSS Auditor – Virtue Security](https://www.virtuesecurity.com/blog/understanding-xss-auditor/)
-- [The misunderstood X-XSS-Protection – blog.innerht.ml](http://blog.innerht.ml/the-misunderstood-x-xss-protection/)
+- [Controlling the XSS Filter – Microsoft](https://docs.microsoft.com/archive/blogs/ieinternals/controlling-the-xss-filter)
+- [Understanding XSS Auditor – Virtue Security](https://www.virtuesecurity.com/understanding-xss-auditor/)
+- [The misunderstood X-XSS-Protection – blog.innerht.ml](https://blog.innerht.ml/the-misunderstood-x-xss-protection/)

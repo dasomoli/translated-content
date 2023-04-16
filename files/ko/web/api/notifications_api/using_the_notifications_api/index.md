@@ -1,260 +1,253 @@
 ---
-title: 알림 API 사용하기
+title: Using the Notifications API
 slug: Web/API/Notifications_API/Using_the_Notifications_API
-original_slug: WebAPI/Using_Web_Notifications
+page-type: guide
+browser-compat: api.Notification
 ---
 
 {{APIRef("Web Notifications")}}{{AvailableInWorkers}}{{securecontext_header}}
 
-웹 페이지나 앱에서 [알림(Notifications) API](/ko/docs/Web/API/Notifications_API)를 사용하면 페이지 외부에 표시되는 알림을 보낼 수 있습니다. 이것은 시스템 레벨에서 처리되는 것으로 애플리케이션이 유휴 상태거나 백그라운드에 있더라도 웹 앱이 사용자에게 정보를 보낼 수 있습니다. 이 글에서는 여러분의 앱에서 이 API를 사용하기 위한 기초를 알아봅니다.
+The [Notifications API](/en-US/docs/Web/API/Notifications_API) lets a web page or app send notifications that are displayed outside the page at the system level; this lets web apps send information to a user even if the application is idle or in the background. This article looks at the basics of using this API in your own apps.
 
-일반적으로 시스템 알림은 운영 체계의 표준 알림 메커니즘을 말합니다. 예를 들어 일반적인 데스크톱 시스템이나 모바일 장치의 브로드캐스트 알림을 생각해봅시다.
+Typically, system notifications refer to the operating system's standard notification mechanism: think for example of how a typical desktop system or mobile device broadcasts notifications.
 
-![](android-notification.png)
+![Android device notifications feed containing a list of several alerts from multiple sources.](android-notification.png)
 
-물론 시스템 알림 시스템은 플랫폼 및 브라우저에 따라 다양하지만 괜찮습니다. 알림 API는 범용적으로 작성돼서 대부분의 시스템 알림 시스템과 호환됩니다.
+The system notification system will vary of course by platform and browser, but this is OK, and the Notifications API is written to be general enough for compatibility with most system notification systems.
 
-## 예시
+## Examples
 
-웹 알림의 대표적인 사용 사례는 웹 기반 메일이나 IRC 애플리케이션입니다. 새 메시지가 도착하면 사용자가 다른 애플리케이션으로 다른 일을 하더라도 사용자에게 알릴 필요가 있습니다. 요즘은 [Slack](https://slack.com/) 등 이러한 사례를 많이 찾아볼 수 있습니다.
+One of the most obvious use cases for web notifications is a web-based mail or IRC application that needs to notify the user when a new message is received, even if the user is doing something else with another application. Many examples of this now exist, such as [Slack](https://slack.com/).
 
-우리는 웹 알림을 사용하는 방법을 좀더 잘 알 수 있도록 실제적인 예시 — 할 일 목록 앱 —를 작성했습니다. 데이터는 로컬에서 [IndexedDB](/ko/docs/Web/API/IndexedDB_API)로 저장하고 사용자 알림은 할 일 기한이 됐을 때 시스템 알림을 사용합니다. [할 일 목록 코드를 다운로드하거나](https://github.com/mdn/dom-examples/tree/main/to-do-notifications), [앱의 라이브 실행을 보세요](https://mdn.github.io/dom-examples/to-do-notifications/).
+We've written a real-world example — a to-do list app — to give more of an idea of how web notifications can be used. It stores data locally using [IndexedDB](/en-US/docs/Web/API/IndexedDB_API) and notifies users when tasks are due using system notifications. [Download the To-do list code](https://github.com/mdn/dom-examples/tree/main/to-do-notifications), or [view the app running live](https://mdn.github.io/dom-examples/to-do-notifications/).
 
-## 권한 요청하기
+## Requesting permission
 
-앱이 알림을 보내려면 먼저 사용자가 애플리케이션에 해당 권한을 허용해줘야 합니다. 이는 API가 웹페이지 외부와 상호작용할 때 통상적인 요구 사항입니다. 최소 한번은 사용자가 해당 애플리케이션이 알림을 표시할 수 있는 권한을 허용해줄 필요가 있으며 이로써 사용자는 어떤 앱/사이트가 알림을 보일 수 있는지 제어할 수 있습니다.
+Before an app can send a notification, the user must grant the application the right to do so. This is a common requirement when an API tries to interact with something outside a web page — at least once, the user needs to specifically grant that application permission to present notifications, thereby letting the user control which apps/sites are allowed to display notifications.
 
-과거에 푸시 알림에 대한 악용 때문에 웹 브라우저와 개발자는 그런 문제를 완화할 수 있는 전략을 구현하게 되었습니다. 알림을 발생시키려면 사용자 제스처(예: 단추 클릭)에 대한 응답으로만 가능합니다. 이것은 모범적인 방식일 뿐 아니라 — 사용자에게 미동의 알림으로 스팸을 보내면 안됩니다 — 실제로도 전향적인 브라우저는 사용자 제스처에 대한 응답으로 촉발되지 않은 알림은 명시적으로 불허합니다. 파이어폭스는 이미 72 버전부터 이렇게 하고 있으며 사파리도 하고 있습니다.
+Because of abuses of push notifications in the past, web browsers and developers have begun to implement strategies to help mitigate this problem. You should only request consent to display notifications in response to a user gesture (e.g. clicking a button). This is not only best practice — you should not be spamming users with notifications they didn't agree to — but going forward browsers will explicitly disallow notification permission requests not triggered in response to a user gesture. Firefox is already doing this from version 72, for example, and Safari has done it for some time.
 
-또한 크롬과 파이어폭스에서는 사이트가 보안 콘텍스트(즉, HTTPS)가 아니면 알림을 아예 요청할 수 없으며 크로스 오리진 {{htmlelement("iframe")}}으로부터의 알림 권한은 요청할 수 없게 되었습니다.
+In addition, In Chrome and Firefox you cannot request notifications at all unless the site is a secure context (i.e. HTTPS), and you can no longer allow notification permissions to be requested from cross-origin {{htmlelement("iframe")}}s.
 
-### 현재 권한 상태 확인하기
+### Checking current permission status
 
-권한을 이미 가지고 있는지 확인하려면 {{domxref("Notification.permission")}} 읽기 전용 속성의 값을 확인하면 됩니다. 다음 세 가지 값이 있을 수 있습니다.
+You can check to see if you already have permission by checking the value of the {{domxref("Notification.permission")}} read only property. It can have one of three possible values:
 
 - `default`
-  - : 사용자에게 아직 권한을 요구하지 않았으며 따라서 알림을 표시하지 않습니다.
+  - : The user hasn't been asked for permission yet, so notifications won't be displayed.
 - `granted`
-  - : 사용자에게 알림 표시 권한을 요구했으며 사용자는 권한을 허용했습니다.
+  - : The user has granted permission to display notifications, after having been asked previously.
 - `denied`
-  - : 사용자가 명시적으로 알림 표시 권한을 거부했습니다.
+  - : The user has explicitly declined permission to show notifications.
 
-### 권한 획득하기
+### Getting permission
 
-아직 알림 표시 권한이 허용되지 않았다면 애플리케이션은 {{domxref("Notification.requestPermission()")}} 메서드를 사용하여 사용자에게 권한을 요청할 필요가 있습니다. 간단하게는 아래와 같이 넣습니다.
+If permission to display notifications hasn't been granted yet, the application needs to use the {{domxref("Notification.requestPermission()")}} method to request this from the user. In its simplest form, we just include the following:
 
 ```js
-Notification.requestPermission().then(function(result) {
+Notification.requestPermission().then((result) => {
   console.log(result);
 });
 ```
 
-여기서는 프로미스 방식의 메서드 버전을 사용합니다. 과거 버전을 지원하려면 아래와 같이 과거의 콜백 버전을 사용해야 할 수 있습니다.
+This uses the promise-based version of the method. If you want to support older versions, you might have to use the older callback version, which looks like this:
 
 ```js
 Notification.requestPermission();
 ```
 
-콜백 버전은 콜백 함수를 옵셔널하게 받을 수 있으며 사용자가 표시 권한 요청에 응답한 후에 호출됩니다.
+The callback version optionally accepts a callback function that is called once the user has responded to the request to display permissions.
 
-### 예시
+### Example
 
-우리가 만드는 할 일 데모에서는 "알림 허용" 단추를 둬서 누르면 앱의 알림 권한을 요청합니다.
+In our todo list demo, we include an "Enable notifications" button that, when pressed, requests notification permissions for the app.
 
 ```html
-<button id="enable">알림 허용</button>
+<button id="enable">Enable notifications</button>
 ```
 
-누르면 다음 `askNotificationPermission()` 함수를 호출합니다.
+Clicking this calls the `askNotificationPermission()` function:
 
 ```js
 function askNotificationPermission() {
-  // 권한을 실제로 요구하는 함수
+  // function to actually ask the permissions
   function handlePermission(permission) {
-    // 사용자의 응답에 관계 없이 크롬이 정보를 저장할 수 있도록 함
-    if(!('permission' in Notification)) {
-      Notification.permission = permission;
-    }
-
-    // 사용자 응답에 따라 단추를 보이거나 숨기도록 설정
-    if(Notification.permission === 'denied' || Notification.permission === 'default') {
-      notificationBtn.style.display = 'block';
-    } else {
-      notificationBtn.style.display = 'none';
-    }
+    // set the button to shown or hidden, depending on what the user answers
+    notificationBtn.style.display =
+      Notification.permission === "granted" ? "none" : "block";
   }
 
-  // 브라우저가 알림을 지원하는지 확인
-  if (!('Notification' in window)) {
-    console.log("이 브라우저는 알림을 지원하지 않습니다.");
+  // Let's check if the browser supports notifications
+  if (!("Notification" in window)) {
+    console.log("This browser does not support notifications.");
+  } else if (checkNotificationPromise()) {
+    Notification.requestPermission().then((permission) => {
+      handlePermission(permission);
+    });
   } else {
-    if(checkNotificationPromise()) {
-      Notification.requestPermission()
-      .then((permission) => {
-        handlePermission(permission);
-      })
-    } else {
-      Notification.requestPermission(function(permission) {
-        handlePermission(permission);
-      });
-    }
+    Notification.requestPermission((permission) => {
+      handlePermission(permission);
+    });
   }
 }
 ```
 
-두 번째 메인 블록을 먼저 보면 알림이 지원되는지 확인하는 것을 알 수 있습니다. 지원하는 경우 그에 따라 `Notification.requestPermission()`의 프로미스 기반 버전이 지원되는지 보는 확인을 실행합니다. 맞다면 프로미스 기반 버전을 실행하고(사파리 외에는 전부 지원됨) 아니라면 과거의 콜백 기반 버전을 실행합니다(사파리에서 지원).
+Looking at the second main block first, you'll see that we first check to see if Notifications are supported. If they are, we then run a check to see whether the promise-based version of `Notification.requestPermission()` is supported. If it is, we run the promise-based version (supported everywhere except Safari), and if not, we run the older callback-based version (which is supported in Safari).
 
-코드 중복을 피하기 위해 뒷 처리 수행 코드를 `handlePermission()` 함수에 넣었는데 이 함수가 코드에서 첫 번째 메인 블록입니다. 그 안에서는 `Notification.permission` 값을 명시적으로 설정하고(크롬의 일부 과거 버전에서는 이게 자동으로 안됩니다) 사용자가 권한 대화창에서 선택한 결과에 따라 단추를 보이거나 숨깁니다. 권한이 이미 허용됐는지 보여주려는 것은 아니고 사용자가 권한을 거부한 경우 나중에 다시 선택할 수 있도록 해주는 것입니다.
+To avoid duplicating code, we have stored a few bits of housekeeping code inside the `handlePermission()` function, which is the first main block inside this snippet. Inside here we explicitly set the `Notification.permission` value (some old versions of Chrome failed to do this automatically), and show or hide the button depending on what the user chose in the permission dialog. We don't want to show it if permission has already been granted, but if the user chose to deny permission, we want to give them the chance to change their mind later on.
 
-**참고:** 크롬 37 버전 전에는 `load` 이벤트 핸들러에서 {{domxref("Notification.requestPermission()")}}을 호출할 수 없었습니다([이슈 274284](https://code.google.com/p/chromium/issues/detail?id=274284) 참고).
+> **Note:** Before version 37, Chrome doesn't let you call {{domxref("Notification.requestPermission()")}} in the `load` event handler (see [issue 274284](https://crbug.com/274284)).
 
-### requestPermission() 프로미스 기능 알아내기
+### Feature-detecting the requestPermission() promise
 
-위에서 우리는 브라우저가 `Notification.requestPermission()`의 프로미스 버전을 지원하는지 확인해야 한다고 했습니다. 아래와 같이 했습니다.
+Above we said that we had to check whether the browser supports the promise version of `Notification.requestPermission()`. We did this using the following:
 
 ```js
 function checkNotificationPromise() {
-    try {
-      Notification.requestPermission().then();
-    } catch(e) {
-      return false;
-    }
-
-    return true;
+  try {
+    Notification.requestPermission().then();
+  } catch (e) {
+    return false;
   }
+
+  return true;
+}
 ```
 
-기본적으로 `requestPermission()`에 `.then()` 메서드가 있는지 알아보는 것입니다. 맞다면 계속 진행하고 `true`를 반환합니다. 실패라면 `catch() {}` 블록에서 `false`를 반환합니다.
+We basically try to see if the `.then()` method is available on `requestPermission()`. If so, we move on and return `true`. If it fails, we return `false` in the `catch() {}` block.
 
-## 알림 만들기
+## Creating a notification
 
-알림 만들기는 쉬워서 {{domxref("Notification")}} 생성자만 사용하면 됩니다. 이 생성자는 알림에 표시할 제목과 {{domxref("Notification.icon","icon")}}이나 텍스트 {{domxref("Notification.body","body")}} 같은 알림 조작 옵션 몇 가지를 받도록 돼 있습니다.
+Creating a notification is easy; just use the {{domxref("Notification")}} constructor. This constructor expects a title to display within the notification and some options to enhance the notification such as an {{domxref("Notification.icon","icon")}} or a text {{domxref("Notification.body","body")}}.
 
-예를 들어 할일 목록 예시에서 아래 코드로 필요시 알림을 만듭니다(`createNotification()` 함수에서 찾을 수 있음).
+For example, in the to-do-list example we use the following snippet to create a notification when required (found inside the `createNotification()` function):
 
 ```js
-var img = '/to-do-notifications/img/icon-128.png';
-var text = '아! "' + title + '" 작업 기한이 만료됐습니다.';
-var notification = new Notification('할 일 목록', { body: text, icon: img });
+const img = "/to-do-notifications/img/icon-128.png";
+const text = `HEY! Your task "${title}" is now overdue.`;
+const notification = new Notification("To do list", { body: text, icon: img });
 ```
 
-## 알림 닫기
+## Closing notifications
 
-파이어폭스와 사파리는 알림을 자동으로 금방(약 4초) 닫습니다. 이것은 운영 체계 수준에서도 발생합니다. 그런데 크롬 같은 다른 브라우저는 그렇지 않습니다. 모든 브라우저에서 알림이 닫히게 하려면 {{domxref("WindowTimers.setTimeout","setTimeout()")}} 함수에서 {{domxref("Notification.close")}} 함수를 호출하여 알림을 4초 후에 닫으면 됩니다. [`bind()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Function/bind)를 사용하여 `close()` 호출이 알림에 연동되게 하는 것도 해줘야 합니다.
+Use {{domxref("Notification.close","close()")}} to remove a notification that is no longer relevant to the user (e.g. the user already read the notification on the webpage, in the case of a messaging app, or the following song is already playing in a music app to notifies upon song changes). Most modern browsers dismiss notifications automatically after a few moments (around four seconds) but this isn't something you should generally be concerned about as it's up to the user and user agent. The dismissal may also happen at the operating system level and users should remain in control of this. Old versions of Chrome didn't remove notifications automatically so you can do so after a {{domxref("setTimeout()")}} only for those legacy versions in order to not remove notifications from notification trays on other browsers.
 
 ```js
-setTimeout(notification.close.bind(notification), 4000);
+const n = new Notification("My Great Song");
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") {
+    // The tab has become visible so clear the now-stale Notification.
+    n.close();
+  }
+});
 ```
 
-> **참고:** "close" 이벤트를 받았을 때 알림을 닫은 것이 사용자인지는 보장할 수 없습니다. 이것은 규격과도 일치합니다. 규격에서는 "알림이 닫힐 때 그것이 기반 알림 플랫폼에 의한 것이든지 사용자에 의한 것이든지 닫기 절차가 실행돼야 한다."고 기술하고 있습니다.
+> **Note:** This API shouldn't be used just to have the notification removed from the screen after a fixed delay (on modern browsers) since this method will also remove the notification from any notification tray, preventing users from interacting with it after it was initially shown.
 
-## 알림 이벤트
+> **Note:** When you receive a "close" event, there is no guarantee that it's the user who closed the notification. This is in line with the specification, which states: "When a notification is closed, either by the underlying notifications platform or by the user, the close steps for it must be run."
 
-{{domxref("Notification")}} 인스턴스에 촉발되는 이벤트는 다음 네 가지입니다.
+## Notification events
+
+There are four events that are triggered on the {{domxref("Notification")}} instance:
 
 - `click`
-  - : 사용자가 알림을 클릭하면 촉발됩니다.
+  - : Triggered when the user clicks on the notification.
 - `close`
-  - : 알림이 닫힌 후 촉발됩니다.
+  - : Triggered once the notification is closed.
 - `error`
-  - : 알림에 문제가 있을 경우 촉발되며 대개 어떤 이유에 의해 알림을 표시할 수 없는 경우입니다.
+  - : Triggered if something goes wrong with the notification; this is usually because the notification couldn't be displayed for some reason.
 - `show`
-  - : 알림이 사용자에게 표시되면 촉발됩니다.
+  - : Triggered when the notification is displayed to the user.
 
-이 이벤트들은 {{domxref("Notification.onclick","onclick")}}, {{domxref("Notification.onclose","onclose")}}, {{domxref("Notification.onerror","onerror")}}, {{domxref("Notification.onshow","onshow")}} 핸들러로 추적할 수 있습니다. {{domxref("Notification")}}이 {{domxref("EventTarget")}}을 상속하기 때문에 {{domxref("EventTarget.addEventListener","addEventListener()")}} 메서드를 사용할 수 있습니다.
+These events can be tracked using the {{domxref("Notification.click_event","onclick")}}, {{domxref("Notification.close_event","onclose")}}, {{domxref("Notification.error_event","onerror")}}, and {{domxref("Notification.show_event","onshow")}} handlers. Because {{domxref("Notification")}} also inherits from {{domxref("EventTarget")}}, it's possible to use the {{domxref("EventTarget.addEventListener","addEventListener()")}} method on it.
 
-## 기존 알림 대체하기
+## Replacing existing notifications
 
-사용자가 잠깐 사이에 알림을 많이 받는 것은 바람직하지 않습니다. 예를 들어 메신저 애플리케이션이 모든 수신 메시지를 사용자에게 알리는데 그게 아주 많다면요? 사용자가 알림 때문에 대량 스팸을 받지 않도록 알림 대기열(큐)을 수정해서 걸려 있는 알림 하나나 여럿을 새로운 알림 하나로 대체할 수 있습니다.
+It is usually undesirable for a user to receive a lot of notifications in a short space of time — for example, what if a messenger application notified a user for each incoming message, and they were being sent a lot? To avoid spamming the user with too many notifications, it's possible to modify the pending notifications queue, replacing single or multiple pending notifications with a new one.
 
-이를 위해 새 알림에 태그를 붙일 수 있습니다. 알림에 이미 같은 태그가 있고 표시되지 않았다면 새 알림으로 이전 알림을 대체하는 것입니다. 같은 태그의 알림이 이미 표시됐다면 이전 알림을 닫고 새 알림을 표시합니다.
+To do this, it's possible to add a tag to any new notification. If a notification already has the same tag and has not been displayed yet, the new notification replaces that previous notification. If the notification with the same tag has already been displayed, the previous notification is closed and the new one is displayed.
 
-### 태그 예시
+### Tag example
 
-다음과 같은 간단한 HTML을 봅시다.
+Assume the following basic HTML:
 
 ```html
-<button>알림 실행!</button>
+<button>Notify me!</button>
 ```
 
-다수의 알림을 아래 방법으로 처리할 수 있습니다.
+It's possible to handle multiple notifications this way:
 
 ```js
-window.addEventListener('load', function () {
-  // 처음에는 알림 권한이 있는지 확인함
-  // 없으면 권한 요구
-  if (Notification && Notification.permission !== "granted") {
-    Notification.requestPermission(function (status) {
-      if (Notification.permission !== status) {
-        Notification.permission = status;
-      }
-    });
+window.addEventListener("load", () => {
+  const button = document.querySelector("button");
+
+  if (window.self !== window.top) {
+    // Ensure that if our document is in a frame, we get the user
+    // to first open it in its own tab or window. Otherwise, it
+    // won't be able to request permission to send notifications.
+    button.textContent = "View live result of the example code above";
+    button.addEventListener("click", () => window.open(location.href));
+    return;
   }
 
-  var button = document.getElementsByTagName('button')[0];
-
-  button.addEventListener('click', function () {
-    // 사용자가 알림을 받는 데 동의한 경우
-    // 알림 10개를 보내본다
-    if (Notification && Notification.permission === "granted") {
-      var i = 0;
-      // 어떤 브라우저(파이어폭스 등)는 일정 시간 동안 알림이 너무 많은 경우 차단하기 때문에 인터벌 사용.
-      var interval = window.setInterval(function () {
-        // 태그 덕분에 "안녕! 9" 알림만 보여야 함
-        var n = new Notification("안녕! " + i, {tag: '알림너무많음'});
-        if (i++ == 9) {
-          window.clearInterval(interval);
+  button.addEventListener("click", () => {
+    if (Notification?.permission === "granted") {
+      // If the user agreed to get notified
+      // Let's try to send ten notifications
+      let i = 0;
+      // Using an interval cause some browsers (including Firefox) are blocking notifications if there are too much in a certain time.
+      const interval = setInterval(() => {
+        // Thanks to the tag, we should only see the "Hi! 9" notification
+        const n = new Notification(`Hi! ${i}`, { tag: "soManyNotification" });
+        if (i === 9) {
+          clearInterval(interval);
         }
+        i++;
       }, 200);
-    }
-
-    // 사용자가 알림을 받을지 말지 답하지 않은 경우
-    // 참고: 크롬 때문에 권한 속성이 설정됐는지 알 수 없으므로
-    // "기본" 값을 확인하는 것은 안전하지 않음
-    else if (Notification && Notification.permission !== "denied") {
-      Notification.requestPermission(function (status) {
-        // 사용자가 ok한 경우
+    } else if (Notification && Notification.permission !== "denied") {
+      // If the user hasn't told if they want to be notified or not
+      // Note: because of Chrome, we are not sure the permission property
+      // is set, therefore it's unsafe to check for the "default" value.
+      Notification.requestPermission((status) => {
+        // If the user said okay
         if (status === "granted") {
-          var i = 0;
-          // 어떤 브라우저(파이어폭스 등)는 일정 시간 동안 알림이 너무 많은 경우 차단하기 때문에 인터벌 사용.
-          var interval = window.setInterval(function () {
-            // 태그 덕분에 "안녕! 9" 알림만 보여야 함
-            var n = new Notification("안녕! " + i, {tag: '알림너무많음'});
-            if (i++ == 9) {
-              window.clearInterval(interval);
+          let i = 0;
+          // Using an interval cause some browsers (including Firefox) are blocking notifications if there are too much in a certain time.
+          const interval = setInterval(() => {
+            // Thanks to the tag, we should only see the "Hi! 9" notification
+            const n = new Notification(`Hi! ${i}`, {
+              tag: "soManyNotification",
+            });
+            if (i === 9) {
+              clearInterval(interval);
             }
+            i++;
           }, 200);
-        }
-
-        // 그 외의 경우 일반적인 모달 alert로 폴백
-        else {
-          alert("안녕!");
+        } else {
+          // Otherwise, we can fallback to a regular modal alert
+          alert("Hi!");
         }
       });
-    }
-
-    // 사용자가 알림을 거부한 경우
-    else {
-      // 일반적인 모달 alert로 폴백
-      alert("안녕!");
+    } else {
+      // If the user refuses to get notified, we can fallback to a regular modal alert
+      alert("Hi!");
     }
   });
 });
 ```
 
-라이브 결과는 아래에서 보세요.
+### Result
 
 {{ EmbedLiveSample('Tag_example', '100%', 30) }}
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참고
+## See also
 
-- [사용자 알림 편람](/ko/Apps/Build/User_notifications)
 - {{ domxref("Notification") }}

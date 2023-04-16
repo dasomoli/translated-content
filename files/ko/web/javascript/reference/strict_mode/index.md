@@ -1,276 +1,334 @@
 ---
 title: Strict mode
 slug: Web/JavaScript/Reference/Strict_mode
+page-type: guide
+spec-urls: https://tc39.es/ecma262/multipage/strict-mode-of-ecmascript.html
 ---
 
 {{JsSidebar("More")}}
 
-> **Callout:** 가끔 엄격하지 않은 기본값을 " **[느슨한 모드](/ko/docs/Glossary/Sloppy_mode)**(sloppy mode)"라고 부르기도 합니다. 공식적인 용어는 아니지만 혹시 모르니 알아두세요.
+> **Note:** Sometimes you'll see the default, non-strict mode referred to as _[sloppy mode](/en-US/docs/Glossary/Sloppy_mode)_. This isn't an official term, but be aware of it, just in case.
 
-[ECMAScript 5](http://www.ecma-international.org/publications/standards/Ecma-262.htm) 에서 소개된 JavaScript 의 엄격모드는 JavaScript 의 제한된 버전을 선택하여 암묵적인 "**[느슨한 모드](/ko/docs/Glossary/Sloppy_mode)**(sloppy mode)" 를 해제하기 위한 방법입니다. 엄격 모드는 단지 부분적인 것이 아니며, 이것은 _고의적으로_ 일반 코드와 다른 시멘틱을 가지고 있습니다. 엄격모드를 지원하지 않는 브라우저에서는 엄격 모드의 코드가 다른 방식으로 동작할 것입니다, 그 때문에 엄격 모드가 적절하게 적용된 피쳐 테스트 없이 엄격 모드에 의존하면 안됩니다. 엄격 모드의 코드와 비-엄격 모드의 코드는 공존할 수 있으며, 때문에 스크립트의 엄격 모드를 취사 선택하는 것이 점진적으로 가능하게 되었습니다.
+JavaScript's strict mode is a way to _opt in_ to a restricted variant of JavaScript, thereby implicitly opting-out of "[sloppy mode](/en-US/docs/Glossary/Sloppy_mode)". Strict mode isn't just a subset: it _intentionally_ has different semantics from normal code. Browsers not supporting strict mode will run strict mode code with different behavior from browsers that do, so don't rely on strict mode without feature-testing for support for the relevant aspects of strict mode. Strict mode code and non-strict mode code can coexist, so scripts can opt into strict mode incrementally.
 
-엄격 모드는 평범한 JavaScript 시멘틱스에 몇가지 변경이 일어나게 합니다.
+Strict mode makes several changes to normal JavaScript semantics:
 
-1. 기존에는 조용히 무시되던 에러들을 throwing합니다.
-2. JavaScript 엔진의 최적화 작업을 어렵게 만드는 실수들을 바로잡습니다. 가끔씩 엄격 모드의 코드는 비-엄격 모드의 동일한 코드보다 더 빨리 작동하도록 만들어집니다.
-3. 엄격 모드는 ECMAScript의 차기 버전들에서 정의 될 문법을 금지합니다.
+1. Eliminates some JavaScript silent errors by changing them to throw errors.
+2. Fixes mistakes that make it difficult for JavaScript engines to perform optimizations: strict mode code can sometimes be made to run faster than identical code that's not strict mode.
+3. Prohibits some syntax likely to be defined in future versions of ECMAScript.
 
-코드를 JavaScript의 변형이 제한된 환경에서 동작하도록 하고 싶다면, 엄격 모드로의 변환([transitioning to strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode/Transitioning_to_strict_mode))을 참고하세요.
+## Invoking strict mode
 
-## 엄격모드 적용하기
+Strict mode applies to _entire scripts_ or to _individual functions_. It doesn't apply to [block statements](/en-US/docs/Web/JavaScript/Reference/Statements/block) enclosed in `{}` braces; attempting to apply it to such contexts does nothing. [`eval`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval) code, [`Function`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/Function) code, [event handler](/en-US/docs/Web/HTML/Attributes#event_handler_attributes) attributes, strings passed to [`setTimeout()`](/en-US/docs/Web/API/setTimeout), and related functions are either function bodies or entire scripts, and invoking strict mode in them works as expected.
 
-엄격모드는 _전체 스크립트_ 또는 *부분 함수*에 적용가능합니다. 단, `{}` 괄호로 묶여진 블럭문에는 적용되지 않습니다. 컨텍스트와 같은곳에 적용을 시도하면 동작하지 않습니다. `eval` 코드, `Function` 코드, 이벤트 핸들러 속성, {{domxref("WindowTimers.setTimeout()")}} 과 연관된 함수들에 전달된 문자열이 전체 스크립트이며 여기에서 엄격모드가 예상대로 동작합니다.
+### Strict mode for scripts
 
-### 스크립트 엄격 모드
-
-엄격모드를 전체 스크립트에 적용하기 위해, 정확한 구문 `"use strict";`(또는 `'use strict';`) 을 다른 구문 작성 전에 삽입합니다.
+To invoke strict mode for an entire script, put the _exact_ statement `"use strict";` (or `'use strict';`) before any other statements.
 
 ```js
-// 전체 스크립트 엄격 모드 구문
-'use strict';
-var v = "Hi!  I'm a strict mode script!";
-```
-
-이 구문은 이미 [유명한 웹사이트](https://bugzilla.mozilla.org/show_bug.cgi?id=627531)에서 [문제를 일으킨 전적](https://bugzilla.mozilla.org/show_bug.cgi?id=579119)이 있습니다. 상충되지 않는 스크립트들 끼리 맹목적인 연결이 불가능하기 때문입니다. 엄격 모드의 스크립트와 비-엄격 모드의 스크립트의 연결은 심사숙고 하시기를 바랍니다. 이렇게 되면 전체 연결은 엄격으로 보입니다! 엄격 모드에 다른 엄격모드 들을 결합하는 것은 괜찮습니다. 그리고, 비-엄격 스크립트 사이의 결합도 괜찮습니다. 분명한건, 스크립트를 결합하는 것이 절대 이상적인 것이 아니라는 것이지만, 그래야 한다면 함수를 기준으로 엄격모드 사용을 고려하시기 바랍니다.
-
-또한 함수 내부의 전체 스크립트 내용에 접근할 수 있으며, 엄격모드를 사용하는 외부 함수를 가질 수 있습니다. 이는 결합 문제를 없애주기도 하지만, 이것이 스코프 바깥에 위치한 어떤 전역 변수든 확실하게 밖으로 추출할 수 있음을 의미합니다 .
-
-### 함수에 strict mode 적용
-
-마찬가지로, 함수에 strict mode를 적용하기 위해, 함수 본문 처음에 다음의 구문을 넣습니다. `"use strict";` (또는 `'use strict';`).
-
-```js
-function strict() {
-  // 함수-레벨 strict mode 문법
-  'use strict';
-  function nested() { return "And so am I!"; }
-  return "Hi!  I'm a strict mode function!  " + nested();
-}
-function notStrict() { return "I'm not strict."; }
-```
-
-### 모듈에 strict mode 적용
-
-ECMAScript 2015 는 [JavaScript 모듈](/en-US/docs/Web/JavaScript/Reference/Statements/export)을 소개했습니다. 따라서, 이는 엄격 모드를 적용할 수 있는 3번 째 방법입니다. JavaScript 모듈의 전체 컨텐츠는 엄격 모드 시작을 위한 구문 없이도 자동으로 엄격모드입니다.
-
-```js
-    function strict() {
-        // 모듈이기때문에 기본적으로 엄격합니다
-    }
-    export default strict;
-```
-
-## 엄격한 모드 변경
-
-엄격한 모드는 구문과 런타임 동작을 모두 변경합니다.
-일반적으로 이러한 유형의 변화가 발생합니다: 변환 실수를 오류로 해석하거나(문법 오류 또는 런타임에 오류 발생), 특정 이름의 특정 용도에 대한 특정 변수를 계산하는 방법을 단순화하며, `eval` 과 `arguments` 를 단순화하고,"안전한 "자바 스크립트를 작성하도록 돕고, 미래 ECMAScript의 진화에 대비합니다.
-
-### 실수를 에러로 바꾸는 것
-
-엄격한 모드는 일부 이전에 허용되었던 실수를 오류로 바꿔 놓습니다. 자바 스크립트는 초보 개발자에게 쉬운 것이 되도록 설계되었으며, 때로는 오류를 일으킬만한 동작을 에러없이 시행합니다. 때때로 이것은 즉각적인 문제를 해결하지만, 때때로 이것은 더 심각한 문제를 만들어 냅니다. 엄격한 모드는 이러한 실수를 오류로 처리해서 그것을 발견하고 즉시 고칠 수 있도록 합니다.
-
-첫째로, 엄격모드는 실수로 글로벌 변수를 생성하는 것을 불가능하게 만듭니다. 일반적인 JavaScript에서 변수를 잘못 입력하면 전역 객체에 대한 새 속성이 만들어지고 그대로 "동작" (미래의 오류가 발생할 수 있음: modern 자바 스크립트처럼) 합니다. 전역 변수를 생성하는 할당은 엄격 모드에선 오류를 발생시킵니다.
-
-```js
+// Whole-script strict mode syntax
 "use strict";
-                       // 전역 변수 mistypedVariable 이 존재한다고 가정
-mistypedVaraible = 17; // 변수의 오타때문에 이 라인에서 ReferenceError 를 발생시킴
+const v = "Hi! I'm a strict mode script!";
 ```
 
-둘째로, 엄격모드는 예외를 발생시키는 실패를 조용히 넘어가는 대신 작업을 만듭니다. 예를 들어, `NaN` 은 쓸 수 없는 전역 변수입니다. `NaN` 에 할당하는 일반적인 코드는 아무 것도 하지 않습니다. 개발자도 아무런 실패 피드백을 받지 않습니다. 엄격 모드에서 `NaN` 에 할당하는 것은 예외를 발생시킵니다. 일반 코드에서 조용히 넘어가는 모든 실패에 대해 (쓸 수 없는 전역 또는 프로퍼티에 할당, getter-only 프로퍼티에 할당, [확장 불가](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/preventExtensions) 객체에 새 프로퍼티 할당) 엄격 모드에서는 예외를 발생시킵니다.
+### Strict mode for functions
+
+Likewise, to invoke strict mode for a function, put the _exact_ statement `"use strict";` (or `'use strict';`) in the function's body before any other statements.
 
 ```js
-"use strict";
-
-// 쓸 수 없는 프로퍼티에 할당
-var undefined = 5; // TypeError 발생
-var Infinity = 5; // TypeError 발생
-
-// 쓸 수 없는 프로퍼티에 할당
-var obj1 = {};
-Object.defineProperty(obj1, "x", { value: 42, writable: false });
-obj1.x = 9; // TypeError 발생
-
-// getter-only 프로퍼티에 할당
-var obj2 = { get x() { return 17; } };
-obj2.x = 5; // TypeError 발생
-
-// 확장 불가 객체에 새 프로퍼티 할당
-var fixed = {};
-Object.preventExtensions(fixed);
-fixed.newProp = "ohai"; // TypeError 발생
-```
-
-셋째로, 엄격 모드는 삭제할 수 없는 프로퍼티를 삭제하려할 때 예외를 발생시킵니다(시도가 어떤 효과도 없을 때).
-
-```js
-"use strict";
-delete Object.prototype; // TypeError 발생
-```
-
-넷째로, Gecko 34 이전의 엄격모드는 객체 리터럴의 모든 프로퍼티의 이름이 유니크해도록 요구합니다. 일반 코드는 프로퍼티의 값이 나중에 정해진 프로퍼티 이름으로 중복할 것입니다. 하지만 마지막 인스턴스 만 변경했기 때문에 코드를 수정하여 마지막 인스턴스를 변경하는 것 이외의 속성 값을 변경하면 복제는 버그의 벡터가됩니다. 엄격모드에서는 프로퍼티 이름을 중복하는 것은 구문 에러입니다.
-
-> **Note:** ECMAScript 2015부터는 에러가 아닙니다. ([Firefox bug 1041128](https://bugzil.la/1041128)).
-
-```js
-"use strict";
-var o = { p: 1, p: 2 }; // !!! 구문 에러
-```
-
-다섯째로, 엄격모드는 유니크한 함수 파라미터 이름을 요구합니다. 일반 코드에서는 마지막으로 중복된 인수가 이전에 지정된 인수를 숨깁니다. 이러한 이전의 인수들은 `arguments[i]` 를 통해 여전히 남아 있을 수 있으므로, 완전히 접근 불가한 것이 아닙니다. 여전히, 이런 숨김 처리는 이치에 맞지 않으며 원했던 것이 아닐 수 있습니다(예를 들면 오타를 숨길 수도 있습니다). 따라서 엄격 모드에서는 중복 인수명은 구문 에러입니다.
-
-```js
-function sum(a, a, c){ // !!! 구문 에러
+function myStrictFunction() {
+  // Function-level strict mode syntax
   "use strict";
-  return a + b + c; // 코드가 실행되면 잘못된 것임
+  function nested() {
+    return "And so am I!";
+  }
+  return `Hi! I'm a strict mode function! ${nested()}`;
+}
+function myNotStrictFunction() {
+  return "I'm not strict.";
 }
 ```
 
-여섯째로, ECMAScript 5 에서의 엄격 모드는 8진 구문을 금지합니다. 8진 구문은 ES5의 문법이 아니지만, 모든 브라우저에서 앞에 0을 붙여 지원됩니다(`0644 === 420` 와 `"\045" === "%"`). ECMAScript 2015 에서는 접두사 "`0o`"를 붙여 8진수를 지원합니다.
+The `"use strict"` directive can only be applied to the body of functions with simple parameters. Using `"use strict"` in functions with [rest](/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters), [default](/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters), or [destructured](/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) parameters is a [syntax error](/en-US/docs/Web/JavaScript/Reference/Errors/Strict_non_simple_params).
 
-```js
-var a = 0o10; // ES6: 8진수
+```js example-bad
+function sum(a = 1, b = 2) {
+  // SyntaxError: "use strict" not allowed in function with default parameter
+  "use strict";
+  return a + b;
+}
 ```
 
-초보 개발자들은 가끔 앞에 붙은 0 이 무의미하다고 생각하여, 이를 정렬용으로 사용합니다 — 하지만 이는 숫자의 의미를 바꿔버립니다! 이 8진수 문법은 거의 무용하며 잘못 사용될 수 있으므로 엄격모드에서 이 구문은 에러입니다.
+### Strict mode for modules
+
+The entire contents of [JavaScript modules](/en-US/docs/Web/JavaScript/Guide/Modules) are automatically in strict mode, with no statement needed to initiate it.
+
+```js
+function myStrictFunction() {
+  // because this is a module, I'm strict by default
+}
+export default myStrictFunction;
+```
+
+### Strict mode for classes
+
+All parts of a [class](/en-US/docs/Web/JavaScript/Reference/Classes)'s body are strict mode code, including both [class declarations](/en-US/docs/Web/JavaScript/Reference/Statements/class) and [class expressions](/en-US/docs/Web/JavaScript/Reference/Operators/class).
+
+```js
+class C1 {
+  // All code here is evaluated in strict mode
+  test() {
+    delete Object.prototype;
+  }
+}
+new C1().test(); // TypeError, because test() is in strict mode
+
+const C2 = class {
+  // All code here is evaluated in strict mode
+};
+
+// Code here may not be in strict mode
+delete Object.prototype; // Will not throw error
+```
+
+## Changes in strict mode
+
+Strict mode changes both syntax and runtime behavior. Changes generally fall into these categories:
+
+- changes converting mistakes into errors (as syntax errors or at runtime)
+- changes simplifying how variable references are resolved
+- changes simplifying `eval` and `arguments`
+- changes making it easier to write "secure" JavaScript
+- changes anticipating future ECMAScript evolution.
+
+### Converting mistakes into errors
+
+Strict mode changes some previously-accepted mistakes into errors. JavaScript was designed to be easy for novice developers, and sometimes it gives operations which should be errors non-error semantics. Sometimes this fixes the immediate problem, but sometimes this creates worse problems in the future. Strict mode treats these mistakes as errors so that they're discovered and promptly fixed.
+
+#### Assigning to undeclared variables
+
+Strict mode makes it impossible to accidentally create global variables. In sloppy mode, mistyping a variable in an assignment creates a new property on the global object and continues to "work". Assignments which would accidentally create global variables throw an error in strict mode:
 
 ```js
 "use strict";
-var sum = 015 + // !!! 구문 에러
-          197 +
-          142;
+let mistypeVariable;
+
+// Assuming no global variable mistypeVarible exists
+// this line throws a ReferenceError due to the
+// misspelling of "mistypeVariable" (lack of an "a")
+mistypeVarible = 17;
 ```
 
-일곱째로, ECMAScript 6 의 엄격모드는 {{Glossary("primitive")}} 값에 프로퍼티를 설정하는 것을 금지합니다. 엄격모드가 아닐 때에는 프로퍼티 설정이 간단하게 무시되지만(no-op), 엄격모드에서는 {{jsxref("TypeError")}} 를 발생시킵니다.
+#### Failing to assign to object properties
+
+Strict mode makes assignments which would otherwise silently fail to throw an exception. There are three ways to fail a property assignment:
+
+- assignment to a non-writable data property
+- assignment to a getter-only accessor property
+- assignment to a new property on a [non-extensible](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/isExtensible) object
+
+For example, [`NaN`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN) is a non-writable global variable. In sloppy mode, assigning to `NaN` does nothing; the developer receives no failure feedback. In strict mode, assigning to `NaN` throws an exception.
 
 ```js
-(function() {
 "use strict";
 
-false.true = "";         // TypeError
-(14).sailing = "home";   // TypeError
+// Assignment to a non-writable global
+undefined = 5; // TypeError
+Infinity = 5; // TypeError
+
+// Assignment to a non-writable property
+const obj1 = {};
+Object.defineProperty(obj1, "x", { value: 42, writable: false });
+obj1.x = 9; // TypeError
+
+// Assignment to a getter-only property
+const obj2 = {
+  get x() {
+    return 17;
+  },
+};
+obj2.x = 5; // TypeError
+
+// Assignment to a new property on a non-extensible object
+const fixed = {};
+Object.preventExtensions(fixed);
+fixed.newProp = "ohai"; // TypeError
+```
+
+#### Failing to delete object properties
+
+Attempts to [delete](/en-US/docs/Web/JavaScript/Reference/Operators/delete) a non-configurable or otherwise undeletable (e.g. it's intercepted by a proxy's [`deleteProperty`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/deleteProperty) handler which returns `false`) property throw in strict mode (where before the attempt would have no effect):
+
+```js
+"use strict";
+delete Object.prototype; // TypeError
+delete [].length; // TypeError
+```
+
+Strict mode also forbids deleting plain names. `delete name` in strict mode is a syntax error:
+
+```js example-bad
+"use strict";
+
+var x;
+delete x; // syntax error
+```
+
+If the name is a configurable global property, prefix it with [`globalThis`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis) to delete it.
+
+```js example-good
+"use strict";
+
+delete globalThis.x;
+```
+
+#### Duplicate parameter names
+
+Strict mode requires that function parameter names be unique. In sloppy mode, the last duplicated argument hides previous identically-named arguments. Those previous arguments remain available through [`arguments`](/en-US/docs/Web/JavaScript/Reference/Functions/arguments), so they're not completely inaccessible. Still, this hiding makes little sense and is probably undesirable (it might hide a typo, for example), so in strict mode, duplicate argument names are a syntax error:
+
+```js example-bad
+function sum(a, a, c) {
+  // syntax error
+  "use strict";
+  return a + a + c; // wrong if this code ran
+}
+```
+
+#### Legacy octal literals
+
+Strict mode [forbids a `0`-prefixed octal literal or octal escape sequence](/en-US/docs/Web/JavaScript/Reference/Errors/Deprecated_octal). In sloppy mode, a number beginning with a `0`, such as `0644`, is interpreted as an octal number (`0644 === 420`), if all digits are smaller than 8. Novice developers sometimes believe a leading-zero prefix has no semantic meaning, so they might use it as an alignment device — but this changes the number's meaning! A leading-zero syntax for the octal is rarely useful and can be mistakenly used, so strict mode makes it a syntax error:
+
+```js example-bad
+"use strict";
+const sum =
+  015 + // syntax error
+  197 +
+  142;
+```
+
+The standardized way to denote octal literals is via the `0o` prefix. For example:
+
+```js example-good
+const sumWithOctal = 0o10 + 8;
+console.log(sumWithOctal); // 16
+```
+
+Octal escape sequences, such as `"\45"`, which is equal to `"%"`, can be used to represent characters by extended-ASCII character code numbers in octal. In strict mode, this is a syntax error. More formally, it's disallowed to have `\` followed by any decimal digit other than `0`, or `\0` followed by a decimal digit; for example `\9` and `\07`.
+
+#### Setting properties on primitive values
+
+Strict mode forbids setting properties on [primitive](/en-US/docs/Glossary/Primitive) values. Accessing a property on a primitive implicitly creates a wrapper object that's unobservable, so in sloppy mode, setting properties is ignored (no-op). In strict mode, a {{jsxref("TypeError")}} is thrown.
+
+```js
+"use strict";
+
+false.true = ""; // TypeError
+(14).sailing = "home"; // TypeError
 "with".you = "far away"; // TypeError
-
-})();
 ```
 
-### 변수 사용 단순화
+#### Duplicate property names
 
-엄격모드는 코드상의 변수 이름을 특정 변수 정의로 매핑하는 방법을 단순화합니다. 많은 컴파일러 최적화는 변수 X 가 어떤 위치에 저장되어 있는지를 말해주는 능력에 의존하고 있습니다. 이는 자바스크립트 코드를 완전히 최적화하는데 중요합니다. 자바스크립트는 때때로 이름을 코드상의 변수 정의로 기본 매핑하는 것을 런타임때까지 실행이 불가하게합니다. 엄격모드는 이것이 발생하는 대부분의 경우를 제거하여 컴파일러가 엄격모드 코드를 더 잘 최적화 할 수 있게합니다.
-
-첫째로, 엄격모드는 `with` 를 사용하지 못하게합니다. `with` 사용의 문제는 런타임중에 블록안의 모든 이름이 전달된 객체의 프로퍼티나 인근 (또는 심지어 전역) 스코프 내의 변수로 매핑될 수도 있다는 것입니다. 이는 사전에 아는 것이 불가합니다. 엄격 모드는 `with` 를 구문 에러로 만들어, `with` 의 이름이 런타임에 알 수 없는 위치를 참조하지 않도록합니다.
+Duplicate property names used to be considered a {{jsxref("SyntaxError")}} in strict mode. With the introduction of [computed property names](/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer), making duplication possible at runtime, this restriction was removed in ES2015.
 
 ```js
 "use strict";
-var x = 17;
-with (obj) // !!! 구문 에러
-{
-  // 엄격모드가 아니라면, 이는 var x 가 되어야 하나요,
-  // obj.x 가 되어야 하나요?
-  // 일반적으로는 코드를 실행하지 않고 이를 말하는 것은 불가하므로,
-  // 이름을 최적화 할 수 없습니다.
+const o = { p: 1, p: 2 }; // syntax error prior to ECMAScript 2015
+```
+
+> **Note:** Making code that used to error become non-errors is always considered backwards-compatible. This is a good part of the language being strict about throwing errors: it leaves room for future semantic changes.
+
+### Simplifying scope management
+
+Strict mode simplifies how variable names map to particular variable definitions in the code. Many compiler optimizations rely on the ability to say that variable _X_ is stored in _that_ location: this is critical to fully optimizing JavaScript code. JavaScript sometimes makes this basic mapping of name to variable definition in the code impossible to perform until runtime. Strict mode removes most cases where this happens, so the compiler can better optimize strict mode code.
+
+#### Removal of the with statement
+
+Strict mode prohibits [`with`](/en-US/docs/Web/JavaScript/Reference/Statements/with). The problem with `with` is that any name inside the block might map either to a property of the object passed to it, or to a variable in surrounding (or even global) scope, at runtime; it's impossible to know which beforehand. Strict mode makes `with` a syntax error, so there's no chance for a name in a `with` to refer to an unknown location at runtime:
+
+```js example-bad
+"use strict";
+const x = 17;
+with (obj) {
+  // Syntax error
+  // If this weren't strict mode, would this be const x, or
+  // would it instead be obj.x? It's impossible in general
+  // to say without running the code, so the name can't be
+  // optimized.
   x;
 }
 ```
 
-이름이 짧은 변수에 객체를 할당한 후, 변수에 해당하는 프로퍼티에 접근하는 간단한 대안은 `with` 를 대체할 준비가 되었습니다.
+The simple alternative of assigning the object to a short name variable, then accessing the corresponding property on that variable, stands ready to replace `with`.
 
-둘째로, [엄격모드 코드의 `eval` 은 새로운 변수를 주위 스코프에 추가하지 않습니다](http://whereswalden.com/2011/01/10/new-es5-strict-mode-support-new-vars-created-by-strict-mode-eval-code-are-local-to-that-code-only/). 일반적인 코드에서 `eval("var x;")` 는 변수 `x` 를 주위 함수나 전역 스코프에 추가합니다. 이는, 일반적으로 `eval` 호출을 포함하는 함수에서 인수나 지역 변수를 참조하지 않는 모든 이름은 런타임에 특정 정의에 반드시 매핑되어야 함을 의미합니다(`eval` 이 외부 변수를 숨기는 새로운 변수를 추가했기 때문입니다). 엄격모드에서 `eval` 은 evaluated 된 코드에서만 변수를 생성하므로, 외부 변수나 일부 로컬 변수에 참조하는지에 영향을 주지 않습니다.
+#### Non-leaking eval
+
+In strict mode, [`eval` does not introduce new variables into the surrounding scope](https://whereswalden.com/2011/01/10/new-es5-strict-mode-support-new-vars-created-by-strict-mode-eval-code-are-local-to-that-code-only/). In sloppy mode, `eval("var x;")` introduces a variable `x` into the surrounding function or the global scope. This means that, in general, in a function containing a call to `eval`, every name not referring to an argument or local variable must be mapped to a particular definition at runtime (because that `eval` might have introduced a new variable that would hide the outer variable). In strict mode, `eval` creates variables only for the code being evaluated, so `eval` can't affect whether a name refers to an outer variable or some local variable:
 
 ```js
 var x = 17;
-var evalX = eval("'use strict'; var x = 42; x");
+var evalX = eval("'use strict'; var x = 42; x;");
 console.assert(x === 17);
 console.assert(evalX === 42);
 ```
 
-이와 관련해서, `eval` 함수가 엄격모드 코드 내에서 `eval(...)` 형태의 표현으로 적용되었다면, 코드는 엄격모드 코드로 evaluated 됩니다. 코드는 명시적으로 엄격모드를 적용할 수 있지만, 필수적인 것은 아닙니다.
+Whether the string passed to `eval()` is evaluated in strict mode depends on how `eval()` is invoked ([direct eval or indirect eval](/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval#direct_and_indirect_eval)).
 
-```js
-function strict1(str){
-  "use strict";
-  return eval(str); // str 은 엄격모드 코드로 다뤄짐
-}
-function strict2(f, str){
-  "use strict";
-  return f(str); // eval(...) 이 아님:
-                 // str 은 엄격모드를 적용한 경우에만 엄격함
-}
-function nonstrict(str){
-  return eval(str); // str 은 엄격모드를 적용한 경우에만 엄격함
-}
+#### Block-scoped function declarations
 
-strict1("'엄격모드 코드!'");
-strict1("'use strict'; '엄격모드 코드!'");
-strict2(eval, "'느슨한 코드.'");
-strict2(eval, "'use strict'; '엄격모드 코드!'");
-nonstrict("'느슨한 코드.'");
-nonstrict("'use strict'; '엄격모드 코드!'");
-```
+The JavaScript language specification, since its start, had not allowed function declarations nested in block statements. However, it was so intuitive that most browsers implemented it as an extension grammar. Unfortunately, the implementations' semantics diverged, and it became impossible for the language specification to reconcile all implementations. Therefore, [block-scoped function declarations](/en-US/docs/Web/JavaScript/Reference/Statements/function#block-level_function_declaration) are only explicitly specified in strict mode (whereas they were once disallowed in strict mode), while sloppy mode behavior remains divergent among browsers.
 
-따라서 엄격모드 `eval` 코드 내의 이름은 엄격모드 코드 내의 이름이 `eval` 의 결과로 evaluated 되지 않은 것과 동일하게 동작합니다.
+### Making eval and arguments simpler
 
-셋째로, 엄격모드는 일반 이름을 제거하는 것을 금지합니다. 엄격 모드에서 `delete name` 은 구문 에러입니다.
+Strict mode makes [`arguments`](/en-US/docs/Web/JavaScript/Reference/Functions/arguments) and [`eval`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval) less bizarrely magical. Both involve a considerable amount of magical behavior in sloppy mode: `eval` to add or remove bindings and to change binding values, and `arguments` syncing named arguments with its indexed properties. Strict mode makes great strides toward treating `eval` and `arguments` as keywords.
 
-```js
-"use strict";
+#### Preventing binding or assigning eval and arguments
 
-var x;
-delete x; // !!! 구문 에러
+The names `eval` and `arguments` can't be bound or assigned in language syntax. All these attempts to do so are syntax errors:
 
-eval("var y; delete y;"); // !!! syntax error
-```
-
-### `eval` 과 `arguments` 를 더 간단하게 하기
-
-엄격모드는 `arguments` 와 `eval` 을 덜 기괴하고 마법적으로 만듭니다. 둘은 일반 코드에서 상당히 많은 마법적인 동작들을 갖고 있습니다: 바인딩을 추가하거나 삭제하고 바인딩 값을 변경하기위한 `eval`, 명명된 인수를 앨리어스하는 인덱싱된 프로퍼티 `arguments`. 엄격모드는 ECMAScript 의 미래 버전까지는 모든 수정이 이루지지는 않겠지만 `eval` 과 `arguments` 를 키워드로 다루기 위한 훌륭한 큰 걸음을 내딛었습니다.
-
-첫째로, 변수명 eval 과 arguments 는 언어 문법에 바운드되거나 할당될 수 없습니다. 다음 시도들은 모두 구문 에러입니다.
-
-```js
+```js example-bad
 "use strict";
 eval = 17;
 arguments++;
 ++eval;
-var obj = { set p(arguments) { } };
-var eval;
-try { } catch (arguments) { }
-function x(eval) { }
-function arguments() { }
-var y = function eval() { };
-var f = new Function("arguments", "'use strict'; return 17;");
+const obj = { set p(arguments) {} };
+let eval;
+try {
+} catch (arguments) {}
+function x(eval) {}
+function arguments() {}
+const y = function eval() {};
+const f = new Function("arguments", "'use strict'; return 17;");
 ```
 
-둘째로, 엄격모드 코드는 `arguments` 객체가 생성한 프로퍼티를 앨리어스하지 않습니다. 함수의 첫 번째 인수가 `arg` 인 일반 코드에서는 `arg` 를 설정하는 것은 `arguments[0]` 를 설정하기도 하며, 그 반대도 그렇습니다(인수가 제공되지 않거나, `arguments[0]` 이 삭제된 경우는 제외). 엄격모드 함수의 `arguments` 객체는 함수가 호출될 때 원본 인수들을 저장합니다. `arguments[i]` 는 명명된 인수에 해당하는 값을 추적하지 않으며, 명명된 인수도 `arguments[i]` 에 해당하는 값을 추적하지 않습니다.
+#### No syncing between parameters and arguments indices
+
+Strict mode code doesn't sync indices of the `arguments` object with each parameter binding. In a sloppy mode function whose first argument is `arg`, setting `arg` also sets `arguments[0]`, and vice versa (unless no arguments were provided or `arguments[0]` is deleted). `arguments` objects for strict mode functions store the original arguments when the function was invoked. `arguments[i]` does not track the value of the corresponding named argument, nor does a named argument track the value in the corresponding `arguments[i]`.
 
 ```js
-function f(a){
+function f(a) {
   "use strict";
   a = 42;
   return [a, arguments[0]];
 }
-var pair = f(17);
+const pair = f(17);
 console.assert(pair[0] === 42);
 console.assert(pair[1] === 17);
 ```
 
-셋째로, `arguments.callee` 는 더 이상 지원되지 않습니다. 일반 코드의 `arguments.callee` 는 바깥 함수를 참조합니다. 이런 유즈 케이스는 중요하지 않습니다. 간단히 바깥 함수의 이름을 사용하면됩니다. 더욱이, `arguments.callee` 는 인라인 함수와 같은 최적화를 상당히 방해하므로, `arguments.callee` 가 접근하는 함수는 인라인이 아닌 함수를 참조하도록 제공해야 했습니다. 엄격모드 함수의 `arguments.callee` 는 삭제할 수 없는 프로퍼티이며, 설정이나 반환할때 에러를 발생합니다.
+### "Securing" JavaScript
+
+Strict mode makes it easier to write "secure" JavaScript. Some websites now provide ways for users to write JavaScript which will be run by the website _on behalf of other users_. JavaScript in browsers can access the user's private information, so such JavaScript must be partially transformed before it is run, to censor access to forbidden functionality. JavaScript's flexibility makes it effectively impossible to do this without many runtime checks. Certain language functions are so pervasive that performing runtime checks has a considerable performance cost. A few strict mode tweaks, plus requiring that user-submitted JavaScript be strict mode code and that it be invoked in a certain manner, substantially reduce the need for those runtime checks.
+
+#### No this substitution
+
+The value passed as `this` to a function in strict mode is not forced into being an object (a.k.a. "boxed"). For a sloppy mode function, `this` is always an object: either the provided object, if called with an object-valued `this`; or the boxed value of `this`, if called with a primitive as `this`; or the global object, if called with `undefined` or `null` as `this`. (Use [`call`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call), [`apply`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply), or [`bind`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind) to specify a particular `this`.) Not only is automatic boxing a performance cost, but exposing the global object in browsers is a security hazard because the global object provides access to functionality that "secure" JavaScript environments must restrict. Thus for a strict mode function, the specified `this` is not boxed into an object, and if unspecified, `this` is `undefined` instead of [`globalThis`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis):
 
 ```js
 "use strict";
-var f = function() { return arguments.callee; };
-f(); // TypeError
-```
-
-### JavaScript "보안"
-
-엄격모드는 "보안된" 자바스크립트를 작성하기 쉽게 해줍니다. 일부 웹사이트들은 사용자가 다른 사용자들을 대신하여 웹사이트에서 실행시키는자바스크립트를 작성하는 방법을 제공합니다. 브라우저에서 자바스크립트는 사용자의 개인정보에 접근할수 있기 때문에, 자바스크립트는 금지된 기능에 대한 검열을 하기위해 반드시 실행전에 부분적으로 변경되어야 합니다. 자바스크립트의 유연성으로 인해 많은 런타임 체크없이 이것을 수행하는것은 사실상 불가능합니다. 특정 언어의 기능들이 너무 광범위하여 런타임 검사 수행은 상당한 성능비용이 생깁니다. 엄격모드의 작은 수정과 사용자가 제출한 자바스크립트가 엄격모드가 되면 특정 방식으로 호출되므로 런타임 검사의 필요성이 크게 줄어 듭니다.
-
-첫째, 엄격모드에서는 `this` 로 함수에 전달된 값은 강제로 객체가 되지 않습니다 (a.k.a. "boxed"). 보통 함수의 경우, `this` 는 언제나 객체입니다: 객체값 `this` 와 함께 호출된 경우 제공된 객체이거나 ; 부울값, 문자 또는 숫자 `this` 로 호출된 경우 그 값은 Boxed 입니다; 또는 `undefined` 또는 `null` `this` 로 호출되면 전역객체입니다. (특정된 `this` 명세를 위해서는 [`call`](/en-US/Web/JavaScript/Reference/Global_Objects/Function/call), [`apply`](/en-US/Web/JavaScript/Reference/Global_Objects/Function/apply), 또는 [`bind`](/en-US/Web/JavaScript/Reference/Global_Objects/Function/bind) 를 사용하십시요) 자동 박싱은 성능 비용뿐 아니라 전역 객체가 브라우저에 노출되는것은 보안상 위험합니다. 전역객체들은 자바스크립트 환경의 "보안" 기능에 접근하는것을 제공하기때문에 제한되어야 합니다. 따라서 엄격모드의 함수는, 정의된 `this` 는 박스드 객체가 되지 않으며, 정의되지 않은경우 `this` 는 `undefined` 가 됩니다:
-
-```js
-"use strict";
-function fun() { return this; }
+function fun() {
+  return this;
+}
 console.assert(fun() === undefined);
 console.assert(fun.call(2) === 2);
 console.assert(fun.apply(null) === null);
@@ -278,96 +336,95 @@ console.assert(fun.call(undefined) === undefined);
 console.assert(fun.bind(true)() === true);
 ```
 
-즉, 브라우저에서 엄격모드의 함수내 에서는 더 이상 `window` 객체를 `this` 를 통해 참조할 수 없습니다.
+#### Removal of stack-walking properties
 
-둘째로, 엄격모드에서는 ECMAScript의 일반적으로 구현된 확장을 통해 자바스크립트 스택을 "걷는"것이 불가능합니다. 이러한 일반적인 확장 코드는, 함수 `fun` 이 호출되는 중간에, `fun.caller` 는 가장 최근에 `fun` 을 호출한 함수이고 `fun.arguments` 는 `fun`을 호출하기 위한 인수입니다. "권한있는"함수와 (잠재적으로 보안되지 않은) 인수에 접근을 허용하기때문에 두가지 확장 모두 자바스크립트의 "보안" 문제가 됩니다. `fun` 이 엄격모드인경우, both `fun.caller` 와 `fun.arguments` 모두 설정 또는 검색될때 삭제 불가능한 속성이 됩니다.
+In strict mode it's no longer possible to "walk" the JavaScript stack. Many implementations used to implement some extension features that make it possible to detect the upstream caller of a function. When a function `fun` is in the middle of being called, [`fun.caller`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/caller) is the function that most recently called `fun`, and [`fun.arguments`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/arguments) is the `arguments` for that invocation of `fun`. Both extensions are problematic for "secure" JavaScript because they allow "secured" code to access "privileged" functions and their (potentially unsecured) arguments. If `fun` is in strict mode, both `fun.caller` and `fun.arguments` are non-deletable properties which throw when set or retrieved:
 
 ```js
-function restricted()
-{
+function restricted() {
   "use strict";
-  restricted.caller;    // throws a TypeError
+  restricted.caller; // throws a TypeError
   restricted.arguments; // throws a TypeError
 }
-function privilegedInvoker()
-{
+function privilegedInvoker() {
   return restricted();
 }
 privilegedInvoker();
 ```
 
-셋째, 엄격모드의 `인수` 는 더이상 해당 함수의 호출 변수에 대한 접근을 제공하지 않습니다. 일부 이전 ECMAScript에서 `arguments.caller` 해당 함수에 별명이 지정된 객체였습니다. 이것은 함수의 추상화를 통해 권한이 있는 값을 숨길수 있는 기능을 차단하여 [보안의 위협](http://stuff.mit.edu/iap/2008/facebook/)이 됩니다; 이것은 또한 대부분의 최적화를 배제시킵니다. 이러한 이유로 최신 브라우저들은 이를 구현하지 않습니다. 하지만 이것들의 이전 기능들 때문에, 엄격모드함수에서 `arguments.caller` 설정이나 검색시 삭제 불가능한 요소가 됩니다:
+Similarly, [`arguments.callee`](/en-US/docs/Web/JavaScript/Reference/Functions/arguments/callee) is no longer supported. In sloppy mode, `arguments.callee` refers to the enclosing function. This use case is weak: name the enclosing function! Moreover, `arguments.callee` substantially hinders optimizations like inlining functions, because it must be made possible to provide a reference to the un-inlined function if `arguments.callee` is accessed. `arguments.callee` for strict mode functions is a non-deletable property which throws an error when set or retrieved:
 
 ```js
 "use strict";
-function fun(a, b)
-{
-  "use strict";
-  var v = 12;
-  return arguments.caller; //TypeError 가 발생.
-}
-fun(1, 2); // doesn't expose v (or a or b)
+const f = function () {
+  return arguments.callee;
+};
+f(); // throws a TypeError
 ```
 
-### 미래의 ECMAScript 버전을 위한 준비
+### Future-proofing JavaScript
 
-새롭게 선보일 ECMAScript 버전은 새로운 구문을 소개할 것이고, ECMAScript5에서의 엄격 모드는 변환을 쉽게 하기 위해 몇 가지의 제한을 적용할 것으로 예상되고 있습니다. 만약 이 변화들이 엄격 모드에서의 제한을 기반으로 한다면, 더 바꾸기 쉬워질 것입니다.
+#### Extra reserved words
 
-첫번째로, 엄격 모드에서의 식별자 후보들은 예약어가 됩니다. 이 예약어들은 `implements`, `interface`, `let`, `package`, `private`, `protected`, `public`, `static`, `yield`입니다. 그럼, 엄격 모드에서는 이 예약어와 똑같은 이름을 사용하거나, 변수명 또는 아규먼트명으로도 사용할 수 없습니다.
+[Reserved words](/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#reserved_words) are identifiers that can't be used as variable names. Strict mode reserves some more names than sloppy mode, some of which are already used in the language, and some of which are reserved for the future to make future syntax extensions easier to implement.
 
-```js
-function package(protected){ // !!!
-  "use strict";
-  var implements; // !!!
+- `implements`
+- `interface`
+- [`let`](/en-US/docs/Web/JavaScript/Reference/Statements/let)
+- `package`
+- `private`
+- `protected`
+- `public`
+- [`static`](/en-US/docs/Web/JavaScript/Reference/Classes/static)
+- [`yield`](/en-US/docs/Web/JavaScript/Reference/Operators/yield)
 
-  interface: // !!!
-  while (true){
-    break interface; // !!!
-  }
+## Transitioning to strict mode
 
-  function private() { } // !!!
-}
-function fun(static) { 'use strict'; } // !!!
-```
+Strict mode has been designed so that the transition to it can be made gradually. It is possible to change each file individually and even to transition code to strict mode down to the function granularity.
 
-Mozilla의 특별 지시 두 가지 : 먼저, 코드가 JavaScript 1.7 또는 그보다 높고 (예를 들어, 크롬 코드 또는 `<script type="">` 를 바로 사용할 때) 엄격 모드의 코드라면, `let` 와 `yield`는 처음 소개되었을 때의 그 기능을 가진다. 그러나 웹에서의 엄격 모드 코드는, `<script src="">`나 `<script>...</script>`로 로딩되지, `let`/`yield`를 식별자로 사용할 수가 없을 것이다. 그리고 나서는, ES5 가 `class`, `enum`, `export`, `extends`, `import`, and `super` 와 같은 예약어들을 무조건 리저브함에도 불구하고, 먼저 Firefox 5 Mozilla 는 그것들을 엄격 모드에서만 리저브한다.
+You can migrate a codebase to strict mode by first adding `"use strict"` to a piece of source code, and then fixing all execution errors, while watching out for semantic differences.
 
-다음은, 엄격 모드는 스크립트나 함수의 탑 레벨이 아닌 곳에서의 함수 내용 정의를 제한합니다. ([strict mode prohibits function statements not at the top level of a script or function](http://whereswalden.com/2011/01/24/new-es5-strict-mode-requirement-function-statements-not-at-top-level-of-a-program-or-function-are-prohibited/)). 브라우저에서 일반적인 코드는 함수 내용 정의가 "어디에서든" 허용됩니다. _이것은 ES5의 부분이 아닙니다!(심지어 ES3도 아니다.)_ 이건 다른 브라우저에서 공존할 수 없는 시멘틱의 확장입니다. 앞으로의 ECMAScript 에디션은 바라건대, 스크립트나 함수의 탑 레벨이 아닌 곳에서의 함수 내용 정의를 위해, 새로운 시멘틱을 명시할 것입니다. 엄격 모드에서 이러한 함수 정의를 금지하는 것([Prohibiting such function statements in strict mode](http://wiki.ecmascript.org/doku.php?id=conventions:no_non_standard_strict_decls))은 앞으로 출시될 ECMAScript의 사양을 위한 "준비"입니다. :
+### Syntax errors
 
-```js
-"use strict";
-if (true){
-  function f() { } // !!! syntax error
-  f();
-}
+When adding `'use strict';`, the following cases will throw a {{jsxref("SyntaxError")}} before the script is executing:
 
-for (var i = 0; i < 5; i++){
-  function f2() { } // !!! syntax error
-  f2();
-}
+- Octal syntax `const n = 023;`
+- [`with`](/en-US/docs/Web/JavaScript/Reference/Statements/with) statement
+- Using [`delete`](/en-US/docs/Web/JavaScript/Reference/Operators/delete) on a variable name `delete myVariable`;
+- Using [`eval`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval) or [`arguments`](/en-US/docs/Web/JavaScript/Reference/Functions/arguments) as variable or function argument name
+- Using one of the newly [reserved keywords](/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#reserved_words) (in prevision for future language features): `implements`, `interface`, `let`, `package`, `private`, `protected`, `public`, `static`, and `yield`
+- Declaring two function parameters with the same name `function f(a, b, b) {}`
+- Declaring the same property name twice in an object literal `{a: 1, b: 3, a: 7}`. This constraint was later removed ([bug 1041128](https://bugzil.la/1041128)).
 
-function baz(){ // kosher
-  function eit() { } // also kosher
-}
-```
+These errors are good, because they reveal plain errors or bad practices. They occur before the code is running, so they are easily discoverable as long as the code gets parsed by the runtime.
 
-이 규제는 엄밀히 말하면 엄격 모드가 아닌데, 저런 함수 표현식들은 기본 ECMAScript5의 확장이기 때문입니다. 그러나 이것이 ECMAScript 협회가 권장하는 방식이며, 브라우저들이 이를 지원할 것입니다.
+### New runtime errors
 
-## 브라우저에서의 엄격 모드
+JavaScript used to silently fail in contexts where what was done should be an error. Strict mode throws in such cases. If your code base contains such cases, testing will be necessary to be sure nothing is broken. You can screen for such errors at the function granularity level.
 
-현재 주류의 브라우저들은 엄격 모드를 지원하고 있습니다. 하지만, 아직도 현실에서 사용되는 수 많은 브라우저의 버전들은 엄격 모드를 부분적으로만 지원하거나([Browser versions used in the wild that only have partial support for strict mode](http://caniuse.com/use-strict)), 아예 지원을 하지 않고 있기 때문에, 맹목적으로 여기에 의지할 수는 없습니다. (예를 들면, Internet Explorer 10 버전 이하!) _엄격 모드는 시멘틱을 바꿉니다._ 이 변화들에 의지하는 것은 실수와 엄격 모드를 지원하지 않는 브라우저의 에러를 야기할 것입니다. 엄격 모드를 사용하는 데에 주의하는 것을 익히세요, 그리고 피쳐 테스트로 엄격 모드를 사용하기에 적절한 부분인지 확인하고 보완하세요. 마지막으로, _엄격 모드를 지원하는 브라우저와 그렇지 않은 브라우저에서 작성한 코드의 테스트를 확실히 하도록 하세요._
+- Assigning to an undeclared variable throws a {{jsxref("ReferenceError")}}. This used to set a property on the global object, which is rarely the expected effect. If you really want to set a value to the global object, explicitly assign it as a property on `globalThis`.
+- Failing to assign to an object's property (e.g. it's read-only) throws a {{jsxref("TypeError")}}. In sloppy mode, this would silently fail.
+- Deleting a non-deletable property throws a {{jsxref("TypeError")}}. In sloppy mode, this would silently fail.
+- Accessing [`arguments.callee`](/en-US/docs/Web/JavaScript/Reference/Functions/arguments/callee), [`strictFunction.caller`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/caller), or [`strictFunction.arguments`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/arguments) throws a {{jsxref("TypeError")}} if the function is in strict mode. If you are using `arguments.callee` to call the function recursively, you can use a named function expression instead.
 
-## 명세서
+### Semantic differences
+
+These differences are very subtle differences. It's possible that a test suite doesn't catch this kind of subtle difference. Careful review of your code base will probably be necessary to be sure these differences don't affect the semantics of your code. Fortunately, this careful review can be done gradually down the function granularity.
+
+- `this`
+  - : In sloppy mode, function calls like `f()` would pass the global object as the `this` value. In strict mode, it is now `undefined`. When a function was called with [`call`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call) or [`apply`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply), if the value was a primitive value, this one was boxed into an object (or the global object for `undefined` and `null`). In strict mode, the value is passed directly without conversion or replacement.
+- `arguments`
+  - : In sloppy mode, modifying a value in the `arguments` object modifies the corresponding named argument. This made optimizations complicated for JavaScript engine and made code harder to read/understand. In strict mode, the `arguments` object is created and initialized with the same values than the named arguments, but changes to either the `arguments` object or the named arguments aren't reflected in one another.
+- `eval`
+  - : In strict mode code, `eval` doesn't create a new variable in the scope from which it was called. Also, of course, in strict mode, the string is evaluated with strict mode rules. Thorough testing will need to be performed to make sure nothing breaks. Not using eval if you don't really need it may be another pragmatic solution.
+- Block-scoped function declarations
+  - : In sloppy mode, a function declaration inside a block may be visible outside the block and even callable. In strict mode, a function declaration inside a block is only visible inside the block.
+
+## Specifications
 
 {{Specifications}}
 
-## 함께 보기
+## See also
 
-- [Where's Walden? » New ES5 strict mode support: now with poison pills!](http://whereswalden.com/2010/09/08/new-es5-strict-mode-support-now-with-poison-pills/)
-- [Where's Walden? » New ES5 strict mode requirement: function statements not at top level of a program or function are prohibited](http://whereswalden.com/2011/01/24/new-es5-strict-mode-requirement-function-statements-not-at-top-level-of-a-program-or-function-are-prohibited/)
-- [Where's Walden? » New ES5 strict mode support: new vars created by strict mode eval code are local to that code only](http://whereswalden.com/2011/01/10/new-es5-strict-mode-support-new-vars-created-by-strict-mode-eval-code-are-local-to-that-code-only/)
-- [JavaScript "use strict" tutorial for beginners.](http://qnimate.com/javascript-strict-mode-in-nutshell/)
-- [John Resig - ECMAScript 5 Strict Mode, JSON, and More](http://ejohn.org/blog/ecmascript-5-strict-mode-json-and-more/)
-- [ECMA-262-5 in detail. Chapter 2. Strict Mode.](http://dmitrysoshnikov.com/ecmascript/es5-chapter-2-strict-mode/)
-- [Strict mode compatibility table](http://kangax.github.io/compat-table/es5/#Strict_mode)
-- [Transitioning to strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode/Transitioning_to_strict_mode)
+- [JavaScript modules](/en-US/docs/Web/JavaScript/Guide/Modules)
+- [Lexical grammar](/en-US/docs/Web/JavaScript/Reference/Lexical_grammar)

@@ -1,14 +1,19 @@
 ---
 title: initial
 slug: Web/CSS/initial
+page-type: css-keyword
+browser-compat: css.types.global_keywords.initial
 ---
+
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`initial`** 키워드는 속성의 [초깃값(기본값)](/ko/docs/Web/CSS/initial_value)을 요소에 적용합니다. 초깃값은 브라우저가 지정합니다. 모든 속성에서 사용할 수 있으며, {{cssxref("all")}}에 지정할 경우 모든 CSS 속성을 초깃값으로 재설정합니다.
+The **`initial`** CSS keyword applies the [initial (or default) value](/en-US/docs/Web/CSS/initial_value) of a property to an element. It can be applied to any CSS property, including the CSS shorthand property {{cssxref("all")}}. With `all` set to `initial`, all CSS properties can be restored to their respective initial values in one go instead of restoring each one separately.
 
-> **참고:** [상속 속성](/ko/docs/Web/CSS/inheritance#Inherited_properties)의 초깃값은 예상치 못한 값일 수도 있습니다. 따라서, {{cssxref("inherit")}}, {{cssxref("unset")}}, {{cssxref("revert")}} 키워드의 사용을 대신 고려해보세요.
+On [inherited properties](/en-US/docs/Web/CSS/Inheritance#inherited_properties), the initial value may be unexpected. You should consider using the {{cssxref("inherit")}}, {{cssxref("unset")}}, {{cssxref("revert")}}, or {{cssxref("revert-layer")}} keywords instead.
 
-## 예제
+## Examples
+
+### Using initial to reset color for an element
 
 #### HTML
 
@@ -32,16 +37,24 @@ em {
 }
 ```
 
-{{EmbedLiveSample('예제')}}
+#### Result
 
-## 명세
+{{EmbedLiveSample('Using_initial_to_reset_color_for_an_element')}}
+
+With the `initial` keyword in this example, `color` value on the `em` element is restored to the initial value of [`color`](/en-US/docs/Web/CSS/color#formal_definition), as defined in the specification.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
-- {{cssxref("inherit")}}, {{cssxref("unset")}}, {{cssxref("revert")}}, {{cssxref("all")}}
+- Use the {{cssxref("inherit")}} keyword to make an element's property the same as its parent.
+- Use the {{cssxref("revert")}} keyword to reset a property to the value established by the user-agent stylesheet (or by user styles, if any exist).
+- Use the {{cssxref("revert-layer")}} keyword to reset a property to the value established in a previous cascade layer.
+- Use the {{cssxref("unset")}} keyword to set a property to its inherited value if it inherits or to its initial value if not.
+- The {{cssxref("all")}} property lets you reset all properties to their initial, inherited, reverted, or unset state at once.

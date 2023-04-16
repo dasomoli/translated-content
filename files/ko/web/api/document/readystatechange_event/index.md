@@ -1,16 +1,30 @@
 ---
-title: 'Document: readystatechange event'
+title: "Document: readystatechange event"
+short-title: readystatechange
 slug: Web/API/Document/readystatechange_event
+page-type: web-api-event
+browser-compat: api.Document.readystatechange_event
 ---
+
 {{APIRef}}
 
-**`readystatechange`** 이벤트는 현재 페이지의 {{domxref("Document.readyState", "readyState")}} 속성값이 변할 때 발생한다.
+The **`readystatechange`** event is fired when the {{domxref("Document.readyState", "readyState")}} attribute of a document has changed.
 
-| Bubbles                | No                           |
-| ---------------------- | ---------------------------- |
-| Cancelable             | No                           |
-| Interface              | {{domxref("Event")}} |
-| Event handler property | `onreadystatechange`         |
+This event is not cancelable and does not bubble.
+
+## Syntax
+
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
+
+```js
+addEventListener("readystatechange", (event) => {});
+
+onreadystatechange = (event) => {};
+```
+
+## Event type
+
+A generic {{domxref("Event")}}.
 
 ## Examples
 
@@ -24,15 +38,22 @@ slug: Web/API/Document/readystatechange_event
 </div>
 
 <div class="event-log">
-  <label>Event log:</label>
-  <textarea readonly class="event-log-contents" rows="8" cols="30"></textarea>
+  <label for="eventLog">Event log:</label>
+  <textarea
+    readonly
+    class="event-log-contents"
+    rows="8"
+    cols="30"
+    id="eventLog"></textarea>
 </div>
 ```
+
+#### CSS
 
 ```css hidden
 body {
   display: grid;
-  grid-template-areas: "control  log";
+  grid-template-areas: "control log";
 }
 
 .controls {
@@ -50,7 +71,8 @@ body {
   resize: none;
 }
 
-label, button {
+label,
+button {
   display: block;
 }
 
@@ -59,29 +81,29 @@ label, button {
 }
 ```
 
-#### JS
+#### JavaScript
 
 ```js
-const log = document.querySelector('.event-log-contents');
-const reload = document.querySelector('#reload');
+const log = document.querySelector(".event-log-contents");
+const reload = document.querySelector("#reload");
 
-reload.addEventListener('click', () => {
-  log.textContent ='';
-  window.setTimeout(() => {
-      window.location.reload(true);
+reload.addEventListener("click", () => {
+  log.textContent = "";
+  setTimeout(() => {
+    window.location.reload(true);
   }, 200);
 });
 
-window.addEventListener('load', (event) => {
-    log.textContent = log.textContent + 'load\n';
+window.addEventListener("load", (event) => {
+  log.textContent = `${log.textContent}load\n`;
 });
 
-document.addEventListener('readystatechange', (event) => {
-    log.textContent = log.textContent + `readystate: ${document.readyState}\n`;
+document.addEventListener("readystatechange", (event) => {
+  log.textContent = `${log.textContent}readystate: ${document.readyState}\n`;
 });
 
-document.addEventListener('DOMContentLoaded', (event) => {
-    log.textContent = log.textContent + `DOMContentLoaded\n`;
+document.addEventListener("DOMContentLoaded", (event) => {
+  log.textContent = `${log.textContent}DOMContentLoaded\n`;
 });
 ```
 
@@ -89,11 +111,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 {{ EmbedLiveSample('Live_example', '100%', '160px') }}
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

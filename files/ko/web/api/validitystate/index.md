@@ -1,48 +1,50 @@
 ---
 title: ValidityState
 slug: Web/API/ValidityState
+page-type: web-api-interface
+browser-compat: api.ValidityState
 ---
 
 {{APIRef("HTML DOM")}}
 
-**`ValidityState`** 인터페이스는 제약 유효성 검사에 대해 요소가 가질 수 있는 유효성 상태를 나타내며, 요소의 값이 유효하지 않은 경우 그 이유에 대한 설명을 도와줍니다.
+The **`ValidityState`** interface represents the _validity states_ that an element can be in, with respect to constraint validation. Together, they help explain why an element's value fails to validate, if it's not valid.
 
-## 속성
+## Instance properties
 
-각각의 {{jsxref("Boolean")}} 속성에 대해, `true` 값은 해당 이유로 인해 값의 유효성 검사를 실패했음을 나타냅니다. **`valid`** 속성은 예외로서 `true`는 모든 제약조건을 통과했음을 의미합니다.
+For each of these Boolean properties, a value of `true` indicates that the specified reason validation may have failed is true, with the exception of the `valid` property, which is `true` if the element's value obeys all constraints.
 
 - {{domxref("ValidityState.badInput", "badInput")}} {{ReadOnlyInline}}
-  - : 사용자가 입력한 값을 브라우저가 변환하지 못했음을 나타내는 {{jsxref("Boolean")}} 값입니다.
+  - : A boolean value that is `true` if the user has provided input that the browser is unable to convert.
 - `customError` {{ReadOnlyInline}}
-  - : {{domxref('HTMLObjectElement.setCustomValidity', 'setCustomValidity()')}} 메서드를 사용해 요소의 사용자 지정 유효성 메시지를 비어있지 않은 문자열로 설정했는지를 나타내는 {{jsxref("Boolean")}} 값입니다.
+  - : A boolean value indicating whether the element's custom validity message has been set to a non-empty string by calling the element's {{domxref('HTMLObjectElement.setCustomValidity', 'setCustomValidity()')}} method.
 - {{domxref("ValidityState.patternMismatch", "patternMismatch")}} {{ReadOnlyInline}}
-  - : 값이 주어진 {{htmlattrxref("pattern", "input")}} 특성을 만족하지 못하는지 나타내는 {{jsxref("Boolean")}} 값입니다 참일 경우, CSS {{cssxref(":invalid")}} 의사 클래스를 만족합니다.
+  - : A boolean value that is `true` if the value does not match the specified [`pattern`](/en-US/docs/Web/HTML/Element/input#pattern), and `false` if it does match. If `true`, the element matches the {{cssxref(":invalid")}} CSS pseudo-class.
 - {{domxref("ValidityState.rangeOverflow", "rangeOverflow")}} {{ReadOnlyInline}}
-  - : 값이 주어진 {{htmlattrxref("max", "input")}} 특성보다 큰지 나타내는 {{jsxref("Boolean")}} 값입니다. 참일 경우, CSS {{cssxref(":invalid")}}와 {{cssxref(":out-of-range")}} 의사 클래스를 만족합니다.
+  - : A boolean value that is `true` if the value is greater than the maximum specified by the [`max`](/en-US/docs/Web/HTML/Element/input#max) attribute, or `false` if it is less than or equal to the maximum. If `true`, the element matches the {{cssxref(":invalid")}} and {{cssxref(":out-of-range")}} and CSS pseudo-classes.
 - {{domxref("ValidityState.rangeUnderflow", "rangeUnderflow")}} {{ReadOnlyInline}}
-  - : 값이 주어진 {{htmlattrxref("min", "input")}} 특성보다 작은지 나타내는 {{jsxref("Boolean")}} 값입니다. 참일 경우, CSS {{cssxref(":invalid")}}와 {{cssxref(":out-of-range")}} 의사 클래스를 만족합니다.
+  - : A boolean value that is `true` if the value is less than the minimum specified by the [`min`](/en-US/docs/Web/HTML/Element/input#min) attribute, or `false` if it is greater than or equal to the minimum. If `true`, the element matches the {{cssxref(":invalid")}} and {{cssxref(":out-of-range")}} CSS pseudo-classes.
 - {{domxref("ValidityState.stepMismatch", "stepMismatch")}} {{ReadOnlyInline}}
-  - : 값이 주어진 {{htmlattrxref("step", "input")}} 특성의 규칙을 만족하지 않는지 (즉, 값을 스텝 값으로 나눌 수 없는지) 나타내는 {{jsxref("Boolean")}} 값입니다. 참일 경우, CSS {{cssxref(":invalid")}}와 {{cssxref(":out-of-range")}} 의사 클래스를 만족합니다.
+  - : A boolean value that is `true` if the value does not fit the rules determined by the [`step`](/en-US/docs/Web/HTML/Element/input#step) attribute (that is, it's not evenly divisible by the step value), or `false` if it does fit the step rule. If `true`, the element matches the {{cssxref(":invalid")}} and {{cssxref(":out-of-range")}} CSS pseudo-classes.
 - {{domxref("ValidityState.tooLong", "tooLong")}} {{ReadOnlyInline}}
-  - : 값이 {{domxref("HTMLInputElement")}} 또는 {{domxref("HTMLTextAreaElement")}} 객체의 `maxlength` 값보다 긴지 나타내는 {{jsxref("Boolean")}} 값입니다. 참일 경우, CSS {{cssxref(":invalid")}}와 {{cssxref(":out-of-range")}} 의사 클래스를 만족합니다.
+  - : A boolean value that is `true` if the value exceeds the specified `maxlength` for {{domxref("HTMLInputElement")}} or {{domxref("HTMLTextAreaElement")}} objects, or `false` if its length is less than or equal to the maximum length. _Note: This property is never `true` in Gecko, because elements' values are prevented from being longer than `maxlength`._ If `true`, the element matches the {{cssxref(":invalid")}} and {{cssxref(":out-of-range")}} CSS pseudo-classes.
 - {{domxref("ValidityState.tooShort", "tooShort")}} {{ReadOnlyInline}}
-  - : 값이 {{domxref("HTMLInputElement")}} 또는 {{domxref("HTMLTextAreaElement")}} 객체의 `minLength` 값보다 짧은지 나타내는 {{jsxref("Boolean")}} 값입니다. 참일 경우, CSS {{cssxref(":invalid")}}와 {{cssxref(":out-of-range")}} 의사 클래스를 만족합니다.
+  - : A boolean value that is `true` if the value fails to meet the specified `minlength` for {{domxref("HTMLInputElement")}} or {{domxref("HTMLTextAreaElement")}} objects, or `false` if its length is greater than or equal to the minimum length. If `true`, the element matches the {{cssxref(":invalid")}} and {{cssxref(":out-of-range")}} CSS pseudo-classes.
 - {{domxref("ValidityState.typeMismatch", "typeMismatch")}} {{ReadOnlyInline}}
-  - : 값이 입력 유형에서 요구하는 형식({{htmlattrxref("type", "input")}}이 `email`이나 `url`인 경우)에 맞지 않는지 나타내는 {{jsxref("Boolean")}} 값입니다. 참일 경우, CSS {{cssxref(":invalid")}} 의사 클래스를 만족합니다.
+  - : A boolean value that is `true` if the value is not in the required syntax (when [`type`](/en-US/docs/Web/HTML/Element/input#type) is `email` or `url`), or `false` if the syntax is correct. If `true`, the element matches the {{cssxref(":invalid")}} CSS pseudo-class.
 - `valid` {{ReadOnlyInline}}
-  - : 요소가 모든 유효성 제약을 만족하여 유효한 상태인지 나타내는 {{jsxref("Boolean")}} 값입니다. 참일 경우 CSS {{cssxref(":valid")}} 의사 클래스를, 거짓일 경우 {{cssxref(":invalid")}} 의사 클래스를 만족합니다.
+  - : A boolean value that is `true` if the element meets all its validation constraints, and is therefore considered to be valid, or `false` if it fails any constraint. If `true`, the element matches the {{cssxref(":valid")}} CSS pseudo-class; the {{cssxref(":invalid")}} CSS pseudo-class otherwise.
 - {{domxref("ValidityState.valueMissing", "valueMissing")}} {{ReadOnlyInline}}
-  - : 요소가 {{htmlattrxref("required", "input")}} 특성을 가지고 있지만 값은 없는 경우 참인 {{jsxref("Boolean")}} 값입니다. 참일 경우, CSS {{cssxref(":invalid")}} 의사 클래스를 만족합니다.
+  - : A boolean value that is `true` if the element has a [`required`](/en-US/docs/Web/HTML/Element/input#required) attribute, but no value, or `false` otherwise. If `true`, the element matches the {{cssxref(":invalid")}} CSS pseudo-class.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Guide: Constraint validation](/ko/docs/Web/Guide/HTML/HTML5/Constraint_validation)
-- [Tutorial: Form data validation](/ko/docs/Learn/HTML/Forms/Form_validation)
+- [Guide: Constraint validation](/en-US/docs/Web/HTML/Constraint_validation)
+- [Tutorial: Form data validation](/en-US/docs/Learn/Forms/Form_validation)

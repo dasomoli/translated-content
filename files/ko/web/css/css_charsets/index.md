@@ -1,18 +1,24 @@
 ---
 title: CSS Charsets
 slug: Web/CSS/CSS_Charsets
+page-type: css-module
+browser-compat: css.at-rules.charset
 ---
 
 {{CSSRef}}
 
-**CSS Charsets**는 스타일 시트에서 사용하는 문자 집합을 정의할 수 있는 CSS 모듈입니다.
+**CSS Charsets** is a module of CSS that lets you specify the character set used in the style sheet.
 
-## 참고서
+## Reference
 
-### @규칙
+### At-rules
 
 - {{cssxref("@charset")}}
 
-## 명세서
+## Specifications
 
 {{Specifications}}
+
+## Browser compatibility
+
+{{Compat}}

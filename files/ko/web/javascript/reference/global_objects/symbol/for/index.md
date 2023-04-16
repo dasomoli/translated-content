@@ -1,74 +1,77 @@
 ---
 title: Symbol.for()
 slug: Web/JavaScript/Reference/Global_Objects/Symbol/for
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Symbol.for
 ---
 
 {{JSRef}}
 
-**`Symbol.for(key)`** 메서드는 주어진 키를 사용해 런타임 범위의 심볼 레지스트리에서 존재하는 심볼을 찾고, 존재할 경우 이를 반환합니다. 존재하지 않는 경우에는 해당 키를 사용해 전역 심볼 레지스트리에 새로운 심볼을 생성합니다.
+The **`Symbol.for()`** static method searches for existing symbols
+in a runtime-wide symbol registry with the given key and returns it if found. Otherwise
+a new symbol gets created in the global symbol registry with this key.
 
 {{EmbedInteractiveExample("pages/js/symbol-for.html")}}
 
-## 구문
+## Syntax
 
-```js
-Symbol.for(key);
+```js-nolint
+Symbol.for(key)
 ```
 
-### 파라미터
+### Parameters
 
 - `key`
-  - : 문자열, 필수. 심볼에 대한 키(심볼을 설명하기 위해서도 사용됨).
+  - : String, required. The key for the symbol (and also used for the description of the
+    symbol).
 
-### 반환 값
+### Return value
 
-주어진 키를 갖는 존재하는 심볼. 존재하지 않을 경우 새로운 심볼이 생성되고 반환됨.
+An existing symbol with the given key if found; otherwise, a new symbol is created and
+returned.
 
-## 설명
+## Description
 
-`Symbol()`과 대조적으로, `Symbol.for()` 함수는 전역 심볼 레지스트리 목록에서 사용 가능한 심볼을 생성합니다. `Symbol.for()`는 호출할 때마다 새로운 심볼을 생성하지는 않으며 레지스트리에서 주어진 `key`를 갖는 심볼이 이미 존재하는지를 먼저 확인합니다. 존재하는 경우 해당하는 심볼이 반환됩니다. 주어진 키를 갖는 심볼이 존재하지 않는 경우, `Symbol.for()`는 새로운 전역 심볼을 생성합니다.
+In contrast to `Symbol()`, the `Symbol.for()` function creates a
+symbol available in a [global symbol registry](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol#shared_symbols_in_the_global_symbol_registry) list. `Symbol.for()` does also
+not necessarily create a new symbol on every call, but checks first if a symbol with the
+given `key` is already present in the registry. In that case, that symbol is
+returned. If no symbol with the given key is found, `Symbol.for()` will
+create a new global symbol.
 
-### 전역 심볼 레지스트리
+## Examples
 
-전역 심볼 레지스트리는 다음 레코드 구조를 갖는 목록이며 비어있는 상태로 초기화됩니다.
-
-| 필드명 | 값                                   |
-| ---------- | --------------------------------------- |
-| [[key]]    | 심볼을 구분하는데 사용되는 문자열 키. |
-| [[symbol]] | 전역으로 저장되는 심볼.       |
-
-## 예제
-
-### Symbol.for() 사용하기
+### Using Symbol.for()
 
 ```js
-Symbol.for('foo'); // 새로운 전역 심볼을 생성
-Symbol.for('foo'); // 이미 생성된 심볼을 반환
+Symbol.for("foo"); // create a new global symbol
+Symbol.for("foo"); // retrieve the already created symbol
 
-// 동일한 전역 심볼이지만 지역적으로는 그렇지 않음
-Symbol.for('bar') === Symbol.for('bar'); // true
-Symbol('bar') === Symbol('bar'); // false
+// Same global symbol, but not locally
+Symbol.for("bar") === Symbol.for("bar"); // true
+Symbol("bar") === Symbol("bar"); // false
 
-// 키는 설명으로 사용되기도 함
-var sym = Symbol.for('mario');
+// The key is also used as the description
+const sym = Symbol.for("mario");
 sym.toString(); // "Symbol(mario)"
 ```
 
-전역 심볼 키와 다른 (라이브러리 코드) 전역 심볼의 이름 충돌을 피하려면, 심볼에 접두어를 붙이는 것이 좋습니다.
+To avoid name clashes with your global symbol keys and other (library code) global
+symbols, it might be a good idea to prefix your symbols:
 
 ```js
-Symbol.for('mdn.foo');
-Symbol.for('mdn.bar');
+Symbol.for("mdn.foo");
+Symbol.for("mdn.bar");
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Symbol.keyFor()")}}

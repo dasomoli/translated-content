@@ -1,12 +1,13 @@
 ---
-title: 인접 형제 결합자
+title: Adjacent sibling combinator
 slug: Web/CSS/Adjacent_sibling_combinator
-original_slug: Web/CSS/인접_형제_선택자
+page-type: css-combinator
+browser-compat: css.selectors.adjacent_sibling
 ---
 
 {{CSSRef("Selectors")}}
 
-**인접 형제 결합자**(`+`)는 앞에서 지정한 요소의 **바로 다음**에 위치하는 형제 요소만 선택합니다.
+The **adjacent sibling combinator** (`+`) separates two selectors and matches the second element only if it _immediately_ follows the first element, and both are children of the same parent {{DOMxRef("element")}}.
 
 ```css
 /* Paragraphs that come immediately after any image */
@@ -15,13 +16,13 @@ img + p {
 }
 ```
 
-## 구문
+## Syntax
 
-```
+```css
 former_element + target_element { style properties }
 ```
 
-## 예제
+## Examples
 
 ### CSS
 
@@ -41,18 +42,18 @@ li:first-of-type + li {
 </ul>
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample("예제", "100%", 100)}}
+{{EmbedLiveSample("Examples", "100%", 100)}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [일반 형제 결합자](/ko/docs/Web/CSS/General_sibling_combinator)
+- [General sibling combinator](/en-US/docs/Web/CSS/General_sibling_combinator)

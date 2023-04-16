@@ -1,32 +1,35 @@
 ---
 title: 503 Service Unavailable
 slug: Web/HTTP/Status/503
+page-type: http-status-code
+browser-compat: http.status.503
 ---
+
 {{HTTPSidebar}}
 
-하이퍼텍스트 전송 프로토콜(HTTP) **`503 Service Unavailable`** 서버 에러 응답 코드는 서버가 요청을 처리할 준비가 되지 않은 것을 의미합니다.
+The HyperText Transfer Protocol (HTTP) **`503 Service Unavailable`** server error response code indicates that the server is not ready to handle the request.
 
-흔하게는 서버가 점검을 위해 다운되거나 과부하 때문에 발생합니다. 이 응답은 일시적인 상황을 위해 사용되어야 하며, {{HTTPHeader("Retry-After")}} HTTP 헤더는 가능하다면 서비스 복구를 위한 예상 시간을 포함해야 합니다.
+Common causes are a server that is down for maintenance or that is overloaded. This response should be used for temporary conditions and the {{HTTPHeader("Retry-After")}} HTTP header should, if possible, contain the estimated time for the recovery of the service.
 
-> **참고:** 이 응답(response)과 함께, 이 문제에 대해 설명하는 사용자 친화적 페이지가 전달되어야 합니다.
+> **Note:** together with this response, a user-friendly page explaining the problem should be sent.
 
-503 상태는 종종 일시적인 상황이며 응답은 일반적으로 캐시되지 않아야 하므로, 이 응답과 함께 전달되는 캐싱 관련 헤더들은 주의 깊게 다루어져야 합니다.
+Caching-related headers that are sent along with this response should be taken care of, as a 503 status is often a temporary condition and responses shouldn't usually be cached.
 
-## 상태
+## Status
 
 ```http
 503 Service Unavailable
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{HTTPHeader("Retry-After")}}
-- [HTTP/1.1: Status Code Definitions](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
+- [HTTP Status Code Definitions](https://httpwg.org/specs/rfc9110.html#status.503)

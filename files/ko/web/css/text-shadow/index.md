@@ -1,15 +1,17 @@
 ---
 title: text-shadow
 slug: Web/CSS/text-shadow
+page-type: css-property
+browser-compat: css.properties.text-shadow
 ---
 
 {{CSSRef}}
 
-**`text-shadow`** [CSS](/ko/docs/Web/CSS) 속성은 텍스트에 그림자(shadow)를 추가합니다. 텍스트와 그 장식에 적용 할 쉼표로 구분 된 그림자 목록을 허용합니다. 각 그림자는 요소, 흐림 반경 및 색상의 X 및 Y 오프셋 조합으로 설명됩니다.
+The **`text-shadow`** CSS property adds shadows to text. It accepts a comma-separated list of shadows to be applied to the text and any of its [`decorations`](/en-US/docs/Web/CSS/text-decoration). Each shadow is described by some combination of X and Y offsets from the element, blur radius, and color.
 
 {{EmbedInteractiveExample("pages/css/text-shadow.html")}}
 
-## 구문
+## Syntax
 
 ```css
 /* offset-x | offset-y | blur-radius | color */
@@ -38,7 +40,7 @@ text-shadow: unset;
 
 This property is specified as a comma-separated list of shadows.
 
-Each shadow is specified as two or three `<length>` values, followed optionally by a `<color>` value. The first two `<length>` values are the `<offset-x>` and `<offset-y>` values. The third, optional, `<length>` value is the `<blur-radius>`. The`<color>` value is the shadow's color.
+Each shadow is specified as two or three `<length>` values, followed optionally by a `<color>` value. The first two `<length>` values are the `<offset-x>` and `<offset-y>` values. The third, optional, `<length>` value is the `<blur-radius>`. The `<color>` value is the shadow's color.
 
 When more than one shadow is given, shadows are applied front-to-back, with the first-specified shadow on top.
 
@@ -72,9 +74,10 @@ This property applies to both {{cssxref("::first-line")}} and {{cssxref("::first
 ```
 
 ```html
-<p class="red-text-shadow">Sed ut perspiciatis unde omnis iste
-    natus error sit voluptatem accusantium doloremque laudantium,
-    totam rem aperiam, eaque ipsa quae ab illo inventore.</p>
+<p class="red-text-shadow">
+  Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
+  doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore.
+</p>
 ```
 
 {{EmbedLiveSample('Simple_shadow', '660px', '90px')}}
@@ -90,23 +93,25 @@ This property applies to both {{cssxref("::first-line")}} and {{cssxref("::first
 ```
 
 ```html
-<p class="white-text-with-blue-shadow">Sed ut perspiciatis unde omnis iste
-    natus error sit voluptatem accusantium doloremque laudantium,
-    totam rem aperiam, eaque ipsa quae ab illo inventore.</p>
+<p class="white-text-with-blue-shadow">
+  Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
+  doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore.
+</p>
 ```
 
 {{EmbedLiveSample('Multiple_shadows', '660px', '170px')}}
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- {{cssxref("box-shadow")}}
 - The {{cssxref("&lt;color&gt;")}} data type (for specifying the shadow color)
+- {{cssxref("box-shadow")}}
+- {{cssxref("filter-function/drop-shadow", "drop-shadow()")}}
 - [Applying color to HTML elements using CSS](/en-US/docs/Web/CSS/CSS_Colors/Applying_color)

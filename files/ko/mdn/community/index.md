@@ -1,68 +1,82 @@
 ---
-title: MDN에 피드백을 보내주세요!
+title: Community guidelines
 slug: MDN/Community
-original_slug: MDN/Contribute/Feedback
+page-type: mdn-community-guide
 ---
 
-<div>{{MDNSidebar}}</div>
+{{MDNSidebar}}
 
-<p>Mozilla 개발자 네트워크에 오신것을 환영합니다! 만일 당신이 MDN을 사용하면서 발견한 문제점들이나 바라는 점들을 제안하고 싶다면 이곳은 당신에게 어울리는 장소입니다. 당신이 피드백을 제공함으로써 당신의 Mozilla 커뮤니티에서의 힘은 더 커질 것이고 우리는 당신의 관심에 감사드릴 것입니다.</p>
+👋 Welcome to MDN Web Docs, an open-source, collaborative project that documents web platform technologies, including [HTML](/en-US/docs/Web/HTML), [CSS](/en-US/docs/Web/CSS), [JavaScript](/en-US/docs/Web/JavaScript), and [Web APIs](/en-US/docs/Web/API).
+We also provide extensive [learning resources](/en-US/docs/Learn) for early-stage developers and students.
 
-<p>당신에게는 당신의 통찰력을 제공하기 위한 몇가지 선택사항들이 있으며 이 문서는 당신에게 도움을 줄 것입니다.</p>
+By participating in and contributing to our projects and discussions, you acknowledge that you have read and agree to the [Mozilla community participation guidelines](https://github.com/mdn/mdn-community/blob/main/CODE_OF_CONDUCT.md).
 
-<h2 id="자료_업데이트하기">자료 업데이트하기</h2>
+## Ways to contribute
 
-<p>당신이 문서에서 문제점을 찾았다면, 그냥 고치면 됩니다. </p>
+- [Fixing known high impact issues](https://github.com/orgs/mdn/projects/25/views/1)
+- [Reviewing pull requests](/en-US/docs/MDN/Community/Pull_requests)
+- [Help beginners to learn on MDN Web Docs](/en-US/docs/MDN/Community/Learn_forum)
+- [Contribute to MDN Web Docs interactive examples](https://github.com/mdn/interactive-examples/blob/main/CONTRIBUTING.md)
+- [Help translate MDN Web Docs](/en-US/docs/MDN/Community/Contributing/Translated_content)
+- [Help fix known platform issues](https://github.com/mdn/yari/issues)
+- [Help us keep browser compatibility data up to date.](https://github.com/mdn/browser-compat-data)
 
-<ol>
- <li><a href="https://github.com/">Github</a>을 이용해서 <a href="/ko/docs/MDN/Contribute/Howto/Create_an_MDN_account">계정을 만들고</a></li>
- <li>원하는 페이지에서 파란색 <strong>편집</strong> 버튼을 클릭해서 에디터를 엽니다.</li>
- <li>변경이 끝나면 <strong>게시</strong> 버튼을 클릭합니다. </li>
-</ol>
+## Guides in this section
 
-<p>문서는 모두 위키 기반이며 자원봉사자들과 스탭들이 관리하므로 문법적인 것에 너무 부담가질 필요 없습니다. 실수가 있다면 우리가 고칠 겁니다. 걱정하지 마세요.</p>
+This is the list of guides and pages in this section.
 
-<p>MDN 문서작성에 도움을 주는 방법을 알고싶다면 :</p>
+- [Contributing](/en-US/docs/MDN/Community/Contributing)
 
-<ul>
- <li><a href="/ko/docs/Project:Getting_started" title="/en-US/docs/Project:Getting_started">시작하기</a></li>
- <li><a href="/ko/docs/MDN/Contribute">MDN에 도움주기</a></li>
- <li><a href="/ko/docs/MDN/Contribute/Editor" title="/en-US/docs/Project:MDN_editing_interface">MDN 편집 인터페이스</a></li>
-</ul>
+  - : This section explains how you can start contributing and the type of contributions we accept. This section covers the following topics:
 
-<h2 id="대화에_참여하기">대화에 참여하기</h2>
+    - [Getting started](/en-US/docs/MDN/Community/Contributing/Getting_started)
+    - [Our repositories](/en-US/docs/MDN/Community/Contributing/Our_repositories)
+    - [Translated content](/en-US/docs/MDN/Community/Contributing/Translated_content)
+    - [Security vulnerability response steps](/en-US/docs/MDN/Community/Contributing/Security_vulnerability_response)
 
-<p>우리랑 대화하세요! MDN 콘텐츠에 일하는 다른 사람들과 연락하는 몇가지 방법이 여기 있습니다.</p>
+- [Open source etiquette](/en-US/docs/MDN/Community/Open_source_etiquette)
 
-<h3 id="채팅실시간">채팅(실시간)</h3>
+  - : This article explains how to behave when contributing to our open source project.
 
-<p>우리는 MDN과 콘텐츠에 대한 의견을 <a href="https://wiki.mozilla.org/IRC">IRC</a>를 통해서 나눕니다. 당신도 참여하세요! 주제별로 몇가지 채널이 있습니다. </p>
+- [Discussions](/en-US/docs/MDN/Community/Discussions)
 
-<dl>
- <dt><a href="irc://irc.mozilla.org/mdn" title="irc://irc.mozilla.org/mdn">MDN 사이트 콘텐츠 (#mdn)</a></dt>
- <dd>사이트 이용법, 콘텐츠 읽는 법, 기여하는 방법 등에 대한 MDN의 일반적인 논의를 합니다. 콘텐츠에 대한 질문이나 덧붙일 말이 있을 때, 기고문을 작성하거나, 그냥 작성팀과 이야기하고 싶을 때 이곳을 이용합니다. </dd>
- <dt><a href="irc://irc.mozilla.org/mdndev" title="irc://irc.mozilla.org/mdndev">문서 사이트 개발 (#mdndev)</a></dt>
- <dd><a href="https://chat.mozilla.org/#/room/#mdn:mozilla.org">Matrix</a> 채널은 MDN 사이드가 동작하는 플랫폼 개발작업에 대해 이야기하는 곳입니다. 사이트 동작에 문제를 겪었거나 신규 기능에 대한 아이디어가 있다면 이곳을 찾으세요. </dd>
-</dl>
+  - : On MDN Web Docs, we encourage our community to start and/or engage in discussions around topics related to the overall project. Discussions are categorized by different topic areas. This article explains the details.
 
-<h3 id="토론_비동기">토론 (비동기)</h3>
+- [Learn forum](/en-US/docs/MDN/Community/Learn_forum)
 
-<p>장기 토론은 <a href="https://discourse.mozilla-community.org/c/mdn">MDN 토론 포럼</a> 을 사용합니다. 이메일(<a href="mailto://mdn@mozilla-community.org">mdn@mozilla-community.org</a>)을 통해서 포럼에 게시물을 올릴 수 있습니다. 포럼에 합류하면 이메일로 토론 알림을 받을건지 선택할 수 있습니다. </p>
+  - : Our [Learn web development](/en-US/docs/Learn) pages get over a million views per month and have [active forums](https://discourse.mozilla.org/c/mdn/learn/250), where people go to ask for general help or request that their assessments be marked. We'd love some help with answering posts and growing our learning community. In this article, you'll learn what we need help with and the skills you'll need to provide help.
 
-<h2 id="문제_보고하기">문제 보고하기</h2>
+- [Issues](/en-US/docs/MDN/Community/Issues)
 
-<h3 id="문서_오류">문서 오류</h3>
+  - : Issues are used to track all bugs and work that has a clear actionable outcome. This article contains guidelines on opening and working on issues. This article also covers the following topics:
 
-<p>당신이 문서 오류를 발견했는데 수정할 수 없다면, <a href="https://github.com/mdn/sprints/issues/new?template=issue-template.md&amp;projects=mdn/sprints/2&amp;labels=user-report">신고</a>하면 됩니다! 모든 종류의 문서 오류가 해당됩니다. 예를 들면</p>
+    - [Issue triage](/en-US/docs/MDN/Community/Issues/Issue_triage)
+    - [Content and feature suggestions](/en-US/docs/MDN/Community/Issues/Content_suggestions_feature_proposals)
 
-<ul>
- <li>단순 교정</li>
- <li>완전히 새로운 항목 요청</li>
- <li>잘못된 콘텐츠 신고 (악성광고, 잘못 붙인 번역)</li>
-</ul>
+- [Pull requests](/en-US/docs/MDN/Community/Pull_requests)
 
-<p>위에서도 말한 것 처럼, 우리는 당신이 직접 기여하기를 원합니다. 하지만 신고만해도 괜찮습니다. </p>
+  - : This section covers our guidelines for submitting pull requests and what you should expect from the review process.
 
-<h3 id="사이트_오류">사이트 오류</h3>
+- [Users and teams](/en-US/docs/MDN/Community/Users_teams)
 
-<p>MDN 사이트의 문제점을 겪었거나, 신규기능의 아이디어가 있다면 <a href="https://bugzilla.mozilla.org/form.mdn">MDN 개발팀으로 이슈 티켓을 끊어주세요</a>. </p>
+  - : This section provides an overview of the users and teams that are part of the MDN Web Docs project and details what it means to be part of a team.
+
+## Code of conduct
+
+By participating in and contributing to our projects and discussions, you acknowledge that you have read and agree to the [Mozilla community participation guidelines](https://github.com/mdn/mdn-community/blob/main/CODE_OF_CONDUCT.md).
+
+## Get in touch
+
+You can communicate with the MDN Web Docs team and community using the [communication channels](/en-US/docs/MDN/Community/Communication_channels).
+
+> If you are learning web development and are stuck on a coding problem, we have [active forums](/en-US/docs/MDN/Community/Communication_channels#forums) where you can ask questions and get help.
+
+### General support questions
+
+We are a small team working hard to keep up with the documentation demands of a continuously changing web ecosystem. Unfortunately, we just can't help with general support questions. For general help while learning to code, please refer to the following resources:
+
+- [Learn web development](/en-US/docs/Learn)
+- [MDN Web Docs learn forum](https://discourse.mozilla.org/c/mdn/learn/250)
+- [Stackoverflow](https://stackoverflow.com/questions/)
+
+Any issues, discussions, or pull requests opened on repositories requesting support will be directed here, then closed and locked.

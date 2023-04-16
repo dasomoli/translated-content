@@ -1,55 +1,57 @@
 ---
 title: Math.sin()
 slug: Web/JavaScript/Reference/Global_Objects/Math/sin
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Math.sin
 ---
 
 {{JSRef}}
 
-**`Math.sin()`** 함수는 숫자의 사인값을 반환합니다.
+The **`Math.sin()`** static method returns the sine of a number in radians.
 
 {{EmbedInteractiveExample("pages/js/math-sin.html")}}
 
 ## Syntax
 
-```js
-    Math.sin(x)
+```js-nolint
+Math.sin(x)
 ```
 
-### 파라미터
+### Parameters
 
 - `x`
-  - : 숫자 (라디안으로 주어짐).
+  - : A number representing an angle in radians.
 
-### 반환 값
+### Return value
 
-주어진 숫자의 사인 값
+The sine of `x`, between -1 and 1, inclusive. If `x` is {{jsxref("Infinity")}}, `-Infinity`, or {{jsxref("NaN")}}, returns {{jsxref("NaN")}}.
 
-## 설명
+## Description
 
-`Math.sin()` 메소드는 라디안으로 주어진 각도의 사인 값인 -1과 1 사이의 수를 반환합니다.
+Because `sin()` is a static method of `Math`, you always use it as `Math.sin()`, rather than as a method of a `Math` object you created (`Math` is not a constructor).
 
-`sin()` 은 `Math`의 스태틱 메소드이기 때문에, `Math` 오브젝트 의 메소드로 사용하지 말고 항상 `Math.sin()`로 사용해야합니다. (`Math` 는 생성자가 아닙니다).
+## Examples
 
-## 예
-
-### Using `Math.sin()`
+### Using Math.sin()
 
 ```js
-Math.sin(0);           // 0
-Math.sin(1);           // 0.8414709848078965
-
+Math.sin(-Infinity); // NaN
+Math.sin(-0); // -0
+Math.sin(0); // 0
+Math.sin(1); // 0.8414709848078965
 Math.sin(Math.PI / 2); // 1
+Math.sin(Infinity); // NaN
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 보기
+## See also
 
 - {{jsxref("Math.acos()")}}
 - {{jsxref("Math.asin()")}}

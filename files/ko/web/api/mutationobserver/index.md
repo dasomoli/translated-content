@@ -1,73 +1,77 @@
 ---
 title: MutationObserver
 slug: Web/API/MutationObserver
-l10n:
-  sourceCommit: 76c7e0502bb6bfa765946c32562fdc93e8456e19
+page-type: web-api-interface
+browser-compat: api.MutationObserver
 ---
 
 {{APIRef("DOM WHATWG")}}
 
-`MutationObserver` 인터페이스는 [DOM](/ko/docs/Web/API/Document_Object_Model) 트리의 변경을 감지하는 기능을 제공합니다. DOM3 이벤트 명세의 일부였던 [Mutation Events](/ko/docs/Web/API/MutationEvent)를 대체합니다.
+The {{domxref("MutationObserver")}} interface provides the ability to watch for changes being made to the [DOM](/en-US/docs/Web/API/Document_Object_Model) tree. It is designed as a replacement for the older [Mutation Events](/en-US/docs/Web/API/MutationEvent) feature, which was part of the DOM3 Events specification.
 
-## 생성자
+## Constructor
 
 - {{domxref("MutationObserver.MutationObserver", "MutationObserver()")}}
-  - : DOM 변경이 발생하면 콜백을 호출하는 새 `MutationObserver`를 생성하고 반환합니다.
+  - : Creates and returns a new `MutationObserver` which will invoke a specified callback function when DOM changes occur.
 
-## 인스턴스 메서드
+## Instance methods
 
 - {{domxref("MutationObserver.disconnect()", "disconnect()")}}
-  - : {{domxref("MutationObserver.observe", "observe()")}}를 호출하기 전까지 `MutationObserver` 인스턴스가 더이상의 알림을 수신하지 않도록 설정합니다.
+  - : Stops the `MutationObserver` instance from receiving further notifications until and unless {{domxref("MutationObserver.observe", "observe()")}} is called again.
 - {{domxref("MutationObserver.observe()", "observe()")}}
-  - : 주어진 설정과 일치하는 DOM 변경이 발생했을 때 `MutationObserver` 인스턴스가 자신의 콜백으로 알림을 수신하도록 설정합니다.
+  - : Configures the `MutationObserver` to begin receiving notifications through its callback function when DOM changes matching the given options occur.
 - {{domxref("MutationObserver.takeRecords()", "takeRecords()")}}
-  - : `MutationObserver`의 알림 큐를 비우고, 큐에서 대기 중이던 알림들은 {{domxref("MutationRecord")}}들로 구성된 새로운 {{jsxref("Array")}}로 반환합니다.
+  - : Removes all pending notifications from the `MutationObserver`'s notification queue and returns them in a new {{jsxref("Array")}} of {{domxref("MutationRecord")}} objects.
 
-## 예제
+## Mutation Observer & customize resize event listener & demo
 
-다음 예제는 [이 블로그 글](https://hacks.mozilla.org/2012/05/dom-mutationobserver-reacting-to-dom-changes-without-killing-browser-performance/)에서 가져온 것입니다.
+<https://codepen.io/milofultz/pen/LYjPXPw>
+
+## Example
+
+The following example was adapted from [this blog post](https://hacks.mozilla.org/2012/05/dom-mutationobserver-reacting-to-dom-changes-without-killing-browser-performance/).
 
 ```js
-// 변경을 감지할 노드 선택
+// Select the node that will be observed for mutations
 const targetNode = document.getElementById("some-id");
 
-// 감지 옵션 (감지할 변경)
+// Options for the observer (which mutations to observe)
 const config = { attributes: true, childList: true, subtree: true };
 
-// 변경 감지 시 실행할 콜백 함수
+// Callback function to execute when mutations are observed
 const callback = (mutationList, observer) => {
   for (const mutation of mutationList) {
     if (mutation.type === "childList") {
-      console.log("자식 노드가 추가되거나 제거됐습니다.");
+      console.log("A child node has been added or removed.");
     } else if (mutation.type === "attributes") {
-      console.log(`${mutation.attributeName} 특성이 변경됐습니다.`);
+      console.log(`The ${mutation.attributeName} attribute was modified.`);
     }
   }
 };
 
-// 콜백 함수에 연결된 감지기 인스턴스 생성
+// Create an observer instance linked to the callback function
 const observer = new MutationObserver(callback);
 
-// 설정한 변경의 감지 시작
+// Start observing the target node for configured mutations
 observer.observe(targetNode, config);
 
-// 이후 감지 중단 가능
+// Later, you can stop observing
 observer.disconnect();
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref('PerformanceObserver')}}
 - {{domxref('ResizeObserver')}}
 - {{domxref('IntersectionObserver')}}
-- [짧은 개요](https://developer.chrome.com/blog/detect-dom-changes-with-mutation-observers/)
-- [좀 더 깊게 알아보기](https://hacks.mozilla.org/2012/05/dom-mutationobserver-reacting-to-dom-changes-without-killing-browser-performance/)
-- [Chromium 개발자 Rafael Weinstein의 발표](https://www.youtube.com/watch?v=eRZ4pO0gVWw)
+- [A brief overview](https://developer.chrome.com/blog/detect-dom-changes-with-mutation-observers/)
+- [A more in-depth discussion](https://hacks.mozilla.org/2012/05/dom-mutationobserver-reacting-to-dom-changes-without-killing-browser-performance/)
+- [A screencast by Chromium developer Rafael Weinstein](https://www.youtube.com/watch?v=eRZ4pO0gVWw)

@@ -2,41 +2,45 @@
 title: position
 slug: Web/XPath/Functions/position
 ---
+
 {{ XsltRef() }}
 
-`position` 함수는 식 평가 문맥(expression evaluation context)와 위치가 같은 숫자를 반환합니다.
+The `position` function returns a number equal to the context position from the expression evaluation context.
 
-### 구문
+### Syntax
 
 ```
 position()
 ```
 
-### 반환
+### Returns
 
-식 평가 문맥과 위치가 같은 정수.
+An integer equal to the context position from the expression evaluation context.
 
-### 주의
+### Notes
 
-- 문맥 안 노드의 위치는 0 기반이 아님을 주의하세요. 첫 노드는 위치가 1입니다.
-- 문맥은 경로의 나머지로 결정됩니다.
+- Note that a node's position in a context is not zero-based. The first node has a position of 1.
 
-```
-<xsl:template match="//a[position() = 5">
- <!-- 이 템플릿은 문서 안 다섯 번째 a 요소와 일치합니다. -->
-</xsl:template>
-```
+- The context is determined by the rest of the path.
 
-```
-<xsl:template match="//div[@class='foo']/bar[position() = 1]">
- <!-- 이 템플릿은 class 속성이 "foo"이고 div 요소의 자식인 첫 번째 bar 요소와 일치합니다 -->
-</xsl:template>
-```
+  ```xml
+  <xsl:template match="//a[position() = 5]">
+    <!-- this template matches the fifth a element
+            anywhere in the document. -->
+  </xsl:template>
+  ```
 
-### 정의
+  ```xml
+  <xsl:template match="//div[@class='foo']/bar[position() = 1]">
+    <!-- this template matches the first bar element that is
+        a child of a div element with a class attribute equal to "foo" -->
+  </xsl:template>
+  ```
 
-[XPath 1.0 4.1](http://www.w3.org/TR/xpath#function-position)
+### Defined
 
-### Gecko 지원
+[XPath 1.0 4.1](https://www.w3.org/TR/1999/REC-xpath-19991116/#function-position)
 
-지원함.
+### Gecko support
+
+Supported.

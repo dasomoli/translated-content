@@ -1,55 +1,53 @@
 ---
-title: scroll
+title: "Document: scroll event"
+short-title: scroll
 slug: Web/API/Document/scroll_event
+page-type: web-api-event
+browser-compat: api.Document.scroll_event
 ---
 
-document view 나 element가 스크롤 될 때, **`scroll`** 이벤트가 발생합니다.
+{{APIRef}}
 
-## 개요
+The **`scroll`** event fires when the document view has been scrolled.
+To detect when scrolling has completed, see the {{domxref("Document/scrollend_event", "Document: scrollend event")}}.
+For element scrolling, see {{domxref("Element/scroll_event", "Element: scroll event")}}.
 
-| 인터페이스   | {{domxref("UIEvent")}}                                                |
-| ------------ | --------------------------------------------------------------------------- |
-| 버블         | element에는 없지만, document에서 실행될 때 버블링이 발생합니다.             |
-| 취소가능여부 | 불가                                                                        |
-| 타겟         | DefaultView, {{domxref("Document")}}, {{domxref("Element")}} |
-| 기본 액션    | 없음                                                                        |
+## Syntax
 
-## 속성
-
-| 속성                                  | 타입                                 | 설명                                                                   |
-| ------------------------------------- | ------------------------------------ | ---------------------------------------------------------------------- |
-| `target` {{readonlyInline}}     | {{domxref("EventTarget")}} | 이벤트 대상 (DOM 트리의 최상위 타겟)                                   |
-| `type` {{readonlyInline}}       | {{domxref("DOMString")}}     | 이벤트의 타입                                                          |
-| `bubbles` {{readonlyInline}}    | {{domxref("Boolean")}}         | 이벤트가 버블이 되는지                                                 |
-| `cancelable` {{readonlyInline}} | {{domxref("Boolean")}}         | 이벤트 취소가 가능한지                                                 |
-| `view` {{readonlyInline}}       | {{domxref("WindowProxy")}} | {{domxref("Document.defaultView")}} (document의 `window`) |
-| `detail` {{readonlyInline}}     | `long` (`float`)                     | `0`.                                                                   |
-
-## 예제
-
-### 스크롤 이벤트의 조절
-
-`scroll` 이벤트가 빠른 속도로 실행될 수 있기 때문에, 이벤트 핸들러는 DOM 수정과 같이 느린 작업을 실행하지 말아야 합니다. 대신, 다음을 사용하여 이벤트를 제한하는 것을 권장합니다.
-{{domxref("Window.requestAnimationFrame()", "requestAnimationFrame()")}}, {{domxref("WindowOrWorkerGlobalScope.setTimeout()", "setTimeout()")}}, 혹은, {{domxref("CustomEvent")}}
-
-그러나 입력 이벤트와 애니메이션 프레임은 거의 동일한 속도로 실행되므로 아래 최적화는 종종 불필요합니다. 다음은 `requestAnimationFrame`에 대한 `scroll`이벤트를 최적화하는 예제입니다.
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
 
 ```js
-// 참조: http://www.html5rocks.com/en/tutorials/speed/animations/
+addEventListener("scroll", (event) => {});
 
-let last_known_scroll_position = 0;
+onscroll = (event) => {};
+```
+
+## Event type
+
+A generic {{domxref("Event")}}.
+
+## Examples
+
+### Scroll event throttling
+
+Since `scroll` events can fire at a high rate, the event handler shouldn't execute computationally expensive operations such as DOM modifications. Instead, it is recommended to throttle the event using {{DOMxRef("Window.requestAnimationFrame()", "requestAnimationFrame()")}}, {{DOMxRef("setTimeout()")}}, or a {{DOMxRef("CustomEvent")}}, as follows.
+
+Note, however, that input events and animation frames are fired at about the same rate, and therefore the optimization below is often unnecessary. This example optimizes the `scroll` event for `requestAnimationFrame`.
+
+```js
+let lastKnownScrollPosition = 0;
 let ticking = false;
 
-function doSomething(scroll_pos) {
-  // scroll 위치에 대한 작업을 하세요
+function doSomething(scrollPos) {
+  // Do something with the scroll position
 }
 
-window.addEventListener('scroll', function(e) {
-  last_known_scroll_position = window.scrollY;
+document.addEventListener("scroll", (event) => {
+  lastKnownScrollPosition = window.scrollY;
 
   if (!ticking) {
-    window.requestAnimationFrame(function() {
-      doSomething(last_known_scroll_position);
+    window.requestAnimationFrame(() => {
+      doSomething(lastKnownScrollPosition);
       ticking = false;
     });
 
@@ -58,15 +56,15 @@ window.addEventListener('scroll', function(e) {
 });
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - [Document: `scrollend` event](/en-US/docs/Web/API/Document/scrollend_event)
 - [Element: `scroll` event](/en-US/docs/Web/API/Element/scroll_event)

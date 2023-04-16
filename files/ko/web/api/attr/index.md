@@ -1,59 +1,59 @@
 ---
 title: Attr
 slug: Web/API/Attr
+page-type: web-api-interface
+browser-compat: api.Attr
 ---
 
 {{APIRef("DOM")}}
 
-**`Attr`** 인터페이스는 요소의 속성 중 하나를 객체로 나타냅니다. 대부분의 경우 속성 값을 문자열로 직접 검색하지만(예: {{domxref("Element.getAttribute()")}}), 특정 함수(예: {{domxref("Element.getAttributeNode()")}})나 반복을 통해서는 `Attr` 인스턴스를 반환합니다.
+The **`Attr`** interface represents one of an element's attributes as an object. In most situations, you will directly retrieve the attribute value as a string (e.g., {{domxref("Element.getAttribute()")}}), but certain functions (e.g., {{domxref("Element.getAttributeNode()")}}) or means of iterating return `Attr` instances.
 
 {{InheritanceDiagram}}
 
-`Attr` 객체의 핵심 개념은 '이름'과 '값'의 연관성입니다. 또한 속성은 '네임스페이스'의 일부인 경우가 있는데 이때는 네임스페이스를 식별하는 URI와 네임스페이스의 약어인 접두사를 가집니다.
+The core idea of an object of type `Attr` is the association between a _name_ and a _value_. An attribute may also be part of a _namespace_ and, in this case, it also has a URI identifying the namespace, and a prefix that is an abbreviation for the namespace.
 
-이름은 네임스페이스 접두사를 무시하면 로컬로, 네임스페이스 내의 속성을 포함하면(콜론(`:`)으로 로컬 이름과 구분된 경우도) 한정(_qualified_)된 것으로 간주됩니다. 네임스페이스 외부의 속성, 접두사가 정의되지 않은 네임스페이스 내부의 속성, 접두사가 있는 네임스페이스 내부의 속성과 같은 다음 세 가지 경우로 나눌 수 있습니다.
+The name is deemed _local_ when it ignores the eventual namespace prefix and deemed _qualified_ when it includes the prefix of the namespace, if any, separated from the local name by a colon (`:`). We have three cases: an attribute outside of a namespace, an attribute inside a namespace without a prefix defined, an attribute inside a namespace with a prefix:
 
-|    속성    | 네임스페이스 이름   | 네임스페이스 접두사   | 속성 로컬 이름          | 한정된 속성 이름             |
+| Attribute | Namespace name | Namespace prefix | Attribute local name | Attribute qualified name |
 | --------- | -------------- | ---------------- | -------------------- | ------------------------ |
 | `myAttr`  | _none_         | _none_           | `myAttr`             | `myAttr`                 |
 | `myAttr`  | `mynamespace`  | _none_           | `myAttr`             | `myAttr`                 |
 | `myAttr`  | `mynamespace`  | `myns`           | `myAttr`             | `myns:myAttr`            |
 
-> **참고:** 이 인터페이스는 SVG, HTML 그리고 MathML 요소의 트리 표현에 존재하는 속성만 나타냅니다.
->
-> {{HTMLElement("table")}} 요소에 대한 {{domxref("HTMLTableElement")}} 인터페이스의 속성을 나타내지 않습니다. (속성에 대한 자세한 내용은 {{Glossary("Attribute", "이 문서")}}를 참고하세요.)
+> **Note:** This interface represents only attributes present in the tree representation of the {{domxref("Element")}}, being a SVG, an HTML or a MathML element. It doesn't represent the _property_ of an interface associated with such element, such as {{domxref("HTMLTableElement")}} for a {{HTMLElement("table")}} element. (See {{Glossary("Attribute", "this article")}} for more information about attributes and how they are _reflected_ into properties.)
 
-## 인스턴스 속성
+## Instance properties
 
-이 인터페이스는 상위 인터페이스인 {{domxref("Node")}}와 {{domxref("EventTarget")}}의 속성도 상속합니다.
+_This interface also inherits the properties of its parent interfaces, {{domxref("Node")}} and {{domxref("EventTarget")}}._
 
 - {{domxref("Attr.localName", "localName")}} {{ReadOnlyInline}}
-  - : 속성의 한정된 이름의 로컬 부분을 나타내는 문자열입니다.
+  - : A string representing the local part of the qualified name of the attribute.
 - {{domxref("Attr.name", "name")}} {{ReadOnlyInline}}
-  - : 속성의 한정된 이름을 나타내는 문자열입니다. 속성이 네임스페이스에 속하지 않은 경우 {{domxref("attr.localName", "localName")}} 속성과 동일합니다.
+  - : The attribute's _qualified name_. If the attribute is not in a namespace, it will be the same as {{domxref("attr.localName", "localName")}} property.
 - {{domxref("Attr.namespaceURI", "namespaceURI")}} {{ReadOnlyInline}}
-  - : 속성의 네임스페이스 URI를 나타내는 문자열입니다. 네임스페이스가 없는 경우 `null`입니다.
+  - : A string representing the URI of the namespace of the attribute, or `null` if there is no namespace.
 - {{domxref("Attr.ownerElement", "ownerElement")}} {{ReadOnlyInline}}
-  - : 속성이 속한 {{domxref("Element")}}입니다.
+  - : The {{domxref("Element")}} the attribute belongs to.
 - {{domxref("Attr.prefix", "prefix")}} {{ReadOnlyInline}}
-  - : 속성의 네임스페이스 접두사를 나타내는 문자열입니다. 접두사가 없거나 네임스페이스가 없는 경우 `null`입니다.
+  - : A string representing the namespace prefix of the attribute, or `null` if a namespace without prefix or no namespace are specified.
 - {{domxref("Attr.specified", "specified")}} {{ReadOnlyInline}} {{deprecated_inline}}
-  - : 이 속성은 항상 `true`를 반환합니다.
+  - : This property always returns `true`.
 - {{domxref("Attr.value", "value")}}
-  - : 이 속성을 사용하여 설정하고 가져올 수 있는 문자열인 속성의 값입니다.
+  - : The attribute's value, a string that can be set and get using this property.
 
-## 인스턴스 메서드
+## Instance methods
 
-이 인터페이스는 특정 메서드를 가지지 않지만, 상위 인터페이스인 {{domxref("Node")}}와 {{domxref("EventTarget")}}의 메서드를 상속합니다.
+_This interface has no specific methods, but inherits the methods of its parent interfaces, {{domxref("Node")}} and {{domxref("EventTarget")}}._
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 다른 노드는 {{domxref("CDATASection")}}, {{domxref("CharacterData")}}, {{domxref("Comment")}}, {{domxref("Document")}}, {{domxref("Element")}}, {{domxref("ProcessingInstruction")}}, 그리고 {{domxref("Text")}}가 있습니다.
+- Other nodes are {{domxref("CDATASection")}}, {{domxref("CharacterData")}}, {{domxref("Comment")}}, {{domxref("Document")}}, {{domxref("Element")}}, {{domxref("ProcessingInstruction")}}, and {{domxref("Text")}}.

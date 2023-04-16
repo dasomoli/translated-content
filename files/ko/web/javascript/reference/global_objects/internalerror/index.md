@@ -1,80 +1,87 @@
 ---
 title: InternalError
 slug: Web/JavaScript/Reference/Global_Objects/InternalError
+page-type: javascript-class
+status:
+  - non-standard
+browser-compat: javascript.builtins.InternalError
 ---
 
-{{JSRef}} {{non-standard_header}}
+{{JSRef}}{{Non-standard_Header}}
 
-**`InternalError`** 객체는 JavaScript 엔진 내부에서 발생한 오류를 나타냅니다.
+The **`InternalError` object** indicates an error that occurred internally in the JavaScript engine.
 
-다음의 오류 예시의 경우는 일반적으로 어떤 값이 너무 큰 경우입니다.
+Example cases are mostly when something is too large, e.g.:
 
-- "too many switch cases", (swich case의 수가 너무 많음)
-- "too many parentheses in regular expression", (정규표현식에 너무 많은 괄호가 있음)
-- "array initializer too large", (배열 초기화 값이 너무 큼)
-- "too much recursion". (너무 많은 재귀 호출)
+- "too many switch cases",
+- "too many parentheses in regular expression",
+- "array initializer too large",
+- "too much recursion".
 
-## 생성자
+`InternalError` is a subclass of {{jsxref("Error")}}.
 
-- {{jsxref("InternalError/InternalError", "InternalError()")}}
-  - : 새로운 `InternalError` 객체를 만듭니다.
+## Constructor
 
-## 인스턴스 속성
+- {{jsxref("InternalError/InternalError", "InternalError()")}} {{Non-standard_Inline}}
+  - : Creates a new `InternalError` object.
 
-- {{jsxref("Error.prototype.message", "InternalError.prototype.message")}}
-  - : 오류 메시지. {{jsxref("Error")}}로부터 상속되었습니다.
-- {{jsxref("Error.prototype.name", "InternalError.prototype.name")}}
-  - : 오류 이름. {{jsxref("Error")}}로부터 상속되었습니다.
-- {{jsxref("Error.prototype.fileName", "InternalError.prototype.fileName")}}
-  - : 오류가 발생한 파일 경로. {{jsxref("Error")}}로부터 상속되었습니다.
-- {{jsxref("Error.prototype.lineNumber", "InternalError.prototype.lineNumber")}}
-  - : 오류가 발생한 곳의 줄 번호. {{jsxref("Error")}}로부터 상속되었습니다.
-- {{jsxref("Error.prototype.columnNumber", "InternalError.prototype.columnNumber")}}
-  - : 오류가 발생한 행의 열 번호. {{jsxref("Error")}}로부터 상속되었습니다.
-- {{jsxref("Error.prototype.stack", "InternalError.prototype.stack")}}
-  - : 스택 추적. {{jsxref("Error")}}로부터 상속되었습니다.
+## Instance properties
 
-## 예제
+_Also inherits instance properties from its parent {{jsxref("Error")}}_.
 
-### 너무 많은 재귀 호출
+These properties are defined on `InternalError.prototype` and shared by all `InternalError` instances.
 
-이 재귀 함수는 종료 조건에 따라 10번 수행됩니다.
+- {{jsxref("Object/constructor", "InternalError.prototype.constructor")}}
+  - : The constructor function that created the instance object. For `InternalError` instances, the initial value is the {{jsxref("InternalError/InternalError", "InternalError")}} constructor.
+- {{jsxref("Error/name", "InternalError.prototype.name")}}
+  - : Represents the name for the type of error. For `InternalError.prototype.name`, the initial value is `"InternalError"`.
+
+## Instance methods
+
+_Inherits instance methods from its parent {{jsxref("Error")}}_.
+
+## Examples
+
+### Too much recursion
+
+This recursive function runs 10 times, as per the exit condition.
 
 ```js
 function loop(x) {
-  if (x >= 10) // "x >= 10" 는 종료 조건입니다.
-    return;
-  // 어떤 코드
-  loop(x + 1); // 재귀 호출
+  // "x >= 10" is the exit condition
+  if (x >= 10) return;
+
+  // do stuff
+  loop(x + 1); // the recursive call
 }
 loop(0);
 ```
 
-이 조건을 매우 높은 값으로 설정하면 작동하지 않습니다:
+Setting this condition to an extremely high value, may not work:
 
 ```js example-bad
 function loop(x) {
-  if (x >= 1000000000000)
-    return;
-  // 어떤 코드
+  if (x >= 1000000000000) return;
+
+  // do stuff
   loop(x + 1);
 }
 loop(0);
 
-// InternalError: too much recursion(너무 많은 재귀 호출)
+// InternalError: too much recursion
 ```
 
-더 많은 정보를 보려면 [InternalError: too much recursion(너무 많은 재귀 호출)](/ko/docs/Web/JavaScript/Reference/Errors/Too_much_recursion)를 보시길 바랍니다.
+For more information, see [InternalError: too much recursion.](/en-US/docs/Web/JavaScript/Reference/Errors/Too_much_recursion)
 
-## 명세
+## Specifications
 
-어떤 표준에도 속하지 않습니다.
+Not part of any standard.
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Error")}}
-- [InternalError: too much recursion(너무 많은 재귀 호출)](/ko/docs/Web/JavaScript/Reference/Errors/Too_much_recursion)
+- [InternalError: too much recursion](/en-US/docs/Web/JavaScript/Reference/Errors/Too_much_recursion)

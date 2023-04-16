@@ -1,98 +1,107 @@
 ---
-title: '<head>: 문서 메타데이터 (헤더) 요소'
+title: "<head>: The Document Metadata (Header) element"
 slug: Web/HTML/Element/head
+page-type: html-element
+browser-compat: html.elements.head
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<head>` 요소**는 기계가 식별할 수 있는 문서 정보(메타데이터)를 담습니다. 정보로는 문서가 사용할 [제목](/ko/docs/Web/HTML/Element/title), [스크립트](/ko/docs/Web/HTML/Element/script), [스타일 시트](/ko/docs/Web/HTML/Element/style) 등이 있습니다.
+The **`<head>`** [HTML](/en-US/docs/Web/HTML) element contains machine-readable information ({{glossary("metadata")}}) about the document, like its [title](/en-US/docs/Web/HTML/Element/title), [scripts](/en-US/docs/Web/HTML/Element/script), and [style sheets](/en-US/docs/Web/HTML/Element/style).
 
-> **참고:** `<head>`의 주 목적은 기계 처리를 위한 정보이고, 사람이 읽을 수 있는 정보가 아닙니다. 최상위 제목, 작성자 목록 등 사람에게 보여야 할 정보는 {{HTMLElement("header")}} 요소를 사용하세요.
+> **Note:** `<head>` primarily holds information for machine processing, not human-readability. For human-visible information, like top-level headings and listed authors, see the {{HTMLElement("header")}} element.
+
+## Attributes
+
+This element includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
+
+- `profile` {{deprecated_inline}} {{Non-standard_Inline}}
+  - : The {{glossary("URI")}}s of one or more metadata profiles, separated by {{Glossary("whitespace", "white space")}}.
+
+## Examples
+
+```html
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Document title</title>
+  </head>
+</html>
+```
+
+## Technical summary
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
       </th>
-      <td>없음.</td>
+      <td>None.</td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
       <td>
         <p>
-          현재 문서가 {{HTMLElement("iframe")}}
-          {{htmlattrxref("srcdoc", "iframe")}} 문서거나, 제목 정보가
-          더 높은 단계의 규약에 존재하는 경우(HTML 이메일의 제목처럼) 0개 이상의
-          메타에이터 콘텐츠.
+          If the document is an {{HTMLElement("iframe")}}
+          <a href="/en-US/docs/Web/HTML/Element/iframe#srcdoc"><code>srcdoc</code></a> document, or if title
+          information is available from a higher level protocol (like the
+          subject line in HTML email), zero or more elements of metadata
+          content.
         </p>
         <p>
-          이외에는 하나 이상의 메타데이터 콘텐츠. 단, 정확히 한 개의
-          {{htmlelement("title")}} 요소를 포함해야 합니다.
+          Otherwise, one or more elements of metadata content where exactly one
+          is a {{HTMLElement("title")}} element.
         </p>
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
+      <th scope="row">Tag omission</th>
       <td>
-        <code>&#x3C;head></code> 요소 내의 첫 번째 것이 요소라면 여는 태그를
-        생략할 수 있습니다.<br /><code>&#x3C;head></code> 요소 뒤의 첫 번째
-        항목이 공백문자나 주석이 아니라면 닫는 태그를 생략할 수 있습니다.
+        The start tag may be omitted if the first thing inside the
+        <code>&#x3C;head></code> element is an element.<br />The end tag may be
+        omitted if the first thing following the
+        <code>&#x3C;head></code> element is not a space character or a comment.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모 요소</th>
-      <td>{{HTMLElement("html")}} 요소의 첫 번째 자식으로 배치.</td>
+      <th scope="row">Permitted parents</th>
+      <td>An {{HTMLElement("html")}} element, as its first child.</td>
     </tr>
     <tr>
-      <th scope="row">암시적 ARIA 역할</th>
+      <th scope="row">Implicit ARIA role</th>
       <td>
         <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
-          >대응하는 역할 없음</a
+          >No corresponding role</a
         >
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 요소</th>
-      <td>없음</td>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>No <code>role</code> permitted</td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLHeadElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
-
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)만 포함합니다.
-
-## 예제
-
-```html
-<!doctype html>
-<html>
-  <head>
-    <title>문서 제목</title>
-  </head>
-</html>
-```
-
-## 참고
-
-HTML5 호환 브라우저는 `<head>`가 없는 경우 자동으로 생성합니다. 하지만 [오래된 구형 브라우저에서는 그렇지 않습니다.](https://www.stevesouders.com/blog/2010/05/12/autohead-my-first-browserscope-user-test/)
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- `<head>` 안에 배치할 수 있는 요소
+- Elements that can be used inside the `<head>`:
 
   - {{HTMLElement("title")}}
   - {{HTMLElement("base")}}

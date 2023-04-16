@@ -1,75 +1,99 @@
 ---
-title: 루프와 반복
+title: Loops and iteration
 slug: Web/JavaScript/Guide/Loops_and_iteration
+page-type: guide
 ---
 
-{{jsSidebar("JavaScript Guide")}} {{PreviousNext("Web/JavaScript/Guide/Control_flow_and_error_handling", "Web/JavaScript/Guide/Functions")}}
+{{jsSidebar("JavaScript Guide")}}
+{{PreviousNext("Web/JavaScript/Guide/Control_flow_and_error_handling",
+  "Web/JavaScript/Guide/Functions")}}
 
-루프는 어떤 것을 반복적으로 시행할때 빠르고 간편한 방법을 제공합니다. [JavaScript Guide](/en-US/docs/Web/JavaScript/Guide)의 이 항목은 JavaScript 에서 사용이 가능한 서로 다른 여러가지 반복문을 소개합니다.
+Loops offer a quick and easy way to do something repeatedly. This
+chapter of the [JavaScript Guide](/en-US/docs/Web/JavaScript/Guide)
+introduces the different iteration statements available to JavaScript.
 
-반복문을 게임의 컴퓨터화된 버전이라고 생각해 보세요. 누군가에게 한 방향으로 X만큼 가게 시키고 다른 방향으로 Y만큼 더 가게 한다고 생각해 보십시오. 예를들어, "동쪽으로 5만큼 가세요"는 다음과 같이 반복문으로 표현 될 수 있습니다.
+You can think of a loop as a computerized version of the game where you tell someone to
+take _X_ steps in one direction, then _Y_ steps in another. For example,
+the idea "Go five steps to the east" could be expressed this way as a loop:
 
 ```js
-var step;
-for (step = 0; step < 5; step++) {
+for (let step = 0; step < 5; step++) {
   // Runs 5 times, with values of step 0 through 4.
-  console.log('Walking east one step');
+  console.log("Walking east one step");
 }
 ```
 
-반복문은 매우 다양한 종류가 있습니다. 하지만 반복문이 기본적으로 하는일은 모두 같습니다. 반복문은 한 동작을 여러 번 반복합니다. (사실 0회 반복하는 것도 가능합니다.) 다양한 반복문 메커니즘은 다양한 방법으로 반복문의 시작점과 끝나는 점을 정할 수 있습니다.
+There are many different kinds of loops, but they all essentially do the same thing:
+they repeat an action some number of times. (Note that it's possible that number could
+be zero!)
 
-자바스크립트가 지원하는 반복문은 다음과 같습니다:
+The various loop mechanisms offer different ways to determine the start and end points
+of the loop. There are various situations that are more easily served by one type of
+loop over the others.
 
-- [for 문](#for_문)
-- [do...while 문](#do...while_문)
-- [while 문](#while_문)
-- [레이블 문](#레이블_문)
-- [break 문](#break_문)
-- [continue 문](#continue_문)
-- [for...in 문](#for...in_문)
-- [for...of 문](#for...of_문)
+The statements for loops provided in JavaScript are:
 
-## `for` 문
+- [for statement](#for_statement)
+- [do...while statement](#do...while_statement)
+- [while statement](#while_statement)
+- [labeled statement](#labeled_statement)
+- [break statement](#break_statement)
+- [continue statement](#continue_statement)
+- [for...in statement](#for...in_statement)
+- [for...of statement](#for...of_statement)
 
-for 반복문은 어떤 특정한 조건이 거짓으로 판별될 때까지 반복합니다. 자바스크립트의 반복문은 C의 반복문과 비슷합니다. for 반복문은 다음과 같습니다.
+## for statement
 
+A {{jsxref("statements/for","for")}} loop repeats until a specified condition evaluates to false. The JavaScript `for` loop is similar to the Java and C `for` loop.
+
+A `for` statement looks as follows:
+
+```js-nolint
+for (initialization; condition; afterthought)
+  statement
 ```
-    for ([초기문]; [조건문]; [증감문])
-      문장
-```
 
-for문이 실행될 때, 다음과 같이 실행됩니다.:
+When a `for` loop executes, the following occurs:
 
-1. 초기화 구문인 초기문이 존재한다면 초기문이 실행됩니다. 이 표현은 보통 1이나 반복문 카운터로 초기 설정이 됩니다. 그러나 복잡한 구문으로 표현 될 때도 있습니다. 또한 변수로 선언 되기도 합니다.
-2. 조건문은 조건을 검사합니다. 만약 조건문이 참이라면, 그 반복문은 실행됩니다. 만약 조건문이 거짓이라면, 그 for문은 종결됩니다. 만약 그 조건문이 생략된다면, 그 조건문은 참으로 추정됩니다.
-3. 문장이 실행됩니다. 많은 문장을 실행할 경우엔, { } 를 써서 문장들을 묶어 줍니다.
-4. 갱신 구문인 증감문이 존재한다면 실행되고 2번째 단계로 돌아갑니다.
+1. The initializing expression `initialization`, if any, is executed. This expression usually initializes one or more loop counters, but the syntax allows an expression of any degree of complexity. This expression can also declare variables.
+2. The `condition` expression is evaluated. If the value of `condition` is true, the loop statements execute. Otherwise, the `for` loop terminates. (If the `condition` expression is omitted entirely, the condition is assumed to be true.)
+3. The `statement` executes. To execute multiple statements, use a [block statement](/en-US/docs/Web/JavaScript/Reference/Statements/block) (`{ }`) to group those statements.
+4. If present, the update expression `afterthought` is executed.
+5. Control returns to Step 2.
 
-### **예시**
+### Example
 
-다음 함수는 스크롤링 목록(다중 선택을 허용하는 요소 {{HTMLElement("select")}}). 에서 선택된 옵션들을 세는 for문 입니다. 이 for문은 변수 i 를 선언하고 0으로 초기화 시킵니다. 이것은 i 가 \<select> 요소 안의 옵션 수가 i 보다 작은지 확인 합니다. 다음의 if문을 수행하고 각 루프를 빠져나간 뒤 i 를 1 증가시킵니다.
+In the example below, the function contains a `for` statement that counts
+the number of selected options in a scrolling list (a [`<select>`](/en-US/docs/Web/HTML/Element/select)
+element that allows multiple selections).
+
+#### HTML
 
 ```html
 <form name="selectForm">
-  <p>
-    <label for="musicTypes">Choose some music types, then click the button below:</label>
-    <select id="musicTypes" name="musicTypes" multiple="multiple">
-      <option selected="selected">R&B</option>
-      <option>Jazz</option>
-      <option>Blues</option>
-      <option>New Age</option>
-      <option>Classical</option>
-      <option>Opera</option>
-    </select>
-  </p>
-  <p><input id="btn" type="button" value="How many are selected?" /></p>
+  <label for="musicTypes"
+    >Choose some music types, then click the button below:</label
+  >
+  <select id="musicTypes" name="musicTypes" multiple>
+    <option selected>R&B</option>
+    <option>Jazz</option>
+    <option>Blues</option>
+    <option>New Age</option>
+    <option>Classical</option>
+    <option>Opera</option>
+  </select>
+  <button id="btn" type="button">How many are selected?</button>
 </form>
+```
 
-<script>
-function howMany(selectObject) {
-  var numberSelected = 0;
-  for (var i = 0; i < selectObject.options.length; i++) {
+#### JavaScript
+
+Here, the `for` statement declares the variable `i` and initializes it to `0`. It checks that `i` is less than the number of options in the `<select>` element, performs the succeeding `if` statement, and increments `i` by 1 after each pass through the loop.
+
+```js
+function countSelected(selectObject) {
+  let numberSelected = 0;
+  for (let i = 0; i < selectObject.options.length; i++) {
     if (selectObject.options[i].selected) {
       numberSelected++;
     }
@@ -77,144 +101,188 @@ function howMany(selectObject) {
   return numberSelected;
 }
 
-var btn = document.getElementById("btn");
-btn.addEventListener("click", function(){
-  alert('Number of options selected: ' + howMany(document.selectForm.musicTypes))
+const btn = document.getElementById("btn");
+
+btn.addEventListener("click", () => {
+  const musicTypes = document.selectForm.musicTypes;
+  console.log(`You have selected ${countSelected(musicTypes)} option(s).`);
 });
-</script>
 ```
 
-## `do...while` 문
+## do...while statement
 
-do...while 문은 특정한 조건이 거짓으로 판별될 때까지 반복합니다. do...while 문은 다음과 같습니다.
+The {{jsxref("statements/do...while", "do...while")}} statement repeats until a
+specified condition evaluates to false.
 
+A `do...while` statement looks as follows:
+
+```js-nolint
+do
+  statement
+while (condition);
 ```
-    do
-      문장
-    while (조건문);
-```
 
-`조건문을 확인하기 전에 문장은 한번 실행됩니다. 많은 문장을 실행하기 위해선 { }를 써서 문장들을 묶어줍니다. 만약 조건이 참이라면, 그 문장은 다시 실행됩니다. 매 실행 마지막마다 조건문이 확인됩니다. 만약 조건문이 거짓일 경우, 실행을 멈추고 do...while 문 바로 아래에 있는 문장으로 넘어가게 합니다.`
+`statement` is always executed once before the condition is
+checked. (To execute multiple statements, use a block statement (`{ }`)
+to group those statements.)
 
-### **예시**
+If `condition` is `true`, the statement executes again. At the
+end of every execution, the condition is checked. When the condition is
+`false`, execution stops, and control passes to the statement following
+`do...while`.
 
-다음 예제에서, do 반복문은 최소 한번은 반복됩니다. 그리고 i 가 5보다 작지 않을 때까지 계속 반복됩니다.
+### Example
+
+In the following example, the `do` loop iterates at least once and
+reiterates until `i` is no longer less than `5`.
 
 ```js
+let i = 0;
 do {
   i += 1;
   console.log(i);
 } while (i < 5);
 ```
 
-## `while` 문
+## while statement
 
-while 문은 어떤 조건문이 참이기만 하면 문장을 계속해서 수행합니다. while 문은 다음과 같습니다.
+A {{jsxref("statements/while","while")}} statement executes its statements as long as a
+specified condition evaluates to `true`. A `while` statement looks
+as follows:
 
+```js-nolint
+while (condition)
+  statement
 ```
-    while (조건문)
-      문장
-```
 
-만약 조건문이 거짓이 된다면, 그 반복문 안의 문장은 실행을 멈추고 반복문 바로 다음의 문장으로 넘어갑니다.
+If the `condition` becomes `false`,
+`statement` within the loop stops executing and control passes to the
+statement following the loop.
 
-조건문은 반복문 안의 문장이 실행되기 전에 확인 됩니다. 만약 조건문이 참으로 리턴된다면, 문장은 실행되고 그 조건문은 다시 판별됩니다. 만약 조건문이 거짓으로 리턴된다면, 실행을 멈추고 while문 바로 다음의 문장으로 넘어가게 됩니다.
+The condition test occurs _before_ `statement` in the loop is
+executed. If the condition returns `true`, `statement` is executed
+and the `condition` is tested again. If the condition returns
+`false`, execution stops, and control is passed to the statement following
+`while`.
 
-많은 문장들을 실행하기 위해선, { }를 써서 문장들을 묶어줍니다.
+To execute multiple statements, use a block statement (`{ }`) to group
+those statements.
 
-### **예시 1**
+### Example 1
 
-다음 while 반복문은 n이 3보다 작은 한, 계속 반복됩니다.
+The following `while` loop iterates as long as `n` is
+less than `3`:
 
 ```js
-n = 0;
-x = 0;
+let n = 0;
+let x = 0;
 while (n < 3) {
   n++;
   x += n;
 }
 ```
 
-매 반복과 함께, n이 증가하고 x에 더해집니다. 그러므로, x와 n은 다음과 같은 값을 갖습니다.
+With each iteration, the loop increments `n` and adds that value to
+`x`. Therefore, `x` and `n` take on the following
+values:
 
-- 첫번째 경과 후: `n` = 1 and `x` = 1
-- 두번째 경과 후: `n` = 2 and `x` = 3
-- 세번째 경과 후: `n` = 3 and `x` = 6
+- After the first pass: `n` = `1` and `x` =
+  `1`
+- After the second pass: `n` = `2` and `x` =
+  `3`
+- After the third pass: `n` = `3` and `x` =
+  `6`
 
-세번째 경과 후에, n < 3 은 더이상 참이 아니므로, 반복문은 종결됩니다.
+After completing the third pass, the condition `n < 3` is no longer
+`true`, so the loop terminates.
 
-### **예시 2**
+### Example 2
 
-조건문은 항상 거짓이 될지라도 무한 루프는 피해야 합니다. 그렇지 않으면 그 반복문은 영원히 끝나지 않을 것입니다. 아래의 while 문은 조건문이 절대 거짓이 될 수 없으므로 영원히 반복될 것입니다.
+Avoid infinite loops. Make sure the condition in a loop eventually becomes
+`false`—otherwise, the loop will never terminate! The statements in the
+following `while` loop execute forever because the condition never becomes
+`false`:
 
-```js
-// 다음과 같은 코드는 피하세요.
+```js example-bad
+// Infinite loops are bad!
 while (true) {
-  console.log("Hello, world");
+  console.log("Hello, world!");
 }
 ```
 
-## 레이블 문
+## labeled statement
 
-[레이블](/en-US/docs/Web/JavaScript/Reference/Statements/label)은 여러분이 프로그램에서 다른 곳으로 참조할 수 있도록 식별자로 문을 제공합니다. 예를 들어, 여러분은 루프를 식별하기 위해 레이블을 사용하고, 프로그램이 루프를 방해하거나 실행을 계속할지 여부를 나타내기 위해 break나 continue 문을 사용할 수 있습니다.
+A {{jsxref("statements/label","label")}} provides a statement with an identifier that
+lets you refer to it elsewhere in your program. For example, you can use a label to
+identify a loop, and then use the `break` or `continue` statements
+to indicate whether a program should interrupt the loop or continue its execution.
 
-레이블 문의 구문은 다음과 같습니다:
+The syntax of the labeled statement looks like the following:
 
+```js-nolint
+label:
+  statement
 ```
-    label :
-       statement
-```
 
-레이블 값은 예약어가 아닌 임의의 JavaScript 식별자일 수 있습니다. 여러분이 레이블을 가지고 식별하는 문은 어떠한 문이 될 수 있습니다.
+The value of `label` may be any JavaScript identifier that is not a
+reserved word. The `statement` that you identify with a label may be
+any statement.
 
-### **예시**
+### Example
 
-이 예에서, 레이블 markLoop는 while 루프를 식별합니다.
+In this example, the label `markLoop` identifies a `while` loop.
 
 ```js
-markLoop:
-while (theMark == true) {
-   doSomething();
+markLoop: while (theMark) {
+  doSomething();
 }
 ```
 
-## `break` 문
+## break statement
 
-break문은 반복문, switch문, 레이블 문과 결합한 문장을 빠져나올 때 사용합니다.
+Use the {{jsxref("statements/break","break")}} statement to terminate a loop,
+`switch`, or in conjunction with a labeled statement.
 
-- 레이블 없이 break문을 쓸 때: 가장 가까운 `while`, `do-while`, `for`, 또는 `switch`문을 종료하고 다음 명령어로 넘어갑니다.
-- 레이블 문을 쓸 때: 특정 레이블 문에서 끝납니다.
+- When you use `break` without a label, it terminates the innermost
+  enclosing `while`, `do-while`, `for`, or
+  `switch` immediately and transfers control to the following statement.
+- When you use `break` with a label, it terminates the specified labeled
+  statement.
 
-break문의 문법은 다음과 같습니다.
-
-1. `break;`
-2. `break [레이블];`
-
-break문의 첫번째 형식은 가장 안쪽의 반복문이나 switch문을 빠져나옵니다. 두번째 형식는 특정한 레이블 문을 빠져나옵니다.
-
-### **예시** **1**
-
-다음 예
+The syntax of the `break` statement looks like this:
 
 ```js
-for (i = 0; i < a.length; i++) {
-  if (a[i] == theValue) {
+break;
+break label;
+```
+
+1. The first form of the syntax terminates the innermost enclosing loop or `switch`.
+2. The second form of the syntax terminates the specified enclosing labeled statement.
+
+### Example 1
+
+The following example iterates through the elements in an array until it finds the
+index of an element whose value is `theValue`:
+
+```js
+for (let i = 0; i < a.length; i++) {
+  if (a[i] === theValue) {
     break;
   }
 }
 ```
 
-### **예시 2:** Breaking to a label
+### Example 2: Breaking to a label
 
 ```js
-var x = 0;
-var z = 0
+let x = 0;
+let z = 0;
 labelCancelLoops: while (true) {
-  console.log("Outer loops: " + x);
+  console.log("Outer loops:", x);
   x += 1;
   z = 1;
   while (true) {
-    console.log("Inner loops: " + z);
+    console.log("Inner loops:", z);
     z += 1;
     if (z === 10 && x === 10) {
       break labelCancelLoops;
@@ -225,118 +293,176 @@ labelCancelLoops: while (true) {
 }
 ```
 
-## continue 문
+## continue statement
 
-[`continue`](/en-US/docs/Web/JavaScript/Reference/Statements/continue) 문은 while, do-while, for, 레이블 문을 다시 시작하기 위해 사용될 수 있습니다.
+The {{jsxref("statements/continue","continue")}} statement can be used to restart a
+`while`, `do-while`, `for`, or `label`
+statement.
 
-- 레이블없이 continue를 사용하는 경우, 그것은 가장 안쪽의 while, do-while, for 문을 둘러싼 현재 반복을 종료하고, 다음 반복으로 루프의 실행을 계속합니다. break문과 달리, continue 문은 전체 루프의 실행을 종료하지 않습니다. while 루프에서 그것은 다시 조건으로 이동합니다. for 루프에서 그것은 증가 표현으로 이동합니다.
-- 레이블과 함께 continue를 사용하는 경우, continue는 그 레이블로 식별되는 루프 문에 적용됩니다.
+- When you use `continue` without a label, it terminates the current
+  iteration of the innermost enclosing `while`, `do-while`, or
+  `for` statement and continues execution of the loop with the next
+  iteration. In contrast to the `break` statement, `continue` does
+  not terminate the execution of the loop entirely. In a `while` loop, it
+  jumps back to the condition. In a `for` loop, it jumps to the
+  `increment-expression`.
+- When you use `continue` with a label, it applies to the looping statement
+  identified with that label.
 
-continue 문의 구문은 다음과 같습니다:
-
-1. `continue;`
-2. `continue`_`label;`_
-
-### **예시 1**
-
-다음의 예는 i 값이 3일 때 실행하는 continue 문과 함께 while 루프를 보여줍니다. 따라서, n은 값 1, 3, 7, 12를 취합니다.
+The syntax of the `continue` statement looks like the following:
 
 ```js
-i = 0;
-n = 0;
+continue;
+continue label;
+```
+
+### Example 1
+
+The following example shows a `while` loop with a `continue`
+statement that executes when the value of `i` is `3`. Thus,
+`n` takes on the values `1`, `3`, `7`, and
+`12`.
+
+```js
+let i = 0;
+let n = 0;
 while (i < 5) {
   i++;
-  if (i == 3) {
+  if (i === 3) {
     continue;
   }
   n += i;
+  console.log(n);
 }
+//1,3,7,12
 ```
 
-### **예시 2**
+If you comment out the `continue;`, the loop would run till the end and you would see `1,3,6,10,15`.
 
-checkiandj 레이블 문은 checkj 레이블 문을 포함합니다. continue가 발생하는 경우, 프로그램은 checkj의 현재 반복을 종료하고, 다음 반복을 시작합니다. 그 조건이 false를 반환 할 때까지 continue가 발생할 때마다, checkj는 반복합니다. false가 반환될 때, checkiandj 문의 나머지 부분은 완료되고, 그 조건이 false를 반환 할 때까지 checkiandj는 반복합니다. false가 반환될 때, 이 프로그램은 다음 checkiandj 문에서 계속됩니다.
+### Example 2
 
-continue가 checkiandj의 레이블을 가지고 있다면, 프로그램은 checkiandj 문 상단에서 계속될 것입니다.
+A statement labeled `checkiandj` contains a statement labeled
+`checkj`. If `continue` is encountered, the program
+terminates the current iteration of `checkj` and begins the next
+iteration. Each time `continue` is encountered, `checkj`
+reiterates until its condition returns `false`. When `false` is
+returned, the remainder of the `checkiandj` statement is completed,
+and `checkiandj` reiterates until its condition returns
+`false`. When `false` is returned, the program continues at the
+statement following `checkiandj`.
+
+If `continue` had a label of `checkiandj`, the program
+would continue at the top of the `checkiandj` statement.
 
 ```js
-checkiandj:
-  while (i < 4) {
-    console.log(i);
-    i += 1;
-    checkj:
-      while (j > 4) {
-        console.log(j);
-        j -= 1;
-        if ((j % 2) == 0) {
-          continue checkj;
-        }
-        console.log(j + " is odd.");
-      }
-      console.log("i = " + i);
-      console.log("j = " + j);
+let i = 0;
+let j = 10;
+checkiandj: while (i < 4) {
+  console.log(i);
+  i += 1;
+  checkj: while (j > 4) {
+    console.log(j);
+    j -= 1;
+    if (j % 2 === 0) {
+      continue checkj;
+    }
+    console.log(j, "is odd.");
   }
-```
-
-## `for...in` 문
-
-[`for...in`](/en-US/docs/Web/JavaScript/Reference/Statements/for...in) 문은 객체의 열거 속성을 통해 지정된 변수를 반복합니다. 각각의 고유한 속성에 대해, JavaScript는 지정된 문을 실행합니다. for...in 문은 다음과 같습니다:
-
-```
-for (variable in object) {
-  statements
+  console.log("i =", i);
+  console.log("j =", j);
 }
 ```
 
-### **예시**
+## for...in statement
 
-다음 함수는 객체와 객체의 이름을 함수의 인수로 취합니다. 그런 다음 모든 객체의 속성을 반복하고 속성 이름과 값을 나열하는 문자열을 반환합니다.
+The {{jsxref("statements/for...in","for...in")}} statement iterates a specified
+variable over all the enumerable properties of an object. For each distinct property,
+JavaScript executes the specified statements. A `for...in` statement looks as
+follows:
+
+```js-nolint
+for (variable in object)
+  statement
+```
+
+### Example
+
+The following function takes as its argument an object and the object's name. It then
+iterates over all the object's properties and returns a string that lists the property
+names and their values.
 
 ```js
-function dump_props(obj, obj_name) {
-  var result = "";
-  for (var i in obj) {
-    result += obj_name + "." + i + " = " + obj[i] + "<br>";
+function dumpProps(obj, objName) {
+  let result = "";
+  for (const i in obj) {
+    result += `${objName}.${i} = ${obj[i]}<br>`;
   }
   result += "<hr>";
   return result;
 }
 ```
 
-속성 make와 model을 가진 객체 car의 경우, 결과는 다음과 같습니다:
+For an object `car` with properties `make` and `model`, `result` would be:
 
-```js
+```
 car.make = Ford
 car.model = Mustang
 ```
 
-### **배열**
+### Arrays
 
-{{jsxref("배열")}} 요소를 반복하는 방법으로 이를 사용하도록 유도될 수 있지만, **for...in** 문은 숫자 인덱스에 추가하여 사용자 정의 속성의 이름을 반환합니다. 따라서 만약 여러분이 사용자 정의 속성 또는 메서드를 추가하는 등 Array 객체를 수정한다면, 배열 요소 이외에도 사용자 정의 속성을 통해 **for...in** 문을 반복하기 때문에, 배열을 통해 반복할 때 숫자 인덱스와 전통적인 [`for`](/en-US/docs/Web/JavaScript/Reference/Statements/for) 루프를 사용하는 것이 좋습니다.
+Although it may be tempting to use this as a way to iterate over {{jsxref("Array")}}
+elements, the `for...in` statement will return the name of your user-defined
+properties in addition to the numeric indexes.
 
-## `for...of` 문
+Therefore, it is better to use a traditional {{jsxref("statements/for","for")}} loop
+with a numeric index when iterating over arrays, because the `for...in`
+statement iterates over user-defined properties in addition to the array elements, if
+you modify the Array object (such as adding custom properties or methods).
 
-[`for...of`](/en-US/docs/Web/JavaScript/Reference/Statements/for...of) 문은 각각의 고유한 특성의 값을 실행할 명령과 함께 사용자 지정 반복 후크를 호출하여, [반복 가능한 객체](/en-US/docs/Web/JavaScript/Guide/iterable)({{jsxref("배열")}}, {{jsxref("Map")}}, {{jsxref("Set")}}, [인수](/en-US/docs/Web/JavaScript/Reference/Functions_and_function_scope/arguments) 객체 등을 포함)를 통해 반복하는 루프를 만듭니다.
+## for...of statement
 
+The {{jsxref("statements/for...of","for...of")}} statement creates a loop Iterating
+over [iterable objects](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) (including
+{{jsxref("Array")}}, {{jsxref("Map")}}, {{jsxref("Set")}},
+{{jsxref("functions/arguments","arguments")}} object and so on), invoking a custom
+iteration hook with statements to be executed for the value of each distinct property.
+
+```js-nolint
+for (variable of object)
+  statement
 ```
-    for (variable of object) {
-      statement
-    }
-```
 
-다음 예는 for...of 루프와 [`for...in`](/en-US/docs/Web/JavaScript/Reference/Statements/for...in) 루프의 차이를 보여줍니다. 속성 이름을 통해 for...in이 반복하는 동안, for...of은 속성 값을 통해 반복합니다:
+The following example shows the difference between a `for...of` loop and a
+{{jsxref("statements/for...in","for...in")}} loop. While `for...in` iterates
+over property names, `for...of` iterates over property values:
 
 ```js
-let arr = [3, 5, 7];
+const arr = [3, 5, 7];
 arr.foo = "hello";
 
-for (let i in arr) {
-   console.log(i); // logs "0", "1", "2", "foo"
+for (const i in arr) {
+  console.log(i);
 }
+// "0" "1" "2" "foo"
 
-for (let i of arr) {
-   console.log(i); // logs "3", "5", "7"
+for (const i of arr) {
+  console.log(i);
 }
+// Logs: 3 5 7
 ```
 
-{{PreviousNext("Web/JavaScript/Guide/Control_flow_and_error_handling", "Web/JavaScript/Guide/Functions")}}
+The `for...of` and `for...in` statements can also be used with [destructuring](/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment). For example, you can simultaneously loop over the keys and values of an object using {{jsxref("Object.entries()")}}.
+
+```js
+const obj = { foo: 1, bar: 2 };
+
+for (const [key, val] of Object.entries(obj)) {
+  console.log(key, val);
+}
+// "foo" 1
+// "bar" 2
+```
+
+{{PreviousNext("Web/JavaScript/Guide/Control_flow_and_error_handling",
+  "Web/JavaScript/Guide/Functions")}}

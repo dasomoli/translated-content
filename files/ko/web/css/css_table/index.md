@@ -1,15 +1,17 @@
 ---
 title: CSS Table
 slug: Web/CSS/CSS_Table
+page-type: css-module
+spec-urls: https://www.w3.org/TR/CSS22/tables.html
 ---
 
 {{CSSRef}}
 
-**CSS Table**은 표 데이터의 배치법을 정의하는 CSS 모듈입니다.
+**CSS Table** is a CSS module that defines how to lay out table data.
 
-## 참고서
+## Reference
 
-### 속성
+### Properties
 
 - {{cssxref("border-collapse")}}
 - {{cssxref("border-spacing")}}
@@ -18,6 +20,6 @@ slug: Web/CSS/CSS_Table
 - {{cssxref("table-layout")}}
 - {{cssxref("vertical-align")}}
 
-## 명세서
+## Specifications
 
 {{Specifications}}

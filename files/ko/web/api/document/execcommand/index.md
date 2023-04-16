@@ -1,138 +1,238 @@
 ---
-title: Document.execCommand()
+title: "Document: execCommand() method"
+short-title: execCommand()
 slug: Web/API/Document/execCommand
+page-type: web-api-instance-method
+status:
+  - deprecated
+browser-compat: api.Document.execCommand
 ---
+
 {{ApiRef("DOM")}}{{deprecated_header}}
 
-HTML 문서가 `designMode`로 전환되면 문서에서 `execCommand` 메서드를 사용할 수 있게 되는데 이것을 이용해서 문서의 편집 가능한 영역을 변경할 수 있습니다. 대부분의 명령어는 문서의 선택 영역에 영향(_볼드, 이탤릭 등_)을 미치고 나머지는 새 요소를 추가(링크 추가)하거나 전체 줄에 영향(들여쓰기)을 미칩니다. `contentEditable`을 사용할 때에 `execCommand()`를 호출하면 현재 활성화된 편집 요소에 영향을 미칩니다.
+When an HTML document has been switched to
+[`designMode`](/en-US/docs/Web/API/Document/designMode), its
+`document` object exposes an **`execCommand`**
+method to run commands that manipulate the current editable region, such as [form inputs](/en-US/docs/Web/HTML/Element/input) or
+[`contentEditable`](/en-US/docs/Web/HTML/Global_attributes/contenteditable)
+elements.
 
-## 문법
+Most commands affect the document's [selection](/en-US/docs/Web/API/Selection) (bold, italics, etc.), while others
+insert new elements (adding a link), or affect an entire line (indenting). When using
+`contentEditable`, `execCommand()` affects the currently active
+editable element.
 
-```js
-bool = document.execCommand(aCommandName, aShowDefaultUI, aValueArgument)
+The [Clipboard API](/en-US/docs/Web/API/Clipboard_API) can be used instead of `execCommand` in many cases, but `execCommand` is still sometimes useful. In particular, the Clipboard API doesn't replace the `insertText` command, which you can use to programmatically replace text at the cursor while preserving the undo buffer (edit history) in plain `textarea` and `input` elements.
+
+## Syntax
+
+```js-nolint
+execCommand(aCommandName, aShowDefaultUI, aValueArgument)
 ```
 
-### 반환값
-
-명령어가 지원되지 않거나 활성화되어 있지 않으면 `false` {{jsxref('Boolean')}} 값을 반환합니다.
-
-### 매개 변수
+### Parameters
 
 - `aCommandName`
-  - : 실행해야할 명령어 이름 {{domxref("DOMString")}}을 나타냅니다. 사용 가능한 명령어 목록은 [Commands](#commands)를 참고하세요.
+
+  - : A string specifying the name of the command to execute. The following commands are specified:
+    - `backColor`
+      - : Changes the document background color. In `styleWithCss` mode, it affects the background color of the containing block instead. This requires a {{cssxref("&lt;color&gt;")}} value string to be passed in as a value argument.
+    - `bold`
+      - : Toggles bold on/off for the selection or at the insertion point.
+    - `contentReadOnly`
+      - : Makes the content document either read-only or editable. This requires a boolean true/false as the value argument.
+    - `copy`
+      - : Copies the current selection to the clipboard. Conditions of having this behavior enabled vary from one browser to another, and have evolved over time. Check the compatibility table to determine if you can use it in your case.
+    - `createLink`
+      - : Creates an hyperlink from the selection, but only if there is a selection. Requires a {{Glossary("URI")}} string as a value argument for the hyperlink's `href`. The URI must contain at least a single character, which may be whitespace.
+    - `cut`
+      - : Removes the current selection and copies it to the clipboard. When this behavior is enabled varies between browsers, and its conditions have evolved over time. Check [the compatibility table](#browser_compatibility) for usage details.
+    - `decreaseFontSize`
+      - : Adds a {{HTMLElement("small")}} tag around the selection or at the insertion point.
+    - `defaultParagraphSeparator`
+      - : Changes the paragraph separator used when new paragraphs are created in editable text regions. See [Differences in markup generation](/en-US/docs/Web/Guide/HTML/Editable_content#differences_in_markup_generation) for more details.
+    - `delete`
+      - : Deletes the current selection.
+    - `enableAbsolutePositionEditor`
+      - : Enables or disables the grabber that allows absolutely-positioned elements to be moved around. The grabber is disabled by default since Firefox 64 ([Firefox bug 1490641](https://bugzil.la/1490641)).
+    - `enableInlineTableEditing`
+      - : Enables or disables the table row/column insertion and deletion controls. The controls are disabled by default since Firefox 64 ([Firefox bug 1490641](https://bugzil.la/1490641)).
+    - `enableObjectResizing`
+      - : Enables or disables the resize handles on images, tables, and absolutely-positioned elements and other resizable objects. The handles are disabled by default since Firefox 64 ([Firefox bug 1490641](https://bugzil.la/1490641)).
+    - `fontName`
+      - : Changes the font name for the selection or at the insertion point. This requires a font name string (like `"Arial"`) as a value argument.
+    - `fontSize`
+      - : Changes the font size for the selection or at the insertion point. This requires an integer from `1` - `7` as a value argument.
+    - `foreColor`
+      - : Changes a font color for the selection or at the insertion point. This requires a hexadecimal color value string as a value argument.
+    - `formatBlock`
+      - : Adds an HTML block-level element around the line containing the current selection, replacing the block element containing the line if one exists (in Firefox, {{HTMLElement("blockquote")}} is the exception — it will wrap any containing block element). Requires a tag-name string as a value argument. Virtually all block-level elements can be used. (Legacy Edge only supports heading tags `H1` – `H6`, `ADDRESS`, and `PRE`, which must be wrapped in angle brackets, such as `"<H1>"`.)
+    - `forwardDelete`
+      - : Deletes the character ahead of the [cursor](https://en.wikipedia.org/wiki/Cursor_%28computers%29)'s position, identical to hitting the Delete key on a Windows keyboard.
+    - `heading`
+      - : Adds a heading element around a selection or insertion point line. Requires the tag-name string as a value argument (i.e., `"H1"`, `"H6"`). (Not supported by Safari.)
+    - `hiliteColor`
+      - : Changes the background color for the selection or at the insertion point. Requires a color value string as a value argument. `useCSS` must be `true` for this to function.
+    - `increaseFontSize`
+      - : Adds a {{HTMLElement("big")}} tag around the selection or at the insertion point.
+    - `indent`
+      - : Indents the line containing the selection or insertion point. In Firefox, if the selection spans multiple lines at different levels of indentation, only the least indented lines in the selection will be indented.
+    - `insertBrOnReturn`
+      - : Controls whether the Enter key inserts a {{HTMLElement("br")}} element, or splits the current block element into two.
+    - `insertHorizontalRule`
+      - : Inserts a {{HTMLElement("hr")}} element at the insertion point, or replaces the selection with it.
+    - `insertHTML`
+      - : Inserts an HTML string at the insertion point (deletes selection). Requires a valid HTML string as a value argument.
+    - `insertImage`
+      - : Inserts an image at the insertion point (deletes selection). Requires a URL string for the image's `src` as a value argument. The requirements for this string are the same as `createLink`.
+    - `insertOrderedList`
+      - : Creates a [numbered ordered list](/en-US/docs/Web/HTML/Element/ol) for the selection or at the insertion point.
+    - `insertUnorderedList`
+      - : Creates a [bulleted unordered list](/en-US/docs/Web/HTML/Element/ul) for the selection or at the insertion point.
+    - `insertParagraph`
+      - : Inserts a [paragraph](/en-US/docs/Web/HTML/Element/p) around the selection or the current line.
+    - `insertText`
+      - : Inserts the given plain text at the insertion point (deletes selection).
+    - `italic`
+      - : Toggles italics on/off for the selection or at the insertion point.
+    - `justifyCenter`
+      - : Centers the selection or insertion point.
+    - `justifyFull`
+      - : Justifies the selection or insertion point.
+    - `justifyLeft`
+      - : Justifies the selection or insertion point to the left.
+    - `justifyRight`
+      - : Right-justifies the selection or the insertion point.
+    - `outdent`
+      - : Outdents the line containing the selection or insertion point.
+    - `paste`
+      - : Pastes the clipboard contents at the insertion point (replaces current selection). Disabled for web content.
+    - `redo`
+      - : Redoes the previous undo command.
+    - `removeFormat`
+      - : Removes all formatting from the current selection.
+    - `selectAll`
+      - : Selects all of the content of the editable region.
+    - `strikeThrough`
+      - : Toggles strikethrough on/off for the selection or at the insertion point.
+    - `subscript`
+      - : Toggles [subscript](/en-US/docs/Web/HTML/Element/sub) on/off for the selection or at the insertion point.
+    - `superscript`
+      - : Toggles [superscript](/en-US/docs/Web/HTML/Element/sup) on/off for the selection or at the insertion point.
+    - `underline`
+      - : Toggles [underline](/en-US/docs/Web/HTML/Element/u) on/off for the selection or at the insertion point.
+    - `undo`
+      - : Undoes the last executed command.
+    - `unlink`
+      - : Removes the [anchor element](/en-US/docs/Web/HTML/Element/a) from a selected hyperlink.
+    - `useCSS` {{Deprecated_inline}}
+      - : Toggles the use of HTML tags or CSS for the generated markup. Requires a boolean true/false as a value argument.
+        > **Note:** This argument is logically backwards (i.e., use `false` to use CSS,
+        > `true` to use HTML). This has been deprecated in favor of `styleWithCSS`.
+    - `styleWithCSS`
+      - : Replaces the `useCSS` command. `true` modifies/generates `style` attributes in markup, false generates presentational elements.
+    - `AutoUrlDetect`
+      - : Changes the browser auto-link behavior.
+
 - `aShowDefaultUI`
-  - : 기본 사용자 UI가 나타나야하는지를 보여주는 {{jsxref("Boolean")}} 값입니다. Mozilla에서는 구현되어 있지 않습니다.
+  - : A boolean value indicating whether the default user interface should be shown. This is not implemented in Mozilla.
 - `aValueArgument`
-  - : 입력 변수가 필요한 명령어(`insertImage`와 같이 삽입할 이미지의 URL이 필요한)의 경우 이 {{domxref("DOMString")}}으로 정보를 전달합니다. 변수가 필요하지 않으면 `null`을 표기합니다.
+  - : For commands which require an input argument, is a string providing that information. For example, `insertImage` requires the URL of the image to insert. Specify `null` if no argument is needed.
 
-### 명령어
+### Return value
 
-- `backColor`
-  - : 문서의 배경색을 변경합니다. `styleWithCss` 모드에서는 대신 상위 요소의 배경색에 영향을 미칩니다. 변수 값으로 {{cssxref("&lt;color&gt;")}} 값을 넘겨야 합니다. Internet Explorer는 이 명령어를 텍스트 배경색을 변경하는데 사용합니다.
-- `bold`
-  - : 선택 영역이나 입력 위치에 볼드를 온/오프합니다. Internet Explorer는 {{HTMLElement("b")}} 대신 {{HTMLElement("strong")}} 태그를 사용합니다.
-- `contentReadOnly`
-  - : 내용 문서를 읽기 전용으로 하거나 편집 가능하게 합니다. boolean true/false 값을 변수로 넘겨주어야 합니다. (Internet Explorer는 지원하지 않습니다.)
-- `copy`
-  - : 클립보드에 현재 선택 영역의 내용을 복사합니다. 브라우저마다 이 기능이 활성화되는 조건이 다르고 계속해서 변경됩니다. 상황에 따라서 이 기능을 사용할 수 있을지 호환성 표를 참고하세요.
-- `createLink`
-  - : 선택 영역이 있을 때 선택 영역에 링크 요소를 만듭니다. 변수 값으로 HREF URI 문자열이 필요합니다. URI는 최소 한글자 이상이어야 하고 공백문자여도 됩니다. (Internet Explorer는 null URI 값으로 링크를 생성합니다.)
-- `cut`
-  - : 현재 선택 영역을 잘라내어서 클립보드에 복사합니다. 브라우저마다 이 기능이 활성화되는 조건이 다르고 계속해서 변경됩니다. 상황에 따라서 이 기능을 사용할 수 있을지 호환성 표를 참고하세요.
-- `decreaseFontSize`
-  - : 선택 영역이나 입력 위치에 {{HTMLElement("small")}} 태그를 추가합니다. (Internet Explorer는 지원하지 않습니다.)
-- `delete`
-  - : 현재 선택 영역을 지웁니다.
-- `enableInlineTableEditing`
-  - : 표의 행과 열을 추가 삭제하는 명령 도구를 활성화하거나 비활성화합니다. (Internet Explorer는 지원하지 않습니다.)
-- `enableObjectResizing`
-  - : 이미지나 다른 크기 조정이 가능한 객체의 크기 조정 도구를 활성화하거나 비활성화합니다.
-- `fontName`
-  - : 선택 영역이나 입력 위치의 서체 이름을 변경합니다. 변수 값으로 서체 이름 문자열(`예를 드러 "Arial"`)을 넘겨야 합니다.
-- `fontSize`
-  - : 선택 영역이나 입력 위치의 서체 크기를 변경합니다. 변수 값으로 HTML 서체 크기(`1`-`7`)을 넘겨야 합니다.
-- `foreColor`
-  - : 선택 영역이나 입력 위치의 서체 색상을 변경합니다. 변수 값으로 색상 값 문자열을 넘겨야 합니다.
-- `formatBlock`
-  - : 현재 선택 영역이 있는 줄을 포함하는 HTML 요소를 추가하고 줄을 포함하는 요소가 있을 경우 요소을 변경합니다(Firefox에서는 BLOCKQUOTE가 예외적으로 상위 요소를 감쌉니다). 변수 값으로 태그 이름 문자열을 넘겨야 합니다. 실질적으로 모든 블록 요소를 사용할 수 있습니다(예 "H1", "P", "DL", "BLOCKQUOTE"). (Internet Explorer는 제목 태그 H1 - H6와 ADDRESS, PRE만 지원하고 태그 구분자 < >를 써서 "\<H1>"와 같이 사용해야 합니다.)
-- `forwardDelete`
-  - : [커서](http://en.wikipedia.org/wiki/Cursor_%28computers%29) 위치 앞의 글자를 지웁니다. delete 키를 누른 것과 동일합니다.
-- `heading`
-  - : 선택 영역이나 입력 위치 줄에 제목 태그를 추가합니다. 변수 값으로 제목 이름 문자열(예 "H1", "H6")을 넘겨야 합니다. (Internet Explorer와 Safari는 지원하지 않습니다.)
-- `hiliteColor`
-  - : 선택 영역이나 입력 위치의 배경 색상을 변경합니다. 변수 값으로 생상 값 문자열을 넘겨야 합니다. 이 함수는 UseCSS가 반드시 켜져 있어야 합니다. (Internet Explorer는 지원하지 않습니다.)
-- `increaseFontSize`
-  - : 선택 영역이나 입력 위치에 BIG 태그를 추가합니다. (Internet Explorer는 지원하지 않습니다.)
-- `indent`
-  - : 선택 영역이나 입력 위치를 포함하는 줄을 들여쓰기 합니다. Firefox에서는 선택 영역이 여러줄에 걸처 서로 다른 들여쓰기 값을 가지고 있으면 제일 조금 들여쓰기된 줄만 들여쓰기가 됩니다.
-- `insertBrOnReturn`
-  - : 엔터키를 눌렀을 때 br 태그를 넣을지 현재의 블록 요소를 두개로 나줄지 제어합니다. (Internet Explorer는 지원하지 않습니다.)
-- `insertHorizontalRule`
-  - : 입력 위치에 가로줄을 넣습니다(선택 영역은 지워집니다).
-- `insertHTML`
-  - : 입력 위치에 HTML 문자열을 넣습니다(선택 영역을 지워집니다). 변수 값으로 유효한 HTML 문자열을 넘겨야 합니다. (Internet Explorer는 지원하지 않습니다.)
-- `insertImage`
-  - : 입력 위치에 이미지를 넣습니다(선택 영역을 지워집니다). 변수 값으로 이미지의 SRC URI 문자열을 넘겨야 합니다. URI는 최소 한글자 이상이어야 하고 공백문자여도 됩니다. (Internet Explorer는 null URI 값으로 링크를 생성합니다.)
-- `insertOrderedList`
-  - : 선택 영역이나 입력 위치에 번호 순서가 있는 목록을 넣습니다.
-- `insertUnorderedList`
-  - : 선택 영역이나 입력 위치에 번호 순서가 없는 목록을 넣습니다.
-- `insertParagraph`
-  - : 선택 영역이나 현재 줄에 문단 태그를 추가합니다. (Internet Explorer는 입력 위치에 문단을 삽입하고 선택 영역은 삭제합니다.)
-- `insertText`
-  - : 입력 위치에 지정된 텍스트를 입력합니다(선택 영역은 지워집니다).
-- `italic`
-  - : 선택 영역이나 입력 위치에 이탤릭을 온/오프합니다. (Internet Explorer는 I 대신 EM 태그를 사용합니다.)
-- `justifyCenter`
-  - : 선택 영역이나 입력 위치를 가운데 정렬합니다.
-- `justifyFull`
-  - : 선택 영역이나 입력 위치를 양쪽 정렬합니다.
-- `justifyLeft`
-  - : 선택 영역이나 입력 위치를 좌측 정렬합니다.
-- `justifyRight`
-  - : 선택 영역이나 입력 위치를 우측 정렬합니다.
-- `outdent`
-  - : 선택 영역이나 입력 위치의 줄을 내어쓰기 합니다.
-- `paste`
-  - : 입력 위치에 클립보드의 내용을 붙여넣기 합니다(현재의 선택 영역을 교체합니다). user.js 설정 파일에서 클립보드가 활성화 되어 있어야 합니다. 참고 \[1].
-- `redo`
-  - : 이전에 실행 취소된 명령을 다시 실행합니다.
-- `removeFormat`
-  - : 현재 선택 영역의 모든 문서 형식을 제거합니다.
-- `selectAll`
-  - : 편집 가능 영역의 모든 내용을 선택합니다.
-- `strikeThrough`
-  - : 선택 영역이나 입력 위치의 가로줄을 온/오프 합니다.
-- `subscript`
-  - : 선택 영역이나 입력 위치의 아랫첨자를 온/오프 합니다.
-- `superscript`
-  - : 선택 영역이나 입력 위치의 윗첨자를 온/오프 합니다.
-- `underline`
-  - : 선택 영역이나 입력 위치의 밑줄을 온/오프 합니다.
-- `undo`
-  - : 직전에 실행된 명령을 취소합니다.
-- `unlink`
-  - : 선택된 링크에서 링크 태그를 제거합니다.
-- `useCSS` {{Deprecated_inline}}
-  - : 생성된 마크업의 HTML 태그나 CSS 사용을 토글합니다. 변수 값으로 boolean true/false 값을 넘겨야 합니다. 주의: 이 값은 논리적으로 반대입니다(CSS를 사용하기 위해서는 false를 HTML을 사용하기 위해서는 true). (Internet Explorer는 지원하지 않습니다.) 이 명령은 더이상 사용하지 않습니다. 대신 _styleWithCSS_ 명령어를 사용하세요.
-- `styleWithCSS`
-  - : _useCSS_ 명령어를 대체합니다. 변수 값은 예상한대로 작동합니다. 예를 들어서 마크업에서 _style_ 속성을 수정하거나 생성하려면 true를, false는 포매팅 요소를 생성합니다.
+A boolean value that is `false` if the command is unsupported or disabled.
 
-## 예제
+> **Note:** `document.execCommand()` only returns
+> `true` if it is invoked as part of a user interaction. You can't use it to
+> verify browser support before calling a command. From Firefox 82, nested
+> `document.execCommand()` calls will always return `false`.
 
-CodePen의 [how to use](http://codepen.io/netsi1964/full/QbLLGW/)를 참고하세요.
+## Examples
 
-## 명세
+An example of [how to use execCommand with contentEditable elements](https://codepen.io/chrisdavidmills/full/gzYjag/) on CodePen.
 
-{{Specifications}}
+### Using insertText
 
-## 브라우저 호환성
+This example shows two very basic HTML editors, one using a {{HTMLElement("textarea")}} element and one using a {{HTMLElement("pre")}} element with the [`contenteditable`](/en-US/docs/Web/HTML/Global_attributes#contenteditable) attribute set.
+
+Clicking the "Bold" or "Italic" buttons inserts the appropriate tags in the element, using `insertText` to preserve the edit history, so the user can undo the action.
+
+#### HTML
+
+```html
+<h2>textarea</h2>
+
+<div class="actions" data-for="textarea">
+  <button data-el="b">Bold</button>
+  <button data-el="i">Italic</button>
+</div>
+
+<textarea class="editarea">Some text.</textarea>
+
+<h2>contenteditable</h2>
+
+<div class="actions" data-for="pre">
+  <button data-el="b">Bold</button>
+  <button data-el="i">Italic</button>
+</div>
+
+<pre contenteditable="true" class="editarea">Some text.</pre>
+```
+
+#### JavaScript
+
+```js
+// Prepare action buttons
+const buttonContainers = document.querySelectorAll(".actions");
+
+for (const buttonContainer of buttonContainers) {
+  const buttons = buttonContainer.querySelectorAll("button");
+  const pasteTarget = buttonContainer.getAttribute("data-for");
+
+  for (const button of buttons) {
+    const elementName = button.getAttribute("data-el");
+    button.addEventListener("click", () =>
+      insertText(`<${elementName}></${elementName}>`, pasteTarget)
+    );
+  }
+}
+
+// Inserts text at cursor, or replaces selected text
+function insertText(newText, selector) {
+  const textarea = document.querySelector(selector);
+  textarea.focus();
+
+  let pasted = true;
+  try {
+    if (!document.execCommand("insertText", false, newText)) {
+      pasted = false;
+    }
+  } catch (e) {
+    console.error("error caught:", e);
+    pasted = false;
+  }
+
+  if (!pasted) {
+    console.error("paste unsuccessful, execCommand not supported");
+  }
+}
+```
+
+#### Result
+
+{{EmbedLiveSample("Using insertText", 100, 300)}}
+
+## Specifications
+
+This feature is not part of any current specification. It is no longer on track to become a standard.
+
+## Browser compatibility
 
 {{Compat}}
 
-## 참고
+## See also
 
+- [Clipboard API](/en-US/docs/Web/API/Clipboard_API)
 - {{domxref("HTMLElement.contentEditable")}}
 - {{domxref("document.designMode")}}
-- [Rich-Text Editing in Mozilla](/ko/docs/Rich-Text_Editing_in_Mozilla)
-- [Scribe's "Browser Inconsistencies" documentation](https://github.com/guardian/scribe/blob/master/BROWSERINCONSISTENCIES.md) with bugs related to `document.execCommand`.

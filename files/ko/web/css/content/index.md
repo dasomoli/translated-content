@@ -1,106 +1,142 @@
 ---
 title: content
 slug: Web/CSS/content
+page-type: css-property
+browser-compat: css.properties.content
 ---
+
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`content`** 속성은 생성한 값으로 요소를 대체합니다. `content` 속성으로 추가한 요소는 "익명 [대체 요소](/ko/docs/Web/CSS/Replaced_element)"입니다.
+The **`content`** [CSS](/en-US/docs/Web/CSS) property replaces an element with a generated value. Objects inserted using the `content` property are **anonymous [replaced elements](/en-US/docs/Web/CSS/Replaced_element)**.
+
+{{EmbedInteractiveExample("pages/tabbed/content.html", "tabbed-shorter")}}
+
+## Syntax
 
 ```css
-/* 다른 값과 조합할 수 없는 키워드 */
+/* Keywords that cannot be combined with other values */
 content: normal;
 content: none;
 
-/* <image> 값 */
+/* <image> values */
 content: url("http://www.example.com/test.png");
 content: linear-gradient(#e66465, #9198e5);
+content: image-set("image1x.png" 1x, "image2x.png" 2x);
 
-/* 생성한 값의 대체 텍스트, Level 3 명세에서 추가 */
+/* alt text for generated content, added in the Level 3 specification */
 content: url("http://www.example.com/test.png") / "This is the alt text";
 
-/* 앞선 값은 모두 ::before와 ::after에만 적용 가능 */
-
-/* <string> 값 */
+/* <string> value */
 content: "prefix";
 
-/* <counter> 값 */
-content: counter(chapter_counter);
-content: counters(section_counter, ".");
+/* list of content values */
+content: "prefix" url("http://www.example.com/test.png");
+content: "prefix" url("http://www.example.com/test.png") "suffix" /
+  "This is some alt text";
 
-/* HTML 속성값으로 연결하는 attr() */
+/* <counter> values, optionally with <list-style-type> */
+content: counter(chapter_counter);
+content: counter(chapter_counter, upper-roman);
+content: counters(section_counter, ".");
+content: counters(section_counter, ".", decimal-leading-zero);
+
+/* attr() value linked to the HTML attribute value */
 content: attr(value string);
 
-/* 언어와 요소 위치 기반 키워드 */
+/* Language- and position-dependent keywords */
 content: open-quote;
 content: close-quote;
 content: no-open-quote;
 content: no-close-quote;
 
-/* normal과 none을 제외하면 여러 키워드를 함께 사용할 수 있음 */
-content: open-quote chapter_counter;
+/* Except for normal and none, several values can be used simultaneously */
+content: open-quote counter(chapter_counter);
 
-/* 전역 값 */
+/* Global values */
 content: inherit;
 content: initial;
+content: revert;
+content: revert-layer;
 content: unset;
 ```
 
-{{cssinfo}}
-
-## 구문
-
-### 값
+### Values
 
 - `none`
-  - : 의사 요소를 생성하지 않음.
+  - : When applied to a pseudo-element, the pseudo-element is not generated. If applied to an element, the value has no effect.
 - `normal`
-  - : `::before`와 `::after` 의사 요소인 경우 `none`.
+  - : Computes to `none` for the `::before` and `::after` pseudo-elements.
 - {{cssxref("&lt;string&gt;")}}
-  - : 요소의 "대체 텍스트". 모든 숫자와 문자가 가능합니다. 단, 라틴계 문자가 아닌 경우 유니코드 이스케이프 시퀀스를 사용해 인코딩해야 합니다. 예를 들어, `\000A9`는 저작권 기호입니다.
+  - : Specifies the "alt text" for the element. This value can be any number of text characters. Non-Latin characters must be encoded using their Unicode escape sequences: for example, `\000A9` represents the copyright symbol.
+- `<content-list>`
+  - : A list of anonymous inline boxes that will replace the content of the selected element (in the specified order).
+    This list can include strings, images, counters, and so on.
 - {{cssxref("&lt;image&gt;")}}
-  - : {{cssxref("&lt;url&gt;")}}이나 {{cssxref("&lt;gradient&gt;")}} 자료형을 사용한 {{cssxref("&lt;image&gt;")}}, 또는 {{cssxref("element")}} 함수를 사용해 가리킨, 보여줄 웹페이지의 일부.
-- {{cssxref("&lt;counter&gt;")}}
-  - : 보통 숫자인 <a href="/ko/docs/Web/CSS/CSS_Lists_and_Counters/Using_CSS_counters">CSS 카운터 값</a>.{{cssxref("counter")}}나 {{cssxref("counters")}} 함수를 사용해 지정할 수 있습니다.
+  - : An {{cssxref("&lt;image&gt;")}}, denoted by the {{cssxref("url", "url()")}} or {{cssxref("&lt;gradient&gt;")}} data type, or part of the webpage, defined by the {{cssxref("element", "element()")}} function, denoting the content to display.
+- {{cssxref("counter", "counter()")}}
 
-    {{cssxref("counter")}} 함수는 `counter(<var>name</var>)`과 `counter(<var>name</var>, <var>style</var>)`의 두 형태를 가지고 있습니다. 생성하는 값은 주어진 의사 요소의 현재 범위에서, 해당하는 이름을 가진 가장 안쪽 카운터의 값입니다. 지정한 스타일(기본 `decimal`)에 맞춰 서식을 적용합니다.
+  - : The value of a [CSS counter](/en-US/docs/Web/CSS/CSS_Counter_Styles/Using_CSS_counters), generally a number produced by computations defined by {{cssxref("&lt;counter-reset&gt;")}} and {{cssxref("&lt;counter-increment&gt;")}} properties. It can be displayed using either the {{cssxref("counter", "counter()")}} or {{cssxref("counters", "counters()")}} function.
 
-    {{cssxref("counters")}} 함수 역시 `counters(<var>name</var>, <var>string</var>)'과 'counters(<var>name</var>, <var>string</var>, <var>style</var>)`의 두 형태를 가집니다. 생성하는 값은 주어진 의사 요소의 현재 범위에서, 해당하는 이름을 가진 카운터 값의 목록으로 바깥쪽부터 시작하며 주어진 문자열을 사용해 구분합니다. 지정한 스타일(기본 `decimal`)에 맞춰 서식을 적용합니다..
+    The {{cssxref("counter", "counter()")}} function has two forms: 'counter(_name_)' or 'counter(_name_, style)'. The generated text is the value of the innermost counter of the given name in scope at the given pseudo-element. It is formatted in the specified {{cssxref("&lt;list-style-type&gt;")}} (`decimal` by default).
+
+    The {{cssxref("counters", "counters()")}} function also has two forms: 'counters(_name_, _string_)' or 'counters(_name_, _string_, _style_)'. The generated text is the value of all counters with the given name in scope at the given pseudo-element, from outermost to innermost, separated by the specified string. The counters are rendered in the indicated {{cssxref("&lt;list-style-type&gt;")}} (`decimal` by default).
+
 - `attr(x)`
-  - : 문자열로 변환한, 요소 속성 `x`의 값. `x` 속성이 존재하지 않으면 빈 문자열을 반환합니다. 속성명의 대소문자 구분 여부는 문서 언어에 따릅니다.
+  - : The value of the element's attribute `x` as a string. If there is no attribute `x`, an empty string is returned. The case-sensitivity of attribute names depends on the document language.
 - `open-quote` | `close-quote`
-  - : {{cssxref("quotes")}} 속성에서 가져온 적절한 문자열을 사용해 대체.
+  - : These values are replaced by the appropriate string from the {{cssxref("quotes")}} property.
 - `no-open-quote` | `no-close-quote`
-  - : 콘텐츠는 추가하지 않고, 대신 따옴표의 중첩 단계를 증감.
+  - : Introduces no content, but increments (decrements) the level of nesting for quotes.
+- `<content-list> / "Alternative text"`
+  - : Alternative text may be specified for an image (or list of content items) by appending a forward slash and then the text.
+    The alternative text is intended for speech output by screen-readers, but may also be displayed in some browsers.
+    Note that if the browser does not support alternative text, neither the content or alternative text will be used.
 
-### 형식 구문
+## Accessibility concerns
+
+CSS-generated content is not included in the [DOM](/en-US/docs/Web/API/Document_Object_Model/Introduction). Because of this, it will not be represented in the [accessibility tree](/en-US/docs/Learn/Accessibility/What_is_accessibility#accessibility_apis) and certain assistive technology/browser combinations will not announce it. If the content conveys information that is critical to understanding the page's purpose, it is better to include it in the main document.
+
+- [Accessibility support for CSS generated content – Tink](https://tink.uk/accessibility-support-for-css-generated-content/)
+- [Explanation of WCAG, Guideline 1.3 – MDN](/en-US/docs/Web/Accessibility/Understanding_WCAG/Perceivable#guideline_1.3_%e2%80%94_create_content_that_can_be_presented_in_different_ways)
+- [Understanding Success Criterion 1.3.1 | W3C Understanding WCAG 2.0](https://www.w3.org/TR/UNDERSTANDING-WCAG20/content-structure-separation-programmatic.html)
+
+## Formal definition
+
+{{cssinfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 헤딩과 따옴표
+### Headings and quotes
 
-다음 예제는 인용구 주변에 따옴표를 추가하고, 헤딩 앞에 단어 "Chapter"를 추가합니다.
+This example inserts quotation marks around quotes, and adds the word "Chapter" before headings.
 
 #### HTML
 
 ```html
 <h1>5</h1>
-<p>According to Sir Tim Berners-Lee,
-  <q cite="http://www.w3.org/People/Berners-Lee/FAQ.html#Internet">I was
-    lucky enough to invent the Web at the time when the Internet
-    already existed - and had for a decade and a half.</q>
-  We must understand that there is nothing fundamentally wrong
-  with building on the contributions of others.
+<p>
+  According to Sir Tim Berners-Lee,
+  <q cite="http://www.w3.org/People/Berners-Lee/FAQ.html#Internet">
+    I was lucky enough to invent the Web at the time when the Internet already
+    existed - and had for a decade and a half.
+  </q>
+  We must understand that there is nothing fundamentally wrong with building on
+  the contributions of others.
 </p>
 
 <h1>6</h1>
-<p>According to the Mozilla Manifesto,
-  <q cite="http://www.mozilla.org/en-US/about/manifesto/">Individuals
-    must have the ability to shape the Internet and
-    their own experiences on the Internet.</q>
-  Therefore, we can infer that contributing to the open web
-  can protect our own individual experiences on it.
+<p>
+  According to the Mozilla Manifesto,
+  <q cite="http://www.mozilla.org/en-US/about/manifesto/">
+    Individuals must have the ability to shape the Internet and their own
+    experiences on the Internet.
+  </q>
+  Therefore, we can infer that contributing to the open web can protect our own
+  individual experiences on it.
 </p>
 ```
 
@@ -119,44 +155,57 @@ q::after {
   content: close-quote;
 }
 
-h1::before  {
-  content: "Chapter ";  /* The trailing space creates separation
-                           between the added content and the
-                           rest of the content */
+h1::before {
+  content: "Chapter "; /* The trailing space creates separation
+                          between the added content and the
+                          rest of the content */
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('헤딩과_따옴표', '100%', 200)}}
+{{EmbedLiveSample('Headings_and_quotes', '100%', 200)}}
 
-### 이미지와 텍스트
+### Image combined with alternative text
 
-다음 예제는 링크 앞에 이미지를 추가합니다. 이미지를 가져오지 못한 경우 텍스트를 대신 추가합니다.
+This example inserts an image before the link and provides alternative text that a screen reader can output as speech.
+Some browsers may also display the alternative text.
 
 #### HTML
 
 ```html
-<a href="http://www.mozilla.org/en-US/">Mozilla Home Page</a>
+<a href="https://www.mozilla.org/en-US/">Mozilla Home Page</a>
 ```
 
 #### CSS
 
+The CSS to show the image and set the alternative text is shown below.
+This also sets the font and color for the content.
+This will only be used on browsers that _display_ the alternative text.
+
 ```css
 a::before {
-  content: url("https://mozorg.cdn.mozilla.net/media/img/favicon.ico") " MOZILLA: ";
+  content: url("https://mozorg.cdn.mozilla.net/media/img/favicon.ico") /
+    " MOZILLA: ";
   font: x-small Arial, sans-serif;
   color: gray;
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('이미지와_텍스트', '100%', 60)}}
+The browser should display the icon before the link below.
+If using a screen reader, it should speak the word "MOZILLA" when it reaches the image.
 
-### 클래스 사용
+{{EmbedLiveSample('Image_combined_with_text', '100%', 60)}}
 
-다음 예제는 목록의 특별한 항목 뒤에 추가 텍스트를 삽입합니다.
+Note that on a browser that does not support the alternative text syntax, the whole line is invalid.
+In this case neither the image or alternative text will be used!
+You could partially address this issue by including CSS that adds the image before the line with them both.
+
+### Targeting classes
+
+This example inserts additional text after special items in a list.
 
 #### HTML
 
@@ -174,29 +223,31 @@ a::before {
 
 ```css
 .new-entry::after {
-  content: " New!";  /* The leading space creates separation
-                        between the added content and the
-                        rest of the content */
+  content: " New!"; /* The leading space creates separation
+                       between the added content and the
+                       rest of the content */
   color: red;
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('클래스_사용', '100%', 160)}}
+{{EmbedLiveSample('Targeting_classes', '100%', 160)}}
 
-### 이미지와 요소 속성
+### Images and element attributes
 
-다음 예제는 링크 앞에 이미지를 추가하고, 뒤에 `id` 속성의 값을 붙입니다.
+This example inserts an image before each link, and adds its `id` attribute after.
 
 #### HTML
 
 ```html
 <ul>
-  <li><a id="moz" href="http://www.mozilla.org/">
-    Mozilla Home Page</a></li>
-  <li><a id="mdn" href="https://developer.mozilla.org/">
-    Mozilla Developer Network</a></li>
+  <li><a id="moz" href="https://www.mozilla.org/"> Mozilla Home Page</a></li>
+  <li>
+    <a id="mdn" href="https://developer.mozilla.org/">
+      Mozilla Developer Network</a
+    >
+  </li>
 </ul>
 ```
 
@@ -213,11 +264,11 @@ a::after {
 }
 
 #moz::before {
-  content: url("https://mozorg.cdn.mozilla.net/media/img/favicon.ico") ;
+  content: url("https://mozorg.cdn.mozilla.net/media/img/favicon.ico");
 }
 
 #mdn::before {
-  content: url("mdn-favicon16.png") ;
+  content: url("mdn-favicon16.png");
 }
 
 li {
@@ -225,13 +276,13 @@ li {
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('이미지와_요소_속성', '100%', 160)}}
+{{EmbedLiveSample('Images_and_element_attributes', '100%', 160)}}
 
-### 요소 대체
+### Element replacement
 
-다음 예제는 요소의 콘텐츠를 이미지로 대체합니다. {{cssxref("&lt;url&gt;")}} 또는 {{cssxref("&lt;image&gt;")}} 사용하면 콘텐츠를 대체합니다. 요소를 대체했으므로 `::before`나 `::after`는 생성하지 않습니다.
+This example replaces an element's content with an image. You can replace the contents of an element with either a {{cssxref("url", "url()")}} or an {{cssxref("&lt;image&gt;")}} value. Content added with `::before` or `::after` will not be generated as the contents of the element have been replaced.
 
 #### HTML
 
@@ -246,35 +297,30 @@ li {
   content: url("mdn.svg");
 }
 
-#replaced::after { /* will not show if element replacement is supported */
+/* will not show if element replacement is supported */
+#replaced::after {
   content: " (" attr(id) ")";
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('요소_대체', '100%', 200)}}
+{{EmbedLiveSample('Element_replacement', '100%', 200)}}
 
-## 접근성 고려사항
-
-CSS로 생성한 콘텐츠는 [DOM](/ko/docs/Web/API/Document_Object_Model/소개)이 포함하지 않고, [접근성 트리](/ko/docs/Learn/접근성/What_is_accessibility)에도 들어가지 않습니다. 따라서 특정 접근성 기술/브라우저 조합이 내용을 표현하지 않을 수 있습니다. 콘텐츠가 포함한 정보가 페이지의 목적을 이해하는 것에 중요하다면 주 문서로 포함하는 것이 좋습니다.
-
-- [Accessibility support for CSS generated content – Tink](https://tink.uk/accessibility-support-for-css-generated-content/)
-- [Explanation of WCAG, Guideline 1.3 – MDN](/ko/docs/Web/Accessibility/Understanding_WCAG/Perceivable#Guideline_1.3_%E2%80%94_Create_content_that_can_be_presented_in_different_ways)
-- [Understanding Success Criterion 1.3.1 | W3C Understanding WCAG 2.0](https://www.w3.org/TR/UNDERSTANDING-WCAG20/content-structure-separation-programmatic.html)
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Replaced elements](/en-US/docs/Web/CSS/Replaced_element)
 - {{Cssxref("::after")}}
 - {{Cssxref("::before")}}
 - {{Cssxref("::marker")}}
+- {{Cssxref("contain")}}
 - {{Cssxref("quotes")}}
-- {{cssxref("url()")}} 함수
+- {{cssxref("url", "url()")}} function

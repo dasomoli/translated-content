@@ -1,11 +1,13 @@
 ---
-title: Breadcrumb (브레드크럼)
+title: Breadcrumb
 slug: Glossary/Breadcrumb
+page-type: glossary-definition
 ---
-**브레드크럼**, 또는 브레드크럼 트레일은 일반적으로 사이트의 header와 기본 컨텐츠 사이에 배치되는 탐색 보조 도구로, 사이트 구조와 관련된 현재 페이지의 계층 구조, 최상위에서부터 현재 페이지까지를 사용자의 링크 목록 등으로 표시합니다. 현재 페이지까지 방문한 순서대로 보입니다.
 
-이 문서의 위치 탐색 경로는 다음과 같습니다.:
+A **breadcrumb**, or breadcrumb trail, is a navigational aid that is typically placed between a site's header and the main content, displaying either a hierarchy of the current page in relation to the site's structure, from top level to current page, or a list of the links the user followed to get to the current page, in the order visited.
 
-[MDN](/) > [Glossary](/ko/docs/Glossary) > Breadcrumb
+A location breadcrumb for this document might look something like this:
 
-브레드크럼 트레일을 통해 사용자는 웹 사이트 내에서 현재 자신의 위치를 알 수 있습니다. 이러한 유형의 탐색이 올바르게 수행되면 사용자는 사이트 내 위치와 이동 경로를 알 수 있습니다. 또한 사용자가 이전 위치로 돌아가는 데 도움이 되며 상위 페이지로 이동하는 데 필요한 클릭 수를 줄일 수 있습니다.
+[MDN](/) > [Glossary](/en-US/docs/Glossary) > Breadcrumb
+
+Breadcrumb trails enable users to be aware of their location within a website. This type of navigation, if done correctly, helps users know where they are in a site and how they got there. They can also help a user get back to where they were before and can reduce the number of clicks needed to get to a higher-level page.

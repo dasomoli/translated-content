@@ -1,39 +1,74 @@
 ---
 title: WebAssembly.Module
 slug: WebAssembly/JavaScript_interface/Module
-original_slug: Web/JavaScript/Reference/Global_Objects/WebAssembly/Module
+browser-compat: javascript.builtins.WebAssembly.Module
 ---
 
 {{WebAssemblySidebar}}
 
-**`WebAssembly.Module`** 객체는 브라우저에서 이미 컴파일 된 stateless WebAssembly 코드를 포함하며 효율적으로 [Workers와 공유](/ko/docs/Web/API/Worker/postMessage)하고 여러 번 인스턴스화 할 수 있습니다. 모듈을 인스턴스화하려면 [WebAssembly.instantiate() 2차 오버로드를 호출](/ko/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/instantiate#Secondary_overload_%E2%80%94_taking_a_module_object_instance)하세요.
+A **`WebAssembly.Module`** object contains stateless WebAssembly code that has already been compiled by the browser — this can be efficiently [shared with Workers](/en-US/docs/Web/API/Worker/postMessage), and instantiated multiple times.
 
-`WebAssembly.Module()` 생성자 함수를 호출하여 지정된 WebAssembly 바이너리 코드를 동기식으로 컴파일 할 수 있습니다. 그러나 `Module`을 쓰는 주된 방법은 {{jsxref ( "WebAssembly.compile ()")}}과 같은 비동기 컴파일 함수를 사용하는 것입니다.
+## Constructor
 
-## 생성자
-
-- {{jsxref("Global_Objects/WebAssembly/Module/Module", "WebAssembly.Module()")}}
+- [`WebAssembly.Module()`](/en-US/docs/WebAssembly/JavaScript_interface/Module/Module)
   - : Creates a new `Module` object.
 
-## 정적 속성
+## Static properties
 
-- {{jsxref("Global_Objects/WebAssembly/Module/customSections", "WebAssembly.Module.customSections()")}}
-  - : 모듈(`Module`)과 문자열이 주어지면 모듈의 모든 사용자 정의 섹션 내용의 사본을 주어진 문자열 이름으로 반환합니다.
-- {{jsxref("Global_Objects/WebAssembly/Module/exports", "WebAssembly.Module.exports()")}}
-  - : 모듈(`Module`)이 주어지면 선언 된 모든 내보내기에 대한 설명이 들어있는 배열을 반환합니다.
-- {{jsxref("Global_Objects/WebAssembly/Module/imports", "WebAssembly.Module.imports()")}}
-  - : 모듈(`Module`)이 주어지면 선언 된 모든 가져오기에 대한 설명이 들어있는 배열을 반환합니다.
+- [`WebAssembly.Module.customSections()`](/en-US/docs/WebAssembly/JavaScript_interface/Module/customSections)
+  - : Given a `Module` and string, returns a copy of the contents of all custom sections in the module with the given string name.
+- [`WebAssembly.Module.exports()`](/en-US/docs/WebAssembly/JavaScript_interface/Module/exports)
+  - : Given a `Module`, returns an array containing descriptions of all the declared exports.
+- [`WebAssembly.Module.imports()`](/en-US/docs/WebAssembly/JavaScript_interface/Module/imports)
+  - : Given a `Module`, returns an array containing descriptions of all the declared imports.
 
-## 명세
+## Examples
+
+### Sending a compiled module to a worker
+
+The following example compiles the loaded `simple.wasm` byte code using the [`WebAssembly.compileStreaming()`](/en-US/docs/WebAssembly/JavaScript_interface/compileStreaming) method and sends the resulting `Module` instance to a [worker](/en-US/docs/Web/API/Web_Workers_API) using {{domxref("Worker/postMessage", "postMessage()")}}.
+
+See the `index-compile.html` [source code](https://github.com/mdn/webassembly-examples/blob/master/js-api-examples/index-compile.html) or [view it live](https://mdn.github.io/webassembly-examples/js-api-examples/index-compile.html).
+
+```js
+const worker = new Worker("wasm_worker.js");
+
+WebAssembly.compileStreaming(fetch("simple.wasm")).then((mod) =>
+  worker.postMessage(mod)
+);
+```
+
+The worker function [`wasm_worker.js`](https://github.com/mdn/webassembly-examples/blob/master/js-api-examples/wasm_worker.js) defines an import object for the module to use. The function then sets up an event handler to receive the module from the main thread. When the module is received, we create an instance from it using the [`WebAssembly.instantiate()`](/en-US/docs/WebAssembly/JavaScript_interface/instantiate) method and invoke an exported function from inside it.
+
+```js
+const importObject = {
+  imports: {
+    imported_func(arg) {
+      console.log(arg);
+    },
+  },
+};
+
+onmessage = (e) => {
+  console.log("module received from main thread");
+  const mod = e.data;
+
+  WebAssembly.instantiate(mod, importObject).then((instance) => {
+    instance.exports.exported_func();
+  });
+};
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- [WebAssembly](/ko/docs/WebAssembly) overview page
-- [WebAssembly concepts](/ko/docs/WebAssembly/Concepts)
-- [Using the WebAssembly JavaScript API](/ko/docs/WebAssembly/Using_the_JavaScript_API)
+- [WebAssembly](/en-US/docs/WebAssembly) overview page
+- [WebAssembly concepts](/en-US/docs/WebAssembly/Concepts)
+- [Using the WebAssembly JavaScript API](/en-US/docs/WebAssembly/Using_the_JavaScript_API)

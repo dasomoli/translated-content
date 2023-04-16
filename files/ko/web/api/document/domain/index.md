@@ -1,65 +1,159 @@
 ---
-title: Document.domain
+title: "Document: domain property"
+short-title: domain
 slug: Web/API/Document/domain
+page-type: web-api-instance-property
+status:
+  - deprecated
+browser-compat: api.Document.domain
 ---
 
-{{ApiRef}}
+{{ApiRef}} {{Deprecated_Header}}
 
-{{domxref("Document")}} 인터페이스의 **`domain`** 속성은 [동일 출처 정책](/ko/docs/Web/Security/Same-origin_policy)에서 사용하는 현재 문서의 {{glossary("origin", "출처")}}에서 도메인 부분을 설정하거나 가져옵니다.
+The **`domain`** property of the {{domxref("Document")}}
+interface gets/sets the domain portion of the {{glossary("origin")}} of the current
+document, as used by the [same-origin policy](/en-US/docs/Web/Security/Same-origin_policy).
 
-`domain` 속성을 성공적으로 설정하면 출처의 포트를 {{jsxref("null")}}로 설정합니다.
+## Value
 
-## 구문
+A string.
 
-```js
-const domainString = document.domain
-document.domain = domainString
-```
+### Exceptions
 
-### 값
+- `SecurityError` {{domxref("DOMException")}}
+  - : Use of this feature was blocked by a [Permissions Policy](/en-US/docs/Web/HTTP/Permissions_Policy).
 
-현재 문서 출처의 도메인 부분.
+## Examples
 
-### 예외
+### Getting the domain
 
-- `SecurityError`
-  - : 다음 상황에서 `domain`을 변경하려 시도한 경우.\* 샌드박스 설정된 {{htmlelement("iframe")}} 요소에 속한 문서
-    - {{glossary("browsing context", "브라우징 맥락")}}이 없는 문서
-    - 문서의 [유효 도메인](https://html.spec.whatwg.org/multipage/origin.html#concept-origin-effective-domain)이 `null`
-    - 주어진 값이 문서의 유효 도메인과 같지 않거나, 등록 가능한 도메인 접미사가 아닌 경우
-    - {{httpheader('Feature-Policy/document-domain','document-domain')}} {{HTTPHeader("Feature-Policy")}} 헤더가 설정된 경우
-
-## 예제
-
-### 도메인 가져오기
-
-`http://developer.mozilla.org/en-US/docs/Web` 주소에서, 다음 코드는 `currentDomain` 변수에 "`developer.mozilla.org`" 문자열을 할당합니다.
+For code running at the URL `https://developer.mozilla.org/en-US/docs/Web`,
+this example would set `currentDomain` to the string
+"`developer.mozilla.org`".
 
 ```js
 const currentDomain = document.domain;
 ```
 
-### 창 닫기
+The getter for this property returns the domain portion of the current document's
+origin. In most cases, this will be the hostname portion of the document's URL. However,
+there are some exceptions:
 
-어느 문서, 예컨대 `www.example.xxx/good.html` 등이 `www.example.com`의 도메인을 가지고 있을 때, 다음 예제는 창을 닫으려 시도합니다.
+- If the page has an opaque {{glossary("origin")}}, e.g. for a page with a [data URL](/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs), then it will
+  return the empty string.
+- If the `document.domain` [setter](#setter) has been used, then
+  it will return the value that was set.
+
+Although the getter is not dangerous in the same way that the setter is, it is likely
+simpler and more useful to use the {{domxref("Location.hostname")}} property instead.
+Then you can avoid `document.domain` entirely:
 
 ```js
-const badDomain = "www.example.xxx";
-
-if (document.domain == badDomain) {
-  // 예시에 불과 (window.close()는 아무것도 하지 않을 수도 있음)
-  window.close();
-}
+const currentHostname = location.hostname;
 ```
 
-## 명세
+For the URL `https://developer.mozilla.org/en-US/docs/Web`,
+`currentHostname` is also the string "`developer.mozilla.org`".
+Other alternatives that provide slightly different information are
+{{domxref("Location.host")}}, which includes the port, and
+{{domxref("origin")}}, which provides the full origin.
+
+### Setting the domain
+
+```js
+document.domain = domainString;
+```
+
+The setter for this property can be used to _change_ a page's
+{{glossary("origin")}}, and thus modify how certain security checks are performed. It
+can only be set to the same or a parent domain. For example, if
+`https://a.example.com` and `https://b.example.com` both use
+
+```js
+document.domain = "example.com";
+```
+
+then they have both modified their origin to have the same domain, and they can now
+access each other's DOM directly—despite being cross-origin, which would normally
+prevent such access.
+
+Note that setting `document.domain` to its current value is not a no-op. It
+still changes the origin. For example, if one page sets
+
+```js
+document.domain = document.domain;
+```
+
+then it will be counted as cross-origin from any other normally-same-origin pages that
+have not done the same thing.
+
+#### Deprecation
+
+The `document.domain` setter is deprecated. It undermines the security
+protections provided by the [same origin policy](/en-US/docs/Web/Security/Same-origin_policy), and complicates the origin model in browsers, leading to
+interoperability problems and security bugs.
+
+Attempting to set `document.domain` is dangerous. It opens up full access to
+a page's DOM from _all_ subdomains, which is likely not what is intended. It
+also removes the port component from the origin, so now your page can be accessed by
+other pages with the same IP address or same host component, even on a different port.
+
+This is especially insecure on shared hosting. For example, another shared hosting
+customer is able to host a site at the same IP address but on a different port, then
+setting `document.domain` will remove the same-origin protection that
+normally protects you from that other customer's site accessing your site's data.
+
+Similar problems occur with shared hosting sites that give each customer a different
+subdomain. If a site sets `document.domain`, any other customer on a
+different subdomain can now do the same thing, and start accessing the data of the
+original site.
+
+Instead of using `document.domain` to facilitate cross-origin communication,
+you should use {{domxref("Window.postMessage")}} to send an asynchronous message to the
+other origin. This controlled access via message-passing is much more secure than the
+blanket exposure of all data caused by `document.domain`.
+
+#### Failures
+
+The setter will throw a "`SecurityError`" {{domxref("DOMException")}} in
+several cases:
+
+- The {{httpheader('Permissions-Policy/document-domain','document-domain')}}
+  {{HTTPHeader("Permissions-Policy")}} is disabled.
+- The document is inside a sandboxed {{htmlelement("iframe")}}.
+- The document has no {{glossary("browsing context")}}.
+- The document's [effective domain](https://html.spec.whatwg.org/multipage/origin.html#concept-origin-effective-domain) is `null`.
+- The given value is neither the same as the page's current hostname, nor a parent
+  domain of it.
+
+As an example of this last failure case, trying to set `document.domain` to
+`"example.org"` when on `https://example.com/` will throw.
+
+Additionally, as part of its deprecation, it will do nothing when combined with certain
+modern isolation features:
+
+- If used on a cross-origin isolated page, i.e. one that uses the appropriate values
+  for the {{httpheader("Cross-Origin-Opener-Policy")}} and
+  {{httpheader("Cross-Origin-Embedder-Policy")}} HTTP headers
+- If used on an origin-isolated page, i.e. one that uses the
+  {{httpheader("Origin-Isolation")}} HTTP header
+
+Finally, setting `document.domain` does not change the origin used for
+origin-checks by some Web APIs, preventing sub-domain access via this mechanism.
+Affected APIs include (but are not limited to):
+{{domxref("Window.localStorage")}}, {{domxref("IndexedDB_API")}}, {{domxref("BroadcastChannel")}}, {{domxref("SharedWorker")}} .
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [동일 출처 정책](/ko/docs/Web/Security/Same-origin_policy)
+- [Same-origin policy](/en-US/docs/Web/Security/Same-origin_policy)
+- {{domxref("Location.hostname")}}
+- {{domxref("Location.host")}}
+- {{domxref("origin")}}

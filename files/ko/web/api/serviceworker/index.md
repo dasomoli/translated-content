@@ -1,82 +1,96 @@
 ---
 title: ServiceWorker
 slug: Web/API/ServiceWorker
+page-type: web-api-interface
+browser-compat: api.ServiceWorker
 ---
 
-{{APIRef("Service Workers API")}}
+{{securecontext_header}}{{APIRef("Service Workers API")}}
 
-[Service Worker API](/ko/docs/Web/API/Service_Worker_API)의 **`ServiceWorker`** 인터페이스는 서비스 워커로의 참조를 제공합니다. 다수의 {{glossary("browsing context", "브라우징 맥락")}}(e.g. 페이지, 다른 워커, 등등)는 고유한 `ServiceWorker` 객체를 통해 동일한 서비스 워커와 연결할 수 있습니다.
+The **`ServiceWorker`** interface of the [Service Worker API](/en-US/docs/Web/API/Service_Worker_API) provides a reference to a service worker. Multiple {{glossary("browsing context", "browsing contexts")}} (e.g. pages, workers, etc.) can be associated with the same service worker, each through a unique `ServiceWorker` object.
 
-`ServiceWorker` 객체는 {{domxref("ServiceWorkerRegistration.active")}} 속성과 {{domxref("ServiceWorkerContainer.controller")}} 속성으로 접근할 수 있습니다. `controller`는 활성화되어 페이지를 통제 중인 서비스 워커입니다.
+A `ServiceWorker` object is available in the {{domxref("ServiceWorkerRegistration.active")}} property, and the {{domxref("ServiceWorkerContainer.controller")}} property — this is a service worker that has been activated and is controlling the page (the service worker has been successfully registered, and the controlled page has been reloaded.)
 
-`ServiceWorker` 인터페이스에서는 일련의 생명주기 이벤트(`install`, `activate`)와 기능 이벤트(`fetch`)가 발생합니다. `ServiceWorker` 객체의 생명주기는 {{domxref("ServiceWorker.state")}} 속성이 담고 있습니다.
+The `ServiceWorker` interface is dispatched a set of lifecycle events — `install` and `activate` — and functional events including `fetch`. A `ServiceWorker` object has an associated {{domxref("ServiceWorker.state")}}, related to its lifecycle.
 
-## 속성
+{{InheritanceDiagram}}
 
-`ServiceWorker` 인터페이스는 부모 {{domxref("Worker")}}에서 속성을 상속합니다.
+## Instance properties
 
-- {{domxref("ServiceWorker.scriptURL")}} {{readonlyinline}}
+_The `ServiceWorker` interface inherits properties from its parent, {{domxref("EventTarget")}}._
+
+- {{domxref("ServiceWorker.scriptURL")}} {{ReadOnlyInline}}
   - : Returns the `ServiceWorker` serialized script URL defined as part of {{domxref("ServiceWorkerRegistration")}}. The URL must be on the same origin as the document that registers the `ServiceWorker`.
-- {{domxref("ServiceWorker.state")}} {{readonlyinline}}
-  - : Returns the state of the service worker. It returns one of the following values: `installing`, `installed,` `activating`, `activated`, or `redundant`.
+- {{domxref("ServiceWorker.state")}} {{ReadOnlyInline}}
+  - : Returns the state of the service worker. It returns one of the following values: `parsed`, `installing`, `installed`, `activating`, `activated`, or `redundant`.
 
-### 이벤트 처리기
+## Instance methods
 
-- {{domxref("ServiceWorker.onstatechange")}} {{readonlyinline}}
-  - : An {{domxref("EventListener")}} property called whenever an event of type `statechange` is fired; it is basically fired anytime the {{domxref("ServiceWorker.state")}} changes.
+_The `ServiceWorker` interface inherits methods from its parent, {{domxref("EventTarget")}}._
 
-## 메서드
+- {{domxref("ServiceWorker.postMessage()")}}
+  - : Sends a message — consisting of any [structured-cloneable](/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm) JavaScript object — to the service worker. The message is transmitted to the service worker using a {{domxref("ServiceWorkerGlobalScope.message_event", "message")}} event on its global scope.
 
-`ServiceWorker` 인터페이스는 부모 {{domxref("Worker")}}에서 메서드를 상속합니다. 단, {{domxref("Worker.terminate()")}}는 예외이며 서비스 워커에서 접근할 수 없습니다.
+## Events
 
-## 예제
+- {{domxref("ServiceWorker.statechange_event", "statechange")}}
+  - : Fired when {{domxref("ServiceWorker.state")}} changes.
+
+- {{domxref("ServiceWorker.error_event", "error")}}
+  - : Fired when an error happens inside the `ServiceWorker` object.
+
+## Examples
 
 This code snippet is from the [service worker registration-events sample](https://github.com/GoogleChrome/samples/blob/gh-pages/service-worker/registration-events/index.html) ([live demo](https://googlechrome.github.io/samples/service-worker/registration-events/)). The code listens for any change in the {{domxref("ServiceWorker.state")}} and returns its value.
 
 ```js
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js', {
-        scope: './'
-    }).then(function (registration) {
-        var serviceWorker;
-        if (registration.installing) {
-            serviceWorker = registration.installing;
-            document.querySelector('#kind').textContent = 'installing';
-        } else if (registration.waiting) {
-            serviceWorker = registration.waiting;
-            document.querySelector('#kind').textContent = 'waiting';
-        } else if (registration.active) {
-            serviceWorker = registration.active;
-            document.querySelector('#kind').textContent = 'active';
-        }
-        if (serviceWorker) {
-            // logState(serviceWorker.state);
-            serviceWorker.addEventListener('statechange', function (e) {
-                // logState(e.target.state);
-            });
-        }
-    }).catch (function (error) {
-        // Something went wrong during registration. The service-worker.js file
-        // might be unavailable or contain a syntax error.
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker
+    .register("service-worker.js", {
+      scope: "./",
+    })
+    .then((registration) => {
+      let serviceWorker;
+      if (registration.installing) {
+        serviceWorker = registration.installing;
+        document.querySelector("#kind").textContent = "installing";
+      } else if (registration.waiting) {
+        serviceWorker = registration.waiting;
+        document.querySelector("#kind").textContent = "waiting";
+      } else if (registration.active) {
+        serviceWorker = registration.active;
+        document.querySelector("#kind").textContent = "active";
+      }
+      if (serviceWorker) {
+        // logState(serviceWorker.state);
+        serviceWorker.addEventListener("statechange", (e) => {
+          // logState(e.target.state);
+        });
+      }
+    })
+    .catch((error) => {
+      // Something went wrong during registration. The service-worker.js file
+      // might be unavailable or contain a syntax error.
     });
 } else {
-    // The current browser doesn't support service workers.
+  // The current browser doesn't support service workers.
+  // Perhaps it is too old or we are not in a Secure Context.
 }
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [ServiceWorker Cookbook](https://github.com/mdn/serviceworker-cookbook)
-- [Using Service Workers](/ko/docs/Web/API/ServiceWorker_API/Using_Service_Workers)
-- [Service worker basic code example](https://github.com/mdn/sw-test)
+- [The Offline Cookbook](https://web.dev/offline-cookbook/)(service workers)
+- [Using Service Workers](/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers)
+- [Service worker basic code example](https://github.com/mdn/dom-examples/tree/main/service-worker/simple-service-worker)
 - [Is ServiceWorker ready?](https://jakearchibald.github.io/isserviceworkerready/)
 - {{jsxref("Promise")}}
-- [Using web workers](/ko/docs/Web/API/Web_Workers_API/Using_web_workers)
+- [Using web workers](/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)

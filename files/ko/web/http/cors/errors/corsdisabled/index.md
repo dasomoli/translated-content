@@ -1,25 +1,29 @@
 ---
-title: 'Reason: CORS disabled'
+title: "Reason: CORS disabled"
 slug: Web/HTTP/CORS/Errors/CORSDisabled
+page-type: http-cors-error
 ---
 
 {{HTTPSidebar}}
 
-## 원인
+## Reason
 
 ```plain
-원인: CORS 비활성화
+Reason: CORS disabled
 ```
 
-## 무엇이 문제인가요?
+## What went wrong?
 
-{{Glossary("CORS")}}를 사용해야 하는 요청이 시도되었지만 사용자의 브라우저에서 CORS가 비활성화되어 있습니다. 이 경우 사용자는 브라우저에서 CORS를 다시 켜야 합니다.
+A request that needs to use {{Glossary("CORS")}} was attempted, but CORS is disabled in
+the user's browser. When this happens, the user needs to turn CORS back on in their
+browser.
 
-파이어폭스에서 CORS를 비활성화하는 기본 설정은 `content.cors.disable`입니다.
-`true`로 설정하면 CORS가 비활성화되므로 그럴 때마다 CORS 요청은 항상 실패하고 이 오류가 발생합니다.
+In Firefox, the preference that disables CORS is `content.cors.disable`.
+Setting this to `true` disables CORS, so whenever that's the case, CORS
+requests will always fail with this error.
 
-## 더 보기
+## See also
 
-- [CORS 에러](/en-US/docs/Web/HTTP/CORS/Errors)
+- [CORS errors](/en-US/docs/Web/HTTP/CORS/Errors)
 - Glossary: {{Glossary("CORS")}}
-- [CORS 소개](/en-US/docs/Web/HTTP/CORS)
+- [CORS introduction](/en-US/docs/Web/HTTP/CORS)

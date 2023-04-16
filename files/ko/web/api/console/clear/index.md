@@ -1,21 +1,33 @@
 ---
-title: console.clear()
+title: "console: clear() method"
+short-title: clear()
 slug: Web/API/console/clear
+page-type: web-api-instance-method
+browser-compat: api.console.clear
 ---
+
 {{APIRef("Console API")}}
 
-**`console.clear()`** 메서드는 현재 환경에서 가능한 경우, 콘솔에 기록된 메시지를 모두 지웁니다.
+The **`console.clear()`** method clears the console if the console allows it. A graphical console, like those running on browsers, will allow it; a console displaying on the terminal, like the one running on Node, will not support it, and will have no effect (and no error).
 
-## 구문
+## Syntax
 
-```js
-console.clear();
+```js-nolint
+clear()
 ```
 
-## 명세
+### Parameters
+
+None.
+
+### Return value
+
+None ({{jsxref("undefined")}}).
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

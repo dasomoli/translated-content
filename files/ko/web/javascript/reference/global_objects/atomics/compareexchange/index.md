@@ -1,69 +1,75 @@
 ---
 title: Atomics.compareExchange()
 slug: Web/JavaScript/Reference/Global_Objects/Atomics/compareExchange
-l10n:
-  sourceCommit: 194d3e00cb93a6e5ea44812548f4131cb17f0381
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Atomics.compareExchange
 ---
 
 {{JSRef}}
 
-**`Atomics.compareExchange()`** 정적 메서드는 주어진 예상 값이 이전 값과 같으면 배열의 지정된 위치에서
-지정된 대체 값을 교환합니다. 예상 값이 이전 값과 같을 경우, 배열의 지정된 위치에서 지정된 대체 값을 교환합니다.
-이 메서드는 해당 위치의 이전 값이 해당 위치의 이전 값을 반환합니다. 이 아토믹 연산은 수정된 값이 반환될 때까지 다른 쓰기가
-발생하지 않음을 보장합니다.
+The **`Atomics.compareExchange()`** static
+method exchanges a given replacement value at a given position in the array, if a given
+expected value equals the old value. It returns the old value at that position whether
+it was equal to the expected value or not. This atomic operation guarantees that no
+other write happens until the modified value is written back.
 
 {{EmbedInteractiveExample("pages/js/atomics-compareexchange.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 Atomics.compareExchange(typedArray, index, expectedValue, replacementValue)
 ```
 
-### 매개변수
+### Parameters
 
 - `typedArray`
-  - : 정수형 형식화 배열. {{jsxref("Int8Array")}}, {{jsxref("Uint8Array")}},
+  - : An integer typed array. One of {{jsxref("Int8Array")}}, {{jsxref("Uint8Array")}},
     {{jsxref("Int16Array")}}, {{jsxref("Uint16Array")}}, {{jsxref("Int32Array")}},
-    {{jsxref("Uint32Array")}}, {{jsxref("BigInt64Array")}},
-    {{jsxref("BigUint64Array")}} 중 하나.
+    {{jsxref("Uint32Array")}}, {{jsxref("BigInt64Array")}}, or
+    {{jsxref("BigUint64Array")}}.
 - `index`
-  - : 값을 불러올 `typedArray`의 인덱스
+  - : The position in the `typedArray` to exchange a
+    `value`.
 - `expectedValue`
-  - : 동일성을 확인하기 위한 값
+  - : The value to check for equality.
 - `replacementValue`
-  - : 교환할 숫자
+  - : The number to exchange.
 
-### 반환 값
+### Return value
 
-주어진 위치(`typedArray[index]`)의 예전 값.
+The old value at the given position
+(`typedArray[index]`).
 
-### 예외
+### Exceptions
 
-- `typedArray`가 허용된 정수형이 아닐 경우 {{jsxref("TypeError")}}가 발생합니다.
-- `index`가 `typedArray`의 범위를 벗어날 경우 {{jsxref("RangeError")}}가 발생합니다.
+- {{jsxref("TypeError")}}
+  - : Thrown if `typedArray` is not one of the allowed integer types.
+- {{jsxref("RangeError")}}
+  - : Thrown if `index` is out of bounds in the `typedArray`.
 
-## 예제
+## Examples
 
-### compareExchange() 사용하기
+### Using compareExchange()
 
 ```js
 const sab = new SharedArrayBuffer(1024);
 const ta = new Uint8Array(sab);
 ta[0] = 7;
-Atomics.compareExchange(ta, 0, 7, 12); // 이전 값 7을 반환합니다
+
+Atomics.compareExchange(ta, 0, 7, 12); // returns 7, the old value
 Atomics.load(ta, 0); // 12
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Atomics")}}
 - {{jsxref("Atomics.exchange()")}}

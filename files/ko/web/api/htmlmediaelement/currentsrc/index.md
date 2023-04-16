@@ -1,39 +1,41 @@
 ---
-title: HTMLMediaElement.currentSrc
+title: "HTMLMediaElement: currentSrc property"
+short-title: currentSrc
 slug: Web/API/HTMLMediaElement/currentSrc
-l10n:
-  sourceCommit: 0230ecc4418a1e52bca6b4d03c4eb794f90d04f1
+page-type: web-api-instance-property
+browser-compat: api.HTMLMediaElement.currentSrc
 ---
 
 {{APIRef("HTML DOM")}}
 
-**`HTMLMediaElement.currentSrc`** 속성에는 선택한 미디어 리소스의 절대 URL이
-포함되어 있습니다. 예를 들어 웹 서버가 사용자 디스플레이의 해상도에 따라
-미디어 파일을 선택하는 경우 이런 일이 발생할 수 있습니다. `networkState` 속성이
-`EMPTY`인 경우 값은 빈 문자열입니다.
+The **`HTMLMediaElement.currentSrc`** property contains the
+absolute URL of the chosen media resource. This could happen, for example, if the web
+server selects a media file based on the resolution of the user's display. The value
+is an empty string if the `networkState` property is `EMPTY`.
 
-## 값
+## Value
 
-선택한 미디어 소스의 절대 URL을 포함하는 문자열 객체입니다.
-`networkState`가 `EMPTY`라면 빈 문자열, 아니라면 미디어 요소(element) 내에 포함된 {{domxref("HTMLSourceElement")}}로
-나열한 리소스 중 하나가 됩니다. 만약 {{HTMLElement("source")}} 요소가
-제공되지 않은 경우 값 또는 src가 됩니다.
+A string object containing the absolute URL of the chosen media
+source; this may be an empty string if `networkState` is `EMPTY`;
+otherwise, it will be one of the resources listed by the
+{{domxref("HTMLSourceElement")}} contained within the media element, or the value or src
+if no {{HTMLElement("source")}} element is provided.
 
-## 예제
+## Examples
 
 ```js
 const obj = document.createElement("video");
 console.log(obj.currentSrc); // ""
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- currentSrc를 정의하는 인터페이스는 {{domxref("HTMLMediaElement")}}입니다.
+- {{domxref("HTMLMediaElement")}}: Interface used to define the `HTMLMediaElement.currentSrc` property

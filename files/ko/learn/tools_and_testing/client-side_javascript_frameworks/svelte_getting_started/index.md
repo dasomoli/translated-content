@@ -1,104 +1,104 @@
 ---
-title: Svelte 시작하기
+title: Getting started with Svelte
 slug: >-
-    Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started
+  Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started
 ---
 
 {{LearnSidebar}}
+{{PreviousMenuNext("Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_resources","Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_todo_list_beginning", "Learn/Tools_and_testing/Client-side_JavaScript_frameworks")}}
 
-{{PreviousMenuNext("Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started","Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_Todo_list_beginning", "Learn/Tools_and_testing/Client-side_JavaScript_frameworks")}}
-
-이 문서에는 [Svelte 프레임워크](https://svelte.dev/)에 대한 빠른 소개를 제공합니다.
-Svelte가 어떻게 작동하는지, 지금까지 본 나머지 프레임워크 및 도구와 Svelte가 어떻게 다른지 살펴보겠습니다. 그런 다음 개발 환경을 설정하고, 샘플 앱을 만들고, 프로젝트 구조를 이해하고, 로컬에서 실행하고 프로덕션용으로 빌드하는 방법을 배웁니다.
+In this article we'll provide a quick introduction to the [Svelte framework](https://svelte.dev/). We will see how Svelte works and what sets it apart from the rest of the frameworks and tools we've seen so far. Then we will learn how to set up our development environment, create a sample app, understand the structure of the project, and see how to run it locally and build it for production.
 
 <table>
   <tbody>
     <tr>
-      <th scope="row">전제사항:</th>
+      <th scope="row">Prerequisites:</th>
       <td>
         <p>
-          적어도
-          <a href="/ko/docs/Learn/HTML">HTML</a>,
-          <a href="/ko/docs/Learn/CSS">CSS</a>, and
-          <a href="/ko/docs/Learn/JavaScript">JavaScript</a>
-          언어의 사용에 익숙하기를 권장합니다. 그리고
+          At minimum, it is recommended that you are familiar with the core
+          <a href="/en-US/docs/Learn/HTML">HTML</a>,
+          <a href="/en-US/docs/Learn/CSS">CSS</a>, and
+          <a href="/en-US/docs/Learn/JavaScript">JavaScript</a> languages, and
+          have knowledge of the
           <a
-            href="/ko/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line"
-            >터미널/커맨트 라인</a
-          >의 사용법에 대해서도 지식이 있어야합니다.
+            href="/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line"
+            >terminal/command line</a
+          >.
         </p>
         <p>
-        Svelte 컴파일러는 우리의 소스로 부터 최소화 및 최적화된 자바스크립트 코드를 생성합니다.
-        당신은 앱을 컴파일하고 빌드하기 위한 노드와 npm이 설치된 터미널이 필요합니다.
+          Svelte is a compiler that generates minimal and highly optimized
+          JavaScript code from our sources; you'll need a terminal with node +
+          npm installed to compile and build your app.
         </p>
       </td>
     </tr>
     <tr>
-      <th scope="row">목표:</th>
+      <th scope="row">Objective:</th>
       <td>
-      로컬 Svelte 개발 환경을 설정하기 위해, 시작하는 앱을 생성 및 빌드하고 Svelte가 어떻게 동작하는지에 대해서 이해합니다.
+        To setup a local Svelte development environment, create and build a
+        starter app, and understand the basics of how it works.
       </td>
     </tr>
   </tbody>
 </table>
 
-## Svelte: 풍부한 사용자 인터페이스를 구축하기 위한 새로운 접근
+## Svelte: A new approach to building rich user interfaces
 
-Svelte는 모듈에서 다루는 다른 프레임워크와는 다른 웹앱 구축 방식을 제공합니다. React와 Vue와 같은 프레임 워크는 앱이 실행되는 동안 사용자의 브라우저에서 대부분의 작업을 수행하지만 Svelte는 해당 작업을 앱을 빌드하는 컴파일 단계로 전환하여 고도로 최적화된 바닐라 자바스크립트를 생성합니다.
+Svelte provides a different approach to building web apps than some of the other frameworks covered in this module. While frameworks like React and Vue do the bulk of their work in the user's browser while the app is running, Svelte shifts that work into a compile step that happens only when you build your app, producing highly optimized vanilla JavaScript.
 
-이 접근 방식의 결과는 더 작은 어플리케이션 번들과 더 좋은 성능을 낼 뿐만 아니라 개발자들이 최신 도구적 생태계에 제한된 경험을 가진 사람들에게 더욱 다가가는 경험을 합니다.
+The outcome of this approach is not only smaller application bundles and better performance, but also a developer experience that is more approachable for people that have limited experience of the modern tooling ecosystem.
 
-Svelte는 HTML, CSS 및 자바스크립트의 고전적인 웹 개발 모델을 고수하면서 HTML과 자바스크립트에 몇 가지 확장을 추가합니다. 스벨트는 다른 프레임워크 선택지보다 배워야 할 개념과 도구가 적습니다.
+Svelte sticks closely to the classic web development model of HTML, CSS, and JS, just adding a few extensions to HTML and JavaScript. It arguably has fewer concepts and tools to learn than some of the other framework options.
 
-현재 주요한 단점은 신생 프레임워크라는 것입니다. 따라서 생태계는 성숙한 프레임워크보다 도구, 지원, 플러그인, 명확한 사용 패턴 등의 측면에서 더 제한적이며 일자리도 적습니다. 그러나 Svelte의 장점은 당신이 그것에 대해 관심을 갖도록 만들기에 충분할 것입니다.
+Its main current disadvantages are that it is a young framework — its ecosystem is therefore more limited in terms of tooling, support, plugins, clear usage patterns, etc. than more mature frameworks, and there are also fewer job opportunities. But its advantages should be enough to make you interested to explore it.
 
-> **참고:** 최근 Svelte는 가장 요청이 많았던 기능 중 하나인 [공식 타입스크립트 지원](https://svelte.dev/blog/svelte-and-typescript)을 추가했습니다. 나중에 이 자습서 시리즈에서 살펴보겠습니다.
+> **Note:** recently Svelte has added [official TypeScript support](https://svelte.dev/blog/svelte-and-typescript), one of its most requested features. We'll look at it later on in this tutorial series.
 
-[Svelte 공식 튜토리얼](https://svelte.dev/tutorial/basics)을 통해 기본 개념을 빠르게 숙지한 후 이 튜토리얼 시리즈로 돌아와서 좀 더 심도 있게 빌드하는 방법을 알아보시기 바랍니다.
+We encourage you to go through the [Svelte tutorial](https://svelte.dev/tutorial/basics) for a really quick introduction to the basic concepts, before returning to this tutorial series to learn how to build something slightly more in-depth.
 
-## 사용 사례
+## Use cases
 
-Svelte는 인터페이스 또는 전체 애플리케이션의 작은 부분을 개발하는 데 사용할 수 있습니다. Svelte가 UI를 구동하도록 처음부터 시작하거나 기존 애플리케이션에 점진적으로 통합할 수 있습니다.
+Svelte can be used to develop small pieces of an interface or whole applications. You can either start from scratch letting Svelte drive your UI or you can incrementally integrate it into an existing application.
 
-Svelte는 특히 다음 상황을 해결하는 데 적합합니다.
+Nevertheless, Svelte is particularly appropriate to tackle the following situations:
 
-- 저전력 장치용 웹 애플리케이션: Svelte로 구축된 애플리케이션은 번들 크기가 더 작아서 네트워크 연결이 느리고 처리 능력이 제한된 장치에 이상적입니다. 코드가 적다는 것은 다운로드, 구문 분석, 실행 및 메모리에 머무는 데 필요한 KB가 적다는 것을 의미합니다.
-- 고도의 대화형 페이지 또는 복잡한 시각화: 많은 수의 DOM 요소를 표시해야 하는 데이터 시각화를 구축하는 경우 런타임 오버헤드가 없는 프레임워크에서 제공되는 성능 향상을 통해 사용자 상호 작용이 빠르고 반응이 빠릅니다.
-- 기본 웹 개발 지식이 있는 사람의 온보딩: Svelte는 학습 곡선이 얕습니다. 기본 HTML, CSS 및 JavaScript 지식이 있는 웹 개발자는 짧은 시간에 Svelte 세부 사항을 쉽게 파악하고 웹 애플리케이션 구축을 시작할 수 있습니다.
+- Web applications intended for low-power devices: Applications built with Svelte have smaller bundle sizes, which is ideal for devices with slow network connections and limited processing power. Less code means fewer KB to download, parse, execute, and keep hanging around in memory.
+- Highly interactive pages or complex visualizations: If you are building data-visualizations that need to display a large number of DOM elements, the performance gains that come from a framework with no runtime overhead will ensure that user interactions are snappy and responsive.
+- Onboarding people with basic web development knowledge: Svelte has a shallow learning curve. Web developers with basic HTML, CSS, and JavaScript knowledge can easily grasp Svelte specifics in a short time and start building web applications.
 
-또한 [Sapper](https://sapper.svelte.dev/)(스벨트 기반 프레임워크)의 도움으로 서버 측 렌더링, 코드 분할, 파일 기반 라우팅 및 오프라인 지원과 같은 고급 기능을 갖춘 애플리케이션을 개발할 수도 있습니다. 그리고 네이티브 모바일 애플리케이션을 구축할 수 있는 [스벨트 네이티브](https://svelte-native.technology/)도 있습니다.
+Moreover, with the help of [Sapper](https://sapper.svelte.dev/) (a framework based on Svelte), you can also develop applications with advanced features like server-side rendering, code splitting, file-based routing and offline support. And then there's also [Svelte Native](https://svelte-native.technology/), which lets you build native mobile applications.
 
-## Svelte는 어떻게 작동하나요?
+## How does Svelte work?
 
-컴파일러이기 때문에 Svelte는 HTML, CSS 및 자바스크립트를 확장하여 런타임 오버헤드 없이 최적의 JavaScript 코드를 생성할 수 있습니다. 이를 달성하기 위해 Svelte는 다음과 같은 방식으로 바닐라 웹 기술을 확장합니다.
+Being a compiler, Svelte can extend HTML, CSS, and JavaScript, generating optimal JavaScript code without any runtime overhead. To achieve this, Svelte extends vanilla web technologies in the following ways:
 
-- 마크업에서 자바스크립트 표현식을 허용하고 핸들바와 유사한 방식으로 조건 및 루프를 사용하는 지시문을 제공하여 HTML을 확장합니다.
-- 범위 지정 메커니즘을 추가해 CSS를 확장함으로 각 컴포넌트가 다른 컴포넌트의 스타일과 충돌할 위험 없이 자체 스타일을 정의할 수 있도록 합니다.
-- 진정한 반응성을 달성하고 컴포넌트 상태 관리를 용이하게 하기 위해 언어의 특정 지시문을 재해석하여 자바스크립트를 확장합니다.
+- It extends HTML by allowing JavaScript expressions in markup and providing directives to use conditions and loops, in a fashion similar to handlebars.
+- It extends CSS by adding a scoping mechanism, allowing each component to define its own styles without the risk of clashing with other components' styles.
+- It extends JavaScript by reinterpreting specific directives of the language to achieve true reactivity and ease component state management.
 
-컴파일러는 매우 특정한 상황과 Svelte 컴포넌트의 컨텍스트에서만 개입합니다. 자바스크립트 언어에 대한 확장은 최소한이며 자바스크립트 구문을 위반하거나 개발자를 소외시키지 않도록 신중하게 선택됩니다. 사실, 대부분 바닐라 자바스크립트로 작업하게 될 것입니다.
+The compiler only intervenes in very specific situations and only in the context of Svelte components. Extensions to the JavaScript language are minimal and carefully picked in order not to break JavaScript syntax or alienate developers. In fact, you will be mostly working with vanilla JavaScript.
 
-## Svelte의 첫 단계
+## First steps with Svelte
 
-Svelte는 컴파일러이므로 `<script src="svelte.js">` 태그를 페이지에 추가하고 앱으로 가져올 수 없습니다. 컴파일러가 작업을 수행하도록 하려면 개발 환경을 설정해야 합니다.
+Since Svelte is a compiler, you can't just add a `<script src="svelte.js">` tag to your page and import it into your app. You'll have to set up your development environment in order to let the compiler do its job.
 
-### 요구 사항
+### Requirements
 
-Svelte를 사용하려면 [Node.js](https://nodejs.org/en/)가 설치되어 있어야 합니다. 장기 지원(LTS) 버전을 사용하는 것이 좋습니다. 노드에는 npm(노드 패키지 관리자) 및 npx(노드 패키지 실행기)가 포함됩니다. npm 대신 Yarn 패키지 관리자를 사용할 수도 있지만 이 자습서 세트에서는 npm을 사용한다고 가정합니다. npm 및 yarn에 대한 자세한 내용은 [패키지 관리 기본 사항](/ko/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Package_management)을 참조하세요.
+In order to work with Svelte, you need to have [Node.js](https://nodejs.org/en/) installed. It's recommended that you use the long-term support (LTS) version. Node includes npm (the node package manager), and npx (the node package runner). Note that you can also use the Yarn package manager in place of npm, but we'll assume you are using npm in this set of tutorials. See [Package management basics](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Package_management) for more information on npm and yarn.
 
-Windows를 사용하는 경우 이 튜토리얼에서 언급한 터미널 명령을 사용하려면 Unix/macOS 터미널과 패리티를 제공하는 일부 소프트웨어를 설치해야 합니다. Gitbash([Windows용 git 도구 집합](https://gitforwindows.org/)) 또는 [Linux용 Windows 하위 시스템(WSL)](https://docs.microsoft.com/windows/wsl/about) 둘 다 적합합니다. 이에 대한 자세한 내용과 일반적인 터미널 명령은 [명령줄 단기 특강](/ko/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line)을 참조하세요.
+If you're using Windows, you will need to install some software to give you parity with Unix/macOS terminal in order to use the terminal commands mentioned in this tutorial. Gitbash (which comes as part of the [git for Windows toolset](https://gitforwindows.org/)) or [Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/windows/wsl/about) are both suitable. See [Command line crash course](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line) for more information on these, and on terminal commands in general.
 
-또한 자세한 내용은 다음을 참조하십시오.
+Also see the following for more information:
 
-- nodejs.org의 ["npm이란?"](https://nodejs.org/en/knowledge/getting-started/npm/what-is-npm/)
-- npm 블로그의 ["npx 소개"](https://blog.npmjs.org/post/162869356040/introducing-npx-an-npm-package-runner)
-- Svelte 블로그의 ["Svelte를 시작하는 가장 쉬운 방법"](https://svelte.dev/blog/the-easiest-way-to-get-started)
+- ["What is npm"](https://nodejs.org/en/knowledge/getting-started/npm/what-is-npm/) on nodejs.org
+- ["Introducing npx"](https://blog.npmjs.org/post/162869356040/introducing-npx-an-npm-package-runner) on the npm blog
+- ["The easiest way to get started with Svelte"](https://svelte.dev/blog/the-easiest-way-to-get-started) on the Svelte blog
 
-### 첫 번째 Svelte 앱 만들기
+### Creating your first Svelte app
 
-스타터 앱 템플릿을 만드는 가장 쉬운 방법은 스타터 템플릿 애플리케이션을 다운로드하는 것입니다. GitHub의 [sveltejs/template](https://github.com/sveltejs/template)을 방문하거나 다운로드하고 압축을 푸는 과정을 피하고 싶다면 [degit](https://github.com/Rich-Harris/degit)을 사용하면 됩니다.
+The easiest way to create a starter app template is to just download the starter template application. You can do that by visiting [sveltejs/template](https://github.com/sveltejs/template) on GitHub, or you can avoid having to download and unzip it and just use [degit](https://github.com/Rich-Harris/degit).
 
-시작 앱 템플릿을 만들려면 다음 터미널을 실행하세요.
+To create your starter app template, run the following terminal commands:
 
 ```bash
 npx degit sveltejs/template moz-todo-svelte
@@ -107,15 +107,15 @@ npm install
 npm run dev
 ```
 
-> **참고:** degit은 마술 같은 것을 하지 않습니다. 단지 최신 버전의 git repo 콘텐츠를 다운로드하고 압축을 풀 수 있게 해줍니다. 리포지토리의 모든 기록을 다운로드하거나 완전한 로컬 복제본을 생성하지 않기 때문에 `git clone`을 사용하는 것보다 훨씬 빠릅니다.
+> **Note:** degit doesn't do any kind of magic — it just lets you download and unzip the latest version of a git repo's contents. This is much quicker than using `git clone` because it will not download all the history of the repo, or create a complete local clone.
 
-`npm run dev`를 실행한 후 Svelte는 애플리케이션을 컴파일하고 빌드합니다. `localhost:8080`에서 로컬 서버를 시작합니다. Svelte는 파일 업데이트를 감시하고 소스 파일이 변경되면 자동으로 앱을 다시 컴파일하고 새로 고칩니다. 브라우저에 다음과 같이 표시됩니다.
+After running `npm run dev`, Svelte will compile and build your application. It will start a local server at `localhost:8080`. Svelte will watch for file updates, and automatically recompile and refresh the app for you when changes are made to the source files. Your browser will display something like this:
 
 ![A simple start page that says hello world, and gives a link to the official svelte tutorials](01-svelte-starter-app.png)
 
-### 애플리케이션 구조
+### Application structure
 
-시작 템플릿은 다음 구조로 제공됩니다.
+The starter template comes with the following structure:
 
 ```
 moz-todo-svelte
@@ -140,46 +140,52 @@ moz-todo-svelte
     └── main.js
 ```
 
-구성은 다음과 같습니다.
+The contents are as follows:
 
-- `package.json`과 `package-lock.json`: Node.js/npm이 구성을 유지하기 위해 사용하는 프로젝트에 대한 정보를 포함합니다. 이 튜토리얼을 완료하기 위해 이 파일을 전혀 이해할 필요는 없지만, 이에 대해 더 알고 싶다면 NodeJS.org의 [`package.json`은 무엇인가요?](https://nodejs.org/en/knowledge/getting-started/npm/what-is-the-file-package-json/)?를 읽어보시면 됩니다. 또한 저희의 [패키지 관리 기본 자습서](/ko/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Package_management)에서도 이에 대해 다루고 있습니다.
-- `node_modules`: 노드가 프로젝트 종속성을 저장하는 곳입니다. 이러한 종속성은 프로덕션으로 전송되지 않고 개발 목적으로만 사용됩니다.
-- `.gitignore`: 프로젝트에서 무시할 파일 또는 폴더를 git에 알려줍니다. git repo에 앱을 포함하기로 결정한 경우에 유용합니다.
-- `rollup.config.js`: Svelte는 [롤업](https://rollupjs.org/)을 모듈 번들러로 사용합니다. 이 구성 파일은 앱을 컴파일하고 빌드하는 방법을 롤업에 알려줍니다. [웹팩](https://webpack.js.org/)을 선호하는 경우 대신 `npx degit sveltejs/template-webpack svelte-app`을 사용하여 시작 프로젝트를 만들 수 있습니다.
-- `scripts`: 필요에 따라 설정 스크립트를 포함합니다. 현재는 `setupTypeScript.js`만 포함해야 합니다.
-  - `setupTypeScript.js`: 이 스크립트는 Svelte에서 타입스크립트 지원을 설정합니다. 마지막 글에 이에 대해 더 이야기하겠습니다.
-- `src`: 이 디렉토리는 애플리케이션의 소스 코드가 있는 곳으로 앱의 코드를 생성하게 됩니다.
-  - `App.svelte`: 앱의 최상위 컴포넌트입니다. 'Hello World!' 메시지까지만 렌더링합니다.
-  - `main.js`: 애플리케이션의 진입점입니다. 단지 `App` 컴포넌트를 인스턴스화하고 HTML 페이지의 본문에 바인딩합니다.
-- `public`: 이 디렉토리에는 생산에 게시될 모든 파일이 포함됩니다.
-  - `favicon.png`: 앱의 파비콘입니다. 현재 Svelte 로고입니다.
-  - `index.html`: 앱의 기본 페이지입니다. 처음에는 Svelte가 생성한 CSS 파일과 js 번들을 로드하는 빈 HTML 페이지일 뿐입니다.
-  - `global.css`: 이 파일에는 범위가 지정되지 않은 스타일이 포함되어 있습니다. 전체 애플리케이션에 적용되는 일반 CSS 파일입니다.
-  - `build`: 이 폴더에는 생성된 CSS 및 JavaScript 소스 코드가 포함되어 있습니다.
-    - `bundle.css`: 각 컴포넌트에 대해 정의된 스타일에서 Svelte가 생성한 CSS 파일입니다.
-    - `bundle.js`: 모든 JavaScript 소스 코드에서 컴파일된 JavaScript 파일입니다.
+- `package.json` and `package-lock.json`: Contains information about the project that Node.js/npm uses to keep it organized. You don't need to understand this file at all to complete this tutorial, however, if you'd like to learn more about it, you can read [What is the file `package.json`](https://nodejs.org/en/knowledge/getting-started/npm/what-is-the-file-package-json/)? on NodeJS.org; we also talk about it in our [Package management basics tutorial](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Package_management).
+- `node_modules`: This is where node saves the project dependencies. These dependencies won't be sent to production, they are just used for development purposes.
+- `.gitignore`: Tells git which files or folder to ignore from the project — useful if you decide to include your app in a git repo.
+- `rollup.config.js`: Svelte uses [rollup.js](https://rollupjs.org/) as a module bundler. This configuration file tells rollup how to compile and build your app. If you prefer [webpack](https://webpack.js.org/), you can create your starter project with `npx degit sveltejs/template-webpack svelte-app` instead.
+- `scripts`: Contains setup scripts as required. Currently should only contain `setupTypeScript.js`.
 
-## 첫 번째 Svelte 컴포넌트 살펴보기
+  - `setupTypeScript.js`: This script sets up TypeScript support in Svelte. We'll talk about this more in the last article.
 
-컴포넌트들은 Svelte 애플리케이션의 구축을 위한 블록들입니다. 컴포넌트들은 HTML의 상위 집합을 사용하여 `.svelte` 파일에 기록됩니다.
+- `src`: This directory is where the source code for your application lives — where you'll be creating the code for your app.
 
-세 섹션(`<script>`, `<style>` 및 마크업)은 모두 선택 사항이며 원하는 순서로 표시될 수 있습니다.
+  - `App.svelte`: This is the top-level component of your app. So far it just renders the 'Hello World!' message.
+  - `main.js`: The entry point to our application. It just instantiates the `App` component and binds it to the body of our HTML page.
+
+- `public`: This directory contains all the files that will be published in production.
+
+  - `favicon.png`: This is the favicon for your app. Currently, it's the Svelte logo.
+  - `index.html`: This is the main page of your app. Initially it's just an empty HTML page that loads the CSS files and js bundles generated by Svelte.
+  - `global.css`: This file contains unscoped styles. It's a regular CSS file that will be applied to the whole application.
+  - `build`: This folder contains the generated CSS and JavaScript source code.
+
+    - `bundle.css`: The CSS file that Svelte generated from the styles defined for each component.
+    - `bundle.js`: The JavaScript file compiled from all your JavaScript source code.
+
+## Having a look at our first Svelte component
+
+Components are the building blocks of Svelte applications. They are written into `.svelte` files using a superset of HTML.
+
+All three sections — `<script>`, `<style>`, and markup — are optional, and can appear in any order you like.
 
 ```html
 <script>
-  // 로직이 들어갑니다.
+  // logic goes here
 </script>
 
 <style>
-  /* 스타일이 들어갑니다. */
+  /* styles go here */
 </style>
 
-<!-- 마크업(0 또는 다른 HTML 엘리먼트들)이 들어갑니다. -->
+<!-- markup (zero or more HTML elements) goes here -->
 ```
 
-> **참고:** 컴포넌트 형식에 대한 자세한 내용은 [Svelte 설명서](https://svelte.dev/docs#Component_format)를 참조하세요.
+> **Note:** For more information on the component format, have a look at the [Svelte documentation](https://svelte.dev/docs#Component_format).
 
-이를 염두에 두고 스타터 템플릿과 함께 제공되는 `src/App.svelte` 파일을 살펴보겠습니다. 다음과 같은 내용이 표시되어야 합니다.
+With this in mind, let's have a look at the `src/App.svelte` file that came with the starter template. You should see something like the following:
 
 ```html
 <script>
@@ -187,9 +193,10 @@ moz-todo-svelte
 </script>
 
 <main>
-  <h1>안녕! {name}!</h1>
+  <h1>Hello {name}!</h1>
   <p>
-    <a href="https://svelte.dev/tutorial">Svelte 튜토리얼</a>에 방문해서 Svelte 앱을 반드는 방법을 배워보세요.
+    Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn
+    how to build Svelte apps.
   </p>
 </main>
 
@@ -216,9 +223,9 @@ moz-todo-svelte
 </style>
 ```
 
-### `<script>` 섹션
+### The `<script>` section
 
-`<script>` 블록에는 컴포넌트 인스턴스가 생성될 때 실행되는 자바스크립트가 포함되어 있습니다. 최상위 수준에서 선언된(또는 가져온) 변수는 컴포넌트의 마크업에서 '볼 수' 있습니다. 최상위 변수는 Svelte가 컴포넌트 상태를 처리하는 방식이며 기본적으로 반응적입니다. 이것이 무엇을 의미하는지 나중에 자세히 설명하겠습니다.
+The `<script>` block contains JavaScript that runs when a component instance is created. Variables declared (or imported) at the top level are 'visible' from the component's markup. Top-level variables are the way Svelte handles the component state, and they are reactive by default. We will explain in detail what this means later on.
 
 ```html
 <script>
@@ -226,26 +233,27 @@ moz-todo-svelte
 </script>
 ```
 
-Svelte는 [`export`](/ko/docs/Web/JavaScript/Reference/Statements/export) 키워드를 사용하여 변수 선언을 속성으로 표시합니다. 이는 컴포넌트의 사용자가 액세스할 수 있음을 의미합니다. (예: 다른 컴포넌트). 이것은 Svelte가 자바스크립트 구문을 확장하여 친숙함을 유지하면서 더 유용하게 만드는 한 예입니다.
+Svelte uses the [`export`](/en-US/docs/Web/JavaScript/Reference/Statements/export) keyword to mark a variable declaration as a property (or prop), which means it becomes accessible to consumers of the component (e.g. other components). This is one example of Svelte extending JavaScript syntax to make it more useful, while keeping it familiar.
 
-### 마크업 부분
+### The markup section
 
-마크업 섹션에서 원하는 HTML을 삽입할 수 있으며 추가로 단일 중괄호(`{}`) 안에 유효한 자바스크립트 표현식을 삽입할 수 있습니다. 이 경우 `안녕` 텍스트 바로 뒤에 `name` 속성의 값을 삽입합니다.
+In the markup section you can insert any HTML you like, and in addition you can insert valid JavaScript expressions inside single curly brackets (`{}`). In this case we are embedding the value of the `name` prop right after the `Hello` text.
 
 ```html
 <main>
-  <h1>안녕 {name}!</h1>
+  <h1>Hello {name}!</h1>
   <p>
-    <a href="https://svelte.dev/tutorial">Svelte 튜토리얼</a>에 방문해서 Svelte 앱을 반드는 방법을 배워보세요.
+    Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn
+    how to build Svelte apps.
   </p>
 </main>
 ```
 
-Svelte는 `{#if}`, `{#each}` 및 `{#await}`와 같은 태그도 지원합니다. 이러한 예제를 사용하면 마크업의 일부를 조건부로 렌더링하고, 요소 목록을 반복하고, 비동기 값들에 각각 작용합니다.
+Svelte also supports tags like `{#if}`, `{#each}`, and `{#await}` — these examples allow you to conditionally render a portion of the markup, iterate through a list of elements, and work with async values, respectively.
 
-### `<style>` 섹션
+### The `<style>` section
 
-CSS 작업 경험이 있는 경우 다음 스니펫을 쉽게 이해할 수 있습니다.
+If you have experience working with CSS, the following snippet should make sense:
 
 ```html
 <style>
@@ -271,36 +279,36 @@ CSS 작업 경험이 있는 경우 다음 스니펫을 쉽게 이해할 수 있�
 </style>
 ```
 
-[`<h1>`](/ko/docs/Web/HTML/Element/Heading_Elements) 요소에 스타일을 적용하고 있습니다. `<h1>` 요소가 포함된 다른 컴포넌트는 어떻게 될까요?
+We are applying a style to our [`<h1>`](/en-US/docs/Web/HTML/Element/Heading_Elements) element. What will happen to other components with `<h1>` elements in them?
 
-Svelte에서 컴포넌트의 `<style>` 블록 내부 CSS는 해당 컴포넌트로만 범위가 지정됩니다. 이는 컴포넌트 스타일의 해시를 기반으로 하는 선택한 요소에 클래스를 추가하여 작동합니다.
+In Svelte, CSS inside a component's `<style>` block will be scoped only to that component. This works by adding a class to selected elements, which is based on a hash of the component styles.
 
-새 브라우저 탭에서 `localhost:8080`을 열고 _HELLO WORLD!_ 레이블을 마우스 오른쪽/<kbd>Ctrl</kbd>-클릭하고 _Inspect_를 선택하여 작동 중인 것을 확인할 수 있습니다.
+You can see this in action by opening `localhost:8080` in a new browser tab, right/<kbd>Ctrl</kbd>-clicking on the _HELLO WORLD!_ label, and choosing _Inspect_:
 
 ![Svelte starter app with devtools open, showing classes for scoped styles](02-svelte-component-scoped-styles.png)
 
-앱을 컴파일할 때 Svelte는 `h1` 스타일 정의를 `h1.svelte-1tky8bj`로 변경한 다음 컴포넌트의 모든 `<h1>` 요소를 `<h1 class="svelte-1tky8bj">`로 수정합니다. 필요에 따라 스타일을 선택합니다.
+When compiling the app, Svelte changes our `h1` styles definition to `h1.svelte-1tky8bj`, and then modifies every `<h1>` element in our component to `<h1 class="svelte-1tky8bj">`, so that it picks up the styles as required.
 
-> **참고:** 이 동작을 재정의하고 `:global()` 한정자를 사용하여 전역적으로 선택기에 스타일을 적용할 수 있습니다([Svelte `<style>` 문서](https://svelte.dev/docs#style)를 보시면 더 많은 정보가 있습니다).
+> **Note:** You can override this behavior and apply styles to a selector globally using the `:global()` modifier (see the [Svelte `<style>` docs](https://svelte.dev/docs#style) for more information).
 
-## 몇 가지 변경
+## Making a couple of changes
 
-이제 모든 것이 어떻게 조화를 이루는지에 대한 기본적인 아이디어를 얻었으므로 몇 가지 변경 작업을 시작할 수 있습니다.
-이 시점에서 `App.svelte` 컴포넌트를 업데이트할 수 있습니다. 예를 들어 `App.svelte`의 6번째 줄에 있는 `<h1>` 요소를 다음과 같이 변경합니다.
+Now that we have a general idea of how it all fits together, we can start making a few changes.
+At this point you can try updating your `App.svelte` component — for example change the `<h1>` element on line 6 of `App.svelte` so that it reads like this:
 
 ```html
 <h1>Hello {name} from MDN!</h1>
 ```
 
-변경 사항을 저장하면 `localhost:8080`에서 실행 중인 앱이 자동으로 업데이트됩니다.
+Just save your changes and the app running at `localhost:8080` will be automatically updated.
 
-### Svelte 반응성 살펴보기
+### A first look at Svelte reactivity
 
-UI 프레임워크의 컨텍스트에서 반응성은 컴포넌트의 상태가 변경될 때 프레임워크가 DOM을 자동으로 업데이트할 수 있음을 의미합니다.
+In the context of a UI framework, reactivity means that the framework can automatically update the DOM when the state of any component is changed.
 
-Svelte에서 반응성은 컴포넌트의 최상위 변수에 새 값을 할당하여 트리거됩니다. 예를 들어 `App` 컴포넌트에 `toggleName()` 함수를 포함하고 이를 실행하는 버튼을 포함할 수 있습니다.
+In Svelte, reactivity is triggered by assigning a new value to any top-level variable in a component. For example, we could include a `toggleName()` function in our `App` component, and a button to run it.
 
-다음과 같이 `<script>` 및 마크업 섹션을 업데이트 해보세요.
+Try updating your `<script>` and markup sections like so:
 
 ```html
 <script>
@@ -308,7 +316,7 @@ Svelte에서 반응성은 컴포넌트의 최상위 변수에 새 값을 할당�
 
   function toggleName() {
     if (name === "world") {
-      name = "svelte";
+      name = "Svelte";
     } else {
       name = "world";
     }
@@ -316,23 +324,24 @@ Svelte에서 반응성은 컴포넌트의 최상위 변수에 새 값을 할당�
 </script>
 
 <main>
-  <h1>안녕! {name}!</h1>
-  <button on:click="{toggleName}">토글 name</button>
+  <h1>Hello {name}!</h1>
+  <button on:click="{toggleName}">Toggle name</button>
   <p>
-    <a href="https://svelte.dev/tutorial">Svelte 튜토리얼</a>에 방문해서 Svelte 앱을 반드는 방법을 배워보세요.
+    Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn
+    how to build Svelte apps.
   </p>
 </main>
 ```
 
-버튼을 클릭할 때마다 Svelte는 `toggleName()` 함수를 실행하여 `name` 변수의 값을 업데이트합니다.
+Whenever the button is clicked, Svelte executes the `toggleName()` function, which in turn updates the value of the `name` variable.
 
-보시다시피 `<h1>` 레이블이 자동으로 업데이트됩니다. 뒤의 내용에서 Svelte는 가상 DOM이나 기타 복잡한 조정 메커니즘을 사용하지 않고 name 변수의 값이 변경될 때마다 DOM을 업데이트하는 자바스크립트 코드를 만들었습니다.
+As you can see, the `<h1>` label is automatically updated. Behind the scenes, Svelte created the JavaScript code to update the DOM whenever the value of the name variable changes, without using any virtual DOM or other complex reconciliation mechanism.
 
-`on:click`에서 `:`의 사용에 유의하십시오. 이것이 DOM 이벤트를 수신하기 위한 Svelte의 구문입니다.
+Note the use of `:` in `on:click`. That's Svelte's syntax for listening to DOM events.
 
-## main.js 검사: 앱의 진입점
+## Inspecting main.js: the entry point of our app
 
-`App` 컴포넌트를 가져와서 사용하고 있는 `src/main.js`를 열어봅시다. 이 파일은 우리 앱의 진입점이며 처음에는 다음과 같이 보입니다.
+Let's open `src/main.js`, which is where the `App` component is being imported and used. This file is the entry point for our app, and it initially looks like this:
 
 ```js
 import App from "./App.svelte";
@@ -347,20 +356,20 @@ const app = new App({
 export default app;
 ```
 
-`main.js`는 사용할 Svelte 컴포넌트를 가져오는 것으로 시작합니다. 그런 다음 3행에서 인스턴스화하여 다음 속성을 가진 옵션 개체를 전달합니다.
+`main.js` starts by importing the Svelte component that we are going to use. Then in line 3 it instantiates it, passing an option object with the following properties:
 
-- `target`: 컴포넌트를 렌더링하려는 DOM 요소(이 경우 `<body>` 요소)입니다.
-- `props`: `App` 컴포넌트의 각 prop에 할당할 값입니다.
+- `target`: The DOM element inside which we want the component to be rendered, in this case the `<body>` element.
+- `props`: the values to assign to each prop of the `App` component.
 
-## 숨겨진 아래 살펴보기
+## A look under the hood
 
-어떻게 Svelte는 이 모든 파일이 함께 잘 작동하도록 관리하나요?
+How does Svelte manage to make all these files work together nicely?
 
-Svelte 컴파일러는 모든 컴포넌트의 `<style>` 섹션을 처리하고 `public/build/bundle.css` 파일로 컴파일합니다.
+The Svelte compiler processes the `<style>` section of every component and compiles them into the `public/build/bundle.css` file.
 
-또한 모든 컴포넌트의 마크업 및 `<script>` 섹션을 컴파일하고 결과를 `public/build/bundle.js`에 저장합니다. 또한 `src/main.js`에 코드를 추가하여 각 컴포넌트의 기능을 참조합니다.
+It also compiles the markup and `<script>` section of every component and stores the result in `public/build/bundle.js`. It also adds the code in `src/main.js` to reference the features of each component.
 
-마지막으로 `public/index.html` 파일에는 생성된 `bundle.css` 및 `bundle.js` 파일이 포함됩니다.
+Finally the file `public/index.html` includes the generated `bundle.css` and `bundle.js` files:
 
 ```html
 <!DOCTYPE html>
@@ -382,31 +391,31 @@ Svelte 컴파일러는 모든 컴포넌트의 `<style>` 섹션을 처리하고 `
 </html>
 ```
 
-`bundle.js`의 축소된 버전은 "Svelte 런타임"(단지 300줄의 자바스크립트 코드) 및 `App.svelte` 컴파일 컴포넌트를 포함하여 무게가 3KB를 약간 넘습니다. 보시다시피 `bundle.js`는 `index.html`이 참조하는 유일한 자바스크립트 파일입니다. 웹 페이지에 로드된 다른 라이브러리가 없습니다.
+The minified version of `bundle.js` weighs a little more than 3KB, which includes the "Svelte runtime" (just 300 lines of JavaScript code) and the `App.svelte` compiled component. As you can see, `bundle.js` is the only JavaScript file referenced by `index.html`. There are no other libraries loaded into the web page.
 
-이것은 다른 프레임워크의 컴파일된 번들보다 훨씬 작은 공간입니다. 코드 번들의 경우 중요한 것은 다운로드해야 하는 파일의 크기만이 아니라는 점을 고려하십시오. 이것은 구문 분석, 실행 및 메모리에 보관해야 하는 실행 가능한 코드입니다. 따라서 이것은 특히 저전력 장치나 CPU를 많이 사용하는 응용 프로그램에서 차이를 만듭니다.
+This is a much smaller footprint than compiled bundles from other frameworks. Take into account that, in the case of code bundles, it's not just the size of the files you have to download that matter. This is executable code that needs to be parsed, executed, and kept in memory. So this really makes a difference, especially in low-powered devices or CPU-intensive applications.
 
-## 튜토리얼 이후에
+## Following this tutorial
 
-이 자습서 시리즈에서는 완전한 웹 애플리케이션을 구축하게 됩니다. Svelte에 대한 모든 기본 사항과 몇 가지 고급 주제에 대해 알아봅니다.
+In this tutorial series you will be building a complete web application. We'll learn all the basics about Svelte and also quite a few advanced topics.
 
-콘텐츠를 읽으면 Svelte 기능을 잘 이해할 수 있지만 진행하면서 앱 코딩을 따라가면 이 자습서를 최대한 활용할 수 있습니다. 각 문서를 더 쉽게 따라갈 수 있도록 각 자습서의 시작 부분에 있는 앱의 소스가 포함된 폴더가 있는 GitHub 리포지토리를 제공합니다.
+You can just read the content to get a good understanding of Svelte features, but you'll get the most out of this tutorial if you follow along coding the app with us as you go. To make it easier for you to follow each article, we provide a GitHub repository with a folder containing the source for the app as it is at the start of each tutorial.
 
-Svelte는 컴퓨터에 아무것도 설치하지 않고도 웹에서 Svelte 앱을 라이브 코딩할 수 있는 놀이터인 온라인 REPL도 제공합니다. 바로 코딩을 시작할 수 있도록 각 기사에 대한 REPL을 제공합니다. 이러한 도구를 사용하는 방법에 대해 좀 더 이야기해 봅시다.
+Svelte also provides an online REPL, which is a playground for live-coding Svelte apps on the web without having to install anything on your machine. We provide a REPL for each article so you can start coding along right away. Let's talk a bit more about how to use these tools.
 
-### Git 사용법
+### Using Git
 
-가장 널리 사용되는 버전 제어 시스템은 리포지토리에 대한 호스팅과 리포지토리 작업을 위한 여러 도구를 제공하는 사이트인 GitHub와 함께 Git입니다.
+The most popular version control system is Git, along with GitHub, a site that provides hosting for your repositories and several tools for working with them.
 
-각 기사의 소스 코드를 쉽게 다운로드할 수 있도록 GitHub를 사용할 것입니다. 길을 잃을 경우를 대비하여 기사를 완료한 후 코드를 원래대로 얻을 수도 있습니다.
+We'll be using GitHub so that you can easily download the source code for each article. You will also be able to get the code as it should be after completing the article, just in case you get lost.
 
-[git 설치](https://git-scm.com/downloads) 후 레포지토리를 복제하려면 다음을 실행해야 합니다.
+After [installing git](https://git-scm.com/downloads), to clone the repository you should execute:
 
 ```bash
 git clone https://github.com/opensas/mdn-svelte-tutorial.git
 ```
 
-그런 다음 각 문서의 시작 부분에서 해당 폴더로 `cd`하고 개발 모드에서 앱을 시작하여 다음과 같이 현재 상태를 확인할 수 있습니다.
+Then at the beginning of each article, you can just `cd` into the corresponding folder and start the app in dev mode to see what its current state should be, like this:
 
 ```bash
 cd 02-starting-our-todo-app
@@ -414,83 +423,85 @@ npm install
 npm run dev
 ```
 
-git 및 GitHub에 대해 자세히 알아보려면 저희가 정리한 유용한 가이드 링크 목록을 보세요. [Git 및 GitHub](/ko/docs/Learn/Tools_and_testing/GitHub)
+If you want lo learn more about git and GitHub, we've compiled a list of links to useful guides — see [Git and GitHub](/en-US/docs/Learn/Tools_and_testing/GitHub).
 
-> **참고:** git repo를 복제하지 않고 파일을 다운로드하기만 하려면 `npx degit opensas/mdn-svelte-tutorial`과 같은 degit 도구를 사용할 수 있습니다. `npx degit opensas/mdn-svelte-tutorial/01-getting-started`를 사용하여 특정 폴더를 다운로드할 수도 있습니다. Degit은 로컬 git repo를 만들지 않고 지정된 폴더의 파일만 다운로드합니다.
+> **Note:** If you just want to download the files without cloning the git repo, you can use the degit tool like this — `npx degit opensas/mdn-svelte-tutorial`. You can also download a specific folder with `npx degit opensas/mdn-svelte-tutorial/01-getting-started`. Degit won't create a local git repo, it will just download the files of the specified folder.
 
-### Svelte REPL 사용
+### Using the Svelte REPL
 
-REPL([read–eval–print loop](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop))은 명령을 입력하고 결과를 즉시 확인하십시오. 많은 프로그래밍 언어가 REPL을 제공합니다.
+A REPL ([read–eval–print loop](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop)) is an interactive environment that allows you to enter commands and immediately see the results — many programming languages provide a REPL.
 
-Svelte의 REPL은 그 이상입니다. 완전한 앱을 만들고 온라인에 저장하고 다른 사람과 공유할 수 있는 온라인 도구입니다.
+Svelte's REPL is much more than that. It's an online tool that allows you to create complete apps, save them online, and share with others.
 
-아무 것도 설치하지 않고 모든 컴퓨터에서 Svelte로 게임을 시작하는 가장 쉬운 방법입니다. Svelte 커뮤니티에서도 널리 사용됩니다. 아이디어를 공유하거나 도움을 요청하거나 문제를 보고하려는 경우 문제를 시연하는 REPL 인스턴스를 생성하는 것이 항상 매우 유용합니다.
+It's the easiest way to start playing with Svelte from any machine, without having to install anything. It is also widely used by Svelte community. If you want to share an idea, ask for help, or report an issue, it's always extremely useful to create a REPL instance demonstrating the issue.
 
-Svelte REPL과 사용 방법을 간단히 살펴보겠습니다. 다음과 같이 보입니다.
+Let's have a quick look at the Svelte REPL and how you'd use it. It looks like so:
 
 ![the svelte REPL in action, showing component code on the left, and output on the right](03-svelte-repl-in-action.png)
 
-REPL을 시작하려면 브라우저를 열고 <https://svelte.dev/repl>로 이동합니다.
+To start a REPL, open your browser and navigate to <https://svelte.dev/repl>.
 
-- 화면 왼쪽에는 컴포넌트의 코드가 표시되고 오른쪽에는 실행 중인 앱의 출력이 표시됩니다.
-- 코드 위의 막대를 사용하면 `.svelte` 및 `.js` 파일을 만들고 재배열할 수 있습니다. 폴더 안에 파일을 만들려면 `components/MyComponent.svelte`와 같이 전체 경로 이름을 지정하기만 하면 됩니다. 폴더가 자동으로 생성됩니다.
-- 해당 막대 위에는 REPL의 제목이 있습니다. 그것을 클릭하여 편집하세요.
-- 오른쪽에는 3개의 탭이 있습니다.
+- On the left side of the screen you'll see the code of your components, and on the right you'll see the running output of your app.
+- The bar above the code lets you create `.svelte` and `.js` files and rearrange them. To create a file inside a folder, just specify the complete pathname, like this: `components/MyComponent.svelte`. The folder will be automatically created.
+- Above that bar you have the title of the REPL. Click on it to edit it.
+- On the right side you have three tabs:
 
-  - _Result_ 탭에는 앱 출력이 표시되며 하단에 콘솔이 제공됩니다.
-  - _JS output_ 탭에서는 Svelte에서 생성된 JavaScript 코드를 검사하고 컴파일러 옵션을 설정할 수 있습니다.
-  - _CSS output_ 탭에는 Svelte에서 생성한 CSS가 표시됩니다.
+  - The _Result_ tab shows your app output, and provides a console at the bottom.
+  - The _JS output_ tab lets you inspect the JavaScript code generated by Svelte and set compiler options.
+  - The _CSS output_ tab shows the CSS generated by Svelte.
 
-- 탭 위에는 전체 화면 모드로 전환하고 앱을 다운로드할 수 있는 도구 모음이 있습니다. GitHub 계정으로 로그인하면 앱을 포크하고 저장할 수도 있습니다. 또한 GitHub 사용자 이름 프로필을 클릭하고 _Your saved apps_ 을 선택하면 저장된 모든 REPL을 볼 수 있습니다.
+- Above the tabs, you'll find a toolbar that lets you enter fullscreen mode and download your app. If you log in with a GitHub account, you'll also be able to fork and save the app. You'll also be able to see all your saved REPLs by clicking on your GitHub username profile and selecting _Your saved apps_.
 
-REPL에서 파일을 변경할 때마다 Svelte는 앱을 다시 컴파일하고 결과 탭을 업데이트합니다. 앱을 공유하려면 URL을 공유하세요. 예를 들어 전체 앱을 실행하는 REPL 링크는 다음과 같습니다. <https://svelte.dev/repl/378dd79e0dfe4486a8f10823f3813190?version=3.23.2>.
+Whenever you change any file on the REPL, Svelte will recompile the app and update the Result tab. To share your app, share the URL. For example, here's the link for a REPL running our complete app: <https://svelte.dev/repl/378dd79e0dfe4486a8f10823f3813190?version=3.23.2>.
 
-> **참고:** URL에서 Svelte의 버전을 지정하는 방법에 유의하십시오. 이는 Svelte의 특정 버전과 관련된 문제를 보고할 때 유용합니다.
+> **Note:** Notice how you can specify Svelte's version in the URL. This is useful when reporting issues related to a specific version of Svelte.
 
-바로 코딩을 시작할 수 있도록 각 기사의 시작과 끝에 REPL을 제공합니다.
+We will provide a REPL at the beginning and end of each article so that you can start coding with us right away.
 
-> **참고:** 현재 REPL은 폴더 이름을 제대로 처리할 수 없습니다. REPL에 대한 자습서를 따르는 경우 루트 폴더 내에 모든 컴포넌트를 생성하십시오. 그런 다음 코드에 다음과 같은 경로를 본다면 (예: `import Todos from './components/Todos.svelte'`),곧장 일반 URL로 대체하세요 (예: `import Todos from './Todos.svelte'`).
+> **Note:** At the moment the REPL can't handle folder names properly. If you are following the tutorial on the REPL, just create all your components inside the root folder. Then when you see a path in the code, for example `import Todos from './components/Todos.svelte'`, just replace it with a flat URL, e.g. `import Todos from './Todos.svelte'`.
 
-## 지금까지의 코드
+## The code so far
 
 ### Git
 
-레포지토리 클론을 하세요(당신이 이미 클론을 완료하지 않았다면).
+Clone the GitHub repo (if you haven't already done it) with:
 
 ```bash
 git clone https://github.com/opensas/mdn-svelte-tutorial.git
 ```
 
-그런 다음 현재 앱으로 상태를 이동하고, 실행하세요.
+Then to get to the current app state, run
 
 ```bash
 cd mdn-svelte-tutorial/01-getting-started
 ```
 
-또는 폴더의 내용을 직접 다운로드하세요.
+Or directly download the folder's content:
 
 ```bash
 npx degit opensas/mdn-svelte-tutorial/01-getting-started
 ```
 
-개발 모드로 당신의 앱을 실행하기 위한 명령어(`npm install && npm run dev`)를 기억하세요.
+Remember to run `npm install && npm run dev` to start your app in development mode.
 
 ### REPL
 
-REPL을 사용하여 우리와 함께 코딩하려면 <https://svelte.dev/repl/fc68b4f059d34b9c84fa042d1cce586c?version=3.23.2>에서 시작하세요.
+To code along with us using the REPL, start at
 
-## 요약
+<https://svelte.dev/repl/fc68b4f059d34b9c84fa042d1cce586c?version=3.23.2>
 
-이것으로 Svelte를 로컬로 설치하는 방법, 스타터 앱을 만드는 방법 및 기본 작동 방법을 포함하여 Svelte에 대한 초기 살펴보기를 마칩니다. 다음 글에서 우리는 첫 번째로 초심자에게 적절한 애플리케이션인 할 일 목록을 만들기 시작할 것입니다. 하지만 그 전에 배운 내용 중 일부를 요약해 보겠습니다.
+## Summary
 
-Svelte에서.
+This brings us to the end of our initial look at Svelte, including how to install it locally, create a starter app, and how the basics work. In the next article we'll start building our first proper application, a todo list. Before we do that, however, let's recap some of the things we've learned.
 
-- 단일 `.svelte` 파일에서 각 컴포넌트의 스크립트, 스타일 및 마크업을 정의합니다.
-- 컴포넌트 속성은 `export` 키워드로 선언됩니다.
-- 해당 `.svelte` 파일을 가져오기만 하면 Svelte 컴포넌트를 사용할 수 있습니다.
-- 컴포넌트 스타일은 서로 충돌하지 않도록 범위가 지정됩니다.
-- 마크업 섹션에서 중괄호 사이에 넣어 자바스크립트 표현식을 포함할 수 있습니다.
-- 컴포넌트의 최상위 변수는 컴포넌트의 상태를 구성합니다.
-- 최상위 변수에 새 값을 할당하는 것만으로 반응성이 발동됩니다.
+In Svelte:
 
-{{PreviousMenuNext("학습/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_resources","학습/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_todo_list_beginning", "학습/Tools_and_testing/Client-side_JavaScript_frameworks")}}
+- We define the script, style, and markup of each component in a single `.svelte` file.
+- Component props are declared with the `export` keyword.
+- Svelte components can be used just by importing the corresponding `.svelte` file.
+- Components styles are scoped, keeping them from clashing with each other.
+- In the markup section you can include any JavaScript expression by putting it between curly braces.
+- The top-level variables of a component constitute its state.
+- Reactivity is fired just by assigning a new value to a top-level variable.
+
+{{PreviousMenuNext("Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Vue_resources","Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_todo_list_beginning", "Learn/Tools_and_testing/Client-side_JavaScript_frameworks")}}

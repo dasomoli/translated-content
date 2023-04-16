@@ -1,62 +1,78 @@
 ---
-title: console.log()
+title: "console: log() method"
+short-title: log()
 slug: Web/API/console/log
+page-type: web-api-instance-method
+browser-compat: api.console.log
 ---
 
 {{APIRef("Console API")}}
 
-**`console.log()`** 메서드는 웹 콘솔에 메시지를 출력합니다. 메시지는 (선택적 대체 값을 포함한) 단일 문자열이거나 더 많은 JavaScript 객체중 하나일 수 있습니다.
+The **`console.log()`** method outputs a message to the web console.
+The message may be a single string (with optional substitution values), or it may be any one
+or more JavaScript objects.
 
 {{AvailableInWorkers}}
 
-## 구문
+## Syntax
 
-```js
-console.log(obj1 [, obj2, ..., objN]);
-console.log(msg [, subst1, ..., substN]);
+```js-nolint
+log(obj1)
+log(obj1, /* …, */ objN)
+log(msg)
+log(msg, subst1, /* …, */ substN)
 ```
 
-### 매개변수
+### Parameters
 
-- `obj1` ... `objN`
-  - : 출력할 JavaScript 객체 목록입니다. 이러한 각 객체의 문자열 표현은 입력한 순서대로 함께 출력됩니다. 최신 버전의 Chrome 및 Firefox에서, 콘솔에 기록되는 것은 객체에 대한 참조이며, `console.log()`를 호출하는 순간에 객체의 '값'이 반드시 필요한 것은 아닙니다.
+- `obj1` … `objN`
+  - : A list of JavaScript objects to output.
+    Objects are output in the order listed. Please be warned that if
+    you log objects in the latest versions of Chrome and Firefox, what you get logged on
+    the console is a _reference to the object_, which is not necessarily the
+    'value' of the object at the moment in time you call `console.log()`, but
+    it is the value of the object at the moment you open the console.
 - `msg`
-  - : 0개 이상의 치환 문자열들을 포함하는 자바스크립트 문자열입니다.
-- `subst1` ... `substN`
-  - : `msg` 내의 치환 문자열들을 치환할 자바스크립트 객체들입니다. 출력 형식에 추가 제어를 할 수 있게 해줍니다.
+  - : A JavaScript string containing zero or more substitution strings.
+- `subst1` … `substN`
+  - : JavaScript objects with which to replace substitution strings within
+    `msg`. This gives you additional control over the format of the output.
 
-자세한 내용은 {{domxref("console")}} 문서의 [콘솔에 텍스트 출력](/ko/docs/Web/API/Console#콘솔에_텍스트_출력하기)을 참고하세요.
+See [Outputting text to the console](/en-US/docs/Web/API/console#outputting_text_to_the_console) in the documentation of {{domxref("console")}} for details.
 
-## log()와 dir()의 차이
+### Return value
 
-당신은 {{domxref("console.dir()")}}과 `console.log()`가 무엇이 다른지 궁금할 수 있습니다.
+None ({{jsxref("undefined")}}).
 
-DOM 요소들을 콘솔로 보낼 때 Chrome에서 다른 유용한 차이점이 있습니다.
+## Logging objects
 
-![](dozdcyr.png)
+Information about an object is lazily retrieved. This means that the log message shows the content of an object at the time when it's first viewed, not when it was logged. For example:
 
-- `console.log`는 요소를 HTML과 같은 트리 구조로 출력합니다.
-- `console.dir`은 요소를 JSON과 같은 트리 구조로 출력합니다.
+```js
+const obj = {};
+console.log(obj);
+obj.prop = 123;
+```
 
-구체적으로, `console.log`는 DOM 요소에 대해 특별한 처리를 제공하지만 `console.dir`은 그렇지 않습니다. 이것은 종종 DOM JS 객체의 전체 표현을 보려고 할 때 유용합니다.
+This will output `{}`. However, if you expand the object's details, you will see `prop: 123`.
 
-이것과 다른 함수들에 대한 더 많은 정보는 [Chrome Console API reference](https://developers.google.com/chrome-developer-tools/docs/console-api#consoledirobject)에서 확인할 수 있습니다.
+If you are going to mutate your object and you want to prevent the logged information from being updated, you can [deep-clone](/en-US/docs/Glossary/Deep_copy) the object before logging it. A common way is to {{jsxref("JSON.stringify()")}} and then {{jsxref("JSON.parse()")}} it:
 
-## 객체 로깅하기
+```js
+console.log(JSON.parse(JSON.stringify(obj)));
+```
 
-`console.log(obj)`를 사용하지 말고 `console.log(JSON.parse(JSON.stringify(obj)))`를 사용하시기 바랍니다.
+There are other alternatives that work in browsers, such as [`structuredClone()`](/en-US/docs/Web/API/structuredClone), which are more effective at cloning different types of objects.
 
-이 방법은 여러분이 로그를 남길 당시의 `obj` 값을 보려고 사용했을 것입니다. 그러나 많은 브라우저가 값이 갱신 될때마다 끊임없이 바뀐 값을 보여줍니다. 이는 여러분이 원하는 방법이 아닐 것입니다.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [MSDN: F12 도구 콘솔을 사용하여 오류 및 상태 보기](https://msdn.microsoft.com/library/gg589530)
+- [MSDN: Using the F12 Tools Console to View Errors and Status](<https://docs.microsoft.com/previous-versions/windows/internet-explorer/ie-developer/samples/gg589530(v=vs.85)>)
 - [NodeJS: Console API](https://nodejs.org/docs/latest/api/console.html#console_console_log_data)

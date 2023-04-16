@@ -1,31 +1,53 @@
 ---
-title: AnimationTimeline.currentTime
+title: "AnimationTimeline: currentTime property"
+short-title: currentTime
 slug: Web/API/AnimationTimeline/currentTime
+page-type: web-api-instance-property
+browser-compat: api.AnimationTimeline.currentTime
 ---
 
-{{ SeeCompatTable() }}{{ APIRef("Web Animations") }}
+{{ APIRef("Web Animations") }}
 
-Web Animations API의 AnimationTimeline 인터페이스의 currentTime 읽기 전용 속성은 타임 라인의 현재 시간을 밀리 초 단위로 반환하거나 타임 라인이 비활성 상태이면 null을 반환합니다.출력 값이 생성되는 시간 세그먼트를 정의합니다. 이러한 값은 대상 속성에 애니메이션 효과를 적용하는 데 사용됩니다.
+The **`currentTime`** read-only property of the [Web Animations API](/en-US/docs/Web/API/Web_Animations_API)'s {{domxref("AnimationTimeline")}} interface returns the timeline's current time in milliseconds, or `null` if the timeline is inactive.
+
+## Value
+
+A number representing the timeline's current time in milliseconds, or `null` if the timeline is inactive.
+
+## Reduced time precision
+
+To offer protection against timing attacks and [fingerprinting](/en-US/docs/Glossary/Fingerprinting), the precision of `animationTimeline.currentTime` might get rounded depending on browser settings.
+In Firefox, the `privacy.reduceTimerPrecision` preference is enabled by default and defaults to 20us in Firefox 59; in 60 it will be 2ms.
 
 ```js
-    var currentTime = AnimationTimeline.currentTime;
+// reduced time precision (2ms) in Firefox 60
+animationTimeline.currentTime;
+// 23.404
+// 24.192
+// 25.514
+// …
+
+// reduced time precision with `privacy.resistFingerprinting` enabled
+animationTimeline.currentTime;
+// 49.8
+// 50.6
+// 51.7
+// …
 ```
 
-### Value
+In Firefox, you can also enable `privacy.resistFingerprinting`; the precision will be 100ms or the value of `privacy.resistFingerprinting.reduceTimerPrecision.microseconds`, whichever is larger.
 
-타임 라인의 현재 시간을 밀리 초 단위로 나타내는 숫자 또는 타임 라인이 비활성 상태 인 경우 null입니다.
-
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- [Web Animations API](/ko/docs/Web/API/Web_Animations_API)
+- [Web Animations API](/en-US/docs/Web/API/Web_Animations_API)
 - {{domxref("AnimationTimeline")}}
 - {{domxref("DocumentTimeline")}} inherits this property
 - {{domxref("Document.timeline")}} returns a timeline object which inherits this property

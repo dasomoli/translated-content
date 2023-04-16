@@ -1,16 +1,27 @@
 ---
-title: Document.defaultView
+title: "Document: defaultView property"
+short-title: defaultView
 slug: Web/API/Document/defaultView
+page-type: web-api-instance-property
+browser-compat: api.Document.defaultView
 ---
 
 {{ApiRef}}
 
-브라우저의 **`document.defaultView`** 는 {{glossary("browsing context", "문서")}}와 연결된 {{domxref("Window", "window")}} 객체를 반환합니다. 가능하지 않은 경우 {{jsxref("null")}}을 대신 반환합니다.
+In browsers, **`document.defaultView`** returns the
+{{domxref("Window", "window")}} object associated with {{Glossary("Browsing_context", "a
+  document")}}, or `null` if none is available.
 
-## 명세
+This property is read-only.
+
+## Value
+
+The {{domxref("Window", "window")}} object.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

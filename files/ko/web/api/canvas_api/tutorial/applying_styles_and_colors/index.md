@@ -1,30 +1,32 @@
 ---
-title: 스타일과 색 적용하기
+title: Applying styles and colors
 slug: Web/API/Canvas_API/Tutorial/Applying_styles_and_colors
-original_slug: Web/HTML/Canvas/Tutorial/Applying_styles_and_colors
+page-type: guide
 ---
 
 {{DefaultAPISidebar("Canvas API")}} {{PreviousNext("Web/API/Canvas_API/Tutorial/Drawing_shapes", "Web/API/Canvas_API/Tutorial/Drawing_text")}}
 
-[도형 그리기](/ko/docs/Web/HTML/Canvas/Tutorial/Drawing_shapes) 장에서는 기본 선과 채우기 스타일만 사용했습니다. 여기서 우리는 그리기를 조금 더 매력적으로 만들 수있는 캔버스 옵션을 살펴볼 것입니다. 그리기에 다른 색상, 선 스타일, 그라디언트, 패턴 및 그림자를 추가하는 방법을 배우게됩니다.
+In the chapter about [drawing shapes](/en-US/docs/Web/API/Canvas_API/Tutorial/Drawing_shapes), we used only the default line and fill styles. Here we will explore the canvas options we have at our disposal to make our drawings a little more attractive. You will learn how to add different colors, line styles, gradients, patterns and shadows to your drawings.
 
-## 색상
+> **Note:** Canvas content is not accessible to screen readers. If the canvas is purely decorative, include `role="presentation"` on the `<canvas>` opening tag. Otherwise, include descriptive text as the value of the [`aria-label`](/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-label) attribute directly on the canvas element itself or include fallback content placed within the opening and closing canvas tag. Canvas content is not part of the DOM, but nested fallback content is.
 
-지금까지는 그리기 메소드만 살펴봤습니다. 도형에 색을 적용하고자 하면, `fillStyle`과 `strokeStyle` 두 가지 중요한 속성을 사용할 수 있습니다.
+## Colors
+
+Up until now we have only seen methods of the drawing context. If we want to apply colors to a shape, there are two important properties we can use: `fillStyle` and `strokeStyle`.
 
 - {{domxref("CanvasRenderingContext2D.fillStyle", "fillStyle = color")}}
-  - : 도형을 채우는 색을 설정합니다.
+  - : Sets the style used when filling shapes.
 - {{domxref("CanvasRenderingContext2D.strokeStyle", "strokeStyle = color")}}
-  - : 도형의 윤곽선 색을 설정합니다.
+  - : Sets the style for shapes' outlines.
 
-여기서의 `color`는 CSS의 {{cssxref("&lt;color&gt;")}}, 그라디언트 객체, 패턴 객체를 뜻합니다. 그라디언트 객체와 패턴 객체는 페이지 아래에서 설명합니다. 윤곽선과 채움 색의 초기 설정값은 검은색입니다. (CSS 색상 값 `#000000`)
+`color` is a string representing a CSS {{cssxref("&lt;color&gt;")}}, a gradient object, or a pattern object. We'll look at gradient and pattern objects later. By default, the stroke and fill color are set to black (CSS color value `#000000`).
 
-> **참고:** `strokeStyle` 또는 `fillStyle` 속성을 설정하면, 새로 설정된 값이 앞으로 그려질 도형의 기본 값이 됩니다. 각 도형에 다른 색을 적용하려면 `fillStyle` 또는 `strokeStyle` 속성을 다시 적용해야 합니다.
+> **Note:** When you set the `strokeStyle` and/or `fillStyle` property, the new value becomes the default for all shapes being drawn from then on. For every shape you want in a different color, you will need to reassign the `fillStyle` or `strokeStyle` property.
 
-색의 올바른 값은 CSS3 사양에 나오는 {{cssxref("&lt;color&gt;")}} 값입니다. 아래에 나오는 색은 모두 한가지 색을 다르게 표현한 것입니다.
+The valid strings you can enter should, according to the specification, be CSS {{cssxref("&lt;color&gt;")}} values. Each of the following examples describe the same color.
 
 ```js
-// fillStyle에 적용되는 색은 모두 '오렌지'
+// these all set the fillStyle to 'orange'
 
 ctx.fillStyle = "orange";
 ctx.fillStyle = "#FFA500";
@@ -32,105 +34,113 @@ ctx.fillStyle = "rgb(255, 165, 0)";
 ctx.fillStyle = "rgba(255, 165, 0, 1)";
 ```
 
-### `fillStyle` 예제
+### A `fillStyle` example
 
-이 예제에서 `for` 반복문을 두 번 사용하여 사각형 격자를 그릴 것입니다. 결과는 스크린샷과 같을 것입니다. 결과가 그리 대단한 것은 아닙니다. 각 사각형의 RGB 색상값에서 붉은색과 녹색 값만을 변수 `i`와 `j`를 사용하여 변경합니다. 파란색 채널은 고정된 값입니다. 채널 값들을 변경함으로써, 모든 종류의 팔레트를 생성할 수 있습니다. 단계를 늘리면 Photoshop에서 사용하는 색상 팔레트와 비슷한 모양을 얻을 수 있습니다.
-
-<pre class="brush: js;highlight[5,6]">function draw() {
-  var ctx = document.getElementById('canvas').getContext('2d');
-  for (var i = 0; i &#x3C; 6; i++){
-    for (var j = 0; j &#x3C; 6; j++){
-      ctx.fillStyle = 'rgb(' + Math.floor(255 - 42.5 * i) + ', ' +
-                       Math.floor(255 - 42.5 * j) + ', 0)';
-      ctx.fillRect(j*25,i*25,25,25);
-    }
-  }
-}</pre>
-
-```html hidden
-<canvas id="canvas" width="150" height="150"></canvas>
-```
-
-```js hidden
-draw();
-```
-
-결과는 아래와 같습니다.
-
-{{EmbedLiveSample("A_fillStyle_example", 160, 160, "canvas_fillstyle.png")}}
-
-### `strokeStyle` 예제
-
-이번 예제는 위에 나온 예제와 비슷하지만, `strokeStyle` 속성을 사용하여 윤곽선의 색을 바꿉니다. 사각형 대신, 원을 그리는 `arc()` 메소드를 사용합니다.
-
-<pre class="brush: js;highlight[5,6]">function draw() {
-  var ctx = document.getElementById('canvas').getContext('2d');
-  for (var i = 0; i &#x3C; 6; i++) {
-    for (var j = 0; j &#x3C; 6; j++) {
-      ctx.strokeStyle = 'rgb(0, ' + Math.floor(255 - 42.5 * i) + ', ' +
-                       Math.floor(255 - 42.5 * j) + ')';
-      ctx.beginPath();
-      ctx.arc(12.5 + j * 25, 12.5 + i * 25, 10, 0, Math.PI * 2, true);
-      ctx.stroke();
-    }
-  }
-}</pre>
-
-```html hidden
-<canvas id="canvas" width="150" height="150"></canvas>
-```
-
-```js hidden
-draw();
-```
-
-결과는 아래와 같습니다.
-
-{{EmbedLiveSample("A_strokeStyle_example", "180", "180", "canvas_strokestyle.png")}}
-
-## 투명도
-
-캔버스에는 불투명한 도형을 그릴 수도 있고, 반투명한 도형도 그릴 수도 있습니다. `globalAlpha` 값을 설정하거나 윤곽선 또는 채움 스타일에 반투명 색을 적용하면 됩니다.
-
-- {{domxref("CanvasRenderingContext2D.globalAlpha", "globalAlpha = transparencyValue")}}
-  - : 투명도 값이 설정되면 이후 캔버스에 그려지는 모든 도형들의 투명도가 바뀝니다. 설정하는 값은 0.0(완전히 투명)과 1.0(완전히 불투명) 사이에 있어야 하며, 초기 설정값은 1.0(완전히 불투명)입니다.
-
-`globalAlpha`는 모두 같은 투명도로 캔버스에 많은 도형을 그릴 때 유용합니다. 하지만, 보통은 각각의 도형마다 투명도를 설정하는 것이 더 유용할 것입니다.
-
-`strokeStyle`과 `fillStyle` 값에 CSS rgba 색상값을 적용할 수 있으므로, 투명한 색을 적용하려면 아래와 같은 표기법을 사용할 수 있습니다.
-
-```js
-// 외곽선과 채움 스타일에 투명 적용
-
-ctx.strokeStyle = 'rgba(255, 0, 0, 0.5)';
-ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
-```
-
-`rgba()` 함수는 `rgb()` 함수와 비슷하지만, 인자가 하나 더 있습니다. 마지막 인자는 투명도 값을 설정하는 인자입니다. 올바른 범위는 0.0(완전히 투명)에서 1.0(완전히 불투명)입니다.
-
-### `globalAlpha` 예제
-
-이 예제에서, 네 가지 다른 색을 가진 사각형을 배경에 그릴 것입니다. 그 위에, 반투명한 원을 여러 개 그릴 것입니다. `globalAlpha` 값을 `0.2`로 설정하면 이후 그려질 도형은 이 값을 사용합니다. `for` 반복문을 사용하여 점점 큰 반지름의 원을 그립니다. 최종 결과물은 원형 그레이디언트가 됩니다. 원이 겹쳐지면서 점점 불투명해지는 것을 볼 수 있으며, 최종적으로 한 가운데에 있는 원에서는 뒷 배경이 거의 보이지 않게 됩니다.
+In this example, we once again use two `for` loops to draw a grid of rectangles, each in a different color. The resulting image should look something like the screenshot. There is nothing too spectacular happening here. We use the two variables `i` and `j` to generate a unique RGB color for each square, and only modify the red and green values. The blue channel has a fixed value. By modifying the channels, you can generate all kinds of palettes. By increasing the steps, you can achieve something that looks like the color palettes Photoshop uses.
 
 ```js
 function draw() {
-  var ctx = document.getElementById('canvas').getContext('2d');
-  // 배경을 그린다
-  ctx.fillStyle = '#FD0';
-  ctx.fillRect(0, 0, 75, 75);
-  ctx.fillStyle = '#6C0';
-  ctx.fillRect(75, 0, 75, 75);
-  ctx.fillStyle = '#09F';
-  ctx.fillRect(0, 75, 75, 75);
-  ctx.fillStyle = '#F30';
-  ctx.fillRect(75, 75, 75, 75);
-  ctx.fillStyle = '#FFF';
+  const ctx = document.getElementById("canvas").getContext("2d");
+  for (let i = 0; i < 6; i++) {
+    for (let j = 0; j < 6; j++) {
+      ctx.fillStyle = `rgb(${Math.floor(255 - 42.5 * i)}, ${Math.floor(
+        255 - 42.5 * j
+      )}, 0)`;
+      ctx.fillRect(j * 25, i * 25, 25, 25);
+    }
+  }
+}
+```
 
-  // 투명값을 설정한다
+```html hidden
+<canvas id="canvas" width="150" height="150"
+  >A 6 by 6 square grid displaying 36 different colors</canvas
+>
+```
+
+```js hidden
+draw();
+```
+
+The result looks like this:
+
+{{EmbedLiveSample("A_fillStyle_example", 160, 160, "canvas_fillstyle.png")}}
+
+### A `strokeStyle` example
+
+This example is similar to the one above, but uses the `strokeStyle` property to change the colors of the shapes' outlines. We use the `arc()` method to draw circles instead of squares.
+
+```js
+function draw() {
+  const ctx = document.getElementById("canvas").getContext("2d");
+  for (let i = 0; i < 6; i++) {
+    for (let j = 0; j < 6; j++) {
+      ctx.strokeStyle = `rgb(0, ${Math.floor(255 - 42.5 * i)}, ${Math.floor(
+        255 - 42.5 * j
+      )})`;
+      ctx.beginPath();
+      ctx.arc(12.5 + j * 25, 12.5 + i * 25, 10, 0, 2 * Math.PI, true);
+      ctx.stroke();
+    }
+  }
+}
+```
+
+```html hidden
+<canvas id="canvas" width="150" height="150" role="presentation"></canvas>
+```
+
+```js hidden
+draw();
+```
+
+The result looks like this:
+
+{{EmbedLiveSample("A_strokeStyle_example", "180", "180", "canvas_strokestyle.png")}}
+
+## Transparency
+
+In addition to drawing opaque shapes to the canvas, we can also draw semi-transparent (or translucent) shapes. This is done by either setting the `globalAlpha` property or by assigning a semi-transparent color to the stroke and/or fill style.
+
+- {{domxref("CanvasRenderingContext2D.globalAlpha", "globalAlpha = transparencyValue")}}
+  - : Applies the specified transparency value to all future shapes drawn on the canvas. The value must be between 0.0 (fully transparent) to 1.0 (fully opaque). This value is 1.0 (fully opaque) by default.
+
+The `globalAlpha` property can be useful if you want to draw a lot of shapes on the canvas with similar transparency, but otherwise it's generally more useful to set the transparency on individual shapes when setting their colors.
+
+Because the `strokeStyle` and `fillStyle` properties accept CSS rgba color values, we can use the following notation to assign a transparent color to them.
+
+```js
+// Assigning transparent colors to stroke and fill style
+
+ctx.strokeStyle = "rgba(255, 0, 0, 0.5)";
+ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+```
+
+The `rgba()` function is similar to the `rgb()` function but it has one extra parameter. The last parameter sets the transparency value of this particular color. The valid range is again between 0.0 (fully transparent) and 1.0 (fully opaque).
+
+### A `globalAlpha` example
+
+In this example, we'll draw a background of four different colored squares. On top of these, we'll draw a set of semi-transparent circles. The `globalAlpha` property is set at `0.2` which will be used for all shapes from that point on. Every step in the `for` loop draws a set of circles with an increasing radius. The final result is a radial gradient. By overlaying ever more circles on top of each other, we effectively reduce the transparency of the circles that have already been drawn. By increasing the step count and in effect drawing more circles, the background would completely disappear from the center of the image.
+
+```js
+function draw() {
+  const ctx = document.getElementById("canvas").getContext("2d");
+  // draw background
+  ctx.fillStyle = "#FD0";
+  ctx.fillRect(0, 0, 75, 75);
+  ctx.fillStyle = "#6C0";
+  ctx.fillRect(75, 0, 75, 75);
+  ctx.fillStyle = "#09F";
+  ctx.fillRect(0, 75, 75, 75);
+  ctx.fillStyle = "#F30";
+  ctx.fillRect(75, 75, 75, 75);
+  ctx.fillStyle = "#FFF";
+
+  // set transparency value
   ctx.globalAlpha = 0.2;
 
-  // 반투명한 원을 그린다
-  for (var i = 0; i &#x3C; 7; i++){
+  // Draw semi transparent circles
+  for (let i = 0; i < 7; i++) {
     ctx.beginPath();
     ctx.arc(75, 75, 10 + 10 * i, 0, Math.PI * 2, true);
     ctx.fill();
@@ -139,7 +149,7 @@ function draw() {
 ```
 
 ```html hidden
-<canvas id="canvas" width="150" height="150"></canvas>
+<canvas id="canvas" width="150" height="150" role="presentation"></canvas>
 ```
 
 ```js hidden
@@ -148,77 +158,77 @@ draw();
 
 {{EmbedLiveSample("A_globalAlpha_example", "180", "180", "canvas_globalalpha.png")}}
 
-### `rgba()`를 사용한 예제
+### An example using `rgba()`
 
-두번째 예제에서는 위의 예제와 비슷한 일을 하지만, 겹쳐진 원을 그리는 대신, 불투명도가 증가하는 작은 사각형을 그릴 것입니다. 각각의 도형마다 윤곽선이나 채움 스타일을 따로따로 설정할 수 있기 때문에, `rgba()`를 사용할 때는 조금 더 제어가 쉽고 융통성도 있습니다.
+In this second example, we do something similar to the one above, but instead of drawing circles on top of each other, I've drawn small rectangles with increasing opacity. Using `rgba()` gives you a little more control and flexibility because we can set the fill and stroke style individually.
 
 ```js
 function draw() {
-  var ctx = document.getElementById('canvas').getContext('2d');
+  const ctx = document.getElementById("canvas").getContext("2d");
 
-  // 배경을 그린다
-  ctx.fillStyle = 'rgb(255,221,0)';
-  ctx.fillRect(0,0,150,37.5);
-  ctx.fillStyle = 'rgb(102,204,0)';
-  ctx.fillRect(0,37.5,150,37.5);
-  ctx.fillStyle = 'rgb(0,153,255)';
-  ctx.fillRect(0,75,150,37.5);
-  ctx.fillStyle = 'rgb(255,51,0)';
-  ctx.fillRect(0,112.5,150,37.5);
+  // Draw background
+  ctx.fillStyle = "rgb(255, 221, 0)";
+  ctx.fillRect(0, 0, 150, 37.5);
+  ctx.fillStyle = "rgb(102, 204, 0)";
+  ctx.fillRect(0, 37.5, 150, 37.5);
+  ctx.fillStyle = "rgb(0, 153, 255)";
+  ctx.fillRect(0, 75, 150, 37.5);
+  ctx.fillStyle = "rgb(255, 51, 0)";
+  ctx.fillRect(0, 112.5, 150, 37.5);
 
-  // 반투명한 사각형을 그린다
-  for (var i=0;i&#x3C;10;i++){
-    ctx.fillStyle = 'rgba(255,255,255,'+(i+1)/10+')';
-    for (var j=0;j&#x3C;4;j++){
-      ctx.fillRect(5+i*14,5+j*37.5,14,27.5)
+  // Draw semi transparent rectangles
+  for (let i = 0; i < 10; i++) {
+    ctx.fillStyle = `rgba(255, 255, 255, ${(i + 1) / 10})`;
+    for (let j = 0; j < 4; j++) {
+      ctx.fillRect(5 + i * 14, 5 + j * 37.5, 14, 27.5);
     }
   }
 }
 ```
 
 ```html hidden
-<canvas id="canvas" width="150" height="150"></canvas>
+<canvas id="canvas" width="150" height="150" role="presentation"></canvas>
 ```
 
 ```js hidden
 draw();
 ```
 
-{{EmbedLiveSample("An_example_using_rgba()", "180", "180", "canvas_rgba.png")}}
+{{EmbedLiveSample("An_example_using_rgba", "180", "180", "canvas_rgba.png")}}
 
-## 선 모양
+## Line styles
 
-선의 스타일을 바꾸는 방법이 몇가지 있습니다.
+There are several properties which allow us to style lines.
 
 - {{domxref("CanvasRenderingContext2D.lineWidth", "lineWidth = value")}}
-  - : 이후 그려질 선의 두께를 설정합니다.
+  - : Sets the width of lines drawn in the future.
 - {{domxref("CanvasRenderingContext2D.lineCap", "lineCap = type")}}
-  - : 선의 끝 모양을 설정합니다.
+  - : Sets the appearance of the ends of lines.
 - {{domxref("CanvasRenderingContext2D.lineJoin", "lineJoin = type")}}
-  - : 선들이 만나는 "모서리"의 모양을 설정합니다.
+  - : Sets the appearance of the "corners" where lines meet.
 - {{domxref("CanvasRenderingContext2D.miterLimit", "miterLimit = value")}}
-  - : 두 선이 예각으로 만날 때 접합점의 두께를 제어할 수 있도록, 연결부위의 크기를 제한하는 값을 설정합니다.
+  - : Establishes a limit on the miter when two lines join at a sharp angle, to let you control how thick the junction becomes.
 - {{domxref("CanvasRenderingContext2D.getLineDash", "getLineDash()")}}
-  - : 음수가 아닌 짝수를 포함하는 현재 선의 대시 패턴 배열을 반환합니다.
+  - : Returns the current line dash pattern array containing an even number of non-negative numbers.
 - {{domxref("CanvasRenderingContext2D.setLineDash", "setLineDash(segments)")}}
-  - : 현재 선의 대시 패턴을 설정합니다.
+  - : Sets the current line dash pattern.
 - {{domxref("CanvasRenderingContext2D.lineDashOffset", "lineDashOffset = value")}}
-  - : 선의 대시 배열이 어디서 시작될지 지정합니다.
+  - : Specifies where to start a dash array on a line.
 
-아래 예제들을 보면 어떻게 동작하는지 이해할 수 있을 것입니다.
+You'll get a better understanding of what these do by looking at the examples below.
 
-### `lineWidth` 예제
+### A `lineWidth` example
 
-현재 선의 두께를 설정합니다. 설정값은 반드시 양수이어야 하며, 초기 설정값은 1.0 단위입니다.
+This property sets the current line thickness. Values must be positive numbers. By default this value is set to 1.0 units.
 
-선의 두께는 지정된 경로의 가운데에 있는 획의 두께입니다. 이 말의 뜻은, 경로의 좌우로, 설정된 두께 반 만큼의 폭 영역이 그려진다는 것입니다. 캔버스 좌표는 픽셀을 직접 참조하지 않으므로, 선명한 수평 및 수직선을 얻기 위해 특별히 주의를 기울여야 합니다.
+The line width is the thickness of the stroke centered on the given path. In other words, the area that's drawn extends to half the line width on either side of the path. Because canvas coordinates do not directly reference pixels, special care must be taken to obtain crisp horizontal and vertical lines.
 
-아래에 나오는 예제에서는, 선의 두께가 점점 증가하는 10개의 직선이 그려집니다. 가장 왼쪽의 선은 1.0 단위 폭입니다. 그러나, 경로의 위치 때문에 가장 왼쪽과 다른 모든 홀수 폭 두께 선은 선명하게 보이지 않습니다.
+In the example below, 10 straight lines are drawn with increasing line widths. The line on the far left is 1.0 units wide. However, the leftmost and all other odd-integer-width thickness lines do not appear crisp, because of the path's positioning.
 
 ```js
 function draw() {
-  var ctx = document.getElementById('canvas').getContext('2d');
-  for (var i = 0; i &#x3C; 10; i++){
+  const ctx = document.getElementById("canvas").getContext("2d");
+  for (let i = 0; i < 10; i++) {
     ctx.lineWidth = 1 + i;
     ctx.beginPath();
     ctx.moveTo(5 + i * 14, 5);
@@ -229,7 +239,7 @@ function draw() {
 ```
 
 ```html hidden
-<canvas id="canvas" width="150" height="150"></canvas>
+<canvas id="canvas" width="150" height="150" role="presentation"></canvas>
 ```
 
 ```js hidden
@@ -238,44 +248,43 @@ draw();
 
 {{EmbedLiveSample("A_lineWidth_example", "180", "180", "canvas_linewidth.png")}}
 
-선명한 선을 얻으려면 경로에 획을 어떻게 그려지는지 이해해야 합니다. 아래의 이미지를 보면, 격자는 캔버스의 좌표 격자를 나타냅니다. 격자선 사이에 있는 사각형은 실제 픽셀과 딱 맞아 떨어집니다. 아래에 있는 첫번째 이미지를 보면, (2,1)에서 (5,5)로 사각형이 채워져 있습니다. 사각형의 전체 영역(연한 붉은 색)은 픽셀 경계선 사이에 딱 맞아 떨어지기 때문에 채워진 사각형은 선명한 가장자리를 갖습니다.
+Obtaining crisp lines requires understanding how paths are stroked. In the images below, the grid represents the canvas coordinate grid. The squares between gridlines are actual on-screen pixels. In the first grid image below, a rectangle from (2,1) to (5,5) is filled. The entire area between them (light red) falls on pixel boundaries, so the resulting filled rectangle will have crisp edges.
 
-![](canvas-grid.png)
+![Three coordinate grids. The grid lines are actual pixels on the screen. The top left corner of each grid is labeled (0,0). In the first grid, a rectangle from (2,1) to (5,5) is filled in light-red color. In the second grid, (3,1) to (3,5) is joined with a 1-pixel thick royal blue line. The royal-blue line is centered on a grid line, extends from 2.5 to 3.5 on the x access, halfway into the pixels on either side of the graph line, with a light blue background on either side extending from 2 to 4 on the x-access. To avoid the light blue blur extension of the line in the second coordinate grid, the path in, the third coordinate grid is a royal-blue from line (3.5,1) to (3.5,5). The 1 pixel line width ends up completely and precisely filling a single pixel vertical line.](canvas-grid.png)
 
-만일 (3,1)에서 (3,5)로 그리는 직선의 두께가 1.0이라면, 두번째 이미지와 같은 상황이 됩니다. 채워진 실제 영역 (진한 파란색)은 패스의 양쪽에있는 픽셀의 절반까지만 확장됩니다. 이것은 1 픽셀을 채우는 것이 아니므로 근사값으로 화면에 그려지게 됩니다. 그래서 양옆의 영역(연한 파란색과 짙은 파란 색)으로, 실제 설정한 색과는 다른 흐릿한 색으로 채워지는 것입니다. 이전 예제에서 보듯이 선 두께가 `1.0`인 선에서 일어난 일입니다.
+If you consider a path from (3,1) to (3,5) with a line thickness of `1.0`, you end up with the situation in the second image. The actual area to be filled (dark blue) only extends halfway into the pixels on either side of the path. An approximation of this has to be rendered, which means that those pixels being only partially shaded, and results in the entire area (the light blue and dark blue) being filled in with a color only half as dark as the actual stroke color. This is what happens with the `1.0` width line in the previous example code.
 
-이렇게 되는 것을 막으려면, 경로를 아주 정밀하게 생성해야 합니다. 선의 두께가 1.0이면 경로의 양쪽으로 0.5 단위만큼이라는 것을 알고 있으니, (3.5,1)에서 (3.5,5)로 그리는 경로를 생성하는 세번째 이미지의 결과는 완벽히 정밀하게 1 픽셀 두께의 수직선이 됩니다.
+To fix this, you have to be very precise in your path creation. Knowing that a `1.0` width line will extend half a unit to either side of the path, creating the path from (3.5,1) to (3.5,5) results in the situation in the third image—the `1.0` line width ends up completely and precisely filling a single pixel vertical line.
 
-> **참고:** **참고:** 위에 나온 수직선 그리기 예제를 살펴보면, Y 위치는 정수로 된 격자선 위치를 참조하고 있습니다. 그렇지 않았다면, 끝점에서 픽셀의 반을 차지한 상태로 보였을 것입니다. (초기값이 `butt`인 `lineCap` 스타일의 설정값에 따라 다르게 보입니다. 홀수 두께 선들의 좌표를 0.5 픽셀씩 조정하여 다시 계산하고 싶을지도 모릅니다. `lineCap` 스타일을 `square`로 설정함으로써, 끝점에서 선의 외곽 경계선은 픽셀에 딱 맞게 자동적으로 확장될 것입니다.)경로의 시작 지점과 종료 지점의 끝점만이 영향을 받는다는 것에 주목하세요. 만약 `closePath()`로 경로가 닫힌다면, 시작 지점과 종료 지점은 없는 것입니다. 그 대신, 경로 안에 있는 모든 끝점들은, 초기 설정값이 `miter`인 `lineJoin` 스타일의 설정값을 사용하여 이전 부분 및 다음 부분과 이어지는데, 교차되는 점들로 이어진 부분들의 외곽 경계선을 자동적으로 확장하는 효과가 생깁니다. 그렇기 때문에 만약 이들 이어진 부분들이 수직 또는 수평이라면, 그려지는 선들은 각 끝점의 중심에 놓인 픽셀을 가득 채우게 될 것입니다. 이들 선 스타일에 대한 예제는 아래에 나옵니다.
+> **Note:** Be aware that in our vertical line example, the Y position still referenced an integer gridline position—if it hadn't, we would see pixels with half coverage at the endpoints (but note also that this behavior depends on the current `lineCap` style whose default value is `butt`; you may want to compute consistent strokes with half-pixel coordinates for odd-width lines, by setting the `lineCap` style to `square`, so that the outer border of the stroke around the endpoint will be automatically extended to cover the whole pixel exactly).
+>
+> Note also that only start and final endpoints of a path are affected: if a path is closed with `closePath()`, there's no start and final endpoint; instead, all endpoints in the path are connected to their attached previous and next segment using the current setting of the `lineJoin` style, whose default value is `miter`, with the effect of automatically extending the outer borders of the connected segments to their intersection point, so that the rendered stroke will exactly cover full pixels centered at each endpoint if those connected segments are horizontal and/or vertical. See the next two sections for demonstrations of these additional line styles.
 
-짝수 두께의 선들은 반으로 나누어도 각각의 반은 정수의 양만큼이기 때문에 픽셀을 조정할 필요가 없습니다.
+For even-width lines, each half ends up being an integer amount of pixels, so you want a path that is between pixels (that is, (3,1) to (3,5)), instead of down the middle of pixels.
 
-비트맵이 아닌 벡터 2D 그래픽으로 작업할 때, 작업을 시작할 때는 약간 힘들겠지만, 격자와 경로의 위치에 주의를 기울인다면, 크기를 키우거나 줄이거나 또는 어떠한 변형을 하더라도 그리려는 이미지는 똑바로 보일 것입니다. 1.0 두께의 수직선은 2배로 크기를 키웠을 때, 정확히 2 픽셀 두께의 선이 되며, 올바른 위치에 나타날 것입니다.
+While slightly painful when initially working with scalable 2D graphics, paying attention to the pixel grid and the position of paths ensures that your drawings will look correct regardless of scaling or any other transformations involved. A 1.0-width vertical line drawn at the correct position will become a crisp 2-pixel line when scaled up by 2, and will appear at the correct position.
 
-### `lineCap` 예제
+### A `lineCap` example
 
-`lineCap` 속성은 그리려는 모든 선의 끝점 모양을 결정합니다. `butt`, `round`, `square`라는 세 가지 값을 가지며, 초기 설정값은 `butt`입니다.
-
-![](canvas_linecap.png)
+The `lineCap` property determines how the end points of every line are drawn. There are three possible values for this property and those are: `butt`, `round` and `square`. By default this property is set to `butt`:
 
 - `butt`
-  - : 선의 끝이 좌표에 딱맞게 잘립니다.
+  - : The ends of lines are squared off at the endpoints.
 - `round`
-  - : 선의 끝이 동그랗습니다.
+  - : The ends of lines are rounded.
 - `square`
-  - : 선 끝에, 선 두께 반만큼의 사각형 영역이 더해집니다.
+  - : The ends of lines are squared off by adding a box with an equal width and half the height of the line's thickness.
 
-이 예제에서는, 각기 다른 `lineCap` 속성 값을 가진 선 세개가 그려집니다. 또한 각 선들의 차이점을 정확히 보이기 위한 안내선이 추가로 그려집니다. 세개의 선 모두, 이 안내선 위에 시작과 종료 좌표가 있습니다.
+In this example, we'll draw three lines, each with a different value for the `lineCap` property. I also added two guides to see the exact differences between the three. Each of these lines starts and ends exactly on these guides.
 
-맨 왼쪽에 있는 선은 초기 설정값인 `butt`을 사용합니다. 안내선에 딱 맞게 선이 시작되고 끝이 납니다. 가운데에 있는 선은 `round`를 사용합니다. 선 두께의 반을 반지름으로 하는 반원이 끝에 붙습니다. 맨 오른쪽에 있는 선은 `square`를 사용합니다. 선 두께 만큼의 너비와 선 두께 반 만큼의 높이를 가진 네모 상자가 끝에 붙습니다.
+The line on the left uses the default `butt` option. You'll notice that it's drawn completely flush with the guides. The second is set to use the `round` option. This adds a semicircle to the end that has a radius half the width of the line. The line on the right uses the `square` option. This adds a box with an equal width and half the height of the line thickness.
 
 ```js
 function draw() {
-  var ctx = document.getElementById('canvas').getContext('2d');
-  var lineCap = ['butt','round','square'];
+  const ctx = document.getElementById("canvas").getContext("2d");
 
-  // 안내선을 그린다
-  ctx.strokeStyle = '#09f';
+  // Draw guides
+  ctx.strokeStyle = "#09f";
   ctx.beginPath();
   ctx.moveTo(10, 10);
   ctx.lineTo(140, 10);
@@ -283,53 +292,50 @@ function draw() {
   ctx.lineTo(140, 140);
   ctx.stroke();
 
-  // 선을 그린다
-  ctx.strokeStyle = 'black';
-  for (var i=0;i&#x3C;lineCap.length;i++){
+  // Draw lines
+  ctx.strokeStyle = "black";
+  ["butt", "round", "square"].forEach((lineCap, i) => {
     ctx.lineWidth = 15;
-    ctx.lineCap = lineCap[i];
+    ctx.lineCap = lineCap;
     ctx.beginPath();
     ctx.moveTo(25 + i * 50, 10);
-    ctx.lineTo(25 + i * 50,140);
+    ctx.lineTo(25 + i * 50, 140);
     ctx.stroke();
-  }
+  });
 }
 ```
 
 ```html hidden
-<canvas id="canvas" width="150" height="150"></canvas>
+<canvas id="canvas" width="150" height="150" role="presentation"></canvas>
 ```
 
 ```js hidden
 draw();
 ```
 
-{{EmbedLiveSample("A_lineCap_example", "180", "180", "canvas_linecap.png")}}
+{{EmbedLiveSample("A_lineCap_example", "180", "180", "Canvas_linecap.png")}}
 
-### `lineJoin` 예제
+### A `lineJoin` example
 
-`lineJoin` 속성은, 도형을 이루는 선이나 호나 곡선들이 연결되는 지점의 모양을 결정합니다. 끝점과 제어점이 정확히 같은 위치인, 길이가 0인 부분들은 제외된다.
+The `lineJoin` property determines how two connecting segments (of lines, arcs or curves) with non-zero lengths in a shape are joined together (degenerate segments with zero lengths, whose specified endpoints and control points are exactly at the same position, are skipped).
 
-이 속성에는 세 가지 값이 있는데, `round`, `bevel`, `miter`이며, 초기 설정값은 `miter`입니다. 두 부분들이 같은 방향으로 연결되어 있는 경우에는, `lineJoin`을 설정해도 아무런 효과가 나타나지 않습니다.
-
-![](canvas_linejoin.png)
+There are three possible values for this property: `round`, `bevel` and `miter`. By default this property is set to `miter`. Note that the `lineJoin` setting has no effect if the two connected segments have the same direction, because no joining area will be added in this case:
 
 - `round`
-  - : 도형의 모서리를, 연결되는 부분들의 공통 끝점을 중심으로 하는 원 모양으로 만듭니다. 이때 원의 반지름은 선의 두께와 같습니다.
+  - : Rounds off the corners of a shape by filling an additional sector of disc centered at the common endpoint of connected segments. The radius for these rounded corners is equal to half the line width.
 - `bevel`
-  - : 도형의 모서리를, 연결되는 부분들의 공통 끝점에서 세모 모양으로 만듭니다.
+  - : Fills an additional triangular area between the common endpoint of connected segments, and the separate outside rectangular corners of each segment.
 - `miter`
-  - : 도형의 모서리를, 두 부분의 바깥쪽 테두리 선을 각각 연장하여 교차된 점으로 생긴 마름모꼴 모양으로 만듭니다. `miterLimit` 속성값에 따라 모양이 달라집니다.
+  - : Connected segments are joined by extending their outside edges to connect at a single point, with the effect of filling an additional lozenge-shaped area. This setting is effected by the `miterLimit` property which is explained below.
 
-아래 예제에서 세 개의 경로를 그릴 것입니다. 세 경로는 각각 다른 `lineJoin` 속성값을 가집니다.
+The example below draws three different paths, demonstrating each of these three `lineJoin` property settings; the output is shown above.
 
 ```js
 function draw() {
-  var ctx = document.getElementById('canvas').getContext('2d');
-  var lineJoin = ['round', 'bevel', 'miter'];
+  const ctx = document.getElementById("canvas").getContext("2d");
   ctx.lineWidth = 10;
-  for (var i=0;i&#x3C;lineJoin.length;i++){
-    ctx.lineJoin = lineJoin[i];
+  ["round", "bevel", "miter"].forEach((lineJoin, i) => {
+    ctx.lineJoin = lineJoin;
     ctx.beginPath();
     ctx.moveTo(-5, 5 + i * 40);
     ctx.lineTo(35, 45 + i * 40);
@@ -337,67 +343,67 @@ function draw() {
     ctx.lineTo(115, 45 + i * 40);
     ctx.lineTo(155, 5 + i * 40);
     ctx.stroke();
-  }
+  });
 }
 ```
 
 ```html hidden
-<canvas id="canvas" width="150" height="150"></canvas>
+<canvas id="canvas" width="150" height="150" role="presentation"></canvas>
 ```
 
 ```js hidden
 draw();
 ```
 
-{{EmbedLiveSample("A_lineJoin_example", "180", "180", "canvas_linejoin.png")}}
+{{EmbedLiveSample("A_lineJoin_example", "180", "180", "Canvas_linejoin.png")}}
 
-### `miterLimit` 속성 예제
+### A demo of the `miterLimit` property
 
-위의 예제에서 볼 수 있듯이, 속성값을 `miter`로 하여 두 선이 연결되면, 연결되는 두 선의 바깥쪽 테두리는 연장선이 만나는 지점까지 확장됩니다. 연결된 두 선이 이루는 각도가 크면, 확장되는 영역이 크지 않지만, 각도가 작아짐(끝이 뾰족해짐)에 따라서 이 영역이 기하급수적으로 커질 수도 있습니다.
+As you've seen in the previous example, when joining two lines with the `miter` option, the outside edges of the two joining lines are extended up to the point where they meet. For lines which are at large angles with each other, this point is not far from the inside connection point. However, as the angles between each line decrease, the distance (miter length) between these points increases exponentially.
 
-`miterLimit` 속성은 끝점이 만나는 지점과 테두리 연장선이 만나는 지점이 얼마나 떨어져 있을지를 결정합니다. 두 선이 이 값을 넘게 되면, `lineJoin` 속성의 `bevel` 값 모양이 적용됩니다. `miterLimit` 속성값(HTML {{HTMLElement("canvas")}}에서, 초기 설정값은 10.0)에 의해, 현재 좌표 방식 안에서, 선의 두께에 따라, 어느 정도까지 뾰족해질 수 있는지가 계산됩니다. 그래서 `miterLimit`은 현재 디스플레이 비율이나 경로의 변형 같은 것으로 각각 설정될 수 있습니다. 그렇게 하여 선의 모서리에만 영향을 줍니다.
+The `miterLimit` property determines how far the outside connection point can be placed from the inside connection point. If two lines exceed this value, a bevel join gets drawn instead. Note that the maximum miter length is the product of the line width measured in the current coordinate system, by the value of this `miterLimit` property (whose default value is 10.0 in the HTML {{HTMLElement("canvas")}}), so the `miterLimit` can be set independently from the current display scale or any affine transforms of paths: it only influences the effectively rendered shape of line edges.
 
-더 자세히 얘기하자면, 뾰족함 제한(miter limit)은, 선 두께의 반과 확장되는 길이(HTML 캔버스에서, 선이 연결되는 바깥쪽 끝부분과, 경로에서 연결되는 두 부분의 공통 끝점 사이로 측정합니다.)의 최대 허용 비율입니다. 이것은 두 부분의 외곽선이 만나는 안쪽 점과 바깥쪽 점 사이 거리와, 선 두께의 최대 허용 비율과 같습니다. miter 값 모양이 아닌 bevel 값 모양으로 연결되는 지점의 최소 안쪽 각 반 만큼의 값과 같은 것입니다.
+More exactly, the miter limit is the maximum allowed ratio of the extension length (in the HTML canvas, it is measured between the outside corner of the joined edges of the line and the common endpoint of connecting segments specified in the path) to half the line width. It can equivalently be defined as the maximum allowed ratio of the distance between the inside and outside points of junction of edges, to the total line width. It is then equal to the cosecant of half the minimum inner angle of connecting segments below which no miter join will be rendered, but only a bevel join:
 
 - `miterLimit` = **max** `miterLength` / `lineWidth` = 1 / **sin** ( **min** _θ_ / 2 )
-- 초기 설정값이 10.0인 뾰족함 제한(miter limit)값은 약 11도보다 낮은 예각인 곳을 bevel 값 모양으로 만듭니다.
-- 뾰족함 제한 값이 √2 ≈ 1.4142136(반올림)과 같다면 연결되는 곳이 둔각이거나 직각인 곳을 제외한 모든 곳을 bevel 값 모양으로 만듭니다.
-- 뾰족함 제한 값이 1.0과 같다면 모든 곳을 bevel 값 모양으로 만듭니다.
-- 뾰족함 제한 값에는 1.0보다 작은 값이 올 수 없습니다.
+- The default miter limit of 10.0 will strip all miters for sharp angles below about 11 degrees.
+- A miter limit equal to √2 ≈ 1.4142136 (rounded up) will strip miters for all acute angles, keeping miter joins only for obtuse or right angles.
+- A miter limit equal to 1.0 is valid but will disable all miters.
+- Values below 1.0 are invalid for the miter limit.
 
-다음 예제에서는 `miterLimit` 값을 바꾸고 그 결과가 어떤지 바로 확인할 수 있습니다. 파란색 선은 지그재그 무늬 안에서 선들의 시작 지점과 종료 지점을 나타냅니다.
+Here's a little demo in which you can set `miterLimit` dynamically and see how this effects the shapes on the canvas. The blue lines show where the start and endpoints for each of the lines in the zig-zag pattern are.
 
-이 예제에서 `miterLimit` 값을 4.2보다 낮게 설정하면, 모든 연결 지점은 bevel 값 모양이 되어 파란색 선에 붙을 것입니다. `miterLimit` 값이 10보다 높다면, 거의 모든 연결 지점들이 파란색 선 바깥쪽에 있을 것입니다. 왼쪽으로 갈수록 파란색 선에서 더 많이 튀어나오는데, 왼쪽으로 갈수록 연결되는 각이 더 작아지기 때문입니다. 값을 5로 설정하면, 반은 bevel 값 모양으로, 반은 miter 값 모양이 됩니다.
+If you specify a `miterLimit` value below 4.2 in this demo, none of the visible corners will join with a miter extension, but only with a small bevel near the blue lines; with a `miterLimit` above 10, most corners in this demo should join with a miter far away from the blue lines, and whose height is decreasing between corners from left to right because they connect with growing angles; with intermediate values, the corners on the left side will only join with a bevel near the blue lines, and the corners on the right side with a miter extension (also with a decreasing height).
 
 ```js
 function draw() {
-  var ctx = document.getElementById('canvas').getContext('2d');
+  const ctx = document.getElementById("canvas").getContext("2d");
 
-  // 캔버스를 비운다
-  ctx.clearRect(0,0,150,150);
+  // Clear canvas
+  ctx.clearRect(0, 0, 150, 150);
 
-  // 안내선을 그린다
-  ctx.strokeStyle = '#09f';
-  ctx.lineWidth   = 2;
-  ctx.strokeRect(-5,50,160,50);
+  // Draw guides
+  ctx.strokeStyle = "#09f";
+  ctx.lineWidth = 2;
+  ctx.strokeRect(-5, 50, 160, 50);
 
-  // 선 스타일을 설정한다
-  ctx.strokeStyle = '#000';
+  // Set line styles
+  ctx.strokeStyle = "#000";
   ctx.lineWidth = 10;
 
-  // 입력 값을 검사한다
-  if (document.getElementById('miterLimit').value.match(/\d+(\.\d+)?/)) {
-    ctx.miterLimit = parseFloat(document.getElementById('miterLimit').value);
+  // check input
+  if (document.getElementById("miterLimit").value.match(/\d+(\.\d+)?/)) {
+    ctx.miterLimit = parseFloat(document.getElementById("miterLimit").value);
   } else {
-    alert('Value must be a positive number');
+    alert("Value must be a positive number");
   }
 
-  // 선을 그린다
+  // Draw lines
   ctx.beginPath();
-  ctx.moveTo(0,100);
-  for (i=0;i&#x3C;24;i++){
-    var dy = i%2==0 ? 25 : -25 ;
-    ctx.lineTo(Math.pow(i,1.5)*2,75+dy);
+  ctx.moveTo(0, 100);
+  for (let i = 0; i < 24; i++) {
+    const dy = i % 2 === 0 ? 25 : -25;
+    ctx.lineTo(Math.pow(i, 1.5) * 2, 75 + dy);
   }
   ctx.stroke();
   return false;
@@ -407,12 +413,16 @@ function draw() {
 ```html hidden
 <table>
   <tr>
-    <td><canvas id="canvas" width="150" height="150"></canvas></td>
-    <td>Change the <code>miterLimit</code> by entering a new value below and clicking the redraw button.<br><br>
+    <td>
+      <canvas id="canvas" width="150" height="150" role="presentation"></canvas>
+    </td>
+    <td>
+      Change the <code>miterLimit</code> by entering a new value below and
+      clicking the redraw button.<br /><br />
       <form onsubmit="return draw();">
-        <label>Miter limit</label>
-        <input type="text" size="3" id="miterLimit"/>
-        <input type="submit" value="Redraw"/>
+        <label for="miterLimit">Miter limit</label>
+        <input type="number" size="3" id="miterLimit" />
+        <input type="submit" value="Redraw" />
       </form>
     </td>
   </tr>
@@ -420,25 +430,27 @@ function draw() {
 ```
 
 ```js hidden
-document.getElementById('miterLimit').value = document.getElementById('canvas').getContext('2d').miterLimit;
+document.getElementById("miterLimit").value = document
+  .getElementById("canvas")
+  .getContext("2d").miterLimit;
 draw();
 ```
 
 {{EmbedLiveSample("A_demo_of_the_miterLimit_property", "400", "180", "canvas_miterlimit.png")}}
 
-### 대시라인 사용하기
+### Using line dashes
 
-`setLineDash` 메소드와 `lineDashOffset` 속성은 선의 대시 패턴을 지정합니다. `setLineDash` 메소드는 거리를 지정하는 숫자 목록을 받아 선과 틈을 교대로 그리며 `lineDashOffset` 속성은 패턴을 시작할 위치를 오프셋으로 설정합니다.
+The `setLineDash` method and the `lineDashOffset` property specify the dash pattern for lines. The `setLineDash` method accepts a list of numbers that specifies distances to alternately draw a line and a gap and the `lineDashOffset` property sets an offset where to start the pattern.
 
-이 예제에서 우리는 행진하는 개미 효과를 만들고 있습니다. 컴퓨터 그래픽 프로그램의 선택 도구에서 흔히 볼 수있는 애니메이션 기술입니다. 테두리를 애니메이션화하여 사용자가 선택 테두리와 이미지 배경을 구별하는 데 도움이됩니다. 이 튜토리얼의 뒷부분에서 이 작업 및 다른 [기본 애니메이션](/ko/docs/docs/Web/API/Canvas_API/Tutorial/Basic_animations)을 수행하는 방법을 배울 수 있습니다.
+In this example we are creating a marching ants effect. It is an animation technique often found in selection tools of computer graphics programs. It helps the user to distinguish the selection border from the image background by animating the border. In a later part of this tutorial, you can learn how to do this and other [basic animations](/en-US/docs/Web/API/Canvas_API/Tutorial/Basic_animations).
 
 ```html hidden
-<canvas id="canvas" width="110" height="110"></canvas>
+<canvas id="canvas" width="110" height="110" role="presentation"></canvas>
 ```
 
 ```js
-var ctx = document.getElementById('canvas').getContext('2d');
-var offset = 0;
+const ctx = document.getElementById("canvas").getContext("2d");
+let offset = 0;
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -461,224 +473,269 @@ march();
 
 {{EmbedLiveSample("Using_line_dashes", "120", "120", "marching-ants.png")}}
 
-## 그라디언트(Gradient)
+## Gradients
 
-다른 그래픽 프로그램들과 마찬가지로, 선형 및 원형의 그레이디언트를 사용할 수 있습니다. 다음 메소드 중 하나를 사용하여 {{domxref("CanvasGradient")}} 객체를 생성합니다. 그런 다음 이 객체를 `fillStyle` 또는 `strokeStyle` 속성에 할당 할 수 있습니다.
+Just like any normal drawing program, we can fill and stroke shapes using linear, radial and conic gradients. We create a {{domxref("CanvasGradient")}} object by using one of the following methods. We can then assign this object to the `fillStyle` or `strokeStyle` properties.
 
 - {{domxref("CanvasRenderingContext2D.createLinearGradient", "createLinearGradient(x1, y1, x2, y2)")}}
-  - : 시작점 좌표를 (`x1`, `y1`)로 하고, 종료점 좌표를 (`x2`, `y2`)로 하는 선형 그라디언트 오브젝트를 생성합니다.
+  - : Creates a linear gradient object with a starting point of (`x1`, `y1`) and an end point of (`x2`, `y2`).
 - {{domxref("CanvasRenderingContext2D.createRadialGradient", "createRadialGradient(x1, y1, r1, x2, y2, r2)")}}
-  - : 반지름이 `r1`이고 좌표 (`x1`, `y1`)을 중심으로 하는 원과, 반지름이 `r2`이고 좌표 (`x2`, `y2`)를 중심으로 하는 원을 사용하여 그라디언트가 생성됩니다.
+  - : Creates a radial gradient. The parameters represent two circles, one with its center at (`x1`, `y1`) and a radius of `r1`, and the other with its center at (`x2`, `y2`) with a radius of `r2`.
+- {{domxref("CanvasRenderingContext2D.createConicGradient", "createConicGradient(angle, x, y)")}}
+  - : Creates a conic gradient object with a starting angle of `angle` in radians, at the position (`x`, `y`).
 
-예를 들면 다음과 같습니다.
+For example:
 
 ```js
-var lineargradient = ctx.createLinearGradient(0, 0, 150, 150);
-var radialgradient = ctx.createRadialGradient(75, 75, 0, 75, 75, 100);
+const lineargradient = ctx.createLinearGradient(0, 0, 150, 150);
+const radialgradient = ctx.createRadialGradient(75, 75, 0, 75, 75, 100);
 ```
 
-`CanvasGradient` 객체를 만들었다면, `addColorStop()` 메소드를 사용하여, 오브젝트에 색을 적용할 수 있습니다.
+Once we've created a `CanvasGradient` object we can assign colors to it by using the `addColorStop()` method.
 
 - {{domxref("CanvasGradient.addColorStop", "gradient.addColorStop(position, color)")}}
-  - : `gradient` 오브젝트에 새로운 색 중단점(color stop)을 생성합니다. `position`은 0.0에서 1.0 사이의 숫자이고 그라디언트에서 색상의 상대적인 위치를 정의합니다. `color` 인자는 CSS {{cssxref("&lt;color&gt;")}}를 나타내는 문자열이어야하고, 그라디언트가 (전환효과로) 진행되면서 도달한 지점의 색상을 의미합니다.
+  - : Creates a new color stop on the `gradient` object. The `position` is a number between 0.0 and 1.0 and defines the relative position of the color in the gradient, and the `color` argument must be a string representing a CSS {{cssxref("&lt;color&gt;")}}, indicating the color the gradient should reach at that offset into the transition.
 
-색 중단점은 원하는 만큼 마음대로 추가할 수 있습니다. 흰 색에서 검은 색으로 변하는 선형 그레이디언트를 만들려면 아래와 같이 합니다.
+You can add as many color stops to a gradient as you need. Below is a very simple linear gradient from white to black.
 
 ```js
-var lineargradient = ctx.createLinearGradient(0, 0, 150, 150);
-lineargradient.addColorStop(0, 'white');
-lineargradient.addColorStop(1, 'black');
+const lineargradient = ctx.createLinearGradient(0, 0, 150, 150);
+lineargradient.addColorStop(0, "white");
+lineargradient.addColorStop(1, "black");
 ```
 
-### `createLinearGradient` 예제
+### A `createLinearGradient` example
 
-이 예제에서 그레이디언트 두 개를 만들 것입니다. 예제에서 볼 수 있듯이, `strokeStyle`과 `fillStyle` 속성 모두 `canvasGradient` 오브젝트를 속성 값으로 가질 수 있습니다.
+In this example, we'll create two different gradients. As you can see here, both the `strokeStyle` and `fillStyle` properties can accept a `canvasGradient` object as valid input.
 
 ```js
 function draw() {
-  var ctx = document.getElementById('canvas').getContext('2d');
+  const ctx = document.getElementById("canvas").getContext("2d");
 
-  // 그레이디언트를 생성한다
-  var lingrad = ctx.createLinearGradient(0, 0, 0, 150);
-  lingrad.addColorStop(0, '#00ABEB');
-  lingrad.addColorStop(0.5, '#fff');
-  lingrad.addColorStop(0.5, '#26C000');
-  lingrad.addColorStop(1, '#fff');
+  // Create gradients
+  const lingrad = ctx.createLinearGradient(0, 0, 0, 150);
+  lingrad.addColorStop(0, "#00ABEB");
+  lingrad.addColorStop(0.5, "#fff");
+  lingrad.addColorStop(0.5, "#26C000");
+  lingrad.addColorStop(1, "#fff");
 
-  var lingrad2 = ctx.createLinearGradient(0, 50, 0, 95);
-  lingrad2.addColorStop(0.5, '#000');
-  lingrad2.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  const lingrad2 = ctx.createLinearGradient(0, 50, 0, 95);
+  lingrad2.addColorStop(0.5, "#000");
+  lingrad2.addColorStop(1, "rgba(0, 0, 0, 0)");
 
-  // 외곽선과 채움 스타일에 그레이디언트를 적용한다
+  // assign gradients to fill and stroke styles
   ctx.fillStyle = lingrad;
   ctx.strokeStyle = lingrad2;
 
-  // 도형을 그린다
+  // draw shapes
   ctx.fillRect(10, 10, 130, 130);
   ctx.strokeRect(50, 50, 50, 50);
-
 }
 ```
 
 ```html hidden
-<canvas id="canvas" width="150" height="150"></canvas>
+<canvas id="canvas" width="150" height="150" role="presentation"></canvas>
 ```
 
 ```js hidden
 draw();
 ```
 
-첫번째 그라디언트는 배경 그라디언트입니다. 보시다시피 같은 위치에 두 가지 색상을 지정했습니다. 매우 선명한 색상 전환을 만들기 위해 이 작업을 수행합니다(이 경우 흰색에서 녹색으로). 일반적으로 색상 중단점을 정의하는 순서는 중요하지 않지만, 이 특별한 경우에는 의미가 있습니다.
+The first is a background gradient. As you can see, we assigned two colors at the same position. You do this to make very sharp color transitions—in this case from white to green. Normally, it doesn't matter in what order you define the color stops, but in this special case, it does significantly. If you keep the assignments in the order you want them to appear, this won't be a problem.
 
-두 번째 그래디언트에서는 시작 색상 (위치 0.0)을 지정하지 않았는데, 자동으로 다음 색상 중단점의 색상으로 가정하기 때문에 반드시 필요하지는 않기 때문입니다. 따라서 위치 0.5에 검은색을 지정하면 시작부터 중단점까지 자동으로 검정색 그라이언트를 만듭니다.
+In the second gradient, we didn't assign the starting color (at position 0.0) since it wasn't strictly necessary, because it will automatically assume the color of the next color stop. Therefore, assigning the black color at position 0.5 automatically makes the gradient, from the start to this stop, black.
 
 {{EmbedLiveSample("A_createLinearGradient_example", "180", "180", "canvas_lineargradient.png")}}
 
-### `createRadialGradient` 예제
+### A `createRadialGradient` example
 
-이 예제에서는 원형 그레이디언트를 4개 만들 것입니다. 포토샵같은 프로그램에서 원형 그레이디언트를 만들 때는 하나의 점을 중심으로 그레이디언트를 만드는데, 캔버스의 원형 그레이디언트에서는 시작과 종료 지점 두군데를 제어할 수 있기 때문에, 기존의 프로그램에서 볼 수 있는 원형 그레이디언트보다는 더 복잡한 효과를 만들어 낼 수 있습니다.
+In this example, we'll define four different radial gradients. Because we have control over the start and closing points of the gradient, we can achieve more complex effects than we would normally have in the "classic" radial gradients we see in, for instance, Photoshop (that is, a gradient with a single center point where the gradient expands outward in a circular shape).
 
 ```js
 function draw() {
-  var ctx = document.getElementById('canvas').getContext('2d');
+  const ctx = document.getElementById("canvas").getContext("2d");
 
-  // 그라디언트를 생성한다
-  var radgrad = ctx.createRadialGradient(45,45,10,52,50,30);
-  radgrad.addColorStop(0, '#A7D30C');
-  radgrad.addColorStop(0.9, '#019F62');
-  radgrad.addColorStop(1, 'rgba(1,159,98,0)');
+  // Create gradients
+  const radgrad = ctx.createRadialGradient(45, 45, 10, 52, 50, 30);
+  radgrad.addColorStop(0, "#A7D30C");
+  radgrad.addColorStop(0.9, "#019F62");
+  radgrad.addColorStop(1, "rgba(1, 159, 98, 0)");
 
-  var radgrad2 = ctx.createRadialGradient(105,105,20,112,120,50);
-  radgrad2.addColorStop(0, '#FF5F98');
-  radgrad2.addColorStop(0.75, '#FF0188');
-  radgrad2.addColorStop(1, 'rgba(255,1,136,0)');
+  const radgrad2 = ctx.createRadialGradient(105, 105, 20, 112, 120, 50);
+  radgrad2.addColorStop(0, "#FF5F98");
+  radgrad2.addColorStop(0.75, "#FF0188");
+  radgrad2.addColorStop(1, "rgba(255, 1, 136, 0)");
 
-  var radgrad3 = ctx.createRadialGradient(95,15,15,102,20,40);
-  radgrad3.addColorStop(0, '#00C9FF');
-  radgrad3.addColorStop(0.8, '#00B5E2');
-  radgrad3.addColorStop(1, 'rgba(0,201,255,0)');
+  const radgrad3 = ctx.createRadialGradient(95, 15, 15, 102, 20, 40);
+  radgrad3.addColorStop(0, "#00C9FF");
+  radgrad3.addColorStop(0.8, "#00B5E2");
+  radgrad3.addColorStop(1, "rgba(0, 201, 255, 0)");
 
-  var radgrad4 = ctx.createRadialGradient(0,150,50,0,140,90);
-  radgrad4.addColorStop(0, '#F4F201');
-  radgrad4.addColorStop(0.8, '#E4C700');
-  radgrad4.addColorStop(1, 'rgba(228,199,0,0)');
+  const radgrad4 = ctx.createRadialGradient(0, 150, 50, 0, 140, 90);
+  radgrad4.addColorStop(0, "#F4F201");
+  radgrad4.addColorStop(0.8, "#E4C700");
+  radgrad4.addColorStop(1, "rgba(228, 199, 0, 0)");
 
-  // 도형을 그린다
+  // draw shapes
   ctx.fillStyle = radgrad4;
-  ctx.fillRect(0,0,150,150);
+  ctx.fillRect(0, 0, 150, 150);
   ctx.fillStyle = radgrad3;
-  ctx.fillRect(0,0,150,150);
+  ctx.fillRect(0, 0, 150, 150);
   ctx.fillStyle = radgrad2;
-  ctx.fillRect(0,0,150,150);
+  ctx.fillRect(0, 0, 150, 150);
   ctx.fillStyle = radgrad;
-  ctx.fillRect(0,0,150,150);
+  ctx.fillRect(0, 0, 150, 150);
 }
 ```
 
 ```html hidden
-<canvas id="canvas" width="150" height="150"></canvas>
+<canvas id="canvas" width="150" height="150" role="presentation"></canvas>
 ```
 
 ```js hidden
 draw();
 ```
 
-이 예제에서는 원형 그레이디언트에 사용되는 두 원의 중심을 달리하여 입체적인 공처럼 보이게 했습니다. 안쪽 원과 바깥쪽 원은 겹치지 않게 하는 것이 좋습니다. 왜냐하면 예상하기 힘든 이상한 결과가 나타날 수 있기 때문입니다.
+In this case, we've offset the starting point slightly from the end point to achieve a spherical 3D effect. It's best to try to avoid letting the inside and outside circles overlap because this results in strange effects which are hard to predict.
 
-그레이디언트의 마지막 색 적용 지점에서는 투명도를 적용하였습니다. 투명도가 적용된 지점에서 이전 지점까지의 색 변화를 보기 좋게 만들려면, 두 지점에 똑같은 색을 적용하면 되는데, 이 예제에서는 색의 값을 다른 방식으로 입력하여 헷갈릴 수도 있습니다. 첫번째 그레이디언트에 사용된 `#019F62`와 `rgba(1,159,98,1)`은 같은 색입니다.
+The last color stop in each of the four gradients uses a fully transparent color. If you want to have a nice transition from this to the previous color stop, both colors should be equal. This isn't very obvious from the code because it uses two different CSS color methods as a demonstration, but in the first gradient `#019F62 = rgba(1,159,98,1)`.
 
 {{EmbedLiveSample("A_createRadialGradient_example", "180", "180", "canvas_radialgradient.png")}}
 
-## 패턴(Patterns)
+### A `createConicGradient` example
 
-이전 페이지의 예제 중 하나에서 일련의 루프를 사용하여 이미지 패턴을 만들었습니다. 그러나 훨씬 간단한 메소드 인 createPattern () 메소드가 있습니다.
-
-- {{domxref("CanvasRenderingContext2D.createPattern", "createPattern(image, type)")}}
-  - : 새 캔버스 패턴 객체를 만들어 반환합니다. `image`는 {{domxref("CanvasImageSource")}}(즉, {{domxref("HTMLImageElement")}}, 다른 캔버스, {{HTMLElement("video")}} 요소 등등)입니다. `type`은 이미지 사용 방법을 나타내는 문자열입니다.
-
-`type`은 패턴을 만들기 위해 이미지를 사용하는 방법을 지정하며, 다음 문자열 값 중 하나 여야합니다.
-
-- `repeat`
-  - : 수직 및 수평 방향으로 이미지를 이어 붙입니다.
-- `repeat-x`
-  - : 수평 방향으로만 이미지를 이어 붙입니다.
-- `repeat-y`
-  - : 수직 방향으로만 이미지를 이어 붙입니다.
-- `no-repeat`
-  - : 이미지를 이어 붙이지 않습니다. 이미지는 한번만 사용됩니다.
-
-이 메소드를 사용하여 위에서 본 그라디언트 메소드와 매우 유사한 {{domxref ( "CanvasPattern")}} 객체를 생성합니다. 패턴을 생성하면 `fillStyle` 또는 `strokeStyle` 속성에 패턴을 할당 할 수 있습니다. 예를 들면 다음과 같습니다.
-
-```js
-var img = new Image();
-img.src = 'someimage.png';
-var ptrn = ctx.createPattern(img, 'repeat');
-```
-
-> **참고:** `drawImage ()` 메서드와 마찬가지로 이 메소드를 호출하기 전에 이미지가 로드되었는지 확인해야합니다. 그렇지 않으면 패턴이 잘못 그려 질 수 있습니다.
-
-### `createPattern` 예제
-
-이 마지막 예제에서, `fillStyle` 속성에 적용할 패턴을 만들 것입니다. 한 가지 눈여겨 볼 것은, 이미지 `onload` 핸들러 사용한다는 것입니다. 이미지를 패턴에 적용하기 전에 불러오기가 완료되었는지 확인하는 것입니다.
+In this example, we'll define two different conic gradients. A conic gradient differs from a radial gradient as, instead of creating circles, it circles around a point.
 
 ```js
 function draw() {
-  var ctx = document.getElementById('canvas').getContext('2d');
+  const ctx = document.getElementById("canvas").getContext("2d");
 
-  // 패턴으로 사용할 이미지 오브젝트를 생성한다
-  var img = new Image();
-  img.src = 'canvas_createpattern.png';
-  img.onload = function() {
+  // Create gradients
+  const conicGrad1 = ctx.createConicGradient(2, 62, 75);
+  conicGrad1.addColorStop(0, "#A7D30C");
+  conicGrad1.addColorStop(1, "#fff");
 
-    // 패턴을 생성한다
-    var ptrn = ctx.createPattern(img,'repeat');
-    ctx.fillStyle = ptrn;
-    ctx.fillRect(0,0,150,150);
+  const conicGrad2 = ctx.createConicGradient(0, 187, 75);
+  // we multiply our values by Math.PI/180 to convert degrees to radians
+  conicGrad2.addColorStop(0, "black");
+  conicGrad2.addColorStop(0.25, "black");
+  conicGrad2.addColorStop(0.25, "white");
+  conicGrad2.addColorStop(0.5, "white");
+  conicGrad2.addColorStop(0.5, "black");
+  conicGrad2.addColorStop(0.75, "black");
+  conicGrad2.addColorStop(0.75, "white");
+  conicGrad2.addColorStop(1, "white");
 
-  }
+  // draw shapes
+  ctx.fillStyle = conicGrad1;
+  ctx.fillRect(12, 25, 100, 100);
+  ctx.fillStyle = conicGrad2;
+  ctx.fillRect(137, 25, 100, 100);
 }
 ```
 
-```html
-<canvas id="canvas" width="150" height="150"></canvas>
+```html hidden
+<canvas id="canvas" width="250" height="150" role="presentation"
+  >A conic gradient</canvas
+>
 ```
 
-```js
+```js hidden
 draw();
 ```
 
-The result looks like this:
+The first gradient is positioned in the center of the first rectangle and moves a green color stop at the start, to a white one at the end. The angle starts at 2 radians, which is noticeable because of the beginning/end line pointing south east.
 
-{{EmbedLiveSample("A_createPattern_example", "180", "180", "canvas_createpattern.png")}}
+The second gradient is also positioned at the center of it's second rectangle. This one has multiple color stops, alternating from black to white at each quarter of the rotation. This gives us the checkered effect.
 
-## 그림자
+{{EmbedLiveSample("A_createConicGradient_example", "180", "180", "canvas_conicgrad.png")}}
 
-그림자 사용에는 네 개의 속성이 있습니다.
+## Patterns
 
-- {{domxref("CanvasRenderingContext2D.shadowOffsetX", "shadowOffsetX = float")}}
-  - : 그림자가 객체에서 연장되어야하는 수평 거리를 나타냅니다. 이 값은 변환 행렬의 영향을 받지 않습니다. 기본값은 0입니다.
-- {{domxref("CanvasRenderingContext2D.shadowOffsetY", "shadowOffsetY = float")}}
-  - : 그림자가 객체에서 연장되어야하는 수직 거리를 나타냅니다. 이 값은 변환 행렬의 영향을 받지 않습니다. 기본값은 0입니다.
-- {{domxref("CanvasRenderingContext2D.shadowBlur", "shadowBlur = float")}}
-  - : 흐림(blur) 효과의 크기를 나타냅니다. 이 값은 픽셀 수와 일치하지 않으며 현재 변환 행렬의 영향을 받지 않습니다. 기본값은 0입니다.
-- {{domxref("CanvasRenderingContext2D.shadowColor", "shadowColor = color")}}
-  - : 그림자 효과의 색상을 나타내는 표준 CSS 색상 값. 기본적으로 완전 검은색입니다.
+In one of the examples on the previous page, we used a series of loops to create a pattern of images. There is, however, a much simpler method: the `createPattern()` method.
 
-`shadowOffsetX` 및 `shadowOffsetY` 속성은 그림자가 X 및 Y 방향으로 객체에서 얼마나 멀리 떨어져야하는지 나타냅니다. 이 값은 현재 변환 행렬의 영향을받지 않습니다. 음수값을 사용하면 그림자가 위로 또는 왼쪽으로 확장되고 양수값을 사용하면 그림자가 아래로 또는 오른쪽으로 확장됩니다. 기본값은 모두 0입니다.
+- {{domxref("CanvasRenderingContext2D.createPattern", "createPattern(image, type)")}}
+  - : Creates and returns a new canvas pattern object. `image` is a the source of the image (that is, an {{domxref("HTMLImageElement")}}, a {{domxref("SVGImageElement")}}, another {{domxref("HTMLCanvasElement")}} or a {{domxref("OffscreenCanvas")}}, an {{domxref("HTMLVideoElement")}} or a {{domxref("VideoFrame")}}, or an {{domxref("ImageBitmap")}}). `type` is a string indicating how to use the image.
 
-`shadowBlur` 속성은 흐림 효과의 크기를 나타냅니다. 이 값은 픽셀 수와 일치하지 않으며 현재 변환 행렬의 영향을받지 않습니다. 기본값은 0입니다.
+The type specifies how to use the image in order to create the pattern, and must be one of the following string values:
 
-`shadowColor` 속성은 그림자 효과의 색상을 나타내는 표준 CSS 색상 값입니다. 기본값은 완전 검은색입니다.
+- `repeat`
+  - : Tiles the image in both vertical and horizontal directions.
+- `repeat-x`
+  - : Tiles the image horizontally but not vertically.
+- `repeat-y`
+  - : Tiles the image vertically but not horizontally.
+- `no-repeat`
+  - : Doesn't tile the image. It's used only once.
 
-> **참고:** **알아둘 것:** 음영은 `source-over` [합성 작업](/ko/docs/docs/Web/API/Canvas_API/Tutorial/Compositing)에만 사용됩니다.
+We use this method to create a {{domxref("CanvasPattern")}} object which is very similar to the gradient methods we've seen above. Once we've created a pattern, we can assign it to the `fillStyle` or `strokeStyle` properties. For example:
 
-### 그림자 있는 글자 예제
+```js
+const img = new Image();
+img.src = "someimage.png";
+const ptrn = ctx.createPattern(img, "repeat");
+```
 
-이 예제에서는 그림자가 있는 글자를 그립니다.
+> **Note:** Like with the `drawImage()` method, you must make sure the image you use is loaded before calling this method or the pattern may be drawn incorrectly.
+
+### A `createPattern` example
+
+In this last example, we'll create a pattern to assign to the `fillStyle` property. The only thing worth noting is the use of the image's `onload` handler. This is to make sure the image is loaded before it is assigned to the pattern.
 
 ```js
 function draw() {
-  var ctx = document.getElementById('canvas').getContext('2d');
+  const ctx = document.getElementById("canvas").getContext("2d");
+
+  // create new image object to use as pattern
+  const img = new Image();
+  img.src = "canvas_createpattern.png";
+  img.onload = () => {
+    // create pattern
+    const ptrn = ctx.createPattern(img, "repeat");
+    ctx.fillStyle = ptrn;
+    ctx.fillRect(0, 0, 150, 150);
+  };
+}
+```
+
+```html hidden
+<canvas id="canvas" width="150" height="150" role="presentation"></canvas>
+```
+
+```js hidden
+draw();
+```
+
+{{EmbedLiveSample("A_createPattern_example", "180", "180", "canvas_createpattern.png")}}
+
+## Shadows
+
+Using shadows involves just four properties:
+
+- {{domxref("CanvasRenderingContext2D.shadowOffsetX", "shadowOffsetX = float")}}
+  - : Indicates the horizontal distance the shadow should extend from the object. This value isn't affected by the transformation matrix. The default is 0.
+- {{domxref("CanvasRenderingContext2D.shadowOffsetY", "shadowOffsetY = float")}}
+  - : Indicates the vertical distance the shadow should extend from the object. This value isn't affected by the transformation matrix. The default is 0.
+- {{domxref("CanvasRenderingContext2D.shadowBlur", "shadowBlur = float")}}
+  - : Indicates the size of the blurring effect; this value doesn't correspond to a number of pixels and is not affected by the current transformation matrix. The default value is 0.
+- {{domxref("CanvasRenderingContext2D.shadowColor", "shadowColor = color")}}
+  - : A standard CSS color value indicating the color of the shadow effect; by default, it is fully-transparent black.
+
+The properties `shadowOffsetX` and `shadowOffsetY` indicate how far the shadow should extend from the object in the X and Y directions; these values aren't affected by the current transformation matrix. Use negative values to cause the shadow to extend up or to the left, and positive values to cause the shadow to extend down or to the right. These are both 0 by default.
+
+The `shadowBlur` property indicates the size of the blurring effect; this value doesn't correspond to a number of pixels and is not affected by the current transformation matrix. The default value is 0.
+
+The `shadowColor` property is a standard CSS color value indicating the color of the shadow effect; by default, it is fully-transparent black.
+
+> **Note:** Shadows are only drawn for `source-over` [compositing operations](/en-US/docs/Web/API/Canvas_API/Tutorial/Compositing).
+
+### A shadowed text example
+
+This example draws a text string with a shadowing effect.
+
+```js
+function draw() {
+  const ctx = document.getElementById("canvas").getContext("2d");
 
   ctx.shadowOffsetX = 2;
   ctx.shadowOffsetY = 2;
@@ -692,7 +749,7 @@ function draw() {
 ```
 
 ```html hidden
-<canvas id="canvas" width="150" height="80"></canvas>
+<canvas id="canvas" width="150" height="80" role="presentation"></canvas>
 ```
 
 ```js hidden
@@ -701,33 +758,33 @@ draw();
 
 {{EmbedLiveSample("A_shadowed_text_example", "180", "100", "shadowed-string.png")}}
 
-다음 장에서 [텍스트 그리기](/ko/docs/Web/API/Canvas_API/Tutorial/Drawing_text)에 대한 `font` 속성과 `fillText` 메소드를 살펴 보겠습니다.
+We will look at the `font` property and `fillText` method in the next chapter about [drawing text](/en-US/docs/Web/API/Canvas_API/Tutorial/Drawing_text).
 
-## 캔버스 채우기 규칙
+## Canvas fill rules
 
-`fill` (혹은 {{domxref("CanvasRenderingContext2D.clip", "clip")}} 및 {{domxref("CanvasRenderingContext2D.isPointInPath", "isPointinPath")}})을 사용할 때 한 점이 경로 안쪽 또는 바깥에 있는지 그리고 따라서 채워지는지 여부를 결정하기 위한 채우기 규칙 알고리즘을 선택적으로 제공 할 수 있습니다. 경로가 교차하거나 중첩 된 경우에 유용합니다.
+When using `fill` (or {{domxref("CanvasRenderingContext2D.clip", "clip")}} and {{domxref("CanvasRenderingContext2D.isPointInPath", "isPointInPath")}}) you can optionally provide a fill rule algorithm by which to determine if a point is inside or outside a path and thus if it gets filled or not. This is useful when a path intersects itself or is nested.
 
-다음 두가지 값을 사용할 수 있습니다:
+Two values are possible:
 
 - `nonzero`
-  - : [non-zero winding rule](http://en.wikipedia.org/wiki/Nonzero-rule) 알고리즘. 기본값.
+  - : The [non-zero winding rule](https://en.wikipedia.org/wiki/Nonzero-rule), which is the default rule.
 - `evenodd`
-  - : [even-odd winding rule](http://en.wikipedia.org/wiki/Even%E2%80%93odd_rule) 알고리즘.
+  - : The [even-odd winding rule](https://en.wikipedia.org/wiki/Even%E2%80%93odd_rule).
 
 In this example we are using the `evenodd` rule.
 
 ```js
 function draw() {
-  var ctx = document.getElementById('canvas').getContext('2d');
+  const ctx = document.getElementById("canvas").getContext("2d");
   ctx.beginPath();
   ctx.arc(50, 50, 30, 0, Math.PI * 2, true);
   ctx.arc(50, 50, 15, 0, Math.PI * 2, true);
-  ctx.fill('evenodd');
+  ctx.fill("evenodd");
 }
 ```
 
 ```html hidden
-<canvas id="canvas" width="100" height="100"></canvas>
+<canvas id="canvas" width="100" height="100" role="presentation"></canvas>
 ```
 
 ```js hidden

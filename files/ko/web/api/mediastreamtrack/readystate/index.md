@@ -1,34 +1,35 @@
 ---
-title: MediaStreamTrack.readyState
+title: "MediaStreamTrack: readyState property"
+short-title: readyState
 slug: Web/API/MediaStreamTrack/readyState
+page-type: web-api-instance-property
+browser-compat: api.MediaStreamTrack.readyState
 ---
 
 {{APIRef("Media Capture and Streams")}}
 
-**`MediaStreamTrack.readyState`** 읽기 전용 속성은 트랙의 상태를 나타내는 열거형 값을 반환합니다.
+The **`MediaStreamTrack.readyState`** read-only property returns an enumerated value giving the status of the track.
 
-## 구문
+## Value
 
-```js
-const state = track.readyState
-```
+It takes one of the following values:
 
-### 값
+- `"live"` which indicates that an input is connected and does its
+  best-effort in providing real-time data. In that case, the output of data can be
+  switched on or off using the {{domxref("MediaStreamTrack.enabled")}} property.
+- `"ended"` which indicates that the input is not giving any more data and
+  will never provide new data.
 
-다음의 두 값 중 하나입니다.
-
-- `"live"`는 입력이 연결됐으며 트랙이 실시간 데이터를 받는 중임을 나타냅니다. 이 때, 데이터 출력은 {{domxref("MediaStreamTrack.enabled")}} 속성을 사용해 켜거나 끌 수 있습니다.
-- `"ended"`는 입력이 더 이상 데이터를 제공하지 않으며 앞으로도 새로운 데이터를 제공하지 않을 것임을 나타냅니다.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [WebRTC](/ko/docs/Web/API/WebRTC_API)
-- {{domxref("MediaStreamTrack.onended")}}
+- [Media Capture and Streams API](/en-US/docs/Web/API/Media_Capture_and_Streams_API)
+- [WebRTC](/en-US/docs/Web/API/WebRTC_API)
+- The {{domxref("MediaStreamTrack.ended_event", "ended")}} event

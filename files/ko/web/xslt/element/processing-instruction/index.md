@@ -1,34 +1,33 @@
 ---
-title: processing-instruction
+title: <xsl:processing-instruction>
 slug: Web/XSLT/Element/processing-instruction
-original_slug: Web/XSLT/processing-instruction
 ---
 
 {{ XsltRef() }}
 
-`<xsl:processing-instruction>` 요소는 출력 문서에 처리 명령을 씁니다.
+The `<xsl:processing-instruction>` element writes a processing instruction to the output document.
 
-### 문법
+### Syntax
 
 `<xsl:processing-instruction name=NAME> TEMPLATE </xsl:processing-instruction>`
 
-### 필수 속성
+### Required Attributes
 
 - `name`
-  - : 처리 명령에 이름을 지정합니다.
+  - : Specifies the name of this processing instruction.
 
-### 선택 속성
+### Optional Attributes
 
-없음.
+None.
 
-### 타입
+### Type
 
-명령, 템플릿 안에 나타남.
+Instruction, appears within a template.
 
-### 정의
+### Defined
 
-[XSLT section 7.3, Creating Processing Instructions](http://www.w3.org/TR/xslt#section-Creating-Processing-Instructions)
+XSLT, section 7.3
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

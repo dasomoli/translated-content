@@ -1,26 +1,48 @@
 ---
-title: RTCPeerConnection()
+title: "RTCPeerConnection: RTCPeerConnection() constructor"
+short-title: RTCPeerConnection()
 slug: Web/API/RTCPeerConnection/RTCPeerConnection
+page-type: web-api-constructor
+browser-compat: api.RTCPeerConnection.RTCPeerConnection
 ---
 
 {{APIRef("WebRTC")}}
 
-**`RTCPeerConnection()`** 생성자는 로컬 기기와 원격 피어 간의 연결을 나타내는 {{domxref("RTCPeerConnection")}} 객체를 새로 만들어 반환합니다.
+The **`RTCPeerConnection()`**
+constructor returns a newly-created {{domxref("RTCPeerConnection")}}, which represents
+a connection between the local device and a remote peer.
 
-## 구문
+## Syntax
 
-```js
-pc = new RTCPeerConnection([configuration]);
+```js-nolint
+new RTCPeerConnection()
+new RTCPeerConnection(configuration)
 ```
 
-### 매개변수
+### Parameters
 
 - `configuration` {{optional_inline}}
-  - : 새로운 연결을 설정하는 옵션 객체입니다.
-    - `bundlePolicy` {{optional_inline}}
-      - : 원격 피어가 [SDP BUNDLE 표준](https://webrtcstandards.info/sdp-bundle/)과 호환되지 않을 때 어떻게 candidate의 네고시에이션을 처리 할 것인지를 정의합니다.
 
-        가능한 값은 다음 열거형 값 중 하나로, 기본 값은 `balanced`입니다.
+  - : An object providing options to configure the new connection:
+
+    - `bundlePolicy` {{optional_inline}}
+
+      - : Specifies how to handle negotiation of candidates
+        when the remote peer is not compatible
+        with the [SDP BUNDLE standard](https://webrtcstandards.info/sdp-bundle/).
+        If the remote endpoint is BUNDLE-aware,
+        all media tracks and data channels are bundled onto a single transport at the completion of negotiation,
+        regardless of policy used,
+        and any superfluous transports that were created initially are closed at that point.
+
+        In technical terms,
+        a BUNDLE lets all media flow between two peers flow across a single **5-tuple**;
+        that is, from a single IP and port on one peer to a single IP and port on the other peer,
+        using the same transport protocol.
+
+        This must be one of the following string values,
+        if not `balanced` is assumed:
+
         - `balanced`
           - : The ICE agent initially creates one {{domxref("RTCDtlsTransport")}}
             for each type of content added: audio, video, and data channels.
@@ -36,26 +58,63 @@ pc = new RTCPeerConnection([configuration]);
             to carry all of the {{DOMxRef("RTCPeerConnection")}}'s data.
             If the remote endpoint is not BUNDLE-aware,
             then only a single track will be negotiated and the rest ignored.
+
     - `certificates` {{optional_inline}}
-      - : 연결 인증에 사용할 {{domxref("RTCCertificate")}}를 담은 {{jsxref("Array")}}입니다. 지정하지 않을 경우 {{domxref("RTCPeerConnection")}} 인스턴스 각각에 대해 인증서가 자동으로 생성됩니다. 주어진 연결에 대해 하나의 인증서만 사용되지만, 다양한 알고리즘을 사용하는 여러 인증서를 제공하면 특정 상황에서의 연결 성공률을 높일 수 있습니다. 아래의 [인증서 사용하기](#인증서_사용하기)에서 더 많은 정보를 확인하세요.
 
-        > **참고:** 이 옵션은 처음 지정한 이후 변경할 수 없습니다. 인증서를 설정한 후엔 모든 {{domxref("RTCPeerConnection.setConfiguration()")}}이 무시됩니다.
+      - : An {{jsxref("Array")}} of objects of type {{domxref("RTCCertificate")}}
+        which are used by the connection for authentication.
+        If this property isn't specified,
+        a set of certificates is generated automatically for each {{domxref("RTCPeerConnection")}} instance.
+        Although only one certificate is used by a given connection,
+        providing certificates for multiple algorithms may improve the odds of successfully connecting in some circumstances.
+        See [Using certificates](#using_certificates) for further information.
+
+        > **Note:** This configuration option cannot be changed after it is first specified; once the certificates have been set, this property is ignored in future calls to {{domxref("RTCPeerConnection.setConfiguration()")}}.
+
     - `iceCandidatePoolSize` {{optional_inline}}
-      - : ICE candidate 풀의 크기를 지정하는 부호 없는 16비트 정수 값입니다. 기본 값은 0으로 candidate 를 미리 가져오지 않을 것임을 나타냅니다. 연결 시도 전부터 ICE 에이전트가 ICE candidate를 가져올 수 있도록 허용하면 {{domxref("RTCPeerConnection.setLocalDescription()")}} 호출 시점에 이미 candidate를 조사할 수 있으므로 특정 상황에서 연결 속도가 빨라질 수 있습니다.
 
-        > **참고:** ICE candidate 풀의 크기를 변경하면 ICE 수집이 시작할 수 있습니다.
+      - : An unsigned 16-bit integer value which specifies the size of the prefetched ICE candidate pool.
+        The default value is 0 (meaning no candidate prefetching will occur).
+        You may find in some cases that connections can be established more quickly
+        by allowing the ICE agent to start fetching ICE candidates
+        before you start trying to connect,
+        so that they're already available for inspection
+        when {{domxref("RTCPeerConnection.setLocalDescription()")}} is called.
+
+        > **Note:** Changing the size of the ICE candidate pool may trigger the beginning of ICE gathering.
+
     - `iceServers` {{optional_inline}}
-      - : ICE 에이전트가 사용할 수 있는 서버(보통 STUN/TURN)를 설명하는 {{domxref("RTCIceServer")}} 객체의 배열입니다. 지정하지 않을 경우 STUN/TURN 서버를 사용하지 않고 연결 시도를 하므로 연결이 로컬 피어로 제한됩니다.
+      - : An array of {{domxref("RTCIceServer")}} objects,
+        each describing one server which may be used by the ICE agent;
+        these are typically STUN and/or TURN servers.
+        If this isn't specified,
+        the connection attempt will be made with no STUN or TURN server available,
+        which limits the connection to local peers.
     - `iceTransportPolicy` {{optional_inline}}
-      - : 현재 ICE 트랜스포트 정책입니다. 지정하지 않을 경우 기본 값은 `all`로, 모든 candidate를 고려합니다. 가능한 값은 다음과 같습니다.
+
+      - : The current ICE transport policy;
+        if the policy isn't specified, `all` is assumed by default,
+        allowing all candidates to be considered.
+        Possible values are:
+
         - `"all"`
-          - : 모든 ICE candidate를 고려합니다.
+          - : All ICE candidates will be considered.
+        - `"public"` {{deprecated_inline}}
+          - : Only ICE candidates with public IP addresses will be considered. _Removed from the specification's May 13, 2016 working draft._
         - `"relay"`
-          - : IP 주소가 중개 중인, 예컨대 STUN 또는 TURN 서버를 통해 전송 중인 ICE candidate만 고려합니다.
+          - : Only ICE candidates whose IP addresses are being relayed, such as those being passed through a STUN or TURN server, will be considered.
+
     - `peerIdentity` {{optional_inline}}
-      - : {{domxref("RTCPeerConnection")}}의 대상 피어 아이덴티티를 나타내는 {{domxref("DOMString")}}입니다. 기본 값은 `null`입니다. 이 값을 지정한 경우 `RTCPeerConnection`은 주어진 이름으로 인증에 성공해야 원격 피어로 연결을 시도합니다.
+      - : A string
+        which specifies the target peer identity for the {{domxref("RTCPeerConnection")}}.
+        If this value is set
+        (it defaults to `null`),
+        the `RTCPeerConnection` will not connect to a remote peer
+        unless it can successfully authenticate with the given name.
     - `rtcpMuxPolicy` {{optional_inline}}
-      - : non-multiplexed RTCP를 지원하기 위해 ICE 수집 중 사용할 RTCP mux 정책입니다. 가능한 값은 다음과 같습니다.
+
+      - : The RTCP mux policy to use when gathering ICE candidates, in order to support non-multiplexed RTCP. Possible values are:
+
         - `negotiate`
           - : Instructs the ICE agent to gather both {{Glossary("RTP")}} and {{Glossary("RTCP")}} candidates.
             If the remote peer can multiplex RTCP,
@@ -68,11 +127,13 @@ pc = new RTCPeerConnection([configuration]);
             then session negotiation fails.
             This is the default value.
 
-### 반환 값
+### Return value
 
-`configuration`이 지정된 경우 그에 맞게 구성한, 그렇지 않은 경우 기본값 구성을 이용한 {{domxref("RTCPeerConnection")}} 객체입니다.
+A newly-created {{domxref("RTCPeerConnection")}} object, configured as described by
+`configuration`, if specified; otherwise, configured to appropriate basic
+defaults.
 
-### 인증서 사용하기
+### Using certificates
 
 When you wish to provide your own certificates for use by an
 {{domxref("RTCPeerConnection")}} instead of having the `RTCPeerConnection`
@@ -94,17 +155,17 @@ benefit to providing your own is identity key continuity—if you use the same c
 for subsequent calls, the remote peer can tell you're the same caller. This also avoids
 the cost of generating new keys.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참고
+## See also
 
-- [Signaling and video calling](/ko/docs/Web/API/WebRTC_API/Signaling_and_video_calling)
-- [WebRTC architecture overview](/ko/docs/Web/API/WebRTC_API/Architecture)
-- [Lifetime of a WebRTC session](/ko/docs/Web/API/WebRTC_API/Session_lifetime)
+- [Signaling and video calling](/en-US/docs/Web/API/WebRTC_API/Signaling_and_video_calling)
+- [WebRTC architecture overview](/en-US/docs/Web/API/WebRTC_API/Protocols)
+- [Lifetime of a WebRTC session](/en-US/docs/Web/API/WebRTC_API/Session_lifetime)
 - {{domxref("RTCPeerConnection")}}

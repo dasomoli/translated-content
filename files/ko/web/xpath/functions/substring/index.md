@@ -5,42 +5,37 @@ slug: Web/XPath/Functions/substring
 
 {{ XsltRef() }}
 
-`substring` 함수는 인수로 준 문자열의 부분을 반환합니다.
+The `substring` function returns a part of a given string.
 
-### 구문
+### Syntax
 
 ```
-substring(string ,start [,length] )
+substring(string, start)
+substring(string, start, length)
 ```
 
-### 인수
+### Arguments
 
 - `string`
-  - : 평가할 문자열.
+  - : The string to evaluate.
 - `start`
-  - : 부분 문자열이 시작하는
-    `string`
-    안 위치.
-- `length`
-  (선택사항)
-  - : 부분 문자열의 길이. 빼면, 반환되는 문자열은
-    `start`
-    위치부터
-    `string`
-    의 끝까지 모든 문자를 포함합니다.
+  - : The position within `string` the substring begins
+- `length` {{optional_inline}}
+  - : The length of the substring.
+    If omitted, the returned string will contain every character from the `start` position to the end of `string`.
 
-### 반환
+### Returns
 
-문자열.
+A string.
 
-### 주의
+### Notes
 
-다른 XPath 함수와 마찬가지로, 위치는 0에 기반을 두지 않습니다. 문자열의 첫 문자는 위치가 0이 아니라 1입니다.
+As in other XPath functions, the position is not zero-based. The first character in the string has a position of 1, not 0.
 
-### 정의
+### Defined
 
-[XPath 1.0 4.2](http://www.w3.org/TR/xpath#function-substring)
+[XPath 1.0 4.2](https://www.w3.org/TR/1999/REC-xpath-19991116/#function-substring)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

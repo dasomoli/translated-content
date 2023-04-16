@@ -1,20 +1,20 @@
 ---
-title: undefined
+title: Undefined
 slug: Glossary/Undefined
+page-type: glossary-definition
 ---
 
-**`undefined`** 는 {{Glossary("primitive", "원시값")}}으로, 선언한 후 값을 할당하지 않은 {{glossary("variable", "변수")}} 혹은 값이 주어지지 않은 {{Glossary("argument","인수")}}에 자동으로 할당됩니다.
+**`undefined`** is a {{Glossary("primitive")}} value automatically assigned to {{glossary("variable", "variables")}} that have just been declared, or to formal {{Glossary("Argument","arguments")}} for which there are no actual arguments.
 
-## 예제
+## Example
 
 ```js
-var x; // 값을 할당하지 않고 변수 선언
+let x; //create a variable but assign it no value
 
-console.log("x's value is", x) // "x's value is undefined" 출력
+console.log(`x's value is ${x}`); //logs "x's value is undefined"
 ```
 
-## 더 알아보기
+## See also
 
-### 기술 참고서
-
-- [JavaScript 자료형과 자료 구조](/ko/docs/Web/JavaScript/Data_structures)
+- [Undefined value](https://en.wikipedia.org/wiki/Undefined_value) on Wikipedia
+- [JavaScript data types and data structures](/en-US/docs/Web/JavaScript/Data_structures)

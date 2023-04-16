@@ -1,56 +1,56 @@
 ---
 title: Content-Length
 slug: Web/HTTP/Headers/Content-Length
-l10n:
-  sourceCommit: 36001a269f4d7b2b3ac6de79e942a5f849bb87d8
+page-type: http-header
+browser-compat: http.headers.Content-Length
 ---
 
 {{HTTPSidebar}}
 
-**`Content-Length`** 헤더는 수신자에게 전송되는 메시지 본문의 크기(바이트)를 나타냅니다.
+The **`Content-Length`** header indicates the size of the message body, in bytes, sent to the recipient.
 
 <table class="properties">
   <tbody>
     <tr>
-      <th scope="row">헤더 타입</th>
+      <th scope="row">Header type</th>
       <td>
-        {{Glossary("Request header", "요청 헤더")}},
-        {{Glossary("Response header", "응답 헤더")}},
+        {{Glossary("Request header")}},
+        {{Glossary("Response header")}},
         {{Glossary("Payload header")}}
       </td>
     </tr>
     <tr>
-      <th scope="row">{{Glossary("Forbidden header name", "금지된 헤더 이름")}}</th>
-      <td>네</td>
+      <th scope="row">{{Glossary("Forbidden header name")}}</th>
+      <td>yes</td>
     </tr>
     <tr>
       <th scope="row">
         {{Glossary("CORS-safelisted response header")}}
       </th>
-      <td>네</td>
+      <td>yes</td>
     </tr>
   </tbody>
 </table>
 
-## 구문
+## Syntax
 
 ```http
 Content-Length: <length>
 ```
 
-## 지시어
+## Directives
 
 - \<length>
-  - : 8진수에 대한 십진수 단위의 길이.
+  - : The length in decimal number of octets.
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{HTTPHeader("Transfer-Encoding")}}

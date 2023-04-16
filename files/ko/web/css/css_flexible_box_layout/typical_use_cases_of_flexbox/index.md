@@ -1,86 +1,86 @@
 ---
-title: 가변상자의 대표적인 사용례
+title: Typical use cases of flexbox
 slug: Web/CSS/CSS_Flexible_Box_Layout/Typical_Use_Cases_of_Flexbox
-original_slug: Web/CSS/CSS_Flexible_Box_Layout/가변상자의_대표적인_사용례
+page-type: guide
 ---
 
 {{CSSRef}}
 
-이번 안내서에서는 흔히 볼 수 있는 가변상자 사용 사례 중 일부를 살펴 보겠습니다. 가변상자의 사용이 다른 레이아웃 메서드보다 더 적합한 사례입니다.
+In this guide, we will take a look at some of the common use cases for flexbox — those places where it makes more sense than another layout method.
 
-## 왜 가변상자를 선택?
+## Why choose flexbox?
 
-완벽한 브라우저 지원 환경에서 가변상자를 사용하기로 선택한 이유는 항목 모음을 한 방향 또는 다른 방향으로 배치하길 원하기 때문입니다. 우리가 항목을 배치할 때 해당 일차원의 항목 크기를 제어하거나 항목 간 간격을 제어하려고 합니다. 이것이 가변상자를 설계한 목적에 맞는 용도입니다. [가변상자와 여타 CSS 레이아웃 메서드의 관계](/ko/docs/Web/CSS/CSS_Flexible_Box_Layout/Relationship_of_Flexbox_to_Other_Layout_Methods)에서 가변상자와 CSS 격자 레이아웃의 차이점에 대해 자세히 읽을 수 있습니다. 그곳에선 가변상자가 CSS 레이아웃의 전체 그림에서 어떤 역할을 하고 있는지에 대해 논의합니다.
+In a perfect world of browser support, the reason you'd choose to use flexbox is because you want to lay a collection of items out in one direction or another. As you lay out your items you want to control the dimensions of the items in that one dimension, or control the spacing between items. These are the uses that flexbox was designed for. You can read more about the difference between flexbox and CSS Grid Layout in [Relationship of Flexbox to other layout methods](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Relationship_of_Flexbox_to_Other_Layout_Methods), where we discuss how flexbox fits into the overall picture of CSS Layout.
 
-실제로 격자 레이아웃에 의해 더 잘 수행 될 수있는 작업이나 격자에 대한 대체품 및 정렬 기능을 얻기 위해 가변상자를 종종 사용합니다. 당 사용례는 블록 레이아웃에서 <ruby><em>상자 정렬</em><rp> (</rp><rt>Box Alignment</rt><rp>) </rp></ruby>이 구현되고 나면 변경될 수 있습니다. 이 안내서에서는 오늘날 가변상자가 쓰일 수 있는 몇 가지 대표적인 사용례를 살펴봅니다.
+In reality we also often use Flexbox for jobs that might be better done by Grid Layout, as a fallback for Grid, and also in order to get alignment capabilities. This is something that may well change once Box Alignment is implemented in Block Layout. In this guide we'll look at some of the typical things you might use flexbox for today.
 
-## 탐색 메뉴
+## Navigation
 
-탐색 메뉴의 일반적인 패턴은 항목 목록을 가로 막대로 표시하는 것입니다. 이 패턴은 기본적으로 가변상자 이전에는 달성하기 어려웠습니다. 이는(탐색 가로 막대) 가장 간단한 가변상자 예제를 형성하며 이상적인 가변상자 사용 사례로 간주될 수 있습니다.
+A common pattern for navigation is to have a list of items displayed as a horizontal bar. This pattern, as basic as it seems, was difficult to achieve before flexbox. It forms the most simple of flexbox examples, and could be considered the ideal flexbox use case.
 
-가로로 표시하려는 항목 집합이 있으면 잉여 공간이 생길 수밖에 없습니다. 우리는 그 공간으로 무엇을 해야할지 결정해야 하며 몇 가지 선택 옵션이 있습니다. 일번 선택은 우리가 항목 무리 이외의 공간을 표시합니다. 따라서 그 사이 또는 그 주변에 공백이 생깁니다. 또는 항목 내부 여분의 공간을 흡수하려면 항목 집합이 이 공간을 확장하고 점유할 수 있는 메소드가 필요합니다.
+When we have a set of items that we want to display horizontally, we may well end up with additional space. We need to decide what to do with that space, and have a couple of options. We either display the space outside of the items — therefore spacing them out with white space between or around them — or we absorb the extra space inside the items and therefore need a method of allowing the items to grow and take up this space.
 
-### 항목 외부에 공간 분배
+### Space distributed outside the items
 
-항목 사이 또는 주위에 공간을 분배시키기 위해 가변상자의 정렬 속성과 {{cssxref("justify-content")}} 속성을 사용합니다. 이 속성에 대한 자세한 내용은 기본 축을 기준으로 항목 정렬을 처리하는 [가변 컨테이너의 항목 정렬](/ko/docs/Web/CSS/CSS_Flexible_Box_Layout/Aligning_Items_in_a_Flex_Container)에서 확인할 수 있습니다.
+To distribute the space between or around the items we use the alignment properties in flexbox, and the {{cssxref("justify-content")}} property. You can read more about this property in [Aligning Items in a flex container](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Aligning_Items_in_a_Flex_Container), which deals with aligning items on the main axis.
 
-아래 실제 예에서 우리는 항목을 원래 크기로 표시하고 `justify-content: space-between`를 사용하여 항목 사이의 간격을 동일하게 만듭니다. `space-around` 값을 사용하거나, 지원이 될 경우 `space-evenly`를 사용해 공간이 분배되는 방식을 변경할 수 있습니다. `flex-start`를 사용하여 항목 끝에 공간을 배치하거나 `flex-end`를 사용하여 항목 앞에 배치하거나 `center`를 사용해 탐색 항목 중앙에 배치할 수 있습니다.
+In the below live example we display the items at their natural size and by using `justify-content: space-between` make equal amounts of space between the items. You can change how the space is distributed using the `space-around` value, or where supported, `space-evenly`. You could also use `flex-start` to place the space at the end of the items, `flex-end` to place it before them, or `center` to center the navigation items.
 
 {{EmbedGHLiveSample("css-examples/flexbox/use-cases/navigation.html", '100%', 550)}}
 
-### 항목 내부에 공간 분배
+### Space distributed within the items
 
-탐색 메뉴를 위한 다른 패턴은 항목 사이에 공간을 만드는 것이 아니라 항목 자체 내에 사용 가능한 공간을 분배하는 것입니다. 이 경우, [주축을 따라 가변 항목의 비율 제어](/ko/docs/Web/CSS/CSS_Flexible_Box_Layout/Controlling_Ratios_of_Flex_Items_Along_the_Main_Ax)에서 설명된대로 가변 속성을 사용하여 항목이 서로 비례하여 확대 및 축소되도록 합니다.
+A different pattern for navigation would be to distribute the available space within the items themselves, rather than create space between them. In this case we would use the {{cssxref("flex")}} properties to allow items to grow and shrink in proportion to one another as described in [Controlling ratios of flex items along the main axis](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Controlling_Ratios_of_Flex_Items_Along_the_Main_Ax).
 
-모든 탐색 메뉴 항목의 너비를 동일하게 하려면 `flex: auto`를 사용하면 됩니다. 그것은 `flex: 1 1 auto`의 약칭으로 모든 항목이 자동이란 가변 기반에 따라 확대되거나 축소됩니다. 여기서 자동이란 항목이 길수록 더 많은 공간이 생긴다는 말입니다.
+If you wanted to respect the size property of my navigation items but have the available space shared out equally among them, then you might use `flex: auto`, which is the shorthand for `flex: 1 1 auto` — all items grow and shrink from a flex-basis of auto. This would mean that the longer item would have more space because it started from a larger size, even though the same amount of available space is assigned to it as the others.
 
-아래의 실제 예제에서 `flex: auto`를 `flex: 1`로 변경해보십시요. 이것은 `flex: 1 1 0`의 약칭입니다. 모든 항목이 0의 가변 기반에서 작동하여 모든 공간을 고르게 배분할 수 있기 때문에 모든 항목이 동일한 너비가 됩니다.
+In the live example below try changing `flex: auto` to `flex: 1`. This is the shorthand for `flex: 1 1 0` and causes all of the items to become the same width, as they are working from a flex-basis of 0 allowing all of the space to be distributed evenly.
 
 {{EmbedGHLiveSample("css-examples/flexbox/use-cases/navigation-flex.html", '100%', 550)}}
 
-## 탐색 메뉴 분할
+## Split navigation
 
-주축에서 항목을 정렬하는 또 다른 방법은 자동 여백을 사용하는 것입니다. 이를 통해 한 그룹의 항목이 왼쪽으로 정렬되고 다른 그룹이 오른쪽으로 정렬되는 탐색 모음(메뉴)의 디자인 패턴이 가능합니다.
+Another way to align items on the main axis is to use auto margins. This enables the design pattern of a navigation bar where one group of items are aligned left and another group aligned right.
 
-여기에서는 [주축 정렬에 대한 자동 여백 사용](/ko/docs/Web/CSS/CSS_Flexible_Box_Layout/Aligning_Items_in_a_Flex_Container#Using_auto_margins_for_main_axis_alignment)에서 설명된 자동 여백 기술을 사용합니다. 항목 무리는 `flex-start`를 사용해 주축에 정렬됩니다. 그것이 가변상자의 초기값 동작이며, 우리가 항목을 오른쪽으로 정렬하려면 왼쪽 여백을 자동으로 지정합니다. 클래스 지정을 한 항목에서 다른 항목으로 이동하여 분할이 발생하는 위치를 변경할 수 있습니다.
+Here we are using the auto margins technique described in [Using auto margins for main axis alignment](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Aligning_Items_in_a_Flex_Container#using_auto_margins_for_main_axis_alignment). The items are aligned on the main axis with `flex-start` as this is the initial behavior of flexbox, and we are aligning the item on the right by giving it a left margin of auto. You can move the class from one item to another to change where the split happens.
 
-또한 이 예제에서는 가변 항목에 여백을 사용하여 항목 사이에 간격을 만들고 컨테이너에 음의 여백을 사용하여 항목이 여전히 오른쪽 및 왼쪽 가장자리와 맞붙도록 합니다. <ruby><em>박스 정렬</em><rp> (</rp><rt>Box Alignment</rt><rp>) </rp></ruby>규격의 `gap` 속성이 가변상자에 구현될 때까지 항목 간에 배수구를 만들려면 이 방식으로 여백을 사용해야 합니다.
+Also in this example we are using margins on the flex items to create a gap between items, and a negative margin on the container in order that the items still remain flush with the right and left edges. Until the `gap` properties from the Box Alignment specification are implemented in flexbox, we have to use margins in this way if we want to create a gutter between items.
 
 {{EmbedGHLiveSample("css-examples/flexbox/use-cases/split-navigation.html", '100%', 550)}}
 
-## 항목 중심에 놓기
+## Center item
 
-가변상자 이전에 개발자들은 웹 디자인에서 가장 어려운 문제는 수직 중심이라고 농담할겁니다. 다음 실제 예제에서 볼 수 있듯이 가변상자의 정렬 속성을 사용하여 간단하게 만들었습니다.
+Before flexbox, developers would joke that the hardest problem in web design was vertical centering. This has now been made straightforward using the alignment properties in flexbox, as the following live example shows.
 
-항목에 `flex-start`를 지정해 시작 부분으로 정렬하거나 `flex-end`를 지정해 끝 부분에 항목을 정렬하는 식으로 정렬을 맘대로 조정할 수 있습니다.
+You can play with the alignment, aligning the item to the start with `flex-start` or end with `flex-end`.
 
 {{EmbedGHLiveSample("css-examples/flexbox/use-cases/center.html", '100%', 700)}}
 
-<ruby><em>박스 정렬</em><rp> (</rp><rt>Box Alignment</rt><rp>) </rp></ruby>속성은 궁극적으로 블록 레이아웃의 내용으로 구현될 예정이므로 미래에는 단일 아이템을 중앙에 배치하기 위해 컨테이너를 가변 컨테이너로 만들 필요는 없습니다. 그러나 당장은 하나의 것을 다른 것의 중심에 올바로 배치해야하는 경우 가변상자를 사용하는 게 맞습니다. 위의 예에서와 같이 컨테이너를 가변 컨테이너로 만든 다음 상위 요소에 대해 `align-items`을 사용하거나 가변 항목 자체를 `align-self`로 공략합니다.
+In the future we may not need to make a container a flex container just to center a single item, as the Box Alignment properties will ultimately be implemented in Block layout. For now however, if you need to properly center one thing inside another, flexbox is the way to do it. As in the example above, make a container into a flex container, and then use either `align-items` on the parent element or target the flex item itself with `align-self`.
 
-## 바닥글을 아래로 밀어내는 카드 레이아웃
+## Card layout pushing footer down
 
-가변상자 또는 CSS 격자를 사용하여 카드 구성 요소의 목록을 레이아웃하더라도, 이들 레이아웃 메서드는 가변 또는 격자 구성 요소의 직계 자식에서만 작동합니다. 즉, 콘텐츠의 크기가 가변적이면 카드가 격자 영역의 높이나 가변 컨테이너의 높이까지 늘어납니다. 모든 내부 콘텐츠는 친숙한 블록 레이아웃을 사용합니다. 즉, 콘텐츠가 적은 카드에서는 바닥글이 카드의 아래쪽에 고정되지 않고 콘텐츠의 밑단까지 차오릅니다.
+Whether you use flexbox or CSS Grid to lay out a list of card components, these layout methods only work on direct children of the flex or grid component. This means that if you have variable amounts of content, the card will stretch to the height of the grid area or flex container. Any content inside uses regular block layout, meaning that on a card with less content the footer will rise up to the bottom of the content rather than stick to the bottom of the card.
 
-![구성 요소의 내부가 (상위) 랩퍼와 함께 늘어나지 않음을 표시하는 두 개의 카드 구성 요소.](flex-cards.png)
+![Two card components showing that the internals of the component do not stretch with the wrapper.](flex-cards.png)
 
-가변상자가 이를 해결할 수 있습니다. 우리는 {{cssxref("flex-direction")}}`: column` 속성를 가진 카드를 가변 컨테이너로 만듭니다. 그런 다음 컨텐츠 영역을 `flex: 1`로 설정합니다. 이는 `flex: 1 1 0`의 축약형입니다. — 항목이 `0`의 가변 기준에서 커지거나 줄어들 수 있습니다. 이것이(컨텐츠 영역이) 커질 수 있는 유일한 항목이므로 가변 컨테이너에 있는 잉여 공간을 차지하고 바닥글을 바닥으로 밉니다. 라이브 예제에서 `flex` 속성을 제거하면 바닥글이 컨텐츠 바로 아래로 이동하는 방식을 볼 수 있습니다.
+Flexbox can solve this. We make the card a flex container, with {{cssxref("flex-direction")}}`: column`. We then set the content area to `flex: 1`, which is the shorthand for `flex: 1 1 0` — the item can grow and shrink from a flex basis of `0`. As this is the only item that can grow, it takes up all available space in the flex container and pushes the footer to the bottom. If you remove the `flex` property from the live example you will see how the footer then moves up to sit directly under the content.
 
 {{EmbedGHLiveSample("css-examples/flexbox/use-cases/cards.html", '100%', 800)}}
 
-## 미디어 객체
+## Media objects
 
-미디어 객체는 웹 디자인에서 일반적인 패턴입니다. 이 패턴에는 한쪽에 이미지 나 다른 요소가 있고 오른쪽에 텍스트가 있습니다. 이상적으로 미디어 개체를 반대쪽으로 돌릴 수 있어야 합니다. 말하자면 이미지를 왼쪽에서 오른쪽으로 이동시키는 겁니다.
+The media object is a common pattern in web design — this pattern has an image or other element to one side and text to the right. Ideally a media object should be able to be flipped — moving the image from left to right.
 
-이 패턴은 어디에서나 볼 수 있으며, 주석 상자용으로 쓰이기도 하고, 이미지와 설명을 표시해야하는 모든 곳에서 볼 수 있습니다. 가변상자를 사용하면 이미지를 포함하는 미디어 객체의 일부가 이미지에서 크기 정보를 가져온 다음 미디어 객체의 본문이 가변적으로 남은 공간을 차지할 수 있습니다.
+We see this pattern everywhere, used for comments, and anywhere we need to display images and descriptions. With flexbox we can allow the part of the media object containing the image to take its sizing information from the image, and then the body of the media object flexes to take up the remaining space.
 
-여러분은 아래 실제 예제에서 미디어 객체를 볼 수 있습니다. 정렬 속성을 사용하여 십자축의 항목을 `flex-start`로 정렬한 다음 `.content` 가변 항목을 `flex: 1`로 설정했습니다. 위의 열 레이아웃 카드 패턴에서와 같이 `flex: 1`를 사용하면 카드가 커질 수 있습니다.
+In the live example below you can see our media object. I have used the alignment properties to align the items on the cross axis to `flex-start`, and then set the `.content` flex item to `flex: 1`. As with our column layout card pattern above, using `flex: 1` means this part of the card can grow.
 
 {{EmbedGHLiveSample("css-examples/flexbox/use-cases/media.html", '100%', 600)}}
 
-이 라이브 예제에서 시도할 수 있는 것은 디자인에서 미디어 개체를 제약하려는 여러 가지 방법과 관련이 있습니다.
+Some things that you might want to try in this live example relate to the different ways you might want to constrain the media object in your design.
 
-이미지가 너무 커지는 것을 방지하려면 이미지에 {{cssxref("max-width")}}를 추가하십시오. 미디어 객체의 그쪽 측면이 가변상자의 초기값(예: 100px)을 사용함에 따라 줄어들지만 커질 수는 없으며 `flex-basis`는 자동을 사용합니다. 이미지에 적용된 모든 {{cssxref("width")}} 또는 최대 너비는 <ruby><code>flex-basis</code><rp> (</rp><rt>가변 기준</rt><rp>) </rp></ruby>이 됩니다.
+To prevent the image growing too large, add a {{cssxref("max-width")}} to the image. As that side of the media object is using the initial values of flexbox it can shrink but not grow, and uses a `flex-basis` of auto. Any {{cssxref("width")}} or max-width applied to the image will become the `flex-basis`.
 
 ```css
 .image img {
@@ -88,7 +88,7 @@ original_slug: Web/CSS/CSS_Flexible_Box_Layout/가변상자의_대표적인_사�
 }
 ```
 
-또한 양쪽이 비례하여 커지거나 줄어들 수 있습니다. 양면을 `flex: 1`로 설정하면 0의 {{cssxref("flex-basis")}}에서 커지거나 줄어들기 때문에 두 개의 동일한 크기의 열이 생깁니다. 컨텐츠를 기준으로 사용하여 (컨텐츠와 이미지) 둘 다에 `flex: auto`로 설정하면 컨텐츠의 크기에 따라, 또는 이미지의 너비와 같은 가변 항목에 직접 적용되는 크기에 따라 커지거나 줄어들 수 있습니다.
+You could also allow both sides to grow and shrink in proportion. If you set both sides to `flex: 1`, they will grow and shrink from a {{cssxref("flex-basis")}} of 0, so you will end up with two equal-sized columns. You could either take the content as a guide and set both to `flex: auto`, in which case they would grow and shrink from the size of the content or any size applied directly to the flex items such as a width on the image.
 
 ```css
 .media .content {
@@ -101,7 +101,7 @@ original_slug: Web/CSS/CSS_Flexible_Box_Layout/가변상자의_대표적인_사�
 }
 ```
 
-예를 들어 이미지가 있는 쪽을 `flex: 1`로 설정하고 콘텐츠 쪽을 `flex: 3`으로 설정하는 등 각면에 서로 다른 {{cssxref("flex-grow")}}를 부여할 수 있습니다. 즉, `flex-basis`를 `0`으로 사용하지만 해당 공간을 `flex-grow` 인수에 맞춰 서로 다르게 공간을 할당합니다. 그런 용도로 사용하는 가변 속성은 [주축을 따라 가변 항목의 비율 제어](/ko/docs/Web/CSS/CSS_Flexible_Box_Layout/Controlling_Ratios_of_Flex_Items_Along_the_Main_Ax) 안내서에서 자세히 설명되어 있습니다.
+You could also give each side different {{cssxref("flex-grow")}} factors, for example setting the side with the image to `flex: 1` and the content side to `flex: 3`. This will mean they use a `flex-basis` of `0` but distribute that space at different rates according to the `flex-grow` factor you have assigned. The flex properties we use to do this are described in detail in the guide [Controlling ratios of flex items along the main axis](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Controlling_Ratios_of_Flex_Items_Along_the_Main_Ax).
 
 ```css
 .media .content {
@@ -114,28 +114,28 @@ original_slug: Web/CSS/CSS_Flexible_Box_Layout/가변상자의_대표적인_사�
 }
 ```
 
-### 미디어 객체 방향 돌리기
+### Flipping the media object
 
-이미지가 오른쪽에 있고 콘텐츠가 왼쪽에 있도록 미디어 객체의 표시를 전환하려면 `flex-direction` 속성을 이용해 `row-reverse`로 설정할 수 있습니다. 미디어 개체가 이제 다른 방향으로 표시됩니다. 저는 그걸 달성하기 위해 라이브 예제에서 기존 `.media` 클래스와 함께 `flipped` 클래스를 추가했습니다. 즉, HTML에서 해당 클래스를 제거하여 디스플레이가 어떻게 변경되는지 확인할 수 있습니다.
+To switch the display of the media object so that the image is on the right and the content is on the left we can use the `flex-direction` property set to `row-reverse`. The media object now displays the other way around. I have achieved this in the live example by adding a class of `flipped` alongside the existing `.media` class. This means you can see how the display changes by removing that class from the HTML.
 
 {{EmbedGHLiveSample("css-examples/flexbox/use-cases/media-flipped.html", '100%', 650)}}
 
-## 양식 컨트롤
+## Form controls
 
-가변상자는 양식 컨트롤에 스타일을 적용할 때 특히 유용합니다. 양식에는 일반적으로 서로 정렬하고 싶은 다수의 마크업과 다수의 작은 요소를 포함할 수 있습니다. 일반적인 패턴은 {{htmlelement("input")}} 요소가 {{htmlelement("button")}}과 짝을 이루는 검색 양식의 경우나 방문자가 단순히 전자 메일 주소를 입력하도록 하려는 경우입니다.
+Flexbox is particularly useful when it comes to styling form controls. Forms have lots of markup and lots of small elements that we typically want to align with each other. A common pattern is to have an {{htmlelement("input")}} element paired with a {{htmlelement("button")}}, perhaps for a search form or where you want your visitor to enter an email address.
 
-가변상자를 사용하면 이러한 유형의 레이아웃을 쉽게 달성할 수 있습니다. 테두리를 지정하고 표시하도록 설정한 래퍼 클래스에 `<button>` 및 `<input>` 필드가 포함되어 있습니다. 거기에 테두리를 부여하고 `display: flex`를 설정했습니다. 그런 다음 가변 속성을 사용하여 `<input>` 필드가 커지도록 했고, 버튼은 그렇지 않습니다. 이것은 사용 가능한 공간이 변함에 따라 텍스트 필드가 커지거나 작아지는 한 쌍의 필드가 있음을 의미합니다.
+Flexbox makes this type of layout easy to achieve. I have contained my `<button>` and `<input>` field in a wrapper which I have given a border and set to `display: flex`. I then use the flex properties to allow the `<input>` field to grow, while the button does not grow. This means we have a pair of fields, with the text field growing and shrinking as the available space changes.
 
 {{EmbedGHLiveSample("css-examples/flexbox/use-cases/input-button.html", '100%', 550)}}
 
-버튼을 오른쪽에 올려 놓은 것처럼 레이블이나 아이콘을 왼쪽에 쉽게 추가 할 수 있습니다. 나는 레이블을 추가했으며 배경색에 대한 스타일링 이외에 레이아웃을 변경할 필요가 없었습니다. 신축성있는 입력 필드는 이제 맘대로 이용할 공간이 조금 줄어들지만 두 항목의 지분이 고려된 후 남은 공간을 사용합니다.
+You could add a label or icon to the left as easily as we popped the button onto the right. I have added a label, and other than some styling for background color I didn't need to change the layout. The stretchy input field now has a little less space to play with but it uses the space left after the two items are accounted for.
 
 {{EmbedGHLiveSample("css-examples/flexbox/use-cases/label-input-button.html", '100%', 550)}}
 
-이와 같은 패턴을 사용하면 디자인에 추가할 요소를 쉽게 수용할 수 있는 양식 요소 라이브러리를 훨씬 쉽게 만들 수 있습니다. 커지지 않는 항목과 커지는 항목을 혼합하는 식으로 가변상자의 유연성을 활용하고 있습니다.
+Patterns like this can make it much easier to create a library of form elements for your design, which easily accommodate additional elements being added. You are taking advantage of the flexibility of flexbox by mixing items that do not grow with those that do.
 
-## 결론
+## Conclusion
 
-위의 패턴을 살펴보면서 가변 상자를 사용하여 원하는 결과를 얻는 가장 좋은 방법을 여러분이 생각을 통해 파악되기 시작했길 희망해봅니다. 종종 하나 이상의 선택이 있습니다. 늘릴 수 없는 항목을 늘릴 수 있는 것과 혼합하거나, 콘텐츠를 사용하여 크기를 알리거나, 가변상자가 공간을 비례적으로 공유할 수 있도록 하십시오. 그것은 당신에게 달려 있습니다.
+While exploring the above patterns you have hopefully started to see how you can think through the best way to use flexbox to achieve the result that you want. Quite often you have more than one choice. Mix items that cannot stretch with those that can, use the content to inform the size, or allow flexbox to share out space in proportion. It's up to you.
 
-보유 컨텐츠를 제시하는 가장 좋은 방법을 생각한 다음 가변상자 또는 기타 레이아웃 방법이 컨텐츠를 선보이는 데 어떻게 도움이 되는지 살펴보십시오.
+Think about the best way to present the content that you have and then see how flexbox or other layout methods can help you achieve it.

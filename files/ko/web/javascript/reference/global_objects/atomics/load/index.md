@@ -1,44 +1,47 @@
 ---
 title: Atomics.load()
 slug: Web/JavaScript/Reference/Global_Objects/Atomics/load
-l10n:
-  sourceCommit: 3f0cd840cd9575701c65b8c6a1e172a2b0c3bd62
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Atomics.load
 ---
 
 {{JSRef}}
 
-**`Atomics.load()`** 정적 메서드는 배열의 지정된 위치의 값을 반환합니다.
+The **`Atomics.load()`** static
+method returns a value at a given position in the array.
 
 {{EmbedInteractiveExample("pages/js/atomics-load.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 Atomics.load(typedArray, index)
 ```
 
-### 매개 변수
+### Parameters
 
 - `typedArray`
-  - : 정수형 형식화 배열. {{jsxref("Int8Array")}}, {{jsxref("Uint8Array")}},
+  - : An integer typed array. One of {{jsxref("Int8Array")}}, {{jsxref("Uint8Array")}},
     {{jsxref("Int16Array")}}, {{jsxref("Uint16Array")}}, {{jsxref("Int32Array")}},
-    {{jsxref("Uint32Array")}}, {{jsxref("BigInt64Array")}},
-    {{jsxref("BigUint64Array")}} 중 하나.
+    {{jsxref("Uint32Array")}}, {{jsxref("BigInt64Array")}}, or
+    {{jsxref("BigUint64Array")}}.
 - `index`
-  - : 값을 불러올 `typedArray`의 인덱스
+  - : The position in the `typedArray` to load from.
 
-### 반환 값
+### Return value
 
-주어진 위치(`typedArray[index]`)의 예전 값.
+The value at the given position (`typedArray[index]`).
 
-### 예외
+### Exceptions
 
-- `typedArray`가 허용된 정수형이 아닐 경우 {{jsxref("TypeError")}}가 발생합니다.
-- `index`가 `typedArray`의 범위를 벗어날 경우 {{jsxref("RangeError")}}가 발생합니다.
+- {{jsxref("TypeError")}}
+  - : Thrown if `typedArray` is not one of the allowed integer types.
+- {{jsxref("RangeError")}}
+  - : Thrown if `index` is out of bounds in the `typedArray`.
 
-## 예제
+## Examples
 
-### `load` 사용하기
+### Using `load`
 
 ```js
 const sab = new SharedArrayBuffer(1024);
@@ -48,15 +51,15 @@ Atomics.add(ta, 0, 12);
 Atomics.load(ta, 0); // 12
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Atomics")}}
 - {{jsxref("Atomics.store()")}}

@@ -1,83 +1,91 @@
 ---
 title: String.prototype.lastIndexOf()
 slug: Web/JavaScript/Reference/Global_Objects/String/lastIndexOf
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.String.lastIndexOf
 ---
+
 {{JSRef}}
 
-**`lastIndexOf()`** 메서드는 주어진 값과 일치하는 부분을 `fromIndex`로부터 역순으로 탐색하여, 최초로 마주치는 인덱스를 반환합니다. 일치하는 부분을 찾을 수 없으면 `-1`을 반환합니다.
+The **`lastIndexOf()`** method, given one argument: a substring to search for, searches the entire calling string, and returns the index of the last occurrence of the specified substring. Given a second argument: a number, the method returns the last occurrence of the specified substring at an index less than or equal to the specified number.
 
 {{EmbedInteractiveExample("pages/js/string-lastindexof.html", "shorter")}}
 
-## 구문
+## Syntax
 
-```js
-str.lastIndexOf(searchValue[, fromIndex])
+```js-nolint
+lastIndexOf(searchString)
+lastIndexOf(searchString, position)
 ```
 
-### 매개변수
+### Parameters
 
-- `searchValue`
-  - : 탐색할 문자열. 빈 값을 제공할 경우 `fromIndex`를 반환합니다.
-- `fromIndex` {{optional_inline}}
-  - : 탐색의 시작점으로 사용할 인덱스. 기본값은 `+Infinity`입니다. `fromIndex >= str.length`인 경우 모든 문자열을 탐색합니다. `fromIndex < 0`인 경우엔 `0`을 지정한 것과 동일합니다.
+- `searchString`
 
-### 반환 값
+  - : Substring to search for. All values are [coerced to strings](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_coercion), so omitting it or passing `undefined` causes `indexOf()` to search for the string `"undefined"`, which is rarely what you want.
 
-문자열 내에서 searchValue가 마지막으로 등장하는 인덱스. 등장하지 않으면 `-1`.
+- `position` {{optional_inline}}
 
-## 설명
+  - : The method returns the index of the last occurrence of the specified substring at a position less than or equal to `position`, which defaults to `+Infinity`. If `position` is greater than the length of the calling string, the method searches the entire string. If `position` is less than `0`, the behavior is the same as for `0` — that is, the method looks for the specified substring only at index `0`.
 
-문자열의 문자는 왼쪽에서 오른쪽으로 인덱스를 매깁니다. 첫 번째 문자의 인덱스는 `0`이며, 마지막 문자의 인덱스는 `str.length -1`입니다.
+    - `'hello world hello'.lastIndexOf('world', 4)` returns `-1` — because, while the substring `world` does occurs at index `6`, that position is not less than or equal to `4`.
 
-```js
-'canal'.lastIndexOf('a');     //  3 반환
-'canal'.lastIndexOf('a', 2);  //  1 반환
-'canal'.lastIndexOf('a', 0);  // -1 반환
-'canal'.lastIndexOf('x');     // -1 반환
-'canal'.lastIndexOf('c', -5); //  0 반환
-'canal'.lastIndexOf('c', 0);  //  0 반환
-'canal'.lastIndexOf('');      //  5 반환
-'canal'.lastIndexOf('', 2);   //  2 반환
-```
+    - `'hello world hello'.lastIndexOf('hello', 99)` returns `12` — because the last occurrence of `hello` at a position less than or equal to `99` is at position `12`.
 
-> **참고:** `'abab'.lastIndexOf('ab', 2)`는 0이 아니고 2를 반환합니다. `fromIndex`는 탐색의 시작점만 제한하기 때문입니다.
+    - `'hello world hello'.lastIndexOf('hello', 0)` and `'hello world hello'.lastIndexOf('hello', -5)` both return `0` — because both cause the method to only look for `hello` at index `0`.
 
-### 대소문자 구분
+### Return value
 
-`lastIndexOf()` 메서드는 대소문자를 구분합니다. 예를 들어, 아래 예제는 `-1`을 반환합니다.
+The index of the last occurrence of `searchString` found, or `-1` if not found.
+
+## Description
+
+Strings are zero-indexed: The index of a string's first character is `0`, and the index of a string's last character is the length of the string minus 1.
 
 ```js
-'Blue Whale, Killer Whale'.lastIndexOf('blue'); // -1 반환
+"canal".lastIndexOf("a"); // returns 3
+"canal".lastIndexOf("a", 2); // returns 1
+"canal".lastIndexOf("a", 0); // returns -1
+"canal".lastIndexOf("x"); // returns -1
+"canal".lastIndexOf("c", -5); // returns 0
+"canal".lastIndexOf("c", 0); // returns 0
+"canal".lastIndexOf(""); // returns 5
+"canal".lastIndexOf("", 2); // returns 2
 ```
 
-## 예제
+### Case-sensitivity
 
-### `indexOf()`와 `lastIndexOf()` 사용하기
-
-아래 예제는 문자열 `"Brave new world"` 내에서 특정 값의 위치를 확인하기 위해 {{jsxref("String.prototype.indexOf()", "indexOf()")}}와 `lastIndexOf()`를 사용합니다.
+The `lastIndexOf()` method is case sensitive. For example, the following
+expression returns `-1`:
 
 ```js
-let anyString = 'Brave new world';
-
-console.log('시작점으로부터 처음 만나는 w의 위치는 ' + anyString.indexOf('w'));
-// logs 8
-console.log('끝점으로부터 처음 만나는 w의 위치는 ' + anyString.lastIndexOf('w'));
-// logs 10
-console.log('시작점으로부터 처음 만나는 "new"의 위치는 ' + anyString.indexOf('new'));
-// logs 6
-console.log('끝점으로부터 처음 만나는 "new"의 위치는 ' + anyString.lastIndexOf('new'));
-// logs 6
+"Blue Whale, Killer Whale".lastIndexOf("blue"); // returns -1
 ```
 
-## 명세
+## Examples
+
+### Using indexOf() and lastIndexOf()
+
+The following example uses {{jsxref("String.prototype.indexOf()", "indexOf()")}} and
+`lastIndexOf()` to locate values in the string
+"`Brave, Brave New World`".
+
+```js
+const anyString = "Brave, Brave New World";
+
+console.log(anyString.indexOf("Brave")); // 0
+console.log(anyString.lastIndexOf("Brave")); // 7
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("String.prototype.charAt()")}}
 - {{jsxref("String.prototype.indexOf()")}}

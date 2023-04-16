@@ -1,75 +1,83 @@
 ---
 title: handler.has()
 slug: Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/has
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Proxy.handler.has
 ---
 
 {{JSRef}}
 
-**`handler.has()`** 메서드는 {{jsxref("Operators/in", "in")}} 연산자에 대한 트랩입니다.
+The **`handler.has()`** method is a trap for the `[[HasProperty]]` [object internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods), which is used by operations such as the {{jsxref("Operators/in", "in")}} operator.
 
 {{EmbedInteractiveExample("pages/js/proxyhandler-has.html", "taller")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 new Proxy(target, {
   has(target, prop) {
   }
 });
 ```
 
-### 매개 변수
+### Parameters
 
-다음 매개변수는 `has()` 메서드에 전달됩니다. `this`는 처리기에 바인딩됩니다.
+The following parameters are passed to `has()` method. `this` is
+bound to the handler.
 
 - `target`
-  - : 대상 객체
+  - : The target object.
 - `prop`
-  - : 존재 여부를 확인할 속성의 이름 또는 {{jsxref("Symbol")}}
+  - : The name or {{jsxref("Symbol")}} of the property to check for existence.
 
-### 반환 값
+### Return value
 
-`has()` 메서드는 불리언 값을 반환합니다.
+The `has()` method must return a boolean value.
 
-## 설명
+## Description
 
-**`handler.has()`** 메서드는 {{jsxref("Operators/in", "in")}} 연산자에 대한 트랩입니다.
+### Interceptions
 
-### 가로채기
+This trap can intercept these operations:
 
-이 트랩은 다음 작업을 가로챌 수 있습니다.
-
-- 속성 쿼리: `foo in proxy`
-- 상속된 속성 쿼리: `foo in Object.create(proxy)`
-- `with` 확인: `with(proxy) { (foo); }`
+- The [`in`](/en-US/docs/Web/JavaScript/Reference/Operators/in) operator: `foo in proxy`
+- [`with`](/en-US/docs/Web/JavaScript/Reference/Statements/with) check: `with(proxy) { (foo); }`
 - {{jsxref("Reflect.has()")}}
 
-### 불변 조건
+Or any other operation that invokes the `[[HasProperty]]` [internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods).
 
-다음 불변 조건이 위반되면 프록시에서 {{jsxref("TypeError")}}가 발생합니다.
+### Invariants
 
-- 속성이 대상 객체의 구성할 수 없는 자체 속성으로 존재하는 경우, 속성이 존재하지 않는 것으로 보고될 수 없습니다.
-- 속성이 대상 객체의 자체 속성으로 존재하고 대상 객체가 확장될 수 없는 경우, 속성이 존재하지 않는 것으로 보고될 수 없습니다.
+If the following invariants are violated, the trap throws a {{jsxref("TypeError")}} when invoked.
 
-## 예제
+- A property cannot be reported as non-existent, if it exists as a non-configurable
+  own property of the target object.
+- A property cannot be reported as non-existent, if it exists as an own property of
+  the target object and the target object is not extensible.
 
-### in 연산자 트랩
+## Examples
 
-다음 코드는 {{jsxref("Operators/in", "in")}} 연산자를 트랩합니다.
+### Trapping the in operator
+
+The following code traps the {{jsxref("Operators/in", "in")}} operator.
 
 ```js
-const p = new Proxy({}, {
-  has(target, prop) {
-    console.log(`called: ${prop}`);
-    return true;
+const p = new Proxy(
+  {},
+  {
+    has(target, prop) {
+      console.log(`called: ${prop}`);
+      return true;
+    },
   },
-});
+);
 
-console.log('a' in p); // "called: a"
-                       // true
+console.log("a" in p);
+// "called: a"
+// true
 ```
 
-다음 코드는 불변 조건을 위반합니다.
+The following code violates an invariant.
 
 ```js example-bad
 const obj = { a: 10 };
@@ -81,20 +89,20 @@ const p = new Proxy(obj, {
   },
 });
 
-'a' in p; // TypeError is thrown
+"a" in p; // TypeError is thrown
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Proxy")}}
-- [`Proxy()` 생성자](/ko/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy)
-- {{jsxref("Operators/in", "in")}} 연산자
+- [`Proxy()` constructor](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy)
+- {{jsxref("Operators/in", "in")}} operator
 - {{jsxref("Reflect.has()")}}

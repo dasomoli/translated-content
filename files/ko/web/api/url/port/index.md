@@ -1,40 +1,39 @@
 ---
-title: URL.port
+title: "URL: port property"
+short-title: port
 slug: Web/API/URL/port
+page-type: web-api-instance-property
+browser-compat: api.URL.port
 ---
 
 {{ApiRef("URL API")}}
 
-{{domxref("URL")}} 인터페이스의 **`port`** 속성은 URL의 포트 숫자를 담은 {{domxref("USVString")}}입니다. URL이 명시적인 포트 번호를 포함하고 있지 않으면 빈 문자열(`''`)입니다.
+The **`port`** property of the {{domxref("URL")}} interface is
+a string containing the port number of the URL.
+
+> **Note:** If an input string passed to the [`URL()`](/en-US/docs/Web/API/URL/URL) constructor doesn't contain an explicit port number (e.g., `https://localhost`) or contains a port number that's the default port number corresponding to the protocol part of the input string (e.g., `https://localhost:443`), then in the [`URL`](/en-US/docs/Web/API/URL) object the constructor returns, the value of the port property will be the empty string: `''`.
 
 {{AvailableInWorkers}}
 
-## 구문
+## Value
+
+A string.
+
+## Examples
 
 ```js
-const portNumber = url.port
-url.port = newPortNumber
-```
-
-### 값
-
-A {{domxref("USVString")}}.
-
-## 예제
-
-```js
-const url = new URL('https://mydomain.com:80/svn/Repos/');
+const url = new URL("https://example.com:80/svn/Repos/");
 console.log(url.port); // Logs '80'
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 속성이 속한 {{domxref("URL")}} 인터페이스.
+- The {{domxref("URL")}} interface it belongs to.

@@ -1,63 +1,63 @@
 ---
 title: pageAction.show()
 slug: Mozilla/Add-ons/WebExtensions/API/pageAction/show
+page-type: webextension-api-function
+browser-compat: webextensions.api.pageAction.show
 ---
 
 {{AddonSidebar()}}
 
-지정한 탭의 페이지 액션을 보인다. 페이지 액션은 해당 탭이 활성일 때 표시된다.
+Shows the {{WebExtAPIRef("pageAction")}} for a given {{WebExtAPIRef("tabs/Tab", "tab")}}. The page action is shown whenever the given tab is the active tab.
 
-`show()`는 설정된 URL 패턴과 상관없이 동작한다. 따라서 [`show_matches`](/Add-ons/WebExtensions/manifest.json/page_action)와 일치하지 않아도 [`hide_matches`](/Add-ons/WebExtensions/manifest.json/page_action)여도 표시된다.
+`show()` overrides pattern matching, so the page action will be shown in the specified tab even if [`show_matches`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/page_action) does not match the URL or [`hide_matches`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/page_action) does.
 
-`show()`는 아무런 내용도 없는 탭에는 효과가 없다.
+Note that calling `show()` has no effect on a tab with no content loaded.
 
-## 문법
+## Syntax
 
-```js
+```js-nolint
 browser.pageAction.show(
   tabId // integer
 )
 ```
 
-### 매개변수
+### Parameters
 
-- `details`
+- `tabId`
+  - : `integer`. The ID of the {{WebExtAPIRef("tabs/Tab", "tab")}} for which you want to show the page action.
 
-  - : `object`. An object containing the `tabId` to check.
+### Return value
 
-    - `tabId`
-      - : `integer`. ID of the tab to check.
+A [`Promise`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) that will be fulfilled with `undefined`.
 
-### 반환 값
-
-A [`Promise`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) that will be fulfilled with `true` if the extension's page action is being shown for the given tab, and `false` otherwise.
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 예제
+## Examples
 
-콘텍스트 메뉴가 선택되면 페이지 액션을 보이는 예제다. 메뉴를 만들려면 `contextMenus` [권한](/ko/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions)이 [manifest](/ko/docs/Mozilla/Add-ons/WebExtensions/manifest.json)에 필요하다.
+This example shows the {{WebExtAPIRef("pageAction")}} for the active tab when the user selects a context menu item.
+
+> **Note:** You'll need the `contextMenus` [permission](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions) in your [manifest](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json) to create context menu items.
 
 ```js
 browser.contextMenus.create({
   id: "show",
   title: "Show page action"
-});
+})
 
-browser.contextMenus.onClicked.addListener(function(info, tab) {
-  if (info.menuItemId == "show") {
-    browser.pageAction.show(tab.id);
+browser.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === "show") {
+    browser.pageAction.show(tab.id)
   }
-});
+})
 ```
 
 {{WebExtExamples}}
 
-> **참고:** **Acknowledgements**This API is based on Chromium's [`chrome.pageAction`](https://developer.chrome.com/extensions/pageAction#method-show) API. This documentation is derived from [`page_action.json`](https://chromium.googlesource.com/chromium/src/+/master/chrome/common/extensions/api/page_action.json) in the Chromium code.Microsoft Edge compatibility data is supplied by Microsoft Corporation and is included here under the Creative Commons Attribution 3.0 United States License.
+> **Note:** This API is based on Chromium's [`chrome.pageAction`](https://developer.chrome.com/docs/extensions/reference/pageAction/#method-show) API. This documentation is derived from [`page_action.json`](https://chromium.googlesource.com/chromium/src/+/master/chrome/common/extensions/api/page_action.json) in the Chromium code.
 
-```
+<!--
 // Copyright 2015 The Chromium Authors. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -85,4 +85,4 @@ browser.contextMenus.onClicked.addListener(function(info, tab) {
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-```
+-->

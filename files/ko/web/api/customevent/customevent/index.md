@@ -1,64 +1,72 @@
 ---
-title: CustomEvent()
+title: "CustomEvent: CustomEvent() constructor"
+short-title: CustomEvent()
 slug: Web/API/CustomEvent/CustomEvent
+page-type: web-api-constructor
+browser-compat: api.CustomEvent.CustomEvent
 ---
 
 {{APIRef("DOM")}}
 
-**`CustomEvent()`** 생성자는 새로운 {{domxref("CustomEvent")}}를 생성합니다.
+The **`CustomEvent()`** constructor creates a new {{domxref("CustomEvent")}} object.
 
-## 구문
+## Syntax
 
-```js
-CustomEvent(typeArg);
-CustomEvent(typeArg, options);
+```js-nolint
+new CustomEvent(type)
+new CustomEvent(type, options)
 ```
 
-### 매개변수
+### Parameters
 
-- `typeArg`
-  - : 이벤트의 이름을 나타내는 문자열입니다.
+- `type`
+  - : A string providing the name of the event. Event names are case-sensitive.
 - `options` {{optional_inline}}
-  - : 다음 속성을 포함하는 객체입니다.
-    - `"detail"`: 이 이벤트 내에 포함할, 이벤트의 세부 정보를 나타내는 값입니다. 기본 값은 `null`입니다. 처리기에서 {{domxref("CustomEvent.detail")}} 속성을 통해 이 값에 접근할 수 있습니다.
-    - {{domxref("Event.Event", "Event()")}} 생성자의 옵션에 지정할 수 있는 모든 속성.
+  - : An object that, _in addition of the properties defined in {{domxref("Event/Event", "Event()")}}_, can have the following properties:
+    - `detail` {{optional_inline}}
+      - : An event-dependent value associated with the event. This value is then available to the handler using the {{domxref("CustomEvent.detail")}} property.
+        It defaults to `null`.
 
-## 예제
+### Return value
+
+A new {{domxref("CustomEvent")}} object.
+
+## Example
 
 ```js
-// CustomEvent 생성
-const catFound = new CustomEvent('animalfound', {
+// create custom events
+const catFound = new CustomEvent("animalfound", {
   detail: {
-    name: 'cat'
-  }
+    name: "cat",
+  },
 });
-const dogFound = new CustomEvent('animalfound', {
+const dogFound = new CustomEvent("animalfound", {
   detail: {
-    name: 'dog'
-  }
+    name: "dog",
+  },
 });
 
-// 적합한 이벤트 수신기 부착
-obj.addEventListener('animalfound', (e) => console.log(e.detail.name));
+// add an appropriate event listener
+obj.addEventListener("animalfound", (e) => console.log(e.detail.name));
 
-// 이벤트 발송
+// dispatch the events
 obj.dispatchEvent(catFound);
 obj.dispatchEvent(dogFound);
 
-// 콘솔에 "cat"과 "dog"가 기록됨
+// "cat" and "dog" logged in the console
 ```
 
-[이벤트 생성 및 발동](/ko/docs/Web/Events/Creating_and_triggering_events) 문서에서 더 많은 예제를 확인하세요.
+Additional examples can be found at [Creating and triggering events](/en-US/docs/Web/Events/Creating_and_triggering_events).
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 보기
+## See also
 
 - {{domxref("CustomEvent")}}
-- [이벤트 생성 및 발동](/ko/docs/Web/Events/Creating_and_triggering_events)
+- [Creating and triggering events](/en-US/docs/Web/Events/Creating_and_triggering_events)

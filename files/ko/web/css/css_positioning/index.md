@@ -1,30 +1,40 @@
 ---
-title: CSS Positioning
+title: CSS Positioned Layout
 slug: Web/CSS/CSS_Positioning
+page-type: css-module
+spec-urls: https://drafts.csswg.org/css-position/
 ---
 
 {{CSSRef}}
 
-**CSS Positioning**은 요소를 페이지에 배치하는 방법을 정의하는 CSS 모듈입니다.
+**CSS Positioned Layout** is a module of CSS that defines how to position elements on the page.
 
-## 참고서
+## Reference
 
-### CSS 속성
+### Properties
 
-- {{cssxref("bottom")}}
-- {{cssxref("clear")}}
-- {{cssxref("float")}}
-- {{cssxref("left")}}
-- {{cssxref("position")}}
-- {{cssxref("right")}}
 - {{cssxref("top")}}
+- {{cssxref("right")}}
+- {{cssxref("bottom")}}
+- {{cssxref("left")}}
+- {{cssxref("inset")}}
+- {{cssxref("inset-inline")}}
+- {{cssxref("inset-inline-start")}}
+- {{cssxref("inset-inline-end")}}
+- {{cssxref("inset-block")}}
+- {{cssxref("inset-block-start")}}
+- {{cssxref("inset-block-end")}}
+- {{cssxref("float")}}
+- {{cssxref("clear")}}
+- {{cssxref("position")}}
 - {{cssxref("z-index")}}
+- {{cssxref("transform")}}
 
-## 안내서
+## Guides
 
-- [CSS z-index 이해하기](/ko/docs/Web/CSS/CSS_Positioning/Understanding_z_index)
-  - : 쌓임 문맥의 개념을 소개하고 몇 가지 예와 함께 z축 순서의 동작을 설명합니다.
+- [Understanding CSS z-index](/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index)
+  - : Presents the notion of stacking context and explains how z-ordering works, with several examples.
 
-## 명세
+## Specifications
 
 {{Specifications}}

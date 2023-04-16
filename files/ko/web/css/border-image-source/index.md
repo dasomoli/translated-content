@@ -1,53 +1,73 @@
 ---
 title: border-image-source
 slug: Web/CSS/border-image-source
+page-type: css-property
+browser-compat: css.properties.border-image-source
 ---
 
 {{CSSRef}}
 
-**`border-image-source`** [CSS](/ko/docs/Web/CSS) 속성은 요소의 [테두리 이미지](/ko/docs/Web/CSS/border-image)로 사용할 원본 이미지를 지정합니다.
+The **`border-image-source`** [CSS](/en-US/docs/Web/CSS) property sets the source image used to create an element's [border image](/en-US/docs/Web/CSS/border-image).
 
 {{EmbedInteractiveExample("pages/css/border-image-source.html")}}
 
-{{cssxref("border-image-slice")}} 속성으로 나뉜 구역을 사용해 최종 테두리 이미지를 생성합니다.
+The {{cssxref("border-image-slice")}} property is used to divide the source image into regions, which are then dynamically applied to the final border image.
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword value */
 border-image-source: none;
 
-/* <image> 값 */
+/* <image> values */
 border-image-source: url(image.jpg);
 border-image-source: linear-gradient(to top, red, yellow);
 
-/* 전역 값 */
+/* Global values */
 border-image-source: inherit;
 border-image-source: initial;
+border-image-source: revert;
+border-image-source: revert-layer;
 border-image-source: unset;
 ```
 
-### 값
+### Values
 
 - `none`
-  - : 테두리 이미지를 사용하지 않습니다. {{cssxref("border-style")}}이 대신 표시됩니다.
+  - : No border image is used. The appearance defined by {{cssxref("border-style")}} is displayed instead.
 - {{cssxref("&lt;image&gt;")}}
-  - : 테두리에 사용할 이미지 참조입니다.
+  - : Image reference to use for the border.
 
-### 형식 구문
+## Formal definition
+
+{{CSSInfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-{{cssxref("border-image")}}에서 확인할 수 있습니다.
+### Basic example
 
-## 명세
+```css
+.box {
+  border-image-source: url("image.png");
+}
+```
+
+## Specifications
 
 {{Specifications}}
 
-{{cssinfo}}
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- {{cssxref("border")}}
+- {{cssxref("outline")}}
+- {{cssxref("box-shadow")}}
+- {{cssxref("background-image")}}
+- {{cssxref("url", "url()")}} function

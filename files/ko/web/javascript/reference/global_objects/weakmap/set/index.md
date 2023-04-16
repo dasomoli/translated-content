@@ -1,55 +1,68 @@
 ---
 title: WeakMap.prototype.set()
 slug: Web/JavaScript/Reference/Global_Objects/WeakMap/set
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.WeakMap.set
 ---
 
 {{JSRef}}
 
-**`set()`** 메서드는 지정된 키와 값을 가진 새 요소를 `WeakMap` 객체에 추가합니다.
+The **`set()`** method adds a new element with a specified key
+and value to a `WeakMap` object.
 
 {{EmbedInteractiveExample("pages/js/weakmap-prototype-set.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 set(key, value)
 ```
 
-### 매개변수
+### Parameters
 
 - `key`
-  - : 필수로 요구되며, 반드시 `object`여야 합니다. `WeakMap` 객체에 추가할 요소의 키입니다.
+  - : Must be either an object or a [non-registered symbol](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol#shared_symbols_in_the_global_symbol_registry). The key of the entry to add to the `WeakMap` object.
 - `value`
-  - : 필수로 요구되며, 임의의 값입니다. `WeakMap` 객체에 추가할 요소의 값입니다.
+  - : Any value representing the value of the entry to add to the `WeakMap` object.
 
-### 반환 값
+### Return value
 
-`WeakMap` 객체입니다.
+The `WeakMap` object.
 
-## 예제
+### Exceptions
 
-### set() 메서드 사용하기
+- {{jsxref("TypeError")}}
+  - : Thrown if `key` is not an object or a [non-registered symbol](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol#shared_symbols_in_the_global_symbol_registry).
+
+## Examples
+
+### Using the set() method
 
 ```js
 const wm = new WeakMap();
 const obj = {};
 
-// WeakMap에 새 요소를 추가합니다
-wm.set(obj, 'foo').set(window, 'bar'); // 체인가능
+// Add new elements to the WeakMap
+wm.set(obj, "foo").set(window, "bar"); // chainable
 
-// WeakMap 요소 업데이트
-wm.set(obj, 'baz');
+// Update an element in the WeakMap
+wm.set(obj, "baz");
+
+// Using a non-registered symbol as key
+const sym = Symbol("foo");
+wm.set(sym, "baz");
+wm.set(Symbol.iterator, "qux");
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이보기
+## See also
 
 - {{jsxref("WeakMap")}}
 - {{jsxref("WeakMap.prototype.get()")}}

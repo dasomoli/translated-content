@@ -1,80 +1,97 @@
 ---
-title: <s>
+title: "<s>: The Strikethrough element"
 slug: Web/HTML/Element/s
+page-type: html-element
+browser-compat: html.elements.s
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<s>` 요소**는 글자에 취소선, 즉 글자를 가로지르는 선을 그립니다. `<s>` 요소를 사용해 이제 관계 없거나 더 이상 정확하지 않은 부분을 나타내세요. 그러나, `<s>`는 문서의 편집 기록을 나타내는 용도로는 적합하지 않습니다. 상황에 따라 {{HTMLElement("del")}}과 {{HTMLElement("ins")}} 요소를 대신 사용하세요.
+The **`<s>`** [HTML](/en-US/docs/Web/HTML) element renders text with a strikethrough, or a line through it. Use the `<s>` element to represent things that are no longer relevant or no longer accurate. However, `<s>` is not appropriate when indicating document edits; for that, use the {{HTMLElement("del")}} and {{HTMLElement("ins")}} elements, as appropriate.
 
 {{EmbedInteractiveExample("pages/tabbed/s.html", "tabbed-shorter")}}
-
-<div class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</div>
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a
-          href="/ko/docs/Web/Guide/HTML/%EC%BB%A8%ED%85%90%ED%8A%B8_%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC"
-          >콘텐츠 카테고리</a
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
         >
       </th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#플로우_콘텐츠"
-          >플로우 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >Phrasing content</a
         >,
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#구문_콘텐츠"
-          >구문 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >flow content</a
         >.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#구문_콘텐츠"
-          >구문 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >Phrasing content</a
         >.
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
+      <th scope="row">Tag omission</th>
       <td>{{no_tag_omission}}</td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Permitted parents</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >를 허용하는 모든 요소.
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>모두</td>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
+          >No corresponding role</a
+        >
+      </td>
     </tr>
     <tr>
-      <th scope="row">DOM 요소</th>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>Any</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
+## Attributes
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)만 포함합니다.
+This element only includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-## 예제
+## Examples
 
-```html
-<s>Today's Special: Salmon</s> SOLD OUT<br>
+```css
+.sold-out {
+  text-decoration: line-through;
+}
 ```
 
-{{EmbedLiveSample("예제")}}
+```html
+<s>Today's Special: Salmon</s> SOLD OUT<br />
+<span class="sold-out">Today's Special: Salmon</span> SOLD OUT
+```
 
-## 접근성 고려사항
+### Result
 
-대부분의 스크린 리더는 기본값에서 `<s>` 요소의 존재를 표현하지 않습니다. 그러나 CSS {{cssxref("content")}} 속성과 {{cssxref("::before")}}, {{cssxref("::after")}} 의사 요소를 사용하면 소리내어 읽도록 할 수 있습니다.
+{{EmbedLiveSample("Examples")}}
+
+## Accessibility concerns
+
+The presence of the `s` element is not announced by most screen reading technology in its default configuration. It can be made to be announced by using the CSS {{cssxref("content")}} property, along with the {{cssxref("::before")}} and {{cssxref("::after")}} pseudo-elements.
 
 ```css
 s::before,
@@ -89,28 +106,29 @@ s::after {
 }
 
 s::before {
-  content: " [취소선 시작] ";
+  content: " [start of stricken text] ";
 }
 
 s::after {
-  content: " [취소선 끝] ";
+  content: " [end of stricken text] ";
 }
 ```
 
-스크린 리더 사용자 일부는 지나치게 자세한 안내를 유발할 수 있는 콘텐츠의 표현을 의도적으로 꺼놓습니다. 그러므로 이 방식을 남용해선 안되며, 콘텐츠의 이해에 취소선의 유무가 꼭 필요할 때만 사용해야 합니다.
+Some people who use screen readers deliberately disable announcing content that creates extra verbosity. Because of this, it is important to not abuse this technique and only apply it in situations where not knowing content has been struck out would adversely affect understanding.
 
-- [Short note on making your mark (more accessible) | The Paciello Group](https://developer.paciellogroup.com/blog/2017/12/short-note-on-making-your-mark-more-accessible/)
-- [Tweaking Text Level Styles | Adrian Roselli](http://adrianroselli.com/2017/12/tweaking-text-level-styles.html)
+- [Short note on making your mark (more accessible) | The Paciello Group](https://www.tpgi.com/short-note-on-making-your-mark-more-accessible/)
+- [Tweaking Text Level Styles | Adrian Roselli](https://adrianroselli.com/2017/12/tweaking-text-level-styles.html)
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 자료가 **삭제**된 경우 사용하는 {{HTMLElement("del")}} 요소.
-- `<s>` 요소의 시각적 요소를 재현할 수 있는 CSS {{cssxref("text-decoration-line")}} 속성.
+- The {{HTMLElement("strike")}} element, alter ego of the {{HTMLElement("s")}} element is obsolete and should not be used on websites anymore.
+- The {{HTMLElement("del")}} element is to be used instead if the data has been _deleted_.
+- The CSS {{cssxref("text-decoration-line")}} property is to be used to achieve the former visual aspect of the {{HTMLElement("s")}} element.

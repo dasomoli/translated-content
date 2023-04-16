@@ -1,35 +1,53 @@
 ---
-title: 모든 코드에 대한 일반 가이드라인
+title: Guidelines for styling code examples
 slug: MDN/Writing_guidelines/Writing_style_guide/Code_style_guide
-original_slug: MDN/Guidelines/Code_guidelines/General
+page-type: mdn-writing-guide
 ---
 
 {{MDNSidebar}}
 
-아래 코드 예제 가이드라인에서 HTML, CSS, JavaScript 나 다른 어느 코드로 예로 들건 , 모든 코드 타입에 적용됩니다.
+The guidelines described in this article apply to the styling and formatting of code examples, irrespective of the language. For guidelines about what content to include while writing the code examples, see the [writing style guide](/en-US/docs/MDN/Writing_guidelines/writing_style_guide#code_examples).
 
-## 이 문서 내용은
+For technology-specific guidelines, see the following articles:
 
-- [들여쓰기, 여백주기, 사이즈](/ko/docs/MDN/Contribute/Guidelines/Code_guidelines/General#들여쓰기_여백주기_사이즈)
+- [HTML guidelines](/en-US/docs/MDN/Writing_guidelines/Writing_style_guide/Code_style_guide/HTML)
+- [CSS guidelines](/en-US/docs/MDN/Writing_guidelines/Writing_style_guide/Code_style_guide/CSS)
+- [JavaScript guidelines](/en-US/docs/MDN/Writing_guidelines/Writing_style_guide/Code_style_guide/JavaScript)
+- [Shell prompt guidelines](/en-US/docs/MDN/Writing_guidelines/Writing_style_guide/Code_style_guide/Shell)
 
-  - [들여쓰기](/ko/docs/MDN/Contribute/Guidelines/Code_guidelines/General#들여쓰기)
-  - [코드 한 줄 길이](/ko/docs/MDN/Contribute/Guidelines/Code_guidelines/General#코드_한_줄_길이)
-  - [코드 블럭 높이](/ko/docs/MDN/Contribute/Guidelines/Code_guidelines/General#코드_블럭_높이)
+## General best practices
 
-- [예제 디스플레이 가이드라인](/ko/docs/MDN/Contribute/Guidelines/Code_guidelines/General#예제_디스플레이_가이드라인)
+This section provides the best practices for creating an understandable minimal code example to demonstrate the usage of a specific feature or function.
 
-  - [렌더링 된 예제 크기](/ko/docs/MDN/Contribute/Guidelines/Code_guidelines/General#렌더링_된_예제_크기)
-  - [이미지나 다른 미디어의 사용](/ko/docs/MDN/Contribute/Guidelines/Code_guidelines/General#이미지나_다른_미디어의_사용)
-  - [컬러의 사용](/ko/docs/MDN/Contribute/Guidelines/Code_guidelines/General#컬러의_사용)
-  - [좋은 예시와 나쁜 예시 강조](/ko/docs/MDN/Contribute/Guidelines/Code_guidelines/General#좋은_예시와_나쁜_예시_강조)
+Code examples that you add to MDN Web Docs should be:
 
-- [레퍼런스 페이지에 문법 섹션 작성](/ko/docs/MDN/Contribute/Guidelines/Code_guidelines/General#레퍼런스_페이지에서_문법_섹션_작성)
+- simple enough to be understandable, but
+- complex enough to do something interesting, and preferably useful.
 
-## 들여쓰기, 여백주기, 사이즈
+There is one overarching consideration that you need to keep in mind: **Readers will copy and paste the code sample into their own code and may put it into production.**
 
-### 들여쓰기
+Therefore, you should make sure that the code example is usable, follows generally accepted best practices, and **does not** do anything that will cause an application to be insecure, grossly inefficient, bloated, or inaccessible. If the code example is not runnable or production-worthy, be sure to include a warning in a code comment and in the explanatory text; for example, if it is only a snippet and not a full example, make this clear. This also means that you should provide **all** of the information necessary to run the example including any dependencies and setup information.
 
-모든 코드는 2 스페이스로 들여쓰기 해야합니다. 예를 들면:
+Code examples should be as self-contained and easy to understand as possible. The aim is not necessarily to produce efficient, clever code that impresses experts and has great functionality, but rather to produce reduced working examples that can be understood as quickly as possible.
+
+Some more general best practices include:
+
+- The code example should be short and ideally show only the feature you are immediately interested in.
+- **Only** include code that is essential for the example. A large amount of non-relevant code can easily distract or confuse the reader. If you want to provide a full, more lengthy example, put it in one of our [GitHub repos](https://github.com/mdn/) (or a JSBin, Codepen, or similar) and then provide the link to the full version above or below the sample.
+- Don't include unnecessary server-side code, libraries, frameworks, preprocessors, and other such dependencies. They make the code less portable and harder to run and understand. Use vanilla code where possible.
+- Don't assume readers' knowledge of any libraries, frameworks, preprocessors, or other non-native features. For example, use class names that make sense within the example rather than class names that make sense to BEM or Bootstrap users.
+- Write your code to be as clean and understandable as possible, even if it is not the most efficient way to write it.
+- Don't use bad practices for brevity (such as presentation elements like {{HTMLElement("big")}} or {{domxref("Document.write", "document.write()")}}); do it correctly.
+- In the case of API demos, if you are using multiple APIs together, point out which APIs are included and which features come from where.
+
+## Guidelines for formatting
+
+These guidelines for formatting code examples for MDN Web Docs are also good practices when you are coding.
+
+### Indentation
+
+- Use two spaces per tab for indentation in all code examples.
+- Place the open-brace ("`{`") characters on the same line as the statement that opens the block.
 
 ```html example-good
 <div>
@@ -39,127 +57,155 @@ original_slug: MDN/Guidelines/Code_guidelines/General
 
 ```js example-good
 function myFunc() {
-  if(thingy) {
-    console.log('Yup, that worked.');
+  if (thingy) {
+    console.log("Yup, that worked.");
   }
 }
 ```
 
-### 코드 한 줄 길이
+### Spacing
 
-한 행의 코드는 최대 80자 ([대화형 예제](https://github.com/mdn/interactive-examples)는 64자) 이내로 제한 되어야 합니다. 가독성을 위해 합리적으로 행을 분리 하는 것 좋지만 모범 사례를 벗어나지는 마십시오.
-
-예를 들면, 아래는 안 좋은 예입니다.
-
-```js example-bad
-let tommyCat = 'Said Tommy the Cat as he reeled back to clear whatever foreign matter may have nestled its way into his mighty throat. Many a fat alley rat had met its demise while staring point blank down the cavernous barrel of this awesome prowling machine.';
-```
-
-이것은 좀 낫지만, 그래도 여전히 좋지 않습니다:
-
-```js
-let tommyCat = 'Said Tommy the Cat as he reeled back to clear whatever foreign '
-+ 'matter may have nestled its way into his mighty throat. Many a fat alley rat '
-+ 'had met its demise while staring point blank down the cavernous barrel of '
-+ 'this awesome prowling machine.';
-```
-
-템플릿 리터럴을 사용하는 것이 더 좋습니다:
+Add a space between a control statement or loop keyword and its opening parenthesis.
 
 ```js example-good
-let tommyCat = `Said Tommy the Cat as he reeled back to clear whatever foreign
+if (condition) {
+  /* handle the condition */
+} else {
+  /* handle the "else" case */
+}
+```
+
+### Code line length
+
+- Code lines shouldn't be so long that they require horizontal scrolling to read.
+- As a recommended practice, keep code lines up to a maximum of 80 characters long (64 for [interactive examples](https://github.com/mdn/interactive-examples)).
+- Break long lines at natural breaking points for the sake of readability, but not at the expense of best practices.
+
+For example, this is not great:
+
+```js example-bad
+let tommyCat =
+  "Said Tommy the Cat as he reeled back to clear whatever foreign matter may have nestled its way into his mighty throat. Many a fat alley rat had met its demise while staring point blank down the cavernous barrel of this awesome prowling machine.";
+```
+
+This is better, but somewhat awkward:
+
+```js
+const tommyCat =
+  "Said Tommy the Cat as he reeled back to clear whatever foreign " +
+  "matter may have nestled its way into his mighty throat. Many a fat alley rat " +
+  "had met its demise while staring point blank down the cavernous barrel of " +
+  "this awesome prowling machine.";
+```
+
+Even better is to use a template literal:
+
+```js example-good
+const tommyCat = `Said Tommy the Cat as he reeled back to clear whatever foreign
   matter may have nestled its way into his mighty throat. Many a fat alley rat
   had met its demise while staring point blank down the cavernous barrel of
   this awesome prowling machine.`;
 ```
 
-### 코드 블럭 높이
+```js example-good
+if (
+  obj.CONDITION ||
+  obj.OTHER_CONDITION ||
+  obj.SOME_OTHER_CONDITION ||
+  obj.YET_ANOTHER_CONDITION
+) {
+  /* something */
+}
 
-코드 블럭은 필요한 만큼 길어야 하지만 너무 길면 안됩니다. 15에서 25 라인 정도의 길이가 이상적입니다. 코드 블럭이 너무 길어진다면, 가장 유용한 스니펫만 보여주고, 나머지 부분은 깃허브 저장소나 코드펜 같은 링크로 연결하세요.
-
-## 예제 디스플레이 가이드라인
-
-### 렌더링 된 예제 크기
-
-MDN 메인 콘텐츠 창은 데스크탑에서 약 700px 크기 이므로, 삽입된 MDN 예제는 ( 삽입된 예제를 100% 너비로 설정했을 때 ) 해당 너비에서 잘 보여야 합니다.
-
-높이의 경우, 최대한의 화면 가독성을 위해 가능하면 렌더링 된 예제 높이를 700px 아래로 유지하는 것을 추천합니다.
-
-모바일 디바이스에서도 예제가 잘 보이도록 어느 정도는 반응형으로 동작되도록 예제를 작성하는데 신경써야 합니다.
-
-### 이미지나 다른 미디어의 사용
-
-가끔 이미지나 다른 미디어를 예제에 삽입하고 싶을 때가 있습니다. 그럴 때에는:
-
-- 해당 미디어의 라이센스가 사용을 허용하는지 확인하세요. [CC0](https://creativecommons.org/share-your-work/public-domain/cc0/)와 같은 매우 관대한 라이브러리나, 적어도 일반적인 콘텐츠 라이센스인 [Creative Commons Attribution-ShareAlike license](http://creativecommons.org/licenses/by-sa/2.5/) (CC-BY-SA) 중 하나를 사용하도록 해야합니다.
-- 이미지에 대해서는, <https://tinypng.com> 나 <https://imageoptim.com> 를 사용해 예제의 페이지 무게를 줄여야 합니다.
-- `SVG`에 대해서는, [SVGOMG](https://jakearchibald.github.io/svgomg/)를 통해 `SVG` 파일이 파일 마지막에 빈 줄을 갖도록 해야합니다.
-- 페이지에서 아이콘을 보여줄 때 (즉 {{cssxref("background-image")}} 를 이용할 때), 적당한 곳에 [빌트인 MDN 아이콘](https://mdn.github.io/mdn-fiori/patterns/css/iconography/)을 사용하고, 다른 경우와 비교하여 스타일을 맞추도록 하십시오.
-
-### 컬러의 사용
-
-소문자 16진수 대신, 음영이나 주요 컬러(즉, 검은색, 흰색, 빨간색)는 키워드를 사용할 수있습니다. 필요한 경우에만 좀 더 복잡한 컬러스킴을 사용하세요.( 예를 들면, 투명색이 필요할 때)
-
-주요 "기본" 컬러는 키워드로 설정하는것이 좋습니다. 예를 들면:
-
-```css example-good
-color: black;
-color: white;
-color: red;
+const toolkitProfileService = Components.classes[
+  "@mozilla.org/toolkit/profile-service;1"
+].createInstance(Components.interfaces.nsIToolkitProfileService);
 ```
 
-좀 더 복잡한 컬러는 rgb() 를 사용합니다. (반 투명 색 포함):
+### Code block height
 
-```css example-good
-color: rgb(0, 0, 0, 0.5);
-color: rgb(248, 242, 230);
+Code blocks should be as long as they need to be, but no longer. Ideally, aim for something short like 15-25 lines. If a code block is going to be a lot longer, consider just showing the most useful snippet, and link to the full example on a GitHub repo or codepen, say. <!--is this the current recommendation?-->
+
+#### Inline code formatting
+
+Use the {{HTMLElement("code")}} tags to mark up function names, variable names, and method names.
+For example: "the `frenchText()` function".
+
+**Method names should be followed by a pair of parentheses.** For example, `doSomethingUseful()`.
+The parentheses help differentiate methods from other code terms.
+
+## Guidelines for proper rendering
+
+These guidelines should be followed to ensure that the code examples you write display properly on MDN Web Docs. You should also consider responsiveness making writing code examples so that they are also useful on mobile devices.
+
+### Size of the rendered code example
+
+- **Set the width to 100%**: The main content pane on MDN Web Docs is about 700px wide on desktop, so the embedded code examples must look OK at that width.
+- **Set height below 700px**: We recommend keeping this height for the rendered code example width for maximum onscreen legibility.
+
+### Color in the rendered code example
+
+- Use keywords for primary and other "basic" colors, for example:
+
+  ```css example-good
+  color: black;
+  color: white;
+  color: red;
+  ```
+
+- Use `rgb()` for more complex colors (including semi-transparent ones):
+
+  ```css example-good
+  color: rgb(0, 0, 0, 0.5);
+  color: rgb(248, 242, 230);
+  ```
+
+- If you have to use hex colors, then use lower-case:
+
+  ```css example-good
+  color: #058ed9;
+  color: #a39a92;
+  ```
+
+- Use the short form where relevant:
+
+  ```css example-good
+  color: #ff0;
+  color: #fff;
+  ```
+
+### Mark rendered examples as good or bad
+
+You'll notice on this page that the code blocks that represent good practices to follow are rendered with a green check mark in the right corner, and the code blocks that demonstrate bad practices are rendered with white cross in red circle.
+
+You can follow the same style while writing code examples. You don't need to use this style everywhere — only on pages where you want to specifically call out good and bad practices in your code examples.
+
+To get this rendering, use "code fences" to demarcate the code block, followed by the language info string. For example:
+
+```js
+function myFunc() {
+  console.log("Hello!");
+}
 ```
 
-16진수 컬러를 사용해야 한다면, 소문자를 이용하세요:
+To represent the code block as a good or bad example, add `example-good` or `example-bad` after the language string, like so:
 
-```css example-good
-color: #058ed9;
-color: #a39a92;
+````md
+```html example-good
+<p class="brush: js example-good"></p>
 ```
 
-그리고 가능한 곳에는 단축형태를 사용하세요:
+```html example-bad
+<p class="brush: js example-bad"></p>
+```
+````
 
-```css example-good
-color: #ff0;
-color: #fff;
+These will be rendered as:
+
+```html example-good
+<p class="brush: js example-good"></p>
 ```
 
-[MDN's Fiori 가이드라인](https://mdn-fiori.netlify.app/)(프론트엔드 코드베이스용)은 전체 MDN 디자인에 사용된 [유용한 컬러셋](https://mdn-fiori.netlify.app/?path=/docs/docs-colors--page)을 포함하고 있습니다. ( 역자주: 영어 원문 링크가 깨져 [MDN Fiori 깃허브 리포](https://github.com/mdn/mdn-fiori) 에서 비슷한 링크를 찾아 연결했습니다.)
-
-### 좋은 예시와 나쁜 예시 강조
-
-이 가이드라인에서 알 수 있는 것처럼, 좋은 실습예시는 연두색에 웃는얼굴로 강조되며, 나쁜 실습 예시는 슬픈표정에 빨간 바탕으로 강조됩니다.
-
-이 처럼 하려면, MDN 에디터 콘트롤로 코드 블럭을 `<pre>` 블럭이 되도록 하고, 적절한 문법 강조를 설정해야 합니다. 소스 코드는 아래와 비슷하게 보일겁니다:
-
-```html
-    <pre class="brush: js">
-    function myFunc() {
-      console.log('Hello!');
-    };</pre>
+```html example-bad
+<p class="brush: js example-bad"></p>
 ```
-
-이 상태에서 좋은 예시로 만들려면, `class` 속성의 오른쪽 따옴표 바로 앞에 `example-good`을 넣으면 됩니다:
-
-```html
-    <pre class="brush: js example-good">
-      ...
-```
-
-나쁜 예시로 만들려면, `class` 속성의 오른쪽 따옴표 바로 앞에 `example-bad`를 넣으면 됩니다:
-
-```html
-    <pre class="brush: js example-bad">
-      ...
-```
-
-우리는 당신이 이 기능을 사용하길 권장합니다. 모든 곳에 사용할 필요는 없습니다. 당신의 코드에서 좋은 예와 나쁜 예를 구분할 필요가 있을때 사용하세요.
-
-## 레퍼런스 페이지에서 문법 섹션 작성
-
-MDN 레퍼런스 페이지에는 JavaScript 메서드, CSS 속성, HTML 요소 등과 같이 기능의 구문이 무엇을 할 수 있고, 어때야 하는지 명확하게 보여주는 문법 섹션(Syntax section)이 포함되어 있습니다. 이 내용을 작성하는 가이드라인은 [Syntax sections](/ko/docs/MDN/Contribute/Structures/Syntax_sections) 문서를 참고하세요.

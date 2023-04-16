@@ -1,88 +1,98 @@
 ---
 title: handler.ownKeys()
 slug: Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/ownKeys
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Proxy.handler.ownKeys
 ---
 
 {{JSRef}}
 
-**`handler.ownKeys()`** 메서드는 {{jsxref("Reflect.ownKeys()")}}에 대한 트랩입니다.
+The **`handler.ownKeys()`** method is a trap for the `[[OwnPropertyKeys]]` [object internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods), which is used by operations such as {{jsxref("Object.keys()")}}, {{jsxref("Reflect.ownKeys()")}}, etc.
 
 {{EmbedInteractiveExample("pages/js/proxyhandler-ownkeys.html", "taller")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 new Proxy(target, {
   ownKeys(target) {
   }
 });
 ```
 
-### 매개 변수
+### Parameters
 
-다음 매개변수는 `ownKeys()` 메서드에 전달됩니다. `this`는 처리기에 바인딩됩니다.
+The following parameter is passed to the `ownKeys()` method.
+`this` is bound to the handler.
 
 - `target`
-  - : 대상 객체
+  - : The target object.
 
-### 반환 값
+### Return value
 
-`ownKeys()` 메서드는 열거 가능한 객체를 반환합니다.
+The `ownKeys()` method must return an enumerable object.
 
-## 설명
+## Description
 
-**`handler.ownKeys()`** 메서드는 {{jsxref("Reflect.ownKeys()")}}에 대한 트랩입니다.
+### Interceptions
 
-### 가로채기
-
-이 트랩은 다음 작업을 가로챌 수 있습니다.
+This trap can intercept these operations:
 
 - {{jsxref("Object.getOwnPropertyNames()")}}
 - {{jsxref("Object.getOwnPropertySymbols()")}}
 - {{jsxref("Object.keys()")}}
 - {{jsxref("Reflect.ownKeys()")}}
 
-### 불변 조건
+Or any other operation that invokes the `[[OwnPropertyKeys]]` [internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods).
 
-다음 불변 조건이 위반되면 프록시에서 {{jsxref("TypeError")}}가 발생합니다.
+### Invariants
 
-- `ownKeys()`의 결과는 배열이어야 합니다.
-- 각 배열 요소의 유형은 {{jsxref("String")}} 또는 {{jsxref("Symbol")}}입니다.
-- 결과 목록에는 대상 객체의 구성할 수 없는 모든 고유 속성의 키가 포함되어야 합니다.
-- 대상 개체를 확장할 수 없는 경우, 결과 목록에는 대상 객체의 자체 속성에 대한 모든 키가 포함되어야 하며, 다른 값은 포함되지 않아야 합니다.
+If the following invariants are violated, the trap throws a {{jsxref("TypeError")}} when invoked.
 
-## 예제
+- The result of `ownKeys()` must be an array.
+- The type of each array element is either a {{jsxref("String")}} or a
+  {{jsxref("Symbol")}}.
+- The result List must contain the keys of all non-configurable own properties of the
+  target object.
+- If the target object is not extensible, then the result List must contain all the
+  keys of the own properties of the target object and no other values.
 
-### getOwnPropertyNames 트랩
+## Examples
 
-다음 코드는 {{jsxref("Object.getOwnPropertyNames()")}}를 트랩합니다.
+### Trapping of getOwnPropertyNames
+
+The following code traps {{jsxref("Object.getOwnPropertyNames()")}}.
 
 ```js
-const p = new Proxy({}, {
-  ownKeys(target) {
-    console.log('called');
-    return ['a', 'b', 'c'];
-  }
-});
+const p = new Proxy(
+  {},
+  {
+    ownKeys(target) {
+      console.log("called");
+      return ["a", "b", "c"];
+    },
+  },
+);
 
-console.log(Object.getOwnPropertyNames(p)); // "called"
-                                            // [ 'a', 'b', 'c' ]
+console.log(Object.getOwnPropertyNames(p));
+// "called"
+// [ 'a', 'b', 'c' ]
 ```
 
-다음 코드는 불변 조건을 위반합니다.
+The following code violates an invariant.
 
 ```js example-bad
 const obj = {};
-Object.defineProperty(obj, 'a', {
+Object.defineProperty(obj, "a", {
   configurable: false,
   enumerable: true,
-  value: 10 }
-);
+  value: 10,
+});
 
 const p = new Proxy(obj, {
   ownKeys(target) {
     return [123, 12.5, true, false, undefined, null, {}, []];
-  }
+  },
 });
 
 console.log(Object.getOwnPropertyNames(p));
@@ -91,17 +101,17 @@ console.log(Object.getOwnPropertyNames(p));
 // with only string and symbol elements
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Proxy")}}
-- [`Proxy()` 생성자](/ko/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy)
+- [`Proxy()` constructor](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy)
 - {{jsxref("Object.getOwnPropertyNames()")}}
 - {{jsxref("Reflect.ownKeys()")}}

@@ -1,26 +1,29 @@
 ---
-title: AbstractRange.collapsed
+title: "AbstractRange: collapsed property"
+short-title: collapsed
 slug: Web/API/AbstractRange/collapsed
+page-type: web-api-instance-property
+browser-compat: api.AbstractRange.collapsed
 ---
 
-{{APIRef("DOM WHATWG")}}
+{{APIRef("DOM")}}
 
-{{domxref("AbstractRange")}}의 범위가 축소된 read-only 속성은 범위의 시작 위치와 끝 위치가 같을 경우 true를 반환합니다.
+The read-only **`collapsed`** property of the {{domxref("AbstractRange")}} interface returns `true` if the range's start position and end position are the same.
 
-## 문법
+## Value
+
+A boolean value which is `true` if the range is _collapsed_. A collapsed range is one in which the start and end positions are the same, resulting in a zero-character-long range.
+
+## Example
 
 ```js
-    var isCollpased = range.collapsed
+let isCollapsed = range.collapsed;
 ```
 
-### Value
-
-범위가 축소된 경우 true인 {{jsxref("Boolean")}}값을 반환합니다. 축소된 범위는 시작 위치와 종료 위치가 동일하며, 문자 길이가 0인 범위입니다.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

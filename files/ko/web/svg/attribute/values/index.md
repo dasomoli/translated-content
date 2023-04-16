@@ -1,49 +1,96 @@
 ---
 title: values
 slug: Web/SVG/Attribute/values
+page-type: svg-attribute
+spec-urls:
+  - https://drafts.fxtf.org/filter-effects/#element-attrdef-fecolormatrix-values
+  - https://svgwg.org/specs/animations/#ValuesAttribute
 ---
-« [SVG Attribute reference home](/en/SVG/Attribute)
 
-`values` 속성은 사용하는 맥락에 따라 크게 두 가지 의미가 있습니다.
+{{SVGRef}}
 
-애니메이션 요소의 경우, values 속성은 세미콜론으로 구분된 하나 이상의 값 목록입니다. 애니메이션은 애니메이션 과정에서 순서대로 값을 적용합니다. 값 목록이 지정되면 {{ SVGAttr("from") }}, {{ SVGAttr("to") }} 그리고 {{ SVGAttr("by") }} 속성 값은 무시됩니다.
+The `values` attribute has different meanings, depending upon the context where it's used, either it defines a sequence of values used over the course of an animation, or it's a list of numbers for a color matrix, which is interpreted differently depending on the type of color change to be performed.
 
-{{ SVGElement("feColorMatrix") }} 요소의 경우 값의 내용은 {{ SVGAttr("type") }} 속성의 값에 따라 다릅니다:
+You can use this attribute with the following SVG elements:
 
-- For `type="matrix"`, `values` is a list of 20 matrix values (a00 a01 a02 a03 a04 a10 a11 ... a34), separated by whitespace and/or a comma.
-- For `type="saturate"`, `values` is a single real number value (0 to 1).
-- For `type="hueRotate"`, `values` is a single one real number value (degrees).
-- For `type="luminanceToAlpha"`, `values` is not applicable.
+- {{SVGElement("animate")}}
+- {{SVGElement("animateMotion")}}
+- {{SVGElement("animateTransform")}}
+- {{SVGElement("feColorMatrix")}}
 
-If the attribute is not specified, then the default behavior depends on the value of attribute {{ SVGAttr("type") }}.
+## animate, animateMotion, animateTransform
 
-- If `type="matrix"`, then this attribute defaults to the identity matrix.
-- If `type="saturate"`, then this attribute defaults to the value 1, which results in the identity matrix.
-- If `type="hueRotate"`, then this attribute defaults to the value 0, which results in the identity matrix.
+For {{SVGElement("animate")}}, {{SVGElement("animateMotion")}}, and {{SVGElement("animateTransform")}}, `values` is a list of values defining the sequence of values over the course of the animation. If this attribute is specified, any {{SVGAttr("from")}}, {{SVGAttr("to")}}, and {{SVGAttr("by")}} attribute values set on the element are ignored.
 
-## Usage context
+<table class="properties">
+  <tbody>
+    <tr>
+      <th scope="row">Value</th>
+      <td>
+        <code
+          ><a href="/en-US/docs/Web/SVG/Content_type#list-of-ts"
+            >&#x3C;list-of-values></a
+          ></code
+        >
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Default value</th>
+      <td><em>None</em></td>
+    </tr>
+    <tr>
+      <th scope="row">Animatable</th>
+      <td>No</td>
+    </tr>
+  </tbody>
+</table>
 
-### For animation elements
+- `<list-of-values>`
+  - : The value holds a semicolon-separated list of one or more values. The type of the values is defined by the {{SVGAttr("href")}} and {{SVGAttr("attributeName")}} attributes.
 
-| Categories         | Animation value attribute                                                        |
-| ------------------ | -------------------------------------------------------------------------------- |
-| Value              | \<list>                                                                           |
-| Animatable         | No                                                                               |
-| Normative document | [SVG 1.1 (2nd Edition)](http://www.w3.org/TR/SVG11/animate.html#ValuesAttribute) |
+## feColorMatrix
 
-### For the {{ SVGElement("feColorMatrix") }} element
+For the {{SVGElement("feColorMatrix")}} element, `values` is a list of numbers interpreted differently depending on the value of the {{SVGAttr("type")}} attribute.
 
-| Categories         | _None_                                                                                        |
-| ------------------ | --------------------------------------------------------------------------------------------- |
-| Value              | \<list> \| [\<number>](/en/SVG/Content_type#Number)                 |
-| Animatable         | Yes                                                                                           |
-| Normative document | [SVG 1.1 (2nd Edition)](http://www.w3.org/TR/SVG11/filters.html#feColorMatrixValuesAttribute) |
+<table class="properties">
+  <tbody>
+    <tr>
+      <th scope="row">Value</th>
+      <td>
+        <code
+          ><a href="/en-US/docs/Web/SVG/Content_type#list-of-ts"
+            >&#x3C;list-of-numbers></a
+          ></code
+        >
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Default value</th>
+      <td>
+        <em
+          >If <code>type="matrix"</code>, identity matrix,<br />if
+          <code>type="saturate"</code>, <code>1</code>, resulting in identity
+          matrix,<br />if <code>type="hueRotate"</code>, <code>0</code>,
+          resulting in identity matrix</em
+        >
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Animatable</th>
+      <td>Yes</td>
+    </tr>
+  </tbody>
+</table>
 
-## 예제
+- `<list-of-numbers>`
 
-## Elements
+  - : The value is a list of numbers, which is interpreted differently depending on the value of the `type` attribute:
 
-The following elements can use the `values` attribute
+    - For `type="matrix"`, `values` is a list of 20 matrix values (a00 a01 a02 a03 a04 a10 a11 … a34), separated by whitespace and/or a comma.
+    - For `type="saturate"`, `values` is a single real number value (0 to 1).
+    - For `type="hueRotate"`, `values` is a single one real number value (degrees).
+    - For `type="luminanceToAlpha"`, `values` is not applicable.
 
-- [Animation elements](/en/SVG/Element#Animation) »
-- {{ SVGElement("feColorMatrix") }}
+## Specifications
+
+{{Specifications}}

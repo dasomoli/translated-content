@@ -1,76 +1,37 @@
 ---
-title: <slot>
+title: "<slot>: The Web Component Slot element"
 slug: Web/HTML/Element/slot
+page-type: html-element
+browser-compat: html.elements.slot
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<slot>` 요소**는 웹 컴포넌트 사용자가 자신만의 마크업으로 채워 별도의 DOM 트리를 생성하고, 컴포넌트와 함께 표현할 수 있는 웹 컴포넌트 내부의 플레이스홀더입니다.
+The **`<slot>`** [HTML](/en-US/docs/Web/HTML) element—part of the [Web Components](/en-US/docs/Web/API/Web_components) technology suite—is a placeholder inside a web component that you can fill with your own markup, which lets you create separate DOM trees and present them together.
 
-<table class="properties">
-  <tbody>
-    <tr>
-      <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
-      </th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 콘텐츠</th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#투명_콘텐츠_모델"
-          >투명</a
-        >.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">이벤트</th>
-      <td>{{event("slotchange")}}</td>
-    </tr>
-    <tr>
-      <th scope="row">태그 생략</th>
-      <td>{{no_tag_omission}}</td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 부모 요소</th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >를 허용하는 모든 요소.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>없음</td>
-    </tr>
-    <tr>
-      <th scope="row">DOM 인터페이스</th>
-      <td>{{domxref("HTMLSlotElement")}}</td>
-    </tr>
-  </tbody>
-</table>
+## Attributes
 
-## 특성
+This element includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)을 포함합니다.
+- `name`
 
-- {{htmlattrdef("name")}}
-  - : 슬롯의 이름.
+  - : The slot's name.
 
-## 예제
+    A **_named slot_** is a `<slot>` element with a `name` attribute.
+
+## Examples
 
 ```html
 <template id="element-details-template">
   <style>
-    details {font-family: "Open Sans Light", Helvetica, Arial, sans-serif }
-    .name {font-weight: bold; color: #217ac0; font-size: 120% }
+    details {
+      font-family: "Open Sans Light", Helvetica, Arial, sans-serif;
+    }
+    .name {
+      font-weight: bold;
+      color: #217ac0;
+      font-size: 120%;
+    }
     h4 {
       margin: 10px 0 -8px 0;
       background: #217ac0;
@@ -79,29 +40,99 @@ slug: Web/HTML/Element/slot
       border: 1px solid #cee9f9;
       border-radius: 4px;
     }
-    .attributes { margin-left: 22px; font-size: 90% }
-    .attributes p { margin-left: 16px; font-style: italic }
+    .attributes {
+      margin-left: 22px;
+      font-size: 90%;
+    }
+    .attributes p {
+      margin-left: 16px;
+      font-style: italic;
+    }
   </style>
   <details>
     <summary>
       <code class="name">&lt;<slot name="element-name">NEED NAME</slot>&gt;</code>
-      <i class="desc"><slot name="description">NEED DESCRIPTION</slot></i>
+      <span class="desc"><slot name="description">NEED DESCRIPTION</slot></span>
     </summary>
     <div class="attributes">
       <h4>Attributes</h4>
       <slot name="attributes"><p>None</p></slot>
     </div>
   </details>
-  <hr>
+  <hr />
 </template>
 ```
 
-> **참고:** 온전한 예제는 [element-details](https://github.com/mdn/web-components-examples/tree/master/element-details)([라이브로 보기](https://mdn.github.io/web-components-examples/element-details/))에서 볼 수 있습니다. 설명은 [템플릿과 슬롯 사용하기](/ko/docs/Web/Web_Components/Using_templates_and_slots)에서 확인할 수 있습니다.
+> **Note:** You can see this complete example in action at [element-details](https://github.com/mdn/web-components-examples/tree/main/element-details) (see it [running live](https://mdn.github.io/web-components-examples/element-details/)). In addition, you can find an explanation at [Using templates and slots](/en-US/docs/Web/API/Web_components/Using_templates_and_slots).
 
-## 명세
+## Technical summary
+
+<table class="properties">
+  <tbody>
+    <tr>
+      <th scope="row">
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
+      </th>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
+        >,
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted content</th>
+      <td>
+        <a
+          href="/en-US/docs/Web/HTML/Content_categories#transparent_content_model"
+          >Transparent</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Events</th>
+      <td>{{domxref("HTMLSlotElement/slotchange_event", "slotchange")}}</td>
+    </tr>
+    <tr>
+      <th scope="row">Tag omission</th>
+      <td>{{no_tag_omission}}</td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted parents</th>
+      <td>
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
+          >No corresponding role</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>No <code>role</code> permitted</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
+      <td>{{domxref("HTMLSlotElement")}}</td>
+    </tr>
+  </tbody>
+</table>
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

@@ -1,399 +1,647 @@
 ---
-title: 구조 분해 할당
+title: Destructuring assignment
 slug: Web/JavaScript/Reference/Operators/Destructuring_assignment
+page-type: javascript-language-feature
+browser-compat: javascript.operators.destructuring
 ---
+
 {{jsSidebar("Operators")}}
 
-**구조 분해 할당** 구문은 배열이나 객체의 속성을 해체하여 그 값을 개별 변수에 담을 수 있게 하는 JavaScript 표현식입니다.
+The **destructuring assignment** syntax is a JavaScript expression that makes it possible to unpack values from arrays, or properties from objects, into distinct variables.
 
-{{EmbedInteractiveExample("pages/js/expressions-destructuringassignment.html")}}
+{{EmbedInteractiveExample("pages/js/expressions-destructuringassignment.html", "taller")}}
 
-## 구문
+## Syntax
 
-```js
-var a, b, rest;
-[a, b] = [10, 20];
-console.log(a); // 10
-console.log(b); // 20
+```js-nolint
+const [a, b] = array;
+const [a, , b] = array;
+const [a = aDefault, b] = array;
+const [a, b, ...rest] = array;
+const [a, , b, ...rest] = array;
+const [a, b, ...{ pop, push }] = array;
+const [a, b, ...[c, d]] = array;
 
-[a, b, ...rest] = [10, 20, 30, 40, 50];
-console.log(a); // 10
-console.log(b); // 20
-console.log(rest); // [30, 40, 50]
+const { a, b } = obj;
+const { a: a1, b: b1 } = obj;
+const { a: a1 = aDefault, b = bDefault } = obj;
+const { a, b, ...rest } = obj;
+const { a: a1, b: b1, ...rest } = obj;
+const { [key]: a } = obj;
 
-({ a, b } = { a: 10, b: 20 });
-console.log(a); // 10
-console.log(b); // 20
+let a, b, a1, b1, c, d, rest, pop, push;
+[a, b] = array;
+[a, , b] = array;
+[a = aDefault, b] = array;
+[a, b, ...rest] = array;
+[a, , b, ...rest] = array;
+[a, b, ...{ pop, push }] = array;
+[a, b, ...[c, d]] = array;
 
-
-// Stage 4(finished) proposal
-({a, b, ...rest} = {a: 10, b: 20, c: 30, d: 40});
-console.log(a); // 10
-console.log(b); // 20
-console.log(rest); // {c: 30, d: 40}
+({ a, b } = obj); // brackets are required
+({ a: a1, b: b1 } = obj);
+({ a: a1 = aDefault, b = bDefault } = obj);
+({ a, b, ...rest } = obj);
+({ a: a1, b: b1, ...rest } = obj);
 ```
 
-## 설명
+## Description
 
-객체 및 배열 리터럴 표현식을 사용하면 즉석에서 쉽게 데이터 뭉치를 만들 수 있습니다.
+The object and array literal expressions provide an easy way to create _ad hoc_ packages of data.
 
 ```js
-var x = [1, 2, 3, 4, 5];
+const x = [1, 2, 3, 4, 5];
 ```
 
-구조 분해 할당의 구문은 위와 비슷하지만, 대신 할당문의 좌변에서 사용하여, 원래 변수에서 어떤 값을 분해해 할당할지 정의합니다.
+The destructuring assignment uses similar syntax, but on the left-hand side of the assignment to define what values to unpack from the sourced variable.
 
 ```js
-var x = [1, 2, 3, 4, 5];
-var [y, z] = x;
+const x = [1, 2, 3, 4, 5];
+const [y, z] = x;
 console.log(y); // 1
 console.log(z); // 2
 ```
 
-구조 분해 할당은 Perl이나 Python 등 다른 언어가 가지고 있는 기능입니다.
-
-## 배열 구조 분해
-
-### 기본 변수 할당
+Similarly, you can destructure objects on the left-hand side of the assignment.
 
 ```js
-var foo = ["one", "two", "three"];
+const obj = { a: 1, b: 2 };
+const { a, b } = obj;
+// is equivalent to:
+// const a = obj.a;
+// const b = obj.b;
+```
 
-var [red, yellow, green] = foo;
+This capability is similar to features present in languages such as Perl and Python.
+
+### Binding and assignment
+
+For both object and array destructuring, there are two kinds of destructuring patterns: _binding pattern_ and _assignment pattern_, with slightly different syntaxes.
+
+In binding patterns, the pattern starts with a declaration keyword (`var`, `let`, or `const`). Then, each individual property must either be bound to a variable or further destructured.
+
+```js
+const obj = { a: 1, b: { c: 2 } };
+const {
+  a,
+  b: { c: d },
+} = obj;
+// Two variables are bound: `a` and `d`
+```
+
+All variables share the same declaration, so if you want some variables to be re-assignable but others to be read-only, you may have to destructure twice — once with `let`, once with `const`.
+
+```js
+const obj = { a: 1, b: { c: 2 } };
+const { a } = obj; // a is constant
+let {
+  b: { c: d },
+} = obj; // d is re-assignable
+```
+
+In assignment patterns, the pattern does not start with a keyword. Each destructured property is assigned to a target of assignment — which may either be declared beforehand with `var` or `let`, or is a property of another object — in general, anything that can appear on the left-hand side of an assignment expression.
+
+```js
+const numbers = [];
+const obj = { a: 1, b: 2 };
+({ a: numbers[0], b: numbers[1] } = obj);
+// The properties `a` and `b` are assigned to properties of `numbers`
+```
+
+> **Note:** The parentheses `( ... )` around the assignment statement are required when using object literal destructuring assignment without a declaration.
+>
+> `{ a, b } = { a: 1, b: 2 }` is not valid stand-alone syntax, as the `{a, b}` on the left-hand side is considered a block and not an object literal. However, `({ a, b } = { a: 1, b: 2 })` is valid, as is `const { a, b } = { a: 1, b: 2 }`.
+>
+> If your coding style does not include trailing semicolons, the `( ... )` expression needs to be preceded by a semicolon, or it may be used to execute a function on the previous line.
+
+Note that the equivalent _binding pattern_ of the code above is not valid syntax:
+
+```js example-bad
+const numbers = [];
+const obj = { a: 1, b: 2 };
+const { a: numbers[0], b: numbers[1] } = obj;
+
+// This is equivalent to:
+//   const numbers[0] = obj.a;
+//   const numbers[1] = obj.b;
+// Which definitely is not valid.
+```
+
+### Default value
+
+Each destructured property can have a _default value_. The default value is used when the property is not present, or has value `undefined`. It is not used if the property has value `null`.
+
+```js
+const [a = 1] = []; // a is 1
+const { b = 2 } = { b: undefined }; // b is 2
+const { c = 2 } = { c: null }; // c is null
+```
+
+The default value can be any expression. It will only be evaluated when necessary.
+
+```js
+const { b = console.log("hey") } = { b: 2 };
+// Does not log anything, because `b` is defined and there's no need
+// to evaluate the default value.
+```
+
+### Rest property
+
+You can end a destructuring pattern with a rest property `...rest`. This pattern will store all remaining properties of the object or array into a new object or array.
+
+```js
+const { a, ...others } = { a: 1, b: 2, c: 3 };
+console.log(others); // { b: 2, c: 3 }
+
+const [first, ...others2] = [1, 2, 3];
+console.log(others2); // [2, 3]
+```
+
+The rest property must be the last in the pattern, and must not have a trailing comma.
+
+```js-nolint example-bad
+const [a, ...b,] = [1, 2, 3];
+
+// SyntaxError: rest element may not have a trailing comma
+// Always consider using rest operator as the last element
+```
+
+### Destructuring patterns with other syntaxes
+
+In many syntaxes where the language binds a variable for you, you can use a destructuring pattern as well. These include:
+
+- The looping variable of [`for...in`](/en-US/docs/Web/JavaScript/Reference/Statements/for...in) and [`for...of`](/en-US/docs/Web/JavaScript/Reference/Statements/for...of) loops;
+- [Function](/en-US/docs/Web/JavaScript/Reference/Functions) parameters;
+- The [`catch`](/en-US/docs/Web/JavaScript/Reference/Statements/try...catch) binding variable.
+
+For features specific to array or object destructuring, please refer to the individual examples below.
+
+## Examples
+
+### Array destructuring
+
+#### Basic variable assignment
+
+```js
+const foo = ["one", "two", "three"];
+
+const [red, yellow, green] = foo;
 console.log(red); // "one"
 console.log(yellow); // "two"
 console.log(green); // "three"
 ```
 
-### 선언에서 분리한 할당
+#### Destructuring with more elements than the source
 
-변수의 선언이 분리되어도 구조 분해를 통해 값을 할당할 수 있습니다.
+In an array destructuring from an array of length _N_ specified on the right-hand side of the assignment, if the number of variables specified on the left-hand side of the assignment is greater than _N_, only the first _N_ variables are assigned values. The values of the remaining variables will be undefined.
 
 ```js
-var a, b;
+const foo = ["one", "two"];
 
-[a, b] = [1, 2];
-console.log(a); // 1
-console.log(b); // 2
+const [red, yellow, green, blue] = foo;
+console.log(red); // "one"
+console.log(yellow); // "two"
+console.log(green); // undefined
+console.log(blue); // undefined
 ```
 
-### 기본값
+#### Swapping variables
 
-변수에 기본값을 할당하면, 분해한 값이 {{jsxref("undefined")}}일 때 그 값을 대신 사용합니다.
+Two variables values can be swapped in one destructuring expression.
 
-```js
-var a, b;
-
-[a=5, b=7] = [1];
-console.log(a); // 1
-console.log(b); // 7
-```
-
-### 변수 값 교환하기
-
-하나의 구조 분해 표현식만으로 두 변수의 값을 교환할 수 있습니다.
-
-구조 분해 할당 없이 두 값을 교환하려면 임시 변수가 필요합니다. (일부 로우 레벨 언어에서는 [XOR 교체 트릭](http://en.wikipedia.org/wiki/XOR_swap)을 사용할 수 있습니다)
+Without destructuring assignment, swapping two values requires a temporary variable (or, in some low-level languages, the [XOR-swap trick](https://en.wikipedia.org/wiki/XOR_swap_algorithm)).
 
 ```js
-var a = 1;
-var b = 3;
+let a = 1;
+let b = 3;
 
 [a, b] = [b, a];
 console.log(a); // 3
 console.log(b); // 1
+
+const arr = [1, 2, 3];
+[arr[2], arr[1]] = [arr[1], arr[2]];
+console.log(arr); // [1, 3, 2]
 ```
 
-### 함수가 반환한 배열 분석
+#### Parsing an array returned from a function
 
-함수는 이전부터 배열을 반환할 수 있었습니다. 구조 분해를 사용하면 반환된 배열에 대한 작업을 더 간결하게 수행할 수 있습니다.
+It's always been possible to return an array from a function. Destructuring can make working with an array return value more concise.
 
-아래 예제에서 `f()`는 출력으로 배열 `[1, 2]`을 반환하는데, 하나의 구조 분해만으로 값을 분석할 수 있습니다.
+In this example, `f()` returns the values `[1, 2]` as its output, which can be parsed in a single line with destructuring.
 
 ```js
 function f() {
   return [1, 2];
 }
 
-var a, b;
-[a, b] = f();
+const [a, b] = f();
 console.log(a); // 1
 console.log(b); // 2
 ```
 
-### 일부 반환 값 무시하기
+#### Ignoring some returned values
 
-다음과 같이 필요하지 않은 반환 값을 무시할 수 있습니다.
+You can ignore return values that you're not interested in:
 
 ```js
 function f() {
   return [1, 2, 3];
 }
 
-var [a, , b] = f();
+const [a, , b] = f();
 console.log(a); // 1
 console.log(b); // 3
+
+const [c] = f();
+console.log(c); // 1
 ```
 
-반환 값을 모두 무시할 수도 있습니다.
+You can also ignore all returned values:
 
 ```js
-[,,] = f();
+[, ,] = f();
 ```
 
-### 변수에 배열의 나머지를 할당하기
+#### Using a binding pattern as the rest property
 
-배열을 구조 분해할 경우, 나머지 구문을 이용해 분해하고 남은 부분을 하나의 변수에 할당할 수 있습니다.
+The rest property of array destructuring assignment can be another array or object binding pattern. This allows you to simultaneously unpack the properties and indices of arrays.
 
 ```js
-var [a, ...b] = [1, 2, 3];
-console.log(a); // 1
-console.log(b); // [2, 3]
+const [a, b, ...{ pop, push }] = [1, 2];
+console.log(a, b); // 1 2
+console.log(pop, push); // [Function pop] [Function push]
 ```
 
-나머지 요소의 오른쪽 뒤에 쉼표가 있으면 {{jsxref("SyntaxError")}}가 발생합니다.
+```js
+const [a, b, ...[c, d]] = [1, 2, 3, 4];
+console.log(a, b, c, d); // 1 2 3 4
+```
+
+These binding patterns can even be nested, as long as each rest property is the last in the list.
+
+```js
+const [a, b, ...[c, d, ...[e, f]]] = [1, 2, 3, 4, 5, 6];
+console.log(a, b, c, d, e, f); // 1 2 3 4 5 6
+```
+
+On the other hand, object destructuring can only have an identifier as the rest property.
 
 ```js example-bad
-var [a, ...b,] = [1, 2, 3];
-// SyntaxError: rest element may not have a trailing comma
+const { a, ...{ b } } = { a: 1, b: 2 };
+// SyntaxError: `...` must be followed by an identifier in declaration contexts
+
+let a, b;
+({ a, ...{ b } } = { a: 1, b: 2 });
+// SyntaxError: `...` must be followed by an assignable reference in assignment contexts
 ```
 
-### 정규 표현식과 일치하는 값 해체하기
+#### Unpacking values from a regular expression match
 
-정규 표현식의 [`exec()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec) 메서드는 일치하는 부분를 찾으면 그 문자열에서 정규식과 일치하는 부분 전체를 배열의 맨 앞에, 그리고 그 뒤에 정규식에서 괄호로 묶인 각 그룹과 일치하는 부분을 포함하는 배열을 반환합니다. 구조 분해 할당은 필요하지 않은 경우 일치하는 전체 부분은 무시하고 필요한 부분만 쉽게 빼올 수 있습니다.
+When the regular expression [`exec()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec) method finds a match, it returns an array containing first the entire matched portion of the string and then the portions of the string that matched each parenthesized group in the regular expression. Destructuring assignment allows you to unpack the parts out of this array easily, ignoring the full match if it is not needed.
 
 ```js
 function parseProtocol(url) {
-  var parsedURL = /^(\w+)\:\/\/([^\/]+)\/(.*)$/.exec(url);
+  const parsedURL = /^(\w+):\/\/([^/]+)\/(.*)$/.exec(url);
   if (!parsedURL) {
     return false;
   }
-  console.log(parsedURL); // ["https://developer.mozilla.org/en-US/Web/JavaScript", "https", "developer.mozilla.org", "en-US/Web/JavaScript"]
+  console.log(parsedURL);
+  // ["https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+  // "https", "developer.mozilla.org", "en-US/docs/Web/JavaScript"]
 
-  var [, protocol, fullhost, fullpath] = parsedURL;
+  const [, protocol, fullhost, fullpath] = parsedURL;
   return protocol;
 }
 
-console.log(parseProtocol('https://developer.mozilla.org/en-US/Web/JavaScript')); // "https"
+console.log(
+  parseProtocol("https://developer.mozilla.org/en-US/docs/Web/JavaScript"),
+);
+// "https"
 ```
 
-## 객체 구조 분해
+#### Using array destructuring on any iterable
 
-### 기본 할당
+Array destructuring calls the [iterable protocol](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) of the right-hand side. Therefore, any iterable, not necessarily arrays, can be destructured.
 
 ```js
-var o = {p: 42, q: true};
-var {p, q} = o;
-
-console.log(p); // 42
-console.log(q); // true
+const [a, b] = new Map([
+  [1, 2],
+  [3, 4],
+]);
+console.log(a, b); // [1, 2] [3, 4]
 ```
 
-### 선언 없는 할당
+Non-iterables cannot be destructured as arrays.
 
-구조 분해를 통해 변수의 선언과 분리하여 변수에 값을 할당할 수 있습니다.
-
-```js
-var a, b;
-
-({a, b} = {a: 1, b: 2});
+```js example-bad
+const obj = { 0: "a", 1: "b", length: 2 };
+const [a, b] = obj;
+// TypeError: obj is not iterable
 ```
 
-<div class="note"><p><strong>참고</strong>: 할당 문을 둘러싼 <code>( .. )</code>는 선언 없이 객체 리터럴(object literal) 비구조화 할당을 사용할 때 필요한 구문입니다.</p><p><code>{a, b} = {a:1, b:2}</code>는 유효한 독립 구문이 아닙니다. 좌변의 <code>{a, b}</code>이 객체 리터럴이 아닌 블록으로 간주되기 때문입니다.</p><p>하지만, <code>({a, b} = {a:1, b:2})</code>는 유효한데, <code>var {a, b} = {a:1, b:2}</code>와 같습니다.</p><p><code>( .. )</code> 표현식 앞에는 세미콜론이 있어야 합니다. 그렇지 않을 경우 이전 줄과 연결되어 함수를 실행하는데 이용될 수 있습니다.</p></div>
-
-### 새로운 변수 이름으로 할당하기
-
-객체로부터 속성을 해체하여 객체의 원래 속성명과는 다른 이름의 변수에 할당할 수 있습니다.
+Iterables are only iterated until all bindings are assigned.
 
 ```js
-var o = {p: 42, q: true};
-var {p: foo, q: bar} = o;
+const obj = {
+  *[Symbol.iterator]() {
+    for (const v of [0, 1, 2, 3]) {
+      console.log(v);
+      yield v;
+    }
+  },
+};
+const [a, b] = obj; // Only logs 0 and 1
+```
+
+The rest binding is eagerly evaluated and creates a new array, instead of using the old iterable.
+
+```js
+const obj = {
+  *[Symbol.iterator]() {
+    for (const v of [0, 1, 2, 3]) {
+      console.log(v);
+      yield v;
+    }
+  },
+};
+const [a, b, ...rest] = obj; // Logs 0 1 2 3
+console.log(rest); // [2, 3] (an array)
+```
+
+### Object destructuring
+
+#### Basic assignment
+
+```js
+const user = {
+  id: 42,
+  isVerified: true,
+};
+
+const { id, isVerified } = user;
+
+console.log(id); // 42
+console.log(isVerified); // true
+```
+
+#### Assigning to new variable names
+
+A property can be unpacked from an object and assigned to a variable with a different name than the object property.
+
+```js
+const o = { p: 42, q: true };
+const { p: foo, q: bar } = o;
 
 console.log(foo); // 42
 console.log(bar); // true
 ```
 
-### 기본값
+Here, for example, `const { p: foo } = o` takes from the object `o` the property named `p` and assigns it to a local variable named `foo`.
 
-객체로부터 해체된 값이 `undefined`인 경우, 변수에 기본값을 할당할 수 있습니다.
+#### Assigning to new variable names and providing default values
 
-```js
-var {a = 10, b = 5} = {a: 3};
+A property can be both
 
-console.log(a); // 3
-console.log(b); // 5
-```
-
-### 기본값 갖는 새로운 이름의 변수에 할당하기
-
-새로운 변수명 할당과 기본값 할당을 한번에 할 수 있습니다.
+- Unpacked from an object and assigned to a variable with a different name.
+- Assigned a default value in case the unpacked value is `undefined`.
 
 ```js
-var {a: aa = 10, b: bb = 5} = {a: 3};
+const { a: aa = 10, b: bb = 5 } = { a: 3 };
 
 console.log(aa); // 3
 console.log(bb); // 5
 ```
 
-### 함수 매개변수의 기본값 설정하기
+#### Unpacking properties from objects passed as a function parameter
 
-#### ES5 버전
+Objects passed into function parameters can also be unpacked into variables, which may then be accessed within the function body.
+As for object assignment, the destructuring syntax allows for the new variable to have the same name or a different name than the original property, and to assign default values for the case when the original object does not define the property.
+
+Consider this object, which contains information about a user.
 
 ```js
-function drawES5Chart(options) {
-  options = options === undefined ? {} : options;
-  var size = options.size === undefined ? 'big' : options.size;
-  var cords = options.cords === undefined ? { x: 0, y: 0 } : options.cords;
-  var radius = options.radius === undefined ? 25 : options.radius;
-  console.log(size, cords, radius);
-  // 이제 드디어 차트 그리기 수행
+const user = {
+  id: 42,
+  displayName: "jdoe",
+  fullName: {
+    firstName: "Jane",
+    lastName: "Doe",
+  },
+};
+```
+
+Here we show how to unpack a property of the passed object into a variable with the same name.
+The parameter value `{ id }` indicates that the `id` property of the object passed to the function should be unpacked into a variable with the same name, which can then be used within the function.
+
+```js
+function userId({ id }) {
+  return id;
 }
 
-drawES5Chart({
-  cords: { x: 18, y: 30 },
-  radius: 30
+console.log(userId(user)); // 42
+```
+
+You can define the name of the unpacked variable.
+Here we unpack the property named `displayName`, and rename it to `dname` for use within the function body.
+
+```js
+function userDisplayName({ displayName: dname }) {
+  return dname;
+}
+
+console.log(userDisplayName(user)); // `jdoe`
+```
+
+Nested objects can also be unpacked.
+The example below shows the property `fullname.firstName` being unpacked into a variable called `name`.
+
+```js
+function whois({ displayName, fullName: { firstName: name } }) {
+  return `${displayName} is ${name}`;
+}
+
+console.log(whois(user)); // "jdoe is Jane"
+```
+
+#### Setting a function parameter's default value
+
+Default values can be specified using `=`, and will be used as variable values if a specified property does not exist in the passed object.
+
+Below we show a function where the default size is `'big'`, default co-ordinates are `x: 0, y: 0` and default radius is 25.
+
+```js
+function drawChart({
+  size = "big",
+  coords = { x: 0, y: 0 },
+  radius = 25,
+} = {}) {
+  console.log(size, coords, radius);
+  // do some chart drawing
+}
+
+drawChart({
+  coords: { x: 18, y: 30 },
+  radius: 30,
 });
 ```
 
-#### ES2015 버전
+In the function signature for `drawChart` above, the destructured left-hand side has a default value of an empty object `= {}`.
+
+You could have also written the function without that default. However, if you leave out that default value, the function will look for at least one argument to be supplied when invoked, whereas in its current form, you can call `drawChart()` without supplying any parameters. Otherwise, you need to at least supply an empty object literal.
+
+For more information, see [Default parameters > Destructured parameter with default value assignment](/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters#destructured_parameter_with_default_value_assignment).
+
+#### Nested object and array destructuring
 
 ```js
-function drawES2015Chart({size = 'big', cords = { x: 0, y: 0 }, radius = 25} = {}) {
-  console.log(size, cords, radius);
-  // 차트 그리기 수행
-}
-
-drawES2015Chart({
-  cords: { x: 18, y: 30 },
-  radius: 30
-});
-```
-
-<div class="note"><p>위의 <strong><code>drawES2015Chart</code></strong> 함수의 원형에서 구조 분해된 좌변에 빈 오브젝트 리터럴을 할당하는 것을 볼 수 있습니다 <code>{size = 'big', cords = {x: 0, y: 0}, radius = 25} = {}</code>. 빈 오브젝트를 우변에 할당하지 않고도 함수를 작성할 수 있습니다. 하지만, 지금의 형태에서는 단순히 <code><strong>drawES2015Chart()</strong></code>와 같이 어떤 매개변수 없이도 호출할 수 있지만, 우변의 빈 오브젝트 할당을 없앤다면 함수 호출시 적어도 하나의 인자가 제공되어야만 합니다. 이 함수가 어떠한 매개변수 없이도 호출할 수 있길 원한다면 지금 형태가 유용하고, 무조건 객체를 넘기길 원하는 경우에는 빈 객체 할당을 하지 않는 것이 유용할 수 있습니다.</p></div>
-
-### 중첩된 객체 및 배열의 구조 분해
-
-```js
-var metadata = {
-    title: "Scratchpad",
-    translations: [
-       {
-        locale: "de",
-        localization_tags: [ ],
-        last_edit: "2014-04-14T08:43:37",
-        url: "/de/docs/Tools/Scratchpad",
-        title: "JavaScript-Umgebung"
-       }
-    ],
-    url: "/en-US/docs/Tools/Scratchpad"
+const metadata = {
+  title: "Scratchpad",
+  translations: [
+    {
+      locale: "de",
+      localizationTags: [],
+      lastEdit: "2014-04-14T08:43:37",
+      url: "/de/docs/Tools/Scratchpad",
+      title: "JavaScript-Umgebung",
+    },
+  ],
+  url: "/en-US/docs/Tools/Scratchpad",
 };
 
-var { title: englishTitle, translations: [{ title: localeTitle }] } = metadata;
+const {
+  title: englishTitle, // rename
+  translations: [
+    {
+      title: localeTitle, // rename
+    },
+  ],
+} = metadata;
 
 console.log(englishTitle); // "Scratchpad"
-console.log(localeTitle);  // "JavaScript-Umgebung"
+console.log(localeTitle); // "JavaScript-Umgebung"
 ```
 
-### for of 반복문과 구조 분해
+#### For of iteration and destructuring
 
 ```js
-var people = [
+const people = [
   {
     name: "Mike Smith",
     family: {
       mother: "Jane Smith",
       father: "Harry Smith",
-      sister: "Samantha Smith"
+      sister: "Samantha Smith",
     },
-    age: 35
+    age: 35,
   },
   {
     name: "Tom Jones",
     family: {
       mother: "Norah Jones",
       father: "Richard Jones",
-      brother: "Howard Jones"
+      brother: "Howard Jones",
     },
-    age: 25
-  }
+    age: 25,
+  },
 ];
 
-for (var {name: n, family: { father: f } } of people) {
-  console.log("Name: " + n + ", Father: " + f);
+for (const {
+  name: n,
+  family: { father: f },
+} of people) {
+  console.log(`Name: ${n}, Father: ${f}`);
 }
 
 // "Name: Mike Smith, Father: Harry Smith"
 // "Name: Tom Jones, Father: Richard Jones"
 ```
 
-### 함수 매개변수로 전달된 객체에서 필드 해체하기
+#### Computed object property names and destructuring
+
+Computed property names, like on [object literals](/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer#computed_property_names), can be used with destructuring.
 
 ```js
-function userId({id}) {
-  return id;
-}
-
-function whois({displayName: displayName, fullName: {firstName: name}}){
-  console.log(displayName + " is " + name);
-}
-
-var user = {
-  id: 42,
-  displayName: "jdoe",
-  fullName: {
-      firstName: "John",
-      lastName: "Doe"
-  }
-};
-
-console.log("userId: " + userId(user)); // "userId: 42"
-whois(user); // "jdoe is John"
-```
-
-이 예제는 user 객체로부터 `id`, `displayName` 및 `firstName` 을 해체해 출력합니다.
-
-### 계산된 속성 이름과 구조 분해
-
-계산된 속성 이름(computed property name)은, [객체 리터럴](/ko/docs/Web/JavaScript/Reference/Operators/Object_initializer#Computed_property_names)과 비슷하게 구조 분해에도 사용될 수 있습니다.
-
-```js
-let key = "z";
-let { [key]: foo } = { z: "bar" };
+const key = "z";
+const { [key]: foo } = { z: "bar" };
 
 console.log(foo); // "bar"
 ```
 
-### 객체 구조 분해에서 Rest
+#### Invalid JavaScript identifier as a property name
 
-[Rest/Spread Properties for ECMAScript](https://github.com/tc39/proposal-object-rest-spread) 제안(stage 3)에서는 구조 분해에 [rest](/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters) 구문을 추가하고 있습니다. rest 속성은 구조 분해 패턴으로 걸러지지 않은 열거형 속성의 키를 가진 나머지 항목들을 모읍니다.
-
-```js
-let {a, b, ...rest} = {a: 10, b: 20, c: 30, d: 40}
-a; // 10
-b; // 20
-rest; // { c: 30, d: 40 }
-```
-
-### 속성 이름이 유효한 JavaScript 식별자명이 아닌 경우
-
-구조 분해는 JavaScript {{glossary("Identifier", "식별자")}} 이름으로 적합하지 않은 속성명이 제공된 경우에도 이용할 수 있습니다. 이 때는 대체할 유효한 식별자명을 제공해야 합니다.
+Destructuring can be used with property names that are not valid JavaScript {{glossary("Identifier", "identifiers")}} by providing an alternative identifier that is valid.
 
 ```js
-const foo = { 'fizz-buzz': true };
-const { 'fizz-buzz': fizzBuzz } = foo;
+const foo = { "fizz-buzz": true };
+const { "fizz-buzz": fizzBuzz } = foo;
 
-console.log(fizzBuzz); // "true"
+console.log(fizzBuzz); // true
 ```
 
-## 명세서
+### Destructuring primitive values
+
+Object destructuring is almost equivalent to [property accessing](/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors). This means if you try to destruct a primitive value, the value will get wrapped into the corresponding wrapper object and the property is accessed on the wrapper object.
+
+```js
+const { a, toFixed } = 1;
+console.log(a, toFixed); // undefined ƒ toFixed() { [native code] }
+```
+
+Same as accessing properties, destructuring `null` or `undefined` throws a {{jsxref("TypeError")}}.
+
+```js example-bad
+const { a } = undefined; // TypeError: Cannot destructure property 'a' of 'undefined' as it is undefined.
+const { a } = null; // TypeError: Cannot destructure property 'b' of 'null' as it is null.
+```
+
+This happens even when the pattern is empty.
+
+```js example-bad
+const {} = null; // TypeError: Cannot destructure 'null' as it is null.
+```
+
+#### Combined Array and Object Destructuring
+
+Array and Object destructuring can be combined. Say you want the third element in the array `props` below, and then you want the `name` property in the object, you can do the following:
+
+```js
+const props = [
+  { id: 1, name: "Fizz" },
+  { id: 2, name: "Buzz" },
+  { id: 3, name: "FizzBuzz" },
+];
+
+const [, , { name }] = props;
+
+console.log(name); // "FizzBuzz"
+```
+
+#### The prototype chain is looked up when the object is deconstructed
+
+When deconstructing an object, if a property is not accessed in itself, it will continue to look up along the prototype chain.
+
+```js
+const obj = {
+  self: "123",
+  __proto__: {
+    prot: "456",
+  },
+};
+const { self, prot } = obj;
+// self "123"
+// prot "456" (Access to the prototype chain)
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [할당 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Assignment_Operators)
+- [Assignment operators](/en-US/docs/Web/JavaScript/Reference/Operators#assignment_operators)
 - ["ES6 in Depth: Destructuring" on hacks.mozilla.org](https://hacks.mozilla.org/2015/05/es6-in-depth-destructuring/)

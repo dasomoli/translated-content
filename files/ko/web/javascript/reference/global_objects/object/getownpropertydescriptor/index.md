@@ -1,88 +1,152 @@
 ---
 title: Object.getOwnPropertyDescriptor()
 slug: Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Object.getOwnPropertyDescriptor
 ---
 
 {{JSRef}}
 
-**`Object.getOwnPropertyDescriptor()`** 메서드는 주어진 객체 _자신의 속성_(즉, 객체에 직접 제공하는 속성, 객체의 프로토타입 체인을 따라 존재하는 덕택에 제공하는 게 아닌)에 대한 속성 설명자(descriptor)를 반환합니다.
+The **`Object.getOwnPropertyDescriptor()`** static method returns an
+object describing the configuration of a specific property on a given object (that is,
+one directly present on an object and not in the object's prototype chain). The object
+returned is mutable but mutating it has no effect on the original property's
+configuration.
 
-## 구문
+{{EmbedInteractiveExample("pages/js/object-getownpropertydescriptor.html")}}
 
-```js
+## Syntax
+
+```js-nolint
 Object.getOwnPropertyDescriptor(obj, prop)
 ```
 
-### 매개변수
+### Parameters
 
 - `obj`
-  - : 속성을 찾을 대상 객체.
+  - : The object in which to look for the property.
 - `prop`
-  - : 설명이 검색될 속성명.
+  - : The name or {{jsxref("Symbol")}} of the property whose description is to be
+    retrieved.
 
-### 반환값
+### Return value
 
-객체에 존재하는 경우 주어진 속성의 속성 설명자, 없으면 {{jsxref("undefined")}}.
+A property descriptor of the given property if it exists on the object,
+{{jsxref("undefined")}} otherwise.
 
-## 설명
+## Description
 
-이 메서드는 정확한 속성 설명의 검사를 허용합니다. JavaScript에서 *속성*은 문자열 값인 이름과 속성 설명자로 구성됩니다. 속성 설명자 유형과 attribute에 관한 자세한 정보는 {{jsxref("Object.defineProperty()")}}에서 찾을 수 있습니다.
+This method permits examination of the precise description of a property. A
+_property_ in JavaScript consists of either a string-valued name or a
+{{jsxref("Symbol")}} and a property descriptor. Further information about property
+descriptor types and their attributes can be found in
+{{jsxref("Object.defineProperty()")}}.
 
-*속성 설명자*는 다음 attribute 중 일부의 기록입니다:
+A _property descriptor_ is a record with some of the following attributes:
 
 - `value`
-  - : 속성과 관련된 값 (데이터 설명자만).
-- **`writable`**
-  - : 속성과 관련된 값이 변경될 수 있는 경우에만 `true` (데이터 설명자만).
+  - : The value associated with the property (data descriptors only).
+- `writable`
+  - : `true` if and only if the value associated with the property may be
+    changed (data descriptors only).
 - `get`
-  - : 속성에 대해 getter로서 제공하는 함수 또는 getter가 없는 경우 {{jsxref("undefined")}} (접근자 설명자만).
+  - : A function which serves as a getter for the property, or {{jsxref("undefined")}} if
+    there is no getter (accessor descriptors only).
 - `set`
-  - : 속성에 대해 setter로서 제공하는 함수 또는 setter가 없는 경우 {{jsxref("undefined")}} (접근자 설명자만).
+  - : A function which serves as a setter for the property, or {{jsxref("undefined")}} if
+    there is no setter (accessor descriptors only).
 - `configurable`
-  - : 이 속성 설명자의 유형이 바뀔 수 있는 경우에만 그리고 속성이 해당 객체에서 삭제될 수 있는 경우 `true`.
+  - : `true` if and only if the type of this property descriptor may be changed
+    and if the property may be deleted from the corresponding object.
 - `enumerable`
-  - : 이 속성이 해당 객체의 속성 열거 중에 나타나는 경우에만 `true`.
+  - : `true` if and only if this property shows up during enumeration of the
+    properties on the corresponding object.
 
-## 예
+## Examples
+
+### Using Object.getOwnPropertyDescriptor
 
 ```js
-var o, d;
+let o, d;
 
-o = { get foo() { return 17; } };
-d = Object.getOwnPropertyDescriptor(o, 'foo');
-// d는 { configurable: true, enumerable: true, get: /* getter 함수 */, set: undefined }
+o = {
+  get foo() {
+    return 17;
+  },
+};
+d = Object.getOwnPropertyDescriptor(o, "foo");
+console.log(d);
+// {
+//   configurable: true,
+//   enumerable: true,
+//   get: [Function: get foo],
+//   set: undefined
+// }
 
 o = { bar: 42 };
-d = Object.getOwnPropertyDescriptor(o, 'bar');
-// d는 { configurable: true, enumerable: true, value: 42, writable: true }
+d = Object.getOwnPropertyDescriptor(o, "bar");
+console.log(d);
+// {
+//   configurable: true,
+//   enumerable: true,
+//   value: 42,
+//   writable: true
+// }
+
+o = { [Symbol.for("baz")]: 73 };
+d = Object.getOwnPropertyDescriptor(o, Symbol.for("baz"));
+console.log(d);
+// {
+//   configurable: true,
+//   enumerable: true,
+//   value: 73,
+//   writable: true
+// }
 
 o = {};
-Object.defineProperty(o, 'baz', { value: 8675309, writable: false, enumerable: false });
-d = Object.getOwnPropertyDescriptor(o, 'baz');
-// d는 { value: 8675309, writable: false, enumerable: false, configurable: false }
+Object.defineProperty(o, "qux", {
+  value: 8675309,
+  writable: false,
+  enumerable: false,
+});
+d = Object.getOwnPropertyDescriptor(o, "qux");
+console.log(d);
+// {
+//   value: 8675309,
+//   writable: false,
+//   enumerable: false,
+//   configurable: false
+// }
 ```
 
-## 주의
+### Non-object coercion
 
-ES5에서, 이 메서드의 첫 번째 인수가 비객체(원시형)인 경우, 그러면 {{jsxref("TypeError")}}가 발생합니다. ES6에서, 비객체 첫 번째 인수는 먼저 객체로 강제됩니다.
+In ES5, if the first argument to this method is not an object (a primitive), then it
+will cause a {{jsxref("TypeError")}}. In ES2015, a non-object first argument will be
+coerced to an object at first.
 
 ```js
 Object.getOwnPropertyDescriptor("foo", 0);
-// TypeError: "foo"는 객체가 아닙니다  // ES5 코드
+// TypeError: "foo" is not an object  // ES5 code
 
 Object.getOwnPropertyDescriptor("foo", 0);
-// {configurable:false, enumerable:true, value:"f", writable:false}  // ES6 코드
+// Object returned by ES2015 code: {
+//   configurable: false,
+//   enumerable: true,
+//   value: "f",
+//   writable: false
+// }
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
 - {{jsxref("Object.defineProperty()")}}
 - {{jsxref("Reflect.getOwnPropertyDescriptor()")}}

@@ -1,51 +1,79 @@
 ---
-title: ArrayBuffer() 생성자
+title: ArrayBuffer() constructor
 slug: Web/JavaScript/Reference/Global_Objects/ArrayBuffer/ArrayBuffer
+page-type: javascript-constructor
+browser-compat: javascript.builtins.ArrayBuffer.ArrayBuffer
 ---
 
 {{JSRef}}
 
-**`ArrayBuffer()`** 생성자는 {{jsxref("ArrayBuffer")}} 객체를 생성합니다.
+The **`ArrayBuffer()`** constructor creates {{jsxref("ArrayBuffer")}} objects.
 
-{{EmbedInteractiveExample("pages/js/arraybuffer-constructor.html")}}
+{{EmbedInteractiveExample("pages/js/arraybuffer-constructor.html","shorter")}}
 
-## 구문
+## Syntax
 
-```js
-    new ArrayBuffer(length)
+```js-nolint
+new ArrayBuffer(length)
+new ArrayBuffer(length, options)
 ```
 
-### 매개변수
+> **Note:** `ArrayBuffer()` can only be constructed with [`new`](/en-US/docs/Web/JavaScript/Reference/Operators/new). Attempting to call it without `new` throws a {{jsxref("TypeError")}}.
+
+### Parameters
 
 - `length`
-  - : 생성할 `ArrayBuffer`의 바이트 크기.
+  - : The size, in bytes, of the array buffer to create.
+- `options` {{optional_inline}} {{experimental_inline}}
+  - : An object, which can contain the following properties:
+    - `maxByteLength` {{optional_inline}} {{experimental_inline}}
+      - : The maximum size, in bytes, that the array buffer can be resized to.
 
-### 반환 값
+### Return value
 
-지정한 크기를 가진 새로운 `ArrayBuffer` 객체. 내용은 모두 0으로 초기화됩니다.
+A new `ArrayBuffer` object of the specified size, with its {{jsxref("ArrayBuffer/maxByteLength", "maxByteLength")}} property set to the specified `maxByteLength` if one was specified. Its contents are initialized to 0.
 
-### 예외
+### Exceptions
 
-`length`가 {{jsxref("Number.MAX_SAFE_INTEGER")}}보다 크거나, 음수면 {{jsxref("RangeError")}}.
+- {{jsxref("RangeError")}}
+  - : Thrown if one of the following is true:
+    - `length` or `maxByteLength` is larger than {{jsxref("Number.MAX_SAFE_INTEGER")}} (≥ 2<sup>53</sup>) or negative.
+    - `length` is larger than `maxByteLength`.
 
-## 예제
+## Examples
 
-아래 예제 코드는 8바이트 버퍼를 생성한 후 {{jsxref("Int32Array")}} 뷰로 그 버퍼를 참조합니다.
+### Creating an ArrayBuffer
+
+In this example, we create a 8-byte buffer with a {{jsxref("Global_Objects/Int32Array",
+  "Int32Array")}} view referring to the buffer:
 
 ```js
-var buffer = new ArrayBuffer(8);
-var view   = new Int32Array(buffer);
+const buffer = new ArrayBuffer(8);
+const view = new Int32Array(buffer);
 ```
 
-## 명세
+### Creating a resizable ArrayBuffer
+
+In this example, we create a 8-byte buffer that is resizable to a max length of 16 bytes, then {{jsxref("ArrayBuffer/resize", "resize()")}} it to 12 bytes:
+
+```js
+const buffer = new ArrayBuffer(8, { maxByteLength: 16 });
+
+buffer.resize(12);
+```
+
+> **Note:** It is recommended that `maxByteLength` is set to the smallest value possible for your use case. It should never exceed `1073741824` (1GB) to reduce the risk of out-of-memory errors.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [JavaScript 형식화 배열](/ko/docs/Web/JavaScript/Typed_arrays)
+- [Polyfill of `ArrayBuffer` in `core-js`](https://github.com/zloirock/core-js#ecmascript-typed-arrays)
+- [JavaScript typed arrays](/en-US/docs/Web/JavaScript/Typed_arrays)
 - {{jsxref("SharedArrayBuffer")}}

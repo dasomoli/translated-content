@@ -1,69 +1,99 @@
 ---
 title: Reflect.get()
 slug: Web/JavaScript/Reference/Global_Objects/Reflect/get
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Reflect.get
 ---
+
 {{JSRef}}
 
-**`Reflect.get()`** 정적 메서드는 객체의 속성을 가져오는 함수입니다. `target[propertyKey]`와 비슷합니다.
+The **`Reflect.get()`** static method is like the [property accessor](/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors) syntax, but as a function.
 
 {{EmbedInteractiveExample("pages/js/reflect-get.html")}}
 
-## 구문
+## Syntax
 
-```js
-Reflect.get(target, propertyKey[, receiver])
+```js-nolint
+Reflect.get(target, propertyKey)
+Reflect.get(target, propertyKey, receiver)
 ```
 
-### 매개변수
+### Parameters
 
 - `target`
-  - : 속성을 가져올 대상 객체.
+  - : The target object on which to get the property.
 - `propertyKey`
-  - : 가져올 속성의 이름.
+  - : The name of the property to get.
 - `receiver` {{optional_inline}}
-  - : 대상 속성이 접근자라면 `this`의 값으로 사용할 값. {{jsxref("Proxy")}}와 함께 사용하면, 대상을 상속하는 객체를 사용할 수 있습니다.
+  - : The value of `this` provided for the call to `target` if a getter is encountered.
 
-### 반환 값
+### Return value
 
-속성의 값.
+The value of the property.
 
-### 예외
+### Exceptions
 
-`target`이 {{jsxref("Object")}}가 아니면 {{jsxref("TypeError")}}.
+- {{jsxref("TypeError")}}
+  - : Thrown if `target` is not an object.
 
-## 설명
+## Description
 
-`Reflect.get` 메서드는 객체 속성의 값을 가져올 수 있습니다. [속성 접근자](/ko/docs/Web/JavaScript/Reference/Operators/Property_Accessors)의 함수판이라고 할 수 있습니다.
+`Reflect.get()` provides the reflective semantic of a [property access](/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors). That is, `Reflect.get(target, propertyKey, receiver)` is semantically equivalent to:
 
-## 예제
+```js
+target[propertyKey];
+```
 
-### `Reflect.get()` 사용하기
+Note that in a normal property access, `target` and `receiver` would observably be the same object.
+
+`Reflect.get()` invokes the `[[Get]]` [object internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods) of `target`.
+
+## Examples
+
+### Using Reflect.get()
 
 ```js
 // Object
-var obj = { x: 1, y: 2 };
-Reflect.get(obj, 'x'); // 1
+const obj1 = { x: 1, y: 2 };
+Reflect.get(obj1, "x"); // 1
 
 // Array
-Reflect.get(['zero', 'one'], 1); // "one"
+Reflect.get(["zero", "one"], 1); // "one"
 
-// handler 매개변수와 Proxy
-var x = {p: 1};
-var obj = new Proxy(x, {
-  get(t, k, r) { return k + 'bar'; }
-});
-Reflect.get(obj, 'foo'); // "foobar"
+// Proxy with a get handler
+const obj2 = new Proxy(
+  { p: 1 },
+  {
+    get(t, k, r) {
+      return k + "bar";
+    },
+  }
+);
+Reflect.get(obj2, "foo"); // "foobar"
+
+//Proxy with get handler and receiver
+const obj3 = new Proxy(
+  { p: 1, foo: 2 },
+  {
+    get(t, prop, receiver) {
+      return receiver[prop] + "bar";
+    },
+  }
+);
+Reflect.get(obj, "foo", { foo: 3 }); // "3bar"
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `Reflect.get` in `core-js`](https://github.com/zloirock/core-js#ecmascript-reflect)
 - {{jsxref("Reflect")}}
-- [속성 접근자](/ko/docs/Web/JavaScript/Reference/Operators/Property_Accessors)
+- [Property accessors](/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors)
+- [`Proxy`'s `get` handler](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/get)

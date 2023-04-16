@@ -1,121 +1,86 @@
 ---
-title: '<kbd>: 키보드 입력 요소'
+title: "<kbd>: The Keyboard Input element"
 slug: Web/HTML/Element/kbd
+page-type: html-element
+browser-compat: html.elements.kbd
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<kbd>` 요소**는 키보드 입력, 음성 입력 등 임의의 장치를 사용한 사용자의 입력을 나타냅니다. 관례에 따라 {{glossary("user agent", "사용자 에이전트")}}의 고정폭 글꼴로 표시하지만, HTML 표준은 그런 점을 강제하지 않습니다.
+The **`<kbd>`** [HTML](/en-US/docs/Web/HTML) element represents a span of inline text denoting textual user input from a keyboard, voice input, or any other text entry device. By convention, the {{Glossary("user agent")}} defaults to rendering the contents of a `<kbd>` element using its default monospace font, although this is not mandated by the HTML standard.
 
 {{EmbedInteractiveExample("pages/tabbed/kbd.html", "tabbed-shorter")}}
 
-<table class="properties">
-  <tbody>
-    <tr>
-      <th scope="row">콘텐츠 카테고리</th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >, 뚜렷한 콘텐츠.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 콘텐츠</th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">태그 생략</th>
-      <td>{{no_tag_omission}}</td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 부모 요소</th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >를 허용하는 모든 요소.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>모두</td>
-    </tr>
-    <tr>
-      <th scope="row">DOM 인터페이스</th>
-      <td>{{domxref("HTMLElement")}}</td>
-    </tr>
-  </tbody>
-</table>
+`<kbd>` may be nested in various combinations with the {{HTMLElement("samp")}} (Sample Output) element to represent various forms of input or output based on visual cues.
 
-## 특성
+## Attributes
 
-이 요소는 [전역 특성](/ko/docs/HTML/Global_attributes)만 포함합니다.
+This element only includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-## 사용 일람
+## Usage notes
 
-`<kbd>` 요소를 다른 요소와 조합해 더 상세한 상황을 표현할 수 있습니다.
+Other elements can be used in tandem with `<kbd>` to represent more specific scenarios:
 
-- `<kbd>` 요소를 다른 `<kbd>` 요소 안에 배치해, 하나의 입력 안의 작은 부분이나, 실제 타이핑 키를 하나씩 나타낼 수 있습니다. 아래의 [입력 안의 키입력 나타내기](#입력_안의_키입력_나타내기) 예제를 참고하세요.
-- `<kbd>` 요소를 {{htmlelement("samp")}} 요소 안에 배치하면 시스템이 에코로써 다시 출력한 사용자 입력을 나타낼 수 있습니다. 아래의 [재출력된 입력](#재출력된_입력) 예제를 참고하세요.
-- 반면, `<samp>` 요소를 `<kbd>` 요소 안에 배치하면 화면에 표시된 메뉴 이름, 메뉴 항목, 버튼 이름 등 시스템이 출력한 텍스트를 기반으로 한 입력을 나타낼 수 있습니다. 아래의 [화면에 표시된 입력 옵션 나타내기](#화면에_표시된_입력_옵션_나타내기) 예제를 참고하세요.
+- Nesting a `<kbd>` element within another `<kbd>` element represents an actual key or other unit of input as a portion of a larger input. See [Representing keystrokes within an input](#representing_keystrokes_within_an_input) below.
+- Nesting a `<kbd>` element inside a {{HTMLElement("samp")}} element represents input that has been echoed back to the user by the system. See [Echoed input](#echoed_input), below, for an example.
+- Nesting a `<samp>` element inside a `<kbd>` element, on the other hand, represents input which is based on text presented by the system, such as the names of menus and menu items, or the names of buttons displayed on the screen. See the example under [Representing onscreen input options](#representing_onscreen_input_options) below.
 
-> **참고:** 사용자 지정 CSS 파일을 정의해 `<kbd>` 요소의 브라우저 기본 글꼴을 바꿀 수 있지만, 사용자 설정이 더 우선할 수도 있습니다.
+> **Note:** You can define a custom style to override the browser's default font selection for the `<kbd>` element, although the user's preferences may potentially override your CSS.
 
-## 예제
+## Examples
 
-### 기본 예제
+### Basic example
 
 ```html
-<p><kbd>help mycommand</kbd> 명령어를 입력해 "mycommand" 명령에 대한 문서를 확인하세요.</p>
+<p>
+  Use the command <kbd>help mycommand</kbd> to view documentation for the
+  command "mycommand".
+</p>
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("기본_예제", 350, 80)}}
+{{ EmbedLiveSample('Basic_example', 350, 80) }}
 
-### 입력 안의 키입력 나타내기
+### Representing keystrokes within an input
 
-다수의 키입력으로 구성된 입력을 설명할 땐 여러 개의 `<kbd>` 요소를 중첩할 수 있습니다. 바깥 `<kbd>`는 전체 입력을, 각각의 키입력 또는 구성요소는 안쪽의 `<kbd>`로 나타냅니다.
+To describe an input comprised of multiple keystrokes, you can nest multiple `<kbd>` elements, with an outer `<kbd>` element representing the overall input and each individual keystroke or component of the input enclosed within its own `<kbd>`.
 
-#### 스타일 없이
+#### Unstyled
 
-우선 기본 HTML에서 어떻게 나타나나 확인해보겠습니다.
+First, let's look at what this looks like as just plain HTML.
 
 ##### HTML
 
 ```html
-<p>새로운 문서는 키보드 단축키
-<kbd><kbd>Ctrl</kbd>+<kbd>N</kbd></kbd>으로 만들 수 있습니다.</p>
+<p>
+  You can also create a new document using the keyboard shortcut
+  <kbd><kbd>Ctrl</kbd>+<kbd>N</kbd></kbd>.
+</p>
 ```
 
-단축키 조합 전체를 하나의 `<kbd>`로 감싼 후, 조합 구성요소를 나타내기 위해 각각의 키보드 키를 다른 `<kbd>`로 감싼 모습입니다.
+This wraps the entire key sequence in an outer `<kbd>` element, then each individual key within its own, in order to denote the components of the sequence.
 
-> **참고:** 꼭 이렇게 중첩할 필요는 없습니다. 바깥 `<kbd>`를 생략하고, `<kbd>Ctrl</kbd>+<kbd>N</kbd>`로 작성하더라도 완벽하게 유효한 표기법입니다.
+> **Note:** You don't need to do all this wrapping; you can choose to simplify it by leaving out the external `<kbd>` element. In other words, simplifying this to just `<kbd>Ctrl</kbd>+<kbd>N</kbd>` would be perfectly valid.
 >
-> 다만 현재 사용 중인 스타일에 따라 중첩이 유용할 때도 있습니다.
+> **Note:** Depending on your style sheet, though, you may find it useful to do this kind of nesting.
 
-##### 결과
+##### Result
 
-스타일 시트 없는 출력은 다음과 같습니다.
+The output looks like this without a style sheet applied:
 
-{{EmbedLiveSample("스타일_없이", 650, 80)}}
+{{EmbedLiveSample("Unstyled", 650, 80)}}
 
-#### 스타일 적용
+#### With custom styles
 
-CSS를 좀 더해서 명확하게 바꿀 수 있습니다.
+We can make more sense of this by adding some CSS:
 
 ##### CSS
 
-키보드 버튼을 렌더링 할 때 사용할 수 있는, `<kbd>` 요소의 `"key"` 스타일을 추가합니다.
+We add a new selector for nested `<kbd>` elements, `kbd>kbd`, which we can apply when rendering keyboard keys:
 
 ```css
-kbd.key {
+kbd>kbd {
   border-radius: 3px;
   padding: 1px 2px 0;
   border: 1px solid black;
@@ -124,64 +89,131 @@ kbd.key {
 
 ##### HTML
 
-HTML을 업데이트해 앞선 스타일을 적용합니다.
+Then we update the HTML to use this class on the keys in the output to be presented:
 
 ```html
-<p>새로운 문서는 키보드 단축키
-<kbd><kbd class="key">Ctrl</kbd>+<kbd class="key">N</kbd></kbd>으로 만들 수 있습니다.</p>
+<p>
+  You can also create a new document by pressing
+  <kbd><kbd>Ctrl</kbd>+<kbd>N</kbd></kbd>.
+</p>
 ```
 
-##### 결과
+##### Result
 
-원하던 바로 그 결과입니다!
+The result is just what we want!
 
-{{EmbedLiveSample("스타일_적용", 650, 80)}}
+{{EmbedLiveSample("With_custom_styles", 650, 80)}}
 
-### 재출력된 입력
+### Echoed input
 
-`<kbd>` 요소를 {{htmlelement("samp")}} 요소 안에 배치하면 시스템이 다시 출력한 입력을 나타낼 수 있습니다.
+Nesting a `<kbd>` element inside a {{HTMLElement("samp")}} element represents input that has been echoed back to the user by the system.
 
 ```html
-<p>구문 오류가 발생하면, 오류 원인을 찾을 수 있도록
-입력받은 명령을 다시 출력합니다.</p>
+<p>
+  If a syntax error occurs, the tool will output the initial command you typed
+  for your review:
+</p>
 <blockquote>
   <samp><kbd>custom-git ad my-new-file.cpp</kbd></samp>
 </blockquote>
 ```
 
-결과는 다음과 같습니다.
+#### Result
 
-{{EmbedLiveSample("재출력된_입력", 650, 120)}}
+{{EmbedLiveSample("Echoed_input", 650, 100)}}
 
-### 화면에 표시된 입력 옵션 나타내기
+### Representing onscreen input options
 
-{{htmlelement("samp")}} 요소를 `<kbd>` 요소 안에 배치하면 시스템이 화면에 표시하는 입력 선택지(메뉴, 버튼...)에 기반한 사용자 입력을 나타냅니다.
+Nesting a `<samp>` element inside a `<kbd>` element represents input which is based on text presented by the system, such as the names of menus and menu items, or the names of buttons displayed on the screen.
 
-예를 들면, "파일" 메뉴의 "새 문서" 옵션을 선택하는 방법에 대해 설명하는 HTML은 다음과 같은 형태를 가집니다.
+For example, you can explain how to choose the "New Document" option in the "File" menu using HTML that looks like this:
 
 ```html
-<p>새로운 파일을 생성하려면, <kbd>
-<kbd><samp>파일</samp></kbd>⇒<kbd><samp>새 문서</samp></kbd>
-</kbd> 메뉴를 선택하세요.
+<p>
+  To create a new file, choose the menu option
+  <kbd
+    ><kbd><samp>File</samp></kbd>⇒<kbd><samp>New Document</samp></kbd></kbd>.
+</p>
 
-<p>파일의 이름을 입력한 후, <kbd><samp>확인</samp></kbd>을
-누르는 걸 잊지 마세요.</p>
+<p>
+  Don't forget to click the <kbd><samp>OK</samp></kbd> button to confirm once
+  you've entered the name of the new file.
+</p>
 ```
 
-흥미로운 중첩 사용법을 볼 수 있습니다. 메뉴 옵션 설명을 보면, 전체 입력 시퀀스가 하나의 `<kbd>` 요소에 들어간 것을 볼 수 있으며, 메뉴 이름("파일")과 메뉴 항목("새 문서") 둘 다 각자의 `<kbd>`와 `<samp>`로 표시한 것을 볼 수 있습니다. `<kbd>` 안에 `<samp>`가 존재하므로, "파일"과 "새 문서"는 화면 위의 위젯을 사용한 입력임을 알 수 있습니다.
+This does some interesting nesting. For the menu option description, the entire input is enclosed in a `<kbd>` element. Then, inside that, both the menu and menu item names are contained within both `<kbd>` and `<samp>`, indicating an input which is selected from a screen widget.
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("화면에_표시된_입력_옵션_나타내기", 650, 120)}}
+{{EmbedLiveSample("Representing_onscreen_input_options", 650, 120)}}
 
-## 명세
+## Technical summary
+
+<table class="properties">
+  <tbody>
+    <tr>
+      <th scope="row">
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
+      </th>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
+        >,
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >, palpable content.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted content</th>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >Phrasing content</a
+        >.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Tag omission</th>
+      <td>{{no_tag_omission}}</td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted parents</th>
+      <td>
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
+          >No corresponding role</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>Any</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
+      <td>{{domxref("HTMLElement")}}</td>
+    </tr>
+  </tbody>
+</table>
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{htmlelement("code")}}

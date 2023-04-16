@@ -1,41 +1,47 @@
 ---
 title: AudioWorklet
 slug: Web/API/AudioWorklet
+page-type: web-api-interface
+browser-compat: api.AudioWorklet
 ---
+
 {{APIRef("Web Audio API")}}{{securecontext_header}}
 
-[Web Audio API](/ko/docs/Web/API/Web_Audio_API)의 **`AudioWorklet`** 인터페이스는 아주 낮은 레이턴시의 오디오 프로세싱을 제공하기 위해 별도의 스레드에서 실행되는 사용자 정의 오디오 프로세싱 스크립트를 제공하려는 목적으로 사용됩니다.
+The **`AudioWorklet`** interface of the [Web Audio API](/en-US/docs/Web/API/Web_Audio_API) is used to supply custom audio processing scripts that execute in a separate thread to provide very low latency audio processing.
 
-worklet의 코드는 worklet과 다른 오디오 노드에 의해 공유되는 별도의 Web Audio 스레드를 사용하며 {{domxref("AudioWorkletGlobalScope")}} 전역 실행 컨텍스트에서 실행됩니다.
+The worklet's code is run in the {{domxref("AudioWorkletGlobalScope")}} global execution context, using a separate Web Audio thread which is shared by the worklet and other audio nodes.
 
-오디오 컨텍스트의 `AudioWorklet` 인스턴스에 {{domxref("BaseAudioContext.audioWorklet")}} 속성을 통해 접근합니다.
+Access the audio context's instance of `AudioWorklet` through the {{domxref("BaseAudioContext.audioWorklet")}} property.
 
-## 속성
+{{InheritanceDiagram}}
 
-_`AudioWorklet` 인터페이스는 자신이 소유하는 어떠한 속성도 정의하지 않으나, {{domxref("Worklet")}}의 속성을 상속받습니다._
+## Instance properties
 
-## 메서드
+_The `AudioWorklet` interface does not define any properties of its own, but does inherit properties of {{domxref("Worklet")}}._
 
-_이 인터페이스는 {{domxref('Worklet')}}으로부터 메서드를 상속받습니다. `AudioWorklet` 인터페이스는 자신이 소유하는 어떠한 메서드도 정의하지 않습니다._
+## Instance methods
 
-## 이벤트
+_This interface inherits methods from {{domxref('Worklet')}}. The `AudioWorklet` interface does not define any methods of its own._
 
-_`AudioWorklet`은 응답하는 이벤트를 가지고 있지 않습니다._
+## Events
 
-## 예제
+_`AudioWorklet` has no events to which it responds._
 
-{{domxref("AudioWorkletNode")}}에서 사용자 정의 오디오 노드 생성에 대한 완전한 예제를 참고해 보세요.
+## Examples
 
-## 명세
+See {{domxref("AudioWorkletNode")}} for complete examples of custom audio node creation.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{domxref("AudioWorkletGlobalScope")}} — `AudioWorklet`의 전역 실행 컨텍스트
-- [Web Audio API](/ko/docs/Web/API/Web_Audio_API)
-- [Web Audio API 사용하기](/ko/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)
+- {{domxref("AudioWorkletGlobalScope")}} — the global execution context of an `AudioWorklet`
+- [Web Audio API](/en-US/docs/Web/API/Web_Audio_API)
+- [Using the Web Audio API](/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)
+- [Using AudioWorklet](/en-US/docs/Web/API/Web_Audio_API/Using_AudioWorklet)

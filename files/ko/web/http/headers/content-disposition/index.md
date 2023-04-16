@@ -1,22 +1,26 @@
 ---
 title: Content-Disposition
 slug: Web/HTTP/Headers/Content-Disposition
+page-type: http-header
+browser-compat: http.headers.Content-Disposition
 ---
 
 {{HTTPSidebar}}
-일반적인 HTTP 응답에서 **`Content-Disposition`** 헤더는 컨텐츠가 브라우저에 _inline_ 되어야 하는 웹페이지 자체이거나 웹페이지의 일부인지, 아니면 *attachment*로써 다운로드 되거나 로컬에 저장될 용도록 쓰이는 것인지를 알려주는 헤더입니다.
 
-`multipart/form-data` 본문에서의 **`Content-Disposition`** 일반 헤더는 multipart의 하위파트에서 활용될 수 있는데, 이 때 이 헤더는 multipart 본문 내의 필드에 대한 정보를 제공합니다. multipart의 하위파트는 {{HTTPHeader("Content-Type")}} 헤더에 정의된 _boundary_ 구분자에 의해 구분되며, `Content-Disposition` 헤더를 multipart 자체에 사용하는 것은 아무런 효과를 발휘하지 못합니다.
+In a regular HTTP response, the **`Content-Disposition`** response header is a header indicating if the content is expected to be displayed _inline_ in the browser, that is, as a Web page or as part of a Web page, or as an _attachment_, that is downloaded and saved locally.
 
-`Content-Disposition` 헤더는 광의의 MIME 맥락 속에서 정의되었는데, 그 정의에서 사용되는 파라미터 중 일부인 `form-data`, `name` 그리고 `filename`만이 HTTP forms와 {{HTTPMethod("POST")}} 요청에 적용될 수 있습니다. 여기서 `name`과 `filename`은 필수적인 파라미터는 아닙니다.
+In a `multipart/form-data` body, the HTTP **`Content-Disposition`** general header is a header that must be used on each subpart of a multipart body to give information about the field it applies to. The subpart is delimited by the _boundary_ defined in the {{HTTPHeader("Content-Type")}} header. Used on the body itself, `Content-Disposition` has no effect.
+
+The `Content-Disposition` header is defined in the larger context of MIME messages for email, but only a subset of the possible parameters apply to HTTP forms and {{HTTPMethod("POST")}} requests. Only the value `form-data`, as well as the optional directive `name` and `filename`, can be used in the HTTP context.
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">Header type</th>
       <td>
-        {{Glossary("Response header")}} (for the main body)<br />{{Glossary("General header")}}
-        (for a subpart of a multipart body)
+        {{Glossary("Response header")}} (for the main body),<br />{{Glossary("Request header")}},
+        {{Glossary("Response header")}} (for a subpart of a multipart
+        body)
       </td>
     </tr>
     <tr>
@@ -26,49 +30,56 @@ slug: Web/HTTP/Headers/Content-Disposition
   </tbody>
 </table>
 
-## Syntax (구문)
+## Syntax
 
-### As a response header for the main body (메인 바디를 위한 응답 헤더로서)
+### As a response header for the main body
 
-HTTP 구문의 첫번째 파라미터는 `inline` (기본값, 웹 페이지 안에서 또는 웹 페이지로 나타남) 또는 `attachment` (반드시 다운로드 받아야 하며 대부분의 브라우저는 'Save as'(새이름으로저장)창을 보여주고 `filename` 파라미터들이 존재한다면 그 이름을 새이름으로 미리 채워줌)입니다.
+The first parameter in the HTTP context is either `inline` (default value, indicating it can be displayed inside the Web page, or as the Web page) or `attachment` (indicating it should be downloaded; most browsers presenting a 'Save as' dialog, prefilled with the value of the `filename` parameters if present).
 
-```
+```http
 Content-Disposition: inline
 Content-Disposition: attachment
 Content-Disposition: attachment; filename="filename.jpg"
 ```
 
-### As a header for a multipart body (멀티파트 바디를 위한 헤더로서)
+> **Note:** Chrome, and Firefox 82 and later, prioritize the HTML [\<a> element's](/en-US/docs/Web/HTML/Element/a) `download` attribute over the `Content-Disposition: inline` parameter (for [same-origin URLs](/en-US/docs/Web/Security/Same-origin_policy)). Earlier Firefox versions prioritize the header and will display the content inline.
 
-HTTP 구문의 첫번째 파라미터는 언제나 `form-data`입니다. 추가적인 파라미터들은 대소문자 구분이 없으며, `'='` 다음에 "문자열로 표현한 아규먼트들"을 가집니다. 다중 파라미터들은 세미콜론 (`';'`)으로 구분합니다.
+### As a header for a multipart body
 
-```
-Content-Disposition: form-data
+A `multipart/form-data` body requires a `Content-Disposition` header to provide information for each subpart of the form (e.g. for every form field and any files that are part of field data). The first directive is always `form-data`, and the header _must_ also include a `name` parameter to identify the relevant field. Additional directives are case-insensitive and have arguments that use quoted-string syntax after the `'='` sign. Multiple parameters are separated by a semicolon (`';'`).
+
+```http
 Content-Disposition: form-data; name="fieldName"
 Content-Disposition: form-data; name="fieldName"; filename="filename.jpg"
 ```
 
-### Directives (지시자들)
+### Directives
 
 - `name`
 
-  - : 이름(`name`) 다음에 오는 문자열에는 이 서브파트가 참조하는 폼의 HTML 필드에서 사용한 그 이름이 들어갑니다. 같은 필드에 여러개의 파일이 있을 경우 (예 : `{{HTMLElement("input","&lt;input type=\"file\"&gt;")}}` 요소의 {{htmlattrxref("multiple", "input")}} 속성), 같은 이름으로 여러개의 서브파트들이 존재할 수 있습니다.
+  - : Is followed by a string
+    containing the name of the HTML field in the form
+    that the content of this subpart refers to.
+    When dealing with multiple files in the same field
+    (for example, the [`multiple`](/en-US/docs/Web/HTML/Element/input#multiple) attribute of an `{{HTMLElement("input","&lt;input type=\"file\"&gt;")}}` element),
+    there can be several subparts with the same name.
 
-  `name`의 값이 `'_charset_'`인 것은 그 부분이 HTML필드가 아니라, charset을 명시하지 않고 사용할 수 있는 기본 charset임을 나타냅니다.
+    A `name` with a value of `'_charset_'` indicates
+    that the part is not an HTML field,
+    but the default charset to use for parts without explicit charset information.
 
 - `filename`
-
-  - : 파일명(`filename`) 다음에 오는 문자열에는 전송된 해당 파일의 원래 이름이 들어갑니다. 파일명은 언제나 선택사항이지만, 맹목적으로 쓰여서는 안됩니다 : 경로 정보가 공개되어야 하며, 서버 파일 시스템 규칙에 따라 전환되어야 합니다. 이러한 파라미터들은 대부분 지시적 정보(indicative information)를 제공합니다. 파일명이 `Content-Disposition: attachment`과 같이 사용되면 최종적으로 사용자가 "새이름으로저장(Save As)" 창에서 보게 되는 파일명의 기본값으로 사용됩니다.
-
+  - : Is followed by a string containing the original name of the file transmitted. The filename is always optional and must not be used blindly by the application: path information should be stripped, and conversion to the server file system rules should be done. This parameter provides mostly indicative information. When used in combination with `Content-Disposition: attachment`, it is used as the default filename for an eventual "Save As" dialog presented to the user.
 - `filename*`
+  - : The parameters `filename` and `filename*` differ only in that `filename*` uses the encoding defined in [RFC 5987](https://datatracker.ietf.org/doc/html/rfc5987). When both `filename` and `filename*` are present in a single header field value, `filename*` is preferred over `filename` when both are understood.
 
-  - : "filename"과의 유일한 차이점은 "filename*"는 인코딩으로 [RFC 5987](https://tools.ietf.org/html/rfc5987)을 사용한다는 것 뿐입니다. 하나의 헤더 필드에 "filename"과 "filename*"이 둘 다 사용된다면 "filename*"이 보다 우선됩니다.
+> **Warning:** The string following `filename` should always be put into quotes; but, for compatibility reasons, many browsers try to parse unquoted names that contain spaces.
 
 ## Examples
 
 A response triggering the "Save As" dialog:
 
-```
+```http
 200 OK
 Content-Type: text/html; charset=utf-8
 Content-Disposition: attachment; filename="cool.html"
@@ -81,7 +92,7 @@ This simple HTML file will be saved as a regular download rather than displayed 
 
 An example of an HTML form posted using the `multipart/form-data` format that makes use of the `Content-Disposition` header:
 
-```
+```http
 POST /test.html HTTP/1.1
 Host: example.org
 Content-Type: multipart/form-data;boundary="boundary"
@@ -97,20 +108,21 @@ value2
 --boundary--
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## Compatibility notes
+### Compatibility notes
 
 - Firefox 5 handles the `Content-Disposition` HTTP response header more effectively if both the `filename` and `filename*` parameters are provided; it looks through all provided names, using the `filename*` parameter if one is available, even if a `filename` parameter is included first. Previously, the first matching parameter would be used, thereby preventing a more appropriate name from being used. See [Firefox bug 588781](https://bugzil.la/588781).
+- Firefox 82 (and later) and Chrome prioritize the HTML [\<a> element's](/en-US/docs/Web/HTML/Element/a) `download` attribute over the `Content-Disposition: inline` parameter (for [same-origin URLs](/en-US/docs/Web/Security/Same-origin_policy)). Earlier Firefox versions prioritize the header and will display the content inline.
 
 ## See also
 
-- [HTML Forms](/ko/docs/Web/Guide/HTML/Forms)
+- [HTML Forms](/en-US/docs/Learn/Forms)
 - The {{HTTPHeader("Content-Type")}} defining the boundary of the multipart body.
 - The {{domxref("FormData")}} interface used to manipulate form data for use in the {{domxref("XMLHttpRequest")}} API.

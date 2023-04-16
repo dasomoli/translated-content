@@ -1,55 +1,64 @@
 ---
 title: Reflect.preventExtensions()
 slug: Web/JavaScript/Reference/Global_Objects/Reflect/preventExtensions
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Reflect.preventExtensions
 ---
+
 {{JSRef}}
 
-**`Reflect.preventExtensions()`** 정적 메서드는 새로운 속성을 객체에 추가하지 못하도록 완전히 막습니다. 즉, 미래의 객체 확장을 막습니다. {{jsxref("Object.preventExtensions()")}}와 유사하지만 [차이점](#object.preventextensions_와의_차이점)도 있습니다.
+The **`Reflect.preventExtensions()`** static method is like {{jsxref("Object.preventExtensions()")}}. It prevents new properties from ever being added to an object (i.e., prevents future extensions to the object).
 
 {{EmbedInteractiveExample("pages/js/reflect-preventextensions.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 Reflect.preventExtensions(target)
 ```
 
-### 매개변수
+### Parameters
 
 - `target`
-  - : 확장을 방지할 대상 객체.
+  - : The target object on which to prevent extensions.
 
-### 반환 값
+### Return value
 
-대상의 확장을 성공적으로 방지했는지 나타내는 {{jsxref("Boolean")}}.
+A {{jsxref("Boolean")}} indicating whether or not the target was successfully set to prevent extensions.
 
-### 예외
+### Exceptions
 
-`target`이 {{jsxref("Object")}}가 아니면 {{jsxref("TypeError")}}.
+- {{jsxref("TypeError")}}
+  - : Thrown if `target` is not an object.
 
-## 설명
+## Description
 
-`Reflect.preventExtensions()` 메서드는 새로운 속성을 객체에 추가하지 못하도록 완전히 막습니다. 즉, 미래의 객체 확장을 막습니다. {{jsxref("Object.preventExtensions()")}}와 유사합니다.
+`Reflect.preventExtensions()` provides the reflective semantic of preventing extensions of an object. The differences with {{jsxref("Object.isExtensible()")}} are:
 
-## 예제
+- `Reflect.preventExtensions()` throws a {{jsxref("TypeError")}} if the target is not an object, while `Object.preventExtensions()` always returns non-object targets as-is.
+- `Reflect.preventExtensions()` returns a {{jsxref("Boolean")}} indicating whether or not the target was successfully set to prevent extensions, while `Object.preventExtensions()` returns the target object.
 
-### `Reflect.preventExtensions()` 사용하기
+`Reflect.preventExtensions()` invokes the `[[PreventExtensions]]` [object internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods) of `target`.
 
-{{jsxref("Object.preventExtensions()")}}도 참고하세요.
+## Examples
+
+### Using Reflect.preventExtensions()
+
+See also {{jsxref("Object.preventExtensions()")}}.
 
 ```js
-// 객체는 기본적으로 확장 가능
-var empty = {};
-Reflect.isExtensible(empty); // === true
+// Objects are extensible by default.
+const empty = {};
+Reflect.isExtensible(empty); // true
 
-// ...하지만 바꿀 수 있음
+// ...but that can be changed.
 Reflect.preventExtensions(empty);
-Reflect.isExtensible(empty); // === false
+Reflect.isExtensible(empty); // false
 ```
 
-### `Object.preventExtensions()`와의 차이점
+### Difference with Object.preventExtensions()
 
-`Reflect.preventExtensions()`는 첫 번째 매개변수가 {{glossary("Primitive", "원시값")}}이면 {{jsxref("TypeError")}}를 던집니다. 반면 {{jsxref("Object.preventExtensions()")}}는 우선 객체로 변환을 시도합니다.
+If the `target` argument to this method is not an object (a primitive), then it will cause a {{jsxref("TypeError")}}. With {{jsxref("Object.preventExtensions()")}}, a non-object `target` will be returned as-is without any errors.
 
 ```js
 Reflect.preventExtensions(1);
@@ -59,15 +68,17 @@ Object.preventExtensions(1);
 // 1
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `Reflect.preventExtensions` in `core-js`](https://github.com/zloirock/core-js#ecmascript-reflect)
 - {{jsxref("Reflect")}}
-- {{jsxref("Object.isExtensible()")}}
+- {{jsxref("Object.preventExtensions()")}}
+- [`Proxy`'s `preventExtensions` handler](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/preventExtensions)

@@ -1,15 +1,22 @@
 ---
-title: 인라인 요소
+title: Inline elements
 slug: Web/HTML/Inline_elements
+page-type: guide
 ---
 
-HTML(**Hypertext Markup Language**)의 요소는 역사적으로 ["블록 레벨" 요소](/ko/docs/Web/HTML/Block-level_elements)와 "인라인" 요소로 분류됐습니다. 인라인 요소는 콘텐츠의 흐름을 끊지 않고, 요소를 구성하는 태그에 할당된 공간만 차지합니다. 이 글은 인라인 요소란 무엇인지와 블록 레벨 요소와의 차이점을 살펴봅니다.
+{{HTMLSidebar}}
 
-> **참고:** 인라인 요소는 새로운 줄을 만들지 않으며 필요한 너비만 차지합니다.
+In this article, we'll examine HTML inline-level elements and how they differ from [block-level elements](/en-US/docs/Web/HTML/Block-level_elements).
 
-## 인라인 vs. 블록 레벨 요소
+HTML (**HyperText Markup Language**) elements historically were categorized as either "block-level" elements or "inline-level" elements. Since this is a presentational characteristic it is nowadays specified by CSS in the [Flow Layout](/en-US/docs/Web/CSS/CSS_Flow_Layout).
 
-간단한 예제만으로 쉽게 설명할 수 있습니다. 우선 다음 CSS를 사용하겠습니다.
+Inline elements are those which only occupy the space bounded by the tags defining the element, instead of breaking the flow of the content.
+
+> **Note:** An inline element does not start on a new line and only takes up as much width as necessary.
+
+## Inline vs. block-level elements: a demonstration
+
+This is most easily demonstrated with a simple example. First, some simple CSS that we'll be using:
 
 ```css
 .highlight {
@@ -17,75 +24,89 @@ HTML(**Hypertext Markup Language**)의 요소는 역사적으로 ["블록 레벨
 }
 ```
 
-### 인라인
+### Inline
 
-인라인 요소를 보이는 다음 예제를 확인해주세요.
+Let's look at the following example which demonstrates an inline element:
 
 ```html
-<div>다음 span은 <span class="highlight">인라인 요소</span>로,
-영향 범위의 시작과 끝을 알 수 있도록 배경색을 지정했습니다.</div>
+<div>
+  The following span is an <span class="highlight">inline element</span>; its
+  background has been colored to display both the beginning and end of the
+  inline element's influence.
+</div>
 ```
 
-이 예제에서 {{HTMLElement("div")}}는 텍스트를 가진 블록 레벨 요소입니다. 그 텍스트 안에는 인라인 요소인 {{HTMLElement("span")}}이 존재합니다. `<span>`은 인라인이기 때문에 전체 문단이 끊기지 않고 하나로 그려집니다. 결과도 확인해보세요.
+In this example, the {{HTMLElement("div")}} block-level element contains some text. Within that text is a {{HTMLElement("span")}} element, which is an inline element. Because the `<span>` element is inline, the paragraph correctly renders as a single, unbroken text flow, like this:
 
-{{EmbedLiveSample("인라인", 600, 80)}}
-
-<div class="hidden"><p>For looks, this CSS (not displayed in standard reading mode) is also used:</p><pre class="brush: css">body {
+```css hidden
+body {
   margin: 0;
   padding: 4px;
   border: 1px solid #333;
 }
 
 .highlight {
-background-color:#ee3;
-}</pre></div>
-
-### 블록 레벨
-
-이제 아까 만든 `<span>`을 마치 {{htmlelement("p")}}처럼 블록 레벨인 요소로 바꿔보겠습니다.
-
-```html
-<div>다음 p는 <p class="highlight">블록 레벨 요소</p>로,
-영향 범위의 시작과 끝을 알 수 있도록 배경색을 지정했습니다.
+  background-color: #ee3;
+}
 ```
 
-<div class="hidden"><p>The CSS (not displayed in standard reading mode) is also used:</p><pre class="brush: css">body {
+{{EmbedLiveSample("Inline", 600, 80)}}
+
+### Block-level
+
+Now let's change that `<span>` into a block-level element, such as {{HTMLElement("p")}}:
+
+```html
+<div>
+  The following paragraph is a
+  <p class="highlight">block-level element;</p>
+  its background has been colored to display both the beginning and end of the
+  block-level element's influence.
+</div>
+```
+
+```css hidden
+body {
   margin: 0;
   padding: 4px;
   border: 1px solid #333;
 }
 
 .highlight {
-background-color:#ee3;
-}</pre></div>
+  background-color: #ee3;
+}
+```
 
-아까와 같은 CSS를 사용했을 때, 결과는 다음과 같습니다.
+Rendered using the same CSS as before, we get:
 
-{{EmbedLiveSample("블록_레벨", 600, 150)}}
+{{EmbedLiveSample("Block-level", 600, 150)}}
 
-차이가 보이나요? `<p>` 요소는 텍스트의 레이아웃을 완전히 바꿔, `<p>` 이전과 자기 자신의 텍스트, 그리고 `<p>` 이후의 세 부분으로 나눠버렸습니다.
+See the difference? The `<p>` element totally changes the layout of the text, splitting it into three segments: the text before the `<p>`, then the `<p>`'s text, and finally the text following the `<p>`.
 
-### 요소 레벨 변경
+### Changing element levels
 
-CSS {{cssxref("display")}} 속성을 사용해 요소의 시각적 표현 레벨을 바꿀 수 있습니다. 예컨대 `display`의 값을 `inline`에서 `block`으로 바꾸면, 브라우저에게 이 인라인 요소를 인라인 박스 대신 블록 박스를 사용해 그리라고 알리는 것입니다. 그러나 이 방법을 사용해도 요소의 카테고리와 콘텐츠 모델은 바뀌지 않습니다. 즉 `<span>` 요소의 `display`를 `block`으로 지정한다 해도, 그 안에 `<div>`를 넣을 수는 없습니다.
+You can change the _visual presentation_ of an element using the CSS {{cssxref("display")}} property. For example, by changing the value of `display` from `"inline"` to `"block"`, you can tell the browser to render the inline element in a block box rather than an inline box, and vice versa. However, doing this will not change the _category_ and the _content model_ of the element. For example, even if the `display` of the `span` element is changed to `"block"`, it still would not allow to nest a `div` element inside it.
 
-## 개념적 차이
+## Conceptual differences
 
-다음은 인라인과 블록 레벨 요소의 간략한 개념적 차이입니다.
+In brief, here are the basic conceptual differences between inline and block-level elements:
 
-- 콘텐츠 모델
-  - : 보통 인라인 요소는 데이터와 다른 인라인 요소만 포함할 수 있으며, 블록 요소는 포함할 수 없습니다.
-- 서식
-  - : 기본적으로, 인라인 요소는 문서 흐름에서 줄바꿈을 강제하지 않습니다. 반면 블록 요소는 줄바꿈을 유발합니다. (물론 언제나처럼 CSS로 바꿀 수 있습니다)
+- Content model
 
-## 요소 목록
+  - : Generally, inline elements may contain only data and other inline elements. An exception is the inline `a` element which may contain block level elements such as `div`.
+    > **Note:** Links that wrap multiple lines of block-level content make for a poor-to-unusable experience for some assistive technologies and should be avoided.
 
-다음은 기본값이 인라인인 요소의 목록입니다. (사실 HTML5는 블록과 인라인 요소를 정의하지 않습니다. [콘텐츠 카테고리](/ko/docs/Web/Guide/HTML/Content_categories)를 사용하세요)
+- Formatting
+  - : By default, inline elements do not force a new line to begin in the document flow. Block elements, on the other hand, typically cause a line break to occur (although, as usual, this can be changed using CSS).
+
+## List of "inline" elements
+
+The following elements are inline by default (although block and inline elements are no longer defined in HTML 5, use [content categories](/en-US/docs/Web/HTML/Content_categories) instead):
 
 - {{ HTMLElement("a") }}
 - {{ HTMLElement("abbr") }}
 - {{ HTMLElement("acronym") }}
-- {{ HTMLElement("audio") }} (컨트롤이 보이면)
+- {{ HTMLElement("audio") }} (if it has visible controls)
 - {{ HTMLElement("b") }}
 - {{ HTMLElement("bdi") }}
 - {{ HTMLElement("bdo") }}
@@ -128,7 +149,7 @@ CSS {{cssxref("display")}} 속성을 사용해 요소의 시각적 표현 레벨
 - {{ HTMLElement("strong") }}
 - {{ HTMLElement("sub") }}
 - {{ HTMLElement("sup") }}
-- {{ HTMLElement("svg") }}
+- {{ SVGElement("svg") }}
 - {{ HTMLElement("template") }}
 - {{ HTMLElement("textarea") }}
 - {{ HTMLElement("time") }}
@@ -138,12 +159,10 @@ CSS {{cssxref("display")}} 속성을 사용해 요소의 시각적 표현 레벨
 - {{ HTMLElement("video") }}
 - {{ HTMLElement("wbr") }}
 
-## 같이 보기
+## See also
 
-- [블록 레벨 요소](/ko/docs/Web/HTML/Block-level_elements)
-- [HTML 요소 참고서](/ko/docs/Web/HTML/Element)
+- [Block-level elements](/en-US/docs/Web/HTML/Block-level_elements)
+- [HTML element reference](/en-US/docs/Web/HTML/Element)
 - {{cssxref("display")}}
-- [콘텐츠 카테고리](/ko/docs/Web/Guide/HTML/Content_categories)
-- [일반 플로우에서의 블록과 인라인 레이아웃](/ko/docs/Web/CSS/CSS_Flow_Layout/Block_and_Inline_Layout_in_Normal_Flow)
-
-{{QuickLinksWithSubpages("/ko/docs/Web/HTML/")}}
+- [Content categories](/en-US/docs/Web/HTML/Content_categories)
+- [Block and Inline Layout in Normal Flow](/en-US/docs/Web/CSS/CSS_Flow_Layout/Block_and_Inline_Layout_in_Normal_Flow)

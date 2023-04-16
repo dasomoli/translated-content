@@ -1,71 +1,116 @@
 ---
 title: overflow-wrap
 slug: Web/CSS/overflow-wrap
+page-type: css-property
+browser-compat: css.properties.overflow-wrap
 ---
+
 {{CSSRef}}
 
-**`overflow-wrap`** CSS 요소는 어떤 문자가 내용 칸 밖으로 넘치지 않게 브라우저가 단어 마디 안에 줄을 바꿔야 할 것인지 아닌지를 정할 때 사용됩니다.
+The **`overflow-wrap`** [CSS](/en-US/docs/Web/CSS) property applies to inline elements, setting whether the browser should insert line breaks within an otherwise unbreakable string to prevent text from overflowing its line box.
 
-> **참고:** {{cssxref("word-break")}}와는 달리, `overflow-wrap`은 모든 단어가 넘치지 않으면 자신의 줄 안에 놓여 있을 수 없을 때 줄 바꿈을 한 번만 할 것입니다.
+{{EmbedInteractiveExample("pages/css/overflow-wrap.html")}}
 
-이 속성은 처음에 마이크로소프트에서 표준이 아니고 접두어가 없는 `word-wrap`으로 나왔고, 대부분 브라우저에서 똑같은 이름으로 구현되었습니다. 요즘은 `overflow-wrap`으로 다시 지어지고, `word-wrap`은 동의어가 되었습니다.
+> **Note:** In contrast to {{cssxref("word-break")}}, `overflow-wrap` will only create a break if an entire word cannot be placed on its own line without overflowing.
 
-## 구문
+The property was originally a nonstandard and unprefixed Microsoft extension called `word-wrap`, and was implemented by most browsers with the same name. It has since been renamed to `overflow-wrap`, with `word-wrap` being an alias.
+
+## Syntax
 
 ```css
 /* Keyword values */
 overflow-wrap: normal;
 overflow-wrap: break-word;
+overflow-wrap: anywhere;
 
 /* Global values */
 overflow-wrap: inherit;
 overflow-wrap: initial;
+overflow-wrap: revert;
+overflow-wrap: revert-layer;
 overflow-wrap: unset;
 ```
 
-`overflow-wrap` 속성은 아래에 나열돼 있는 값들 중 단 하나로 정해집니다.
+The `overflow-wrap` property is specified as a single keyword chosen from the list of values below.
 
-### 값
+### Values
 
 - `normal`
-  - : 줄이 오직 (두 단어 사이의 공백과 같이) 보통의 줄 바꿈 지점에서만 줄을 바꿉니다.
+  - : Lines may only break at normal word break points (such as a space between two words).
+- `anywhere`
+  - : To prevent overflow, an otherwise unbreakable string of characters — like a long word or URL — may be broken at any point if there are no otherwise-acceptable break points in the line. No hyphenation character is inserted at the break point. Soft wrap opportunities introduced by the word break are considered when calculating min-content intrinsic sizes.
 - `break-word`
-  - : 보통 안 바꿔지는 단어들을 한 줄에서 대신 줄을 바꿀 만한 지점이 없을 시 임의의 지점에서 줄을 바꿉니다.
+  - : The same as the `anywhere` value, with normally unbreakable words allowed to be broken at arbitrary points if there are no otherwise acceptable break points in the line, but soft wrap opportunities introduced by the word break are NOT considered when calculating min-content intrinsic sizes.
 
-### 기본적인 구문
+## Formal definition
+
+{{cssinfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예시
+## Examples
 
-이 예시는 긴 단어를 넘길 때 `overflow-wrap`, `word-break`, 그리고 `hyphens`의 결과를 비교합니다.
+### Comparing overflow-wrap, word-break, and hyphens
 
-### HTML
+This example compares the results of `overflow-wrap`, `word-break`, and `hyphens` when breaking up a long word.
+
+#### HTML
 
 ```html
-<p class="normal">They say the fishing is excellent at
-  Lake Chargoggagoggmanchauggagoggchaubunagungamaugg,
-  though I've never been there myself. (normal)</p>
-<p class="overflow-wrap">They say the fishing is excellent at
-  Lake Chargoggagoggmanchauggagoggchaubunagungamaugg,
-  though I've never been there myself. (overflow-wrap)</p>
-<p class="word-break">They say the fishing is excellent at
-  Lake Chargoggagoggmanchauggagoggchaubunagungamaugg,
-  though I've never been there myself. (word-break)</p>
-<p class="hyphens">They say the fishing is excellent at
-  Lake Chargoggagoggmanchauggagoggchaubunagungamaugg,
-  though I've never been there myself. (hyphens)</p>
+<p>
+  They say the fishing is excellent at Lake
+  <em class="normal">Chargoggagoggmanchauggagoggchaubunagungamaugg</em>, though
+  I've never been there myself. (<code>normal</code>)
+</p>
+<p>
+  They say the fishing is excellent at Lake
+  <em class="ow-anywhere">Chargoggagoggmanchauggagoggchaubunagungamaugg</em>,
+  though I've never been there myself. (<code>overflow-wrap: anywhere</code>)
+</p>
+<p>
+  They say the fishing is excellent at Lake
+  <em class="ow-break-word">Chargoggagoggmanchauggagoggchaubunagungamaugg</em>,
+  though I've never been there myself. (<code>overflow-wrap: break-word</code>)
+</p>
+<p>
+  They say the fishing is excellent at Lake
+  <em class="word-break">Chargoggagoggmanchauggagoggchaubunagungamaugg</em>,
+  though I've never been there myself. (<code>word-break</code>)
+</p>
+<p>
+  They say the fishing is excellent at Lake
+  <em class="hyphens">Chargoggagoggmanchauggagoggchaubunagungamaugg</em>, though
+  I've never been there myself. (<code>hyphens</code>, without
+  <code>lang</code> attribute)
+</p>
+<p lang="en">
+  They say the fishing is excellent at Lake
+  <em class="hyphens">Chargoggagoggmanchauggagoggchaubunagungamaugg</em>, though
+  I've never been there myself. (<code>hyphens</code>, English rules)
+</p>
+<p class="hyphens" lang="de">
+  They say the fishing is excellent at Lake
+  <em class="hyphens">Chargoggagoggmanchauggagoggchaubunagungamaugg</em>, though
+  I've never been there myself. (<code>hyphens</code>, German rules)
+</p>
 ```
 
-### CSS
+#### CSS
 
 ```css
 p {
   width: 13em;
+  margin: 2px;
   background: gold;
 }
 
-.overflow-wrap {
+.ow-anywhere {
+  overflow-wrap: anywhere;
+}
+
+.ow-break-word {
   overflow-wrap: break-word;
 }
 
@@ -78,18 +123,21 @@ p {
 }
 ```
 
-### Result
+#### Result
 
-{{ EmbedLiveSample('Example', '100%', 260) }}
+{{ EmbedLiveSample('Comparing_overflow-wrap_word-break_and_hyphens', '100%', 260) }}
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 바로 보기
+## See also
 
 - {{cssxref("word-break")}}
+- {{cssxref("hyphens")}}
+- {{cssxref("text-overflow")}}
+- [Guide to wrapping and breaking text](/en-US/docs/Web/CSS/CSS_Text/Wrapping_Text)

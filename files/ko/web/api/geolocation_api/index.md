@@ -1,68 +1,66 @@
 ---
 title: Geolocation API
 slug: Web/API/Geolocation_API
+page-type: web-api-overview
+browser-compat: api.Geolocation
 ---
+
 {{securecontext_header}}{{DefaultAPISidebar("Geolocation API")}}
 
-**Geolocation API**는 사용자가 원할 경우 웹 애플리케이션에 위치 정보를 제공할 수 있는 API입니다. 개인정보 보호를 위해, 브라우저는 위치 정보를 제공하기 전에 사용자에게 위치 정보 권한에 대한 확인을 받습니다.
+The **Geolocation API** allows the user to provide their location to web applications if they so desire. For privacy reasons, the user is asked for permission to report location information.
 
-`Geolocation` 객체를 사용하려는 WebExtension은 매니페스트에 `"geolocation"` 권한을 추가해야 합니다. 사용자의 운영 체제는 WebExtension이 처음으로 위치 정보를 요청하는 순간 사용자에게 정보 제공 여부를 물어봅니다.
+WebExtensions that wish to use the `Geolocation` object must add the `"geolocation"` permission to their manifest. The user's operating system will prompt the user to allow location access the first time it is requested.
 
-## 개념과 사용법
+## Concepts and usage
 
-사용자의 현재 위치를 지도에 표시하거나 위치 기반 개인화 정보를 제공하는 등, 웹 앱에서 위치 정보를 가져와야 하는 경우가 종종 있습니다.
+You will often want to retrieve a user's location information in your web app, for example to plot their location on a map, or display personalized information relevant to their location.
 
-Geolocation API는 {{domxref("Navigator.geolocation", "navigator.geolocation")}}을 통해 접근합니다. 이 때, 사용자의 브라우저는 위치 정보 접근 권한을 요청하게 되고, 사용자가 허가할 경우 현재 장치에서 사용 가능한 최선의 방법(GPS, WiFi, ...)을 통해 위치를 알아냅니다.
+The Geolocation API is accessed via a call to {{domxref("Navigator.geolocation", "navigator.geolocation")}}; this will cause the user's browser to ask them for permission to access their location data. If they accept, then the browser will use the best available functionality on the device to access this information (for example, GPS).
 
-위의 과정이 끝난 후, 코드에서는 몇 가지 다른 방법으로 위치 정보를 가져올 수 있습니다.
+The developer can now access this location information in a couple of different ways:
 
-- {{domxref("Geolocation.getCurrentPosition()")}}: 장치의 현재 위치를 가져옵니다.
-- {{domxref("Geolocation.watchPosition()")}}: 장치의 위치가 바뀔 때마다, 자동으로 새로운 위치를 사용해 호출할 처리기 함수를 등록합니다.
+- {{domxref("Geolocation.getCurrentPosition()")}}: Retrieves the device's current location.
+- {{domxref("Geolocation.watchPosition()")}}: Registers a handler function that will be called automatically each time the position of the device changes, returning the updated location.
 
-두 메서드 모두 최대 세 개의 매개변수를 받습니다.
+In both cases, the method call takes up to three arguments:
 
-- 필수로 지정하는 성공 콜백: 위치 정보를 성공적으로 가져온 경우, 위치 데이터를 담은 {{domxref("GeolocationPosition")}} 객체를 유일한 매개변수로 하여 콜백을 호출합니다.
-- 선택적으로 지정하는 실패 콜백: 위치 정보를 가져오지 못한 경우, 실패 원인을 담은 {{domxref("GeolocationPositionError")}} 객체를 유일한 매개변수로 하여 콜백을 호출합니다.
-- 선택적으로 지정하는 {{domxref("PositionOptions")}} 객체는 위치 정보 회수에 적용할 옵션을 제공합니다.
+- A mandatory success callback: If the location retrieval is successful, the callback executes with a {{domxref("GeolocationPosition")}} object as its only parameter, providing access to the location data.
+- An optional error callback: If the location retrieval is unsuccessful, the callback executes with a {{domxref("GeolocationPositionError")}} object as its only parameter, providing access information on what went wrong.
+- An optional object which provides options for retrieval of the position data.
 
-`Geolocation` 사용법에 대한 추가 정보는 [Geolocation API 사용하기](/ko/docs/WebAPI/Using_geolocation) 문서를 참고하세요.
+For further information on Geolocation usage, read [Using the Geolocation API](/en-US/docs/Web/API/Geolocation_API/Using_the_Geolocation_API).
 
-## 인터페이스
+## Interfaces
 
 - {{domxref("Geolocation")}}
-  - : Geolocation API의 주요 클래스로서 사용자의 현재 위치를 가져오고, 위치 변경을 감지하고, 이전에 등록했던 감지기를 제거하는 메서드를 담고 있습니다.
+  - : The main class of this API — contains methods to retrieve the user's current position, watch for changes in their position, and clear a previously-set watch.
 - {{domxref("GeolocationPosition")}}
-  - : 사용자의 위치를 나타냅니다. `GeolocationPosition` 인스턴스는 {{domxref("Geolocation")}} 객체 메서드의 성공 콜백에 제공되며, 타임스탬프와 함께 {{domxref("GeolocationCoordinates")}} 객체 인스턴스를 포함합니다.
+  - : Represents the position of a user. A `GeolocationPosition` instance is returned by a successful call to one of the methods contained inside {{domxref("Geolocation")}}, inside a success callback, and contains a timestamp plus a {{domxref("GeolocationCoordinates")}} object instance.
 - {{domxref("GeolocationCoordinates")}}
-  - : 사용자 위치의 좌표를 나타냅니다. `GeolocationCoordinates` 인스턴스는 위도, 경도 외에도 기타 중요한 관련 정보를 포함합니다.
+  - : Represents the coordinates of a user's position; a `GeolocationCoordinates` instance contains latitude, longitude, and other important related information.
 - {{domxref("GeolocationPositionError")}}
-  - : `GeolocationPositionError`는 {{domxref("Geolocation")}} 객체 메서드의 오류 콜백에 제공되며, 오류 코드와 오류 메시지를 담고 있습니다.
+  - : A `GeolocationPositionError` is returned by an unsuccessful call to one of the methods contained inside {{domxref("Geolocation")}}, inside an error callback, and contains an error code and message.
 - {{domxref("Navigator.geolocation")}}
-  - : API로 접근할 수 있는 지점입니다. {{domxref("Geolocation")}} 객체 인스턴스를 반환합니다.
+  - : The entry point into the API. Returns a {{domxref("Geolocation")}} object instance, from which all other functionality can be accessed.
 
-## 연관 배열
+## Examples
 
-- {{domxref("PositionOptions")}}
-  - : {{domxref("Geolocation.getCurrentPosition()")}}과 {{domxref("Geolocation.watchPosition()")}}에 매개변수로 전달할 옵션을 나타내는 객체입니다.
+See [Using the Geolocation API](/en-US/docs/Web/API/Geolocation_API/Using_the_Geolocation_API#examples) for example code.
 
-## 예제
-
-[Geolocation API 사용하기](/ko/docs/Web/API/Geolocation_API/Using_the_Geolocation_API#examples)에서 예제를 확인하세요.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-### 가용성
+### Availability
 
-WiFi 기반의 위치 정보는 보통 Google이 제공하므로, 기본 Geolocation API는 중국에서 사용하지 못할 수도 있습니다. 대신 [Baidu](http://lbsyun.baidu.com/index.php?title=jspopular/guide/geolocation), [Autonavi](https://lbs.amap.com/api/javascript-api/guide/services/geolocation#geolocation), [Tencent](http://lbs.qq.com/tool/component-geolocation.html) 등 지역 서드파티 제공자가 지원하는 라이브러리를 사용할 수 있습니다. 위 서비스는 WiFi 대신 IP 주소와 지역 앱을 사용해 위치 정보를 개선합니다.
+As Wi-Fi-based locating is often provided by Google, the vanilla Geolocation API may be unavailable in China. You may use local third-party providers such as [Baidu](https://lbsyun.baidu.com/index.php?title=jspopular/guide/geolocation), [Autonavi](https://lbs.amap.com/api/javascript-api/guide/services/geolocation#geolocation), or [Tencent](https://lbs.qq.com/tool/component-geolocation.html). These services use the user's IP address and/or a local app to provide enhanced positioning.
 
-## 같이 보기
+## See also
 
-- [Geolocation API 사용하기](/ko/docs/Web/API/Geolocation_API/Using)
-- [w3.org의 Geolocation API](https://www.w3.org/TR/geolocation-API/)
-- [Who moved my geolocation?](https://hacks.mozilla.org/2013/10/who-moved-my-geolocation/) (Hacks 블로그)
+- [Using the Geolocation API](/en-US/docs/Web/API/Geolocation_API/Using_the_Geolocation_API)
+- [Geolocation API on w3.org](https://www.w3.org/TR/geolocation/)
+- [Who moved my geolocation?](https://hacks.mozilla.org/2013/10/who-moved-my-geolocation/) (Hacks blog)

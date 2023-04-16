@@ -1,103 +1,170 @@
 ---
 title: SharedArrayBuffer
 slug: Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer
+page-type: javascript-class
+browser-compat: javascript.builtins.SharedArrayBuffer
 ---
 
 {{JSRef}}
 
-**`SharedArrayBuffer`** 객체는 제네릭, 고정된 길이의 원시 바이너리 데이터 버퍼를 표현하는데 사용됩니다. {{jsxref("ArrayBuffer")}} 객체와 유사하지만, 공유된 메모리상의 뷰를 생성하는데 사용될 수 있습니다. `ArrayBuffer` 와는 달리, `SharedArrayBuffer` 는 분리될 수 없습니다.
+The **`SharedArrayBuffer`** object is used to represent a generic raw binary data buffer, similar to the {{jsxref("ArrayBuffer")}} object, but in a way that they can be used to create views on shared memory. A `SharedArrayBuffer` is not a [Transferable Object](/en-US/docs/Web/API/Web_Workers_API/Transferable_objects), unlike an `ArrayBuffer` which is transferable.
 
-> **참고:** [Spectre](https://meltdownattack.com/) 에대한 응답으로 2018년 1월 5일에 `SharedArrayBuffer` 는 모든 주요 브라우저에서 기본적으로 비활성화되어있음을 참고하세요. Chrome 은 사이트 격리 기능을 사용하여 Spectre 스타일 취약점으로부터 보호될 수 있는 플랫폼상의 [v67 에서 이를 다시 활성화](https://bugs.chromium.org/p/chromium/issues/detail?id=821270)하였습니다.
+## Description
 
-{{EmbedInteractiveExample("pages/js/sharedarraybuffer-constructor.html")}}
+To share memory using {{jsxref("SharedArrayBuffer")}} objects from one agent in the cluster to another (an agent is either the web page's main program or one of its web workers), [`postMessage`](/en-US/docs/Web/API/Worker/postMessage) and [structured cloning](/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm) is used.
 
-## 구문
-
-```js
-new SharedArrayBuffer(length)
-```
-
-### 파라미터
-
-- `length`
-  - : 생성할 array buffer 의 바이트 크기.
-
-### 반환 값
-
-크기가 지정된 새로운 `SharedArrayBuffer` 객체입니다. 컨텐츠는 0 으로 초기화됩니다.
-
-## 설명
-
-### 할당 및 메모리 공유
-
-{{jsxref("SharedArrayBuffer")}} 객체를 사용해 메모리를 하나의 agent(agent 는 웹 페이지의 메인 프로그램 또는 웹 워커 중 하나입니다)와 다른 agent 에서 공유하기 위해, [`postMessage`](/ko/docs/Web/API/Worker/postMessage) 와 [structured cloning](/ko/docs/Web/API/Web_Workers_API/Structured_clone_algorithm) 이 사용됩니다.
-
-Structured clone 알고리즘은 `SharedArrayBuffer` 와 `SharedArrayBuffer` 상에 맵핑된 `TypedArray` 를 받아들입니다. 이 두 경우에서, `SharedArrayBuffer` 객체는 수신자(receiver)에게 전달되어 수신 agent(예, {{jsxref("ArrayBuffer")}})의 새로운 비공개의 SharedArrayBuffer 객체를 생성합니다. 하지만, 두 `SharedArrayBuffer` 에 의해 참조되는 공유 데이터 블록은 같은 블록이며, 부수적인 효과로, 하나의 agent 가 다른 agent 에서 보이게 됩니다.
+The structured clone algorithm accepts `SharedArrayBuffer` objects and typed arrays mapped onto `SharedArrayBuffer` objects. In both cases, the `SharedArrayBuffer` object is transmitted to the receiver resulting in a new, private `SharedArrayBuffer` object in the receiving agent (just as for {{jsxref("ArrayBuffer")}}). However, the shared data block referenced by the two `SharedArrayBuffer` objects is the same data block, and a side effect to the block in one agent will eventually become visible in the other agent.
 
 ```js
-var sab = new SharedArrayBuffer(1024);
+const sab = new SharedArrayBuffer(1024);
 worker.postMessage(sab);
 ```
 
-### Atomic operation 으로 공유 메모리 수정 및 동기화
+Shared memory can be created and updated simultaneously in workers or the main thread. Depending on the system (the CPU, the OS, the Browser) it can take a while until the change is propagated to all contexts. To synchronize, {{jsxref("Atomics", "atomic", "", 1)}} operations are needed.
 
-공유 메모리는 워커나 메인 스레드에서 동시에 수정 및 생성할 수 있습니다. 시스템(CPU, OS, 브라우저)에따라 변경사항이 전체 컨텍스트로 전파될때까지 약간의 시간이 필요합니다. 동기화를 위해선, {{jsxref("Atomics", "atomic", "", 1)}} 연산이 필요합니다.
+`SharedArrayBuffer` objects are used by some web APIs, such as:
 
-### `SharedArrayBuffer` 객체를 사용할 수 있는 API
+- [`WebGLRenderingContext.bufferData()`](/en-US/docs/Web/API/WebGLRenderingContext/bufferData)
+- [`WebGLRenderingContext.bufferSubData()`](/en-US/docs/Web/API/WebGLRenderingContext/bufferSubData)
+- [`WebGL2RenderingContext.getBufferSubData()`](/en-US/docs/Web/API/WebGL2RenderingContext/getBufferSubData)
 
-- {{domxref("WebGLRenderingContext.bufferData()")}}
-- {{domxref("WebGLRenderingContext.bufferSubData()")}}
-- {{domxref("WebGL2RenderingContext.getBufferSubData()")}}
+### Security requirements
 
-### 생성자는 `new` 연산자를 필요로 함
+Shared memory and high-resolution timers were effectively [disabled at the start of 2018](https://blog.mozilla.org/security/2018/01/03/mitigations-landing-new-class-timing-attack/) in light of [Spectre](<https://en.wikipedia.org/wiki/Spectre_(security_vulnerability)>). In 2020, a new, secure approach has been standardized to re-enable shared memory.
 
-`SharedArrayBuffer` 생성자는 생성될 때, {{jsxref("Operators/new", "new")}} 연산자를 필요로 합니다. `SharedArrayBuffer` 생성자를 new 없이 함수로써 호출하면, {{jsxref("TypeError")}} 를 일으킬 것 입니다.
+As a baseline requirement, your document needs to be in a [secure context](/en-US/docs/Web/Security/Secure_Contexts).
 
-```js example-bad
-var sab = SharedArrayBuffer(1024);
-// TypeError: calling a builtin SharedArrayBuffer constructor
-// without new is forbidden
+For top-level documents, two headers need to be set to cross-origin isolate your site:
+
+- [`Cross-Origin-Opener-Policy`](/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy) with `same-origin` as value (protects your origin from attackers)
+- [`Cross-Origin-Embedder-Policy`](/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy) with `require-corp` or `credentialless` as value (protects victims from your origin)
+
+```http
+Cross-Origin-Opener-Policy: same-origin
+Cross-Origin-Embedder-Policy: require-corp
 ```
 
-```js example-good
-var sab = new SharedArrayBuffer(1024);
+To check if cross origin isolation has been successful, you can test against the [`crossOriginIsolated`](/en-US/docs/Web/API/crossOriginIsolated) property available to window and worker contexts:
+
+```js
+const myWorker = new Worker("worker.js");
+
+if (crossOriginIsolated) {
+  const buffer = new SharedArrayBuffer(16);
+  myWorker.postMessage(buffer);
+} else {
+  const buffer = new ArrayBuffer(16);
+  myWorker.postMessage(buffer);
+}
 ```
 
-## 속성
+With these two headers set, `postMessage()` no longer throws for `SharedArrayBuffer` objects and shared memory across threads is therefore available.
 
-- `SharedArrayBuffer.length`
-  - : 값이 1인 `SharedArrayBuffer` 생성자의 length 속성입니다.
-- {{jsxref("SharedArrayBuffer.prototype")}}
-  - : 모든 `SharedArrayBuffer` 객체에 프로퍼티 추가를 가능하게 해줍니다.
+Nested documents and dedicated workers need to set the [`Cross-Origin-Embedder-Policy`](/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy) header as well, with the same value. No further changes are needed for same-origin nested documents and subresources. Same-site (but cross-origin) nested documents and subresources need to set the [`Cross-Origin-Resource-Policy`](/en-US/docs/Web/HTTP/Headers/Cross-Origin-Resource-Policy) header with `same-site` as value. And their cross-origin (and cross-site) counterparts need to set the same header with `cross-origin` as value. Note that setting the [`Cross-Origin-Resource-Policy`](/en-US/docs/Web/HTTP/Headers/Cross-Origin-Resource-Policy) header to any other value than `same-origin` opens up the resource to potential attacks, such as [Spectre](<https://en.wikipedia.org/wiki/Spectre_(security_vulnerability)>).
 
-## `SharedArrayBuffer` prototype 객체
+Note that the [`Cross-Origin-Opener-Policy`](/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy) header limits your ability to retain a reference to popups. Direct access between two top-level window contexts essentially only work if they are same-origin and carry the same two headers with the same two values.
 
-모든 `SharedArrayBuffer` 인스턴스는 {{jsxref("SharedArrayBuffer.prototype")}} 를 상속합니다.
+### API availability
 
-### 속성
+Depending on whether the above security measures are taken, the various memory-sharing APIs have different availabilities:
 
-- [`SharedArrayBuffer.prototype.byteLength`](/ko/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer/byteLength)
-  - : 배열의 크기 (바이트)입니다. 이것은 배열이 구성 될 때 설정되며 변경할 수 없습니다. 읽기 전용입니다.
+- The `Atomics` object is always available.
+- `SharedArrayBuffer` objects are in principle always available, but unfortunately the constructor on the global object is hidden, unless the two headers mentioned above are set, for compatibility with web content. There is hope that this restriction can be removed in the future. [`WebAssembly.Memory`](/en-US/docs/WebAssembly/JavaScript_interface/Memory) can still be used to get an instance.
+- Unless the two headers mentioned above are set, the various `postMessage()` APIs will throw for `SharedArrayBuffer` objects. If they are set, `postMessage()` on `Window` objects and dedicated workers will function and allow for memory sharing.
 
-### 메소드
+### WebAssembly shared memory
 
-- [`SharedArrayBuffer.prototype.slice(begin, end)`](/ko/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer/slice)
-  - : Returns a new `SharedArrayBuffer` whose contents are a copy of this `SharedArrayBuffer`'s bytes from `begin`, inclusive, up to `end`, exclusive. `begin` 또는 `end` 중 하나가 음수이면 처음부터가 아니라 배열 끝의 인덱스를 참조합니다.
+[`WebAssembly.Memory`](/en-US/docs/WebAssembly/JavaScript_interface/Memory) objects can be created with the [`shared`](/en-US/docs/WebAssembly/JavaScript_interface/Memory/Memory#shared) constructor flag. When this flag is set to `true`, the constructed `Memory` object can be shared between workers via `postMessage()`, just like `SharedArrayBuffer`, and the backing [`buffer`](/en-US/docs/WebAssembly/JavaScript_interface/Memory/buffer) of the `Memory` object is a `SharedArrayBuffer`. Therefore, the requirements listed above for sharing a `SharedArrayBuffer` between workers also apply to sharing a `WebAssembly.Memory`.
 
-## 명세
+The WebAssembly Threads proposal also defines a new set of [atomic](https://github.com/WebAssembly/threads/blob/master/proposals/threads/Overview.md#atomic-memory-accesses) instructions. Just as `SharedArrayBuffer` and its methods are unconditionally enabled (and only sharing between threads is gated on the new headers), the WebAssembly atomic instructions are also unconditionally allowed.
+
+### Growing SharedArrayBuffers
+
+`SharedArrayBuffer` objects can be made growable by including the `maxByteLength` option when calling the {{jsxref("SharedArrayBuffer/SharedArrayBuffer", "SharedArrayBuffer()")}} constructor. You can query whether a `SharedArrayBuffer` is growable and what its maximum size is by accessing its {{jsxref("SharedArrayBuffer/growable", "growable")}} and {{jsxref("SharedArrayBuffer/maxByteLength", "maxByteLength")}} properties, respectively. You can assign a new size to a growable `SharedArrayBuffer` with a {{jsxref("SharedArrayBuffer/grow()", "grow()")}} call. New bytes are initialized to 0.
+
+These features make growing `SharedArrayBuffer`s more efficient — otherwise, you have to make a copy of the buffer with a new size. It also gives JavaScript parity with WebAssembly in this regard (WASM linear memory can be resized with [`WebAssembly.Memory.prototype.grow()`](/en-US/docs/WebAssembly/JavaScript_interface/Memory/grow)).
+
+For security reasons, `SharedArrayBuffer`s cannot be reduced in size, only grown.
+
+## Constructor
+
+- {{jsxref("SharedArrayBuffer/SharedArrayBuffer", "SharedArrayBuffer()")}}
+  - : Creates a new `SharedArrayBuffer` object.
+
+## Static properties
+
+- {{jsxref("SharedArrayBuffer/@@species", "SharedArrayBuffer[@@species]")}}
+  - : Returns the constructor used to construct return values from `SharedArrayBuffer` methods.
+
+## Instance properties
+
+These properties are defined on `SharedArrayBuffer.prototype` and shared by all `SharedArrayBuffer` instances.
+
+- {{jsxref("SharedArrayBuffer.prototype.byteLength")}}
+  - : The size, in bytes, of the array. This is established when the array is constructed and can only be changed using the {{jsxref("SharedArrayBuffer.prototype.grow()")}} method if the `SharedArrayBuffer` is growable.
+- {{jsxref("Object/constructor", "SharedArrayBuffer.prototype.constructor")}}
+  - : The constructor function that created the instance object. For `SharedArrayBuffer` instances, the initial value is the {{jsxref("SharedArrayBuffer/SharedArrayBuffer", "SharedArrayBuffer")}} constructor.
+- {{jsxref("SharedArrayBuffer.prototype.growable")}}
+  - : Read-only. Returns `true` if the `SharedArrayBuffer` can be grown, or `false` if not.
+- {{jsxref("SharedArrayBuffer.prototype.maxByteLength")}}
+  - : The read-only maximum length, in bytes, that the `SharedArrayBuffer` can be grown to. This is established when the array is constructed and cannot be changed.
+- `SharedArrayBuffer.prototype[@@toStringTag]`
+  - : The initial value of the [`@@toStringTag`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toStringTag) property is the string `"SharedArrayBuffer"`. This property is used in {{jsxref("Object.prototype.toString()")}}.
+
+## Instance methods
+
+- {{jsxref("SharedArrayBuffer.prototype.grow()")}}
+  - : Grows the `SharedArrayBuffer` to the specified size, in bytes.
+- {{jsxref("SharedArrayBuffer.prototype.slice()")}}
+  - : Returns a new `SharedArrayBuffer` whose contents are a copy of this `SharedArrayBuffer`'s bytes from `begin`, inclusive, up to `end`, exclusive. If either `begin` or `end` is negative, it refers to an index from the end of the array, as opposed to from the beginning.
+
+## Examples
+
+### Creating a new SharedArrayBuffer
+
+```js
+const sab = new SharedArrayBuffer(1024);
+```
+
+### Slicing the SharedArrayBuffer
+
+```js
+sab.slice(); // SharedArrayBuffer { byteLength: 1024 }
+sab.slice(2); // SharedArrayBuffer { byteLength: 1022 }
+sab.slice(-2); // SharedArrayBuffer { byteLength: 2 }
+sab.slice(0, 1); // SharedArrayBuffer { byteLength: 1 }
+```
+
+### Using it in a WebGL buffer
+
+```js
+const canvas = document.querySelector("canvas");
+const gl = canvas.getContext("webgl");
+const buffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+gl.bufferData(gl.ARRAY_BUFFER, sab, gl.STATIC_DRAW);
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 보기
+## See also
 
 - {{jsxref("Atomics")}}
 - {{jsxref("ArrayBuffer")}}
-- [JavaScript 형식화 배열](/ko/docs/Web/JavaScript/Typed_arrays)
-- [Web Workers](/ko/docs/Web/API/Web_Workers_API)
-- [parlib-simple](https://github.com/lars-t-hansen/parlib-simple) – 동기화 및 작업 분리 추상화를 제공하는 간단한 라이브러리.
-- [Shared Memory – 간단한 튜토리얼](https://github.com/tc39/ecmascript_sharedmem/blob/master/TUTORIAL.md)
-- [A Taste of JavaScript’s New Parallel Primitives – Mozilla Hacks](https://hacks.mozilla.org/2016/05/a-taste-of-javascripts-new-parallel-primitives/)
+- [JavaScript typed arrays](/en-US/docs/Web/JavaScript/Typed_arrays)
+- [Web Workers](/en-US/docs/Web/API/Web_Workers_API)
+- [parlib-simple](https://github.com/lars-t-hansen/parlib-simple) – a simple library providing synchronization and work distribution abstractions.
+- [Shared Memory – a brief tutorial](https://github.com/tc39/proposal-ecmascript-sharedmem/blob/main/TUTORIAL.md)
+- [A Taste of JavaScript's New Parallel Primitives – Mozilla Hacks](https://hacks.mozilla.org/2016/05/a-taste-of-javascripts-new-parallel-primitives/)
+- [COOP and COEP explained](https://docs.google.com/document/d/1zDlfvfTJ_9e8Jdc8ehuV4zMEu9ySMCiTGMS9y0GU92k/edit).
+- `Cross-Origin-Opener-Policy`: [whatwg/html issue #3740](https://github.com/whatwg/html/issues/3740), [draft specification](https://gist.github.com/annevk/6f2dd8c79c77123f39797f6bdac43f3e).
+- `Cross-Origin-Embedder-Policy`: [whatwg/html issue #4175](https://github.com/whatwg/html/issues/4175), [draft specification](https://mikewest.github.io/corpp/).
+- `Cross-Origin-Resource-Policy`: [standardized in Fetch](https://fetch.spec.whatwg.org/#cross-origin-resource-policy-header), new `cross-origin` value is part of the `Cross-Origin-Embedder-Policy` effort.
+- `postMessage()` changes and [`self.crossOriginIsolated`](/en-US/docs/Web/API/crossOriginIsolated): [whatwg/html issue #4732](https://github.com/whatwg/html/issues/4732), [whatwg/html issue #4872](https://github.com/whatwg/html/issues/4872), [draft specification](https://github.com/whatwg/html/pull/4734).
+- [SharedArrayBuffer updates in Android Chrome 88 and Desktop Chrome 92](https://developer.chrome.com/blog/enabling-shared-array-buffer/)

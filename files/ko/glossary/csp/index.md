@@ -1,17 +1,14 @@
 ---
 title: CSP
 slug: Glossary/CSP
+page-type: glossary-definition
 ---
-CSP (Content Security Policy)는 {{Glossary("XSS")}}이나 데이터 주입과 같은 특정 웹사이트 관련 공격을 탐지 하거나 완화 하기 위해 사용된다.
 
-기본적인 구현은 `Content-Security-Policy`라고 불리는 {{Glossary("HTTP")}} 헤더를 기반으로 한다.
+A CSP ([Content Security Policy](/en-US/docs/Web/HTTP/CSP)) is used to detect and mitigate certain types of website related attacks like {{Glossary("Cross-site_scripting")}}, [clickjacking](/en-US/docs/Glossary/Clickjacking) and data injections.
 
-## 더 공부하기
+The implementation is based on an {{Glossary("HTTP")}} header called {{HTTPHeader("Content-Security-Policy")}}.
 
-### 일반 지식
+## See also
 
 - [Content Security Policy on Wikipedia](https://en.wikipedia.org/wiki/Content_Security_Policy)
-
-### 기술 지식
-
-- [Content Security Policy documentation on MDN](/ko/docs/Web/Security/CSP)
+- [Content Security Policy documentation on MDN](/en-US/docs/Web/HTTP/CSP)

@@ -1,61 +1,79 @@
 ---
 title: Math.tan()
 slug: Web/JavaScript/Reference/Global_Objects/Math/tan
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Math.tan
 ---
 
 {{JSRef}}
 
-**`Math.tan()`** 함수는 탄젠트 값을 반환합니다
+The **`Math.tan()`** static method returns the tangent of a number in radians.
 
 {{EmbedInteractiveExample("pages/js/math-tan.html")}}
 
-## 문법
+## Syntax
 
-```js
+```js-nolint
 Math.tan(x)
 ```
 
-### 매개변수
+### Parameters
 
 - `x`
-  - : 라디안 각도를 표현한 수.
+  - : A number representing an angle in radians.
 
-### 반환 값
+### Return value
 
-주어진 수의 탄젠트 값
+The tangent of `x`. If `x` is {{jsxref("Infinity")}}, `-Infinity`, or {{jsxref("NaN")}}, returns {{jsxref("NaN")}}.
 
-## 설명
+> **Note:** Due to floating point precision, it's not possible to obtain the exact value π/2, so the result is always finite if not `NaN`.
 
-`Math.tan()` 메서드는 각도의 탄젠트 값을 표현하는 수를 반환합니다.
+## Description
 
-`tan()`은 `Math`의 정적 메서드이므로 사용자가 만든 `Math` 객체의 메서드가 아닌 항상 `Math.tan()`으로 사용합니다 (`Math` 는 생성자가 아닙니다).
+Because `tan()` is a static method of `Math`, you always use it as `Math.tan()`, rather than as a method of a `Math` object you created (`Math` is not a constructor).
 
-## 예제
+## Examples
 
-### `Math.tan()`사용하기
+### Using Math.tan()
 
 ```js
+Math.tan(-Infinity); // NaN
+Math.tan(-0); // -0
+Math.tan(0); // 0
 Math.tan(1); // 1.5574077246549023
+Math.tan(Math.PI / 4); // 0.9999999999999999 (Floating point error)
+Math.tan(Infinity); // NaN
 ```
 
-`Math.tan()`함수는 라디안 값으로 받지만 각도로 작업하는 것이 더 쉽기 때문에 다음 함수는 각도로 값을 받아서 라디안으로 변환하고 탄젠트를 반환합니다.
+### Math.tan() and π/2
+
+It's not possible to calculate `tan(π/2)` exactly.
+
+```js
+Math.tan(Math.PI / 2); // 16331239353195370
+Math.tan(Math.PI / 2 + Number.EPSILON); // -6218431163823738
+```
+
+### Using Math.tan() with a degree value
+
+Because the `Math.tan()` function accepts radians, but it is often easier to work with degrees, the following function accepts a value in degrees, converts it to radians and returns the tangent.
 
 ```js
 function getTanDeg(deg) {
-  var rad = deg * Math.PI/180;
+  const rad = (deg * Math.PI) / 180;
   return Math.tan(rad);
 }
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Math.acos()")}}
 - {{jsxref("Math.asin()")}}

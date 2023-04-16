@@ -1,522 +1,144 @@
 ---
-title: 학습서
+title: Tutorials
 slug: Web/Tutorials
+page-type: landing-page
 ---
-이 페이지에는 다양한 학습서 및 교육 자료에 대한 링크가 있습니다. 여러분이 웹 개발을 이제 시작하는 사람이든지, 기초를 공부하는 사람이든지, 이미 개발을 해본 사람이든지 모범 사례에 대한 유용한 자료를 찾으실 수 있습니다. 이들 자료는 웹 개발의 개방형 표준 및 모범 사례를 채택한 미래 지향적 기업 및 웹 개발자가 창작한 것으로서 Creative Commons 등의 개방형 콘텐트 라이선스를 통해 번역을 제공 또는 허용합니다.
 
-## 웹입문자를 위하여
+The links on this page lead to a variety of tutorials and training materials. Whether you are just starting, learning the basics, or are an old hand at web development, you can find helpful resources here for best practices.
 
-- [시작해 볼까요?](/ko/docs/Learn/Getting_started_with_the_web)
-  - : 시작해 볼까요? 는 웹개발의 실제를 소개하는 간결한 안내서입니다. 간단한 코딩을 통해 자신만의 웹페이지를 구축할 수 있는 도구들을 준비할 수 있도록 돕습니다.
+These resources are created by forward-thinking companies and web developers who have embraced open standards and best practices for web development and that provide or allow translations, through an open content license such as Creative Commons.
 
-<table class="topicpage-table">
-  <tbody>
-    <tr>
-      <td>
-        <h2 class="Documentation" id="Documentation" name="Documentation">
-          HTML 학습서
-        </h2>
-        <h3 id="입문">입문</h3>
-        <dl>
-          <dt>
-            <a
-              href="http://docs.webplatform.org/wiki/guides/the_basics_of_html"
-              rel="external"
-              >HTML의 기본</a
-            >
-            (WebPlatform.org)
-          </dt>
-          <dd>
-            HTML이 무엇인지, 무엇을 할 수 있는지, HTML의 브리핑 역사, HTML과
-            같은 문서구조를 보여줍니다. 훨씬 깊은 HTML의 각 부분을 하나하나 살펴
-            수행할 수 있습니다.
-          </dd>
-          <dt>
-            <a
-              href="http://reference.sitepoint.com/html/page-structure"
-              rel="external"
-              >Wep Page의 기본 구조</a
-            >
-            (SitePoint)
-          </dt>
-          <dd>큰 그림을 통해 HTML 요소에 대해 알아봅니다.</dd>
-          <dt>
-            <a
-              href="http://reference.sitepoint.com/html/elements"
-              rel="external"
-              >기본 HTML 요소</a
-            >
-            (SitePoint)
-          </dt>
-          <dd>
-            HTML문서를 작성하는 데 사용할 수 있는 다양한 유형의 요소를
-            설명합니다.
-          </dd>
-          <dt>
-            <a href="http://htmldog.com/guides/htmlbeginner/" rel="external"
-              >HTML기초 학습서</a
-            >
-            (HTML Dog)
-          </dt>
-          <dd>기본 학습서를 익히며 연습합니다.</dd>
-          <dt>
-            <a
-              href="http://wikiversity.org/wiki/Web_Design/HTML_Challenges"
-              rel="external"
-              >HTML 과제</a
-            >
-            (Wikiversity)
-          </dt>
-          <dd>
-            의미있는 mark-up에 집중하여 HTML기술(예를 들어, "나는 &#x3C;h2> 요소
-            또는&#x3C;strong> 요소를 이용합니까?")을 이러한 과제에 연마,
-            사용합니다.
-          </dd>
-          <dt>
-            <a href="https://developer.mozilla.org/ko/docs/HTML/Element"
-              >MDN HTML 요소 참조</a
-            >
-          </dt>
-          <dd>
-            포괄적인 HTML요소에 대한 참조 및 파이어폭스와 다른 부라우저를
-            지원하는 방법을 알려줍니다.
-          </dd>
-          <dt>
-            <a href="http://codeavengers.com/">CodeAvengers</a>
-            (CodeAvengers.com)
-          </dt>
-          <dd>
-            Code Avengers는 HTML, CSS 및 자바스크립트를 사용하여 Code Wep
-            에플리케이션 및 게임을 배우는 재미있고 효과적인 방법입니다.
-          </dd>
-        </dl>
-        <h3 id="고급">고급</h3>
-        <dl>
-          <dt>
-            <a
-              href="https://developer.mozilla.org/ko/docs/Tips_for_Authoring_Fast-loading_HTML_Pages"
-              >HTML 페이지를 빠르게 로드할 수 있게 만드는 팁</a
-            >
-          </dt>
-          <dd>
-            사이트 방문자들에게 더 많은 응답을 제공하고, 웹 서버와 인터넷 연결
-            부하를 줄여 웹 페이지를 최적화 할 수 있습니다.
-          </dd>
-          <dt>
-            <a href="http://diveintohtml5.info/" rel="external"
-              >Dive into HTML5</a
-            >
-            (Mark Pilgrim)
-          </dt>
-          <dd>HTML5, HTML의 최신버전 기능에 대해 자세히 알아보십시오.</dd>
-          <dt>
-            <a href="http://www.html5rocks.com/tutorials/" rel="external"
-              >HTML5 학습서</a
-            >
-            (HTML5 Rocks)
-          </dt>
-          <dd>HTML5 기능을 사용하여 코드를 통해 guided tour를 습득.</dd>
-          <dt>
-            <a
-              href="http://www.alistapart.com/articles/semanticsinhtml5/"
-              rel="external"
-              >HTML5의 의미</a
-            >
-            (A List Apart)
-          </dt>
-          <dd>앞뒤로 호환되며, 확장 가능한 mark-up을 배울 수 있습니다.</dd>
-          <dt>
-            <a href="https://developer.mozilla.org/ko/docs/Canvas_tutorial"
-              >Canvas 학습서</a
-            >
-          </dt>
-          <dd>
-            Canvas 요소를통해 스크립트를 이용하여 크래픽을 만드는 방법을
-            알아보십시오.
-          </dd>
-          <dt>
-            <a href="http://html5doctor.com/" rel="external">HTML5 Doctor</a>
-          </dt>
-          <dd>현재 HTML5를 사용하는 방법에 대한 기사.</dd>
-          <dt>
-            <a href="http://www.elated.com/articles/html5-audio/" rel="external"
-              >HTML5 오디오의 기쁨</a
-            >
-            (Elated)
-          </dt>
-          <dd>
-            쉽게 웹 페이지에 사운드를 적용시키는 HTML 오디오 요소를 사용하는
-            방법에 대해 알아봅니다. 더 많은 코드 예제는 학습서 안에 있습니다.
-          </dd>
-        </dl>
-      </td>
-      <td>
-        <h2 class="Documentation" id="Documentation" name="Documentation">
-          Javascript 학습서
-        </h2>
-        <h3 id="입문_2">입문</h3>
-        <dl>
-          <dt>
-            <a href="http://www.codecademy.com/">Codecademy</a> (Codecademy)
-          </dt>
-          <dd>
-            Codecademy는 자바 스크립트를 코딩하는 방법을 배울 수 있는 가장 쉬운
-            방법입니다. 친구들과 함께 재미있게 배울 수 있습니다.
-          </dd>
-          <dt>
-            <a
-              href="https://developer.mozilla.org/ko/docs/JavaScript/Getting_Started"
-              >JavaScript 시작하기</a
-            >
-          </dt>
-          <dd>JavaScript란 무엇이며, 어떻게 도움을 줄까?</dd>
-          <dt>
-            <a
-              href="http://docs.webplatform.org/wiki/concepts/programming/programming_basics"
-              rel="external"
-              >Programming – 입문 </a
-            >(WebPlatform.org)
-          </dt>
-          <dd>
-            프로그래밍의 기본 중의 기본. 자바스크립트를 사용하고 더 많은 것을 할
-            수 있는 모범사례와 무엇을 할 수 있는지 소개하는 기사.
-          </dd>
-          <dt>
-            <a
-              href="http://dev.opera.com/articles/view/javascript-best-practices/"
-              rel="external"
-              >JavaScript 모범사례</a
-            ><a
-              href="http://docs.webplatform.org/wiki/tutorials/javascript_best_practices"
-            >
-            </a
-            >(WebPlatform.org)
-          </dt>
-          <dd>
-            자바 스크립트를 작성(그렇지 않아도)한 명백하고 분명한 몇 가지
-            모범사례에 대해 알아보십시오.
-          </dd>
-          <dt>
-            <a href="http://codeavengers.com/">CodeAvengers</a>
-            (CodeAvengers.com)
-          </dt>
-          <dd>
-            Code Avengers는 HTML, CSS 및 자바스크립트를 사용하여 Code Wep
-            에플리케이션 및 게임을 배우는 재미있고 효과적인 방법입니다.
-          </dd>
-        </dl>
-        <h3 id="중급">중급</h3>
-        <dl>
-          <dt>
-            <a
-              href="https://developer.mozilla.org/ko/docs/A_re-introduction_to_JavaScript"
-              >JavaScript 다시 소개하기</a
-            >
-          </dt>
-          <dd>
-            중급 개발자들을 대상으로 자바 스크립트 프로그래밍 언어의 요점을
-            되풀이합니다.
-          </dd>
-          <dt>
-            <a href="http://eloquentjavascript.net/contents.html" rel="external"
-              >Eloquent JavaScript</a
-            >
-          </dt>
-          <dd>중급 및 고급 자바 스크립트 방법론에 대한 포괄적인 가이드.</dd>
-          <dt>
-            <a
-              href="http://www.addyosmani.com/resources/essentialjsdesignpatterns/book/"
-              rel="external"
-              >JavaScript 필수 디자인 패턴</a
-            >
-            (Addy Osmani)
-          </dt>
-          <dd>자바 스크립트에 필요한 디자인 패턴을 소개.</dd>
-          <dt>
-            <a
-              href="http://www.yuiblog.com/blog/2007/01/24/video-crockford-tjpl/"
-              rel="external"
-              >JavaScript 프로그래밍 언어</a
-            >
-            (YUI Blog)
-          </dt>
-          <dd>오늘날, Douglas Crockford가 탐구해온 언어와 방법.</dd>
-          <dt>
-            <a
-              href="https://developer.mozilla.org/ko/docs/Introduction_to_Object-Oriented_JavaScript"
-              >객체 지향 JavaScript 소개</a
-            >
-          </dt>
-          <dd>자바 스크립트 개체 모델에 대해 자세히 알아보십시오.</dd>
-        </dl>
-        <h3 id="고급_2">고급</h3>
-        <dl>
-          <dt>
-            <a href="http://ejohn.org/apps/learn/" rel="external"
-              >고급 JavaScript 학습</a
-            >
-            (John Resig)
-          </dt>
-          <dd>John Resig의 고급 자바스크립트 가이드.</dd>
-          <dt>
-            <a
-              href="http://www.elated.com/articles/javascript-dom-intro/"
-              rel="external"
-              >JavaScript DOM을 소개합니다</a
-            >
-            (Elated)
-          </dt>
-          <dd>
-            이것은 어떤 문서이며, 어디가 유용합니까? 이 문서는 강력한 스크립트
-            기능을 부드럽게 소개합니다.
-          </dd>
-          <dt>
-            <a
-              href="http://yuiblog.com/blog/2006/10/20/video-crockford-domtheory/"
-              rel="external"
-              >불편한 API: DOM의 이론</a
-            >
-            (YUI Blog)
-          </dt>
-          <dd>Douglas Crockford가 문서 객체 모델을 설명합니다.</dd>
-          <dt>
-            <a
-              href="http://yuiblog.com/blog/2006/11/27/video-crockford-advjs/"
-              rel="external"
-              >고급JavaScript</a
-            >
-            (YUI Blog)
-          </dt>
-          <dd>
-            Douglas Crockford가 자바 스크립트 프로그래머가 제작할 응용프로그램을
-            선택할 수 있는 코드 패턴을 유사하게 보여드립니다.
-          </dd>
-          <dt>
-            <a
-              href="http://bonsaiden.github.com/JavaScript-Garden/"
-              rel="external"
-              >JavaScript Garden</a
-            >
-          </dt>
-          <dd>자바 스크립트의 가장 독특한 부분을 설명서에서 참조하십시오.</dd>
-          <dt>
-            <a
-              href="http://stackoverflow.com/questions/394601/which-javascript-framework-jquery-vs-dojo-vs"
-              rel="external"
-              >어떤 JavaScript Framework를?</a
-            >
-            (StackOverflow)
-          </dt>
-          <dd>자바 스크립트 프레임 워크를 선택하는 방법에 대한 조언.</dd>
-          <dt>
-            <a
-              href="http://yuiblog.com/blog/2008/07/22/non-blocking-scripts/"
-              rel="external"
-              >Non-blocking JavaScript Downloads</a
-            >
-            (YUI Blog)
-          </dt>
-          <dd>
-            자바 스크립트를 포함하는 페이지의 다운로드 성능 향상을 위한 팁을
-            제공합니다.
-          </dd>
-          <dt>
-            <a href="https://developer.mozilla.org/ko/docs/JavaScript/Guide"
-              >JavaScript 가이드</a
-            >
-          </dt>
-          <dd>
-            초급에서 고급까지 모든 수준을 학습 할 수 있는 포괄적이고 정기적으로
-            업데이트 되는 자가스크립트 설명서를 참조하십시오.
-          </dd>
-        </dl>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <h2 class="Documentation" id="Documentation" name="Documentation">
-          CSS 학습서
-        </h2>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <h3 id="입문_3">입문</h3>
-        <dl>
-          <dt>
-            <a href="https://developer.mozilla.org/ko/docs/CSS/Getting_Started"
-              >CSS 시작하기</a
-            >
-          </dt>
-          <dd>
-            이 학습서는 Cascading Style Sheets (CSS)를 소개합니다. 이것은 자신의
-            컴퓨터에 시도할 수 있는 실용적인 예제와 CSS의 기본 기능을
-            안내합니다.
-          </dd>
-          <dt>
-            <a
-              href="http://docs.webplatform.org/wiki/guides/getting_started_with_css"
-              rel="external"
-              >CSS 기초</a
-            >
-            (WebPlatform.org)
-          </dt>
-          <dd>
-            CSS가 무엇인지, 어떻게 HTML에 적용하는지, 기본적인 CSS구문은 어떤
-            것인지. 다음과 같이 배웁니다.
-          </dd>
-          <dt>
-            <a
-              href="http://en.wikiversity.org/wiki/Web_Design/CSS_Classes"
-              rel="external"
-              >CSS Selector Classes</a
-            >
-            (Wikiversity)
-          </dt>
-          <dd>CSS의 클래스는 무엇입니까?</dd>
-          <dt>
-            <a
-              href="http://en.wikiversity.org/wiki/Web_Design/External_CSS"
-              rel="external"
-              >외부 CSS</a
-            >
-            (Wikiversity)
-          </dt>
-          <dd>외부 스타일 시트에서 CSS를 사용.</dd>
-          <dt>
-            <a href="http://www.w3.org/MarkUp/Guide/Style" rel="external"
-              >스타일에서 Touch 추가하기</a
-            >
-            (W3C)
-          </dt>
-          <dd>CSS로 웹페이지를 스타일링 하는 간단한 초보자 가이드.</dd>
-          <dt>
-            <a href="https://developer.mozilla.org/ko/docs/Common_CSS_Questions"
-              >일반적인 CSS 질문</a
-            >
-          </dt>
-          <dd>초보자들을 위한 일반적인 질문 및 응답.</dd>
-          <dt>
-            <a href="http://codeavengers.com/">CodeAvengers</a>
-            (CodeAvengers.com)
-          </dt>
-          <dd>
-            Code Avengers는 HTML, CSS 및 자바스크립트를 사용하여 Code Wep
-            에플리케이션 및 게임을 배우는 재미있고 효과적인 방법입니다.
-          </dd>
-        </dl>
-        <h3 id="중급_2">중급</h3>
-        <dl>
-          <dt>
-            <a href="https://developer.mozilla.org/ko/docs/CSS/CSS_Reference"
-              >CSS 참조</a
-            >
-          </dt>
-          <dd>
-            파이어 폭스와 다른 브라우저에서의 지원에 대한 세부사항, CSS 참조를
-            작성합니다.
-          </dd>
-          <dt>
-            <a
-              href="http://en.wikiversity.org/wiki/Web_Design/CSS_challenges"
-              rel="external"
-              >CSS 과제</a
-            >
-            (Wikiversity)
-          </dt>
-          <dd>
-            CSS 기술을 이용해 더 많은 연습을 필요로 하는곳에 참여하십시오.
-          </dd>
-          <dt>
-            <a href="http://www.html.net/tutorials/css/" rel="external"
-              >중급 CSS 개념</a
-            >
-            (HTML.net)
-          </dt>
-          <dd>Grouping, pseudo-classes 등등.</dd>
-          <dt>
-            <a
-              href="http://www.alistapart.com/articles/css-positioning-101/"
-              rel="external"
-              >CSS Positioning 101</a
-            >
-            (A List Apart)
-          </dt>
-          <dd>표준을 준수하여 table-free layout을 사용.</dd>
-          <dt>
-            <a
-              href="http://www.alistapart.com/articles/progressiveenhancementwithcss/"
-              rel="external"
-              >CSS와 점진적 향상</a
-            >
-            (A List Apart)
-          </dt>
-          <dd>CSS로 웹 페이지에 점진적 개선을 통합 할 수 있습니다.</dd>
-          <dt>
-            <a
-              href="http://www.alistapart.com/articles/fluidgrids/"
-              rel="external"
-              >Fluid Grids</a
-            >
-            (A List Apart)
-          </dt>
-          <dd>
-            typographic grid를 이용하는 동안, 유동적으로 브라우저 창 크키를
-            조절하는 레이아웃 디자인.
-          </dd>
-        </dl>
-      </td>
-      <td>
-        <h3 id="고급_3">고급</h3>
-        <dl>
-          <dt>
-            <a href="http://addyosmani.com/blog/css3-screencast/" rel="external"
-              >5분 동안의 CSS3</a
-            >
-            (Addy Osmani)
-          </dt>
-          <dd>CSS3 도입 된핵심 기능 중 일부에 대한 간단한 소개.</dd>
-          <dt>
-            <a
-              href="https://developer.mozilla.org/ko/docs/CSS/Using_CSS_transforms"
-              >CSS를 사용한 변환</a
-            >
-          </dt>
-          <dd>
-            회전, 기울이기, 크기 조절 등의 변환을 CSS를 사용하여 적용합니다.
-          </dd>
-          <dt>
-            <a href="https://developer.mozilla.org/ko/docs/CSS/CSS_transitions"
-              >CSS 전환</a
-            >
-          </dt>
-          <dd>
-            CSS 전환, 초안 CSS3 스펙의 일부 대신에 변경 내용이 즉시 적용하는
-            것에 CSS 속성 변화를 보여주는 방법을 제공합니다.
-          </dd>
-          <dt>
-            <a
-              href="http://www.alistapart.com/articles/understanding-css3-transitions/"
-              rel="external"
-              >Understanding CSS3 Transitions</a
-            >
-            (A List Apart)
-          </dt>
-          <dd>신중하게 상황을 선택하여 CSS3를 사용하여 전환을 시작합니다.</dd>
-          <dt>
-            <a
-              href="http://www.html5rocks.com/tutorials/webfonts/quick/"
-              rel="external"
-              >@font-face 윕 font를 구현하기 위한 빠른 안내</a
-            >
-            (HTML5 Rocks)
-          </dt>
-          <dd>
-            CSS3에서 @font-face 기능을 사용하면, 접근 조작 가능하거나 확장
-            가능한 방식으로 웹에서 사용자 지정 글꼴을 사용할 수 있습니다.
-          </dd>
-        </dl>
-      </td>
-    </tr>
-  </tbody>
-</table>
+## For complete beginners to the Web
+
+- [Getting started with the Web](/en-US/docs/Learn/Getting_started_with_the_web)
+  - : _Getting started with the Web_ is a concise series introducing you to the practicalities of web development. You'll set up the tools you need to construct a simple webpage and publish your own simple code.
+
+## HTML Tutorials
+
+### Introductory level
+
+- [Introduction to HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML)
+  - : This module sets the stage, getting you used to important concepts and syntax, looking at applying HTML to text, how to create hyperlinks, and how to use HTML to structure a webpage.
+- [MDN HTML element reference](/en-US/docs/Web/HTML/Element)
+  - : A comprehensive reference for HTML elements, and how the different browsers support them.
+- [Creating a Simple Web Page with HTML](https://www.theblogstarter.com/html-for-beginners/)
+  - : An HTML guide for beginners that includes explanations of common tags, including HTML tags. Also includes a step-by-step guide to creating a basic web page with code examples.
+- [HTML Challenges](https://wikiversity.org/wiki/Web_Design/HTML_Challenges)
+  - : Use these challenges to hone your HTML skills (for example, "Should I use an \<h2> element or a \<strong> element?"), focusing on meaningful markup.
+
+### Intermediate level
+
+- [Multimedia and embedding](/en-US/docs/Learn/HTML/Multimedia_and_embedding)
+  - : This module explores how to use HTML to include multimedia in your web pages, including the different ways that images can be included, and how to embed video, audio, and even entire other webpages.
+- [HTML tables](/en-US/docs/Learn/HTML/Tables)
+  - : Representing tabular data on a webpage in an understandable, {{glossary("Accessibility", "accessible")}} way can be a challenge. This module covers basic table markup, along with more complex features such as implementing captions and summaries.
+
+### Advanced level
+
+- [HTML forms](/en-US/docs/Learn/Forms)
+  - : Forms are a very important part of the Web — these provide much of the functionality you need for interacting with websites, e.g. registering and logging in, sending feedback, buying products, and more. This module gets you started with creating the client-side parts of forms.
+- [Tips for authoring fast-loading HTML pages](/en-US/docs/Learn/HTML/Howto/Author_fast-loading_HTML_pages)
+  - : Optimize web pages to provide a more responsive site for visitors and reduce the load on your web server and Internet connection.
+
+## CSS Tutorials
+
+### Introductory level
+
+- [CSS basics](/en-US/docs/Learn/Getting_started_with_the_web/CSS_basics)
+  - : CSS (Cascading Style Sheets) is the code you use to style your webpage. _CSS Basics_ takes you through what you need to get started. We'll answer questions like: How do I make my text black or red? How do I make my content show up in such-and-such a place on the screen? How do I decorate my webpage with background images and colors?
+- [CSS first steps](/en-US/docs/Learn/CSS/First_steps)
+  - : CSS (Cascading Style Sheets) is used to style and lay out web pages — for example, to alter the font, color, size, and spacing of your content, split it into multiple columns, or add animations and other decorative features. This module provides a gentle beginning to your path toward CSS mastery with the basics of how it works, what the syntax looks like, and how you can start using it to add styling to HTML.
+- [CSS building blocks](/en-US/docs/Learn/CSS/Building_blocks)
+
+  - : This module carries on where [CSS first steps](/en-US/docs/Learn/CSS/First_steps) left off — now you've gained familiarity with the language and its syntax, and got some basic experience with using it, it's time to dive a bit deeper. This module looks at the cascade and inheritance, all the selector types we have available, units, sizing, styling backgrounds and borders, debugging, and lots more.
+
+    The aim here is to provide you with a toolkit for writing competent CSS and help you understand all the essential theory, before moving on to more specific disciplines like [text styling](/en-US/docs/Learn/CSS/Styling_text) and [CSS layout](/en-US/docs/Learn/CSS/CSS_layout).
+
+- [Selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors)
+
+  - : Target HTML elements, including based on element state, with CSS.
+
+- [Specificity](/en-US/docs/Web/CSS/Specificity)
+
+  - : Understanding the browser algorithm to determine which CSS declarations get applied to an element when there are competing declarations, with a [specificity quiz](https://estelle.github.io/CSS/selectors/exercises/specificity.html)
+
+- [Cascade & Inheritance](/en-US/docs/Learn/CSS/Building_blocks/Cascade_and_inheritance)
+
+  - : The cascade, specificity, and inheritance control how CSS is applied to HTML and how conflicts between style declarations are resolved.
+
+- [Styling text](/en-US/docs/Learn/CSS/Styling_text)
+  - : Here we look at text styling fundamentals, including setting font, boldness, and italics, line and letter spacing, and drop shadows and other text features. We round off the module by looking at applying custom fonts to your page, and styling lists and links.
+- [Common CSS Questions](/en-US/docs/Learn/CSS/Howto/CSS_FAQ)
+  - : Common questions and answers for beginners.
+
+### Intermediate level
+
+- [CSS layout](/en-US/docs/Learn/CSS/CSS_layout)
+  - : At this point we've already looked at CSS fundamentals, how to style text, and how to style and manipulate the boxes that your content sits inside. Now it's time to look at how to place your boxes in the right place in relation to the viewport, and one another. We have covered the necessary prerequisites so can now dive deep into CSS layout, looking at different display settings, traditional layout methods involving float and positioning, and new fangled layout tools like flexbox.
+- [CSS reference](/en-US/docs/Web/CSS/Reference)
+  - : Complete reference to CSS, with details on support by Firefox and other browsers.
+- [Fluid Grids](https://alistapart.com/article/fluidgrids/)
+  - : Design layouts that fluidly resize with the browser window, while still using a typographic grid.
+- [CSS Challenges](https://en.wikiversity.org/wiki/Web_Design/CSS_challenges)
+  - : Flex your CSS skills, and see where you need more practice.
+
+### Advanced level
+
+- [Using CSS transforms](/en-US/docs/Web/CSS/CSS_Transforms/Using_CSS_transforms)
+  - : Apply rotation, skewing, scaling, and translation using CSS.
+- [CSS transitions](/en-US/docs/Web/CSS/CSS_Transitions/Using_CSS_transitions)
+  - : CSS transitions provide a way to animate changes to CSS properties, instead of having the changes take effect instantly.
+- [Canvas tutorial](/en-US/docs/Web/API/Canvas_API/Tutorial)
+  - : Learn how to draw graphics using scripting using the canvas element.
+
+## JavaScript Tutorials
+
+### Introductory level
+
+- [JavaScript first steps](/en-US/docs/Learn/JavaScript/First_steps)
+  - : In our first JavaScript module, we first answer some fundamental questions such as "what is JavaScript?", "what does it look like?", and "what can it do?", before moving on to taking you through your first practical experience of writing JavaScript. After that, we discuss some key JavaScript features in detail, such as variables, strings, numbers and arrays.
+- [JavaScript building blocks](/en-US/docs/Learn/JavaScript/Building_blocks)
+  - : In this module, we continue our coverage of all JavaScript's key fundamental features, turning our attention to commonly-encountered types of code blocks such as conditional statements, loops, functions, and events. You've seen this stuff already in the course, but only in passing — here we'll discuss it all explicitly.
+- [Getting started with JavaScript](/en-US/docs/Learn/Getting_started_with_the_web/JavaScript_basics)
+  - : What is JavaScript and how can it help you?
+- [Codecademy](https://www.codecademy.com/)
+  - : Codecademy is an easy way to learn how to code JavaScript. It's interactive and you can do it with your friends.
+- [freeCodeCamp](https://www.freecodecamp.org/learn)
+  - : freeCodeCamp teaches a variety of languages and frameworks for web development. It also has a [forum](https://forum.freecodecamp.org/), an [internet radio station](https://coderadio.freecodecamp.org), and a [blog](https://www.freecodecamp.org/news).
+
+### Intermediate level
+
+- [Introducing JavaScript objects](/en-US/docs/Learn/JavaScript/Objects)
+  - : In JavaScript, most things are objects, from core JavaScript features like strings and arrays to the browser APIs built on top of JavaScript. You can even create your own objects to encapsulate related functions and variables into efficient packages. The object-oriented nature of JavaScript is important to understand if you want to go further with your knowledge of the language and write more efficient code, therefore we've provided this module to help you. Here we teach object theory and syntax in detail, look at how to create your own objects, and explain what JSON data is and how to work with it.
+- [Client-side web APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs)
+  - : When writing client-side JavaScript for websites or applications, you won't go very far before you start to use APIs — interfaces for manipulating different aspects of the browser and operating system the site is running on, or even data from other websites or services. In this module, we will explore what APIs are, and how to use some of the most common APIs you'll come across often in your development work.
+- [Eloquent JavaScript](https://eloquentjavascript.net/)
+  - : A comprehensive guide to intermediate and advanced JavaScript methodologies.
+- [Speaking JavaScript](https://exploringjs.com/es5/)
+  - : For programmers who want to learn JavaScript quickly and properly, and for JavaScript programmers who want to deepen their skills and/or look up specific topics.
+- [Essential JavaScript Design Patterns](https://addyosmani.com/resources/essentialjsdesignpatterns/book/)
+  - : An introduction to essential JavaScript design patterns.
+- [JavaScript.info - The Modern JavaScript Tutorial](https://javascript.info/)
+  - : Part 1: The Language. Part 2: Working with Browsers.
+
+### Advanced level
+
+- [JavaScript Guide](/en-US/docs/Web/JavaScript/Guide)
+  - : A comprehensive, regularly updated guide to JavaScript for all levels of learning from beginner to advanced.
+- [You Don't Know JS](https://github.com/getify/You-Dont-Know-JS)
+  - : A series of books diving deep into the core mechanisms of the JavaScript language.
+- [JavaScript Garden](https://github.com/BonsaiDen/JavaScript-Garden)
+  - : Documentation of the most quirky parts of JavaScript.
+- [Exploring ES6](https://exploringjs.com/es6/)
+  - : Reliable and in-depth information on ECMAScript 2015.
+- [JavaScript Patterns](https://shichuan.github.io/javascript-patterns/)
+  - : A JavaScript pattern and anti-pattern collection that covers function patterns, jQuery patterns, jQuery plugin patterns, design patterns, general patterns, literals and constructor patterns, object creation patterns, code reuse patterns, DOM.
+- [How browsers work](https://www.html5rocks.com/en/tutorials/internals/howbrowserswork/)
+  - : A detailed research article describing different modern browsers, their engines, page rendering etc.
+- [JavaScript Videos](https://github.com/bolshchikov/js-must-watch)
+  - : A collection of JavaScript videos to watch.
+
+### Extension Development
+
+- [WebExtensions](/en-US/docs/Mozilla/Add-ons/WebExtensions)
+  - : WebExtensions is a cross-browser system for developing browser add-ons. To a large extent, the system is compatible with the [extension API](https://developer.chrome.com/docs/extensions/reference/) supported by Google Chrome and Opera. Extensions written for these browsers will in most cases run in Firefox or [Microsoft Edge](https://docs.microsoft.com/archive/microsoft-edge/legacy/developer/) with [just a few changes](https://extensionworkshop.com/documentation/develop/porting-a-google-chrome-extension/). The API is also fully compatible with [multiprocess Firefox](https://wiki.mozilla.org/Firefox/multiprocess).

@@ -1,15 +1,17 @@
 ---
 title: CSS Masking
 slug: Web/CSS/CSS_Masking
-original_slug: Web/CSS/CSS_Masks
+page-type: css-module
+spec-urls: https://drafts.fxtf.org/css-masking/
 ---
+
 {{CSSRef}}
 
-**CSS Masking**은 마스킹 및 클리핑을 포함해 시각 요소의 부분 또는 전체를 숨기기 위한 수단을 정의하는 CSS 모듈입니다.
+**CSS Masking** is a [CSS](/en-US/docs/Web/CSS) module that defines means, including masking and clipping, for partially or fully hiding portions of visual elements.
 
-## 참고서
+## Reference
 
-### 속성
+### Properties
 
 - {{cssxref("clip")}} {{deprecated_inline}}
 - {{cssxref("clip-path")}}
@@ -32,6 +34,6 @@ original_slug: Web/CSS/CSS_Masks
 - {{cssxref("mask-size")}}
 - {{cssxref("mask-type")}}
 
-## 명세서
+## Specifications
 
 {{Specifications}}

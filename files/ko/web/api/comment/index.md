@@ -1,35 +1,39 @@
 ---
 title: Comment
 slug: Web/API/Comment
+page-type: web-api-interface
+browser-compat: api.Comment
 ---
 
 {{ ApiRef("DOM") }}
 
-**`Comment`** 인터페이스는 마크업 내의 텍스트 표기인 주석을 나타냅니다. 주석은 화면에 보여지지 않지만 웹 페이지의 소스에서 확인할 수 있습니다. HTML과 XML에서 주석은 '`<!--`' 표기와 '`-->`' 사이의 내용입니다. XML의 주석 내용에는 '`--`'을 포함할 수 없습니다.
+The **`Comment`** interface represents textual notations within markup; although it is generally not visually shown, such comments are available to be read in the source view.
+
+Comments are represented in HTML and XML as content between '`<!--`' and '`-->`'. In XML, like inside SVG or MathML markup, the character sequence '`--`' cannot be used within a comment.
 
 {{InheritanceDiagram}}
 
-## 속성
+## Instance properties
 
-`Comment` 인터페이스는 별도의 속성을 갖지 않지만 부모인 {{domxref("CharacterData")}}와, 그 부모인 {{domxref("Node")}}의 속성을 상속합니다.
+_This interface has no specific property, but inherits those of its parent, {{domxref("CharacterData")}}, and indirectly those of {{domxref("Node")}}._
 
-## 생성자
+## Constructor
 
-- {{domxref("Comment.Comment()", "Comment()")}} {{experimental_inline}}
-  - : 매개변수를 내용으로 하는 `Comment` 객체를 반환합니다.
+- {{ domxref("Comment.Comment()", "Comment()") }}
+  - : Returns a new `Comment` object with the parameter as its textual content. If not present, its default value is the empty string, `''`.
 
-## 메서드
+## Instance methods
 
-`Comment` 인터페이스는 별도의 메서드를 갖지 않지만 부모인 {{domxref("CharacterData")}}와, 그 부모인 {{domxref("Node")}}의 메서드를 상속합니다.
+_This interface has no specific method, but inherits those of its parent, {{domxref("CharacterData")}}, and indirectly those of {{domxref("Node")}}._
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [DOM 인터페이스 목록](/ko/docs/Web/API/Document_Object_Model)
+- [The DOM API](/en-US/docs/Web/API/Document_Object_Model)

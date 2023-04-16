@@ -1,69 +1,100 @@
 ---
-title: performance.mark()
+title: "Performance: mark() method"
+short-title: mark()
 slug: Web/API/Performance/mark
+page-type: web-api-instance-method
+browser-compat: api.Performance.mark
 ---
 
-{{APIRef("User Timing API")}}
+{{APIRef("Performance API")}}
 
-**`mark()`** 메소드는 브라우저의 *performance entry buffer*에 주어진 이름으로 {{domxref("DOMHighResTimeStamp","timestamp")}}를 생성합니다. timestamp가 정의된 응용프로그램은 {{domxref("Performance")}} 인터페이스의 `getEntries*()` 메소드들을 통해 불러올 수 있습니다. ({{domxref("Performance.getEntries","getEntries()")}}, {{domxref("Performance.getEntriesByName","getEntriesByName()")}}, {{domxref("Performance.getEntriesByType","getEntriesByType()")}}).
-
-{{AvailableInWorkers}}
-
-`mark`의 {{domxref("PerformanceEntry","performance entry")}}는 다음 속성값을 갖습니다:
-
-- {{domxref("PerformanceEntry.entryType","entryType")}} - "`mark`"로 설정됩니다.
-- {{domxref("PerformanceEntry.name","name")}} - mark가 생성될 때 주어진 "`name`"으로 설정됩니다.
-- {{domxref("PerformanceEntry.startTime","startTime")}} - `mark()`가 호출되었을 때의 {{domxref("DOMHighResTimeStamp","timestamp")}}가 설정됩니다.
-- {{domxref("PerformanceEntry.duration","duration")}} - "`0`"으로 설정됩니다. (*duration*이 없는 mark).
-
-만약 메서드에 주어진 `name`이 이미 {{domxref("PerformanceTiming")}} 인터페이스 상에 존재한다면 {{jsxref("SyntaxError")}}를 throw 합니다.
+The **`mark()`** method creates a named {{domxref("PerformanceMark")}} object representing a high resolution timestamp marker in the browser's performance timeline.
 
 ## Syntax
 
-```js
-performance.mark(name);
+```js-nolint
+mark(name)
+mark(name, markOptions)
 ```
 
-### Arguments
+### Parameters
 
-- name
-  - : mark의 이름을 나타내는 {{domxref("DOMString")}}.
+- `name`
+  - : A string representing the name of the mark. Must not be the same name as one of the properties of the deprecated {{domxref("PerformanceTiming")}} interface.
+- `markOptions` {{optional_inline}}
+  - : An object for specifying a timestamp and additional metadata for the mark.
+    - `detail` {{optional_inline}}
+      - : Arbitrary metadata to include in the mark. Defaults to `null`. Must be [structured-cloneable](/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm).
+    - `startTime` {{optional_inline}}
+      - : {{domxref("DOMHighResTimeStamp")}} to use as the mark time. Defaults to {{domxref("performance.now()")}}.
 
 ### Return value
 
-void
+The {{domxref("PerformanceMark")}} entry that was created.
 
-## Example
+### Exceptions
 
-다음 예시는 mark()를 사용하여 {{domxref("PerformanceMark")}}를 생성하고 불러오는 방법을 보여줍니다.
+- {{jsxref("SyntaxError")}}: Thrown if the `name` is one of the properties of the deprecated {{domxref("PerformanceTiming")}} interface. See the [example below](#reserved_names).
+- {{jsxref("TypeError")}}: Thrown if `startTime` is negative.
+
+## Examples
+
+### Creating named markers
+
+The following example uses `mark()` to create named {{domxref("PerformanceMark")}} entries. You can create several marks with the same name. You can also assign them, to have a reference to the {{domxref("PerformanceMark")}} object that has been created.
 
 ```js
-// Create a bunch of marks.
-performance.mark("squirrel");
-performance.mark("squirrel");
-performance.mark("monkey");
-performance.mark("monkey");
-performance.mark("dog");
-performance.mark("dog");
+performance.mark("login-started");
+performance.mark("login-started");
+performance.mark("login-finished");
+performance.mark("form-sent");
 
-// Get all of the PerformanceMark entries.
-const allEntries = performance.getEntriesByType("mark");
-console.log(allEntries.length);
-// 6
-
-// Get all of the "monkey" PerformanceMark entries.
-const monkeyEntries = performance.getEntriesByName("monkey");
-console.log(monkeyEntries.length);
-// 2
-
-// Clear out all of the marks.
-performance.clearMarks();
+const videoMarker = performance.mark("video-loaded");
 ```
 
-## 명세서
+### Creating markers with details
+
+The performance mark is configurable using the `markOptions` object where you can put additional information in the `detail` property, which can be of any type.
+
+```js
+performance.mark("login-started", {
+  detail: "Login started using the login button in the top menu.",
+});
+
+performance.mark("login-started", {
+  detail: { htmlElement: myElement.id },
+});
+```
+
+### Creating markers with a different start time
+
+The default timestamp of the `mark()` method is {{domxref("performance.now()")}}. You can set it to a different time using the `startTime` option in `markOptions`.
+
+```js
+performance.mark("start-checkout", {
+  startTime: 20.0,
+});
+
+performance.mark("login-button-pressed", {
+  startTime: myEvent.timeStamp,
+});
+```
+
+### Reserved names
+
+Note in order to maintain backwards compatibility, names that are part of the deprecated {{domxref("PerformanceTiming")}} interface can't be used. The following example throws:
+
+```js example-bad
+performance.mark("navigationStart");
+// SyntaxError: "navigationStart" is part of
+// the PerformanceTiming interface,
+// and cannot be used as a mark name
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

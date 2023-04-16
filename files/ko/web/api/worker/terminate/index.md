@@ -1,44 +1,47 @@
 ---
-title: Worker.terminate()
+title: "Worker: terminate() method"
+short-title: terminate()
 slug: Web/API/Worker/terminate
+page-type: web-api-instance-method
+browser-compat: api.Worker.terminate
 ---
 
 {{APIRef("Web Workers API")}}
 
-{{domxref("Worker")}} 인터페이스의 **`terminate()`** 메서드는 {{domxref("Worker")}}를 즉시 종료시킬 때 사용합니다. 이것은 worker가 자신의 작업들을 끝마칠 수 있도록 하는 게 아니라, 바로 종료시키는 것입니다.
+The **`terminate()`** method of the {{domxref("Worker")}} interface immediately terminates the {{domxref("Worker")}}. This does not offer the worker an opportunity to finish its operations; it is stopped at once.
 
-## 구문
+## Syntax
 
 ```js-nolint
 terminate()
 ```
 
-### 매개변수
+### Parameters
 
-없음.
+None.
 
-### 반환 값
+### Return value
 
-없음 ({{jsxref("undefined")}}).
+None ({{jsxref("undefined")}}).
 
-## 예시
+## Examples
 
-아래의 코드 스니펫은 {{domxref("Worker.Worker", "Worker()")}} 생성자를 이용하여 {{domxref("Worker")}} 객체를 생성하고, 즉시 종료하는 예를 보여줍니다.
+The following code snippet shows creation of a {{domxref("Worker")}} object using the {{domxref("Worker.Worker", "Worker()")}} constructor, which is then immediately terminated.
 
 ```js
-const myWorker = new Worker('worker.js');
+const myWorker = new Worker("worker.js");
 
 myWorker.terminate();
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-{{domxref("Worker")}} 인터페이스
+The {{domxref("Worker")}} interface it belongs to.

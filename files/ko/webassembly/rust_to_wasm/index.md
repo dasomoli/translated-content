@@ -1,322 +1,341 @@
 ---
-title: Rust를 WebAssembly로 컴파일하기
+title: Compiling from Rust to WebAssembly
 slug: WebAssembly/Rust_to_wasm
 ---
+
 {{WebAssemblySidebar}}
 
-여러분이 Rust 코드를 가지고 있다면 WebAssembly로 컴파일 할 수 있습니다. 이 튜토리얼은 Rust 프로젝트를 컴파일하여 기존 웹 애플리케이션에서 사용하기 위해 알아야 할 모든 것을 설명합니다.
+If you have some Rust code, you can compile it into [WebAssembly](/en-US/docs/WebAssembly) (wasm). This tutorial takes you through all you need to know to compile a Rust project to wasm and use it in an existing web app.
 
-## Rust 및 WebAssembly 사용 사례
+## Rust and WebAssembly use cases
 
-Rust와 WebAssembly를 위한 두가지 주요 사용 사례가 있습니다.
+There are two main use cases for Rust and WebAssembly:
 
-- 어플리케이션 전체를 만드는것 - Rust기반 Web app 만들기
-- 어플리케이션의 일부를 만드는것 - Rust를 기존에 존재하는 JavaScript frontend에서 사용하는것
+- Build an entire application — an entire web app based in Rust.
+- Build a part of an application — using Rust in an existing JavaScript frontend.
 
-당분간, Rust 팀은 후자의 경우에 초점을 맞출 것입니다.그래서 여기서는 두번째 내용에 대해 다루겠습니다. 첫번째 use-case는 [`yew`](https://github.com/DenisKolodin/yew)와 같은 프로젝트를 한번 확인해보세요.
+For now, the Rust team is focusing on the latter case, and so that's what we cover here. For the former case, check out projects like [`yew`](https://github.com/yewstack/yew).
 
-이 튜토리얼에서는 Rust의 npm 패키지를 빌드하는 도구인 `wasm-pack`을 사용하여 npm 패키지를 빌드합니다. 이 패키지에는 WebAssembly 및 JavaScript 코드만 포함되므로 패키지 사용자는 Rust를 설치할 필요가 없습니다. 심지어 WebAssembly에서 작성된 것임을 알지 못할 수도 있습니다.
+In this tutorial, we build a package using `wasm-pack`, a tool for building JavaScript packages in Rust. This package will contain only WebAssembly and JavaScript code, and so the users of the package won't need Rust installed. They may not even notice that it's written in Rust.
 
-## Rust 환경 설치
+## Rust Environment Setup
 
-환경을 설치하기 위해 필요한 모든 단계를 수행해 봅시다.
+Let's go through all the required steps to get our environment set up.
 
-### Rust 설치
+### Install Rust
 
-[Install Rust](https://www.rust-lang.org/install.html)와 다음 설명에 따라 Rust를 설치합니다. "rustup"이라는 툴을 설치할건데 다양한 버전의 Rust를 관리할 수 있게 해줍니다. 기본적으로 최신 배포버전의 Rust가 설치됩니다. Rustup은 Rust 컴파일러인 `rustc` Rust의 표준 라이브러리 인 `rust-std`, Rust의 패키지 메니저 `cargo`및 `rust-docs` 등 유용한 문서를 설치합니다.
+Install Rust by going to the [Install Rust](https://www.rust-lang.org/tools/install) page and following the instructions. This installs a tool called "rustup", which lets you manage multiple versions of Rust. By default, it installs the latest stable Rust release, which you can use for general Rust development. Rustup installs `rustc`, the Rust compiler, as well as `cargo`, Rust's package manager, `rust-std`, Rust's standard libraries, and some helpful docs — `rust-docs`.
 
-> **참고:** 설치를 완료한 뒤 cargo의 `bin` 디렉토리가 시스템의 `PATH`에 등록되어 있어야 함에 주의하십시오. 보통은 자동으로 등록되지만, 터미널을 재시작해야 할 수도 있습니다.
+> **Note:** Pay attention to the post-install note about needing cargo's `bin` directory in your system `PATH`. This is added automatically, but you must restart your terminal for it to take effect.
 
 ### wasm-pack
 
-패키지를 빌드하기 위해, `wasm-pack`이라는 추가적인 툴이 필요합니다. 이것을 통해 코드를 WebAssembly로 컴파일하고, `npm`에 적합한 패키징을 생성할 수 있습니다. 설치를 하려면 터미널에 다음 명령을 입력합니다.
+To build the package, we need an additional tool, `wasm-pack`. This helps compile the code to WebAssembly, as well as produce the right packaging for use in the browser. To download and install it, enter the following command into your terminal:
 
 ```bash
-    cargo install wasm-pack
+cargo install wasm-pack
 ```
 
-### Node.js 설치와 npm 계정 생성
+## Building our WebAssembly package
 
-이 튜토리얼에서 우리는 npm 패키지를 생성할 것이므로 Node.js와 npm이 설치되어 있어야 합니다. 추가적으로, 우리는 npm에 패키지를 배포할 것이며 npm 계정 역시 필요합니다. 이것들은 모두 무료입니다. 당신은 _기술적으로는_ 패키지를 배포할 필요가 없지만, 패키지를 사용하는 것이 더 쉬우므로 이 튜토리얼에서 수행한다고 가정합니다.
-
-Node.js와 npm을 설치하려면 [Get npm!](https://www.npmjs.com/get-npm) 페이지를 열고 안내를 따라하시면 됩니다. 버전을 선택할 때, 원하는 것을 선택하면 됩니다. 이 튜토리얼은 버전과는 무관합니다.
-
-npm 계정을 만드려면 [npm 가입 페이지](https://www.npmjs.com/signup) 에서 양식을 작성하시면 됩니다.
-
-그 다음은, 명령줄에서 `npm adduser` 명령을 실행합니다.
+Enough setup; let's create a new package in Rust. Navigate to wherever you keep your personal projects, and type this:
 
 ```bash
-    $ npm adduser
-    Username: yournpmusername
-    Password:
-    Email: (this IS public) you@example.com
+$ cargo new --lib hello-wasm
+     Created library `hello-wasm` project
 ```
 
-계정명과 패스워드, 그리고 이메일을 입력하세요. 제대로 작동했다면, 다음 출력을 볼 수 있습니다.
+This creates a new library in a subdirectory named `hello-wasm` with everything you need to get going:
 
-```bash
-    Logged in as yournpmusername on https://registry.npmjs.org/.
+```plain
++-- Cargo.toml
++-- src
+    +-- lib.rs
 ```
 
-만약 제대로 되지 않았다면, 문제 해결을 위해 npm에 문의를 해보세요.
+First, we have `Cargo.toml`; this is the file that we use to configure our build. If you've used `Gemfile` from Bundler or `package.json` from npm, this is likely to be familiar; Cargo works in a similar manner to both of them.
 
-## WebAssembly npm 패키지 빌드하기
+Next, Cargo has generated some Rust code for us in `src/lib.rs`:
 
-설치가 다 되었으므로, Rust의 새 패키지를 만듭시다. 개인 프로젝트를 담는 디렉터리로 이동한 뒤, 다음 명령어를 입력합니다.
-
-```bash
-    $ cargo new --lib hello-wasm
-         Created library `hello-wasm` project
-```
-
-이 명령어는 `hello-wasm`으로 이름지어진 하위 디렉터리에 새 라이브러리를 생성합니다.
-
-```bash
-    +-- Cargo.toml
-    +-- src
-        +-- lib.rs
-```
-
-첫번째로, `Cargo.toml`은 빌드를 위해 설정하는 파일입니다. Bundler에서 `Gemfile`이나 npm에서 `package.json`을 써보셨다면 꽤 익숙할 것입니다. Cargo는 이것들과 비슷한 방식으로 작동합니다.
-
-다음은, Cargo가 `src/lib.rs`에 다음 Rust 코드를 생성했을 것입니다.
-
-```bash
-    #[cfg(test)]
-    mod tests {
-        #[test]
-        fn it_works() {
-            assert_eq!(2 + 2, 4);
-        }
+```rust
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn it_works() {
+        assert_eq!(2 + 2, 4);
     }
+}
 ```
 
-우리는 이 테스트 코드를 사용하지 않을 것이므로, 삭제해도 좋습니다.
+We won't use this test code at all, so go ahead and delete it.
 
-### Rust로 무언가를 써보기
+### Let's write some Rust
 
-`src/lib.rs`에 다음 코드를 적어봅시다.
+Let's put this code into `src/lib.rs` instead:
 
-```rs
-    use wasm_bindgen::prelude::*;
+```rust
+use wasm_bindgen::prelude::*;
 
-    #[wasm_bindgen]
-    extern {
-        pub fn alert(s: &str);
-    }
+#[wasm_bindgen]
+extern {
+    pub fn alert(s: &str);
+}
 
-    #[wasm_bindgen]
-    pub fn greet(name: &str) {
-        alert(&format!("Hello, {}!", name));
-    }
+#[wasm_bindgen]
+pub fn greet(name: &str) {
+    alert(&format!("Hello, {}!", name));
+}
 ```
 
-이것은 우리의 Rust project의 내용으로, 세가지 주요 부분이 있습니다. 그들에 대해 차례대로 얘기해봅시다. 여기서는 고수준의 설명을 제공하고 일부 세부 사항에 대해서 설명합니다. Rust 언어에 대해 좀 더 배우고 싶으시면 [The Rust Programming Language](https://doc.rust-lang.org/book/) 에서 확인하시면 됩니다.
+This is the contents of our Rust project. It has three main parts; let's talk about each of them in turn. We give a high-level explanation here, and gloss over some details; to learn more about Rust, please check the free online book [The Rust Programming Language](https://doc.rust-lang.org/book/).
 
-#### Rust와 JavaScript간의 통신을 위한 `wasm-bindgen` 사용
+#### Using `wasm-bindgen` to communicate between Rust and JavaScript
 
-첫 부분은 다음과 같습니다.
+The first part looks like this:
 
-```rs
-    use wasm_bindgen::prelude::*;
+```rust
+use wasm_bindgen::prelude::*;
 ```
 
-Rust에서 라이브러리는 크레이트(crate)라고 합니다.
+Libraries are called "crates" in Rust.
 
-알 것 같나요? _Cargo(화물)_ 는 배에 _crate(상자)_ 들을 실어 나릅니다.
+Get it? _Cargo_ ships _crates_.
 
-세번째 줄의 `use` 키워드는 라이브러리로부터 코드를 불러옵니다. 이 경우, 우리는 `wasm_bindgen::prelude` 모듈 내에 있는 모든 것을 불러오게 됩니다. 다음 섹션에서 이것들의 기능에 대해 다룰 것입니다.
+The first line contains a `use` command, which imports code from a library into your code. In this case, we're importing everything in the `wasm_bindgen::prelude` module. We use these features in the next section.
 
-다음 섹션으로 넘어가기 전에 `wasm-bindgen`에 대해 좀 더 얘기해야 합니다.
+Before we move on to the next section, we should talk a bit more about `wasm-bindgen`.
 
-`wasm-pack`은 다른 도구인 `wasm-bindgen`을 사용해 JavaScript와 Rust의 타입들 사이에 다리를 제공합니다. 이는 JavaScript가 문자열을 통해 Rust의 API를 호출하거나, JavaScript의 예외를 포착하기 위해 Rust의 함수를 호출할 수 있습니다.
+`wasm-pack` uses `wasm-bindgen`, another tool, to provide a bridge between the types of JavaScript and Rust. It allows JavaScript to call a Rust API with a string, or a Rust function to catch a JavaScript exception.
 
-우리는 패키지에서 `wasm-bindgen`의 기능을 사용할 것입니다. 실은, 그것들은 다음 섹션에 있습니다.
+We use `wasm-bindgen`'s functionality in our package. In fact, that's the next section.
 
-#### Rust에서 JavaScript의 외부함수 호출
+#### Calling external functions in JavaScript from Rust
 
-다음 부분은 이렇게 되어있을 것입니다.
+The next part looks like this:
 
-```rs
-    #[wasm_bindgen]
-    extern {
-        pub fn alert(s: &str);
-    }
+```rust
+#[wasm_bindgen]
+extern {
+    pub fn alert(s: &str);
+}
 ```
 
-`#[ ]` 안에 있는 것을 속성이라고 부르는데, 이것은 다음에 오는 구문을 수정합니다. 이 경우에, 그 구문은 `extern`이며, Rust에게 외부에 정의된 함수를 호출할 것임을 알립니다. 이 속성의 경우, "`wasm-bindgen`은 이 함수들을 어떻게 찾을 것인지 알고 있다"고 알리는 것입니다.
+The bit inside the `#[ ]` is called an "attribute", and it modifies the next statement somehow. In this case, that statement is an `extern`, which tells Rust that we want to call some externally defined functions. The attribute says "wasm-bindgen knows how to find these functions".
 
-세번째 줄의 함수 시그니처는 Rust로 작성되어있습니다. `alert` 함수는 문자열 타입의 `s` 하나를 인자로서 받는다는 의미입니다.
+The third line is a function signature, written in Rust. It says "the `alert` function takes one argument, a string named `s`."
 
-짐작하셨듯이, 이것은 [JavaScript에 의해 제공되는 `alert` 함수](/ko/docs/Web/API/Window/alert)입니다. 다음 섹션에서 이 함수를 호출할 것입니다.
+As you might suspect, this is [the `alert` function provided by JavaScript](/en-US/docs/Web/API/Window/alert). We call this function in the next section.
 
-JavaScript 함수를 호출하고 싶을 때면 언제든지 이들을 파일에 추가할 수 있으며, \`wasm-bindgen\`이 당신을 위해 그 모든 것을 설정할 것입니다. 아직 모든 것이 지원되지는 않지만, 우리는 노력하고 있습니다. 빠진 것이 있다면, [버그를 제출해주십시오.](https://github.com/rustwasm/wasm-bindgen/issues/new)
+Whenever you want to call JavaScript functions, you can add them to this file, and `wasm-bindgen` takes care of setting everything up for you. Not everything is supported yet, but we're working on it. Please [file bugs](https://github.com/rustwasm/wasm-bindgen/issues/new) if something is missing.
 
-#### JavaScript가 호출할 수 있는 Rust 함수 작성
+#### Producing Rust functions that JavaScript can call
 
-마지막 부분은 여기 있습니다.
+The final part is this one:
 
-```rs
-    #[wasm_bindgen]
-    pub fn greet(name: &str) {
-        alert(&format!("Hello, {}!", name));
-    }
+```rust
+#[wasm_bindgen]
+pub fn greet(name: &str) {
+    alert(&format!("Hello, {}!", name));
+}
 ```
 
-`#[wasm_bindgen]` 속성이 한번 더 나왔습니다. 이번엔 `extern` 구문이 수정되는 대신, `fn` 구문이 수정됩니다. 이것은 Rust 함수를 JavaScript에 의해 호출될 수 있도록 함을 의미하며, `extern` 과는 반대 기능이 됩니다. 이것은 우리가 필요로 하는 기능이 아니라, 우리가 세상에 제공하는 기능이 될 것입니다.
+Once again, we see the `#[wasm_bindgen]` attribute. In this case, it's not modifying an `extern` block, but a `fn`; this means that we want this Rust function to be able to be called by JavaScript. It's the opposite of `extern`: these aren't the functions we need, but rather the functions we're giving out to the world.
 
-이 함수의 이름은 `greet`이며, (`&str` 이라고 쓰여진) 문자열 타입의 `name` 하나를 인자로 갖습니다. 이것은 우리가 위에 있는 `extern` 블록에서 요구한 `alert` 함수를 호출하여, 문자열을 연결하는 `format!` 매크로를 전달합니다.
+This function is named `greet`, and takes one argument, a string (written `&str`), `name`. It then calls the `alert` function we asked for in the `extern` block above. It passes a call to the `format!` macro, which lets us concatenate strings.
 
-`format!`매크로는 이 경우에 서식 문자열과 변수를 두개의 인자로 받습니다. 서식 문자열은 `"Hello, {}!"` 입니다. 이것은 두번째 인자의 변수를 표시할 `{}`를 담고 있습니다. 변수의 경우 함수의 인자로 전달받은 `name`을 전달하므로, 우리가 `greet("Steve")`를 호출하였다면 매크로는 `"Hello, Steve!"`를 반환할 것입니다.
+The `format!` macro takes two arguments in this case, a format string, and a variable to put in it. The format string is the `"Hello, {}!"` bit. It contains `{}`s, where variables will be interpolated. The variable we're passing is `name`, the argument to the function, so if we call `greet("Steve")` we should see `"Hello, Steve!".`
 
-이것은 `alert()`에 인자로 전달되므로, 이 함수를 호출한다면 우리는 브라우저의 경고창에서 "Hello, Steve!"를 볼 수 있을 것입니다.
+This is passed to `alert()`, so when we call this function we will see an alert box with "Hello, Steve!" in it.
 
-라이브러리가 모두 작성되었으므로, 빌드를 해봅시다.
+Now that our library is written, let's build it.
 
-### 작성된 코드를 WebAssembly로 컴파일
+### Compiling our code to WebAssembly
 
-컴파일이 올바르게 되려면, 먼저 `Cargo.toml`에서 설정을 해줘야 합니다. 파일을 열면, 다음과 같은 내용이 있을 것입니다.
+To compile our code correctly, we first need to configure it with `Cargo.toml`. Open this file, and change its contents to look like this:
 
+```toml
+[package]
+name = "hello-wasm"
+version = "0.1.0"
+authors = ["Your Name <you@example.com>"]
+description = "A sample project with wasm-pack"
+license = "MIT/Apache-2.0"
+repository = "https://github.com/yourgithubusername/hello-wasm"
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2"
 ```
-    [package]
-    name = "hello-wasm"
-    version = "0.1.0"
-    authors = ["Your Name <you@example.com>"]
-    description = "A sample project with wasm-pack"
-    license = "MIT/Apache-2.0"
-    repository = "https://github.com/yourgithubusername/hello-wasm"
 
-    [lib]
-    crate-type = ["cdylib"]
+Fill in your own repository and use the same info that `git` uses for the `authors` field.
 
-    [dependencies]
-    wasm-bindgen = "0.2"
-```
+The big part to add is the `[package]`. The `[lib]` part tells Rust to build a `cdylib` version of our package; we won't get into what that means in this tutorial. For more, consult the [Cargo](https://doc.rust-lang.org/cargo/guide/) and [Rust Linkage](https://doc.rust-lang.org/reference/linkage.html) documentation.
 
-리포지토리 이름을 작성하고, `author` 필드를 `git`이 사용하는 것과 같게 설정해주세요.
+The last section is the `[dependencies]` section. Here's where we tell Cargo what version of `wasm-bindgen` we want to depend on; in this case, that's any `0.2.z` version (but not `0.3.0` or above).
 
-추가해야 할 커다란 부분은 아래에 있습니다. `[lib]` 섹션은 패키지를 `cdylib` 형식으로 빌드할 것이라고 Rust에게 알리는데, 이 튜토리얼에선 그 의미가 무엇인지 다루지 않을 것입니다. 자세한 설명은 [Cargo](https://doc.rust-lang.org/cargo/guide/) 와 [Rust Linkage](https://doc.rust-lang.org/reference/linkage.html) 문서를 참조하십시오.
+### Building the package
 
-마지막의 `[dependencies]` 섹션에서, Cargo에게 어떤 버전의 `wasm-bindgen`에 의존하고 있는지 알립니다. 이 경우, 버전 `0.2.z`는 어떤 것이든 사용할 수 있지만, `0.3.0`이상부터는 사용하지 않습니다.
-
-### 패키지 빌드하기
-
-모든 셋팅이 끝났으므로, 패키지를 빌드합시다. 터미널에 다음을 입력합니다.
+Now that we've got everything set up, let's build the package. Type this into your terminal:
 
 ```bash
-    wasm-pack build --scope mynpmusername
+wasm-pack build --target web
 ```
 
-이 명령어를 입력하면 많은 일이 일어납니다. (그리고 특히 `wasm-pack`을 처음 실행했을 때 처럼 많은 시간이 걸립니다.) 이에 대한 자세한 사항을 알고 싶으면, [Mozilla Hacks의 블로그 포스트](https://hacks.mozilla.org/2018/04/hello-wasm-pack/)를 확인해보세요. 간단히 요약하자면, `wasm-pack build`는:
+This does a number of things (and they take a lot of time, especially the first time you run `wasm-pack`). To learn about them in detail, check out [this blog post on Mozilla Hacks](https://hacks.mozilla.org/2018/04/hello-wasm-pack/). In short, `wasm-pack build`:
 
-1. Rust 코드를 WebAssembly로 컴파일 합니다.
-2. 그 WebAssembly 위에서 `wasm-bindgen`을 실행하여, WebAssembly를 npm이 이해할 수 있는 모듈로 감싸는 JavaScript 파일을 생성합니다.
-3. `pkg` 디렉터리를 만들고 JavaScript 파일과 WebAssembly 코드를 그 안으로 옮깁니다.
-4. `Cargo.toml` 을 읽고 동등한 `package.json`을 생성합니다.
-5. `README.md` 가 있다면 패키지로 복사합니다.
+1. Compiles your Rust code to WebAssembly.
+2. Runs `wasm-bindgen` on that WebAssembly, generating a JavaScript file that wraps up that WebAssembly file into a module the browser can understand.
+3. Creates a `pkg` directory and moves that JavaScript file and your WebAssembly code into it.
+4. Reads your `Cargo.toml` and produces an equivalent `package.json`.
+5. Copies your `README.md` (if you have one) into the package.
 
-빌드가 끝났다면, `pkg` 디렉터리에 npm 패키지가 생성될 것입니다.
+The end result? You have a package inside the `pkg` directory.
 
-#### 코드 사이즈에 대한 오류
+#### A digression about code size
 
-생성된 WebAssembly 코드의 크기를 확인해보면, 몇백 킬로바이트가 될 것입니다. 우리는 Rust에게 코드의 크기를 최적화하라고 지시하지 않았으며, 만약 그렇게 지시한다면 크기가 _많이_ 줄어들 것입니다. 이것은 이 튜토리얼에서 다루는 내용을 벗어나지만, 자세한 내용을 보려면 [Shrinking .wasm Size](https://rustwasm.github.io/book/game-of-life/code-size.html#shrinking-wasm-size)에 대한 Rust WebAssembly Working Group의 문서를 참조하십시오.
+If you check out the generated WebAssembly code size, it may be a few hundred kilobytes. We haven't instructed Rust to optimize for size at all, and doing so cuts down on the size _a lot_. This is beyond the scope of this tutorial, but if you'd like to learn more, check out the Rust WebAssembly Working Group's documentation on [Shrinking .wasm Size](https://rustwasm.github.io/book/game-of-life/code-size.html#shrinking-wasm-size).
 
-### npm에 패키지 배포
+## Using the package on the web
 
-npm에 우리의 새 패키지를 배포해봅시다.
+Now that we've got a compiled wasm module, let's run it in the browser.
 
-```bash
-    cd pkg
-    npm publish --access=public
-```
-
-우리는 이제 Rust로 쓰여졌으나, WebAssembly로 컴파일된 npm 패키지를 갖고 있습니다. 이것은 JavaScript에 쓰일 수 있도록 준비되었으며, 다른 사용자들은 Rust를 설치할 필요가 없습니다. 왜냐하면 패키지에는 WebAssembly 코드만 포함되어있으며, Rust 소스는 없기 때문입니다.
-
-## 웹상의 패키지 사용하기
-
-우리의 새 패키지를 사용하는 웹사이트를 빌드해봅시다. 많은 사람들이 여러가지 번들러 도구를 사용해 npm패키지를 사용하는데, 이 튜토리얼에선 이들 중 하나인 `webpack`을 사용할 것입니다. 이것은 조금 복잡하고, 현실적인 사용 사례를 보여줄 것입니다.
-
-`pkg` 와 `hello-wasm` 디렉터리를 빠져나가서, 다음처럼 `site`라는 이름의 새 디렉터리를 만들고 진입합니다.
-
-```bash
-    cd ../..
-    mkdir site
-    cd site
-```
-
-`package.json` 이라는 이름의 새 파일을 만들어, 다음 코드를 작성합니다.
-
-```json
-    {
-      "scripts": {
-        "serve": "webpack-dev-server"
-      },
-      "dependencies": {
-        "@mynpmusername/hello-wasm": "^0.1.0"
-      },
-      "devDependencies": {
-        "webpack": "^4.25.1",
-        "webpack-cli": "^3.1.2",
-        "webpack-dev-server": "^3.1.10"
-      }
-    }
-```
-
-`dependencies` 섹션에서 `@` 뒤에 실제 npm 계정명을 넣어주세요.
-
-그 다음은 Webpack을 설정해야 합니다. `webpack.config.js` 파일을 만든 뒤, 다음 코드를 작성합니다.
-
-```js
-    const path = require('path');
-    module.exports = {
-      entry: "./index.js",
-      output: {
-        path: path.resolve(__dirname, "dist"),
-        filename: "index.js",
-      },
-      mode: "development"
-    };
-```
-
-그리고 HTML 파일도 필요합니다. `index.html`을 만들고, 다음 내용을 작성합니다.
+Let's start by creating a file named `index.html` in the root of the project, and give it the following contents:
 
 ```html
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <meta charset="utf-8">
-        <title>hello-wasm example</title>
-      </head>
-      <body>
-        <script src="./index.js"></script>
-      </body>
-    </html>
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>hello-wasm example</title>
+  </head>
+  <body>
+    <script type="module">
+      import init, { greet } from "./pkg/hello_wasm.js";
+      init().then(() => {
+        greet("WebAssembly");
+      });
+    </script>
+  </body>
+</html>
 ```
 
-마지막으로, HTML에서 참조되는 `index.js`를 만들어 다음 내용을 작성합니다.
+The script in this file will import the js glue code, initialize the wasm module, and call the `greet` function we wrote in rust.
 
-```js
-    const js = import("./node_modules/@yournpmusername/hello-wasm/hello_wasm.js");
-    js.then(js => {
-      js.greet("WebAssembly");
-    });
-```
+Serve the root directory of the project with a local web server, (e.g. `python3 -m http.server`). If you're not sure how to do that, refer to [Running a simple local HTTP server](/en-US/docs/Learn/Common_questions/Tools_and_setup/set_up_a_local_testing_server#running_a_simple_local_http_server).
 
-npm 계정명을 한번 더 입력해야 합니다.
+> **Note:** Make sure to use an up-to-date web server that supports the `application/wasm` MIME type. Older web servers might not support it yet.
 
-이것은 `node_modules` 폴더에 있는 새 모듈을 불러옵니다. 이것은 모범 사례로 여겨지진 않지만, 데모이므로 지금은 괜찮습니다. 모듈이 로드되었면, 모듈로부터 `greet` 함수를 호출하여 `"WebAssembly"` 를 문자열로서 전달합니다. 여기엔 특별한 것이 없지만, Rust 코드를 호출한 방법에 주목해주세요. JavaScript 코드가 알 수 있는 한, 이것은 그저 정상적인 모듈일 뿐입니다.
+Load `index.html` from the web server (if you used the Python3 example: `http://localhost:8000`). An alert box appears on the screen, with `Hello, WebAssembly!` in it. We've successfully called from JavaScript into Rust, and from Rust into JavaScript.
 
-파일들을 모두 만들었으니, 한번 보도록 합시다.
+## Making our package available to npm
+
+If you want to use the WebAssembly module with npm, we'll need to make a few changes.
+
+Let's start by recompiling our Rust with the target bundler option:
 
 ```bash
-    npm install
-    npm run serve
+wasm-pack build --target bundler
 ```
 
-이것은 간단한 웹 서버를 시작합니다. [http://localhost:8080](http://localhost:8080/)을 열면 화면에 `Hello, WebAssembly!` 라고 쓰여진 alert box가 나타납니다. 우리는 성공적으로 JavaScript로부터 Rust를, Rust로부터 JavaScript를 호출하였습니다.
+### Install Node.js and npm
 
-## 결론
+We are building an npm package, so you need to have Node.js and npm installed.
 
-이것이 튜토리얼의 끝입니다. 우리는 당신이 이것이 쓸모있다는 것을 알게 되었길 기대합니다.
+To get Node.js and npm, go to the [Get npm!](https://docs.npmjs.com/getting-started/) page and follow the instructions. When it comes to picking a version, choose any one you'd like; this tutorial isn't version-specific.
 
-여기에 많은 흥미로운 작업이 진행되고 있습니다. 이것을 좀 더 낫게 만들고 싶다면, [the Rust Webassembly Working Group](http://fitzgeraldnick.com/2018/02/27/wasm-domain-working-group.html)을 확인해보세요.
+Next, let's use `npm link` to make this package available to other JavaScript packages installed
+
+```bash
+cd pkg
+npm link
+```
+
+We now have an npm package, written in Rust, but compiled to WebAssembly. It's ready for use from JavaScript, and doesn't require the user to have Rust installed; the code included was the WebAssembly code, not the Rust source.
+
+### Using the npm package on the web
+
+Let's build a website that uses our new npm package. Many people use npm packages through various bundler tools, and we'll be using one of them, `webpack`, in this tutorial. It's only a bit complex, and shows a realistic use-case.
+
+Let's move back out of the `pkg` directory, and make a new directory, `site`, to try this out in:
+
+```bash
+cd ..
+mkdir site
+cd site
+npm link hello-wasm
+```
+
+Create a new file, `package.json`, and put the following code in it:
+
+```json
+{
+  "scripts": {
+    "serve": "webpack-dev-server"
+  },
+  "dependencies": {
+    "hello-wasm": "^0.1.0"
+  },
+  "devDependencies": {
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
+  }
+}
+```
+
+Next, we need to configure Webpack. Create `webpack.config.js` and put the following in it:
+
+```js
+const path = require("path");
+module.exports = {
+  entry: "./index.js",
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "index.js",
+  },
+  mode: "development",
+};
+```
+
+Next, create a file named `index.js`, and give it these contents:
+
+```js
+import("./node_modules/hello-wasm/hello_wasm.js").then((js) => {
+  js.greet("WebAssembly with npm");
+});
+```
+
+This imports the new module from the `node_modules` folder. This isn't considered a best practice, but this is a demo, so it's OK for now. Once it's loaded, it calls the `greet` function from that module, passing `"WebAssembly"` as a string. Note how there's nothing special here, yet we're calling into Rust code. As far as the JavaScript code can tell, this is just a normal module.
+
+Finally, we need to modify the HTML file; open the `index.html` file and replace the current contents with the following:
+
+```html
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>hello-wasm example</title>
+  </head>
+  <body>
+    <script src="./index.js"></script>
+  </body>
+</html>
+```
+
+We're done making files. Let's give this a shot:
+
+```bash
+npm install
+npm run serve
+```
+
+This starts a web server. Load `http://localhost:8080` and an alert box appears on the screen, with `Hello, WebAssembly with npm!` in it. We've successfully used the Rust module with npm.
+
+## Conclusion
+
+This is the end of our tutorial; we hope you've found it useful.
+
+There's lots of exciting work going on in this space; if you'd like to help make it even better, check out [the Rust WebAssembly Working Group](https://fitzgeraldnick.com/2018/02/27/wasm-domain-working-group.html).

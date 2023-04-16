@@ -1,39 +1,38 @@
 ---
-title: param
+title: <xsl:param>
 slug: Web/XSLT/Element/param
-original_slug: Web/XSLT/param
 ---
 
 {{ XsltRef() }}
 
-`<xsl:param>` 요소는 이름과 선택에 따라 기본값으로 매개변수를 설정합니다. 최상위 요소로 쓸 때, 매개변수는 전역입니다. `<xsl:template>` 요소 안에서 쓰면, 매개변수는 그 템플릿에 대해 지역입니다. 이 경우에 요소는 템플릿의 첫 자식 요소여야 합니다.
+The `<xsl:param>` element establishes a parameter by name and, optionally, a default value for that parameter. When used as a top-level element, the parameter is global. When used inside an `<xsl:template>` element, the parameter is local to that template. In this case it must be the first child element of the template.
 
-### 문법
+### Syntax
 
-```
+```xml
 <xsl:param name=NAME select=EXPRESSION>
   TEMPLATE
 </xsl:param>
 ```
 
-### 필수 속성
+### Required Attributes
 
 - `name`
-  - : 파라미터에 이름을 붙입니다. 이름은 QName이어야 합니다.
+  - : Names the parameter. This must be a QName.
 
-### 선택 속성
+### Optional Attributes
 
 - `select`
-  - : none으로 지정하면 기본값을 제공하는 XPath 식을 씁니다.
+  - : Uses an XPath expression to provide a default value if none is specified.
 
-### 타입
+### Type
 
-명령, 최상위 요소나 템플릿 안에 나타날 수 있음.
+Instruction, can appear as a top-level element or within a template.
 
-### 정의
+### Defined
 
-[XSLT section 11, Variables and Parameters](http://www.w3.org/TR/xslt#variables)
+XSLT, section 11.
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

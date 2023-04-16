@@ -1,20 +1,31 @@
 ---
-title: History.length
+title: "History: length property"
+short-title: length
 slug: Web/API/History/length
+page-type: web-api-instance-property
+browser-compat: api.History.length
 ---
 
-{{ APIRef("HTML DOM") }}
+{{APIRef("History API")}}
 
-**`History.length`** 읽기 전용 속성은 현재 페이지를 포함해, 세션 기록의 길이를 나타내는 정수를 반환합니다. 예를 들어, 새로운 탭에 막 불러온 페이지의 세션 기록 길이는 `1`입니다.
+The **`History.length`** read-only
+property returns an integer representing the number of elements in the session
+history, including the currently loaded page.
 
-## 명세
+For example, for a page loaded in a new tab this property returns `1`.
+
+## Value
+
+A number.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 속성이 속한 {{domxref("History")}} 인터페이스
+- The {{domxref("History")}} interface it belongs to.

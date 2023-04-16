@@ -1,147 +1,147 @@
 ---
-title: 동일 출처 정책
+title: Same-origin policy
 slug: Web/Security/Same-origin_policy
 ---
 
-{{QuickLinksWithSubpages("/ko/docs/Web/Security")}}
+{{QuickLinksWithSubpages("/en-US/docs/Web/Security")}}
 
-**동일 출처 정책**(same-origin policy)은 어떤 {{Glossary("origin", "출처")}}에서 불러온 문서나 스크립트가 다른 출처에서 가져온 리소스와 상호작용하는 것을 제한하는 중요한 보안 방식입니다. 동일 출처 정책은 잠재적으로 해로울 수 있는 문서를 분리함으로써 공격받을 수 있는 경로를 줄여줍니다.
+The **same-origin policy** is a critical security mechanism that restricts how a document or script loaded by one {{Glossary("origin")}} can interact with a resource from another origin.
 
-## 출처의 정의
+It helps isolate potentially malicious documents, reducing possible attack vectors. For example, it prevents a malicious website on the Internet from running JS in a browser to read data from a third-party webmail service (which the user is signed into) or a company intranet (which is protected from direct access by the attacker by not having a public IP address) and relaying that data to the attacker.
 
-두 URL의 {{glossary("protocol", "프로토콜")}}, {{glossary("port", "포트")}}(명시한 경우), {{glossary("host", "호스트")}}가 모두 같아야 **동일한 출처**라고 말합니다. "스킴/호스트/포트튜플"이나 그냥 "튜플"(2개 이상의 요소가 전체를 구성하는 집합)이라고 하기도 합니다.
+## Definition of an origin
 
-아래 표는 URL `http://store.company.com/dir/page.html`의 출처를 비교한 예시입니다.
+Two URLs have the _same origin_ if the {{Glossary("protocol")}}, {{Glossary("port")}} (if specified), and {{Glossary("host")}} are the same for both. You may see this referenced as the "scheme/host/port tuple", or just "tuple". (A "tuple" is a set of items that together comprise a whole — a generic form for double/triple/quadruple/quintuple/etc.)
 
-| URL                                               | 결과 | 이유                                |
-| ------------------------------------------------- | ---- | ----------------------------------- |
-| `http://store.company.com/dir2/other.html`        | 성공 | 경로만 다름                         |
-| `http://store.company.com/dir/inner/another.html` | 성공 | 경로만 다름                         |
-| `https://store.company.com/secure.html`           | 실패 | 프로토콜 다름                       |
-| `http://store.company.com:81/dir/etc.html`        | 실패 | 포트 다름 (`http://`는 80이 기본값) |
-| `http://news.company.com/dir/other.html`          | 실패 | 호스트 다름                         |
+The following table gives examples of origin comparisons with the URL `http://store.company.com/dir/page.html`:
 
-### 출처 상속
+| URL                                               | Outcome     | Reason                                           |
+| ------------------------------------------------- | ----------- | ------------------------------------------------ |
+| `http://store.company.com/dir2/other.html`        | Same origin | Only the path differs                            |
+| `http://store.company.com/dir/inner/another.html` | Same origin | Only the path differs                            |
+| `https://store.company.com/page.html`             | Failure     | Different protocol                               |
+| `http://store.company.com:81/dir/page.html`       | Failure     | Different port (`http://` is port 80 by default) |
+| `http://news.company.com/dir/page.html`           | Failure     | Different host                                   |
 
-`about:blank`와 `javascript:` URL은 출처 서버에 대한 정보를 가지고 있지 않습니다. 따라서 이런 URL에서 실행하는 스크립트는 해당 URL을 가지고 있는 문서의 출처를 상속합니다.
+### Inherited origins
 
-> **참고:** 예를 들어, `about:blank`는 부모 창에서 내용을 채워넣을 빈 팝업({{domxref("Window.open()")}} 등의 방식으로 생성)의 URL로 주로 사용됩니다. 만약 이 팝업이 JavaScript도 포함한다면 팝업을 생성한 스크립트의 출처를 따라가게 됩니다.
+Scripts executed from pages with an `about:blank` or `javascript:` URL inherit the origin of the document containing that URL, since these types of URLs do not contain information about an origin server.
 
-> **경고:** `data:` URL은 비어있는 보안 맥락을 새로 받습니다.
+For example, `about:blank` is often used as a URL of new, empty popup windows into which the parent script writes content (e.g. via the {{domxref("Window.open()")}} mechanism). If this popup also contains JavaScript, that script would inherit the same origin as the script that created it.
 
-### Internet Explorer 예외사항
+`data:` URLs get a new, empty, security context.
 
-Internet Explorer는 동일 출처 정책에 두 가지 중요한 예외사항이 있습니다.
+### File origins
 
-- 신뢰할 수 있는 사이트
-  - : 양쪽 도메인 모두가 **높음** 단계의 보안 수준을 가지고 있는 경우 동일 출처 제약을 적용하지 않습니다.
-- 포트
-  - : Internet Explorer는 동일 출처 정책 검사에 포트를 포함하지 않습니다. 따라서 `http://company.com:81/index.html`과 `http://company.com/index.html`은 동일 출처로 간주하며, 제한을 두지 않습니다.
+Modern browsers usually treat the origin of files loaded using the `file:///` schema as _opaque origins_.
+What this means is that if a file includes other files from the same folder (say), they are not assumed to come from the same origin, and may trigger {{Glossary("CORS")}} errors.
 
-두 예외 모두 비표준이며 다른 브라우저에서는 지원하지 않습니다.
+Note that the [URL specification](https://url.spec.whatwg.org/#origin) states that the origin of files is implementation-dependent, and some browsers may treat files in the same directory or subdirectory as same-origin even though this has [security implications](https://www.mozilla.org/en-US/security/advisories/mfsa2019-21/#CVE-2019-11730).
 
-## 출처 변경
+## Changing origin
 
-일부 제약이 있긴 하지만 페이지의 출처를 변경하는 것도 가능합니다. 스크립트로{{domxref("document.domain")}}의 값을 현재 도메인이나 현재 도메인의 상위 도메인으로 변경할 수 있는데, 상위 도메인으로 설정한 경우 (더 짧은) 상위 도메인을 동일 출처 검사에 사용합니다.
+> **Warning:** The approach described here (using the {{domxref("document.domain")}} setter) is deprecated because it undermines the security protections provided by the same origin policy, and complicates the origin model in browsers, leading to interoperability problems and security bugs.
 
-`http://store.company.com/dir/other.html` 문서의 스크립트가 다음 코드를 실행한 이후를 가정해보겠습니다.
+A page may change its own origin, with some limitations. A script can set the value of {{domxref("document.domain")}} to its current domain or a superdomain of its current domain. If set to a superdomain of the current domain, the shorter superdomain is used for same-origin checks.
 
-```
+For example, assume a script from the document at `http://store.company.com/dir/other.html` executes the following:
+
+```js
 document.domain = "company.com";
 ```
 
-해당 페이지는 `http://company.com/dir/page.html`과의 동일 출처 검사를 통과할 수 있습니다. (단, `http://company.com/dir/page.html` 역시 자신의 `document.domain`을 `"company.com"`으로 설정해 이런 동작을 허용하겠다고 알려줘야 합니다. {{domxref("document.domain")}} 문서에서 더 알아보세요.) 그러나, `company.com`은 `document.domain`을 `othercompany.com`으로 설정할 수 **없습니다**. `company.com`의 상위 도메인이 아니기 때문입니다.
+Afterward, the page can pass the same-origin check with `http://company.com/dir/page.html` (assuming `http://company.com/dir/page.html` sets its `document.domain` to "`company.com`" to indicate that it wishes to allow that - see {{domxref("document.domain")}} for more). However, `company.com` could **not** set `document.domain` to `othercompany.com`, since that is not a superdomain of `company.com`.
 
-포트 번호는 브라우저가 따로 검사합니다. 모든 `document.domain`의 변화, 심지어 `document.domain = document.domain`조차 포트 번호를 {{jsxref("null")}}로 덮어씁니다. 따라서 `company.com:8080`과 `company.com`을 서로 연결하고자 할때 앞쪽에서 `document.domain = "company.com"`을 추가하는 것만 가지고는 **불가능**하며, 반드시 양쪽 모두 자신의 포트 숫자를 `null`로 설정해야 합니다.
+The port number is checked separately by the browser. Any call to `document.domain`, including `document.domain = document.domain`, causes the port number to be overwritten with `null`. Therefore, one **cannot** make `company.com:8080` talk to `company.com` by only setting `document.domain = "company.com"` in the first. It has to be set in both so their port numbers are both `null`.
 
-> **참고:** `document.domain`을 통해 서브도메인이 부모에 안전하게 접근할 수 있도록 허용할 때, 반드시 부모와 자식 모두의 `document.domain`을 같은 값으로 지정해야 합니다. 부모 도메인을 자기 자신의 값으로 설정하는, 아무 의미도 없어 보이는 경우라도 지정이 필요합니다. 그렇지 않으면 권한 오류가 발생할 수 있습니다.
+The mechanism has some limitations. For example, it will throw a "`SecurityError`" [`DOMException`](/en-US/docs/Web/API/DOMException) if the [`document-domain`](/en-US/docs/Web/HTTP/Headers/Permissions-Policy/document-domain) [`Permissions-Policy`](/en-US/docs/Web/HTTP/Headers/Permissions-Policy) is enabled or the document is in a sandboxed [`<iframe>`](/en-US/docs/Web/HTML/Element/iframe), and changing the origin in this way does not affect the origin checks used by many Web APIs (e.g. [`localStorage`](/en-US/docs/Web/API/Window/localStorage), [`indexedDB`](/en-US/docs/Web/API/IndexedDB_API), [`BroadcastChannel`](/en-US/docs/Web/API/BroadcastChannel), [`SharedWorker`](/en-US/docs/Web/API/SharedWorker)). A more exhaustive list of failure cases can be found in [Document.domain > Failures](/en-US/docs/Web/API/Document/domain#failures).
 
-## 교차 출처 네트워크 접근
+> **Note:** When using `document.domain` to allow a subdomain to access its parent, you need to set `document.domain` to the _same value_ in both the parent domain and the subdomain. This is necessary even if doing so is setting the parent domain back to its original value. Failure to do this may result in permission errors.
 
-동일 출처 정책은 서로 다른 출처 사이에서 {{domxref("XMLHttpRequest")}} 혹은 {{htmlelement("img")}} 요소를 사용할 때 등의 상호작용을 통제합니다. 상호작용은 보통 다음의 세 가지 범주로 나뉩니다.
+## Cross-origin network access
 
-- 교차 출처 쓰기는 보통 허용합니다. 예시로는 링크, 리다이렉트, 양식 제출 등이 있습니다. 일부 HTTP 요청은 [프리플라이트](/ko/docs/Web/HTTP/CORS#Preflighted_requests)를 요구합니다.
-- 교차 출처 삽입은 보통 허용합니다. 예시는 아래에 있습니다.
-- 교차 출처 읽기는 보통 불허하지만, 종종 교차 출처 삽입 과정에서 읽기 권한이 누출됩니다. 가령 삽입한 이미지의 크기나, 삽입한 스크립트의 행동, [삽입한 리소스의 가용성](https://bugzilla.mozilla.org/show_bug.cgi?id=629094) 등을 읽을 수 있습니다.
+The same-origin policy controls interactions between two different origins, such as when you use {{domxref("XMLHttpRequest")}} or an {{htmlelement("img")}} element. These interactions are typically placed into three categories:
 
-다음은 교차 출처로 삽입할 수 있는 리소스의 일부 예제입니다.
+- Cross-origin _writes_ are typically allowed. Examples are links, redirects, and form submissions. Some HTTP requests require [preflight](/en-US/docs/Web/HTTP/CORS#preflighted_requests).
+- Cross-origin _embedding_ is typically allowed. (Examples are listed below.)
+- Cross-origin _reads_ are typically disallowed, but read access is often leaked by embedding. For example, you can read the dimensions of an embedded image, the actions of an embedded script, or the [availability of an embedded resource](https://bugzil.la/629094).
 
-- `<script src="..."></script>`로 추가하는 JavaScript. 그러나 구문 오류에 대한 상세 정보는 동일 출처 스크립트에서만 확인 가능합니다.
-- `<link rel="stylesheet" href="...">`로 적용하는 CSS. CSS의 [느슨한 구문 규칙](https://scarybeastsecurity.blogspot.com/2009/12/generic-cross-browser-cross-domain.html)으로 인해, 교차 출처 CSS는 올바른 `Content-Type` 헤더를 필요로 합니다. 브라우저 별 제한은 다릅니다. [Internet Explorer](<https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/compatibility/gg622939(v=vs.85)?redirectedfrom=MSDN>), [Firefox](https://www.mozilla.org/en-US/security/advisories/mfsa2010-46/), [Chrome](https://bugs.chromium.org/p/chromium/issues/detail?id=9877), [Safari](https://support.apple.com/ko-kr/HT4070)(CVE-2010-0051), [Opera](https://security.opera.com/cross-domain-data-theft-with-css-load-opera-security-advisories/)
-- {{htmlelement("img")}}로 표시하는 이미지.
-- {{htmlelement("video")}}와 {{htmlelement("audio")}}로 재생하는 미디어.
-- {{htmlelement("object")}}와 {{htmlelement("embed")}}로 삽입하는 외부 리소스.
-- {{cssxref("@font-face")}}로 적용하는 글씨체. 하지만 일부 브라우저는 동일 출처를 요구할 수도 있습니다.
-- {{htmlelement("iframe")}}으로 삽입하는 모든 것. {{httpheader("X-Frame-Options")}} 헤더를 사용해 교차 출처 프레임의 대상이 되는 것을 방지할 수 있습니다.
+Here are some examples of resources which may be embedded cross-origin:
 
-### 교차 출처 접근 허용하기
+- JavaScript with `<script src="…"></script>`. Error details for syntax errors are only available for same-origin scripts.
+- CSS applied with `<link rel="stylesheet" href="…">`. Due to the relaxed syntax rules of CSS, cross-origin CSS requires a correct `Content-Type` header. Browsers block stylesheet loads if it is a cross-origin load where the MIME type is incorrect and the resource does not start with a valid CSS construct.
+- Images displayed by {{htmlelement("img")}}.
+- Media played by {{htmlelement("video")}} and {{htmlelement("audio")}}.
+- External resources embedded with {{htmlelement("object")}} and {{htmlelement("embed")}}.
+- Fonts applied with {{cssxref("@font-face")}}. Some browsers allow cross-origin fonts, others require same-origin.
+- Anything embedded by {{htmlelement("iframe")}}. Sites can use the {{HTTPHeader("X-Frame-Options")}} header to prevent cross-origin framing.
 
-[CORS](/ko/docs/Web/HTTP/CORS)를 사용해 교차 출처 접근을 허용하세요. CORS는 {{glossary("HTTP")}}의 일부로, 어떤 호스트에서 자신의 콘텐츠를 불러갈 수 있는지 서버에 지정할 수 있는 방법입니다.
+### How to allow cross-origin access
 
-### 교차 출처 접근 막기
+Use [CORS](/en-US/docs/Web/HTTP/CORS) to allow cross-origin access. CORS is a part of {{Glossary("HTTP")}} that lets servers specify any other hosts from which a browser should permit loading of content.
 
-- 교차 출처 쓰기를 방지하려면 추측 불가능한 토큰을 요청에 포함하세요. [교차 출처 요청 위조(Cross-Site Request Forgery, CSRF)](https://owasp.org/www-community/attacks/csrf) 토큰이라고 부릅니다. 토큰을 요구하는 페이지의 교차 출처 읽기도 막아야 합니다.
-- 리소스의 교차 출처 읽기를 방지하려면 삽입 불가하도록 설정하세요. 리소스 삽입 과정에서 일부 정보가 새어 나가므로 방지해야 합니다.
-- 교차 출처 삽입을 방지하려면, 리소스가 위에 나열한 삽입 가능 형태로 읽히지 않도록 해야 합니다. 브라우저는 Content-Type 헤더를 준수하지 않을 수도 있습니다. 즉, `<script>` 태그가 HTML 문서를 가리키도록 설정하는 경우, 브라우저는 HTML을 JavaScript로 분석하려고 시도합니다. 방지하려는 리소스가 사이트의 진입점이 아닌 경우 CSRF 토큰을 사용하는 것도 삽입 방지의 방법입니다.
+### How to block cross-origin access
 
-## 교차 출처 스크립트 API 접근
+- To prevent cross-origin writes, check an unguessable token in the request — known as a [Cross-Site Request Forgery (CSRF)](https://owasp.org/www-community/attacks/csrf) token. You must prevent cross-origin reads of pages that require this token.
+- To prevent cross-origin reads of a resource, ensure that it is not embeddable. It is often necessary to prevent embedding because embedding a resource always leaks some information about it.
+- To prevent cross-origin embeds, ensure that your resource cannot be interpreted as one of the embeddable formats listed above. Browsers may not respect the `Content-Type` header. For example, if you point a `<script>` tag at an HTML document, the browser will try to parse the HTML as JavaScript. When your resource is not an entry point to your site, you can also use a CSRF token to prevent embedding.
 
-{{domxref("HTMLIFrameElement.contentWindow", "iframe.contentWindow")}}, {{domxref("window.parent")}}, {{domxref("window.open")}}, {{domxref("window.opener")}} 등의 JavaScript API는 문서가 서로를 직접 참조할 수 있도록 합니다. 이때 두 문서의 출처가 같지 않을 경우 참조를 통해 {{domxref("Window")}}와 {{domxref("Location")}} 객체로의 매우 제한된 접근만 가능합니다. 아래의 두 구획에서 접근 가능한 항목을 볼 수 있습니다.
+## Cross-origin script API access
 
-서로 다른 출처의 문서간 통신을 하려면 {{domxref("window.postMessage()")}}를 사용하세요.
+JavaScript APIs like {{domxref("HTMLIFrameElement.contentWindow", "iframe.contentWindow")}}, {{domxref("window.parent")}}, {{domxref("window.open")}}, and {{domxref("window.opener")}} allow documents to directly reference each other. When two documents do not have the same origin, these references provide very limited access to {{domxref("Window")}} and {{domxref("Location")}} objects, as described in the next two sections.
 
-명세: [HTML Living Standard § Cross-origin objects](https://html.spec.whatwg.org/multipage/browsers.html#cross-origin-objects)
+To communicate between documents from different origins, use {{domxref("window.postMessage")}}.
+
+Specification: [HTML Living Standard § Cross-origin objects](https://html.spec.whatwg.org/multipage/browsers.html#cross-origin-objects).
 
 ### Window
 
-교차 출처에서 `Window`의 다음 항목에 접근할 수 있습니다.
+The following cross-origin access to these `Window` properties is allowed:
 
-| 메서드                                       |
-| -------------------------------------------- |
-| {{domxref("window.blur")}}         |
-| {{domxref("window.close")}}         |
-| {{domxref("window.focus")}}         |
+| Methods                           |
+| --------------------------------- |
+| {{domxref("window.blur")}}        |
+| {{domxref("window.close")}}       |
+| {{domxref("window.focus")}}       |
 | {{domxref("window.postMessage")}} |
 
-| 속성                                     |            |
-| ---------------------------------------- | ---------- |
-| {{domxref("window.closed")}}     | 읽기 전용. |
-| {{domxref("window.frames")}}     | 읽기 전용. |
-| {{domxref("window.length")}}     | 읽기 전용. |
-| {{domxref("window.location")}} | 읽기/쓰기. |
-| {{domxref("window.opener")}}     | 읽기 전용. |
-| {{domxref("window.parent")}}     | 읽기 전용. |
-| {{domxref("window.self")}}     | 읽기 전용. |
-| {{domxref("window.top")}}         | 읽기 전용. |
-| {{domxref("window.window")}}     | 읽기 전용. |
+| Attributes                     |             |
+| ------------------------------ | ----------- |
+| {{domxref("window.closed")}}   | Read only.  |
+| {{domxref("window.frames")}}   | Read only.  |
+| {{domxref("window.length")}}   | Read only.  |
+| {{domxref("window.location")}} | Read/Write. |
+| {{domxref("window.opener")}}   | Read only.  |
+| {{domxref("window.parent")}}   | Read only.  |
+| {{domxref("window.self")}}     | Read only.  |
+| {{domxref("window.top")}}      | Read only.  |
+| {{domxref("window.window")}}   | Read only.  |
 
-일부 브라우저는 위의 항목보다 더 많은 접근을 허용할 수도 있습니다.
+Some browsers allow access to more properties than the above.
 
 ### Location
 
-교차 출처에서 `Location`의 다음 항목에 접근할 수 있습니다.
+The following cross-origin access to `Location` properties is allowed:
 
-| 메서드                                   |
-| ---------------------------------------- |
+| Methods                         |
+| ------------------------------- |
 | {{domxref("location.replace")}} |
 
-| 속성                                 |            |
-| ------------------------------------ | ---------- |
-| {{domxref("URLUtils.href")}} | 쓰기 전용. |
+| Attributes                   |             |
+| ---------------------------- | ----------- |
+| {{domxref("location.href")}} | Write-only. |
 
-일부 브라우저는 위의 항목보다 더 많은 접근을 허용할 수도 있습니다.
+Some browsers allow access to more properties than the above.
 
-## 교차 출처 데이터 저장소 접근
+## Cross-origin data storage access
 
-[Web Storage](/ko/docs/Web/API/Web_Storage_API)와 [IndexedDB](/ko/docs/Web/API/IndexedDB_API) 등 브라우저에 저장한 데이터로의 접근은 출처별로 제한됩니다. 각각의 출처는 별도의 저장소를 받으며, 한 출처의 JavaScript에서 다른 출처의 저장소를 읽거나 쓰는 것은 불가능합니다.
+Access to data stored in the browser such as [Web Storage](/en-US/docs/Web/API/Web_Storage_API) and [IndexedDB](/en-US/docs/Web/API/IndexedDB_API) are separated by origin. Each origin gets its own separate storage, and JavaScript in one origin cannot read from or write to the storage belonging to another origin.
 
-{{glossary("Cookie", "쿠키")}}는 출처에 대해 다른 정의를 사용합니다. 어떤 페이지는 자신의 도메인은 물론, 공개 접두사가 아닌 모든 부모 도메인에 대해 쿠키를 설정할 수 있습니다. Firefox와 Chrome은 [Public Suffix List](https://publicsuffix.org/)를 사용해 도메인의 공개 접두사 여부를 판별합니다. Internet Explorer는 별도의 내부 방식을 사용합니다. 브라우저는 주어진 도메인 및 하위 도메인에 대한 쿠키 접근을 허용하며, 사용한 {{glossary("protocol", "프로토콜")}}(HTTP/HTTPS)과 {{glossary("port", "포트")}}는 검사하지 않습니다. 쿠키를 설정할 때 `Domain`, `Path`, `Secure`, `HttpOnly` 플래그를 사용해 쿠키 접근을 제한할 수 있습니다. 쿠키를 읽을 때, 쿠키를 설정한 장소는 볼 수 없습니다. 오로지 안전한 HTTPS 연결만 사용하더라도, 보이는 쿠키 중 어떠한 것이라도 안전하지 않은 연결에서 설정한 것일 수 있습니다.
+{{glossary("Cookie", "Cookies")}} use a separate definition of origins. A page can set a cookie for its own domain or any parent domain, as long as the parent domain is not a public suffix. Firefox and Chrome use the [Public Suffix List](https://publicsuffix.org/) to determine if a domain is a public suffix. When you set a cookie, you can limit its availability using the `Domain`, `Path`, `Secure`, and `HttpOnly` flags. When you read a cookie, you cannot see from where it was set. Even if you use only secure https connections, any cookie you see may have been set using an insecure connection.
 
-## 같이 보기
+## See also
 
-- [W3C의 Same-Origin Policy](https://www.w3.org/Security/wiki/Same_Origin_Policy)
-- [web.dev의 Same-origin policy](https://web.dev/secure/same-origin-policy)
-
-## 원본 문서 정보
-
-- 저자: Jesse Ruderman
+- [Same Origin Policy at W3C](https://www.w3.org/Security/wiki/Same_Origin_Policy)
+- [Same-origin policy at web.dev](https://web.dev/same-origin-policy/)
+- {{httpheader("Cross-Origin-Resource-Policy")}}
+- {{httpheader("Cross-Origin-Embedder-Policy")}}

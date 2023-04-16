@@ -1,62 +1,84 @@
 ---
-title: URL.createObjectURL()
+title: "URL: createObjectURL() static method"
+short-title: createObjectURL()
 slug: Web/API/URL/createObjectURL
+page-type: web-api-static-method
+browser-compat: api.URL.createObjectURL
 ---
 
 {{APIRef("URL API")}}
 
-**`URL.createObjectURL()`** 정적 메서드는 주어진 객체를 가리키는 URL을 {{domxref("DOMString")}}으로 반환합니다. 해당 URL은 자신을 생성한 창의 {{domxref("document")}}가 사라지면 함께 무효화됩니다.
+The **`URL.createObjectURL()`** static
+method creates a string containing a URL representing the object
+given in the parameter.
 
-객체 URL을 해제하려면 {{domxref("URL.revokeObjectURL", "revokeObjectURL()")}}을 호출하세요.
+The URL lifetime is tied to the {{domxref("document")}}
+in the window on which it was created. The new object URL represents the specified
+{{domxref("File")}} object or {{domxref("Blob")}} object.
+
+To release an object URL, call {{domxref("URL.revokeObjectURL", "revokeObjectURL()")}}.
 
 {{AvailableInWorkers}}
 
-> **참고:** 이 기능은 메모리 누수의 가능성으로 인해 [Service Worker](/ko/docs/Web/API/Service_Worker_API)에서 사용할 수 없습니다.
+> **Note:** This feature is _not_ available in [Service Workers](/en-US/docs/Web/API/Service_Worker_API) due to its
+> potential to create memory leaks.
 
-## 구문
+## Syntax
 
-```js
-const objectURL = URL.createObjectURL(object)
+```js-nolint
+URL.createObjectURL(object)
 ```
 
-### 매개변수
+### Parameters
 
 - `object`
-  - : 객체 URL을 생성할 {{domxref("File")}}, {{domxref("Blob")}}, {{domxref("MediaSource")}} 객체.
+  - : A {{domxref("File")}}, {{domxref("Blob")}}, or {{domxref("MediaSource")}} object to
+    create an object URL for.
 
-### 반환 값
+### Return value
 
-지정한 `object`의 참조 URL을 담은 {{domxref("DOMString")}}
+A string containing an object URL that can be used to reference the
+contents of the specified source `object`.
 
-## 예제
+## Examples
 
-[객체 URL을 사용하여 이미지 표시하기](/ko/docs/Web/API/File/Using_files_from_web_applications#예시_객체_URL을_사용하여_이미지_표시하기)를 보세요.
+See [Using object URLs to display images](/en-US/docs/Web/API/File_API/Using_files_from_web_applications#example_using_object_urls_to_display_images).
 
-## 사용 일람
+## Usage notes
 
-### 메모리 관리
+### Memory management
 
-같은 객체를 사용하더라도, `createObjectURL()`을 매번 호출할 때마다 새로운 객체 URL을 생성합니다. 각각의 URL을 더는 쓰지 않을 땐 {{domxref("URL.revokeObjectURL()")}}을 사용해 하나씩 해제해줘야 합니다.
+Each time you call `createObjectURL()`, a new object URL is created, even if
+you've already created one for the same object. Each of these must be released by
+calling {{domxref("URL.revokeObjectURL()")}} when you no longer need them.
 
-브라우저는 불러온 문서를 해제할 때 객체 URL도 자동으로 해제합니다. 그러나 최적의 성능과 메모리 사용량을 위해서, 객체 URL을 해제해도 안전하다면 그렇게 해야 합니다.
+Browsers will release object URLs automatically when the document is unloaded; however,
+for optimal performance and memory usage, if there are safe times when you can
+explicitly unload them, you should do so.
 
-### 미디어 스트림 객체 URL
+### Using object URLs for media streams
 
-구 Media Source 명세에서는 {{HTMLElement("video")}} 요소에 스트림을 부착하려면 {{domxref("MediaStream")}}의 객체 URL을 생성했어야 했습니다. 이제 이런 과정은 필수가 아니며, 브라우저도 지원을 중단하고 있습니다.
+In older versions of the Media Source specification, attaching a stream to a
+{{HTMLElement("video")}} element required creating an object URL for the
+{{domxref("MediaStream")}}. This is no longer necessary, and browsers are removing
+support for doing this.
 
-> **경고:** **중요:** 아직 미디어 요소에 {{domxref("URL.createObjectURL", "createObjectURL()")}}을 사용해 스트림을 부착하고 있다면, {{domxref("HTMLMediaElement.srcObject", "srcObject")}}에 `MediaStream`을 직접 설정하도록 코드를 수정해야 합니다.
+> **Warning:** If you still have code that relies on
+> {{domxref("URL.createObjectURL", "createObjectURL()")}} to attach streams to media
+> elements, you need to update your code to set {{domxref("HTMLMediaElement.srcObject", "srcObject")}} to the `MediaStream` directly.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [웹 애플리케이션에서 파일 사용하기](/ko/docs/Web/API/File/Using_files_from_web_applications)
+- [Using files from web applications](/en-US/docs/Web/API/File_API/Using_files_from_web_applications)
+- [Using object URLs to display images](/en-US/docs/Web/API/File_API/Using_files_from_web_applications#example_using_object_urls_to_display_images)
 - {{domxref("URL.revokeObjectURL()")}}
 - {{domxref("HTMLMediaElement.srcObject")}}
 - {{domxref("FileReader.readAsDataURL()")}}

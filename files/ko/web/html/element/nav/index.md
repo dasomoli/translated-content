@@ -1,79 +1,92 @@
 ---
-title: '<nav>: 탐색 구획 요소'
+title: "<nav>: The Navigation Section element"
 slug: Web/HTML/Element/nav
+page-type: html-element
+browser-compat: html.elements.nav
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<nav>` 요소**는 문서의 부분 중 현재 페이지 내, 또는 다른 페이지로의 링크를 보여주는 구획을 나타냅니다. 자주 쓰이는 예제는 메뉴, 목차, 색인입니다.
+The **`<nav>`** [HTML](/en-US/docs/Web/HTML) element represents a section of a page whose purpose is to provide navigation links, either within the current document or to other documents. Common examples of navigation sections are menus, tables of contents, and indexes.
 
 {{EmbedInteractiveExample("pages/tabbed/nav.html", "tabbed-standard")}}
-
-<p class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</p>
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a
-          href="/ko/docs/Web/Guide/HTML/%EC%BB%A8%ED%85%90%ED%8A%B8_%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC"
-          >콘텐츠 카테고리</a
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
         >
       </th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#플로우_콘텐츠"
-          >플로우 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
         >,
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#구획_콘텐츠"
-          >구획 콘텐츠</a
-        >, 뚜렷한 콘텐츠.
+        <a
+          href="/en-US/docs/Web/HTML/Content_categories#sectioning_content"
+          >sectioning content</a
+        >, palpable content.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#플로우_콘텐츠"
-          >플로우 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
         >.
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
+      <th scope="row">Tag omission</th>
       <td>{{no_tag_omission}}</td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Permitted parents</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >를 허용하는 모든 요소.
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >flow content</a
+        >.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 규칙</th>
-      <td>없음</td>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <code
+          ><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/Navigation_Role"
+            >navigation</a
+          ></code
+        >
+      </td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>No <code>role</code> permitted</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
+## Attributes
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)만 포함합니다.
+This element only includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-## 사용 일람
+## Usage notes
 
-- 문서의 모든 링크가 `<nav>` 요소 안에 있을 필요는 없습니다. `<nav>` 요소는 주요 탐색 링크 블록을 위한 요소입니다. 대개 {{htmlelement("footer")}} 요소가 `<nav>`에 들어가지 않아도 되는 링크를 포함합니다.
-- `<nav>` 하나는 사이트 전체 탐색, 다른 하나는 현재 페이지 내 탐색으로 사용하는 등, 하나의 문서에서 여러 개의 {{HTMLElement("nav")}} 태그를 가질 수 있습니다. 이럴 때 [`aria-labelledby`](/ko/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-labelledby_attribute)를 사용해 접근성을 향상할 수 있습니다.
-- 스크린 리더 등 장애를 가진 사용자를 위한 사용자 에이전트는 최초 렌더링에서 탐색 전용 콘텐츠를 제외할지 결정할 때 `<nav>`를 참고합니다.
+- It's not necessary for all links to be contained in a `<nav>` element. `<nav>` is intended only for a major block of navigation links; typically the {{HTMLElement("footer")}} element often has a list of links that don't need to be in a {{HTMLElement("nav")}} element.
+- A document may have several {{HTMLElement("nav")}} elements, for example, one for site navigation and one for intra-page navigation. [`aria-labelledby`](/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-labelledby) can be used in such case to promote accessibility, see [example](/en-US/docs/Web/HTML/Element/Heading_Elements#labeling_section_content).
+- User agents, such as screen readers targeting disabled users, can use this element to determine whether to omit the initial rendering of navigation-only content.
 
-## 예제
+## Examples
 
-```xml
-<nav>
+In this example, a `<nav>` block is used to contain an unordered list ({{HTMLElement("ul")}}) of links. With appropriate CSS, this can be presented as a sidebar, navigation bar, or drop-down menu.
+
+```html
+<nav class="menu">
   <ul>
     <li><a href="#">Home</a></li>
     <li><a href="#">About</a></li>
@@ -82,10 +95,45 @@ slug: Web/HTML/Element/nav
 </nav>
 ```
 
-## 명세
+The semantics of the `nav` element is that of providing links. However a `nav` element doesn't have to contain a list, it can contain other kinds of content as well. In this navigation block, links are provided in prose:
+
+```html
+<nav>
+  <h2>Navigation</h2>
+  <p>
+    You are on my home page. To the north lies <a href="/blog">my blog</a>, from
+    whence the sounds of battle can be heard. To the east you can see a large
+    mountain, upon which many <a href="/school">school papers</a> are littered.
+    Far up this mountain you can spy a little figure who appears to be me,
+    desperately scribbling a <a href="/school/thesis">thesis</a>.
+  </p>
+  <p>
+    To the west are several exits. One fun-looking exit is labeled
+    <a href="https://games.example.com/">"games"</a>. Another more
+    boring-looking exit is labeled <a href="https://isp.example.net/">ISP™</a>.
+  </p>
+  <p>
+    To the south lies a dark and dank <a href="/about">contacts page</a>.
+    Cobwebs cover its disused entrance, and at one point you see a rat run
+    quickly out of the page.
+  </p>
+</nav>
+```
+
+### Result
+
+{{EmbedLiveSample('Examples')}}
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- Other section-related elements: {{HTMLElement("body")}}, {{HTMLElement("article")}}, {{HTMLElement("section")}}, {{HTMLElement("aside")}}, {{HTMLElement("Heading_Elements", "h1")}}, {{HTMLElement("Heading_Elements", "h2")}}, {{HTMLElement("Heading_Elements", "h3")}}, {{HTMLElement("Heading_Elements", "h4")}}, {{HTMLElement("Heading_Elements", "h5")}}, {{HTMLElement("Heading_Elements", "h6")}}, {{HTMLElement("hgroup")}}, {{HTMLElement("header")}}, {{HTMLElement("footer")}}, {{HTMLElement("address")}};
+- [Sections and outlines of an HTML document](/en-US/docs/Web/HTML/Element/Heading_Elements).
+- [ARIA: Navigation role](/en-US/docs/Web/Accessibility/ARIA/Roles/navigation_role)

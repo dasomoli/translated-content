@@ -1,41 +1,44 @@
 ---
-title: ':hover'
+title: ":hover"
 slug: Web/CSS/:hover
+page-type: css-pseudo-class
+browser-compat: css.selectors.hover
 ---
 
-{{ CSSRef }}
+{{CSSRef}}
 
-**`:hover`** [CSS](/ko/docs/Web/CSS) [의사 클래스](/ko/docs/Web/CSS/Pseudo-classes)는 사용자가 포인팅 장치를 사용해 상호작용 중인 요소를 선택합니다. 보통 사용자의 커서(마우스 포인터)가 요소 위에 올라가 있으면 선택됩니다.
+The **`:hover`** [CSS](/en-US/docs/Web/CSS) [pseudo-class](/en-US/docs/Web/CSS/Pseudo-classes) matches when the user interacts with an element with a pointing device, but does not necessarily activate it. It is generally triggered when the user hovers over an element with the cursor (mouse pointer).
+
+{{EmbedInteractiveExample("pages/tabbed/pseudo-class-hover.html", "tabbed-shorter")}}
+
+Styles defined by the `:hover` pseudo-class will be overridden by any subsequent link-related pseudo-class ({{ cssxref(":link") }}, {{ cssxref(":visited") }}, or {{ cssxref(":active") }}) that has at least equal specificity. To style links appropriately, put the `:hover` rule after the `:link` and `:visited` rules but before the `:active` one, as defined by the _LVHA-order_: `:link` — `:visited` — `:hover` — `:active`.
+
+> **Note:** The `:hover` pseudo-class is problematic on touchscreens. Depending on the browser, the `:hover` pseudo-class might never match, match only for a moment after touching an element, or continue to match even after the user has stopped touching and until the user touches another element. Web developers should make sure that content is accessible on devices with limited or non-existent hovering capabilities.
+
+## Syntax
 
 ```css
-/* "호버링" 중인 <a> 요소 선택 */
-a:hover {
-  color: orange;
+:hover {
+  /* ... */
 }
 ```
 
-`:hover` 의사 클래스로 정의한 스타일은 자신보다 뒤에 위치하고 동등한 명시성을 가진 다른 링크 의사 클래스({{cssxref(":link")}}, {{cssxref(":visited")}}, {{cssxref(":active")}})가 덮어씁니다. 링크를 적절히 디자인하려면 LVHA-순서(`:link` — `:visited` — `:hover` — `:active`)를 따라, `:hover` 규칙을 `:link`와 `:visited` 뒤, `:active` 앞에 배치하세요.
+## Examples
 
-> **참고:** `:hover` 의사 클래스는 터치스크린에서 문제가 많습니다. 브라우저에 따라서 :hover를 절대 활성화하지 않을 수도 있지만, 요소를 터치한 직후에만, 아니면 터치한 이후 다른 요소를 다시 터치하기 전까지 계속 활성화할 수도 있습니다. 웹 개발자는 호버링이 제한적이거나 아예 불가능한 장치에서도 콘텐츠에 접근할 수 있도록 개발해야 합니다.
+### Basic example
 
-## 구문
-
-{{csssyntax}}
-
-## 예제
-
-### HTML
+#### HTML
 
 ```html
-<a href="#">이 링크를 가리켜보세요.</a>
+<a href="#">Try hovering over this link.</a>
 ```
 
-### CSS
+#### CSS
 
 ```css
 a {
   background-color: powderblue;
-  transition: background-color .5s;
+  transition: background-color 0.5s;
 }
 
 a:hover {
@@ -43,19 +46,19 @@ a:hover {
 }
 ```
 
-### 결과
+#### Result
 
-{{EmbedLiveSample("예제")}}
+{{EmbedLiveSample("Basic_example")}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Chromium 버그 #370155: Don't make `:hover` sticky on tap on sites that set a mobile viewport](https://code.google.com/p/chromium/issues/detail?id=370155)
-- [Chromium 버그 #306581: Immediately show hover and active states on touch when page isn't scrollable.](https://code.google.com/p/chromium/issues/detail?id=306581)
+- [Chromium bug #370155: Don't make `:hover` sticky on tap on sites that set a mobile viewport](https://crbug.com/370155)
+- [Chromium bug #306581: Immediately show hover and active states on touch when page isn't scrollable.](https://crbug.com/306581)

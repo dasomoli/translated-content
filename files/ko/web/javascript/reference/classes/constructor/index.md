@@ -1,29 +1,38 @@
 ---
 title: constructor
 slug: Web/JavaScript/Reference/Classes/constructor
+page-type: javascript-language-feature
+browser-compat: javascript.classes.constructor
 ---
+
 {{jsSidebar("Classes")}}
 
-**`constructor`** 메서드는 {{jsxref("Statements/class", "클래스", "", 1)}}의 인스턴스 객체를 생성하고 초기화하는 특별한 메서드입니다.
+The **`constructor`** method is a special method of a [class](/en-US/docs/Web/JavaScript/Reference/Classes) for creating and initializing an object instance of that class.
+
+> **Note:** This page introduces the `constructor` syntax. For the `constructor` property present on all objects, see {{jsxref("Object.prototype.constructor")}}.
 
 {{EmbedInteractiveExample("pages/js/classes-constructor.html")}}
 
-## 구문
+## Syntax
 
-```js
-constructor() { ... }
-constructor(argument0) { ... }
-constructor(argument0, argument1) { ... }
-constructor(argument0, argument1, ... , argumentN) { ... }
+```js-nolint
+constructor() { /* … */ }
+constructor(argument0) { /* … */ }
+constructor(argument0, argument1) { /* … */ }
+constructor(argument0, argument1, /* … ,*/ argumentN) { /* … */ }
 ```
 
-## 설명
+There are some additional syntax restrictions:
 
-`constructor`를 사용하면 다른 모든 메서드 호출보다 앞선 시점인, 인스턴스 객체를 초기화할 때 수행할 초기화 코드를 정의할 수 있습니다.
+- A class method called `constructor` cannot be a [getter](/en-US/docs/Web/JavaScript/Reference/Functions/get), [setter](/en-US/docs/Web/JavaScript/Reference/Functions/set), [async](/en-US/docs/Web/JavaScript/Reference/Statements/async_function), or [generator](/en-US/docs/Web/JavaScript/Reference/Statements/function*).
+- A class cannot have more than one `constructor` method.
+
+## Description
+
+A constructor enables you to provide any custom initialization that must be done before any other methods can be called on an instantiated object.
 
 ```js
 class Person {
-
   constructor(name) {
     this.name = name;
   }
@@ -31,21 +40,21 @@ class Person {
   introduce() {
     console.log(`Hello, my name is ${this.name}`);
   }
-
 }
 
-const otto = new Person('Otto');
+const otto = new Person("Otto");
 
-otto.introduce();
+otto.introduce(); // Hello, my name is Otto
 ```
 
-클래스에 생성자를 정의하지 않으면 기본 생성자를 사용합니다. 아무것도 상속하지 않는 기본 클래스일 때의 기본 생성자는 빈 메서드입니다.
+If you don't provide your own constructor, then a default constructor will be supplied for you.
+If your class is a base class, the default constructor is empty:
 
 ```js
 constructor() {}
 ```
 
-다른 클래스를 상속하는 경우, 기본 생성자는 자신의 매개변수를 부모 클래스의 생성자로 전달합니다.
+If your class is a derived class, the default constructor calls the parent constructor, passing along any arguments that were provided:
 
 ```js
 constructor(...args) {
@@ -53,76 +62,161 @@ constructor(...args) {
 }
 ```
 
-따라서 다음과 같은 코드를 작성할 수 있습니다.
+> **Note:** The difference between an explicit constructor like the one above and the default constructor is that the latter doesn't actually invoke [the array iterator](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/@@iterator) through [argument spreading](/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax).
+
+That enables code like this to work:
 
 ```js
 class ValidationError extends Error {
-
   printCustomerMessage() {
     return `Validation failed :-( (details: ${this.message})`;
   }
-
 }
 
 try {
   throw new ValidationError("Not a valid phone number");
 } catch (error) {
-   if (error instanceof ValidationError) {
-    console.log(error.name); // ValidationError가 아니라 Error!
+  if (error instanceof ValidationError) {
+    console.log(error.name); // This is Error instead of ValidationError!
     console.log(error.printCustomerMessage());
   } else {
-    console.log('Unknown error', error);
+    console.log("Unknown error", error);
     throw error;
   }
 }
 ```
 
-`ValidationError` 클래스는 아무런 초기화 동작도 필요하지 않으므로 생성자를 별도로 명시하지 않았으며, 대신 기본 생성자가 매개변수로 부모 `Error` 클래스의 초기화를 처리하고 있습니다.
+The `ValidationError` class doesn't need an explicit constructor, because it doesn't need to do any custom initialization.
+The default constructor then takes care of initializing the parent `Error` from the argument it is given.
 
-그러나, 파생 클래스에 직접 생성자를 정의할 경우, 부모 클래스의 생성자를 호출하려면 직접 `super()`를 호출해야 합니다.
+However, if you provide your own constructor, and your class derives from some parent class, then you must explicitly call the parent class constructor using [`super()`](/en-US/docs/Web/JavaScript/Reference/Operators/super).
+For example:
 
 ```js
 class ValidationError extends Error {
-
   constructor(message) {
-    super(message);  // 부모 클래스의 생성자 호출
-    this.name = 'ValidationError';
-    this.code = '42';
+    super(message); // call parent class constructor
+    this.name = "ValidationError";
+    this.code = "42";
   }
 
   printCustomerMessage() {
-     return `Validation failed :-( (details: ${this.message}, code: ${this.code})`;
+    return `Validation failed :-( (details: ${this.message}, code: ${this.code})`;
   }
-
 }
 
 try {
   throw new ValidationError("Not a valid phone number");
 } catch (error) {
-   if (error instanceof ValidationError) {
-    console.log(error.name); // 이제 ValidationError!
+  if (error instanceof ValidationError) {
+    console.log(error.name); // Now this is ValidationError!
     console.log(error.printCustomerMessage());
   } else {
-    console.log('Unknown error', error);
+    console.log("Unknown error", error);
     throw error;
   }
 }
 ```
 
-"`constructor`"라는 이름의 메서드는 하나의 클래스에 오직 하나만 존재할 수 있습니다. 두 개 이상의 `constructor` 메서드를 정의하면 {{jsxref("SyntaxError")}}가 발생합니다.
+Using [`new`](/en-US/docs/Web/JavaScript/Reference/Operators/new) on a class goes through the following steps:
 
-## 예제
+1. (If it's a derived class) The `constructor` body before the `super()` call is evaluated. This part should not access `this` because it's not yet initialized.
+2. (If it's a derived class) The `super()` call is evaluated, which initializes the parent class through the same process.
+3. The current class's [fields](/en-US/docs/Web/JavaScript/Reference/Classes/Public_class_fields) are initialized.
+4. The `constructor` body after the `super()` call (or the entire body, if it's a base class) is evaluated.
 
-### `constructor` 메서드 사용하기
+Within the `constructor` body, you can access the object being created through [`this`](/en-US/docs/Web/JavaScript/Reference/Operators/this) and access the class that is called with [`new`](/en-US/docs/Web/JavaScript/Reference/Operators/new) through [`new.target`](/en-US/docs/Web/JavaScript/Reference/Operators/new.target). Note that methods (including [getters](/en-US/docs/Web/JavaScript/Reference/Functions/get) and [setters](/en-US/docs/Web/JavaScript/Reference/Functions/set)) and the [prototype chain](/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain) are already initialized on `this` before the `constructor` is executed, so you can even access methods of the subclass from the constructor of the superclass. However, if those methods use `this`, the `this` will not have been fully initialized yet. This means reading public fields of the derived class will result in `undefined`, while reading private fields will result in a `TypeError`.
+
+```js example-bad
+new (class C extends class B {
+  constructor() {
+    console.log(this.foo());
+  }
+} {
+  #a = 1;
+  foo() {
+    return this.#a; // TypeError: Cannot read private member #a from an object whose class did not declare it
+    // It's not really because the class didn't declare it,
+    // but because the private field isn't initialized yet
+    // when the superclass constructor is running
+  }
+})();
+```
+
+The `constructor` method may have a return value. While the base class may return anything from its constructor, the derived class must return an object or `undefined`, or a {{jsxref("TypeError")}} will be thrown.
+
+```js
+class ParentClass {
+  constructor() {
+    return 1;
+  }
+}
+
+console.log(new ParentClass()); // ParentClass {}
+// The return value is ignored because it's not an object
+// This is consistent with function constructors
+
+class ChildClass extends ParentClass {
+  constructor() {
+    return 1;
+  }
+}
+
+console.log(new ChildClass()); // TypeError: Derived constructors may only return object or undefined
+```
+
+If the parent class constructor returns an object, that object will be used as the `this` value on which [class fields](/en-US/docs/Web/JavaScript/Reference/Classes/Public_class_fields) of the derived class will be defined. This trick is called ["return overriding"](/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields#returning_overriding_object), which allows a derived class's fields (including [private](/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields) ones) to be defined on unrelated objects.
+
+The `constructor` follows normal [method](/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions) syntax, so [parameter default values](/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters), [rest parameters](/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters), etc. can all be used.
+
+```js
+class Person {
+  constructor(name = "Anonymous") {
+    this.name = name;
+  }
+  introduce() {
+    console.log(`Hello, my name is ${this.name}`);
+  }
+}
+
+const person = new Person();
+person.introduce(); // Hello, my name is Anonymous
+```
+
+The constructor must be a literal name. Computed properties cannot become constructors.
+
+```js
+class Foo {
+  // This is a computed property. It will not be picked up as a constructor.
+  ["constructor"]() {
+    console.log("called");
+    this.a = 1;
+  }
+}
+
+const foo = new Foo(); // No log
+console.log(foo); // Foo {}
+foo.constructor(); // Logs "called"
+console.log(foo); // Foo { a: 1 }
+```
+
+Async methods, generator methods, accessors, and class fields are forbidden from being called `constructor`. Private names cannot be called `#constructor`. Any member named `constructor` must be a plain method.
+
+## Examples
+
+### Using the constructor
+
+This code snippet is taken from the [classes sample](https://github.com/GoogleChrome/samples/blob/gh-pages/classes-es6/index.html) ([live demo](https://googlechrome.github.io/samples/classes-es6/index.html)).
 
 ```js
 class Square extends Polygon {
   constructor(length) {
-    // length로 다각형의 넓이와 높이를 정의하기 위해 부모 클래스의 생성자를 호출합니다.
+    // Here, it calls the parent class' constructor with lengths
+    // provided for the Polygon's width and height
     super(length, length);
-    // 참고: 파생 클래스에서, this를 사용하기 전에는 반드시 super()를 먼저 호출해야 합니다.
-    // 그렇지 않으면 ReferenceError가 발생합니다.
-    this.name = 'Square';
+    // NOTE: In derived classes, `super()` must be called before you
+    // can use `this`. Leaving this out will cause a ReferenceError.
+    this.name = "Square";
   }
 
   get area() {
@@ -136,46 +230,59 @@ class Square extends Polygon {
 }
 ```
 
-### 다른 예제
+### Calling super in a constructor bound to a different prototype
 
-아래 예제에서, `Square` 클래스의 프로토타입을 `Rectangle`의 프로토타입으로 바꾼 후에도, `Square`의 인스턴스를 생성할 때 부모 클래스인 `Polygon` 생성자를 호출하는 것을 확인할 수 있습니다.
+`super()` calls the constructor that's the prototype of the current class. If you change the prototype of the current class itself, `super()` will call the constructor that's the new prototype. Changing the prototype of the current class's `prototype` property doesn't affect which constructor `super()` calls.
 
 ```js
 class Polygon {
-    constructor() {
-        this.name = "Polygon";
-    }
+  constructor() {
+    this.name = "Polygon";
+  }
+}
+
+class Rectangle {
+  constructor() {
+    this.name = "Rectangle";
+  }
 }
 
 class Square extends Polygon {
-    constructor() {
-        super();
-    }
+  constructor() {
+    super();
+  }
 }
 
-class Rectangle {}
+// Make Square extend Rectangle (which is a base class) instead of Polygon
+Object.setPrototypeOf(Square, Rectangle);
 
-Object.setPrototypeOf(Square.prototype, Rectangle.prototype);
+const newInstance = new Square();
 
-console.log(Object.getPrototypeOf(Square.prototype) === Polygon.prototype); //false
-console.log(Object.getPrototypeOf(Square.prototype) === Rectangle.prototype); //true
+// newInstance is still an instance of Polygon, because we didn't
+// change the prototype of Square.prototype, so the prototype chain
+// of newInstance is still
+//   newInstance --> Square.prototype --> Polygon.prototype
+console.log(newInstance instanceof Polygon); // true
+console.log(newInstance instanceof Rectangle); // false
 
-let newInstance = new Square();
-console.log(newInstance.name); //Polygon
+// However, because super() calls Rectangle as constructor, the name property
+// of newInstance is initialized with the logic in Rectangle
+console.log(newInstance.name); // Rectangle
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Using classes](/en-US/docs/Web/JavaScript/Guide/Using_classes)
+- [Classes](/en-US/docs/Web/JavaScript/Reference/Classes)
+- [Static initialization blocks](/en-US/docs/Web/JavaScript/Reference/Classes/Static_initialization_blocks)
+- {{jsxref("Statements/class", "class")}}
 - {{jsxref("Operators/super", "super()")}}
-- {{jsxref("Statements/class", "클래스 선언문", "", 1)}}
-- {{jsxref("Operators/class", "클래스 표현식", "", 1)}}
-- {{jsxref("Classes", "클래스", "", 1)}}
 - {{jsxref("Object.prototype.constructor")}}

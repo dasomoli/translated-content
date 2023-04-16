@@ -1,28 +1,24 @@
 ---
 title: Algorithm
 slug: Glossary/Algorithm
+page-type: glossary-definition
 ---
 
-알고리즘(Algorithm)은 기능을 수행하기 위한 독립된 명령어들의 집합이다.
+An algorithm is a self-contained series of instructions to perform a function.
 
-즉, 알고리즘은 인간이나 기계에 의해 반복적으로 해결할 수 있도록 문제를 해결하는 방법을 기술하는 수단이다. 컴퓨터 과학자들은 "알고리즘의 복잡성"이나 "빅 O" 표기법이라는 개념을 통해 알고리즘의 효율성을 비교한다.
+In other words, an algorithm is a means of describing a way to solve a problem so that it can be solved repeatedly, by humans or machines. Computer scientists compare the efficiency of algorithms through the concept of "Algorithmic Complexity" or "Big O" notation.
 
-예를 들어:
+For example:
 
-- 요리 레시피는 인간을 위한 간단한 알고리즘이다.
-- 정렬 알고리즘은 종종 컴퓨터 프로그래밍에서 데이터를 정렬하는 방법을 설명하기 위해 사용된다.
+- A cooking recipe is a simple algorithm for humans.
+- A sorting algorithm is often used in computer programming to explain to a machine how to sort data.
 
-일반적인 알고리즘은 Traveling Salemen Problem, Tree Traversal Algorithms 등과 같은 길 찾기 알고리즘이다.
+Common algorithms are Pathfinding algorithms such as the Traveling Salesman Problem, Tree Traversal algorithms and so on.
 
-선형 회귀, 로지스틱 회귀, 의사결정 트리, 랜덤 포레스트, 지원 벡터 머신, Recurrent Neural Network(RNN), Long Term Memory(LSTM) Neural Network, Convolutional Neural Network(CNNN), Deep Convolutional Neural Network(심층 신경망) 등의 머신 러닝 알고리즘도 있다.
+There are also Machine Learning algorithms such as Linear Regression, Logistic Regression, Decision Tree, Random Forest, Support Vector Machine, Recurrent Neural Network (RNN), Long Short Term Memory (LSTM) Neural Network, Convolutional Neural Network (CNN), Deep Convolutional Neural Network and so on.
 
-## 더 알아보기
+## See also
 
-### 일반적 지식
-
-- Wikipedia의 [Algorithm](https://ko.wikipedia.org/wiki/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98)
-
-### 기술적 참조
-
+- [Algorithm](https://en.wikipedia.org/wiki/Algorithm) on Wikipedia
 - [Explanations of sorting algorithms](https://www.toptal.com/developers/sorting-algorithms)
-- [Explanations of algorithmic complexity](http://bigocheatsheet.com/)
+- [Explanations of algorithmic complexity](https://www.bigocheatsheet.com/)

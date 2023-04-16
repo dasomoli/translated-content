@@ -1,54 +1,57 @@
 ---
-title: 'SyntaxError: missing ] after element list'
+title: "SyntaxError: missing ] after element list"
 slug: Web/JavaScript/Reference/Errors/Missing_bracket_after_list
+page-type: javascript-error
 ---
 
 {{jsSidebar("Errors")}}
 
-## 메세지
+The JavaScript exception "missing ] after element list" occurs when there is an error
+with the array initializer syntax somewhere. Likely there is a closing bracket
+(`]`) or a comma (`,`) missing.
+
+## Message
 
 ```
-    SyntaxError: missing ] after element list
+SyntaxError: missing ] after element list (Firefox)
+SyntaxError: Unexpected token ';'. Expected either a closing ']' or a ',' following an array element. (Safari)
 ```
 
-## 에러 타입
+## Error type
 
 {{jsxref("SyntaxError")}}.
 
-## 무엇이 잘못되었을까?
+## What went wrong?
 
-배열 초기자 구문에 오류가 있습니다. 닫는 대괄호("`]`") 또는 콤마("`,`")가 빠진 것 같습니다.
+There is an error with the array initializer syntax somewhere. Likely there is a
+closing bracket (`]`) or a comma (`,`) missing.
 
-## 예제
+## Examples
 
-### 완성되지 않은 배열 초기자
+### Incomplete array initializer
 
 ```js example-bad
-var list = [1, 2,
+const list = [1, 2,
 
-var instruments = [
-  'Ukulele',
-  'Guitar',
-  'Piano'
+const instruments = [
+  "Ukulele",
+  "Guitar",
+  "Piano",
 };
 
-var data = [{foo: 'bar'} {bar: 'foo'}];
+const data = [{ foo: "bar" } { bar: "foo" }];
 ```
 
-바르게 고치면:
+Correct would be:
 
 ```js example-good
-var list = [1, 2];
+const list = [1, 2];
 
-var instruments = [
- 'Ukulele',
- 'Guitar',
- 'Piano'
-];
+const instruments = ["Ukulele", "Guitar", "Piano"];
 
-var data = [{foo: 'bar'}, {bar: 'foo'}];
+const data = [{ foo: "bar" }, { bar: "foo" }];
 ```
 
-## 같이 보기
+## See also
 
 - {{jsxref("Array")}}

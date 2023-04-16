@@ -1,19 +1,20 @@
 ---
-title: 'Django Tutorial Part 7: Sessions framework'
+title: "Django Tutorial Part 7: Sessions framework"
 slug: Learn/Server-side/Django/Sessions
 ---
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/Server-side/Django/Generic_views", "Learn/Server-side/Django/authentication_and_sessions", "Learn/Server-side/Django")}}
 
-이 튜토리얼에서는 [LocalLibrary](/ko/docs/Learn/Server-side/Django/Tutorial_local_library_website) website을 확장시킬 것입니다. 방문 수를 셀 수 있는 session-based 기능을 더한 홈페이지입니다. 이것은 상대적으로 간단한 예제인데, 이는 당신의 홈페이지에서 익명의 유저들에게 지속적으로 서비스를 제공하는 session framework의 사용법입니다.
+This tutorial extends our [LocalLibrary](/en-US/docs/Learn/Server-side/Django/Tutorial_local_library_website) website, adding a session-based visit-counter to the home page.
+This is a relatively simple example, but it does show how you can use the session framework to provide persistent behavior for anonymous users in your own sites.
 
-<table class="learn-box standard-table">
+<table>
   <tbody>
     <tr>
       <th scope="row">Prerequisites:</th>
       <td>
-        Complete all previous tutorial topics, including
-        <a href="/en-US/docs/Learn/Server-side/Django/Generic_views"
+        Complete all previous tutorial topics, including <a
+          href="/en-US/docs/Learn/Server-side/Django/Generic_views"
           >Django Tutorial Part 6: Generic list and detail views</a
         >
       </td>
@@ -25,49 +26,51 @@ slug: Learn/Server-side/Django/Sessions
   </tbody>
 </table>
 
-## 개요
+## Overview
 
-이전 튜토리얼에서 우리가 만든 [LocalLibrary](/ko/docs/Learn/Server-side/Django/Tutorial_local_library_website) website는 카탈로그에서 유저가 책과 저자를 검색할 수 있도록 합니다. 컨텐츠가 Database로부터 다이나믹하게 생성되기 때문에, 모든 유저는 사용시에 필수적으로 같은 페이지와 정보 타입에 필수적으로 접근할 것입니다.
+The [LocalLibrary](/en-US/docs/Learn/Server-side/Django/Tutorial_local_library_website) website we created in the previous tutorials allows users to browse books and authors in the catalog. While the content is dynamically generated from the database, every user will essentially have access to the same pages and types of information when they use the site.
 
-실제 도서관에서는 각각의 유저들에게 그들의 이전 사이트 사용과 선호 등에 기반한 커스텀된 경험을 제공하고 싶을지도 모릅니다 . 예를 들어, 유저가 이미 알고 있는 경고 메세지들을 숨길 수도 있습니다. 그 유저들이 다음에 사이트를 방문하거나 그들의 선호사항(e.g. 그들이 각 페이지에서 보여지길 원하는 검색의 결과 수)에 대해서 저장하는 것을 말합니다.
+In a "real" library you may wish to provide individual users with a customized experience, based on their previous use of the site, preferences, etc.
+For example, you could hide warning messages that the user has previously acknowledged next time they visit the site, or store and respect their preferences (such as, the number of search results that they want to be displayed on each page).
 
-session framework는 당신이 이 행동의 분류하도록 하며, 각 사이트 방문자에 기반한 임의의 데이터를 검색하거나 저장하도록 합니다.
+The session framework lets you implement this sort of behavior, allowing you to store and retrieve arbitrary data on a per-site-visitor basis.
 
-## 세션이란?
+## What are sessions?
 
-웹 브라우저와 서버가 HTTP 프로토콜을 통해서 하는 모든 커뮤니케이션은 무상태(stateless)라고 합니다. 프로토콜이 무상태라는 뜻은 클라이언트와 서버 사이의 메시지가 완벽하게 각각 독립적이라는 뜻입니다. — 여기엔 이전 메시지에 근거한 행동이나 순서(sequence)라는 것이 존재하지 않습니다. 결국, 만약 사이트가 클라이언트와 계속적인 관계를 유지하는 것을 당신이 원한다면, 당신이 직접 그 작업을 해야합니다.
+All communication between web browsers and servers is via {{Glossary("HTTP")}}, which is _stateless_. The fact that the protocol is stateless means that messages between the client and server are completely independent of each other — there is no notion of "sequence" or behavior based on previous messages. As a result, if you want to have a site that keeps track of the ongoing relationships with a client, you need to implement that yourself.
 
-세션이라는 것은 Django 그리고 대부분의 인터넷에서 사용되는 메카니즘으로, 사이트와 특정 브라우저 사이의 "state"를 유지시키는 것입니다. 세션은 당신이 매 브라우저마다 임의의 데이터를 저장하게 하고, 이 데이터가 브라우저에 접속할 때 마다 사이트에서 활용될 수 있도록 합니다. 세션에 연결된 각각의 데이터 아이템들은 "key"에 의해 인용되고, 이는 또다시 데이터를 찾거나 저장하는 데에 이용됩니다.
+Sessions are the mechanism used by Django (and most of the Internet) for keeping track of the "state" between the site and a particular browser. Sessions allow you to store arbitrary data per browser, and have this data available to the site whenever the browser connects. Individual data items associated with the session are then referenced by a "key", which is used both to store and retrieve the data.
 
-장고는 특정 _session id_ 를 포함하는 쿠키를 사용해서 각각의 브라우저와 사이트가 연결된 세션을 알아냅니다. 실질적인 세션의 _data_ 사이트의 Database에 기본 설정값으로 저장됩니다 (이는 쿠키안에 데이터를 저장하는 것보다 더 보안에 유리하고, 쿠키는 악의적인 사용자에게 취약합니다). 당신은 Django를 다른 장소 (캐시, 파일, "보안이 된" 쿠키)에 저장하도록 설정할 수 있지만, 그러나 기본 위치가 상대적으로 더 안전합니다.
+Django uses a cookie containing a special _session id_ to identify each browser and its associated session with the site. The actual session _data_ is stored in the site database by default (this is more secure than storing the data in a cookie, where they are more vulnerable to malicious users). You can configure Django to store the session data in other places (cache, files, "secure" cookies), but the default location is a good and relatively secure option.
 
-## 세션 사용설정하기
+## Enabling sessions
 
-세션설정은 처음에 skeleton website를 생성했을 때 (in tutorial 2) 자동으로 사용할 수 있도록 설정되었습니다.
+Sessions were enabled automatically when we [created the skeleton website](/en-US/docs/Learn/Server-side/Django/skeleton_website) (in tutorial 2).
 
-세션사용설정은 프로젝트 settings.py에서 아래와 같이 `INSTALLED_APPS` 와 `MIDDLEWARE` 부분에 있습니다.
+The configuration is set up in the `INSTALLED_APPS` and `MIDDLEWARE` sections of the project file (**locallibrary/locallibrary/settings.py**), as shown below:
 
 ```python
 INSTALLED_APPS = [
-    ...
+    # …
     'django.contrib.sessions',
-    ....
+    # …
 
 MIDDLEWARE = [
-    ...
+    # …
     'django.contrib.sessions.middleware.SessionMiddleware',
-    ....
+    # …
 ```
 
-## 세션 사용하기
+## Using sessions
 
-`session` 속성은 `request` parameter 에서 파생된 view 안에 있습니다. ( view 로 전달되는 `HttpRequest` 의 첫번째 함수 ). 이 세션의 속성은 현재의 사용자(정확히는 브라우저) 의 site 에 대한 connection 을 의미합니다. 브라우저의 cookie 안에 정의 되어 있습니다.
+You can access the `session` attribute within a view from the `request` parameter (an `HttpRequest` passed in as the first argument to the view).
+This session attribute represents the specific connection to the current user (or to be more precise, the connection to the current _browser_, as identified by the session id in the browser's cookie for this site).
 
-이 `session` 속성은 사전 같은 객체이지만 여러번 읽고 쓰기가 가능합니다.여러분은 다양한 딕셔너리 연산 - 즉, 모든 데이타 삭제, Key 가 존재하는지 데이터를 통한 looping 기타등등. 무엇보다 표준적인 "dictionary" API 를 통해 값을 가져오거나 저장 할 수 있습니다.
+The `session` attribute is a dictionary-like object that you can read and write as many times as you like in your view, modifying it as wished. You can do all the normal dictionary operations, including clearing all data, testing if a key is present, looping through data, etc. Most of the time though, you'll just use the standard "dictionary" API to get and set values.
 
-아래 코드는 key 값이 `"my_car"` 인 데이터를 어떻게 읽고 쓰고 삭제하는지 보여줍니다. 물론 그 key 값은 현재의 session (브라우저와 사이트의 연결정보) 과 연관되어진 key 입니다.
+The code fragments below show how you can get, set, and delete some data with the key "`my_car`", associated with the current session (browser).
 
-> **참고:** 장고가 대단한점 한가지는 여러분이 이런 session 의 매카니즘에 생각하지 않게끔 한다는 점입니다. 만일 view 안에 있는 아래의 code 를 사용하면 **오직 현재의 브라우저만**이 현재의 request 에 관한 `my_car` 정보를 알 수 있다는 겁니다.
+> **Note:** One of the great things about Django is that you don't need to think about the mechanisms that tie the session to your current request in your view. If we were to use the fragments below in our view, we'd know that the information about `my_car` is associated only with the browser that sent the current request.
 
 ```python
 # Get a session value by its key (e.g. 'my_car'), raising a KeyError if the key is not present
@@ -83,18 +86,18 @@ request.session['my_car'] = 'mini'
 del request.session['my_car']
 ```
 
-이 API 는 또한 여러가지 다른 방법을 제공하는데 그들은 대부분 관련된 session cookie 를 다루는데 사용되는 것들 입니다. 예를 들어, 그 cookies 가 사용자의 브라우저에서 지원이 되는지 테스트하거나, 만기일을 알아본다던지, 만기된 session 을 삭제 한다던지. 좀더 알아보고 싶다면 [How to use sessions](https://docs.djangoproject.com/en/2.0/topics/http/sessions/) (Django docs) 에서 그 API 를 배울수 있습니다.
+The API also offers a number of other methods that are mostly used to manage the associated session cookie. For example, there are methods to test that cookies are supported in the client browser, to set and check cookie expiry dates, and to clear expired sessions from the data store. You can find out about the full API in [How to use sessions](https://docs.djangoproject.com/en/4.0/topics/http/sessions/) (Django docs).
 
-## 세션 데이터 저장하기
+## Saving session data
 
-기본적으로 장고는 세션 데이타를 세션 database 에 저장합니다. 그리고 그 session cookie 를 필요할때 client 에게로 내려보내는 거지요. 즉, session 정보가 변경되었거나 삭제 되었을때, 앞장에서 기술한것처럼, 만일 session key 값을 이용해서 어떤 정보가 변경이 되었다면 우리는 이에 대해 염려 할 필요가 없습니다.예를 들자면 :
+By default, Django only saves to the session database and sends the session cookie to the client when the session has been _modified_ (assigned) or _deleted_. If you're updating some data using its session key as shown in the previous section, then you don't need to worry about this! For example:
 
 ```python
 # This is detected as an update to the session, so session data is saved.
 request.session['my_car'] = 'mini'
 ```
 
-만일 당신이 session data 안에 있는 어떤 정보를 수정 했다면 장고는 여러분이 수정한걸 알아채지 못합니다. (예를 들어, 만일 `"my_car"` 안의 `"wheels"` 정보를 수정 했다면 ). 이경우 명시적으로 그 session 이 수정 되었다고 아래의 코드처럼 표현해 주어야 합니다.
+If you're updating some information _within_ session data, then Django will not recognize that you've made a change to the session and save the data (for example, if you were to change "`wheels`" data inside your "`my_car`" data, as shown below). In this case you will need to explicitly mark the session as having been modified.
 
 ```python
 # Session object not directly modified, only data within the session. Session changes not saved!
@@ -104,15 +107,17 @@ request.session['my_car']['wheels'] = 'alloy'
 request.session.modified = True
 ```
 
-> **참고:** You can change the behavior so the site will update the database/send cookie on every request by adding `SESSION_SAVE_EVERY_REQUEST = True` into your project settings (**locallibrary/locallibrary/settings.py**).
+> **Note:** You can change the behavior so the site will update the database/send cookie on every request by adding `SESSION_SAVE_EVERY_REQUEST = True` into your project settings (**locallibrary/locallibrary/settings.py**).
 
-## 간단한 예제 — 방문자수 받아오기
+## Simple example — getting visit counts
 
-간단한 실제 예제로서, 우리는 현재 유저가 LocalLibrary 홈페이지에 몇 번이나 방문했는지 알려주도록 업데이트할 것입니다. **/locallibrary/catalog/views.py** 을 열고 밑에 굵게 표시된 부분을 추가해서 바꿔봅시다.
+As a simple real-world example we'll update our library to tell the current user how many times they have visited the _LocalLibrary_ home page.
+
+Open **/locallibrary/catalog/views.py**, and add the lines that contain `num_visits` into `index()` (as shown below).
 
 ```python
 def index(request):
-    ...
+    # …
 
     num_authors = Author.objects.count()  # The 'all()' is implied by default.
 
@@ -132,11 +137,11 @@ def index(request):
     return render(request, 'index.html', context=context)
 ```
 
-먼저 `'num_visits'` 세션 키 값을 가져오도록 합니다, 그리고 만약 전에 방문한적이 없다면 0이 되도록 합니다. 매번 요청받을 때 마다, 값을 증가시키고 세션에 값을 저장합니다 (유저의 다음 방문을 위해서요). context 변수를 통해 template에 `num_visits` 변수가 전달됩니다.
+Here we first get the value of the `'num_visits'` session key, setting the value to 0 if it has not previously been set. Each time a request is received, we then increment the value and store it back in the session (for the next time the user visits the page). The `num_visits` variable is then passed to the template in our context variable.
 
-> **참고:** 이 지점에서 우리는 브라우저가 쿠키를 지원하는 지 그렇지 않은지 테스트할 수도 있습니다(예제로서 [How to use sessions](https://docs.djangoproject.com/en/2.0/topics/http/sessions/) 를 보도록하십시오). 또한 쿠키를 지원하는 지와는 별개로 UI를 디자인할 것입니다.
+> **Note:** We might also test whether cookies are even supported in the browser here (see [How to use sessions](https://docs.djangoproject.com/en/4.0/topics/http/sessions/) for examples) or design our UI so that it doesn't matter whether or not cookies are supported.
 
-메인 HTML template(**/locallibrary/catalog/templates/index.html**) "Dynamic content" 섹션 밑 부분에 context 변수가 보일 수 있도록 밑에 보이는 굵은 선으로 표시된 코드를 추가해주세요:
+Add the line shown at the bottom of the following block to your main HTML template (**/locallibrary/catalog/templates/index.html**) at the bottom of the "Dynamic content" section to display the `num_visits` context variable.
 
 ```html
 <h2>Dynamic content</h2>
@@ -149,19 +154,21 @@ def index(request):
   <li><strong>Authors:</strong> \{{ num_authors }}</li>
 </ul>
 
-<p>You have visited this page \{{ num_visits }}{% if num_visits == 1 %} time{% else %} times{% endif %}.</p>
+<p>You have visited this page \{{ num_visits }} time\{{ num_visits|pluralize }}.</p>
 ```
 
-바뀐 것을 저장해주시고 테스트 서버를 재시작해주세요. 페이지를 새로고침할 때 마다, 숫자가 업데이트되는 것을 보실 수 있을겁니다.
+Note that we use the Django built-in template tag [pluralize](https://docs.djangoproject.com/en/4.0/ref/templates/builtins/#pluralize) to add an "s" when the page has been visited multiple time**s**.
 
-## 요약
+Save your changes and restart the test server. Every time you refresh the page, the number should update.
 
-익명 유저와의 상호작용을 증대하기 위해 세션을 이용하는 것이 얼마나 쉬운일인지 알 수 있었습니다.
+## Summary
 
-다음 장에서는, 인증과 권한부여(허가)에 관한 프레임워크를 설명할 것입니다. 그리고 유저 계정을 어떻게 지원할 수 있는지를 보도록 하죠.
+You now know how easy it is to use sessions to improve your interaction with _anonymous_ users.
+
+In our next articles we'll explain the authentication and authorization (permission) framework, and show you how to support user accounts.
 
 ## See also
 
-- [How to use sessions](https://docs.djangoproject.com/en/2.0/topics/http/sessions/) (Django docs)
+- [How to use sessions](https://docs.djangoproject.com/en/4.0/topics/http/sessions/) (Django docs)
 
 {{PreviousMenuNext("Learn/Server-side/Django/Generic_views", "Learn/Server-side/Django/Authentication", "Learn/Server-side/Django")}}

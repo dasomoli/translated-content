@@ -1,68 +1,57 @@
 ---
 title: DOMParser
 slug: Web/API/DOMParser
+page-type: web-api-interface
+browser-compat: api.DOMParser
 ---
 
 {{APIRef("DOM")}}
 
-The **`DOMParser`** 인터페이스는 DOM {{domxref("Document")}} 문서에 맞는 {{Glossary("XML")}} 및 {{Glossary("HTML")}} 소스 코드를 해석할 수 있는 기반을 제공한다 .
+The **`DOMParser`** interface provides
+the ability to parse {{Glossary("XML")}} or {{Glossary("HTML")}} source code from a
+string into a DOM {{domxref("Document")}}.
 
-> **참고:** {{domxref("XMLHttpRequest")}} 객체로도 인식 가능한 URL 주소로부터 직접 XML 및 HTML 문서를 해석하여 {{domxref("XMLHttpRequest.response", "response")}} 속성을 통해 `Document` 객체로 제공한다.
+You can perform the opposite operation—converting a DOM tree into XML or HTML
+source—using the {{domxref("XMLSerializer")}} interface.
 
-반대로 DOM 구조를 XML 및 HTML 소스 코드로 제공하는 방식은 {{domxref("XMLSerializer")}} 인터페이스를 참고하도록 한다.
+In the case of an HTML document, you can also replace portions of the DOM with new DOM
+trees built from HTML by setting the value of the {{domxref("Element.innerHTML")}} and
+{{domxref("Element.outerHTML", "outerHTML")}} properties. These properties can also be
+read to fetch HTML fragments corresponding to the corresponding DOM subtree.
 
-HTML 문서의 경우, {{domxref("Element.innerHTML")}} 속성과 {{domxref("Element.outerHTML", "outerHTML")}} 속성을 통해 DOM 구조를 새로운 방식으로 변경할 수 있다. 또한 이들 속성을 통해 HTML 구조의 하위에 있는 HTML 구조도 불러올 수 있다.
+Note that {{domxref("XMLHttpRequest")}} can parse XML and HTML directly
+from a URL-addressable resource, returning a `Document` in its
+{{domxref("XMLHttpRequest.response", "response")}} property.
 
-## 문법
+> **Note:** Be aware that [block-level elements](/en-US/docs/Web/HTML/Block-level_elements)
+> like `<p>` will be automatically closed if another
+> block-level element is nested inside and therefore parsed before the closing `</p>` tag.
 
-```js
-let domparser = new DOMParser()
-```
+## Constructor
 
-## 메소드
+- {{domxref("DOMParser.DOMParser","DOMParser()")}}
+  - : Creates a new `DOMParser` object.
+
+## Instance methods
 
 - {{domxref("DOMParser.parseFromString()")}}
+  - : Parses a string using either the HTML parser or the XML parser, returning an {{domxref("HTMLDocument")}} or {{domxref("XMLDocument")}}.
 
-#### 문법
+## Examples
 
-```js
-let doc = domparser.parseFromString(string, mimeType)
-```
+The documentation for {{domxref("DOMParser.parseFromString()")}}, this interface's only method, contains examples for parsing XML, SVG, and HTML strings.
 
-#### 반환
-
-**[`mimeType`](#Argument02)** 인자를 통해 정의한 형식에 따른 {{domxref("Document")}} 또는{{domxref("XMLDocument")}} 문서를 반환한다.
-
-#### 인자
-
-이 메소드에는 2개의 인자가 제공되는데, 모두 필수값이다.
-
-- `string`
-  - : 해석할 {{domxref("DOMString")}} 문자열. 반드시 {{Glossary("HTML")}}, {{Glossary("xml")}}, {{Glossary("xhtml+xml")}} 또는 {{Glossary("svg")}} 문서 형식에 맞아야 한다.
-- `mimeType`
-  - | : 아래 표에 정의한 형식을 반환 값으로 제공할 {{domxref("DOMString")}} 문자열. | `mimeType`                             | `doc.constructor` |
-    | ------------------------------------------------------------------------------------- | -------------------------------------- | ----------------- |
-    | `text/html`                                                                           | `{{domxref("Document")}}`     |
-    | `text/xml`                                                                            | `{{domxref("XMLDocument")}}` |
-    | `application/xml`                                                                     | `{{domxref("XMLDocument")}}` |
-    | `application/xhtml+xml`                                                               | `{{domxref("XMLDocument")}}` |
-    | `image/svg+xml`                                                                       | `{{domxref("XMLDocument")}}` |
-
-## 예제
-
-이 인터페이스의 유일한 메서드인 {{domxref("DOMParser.parseFromString()")}}에 대한 설명서에는 XML, SVG 및 HTML 문자열을 구문 분석하기 위한 예제가 포함되어 있습니다.
-
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [XML 문서 직렬화와 해석](/ko/docs/Parsing_and_serializing_XML)
+- [Parsing and serializing XML](/en-US/docs/Web/Guide/Parsing_and_serializing_XML)
 - {{domxref("XMLHttpRequest")}}
 - {{domxref("XMLSerializer")}}
-- {{jsxref("JSON.parse()")}} - {{jsxref("JSON")}} 문서에 대해 같은 역할을 제공한다.
+- {{jsxref("JSON.parse()")}} - counterpart for {{jsxref("JSON")}} documents.

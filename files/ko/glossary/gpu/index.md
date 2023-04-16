@@ -1,6 +1,7 @@
 ---
 title: GPU
 slug: Glossary/GPU
+page-type: glossary-definition
 ---
 
-GPU(Graphics Processing Unit)는 CPU(중앙 처리 장치)와 유사한 컴퓨터 부품이다. 이것은 당신의 모니터에 그래픽(2D와 3D 모두)을 그리는 것을 전문으로 한다.
+The GPU (Graphics Processing Unit) is a computer component similar to the CPU (Central Processing Unit). It specializes in the drawing of graphics (both 2D and 3D) on your monitor.

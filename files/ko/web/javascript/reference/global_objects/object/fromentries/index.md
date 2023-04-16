@@ -1,82 +1,107 @@
 ---
 title: Object.fromEntries()
 slug: Web/JavaScript/Reference/Global_Objects/Object/fromEntries
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Object.fromEntries
 ---
 
 {{JSRef}}
 
-**`Object.fromEntries()`** 메서드는 키값 쌍의 목록을 객체로 바꿉니다.
+The **`Object.fromEntries()`** static method transforms a list of key-value pairs into an object.
 
 {{EmbedInteractiveExample("pages/js/object-fromentries.html")}}
 
-## 구문
+## Syntax
 
-```js
-Object.fromEntries(iterable);
+```js-nolint
+Object.fromEntries(iterable)
 ```
 
-### 매개변수
+### Parameters
 
 - `iterable`
-  - : 반복 가능한 객체. 즉, {{jsxref("Array")}}, {{jsxref("Map")}} 또는 [반복 규약](/ko/docs/Web/JavaScript/Reference/Iteration_protocols)을 구현한 기타 객체.
 
-### 반환 값
+  - : An [iterable](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterable_protocol), such as an {{jsxref("Array")}} or {{jsxref("Map")}}, containing a list of objects. Each object should have two properties:
 
-속성의 키와 값을 반복 가능한 객체에서 가져온 새로운 객체.
+    - `0`
+      - : A string or [symbol](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol) representing the property key.
+    - `1`
+      - : The property value.
 
-## 설명
+    Typically, this object is implemented as a two-element array, with the first element being the property key and the second element being the property value.
 
-`Object.fromEntries()` 메서드는 키값 쌍 목록을 받고, 그 목록을 사용해 속성을 부여한 새로운 객체를 반환합니다. `iterable` 인자는 `@@iterator` 메서드를 구현하여 반복기 객체를 반환해야 하고, 그 반복기는 또 배열 형태의 객체로 요소 2개를 반환해야 합니다. 반환된 요소 중 첫 번째는 생성할 객체의 속성 키로, 두 번째는 속성 값으로 사용합니다.
+### Return value
 
-`Object.fromEntries()`는{{jsxref("Object.entries()")}}의 역을 수행합니다.
+A new object whose properties are given by the entries of the iterable.
 
-## 예제
+## Description
 
-### `Map`에서 `Object`로
+The `Object.fromEntries()` method takes a list of key-value pairs and returns a new object whose properties are given by those entries. The `iterable` argument is expected to be an object that implements an `@@iterator` method. The method returns an iterator object that produces two-element array-like objects. The first element is a value that will be used as a property key, and the second element is the value to associate with that property key.
+
+`Object.fromEntries()` performs the reverse of {{jsxref("Object.entries()")}}, except that `Object.entries()` only returns string-keyed properties, while `Object.fromEntries()` can also create symbol-keyed properties.
+
+> **Note:** Unlike {{jsxref("Array.from()")}}, `Object.fromEntries()` does not use the value of `this`, so calling it on another constructor does not create objects of that type.
+
+## Examples
+
+### Converting a Map to an Object
+
+With `Object.fromEntries`, you can convert from {{jsxref("Map")}} to {{jsxref("Object")}}:
 
 ```js
-const map = new Map([ ['foo', 'bar'], ['baz', 42] ]);
+const map = new Map([
+  ["foo", "bar"],
+  ["baz", 42],
+]);
 const obj = Object.fromEntries(map);
 console.log(obj); // { foo: "bar", baz: 42 }
 ```
 
-### `Array`에서 `Object`로
+### Converting an Array to an Object
+
+With `Object.fromEntries`, you can convert from {{jsxref("Array")}} to {{jsxref("Object")}}:
 
 ```js
-const arr = [ ['0', 'a'], ['1', 'b'], ['2', 'c'] ];
+const arr = [
+  ["0", "a"],
+  ["1", "b"],
+  ["2", "c"],
+];
 const obj = Object.fromEntries(arr);
 console.log(obj); // { 0: "a", 1: "b", 2: "c" }
 ```
 
-### 객체 변환
+### Object transformations
 
-`Object.fromEntries()`와 그 역인 {{jsxref("Object.entries()")}}, 그리고 [배열 변형 메서드](/ko/docs/Web/JavaScript/Reference/Global_Objects/Array#메서드_2)를 통해 객체를 변환할 수 있습니다.
+With `Object.fromEntries`, its reverse method {{jsxref("Object.entries()")}}, and [array manipulation methods](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#instance_methods), you are able to transform objects like this:
 
 ```js
 const object1 = { a: 1, b: 2, c: 3 };
 
 const object2 = Object.fromEntries(
-  Object.entries(object1)
-  .map(([ key, val ]) => [ key, val * 2 ])
+  Object.entries(object1).map(([key, val]) => [key, val * 2]),
 );
 
 console.log(object2);
 // { a: 2, b: 4, c: 6 }
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `Object.fromEntries` in `core-js`](https://github.com/zloirock/core-js#ecmascript-object)
 - {{jsxref("Object.entries()")}}
 - {{jsxref("Object.keys()")}}
 - {{jsxref("Object.values()")}}
+- {{jsxref("Object.prototype.propertyIsEnumerable()")}}
+- {{jsxref("Object.create()")}}
 - {{jsxref("Map.prototype.entries()")}}
 - {{jsxref("Map.prototype.keys()")}}
 - {{jsxref("Map.prototype.values()")}}

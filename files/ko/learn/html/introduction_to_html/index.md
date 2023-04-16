@@ -1,47 +1,51 @@
 ---
-title: HTML 소개
+title: Introduction to HTML
 slug: Learn/HTML/Introduction_to_HTML
 ---
 
 {{LearnSidebar}}
 
-{{glossary("HTML")}}은 문서의 특정 텍스트 영역이 문단인지 목록인지 표의 일부인지 구분 할 수 있도록 의미를 부여하고, 헤더인지, 콘텐츠 컬럼인지, 네비게이션 메뉴인지 알수 있도록 논리적인 영역으로 구조화 하고, 이미지와 비디오 같은 콘텐츠를 삽입할 수 있게 해주는 요소들로 구성된 지극히 간단한 언어입니다. 이번 과정은 이 두 가지 주제에 대한 소개와 HTML을 이해하기 위해 알아야 하는 기본 개념과 문법을 설명합니다.
+At its heart, {{glossary("HTML")}} is a language made up of {{Glossary("Element","elements")}}, which can be applied to pieces of text to give them different meaning in a document (Is it a paragraph? Is it a bulleted list? Is it part of a table?), structure a document into logical sections (Does it have a header? Three columns of content? A navigation menu?), and embed content such as images and videos into a page. This module will introduce the first two of these and introduce fundamental concepts and syntax you need to know to understand HTML.
 
-## 전제 조건
+> **Callout:**
+>
+> #### Looking to become a front-end web developer?
+>
+> We have put together a course that includes all the essential information you need to
+> work towards your goal.
+>
+> [**Get started**](/en-US/docs/Learn/Front-end_web_developer)
 
-이번 과정을 시작하기 전에, HTML에 대한 사전 지식은 필요하지 않습니다만, 기본적으로 컴퓨터 사용에 친숙해야 하고, 웹사이트의 콘텐츠를 탐색하는 정도의 웹을 사용할 줄 알아야 합니다. [기본 소프트웨어 설치](/ko/docs/Learn/Getting_started_with_the_web/Installing_basic_software)에 있는 기본적인 작업 환경이 구축되어 있어야 하고, [파일 다루기](/ko/docs/Learn/Getting_started_with_the_web/Dealing_with_files)에 있는 파일을 생성하고 관리하는 방법을 이해하고 있어야 합니다. 이 두가지 내용은 [웹 시작하기](/ko/docs/Learn/Getting_started_with_the_web)를 위한 초급 과정입니다.
+## Prerequisites
 
-> **참고:** 혹시, 파일을 생성하기 힘든 컴퓨터/테블릿 혹은 다른 기기에서 작업한다면, [JSBin](http://jsbin.com/) 이나 [Thimble](https://thimble.mozilla.org/) 같은 온라인 코딩 프로그램을 이용하여 대부분의 코드 예제를 작성해 볼 수 있습니다.
+Before starting this module, you don't need any previous HTML knowledge, but you should have at least basic familiarity with using computers and using the web passively (i.e., just looking at it and consuming content). You should have a basic work environment set up (as detailed in [Installing basic software](/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software)), and understand how to create and manage files (as detailed in [Dealing with files](/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files)). Both are parts of our [Getting started with the web](/en-US/docs/Learn/Getting_started_with_the_web) complete beginner's module.
 
-## 안내서
+> **Note:** If you are working on a computer/tablet/other device where you don't have the ability to create your own files, you could try out (most of) the code examples in an online coding program such as [JSBin](https://jsbin.com/) or [Glitch](https://glitch.com/).
 
-이 과정은 HTML의 모든 기초 이론을 학습하고, 몇몇 기법을 실습해 볼 수 있는 충분한 기회를 제공합니다. 아래와 같은 내용을 담고 있습니다.
+## Guides
 
-- [HTML 시작하기](/ko/docs/Learn/HTML/Introduction_to_HTML/Getting_started)
-  - : HTML을 시작하기 위한 초급 내용을 다룹니다. 요소, 속성을 정의하고, 한번쯤은 들어봤을지도 모르는 중요한 용어들을 알아보고 어디에 사용되는지 살펴봅니다. 또, HTML 요소를 구조화 하는 방법, 일반적인 HTML 페이지가 어떻게 구조화되는지를 알아보고, 언어의 중요한 기본 특징에 대해 설명합니다. 그러면서, 여러분들이 흥미를 가질 수 있도록 HTML 코드를 직접 작성해 보도록 하겠습니다.
-- [head 안에는 무엇이 있나? HTML 메타 데이터](/ko/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML)
-  - : HTML 문서의 헤드는 페이지가 로딩될 때 웹 브라우저에는 보이지 않는 부분입니다. 페이지의 {{htmlelement("title")}}, (HTML 콘텐츠에 스타일을 적용하고 싶다면) {{glossary("CSS")}} 링크, 파비콘 링크, 그리고 메타데이터(문서의 작성자, 문서를 설명하기 위한 중요한 키워드와 같은 HTML에 대한 정보)와 같은 정보를 담고 있습니다.
-- [HTML 텍스트 기본](/ko/docs/Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals)
-  - : HTML을 사용하는 주요 목적 중의 하나는 텍스트에 의미를 부여(**시맨틱**)하는 것인데, 그렇게 하면 브라우저는 화면에 어떻게 노출되어야 하는지 명확하게 알 수 있습니다. 이 글에서는 HTML을 이용하여 글의 제목과 문단의 구조에서 텍스트를 분리해 보고, 단어에 강조/중요도를 부여해보고, 리스트 만드는 법 등을 살펴 보겠습니다.
-- [하이퍼링크 만들기](/ko/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperlinks)
-  - : 하이퍼링크는 웹을 웹(web, 거미줄, 연결을 의미)으로 만들어주는 것이기 때문에 굉장히 중요합니다. 이 글에서는 링크를 만드는데 필요한 문법을 설명하고, 링크의 사례들을 논의해 봅니다.
-- [텍스트 조작 고급기법](/ko/docs/Learn/HTML/Introduction_to_HTML/Advanced_text_formatting)
-  - : HTML에는 텍스트를 조작하기 위한 많은 요소들이 있습니다. [이](/ko/docs/Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals) 글에는 다 담을 수는 없습니다. 이 글에서는 잘 알려지진 않았지만 알아두면 굉장히 유용한 요소들을 살펴보겠습니다. 인용구, 설명 목록, 소스 코드 혹은 관련 텍스트, 위첨자, 아래첨자, 연락 정보 등을 마크업 하는 방법을 알아보겠습니다.
-- [문서와 웹사이트 구조](/ko/docs/Learn/HTML/Introduction_to_HTML/Document_and_website_structure)
-  - : ‘문단’이나 ‘이미지’와 같은 페이지의 부분을 정의하는 것처럼, HTML은 ‘헤더’, ‘네비게이션 메뉴’, ‘주요 내용 컬럼’과 같은 웹사이트의 영역을 정의하는데도 사용됩니다. 이 글에서는 기본 웹사이트 구조를 설계하는 법을 살펴보고, 이 구조를 표현하기 위해 HTML로 직접 작성해 보겠습니다.
-- [HTML 디버깅](/ko/docs/Learn/HTML/Introduction_to_HTML/Debugging_HTML)
-  - : HTML 작성은 잘 되었는데, 무언가 잘못되었고, 작업을 할 수 없다면 코드에서 에러가 발생하는 부분은 어디일까요? 이 글은 이런 상황에 도움을 줄 수 있는 도구들을 소개합니다.
+This module contains the following articles, which will take you through all the basic theory of HTML and provide ample opportunity for you to test out some skills.
 
-## 평가
+- [Getting started with HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started)
+  - : Covers the absolute basics of HTML, to get you started — we define elements, attributes, and other important terms, and show where they fit in the language. We also show how a typical HTML page is structured and how an HTML element is structured, and explain other important basic language features. Along the way, we'll play with some HTML to get you interested!
+- [What's in the head? Metadata in HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML)
+  - : The {{Glossary("Head","head")}} of an HTML document is the part that **is not** displayed in the web browser when the page is loaded. It contains information such as the page {{htmlelement("title")}}, links to {{glossary("CSS")}} (if you want to style your HTML content with CSS), links to custom favicons, and metadata (data about the HTML, such as who wrote it, and important keywords that describe the document).
+- [HTML text fundamentals](/en-US/docs/Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals)
+  - : One of HTML's main jobs is to give text meaning (also known as {{Glossary("Semantics","semantics")}}), so that the browser knows how to display it correctly. This article looks at how to use HTML to break up a block of text into a structure of headings and paragraphs, add emphasis/importance to words, create lists, and more.
+- [Creating hyperlinks](/en-US/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperlinks)
+  - : Hyperlinks are really important — they are what makes the web a web. This article shows the syntax required to make a link and discusses best practices for links.
+- [Advanced text formatting](/en-US/docs/Learn/HTML/Introduction_to_HTML/Advanced_text_formatting)
+  - : There are many other elements in HTML for formatting text that we didn't get to in the [HTML text fundamentals](/en-US/docs/Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals) article. The elements here are less well-known, but still useful to know about. In this article, you'll learn about marking up quotations, description lists, computer code and other related text, subscript and superscript, contact information, and more.
+- [Document and website structure](/en-US/docs/Learn/HTML/Introduction_to_HTML/Document_and_website_structure)
+  - : As well as defining individual parts of your page (such as "a paragraph" or "an image"), HTML is also used to define areas of your website (such as "the header", "the navigation menu", or "the main content column"). This article looks into how to plan a basic website structure and how to write the HTML to represent this structure.
+- [Debugging HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/Debugging_HTML)
+  - : Writing HTML is fine, but what if something goes wrong, and you can't work out where the error in the code is? This article will introduce you to some tools that can help.
 
-다음의 평가들은 위의 가이드에 있는 HTML 기본을 얼마나 이해하고 있는지 테스트 합니다.
+## Assessments
 
-- [마크업](/ko/docs/Learn/HTML/Introduction_to_HTML/Marking_up_a_letter)
-  - : 우리는 모두 편지 쓰는 법을 금방 배우게 됩니다. 텍스트를 꾸미고 조작하는 것을 테스트 해볼 수 있는 유용한 예제들이 있습니다. 여러분이 마크업 하는 것을 평가합니다.
-- [페이지 콘텐츠 구조화](/ko/docs/Learn/HTML/Introduction_to_HTML/Structuring_a_page_of_content)
-  - : 이 평가는 헤더, 푸터, 네비게이션 메뉴, 주요 콘텐츠, 사이드바를 담고 있는 간단한 웹 페이지의 구조를 HTML로 작성하는 능력을 테스트합니다.
+The following assessments will test your understanding of the HTML basics covered in the guides above.
 
-## 같이 보기
-
-- [웹 지식 기본 1](https://teach.mozilla.org/activities/web-lit-basics/)
-  - : HTML 소개 과정에서 논의된 많은 기법들을 살펴보고 테스트 해볼 수 있는 모질라 재단 과정이 있습니다. 학습자들은 이 여섯 가지의 과정에서 글을 읽고, 글을 작성하고, 참석하는데 친숙해 질 것입니다. 만들어 보고 협업하면서 탄탄한 웹의 토대를 찾아보세요.
+- [Marking up a letter](/en-US/docs/Learn/HTML/Introduction_to_HTML/Marking_up_a_letter)
+  - : We all learn to write a letter sooner or later; it is also a useful example to test out text formatting skills. In this assessment, you'll be given a letter to mark up.
+- [Structuring a page of content](/en-US/docs/Learn/HTML/Introduction_to_HTML/Structuring_a_page_of_content)
+  - : This assessment tests your ability to use HTML to structure a simple page of content, containing a header, a footer, a navigation menu, main content, and a sidebar.

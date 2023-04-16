@@ -1,66 +1,68 @@
 ---
 title: Object() constructor
 slug: Web/JavaScript/Reference/Global_Objects/Object/Object
+page-type: javascript-constructor
+browser-compat: javascript.builtins.Object.Object
 ---
 
 {{JSRef}}
 
-**`Object`의 생성자**는 주어진 값를 객체 래퍼로 만들어 줍니다.
+The **`Object()`** constructor turns the input into an object. Its behavior depends on the input's type.
 
-- 만약 값이 {{jsxref("null")}} 또는 {{jsxref("undefined")}} 라면, 빈 객체를 생성하여 반환합니다.
-- 그렇지 않으면, 주어진 값의 타입 객체를 반환합니다.
-- 만약 주어진 값이 객체라면, 해당 값을 그대로 반환합니다.
+- If the value is [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null) or {{jsxref("undefined")}}, it creates and returns an empty object.
+- Otherwise, it returns an object of a Type that corresponds to the given value.
+- If the value is an object already, it returns the value.
 
-비 생성자 컨텍스트로 호출되면, `Object` 는 `new Object()` 와 동일하게 동작합니다.
+## Syntax
 
-## 구문
-
-```js
-new Object()
+```js-nolint
 new Object(value)
+Object(value)
 ```
 
-### 매개변수
+> **Note:** `Object()` can be called with or without [`new`](/en-US/docs/Web/JavaScript/Reference/Operators/new). Both create a new object.
+
+### Parameters
 
 - `value`
-  - : 아무 값
+  - : Any value.
 
-## 예시
+## Examples
 
-### 새로운 객체 생성
+### Creating a new Object
 
 ```js
-let o = new Object()
-o.foo = 42
+const o = new Object();
+o.foo = 42;
 
-console.log(o)
-// Object { foo: 42 }
+console.log(o);
+// { foo: 42 }
 ```
 
-### undefined와 null을 받는 객체 types
+### Using Object given undefined and null types
 
-다음 예제는 빈 `객체`를 `o` 변수에 저장합니다 :
-
-```js
-let o = new Object()
-```
+The following examples store an empty `Object` object in `o`:
 
 ```js
-let o = new Object(undefined)
+const o = new Object();
 ```
 
 ```js
-let o = new Object(null)
+const o = new Object(undefined);
 ```
 
-## 명세
+```js
+const o = new Object(null);
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이보기
+## See also
 
-- [객체 초기자](/ko/docs/Web/JavaScript/Reference/Operators/Object_initializer)
+- [Object initializer](/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer)

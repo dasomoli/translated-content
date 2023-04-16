@@ -1,29 +1,32 @@
 ---
-title: EventTarget()
+title: "EventTarget: EventTarget() constructor"
+short-title: EventTarget()
 slug: Web/API/EventTarget/EventTarget
+page-type: web-api-constructor
+browser-compat: api.EventTarget.EventTarget
 ---
 
 {{APIRef("DOM")}}
 
-**`EventTarget()`** 생성자는 새로운 {{domxref("EventTarget")}} 객체 인스턴스를 생성합니다.
+The **`EventTarget()`** constructor creates a new {{domxref("EventTarget")}} object instance.
 
-> **참고:** 이 생성자를 명시적으로 사용하는 경우는 거의 없습니다. 보통은 {{domxref("EventTarget")}}을 상속하는 객체의 생성자 내에서 [`super`](/ko/docs/Web/JavaScript/Reference/Operators/super) 키워드로 사용됩니다.
+> **Note:** It is fairly rare to explicitly call this constructor. Most of the time, this constructor is used inside the constructor of an object extending the {{domxref("EventTarget")}} interface, using the [`super`](/en-US/docs/Web/JavaScript/Reference/Operators/super) keyword.
 
-## 구문
+## Syntax
 
-```js
-new EventTarget();
+```js-nolint
+new EventTarget()
 ```
 
-### 매개변수
+### Parameters
 
-없음.
+None.
 
-### 반환 값
+### Return value
 
-{{domxref("EventTarget")}} 객체의 새로운 인스턴스.
+A new instance of the {{domxref("EventTarget")}} object.
 
-## 예제
+## Examples
 
 ```js
 class MyEventTarget extends EventTarget {
@@ -32,25 +35,27 @@ class MyEventTarget extends EventTarget {
     this._secret = mySecret;
   }
 
-  get secret() { return this._secret; }
-};
+  get secret() {
+    return this._secret;
+  }
+}
 
 let myEventTarget = new MyEventTarget(5);
-let value = myEventTarget.secret;  // == 5
-myEventTarget.addEventListener("foo", function(e) {
-  this._secret = e.detail;
+let value = myEventTarget.secret; // === 5
+myEventTarget.addEventListener("foo", (e) => {
+  myEventTarget._secret = e.detail;
 });
 
 let event = new CustomEvent("foo", { detail: 7 });
 myEventTarget.dispatchEvent(event);
-let newValue = myEventTarget.secret; // == 7
+let newValue = myEventTarget.secret; // === 7
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

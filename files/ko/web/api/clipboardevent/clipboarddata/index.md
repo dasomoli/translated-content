@@ -1,31 +1,38 @@
 ---
-title: ClipboardEvent.clipboardData
+title: "ClipboardEvent: clipboardData property"
+short-title: clipboardData
 slug: Web/API/ClipboardEvent/clipboardData
+page-type: web-api-instance-property
+browser-compat: api.ClipboardEvent.clipboardData
 ---
-{{APIRef("Clipboard API")}} {{SeeCompatTable}}
 
-**`ClipboardEvent.clipboardData`** 속성은 다음과 같은 용도로 사용할 수 있는 {{domxref("DataTransfer")}} 객체입니다.
+{{APIRef("Clipboard API")}}
 
-- {{domxref("Element/cut_event", "cut")}}, {{domxref("Element/copy_event", "copy")}} 이벤트 처리기 내에서, 어떤 데이터를 클립보드에 넣어야 하는지 지정하기. 보통 {{domxref("DataTransfer.setData", "setData(format, data)")}}를 호출해서 수행합니다.
-- {{domxref("Element/paste_event", "paste")}} 이벤트 처리기 내에서 데이터를 가져오기. 보통 {{domxref("DataTransfer.getData", "getData(format)")}}을 호출해서 수행합니다.
+The **`ClipboardEvent.clipboardData`** property holds a {{domxref("DataTransfer")}} object, which can be used:
 
-{{domxref("Element/cut_event", "cut")}}, {{domxref("Element/copy_event", "copy")}}, {{domxref("Element/paste_event", "paste")}} 이벤트 문서에서 자세한 정보를 확인하세요.
+- to specify what data should be put into the clipboard from the {{domxref("Element/cut_event", "cut")}} and
+  {{domxref("Element/copy_event", "copy")}} event handlers, typically with a {{domxref("DataTransfer.setData",
+    "setData(format, data)")}} call;
+- to obtain the data to be pasted from the {{domxref("Element/paste_event", "paste")}} event handler, typically
+  with a {{domxref("DataTransfer.getData", "getData(format)")}} call.
 
-## 구문
+See the {{domxref("Element/cut_event", "cut")}}, {{domxref("Element/copy_event", "copy")}}, and {{domxref("Element/paste_event", "paste")}} events
+documentation for more information.
 
-```js
-data = ClipboardEvent.clipboardData
-```
+## Value
 
-## 명세
+A {{domxref("DataTransfer")}} object.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 복사 관련 이벤트: {{domxref("Element/cut_event", "cut")}}, {{domxref("Element/copy_event", "copy")}}, {{domxref("Element/paste_event", "paste")}}
-- 이 속성이 속한 {{domxref("ClipboardEvent")}} 인터페이스.
+- Copy-related events: {{domxref("Element/copy_event", "copy")}}, {{domxref("Element/cut_event", "cut")}}, {{domxref("Element/paste_event", "paste")}}
+- The {{domxref("ClipboardEvent")}} interface it belongs to.
+- [Clipboard API](/en-US/docs/Web/API/Clipboard_API)

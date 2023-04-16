@@ -1,34 +1,83 @@
 ---
-title: FileReader.readAsText()
+title: "FileReader: readAsText() method"
+short-title: readAsText()
 slug: Web/API/FileReader/readAsText
+page-type: web-api-instance-method
+browser-compat: api.FileReader.readAsText
 ---
+
 {{APIRef("File API")}}
 
-**`readAsText()`** 메서드는 지정된 {{domxref("Blob")}} 이나 {{domxref("File")}} 의 컨텐츠를 읽기 위해 사용합니다. 읽기 연산이 끝나면, {{domxref("FileReader.readyState","readyState")}} 가 `DONE`으로 바뀌고, {{event("loadend")}} 이벤트가 트리거 되고, {{domxref("FileReader.result","result")}} 프로퍼티는 파일의 내용을 텍스트 문자열로 가집니다.
+The **`readAsText()`** method is used to read the contents of the specified {{domxref("Blob")}} or {{domxref("File")}}.
+When the read operation is complete, the {{domxref("FileReader.readyState","readyState")}} is changed to `DONE`,
+the {{domxref("FileReader/loadend_event", "loadend")}} event is triggered, and the {{domxref("FileReader.result","result")}} property contains the contents of the file as a text string.
 
-> **참고:** {{domxref("Blob.text()")}} 메서드는 파일을 텍스트로 읽는 프로미스 기반의 새 API 입니다.
+> **Note:** The {{domxref("Blob.text()")}} method is a newer promise-based API to read a file as text.
 
-## 문법
+> **Note:** This method loads the entire file's content into memory and is not suitable for large files. Prefer [`readAsArrayBuffer()`](/en-US/docs/Web/API/FileReader/readAsArrayBuffer) for large files.
 
-```js
-instanceOfFileReader.readAsText(blob[, encoding]);
+## Syntax
+
+```js-nolint
+readAsText(blob)
+readAsText(blob, encoding)
 ```
 
-### 매개변수
+### Parameters
 
 - `blob`
-  - : 읽어 들일 {{domxref("Blob")}} 이나 {{domxref("File")}}
+  - : The {{domxref("Blob")}} or {{domxref("File")}} from which to read.
 - `encoding` {{optional_inline}}
-  - : 반환 데이터에 사용될 문자열 인코딩을 지정. 매개변수가 지정되지 않으면 기본적으로 UTF-8이라고 가정합니다.
+  - : A string specifying the encoding to use for the returned data. By default, UTF-8 is assumed if this parameter is not specified.
 
-## 명세
+### Return value
+
+None ({{jsxref("undefined")}}).
+
+## Examples
+
+### HTML
+
+```html
+<input type="file" onchange="previewFile()" /><br />
+<p class="content"></p>
+```
+
+### JavaScript
+
+```js
+function previewFile() {
+  const content = document.querySelector(".content");
+  const [file] = document.querySelector("input[type=file]").files;
+  const reader = new FileReader();
+
+  reader.addEventListener(
+    "load",
+    () => {
+      // this will then display a text file
+      content.innerText = reader.result;
+    },
+    false
+  );
+
+  if (file) {
+    reader.readAsText(file);
+  }
+}
+```
+
+### Result
+
+{{EmbedLiveSample("Examples", "100%", 240)}}
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 보기
+## See also
 
 - {{domxref("FileReader")}}

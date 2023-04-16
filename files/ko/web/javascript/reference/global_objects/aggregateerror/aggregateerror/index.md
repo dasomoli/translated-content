@@ -1,13 +1,15 @@
 ---
 title: AggregateError() constructor
 slug: Web/JavaScript/Reference/Global_Objects/AggregateError/AggregateError
+page-type: javascript-constructor
+browser-compat: javascript.builtins.AggregateError.AggregateError
 ---
 
 {{JSRef}}
 
-**`AggregateError()`** 생성자는 여러 오류를 하나의 오류로 포장하기 위한 오류를 생성합니다.
+The **`AggregateError()`** constructor creates {{jsxref("AggregateError")}} objects.
 
-## 구문
+## Syntax
 
 ```js-nolint
 new AggregateError(errors)
@@ -19,46 +21,44 @@ AggregateError(errors, message)
 AggregateError(errors, message, options)
 ```
 
-> **참고:** `AggregateError()`는 [`new`](/ko/docs/Web/JavaScript/Reference/Operators/new)와 함께 혹은 없이도 호출할 수 있습니다. 두 방법 모두 `AggregateError`를 생성합니다.
+> **Note:** `AggregateError()` can be called with or without [`new`](/en-US/docs/Web/JavaScript/Reference/Operators/new). Both create a new `AggregateError` instance.
 
-### 매개변수
+### Parameters
 
 - `errors`
-  - : 반복 가능한 오류들. 실제 {{JSxRef("Error")}}객체가 아닐 수 있습니다.
+  - : An iterable of errors, may not actually be {{JSxRef("Error")}} instances.
 - `message` {{optional_inline}}
-  - : `AggregateError`의 사람이 읽을 수 있는 설명입니다. 선택적 입력값입니다.
+  - : An optional human-readable description of the aggregate error.
 - `options` {{optional_inline}}
-  - : 다음 속성을 가진 객체입니다.
+  - : An object that has the following properties:
     - `cause` {{optional_inline}}
-      - : 오류의 특정 원인을 나타내는 속성입니다.
-        보다 구체적이거나 유용한 오류 메시지로 오류를 잡아서 다시 오류를 발생시킬 때 이 속성을 사용하여 원래 오류를 전달할 수 있습니다.
+      - : A property indicating the specific cause of the error.
+        When catching and re-throwing an error with a more-specific or useful error message, this property can be used to pass the original error.
 
-## 예제
+## Examples
 
-### AggregateError 생성하기
+### Creating an AggregateError
 
 ```js
 try {
-  throw new AggregateError([
-    new Error("some error"),
-  ], 'Hello');
+  throw new AggregateError([new Error("some error")], "Hello");
 } catch (e) {
   console.log(e instanceof AggregateError); // true
-  console.log(e.message);                   // "Hello"
-  console.log(e.name);                      // "AggregateError"
-  console.log(e.errors);                    // [ Error: "some error" ]
+  console.log(e.message); // "Hello"
+  console.log(e.name); // "AggregateError"
+  console.log(e.errors); // [ Error: "some error" ]
 }
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - [Polyfill of `AggregateError` in `core-js`](https://github.com/zloirock/core-js#ecmascript-promise)
 - {{jsxref("Promise.any")}}

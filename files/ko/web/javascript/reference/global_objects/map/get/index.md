@@ -1,69 +1,71 @@
 ---
 title: Map.prototype.get()
 slug: Web/JavaScript/Reference/Global_Objects/Map/get
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Map.get
 ---
 
 {{JSRef}}
 
-**`get()`** 메서드는 `Map` 객체에서 특정 요소를 반환합니다. 만약 주어진 키와 관련된 값이 객체라면 해당 객체에 대한
-참조만 가져오고, 해당 객체에 대한 모든 변경은 `Map` 내에서 효율적으로 수정됩니다.
+The **`get()`** method returns a specified element from a `Map` object. If the
+value that is associated to the provided key is an object, then you will get a
+reference to that object and any change made to that object will effectively
+modify it inside the `Map` object.
 
 {{EmbedInteractiveExample("pages/js/map-prototype-get.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 get(key)
 ```
 
-### 매개변수
+### Parameters
 
 - `key`
-  - : `Map` 객체에서 반환받을 요소의 키
+  - : The key of the element to return from the `Map` object.
 
-### 반환 값
+### Return value
 
-명시된 키와 연관된 요소 혹은 `Map` 객체에서 해당 키를 찾을 수 없는 경우 {{jsxref("undefined")}}.
+The element associated with the specified key, or
+{{jsxref("undefined")}} if the key can't be found in the `Map` object.
 
-## 예제
+## Examples
 
-### get() 사용하기
+### Using get()
 
 ```js
 const myMap = new Map();
-myMap.set('bar', 'foo');
+myMap.set("bar", "foo");
 
-console.log(myMap.get('bar')); // Returns "foo"
-console.log(myMap.get('baz')); // Returns undefined
+console.log(myMap.get("bar")); // Returns "foo"
+console.log(myMap.get("baz")); // Returns undefined
 ```
 
-### get()을 사용하여 객체에 대한 참조 검색
+### Using get() to retrieve a reference to an object
 
 ```js
 const arr = [];
 const myMap = new Map();
+myMap.set("bar", arr);
 
-myMap.set('bar', arr);
-
-myMap.get('bar').push('foo');
+myMap.get("bar").push("foo");
 
 console.log(arr); // ["foo"]
-console.log(myMap.get('bar')); // ["foo"]
+console.log(myMap.get("bar")); // ["foo"]
 ```
 
-맵이 원본 객체에 대한 참조만 보유하고 있다는 것은 해당 객체가 가비지 콜렉션되지 않을 수 있으며 이로 인해 예측하지 못한
-메모리 문제가 일어날 수 있음을 의미합니다. 만약 맵에 저장되어 있는 객체가 원본 객체와 동일한 수명을 가지게 하려면
-{{jsxref("WeakMap")}}을 고려하시기 바랍니다.
+Note that the map holding a reference to the original object effectively means the object cannot be garbage-collected, which may lead to unexpected memory issues. If you want the object stored in the map to have the same lifespan as the original one, consider using a {{jsxref("WeakMap")}}.
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Map")}}
 - {{jsxref("Map.prototype.set()")}}

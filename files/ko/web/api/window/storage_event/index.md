@@ -1,45 +1,92 @@
 ---
-title: WindowEventHandlers.onstorage
+title: "Window: storage event"
+short-title: storage
 slug: Web/API/Window/storage_event
-original_slug: Web/API/WindowEventHandlers/onstorage
+page-type: web-api-event
+browser-compat: api.Window.storage_event
 ---
 
-<div class="syntaxbox">{{APIRef}}</div>
+{{APIRef}}
 
-{{domxref("WindowEventHandlers")}} 믹스인의 **`onstorage`** 속성은 [`storage`](/ko/docs/Web/API/Window/storage_event) 이벤트를 처리하는 {{event("Event_handlers", "event handler")}}입니다.
+The **`storage`** event of the {{domxref("Window")}} interface fires when a storage area (`localStorage`) has been modified in the context of another document.
 
-`storage` 이벤트는 다른 문서에서 저장소를 변경했을 때 발생합니다.
+> **Note:** This won't work on the same page that is making the changes — it is really a way for other pages on the domain using the storage to sync any changes that are made. Pages on other domains can't access the same storage objects.
 
-## 구문
+## Syntax
+
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
 
 ```js
-window.onstorage = functionRef;
+addEventListener("storage", (event) => {});
+onstorage = (event) => {};
 ```
 
-### 값
+## Event type
 
-`functionRef`는 함수 이름 혹은 [함수 표현식](/ko/docs/Web/JavaScript/Reference/Operators/function)으로, 단일 매개변수로써 {{domxref("StorageEvent")}}를 받습니다.
+A {{domxref("StorageEvent")}}. Inherits from {{domxref("Event")}}.
 
-## 예제
+{{InheritanceDiagram("StorageEvent")}}
 
-다음 예제는 다른 문서에서 저장소 키를 바꿀 때마다 메시지를 기록합니다.
+## Event properties
+
+- {{domxref("StorageEvent.key", "key")}} {{ReadOnlyInline}}
+  - : Returns a string that represents the key changed.
+    The `key` attribute is [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null)
+    when the change is caused by the storage `clear()` method.
+- {{domxref("StorageEvent.newValue", "newValue")}} {{ReadOnlyInline}}
+  - : Returns a string with the new value of the `key`.
+    This value is `null`
+    when the change has been invoked by storage `clear()` method,
+    or the `key` has been removed from the storage.
+- {{domxref("StorageEvent.oldValue", "oldValue")}} {{ReadOnlyInline}}
+  - : Returns a string with the original value of the `key`.
+    This value is `null` when the `key` has been newly added
+    and therefore doesn't have any previous value.
+- {{domxref("StorageEvent.storageArea", "storageArea")}} {{ReadOnlyInline}}
+  - : Returns a {{DOMxRef("Storage")}} object that represents the storage that was affected.
+- {{domxref("StorageEvent.url", "url")}} {{ReadOnlyInline}}
+  - : Returns string with the URL of the document whose `key` changed.
+
+## Event handler aliases
+
+In addition to the `Window` interface, the event handler property `onstorage` is also available on the following targets:
+
+- {{domxref("HTMLBodyElement")}}
+- {{domxref("HTMLFrameSetElement")}}
+- {{domxref("SVGSVGElement")}}
+
+## Examples
+
+Log the `sampleList` item to the console when the `storage` event fires:
 
 ```js
-window.onstorage = function(e) {
-  console.log('The ' + e.key +
-    ' key has been changed from ' + e.oldValue +
-    ' to ' + e.newValue + '.');
+window.addEventListener("storage", () => {
+  // When local storage changes, dump the list to
+  // the console.
+  console.log(JSON.parse(window.localStorage.getItem("sampleList")));
+});
+```
+
+The same action can be achieved using the `onstorage` event handler property:
+
+```js
+window.onstorage = () => {
+  // When local storage changes, dump the list to
+  // the console.
+  console.log(JSON.parse(window.localStorage.getItem("sampleList")));
 };
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Window: `storage` 이벤트](/ko/docs/Web/API/Window/storage_event)
+- [Web Storage API](/en-US/docs/Web/API/Web_Storage_API)
+- [Using the Web Storage API](/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API)
+- [Responding to storage changes with the StorageEvent](/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API#responding_to_storage_changes_with_the_storageevent)

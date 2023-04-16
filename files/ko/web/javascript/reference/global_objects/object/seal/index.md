@@ -1,97 +1,126 @@
 ---
 title: Object.seal()
 slug: Web/JavaScript/Reference/Global_Objects/Object/seal
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Object.seal
 ---
+
 {{JSRef}}
 
-**`Object.seal()`** 메서드는 객체를 밀봉합니다. 객체를 밀봉하면 그 객체에는 새로운 속성을 추가할 수 없고, 현재 존재하는 모든 속성을 설정 불가능 상태로 만들어줍니다. 하지만 쓰기 가능한 속성의 값은 밀봉 후에도 변경할 수 있습니다(역자 주 : 바로 이 점이 `Object.freeze()`와의 차이라고 할 수 있습니다).
+The **`Object.seal()`** static method _seals_ an object. Sealing an object [prevents extensions](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/preventExtensions) and makes existing properties non-configurable. A sealed object has a fixed set of properties: new properties cannot be added, existing properties cannot be removed, their enumerability and configurability cannot be changed, and its prototype cannot be re-assigned. Values of existing properties can still be changed as long as they are writable. `seal()` returns the same object that was passed in.
 
 {{EmbedInteractiveExample("pages/js/object-seal.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 Object.seal(obj)
 ```
 
-### 매개변수
+### Parameters
 
 - `obj`
-  - : 봉인할 객체.
+  - : The object which should be sealed.
 
-### 반환 값
+### Return value
 
-봉인한 객체.
+The object being sealed.
 
-## 설명
+## Description
 
-객체는 기본적으로 확장이 가능({{jsxref("Object.isExtensible()", "extensible", "", 1)}})합니다. 즉, 새로운 속성을 추가할 수 있습니다. 하지만 객체를 밀봉하면 그 객체에 새로운 속성을 추가할 수 없게되고, 그 객체 내에 존재하는 모든 속성이 설정 불가능(non-configurable)해 집니다. 객체를 밀봉하면 객체의 속성을 고정된 불변의 상태로 만듭니다. 모든 속성을 설정 불가능한 상태로 만드는 것은 데이터 속성(data properties)을 접근자 속성(accessor properties)으로, 또는 접근자 속성을 데이터 속성으로 변경할 수 없게 만듭니다. 하지만 객체를 완전히 얼려서 데이터 속성의 값도 변경할 수 없게 만드는 `Object.freeze()`와 달리, `Object.seal()`은 객체를 밀봉한 후에도 그 객체의 데이터 속성의 값은 여전히 변경할 수 있게 해줍니다. 다만, 밀봉한 후에는 객체를 얼리는 것과 마찬가지로 속성의 추가/삭제나 데이터 속성과 접근자 속성 사이의 전환은 암묵적이든, 아니면 {{jsxref("Strict_mode", "strict mode", "", 1)}} 에서와 같이 명시적으로 {{jsxref("Global_Objects/TypeError", "TypeError")}} 예외를 발생시키든 모두 실패로 끝납니다.
+Sealing an object is equivalent to [preventing extensions](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/preventExtensions) and then changing all existing [properties' descriptors](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty#description) to `configurable: false`. This has the effect of making the set of properties on the object fixed. Making all properties non-configurable
+also prevents them from being converted from data properties to accessor properties and
+vice versa, but it does not prevent the values of data properties from being changed.
+Attempting to delete or add properties to a sealed object, or to convert a data property
+to accessor or vice versa, will fail, either silently or by throwing a
+{{jsxref("TypeError")}} (most commonly, although not exclusively, when in
+{{jsxref("Strict_mode", "strict mode", "", 1)}} code).
 
-프로토타입 체인은 밀봉 전이나 후나 달라지지 않습니다. 하지만 [`Object.prototype.__proto__`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/proto) {{deprecated_inline}} 속성은 함께 밀봉됩니다.
+The prototype chain remains untouched. However, due to the effect of [preventing extensions](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/preventExtensions), the `[[Prototype]]` cannot be reassigned.
 
-## 예제
+Unlike {{jsxref("Object.freeze()")}}, objects sealed with `Object.seal()` may have their existing
+properties changed, as long as they are writable.
+
+## Examples
+
+### Using Object.seal
 
 ```js
-var obj = {
-  prop: function() {},
-  foo: 'bar'
+const obj = {
+  prop() {},
+  foo: "bar",
 };
 
-// 새 속성이 추가되고, 기존 속성은 변경되거나 제거될 수 있음
-obj.foo = 'baz';
-obj.lumpy = 'woof';
+// New properties may be added, existing properties
+// may be changed or removed.
+obj.foo = "baz";
+obj.lumpy = "woof";
 delete obj.prop;
 
-var o = Object.seal(obj);
+const o = Object.seal(obj);
 
-assert(o === obj);
-assert(Object.isSealed(obj) === true);
+o === obj; // true
+Object.isSealed(obj); // true
 
-// 밀봉한 객체의 속성값은 밀봉 전과 마찬가지로 변경할 수 있음
-obj.foo = 'quux';
-obj.foo // 'quux' 가 출력됨
+// Changing property values on a sealed object
+// still works.
+obj.foo = "quux";
 
-// 데이터 속성과 접근자 속성 사이의 전환은 불가
-Object.defineProperty(obj, 'foo', { get: function() { return 'g'; } }); // TypeError 발생
+// But you can't convert data properties to accessors,
+// or vice versa.
+Object.defineProperty(obj, "foo", {
+  get() {
+    return "g";
+  },
+}); // throws a TypeError
 
-// 속성값의 변경을 제외한 어떤 변경도 적용되지 않음
-obj.quaxxor = 'the friendly duck'; // 에러가 나지는 않지만 속성은 추가되지 않음
-delete obj.foo; // 에러가 나지는 않지만 속성이 삭제되지 않음
+// Now any changes, other than to property values,
+// will fail.
+obj.quaxxor = "the friendly duck";
+// silently doesn't add the property
+delete obj.foo;
+// silently doesn't delete the property
 
-// strict mode 에서는 속성값의 변경을 제외한 모든 변경은 TypeError 발생
+// ...and in strict mode such attempts
+// will throw TypeErrors.
 function fail() {
-  'use strict';
-  delete obj.foo; // TypeError 발생
-  obj.sparky = 'arf'; // TypeEror 발생
+  "use strict";
+  delete obj.foo; // throws a TypeError
+  obj.sparky = "arf"; // throws a TypeError
 }
 fail();
 
-// Object.defineProperty() 메서드를 이용한 속성의 추가도 TypeError 발생
-Object.defineProperty(obj, 'ohai', { value: 17 }); // TypeErorr 발생
-Object.defineProperty(obj, 'foo', { value: 'eit' }); // 속성값의 변경은 가능함
+// Attempted additions through
+// Object.defineProperty will also throw.
+Object.defineProperty(obj, "ohai", {
+  value: 17,
+}); // throws a TypeError
+Object.defineProperty(obj, "foo", {
+  value: "eit",
+}); // changes existing property value
 ```
 
-## 참고
+### Non-object argument
 
-ES5에서는 **`Object.seal()`** 메서드의 인자가 객체가 아닐 때(즉, 원시형일 때)는 {{jsxref("Global_Objects/TypeError", "TypeError")}}가 발생합니다. ES6에서는 원시형 인자도 밀봉된 객체라고 취급해서 {{jsxref("Global_Objects/TypeError", "TypeError")}}를 발생시키지 않고 원시형 인자를 그대로 반환합니다.
+In ES5, if the argument to this method is not an object (a primitive), then it will cause a {{jsxref("TypeError")}}. In ES2015, a non-object argument will be returned as-is without any errors, since primitives are already, by definition, immutable.
 
 ```js
-> Object.seal(1)
-TypeError: 1 is not an object // ES5 code
+Object.seal(1);
+// TypeError: 1 is not an object (ES5 code)
 
-> Object.seal(1)
-1                             // ES6 code
+Object.seal(1);
+// 1                             (ES2015 code)
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Object.isSealed()")}}
 - {{jsxref("Object.preventExtensions()")}}

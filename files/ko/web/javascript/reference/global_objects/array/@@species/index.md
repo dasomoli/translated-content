@@ -1,52 +1,95 @@
 ---
-title: get Array[@@species]
+title: Array[@@species]
 slug: Web/JavaScript/Reference/Global_Objects/Array/@@species
+page-type: javascript-static-accessor-property
+browser-compat: javascript.builtins.Array.@@species
 ---
 
 {{JSRef}}
 
-**`Array[@@species]`** 접근자 속성은 `Array` 생성자를 반환합니다.
+The **`Array[@@species]`** static accessor property returns the constructor used to construct return values from array methods.
 
-## 구문
+> **Warning:** The existence of `@@species` allows execution of arbitrary code and may create security vulnerabilities. It also makes certain optimizations much harder. Engine implementers are [investigating whether to remove this feature](https://github.com/tc39/proposal-rm-builtin-subclassing). Avoid relying on it if possible. Modern array methods, such as {{jsxref("Array/toReversed", "toReversed()")}}, do not use `@@species` and always return a new `Array` base class instance.
 
-```js
-    Array[Symbol.species]
+## Syntax
+
+```js-nolint
+Array[Symbol.species]
 ```
 
-### 반환 값
+### Return value
 
-{{jsxref("Array")}} 생성자.
+The value of the constructor (`this`) on which `get @@species` was called. The return value is used to construct return values from array methods that create new arrays.
 
-## 설명
+## Description
 
-`species` 접근자 속성은 `Array` 객체의 기본 생성자를 반환합니다. 서브클래스 생성자는 생성자 할당을 변경하기 위해 이 속성을 재정의할 수 있습니다.
-
-## 예제
-
-`species` 속성은 `Array` 객체의 `Array` 생성자를 반환합니다.
+The `@@species` accessor property returns the default constructor for `Array` objects. Subclass constructors may override it to change the constructor assignment. The default implementation is basically:
 
 ```js
-Array[Symbol.species]; // function Array()
-```
-
-파생 콜렉션 개체(예시: 사용자 설정 배열인 `MyArray`)에서, `MyArray` 종(species)은 `MyArray` 생성자입니다. 그러나 이 속성을 재정의하면 파생 클래스 메서드에서 상위 `Array` 객체를 반환할 수 있습니다.
-
-```js
-class MyArray extends Array {
-  // MyArray species를 부모 Array 생성자로 재설정
-  static get [Symbol.species]() { return Array; }
+// Hypothetical underlying implementation for illustration
+class Array {
+  static get [Symbol.species]() {
+    return this;
+  }
 }
 ```
 
-## 명세
+Because of this polymorphic implementation, `@@species` of derived subclasses would also return the constructor itself by default.
+
+```js
+class SubArray extends Array {}
+SubArray[Symbol.species] === SubArray; // true
+```
+
+When calling array methods that do not mutate the existing array but return a new array instance (for example, [`filter()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) and [`map()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map)), the array's `constructor[@@species]` will be accessed. The returned constructor will be used to construct the return value of the array method. This makes it technically possible to make array methods return objects unrelated to arrays.
+
+```js
+class NotAnArray {
+  constructor(length) {
+    this.length = length;
+  }
+}
+
+const arr = [0, 1, 2];
+arr.constructor = { [Symbol.species]: NotAnArray };
+arr.map((i) => i); // NotAnArray { '0': 0, '1': 1, '2': 2, length: 3 }
+arr.filter((i) => i); // NotAnArray { '0': 1, '1': 2, length: 0 }
+arr.concat([1, 2]); // NotAnArray { '0': 0, '1': 1, '2': 2, '3': 1, '4': 2, length: 5 }
+```
+
+## Examples
+
+### Species in ordinary objects
+
+The `@@species` property returns the default constructor function, which is the `Array` constructor for `Array`.
+
+```js
+Array[Symbol.species]; // [Function: Array]
+```
+
+### Species in derived objects
+
+In an instance of a custom `Array` subclass, such as `MyArray`, the `MyArray` species is the `MyArray` constructor. However, you might want to overwrite this, in order to return parent `Array` objects in your derived class methods:
+
+```js
+class MyArray extends Array {
+  // Overwrite MyArray species to the parent Array constructor
+  static get [Symbol.species]() {
+    return Array;
+  }
+}
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `Array[Symbol.species]` and support of `Symbol.species` in all affected `Array` methods in `core-js`](https://github.com/zloirock/core-js#ecmascript-array)
 - {{jsxref("Array")}}
 - {{jsxref("Symbol.species")}}

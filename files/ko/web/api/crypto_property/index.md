@@ -1,57 +1,63 @@
 ---
-title: Window.crypto
+title: crypto global property
+short-title: crypto
 slug: Web/API/crypto_property
-original_slug: Web/API/Window/crypto
+page-type: web-api-global-property
+browser-compat: api.crypto
 ---
+
 {{APIRef}}
 
-**`Window.crypto`**속성은 전역 객체인 {{domxref("Crypto")}} 객체를 반환합니다. `Crypto` 객체는 웹 페이지가 특정 암호학적 서비스에 접근할 수 있는 경로입니다. `crypto` 속성 자체는 읽기 전용이지만, 모든 메서드(와 자식 객체 {{domxref("SubtleCrypto")}})의 메서드)는 읽기 전용이 아니므로 {{glossary("polyfill", "폴리필")}}을 통한 공격에 취약합니다.
+The global read-only **`crypto`** property returns the {{domxref("Crypto")}} object associated to the global object. This object allows web pages access to certain cryptographic related services.
 
-## 구문
+Although the property itself is read-only, all of its methods (and the methods of its
+child object, {{domxref("SubtleCrypto")}}) are not read-only, and therefore vulnerable
+to attack by {{glossary("polyfill")}}.
 
-```js
-var cryptoObj = window.crypto || window.msCrypto; // for IE 11
-```
+Although `crypto` is available on all windows, the returned `Crypto` object only has one usable feature in insecure contexts: the {{domxref("Crypto.getRandomValues", "getRandomValues()")}} method. In general, you should use this API only in secure contexts.
 
-## 예제
+## Value
 
-다음 예제는 {{domxref("Window.crypto")}} 속성을 통해 {{domxref("Crypto.getRandomValues", "getRandomValues()")}} 메서드에 접근합니다.
+An instance of the {{domxref("Crypto")}} interface, providing access to general-purpose cryptography and a strong random-number generator.
+
+## Examples
+
+This example uses the `crypto` property to access the {{domxref("Crypto.getRandomValues", "getRandomValues()")}} method.
 
 ### JavaScript
 
 ```js
-genRandomNumbers = function getRandomNumbers() {
-  var array = new Uint32Array(10);
-  window.crypto.getRandomValues(array);
+globalThis.genRandomNumbers = () => {
+  const array = new Uint32Array(10);
+  crypto.getRandomValues(array);
 
-  var randText = document.getElementById("myRandText");
-  randText.innerHTML = "The random numbers are: "
-  for (var i = 0; i < array.length; i++) {
-    randText.innerHTML += array[i] + " ";
-  }
-}
+  const randText = document.getElementById("myRandText");
+  randText.textContent = `The random numbers are: ${array.join(" ")}`;
+};
 ```
 
 ### HTML
 
 ```html
-<p id="myRandText">The random numbers are: </p>
-<button type="button" onClick='genRandomNumbers()'>Generate 10 random numbers</button>
+<p id="myRandText">The random numbers are:</p>
+<button type="button" onClick="genRandomNumbers()">
+  Generate 10 random numbers
+</button>
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample('예제')}}
+{{EmbedLiveSample('Examples')}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{domxref("Window")}} 전역 객체
-- {{domxref("Crypto")}} 인터페이스
+- The {{domxref("Window")}} global object
+- The {{domxref("Crypto")}} interface

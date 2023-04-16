@@ -1,57 +1,60 @@
 ---
 title: border-bottom-width
 slug: Web/CSS/border-bottom-width
+page-type: css-property
+browser-compat: css.properties.border-bottom-width
 ---
 
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`border-bottom-width`** 속성은 요소의 아래 테두리 너비를 지정합니다.
+The **`border-bottom-width`** [CSS](/en-US/docs/Web/CSS) property sets the width of the bottom border of an element.
 
 {{EmbedInteractiveExample("pages/css/border-bottom-width.html")}}
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
 border-bottom-width: thin;
 border-bottom-width: medium;
 border-bottom-width: thick;
 
-/* <length> 값 */
+/* <length> values */
 border-bottom-width: 10em;
 border-bottom-width: 3vmax;
 border-bottom-width: 6px;
 
-/* 전역 값 */
+/* Global keywords */
 border-bottom-width: inherit;
 border-bottom-width: initial;
+border-bottom-width: revert;
+border-bottom-width: revert-layer;
 border-bottom-width: unset;
 ```
 
-### 값
+### Values
 
 - `<line-width>`
 
-  - : 테두리의 너비입니다. 0 이상의 {{cssxref("&lt;length&gt;")}} 또는 키워드를 사용할 수 있습니다. 키워드는 다음 세 가지 중 하나여야 합니다.
+  - : Defines the width of the border, either as an explicit nonnegative {{cssxref("&lt;length&gt;")}} or a keyword. If it's a keyword, it must be one of the following values:
 
-    | `thin`   |     | 얇은 테두리 |
-    | -------- | --- | ----------- |
-    | `medium` |     | 중간 테두리 |
-    | `thick`  |     | 굵은 테두리 |
+    - `thin`
+    - `medium`
+    - `thick`
 
-    > **참고:** 각 키워드의 굵기를 정의한 명세는 없기 때문에 결과는 구현별로 상이할 수 있습니다. 다만 굵기는 언제나 `thin ≤ medium ≤ thick`이고, 하나의 문서 내에서 동일합니다.
+> **Note:** Because the specification doesn't define the exact thickness denoted by each keyword, the precise result when using one of them is implementation-specific. Nevertheless, they always follow the pattern `thin ≤ medium ≤ thick`, and the values are constant within a single document.
 
-## 형식 정의
+## Formal definition
 
-{{cssinfo}}
+{{CSSInfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 아래 테두리의 너비 비교
+### Comparing bottom border widths
 
 #### HTML
 
@@ -76,19 +79,19 @@ div:nth-child(2) {
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('아래_테두리의_너비_비교', '100%')}}
+{{EmbedLiveSample('Comparing_bottom_border_widths', '100%')}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 테두리 너비 관련 CSS 속성: {{Cssxref("border-left-width")}}, {{Cssxref("border-right-width")}}, {{Cssxref("border-top-width")}}, and {{Cssxref("border-width")}}.
-- 아래 테두리 관련 CSS 속성: {{Cssxref("border")}}, {{Cssxref("border-bottom")}}, {{Cssxref("border-bottom-style")}}, and {{Cssxref("border-bottom-color")}}.
+- The other border-width-related CSS properties: {{Cssxref("border-left-width")}}, {{Cssxref("border-right-width")}}, {{Cssxref("border-top-width")}}, and {{Cssxref("border-width")}}.
+- The other border-bottom-related CSS properties: {{Cssxref("border")}}, {{Cssxref("border-bottom")}}, {{Cssxref("border-bottom-style")}}, and {{Cssxref("border-bottom-color")}}.

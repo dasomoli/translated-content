@@ -1,78 +1,173 @@
 ---
 title: Location
 slug: Web/API/Location
+page-type: web-api-interface
+browser-compat: api.Location
 ---
+
 {{APIRef("HTML DOM")}}
 
-**`Location`** 인터페이스는 객체가 연결된 장소(URL)를 표현합니다. `Location` 인터페이스에 변경을 가하면 연결된 객체에도 반영되는데, {{domxref("Document")}}와 {{domxref("Window")}} 인터페이스가 이런 `Location`을 가지고 있습니다. 각각 {{domxref("Document.location")}}과 {{domxref("Window.location")}}으로 접근할 수 있습니다.
+The **`Location`** interface represents the location (URL) of the object it is linked to. Changes done on it are reflected on the object it relates to. Both the {{domxref("Document")}} and {{domxref("Window")}} interface have such a linked `Location`, accessible via {{domxref("Document.location")}} and {{domxref("Window.location")}} respectively.
 
-## 속성
+## Location anatomy
 
-`Location` 인터페이스는 아무 속성도 상속하지 않지만, {{domxref("URLUtils")}}의 속성을 구현합니다.
+Hover over the URL segments below to highlight their meaning:
 
-- {{domxref("Location.href")}}
-  - : 온전한 URL을 값으로 하는 {{domxref("DOMString")}}입니다. 바뀔 경우 연결된 문서도 새로운 페이지로 이동합니다. 연결된 문서와 다른 오리진에서도 설정할 수 있습니다.
-- {{domxref("Location.protocol")}}
-  - : URL의 프로토콜 부분을 값으로 하는 {{domxref("DOMString")}}으로, 마지막의 `':'`도 포함합니다.
-- {{domxref("Location.host")}}
-  - : URL의 호스트 부분을 값으로 하는 {{domxref("DOMString")}}으로, 호스트명, `':'`, 포트 번호를 포함합니다.
-- {{domxref("Location.hostname")}}
-  - : URL의 도메인 부분을 값으로 하는 {{domxref("DOMString")}}입니다.
-- {{domxref("Location.port")}}
-  - : URL의 포트 번호를 값으로 하는 {{domxref("DOMString")}}입니다.
-- {{domxref("Location.pathname")}}
-  - : `'/'` 문자 뒤 URL의 경로를 값으로 하는 {{domxref("DOMString")}}입니다.
-- {{domxref("Location.search")}}
-  - : `'?'` 문자 뒤 URL의 쿼리스트링을 값으로 하는 {{domxref("DOMString")}}입니다. 모던 브라우저에서는 {{domxref("URLSearchParams.get()")}}과 {{domxref("URL.searchParams")}}를 사용해서 인자를 쉽게 추출할 수 있습니다.
-- {{domxref("Location.hash")}}
-  - : `'#'` 문자 뒤 URL의 프래그먼트 식별자를 값으로 하는 {{domxref("DOMString")}}입니다.
-- {{domxref("Location.username")}}
-  - : 도메인 이름 이전에 명시된 사용자명을 값으로 하는 {{domxref("DOMString")}}입니다.
-- {{domxref("Location.password")}}
-  - : 도메인 이름 이전에 명시된 비밀번호를 값으로 하는 {{domxref("DOMString")}}입니다.
-- {{domxref("Location.origin")}} {{readOnlyInline}}
-  - : 지정한 장소 오리진의 표준 형태를 값으로 하는 {{domxref("DOMString")}}입니다.
-
-## 메서드
-
-`Location` 인터페이스는 아무 메서드도 상속하지 않지만, {{domxref("URLUtils")}}의 메서드를 구현합니다.
-
-- {{domxref("Location.assign()")}}
-  - : 주어진 URL의 리소스를 불러옵니다.
-- {{domxref("Location.reload()")}}
-  - : 현재 URL의 리소스를 다시 불러옵니다. 선택적으로 매개변수에 `true`를 제공해 브라우저 캐시를 무시하고 서버에서 새로 불러올 수 있습니다,
-- {{domxref("Location.replace()")}}
-  - : Replaces the current resource with the one at the provided URL. The difference from the `assign()` method is that after using `replace()` the current page will not be saved in session {{domxref("History")}}, meaning the user won't be able to use the _back_ button to navigate to it.
-- {{domxref("Location.toString()")}}
-  - : Returns a {{domxref("DOMString")}} containing the whole URL. It is a synonym for {{domxref("URLUtils.href")}}, though it can't be used to modify the value.
-
-## 예제
-
-```js
-// Create anchor element and use href property for the purpose of this example
-// A more correct alternative is to browse to the URL and use document.location or window.location
-var url = document.createElement('a');
-url.href = 'https://developer.mozilla.org:8080/en-US/search?q=URL#search-results-close-container';
-console.log(url.href);      // https://developer.mozilla.org:8080/en-US/search?q=URL#search-results-close-container
-console.log(url.protocol);  // https:
-console.log(url.host);      // developer.mozilla.org:8080
-console.log(url.hostname);  // developer.mozilla.org
-console.log(url.port);      // 8080
-console.log(url.pathname);  // /en-US/search
-console.log(url.search);    // ?q=URL
-console.log(url.hash);      // #search-results-close-container
-console.log(url.origin);    // https://developer.mozilla.org:8080
+```html hidden
+<span id="href" title="href"
+  ><span id="origin" title="origin"
+    ><span id="protocol" title="protocol">https:</span>//<span
+      id="host"
+      title="host"
+      ><span id="hostname" title="hostname">example.org</span>:<span
+        id="port"
+        title="port"
+        >8080</span
+      ></span
+    ></span
+  ><span id="pathname" title="pathname">/foo/bar</span
+  ><span id="search" title="search">?q=baz</span
+  ><span id="hash" title="hash">#bang</span></span
+>
 ```
 
-## 명세
+```css hidden
+html {
+  display: table;
+  width: 100%;
+}
+
+body {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  font-family: Georgia;
+  font-size: 175%;
+  line-height: 1em;
+  white-space: nowrap;
+}
+
+[title] {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  line-height: 2em;
+  cursor: pointer;
+  color: gray;
+}
+
+[title]::before {
+  content: attr(title);
+  font-family: monospace;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  left: 50%;
+  margin-left: -50%;
+  font-size: 60%;
+  line-height: 1.5;
+  background: black;
+}
+
+[title]:hover::before,
+:target::before {
+  background: black;
+  color: yellow;
+}
+
+[title] [title]::before {
+  margin-top: 1.5em;
+}
+
+[title] [title] [title]::before {
+  margin-top: 3em;
+}
+
+[title] [title] [title] [title]::before {
+  margin-top: 4.5em;
+}
+
+[title]:hover,
+:target {
+  position: relative;
+  z-index: 1;
+  outline: 50em solid rgba(255, 255, 255, 0.8);
+}
+```
+
+```js hidden
+document.body.addEventListener("click", (event) => {
+  event.preventDefault();
+
+  window.location.hash = event.target.hasAttribute("id")
+    ? `#${event.target.getAttribute("id")}`
+    : "";
+});
+```
+
+{{EmbedLiveSample('Location anatomy', '85ch', '180px')}}
+
+## Instance properties
+
+- {{domxref("Location.ancestorOrigins")}}
+  - : A static {{domxref("DOMStringList")}} containing, in reverse order, the origins of all ancestor browsing contexts of the document associated with the given `Location` object.
+- {{domxref("Location.href")}}
+  - : A {{Glossary("stringifier")}} that returns a string containing the entire URL. If changed, the associated document navigates to the new page. It can be set from a different origin than the associated document.
+- {{domxref("Location.protocol")}}
+  - : A string containing the protocol scheme of the URL, including the final `':'`.
+- {{domxref("Location.host")}}
+  - : A string containing the host, that is the _hostname_, a `':'`, and the _port_ of the URL.
+- {{domxref("Location.hostname")}}
+  - : A string containing the domain of the URL.
+- {{domxref("Location.port")}}
+  - : A string containing the port number of the URL.
+- {{domxref("Location.pathname")}}
+  - : A string containing an initial `'/'` followed by the path of the URL, not including the query string or fragment.
+- {{domxref("Location.search")}}
+  - : A string containing a `'?'` followed by the parameters or "querystring" of the URL. Modern browsers provide [URLSearchParams](/en-US/docs/Web/API/URLSearchParams/get#examples) and [URL.searchParams](/en-US/docs/Web/API/URL/searchParams#examples) to make it easy to parse out the parameters from the querystring.
+- {{domxref("Location.hash")}}
+  - : A string containing a `'#'` followed by the fragment identifier of the URL.
+- {{domxref("Location.origin")}} {{ReadOnlyInline}}
+  - : Returns a string containing the canonical form of the origin of the specific location.
+
+## Instance methods
+
+- {{domxref("Location.assign()")}}
+  - : Loads the resource at the URL provided in parameter.
+- {{domxref("Location.reload()")}}
+  - : Reloads the current URL, like the Refresh button.
+- {{domxref("Location.replace()")}}
+  - : Replaces the current resource with the one at the provided URL (redirects to the provided URL). The difference from the `assign()` method and setting the `href` property is that after using `replace()` the current page will not be saved in session {{domxref("History")}}, meaning the user won't be able to use the _back_ button to navigate to it.
+- {{domxref("Location.toString()")}}
+  - : Returns a string containing the whole URL. It is a synonym for {{domxref("Location.href")}}, though it can't be used to modify the value.
+
+## Examples
+
+```js
+// location: https://developer.mozilla.org:8080/en-US/search?q=URL#search-results-close-container
+const loc = document.location;
+console.log(loc.href); // https://developer.mozilla.org:8080/en-US/search?q=URL#search-results-close-container
+console.log(loc.protocol); // https:
+console.log(loc.host); // developer.mozilla.org:8080
+console.log(loc.hostname); // developer.mozilla.org
+console.log(loc.port); // 8080
+console.log(loc.pathname); // /en-US/search
+console.log(loc.search); // ?q=URL
+console.log(loc.hash); // #search-results-close-container
+console.log(loc.origin); // https://developer.mozilla.org:8080
+
+location.assign("http://another.site"); // load another page
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- Two methods creating such an object: {{domxref("Window.location")}} and {{domxref("Document.location")}}.
-- URL related interfaces: {{domxref("URL")}}, {{domxref("URLSearchParams")}} and {{domxref("HTMLHyperlinkElementUtils")}}
+- Two `Location` properties: {{domxref("Window.location")}} and {{domxref("Document.location")}}.
+- URL manipulation interfaces: {{domxref("URL")}} and {{domxref("URLSearchParams")}}.

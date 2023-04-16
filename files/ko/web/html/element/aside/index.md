@@ -1,124 +1,127 @@
 ---
-title: '<aside>: 별도 구획 요소'
+title: "<aside>: The Aside element"
 slug: Web/HTML/Element/aside
+page-type: html-element
+browser-compat: html.elements.aside
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<aside>` 요소**는 문서의 주요 내용과 간접적으로만 연관된 부분을 나타냅니다. 주로 사이드바 혹은 콜아웃 박스로 표현합니다.
+The **`<aside>`** [HTML](/en-US/docs/Web/HTML) element represents a portion of a document whose content is only indirectly related to the document's main content. Asides are frequently presented as sidebars or call-out boxes.
 
 {{EmbedInteractiveExample("pages/tabbed/aside.html", "tabbed-standard")}}
 
-<p class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</p>
+## Attributes
+
+This element only includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
+
+## Usage notes
+
+- Do not use the `<aside>` element to tag parenthesized text, as this kind of text is considered part of the main flow.
+
+## Examples
+
+### Using \<aside>
+
+This example uses `<aside>` to mark up a paragraph in an article. The paragraph is only indirectly related to the main article content:
+
+```html
+<article>
+  <p>
+    The Disney movie <cite>The Little Mermaid</cite> was first released to
+    theatres in 1989.
+  </p>
+  <aside>
+    <p>The movie earned $87 million during its initial release.</p>
+  </aside>
+  <p>More info about the movie…</p>
+</article>
+```
+
+#### Result
+
+{{EmbedLiveSample("Using_aside")}}
+
+## Technical summary
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a
-          href="/ko/docs/Web/Guide/HTML/%EC%BB%A8%ED%85%90%ED%8A%B8_%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC"
-          >콘텐츠 카테고리</a
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
         >
       </th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#플로우_콘텐츠"
-          >플로우 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
         >,
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#구획_콘텐츠"
-          >구획 콘텐츠</a
+        <a
+          href="/en-US/docs/Web/HTML/Content_categories#sectioning_content"
+          >sectioning content</a
         >,
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#뚜렷한_컨텐츠"
-          >뚜렷한 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#palpable_content"
+          >palpable content</a
         >.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#플로우_콘텐츠"
-          >플로우 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
         >.
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
+      <th scope="row">Tag omission</th>
       <td>{{no_tag_omission}}</td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Permitted parents</th>
       <td>
-        <a href="/en-US/docs/Web/HTML/Content_categories#Flow_content"
-          >플로우 콘텐츠</a
-        >를 허용하는 모든 요소.<br /><code>&#x3C;aside></code> 요소는
-        {{HTMLElement("address")}}의 후손이 될 수 없음에 주의하세요.
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >flow content</a
+        >. Note that an <code>&#x3C;aside></code> element must not be a
+        descendant of an {{HTMLElement("address")}} element.
       </td>
     </tr>
     <tr>
-      <th scope="row">암시적 ARIA 역할</th>
+      <th scope="row">Implicit ARIA role</th>
       <td>
         <code
-          ><a href="/ko/docs/Web/Accessibility/ARIA/Roles/Complementary_role"
+          ><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/Complementary_role"
             >complementary</a
           ></code
         >
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 요소</th>
+      <th scope="row">Permitted ARIA roles</th>
       <td>
-        <a href='/ko/docs/Web/Accessibility/ARIA/Roles/feed_role'><code>feed</code></a>, <a href='/ko/docs/Web/Accessibility/ARIA/Roles/none_role'><code>none</code></a>,
-        <a href='/ko/docs/Web/Accessibility/ARIA/Roles/note_role'><code>note</code></a>, <a href='/ko/docs/Web/Accessibility/ARIA/Roles/presentation_role'><code>presentation</code></a>,
-        <a href='/ko/docs/Web/Accessibility/ARIA/Roles/region_role'><code>region</code></a>, <a href='/ko/docs/Web/Accessibility/ARIA/Roles/search_role'><code>search</code></a>
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/feed_role"><code>feed</code></a>, <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/none_role"><code>none</code></a>,
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/note_role"><code>note</code></a>, <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/presentation_role"><code>presentation</code></a>,
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/region_role"><code>region</code></a>, <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/search_role"><code>search</code></a>
       </td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
-
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)만 포함합니다.
-
-## 사용 일람
-
-- 괄호에 묶인 텍스트라도 문서의 주요 플로우에 포함되어야 하므로 `<aside>`로 나타내선 안됩니다.
-
-## 예제
-
-### `<aside>` 사용하기
-
-다음 예제는 글 내의 문단을 `<aside>`로 표시합니다. 해당 문단은 글의 주제와 간접적으로만 연결되어 있습니다.
-
-```html
-<article>
-  <p>
-    디즈니 만화영화 <em>인어 공주</em>는
-    1989년 처음 개봉했습니다.
-  </p>
-  <aside>
-    인어 공주는 첫 개봉 당시 8700만불의 흥행을 기록했습니다.
-  </aside>
-  <p>
-    영화에 대한 정보...
-  </p>
-</article>
-```
-
-### 결과
-
-{{EmbedLiveSample("예제")}}
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [HTML 구획과 개요 사용하기](/ko/docs/Web/HTML/HTML5_문서의_섹션과_윤곽)
+- Other section-related elements: {{HTMLElement("body")}}, {{HTMLElement("article")}}, {{HTMLElement("section")}}, {{HTMLElement("nav")}}, {{HTMLElement("Heading_Elements", "h1")}}, {{HTMLElement("Heading_Elements", "h2")}}, {{HTMLElement("Heading_Elements", "h3")}}, {{HTMLElement("Heading_Elements", "h4")}}, {{HTMLElement("Heading_Elements", "h5")}}, {{HTMLElement("Heading_Elements", "h6")}}, {{HTMLElement("hgroup")}}, {{HTMLElement("header")}}, {{HTMLElement("footer")}}, {{HTMLElement("address")}};
+- [Using HTML sections and outlines](/en-US/docs/Web/HTML/Element/Heading_Elements)
+- [ARIA: Complementary role](/en-US/docs/Web/Accessibility/ARIA/Roles/complementary_role)

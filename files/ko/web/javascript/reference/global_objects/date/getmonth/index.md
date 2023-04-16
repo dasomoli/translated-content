@@ -1,56 +1,66 @@
 ---
 title: Date.prototype.getMonth()
 slug: Web/JavaScript/Reference/Global_Objects/Date/getMonth
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.getMonth
 ---
 
 {{JSRef}}
 
-**`getMonth()`** 메서드는 `Date` 객체의 월 값을 현지 시간에 맞춰 반환합니다. 월은 0부터 시작합니다.
+The **`getMonth()`** method returns the month in the specified
+date according to local time, as a zero-based value (where zero indicates the first
+month of the year).
 
-{{EmbedInteractiveExample("pages/js/date-getmonth.html")}}
+{{EmbedInteractiveExample("pages/js/date-getmonth.html","shorter")}}
 
-## 구문
+## Syntax
 
-```js
-    dateObj.getMonth()
+```js-nolint
+getMonth()
 ```
 
-### 반환 값
+### Return value
 
-현지 시간 기준 월을 나타내는 0에서 11 사이의 정수. 0은 1월, 1은 2월... 을 나타냅니다.
+An integer number, between 0 and 11, representing the month in the given date according
+to local time. 0 corresponds to January, 1 to February, and so on.
 
-## 예제
+## Examples
 
-### `getMonth()` 사용하기
+### Using getMonth()
 
-다음 예제는 {{jsxref("Date")}} 객체 `Xmas95`의 값을 사용해 변수 `month`에 11을 할당합니다.
+The second statement below assigns the value 11 to the variable `month`,
+based on the value of the {{jsxref("Date")}} object `xmas95`.
 
 ```js
-var Xmas95 = new Date('December 25, 1995 23:15:30');
-var month = Xmas95.getMonth();
+const xmas95 = new Date("December 25, 1995 23:15:30");
+const month = xmas95.getMonth();
 
 console.log(month); // 11
 ```
 
-> **참고:** **참고:** 필요한 경우 {{jsxref("DateTimeFormat", "Intl.DateTimeFormat()")}}과 `options` 매개변수를 사용해 해당하는 달의 이름(`"January"` 등)을 가져올 수 있습니다. 이 방법을 사용하면 국제화도 보다 편리합니다.
+> **Note:** If needed, the full name of a month (`January` for
+> example) can be obtained by using
+> [`Intl.DateTimeFormat()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat#using_options)
+> with an `options` parameter. Using this method, internationalization is
+> made easier:
+>
+> ```js
+> const options = { month: "long" };
+> console.log(new Intl.DateTimeFormat("en-US", options).format(Xmas95));
+> // December
+> console.log(new Intl.DateTimeFormat("de-DE", options).format(Xmas95));
+> // Dezember
+> ```
 
-```js
-var options = { month: 'long'};
-console.log(new Intl.DateTimeFormat('ko-KR', options).format(Xmas95));
-// 12월
-console.log(new Intl.DateTimeFormat('en-US', options).format(Xmas95));
-// December
-```
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Date.prototype.getUTCMonth()")}}
 - {{jsxref("Date.prototype.setMonth()")}}

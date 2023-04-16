@@ -1,13 +1,18 @@
 ---
 title: Set-Cookie
 slug: Web/HTTP/Headers/Set-Cookie
+page-type: http-header
+browser-compat: http.headers.Set-Cookie
 ---
 
 {{HTTPSidebar}}
 
-**`Set-Cookie`** HTTP 응답 헤더는 서버에서 사용자 브라우저에 쿠키를 전송하기 위해 사용됩니다.
+The **`Set-Cookie`** HTTP response header is used to send a cookie from the server to the user agent, so that the user agent can send it back to the server later.
+To send multiple cookies, multiple **`Set-Cookie`** headers should be sent in the same response.
 
-자세한 정보를 보려면 [HTTP cookies](/ko/docs/Web/HTTP/Cookies)에 수록된 가이드를 읽으세요.
+> **Warning:** Browsers block frontend JavaScript code from accessing the `Set-Cookie` header, as required by the Fetch spec, which defines `Set-Cookie` as a [forbidden response-header name](https://fetch.spec.whatwg.org/#forbidden-response-header-name) that [must be filtered out](https://fetch.spec.whatwg.org/#ref-for-forbidden-response-header-name%E2%91%A0) from any response exposed to frontend code.
+
+For more information, see the guide on [Using HTTP cookies](/en-US/docs/Web/HTTP/Cookies).
 
 <table class="properties">
   <tbody>
@@ -19,121 +24,227 @@ slug: Web/HTTP/Headers/Set-Cookie
       <th scope="row">{{Glossary("Forbidden header name")}}</th>
       <td>no</td>
     </tr>
+    <tr>
+      <th scope="row">{{Glossary("Forbidden response header name")}}</th>
+      <td>yes</td>
+    </tr>
   </tbody>
 </table>
 
-## 문법
+## Syntax
 
-```
+```http
 Set-Cookie: <cookie-name>=<cookie-value>
-Set-Cookie: <cookie-name>=<cookie-value>; Expires=<date>
-Set-Cookie: <cookie-name>=<cookie-value>; Max-Age=<non-zero-digit>
 Set-Cookie: <cookie-name>=<cookie-value>; Domain=<domain-value>
+Set-Cookie: <cookie-name>=<cookie-value>; Expires=<date>
+Set-Cookie: <cookie-name>=<cookie-value>; HttpOnly
+Set-Cookie: <cookie-name>=<cookie-value>; Max-Age=<number>
+Set-Cookie: <cookie-name>=<cookie-value>; Partitioned
 Set-Cookie: <cookie-name>=<cookie-value>; Path=<path-value>
 Set-Cookie: <cookie-name>=<cookie-value>; Secure
-Set-Cookie: <cookie-name>=<cookie-value>; HttpOnly
 
 Set-Cookie: <cookie-name>=<cookie-value>; SameSite=Strict
 Set-Cookie: <cookie-name>=<cookie-value>; SameSite=Lax
+Set-Cookie: <cookie-name>=<cookie-value>; SameSite=None; Secure
 
-// Multiple directives are also possible, for example:
+// Multiple attributes are also possible, for example:
 Set-Cookie: <cookie-name>=<cookie-value>; Domain=<domain-value>; Secure; HttpOnly
 ```
 
-## 디렉티브
+## Attributes
 
 - `<cookie-name>=<cookie-value>`
 
-  - : 쿠키는 "이름-값" 페어로 시작됩니다.
+  - : Defines the cookie name and its value.
+    A cookie definition begins with a name-value pair.
 
-    - `<cookie-name>` 는 제어 문자 및 공백, 탭(\t)를 제외한 아스키 문자로 구성되어야 합니다. 또한, "( ) < > @ , ; : \ " / \[ ] ? = { }" 같은 문자도 포함할 수 없습니다.
-    - A `<cookie-value>` 는 필요하다면 쌍 따운표로 묶여질 수 있고 아스키 코드 문자로 구성되어야 하고, `<cookie-name>`처럼 제어 문자, 공백, 쌍 따운표, 콤마, 세미콜론, 역 슬래쉬(\\)는 사용할 수 없습니다. **엔코딩**: 쿠기 값에 대해서 URL 엔코딩을 사용하는 구현 기법들이 많지만, RFC 명세에서 요구하는 것은 아닙니다. 단지, \<cookie-value>에 허용된 문자에 대한 요구사항을 만족시킬 뿐이죠.
-    - **`__Secure-` 프리픽스**: `__Secure-` (대쉬는 프리픽스의 일부입니다)로 시작되는 쿠키 이름은 반드시 `secure` 플래그가 설정되어야 하고, 보안 페이지(HTTPS)여야 합니다.
-    - **`__Host-` 프리픽스**: `__Host-` 로 시작되는 쿠키들은 `secure` 플래그가 설정되어야 하며, 마찬가지로 보안 페이지(HTTPS)여야 하고, 도메인이 지정되지 않아야 합니다. (따라서 서브 도메인에 쿠키를 공유할 수 없습니다) 그리고, 경로는 반드시 "/"여야 합니다.
+    A `<cookie-name>` can contain any US-ASCII characters except for: control characters (ASCII characters 0 up to 31 and ASCII character 127) or separator characters (space, tab and the characters: `( ) < > @ , ; : \ " / [ ] ? = { }`)
 
-- Expires=\<date> {{optional_inline}}
+    A `<cookie-value>` can optionally be wrapped in double quotes and include any US-ASCII character excluding control characters (ASCII characters 0 up to 31 and ASCII character 127), {{glossary("Whitespace")}}, double quotes, commas, semicolons, and backslashes.
 
-  - : HTTP 타임스템프로 기록된 쿠키의 최대 생존 시간(수명). 세부 형태를 확인하려면 {{HTTPHeader("Date")}}를 참조하세요. 지정되지 않았다면, **세션 쿠키**로서 취급되며, 클라이언트가 종료될 때 파기 됩니다. 그러나 많은 웹 브라우져에서 세션이라고 불리는 기능(그러니까 모든 탭을 기억했다가 브라우져를 다시 켜면 복구된다던지 하는 기능)을 구현합니다. 쿠키들 또한 함께 복원되므로, 정확히 말해서 브라우져를 닫은 적이 없는 게 되는 것이죠.
+    **Encoding**: Many implementations perform [URL encoding](https://en.wikipedia.org/wiki/URL_encoding) on cookie values.
+    However, this is not required by the RFC specification.
+    The URL encoding does help to satisfy the requirements of the characters allowed for `<cookie-value>`.
 
-    만료 시간이 지정되면, 시간 및 날자로 이뤄진 값은 서버가 아니라 클라이언트에 상대적인 값으로 취급됩니다.
+    > **Note:** Some `<cookie-name>` have a specific semantic:
+    >
+    > **`__Secure-` prefix**: Cookies with names starting with `__Secure-` (dash is part of the prefix)
+    > must be set with the `secure` flag from a secure page (HTTPS).
+    >
+    > **`__Host-` prefix**: Cookies with names starting with `__Host-` must be set with the `secure` flag, must be from a secure page (HTTPS), must not have a domain specified (and therefore, are not sent to subdomains), and the path must be `/`.
 
-- Max-Age=\<number> {{optional_inline}}
-  - : 쿠키가 만료될 때 까지의 시간 (초 단위). 0 또는 음수가 지정되면 해당 쿠키는 즉시 만료되며, 오래된 브라우저(ie6, ie7 그리고 ie8)은 이 헤더를 지원하지 않습니다. 다른 브라우저들은 둘 다(`Expires` 와 `Max-Age)` 지정되었을 때 `Max-Age` 값을 더 우선시합니다.
-- Domain=\<domain-value> {{optional_inline}}
-  - : 쿠키가 적용되어야 하는 호스트를 지정. 지정되어 있지 않으면 현재 문서 URI를 기준으로 적용됩니다만, 서브 도메인을 포함하지 않습니다. 이전의 설계와 달리, 도메인의 선두에 위치한 점들은 무시됩니다. 도메인이 지정되면, 서브도메인들은 항상 포함됩니다.
-- Path=\<path-value> {{optional_inline}}
-  - : 쿠키 헤더를 보내기 전에 요청 된 리소스에 있어야하는 URL 경로를 나타냅니다. % x2F ( "/") 문자는 디렉토리 구분 기호로 해석되며 하위 디렉토리도 일치합니다 (예: path=/docs, "/docs", "/docs/Web/"또는 "/docs/Web/HTTP "가 모두 일치합니다).
-- Secure {{optional_inline}}
+- `Domain=<domain-value>` {{optional_inline}}
 
-  - : 보안 쿠키들은 서버에서 요청이 SSL을 사용하며, HTTPS 프로토콜을 사용할 때에만 전송됩니다. 그러나 기밀 정보나 민감한 정보들은 HTTP 쿠키에 보관되거나 그걸로 전송되어선 안됩니다. 왜냐하면, 그 전체 메커니즘이 본질적으로 보안이 결여되어 있고, 거기 들어있는 어떤 정보도 암호화되지 않기 때문입니다.
+  - : Defines the host to which the cookie will be sent.
 
-    > **참고:** **노트:** 비 보안 사이트(`http:`)들은 "보안" 쿠키를 더이상 설정할 수 없습니다(Chrome 52+ 및 Firefox 52+).
+    Only the current domain can be set as the value, or a domain of a higher order, unless it is a public suffix. Setting the domain will make the cookie available to it, as well as to all its subdomains.
 
-- HttpOnly {{optional_inline}}
-  - : HTTP-only cookies aren't accessible via JavaScript through the property, the {{domxref("XMLHttpRequest")}} and {{domxref("Request")}} APIs to mitigate attacks against cross-site scripting ({{Glossary("XSS")}}).
-- SameSite=Strict
-  SameSite=Lax {{optional_inline}} {{experimental_inline}}
-  - : Allows servers to assert that a cookie ought not to be sent along with cross-site requests, which provides some protection against cross-site request forgery attacks ({{Glossary("CSRF")}}).
+    If omitted, this attribute defaults to the host of the current document URL, not including subdomains.
+
+    Contrary to earlier specifications, leading dots in domain names (`.example.com`) are ignored.
+
+    Multiple host/domain values are _not_ allowed, but if a domain _is_ specified, then subdomains are always included.
+
+- `Expires=<date>` {{optional_inline}}
+
+  - : Indicates the maximum lifetime of the cookie as an HTTP-date timestamp.
+    See {{HTTPHeader("Date")}} for the required formatting.
+
+    If unspecified, the cookie becomes a **session cookie**.
+    A session finishes when the client shuts down, after which
+    the session cookie is removed.
+
+    > **Warning:** Many web browsers have a _session restore_ feature that will save all tabs and restore them the next time the browser is used. Session cookies will also be restored, as if the browser was never closed.
+
+    When an `Expires` date is set, the deadline is relative to the _client_ the cookie is being set on, not the server.
+
+- `HttpOnly` {{optional_inline}}
+
+  - : Forbids JavaScript from accessing the cookie, for example, through the {{domxref("Document.cookie")}} property.
+    Note that a cookie that has been created with `HttpOnly` will still be sent with JavaScript-initiated requests, for example, when calling {{domxref("XMLHttpRequest.send()")}} or {{domxref("fetch()")}}.
+    This mitigates attacks against cross-site scripting ({{Glossary("Cross-site_scripting", "XSS")}}).
+
+- `Max-Age=<number>` {{optional_inline}}
+
+  - : Indicates the number of seconds until the cookie expires. A zero or negative number will expire the cookie immediately. If both `Expires` and `Max-Age` are set, `Max-Age` has precedence.
+
+- `Partitioned` {{optional_inline}}{{experimental_inline}}
+
+  - : Indicates that the cookie should be stored using partitioned storage. See [Cookies Having Independent Partitioned State (CHIPS)](/en-US/docs/Web/Privacy/Partitioned_cookies) for more details.
+
+- `Path=<path-value>` {{optional_inline}}
+
+  - : Indicates the path that _must_ exist in the requested URL for the browser to send the `Cookie` header.
+
+    The forward slash (`/`) character is interpreted as a directory separator, and subdirectories are matched as well. For example, for `Path=/docs`,
+
+    - the request paths `/docs`, `/docs/`, `/docs/Web/`, and `/docs/Web/HTTP` will all match.
+    - the request paths `/`, `/docsets`, `/fr/docs` will not match.
+
+- `SameSite=<samesite-value>` {{optional_inline}}
+
+  - : Controls whether or not a cookie is sent with cross-site requests,
+    providing some protection against cross-site request forgery attacks ({{Glossary("CSRF")}}).
+
+    The possible attribute values are:
+
+    - `Strict`
+
+      - : Means that the browser sends the cookie only for same-site requests, that is, requests originating from the same site that set the cookie.
+        If a request originates from a different domain or scheme (even with the same domain), no cookies with the `SameSite=Strict` attribute are sent.
+
+    - `Lax`
+
+      - : Means that the cookie is not sent on cross-site requests, such as on requests to load images or frames, but is sent when a user is navigating to the origin site from an external site (for example, when following a link).
+        This is the default behavior if the `SameSite` attribute is not specified.
+
+    - `None`
+
+      - : means that the browser sends the cookie with both cross-site and same-site requests.
+        The `Secure` attribute must also be set when setting this value, like so `SameSite=None; Secure`. If `Secure` is missing an error will be logged:
+
+        ```
+        Cookie "myCookie" rejected because it has the "SameSite=None" attribute but is missing the "secure" attribute.
+
+        This Set-Cookie was blocked because it had the "SameSite=None" attribute but did not have the "Secure" attribute, which is required in order to use "SameSite=None".
+        ```
+
+        > **Note:** A [`Secure`](#secure) cookie is only sent to the server with an encrypted request over the HTTPS protocol. Note that insecure sites (`http:`) can't set cookies with the `Secure` directive, and therefore can't use `SameSite=None`.
+
+- `Secure` {{optional_inline}}
+
+  - : Indicates that the cookie is sent to the server only when a request is made with the `https:` scheme (except on localhost), and therefore, is more resistant to [man-in-the-middle](/en-US/docs/Glossary/MitM) attacks.
+
+    > **Note:** Do not assume that `Secure` prevents all access to sensitive information in cookies (session keys, login details, etc.). Cookies with this attribute can still be read/modified either with access to the client's hard disk or from JavaScript if the `HttpOnly` cookie attribute is not set.
+    >
+    > Insecure sites (`http:`) cannot set cookies with the `Secure` attribute (since Chrome 52 and Firefox 52). For Firefox, the `https:` requirements are ignored when the `Secure` attribute is set by localhost (since Firefox 75).
 
 ## Examples
 
 ### Session cookie
 
-Session cookies will get removed when the client is shut down. They don't specify the `Expires` or `Max-Age` directives. Note that web browser have often enabled session restoring.
+**Session cookies** are removed when the client shuts down. Cookies are session cookies if they do not specify the `Expires` or `Max-Age` attribute.
 
-```
-Set-Cookie: sessionid=38afes7a8; HttpOnly; Path=/
+```http
+Set-Cookie: sessionId=38afes7a8
 ```
 
 ### Permanent cookie
 
-Instead of expiring when the client is closed, permanent cookies expire at a specific date (`Expires`) or after a specific length of time (`Max-Age`).
+**Permanent cookies** are removed at a specific date (`Expires`) or after a specific length of time (`Max-Age`) and not when the client is closed.
 
+```http
+Set-Cookie: id=a3fWa; Expires=Wed, 21 Oct 2015 07:28:00 GMT
 ```
-Set-Cookie: id=a3fWa; Expires=Wed, 21 Oct 2015 07:28:00 GMT; Secure; HttpOnly
+
+```http
+Set-Cookie: id=a3fWa; Max-Age=2592000
 ```
 
 ### Invalid domains
 
-A cookie belonging to a domain that does not include the origin server [should be rejected by the user agent](https://tools.ietf.org/html/rfc6265#section-4.1.2.3). The following cookie will be rejected if it was set by a server hosted on originalcompany.com.
+A cookie for a domain that does not include the server that set it [should be rejected by the user agent](https://datatracker.ietf.org/doc/html/rfc6265#section-4.1.2.3).
 
+The following cookie will be rejected if set by a server hosted on `originalcompany.com`:
+
+```http
+Set-Cookie: qwerty=219ffwef9w0f; Domain=somecompany.co.uk
 ```
-Set-Cookie: qwerty=219ffwef9w0f; Domain=somecompany.co.uk; Path=/; Expires=Wed, 30 Aug 2019 00:00:00 GMT
+
+A cookie for a subdomain of the serving domain will be rejected.
+
+The following cookie will be rejected if set by a server hosted on `example.com`:
+
+```http
+Set-Cookie: sessionId=e8bb43229de9; Domain=foo.example.com
 ```
 
 ### Cookie prefixes
 
-Cookies names with the prefixes `__Secure-` and `__Host-` can be used only if they are set with the `secure` directive from a secure (HTTPS) origin. In addition, cookies with the `__Host-` prefix must have a path of "/" (the entire host) and must not have a domain attribute. For clients that don't implement cookie prefixes, you cannot count on having these additional assurances and the cookies will always be accepted.
+Cookie names prefixed with `__Secure-` or `__Host-` can be used only if they are set with the `secure` attribute from a secure (HTTPS) origin.
 
-```
+In addition, cookies with the `__Host-` prefix must have a path of `/` (meaning any path at the host) and must not have a `Domain` attribute.
+
+> **Warning:** For clients that don't implement cookie prefixes, you cannot count on these additional assurances, and prefixed cookies will always be accepted.
+
+```http
 // Both accepted when from a secure origin (HTTPS)
 Set-Cookie: __Secure-ID=123; Secure; Domain=example.com
 Set-Cookie: __Host-ID=123; Secure; Path=/
 
-// Rejected due to missing Secure directive
+// Rejected due to missing Secure attribute
 Set-Cookie: __Secure-id=1
 
-// Rejected due to the missing Path=/ directive
+// Rejected due to the missing Path=/ attribute
 Set-Cookie: __Host-id=1; Secure
 
-// Rejected due to setting a domain
-Set-Cookie: __Host-id=1; Secure; Path=/; domain=example.com
+// Rejected due to setting a Domain
+Set-Cookie: __Host-id=1; Secure; Path=/; Domain=example.com
 ```
 
-## 명세서
+### Partitioned cookie
+
+```http
+Set-Cookie: __Host-example=34d8g; SameSite=None; Secure; Path=/; Partitioned;
+```
+
+> **Note:** Partitioned cookies must be set with `Secure` and `Path=/`. In addition, it is recommended to use the `__Host` prefix when setting partitioned cookies to make them bound to the hostname and not the registrable domain.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## Compatibility notes
+### Compatibility notes
 
-- Starting with Chrome 52 and Firefox 52, insecure sites (`http:`) can't set cookies with the "secure" directive anymore.
+- Starting with Chrome 52 and Firefox 52, insecure sites (`http:`) can't set cookies with the `Secure` attribute anymore.
 
 ## See also
 
-- [HTTP cookies](/ko/docs/Web/HTTP/Cookies)
+- [HTTP cookies](/en-US/docs/Web/HTTP/Cookies)
 - {{HTTPHeader("Cookie")}}
 - {{domxref("Document.cookie")}}
+- [Samesite cookies explained](https://web.dev/samesite-cookies-explained/) (web.dev blog)

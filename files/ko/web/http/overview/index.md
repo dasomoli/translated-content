@@ -1,172 +1,234 @@
 ---
-title: HTTP 개요
+title: An overview of HTTP
 slug: Web/HTTP/Overview
+page-type: guide
 ---
 
 {{HTTPSidebar}}
 
-**HTTP는 HTML 문서와 같은 리소스들을 가져올 수 있도록 해주는** {{glossary("protocol", "프로토콜")}}입니다. HTTP는 웹에서 이루어지는 모든 데이터 교환의 기초이며, 클라이언트-서버 프로토콜이기도 합니다. 클라이언트-서버 프로토콜이란 (보통 웹브라우저인) 수신자 측에 의해 요청이 초기화되는 프로토콜을 의미합니다. 하나의 완전한 문서는 텍스트, 레이아웃 설명, 이미지, 비디오, 스크립트 등 불러온(fetched) 하위 문서들로 재구성됩니다.
+**HTTP** is a {{Glossary("protocol")}} for fetching resources such as HTML documents.
+It is the foundation of any data exchange on the Web and it is a client-server protocol, which means requests are initiated by the recipient, usually the Web browser.
+A complete document is reconstructed from the different sub-documents fetched, for instance, text, layout description, images, videos, scripts, and more.
 
-![웹 문서는 다른 리소스들의 구성](fetching_a_page.png)
+![A Web document is the composition of different resources](fetching_a_page.png)
 
-클라이언트와 서버들은 (데이터 스트림과 대조적으로) 개별적인 메시지 교환에 의해 통신합니다. 보통 브라우저인 클라이언트에 의해 전송되는 메시지를 요청(*requests*)이라고 부르며, 그에 대해 서버에서 응답으로 전송되는 메시지를 응답(*responses*)이라고 부릅니다.
+Clients and servers communicate by exchanging individual messages (as opposed to a stream of data).
+The messages sent by the client, usually a Web browser, are called _requests_ and the messages sent by the server as an answer are called _responses_.
 
-![TCP(전송 계층) 및 IP(네트워크 계층) 위 및 표시 계층 아래의 응용 계층 프로토콜로서의 HTTP.](http-layers.png)
+![HTTP as an application layer protocol, on top of TCP (transport layer) and IP (network layer) and below the presentation layer.](http-layers.png)Designed in the early 1990s, HTTP is an extensible protocol which has evolved over time.
+It is an application layer protocol that is sent over {{Glossary("TCP")}}, or over a {{Glossary("TLS")}}-encrypted TCP connection, though any reliable transport protocol could theoretically be used.
+Due to its extensibility, it is used to not only fetch hypertext documents, but also images and videos or to post content to servers, like with HTML form results.
+HTTP can also be used to fetch parts of documents to update Web pages on demand.
 
-1990년대 초에 설계된 HTTP는 거듭하여 진화해온 확장 가능한 프로토콜입니다. HTTP는 애플리케이션 계층의 프로토콜로, 신뢰 가능한 전송 프로토콜이라면 이론상으로는 무엇이든 사용할 수 있으나 {{glossary("TCP")}} 혹은 암호화된 TCP 연결인 {{glossary("TLS")}}를 통해 전송됩니다. HTTP의 확장성 덕분에, 오늘날 하이퍼텍스트 문서 뿐만 아니라 이미지와 비디오 혹은 HTML 폼 결과와 같은 내용을 서버로 포스트(POST)하기 위해서도 사용됩니다. HTTP는 또한 필요할 때마다 웹 페이지를 갱신하기 위해 문서의 일부를 가져오는데 사용될 수도 있습니다.
+## Components of HTTP-based systems
 
-## HTTP 기반 시스템의 구성요소
+HTTP is a client-server protocol: requests are sent by one entity, the user-agent (or a proxy on behalf of it).
+Most of the time the user-agent is a Web browser, but it can be anything, for example, a robot that crawls the Web to populate and maintain a search engine index.
 
-HTTP는 클라이언트-서버 프로토콜입니다. 요청은 하나의 개체, 사용자 에이전트(또는 그것을 대신하는 프록시)에 의해 전송됩니다. 대부분의 경우, 사용자 에이전트는 브라우저지만, 무엇이든 될 수 있습니다. 예를 들어, 검색 엔진 인덱스를 채워넣고 유지하기 위해 웹을 돌아다니는 로봇이 그러한 경우입니다.
+Each individual request is sent to a server, which handles it and provides an answer called the _response_.
+Between the client and the server there are numerous entities, collectively called {{Glossary("Proxy_server", "proxies")}}, which perform different operations and act as gateways or {{Glossary("Cache", "caches")}}, for example.
 
-각각의 개별적인 요청들은 서버로 보내지며, 서버는 요청을 처리하고 *response*라고 불리는 응답을 제공합니다. 이 요청과 응답 사이에는 여러 개체들이 있는데, 예를 들면 다양한 작업을 수행하는 게이트웨이 또는 {{glossary("Cache", "캐시")}} 역할을 하는 {{glossary("Proxy_server", "프록시")}} 등이 있습니다.
+![Client server chain](client-server-chain.png)
 
-![클라이언트 서버 체인](client-server-chain.png)
+In reality, there are more computers between a browser and the server handling the request: there are routers, modems, and more.
+Thanks to the layered design of the Web, these are hidden in the network and transport layers.
+HTTP is on top, at the application layer.
+Although important for diagnosing network problems, the underlying layers are mostly irrelevant to the description of HTTP.
 
-실제로는 브라우저와 요청을 처리하는 서버 사이에는 좀 더 많은 컴퓨터들이 존재합니다: 라우터, 모뎀 등이 있죠. 웹의 계층적인 설계 덕분에, 이들은 네트워크와 전송 계층 내로 숨겨집니다. HTTP은 애플리케이션 계층의 최상위에 있습니다. 네트워크 문제를 진단하는 것도 중요하지만, 기본 레이어들은 HTTP의 명세와는 거의 관련이 없습니다.
+### Client: the user-agent
 
-### 클라이언트: 사용자 에이전트
+The _user-agent_ is any tool that acts on behalf of the user.
+This role is primarily performed by the Web browser, but it may also be performed by programs used by engineers and Web developers to debug their applications.
 
-사용자 에이전트는 사용자를 대신하여 동작하는 모든 도구입니다. 이 역할은 주로 브라우저에 의해 수행됩니다; 엔지니어들과 자신들의 애플리케이션을 디버그하는 웹 개발자들이 사용하는 프로그램들은 예외입니다.
+The browser is **always** the entity initiating the request.
+It is never the server (though some mechanisms have been added over the years to simulate server-initiated messages).
 
-브라우저는 **항상** 요청을 보내는 개체입니다. 그것은 결코 서버가 될 수 없습니다(수년에 걸쳐 서버 초기화된 메시지를 시뮬레이션하기 위해 몇 가지 메커니즘이 추가되어 왔지만).
+To display a Web page, the browser sends an original request to fetch the HTML document that represents the page.
+It then parses this file, making additional requests corresponding to execution scripts, layout information (CSS) to display, and sub-resources contained within the page (usually images and videos).
+The Web browser then combines these resources to present the complete document, the Web page.
+Scripts executed by the browser can fetch more resources in later phases and the browser updates the Web page accordingly.
 
-웹 페이지를 표시하기 위해, 브라우저는 페이지의 HTML 문서를 가져오기 위한 요청을 전송한 뒤, 파일을 구문 분석하여 실행해야 할 스크립트 그리고 페이지 내 포함된 하위 리소스들(보통 이미지와 비디오)을 잘 표시하기 위한 레이아웃 정보(CSS)에 대응하는 추가적인 요청들을 가져옵니다. 그런 뒤에 브라우저는 완전한 문서인 웹 페이지를 표시하기 위해 그런 리소스들을 혼합합니다. 브라우저에 의해 실행된 스크립트는 이후 단계에서 좀 더 많은 리소스들을 가져올 수 있으며 브라우저는 그에 따라 웹 페이지를 갱신하게 됩니다.
+A Web page is a hypertext document.
+This means some parts of the displayed content are links, which can be activated (usually by a click of the mouse) to fetch a new Web page, allowing the user to direct their user-agent and navigate through the Web.
+The browser translates these directions into HTTP requests, and further interprets the HTTP responses to present the user with a clear response.
 
-웹 페이지는 하이퍼텍스트 문서로, 표시된 텍스트의 일부는 사용자가 사용자 에이전트를 제어하고 웹을 돌아다닐 수 있도록 새로운 웹 페이지를 가져오기 위해 실행(보통 마우스 클릭에 의해)될 수 있는 링크임을 뜻합니다. 브라우저는 HTTP 요청 내에서 이런 지시 사항들을 변환하고 HTTP 응답을 해석하여 사용자에게 명확한 응답을 표시합니다.
+### The Web server
 
-### 웹 서버
+On the opposite side of the communication channel is the server, which _serves_ the document as requested by the client.
+A server appears as only a single machine virtually; but it may actually be a collection of servers sharing the load (load balancing), or a complex piece of software interrogating other computers (like cache, a DB server, or e-commerce servers), totally or partially generating the document on demand.
 
-통신 채널의 반대편에는 클라이언트에 의한 요청에 대한 문서를 *제공*하는 서버가 존재합니다. 서버는 사실 상 논리적으로 단일 기계입니다.이는 로드(로드 밸런싱) 혹은 그때 그때 다른 컴퓨터(캐시, DB 서버, e-커머스 서버 등과 같은)들의 정보를 얻고 완전하게 혹은 부분적으로 문서를 생성하는 소프트웨어의 복잡한 부분을 공유하는 서버들의 집합일 수도 있기 때문입니다.
+A server is not necessarily a single machine, but several server software instances can be hosted on the same machine.
+With HTTP/1.1 and the {{HTTPHeader("Host")}} header, they may even share the same IP address.
 
-서버는 반드시 단일 머신일 필요는 없지만, 여러 개의 서버를 동일한 머신 위에서 호스팅 할 수는 있습니다. HTTP/1.1과 {{HTTPHeader("Host")}} 헤더를 이용하여, 동일한 IP 주소를 공유할 수도 있습니다.
+### Proxies
 
-### 프록시
+Between the Web browser and the server, numerous computers and machines relay the HTTP messages.
+Due to the layered structure of the Web stack, most of these operate at the transport, network or physical levels, becoming transparent at the HTTP layer and potentially having a significant impact on performance.
+Those operating at the application layers are generally called **proxies**.
+These can be transparent, forwarding on the requests they receive without altering them in any way, or non-transparent, in which case they will change the request in some way before passing it along to the server.
+Proxies may perform numerous functions:
 
-웹 브라우저와 서버 사이에서는 수많은 컴퓨터와 머신이 HTTP 메시지를 이어 받고 전달합니다. 여러 계층으로 이루어진 웹 스택 구조에서 이러한 컴퓨터/머신들은 대부분은 전송, 네트워크 혹은 물리 계층에서 동작하며, 성능에 상당히 큰 영향을 주지만 HTTP 계층에서는 이들이 어떻게 동작하는지 눈에 보이지 않습니다. 이러한 컴퓨터/머신 중에서도 애플리케이션 계층에서 동작하는 것들을 일반적으로 **프록시**라고 부릅니다. 프록시는 눈에 보이거나 그렇지 않을 수도 있으며(프록시를 통해 요청이 변경되거나 변경되지 않는 경우를 말함) 다양한 기능들을 수행할 수 있습니다:
+- caching (the cache can be public or private, like the browser cache)
+- filtering (like an antivirus scan or parental controls)
+- load balancing (to allow multiple servers to serve different requests)
+- authentication (to control access to different resources)
+- logging (allowing the storage of historical information)
 
-- 캐싱 (캐시는 공개 또는 비공개가 될 수 있습니다 (예: 브라우저 캐시))
-- 필터링 (바이러스 백신 스캔, 유해 컨텐츠 차단(자녀 보호) 기능)
-- 로드 밸런싱 (여러 서버들이 서로 다른 요청을 처리하도록 허용)
-- 인증 (다양한 리소스에 대한 접근 제어)
-- 로깅 (이력 정보를 저장)
+## Basic aspects of HTTP
 
-## HTTP의 기초적인 측면
+### HTTP is simple
 
-### HTTP은 간단합니다
+HTTP is generally designed to be simple and human-readable, even with the added complexity introduced in HTTP/2 by encapsulating HTTP messages into frames.
+HTTP messages can be read and understood by humans, providing easier testing for developers, and reduced complexity for newcomers.
 
-HTTP는 사람이 읽을 수 있으며 간단하게 고안되었습니다. 심지어 HTTP/2가 다소 더 복잡해졌지만 여전히 HTTP 메세지를 프레임별로 캡슐화하여 간결함을 유지하였습니다. HTTP 메시지들은 사람이 읽고 이해할 수 있어, 테스트하기 쉽고 초심자의 진입장벽을 낮췄습니다.
+### HTTP is extensible
 
-### HTTP은 확장 가능합니다
+Introduced in HTTP/1.0, [HTTP headers](/en-US/docs/Web/HTTP/Headers) make this protocol easy to extend and experiment with.
+New functionality can even be introduced by a simple agreement between a client and a server about a new header's semantics.
 
-HTTP/1.0에서 소개된, [HTTP 헤더](/ko/docs/Web/HTTP/Headers)는 HTTP를 확장하고 실험하기 쉽게 만들어주었습니다. 클라이언트와 서버가 새로운 헤더의 시맨틱에 대해 간단한 합의만 한다면, 언제든지 새로운 기능을 추가할 수 있습니다.
+### HTTP is stateless, but not sessionless
 
-### HTTP은 상태는 없지만 세션은 있습니다
+HTTP is stateless: there is no link between two requests being successively carried out on the same connection.
+This immediately has the prospect of being problematic for users attempting to interact with certain pages coherently, for example, using e-commerce shopping baskets.
+But while the core of HTTP itself is stateless, HTTP cookies allow the use of stateful sessions.
+Using header extensibility, HTTP Cookies are added to the workflow, allowing session creation on each HTTP request to share the same context, or the same state.
 
-HTTP는 상태를 저장하지 않습니다(Stateless). 동일한 연결 상에서 연속하여 전달된 두 개의 요청 사이에는 연결고리가 없습니다. 이는 e-커머스 쇼핑 바구니처럼, 일관된 방식으로 사용자가 페이지와 상호작용하길 원할 때 문제가 됩니다. 하지만, HTTP의 핵심은 상태가 없는 것이지만 HTTP 쿠키는 상태가 있는 세션을 만들도록 해줍니다.
-헤더 확장성을 사용하여, 동일한 컨텍스트 또는 동일한 상태를 공유하기 위해 각각의 요청들에 세션을 만들도록 HTTP 쿠키가 추가됩니다.
+### HTTP and connections
 
-### HTTP와 연결
+A connection is controlled at the transport layer, and therefore fundamentally out of scope for HTTP.
+HTTP doesn't require the underlying transport protocol to be connection-based; it only requires it to be _reliable_, or not lose messages (at minimum, presenting an error in such cases).
+Among the two most common transport protocols on the Internet, TCP is reliable and UDP isn't.
+HTTP therefore relies on the TCP standard, which is connection-based.
 
-연결은 전송 계층에서 제어되므로 근본적으로 HTTP 영역 밖입니다. HTTP는 연결될 수 있도록 하는 근본적인 전송 프로토콜을 요구하지 않습니다; 다만 그저 신뢰할 수 있거나 메시지 손실이 없는(최소한의 오류는 표시) 연결을 요구할 뿐입니다. 인터넷 상의 가장 일반적인 두 개의 전송 프로토콜 중에서 TCP는 신뢰할 수 있으며 UDP는 그렇지 않습니다. 그러므로 HTTP는 연결이 필수는 아니지만 연결 기반인 TCP 표준에 의존합니다.
+Before a client and server can exchange an HTTP request/response pair, they must establish a TCP connection, a process which requires several round-trips.
+The default behavior of HTTP/1.0 is to open a separate TCP connection for each HTTP request/response pair.
+This is less efficient than sharing a single TCP connection when multiple requests are sent in close succession.
 
-클라이언트와 서버가 HTTP를 요청/응답으로 교환하기 전에 여러 왕복이 필요한 프로세스인 TCP 연결을 설정해야 합니다. HTTP/1.0의 기본 동작은 각 요청/응답에 대해 별도의 TCP 연결을 여는 것입니다. 이 동작은 여러 요청을 연속해서 보내는 경우에는 단일 TCP 연결을 공유하는 것보다 효율적이지 못합니다.
+In order to mitigate this flaw, HTTP/1.1 introduced _pipelining_ (which proved difficult to implement) and _persistent connections_: the underlying TCP connection can be partially controlled using the {{HTTPHeader("Connection")}} header.
+HTTP/2 went a step further by multiplexing messages over a single connection, helping keep the connection warm and more efficient.
 
-이러한 결함을 개선하기 위해, HTTP/1.1은 (구현하기 어렵다고 입증된) 파이프라이닝 개념과 지속적인 연결의 개념을 도입했습니다: 기본적인 TCP 연결은 {{HTTPHeader("Connection")}} 헤더를 사용해 부분적으로 제어할 수 있습니다. HTTP/2는 연결을 좀 더 지속되고 효율적으로 유지하는데 도움이 되도록, 단일 연결 상에서 메시지를 다중 전송(multiplex)하여 한 걸음 더 나아갔습니다.
+Experiments are in progress to design a better transport protocol more suited to HTTP.
+For example, Google is experimenting with [QUIC](https://en.wikipedia.org/wiki/QUIC) which builds on UDP to provide a more reliable and efficient transport protocol.
 
-HTTP에 더 알맞은 좀 더 나은 전송 프로토콜을 설계하는 실험이 진행 중에 있습니다. 예를 들어, 구글은 좀 더 신뢰성있고 효율적인 전송 프로토콜을 제공하기 위해 UDP기반의 [QUIC](https://en.wikipedia.org/wiki/QUIC)를 실험하고 있습니다.
+## What can be controlled by HTTP
 
-## HTTP로 제어할 수 있는 것
+This extensible nature of HTTP has, over time, allowed for more control and functionality of the Web.
+Cache and authentication methods were functions handled early in HTTP history.
+The ability to relax the _origin constraint_, by contrast, was only added in the 2010s.
 
-HTTP의 확장 가능한 특성은 수년 간에 걸쳐 웹의 점점 더 많은 기능들을 제어하도록 허용되어 왔습니다. 캐시 혹은 인증 메서드는 HTTP에 초기부터 제어해왔던 기능이며, 반면에 `origin` 제약사항을 완화시키는 조치는 2010년에 들어서 추가되었습니다.
+Here is a list of common features controllable with HTTP:
 
-다음은 HTTP 사용하여 제어 가능한 일반적인 기능 목록입니다.
+- _[Caching](/en-US/docs/Web/HTTP/Caching)_:
+  How documents are cached can be controlled by HTTP.
+  The server can instruct proxies and clients about what to cache and for how long.
+  The client can instruct intermediate cache proxies to ignore the stored document.
+- _Relaxing the origin constraint_:
+  To prevent snooping and other privacy invasions, Web browsers enforce strict separation between Web sites.
+  Only pages from the **same origin** can access all the information of a Web page.
+  Though such a constraint is a burden to the server, HTTP headers can relax this strict separation on the server side, allowing a document to become a patchwork of information sourced from different domains; there could even be security-related reasons to do so.
+- _Authentication_:
+  Some pages may be protected so that only specific users can access them.
+  Basic authentication may be provided by HTTP, either using the {{HTTPHeader("WWW-Authenticate")}} and similar headers, or by setting a specific session using [HTTP cookies](/en-US/docs/Web/HTTP/Cookies).
+- _[Proxy and tunneling](/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling)_:
+  Servers or clients are often located on intranets and hide their true IP address from other computers.
+  HTTP requests then go through proxies to cross this network barrier.
+  Not all proxies are HTTP proxies.
+  The SOCKS protocol, for example, operates at a lower level.
+  Other protocols, like ftp, can be handled by these proxies.
+- _Sessions_:
+  Using HTTP cookies allows you to link requests with the state of the server.
+  This creates sessions, despite basic HTTP being a state-less protocol.
+  This is useful not only for e-commerce shopping baskets, but also for any site allowing user configuration of the output.
 
-- **[캐시](/ko/docs/Web/HTTP/Caching)**
-  - HTTP로 문서가 캐시되는 방식을 제어할 수 있습니다. 서버는 캐시 대상과 기간을 프록시와 클라이언트에 지시할 수 있고 클라이언트는 저장된 문서를 무시하라고 중간 캐시 프록시에게 지시할 수 있습니다.
+## HTTP flow
 
-- **`origin` 제약사항을 완화하기**
-  - 스누핑과 다른 프라이버시 침해를 막기 위해, 브라우저는 웹 사이트 간의 엄격한 분리를 강제합니다. **동일한 origin**으로부터 온 페이지만이 웹 페이지의 전체 정보에 접근할 수 있죠. 그런 제약 사항은 서버에 부담이 되지만, HTTP 헤더를 통해 그것을 완화시킬 수 있습니다. 그런 덕분에 문서는 다른 도메인으로부터 전달된 정보를 패치워크할 수 있습니다(그렇게 하려면 어떤 경우에 보안과 관련된 사항이 있을 수도 있습니다).
+When a client wants to communicate with a server, either the final server or an intermediate proxy, it performs the following steps:
 
-- **인증**
-  - 어떤 페이지들은 보호되어 오로지 특정 사용자만이 그것에 접근할 수도 있습니다. 기본 인증은 HTTP를 통해 {{HTTPHeader("WWW-Authenticate")}} 또는 유사한 헤더를 사용해 제공되거나, [HTTP 쿠키](/ko/docs/Web/HTTP/Cookies)를 사용해 특정 세션을 설정하여 이루어질 수도 있습니다.
+1. Open a TCP connection: The TCP connection is used to send a request, or several, and receive an answer.
+   The client may open a new connection, reuse an existing connection, or open several TCP connections to the servers.
 
-- **[프록시와 터널링](/ko/docs/Web/HTTP/Proxy_servers_and_tunneling)**
-  - 서버 혹은 클라이언트 혹은 그 둘 모두는 종종 인트라넷에 위치하며 다른 개체들에게 그들의 실제 주소를 숨기기도 합니다. HTTP 요청은 네트워크 장벽을 가로지르기 위해 프록시를 통해 나가게 되죠. 모든 프록시가 HTTP 프록시는 아닙니다. 예를 들면 SOCKS 프로토콜은 좀 더 저수준에서 동작합니다. FTP와 같은 다른 프로토콜도 이 프록시를 통해 처리될 수 있습니다.
+2. Send an HTTP message: HTTP messages (before HTTP/2) are human-readable.
+   With HTTP/2, these simple messages are encapsulated in frames, making them impossible to read directly, but the principle remains the same.
+   For example:
 
-- **세션**
-  - 쿠키 사용은 서버 상태를 요청과 연결하도록 해줍니다. 이것은 HTTP가 기본적으로 상태없는 프로토콜임에도 세션을 만들어주는 계기가 됩니다. 이것은 e-커머스 쇼핑 바구니를 위해서 유용할 뿐만 아니라 사용자 구성을 허용하는 모든 사이트에 대해서 유용합니다.
+   ```http
+   GET / HTTP/1.1
+   Host: developer.mozilla.org
+   Accept-Language: fr
+   ```
 
-## HTTP 흐름
+3. Read the response sent by the server, such as:
 
-클라이언트가 서버와 통신하고자 할 때, 최종 서버가 됐든 중간 프록시가 됐든 다음 단계의 과정을 수행합니다.
+   ```http
+   HTTP/1.1 200 OK
+   Date: Sat, 09 Oct 2010 14:28:02 GMT
+   Server: Apache
+   Last-Modified: Tue, 01 Dec 2009 20:18:22 GMT
+   ETag: "51142bc1-7449-479b075b2891b"
+   Accept-Ranges: bytes
+   Content-Length: 29769
+   Content-Type: text/html
 
-1. TCP 연결을 엽니다. TCP 연결은 요청을 보내거나(혹은 여러 개의 요청) 응답을 받는데 사용됩니다. 클라이언트는 새 연결을 열거나, 기존 연결을 재사용하거나, 서버에 대한 여러 TCP 연결을 열 수 있습니다.
-2. HTTP 메시지를 전송합니다. HTTP 메시지(HTTP/2 이전)는 인간이 읽을 수 있습니다. HTTP/2에서는 이런 간단한 메시지가 프레임 속으로 캡슐화되어 직접 읽는게 불가능하지만 원칙은 동일합니다.
+   <!DOCTYPE html>… (here come the 29769 bytes of the requested web page)
+   ```
 
-    ```html
-    GET / HTTP/1.1
-    Host: developer.mozilla.org
-    Accept-Language: fr
-    ```
+4. Close or reuse the connection for further requests.
 
-3. 서버에 의해 전송된 응답을 읽어들입니다
+If HTTP pipelining is activated, several requests can be sent without waiting for the first response to be fully received.
+HTTP pipelining has proven difficult to implement in existing networks, where old pieces of software coexist with modern versions.
+HTTP pipelining has been superseded in HTTP/2 with more robust multiplexing requests within a frame.
 
-    ```html
-    HTTP/1.1 200 OK
-    Date: Sat, 09 Oct 2010 14:28:02 GMT
-    Server: Apache
-    Last-Modified: Tue, 01 Dec 2009 20:18:22 GMT
-    ETag: "51142bc1-7449-479b075b2891b"
-    Accept-Ranges: bytes
-    Content-Length: 29769
-    Content-Type: text/html
+## HTTP Messages
 
-    <!DOCTYPE html... (here comes the 29769 bytes of the requested web page)
-    ```
+HTTP messages, as defined in HTTP/1.1 and earlier, are human-readable.
+In HTTP/2, these messages are embedded into a binary structure, a _frame_, allowing optimizations like compression of headers and multiplexing.
+Even if only part of the original HTTP message is sent in this version of HTTP, the semantics of each message is unchanged and the client reconstitutes (virtually) the original HTTP/1.1 request.
+It is therefore useful to comprehend HTTP/2 messages in the HTTP/1.1 format.
 
-4. 연결을 닫거나 다른 요청들을 위해 재사용합니다.
+There are two types of HTTP messages, requests and responses, each with its own format.
 
-HTTP 파이프라이닝이 활성화되면, 첫번째 응답을 완전히 수신할 때까지 기다리지 않고 여러 요청을 보낼 수 있습니다. HTTP 파이프라이닝은 오래된 소프트웨어와 최신 버전이 공존하고 있는, 기존의 네트워크 상에서 구현하기 어렵다는게 입증되었으며, 프레임안에서 보다 활발한 다중 요청을 보내는 HTTP/2로 교체되고 있습니다.
+### Requests
 
-## HTTP 메시지
+An example HTTP request:
 
-HTTP/1.1와 초기 HTTP 메시지는 사람이 읽을 수 있습니다. HTTP/2에서, 이 메시지들은 새로운 이진 구조인 프레임 안으로 임베드되어, 헤더의 압축과 다중화와 같은 최적화를 가능케 합니다. 본래의 HTTP 메시지의 일부분만이 이 버전의 HTTP 내에서 전송된다고 할지라도, 각 메시지의 의미들은 변화하지 않으며 클라이언트는 본래의 HTTP/1.1 요청을 (가상으로) 재구성합니다. 그러므로 HTTP/1.1 포맷 내에서 HTTP/2를 이해하는 것은 여전히 유용합니다.
+![A basic HTTP request](http_request.png)
 
-HTTP 메시지의 두 가지 타입인 요청(requests)과 응답(responses)은 각자의 특성있는 형식을 가지고 있습니다.
+Requests consist of the following elements:
 
-### 요청
+- An HTTP [method](/en-US/docs/Web/HTTP/Methods), usually a verb like {{HTTPMethod("GET")}}, {{HTTPMethod("POST")}}, or a noun like {{HTTPMethod("OPTIONS")}} or {{HTTPMethod("HEAD")}} that defines the operation the client wants to perform.
+  Typically, a client wants to fetch a resource (using `GET`) or post the value of an [HTML form](/en-US/docs/Learn/Forms) (using `POST`), though more operations may be needed in other cases.
+- The path of the resource to fetch; the URL of the resource stripped from elements that are obvious from the context, for example without the {{Glossary("protocol")}} (`http://`), the {{Glossary("domain")}} (here, `developer.mozilla.org`), or the TCP {{Glossary("port")}} (here, `80`).
+- The version of the HTTP protocol.
+- Optional [headers](/en-US/docs/Web/HTTP/Headers) that convey additional information for the servers.
+- A body, for some methods like `POST`, similar to those in responses, which contain the resource sent.
 
-요청은 다음의 요소들로 구성됩니다.
+### Responses
 
-![HTTP 요청](http_request.png)
+An example response:
 
-- HTTP [메서드](/ko/docs/Web/HTTP/Methods), 보통 클라이언트가 수행하고자 하는 동작을 정의한 {{HTTPMethod("GET")}}, {{HTTPMethod("POST")}} 같은 동사나 {{HTTPMethod("OPTIONS")}}나 {{HTTPMethod("HEAD")}}와 같은 명사입니다. 일반적으로, 클라이언트는 리소스를 가져오거나(`GET`을 사용하여) [HTML 폼](/ko/docs/Web/Guide/HTML/Forms)의 데이터를 전송(`POST`를 사용하여)하려고 하지만, 다른 경우에는 다른 동작이 요구될 수도 있습니다.
-- 가져오려는 리소스의 경로; 예를 들면 {{glossary("protocol", "프로토콜")}} (`http://`), {{glossary("domain", "도메인")}} (여기서는 `developer.mozilla.org`), 또는 TCP {{glossary("port", "포트")}} (여기서는 `80`)인 요소들을 제거한 리소스의 URL입니다.
-- HTTP 프로토콜의 버전.
-- 서버에 대한 추가 정보를 전달하는 선택적 [헤더들](/ko/docs/Web/HTTP/Headers).
-- `POST`와 같은 몇 가지 메서드를 위한, 전송된 리소스를 포함하는 응답의 본문과 유사한 본문.
+![HTTP Response image](http_response.png)
 
-### 응답
+Responses consist of the following elements:
 
-응답은 다음의 요소들로 구성됩니다.
+- The version of the HTTP protocol they follow.
+- A [status code](/en-US/docs/Web/HTTP/Status), indicating if the request was successful or not, and why.
+- A status message, a non-authoritative short description of the status code.
+- HTTP [headers](/en-US/docs/Web/HTTP/Headers), like those for requests.
+- Optionally, a body containing the fetched resource.
 
-![HTTP 응답](http_response.png)
+## APIs based on HTTP
 
-- HTTP 프로토콜의 버전
-- 요청의 성공 여부와, 그 이유를 나타내는 [상태 코드](/ko/docs/Web/HTTP/Status)
-- 아무런 영향력이 없는, 상태 코드의 짧은 설명을 나타내는 상태 메시지
-- 요청 헤더와 비슷한, HTTP [헤더들](/ko/docs/Web/HTTP/Headers)
-- 선택 사항으로 가져온 리소스가 포함되는 본문
+The most commonly used API based on HTTP is the {{domxref("XMLHttpRequest")}} API, which can be used to exchange data between a {{Glossary("user agent")}} and a server.
+The modern {{domxref("Fetch API")}} provides the same features with a more powerful and flexible feature set.
 
-## HTTP 기반 API
+Another API, [server-sent events](/en-US/docs/Web/API/Server-sent_events), is a one-way service that allows a server to send events to the client, using HTTP as a transport mechanism.
+Using the {{domxref("EventSource")}} interface, the client opens a connection and establishes event handlers.
+The client browser automatically converts the messages that arrive on the HTTP stream into appropriate {{domxref("Event")}} objects. Then it delivers them to the event handlers that have been registered for the events' {{domxref("Event.type", "type")}} if known, or to the {{domxref("EventSource.message_event", "onmessage")}} event handler if no type-specific event handler was established.
 
-HTTP 기반으로 가장 일반적으로 사용된 API는 {{Glossary("user agent")}}와 서버간에 데이터를 교환하는데 사용될 수 있는 {{domxref("XMLHttpRequest")}} API 입니다. 최신 {{domxref("Fetch API")}}는 보다 강력하고 유연한 기능을 제공합니다.
+## Conclusion
 
-또 다른 API인 [서버-전송 이벤트](/ko/docs/Web/API/Server-sent_events)는 서버가 전송 메커니즘으로 HTTP를 사용하여, 클라이언트로 이벤트를 보낼 수 있도록 하는 단방향 서비스입니다. 클라이언트는 {{domxref("EventSource")}} 인터페이스를 사용하여, 연결을 맺고 이벤트 핸들러를 설정합니다. 클라이언트 브라우저는 HTTP 스트림으로 도착한 메시지를 적절한 {{domxref("Event")}} 객체로 자동 변환하여, 알려진 경우 해당 이벤트 {{domxref("Event.type", "type")}}에 대해 등록된 이벤트 핸들러로 전달하거나 또는 특정 유형의 이벤트가 설정되지 않은 경우에는 {{domxref("EventSource.onmessage", "onmessage")}} 이벤트 핸들러로 전달합니다.
+HTTP is an extensible protocol that is easy to use.
+The client-server structure, combined with the ability to add headers, allows HTTP to advance along with the extended capabilities of the Web.
 
-## 결론
-
-HTTP는 사용이 쉬운 확장 가능한 프로토콜입니다. 헤더를 쉽게 추가하는 능력을 지닌 클라이언트-서버 구조는 HTTP가 웹의 확장된 수용력과 함께 발전할 수 있게 합니다.
-
-HTTP/2가 성능 향상을 위해 HTTP 메시지를 프레임 내로 임베드하여 약간의 복잡함을 더했을지라도, 애플리케이션의 관점에서 볼 때, 메시지의 기본적인 구조는 HTTP/1.0이 릴리즈된 이후와 동일합니다. 세션의 흐름은 여전히 단순하여, 간단한 [HTTP 메시지 모니터](https://firefox-source-docs.mozilla.org/devtools-user/network_monitor/index.html)를 이용한 조사와 디버그를 가능하게 해줍니다.
+Though HTTP/2 adds some complexity by embedding HTTP messages in frames to improve performance, the basic structure of messages has stayed the same since HTTP/1.0.
+Session flow remains simple, allowing it to be investigated and debugged with a simple [HTTP message monitor](https://firefox-source-docs.mozilla.org/devtools-user/network_monitor/index.html).

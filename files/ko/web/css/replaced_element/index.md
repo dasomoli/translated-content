@@ -1,69 +1,71 @@
 ---
-title: 대체 요소
+title: Replaced elements
 slug: Web/CSS/Replaced_element
+page-type: guide
 ---
 
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS)의 **대체 요소**(replaced element)란 자신의 표현 결과가 CSS의 범위를 벗어나는 요소로서, CSS 서식 모델과는 분리된 외부 객체인 요소입니다.
+In [CSS](/en-US/docs/Web/CSS), a **replaced element** is an element whose representation is outside the scope of CSS; they're external objects whose representation is independent of the CSS formatting model.
 
-간단히 말해서, 대체 요소는 자신의 콘텐츠가 현재 문서 스타일의 영향을 받지 않는 요소라고 할 수 있습니다. CSS는 대체 요소의 위치에 영향을 줄 수 있지만 콘텐츠에는 미치지 못합니다. {{htmlelement("iframe")}} 등 일부 대체 요소는 자신만의 스타일 시트를 가질 수도 있지만, 부모 문서의 스타일을 상속하지는 않습니다.
+Put in simpler terms, they're elements whose contents are not affected by the current document's styles. The position of the replaced element can be affected using CSS, but not the contents of the replaced element itself. Some replaced elements, such as {{HTMLElement("iframe")}} elements, may have stylesheets of their own, but they don't inherit the styles of the parent document.
 
-CSS가 대체 요소에 영향을 줄 수 있는 다른 유일한 방법은, 일련의 속성을 통해 요소 박스에서 콘텐츠의 위치를 제어하는 것입니다. [콘텐츠 박스 내부의 객체 위치 제어](#콘텐츠_박스_내부의_객체_위치_제어) 항목을 참고하세요.
+The only other impact CSS can have on a replaced element is that there are properties which support controlling the positioning of the element's content within its box. See [Controlling object position within the content box](#controlling_object_position_within_the_content_box) for further information.
 
-## 대체 요소
+## Replaced elements
 
-전형적인 대체 요소는 다음과 같습니다.
+Typical replaced elements are:
 
 - {{HTMLElement("iframe")}}
 - {{HTMLElement("video")}}
 - {{HTMLElement("embed")}}
 - {{HTMLElement("img")}}
 
-일부 요소는 특정한 경우에만 대체 요소로 취급합니다.
+Some elements are treated as replaced elements only in specific cases:
 
 - {{HTMLElement("option")}}
 - {{HTMLElement("audio")}}
 - {{HTMLElement("canvas")}}
 - {{HTMLElement("object")}}
+- {{HTMLElement("applet")}}
 
-HTML 명세에 따르면 {{htmlelement("input")}} 또한 대체될 수 있습니다. `<input>` 유형이 `"image"`인 경우 {{htmlelement("img")}}와 유사한 대체 요소이기 때문입니다. 그러나 다른 유형의 `<input>`을 포함한 나머지 양식 컨트롤 요소는 비대체 요소라고 명시하고 있습니다. (명세는 양식 요소의 플랫폼별 기본 렌더링을 "위젯"(Widget)이라는 용어로 설명하고 있습니다.)
+HTML spec also says that an {{HTMLElement("input")}} element can be replaced, because {{HTMLElement("input")}} elements of the `"image"` type are replaced elements similar to {{HTMLElement("img")}}. However, other form controls, including other types of {{HTMLElement("input")}} elements, are explicitly listed as non-replaced elements (the spec describes their default platform-specific rendering with the term "Widgets").
 
-CSS {{cssxref("content")}} 속성을 사용해 추가한 객체도 대체 요소로, HTML 마크업에는 존재하지 않기 때문에 "익명" 대체 요소라고 합니다.
+Objects inserted using the CSS {{cssxref("content")}} property are _anonymous replaced elements_. They are "anonymous" because they don't exist in the HTML markup.
 
-## 대체 요소와 CSS
+## Using CSS with replaced elements
 
-CSS는 바깥 여백이나 일부 `auto` 값 계산 등 특정 상황에서 대체 요소를 특별히 취급합니다.
+CSS handles replaced elements specifically in some cases, like when calculating margins and some `auto` values.
 
-일부 대체 요소는 고유 크기 또는 정의된 기준선을 가질 수 있으며, {{cssxref("vertical-align")}} 등의 CSS 속성이 사용할 수 있습니다. 오직 대체 요소만이 고유 크기를 가질 수 있습니다.
+Note that some replaced elements, but not all, have intrinsic dimensions or a defined baseline, which is used by some CSS properties, such as {{cssxref("vertical-align")}}. Only replaced elements can ever have intrinsic dimensions.
 
-## 명세서
+### Controlling object position within the content box
 
-{{Specifications}}
+Certain CSS properties can be used to specify how the object contained within the replaced element should be positioned within the element's box area. These are defined by the [CSS Images](https://drafts.csswg.org/css-images/) specification:
 
-## 같이 보기
+- {{cssxref("object-fit")}}
+  - : Specifies how the replaced element's content object should be fitted to the containing element's box.
+- {{cssxref("object-position")}}
+  - : Specifies the alignment of the replaced element's content object within the element's box.
 
-- [HTML 명세](https://html.spec.whatwg.org/multipage/rendering.html#replaced-elements)
-- CSS 주요 개념
+## See also
 
-  - [CSS 문법](/ko/docs/Web/CSS/Syntax)
-  - [@규칙](/ko/docs/Web/CSS/At-rule)
-  - [주석](/ko/docs/Web/CSS/Comments)
-  - [명시도](/ko/docs/Web/CSS/Specificity)
-  - [상속](/ko/docs/Web/CSS/inheritance)
-  - [박스 모델](/ko/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
-  - [레이아웃 모드](/ko/docs/Web/CSS/Layout_mode)
-  - [시각적 서식 모델](/ko/docs/Web/CSS/Visual_formatting_model)
-  - [마진 중첩](/ko/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)
-  - 값
-
-    - [초깃값](/ko/docs/Web/CSS/initial_value)
-    - [계산값](/ko/docs/Web/CSS/computed_value)
-    - [결정값](/ko/docs/Web/CSS/resolved_value)
-    - [지정값](/ko/docs/Web/CSS/specified_value)
-    - [사용값](/ko/docs/Web/CSS/used_value)
-    - [실제값](/ko/docs/Web/CSS/actual_value)
-
-  - [값 정의 구문](/ko/docs/Web/CSS/Value_definition_syntax)
-  - [단축 속성](/ko/docs/Web/CSS/Shorthand_properties)
-  - [대체 요소](/ko/docs/Web/CSS/Replaced_element)
+- [HTML Spec](https://html.spec.whatwg.org/multipage/rendering.html#replaced-elements)
+- {{glossary("void element", "Void elements")}}
+- CSS key concepts:
+  - [CSS syntax](/en-US/docs/Web/CSS/Syntax)
+  - [At-rules](/en-US/docs/Web/CSS/At-rule)
+  - [Comments](/en-US/docs/Web/CSS/Comments)
+  - [Specificity](/en-US/docs/Web/CSS/Specificity)
+  - [Inheritance](/en-US/docs/Web/CSS/Inheritance)
+  - [Box model](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
+  - [Layout modes](/en-US/docs/Web/CSS/Layout_mode)
+  - [Visual formatting models](/en-US/docs/Web/CSS/Visual_formatting_model)
+  - [Margin collapsing](/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)
+  - Values
+    - [Initial values](/en-US/docs/Web/CSS/initial_value)
+    - [Computed values](/en-US/docs/Web/CSS/computed_value)
+    - [Used values](/en-US/docs/Web/CSS/used_value)
+    - [Actual values](/en-US/docs/Web/CSS/actual_value)
+  - [Value definition syntax](/en-US/docs/Web/CSS/Value_definition_syntax)
+  - [Shorthand properties](/en-US/docs/Web/CSS/Shorthand_properties)

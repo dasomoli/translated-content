@@ -1,50 +1,66 @@
 ---
-title: touchcancel
+title: "Element: touchcancel event"
+short-title: touchcancel
 slug: Web/API/Element/touchcancel_event
+page-type: web-api-event
+browser-compat: api.Element.touchcancel_event
 ---
 
-`touchcancel` 이벤트는 터치포인트가 현재 구현된 방식안에서 방해 받을때 ( 예를들어 너무 많은 터치 포인트) 발생한다.
+{{APIRef}}
 
-## General info
+The `touchcancel` event is fired when one or more touch points have been disrupted in an implementation-specific manner (for example, too many touch points are created).
 
-- Specification
-  - : [Touch Events](http://www.w3.org/TR/touch-events/#the-touchcancel-event)
-- Interface
-  - : TouchEvent
-- Bubbles
-  - : Yes
-- Cancelable
-  - : No
-- Target
-  - : Document, Element
-- Default Action
-  - : None
+## Syntax
 
-## Properties
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
 
-| Property                                  | Type         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| ----------------------------------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `target` {{readonlyInline}}         | EventTarget  | The event target (the topmost target in the DOM tree).                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `type` {{readonlyInline}}           | DOMString    | The type of event.                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `bubbles` {{readonlyInline}}        | Boolean      | Whether the event normally bubbles or not.                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `cancelable` {{readonlyInline}}     | Boolean      | Whether the event is cancellable or not.                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| `view` {{readonlyInline}}           | WindowProxy  | [`document.defaultView`](/ko/docs/Web/API/Document/defaultView) (`window` of the document)                                                                                                                                                                                                                                        |
-| `detail` {{readonlyInline}}         | long (float) | 0.                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `touches` {{readonlyInline}}        | TouchList    | A list of [`Touch`](/en/DOM/Touch)es for every point of contact currently touching the surface.                                                                                                                                                                                                                                                                                                                                                           |
-| `targetTouches` {{readonlyInline}}  | TouchList    | A list of [`Touch`](/en/DOM/Touch)es for every point of contact that is touching the surface and started on the element that is the target of the current event.                                                                                                                                                                                                                                                                                          |
-| `changedTouches` {{readonlyInline}} | TouchList    | A list of [`Touch`](/ko/docs/DOM/Touch)es for every point of contact which contributed to the event. For the touchstart event this must be a list of the touch points that just became active with the current event. For the touchmove event this must be a list of the touch points that have moved since the last event. For the touchend and touchcancel events this must be a list of the touch points that have just been removed from the surface. |
-| `ctrlKey` {{readonlyInline}}        | boolean      | `true` if the control key was down when the event was fired. `false` otherwise.                                                                                                                                                                                                                                                                                                                                                                           |
-| `shiftKey` {{readonlyInline}}       | boolean      | `true` if the shift key was down when the event was fired. `false` otherwise.                                                                                                                                                                                                                                                                                                                                                                             |
-| `altKey` {{readonlyInline}}         | boolean      | `true` if the alt key was down when the event was fired. `false` otherwise.                                                                                                                                                                                                                                                                                                                                                                               |
-| `metaKey` {{readonlyInline}}        | boolean      | `true` if the meta key was down when the event was fired. `false` otherwise.                                                                                                                                                                                                                                                                                                                                                                              |
+```js
+addEventListener("touchcancel", (event) => {});
+
+ontouchcancel = (event) => {};
+```
+
+## Event type
+
+A {{domxref("TouchEvent")}}. Inherits from {{domxref("Event")}}.
+
+{{InheritanceDiagram("TouchEvent")}}
+
+## Event properties
+
+_This interface inherits properties from its parent, {{domxref("UIEvent")}} and {{domxref("Event")}}._
+
+- {{domxref("TouchEvent.altKey")}} {{ReadOnlyInline}}
+  - : A Boolean value indicating whether or not the alt key was down when the touch event was fired.
+- {{domxref("TouchEvent.changedTouches")}} {{ReadOnlyInline}}
+  - : A {{domxref("TouchList")}} of all the {{domxref("Touch")}} objects representing individual points of contact whose states changed between the previous touch event and this one.
+- {{domxref("TouchEvent.ctrlKey")}} {{ReadOnlyInline}}
+  - : A Boolean value indicating whether or not the control key was down when the touch event was fired.
+- {{domxref("TouchEvent.metaKey")}} {{ReadOnlyInline}}
+  - : A Boolean value indicating whether or not the meta key was down when the touch event was fired.
+- {{domxref("TouchEvent.shiftKey")}} {{ReadOnlyInline}}
+  - : A Boolean value indicating whether or not the shift key was down when the touch event was fired.
+- {{domxref("TouchEvent.targetTouches")}} {{ReadOnlyInline}}
+  - : A {{domxref("TouchList")}} of all the {{domxref("Touch")}} objects that are both currently in contact with the touch surface **and** were also started on the same element that is the target of the event.
+- {{domxref("TouchEvent.touches")}} {{ReadOnlyInline}}
+  - : A {{domxref("TouchList")}} of all the {{domxref("Touch")}} objects representing all current points of contact with the surface, regardless of target or changed status.
+- {{domxref("TouchEvent.rotation")}} {{non-standard_inline()}} {{ReadOnlyInline}}
+  - : Change in rotation (in degrees) since the event's beginning. Positive values indicate clockwise rotation; negative values indicate counterclockwise rotation. Initial value: `0.0`.
+- {{domxref("TouchEvent.scale")}} {{non-standard_inline()}} {{ReadOnlyInline}}
+  - : Distance between two digits since the event's beginning. Expressed as a floating-point multiple of the initial distance between the digits at the beginning of the event. Values below 1.0 indicate an inward pinch (zoom out). Values above 1.0 indicate an outward unpinch (zoom in). Initial value: `1.0`.
 
 ## Examples
 
-해당 이벤트의 샘플코드는 [Touch events](/ko/docs/DOM/Touch_events) 에서 확인할 수 있다.
+Code samples for those events are available on the dedicated page: [Touch events](/en-US/docs/Web/API/Touch_events).
 
-## Related Events
+## Specifications
 
-- {{event("touchstart")}}
-- {{event("touchend")}}
-- {{event("touchmove")}}
-- {{event("touchcancel")}}
+{{Specifications}}
+
+## Browser compatibility
+
+{{Compat}}
+
+## See also
+
+- This event on [`Document`](/en-US/docs/Web/API/Document) targets: [`touchcancel`](/en-US/docs/Web/API/Document/touchcancel_event)

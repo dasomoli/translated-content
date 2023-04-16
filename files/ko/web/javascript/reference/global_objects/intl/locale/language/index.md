@@ -1,47 +1,47 @@
 ---
 title: Intl.Locale.prototype.language
 slug: Web/JavaScript/Reference/Global_Objects/Intl/Locale/language
+page-type: javascript-instance-accessor-property
+browser-compat: javascript.builtins.Intl.Locale.language
 ---
 
 {{JSRef}}
 
-**`Intl.Locale.prototype.language`** 속성은 locale과 관련된 언어를 반환하는 접근자 속성입니다.
+The **`language`** accessor property of {{jsxref("Intl.Locale")}} instances returns the language associated with this locale.
 
 ## Description
 
-언어는 locale의 핵심 기능 중 하나입니다. 유니 코드 사양은 locale의 언어 식별자를 언어와 지역으로 함께 취급합니다 (예를 들어 영국 영어와 미국 영어 등의 방언과 변형을 구별하기 위해). {{jsxref("Locale", "Locale")}}의 language 속성은 로캘의 언어 하위 태그를 엄격하게 반환합니다.
+Language is one of the core features of a locale. The Unicode specification treats the language identifier of a locale as the language and the region together (to make a distinction between dialects and variations, e.g. British English vs. American English). The `language` property of a {{jsxref("Intl/Locale", "Locale")}} returns strictly the locale's language subtag.
 
 ## Examples
 
-### locale 식별자 문자열 인수에서 언어 설정
+### Setting the language in the locale identifier string argument
 
-유효한 유니 코드 locale 식별자가 되려면 문자열이 언어 하위 태그로 시작해야합니다. {{jsxref("Locale", "Locale")}} 생성자에 대한 주요 인수는 유효한 유니 코드 locale 식별자여야하므로 생성자가 사용될 때마다 언어 하위 태그가있는 식별자를 전달해야합니다.
-
-```js
-let langStr = new Intl.Locale("en-Latn-US");
-
-console.log(langStr.language); // Prints "en"
-```
-
-### configuration 객체로 언어 오버라이딩 하기
-
-언어 하위 태그를 지정해야하지만 {{jsxref("Locale", "Locale")}} 생성자는 언어 하위 태그를 재정의 할 수있는 구성 개체를 사용합니다.
+In order to be a valid Unicode locale identifier, a string must start with the language subtag. The main argument to the {{jsxref("Intl/Locale/Locale", "Intl.Locale()")}} constructor must be a valid Unicode locale identifier, so whenever the constructor is used, it must be passed an identifier with a language subtag.
 
 ```js
-let langObj = new Intl.Locale("en-Latn-US", {language: "es"});
-
-console.log(langObj.language); // Prints "es"
+const locale = new Intl.Locale("en-Latn-US");
+console.log(locale.language); // Prints "en"
 ```
 
-## 명세서
+### Overriding language via the configuration object
+
+While the language subtag must be specified, the {{jsxref("Intl/Locale/Locale", "Intl.Locale()")}} constructor takes a configuration object, which can override the language subtag.
+
+```js
+const locale = new Intl.Locale("en-Latn-US", { language: "es" });
+console.log(locale.language); // Prints "es"
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- {{jsxref("Locale", "Locale")}}
+- {{jsxref("Intl.Locale")}}
 - [Unicode language subtag specification](https://www.unicode.org/reports/tr35/#unicode_language_subtag_validity)

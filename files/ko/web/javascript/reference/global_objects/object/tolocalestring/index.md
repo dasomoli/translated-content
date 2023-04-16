@@ -1,44 +1,109 @@
 ---
 title: Object.prototype.toLocaleString()
 slug: Web/JavaScript/Reference/Global_Objects/Object/toLocaleString
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Object.toLocaleString
 ---
 
 {{JSRef}}
 
-**`toLocaleString()`** 메서드는 객체로 된 문자열을 반환합니다. 이 메서드는 지역별로 다른 객체로 재정의되어 표시됩니다.
+The **`toLocaleString()`** method returns a string representing the object. This method is meant to be overridden by derived objects for locale-specific purposes.
 
 {{EmbedInteractiveExample("pages/js/object-prototype-tolocalestring.html")}}
 
-## 구문
+## Syntax
 
-```js
-obj.toLocaleString()
+```js-nolint
+toLocaleString()
 ```
 
-### 반환 값
+### Parameters
 
-객체를 나타내는 문자열.
+None. However, all objects that override this method are expected to accept at most two parameters, corresponding to `locales` and `options`, such as {{jsxref("Date.prototype.toLocaleString")}}. The parameter positions should not be used for any other purpose.
 
-## 설명
+### Return value
 
-{{jsxref("Object")}}의 `toLocaleString`은 {{jsxref("Object.toString", "toString()")}}을 호출 한 결과를 반환합니다.
+The return value of calling `this.toString()`.
 
-이 함수는 모든 객체가 사용할 수는 없지만 객체에 일반 `toLocaleString` 메소드를 제공하기 위해 제공됩니다. 아래 목록을 참조하십시오.
+## Description
 
-### `toLocaleString()`을 재정의하는 객체
+All objects that inherit from `Object.prototype` (that is, all except [`null`-prototype objects](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#null-prototype_objects)) inherit the `toLocaleString()` method. {{jsxref("Object")}}'s `toLocaleString` returns the result of calling {{jsxref("Object/toString", "this.toString()")}}.
+
+This function is provided to give objects a generic `toLocaleString` method, even though not all may use it. In the core language, these built-in objects override `toLocaleString` to provide locale-specific formatting:
 
 - {{jsxref("Array")}}: {{jsxref("Array.prototype.toLocaleString()")}}
 - {{jsxref("Number")}}: {{jsxref("Number.prototype.toLocaleString()")}}
 - {{jsxref("Date")}}: {{jsxref("Date.prototype.toLocaleString()")}}
+- {{jsxref("TypedArray")}}: {{jsxref("TypedArray.prototype.toLocaleString()")}}
+- {{jsxref("BigInt")}}: {{jsxref("BigInt.prototype.toLocaleString()")}}
 
-## 명세
+## Examples
+
+### Using the base toLocaleString() method
+
+The base `toLocaleString()` method simply calls `toString()`.
+
+```js
+const obj = {
+  toString() {
+    return "My Object";
+  },
+};
+console.log(obj.toLocaleString()); // "My Object"
+```
+
+### Array toLocaleString() override
+
+{{jsxref("Array.prototype.toLocaleString()")}} is used to print array values as a string by invoking each element's `toLocaleString()` method and joining the results with a locale-specific separator. For example:
+
+```js
+const testArray = [4, 7, 10];
+
+const euroPrices = testArray.toLocaleString("fr", {
+  style: "currency",
+  currency: "EUR",
+});
+// "4,00 €,7,00 €,10,00 €"
+```
+
+### Date toLocaleString() override
+
+{{jsxref("Date.prototype.toLocaleString()")}} is used to print out date displays more suitable for specific locales. For example:
+
+```js
+const testDate = new Date();
+// "Fri May 29 2020 18:04:24 GMT+0100 (British Summer Time)"
+
+const deDate = testDate.toLocaleString("de");
+// "29.5.2020, 18:04:24"
+
+const frDate = testDate.toLocaleString("fr");
+// "29/05/2020, 18:04:24"
+```
+
+### Number toLocaleString() override
+
+{{jsxref("Number.prototype.toLocaleString()")}} is used to print out number displays more suitable for specific locales, e.g. with the correct separators. For example:
+
+```js
+const testNumber = 2901234564;
+// "2901234564"
+
+const deNumber = testNumber.toLocaleString("de");
+// "2.901.234.564"
+
+const frNumber = testNumber.toLocaleString("fr");
+// "2 901 234 564"
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Object.prototype.toString()")}}

@@ -1,77 +1,150 @@
 ---
-title: 쉼표 연산자
-slug: Web/JavaScript/Reference/Operators/Comma_Operator
+title: Comma operator (,)
+slug: Web/JavaScript/Reference/Operators/Comma_operator
+page-type: javascript-operator
+browser-compat: javascript.operators.comma
 ---
 
 {{jsSidebar("Operators")}}
 
-**쉼표 연산자**는 각각의 피연산자를 왼쪽에서 오른쪽 순서로 평가하고, 마지막 연산자의 값을 반환합니다.
+The **comma (`,`)** operator evaluates each of its operands (from left to right) and returns the value of the last operand. This is commonly used to provide multiple updaters to a [`for`](/en-US/docs/Web/JavaScript/Reference/Statements/for) loop's afterthought.
 
 {{EmbedInteractiveExample("pages/js/expressions-commaoperators.html")}}
 
-## 구문
+## Syntax
 
-```js
-    expr1, expr2, expr3...
+```js-nolint
+expr1, expr2, expr3/* , … */
 ```
 
-### 매개변수
+### Parameters
 
-- `expr1`, `expr2, expr3...`
-  - : 아무 표현식.
+- `expr1`, `expr2`, `expr3`, …
+  - : One or more expressions, the last of which is returned as the value of the compound expression.
 
-## 설명
+## Description
 
-단일 표현식을 요구하는 곳에 복수의 표현식을 사용하고 싶을 때 쉼표 연산자를 사용할 수 있습니다. 가장 흔히 사용되는 곳은 `for` 반복문에 다수의 매개변수를 제공할 때입니다.
+You can use the comma operator when you want to include multiple expressions in a location that requires a single expression. The most common usage of this operator is to supply multiple updaters in a `for` loop.
 
-쉼표 연산자는 배열, 객체, 함수의 매개변수와 호출 인수에서 사용하는 쉼표와는 전혀 다릅니다.
+Because all expressions except the last are evaluated and then discarded, these expressions must have side effects to be useful. Common expressions that have side effects are assignments, function calls, and [`++`](/en-US/docs/Web/JavaScript/Reference/Operators/Increment) and [`--`](/en-US/docs/Web/JavaScript/Reference/Operators/Decrement) operators. Others may also have side effects if they invoke [getters](/en-US/docs/Web/JavaScript/Reference/Functions/get) or trigger [type coercions](/en-US/docs/Web/JavaScript/Data_structures#type_coercion).
 
-## 예제
+The comma operator has the lowest [precedence](/en-US/docs/Web/JavaScript/Reference/Operators/Operator_precedence) of all operators. If you want to incorporate a comma-joined expression into a bigger expression, you must parenthesize it.
 
-`a`를 한 행에 10개의 요소를 가진 2차원 배열이라고 가정할 때, 아래 예제는 쉼표 연산자를 사용해 한 번에 `i`는 증가시키고 `j`는 감소시킵니다.
+The comma operator is completely different from commas used as syntactic separators in other locations, which include:
 
-다음 코드는 2차원 배열의 대각선에 위치하는 요소의 값을 출력합니다.
+- Elements in array initializers (`[1, 2, 3]`)
+- Properties in [object initializers](/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer) (`{ a: 1, b: 2 }`)
+- Parameters in [function declarations](/en-US/docs/Web/JavaScript/Reference/Statements/function)/expressions (`function f(a, b) { … }`)
+- Arguments in function calls (`f(1, 2)`)
+- Binding lists in [`let`](/en-US/docs/Web/JavaScript/Reference/Statements/let), [`const`](/en-US/docs/Web/JavaScript/Reference/Statements/const), or [`var`](/en-US/docs/Web/JavaScript/Reference/Statements/var) declarations (`const a = 1, b = 2;`)
+- Import lists in [`import`](/en-US/docs/Web/JavaScript/Reference/Statements/import) declarations (`import { a, b } from "c";`)
+- Export lists in [`export`](/en-US/docs/Web/JavaScript/Reference/Statements/export) declarations (`export { a, b };`)
+
+In fact, although some of these places accept almost all expressions, they don't accept comma-joined expressions because that would be ambiguous with the syntactic comma separators. In this case, you must parenthesize the comma-joined expression. For example, the following is a `const` declaration that declares two variables, where the comma is not the comma operator:
+
+```js-nolint
+const a = 1, b = 2;
+```
+
+It is different from the following, where `b = 2` is an [assignment expression](/en-US/docs/Web/JavaScript/Reference/Operators/Assignment), not a declaration. The value of `a` is `2`, the return value of the assignment, while the value of `1` is discarded:
+
+```js-nolint
+const a = (1, b = 2);
+```
+
+Comma operators cannot appear as [trailing commas](/en-US/docs/Web/JavaScript/Reference/Trailing_commas).
+
+## Examples
+
+### Using the comma operator in a for loop
+
+If `a` is a 2-dimensional array with 10 elements on each side, the following code uses the comma operator to increment `i` and decrement `j` at once, thus printing the values of the diagonal elements in the array:
 
 ```js
+const a = Array.from({ length: 10 }, () =>
+  Array.from({ length: 10 }, Math.random),
+); // A 10×10 array of random numbers
+
 for (let i = 0, j = 9; i <= 9; i++, j--) {
   console.log(`a[${i}][${j}] = ${a[i][j]}`);
 }
 ```
 
-쉼표 연산자를 할당에 사용하면, 할당 연산이 표현식에 포함되지 않아 예상한 결과와는 다소 다를 수 있습니다. 다음 예제에서, `a`는 `b = 3`의 값(3)을 할당받지만, `c = 4` 표현식 역시 평가되어 콘솔에 기록됩니다. [연산자 우선순위와 결합성](/ko/docs/Web/JavaScript/Reference/Operators/Operator_Precedence) 때문입니다.
+### Using the comma operator to join assignments
 
-```js
-var a, b, c;
+Because commas have the lowest [precedence](/en-US/docs/Web/JavaScript/Reference/Operators/Operator_precedence) — even lower than assignment — commas can be used to join multiple assignment expressions. In the following example, `a` is set to the value of `b = 3` (which is 3). Then, the `c = 4` expression evaluates and its result becomes the return value of the entire comma expression.
 
-a = b = 3, c = 4; // 콘솔에는 4를 반환
-console.log(a); // 3 (제일 왼쪽)
+```js-nolint
+let a, b, c;
 
-var x, y, z;
+a = b = 3, c = 4; // Returns 4
+console.log(a); // 3 (left-most)
 
-x = (y = 5, z = 6); // 콘솔에는 6을 반환
-console.log(x); // 6 (제일 오른쪽)
+let x, y, z;
+
+x = (y = 5, z = 6); // Returns 6
+console.log(x); // 6 (right-most)
 ```
 
-### 연산 후 반환
+### Processing and then returning
 
-쉼표 연산자를 사용하는 다른 방법은 값을 반환하기 전에 연산을 수행하는 것입니다. 쉼표 연산자는 마지막 표현식의 평가 결과만 반환하지만, 이전 피연산자에 대해서도 평가는 수행하므로 다음과 같은 코드를 작성할 수 있습니다.
+Another example that one could make with the comma operator is processing before returning. As stated, only the last element will be returned but all others are going to be evaluated as well. So, one could do:
 
-```js
-function myFunc () {
-  var x = 0;
+```js-nolint
+function myFunc() {
+  let x = 0;
 
-  return (x += 1, x); // ++x 와 같은 효과
+  return (x += 1, x); // the same as return ++x;
 }
 ```
 
-## 명세서
+This is especially useful for one-line [arrow functions](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions). The following example uses a single [`map()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) to get both the sum of an array and the squares of its elements, which would otherwise require two iterations, one with [`reduce()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce) and one with `map()`:
+
+```js
+let sum = 0;
+const squares = [1, 2, 3, 4, 5].map((x) => ((sum += x), x * x));
+console.log(squares); // [1, 4, 9, 16, 25]
+console.log(sum); // 15
+```
+
+### Discarding reference binding
+
+The comma operator always returns the last expression as a _value_ instead of a _reference_. This causes some contextual information such as the [`this`](/en-US/docs/Web/JavaScript/Reference/Operators/this) binding to be lost. For example, a property access returns a reference to the function, which also remembers the object that it's accessed on, so that calling the property works properly. If the method is returned from a comma expression, then the function is called as if it's a new function value, and `this` is `undefined`.
+
+```js-nolint
+const obj = {
+  value: "obj",
+  method() {
+    console.log(this.value);
+  },
+};
+
+obj.method(); // "obj"
+(obj.method)(); // "obj" (the grouping operator still returns the reference)
+(0, obj.method)(); // undefined (the comma operator returns a new value)
+```
+
+You can enter [indirect eval](/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval#direct_and_indirect_eval) with this technique, because direct eval requires the function call to happen on the reference to the `eval()` function.
+
+```js-nolint
+globalThis.isDirectEval = false;
+
+{
+  const isDirectEval = true;
+  console.log(eval("isDirectEval")); // true
+  console.log((eval)("isDirectEval")); // true (the grouping operator still returns a reference to `eval`)
+  console.log((0, eval)("isDirectEval")); // false (the comma operator returns a new value)
+}
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [`for` 반복문](/ko/docs/Web/JavaScript/Reference/Statements/for)
+- [`for` loop](/en-US/docs/Web/JavaScript/Reference/Statements/for)

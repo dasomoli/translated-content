@@ -1,39 +1,55 @@
 ---
-title: URL.origin
+title: "URL: origin property"
+short-title: origin
 slug: Web/API/URL/origin
+page-type: web-api-instance-property
+browser-compat: api.URL.origin
 ---
 
 {{APIRef("URL API")}}
 
-{{domxref("URL")}} 인터페이스의 **`origin`** 읽기 전용 속성은 표현 중인 URL의 출처를 유니코드로 직렬화한 {{domxref("USVString")}}을 반환합니다. 정확한 구조는 URL의 유형에 따라 다릅니다.
+The **`origin`** read-only property of
+the {{domxref("URL")}} interface returns a string containing the
+Unicode serialization of the origin of the represented URL.
 
-- `http` 또는 `https` URL은 스킴 뒤 `'://'`, 도메인, `':'`, 마지막으로 포트(명시적으로 지정한 경우)로 구성됩니다.
-- `file:` URL은 브라우저마다 다릅니다.
-- `blob:` URL은 `blob:` 뒤의 URL 출처를 반환합니다. 예를 들어, `"blob:https://mozilla.org"`인 경우 `"https://mozilla.org"`를 반환합니다.
+The exact structure
+varies depending on the type of URL:
+
+- For `http` or `https` URLs, the scheme followed by
+  `'://'`, followed by the domain, followed by `':'`, followed by
+  the port (if explicitly specified, unless it is the default port - `80` and `443` respectively).
+- For `file:` URLs, the value is browser dependent.
+- for `blob:` URLs, the origin of the URL following `blob:` will
+  be used. For example, `"blob:https://mozilla.org"` will be returned as
+  `"https://mozilla.org".`
 
 {{AvailableInWorkers}}
 
-## 구문
+## Value
+
+A string.
+
+## Examples
 
 ```js
-const originString = url.origin
-```
-
-### 값
-
-A {{domxref("USVString")}}.
-
-## 예제
-
-```js
-const url = new URL("blob:https://mozilla.org:443/")
+const url = new URL("blob:https://mozilla.org:443/");
 console.log(url.origin); // Logs 'https://mozilla.org'
+
+const url = new URL("http://localhost:80/");
+console.log(url.origin); // Logs 'http://localhost'
+
+const url = new URL("https://mozilla.org:8080/");
+console.log(url.origin); // Logs 'https://mozilla.org:8080'
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- The {{domxref("URL")}} interface

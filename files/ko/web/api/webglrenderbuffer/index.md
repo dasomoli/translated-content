@@ -1,39 +1,44 @@
 ---
 title: WebGLRenderbuffer
 slug: Web/API/WebGLRenderbuffer
+page-type: web-api-interface
+browser-compat: api.WebGLRenderbuffer
 ---
+
 {{APIRef("WebGL")}}
 
-**WebGLRenderbuffer** 인터페이스는 [WebGL API](/ko/docs/Web/API/WebGL_API) 의 부분입니다. 그리고 이미지를 담거나 렌더링 연산의 소스나 타겟이 될 수 있는 버퍼를 말합니다.
+The **WebGLRenderbuffer** interface is part of the [WebGL API](/en-US/docs/Web/API/WebGL_API) and represents a buffer that can contain an image, or that can be a source or target of a rendering operation.
 
-## 설명
+{{InheritanceDiagram}}
 
-`WebGLRenderbuffer` 오브젝트는 메소드나 프로퍼티를 정의 하지 않으며 직접적으로 접근할 수 없습니다. When working with `WebGLRenderbuffer` 오브젝트와 작업하려면 다음의 {{domxref("WebGLRenderingContext")}} 메소드가 도움이 될 것입니다.
+## Description
+
+The `WebGLRenderbuffer` object does not define any methods or properties of its own and its content is not directly accessible. When working with `WebGLRenderbuffer` objects, the following methods of the {{domxref("WebGLRenderingContext")}} are useful:
 
 - {{domxref("WebGLRenderingContext.bindRenderbuffer()")}}
 - {{domxref("WebGLRenderingContext.createRenderbuffer()")}}
 - {{domxref("WebGLRenderingContext.deleteRenderbuffer()")}}
 - {{domxref("WebGLRenderingContext.isRenderbuffer()")}}
 
-## 예
+## Examples
 
-### 렌더 버퍼 만들기
+### Creating a render buffer
 
 ```js
-var canvas = document.getElementById('canvas');
-var gl = canvas.getContext('webgl');
-var buffer = gl.createRenderbuffer();
+const canvas = document.getElementById("canvas");
+const gl = canvas.getContext("webgl");
+const buffer = gl.createRenderbuffer();
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 보기
+## See also
 
 - {{domxref("WebGLRenderingContext.bindRenderbuffer()")}}
 - {{domxref("WebGLRenderingContext.createRenderbuffer()")}}

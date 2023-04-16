@@ -1,25 +1,31 @@
 ---
 title: Math.LOG2E
 slug: Web/JavaScript/Reference/Global_Objects/Math/LOG2E
+page-type: javascript-static-data-property
+browser-compat: javascript.builtins.Math.LOG2E
 ---
 
 {{JSRef}}
 
-**`Math.LOG2E`** 속성은 e의 로그 2 값, 약 1.442의 값을 가집니다.
+The **`Math.LOG2E`** static data property represents the base 2 logarithm of [e](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/E), approximately 1.442.
 
-<math display="block"><semantics><mrow><mstyle mathvariant="monospace"><mi>Math.LOG2E</mi></mstyle><mo>=</mo><msub><mo lspace="0em" rspace="0em">log</mo><mn>2</mn></msub><mo stretchy="false">(</mo><mi>e</mi><mo stretchy="false">)</mo><mo>≈</mo><mn>1.442</mn></mrow><annotation encoding="TeX">\mathtt{\mi{Math.LOG2E}} = \log_2(e) \approx 1.442</annotation></semantics></math>
+{{EmbedInteractiveExample("pages/js/math-log2e.html","shorter")}}
 
-{{EmbedInteractiveExample("pages/js/math-log2e.html")}}{{js_property_attributes(0, 0, 0)}}
+## Value
 
-## 설명
+<math display="block"><semantics><mrow><mi>𝙼𝚊𝚝𝚑.𝙻𝙾𝙶𝟸𝙴</mi><mo>=</mo><msub><mo lspace="0em" rspace="0em">log</mo><mn>2</mn></msub><mo stretchy="false">(</mo><mi mathvariant="normal">e</mi><mo stretchy="false">)</mo><mo>≈</mo><mn>1.442</mn></mrow><annotation encoding="TeX">\mathtt{\mi{Math.LOG2E}} = \log_2(\mathrm{e}) \approx 1.442</annotation></semantics></math>
 
-`LOG2E`는 `Math`의 정적 속성이므로, 사용자가 생성한 `Math` 객체의 속성으로 접근할 수 없고 항상 `Math.LOG2E`를 사용해야 합니다. (`Math`는 생성자가 아닙니다)
+{{js_property_attributes(0, 0, 0)}}
 
-## 설명
+## Description
 
-### `Math.LOG2E` 사용하기
+Because `LOG2E` is a static property of `Math`, you always use it as `Math.LOG2E`, rather than as a property of a `Math` object you created (`Math` is not a constructor).
 
-다음 함수는 e의 로그 2 값을 반환합니다.
+## Examples
+
+### Using Math.LOG2E
+
+The following function returns the base 2 logarithm of e:
 
 ```js
 function getLog2e() {
@@ -29,15 +35,15 @@ function getLog2e() {
 getLog2e(); // 1.4426950408889634
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Math.exp()")}}
 - {{jsxref("Math.log()")}}

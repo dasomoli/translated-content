@@ -1,61 +1,93 @@
 ---
 title: WebAssembly.instantiateStreaming()
 slug: WebAssembly/JavaScript_interface/instantiateStreaming
-original_slug: Web/JavaScript/Reference/Global_Objects/WebAssembly/instantiateStreaming
+browser-compat: javascript.builtins.WebAssembly.instantiateStreaming
 ---
 
 {{WebAssemblySidebar}}
 
-**`WebAssembly.instantiateStreaming()`** 함수는 스트림 된 원본 소스에서 직접 WebAssembly 모듈을 컴파일하고 인스턴스화합니다. Wasm 코드를로드하는 가장 효율적이고 최적화 된 방법입니다.
+The **`WebAssembly.instantiateStreaming()`** function compiles
+and instantiates a WebAssembly module directly from a streamed underlying source. This
+is the most efficient, optimized way to load wasm code.
+
+> **Note:** Webpages that have strict [Content Security Policy (CSP)](/en-US/docs/Web/HTTP/CSP) might block WebAssembly from compiling and executing modules.
+> For more information on allowing WebAssembly compilation and execution, see the [script-src CSP](/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src).
 
 ## Syntax
 
-```js
-Promise<ResultObject> WebAssembly.instantiateStreaming(source, importObject);
+```js-nolint
+WebAssembly.instantiateStreaming(source, importObject)
 ```
 
 ### Parameters
 
-- _source_
-  - : 스트리밍, 컴파일 및 인스턴스화하려는 .wasm 모듈의 기본 소스를 나타내는 {{domxref ( "Response")}} 객체 또는 promise.
-- _importObject_ {{optional_inline}}
-  - : 함수 또는 {{jsxref("WebAssembly.Memory")}} 객체와 같이 새로 생성 된 `Instance`로 가져올 값을 포함하는 객체입니다. 컴파일 된 모듈의 각 선언 된 가져 오기에 대해 하나의 일치하는 속성이 있어야합니다. 그렇지 않으면 [WebAssembly.LinkError](/ko/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/LinkError)가 발생합니다.
+- `source`
+  - : A [`Response`](/en-US/docs/Web/API/Response)
+    object or a promise that will fulfill with one, representing the underlying source of
+    a .wasm module you want to stream, compile, and instantiate.
+- `importObject` {{optional_inline}}
+  - : An object containing the values to be imported into the newly-created
+    `Instance`, such as functions or [`WebAssembly.Memory`](/en-US/docs/WebAssembly/JavaScript_interface/Memory) objects.
+    There must be one matching property for each declared import of the compiled module or
+    else a
+    [`WebAssembly.LinkError`](/en-US/docs/WebAssembly/JavaScript_interface/LinkError)
+    is thrown.
 
 ### Return value
 
-두 개의 필드를 포함하는 `ResultObject`로 해석되는 `Promise` :
+A `Promise` that resolves to a `ResultObject` which contains two
+fields:
 
-- `module`: 컴파일 된 WebAssembly 모듈을 나타내는 {{jsxref ( "WebAssembly.Module")}} 객체입니다. 이 `Module`은 다시 인스턴스화되거나 [postMessage()](/ko/docs/Web/API/Worker/postMessage)를 통해 공유 될 수 있습니다.
-- `instance`: [Exported WebAssembly functions](/ko/docs/WebAssembly/Exported_functions)를 포함하는 {{jsxref ( "WebAssembly.Instance")}} 객체입니다.
+- `module`: A [`WebAssembly.Module`](/en-US/docs/WebAssembly/JavaScript_interface/Module) object representing the
+  compiled WebAssembly module. This `Module` can be instantiated again or
+  shared via [postMessage()](/en-US/docs/Web/API/Worker/postMessage).
+- `instance`: A [`WebAssembly.Instance`](/en-US/docs/WebAssembly/JavaScript_interface/Instance) object that contains all
+  the [Exported WebAssembly functions](/en-US/docs/WebAssembly/Exported_functions).
 
 ### Exceptions
 
-- 매개 변수 중 하나가 올바른 유형 또는 구조가 아니면 {{jsxref ( "TypeError")}}가 발생합니다.
-- 작업작업이 실패하면 promise는 실패 원인에 따라 {{jsxref ( "WebAssembly.CompileError")}}, {{jsxref ( "WebAssembly.LinkError")}} 또는 {{jsxref ( "WebAssembly.RuntimeError")}}로 거부됩니다.
+- If either of the parameters are not of the correct type or structure, a
+  {{jsxref("TypeError")}} is thrown.
+- If the operation fails, the promise rejects with a
+  [`WebAssembly.CompileError`](/en-US/docs/WebAssembly/JavaScript_interface/CompileError), [`WebAssembly.LinkError`](/en-US/docs/WebAssembly/JavaScript_interface/LinkError), or
+  [`WebAssembly.RuntimeError`](/en-US/docs/WebAssembly/JavaScript_interface/RuntimeError), depending on the cause of the failure.
 
 ## Examples
 
-다음 예제 (GitHub의 [instantiate-streaming.html](https://github.com/mdn/webassembly-examples/blob/master/js-api-examples/instantiate-streaming.html) 데모보기 및 [view it live](https://mdn.github.io/webassembly-examples/js-api-examples/instantiate-streaming.html))에서는 원본 소스에서 .wasm 모듈을 직접 스트리밍 한 다음 컴파일하고 인스턴스화합니다. 약속은 `ResultObject`로 충족됩니다.`instantiateStreaming()` 함수는 {{domxref("Response")}} 객체에 대한 promise를 받아들이므로 직접 {{domxref("WindowOrWorkerGlobalScope.fetch()")}} 호출을 전달할 수 있으며 응답을 수행하면 함수에 응답을 전달합니다.
+### Instantiating streaming
+
+The following example (see our [instantiate-streaming.html](https://github.com/mdn/webassembly-examples/blob/master/js-api-examples/instantiate-streaming.html)
+demo on GitHub, and [view it live](https://mdn.github.io/webassembly-examples/js-api-examples/instantiate-streaming.html) also)
+directly streams a .wasm module from an underlying source then
+compiles and instantiates it, the promise fulfilling with a `ResultObject`.
+Because the `instantiateStreaming()` function accepts a promise for a [`Response`](/en-US/docs/Web/API/Response)
+object, you can directly pass it a [`fetch()`](/en-US/docs/Web/API/fetch)
+call, and it will pass the response into the function when it fulfills.
 
 ```js
-var importObject = { imports: { imported_func: arg => console.log(arg) } };
+const importObject = { imports: { imported_func: (arg) => console.log(arg) } };
 
-WebAssembly.instantiateStreaming(fetch('simple.wasm'), importObject)
-.then(obj => obj.instance.exports.exported_func());
+WebAssembly.instantiateStreaming(fetch("simple.wasm"), importObject).then(
+  (obj) => obj.instance.exports.exported_func()
+);
 ```
 
-그런 다음 `ResultObject`의 인스턴스 구성원에 액세스하고 포함 된 내 보낸 함수를 호출합니다.
+The `ResultObject`'s instance member is then accessed, and the contained
+exported function invoked.
 
-## 명세서
+> **Note:** For this to work, `.wasm` files should be returned
+> with an `application/wasm` MIME type by the server.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- [WebAssembly](/ko/docs/WebAssembly) overview page
-- [WebAssembly concepts](/ko/docs/WebAssembly/Concepts)
-- [Using the WebAssembly JavaScript API](/ko/docs/WebAssembly/Using_the_JavaScript_API)
+- [WebAssembly](/en-US/docs/WebAssembly) overview page
+- [WebAssembly concepts](/en-US/docs/WebAssembly/Concepts)
+- [Using the WebAssembly JavaScript API](/en-US/docs/WebAssembly/Using_the_JavaScript_API)

@@ -1,56 +1,67 @@
 ---
-title: GlobalEventHandlers.ontouchstart
+title: "Element: touchstart event"
+short-title: touchstart
 slug: Web/API/Element/touchstart_event
-original_slug: Web/API/GlobalEventHandlers/ontouchstart
+page-type: web-api-event
+browser-compat: api.Element.touchstart_event
 ---
 
-{{ApiRef("HTML DOM")}}
+{{APIRef}}
 
-{{event("touchstart")}} 이벤트를 위한 {{domxref("GlobalEventHandlers","global event handler")}}
+The `touchstart` event is fired when one or more touch points are placed on the touch surface.
 
-{{SeeCompatTable}}
+## Syntax
 
-## 문법
-
-```js
-var startHandler = someElement.ontouchstart;
-```
-
-### 반환 값
-
-- `startHandler`
-  - : `someElement`를 위한 _touchstart_ 이벤트 핸들러
-
-## 예제
-
-이 예제는 HTML 요소에 _touchstart_ e이벤트 핸들러를 등록하기 위한 두 방법을 보여주고 있습니다.
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
 
 ```js
-<html>
-<script>
-function startTouch(ev) {
- // 이벤트 내부
-}
-function init() {
- var el=document.getElementById("target1");
- el.ontouchstart = startTouch;
-}
-</script>
-<body onload="init();">
-<div id="target1"> 터치해주세요... </div>
-<div id="target2" ontouchstart="startTouch(event)"> 터치해주세요... </div>
-</body>
-</html>
+addEventListener("touchstart", (event) => {});
+
+ontouchstart = (event) => {};
 ```
 
-## 명세
+## Event type
+
+A {{domxref("TouchEvent")}}. Inherits from {{domxref("Event")}}.
+
+{{InheritanceDiagram("TouchEvent")}}
+
+## Event properties
+
+_This interface inherits properties from its parent, {{domxref("UIEvent")}} and {{domxref("Event")}}._
+
+- {{domxref("TouchEvent.altKey")}} {{ReadOnlyInline}}
+  - : A Boolean value indicating whether or not the alt key was down when the touch event was fired.
+- {{domxref("TouchEvent.changedTouches")}} {{ReadOnlyInline}}
+  - : A {{domxref("TouchList")}} of all the {{domxref("Touch")}} objects representing individual points of contact whose states changed between the previous touch event and this one.
+- {{domxref("TouchEvent.ctrlKey")}} {{ReadOnlyInline}}
+  - : A Boolean value indicating whether or not the control key was down when the touch event was fired.
+- {{domxref("TouchEvent.metaKey")}} {{ReadOnlyInline}}
+  - : A Boolean value indicating whether or not the meta key was down when the touch event was fired.
+- {{domxref("TouchEvent.shiftKey")}} {{ReadOnlyInline}}
+  - : A Boolean value indicating whether or not the shift key was down when the touch event was fired.
+- {{domxref("TouchEvent.targetTouches")}} {{ReadOnlyInline}}
+  - : A {{domxref("TouchList")}} of all the {{domxref("Touch")}} objects that are both currently in contact with the touch surface **and** were also started on the same element that is the target of the event.
+- {{domxref("TouchEvent.touches")}} {{ReadOnlyInline}}
+  - : A {{domxref("TouchList")}} of all the {{domxref("Touch")}} objects representing all current points of contact with the surface, regardless of target or changed status.
+- {{domxref("TouchEvent.rotation")}} {{non-standard_inline()}} {{ReadOnlyInline}}
+  - : Change in rotation (in degrees) since the event's beginning. Positive values indicate clockwise rotation; negative values indicate counterclockwise rotation. Initial value: `0.0`.
+- {{domxref("TouchEvent.scale")}} {{non-standard_inline()}} {{ReadOnlyInline}}
+  - : Distance between two digits since the event's beginning. Expressed as a floating-point multiple of the initial distance between the digits at the beginning of the event. Values below 1.0 indicate an inward pinch (zoom out). Values above 1.0 indicate an outward unpinch (zoom in). Initial value: `1.0`.
+
+## Examples
+
+Code samples for those events are available on the dedicated page: [Touch events](/en-US/docs/Web/API/Touch_events).
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 더 보기
+## See also
 
-- {{ event("touchstart") }}
+- [Touch events](/en-US/docs/Web/API/Touch_events)
+- This event on {{domxref("Document")}} targets: {{domxref("Document/touchstart_event", "touchstart")}}

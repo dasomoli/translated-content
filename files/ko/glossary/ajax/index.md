@@ -1,18 +1,25 @@
 ---
-title: AJAX
+title: Ajax
 slug: Glossary/AJAX
+page-type: glossary-definition
 ---
 
-AJAX (Asynchronous {{glossary("JavaScript")}} And {{glossary("XML")}})는 {{glossary("HTML")}}, {{glossary("CSS")}}, JavaScript, {{glossary("DOM")}} 조작, 와 `XMLHttpRequest` {{glossary("object")}}를 활용한 프로그래밍 방식이다. AJAX는 전체 페이지가 다시 로드되지 않고 일부분만 업데이트하는 좀 더 복잡한 웹페이지를 만들 수 있게 해준다. 또한 AJAX를 사용하면 웹페이지 일부가 리로드 되는 동안에도 코드가 계속 실행되어 비동기식으로 작업할 수 있다. (동기적으로 움직이는 코드와 비교하자면 웹페이지가 로딩이 끝날 때 까지 당신의 코드는 움직이지 않습니다.)
+**Ajax**, which initially stood for Asynchronous {{Glossary("JavaScript")}} And {{Glossary("XML")}}, is a programming practice of building complex, dynamic webpages using a technology known as {{Glossary("XMLHttpRequest")}}.
 
-## 더 많은 정보
+Ajax allows you to collect data to update parts of the {{Glossary("DOM")}} of an {{Glossary("HTML")}} page without the need for a full page refresh. Ajax also lets you work asynchronously, meaning your code continues to run while the targeted part of your web page is trying to reload (compared to synchronously, which blocks your code from running until that part of your page is done reloading).
 
-### 일반 지식
+With interactive websites and modern web standards, Ajax is performed using functions within JavaScript frameworks and the {{domxref("Fetch API")}} Standard.
 
-- 위키피디아 [AJAX](https://ko.wikipedia.org/wiki/Ajax)
-- [Synchronous vs. Asynchronous Communications](http://peoplesofttutorial.com/difference-between-synchronous-and-asynchronous-messaging/)
+## See also
 
-### 기술 정보
+- [AJAX](https://en.wikipedia.org/wiki/AJAX) on Wikipedia
+- [Ajax](/en-US/docs/Web/Guide/AJAX)
+- [Ajax - Getting started](/en-US/docs/Web/Guide/AJAX/Getting_Started)
+- [Glossary](/en-US/docs/Glossary):
 
-- {{domxref("XMLHttpRequest")}} 객체
-- [The AJAX documentation on MDN](/ko/docs/AJAX)
+  - {{Glossary("XMLHttpRequest")}}
+
+- {{DOMxRef("XMLHttpRequest")}}
+- {{DOMxRef("Fetch API")}}
+- [Using Fetch API](/en-US/docs/Web/API/Fetch_API/Using_Fetch)
+- [Synchronous vs. Asynchronous Communications](https://peoplesofttutorial.com/difference-between-synchronous-and-asynchronous-messaging/)

@@ -1,64 +1,67 @@
 ---
 title: File
 slug: Web/API/File
+page-type: web-api-interface
+browser-compat: api.File
 ---
-{{APIRef}}
 
-**`File`** 인터페이스는 파일에 대한 정보를 제공하고, 웹 페이지가 JavaScript로 파일의 내용에 접근할 수 있는 방법을 제공합니다.
+{{APIRef("File API")}}
 
-`File` 객체는 보통 {{domxref("FileList")}} 객체가 포함한 것을 사용하게 됩니다. `FileList` 객체는 사용자가 {{htmlelement("input")}} 요소로 파일을 선택한 결과 값으로, 또는 드래그 앤 드롭 작업의 {{domxref("DataTransfer")}} 객체에서 가져올 수 있습니다.
+The **`File`** interface provides information about files and allows JavaScript in a web page to access their content.
 
-`File` 객체는 {{domxref("Blob")}}의 한 종류로, `Blob`을 사용할 수 있는 모든 맥락에서 사용할 수 있습니다. 특히 {{domxref("FileReader")}}, {{domxref("URL.createObjectURL()")}}, {{domxref("createImageBitmap()")}}, {{domxref("XMLHttpRequest", "", "send()")}}는 `Blob`과 `File`을 모두 허용합니다.
+`File` objects are generally retrieved from a {{DOMxRef("FileList")}} object returned as a result of a user selecting files using the {{HTMLElement("input")}} element, or from a drag and drop operation's {{DOMxRef("DataTransfer")}} object.
 
-자세한 정보 및 예제는 [웹 애플리케이션에서 파일 사용하기](/ko/docs/Web/API/File/Using_files_from_web_applications)를 참고하세요.
+A `File` object is a specific kind of {{DOMxRef("Blob")}}, and can be used in any context that a Blob can. In particular, {{DOMxRef("FileReader")}}, {{DOMxRef("URL.createObjectURL()")}}, {{DOMxRef("createImageBitmap()")}}, and {{DOMxRef("XMLHttpRequest", "", "send()")}} accept both `Blob`s and `File`s.
+
+See [Using files from web applications](/en-US/docs/Web/API/File_API/Using_files_from_web_applications) for more information and examples.
 
 {{InheritanceDiagram}}
 
-## 생성자
+## Constructor
 
-- {{domxref("File.File", "File()")}}
-  - : 새로 생성한 `File`을 반환합니다.
+- {{DOMxRef("File.File", "File()")}}
+  - : Returns a newly constructed `File`.
 
-## 속성
+## Instance properties
 
-- {{domxref("File.prototype.lastModified")}} {{readonlyinline}}
-  - : 파일의 최종 수정 시간을 UNIX 시간(1970년 1월 1일 자정)과의 밀리초 차이로 반환합니다.
-- {{domxref("File.prototype.lastModifiedDate")}} {{deprecated_inline}} {{readonlyinline}}
-  - : `File` 객체가 참조하는 파일의 마지막 수정 시간을 {{jsxref("Date")}}로 반환합니다.
-- {{domxref("File.prototype.name")}} {{readonlyinline}}
-  - : `File` 객체가 참조하는 파일의 이름을 반환합니다.
-- {{domxref("File.prototype.webkitRelativePath")}} {{non-standard_inline}} {{readonlyinline}}
-  - : {{domxref("File")}}의 URL 상대경로를 반환합니다.
+- {{DOMxRef("File.prototype.lastModified")}} {{ReadOnlyInline}}
+  - : Returns the last modified time of the file, in millisecond since the UNIX epoch (January 1st, 1970 at Midnight).
+- {{DOMxRef("File.prototype.lastModifiedDate")}} {{Deprecated_Inline}} {{ReadOnlyInline}} {{Non-standard_Inline}}
+  - : Returns the last modified {{JSxRef("Date")}} of the file referenced by the `File` object.
+- {{DOMxRef("File.prototype.name")}} {{ReadOnlyInline}}
+  - : Returns the name of the file referenced by the `File` object.
+- {{DOMxRef("File.prototype.webkitRelativePath")}} {{ReadOnlyInline}}
+  - : Returns the path the URL of the {{DOMxRef("File")}} is relative to.
 
-`File`은 {{domxref("Blob")}}을 구현하므로 다음 속성도 가집니다.
+`File` implements {{DOMxRef("Blob")}}, so it also has the following properties available to it:
 
-- {{domxref("File.prototype.size")}} {{readonlyinline}}
-  - : `File`의 크기를 바이트 단위로 반환합니다.
-- {{domxref("File.prototype.type")}} {{readonlyinline}}
-  - : `File`의 [MIME 유형](/ko/docs/Web/HTTP/Basics_of_HTTP/MIME_types)을 반환합니다.
+- {{DOMxRef("File.prototype.size")}} {{ReadOnlyInline}}
+  - : Returns the size of the file in bytes.
+- {{DOMxRef("File.prototype.type")}} {{ReadOnlyInline}}
+  - : Returns the [MIME](/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) type of the file.
 
-## 메서드
+## Instance methods
 
-`File` 인터페이스는 메서드를 정의하지 않지만, {{domxref("Blob")}} 인터페이스에서 메서드를 상속합니다.
+_The `File` interface doesn't define any methods, but inherits methods from the {{DOMxRef("Blob")}} interface:_
 
-- {{domxref("Blob.prototype.slice()")}}
-  - : 지정한 바이트 범위 만큼 소스 {{domxref("Blob")}}의 데이터를 복사한 새로운 `Blob` 객체를 반환합니다.
-- {{domxref("Blob.prototype.stream()")}}
-  - : `File`을 {{domxref("ReadableStream")}}으로 변환합니다. `ReadableStream`은 파일 내용을 읽을 때 사용할 수 있습니다.
-- {{domxref("Blob.prototype.text()")}}
-  - : `File`을 스트림으로 변환한 후 끝까지 읽습니다. 문자열로 이행하는 {{jsxref("Promise")}}를 반환합니다.
-- {{domxref("Blob.prototype.arrayBuffer()")}}
-  - : `File`을 스트림으로 변환한 후 끝까지 읽습니다. {{jsxref("ArrayBuffer")}}로 이행하는 {{jsxref("Promise")}}를 반환합니다.
+- {{DOMxRef("Blob.prototype.slice()", "Blob.prototype.slice([start[, end[, contentType]]])")}}
+  - : Returns a new `Blob` object containing the data in the specified range of bytes of the source `Blob`.
+- {{DOMxRef("Blob.prototype.stream()")}}
+  - : Transforms the `File` into a {{DOMxRef("ReadableStream")}} that can be used to read the `File` contents.
+- {{DOMxRef("Blob.prototype.text()")}}
+  - : Transforms the `File` into a stream and reads it to completion. It returns a promise that resolves with a string (text).
+- {{DOMxRef("Blob.prototype.arrayBuffer()")}}
+  - : Transforms the `File` into a stream and reads it to completion. It returns a promise that resolves with an {{jsxref("ArrayBuffer")}}.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [웹 애플리케이션에서 파일 사용하기](/ko/docs/Web/API/File/Using_files_from_web_applications)
-- {{domxref("FileReader")}}
+- [Using files from web applications](/en-US/docs/Web/API/File_API/Using_files_from_web_applications)
+- {{DOMxRef("FileReader")}}

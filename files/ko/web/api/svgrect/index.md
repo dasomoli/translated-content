@@ -1,33 +1,35 @@
 ---
 title: SVGRect
 slug: Web/API/SVGRect
+page-type: web-api-interface
+browser-compat: api.SVGRect
 ---
 
 {{APIRef("SVG")}}
 
-**`SVGRect`** 인터페이스는 직사각형을 나타냅니다. 직사각형은 최소 `x` 값과 최소 `y` 값을 가리키는 좌표쌍, 그리고 양수인 `width`와 `height` 값으로 구성됩니다.
+The **`SVGRect`** represents a rectangle. Rectangles consist of an `x` and `y` coordinate pair identifying a minimum `x` value, a minimum `y` value, and a `width` and `height`, which are constrained to be non-negative.
 
-**`SVGRect`** 객체는 읽기 전용으로 지정될 수 있습니다. 읽기 전용일 경우 객체를 수정하려고 시도하면 예외가 발생합니다.
+An **`SVGRect`** object can be designated as read only, which means that attempts to modify the object will result in an exception being thrown.
 
-## 속성
+## Instance properties
 
 - {{domxref("SVGRect.x")}}
-  - : 이 좌표의 정확한 효과는 요소에 따라 다릅니다. `x` 특성을 지정하지 않은 경우 `0`을 지정한 것과 동일하게 취급합니다.
+  - : The exact effect of this coordinate depends on each element. If the attribute is not specified, the effect is as if a value of `0` were specified.
 - {{domxref("SVGRect.y")}}
-  - : 이 좌표의 정확한 효과는 요소에 따라 다릅니다. `y` 특성을 지정하지 않은 경우 `0`을 지정한 것과 동일하게 취급합니다.
+  - : The exact effect of this coordinate depends on each element. If the attribute is not specified, the effect is as if a value of `0` were specified.
 - {{domxref("SVGRect.width")}}
-  - : 직사각형의 너비를 나타냅니다. 음수로 설정하려고 시도하면 오류가 발생합니다. `0`일 경우 요소를 렌더링하지 않습니다.
+  - : This represents the width of the rectangle. A value that is negative results to an error. A value of `0` disables rendering of the element
 - {{SVGAttr("SVGRect.height")}}
-  - : 직사각형의 높이를 나타냅니다. 음수로 설정하려고 시도하면 오류가 발생합니다. `0`일 경우 요소를 렌더링하지 않습니다.
+  - : This represents the height of the rectangle. A value that is negative results to an error. A value of `0` disables rendering of the element.
 
-## 메서드
+## Instance methods
 
-없음.
+None.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

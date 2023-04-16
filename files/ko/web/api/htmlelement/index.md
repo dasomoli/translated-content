@@ -1,206 +1,181 @@
 ---
 title: HTMLElement
 slug: Web/API/HTMLElement
+page-type: web-api-interface
+browser-compat: api.HTMLElement
 ---
 
-{{ APIRef("HTML DOM") }}
+{{APIRef("HTML DOM")}}
 
-**`HTMLElement`** 인터페이스는 모든 종류의 [HTML](/ko/docs/Web/HTML) 요소를 나타냅니다. 일부 요소는 이 인터페이스를 직접 구현하지만 나머지 요소는 `HTMLElement`를 상속한 자식 인터페이스를 구현합니다.
+The **`HTMLElement`** interface represents any [HTML](/en-US/docs/Web/HTML) element. Some elements directly implement this interface, while others implement it via an interface that inherits it.
 
 {{InheritanceDiagram}}
 
-## 속성
+## Instance properties
 
-_부모인 {{domxref("Element")}}의 속성을 상속합니다. {{domxref("GlobalEventHandlers")}}, {{domxref("TouchEventHandlers")}}의 속성을 구현합니다._
+_Inherits properties from its parent, {{DOMxRef("Element")}}._
 
-- {{domxref("HTMLElement.accessKey")}}
-  - : 요소에 할당된 접근 키를 나타내는 {{domxref("DOMString")}}입니다.
-- {{domxref("HTMLElement.accessKeyLabel")}} {{readonlyInline}}
-  - : 요소에 할당된 접근 키를 포함하는 {{domxref("DOMString")}}을 반환합니다.
-- {{domxref("HTMLElement.contentEditable")}}
-  - : 요소가 수정 가능하면 `"true"`, 그렇지 않으면 `"false"` 값을 갖는 {{domxref("DOMString")}}입니다.
-- {{domxref("HTMLElement.isContentEditable")}} {{readonlyInline}}
-  - : 요소의 콘텐츠가 수정 가능한지 여부를 나타내는 {{domxref("Boolean")}}을 반환합니다.
-- {{domxref("HTMLElement.contextMenu")}} {{deprecated_inline}}
-  - : 요소와 관련된 콘텍스트 메뉴를 나타내는 {{domxref("HTMLMenuElement")}}입니다. {{jsxref("null")}}일 수 있습니다.
-- {{domxref("HTMLElement.dataset")}} {{readonlyInline}}
-  - : 요소의 [사용자 지정 데이터 속성](/ko/docs/Learn/HTML/Howto/%EB%8D%B0%EC%9D%B4%ED%84%B0_%EC%86%8D%EC%84%B1_%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0)(`data-*`)을 스크립트에서 읽고 쓸 수 있는 {{domxref("DOMStringMap")}}을 반환합니다.
-- {{domxref("HTMLElement.dir")}}
-  - : 요소의 방향성을 표현하는 전역 속성 `dir` 을 나타내는 {{domxref("DOMString")}} 을 반환합니다. 가능한 값은 `"ltr"`, `"rtl"`, `"auto"` 입니다.
-- {{domxref("HTMLElement.draggable")}}
-  - : 요소가 드래그 가능한지 여부를 나타내는 {{jsxref("Boolean")}} 을 반환합니다.
-- {{domxref("HTMLElement.dropzone")}} {{readonlyInline}}
-  - : `dropzone` 전역 속성을 나타내고 drop 작업에 대한 동작을 설명하는 {{domxref("DOMSettableTokenList")}} 를 반환합니다.
-- {{domxref("HTMLElement.hidden")}}
-  - : 요소가 숨김상태인지 여부를 나타내는 {{jsxref("Boolean")}} 을 반환합니다.
-- {{domxref("HTMLElement.inert")}}
-  - : 유저 에이전트가 사용자 인터렉션 이벤트, 페이지 내 텍스트 검색("페이지에서 찾기"), 텍스트 선택의 목적으로 주어진 노드가 없는 것처럼 동작해야하는지 여부를 나타내는 {{jsxref("Boolean")}} 을 반환합니다.
-- {{domxref("HTMLElement.innerText")}}
-  - : 노드와 그 자손의 "렌더링된" 텍스트 컨텐츠를 나타냅니다. getter 로써, 이는 사용자가 커서로 요소의 컨텐츠를 하이라이팅한 후 클립보드로 복사하면 얻을 수 있는 텍스트와 유사합니다.
-- {{domxref("HTMLElement.itemScope")}} {{experimental_inline}}
-  - : 항목 스코프를 나타내는 {{jsxref("Boolean")}} 입니다.
-- {{domxref("HTMLElement.itemType")}} {{readonlyInline}}{{experimental_inline}}
-  - : {{domxref("DOMSettableTokenList")}}… 를 반환합니다.
-- {{domxref("HTMLElement.itemId")}} {{experimental_inline}}
-  - : 항목 ID 를 나타내는 {{domxref("DOMString")}} 입니다.
-- {{domxref("HTMLElement.itemRef")}} {{readonlyInline}}{{experimental_inline}}
-  - : {{domxref("DOMSettableTokenList")}}… 를 반환합니다.
-- {{domxref("HTMLElement.itemProp")}} {{readonlyInline}}{{experimental_inline}}
-  - : {{domxref("DOMSettableTokenList")}}… 를 반환합니다.
-- {{domxref("HTMLElement.itemValue")}} {{experimental_inline}}
-  - : 항목 값을 나타내는 {{jsxref("Object")}} 를 반환합니다.
-- {{domxref("HTMLElement.lang")}}
-  - : 요소의 속성, 텍스트, 컨텐츠의 언어를 나타내는 {{domxref("DOMString")}} 입니다.
-- {{domxref("HTMLElement.noModule")}}
-  - : 임포트한 스크립트가 모듈 스크립트를 지원하는 유저 에이전트에서 실행될 수 있는지를 나타내는 {{jsxref("Boolean")}} 입니다.
-- {{domxref("HTMLElement.nonce")}}
-  - : 주어진 페치(fetch)의 진행을 허용할지를 결정하기 위한 컨텐츠 보안 정책(Content Security Policy)에서 한 번 사용된 암호회된 숫자를 반환합니다.
-- {{domxref("HTMLElement.offsetHeight")}} {{readonlyInline}}{{experimental_inline}}
-  - : 레이아웃에 상대적인 요소의 높이를 갖는 `double` 을 반환합니다.
-- {{domxref("HTMLElement.offsetLeft")}}{{readonlyInline}}{{experimental_inline}}
-  - : 요소의 left border 부터 `offsetParent` 의 left border 까지의 거리를 `double` 로 반환합니다.
-- {{domxref("HTMLElement.offsetParent")}}{{readonlyInline}}{{experimental_inline}}
-  - : 모든 오프셋 계산이 현재 연산된 요소인 {{domxref("Element")}} 를 반환합니다.
-- {{domxref("HTMLElement.offsetTop")}}{{readonlyInline}}{{experimental_inline}}
-  - : 요소의 top border 부터 `offsetParent` 의 top border 까지의 거리를 `double` 로 반환합니다.
-- {{domxref("HTMLElement.offsetWidth")}}{{readonlyInline}}{{experimental_inline}}
-  - : 레이아웃에 상대적인 요소의 너비를 갖는 `double` 을 반환합니다.
-- {{domxref("HTMLElement.properties")}} {{readonlyInline}}{{experimental_inline}}
-  - : {{domxref("HTMLPropertiesCollection")}}… 을 반환합니다.
-- {{domxref("HTMLElement.spellcheck")}}
-  - : [철자 검사](/ko/docs/Web/HTML/Global_attributes/spellcheck)를 제어하는 {{jsxref("Boolean")}} 입니다. 모든 HTML 요소에 존재하지만, 모두에 대해 적용되지는 않습니다.
-- {{domxref("HTMLElement.style")}}
-  - : 요소의 스타일 속성의 정의를 나타내는 {{domxref("CSSStyleDeclaration")}} 객체입니다.
-- {{domxref("HTMLElement.tabIndex")}}
-  - : 탭 순서에서 요소의 위치를 나타내는 `long` 입니다.
-- {{domxref("HTMLElement.title")}}
-  - : 요소에 마우스를 오버할 때 팝업 상자에 표시되는 텍스트를 갖는 {{domxref("DOMString")}} 입니다.
-- {{domxref("HTMLElement.translate")}} {{experimental_inline}}
-  - : 번역을 나타내는 {{jsxref("Boolean")}} 입니다.
+- {{DOMxRef("HTMLElement.accessKey")}}
+  - : A string representing the access key assigned to the element.
+- {{DOMxRef("HTMLElement.accessKeyLabel")}} {{ReadOnlyInline}}
+  - : Returns a string containing the element's assigned access key.
+- {{DOMxRef("HTMLElement.attributeStyleMap")}} {{ReadOnlyInline}}
+  - : A {{DOMxRef("StylePropertyMap")}} representing the declarations of the element's [`style`](/en-US/docs/Web/HTML/Global_attributes#style) attribute.
+- {{DOMxRef("HTMLElement.contentEditable")}}
+  - : A string, where a value of `true` means the element is editable and a value of `false` means it isn't.
+- {{DOMxRef("HTMLElement.isContentEditable")}} {{ReadOnlyInline}}
+  - : Returns a boolean value indicating whether or not the content of the element can be edited.
+- {{DOMxRef("HTMLElement.dataset")}} {{ReadOnlyInline}}
+  - : Returns a {{DOMxRef("DOMStringMap")}} with which script can read and write the element's [custom data attributes](/en-US/docs/Learn/HTML/Howto/Use_data_attributes) (`data-*`) .
+- {{DOMxRef("HTMLElement.dir")}}
+  - : A string, reflecting the `dir` global attribute, representing the directionality of the element. Possible values are `"ltr"`, `"rtl"`, and `"auto"`.
+- {{DOMxRef("HTMLElement.draggable")}}
+  - : A boolean value indicating if the element can be dragged.
+- {{DOMxRef("HTMLElement.enterKeyHint")}}
+  - : A string defining what action label (or icon) to present for the enter key on virtual keyboards.
+- {{DOMxRef("HTMLElement.hidden")}}
+  - : A string or boolean value reflecting the value of the element's [`hidden`](/en-US/docs/Web/HTML/Global_attributes/hidden) attribute.
+- {{DOMxRef("HTMLElement.inert")}}
+  - : A boolean value indicating whether the user agent must act as though the given node is absent for the purposes of user interaction events, in-page text searches ("find in page"), and text selection.
+- {{DOMxRef("HTMLElement.innerText")}}
+  - : Represents the rendered text content of a node and its descendants.
+    As a getter, it approximates the text the user would get if they highlighted the contents of the element with the cursor and then copied it to the clipboard.
+    As a setter, it replaces the content inside the selected element, converting any line breaks into {{HTMLElement("br")}} elements.
+- {{DOMxRef("HTMLElement.inputMode")}}
+  - : A string value reflecting the value of the element's [`inputmode`](/en-US/docs/Web/HTML/Global_attributes/inputmode) attribute.
+- {{DOMxRef("HTMLElement.popover")}} {{Experimental_Inline}}
+  - : A string value reflecting the value of the element's [`popover`](/en-US/docs/Web/HTML/Global_attributes/popover) attribute.
+- {{DOMxRef("HTMLElement.lang")}}
+  - : A string representing the language of an element's attributes, text, and element contents.
+- {{DOMxRef("HTMLElement.noModule")}}
+  - : A boolean value indicating whether an import script can be executed in user agents that support module scripts.
+- {{DOMxRef("HTMLElement.nonce")}}
+  - : Returns the cryptographic number used once that is used by Content Security Policy to determine whether a given fetch will be allowed to proceed.
+- {{DOMxRef("HTMLElement.offsetHeight")}} {{ReadOnlyInline}}
+  - : Returns a `double` containing the height of an element, relative to the layout.
+- {{DOMxRef("HTMLElement.offsetLeft")}} {{ReadOnlyInline}}
+  - : Returns a `double`, the distance from this element's left border to its `offsetParent`'s left border.
+- {{DOMxRef("HTMLElement.offsetParent")}} {{ReadOnlyInline}}
+  - : An {{DOMxRef("Element")}} that is the element from which all offset calculations are currently computed.
+- {{DOMxRef("HTMLElement.offsetTop")}} {{ReadOnlyInline}}
+  - : Returns a `double`, the distance from this element's top border to its `offsetParent`'s top border.
+- {{DOMxRef("HTMLElement.offsetWidth")}} {{ReadOnlyInline}}
+  - : Returns a `double` containing the width of an element, relative to the layout.
+- {{DOMxRef("HTMLElement.outerText")}}
+  - : Represents the rendered text content of a node and its descendants.
+    As a getter, it is the same as {{DOMxRef("HTMLElement.innerText")}} (it represents the rendered text content of an element and its descendants).
+    As a setter, it replaces the selected node and its contents with the given value, converting any line breaks into {{HTMLElement("br")}} elements.
+- {{DOMxRef("HTMLElement.properties")}} {{Experimental_Inline}} {{ReadOnlyInline}}
+  - : Returns a {{DOMxRef("HTMLPropertiesCollection")}}…
+- {{DOMxRef("HTMLElement.spellcheck")}}
+  - : A boolean value that controls [spell-checking](/en-US/docs/Web/HTML/Global_attributes/spellcheck). It is present on all HTML elements, though it doesn't have an effect on all of them.
+- {{DOMxRef("HTMLElement.style")}}
+  - : A {{DOMxRef("CSSStyleDeclaration")}} representing the declarations of the element's [`style`](/en-US/docs/Web/HTML/Global_attributes#style) attribute.
+- {{DOMxRef("HTMLElement.tabIndex")}}
+  - : A `long` representing the position of the element in the tabbing order.
+- {{DOMxRef("HTMLElement.title")}}
+  - : A string containing the text that appears in a popup box when mouse is over the element.
+- {{DOMxRef("HTMLElement.translate")}}
+  - : A boolean value representing the translation.
 
-### 이벤트 핸들러
+## Instance methods
 
-`onXYZ` 형태의 대부분의 이벤트 핸들러 속성은 {{domxref("GlobalEventHandlers")}} 또는 {{domxref("TouchEventHandlers")}} 에 정의되어 있으며 `HTMLElement` 에 의해 구현되었습니다. 다음 `HTMLElement` 에 해당하는 핸들러입니다.
+_Inherits methods from its parent, {{DOMxRef("Element")}}._
 
-- {{ domxref("HTMLElement.oncopy") }} {{ non-standard_inline() }}
-  - : `copy` 이벤트를 위한 이벤트 핸들링 코드를 반환합니다([Firefox bug 280959](https://bugzil.la/280959)).
-- {{ domxref("HTMLElement.oncut") }} {{ non-standard_inline() }}
-  - : `cut` 이벤트를 위한 이벤트 핸들링 코드를 반환합니다([Firefox bug 280959](https://bugzil.la/280959)).
-- {{ domxref("HTMLElement.onpaste") }} {{ non-standard_inline() }}
-  - : `paste` 이벤트를 위한 이벤트 핸들링 코드를 반환합니다([Firefox bug 280959](https://bugzil.la/280959)).
-- {{domxref("TouchEventHandlers.ontouchstart")}} {{non-standard_inline}}
-  - : {{event("touchstart")}} 이벤트를 위한 이벤트 핸들링 코드를 반환합니다.
-- {{domxref("TouchEventHandlers.ontouchend")}} {{non-standard_inline}}
-  - : {{event("touchend")}} 이벤트를 위한 이벤트 핸들링 코드를 반환합니다.
-- {{domxref("TouchEventHandlers.ontouchmove")}} {{non-standard_inline}}
-  - : {{event("touchmove")}} 이벤트를 위한 이벤트 핸들링 코드를 반환합니다.
-- {{domxref("TouchEventHandlers.ontouchenter")}} {{non-standard_inline}}
-  - : {{event("touchenter")}} 이벤트를 위한 이벤트 핸들링 코드를 반환합니다.
-- {{domxref("TouchEventHandlers.ontouchleave")}} {{non-standard_inline}}
-  - : {{event("touchleave")}} 이벤트를 위한 이벤트 핸들링 코드를 반환합니다.
-- {{domxref("TouchEventHandlers.ontouchcancel")}} {{non-standard_inline}}
-  - : {{event("touchcancel")}} 이벤트를 위한 이벤트 핸들링 코드를 반환합니다.
+- {{DOMxRef("HTMLElement.attachInternals()")}}
+  - : Returns an {{DOMxRef("ElementInternals")}} object, and enables a custom element to participate in HTML forms.
+- {{DOMxRef("HTMLElement.blur()")}}
+  - : Removes keyboard focus from the currently focused element.
+- {{DOMxRef("HTMLElement.click()")}}
+  - : Sends a mouse click event to the element.
+- {{DOMxRef("HTMLElement.focus()")}}
+  - : Makes the element the current keyboard focus.
+- {{DOMxRef("HTMLElement.hidePopover()")}} {{Experimental_Inline}}
+  - : Hides the element, if it has a valid {{DOMxRef("HTMLElement.popover")}} value.
+- {{DOMxRef("HTMLElement.showPopover()")}} {{Experimental_Inline}}
+  - : Shows the element, promoting it to the top layer, if it has a valid {{DOMxRef("HTMLElement.popover")}} value.
+- {{DOMxRef("HTMLElement.togglePopover()")}} {{Experimental_Inline}}
+  - : Hides or shows the element, if it has a valid {{DOMxRef("HTMLElement.popover")}} value.
 
-## 메서드
-
-_부모인 {{domxref("Element")}}의 메서드를 상속합니다._
-
-- {{domxref("HTMLElement.blur()")}}
-  - : 현재 포커스된 요소로부터 키보드 포커스를 제거합니다.
-- {{domxref("HTMLElement.click()")}}
-  - : 요소로 마우스 클릭 이벤트를 전달합니다.
-- {{domxref("HTMLElement.focus()")}}
-  - : 요소에 현재 키보드 포커스를 생성합니다.
-- {{domxref("HTMLElement.forceSpellCheck()")}} {{experimental_inline}}
-  - : 요소에 철자 확인자를 생성합니다.
-
-## 이벤트
+## Events
 
 Listen to these events using `addEventListener()` or by assigning an event listener to the `oneventname` property of this interface.
 
-- [`invalid`](/en-US/docs/Web/API/HTMLElement/invalid_event)
+- {{DOMxRef("HTMLElement.copy_event", "copy")}}
+  - : Fired when the user initiates a copy action through the browser's user interface.
+- {{DOMxRef("HTMLElement.cut_event", "cut")}}
+  - : Fired when the user initiates a cut action through the browser's user interface.
+- {{DOMxRef("HTMLElement.paste_event", "paste")}}
+  - : Fired when the user initiates a paste action through the browser's user interface.
+- {{domxref("HTMLInputElement/invalid_event", "invalid")}}
   - : Fired when an element does not satisfy its constraints during constraint validation.
-    Also available via the [`oninvalid`](/en-US/docs/Web/API/GlobalEventHandlers/oninvalid) property.
+- {{DOMxRef("HTMLElement.beforetoggle", "beforetoggle")}}
+  - : Fired when the element is a popover, before it is hidden or shown.
+- {{DOMxRef("HTMLElement.toggle", "toggle")}}
+  - : Fired when the element is a popover, just after it is hidden or shown.
 
 ### Animation events
 
-- [`animationcancel`](/en-US/docs/Web/API/HTMLElement/animationcancel_event)
+- {{domxref("Element/animationcancel_event", "animationcancel")}}
   - : Fired when an animation unexpectedly aborts.
-    Also available via the [`onanimationcancel`](/en-US/docs/Web/API/GlobalEventHandlers/onanimationcancel) property.
-- [`animationend`](/en-US/docs/Web/API/HTMLElement/animationend_event)
+- {{domxref("Element/animationend_event", "animationend")}}
   - : Fired when an animation has completed normally.
-    Also available via the [`onanimationend`](/en-US/docs/Web/API/GlobalEventHandlers/onanimationend) property.
-- [`animationiteration`](/en-US/docs/Web/API/HTMLElement/animationiteration_event)
+- {{domxref("Element/animationiteration_event", "animationiteration")}}
   - : Fired when an animation iteration has completed.
-    Also available via the [`onanimationiteration`](/en-US/docs/Web/API/GlobalEventHandlers/onanimationiteration) property.
-- [`animationstart`](/en-US/docs/Web/API/HTMLElement/animationstart_event)
+- {{domxref("Element/animationstart_event", "animationstart")}}
   - : Fired when an animation starts.
-    Also available via the [`onanimationstart`](/en-US/docs/Web/API/GlobalEventHandlers/onanimationstart) property.
 
 ### Input events
 
-- [`beforeinput`](/en-US/docs/Web/API/HTMLElement/beforeinput_event)
+- {{domxref("HTMLElement/beforeinput_event", "beforeinput")}}
   - : Fired when the value of an {{HTMLElement("input")}}, {{HTMLElement("select")}}, or {{HTMLElement("textarea")}} element is about to be modified.
-- [`input`](/en-US/docs/Web/API/HTMLElement/input_event)
+- {{domxref("HTMLElement/input_event", "input")}}
   - : Fired when the `value` of an {{HTMLElement("input")}}, {{HTMLElement("select")}}, or {{HTMLElement("textarea")}} element has been changed.
-    Also available via the [`oninput`](/en-US/docs/Web/API/GlobalEventHandlers/oninput) property.
+- {{domxref("HTMLElement/change_event", "change")}}
+  - : Fired when the `value` of an {{HTMLElement("input")}}, {{HTMLElement("select")}}, or {{HTMLElement("textarea")}} element has been changed and committed by the user. Unlike the {{domxref("HTMLElement/input_event", "input")}} event, the `change` event is not necessarily fired for each alteration to an element's `value`.
 
 ### Pointer events
 
-- [`gotpointercapture`](/en-US/docs/Web/API/HTMLElement/gotpointercapture_event)
-  - : Fired when an element captures a pointer using [`setPointerCapture()`](/en-US/docs/Web/API/Element/setPointerCapture).
-    Also available via the [`ongotpointercapture`](/en-US/docs/Web/API/GlobalEventHandlers/ongotpointercapture) property.
-- [`lostpointercapture`](/en-US/docs/Web/API/HTMLElement/lostpointercapture_event)
-  - : Fired when a [captured pointer](/ko/docs/Web/API/Pointer_events#Pointer_capture) is released.
-    Also available via the [`onlostpointercapture`](/en-US/docs/Web/API/GlobalEventHandlers/onlostpointercapture) property.
-- [`pointercancel`](/en-US/docs/Web/API/HTMLElement/pointercancel_event)
+- {{domxref("Element/gotpointercapture_event", "gotpointercapture")}}
+  - : Fired when an element captures a pointer using {{domxref("Element/setPointerCapture", "setPointerCapture()")}}.
+- {{domxref("Element/lostpointercapture_event", "lostpointercapture")}}
+  - : Fired when a [captured pointer](/en-US/docs/Web/API/Pointer_events#pointer_capture) is released.
+- {{domxref("Element/pointercancel_event", "pointercancel")}}
   - : Fired when a pointer event is canceled.
-    Also available via the [`onpointercancel`](/en-US/docs/Web/API/GlobalEventHandlers/onpointercancel) property.
-- [`pointerdown`](/en-US/docs/Web/API/HTMLElement/pointerdown_event)
+- {{domxref("Element/pointerdown_event", "pointerdown")}}
   - : Fired when a pointer becomes active.
-    Also available via the [`onpointerdown`](/en-US/docs/Web/API/GlobalEventHandlers/onpointerdown) property.
-- [`pointerenter`](/en-US/docs/Web/API/HTMLElement/pointerenter_event)
+- {{domxref("Element/pointerenter_event", "pointerenter")}}
   - : Fired when a pointer is moved into the hit test boundaries of an element or one of its descendants.
-    Also available via the [`onpointerenter`](/en-US/docs/Web/API/GlobalEventHandlers/onpointerenter) property.
-- [`pointerleave`](/en-US/docs/Web/API/HTMLElement/pointerleave_event)
+- {{domxref("Element/pointerleave_event", "pointerleave")}}
   - : Fired when a pointer is moved out of the hit test boundaries of an element.
-    Also available via the [`onpointerleave`](/en-US/docs/Web/API/GlobalEventHandlers/onpointerleave) property.
-- [`pointermove`](/en-US/docs/Web/API/HTMLElement/pointermove_event)
+- {{domxref("Element/pointermove_event", "pointermove")}}
   - : Fired when a pointer changes coordinates.
-    Also available via the [`onpointermove`](/en-US/docs/Web/API/GlobalEventHandlers/onpointermove) property.
-- [`pointerout`](/en-US/docs/Web/API/HTMLElement/pointerout_event)
+- {{domxref("Element/pointerout_event", "pointerout")}}
   - : Fired when a pointer is moved out of the _hit test_ boundaries of an element (among other reasons).
-    Also available via the [`onpointerout`](/en-US/docs/Web/API/GlobalEventHandlers/onpointerout) property.
-- [`pointerover`](/en-US/docs/Web/API/HTMLElement/pointerover_event)
+- {{domxref("Element/pointerover_event", "pointerover")}}
   - : Fired when a pointer is moved into an element's hit test boundaries.
-    Also available via the [`onpointerover`](/en-US/docs/Web/API/GlobalEventHandlers/onpointerover) property.
-- [`pointerup`](/en-US/docs/Web/API/HTMLElement/pointerup_event)
+- {{domxref("Element/pointerup_event", "pointerup")}}
   - : Fired when a pointer is no longer active.
-    Also available via the [`onpointerup`](/en-US/docs/Web/API/GlobalEventHandlers/onpointerup) property.
 
 ### Transition events
 
-- [`transitioncancel`](/en-US/docs/Web/API/HTMLElement/transitioncancel_event)
-  - : Fired when a [CSS transition](/ko/docs/CSS/Using_CSS_transitions) is canceled.
-    Also available via the [`ontransitioncancel`](/en-US/docs/Web/API/GlobalEventHandlers/ontransitioncancel) property.
-- [`transitionend`](/en-US/docs/Web/API/HTMLElement/transitionend_event)
-  - : Fired when a [CSS transition](/ko/docs/CSS/Using_CSS_transitions) has completed.
-    Also available via the [`ontransitionend`](/en-US/docs/Web/API/GlobalEventHandlers/ontransitionend) property.
-- [`transitionrun`](/en-US/docs/Web/API/HTMLElement/transitionrun_event)
-  - : Fired when a [CSS transition](/ko/docs/CSS/Using_CSS_transitions) is first created.
-    Also available via the [`ontransitionrun`](/en-US/docs/Web/API/GlobalEventHandlers/ontransitionrun) property.
-- [`transitionstart`](/en-US/docs/Web/API/HTMLElement/transitionstart_event)
-  - : Fired when a [CSS transition](/ko/docs/CSS/Using_CSS_transitions) has actually started.
-    Also available via the [`ontransitionstart`](/en-US/docs/Web/API/GlobalEventHandlers/ontransitionstart) property.
+- {{domxref("Element/transitioncancel_event", "transitioncancel")}}
+  - : Fired when a [CSS transition](/en-US/docs/Web/CSS/CSS_Transitions/Using_CSS_transitions) is canceled.
+- {{domxref("Element/transitionend_event", "transitionend")}}
+  - : Fired when a [CSS transition](/en-US/docs/Web/CSS/CSS_Transitions/Using_CSS_transitions) has completed.
+- {{domxref("Element/transitionrun_event", "transitionrun")}}
+  - : Fired when a [CSS transition](/en-US/docs/Web/CSS/CSS_Transitions/Using_CSS_transitions) is first created.
+- {{domxref("Element/transitionstart_event", "transitionstart")}}
+  - : Fired when a [CSS transition](/en-US/docs/Web/CSS/CSS_Transitions/Using_CSS_transitions) has actually started.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{domxref("Element")}}
+- {{DOMxRef("Element")}}

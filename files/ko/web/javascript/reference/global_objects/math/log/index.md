@@ -1,53 +1,57 @@
 ---
 title: Math.log()
 slug: Web/JavaScript/Reference/Global_Objects/Math/log
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Math.log
 ---
 
 {{JSRef}}
 
-**`Math.log()`** 함수는 자연 로가리즘은 ({{jsxref("Math.E", "e")}} 를 기초) 의 수를 계산합니다, 이건 다음의
+The **`Math.log()`** static method returns the natural logarithm (base [e](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/E)) of a number. That is
 
-<math display="block"><semantics><mrow><mo>∀</mo><mi>x</mi><mo>></mo><mn>0</mn><mo>,</mo><mstyle mathvariant="monospace"><mrow><mo lspace="0em" rspace="thinmathspace">Math.log</mo><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mstyle><mo>=</mo><mo lspace="0em" rspace="0em">ln</mo><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mtext>the unique</mtext><mspace width="thickmathspace"></mspace><mi>y</mi><mspace width="thickmathspace"></mspace><mtext>such that</mtext><mspace width="thickmathspace"></mspace><msup><mi>e</mi><mi>y</mi></msup><mo>=</mo><mi>x</mi></mrow><annotation encoding="TeX">\forall x > 0, \mathtt{\operatorname{Math.log}(x)} = \ln(x) = \text{고유값} \; y \; \text{같이} \; e^y = x</annotation></semantics></math>
+<math display="block"><semantics><mrow><mo>∀</mo><mi>x</mi><mo>&gt;</mo><mn>0</mn><mo>,</mo><mspace width="0.2777777777777778em"></mspace><mrow><mo lspace="0em" rspace="0.16666666666666666em">𝙼𝚊𝚝𝚑.𝚕𝚘𝚐</mo><mo stretchy="false">(</mo><mi>𝚡</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mo lspace="0em" rspace="0em">ln</mo><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mtext>the unique&nbsp;</mtext><mi>y</mi><mtext>&nbsp;such that&nbsp;</mtext><msup><mi>e</mi><mi>y</mi></msup><mo>=</mo><mi>x</mi></mrow><annotation encoding="TeX">\forall x &gt; 0,\;\mathtt{\operatorname{Math.log}(x)} = \ln(x) = \text{the unique } y \text{ such that } e^y = x</annotation></semantics></math>
 
-자바스크립트 **`Math.log()`** 함수는 _ln(x)_ 수학적으로 같습니다.
+{{EmbedInteractiveExample("pages/js/math-log.html")}}
 
-## 문법
+## Syntax
 
-```js
-    Math.log(x)
+```js-nolint
+Math.log(x)
 ```
 
-### 인자
+### Parameters
 
 - `x`
-  - : 실수값.
+  - : A number greater than or equal to 0.
 
-### 반환값
+### Return value
 
-자연 로가리즘은 ({{jsxref("Math.E", "e")}} 를 기초) 실수값으로 줍니다. 마이너스 실수값, {{jsxref("NaN")}} 계산됩니다.
+The natural logarithm (base [e](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/E)) of `x`. If `x` is ±0, returns [`-Infinity`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/NEGATIVE_INFINITY). If `x < 0`, returns {{jsxref("NaN")}}.
 
-## 설명
+## Description
 
-만일 값 `x` 가 마이너스라면, 항상 다음값이 계산됩니다 {{jsxref("NaN")}}.
+Because `log()` is a static method of `Math`, you always use it as `Math.log()`, rather than as a method of a `Math` object you created (`Math` is not a constructor).
 
-왜그렇냐면 `Math` 의 log() 가 정적 메서드이기 때문,에 매번 다음처럼 `Math.log()` 써야합니다 (생성자로 초기화된 `Math` 개체가 아니기 때문입니다).
+If you need the natural log of 2 or 10, use the constants {{jsxref("Math.LN2")}} or {{jsxref("Math.LN10")}}. If you need a logarithm to base 2 or 10, use {{jsxref("Math.log2()")}} or {{jsxref("Math.log10()")}}. If you need a logarithm to other bases, use `Math.log(x) / Math.log(otherBase)` as in the example below; you might want to precalculate `1 / Math.log(otherBase)` since multiplication in `Math.log(x) * constant` is much faster.
 
-자연로그 2 나 10, 상수로쓸때 {{jsxref("Math.LN2")}} or {{jsxref("Math.LN10")}} . 로가리즘 기초값 2 나 10, 쓸때는 {{jsxref("Math.log2()")}} 혹은 {{jsxref("Math.log10()")}} . 로가리즘 다른 기초값은 Math.log(x) / Math.log(기초값) 처럼 예제참고; 미리계산하여 1 / Math.log(기초값) 할 수 있습니다.
+Beware that positive numbers very close to 1 can suffer from loss of precision and make its natural logarithm less accurate. In this case, you may want to use {{jsxref("Math.log1p")}} instead.
 
-## 예제
+## Examples
 
-### `Math.log() 사용`
+### Using Math.log()
 
 ```js
-Math.log(-1); // NaN, 정의범위 초과
-Math.log(0);  // -Infinity, 무한
-Math.log(1);  // 0
+Math.log(-1); // NaN
+Math.log(-0); // -Infinity
+Math.log(0); // -Infinity
+Math.log(1); // 0
 Math.log(10); // 2.302585092994046
+Math.log(Infinity); // Infinity
 ```
 
-### `Math.log()` 다른 기초값 사용
+### Using Math.log() with a different base
 
-이 함수는 로가리즘 `y 에 대한것으로` 기초값 `x` (ie. <math><semantics><mrow><msub><mo>log</mo><mi>x</mi></msub><mi>y</mi></mrow><annotation encoding="TeX">\log_x y</annotation></semantics></math>): 입니다
+The following function returns the logarithm of `y` with base `x` (i.e. <math><semantics><mrow><msub><mo>log</mo><mi>x</mi></msub><mi>y</mi></mrow><annotation encoding="TeX">\log_x y</annotation></semantics></math>):
 
 ```js
 function getBaseLog(x, y) {
@@ -55,17 +59,17 @@ function getBaseLog(x, y) {
 }
 ```
 
-다음을 실행하면 `getBaseLog(10, 1000)` 다음 `2.9999999999999996 계산되는데` 적당히 반올림하니다, 거의 3 에 가깝습니다.
+If you run `getBaseLog(10, 1000)`, it returns `2.9999999999999996` due to floating-point rounding, but still very close to the actual answer of 3.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이보기
+## See also
 
 - {{jsxref("Math.exp()")}}
 - {{jsxref("Math.log1p()")}}

@@ -1,103 +1,213 @@
 ---
-title: Request()
+title: "Request: Request() constructor"
+short-title: Request()
 slug: Web/API/Request/Request
+page-type: web-api-constructor
+browser-compat: api.Request.Request
 ---
 
-{{APIRef("Fetch")}}
+{{APIRef("Fetch API")}}
 
-**`Request()`** 생성자는 새로운 {{domxref("Request")}} 객체를 생성하도록 도와줍니다.
+The **`Request()`** constructor creates a new
+{{domxref("Request")}} object.
 
-## 문법
+## Syntax
 
-```js
-var myRequest = new Request(input, init);
+```js-nolint
+new Request(input)
+new Request(input, options)
 ```
 
-### 파라미터
+### Parameters
 
-- _input_
-  - : 취득한 리소스를 정의합니다. 이하의 값을 파라미터로 넣을 수 있습니다.\* 취득하고 싶은 리소스의 URL을 담은 {domxref("USVString")}}.
-    - Request 객체의 클론 생성을 위해 입력할 {{domxref("Request")}} 객체. 기존의 request 객체로 새로운 동일한 객체를 생성할때, 다음과 같은 보안에 관련된 예외가 검출될 수 있습니다.
-- _init_ {{optional_inline}}
-  - : 리퀘스트를 적용할 커스텀 설정을 포함한 옵션오브젝트. 설정 가능한 옵션은 다음과 같습니다.\* `method`: `GET`, `POST`과 같은 리퀘스트 메소드.
-    - `headers`: {{domxref("Headers")}}객체 또는 {{domxref("ByteString")}}를 포함하는 리퀘스트에 추가하는 헤더.
-    - `body`: 리퀘스트에 추가할 바디. {{domxref("Blob")}}이나, {{domxref("BufferSource")}}, {{domxref("FormData")}}, {{domxref("URLSearchParams")}}, {{domxref("USVString")}}, 또한 {{domxref("ReadableStream")}} 객체를 사용할 수 있습니다.Request객체가 GET이나 HEAD메서드를 사용하는 경우, 바디를 포함하지 않습니다.
-    - `mode`: Request에서 사용할 모드. `cors`, `no-cors`, `same-origin`, 또한 `navigate`이 사용 가능하며, 기본값은 `cors`입니다. 47버전 이전의 크롬에서는 기본값이 `no-cors` 이며 크롬 47버전 이후로 `same-origin`가 사용 가능하게 되었습니다.
-    - `credentials`: Request에서 사용할 자격 증명서(Request Credential)입니다.`omit`, `same-origin`, 또는 `include`를 사용할 수 있습니다.기본값은 `omit`.이며, 크롬 47 이전의 기본값은 `same-origin` 입니다. 크롬 47 이후로부터`include`가 사용 가능하게 되었습니다.
-    - `cache`: Request에서 사용할 [cache mode](/ko/docs/Web/API/Request/cache) 입니다.
-    - `redirect`: Request에서 사용할 리다이렉트 모드입니다. `follow`, `error`, `manual`.이 사용 가능합니다. 크롬 47 이전 버전에서의 기본값은 `manual` 이며, 47 이후로부터 `follow` 가 사용 가능하게 되었습니다.
-    - `referrer`: `no-referrer`나 `client`, URL을 지정하는 {{domxref("USVString")}}입니다.. 기본값은 `client`입니다.
-    - `integrity`: `sha256-BpfBw7ivV8q2jLiT13fxDYAe2tJllusRSZ273h2nFSE=`같은 Request의 하위 리소스 무결성([subresource integrity](/ko/docs/Web/Security/Subresource_Integrity)) 값을 포함합니다.
+- `input`
 
-## 에러
+  - : Defines the resource that you wish to fetch. This can either be:
 
-| **타입**    | **내용**                                                                                                                                                          |
-| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `TypeError` | [Firefox 43](/ko/docs/Mozilla/Firefox/Releases/43)부터, `http://user:password@example.com` 와 같인 credential을 포함하는 경우 `Request()` 는 타입 에러를 반환합니다. |
+    - A string containing the URL of the resource you want to fetch. The URL may be relative to the base URL, which is the document's {{domxref("Node.baseURI", "baseURI")}} in a window context, or {{domxref("WorkerGlobalScope.location")}} in a worker context.
+    - A {{domxref("Request")}} object, effectively creating a copy. Note the following
+      behavioral updates to retain security while making the constructor less likely to
+      throw exceptions:
 
-## 예시
+      - If this object exists on another origin to the constructor call, the
+        {{domxref("Request.referrer")}} is stripped out.
+      - If this object has a {{domxref("Request.mode")}} of `navigate`,
+        the `mode` value is converted to `same-origin`.
 
-[Fetch Request example](https://github.com/mdn/fetch-examples/tree/gh-pages/fetch-request)에서는, 생성자를 사용해 새로운 Requst 객체를 생성하고 나서 {{domxref("GlobalFetch.fetch")}}인터페이스를 이용해 Request로 읽어온 결과를 취득하고 있습니다. 특정 사진을 가져와서 사용할 수 있게 만들기 위해서 MIME타입을 설정하고, Response의 {{domxref("Body.blob")}}를 반환합니다. 그 후로 오브젝트 URL을 생성해 {{htmlelement("img")}}요소를 표시하도록 합니다. [Fetch Request live](http://mdn.github.io/fetch-examples/fetch-request/)를 참고해주시기 바랍니다.
+- `options` {{optional_inline}}
+
+  - : An object containing any custom settings that you want to apply to the
+    request. The possible options are:
+
+    - `method`
+      - : The request method, e.g., `GET`,
+        `POST`. The default is `GET`.
+    - `headers`
+      - : Any headers you want to add to your request, contained
+        within a {{domxref("Headers")}} object or an object literal with
+        {{jsxref("String")}} values.
+    - `body`
+      - : Any body that you want to add to your request: this can be a
+        {{domxref("Blob")}}, an {{jsxref("ArrayBuffer")}}, a {{jsxref("TypedArray")}}, a {{jsxref("DataView")}},
+        a {{domxref("FormData")}}, a {{domxref("URLSearchParams")}}, a string, or a {{domxref("ReadableStream")}} object.
+        Note that a request using the `GET` or `HEAD` method cannot have a body.
+    - `mode`
+      - : The mode you want to use for the request, e.g.,
+        `cors`, `no-cors`, `same-origin`, or
+        `navigate`. The default is `cors`.
+    - `credentials`
+      - : The request credentials you want to use for the
+        request: `omit`, `same-origin`, or `include`. The
+        default is `same-origin`.
+    - `cache`
+      - : The [cache mode](/en-US/docs/Web/API/Request/cache) you want to use for the request.
+    - `redirect`
+      - : The redirect mode to use: `follow`,
+        `error`, or `manual`. The default is `follow`.
+    - `referrer`
+      - : A string specifying
+        `no-referrer`, `client`, or a URL. The default is
+        `about:client`.
+    - `referrerPolicy`
+      - : A string that changes how the referrer header is populated during certain actions (e.g., fetching subresources, prefetching, performing navigations).
+    - `integrity`
+      - : Contains the [subresource integrity](/en-US/docs/Web/Security/Subresource_Integrity)
+        value of the request (e.g.,
+        `sha256-BpfBw7ivV8q2jLiT13fxDYAe2tJllusRSZ273h2nFSE=`).
+    - `keepalive`
+      - : A boolean that indicates whether to make a persistent connection for multiple requests/responses.
+    - `signal`
+      - : An [AbortSignal](/en-US/docs/Web/API/AbortSignal) object which can be used to communicate with/abort a request.
+    - `priority`
+      - : Specifies the priority of the fetch request relative to other requests of the same type. Must be one of the following strings:
+        - `high`: A high priority fetch request relative to other requests of the same type.
+        - `low`: A low priority fetch request relative to other requests of the same type.
+        - `auto`: Automatically determine the priority of the fetch request relative to other requests of the same type (default).
+
+    If you construct a new `Request` from an existing `Request`, any options you set in an _options_ argument for the new request replace any corresponding options set in the original `Request`. For example:
+
+    ```js
+    const oldRequest = new Request(
+      "https://github.com/mdn/content/issues/12959",
+      { headers: { From: "webmaster@example.org" } }
+    );
+    oldRequest.headers.get("From"); // "webmaster@example.org"
+    const newRequest = new Request(oldRequest, {
+      headers: { From: "developer@example.org" },
+    });
+    newRequest.headers.get("From"); // "developer@example.org"
+    ```
+
+## Errors
+
+<table class="no-markdown">
+  <thead>
+    <tr>
+      <th scope="col">Type</th>
+      <th scope="col">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>TypeError</code></td>
+      <td>
+        Since <a href="/en-US/docs/Mozilla/Firefox/Releases/43">Firefox 43</a>,
+        <code>Request()</code> will throw a TypeError if the URL has
+        credentials, such as http://user:password@example.com.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Examples
+
+In our [Fetch Request example](https://github.com/mdn/dom-examples/tree/main/fetch/fetch-request) (see [Fetch Request live](https://mdn.github.io/dom-examples/fetch/fetch-request/)) we
+create a new `Request` object using the constructor, then fetch it using a
+{{domxref("fetch()")}} call. Since we are fetching an image, we run
+{{domxref("Response.blob")}} on the response to give it the proper MIME type so it will be
+handled properly, then create an Object URL of it and display it in an
+{{htmlelement("img")}} element.
 
 ```js
-var myImage = document.querySelector('img');
+const myImage = document.querySelector("img");
 
-var myRequest = new Request('flowers.jpg');
+const myRequest = new Request("flowers.jpg");
 
-fetch(myRequest).then(function(response) {
-  return response.blob();
-}).then(function(response) {
-  var objectURL = URL.createObjectURL(response);
-  myImage.src = objectURL;
+fetch(myRequest)
+  .then((response) => response.blob())
+  .then((response) => {
+    const objectURL = URL.createObjectURL(response);
+    myImage.src = objectURL;
+  });
+```
+
+In our [Fetch Request with init example](https://github.com/mdn/dom-examples/tree/main/fetch/fetch-with-init-then-request) (see [Fetch Request init live](https://mdn.github.io/dom-examples/fetch/fetch-with-init-then-request/)) we do the same thing except that we pass in an _options_ object when we
+invoke `fetch()`:
+
+```js
+const myImage = document.querySelector("img");
+
+const myHeaders = new Headers();
+myHeaders.append("Content-Type", "image/jpeg");
+
+const myOptions = {
+  method: "GET",
+  headers: myHeaders,
+  mode: "cors",
+  cache: "default",
+};
+
+const myRequest = new Request("flowers.jpg", myOptions);
+
+fetch(myRequest).then((response) => {
+  // ...
 });
 ```
 
-[Fetch Request with init example](https://github.com/mdn/fetch-examples/tree/gh-pages/fetch-request-with-init)에서는 fetch()를 실행할 때 마다, init객체를 전달하는 것 이외에는 거의 동일한 기능을 수행합니다. [Fetch Request init live](http://mdn.github.io/fetch-examples/fetch-request-with-init/) 를 참조해주시기 바랍니다.
+Note that you could also pass `myOptions` into the `fetch` call to get
+the same effect, e.g.:
 
 ```js
-var myImage = document.querySelector('img');
-
-var myHeaders = new Headers();
-myHeaders.append('Content-Type', 'image/jpeg');
-
-var myInit = { method: 'GET',
-                headers: myHeaders,
-                mode: 'cors',
-                cache: 'default' };
-
-var myRequest = new Request('flowers.jpg',myInit);
-
-fetch(myRequest).then(function(response) {
-  ...
+fetch(myRequest, myOptions).then((response) => {
+  // ...
 });
 ```
 
-동일한 효과를 얻기 위해 fetch 호출자에 init객체를 전달하는 것에 주목해주시기 바랍니다. 예를 들면...
+You can also use an object literal as `headers` in `myOptions`.
 
 ```js
-fetch(myRequest,myInit).then(function(response) {
-  ...
-});
+const myOptions = {
+  method: "GET",
+  headers: {
+    "Content-Type": "image/jpeg",
+  },
+  mode: "cors",
+  cache: "default",
+};
+
+const myRequest = new Request("flowers.jpg", myOptions);
 ```
 
-Request 객체ㅡ이 클론을 생성하기 위해서 `Request()` 생성자에 {{domxref("Request")}} 를 전달하고 있습니다.（이것은 {{domxref("Request.clone","clone()")}} 메서드의 호출자와 같습니다.）
+You may also pass a {{domxref("Request")}} object to the `Request()`
+constructor to create a copy of the Request (This is similar to calling the
+{{domxref("Request.clone","clone()")}} method.)
 
 ```js
-var copy = new Request(myRequest);
+const copy = new Request(myRequest);
 ```
 
-> **참고**：마지막의 예시는 [ServiceWorkers](/ko/docs/Web/API/ServiceWorker_API)안에서만 사용 가능합니다。
+> **Note:** This last usage is probably only useful in [ServiceWorkers](/en-US/docs/Web/API/Service_Worker_API).
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 지원현황
+## Browser compatibility
 
 {{Compat}}
 
-## 관련항목
+## See also
 
-- [ServiceWorker API](/ko/docs/Web/API/ServiceWorker_API)
-- [HTTP access control (CORS)](/ko/docs/Web/HTTP/Access_control_CORS)
-- [HTTP](/ko/docs/Web/HTTP)
+- [ServiceWorker API](/en-US/docs/Web/API/Service_Worker_API)
+- [HTTP access control (CORS)](/en-US/docs/Web/HTTP/CORS)
+- [HTTP](/en-US/docs/Web/HTTP)

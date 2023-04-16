@@ -1,63 +1,95 @@
 ---
 title: Reflect.construct()
 slug: Web/JavaScript/Reference/Global_Objects/Reflect/construct
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Reflect.construct
 ---
+
 {{JSRef}}
 
-**`Reflect.construct()`** 정적 메서드는 [`new` 연산자](/ko/docs/Web/JavaScript/Reference/Operators/new)처럼 동작하는 함수입니다. `new target(...args)`를 호출하는 것과 같습니다. 추가 기능으로 다른 프로토타입을 지정할 수도 있습니다.
+The **`Reflect.construct()`** static method is like the {{jsxref("Operators/new", "new")}} operator, but as a function. It is equivalent to calling `new target(...args)`. It gives also the added option to specify a different [`new.target`](/en-US/docs/Web/JavaScript/Reference/Operators/new.target) value.
 
-{{EmbedInteractiveExample("pages/js/reflect-construct.html")}}
+{{EmbedInteractiveExample("pages/js/reflect-construct.html", "taller")}}
 
-## 구문
+## Syntax
 
-```js
-Reflect.construct(target, argumentsList[, newTarget])
+```js-nolint
+Reflect.construct(target, argumentsList)
+Reflect.construct(target, argumentsList, newTarget)
 ```
 
-### 매개변수
+### Parameters
 
 - `target`
-  - : 호출할 대상 함수.
+  - : The target function to call.
 - `argumentsList`
-  - : `target`의 매개변수로 전달할 배열형 객체.
+  - : An [array-like object](/en-US/docs/Web/JavaScript/Guide/Indexed_collections#working_with_array-like_objects) specifying the arguments with which `target` should be called.
 - `newTarget` {{optional_inline}}
-  - : 프로토타입으로 사용할 생성자. [`new.target`](/en-US/docs/Web/JavaScript/Reference/Operators/new.target) 연산자도 확인하세요. `newTarget`이 주어지지 않았을 땐 `target`을 사용합니다.
+  - : The value of [`new.target`](/en-US/docs/Web/JavaScript/Reference/Operators/new.target) operator, which usually specifies the prototype of the returned object. If `newTarget` is not present, its value defaults to `target`.
 
-### 반환 값
+### Return value
 
-`target`을 생성자로 하고 주어진 매개변수를 전달해 생성한 `target`(또는, 지정했다면 `newTarget`)의 새로운 인스턴스.
+A new instance of `target` (or `newTarget`, if present), initialized by `target` as a constructor with the given `argumentsList`.
 
-### 예외
+### Exceptions
 
-`target` 또는 `newTarget`이 생성자가 아니면 {{jsxref("TypeError")}}.
+- {{jsxref("TypeError")}}
+  - : Thrown if `target` or `newTarget` is not a constructor, or if `argumentsList` is not an object.
 
-## 설명
+## Description
 
-`Reflect.construct()`는 생성자를 가변 길이의 매개변수로 호출할 수 있습니다. ([`new` 연산자](/ko/docs/Web/JavaScript/Reference/Operators/new)와 [전개 구문](/ko/docs/Web/JavaScript/Reference/Operators/Spread_syntax)을 사용해도 가능합니다)
+`Reflect.apply()` provides the reflective semantic of a constructor call. That is, `Reflect.construct(target, argumentsList, newTarget)` is semantically equivalent to:
 
 ```js
-var obj = new Foo(...args);
-var obj = Reflect.construct(Foo, args);
+new target(...argumentsList);
 ```
 
-### `Reflect.construct()` vs `Object.create()`
+Note that when using the `new` operator, `target` and `newTarget` are always the same constructor — but `Reflect.construct()` allows you to pass a different [`new.target`](/en-US/docs/Web/JavaScript/Reference/Operators/new.target) value. Conceptually, `newTarget` is the function on which `new` was called, and `newTarget.prototype` will become the constructed object's prototype, while `target` is the constructor that is actually executed to initialize the object. For example, `new.target` may also be different from the currently executed constructor in class inheritance.
 
-`Reflect`의 도입 이전에는 임의의 생성자와 프로토타입에 {{jsxref("Object.create()")}}를 사용해 객체를 생성할 수 있었습니다.
+```js
+class A {
+  constructor() {
+    console.log(new.target.name);
+  }
+}
+class B extends A {}
+
+new B(); // "B"
+```
+
+`Reflect.construct()` allows you to invoke a constructor with a variable number of arguments. (This is also possible with the [spread syntax](/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) in a normal constructor call.)
+
+```js
+const obj = new Foo(...args);
+const obj = Reflect.construct(Foo, args);
+```
+
+`Reflect.construct()` invokes the `[[Construct]]` [object internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods) of `target`.
+
+## Examples
+
+### Using Reflect.construct()
+
+```js
+const d = Reflect.construct(Date, [1776, 6, 4]);
+d instanceof Date; // true
+d.getFullYear(); // 1776
+```
+
+### Reflect.construct() vs. Object.create()
+
+Prior to the introduction of `Reflect`, objects could be constructed using an arbitrary combination of constructors and prototypes using {{jsxref("Object.create()")}}.
 
 ```js
 function OneClass() {
-    this.name = 'one';
+  this.name = "one";
 }
 
 function OtherClass() {
-    this.name = 'other';
+  this.name = "other";
 }
 
-// Calling this:
-var obj1 = Reflect.construct(OneClass, args, OtherClass);
-
-// ...has the same result as this:
-var obj2 = Object.create(OtherClass.prototype);
+const obj2 = Object.create(OtherClass.prototype);
 OneClass.apply(obj2, args);
 
 console.log(obj1.name); // 'one'
@@ -68,59 +100,63 @@ console.log(obj2 instanceof OneClass); // false
 
 console.log(obj1 instanceof OtherClass); // true
 console.log(obj2 instanceof OtherClass); // true
+
+// Another example to demonstrate below:
+
+function func1(a, b, c, d) {
+  console.log(arguments[3]);
+}
+
+function func2(d, e, f, g) {
+  console.log(arguments[3]);
+}
+
+const obj1 = Reflect.construct(func1, ['I', 'Love', 'my', 'country']);
 ```
 
-그러나, 결과는 동일하더라도 과정에는 중요한 차이가 하나 존재합니다. `Object.create()`와 {{jsxref("Function.prototype.apply()")}}를 사용할 땐, 객체 생성에 `new` 키워드가 관여하지 않으므로 `new.target` 연산자가 `undefined`를 가리킵니다.
+However, while the end result is the same, there is one important difference in the process. When using `Object.create()` and {{jsxref("Function.prototype.apply()")}}, the `new.target` operator will point to `undefined` within the function used as the constructor, since the `new` keyword is not being used to create the object. (In fact, it uses the [`apply`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect/apply) semantic, not `construct`, although normal functions happen to operate nearly the same.)
 
-반면 `Reflect.construct()`를 호출하면, `newTarget`이 존재하면 `new.target` 연산자가 `newTarget`을, 아니면 `target`을 가리킵니다.
+When invoking `Reflect.construct()`, on the other hand, the `new.target` operator will point to the `newTarget` parameter if supplied, or `target` if not.
 
 ```js
 function OneClass() {
-    console.log('OneClass');
-    console.log(new.target);
+  console.log("OneClass");
+  console.log(new.target);
 }
 function OtherClass() {
-    console.log('OtherClass');
-    console.log(new.target);
+  console.log("OtherClass");
+  console.log(new.target);
 }
 
-var obj1 = Reflect.construct(OneClass, args);
-// Output:
-//     OneClass
-//     function OneClass { ... }
+const obj1 = Reflect.construct(OneClass, args);
+// Logs:
+// OneClass
+// function OneClass { ... }
 
-var obj2 = Reflect.construct(OneClass, args, OtherClass);
-// Output:
-//     OneClass
-//     function OtherClass { ... }
+const obj2 = Reflect.construct(OneClass, args, OtherClass);
+// Logs:
+// OneClass
+// function OtherClass { ... }
 
-var obj3 = Object.create(OtherClass.prototype);
+const obj3 = Object.create(OtherClass.prototype);
 OneClass.apply(obj3, args);
 // Output:
 //     OneClass
 //     undefined
 ```
 
-## 예제
-
-### `Reflect.construct()` 사용하기
-
-```js
-var d = Reflect.construct(Date, [1776, 6, 4]);
-d instanceof Date; // true
-d.getFullYear(); // 1776
-```
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `Reflect.construct` in `core-js`](https://github.com/zloirock/core-js#ecmascript-reflect)
 - {{jsxref("Reflect")}}
-- [`new`](/ko/docs/Web/JavaScript/Reference/Operators/new)
+- {{jsxref("Operators/new", "new")}}
 - [`new.target`](/en-US/docs/Web/JavaScript/Reference/Operators/new.target)
+- [`Proxy`'s `construct` handler](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/construct)

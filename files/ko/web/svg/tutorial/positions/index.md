@@ -1,46 +1,55 @@
 ---
-title: 위치
+title: Positions
 slug: Web/SVG/Tutorial/Positions
+page-type: guide
 ---
+
+{{SVGRef}}
 
 {{ PreviousNext("Web/SVG/Tutorial/Getting_Started", "Web/SVG/Tutorial/Basic_Shapes") }}
 
-## 그리드
+In this article, we examine how Scalable Vector Graphics (SVG) represents the positions and sizes of objects within a drawing context, including coordinate system and what a "pixel" measurement means in a scalable context.
 
-![가운데가 파란색 상자로 표시된 X, Y 좌표 격자](canvas_default_grid.png)모든 요소(Element)에 대해 SVG는 [캔버스](/en/HTML/Canvas)를 포함한 컴퓨터에서 무언가 그리고자 할때 많이 사용되는 것과 유사한 좌표계 또는 그리드 시스템을 사용합니다. 즉, 문서의 왼쪽 위 모서리는 (0,0)으로 간주되며 한 지점의 위치는 왼쪽 상단 모서리에서 픽셀 단위로 표시되고 X축의 양의 방향은 오른쪽, Y축의 양의 방향은 아래쪽으로 향하게됩니다. 어린시절 배웠던 그래프와는 반대라는 점을 기억하세요. 그러나 이것은 HTML의 요소가 배치되는 것과는 같은 방법입니다 (기본적으로 LTR 문서는 X를 오른쪽에서 왼쪽으로 배치하는 RTL 문서가 아닙니다).
+## The grid
 
-#### 예제:
+For all elements, SVG uses a coordinate system or **grid** system similar to the one used by [canvas](/en-US/docs/Web/API/Canvas_API) (and by a whole lot of other computer drawing routines). That is, the top left corner of the document is considered to be the point (0,0), or point of origin. Positions are then measured in pixels from the top left corner, with the positive x direction being to the right, and the positive y direction being to the bottom.
 
-아래 요소는
+![X, Y coordinate grid with a blue box in the middle.](canvas_default_grid.png)
 
-```
+Note that this is slightly different than the way you're taught to graph as a kid (y axis is flipped). However, this is the same way elements in HTML are positioned (By default, LTR documents are considered not the RTL documents which position X from right-to-left).
+
+### Example
+
+The element
+
+```html
 <rect x="0" y="0" width="100" height="100" />
 ```
 
-왼쪽 상단에서 100px의 정사각형을 정의합니다.
+defines a rectangle from the upper left corner that spans 100px to the right and 100px to the bottom.
 
-### "픽셀"이란?
+### What are "pixels"?
 
-기본적으로 SVG 문서에서 1픽셀은 출력 장치(화면)의 1픽셀에 매핑됩니다. 하지만 이러한 방식만 가능했다면 SVG의 이름에 "확장성(Scalable)"이란 단어가 들어가 있지는 않았겠죠. CSS의 절대 및 상대 글꼴 크기와 매우 흡사하게 SVG는 절대적인 단위 ( "pt"또는 "cm"와 같은 식별자가있는 것)를 정의하고 이것을 사용자 단위(User Unit)로 명칭하며, 이것은 별도의 식별자 없이 숫자 그대로를 사용합니다.
+In the most basic case, one pixel in an SVG document maps to one pixel on the output device (i.e., the screen). But SVG wouldn't have the "Scalable" in its name if there weren't several possibilities to change this behavior. Much like absolute and relative font sizes in CSS, SVG defines absolute units (ones with a dimensional identifier like "pt" or "cm") and so-called user units, which lack that identifier and are plain numbers.
 
-별도로 명시하지 않았다면, 사용자 단위와 화면 단위는 1:1의 비율로 동작합니다. SVG에는 이 비율을 변경하기 위한 몇가지 방법이 있습니다.
+Without further specification, one user unit equals one screen unit. To explicitly change this behavior, there are several possibilities in SVG. We start with the `svg` root element:
 
-```
-<svg width="100" height="100">
-```
-
-위 요소는 100x100px 의 SVG 캔버스를 정의합니다. 사용자 단위와 화면 단위는 1:1의 비율로 동작합니다.
-
-```
-<svg width="200" height="200" viewBox="0 0 100 100">
+```html
+<svg width="100" height="100">…</svg>
 ```
 
-SVG 캔버스 전체 크기는 200x200 픽셀입니다. 그러나 viewBox속성을 사용하여 (0,0)에서 시작하는 100x100px의 화면을 200x200px의 화면에 출력합니다. 이렇게하면 100x100 단위 영역을 효과적으로 확대하고 이미지를 두 배 크기로 확대 할 수 있습니다.
+The above element defines a simple SVG canvas with 100x100px. One user unit equals one screen unit.
 
-이러한 요소 혹은 전체 이미지의 사용자 단위와 화면 단위의 매핑을 사용자 좌표계(User coordinate system)이라고 합니다. 스케일링 외에도 회전, 기울이기, 뒤집기가 가능합니다. 기본 사용자 좌표계는 하나의 사용자 픽셀을 하나의 장치 픽셀에 매핑합니다. SVG파일에서 "in"또는 "cm"과 같은 특정 치수는 결과 이미지에서 1:1로 보이도록 계산됩니다.
+```html
+<svg width="200" height="200" viewBox="0 0 100 100">…</svg>
+```
 
-SVG 1.1 스펙에서는 다음과 같이 인용합니다:
+The whole SVG canvas here is 200px by 200px in size. However, the `viewBox` attribute defines the portion of that canvas to display. These 200x200 pixels display an area that starts at user unit (0,0) and spans 100x100 user units to the right and to the bottom. This effectively zooms in on the 100x100 unit area and enlarges the image to double size.
 
-> \[...] 사용자 환경에서 "1px"이 "0.2822222mm" 에 대응한다고 가정했을때(90dpi), SVG는 다음과 같이 처리한다: \[...] "1cm"는 "35.43307px"과 같다. (그리고 35.43307 사용자 단위와 같다.)
+The current mapping (for a single element or the whole image) of user units to screen units is called **user coordinate system**. Apart from scaling, the coordinate system can also be rotated, skewed, and flipped. The default user coordinate system maps one user pixel to one device pixel. (However, the device may decide what it understands as one pixel.) Lengths in the SVG file with specific dimensions, like "in" or "cm", are then calculated in a way that makes them appear 1:1 in the resulting image.
+
+A quote from the SVG 1.1 specification illustrates this:
+
+> \[...] suppose that the user agent can determine from its environment that "1px" corresponds to "0.2822222mm" (i.e., 90dpi). Then, for all processing of SVG content: \[...] "1cm" equals "35.43307px" (and therefore 35.43307 user units)
 
 {{ PreviousNext("Web/SVG/Tutorial/Getting_Started", "Web/SVG/Tutorial/Basic_Shapes") }}

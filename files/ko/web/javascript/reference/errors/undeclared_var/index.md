@@ -1,41 +1,50 @@
 ---
-title: 'ReferenceError: assignment to undeclared variable "x"'
+title: "ReferenceError: assignment to undeclared variable \"x\""
 slug: Web/JavaScript/Reference/Errors/Undeclared_var
+page-type: javascript-error
 ---
 
 {{jsSidebar("Errors")}}
 
-## 메시지
+The JavaScript [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode)-only exception "Assignment to undeclared variable" occurs when the value has been assigned to an undeclared variable.
+
+## Message
 
 ```
-    ReferenceError: assignment to undeclared variable "x" (Firefox)
-    ReferenceError: "x" is not defined (Chrome)
-    ReferenceError: Variable undefined in strict mode (Edge)
+ReferenceError: x is not defined (V8-based)
+ReferenceError: assignment to undeclared variable x (Firefox)
+ReferenceError: Can't find variable: x (Safari)
 ```
 
-## 에러 형식
+## Error type
 
-엄격 모드([strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode))에서만 발생하는 {{jsxref("ReferenceError")}} 경고.
+{{jsxref("ReferenceError")}} in [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode) only.
 
-## 무엇이 잘못되었을까?
+## What went wrong?
 
-선언되지 않은 변수로 값은 할당되었습니다. [`var`](/en-US/docs/Web/JavaScript/Reference/Statements/var) 키워드가 없이 할당이 된 것입니다. 선언된 변수와 선언되지 않은 변수 사이에는 차이가 있는데, 이는 예상치 못한 결과를 가져오며, 때문에 JavaScript 엄격모드에서는 에러를 발생시키고 있습니다.
+A value has been assigned to an undeclared variable.
+In other words, there was an assignment without the `var` keyword.
+There are some differences between declared and undeclared variables, which might lead to unexpected results and that's why JavaScript presents an error in strict mode.
 
-선언된 변수와 선언되지 않은 변수에 대하여 기억해야 할 세 가지:
+Three things to note about declared and undeclared variables:
 
-- 선언된 변수는 선언된 실행 맥락 내에서 요구됩니다. 선언되지 않은 변수는 항상 전역의 특성을 띱니다.
-- 선언된 변수는 코드가 실행되기 전에 생성됩니다. 선언되지 않은 변수는 실행을 위해 할당이 일어날 때까지 존재하지 않습니다.
-- 선언된 변수는 실행 맥락 내(함수나 전역적인)에서 변경 불가한 요소입니다. 선언되지 않은 변수는 변경이 가능합니다. (삭제 될 수도 있습니다.)
+- Declared variables are constrained in the execution context in which they are declared.
+  Undeclared variables are always global.
+- Declared variables are created before any code is executed.
+  Undeclared variables do not exist until the code assigning to them is executed.
+- Declared variables are a non-configurable property of their execution context (function or global).
+  Undeclared variables are configurable (e.g. can be deleted).
 
-더 많은 설명과 예제를 필요로 한다면 이 [`var`](/en-US/docs/Web/JavaScript/Reference/Statements/var) 참조문서 페이지를 보세요.
+For more details and examples, see the [`var`](/en-US/docs/Web/JavaScript/Reference/Statements/var) reference page.
 
-선언되지 않은 변수 할당에 대한 에러는 엄격 모드([strict mode code](/en-US/docs/Web/JavaScript/Reference/Strict_mode))에서만 발생합니다. 비-엄격 코드에서는 조용히 묵인됩니다.
+Errors about undeclared variable assignments occur in [strict mode code](/en-US/docs/Web/JavaScript/Reference/Strict_mode) only.
+In non-strict code, they are silently ignored.
 
-## 예
+## Examples
 
-### 허용되지 않는 경우
+### Invalid cases
 
-이런 경우에는, 변수 "bar"는 선언되지 않은 변수가 됩니다.
+In this case, the variable "bar" is an undeclared variable.
 
 ```js example-bad
 function foo() {
@@ -45,18 +54,18 @@ function foo() {
 foo(); // ReferenceError: assignment to undeclared variable bar
 ```
 
-### 허용되는 경우
+### Valid cases
 
-"bar" 를 선언된 변수로 만들기 위해서, `var` 키워드를 변수명 앞에 붙여줍니다.
+To make "bar" a declared variable, you can add a [`let`](/en-US/docs/Web/JavaScript/Reference/Statements/let), [`const`](/en-US/docs/Web/JavaScript/Reference/Statements/var), or [`var`](/en-US/docs/Web/JavaScript/Reference/Statements/var) keyword in front of it.
 
 ```js example-good
 function foo() {
   "use strict";
-  var bar = true;
+  const bar = true;
 }
 foo();
 ```
 
-## 참조
+## See also
 
 - [Strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode)

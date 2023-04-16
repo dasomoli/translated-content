@@ -1,58 +1,62 @@
 ---
 title: background-origin
 slug: Web/CSS/background-origin
+page-type: css-property
+browser-compat: css.properties.background-origin
 ---
 
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`background-origin`** 속성은 배경의 원점을 테두리 시작점, 테두리 내부, 안쪽 여백 내부 중 하나로 지정합니다.
+The **`background-origin`** [CSS](/en-US/docs/Web/CSS) property sets the background's origin: from the border start, inside the border, or inside the padding.
 
 {{EmbedInteractiveExample("pages/css/background-origin.html")}}
 
-{{cssxref("background-attachment")}}가 `fixed`인 경우 `background-origin`은 무시됩니다.
+Note that `background-origin` is ignored when {{cssxref("background-attachment")}} is `fixed`.
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
 background-origin: border-box;
 background-origin: padding-box;
 background-origin: content-box;
 
-/* 전역 값 */
+/* Global values */
 background-origin: inherit;
 background-origin: initial;
+background-origin: revert;
+background-origin: revert-layer;
 background-origin: unset;
 ```
 
-`background-origin` 속성은 다음 목록의 키워드 중 하나를 선택해 지정할 수 있습니다.
+The `background-origin` property is specified as one of the keyword values listed below.
 
-### 값
+### Values
 
 - `border-box`
-  - : 배경을 테두리 박스에 상대적으로 배치합니다.
+  - : The background is positioned relative to the border box.
 - `padding-box`
-  - : 배경을 안쪽 여백 박스에 상대적으로 배치합니다.
+  - : The background is positioned relative to the padding box.
 - `content-box`
-  - : 배경을 콘텐츠 박스에 상대적으로 배치합니다.
+  - : The background is positioned relative to the content box.
 
-## 형식 정의
+## Formal definition
 
 {{cssinfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 배경 원점 설정하기
+### Setting background origins
 
 ```css
 .example {
   border: 10px double;
   padding: 10px;
-  background: url('image.jpg');
+  background: url("image.jpg");
   background-position: center left;
   background-origin: content-box;
 }
@@ -62,7 +66,7 @@ background-origin: unset;
 #example2 {
   border: 4px solid black;
   padding: 10px;
-  background: url('image.gif');
+  background: url("image.gif");
   background-repeat: no-repeat;
   background-origin: border-box;
 }
@@ -70,20 +74,48 @@ background-origin: unset;
 
 ```css
 div {
-  background-image: url('logo.jpg'), url('mainback.png'); /* Applies two images to the background */
+  background-image: url("logo.jpg"), url("mainback.png"); /* Applies two images to the background */
   background-position: top right, 0px 0px;
   background-origin: content-box, padding-box;
 }
 ```
 
-## 명세
+### Using two gradients
+
+In this example the box has a thick dotted border. The first gradient uses the `padding-box` as the `background-origin` and therefore the background sits inside the border. The second uses the `content-box` and so only displays behind the content.
+
+```css
+.box {
+  margin: 10px 0;
+  color: #fff;
+  background: linear-gradient(
+      90deg,
+      rgba(131, 58, 180, 1) 0%,
+      rgba(253, 29, 29, 0.6) 60%,
+      rgba(252, 176, 69, 1) 100%
+    ), radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(0, 0, 0, 1) 28%);
+  border: 20px dashed black;
+  padding: 20px;
+  width: 400px;
+  background-origin: padding-box, content-box;
+  background-repeat: no-repeat;
+}
+```
+
+```html
+<div class="box">Hello!</div>
+```
+
+{{EmbedLiveSample('Using_two_gradients', 420, 140)}}
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{cssxref("background-clip")}}

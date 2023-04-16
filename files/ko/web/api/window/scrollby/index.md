@@ -1,72 +1,77 @@
 ---
-title: Window.scrollBy()
+title: "Window: scrollBy() method"
+short-title: scrollBy()
 slug: Web/API/Window/scrollBy
+page-type: web-api-instance-method
+browser-compat: api.Window.scrollBy
 ---
 
 {{ APIRef() }}
 
-**`Window.scrollBy()`** 메서드는 창에 있는 문서를 지정된 양만큼 스크롤합니다.
+The **`Window.scrollBy()`** method scrolls the document in the
+window by the given amount.
 
-## 구문
+## Syntax
 
 ```js-nolint
 scrollBy(x-coord, y-coord)
 scrollBy(options)
 ```
 
-### 매개변수
+### Parameters
 
-- `x-coord`는 스크롤할 수평 픽셀 값입니다.
-- `y-coord`는 스크롤할 수직 픽셀 값입니다.
+- `x-coord` is the horizontal pixel value that you want to scroll by.
+- `y-coord` is the vertical pixel value that you want to scroll by.
 
-\- 혹은 -
+\- or -
 
 - `options`
-  - : 다음 매개변수가 포함된 사전.
+  - : A dictionary containing the following parameters:
     - `top`
-      - : 창 또는 요소를 스크롤할 Y축을 따라 픽셀 수를 지정합니다.
+      - : Specifies the number of pixels along the Y axis to scroll the window or element.
     - `left`
-      - : 창 또는 요소를 스크롤할 X축을 따라 픽셀 수를 지정합니다.
+      - : Specifies the number of pixels along the X axis to scroll the window or element.
     - `behavior`
-      - : 스크롤이 부드럽게 애니메이션되는지 (`smooth`), 한 번의 점프로 즉시 실행되는지 (`instant`), 또는 브라우저가 선택하도록 할지 (`auto`, 기본)를 지정합니다.
+      - : Specifies whether the scrolling should animate smoothly (`smooth`), happen instantly in a single jump (`instant`), or let the browser choose (`auto`, default).
 
-### 반환 값
+### Return value
 
-없음 ({{jsxref("undefined")}}).
+None ({{jsxref("undefined")}}).
 
-## 예제
+## Examples
 
-한 페이지 아래로 스크롤하려면.
+To scroll down one page:
 
 ```js
 window.scrollBy(0, window.innerHeight);
 ```
 
-위로 스크롤하려면.
+To scroll up:
 
 ```js
 window.scrollBy(0, -window.innerHeight);
 ```
 
-`options` 사용.
+Using `options`:
 
 ```js
 window.scrollBy({
   top: 100,
   left: 100,
-  behavior: 'smooth'
+  behavior: "smooth",
 });
 ```
 
-## 참고
+## Notes
 
-{{domxref("window.scroll()")}}가 문서의 절대 위치로 스크롤하는데 반해, `window.scrollBy()`는 특정 양만큼 스크롤합니다.
-{{domxref("window.scrollByLines()")}}와 {{domxref("window.scrollByPages()")}}를 참조하십시오.
+`window.scrollBy()` scrolls by a particular amount, whereas
+{{domxref("window.scroll()")}} scrolls to an absolute position in the document. See also
+{{domxref("window.scrollByLines()")}} and {{domxref("window.scrollByPages()")}}.
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

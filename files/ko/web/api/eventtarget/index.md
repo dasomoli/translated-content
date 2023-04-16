@@ -1,41 +1,47 @@
 ---
 title: EventTarget
 slug: Web/API/EventTarget
+page-type: web-api-interface
+browser-compat: api.EventTarget
 ---
-{{APIRef("DOM")}}
 
-**`EventTarget`** 인터페이스는 이벤트를 수신할 수 있고, 수신한 이벤트에 대한 수신기(listener)를 가질 수 있는 객체가 구현하는 인터페이스입니다. 즉, 이벤트의 대상이 될 수 있는 객체는 `EventTarget`의 세 메서드를 구현합니다.
+{{ApiRef("DOM")}}
 
-{{domxref("Element")}}, {{domxref("Document")}}, {{domxref("Window")}}가 가장 흔한 이벤트 대상이며, 이외에도 {{domxref("XMLHttpRequest")}}, {{domxref("AudioNode")}}, {{domxref("AudioContext")}} 등의 객체도 이벤트 대상입니다.
+The **`EventTarget`** interface is implemented by objects that can receive events and may have listeners for them.
+In other words, any target of events implements the three methods associated with this interface.
 
-많은 이벤트 대상(요소, 문서, 창, ...)은 `onevent` 속성과 특성을 사용한 [이벤트 처리기](/ko/docs/Web/Guide/Events/Event_handlers) 등록도 지원합니다.
+{{domxref("Element")}}, and its children, as well as {{domxref("Document")}} and {{domxref("Window")}}, are the most common event targets,
+but other objects can be event targets, too.
+For example {{domxref("XMLHttpRequest")}}, {{domxref("AudioNode")}}, and {{domxref("AudioContext")}} are also event targets.
+
+Many event targets (including elements, documents, and windows) also support setting [event handlers](/en-US/docs/Web/Events/Event_handlers) via `onevent` properties and attributes.
 
 {{InheritanceDiagram}}
 
-## 생성자
+## Constructor
 
 - {{domxref("EventTarget.EventTarget()", "EventTarget()")}}
-  - : 새로운 `EventTarget` 객체 인스턴스를 생성합니다.
+  - : Creates a new `EventTarget` object instance.
 
-## 메서드
+## Instance methods
 
 - {{domxref("EventTarget.addEventListener()")}}
-  - : `EventTarget`에 특정 이벤트 유형의 처리기를 등록합니다.
+  - : Registers an event handler of a specific event type on the `EventTarget`.
 - {{domxref("EventTarget.removeEventListener()")}}
-  - : `EventTarget`에서 이벤트 수신기를 하나 제거합니다.
+  - : Removes an event listener from the `EventTarget`.
 - {{domxref("EventTarget.dispatchEvent()")}}
-  - : `EventTarget`으로 이벤트를 발송합니다.
+  - : Dispatches an event to this `EventTarget`.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [이벤트 참고서](/ko/docs/Web/Reference/Events) - 웹 플랫폼에서 사용할 수 있는 이벤트 목록
-- [이벤트 입문](/ko/docs/Learn/JavaScript/Building_blocks/Events)
-- {{domxref("Event")}} 인터페이스
+- [Event reference](/en-US/docs/Web/Events) – the events available in the platform.
+- [Introduction to events](/en-US/docs/Learn/JavaScript/Building_blocks/Events)
+- {{domxref("Event")}} interface

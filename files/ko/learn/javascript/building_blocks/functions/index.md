@@ -1,88 +1,92 @@
 ---
-title: 함수 — 코드 재사용
+title: Functions — reusable blocks of code
 slug: Learn/JavaScript/Building_blocks/Functions
 ---
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/JavaScript/Building_blocks/Looping_code","Learn/JavaScript/Building_blocks/Build_your_own_function", "Learn/JavaScript/Building_blocks")}}
 
-코딩에 있어서 또 하나의 필수적인 개념은 **함수**인데, 이는 하나의 일을 하는 코드 조각을 정의된 블록 안에 저장하고, 같은 코드를 여러 번 타이핑하기보다는, 하나의 짧은 명령을 사용하여 여러분이 그 함수가 필요할 때 언제든지 그 코드를 호출할 수 있게 합니다. 이 문서에서 우리는 기본 문법(syntax), 어떻게 함수를 호출하고(invoke) 정의하는지, 스코프(scope), 그리고 매개변수(parameter)와 같은 함수 뒤에 있는 핵심적인 개념들을 탐구할 것입니다.
+Another essential concept in coding is **functions**, which allow you to store a piece of code that does a single task inside a defined block, and then call that code whenever you need it using a single short command — rather than having to type out the same code multiple times. In this article we'll explore fundamental concepts behind functions such as basic syntax, how to invoke and define them, scope, and parameters.
 
-<table class="learn-box standard-table">
+<table>
   <tbody>
     <tr>
-      <th scope="row">필요한 사전 지식:</th>
+      <th scope="row">Prerequisites:</th>
       <td>
-        기본적인 컴퓨터 활용 능력, HTML과 CSS의 기본적인 이해,
-        <a href="/ko/docs/Learn/JavaScript/First_steps">자바스크립트 첫 단계</a
+        Basic computer literacy, a basic understanding of HTML and CSS,
+        <a href="/en-US/docs/Learn/JavaScript/First_steps"
+          >JavaScript first steps</a
         >.
       </td>
     </tr>
     <tr>
-      <th scope="row">목표:</th>
-      <td>JavaScript 함수의 기본 개념을 이해합니다.</td>
+      <th scope="row">Objective:</th>
+      <td>
+        To understand the fundamental concepts behind JavaScript functions.
+      </td>
     </tr>
   </tbody>
 </table>
 
-## 함수는 어디에서 찾을 수 있나요?
+## Where do I find functions?
 
-자바스크립트 어디서든 함수를 찾을 수 있습니다. 사실, 우리는 지금까지 수업에서 함수를 계속 사용해왔습니다. 함수에 대해서 아주 많이 말해오지 않았을 뿐이죠. 그러나 이제 함수에 대해서 분명하게 말하고, 실제로 문법을 탐험할 때가 되었습니다.
+In JavaScript, you'll find functions everywhere. In fact, we've been using functions all the way through the course so far; we've just not been talking about them very much. Now is the time, however, for us to start talking about functions explicitly, and really exploring their syntax.
 
-[for loop](/ko/docs/Learn/JavaScript/Building_blocks/Looping_code#%EB%A3%A8%ED%94%84%EC%9D%98_%ED%91%9C%EC%A4%80), [while 과 do...while loop](/ko/docs/Learn/JavaScript/Building_blocks/Looping_code#while_%EA%B7%B8%EB%A6%AC%EA%B3%A0_do_..._while), 또는 [if...else문](/ko/docs/Learn/JavaScript/Building_blocks/%EC%A1%B0%EA%B1%B4%EB%AC%B8#if_..._else_%EB%AC%B8)과 같은 일반적인 내장 언어 구조를 사용하지 **않고** — `()` —같은 괄호 쌍을 사용했다면 여러분은 함수를 사용하고 있던 겁니다.
+Pretty much anytime you make use of a JavaScript structure that features a pair of parentheses — `()` — and you're **not** using a common built-in language structure like a [for loop](/en-US/docs/Learn/JavaScript/Building_blocks/Looping_code#the_standard_for_loop), [while or do...while loop](/en-US/docs/Learn/JavaScript/Building_blocks/Looping_code#while_and_do_..._while), or [if...else statement](/en-US/docs/Learn/JavaScript/Building_blocks/conditionals#if...else_statements), you are making use of a function.
 
-## 브라우저 내장 함수
+## Built-in browser functions
 
-우리는 이 코스에서 많은 브라우저 내장(built-in) 함수를 사용해왔습니다. 예를 들어, 우리가 매번 텍스트 문자열을 조작할 때마다:
+We've used functions built in to the browser a lot in this course.
+
+Every time we manipulated a text string, for example:
 
 ```js
-var myText = 'I am a string';
-var newString = myText.replace('string', 'sausage');
+const myText = 'I am a string';
+const newString = myText.replace('string', 'sausage');
 console.log(newString);
-// the replace() string function takes a string,
-// replaces one substring with another, and returns
-// a new string with the replacement made
+// the replace() string function takes a source string,
+// and a target string and replaces the source string,
+// with the target string, and returns the newly formed string
 ```
 
-또는 우리가 배열을 조작할 때마다:
+Or every time we manipulated an array:
 
 ```js
-var myArray = ['I', 'love', 'chocolate', 'frogs'];
-var madeAString = myArray.join(' ');
+const myArray = ['I', 'love', 'chocolate', 'frogs'];
+const madeAString = myArray.join(' ');
 console.log(madeAString);
 // the join() function takes an array, joins
 // all the array items together into a single
 // string, and returns this new string
 ```
 
-또는 우리가 무작위의 숫자를 생성할 때마다:
+Or every time we generate a random number:
 
 ```js
-var myNumber = Math.random();
-// the random() function generates a random
-// number between 0 and 1, and returns that
-// number
+const myNumber = Math.random();
+// the random() function generates a random number between
+// 0 and up to but not including 1, and returns that number
 ```
 
-...우리는 함수를 사용하고 있었어요!
+We were using a _function_!
 
-> **참고:** 만약 필요하다면, 이 기능들에 다시 익숙해지기 위해 여러분의 브라우저 자바스크립트 콘솔에 자유롭게 이 코드들을 입력해 보세요.
+> **Note:** Feel free to enter these lines into your browser's JavaScript console to re-familiarize yourself with their functionality, if needed.
 
-JavaScript 언어는 여러분 스스로 코드 전체를 적을 필요 없이, 유용한 것들을 할 수 있게 해주는 많은 내장 함수를 가지고 있습니다. 사실, 브라우저 내장 함수를 **호출**("함수를 실행하다(run 또는 execute)"는 말을 멋있게 "호출하다(invoke)"라고 하기도 합니다)할 때 호출하는 일부 코드는 JavaScript로 작성될 수 없었습니다 — 이러한 함수 중 상당수는 백그라운드 브라우저 코드의 일부를 호출하고 있으며, 이는 JavaScript와 같은 웹 언어가 아니라 대체로 C++와 같은 저수준 시스템 언어로 작성됩니다.
+The JavaScript language has many built-in functions to allow you to do useful things without having to write all that code yourself. In fact, some of the code you are calling when you **invoke** (a fancy word for run, or execute) a built in browser function couldn't be written in JavaScript — many of these functions are calling parts of the background browser code, which is written largely in low-level system languages like C++, not web languages like JavaScript.
 
-몇몇 브라우저 내장함수는 핵심(core) 자바스크립트 언어의 일부가 아니라는 것을 유념하세요. 몇몇은 브라우저 API의 일부로써 정의되어 있는데, 더욱 많은 기능성을 제공하기 위해 기본(default) 언어의 위에 개발되었습니다 ([앞선 코스](/ko/docs/Learn/JavaScript/First_steps/What_is_JavaScript#%EA%B7%B8%EB%9E%98%EC%84%9C_%EC%A7%84%EC%A7%9C_%EC%96%B4%EB%96%A4_%EC%9D%BC%EC%9D%84_%ED%95%A0_%EC%88%98_%EC%9E%88%EB%82%98%EC%9A%94)에서 더 자세한 설명을 볼 수 있습니다). 브라우저 API를 다루는 법은 나중에 더 살펴보도록 하겠습니다.
+Bear in mind that some built-in browser functions are not part of the core JavaScript language — some are defined as part of browser APIs, which build on top of the default language to provide even more functionality (refer to [this early section of our course](/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript#so_what_can_it_really_do) for more descriptions). We'll look at using browser APIs in more detail in a later module.
 
-## 함수 대 메소드
+## Functions versus methods
 
-프로그래머들은 객체(object)의 부분인 **함수**를 **메서드**(method)라고 부릅니다. 여러분은 아직 구성된(structured) 자바스크립트 객체의 내부 작동에 대해서 배울 필요는 없습니다. 차후의 모듈에서 객체의 내부 작동과, 어떻게 객체를 생성하는지에 대한 모든 것을 배울 수 있습니다. 우선은, 우리는 메서드 대 함수에 대해 있을 수 있는 혼란을 단지 정리하기를 원합니다. — 웹 상에서 이용 가능한 관련된 리소스들을 살펴보면서 여러분은 두 용어를 만날 가능성이 있습니다.
+**Functions** that are part of objects are called **methods**. You don't need to learn about the inner workings of structured JavaScript objects yet — you can wait until our later module that will teach you all about the inner workings of objects, and how to create your own. For now, we just wanted to clear up any possible confusion of method versus function — you are likely to meet both terms as you look at the available related resources across the Web.
 
-우리가 지금까지 사용해 왔던 내장된(built-in) 코드는 두 형태로 나타납니다. 바로 **함수**와 **메서드**입니다. 여러분은 내장 함수의 전체 목록과, 내장 객체와 그들의 해당하는 메서드들 또한 [여기서](/ko/docs/Web/JavaScript/Reference/Global_Objects) 확인할 수 있습니다.
+The built-in code we've made use of so far come in both forms: **functions** and **methods.** You can check the full list of the built-in functions, as well as the built-in objects and their corresponding methods [here](/en-US/docs/Web/JavaScript/Reference/Global_Objects).
 
-여러분은 또한 많은 **사용자 정의 함수**(custom functions)들을 이 코스에서 지금까지 봐 왔습니다. — 브라우저 내부에서 정의된 게 아니라, 여러분의 코드에서 정의된 함수 말입니다. 괄호 바로 앞에 있는 사용자 정의 이름을 봤을 때마다, 여러분은 사용자 정의 함수를 사용하고 있었던 것입니다. [반복문(loops) 문서](/ko/docs/Learn/JavaScript/Building_blocks/Looping_code)의 [random-canvas-circles.html](https://mdn.github.io/learning-area/javascript/building-blocks/loops/random-canvas-circles.html) 예제 (전체 [소스 코드](https://github.com/mdn/learning-area/blob/master/javascript/building-blocks/loops/random-canvas-circles.html) 또한 보세요)에서, 우리는 다음과 같은 사용자 정의 `draw()` 함수를 포함했었습니다.
+You've also seen a lot of **custom functions** in the course so far — functions defined in your code, not inside the browser. Anytime you saw a custom name with parentheses straight after it, you were using a custom function. In our [random-canvas-circles.html](https://mdn.github.io/learning-area/javascript/building-blocks/loops/random-canvas-circles.html) example (see also the full [source code](https://github.com/mdn/learning-area/blob/main/javascript/building-blocks/loops/random-canvas-circles.html)) from our [loops article](/en-US/docs/Learn/JavaScript/Building_blocks/Looping_code), we included a custom `draw()` function that looked like this:
 
 ```js
 function draw() {
   ctx.clearRect(0,0,WIDTH,HEIGHT);
-  for (var i = 0; i < 100; i++) {
+  for (let i = 0; i < 100; i++) {
     ctx.beginPath();
     ctx.fillStyle = 'rgba(255,0,0,0.5)';
     ctx.arc(random(WIDTH), random(HEIGHT), random(50), 0, 2 * Math.PI);
@@ -91,13 +95,13 @@ function draw() {
 }
 ```
 
-이 함수는 {{htmlelement("canvas")}} 요소 안에 100개의 임의의 원을 그립니다. 원할 때마다 아래 코드로 함수를 호출할 수 있습니다.
+This function draws 100 random circles inside a {{htmlelement("canvas")}} element. Every time we want to do that, we can just invoke the function with this:
 
 ```js
 draw();
 ```
 
-우리가 이것을 반복하기를 원할 때마다 모든 코드를 또 작성하지 않고 말이죠. 그리고 함수는 여러분이 원하는 코드를 무엇이든지간에 포함할 수 있습니다. 여러분은 심지어 다른 함수들을 함수 내부에서부터 호출할 수 있습니다. 위의 예시는 아래와 같이 정의된 `random()` 함수를 세 번이나 호출하고 있죠.
+rather than having to write all that code out again every time we want to repeat it. And functions can contain whatever code you like — you can even call other functions from inside functions. The above function for example calls the `random()` function three times, which is defined by the following code:
 
 ```js
 function random(number) {
@@ -105,26 +109,77 @@ function random(number) {
 }
 ```
 
-브라우저의 내장 [Math.random()](/ko/docs/Web/JavaScript/Reference/Global_Objects/Math/random) 함수는 오직 0과 1사이의 무작위 소수를 생성하기 때문에 우리는 이 함수가 필요했습니다. 우리는 0과 명시된 숫자 사이의 무작위 정수를 원했습니다.
+We needed this function because the browser's built-in [Math.random()](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random) function only generates a random decimal number between 0 and 1. We wanted a random whole number between 0 and a specified number.
 
-## 함수 호출
+## Invoking functions
 
-지금까지 꽤 잘 따라온 거 같은데 혹시 모르니깐 말해 주자면... 정의된 함수를 작동시키기 위해선 함수를 '호출' 해야 돼요. 함수 호출은 함수의 이름을 괄호와 함께 코드 내에 적어 주면 됩니다.
+You are probably clear on this by now, but just in case, to actually use a function after it has been defined, you've got to run — or invoke — it. This is done by including the name of the function in the code somewhere, followed by parentheses.
 
 ```js
 function myFunction() {
   alert('hello');
 }
 
-myFunction()
+myFunction();
 // calls the function once
 ```
 
-> **참고:** 이 형태의 함수 생성은 또한 _함수 선언_(function declaration)으로도 알려져 있습니다. 이것은 언제나 호이스팅(hoisting)되어서, 여러분은 함수를 함수 정의 위에서 호출할 수 있고 이것은 잘 작동할 것입니다.
+> **Note:** This form of creating a function is also known as _function declaration_. It is always hoisted, so you can call function above function definition and it will work fine.
 
-## 익명 함수
+## Function parameters
 
-여러분은 조금 다른 방식으로 정의되거나 호출되는 함수를 본 적 있을 거예요. 이제까지 우리는 이런 식으로 함수를 생성했죠:
+Some functions require **parameters** to be specified when you are invoking them — these are values that need to be included inside the function parentheses, which it needs to do its job properly.
+
+> **Note:** Parameters are sometimes called arguments, properties, or even attributes.
+
+As an example, the browser's built-in [Math.random()](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random) function doesn't require any parameters. When called, it always returns a random number between 0 and 1:
+
+```js
+const myNumber = Math.random();
+```
+
+The browser's built-in string [replace()](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace) function however needs two parameters — the substring to find in the main string, and the substring to replace that string with:
+
+```js
+const myText = 'I am a string';
+const newString = myText.replace('string', 'sausage');
+```
+
+> **Note:** When you need to specify multiple parameters, they are separated by commas.
+
+### Optional parameters
+
+Sometimes parameters are optional — you don't have to specify them. If you don't, the function will generally adopt some kind of default behavior. As an example, the array [join()](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join) function's parameter is optional:
+
+```js
+const myArray = ['I', 'love', 'chocolate', 'frogs'];
+const madeAString = myArray.join(' ');
+console.log(madeAString);
+// returns 'I love chocolate frogs'
+
+const madeAnotherString = myArray.join();
+console.log(madeAnotherString);
+// returns 'I,love,chocolate,frogs'
+```
+
+If no parameter is included to specify a joining/delimiting character, a comma is used by default.
+
+### Default parameters
+
+If you're writing a function and want to support optional parameters, you can specify default values by adding `=` after the name of the parameter, followed by the default value:
+
+```js
+function hello(name = 'Chris') {
+  console.log(`Hello ${name}!`);
+}
+
+hello('Ari'); // Hello Ari!
+hello();      // Hello Chris!
+```
+
+## Anonymous functions and arrow functions
+
+So far we have just created a function like so:
 
 ```js
 function myFunction() {
@@ -132,117 +187,128 @@ function myFunction() {
 }
 ```
 
-하지만 이름 없는 함수 또한 만들 수 있답니다.
+But you can also create a function that doesn't have a name:
 
 ```js
-function() {
+(function () {
   alert('hello');
+})
+```
+
+This is called an **anonymous function**, because it has no name. You'll often see anonymous functions when a function expects to receive another function as a parameter. In this case the function parameter is often passed as an anonymous function.
+
+> **Note:** This form of creating a function is also known as _function expression_. Unlike function declaration, function expressions are not hoisted.
+
+### Anonymous function example
+
+For example, let's say you want to run some code when the user types into a text box. To do this you can call the {{domxref("EventTarget/addEventListener", "addEventListener()")}} function of the text box. This function expects you to pass it (at least) two parameters:
+
+- the name of the event to listen for, which in this case is {{domxref("Element/keydown_event", "keydown")}}
+- a function to run when the event happens.
+
+When the user presses a key, the browser will call the function you provided, and will pass it a parameter containing information about this event, including the particular key that the user pressed:
+
+```js
+function logKey(event) {
+  console.log(`You pressed "${event.key}".`);
+}
+
+textBox.addEventListener('keydown', logKey);
+```
+
+Instead of defining a separate `logKey()` function, you can pass an anonymous function into `addEventListener()`:
+
+```js
+textBox.addEventListener('keydown', function(event) {
+  console.log(`You pressed "${event.key}".`);
+});
+```
+
+### Arrow functions
+
+If you pass an anonymous function like this, there's an alternative form you can use, called an **arrow function**. Instead of `function(event)`, you write `(event) =>`:
+
+```js
+textBox.addEventListener('keydown', (event) => {
+  console.log(`You pressed "${event.key}".`);
+});
+```
+
+If the function only has one line in the curly brackets, you omit the curly brackets:
+
+```js
+textBox.addEventListener('keydown', (event) => console.log(`You pressed "${event.key}".`));
+```
+
+If the function only takes one parameter, you can also omit the brackets around the parameter:
+
+```js
+textBox.addEventListener('keydown', event => console.log(`You pressed "${event.key}".`));
+```
+
+Finally, if your function needs to return a value, and contains only one line, you can also omit the `return` statement. In the following example we're using the {{jsxref("Array.prototype.map()","map()")}} method of `Array` to double every value in the original array:
+
+```js
+const originals = [1, 2, 3];
+
+const doubled = originals.map((item) => item * 2);
+
+console.log(doubled); // [2, 4, 6]
+```
+
+The `map()` method takes each item in the array in turn, passing it into the given function. It then takes the value returned by that function and adds it to a new array.
+
+So in the example above, `(item) => item * 2` is the arrow function equivalent of:
+
+```js
+function doubleItem(item) {
+  return item * 2;
 }
 ```
 
-이건 **익명 함수**라고 불려요. 이름이 없다는 뜻이죠! 익명함수는 스스로 뭘 어쩌지 못 해요. 익명함수는 주로 이벤트 핸들러와 사용됩니다. 아래의 예시는 함수 내의 코드가 관련된 버튼을 클릭함에 따라 작동한다는 걸 보여주죠.
+We recommend that you use arrow functions, as they can make your code shorter and more readable. To learn more, see the [section on arrow functions in the JavaScript guide](/en-US/docs/Web/JavaScript/Guide/Functions#arrow_functions), and our [reference page on arrow functions](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions).
+
+> **Note:** There are some subtle differences between arrow functions and normal functions. They're outside the scope of this introductory guide, and are unlikely to make a difference in the cases we've discussed here. To learn more, see the [arrow function reference documentation](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions).
+
+### Arrow function live sample
+
+Here's a complete working example of the "keydown" example we discussed above:
+
+The HTML:
+
+```html
+<input id="textBox" type="text">
+<div id="output"></div>
+```
+
+The JavaScript:
 
 ```js
-var myButton = document.querySelector('button');
+const textBox = document.querySelector("#textBox");
+const output = document.querySelector("#output");
 
-myButton.onclick = function() {
-  alert('hello');
+textBox.addEventListener('keydown', (event) => output.textContent = `You pressed "${event.key}".`);
+```
+
+```css hidden
+div {
+  margin: 0.5rem 0;
 }
 ```
 
-위의 예시는 페이지 상의 클릭을 위해 {{htmlelement("button")}} 요소를 필요로 합니다. 여러분은 코스를 거치며 이런 구조의 코드를 꽤 봐왔을 거예요. 다음 문서에서 더 많은 걸 배워 보자구요.
+The result - try typing into the text box and see the output:
 
-여러분은 변수 속에 익명함수를 넣을 수 있어요. 예시입니다.
+{{EmbedLiveSample("Arrow function live sample", 100, 100)}}
 
-```js
-var myGreeting = function() {
-  alert('hello');
-}
-```
+## Function scope and conflicts
 
-> **참고:** 이 형태의 함수 생성은 또한 _함수 표현식_(function expression)으로도 알려져 있습니다. 함수 선언과는 다르게, 함수 표현식은 호이스팅되지 않습니다.
+Let's talk a bit about {{glossary("scope")}} — a very important concept when dealing with functions. When you create a function, the variables and other things defined inside the function are inside their own separate **scope**, meaning that they are locked away in their own separate compartments, unreachable from code outside the functions.
 
-이 함수는 이런 식으로 호출되죠:
+The top level outside all your functions is called the **global scope**. Values defined in the global scope are accessible from everywhere in the code.
 
-```js
-myGreeting();
-```
+JavaScript is set up like this for various reasons — but mainly because of security and organization. Sometimes you don't want variables to be accessible from everywhere in the code — external scripts that you call in from elsewhere could start to mess with your code and cause problems because they happen to be using the same variable names as other parts of the code, causing conflicts. This might be done maliciously, or just by accident.
 
-이 방법은 효과적으로 함수에 이름을 부여하고 있어요. 여러분은 다중 변수들에 함수를 할당할 수도 있죠. 예를 들면,
-
-```js
-var anotherGreeting = function() {
-  alert('hello');
-}
-```
-
-이제 함수는 이런 식으로도 호출이 가능해졌구요.
-
-```js
-myGreeting();
-anotherGreeting();
-```
-
-하지만 위의 방식은 사람 헷갈리게 만들어요. 그니깐 쓰진 맙시다! 함수를 만들 땐 아래의 형태를 고수하는 게 나아요.
-
-```js
-function myGreeting() {
-  alert('hello');
-}
-```
-
-익명함수는 이벤트 발생에 따른 수많은 코드를 작동시키기 위해 주로 쓰이게 돼요. 이벤트 핸들러를 사용한 버튼의 클릭과 같은 상황에 말이죠. 자, 그 코드는 아래와 같이 생겼어요.
-
-```js
-myButton.onclick = function() {
-  alert('hello');
-  // 내가 원하는 만큼 얼마든지
-  // 여기에 코드를 작성하면 됩니다!
-}
-```
-
-## 함수 매개변수
-
-몇몇 함수는 호출을 위해 매개변수를 필요로 하는 경우가 있습니다. 이것들은 함수 괄호 안에 포함될 필요가 있는 값들인데, 올바르게 동작하기 위해 필요합니다.
-
-> **참고:** 매개변수는 종종 arguments, properties, 심지어 attributes 라고도 불려요.
-
-예를 들어, 브라우저의 내장 함수인 [Math.random()](/ko/docs/Web/JavaScript/Reference/Global_Objects/Math/random)은 어떤 매개변수도 필요로 하지 않습니다. 이 함수는 호출되면 늘 0과 1사이의 무작위 수를 반환해 주죠.
-
-```js
-var myNumber = Math.random();
-```
-
-하지만 브라우저의 내장 문자열 [replace()](/ko/docs/Web/JavaScript/Reference/Global_Objects/String/replace) 함수는 두 개의 매개변수를 필요로 합니다. 대체될 문자와 대체할 문자죠.
-
-```js
-var myText = 'I am a string';
-var newString = myText.replace('string', 'sausage');
-```
-
-> **참고:** 여러 개의 매개변수는 콤마에 의해 구분되어집니다.
-
-매개변수는 이따금 선택 사항이기도 합니다. 여러분이 명시해 줄 필요가 없다는 뜻이죠. 그런 경우, 일반적으로 함수는 기본 기능을 수행합니다. 예를 들어, 배열과 관련된 [join()](/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/join) 함수의 매개변수가 그렇죠.
-
-```js
-var myArray = ['I', 'love', 'chocolate', 'frogs'];
-var madeAString = myArray.join(' ');
-// returns 'I love chocolate frogs'
-var madeAString = myArray.join();
-// returns 'I,love,chocolate,frogs'
-```
-
-결합(joining)/한정(delimiting)하는 문자를 명시할 어떠한 매개변수도 포함되지 않는다면, 콤마가 기본으로 사용될 것입니다.
-
-## 함수 스코프와 충돌(conflicts)
-
-우리 '[스코프](/ko/docs/Glossary/Scope)(scope)'에 대해 얘기해 볼까요? '스코프'는 함수와 관련된 매우 중요한 개념입니다. 함수를 생성할 때, 변수 및 함수 내 정의된 코드들은 그들만의 분리된 '스코프' 안에 자리하게 됩니다. 그 말인 즉슨, 다른 함수의 내부나 외부 함수의 코드가 접근할 수 없는 그들만의 구획에 갇혀 있다는 뜻입니다.
-
-함수 바깥에 선언된 가장 상위 레벨의 스코프를 '**전역 스코프**(global scope)' 라고 부릅니다.전역 스코프 내에 정의된 값들은 어느 코드든 접근이 가능합니다.
-
-자바스크립트는 다양한 이유로 인해 이와 같이 설정되어 있지만, 주로는 안전성과 구조 때문입니다. 어떤 때에는 여러분의 변수가 어느 코드나 접근 가능한 변수가 되는 걸 원치 않을 겁니다. 여러분이 어딘가에서 불러온 외부 스크립트가 문제를 일으킬 수도 있으니깐요. 외부 스크립트의 코드와 같은 변수 이름을 사용하면 충돌이 일어나게 돼요. 이건 악의적일 수도 있고, 아님 뭐 단순한 우연이겠죠.
-
-예를 들어 , 여러분에게 두 개의 외부 자바스크립트 파일을 호출하는 HTML이 있다고 쳐요. 그 둘은 같은 이름으로 정의된 변수와 함수를 사용하고 있습니다.
+For example, say you have an HTML file that is calling in two external JavaScript files, and both of them have a variable and a function defined that use the same name:
 
 ```html
 <!-- Excerpt from my HTML -->
@@ -255,189 +321,140 @@ var madeAString = myArray.join();
 
 ```js
 // first.js
-var name = 'Chris';
+const name = 'Chris';
 function greeting() {
-  alert('Hello ' + name + ': welcome to our company.');
+  alert(`Hello ${name}: welcome to our company.`);
 }
 ```
 
 ```js
 // second.js
-var name = 'Zaptec';
+const name = 'Zaptec';
 function greeting() {
-  alert('Our company is called ' + name + '.');
+  alert(`Our company is called ${name}.`);
 }
 ```
 
-여러분이 호출하고 싶은 두 함수 모두 `greeting()` 이지만, 여러분은 오직 `first.js` 파일의 `greeting()` 함수에만 접근할 수 있을 뿐입니다 (두번째 것은 무시됩니다). 추가적으로, `second.js` 파일에서 `let` 키워드로 `name` 변수를 두 번째로 선언하려고 시도하는 것은 오류를 낳습니다.
+Both functions you want to call are called `greeting()`, but you can only ever access the `first.js` file's `greeting()` function (the second one is ignored). In addition, an error results when attempting (in the `second.js` file) to assign a new value to the `name` variable — because it was already declared with `const`, and so can't be reassigned.
 
-> **참고:** 예제를 [GitHub](https://mdn.github.io/learning-area/javascript/building-blocks/functions/conflict.html)에서 볼 수 있습니다. ([소스 코드](https://github.com/mdn/learning-area/tree/master/javascript/building-blocks/functions) 또한 볼 수 있습니다).
+> **Note:** You can see this example [running live on GitHub](https://mdn.github.io/learning-area/javascript/building-blocks/functions/conflict.html) (see also the [source code](https://github.com/mdn/learning-area/tree/main/javascript/building-blocks/functions)).
 
-함수의 일부를 코드 안에 가두는 것은 이러한 문제를 피할 수 있고, 가장 좋은 방법이라 여겨집니다.
+Keeping parts of your code locked away in functions avoids such problems, and is considered the best practice.
 
-동물원 같네요. 사자, 얼룩말, 호랑이, 그리고 펭귄은 자신들만의 울타리 안에 있으며, 그들의 울타리 내부에 있는 것만 건드릴 수 있어요. 함수 스코프처럼 말이죠. 만약 동물들이 다른 울타리 안으로 들어갈 수 있었다면, 문제가 생겼을 겁니다. 좋게는 다른 동물이 낯선 거주 환경에서 불편함을 느끼는 정도겠죠. 사자나 호랑이가 펭귄의 물기 많고 추운 영역 안에서 끔찍함을 느끼듯이요. 하지만 최악의 상황엔 사자나 호랑이가 펭귄을 먹어 치울지도 모르죠!
+It is a bit like a zoo. The lions, zebras, tigers, and penguins are kept in their own enclosures, and only have access to the things inside their enclosures — in the same manner as the function scopes. If they were able to get into other enclosures, problems would occur. At best, different animals would feel really uncomfortable inside unfamiliar habitats — a lion or tiger would feel terrible inside the penguins' watery, icy domain. At worst, the lions and tigers might try to eat the penguins!
 
-![](mdn-mozilla-zoo.png)
+![Four different animals enclosed in their respective habitat in a Zoo](mdn-mozilla-zoo.png)
 
-사육사는 전역 스코프와 같습니다. 그들은 모든 울타리에 들어갈 수 있고, 먹이를 보충하고, 아픈 동물들을 돌볼 수 있어요.
+The zoo keeper is like the global scope — they have the keys to access every enclosure, to restock food, tend to sick animals, etc.
 
-### 직접 해보기: 스코프랑 놀자
+### Active learning: Playing with scope
 
-스코프를 설명하기 위해 스코프 사용의 실례를 한번 봅시다.
+Let's look at a real example to demonstrate scoping.
 
-1. 먼저, 주어진 [function-scope.html](https://github.com/mdn/learning-area/blob/master/javascript/building-blocks/functions/function-scope.html) 예제의 복사본을 만드세요. 예제에는 2개의 함수 `a()` 와 `b()`, 그리고 3개의 변수 — `x`, `y`, 와 `z` —가 있습니다. 그 중 2개는 함수 안에 정의되어 있으며, 1개는 전역 스코프에 정의되어 있습니다. 이것은 또한 세 번째 함수 `output()`을 포함하고 있는데, 이건 하나의 매개변수만 받으며, 페이지의 단락 안에 그것을 출력합니다.
-2. 예제를 인터넷 브라우저나 텍스트 에디터를 통해 열어봅시다.
-3. 브라우저 개발자 툴에서 자바스크립트 콘솔을 엽시다. 자바스크립트 콘솔에서 아래와 같이 작성해보세요.
+1. First, make a local copy of our [function-scope.html](https://github.com/mdn/learning-area/blob/main/javascript/building-blocks/functions/function-scope.html) example. This contains two functions called `a()` and `b()`, and three variables — `x`, `y`, and `z` — two of which are defined inside the functions, and one in the global scope. It also contains a third function called `output()`, which takes a single parameter and outputs it in a paragraph on the page.
+2. Open the example up in a browser and in your text editor.
+3. Open the JavaScript console in your browser developer tools. In the JavaScript console, enter the following command:
 
-    ```js
-    output(x);
-    ```
+   ```js
+   output(x);
+   ```
 
-    여러분은 브라우저 뷰포트에 출력된 변수 `x`의 값을 볼 수 있을 것입니다.
+   You should see the value of variable `x` printed to the browser viewport.
 
-4. 이제 다음을 콘솔에 입력해 보세요.
+4. Now try entering the following in your console
 
-    ```js
-    output(y);
-    output(z);
-    ```
+   ```js
+   output(y);
+   output(z);
+   ```
 
-    이것 모두는 다음의 오류를 리턴할 것입니다. "[ReferenceError: y is not defined](/ko/docs/Web/JavaScript/Reference/Errors/Not_defined)". 이것은 왜 그럴까요? 왜냐하면 함수 스코프 때문입니다. — `y`와 `z`는 `a()`와 `b()`함수 안에 잡혀 있어서, `output()`은 전역 스코프에서 호출되었을 때 그들에게 접근할 수 없습니다.
+   Both of these should throw an error into the console along the lines of "[ReferenceError: y is not defined](/en-US/docs/Web/JavaScript/Reference/Errors/Not_defined)". Why is that? Because of function scope — `y` and `z` are locked inside the `a()` and `b()` functions, so `output()` can't access them when called from the global scope.
 
-5. 그러나, 이것이 다른 함수 안쪽에서 호출되었을 때는 어떨까요? `a()`와 `b()`를 다음과 같이 보이도록 수정해 보세요.
+5. However, what about when it's called from inside another function? Try editing `a()` and `b()` so they look like this:
 
-    ```js
-    function a() {
-      var y = 2;
-      output(y);
-    }
+   ```js
+   function a() {
+     const y = 2;
+     output(y);
+   }
 
-    function b() {
-      var z = 3;
-      output(z);
-    }
-    ```
+   function b() {
+     const z = 3;
+     output(z);
+   }
+   ```
 
-    코드를 저장하고 브라우저에서 다시 로드한 후, `a()`와 `b()` 함수를 자바스크립트 콘솔에서 호출해 보세요.
+   Save the code and reload it in your browser, then try calling the `a()` and `b()` functions from the JavaScript console:
 
-    ```js
-    a();
-    b();
-    ```
+   ```js
+   a();
+   b();
+   ```
 
-    여러분은 페이지에 출력된 `y`와 `z`값들을 볼 수 있을 것입니다. `output()` 함수가 다른 함수 안쪽에서 호출되고 있으므로, 이것은 잘 작동합니다. — 각각의 경우에서, 같은 스코프에서 그것이 출력하고 있는 변수들이 정의되어 있으므로. `output()`는 전역 스코프에서 정의되었으므로, 이 함수 자체는 어디서든 이용할 수 있습니다.
+   You should see the `y` and `z` values printed in the browser viewport. This works fine, as the `output()` function is being called inside the other functions — in the same scope as the variables it is printing are defined in, in each case. `output()` itself is available from anywhere, as it is defined in the global scope.
 
-6. 이제 여러분의 코드를 다음과 같이 갱신해 보세요.
+6. Now try updating your code like this:
 
-    ```js
-    function a() {
-      var y = 2;
-      output(x);
-    }
+   ```js
+   function a() {
+     const y = 2;
+     output(x);
+   }
 
-    function b() {
-      var z = 3;
-      output(x);
-    }
-    ```
+   function b() {
+     const z = 3;
+     output(x);
+   }
+   ```
 
-7. 저장하고 다시 로드한 후 이것을 자바스크립트 콘솔에서 시도해 보세요.
+7. Save and reload again, and try this again in your JavaScript console:
 
-    ```js
-    a();
-    b();
-    ```
+   ```js
+   a();
+   b();
+   ```
 
-8. 브라우저 뷰포트에 `a()` 와 `b()` 모두 x 값을 출력해야 합니다. 왜냐하면 비록 `output()` 호출이 `x`가 정의되어 있는 같은 스코프에 있지 않더라도, `x`는 전역 변수이므로 모든 코드 어디서든 이용 가능하기 때문에 이것들은 잘 작동합니다.
-9. 마지막으로, 여러분의 코드를 다음과 같이 갱신해 보세요.
+   Both the `a()` and `b()` call should print the value of x to the browser viewport. These work fine because even though the `output()` calls are not in the same scope as `x` is defined in, `x` is a global variable so is available inside all code, everywhere.
 
-    ```js
-    function a() {
-      var y = 2;
-      output(z);
-    }
+8. Finally, try updating your code like this:
 
-    function b() {
-      var z = 3;
-      output(y);
-    }
-    ```
+   ```js
+   function a() {
+     const y = 2;
+     output(z);
+   }
 
-10. 저장하고 다시 로드한 후, 자바스크립트 콘솔에서 다시 다음을 시도해 보세요.
+   function b() {
+     const z = 3;
+     output(y);
+   }
+   ```
 
-    ```js
-    a();
-    b();
-    ```
+9. Save and reload again, and try this again in your JavaScript console:
 
-    이번에는 `a()` 와 `b()` 호출이 둘 다 이 짜증나는 "[ReferenceError: z is not defined](/ko/docs/Web/JavaScript/Reference/Errors/Not_defined)" 오류를 리턴할 것입니다. — 이것은 왜냐하면 `output()` 호출과 그들이 출력하기를 시도하는 변수들이 같은 함수 스코프 내부에 정의되어 있지 않기 때문입니다. — 변수들은 효과적으로 이 함수 호출에 보이지 않습니다.
+   ```js
+   a();
+   b();
+   ```
 
-> **참고:** 같은 스코프 규칙은 반복문 (예: `for() { ... }`)과 조건문(conditional blocks) (예: `if() { ... }`)에 적용되지 않습니다. — 이것들은 아주 비슷하게 생겼지만, 같은 것이 아닙니다! 헷갈리지 않도록 조심하세요.
+   This time the `a()` and `b()` calls will throw that annoying [ReferenceError: _variable name_ is not defined](/en-US/docs/Web/JavaScript/Reference/Errors/Not_defined) error into the console — this is because the `output()` calls and the variables they are trying to print are not in the same function scopes — the variables are effectively invisible to those function calls.
 
-> **참고:** [ReferenceError: "x" is not defined](/ko/docs/Web/JavaScript/Reference/Errors/Not_defined) 오류는 여러분이 마주칠 가장 일반적인 것들 중 하나입니다. 만약 여러분이 이 오류를 얻었고 여러분이 문제의 변수를 정의했다는 것이 확실하다면, 그것이 어떤 스코프 안에 들어있는지 확인해 보세요.
+> **Note:** The same scoping rules do not apply to loop (e.g. `for() { }`) and conditional blocks (e.g. `if () { }`) — they look very similar, but they are not the same thing! Take care not to get these confused.
 
-### 함수 내부의 함수
+> **Note:** The [ReferenceError: "x" is not defined](/en-US/docs/Web/JavaScript/Reference/Errors/Not_defined) error is one of the most common you'll encounter. If you get this error and you are sure that you have defined the variable in question, check what scope it is in.
 
-여러분은 함수를 어디에서나, 심지어 다른 함수 내에서도 호출할 수 있다는 것을 명심하세요. 이것은 종종 코드를 깔끔하게 유지하기 위한 방법으로써 사용됩니다. — 만약 여러분이 크고 복잡한 함수를 가지고 있다면, 만약 여러분이 그것을 몇몇의 하위 함수(sub-functions)로 나눈다면 이해하기 더 쉬울 것입니다.
+## Test your skills!
 
-```js
-function myBigFunction() {
-  var myValue;
+You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Functions](/en-US/docs/Learn/JavaScript/Building_blocks/Test_your_skills:_Functions). These tests require skills that are covered in the next two articles, so you might want to read those first before trying it.
 
-  subFunction1();
-  subFunction2();
-  subFunction3();
-}
+## Conclusion
 
-function subFunction1() {
-  console.log(myValue);
-}
+This article has explored the fundamental concepts behind functions, paving the way for the next one in which we get practical and take you through the steps to building up your own custom function.
 
-function subFunction2() {
-  console.log(myValue);
-}
+## See also
 
-function subFunction3() {
-  console.log(myValue);
-}
-```
-
-함수 내부에서 사용되고 있는 값들이 올바르게 스코프 내에 있는지 확실히 하세요. 상기의 예시는 `ReferenceError: myValue is not defined` 오류를 던질 것인데, 이는 왜냐하면 비록 `myValue` 변수가 함수가 호출되는 같은 스코프 내에 정의되어 있긴 하지만, 이것은 함수 정의 (함수가 호출될 때 실행되는 실제 코드) 내부에 정의되어 있지 않습니다. 이것을 작동하게 하려면, 여러분은 값을 함수 내부에 매개변수로써 다음과 같이 전달해야만 합니다.
-
-```js
-function myBigFunction() {
-  var myValue = 1;
-
-  subFunction1(myValue);
-  subFunction2(myValue);
-  subFunction3(myValue);
-}
-
-function subFunction1(value) {
-  console.log(value);
-}
-
-function subFunction2(value) {
-  console.log(value);
-}
-
-function subFunction3(value) {
-  console.log(value);
-}
-```
-
-## 실력을 평가해 보세요!
-
-이 문서를 끝까지 읽으셨지만, 중요한 것들을 여전히 기억하고 계신가요? 다음 문서를 읽기 전에 이 문서의 내용을 잘 학습하고 이해하셨는지 확인하실 수 있습니다 — [실력을 평가해 보세요: 함수](/ko/docs/Learn/JavaScript/Building_blocks/Test_your_skills:_Functions). 이 테스트들은 다음 두 문서에서 다뤄지는 기술들을 요구하므로, 여러분은 그 문서들을 이 테스트를 시도해 보기 전에 먼저 읽기를 원할지도 모릅니다.
-
-## 결론
-
-이 문서는, 여러분만의 사용자 정의 함수 만들기를 익히도록 돕고 실제적인 것을 다루는 다음 문서에 대한 길을 만들며, 함수 뒤에 있는 핵심적인 개념들을 탐구했습니다.
-
-## 같이 보기
-
-- [자세한 함수 가이드](/ko/docs/Web/JavaScript/Guide/Functions) — 여기 포함되지 않은 몇몇 고급 기능들을 다룹니다.
-- [함수 참고서](/ko/docs/Web/JavaScript/Reference/Functions)
-- [기본 매개변수](/ko/docs/Web/JavaScript/Reference/Functions/Default_parameters), [화살표 함수](/ko/docs/Web/JavaScript/Reference/Functions/Arrow_functions) — 고급 개념 참고서
+- [Functions detailed guide](/en-US/docs/Web/JavaScript/Guide/Functions) — covers some advanced features not included here.
+- [Functions reference](/en-US/docs/Web/JavaScript/Reference/Functions)
+- [Default parameters](/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters), [Arrow functions](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions) — advanced concept references
 
 {{PreviousMenuNext("Learn/JavaScript/Building_blocks/Looping_code","Learn/JavaScript/Building_blocks/Build_your_own_function", "Learn/JavaScript/Building_blocks")}}

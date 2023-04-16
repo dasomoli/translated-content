@@ -5,32 +5,32 @@ slug: Web/XPath/Functions/namespace-uri
 
 {{ XsltRef() }}
 
-`namespace-uri` 함수는 인수로 준 노드 집합 안 첫 노드의 이름공간 URI를 나타내는 문자열을 반환합니다.
+The `namespace-uri` function returns a string representing the namespace URI of the first node in a given node-set.
 
-### 구문
+### Syntax
 
 ```
 namespace-uri( [node-set] )
 ```
 
-### 인수
+### Arguments
 
-- `node-set`(선택사항)
-  - : 이 노드 집합 안 첫 노드의 이름공간 URI가 반환됩니다. 이 인수를 빼면, 현재 문맥 노드를 씁니다.
+- `node-set` (optional)
+  - : The namespace URI of the first node in this node-set will be returned. If this argument is omitted, the current context node will be used.
 
-### 반환
+### Returns
 
-제공한 노드가 있는 이름공간 URI를 나타내는 문자열.
+A string representing URI of the namespace in which the given node resides.
 
-### 주의
+### Notes
 
-- 만약 제공한 노드가 지정된 이름공간이 없으면, 반환되는 문자열은 빈 문자열입니다.
-- 요소와 속성 노드 말고 다른 노드는, 반환되는 문자열이 항상 빈 문자열입니다.
+- If the given node does not have a specified namespace, the returned string will be an empty string.
+- For nodes other than element and attribute nodes, the returned string will always be an empty string.
 
-### 정의
+### Defined
 
-[XPath 1.0 4.1](http://www.w3.org/TR/xpath#function-local-name)
+[XPath 1.0 4.1](https://www.w3.org/TR/1999/REC-xpath-19991116/#function-local-name)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

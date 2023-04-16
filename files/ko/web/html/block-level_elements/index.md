@@ -1,112 +1,124 @@
 ---
-title: 블록 레벨 요소
+title: Block-level elements
 slug: Web/HTML/Block-level_elements
+page-type: guide
 ---
 
-**HTML**(Hypertext Markup Language)의 요소는 역사적으로 "블록 레벨" 요소와 ["인라인" 요소](/ko/docs/Web/HTML/Inline_elements)로 분류됐습니다. 기본적으로 블록 레벨 요소는 부모 요소의 전체 공간을 차지하여 "블록"을 만듭니다. 이 글에서 자세한 설명을 읽을 수 있습니다.
+{{HTMLSidebar}}
 
-{{glossary("browser", "브라우저")}}는 보통 블록 레벨 요소의 앞과 뒤를 개행해서 그립니다. 상자를 쌓는 것 처럼 생각할 수 있습니다.
+In this article, we'll examine HTML block-level elements and how they differ from [inline-level elements](/en-US/docs/Web/HTML/Inline_elements).
 
-> **참고:** 블록 레벨 요소는 언제나 새로운 줄에서 시작하고, 좌우 양쪽으로 최대한 늘어나 가능한 모든 너비를 차지합니다.
+HTML (**HyperText Markup Language**) elements historically were categorized as either "block-level" elements or "inline-level" elements. Since this is a presentational characteristic it is nowadays specified by CSS in the [Flow Layout](/en-US/docs/Web/CSS/CSS_Flow_Layout). A Block-level element occupies the entire horizontal space of its parent element (container), and vertical space equal to the height of its contents, thereby creating a "block".
 
-다음 예제가 블록 레벨 요소의 영향을 보여줍니다.
+Browsers typically display the block-level element with a newline both before and after the element. You can visualize them as a stack of boxes.
 
-## 블록 레벨 요소
+> **Note:** A block-level element always starts on a new line and takes up the full width available (stretches out to the left and right as far as it can).
+
+The following example demonstrates the block-level element's influence:
+
+## Block-level elements
 
 ### HTML
 
 ```html
-<p>이 문단은 블록 레벨 요소입니다. 부모 요소와 구분할 수 있도록 배경 색을 입혔습니다.</p>
+<p>
+  This paragraph is a block-level element; its background has been colored to
+  display the paragraph's parent element.
+</p>
 ```
 
 ### CSS
 
 ```css
-p { background-color: #8ABB55; }
+p {
+  background-color: #8abb55;
+}
 ```
 
-{{EmbedLiveSample('블록_레벨_요소')}}
+{{ EmbedLiveSample('Block-level_elements') }}
 
-## 사용처
+## Usage
 
-- 블록 레벨 요소는 {{HTMLElement("body")}} 요소 안에서만 나타날 수 있습니다.
+- Block-level elements may appear only within a {{ HTMLElement("body") }} element.
 
-## 블록 레벨 vs. 인라인
+## Block-level vs. inline
 
-블록 레벨 요소와 인라인 요소는 몇 가지 중요한 차이점을 가지고 있습니다.
+There are a couple of key differences between block-level elements and inline elements:
 
-- 콘텐츠 모델
-  - : 일반적으로 블록 레벨 요소는 인라인 요소와 (때때로) 다른 블록 레벨 요소를 포함할 수 있습니다. 이런 고유한 구조적 차이점으로 인해 블록 레벨 요소는 인라인 요소보다 더 "큰" 구조를 생성할 수 있습니다.
-- 기본 서식
-  - : 기본적으로 블록 레벨 요소는 새로운 줄에서 시작하지만, 인라인 요소는 줄의 어느 곳에서나 시작할 수 있습니다.
+- Content model
+  - : Generally, block-level elements may contain inline elements and (sometimes) other block-level elements. Inherent in this structural distinction is the idea that block elements create "larger" structures than inline elements.
+- Default formatting
+  - : By default, block-level elements begin on new lines, but inline elements can start anywhere in a line.
 
-블록 레벨과 인라인 요소의 분류는 HTML 명세 4.01까지 사용됐습니다. 이런 이진적 구분은 HTML5부터 보다 복잡한 [콘텐츠 카테고리](/ko/docs/Web/Guide/HTML/Content_categories) 집합으로 대체됐습니다. "인라인" 카테고리는 [구문 콘텐츠](/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠)와 적당히 짝지을 수 있지만 "블록 레벨" 카테고리는 어느 HTML5 콘텐츠 카테고리와도 정확히 일치하지 않습니다. 그러나 블록 레벨과 인라인 요소를 조합하면 [플로우 콘텐츠](/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠)에 대응합니다. [대화형 콘텐츠](/ko/docs/Web/Guide/HTML/Content_categories#대화형_콘텐츠) 등 추가 카테고리도 존재합니다.
+The distinction of block-level vs. inline elements was used in HTML specifications up to 4.01. Later, this binary distinction is replaced with a more complex set of [content categories](/en-US/docs/Web/HTML/Content_categories). While the "inline" category roughly corresponds to the category of [phrasing content](/en-US/docs/Web/HTML/Content_categories#phrasing_content), the "block-level" category doesn't directly correspond to any HTML content category, but _"block-level" and "inline" elements combined_ correspond to the [flow content](/en-US/docs/Web/HTML/Content_categories#flow_content) in HTML. There are also additional categories, e.g. [interactive content](/en-US/docs/Web/HTML/Content_categories#interactive_content).
 
-## 요소 목록
+### Changing element levels
 
-다음은 HTML 블록 레벨 요소의 전체 목록입니다. (사실 HTML5의 새로운 요소를 설명할 때, "블록 레벨"이라는 용어는 정의되지 않습니다.)
+You can change the _visual presentation_ of an element using the CSS {{cssxref("display")}} property. For example, by changing the value of `display` from `inline` to `block`, the browser will render the inline element as a block box rather than an inline box, and vice versa. However, doing this will not change the _category_ and the _content model_ of the element. For example, even if the `display` of the `span` element is changed to `block`, it should still only contain [phrasing content](/en-US/docs/Web/HTML/Content_categories#phrasing_content).
+
+## Elements
+
+The following is a complete list of all HTML "block-level" elements (although "block-level" is not technically defined for elements that are new in HTML5).
 
 - {{ HTMLElement("address") }}
-  - : 연락처 정보.
+  - : Contact information.
 - {{ HTMLElement("article") }}
-  - : 단락 콘텐츠.
+  - : Article content.
 - {{ HTMLElement("aside") }}
-  - : 부가 콘텐츠.
+  - : Aside content.
 - {{ HTMLElement("blockquote") }}
-  - : 긴("블록") 인용구.
-- {{HTMLElement("details")}}
-  - : 상세 정보 위젯.
-- {{HTMLElement("dialog")}}
-  - : 대화상자.
+  - : Long ("block") quotation.
+- {{ HTMLElement("details") }}
+  - : Disclosure widget.
+- {{ HTMLElement("dialog") }}
+  - : Dialog box.
 - {{ HTMLElement("dd") }}
-  - : 설명 목록의 정의 설명.
+  - : Describes a term in a description list.
 - {{ HTMLElement("div") }}
-  - : 문서의 분할.
+  - : Document division.
 - {{ HTMLElement("dl") }}
-  - : 설명 목록.
-- {{HTMLElement("dt")}}
-  - : 설명 목록의 정의.
+  - : Description list.
+- {{ HTMLElement("dt") }}
+  - : Description list term.
 - {{ HTMLElement("fieldset") }}
-  - : 필드 집합의 라벨.
+  - : Field set label.
 - {{ HTMLElement("figcaption") }}
-  - : 그림 설명.
+  - : Figure caption.
 - {{ HTMLElement("figure") }}
-  - : 미디어 콘텐츠 그룹과 설명. ({{ HTMLElement("figcaption") }}을 참고하세요)
+  - : Groups media content with a caption (see {{ HTMLElement("figcaption") }}).
 - {{ HTMLElement("footer") }}
-  - : 페이지나 구역의 푸터.
+  - : Section or page footer.
 - {{ HTMLElement("form") }}
-  - : 입력 폼.
-- {{ HTMLElement("h1") }}, {{ HTMLElement("h2") }}, {{ HTMLElement("h3") }}, {{ HTMLElement("h4") }}, {{ HTMLElement("h5") }}, {{ HTMLElement("h6") }}
-  - : 1\~6단계 제목.
+  - : Input form.
+- {{ HTMLElement("Heading_Elements", "h1")}}, {{ HTMLElement("Heading_Elements", "h2")}}, {{ HTMLElement("Heading_Elements", "h3")}}, {{ HTMLElement("Heading_Elements", "h4")}}, {{ HTMLElement("Heading_Elements", "h5")}}, {{ HTMLElement("Heading_Elements", "h6")}}
+  - : Heading levels 1-6.
 - {{ HTMLElement("header") }}
-  - : 페이지나 구역의 헤더.
+  - : Section or page header.
 - {{ HTMLElement("hgroup") }}
-  - : 헤더 정보 그룹.
+  - : Groups header information.
 - {{ HTMLElement("hr") }}
-  - : 수평선(구분선).
-- {{HTMLElement("li")}}
-  - : 목록의 항목.
-- {{HTMLElement("main")}}
-  - : 문서에서 하나 뿐인 중심 콘텐츠.
-- {{HTMLElement("nav")}}
-  - : 탐색 링크를 포함.
+  - : Horizontal rule (dividing line).
+- {{ HTMLElement("li") }}
+  - : List item.
+- {{ HTMLElement("main") }}
+  - : Contains the central content unique to this document.
+- {{ HTMLElement("nav") }}
+  - : Contains navigation links.
 - {{ HTMLElement("ol") }}
-  - : 정렬된 목록.
+  - : Ordered list.
 - {{ HTMLElement("p") }}
-  - : 문단.
+  - : Paragraph.
 - {{ HTMLElement("pre") }}
-  - : 미리 서식 적용한 글.
+  - : Preformatted text.
 - {{ HTMLElement("section") }}
-  - : 웹 페이지의 구역.
+  - : Section of a web page.
 - {{ HTMLElement("table") }}
-  - : 표.
+  - : Table.
 - {{ HTMLElement("ul") }}
-  - : 정렬되지 않은 목록.
+  - : Unordered list.
 
-## 같이 보기
+## See also
 
-- [인라인 요소](/ko/docs/Web/HTML/Inline_elements)
+- [Inline elements](/en-US/docs/Web/HTML/Inline_elements)
 - {{cssxref("display")}}
-- [Block and Inline Layout in Normal Flow](/ko/docs/Web/CSS/CSS_Flow_Layout/Block_and_Inline_Layout_in_Normal_Flow)
-
-{{QuickLinksWithSubpages("/ko/docs/Web/HTML/")}}
+- [Block and Inline Layout in Normal Flow](/en-US/docs/Web/CSS/CSS_Flow_Layout/Block_and_Inline_Layout_in_Normal_Flow)

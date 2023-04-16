@@ -1,13 +1,21 @@
 ---
-title: Document.URL
+title: "Document: URL property"
+short-title: URL
 slug: Web/API/Document/URL
+page-type: web-api-instance-property
+browser-compat: api.Document.URL
 ---
 
 {{APIRef("DOM")}}
 
-{{domxref("Document")}} 인터페이스의 **`URL`** 읽기 전용 속성은 문서의 주소를 문자열로 반환합니다.
+The **`URL`** read-only property of the {{domxref("Document")}}
+interface returns the document location as a string.
 
-## 예제
+## Value
+
+A string containing the URL of the document.
+
+## Examples
 
 ### JavaScript
 
@@ -19,23 +27,23 @@ document.getElementById("url").textContent = document.URL;
 
 ```html
 <p id="urlText">
-  URL:<br/>
-  <span id="url">URL이 여기 보입니다</span>
+  URL:<br />
+  <span id="url">URL goes here</span>
 </p>
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample("예제", "100%", 100)}}
+{{EmbedLiveSample("Examples", "100%", 100)}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{domxref("HTMLDocument")}}
+- The {{domxref("document.documentURI")}} property which returns the same value.

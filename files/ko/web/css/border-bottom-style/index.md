@@ -1,19 +1,22 @@
 ---
 title: border-bottom-style
 slug: Web/CSS/border-bottom-style
+page-type: css-property
+browser-compat: css.properties.border-bottom-style
 ---
+
 {{CSSRef}}
 
-**`border-bottom-style`** [CSS](/ko/docs/Web/CSS) 속성은 요소 테두리의 아래쪽 스타일을 지정합니다.
+The **`border-bottom-style`** [CSS](/en-US/docs/Web/CSS) property sets the line style of an element's bottom {{cssxref("border")}}.
 
 {{EmbedInteractiveExample("pages/css/border-bottom-style.html")}}
 
-> **참고:** 명세는 서로 다른 스타일의 테두리가 꼭지점에서 만날 때 어떻게 그려야 할지는 정의하고 있지 않습니다.
+> **Note:** The specification doesn't define how borders of different styles connect in the corners.
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
 border-bottom-style: none;
 border-bottom-style: hidden;
 border-bottom-style: dotted;
@@ -25,19 +28,27 @@ border-bottom-style: ridge;
 border-bottom-style: inset;
 border-bottom-style: outset;
 
-/* 전역 값 */
+/* Global values */
 border-bottom-style: inherit;
 border-bottom-style: initial;
+border-bottom-style: revert;
+border-bottom-style: revert-layer;
 border-bottom-style: unset;
 ```
 
-`border-bottom-style` 속성은 {{cssxref("border-style")}} 속성에 사용할 수 있는 키워드 중 하나를 사용해 지정할 수 있습니다.
+The `border-bottom-style` property is specified as a single keyword chosen from those available for the {{cssxref("border-style")}} property.
 
-### 형식 구문
+## Formal definition
+
+{{CSSInfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
+
+### Demonstrating all border styles
 
 #### HTML
 
@@ -67,40 +78,60 @@ border-bottom-style: unset;
 ```css
 /* Define look of the table */
 table {
-  border-width: 2px;
-  background-color: #52E385;
+  border-width: 3px;
+  background-color: #52e385;
 }
-tr, td {
+tr,
+td {
   padding: 3px;
 }
 
 /* border-bottom-style example classes */
-.b1 {border-bottom-style: none;}
-.b2 {border-bottom-style: hidden;}
-.b3 {border-bottom-style: dotted;}
-.b4 {border-bottom-style: dashed;}
-.b5 {border-bottom-style: solid;}
-.b6 {border-bottom-style: double;}
-.b7 {border-bottom-style: groove;}
-.b8 {border-bottom-style: ridge;}
-.b9 {border-bottom-style: inset;}
-.b10 {border-bottom-style: outset;}
+.b1 {
+  border-bottom-style: none;
+}
+.b2 {
+  border-bottom-style: hidden;
+}
+.b3 {
+  border-bottom-style: dotted;
+}
+.b4 {
+  border-bottom-style: dashed;
+}
+.b5 {
+  border-bottom-style: solid;
+}
+.b6 {
+  border-bottom-style: double;
+}
+.b7 {
+  border-bottom-style: groove;
+}
+.b8 {
+  border-bottom-style: ridge;
+}
+.b9 {
+  border-bottom-style: inset;
+}
+.b10 {
+  border-bottom-style: outset;
+}
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('예제', 300, 200)}}
+{{ EmbedLiveSample('Demonstrating_all_border_styles', 300, 200) }}
 
-## 명세
+## Specifications
 
 {{Specifications}}
-{{cssinfo}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 테두리 스타일 관련 CSS 속성: {{cssxref("border-top-style")}}, {{cssxref("border-right-style")}}, {{cssxref("border-left-style")}}, {{cssxref("border-style")}}.
-- 아래쪽 테두리 관련 CSS 속성: {{cssxref("border-bottom")}}, {{cssxref("border-bottom-color")}}, {{cssxref("border-bottom-width")}}.
+- The other style-related border properties: {{ Cssxref("border-left-style") }}, {{ Cssxref("border-right-style") }}, {{ Cssxref("border-top-style") }}, and {{ Cssxref("border-style") }}.
+- The other bottom-border-related properties: {{ Cssxref("border-bottom") }}, {{ Cssxref("border-bottom-color") }}, and {{ Cssxref("border-bottom-width") }}.

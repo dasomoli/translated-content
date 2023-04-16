@@ -1,241 +1,251 @@
 ---
-title: 식 및 연산자
+title: Expressions and operators
 slug: Web/JavaScript/Reference/Operators
+page-type: landing-page
+browser-compat: javascript.operators
 ---
-{{jsSidebar("Operators")}}
 
-이 장은 JavaScript의 모든 연산자, 식 및 키워드를 나열합니다.
+{{JSSidebar("Operators")}}
 
-## 항목별 식 및 연산자
+This chapter documents all the JavaScript language operators, expressions and keywords.
 
-알파벳순 목록은 왼쪽 사이드바를 보세요.
+## Expressions and operators by category
 
-### 기본 식
+For an alphabetical listing see the sidebar on the left.
 
-기본 키워드 및 JavaScript의 일반 식.
+### Primary expressions
+
+Basic keywords and general expressions in JavaScript. These expressions have the highest precedence (higher than [operators](/en-US/docs/Web/JavaScript/Reference/Operators/Operator_precedence)).
 
 - {{JSxRef("Operators/this", "this")}}
-  - : `this` 키워드는 실행 문맥의 특별한 속성을 가리킵니다.
-- {{JSxRef("Operators/function", "function")}}
-  - : `function` 키워드는 함수를 정의합니다.
-- {{JSxRef("Operators/class", "class")}}
-  - : `class` 키워드는 클래스를 정의합니다.
-- {{JSxRef("Operators/function*", "function*")}}
-  - : `function*` 키워드는 생성기 함수 식을 정의합니다.
-- {{JSxRef("Operators/yield", "yield")}}
-  - : 생성기 함수를 일시정지 및 재개합니다.
-- {{JSxRef("Operators/yield*", "yield*")}}
-  - : 다른 생성기 함수 또는 순회가능 객체로 위임합니다.
-- {{JSxRef("Operators/async_function", "async function")}}
-  - : `async function`은 비동기 함수 표현식을 정의합니다.
-- {{JSxRef("Operators/await", "await")}}
-  - : 비동기 함수를 일시 중지했다가 다시 시작하고 promise의 resolution/rejection을 기다립니다.
+  - : The `this` keyword refers to a special property of an execution context.
+- [Literals](/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#literals)
+  - : Basic `null`, boolean, number, and string literals.
 - {{JSxRef("Global_Objects/Array", "[]")}}
-  - : 배열 초기자 및 리터럴 구문.
+  - : Array initializer/literal syntax.
 - {{JSxRef("Operators/Object_initializer", "{}")}}
-  - : 객체 초기자 및 리터럴 구문.
+  - : Object initializer/literal syntax.
+- {{JSxRef("Operators/function", "function")}}
+  - : The `function` keyword defines a function expression.
+- {{JSxRef("Operators/class", "class")}}
+  - : The `class` keyword defines a class expression.
+- {{JSxRef("Operators/function*", "function*")}}
+  - : The `function*` keyword defines a generator function expression.
+- {{JSxRef("Operators/async_function", "async function")}}
+  - : The `async function` defines an async function expression.
+- {{JSxRef("Operators/async_function*", "async function*")}}
+  - : The `async function*` keywords define an async generator function expression.
 - {{JSxRef("Global_Objects/RegExp", "/ab+c/i")}}
-  - : 정규식 리터럴 구문.
+  - : Regular expression literal syntax.
+- {{JSxRef("Template_literals", "`string`")}}
+  - : Template literal syntax.
 - {{JSxRef("Operators/Grouping", "( )")}}
-  - : 그룹 연산자.
+  - : Grouping operator.
 
-### 좌변 식
+### Left-hand-side expressions
 
-좌변값은 할당 대상입니다.
+Left values are the destination of an assignment.
 
 - {{JSxRef("Operators/Property_accessors", "Property accessors", "", 1)}}
-  - : 속성 접근자는 객체의 속성 또는 메서드에 대한 접근 방법을 제공합니다.
-    (`object.property`, `object["property"]`)
+  - : Member operators provide access to a property or method of an object (`object.property` and `object["property"]`).
+- {{JSxRef("Operators/Optional_chaining", "?.")}}
+  - : The optional chaining operator returns `undefined` instead of causing an error if a reference is [nullish](/en-US/docs/Glossary/Nullish) ([`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null) or [`undefined`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined)).
 - {{JSxRef("Operators/new", "new")}}
-  - : `new` 연산자는 생성자의 인스턴스를 만듭니다.
+  - : The `new` operator creates an instance of a constructor.
 - {{JSxRef("Operators/new%2Etarget", "new.target")}}
-  - : 생성자 문맥에서, `new.target`은 {{jsxref("Operators/new", "new")}}에 의해 호출된 생성자를 말합니다.
+  - : In constructors, `new.target` refers to the constructor that was invoked by {{JSxRef("Operators/new", "new")}}.
+- {{JSxRef("Operators/import%2Emeta", "import.meta")}}
+  - : An object exposing context-specific metadata to a JavaScript module.
 - {{JSxRef("Operators/super", "super")}}
-  - : `super` 키워드는 부모 생성자를 호출합니다.
-- {{JSxRef("Operators/Spread_syntax", "...obj")}}
-  - : 전개 연산자는 (함수 호출 시) 매개변수 여럿이나, (배열 리터럴에서) 다수의 요소를 필요로 하는 곳에서 표현식을 확장합니다.
+  - : The `super` keyword calls the parent constructor or allows accessing properties of the parent object.
+- {{JSxRef("Operators/import", "import()")}}
+  - : The `import()` syntax allows loading a module asynchronously and dynamically into a potentially non-module environment.
 
-### 증가 및 감소
+### Increment and decrement
 
-접두/접미 증감 연산자입니다.
+Postfix/prefix increment and postfix/prefix decrement operators.
 
 - {{JSxRef("Operators/Increment", "A++")}}
-  - : 접미 증가 연산자.
+  - : Postfix increment operator.
 - {{JSxRef("Operators/Decrement", "A--")}}
-  - : 접미 감소 연산자.
+  - : Postfix decrement operator.
 - {{JSxRef("Operators/Increment", "++A")}}
-  - : 접두 증가 연산자.
+  - : Prefix increment operator.
 - {{JSxRef("Operators/Decrement", "--A")}}
-  - : 접두 감소 연산자.
+  - : Prefix decrement operator.
 
-### 단항 연산자
+### Unary operators
 
-단항 연산은 피연산자가 하나뿐인 연산입니다.
+A unary operation is an operation with only one operand.
 
 - {{JSxRef("Operators/delete", "delete")}}
-  - : `delete` 연산자는 객체에서 속성을 지웁니다.
+  - : The `delete` operator deletes a property from an object.
 - {{JSxRef("Operators/void", "void")}}
-  - : `void` 연산자는 식의 반환값을 버립니다.
+  - : The `void` operator evaluates an expression and discards its return value.
 - {{JSxRef("Operators/typeof", "typeof")}}
-  - : `typeof` 연산자는 주어진 객체의 형을 판별합니다.
+  - : The `typeof` operator determines the type of a given object.
 - {{JSxRef("Operators/Unary_plus", "+")}}
-  - : 단항 더하기 연산자는 피연산자를 숫자로 변환합니다.
+  - : The unary plus operator converts its operand to Number type.
 - {{JSxRef("Operators/Unary_negation", "-")}}
-  - : 단항 부정 연산자는 피연산자를 숫자로 변환한 뒤 부호를 바꿉니다.
+  - : The unary negation operator converts its operand to Number type and then negates it.
 - {{JSxRef("Operators/Bitwise_NOT", "~")}}
-  - : 비트 NOT 연산자.
+  - : Bitwise NOT operator.
 - {{JSxRef("Operators/Logical_NOT", "!")}}
-  - : 논리 NOT 연산자.
+  - : Logical NOT operator.
+- {{JSxRef("Operators/await", "await")}}
+  - : Pause and resume an async function and wait for the promise's fulfillment/rejection.
 
-### 산술 연산자
+### Arithmetic operators
 
-산술 연산자는 피연산자로 숫자 값(리터럴이나 변수)을 취하고 숫자 값 하나를 반환합니다.
-
-- {{JSxRef("Operators/Addition", "+")}}
-  - : 더하기 연산자.
-- {{JSxRef("Operators/Subtraction", "-")}}
-  - : 빼기 연산자.
-- {{JSxRef("Operators/Division", "/")}}
-  - : 나누기 연산자.
-- {{JSxRef("Operators/Multiplication", "*")}}
-  - : 곱하기 연산자.
-- {{JSxRef("Operators/Remainder", "%")}}
-  - : 나머지 연산자.
-
-<!---->
+Arithmetic operators take numerical values (either literals or variables) as their operands and return a single numerical value.
 
 - {{JSxRef("Operators/Exponentiation", "**")}}
-  - : 거듭제곱 연산자.
+  - : Exponentiation operator.
+- {{JSxRef("Operators/Multiplication", "*")}}
+  - : Multiplication operator.
+- {{JSxRef("Operators/Division", "/")}}
+  - : Division operator.
+- {{JSxRef("Operators/Remainder", "%")}}
+  - : Remainder operator.
+- {{JSxRef("Operators/Addition", "+")}} (Plus)
+  - : Addition operator.
+- {{JSxRef("Operators/Subtraction", "-")}}
+  - : Subtraction operator.
 
-### 관계 연산자
+### Relational operators
 
-비교 연산자는 피연산자를 비교하고, 비교가 참인지 여부를 나타내는 {{jsxref("Boolean")}} 값을 반환합니다.
+A comparison operator compares its operands and returns a boolean value based on whether the comparison is true.
 
-- {{JSxRef("Operators/in", "in")}}
-  - : `in` 연산자는 객체에 주어진 속성이 있는지를 결정합니다.
-- {{JSxRef("Operators/instanceof", "instanceof")}}
-  - : `instanceof` 연산자는 객체가 다른 객체의 인스턴스인지 판별합니다.
-- {{JSxRef("Operators/Less_than", "&lt;")}}
-  - : 작음 연산자.
-- {{JSxRef("Operators/Greater_than", "&gt;")}}
-  - : 큼 연산자.
+- {{JSxRef("Operators/Less_than", "&lt;")}} (Less than)
+  - : Less than operator.
+- {{JSxRef("Operators/Greater_than", "&gt;")}} (Greater than)
+  - : Greater than operator.
 - {{JSxRef("Operators/Less_than_or_equal", "&lt;=")}}
-  - : 작거나 같음 연산자.
+  - : Less than or equal operator.
 - {{JSxRef("Operators/Greater_than_or_equal", "&gt;=")}}
-  - : 크거나 같음 연산자.
+  - : Greater than or equal operator.
+- {{JSxRef("Operators/instanceof", "instanceof")}}
+  - : The `instanceof` operator determines whether an object is an instance of another object.
+- {{JSxRef("Operators/in", "in")}}
+  - : The `in` operator determines whether an object has a given property.
 
-<div class="note"><p><strong>참고: =></strong> 는 연산자가 아니고, <a href="/ko/docs/Web/JavaScript/Reference/Functions/Arrow_functions">화살표 함수</a>의 표기법입니다.</p></div>
+> **Note:** `=>` is not an operator, but the notation for [Arrow functions](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions).
 
-### 같음 연산자
+### Equality operators
 
-같음 연산자의 평가 결과는 항상 {{jsxref("Boolean")}} 형으로 비교가 참인지 나타냅니다.
+The result of evaluating an equality operator is always of type boolean based on whether the comparison is true.
 
 - {{JSxRef("Operators/Equality", "==")}}
-  - : 동등 연산자.
+  - : Equality operator.
 - {{JSxRef("Operators/Inequality", "!=")}}
-  - : 부등 연산자.
+  - : Inequality operator.
 - {{JSxRef("Operators/Strict_equality", "===")}}
-  - : 일치 연산자.
+  - : Strict equality operator.
 - {{JSxRef("Operators/Strict_inequality", "!==")}}
-  - : 불일치 연산자.
+  - : Strict inequality operator.
 
-### 비트 시프트 연산자
+### Bitwise shift operators
 
-피연산자의 모든 비트를 시프트하는 연산.
+Operations to shift all bits of the operand.
 
 - {{JSxRef("Operators/Left_shift", "&lt;&lt;")}}
-  - : 비트 좌로 시프트 연산자.
+  - : Bitwise left shift operator.
 - {{JSxRef("Operators/Right_shift", "&gt;&gt;")}}
-  - : 비트 우로 시프트 연산자.
+  - : Bitwise right shift operator.
 - {{JSxRef("Operators/Unsigned_right_shift", "&gt;&gt;&gt;")}}
-  - : 비트 부호 없는 우로 시프트 연산자.
+  - : Bitwise unsigned right shift operator.
 
-### 이진 비트 연산자
+### Binary bitwise operators
 
-비트 연산자는 피연산자를 32비트 집합(0과 1)으로 다루고 표준 JavaScript 숫자 값을 반환합니다.
+Bitwise operators treat their operands as a set of 32 bits (zeros and ones) and return standard JavaScript numerical values.
 
 - {{JSxRef("Operators/Bitwise_AND", "&amp;")}}
-  - : 비트 AND.
+  - : Bitwise AND.
 - {{JSxRef("Operators/Bitwise_OR", "|")}}
-  - : 비트 OR.
+  - : Bitwise OR.
 - {{JSxRef("Operators/Bitwise_XOR", "^")}}
-  - : 비트 XOR.
+  - : Bitwise XOR.
 
-### 이진 논리 연산자
+### Binary logical operators
 
-논리 연산자는 보통 사용될 때 불리언(논리) 값으로 사용되고, 불리언 값을 반환합니다.
+Logical operators implement boolean (logical) values and have [short-circuiting](/en-US/docs/Web/JavaScript/Reference/Operators/Operator_precedence#short-circuiting) behavior.
 
 - {{JSxRef("Operators/Logical_AND", "&amp;&amp;")}}
-  - : 논리 AND.
+  - : Logical AND.
 - {{JSxRef("Operators/Logical_OR", "||")}}
-  - : 논리 OR.
-- {{JSxRef("Operators/Nullish_coalescing_operator", "??")}}
-  - : Nullish 통합 연산자.
+  - : Logical OR.
+- {{JSxRef("Operators/Nullish_coalescing", "??")}}
+  - : Nullish Coalescing Operator.
 
-### 조건부(삼항) 연산자
+### Conditional (ternary) operator
 
-<dl><dt>{{JSxRef("Operators/Conditional_Operator", "(condition ? ifTrue : ifFalse)")}}</dt></dl>
+- {{JSxRef("Operators/Conditional_operator", "(condition ? ifTrue : ifFalse)")}}
+  - : The conditional operator returns one of two values based on the logical value of the condition.
 
-조건부 연산자는 조건의 논리값에 따라 두 값 중 하나를 반환합니다.
+### Assignment operators
 
-### 선택적 연결 연산자
-
-- {{JSxRef("Operators/Optional_chaining", "?.")}}
-  - : 선택적 연결 연산자는 참조가 [nullish](/en-US/docs/Glossary/nullish) ([`null`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/null) 또는 [`undefined`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined)) 인 경우 오류를 발생시키는 대신 `undefined`를 반환합니다.
-
-### 할당 연산자
-
-할당 연산자는 값을 그 우변 피연산자의 값에 따라 좌변 피연산자에 할당합니다.
+An assignment operator assigns a value to its left operand based on the value of its right operand.
 
 - {{JSxRef("Operators/Assignment", "=")}}
-  - : 할당 연산자.
+  - : Assignment operator.
 - {{JSxRef("Operators/Multiplication_assignment", "*=")}}
-  - : 곱셈 할당.
-- {{JSxRef("Operators/Exponentiation_assignment", "**=")}}
-  - : 거듭제곱 할당.
+  - : Multiplication assignment.
 - {{JSxRef("Operators/Division_assignment", "/=")}}
-  - : 나눗셈 할당.
+  - : Division assignment.
 - {{JSxRef("Operators/Remainder_assignment", "%=")}}
-  - : 나머지 할당.
+  - : Remainder assignment.
 - {{JSxRef("Operators/Addition_assignment", "+=")}}
-  - : 덧셈 할당.
+  - : Addition assignment.
 - {{JSxRef("Operators/Subtraction_assignment", "-=")}}
-  - : 뺄셈 할당
+  - : Subtraction assignment
 - {{JSxRef("Operators/Left_shift_assignment", "&lt;&lt;=")}}
-  - : 좌로 이동 할당.
+  - : Left shift assignment.
 - {{JSxRef("Operators/Right_shift_assignment", "&gt;&gt;=")}}
-  - : 우로 이동 할당.
+  - : Right shift assignment.
 - {{JSxRef("Operators/Unsigned_right_shift_assignment", "&gt;&gt;&gt;=")}}
-  - : 부호 없는 우로 이동 할당.
+  - : Unsigned right shift assignment.
 - {{JSxRef("Operators/Bitwise_AND_assignment", "&amp;=")}}
-  - : 비트 AND 할당.
+  - : Bitwise AND assignment.
 - {{JSxRef("Operators/Bitwise_XOR_assignment", "^=")}}
-  - : 비트 XOR 할당.
+  - : Bitwise XOR assignment.
 - {{JSxRef("Operators/Bitwise_OR_assignment", "|=")}}
-  - : 비트 OR 할당.
+  - : Bitwise OR assignment.
+- {{JSxRef("Operators/Exponentiation_assignment", "**=")}}
+  - : Exponentiation assignment.
 - {{JSxRef("Operators/Logical_AND_assignment", "&amp;&amp;=")}}
-  - : 논리적 AND 할당.
+  - : Logical AND assignment.
 - {{JSxRef("Operators/Logical_OR_assignment", "||=")}}
-  - : 논리적 OR 할당.
-- {{JSxRef("Operators/Logical_nullish_assignment", "??=")}}
-  - : 논리적 nullish 할당.
-- {{JSxRef("Operators/Destructuring_assignment", "[a, b] = [1, 2]")}}
-  {{JSxRef("Operators/Destructuring_assignment", "{a, b} = {a:1, b:2}")}}
-  - : 구조 분해 할당은 배열 또는 객체의 속성을 배열 또는 객체 리터럴과 비슷해 보이는 구문을 사용하여 변수에 할당할 수 있게 합니다.
+  - : Logical OR assignment.
+- {{JSxRef("Operators/Nullish_coalescing_assignment", "??=")}}
+  - : Nullish coalescing assignment.
+- [`[a, b] = arr`, `{ a, b } = obj`](/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
+  - : Destructuring assignment allows you to assign the properties of an array or object to variables using syntax that looks similar to array or object literals.
 
-### 쉼표 연산자
+### Yield operators
 
-- {{jsxref("Operators/Comma_Operator", ",")}}
-  - : 쉼표 연산자는 여러 식을 단문으로 평가되게 하고 마지막 식의 결과를 반환합니다.
+- {{JSxRef("Operators/yield", "yield")}}
+  - : Pause and resume a generator function.
+- {{JSxRef("Operators/yield*", "yield*")}}
+  - : Delegate to another generator function or iterable object.
 
-## 명세
+### Spread syntax
+
+- {{JSxRef("Operators/Spread_syntax", "...obj")}}
+  - : Spread syntax allows an iterable, such as an array or string, to be expanded in places where zero or more arguments (for function calls) or elements (for array literals) are expected. In an object literal, the spread syntax enumerates the properties of an object and adds the key-value pairs to the object being created.
+
+### Comma operator
+
+- {{JSxRef("Operators/Comma_operator", ",")}}
+  - : The comma operator allows multiple expressions to be evaluated in a single statement and returns the result of the last expression.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [연산자 우선순위](/ko/docs/Web/JavaScript/Reference/Operators/연산자_우선순위)
+- [Operator precedence](/en-US/docs/Web/JavaScript/Reference/Operators/Operator_precedence)

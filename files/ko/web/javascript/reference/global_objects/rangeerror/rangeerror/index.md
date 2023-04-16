@@ -1,13 +1,15 @@
 ---
-title: RangeError() 생성자
+title: RangeError() constructor
 slug: Web/JavaScript/Reference/Global_Objects/RangeError/RangeError
+page-type: javascript-constructor
+browser-compat: javascript.builtins.RangeError.RangeError
 ---
 
 {{JSRef}}
 
-**`RangeError()`** 생성자는 어떤 값이 집합에 없거나 허용되는 범위가 아닐 때 발생하는 오류를 생성합니다
+The **`RangeError()`** constructor creates {{jsxref("RangeError")}} objects.
 
-## 구문
+## Syntax
 
 ```js-nolint
 new RangeError()
@@ -23,25 +25,25 @@ RangeError(message, fileName)
 RangeError(message, fileName, lineNumber)
 ```
 
-> **참고:** `RangeError()`는 [`new`](/ko/docs/Web/JavaScript/Reference/Operators/new)와 함께 호출하거나 혹은 `new` 없이 호출할 수 있습니다. 두 방법 모두 새로운 `RangeError` 인스턴스를 생성합니다.
+> **Note:** `RangeError()` can be called with or without [`new`](/en-US/docs/Web/JavaScript/Reference/Operators/new). Both create a new `RangeError` instance.
 
-### 매개변수
+### Parameters
 
 - `message` {{optional_inline}}
-  - : 사람이 읽을 수 있는 오류에 대한 설명
+  - : Human-readable description of the error.
 - `options` {{optional_inline}}
-  - : 다음의 속성을 가지는 객체.
+  - : An object that has the following properties:
     - `cause` {{optional_inline}}
-      - : 오류의 특정 원인을 가리키는 속성.
-        오류를 잡아서 좀 더 상세하거나 유용한 오류 메시지와 함께 예외를 다시 발생시킬 때 이 속성을 원래 오류를 전달하는데 사용할 수 있습니다.
+      - : A property indicating the specific cause of the error.
+        When catching and re-throwing an error with a more-specific or useful error message, this property can be used to pass the original error.
 - `fileName` {{optional_inline}} {{non-standard_inline}}
-  - : 예외가 발생한 코드를 담고 있는 파일 이름
+  - : The name of the file containing the code that caused the exception
 - `lineNumber` {{optional_inline}} {{non-standard_inline}}
-  - : 예외가 발상한 코드의 줄 수
+  - : The line number of the code that caused the exception
 
-## 예제
+## Examples
 
-### RangeError 사용하기(숫자 값일 경우)
+### Using RangeError (for numeric values)
 
 ```js
 function check(n) {
@@ -49,6 +51,7 @@ function check(n) {
     throw new RangeError("The argument must be between -500 and 500.");
   }
 }
+
 try {
   check(2000);
 } catch (error) {
@@ -58,16 +61,17 @@ try {
 }
 ```
 
-### RangeError 사용하기 (숫자 값이 아닐 경우)
+### Using RangeError (for non-numeric values)
 
 ```js
 function check(value) {
   if (!["apple", "banana", "carrot"].includes(value)) {
     throw new RangeError(
-      'The argument must be an "apple", "banana", or "carrot".'
+      'The argument must be an "apple", "banana", or "carrot".',
     );
   }
 }
+
 try {
   check("cabbage");
 } catch (error) {
@@ -77,15 +81,15 @@ try {
 }
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Error")}}
 - {{jsxref("Array")}}

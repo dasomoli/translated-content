@@ -1,83 +1,90 @@
 ---
 title: <main>
 slug: Web/HTML/Element/main
+page-type: html-element
+browser-compat: html.elements.main
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<main>` 요소**는 문서 {{HTMLElement("body")}}의 주요 콘텐츠를 나타냅니다. 주요 콘텐츠 영역은 문서의 핵심 주제나 앱의 핵심 기능에 직접적으로 연결됐거나 확장하는 콘텐츠로 이루어집니다.
+The **`<main>`** [HTML](/en-US/docs/Web/HTML) element represents the dominant content of the {{HTMLElement("body")}} of a document. The main content area consists of content that is directly related to or expands upon the central topic of a document, or the central functionality of an application.
 
-{{EmbedInteractiveExample("pages/tabbed/main.html","tabbed-standard")}}
+{{EmbedInteractiveExample("pages/tabbed/main.html","tabbed-shorter")}}
 
-<p class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</p>
-
-{{htmlattrxref("hidden")}} 속성 없이는 문서에 하나보다 많은 `<main>` 요소가 존재해선 안됩니다.
+A document mustn't have more than one `<main>` element that doesn't have the [`hidden`](/en-US/docs/Web/HTML/Global_attributes#hidden) attribute specified.
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리">콘텐츠 카테고리</a>
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
       </th>
       <td>
-        <a
-          href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#플로우_콘텐츠"
-          title="HTML/Content_categories#Flow_content"
-          >플로우 콘텐츠</a
-        >, 뚜렷한 콘텐츠.
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
+        >, palpable content.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
       <td>
-        <a
-          href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#플로우_콘텐츠"
-          title="HTML/Content_categories#Flow_content"
-          >플로우 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
         >.
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
-      <td>{{no_tag_omission}}</td>
+      <th scope="row">Tag omission</th>
+      <td>None; both the starting and ending tags are mandatory.</td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Permitted parents</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >를 허용하는 요소. 단,
+        Where
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >flow content</a
+        >
+        is expected, but only if it is a
         <a
           href="https://html.spec.whatwg.org/multipage/grouping-content.html#hierarchically-correct-main-element"
-          >구조적으로 올바른 <code>&#x3C;main></code> 요소</a
-        >여야 합니다.
+          >hierarchically correct <code>main</code> element</a
+        >.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
+      <th scope="row">Implicit ARIA role</th>
       <td>
-        기본적으로 <code>main</code> 역할 포함,
-        <a href='/ko/docs/Web/Accessibility/ARIA/Roles/presentation_role'><code>presentation</code></a> 가능.
+        <code
+          ><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/Main_role"
+            >main</a
+          ></code
+        >
       </td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>No <code>role</code> permitted</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
+## Attributes
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)만 포함합니다.
+This element only includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-## 사용 일람
+## Usage notes
 
-`<main>` 요소의 콘텐츠는 문서의 유일한 내용이어야 합니다. 사이드바, 탐색 링크, 저작권 정보, 사이트 로고, 검색 폼 등 여러 문서에 걸쳐 반복되는 콘텐츠는 포함해선 안됩니다. 그러나 검색 폼이 페이지의 주요 기능이라면 예외로 둘 수 있습니다.
+The content of a `<main>` element should be unique to the document. Content that is repeated across a set of documents or document sections such as sidebars, navigation links, copyright information, site logos, and search forms shouldn't be included unless the search form is the main function of the page.
 
-`<main>`은 요소 개요에 영향을 주지 않습니다. {{htmlelement("body")}} 등의 요소나 {{htmlelement("h2")}}와 같은 제목 요소와 달리 `<main>`은 페이지의 개념적 구조를 바꾸지 않으며 온전히 정보 제공용입니다.
+`<main>` doesn't contribute to the document's outline; that is, unlike elements such as {{HTMLElement("body")}}, headings such as {{HTMLElement("Heading_Elements", "h2")}}, and such, `<main>` doesn't affect the {{glossary("DOM", "DOM's")}} concept of the structure of the page. It's strictly informative.
 
-## 예제
+## Examples
 
 ```html
 <!-- other content -->
@@ -88,36 +95,39 @@ slug: Web/HTML/Element/main
 
   <article>
     <h2>Red Delicious</h2>
-    <p>These bright red apples are the most common found in many
-    supermarkets.</p>
-    <p>... </p>
-    <p>... </p>
+    <p>
+      These bright red apples are the most common found in many supermarkets.
+    </p>
+    <p>…</p>
+    <p>…</p>
   </article>
 
   <article>
     <h2>Granny Smith</h2>
-    <p>These juicy, green apples make a great filling for
-    apple pies.</p>
-    <p>... </p>
-    <p>... </p>
+    <p>These juicy, green apples make a great filling for apple pies.</p>
+    <p>…</p>
+    <p>…</p>
   </article>
-
 </main>
 
 <!-- other content -->
 ```
 
-## 접근성 고려사항
+### Result
 
-### 랜드마크
+{{EmbedLiveSample('Examples')}}
 
-`<main>` 요소는 [`main` 랜드마크](/ko/docs/Web/Accessibility/ARIA/Roles/Main_role) 역할과 동일하게 행동합니다. [랜드마크](/ko/docs/Web/Accessibility/ARIA/ARIA_Techniques)는 접근성 보조기술이 문서의 큰 구획을 찾고 이동할 때 쓰입니다. 구형 브라우저를 지원할 필요가 없다면, `role="main"`보다 `<main>` 요소를 사용하세요.
+## Accessibility concerns
 
-### 건너뛰기 링크
+### Landmark
 
-건너뛰기 링크, 스킵 내비게이션(skipnav)은 접근성 보조기술이 주요 탐색 구획, 정보 배너 등 반복되는 큰 구획을 빠르게 넘어갈 수 있도록 지원하는 기법으로, 사용자가 페이지의 주요 내용으로 신속하게 접근할 수 있도록 도와줍니다.
+The `<main>` element behaves like a [`main` landmark](/en-US/docs/Web/Accessibility/ARIA/Roles/main_role) role. [Landmarks](/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques#landmark_roles) can be used by assistive technology to quickly identify and navigate to large sections of the document. Prefer using the `<main>` element over declaring `role="main"`, unless there are [legacy browser support concerns](#browser_compatibility).
 
-`<main>` 요소에 {{htmlattrxref("id")}} 요소를 추가해 건너뛰기 링크의 대상으로 지정하세요.
+### Skip navigation
+
+Skip navigation, also known as "skipnav", is a technique that allows an assistive technology user to quickly bypass large sections of repeated content (main navigation, info banners, etc.). This lets the user access the main content of the page faster.
+
+Adding an [`id`](/en-US/docs/Web/HTML/Global_attributes#id) attribute to the `<main>` element lets it be a target of a skip navigation link.
 
 ```html
 <body>
@@ -133,30 +143,22 @@ slug: Web/HTML/Element/main
 
 - [WebAIM: "Skip Navigation" Links](https://webaim.org/techniques/skipnav/)
 
-### 읽기 모드
+### Reader mode
 
-브라우저 읽기 모드는 문서 콘텐츠를 변환할 때 `<main>` 요소와 더불어 [제목](/ko/docs/Web/HTML/Element/Heading_Elements)과 [콘텐츠 구획](/ko/docs/Web/HTML/Element#콘텐츠_구획) 요소를 사용합니다.
+Browser reader mode functionality looks for the presence of the `<main>` element, as well as [heading](/en-US/docs/Web/HTML/Element/Heading_Elements) and [content sectioning elements](/en-US/docs/Web/HTML/Element#content_sectioning) when converting content into a specialized reader view.
 
 - [Building websites for Safari Reader Mode and other reading apps.](https://medium.com/@mandy.michael/building-websites-for-safari-reader-mode-and-other-reading-apps-1562913c86c9)
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
-
-대부분의 브라우저에서 `<main>` 요소를 지원합니다. 그러나 Internet Explorer 11 이하를 지원할 땐 `<main>` 요소에 `"main"` {{glossary("ARIA")}} 역할을 명시해 접근성을 확보하는 것이 좋습니다.
-
-```html
-<main role="main">
-  ...
-</main>
-```
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 기본 구조 요소: {{HTMLElement("html")}}, {{HTMLElement("head")}}, {{HTMLElement("body")}}
-- 구획 관련 요소: {{HTMLElement("article")}}, {{HTMLElement("aside")}}, {{HTMLElement("footer")}}, {{HTMLElement("header")}}, {{HTMLElement("nav")}}
-- [ARIA: Main role](/ko/docs/Web/Accessibility/ARIA/Roles/Main_role)
+- Basic structural elements: {{HTMLElement("html")}}, {{HTMLElement("head")}}, {{HTMLElement("body")}}
+- Section-related elements: {{HTMLElement("article")}}, {{HTMLElement("aside")}}, {{HTMLElement("footer")}}, {{HTMLElement("header")}}, or {{HTMLElement("nav")}}
+- [ARIA: Main role](/en-US/docs/Web/Accessibility/ARIA/Roles/main_role)

@@ -1,57 +1,96 @@
 ---
 title: Date.prototype.getTime()
 slug: Web/JavaScript/Reference/Global_Objects/Date/getTime
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.getTime
 ---
+
 {{JSRef}}
 
-**getTime()** 메서드는 표준시에 따라 지정된 날짜의 시간에 해당하는 숫자 값을 반환합니다.
+The **`getTime()`** method returns the number of milliseconds since the [epoch](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#the_ecmascript_epoch_and_timestamps), which is defined as the midnight at the beginning of January 1, 1970, UTC.
 
-이 메서드를 사용하면 다른 {{jsxref ( "Date")}} 객체에 날짜와 시간을 지정할 수 있습니다. 이 메소드는 기능적으로 {{jsxref("Date.valueof", "valueOf()")}} 메소드와 동일합니다.
+You can use this method to help assign a date and time to another {{jsxref("Date")}}
+object. This method is functionally equivalent to the {{jsxref("Date/valueof",
+  "valueOf()")}} method.
+
+{{EmbedInteractiveExample("pages/js/date-gettime.html","shorter")}}
 
 ## Syntax
 
-```js
-    dateObj.getTime()
+```js-nolint
+getTime()
 ```
 
 ### Return value
 
-1970 년 1 월 1 일 00:00:00 UTC와 주어진 날짜 사이의 경과 시간 (밀리 초)을 나타내는 숫자입니다.
+A number representing the milliseconds elapsed between 1 January 1970 00:00:00 UTC and
+the given date.
+
+## Description
+
+To offer protection against timing attacks and [fingerprinting](/en-US/docs/Glossary/Fingerprinting), the precision of
+`new Date().getTime()` might get rounded depending on browser settings. In
+Firefox, the `privacy.reduceTimerPrecision` preference is enabled by default
+and defaults to 20µs in Firefox 59; in 60 it will be 2ms.
+
+```js
+// reduced time precision (2ms) in Firefox 60
+new Date().getTime();
+// 1519211809934
+// 1519211810362
+// 1519211811670
+// …
+
+// reduced time precision with `privacy.resistFingerprinting` enabled
+new Date().getTime();
+// 1519129853500
+// 1519129858900
+// 1519129864400
+// …
+```
+
+In Firefox, you can also enable `privacy.resistFingerprinting`, the
+precision will be 100ms or the value of
+`privacy.resistFingerprinting.reduceTimerPrecision.microseconds`, whichever
+is larger.
 
 ## Examples
 
-### 날짜 복사에 getTime () 사용
+### Using `getTime()` for copying dates
 
-동일한 시간 값으로 날짜 객체를 생성합니다.
+Constructing a date object with the identical time value.
 
 ```js
-// 월은 0부터 시작하여 생일은 1995 년 1 월 10 일이됩니다.
-var birthday = new Date(1994, 12, 10);
-var copy = new Date();
+// Since month is zero based, birthday will be January 10, 1995
+const birthday = new Date(1994, 12, 10);
+const copy = new Date();
 copy.setTime(birthday.getTime());
 ```
 
-### 측정 실행 시간
+### Measuring execution time
 
-새로 생성 된 {{jsxref ( "Date")}} 객체에서 두 개의 연속 getTime () 호출을 뺀 후에이 두 호출 사이의 시간 범위를 지정하십시오. 일부 작업의 실행 시간을 계산하는 데 사용할 수 있습니다. 불필요한 {{jsxref ( "Date")}} 객체를 인스턴스화하지 않으려면 {{jsxref("Date.now()")}}를 참조하십시오.
+Subtracting two subsequent `getTime()` calls on newly generated
+{{jsxref("Date")}} objects, give the time span between these two calls. This can be used
+to calculate the executing time of some operations. See also {{jsxref("Date.now()")}} to
+prevent instantiating unnecessary {{jsxref("Date")}} objects.
 
 ```js
-var end, start;
+let end, start;
 
 start = new Date();
-for (var i = 0; i < 1000; i++) {
+for (let i = 0; i < 1000; i++) {
   Math.sqrt(i);
 }
 end = new Date();
 
-console.log('Operation took ' + (end.getTime() - start.getTime()) + ' msec');
+console.log(`Operation took ${end.getTime() - start.getTime()} msec`);
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

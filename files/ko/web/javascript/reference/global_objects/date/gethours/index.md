@@ -1,46 +1,52 @@
 ---
 title: Date.prototype.getHours()
 slug: Web/JavaScript/Reference/Global_Objects/Date/getHours
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.getHours
 ---
 
 {{JSRef}}
 
-**`getHours()`** 메서드는 주어진 날짜의 현지 시간 기준 시를 반환합니다.
+The **`getHours()`** method returns the hour for the specified
+date, according to local time.
 
-{{EmbedInteractiveExample("pages/js/date-gethours.html")}}
+{{EmbedInteractiveExample("pages/js/date-gethours.html","shorter")}}
 
-## 구문
+## Syntax
 
-```js
-    dateObj.getHours()
+```js-nolint
+getHours()
 ```
 
-### 반환 값
+### Return value
 
-주어진 날짜의 현지 시간 기준 시를 나타내는 0에서 23 사이의 정수.
+An integer number, between 0 and 23, representing the hour for the given date according
+to local time.
 
-## 예제
+## Examples
 
-### `getHours()` 사용하기
+### Using getHours()
 
-아래의 두 번째 명령문은 {{jsxref("Date")}} 객체 `Xmas95` 날짜의 시를 `hours` 변수에 할당합니다.
+The second statement below assigns the value 23 to the variable `hours`,
+based on the value of the {{jsxref("Global_Objects/Date", "Date")}} object
+`xmas95`.
 
 ```js
-var Xmas95 = new Date('December 25, 1995 23:15:30');
-var hours = Xmas95.getHours();
+const xmas95 = new Date("December 25, 1995 23:15:30");
+const hours = xmas95.getHours();
 
 console.log(hours); // 23
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Date.prototype.getUTCHours()")}}
 - {{jsxref("Date.prototype.setHours()")}}

@@ -1,56 +1,85 @@
 ---
-title: MediaStreamTrack.enabled
+title: "MediaStreamTrack: enabled property"
+short-title: enabled
 slug: Web/API/MediaStreamTrack/enabled
+page-type: web-api-instance-property
+browser-compat: api.MediaStreamTrack.enabled
 ---
+
 {{APIRef("Media Capture and Streams")}}
 
-{{domxref("MediaStreamTrack")}} 인터페이스의 **`enabled`** 속성은 트랙이 소스 스트림을 렌더링 할 수 있으면 `true`, 아니면 `false`를 반환합니다. `enabled` 속성을 사용해 음소거 기능을 구현할 수 있습니다. 활성화된 경우 트랙의 데이터는 입력에서 목적지로 출력됩니다. 비활성 상태에서는 빈 프레임만 출력합니다.
+The **`enabled`** property on the
+{{domxref("MediaStreamTrack")}} interface is a Boolean value which is
+`true` if the track is allowed to render the source stream or
+`false` if it is not. This can be used to intentionally mute a
+track.
 
-오디오 트랙의 경우 비활성화 트랙이 생성하는 빈 프레임은 아무 소리도 없는 것, 즉 모든 샘플의 값이 0인 프레임이며, 비디오의 경우 모든 픽셀이 검은 프레임입니다.
+When enabled, a track's data is output from the source to the
+destination; otherwise, empty frames are output.
 
-사실, `enabled`의 값은 사용자가 트랙의 "음소거" 상태로 취급할 상태를 나타내며, {{domxref("MediaStreamTrack.muted", "muted")}} 속성은 전송 중 프레임 유실 등으로 인해 데이터를 출력할 수 없는 상태를 뜻합니다.
+In the case of audio, a disabled track generates frames of silence (that is, frames in
+which every sample's value is 0). For video tracks, every frame is filled entirely with
+black pixels.
 
-> **참고:** 트랙의 연결이 끊긴 후에도 `enabled` 값을 바꿀 수는 있지만 아무런 효과도 없습니다.
+The value of `enabled`, in essence, represents what a typical user would
+consider the muting state for a track, whereas the {{domxref("MediaStreamTrack.muted",
+  "muted")}} property indicates a state in which the track is temporarily unable to output
+data, such as a scenario in which frames have been lost in transit.
 
-## 구문
+> **Note:** If the track has been disconnected, the value of this property
+> can be changed, but has no effect.
+
+## Value
+
+When `true`, `enabled` indicates that the track is permitted to
+render its actual media to the output. When `enabled` is set to
+`false`, the track only generates empty frames.
+
+Empty audio frames have every sample's value set to 0. Empty video frames have every
+pixel set to black.
+
+> **Note:** When implementing a mute/unmute feature, you should use the
+> `enabled` property.
+
+## Usage notes
+
+If the {{domxref("MediaStreamTrack")}} represents the video input from a camera,
+disabling the track by setting `enabled` to `false` also updates
+device activity indicators to show that the camera is not currently recording or
+streaming. For example, the green "in use" light next to the camera in iMac and MacBook
+computers turns off while the track is muted in this way.
+
+## Example
+
+This example demonstrates a {{domxref("Element/click_event", "click")}} event handler for a pause button.
 
 ```js
-const enabledFlag = track.enabled
-track.enabled = [true | false]
-```
-
-### 값
-
-`true`는 실제 미디어의 렌더링이 허용됨을 나타냅니다. `false`로 설정한 경우 빈 프레임만 생성합니다.
-
-빈 오디오 프레임의 모든 샘플 값은 0입니다. 빈 비디오 프레임의 모든 픽셀은 완전한 검정입니다.
-
-## 사용 일람
-
-{{domxref("MediaStreamTrack")}}이 카메라의 비디오 입력을 나타내는 경우, 트랙의 `enabled`를`false`로 설정해 비활성화하면 카메라의 녹화 표시도 꺼집니다. 예를 들어, iMac과 MacBook의 카메라 옆에 존재하는 초록색 "사용 중" LED도 꺼집니다.
-
-## 예제
-
-다음 코드는 [`click`](/ko/docs/Web/API/Element/click_event) 이벤트 처리기를 사용해 일시정지를 구현합니다.
-
-```js
-pauseButton.onclick = function(evt) {
+pauseButton.onclick = (evt) => {
   const newState = !myAudioTrack.enabled;
 
   pauseButton.innerHTML = newState ? "&#x25B6;&#xFE0F;" : "&#x23F8;&#xFE0F;";
   myAudioTrack.enabled = newState;
-}
+};
 ```
 
-## 명세
+This creates a variable, `newState`, which is the opposite of the current
+value of `enabled`, then uses that to select either the Emoji character for
+the "play" icon or the character for the "pause" icon as the new
+{{domxref("Element.innerHTML", "innerHTML")}} of the pause button's element.
 
-## 브라우저 호환성
+Finally, the new value of `enabled` is saved, making the change take effect.
+
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [MediaStream API](/ko/docs/Web/API/Media_Streams_API)
+- [Media Capture and Streams API](/en-US/docs/Web/API/Media_Capture_and_Streams_API)
 - {{domxref("MediaStream")}}
 - {{domxref("MediaStreamTrack")}}
-- [WebRTC](/ko/docs/Web/API/WebRTC_API)
+- [WebRTC](/en-US/docs/Web/API/WebRTC_API)

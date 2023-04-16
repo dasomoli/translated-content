@@ -1,35 +1,40 @@
 ---
 title: spellcheck
 slug: Web/HTML/Global_attributes/spellcheck
+page-type: html-attribute
+browser-compat: html.global_attributes.spellcheck
 ---
 
 {{HTMLSidebar("Global_attributes")}}
 
-**`spellcheck`** [전역 특성](/ko/docs/Web/HTML/Global_attributes)은 요소의 맞춤법 검사 여부를 지정하는 열거형 특성입니다.
+The **`spellcheck`** [global attribute](/en-US/docs/Web/HTML/Global_attributes) is an [enumerated](/en-US/docs/Glossary/Enumerated) attribute that defines whether the element may be checked for spelling errors.
 
 {{EmbedInteractiveExample("pages/tabbed/attribute-spellcheck.html","tabbed-shorter")}}
 
-<div class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</div>
+It may have the following values:
 
-가능한 값은 다음과 같습니다.
+- empty string or `true`, which indicates that the element should be, if possible, checked for spelling errors;
+- `false`, which indicates that the element should not be checked for spelling errors.
 
-- `true`는 가능한 경우 요소의 맞춤법을 검사해야 함을 나타냅니다.
-- `false`는 요소의 맞춤법을 검사하지 않아야 함을 나타냅니다.
+If this attribute is not set, its default value is element-type and browser-defined. This default value may also be _inherited_, which means that the element content will be checked for spelling errors only if its nearest ancestor has a _spellcheck_ state of `true`.
 
-> **참고:** `spellcheck` 특성은 불리언이 아니고 열거형 특성이므로 `true` 또는 `false`를 반드시 지정해야 합니다. 즉, `<textarea spellcheck></textarea>`처럼은 사용할 수 없으며, `<textarea spellcheck="true"></textarea>`와 같이 사용해야 합니다.
+This attribute is merely a hint for the browser: browsers are not required to check for spelling errors. Typically non-editable elements are not checked for spelling errors, even if the `spellcheck` attribute is set to `true` and the browser supports spellchecking.
 
-특성을 지정하지 않았을 때의 기본값은 브라우저 및 요소에 따라 다릅니다. 또한, `spellcheck` 특성은 상속 대상이므로, 부모 요소의 값에도 영향을 받습니다.
+## Security and privacy concerns
 
-`spellcheck`는 권장사항에 불과하며, 브라우저가 맞춤법을 검사해야 할 의무는 없습니다. 보통 `spllcheck` 특성을 `true`로 지정하더라도, 요소를 편집할 수 없다면 맞춤법 검사를 하지 않습니다.
+Using spellchecking can have consequences for users' security and privacy.
+The specification does not regulate _how_ spellchecking is done and the content of the element may be sent to a third party for spellchecking results (see [enhanced spellchecking and "spell-jacking"](https://www.otto-js.com/news/article/chrome-and-edge-enhanced-spellcheck-features-expose-pii-even-your-passwords)).
 
-## 명세
+You should consider setting `spellcheck` to `false` for elements that can contain sensitive information.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 모든 [전역 특성](/ko/docs/Web/HTML/Global_attributes).
+- All [global attributes](/en-US/docs/Web/HTML/Global_attributes).

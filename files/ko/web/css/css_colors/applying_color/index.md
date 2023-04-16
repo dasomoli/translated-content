@@ -1,136 +1,132 @@
 ---
-title: CSS로 HTML 요소에 색 입히기
+title: Applying color to HTML elements using CSS
 slug: Web/CSS/CSS_Colors/Applying_color
-original_slug: Web/HTML/Applying_color
+page-type: guide
 ---
 
-{{HTMLSidebar}}
+{{CSSRef}}
 
-색은 인간의 감정을 표현하는 기본적인 형태입니다. 아이들은 뭔가 그릴 수 있는 민첩성을 갖추기도 전에 색을 가지고 놉니다. 사람들이 웹 사이트를 개발할 때 보통 색을 제일 먼저 입혀보고 싶어 하는 건 이런 이유일지도 모릅니다. [CSS](/ko/docs/Web/CSS)와 함께라면 무궁무진한 방법으로 여러분의 [HTML](/ko/docs/Web/HTML) [요소](/ko/docs/Web/HTML/Element)에 색을 넣어 원하는 모습을 만들 수 있습니다. 이 글은 CSS 색을 HTML에 적용하는 기초를 소개합니다.
+This article is a primer introducing each of the ways CSS color can be used in HTML.
 
-다행히도 HTML에 색을 추가하는 건 정말 쉽고 거의 모든 곳에 할 수 있는 일입니다.
+The use of color is a fundamental form of human expression. Children experiment with color before they even have the manual dexterity to draw. Maybe that's why color is one of the first things people often want to experiment with when learning to develop websites. With [CSS](/en-US/docs/Web/CSS), there are lots of ways to add color to your [HTML](/en-US/docs/Web/HTML) [elements](/en-US/docs/Web/HTML/Element) to create just the look you want.
 
-[색을 입힐 수 있는 목록, 그때 사용할 CSS 속성](#색을_입힐_수_있는_것), [색을 나타내는 법](#색을_나타내는_법), [실제로 색 사용하기](#색_사용하기) 등 색을 쓸 때 알아야 할 주제는 대부분 짚고 가겠습니다. [사용자가 색을 선택](#사용자의_색_선택)할 수 있는 방법도 확인해보겠습니다.
+We're going to touch on most of what you'll need to know when using color, including a [list of what you can color and what CSS properties are involved](#things_that_can_have_color), [how you describe colors](#how_to_describe_a_color), and how to actually [use colors both in stylesheets and in scripts](#using_color). We'll also take a look at how to [let the user pick a color](#letting_the_user_pick_a_color).
 
-마지막으로는 적절한 색을 고르고, 서로 다른 시각적 조건을 가진 사람들을 고려하는 등 [현명한 색 선택](#현명하게_색_고르기)에 대해 간단히 알아보겠습니다.
+Then we'll wrap things up with a brief discussion of how to [use color wisely](#using_color_wisely): how to select appropriate colors, keeping in mind the needs of people with differing visual capabilities.
 
-## 색을 입힐 수 있는 것
+## Things that can have color
 
-요소 차원에서 보자면 HTML의 모든 것에 색을 입힐 수 있습니다. 대신에 글씨와 테두리처럼, 요소 안에 그려지는 것의 종류에 따라 알아보겠습니다. 각각의 종류에 적용할 수 있는 CSS 속성의 목록도 보겠습니다.
+At the element level, everything in HTML can have color applied to it. Instead, let's look at things in terms of the kinds of things that are drawn in the elements, such as text and borders and so forth. For each, we'll see a list of the CSS properties that apply color to them.
 
-가장 기초적인 단계로는 {{cssxref("color")}} 속성이 HTML 요소의 콘텐츠 전경색을 지정하고, {{cssxref("background-color")}} 속성이 요소의 배경색을 지정합니다. 두 속성은 거의 모든 요소에 사용할 수 있습니다.
+At a fundamental level, the {{cssxref("color")}} property defines the foreground color of an HTML element's content and the {{cssxref("background-color")}} property defines the element's background color. These can be used on just about any element.
 
-### 글씨
+### Text
 
-요소를 렌더링할 때 글씨, 글씨 배경과 기타 꾸미기 효과의 색은 아래에 나열한 속성이 결정합니다.
+Whenever an element is rendered, these properties are used to determine the color of the text, its background, and any decorations on the text.
 
 - {{cssxref("color")}}
-  - : 글씨와 글씨 장식(밑줄, 윗줄, 취소선 등)을 그릴 때 사용할 색입니다.
+  - : The color to use when drawing the text and any [text decorations](/en-US/docs/Learn/CSS/Styling_text/Fundamentals#font_style_font_weight_text_transform_and_text_decoration) (such as the addition of under- or overlines, strike-through lines, and so forth.
 - {{cssxref("background-color")}}
-  - : 글씨의 배경색입니다.
+  - : The text's background color.
 - {{cssxref("text-shadow")}}
-
-  - : 글씨의 그림자 효과를 설정합니다. 여러 옵션 중에서 그림자 색을 정할 수 있습니다. (이후 다른 옵션에 따라 흐려지고 배경과 섞입니다)
-
-    See [Text drop shadows](/en-US/docs/Learn/CSS/Styling_text/Fundamentals#text_drop_shadows) to learn more.
-
+  - : Configures a shadow effect to apply to text. Among the options for the shadow is the shadow's base color (which is then blurred and blended with the background based on the other parameters). See [Text drop shadows](/en-US/docs/Learn/CSS/Styling_text/Fundamentals#text_drop_shadows) to learn more.
 - {{cssxref("text-decoration-color")}}
-  - : 기본 설정에서 글씨 장식(밑줄, 윗줄, 취소선 등)은 `color` 속성의 값을 색으로 사용합니다. 그러나 `text-decoration-color` 속성을 지정하면 다른 색으로 바꿀 수 있습니다.
+  - : By default, text decorations (such as underlines, strikethroughs, etc.) use the `color` property as their colors. However, you can override that behavior and use a different color for them with the `text-decoration-color` property.
 - {{cssxref("text-emphasis-color")}}
-  - : 글씨 위에 표시할 강조 표시의 색입니다.
+  - : The color to use when drawing emphasis symbols adjacent to each character in the text. This is used primarily when drawing text for East Asian languages.
 - {{cssxref("caret-color")}}
-  - : 요소의 {{Glossary("caret", "캐럿")}}(글씨 입력 커서) 색입니다. {{HTMLElement("input")}}이나 {{HTMLElement("textarea")}}, HTML {{htmlattrxref("contenteditable")}} 속성을 설정한 요소처럼 편집 가능한 경우에만 유용합니다.
+  - : The color to use when drawing the {{Glossary("caret")}} (sometimes referred to as the text input cursor) within the element. This is only useful in elements that are editable, such as {{HTMLElement("input")}} and {{HTMLElement("textarea")}} or elements whose HTML [`contenteditable`](/en-US/docs/Web/HTML/Global_attributes#contenteditable) attribute is set.
 
-### 박스
+### Boxes
 
-모든 요소는 모종의 콘텐츠를 가진 박스로, 콘텐츠 외에도 배경과 테두리를 가질 수 있습니다.
+Every element is a box with some sort of content, and has a background and a border in addition to whatever contents the box may have.
 
-- [테두리](#테두리)
-  - [: 테두리](#테두리) 항목에서 박스 테두리에 사용할 수 있는 CSS 속성의 목록을 확인하세요.
+- [Borders](#borders_2)
+  - : See the section [Borders](#borders_2) for a list of the CSS properties you can use to set the colors of a box's borders.
 - {{cssxref("background-color")}}
-  - : 전경 콘텐츠가 없는 곳에 표시할 배경색입니다.
+  - : The background color to use in areas of the element that have no foreground content.
 - {{cssxref("column-rule-color")}}
-  - : 긴 글씨를 여러 단으로 나눌 때 그릴 구분선의 색입니다.
+  - : The color to use when drawing the line separating columns of text.
 - {{cssxref("outline-color")}}
-  - : 요소의 바깥에 외곽선을 그릴 때 사용할 색입니다. 외곽선은 문서에서 공간을 차지하지 않아서 다른 요소를 가릴 수 있다는 점에서 테두리와 다릅니다. 보통 현재 선택돼 입력 이벤트를 받을 수 있는 요소를 강조할 때 사용합니다.
+  - : The color to use when drawing an outline around the outside of the element. This outline is different from the border in that it doesn't get space set aside for it in the document (so it may overlap other content). It's generally used as a focus indicator, to show which element will receive input events.
 
-### 테두리
+### Borders
 
-모든 요소는 주위에 테두리를 가질 수 있습니다. 기본적인 테두리는 요소 콘텐츠의 모서리를 따라 그리는 선입니다. See [Box properties](/ko/docs/Learn/CSS/Introduction_to_CSS/Box_model#box_properties) to learn about the relationship between elements and their borders, and the article [Styling borders using CSS](/en-US/docs/Learn/CSS/Building_blocks/Backgrounds_and_borders) to learn more about applying styles to borders.
+Any element can have a [border](/en-US/docs/Learn/CSS/Building_blocks/Backgrounds_and_borders) drawn around it. A basic element border is a line drawn around the edges of the element's content. See [The box model](/en-US/docs/Learn/CSS/Building_blocks/The_box_model) to learn about the relationship between elements and their borders, and the article [Styling borders using CSS](/en-US/docs/Learn/CSS/Building_blocks/Backgrounds_and_borders) to learn more about applying styles to borders.
 
-{{cssxref("border")}} 단축 속성을 사용하면 색은 물론 [너비](/ko/docs/Web/CSS/border-width)와 [스타일](/ko/docs/Web/CSS/border-style)(실선, 점선 등)같은 속성을 한 번에 설정할 수 있습니다.
+You can use the {{cssxref("border")}} shorthand property, which lets you configure everything about the border in one shot (including non-color features of borders, such as its [width](/en-US/docs/Web/CSS/border-width), [style](/en-US/docs/Web/CSS/border-style) (solid, dashed, etc.), and so forth.
 
 - {{cssxref("border-color")}}
-  - : 모든 면의 테두리가 사용할 단색입니다.
-- {{cssxref("border-left-color")}}, {{cssxref("border-right-color")}}, {{cssxref("border-top-color")}}, {{cssxref("border-bottom-color")}}
-  - : 테두리 색을 방향에 따라 다르게 설정할 수 있습니다.
-- {{cssxref("border-block-start-color")}}, {{cssxref("border-block-end-color")}}
+  - : Specifies a single color to use for every side of the element's border.
+- {{cssxref("border-left-color")}}, {{cssxref("border-right-color")}}, {{cssxref("border-top-color")}}, and {{cssxref("border-bottom-color")}}
+  - : Lets you set the color of the corresponding side of the element's border.
+- {{cssxref("border-block-start-color")}} and {{cssxref("border-block-end-color")}}
   - : With these, you can set the color used to draw the borders which are closest to the start and end of the block the border surrounds. In a left-to-right writing mode (such as the way English is written), the block start border is the top edge and the block end is the bottom. This differs from the inline start and end, which are the left and right edges (corresponding to where each line of text in the box begins and ends).
-- {{cssxref("border-inline-start-color")}}, {{cssxref("border-inline-end-color")}}
-  - : These let you color the edges of the border closest to to the beginning and the end of the start of lines of text within the box. Which side this is will vary depending on the {{cssxref("writing-mode")}}, {{cssxref("direction")}}, and {{cssxref("text-orientation")}} properties, which are typically (but not always) used to adjust text directionality based on the language being displayed. For example, if the box's text is being rendered right-to-left, then the `border-inline-start-color` is applied to the right side of the border.
+- {{cssxref("border-inline-start-color")}} and {{cssxref("border-inline-end-color")}}
+  - : These let you color the edges of the border closest to the beginning and the end of the start of lines of text within the box. Which side this is will vary depending on the {{cssxref("writing-mode")}}, {{cssxref("direction")}}, and {{cssxref("text-orientation")}} properties, which are typically (but not always) used to adjust text directionality based on the language being displayed. For example, if the box's text is being rendered right-to-left, then the `border-inline-start-color` is applied to the right side of the border.
 
-### 다른 방법
+### Other ways to use color
 
-웹 기술에서 CSS만 색을 지원하는건 아닙니다. 웹에서 사용할 수 있는 다른 그래픽 기술에서도 색을 지원합니다.
+CSS isn't the only web technology that supports color. There are graphics technologies that are available on the web which also support color.
 
-- HTML [Canvas API](/ko/docs/Web/API/Canvas_API)
-  - : {{HTMLElement("canvas")}} 요소로 2D 비트맵 그래픽을 그릴 수 있습니다. [캔버스 자습서](/ko/docs/Web/API/Canvas_API/Tutorial)를 방문해 더 알아보세요.
-- [SVG](/ko/docs/Web/SVG) (Scalable Vector Graphics)
-  - : 선, 패턴, 특정 모양의 형태를 그리는 명령어를 사용해 이미지를 그릴 수 있습니다. SVG 명령어는 XML 형식을 따르며, 웹 페이지에 바로 삽입할 수도 있고, 다른 이미지처럼 {{HTMLElement("img")}} 요소에 넣을 수도 있습니다.
-- [WebGL](/ko/docs/Web/API/WebGL_API)
-  - : Web Graphics Library는 OpenGL ES 기반의 API로, 웹에서 고성능 2D 및 3D 그래픽을 그릴 수 있습니다. [WebGL 자습서](/ko/docs/Web/API/WebGL_API/Tutorial/Getting_started_with_WebGL)를 방문해 더 알아보세요.
+- The HTML [Canvas API](/en-US/docs/Web/API/Canvas_API)
+  - : Lets you draw 2D bitmapped graphics in a {{HTMLElement("canvas")}} element. See our [Canvas tutorial](/en-US/docs/Web/API/Canvas_API/Tutorial) to learn more.
+- [SVG](/en-US/docs/Web/SVG) (Scalable Vector Graphics)
+  - : Lets you draw images using commands that draw specific shapes, patterns, and lines to produce an image. SVG commands are formatted as XML, and can be embedded directly into a web page or can be placed in the page using the {{HTMLElement("img")}} element, just like any other type of image.
+- [WebGL](/en-US/docs/Web/API/WebGL_API)
+  - : The Web Graphics Library is an OpenGL ES-based API for drawing high-performance 2D and 3D graphics on the Web. See our [WebGL tutorial](/en-US/docs/Web/API/WebGL_API/Tutorial) to find out more.
 
-## 색을 나타내는 법
+## How to describe a color
 
-CSS에서 색을 나타내려면 우선 "색"이라는 개념을, 원색이나 밝기 등 구성 요소를 분리해 수치로 표기하는 등 컴퓨터가 이해할 수 있는 디지털 형태로 변환해야 합니다. 변환 방법이 여러 가지이듯 CSS가 색을 표현하는 방법도 여러 가지입니다.
+In order to represent a color in CSS, you have to find a way to translate the analog concept of "color" into a digital form that a computer can use. This is typically done by breaking down the color into components, such as how much of each of a set of primary colors to mix together, or how bright to make the color. As such, there are several ways you can describe color in CSS.
 
-각각의 형태에 대한 더 자세한 내용은 CSS {{cssxref("&lt;color&gt;")}} 단위 문서를 참고하세요.
+For more detailed discussion of each of the color value types, see the reference for the CSS {{cssxref("&lt;color&gt;")}} unit.
 
-### 키워드
+### Keywords
 
-CSS 표준은 다수의 색 키워드를 사전에 정의하고 있으므로, 원하는 색을 가리키는 키워드가 있다면 숫자형 표현 대신 사용할 수 있습니다. 색 키워드는 원색과 2차색(`red`, `blue`, `orange` 등), 단계별 무채색(`black`에서 `white`까지, `darkgray`와 `lightgrey` 등) 외에도 `lightseagreen`, `cornflowerblue`, `rebeccapurple`처럼 다양한 종류의 혼합색을 포함하고 있습니다.
+A set of standard color names have been defined, letting you use these keywords instead of numeric representations of colors if you choose to do so and there's a keyword representing the exact color you want to use. Color keywords include the standard primary and secondary colors (such as `red`, `blue`, or `orange`), shades of gray (from `black` to `white`, including colors like `darkgray` and `lightgrey`), and a variety of other blended colors including `lightseagreen`, `cornflowerblue`, and `rebeccapurple`.
 
-사용할 수 있는 모든 색 키워드의 목록은 [`<color>`의 색상 키워드 항목](/ko/docs/Web/CSS/color_value#%EC%83%89%EC%83%81_%ED%82%A4%EC%9B%8C%EB%93%9C)을 참고하세요.
+See [Named colors](/en-US/docs/Web/CSS/named-color) for more information on color keywords.
 
-### RGB 값
+### RGB values
 
-RGB 색은 세 가지 방법으로 표현할 수 있습니다.
+There are three ways to represent an RGB color in CSS.
 
-#### 16진수 문자열 표기법
+#### Hexadecimal string notation
 
-16진수 문자열 표기법은 색의 구성요소(빨강, 초록, 파랑)를 16진수 숫자로 표현합니다. 네 번째 구성 요소로 알파 채널(불투명도)을 포함할 수도 있습니다. 하나의 구성 요소는 0에서 255 사이(0x00에서 0xFF)를 숫자 두 개로, 또는 0에서 15 사이(0x0에서 0xF)를 숫자 한 개로 표기합니다. 단, 모든 구성 요소는 같은 수의 문자로 표기해야 합니다. 한 자릿수(0\~F)로 표기한다면, 구성 요소의 최종 값은 자신의 문자를 두 번씩 사용해 계산합니다. 즉, `"#D"`의 값은 `"#DD"`입니다.
+Hexadecimal string notation represents a color using hexadecimal digits to represent each of the color components (red, green, and blue). It may also include a fourth component: the alpha channel (or opacity). Each color component can be represented as a number between 0 and 255 (0x00 and 0xFF) or, optionally, as a number between 0 and 15 (0x0 and 0xF). All components _must_ be specified using the same number of digits. If you use the single-digit notation, the final color is computed by using each component's digit twice; that is, `"#D"` becomes `"#DD"` when drawing.
 
-16진수 문자열 표기법은 항상 `"#"`으로 시작해야 하고, 16진수 숫자는 그 후에 위치합니다. 문자열은 대소문자를 구분하지 않습니다.
+A color in hexadecimal string notation always begins with the character `"#"`. After that come the hexadecimal digits of the color code. The string is case-insensitive.
 
 - `"#rrggbb"`
-  - : 완전히 불투명한 색을 지정합니다. 구성 요소 중 빨강은 16진수 `0xrr`, 초록은 `0xgg`, 파랑은 `0xbb`입니다.
+  - : Specifies a fully-opaque color whose red component is the hexadecimal number `0xrr`, green component is `0xgg`, and blue component is `0xbb`.
 - `"#rrggbbaa"`
-  - : 구성 요소 중 빨강은 16진수 `0xrr`, 초록은 `0xgg`, 파랑은 `0xbb`인 색을 지정합니다. 알파 채널의 값은 `0xaa`로, 값이 낮을 수록 색은 더 투명해집니다.
+  - : Specifies a color whose red component is the hexadecimal number `0xrr`, green component is `0xgg`, and blue component is `0xbb`. The alpha channel is specified by `0xaa`; the lower this value is, the more translucent the color becomes.
 - `"#rgb"`
-  - : 완전히 불투명한 색을 지정합니다. 구성 요소 중 빨강은 16진수 `0xrr`, 초록은 `0xgg`, 파랑은 `0xbb`입니다.
+  - : Specifies a color whose red component is the hexadecimal number `0xrr`, green component is `0xgg`, and blue component is `0xbb`.
 - `"#rgba"`
-  - : 구성 요소 중 빨강은 16진수 `0xrr`, 초록은 `0xgg`, 파랑은 `0xbb`인 색을 지정합니다. 알파 채널의 값은 `0xaa`로, 값이 낮을 수록 색은 더 투명해집니다.
+  - : Specifies a color whose red component is the hexadecimal number `0xrr`, green component is `0xgg`, and blue component is `0xbb`. The alpha channel is specified by `0xaa`; the lower this value is, the more translucent the color becomes.
 
-예를 하나 들자면 불투명한 파랑은 `"#0000ff"`이나 `"#00f"`로 표현할 수 있습니다. 25%만 불투명한 파랑으로 만들 땐 `"#0000ff44"` 또는 `"#00f4"`로 표기합니다.
+As an example, you can represent the opaque color bright blue as `"#0000ff"` or `"#00f"`. To make it 25% opaque, you can use `"#0000ff44"` or `"#00f4"`.
 
-#### RGB 함수형 표기법
+#### RGB functional notation
 
-16진수 문자열 표기법과 같이, RGB(Red/Green/Blue) 함수 표기법은 빨강, 초록, 파랑, 그리고 불투명도를 나타낼 선택적 알파 채널 구성요소를 사용해 색을 나타냅니다. 그러나 문자열 표기법과 달리 CSS 함수 {{cssxref("color_value", "rgb()", "#rgb()")}}를 사용합니다. `rgb()` 함수의 세 매개변수는 순서대로 빨강, 파랑, 초록 값이며, 생략 가능한 마지막 네 번째 매개변수가 알파 채널을 나타냅니다.
+RGB (Red/Green/Blue) functional notation, like hexadecimal string notation, represents colors using their red, green, and blue components (as well as, optionally, an alpha channel component for opacity). However, instead of using a string, the color is defined using the CSS function {{cssxref("color_value", "rgb()", "#rgb()")}}. This function accepts as its input parameters the values of the red, green, and blue components and an optional fourth parameter, the value for the alpha channel.
 
-각 매개변수의 유효한 값은 다음과 같습니다.
+Legal values for each of these parameters are:
 
-- `red`, `green`, `blue`
-  - : 각각 0 이상, 255 이하인 {{cssxref("&lt;integer&gt;")}}이거나, 또는 0% 이상 100% 이하인 {{cssxref("&lt;percentage&gt;")}}여야 합니다.
+- `red`, `green`, and `blue`
+  - : Each must be an {{cssxref("&lt;integer&gt;")}} value between 0 and 255 (inclusive), or a {{cssxref("&lt;percentage&gt;")}} from 0% to 100%.
 - `alpha`
-  - : 0.0(완전히 투명) 이상, 1.0(완전히 불투명) 이하의 숫자여야 합니다. 백분율도 사용할 수 있으며, 0%는 0.0, 100%는 1.0에 대응합니다.
+  - : The alpha channel is a number between 0.0 (fully transparent) and 1.0 (fully opaque). You can also specify a percentage where 0% is the same as 0.0 and 100% is the same as 1.0.
 
-예를 들어, 50% 불투명도의 밝은 빨강은 `rgb(255, 0, 0, 0.5)`와 `rgb(100%, 0, 0, 50%)` 두 방법으로 만들 수 있습니다.
+For example, a bright red that's 50% opaque can be represented as `rgb(255, 0, 0, 0.5)` or `rgb(100%, 0, 0, 50%)`.
 
-### HSL 함수형 표기법
+### HSL functional notation
 
-많은 경우, 디자이너와 아티스트는 HSL(색조/채도/명도) 모델을 사용한 색을 선호합니다. 웹에서 HSL 색상은 HSL 함수 표기법을 사용해 나타냅니다. CSS `hsl()` 함수의 사용법 자체는 `rgb()` 함수와 매우 유사합니다.
+Designers and artists often prefer to work using the [HSL](https://en.wikipedia.org/wiki/HSL_and_HSV) (Hue/Saturation/Luminosity) color method. On the web, HSL colors are represented using HSL functional notation. The `hsl()` CSS function is very similar to the `rgb()` function in usage otherwise.
 
-The diagram below shows an HSL color cylinder. Hue defines the actual color based on the position along a circular {{glossary("color wheel")}} representing the colors of the visible spectrum. Saturation is a percentage of how much of the way between being a shade of gray and having the maximum possible amount of the given hue. As the value of luminance (or lightness) increases, the color transitions from the darkest possible to the brightest possible (from black to white). Image courtesy of user [SharkD](https://commons.wikimedia.org/wiki/User:SharkD) on [Wikipedia](https://www.wikipedia.org/), distributed under the [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) license.
+The diagram below shows an HSL color cylinder. Hue defines the actual color based on the position along a circular {{glossary("color wheel")}} representing the colors of the visible spectrum. Saturation is a percentage of how much of the way between being a shade of gray and having the maximum possible amount of the given hue. As the value of luminance (or lightness) increases, the color transitions from the darkest possible to the brightest possible (from black to white). Image courtesy of user [SharkD](https://commons.wikimedia.org/wiki/User:SharkD) on [Wikipedia](https://en.wikipedia.org/), distributed under the [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) license.
 
 ![HSL color cylinder](640px-hsl_color_solid_cylinder.png)
 
@@ -156,9 +152,10 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
   border: 1px solid black;
-  padding:4px 6px;
+  padding: 4px 6px;
   text-align: left;
 }
 
@@ -169,38 +166,38 @@ th {
 
 ```html
 <table>
- <thead>
-  <tr>
-   <th scope="col">Color in HSL notation</th>
-   <th scope="col">Example</th>
-  </tr>
- </thead>
- <tbody>
-  <tr>
-   <td><code>hsl(90deg, 100%, 50%)</code></td>
-   <td style="background-color: hsl(90deg, 100%, 50%);">&nbsp;</td>
-  </tr>
-  <tr>
-   <td><code>hsl(90, 100%, 50%)</code></td>
-   <td style="background-color: hsl(90, 100%, 50%);">&nbsp;</td>
-  </tr>
-  <tr>
-   <td><code>hsl(0.15turn, 50%, 75%)</code></td>
-   <td style="background-color: hsl(0.15turn, 50%, 75%);">&nbsp;</td>
-  </tr>
-  <tr>
-   <td><code>hsl(0.15turn, 90%, 75%)</code></td>
-   <td style="background-color: hsl(0.15turn, 90%, 75%);">&nbsp;</td>
-  </tr>
-  <tr>
-   <td><code>hsl(0.15turn, 90%, 50%)</code></td>
-   <td style="background-color: hsl(0.15turn, 90%, 50%);">&nbsp;</td>
-  </tr>
-  <tr>
-   <td><code>hsl(270deg, 90%, 50%)</code></td>
-   <td style="background-color: hsl(270deg, 90%, 50%);">&nbsp;</td>
-  </tr>
- </tbody>
+  <thead>
+    <tr>
+      <th scope="col">Color in HSL notation</th>
+      <th scope="col">Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>hsl(90deg, 100%, 50%)</code></td>
+      <td style="background-color: hsl(90deg, 100%, 50%);">&nbsp;</td>
+    </tr>
+    <tr>
+      <td><code>hsl(90, 100%, 50%)</code></td>
+      <td style="background-color: hsl(90, 100%, 50%);">&nbsp;</td>
+    </tr>
+    <tr>
+      <td><code>hsl(0.15turn, 50%, 75%)</code></td>
+      <td style="background-color: hsl(0.15turn, 50%, 75%);">&nbsp;</td>
+    </tr>
+    <tr>
+      <td><code>hsl(0.15turn, 90%, 75%)</code></td>
+      <td style="background-color: hsl(0.15turn, 90%, 75%);">&nbsp;</td>
+    </tr>
+    <tr>
+      <td><code>hsl(0.15turn, 90%, 50%)</code></td>
+      <td style="background-color: hsl(0.15turn, 90%, 50%);">&nbsp;</td>
+    </tr>
+    <tr>
+      <td><code>hsl(270deg, 90%, 50%)</code></td>
+      <td style="background-color: hsl(270deg, 90%, 50%);">&nbsp;</td>
+    </tr>
+  </tbody>
 </table>
 ```
 
@@ -247,14 +244,10 @@ The HTML responsible for creating the above example is shown here:
 ```html
 <div class="wrapper">
   <div class="box boxLeft">
-    <p>
-      This is the first box.
-    </p>
+    <p>This is the first box.</p>
   </div>
   <div class="box boxRight">
-    <p>
-      This is the second box.
-    </p>
+    <p>This is the second box.</p>
   </div>
 </div>
 ```
@@ -335,7 +328,7 @@ Finally, the `.boxRight` class describes the unique properties of the box that's
 
 ## Letting the user pick a color
 
-There are many situations in which your website may need to let the user select a color. Perhaps you have a customizable user interface, or you're implementing a drawing app. Maybe you have editable text and need to let the user choose the text color. Or perhaps your app lets the user assign colors to folders or items. Although historically it's been necessary to implement your own [color picker](https://en.wikipedia.org/wiki/Color_picker), HTML now provides support for browsers to provide one for your use through the {{HTMLElement("input")}} element, by using `"color"` as the value of its {{htmlattrxref("type", "input")}} attribute.
+There are many situations in which your website may need to let the user select a color. Perhaps you have a customizable user interface, or you're implementing a drawing app. Maybe you have editable text and need to let the user choose the text color. Or perhaps your app lets the user assign colors to folders or items. Although historically it's been necessary to implement your own [color picker](https://en.wikipedia.org/wiki/Color_picker), HTML now provides support for browsers to provide one for your use through the {{HTMLElement("input")}} element, by using `"color"` as the value of its [`type`](/en-US/docs/Web/HTML/Element/input#type) attribute.
 
 The `<input>` element represents a color only in the [hexadecimal string notation](#hexadecimal_string_notation) covered above.
 
@@ -354,7 +347,7 @@ The HTML here creates a box that contains a color picker control (with a label c
 ```html
 <div id="box">
   <label for="colorPicker">Border color:</label>
-  <input type="color" value="#8888ff" id="colorPicker">
+  <input type="color" value="#8888ff" id="colorPicker" />
   <p id="output"></p>
 </div>
 ```
@@ -369,7 +362,7 @@ The CSS establishes a size for the box and some basic styling for appearances. T
   height: 200px;
   border: 2px solid rgb(245, 220, 225);
   padding: 4px 6px;
-  font: 16px "Lucida Grande", "Helvetica", "Arial", "sans-serif"
+  font: 16px "Lucida Grande", "Helvetica", "Arial", "sans-serif";
 }
 ```
 
@@ -384,13 +377,21 @@ const output = document.getElementById("output");
 
 box.style.borderColor = colorPicker.value;
 
-colorPicker.addEventListener("input", (event) => {
-  box.style.borderColor = event.target.value;
-}, false);
+colorPicker.addEventListener(
+  "input",
+  (event) => {
+    box.style.borderColor = event.target.value;
+  },
+  false
+);
 
-colorPicker.addEventListener("change", (event) => {
-  output.innerText = `Color set to ${colorPicker.value}.`;
-}, false);
+colorPicker.addEventListener(
+  "change",
+  (event) => {
+    output.innerText = `Color set to ${colorPicker.value}.`;
+  },
+  false
+);
 ```
 
 The {{domxref("HTMLElement/input_event", "input")}} event is sent every time the value of the element changes; that is, every time the user adjusts the color in the color picker. Each time this event arrives, we set the box's border color to match the color picker's current value.

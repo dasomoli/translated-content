@@ -1,58 +1,78 @@
 ---
-title: 곱하기 (*)
+title: Multiplication (*)
 slug: Web/JavaScript/Reference/Operators/Multiplication
+page-type: javascript-operator
+browser-compat: javascript.operators.multiplication
 ---
 
 {{jsSidebar("Operators")}}
 
-곱하기 연산자(`*`)는 두 연산자의 곱을 구합니다.
+The **multiplication (`*`)** operator produces the product of the operands.
 
 {{EmbedInteractiveExample("pages/js/expressions-multiplication.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 x * y
 ```
 
-## 예제
+## Description
 
-### 곱셈
+The `*` operator is overloaded for two types of operands: number and [BigInt](/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt). It first [coerces both operands to numeric values](/en-US/docs/Web/JavaScript/Data_structures#numeric_coercion) and tests the types of them. It performs BigInt multiplication if both operands becomes BigInts; otherwise, it performs number multiplication. A {{jsxref("TypeError")}} is thrown if one operand becomes a BigInt but the other becomes a number.
 
-```js
- 2 * 2     // 4
--2 * 2     // -4
-```
+## Examples
 
-### Infinity 곱하기
+### Multiplication using numbers
 
 ```js
-Infinity * 0         // NaN
-Infinity * Infinity  // Infinity
+2 * 2; // 4
+-2 * 2; // -4
 ```
 
-### 숫자가 아닌 경우
+### Multiplication with Infinity
 
 ```js
-'foo' * 2 // NaN
+Infinity * 0; // NaN
+Infinity * Infinity; // Infinity
 ```
 
-## 명세
+### Multiplication with non-numbers
+
+```js
+"foo" * 2; // NaN
+"2" * 2; // 4
+```
+
+### Multiplication using BigInts
+
+```js
+2n * 2n; // 4n
+-2n * 2n; // -4n
+
+2n * 2; // TypeError: Cannot mix BigInt and other types, use explicit conversions
+
+// To multiply a BigInt with a non-BigInt, convert either operand
+2n * BigInt(2); // 4n
+Number(2n) * 2; // 4
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [더하기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Addition)
-- [빼기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Subtraction)
-- [나누기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Division)
-- [나머지 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Remainder)
-- [거듭제곱 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Exponentiation)
-- [증가 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Increment)
-- [감소 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Decrement)
-- [단항 부정 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Unary_negation)
-- [단항 플러스 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Unary_plus)
+- [Addition operator](/en-US/docs/Web/JavaScript/Reference/Operators/Addition)
+- [Subtraction operator](/en-US/docs/Web/JavaScript/Reference/Operators/Subtraction)
+- [Division operator](/en-US/docs/Web/JavaScript/Reference/Operators/Division)
+- [Remainder operator](/en-US/docs/Web/JavaScript/Reference/Operators/Remainder)
+- [Exponentiation operator](/en-US/docs/Web/JavaScript/Reference/Operators/Exponentiation)
+- [Increment operator](/en-US/docs/Web/JavaScript/Reference/Operators/Increment)
+- [Decrement operator](/en-US/docs/Web/JavaScript/Reference/Operators/Decrement)
+- [Unary negation operator](/en-US/docs/Web/JavaScript/Reference/Operators/Unary_negation)
+- [Unary plus operator](/en-US/docs/Web/JavaScript/Reference/Operators/Unary_plus)

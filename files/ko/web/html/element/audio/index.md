@@ -1,60 +1,64 @@
 ---
-title: <audio>
+title: "<audio>: The Embed Audio element"
 slug: Web/HTML/Element/audio
+page-type: html-element
+browser-compat: html.elements.audio
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<audio>` 요소**는 문서에 소리 콘텐츠를 포함할 때 사용합니다. `src` 특성 또는 {{htmlelement("source")}} 요소를 사용해 한 개 이상의 오디오 소스를 지정할 수 있으며, 다수를 지정한 경우 가장 적절한 소스를 브라우저가 고릅니다. {{domxref("MediaStream")}}을 사용하면 미디어 스트림을 바라볼 수도 있습니다.
+The **`<audio>`** [HTML](/en-US/docs/Web/HTML) element is used to embed sound content in documents. It may contain one or more audio sources, represented using the `src` attribute or the {{HTMLElement("source")}} element: the browser will choose the most suitable one. It can also be the destination for streamed media, using a {{domxref("MediaStream")}}.
 
 {{EmbedInteractiveExample("pages/tabbed/audio.html","tabbed-standard")}}
 
-<div class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples</a> and send us a pull request.</div>
+The above example shows simple usage of the `<audio>` element. In a similar manner to the {{htmlelement("img")}} element, we include a path to the media we want to embed inside the `src` attribute; we can include other attributes to specify information such as whether we want it to autoplay and loop, whether we want to show the browser's default audio controls, etc.
 
-## 특성
+The content inside the opening and closing `<audio></audio>` tags is shown as a fallback in browsers that don't support the element.
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)을 포함합니다.
+## Attributes
 
-- {{htmlattrdef("autoplay")}}
+This element's attributes include the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-  - : 지정한 경우, 전체 오디오 파일의 다운로드를 기다리지 않고 가능한 빠른 시점에 재생을 시작합니다.
+- `autoplay`
 
-    > **참고:** 오디오 및 오디오를 가진 비디오를 자동으로 재생하는 사이트는 사용자 경험에 악영향을 끼칠 수 있으므로 피해야 합니다. 반드시 자동 재생을 제공해야 한다면 사용자의 명시적인 동의를 얻어야 하도록 해야 합니다. 그러나, 미디어 소스가 사용자의 선택에 의해 나중에 정해지는 경우라면 자동 재생이 유용할 수 있습니다. [자동 재생 안내서](/ko/docs/Web/Media/Autoplay_guide)를 방문하고 추가 정보와 적절한 사용법을 알아보세요.
+  - : A Boolean attribute: if specified, the audio will automatically begin playback as soon as it can do so, without waiting for the entire audio file to finish downloading.
 
-- {{htmlattrdef("controls")}}
-  - : 지정한 경우 오디오 재생, 볼륨, 탐색, 일시 정지 컨트롤을 브라우저에서 제공합니다.
-- {{htmlattrdef("crossorigin")}}
+    > **Note:** Sites that automatically play audio (or videos with an audio track) can be an unpleasant experience for users, so should be avoided when possible. If you must offer autoplay functionality, you should make it opt-in (requiring a user to specifically enable it). However, this can be useful when creating media elements whose source will be set at a later time, under user control. See our [autoplay guide](/en-US/docs/Web/Media/Autoplay_guide) for additional information about how to properly use autoplay.
 
-  - : CORS를 사용해 지정한 오디오 파일을 가져올지 나타내는 열거형 특성. [교차 출처 활성화 리소스](/ko/docs/Web/HTML/CORS_enabled_image)는 {{HTMLElement("canvas")}} 요소에 사용해도 캔버스를 "오염"시키지 않습니다. 가능한 값은 다음과 같습니다.
+- `controls`
+
+  - : If this attribute is present, the browser will offer controls to allow the user to control audio playback, including volume, seeking, and pause/resume playback.
+
+- `controlslist` {{experimental_inline}}{{non-standard_inline}}
+
+  - : The [`controlslist`](https://wicg.github.io/controls-list/explainer.html) attribute, when specified, helps the browser select what controls to show for the `audio` element whenever the browser shows its own set of controls (that is, when the `controls` attribute is specified).
+
+    The allowed values are `nodownload`, `nofullscreen` and `noremoteplayback`.
+
+- `crossorigin`
+
+  - : This [enumerated](/en-US/docs/Glossary/Enumerated) attribute indicates whether to use CORS to fetch the related audio file. [CORS-enabled resources](/en-US/docs/Web/HTML/CORS_enabled_image) can be reused in the {{HTMLElement("canvas")}} element without being _tainted_. The allowed values are:
 
     - `anonymous`
-      - : 자격 증명 없이 교차 출처 요청을 전송합니다. 즉, `Origin:` HTTP 헤더를 쿠키, X.509 인증서, HTTP Basic 인증 없이 전송합니다. 서버에서 `Access-Control-Allow-Origin:` HTTP 헤더를 지정하지 않음으로써 요청 출처 사이트에 자격 증명을 보내지 않는다면 이미지는 "오염"되고, 사용처가 제한됩니다.
+      - : Sends a cross-origin request without a credential. In other words, it sends the `Origin:` HTTP header without a cookie, X.509 certificate, or performing HTTP Basic authentication. If the server does not give credentials to the origin site (by not setting the `Access-Control-Allow-Origin:` HTTP header), the resource will be _tainted_, and its usage restricted.
     - `use-credentials`
-      - : 자격 증명과 함께 교차 출처 요청을 전송합니다. 즉, `Origin:` HTTP 헤더를 쿠키, X 509 인증서, 또는 HTTP Basic 이증과 함께 전송합니다. 서버에서 `Access-Control-Allow-Origin:` HTTP 헤더를 통한 자격 증명을 요청 출처 사이트에 보내지 않는다면 이미지는 "오염"되고, 사용처가 제한됩니다.
+      - : Sends a cross-origin request with a credential. In other words, it sends the `Origin:` HTTP header with a cookie, a certificate, or performing HTTP Basic authentication. If the server does not give credentials to the origin site (through `Access-Control-Allow-Credentials:` HTTP header), the resource will be _tainted_ and its usage restricted.
 
-    특성이 존재하지 않으면 리소스를 CORS 요청 없이(`Origin:` HTTP 헤더 없이) 가져오므로, {{htmlelement("canvas")}}를 오염시키게 됩니다. 유효하지 않은 값의 경우 anonymous 키워드를 사용한 것으로 간주합니다.
+    When not present, the resource is fetched without a CORS request (i.e. without sending the `Origin:` HTTP header), preventing its non-tainted use in {{HTMLElement('canvas')}} elements. If invalid, it is handled as if the enumerated keyword **anonymous** was used. See [CORS settings attributes](/en-US/docs/Web/HTML/Attributes/crossorigin) for additional information.
 
-- {{htmlattrdef("currentTime")}}
+- `disableremoteplayback` {{experimental_inline}}
 
-  - : Reading `currentTime` returns a double-precision floating-point value indicating the current playback position, in seconds, of the audio. If the audio's metadata isn't available yet—thereby preventing you from knowing the media's start time or duration—`currentTime` instead indicates, and can be used to change, the time at which playback will begin. Otherwise, setting `currentTime` sets the current playback position to the given time and seeks the media to that position if the media is currently loaded.
+  - : A Boolean attribute used to disable the capability of remote playback in devices that are attached using wired (HDMI, DVI, etc.) and wireless technologies (Miracast, Chromecast, DLNA, AirPlay, etc.). See [this proposed specification](https://www.w3.org/TR/remote-playback/#the-disableremoteplayback-attribute) for more information.
 
-    If the audio is being streamed, it's possible that the {{Glossary("user agent")}} may not be able to obtain some parts of the resource if that data has expired from the media buffer. Other audio may have a media timeline that doesn't start at 0 seconds, so setting `currentTime` to a time before that would fail. For example, if the audio's media timeline starts at 12 hours, setting `currentTime` to 3600 would be an attempt to set the current playback position well before the beginning of the media, and would fail. The {{domxref("HTMLMediaElement.getStartDate", "getStartDate()")}} method can be used to determine the beginning point of the media timeline's reference frame.
+    > **Note:** In Safari, you can use [`x-webkit-airplay="deny"`](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/AirPlayGuide/OptingInorOutofAirPlay/OptingInorOutofAirPlay.html) as a fallback.
 
-- {{htmlattrdef("disableRemotePlayback")}} {{experimental_inline}}
-
-  - : A Boolean attribute used to disable the capability of remote playback in devices that are attached using wired (HDMI, DVI, etc.) and wireless technologies (Miracast, Chromecast, DLNA, AirPlay, etc). See [this proposed specification](https://www.w3.org/TR/remote-playback/#the-disableremoteplayback-attribute) for more information.
-
-    > **참고:** In Safari, you can use [`x-webkit-airplay="deny"`](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/AirPlayGuide/OptingInorOutofAirPlay/OptingInorOutofAirPlay.html) as a fallback.
-
-- {{htmlattrdef("duration")}} {{ReadOnlyInline}}
-  - : A double-precision floating-point value which indicates the duration (total length) of the audio in seconds, on the media's timeline. If no media is present on the element, or the media is not valid, the returned value is `NaN`. If the media has no known end (such as for live streams of unknown duration, web radio, media incoming from [WebRTC](/ko/docs/Web/API/WebRTC_API), and so forth), this value is `+Infinity`.
-- {{htmlattrdef("loop")}}
+- `loop`
   - : A Boolean attribute: if specified, the audio player will automatically seek back to the start upon reaching the end of the audio.
-- {{htmlattrdef("muted")}}
+- `muted`
   - : A Boolean attribute that indicates whether the audio will be initially silenced. Its default value is `false`.
-- {{htmlattrdef("preload")}}
+- `preload`
 
-  - : This enumerated attribute is intended to provide a hint to the browser about what the author thinks will lead to the best user experience. It may have one of the following values:
+  - : This [enumerated](/en-US/docs/Glossary/Enumerated) attribute is intended to provide a hint to the browser about what the author thinks will lead to the best user experience. It may have one of the following values:
 
     - `none`: Indicates that the audio should not be preloaded.
     - `metadata`: Indicates that only audio metadata (e.g. length) is fetched.
@@ -63,81 +67,212 @@ slug: Web/HTML/Element/audio
 
     The default value is different for each browser. The spec advises it to be set to `metadata`.
 
-    > **참고:** **Usage notes:**- The `autoplay` attribute has precedence over `preload`. If `autoplay` is specified, the browser would obviously need to start downloading the audio for playback.
+    > **Note:**
     >
+    > - The `autoplay` attribute has precedence over `preload`. If `autoplay` is specified, the browser would obviously need to start downloading the audio for playback.
     > - The browser is not forced by the specification to follow the value of this attribute; it is a mere hint.
 
-- {{htmlattrdef("src")}}
-  - : The URL of the audio to embed. This is subject to [HTTP access controls](/ko/docs/HTTP_access_control). This is optional; you may instead use the {{htmlelement("source")}} element within the audio block to specify the audio to embed.
+- `src`
+  - : The URL of the audio to embed. This is subject to [HTTP access controls](/en-US/docs/Web/HTTP/CORS). This is optional; you may instead use the {{htmlelement("source")}} element within the audio block to specify the audio to embed.
 
-Time offsets are specified as float values indicating the number of seconds to offset.
+## Events
 
-> **참고:** The time offset value definition has not yet been completed in the HTML5 specification and is subject to change.
+<table class="no-markdown">
+  <thead>
+    <tr>
+      <th scope="col">Event name</th>
+      <th scope="col">Fired when</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{domxref("ScriptProcessorNode/audioprocess_event", "audioprocess")}}</td>
+      <td>
+        The input buffer of a {{DOMxRef("ScriptProcessorNode")}} is
+        ready to be processed.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{domxref("HTMLMediaElement.canplay_event", 'canplay')}}
+      </td>
+      <td>
+        The browser can play the media, but estimates that not enough data has
+        been loaded to play the media up to its end without having to stop for
+        further buffering of content.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{domxref("HTMLMediaElement.canplaythrough_event", 'canplaythrough')}}
+      </td>
+      <td>
+        The browser estimates it can play the media up to its end without
+        stopping for content buffering.
+      </td>
+    </tr>
+    <tr>
+      <td>{{domxref("OfflineAudioContext/complete_event", "complete")}}</td>
+      <td>
+        The rendering of an {{DOMxRef("OfflineAudioContext")}} is
+        terminated.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{domxref("HTMLMediaElement.durationchange_event", 'durationchange')}}
+      </td>
+      <td>The <code>duration</code> attribute has been updated.</td>
+    </tr>
+    <tr>
+      <td>
+        {{domxref("HTMLMediaElement.emptied_event", 'emptied')}}
+      </td>
+      <td>
+        The media has become empty; for example, this event is sent if the media
+        has already been loaded (or partially loaded), and the
+        {{domxref("HTMLMediaElement.load")}} method is called to
+        reload it.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{domxref("HTMLMediaElement.ended_event", 'ended')}}
+      </td>
+      <td>Playback has stopped because the end of the media was reached.</td>
+    </tr>
+    <tr>
+      <td>
+        {{domxref("HTMLMediaElement.loadeddata_event", 'loadeddata')}}
+      </td>
+      <td>The first frame of the media has finished loading.</td>
+    </tr>
+    <tr>
+      <td>
+        {{domxref("HTMLMediaElement.loadedmetadata_event", 'loadedmetadata')}}
+      </td>
+      <td>The metadata has been loaded.</td>
+    </tr>
+    <tr>
+      <td>
+        {{domxref("HTMLMediaElement.pause_event", 'pause')}}
+      </td>
+      <td>Playback has been paused.</td>
+    </tr>
+    <tr>
+      <td>
+        {{domxref("HTMLMediaElement.play_event", 'play')}}
+      </td>
+      <td>Playback has begun.</td>
+    </tr>
+    <tr>
+      <td>
+        {{domxref("HTMLMediaElement.playing_event", 'playing')}}
+      </td>
+      <td>
+        Playback is ready to start after having been paused or delayed due to
+        lack of data.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{domxref("HTMLMediaElement.ratechange_event", 'ratechange')}}
+      </td>
+      <td>The playback rate has changed.</td>
+    </tr>
+    <tr>
+      <td>
+        {{domxref("HTMLMediaElement.seeked_event", 'seeked')}}
+      </td>
+      <td>A <em>seek</em> operation completed.</td>
+    </tr>
+    <tr>
+      <td>
+        {{domxref("HTMLMediaElement.seeking_event", 'seeking')}}
+      </td>
+      <td>A <em>seek</em> operation began.</td>
+    </tr>
+    <tr>
+      <td>
+        {{domxref("HTMLMediaElement.stalled_event", 'stalled')}}
+      </td>
+      <td>
+        The user agent is trying to fetch media data, but data is unexpectedly
+        not forthcoming.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{domxref("HTMLMediaElement.suspend_event", 'suspend')}}
+      </td>
+      <td>Media data loading has been suspended.</td>
+    </tr>
+    <tr>
+      <td>
+        {{domxref("HTMLMediaElement.timeupdate_event", 'timeupdate')}}
+      </td>
+      <td>
+        The time indicated by the <code>currentTime</code> attribute has been
+        updated.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{domxref("HTMLMediaElement.volumechange_event", 'volumechange')}}
+      </td>
+      <td>The volume has changed.</td>
+    </tr>
+    <tr>
+      <td>
+        {{domxref("HTMLMediaElement.waiting_event", 'waiting')}}
+      </td>
+      <td>Playback has stopped because of a temporary lack of data</td>
+    </tr>
+  </tbody>
+</table>
 
-## 이벤트
+## Usage notes
 
-| 이벤트 이름                                                                                  | 발생 조건                                                                                                                                                                                                                            |
-| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| {{Event("audioprocess")}}                                                             | The input buffer of a {{DOMxRef("ScriptProcessorNode")}} is ready to be processed.                                                                                                                                         |
-| {{domxref("HTMLMediaElement.canplay_event", 'canplay')}}                 | The browser can play the media, but estimates that not enough data has been loaded to play the media up to its end without having to stop for further buffering of content.                                                          |
-| {{domxref("HTMLMediaElement.canplaythrough_event", 'canplaythrough')}} | The browser estimates it can play the media up to its end without stopping for content buffering.                                                                                                                                    |
-| {{Event("complete")}}                                                                 | The rendering of an {{DOMxRef("OfflineAudioContext")}} is terminated.                                                                                                                                                      |
-| {{domxref("HTMLMediaElement.durationchange_event", 'durationchange')}} | The `duration` attribute has been updated.                                                                                                                                                                                           |
-| {{domxref("HTMLMediaElement.emptied_event", 'emptied')}}                 | The media has become empty; for example, this event is sent if the media has already been loaded (or partially loaded), and the [`load()`](/ko/docs/XPCOM_Interface_Reference/NsIDOMHTMLMediaElement) method is called to reload it. |
-| {{domxref("HTMLMediaElement.ended_event", 'ended')}}                         | Playback has stopped because the end of the media was reached.                                                                                                                                                                       |
-| {{domxref("HTMLMediaElement.loadeddata_event", 'loadeddata')}}         | The first frame of the media has finished loading.                                                                                                                                                                                   |
-| {{domxref("HTMLMediaElement.loadedmetadata_event", 'loadedmetadata')}} | The metadata has been loaded.                                                                                                                                                                                                        |
-| {{domxref("HTMLMediaElement.pause_event", 'pause')}}                         | Playback has been paused.                                                                                                                                                                                                            |
-| {{domxref("HTMLMediaElement.play_event", 'play')}}                         | Playback has begun.                                                                                                                                                                                                                  |
-| {{domxref("HTMLMediaElement.playing_event", 'playing ')}}                 | Playback is ready to start after having been paused or delayed due to lack of data.                                                                                                                                                  |
-| {{domxref("HTMLMediaElement.ratechange_event", 'ratechange')}}         | The playback rate has changed.                                                                                                                                                                                                       |
-| {{domxref("HTMLMediaElement.seeked_event", 'seeked')}}                     | A _seek_ operation completed.                                                                                                                                                                                                        |
-| {{domxref("HTMLMediaElement.seeking_event", 'seeking')}}                 | A _seek_ operation began.                                                                                                                                                                                                            |
-| {{domxref("HTMLMediaElement.stalled_event", 'stalled')}}                 | The user agent is trying to fetch media data, but data is unexpectedly not forthcoming.                                                                                                                                              |
-| {{domxref("HTMLMediaElement.suspend_event", 'suspend')}}                 | Media data loading has been suspended.                                                                                                                                                                                               |
-| {{domxref("HTMLMediaElement.timeupdate_event", 'timeupdate')}}         | The time indicated by the `currentTime` attribute has been updated.                                                                                                                                                                  |
-| {{domxref("HTMLMediaElement.volumechange_event", 'volumechange')}}     | The volume has changed.                                                                                                                                                                                                              |
-| {{domxref("HTMLMediaElement.waiting_event", 'waiting')}}                 | Playback has stopped because of a temporary lack of data                                                                                                                                                                             |
-
-## 사용 일람
-
-Browsers don't all support the same [file types](/ko/docs/Web/Media/Formats/Containers) and [audio codecs](/ko/docs/Web/Media/Formats/Audio_codecs); you can provide multiple sources inside nested {{htmlelement("source")}} elements, and the browser will then use the first one it understands:
+Browsers don't all support the same [file types](/en-US/docs/Web/Media/Formats/Containers) and [audio codecs](/en-US/docs/Web/Media/Formats/Audio_codecs); you can provide multiple sources inside nested {{htmlelement("source")}} elements, and the browser will then use the first one it understands:
 
 ```html
 <audio controls>
-  <source src="myAudio.mp3" type="audio/mpeg">
-  <source src="myAudio.ogg" type="audio/ogg">
-  <p>Your browser doesn't support HTML5 audio. Here is
-     a <a href="myAudio.mp4">link to the audio</a> instead.</p>
+  <source src="myAudio.mp3" type="audio/mpeg" />
+  <source src="myAudio.ogg" type="audio/ogg" />
+  <p>
+    Download <a href="myAudio.mp3">MP3</a> or
+    <a href="myAudio.ogg">OGG</a> audio.
+  </p>
 </audio>
 ```
 
-We offer a substantive and thorough [guide to media file types](/ko/docs/Web/Media/Formats) and the [audio codecs that can be used within them](/ko/docs/Web/Media/Formats/Audio_codecs). Also available is [a guide to the codecs supported for video](/ko/docs/Web/Media/Formats/Video_codecs).
+We offer a substantive and thorough [guide to media file types](/en-US/docs/Web/Media/Formats) and the [audio codecs that can be used within them](/en-US/docs/Web/Media/Formats/Audio_codecs). Also available is [a guide to the codecs supported for video](/en-US/docs/Web/Media/Formats/Video_codecs).
 
 Other usage notes:
 
 - If you don't specify the `controls` attribute, the audio player won't include the browser's default controls. You can, however, create your own custom controls using JavaScript and the {{domxref("HTMLMediaElement")}} API.
-- To allow precise control over your audio content, `HTMLMediaElement`s fire many different [events](/ko/docs/Web/Guide/Events/Media_events). This also provides a way to monitor the audio's fetching process so you can watch for errors or detect when enough is available to begin to play or manipulate it.
-- You can also use the [Web Audio API](/ko/docs/Web/API/Web_Audio_API) to directly generate and manipulate audio streams from JavaScript code rather than streaming pre-existing audio files.
-- `<audio>` elements can't have subtitles or captions associated with them in the same way that `<video>` elements can. See [WebVTT and Audio](https://www.iandevlin.com/blog/2015/12/html5/webvtt-and-audio) by Ian Devlin for some useful information and workarounds.
+- To allow precise control over your audio content, `HTMLMediaElement`s fire many different [events](/en-US/docs/Web/API/HTMLMediaElement#events). This also provides a way to monitor the audio's fetching process so you can watch for errors or detect when enough is available to begin to play or manipulate it.
+- You can also use the [Web Audio API](/en-US/docs/Web/API/Web_Audio_API) to directly generate and manipulate audio streams from JavaScript code rather than streaming pre-existing audio files.
+- `<audio>` elements can't have subtitles or captions associated with them in the same way that `<video>` elements can. See [WebVTT and Audio](https://www.iandevlin.com/blog/2015/12/html5/webvtt-and-audio/) by Ian Devlin for some useful information and workarounds.
+- To test the fallback content on browsers that support the element, you can replace `<audio>` with a non-existing element like `<notanaudio>`.
 
-A good general source of information on using HTML `<audio>` is the [Video and audio content](/ko/docs/Learn/HTML/Multimedia_and_embedding/Video_and_audio_content) beginner's tutorial.
+A good general source of information on using HTML `<audio>` is the [Video and audio content](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Video_and_audio_content) beginner's tutorial.
 
 ### Styling with CSS
 
 The `<audio>` element has no intrinsic visual output of its own unless the `controls` attribute is specified, in which case the browser's default controls are shown.
 
-The default controls have a {{cssxref("display")}} value of `inline` by default, and it is often a good idea set the value to `block` to improve control over positioning and layout, unless you want it to sit within a text block or similar.
+The default controls have a {{cssxref("display")}} value of `inline` by default, and it is often a good idea to set the value to `block` to improve control over positioning and layout, unless you want it to sit within a text block or similar.
 
 You can style the default controls with properties that affect the block as a single unit, so for example you can give it a {{cssxref("border")}} and {{cssxref("border-radius")}}, {{cssxref("padding")}}, {{cssxref("margin")}}, etc. You can't however style the individual components inside the audio player (e.g. change the button size or icons, change the font, etc.), and the controls are different across the different browsers.
 
 To get a consistent look and feel across browsers, you'll need to create custom controls; these can be marked up and styled in whatever way you want, and then JavaScript can be used along with the {{domxref("HTMLMediaElement")}} API to wire up their functionality.
 
-[Video player styling basics](/ko/docs/Web/Apps/Fundamentals/Audio_and_video_delivery/Video_player_styling_basics) provides some useful styling techniques — it is written in the context of `<video>`, but much of it is equally applicable to `<audio>`.
+[Video player styling basics](/en-US/docs/Web/Guide/Audio_and_video_delivery/Video_player_styling_basics) provides some useful styling techniques — it is written in the context of `<video>`, but much of it is equally applicable to `<audio>`.
 
 ### Detecting addition and removal of tracks
 
-You can detect when tracks are added to and removed from an `<audio>` element using the {{event("addtrack")}} and {{event("removetrack")}} events. However, these events aren't sent directly to the `<audio>` element itself. Instead, they're sent to the track list object within the `<audio>` element's {{domxref("HTMLMediaElement")}} that corresponds to the type of track that was added to the element:
+You can detect when tracks are added to and removed from an `<audio>` element using the {{domxref("AudioTrackList/addtrack_event", "addtrack")}} and {{domxref("AudioTrackList/removetrack_event", "removetrack")}} events. However, these events aren't sent directly to the `<audio>` element itself. Instead, they're sent to the track list object within the `<audio>` element's {{domxref("HTMLMediaElement")}} that corresponds to the type of track that was added to the element:
 
 - {{domxref("HTMLMediaElement.audioTracks")}}
   - : An {{domxref("AudioTrackList")}} containing all of the media element's audio tracks. You can add a listener for `addtrack` to this object to be alerted when new audio tracks are added to the element.
@@ -146,27 +281,27 @@ You can detect when tracks are added to and removed from an `<audio>` element us
 - {{domxref("HTMLMediaElement.textTracks")}}
   - : Add an `addtrack` event listener to this {{domxref("TextTrackList")}} to be notified when new text tracks are added to the element.
 
-> **참고:** Even though it's an `<audio>` element, it still has video and text track lists, and can in fact be used to present video, although the use interface implications can be odd.
+> **Note:** Even though it's an `<audio>` element, it still has video and text track lists, and can in fact be used to present video, although the user interface implications can be odd.
 
 For example, to detect when audio tracks are added to or removed from an `<audio>` element, you can use code like this:
 
 ```js
-var elem = document.querySelector("audio");
+const elem = document.querySelector("audio");
 
-elem.audioTrackList.onaddtrack = function(event) {
+elem.audioTrackList.onaddtrack = (event) => {
   trackEditor.addTrack(event.track);
 };
 
-elem.audioTrackList.onremovetrack = function(event) {
+elem.audioTrackList.onremovetrack = (event) => {
   trackEditor.removeTrack(event.track);
 };
 ```
 
 This code watches for audio tracks to be added to and removed from the element, and calls a hypothetical function on a track editor to register and remove the track from the editor's list of available tracks.
 
-You can also use {{domxref("EventTarget.addEventListener", "addEventListener()")}} to listen for the {{event("addtrack")}} and {{event("removetrack")}} events.
+You can also use {{domxref("EventTarget.addEventListener", "addEventListener()")}} to listen for the {{domxref("AudioTrackList/addtrack_event", "addtrack")}} and {{domxref("AudioTrackList/removetrack_event", "removetrack")}} events.
 
-## 예제
+## Examples
 
 ### Basic usage
 
@@ -174,14 +309,12 @@ The following example shows simple usage of the `<audio>` element to play an OGG
 
 ```html
 <!-- Simple audio playback -->
-<audio
-  src="AudioTest.ogg"
-  autoplay>
-  Your browser does not support the <code>audio</code> element.
+<audio src="AudioTest.ogg" autoplay>
+  <a href="AudioTest.ogg">Download OGG audio</a>.
 </audio>
 ```
 
-For details on when autoplay works, how to get permission to use autoplay, and how and when it's appropriate to use autoplay, see our [autoplay guide](/ko/docs/Web/Media/Autoplay_guide).
+For details on when autoplay works, how to get permission to use autoplay, and how and when it's appropriate to use autoplay, see our [autoplay guide](/en-US/docs/Web/Media/Autoplay_guide).
 
 ### \<audio> element with \<source> element
 
@@ -189,8 +322,8 @@ This example specifies which audio track to embed using the `src` attribute on a
 
 ```html
 <audio controls>
-  <source src="foo.wav" type="audio/wav">
-  Your browser does not support the <code>audio</code> element.
+  <source src="foo.wav" type="audio/wav" />
+  <a href="foo.wav">Download WAV audio</a>.
 </audio>
 ```
 
@@ -200,15 +333,15 @@ This example includes multiple `<source>` elements. The browser tries to load th
 
 ```html
 <audio controls>
- <source src="foo.opus" type="audio/ogg; codecs=opus"/>
- <source src="foo.ogg" type="audio/ogg; codecs=vorbis"/>
- <source src="foo.mp3" type="audio/mpeg"/>
+  <source src="foo.opus" type="audio/ogg; codecs=opus" />
+  <source src="foo.ogg" type="audio/ogg; codecs=vorbis" />
+  <source src="foo.mp3" type="audio/mpeg" />
 </audio>
 ```
 
-## 접근성 고려사항
+## Accessibility concerns
 
-Audio with spoken dialog should provide both captions and transcripts that accurately describe its content. Captions, which are specified using [WebVTT](/ko/docs/Web/API/WebVTT_API), allow people who are experiencing hearing loss to understand an audio recording's content as the recording is being played, while transcripts allow people who need additional time to be able to review the recording's content at a pace and format that is comfortable for them.
+Audio with spoken dialog should provide both captions and transcripts that accurately describe its content. Captions, which are specified using [WebVTT](/en-US/docs/Web/API/WebVTT_API), allow people who are experiencing hearing loss to understand an audio recording's content as the recording is being played, while transcripts allow people who need additional time to be able to review the recording's content at a pace and format that is comfortable for them.
 
 If automatic captioning services are used, it is important to review the generated content to ensure it accurately represents the source audio.
 
@@ -234,112 +367,98 @@ Also it's a good practice to provide some content (such as the direct download l
 
 ```html
 <audio controls>
-  <source src="myAudio.mp3" type="audio/mpeg">
-  <source src="myAudio.ogg" type="audio/ogg">
+  <source src="myAudio.mp3" type="audio/mpeg" />
+  <source src="myAudio.ogg" type="audio/ogg" />
   <p>
-    Your browser doesn't support HTML5 audio.
-    Here is a <a href="myAudio.mp4">link to download the audio</a> instead.
+    Download <a href="myAudio.mp3">MP3</a> or
+    <a href="myAudio.ogg">OGG</a> audio.
   </p>
 </audio>
 ```
 
-- [MDN Subtitles and closed caption — Plugins](/ko/docs/Plugins/Flash_to_HTML5/Video/Subtitles_captions)
-- [Web Video Text Tracks Format (WebVTT)](/ko/docs/Web/API/WebVTT_API)
+- [Web Video Text Tracks Format (WebVTT)](/en-US/docs/Web/API/WebVTT_API)
 - [WebAIM: Captions, Transcripts, and Audio Descriptions](https://webaim.org/techniques/captions/)
-- [MDN Understanding WCAG, Guideline 1.2 explanations](/ko/docs/Web/Accessibility/Understanding_WCAG/Perceivable#Guideline_1.2_—_Providing_text_alternatives_for_time-based_media)
+- [MDN Understanding WCAG, Guideline 1.2 explanations](/en-US/docs/Web/Accessibility/Understanding_WCAG/Perceivable#guideline_1.2_—_providing_text_alternatives_for_time-based_media)
 - [Understanding Success Criterion 1.2.1 | W3C Understanding WCAG 2.0](https://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv-av-only-alt.html)
 - [Understanding Success Criterion 1.2.2 | W3C Understanding WCAG 2.0](https://www.w3.org/TR/UNDERSTANDING-WCAG20/media-equiv-captions.html)
 
-## 기술 요약
+## Technical summary
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
       </th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#내장_콘텐츠"
-          >내장 콘텐츠</a
-        >. {{htmlattrxref("controls", "audio")}} 특성을 가진 경우,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#대화형_콘텐츠"
-          >대화형 콘텐츠</a
-        >
-        및 뚜렷한 콘텐츠.
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
+        >, phrasing content, embedded content. If it has a
+        <a href="/en-US/docs/Web/HTML/Element/audio#controls"><code>controls</code></a> attribute: interactive
+        content and palpable content.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
       <td>
-        <p>
-          {{htmlattrxref("src", "audio")}} 특성을 가진 경우 0개
-          이상의 {{htmlelement("track")}} 요소와 그 이후의 투명한
-          콘텐츠. 단, 다른 {{htmlelement("audio")}}와
-          {{htmlelement("video")}} 요소는 불가능.
-        </p>
-        <p>
-          그 외의 경우 0개 이상의 {{HTMLElement("source")}} 요소와 0개
-          이상의 {{HTMLElement("track")}} 요소, 그리고 이후의 투명한
-          콘텐츠. 단, 다른 {{htmlelement("audio")}}와
-          {{htmlelement("video")}} 요소는 불가능.
-        </p>
+        If the element has a <a href="/en-US/docs/Web/HTML/Element/audio#src"><code>src</code></a>
+        attribute: zero or more {{HTMLElement("track")}} elements
+        followed by transparent content that contains no
+        {{HTMLElement("audio")}} or {{HTMLElement("video")}}
+        media elements.<br />Else: zero or more {{HTMLElement("source")}}
+        elements followed by zero or more {{HTMLElement("track")}}
+        elements followed by transparent content that contains no
+        {{HTMLElement("audio")}} or {{HTMLElement("video")}}
+        media elements.
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
+      <th scope="row">Tag omission</th>
       <td>{{no_tag_omission}}</td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모 요소</th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#내장_콘텐츠"
-          >내장 콘텐츠</a
-        >를 허용하는 모든 요소.
-      </td>
+      <th scope="row">Permitted parents</th>
+      <td>Any element that accepts embedded content.</td>
     </tr>
     <tr>
-      <th scope="row">암시적 ARIA 역할</th>
+      <th scope="row">Implicit ARIA role</th>
       <td>
         <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
-          >대응하는 역할 없음</a
+          >No corresponding role</a
         >
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td><a href='/ko/docs/Web/Accessibility/ARIA/Roles/application_role'><code>application</code></a></td>
+      <th scope="row">Permitted ARIA roles</th>
+      <td><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/application_role"><code>application</code></a></td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLAudioElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Web media technologies](/ko/docs/Web/Media)
+- [Web media technologies](/en-US/docs/Web/Media)
 
-  - [Media container formats (file types)](/ko/docs/Web/Media/Formats/Containers)
-  - [Guide to audio codecs used on the web](/ko/docs/Web/Media/Formats/Audio_codecs)
+  - [Media container formats (file types)](/en-US/docs/Web/Media/Formats/Containers)
+  - [Guide to audio codecs used on the web](/en-US/docs/Web/Media/Formats/Audio_codecs)
 
-- [Web Audio API](/ko/docs/Web_Audio_API)
+- [Web Audio API](/en-US/docs/Web/API/Web_Audio_API)
 - {{domxref("HTMLAudioElement")}}
 - {{htmlelement("source")}}
 - {{htmlelement("video")}}
-- [Learning area: Video and audio content](/ko/docs/Learn/HTML/Multimedia_and_embedding/Video_and_audio_content)
-- [Cross-browser audio basics](/en-US/Apps/Fundamentals/Audio_and_video_delivery/Cross-browser_audio_basics)
+- [Learning area: Video and audio content](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Video_and_audio_content)
+- [Cross-browser audio basics](/en-US/docs/Web/Guide/Audio_and_video_delivery/Cross-browser_audio_basics)

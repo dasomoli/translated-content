@@ -1,50 +1,50 @@
 ---
-title: RTCPeerConnection.iceGatheringState
+title: "RTCPeerConnection: iceGatheringState property"
+short-title: iceGatheringState
 slug: Web/API/RTCPeerConnection/iceGatheringState
+page-type: web-api-instance-property
+browser-compat: api.RTCPeerConnection.iceGatheringState
 ---
 
-{{APIRef("WebRTC")}}{{SeeCompatTable}}
+{{APIRef("WebRTC")}}
 
-읽기 속성인 **`RTCPeerConnection.iceGatheringState`** 는 연결 인터페이스의 ICE 수집 상태를 알려주는 `RTCIceGatheringState`타입의 Enum을 반환합니다. 이 속성을 활용하면, ICE candidate 수집 과정이 언제 종료되는지 감지 할 수 있습니다.
+The read-only property **`RTCPeerConnection.iceGatheringState`** returns a string
+that describes the connection's ICE gathering state.
+This lets you detect, for example, when collection of ICE candidates has finished.
 
-{{DOMxRef("RTCPeerConnection/icegatheringstatechange_event", "icegatheringstatechange")}}타입의 이벤트 감시를 통해 이 속성 값이 언제 변하는지를 확인 할 수 있습니다.
+You can detect when the value of this property changes by watching for an event of type
+{{DOMxRef("RTCPeerConnection/icegatheringstatechange_event", "icegatheringstatechange")}}.
 
-## Syntax
+## Value
 
-```js
-var state = RTCPeerConnection.iceGatheringState;
-```
+The possible values are:
 
-### 값
+- `new`
+  - : The peer connection was just created and hasn't done any networking yet.
+- `gathering`
+  - : The ICE agent is in the process of gathering candidates for the connection.
+- `complete`
+  - : The ICE agent has finished gathering candidates.
+    If something happens that requires collecting new candidates,
+    such as a new interface being added or the addition of a new ICE server,
+    the state will revert to `gathering` to gather those candidates.
 
-반환되는 값은 `RTCIceGatheringState`타입의 Enum입니다.
-
-### RTCIceGatheringState enum[섹션](/ko/docs/Web/API/RTCPeerConnection#RTCIceGatheringState_enum)
-
-[`RTCPeerConnection.iceGatheringState`](/ko/docs/Web/API/RTCPeerConnection/iceGatheringState) 속성을 사용하게되면 반환되는 `RTCIceGatheringState` enum은 현재의 ICE 수집 상태를 반영하여 알려주는 문자열 상수입니다. {{DOMxRef("RTCPeerConnection/icegatheringstatechange_event", "icegatheringstatechange")}} 타입의 이벤트를 감시해서 이 값이 언제 변하는지 확인 할 수 있습니다.
-
-| 상수명 | 설명 |
-| --- | --- |
-| `"new"`       | 피어 연결이 새로 생성되었지만, 아직 네트워킹은 시작되지 않은 상태                                                                                                                                            |
-| `"gathering"` | ICE 에이전트가 연결을 위한 ICE candidate를 수집하는 과정에 있음을 알려주는 상태                                                                                                                              |
-| `"complete"`  | ICE 에이전트가 candidate 수집을 완료한 상태. 새로운 인터페이스가 추가되거나, 신규 ICE 서버가 추가와 같이 신규 ICE candidate를 수집해야하는 상황이 오면, 상태가 `complete`에서 `gathering`으로 다시 바뀝니다. |
-
-## <br>예시
+## Example
 
 ```js
-var pc = new RTCPeerConnection();
-var state = pc.iceGatheringState;
+const pc = new RTCPeerConnection();
+const state = pc.iceGatheringState;
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
 - {{DOMxRef("RTCPeerConnection/icegatheringstatechange_event", "icegatheringstatechange")}}
-- [WebRTC](/ko/docs/Web/Guide/API/WebRTC)
+- [WebRTC](/en-US/docs/Web/API/WebRTC_API)

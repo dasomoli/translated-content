@@ -1,186 +1,284 @@
 ---
-title: '@supports'
+title: "@supports"
 slug: Web/CSS/@supports
+page-type: css-at-rule
+browser-compat: css.at-rules.supports
 ---
 
 {{CSSRef}}
 
-**`@supports`** [CSS](/ko/docs/Web/CSS) [@규칙](/ko/docs/Web/CSS/At-rule)은 주어진 하나 이상의 CSS 기능을 브라우저가 지원하는지에 따라 다른 스타일 선언을 할 수 있는 방법을 제공합니다. 이를 기능 쿼리(feature query)라고 부릅니다. `@supports`는 스타일의 최상위 단계, 또는 다른 [조건부 그룹 규칙](/ko/docs/Web/CSS/At-rule#조건부_그룹_규칙)에 중첩해 위치할 수 있습니다.
+The **`@supports`** [CSS](/en-US/docs/Web/CSS) [at-rule](/en-US/docs/Web/CSS/At-rule) lets you specify CSS declarations that depend on a browser's support for CSS features.
+Using this at-rule is commonly called a _feature query_.
+The rule must be placed at the top level of your code or nested inside any other [conditional group at-rule](/en-US/docs/Web/CSS/At-rule#conditional_group_rules).
+
+{{EmbedInteractiveExample("pages/tabbed/at-rule-supports.html", "tabbed-standard")}}
+
+In JavaScript, `@supports` can be accessed via the CSS object model interface {{DOMxRef("CSSSupportsRule")}}.
+
+## Syntax
+
+The `@supports` at-rule consists of a block of statements with a _supports condition._
+The supports condition is a set of one or more name-value pairs (e.g., `<property>: <value>`).
 
 ```css
-@supports (display: grid) {
-  div {
-    display: grid;
-  }
+@supports (<supports-condition>) {
+  /* If the condition is true, use the CSS in this block. */
 }
 ```
 
+The conditions can be combined by conjunctions (`and`), disjunctions (`or`), and/or negations (`not`).
+
 ```css
-@supports not (display: grid) {
-  div {
-    float: right;
-  }
+@supports (<supports-condition>) and (<supports-condition>) {
+  /* If both conditions are true, use the CSS in this block. */
 }
 ```
 
-JavaScript에서, `@supports`는 CSS 객체 모델 인터페이스 {{DOMxRef("CSSSupportsRule")}}로 접근할 수 있습니다.
+The precedence of operators can be defined with parentheses.
+Supports conditions can use either a `<property>: <value>` declaration syntax or a `<function()>` syntax.
+The following sections describe the use of each type of supports condition.
 
-## 구문
+### Declaration syntax
 
-`@supports` @규칙은 하나의 선언 블록을 특정 기능의 브라우저 지원 조건과 연결할 수 있습니다. _지원 조건은 하나 이상의 키-값 쌍을 논리곱(`and`), 논리합(`or`), 부정(`not`으로 연결해 구성합니다. 괄호로 묶어 우선순위를_ 지정할 수도 있습니다.
-
-### 선언 구문
-
-가장 기본적인 지원 조건은 단순한 선언(속성 이름과 그 값)입니다. 선언은 괄호로 묶여야 합니다. 다음 예제는 브라우저가 {{cssxref("transform-origin")}} 속성의 값으로 `5% 5%`가 유효하다고 여길 때 통과합니다.
-
-```css
-@supports (transform-origin: 5% 5%) {}
-```
-
-### 함수 구문
-
-두 번째 기본적인 지원 조건은 지원 함수로, 모든 브라우저가 함수 구문을 지원하지만 지원 함수 자체는 아직 표준화 중입니다.
-
-#### `selector()` {{experimental_inline}}
-
-브라우저가 주어진 선택자를 지원하는지 판별합니다. 다음 예제는 브라우저가 [자식 결합자](/ko/docs/Web/CSS/Child_combinator)를 지원할 때 통과합니다.
+The declaration syntax checks if a browser supports the specified `<property>: <value>` declaration.
+The declaration must be surrounded by parentheses.
+The following example returns true and applies the CSS style if the browser supports the expression `transform-origin: 5% 5%`:
 
 ```css
-@supports selector(A > B) {}
+@supports (transform-origin: 5% 5%) {
+}
 ```
 
-### `not` 연산자
+### Function syntax
 
-`not` 연산자를 어떤 표현식 앞에 붙이면 그 반대 결과를 낳는 새로운 표현식을 생성합니다. 다음 예제는 브라우저가 {{cssxref("transform-origin")}} 속성의 값으로 `10em 10em 10em`이 **유효하지 않다**고 여길 때 통과합니다.
+The function syntax checks if a browser supports values or expressions within the function.
+The functions supported in the function syntax are described in the following sections.
+
+#### `selector()` {{Experimental_Inline}}
+
+This function evaluates if a browser supports the specified selector syntax.
+The following example returns true and applies the CSS style if the browser supports the [child combinator](/en-US/docs/Web/CSS/Child_combinator):
 
 ```css
-@supports not (transform-origin: 10em 10em 10em) {}
+@supports selector(h2 > p) {
+}
 ```
 
-다른 연산자와 마찬가지로, 선언의 복잡도와 관계 없이 `not` 연산자를 적용할 수 있습니다. 다음 두 예시는 모두 유효한 구문입니다.
+#### `font-tech()`
+
+This function checks if a browser supports the specified font technology for layout and rendering.
+The following example returns true and applies the CSS style if the browser supports the `COLRv1` font technology:
 
 ```css
-@supports not (not (transform-origin: 2px)) {}
-@supports (display: grid) and (not (display: inline-grid)) {}
+@supports font-tech(color-COLRv1) {
+}
 ```
 
-> **참고:** 최상위 `not` 연산자는 괄호로 감싸지 않아도 괜찮습니다. `and`, `or` 등 다른 연산자와 함께 사용할 때는 괄호가 필요합니다.
+The table below describes the available font technologies that can be queried using this function:
 
-### `and` 연산자
+| Technology          | Supports                                                                                      |
+| :------------------ | :-------------------------------------------------------------------------------------------- |
+| `color-colrv0`      | Multi-colored glyphs via COLR version 0 table                                                 |
+| `color-colrv1`      | Multi-colored glyphs via COLR version 1 table                                                 |
+| `color-svg`         | SVG multi-colored tables                                                                      |
+| `color-sbix`        | Standard bitmap graphics tables                                                               |
+| `color-cbdt`        | Color bitmap data tables                                                                      |
+| `features-opentype` | OpenType `GSUB` and `GPOS` tables                                                             |
+| `features-aat`      | TrueType `morx` and `kerx` tables                                                             |
+| `features-graphite` | Graphite features, namely `Silf`, `Glat` , `Gloc` , `Feat`, and `Sill` tables                 |
+| `incremental`       | Incremental font loading                                                                      |
+| `variations`        | Font variations in TrueType and OpenType fonts to control the font axis, weight, glyphs, etc. |
+| `palettes`          | Font palettes by means of `font-palette` to select one of many color palettes in the font     |
 
-`and` 연산자는 두 표현식의 논리곱으로부터 새로운 표현식을 생성합니다. 새로운 표현식은 두 구성 표현식이 **모두 참일 때만** 참을 반환합니다. 다음 예제는 두 개의 구성 표현식이 동시에 참이어야만 통과합니다.
+#### `font-format()`
+
+This function checks if a browser supports the specified font format for layout and rendering.
+The following example returns true and applies the CSS style if the browser supports the `opentype` font format:
 
 ```css
-@supports (display: table-cell) and (display: list-item) {}
+@supports font-format(opentype) {
+}
 ```
 
-다수의 논리곱은 괄호 없이 병치할 수 있습니다. 다음 두 예시는 모두 유효한 구문입니다.
+The following table describes the available formats that can be queried with this function:
+
+| Format              | Description                     | File extensions |
+| :------------------ | :------------------------------ | :-------------- |
+| `collection`        | OpenType Collection             | `.otc`, `.ttc`  |
+| `embedded-opentype` | Embedded OpenType               | `.eot`          |
+| `opentype`          | OpenType                        | `.ttf`, `.otf`  |
+| `svg`               | SVG Font (deprecated)           | `.svg`, `.svgz` |
+| `truetype`          | TrueType                        | `.ttf`          |
+| `woff`              | WOFF 1.0 (Web Open Font Format) | `.woff`         |
+| `woff2`             | WOFF 2.0 (Web Open Font Format) | `.woff2`        |
+
+### The not operator
+
+The `not` operator precedes an expression resulting in the negation of the expression.
+The following returns true if the browser's {{CSSxRef("transform-origin")}} property considers `10em 10em 10em` **to be invalid:**
 
 ```css
-@supports (display: table-cell) and (display: list-item) and (display:run-in) {}
-@supports (display: table-cell) and ((display: list-item) and (display:run-in)) {}
+@supports not (transform-origin: 10em 10em 10em) {
+}
 ```
 
-### `or` 연산자
-
-`or` 연산자는 두 표현식의 논리합으로부터 새로운 표현식을 생성합니다. 새로운 표현식은 두 구성 표현식 중 **어느 한 쪽이라도 참이면** 참을 반환합니다. 다음 예제는 두 개의 구성 표현식 중 하나라도 참이면 통과합니다.
+As with any operator, the `not` operator can be applied to a declaration of any complexity.
+The following examples are both valid:
 
 ```css
-@supports (transform-style: preserve) or (-moz-transform-style: preserve) {}
+@supports not (not (transform-origin: 2px)) {
+}
+@supports (display: grid) and (not (display: inline-grid)) {
+}
 ```
 
-다수의 논리합은 괄호 없이 병치할 수 있습니다. 다음 두 예시는 모두 유효한 구문입니다.
+> **Note:** There is no need to enclose the `not` operator between two parentheses at the top level.
+> To combine it with other operators, like `and` and `or`, the parentheses are required.
+
+### The and operator
+
+The `and` operator creates a new expression from the conjunction of two shorter expressions. It returns true only if **both** of the shorter expressions are also true. The following example returns true if and only if the two shorter expressions are simultaneously true:
 
 ```css
-@supports (transform-style: preserve) or (-moz-transform-style: preserve) or
-          (-o-transform-style: preserve) or (-webkit-transform-style: preserve) {}
-
-@supports (transform-style: preserve-3d) or ((-moz-transform-style: preserve-3d) or
-          ((-o-transform-style: preserve-3d) or (-webkit-transform-style: preserve-3d))) {}
+@supports (display: table-cell) and (display: list-item) {
+}
 ```
 
-> **참고:** `and`와 `or` 연산자를 같이 사용할 때는 괄호를 사용해 연산자 적용 순서를 정의해야 합니다. 그렇지 않으면 조건이 유효하지 않으므로 @-규칙 전체를 무시합니다.
+Multiple conjunctions can be juxtaposed without the need of more parentheses. The following are both equivalent:
 
-### 형식 구문
+```css
+@supports (display: table-cell) and (display: list-item) and (display: contents) {
+}
+@supports (display: table-cell) and
+  ((display: list-item) and (display: contents)) {
+}
+```
+
+### The or operator
+
+The `or` operator creates a new expression from the disjunction of two shorter expressions. It returns true if **one or both** of the shorter expressions is also true. The following example returns true if at least one of the two shorter expressions is true:
+
+```css
+@supports (transform-style: preserve) or (-moz-transform-style: preserve) {
+}
+```
+
+Multiple disjunctions can be juxtaposed without the need of more parentheses. The following are both equivalent:
+
+```css
+@supports (transform-style: preserve) or (-moz-transform-style: preserve) or (-webkit-transform-style: preserve) {}
+
+@supports (transform-style: preserve-3d) or ((-moz-transform-style: preserve-3d) or (-webkit-transform-style: preserve-3d))) {}
+```
+
+> **Note:** When using both `and` and `or` operators, the parentheses must be used to define the order in which they apply. Otherwise, the condition is invalid and the whole rule is ignored.
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 주어진 CSS 속성의 지원 여부 판별
+### Testing for the support of a CSS property
 
 ```css
 @supports (animation-name: test) {
-    … /* 애니메이션 속성을 접두사 없이 사용할 수 있을 때 CSS 적용 */
-    @keyframes { /* 다른 @-규칙을 중첩 가능 */
-      …
-    }
-}
-```
-
-### 주어진 CSS 속성 및 접두사 버전의 지원 여부 판별
-
-```css
-@supports ( (perspective: 10px) or (-moz-perspective: 10px) or (-webkit-perspective: 10px) or
-            (-ms-perspective: 10px) or (-o-perspective: 10px) ) {
-    … /* 접두사가 붙더라도 3D 변형을 지원하면 CSS 적용 */
-}
-```
-
-### 특정 CSS 속성의 미지원 여부 판별
-
-```css
-@supports not ((text-align-last: justify) or (-moz-text-align-last: justify) ){
-    … /* text-align-last: justify를 대체할 CSS */
-}
-```
-
-### 사용자 정의 속성 지원 여부 판별
-
-```css
-@supports (--foo: green) {
-  body {
-    color: var(--varName);
+  /* CSS applied when animations are supported without a prefix */
+  @keyframes {
+    /* Other at-rules can be nested inside */
   }
 }
 ```
 
-### 선택자 지원 여부 판별 (예: {{CSSxRef(":is", ":is()")}})
-
-{{SeeCompatTable}}
+### Testing for the support of a given CSS property or a prefixed version
 
 ```css
-/* :is()를 지원하지 않는 브라우저에서는 무시함 */
-:is(ul, ol) > li {
-  … /* :is() 선택자를 지원할 때 적용할 CSS */
+@supports (text-stroke: 10px) or (-webkit-text-stroke: 10px) {
+  /* CSS applied when text-stroke, prefixed or not, is supported */
+}
+```
+
+### Testing for the non-support of a specific CSS property
+
+```css
+@supports not ((text-align-last: justify) or (-moz-text-align-last: justify)) {
+  /* CSS to provide fallback alternative for text-align-last: justify */
+}
+```
+
+### Testing for the support of a selector
+
+CSS conditional rules provide the ability to test for the support of a selector such as {{cssxref(":has",":has()")}}.
+
+```css
+/* This rule won't be applied in browsers that don't support :has() */
+ul:has(> li li) {
+  /* CSS is applied when the :has(…) pseudo-class is supported */
 }
 
-@supports not selector(:is(a, b)) {
-  /* :is()를 지원하지 않을 때 대체할 CSS */
+@supports not selector(:has(a, b)) {
+  /* Fallback for when :has() is unsupported */
   ul > li,
   ol > li {
-    … /* :is()를 지원하지 않을 때 적용할 CSS */
+    /* The above expanded for browsers that don't support :has(…) */
   }
 }
 
+/* Note: So far, there's no browser that supports the `of` argument of :nth-child(…) */
 @supports selector(:nth-child(1n of a, b)) {
-  /* @supports로 먼저 묶지 않으면 :nth-child()의 of 구문을
-     지원하지 않는 브라우저에서 스타일을 잘못 적용할 수 있음 */
-  :is(:nth-child(1n of ul, ol) a,
-  details > summary) {
-    … /* :is() 선택자와 :nth-child()의 of 구문을 지원할 때 적용할 CSS */
+  /* This rule needs to be inside the @supports block, otherwise
+     it will be partially applied in browsers which don't support
+     the `of` argument of :nth-child(…) */
+  :is(:nth-child(1n of ul, ol) a, details > summary) {
+    /* CSS applied when the :is(…) selector and
+       the `of` argument of :nth-child(…) are both supported */
   }
 }
 ```
 
-## 명세
+### Testing for the support of a font technology
+
+The following example applies the CSS style if the browser supports the `COLRv1` font technology:
+
+```css
+@import url("https://fonts.googleapis.com/css2?family=Bungee+Spice");
+
+@supports font-tech(color-COLRv1) {
+  font-family: "Bungee Spice";
+}
+```
+
+It's also possible to test for the support of a font technology by using the `tech` function inside the {{CSSxRef("@font-face")}} at-rule.
+If a browser doesn't support the font technology, a fallback font (`Bungee-fallback.otf`) can be used instead.
+
+```css
+@font-face {
+  font-family: "Bungee Spice";
+  src: url("https://fonts.googleapis.com/css2?family=Bungee+Spice") tech(color-COLRv1),
+    url("Bungee-fallback.otf") format("opentype");
+}
+```
+
+### Testing for the support of a font format
+
+The following example applies the CSS style if the browser supports the `woff2` font format:
+
+```css
+@supports font-format(woff2) {
+  font-family: "Open Sans";
+  src: url("open-sans.woff2") format("woff2");
+}
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- CSSOM 클래스 {{ domxref("CSSSupportsRule") }}과, JavaScript를 통해 동일한 판별을 수행할 수 있는 {{ domxref("CSS.supports") }} 메서드
+- [Using feature queries](/en-US/docs/Web/CSS/CSS_Conditional_Rules/Using_Feature_Queries)
+- The CSSOM class {{DOMxRef("CSSSupportsRule")}}, and the {{DOMxRef("CSS.supports()")}} method that allows the same check to be performed via JavaScript.

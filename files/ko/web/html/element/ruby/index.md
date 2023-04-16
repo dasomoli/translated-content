@@ -1,11 +1,15 @@
 ---
-title: <ruby>
+title: "<ruby>: The Ruby Annotation element"
 slug: Web/HTML/Element/ruby
+page-type: html-element
+browser-compat: html.elements.ruby
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<ruby>` 요소**는 루비 주석을 나타냅니다. 루비 주석은 동아시아 문자의 발음을 표기할 때 사용합니다.
+The **`<ruby>`** [HTML](/en-US/docs/Web/HTML) element represents small annotations that are rendered above, below, or next to base text, usually used for showing the pronunciation of East Asian characters. It can also be used for annotating other kinds of text, but this usage is less common.
+
+The term _ruby_ originated as [a unit of measurement used by typesetters](<https://en.wikipedia.org/wiki/Agate_(typography)>), representing the smallest size that text can be printed on newsprint while remaining legible.
 
 {{EmbedInteractiveExample("pages/tabbed/ruby.html", "tabbed-shorter")}}
 
@@ -13,58 +17,66 @@ slug: Web/HTML/Element/ruby
   <tbody>
     <tr>
       <th scope="row">
-        <a
-          href="/ko/docs/Web/Guide/HTML/%EC%BB%A8%ED%85%90%ED%8A%B8_%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC"
-          >콘텐츠 카테고리</a
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
         >
       </th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#플로우_콘텐츠"
-          >플로우 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
         >,
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >, 뚜렷한 콘텐츠.
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >, palpable content.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#구문_콘텐츠"
-          >구문 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >Phrasing content</a
         >.
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
+      <th scope="row">Tag omission</th>
       <td>{{no_tag_omission}}</td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모</th>
+      <th scope="row">Permitted parents</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >를 허용하는 모든 요소.
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>모두</td>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
+          >No corresponding role</a
+        >
+      </td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>Any</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
+## Attributes
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)만 포함합니다.
+This element only includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-## 예제
+## Examples
 
-### 문자별 표기
+### Example 1: Character
 
 ```html
 <ruby>
@@ -73,9 +85,11 @@ slug: Web/HTML/Element/ruby
 </ruby>
 ```
 
-{{EmbedLiveSample("문자별_표기")}}
+#### Result
 
-### 단어별 표기
+{{EmbedLiveSample('Example 1: Character')}}
+
+### Example 2: Word
 
 ```html
 <ruby>
@@ -83,20 +97,22 @@ slug: Web/HTML/Element/ruby
 </ruby>
 ```
 
-{{EmbedLiveSample("단어별_표기")}}
+#### Result
 
-## 명세
+{{EmbedLiveSample('Example 1: Word')}}
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{HTMLElement("rt")}}
 - {{HTMLElement("rp")}}
 - {{HTMLElement("rb")}}
 - {{HTMLElement("rtc")}}
-- {{HTMLElement("rbc")}}
+- {{CSSxRef("text-transform")}}: full-size-kana

@@ -1,55 +1,62 @@
 ---
 title: outline-width
 slug: Web/CSS/outline-width
+page-type: css-property
+browser-compat: css.properties.outline-width
 ---
+
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`outline-width`** 속성은 요소 외곽선의 두께를 설정합니다. 외곽선은 요소의 [테두리](/ko/docs/Web/CSS/border) 바깥에 그려지는 선입니다.
+The [CSS](/en-US/docs/Web/CSS) **`outline-width`** property sets the thickness of an element's outline. An outline is a line that is drawn around an element, outside the {{cssxref("border")}}.
 
 {{EmbedInteractiveExample("pages/css/outline-width.html")}}
 
-외곽선 외형을 설정할 땐 {{cssxref("outline")}} 단축 속성을 사용하는게 편리한 상황이 많습니다.
+It is often more convenient to use the shorthand property {{cssxref("outline")}} when defining the appearance of an outline.
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
 outline-width: thin;
 outline-width: medium;
 outline-width: thick;
 
-/* <length> 값 */
+/* <length> values */
 outline-width: 1px;
 outline-width: 0.1em;
 
-/* 전역 값 */
+/* Global values */
 outline-width: inherit;
+outline-width: initial;
+outline-width: revert;
+outline-width: revert-layer;
+outline-width: unset;
 ```
 
-`outline-width` 속성은 다음 값 중 하나를 사용해 지정합니다.
+The `outline-width` property is specified as any one of the values listed below.
 
-### 값
+### Values
 
 - {{cssxref("&lt;length&gt;")}}
-  - : 외곽선의 두께를 `<length>`로 설정합니다.
+  - : The width of the outline specified as a `<length>`.
 - `thin`
-  - : 사용자 에이전트마다 다릅니다. 데스크톱 브라우저에서는 보통 `1px`입니다.
+  - : Depends on the user agent. Typically equivalent to `1px` in desktop browsers (including Firefox).
 - `medium`
-  - : 사용자 에이전트마다 다릅니다. 데스크톱 브라우저에서는 보통 `3px`입니다.
+  - : Depends on the user agent. Typically equivalent to `3px` in desktop browsers (including Firefox).
 - `thick`
-  - : 사용자 에이전트마다 다릅니다. 데스크톱 브라우저에서는 보통 `5px`입니다.
+  - : Depends on the user agent. Typically equivalent to `5px` in desktop browsers (including Firefox).
 
-## 형식 정의
+## Formal definition
 
 {{cssinfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 요소의 외곽선 두께 설정하기
+### Setting an element's outline width
 
 #### HTML
 
@@ -96,14 +103,20 @@ span {
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('요소의_외곽선_두께_설정하기', '100%', '80')}}
+{{EmbedLiveSample('Setting_an_elements_outline_width', '100%', '80')}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- {{cssxref("outline")}}
+- {{cssxref("outline-color")}}
+- {{cssxref("outline-style")}}

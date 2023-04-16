@@ -1,98 +1,135 @@
 ---
 title: String.raw()
 slug: Web/JavaScript/Reference/Global_Objects/String/raw
+page-type: javascript-static-method
+browser-compat: javascript.builtins.String.raw
 ---
+
 {{JSRef}}
 
-`String.raw()`메서드는 [템플릿 리터럴](/ko/docs/Web/JavaScript/Reference/Template_literals)의 태그 함수입니다.
-이는 Pyhon의 `r` 접두사 또는 C#의 문자열 리터럴의 `@` 접두사와 유사합니다.(그러나 동일 하지는 않습니다. 이 문제에 관해서는 여기 [이슈](https://bugs.chromium.org/p/v8/issues/detail?id=5016)를 참조하십시오.)
-이 메서드는 템플릿 리터럴의 윈시 문자열을 가져오는데 사용됩니다. 즉, 대체(예: `${foo}`)는 처리되지만 이스케이프(예: `\n`)는 처리되지 않습니다.
+The **`String.raw()`** static method is a tag function of [template literals](/en-US/docs/Web/JavaScript/Reference/Template_literals). This is similar to the `r` prefix in Python, or the `@` prefix in C# for string literals. It's used to get the raw string form of template literals — that is, substitutions (e.g. `${foo}`) are processed, but escape sequences (e.g. `\n`) are not.
 
 {{EmbedInteractiveExample("pages/js/string-raw.html")}}
 
-## 구문
+## Syntax
 
-```js
-String.raw(callSite, ...substitutions)
+```js-nolint
+String.raw(strings, ...substitutions)
 
 String.raw`templateString`
 ```
 
-### 매개변수
+### Parameters
 
-- `callSite`
-  - : 정해진 형식의 템플릿 호출 개체 예: `{ raw: ['foo', 'bar', 'baz'] }`.
+- `strings`
+  - : Well-formed template literal array object, like `{ raw: ['foo', 'bar', 'baz'] }`. Should be an object with a `raw` property whose value is an array-like object of strings.
 - `...substitutions`
-  - : 대체값을 포함합니다.
+  - : Contains substitution values.
 - `templateString`
-  - : {{jsxref("template_literals", "템플릿 리터럴", "", 1)}}, 선택사항으로 대체를 포함 예:(`${...}`).
+  - : A [template literal](/en-US/docs/Web/JavaScript/Reference/Template_literals), optionally with substitutions (`${...}`).
 
-### 반환값
+### Return value
 
-주어진 템플릿 리터럴의 원시 문자열 형식.
+The raw string form of a given template literal.
 
-### 예외
+### Exceptions
 
 - {{jsxref("TypeError")}}
-  - : 첫번째 인자의 객체의 포맷이 올바르지 않은 경우 {{jsxref("TypeError")}}예외가 발생(throw)한다.
+  - : Thrown if the first argument doesn't have a `raw` property, or the `raw` property is `undefined` or `null`.
 
-## 설명
+## Description
 
-`String.raw()`의 경우 보통 템플릿 리터럴과 많이 사용하고, 첫번째 구문의 경우 잘 사용되지 않습니다.
-왜냐하면 자바스크립트 엔진이 당신을 위해서 자동으로 적절한 인수로 호출해주기 때문입니다. ( 다른 [태그 메서드](/ko/docs/Web/JavaScript/Reference/Template_literals#tagged_template_literals) 들과 마찬가지로).
+In most cases, `String.raw()` is used with template literals. The first syntax mentioned above is only rarely used, because the JavaScript engine will call this with proper arguments for you, (just like with other [tag functions](/en-US/docs/Web/JavaScript/Reference/Template_literals#tagged_templates)).
 
-`String.raw()`은 템플릿 리터럴의 유일한 내장 함수입니다. 기본 템플릿 기능과 동일하게 작동하며 연결을 수행합니다. JavaScript 코드를 사용하여 다시 구현할 수도 있습니다.
+`String.raw()` is the only built-in template literal tag. It has close semantics to an untagged literal since it concatenates all arguments and returns a string. You can even re-implement it with normal JavaScript code.
 
-## 예시
+> **Warning:** You should not use `String.raw` directly as an "identity" tag. See [Building an identity tag](#building_an_identity_tag) for how to implement this.
 
-### String.raw() 사용
+If `String.raw()` is called with an object whose `raw` property doesn't have a `length` property or a non-positive `length`, it returns an empty string `""`. If `substitutions.length < strings.raw.length - 1` (i.e. there are not enough substitutions to fill the placeholders — which can't happen in a well-formed tagged template literal), the rest of the placeholders are filled with empty strings.
+
+## Examples
+
+### Using String.raw()
 
 ```js
-String.raw`Hi\n${2+3}!`;
+String.raw`Hi\n${2 + 3}!`;
 // 'Hi\\n5!', the character after 'Hi'
 // is not a newline character,
 // '\' and 'n' are two characters.
 
 String.raw`Hi\u000A!`;
 // 'Hi\\u000A!', same here, this time we will get the
-//  \, u, 0, 0, 0, A, 6 characters.
+// \, u, 0, 0, 0, A, 6 characters.
 // All kinds of escape characters will be ineffective
 // and backslashes will be present in the output string.
 // You can confirm this by checking the .length property
 // of the string.
 
-let name = 'Bob';
+const name = "Bob";
 String.raw`Hi\n${name}!`;
 // 'Hi\\nBob!', substitutions are processed.
 
-// Normally you would not call String.raw() as a function,
-// but to simulate `foo${2 + 3}bar${'Java' + 'Script'}baz` you can do:
-String.raw({
-  raw: ['foo', 'bar', 'baz']
-}, 2 + 3, 'Java' + 'Script'); // 'foo5barJavaScriptbaz'
-// Notice the first argument is an object with a 'raw' property,
-// whose value is an iterable representing the separated strings
-// in the template literal.
-// The rest of the arguments are the substitutions.
-
-// The first argument’s 'raw' value can be any iterable, even a string!
-// For example, 'test' is treated as ['t', 'e', 's', 't'].
-// The following is equivalent to
-// `t${0}e${1}s${2}t`:
-String.raw({ raw: 'test' }, 0, 1, 2); // 't0e1s2t'
+String.raw`Hi \${name}!`;
+// 'Hi \\${name}!', the dollar sign is escaped; there's no interpolation.
 ```
 
-## 명세
+### Building an identity tag
+
+Many tools give special treatment to literals tagged by a particular name.
+
+```js-nolint
+// Some formatters will format this literal's content as HTML
+const doc = html`<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Hello</title>
+  </head>
+  <body>
+    <h1>Hello world!</h1>
+  </body>
+</html>
+`;
+```
+
+One might naïvely implement the `html` tag as:
+
+```js
+const html = String.raw;
+```
+
+This, in fact, works for the case above. However, because `String.raw` would concatenate the _raw_ string literals instead of the "cooked" ones, escape sequences would not be processed.
+
+```js-nolint
+const doc = html`<canvas>\n</canvas>`;
+// "<canvas>\\n</canvas>"
+```
+
+This may not be what you want for a "true identity" tag, where the tag is purely for markup and doesn't change the literal's value. In this case, you can create a custom tag and pass the "cooked" (i.e. escape sequences are processed) literal array to `String.raw`, pretending they are raw strings.
+
+```js-nolint
+const html = (strings, ...values) => String.raw({ raw: strings }, ...values);
+// Some formatters will format this literal's content as HTML
+const doc = html`<canvas>\n</canvas>`;
+// "<canvas>\n</canvas>"; the "\n" becomes a line break
+```
+
+Notice the first argument is an object with a `raw` property, whose value is an array-like object (with a `length` property and integer indexes) representing the separated strings in the template literal. The rest of the arguments are the substitutions. Since the `raw` value can be any array-like object, it can even be a string! For example, `'test'` is treated as `['t', 'e', 's', 't']`. The following is equivalent to `` `t${0}e${1}s${2}t` ``:
+
+```js
+String.raw({ raw: "test" }, 0, 1, 2); // 't0e1s2t'
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- `String.raw`의 폴리필은 여기를 참고[`core-js`](https://github.com/zloirock/core-js#ecmascript-string-and-regexp)
-- [Template literals](/ko/docs/Web/JavaScript/Reference/Template_literals)
+- [Polyfill of `String.raw` in `core-js`](https://github.com/zloirock/core-js#ecmascript-string-and-regexp)
+- [Template literals](/en-US/docs/Web/JavaScript/Reference/Template_literals)
 - {{jsxref("String")}}
-- [Lexical grammar](/ko/docs/Web/JavaScript/Reference/Lexical_grammar)
+- [Lexical grammar](/en-US/docs/Web/JavaScript/Reference/Lexical_grammar)

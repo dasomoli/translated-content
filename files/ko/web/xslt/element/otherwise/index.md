@@ -1,37 +1,36 @@
 ---
-title: otherwise
+title: <xsl:otherwise>
 slug: Web/XSLT/Element/otherwise
-original_slug: Web/XSLT/otherwise
 ---
 
 {{ XsltRef() }}
 
-`<xsl:otherwise>` 요소는 아무런 `<xsl:when>` 조건도 적용하지 않았을 때 취하면 좋을 동작을 정의하는 데 씁니다. 다른 프로그래밍 언어의 `else`나 `default` 경우와 비슷합니다.
+The `<xsl:otherwise>` element is used to define the action that should be taken when none of the `<xsl:when>` conditions apply. It is similar to the `else` or `default` case in other programming languages.
 
-### 문법
+### Syntax
 
-```
+```xml
 <xsl:otherwise>
   TEMPLATE
 </xsl:otherwise>
 ```
 
-### 필수 속성
+### Required Attributes
 
-없음.
+None.
 
-### 선택 속성
+### Optional Attributes
 
-없음.
+None.
 
-### 타입
+### Type
 
-하위명령, 템플릿 안에서 `<xsl:choose>` 요소의 마지막 자식으로 나타나야 함.
+Subinstruction, must appear as the last child of an `<xsl:choose>` element, within a template.
 
-### 정의
+### Defined
 
-[XSLT section 9.2, Conditional Processing with xsl:choose](http://www.w3.org/TR/xslt#section-Conditional-Processing-with-xsl:choose)
+XSLT, section 9.2
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

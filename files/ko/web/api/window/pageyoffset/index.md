@@ -1,32 +1,42 @@
 ---
-title: Window.pageYOffset
+title: "Window: pageYOffset property"
+short-title: pageYOffset
 slug: Web/API/Window/pageYOffset
+page-type: web-api-instance-property
+browser-compat: api.Window.pageYOffset
 ---
 
 {{ APIRef("CSSOM View") }}
 
-{{domxref("Window")}} 인터페이스의 **`pageYOffset`** 읽기 전용 속성은 {{domxref("Window.scrollY", "scrollY")}}의 다른 이름으로, 문서가 수직으로 얼마나 스크롤됐는지 픽셀 단위로 반환합니다.
+The read-only {{domxref("Window")}} property **`pageYOffset`**
+is an alias for {{domxref("Window.scrollY", "scrollY")}}; as such, it returns the number
+of pixels the document is currently scrolled along the vertical axis (that is, up or
+down) with a value of 0.0, indicating that the top edge of the {{domxref("Document")}}
+is currently aligned with the top edge of the window's content area.
 
-일부 오래된 브라우저는 `scrollY` 대신 `pageYOffset`만 지원하는 경우가 있지만, 노후 환경을 신경쓰지 않아도 된다면 둘 중 아무거나 사용해도 괜찮습니다.
+There is slightly better support for `pageYOffset` than for
+`scrollY` in older browsers, but if you're not concerned about browsers more
+than a handful of years old, you can use either one.
 
-수평 스크롤을 나타내는 {{domxref("Window.pageXOffset", "pageXOffset")}} 속성 역시 {{domxref("Window.scrollX", "scrollX")}}의 다른 이름입니다.
+The corresponding {{domxref("Window.pageXOffset", "pageXOffset")}} property, which
+returns the number of pixels scrolled along the horizontal axis (left and right), is an
+alias for {{domxref("Window.scrollX", "scrollX")}}.
 
-## 구문
+## Value
 
-```js
-yOffset = window.pageYOffset;
-```
+A double-precision floating-point number specifying the number of pixels the {{domxref("Document")}}
+is scrolled vertically within its containing {{domxref("Window")}}. This number is subpixel precise
+with a range of E(min)=-1022 to E(max)=1023, so it may not be an integer. A value of 0.0 indicates
+that the window is not scrolled vertically, and that the top of the document is located at the top
+edge of the window's content area.
 
-### 값
+Since this property is an alias for {{domxref("Window.scrollY")}}, see that article for
+additional details on this value and its use.
 
-{{domxref("Window")}} 안의 {{domxref("Document")}}가 수직 방향으로 스크롤된 거리를 픽셀 단위로 나타낸 부동소숫점 수. 단일 픽셀보다 높은 수준의 정밀도를 가지므로 정수가 아닐 수 있습니다. `0.0`은 창의 콘텐츠 영역과 문서의 위쪽 모서리 위치가 일치함을 나타냅니다.
-
-`pageYOffset`은 {{domxref("Window.scrollY")}}의 다른 이름이므로, 값에 대한 더 자세한 정보는 해당 문서를 방문해주세요.
-
-## 예제
+## Examples
 
 ```js hidden
-var contentHTML = `
+const contentHTML = `
     <h2 id="introduction">Introduction</h2>
   <p>Lorem ipsum dolor sit amet, consectetur adipiscing
 elit. Aenean volutpat vitae felis non dictum. Ut auctor
@@ -70,43 +80,56 @@ condimentum sapien non felis cursus blandit. Integer
 euismod lectus a ipsum pellentesque lacinia.</p>
 `;
 
-document.getElementById("frame").contentDocument
-        .body.innerHTML = contentHTML;
+document.getElementById("frame").contentDocument.body.innerHTML = contentHTML;
 ```
 
-In this example, an {{HTMLElement("iframe")}} is created and filled with content, then a specific element within the document is scrolled into view in the frame. Once that's done, the vertical scroll position is checked by looking at the value of `pageYOffset` in the frame's {{domxref("HTMLIFrameElement.contentWindow", "contentWindow")}}.
+In this example, an {{HTMLElement("iframe")}} is created and filled with content, then
+a specific element within the document is scrolled into view in the frame. Once that's
+done, the vertical scroll position is checked by looking at the value of
+`pageYOffset` in the frame's {{domxref("HTMLIFrameElement.contentWindow",
+  "contentWindow")}}.
 
 ### HTML
 
-HTML은 단 두 개의 요소를 가진 짧은 코드입니다. 하나는 스크롤할 문서를 담은 {{HTMLElement("iframe")}}이고, 다른 하나는 스크롤을 끝냈을 때 `pageYOffset`의 값을 기록할 {{HTMLElement("div")}}입니다.
+The HTML is extremely simple and has just two elements: an {{HTMLElement("iframe")}}
+that contains the document we're going to scroll, and a {{HTMLElement("div")}} into
+which we'll output the value of `pageYOffset` when we've finished the scroll.
 
 ```html
-<iframe id="frame">
-</iframe>
+<iframe id="frame"> </iframe>
 
-<div id="info">
-</div>
+<div id="info"></div>
 ```
 
 ### JavaScript
 
 ```js
-var frame = document.getElementById("frame");
-var frameDoc = frame.contentDocument;
-var info = document.getElementById("info");
+const frame = document.getElementById("frame");
+const frameDoc = frame.contentDocument;
+const info = document.getElementById("info");
 
-var target = frameDoc.getElementById("overview");
+const target = frameDoc.getElementById("overview");
 frameDoc.scrollingElement.scrollTop = target.offsetTop;
 
-info.innerText = "스크롤 후 Y축 차이: " +
-                 frame.contentWindow.pageYOffset + " 픽셀";
+info.innerText = `Y offset after scrolling: ${frame.contentWindow.pageYOffset} pixels`;
 ```
 
-The JavaScript code begins by getting into `frame` and `info` the `<iframe>` element that contains our content as well as the `<div>` element into which we'll output the result of our scroll position check. It then gets a reference to the element we want to scroll into view calling {{domxref("Document.getElementById", "getElementById()")}} on the frame's {{domxref("HTMLIFrameElement.contentDocument")}}.
+The JavaScript code begins by getting into `frame` and `info` the
+`<iframe>` element that contains our content as well as the
+`<div>` element into which we'll output the result of our scroll
+position check. It then gets a reference to the element we want to scroll into view
+calling {{domxref("Document.getElementById", "getElementById()")}} on the frame's
+{{domxref("HTMLIFrameElement.contentDocument")}}.
 
-With the target element in hand, we set the {{domxref("Element.scrollTop", "scrollTop")}} of the frame's {{domxref("Document.scrollingElement", "scrollingElement")}} to the {{domxref("Element.offsetTop", "offsetTop")}} of the target element. By doing so, we set the vertical scrolling position of the frame's document so that it's the same as the top edge of the target element.
+With the target element in hand, we set the {{domxref("Element.scrollTop",
+  "scrollTop")}} of the frame's {{domxref("Document.scrollingElement",
+  "scrollingElement")}} to the {{domxref("Element.offsetTop", "offsetTop")}} of the target
+element. By doing so, we set the vertical scrolling position of the frame's document so
+that it's the same as the top edge of the target element.
 
-This will automatically set the scrolling position to the maximum possible value if the attempted scroll would exceed the maximum. This prevents us from falling off the edge of the document. Nobody wants to know what's out there. There might be dragons.
+This will automatically set the scrolling position to the maximum possible value if the
+attempted scroll would exceed the maximum. This prevents us from falling off the edge of
+the document. Nobody wants to know what's out there. There might be dragons.
 
 ```css hidden
 iframe {
@@ -121,22 +144,26 @@ iframe {
 }
 ```
 
-### 결과
+### Result
 
-The result follows. Note that the frame's contents have been scrolled to show the section named "Overview", and that the value of the `pageYOffset` property is shown with the corresponding value.
+The result follows. Note that the frame's contents have been scrolled to show the
+section named "Overview", and that the value of the `pageYOffset` property is
+shown with the corresponding value.
 
-{{EmbedLiveSample("예제", 650, 500)}}
+{{EmbedLiveSample("Examples", 650, 500)}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("Window.pageXOffset", "pageXOffset")}}
-- {{domxref("Window.scrollY", "scrollY")}} and {{domxref("Window.scrollX", "scrollX")}}
-- {{domxref("Window.scroll", "scroll()")}}, {{domxref("Window.scrollBy", "scrollBy()")}}, and {{domxref("window.scrollTo", "scrollTo()")}}
+- {{domxref("Window.scrollY", "scrollY")}} and {{domxref("Window.scrollX",
+    "scrollX")}}
+- {{domxref("Window.scroll", "scroll()")}}, {{domxref("Window.scrollBy",
+    "scrollBy()")}}, and {{domxref("window.scrollTo", "scrollTo()")}}

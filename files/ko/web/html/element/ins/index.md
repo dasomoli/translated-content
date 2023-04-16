@@ -1,80 +1,96 @@
 ---
 title: <ins>
 slug: Web/HTML/Element/ins
+page-type: html-element
+browser-compat: html.elements.ins
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<ins>` 요소**는 문서에 추가된 텍스트의 범위를 나타냅니다. {{htmlelement("del")}} 요소를 사용하면 삭제된 텍스트의 범위를 나타낼 수 있습니다.
+The **`<ins>`** [HTML](/en-US/docs/Web/HTML) element represents a range of text that has been added to a document. You can use the {{HTMLElement("del")}} element to similarly represent a range of text that has been deleted from the document.
 
 {{EmbedInteractiveExample("pages/tabbed/ins.html", "tabbed-standard")}}
-
-<p class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</p>
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
       </th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >Phrasing content</a
         >,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >flow content</a
         >.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
-      <td>투명.</td>
-    </tr>
-    <tr>
-      <th scope="row">태그 생략</th>
-      <td>{{no_tag_omission}}</td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Permitted content</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >를 허용하는 모든 요소.
+        <a
+          href="/en-US/docs/Web/HTML/Content_categories#transparent_content_model"
+          >Transparent</a
+        >.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>모두</td>
+      <th scope="row">Tag omission</th>
+      <td>{{no_tag_omission}}</td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">Permitted parents</th>
+      <td>
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
+          >No corresponding role</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>Any</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLModElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
+## Attributes
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)을 포함합니다.
+This element includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-- {{htmlattrdef("cite")}}
-  - : 회의록, 이슈 추적 시스템의 티켓 번호 등 변경점을 설명하는 리소스의 {{glossary("URI")}}.
-- {{htmlattrdef("datetime")}}
-  - : 변경이 발생한 일시. 유효한 날짜 문자열이어야 하며, 시간을 지정할 경우 역시 유효해야 합니다. 유효하지 않은 값을 지정할 경우 일시를 지정하지 않은 것과 같습니다. 유효한 문자열의 종류는 [HTML에서 사용하는 날짜와 시간 형식](/ko/docs/Web/HTML/Date_and_time_formats) 문서에서 확인할 수 있습니다.
+- `cite`
+  - : This attribute defines the URI of a resource that explains the change, such as a link to meeting minutes or a ticket in a troubleshooting system.
+- `datetime`
+  - : This attribute indicates the time and date of the change and must be a valid date with an optional time string. If the value cannot be parsed as a date with an optional time string, the element does not have an associated timestamp. For the format of the string without a time, see [Format of a valid date string](/en-US/docs/Web/HTML/Date_and_time_formats#date_strings). The format of the string if it includes both date and time is covered in [Format of a valid local date and time string](/en-US/docs/Web/HTML/Date_and_time_formats#local_date_and_time_strings).
 
-## 예제
+## Examples
 
 ```html
 <ins>This text has been inserted</ins>
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample("예제")}}
+{{EmbedLiveSample("Examples")}}
 
-## 접근성 고려사항
+## Accessibility concerns
 
-대부분의 스크린 리더는 기본값에서 `<ins>` 요소의 존재를 표현하지 않습니다. 그러나 CSS {{cssxref("content")}} 속성과 {{cssxref("::before")}}, {{cssxref("::after")}} 의사 요소를 사용하면 소리내어 읽도록 할 수 있습니다.
+The presence of the `<ins>` element is not announced by most screen reading technology in its default configuration. It can be made to be announced by using the CSS {{cssxref("content")}} property, along with the {{cssxref("::before")}} and {{cssxref("::after")}} pseudo-elements.
 
 ```css
 ins::before,
@@ -89,27 +105,27 @@ ins::after {
 }
 
 ins::before {
-  content: " [추가 부분 시작] ";
+  content: " [insertion start] ";
 }
 
 ins::after {
-  content: " [추가 부분 끝] ";
+  content: " [insertion end] ";
 }
 ```
 
-스크린 리더 사용자 일부는 지나치게 자세한 안내를 유발할 수 있는 콘텐츠의 표현을 의도적으로 꺼놓습니다. 그러므로 이 방식을 남용해선 안되며, 콘텐츠의 이해에 삽입 여부가 꼭 필요할 때만 사용해야 합니다.
+Some people who use screen readers deliberately disable announcing content that creates extra verbosity. Because of this, it is important to not abuse this technique and only apply it in situations where not knowing content has been inserted would adversely affect understanding.
 
-- [Short note on making your mark (more accessible) | The Paciello Group](https://developer.paciellogroup.com/blog/2017/12/short-note-on-making-your-mark-more-accessible/)
-- [Tweaking Text Level Styles | Adrian Roselli](http://adrianroselli.com/2017/12/tweaking-text-level-styles.html)
+- [Short note on making your mark (more accessible) | The Paciello Group](https://www.tpgi.com/short-note-on-making-your-mark-more-accessible/)
+- [Tweaking Text Level Styles | Adrian Roselli](https://adrianroselli.com/2017/12/tweaking-text-level-styles.html)
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 문서에서 삭제된 부분을 나타내는 {{HTMLElement("del")}} 요소.
+- {{HTMLElement("del")}} element for marking deletion into a document

@@ -1,96 +1,104 @@
 ---
-title: 거듭제곱 (**)
+title: Exponentiation (**)
 slug: Web/JavaScript/Reference/Operators/Exponentiation
+page-type: javascript-operator
+browser-compat: javascript.operators.exponentiation
 ---
 
 {{jsSidebar("Operators")}}
 
-거듭제곱 연산자(`**`)는 왼쪽 피연산자를 밑, 오른쪽 피연산자를 지수로 한 값을 구합니다.
-{{jsxref("BigInt")}}도 피연산자로 받을 수 있다는 점을 제외하면 {{jsxref("Math.pow()")}}와 같습니다.
+The **exponentiation (`**`)** operator returns the result of raising the first operand to the power of the second operand. It is equivalent to {{jsxref("Math.pow()")}}, except it also accepts [BigInts](/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) as operands.
 
 {{EmbedInteractiveExample("pages/js/expressions-exponentiation.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 x ** y
 ```
 
-## 설명
+## Description
 
-거듭제곱 연산자는 우측 결합성을 가집니다. 따라서 `a ** b ** c`는 `a ** (b ** c)`와 같습니다.
+The `**` operator is overloaded for two types of operands: number and [BigInt](/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt). It first [coerces both operands to numeric values](/en-US/docs/Web/JavaScript/Data_structures#numeric_coercion) and tests the types of them. It performs BigInt exponentiation if both operands becomes BigInts; otherwise, it performs number exponentiation. A {{jsxref("TypeError")}} is thrown if one operand becomes a BigInt but the other becomes a number.
 
-PHP, Python 등 거듭제곱 연산자(`**`)를 포함하는 언어의 대부분은 거듭제곱 연산자가 단항 연산자(단항
-`+`, `-` 등)보다 높은 우선순위를 가집니다. 그러나 Bash처럼 단항 연산자가 더 높은 우선순위를
-가지는 예외의 언어도 있습니다.
+For both numbers and BigInts, `0` raised to a positive power returns `0`, and `0` raised to a power of `0` returns `1`. For numbers, `0` raised to a negative number returns `Infinity`, while `-0` raised to a negative number returns `-Infinity`.
 
-반면 JavaScript에서는 모호한 거듭제곱 표현식을 작성하는 것이 불가능합니다. 단항
-연산자(`+/-/~/!/delete/void/typeof`)를 밑 피연산자의 바로 앞에 사용할 수 없으며, 사용하려고 하면
-{{jsxref("SyntaxError")}}가 발생합니다.
+`NaN ** 0` (and the equivalent `Math.pow(NaN, 0)`) is the only case where {{jsxref("NaN")}} doesn't propagate through mathematical operations — it returns `1` despite the operand being `NaN`. In addition, the behavior where `base` is 1 and `exponent` is non-finite (±Infinity or `NaN`) is different from IEEE 754, which specifies that the result should be 1, whereas JavaScript returns `NaN` to preserve backward compatibility with its original behavior.
 
-```js
--2 ** 2;
-// Bash에서는 4, 다른 언어에서는 -4
-// 모호한 식이므로 JavaScript에서 유효하지 않음
+For BigInt exponentiation, a {{jsxref("RangeError")}} is thrown if the exponent `y` is negative. This is because any negative exponent would likely result in a value between 0 and 1 (unless the base is `1`, `-1`, or `0`), which is rounded to zero, and is likely a developer mistake.
 
--(2 ** 2);
-// JavaScript에서 -4, 저자의 의도가 명확함
-```
+The exponentiation operator is [right-associative](/en-US/docs/Web/JavaScript/Reference/Operators/Operator_precedence): `a ** b ** c` is equal to `a ** (b ** c)`.
 
-참고로 어떤 언어에선 캐럿 기호 <kbd>^</kbd>를 거듭제곱에 사용하지만, JavaScript에서 캐럿은
-[비트 XOR 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Bitwise_XOR)에서
-사용합니다.
+In most languages, such as PHP, Python, and others that have an exponentiation operator (`**`), the exponentiation operator is defined to have a higher precedence than unary operators, such as unary `+` and unary `-`, but there are a few exceptions. For example, in Bash, the `**` operator is defined to have a lower precedence than unary operators.
 
-## 예제
+In JavaScript, it is impossible to write an ambiguous exponentiation expression. That is, you cannot put a unary operator (with [precedence 14](/en-US/docs/Web/JavaScript/Reference/Operators/Operator_precedence#table), including `+`/`-`/`~`/`!`/`++`/`--`/`delete`/`void`/`typeof`/`await`) immediately before the base number; [doing so will cause a SyntaxError](/en-US/docs/Web/JavaScript/Reference/Errors/Unparenthesized_unary_expr_lhs_exponentiation).
 
-### 기본 거듭제곱
+For example, `-2 ** 2` is 4 in Bash, but is -4 in other languages (such as Python). This is invalid in JavaScript, as the operation is ambiguous. You have to parenthesize either side — for example, as `-(2 ** 2)` — to make the intention unambiguous.
+
+Note that some programming languages use the caret symbol `^` for exponentiation, but JavaScript uses that symbol for the [bitwise XOR operator](/en-US/docs/Web/JavaScript/Reference/Operators/Bitwise_XOR).
+
+## Examples
+
+### Basic exponentiation
 
 ```js
-2 ** 3   // 8
-3 ** 2   // 9
-3 ** 2.5 // 15.588457268119896
-10 ** -1 // 0.1
-NaN ** 2 // NaN
+2 ** 3; // 8
+3 ** 2; // 9
+3 ** 2.5; // 15.588457268119896
+10 ** -1; // 0.1
+2 ** 1024; // Infinity
+NaN ** 2; // NaN
+NaN ** 0; // 1
+1 ** Infinity; // NaN
+
+2n ** 3n; // 8n
+2n ** 1024n; // A very large number, but not Infinity
+
+2n ** 2; // TypeError: Cannot mix BigInt and other types, use explicit conversions
+
+// To do exponentiation with a BigInt and a non-BigInt, convert either operand
+2n ** BigInt(2); // 4n
+Number(2n) ** 2; // 4
 ```
 
-### 연관성
+### Associativity
 
 ```js
-2 ** 3 ** 2   // 512
-2 ** (3 ** 2) // 512
-(2 ** 3) ** 2 // 64
+2 ** 3 ** 2; // 512
+2 ** (3 ** 2); // 512
+(2 ** 3) ** 2; // 64
 ```
 
-### 단항 연산자와 사용하기
+### Usage with unary operators
 
-거듭제곱 결과의 부호를 반전하려면,
+To invert the sign of the result of an exponentiation expression:
 
 ```js
--(2 ** 2) // -4
+-(2 ** 2); // -4
 ```
 
-거듭제곱 표현식의 밑에 음수를 제공하려면,
+To force the base of an exponentiation expression to be a negative number:
 
 ```js
-(-2) ** 2 // 4
+(-2) ** 2; // 4
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [더하기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Addition)
-- [빼기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Subtraction)
-- [나누기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Division)
-- [곱하기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Multiplication)
-- [나머지 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Remainder)
-- [증가 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Increment)
-- [감소 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Decrement)
-- [단항 부정 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Unary_negation)
-- [단항 플러스 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Unary_plus)
+- [Addition operator](/en-US/docs/Web/JavaScript/Reference/Operators/Addition)
+- [Subtraction operator](/en-US/docs/Web/JavaScript/Reference/Operators/Subtraction)
+- [Division operator](/en-US/docs/Web/JavaScript/Reference/Operators/Division)
+- [Multiplication operator](/en-US/docs/Web/JavaScript/Reference/Operators/Multiplication)
+- [Remainder operator](/en-US/docs/Web/JavaScript/Reference/Operators/Remainder)
+- [Increment operator](/en-US/docs/Web/JavaScript/Reference/Operators/Increment)
+- [Decrement operator](/en-US/docs/Web/JavaScript/Reference/Operators/Decrement)
+- [Unary negation operator](/en-US/docs/Web/JavaScript/Reference/Operators/Unary_negation)
+- [Unary plus operator](/en-US/docs/Web/JavaScript/Reference/Operators/Unary_plus)

@@ -1,37 +1,32 @@
 ---
-title: AudioNode.channelCount
+title: "AudioNode: channelCount property"
+short-title: channelCount
 slug: Web/API/AudioNode/channelCount
+page-type: web-api-instance-property
+browser-compat: api.AudioNode.channelCount
 ---
+
 {{ APIRef("Web Audio API") }}
 
-{{ domxref("AudioNode") }} 인터페이스의 **`channelCount`** 속성은 노드의 모든 입력에 대해 연결을 [업믹싱하거나 다운믹싱](/ko/docs/Web/API/Web_Audio_API/Basic_concepts_behind_Web_Audio_API#up-mixing_and_down-mixing)할 때 얼마나 많은 채널이 사용될 지를 결정하기 위해 사용되는 integer를 나타냅니다.
+The **`channelCount`** property of the {{ domxref("AudioNode") }} interface represents an integer used to determine how many channels are used when [up-mixing and down-mixing](/en-US/docs/Web/API/Web_Audio_API/Basic_concepts_behind_Web_Audio_API#up-mixing_and_down-mixing) connections to any inputs to the node.
 
-`channelCount` 의 사용법과 정밀한 정의는 {{domxref("AudioNode.channelCountMode")}}의 값에 달려 있습니다.
+`channelCount`'s usage and precise definition depend on the value of {{domxref("AudioNode.channelCountMode")}}:
 
-- 만약 `channelCountMode` 값이 `max` 라면, channelCount는 무시됩니다.
-- 만약 `channelCountMode` 값이 `clamped-max` 라면, channelCount는 최대 값으로서 사용됩니다.
-- 만약 `channelCountMode` 값이 `explicit` 이라면, channelCount는 정확한 값으로서 사용됩니다.
+- It is ignored if the `channelCountMode` value is `max`.
+- It is used as a maximum value if the `channelCountMode` value is `clamped-max`.
+- It is used as the exact value if the `channelCountMode` value is `explicit`.
 
-## 구문
+## Value
 
-```js
-var oscillator = audioCtx.createOscillator();
-var channels = oscillator.channelCount;
-```
+An integer.
 
-### 값
-
-integer.
-
-## 예제
+## Examples
 
 ```js
-var AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioContext();
 
-var audioCtx = new AudioContext();
-
-var oscillator = audioCtx.createOscillator();
-var gainNode = audioCtx.createGain();
+const oscillator = audioCtx.createOscillator();
+const gainNode = audioCtx.createGain();
 
 oscillator.connect(gainNode);
 gainNode.connect(audioCtx.destination);
@@ -39,14 +34,14 @@ gainNode.connect(audioCtx.destination);
 oscillator.channelCount;
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Web Audio API 사용하기](/ko/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)
+- [Using the Web Audio API](/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)

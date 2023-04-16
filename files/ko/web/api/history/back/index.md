@@ -1,45 +1,65 @@
 ---
-title: History.back()
+title: "History: back() method"
+short-title: back()
 slug: Web/API/History/back
+page-type: web-api-instance-method
+browser-compat: api.History.back
 ---
-{{APIRef("DOM")}}
 
-**`History.back()`** 메서드는 브라우저가 세션 기록의 바로 뒤 페이지로 이동하도록 지시합니다. {{domxref("History.go", "history.go(-1)")}}와 같습니다. 이전 페이지가 없는 경우 아무것도 하지 않습니다.
+{{APIRef("History API")}}
 
-이 메서드는 비동기적입니다. {{event("popstate")}} 이벤트 처리기를 통해 탐색 완료 시점을 알 수 있습니다.
+The **`History.back()`** method causes
+the browser to move back one page in the session history.
 
-## 구문
+It has the same
+effect as calling {{domxref("History.go", "history.go(-1)")}}. If there is no previous
+page, this method call does nothing.
 
-```js
-history.back()
+This method is {{glossary("asynchronous")}}. Add a listener for the
+{{domxref("Window/popstate_event", "popstate")}} event in order to determine when the navigation has completed.
+
+## Syntax
+
+```js-nolint
+back()
 ```
 
-## 예제
+### Parameters
 
-다음 예제는 클릭했을 때 뒤로 가는 버튼을 생성합니다.
+None.
+
+### Return value
+
+None ({{jsxref("undefined")}}).
+
+## Examples
+
+The following short example causes a button on the page to navigate back one entry in
+the session history.
 
 ### HTML
 
 ```html
-<button id="go-back">뒤로 가기!</button>
+<button id="go-back">Go back!</button>
 ```
 
 ### JavaScript
 
 ```js
-document.getElementById('go-back').addEventListener('click', () => {
-  window.history.back();
+document.getElementById("go-back").addEventListener("click", () => {
+  history.back();
 });
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("History")}}
+- [Working with the History API](/en-US/docs/Web/API/History_API/Working_with_the_History_API)

@@ -1,47 +1,46 @@
 ---
-title: URL.host
+title: "URL: host property"
+short-title: host
 slug: Web/API/URL/host
+page-type: web-api-instance-property
+browser-compat: api.URL.host
 ---
 
 {{ApiRef("URL API")}}
 
-{{domxref("URL")}} 인터페이스의 **`host`** 속성은 URL의 호스트, 즉 {{domxref("URL.hostname", "hostname")}}와 함께, {{glossary("port", "포트")}}가 존재하는 경우 `':'`과 그 뒤의 {{domxref("URL.port", "port")}}를 포함하는 {{domxref("USVString")}} 문자열입니다.
+The **`host`** property of the {{domxref("URL")}} interface is
+a string containing the host, that is the {{domxref("URL.hostname",
+  "hostname")}}, and then, if the {{glossary("port")}} of the URL is nonempty, a
+`':'`, followed by the {{domxref("URL.port", "port")}} of the URL.
 
 {{AvailableInWorkers}}
 
-## 구문
+## Value
+
+A string.
+
+## Examples
 
 ```js
-const host = url.host
-url.host = newHost
-```
-
-### 값
-
-{{domxref("USVString")}}.
-
-## 예제
-
-```js
-let url = new URL('https://developer.mozilla.org/ko/docs/Web/API/URL/host');
+let url = new URL("https://developer.mozilla.org/en-US/docs/Web/API/URL/host");
 console.log(url.host); // "developer.mozilla.org"
 
-url = new URL('https://developer.mozilla.org:443/ko/docs/Web/API/URL/host');
+url = new URL("https://developer.mozilla.org:443/en-US/docs/Web/API/URL/host");
 console.log(url.host); // "developer.mozilla.org"
 // The port number is not included because 443 is the scheme's default port
 
-url = new URL('https://developer.mozilla.org:4097/ko/docs/Web/API/URL/host');
+url = new URL("https://developer.mozilla.org:4097/en-US/docs/Web/API/URL/host");
 console.log(url.host); // "developer.mozilla.org:4097"
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 속성이 속한 {{domxref("URL")}} 인터페이스.
+- The {{domxref("URL")}} interface it belongs to.

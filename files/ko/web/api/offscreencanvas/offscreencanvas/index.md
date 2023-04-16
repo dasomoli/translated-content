@@ -1,42 +1,46 @@
 ---
-title: OffscreenCanvas()
+title: "OffscreenCanvas: OffscreenCanvas() constructor"
+short-title: OffscreenCanvas()
 slug: Web/API/OffscreenCanvas/OffscreenCanvas
+page-type: web-api-constructor
+browser-compat: api.OffscreenCanvas.OffscreenCanvas
 ---
 
-{{APIRef("Canvas API")}} {{SeeCompatTable}}
+{{APIRef("Canvas API")}}
 
-**`OffscreenCanvas()`** 생성자는 새롭게 초기화된 {{domxref("OffscreenCanvas")}} 객체를 반환합니다.
+The **`OffscreenCanvas()`** constructor returns a newly instantiated {{domxref("OffscreenCanvas")}} object.
 
-## 구문
+## Syntax
 
-```js
-new OffscreenCanvas(width, height);
+```js-nolint
+new OffscreenCanvas(width, height)
 ```
 
-### 매개 변수
+### Parameters
 
 - `width`
-  - : offscreen 캔버스의 너비
+  - : The width of the offscreen canvas.
 - `height`
-  - : offscreen 캔버스의 높이
+  - : The height of the offscreen canvas.
 
-## 예시
+## Examples
 
-이 예시는 `OffscreenCanvas()` 생성자를 이용해 새로운 offscreen 캔버스를 생성하고, [WebGL](/ko/docs/Web/API/WebGL_API) 컨텍스트의 {{domxref("OffscreenCanvas.getContext()", "getContext()")}} 메소드를 사용해 초기화합니다.
+This example creates a new offscreen canvas using the `OffscreenCanvas()` constructor.
+We then initialize a [WebGL](/en-US/docs/Web/API/WebGL_API) context on it using the {{domxref("OffscreenCanvas.getContext()", "getContext()")}} method.
 
 ```js
-let offscreen = new OffscreenCanvas(256, 256);
-let gl = offscreen.getContext('webgl');
+const offscreen = new OffscreenCanvas(256, 256);
+const gl = offscreen.getContext("webgl");
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 더 보기
+## See also
 
-- {{domxref("OffscreenCanvas")}}, 생성자가 속한 인터페이스
+- {{domxref("OffscreenCanvas")}}, the interface this constructor belongs to

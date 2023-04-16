@@ -1,63 +1,69 @@
 ---
 title: Atomics.notify()
 slug: Web/JavaScript/Reference/Global_Objects/Atomics/notify
-l10n:
-  sourceCommit: 194d3e00cb93a6e5ea44812548f4131cb17f0381
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Atomics.notify
 ---
 
 {{JSRef}}
 
-**`Atomics.notify()`** 정적 메서드는 대기열에서 대기 중인 있는 일부 에이전트에게 알림을 보냅니다.
+The **`Atomics.notify()`** static
+method notifies up some agents that are sleeping in the wait queue.
 
-> **참조:** 이 작업은 공유된 {{jsxref("Int32Array")}}에서만 작동합니다.
-> 공유되지 않은 `ArrayBuffer` 객체에서는 `0`을 반환합니다.
+> **Note:** This operation works with a shared {{jsxref("Int32Array")}}
+> only.
+> It will return `0` on non-shared `ArrayBuffer` objects.
 
-## 구문
+## Syntax
 
 ```js-nolint
 Atomics.notify(typedArray, index, count)
 ```
 
-### 매개변수
+### Parameters
 
 - `typedArray`
-  - : 공유된 {{jsxref("Int32Array")}}.
+  - : A shared {{jsxref("Int32Array")}}.
 - `index`
-  - : 깨울 `typedArray`의 위치.
+  - : The position in the `typedArray` to wake up on.
 - `count` {{optional_inline}}
-  - : 알림을 보낼 대기 중 에이전트의 숫자. 기본 값은 {{jsxref("Infinity",
-    "+Infinity")}}입니다.
+  - : The number of sleeping agents to notify. Defaults to {{jsxref("Infinity",
+    "+Infinity")}}.
 
-### 반환 값
+### Return value
 
-- 깨어난 에이전트의 숫자를 반환합니다.
-- 공유되지 않은 {{jsxref("ArrayBuffer")}} 객체가 사용되었을 경우 `0`을 반환합니다.
+- Returns the number of woken up agents.
+- Returns `0`, if a non-shared {{jsxref("ArrayBuffer")}} object is used.
 
-### 예외
+### Exceptions
 
-- `typedArray`가 허용된 정수형이 아닐 경우 {{jsxref("TypeError")}}가 발생합니다.
-- `index`가 `typedArray`의 범위를 벗어날 경우 {{jsxref("RangeError")}}가 발생합니다.
+- {{jsxref("TypeError")}}
+  - : Thrown if `typedArray` is not a {{jsxref("Int32Array")}}.
+- {{jsxref("RangeError")}}
+  - : Thrown if `index` is out of bounds in the `typedArray`.
 
-## 예제
+## Examples
 
-### `notify` 사용하기
+### Using `notify`
 
-공유된 `Int32Array`에서
+Given a shared `Int32Array`:
 
 ```js
 const sab = new SharedArrayBuffer(1024);
 const int32 = new Int32Array(sab);
 ```
 
-읽기 스레드는 0이 될 것으로 예상되는 위치 0에서 대기 중입니다. 이 상태가 유지되는 한 계속 진행되지 않습니다.
-그러나 쓰기 스레드가 새 값을 저장하면 쓰기 스레드에서 알림을 받고 새 값(123)을 반환합니다.
+A reading thread is sleeping and waiting on location 0 which is expected to be 0. As
+long as that is true, it will not go on. However, once the writing thread has stored a
+new value, it will be notified by the writing thread and return the new value (123).
 
 ```js
 Atomics.wait(int32, 0, 0);
 console.log(int32[0]); // 123
 ```
 
-쓰기 스레드는 새로운 값을 저장하고 쓰기가 완료되면 대기 중인 스레드에 알립니다.
+A writing thread stores a new value and notifies the waiting thread once it has
+written:
 
 ```js
 console.log(int32[0]); // 0;
@@ -65,15 +71,15 @@ Atomics.store(int32, 0, 123);
 Atomics.notify(int32, 0, 1);
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Atomics")}}
 - {{jsxref("Atomics.wait()")}}

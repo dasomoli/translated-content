@@ -1,10 +1,15 @@
 ---
 title: flex-shrink
 slug: Web/CSS/flex-shrink
+page-type: css-property
+browser-compat: css.properties.flex-shrink
 ---
+
 {{CSSRef}}
 
-**`flex-shrink`** [CSS](/ko/docs/CSS) property는 `flex-item` 요소의 `flex-shrink` 값을 설정하는 속성입니다. 만약 `flex-item` 요소의 크기가 `flex-container` 요소의 크기보다 클 때 flex-shrink 속성을 사용하는데, 설정된 숫자값에 따라 `flex-container` 요소 내부에서 `flex-item` 요소의 크기가 **축소**됩니다.
+The **`flex-shrink`** [CSS](/en-US/docs/Web/CSS) property sets the flex shrink factor of a flex item. If the size of all flex items is larger than the flex container, items shrink to fit according to `flex-shrink`.
+
+In use, `flex-shrink` is used alongside the other flex properties {{cssxref("flex-grow")}} and {{cssxref("flex-basis")}}, and normally defined using the {{cssxref("flex")}} shorthand.
 
 {{EmbedInteractiveExample("pages/css/flex-shrink.html")}}
 
@@ -18,23 +23,31 @@ flex-shrink: 0.6;
 /* Global values */
 flex-shrink: inherit;
 flex-shrink: initial;
+flex-shrink: revert;
+flex-shrink: revert-layer;
 flex-shrink: unset;
 ```
 
-The `flex-shrink` property is specified as a single [`<number>`](#number).
+The `flex-shrink` property is specified as a single `<number>`.
 
 ### Values
 
 - `<number>`
-  - : 관련 링크를 참고하세요{{cssxref("&lt;number&gt;")}}. 단, 음수값은 허용되지 않습니다.
+  - : See {{cssxref("&lt;number&gt;")}}. Negative values are invalid. Defaults to 1.
 
-### Formal syntax
+## Formal definition
+
+{{cssinfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## Example
+## Examples
 
-### HTML
+### Setting flex item shrink factor
+
+#### HTML
 
 ```html
 <p>The width of content is 500px; the flex-basis of the flex items is 120px.</p>
@@ -49,7 +62,7 @@ The `flex-shrink` property is specified as a single [`<number>`](#number).
 </div>
 ```
 
-### CSS
+#### CSS
 
 ```css
 #content {
@@ -59,7 +72,7 @@ The `flex-shrink` property is specified as a single [`<number>`](#number).
 
 #content div {
   flex-basis: 120px;
-  border: 3px solid rgba(0,0,0,.2);
+  border: 3px solid rgba(0, 0, 0, 0.2);
 }
 
 .box {
@@ -71,21 +84,19 @@ The `flex-shrink` property is specified as a single [`<number>`](#number).
 }
 ```
 
-### Result
+#### Result
 
-{{ EmbedLiveSample('Example', 500, 300) }}
+{{EmbedLiveSample('Setting_flex_item_shrink_factor', 500, 300)}}
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-{{cssinfo}}
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- CSS Flexbox Guide: _[Basic Concepts of Flexbox](/ko/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox)_
-- CSS Flexbox Guide: _[Controlling Ratios of flex items along the main axis](/ko/docs/Web/CSS/CSS_Flexible_Box_Layout/Controlling_Ratios_of_Flex_Items_Along_the_Main_Ax)_
+- CSS Flexbox Guide: _[Basic Concepts of Flexbox](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox)_
+- CSS Flexbox Guide: _[Controlling Ratios of flex items along the main axis](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Controlling_Ratios_of_Flex_Items_Along_the_Main_Ax)_

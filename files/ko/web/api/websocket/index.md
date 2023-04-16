@@ -1,83 +1,89 @@
 ---
 title: WebSocket
 slug: Web/API/WebSocket
+page-type: web-api-interface
+browser-compat: api.WebSocket
 ---
 
 {{APIRef("Web Sockets API")}}
 
-`WebSocket` 객체는 [WebSocket](/ko/docs/Web/API/WebSockets_API) 서버 연결의 생성과 관리 및 연결을 통한 데이터 송수신 API를 제공합니다.
+The `WebSocket` object provides the API for creating and managing a [WebSocket](/en-US/docs/Web/API/WebSockets_API) connection to a server, as well as for sending and receiving data on the connection.
 
-`WebSocket` 객체를 생성하려면 [`WebSocket()`](/ko/docs/Web/API/WebSocket/WebSocket) 생성자를 사용하세요.
+To construct a `WebSocket`, use the [`WebSocket()`](/en-US/docs/Web/API/WebSocket/WebSocket) constructor.
 
 {{AvailableInWorkers}}
 
 {{InheritanceDiagram}}
 
-## 생성자
+## Constructor
 
 - {{domxref("WebSocket.WebSocket", "WebSocket()")}}
-  - : 새로운 `WebSocket` 객체를 생성해 반환합니다.
+  - : Returns a newly created `WebSocket` object.
 
-## 속성
+## Instance properties
 
 - {{domxref("WebSocket.binaryType")}}
-  - : 연결에 사용되는 이진 데이터의 유형입니다.
-- {{domxref("WebSocket.bufferedAmount")}} {{readonlyinline}}
-  - : 큐에 대기 중인 데이터의 바이트 수입니다.
-- {{domxref("WebSocket.extensions")}} {{readonlyinline}}
-  - : 서버에서 선택한 확장입니다.
-- {{domxref("WebSocket.protocol")}} {{readonlyinline}}
-  - : 서버에서 선택한 하위 프로토콜입니다.
-- {{domxref("WebSocket.readyState")}} {{readonlyinline}}
-  - : 연결의 현재 상태입니다.
-- {{domxref("WebSocket.url")}} {{readonlyinline}}
-  - : WebSocket의 절대 URL입니다.
+  - : The binary data type used by the connection.
+- {{domxref("WebSocket.bufferedAmount")}} {{ReadOnlyInline}}
+  - : The number of bytes of queued data.
+- {{domxref("WebSocket.extensions")}} {{ReadOnlyInline}}
+  - : The extensions selected by the server.
+- {{domxref("WebSocket.protocol")}} {{ReadOnlyInline}}
+  - : The sub-protocol selected by the server.
+- {{domxref("WebSocket.readyState")}} {{ReadOnlyInline}}
+  - : The current state of the connection.
+- {{domxref("WebSocket.url")}} {{ReadOnlyInline}}
+  - : The absolute URL of the WebSocket.
 
-## 메서드
+## Instance methods
 
 - {{domxref("WebSocket.close()")}}
-  - : 연결을 닫습니다.
+  - : Closes the connection.
 - {{domxref("WebSocket.send()")}}
-  - : 전송할 데이터를 큐에 등록합니다.
+  - : Enqueues data to be transmitted.
 
-## 이벤트
+## Events
 
-`addEventListener()` 메서드를 사용하거나 `WebSocket` 인터페이스의 `oneventname` 속성에 수신기를 할당해서 아래의 이벤트를 수신할 수 있습니다.
+Listen to these events using `addEventListener()` or by assigning an event listener to the `oneventname` property of this interface.
 
 - {{domxref("WebSocket/close_event", "close")}}
-  - : `WebSocket`의 연결이 닫힐 때 발생합니다. `onclose` 속성으로도 수신할 수 있습니다.
+  - : Fired when a connection with a `WebSocket` is closed.
+    Also available via the `onclose` property
 - {{domxref("WebSocket/error_event", "error")}}
-  - : `WebSocket`의 연결이, 일부 데이터 전송의 실패 등 오류로 인해 닫힐 때 발생합니다. `onerror` 속성으로도 수신할 수 있습니다.
+  - : Fired when a connection with a `WebSocket` has been closed because of an error, such as when some data couldn't be sent.
+    Also available via the `onerror` property.
 - {{domxref("WebSocket/message_event", "message")}}
-  - : `WebSocket`으로 데이터를 수신했을 때 발생합니다. `onmessage` 속성으로도 수신할 수 있습니다.
+  - : Fired when data is received through a `WebSocket`.
+    Also available via the `onmessage` property.
 - {{domxref("WebSocket/open_event", "open")}}
-  - : `WebSocket` 연결이 열렸을 때 발생합니다. `onopen` 속성으로도 수신할 수 있습니다.
+  - : Fired when a connection with a `WebSocket` is opened.
+    Also available via the `onopen` property.
 
-## 예제
+## Examples
 
 ```js
-// WebSocket 연결 생성
-const socket = new WebSocket('ws://localhost:8080');
+// Create WebSocket connection.
+const socket = new WebSocket("ws://localhost:8080");
 
-// 연결이 열리면
-socket.addEventListener('open', function (event) {
-    socket.send('Hello Server!');
+// Connection opened
+socket.addEventListener("open", (event) => {
+  socket.send("Hello Server!");
 });
 
-// 메시지 수신
-socket.addEventListener('message', function (event) {
-    console.log('Message from server ', event.data);
+// Listen for messages
+socket.addEventListener("message", (event) => {
+  console.log("Message from server ", event.data);
 });
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [WebSocket을 이용하여 클라이언트 애플리케이션 작성하기](/ko/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications)
+- [Writing WebSocket client applications](/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications)

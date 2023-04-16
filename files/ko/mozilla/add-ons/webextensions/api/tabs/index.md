@@ -1,31 +1,29 @@
 ---
 title: tabs
 slug: Mozilla/Add-ons/WebExtensions/API/tabs
+page-type: webextension-api
+browser-compat: webextensions.api.tabs
 ---
 
 {{AddonSidebar}}
 
 Interact with the browser's tab system.
 
-브라우저의 탭 시스템과의 상호작용.
+> **Note:** When using Manifest V3 or higher, the methods to execute scripts, insert CSS, and remove CSS are provided by the {{WebExtAPIRef("scripting")}} API through the {{WebExtAPIRef("scripting.executeScript()")}}, {{WebExtAPIRef("scripting.insertCSS()")}} and {{WebExtAPIRef("scripting.removeCSS()")}} methods.
 
 You can use this API to get a list of opened tabs, filtered by various criteria, and to open, update, move, reload, and remove tabs. You can't directly access the content hosted by tabs using this API, but you can insert JavaScript and CSS into tabs using the {{WebExtAPIRef("tabs.executeScript()")}} or {{WebExtAPIRef("tabs.insertCSS()")}} APIs.
 
-이 API는 열려있는 탭의 목록을 얻는데, 다양한 기준으로 걸러내는데, 그리고 탭을 열고, 고치고, 옮기고, 다시 싣고, 없애는데 사용할 수 있다. 이 API로 탭에 열린 콘텐트를 직접 다룰 수는 없지만, {{WebExtAPIRef("tabs.executeScript()")}}나 {{WebExtAPIRef("tabs.insertCSS()")}} API로 탭에 자바스크립트와 CSS를 끼워 넣을 수는 있다.
-
 You can use most of this API without any special permission. However:
 
-특별한 권한없이 이 API의 대부분을 사용할 수 있지만:
+- To access `Tab.url`, `Tab.title`, and `Tab.favIconUrl` (or to filter by these properties via {{WebExtAPIRef("tabs.query()")}}), you need to have the `"tabs"` [permission](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions), or have [host permissions](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions#host_permissions) that match `Tab.url`.
 
-- to access `Tab.url`, `Tab.title`, and `Tab.favIconUrl`, you need to have the "tabs" [permission](/ko/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions). In Firefox this also means you need "tabs" to {{WebExtAPIRef("tabs.query", "query")}} by URL.
-- to use {{WebExtAPIRef("tabs.executeScript()")}} or {{WebExtAPIRef("tabs.insertCSS()")}} you must have the [host permission](/en-US/Add-ons/WebExtensions/manifest.json/permissions#Host_permissions) for the tab
+  - Access to these properties by host permissions is supported since Firefox 86 and Chrome 50. In Firefox 85 and earlier, the "tabs" permission was required instead.
 
-- `Tab.url`, `Tab.title`, and `Tab.favIconUrl`에 접근하려면 "tabs" [권한](/ko/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions)을 가져야 한다. 파이어폭스에서 이 말은 URL로 {{WebExtAPIRef("tabs.query", "query")}} 하는데도 "tabs"가 필요하다는 뜻이다.
-- {{WebExtAPIRef("tabs.executeScript()")}}나 {{WebExtAPIRef("tabs.insertCSS()")}}를 사용하려면 탭에 대한 [host 권한](/en-US/Add-ons/WebExtensions/manifest.json/permissions#Host_permissions)을 가져야 한다.
+- To use {{WebExtAPIRef("tabs.executeScript()")}} or {{WebExtAPIRef("tabs.insertCSS()")}}, you must have the [host permission](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions#host_permissions) for the tab
 
-또는 이런 권한을 일시적으로 얻는 방법도 있다. 현재 활성 탭이거나 명시적인 사용자 동작의 응답이라면 ["activeTab" 권한](/en-US/Add-ons/WebExtensions/manifest.json/permissions#activeTab_permission)을 요청하면 된다.
+Alternatively, you can get these permissions temporarily, only for the currently active tab and only in response to an explicit user action, by asking for the [`"activeTab"` permission](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions#activetab_permission).
 
-많은 탭 작업은 탭 ID를 사용한다. 탭 ID는 브라우저 세션 내에서 탭마다 고유하도록 보장된다. 브라우저가 다시 시작되면, 탭 ID를 재사용할 수 있고 그럴 것이다. 다시 시작하는 브라우저에 걸쳐서 탭에 정보를 연관시키려면 {{WebExtAPIRef("sessions.setTabValue()")}}를 사용해라.
+Many tab operations use a Tab `id`. Tab `id`s are guaranteed to be unique to a single tab only within a browser session. If the browser is restarted, then it can and will reuse tab `id`s. To associate information with a tab across browser restarts, use {{WebExtAPIRef("sessions.setTabValue()")}}.
 
 ## Types
 
@@ -157,15 +155,13 @@ You can use most of this API without any special permission. However:
 - {{WebExtAPIRef("tabs.onZoomChange")}}
   - : Fired when a tab is zoomed.
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 {{WebExtExamples("h2")}}
 
-> **참고:** This API is based on Chromium's [`chrome.tabs`](https://developer.chrome.com/docs/extensions/reference/tabs/) API. This documentation is derived from [`tabs.json`](https://chromium.googlesource.com/chromium/src/+/master/chrome/common/extensions/api/tabs.json) in the Chromium code.
->
-> Microsoft Edge compatibility data is supplied by Microsoft Corporation and is included here under the Creative Commons Attribution 3.0 United States License.
+> **Note:** This API is based on Chromium's [`chrome.tabs`](https://developer.chrome.com/docs/extensions/reference/tabs/) API. This documentation is derived from [`tabs.json`](https://chromium.googlesource.com/chromium/src/+/master/chrome/common/extensions/api/tabs.json) in the Chromium code.
 
 <!--
 // Copyright 2015 The Chromium Authors. All rights reserved.

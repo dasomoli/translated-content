@@ -1,62 +1,64 @@
 ---
 title: pageAction
 slug: Mozilla/Add-ons/WebExtensions/API/pageAction
+page-type: webextension-api
+browser-compat: webextensions.api.pageAction
 ---
 
 {{AddonSidebar}}
 
-[페이지 액션](/ko/docs/Mozilla/Add-ons/WebExtensions/Page_actions)은 브라우저의 주소창에 있는 아이콘이다.
+A [page action](/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Page_actions) is a clickable icon inside the browser's address bar.
 
-![](page-action.png)
+![Paw print icon representing a page action](page-action.png)
 
-아이콘 클릭에 대한 대응은 리스너를 등록하고 클릭 이벤트를 기다리는 것이나, [팝업창](/ko/docs/Mozilla/Add-ons/WebExtensions/Popups)이 열리게 하는 것일 수 있다.
+You can listen for clicks on the icon, or specify a [popup](/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Popups) that will open when the icon is clicked.
 
-팝업창은 보통의 웹페이지처럼 HTML, CSS, 그리고 자바스크립트로 내용과 동작을 작성할 수 있다. 팝업창에서 실행되는 자바스크립트는 백그라운드 스크립트와 마찬가지로 모든 확장앱 API를 사용할 수 있다.
+If you specify a popup, you can define its contents and behavior using HTML, CSS, and JavaScript—just like a normal web page. JavaScript running in the popup gets access to all the same WebExtension APIs as your background scripts.
 
-[manifest.json](/ko/docs/Mozilla/Add-ons/WebExtensions/manifest.json)의 [page_action 키](/en-US/Add-ons/WebExtensions/manifest.json/page_action)에 페이지 액션의 대부분의 속성들을 정의할 수 있지만, 이것들은 확정되는 것이라 이후에 바꿀 수 없다. 하지만 이 API는 그것들을 프로그램적으로 재정의하는 것도 가능하다. 그러나 API는 [manifest.json](/ko/docs/Mozilla/Add-ons/WebExtensions/manifest.json)에 [page_action](/en-US/Add-ons/WebExtensions/manifest.json/page_action) 키가 있어야만 사용할 수 있게 되므로 설사 모든 것을 프로그램적으로 할 계획이더라도 [page_action 키](/en-US/Add-ons/WebExtensions/manifest.json/page_action)는 있어야 한다.
+You can define most of a page action's properties declaratively using the [`page_action` key](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/page_action) in your [`manifest.json`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json), but can also redefine them programmatically using this API.
 
-페이지 액션은 특정 페이지에만 적절한 동작들을 위한 것이다(이럴테면 "현재 탭을 북마크하기" 같은). 그렇지 않고, 브라우저가 전반적으로 관련되는 동작이라면(가령은 "모든 북마크 보기" 라면) 브라우저 액션을 대신 사용하라.
+Page actions are for actions that are only relevant to particular pages (such as "bookmark the current tab"). If they are relevant to the browser as a whole (such as "show all bookmarks"), use a browser action instead.
 
-## 자료형
+## Types
 
 - {{WebExtAPIRef("pageAction.ImageDataType")}}
-  - : 이미지에 대한 픽셀 자료.
+  - : Pixel data for an image.
 
-## 함수
+## Functions
 
 - {{WebExtAPIRef("pageAction.show()")}}
-  - : 지정한 탭에 페이지 액션을 보인다.
+  - : Shows the page action for a given tab.
 - {{WebExtAPIRef("pageAction.hide()")}}
-  - : 지정한 탭의 페이지 액션을 숨긴다.
+  - : Hides the page action for a given tab.
 - {{WebExtAPIRef("pageAction.isShown()")}}
-  - : 페이지 액션이 보이는지 아닌지 검사한다.
+  - : Checks whether the page action is shown or not.
 - {{WebExtAPIRef("pageAction.setTitle()")}}
-  - : 페이지 액션의 제목을 설정한다. 이것은 페이지 액션위에 툴팁으로 표시된다.
+  - : Sets the page action's title. This is displayed in a tooltip over the page action.
 - {{WebExtAPIRef("pageAction.getTitle()")}}
-  - : 페이지 액션의 제목을 얻는다.
+  - : Gets the page action's title.
 - {{WebExtAPIRef("pageAction.setIcon()")}}
-  - : 페이지 액션의 아이콘을 설정한다.
+  - : Sets the page action's icon.
 - {{WebExtAPIRef("pageAction.setPopup()")}}
-  - : 페이지 액션의 팝업 URL을 설정한다.
+  - : Sets the URL for the page action's popup.
 - {{WebExtAPIRef("pageAction.getPopup()")}}
-  - : 페이지 액션의 팝업 URL을 얻는다.
+  - : Gets the URL for the page action's popup.
 - {{WebExtAPIRef("pageAction.openPopup()")}}
-  - : 페이지 액션의 팝업을 연다.
+  - : Opens the page action's popup.
 
-## 이벤트
+## Events
 
 - {{WebExtAPIRef("pageAction.onClicked")}}
-  - : 페이지 액션의 아이콘이 클릭되면 발생한다. 페이지 액션이 팝업이 설정되어 있으면 발생하지 않는다.
+  - : Fired when a page action icon is clicked. This event will not fire if the page action has a popup.
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 {{WebExtExamples("h2")}}
 
-> **참고:** **Acknowledgements**This API is based on Chromium's [`chrome.pageAction`](https://developer.chrome.com/extensions/pageAction) API. This documentation is derived from [`page_action.json`](https://chromium.googlesource.com/chromium/src/+/master/chrome/common/extensions/api/page_action.json) in the Chromium code.Microsoft Edge compatibility data is supplied by Microsoft Corporation and is included here under the Creative Commons Attribution 3.0 United States License.
+> **Note:** This API is based on Chromium's [`chrome.pageAction`](https://developer.chrome.com/docs/extensions/reference/pageAction/) API. This documentation is derived from [`page_action.json`](https://chromium.googlesource.com/chromium/src/+/master/chrome/common/extensions/api/page_action.json) in the Chromium code.
 
-```
+<!--
 // Copyright 2015 The Chromium Authors. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -84,3 +86,4 @@ slug: Mozilla/Add-ons/WebExtensions/API/pageAction
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->

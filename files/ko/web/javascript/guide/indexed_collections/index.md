@@ -1,504 +1,624 @@
 ---
 title: Indexed collections
 slug: Web/JavaScript/Guide/Indexed_collections
+page-type: guide
 ---
 
-{{jsSidebar("JavaScript Guide")}} {{PreviousNext("Web/JavaScript/Guide/Regular_Expressions", "Web/JavaScript/Guide/Keyed_Collections")}}
+{{jsSidebar("JavaScript Guide")}} {{PreviousNext("Web/JavaScript/Guide/Regular_expressions", "Web/JavaScript/Guide/Keyed_Collections")}}
 
-이번 장에서는 인덱스값에 의해 정렬이 되는 데이터 자료구조에 대해 소개합니다. 배열과 유사 배열 생성자인 {{jsxref("Array")}} 객체와 {{jsxref("TypedArray")}} 객체 같은 생성자들을 포함합니다.
+This chapter introduces collections of data which are ordered by an index value. This includes arrays and array-like constructs such as {{jsxref("Array")}} objects and {{jsxref("TypedArray")}} objects.
 
-## 배열 객체
+An _array_ is an ordered list of values that you refer to with a name and an index.
 
-배열은 이름과 인덱스로 참조되는 정렬된 값들의 집합입니다. 예를 들면, 숫자로 된 사원번호를 index로하여 사원명을 가지고 있는 emp라는 배열을 가질 수 있습니다. 그래서 emp\[1]은 사원번호 1번, emp\[2]는 사원번호 2번, 이런 식으로 사원번호를 인덱스 값으로 가질 수 있는 것입니다.
+For example, consider an array called `emp`, which contains employees' names indexed by their numerical employee number. So `emp[0]` would be employee number zero, `emp[1]` employee number one, and so on.
 
-자바스크립트는 명시적인 배열 데이터 형식을 가지고 있지 않습니다. 그러나 미리 정의된 배열 객체를 사용할 수 있고 배열 객체의 메서드를 개발하는 어플리케이션에서 사용되는 배열에 사용할 수 있습니다. 배열 객체는 합치기(joining), 순서 뒤집기(reversing) 그리고 정렬(sorting)과 같은 다양한 방법으로 배열을 조작하는 메서드들을 제공합니다. 정규 표현식과 함께 사용할 배열 길이와 기타 속성을 결정하는 속성이 있습니다.
+JavaScript does not have an explicit array data type. However, you can use the predefined `Array` object and its methods to work with arrays in your applications. The `Array` object has methods for manipulating arrays in various ways, such as joining, reversing, and sorting them. It has a property for determining the array length and other properties for use with regular expressions.
 
-### 배열 생성
+We will be focusing on arrays in this article, but many of the same concepts apply to typed arrays as well, since arrays and typed arrays share many similar methods. For more information on typed arrays, see the [typed array reference](/en-US/docs/Web/JavaScript/Typed_arrays).
 
-아래의 구문들은 동일한 요소를 가지는 배열을 생성하는 방법들입니다.
+## Creating an array
+
+The following statements create equivalent arrays:
 
 ```js
-var arr = new Array(element0, element1, ..., elementN);
-var arr = Array(element0, element1, ..., elementN);
-var arr = [element0, element1, ..., elementN];
+const arr1 = new Array(element0, element1, /* … ,*/ elementN);
+const arr2 = Array(element0, element1, /* … ,*/ elementN);
+const arr3 = [element0, element1, /* … ,*/ elementN];
 ```
 
-요소0, 요소1, ..., 요소N은 배열내에 포함된 요소의 값 목록입니다. 해당 값들이 명시되어 있을 경우, 해당 배열은 주어진 요소들을 포함하도록 초기화 됩니다. 해당 배열의 길이는 주어진 요소들의 갯수가 됩니다.
+`element0, element1, …, elementN` is a list of values for the array's elements. When these values are specified, the array is initialized with them as the array's elements. The array's `length` property is set to the number of arguments.
 
-대괄호 문법은 일명 "배열 문자" 혹은 "배열 초기화"라고 합니다. 대괄호 문법은 다른 배열 생성 표기법 보다 짧고 일반적으로 선호하는 문법입니다. 보다 상세한 내용은 [Array literals](/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#Array_literals)를 참조하세요.
+The bracket syntax is called an "array literal" or "array initializer." It's shorter than other forms of array creation, and so is generally preferred. See [Array literals](/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#array_literals) for details.
 
-길이가 0보다 크지만 아무런 요소를 가지고 있지 않은 배열을 생성하기 위한 방법은 아래와 같습니다.
+To create an array with non-zero length, but without any items, either of the following can be used:
 
 ```js
-var arr = new Array(arrayLength);
-var arr = Array(arrayLength);
+// This...
+const arr1 = new Array(arrayLength);
+
+// ...results in the same array as this
+const arr2 = Array(arrayLength);
 
 // This has exactly the same effect
-var arr = [];
-arr.length = arrayLength;
+const arr3 = [];
+arr3.length = arrayLength;
 ```
 
-<div class="note"><p>Note : 위의 예제 코드에서, <code>arrayLength</code>는 반드시 <code>숫자</code>여야 합니다. 그렇지 않으면 하나의 요소(주어진 값)을 가지는 배열이 생성 됩니다. <code>arr.length</code>를 호출하면 <code>arrayLength</code>가 반환이 되지만 해당 배열은 실제로 아무런 요소를 가지고 있지 않습니다. {{jsxref("Statements/for...in","for...in")}} 반복문을 실행하면 해당 배열은 아무런 요소를 반환하지 않습니다.</p></div>
+> **Note:** In the above code, `arrayLength` must be a `Number`. Otherwise, an array with a single element (the provided value) will be created. Calling `arr.length` will return `arrayLength`, but the array doesn't contain any elements. A {{jsxref("Statements/for...in","for...in")}} loop will not find any property on the array.
 
-추가로 아래의 예제에서 볼 수 있듯이, 새로이 정의된 혹은 이미 존재하는 객체 변수의 속성으로 배열을 할당할 수 있습니다.
+In addition to a newly defined variable as shown above, arrays can also be assigned as a property of a new or an existing object:
 
 ```js
-var obj = {};
-// ...
-obj.prop = [element0, element1, ..., elementN];
+const obj = {};
+// …
+obj.prop = [element0, element1, /* … ,*/ elementN];
 
 // OR
-var obj = {prop: [element0, element1, ...., elementN]}
+const obj = { prop: [element0, element1, /* … ,*/ elementN] };
 ```
 
-값이 `숫자`인 하나의 요소만을 가지는 배열을 생성하고자 할 경우, 반드시 대괄호 문법을 사용해야 합니다. 하나의 `숫자` 값을 Array() 생성자에게 전달할 경우, 그 숫자 값은 해당 배열의 요소가 아니라 `arrayLength`(배열의 길이)로 해석됩니다.
+If you wish to initialize an array with a single element, and the element happens to be a `Number`, you must use the bracket syntax. When a single `Number` value is passed to the `Array()` constructor or function, it is interpreted as an `arrayLength`, not as a single element.
 
 ```js
-var arr = [42];
-var arr = Array(42); // Creates an array with no element,
-                     // but with arr.length set to 42
+// This creates an array with only one element: the number 42.
+const arr = [42];
 
-// The above code is equivalent to
-var arr = [];
+// This creates an array with no elements and arr.length set to 42.
+const arr = Array(42);
+
+// This is equivalent to:
+const arr = [];
 arr.length = 42;
 ```
 
-만약 숫자이지만 0이 아닌 소수점을 가지는 숫자를 `Array()생성자에게 인자로 줄 경우, 범위 에러(RangeError)가 발생하게 됩니다. 아래의 예제는 범위 에러가 발생하는 상황을 보여 줍니다.`
+Calling `Array(N)` results in a `RangeError`, if `N` is a non-whole number whose fractional portion is non-zero. The following example illustrates this behavior.
 
 ```js
-var arr = Array(9.3);  // RangeError: Invalid array length
+const arr = Array(9.3); // RangeError: Invalid array length
 ```
 
-만약 임의의 데이터 형식인 하나의 요소를 가지는 배열을 생성하고자 할 경우, 배열 표기법을 사용하는 것이 안전합니다. 혹은 빈 배열을 먼저 선언한 후 임의의 데이터 값을 해당 배열에 추가하는 것도 방법이 됩니다.
+If your code needs to create arrays with single elements of an arbitrary data type, it is safer to use array literals. Alternatively, create an empty array first before adding the single element to it.
 
-ES2015에서 요소가 하나인 배열을 만들기 위해 Array.of 정적 메소드를 사용할 수 있습니다.
+You can also use the {{jsxref("Array.of")}} static method to create arrays with single element.
 
 ```js
-let wisenArray = Array.of(9.3) // wisenArray contains only one element 9.3
+const wisenArray = Array.of(9.3); // wisenArray contains only one element 9.3
 ```
 
-### 배열에 값 저장
+## Referring to array elements
 
-배열의 요소에 값을 할당하여 배열에 값을 저장할 수 있습니다. 예를 들면,
+Because elements are also properties, you can access them using [property accessors](/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors). Suppose you define the following array:
 
 ```js
-var emp = [];
-emp[0] = 'Casey Jones';
-emp[1] = 'Phil Lesh';
-emp[2] = 'August West';
+const myArray = ["Wind", "Rain", "Fire"];
 ```
 
-> **Note:** 위의 코드 예제처럼 배열 연산자에 양의 정수가 아닌 값을 줄 경우, 배열의 요소가 대신 배열로 대변되는 객체의 속성이 생성됩니다.
+You can refer to the first element of the array as `myArray[0]`, the second element of the array as `myArray[1]`, etc… The index of the elements begins with zero.
+
+> **Note:** You can also use [property accessors](/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors) to access other properties of the array, like with an object.
+>
+> ```js
+> const arr = ["one", "two", "three"];
+> arr[2]; // three
+> arr["length"]; // 3
+> ```
+
+## Populating an array
+
+You can populate an array by assigning values to its elements. For example:
 
 ```js
-var arr = [];
-arr[3.4] = 'Oranges';
-console.log(arr.length);                // 0
-console.log(arr.hasOwnProperty(3.4));   // true
+const emp = [];
+emp[0] = "Casey Jones";
+emp[1] = "Phil Lesh";
+emp[2] = "August West";
 ```
 
-배열을 생성함과 동시에 배열에 값을 저장할 수 있습니다.
+> **Note:** If you supply a non-integer value to the array operator in the code above, a property will be created in the object representing the array, instead of an array element.
+>
+> ```js
+> const arr = [];
+> arr[3.4] = "Oranges";
+> console.log(arr.length); // 0
+> console.log(Object.hasOwn(arr, 3.4)); // true
+> ```
+
+You can also populate an array when you create it:
 
 ```js
-var myArray = new Array('Hello', myVar, 3.14159);
-var myArray = ['Mango', 'Apple', 'Orange'];
+const myArray = new Array("Hello", myVar, 3.14159);
+// OR
+const myArray = ["Mango", "Apple", "Orange"];
 ```
 
-### 배열 요소의 참조
+### Understanding length
 
-배열의 요소를 참조하기 위해서 해당 요소의 인덱스(요소의 순서를 나타내는)를 사용할 수 있습니다. 예를 들어, 아래와 같이 배열을 선언하였다면
+At the implementation level, JavaScript's arrays actually store their elements as standard object properties, using the array index as the property name.
 
-```js
-var myArray = ['Wind', 'Rain', 'Fire'];
-```
+The `length` property is special. Its value is always a positive integer greater than the index of the last element if one exists. (In the example below, `'Dusty'` is indexed at `30`, so `cats.length` returns `30 + 1`).
 
-배열의 첫번째 요소는 `myArray[0]로 참조할 수 있고 두번째 요소는 myArray[1]로 참조할 수 있습니다. 배열의 인덱스 값은 0부터 시작합니다.`
-
-> **Note:** 배열 연산자(대괄호)는 배열의 속성에 접근하기 위해서도 사용될 수 있습니다 (배열 또한 객체이기 때문입니다). 예를 들면 아래와 같습니다.
+Remember, JavaScript Array indexes are 0-based: they start at `0`, not `1`. This means that the `length` property will be one more than the highest index stored in the array:
 
 ```js
-var arr = ['one', 'two', 'three'];
-arr[2];  // three
-arr["length"];  // 3
-```
-
-### 배열 길이에 대한 이해
-
-실제 구현에서, 자바스크립트의 배열은 배열에 포함된 요소들을 배열의 인덱스 값을 속성 이름으로 사용하여 표준 객체의 속성처럼 저장합니다. 길이 속성은 좀 특별합니다. 배열의 길이는 항상 마지막 요소의 인덱스에 1을 더한 값을 반환합니다 (다음 예제에서 Dusty는 인덱스 30번째에 위치하기때문에 cats 배열의 길이는 31이 됩니다). 기억하실 것은 자바스크립트 배열의 인덱스는 항상 1부터가 아닌 0부터 시작합니다. 이것이 의미하는 바는 배열의 길이 속성은 배열에 저장되어 있는 가장 큰 인덱스보다 1만큼 큰 값이 된다는 것입니다.
-
-```js
-var cats = [];
-cats[30] = ['Dusty'];
+const cats = [];
+cats[30] = ["Dusty"];
 console.log(cats.length); // 31
 ```
 
-배열의 길이(`length`) 속성을 지정하는 것 또한 가능합니다. 만약 배열에 저장되어 있는 요소의 갯수보다 작은 값을 배열 길이로 지정하게 되면, 지정된 배열 길이보다 큰 인덱스 값을 가지는 요소는 배열에서 삭제됩니다. 0을 배열 길이로 지정하게 되면 해당 배열은 요소를 가지지 않는 빈 배열이 되는 것입니다.
+You can also assign to the `length` property.
+
+Writing a value that is shorter than the number of stored items truncates the array. Writing `0` empties it entirely:
 
 ```js
-var cats = ['Dusty', 'Misty', 'Twiggy'];
+const cats = ["Dusty", "Misty", "Twiggy"];
 console.log(cats.length); // 3
 
 cats.length = 2;
-console.log(cats); // logs "Dusty,Misty" - Twiggy has been removed
+console.log(cats); // [ 'Dusty', 'Misty' ] - Twiggy has been removed
 
 cats.length = 0;
-console.log(cats); // logs []; the cats array is empty
+console.log(cats); // []; the cats array is empty
 
 cats.length = 3;
-console.log(cats); // logs [ <3 empty items ]
+console.log(cats); // [ <3 empty items> ]
 ```
 
-### 배열의 요소를 반복처리하기
+### Iterating over arrays
 
-배열을 가지고 처리하는 주된 작업은 배열의 요소를 반복적으로 접근해서 읽어오는 작업입니다. 가장 간단한 방법은 아래와 같습니다.
+A common operation is to iterate over the values of an array, processing each one in some way. The simplest way to do this is as follows:
 
 ```js
-var colors = ['red', 'green', 'blue'];
-for (var i = 0; i < colors.length; i++) {
+const colors = ["red", "green", "blue"];
+for (let i = 0; i < colors.length; i++) {
   console.log(colors[i]);
 }
 ```
 
-배열이 아무런 요소를 포함하고 있지 않다면 반복문 조건에서 false로 평가됩니다. 배열의 요소가 [DOM](/en-US/docs/DOM) node들을 포함한다면 보다 효율적인 코드 관용구를 사용할 수 있습니다.
+If you know that none of the elements in your array evaluate to `false` in a boolean context—if your array consists only of [DOM](/en-US/docs/Web/API/Document_Object_Model) nodes, for example—you can use a more efficient idiom:
 
 ```js
-var divs = document.getElementsByTagName('div');
-for (var i = 0, div; div = divs[i]; i++) {
+const divs = document.getElementsByTagName("div");
+for (let i = 0, div; (div = divs[i]); i++) {
   /* Process div in some way */
 }
 ```
 
-위의 예제 코드의 for반복문 조건은 배열의 길이를 확인하는 작업을 피할 수 있고, div 변수가 매 반복마다 현재의 요소를 가지게 됩니다.
+This avoids the overhead of checking the length of the array, and ensures that the `div` variable is reassigned to the current item each time around the loop for added convenience.
 
-{{jsxref("Array.forEach", "forEach()")}} 메서드는 배열의 요소를 반복 처리할 수 있는 또 다른 방법입니다:
+The [`forEach()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach) method provides another way of iterating over an array:
 
 ```js
-var colors = ['red', 'green', 'blue'];
-colors.forEach(function(color) {
-  console.log(color);
-});
+const colors = ["red", "green", "blue"];
+colors.forEach((color) => console.log(color));
 // red
 // green
 // blue
 ```
 
-ES2015 Arrow Function으로 다음과 같이 더 짧게 코드를 짤 수 있습니다.
+The function passed to `forEach` is executed once for every item in the array, with the array item passed as the argument to the function. Unassigned values are not iterated in a `forEach` loop.
+
+Note that the elements of an array that are omitted when the array is defined are not listed when iterating by `forEach`, but _are_ listed when `undefined` has been manually assigned to the element:
 
 ```js
-var colors = ['red', 'green', 'blue'];
-color.forEach(color => console.log(color));
-// red
-// green
-// blue
-```
+const sparseArray = ["first", "second", , "fourth"];
 
-`forEach`에 인자로 주어진 함수는 배열의 각 요소에 대해 한번씩 실행이 되고 배열의 각 요소는 인자로 주어진 함수의 인자로 주어지게 됩니다. 할당되지 않은 요소 값은 `forEach` 반복문에서 처리되지 않습니다.
-
-`forEach` 반복문으로 배열의 요소를 반복 처리할 때, 배열을 정의할 때 생략된 요소는 처리 대상이 되지 않는 것에 유의하세요. 하지만 `undefined`를 생략된 요소에 할당하게 되면 undefined로 처리됩니다.
-
-```js
-var array = ['first', 'second', , 'fourth'];
-
-array.forEach(function(element) {
+sparseArray.forEach((element) => {
   console.log(element);
-})
+});
+// Logs:
 // first
 // second
 // fourth
 
-if(array[2] === undefined) {
-   console.log('array[2] is undefined'); // true
+if (sparseArray[2] === undefined) {
+  console.log("sparseArray[2] is undefined"); // true
 }
 
-var array = ['first', 'second', undefined, 'fourth'];
+const nonsparseArray = ["first", "second", undefined, "fourth"];
 
-array.forEach(function(element) {
+nonsparseArray.forEach((element) => {
   console.log(element);
 });
+// Logs:
 // first
 // second
 // undefined
 // fourth
 ```
 
-JavaScript 요소는 표준 객체 속성으로 저장되므로 {{jsxref ( "Statements / for ... in", "for ... in")}} 루프를 사용하여 JavaScript 배열을 반복하는 것은 바람직하지 않습니다. 왜냐면 일반 요소들과 그리고 모든 열거할 수 있는 속성들이 나열되기 때문입니다.
+Since JavaScript array elements are saved as standard object properties, it is not advisable to iterate through JavaScript arrays using {{jsxref("Statements/for...in","for...in")}} loops, because normal elements and all enumerable properties will be listed.
 
-### 배열 객체의 메서드
+### Array methods
 
-{{jsxref("Array")}} 객체는 다음과 같은 메서드들을 가지고 있습니다:
+The {{jsxref("Array")}} object has the following methods:
 
-{{jsxref("Array.concat", "concat()")}} 메서드는 두개의 배열을 합쳐 새로운 배열을 반환합니다.
+The [`concat()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat) method joins two or more arrays and returns a new array.
 
 ```js
-var myArray = new Array('1', '2', '3');
-myArray = myArray.concat('a', 'b', 'c');
+let myArray = ["1", "2", "3"];
+myArray = myArray.concat("a", "b", "c");
 // myArray is now ["1", "2", "3", "a", "b", "c"]
 ```
 
-{{jsxref("Array.join", "join(delimiter = ',')")}} 메서드는 배열의 모든 요소를 주어진 구분자로 연결된 하나의 문자열을 반환합니다.
+The [`join()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join) method joins all elements of an array into a string.
 
 ```js
-var myArray = new Array('Wind', 'Rain', 'Fire');
-var list = myArray.join(' - '); // list is "Wind - Rain - Fire"
+const myArray = ["Wind", "Rain", "Fire"];
+const list = myArray.join(" - "); // list is "Wind - Rain - Fire"
 ```
 
-{{jsxref("Array.push", "push()")}}메서드는 하나 혹은 그 이상의 요소를 배열의 마지막에 추가하고 추가된 요소를 포함한 길이를 반환합니다.
+The [`push()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push) method adds one or more elements to the end of an array and returns the resulting `length` of the array.
 
 ```js
-var myArray = new Array('1', '2');
-myArray.push('3'); // myArray is now ["1", "2", "3"]
+const myArray = ["1", "2"];
+myArray.push("3"); // myArray is now ["1", "2", "3"]
 ```
 
-{{jsxref("Array.pop", "pop()")}} 메서드는 배열의 마지막 요소를 제거하고 그 제거된 요소를 반환합니다.
+The [`pop()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/pop) method removes the last element from an array and returns that element.
 
 ```js
-var myArray = new Array('1', '2', '3');
-var last = myArray.pop();
+const myArray = ["1", "2", "3"];
+const last = myArray.pop();
 // myArray is now ["1", "2"], last = "3"
 ```
 
-{{jsxref("Array.shift", "shift()")}}메서드는 배열의 첫번째 요소를 제거하고 그 제거된 요소를 반환합니다.
+The [`shift()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/shift) method removes the first element from an array and returns that element.
 
 ```js
-var myArray = new Array('1', '2', '3');
-var first = myArray.shift();
+const myArray = ["1", "2", "3"];
+const first = myArray.shift();
 // myArray is now ["2", "3"], first is "1"
 ```
 
-{{jsxref("Array.shift", "unshift()")}}메서드는 하나 혹은 그 이상의 요소를 배열의 앞쪽에 추가하고 추가한 요소를 포함한 길이를 반환합니다.
+The [`unshift()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift) method adds one or more elements to the front of an array and returns the new length of the array.
 
 ```js
-var myArray = new Array('1', '2', '3');
-myArray.unshift('4', '5');
+const myArray = ["1", "2", "3"];
+myArray.unshift("4", "5");
 // myArray becomes ["4", "5", "1", "2", "3"]
 ```
 
-{{jsxref("Array.slice", "slice(start_index, upto_index)")}}메서드는 배열의 특정 부분을 추출하여 그 추출된 부분을 포함하는 새로운 배열을 반환합니다. upto_index에 해당하는 요소는 포함되지 않습니다.
+The [`slice()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice) method extracts a section of an array and returns a new array.
 
 ```js
-var myArray = new Array('a', 'b', 'c', 'd', 'e');
-myArray = myArray.slice(1, 4); // starts at index 1 and extracts all elements
-                               // until index 3, returning [ "b", "c", "d"]
+let myArray = ["a", "b", "c", "d", "e"];
+myArray = myArray.slice(1, 4); // [ "b", "c", "d"]
+// starts at index 1 and extracts all elements
+// until index 3
 ```
 
-{{jsxref("Array.splice", "splice(index, count_to_remove, addElement1, addElement2, ...)")}} 메세드는 주어진 인덱스 요소를 포함하여 count_to_remove 갯수만큼 삭제하고 주어진 요소로 바꿔 줍니다.
+The [`at()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/at) method returns the element at the specified index in the array, or `undefined` if the index is out of range. It's notably used for negative indices that access elements from the end of the array.
 
 ```js
-var myArray = new Array('1', '2', '3', '4', '5');
-myArray.splice(1, 3, 'a', 'b', 'c', 'd');
+const myArray = ["a", "b", "c", "d", "e"];
+myArray.at(-2); // "d", the second-last element of myArray
+```
+
+The [`splice()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice) method removes elements from an array and (optionally) replaces them. It returns the items which were removed from the array.
+
+```js
+const myArray = ["1", "2", "3", "4", "5"];
+myArray.splice(1, 3, "a", "b", "c", "d");
 // myArray is now ["1", "a", "b", "c", "d", "5"]
 // This code started at index one (or where the "2" was),
 // removed 3 elements there, and then inserted all consecutive
 // elements in its place.
 ```
 
-{{jsxref ( "Array.reverse", "reverse ()")}} 배열의 요소를 제자리에 배치합니다. 첫 번째 배열 요소가 마지막 요소가 되고 마지막 요소가 첫 번째 요소가 됩니다. 배열에 대한 참조를 반환합니다.
+The [`reverse()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse) method transposes the elements of an array, in place: the first array element becomes the last and the last becomes the first. It returns a reference to the array.
 
 ```js
-var myArray = new Array('1', '2', '3');
+const myArray = ["1", "2", "3"];
 myArray.reverse();
 // transposes the array so that myArray = ["3", "2", "1"]
 ```
 
-{{jsxref ( "Array.sort", "sort ()")}} 배열의 요소를 제자리에 정렬하고 배열에 대한 참조를 반환합니다.
+The [`flat()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat) method returns a new array with all sub-array elements concatenated into it recursively up to the specified depth.
 
 ```js
-var myArray = new Array('Wind', 'Rain', 'Fire');
-myArray.sort();
-// sorts the array so that myArray = [ "Fire", "Rain", "Wind" ]
+let myArray = [1, 2, [3, 4]];
+myArray = myArray.flat();
+// myArray is now [1, 2, 3, 4], since the [3, 4] subarray is flattened
 ```
 
-`sort()` 메서드에 어떻게 해당 배열의 요소를 정렬할지 결정하는 콜백 함수를 인자로 줄 수 있습니다.
-
-콜백을 사용하는 sort 메소드 및 다른 메소드는 반복 메소드로 알려져 있습니다. 일부 메소드에서는 전체 배열을 반복하기 때문입니다. 각각은 `thisObject`라는 선택적인 두 번째 인수를 취합니다. 제공되면 `thisObject`는 콜백 함수의 본문에 있는 `this` 키워드의 값이 됩니다.
-
-제공되지 않으면 함수가 명시적 객체 컨텍스트 외부에서 호출되는 다른 경우와 마찬가지로 이 함수는 콜백으로 화살표 함수를 사용할 때 전역 객체 ({{domxref ( "window")}})를 참조합니다. 정상적인 기능은 콜백입니다.
-
-콜백 함수는 배열의 요소인 두 개의 인수로 호출됩니다.
-
-아래 함수는 두 값을 비교하여 세 값 중 하나를 반환합니다.
-
-예를 들어, 다음은 문자열의 마지막 문자로 정렬합니다.
+The [`sort()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) method sorts the elements of an array in place, and returns a reference to the array.
 
 ```js
-var sortFn = function(a, b){
-  if (a[a.length - 1] < b[b.length - 1]) return -1;
-  if (a[a.length - 1] > b[b.length - 1]) return 1;
-  if (a[a.length - 1] == b[b.length - 1]) return 0;
-}
+const myArray = ["Wind", "Rain", "Fire"];
+myArray.sort();
+// sorts the array so that myArray = ["Fire", "Rain", "Wind"]
+```
+
+`sort()` can also take a callback function to determine how array elements are compared. The callback function is called with two arguments, which are two values from the array. The function compares these two values and returns a positive number, negative number, or zero, indicating the order of the two values. For instance, the following will sort the array by the last letter of a string:
+
+```js
+const sortFn = (a, b) => {
+  if (a[a.length - 1] < b[b.length - 1]) {
+    return -1; // Negative number => a < b, a comes before b
+  } else if (a[a.length - 1] > b[b.length - 1]) {
+    return 1; // Positive number => a > b, a comes after b
+  }
+  return 0; // Zero => a = b, a and b keep their original order
+};
 myArray.sort(sortFn);
 // sorts the array so that myArray = ["Wind","Fire","Rain"]
 ```
 
-- a의 순서가 b보다 앞에 오면 -1(혹은 음수)을 반환합니다.
-- a의 순서가 b보다 뒤에 오면 1(혹은 양수)을 반환합니다.
-- a와 b가 같으면 0을 반환합니다.
+- if `a` is less than `b` by the sorting system, return `-1` (or any negative number)
+- if `a` is greater than `b` by the sorting system, return `1` (or any positive number)
+- if `a` and `b` are considered equivalent, return `0`.
 
-{{jsxref ( "Array.indexOf", "indexOf (searchElement [, fromIndex])")}}는 배열에서 `searchElement`를 검색하고 첫 번째 일치 항목의 인덱스를 반환합니다.
+The [`indexOf()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf) method searches the array for `searchElement` and returns the index of the first match.
 
 ```js
-var a = ['a', 'b', 'a', 'b', 'a'];
-console.log(a.indexOf('b')); // logs 1
+const a = ["a", "b", "a", "b", "a"];
+console.log(a.indexOf("b")); // 1
+
 // Now try again, starting from after the last match
-console.log(a.indexOf('b', 2)); // logs 3
-console.log(a.indexOf('z')); // logs -1, because 'z' was not found
+console.log(a.indexOf("b", 2)); // 3
+console.log(a.indexOf("z")); // -1, because 'z' was not found
 ```
 
-{{jsxref("Array.lastIndexOf", "lastIndexOf(searchElement[, fromIndex])")}}메서드는 `indexOf`메서드와 유사하게 작동하지만 배열의 뒤쪽에서부터 요소를 찾습니다.
+The [`lastIndexOf()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/lastIndexOf) method works like `indexOf`, but starts at the end and searches backwards.
 
 ```js
-var a = ['a', 'b', 'c', 'd', 'a', 'b'];
-console.log(a.lastIndexOf('b')); // logs 5
+const a = ["a", "b", "c", "d", "a", "b"];
+console.log(a.lastIndexOf("b")); // 5
+
 // Now try again, starting from before the last match
-console.log(a.lastIndexOf('b', 4)); // logs 1
-console.log(a.lastIndexOf('z')); // logs -1
+console.log(a.lastIndexOf("b", 4)); // 1
+console.log(a.lastIndexOf("z")); // -1
 ```
 
-{{jsxref("Array.forEach", "forEach(callback[, thisObject])")}}메서드는 배열의 모든 요소에 대해 반복적으로 주어진 `callback` 함수를 실행합니다.
+The [`forEach()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach) method executes `callback` on every array item and returns `undefined`.
 
 ```js
-var a = ['a', 'b', 'c'];
-a.forEach(function(element) { console.log(element);} );
-// logs each item in turn
+const a = ["a", "b", "c"];
+a.forEach((element) => {
+  console.log(element);
+});
+// Logs:
+// a
+// b
+// c
 ```
 
-{{jsxref("Array.map", "map(callback[, thisObject])")}}메서드는 배열의 모든 요소에 대해 콜백함수를 실행하고 콜백함수의 실행 결과를 새로운 배열에 담아 반환합니다.
+The `forEach` method (and others below) that take a callback are known as _iterative methods_, because they iterate over the entire array in some fashion. Each one takes an optional second argument called `thisArg`. If provided, `thisArg` becomes the value of the `this` keyword inside the body of the callback function. If not provided, as with other cases where a function is invoked outside of an explicit object context, `this` will refer to the global object ([`window`](/en-US/docs/Web/API/Window), [`globalThis`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis), etc.) when the function is [not strict](/en-US/docs/Web/JavaScript/Reference/Strict_mode), or `undefined` when the function is strict.
+
+> **Note:** The `sort()` method introduced above is not an iterative method, because its callback function is only used for comparison and may not be called in any particular order based on element order. `sort()` does not accept the `thisArg` parameter either.
+
+The [`map()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) method returns a new array of the return value from executing `callback` on every array item.
 
 ```js
-var a1 = ['a', 'b', 'c'];
-var a2 = a1.map(function(item) { return item.toUpperCase(); });
-console.log(a2); // logs ['A', 'B', 'C']
+const a1 = ["a", "b", "c"];
+const a2 = a1.map((item) => item.toUpperCase());
+console.log(a2); // ['A', 'B', 'C']
 ```
 
-{{jsxref("Array.filter", "filter(callback[, thisObject])")}}메서드는 배열의 모든 요소에 대해 콜백 함수가 true를 반환하는 요소를 새로운 배열에 담아 반환합니다.
+The [`flatMap()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap) method runs `map()` followed by a `flat()` of depth 1.
 
 ```js
-var a1 = ['a', 10, 'b', 20, 'c', 30];
-var a2 = a1.filter(function(item) { return typeof item == 'number'; });
-console.log(a2); // logs ['10', '20', '30']
+const a1 = ["a", "b", "c"];
+const a2 = a1.flatMap((item) => [item.toUpperCase(), item.toLowerCase()]);
+console.log(a2); // ['A', 'a', 'B', 'b', 'C', 'c']
 ```
 
-{{jsxref ( "Array.every", "every (callback [, thisObject])")}}는 콜백이 배열의 모든 항목에 대해 true를 반환하면 true를 반환합니다.
+The [`filter()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) method returns a new array containing the items for which `callback` returned `true`.
 
 ```js
-function isNumber(value){
-  return typeof value == 'number';
+const a1 = ["a", 10, "b", 20, "c", 30];
+const a2 = a1.filter((item) => typeof item === "number");
+console.log(a2); // [10, 20, 30]
+```
+
+The [`find()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find) method returns the first item for which `callback` returned `true`.
+
+```js
+const a1 = ["a", 10, "b", 20, "c", 30];
+const i = a1.find((item) => typeof item === "number");
+console.log(i); // 10
+```
+
+The [`findLast()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLast) method returns the last item for which `callback` returned `true`.
+
+```js
+const a1 = ["a", 10, "b", 20, "c", 30];
+const i = a1.findLast((item) => typeof item === "number");
+console.log(i); // 30
+```
+
+The [`findIndex()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex) method returns the index of the first item for which `callback` returned `true`.
+
+```js
+const a1 = ["a", 10, "b", 20, "c", 30];
+const i = a1.findIndex((item) => typeof item === "number");
+console.log(i); // 1
+```
+
+The [`findLastIndex()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLastIndex) method returns the index of the last item for which `callback` returned `true`.
+
+```js
+const a1 = ["a", 10, "b", 20, "c", 30];
+const i = a1.findLastIndex((item) => typeof item === "number");
+console.log(i); // 5
+```
+
+The [`every()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every) method returns `true` if `callback` returns `true` for every item in the array.
+
+```js
+function isNumber(value) {
+  return typeof value === "number";
 }
-var a1 = [1, 2, 3];
-console.log(a1.every(isNumber)); // logs true
-var a2 = [1, '2', 3];
-console.log(a2.every(isNumber)); // logs false
+const a1 = [1, 2, 3];
+console.log(a1.every(isNumber)); // true
+const a2 = [1, "2", 3];
+console.log(a2.every(isNumber)); // false
 ```
 
-{{jsxref("Array.some", "some(callback[, thisObject])")}}메서드는 배열의 모든 요소에 대해 콜백 함수를 실행하고 하나의 요소라도 콜백 함수의 결과가 true이면 some() 메서드의 결과는 true가 됩니다.
+The [`some()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some) method returns `true` if `callback` returns `true` for at least one item in the array.
 
 ```js
-function isNumber(value){
-  return typeof value == 'number';
+function isNumber(value) {
+  return typeof value === "number";
 }
-var a1 = [1, 2, 3];
-console.log(a1.some(isNumber)); // logs true
-var a2 = [1, '2', 3];
-console.log(a2.some(isNumber)); // logs true
-var a3 = ['1', '2', '3'];
-console.log(a3.some(isNumber)); // logs false
+const a1 = [1, 2, 3];
+console.log(a1.some(isNumber)); // true
+const a2 = [1, "2", 3];
+console.log(a2.some(isNumber)); // true
+const a3 = ["1", "2", "3"];
+console.log(a3.some(isNumber)); // false
 ```
 
-{{jsxref("Array.reduce", "reduce(callback[, initialValue])")}}메서드는 배열내의 요소를 하나의 요소로 줄이기 위해 `firstValue, secondValue`를 인자로 받는 콜백 함수를 실행합니다.
+The [`reduce()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce) method applies `callback(accumulator, currentValue, currentIndex, array)` for each value in the array for the purpose of reducing the list of items down to a single value. The `reduce` function returns the final value returned by `callback` function.
+
+If `initialValue` is specified, then `callback` is called with `initialValue` as the first parameter value and the value of the first item in the array as the second parameter value.
+
+If `initialValue` is _not_ specified, then `callback`'s first two parameter values will be the first and second elements of the array. On _every_ subsequent call, the first parameter's value will be whatever `callback` returned on the previous call, and the second parameter's value will be the next value in the array.
+
+If `callback` needs access to the index of the item being processed, or access to the entire array, they are available as optional parameters.
 
 ```js
-var a = [10, 20, 30];
-var total = a.reduce(function(first, second) { return first + second; }, 0);
-console.log(total) // Prints 60
+const a = [10, 20, 30];
+const total = a.reduce(
+  (accumulator, currentValue) => accumulator + currentValue,
+  0,
+);
+console.log(total); // 60
 ```
 
-{{jsxref("Array.reduceRight", "reduceRight(callback[, initalvalue])")}}메서드는 reduce()와 유사하게 작동하지만 배열의 마지막 요소부터 시작합니다.
+The [`reduceRight()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduceRight) method works like `reduce()`, but starts with the last element.
 
-`reduce`와 `reduceRight` 메서드는 반복적인 배열 메서드 중 가장 명백합니다. 두 메서드는 재귀적으로 하나의 시퀀스를 하나의 값으로 줄이기 위해 두개의 값을 합치는 알고리즘을 위해 사용되어야 합니다.
+`reduce` and `reduceRight` are the least obvious of the iterative array methods. They should be used for algorithms that combine two values recursively in order to reduce a sequence down to a single value.
 
-### 다차원 배열
+## Sparse arrays
 
-배열은 중첩될 수 있습니다. 즉, 하나의 배열은 또 다른 배열을 요소로 포함할 수 있습니다. 자바스크립트 배열의 이런 특성을 사용하여, 다차원 배열을 생성할 수 있습니다.
-
-아래의 예제는 2차원 배열을 생성하는 예제입니다.
+Arrays can contain "empty slots", which are not the same as slots filled with the value `undefined`. Empty slots can be created in one of the following ways:
 
 ```js
-var a = new Array(4);
-for (i = 0; i < 4; i++) {
+// Array constructor:
+const a = Array(5); // [ <5 empty items> ]
+
+// Consecutive commas in array literal:
+const b = [1, 2, , , 5]; // [ 1, 2, <2 empty items>, 5 ]
+
+// Directly setting a slot with index greater than array.length:
+const c = [1, 2];
+c[4] = 5; // [ 1, 2, <2 empty items>, 5 ]
+
+// Elongating an array by directly setting .length:
+const d = [1, 2];
+d.length = 5; // [ 1, 2, <3 empty items> ]
+
+// Deleting an element:
+const e = [1, 2, 3, 4, 5];
+delete e[2]; // [ 1, 2, <1 empty item>, 4, 5 ]
+```
+
+In some operations, empty slots behave as if they are filled with `undefined`.
+
+```js
+const arr = [1, 2, , , 5]; // Create a sparse array
+
+// Indexed access
+console.log(arr[2]); // undefined
+
+// For...of
+for (const i of arr) {
+  console.log(i);
+}
+// Logs: 1 2 undefined undefined 5
+
+// Spreading
+const another = [...arr]; // "another" is [ 1, 2, undefined, undefined, 5 ]
+```
+
+But in others (most notably array iteration methods), empty slots are skipped.
+
+```js
+const mapped = arr.map((i) => i + 1); // [ 2, 3, <2 empty items>, 6 ]
+arr.forEach((i) => console.log(i)); // 1 2 5
+const filtered = arr.filter(() => true); // [ 1, 2, 5 ]
+const hasFalsy = arr.some((k) => !k); // false
+
+// Property enumeration
+const keys = Object.keys(arr); // [ '0', '1', '4' ]
+for (const key in arr) {
+  console.log(key);
+}
+// Logs: '0' '1' '4'
+// Spreading into an object uses property enumeration, not the array's iterator
+const objectSpread = { ...arr }; // { '0': 1, '1': 2, '4': 5 }
+```
+
+For a complete list of how array methods behave with sparse arrays, see [the `Array` reference page](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#array_methods_and_empty_slots).
+
+## Multi-dimensional arrays
+
+Arrays can be nested, meaning that an array can contain another array as an element. Using this characteristic of JavaScript arrays, multi-dimensional arrays can be created.
+
+The following code creates a two-dimensional array.
+
+```js
+const a = new Array(4);
+for (let i = 0; i < 4; i++) {
   a[i] = new Array(4);
-  for (j = 0; j < 4; j++) {
-    a[i][j] = '[' + i + ', ' + j + ']';
+  for (let j = 0; j < 4; j++) {
+    a[i][j] = `[${i}, ${j}]`;
   }
 }
 ```
 
-이 예제는 다음과 같은 열을 포함하는 배열을 생성합니다.
+This example creates an array with the following rows:
 
 ```
-Row 0: [0,0] [0,1] [0,2] [0,3]
-Row 1: [1,0] [1,1] [1,2] [1,3]
-Row 2: [2,0] [2,1] [2,2] [2,3]
-Row 3: [3,0] [3,1] [3,2] [3,3]
+Row 0: [0, 0] [0, 1] [0, 2] [0, 3]
+Row 1: [1, 0] [1, 1] [1, 2] [1, 3]
+Row 2: [2, 0] [2, 1] [2, 2] [2, 3]
+Row 3: [3, 0] [3, 1] [3, 2] [3, 3]
 ```
 
-### 배열과 정규표현식
+## Using arrays to store other properties
 
-문자열 내에 정규 표현식에 일치하는 결과가 배열일 경우, 해당 배열은 정규 표현식에 일치하는 문자열들의 정보를 제공해 주는 속성들과 요소들을 반환합니다. {{jsxref ( "Global_Objects / RegExp / exec", "RegExp.exec ()")}}, {{jsxref("Global_Objects/String/match","String.match()")}}, 와 {{jsxref("Global_Objects/String/split","String.split()")}}메서드는 결과를 배열로 반환합니다. 정규식과 함께 배열을 어떻게 사용하는지에 대한 정보는 [정규표현식](/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)을 참조하시면 됩니다.
-
-### 배열과 유사한 객체 사용
-
-{{domxref ( "document.getElementsByTagName ()")}} 또는 {{jsxref ( "Functions / arguments", "arguments")}}에서 반환하는 {{domxref("NodeList")}} 객체는 함수 본문 내에서 사용할 수 있게 만들어졌으며 겉으로는 배열처럼 보이고 작동하지만 모든 메서드를 공유하지는 않습니다. arguments 객체는 {{jsxref ( "Global_Objects / Function / length", "length")}} 속성을 제공하지만 {{jsxref ( "Array.forEach", "forEach ()")}} 메소드는 구현하지 않습니다.
-
-배열 프로토타입 메소드는 다른 배열과 유사한 객체에 대해 호출될 수 있습니다.
+Arrays can also be used like objects, to store related information.
 
 ```js
+const arr = [1, 2, 3];
+arr.property = "value";
+console.log(arr.property); // "value"
+```
+
+For example, when an array is the result of a match between a regular expression and a string, the array returns properties and elements that provide information about the match. An array is the return value of [`RegExp.prototype.exec()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec), [`String.prototype.match()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match), and [`String.prototype.split()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split). For information on using arrays with regular expressions, see [Regular Expressions](/en-US/docs/Web/JavaScript/Guide/Regular_expressions).
+
+## Working with array-like objects
+
+Some JavaScript objects, such as the [`NodeList`](/en-US/docs/Web/API/NodeList) returned by [`document.getElementsByTagName()`](/en-US/docs/Web/API/Document/getElementsByTagName) or the {{jsxref("Functions/arguments","arguments")}} object made available within the body of a function, look and behave like arrays on the surface but do not share all of their methods. The `arguments` object provides a {{jsxref("Global_Objects/Function/length","length")}} attribute but does not implement array methods like [`forEach()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach).
+
+Array methods cannot be called directly on array-like objects.
+
+```js example-bad
 function printArguments() {
-  Array.prototype.forEach.call(arguments, function(item) {
+  arguments.forEach((item) => {
+    console.log(item);
+  }); // TypeError: arguments.forEach is not a function
+}
+```
+
+But you can call them indirectly using {{jsxref("Global_Objects/Function/call","Function.prototype.call()")}}.
+
+```js example-good
+function printArguments() {
+  Array.prototype.forEach.call(arguments, (item) => {
     console.log(item);
   });
 }
 ```
 
-배열 프로토타입 메서드는 배열과 비슷한 방식으로 문자에 순차적으로 액세스 할 수 있으므로 문자열에서도 사용할 수 있습니다.
+Array prototype methods can be used on strings as well, since they provide sequential access to their characters in a similar way to arrays:
 
 ```js
-Array.prototype.forEach.call('a string', function(chr) {
+Array.prototype.forEach.call("a string", (chr) => {
   console.log(chr);
 });
 ```
 
-## 타입 배열
-
-자바스크립트 타입 배열은 배열과 유사한 객체이며 원시 이진 데이터 접근에 대한 메카니즘을 제공합니다. 이미 알고 있듯이, {{jsxref("Array")}} 객체는 동적으로 크기가 커지고 작아질 수 있으며 어떤 자바스크립트 값이라도 가질 수 있습니다. 자바스크립트 엔진은 그런 배열을 빠르게 만들기 위해 최적화를 수행합니다. 그러나 웹 어플케이션이 보다 강력해지고, 음성, 영상 조작, [웹소켓](/en-US/docs/WebSockets)을 사용하여 원시 데이터에 접근하는 등의 기능들이 추가되면서 자바스크립트 코드가 타입배열을 가지고 빠르고 쉽게 원시 이진 데이터를 조작할 수 있는 것이 가능한 시점이 되었다는 것은 보다 명백해졌습니다.
-
-### 버퍼와 뷰: 타입 배열 구조
-
-유연성과 효율성을 극대화하기 위해, 자바스크립트 타입 배열은 **버퍼**와 **뷰**라는 구조로 구현되어 있습니다. 하나의 버퍼({{jsxref("ArrayBuffer")}}객체로 구현되어 있습니다)는 하나의 데이터 덩어리를 의미하는 객체입니다. 버퍼는 구체적으로 언급할 형식이 없고, 버퍼가 담고 있는 내용에 접근할 메카니즘을 제공하지 않습니다. 버퍼에 담겨 있는 메모리에 접근하기 위해선, 뷰를 사용해야 합니다. 하나의 뷰는 컨덱스트를 제공하는데, 컨텍스트는 데이터 형, 시작 오프셋 그리고 실제 타입배열로 변경되는 요소의 갯수를 제공합니다.
-
-![Typed arrays in an ArrayBuffer](typed_arrays.png)
-
-### 배열버퍼
-
-{{jsxref("ArrayBuffer")}}는 일반적이고, 고정길이의 이진 데이터 버퍼를 표현하기 위해 사용되는 데이터 타입입니다. `ArrayBuffer의 내용을 직접 수정할 수는 없는 대신 타입 배열 뷰 혹은 특정 형식 그리고 해당 버퍼의 내용을 읽고 쓸 수 있게 해주는`{{jsxref("DataView")}}`를 생성할 수 있습니다.`
-
-### 타입 배열 뷰
-
-타입 배열 뷰들은 스스로를 나타낼 수 있는 이름과 `Int8`, `Uint32`, `Float64`등의 일반적인 숫자 형들을 위한 뷰를 제공합니다.Uint8ClampedArray라는 특별한 타입 배열 뷰가 있습니다. `0`부터 `255`까지의 값을 가질수 있습니다. 예를 들며, `Uint8ClampedArray`는 [Canvas data processing](/en-US/docs/Web/API/ImageData)에 유용합니다.
-
-| Type                                     | Value Range                   | Size in bytes | Description                                                                  | Web IDL type          | Equivalent C type               |
-| ---------------------------------------- | ----------------------------- | ------------- | ---------------------------------------------------------------------------- | --------------------- | ------------------------------- |
-| {{jsxref("Int8Array")}}         | `-128` to `127`               | 1             | 8-bit two's complement signed integer                                        | `byte`                | `int8_t`                        |
-| {{jsxref("Uint8Array")}}         | `0` to `255`                  | 1             | 8-bit unsigned integer                                                       | `octet`               | `uint8_t`                       |
-| {{jsxref("Uint8ClampedArray")}} | `0` to `255`                  | 1             | 8-bit unsigned integer (clamped)                                             | `octet`               | `uint8_t`                       |
-| {{jsxref("Int16Array")}}         | `-32768` to `32767`           | 2             | 16-bit two's complement signed integer                                       | `short`               | `int16_t`                       |
-| {{jsxref("Uint16Array")}}         | `0` to `65535`                | 2             | 16-bit unsigned integer                                                      | `unsigned short`      | `uint16_t`                      |
-| {{jsxref("Int32Array")}}         | `-2147483648` to `2147483647` | 4             | 32-bit two's complement signed integer                                       | `long`                | `int32_t`                       |
-| {{jsxref("Uint32Array")}}         | `0` to `4294967295`           | 4             | 32-bit unsigned integer                                                      | `unsigned long`       | `uint32_t`                      |
-| {{jsxref("Float32Array")}}     | `1.2E-38` to `3.4E38`         | 4             | 32-bit IEEE floating point number (7 significant digits e.g., `1.1234567`)   | `unrestricted float`  | `float`                         |
-| {{jsxref("Float64Array")}}     | `5E-324` to `1.8E308`         | 8             | 64-bit IEEE floating point number (16 significant digits e.g., `1.123...15`) | `unrestricted double` | `double`                        |
-| {{jsxref("BigInt64Array")}}     | `-2^63` to `2^63 - 1`         | 8             | 64-bit two's complement signed integer                                       | `bigint`              | `int64_t (signed long long)`    |
-| {{jsxref("BigUint64Array")}}     | `0` to `2^64 - 1`             | 8             | 64-bit unsigned integer                                                      | `bigint`              | `uint64_t (unsigned long long)` |
-
-[JavaScript typed arrays](/en-US/docs/Web/JavaScript/Typed_arrays)를 참조하시면 보다 많은 정보를 보실 수 있습니다.
-
-{{PreviousNext("Web/JavaScript/Guide/Regular_Expressions", "Web/JavaScript/Guide/Keyed_Collections")}}
+{{PreviousNext("Web/JavaScript/Guide/Regular_expressions", "Web/JavaScript/Guide/Keyed_Collections")}}

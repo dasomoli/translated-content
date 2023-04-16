@@ -1,42 +1,53 @@
 ---
 title: Date.prototype.getUTCDate()
 slug: Web/JavaScript/Reference/Global_Objects/Date/getUTCDate
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.getUTCDate
 ---
+
 {{JSRef}}
 
-**getUTCDate()** 메서드는 표준시에 따라 지정된 날짜에 해당 월의 요일 (날짜)을 반환합니다.
+The **`getUTCDate()`** method returns the day of the month (from
+1 to 31) in the specified date according to universal time.
+
+{{EmbedInteractiveExample("pages/js/date-getutcdate.html")}}
 
 ## Syntax
 
-```js
-    dateObj.getUTCDate()
+```js-nolint
+getUTCDate()
 ```
 
 ### Return value
 
-보편적 인 시간에 따라 지정된 날짜의 달의 날짜를 나타내는 1에서 31 사이의 정수입니다.
+A number.
+If the `Date` object represents a valid date, an integer number ranging from 1 to 31
+representing day of month for the given date, according to universal time.
+Otherwise, [`NaN`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/NaN)
+if the `Date` object doesn't represent a valid date.
 
 ## Examples
 
-### Using `getUTCDate()`
+### Using getUTCDate()
 
-다음 예제에서는 현재 날짜의 일 부분을 day 변수에 할당합니다.
+The following example assigns the day of month of the current date to the variable
+`dayOfMonth`.
 
 ```js
-var today = new Date();
-var day = today.getUTCDate();
+const today = new Date();
+const dayOfMonth = today.getUTCDate();
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- {{jsxref("Date.prototype.getDate()")}}
-- {{jsxref("Date.prototype.getUTCDay()")}}
+- {{jsxref("Date.prototype.getUTCDate()")}}
+- {{jsxref("Date.prototype.getDay()")}}
 - {{jsxref("Date.prototype.setUTCDate()")}}

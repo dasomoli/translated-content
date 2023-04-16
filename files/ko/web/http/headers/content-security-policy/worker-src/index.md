@@ -1,61 +1,69 @@
 ---
 title: "CSP: worker-src"
 slug: Web/HTTP/Headers/Content-Security-Policy/worker-src
-l10n:
-  sourceCommit: 45c7ae13178203b4ee58842efbe2a27deab274a6
+page-type: http-csp-directive
+browser-compat: http.headers.Content-Security-Policy.worker-src
 ---
 
 {{HTTPSidebar}}
 
-HTTP {{HTTPHeader("Content-Security-Policy")}} (CSP) **`worker-src`** 지시문은 {{domxref("Worker")}}, {{domxref("SharedWorker")}}, 또는 {{domxref("ServiceWorker")}}의 유효한 스크립트 소스를 지정합니다.
+The HTTP {{HTTPHeader("Content-Security-Policy")}} (CSP)
+**`worker-src`** directive specifies valid sources for
+{{domxref("Worker")}}, {{domxref("SharedWorker")}}, or {{domxref("ServiceWorker")}}
+scripts.
 
 <table class="properties">
   <tbody>
     <tr>
-      <th scope="row">CSP 버전</th>
+      <th scope="row">CSP version</th>
       <td>3</td>
     </tr>
     <tr>
-      <th scope="row">지시 형식</th>
+      <th scope="row">Directive type</th>
       <td>{{Glossary("Fetch directive")}}</td>
     </tr>
     <tr>
-      <th scope="row">대비책</th>
+      <th scope="row">Fallback</th>
       <td>
         <p>
-          이 지시문이 없으면 사용자 에이전트는 먼저 {{CSP("child-src")}} 지시문을 찾은 다음 {{CSP("script-src")}} 지시문을 찾고, 마지막으로 {{CSP("default-src")}} 지시문을 찾습니다.
+          If this directive is absent, the user agent will first look for the
+          {{CSP("child-src")}} directive, then the
+          {{CSP("script-src")}} directive, then finally for the
+          {{CSP("default-src")}} directive, when governing worker
+          execution.
         </p>
       </td>
     </tr>
   </tbody>
 </table>
 
-## 구문
+## Syntax
 
-`worker-src` 정책에 대해 하나 이상의 소스를 허용할 수 있습니다.
+One or more sources can be allowed for the `worker-src` policy:
 
 ```http
 Content-Security-Policy: worker-src <source>;
 Content-Security-Policy: worker-src <source> <source>;
 ```
 
-### 소스
+### Sources
 
-`<source>`는 [CSP Source Values](/ko/docs/Web/HTTP/Headers/Content-Security-Policy/Sources#소스)에 나열된 값 중 하나입니다.
+`<source>` can be any one of the values listed in [CSP Source Values](/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/Sources#sources).
 
-이 값은 모든 {{Glossary("fetch directive", "fetch 지시문")}} 및 [기타 여러 지시문](/ko/docs/Web/HTTP/Headers/Content-Security-Policy/Sources#관련_지시문)에서 사용할 수 있습니다.
+Note that this same set of values can be used in all {{Glossary("fetch directive", "fetch directives")}} (and a [number of other directives](/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/Sources#relevant_directives)).
 
-## 예제
+## Examples
 
-### 위반 사례
+### Violation cases
 
-주어진 CSP 해더가 다음과 같다면
+Given this CSP header:
 
 ```http
 Content-Security-Policy: worker-src https://example.com/
 ```
 
-아래에서 {{domxref("Worker")}}, {{domxref("SharedWorker")}}, {{domxref("ServiceWorker")}}는 차단되어 로드되지 않습니다.
+{{domxref("Worker")}}, {{domxref("SharedWorker")}}, {{domxref("ServiceWorker")}} are
+blocked and won't load:
 
 ```html
 <script>
@@ -65,16 +73,16 @@ Content-Security-Policy: worker-src https://example.com/
 </script>
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{HTTPHeader("Content-Security-Policy")}}
-- [웹 워커를 위한 CSP](/ko/docs/Web/API/Web_Workers_API/Using_web_workers#content_security_policy)
+- [CSP for Web Workers](/en-US/docs/Web/API/Web_Workers_API/Using_web_workers#content_security_policy)
 - {{domxref("Worker")}}, {{domxref("SharedWorker")}}, {{domxref("ServiceWorker")}}

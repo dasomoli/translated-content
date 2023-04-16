@@ -1,32 +1,32 @@
 ---
 title: border-radius
 slug: Web/CSS/border-radius
+page-type: css-property
+browser-compat: css.properties.border-radius
 ---
 
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`border-radius`** 속성은 요소 테두리 경계의 꼭짓점을 둥글게 만듭니다. 하나의 값을 사용해 원형 꼭짓점을, 두 개의 값을 사용해 타원형 꼭짓점을 적용할 수 있습니다.
+The **`border-radius`** [CSS](/en-US/docs/Web/CSS) property rounds the corners of an element's outer border edge. You can set a single radius to make circular corners, or two radii to make elliptical corners.
 
 {{EmbedInteractiveExample("pages/css/border-radius.html")}}
 
-<div class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples</a> and send us a pull request.</div>
+The radius applies to the whole {{cssxref("background")}}, even if the element has no border; the exact position of the clipping is defined by the {{cssxref("background-clip")}} property.
 
-꼭짓점 반경은 요소의 테두리 존재 여부와는 별개로 전체 {{Cssxref("background")}}에 적용됩니다. 원형 꼭짓점으로 인해 배경이 잘리는 지점은 {{cssxref("background-clip")}} 속성이 지정합니다.
+The `border-radius` property does not apply to table elements when {{cssxref("border-collapse")}} is `collapse`.
 
-{{cssxref("border-collapse")}}의 값이 `collapse`인 표 요소는 `border-radius` 속성의 영향을 받지 않습니다.
+> **Note:** As with any shorthand property, individual sub-properties cannot inherit, such as in `border-radius:0 0 inherit inherit`, which would partially override existing definitions. Instead, the individual longhand properties have to be used.
 
-> **참고:** 다른 단축 속성과 마찬가지로, 각각의 하위 속성이 부모를 상속하도록 할 수는 없습니다. 즉, `border-radius: 0 0 inherit inherit`처럼 일부만 재정의할 수 없습니다. 대신, 원래의 본디속성을 하나씩 사용하세요.
+## Constituent properties
 
-## 구성 속성
+This property is a shorthand for the following CSS properties:
 
-`border-radius`는 다음 CSS 속성의 단축 속성입니다.
+- [`border-top-left-radius`](/en-US/docs/Web/CSS/border-top-left-radius)
+- [`border-top-right-radius`](/en-US/docs/Web/CSS/border-top-right-radius)
+- [`border-bottom-right-radius`](/en-US/docs/Web/CSS/border-bottom-right-radius)
+- [`border-bottom-left-radius`](/en-US/docs/Web/CSS/border-bottom-left-radius)
 
-- {{cssxref("border-bottom-left-radius")}}
-- {{cssxref("border-bottom-right-radius")}}
-- {{cssxref("border-top-left-radius")}}
-- {{cssxref("border-top-right-radius")}}
-
-## 구문
+## Syntax
 
 ```css
 /* The syntax of the first radius allows one to four values */
@@ -44,7 +44,7 @@ border-radius: 1px 0 3px 4px;
 
 /* The syntax of the second radius allows one to four values */
 /* (first radius values) / radius */
-border-radius: 10px 5% / 20px;
+border-radius: 10px / 20px;
 
 /* (first radius values) / top-left-and-bottom-right | top-right-and-bottom-left */
 border-radius: 10px 5% / 20px 30px;
@@ -58,117 +58,243 @@ border-radius: 10px 5% / 20px 25em 30px 35em;
 /* Global values */
 border-radius: inherit;
 border-radius: initial;
+border-radius: revert;
+border-radius: revert-layer;
 border-radius: unset;
 ```
 
-`border-radius` 속성은 다음 방법으로 지정할 수 있습니다.
+The `border-radius` property is specified as:
 
-- 한 개에서 네 개의 {{cssxref("&lt;length&gt;")}} 또는 {{cssxref("&lt;percentage&gt;")}} 값은 꼭짓점의 단일 반지름을 설정합니다.
-- 선택적으로 "`/`" 이후에 한 개에서 네 개의 `<length>` 또는 `<percentage>` 값을 사용해 추가 반지름을 설정해서 타원형 꼭짓점을 만들 수 있습니다.
+- one, two, three, or four {{cssxref("&lt;length&gt;")}} or {{cssxref("&lt;percentage&gt;")}} values. This is used to set a single radius for the corners.
+- followed optionally by "/" and one, two, three, or four `<length>` or `<percentage>` values. This is used to set an additional radius, so you can have elliptical corners.
 
-### 값
+### Values
 
-| _radius_    | ![all-corner.png](all-corner.png) | 테두리의 각 꼭짓점 반지름을 나타내는 {{cssxref("&lt;length&gt;")}} 또는 {{cssxref("&lt;percentage&gt;")}}. 한 개 값 구문에서만 사용합니다. |
-|---|---|---|
-| _top-left-and-bottom-right_ | ![top-left-bottom-right.png](top-left-bottom-right.png) | 왼쪽 위와 오른쪽 아래 꼭짓점의 반지름을 나타내는 {{cssxref("&lt;length&gt;")}} 또는 {{cssxref("&lt;percentage&gt;")}}. 두 개 값 구문에서만 사용합니다.            |
-| _top-right-and-bottom-left_ | ![top-right-bottom-left.png](top-right-bottom-left.png) | 오른쪽 위와 왼쪽 아래 꼭짓점의 반지름을 나타내는 {{cssxref("&lt;length&gt;")}} 또는 {{cssxref("&lt;percentage&gt;")}}. 두 개 또는 세 개 값 구문에서만 사용합니다. |
-| _top-left_                  | ![top-left.png](top-left.png)                           | 왼쪽 위 꼭짓점의 반지름을 나타내는 {{cssxref("&lt;length&gt;")}} 또는 {{cssxref("&lt;percentage&gt;")}}. 세 개 또는 네 개 값 구문에서만 사용합니다.               |
-| _top-right_                 | ![top-right.png](top-right.png)                         | 오른쪽 위 꼭짓점의 반지름을 나타내는 {{cssxref("&lt;length&gt;")}} 또는 {{cssxref("&lt;percentage&gt;")}}. 네 개 값 구문에서만 사용합니다.                        |
-| _bottom-right_              | ![bottom-right.png](bottom-right.png)                   | 오른쪽 아래 꼭짓점의 반지름을 나타내는 {{cssxref("&lt;length&gt;")}} 또는 {{cssxref("&lt;percentage&gt;")}}. 네 개 값 구문에서만 사용합니다.                      |
-| _bottom-left_               | ![bottom-left.png](bottom-left.png)                     | 왼쪽 아래 꼭짓점의 반지름을 나타내는 {{cssxref("&lt;length&gt;")}} 또는 {{cssxref("&lt;percentage&gt;")}}. 네 개 값 구문에서만 사용합니다.                        |
+<table>
+  <tbody>
+    <tr>
+      <td><em>radius</em></td>
+      <td><img alt="A light blue rectangle with a light gray border. All 4 corners are rounded." src="all-corner.png" /></td>
+      <td>
+        Is a {{cssxref("&lt;length&gt;")}} or a
+        {{cssxref("&lt;percentage&gt;")}} denoting a radius to use
+        for the border in each corner of the border. It is used only in the
+        one-value syntax.
+      </td>
+    </tr>
+    <tr>
+      <td><em>top-left-and-bottom-right</em></td>
+      <td>
+        <img alt="A light blue rectangle with a light gray border. The 2 corners on the top left and the bottom right have are rounded." src="top-left-bottom-right.png" />
+      </td>
+      <td>
+        Is a {{cssxref("&lt;length&gt;")}} or a
+        {{cssxref("&lt;percentage&gt;")}} denoting a radius to use
+        for the border in the top-left and bottom-right corners of the element's
+        box. It is used only in the two-value syntax.
+      </td>
+    </tr>
+    <tr>
+      <td><em>top-right-and-bottom-left</em></td>
+      <td>
+        <img alt="A light blue rectangle with a light gray border. The 2 corners on the top right and the bottom left are rounded." src="top-right-bottom-left.png" />
+      </td>
+      <td>
+        Is a {{cssxref("&lt;length&gt;")}} or a
+        {{cssxref("&lt;percentage&gt;")}} denoting a radius to use
+        for the border in the top-right and bottom-left corners of the element's
+        box. It is used only in the two- and three-value syntaxes.
+      </td>
+    </tr>
+    <tr>
+      <td><em>top-left</em></td>
+      <td><img alt="A light blue rectangle with a light gray border. The corner on the top left is rounded." src="top-left.png" /></td>
+      <td>
+        Is a {{cssxref("&lt;length&gt;")}} or a
+        {{cssxref("&lt;percentage&gt;")}} denoting a radius to use
+        for the border in the top-left corner of the element's box. It is used
+        only in the three- and four-value syntaxes.
+      </td>
+    </tr>
+    <tr>
+      <td><em>top-right</em></td>
+      <td><img alt="A light blue rectangle with a light gray border. The corner on the top right is rounded." src="top-right.png" /></td>
+      <td>
+        Is a {{cssxref("&lt;length&gt;")}} or a
+        {{cssxref("&lt;percentage&gt;")}} denoting a radius to use
+        for the border in the top-right corner of the element's box. It is used
+        only in the four-value syntax.
+      </td>
+    </tr>
+    <tr>
+      <td><em>bottom-right</em></td>
+      <td><img alt="A light blue rectangle with a light gray border. The bottom right corner is rounded." src="bottom-right.png" /></td>
+      <td>
+        Is a {{cssxref("&lt;length&gt;")}} or a
+        {{cssxref("&lt;percentage&gt;")}} denoting a radius to use
+        for the border in the bottom-right corner of the element's box. It is
+        used only in the three- and four-value syntaxes.
+      </td>
+    </tr>
+    <tr>
+      <td><em>bottom-left</em></td>
+      <td><img alt="A light blue rectangle with a light gray border. The bottom left corner is rounded." src="bottom-left.png" /></td>
+      <td>
+        Is a {{cssxref("&lt;length&gt;")}} or a
+        {{cssxref("&lt;percentage&gt;")}} denoting a radius to use
+        for the border in the bottom-left corner of the element's box. It is
+        used only in the four-value syntax.
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 - {{cssxref("&lt;length&gt;")}}
-  - : 길이 값을 사용해 원의 반지름 또는 타원의 짧은반지름과 긴반지름을 지정합니다. 음의 값은 유효하지 않습니다.
+  - : Denotes the size of the circle radius, or the semi-major and semi-minor axes of the ellipse, using length values. Negative values are invalid.
 - {{cssxref("&lt;percentage&gt;")}}
-  - : 백분율 값을 사용해 원의 반지름 또는 타원의 짧은반지름과 긴반지름을 지정합니다. 가로축 값은 요소 박스의 너비에 대한 백분율이고, 세로축 값은 박스의 높이에 대한 백분율입니다. 음의 값은 유효하지 않습니다.
+  - : Denotes the size of the circle radius, or the semi-major and semi-minor axes of the ellipse, using percentage values. Percentages for the horizontal axis refer to the width of the box; percentages for the vertical axis refer to the height of the box. Negative values are invalid.
 
-예를 들어...
+For example:
 
 ```css
 border-radius: 1em/5em;
 
-/* 아래와 같음 */
-border-top-left-radius:     1em 5em;
-border-top-right-radius:    1em 5em;
+/* It is equivalent to: */
+border-top-left-radius: 1em 5em;
+border-top-right-radius: 1em 5em;
 border-bottom-right-radius: 1em 5em;
-border-bottom-left-radius:  1em 5em;
+border-bottom-left-radius: 1em 5em;
 ```
 
 ```css
 border-radius: 4px 3px 6px / 2px 4px;
 
-/* 아래와 같음 */
-border-top-left-radius:     4px 2px;
-border-top-right-radius:    3px 4px;
+/* It is equivalent to: */
+border-top-left-radius: 4px 2px;
+border-top-right-radius: 3px 4px;
 border-bottom-right-radius: 6px 2px;
-border-bottom-left-radius:  3px 4px;
+border-bottom-left-radius: 3px 4px;
 ```
 
-## 형식 정의
+## Formal definition
 
-{{cssinfo}}
+{{CSSInfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-```
+```html hidden
+<pre id="example-1">
   border: solid 10px;
-  /* 테두리가 'D'형태가 됨 */
   border-radius: 10px 40px 40px 10px;
-```
+</pre>
 
-```
+<pre id="example-2">
   border: groove 1em red;
   border-radius: 2em;
-```
+</pre>
 
-```
+<pre id="example-3">
   background: gold;
   border: ridge gold;
   border-radius: 13em/3em;
-```
+</pre>
 
-```
+<pre id="example-4">
   border: none;
   border-radius: 40px 10px;
-```
+  background: gold;
+</pre>
 
-```
+<pre id="example-5">
   border: none;
   border-radius: 50%;
-```
+  background: burlywood;
+</pre>
 
-```
+<pre id="example-6">
   border: dotted;
   border-width: 10px 4px;
   border-radius: 10px 40px;
-```
+</pre>
 
-```
+<pre id="example-7">
   border: dashed;
   border-width: 2px 4px;
   border-radius: 40px;
+</pre>
 ```
 
-### 라이브 샘플
+```css hidden
+pre {
+  margin: 20px;
+  padding: 20px;
+  width: 80%;
+  height: 80px;
+}
 
-1. <https://jsfiddle.net/Tripad/qnGKj/2/>
-2. <https://jsfiddle.net/Tripad/qnGKj/3/>
-3. <https://jsfiddle.net/Tripad/qnGKj/4/>
-4. <https://jsfiddle.net/Tripad/qnGKj/5/>
-5. <https://jsfiddle.net/Tripad/qnGKj/6/>
+pre#example-1 {
+  border: solid 10px;
+  border-radius: 10px 40px 40px 10px;
+}
 
-## 명세
+pre#example-2 {
+  border: groove 1em red;
+  border-radius: 2em;
+}
+
+pre#example-3 {
+  background: gold;
+  border: ridge gold;
+  border-radius: 13em/3em;
+}
+
+pre#example-4 {
+  border: none;
+  border-radius: 40px 10px;
+  background: gold;
+}
+
+pre#example-5 {
+  border: none;
+  border-radius: 50%;
+  background: burlywood;
+}
+
+pre#example-6 {
+  border: dotted;
+  border-width: 10px 4px;
+  border-radius: 10px 40px;
+}
+
+pre#example-7 {
+  border: dashed;
+  border-width: 2px 4px;
+  border-radius: 40px;
+}
+```
+
+{{EmbedLiveSample("Examples", "200", "1150")}}
+
+### Live Samples
+
+- Sample 1 : <https://jsfiddle.net/Tripad/qnGKj/2/>
+- Sample 2 : <https://jsfiddle.net/Tripad/qnGKj/3/>
+- Sample 3 : <https://jsfiddle.net/Tripad/qnGKj/4/>
+- Sample 4 : <https://jsfiddle.net/Tripad/qnGKj/5/>
+- Sample 5 : <https://jsfiddle.net/Tripad/qnGKj/6/>
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 꼭짓점 반경 관련 CSS 속성: {{Cssxref("border-top-left-radius")}}, {{Cssxref("border-top-right-radius")}}, {{Cssxref("border-bottom-right-radius")}}, {{Cssxref("border-bottom-left-radius")}}
+- Border-radius-related CSS properties: {{cssxref("border-top-left-radius")}}, {{cssxref("border-top-right-radius")}}, {{cssxref("border-bottom-right-radius")}}, {{cssxref("border-bottom-left-radius")}}, {{cssxref("border-start-start-radius")}}, {{cssxref("border-start-end-radius")}}, {{cssxref("border-end-start-radius")}}, {{cssxref("border-end-end-radius")}}

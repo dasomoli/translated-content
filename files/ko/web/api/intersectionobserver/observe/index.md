@@ -1,63 +1,81 @@
 ---
-title: IntersectionObserver.observe()
+title: "IntersectionObserver: observe() method"
+short-title: observe()
 slug: Web/API/IntersectionObserver/observe
+page-type: web-api-instance-method
+browser-compat: api.IntersectionObserver.observe
 ---
 
 {{APIRef("Intersection Observer API")}}
 
-{{domxref("IntersectionObserver")}}의 **`observe()`** 메서드는 `IntersectionObserver`의 주시 대상 목록에 요소를 추가합니다. 하나의 감지기는 하나의 루트와 하나의 역치 목록만 가질 수 있지만, 동시에 여러 요소를 주시할 수 있습니다.
+The {{domxref("IntersectionObserver")}} method
+**`observe()`** adds an element to the set of target elements
+being watched by the `IntersectionObserver`. One observer has one set of
+thresholds and one root, but can watch multiple target elements for visibility changes
+in keeping with those.
 
-요소의 주시를 중단하려면 {{domxref("IntersectionObserver.unobserve()")}}를 호출하세요.
+To stop observing the element, call
+{{domxref("IntersectionObserver.unobserve()")}}.
 
-지정한 주시 대상 요소의 가시성 비율이 감지기의 역치({{domxref("IntersectionObserver.thresholds")}})를 통과하는 순간 감지기 콜백이 호출됩니다. 이때 역치를 통과한 요소를 나타내는 {{domxref("IntersectionObserverEntry")}}의 배열을 콜백 매개변수로 제공합니다. 이런 구조 덕분에 한 번의 콜백 호출만으로 많은 요소의 가시성 변화를 한 번에 처리할 수 있습니다.
+When the visibility of the specified element crosses over one of the observer's
+visibility thresholds (as listed in {{domxref("IntersectionObserver.thresholds")}}), the
+observer's callback is executed with an array of
+{{domxref("IntersectionObserverEntry")}} objects representing the intersection changes
+which occurred. Note that this design allows multiple elements' intersection changes to
+be processed by a single call to the callback.
 
-## 구문
+> **Note:** the observer [callback](/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver#callback) will always fire the first render cycle after `observe()` is called, even if the observed element has not yet moved with respect to the viewport.
+> This means that, for example, an element that is outside the viewport when `observe()` is called on it will result in the callback being immediately called with at least one [entry](/en-US/docs/Web/API/IntersectionObserverEntry) with [`intersecting`](/en-US/docs/Web/API/IntersectionObserverEntry/isIntersecting) set to `false`.
+> An element inside the viewport will result in the callback being immediately called with at least one entry with `intersecting` set to `true`.
 
-```js
-IntersectionObserver.observe(targetElement);
+## Syntax
+
+```js-nolint
+observe(targetElement)
 ```
 
-### 매개변수
+### Parameters
 
 - `targetElement`
-  - : 루트 내에서의 가시성 변화를 감지할 {{domxref("element")}}입니다. 루트 요소의 자손이어야 합니다. 루트가 현재 문서의 뷰포트일 경우 이 요소도 문서 내에 위치해야 합니다.
+  - : An {{domxref("element")}} whose visibility within the root is to be monitored. This
+    element must be a descendant of the root element (or contained within the current
+    document, if the root is the document's viewport).
 
-### 반환 값
+### Return value
 
-`undefined`.
+None ({{jsxref("undefined")}}).
 
-## 예제
+## Examples
 
 ```js
-// IntersectionObserver 등록
-const io = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    // 주시 대상이 뷰포트 안으로 들어오면 active 클래스 추가
+// Register IntersectionObserver
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
     if (entry.intersectionRatio > 0) {
-      entry.target.classList.add('active');
+      // Add 'active' class if observation target is inside viewport
+      entry.target.classList.add("active");
+    } else {
+      // Remove 'active' class otherwise
+      entry.target.classList.remove("active");
     }
-    // 아니면 active 클래스 제거
-    else {
-      entry.target.classList.remove('active');
-    }
-  })
-})
+  });
+});
 
-// 주시 대상 선언, 주시 시작
-const boxElList = document.querySelectorAll('.box');
+// Declares what to observe, and observes its properties.
+const boxElList = document.querySelectorAll(".box");
 boxElList.forEach((el) => {
   io.observe(el);
-})
+});
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("IntersectionObserver.unobserve()")}}

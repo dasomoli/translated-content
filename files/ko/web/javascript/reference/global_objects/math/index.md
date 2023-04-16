@@ -1,127 +1,171 @@
 ---
 title: Math
 slug: Web/JavaScript/Reference/Global_Objects/Math
+page-type: javascript-namespace
+browser-compat: javascript.builtins.Math
 ---
+
 {{JSRef}}
 
-**`Math`** 는 수학적인 상수와 함수를 위한 속성과 메서드를 가진 내장 객체입니다. 함수 객체가 아닙니다.
+The **`Math`** namespace object contains static properties and methods for mathematical constants and functions.
 
-`Math`는 {{jsxref("Number")}} 자료형만 지원하며 {{jsxref("BigInt")}}와는 사용할 수 없습니다.
+`Math` works with the {{jsxref("Number")}} type. It doesn't work with {{jsxref("BigInt")}}.
 
-## 설명
+## Description
 
-다른 전역 객체와 달리 `Math`는 생성자가 아닙니다. `Math`의 모든 속성과 메서드는 정적입니다. 파이 상수는 `Math.PI`로 참조할 수 있고, 사인 함수는 매개변수 `x`에 대해 `Math.sin(x)`와 같이 호출할 수 있습니다. 상수는 JavaScript에서 가능한 최대 실수 정밀도로 정의되어 있습니다.
+Unlike most global objects, `Math` is not a constructor. You cannot use it with the [`new` operator](/en-US/docs/Web/JavaScript/Reference/Operators/new) or invoke the `Atomics` object as a function. All properties and methods of `Math` are static.
 
-## 속성
+> **Note:** Many `Math` functions have a precision that's _implementation-dependent_.
+>
+> This means that different browsers can give a different result. Even the same JavaScript engine on a different OS or architecture can give different results!
 
+## Static properties
+
+- `Math[@@toStringTag]`
+  - : The initial value of the [`@@toStringTag`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toStringTag) property is the string `"Math"`. This property is used in {{jsxref("Object.prototype.toString()")}}.
 - {{jsxref("Math.E")}}
-  - : 오일러의 상수이며 자연로그의 밑. 약 `2.718`.
+  - : Euler's number and the base of natural logarithms; approximately `2.718`.
 - {{jsxref("Math.LN2")}}
-  - : `2`의 자연로그. 약 `0.693`.
+  - : Natural logarithm of `2`; approximately `0.693`.
 - {{jsxref("Math.LN10")}}
-  - : `10`의 자연로그. 약 `2.303`.
+  - : Natural logarithm of `10`; approximately `2.303`.
 - {{jsxref("Math.LOG2E")}}
-  - : 밑이 `2`인 로그 E. 약 `1.443`.
+  - : Base-2 logarithm of `E`; approximately `1.443`.
 - {{jsxref("Math.LOG10E")}}
-  - : 밑이 `10`인 로그 E. 약 `0.434`.
+  - : Base-10 logarithm of `E`; approximately `0.434`.
 - {{jsxref("Math.PI")}}
-  - : 원의 둘레와 지름의 비율. 약 `3.14159`.
+  - : Ratio of a circle's circumference to its diameter; approximately `3.14159`.
 - {{jsxref("Math.SQRT1_2")}}
-  - : ½의 제곱근. 약 `0.707`.
+  - : Square root of ½; approximately `0.707`.
 - {{jsxref("Math.SQRT2")}}
-  - : `2`의 제곱근. 약 `1.414`.
+  - : Square root of `2`; approximately `1.414`.
 
-## 메서드
+## Static methods
 
-> **참고:** **참고:** 삼각 함수(`sin()`, `cos()`, `tan()`, `asin()`, `acos()`, `atan()`, `atan2()`)는 매개변수와 반환값 모두 호도법(라디안)을 사용합니다.
->
-> 라디안 값을 각도 값으로 변환하려면 `(Math.PI / 180)`으로 나누세요. 반대로 각도 값에 곱하면 라디안 값이 됩니다.
+- {{jsxref("Math.abs()")}}
+  - : Returns the absolute value of `x`.
+- {{jsxref("Math.acos()")}}
+  - : Returns the arccosine of `x`.
+- {{jsxref("Math.acosh()")}}
+  - : Returns the hyperbolic arccosine of `x`.
+- {{jsxref("Math.asin()")}}
+  - : Returns the arcsine of `x`.
+- {{jsxref("Math.asinh()")}}
+  - : Returns the hyperbolic arcsine of a number.
+- {{jsxref("Math.atan()")}}
+  - : Returns the arctangent of `x`.
+- {{jsxref("Math.atanh()")}}
+  - : Returns the hyperbolic arctangent of `x`.
+- {{jsxref("Math.atan2()")}}
+  - : Returns the arctangent of the quotient of its arguments.
+- {{jsxref("Math.cbrt()")}}
+  - : Returns the cube root of `x`.
+- {{jsxref("Math.ceil()")}}
+  - : Returns the smallest integer greater than or equal to `x`.
+- {{jsxref("Math.clz32()")}}
+  - : Returns the number of leading zero bits of the 32-bit integer `x`.
+- {{jsxref("Math.cos()")}}
+  - : Returns the cosine of `x`.
+- {{jsxref("Math.cosh()")}}
+  - : Returns the hyperbolic cosine of `x`.
+- {{jsxref("Math.exp()")}}
+  - : Returns e<sup>x</sup>, where x is the argument, and e is Euler's number (`2.718`…, the base of the natural logarithm).
+- {{jsxref("Math.expm1()")}}
+  - : Returns subtracting `1` from `exp(x)`.
+- {{jsxref("Math.floor()")}}
+  - : Returns the largest integer less than or equal to `x`.
+- {{jsxref("Math.fround()")}}
+  - : Returns the nearest [single precision](https://en.wikipedia.org/wiki/Single-precision_floating-point_format) float representation of `x`.
+- {{jsxref("Math.hypot()")}}
+  - : Returns the square root of the sum of squares of its arguments.
+- {{jsxref("Math.imul()")}}
+  - : Returns the result of the 32-bit integer multiplication of `x` and `y`.
+- {{jsxref("Math.log()")}}
+  - : Returns the natural logarithm (㏒<sub>e</sub>; also, ㏑) of `x`.
+- {{jsxref("Math.log1p()")}}
+  - : Returns the natural logarithm (㏒<sub>e</sub>; also ㏑) of `1 + x` for the number `x`.
+- {{jsxref("Math.log10()")}}
+  - : Returns the base-10 logarithm of `x`.
+- {{jsxref("Math.log2()")}}
+  - : Returns the base-2 logarithm of `x`.
+- {{jsxref("Math.max()")}}
+  - : Returns the largest of zero or more numbers.
+- {{jsxref("Math.min()")}}
+  - : Returns the smallest of zero or more numbers.
+- {{jsxref("Math.pow()")}}
+  - : Returns base `x` to the exponent power `y` (that is, `x`<sup><code>y</code></sup>).
+- {{jsxref("Math.random()")}}
+  - : Returns a pseudo-random number between `0` and `1`.
+- {{jsxref("Math.round()")}}
+  - : Returns the value of the number `x` rounded to the nearest integer.
+- {{jsxref("Math.sign()")}}
+  - : Returns the sign of the `x`, indicating whether `x` is positive, negative, or zero.
+- {{jsxref("Math.sin()")}}
+  - : Returns the sine of `x`.
+- {{jsxref("Math.sinh()")}}
+  - : Returns the hyperbolic sine of `x`.
+- {{jsxref("Math.sqrt()")}}
+  - : Returns the positive square root of `x`.
+- {{jsxref("Math.tan()")}}
+  - : Returns the tangent of `x`.
+- {{jsxref("Math.tanh()")}}
+  - : Returns the hyperbolic tangent of `x`.
+- {{jsxref("Math.trunc()")}}
+  - : Returns the integer portion of `x`, removing any fractional digits.
 
-> **참고:** 많은 수의 `Math` 함수 정확도는 구현에 따라 다를 수 있습니다.
->
-> 즉, 각 브라우저의 결과가 다를 수 있으며, 서로 같은 JS 엔진이라도 운영체제나 아키텍쳐에 따라서 불일치하는 값을 반환할 수 있습니다.
+## Examples
 
-- {{jsxref("Global_Objects/Math/abs", "Math.abs(x)")}}
-  - : 숫자의 절댓값을 반환합니다.
-- {{jsxref("Global_Objects/Math/acos", "Math.acos(x)")}}
-  - : 숫자의 아크코사인 값을 반환합니다.
-- {{jsxref("Global_Objects/Math/acosh", "Math.acosh(x)")}}
-  - : 숫자의 쌍곡아크코사인 값을 반환합니다.
-- {{jsxref("Global_Objects/Math/asin", "Math.asin(x)")}}
-  - : 숫자의 아크사인 값을 반환합니다.
-- {{jsxref("Global_Objects/Math/asinh", "Math.asinh(x)")}}
-  - : 숫자의 쌍곡아크사인 값을 반환합니다.
-- {{jsxref("Global_Objects/Math/atan", "Math.atan(x)")}}
-  - : 숫자의 아크탄젠트 값을 반환합니다.
-- {{jsxref("Global_Objects/Math/atanh", "Math.atanh(x)")}}
-  - : 숫자의 쌍곡아크탄젠트 값을 반환합니다.
-- {{jsxref("Global_Objects/Math/atan2", "Math.atan2(y, x)")}}
-  - : 인수 몫의 아크탄젠트 값을 반환합니다.
-- {{jsxref("Global_Objects/Math/cbrt", "Math.cbrt(x)")}}
-  - : 숫자의 세제곱근을 반환합니다.
-- {{jsxref("Global_Objects/Math/ceil", "Math.ceil(x)")}}
-  - : 인수보다 크거나 같은 수 중에서 가장 작은 정수를 반환합니다.
-- {{jsxref("Global_Objects/Math/clz32", "Math.clz32(x)")}}
-  - : 주어진 32비트 정수의 선행 0 개수를 반환합니다.
-- {{jsxref("Global_Objects/Math/cos", "Math.cos(x)")}}
-  - : 숫자의 코사인 값을 반환합니다.
-- {{jsxref("Global_Objects/Math/cosh", "Math.cosh(x)")}}
-  - : 숫자의 쌍곡코사인 값을 반환합니다.
-- {{jsxref("Global_Objects/Math/exp", "Math.exp(x)")}}
-  - : E^x 를 반환합니다. *x*는 인수이며 E 는 오일러 상수(`2.718`...) 또는 자연로그의 밑입니다.
-- {{jsxref("Global_Objects/Math/expm1", "Math.expm1(x)")}}
-  - : `exp(x)`에서 `1`을 뺀 값을 반환합니다.
-- {{jsxref("Global_Objects/Math/floor", "Math.floor(x)")}}
-  - : 인수보다 작거나 같은 수 중에서 가장 큰 정수를 반환합니다.
-- {{jsxref("Global_Objects/Math/fround", "Math.fround(x)")}}
-  - : 인수의 가장 가까운 단일 정밀도 표현을 반환합니다.
-- {{jsxref("Global_Objects/Math/hypot", "Math.hypot([x[, y[, …]]])")}}
-  - : 인수의 제곱합의 제곱근을 반환합니다.
-- {{jsxref("Global_Objects/Math/imul", "Math.imul(x, y)")}}
-  - : 두 32비트 정수의 곱을 반환합니다.
-- {{jsxref("Global_Objects/Math/log", "Math.log(x)")}}
-  - : 숫자의 자연로그(e를 밑으로 하는 로그, 즉 ln) 값을 반환합니다.
-- {{jsxref("Global_Objects/Math/log1p", "Math.log1p(x)")}}
-  - : 숫자 `x`에 대해 `1 + x`의 자연로그(e를 밑으로 하는 로그, ln) 값을 반환합니다.
-- {{jsxref("Global_Objects/Math/log10", "Math.log10(x)")}}
-  - : 숫자의 밑이 10인 로그를 반환합니다.
-- {{jsxref("Global_Objects/Math/log2", "Math.log2(x)")}}
-  - : 숫자의 밑이 2인 로그를 반환합니다.
-- {{jsxref("Global_Objects/Math/max", "Math.max([x[, y[, …]]])")}}
-  - : 0개 이상의 인수에서 제일 큰 수를 반환합니다.
-- {{jsxref("Global_Objects/Math/min", "Math.min([x[, y[, …]]])")}}
-  - : 0개 이상의 인수에서 제일 작은 수를 반환합니다.
-- {{jsxref("Global_Objects/Math/pow", "Math.pow(x, y)")}}
-  - : x의 y 제곱을 반환합니다.
-- {{jsxref("Global_Objects/Math/random", "Math.random()")}}
-  - : 0과 1 사이의 난수를 반환합니다.
-- {{jsxref("Global_Objects/Math/round", "Math.round(x)")}}
-  - : 숫자에서 가장 가까운 정수를 반환합니다.
-- {{jsxref("Global_Objects/Math/sign", "Math.sign(x)")}}
-  - : x의 양의 수인지 음의 수인지 나타내는 부호를 반환합니다.
-- {{jsxref("Global_Objects/Math/sin", "Math.sin(x)")}}
-  - : 숫자의 사인 값을 반환합니다.
-- {{jsxref("Global_Objects/Math/sinh", "Math.sinh(x)")}}
-  - : 숫자의 쌍곡사인 값을 반환합니다.
-- {{jsxref("Global_Objects/Math/sqrt", "Math.sqrt(x)")}}
-  - : 숫자의 제곱근을 반환합니다.
-- {{jsxref("Global_Objects/Math/tan", "Math.tan(x)")}}
-  - : 숫자의 탄젠트 값을 반환합니다.
-- {{jsxref("Global_Objects/Math/tanh", "Math.tanh(x)")}}
-  - : 숫자의 쌍곡탄젠트 값을 반환합니다.
-- `Math.toSource()` {{non-standard_inline}}
-  - : 문자열 `"Math"`를 반환합니다.
-- {{jsxref("Global_Objects/Math/trunc", "Math.trunc(x)")}}
-  - : 숫자의 정수 부분을 반환합니다.
+### Converting between degrees and radians
 
-## 명세
+The trigonometric functions `sin()`, `cos()`, `tan()`, `asin()`, `acos()`, `atan()`, and `atan2()` expect (and return) angles in _radians_.
+
+Since humans tend to think in degrees, and some functions (such as CSS transforms) can accept degrees, it is a good idea to keep functions handy that convert between the two:
+
+```js
+function degToRad(degrees) {
+  return degrees * (Math.PI / 180);
+}
+
+function radToDeg(rad) {
+  return rad / (Math.PI / 180);
+}
+```
+
+### Calculating the height of an equilateral triangle
+
+If we want to calculate the height of an equilateral triangle, and we know its side length is 100, we can use the formulae _length of the adjacent multiplied by the tangent of the angle is equal to the opposite._
+
+![An equilateral triangle where a perpendicular of one edge is drawn from the opposite vertex, forming a right triangle with three sides marked as "adjacent", "opposite", and "hypotenuse". The angle between the "adjacent" and "hypotenuse" sides is 60 degrees.](trigonometry.png)
+
+In JavaScript, we can do this with the following:
+
+```js
+50 * Math.tan(degToRad(60));
+```
+
+We use our `degToRad()` function to convert 60 degrees to radians, as {{jsxref("Math.tan()")}} expects an input value in radians.
+
+### Returning a random integer between two bounds
+
+This can be achieved with a combination of {{jsxref("Math.random()")}} and {{jsxref("Math.floor()")}}:
+
+```js
+function random(min, max) {
+  const num = Math.floor(Math.random() * (max - min + 1)) + min;
+  return num;
+}
+
+random(1, 10);
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Number")}}

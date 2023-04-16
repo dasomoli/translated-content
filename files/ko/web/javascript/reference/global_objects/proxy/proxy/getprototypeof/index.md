@@ -1,17 +1,19 @@
 ---
 title: handler.getPrototypeOf()
 slug: Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/getPrototypeOf
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Proxy.handler.getPrototypeOf
 ---
 
 {{JSRef}}
 
-**`handler.getPrototypeOf()`** 메서드는 `[[GetPrototypeOf]]` 내부 메서드에 대한 트랩입니다.
+The **`handler.getPrototypeOf()`** method is a trap for the `[[GetPrototypeOf]]` [object internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods), which is used by operations such as {{jsxref("Object.getPrototypeOf()")}}.
 
 {{EmbedInteractiveExample("pages/js/proxyhandler-getprototypeof.html", "taller")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 new Proxy(obj, {
   getPrototypeOf(target) {
     // …
@@ -19,56 +21,61 @@ new Proxy(obj, {
 });
 ```
 
-### 매개변수
+### Parameters
 
-다음 매개변수는 `getPrototypeOf()` 메서드에 전달됩니다. `this`는 처리기에 바인딩됩니다.
+The following parameter is passed to the `getPrototypeOf()` method.
+`this` is bound to the handler.
 
 - `target`
-  - : 대상 객체
+  - : The target object.
 
-### 반환 값
+### Return value
 
-`getPrototypeOf()` 메서드는 객체 또는 `null`을 반환합니다.
+The `getPrototypeOf()` method must return an object or `null`.
 
-## 설명
+## Description
 
-### 가로채기
+### Interceptions
 
-이 트랩은 다음 작업을 가로챌 수 있습니다.
+This trap can intercept these operations:
 
 - {{jsxref("Object.getPrototypeOf()")}}
 - {{jsxref("Reflect.getPrototypeOf()")}}
-- [`__proto__`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/proto)
+- [`__proto__`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/proto)
 - {{jsxref("Object.prototype.isPrototypeOf()")}}
 - {{jsxref("Operators/instanceof", "instanceof")}}
 
-### 불변 조건
+Or any other operation that invokes the `[[GetPrototypeOf]]` [internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods).
 
-다음 불변 조건이 위반되면 프록시에서 {{jsxref("TypeError")}}가 발생합니다.
+### Invariants
 
-- `getPrototypeOf()` 메서드는 반드시 객체나 `null`을 반환해야 합니다.
-- `target`을 확장할 수 없는 경우, `Object.getPrototypeOf(proxy)` 메서드는 `Object.getPrototypeOf(target)`과 동일한 값을 반환해야 합니다.
+If the following invariants are violated, the trap throws a {{jsxref("TypeError")}} when invoked.
 
-## 예제들
+- `getPrototypeOf()` method must return an object or `null`.
+- If `target` is not extensible,
+  `Object.getPrototypeOf(proxy)` method must return the same
+  value as `Object.getPrototypeOf(target)`.
 
-### 기본 사용법
+## Examples
+
+### Basic usage
 
 ```js
 const obj = {};
 const proto = {};
 const handler = {
   getPrototypeOf(target) {
-    console.log(target === obj);   // true
+    console.log(target === obj); // true
     console.log(this === handler); // true
     return proto;
   },
 };
 
 const p = new Proxy(obj, handler);
-console.log(Object.getPrototypeOf(p) === proto);    // true
+console.log(Object.getPrototypeOf(p) === proto); // true
 ```
 
-### getPrototypeOf 트랩을 싱핼 시키는 5가지 방법
+### Five ways to trigger the getPrototypeOf trap
 
 ```js
 const obj = {};
@@ -78,22 +85,22 @@ const p = new Proxy(obj, {
   },
 });
 console.log(
-  Object.getPrototypeOf(p) === Array.prototype,  // true
+  Object.getPrototypeOf(p) === Array.prototype, // true
   Reflect.getPrototypeOf(p) === Array.prototype, // true
-  p.__proto__ === Array.prototype,               // true
-  Array.prototype.isPrototypeOf(p),              // true
-  p instanceof Array,                            // true
+  p.__proto__ === Array.prototype, // true
+  Array.prototype.isPrototypeOf(p), // true
+  p instanceof Array, // true
 );
 ```
 
-### 두 가지 예외
+### Two kinds of exceptions
 
 ```js example-bad
 const obj = {};
 const p = new Proxy(obj, {
   getPrototypeOf(target) {
-    return 'foo';
-  }
+    return "foo";
+  },
 });
 Object.getPrototypeOf(p); // TypeError: "foo" is not an object or null
 
@@ -106,17 +113,17 @@ const p = new Proxy(obj, {
 Object.getPrototypeOf(p); // TypeError: expected same prototype value
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Proxy")}}
-- [`Proxy()` 생성자](/ko/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy)
+- [`Proxy()` constructor](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy)
 - {{jsxref("Object.getPrototypeOf()")}}
 - {{jsxref("Reflect.getPrototypeOf()")}}

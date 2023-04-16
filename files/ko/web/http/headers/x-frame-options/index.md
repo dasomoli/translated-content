@@ -1,15 +1,17 @@
 ---
 title: X-Frame-Options
 slug: Web/HTTP/Headers/X-Frame-Options
+page-type: http-header
+browser-compat: http.headers.X-Frame-Options
 ---
 
 {{HTTPSidebar}}
 
-The **`X-Frame-Options`** [HTTP](/ko/docs/Web/HTTP) 응답 헤더는 해당 페이지를 {{HTMLElement("frame")}} 또는{{HTMLElement("iframe")}}, {{HTMLElement("object")}} 에서 렌더링할 수 있는지 여부를 나타내는데 사용됩니다. 사이트 내 콘텐츠들이 다른 사이트에 포함되지 않도록 하여 [clickjacking](https://en.wikipedia.org/wiki/Clickjacking) 공격을 막기 위해 이 헤더를 사용합니다.
+The **`X-Frame-Options`** [HTTP](/en-US/docs/Web/HTTP) response header can be used to indicate whether or not a browser should be allowed to render a page in a {{HTMLElement("frame")}}, {{HTMLElement("iframe")}}, {{HTMLElement("embed")}} or {{HTMLElement("object")}}. Sites can use this to avoid [click-jacking](/en-US/docs/Web/Security/Types_of_attacks#click-jacking) attacks, by ensuring that their content is not embedded into other sites.
 
-이 설정은 사용자가 `X-Frame-Options`를 지원하는 브라우저를 통해 페이지에 접근할 경우에만 보안됩니다.
+The added security is provided only if the user accessing the document is using a browser that supports `X-Frame-Options`.
 
-> **참고:** {{HTTPHeader("Content-Security-Policy")}} HTTP 헤더에는 브라우저를 지원하기 위해 이 헤더를 [사용하지 않도록 하는](https://www.w3.org/TR/CSP2/#frame-ancestors-and-frame-options) {{HTTPHeader("Content-Security-Policy/frame-ancestors", "frame-ancestors")}} 지시문이 있습니다.
+> **Note:** The {{HTTPHeader("Content-Security-Policy")}} HTTP header has a {{HTTPHeader("Content-Security-Policy/frame-ancestors", "frame-ancestors")}} directive which [obsoletes](https://w3c.github.io/webappsec-csp/#frame-ancestors-and-frame-options) this header for supporting browsers.
 
 <table class="properties">
   <tbody>
@@ -26,95 +28,111 @@ The **`X-Frame-Options`** [HTTP](/ko/docs/Web/HTTP) 응답 헤더는 해당 페�
 
 ## Syntax
 
-`X-Frame-Options` 과 관련해서는 다음의 3가지 설정이 가능합니다.
+There are two possible directives for `X-Frame-Options`:
 
 ```
-X-Frame-Options: deny
-X-Frame-Options: sameorigin
-X-Frame-Options: allow-from https://example.com/
+X-Frame-Options: DENY
+X-Frame-Options: SAMEORIGIN
 ```
 
 ### Directives
 
-`deny`는 같은 사이트 내에서 frame을 통한 접근도 막습니다.
-`sameorigin`를 명시할 경우에는 frame에 포함된 페이지가 페이지를 제공하는 사이트와 동일한할 경우 계속 사용할 수 있습니다.
+If you specify `DENY`, not only will the browser attempt to load the page in a frame fail when loaded from other sites, attempts to do so will fail when loaded from the same site. On the other hand, if you specify `SAMEORIGIN`, you can still use the page in a frame as long as the site including it in a frame is the same as the one serving the page.
 
-- `deny`
-  - : 어떠한 사이트에서도 frame 상에서 보여질 수 없습니다.
-- `sameorigin`
-  - : 동일한 사이트의 frame에서만 보여집니다. 해당 스펙 안에서 브라우저 벤더가 최상위(top level), 혹은 부모(parent), 모든 체인(whole chain)에서 적용할지를 결정하도록 맡겨집니다. 하지만 모든 조상(ancestor)이 동일한 사이트에서 제공되지 않으면 이 옵션은 그다지 유용하지 않다고 논의되고 있습니다. (참고 [Firefox bug 725490](https://bugzil.la/725490)). 상세 지원사항에 대한 참고 [Browser compatibility](#browser_compatibility).
-- `allow-from uri`
-  - : 지정된 특정 uri의 frame 에서만 보여집니다. 파이어폭스에서는 `sameorigin` 과 동일한 문제를 겪고 있습니다. 즉 동일한 사이트에 있는지에 대해서 frame의 조상(ancestor)을 확인하지 않습니다.
+- `DENY`
+  - : The page cannot be displayed in a frame, regardless of the site attempting to do so.
+- `SAMEORIGIN`
+  - : The page can only be displayed if all ancestor frames are same origin to the page itself.
+- `ALLOW-FROM origin` {{deprecated_inline}}
+  - : This is an obsolete directive that no longer works in modern browsers. (Using it will give the same behavior as omitting the header.) Don't use it. The {{HTTPHeader("Content-Security-Policy")}} HTTP header has a {{HTTPHeader("Content-Security-Policy/frame-ancestors", "frame-ancestors")}} directive which you can use instead.
 
-## 예시
+## Examples
 
-> **참고:** 메타 테그 설정은 무용지물이다! 이를테면, `<meta http-equiv="X-Frame-Options" content="deny">` 태그는 아무런 영향을 미치지 않는다. 따라서 사용하지 말자! 오직 아래의 예제처럼 HTTP 헤더 설정을 통해서만 `X-Frame-Options`이 동작한다.
+> **Note:** Setting X-Frame-Options inside the {{HTMLElement("meta")}} element is useless! For instance, `<meta http-equiv="X-Frame-Options" content="deny">` has no effect. Do not use it! `X-Frame-Options` works only by setting through the HTTP header, as in the examples below.
 
-### Apache 설정
+### Configuring Apache
 
-아파치에서 모든 페이지에 `X-Frame-Options` 헤더를 전송하려면, 사이트 설정에 다음의 설정을 추가합니다.
-
-```
-Header always set X-Frame-Options "sameorigin"
-```
-
-아파치에서 `X-Frame-Options` 거부(deny)하려면, 사이트 설정에 다음의 설정을 추가합니다.
+To configure Apache to send the `X-Frame-Options` header for all pages, add this to your site's configuration:
 
 ```
-Header set X-Frame-Options "deny"
+Header always set X-Frame-Options "SAMEORIGIN"
 ```
 
-아파치에서 특정 호스트(host)에서 `X-Frame-Options` 를 허용하려면(`allow-from)`, 사이트 설정에 다음의 설정을 추가합니다.
+To configure Apache to set the `X-Frame-Options` DENY, add this to your site's configuration:
 
 ```
-Header set X-Frame-Options "allow-from https://example.com/"
+Header set X-Frame-Options "DENY"
 ```
 
-### nginx 설정
+### Configuring Nginx
 
-nginx에서 `X-Frame-Options` 헤더를 전송하려면 http, server, location 설정에 아래 설정을 추가합니다.
+To configure Nginx to send the `X-Frame-Options` header, add this either to your http, server or location configuration:
 
 ```
-add_header X-Frame-Options sameorigin;
+add_header X-Frame-Options SAMEORIGIN always;
 ```
 
-### IIS 설정
+### Configuring IIS
 
-ISS에서 `X-Frame-Options` 헤더를 전송하려면, 사이트의 `Web.config` 파일에 다음을 추가합니다.
+To configure IIS to send the `X-Frame-Options` header, add this to your site's `Web.config` file:
 
 ```xml
 <system.webServer>
-  ...
+  …
 
   <httpProtocol>
     <customHeaders>
-      <add name="X-Frame-Options" value="sameorigin" />
+      <add name="X-Frame-Options" value="SAMEORIGIN" />
     </customHeaders>
   </httpProtocol>
 
-  ...
+  …
 </system.webServer>
 ```
 
-### HAProxy 설정
+Or see this [Microsoft support article on setting this configuration using the IIS Manager](https://support.microsoft.com/en-US/office/mitigating-framesniffing-with-the-x-frame-options-header-1911411b-b51e-49fd-9441-e8301dcdcd79) user interface.
 
-HAProxy에서 `X-Frame-Options` 헤더를 전송하려면, front-end, listen, 혹은 backend 설정에 다음을 추가합니다.
+### Configuring HAProxy
+
+To configure HAProxy to send the `X-Frame-Options` header, add this to your front-end, listen, or backend configuration:
 
 ```
-rspadd X-Frame-Options:\ sameorigin
+rspadd X-Frame-Options:\ SAMEORIGIN
 ```
 
-## 명세서
+Alternatively, in newer versions:
+
+```
+http-response set-header X-Frame-Options SAMEORIGIN
+```
+
+### Configuring Express
+
+To configure Express to send the `X-Frame-Options` header, you can use [helmet](https://helmetjs.github.io/) which uses [frameguard](https://helmetjs.github.io/docs/frameguard/) to set the header. Add this to your server configuration:
+
+```js
+const helmet = require("helmet");
+const app = express();
+app.use(helmet.frameguard({ action: "SAMEORIGIN" }));
+```
+
+Alternatively, you can use frameguard directly:
+
+```js
+const frameguard = require("frameguard");
+app.use(frameguard({ action: "SAMEORIGIN" }));
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- [ClickJacking Defenses - IEBlog](https://blogs.msdn.com/b/ie/archive/2009/01/27/ie8-security-part-vii-clickjacking-defenses.aspx)
-- [Combating ClickJacking with X-Frame-Options - IEInternals](https://blogs.msdn.com/b/ieinternals/archive/2010/03/30/combating-clickjacking-with-x-frame-options.aspx)
-- [HTTP Header Field X-Frame-Options - RFC 7034](https://tools.ietf.org/html/rfc7034)
-- [CSP Level 2 frame-ancestors directive](https://w3c.github.io/webappsec/specs/content-security-policy/#directive-frame-ancestors)
+- {{HTTPHeader("Content-Security-Policy")}} directive {{HTTPHeader("Content-Security-Policy/frame-ancestors", "frame-ancestors")}}
+- [ClickJacking Defenses - IEBlog](https://docs.microsoft.com/archive/blogs/ie/ie8-security-part-vii-clickjacking-defenses)
+- [Combating ClickJacking with X-Frame-Options - IEInternals](https://docs.microsoft.com/archive/blogs/ieinternals/combating-clickjacking-with-x-frame-options)

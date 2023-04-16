@@ -1,54 +1,80 @@
 ---
 title: box-sizing
 slug: Web/CSS/box-sizing
+page-type: css-property
+browser-compat: css.properties.box-sizing
 ---
 
 {{CSSRef}}
 
-**`box-sizing`** [CSS](/ko/docs/Web/CSS) 속성은 요소의 너비와 높이를 계산하는 방법을 지정합니다.
+The **`box-sizing`** [CSS](/en-US/docs/Web/CSS) property sets how the total width and height of an element is calculated.
 
 {{EmbedInteractiveExample("pages/css/box-sizing.html")}}
 
-CSS 박스 모델의 기본값에서, 지정한 너비와 높이는 요소의 콘텐츠 박스 크기에만 적용됩니다. 요소에 테두리나 안쪽 여백이 있으면 너비와 높이에 더해서 화면에 그립니다. 따라서 크기를 설정할 때, 원하는 크기를 얻으려면 테두리나 안쪽 여백을 고려해야 합니다.
+By default in the [CSS box model](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model), the `width` and `height` you assign to an element is applied only to the element's content box. If the element has any border or padding, this is then added to the `width` and `height` to arrive at the size of the box that's rendered on the screen. This means that when you set `width` and `height`, you have to adjust the value you give to allow for any border or padding that may be added. For example, if you have four boxes with `width: 25%;`, if any has left or right padding or a left or right border, they will not by default fit on one line within the constraints of the parent container.
 
-`box-sizing` 속성을 사용해 이 방식을 바꿀 수 있습니다.
+The `box-sizing` property can be used to adjust this behavior:
 
-- `content-box`는 기본 CSS 박스 크기 결정법을 사용합니다. 요소의 너비를 100 픽셀로 설정하면 콘텐츠 영역이 100 픽셀 너비를 가지고, 테두리와 안쪽 여백은 이에 더해집니다.
-- `border-box`는 테두리와 안쪽 여백의 크기도 요소의 크기로 고려합니다. 너비를 100 픽셀로 설정하고 테두리와 안쪽 여백을 추가하면, 콘텐츠 영역이 줄어들어 총 너비 100 픽셀을 유지합니다. 대부분의 경우 이 편이 크기를 조절할 때 쉽습니다.
+- `content-box` gives you the default CSS box-sizing behavior. If you set an element's width to 100 pixels, then the element's content box will be 100 pixels wide, and the width of any border or padding will be added to the final rendered width, making the element wider than 100px.
+- `border-box` tells the browser to account for any border and padding in the values you specify for an element's width and height. If you set an element's width to 100 pixels, that 100 pixels will include any border or padding you added, and the content box will shrink to absorb that extra width. This typically makes it much easier to size elements.
 
-## 구문
+  `box-sizing: border-box` is the default styling that browsers use for the {{htmlelement("table")}}, {{htmlelement("select")}}, and {{htmlelement("button")}} elements, and for {{htmlelement("input")}} elements whose type is `{{htmlelement("input/radio", "radio")}}`, `{{htmlelement("input/checkbox", "checkbox")}}`, `{{htmlelement("input/reset", "reset")}}`, `{{htmlelement("input/button", "button")}}`, `{{htmlelement("input/submit", "submit")}}`, `{{htmlelement("input/color", "color")}}`, or `{{htmlelement("input/search", "search")}}`.
 
-`box-sizing` 속성은 다음 키워드 중 하나로 지정할 수 있습니다.
+> **Note:** It is often useful to set `box-sizing` to `border-box` to lay out elements. This makes dealing with the sizes of elements much easier, and generally eliminates a number of pitfalls you can stumble on while laying out your content. On the other hand, when using `position: relative` or `position: absolute`, use of `box-sizing: content-box` allows the positioning values to be relative to the content, and independent of changes to border and padding sizes, which is sometimes desirable.
 
-### 값
+## Syntax
+
+```css
+box-sizing: border-box;
+box-sizing: content-box;
+
+/* Global values */
+box-sizing: inherit;
+box-sizing: initial;
+box-sizing: revert;
+box-sizing: revert-layer;
+box-sizing: unset;
+```
+
+The `box-sizing` property is specified as a single keyword chosen from the list of values below.
+
+### Values
 
 - `content-box`
-  - : CSS 표준이 정의한 초기 기본값. {{Cssxref("width")}}와 {{Cssxref("height")}} 속성이 콘텐츠 영역만 포함하고 안팎 여백과 테두리는 포함하지 않습니다. 즉 `.box {width: 350px; border: 10px solid black;}`을 적용한 요소의 너비는 `370px`입니다.
 
-요소의 크기는 너비 = 콘텐츠 너비, 높이 = 콘텐츠 높이로 계산하고 테두리와 안쪽 여백은 식에 넣지 않습니다.
+  - : This is the initial and default value as specified by the CSS standard. The {{Cssxref("width")}} and {{Cssxref("height")}} properties include the content, but does not include the padding, border, or margin. For example, `.box {width: 350px; border: 10px solid black;}` renders a box that is 370px wide.
+
+    Here, the dimensions of the element are calculated as: _width = width of the content_, and _height = height of the content_. (Borders and padding are not included in the calculation.)
 
 - `border-box`
-  - : {{Cssxref("width")}} 와 {{Cssxref("height")}} 속성이 안쪽 여백과 테두리는 포함하고, 바깥 여백은 포함하지 않습니다. 안쪽 여백과 테두리가 요소 상자 안에 위치함을 유의하세요. 즉 `.box {width: 350px; border: 10px solid black;}`을 적용한 요소의 너비는 `350px`입니다. 콘텐츠 영역의 크기는 음수일 수 없으므로 `border-box`를 사용해 요소를 사라지게 할 수는 없습니다.
 
-  요소의 크기는 너비 = 테두리 + 안쪽 여백 + 콘텐츠 너비, 높이 = 테두리 + 안쪽 여백 + 콘텐츠 높이로 계산합니다.
+  - : The {{Cssxref("width")}} and {{Cssxref("height")}} properties include the content, padding, and border, but do not include the margin. Note that padding and border will be inside of the box. For example, `.box {width: 350px; border: 10px solid black;}` renders a box that is 350px wide, with the area for content being 330px wide. The content box can't be negative and is floored to 0, making it impossible to use `border-box` to make the element disappear.
 
-### 형식 구문
+    Here the dimensions of the element are calculated as: _width = border + padding + width of the content_, and _height = border + padding + height of the content_.
+
+## Formal definition
+
+{{cssinfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-다음 예제는 두 개의 동일한 요소의 크기가 서로 다른 `box-sizing` 값으로 어떻게 달라지는지 보입니다.
+### Box sizes with content-box and border-box
 
-### HTML
+This example shows how different `box-sizing` values alter the rendered size of two otherwise identical elements.
+
+#### HTML
 
 ```html
 <div class="content-box">Content box</div>
-<br>
+<br />
 <div class="border-box">Border box</div>
 ```
 
-### CSS
+#### CSS
 
 ```css
 div {
@@ -76,20 +102,18 @@ div {
 }
 ```
 
-### 결과
+#### Result
 
-{{EmbedLiveSample('예제', 'auto', 300)}}
+{{EmbedLiveSample('Box_sizes_with_content-box_and_border-box', 'auto', 300)}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-{{cssinfo}}
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [CSS 기본 박스 모델](/ko/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
+- [CSS box model](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)

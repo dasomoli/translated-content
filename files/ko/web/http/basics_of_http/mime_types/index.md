@@ -1,124 +1,230 @@
 ---
-title: MIME 타입
+title: MIME types (IANA media types)
 slug: Web/HTTP/Basics_of_HTTP/MIME_types
+page-type: guide
 ---
 
 {{HTTPSidebar}}
 
-**MIME 타입**이란 클라이언트에게 전송된 문서의 다양성을 알려주기 위한 메커니즘입니다: 웹에서 파일의 확장자는 별 의미가 없습니다. 그러므로, 각 문서와 함께 올바른 MIME 타입을 전송하도록, 서버가 정확히 설정하는 것이 중요합니다. 브라우저들은 리소스를 내려받았을 때 해야 할 기본 동작이 무엇인지를 결정하기 위해 대게 MIME 타입을 사용합니다.
+A **media type** (also known as a **Multipurpose Internet Mail Extensions or MIME type**) indicates the nature and format of a document, file, or assortment of bytes.
+MIME types are defined and standardized in IETF's {{RFC(6838)}}.
 
-수 많은 종류의 문서가 있으므로 많은 MIME 타입들이 존재합니다. 우리는 이 글에서 웹 개발에 있어 가장 중요한 MIME 타입들 중 몇 가지를 나열해 살펴보긴 하겠지만, 특정 종류의 문서에 딱 들어맞는 것을 보려면 다음의 전용 문서를 참고하시기 바랍니다: [MIME 타입의 전체 목록](/ko/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Complete_list_of_MIME_types).
+The [Internet Assigned Numbers Authority (IANA)](https://www.iana.org/) is responsible for all official MIME types, and you can find the most up-to-date and complete list at their [Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml) page.
 
-MIME 타입은 문서 타입 정보를 실어나르는 유일한 방법은 아닙니다:
+> **Warning:** Browsers use the MIME type, _not the file extension_, to determine how to process a URL,
+> so it's important that web servers send the correct MIME type in the response's {{HTTPHeader("Content-Type")}} header.
+> If this is not correctly configured, browsers are likely to misinterpret the contents of files, sites will not work correctly, and downloaded files may be mishandled.
 
-- 이름의 접미사가 때때로 사용되는데, 특히 Microsoft의 윈도우즈 시스템이 그렇습니다. 모든 운영체제들이 이런 접미사를 의미있게 생각하는 것은 아니며(Linux 혹은 OS X의 경우 그렇습니다), 외부 MIME 타입의 경우처럼 그들이 정확하다는 보장도 없습니다.
-- 매직 넘버. 다른 종류의 파일의 문법은 구조 상 보여지는 타입을 결정하는데 도움을 줍니다. 예를 들어, 각 GIF 파일들은 47 49 46 38 16진수 값 \[GIF89]로 시작되며 PNG 파일의 경우 89 50 4E 47 \[.PNG]로 시작됩니다. 파일의 모든 타입들이 이런 매직 넘버를 가지고 있는 것은 아니므로 100% 신뢰할 만한 시스템은 아니기도 합니다.
+## Structure of a MIME type
 
-웹에서는 MIME 타입만이 가장 적절하며, 그러므로 조심스럽게 설정되어야 합니다. 브라우저와 서버들은 일반적인 타입이 제공된 경우에만 MIME 타입을 정의하고, 일치하는지 점검하거나 정확한 MIME 타입을 찾기 위해 접미사나 매직 넘버에 근거하는 휴리스틱(발견적 경험)을 사용합니다.
-
-## 문법
-
-### 일반적인 구조
+A MIME type most commonly consists of just two parts: a _type_ and a _subtype_, separated by a slash (`/`) — with no whitespace between:
 
 ```
 type/subtype
 ```
 
-MIME 타입의 구조는 매우 간단합니다; `'/'`로 구분된 두 개의 문자열인 타입과 서브타입으로 구성됩니다. 스페이스는 허용되지 않습니다. *type*은 카테고리를 나타내며 _개별(discrete) 혹은_ _멀티파트_ 타입이 될 수 있습니다. _subtype_ 은 각각의 타입에 한정됩니다.
+The **_type_** represents the general category into which the data type falls, such as `video` or `text`.
 
-MIME 타입은 대소문자를 구분하지는 않지만 전통적으로 소문자로 쓰여집니다.
+The **_subtype_** identifies the exact kind of data of the specified type the MIME type represents.
+For example, for the MIME type `text`, the subtype might be `plain` (plain text), `html` ({{Glossary("HTML")}} source code), or `calendar` (for iCalendar/`.ics`) files.
 
-### 개별 타입
+Each type has its own set of possible subtypes. A MIME type always has both a type and a subtype, never just one or the other.
 
-```
-text/plain
-text/html
-image/jpeg
-image/png
-audio/mpeg
-audio/ogg
-audio/*
-video/mp4
-application/octet-stream
-…
-```
-
-_개별_ 타입은 문서의 카테고리를 가리키며, 다음 중 하나가 될 수 있습니다:
-
-| 타입          | 설명                                                                                                                                   | 일반적인 서브타입 예시                                                                                                                          |
-| ------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `text`        | 텍스트를 포함하는 모든 문서를 나타내며 이론상으로는 인간이 읽을 수 있어야 합니다                                                       | `text/plain`, `text/html`, `text/css, text/javascript`                                                                                          |
-| `image`       | 모든 종류의 이미지를 나타냅니다. (animated gif처럼) 애니메이션되는 이미지가 이미지 타입에 포함되긴 하지만, 비디오는 포함되지 않습니다. | `image/gif`, `image/png`, `image/jpeg`, `image/bmp`, `image/webp`                                                                               |
-| `audio`       | 모든 종류의 오디오 파일들을 나타냅니다.                                                                                                | `audio/midi`, `audio/mpeg, audio/webm, audio/ogg, audio/wav`                                                                                    |
-| `video`       | 모든 종류의 비디오 파일들을 나타냅니다.                                                                                                | `video/webm`, `video/ogg`                                                                                                                       |
-| `application` | 모든 종류의 이진 데이터를 나타냅니다.                                                                                                  | `application/octet-stream`, `application/pkcs12`, `application/vnd.mspowerpoint`, `application/xhtml+xml`, `application/xml`, `application/pdf` |
-
-특정 서브타입이 없는 텍스트 문서들에 대해서는 `text/plain`가 사용되어야 합니다. 특정 혹은 알려진 서브타입이 없는 이진 문서에 대해서는 유사하게, `application/octet-stream`이 사용되어야 합니다.
-
-### 멀티파트 타입
+An optional **parameter** can be added to provide additional details:
 
 ```
-multipart/form-data
-multipart/byteranges
+type/subtype;parameter=value
 ```
 
-_멀티파트_ 타입은 일반적으로 다른 MIME 타입들을 지닌 개별적인 파트들로 나누어지는 문서의 카테고리를 가리킵니다. 즉 이 타입은 _합성된_ 문서를 나타내는 방법입니다. [HTML Forms](/ko/docs/Web/Guide/HTML/Forms)과 {{HTTPMethod("POST")}} 메서드의 관계 속에서 사용되는 `multipart/form-data` 그리고 전체 문서의 하위 집합만 전송하기 위한 {{HTTPStatus("206")}} `Partial Content` 상태 메시지와 함께 사용되는 `multipart/byteranges`를 제외하고는, HTTP가 멀티파트 문서를 다룰 수 있는 특정한 방법은 존재하지 않습니다: 메시지는 브라우저에 간단히 전달됩니다 (문서를 인라인에 어떻게 디스플레이할지 모르기에, '다른 이름으로 저장' 윈도우를 제시할 겁니다)
+For example, for any MIME type whose main type is `text`, you can add the optional `charset` parameter to specify the character set used for the
+characters in the data.
+If no `charset` is specified, the default is {{Glossary("ASCII")}} (`US-ASCII`) unless overridden by the {{Glossary("user agent", "user agent's")}} settings.
+To specify a UTF-8 text file, the MIME type `text/plain;charset=UTF-8` is used.
 
-## 웹 개발자들을 위한 중요한 MIME 타입
+MIME types are case-insensitive but are traditionally written in lowercase. The parameter values can be case-sensitive.
 
-### `application/octet-stream`
+### Types
 
-이 타입은 이진 파일을 위한 기본값입니다. 이 타입은 실제로 _잘 알려지지 않은_ 이진 파일을 의미하므로, 브라우저는 보통 자동으로 실행하지 않거나 실행해야 할지 묻기도 합니다. {{HTTPHeader("Content-Disposition")}} 헤더가 값 `attachment` 와 함게 설정되었고 'Save As' 파일을 제안하는지 여부에 따라 브라우저가 그것을 다루게 됩니다.
+There are two classes of type: **discrete** and **multipart**.
+Discrete types are types which represent a single file or medium, such as a single text or music file, or a single video.
+A multipart type represents a document that's comprised of multiple component parts, each of which may have its own individual MIME type; or, a multipart type may encapsulate multiple files being sent together in one transaction.
+For example, multipart MIME types are used when attaching multiple files to an email.
 
-### `text/plain`
+#### Discrete types
 
-이것은 텍스트 파일에 대한 기본값입니다. 실제로 _알려지지 않은 텍스트_ 파일일지라도 브라우저들은 그것을 디스플레이할 수 있다고 가정합니다.
+The discrete types currently registered with the IANA are:
 
-> **참고:** `text/plain`이 *모든 종류의 텍스트 데이터*를 의미하지는 않는다는 것을 알아두시기 바랍니다. 만약 브라우저가 특정 종류의 텍스트 데이터를 예상한 경우, 반드시 일치한다고 간주하지 않을 겁니다. 특히, CSS 파일을 선언한 {{HTMLElement("link")}} 엘리먼트로부터 `text/plain` 파일을 다운로드할 경우, `text/plain`으로 표현된다면 브라우저는 그것을 유효한 CSS 파일로 감지하지 않을 겁니다. CSS의 MIME 타입인 `text/css`이 사용되어야 합니다.
+- `application`
+  - : Any kind of binary data that doesn't fall explicitly into one of the other types;
+    either data that will be executed or interpreted in some way or binary data that requires a specific application or category of application to use.
+    Generic binary data (or binary data whose true type is unknown) is `application/octet-stream`.
+    Other common examples include `application/pdf`, `application/pkcs8`, and `application/zip`.
+    [(See application type registry at IANA)](https://www.iana.org/assignments/media-types/media-types.xhtml#application)
+- `audio`
+  - : Audio or music data. Examples include `audio/mpeg`,
+    `audio/vorbis`.
+    [(See audio type registry at IANA)](https://www.iana.org/assignments/media-types/media-types.xhtml#audio)
+- `example`
+  - : Reserved for use as a placeholder in examples showing how to use MIME types.
+    These should never be used outside of sample code listings and documentation.
+    `example` can also be used as a subtype;
+    for instance, in an example related to working with audio on the web, the MIME type `audio/example` can be used to indicate that the type is a placeholder and should be replaced with an appropriate one when using the code in the real world.
+- `font`
+  - : Font/typeface data. Common examples include `font/woff`, `font/ttf`, and `font/otf`.
+    [(See font type registry at IANA)](https://www.iana.org/assignments/media-types/media-types.xhtml#font)
+- `image`
+  - : Image or graphical data including both bitmap and vector still images as well as
+    animated versions of still image formats such as animated {{Glossary("GIF")}} or APNG.
+    Common examples are `image/jpeg`, `image/png`, and `image/svg+xml`.
+    [(See image type registry at IANA)](https://www.iana.org/assignments/media-types/media-types.xhtml#image)
+- `model`
+  - : Model data for a 3D object or scene. Examples include `model/3mf` and `model/vrml`.
+    [(See model type registry at IANA)](https://www.iana.org/assignments/media-types/media-types.xhtml#model)
+- `text`
+  - : Text-only data including any human-readable content, source code, or textual data such as comma-separated value (CSV) formatted data.
+    Examples include: `text/plain`, `text/csv`, and `text/html`.
+    [(See text type registry at IANA)](https://www.iana.org/assignments/media-types/media-types.xhtml#text)
+- `video`
+  - : Video data or files, such as MP4 movies (`video/mp4`).
+    [(See video type registry at IANA)](https://www.iana.org/assignments/media-types/media-types.xhtml#video)
 
-### `text/css`
+For text documents without a specific subtype, `text/plain` should be used.
+Similarly, for binary documents without a specific or known subtype, `application/octet-stream` should be used.
 
-웹 페이지 내에서 보통 인터프리트되어야 하는 모든 CSS 파일들은 `text/css` 파일이 되어야 합니다. 대게 서버들은 `.css` 접미사를 가진 파일들을 CSS 파일이라고 인식하지 못해 `text/plain` 혹은 `application/octet-stream` MIME 타입으로 전송합니다: 이런 경우 대부분의 브라우저들이 CSS 파일이라고 인식하지 못하며 조용히 무시될 겁니다. 올바른 타입으로 CSS 파일을 서브하는데 특별한 주의가 필요합니다.
+#### Multipart types
 
-### `text/html`
+**Multipart** types indicate a category of document broken into
+pieces, often with different MIME types; they can also be used — especially in email
+scenarios — to represent multiple, separate files which are all part of the same
+transaction. They represent a **composite document**.
 
-모든 HTML 컨텐츠는 이 타입과 함께 서브되어야 합니다. `application/xml+html`와 같은 XHTML을 위한 대체 MIME 타입들은 현재에는 대부분 쓸모가 없습니다(HTML5이 이 포맷을 흡수했습니다).
+Except for `multipart/form-data`, used in the {{HTTPMethod("POST")}} method of [HTML Forms](/en-US/docs/Learn/Forms), and `multipart/byteranges`, used with {{HTTPStatus("206")}} `Partial Content` to send part of a document, HTTP doesn't handle multipart documents in a special way: the message is transmitted to the browser (which will likely
+show a "Save As" window if it doesn't know how to display the document).
 
-### 이미지 타입
+There are two multipart types:
 
-오직 널리 알려지고 웹에 안전하다고 취급되는 소수의 이미지 타입만이 웹 페이지 내에서 사용될 수 있습니다:
+- `message`
+  - : A message that encapsulates other messages. This can be used, for instance, to represent an email that includes a forwarded message as part of its data,
+    or to allow sending very large messages in chunks as if it were multiple messages.
+    Examples include `message/rfc822` (for forwarded or replied-to message quoting) and `message/partial` to allow breaking a large message into smaller ones automatically to be reassembled by the recipient.
+    [(See message type registry at IANA)](https://www.iana.org/assignments/media-types/media-types.xhtml#message)
+- `multipart`
+  - : Data that consists of multiple components which may individually have different MIME types.
+    Examples include `multipart/form-data` (for data produced using the {{domxref("FormData")}} API) and `multipart/byteranges` (defined in {{RFC(7233, "", "5.4.1")}} and used with {{Glossary("HTTP")}}'s {{HTTPStatus(206)}}
+    "Partial Content" response returned when the fetched data is only part of the content, such as is delivered using the {{HTTPHeader("Range")}} header).
+    [(See multipart type registry at IANA)](https://www.iana.org/assignments/media-types/media-types.xhtml#multipart)
 
-| MIME 타입       | 이미지 타입                                 |
-| --------------- | ------------------------------------------- |
-| `image/gif`     | GIF 이미지 (무손실 압축, PNG에 의해 대체됨) |
-| `image/jpeg`    | JPEG 이미지                                 |
-| `image/png`     | PNG 이미지                                  |
-| `image/svg+xml` | SVG 이미지 (벡터 이미지)                    |
+## Important MIME types for Web developers
 
-WebP (`image/webp`) 추가에 대한 논의가 있지만 새로운 타입의 이미지는 코드 베이스 크기의 증가를 불러오므로, 새로운 보안 문제를 야기할 수도 있어서 브라우저 벤더들은 그것을 수용하기 전에 매우 신중한 분위기입니다.
+### application/octet-stream
 
-다른 종류의 이미지들은 웹 문서 내에서 찾아볼 수 있습니다. 예를 들어, 많은 브라우저들은 파비콘 혹은 그와 비슷한 아이콘 이미지 타입을 지원합니다. 개별적으로 이런 컨텍스트 내에서, `image/x-icon` MIME 타입을 이용해 지원되고 있습니다.
+This is the default for binary files. As it means _unknown binary_ file, browsers usually don't execute it, or even ask if it should be executed. They treat it as if the {{HTTPHeader("Content-Disposition")}} header was set to `attachment`, and propose a "Save As" dialog.
 
-### 오디오와 비디오 타입
+### text/plain
 
-이미지처럼, HTML은 {{HTMLElement("audio")}}과 {{HTMLElement("video")}} 엘리먼트에 사용하기 위한 지원 타입셋을 정의하지는 않습니다. 그래서 그것들 중에 비교적 작은 그룹이 웹에서 사용될 수 있습니다. [HTML audio 그리고 video 엘리먼트에 의해 지원되는 미디어 포맷](/ko/docs/Web/HTML/Supported_media_formats)에서 사용될 수 있는 코덱과 컨테이너 모두를 설명하고 있습니다.
+This is the default for textual files. Even if it really means "unknown textual file," browsers assume they can display it.
 
-이런 파일들의 MIME 타입은 대부분 컨테이너 포맷을 나타내며 웹 컨텍스트에서 대부분의 타입들은 다음과 같습니다:
+> **Note:** `text/plain` does not mean "any kind of textual data."
+> If they expect a specific kind of textual data, they will likely not consider it a match.
+> Specifically if they download a `text/plain` file from a {{HTMLElement("link")}} element declaring a CSS file, they will not recognize it as a valid CSS file if presented with `text/plain`.
+> The CSS mime type `text/css` must be used.
 
-| MIME 타입                                               | 오디오 혹은 비디오 타입                                                                                                                                                                      |
-| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `audio/wave` `audio/wav` `audio/x-wav` `audio/x-pn-wav` | WAVE 컨테이너 포맷 내 오디오 파일. PCM 오디오 코덱 (WAVE codec "1")이 자주 지원되며, 다른 코덱들이 좀 더 제한된 상태로 지원됩니다(PCM 오디오 코덱이 없는 경우).                              |
-| `audio/webm`                                            | WebM 컨테이너 포맷 내 오디오 파일. 가장 일반적인 오디오 코덱인 Vorbis 그리고 Opus이 사용됩니다.                                                                                              |
-| `video/webm`                                            | WebM 컨테이너 포맷 내, 오디오를 지원 가능한 비디오 파일. VP8 그리고 VP9이 이 안에서 가장 일반적으로 사용되는 비디오 코덱입니다; 가장 일반적인 오디오 코덱인 Vorbis 그리고 Opus가 사용됩니다. |
-| `audio/ogg`                                             | OGG 컨테이너 포맷 내 오디오 파일. 이 컨텐이너 내에서는 Vorbis가 가장 일반적으로 사용되는 오디오 코덱입니다.                                                                                  |
-| `video/ogg`                                             | OGG 컨테이너 포맷 내, 오디오를 지원 가능한 비디오 파일. 이 안에서 가장 흔한 비디오 코덱은 Theora 입니다; 흔한 오디오 코덱은 Vorbis입니다.                                                    |
-| `application/ogg`                                       | OGG 컨테이너 포맷을 사용하는 오디오 혹은 비디오 파일. 이 안에서 가장 흔한 비디오 코덱은 Theora 입니다; 흔한 오디오 코덱은 Vorbis입니다.                                                      |
+### text/css
 
-### `multipart/form-data`
+CSS files used to style a Web page **must** be sent with `text/css`.
+If a server doesn't recognize the `.css` suffix for CSS files, it may send them with `text/plain` or `application/octet-stream` MIME types.
+If so, they won't be recognized as CSS by most browsers and will be ignored.
 
-`multipart/form-data`은 브라우저에서 서버로 [HTML Form](/ko/docs/Web/Guide/HTML/Forms)의 내용을 전송 시 사용할 수 있습니다. 멀티 파트 문서 형식으로써, 경계(이중 대시 `'--'` 로 시작되는 문자열)로 구분되어지는 다른 파트들로 구성됩니다. 각 파트는 그 자체로 개체이며 자신만의 HTTP 헤더를 가지는데, 파일 업로드 필드를 위한 헤더로는 {{HTTPHeader("Content-Disposition")}}, 그리고 가장 일반적인 것 중 하나인 {{HTTPHeader("Content-Type")}}이 있습니다({{HTTPHeader("Content-Length")}}은 경계선이 구분자로 사용되므로 무시됩니다).
+### text/html
 
-```
+All HTML content should be served with this type. Alternative MIME types for XHTML (like `application/xhtml+xml`) are mostly useless nowadays.
+
+> **Note:** Use `application/xml` or `application/xhtml+xml` if you want XML's strict parsing rules, [`<![CDATA[…]]>`](/en-US/docs/Web/API/CDATASection) sections, or elements that aren't from HTML/SVG/MathML namespaces.
+
+### text/javascript
+
+Per the [IANA Media Types registry](https://www.iana.org/assignments/media-types/media-types.xhtml#text), [RFC 9239](https://www.rfc-editor.org/rfc/rfc9239.html), and the [HTML specification](https://html.spec.whatwg.org/multipage/scripting.html#scriptingLanguages:text/javascript), JavaScript content should always be served using the MIME type `text/javascript`.
+No other MIME types are considered valid for JavaScript, and using any MIME type other than `text/javascript` may result in scripts that do not load or run.
+
+You may find some JavaScript content incorrectly served with a `charset` parameter as part of the MIME type — as an attempt to specify the character set for the script content.
+That `charset` parameter isn't valid for JavaScript content, and in most cases will result in a script failing to load.
+
+#### Legacy JavaScript MIME types
+
+In addition to the `text/javascript` MIME type, for historical reasons, the [MIME Sniffing Standard](https://mimesniff.spec.whatwg.org/)
+(the definition of how browsers should interpret MIME types and figure
+out what to do with content that doesn't have a valid one) also allows JavaScript to be served using any of the following legacy JavaScript MIME types:
+
+- `application/javascript` {{deprecated_inline}}
+- `application/ecmascript` {{deprecated_inline}}
+- `application/x-ecmascript` {{Non-standard_Inline}}
+- `application/x-javascript` {{Non-standard_Inline}}
+- `text/ecmascript` {{deprecated_inline}}
+- `text/javascript1.0` {{Non-standard_Inline}}
+- `text/javascript1.1` {{Non-standard_Inline}}
+- `text/javascript1.2` {{Non-standard_Inline}}
+- `text/javascript1.3` {{Non-standard_Inline}}
+- `text/javascript1.4` {{Non-standard_Inline}}
+- `text/javascript1.5` {{Non-standard_Inline}}
+- `text/jscript` {{Non-standard_Inline}}
+- `text/livescript` {{Non-standard_Inline}}
+- `text/x-ecmascript` {{Non-standard_Inline}}
+- `text/x-javascript` {{Non-standard_Inline}}
+
+> **Note:** Even though any given {{Glossary("user agent")}} may support any or all of these, you should only use `text/javascript`.
+> It's the only MIME type guaranteed to work now and into the future.
+
+### Image types
+
+Files whose MIME type is `image` contain image data.
+The subtype specifies which specific image file format the data represents.
+
+The following image types are used commonly enough to be considered _safe_ for use on web pages:
+
+- [`image/apng`](/en-US/docs/Web/Media/Formats/Image_types#apng_animated_portable_network_graphics): Animated Portable Network Graphics (APNG)
+- [`image/avif`](/en-US/docs/Web/Media/Formats/Image_types#avif_image) : AV1 Image File Format (AVIF)
+- [`image/gif`](/en-US/docs/Web/Media/Formats/Image_types#gif_graphics_interchange_format): Graphics Interchange Format (GIF)
+- [`image/jpeg`](/en-US/docs/Web/Media/Formats/Image_types#jpeg_joint_photographic_experts_group_image): Joint Photographic Expert Group image (JPEG)
+- [`image/png`](/en-US/docs/Web/Media/Formats/Image_types#png_portable_network_graphics): Portable Network Graphics (PNG)
+- [`image/svg+xml`](/en-US/docs/Web/Media/Formats/Image_types#svg_scalable_vector_graphics): Scalable Vector Graphics (SVG)
+- [`image/webp`](/en-US/docs/Web/Media/Formats/Image_types#webp_image): Web Picture format (WEBP)
+
+The [Image file type and format guide](/en-US/docs/Web/Media/Formats/Image_types#common_image_file_types) provides information and recommendations about when to use the different image formats.
+
+### Audio and video types
+
+As is the case for images, HTML doesn't mandate that web browsers support any specific file and codec types for the {{HTMLElement("audio")}} and {{HTMLElement("video")}} elements, so it's important to consider your target audience and the range of browsers (and versions of those browsers) they may be using when choosing the file type and codecs to use for media.
+
+Our [media container formats guide](/en-US/docs/Web/Media/Formats/Containers) provides a list of the file types that are commonly supported by web browsers,
+including information about what their special use cases may be, any drawbacks they have, and compatibility information, along with other details.
+
+The [audio codec](/en-US/docs/Web/Media/Formats/Audio_codecs) and [video codec](/en-US/docs/Web/Media/Formats/Video_codecs) guides list the various codecs that web browsers often support, providing compatibility details along with technical information such as how many audio channels they support, what sort of compression is used, and what bit rates and so forth they're useful at.
+The [codecs used by WebRTC](/en-US/docs/Web/Media/Formats/WebRTC_codecs) guide expands upon this by specifically covering the codecs supported by the major web browsers, so you can choose the codecs that best cover the range of browsers you wish to support.
+
+As for MIME types of audio or video files, they typically specify the container format (file type).
+The optional [codecs parameter](/en-US/docs/Web/Media/Formats/codecs_parameter) can be added to the MIME type to further specify which codecs to use and what options were used to encode the media, such as codec profile, level, or other such information.
+
+The most commonly used MIME types used for web content are listed below.
+This isn't a complete list of all the types that may be available, however.
+See the [media container formats guide](/en-US/docs/Web/Media/Formats/Containers) for that.
+
+| MIME type                                                  | Audio or video type                                                                                                                                                                     |
+| ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `audio/wave`, `audio/wav`, `audio/x-wav`, `audio/x-pn-wav` | An audio file in the WAVE container format. The PCM audio codec (WAVE codec "1") is often supported, but other codecs have limited support (if any).                                    |
+| `audio/webm`                                               | An audio file in the WebM container format. Vorbis and Opus are the codecs officially supported by the WebM specification.                                                              |
+| `video/webm`                                               | A video file, possibly with audio, in the WebM container format. VP8 and VP9 are the most common video codecs; Vorbis and Opus the most common audio codecs.                            |
+| `audio/ogg`                                                | An audio file in the Ogg container format. Vorbis is the most common audio codec used in such a container; however, Opus is now supported by Ogg as well.                               |
+| `video/ogg`                                                | A video file, possibly with audio, in the Ogg container format. Theora is the usual video codec used within it; Vorbis is the usual audio codec, although Opus is becoming more common. |
+| `application/ogg`                                          | An audio or video file using the Ogg container format. Theora is the usual video codec used within it; Vorbis is the usual audio codec.                                                 |
+
+### multipart/form-data
+
+The `multipart/form-data` type can be used when sending the values of a completed [HTML Form](/en-US/docs/Learn/Forms) from browser to server.
+
+As a multipart document format, it consists of different parts, delimited by a boundary (a string starting with a double dash `--`).
+Each part is its own entity with its own HTTP headers, {{HTTPHeader("Content-Disposition")}}, and {{HTTPHeader("Content-Type")}} for file uploading fields.
+
+```http
 Content-Type: multipart/form-data; boundary=aBoundaryString
 (other headers associated with the multipart document as a whole)
 
@@ -136,18 +242,23 @@ Content-Disposition: form-data; name="myField"
 --aBoundaryString--
 ```
 
-다음은 HTML form입니다:
+The following `<form>`:
 
 ```html
-<form action="http://localhost:8000/" method="post" enctype="multipart/form-data">
-  <input type="text" name="myTextField">
-  <input type="checkbox" name="myCheckBox">Check</input>
-  <input type="file" name="myFile">
+<form
+  action="http://localhost:8000/"
+  method="post"
+  enctype="multipart/form-data">
+  <label>Name: <input name="myTextField" value="Test" /></label>
+  <label><input type="checkbox" name="myCheckBox" /> Check</label>
+  <label>
+    Upload file: <input type="file" name="myFile" value="test.txt" />
+  </label>
   <button>Send the file</button>
 </form>
 ```
 
-HTML form은 다음 메시지를 전송하게 됩니다:
+will send this message:
 
 ```
 POST / HTTP/1.1
@@ -177,11 +288,15 @@ Simple file.
 -----------------------------8721656041911415653955004498--
 ```
 
-### `multipart/byteranges`
+### multipart/byteranges
 
-`multipart/byteranges`는 브라우저로 회신하는 부분적인 응답 전송의 컨텍스트 내에서 사용됩니다. {{HTTPStatus("206")}} `Partial Content` 상태 코드가 전송된 경우, MIME 타입은 문서가 각각의 요청된 범위들 중 하나인 몇 가지 파트들로 구성되어 있음을 알려주기 위해 사용됩니다. 다른 멀티파트 타입처럼, {{HTTPHeader("Content-Type")}}은 경계선 문자열을 정의하기 위해 `boundary` 디렉티브를 사용합니다. 각각의 다른 파트들은 문서의 실제 타입을 가진 {{HTTPHeader("Content-Type")}} 헤더와 그들이 나타내는 범위를 가진 {{HTTPHeader("Content-Range")}}를 지니고 있습니다.
+The `multipart/byteranges` MIME type is used to send partial responses to the browser.
 
-```
+When the {{HTTPStatus("206", "206 Partial Content")}} status code is sent, this MIME type indicates that the document is composed of several parts, one for each of the
+requested ranges. Like other multipart types, the {{HTTPHeader("Content-Type")}} uses a `boundary` to separate the pieces.
+Each piece has a {{HTTPHeader("Content-Type")}} header with its actual type and a {{HTTPHeader("Content-Range")}} of the range it represents.
+
+```http
 HTTP/1.1 206 Partial Content
 Accept-Ranges: bytes
 Content-Type: multipart/byteranges; boundary=3d6b6a416f9b5
@@ -192,7 +307,7 @@ Content-Type: text/html
 Content-Range: bytes 100-200/1270
 
 eta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <meta name="vieport" content
+    <meta name="viewport" content
 --3d6b6a416f9b5
 Content-Type: text/html
 Content-Range: bytes 300-400/1270
@@ -204,19 +319,44 @@ Content-Range: bytes 300-400/1270
 --3d6b6a416f9b5--
 ```
 
-## 정확한 MIME 타입 설정의 중요성
+## Importance of setting the correct MIME type
 
-대부분의 웹 서버들은 기본 타입 중 하나인 `application/octet-stream` MIME 타입을 사용해 알려지지 않은 타입의 리소스를 전송합니다; 보안상의 이유로, 대부분의 브라우저들은 그런 리소스에 대한 사용자화된 기본 동작 설정을 허용하지 않으며 그것을 사용하려면 디스크에 저장할 것을 사용자에게 강제합니다. 정확치 않게 구성된 서버들의 몇 가지 일반적 사례들은 다음의 파일 타입에서 일어납니다:
+Most web servers send unrecognized resources as the `application/octet-stream` MIME type.
+For security reasons, most browsers do not allow setting a custom default action for such resources, forcing the user to save it to disk to use it.
 
-- 인코딩된 RAR 파일. 이상적인 것은 인코딩된 파일의 실제 타입을 설정 가능한 것입니다; 이런 일은 대게 불가능합니다(서버가 모르는 타입일 수도 있고 이런 파일들은 다른 타입의 몇몇 리소스들을 포함하고 있을 수도 있습니다). 이런 경우에, `application/x-rar-compressed` MIME 타입을 전송하도록 서버를 구성하여 사용자가 그에 대한 유용한 기본적인 동작을 정의하지 않게 될 겁니다.
-- 오디오와 비디오 파일. 적합한 MIME 타입을 가진 리소스만이 {{ HTMLElement("video") }} 혹은 {{ HTMLElement("audio") }} 엘리먼트 내에서 인식되어 재생될 수 있을 겁니다. [오디오와 비디오를 위한 정확한 타입 사용](/En/Media_formats_supported_by_the_audio_and_video_elements)을 확인하시기 바랍니다.
-- 개인적인 파일 타입. 개인적인 파일 타입을 서브한 경우 특별한 주의를 기울여야 합니다. 특별한 처리가 불가능하므로 가능하면 `application/octet-stream` 사용을 피하시기 바랍니다: 대부분의 브라우저들은 이런 포괄적인 MIME 타입에 대한 ("워드에서 열기"와 같은) 기본적인 동작의 정의를 허용하지 않습니다.
+Some common incorrect server configurations:
 
-## MIME 스니핑
+- RAR-compressed files.
+  In this case, the ideal would be the true type of the original files; this is often impossible as .RAR files can hold several resources of different types.
+  In this case, configure the server to send `application/x-rar-compressed`.
+- Audio and video.
+  Only resources with the correct MIME Type will be played in {{HTMLElement("video")}} or {{HTMLElement("audio")}} elements.
+  Be sure to specify the correct [media type for audio and video](/en-US/docs/Web/Media/Formats).
+- Proprietary file types.
+  Avoid using `application/octet-stream` as most browsers do not allow defining a default behavior (like "Open in Word") for this generic MIME type.
+  A specific type like `application/vnd.mspowerpoint` lets users open such files automatically in the presentation software of their choice.
 
-MIME 타입이 없을 때, 혹은 클라이언트가 타입이 잘못 설정됐다고 판단한 어떤 다른 경우에, 브라우저들은 MIME 스니핑을 시도할 수도 있는데, 이는 리소스를 훑어보고 정확한 MIME 타입을 추측 해내는 것입니다. 각각의 브라우저들은 이런 과정을 다른 방식으로, 다른 환경 속에서 처리해냅니다. 이런 과정에 관한 몇 가지 보안 관련 사항들이 있는데, 몇몇 MIME 타입들은 실행 가능한 컨텐츠를 나타내고 다른 타입들은 그렇지 않기 때문입니다. 서버들은 {{HTTPHeader("Content-Type")}} 중에{{HTTPHeader("X-Content-Type-Options")}}를 전송하여 이런 MIME 스니핑을 차단할 수 있습니다.
+## MIME sniffing
 
-## 함께 참고할 내용
+In the absence of a MIME type, or in certain cases where browsers believe they are incorrect, browsers may perform _MIME sniffing_ — guessing the correct MIME type by looking at the bytes of the resource.
 
-- [서버의 MIME 타입을 적절하게 구성하기](/ko/docs/Web/Security/Securing_your_site/Configuring_server_MIME_types)
-- [HTML audio 그리고 video 엘리먼트에서 지원하는 미디어 포맷들](/ko/docs/Web/HTML/Supported_media_formats)
+Each browser performs MIME sniffing differently and under different circumstances.
+(For example, Safari will look at the file extension in the URL if the sent MIME type is unsuitable.)
+There are security concerns as some MIME types represent executable content.
+Servers can prevent MIME sniffing by sending the {{HTTPHeader("X-Content-Type-Options")}} header.
+
+## Other methods of conveying document type
+
+MIME types are not the only way to convey document type information:
+
+- Filename suffixes are sometimes used, especially on Microsoft Windows.
+  Not all operating systems consider these suffixes meaningful (such as Linux and macOS), and there is no guarantee they are correct.
+- Magic numbers. The syntax of different formats allows file-type inference by looking at their byte structure.
+  For example, GIF files start with the `47 49 46 38 39` hexadecimal value (`GIF89`), and PNG files with `89 50 4E 47` (`.PNG`).
+  Not all file types have magic numbers, so this is not 100% reliable either.
+
+## See also
+
+- [Web media technologies](/en-US/docs/Web/Media)
+- [Guide to media types used on the web](/en-US/docs/Web/Media/Formats)
+- [Properly configuring server MIME types](/en-US/docs/Learn/Server-side/Configuring_server_MIME_types)

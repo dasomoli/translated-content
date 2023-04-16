@@ -1,96 +1,108 @@
 ---
-title: WebSocket을 이용하여 클라이언트 애플리케이션 작성하기
+title: Writing WebSocket client applications
 slug: Web/API/WebSockets_API/Writing_WebSocket_client_applications
-original_slug: WebSockets/Writing_WebSocket_client_applications
+page-type: guide
 ---
-WebSocket은 ws 프로토콜을 기반으로 클라이언트와 서버 사이에 지속적인 완전 양방향 연결 스트림을 만들어 주는 기술입니다. 일반적인 웹소켓 클라이언트는 사용자의 브라우저일 것이지만, 그렇다고 해서 이 프로토콜이 플랫폼에 종속적이지는 않습니다.
 
-> **참고:** 우리에게는 작동하는 chat/server 시스템 예제 코드 조각이 있습니다. 이는 우리의 인프라가 WebSocket 예제들을 제대로 호스팅할 수 있는 환경이 되면 공유할 것입니다.
+{{APIRef("Websockets API")}}
+
+WebSocket client applications use the [WebSocket API](/en-US/docs/Web/API/WebSockets_API) to communicate with [WebSocket servers](/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers) using the WebSocket protocol.
 
 {{AvailableInWorkers}}
 
-## WebSocket 객체 생성하기
+> **Note:** The example snippets in this article are taken from our WebSocket chat client/server sample.
+> [See the code](https://github.com/mdn/samples-server/tree/master/s/websocket-chat).
 
-WebSocket 프로토콜을 사용하여 통신하기 위해서는 [`WebSocket`](/en/WebSockets/WebSockets_reference/WebSocket)객체를 생성해야 합니다. 이 객체는 자동으로 서버로의 연결을 열려고 할 것입니다.
+## Creating a WebSocket object
 
-WebSocket 생성자는 하나의 필수 파라미터와 하나의 선택 파라미터를 받습니다.
+In order to communicate using the WebSocket protocol, you need to create a {{domxref("WebSocket")}} object; this will automatically attempt to open the connection to the server.
 
-```
-WebSocket WebSocket(
-  in DOMString url,
-  in optional DOMString protocols
-);
+The WebSocket constructor accepts one required and one optional parameter:
+
+```js
+webSocket = new WebSocket(url, protocols);
 ```
 
 - `url`
-  - : 연결할 URL으로, 이것은 WebSocket 서버가 응답할 URL이어야 합니다.
+  - : The URL to which to connect; this should be the URL to which the WebSocket server will respond.
+    This should use the URL scheme `wss://`, although some software may allow you to use the insecure `ws://` for local connections.
 - `protocols` {{ optional_inline() }}
-  - : 하나의 프로토콜 문자열, 또는 프로토콜 문자열의 배열입니다. 이 문자열들은 서브 프로토콜을 지정하는데 사용되어, 하나의 서버가 여러 개의 WebSocket 서브 프로토콜을 구현할 수 있도록 해줍니다. 예를 들어, 하나의 서버가 처리하는 상호작용이 지정된 `protocols`에 따라 달라지도록 할 수 있습니다. 만약 프로토콜 문자열을 지정하지 않으면 빈 문자열을 넣은 것으로 간주됩니다.
+  - : Either a single protocol string or an array of protocol strings.
+    These strings are used to indicate sub-protocols, so that a single server can implement multiple WebSocket sub-protocols (for example, you might want one server to be able to handle different types of interactions depending on the specified `protocol`).
+    If you don't specify a protocol string, an empty string is assumed.
 
-생성자는 예외를 발생시킬 수 있습니다:
+The constructor will throw a `SecurityError` if the destination doesn't allow access.
+This may happen if you attempt to use an insecure connection (most {{Glossary("user agent", "user agents")}} now require a secure link for all WebSocket connections unless they're on the same device or possibly on the same network).
 
-- `SECURITY_ERR`
-  - : 접속을 시도하고 있는 포트가 차단되었습니다.
+### Connection errors
 
-### 연결 에러
+If an error occurs while attempting to connect, first a simple event with the name `error` is sent to the {{domxref("WebSocket")}} object (thereby invoking its {{domxref("WebSocket/error_event", "onerror")}} handler), and then the {{domxref("CloseEvent")}} is sent to the `WebSocket` object (thereby invoking its {{domxref("WebSocket/close_event", "onclose")}} handler) to indicate the reason for the connection's closing.
 
-만약 연결 시도 중 에러가 발생하면, 먼저 "error"란 이름의 이벤트가 [`WebSocket`](/en/WebSockets/WebSockets_reference/WebSocket) 오브젝트로 전달되고, 그로 인해 `onerror` 핸들러가 실행됩니다. 그 후에 연결이 종료되는 이유를 가리키는 [`CloseEvent`](/en/WebSockets/WebSockets_reference/CloseEvent) 이벤트가 [`WebSocket`](/en/WebSockets/WebSockets_reference/WebSocket) 오브젝트로 전달되고, 그로 인해 `onclose` 핸들러가 실행됩니다.
+The browser may also output to its console a more descriptive error message as well as a closing code as defined in [RFC 6455, Section 7.4](https://datatracker.ietf.org/doc/html/rfc6455#section-7.4) through the {{domxref("CloseEvent")}}.
 
-Firefox 11부터는 보통 에러 메세지에 대한 설명이 Mozillia 플랫폼의 콘솔에 표시되며, [`CloseEvent`](/en/WebSockets/WebSockets_reference/CloseEvent)로부터는 [RFC 6455, Section 7.4](http://tools.ietf.org/html/rfc6455#section-7.4)에 정의되어 있는 연결 종료 코드를 받게 됩니다.
+### Examples
 
-### 예제
-
-이 간단한 예제는 새 웹소켓 오브젝트를 생성하여 `ws://www.example.com/socketserver` 서버에 접속하는것을 보여줍니다. 이 예제에서는 커스텀 프로토콜인 "protocolOne" 을 리퀘스트에 같이 지정합니다. (이 프로토콜을 지정하는 부분은 생략될 수 있습니다.)
-
-```js
-var exampleSocket = new WebSocket("ws://www.example.com/socketserver", "protocolOne");
-```
-
-반환된 `exampleSocket` 오브젝트의 `exampleSocket`. `readyState` 값은 `CONNECTING` 입니다. `readyState` 값은 연결이 수립되어 데이터가 전송 가능한 상태가 되면 `OPEN` 으로 변경됩니다.
-
-만약 여러개의 프로토콜을 유연하게 대응할 수 있는 구조를 가지고 있다면, 연결 시에 배열을 통해 프로토콜의 목록을 지정할 수 있습니다.
+This simple example creates a new WebSocket, connecting to the server at `wss://www.example.com/socketserver`.
+A custom protocol of "protocolOne" is named in the request for the socket in this example, though this can be omitted.
 
 ```js
-var exampleSocket = new WebSocket("ws://www.example.com/socketserver", ["protocolOne", "protocolTwo"]);
+const exampleSocket = new WebSocket(
+  "wss://www.example.com/socketserver",
+  "protocolOne"
+);
 ```
 
-연결이 수립되면(`readyState` 가 `OPEN` 이 되었을 때`), exampleSocket.protocol` 값을 조사하여 서버가 어떤 프로토콜을 선택했는지 알아낼 수 있습니다.
+On return, {{domxref("WebSocket.readyState", "exampleSocket.readyState")}} is `CONNECTING`. The `readyState` will become `OPEN` once
+the connection is ready to transfer data.
 
-위의 예제에서 ws 는 http 를 대체합니다. 비슷하게 wss 는 https 를 대체합니다. 웹소켓 연결은 HTTP 업그레이드 메카니즘에 의해 수행되기 때문에 HTTP 서버 주소 지정에 대한 프로토콜 업그레이드 요청은 암시적입니다. (`ws://www.example.com` 또는 `wss://www.example.com`. 같이)
+If you want to open a connection and are flexible about the protocols you support, you can specify an array of protocols:
 
-## 서버에 데이터 전송하기
+```js
+const exampleSocket = new WebSocket("wss://www.example.com/socketserver", [
+  "protocolOne",
+  "protocolTwo",
+]);
+```
 
-한번 연결이 수립되면 이제부터는 서버로 데이터를 전송할 수 있습니다. 이것을 하기 위해서는 단순히 `WebSocket` 오브젝트의 [`send()`](</en/WebSockets/WebSockets_reference/WebSocket#send()> "en/WebSockets/WebSockets reference/WebSocket#send()") 호출하여 보내고 싶은 메세지를 지정하기만 하면 됩니다.:
+Once the connection is established (that is, `readyState` is `OPEN`), {{domxref("WebSocket.protocol", "exampleSocket.protocol")}} will tell you which protocol the server selected.
+
+Establishing a WebSocket relies on the [HTTP Upgrade mechanism](/en-US/docs/Web/HTTP/Protocol_upgrade_mechanism), so the request for the protocol upgrade is implicit when we address the web server as `ws://www.example.com` or `wss://www.example.com`.
+
+## Sending data to the server
+
+Once you've opened your connection, you can begin transmitting data to the server.
+To do this, call the `WebSocket` object's {{domxref("WebSocket.send", "send()")}} method for each message you want to send:
 
 ```js
 exampleSocket.send("Here's some text that the server is urgently awaiting!");
 ```
 
-보낼 수 있는 데이터는 String , {{ domxref("Blob") }}, 또는 `ArrayBuffer` 입니다.
+You can send data as a string, {{ domxref("Blob") }}, or {{jsxref("ArrayBuffer")}}.
 
-> **참고:** 버전 11 아래의 파이어폭스는 String 데이터 전송만을 지원합니다.
-
-연결을 맺는것은 비동기 작업이고 실패하기 쉬운 작업이기 때문에, WebSocket 오브젝트를 생성하자마자 `send()` 로 데이터 전송을 시도하는것은 성공하지 않을 가능성이 있습니다. 우리는 연결이 수립된 이후에만 데이터를 전송하도록 하기 위해 `onopen` 핸들러를 정의하고, 이 위에서 작업합니다.
+As establishing a connection is asynchronous and prone to failure there is no guarantee that calling the `send()` method immediately after creating a WebSocket object will be successful.
+We can at least be sure that attempting to send data only takes place once a connection is established by defining an {{domxref("WebSocket/open_event", "onopen")}} event handler to do the work:
 
 ```js
-exampleSocket.onopen = function (event) {
+exampleSocket.onopen = (event) => {
   exampleSocket.send("Here's some text that the server is urgently awaiting!");
 };
 ```
 
-### 데이터 전송에 JSON 사용하기
+### Using JSON to transmit objects
 
-[JSON](/en/JSON) 을 사용하면 서버에 복잡한 데이터를 편리하게 보낼 수 있습니다. 예를 들어, 채팅 프로그램이 서버와 JSON으로 캡슐화된 패킷 데이터를 주고받는 프로토콜을 구현한것을 상상해 볼 수 있습니다.:
+One handy thing you can do is use {{glossary("JSON")}} to send reasonably complex data
+to the server. For example, a chat program can interact with a server using a protocol
+implemented using packets of JSON-encapsulated data:
 
 ```js
 // Send text to all users through the server
 function sendText() {
   // Construct a msg object containing the data the server needs to process the message from the chat client.
-  var msg = {
+  const msg = {
     type: "message",
     text: document.getElementById("text").value,
-    id:   clientID,
-    date: Date.now()
+    id: clientID,
+    date: Date.now(),
   };
 
   // Send the msg object as a JSON-formatted string.
@@ -101,54 +113,54 @@ function sendText() {
 }
 ```
 
-## 서버로부터 데이터 수신하기
+## Receiving messages from the server
 
-WebSockets는 event-driven API 입니다; 메세지가 수신되면 "message" 이벤트가 `onmessage` 함수로 전달되게 됩니다. 아래와 같은 코드를 작성하여 수신되는 데이터를 받아볼 수 있습니다.:
+WebSockets is an event-driven API; when messages are received, a `message`
+event is sent to the `WebSocket` object. To handle it, add an event listener
+for the `message` event, or use the {{domxref("WebSocket/message_event",
+  "onmessage")}} event handler. To begin listening for incoming data, you can do something
+like this:
 
 ```js
-exampleSocket.onmessage = function (event) {
+exampleSocket.onmessage = (event) => {
   console.log(event.data);
-}
+};
 ```
 
-### JSON 오브젝트를 받아서 처리하기
+### Receiving and interpreting JSON objects
 
-상단의 [데이터 전송에 JSON 사용하기](#데이터_전송에_json_사용하기) 에서 작업한 코드와 연관되는 클라이언트를 생각해 봅시다. 클라이언트에서 받을 수 있는 패킷들의 목록은 다음과 같을 것 입니다.:
+Let's consider the chat client application first alluded to in [Using JSON to transmit objects](#using_json_to_transmit_objects). There are assorted types of data packets the client might receive, such as:
 
-- 로그인 핸드쉐이크
-- 메세지 텍스트
-- 유저 목록 업데이트
+- Login handshake
+- Message text
+- User list updates
 
-위의 메세지들을 받아서 처리하는 코드는 아래와 같을 것 입니다.:
+The code that interprets these incoming messages might look like this:
 
 ```js
-exampleSocket.onmessage = function(event) {
-  var f = document.getElementById("chatbox").contentDocument;
-  var text = "";
-  var msg = JSON.parse(event.data);
-  var time = new Date(msg.date);
-  var timeStr = time.toLocaleTimeString();
+exampleSocket.onmessage = (event) => {
+  const f = document.getElementById("chatbox").contentDocument;
+  let text = "";
+  const msg = JSON.parse(event.data);
+  const time = new Date(msg.date);
+  const timeStr = time.toLocaleTimeString();
 
-  switch(msg.type) {
+  switch (msg.type) {
     case "id":
       clientID = msg.id;
       setUsername();
       break;
     case "username":
-      text = "<b>User <em>" + msg.name + "</em> signed in at " + timeStr + "</b><br>";
+      text = `User <em>${msg.name}</em> signed in at ${timeStr}<br>`;
       break;
     case "message":
-      text = "(" + timeStr + ") <b>" + msg.name + "</b>: " + msg.text + "<br>";
+      text = `(${timeStr}) ${msg.name} : ${msg.text} <br>`;
       break;
     case "rejectusername":
-      text = "<b>Your username has been set to <em>" + msg.name + "</em> because the name you chose is in use.</b><br>"
+      text = `Your username has been set to <em>${msg.name}</em> because the name you chose is in use.<br>`;
       break;
     case "userlist":
-      var ul = "";
-      for (i=0; i < msg.users.length; i++) {
-        ul += msg.users[i] + "<br>";
-      }
-      document.getElementById("userlistbox").innerHTML = ul;
+      document.getElementById("userlistbox").innerHTML = msg.users.join("<br>");
       break;
   }
 
@@ -159,22 +171,24 @@ exampleSocket.onmessage = function(event) {
 };
 ```
 
-여기서 우리는 [`JSON.parse()`](/en/JavaScript/Reference/Global_Objects/JSON/parse) 를 통해 JSON 오브젝트를 자바스크립트 오브젝트로 변환합니다. 그 다음 콘텐츠에 따라 분기하고 처리하는 로직을 가집니다.
+Here we use {{jsxref("JSON.parse()")}} to convert the JSON object back into the original object, then examine and act upon its contents.
 
 ### Text data format
 
-웹소켓을 통해 전달되는 텍스트들은 UTF-8 포멧을 가집니다.
+Text received over a WebSocket connection is in UTF-8 format.
 
-## 연결을 종료하기
+## Closing the connection
 
-`웹 소켓 사용을 마쳤다면 close() 메소드를 호출해 연결을 종료합니다.`:
+When you've finished using the WebSocket connection, call the WebSocket method {{domxref("WebSocket.close", "close()")}}:
 
 ```js
 exampleSocket.close();
 ```
 
-연결을 닫아버리기 전에 `bufferedAmount` 어트리뷰트를 조사하여 아직 네트워크에 전달되지 않은 데이터가 있는지 검사하는것도 좋은 방법입니다.
+It may be helpful to examine the socket's {{domxref("WebSocket.bufferedAmount", "bufferedAmount")}} attribute before attempting to close the connection to determine if any data has yet to be transmitted on the network.
+If this value isn't 0, there's pending data still, so you may wish to wait before closing the connection.
 
-## 보안에 대한 고려 사항
+## Security considerations
 
-웹소켓은 혼합된 연결 환경에서 이용되어서는안됩니다. 예를들어 HTTPS를 이용해 로드된 페이지에서 non-secure 웹소켓 연결을 수립하는것(또는 반대) 처럼 말입니다. 몇몇 브라우저들은 이를 강제로 금지하고 있습니다. 파이어폭스 버전 8이상도 이를 금지합니다.
+WebSockets should not be used in a mixed content environment; that is, you shouldn't open a non-secure WebSocket connection from a page loaded using HTTPS or vice versa.
+Most browsers now only allow secure WebSocket connections, and no longer support using them in insecure contexts.

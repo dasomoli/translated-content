@@ -1,71 +1,102 @@
 ---
 title: border-image
 slug: Web/CSS/border-image
+page-type: css-property
+browser-compat: css.properties.border-image
 ---
+
 {{CSSRef}}
 
-**`border-image`** [CSS](/ko/docs/Web/CSS) 속성은 요소의 주위에 이미지를 그립니다. 일반 [테두리](/ko/docs/Web/CSS/border)를 대체합니다.
+The **`border-image`** [CSS](/en-US/docs/Web/CSS) property draws an image around a given element. It replaces the element's regular [border](/en-US/docs/Web/CSS/border).
 
 {{EmbedInteractiveExample("pages/css/border-image.html")}}
 
-`border-image`는 {{cssxref("border-image-source")}}, {{cssxref("border-image-slice")}}, {{cssxref("border-image-width")}}, {{cssxref("border-image-outset")}}, {{cssxref("border-image-repeat")}}의 [단축 속성](/ko/docs/Web/CSS/Shorthand_properties)입니다. 다른 단축 속성과 마찬가지로, 생략한 속성은 [초기값](/ko/docs/Web/CSS/initial_value)으로 설정됩니다.
+> **Note:** You should specify a separate {{cssxref("border-style")}} in case the border image fails to load. Although the specification doesn't strictly require it, some browsers don't render the border image if {{cssxref("border-style")}} is `none` or {{cssxref("border-width")}} is `0`.
 
-> **참고:** 테두리 이미지를 불러오는데 실패할 경우에 대비해 {{cssxref("border-style")}} 속성을 설정해야 합니다. 사실 명세에 따르면 필수로 지정해야 하지만 모든 브라우저가 그렇게 구현하지는 않았습니다.
+## Constituent properties
 
-## 구문
+This property is a shorthand for the following CSS properties:
+
+- [`border-image-outset`](/en-US/docs/Web/CSS/border-image-outset)
+- [`border-image-repeat`](/en-US/docs/Web/CSS/border-image-repeat)
+- [`border-image-slice`](/en-US/docs/Web/CSS/border-image-slice)
+- [`border-image-source`](/en-US/docs/Web/CSS/border-image-source)
+- [`border-image-width`](/en-US/docs/Web/CSS/border-image-width)
+
+## Syntax
 
 ```css
-/* 이미지 | 슬라이스 */
+/* source | slice */
 border-image: linear-gradient(red, blue) 27;
 
-/* 이미지 | 슬라이스 | 반복 */
+/* source | slice | repeat */
 border-image: url("/images/border.png") 27 space;
 
-/* 이미지 | 슬라이스 | 너비 */
+/* source | slice | width */
 border-image: linear-gradient(red, blue) 27 / 35px;
 
-/* 이미지 | 슬라이스 | 너비 | 거리 | 반복 */
+/* source | slice | width | outset | repeat */
 border-image: url("/images/border.png") 27 23 / 50px 30px / 1rem round space;
+
+/* Global values */
+border-image: inherit;
+border-image: initial;
+border-image: revert;
+border-image: revert-layer;
+border-image: unset;
 ```
 
-`border-image` 속성은 아래 나열한 값 중 한 개에서 다섯 개 사이를 사용해 지정할 수 있습니다.
+The `border-image` property may be specified with anywhere from one to five of the values listed below.
 
-> **참고:** 만약 {{cssxref("border-image-source")}}의 [계산값](/ko/docs/Web/CSS/computed_value)이 `none`이거나 이미지를 그릴 수 없다면 {{cssxref("border-style")}}이 대신 보여집니다.
+> **Note:** If the [computed value](/en-US/docs/Web/CSS/computed_value) of {{cssxref("border-image-source")}} is `none`, or if the image cannot be displayed, the {{cssxref("border-style")}} will be displayed instead.
 
-### 값
+### Values
 
 - `<'border-image-source'>`
-  - : 원본 이미지. {{cssxref("border-image-source")}}를 참고하세요.
+  - : The source image. See {{cssxref("border-image-source")}}.
 - `<'border-image-slice'>`
-  - : 이미지를 구역별로 나눌 때 사용할 슬라이스 크기. 네 개 값까지 지정할 수 있습니다. {{cssxref("border-image-slice")}}를 참고하세요.
+  - : The dimensions for slicing the source image into regions. Up to four values may be specified. See {{cssxref("border-image-slice")}}.
 - `<'border-image-width'>`
-  - : 테두리 이미지 너비. 네 개 값까지 지정할 수 있습니다. {{cssxref("border-image-width")}}를 참고하세요.
+  - : The width of the border image. Up to four values may be specified. See {{cssxref("border-image-width")}}.
 - `<'border-image-outset'>`
-  - : 테두리 이미지와 요소 외곽의 거리. 네 개 값까지 지정할 수 있습니다. {{cssxref("border-image-outset")}}을 참고하세요.
+  - : The distance of the border image from the element's outside edge. Up to four values may be specified. See {{cssxref("border-image-outset")}}.
 - `<'border-image-repeat'>`
-  - : 원본 이미지의 모서리 구역을 테두리의 크기에 맞출 때의 조정 방법. 두 개 값까지 지정할 수 있습니다. {{cssxref("border-image-repeat")}}을 참고하세요.
+  - : Defines how the edge regions of the source image are adjusted to fit the dimensions of the border image. Up to two values may be specified. See {{cssxref("border-image-repeat")}}.
 
-### 형식 구문
+## Accessibility concerns
+
+Assistive technology cannot parse border images. If the image contains information critical to understanding the page's overall purpose, it is better to describe it semantically in the document.
+
+- [MDN Understanding WCAG, Guideline 1.1 explanations](/en-US/docs/Web/Accessibility/Understanding_WCAG/Perceivable#guideline_1.1_%e2%80%94_providing_text_alternatives_for_non-text_content)
+- [Understanding Success Criterion 1.1.1 | Understanding WCAG 2.0](https://www.w3.org/TR/2016/NOTE-UNDERSTANDING-WCAG20-20161007/text-equiv-all.html)
+
+## Formal definition
+
+{{cssinfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 비트맵
+### Bitmap
 
-이번 예제는 요소의 테두리에 마름모 패턴을 적용합니다. 테두리 이미지의 원본은 가로 81픽셀, 세로 81픽셀의 ".png" 파일로, 8개의 마름모가 사각형의 테두리를 이루고 있습니다.
+In this example, we will apply a diamond pattern to an element's borders. The source for the border image is a ".png" file of 81 by 81 pixels, with three diamonds going vertically and horizontally:
 
 ![an example borderimage](border.png)
 
 #### HTML
 
 ```html
-<div id="bitmap">This element is surrounded by a bitmap-based border image!</div>
+<div id="bitmap">
+  This element is surrounded by a bitmap-based border image!
+</div>
 ```
 
 #### CSS
 
-마름모 하나의 크기에 맞추기 위해, 81을 3으로 나눈 `27`을 슬라이스 크기로 사용하여 원본 이미지를 모서리와 테두리 구역으로 나눕니다. 테두리 이미지의 중앙을 요소 테두리의 가운데로 맞추기 위해 거리도 각 너비의 절반으로 설정합니다. 마지막으로 반복 값에 `round`를 지정해 모서리가 끊기거나 잘리지 않도록 설정합니다.
+To match the size of a single diamond, we will use a value of 81 divided by 3, or `27`, for slicing the image into corner and edge regions. To center the border image on the edge of the element's background, we will make the outset values equal to half of the width values. Finally, a repeat value of `round` will make the border slices fit evenly, i.e., without clipping or gaps.
 
 ```css
 #bitmap {
@@ -75,25 +106,23 @@ border-image: url("/images/border.png") 27 23 / 50px 30px / 1rem round space;
   margin: 30px;
   padding: 10px;
 
-  border-image:
-      url("border.png")  /* 원본 이미지 */
-      27 /                    /* 슬라이스 */
-      36px 28px 18px 8px /    /* 너비 */
-      18px 14px 9px 4px       /* 거리 */
-      round;                  /* 반복 */
+  border-image: url("border.png") /* source */ 27 / /* slice */ 36px 28px 18px
+    8px / /* width */ 18px 14px 9px 4px /* outset */ round; /* repeat */
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('비트맵', '100%', 200)}}
+{{EmbedLiveSample('Bitmap', '100%', 200)}}
 
-### 그레이디언트
+### Gradient
 
 #### HTML
 
 ```html
-<div id="gradient">그레이디언트 기반 테두리 이미지에 둘러 쌓인 요소에요!</div>
+<div id="gradient">
+  This element is surrounded by a gradient-based border image!
+</div>
 ```
 
 #### CSS
@@ -107,32 +136,23 @@ border-image: url("/images/border.png") 27 23 / 50px 30px / 1rem round space;
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('그레이디언트')}}
+{{EmbedLiveSample('Gradient')}}
 
-## 접근성 고려사항
-
-보조 기술은 테두리 이미지를 읽을 수 없습니다. 이미지가 페이지 목적의 이해에 필수적인 정보를 갖고 있다면 문서에서 구조적으로 설명하는 편이 좋습니다.
-
-- [MDN Understanding WCAG, Guideline 1.1 explanations](/ko/docs/Web/Accessibility/Understanding_WCAG/Perceivable#Guideline_1.1_%E2%80%94_Providing_text_alternatives_for_non-text_content)
-- [Understanding Success Criterion 1.1.1 | Understanding WCAG 2.0](https://www.w3.org/TR/2016/NOTE-UNDERSTANDING-WCAG20-20161007/text-equiv-all.html)
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-{{cssinfo}}
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{cssxref("border")}}
 - {{cssxref("outline")}}
 - {{cssxref("box-shadow")}}
 - {{cssxref("background-image")}}
-- {{cssxref("url()")}} 함수
-- 그레이디언트 함수: {{CSSxRef("conic-gradient")}}, {{CSSxRef("linear-gradient")}}, {{CSSxRef("repeating-linear-gradient")}}, {{CSSxRef("radial-gradient")}}, {{CSSxRef("repeating-radial-gradient")}}
+- {{cssxref("url", "url()")}} function
+- Gradient functions: {{CSSxRef("gradient/conic-gradient", "conic-gradient()")}}, {{CSSxRef("gradient/repeating-conic-gradient", "repeating-conic-gradient()")}}, {{CSSxRef("gradient/linear-gradient", "linear-gradient()")}}, {{CSSxRef("gradient/repeating-linear-gradient", "repeating-linear-gradient()")}}, {{CSSxRef("gradient/radial-gradient", "radial-gradient()")}}, {{CSSxRef("gradient/repeating-radial-gradient", "repeating-radial-gradient()")}}

@@ -1,38 +1,38 @@
 ---
-title: choose
+title: <xsl:choose>
 slug: Web/XSLT/Element/choose
-original_slug: Web/XSLT/choose
 ---
 
 {{ XsltRef() }}
 
-`<xsl:choose>` 요소는 많은 선택 가운데 하나를 정의합니다. 그리고 절차형 언어(procedural language)의 스위치 문처럼 동작합니다.
+The `<xsl:choose>` element defines a choice among a number of alternatives. It behaves like a switch statement in procedural languages.
 
-### 문법
+### Syntax
 
-```
+```xml
 <xsl:choose>
-  <xsl:when>
-  <xsl:otherwise> [optional]
-</<xsl:choose>
+  <xsl:when test="[whatever to test1]"></xsl:when>
+  <xsl:when test="[whatever to test2]"></xsl:when>
+  <xsl:otherwise></xsl:otherwise> [optional]
+</xsl:choose>
 ```
 
-### 필수 속성
+### Required Attributes
 
-없음.
+None.
 
-### 선택 속성
+### Optional Attributes
 
-없음.
+None.
 
-### 타입
+### Type
 
-명령, 템플릿과 함께 나타남. 하나 이상의 `<xsl:when>` 요소를 포함하고 선택에 따라 마지막에 `<xsl:otherwise>` 요소를 포함합니다.
+Instruction, appears with a template. It contains one or more `<xsl:when>` elements, and, optionally, a final `<xsl:otherwise>` element.
 
-### 정의
+### Defined
 
-[XSLT section 9.2, Conditional Processing with xsl:choose](http://www.w3.org/TR/xslt#section-Conditional-Processing-with-xsl:choose)
+XSLT, section 9.2.
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

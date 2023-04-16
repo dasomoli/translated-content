@@ -1,77 +1,167 @@
 ---
 title: ReadableStream
 slug: Web/API/ReadableStream
+page-type: web-api-interface
+browser-compat: api.ReadableStream
 ---
 
 {{APIRef("Streams")}}
 
-[Streams API](/ko/docs/Web/API/Streams_API)의 `ReadableStream` 인터페이스는 바이트 데이터를 읽을수 있는 스트림을 제공합니다. [Fetch API](/ko/docs/Web/API/Fetch_API)는 Response 객체의 body 속성을 통하여 `ReadableStream`의 구체적인 인스턴스를 제공합니다.
+The `ReadableStream` interface of the [Streams API](/en-US/docs/Web/API/Streams_API) represents a readable stream of byte data. The [Fetch API](/en-US/docs/Web/API/Fetch_API) offers a concrete instance of a `ReadableStream` through the {{domxref("Response.body", "body")}} property of a {{domxref("Response")}} object.
+
+`ReadableStream` is a [transferable object](/en-US/docs/Web/API/Web_Workers_API/Transferable_objects).
 
 ## Constructor
 
 - {{domxref("ReadableStream.ReadableStream", "ReadableStream()")}}
-  - : 읽을수 있는 스트림 객체를 생성하고 리턴합니다.
+  - : Creates and returns a readable stream object from the given handlers.
 
-## Properties
+## Instance properties
 
-- {{domxref("ReadableStream.locked")}} {{readonlyInline}}
-  - : `locked`는 Readable stream이 reader에 고정되어 있는지([locaked to a reader](https://streams.spec.whatwg.org/#locked-to-a-reader)) 확인하는 getter 입니다.
+- {{domxref("ReadableStream.locked")}} {{ReadOnlyInline}}
+  - : Returns a boolean indicating whether or not the readable stream is locked to a reader.
 
-## Methods
+## Instance methods
 
 - {{domxref("ReadableStream.cancel()")}}
-  - : 스트림을 취소하여, 소비자가 스트림에 대해 관심이 없음을 알립니다. The supplied reason argument will be given to the underlying source, which may or may not use it.
+  - : Returns a {{jsxref("Promise")}} that resolves when the stream is canceled. Calling this method signals a loss of interest in the stream by a consumer. The supplied `reason` argument will be given to the underlying source, which may or may not use it.
 - {{domxref("ReadableStream.getReader()")}}
-  - : Reader를 만들고 스트림을 그 Reader에 고정 시킵니다. 스트림이 고정되어 있는 동안에는 다른 Reader를 얻을수 없습니다.
+  - : Creates a reader and locks the stream to it. While the stream is locked, no other reader can be acquired until this one is released.
 - {{domxref("ReadableStream.pipeThrough()")}}
   - : Provides a chainable way of piping the current stream through a transform stream or any other writable/readable pair.
 - {{domxref("ReadableStream.pipeTo()")}}
-  - : 인자로 넘기는 {{domxref("WritableStream")}}과 현재의 ReadableStream을 연결하고 프로미스를 리턴합니다. 이 프로미스는 파이핑 프로세스가 성공적으로 완료될때 fulfil되며 애러가 발생했을때 reject됩니다.
+  - : Pipes the current ReadableStream to a given {{domxref("WritableStream")}} and returns a {{jsxref("Promise")}} that fulfills when the piping process completes successfully, or rejects if any errors were encountered.
 - {{domxref("ReadableStream.tee()")}}
-  - : The `tee` method <a href="https://streams.spec.whatwg.org/#tee-a-readable-stream" id="ref-for-tee-a-readable-stream②">tees</a> this readable stream, returning a two-element array containing the two resulting branches as new {{domxref("ReadableStream")}} instances. Each of those streams receives the same incoming data.
+  - : The `tee` method [tees](https://streams.spec.whatwg.org/#tee-a-readable-stream) this readable stream, returning a two-element array containing the two resulting branches as new {{domxref("ReadableStream")}} instances. Each of those streams receives the same incoming data.
+
+## Async iteration
+
+`ReadableStream` implements the [async iterable protocol](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_async_iterator_and_async_iterable_protocols).
+This enables asynchronous iteration over the chunks in a stream using the [`for await...of`](/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of) syntax:
+
+```js
+const stream = new ReadableStream(getSomeSource());
+
+for await (const chunk of stream) {
+  // Do something with each 'chunk'
+}
+```
+
+The async iterator consumes the stream until it runs out of data or otherwise terminates.
+The loop can also exit early due to a `break`, `throw`, or `return` statement.
+
+While iterating, the stream is locked to prevent other consumers from acquiring a reader (attempting to iterate over a stream that is already locked will throw a `TypeError`).
+This lock is released when the loop exits.
+
+By default, exiting the loop will also cancel the stream, so that it can no longer be used.
+To continue to use a stream after exiting the loop, pass `{ preventCancel: true }` to the stream's `values()` method:
+
+```js
+for await (const chunk of stream.values({ preventCancel: true })) {
+  // Do something with 'chunk'
+  break;
+}
+// Acquire a reader for the stream and continue reading ...
+```
 
 ## Examples
 
-아래 예시에서, 다른 리소스에서 fetch된 HTML 조각들을 스트림 하기위해 가공의 {{domxref("Response")}}를 만듭니다. 이것은{{domxref("Uint8Array")}}로 구성된 {{domxref("ReadableStream")}} 의 사용법을 보여줍니다.
+### Fetch stream
+
+In the following example, an artificial {{domxref("Response")}} is created to stream HTML fragments fetched from another resource to the browser.
+
+It demonstrates the usage of a {{domxref("ReadableStream")}} in combination with a {{jsxref("Uint8Array")}}.
 
 ```js
-fetch("https://www.example.org/").then((response) => {
-  const reader = response.body.getReader();
-  const stream = new ReadableStream({
-    start(controller) {
-      // 아래 함수는 각 data chunck를 다룬다.
-      function push() {
-        // "done"은 Boolean 이며 value는 "Uint8Array 이다."
-        reader.read().then(({ done, value }) => {
-          // 더이상 읽은 데이터가 없는가?
-          if (done) {
-            // 브라우저에게 데이터 전달이 끝났다고 알린다.
-            controller.close();
-            return;
-          }
+fetch("https://www.example.org")
+  .then((response) => response.body)
+  .then((rb) => {
+    const reader = rb.getReader();
 
-          // 데이터를 얻고 컨트롤러를 통하여 그 데이터를 브라우저에 넘긴다.
-          controller.enqueue(value);
-          push();
-        });
-      };
+    return new ReadableStream({
+      start(controller) {
+        // The following function handles each data chunk
+        function push() {
+          // "done" is a Boolean and value a "Uint8Array"
+          reader.read().then(({ done, value }) => {
+            // If there is no more data to read
+            if (done) {
+              console.log("done", done);
+              controller.close();
+              return;
+            }
+            // Get the data and send it to the browser via the controller
+            controller.enqueue(value);
+            // Check chunks by logging to the console
+            console.log(done, value);
+            push();
+          });
+        }
 
-      push();
-    }
+        push();
+      },
+    });
+  })
+  .then((stream) =>
+    // Respond with our stream
+    new Response(stream, { headers: { "Content-Type": "text/html" } }).text()
+  )
+  .then((result) => {
+    // Do things with result
+    console.log(result);
   });
-
-  return new Response(stream, { headers: { "Content-Type": "text/html" } });
-});
 ```
 
-## 명세서
+### Convert async iterator to stream
+
+Converting an [(async) iterator](/en-US/docs/Web/JavaScript/Guide/Iterators_and_generators) to a readable stream:
+
+```js
+function iteratorToStream(iterator) {
+  return new ReadableStream({
+    async pull(controller) {
+      const { value, done } = await iterator.next();
+
+      if (done) {
+        controller.close();
+      } else {
+        controller.enqueue(value);
+      }
+    },
+  });
+}
+```
+
+This works with both async and non-async iterators.
+
+### Async iteration of a stream using for await...of
+
+This example shows how you can process the `fetch()` response using a [`for await...of`](/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of) loop to iterate through the arriving chunks.
+
+```js
+const response = await fetch("https://www.example.org");
+let total = 0;
+
+// Iterate response.body (a ReadableStream) asynchronously
+for await (const chunk of response.body) {
+  // Do something with each chunk
+  // Here we just accumulate the size of the response.
+  total += chunk.length;
+}
+
+// Do something with the total
+console.log(total);
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## See Also
+## See also
 
-- [WHATWG Stream Visualiser](https://whatwg-stream-visualizer.glitch.me/), for a basic visualisation of readable, writable, and transform streams.
+- [WHATWG Stream Visualizer](https://whatwg-stream-visualizer.glitch.me/), for a basic visualization of readable, writable, and transform streams.
+- [web-streams-polyfill](https://github.com/MattiasBuelens/web-streams-polyfill) or [sd-streams](https://github.com/stardazed/sd-streams) - polyfills

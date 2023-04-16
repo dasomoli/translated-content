@@ -1,96 +1,132 @@
 ---
-title: Document.querySelector()
+title: "Document: querySelector() method"
+short-title: querySelector()
 slug: Web/API/Document/querySelector
+page-type: web-api-instance-method
+browser-compat: api.Document.querySelector
 ---
 
 {{ApiRef("DOM")}}
 
-**`Document.querySelector()`** 는 제공한 선택자 또는 선택자 뭉치와 일치하는 문서 내 첫 번째 {{domxref("Element")}}를 반환합니다. 일치하는 요소가 없으면 `null`을 반환합니다.
+The {{domxref("Document")}} method **`querySelector()`**
+returns the first {{domxref("Element")}} within the document that matches the specified
+selector, or group of selectors. If no matches are found, `null` is returned.
 
-> **참고:** 탐색은 깊이우선depth-first 전위pre-order순회로, 문서의 첫 번째 요소부터 시작해 자식 노드의 수를 기준으로 순회합니다.
+> **Note:** The matching is done using depth-first pre-order traversal of
+> the document's nodes starting with the first element in the document's markup and
+> iterating through sequential nodes by order of the number of child nodes.
 
-## 구문
+## Syntax
 
-```js
-document.querySelector(selectors);
+```js-nolint
+querySelector(selectors)
 ```
 
-### 매개변수
+### Parameters
 
 - `selectors`
-  - : 하나 이상의 선택자를 포함한 {{domxref("DOMString")}}. 유효한 CSS 선택자여야만 하며 아닐 경우 `SYNTAX_ERR` 예외가 발생합니다. [선택자로 DOM 요소 선택하기](/ko/docs/Web/API/Document_object_model/Locating_DOM_elements_using_selectors) 문서를 참고해 선택자와 선택자 작성 방법을 더 알아보세요.
+  - : A string containing one or more selectors to match. This string
+    must be a valid CSS selector string; if it isn't, a `SyntaxError` exception
+    is thrown. See [Locating DOM elements using selectors](/en-US/docs/Web/API/Document_object_model/Locating_DOM_elements_using_selectors) for more about selectors and how to manage them.
 
-> **참고:** CSS 표준 구문이 포함하는 문자가 아닌 경우 역슬래시(`\`)로 이스케이프해야 합니다.
->
-> JavaScript 또한 역슬래시로 이스케이프를 하기 때문에 특히 주의를 기울여야 합니다. 자세한 내용은 [특수 문자 이스케이프](#특수_문자_이스케이프) 항목을 참고하세요.
+> **Note:** Characters that are not part of standard CSS syntax must be
+> escaped using a backslash character. Since JavaScript also uses backslash escaping, be
+> especially careful when writing string literals using these characters. See
+> [Escaping special characters](#escaping_special_characters) for more information.
 
-### 반환값
+### Return value
 
-제공한 [CSS 선택자](/ko/docs/Web/CSS/CSS_%EC%84%A0%ED%83%9D%EC%9E%90)를 만족하는 첫 번째 {{domxref("Element")}} 객체. 결과가 없다면 `null`.
+An {{domxref("Element")}} object representing the first element in the document
+that matches the specified set of [CSS selectors](/en-US/docs/Web/CSS/CSS_Selectors), or `null` is returned if there are no matches.
 
-선택자를 만족하는 모든 요소의 목록이 필요하다면 {{domxref("Document.querySelectorAll", "querySelectorAll()")}}을 대신 사용하세요.
+If you need a list of all elements matching the specified selectors, you should use
+{{domxref("Document.querySelectorAll", "querySelectorAll()")}} instead.
 
-### 예외
+### Exceptions
 
-- `SYNTAX_ERR`
-  - : `selectors`의 구문이 유효하지 않음.
+- `SyntaxError` {{domxref("DOMException")}}
+  - : Thrown if the syntax of the specified _selectors_ is invalid.
 
-## 참고
+## Usage notes
 
-만약 `selector`가 ID 선택자인데, 해당 ID를 잘못 사용하여 문서 내에 여러 번 사용했으면 첫 번째로 그 ID를 사용한 요소를 반환합니다.
+If the specified selector matches an ID that is incorrectly used more than once in the
+document, the first element with that ID is returned.
 
-[CSS 의사 요소](/ko/docs/Web/CSS/Pseudo-elements)는 [선택자 API](http://www.w3.org/TR/selectors-api/#grammar)가 명시한 대로 어떠한 요소도 반환하지 않습니다.
+[CSS pseudo-elements](/en-US/docs/Web/CSS/Pseudo-elements) will never return
+any elements, as specified in the [Selectors API](https://www.w3.org/TR/selectors-api/#grammar).
 
-### 특수 문자 이스케이프
+### Escaping special characters
 
-CSS 구문을 따르지 않는, 예컨대 콜론이나 공백을 포함한 선택자나 ID를 사용해야 하면 반드시 백슬래시("`\`")를 사용해 해당 문자를 이스케이프해야 합니다. 백슬래시는 JavaScript의 이스케이프 문자이기 때문에, 백슬래시를 문자로 입력하려면 반드시 두 번 이스케이프해야 합니다. 한 번은 JavaScript 문자열에 필요하고, 또 다른 한 번은 `querySelector()`에 필요합니다.
+To match against an ID or selectors that do not follow standard CSS syntax (by using a
+colon or space inappropriately, for example), you must escape the character with a
+backslash ("`\`"). As the backslash is also an escape character in
+JavaScript, if you are entering a literal string, you must escape it _twice_
+(once for the JavaScript string, and another time for `querySelector()`):
 
 ```html
 <div id="foo\bar"></div>
 <div id="foo:bar"></div>
 
 <script>
-  console.log('#foo\bar')             // "#fooar" ('\b'는 백스페이스 컨트롤 문자)
-  document.querySelector('#foo\bar')  // 일치하는 요소 없음
+  console.log("#foo\bar"); // "#fooar" (\b is the backspace control character)
+  document.querySelector("#foo\bar"); // Does not match anything
 
-  console.log('#foo\\bar')            // "#foo\bar"
-  console.log('#foo\\\\bar')          // "#foo\\bar"
-  document.querySelector('#foo\\bar') // 첫 번째 <div>
+  console.log("#foo\\bar"); // "#foo\bar"
+  console.log("#foo\\\\bar"); // "#foo\\bar"
+  document.querySelector("#foo\\\\bar"); // Match the first div
 
-  document.querySelector('#foo:bar')   // 일치하는 요소 없음
-  document.querySelector('#foo\\:bar') // 두 번째 <div>
+  document.querySelector("#foo:bar"); // Does not match anything
+  document.querySelector("#foo\\:bar"); // Match the second div
 </script>
 ```
 
-## 예제
+## Examples
 
-### 클래스를 만족하는 첫 번째 요소 검색
+### Finding the first element matching a class
 
-아래 예제는 문서에서 "`myclass`"라는 클래스를 사용하는 첫 번째 요소를 반환합니다.
-
-```js
-var el = document.querySelector(".myclass");
-```
-
-### 좀 더 복잡한 선택자
-
-아래 예제처럼 정말 강력한 선택자도 사용할 수 있습니다. 예제의 결과는 클래스가 "`user-panel main`"인 {{HTMLElement("div")}}(`<div class="user-panel main">`) 안의, 이름이 "`login`"인 {{HTMLElement("input")}} 중 첫 번째 요소입니다.
+In this example, the first element in the document with the class
+"`myclass`" is returned:
 
 ```js
-var el = document.querySelector("div.user-panel.main input[name=login]");
+const el = document.querySelector(".myclass");
 ```
 
-## 명세
+### Complex selectors
+
+Selectors can also be really powerful, as demonstrated in the following example. Here,
+the first {{HTMLElement("input")}} element with the name "login"
+(`<input name="login"/>`) located inside a {{HTMLElement("div")}} whose
+class is "user-panel main" (`<div class="user-panel main">`) in the
+document is returned:
+
+```js
+const el = document.querySelector("div.user-panel.main input[name='login']");
+```
+
+### Negation
+
+As all CSS selector strings are valid, you can also negate selectors:
+
+```js
+const el = document.querySelector(
+  "div.user-panel:not(.main) input[name='login']"
+);
+```
+
+This will select an input with a parent div with the `user-panel` class but
+not the `main` class.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 더 보기
+## See also
 
-- [선택자로 DOM 요소 선택하기](/ko/docs/Web/API/Document_object_model/Locating_DOM_elements_using_selectors)
-- {{domxref("element.querySelector()")}}
-- {{domxref("document.querySelectorAll()")}}
-- {{domxref("element.querySelectorAll()")}}
+- [Locating DOM elements using selectors](/en-US/docs/Web/API/Document_object_model/Locating_DOM_elements_using_selectors)
+- {{domxref("Element.querySelector()")}}
+- {{domxref("Document.querySelectorAll()")}}
+- {{domxref("Element.querySelectorAll()")}}

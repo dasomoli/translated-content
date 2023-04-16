@@ -1,264 +1,401 @@
 ---
-title: Intl.DateTimeFormat() 생성자
+title: Intl.DateTimeFormat() constructor
 slug: Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat
+page-type: javascript-constructor
+browser-compat: javascript.builtins.Intl.DateTimeFormat.DateTimeFormat
 ---
 
 {{JSRef}}
 
-**`Intl.DateTimeFormat`** 생성자는 언어에 맞는 날짜 및 시간 서식을 적용하기 위한 {{jsxref("Intl/DateTimeFormat", "Intl.DateTimeFormat")}} 객체를 생성합니다.
+The **`Intl.DateTimeFormat()`** constructor creates {{jsxref("Intl.DateTimeFormat")}} objects.
 
 {{EmbedInteractiveExample("pages/js/intl-datetimeformat.html", "taller")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 new Intl.DateTimeFormat()
 new Intl.DateTimeFormat(locales)
 new Intl.DateTimeFormat(locales, options)
+
+Intl.DateTimeFormat()
+Intl.DateTimeFormat(locales)
+Intl.DateTimeFormat(locales, options)
 ```
 
-### 매개변수
+> **Note:** `Intl.DateTimeFormat()` can be called with or without [`new`](/en-US/docs/Web/JavaScript/Reference/Operators/new). Both create a new `Intl.DateTimeFormat` instance. However, there's a special behavior when it's called without `new` and the `this` value is another `Intl.DateTimeFormat` instance; see [Return value](#return_value).
+
+### Parameters
 
 - `locales` {{optional_inline}}
 
-  - : [BCP 47](https://ko.wikipedia.org/wiki/IETF_%EC%96%B8%EC%96%B4_%ED%83%9C%EA%B7%B8) 언어 태그를 포함하는 문자열이나 문자열의 배열입니다. 브라우저 기본 로케일을 사용하려면 빈 배열을 지정하세요. `ko-u-ca-buddhist`처럼 유니코드 확장 형태도 지원합니다. 로케일 매개변수의 일반적인 형식 및 해석은 {{jsxref("Intl", "Intl", "#Locale_identification_and_negotiation", 1)}} 문서를 참고하세요. 다음의 유니코드 확장 키를 사용할 수 있습니다.
+  - : A string with a BCP 47 language tag, or an array of such strings. For the general form and interpretation of the `locales` argument, see [the parameter description on the `Intl` main page](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#locales_argument). The following Unicode extension keys are allowed:
 
     - `nu`
-      - : 사용할 기수법. "`arab`",
-        "`arabext`", "`bali`", "`beng`",
-        "`deva`", "`fullwide`", "`gujr`",
-        "`guru`", "`hanidec`", "`khmr`",
-        "`knda`", "`laoo`", "`latn`",
-        "`limb`", "`mlym`", "`mong`",
-        "`mymr`", "`orya`", "`tamldec`",
-        "`telu`", "`thai`", "`tibt`" 등을 사용할 수 있습니다.
+      - : Numbering system. Possible values include: `"arab"`,
+        `"arabext"`, `"bali"`, `"beng"`,
+        `"deva"`, `"fullwide"`, `"gujr"`,
+        `"guru"`, `"hanidec"`, `"khmr"`,
+        `"knda"`, `"laoo"`, `"latn"`,
+        `"limb"`, `"mlym"`, `"mong"`,
+        `"mymr"`, `"orya"`, `"tamldec"`,
+        `"telu"`, `"thai"`, `"tibt"`.
     - `ca`
-      - : 역법. "`buddhist`",
-        "`chinese`", "`coptic`", "`ethiopia`",
-        "`ethiopic`", "`gregory`", "`hebrew`",
-        "`indian`", "`islamic`", "`iso8601`",
-        "`japanese`", "`persian`", "`roc`" 등을 사용할 수 있습니다.
+
+      - : Calendar. Possible values include: `"buddhist"`,
+        `"chinese"`, `"coptic"`, `"dangi"`,
+        `"ethioaa"`, `"ethiopic"`, `"gregory"`,
+        `"hebrew"`, `"indian"`, `"islamic"`,
+        `"islamic-umalqura"`, `"islamic-tbla"`, `"islamic-civil"`,
+        `"islamic-rgsa"`, `"iso8601"`, `"japanese"`,
+        `"persian"`, `"roc"`, `"islamicc"`.
+
+        > **Warning:** The `islamicc` calendar key has been deprecated. Please use `islamic-civil`.
+
     - `hc`
-      - : 시간제. "`h11`",
-        "`h12`", "`h23`", "`h24`" 등을 사용할 수 있습니다.
+      - : Hour cycle. Possible values include: `"h11"`, `"h12"`, `"h23"`, `"h24"`.
 
 - `options` {{optional_inline}}
 
-  - : 다음 속성 일부 또는 전부를 포함하는 객체입니다.
+  - : An object with some or all of the following properties:
 
     - `dateStyle`
-      - : `format()`을 호출했을 때 사용할 날짜 서식입니다. 가능한 값은 다음을 포함합니다.
-        - "`full`"
-        - "`long`"
-        - "`medium`"
-        - "`short`"
 
-        > **참고:** `dateStyle`은 `timeStyle`과 함께 사용할 수 있지만, 다른 옵션인 `weekday`, `hour`, `month` 등과는 함께 사용할 수 없습니다.
+      - : The date formatting style to use when calling `format()`.
+        Possible values include:
+
+        - `"full"`
+        - `"long"`
+        - `"medium"`
+        - `"short"`
+
+        > **Note:** `dateStyle` can be used with `timeStyle`, but
+        > not with other options (e.g. `weekday`,
+        > `hour`, `month`, etc.).
 
     - `timeStyle`
-      - : `format()`을 호출했을 때 사용할 시간 서식입니다. 가능한 값은 다음을 포함합니다.
-        - "`full`"
-        - "`long`"
-        - "`medium`"
-        - "`short`"
 
-        > **참고:** `timeStyle`은 `dateStyle`과 함께 사용할 수 있지만, 다른 옵션인 `weekday`, `hour`, `month` 등과는 함께 사용할 수 없습니다.
+      - : The time formatting style to use when calling `format()`.
+        Possible values include:
+
+        - `"full"`
+        - `"long"`
+        - `"medium"`
+        - `"short"`
+
+        > **Note:** `timeStyle` can be used with `dateStyle`, but
+        > not with other options (e.g. `weekday`,
+        > `hour`, `month`, etc.).
 
     - `calendar`
-      - : 역법입니다. "`buddhist`",
-        "`chinese`", " `coptic`", "`ethiopia`",
-        "`ethiopic`", "`gregory`", " `hebrew`",
-        "`indian`", "`islamic`", "`iso8601`", "
-        `japanese`", "`persian`", "`roc`" 등을 사용할 수 있습니다.
+
+      - : Calendar. Possible values include: `"buddhist"`,
+        `"chinese"`, `"coptic"`, `"dangi"`,
+        `"ethioaa"`, `"ethiopic"`, `"gregory"`,
+        `"hebrew"`, `"indian"`, `"islamic"`,
+        `"islamic-umalqura"`, `"islamic-tbla"`, `"islamic-civil"`,
+        `"islamic-rgsa"`, `"iso8601"`, `"japanese"`,
+        `"persian"`, `"roc"`, `"islamicc"`.
+
+        > **Warning:** The `islamicc` calendar key has been deprecated. Please use `islamic-civil`.
 
     - `dayPeriod`
-      - : (영어의 경우) "in the morning", "am", "noon", "n"처럼 시간의 위치를 나타낼 때 사용할 시간 서식입니다. "`narrow`", "`short`", " `long`" 등을 사용할 수 있습니다.
 
-      > **참고:**
-      >
-      > - 12시간제 형식을 사용할 때만 결과의 차이가 있습니다.
-      > - 한국어를 포함해, 많은 로케일에서는 지정한 너비에 상관하지 않고 같은 문자열을 반환합니다. ("새벽", "밤" 등)
+      - : The formatting style used for day periods like "in the morning", "am", "noon", "n" etc. Possible values include:
+        `"narrow"`, `"short"`, `"long"`.
+
+        > **Note:**
+        >
+        > - This option only has an effect if a 12-hour clock is used.
+        > - Many locales use the same string irrespective of the width specified.
 
     - `numberingSystem`
-      - : 기수법입니다. "`arab`",
-        "`arabext`", " `bali`", "`beng`",
-        "`deva`", "`fullwide`", " `gujr`",
-        "`guru`", "`hanidec`", "`khmr`", "
-        `knda`", "`laoo`", "`latn`",
-        "`limb`", "`mlym`", " `mong`",
-        "`mymr`", "`orya`", "`tamldec`", "
-        `telu`", "`thai`", "`tibt`" 등을 사용할 수 있습니다.
-
+      - : Numbering System. Possible values include: `"arab"`,
+        `"arabext"`, `"bali"`, `"beng"`,
+        `"deva"`, `"fullwide"`, `"gujr"`,
+        `"guru"`, `"hanidec"`, `"khmr"`,
+        `"knda"`, `"laoo"`, `"latn"`,
+        `"limb"`, `"mlym"`, `"mong"`,
+        `"mymr"`, `"orya"`, `"tamldec"`, `"telu"`, `"thai"`, `"tibt"`.
     - `localeMatcher`
-      - : 로케일 매칭 알고리즘입니다. 가능한 값은 "`lookup`", "`best fit`"이며 기본 값은 "`best fit`"입니다. 자세한 정보는 {{jsxref("Intl", "Intl", "#로케일_조정", 1)}} 문서를 참고하세요.
-
+      - : The locale matching algorithm to use. Possible values are
+        `"lookup"` and `"best fit"`; the default is
+        `"best fit"`. For information about this option, see the
+        {{jsxref("Global_Objects/Intl", "Intl", "#locale_identification_and_negotiation", 1)}} page.
     - `timeZone`
-      - : 시간대입니다. 구현체가 반드시 인식해야 하는 유일한 값은 "`UTC`"입니다. 기본 값은 런타임의 기본 시간대입니다. 구현체에 따라 "`Asia/Seoul`", "`Asia/Kolkata`",
-        "`America/New_York`"처럼 [IANA 시간대 데이터베이스](https://www.iana.org/time-zones)의 시간대 이름을 인식할 수도 있습니다.
-
+      - : The time zone to use. The only value implementations must recognize is
+        `"UTC"`; the default is the runtime's default time zone.
+        Implementations may also recognize the time zone names of the [IANA time zone database](https://www.iana.org/time-zones),
+        such as `"Asia/Shanghai"`, `"Asia/Kolkata"`,
+        `"America/New_York"`.
     - `hour12`
-      - : 24시간제 대신 12시간제를 사용할지에 대한 여부입니다. 가능한 값은 `true` 또는 `false`입니다. 기본 값은 로케일에 따라 다릅니다. 이 값은 언어 태그의 `hc`, 옵션 중 `hourCycle`보다 우선합니다.
-
+      - : Whether to use 12-hour time (as opposed to 24-hour time). Possible values
+        are `true` and `false`; the default is locale
+        dependent. This option overrides the `hc` language tag and/or
+        the `hourCycle` option in case both are present.
     - `hourCycle`
-      - : 시간제입니다. "`h11`",
-        "`h12`", "`h23`", "`h24`" 등을 사용할 수 있습니다. 이 값은 언어 태그의 `hc`보다 우선하며, `hour12`가 이 값보다 우선합니다.
-
+      - : The hour cycle to use. Possible values are `"h11"`, `"h12"`, `"h23"`, or `"h24"`. This option
+        overrides the `hc` language tag, if both are present, and the
+        `hour12` option takes precedence in case both options have been
+        specified.
     - `formatMatcher`
-      - : 서식 매칭 알고리즘입니다. 가능한 값은 "`basic`", "`best fit`"이며 기본 값은 "`best fit`"입니다. 자세한 설명은 아래 내용을 참고하세요.
+      - : The format matching algorithm to use. Possible values are
+        `"basic"` and `"best fit"`; the default is
+        `"best fit"`. See the following paragraphs for information
+        about the use of this property.
 
-    이하 속성은 서식 출력 결과가 사용할 날짜 및 시간 구성요소를 나타냅니다. 구현체는 적어도 아래의 구성요소 조합을 지원해야 합니다.
+    The following properties describe the date-time components to use in formatted
+    output, and their desired representations. Implementations are required to
+    support at least the following subsets:
 
-    - `weekday`, `year`, `month`, `day`, `hour`, `minute`, `second`
-    - `weekday`, `year`, `month`, `day`
+    - `weekday`, `year`, `month`,
+      `day`, `hour`, `minute`,
+      `second`
+    - `weekday`, `year`, `month`,
+      `day`
     - `year`, `month`, `day`
     - `year`, `month`
     - `month`, `day`
     - `hour`, `minute`, `second`
     - `hour`, `minute`
 
-    구현체에 따라 다른 구성요소 조합을 지원할 수도 있습니다. 시간 서식을 요청하면, 현재 구현체가 지원하는 모든 구성요소 조합 중 최적 조합을 탐색해 사용합니다. 탐색 알고리즘은 `formatMatcher` 옵션 속성을 사용해 지정할 수 있고, [명세에 완벽히 정의된 "`basic`" 알고리즘](https://402.ecma-international.org/1.0/#BasicFormatMatcher)과 구현체에 따라 다른 "`best-fit`" 알고리즘의 두 종류가 있습니다.
+    Implementations may support other subsets, and requests will be negotiated
+    against all available subset-representation combinations to find the best
+    match. Two algorithms are available for this negotiation and selected by the
+    `formatMatcher` property:
+    A [fully specified `"basic"` algorithm](https://402.ecma-international.org/1.0/#BasicFormatMatcher)
+    and an implementation-dependent `"best fit"` algorithm.
 
     - `weekday`
 
-      - : 요일. 가능한 값은 다음과 같습니다.
+      - : The representation of the weekday. Possible values are:
 
-        - "`long`" (`금요일`, `Thursday` 등)
-        - "`short`" (`(금)`, `Thu` 등)
-        - "`narrow`" (`(금)`, `T` 등). 일부 로케일에서는 두 개의 요일이 같은 값을 스타일을 가질 수 있습니다. (예: `Thursday`와 `Tuesday` 둘 다 `T`)
+        - `"long"` (e.g., `Thursday`)
+        - `"short"` (e.g., `Thu`)
+        - `"narrow"` (e.g., `T`). Two weekdays may
+          have the same narrow style for some locales (e.g.
+          `Tuesday`'s narrow style is also `T`).
 
     - `era`
 
-      - : 시대. 가능한 값은 다음과 같습니다.
+      - : The representation of the era. Possible values are:
 
-        - "`long`" (`서기`, `Anno Domini` 등)
-        - "`short`" (`AD` 등)
-        - "`narrow`" (`A`, `AD` 등)
+        - `"long"` (e.g., `Anno Domini`)
+        - `"short"` (e.g., `AD`)
+        - `"narrow"` (e.g., `A`)
 
     - `year`
 
-      - : 연도. 가능한 값은 다음과 같습니다.
+      - : The representation of the year. Possible values are:
 
-        - "`numeric`" (`2019년`, `2019` 등)
-        - "`2-digit`" (`19년`, `19` 등)
+        - `"numeric"` (e.g., `2012`)
+        - `"2-digit"` (e.g., `12`)
 
     - `month`
 
-      - : 월. 가능한 값은 다음과 같습니다.
+      - : The representation of the month. Possible values are:
 
-        - "`numeric`" (`3` 등)
-        - "`2-digit`" (`03` 등)
-        - "`long`" (`3월`, `March` 등)
-        - "`short`" (`Mar` 등)
-        - "`narrow`" (`M` 등). 일부 로케일에서는 두 개의 요일이 같은 값을 스타일을 가질 수 있습니다. (예: `March`와 `May` 둘 다 `M`)
+        - `"numeric"` (e.g., `3`)
+        - `"2-digit"` (e.g., `03`)
+        - `"long"` (e.g., `March`)
+        - `"short"` (e.g., `Mar`)
+        - `"narrow"` (e.g., `M`). Two months may have
+          the same narrow style for some locales (e.g. `May`'s
+          narrow style is also `M`).
 
     - `day`
 
-      - : 일. 가능한 값은 다음과 같습니다.
+      - : The representation of the day. Possible values are:
 
-        - "`numeric`" (`1` 등)
-        - "`2-digit`" (`01` 등)
+        - `"numeric"` (e.g., `1`)
+        - `"2-digit"` (e.g., `01`)
 
     - `hour`
-      - : 시. 가능한 값은 `"numeric"`, `"2-digit"`입니다.
+      - : The representation of the hour. Possible values are
+        `"numeric"`, `"2-digit"`.
     - `minute`
-      - : 분. 가능한 값은 `"numeric"`, `"2-digit"`입니다.
+      - : The representation of the minute. Possible values are
+        `"numeric"`, `"2-digit"`.
     - `second`
-      - : 초. 가능한 값은 `"numeric"`, `"2-digit"`입니다.
+      - : The representation of the second. Possible values are
+        `"numeric"`,`"2-digit"`.
     - `fractionalSecondDigits`
 
-      - : 밀리초를 나타낼 소숫점 이하 자릿수. 가능한 값은 다음과 같습니다.
+      - : The number of digits used to represent fractions of a second (any
+        additional digits are truncated). Possible values are:
 
-        - `0` (밀리초를 표시하지 않음.)
-        - `1` (밀리초를 한 자리까지 표시함. 예를 들어, 0.736초는 7까지 보입니다.)
-        - `2` (밀리초를 두 자리까지 표시함. 예를 들어, 0.736초는 73로 보입니다.)
-        - `3` (밀리초를 세 자리까지 표시함. 예를 들어, 0.736초는 736으로 보입니다.)
+        - `0` (Fractional part dropped.)
+        - `1` (Fractional part represented as 1 digit. For
+          example, 736 is formatted as `7`.)
+        - `2` (Fractional part represented as 2 digits. For
+          example, 736 is formatted as `73`.)
+        - `3` (Fractional part represented as 3 digits. For
+          example, 736 is formatted as `736`.)
 
     - `timeZoneName`
 
-      - : 시간대 이름. 가능한 값은 다음과 같습니다.
+      - : The localized representation of the time zone name. Possible values are:
 
-        - "`long`" 지역화된 긴 시간대 이름 (`한국 표준시`, `British Summer Time`)
-        - "`short`" 지역화된 짧은 시간대 이름 (`PST`, `GMT+9`)
-        - "`shortOffset`" 지역화된 GMT 형식 (`GMT-8`, `GMT+9`)
-        - "`longOffset`" 지역화된 긴 GMT 형식 (`GMT+0900`)
-        - "`shortGeneric`" 지역을 특정하지 않는 일반적인 형식 (`PT`)
-        - "`longGeneric`" 지역을 특정하지 않는 긴 일반적인 형식 (`Pacific Time`)
+        - `"long"` Long localized form (e.g., `Pacific Standard Time`, `Nordamerikanische Westküsten-Normalzeit`)
+        - `"short"` Short localized form (e.g.: `PST`, `GMT-8`)
+        - `"shortOffset"` Short localized GMT format (e.g., `GMT-8`)
+        - `"longOffset"` Long localized GMT format (e.g., `GMT-0800`)
+        - `"shortGeneric"` Short generic non-location format (e.g.: `PT`, `Los Angeles Zeit`).
+        - `"longGeneric"` Long generic non-location format (e.g.: `Pacific Time`, `Nordamerikanische Westküstenzeit`)
 
-        > **참고:** 요구한 형식을 사용할 수 없을 경우 시간대 서식이 다른 형태로 대체될 수 있습니다. 예를 들어 지역을 특정하지 않는 서식의 경우 특정 국가나 도시 이름을 포함하지 않아야 하지만, "Los Angeles Time"처럼 필요할 경우 이름을 포함할 수 있습니다.
+        > **Note:** Timezone display may fall back to another format if a required string is unavailable. For example, the non-location formats should display the timezone without a specific country/city location like "Pacific Time", but may fall back to a timezone like "Los Angeles Time".
 
-    각 구성요소 속성의 기본값은 {{jsxref("undefined")}}입니다. 그러나 모든 속성이 `undefined`일 경우, `year`, `month`, `day`는 "`numeric`"으로 취급합니다.
+    The default value for each date-time component property is
+    {{jsxref("undefined")}}, but if all component properties are
+    {{jsxref("undefined")}}, then `year`, `month`, and
+    `day` are assumed to be `"numeric"`.
 
-## 예제
+### Return value
 
-### DateTimeFormat 사용하기
+A new `Intl.DateTimeFormat` object.
 
-로케일을 지정하지 않고 사용하면 기본 로케일 및 기본 옵션 서식을 적용한 문자열을 반환합니다.
+> **Note:** The text below describes behavior that is marked by the specification as "optional". It may not work in all environments. Check the [browser compatibility table](#browser_compatibility).
+
+Normally, `Intl.DateTimeFormat()` can be called with or without [`new`](/en-US/docs/Web/JavaScript/Reference/Operators/new), and a new `Intl.DateTimeFormat` instance is returned in both cases. However, if the [`this`](/en-US/docs/Web/JavaScript/Reference/Operators/this) value is an object that is [`instanceof`](/en-US/docs/Web/JavaScript/Reference/Operators/instanceof) `Intl.DateTimeFormat` (doesn't necessarily mean it's created via `new Intl.DateTimeFormat`; just that it has `Intl.DateTimeFormat.prototype` in its prototype chain), then the value of `this` is returned instead, with the newly created `Intl.DateTimeFormat` object hidden in a `[Symbol(IntlLegacyConstructedSymbol)]` property (a unique symbol that's reused between instances).
 
 ```js
-var date = new Date(Date.UTC(2012, 11, 20, 3, 0, 0));
+const formatter = Intl.DateTimeFormat.call(
+  { __proto__: Intl.DateTimeFormat.prototype },
+  "en-US",
+  { dateStyle: "full" },
+);
+console.log(Object.getOwnPropertyDescriptors(formatter));
+// {
+//   [Symbol(IntlLegacyConstructedSymbol)]: {
+//     value: DateTimeFormat [Intl.DateTimeFormat] {},
+//     writable: false,
+//     enumerable: false,
+//     configurable: false
+//   }
+// }
+```
 
-// 매개변수 없이 toLocaleString() 호출한 결과는
-// 구현체, 기본 로케일, 기본 시간대에 다라 달라짐
+Note that there's only one actual `Intl.DateTimeFormat` instance here: the one hidden in `[Symbol(IntlLegacyConstructedSymbol)]`. Calling the [`format()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/format) and [`resolvedOptions()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/resolvedOptions) methods on `formatter` would correctly use the options stored in that instance, but calling all other methods (e.g. [`formatRange()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/formatRange)) would fail: "TypeError: formatRange method called on incompatible Object", because those methods don't consult the hidden instance's options.
+
+This behavior, called `ChainDateTimeFormat`, does not happen when `Intl.DateTimeFormat()` is called without `new` but with `this` set to anything else that's not an `instanceof Intl.DateTimeFormat`. If you call it directly as `Intl.DateTimeFormat()`, the `this` value is [`Intl`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl), and a new `Intl.DateTimeFormat` instance is created normally.
+
+## Examples
+
+### Using DateTimeFormat
+
+In basic use without specifying a locale, `DateTimeFormat` uses the default
+locale and default options.
+
+```js
+const date = new Date(Date.UTC(2012, 11, 20, 3, 0, 0));
+
+// toLocaleString without arguments depends on the implementation,
+// the default locale, and the default time zone
 console.log(new Intl.DateTimeFormat().format(date));
-// → ko-KR 로케일(언어)와 Asia/Seoul 시간대(UTC+0900)에서 "2012. 12. 20."
+// "12/19/2012" if run with en-US locale (language) and time zone America/Los_Angeles (UTC-0800)
 ```
 
-### timeStyle과 dateStyle 사용하기
-
-다음 예제는 지역화된 숫자 서식의 예시를 보입니다. 어플리케이션의 사용자 인터페이스 언어에 맞는 서식을 적용하려면 `locales` 매개변수로 적절한 언어(와, 필요한 경우 대체 언어)를 제공하는걸 잊지 마세요.
+### Using timeStyle and dateStyle
 
 ```js
-let o = new Intl.DateTimeFormat("en" , {
-  timeStyle: "short"
+const shortTime = new Intl.DateTimeFormat("en", {
+  timeStyle: "short",
 });
-console.log(o.format(Date.now())); // "13:31 AM"
+console.log(shortTime.format(Date.now())); // "1:31 PM"
 
-let o = new Intl.DateTimeFormat("en" , {
-  dateStyle: "short"
+const shortDate = new Intl.DateTimeFormat("en", {
+  dateStyle: "short",
 });
-console.log(o.format(Date.now())); // "07/07/20"
+console.log(shortDate.format(Date.now())); // "07/07/20"
 
-let o = new Intl.DateTimeFormat("en" , {
+const mediumTime = new Intl.DateTimeFormat("en", {
   timeStyle: "medium",
-  dateStyle: "short"
+  dateStyle: "short",
 });
-console.log(o.format(Date.now())); // "07/07/20, 13:31:55 AM"
+console.log(mediumTime.format(Date.now())); // "07/07/20, 1:31:55 PM"
 ```
 
-### timeZoneName 사용하기
+### Using dayPeriod
 
-`timeZoneName`을 사용하면 시간대도 결과에 포함할 수 있습니다.
+Use the `dayPeriod` option to output a string for the times of day ("in the morning", "at night", "noon", etc.). Note, that this only works when formatting for a 12 hour clock (`hourCycle: 'h12'`) and that for many locales the strings are the same irrespective of the value passed for the `dayPeriod`.
 
 ```js
-var date = Date.UTC(2021, 11, 17, 3, 0, 42);
-const timezoneNames = ['short', 'long', 'shortOffset', 'longOffset', 'shortGeneric', 'longGeneric']
+const date = Date.UTC(2012, 11, 17, 4, 0, 42);
+
+console.log(
+  new Intl.DateTimeFormat("en-GB", {
+    hour: "numeric",
+    hourCycle: "h12",
+    dayPeriod: "short",
+    timeZone: "UTC",
+  }).format(date),
+);
+// 4 at night"  (same formatting in en-GB for all dayPeriod values)
+
+console.log(
+  new Intl.DateTimeFormat("fr", {
+    hour: "numeric",
+    hourCycle: "h12",
+    dayPeriod: "narrow",
+    timeZone: "UTC",
+  }).format(date),
+);
+// "4 mat."  (same output in French for both narrow/short dayPeriod)
+
+console.log(
+  new Intl.DateTimeFormat("fr", {
+    hour: "numeric",
+    hourCycle: "h12",
+    dayPeriod: "long",
+    timeZone: "UTC",
+  }).format(date),
+);
+// "4 du matin"
+```
+
+### Using timeZoneName
+
+Use the `timeZoneName` option to output a string for the timezone ("GMT", "Pacific Time", etc.).
+
+```js
+const date = Date.UTC(2021, 11, 17, 3, 0, 42);
+const timezoneNames = [
+  "short",
+  "long",
+  "shortOffset",
+  "longOffset",
+  "shortGeneric",
+  "longGeneric",
+];
 
 for (const zoneName of timezoneNames) {
-  var formatter = new Intl.DateTimeFormat('en-US', {
-    timeZone: 'America/Los_Angeles',
+  // Do something with currentValue
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Los_Angeles",
     timeZoneName: zoneName,
   });
-  console.log(zoneName + ": " + formatter.format(date) );
+  console.log(`${zoneName}: ${formatter.format(date)}`);
 }
 
-// 예상 출력 결과:
-// > "short: 12/16/2021, PST"
-// > "long: 12/16/2021, Pacific Standard Time"
-// > "shortOffset: 12/16/2021, GMT-8"
-// > "longOffset: 12/16/2021, GMT-08:00"
-// > "shortGeneric: 12/16/2021, PT"
-// > "longGeneric: 12/16/2021, Pacific Time"
+// Logs:
+// short: 12/16/2021, PST
+// long: 12/16/2021, Pacific Standard Time
+// shortOffset: 12/16/2021, GMT-8
+// longOffset: 12/16/2021, GMT-08:00
+// shortGeneric: 12/16/2021, PT
+// longGeneric: 12/16/2021, Pacific Time
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Intl.DateTimeFormat")}}
+- {{jsxref("Intl.supportedValuesOf()")}}
 - {{jsxref("Global_Objects/Intl", "Intl")}}

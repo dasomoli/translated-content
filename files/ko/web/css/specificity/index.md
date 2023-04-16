@@ -1,327 +1,462 @@
 ---
-title: 명시도
+title: Specificity
 slug: Web/CSS/Specificity
+page-type: guide
+spec-urls: https://drafts.csswg.org/selectors/#specificity-rules
 ---
-{{cssref}}
 
-**명시도**란 브라우저가 어느 요소와 가장 연관된 속성을 찾는 수단으로, 이렇게 찾은 속성이 해당 요소에 적용됩니다. 명시도는 여러 종류의 [CSS 선택자](/ko/docs/Web/CSS/CSS_Reference#Selectors)로 구성된 일치 규칙에 기반합니다.
+{{CSSRef}}
 
-## 어떻게 계산되는가?
+**Specificity** is the algorithm used by browsers to determine the [CSS declaration](/en-US/docs/Learn/CSS/First_steps/What_is_CSS#css_syntax) that is the most relevant to an element, which in turn, determines the property value to apply to the element. The specificity algorithm calculates the weight of a [CSS selector](/en-US/docs/Web/CSS/Reference#selectors) to determine which rule from competing CSS declarations gets applied to an element.
 
-명시도는 주어진 CSS 선언에 적용되는 가중치(weight)로, 일치하는 선택자 내 각 [선택자 유형](#selector-type)의 수에 의해 결정됩니다. 여러 선언이 명시도가 같은 경우, CSS에서 맨 끝에 오는 선언이 요소에 적용됩니다. 명시도는 같은 요소가 여러 선언의 대상이 되는 경우에만 적용합니다. CSS 규칙에 따라 [직접 대상 요소](#directly-targeted-elements)는 요소가 부모로부터 상속받는 규칙보다 항상 우선합니다.
+> **Note:** Browsers consider specificity **after** determining [cascade origin and importance](/en-US/docs/Web/CSS/Cascade). In other words, for competing property declarations, specificity is relevant and compared only between selectors from the one [cascade origin and layer](/en-US/docs/Web/CSS/@layer) that has precedence for the property. Order of appearance becomes relevant when the selector specificities of the competing declarations in the cascade layer with precedence are equal.
 
-> **참고:** **주의:** 문서 트리 내 [요소의 근접도(proximity, 가까움)](#tree-proximity-ignorance)는 명시도에 영향이 없습니다.
+## How is specificity calculated?
 
-### 선택자 유형
+Specificity is an algorithm that calculates the weight that is applied to a given CSS declaration. The weight is determined by the number of [selectors of each weight category](#selector_weight_categories) in the selector matching the element (or pseudo-element). If there are two or more declarations providing different property values for the same element, the declaration value in the style block having the matching selector with the greatest algorithmic weight gets applied.
 
-아래 선택자는 유형별로 명시도를 증가시킵니다.
+The specificity algorithm is basically a three-column value of three categories or weights - ID, CLASS, and TYPE - corresponding to the three types of selectors. The value represents the count of selector components in each weight category and is written as _ID - CLASS - TYPE_. The three columns are created by counting the number of selector components for each selector weight category in the selectors that match the element.
 
-1. [유형 선택자](/ko/docs/Web/CSS/Type_selectors)(`h1` 등) 및 의사 요소(`:before` 등).
-2. [클래스 선택자](/ko/docs/Web/CSS/Class_selectors)(`.example` 등), 속성 선택자(`[type="radio"]` 등), 의사 클래스(`:hover` 등).
-3. [ID 선택자](/ko/docs/Web/CSS/ID_selectors)(`#example` 등).
+### Selector weight categories
 
-전역 선택자({{cssxref("Universal_selectors", "*")}}), 조합자({{CSSxRef("Adjacent_sibling_combinator", "+")}}, {{CSSxRef("Child_combinator", "&gt;")}}, {{CSSxRef("General_sibling_combinator", "~")}}, [" "](/ko/docs/Web/CSS/Descendant_combinator), {{CSSxRef("Column_combinator", "||")}}) 및 부정 의사 클래스(`:not()`)는 명시도에 영향을 주지 않습니다. (`:not()` _내부에_ 선언한 선택자는 영향을 끼칩니다)
+The selector weight categories are listed here in the order of decreasing specificity:
 
-<https://specifishity.com>에서 자세한 정보를 확인할 수 있습니다.
+- ID column
+  - : Includes only [ID selectors](/en-US/docs/Web/CSS/ID_selectors), such as `#example`. For each ID in a matching selector, add 1-0-0 to the weight value.
+- CLASS column
+  - : Includes [class selectors](/en-US/docs/Web/CSS/Class_selectors), such as `.myClass`, attribute selectors like `[type="radio"]` and `[lang|="fr"]`, and pseudo-classes, such as `:hover`, `:nth-of-type(3n)`, and `:required`. For each class, attribute selector, or pseudo-class in a matching selector, add 0-1-0 to the weight value.
+- TYPE column
+  - : Includes [type selectors](/en-US/docs/Web/CSS/Type_selectors), such as `p`, `h1`, and `td`, and pseudo-elements like `::before`, `::placeholder`, and all other selectors with double-colon notation. For each type or pseudo-element in a matching selector, add 0-0-1 to the weight value.
+- No value
+  - : The universal selector ({{CSSxRef("Universal_selectors", "*")}}) and the pseudo-class {{CSSxRef(":where", ":where()")}} and its parameters aren't counted when calculating the weight so their value is 0-0-0, but they do match elements. These selectors do not impact the specificity weight value.
 
-요소에 추가한 인라인 스타일(`style="font-weight: bold"`처럼)은 항상 외부 스타일시트의 모든 스타일을 덮어쓰므로 가장 높은 명시도를 갖는 것으로 생각할 수 있습니다.
+Combinators, such as {{CSSxRef("Adjacent_sibling_combinator", "+")}}, {{CSSxRef("Child_combinator", "&gt;")}}, {{CSSxRef("General_sibling_combinator", "~")}}, [" "](/en-US/docs/Web/CSS/Descendant_combinator), and {{CSSxRef("Column_combinator", "||")}}, may make a selector more specific in what is selected but they don't add any value to the specificity weight.
 
-### `!important` 예외
+The negation pseudo-class, {{CSSxRef(":not", ":not()")}}, itself has no weight. Neither do the {{CSSxRef(":is", ":is()")}} or the {{CSSxRef(":has", ":has()")}} pseudo-classes. The parameters in these selectors, however, do. The values of both come from the parameter in the list of parameters that has the highest specificity. The [`:not()`, `:is()` and `:has()` exceptions](#the_is_not_and_has_exceptions) are discussed below.
 
-`!important` 규칙이 스타일 선언에 사용된 경우, 이 선언은 다른 선언보다 우선합니다. 엄밀히 말해 `!important` 자체는 명시도와 아무 관련이 없지만, 명시도에 직접 영향을 미칩니다. 그러나 `!important` 사용은 **나쁜 습관**이고 스타일시트 내 자연스러운 [종속](/ko/docs/Web/CSS/Cascade)을 깨뜨려 디버깅을 더 어렵게 만들기에 피해야 합니다. `!important` 규칙으로 충돌하는 두 선언이 같은 요소에 적용된 경우, 더 큰 명시도를 갖는 선언이 적용됩니다.
+#### Matching selector
 
-**몇몇 경험 법칙들:**
-
-- **항상** !important를 고려하기도 전에 명시도를 활용할 방법을 찾아보세요.
-- 외부 CSS(Bootstrap 또는 Normalize.css 같은 외부 라이브러리에서)를 재정의하는 페이지 전용 CSS에**만** `!important`를 쓰세요.
-- 플러그인/매시업을 작성할 때 `!important`는 **절대** 쓰지 마세요.
-- 사이트 전반 CSS에는 `!important`를 **절대** 쓰지 마세요.
-
-**`!important`를 사용하는 대신에, 다음을 고려하세요:**
-
-1. CSS 종속cascading을 더 잘 활용하세요.
-2. 더 명시된(명확한) 규칙을 쓰세요. 선택 중인 요소 앞에 하나 이상의 요소를 나타냄으로써 규칙은 더 명확해지고 더 높은 우선 순위를 얻습니다:
-
-    ```html
-    <div id="test">
-      <span>Text</span>
-    </div>
-    ```
-
-    ```css
-    div#test span { color: green; }
-    div span { color: blue; }
-    span { color: red; }
-    ```
-
-    순서와 무관하게 첫 번째 규칙이 가장 명확하므로 텍스트는 녹색이 됩니다. (또한, 역시 순서와 무관하게 파란색 규칙이 빨간색 규칙보다 우선합니다.)
-
-3. (2)의 말도 안 되는 특별한 경우로, 더 이상 명시할 요소가 없는 경우 간단한 선택자를 여러 번 써서 명시도를 높일 수 있습니다.
-
-    ```css
-    #myId#myId span { color: yellow; }
-    .myClass.myClass span { color: orange; }
-    ```
-
-#### `!important`를 사용하는 때
-
-##### A) 인라인 스타일을 재정의할 때
-
-사이트 전체의 시각적 요소를 설정하는 전역 CSS 파일은 각 요소에 직접 정의된 인라인 스타일에 덮어쓰일 수 있습니다. 인라인 스타일과 `!important` 모두 매우 나쁜 습관으로 취급되지만, 가끔씩은 `!important`로 인라인 스타일을 덮어써야 할 때가 있습니다.
-
-이때는 전역 CSS 파일의 몇몇 스타일을 `!important`로 설정해서 요소에 직접 작성한 인라인 스타일을 덮어쓸 수 있습니다.
-
-```html
-<div class="foo" style="color: red;">나는 무슨 색일까?</div>
-```
+The specificity weight comes from the matching selector. Take this CSS selector with three comma-separated selectors as an example:
 
 ```css
-.foo[style*="color: red"] {
-  color: firebrick !important;
-}
-```
-
-여러 자바스크립트 프레임워크와 라이브러리에서 인라인 스타일을 추가합니다. 이런 인라인 스타일을 덮어쓸 때 매우 구체적인 선택자와 함께 `!important`를 사용할 수 있습니다.
-
-##### B) 명시도가 높은 규칙을 재정의할 때
-
-```css
-#someElement p {
+[type="password"],
+input:focus,
+:root #myApp input:required {
   color: blue;
 }
+```
 
-p.awesome {
-  color: red;
+The `[type="password"]` selector in the above selector list, with a specificity weight of `0-1-0`, applies the `color: blue` declaration to all password input types.
+
+All inputs, no matter the type, when receiving focus, match the second selector in the list, `input:focus`, with a specificity weight of `0-1-1`; this weight is made up of the `:focus` pseudo-class (0-1-0) and the `input` type (0-0-1). If the password input has focus, it will match `input:focus`, and the specificity weight for the `color: blue` style declaration will be `0-1-1`. When that password doesn't have focus, the specificity weight remains at `0-1-0`.
+
+The specificity for a required input nested in an element with attribute `id="myApp"` is `1-2-1`, based on one ID, two pseudo-classes, and one element type.
+
+If the password input type with `required` is nested in an element with `id="myApp"` set, the specificity weight will be `1-2-1`, based on one ID, two pseudo-classes, and one element type, whether or not it has focus. Why is the specificity weight `1-2-1` rather than `0-1-1` or `0-1-0` in this case? Because the specificity weight comes from the matching selector with the greatest specificity weight. The weight is determined by comparing the values in the three columns, from left to right.
+
+```css
+[type="password"]             /* 0-1-0 */
+input:focus                   /* 0-1-1 */
+:root #myApp input:required   /* 1-2-1 */
+```
+
+### Three-column comparison
+
+Once the specificity values of the relevant selectors are determined, the number of selector components in each column are compared, from left to right.
+
+```css
+#myElement {
+  color: green; /* 1-0-0  - WINS!! */
+}
+.bodyClass .sectionClass .parentClass [id="myElement"] {
+  color: yellow; /* 0-4-0 */
 }
 ```
 
-어떻게 하면 `awesome` 문단이 `#someElement` 안에 있더라도 항상 빨갛게 만들 수 있을까요? `!important`를 사용하지 않으면 위쪽 규칙의 명시도가 높으므로 아래쪽 규칙보다 우선합니다.
+The first column is the value of the _ID_ component, which is the number of IDs in each selector. The numbers in the _ID_ columns of competing selectors are compared. The selector with the greater value in the _ID_ column wins no matter what the values are in the other columns. In the above example, even though the yellow selector has more components in total, only the value of the first column matters.
 
-#### `!important`를 덮어쓰는 방법
-
-A) 태그, ID나 클래스를 추가함으로써 명시도가 더 높은 !important한 CSS 규칙을 만듭니다.
+If the number in the _ID_ columns of competing selectors is the same, then the next column, _CLASS_, is compared, as shown below.
 
 ```css
-table td    { height: 50px !important; }
-.myTable td { height: 50px !important; }
-#myTable td { height: 50px !important; }
-```
-
-B) 혹은 기존의 선택자 아래에 똑같은 선택자를 하나 더 만듭니다(명시도가 같으면 나중에 정의된 규칙이 우선하므로).
-
-```css
-td { height: 50px !important; }
-```
-
-C) 아니면 기존 규칙을 수정해서 아예 `!important`를 사용하지 않게 만드는 것이 더 좋은 방법입니다.
-
-```css
-[id="someElement"] p {
-  color: blue;
+#myElement {
+  color: yellow; /* 1-0-0 */
 }
-
-p.awesome {
-  color: red;
+#myApp [id="myElement"] {
+  color: green; /* 1-1-0  - WINS!! */
 }
 ```
 
-ID를 ID 선택자 대신 속성 선택자로 선택하면 클래스 1개와 같은 명시도가 됩니다. 두 선택자의 명시도가 같아졌으므로 나중에 오는 규칙이 우선합니다.
-
-#### 아래에서 자세한 정보를 확인하세요:
-
-- <https://stackoverflow.com/questions/3706819/what-are-the-implications-of-using-important-in-css>
-- <https://stackoverflow.com/questions/9245353/what-does-important-in-css-mean>
-- <https://stackoverflow.com/questions/5701149/when-to-use-important-property-in-css>
-- <https://stackoverflow.com/questions/11178673/how-to-override-important>
-- <https://stackoverflow.com/questions/2042497/when-to-use-important-to-save-the-day-when-working-with-css>
-
-### `:is()` 및 `:not()` 예외
-
-모두 일치 의사 클래스 {{CSSxRef(":is", ":is()")}} {{Experimental_Inline}} 및 부정 의사 클래스 {{CSSxRef(":not", ":not()")}}은 명시도 계산에서 의사 클래스로 취급되지 _않습니다_. 그러나 이들 의사 클래스 안에 명시된 선택자는 [선택자 유형](#selector-type)의 수를 결정할 때 일반 선택자로 셉니다.
-
-다음 CSS 조각과 HTML은...
+The _CLASS_ column is the count of class names, attribute selectors, and pseudo-classes in the selector. When the _ID_ column value is the same, the selector with the greater value in the _CLASS_ column wins, no matter the value in the _TYPE_ column. This is shown in the example below.
 
 ```css
+:root input {
+  color: green; /* 0-1-1 - WINS because CLASS column is greater */
+}
+html body main input {
+  color: yellow; /* 0-0-4 */
+}
+```
+
+If the numbers in the _CLASS_ and _ID_ columns in competing selectors are the same, the _TYPE_ column becomes relevant. The _TYPE_ column is the number of element types and pseudo-elements in the selector. When the first two columns have the same value, the selector with the greater number in the _TYPE_ column wins.
+
+If the competing selectors have the same values in all the three columns, the proximity rule comes into play, wherein the last declared style gets precedence.
+
+```css
+input.myClass {
+  color: yellow; /* 0-1-1 */
+}
+:root input {
+  color: green; /* 0-1-1 WINS because it comes later */
+}
+```
+
+### The `:is()`, `:not()` and `:has()` exceptions
+
+The matches-any pseudo-class {{CSSxRef(":is", ":is()")}}, the relational pseudo-class {{CSSxRef(":has", ":has()")}}, and the negation pseudo-class {{CSSxRef(":not", ":not()")}} are _not_ considered as pseudo-classes in the specificity weight calculation. They themselves don't add any weight to the specificity equation. However, the selector parameters passed into the pseudo-class parenthesis are part of the specificity algorithm; the weight of the matches-any and negation pseudo-class in the specificity value calculation is the weight of the parameter's [weight](#selector_weight_categories).
+
+```css
+p {
+  /* 0-0-1 */
+}
+:is(p) {
+  /* 0-0-1 */
+}
+
+h2:nth-last-of-type(n + 2) {
+  /* 0-1-1 */
+}
+h2:has(~ h2) {
+  /* 0-0-2 */
+}
+
 div.outer p {
-  color:orange;
+  /* 0-1-2 */
 }
-div:not(.outer) p {
-  color: lime;
+div:not(.inner) p {
+  /* 0-1-2 */
 }
 ```
 
-```html
-<div class="outer">
-  <p>This is in the outer div.</p>
-  <div class="inner">
-    <p>This text is in the inner div.</p>
-  </div>
-</div>
-```
+Note that in the above CSS pairing, the specificity weight provided by the `:is()`, `:has()` and `:not()` pseudo-classes is the value of the selector parameter, not of the pseudo-class.
 
-...다음과 같이 화면에 표시됩니다.
-
-{{EmbedLiveSample('is_및_not_예외','600','100')}}
-
-### `:where()` 예외 {{Experimental_Inline}}
-
-{{SeeCompatTable}}
-
-명시도 조정 가상 클래스 {{CSSxRef(":where", ":where()")}} {{Experimental_Inline}}의 명시도는 항상 0입니다.
-
-다음 CSS 조각과 HTML은...
+All three of these pseudo-classes accept complex selector lists, a list of comma-separated selectors, as a parameter. This feature can be used to increase a selector's specificity:
 
 ```css
-div:where(.outer) p {
-  color: orange;
+:is(p, #fakeId) {
+  /* 1-0-0 */
 }
-
-div p {
-  color: blueviolet;
+h1:has(+ h2, > #fakeId) {
+  /* 1-0-1 */
 }
-```
-
-```css hidden
-#no-where-support {
-  margin: 0.5em;
-  border: 1px solid red;
+p:not(#fakeId) {
+  /* 1-0-1 */
 }
-
-#no-where-support:where(*) {
-  display: none !important;
+div:not(.inner, #fakeId) p {
+  /* 1-0-2 */
 }
 ```
 
-```html hidden
-<div id="no-where-support">
-⚠️ Your browser doesn't support the <code><a href="https://developer.mozilla.org/docs/Web/CSS/:where" target="_top">:where()</a></code> pseudo-class.
-</div>
-```
+In the above CSS code block, we have included `#fakeId` in the selectors. This `#fakeId` adds `1-0-0` to the specificity weight of each paragraph.
 
-```html
-<div class="outer">
-  <p>This is in the outer div.</p>
-  <div class="inner">
-    <p>This text is in the inner div.</p>
-  </div>
-</div>
-```
-
-...다음과 같이 화면에 표시됩니다.
-
-{{EmbedLiveSample('The_where_exception','600','100')}}
-
-### 형태 기반 명시도
-
-명시도는 선택자의 형태(form)를 기반으로 합니다. 아래에서 선택자 `*[id="foo"]`는 그 자체로는 ID를 선택하지만 선택자의 명시도를 계산할 때는 속성 선택자로 취급됩니다.
-
-다음 스타일 선언과 마크업은...
+Generally, you want to keep specificity down to a minimum, but if you need to increase an element's specificity for a particular reason, these three pseudo-classes can help.
 
 ```css
-*#foo {
-  color: green;
-}
-*[id="foo"] {
-  color: purple;
+a:not(#fakeId#fakeId#fakeID) {
+  color: blue; /* 3-0-1 */
 }
 ```
+
+In this example, all links will be blue, unless overridden by a link declaration with 3 or more IDs, a color value matching an `a` includes the [`!important` flag](#the_!important_exception), or if the link has an [inline style](#inline_styles) color declaration. If you use such a technique, add a comment to explain why the hack was needed.
+
+### Inline styles
+
+Inline styles added to an element (e.g., `style="font-weight: bold;"`) always overwrite any normal styles in author stylesheets, and therefore, can be thought of as having the highest specificity. Think of inline styles as having a specificity weight of `1-0-0-0`.
+
+The only way to override inline styles is by using `!important`.
+
+Many JavaScript frameworks and libraries add inline styles. Using `!important` with a very targeted selector, such as an attribute selector using the inline style, is one way to override these inline styles.
 
 ```html
-<p id="foo">I am a sample text.</p>
+<p style="color: purple">…</p>
 ```
 
-...다음과 같이 표시됩니다.
+```css
+p[style*="purple"] {
+  color: rebeccapurple !important;
+}
+```
 
-{{EmbedLiveSample('형태_기반_명시도','600','100')}}
+Make sure to include a comment with every inclusion of the important flag so code maintainers understand why a CSS anti-pattern was used.
 
-같은 요소와 일치하지만 ID 선택자는 더 높은 명시도를 갖기 때문입니다.
+### The `!important` exception
 
-### 트리 근접도 무시
+CSS declarations marked as important override any other declarations within the same cascade layer and origin. Although technically, [`!important`](/en-US/docs/Web/CSS/important) has nothing to do with specificity, it interacts directly with specificity and the cascade. It reverses the [cascade](/en-US/docs/Web/CSS/Cascade) order of stylesheets.
 
-요소와 주어진 선택자로 참조된 다른 요소와의 근접도(proximity)는 명시도에 영향을 주지 않습니다.
+If declarations from the same origin and cascade layer conflict and one property value has the `!important` flag set, the important declaration is applied no matter the specificity. When conflicting declarations from the same origin and cascade layer with the `!important` flag are applied to the same element, the declaration with a greater specificity is applied.
 
-다음 스타일 선언과 HTML은...
+Using `!important` to override specificity is considered a **bad practice** and should be avoided for this purpose. Understanding and effectively using specificity and the cascade can remove any need for the `!important` flag.
+
+Instead of using `!important` to override foreign CSS (from external libraries, like Bootstrap or normalize.css), import the third-party scripts directly into [cascade layers](/en-US/docs/Web/CSS/@layer). If you must use `!important` in your CSS, comment your usage so future code maintainers know why the declaration was marked important and know not to override it. But definitely, don't use `!important` when writing plugins or frameworks that other developers will need to incorporate without being able to control.
+
+### The `:where()` exception
+
+The specificity-adjustment pseudo-class {{CSSxRef(":where", ":where()")}} always has its specificity replaced with zero, `0-0-0`. It enables making CSS selectors very specific in what element is targeted without any increase to specificity.
+
+In creating third-party CSS to be used by developers who don't have access to edit your CSS, it's considered a good practice to create CSS with the lowest possible specificity. For example, if your theme includes the following CSS:
+
+```css
+:where(#defaultTheme) a {
+  /* 0-0-1 */
+  color: red;
+}
+```
+
+Then the developer implementing the widget can easily override the link color using only type selectors.
+
+```css
+footer a {
+  /* 0-0-2 */
+  color: blue;
+}
+```
+
+## Tips for handling specificity headaches
+
+Instead of using `!important`, consider using cascade layers and using low weight specificity throughout your CSS so that styles are easily overridden with slightly more specific rules. Using semantic HTML helps provide anchors from which to apply styling.
+
+### Making selectors specific with and without adding specificity
+
+By indicating the section of the document you're styling before the element you're selecting, the rule becomes more specific. Depending on how you add it, you can add some, a lot, or no specificity, as shown below:
+
+```html
+<main id="myContent">
+  <h1>Text</h1>
+</main>
+```
+
+```css
+#myContent h1 {
+  color: green; /* 1-0-1 */
+}
+[id="myContent"] h1 {
+  color: yellow; /* 0-1-1 */
+}
+:where(#myContent) h1 {
+  color: blue; /* 0-0-1 */
+}
+```
+
+No matter the order, the heading will be green because that rule is the most specific.
+
+#### Reducing ID specificity
+
+Specificity is based on the form of a selector. Including the `id` of an element as an attribute selector rather than an id selector is a good way to make an element more specific without adding an overabundance of specificity. In the previous example, the selector `[id="myContent"]` counts as an attribute selector for the purpose of determining the selector's specificity, even though it selects an ID.
+
+You can also include the `id` or any part of a selector as a parameter in the `:where()` specificity-adjustment pseudo class if you need to make a selector more specific but don't want to add any specificity at all.
+
+### Increasing specificity by duplicating selector
+
+As a special case for increasing specificity, you can duplicate weights from the _CLASS_ or _ID_ columns. Duplicating id, class, pseudo-class or attribute selectors within a compound selector will increase specificity when overriding very specific selectors over which you have no control.
+
+```css
+#myId#myId#myId span {
+  /* 3-0-1 */
+}
+.myClass.myClass.myClass span {
+  /* 0-3-1 */
+}
+```
+
+Use this sparingly, if at all. If using selector duplication, always comment your CSS.
+
+By using `:is()` and `:not()` (and also `:has()`), you can increase specificity even if you can't add an `id` to a parent element:
+
+```css
+:not(#fakeID#fakeId#fakeID) span {
+  /* 3-0-1 */
+}
+:is(#fakeID#fakeId#fakeID, span) {
+  /* 3-0-0 */
+}
+```
+
+### Precedence over third-party CSS
+
+Leveraging cascade layers is the standard way of enabling one set of styles to take precedence over another set of styles; cascade layers enable this without using specificity! Normal (not important) author styles imported into cascade layers have lower precedence than unlayered author styles.
+
+If styles are coming from a stylesheet you can't edit or don't understand and you need to override styles, a strategy is to import the styles you don't control into a cascade layer. Styles in subsequently declared layers take precedence, with unlayered styles having precedence over all layered styles from the same origin.
+
+When two selectors from different layers match the same element, origin and importance take precedence; the specificity of the selector in the losing stylesheet is irrelevant.
+
+```html
+<style>
+  @import TW.css layer();
+  p,
+  p * {
+    font-size: 1rem;
+  }
+</style>
+```
+
+In the above example, all paragraph text, including the nested content, will be `1rem` no matter how many class names the paragraphs have that match the TW stylesheet.
+
+### Avoiding and overriding `!important`
+
+The best approach is to not use `!important`. The above explanations on specificity should be helpful in avoiding using the flag and removing it altogether when encountered.
+
+To remove the perceived need for `!important`, you can do one of the following:
+
+- Increase the specificity of the selector of the formerly `!important` declaration so that it is greater than other declarations
+- Give it the same specificity and put it after the declaration it is meant to override
+- Reduce the specificity of the selector you are trying to override.
+
+All these methods are covered in preceding sections.
+
+If you're unable to remove `!important` flags from an authors style sheet, the only solution to overriding the important styles is by using `!important`. Creating a [cascade layer](/en-US/docs/Web/CSS/@layer) of important declaration overrides is an excellent solution. Two ways of doing this include:
+
+#### Method 1
+
+1. Create a separate, short style sheet containing only important declarations specifically overriding any important declarations you were unable to remove.
+2. Import this stylesheet as the first import in your CSS using `layer()`, including the `@import` statement, before linking to other stylesheets. This is to ensure that the important overrides is imported as the first layer.
+
+```html
+<style>
+  @import importantOverrides.css layer();
+</style>
+```
+
+#### Method 2
+
+1. At the beginning of your stylesheet declarations, create a named cascade layer, like so:
+
+   ```css
+   @layer importantOverrides;
+   ```
+
+2. Each time you need to override an important declaration, declare it within the named layer. Only declare important rules within the layer.
+
+   ```css
+   [id="myElement"] p {
+     /* normal styles here */
+   }
+   @layer importantOverrides {
+     [id="myElement"] p {
+       /* important style here */
+     }
+   }
+   ```
+
+The specificity of the selector of the important style within the layer can be low, as long as it matches the element you are trying to override. Normal layers should be declared outside the layer because layered styles have lower precedence than unlayered styles.
+
+### Tree proximity ignorance
+
+The proximity of an element to other elements that are referenced in a given selector has no impact on specificity.
 
 ```css
 body h1 {
   color: green;
 }
+
 html h1 {
   color: purple;
 }
 ```
 
-```html
-<html>
-<body>
-  <h1>Here is a title!</h1>
-</body>
-</html>
-```
+The `<h1>` elements will be purple because when declarations have the same specificity, the last declared selector has precedence.
 
-...아래와 같이 렌더링됩니다.
+### Directly targeted elements vs. inherited styles
 
-{{EmbedLiveSample('트리_근접도_무시','600','100')}}
-
-두 선언은 [선택자 유형](#selector-type) 갯수가 같지만 `html h1` 선택자가 나중에 선언되었기 때문입니다.
-
-### 직접 일치 요소와 상속된 스타일
-
-특정한 요소와 직접적으로 일치하는 스타일은 상속된 규칙의 명시도와 무관하게 항상 상속된 스타일보다 우선합니다.
-
-다음 CSS와 HTML은...
+Styles for a directly targeted element will always take precedence over inherited styles, regardless of the specificity of the inherited rule. Given the following CSS and HTML:
 
 ```css
 #parent {
   color: green;
 }
+
 h1 {
   color: purple;
 }
 ```
 
 ```html
-<html>
-<body id="parent">
-  <h1>Here is a title!</h1>
-</body>
+<html lang="en">
+  <body id="parent">
+    <h1>Here is a title!</h1>
+  </body>
 </html>
 ```
 
-...역시 아래와 같이 렌더링됩니다.
+The `h1` will be purple because the `h1` selector targets the element specifically, while the green is inherited from the `#parent` declarations.
 
-{{EmbedLiveSample('직접_일치_요소와_상속된_스타일','600','100')}}
+## Examples
 
-`h1` 선택자는 특정한 요소와 직접 일치하지만 초록색 선택자는 그렇지 않고 부모로부터 상속되기 때문입니다.
+In the following CSS, we have three selectors targeting {{HTMLElement('input')}} elements to set a color. For a given input, the specificity weight of the color declaration having precedence is the matching selector with the greatest weight:
 
-## 명세
+```css
+#myElement input.myClass {
+  color: red;
+} /* 1-1-1 */
+input[type="password"]:required {
+  color: blue;
+} /* 0-2-1 */
+html body main input {
+  color: green;
+} /* 0-0-4 */
+```
+
+If the above selectors all target the same input, the input will be red, as the first declaration has the highest value in the _ID_ column.
+
+The last selector has four _TYPE_ components. While it has the highest integer value, no matter how many elements and pseudo-elements are included, even if there were 150, TYPE components never have precedence over _CLASS_ components. The column values are compared starting from left to right when column values are equal.
+
+Had we converted the id selector in the example code above to an attribute selector, the first two selectors would have the same specificity, as shown below:
+
+```css
+[id="myElement"] input.myClass {
+  color: red;
+} /* 0-2-1 */
+input[type="password"]:required {
+  color: blue;
+} /* 0-2-1 */
+```
+
+When multiple declarations have equal specificity, the last declaration found in the CSS is applied to the element. If both selectors match the same {{HTMLElement('input')}}, the color will be blue.
+
+## Additional notes
+
+A few things to remember about specificity:
+
+1. Specificity only applies when the same element is targeted by multiple declarations in the same cascade layer or origin. Specificity only matters for declarations of the same importance and same origin and [cascade layer](/en-US/docs/Web/CSS/@layer). If matching selectors are in different origins, the [cascade](/en-US/docs/Web/CSS/Cascade) determines which declaration takes precedence.
+
+2. When two selectors in the same cascade layer and origin have the same specificity, proximity is important; the last selector wins.
+
+3. As per CSS rules, [directly targeted elements](#directly_targeted_elements_vs._inherited_styles) will always take precedence over rules which an element inherits from its ancestor.
+
+4. [Proximity of elements](#tree_proximity_ignorance) in the document tree has no effect on the specificity.
+
+## Specifications
 
 {{Specifications}}
 
-## 같이 보기
+## See also
 
-- 명시도 계산기: CSS 규칙을 테스트하고 이해할 수 있는 대화형 웹사이트 - <https://specificity.keegan.st/>
-- CSS3 선택자 명시도 - <http://www.w3.org/TR/selectors/#specificity>
-- CSS 주요 개념
-
-  - [CSS 문법](/ko/docs/Web/CSS/Syntax)
-  - [@규칙](/ko/docs/Web/CSS/At-rule)
-  - [주석](/ko/docs/Web/CSS/Comments)
-  - [명시도](/ko/docs/Web/CSS/Specificity)
-  - [상속](/ko/docs/Web/CSS/inheritance)
-  - [박스 모델](/ko/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
-  - [레이아웃 모드](/ko/docs/Web/CSS/Layout_mode)
-  - [시각적 서식 모델](/ko/docs/Web/CSS/Visual_formatting_model)
-  - [마진 중첩](/ko/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)
-  - 값
-
-    - [초깃값](/ko/docs/Web/CSS/initial_value)
-    - [계산값](/ko/docs/Web/CSS/computed_value)
-    - [결정값](/ko/docs/Web/CSS/resolved_value)
-    - [지정값](/ko/docs/Web/CSS/specified_value)
-    - [사용값](/ko/docs/Web/CSS/used_value)
-    - [실제값](/ko/docs/Web/CSS/actual_value)
-
-  - [값 정의 구문](/ko/docs/Web/CSS/Value_definition_syntax)
-  - [단축 속성](/ko/docs/Web/CSS/Shorthand_properties)
-  - [대체 요소](/ko/docs/Web/CSS/Replaced_element)
+- ["Specificity" in "Cascade and inheritance"](/en-US/docs/Learn/CSS/Building_blocks/Cascade_and_inheritance#specificity_2)
+- [SpeciFISHity](https://specifishity.com)
+- [Specificity Calculator](https://specificity.keegan.st/): An interactive website to test and understand your own CSS rules
+- [_ID-CLASS-TYPE_ exercise](https://estelle.github.io/CSS/selectors/exercises/specificity.html) a specificity quiz
+- CSS key concepts:
+  - [CSS syntax](/en-US/docs/Web/CSS/Syntax)
+  - [At-rules](/en-US/docs/Web/CSS/At-rule)
+  - [Comments](/en-US/docs/Web/CSS/Comments)
+  - [Inheritance](/en-US/docs/Web/CSS/Inheritance)
+  - [Box model](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
+  - [Layout modes](/en-US/docs/Web/CSS/Layout_mode)
+  - [Visual formatting models](/en-US/docs/Web/CSS/Visual_formatting_model)
+  - [Margin collapsing](/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)
+  - Values
+    - [Initial values](/en-US/docs/Web/CSS/initial_value)
+    - [Computed values](/en-US/docs/Web/CSS/computed_value)
+    - [Used values](/en-US/docs/Web/CSS/used_value)
+    - [Actual values](/en-US/docs/Web/CSS/actual_value)
+  - [Value definition syntax](/en-US/docs/Web/CSS/Value_definition_syntax)
+  - [Shorthand properties](/en-US/docs/Web/CSS/Shorthand_properties)
+  - [Replaced elements](/en-US/docs/Web/CSS/Replaced_element)

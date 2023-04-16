@@ -1,21 +1,24 @@
 ---
 title: browsingData
 slug: Mozilla/Add-ons/WebExtensions/API/browsingData
+page-type: webextension-api
+browser-compat: webextensions.api.browsingData
 ---
 
 {{AddonSidebar}}
 
-WebExtensions 을 통해 사용자가 브라우저를 사용하는 동안 축적된 데이터를 삭제할 수 있는 기능을 제공합니다.
+Enables extensions to clear the data that is accumulated while the user is browsing.
 
-`browsingData` API는 브라우징 데이터를 다음과 같은 타입으로 구분합니다:
+In the `browsingData` API, browsing data is divided into types:
 
-- 브라우저 캐시
-- 쿠키
-- 다운로드
-- 히스토리
-- 플러그인 데이터
-- 저장된 폼 데이터
-- 저장된 비밀번호saved passwords
+- browser cache
+- cookies
+- downloads
+- history
+- local storage
+- plugin data
+- saved form data
+- saved passwords
 
 You can use the {{WebExtAPIRef("browsingData.remove()")}} function to remove any combination of these types. There are also dedicated functions to remove each particular type of data, such as {{WebExtAPIRef("browsingData.removePasswords()", "removePasswords()")}}, {{WebExtAPIRef("browsingData.removeHistory()", "removeHistory()")}} and so on.
 
@@ -58,17 +61,15 @@ To use this API you must have the "browsingData" [API permission](/en-US/docs/Mo
 - {{WebExtAPIRef("browsingData.settings()")}}
   - : Gets the current value of settings in the browser's "Clear History" feature.
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 {{WebExtExamples("h2")}}
 
 > **Note:** This API is based on Chromium's [`chrome.browsingData`](https://developer.chrome.com/docs/extensions/reference/browsingData/) API.
->
-> Microsoft Edge compatibility data is supplied by Microsoft Corporation and is included here under the Creative Commons Attribution 3.0 United States License.
 
-```
+<!--
 // Copyright 2015 The Chromium Authors. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -96,4 +97,4 @@ To use this API you must have the "browsingData" [API permission](/en-US/docs/Mo
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-```
+-->

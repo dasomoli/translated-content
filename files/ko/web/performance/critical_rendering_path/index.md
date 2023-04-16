@@ -1,59 +1,61 @@
 ---
-title: 중요 렌더링 경로
+title: Critical rendering path
 slug: Web/Performance/Critical_rendering_path
-original_slug: Web/Performance/중요_렌더링_경로
 ---
 
-중요 렌더링 경로 (_Critical Rendering Path_)는 브라우저가 HTML, CSS, Javascript를 화면에 픽셀로 변화하는 일련의 단계를 말하며 이를 최적화하는 것은 렌더링 성능을 향상시킵니다. 중요 렌더링 경로는 [Document Object Model](/ko/docs/Web/API/Document_Object_Model) (DOM), [CSS Object Model](/ko/docs/Web/API/CSS_Object_Model) (CSSOM), 렌더 트리 그리고 레이아웃을 포함합니다.
+{{QuickLinksWithSubPages("Web/Performance")}}
 
-도큐먼트 오브젝트 모델은 HTML을 분석함으로써 만들어집니다. HTML은 Javascript를 요청할 수 있으며, 이 경우 DOM 이 변경될 수 있습니다. HTML은 차례대로 CSS 오브젝트 모델을 만들기 위한 스타일에 대한 요청을 만들거나 포함합니다. 브라우저 엔진은 이 두가지를 결합하여 렌더 트리를 생성하며 레이아웃은 페이지의 모든 것에 대한 크기와 위치를 결정합니다. 일단 레이아웃이 결정되면 화면에 픽셀을 그립니다.
+The Critical Rendering Path is the sequence of steps the browser goes through to convert the HTML, CSS, and JavaScript into pixels on the screen. Optimizing the critical render path improves render performance.
+The critical rendering path includes the [Document Object Model](/en-US/docs/Web/API/Document_Object_Model) (DOM), [CSS Object Model](/en-US/docs/Web/API/CSS_Object_Model) (CSSOM), render tree and layout.
 
-중요 렌더링 경로 최적화는 첫번째 렌더링의 시간을 개선시킵니다. 중요 렌더링 경로를 이해하고, 최적화 하는 것은 뛰어난 사용자 상호작용을 보장하며 버벅거림을 피할 수 있도록 하고, 1초당 60 프레임에 리플로우와 리페인트가 발생할 수 있도록 하는데 중요합니다.
+The document object model is created as the HTML is parsed. The HTML may request JavaScript, which may, in turn, alter the DOM. The HTML includes or makes requests for styles, which in turn builds the CSS object model. The browser engine combines the two to create the Render Tree. Layout determines the size and location of everything on the page. Once layout is determined, pixels are painted to the screen.
 
-## CRP 이해하기
+Optimizing the critical rendering path improves the time to first render. Understanding and optimizing the critical rendering path is important to ensure reflows and repaints can happen at 60 frames per second, to ensure performant user interactions, and to avoid [jank](/en-US/docs/Glossary/Jank).
 
-웹 성능은 서버의 요청과 응답, 로딩, 스크립팅, 렌더링, 레이아웃 그리고 화면에 픽셀 그리기를 포함합니다.
+## Understanding CRP
 
-웹 페이지 또는 어플리케이션에 대한 요청은 HTML 요청으로 시작됩니다. 서버는 응답 헤더 또는 데이터로 HTML을 반환합니다. 그리고 나서 브라우저는 HTML을 분석하고 수신된 바이츠를 DOM 트리로 변환하기 시작합니다. 브라우저는 스타일시트, 스크립트 또는 포함된 이미지 참조인 외부 자원에 대한 링크를 찾을때마다 요청을 시작합니다. 불러온 에셋을 다룰 때까지 나머지 HTML을 분석하는 작업하는 일부 요청은 중단되며 차단됩니다. 브라우저는 CSS 오브젝트 모델을 구축하는 작업이 끝날때까지 요청을 만들고 DOM을 생성하는 HTML을 계속해서 분석합니다. DOM과 CSSOM이 완료되면 브라우저는 렌더 트리를 생성하고 보여지는 컨텐츠를 위해 스타일을 계산합니다. 렌더트리가 완료된 후 모든 렌더 트리 요소들에 대한 위치와 크기가 정의된 레이아웃이 만들어집니다. 일단 완료되면 페이지는 렌더링되거나 또는 화면에 '그려집니다(_painted_)'.
+Web performance includes the server requests and responses, loading, scripting, rendering, layout, and the painting of the pixels to the screen.
+
+A request for a web page or app starts with an HTML request. The server returns the HTML - response headers and data. The browser then begins parsing the HTML, converting the received bytes to the DOM tree. The browser initiates requests every time it finds links to external resources, be it stylesheets, scripts, or embedded image references. Some requests are blocking, which means the parsing of the rest of the HTML is halted until the imported asset is handled. The browser continues to parse the HTML making requests and building the DOM, until it gets to the end, at which point it constructs the CSS object model. With the DOM and CSSOM complete, the browser builds the render tree, computing the styles for all the visible content. After the render tree is complete, layout occurs, defining the location and size of all the render tree elements. Once complete, the page is rendered, or 'painted' on the screen.
 
 ### Document Object Model
 
-DOM 구성은 점진적으로 증가합니다. HTML 응답은 토큰으로, 토큰은 노드로, 노드는 DOM 트리로 변환됩니다.1개의 DOM 노드는 시작태그 토큰으로 시작해서 끝태그 토큰으로 끝납니다. 노드들은 HTML 요소에 대한 모두 연관성 있는 정보를 포함하고 있습니다. 그 정보는 토큰을 통해 설명됩니다. 노드들은 토큰의 위계서열을 기반으로 DOM 트리안에 연결됩니다. 만약 또 다른 시작태그와 끝태그의 묶음이 한 세트의 시작태그와 끝태그 사이에 있다면, 여러분은 DOM 트리의 위계서열을 정의하는 방법으로 노드 안에 노드를 가지게 됩니다.
+DOM construction is incremental. The HTML response turns into tokens which turns into nodes which turn into the DOM Tree. A single DOM node starts with a startTag token and ends with an endTag token. Nodes contain all relevant information about the HTML element. The information is described using tokens. Nodes are connected into a DOM tree based on token hierarchy. If another set of startTag and endTag tokens come between a set of startTag and endTags, you have a node inside a node, which is how we define the hierarchy of the DOM tree.
 
-많은 수의 노드는 중요 렌더링 경로에서 다음의 이벤트를 더 오래 발생시킬 것입니다. 측정하세요! 몇 개의 추가 노드는 차이를 만들지 않지만 전염은 버벅거림을 유발할 수 있습니다.
+The greater the number of nodes, the longer the following events in the critical rendering path will take. Measure! A few extra nodes won't make a big difference, but keep in mind that adding many extra nodes will impact performance.
 
 ### CSS Object Model
 
-DOM은 페이지의 모든 컨텐츠를 포함하고, CSSOM은 DOM을 스타일링 하기 위한 페이지의 모든 스타일 정보를 포함합니다. CSSOM은 DOM과 유사하지만 다릅니다. DOM의 구조는 점진적으로 증가하는 반면에 CSSOM은 그렇지 않습니다. CSS는 렌더링을 막습니다: 브라우저는 모든 CSS를 처리하고 수신할때까지 페이지 렌더링을 막습니다. CSS는 규칙을 덮어쓸수 있기 때문에 렌더링을 막습니다. 그러므로 CSSOM이 완료될때까지 콘텐츠를 렌더링 할 수 없습니다.
+The DOM contains all the content of the page. The CSSOM contains all the information on how to style the DOM. CSSOM is similar to the DOM, but different. While the DOM construction is incremental, CSSOM is not. CSS is render blocking: the browser blocks page rendering until it receives and processes all the CSS. CSS is render blocking because rules can be overwritten, so the content can't be rendered until the CSSOM is complete.
 
-CSS는 유효한 토크들은 인식하기 위해 스스로 규칙 세트를 가지고 있습니다. CSS의 C가 'Cascade(종속 또는 폭포)'라는 의미를 기억해두세요. CSS 규칙은 아래로 종속됩니다. 분석기는 토큰을 노드로 변환할때, 하위 노드가 스타일을 상속합니다. 연속적인 규칙들이 이전의 규칙들에 덮어쓰여질 수 있기 때문에, 증감 처리 기술은 HTML 처럼 CSS에 적용되지는 않습니다. CSS 개체 모델은 CSS를 분석할 때 빌드되지만 나중에 분석되 덮어쓸 스타일들은 화면에 렌더링 할 수 없기 때문에 완전히 분석될 때까지 렌더 트리를 생성하는데 사용할 수 없습니다.
+CSS has its own set of rules for identifying valid tokens. Remember the C in CSS stands for 'Cascade'. CSS rules cascade down. As the parser converts tokens to nodes, descendant nodes will inherit some of the styles of the parent. The incremental processing features don't apply to CSS like they do with HTML, because subsequent rules may override previous ones. The CSS object model gets built as the CSS is parsed, but can't be used to build the render tree until it is completely parsed because styles that are going to be overwritten with later parsing should not be rendered to the screen.
 
-선택자 성능 측면에서, 덜 구체적인 선택자는 더 구체적인 선택자보다 더 빠릅니다. 예를 들어, 브라우저가 `.foo` 찾을때, `.foo {}` 는 `.bar .foo {}` 보다 빠릅니다. 왜냐하면 두번째 시나리오에서, `.foo` 가 부모 객체인 `.bar` 를 가지고 있는지 확인하기 위해 DOM을 거슬러 올라가기 때문입니다. 더 구체적인 태그는 브라우저에게 더 많은 작업을 요구하지만 이러한 패널티는 최적화 할 가치가 없습니다.
+In terms of selector performance, less specific selectors are faster than more specific ones. For example, `.foo {}` is faster than `.bar .foo {}` because when the browser finds `.foo`, in the second scenario, it has to walk up the DOM to check if `.foo` has an ancestor `.bar`. The more specific tag requires more work from the browser, but this penalty is not likely worth optimizing around.
 
-만약 CSS 분석 시간을 측정한다면, 브라우저들이 정말 빠르다는 것에 놀랄 것입니다. 규칙이 구체적일수록 DOM 트리 안에서 더 많은 노드들은 지나야 하기 때문에 더 높은 비용이 듭니다. 그러나 추가적인 비용은 일반적으로 최소입니다. 첫번째는 측정입니다. 필요할때 최적화하세요. 특정 짓는 것은 쉬운 일이 아닙니다. CSS 측면에서, 선택자 성능 최적화와 개선은 오직 microsecond 밖에 되지 않될 것입니다. 축소화와 미디어 쿼리를 사용함으로써 지연된 CSS를 논-블로킹 요청으로 분리하는 것과 같은 [CSS 최적화](/ko/docs/Learn/Performance/CSS_performance)를 위한 다른 방법이 있습니다.
+If you measure the time it takes to parse CSS, you'll be amazed at how fast browsers truly are. The more specific rule is more expensive because it has to traverse more nodes in the DOM tree - but that extra expense is generally minimal. Measure first. Optimize as needed. Specificity is likely not your lowest hanging fruit. When it comes to CSS, selector performance optimization improvements will only be in microseconds. There are other [ways to optimize CSS](/en-US/docs/Learn/Performance/CSS), such as minification, and separating deferred CSS into non-blocking requests by using media queries.
 
 ### Render Tree
 
-렌터 트리는 콘텐츠와 스타일 둘다 캡쳐합니다. DOM과 CSSOM 트리는 렌더 트리에 결합됩니다. 렌더 트리를 구성하기 위해 브라우저는 DOM 트리의 root에서 시작해 모든 노드는 확인하면서 어떤 CSS 규칙들을 첨부할지 결정합니다.
+The render tree captures both the content and the styles: the DOM and CSSOM trees are combined into the render tree. To construct the render tree, the browser checks every node, starting from root of the DOM tree, and determines which CSS rules are attached.
 
-렌더 트리는 오직 보여지는 콘텐츠만 캡쳐합니다. (일반적으로) 헤드 섹션은 보여지는 정보를 포함하고 있지 않으므로 렌더트리 안에 포함되지 않습니다. 만약 요소에 `display: none` 이 적용되어 있다면, 해당 요소 또는 하위 요소는 포함되지 않습니다.
+The render tree only captures visible content. The head section (generally) doesn't contain any visible information, and is therefore not included in the render tree. If there's a `display: none;` set on an element, neither it, nor any of its descendants, are in the render tree.
 
 ### Layout
 
-일단 렌더 트리가 생성되고 나면, 레이아웃은 가능해지며 화면의 크기에 의존합니다. 레이아웃 단계는 요소들이 페이지에서 배치되는 위치와 방법, 각 요소의 너비와 높이 그리고 서로 관련된 위치를 결정합니다.
+Once the render tree is built, layout becomes possible. Layout is dependent on the size of screen. The layout step determines where and how the elements are positioned on the page, determining the width and height of each element, and where they are in relation to each other.
 
-요소의 너비는 무엇일까요? 정의에 따르면, 블럭 수준의 요소들은 그 부모 너비의 기본 너비값의 100% 입니다. 50%의 너비를 갖는 요소는 부모 요소의 절반일 것입니다. 비록 그렇게 정의되어 있지 않더라도, `body` 는 뷰포트 너비의 100%를 의미하는 너비 입니다. 디바이스의 너비는 레이아웃에 영향을 미칩니다.
+What is the width of an element? Block level elements, by definition, have a default width of 100% of the width of their parent. An element with a width of 50%, will be half of the width of its parent. Unless otherwise defined, the body has a width of 100%, meaning it will be 100% of the width of the viewport. This width of the device impacts layout.
 
-뷰포트 메타 태그는 레이아웃에 영향을 미치는 뷰포트 레이아웃의 너비로 정의합니다. 이 태그 없다면, 브라우저는 뷰포트 기본값을 사용합니다. 브라우저의 full screen 기본값은 일반적으로 960px 입니다. 기본적으로 브라우저의 full screen에서, 스마트폰의 브라우저와 같은 너비는 `<meta name="Viewport" content="width=device-witdh">` 로 세팅함으로써 기본 뷰포트 너비 대신에 디바이스의 너비를 사용합니다. 디바이스 너비는 사용자가 디바이스를 가로(landscape) 또는 세로(portrait) 모드 사이로 돌릴때마다 바뀝니다. 레이아웃은 디바이스가 회전하거나 브라우저의 사이즈가 조정될 때마다 발생합니다.
+The viewport meta tag defines the width of the layout viewport, impacting the layout. Without it, the browser uses the default viewport width, which on by-default full screen browsers is generally 960px. On by-default full screen browsers, like your phone's browser, by setting `<meta name="viewport" content="width=device-width">`, the width will be the width of the device instead of the default viewport width. The device-width changes when a user rotates their phone between landscape and portrait mode. Layout happens every time a device is rotated or browser is otherwise resized.
 
-레이아웃 성능은 DOM의 영향을 받습니다. 노드의 수가 많을수록 레이아웃은 더 길어지며 스크롤링 또는 다른 애니메이션들이 필요하다면 레이아웃에 쟁크(jank)를 일으키는 병목현상이 발생할 수 있습니다. 로딩 또는 방향 전환에 20ms 정도 밀릴 수 있지만 애니메이션 또는 스크롤에 쟁크(jank) 유발할 수 있습니다. 노드에 박스 모델 업데이트, 콘텐츠 대체 그리고 노드 추가와 같은 수정은 언제든지 렌더 트리를 수정할 수 있으며 레이아웃을 형성합니다.
+Layout performance is impacted by the DOM — the greater the number of nodes, the longer layout takes. Layout can become a bottleneck, leading to jank if required during scrolling or other animations. While a 20ms delay on load or orientation change may be fine, it will lead to jank on animation or scroll. Any time the render tree is modified, such as by added nodes, altered content, or updated box model styles on a node, layout occurs.
 
-레이아웃 이벤트의 반복과 형성시간을 줄이기 위해서 일괄 업데이트 해야하고, 박스 모델 속성을 애니메이션화 하지 말아야 합니다.
+To reduce the frequency and duration of layout events, batch updates and avoid animating box model properties.
 
 ### Paint
 
-마지막 단계는 화면에 픽셀을 그리는 것입니다. 일단 렌더 트리가 생성되고 레이아웃이 나타나기 시작하면, 화면에 픽셀을 그릴수 있습니다. 로드시, 전체 화면을 그립니다. 그 후에는 브라우저가 필요한 최소 영역만을 다시 그리도록 최적화되어 있기 때문에 영향을 받는 영역만을 화면에 다시 그립니다. 그리는 시간은 렌더 트리에 적용되는 업데이트의 종류가 무엇있냐에 따라 달라집니다. 페인팅은 매우 빠르게 진행되는 과정이기 때문에 성능 향상에 집중해야 하는 가장 큰 영향있는 부분이 아닐 수 있지만, 애니메이션 프레임 소요시간을 측정할때, 레이아웃과 리페인트 시간을 모두 고려하는 것이 중요합니다. 각 노드에 적용된 스타일은 페인트 시간을 증가시키지만 페인트 시간을 0.001ms 증가시키는 스타일을 제거하는 것은 여러분의 최적화 비용이 매우 커지는 것을 막지 못할 수 있습니다. 첫째는 측정하는 것을 기억하고, 최적화 우선순위를 정해야할지 말지를 결정해야 합니다.
+The last step is painting the pixels to the screen. Once the render tree is created and layout occurs, the pixels can be painted to the screen. On load, the entire screen is painted. After that, only impacted areas of the screen will be repainted, as browsers are optimized to repaint the minimum area required. Paint time depends on what kind of updates are being applied to the render tree. While painting is a very fast process, and therefore likely not the most impactful place to focus on in improving performance, it is important to remember to allow for both layout and re-paint times when measuring how long an animation frame may take. The styles applied to each node increase the paint time, but removing style that increases the paint by 0.001ms may not give you the biggest bang for your optimization buck. Remember to measure first. Then you can determine whether it should be an optimization priority.
 
 ## Optimizing for CRP
 
-자원 로드 순서를 관리하고, 파일 사이즈를 줄이며 어떤 자원을 먼저 로드할지 정함으로써 페이지 로드 속도를 개선하세요. 성능 팁으로는 1) 자원 다운로드를 연기함으로써 중요 자원들의 수를 최소화하기 , 2) 각 요청에 대한 파일 사이즈에 따라 필수적인 요청 횟수 최적하하기, 3) 다운받을 중요 에셋의 우선순위를 정함으로써 중요 자원 불러오는 순서 최적화하고, 중요 경로 길이 최소화하기
+Improve page load speed by prioritizing which resources get loaded, controlling the order in which they are loaded, and reducing the file sizes of those resources. Performance tips include 1) minimizing the number of critical resources by deferring non-critical ones' download, marking them as async, or eliminating them altogether, 2) optimizing the number of requests required along with the file size of each request, and 3) optimizing the order in which critical resources are loaded by prioritizing the downloading of critical assets, thereby shortening the critical path length.

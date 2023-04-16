@@ -1,52 +1,58 @@
 ---
-title: URLSearchParams.append()
+title: "URLSearchParams: append() method"
+short-title: append()
 slug: Web/API/URLSearchParams/append
+page-type: web-api-instance-method
+browser-compat: api.URLSearchParams.append
 ---
+
 {{ApiRef("URL API")}}
 
-{{domxref("URLSearchParams")}} 인터페이스의 **`append()`** 메서드는 지정한 키/값 쌍을 새로운 검색 매개변수로서 추가합니다.
+The **`append()`** method of the {{domxref("URLSearchParams")}}
+interface appends a specified key/value pair as a new search parameter.
 
-아래 예제에서도 볼 수 있듯, 같은 키를 여러 번 추가하면 매개변수 문자열에 각각의 키와 함께 여러 번 나타나게 됩니다.
+As shown in the example below, if the same key is appended multiple times it will
+appear in the parameter string multiple times for each value.
 
 {{availableinworkers}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 append(name, value)
 ```
 
-### 매개변수
+### Parameters
 
 - `name`
-  - : 추가할 매개변수의 이름입니다.
+  - : The name of the parameter to append.
 - `value`
-  - : 추가할 매개변수의 값입니다.
+  - : The value of the parameter to append.
 
-### 반환 값
+### Return value
 
-없음 ({{jsxref("undefined")}}).
+None ({{jsxref("undefined")}}).
 
-## 예제
+## Examples
 
 ```js
-let url = new URL('https://example.com?foo=1&bar=2');
+let url = new URL("https://example.com?foo=1&bar=2");
 let params = new URLSearchParams(url.search);
 
-// 두 번째 foo 매개변수 추가
-params.append('foo', 4);
-// 이제 쿼리 문자열이 'foo=1&bar=2&foo=4'
+//Add a second foo parameter.
+params.append("foo", 4);
+//Query string is now: 'foo=1&bar=2&foo=4'
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- URL 관련 다른 인터페이스: {{domxref("URL")}}, {{domxref("HTMLHyperlinkElementUtils")}}.
+- {{domxref("URL")}}
 - [Google Developers: Easy URL manipulation with URLSearchParams](https://developer.chrome.com/blog/urlsearchparams/)

@@ -1,67 +1,94 @@
 ---
 title: Reflect.has()
 slug: Web/JavaScript/Reference/Global_Objects/Reflect/has
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Reflect.has
 ---
 
 {{JSRef}}
 
-**`Reflect.has()`** 정적 메서드는 [`in` 연산자](/ko/docs/Web/JavaScript/Reference/Operators/in)의 함수판입니다.
+The **`Reflect.has()`** static method is like the [`in`](/en-US/docs/Web/JavaScript/Reference/Operators/in) operator, but
+as a function.
 
 {{EmbedInteractiveExample("pages/js/reflect-has.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 Reflect.has(target, propertyKey)
 ```
 
-### 매개변수
+### Parameters
 
 - `target`
-  - : 속성을 탐색할 객체.
+  - : The target object in which to look for the property.
 - `propertyKey`
-  - : 탐색할 속성의 이름.
+  - : The name of the property to check.
 
-### 반환 값
+### Return value
 
-객체가 속성을 가지고 있는지 나타내는 {{jsxref("Boolean")}}.
+A {{jsxref("Boolean")}} indicating whether or not the `target` has the property.
 
-### 예외
+### Exceptions
 
-`target`이 {{jsxref("Object")}}가 아니면 {{jsxref("TypeError")}}.
+- {{jsxref("TypeError")}}
+  - : Thrown if `target` is not an object.
 
-## 설명
+## Description
 
-`Reflect.has()` 메서드는 객체에 속성이 존재하는지 판별할 수 있습니다. [`in` 연산자](/ko/docs/Web/JavaScript/Reference/Operators/in)처럼 동작합니다.
-
-## 예제
-
-### `Reflect.has()` 사용하기
+`Reflect.has()` provides the reflective semantic of checking if a property is in an object. That is, `Reflect.has(target, propertyKey)` is semantically equivalent to:
 
 ```js
-Reflect.has({x: 0}, 'x'); // true
-Reflect.has({x: 0}, 'y'); // false
-
-// 프로토타입 체인에 존재하는 속성도 true 반환
-Reflect.has({x: 0}, 'toString');
-
-// .has() 처리기 메서드를 가진 Proxy
-obj = new Proxy({}, {
-  has(t, k) { return k.startsWith('door'); }
-});
-Reflect.has(obj, 'doorbell'); // true
-Reflect.has(obj, 'dormitory'); // false
+propertyKey in target;
 ```
 
-## 명세
+`Reflect.has()` invokes the `[[HasProperty]]` [object internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods) of `target`.
+
+## Examples
+
+### Using Reflect.has()
+
+```js
+Reflect.has({ x: 0 }, "x"); // true
+Reflect.has({ x: 0 }, "y"); // false
+
+// returns true for properties in the prototype chain
+Reflect.has({ x: 0 }, "toString");
+
+// Proxy with .has() handler method
+obj = new Proxy(
+  {},
+  {
+    has(t, k) {
+      return k.startsWith("door");
+    },
+  },
+);
+Reflect.has(obj, "doorbell"); // true
+Reflect.has(obj, "dormitory"); // false
+```
+
+`Reflect.has` returns `true` for any inherited properties, like the [`in`](/en-US/docs/Web/JavaScript/Reference/Operators/in) operator:
+
+```js
+const a = { foo: 123 };
+const b = { __proto__: a };
+const c = { __proto__: b };
+// The prototype chain is: c -> b -> a
+Reflect.has(c, "foo"); // true
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `Reflect.has` in `core-js`](https://github.com/zloirock/core-js#ecmascript-reflect)
 - {{jsxref("Reflect")}}
-- [`in` 연산자](/ko/docs/Web/JavaScript/Reference/Operators/in)
+- [`in` operator](/en-US/docs/Web/JavaScript/Reference/Operators/in)
+- [`Proxy`'s `has` handler](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/has)

@@ -1,30 +1,40 @@
 ---
-title: Navigator.mediaDevices
+title: "Navigator: mediaDevices property"
+short-title: mediaDevices
 slug: Web/API/Navigator/mediaDevices
+page-type: web-api-instance-property
+browser-compat: api.Navigator.mediaDevices
 ---
-{{APIRef("Media Capture and Streams")}}
 
-**`Navigator.mediaDevices`** 읽기 전용 속성은 카메라, 마이크, 화면 공유와 같이 현재 연결된 미디어 입력 장치에 접근할 수 있는 {{domxref("MediaDevices")}} 객체를 반환합니다.
+{{securecontext_header}}{{APIRef("Media Capture and Streams")}}
 
-## 구문
+The **`Navigator.mediaDevices`** read-only property returns a
+{{domxref("MediaDevices")}} object, which provides access to connected media input
+devices like cameras and microphones, as well as screen sharing.
 
-```js
-var mediaDevices = navigator.mediaDevices;
+## Syntax
+
+```js-nolint
+navigator.mediaDevices
 ```
 
-### 반환 값
+### Return value
 
-{{domxref("MediaDevices")}} 싱글톤 객체.
+The {{domxref("MediaDevices")}} singleton object. Usually, you just use this object's
+members directly, such as by calling
+{{domxref("MediaDevices.getUserMedia", "navigator.mediaDevices.getUserMedia()")}}.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
-- [Media Capture and Streams API](/ko/docs/Web/API/Media_Streams_API): 전체 미디어 스트림 API 문서의 시작 지점.
-- [WebRTC API](/ko/docs/Web/API/WebRTC_API): 밀접한 관련이 있는 WebRTC API 문서.
+- [Media Capture and Streams API](/en-US/docs/Web/API/Media_Capture_and_Streams_API):
+  The entry point to the documentation about the entire Media Capture and Streams API.
+- [WebRTC API](/en-US/docs/Web/API/WebRTC_API): Documentation about the
+  WebRTC API, which is closely related.

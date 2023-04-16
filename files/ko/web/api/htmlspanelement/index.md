@@ -1,30 +1,32 @@
 ---
 title: HTMLSpanElement
 slug: Web/API/HTMLSpanElement
+page-type: web-api-interface
+browser-compat: api.HTMLSpanElement
 ---
 
 {{APIRef("HTML DOM")}}
 
-**`HTMLSpanElement`** 인터페이스는 {{HTMLElement("span")}} 엘리먼트를 나타내며 {{ domxref("HTMLElement") }} 인터페이스로부터 파생되었으며 부가적인 프로퍼티나 메소드는 구현되지 않았습니다.
+The **`HTMLSpanElement`** interface represents a {{HTMLElement("span")}} element and derives from the {{DOMxRef("HTMLElement")}} interface, but without implementing any additional properties or methods.
 
-{{InheritanceDiagram(600, 120)}}
+{{InheritanceDiagram}}
 
-## 프로퍼티
+## Instance properties
 
-_특정 프로퍼티가 없으며, 부모인 {{domxref("HTMLElement")}} 로부터 프로퍼티를 상속받습니다._
+_This interface has no properties, but inherits properties from: {{DOMxRef("HTMLElement")}}._
 
-## 메소드
+## Instance methods
 
-_특정 메소드가 없으며, 부모인 {{domxref("HTMLElement")}} 로부터 메소드를 상속받습니다._
+_This interface has no methods, but inherits methods from: {{DOMxRef("HTMLElement")}}._
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 보기
+## See also
 
-- 이 인터페이스를 구현한 HTML 엘리먼트: {{HTMLElement("span")}}.
+- The HTML element implementing this interface: {{HTMLElement("span")}}.

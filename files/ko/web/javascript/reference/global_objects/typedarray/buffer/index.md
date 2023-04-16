@@ -1,21 +1,25 @@
 ---
 title: TypedArray.prototype.buffer
 slug: Web/JavaScript/Reference/Global_Objects/TypedArray/buffer
+page-type: javascript-instance-accessor-property
+browser-compat: javascript.builtins.TypedArray.buffer
 ---
 
 {{JSRef}}
 
-**`buffer`** 접근자 속성은 생성 시 *TypedArray*에서 참조하는 {{jsxref("ArrayBuffer")}}를 나타냅니다.
+The **`buffer`** accessor property of {{jsxref("TypedArray")}} instances returns the {{jsxref("ArrayBuffer")}} or {{jsxref("SharedArrayBuffer")}} referenced by this typed array at construction time.
 
 {{EmbedInteractiveExample("pages/js/typedarray-buffer.html","shorter")}}
 
-## 설명
+## Description
 
-`buffer` 속성은 set 접근자 함수가 `undefined`인 속성으로, 이 속성은 읽을수만 있습니다. 값은 *TypedArray*가 생성될 때 설정되어 변경할 수 없습니다. *TypedArray*는 [TypedArray 객체](/ko/docs/Web/JavaScript/Reference/Global_Objects/TypedArray#typedarray_객체) 중 하나입니다.
+The `buffer` property is an accessor property whose set accessor function is `undefined`, meaning that you can only read this property. The value is established when the _TypedArray_ is constructed and cannot be changed. _TypedArray_ is one of the [TypedArray objects](/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray#typedarray_objects).
 
-## 예제
+Because a typed array is a _view_ of a buffer, the underlying buffer may be longer than the typed array itself.
 
-### buffer 속성 사용하기
+## Examples
+
+### Using the buffer property
 
 ```js
 const buffer = new ArrayBuffer(8);
@@ -23,7 +27,7 @@ const uint16 = new Uint16Array(buffer);
 uint16.buffer; // ArrayBuffer { byteLength: 8 }
 ```
 
-### 잘린 배열 보기에서 기반 버퍼에 액세스하기
+### Accessing the underlying buffer from a sliced array view
 
 ```js
 const buffer = new ArrayBuffer(1024);
@@ -33,15 +37,15 @@ console.log(arr.buffer.byteLength); // 1024
 console.log(arr.buffer === buffer); // true
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [JavaScript 형식화 배열](/ko/docs/Web/JavaScript/Typed_arrays)
+- [JavaScript typed arrays](/en-US/docs/Web/JavaScript/Typed_arrays)
 - {{jsxref("TypedArray")}}

@@ -1,71 +1,79 @@
 ---
-title: 증가 연산자(++)
+title: Increment (++)
 slug: Web/JavaScript/Reference/Operators/Increment
+page-type: javascript-operator
+browser-compat: javascript.operators.increment
 ---
 
 {{jsSidebar("Operators")}}
 
-**증가(`++`) 연산자** 는 피연산자를 증가(1을 더함)시키고 연산자의 위치에 따라 증가하기 전이나 후의 값을 반환합니다.
+The **increment (`++`)** operator increments (adds one to) its operand and returns the value before or after the increment, depending on where the operator is placed.
 
 {{EmbedInteractiveExample("pages/js/expressions-increment.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 x++
 ++x
 ```
 
-## 설명
+## Description
 
-만약 피연산자 뒤에 연산자를 붙여서 사용한다면 (예를 들어 `x++`) 증가 연산자는 수를 증가시키고 증가하기 전 값을 반환합니다.
+The `++` operator is overloaded for two types of operands: number and [BigInt](/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt). It first [coerces the operand to a numeric value](/en-US/docs/Web/JavaScript/Data_structures#numeric_coercion) and tests the type of it. It performs BigInt increment if the operand becomes a BigInt; otherwise, it performs number increment.
 
-만약 피연산자 앞에 연산자를 붙여서 사용한다면(예를 들어 `++x`) 증가 연산자는 수를 증가시키고 증가 후 값을 반환합니다.
+If used postfix, with operator after operand (for example, `x++`), the increment operator increments and returns the value before incrementing.
 
-증가 연산자는 참조인 피연산자(변수 및 객체 속성, 다시말해 유효한 [할당 대상](/ko/docs/Web/JavaScript/Reference/Operators/Assignment)에만 적용할 수 있습니다. `++x` 자체는 참조가 아닌 값으로 평가되기 때문에 여러 증가 연산자를 연속적으로 사용할 수 없습니다.
+If used prefix, with operator before operand (for example, `++x`), the increment operator increments and returns the value after incrementing.
+
+The increment operator can only be applied on operands that are references (variables and object properties; i.e. valid [assignment targets](/en-US/docs/Web/JavaScript/Reference/Operators/Assignment)). `++x` itself evaluates to a value, not a reference, so you cannot chain multiple increment operators together.
 
 ```js example-bad
 ++(++x); // SyntaxError: Invalid left-hand side expression in prefix operation
 ```
 
-## 예제
+## Examples
 
-### 후위 증가
+### Postfix increment
 
 ```js
 let x = 3;
 const y = x++;
+// x is 4; y is 3
 
-// x = 4
-// y = 3
+let x2 = 3n;
+const y2 = x2++;
+// x2 is 4n; y2 is 3n
 ```
 
-### 전위 증가
+### Prefix increment
 
 ```js
 let x = 3;
 const y = ++x;
+// x is 4; y is 4
 
-// x = 4
-// y = 4
+let x2 = 3n;
+const y2 = ++x2;
+// x2 is 4n; y2 is 4n
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [더하기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Addition)
-- [빼기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Subtraction)
-- [나누기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Division)
-- [곱하기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Multiplication)
-- [나머지 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Remainder)
-- [거듭제곱 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Exponentiation)
-- [감소 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Decrement)
-- [단항 부정 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Unary_negation)
-- [단항 더하기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Unary_plus)
+- [Addition operator](/en-US/docs/Web/JavaScript/Reference/Operators/Addition)
+- [Subtraction operator](/en-US/docs/Web/JavaScript/Reference/Operators/Subtraction)
+- [Division operator](/en-US/docs/Web/JavaScript/Reference/Operators/Division)
+- [Multiplication operator](/en-US/docs/Web/JavaScript/Reference/Operators/Multiplication)
+- [Remainder operator](/en-US/docs/Web/JavaScript/Reference/Operators/Remainder)
+- [Exponentiation operator](/en-US/docs/Web/JavaScript/Reference/Operators/Exponentiation)
+- [Decrement operator](/en-US/docs/Web/JavaScript/Reference/Operators/Decrement)
+- [Unary negation operator](/en-US/docs/Web/JavaScript/Reference/Operators/Unary_negation)
+- [Unary plus operator](/en-US/docs/Web/JavaScript/Reference/Operators/Unary_plus)

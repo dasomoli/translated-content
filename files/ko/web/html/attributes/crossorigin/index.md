@@ -1,51 +1,93 @@
 ---
-title: 'HTML attribute: crossorigin'
+title: "HTML attribute: crossorigin"
 slug: Web/HTML/Attributes/crossorigin
+page-type: html-attribute
+browser-compat:
+  - html.elements.img.crossorigin
+  - html.elements.link.crossorigin
+  - html.elements.script.crossorigin
+  - html.elements.video.crossorigin
+spec-urls: >-
+  https://html.spec.whatwg.org/multipage/urls-and-fetching.html#cors-settings-attributes
 ---
 
-{{ HTMLElement("audio") }}, {{ HTMLElement("img") }}, {{ HTMLElement("link") }}, {{ HTMLElement("script") }}, {{ HTMLElement("video") }}에 있는 crossOrigin 속성은 element가 CORS 요청을 처리하는 방식을 명시하여 element가 fetch한 데이터를 [CORS](/ko/docs/Web/HTTP/CORS) 가능하게 합니다. 특정 element에서는 CORS 세팅 속성이 될 수도 있습니다.
+{{HTMLSidebar}}
 
-Media element의 `crossorigin` 속성은 CORS 세팅입니다.
+The **`crossorigin`** attribute, valid on the {{HTMLElement("audio")}}, {{HTMLElement("img")}}, {{HTMLElement("link")}}, {{HTMLElement("script")}}, and {{HTMLElement("video")}} elements, provides support for [CORS](/en-US/docs/Web/HTTP/CORS), defining how the element handles cross-origin requests, thereby enabling the configuration of the CORS requests for the element's fetched data. Depending on the element, the attribute can be a CORS settings attribute.
 
-세팅 속성은 열거형이며 아래의 값을 가질 수 있습니다:
+The `crossorigin` content attribute on media elements is a CORS settings attribute.
 
-| Keyword           | Description                                                                          |
-| ----------------- | ------------------------------------------------------------------------------------ |
-| `anonymous`       | element의 CORS 요청의 credentials flag가 'same-origin'으로 지정됩니다.               |
-| `use-credentials` | element의 CORS 요청의 crendentials flag가 'include'로 지정됩니다.                    |
-| `""`              | `crossorigin` 또는 `crossorigin=""`처럼 빈 값을 할당하는건 `anonymous`와 동일합니다. |
+These attributes are [enumerated](/en-US/docs/Glossary/Enumerated), and have the following possible values:
 
-기본적으로 (attribute를 명시하지 않으면) CORS 요청은 할 수 없습니다. "anonymous" 키워드는 쿠키를 통한 **user credentials** 교환이 필요 없음을 의미합니다. Same origin이 아닌 경우 client-side SSL certificates/HTTP 인증은 [Terminology section of the CORS specification](http://www.w3.org/TR/cors/#user-credentials)에서 기술하고 있습니다.
+- `anonymous`
+  - : Request uses CORS headers and credentials flag is set to `'same-origin'`. There is no exchange of **user credentials** via cookies, client-side SSL certificates or HTTP authentication, unless destination is the same origin.
+- `use-credentials`
+  - : Request uses CORS headers, credentials flag is set to `'include'` and **user credentials** are always included.
+- `""`
+  - : Setting the attribute name to an empty value, like `crossorigin` or `crossorigin=""`, is the same as `anonymous`.
 
-빈 문자열이나 잘못된 값일 경우 `anonymous` 와 동일하게 동작합니다.
+An invalid keyword and an empty string will be handled as the `anonymous` keyword.
 
-### 예시: script element의 crossorigin
+By default (that is, when the attribute is not specified), CORS is not used at all. The user agent will not ask for permission for full access to the resource and in the case of a cross-origin request, certain limitations will be applied based on the type of element concerned:
 
-아래의 {{HTMLElement("script")}} element를 통해 브라우저로 하여금 `https://example.com/example-framework.js` 스크립트를 user-credential 없이 요청하도록 명시할 수 있습니다.
+<table class="no-markdown">
+  <tbody>
+    <tr>
+      <td class="header">Element</td>
+      <td class="header">Restrictions</td>
+    </tr>
+    <tr>
+      <td><code>img</code>, <code>audio</code>, <code>video</code></td>
+      <td>
+        When resource is placed in {{HTMLElement("canvas")}}, element is marked as <a href="/en-US/docs/Web/HTML/CORS_enabled_image#security_and_tainted_canvases"><em>tainted</em></a>.
+      </td>
+    </tr>
+    <tr>
+      <td><code>script</code></td>
+      <td>
+        Access to error logging via {{domxref('Window.error_event', 'window.onerror')}} will be limited.
+      </td>
+    </tr>
+    <tr>
+      <td><code>link</code></td>
+      <td>
+        Request with no appropriate <code>crossorigin</code> header may be discarded.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+> **Note:** Prior to Firefox 83 the `crossorigin` attribute was not supported for `rel="icon"`. There is also [an open issue for Chrome](https://crbug.com/1121645).
+
+### Example: `crossorigin` with the `<script>` element
+
+You can use the following {{HTMLElement("script")}} element to tell a browser to execute the `https://example.com/example-framework.js` script without sending user-credentials.
 
 ```html
-<script src="https://example.com/example-framework.js" crossorigin="anonymous"></script>
+<script
+  src="https://example.com/example-framework.js"
+  crossorigin="anonymous"></script>
 ```
 
-### 예시: credential 포함한 Webmanifest
+### Example: Web manifest with credentials
 
-[Manifest](/ko/docs/Web/Manifest) 요청 시 credential이 필요하다면 same-origin의 리소스라 하여도 `use-credentials` 값을 사용해야 합니다.
+The `use-credentials` value must be used when fetching a [manifest](/en-US/docs/Web/Manifest) that requires credentials, even if the file is from the same origin.
 
 ```html
-<link rel="manifest" href="/app.webmanifest" crossorigin="use-credentials">
+<link rel="manifest" href="/app.webmanifest" crossorigin="use-credentials" />
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 더 보기
+## See also
 
-- [Cross-Origin Resource Sharing (CORS)](/ko/docs/Web/HTTP/CORS)
-- [HTML attribute: `rel`](/ko/docs/Web/HTML/Attributes/rel)
+- [Cross-Origin Resource Sharing (CORS)](/en-US/docs/Web/HTTP/CORS)
+- [HTML attribute: `rel`](/en-US/docs/Web/HTML/Attributes/rel)
 
 {{QuickLinksWithSubpages("/en-US/docs/Web/HTML/")}}

@@ -1,22 +1,26 @@
 ---
-title: RTCSessionDescription.sdp
+title: "RTCSessionDescription: sdp property"
+short-title: sdp
 slug: Web/API/RTCSessionDescription/sdp
+page-type: web-api-instance-property
+browser-compat: api.RTCSessionDescription.sdp
 ---
 
-{{APIRef("WebRTC")}}{{SeeCompatTable}}
+{{APIRef("WebRTC")}}
 
-읽기 속성인 **`RTCSessionDescription.sdp`** 는 세션에 대해 설명해주는 {{Glossary("SDP")}}를 가지고 있는 {{domxref("DOMString")}}입니다.
+The property **`RTCSessionDescription.sdp`** is a read-only
+string containing the {{Glossary("SDP")}} which describes the session.
 
 ## Syntax
 
-```js
-var value = sessionDescription.sdp;
-sessionDescription.sdp = value;
+```js-nolint
+const value = sessionDescription.sdp
+sessionDescription.sdp = value
 ```
 
-### 값
+### Value
 
-아래와 같이 SDP 메세지를 포함하고 있는 {{domxref("DOMString")}}값 입니다.
+The value is a string containing an SDP message like this one:
 
 ```
 v=0
@@ -32,7 +36,7 @@ m=video 53000 RTP/AVP 32
 a=rtpmap:32 MPV/90000
 ```
 
-## 예시
+## Example
 
 ```js
 // The remote description has been set previously on pc, an RTCPeerConnection
@@ -40,15 +44,15 @@ a=rtpmap:32 MPV/90000
 alert(pc.remoteDescription.sdp);
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
-- [WebRTC](/ko/docs/Web/Guide/API/WebRTC)
+- [WebRTC](/en-US/docs/Web/API/WebRTC_API)
 - The standard for using SDP in an offer/answer protocol {{rfc("3264")}}.

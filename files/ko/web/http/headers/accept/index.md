@@ -1,11 +1,13 @@
 ---
 title: Accept
 slug: Web/HTTP/Headers/Accept
+page-type: http-header
+browser-compat: http.headers.Accept
 ---
 
 {{HTTPSidebar}}
 
-**`Accept`** 요청 HTTP 헤더는 [MIME 타입](/ko/docs/Web/HTTP/Basics_of_HTTP/MIME_types)으로 표현되는, 클라이언트가 이해 가능한 컨텐츠 타입이 무엇인지를 알려줍니다. [컨텐츠 협상](/ko/docs/Web/HTTP/Content_negotiation)을 이용해, 서버는 제안 중 하나를 선택하고 사용하며 {{HTTPHeader("Content-Type")}} 응답 헤더로 클라이언트에게 선택된 타입을 알려줍니다. 브라우저는 요청이 이루어진 컨텍스트에 따라 해당 헤더에 대해 적당한 값들을 설정합니다: CSS 스타일시트를 불러오게 되면, 이미지, 비디오 혹은 스크립트를 불러올 때와 다른 값이 요청에 대해 설정됩니다.
+The **`Accept`** request HTTP header indicates which content types, expressed as [MIME types](/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types), the client is able to understand. The server uses [content negotiation](/en-US/docs/Web/HTTP/Content_negotiation) to select one of the proposals and informs the client of the choice with the {{HTTPHeader("Content-Type")}} response header. Browsers set required values for this header based on the context of the request. For example, a browser uses different values in a request when fetching a CSS stylesheet, image, video, or a script.
 
 <table class="properties">
   <tbody>
@@ -17,51 +19,66 @@ slug: Web/HTTP/Headers/Accept
       <th scope="row">{{Glossary("Forbidden header name")}}</th>
       <td>no</td>
     </tr>
+    <tr>
+      <th scope="row">
+        {{Glossary("CORS-safelisted request header")}}
+      </th>
+      <td>
+        yes, with the additional restriction that values can't contain a
+        <em>CORS-unsafe request header byte</em>: 0x00-0x1F (except 0x09 (HT)),
+        <code>"():&#x3C;>?@[\]{}</code>, and 0x7F (DEL).
+      </td>
+    </tr>
   </tbody>
 </table>
 
-## 문법
+## Syntax
 
-```
+```http
 Accept: <MIME_type>/<MIME_subtype>
 Accept: <MIME_type>/*
 Accept: */*
 
 // Multiple types, weighted with the {{glossary("quality values", "quality value")}} syntax:
-Accept: text/html, application/xhtml+xml, application/xml;q=0.9, */*;q=0.8
+Accept: text/html, application/xhtml+xml, application/xml;q=0.9, image/webp, */*;q=0.8
 ```
 
-## 디렉티브
+## Directives
 
 - `<MIME_type>/<MIME_subtype>`
-  - : `text/html`와 같이 단일의 간격한 [MIME 타입](/ko/docs/Web/HTTP/Basics_of_HTTP/MIME_types).
+  - : A single, precise [MIME type](/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types), like `text/html`.
 - `<MIME_type>/*`
-  - : 서버 타입을 갖지 않는 MIME 타입. `image/*` 은 `image/png`, `image/svg`, `image/gif` 그리고 어떤 다른 이미지 타입들과도 일치하게 됩니다.
+  - : A MIME type, but without a subtype. `image/*` corresponds to `image/png`, `image/svg`, `image/gif`, and other image types.
 - `*/*`
-  - : 모든 MIME 타입
-- `;q=` (q-인자 가중치)
-  - : 사용되는 모든 값들은 *weight*라고 부르는 상대적인 [품질 값](/ko/docs/Glossary/Quality_values)을 사용하여 표현되는 선호 순서로 대체됩니다.
+  - : Any MIME type
+- `;q=` (q-factor weighting)
+  - : A value used is placed in an order of preference expressed using a relative [quality value](/en-US/docs/Glossary/Quality_values) called the _weight_.
 
-## 예제
+## Examples
 
-```
+```http
 Accept: text/html
 
 Accept: image/*
 
+// General default
+Accept: */*
+
+// Default for navigation requests
 Accept: text/html, application/xhtml+xml, application/xml;q=0.9, */*;q=0.8
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 참고할 내용
+## See also
 
-- HTTP [컨텐츠 협상](/ko/docs/Web/HTTP/Content_negotiation)
-- 컨텐츠 현상의 결과에 대한 헤더: {{HTTPHeader("Content-Type")}}
-- 다른 유사한 헤더들: {{HTTPHeader("TE")}}, {{HTTPHeader("Accept-Encoding")}}, {{HTTPHeader("Accept-Charset")}}, {{HTTPHeader("Accept-Language")}}
+- HTTP [content negotiation](/en-US/docs/Web/HTTP/Content_negotiation)
+- [List of default Accept values](/en-US/docs/Web/HTTP/Content_negotiation/List_of_default_Accept_values)
+- A header with the result of the content negotiation: {{HTTPHeader("Content-Type")}}
+- Other similar headers: {{HTTPHeader("TE")}}, {{HTTPHeader("Accept-Encoding")}}, {{HTTPHeader("Accept-Language")}}

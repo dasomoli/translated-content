@@ -1,17 +1,35 @@
 ---
 title: Date
 slug: Web/HTTP/Headers/Date
+page-type: http-header
+browser-compat: http.headers.Date
 ---
 
 {{HTTPSidebar}}
 
-**`Date`** 일반 HTTP 헤더는 메시지가 만들어진 날짜와 시간을 포함합니다.
+The **`Date`** general HTTP header contains the date and time
+at which the message originated.
+
+> **Warning:** `Date` is listed
+> in the [forbidden header names](https://fetch.spec.whatwg.org/#forbidden-header-name)
+> in the fetch spec, so this code will not send the `Date` header:
+>
+> ```js
+> fetch("https://httpbin.org/get", {
+>   headers: {
+>     Date: new Date().toUTCString(),
+>   },
+> });
+> ```
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">Header type</th>
-      <td>{{Glossary("General header")}}</td>
+      <td>
+        {{Glossary("Request header")}},
+        {{Glossary("Response header")}}
+      </td>
     </tr>
     <tr>
       <th scope="row">{{Glossary("Forbidden header name")}}</th>
@@ -20,45 +38,47 @@ slug: Web/HTTP/Headers/Date
   </tbody>
 </table>
 
-## 문법
+## Syntax
 
-```
+```http
 Date: <day-name>, <day> <month> <year> <hour>:<minute>:<second> GMT
 ```
 
-## 디렉티브
+## Directives
 
 - \<day-name>
-  - : "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", 혹은 "Sun" 중 하나 (대소문자 구분).
+  - : One of "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", or "Sun" (case-sensitive).
 - \<day>
-  - : 2자리의 일자 번호, 예를 들어 "04" 혹은 "23".
+  - : 2 digit day number, e.g. "04" or "23".
 - \<month>
-  - : "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" 중 하나 (대소문자 구분).
+  - : One of "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct",
+    "Nov", "Dec" (case sensitive).
 - \<year>
-  - : 4자리의 연도 번호, 예를 들어, "1990" 혹은 "2016".
+  - : 4 digit year number, e.g. "1990" or "2016".
 - \<hour>
-  - : 2자리의 시간 번호, 예를 들어, "09" 혹은 "23".
+  - : 2 digit hour number, e.g. "09" or "23".
 - \<minute>
-  - : 2자리의 분 번호, 예를 들어, "04" 혹은 "59".
+  - : 2 digit minute number, e.g. "04" or "59".
 - \<second>
-  - : 2자리의 초 번호, 예를 들어, "04" 혹은 "59".
+  - : 2 digit second number, e.g. "04" or "59".
 - GMT
-  - : Greenwich 표준시. HTTP에서 날짜는 항상 지역 시간이 아닌 GMT로 표현됩니다.
+  - : Greenwich Mean Time. HTTP dates are always expressed in GMT, never in local
+    time.
 
-## 예제
+## Examples
 
-```
+```http
 Date: Wed, 21 Oct 2015 07:28:00 GMT
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 참고할 내용
+## See also
 
 - {{HTTPHeader("Age")}}

@@ -1,46 +1,52 @@
 ---
 title: Date.prototype.getSeconds()
 slug: Web/JavaScript/Reference/Global_Objects/Date/getSeconds
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.getSeconds
 ---
 
 {{JSRef}}
 
-**`getSeconds()`** 메서드는 `Date` 객체의 초 값을 현지 시간에 맞춰 반환합니다.
+The **`getSeconds()`** method returns the seconds in the
+specified date according to local time.
 
-{{EmbedInteractiveExample("pages/js/date-getseconds.html")}}
+{{EmbedInteractiveExample("pages/js/date-getseconds.html", "shorter")}}
 
-## 구문
+## Syntax
 
-```js
-    dateObj.getSeconds()
+```js-nolint
+getSeconds()
 ```
 
-### 반환 값
+### Return value
 
-현지 시간 기준 초를 나타내는 0에서 59 사이의 정수.
+An integer number, between 0 and 59, representing the seconds in the given date
+according to local time.
 
-## 예제
+## Examples
 
-### `getSeconds()` 사용하기
+### Using getSeconds()
 
-다음 예제는 {{jsxref("Date")}} 객체 `Xmas95`의 값을 사용해 변수 `seconds`에 30을 할당합니다.
+The second statement below assigns the value 30 to the variable `seconds`,
+based on the value of the {{jsxref("Global_Objects/Date", "Date")}} object
+`xmas95`.
 
 ```js
-var Xmas95 = new Date('December 25, 1995 23:15:30');
-var seconds = Xmas95.getSeconds();
+const xmas95 = new Date("December 25, 1995 23:15:30");
+const seconds = xmas95.getSeconds();
 
 console.log(seconds); // 30
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Date.prototype.getUTCSeconds()")}}
 - {{jsxref("Date.prototype.setSeconds()")}}

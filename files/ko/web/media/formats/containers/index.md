@@ -1,49 +1,108 @@
 ---
-title: 미디어 컨테이너 포맷 (파일 타입)
+title: Media container formats (file types)
 slug: Web/Media/Formats/Containers
-original_slug: Web/Media/Formats/컨테이너
 ---
 
-오디오와 비디오 파일 포맷은 두 파트에서 정의할 수 있습니다.(오디오 비디오가 한 파일에 있으면 물론 3 파트지요): 오디오/비디오 코덱와 미디어 컨테이너 포맷(도는 파일 타입)입니다. 이 가이드 문서는 웹에서 널리 쓰이는 컨테이너 포맷에 대해 알아보고 기본적인 스펙와 장단점 그리고 적절한 사용법을 설명하고 있습니다.
+{{QuickLinksWithSubpages("/en-US/docs/Web/Media")}}
 
-[WebRTC](/ko/docs/Web/API/WebRTC_API) 는 컨테이너를 사용하지 않습니다. 대신에 각 트랙을 나타내는{{domxref("MediaStreamTrack")}} 객체를 통해 인코딩 된 오디오/비디오 트랙을 한 곳에서 다른 곳으로 직접 스트리밍합니다. WebRTC에서 일반적으로 사용하는 코덱이나 브라우저 호환성을 알아보려면 [Codecs used by WebRTC](/ko/docs/Web/Media/Formats/WebRTC_codecs) 문서를 참고하세요.
+The format of audio and video media files is defined in two parts (three if a file has both audio and video in it, of course): the audio and/or video codecs used and the media container format (or file type) used.
+In this guide, we'll look at the container formats used most commonly on the web, covering basics about their specifications as well as their benefits, limitations, and ideal use cases.
 
-## 일반적인 컨테이너 포맷
+[WebRTC](/en-US/docs/Web/API/WebRTC_API) does not use a container at all.
+Instead, it streams the encoded audio and video tracks directly from one peer to another using {{domxref("MediaStreamTrack")}} objects to represent each track.
+See [Codecs used by WebRTC](/en-US/docs/Web/Media/Formats/WebRTC_codecs) for information about codecs commonly used for making WebRTC calls, as well as browser compatibility information around codec support in WebRTC.
 
-미디어 컨테이너 포맷에는 여러 종류가 있지만 여러분들은 보통 아래 나열된 목록의 포맷을 주로 만나게 될 겁니다. 일부는 오디오만 지원하는 것도 있고 오디오와 비디오 모두를 지원하는 포맷도 있죠. MIME 타입과 확장자도 나열되어 있습니다. 웹상에서 가장 많이 쓰이는 컨테이너 포맷은 아마도 MPEG-4 (MP4), Quicktime Movie (MOV), Wavefile Audio File Format (WAV)일겁니다. 또한 MP3, Ogg, WebM, AVI 등의 포맷도 볼 수 있지요. 하지만 모든 브라우저가 이 다양한 포맷들을 지원하는 것은 아닙니다. 사용하기 편하고 다른 조합과의 구분을 위해 특정한 컨테이너와 코덱의 조합은 독자적인 MIME type과 확장자를 가지기도 합니다. 예를들어 Opus 오디오 트랙만을 가진 Ogg파일은 가끔 Opus 파일이라 불리며 `.opus` 확장자를 가지는 경우도 있습니다. 하지만 실제로는 단순한 Ogg 파일일 뿐이죠.
+## Common container formats
 
-반대 케이스로 특정 코덱이 특정 컨테이너에 담긴 형태가 매우 보편적일 경우 독자적인 형식으로 취급하는 경우도 있습니다. MP3 오디오 파일이 대표적인 경우로, MPEG-1 컨테이너에 MPEG-1 Audio Layer III 코덱으로 인코딩 된 오디오 트랙 하나만이 담긴 케이스입니다. 컨테이너는 일반적인 MPEG지만 이 형식은 `audio/mp3` MIME 타입과 `.mp3` 확장자를 사용합니다.
+While there are a vast number of media container formats, the ones listed below are the ones you are most likely to encounter.
+Some support only audio while others support both audio and video.
+The MIME types and extensions for each are listed. The most commonly used containers for media on the web are probably MPEG-4 (MP4), QuickTime Movie (MOV), and the Wavefile Audio File Format (WAV).
+However, you may also encounter MP3, Ogg, WebM, AVI, and other formats.
+Not all of these are broadly supported by browsers, however; some combinations of container and codec are sometimes given their own file extensions and MIME types as a matter of convenience, or because of their ubiquity.
+For example, an Ogg file with only an Opus audio track is sometimes referred to as an Opus file, and might even have the extension `.opus`.
+But it's still actually just an Ogg file.
 
-## 컨테이너 포맷(파일 타입) 인덱스
+In other cases, a particular codec, stored in a certain container type, is so ubiquitous that the pairing is treated in a unique fashion.
+A good example of this is the MP3 audio file, which is in fact an MPEG-1 container with a single audio track encoded using MPEG-1 Audio Layer III encoding.
+These files use the `audio/mp3` MIME type and the `.mp3` extension, even though their containers are just MPEG.
 
-특정 컨테이너 포맷에 대해 더 알아보려면 아래 목록에서 찾아 클릭하세요. 컨테이너 사용법과 지원하는 코덱, 지원하는 브라우저 등을 알 수 있습니다.
+### Index of media container formats (file types)
 
-- [일반적인 컨테이너 포맷](#일반적인-컨테이너-포맷)
-- [컨테이너 포맷(파일 타입) 인덱스](#컨테이너-포맷파일-타입-인덱스)
-  - [3GP](#3gp)
-  - [ADTS](#adts)
-  - [FLAC](#flac)
-  - [MPEG/MPEG-2](#mpegmpeg-2)
-  - [MPEG-4 (MP4)](#mpeg-4-mp4)
-  - [Ogg](#ogg)
-  - [QuickTime](#quicktime)
-  - [WAVE (WAV)](#wave-wav)
-  - [WebM](#webm)
-- [알맞은 컨테이너 선택하기](#알맞은-컨테이너-선택하기)
-  - [가이드라인](#가이드라인)
-  - [컨테이너 선택 가이드](#컨테이너-선택-가이드)
-    - [오디오 전용 파일](#오디오-전용-파일)
-    - [비디오 파일](#비디오-파일)
-- [다양한 컨테이너간 호환성 극대화](#다양한-컨테이너간-호환성-극대화)
-- [명세서](#명세서)
-- [브라우저 호환성](#브라우저-호환성)
-- [더 보기](#더-보기)
+To learn more about a specific container format, find it in this list and click through to the details, which include information about what the container is typically useful for, what codecs it supports, and which browsers support it, among other specifics.
+
+<table class="standard-table">
+  <thead>
+    <tr>
+      <th scope="row">Codec name (short)</th>
+      <th scope="col">Full codec name</th>
+      <th scope="col">Browser compatibility</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row"><a href="#3gp">3GP</a></th>
+      <td>Third Generation Partnership</td>
+      <td>Firefox for Android</td>
+    </tr>
+    <tr>
+      <th scope="row"><a href="#adts">ADTS</a></th>
+      <td>Audio Data Transport Stream</td>
+      <td>
+        <p>Firefox</p>
+        <p>Available only if available on the underlying operating system's media framework.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row"><a href="#flac">FLAC</a></th>
+      <td>Free Lossless Audio Codec</td>
+      <td>Chrome 56, Edge 16, Firefox 51, Safari 11</td>
+    </tr>
+    <tr>
+      <th scope="row"><a href="#mpegmpeg-2">MPEG / MPEG-2</a></th>
+      <td>Moving Picture Experts Group (1 and 2)</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <th scope="row"><a href="#mpeg-4_mp4">MPEG-4 (MP4)</a></th>
+      <td>Moving Picture Experts Group 4</td>
+      <td>Chrome 3, Edge 12, Firefox, Internet Explorer 9, Opera 24, Safari 3.1</td>
+    </tr>
+    <tr>
+      <th scope="row"><a href="#ogg">Ogg</a></th>
+      <td>Ogg</td>
+      <td>
+        <p>Chrome 3, Firefox 3.5, Edge 17 (desktop only), Internet Explorer 9, Opera 10.50</p>
+        <p>Edge requires <a href="https://www.microsoft.com/store/productId/9N5TDP8VCMHS">Web Media Extensions</a> to be installed.</p>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row"><a href="#quicktime">QuickTime (MOV)</a></th>
+      <td>Apple QuickTime movie</td>
+      <td>Only older versions of Safari, plus other browsers that supported Apple's QuickTime plugin</td>
+    </tr>
+    <tr>
+      <th scope="row"><a href="#webm">WebM</a></th>
+      <td>Web Media</td>
+      <td>
+        <p>Chrome 6, Edge 17 (desktop only), Firefox 4, Opera 10.6, Safari 14.1 (macOS), Safari 15 (iOS).</p>
+        <p>Edge requires <a href="https://www.microsoft.com/store/productId/9N5TDP8VCMHS">Web Media Extensions</a> to be installed.</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+Unless otherwise specified, both mobile and desktop browser compatibility is implied if a browser is listed here.
+Support is also implied only for the container itself, not for any specific codecs.
 
 ### 3GP
 
-**3GP** 또는 **3GPP** 컨테이너는 셀룰러 네트워크를 통해 전송하고 모바일 장치에서 사용하기 위해 고안되었습니다. 원래 3G 모바일 폰을 위해 디자인하였지만 현대의 모바일 폰과 네트워크에서도 사용하고 있습니다. 하지만 네트워크 처리량이 늘어나면서 3GP 포맷의 필요성은 점차 줄어들고 있죠. 그러나 여전히 느린 네트워크나 저사양 폰에서는 유용한 컨테이너이기도 합니다.
+The **3GP** or **3GPP** media container is used to encapsulate audio and/or video that is specifically intended for transmission over cellular networks for consumption on mobile devices.
+The format was designed for use on 3G mobile phones, but can still be used on more modern phones and networks.
+However, the improved bandwidth availability and increased data caps on most networks has reduced the need for the 3GP format.
+However, this format is still used for slower networks and for lower-performance phones.
 
-이 컨테이너는 ISO Base Media File Format과 MPEG-4 기반이지만 저대역폭 케이스에 최적화되어 있습니다.
+This media container format is derived from the ISO Base Media File Format and MPEG-4, but is specifically streamlined for lower bandwidth scenarios.
 
 | Audio         | Video         |
 | ------------- | ------------- |
@@ -51,11 +110,12 @@ original_slug: Web/Media/Formats/컨테이너
 | `audio/3gpp2` | `video/3gpp2` |
 | `audio/3gp2`  | `video/3gp2`  |
 
-위는 3GP 컨테이너의 기본 MIME 타입입니다; 사용하는 코덱에 따라 다른 타입을 사용할 수도 있습니다; 또한 MIME 타입 문자열에 [`codecs` 파라미터를 추가하여](/ko/docs/Web/Media/Formats/codecs_parameter#ISO-BMFF) 어떠한 오디오/비디오 코덱을 사용했는지 표시할 수 있으며 profile, level, 코덱 설정 값도 추가하여 전달할 수 있습니다.
+These MIME types are the fundamental types for the 3GP media container; other types may be used depending on the specific codec or codecs in use.
+In addition, you can [add the `codecs` parameter](/en-US/docs/Web/Media/Formats/codecs_parameter#iso_base_media_file_format_mp4_quicktime_and_3gp) to the MIME type string to indicate which codecs are used for the audio and/or video tracks, and to optionally provide details about the profile, level, and/or other codec configuration specifics.
 
 <table class="standard-table">
   <caption>
-    3GP가 지원하는 비디오 코덱.
+    Video codecs supported by 3GP
   </caption>
   <thead>
     <tr>
@@ -76,52 +136,36 @@ original_slug: Web/Media/Formats/컨테이너
       <th scope="row">AVC (H.264)</th>
       <td></td>
       <td></td>
-      <td>
-        Yes<sup
-          ><a href="#3gp-vid-footnote-1">1</a>,<a href="#3gp-vid-footnote-1"
-            >2</a
-          ></sup
-        >
-      </td>
+      <td></td>
       <td></td>
     </tr>
     <tr>
       <th scope="row">H.263</th>
       <td></td>
       <td></td>
-      <td>
-        Yes<sup><a href="#3gp-vid-footnote-1">1</a></sup>
-      </td>
+      <td></td>
       <td></td>
     </tr>
     <tr>
       <th scope="row">MPEG-4 Part 2 (MP4v-es)</th>
       <td></td>
       <td></td>
-      <td>
-        Yes<sup><a href="#3gp-vid-footnote-1">1</a></sup>
-      </td>
+      <td></td>
       <td></td>
     </tr>
     <tr>
       <th scope="row">VP8</th>
       <td></td>
       <td></td>
-      <td>
-        Yes<sup><a href="#3gp-vid-footnote-1">1</a></sup>
-      </td>
+      <td></td>
       <td></td>
     </tr>
   </tbody>
 </table>
 
-\[1] FIrefox only supports 3GP on [OpenMAX](https://www.khronos.org/openmax/)-based devices, which currently means the Boot to Gecko (B2G) platform.
-
-\[2] Firefox support for H.264 relies upon the operating system's media infrastructure, so it is available as long as the OS supports it.
-
 <table class="standard-table">
   <caption>
-    3GP가 지원하는 오디오 코덱
+    Audio codecs supported by 3GP
   </caption>
   <thead>
     <tr>
@@ -142,98 +186,71 @@ original_slug: Web/Media/Formats/컨테이너
       <th scope="row">AMR-NB</th>
       <td></td>
       <td></td>
-      <td>
-        Yes<sup><a href="#3gp-aud-footnote-1">1</a></sup>
-      </td>
+      <td></td>
       <td></td>
     </tr>
     <tr>
       <th scope="row">AMR-WB</th>
       <td></td>
       <td></td>
-      <td>
-        Yes<sup><a href="#3gp-aud-footnote-1">1</a></sup>
-      </td>
+      <td></td>
       <td></td>
     </tr>
     <tr>
       <th scope="row">AMR-WB+</th>
       <td></td>
       <td></td>
-      <td>
-        Yes<sup><a href="#3gp-aud-footnote-1">1</a></sup>
-      </td>
+      <td></td>
       <td></td>
     </tr>
     <tr>
       <th scope="row">AAC-LC</th>
       <td></td>
       <td></td>
-      <td>
-        Yes<sup
-          ><a href="#3gp-aud-footnote-1">1</a>,<a href="#av1-vid-footnote-2"
-            >2</a
-          ></sup
-        >
-      </td>
+      <td></td>
       <td></td>
     </tr>
     <tr>
       <th scope="row">HE-AAC v1</th>
       <td></td>
       <td></td>
-      <td>
-        Yes<sup
-          ><a href="#3gp-aud-footnote-1">1</a>,<a href="#av1-vid-footnote-2"
-            >2</a
-          ></sup
-        >
-      </td>
+      <td></td>
       <td></td>
     </tr>
     <tr>
       <th scope="row">HE-AAC v2</th>
       <td></td>
       <td></td>
-      <td>
-        Yes<sup
-          ><a href="#3gp-aud-footnote-1">1</a>,<a href="#av1-vid-footnote-2"
-            >2</a
-          ></sup
-        >
-      </td>
+      <td></td>
       <td></td>
     </tr>
     <tr>
       <th scope="row">MP3</th>
       <td></td>
       <td></td>
-      <td>
-        Yes<sup><a href="#3gp-aud-footnote-1">1</a></sup>
-      </td>
+      <td></td>
       <td></td>
     </tr>
   </tbody>
 </table>
 
-\[1] FIrefox only supports 3GP on [OpenMAX](https://www.khronos.org/openmax/)-based devices, which currently means the Boot to Gecko (B2G) platform.
-
-\[2] Firefox support for AAC relies upon the operating system's media infrastructure, so it is available as long as the OS supports it.
-
 ### ADTS
 
-**Audio Data Transport Stream** (**ADTS**) 는 인터넷 라디오 같은 오디오 스트림을 사용하기 위해 MPEG-4 Part 3로 규정된 컨테이너 포맷입니다. 근본적으로 ACC 오디오 데이터에서 스트림만 깐 것과 거의 동일하며 최소한의 헤더만 담긴 ADTS 프레임으로 구성되어 있습니다.
+**Audio Data Transport Stream** (**ADTS**) is a container format specified by MPEG-4 Part 3 for audio data, intended to be used for streamed audio, such as for Internet radio.
+It is, essentially, an almost bare stream of AAC audio data, comprised of ADTS frames with a minimal header.
 
-| Audio                             |
-| --------------------------------- |
-| `audio/aac`[\[1\]](#adts-foot-1)  |
-| `audio/mpeg`[\[1\]](#adts-foot-1) |
+| Audio        |
+| ------------ |
+| `audio/aac`  |
+| `audio/mpeg` |
 
-\[1] The MIME type used for ADTS depends on what kind of audio frames are contained within. If ADTS frames are used, the `audio/aac` MIME type should be used. If the audio frames are in MPEG-1/MPEG-2 Audio Layer I, II, or III format, the MIME type should be `audio/mpeg`.
+The MIME type used for ADTS depends on what kind of audio frames are contained within.
+If ADTS frames are used, the `audio/aac` MIME type should be used.
+If the audio frames are in MPEG-1/MPEG-2 Audio Layer I, II, or III format, the MIME type should be `audio/mpeg`.
 
 <table class="standard-table">
   <caption>
-    ADTS가 지원하는 오디오 코덱
+    Audio codecs supported by ADTS
   </caption>
   <thead>
     <tr>
@@ -254,9 +271,7 @@ original_slug: Web/Media/Formats/컨테이너
       <th scope="row">AAC</th>
       <td></td>
       <td></td>
-      <td>
-        Yes<sup><a href="#adts-aud-footnote-1">1</a></sup>
-      </td>
+      <td>Yes</td>
       <td></td>
     </tr>
     <tr>
@@ -269,19 +284,22 @@ original_slug: Web/Media/Formats/컨테이너
   </tbody>
 </table>
 
-\[1] Firefox support for AAC relies upon the operating system's media infrastructure, so it is available as long as the OS supports it.
+Firefox support for AAC relies upon the operating system's media infrastructure, so it is available as long as the OS supports it.
 
 ### FLAC
 
-**Free Lossless Audio Codec** (**FLAC**)은 무손실 오디오 코덱입니다; 이 코덱을 담을 수 있는 컨테이너 역시 FLAC이라 부릅니다. 이 포맷은 어느 특허에도 묶여있지 않아 자유롭게 사용할 수 있습니다. FLAC 파일은 FLAC 오디오 데이터만 담을 수 있습니다.
+The **Free Lossless Audio Codec** (**FLAC**) is a lossless audio codec; there is also an associated simple container format, also called FLAC, that can contain this audio.
+The format is not encumbered by any patents, so its use is safe from interference.
+FLAC files can only contain FLAC audio data.
 
-| Audio        |
-| ------------ |
-| `audio/flac` |
+| Audio                         |
+| ----------------------------- |
+| `audio/flac`                  |
+| `audio/x-flac` (non-standard) |
 
 <table class="standard-table">
   <caption>
-    FLAC이 지원하는 오디오 코덱
+    Audio codecs supported by FLAC
   </caption>
   <thead>
     <tr>
@@ -310,11 +328,14 @@ original_slug: Web/Media/Formats/컨테이너
 
 ### MPEG/MPEG-2
 
-[**MPEG-1**](https://ko.wikipedia.org/wiki/MPEG-1)과 [**MPEG-2**](https://ko.wikipedia.org/wiki/MPEG-2)은 근본적으로 동일합니다. the Moving Picture Experts Group (MPEG)에서 만들었으며 DVD 등의 물리적 매체에서 널리 쓰이고 있습니다.
+The **[MPEG-1](https://en.wikipedia.org/wiki/MPEG-1)** and **[MPEG-2](https://en.wikipedia.org/wiki/MPEG-2)** file formats are essentially identical.
+Created by the Moving Picture Experts Group (MPEG), these formats are widely used in physical media, including as the format of the video on DVD media.
 
-인터넷에서 아마 가장 많이 사용되는 MPEG 파일 포맷은 [Layer_III/MP3](https://ko.wikipedia.org/wiki/MPEG-1) 일 겁니다; MP3 파일은 전 세계의 디지털 오디오 장치에서 널리 재생되고 있습니다. 반대로 MPEG-1, MPEG-2는 웹에서 별로 사용하고 있지 않죠.
+On the internet, perhaps the most common use of the MPEG file format is to contain [Layer_III/MP3](https://en.wikipedia.org/wiki/MPEG-1) sound data; the resulting files are the wildly popular MP3 file used by digital music devices around the world.
+Otherwise, MPEG-1 and MPEG-2 are not widely used in Web content.
 
-MPEG-1과 MPEG-2 간의 차이점은 컨테이너 포맷이 아니라 미디어 데이터 포맷에 있습니다. MPEG-1은 1992년 소개되었으며; MPEG-2는 1996년에 소개되었습니다.
+The main differences between MPEG-1 and MPEG-2 take place in the media data formats rather than the container format.
+MPEG-1 was introduced in 1992; MPEG-2 was introduced in 1996.
 
 | Audio        | Video        |
 | ------------ | ------------ |
@@ -322,7 +343,7 @@ MPEG-1과 MPEG-2 간의 차이점은 컨테이너 포맷이 아니라 미디어 
 
 <table class="standard-table">
   <caption>
-    MPEG-1과 MPEG-2가 지원하는 비디오 코덱
+    Video codecs supported by MPEG-1 and MPEG-2
   </caption>
   <thead>
     <tr>
@@ -358,7 +379,7 @@ MPEG-1과 MPEG-2 간의 차이점은 컨테이너 포맷이 아니라 미디어 
 
 <table class="standard-table">
   <caption>
-    MPEG-1과 MPEG-2가 지원하는 오디오 코덱
+    Audio codecs supported by MPEG-1 and MPEG-2
   </caption>
   <thead>
     <tr>
@@ -401,21 +422,25 @@ MPEG-1과 MPEG-2 간의 차이점은 컨테이너 포맷이 아니라 미디어 
 
 ### MPEG-4 (MP4)
 
-**[MPEG-4](https://ko.wikipedia.org/wiki/MPEG-4)** (**MP4**) 는 최신 MPEG 파일 포맷입니다. 파트 1과 14 스펙에서 정의된 두 가지 버전의 포맷이 있습니다. MP4는 오늘날 유명한 컨테이너 포맷으로 많이 쓰이는 코덱을 지원하며 널리 사용되고 있습니다.
+**[MPEG-4](https://en.wikipedia.org/wiki/MPEG-4)** (**MP4**) is the latest version of the MPEG file format.
+There are two versions of the format, defined in parts 1 and 14 of the specification.
+MP4 is a popular container today, as it supports several of the most-used codecs and is broadly supported.
 
-최초의 MPEG-4 Part 1 포맷은 1999년 발표되었습니다; Part 14에서 정의된 버전 2 포맷은 2003년 추가되었습니다. MP4 파일 포맷은 [Apple](https://www.apple.com/)이 개발한 [QuickTime file format](https://en.wikipedia.org/wiki/QuickTime_File_Format)에서 파생된 [ISO base media file format](https://en.wikipedia.org/wiki/ISO_base_media_file_format)에서 다시 파생되었습니다.
+The original MPEG-4 Part 1 file format was introduced in 1999; the version 2 format, defined in Part 14, was added in 2003.
+The MP4 file format is derived from the [ISO base media file format](https://en.wikipedia.org/wiki/ISO_base_media_file_format), which is directly derived from the [QuickTime file format](https://en.wikipedia.org/wiki/QuickTime_File_Format) developed by [Apple](https://www.apple.com/).
 
-MPEG-4 미디어 타입을 표기할 때 (`audio/mp4` or `video/mp4`), MIME 타입에 [`codecs` 파라미터를 추가하여](/ko/docs/Web/Media/Formats/codecs_parameter#ISO-BMFF) 사용하는 오디오/비디오 코덱을 명시할 수 있으며 추가적으로 profile, level, 코덱 설정 등을 명기할 수 있습니다.
+When specifying the MPEG-4 media type (`audio/mp4` or `video/mp4`), you can [add the `codecs` parameter](/en-US/docs/Web/Media/Formats/codecs_parameter#iso_base_media_file_format_mp4_quicktime_and_3gp) to the MIME type string to indicate which codecs are used for the audio and/or video tracks, and to optionally provide details about the profile, level, and/or other codec configuration specifics.
 
 | Audio       | Video       |
 | ----------- | ----------- |
 | `audio/mp4` | `video/mp4` |
 
-위는 MPEG-4 미디어 컨테이너의 기본 타입입니다; 어떤 코덱을 쓰느냐에 따라 MIME 타입도 달라질 수 있습니다. 또한 MIME 타입에 [`codecs` 파라미터를 추가하여](/ko/docs/Web/Media/Formats/codecs_parameter#ISO-BMFF) 사용하는 오디오/비디오 코덱을 명시할 수 있으며 추가적으로 profile, level, 코덱 설정 등을 명기할 수 있습니다.
+These MIME types are the fundamental types for the MPEG-4 media container; other MIME types may be used depending on the specific codec or codecs in use within the container.
+In addition, you can [add the `codecs` parameter](/en-US/docs/Web/Media/Formats/codecs_parameter#iso_base_media_file_format_mp4_quicktime_and_3gp) to the MIME type string to indicate which codecs are used for the audio and/or video tracks, and to optionally provide details about the profile, level, and/or other codec configuration specifics.
 
 <table class="standard-table">
   <caption>
-    MPEG-4가 지원하는 비디오 코덱
+    Video codecs supported by MPEG-4
   </caption>
   <thead>
     <tr>
@@ -437,7 +462,11 @@ MPEG-4 미디어 타입을 표기할 때 (`audio/mp4` or `video/mp4`), MIME 타�
       <td></td>
       <td></td>
       <td>
-        Yes<sup><a href="#mp4-vid-footnote-1">1</a></sup>
+        <p>Yes</p>
+        <p>
+          Firefox support for H.264 relies upon the operating system's media
+          infrastructure, so it is available as long as the OS supports it.
+        </p>
       </td>
       <td></td>
     </tr>
@@ -446,7 +475,8 @@ MPEG-4 미디어 타입을 표기할 때 (`audio/mp4` or `video/mp4`), MIME 타�
       <td></td>
       <td></td>
       <td>
-        Yes<sup><a href="#mp4-vid-footnote-1">1</a></sup>
+        <p>Yes</p>
+        <p>Firefox support for AV1 is disabled on Android ([Firefox bug 1672276](https://bugzil.la/1672276)) and on Windows on ARM (enable by setting the preference <code>media.av1.enabled</code> to <code>true</code>).</p>
       </td>
       <td></td>
     </tr>
@@ -474,13 +504,9 @@ MPEG-4 미디어 타입을 표기할 때 (`audio/mp4` or `video/mp4`), MIME 타�
   </tbody>
 </table>
 
-\[1] Firefox support for H.264 relies upon the operating system's media infrastructure, so it is available as long as the OS supports it.
-
-\[2] Firefox support for AV1 is currently disabled by default; it can be enabled by setting the preference `media.av1.enabled` to `true`.
-
 <table class="standard-table">
   <caption>
-    MPEG-4가 지원하는 오디오 코덱
+    Audio codecs supported by MPEG-4
   </caption>
   <thead>
     <tr>
@@ -502,7 +528,8 @@ MPEG-4 미디어 타입을 표기할 때 (`audio/mp4` or `video/mp4`), MIME 타�
       <td></td>
       <td></td>
       <td>
-        Yes<sup><a href="#mp4-aud-footnote-1">1</a></sup>
+        <p>Yes</p>
+        <p>Firefox support for H.264 relies upon the operating system's media infrastructure, so it is available as long as the OS supports it.</p>
       </td>
       <td></td>
     </tr>
@@ -530,21 +557,30 @@ MPEG-4 미디어 타입을 표기할 때 (`audio/mp4` or `video/mp4`), MIME 타�
   </tbody>
 </table>
 
-\[1] Firefox support for H.264 relies upon the operating system's media infrastructure, so it is available as long as the OS supports it.
-
 ### Ogg
 
-**[Ogg](https://en.wikipedia.org/wiki/Ogg)는** [Xiph.org Foundation](https://www.xiph.org/)이 운영하는 자유 오픈 컨테이너 포맷입니다. Theora, Vorbis, and Opus등의 Ogg 프레임워크는 특허에 얽매이지 않게 정의되었습니다. 재단 웹사이트에서 [Xiph.org documents about the Ogg format](https://xiph.org/ogg/)를 확인할 수 있습니다.
+The [Ogg](https://en.wikipedia.org/wiki/Ogg) container format is a free and open format maintained by the [Xiph.org Foundation](https://www.xiph.org/).
+The Ogg framework also defines patent unencumbered media data formats, such as the Theora video codec and the Vorbis and Opus audio codecs.
+[Xiph.org documents about the Ogg format](https://xiph.org/ogg/) are available on their website.
+
+While Ogg has been around for a long time, it has never gained the wide support needed to make it a good first choice for a media container.
+You are typically better off using WebM, though there are times when Ogg is useful to offer, such as when you wish to support older versions of Firefox and Chrome which don't yet support WebM.
+For example, Firefox 3.5 and 3.6 support Ogg, but not WebM.
+
+You can get more information about Ogg and its codecs in the [Theora Cookbook](https://en.flossmanuals.net/ogg-theora/_full/).
 
 | Audio       | Video       |
 | ----------- | ----------- |
 | `audio/ogg` | `video/ogg` |
 
-MIME 타입에 [`codecs` 파라미터를 추가하여](/ko/docs/Web/Media/Formats/codecs_parameter#Ogg) 사용하는 오디오/비디오 코덱을 명시할 수 있으며 트랙의 미디어 포맷에 대한 추가 정보도 기입할 수 있습니다.
+The `application/ogg` MIME type can be used when you don't necessarily know whether the media contains audio or video.
+If at all possible, you should use one of the specific types, but fall back to `application/ogg` if you don't know the content format or formats.
+
+You can also [add the `codecs` parameter](/en-US/docs/Web/Media/Formats/codecs_parameter) to the MIME type string to indicate which codecs are used for the audio and/or video tracks, and to optionally further describe the track media formats.
 
 <table class="standard-table">
   <caption>
-    Ogg가 지원하는 비디오 코덱
+    Video codecs supported by Ogg
   </caption>
   <thead>
     <tr>
@@ -587,7 +623,7 @@ MIME 타입에 [`codecs` 파라미터를 추가하여](/ko/docs/Web/Media/Format
 
 <table class="standard-table">
   <caption>
-    Ogg가 지원하는 오디오 코덱
+    Audio codecs supported by Ogg
   </caption>
   <thead>
     <tr>
@@ -630,27 +666,36 @@ MIME 타입에 [`codecs` 파라미터를 추가하여](/ko/docs/Web/Media/Format
 
 ### QuickTime
 
-**QuickTime** 파일 포맷(**QTFF**, **QT**, **MOV**) 는 동일한 이름의 미디어 프레임워크에서 사용하기 위해 애플이 개발했습니다. 확장자 `.mov`는 최초 영화에서 쓰이기 위해 개발되었다는 의미에서 지어졌으며 보통 "QuickTime movie" 포맷이라 불립니다. QTFF가 MPEG-4 파일 포맷에 기반하였지만 두 포맷에는 분명한 차이점이 있으며 상호 호환되지 않습니다.
+The **QuickTime** file format (**QTFF**, **QT**, or **MOV**) was created by Apple for use by its media framework of the same name.
+The extension for these files, `.mov`, comes from the fact that the format was initially used for movies and was usually called the "QuickTime movie" format.
+While QTFF served as the basis for the MPEG-4 file format, there are differences and the two are not quite interchangeable.
 
-QuickTime 파일은 오디오, 비디오 텍스트 트랙 등 시간축을 가지는 다수의 데이터 타입을 지원합니다. QuickTime 파일은 원래 macOS에서 사용하기 위해 개발되었지만 수 년이 지나면서 윈도우즈 환경에서는 QuickTime for Windows를 통해 사용할 수 있게 되었습니다. 그러나 2016년 초부터 애플은 더 이상 QuickTime for Windows를 유지 보수하지 않으며 알려진 보안 취약점으로 인해 _사용해선 안됩니다_. 하지만 Windows Media Player 가 현재 QuickTime version 2.0 및 이전 버전을 지원하며; 이후 버전의 QuickTime은 서드파티 플러그인을 통해 지원합니다.
+QuickTime files support any sort of time-based data, including audio and video media, text tracks, and so forth.
+QuickTime files are primarily supported by macOS, but for a number of years, QuickTime for Windows was available to access them on Windows.
+However, QuickTime for Windows is no longer supported by Apple as of early 2016, and _should not be used_, as there are known security concerns.
+However, Windows Media Player now has integrated support for QuickTime version 2.0 and earlier files; support for later versions of QuickTime requires third-party additions.
 
-Mac OS에서 QuickTime 프레임워크는 QuickTime 포맷의 영상 파일 및 코덱 뿐만아니라 널리 쓰이는 오디오/비디오 코덱 상당 수를 지원합니다. 정지 화상 이미지 포맷도 포함해서요. (QuickTime 플러그인이 설치되었거나 QuickTime과 바로 연동된 브라우저를 포함 한)맥 애플리케이션은 QuickTime을 통해서 ACC, AIFF, MP#, PCM, Qualcomm PureVoice 등의 오디오 포맷과 AVI, DV, Pixlet, ProRes, FLAC, Cinepak, 3GP, H.261 through H.265, MJPEG, MPEG-1, MPEG-4 Part 2, Sorenson 등 수 많은 비디오 포맷을 읽고 쓸 수 있습니다.
+On Mac OS, the QuickTime framework not only supported QuickTime format movie files and codecs, but supported a vast array of popular and specialty audio and video codecs, as well as still image formats.
+Through QuickTime, Mac applications (including web browsers, through the QuickTime plugin or direct QuickTime integration) were able to read and write audio formats including AAC, AIFF, MP3, PCM, and Qualcomm PureVoice; and video formats including AVI, DV, Pixlet, ProRes, FLAC, Cinepak, 3GP, H.261 through H.265, MJPEG, MPEG-1 and MPEG-4 Part 2, Sorenson, and many more.
 
-추가적인 코덱을 지원하기 위해 QuickTime에 다수의 서드파티 컴포넌트를 설치할 수도 있습니다.
+In addition, a number of third-party components are available for QuickTime, some of which add support for additional codecs.
 
-QuickTime은 처음부터 지금까지 근본적으로 애플 디바이스에서 사용하기 위해 만들어졌기 때문에 인터넷 환경에서 널리 쓰이고 있지는 않습니다. 애플 스스로도 현재는 MP4 비디오를 사용하고 있구요. 게다가 QuickTime 프레임워크마저 deprecated되면서 macOS 10.15 Catalina부터는 사용이 불가능해졌습니다.
+Because QuickTime support is, for all intents and purposes, primarily available on Apple devices, it is no longer widely used on the internet.
+Apple itself generally now uses MP4 for video.
+In addition, the QuickTime framework has been deprecated on the Mac for some time, and is no longer available at all starting in macOS 10.15 Catalina.
 
 | Video             |
 | ----------------- |
 | `video/quicktime` |
 
-`video/quicktime` 은 QuickTime 미디어 컨테이너의 기본 MIME 타입입니다. QuickTime (Mac OS의 미디어 프레임워크)이 다양한 컨테이너와 코덱을 지원하므로 다른 많은 MIME 타입 역시 지원합니다.
+The `video/quicktime` MIME type is the fundamental type for the QuickTime media container.
+It's worth noting that QuickTime (the media framework on Mac operating systems) supports a wide variety of containers and codecs, so it actually supports many other MIME types.
 
-MIME 타입에 [`codecs` 파라미터를 추가하여](/ko/docs/Web/Media/Formats/codecs_parameter#ISO-BMFF) 사용하는 오디오/비디오 코덱을 명시할 수 있으며 추가적으로 profile, level, 코덱 설정 등을 명기할 수 있습니다.
+You can [add the `codecs` parameter](/en-US/docs/Web/Media/Formats/codecs_parameter#iso_base_media_file_format_mp4_quicktime_and_3gp) to the MIME type string to indicate which codecs are used for the audio and/or video tracks, and to optionally provide details about the profile, level, and/or other codec configuration specifics.
 
 <table class="standard-table">
   <caption>
-    QuickTime이 지원하는 비디오 코덱
+    Video codecs supported by QuickTime
   </caption>
   <thead>
     <tr>
@@ -749,7 +794,7 @@ MIME 타입에 [`codecs` 파라미터를 추가하여](/ko/docs/Web/Media/Format
 
 <table class="standard-table">
   <caption>
-    QuickTime이 지원하는 오디오 코덱
+    Audio codecs supported by QuickTime
   </caption>
   <thead>
     <tr>
@@ -820,11 +865,12 @@ MIME 타입에 [`codecs` 파라미터를 추가하여](/ko/docs/Web/Media/Format
 
 ### WAVE (WAV)
 
-Waveform Audio File Format (WAVE)는 보통 줄여서 WAV라 불리며 `.wav` 확장자를 갖습니다. 오디오 비트스트림 데이터를 담기 위해 Microsoft와 IBM이 개발했습니다. 대부분의 WAV 파일은 linear PCM 포맷의 오디오 데이터를 담고 있습니다.
+The **Waveform Audio File Format** (**WAVE**), usually referred to as WAV due to its filename extension being `.wav`, is a format developed by Microsoft and IBM to store audio bitstream data.
 
-이 파일 포맷은 Resource Interchange File Format (RIFF)에서 파생되었으며 애플의 AIFF 같은 다른 파생 형식와 유사합니다..
+It is derived from the Resource Interchange File Format (RIFF), and as such is similar to other formats such as Apple's AIFF.
+The WAV codec registry can be found at {{RFC(2361)}}; however, because nearly all WAV files use linear PCM, support for the other codecs is sparse.
 
-WAVE 포맷은 1991년 처음 발표되었습니다.
+The WAVE format was first released in 1991.
 
 | Audio            |
 | ---------------- |
@@ -833,9 +879,11 @@ WAVE 포맷은 1991년 처음 발표되었습니다.
 | `audio/x-wav`    |
 | `audio/x-pn-wav` |
 
+The `audio/wave` MIME type is the standard type, and is preferred; however, the others have been used by various products over the years and may be used as well in some environments.
+
 <table class="standard-table">
   <caption>
-    WAVE가 지원하는 오디오 코덱
+    Audio codecs supported by WAVE
   </caption>
   <thead>
     <tr>
@@ -892,9 +940,13 @@ WAVE 포맷은 1991년 처음 발표되었습니다.
 
 ### WebM
 
-**[WebM](https://en.wikipedia.org/wiki/WebM)** (Web Media)는 [Matroska](https://en.wikipedia.org/wiki/Matroska)에 기반하여 현대 웹 환경에서 사용하기 위해 디자인되었습니다. 특정 제품들은 WebM 컨테이너에 다른 코덱을 사용하기도 하지만 기본적으로는 무료 오픈 코덱을 사용하여 완전한 자유-오픈 기술을 지향하고 있습니다.
+**[WebM](https://en.wikipedia.org/wiki/WebM)** (**Web Media**) is a format based on [Matroska](https://en.wikipedia.org/wiki/Matroska) which is designed specifically for use in modern web environments.
+It's based entirely on free and open technologies and primarily uses codecs that are in turn free and open, although some products support other codecs in WebM containers as well.
 
-WebM은 2010년 처음 소개되었습니다..
+WebM was first introduced in 2010 and is now widely supported.
+Compliant implementations of WebM are required to support the VP8 and VP9 video codecs and the Vorbis and Opus audio codecs.
+The WebM container format and its required codecs are all available under open licenses.
+Any other codecs may require a license to use.
 
 | Audio        | Video        |
 | ------------ | ------------ |
@@ -902,7 +954,7 @@ WebM은 2010년 처음 소개되었습니다..
 
 <table class="standard-table">
   <caption>
-    WebM이 지원하는 비디오 코덱
+    Video codecs supported by WebM
   </caption>
   <thead>
     <tr>
@@ -921,46 +973,36 @@ WebM은 2010년 처음 소개되었습니다..
   <tbody>
     <tr>
       <th scope="row">AV1</th>
-      <td></td>
-      <td></td>
+      <td>Yes</td>
+      <td>Yes</td>
       <td>
-        Yes<sup><a href="#av1-vid-footnote-1">1</a></sup>
+        <p>Yes</p>
+        <p>Firefox support for AV1 was added to macOS in Firefox 66; for Windows in Firefox 67; and Firefox 68 on Linux.
+          Firefox for Android does not yet support AV1; the implementation in Firefox is designed to use a secure process, which is not supported yet in Android.
+        </p>
       </td>
-      <td></td>
-    </tr>
-    <tr>
-      <th scope="row">AVC (H.264)</th>
-      <td></td>
-      <td></td>
-      <td>
-        Yes<sup><a href="#av1-vid-footnote-2">2</a></sup>
-      </td>
-      <td></td>
+      <td>Yes</td>
     </tr>
     <tr>
       <th scope="row">VP8</th>
-      <td></td>
-      <td></td>
       <td>Yes</td>
-      <td></td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
     </tr>
     <tr>
-      <th scope="row">VP:9</th>
-      <td></td>
-      <td></td>
+      <th scope="row">VP9</th>
       <td>Yes</td>
-      <td></td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
     </tr>
   </tbody>
 </table>
 
-\[1] Firefox support for AV1 is currently disabled by default; it can be enabled by setting the preference `media.av1.enabled` to `true`.
-
-\[2] Firefox support for H.264 relies upon the operating system's media infrastructure, so it is available as long as the OS supports it.
-
 <table class="standard-table">
   <caption>
-    WebM이 지원하는 오디오 코덱
+    Audio codecs supported by WebM
   </caption>
   <thead>
     <tr>
@@ -979,86 +1021,274 @@ WebM은 2010년 처음 소개되었습니다..
   <tbody>
     <tr>
       <th scope="row">Opus</th>
-      <td></td>
-      <td></td>
       <td>Yes</td>
-      <td></td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
     </tr>
     <tr>
       <th scope="row">Vorbis</th>
-      <td></td>
-      <td></td>
       <td>Yes</td>
-      <td></td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
     </tr>
   </tbody>
 </table>
 
-## 알맞은 컨테이너 선택하기
+## Choosing the right container
 
-여러분의 미디어 데이터에 알맞은 컨테이너를 선택하고 사용하기 위해서 몇 가지 고려해야 할 점들이 있습니다. 상대적으로 어떤 점이 더 중요한지는 요구사항이나 라이선스, 호환성, 타겟 고객 등에 따라 달라질 수 있습니다.
+There are a few factors to consider when selecting the best container or containers to use for your media.
+The relative importance of each will depend on your needs, your license requirements, and the compatibility requirements of your target audience.
 
-### 가이드라인
+### Guidelines
 
-최선책 역시 미디어 데이터로 무엇을 하느냐에 달렸습니다. 미디어를 녹화/편집하는 것은 재생과 전혀 다른 이야기입니다. 최소한 노이즈 축적이라도 방지하려고 무손실 압축을 사용하면 매번 재 압축할 때 마다 압축 데이터가 누적되므로 미디어 데이터를 처리할때는 압축하지 않은 데이터를 사용하는게 퍼포먼스가 좋습니다.
+The best choice also depends on what you'll be doing with the media.
+Playing back media is a different thing than recording and/or editing it.
+If you're going to be manipulating the media data, using an uncompressed format can improve performance, while using a lossless compressed format at least prevents the accumulation of noise as compression artifacts are multiplied with each re-compression that occurs.
 
-- 저사양 단말 또는 저속 네트워크를 사용하는 고객을 대상으로 하고 있다면 3GP 컨테이너와 적절한 압축 코덱을 고려해 볼 수 있습니다.
-- 인코딩시 필수 사항이 있다면 컨테이너 선택 시 적절한 코덱을 지원하는 지 확인해야 합니다.
-- 미디어가 상용이 아니며 오픈 포맷일 경우 FLAC(오디오), WebM(비디오) 등의 오픈 컨테이너 포맷을 고려해 보세요.
-- 어떠한 이유로 미디어를 한가지 포맷으로 제공해야 한다면 많은 디바이스와 브라우저에 널리 쓰여지는 MP3(오디오), MP4(비디오, 오디오)등의 포맷을 선택하세요.
-- 미디어가 오디오만 있다면 오디오 전용 컨테이너를 사용하는게 합당합니다. 현재는 특허가 모두 만료되어 널리 쓰여지는 MP3가 좋은 선택입니다. WAVE도 좋지만 비압축이므로 대용량 오디오 샘플의 경우에는 사용을 주의하세요. 모든 타겟 브라우저가 지원한다면 무손실 압축을 지원하는 FLAC이 최선입니다.
+- If your target audience is likely to include users on mobile, especially on lower-end devices or on slow networks, consider providing a version of your media in a 3GP container with appropriate compression.
+- If you have any specific encoding requirements, make sure the container you choose supports the appropriate codecs.
+- If you want your media to be in a non-proprietary, open format, consider using one of the open container formats such as FLAC (for audio) or WebM (for video).
+- If for any reason you are only able to provide media in a single format, choose a format that's available on the broadest selection of devices and browsers, such as MP3 (for audio) or MP4 (for video and/or audio).
+- If your media is audio-only, choosing an audio-only container format likely makes sense.
+  Now that the patents have all expired, MP3 is a widely supported and good choice.
+  WAVE is good but uncompressed, so be aware of that before using it for large audio samples.
+  FLAC is a very good choice, due to its lossless compression, if the target browsers all support it.
 
-슬픈 일이지만 주요 무손실 압축 포맷 (FLAC, ALAC) 모두 폭넓게 지원되고 있지 않습니다. 둘 중에 FLAC이 그나마 낫지만 macOS에서는 추가적인 소프트웨어 설치 없이는 지원을 안합니다. iOS에서는 아예 불가능하구요. 무손실 오디오를 플랫폼에 무관하게 제공하려면 FLAC과 ALAC 둘 다 지원해야 합니다.
+Unfortunately, neither of the relatively major lossless compression formats (FLAC and ALAC) are universally supported.
+FLAC is the more broadly supported of the two, but is not supported by macOS without additional software installed, and is not supported at all on iOS.
+If you need to offer lossless audio, you may need to provide both FLAC and ALAC to get close to universal compatibility.
 
-### 컨테이너 선택 가이드
+### Container selection advice
 
-아래의 테이블은 다양한 시나리오에서 사용할 컨테이너에 대한 권고안입니다. 이는 추천일 뿐이며 컨테이너 포맷을 선택할 때에는 여러분의 제품이나 기관의 상황을 고려하여 선택하세요.
+The tables below offer suggested containers to use in various scenarios.
+These are just suggestions.
+Be sure to consider the needs of your application and your organization before selecting a container format.
 
-#### 오디오 전용 파일
+#### Audio-only files
 
-| 만약에...                         | 추천 컨테이너 포맷           |
-| --------------------------------- | ---------------------------- |
-| 일반 재생 목적으로 압축 파일 사용 | MP3 (MPEG-1 Audio Layer III) |
-| 무손실 압축 파일                  | FLAC with ALAC fallback      |
-| 무압축 파일                       | WAV                          |
+| If you need…                                  | Consider using this container format |
+| --------------------------------------------- | ------------------------------------ |
+| Compressed files for general-purpose playback | MP3 (MPEG-1 Audio Layer III)         |
+| Losslessly compressed files                   | FLAC with ALAC fallback              |
+| Uncompressed files                            | WAV                                  |
 
-이제는 MP3 특허가 모두 만료되었으므로 오디오 파일 선택은 별로 어려운 문제가 아닙니다. 폭넓게 쓰이는 MP3를 사용하면서 특허료를 내야 하느냐에 대한 고민을 할 필요가 없죠.
+Now that MP3's patents have all expired, the choice of audio file format has become much easier to make.
+It's no longer necessary to choose between MP3's broad compatibility and the need to pay royalties when using it.
 
-#### 비디오 파일
+#### Video files
 
-| 만약에...                             | 추천 컨테이너 포맷                |
-| ------------------------------------- | --------------------------------- |
-| 가능한 오픈 포맷을 사용한 일반 비디오 | WebM (MP4 호환 추가)              |
-| 일반 비디오                           | MP4 (WebM, Ogg 호환 추가)         |
-| 저속 네트워크상의 고효율 압축         | 3GP (MP4 호환 추가)               |
-| 구형 단말/브라우저 지원               | QuickTime (AVI, MPEG-2 호환 추가) |
+| If you need…                                        | Consider using this container format                |
+| --------------------------------------------------- | --------------------------------------------------- |
+| General purpose video, preferably in an open format | WebM (ideally with MP4 fallback)                    |
+| General purpose video                               | MP4 (ideally with WebM or Ogg fallback)             |
+| High compression optimized for slow connections     | 3GP (ideally with MP4 fallback)                     |
+| Compatibility with older devices/browsers           | QuickTime (ideally with AVI and/or MPEG-2 fallback) |
 
-몇 가지 가정 하의 권고입니다. 최종 결정 전에 여러가지를 따져보아야 하며 인코딩 해야 할 미디어가 많은 경우 특히나 심사숙고해야 합니다.
+These suggestions make a number of assumptions.
+You should carefully consider the options before making a final decision, especially if you have a lot of media that will need to be encoded.
 
-## 다양한 컨테이너간 호환성 극대화
+## Maximizing compatibility with multiple containers
 
-호환성을 높이려면 한가지 버전 이상의 미디어 파일 제공을 고려해 볼 수 있습니다. {{HTMLElement("audio")}}, {{HTMLElement("video")}} 엘리먼트 아래에 {{HTMLElement("source")}} 엘리먼트를 추가하여 구현할 수 있죠. 예를 들어 Ogg, WebM 비디오를 우선하되 호환성을 위해 MP4 포맷을 추가할 수 있습니다. 레트로하게 QuickTime이나 AVI 호환을 추가하는 것도 좋은 방법입니다.
+To optimize compatibility, it's worth considering providing more than one version of media files, using the {{HTMLElement("source")}} element to specify each source within the {{HTMLElement("audio")}} or {{HTMLElement("video")}} element.
+For example, you can offer an Ogg or WebM video as the first choice, with a fallback in MP4 format.
+You could even choose to offer a retro-like QuickTime or AVI fallback for good measure.
 
-구현하려면 우선 {{htmlattrxref("src", "video")}} 어트리뷰트 없이 `<video>` (또는 `<audio>`) 엘리먼트를 생성합니다. 그 후 `<video>` 엘리먼트 아래에 {{HTMLElement("source")}} 엘리먼트를 제공하려는 미디어 포맷별로 추가합니다. 이 방식은 대역폭 상황에 따라 소스를 선택하는 방식으로도 사용할 수 있지만 여기서는 포맷 옵션을 제공하기로 하죠.
+To do this, you create a `<video>` (or `<audio>`) element with no [`src`](/en-US/docs/Web/HTML/Element/video#src) attribute.
+Then add child {{HTMLElement("source")}} elements within the `<video>` element, one for each version of the video you offer.
+This can be used to offer various versions of a video that can be selected depending on bandwidth availability, but in our case, we'll use it to offer format options.
 
-아래 예제에서는 두 포맷 타입의 비디오를 제공합니다: WebM and MP4.
+In the example shown here, a video is offered to the browser in two formats: WebM and MP4.
 
 {{EmbedInteractiveExample("pages/tabbed/source.html", "tabbed-standard")}}
 
-<p class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</p>
+The video is offered first in WebM format (with the [`type`](/en-US/docs/Web/HTML/Element/video#type) attribute set to `video/webm`).
+If the {{Glossary("user agent")}} can't play that, it moves on to the next option, whose `type` is specified as `video/mp4`.
+If neither of those can be played, the text "This browser does not support the HTML video element." is presented.
 
-첫번째 비디오는 WebM 포맷입니다({{htmlattrxref("type", "video")}} 어트리뷰트가 `video/webm`). {{Glossary("user agent")}}는 재생이 불가능 한 경우 `type` 이 `video/mp4` 인 다음 옵션으로넘어갑니다. 둘 다 재생이 불가능 할 경우 "This browser does not support the HTML5 video element." 문구가 표시됩니다.
+## Specifications
 
-## 명세서
+| Specification                                                                                                                                                | Comment                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| [ETSI 3GPP](https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=1441)                                            | Defines the 3GP container format                                                                                |
+| [ISO/IEC 14496-3](https://www.iso.org/standard/53943.html) (MPEG-4 Part 3 Audio)                                                                             | Defines MP4 audio including ADTS                                                                                |
+| [FLAC Format](https://xiph.org/flac/format.html)                                                                                                             | The FLAC format specification                                                                                   |
+| [ISO/IEC 11172-1](https://www.iso.org/standard/19180.html) (MPEG-1 Part 1 Systems)                                                                           | Defines the MPEG-1 container format                                                                             |
+| [ISO/IEC 13818-1](https://www.iso.org/standard/74427.html) (MPEG-2 Part 1 Systems)                                                                           | Defines the MPEG-2 container format                                                                             |
+| [ISO/IEC 14496-14](https://www.iso.org/standard/75929.html) (MPEG-4 Part 14: MP4 file format)                                                                | Defines the MPEG-4 (MP4) version 2 container format                                                             |
+| [ISO/IEC 14496-1](https://www.iso.org/standard/55688.html) (MPEG-4 Part 1 Systems)                                                                           | Defines the original MPEG-4 (MP4) container format                                                              |
+| {{RFC(3533)}}                                                                                                                                                | Defines the Ogg container format                                                                                |
+| {{RFC(5334)}}                                                                                                                                                | Defines the Ogg media types and file extensions                                                                 |
+| [QuickTime File Format Specification](https://developer.apple.com/library/archive/documentation/QuickTime/QTFF/QTFFPreface/qtffPreface.html)                 | Defines the QuickTime movie (MOV) format                                                                        |
+| [Multimedia Programming Interface and Data Specifications 1.0](https://web.archive.org/web/20090417165828/http://www.kk.iij4u.or.jp/~kondo/wave/mpidata.txt) | The closest thing to an official WAVE specification                                                             |
+| [Resource Interchange File Format](https://docs.microsoft.com/windows/win32/xaudio2/resource-interchange-file-format--riff-) (used by WAV)                   | Defines the RIFF format; WAVE files are a form of RIFF                                                          |
+| [WebM Container Guidelines](https://www.webmproject.org/docs/container/)                                                                                     | Guide for adapting Matroska for WebM                                                                            |
+| [Matroska Specifications](https://matroska.org/index.html)                                                                                                   | The specification for the Matroska container format upon which WebM is based                                    |
+| [WebM Byte Stream Format](https://w3c.github.io/media-source/webm-byte-stream-format.html)                                                                   | WebM byte stream format for use with [Media Source Extensions](/en-US/docs/Web/API/Media_Source_Extensions_API) |
 
-{{Specifications}}
+## Browser compatibility
 
-## 브라우저 호환성
+<table class="standard-table">
+  <thead>
+    <tr>
+      <th rowspan="2" scope="row" style="vertical-align: bottom">
+        Container format name
+      </th>
+      <th
+        colspan="3"
+        scope="col"
+        style="text-align: center; border-right: 2px solid #d4dde4"
+      >
+        Audio
+      </th>
+      <th colspan="3" scope="col" style="text-align: center">Video</th>
+    </tr>
+    <tr>
+      <th scope="col" style="vertical-align: bottom">MIME type</th>
+      <th scope="col" style="vertical-align: bottom">Extension(s)</th>
+      <th
+        scope="col"
+        style="vertical-align: bottom; border-right: 2px solid #d4dde4"
+      >
+        Browser support
+      </th>
+      <th scope="col" style="vertical-align: bottom">MIME type</th>
+      <th scope="col" style="vertical-align: bottom">Extension(s)</th>
+      <th
+        scope="col"
+        style="vertical-align: bottom; border-right: 2px solid #d4dde4"
+      >
+        Browser support
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row" style="vertical-align: bottom">3GP</th>
+      <td style="vertical-align: top"><code>audio/3gpp</code></td>
+      <td style="vertical-align: top"><code>.3gp</code></td>
+      <td style="vertical-align: top; border-right: 2px solid #d4dde4">
+        Firefox
+      </td>
+      <td style="vertical-align: top"><code>video/3gpp</code></td>
+      <td style="vertical-align: top"><code>.3gp</code></td>
+      <td style="vertical-align: top">Firefox</td>
+    </tr>
+    <tr>
+      <th scope="row" style="vertical-align: top">
+        ADTS (Audio Data Transport Stream)
+      </th>
+      <td style="vertical-align: top"><code>audio/aac</code></td>
+      <td style="vertical-align: top"><code>.aac</code></td>
+      <td style="vertical-align: top; border-right: 2px solid #d4dde4">
+        Firefox
+      </td>
+      <td style="vertical-align: top">—</td>
+      <td style="vertical-align: top">—</td>
+      <td style="vertical-align: top">—</td>
+    </tr>
+    <tr>
+      <th scope="row" style="vertical-align: top">FLAC</th>
+      <td style="vertical-align: top"><code>audio/flac</code></td>
+      <td style="vertical-align: top"><code>.flac</code></td>
+      <td style="vertical-align: top; border-right: 2px solid #d4dde4">
+        Firefox
+      </td>
+      <td style="vertical-align: top">—</td>
+      <td style="vertical-align: top">—</td>
+      <td style="vertical-align: top">—</td>
+    </tr>
+    <tr>
+      <th rowspan="2" scope="row" style="vertical-align: top">
+        MPEG-1 / MPEG-2 (MPG or MPEG)
+      </th>
+      <td style="vertical-align: top"><code>audio/mpeg</code></td>
+      <td style="vertical-align: top">
+        <code>.mpg</code><br /><code>.mpeg</code>
+      </td>
+      <td style="vertical-align: top; border-right: 2px solid #d4dde4">
+        Firefox
+      </td>
+      <td rowspan="2" style="vertical-align: top"><code>video/mpeg</code></td>
+      <td rowspan="2" style="vertical-align: top">
+        <code>.mpg</code><br /><code>.mpeg</code>
+      </td>
+      <td rowspan="2" style="vertical-align: top">Firefox</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top"><code>audio/mp3</code></td>
+      <td style="vertical-align: top"><code>.mp3</code></td>
+      <td style="vertical-align: top; border-right: 2px solid #d4dde4">
+        Firefox
+      </td>
+    </tr>
+    <tr>
+      <th scope="row" style="vertical-align: top">MPEG-4 (MP4)</th>
+      <td style="vertical-align: top"><code>audio/mp4</code></td>
+      <td style="vertical-align: top">
+        <code>.mp4</code><br /><code>.m4a</code>
+      </td>
+      <td style="vertical-align: top; border-right: 2px solid #d4dde4">
+        Firefox
+      </td>
+      <td style="vertical-align: top"><code>video/mp4</code></td>
+      <td style="vertical-align: top">
+        <code>.mp4</code><br /><code>.m4v</code><br /><code>.m4p</code>
+      </td>
+      <td style="vertical-align: top">Firefox</td>
+    </tr>
+    <tr>
+      <th scope="row" style="vertical-align: top">Ogg</th>
+      <td style="vertical-align: top"><code>audio/ogg</code></td>
+      <td style="vertical-align: top">
+        <code>.oga</code><br /><code>.ogg</code>
+      </td>
+      <td style="vertical-align: top; border-right: 2px solid #d4dde4">
+        Firefox
+      </td>
+      <td style="vertical-align: top"><code>video/ogg</code></td>
+      <td style="vertical-align: top">
+        <code>.ogv</code><br /><code>.ogg</code>
+      </td>
+      <td style="vertical-align: top">Firefox</td>
+    </tr>
+    <tr>
+      <th scope="row" style="vertical-align: top">QuickTime Movie (MOV)</th>
+      <td style="vertical-align: top">—</td>
+      <td style="vertical-align: top">—</td>
+      <td style="vertical-align: top; border-right: 2px solid #d4dde4">—</td>
+      <td style="vertical-align: top"><code>video/quicktime</code></td>
+      <td style="vertical-align: top"><code>.mov</code></td>
+      <td style="vertical-align: top">Safari</td>
+    </tr>
+    <tr>
+      <th scope="row" style="vertical-align: top">WAV (Waveform Audiofile)</th>
+      <td style="vertical-align: top"><code>audio/wav</code></td>
+      <td style="vertical-align: top"><code>.wav</code></td>
+      <td style="vertical-align: top; border-right: 2px solid #d4dde4">
+        Firefox
+      </td>
+      <td style="vertical-align: top">—</td>
+      <td style="vertical-align: top">—</td>
+      <td style="vertical-align: top">—</td>
+    </tr>
+    <tr>
+      <th scope="row" style="vertical-align: top">WebM</th>
+      <td style="vertical-align: top"><code>audio/webm</code></td>
+      <td style="vertical-align: top"><code>.webm</code></td>
+      <td style="vertical-align: top; border-right: 2px solid #d4dde4">
+        Firefox
+      </td>
+      <td style="vertical-align: top"><code>video/webm</code></td>
+      <td style="vertical-align: top"><code>.webm</code></td>
+      <td style="vertical-align: top">Firefox</td>
+    </tr>
+  </tbody>
+</table>
 
-{{compat}}
+## See also
 
-## 더 보기
-
-- [WebRTC API](/ko/docs/Web/API/WebRTC_API)
-- [MediaStream Recording API](/ko/docs/Web/API/MediaStream_Recording_API)
+- [WebRTC API](/en-US/docs/Web/API/WebRTC_API)
+- [MediaStream Recording API](/en-US/docs/Web/API/MediaStream_Recording_API)
 - {{HTMLElement("audio")}} and {{HTMLElement("video")}} elements

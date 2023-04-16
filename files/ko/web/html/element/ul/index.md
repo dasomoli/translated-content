@@ -1,85 +1,49 @@
 ---
-title: <ul>
+title: "<ul>: The Unordered List element"
 slug: Web/HTML/Element/ul
+page-type: html-element
+browser-compat: html.elements.ul
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<ul>` 요소**는 정렬되지 않은 목록을 나타냅니다. 보통 불릿으로 표현합니다.
+The **`<ul>`** [HTML](/en-US/docs/Web/HTML) element represents an unordered list of items, typically rendered as a bulleted list.
 
 {{EmbedInteractiveExample("pages/tabbed/ul.html", "tabbed-standard")}}
 
-<p class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</p>
+## Attributes
 
-<table class="properties">
-  <tbody>
-    <tr>
-      <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
-      </th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >. 또한, 최소 하나의 {{htmlelement("li")}} 요소를 자식으로 둔다면
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#뚜렷한_컨텐츠"
-          >뚜렷한 콘텐츠</a
-        >.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 콘텐츠</th>
-      <td>
-        0개 이상의 {{htmlelement("li")}},
-        {{htmlelement("script")}}, {{htmlelement("template")}}
-        요소.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">태그 생략</th>
-      <td>{{no_tag_omission}}</td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 부모 요소</th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >를 허용하는 모든 요소.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>
-        <a href='/ko/docs/Web/Accessibility/ARIA/Roles/directory_role'><code>directory</code></a>, <a href='/ko/docs/Web/Accessibility/ARIA/Roles/group_role'><code>group</code></a>,
-        <a href='/ko/docs/Web/Accessibility/ARIA/Roles/listbox_role'><code>listbox</code></a>, <a href='/ko/docs/Web/Accessibility/ARIA/Roles/menu_role'><code>menu</code></a>,
-        <a href='/ko/docs/Web/Accessibility/ARIA/Roles/menubar_role'><code>menubar</code></a>, <a href='/ko/docs/Web/Accessibility/ARIA/Roles/radiogroup_role'><code>radiogroup</code></a>,
-        <a href='/ko/docs/Web/Accessibility/ARIA/Roles/tablist_role'><code>tablist</code></a>, <a href='/ko/docs/Web/Accessibility/ARIA/Roles/toolbar_role'><code>toolbar</code></a>,
-        <a href='/ko/docs/Web/Accessibility/ARIA/Roles/tree_role'><code>tree</code></a>, <a href='/ko/docs/Web/Accessibility/ARIA/Roles/presentation_role'><code>presentation</code></a>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">DOM 인터페이스</th>
-      <td>{{domxref("HTMLUListElement")}}</td>
-    </tr>
-  </tbody>
-</table>
+This element includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-## 특성
+- `compact` {{Deprecated_inline}} {{Non-standard_Inline}}
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)만 포함합니다.
+  - : This Boolean attribute hints that the list should be rendered in a compact style. The interpretation of this attribute depends on the {{glossary("user agent")}}, and it doesn't work in all browsers.
 
-<div class="hidden"><dl><dt>{{ htmlattrdef("compact") }} {{Deprecated_inline}}</dt><dd>This Boolean attribute hints that the list should be rendered in a compact style. The interpretation of this attribute depends on the {{glossary("user agent")}}, and it doesn't work in all browsers.</dd><dd><div class="warning"><strong>Warning:</strong> Do not use this attribute, as it has been deprecated: use <a href="/en-US/docs/CSS">CSS</a> instead. To give a similar effect as the <code>compact</code> attribute, the CSS property {{cssxref("line-height")}} can be used with a value of <code>80%</code>.</div></dd></dl><dl><dt>{{ htmlattrdef("type") }} {{Deprecated_inline}}</dt><dd>This attribute sets the bullet style for the list. The values defined under <a href="/en-US/docs/HTML3.2">HTML3.2</a> and the transitional version of <a href="/en-US/docs/HTML4.01">HTML 4.0/4.01</a> are:<ul><li><code>circle</code></li><li><code>disc</code></li><li><code>square</code></li></ul><p>A fourth bullet type has been defined in the WebTV interface, but not all browsers support it: <code>triangle</code>.</p><p>If not present and if no <a href="/en-US/docs/CSS">CSS</a> {{ cssxref("list-style-type") }} property applies to the element, the user agent selects a bullet type depending on the nesting level of the list.</p><div class="warning"><strong>Warning:</strong> Do not use this attribute, as it has been deprecated; use the <a href="/en-US/docs/Web/CSS">CSS</a> {{ cssxref("list-style-type") }} property instead.</div></dd></dl></div>
+    > **Warning:** Do not use this attribute, as it has been deprecated: use [CSS](/en-US/docs/Web/CSS) instead. To give a similar effect as the `compact` attribute, the CSS property {{cssxref("line-height")}} can be used with a value of `80%`.
 
-## 사용 일람
+- `type` {{Deprecated_inline}} {{Non-standard_Inline}}
 
-보통 비정렬 목록의 항목은 선행하는 불릿 [마커](/ko/docs/Web/CSS/::marker)와 함께 표시합니다.
+  - : This attribute sets the bullet style for the list. The values defined under HTML3.2 and the transitional version of HTML 4.0/4.01 are:
 
-`<ul>`과 {{htmlelement("ol")}}은 필요한 만큼 중첩할 수 있고, 서로 교차할 수도 있습니다.
+    - `circle`
+    - `disc`
+    - `square`
 
-`<ul>`과 {{htmlelement("ol")}}은 모두 목록을 나타냅니다. 차이가 있다면 `<ul>`에서는 순서가 중요하지 않다는 점입니다. 항목의 순서를 바꿨을 때 의미도 바뀐다면 {{htmlelement("ol")}}을 사용하세요. 그렇지 않으면 `<ul>`을 사용할 수 있습니다.
+    A fourth bullet type has been defined in the WebTV interface, but not all browsers support it: `triangle`.
 
-## 예제
+    If not present and if no [CSS](/en-US/docs/Web/CSS) {{ cssxref("list-style-type") }} property applies to the element, the user agent selects a bullet type depending on the nesting level of the list.
 
-### 간단한 예제
+    > **Warning:** Do not use this attribute, as it has been deprecated; use the [CSS](/en-US/docs/Web/CSS) {{ cssxref("list-style-type") }} property instead.
+
+## Usage notes
+
+- The `<ul>` element is for grouping a collection of items that do not have a numerical ordering, and their order in the list is meaningless. Typically, unordered-list items are displayed with a bullet, which can be of several forms, like a dot, a circle, or a square. The bullet style is not defined in the HTML description of the page, but in its associated CSS, using the {{ cssxref("list-style-type") }} property.
+- The `<ul>` and {{HTMLElement("ol")}} elements may be nested as deeply as desired. Moreover, the nested lists may alternate between `<ol>` and `<ul>` without restriction.
+- The {{ HTMLElement("ol") }} and `<ul>` elements both represent a list of items. They differ in that, with the {{ HTMLElement("ol") }} element, the order is meaningful. To determine which one to use, try changing the order of the list items; if the meaning is changed, the {{ HTMLElement("ol") }} element should be used, otherwise you can use `<ul>`.
+
+## Examples
+
+### Simple example
 
 ```html
 <ul>
@@ -89,70 +53,149 @@ slug: Web/HTML/Element/ul
 </ul>
 ```
 
-{{EmbedLiveSample("간단한_예제", 400, 100)}}
+#### Result
 
-### 중첩 목록
+{{EmbedLiveSample("Simple_example", 400, 120)}}
+
+### Nesting a list
 
 ```html
 <ul>
   <li>first item</li>
-  <li>second item
-  <!-- Look, the closing </li> tag is not placed here! -->
+  <li>
+    second item
+    <!-- Look, the closing </li> tag is not placed here! -->
     <ul>
       <li>second item first subitem</li>
-      <li>second item second subitem
-      <!-- Same for the second nested unordered list! -->
+      <li>
+        second item second subitem
+        <!-- Same for the second nested unordered list! -->
         <ul>
           <li>second item second subitem first sub-subitem</li>
           <li>second item second subitem second sub-subitem</li>
           <li>second item second subitem third sub-subitem</li>
         </ul>
-      </li> <!-- Closing </li> tag for the li that
+      </li>
+      <!-- Closing </li> tag for the li that
                   contains the third unordered list -->
       <li>second item third subitem</li>
     </ul>
-  <!-- Here is the closing </li> tag -->
+    <!-- Here is the closing </li> tag -->
   </li>
   <li>third item</li>
 </ul>
 ```
 
-{{EmbedLiveSample("중첩_목록", 400, 220)}}
+#### Result
 
-### 비정렬 목록 안의 정렬 목록
+{{EmbedLiveSample("Nesting_a_list", 400, 340)}}
+
+### Ordered list inside unordered list
 
 ```html
 <ul>
   <li>first item</li>
-  <li>second item
-  <!-- Look, the closing </li> tag is not placed here! -->
+  <li>
+    second item
+    <!-- Look, the closing </li> tag is not placed here! -->
     <ol>
       <li>second item first subitem</li>
       <li>second item second subitem</li>
       <li>second item third subitem</li>
     </ol>
-  <!-- Here is the closing </li> tag -->
+    <!-- Here is the closing </li> tag -->
   </li>
   <li>third item</li>
 </ul>
 ```
 
-{{EmbedLiveSample("비정렬_목록_안의_정렬_목록", 400, 150)}}
+#### Result
 
-## 명세
+{{EmbedLiveSample("Ordered_list_inside_unordered_list", 400, 190)}}
+
+## Technical summary
+
+<table class="properties">
+  <tbody>
+    <tr>
+      <th scope="row">
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
+      </th>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
+        >, and if the <code>&#x3C;ul></code> element's children include at least
+        one {{HTMLElement("li")}} element,
+        <a href="/en-US/docs/Web/HTML/Content_categories#palpable_content"
+          >palpable content</a
+        >.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted content</th>
+      <td>
+        Zero or more {{HTMLElement("li")}},
+        {{HTMLElement("script")}} and
+        {{HTMLElement("template")}} elements.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Tag omission</th>
+      <td>{{no_tag_omission}}</td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted parents</th>
+      <td>
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >flow content</a
+        >.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <code
+          ><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/List_role"
+            >list</a
+          ></code
+        >
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/directory_role"><code>directory</code></a>, <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/group_role"><code>group</code></a>,
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/listbox_role"><code>listbox</code></a>, <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/menu_role"><code>menu</code></a>,
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/menubar_role"><code>menubar</code></a>, <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/none_role"><code>none</code></a>,
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/presentation_role"><code>presentation</code></a>,
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/radiogroup_role"><code>radiogroup</code></a>, <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/tablist_role"><code>tablist</code></a>,
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/toolbar_role"><code>toolbar</code></a>, <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/tree_role"><code>tree</code></a>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">DOM Interface</th>
+      <td>{{domxref("HTMLUListElement")}}</td>
+    </tr>
+  </tbody>
+</table>
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 리스트 관련 다른 요소: {{HTMLElement("ol")}}, {{HTMLElement("li")}}, {{HTMLElement("menu")}}
-- `<ol>` 요소와 유용하게 사용할 수 있는 CSS 속성
+- Other list-related HTML Elements: {{HTMLElement("ol")}}, {{HTMLElement("li")}}, {{HTMLElement("menu")}}
+- CSS properties that may be specially useful to style the `<ul>` element:
 
-  - 서수를 표현할 방식을 지정하는 {{cssxref("list-style")}} 속성.
-  - 복잡한 중첩 목록을 처리하기 위한 [CSS 카운터](/ko/docs/Web/CSS/CSS_Lists_and_Counters/Using_CSS_counters)
-  - 더 이상 사용하지 않는 `compact` 특성을 대체할 수 있는 {{cssxref("line-height")}}
-  - 항목의 들여쓰기를 조정하기 위한 {{cssxref("margin")}} 속성.
+  - the {{CSSxRef("list-style")}} property, to choose the way the ordinal displays.
+  - [CSS counters](/en-US/docs/Web/CSS/CSS_Counter_Styles/Using_CSS_counters), to handle complex nested lists.
+  - the {{CSSxRef("line-height")}} property, to simulate the deprecated [`compact`](#compact) attribute.
+  - the {{CSSxRef("margin")}} property, to control the list indentation.

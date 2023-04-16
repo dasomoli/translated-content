@@ -1,88 +1,111 @@
 ---
 title: Array.prototype.at()
 slug: Web/JavaScript/Reference/Global_Objects/Array/at
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Array.at
 ---
+
 {{JSRef}}
 
-**`at()`** 메서드는 정수 값을 받아, 배열에서 해당 값에 해당하는 인덱스의 요소를 반환합니다. 양수와 음수 모두 지정할 수 있고, 음수 값의 경우 배열의 뒤에서부터 인덱스를 셉니다.
-
-`at()` 메서드의 존재가 대괄호 표기법을 부정하는 것은 아닙니다. 예를 들어 `array[0]`은 문제 없이 배열의 첫 요소를 반환합니다. 그러나 맨 마지막 요소를 가져오고 싶을 때 {{jsxref("Array.prototype.length", "length")}} 속성을 사용해 `array[array.length - 1]`을 하는 대신, 짧게 `array.at(-1)`을 사용할 수 있습니다. [(예제를 참고하세요)](#예제)
+The **`at()`** method takes an integer value and returns the item at that index, allowing for positive and negative integers. Negative integers count back from the last item in the array.
 
 {{EmbedInteractiveExample("pages/js/array-at.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 at(index)
 ```
 
-### 매개변수
+### Parameters
 
 - `index`
-  - : 배열에서 반환할 요소의 인덱스(위치). 음수 값을 지정할 경우 배열의 마지막을 기준으로 한 인덱스입니다. 즉, 배열 앞 대신 끝에서부터 위치를 계산합니다.
+  - : Zero-based index of the array element to be returned, [converted to an integer](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number#integer_conversion). Negative index counts back from the end of the array — if `index < 0`, `index + array.length` is accessed.
 
-### 반환 값
+### Return value
 
-주어진 인덱스에 위치한 배열 요소. 주어진 인덱스가 배열에 없으면 {{jsxref('undefined')}}를 반환합니다.
+The element in the array matching the given index. Always returns {{jsxref('undefined')}} if `index < -array.length` or `index >= array.length` without attempting to access the corresponding property.
 
-## 예제
+## Description
 
-### 배열의 끝 값 반환
+The `at()` method is equivalent to the bracket notation when `index` is non-negative. For example, `array[0]` and `array.at(0)` both return the first item. However, when counting elements from the end of the array, you cannot use `array[-1]` like you may in Python or R, because all values inside the square brackets are treated literally as string properties, so you will end up reading `array["-1"]`, which is just a normal string property instead of an array index.
 
-아래 예제는 주어진 배열에서 맨 마지막에 위치한 값을 반환하는 함수를 정의합니다.
+The usual practice is to access {{jsxref("Array/length", "length")}} and calculate the index from that — for example, `array[array.length - 1]`. The `at()` method allows relative indexing, so this can be shortened to `array.at(-1)`.
+
+The `at()` method is [generic](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#generic_array_methods). It only expects the `this` value to have a `length` property and integer-keyed properties.
+
+## Examples
+
+### Return the last value of an array
+
+The following example provides a function which returns the last element found in a specified array.
 
 ```js
-// 대상 배열
-const cart = ['사과', '바나나', '배'];
+// Our array with items
+const cart = ["apple", "banana", "pear"];
 
-// 주어진 배열의 마지막 요소를 반환하는 함수
+// A function which returns the last item of a given array
 function returnLast(arr) {
   return arr.at(-1);
 }
 
-// 위의 배열 'cart'에서 마지막 요소를 가져옴
+// Get the last item of our array 'cart'
 const item1 = returnLast(cart);
-console.log(item1); // '배' 기록
+console.log(item1); // 'pear'
 
-// 위의 배열 'cart'에 요소를 추가함
-cart.push('오렌지');
+// Add an item to our 'cart' array
+cart.push("orange");
 const item2 = returnLast(cart);
-console.log(item2); // '오렌지' 기록
+console.log(item2); // 'orange'
 ```
 
-### 방법 비교
+### Comparing methods
 
-아래 예제에서는 {{jsxref("Array")}}의 뒤에서 두 번째 요소를 가져오는 서로 다른 방법을 비교합니다. 모든 방법이 유효하긴 하지만 `at()` 메서드의 간결성과 가독성을 확인할 수 있습니다.
+This example compares different ways to select the penultimate (last but one) item of an {{jsxref('Array')}}. While all the methods shown below are valid, this example highlights the succinctness and readability of the `at()` method.
 
 ```js
-// 대상 배열
-const colors = ['빨강', '초록', '파랑'];
+// Our array with items
+const colors = ["red", "green", "blue"];
 
-// length 속성 사용
-const lengthWay = colors[colors.length-2];
-console.log(lengthWay); // '초록' 기록
+// Using length property
+const lengthWay = colors[colors.length - 2];
+console.log(lengthWay); // 'green'
 
-// slice() 메서드 사용. 배열을 반환함에 주의
+// Using slice() method. Note an array is returned
 const sliceWay = colors.slice(-2, -1);
-console.log(sliceWay[0]); // '초록' 기록
+console.log(sliceWay[0]); // 'green'
 
-// at() 메서드 사용
+// Using at() method
 const atWay = colors.at(-2);
-console.log(atWay); // '초록' 기록
+console.log(atWay); // 'green'
 ```
 
-## 명세
+### Calling at() on non-array objects
+
+The `at()` method reads the `length` property of `this` and calculates the index to access.
+
+```js
+const arrayLike = {
+  length: 2,
+  0: "a",
+  1: "b",
+};
+console.log(Array.prototype.at.call(arrayLike, -1)); // "b"
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- `core-js`의 [`Array.prototype.at` 폴리필](https://github.com/zloirock/core-js#relative-indexing-method)
-- [`at()` 메서드 폴리필](https://github.com/tc39/proposal-relative-indexing-method#polyfill).
-- {{jsxref("Array.prototype.find()")}} – 판별식을 사용해 값을 반환합니다.
-- {{jsxref("Array.prototype.includes()")}} – 값이 배열에 존재하는지 판별합니다.
-- {{jsxref("Array.prototype.indexOf()")}} – 주어진 요소의 인덱스를 반환합니다.
+- [Polyfill of `Array.prototype.at` in `core-js`](https://github.com/zloirock/core-js#relative-indexing-method)
+- [A polyfill for the at() method](https://github.com/tc39/proposal-relative-indexing-method#polyfill).
+- {{jsxref("Array.prototype.find()")}} – return a value based on a given test.
+- {{jsxref("Array.prototype.includes()")}} – test whether a value exists in the array.
+- {{jsxref("Array.prototype.indexOf()")}} – return the index of a given element.
+- [Indexed Collections](/en-US/docs/Web/JavaScript/Guide/Indexed_collections)

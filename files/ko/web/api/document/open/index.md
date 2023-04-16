@@ -1,33 +1,40 @@
 ---
-title: Document.open()
+title: "Document: open() method"
+short-title: open()
 slug: Web/API/Document/open
+page-type: web-api-instance-method
+browser-compat: api.Document.open
 ---
+
 {{APIRef("DOM")}}
 
-**`Document.open()`** 메소드는 문서를 {{domxref("Document.write", "쓰기", "", "1")}} 위해 문서를 열 수 있도록 제공한다.
+The **`Document.open()`** method opens a document for
+{{domxref("Document.write", "writing", "", "1")}}.
 
-이 메소드 호출 시 몇 가지 부작용이 발생한다. 예를 들면,
+This does come with some side effects. For example:
 
-- 현재까지 등록된 모든 요소와 문서, 문서에 속한 윈도우 소속 이벤트 리스너가 모두 삭제된다.
-- 현존했던 모든 요소가 문서에서 삭제된다.
+- All event listeners currently registered on the document, nodes inside the document,
+  or the document's window are removed.
+- All existing nodes are removed from the document.
 
-## 문법
+## Syntax
 
-```js
-document.open();
+```js-nolint
+open()
 ```
 
-### 인자
+### Parameters
 
-없음.
+None.
 
-### Return value반환값
+### Return value
 
-`Document` 객체 인스턴스.
+A `Document` object instance.
 
-## 예시
+## Examples
 
-이 간단한 코드는 문서를 열면서, 원하는 내용을 작성하여 기존 HTML 문서 구조를 대체하고, 문서를 닫는 예제이다.
+The following simple code opens the document and replaces its content with a number of
+different HTML fragments, before closing it again.
 
 ```js
 document.open();
@@ -39,47 +46,53 @@ document.close();
 
 ## Notes
 
-`document.open()` 메소드는 페이지를 불러온 후 {{domxref("document.write()")}} 메소드 호출 시 자동으로 호출된다.
+An automatic `document.open()` call happens when
+{{domxref("document.write()")}} is called after the page has loaded.
 
-Firefox 및 Internet Explorer 에서는 기존까지 모든 요소 뿐 만 아니라 자바스크립트 변수까지 제거했었다. 하지만 현재 그런 경우는 없다.document non-spec'ed parameters to document.open
+### Content Security
 
-### Gecko 특정 참고사항
+This method is subject to the same [same-origin policy](/en-US/docs/Web/Security/Same-origin_policy) as other properties, and does not work if doing so would change the document's origin.
 
-Starting with Gecko 1.9, this method is subject to the same same-origin policy as other properties, and does not work if doing so would change the document's origin.
+## Three-argument document.open()
 
-Starting with Gecko 1.9.2, `document.open()` uses the [principal](/ko/docs/Security_check_basics) of the document whose URI it uses, instead of fetching the principal off the stack. As a result, you can no longer call {{domxref("document.write()")}} into an untrusted document from chrome, even using [`wrappedJSObject`](/en/wrappedJSObject). See [Security check basics](/en/Security_check_basics) for more about principals.
+There is a lesser-known and little-used three-argument version of
+`document.open()`, which is an alias of {{domxref("Window.open()")}} (see
+its page for full details).
 
-## document.open()의 인자 3개
-
-잘 사용하지 않지만, `document.open()` 메소드는 3 개의 인자를 받을 수 있으며, 호출할 경우 {{domxref("Window.open()")}} 메소드와 동일하게 동작한다(`Window.open()` 메소드 참고).
-
-다음 예제는 Github 웹 사이트를 새 창으로 열게 되며, opener 개체를 `null`로 설정한다.
-
-```js
-document.open('https://www.github.com','', 'noopener=true')
-```
-
-## document.open()의 인자 2개
-
-브라우저에서는 2개의 인자를 가진 `document.open()` 또한 가지고 있으며, 아래와 같은 구조를 가진다.
+This call, for example opens github.com in a new window, with its opener set to
+`null`:
 
 ```js
-document.open(type, replace)
+document.open("https://www.github.com", "", "noopener=true");
 ```
 
-Where `type` 인자는 문서를 작성할 MIME 형식을 정의하며(예: `text/html`), 현재 히스토리를 대체(예: `"replace"`) 하는 새 문서 작성을 시작할 수 있다.
+## Two-argument document.open()
 
-하지만 이런 호출은 더 이상 사용할 수 없으며, 예외 또한 발생하지 않는다.대신 인자가 없는 `document.open()` 메소드가 호출되는 효과를 지니며, 대신 브라우저 히스토리 대체는 그대로 작동한다.
+Browsers used to support a two-argument `document.open()`, with the
+following signature:
 
-## 명세서
+```js
+document.open(type, replace);
+```
+
+Where `type` specified the MIME type of the data you are writing (e.g.
+`text/html`) and replace if set (i.e. a string of `"replace"`)
+specified that the history entry for the new document would replace the current history
+entry of the document being written to.
+
+This form is now obsolete; it won't throw an error, but instead just forwards to
+`document.open()` (i.e. is the equivalent of just running it with no
+arguments). The history-replacement behavior now always happens.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이보기
+## See also
 
 - {{domxref("Document")}}
 - {{domxref("Window.open()")}}

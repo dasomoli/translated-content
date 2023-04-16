@@ -1,11 +1,11 @@
 ---
 title: Descriptor (CSS)
 slug: Glossary/CSS_Descriptor
-original_slug: Glossary/Descriptor_(CSS)
+page-type: glossary-definition
 ---
 
-**CSS 설명자**(**descriptor**)는 {{cssxref("at-rule")}}의 특성을 정의합니다. At-rules에는 하나 이상의 설명자가 있을 수 있습니다. 각각의 설명자는 다음을 갖고있습니다.
+A **CSS descriptor** defines the characteristics of an [at-rule](/en-US/docs/Web/CSS/At-rule). At-rules may have one or multiple descriptors. Each descriptor has:
 
-- 이름
-  - 컴포넌트값을 보유하는 값
-  - 기본 상태에서 설정되지 않은(unset) "!important" 플래그
+- A name
+- A value, which holds the component values
+- An "!important" flag, which in its default state is unset

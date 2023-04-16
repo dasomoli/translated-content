@@ -1,79 +1,101 @@
 ---
 title: position
 slug: Web/CSS/position
+page-type: css-property
+browser-compat: css.properties.position
 ---
 
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`position`** 속성은 문서 상에 요소를 배치하는 방법을 지정합니다. {{cssxref("top")}}, {{cssxref("right")}}, {{cssxref("bottom")}}, {{cssxref("left")}} 속성이 요소를 배치할 최종 위치를 결정합니다.
+The **`position`** [CSS](/en-US/docs/Web/CSS) property sets how an element is positioned in a document. The {{Cssxref("top")}}, {{Cssxref("right")}}, {{Cssxref("bottom")}}, and {{Cssxref("left")}} properties determine the final location of positioned elements.
 
 {{EmbedInteractiveExample("pages/css/position.html")}}
 
-## 구문
+## Syntax
 
-`position` 속성은 아래의 목록에서 하나의 키워드 값을 선택해 지정할 수 있습니다.
+```css
+position: static;
+position: relative;
+position: absolute;
+position: fixed;
+position: sticky;
 
-### 값
+/* Global values */
+position: inherit;
+position: initial;
+position: revert;
+position: revert-layer;
+position: unset;
+```
+
+### Values
 
 - `static`
-  - : 요소를 일반적인 문서 흐름에 따라 배치합니다. {{cssxref("top")}}, {{cssxref("right")}}, {{cssxref("bottom")}}, {{cssxref("left")}}, {{cssxref("z-index")}} 속성이 아무런 영향도 주지 않습니다. 기본값입니다.
+  - : The element is positioned according to the normal flow of the document. The {{cssxref("top")}}, {{cssxref("right")}}, {{cssxref("bottom")}}, {{cssxref("left")}}, and {{cssxref("z-index")}} properties have _no effect_. This is the default value.
 - `relative`
-  - : 요소를 일반적인 문서 흐름에 따라 배치하고, 자기 자신을 기준으로 `top`, `right`, `bottom`, `left`의 값에 따라 오프셋을 적용합니다. 오프셋은 다른 요소에는 영향을 주지 않습니다. 따라서 페이지 레이아웃에서 요소가 차지하는 공간은 `static`일 때와 같습니다.
 
-    {{cssxref("z-index")}}의 값이 `auto`가 아니라면 새로운 [쌓임 맥락](/ko/docs/Web/CSS/Understanding_z-index/The_stacking_context)을 생성합니다. `table-*-group`, `table-row`, `table-column`, `table-cell`, `table-caption` 요소에 적용했을 때의 작동 방식은 정의되지 않았습니다.
+  - : The element is positioned according to the normal flow of the document, and then offset _relative to itself_ based on the values of `top`, `right`, `bottom`, and `left`. The offset does not affect the position of any other elements; thus, the space given for the element in the page layout is the same as if position were `static`.
+
+    This value creates a new [stacking context](/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context) when the value of `z-index` is not `auto`. Its effect on `table-*-group`, `table-row`, `table-column`, `table-cell`, and `table-caption` elements is undefined.
+
 - `absolute`
-  - : 요소를 일반적인 문서 흐름에서 제거하고, 페이지 레이아웃에 공간도 배정하지 않습니다. 대신 가장 가까운 위치 지정 조상 요소에 대해 상대적으로 배치합니다. 단, 조상 중 위치 지정 요소가 없다면 초기 [컨테이닝 블록](/ko/docs/Web/CSS/All_About_The_Containing_Block)을 기준으로 삼습니다. 최종 위치는 `top`, `right`, `bottom`, `left` 값이 지정합니다.
 
-    {{cssxref("z-index")}}의 값이 `auto`가 아니라면 새로운 [쌓임 맥락](/ko/docs/Web/CSS/Understanding_z-index/The_stacking_context)을 생성합니다. 절대 위치 지정 요소의 바깥 여백은 서로 [상쇄](/ko/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)되지 않습니다.
+  - : The element is removed from the normal document flow, and no space is created for the element in the page layout. It is positioned relative to its closest [positioned](#types_of_positioning) ancestor, if any; otherwise, it is placed relative to the initial [containing block](/en-US/docs/Web/CSS/Containing_block). Its final position is determined by the values of `top`, `right`, `bottom`, and `left`.
+
+    This value creates a new [stacking context](/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context) when the value of `z-index` is not `auto`. The margins of absolutely positioned boxes do not [collapse](/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing) with other margins.
+
 - `fixed`
-  - : 요소를 일반적인 문서 흐름에서 제거하고, 페이지 레이아웃에 공간도 배정하지 않습니다. 대신 {{glossary("viewport", "뷰포트")}}의 초기 [컨테이닝 블록](/ko/docs/Web/CSS/All_About_The_Containing_Block)을 기준으로 삼아 배치합니다. 단, 요소의 조상 중 하나가 `transform`, `perspective`, `filter` 속성 중 어느 하나라도 `none`이 아니라면 ([CSS Transforms 명세](https://www.w3.org/TR/css-transforms-1/#propdef-transform) 참조) 뷰포트 대신 그 조상을 컨테이닝 블록으로 삼습니다. (`perspective`와 `filter`의 경우 브라우저별로 결과가 다름에 유의) 최종 위치는 `top`, `right`, `bottom`, `left` 값이 지정합니다.
 
-    이 값은 항상 새로운 [쌓임 맥락](/ko/docs/Web/CSS/Understanding_z-index/The_stacking_context)을 생성합니다. 문서를 인쇄할 때는 해당 요소가 모든 페이지의 같은 위치에 출력됩니다.
+  - : The element is removed from the normal document flow, and no space is created for the element in the page layout. It is positioned relative to the initial [containing block](/en-US/docs/Web/CSS/Containing_block) established by the {{glossary("viewport")}}, except when one of its ancestors has a `transform`, `perspective`, or `filter` property set to something other than `none` (see the [CSS Transforms Spec](https://www.w3.org/TR/css-transforms-1/#propdef-transform)), or the [`will-change`](/en-US/docs/Web/CSS/will-change) property is set to `transform`, in which case that ancestor behaves as the containing block. (Note that there are browser inconsistencies with `perspective` and `filter` contributing to containing block formation.) Its final position is determined by the values of `top`, `right`, `bottom`, and `left`.
+
+    This value always creates a new [stacking context](/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context). In printed documents, the element is placed in the same position on _every page_.
+
 - `sticky`
-  - : 요소를 일반적인 문서 흐름에 따라 배치하고, 테이블 관련 요소를 포함해 가장 가까운, 스크롤 되는 조상과, 표 관련 요소를 포함한 [컨테이닝 블록](/ko/docs/Web/CSS/All_About_The_Containing_Block)(가장 가까운 블록 레벨 조상) 을 기준으로 `top`, `right`, `bottom`, `left`의 값에 따라 오프셋을 적용합니다. 오프셋은 다른 요소에는 영향을 주지 않습니다.
 
-    이 값은 항상 새로운 [쌓임 맥락](/ko/docs/Web/CSS/Understanding_z-index/The_stacking_context)을 생성합니다. 끈끈한 요소는 "스크롤 동작"(`overflow`가 `hidden`, `scroll`, `auto` 혹은 `overlay`)이 존재하는 가장 가까운 조상에 달라붙으며, 사실 그 조상은 스크롤 불가하며 실제로 스크롤 가능한 조상이 따로 존재할 경우 "끈끈한" 동작을 보이지 않는 점에 주의하세요. ([W3C CSSWG의 Github 이슈](https://github.com/w3c/csswg-drafts/issues/865) 참조)
+  - : The element is positioned according to the normal flow of the document, and then offset relative to its _nearest scrolling ancestor_ and [containing block](/en-US/docs/Web/CSS/Containing_block) (nearest block-level ancestor), including table-related elements, based on the values of `top`, `right`, `bottom`, and `left`. The offset does not affect the position of any other elements.
 
-## 설명
+    This value always creates a new [stacking context](/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context). Note that a sticky element "sticks" to its nearest ancestor that has a "scrolling mechanism" (created when `overflow` is `hidden`, `scroll`, `auto`, or `overlay`), even if that ancestor isn't the nearest actually scrolling ancestor.
 
-### 배치 유형
+## Description
 
-- **위치 지정 요소**란 `position`의 [계산값](/ko/docs/Web/CSS/computed_value)이 `relative`, `absolute`, `fixed`, `sticky` 중 하나인 요소입니다. 즉, 값이 `static`이 아닌 모든 요소를 말합니다.
-- **상대 위치 지정 요소**는`position`의 [계산값](/ko/docs/Web/CSS/computed_value)이 `relative`인 요소입니다. {{cssxref("top")}}과 {{cssxref("bottom")}}은 원래 위치에서의 세로축 거리를, {{cssxref("left")}}와 {{cssxref("right")}}은 원래 위치에서의 가로축 거리를 지정합니다.
-- **절대 위치 지정 요소**는`position`의 [계산값](/ko/docs/Web/CSS/computed_value)이 `absolute` 또는 `fixed`인 요소입니다.{{cssxref("top")}}, {{cssxref("right")}}, {{cssxref("bottom")}}, {{cssxref("left")}}는 요소의 [컨테이닝 블록](/ko/docs/Web/CSS/All_About_The_Containing_Block)(위치의 기준점이 되는 조상 요소) 모서리로부터의 거리를 지정합니다. 요소가 바깥 여백을 가진다면 거리에 더합니다. 절대 위치 지정 요소는 새로운 [블록 서식 맥락](/ko/docs/Web/Guide/CSS/Block_formatting_context)을 생성합니다.
-- **끈끈한 위치 지정 요소**는 `position`의 [계산값](/ko/docs/Web/CSS/computed_value)이 `sticky`인 요소입니다. 평소에는 상대 위치 지정 요소로 처리하지만, [컨테이닝 블록](/ko/docs/Web/CSS/All_About_The_Containing_Block)이 자신의 플로우 루트(또는, 스크롤 컨테이너)에서 지정한 임계값({{cssxref("top")}} 등으로 지정)을 넘으면 마치 `fixed`처럼 화면에 고정합니다. 고정 상태는 컨테이닝 블록의 반대편 모서리를 만나면 해제됩니다.
+### Types of positioning
 
-대부분의 경우, {{cssxref("height")}}와 {{cssxref("width")}}가 `auto`로 지정된 절대 위치 지정 요소는 자신의 콘텐츠에 맞춰 크기가 바뀝니다. 반면 [비대체](/ko/docs/Web/CSS/Replaced_element) 절대 위치 지정 요소는 {{Cssxref("top")}}과 {{Cssxref("bottom")}}을 지정하고 {{Cssxref("height")}}는 지정하지 않으면 (즉, `auto`로 두면) 사용 가능한 수직 공간을 가득 채웁니다. 마찬가지로 {{Cssxref("left")}}와 {{Cssxref("right")}}을 지정하고, {{Cssxref("width")}}는 `auto`로 두면 사용 가능한 수평 공간을 가득 채웁니다.
+- A **positioned element** is an element whose [computed](/en-US/docs/Web/CSS/computed_value) `position` value is either `relative`, `absolute`, `fixed`, or `sticky`. (In other words, it's anything except `static`.)
+- A **relatively positioned element** is an element whose [computed](/en-US/docs/Web/CSS/computed_value) `position` value is `relative`. The {{Cssxref("top")}} and {{Cssxref("bottom")}} properties specify the vertical offset from its normal position; the {{Cssxref("left")}} and {{Cssxref("right")}} properties specify the horizontal offset.
+- An **absolutely positioned element** is an element whose [computed](/en-US/docs/Web/CSS/computed_value) `position` value is `absolute` or `fixed`. The {{Cssxref("top")}}, {{Cssxref("right")}}, {{Cssxref("bottom")}}, and {{Cssxref("left")}} properties specify offsets from the edges of the element's [containing block](/en-US/docs/Web/CSS/Containing_block). (The containing block is the ancestor relative to which the element is positioned.) If the element has margins, they are added to the offset. The element establishes a new [block formatting context](/en-US/docs/Web/Guide/CSS/Block_formatting_context) (BFC) for its contents.
+- A **stickily positioned element** is an element whose [computed](/en-US/docs/Web/CSS/computed_value) `position` value is `sticky`. It's treated as relatively positioned until its [containing block](/en-US/docs/Web/CSS/Containing_block) crosses a specified threshold (such as setting {{Cssxref("top")}} to value other than auto) within its flow root (or the container it scrolls within), at which point it is treated as "stuck" until meeting the opposite edge of its [containing block](/en-US/docs/Web/CSS/Containing_block).
 
-위에서 설명한 경우(공간을 꽉 채우는 경우)가 아니라면 다음 규칙을 따릅니다.
+Most of the time, absolutely positioned elements that have {{Cssxref("height")}} and {{Cssxref("width")}} set to `auto` are sized so as to fit their contents. However, non-[replaced](/en-US/docs/Web/CSS/Replaced_element), absolutely positioned elements can be made to fill the available vertical space by specifying both {{Cssxref("top")}} and {{Cssxref("bottom")}} and leaving {{Cssxref("height")}} unspecified (that is, `auto`). They can likewise be made to fill the available horizontal space by specifying both {{Cssxref("left")}} and {{Cssxref("right")}} and leaving {{Cssxref("width")}} as `auto`.
 
-- `top`과 `bottom`을 지정한 경우(`auto`가 아닌 경우), `top`이 우선 적용됩니다.
-- `left`와 `right`를 지정한 경우, {{Cssxref("direction")}}이 `ltr`(영어, 한국어 등)이면 `left`를 우선 적용하고, {{Cssxref("direction")}}이 `rtl`(페르시아어, 아랍어, 히브리어 등)이면 `right`를 우선 적용합니다.
+Except for the case just described (of absolutely positioned elements filling the available space):
 
-## 접근성 고려사항
+- If both `top` and `bottom` are specified (technically, not `auto`), `top` wins.
+- If both `left` and `right` are specified, `left` wins when {{Cssxref("direction")}} is `ltr` (English, horizontal Japanese, etc.) and `right` wins when {{Cssxref("direction")}} is `rtl` (Persian, Arabic, Hebrew, etc.).
 
-화면을 확대해서 텍스트가 크게 보이게 했을 때 `absolute`나 `fixed`로 배치된 요소가 내용을 가리지 않도록 주의해야 합니다.
+## Accessibility concerns
 
-- [MDN Understanding WCAG, Guideline 1.4 explanations](/ko/docs/Web/Accessibility/Understanding_WCAG/Perceivable#Guideline_1.4_Make_it_easier_for_users_to_see_and_hear_content_including_separating_foreground_from_background)
+Ensure that elements positioned with an `absolute` or `fixed` value do not obscure other content when the page is zoomed to increase text size.
+
+- [MDN Understanding WCAG, Guideline 1.4 explanations](/en-US/docs/Web/Accessibility/Understanding_WCAG/Perceivable#guideline_1.4_make_it_easier_for_users_to_see_and_hear_content_including_separating_foreground_from_background)
 - [Visual Presentation: Understanding SC 1.4.8 | Understanding WCAG 2.0](https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-visual-presentation.html)
 
-### 성능 및 접근성 문제
+### Performance & Accessibility
 
-`fixed`나 `sticky`를 포함하는 스크롤 요소가 성능 및 접근성 문제를 유발할 수 있습니다. 브라우저는 사용자가 스크롤을 할 때마다 끈끈하거나 고정인 요소를 새로운 위치에 페인트 해야 하는데, 표시해야 되는 내용의 양, 브라우저 및 기기의 성능에 따라 60 fps를 유지하지 못해 일부 민감한 사용자에게는 접근성 문제가, 다른 모두에게는 사용자 경험 악화가 생깁니다. 이 문제의 해결책 중 하나는 {{cssxref("will-change", "will-change: transform")}}을 추가하여 요소를 자신만의 레이어에서 렌더링 하여 페인트 속도를 향상하고, 나아가 성능과 접근성을 높일 수 있습니다.
+Scrolling elements containing `fixed` or `sticky` content can cause performance and accessibility issues. As a user scrolls, the browser must repaint the sticky or fixed content in a new location. Depending on the content needing to be repainted, the browser performance, and the device's processing speed, the browser may not be able to manage repaints at 60 fps, causing accessibility concerns for people with sensitivities and jank for everyone. One solution is to add {{cssxref("will-change", "will-change: transform")}} to the positioned elements to render the element in its own layer, improving repaint speed and therefore improving performance and accessibility.
 
-## 형식 정의
+## Formal definition
 
 {{cssinfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 상대 위치 지정
+### Relative positioning
 
-상대적으로 배치된 요소는 문서 내에서 정상적인(normal) 위치에서 주어진 오프셋만큼 떨어지지만, 다른 요소에는 영향을 주지 않습니다. 아래 예제에서는 다른 요소들이 "Two"가 원래 위치에 있는 것처럼 배치되는 것을 확인할 수 있습니다.
+Relatively positioned elements are offset a given amount from their normal position within the document, but without the offset affecting other elements. In the example below, note how the other elements are placed as if "Two" were taking up the space of its normal location.
 
 #### HTML
 
@@ -87,6 +109,10 @@ slug: Web/CSS/position
 #### CSS
 
 ```css
+* {
+  box-sizing: border-box;
+}
+
 .box {
   display: inline-block;
   width: 100px;
@@ -103,67 +129,112 @@ slug: Web/CSS/position
 }
 ```
 
-{{ EmbedLiveSample('상대_위치_지정', '600px', '200px') }}
+{{EmbedLiveSample('Relative_positioning', '', '200px')}}
 
-### 절대 위치 지정
+### Absolute positioning
 
-상대적으로 배치된 요소가 일반적인 문서 흐름에 따르는 것과 달리, 절대적으로 배치된 요소는 흐름에서 제거됩니다. 따라서 다른 요소는 그 요소가 존재하지 않는 것처럼 배치됩니다. 절대적으로 배치된 요소는 _가장 가까운 위치 지정 조상_(즉, `static`이 아닌 가장 가까운 조상)을 기준으로 배치됩니다. 그런 요소가 존재하지 않는다면, 초기 컨테이닝 블록이 기준이 됩니다.
+Elements that are relatively positioned remain in the normal flow of the document. In contrast, an element that is absolutely positioned is taken out of the flow; thus, other elements are positioned as if it did not exist. The absolutely positioned element is positioned relative to its _nearest positioned ancestor_ (i.e., the nearest ancestor that is not `static`). If a positioned ancestor doesn't exist, it is positioned relative to the ICB (initial containing block — see also the [W3C definition](https://www.w3.org/TR/CSS2/visudet.html#containing-block-details)), which is the containing block of the document's root element.
 
 #### HTML
 
 ```html
-<div class="box" id="one">One</div>
-<div class="box" id="two">Two</div>
-<div class="box" id="three">Three</div>
-<div class="box" id="four">Four</div>
+<h1>Absolute positioning</h1>
+
+<p>
+  I am a basic block level element. My adjacent block level elements sit on new
+  lines below me.
+</p>
+
+<p class="positioned">
+  By default we span 100% of the width of our parent element, and we are as tall
+  as our child content. Our total width and height is our content + padding +
+  border width/height.
+</p>
+
+<p>
+  We are separated by our margins. Because of margin collapsing, we are
+  separated by the width of one of our margins, not both.
+</p>
+
+<p>
+  inline elements <span>like this one</span> and <span>this one</span> sit on
+  the same line as one another, and adjacent text nodes, if there is space on
+  the same line. Overflowing inline elements
+  <span>wrap onto a new line if possible — like this one containing text</span>,
+  or just go on to a new line if not, much like this image will do:
+  <img src="long.jpg" />
+</p>
 ```
 
 #### CSS
 
 ```css
-.box {
-  display: inline-block;
-  width: 100px;
-  height: 100px;
-  background: red;
-  color: white;
+* {
+  box-sizing: border-box;
 }
 
-#two {
+body {
+  width: 500px;
+  margin: 0 auto;
+}
+
+p {
+  background: aqua;
+  border: 3px solid blue;
+  padding: 10px;
+  margin: 10px;
+}
+
+span {
+  background: red;
+  border: 1px solid black;
+}
+
+.positioned {
   position: absolute;
-  top: 20px;
-  left: 20px;
-  background: blue;
+  background: yellow;
+  top: 30px;
+  left: 30px;
 }
 ```
 
-{{ EmbedLiveSample('절대_위치_지정', '800px', '200px') }}
+#### Result
 
-### 고정 위치 지정
+{{EmbedLiveSample('Absolute_positioning', '', '420px')}}
 
-고정 위치 지정은 절대 위치 지정과 비슷하지만, `fixed`는 요소의 컨테이닝 블록이 *뷰포트*의 초기 [컨테이닝 블록](/ko/docs/Web/CSS/All_About_The_Containing_Block)이라는 점에서 다릅니다(`transform`, `perspective`, `filter` 속성이 `none`이 아닌 조상이 있다면 그 조상이 컨테이닝 블록이 됩니다. [CSS Transforms Spec](https://www.w3.org/TR/css-transforms-1/#propdef-transform) 참조). 따라서 스크롤에 관계 없이 화면의 특정 지점에 고정되는, "떠다니는"(floating) 요소를 생성할 수 있습니다. 아래 예제에서, "One" 상자는 페이지 위에서 80픽셀, 왼쪽에서 10픽셀 떨어진 위치에 고정됩니다. 스크롤을 하더라도, 뷰포트를 기준으로 같은 위치에 고정된 채로 유지됩니다.
+### Fixed positioning
+
+Fixed positioning is similar to absolute positioning, with the exception that the element's [containing block](/en-US/docs/Web/CSS/Containing_block) is the initial containing block established by the _viewport_, unless any ancestor has `transform`, `perspective`, or `filter` property set to something other than `none` (see [CSS Transforms Spec](https://www.w3.org/TR/css-transforms-1/#propdef-transform)), which then causes that ancestor to take the place of the elements [containing block](/en-US/docs/Web/CSS/Containing_block). This can be used to create a "floating" element that stays in the same position regardless of scrolling. In the example below, box "One" is fixed at 80 pixels from the top of the page and 10 pixels from the left. Even after scrolling, it remains in the same place relative to the viewport. Also, when the [`will-change`](/en-US/docs/Web/CSS/will-change) property is set to `transform`, a new containing block is established.
 
 #### HTML
 
 ```html
 <div class="outer">
   <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue tortor eget pulvinar lobortis.
-    Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nam ac dolor augue.
-    Pellentesque mi mi, laoreet et dolor sit amet, ultrices varius risus. Nam vitae iaculis elit.
-    Aliquam mollis interdum libero. Sed sodales placerat egestas. Vestibulum ut arcu aliquam purus viverra dictum vel sit amet mi.
-    Duis nisl mauris, aliquam sit amet luctus eget, dapibus in enim. Sed velit augue, pretium a sem aliquam, congue porttitor tortor.
-    Sed tempor nisl a lorem consequat, id maximus erat aliquet. Sed sagittis porta libero sed condimentum.
-    Aliquam finibus lectus nec ante congue rutrum. Curabitur quam quam, accumsan id ultrices ultrices, tempor et tellus.
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue tortor
+    eget pulvinar lobortis. Vestibulum ante ipsum primis in faucibus orci luctus
+    et ultrices posuere cubilia Curae; Nam ac dolor augue. Pellentesque mi mi,
+    laoreet et dolor sit amet, ultrices varius risus. Nam vitae iaculis elit.
+    Aliquam mollis interdum libero. Sed sodales placerat egestas. Vestibulum ut
+    arcu aliquam purus viverra dictum vel sit amet mi. Duis nisl mauris, aliquam
+    sit amet luctus eget, dapibus in enim. Sed velit augue, pretium a sem
+    aliquam, congue porttitor tortor. Sed tempor nisl a lorem consequat, id
+    maximus erat aliquet. Sed sagittis porta libero sed condimentum. Aliquam
+    finibus lectus nec ante congue rutrum. Curabitur quam quam, accumsan id
+    ultrices ultrices, tempor et tellus.
   </p>
   <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue tortor eget pulvinar lobortis.
-    Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nam ac dolor augue.
-    Pellentesque mi mi, laoreet et dolor sit amet, ultrices varius risus. Nam vitae iaculis elit.
-    Aliquam mollis interdum libero. Sed sodales placerat egestas. Vestibulum ut arcu aliquam purus viverra dictum vel sit amet mi.
-    Duis nisl mauris, aliquam sit amet luctus eget, dapibus in enim. Sed velit augue, pretium a sem aliquam, congue porttitor tortor.
-    Sed tempor nisl a lorem consequat, id maximus erat aliquet. Sed sagittis porta libero sed condimentum.
-    Aliquam finibus lectus nec ante congue rutrum. Curabitur quam quam, accumsan id ultrices ultrices, tempor et tellus.
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue tortor
+    eget pulvinar lobortis. Vestibulum ante ipsum primis in faucibus orci luctus
+    et ultrices posuere cubilia Curae; Nam ac dolor augue. Pellentesque mi mi,
+    laoreet et dolor sit amet, ultrices varius risus. Nam vitae iaculis elit.
+    Aliquam mollis interdum libero. Sed sodales placerat egestas. Vestibulum ut
+    arcu aliquam purus viverra dictum vel sit amet mi. Duis nisl mauris, aliquam
+    sit amet luctus eget, dapibus in enim. Sed velit augue, pretium a sem
+    aliquam, congue porttitor tortor. Sed tempor nisl a lorem consequat, id
+    maximus erat aliquet. Sed sagittis porta libero sed condimentum. Aliquam
+    finibus lectus nec ante congue rutrum. Curabitur quam quam, accumsan id
+    ultrices ultrices, tempor et tellus.
   </p>
   <div class="box" id="one">One</div>
 </div>
@@ -172,6 +243,10 @@ slug: Web/CSS/position
 #### CSS
 
 ```css
+* {
+  box-sizing: border-box;
+}
+
 .box {
   width: 100px;
   height: 100px;
@@ -194,21 +269,26 @@ slug: Web/CSS/position
 }
 ```
 
-{{ EmbedLiveSample('고정_위치_지정', '800px', '300px') }}
+#### Result
 
-### 끈끈한 위치 지정
+{{EmbedLiveSample('Fixed_positioning', '', '300px')}}
 
-끈끈한 위치 지정은 상대와 고정 위치 지정을 합친 것으로 생각할 수 있습니다. 끈끈하게 배치된 요소는 상대적으로 배치된 요소로 취급하지만, 주어진 경계선을 지나면 고정 위치를 갖게 됩니다. 예를 들어,
+### Sticky positioning
+
+Sticky positioning can be thought of as a hybrid of relative and fixed positioning when its nearest scrolling ancestor is the viewport. A stickily positioned element is treated as relatively positioned until it crosses a specified threshold, at which point it is treated as fixed until it reaches the boundary of its parent. For example:
 
 ```css
-#one { position: sticky; top: 10px; }
+#one {
+  position: sticky;
+  top: 10px;
+}
 ```
 
-이때 id가 one인 요소는 그 위치가 위에서 10픽셀 떨어진 위치까지는 상대적으로 배치되지만, 그 경계를 넘어가면 위에서 10픽셀 떨어진 위치에 고정됩니다.
+The above CSS rule would position the element with id _one_ relatively until the viewport was scrolled such that the element would be less than 10 pixels from the top. Beyond that threshold, the element would be fixed to 10 pixels from the top.
 
-끈끈한 위치 지정은 흔히 사전순 리스트의 레이블에 사용할 수 있습니다. 예를 들어, "ㄴ" 레이블은 "ㄱ"으로 시작하는 목록이 화면 밖으로 나갈 때까지는 그 바로 밑에 표시되고, 그 다음에는 "ㄱ"을 따라 화면 밖으로 나가는 대신 화면 위에 고정시킬 수 있습니다. 그러다가 "ㄴ" 목록이 화면 바깥으로 나가면 그 자리에 "ㄷ" 레이블을 고정시킬 수 있습니다.
+A common use for sticky positioning is for the headings in an alphabetized list. The "B" heading will appear just below the items that begin with "A" until they are scrolled offscreen. Rather than sliding offscreen with the rest of the content, the "B" heading will then remain fixed to the top of the viewport until all the "B" items have scrolled offscreen, at which point it will be covered up by the "C" heading, and so on.
 
-끈끈한 위치 지정이 의도한 대로 동작하게 하려면 `top`, `right`, `bottom`, `left` 중 적어도 하나의 임계값을 설정해야 합니다. 임계값을 설정하지 않으면 상대 위치 지정과 다를 바가 없습니다.
+You must specify a threshold with at least one of `top`, `right`, `bottom`, or `left` for sticky positioning to behave as expected. Otherwise, it will be indistinguishable from relative positioning.
 
 #### HTML
 
@@ -253,15 +333,15 @@ slug: Web/CSS/position
 }
 
 dl > div {
-  background: #FFF;
+  background: #fff;
   padding: 24px 0 0 0;
 }
 
 dt {
-  background: #B8C1C8;
-  border-bottom: 1px solid #989EA4;
-  border-top: 1px solid #717D85;
-  color: #FFF;
+  background: #b8c1c8;
+  border-bottom: 1px solid #989ea4;
+  border-top: 1px solid #717d85;
+  color: #fff;
   font: bold 18px/21px Helvetica, Arial, sans-serif;
   margin: 0;
   padding: 2px 0 0 12px;
@@ -278,16 +358,22 @@ dd {
 }
 
 dd + dd {
-  border-top: 1px solid #CCC;
+  border-top: 1px solid #ccc;
 }
 ```
 
-{{ EmbedLiveSample('끈끈한_위치_지정', '500px', '300px') }}
+#### Result
 
-## 명세
+{{EmbedLiveSample('Sticky_positioning', '', '300px')}}
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- [Learn CSS: Positioning](/en-US/docs/Learn/CSS/CSS_layout/Positioning)

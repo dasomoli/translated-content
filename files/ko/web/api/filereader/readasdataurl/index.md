@@ -1,42 +1,61 @@
 ---
-title: FileReader.readAsDataURL()
+title: "FileReader: readAsDataURL() method"
+short-title: readAsDataURL()
 slug: Web/API/FileReader/readAsDataURL
+page-type: web-api-instance-method
+browser-compat: api.FileReader.readAsDataURL
 ---
+
 {{APIRef("File API")}}
 
-`readAsDataURL` 메서드는 컨텐츠를 특정 {{domxref("Blob")}} 이나 {{domxref("File")}}에서 읽어 오는 역할을 합니다. 읽어오는 read 행위가 종료되는 경우에, {{domxref("FileReader.readyState","readyState")}} 의 상태가 `DONE`이 되며, {{event("loadend")}} 이벤트가 트리거 됩니다. 이와 함께, base64 인코딩 된 스트링 데이터가 {{domxref("FileReader.result","result")}} 속성(attribute)에 담아지게 됩니다.
+The `readAsDataURL` method is used to read the contents of the specified
+{{domxref("Blob")}} or {{domxref("File")}}. When the read operation is finished, the
+{{domxref("FileReader.readyState","readyState")}} becomes `DONE`, and the
+{{domxref("FileReader/loadend_event", "loadend")}} is triggered. At that time, the
+{{domxref("FileReader.result","result")}} attribute contains the data as a [data: URL](/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs) representing the
+file's data as a base64 encoded string.
 
-## 문법
+> **Note:** The blob's {{domxref("FileReader.result","result")}} cannot be
+> directly decoded as Base64 without first removing the Data-URL declaration preceding
+> the Base64-encoded data. To retrieve only the Base64 encoded string, first
+> remove `data:*/*;base64,` from the result.
 
-```js
-instanceOfFileReader.readAsDataURL(blob);
+## Syntax
+
+```js-nolint
+readAsDataURL(blob)
 ```
 
-### 파라미터
+### Parameters
 
 - `blob`
-  - : 읽고자 하는 {{domxref("Blob")}} 또는 {{domxref("File")}}.
+  - : The {{domxref("Blob")}} or {{domxref("File")}} from which to read.
 
-## 예제
+### Return value
+
+None ({{jsxref("undefined")}}).
+
+## Examples
 
 ### HTML
 
 ```html
 <input type="file" onchange="previewFile()" /><br />
-<img src="" height="200" alt="이미지 미리보기..." />
+<img src="" height="200" alt="Image preview" />
 ```
 
 ### JavaScript
 
 ```js
 function previewFile() {
-  var preview = document.querySelector('img');
-  var file = document.querySelector('input[type=file]').files[0];
-  var reader = new FileReader();
+  const preview = document.querySelector("img");
+  const file = document.querySelector("input[type=file]").files[0];
+  const reader = new FileReader();
 
   reader.addEventListener(
-    'load',
-    function () {
+    "load",
+    () => {
+      // convert image file to base64 string
       preview.src = reader.result;
     },
     false
@@ -48,11 +67,11 @@ function previewFile() {
 }
 ```
 
-### 실행 결과
+### Live Result
 
-{{EmbedLiveSample("Example", "100%", 240)}}
+{{EmbedLiveSample("Examples", "100%", 240)}}
 
-## 복수의 파일 읽기 예제
+## Example reading multiple files
 
 ### HTML
 
@@ -65,18 +84,18 @@ function previewFile() {
 
 ```js
 function previewFiles() {
-  var preview = document.querySelector('#preview');
-  var files = document.querySelector('input[type=file]').files;
+  const preview = document.querySelector("#preview");
+  const files = document.querySelector("input[type=file]").files;
 
   function readAndPreview(file) {
-    // `file.name` 형태의 확장자 규칙에 주의하세요
+    // Make sure `file.name` matches our extensions criteria
     if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
-      var reader = new FileReader();
+      const reader = new FileReader();
 
       reader.addEventListener(
-        'load',
-        function () {
-          var image = new Image();
+        "load",
+        () => {
+          const image = new Image();
           image.height = 100;
           image.title = file.name;
           image.src = this.result;
@@ -90,26 +109,20 @@ function previewFiles() {
   }
 
   if (files) {
-    [].forEach.call(files, readAndPreview);
+    Array.prototype.forEach.call(files, readAndPreview);
   }
 }
 ```
 
-> **참고:**
->
-> [`FileReader()`](/ko/docs/Web/API/FileReader) 생성자는 Internet Explorer 10 이전 버전에서는 지원하지 않는 기능입니다.
->
-> 정상적으로 지원하는 코드를 확인하기 위해서는 다음 링크를 참조하시기 바랍니다. [crossbrowser possible solution for image preview](https://mdn.mozillademos.org/files/3699/crossbrowser_image_preview.html).
-> 또는 [this more powerful example](https://mdn.mozillademos.org/files/3698/image_upload_preview.html).
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 바깥 고리
+## See also
 
 - {{domxref("FileReader")}}
+- {{domxref("URL.createObjectURL()")}}

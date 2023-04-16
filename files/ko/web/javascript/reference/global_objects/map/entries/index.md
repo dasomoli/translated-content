@@ -1,39 +1,35 @@
 ---
 title: Map.prototype.entries()
 slug: Web/JavaScript/Reference/Global_Objects/Map/entries
-l10n:
-  sourceCommit: 2eb202adbe3d83292500ed46344d63fbbae410b5
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Map.entries
 ---
 
 {{JSRef}}
 
-**`entries()`** 메서드는 새 [반복자](/ko/docs/Web/JavaScript/Guide/Iterators_and_Generators)
-객체를 반환합니다. 이 객체에는 `Map` 객체의 각 요소에 대한 `[key, value]` 쌍이 삽입 순서대로 포함됩니다.
-이 특별한 경우, 이 반복자 객체도 반복이 가능하므로 for-of 루프를 사용할 수 있습니다. `[Symbol.iterator]` 프로토콜이
-사용될 경우, 호출될 때 반복자 자체를 반환하는 함수를 반환합니다.
+The **`entries()`** method returns a new _[map iterator](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator)_ object that contains the `[key, value]` pairs for each element in the `Map` object in insertion order.
 
-**`entries()`**
 {{EmbedInteractiveExample("pages/js/map-prototype-entries.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 entries()
 ```
 
-### 반환 값
+### Return value
 
-새로운 {{jsxref("Map")}} 반복자 객체.
+A new [iterable iterator object](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator).
 
-## 예제
+## Examples
 
-### entries() 사용하기
+### Using entries()
 
 ```js
 const myMap = new Map();
-myMap.set('0', 'foo');
-myMap.set(1, 'bar');
-myMap.set({}, 'baz');
+myMap.set("0", "foo");
+myMap.set(1, "bar");
+myMap.set({}, "baz");
 
 const mapIter = myMap.entries();
 
@@ -42,15 +38,15 @@ console.log(mapIter.next().value); // [1, "bar"]
 console.log(mapIter.next().value); // [Object, "baz"]
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Map.prototype.keys()")}}
 - {{jsxref("Map.prototype.values()")}}

@@ -1,23 +1,24 @@
 ---
-title: AudioNode.context
+title: "AudioNode: context property"
+short-title: context
 slug: Web/API/AudioNode/context
+page-type: web-api-instance-property
+browser-compat: api.AudioNode.context
 ---
 
 {{APIRef("Web Audio API")}}
 
-{{domxref("AudioNode")}} 인터페이스의 읽기 전용 `context` 속성은 연관된 {{domxref("BaseAudioContext")}}를 반환하는데, BaseAudioContext는 이 노드가 관여하고 있는 프로세싱 그래프를 나타내는 객체입니다.
+The read-only `context` property of the
+{{domxref("AudioNode")}} interface returns the associated
+{{domxref("BaseAudioContext")}}, that is the object representing the processing graph
+the node is participating in.
 
-## 구문
+## Value
 
-```js
-var aContext = anAudioNode.context;
-```
+The {{domxref("AudioContext")}} or {{domxref("OfflineAudioContext")}} object that was
+used to construct this `AudioNode`.
 
-### 값
-
-이 `AudioNode` 를 생성하기 위해 사용된 {{domxref("AudioContext")}} 또는 {{domxref("OfflineAudioContext")}} 객체.
-
-## 예제
+## Examples
 
 ```js
 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -31,15 +32,14 @@ console.log(oscillator.context); // AudioContext
 console.log(oscillator.context === audioCtx); // true
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Web Audio
-  API 사용하기](/ko/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)
+- [Using the Web Audio API](/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)

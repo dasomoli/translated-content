@@ -1,17 +1,20 @@
 ---
 title: CSS Custom Properties for Cascading Variables
 slug: Web/CSS/CSS_Variables
+page-type: css-module
+spec-urls: https://drafts.csswg.org/css-variables/
 ---
-{{cssref}}
 
-**CSS Custom Properties for Cascading Variables**
+{{CSSRef}}
 
-캐스케이딩 변수를 위한 CSS 사용자지정 속성은, 반복적으로 사용가능한 사용자지정 속성을 만들 수 있게 해주는 모듈입니다.
+**CSS Custom Properties for Cascading Variables** is a [CSS](/en-US/docs/Web/CSS) module that allows for the creation of custom properties that can be used over and over.
 
-## CSS 속성
+## Reference
+
+### Properties
 
 - {{cssxref("--*")}}
 
-## 명세
+## Specifications
 
 {{Specifications}}

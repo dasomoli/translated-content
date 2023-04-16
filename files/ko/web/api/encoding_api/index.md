@@ -1,33 +1,38 @@
 ---
-title: 인코딩 API
+title: Encoding API
 slug: Web/API/Encoding_API
+page-type: web-api-overview
+browser-compat:
+  - api.TextDecoder
+  - api.TextEncoder
+  - api.TextEncoderStream
+  - api.TextDecoderStream
 ---
 
-{{DefaultAPISidebar("Encoding API")}}{{SeeCompatTable}}
+{{DefaultAPISidebar("Encoding API")}}
 
-**인코딩 API**는 {{Glossary("문자 인코딩", "character encodings")}}, {{Glossary("UTF-8")}}이 아닌 레거시 인코딩을 포함한 다양한 문자열을 제어할 수 있는 매커니즘을 제공한다.
+The **Encoding API** provides a mechanism for handling text in various {{Glossary("character encoding", "character encodings")}}, including legacy non-{{Glossary("UTF-8")}} encodings.
 
-인코딩 API는 4가지 인터페이스를 제공한다. {{domxref("TextDecoder")}}, {{domxref("TextEncoder")}}, {{domxref("TextDecoderStream")}}, {{domxref("TextEncoderStream")}} 등 이다.
+The API provides four interfaces: {{domxref("TextDecoder")}}, {{domxref("TextEncoder")}}, {{domxref("TextDecoderStream")}} and {{domxref("TextEncoderStream")}}.
+
+{{AvailableInWorkers}}
 
 ## Interfaces
 
-<div class="index"><ul><li>{{DOMxRef("TextDecoder")}}</li><li>{{DOMxRef("TextEncoder")}}</li><li>{{DOMxRef("TextDecoderStream")}}</li><li>{{DOMxRef("TextEncoderStream")}}</li></ul></div>
+- {{DOMxRef("TextDecoder")}}
+- {{DOMxRef("TextEncoder")}}
+- {{DOMxRef("TextDecoderStream")}}
+- {{DOMxRef("TextEncoderStream")}}
 
-## Tutorials & tools
-
-- A [shim](http://code.google.com/p/stringencoding/) allowing to use this interface in browsers that don't support it.
-- [`StringView`](/en-US/Add-ons/Code_snippets/StringView) – a C-like representation of strings based on typed arrays.
-
-## 명세서
+## Specifications
 
 {{Specifications}}
 
 ## Browser compatibility
 
-### `TextDecoder`
-
 {{Compat}}
 
-### `TextEncoder`
+## See also
 
-{{Compat}}
+- [Encoding API Encodings](/en-US/docs/Web/API/Encoding_API/Encodings) - Encodings that must be supported for decoding text.
+- A [polyfill](https://github.com/inexorabletash/text-encoding) allowing to use this interface in browsers that don't support it

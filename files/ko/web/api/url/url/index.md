@@ -1,68 +1,114 @@
 ---
-title: URL()
+title: "URL: URL() constructor"
+short-title: URL()
 slug: Web/API/URL/URL
+page-type: web-api-constructor
+browser-compat: api.URL.URL
 ---
+
 {{APIRef("URL API")}}
 
-**`URL()`** 생성자는 매개변수로 제공한 URL을 나타내는 새로운 {{domxref("URL")}} 객체를 반환합니다.
+The **`URL()`** constructor returns a newly created
+{{domxref("URL")}} object representing the URL defined by the parameters.
 
-주어진 기준 URL이나 결과 URL이 유효하지 않은 URL일 경우, JavaScript {{jsxref("TypeError")}} 예외가 발생합니다.
+If the given base URL or the resulting URL are not valid URLs, the JavaScript
+{{jsxref("TypeError")}} exception is thrown.
 
 {{AvailableInWorkers}}
 
-## 구문
+## Syntax
 
-```js
-const url = new URL(url [, base])
+```js-nolint
+new URL(url)
+new URL(url, base)
 ```
 
-### 매개변수
+### Parameters
 
 - `url`
-  - : 절대 또는 상대 URL을 나타내는 {{domxref("USVString")}}. `url`이 상대 URL인 경우 `base` 매개변수를 기준 URL로 사용하므로 `base`도 필수로 지정해야 합니다. 절대 URL인 경우 `base`는 무시합니다.
+  - : A string or any other object with a {{Glossary("stringifier")}} — including, for example, an {{htmlelement("a")}} or {{htmlelement("area")}} element — that represents an absolute or relative URL.
+    If `url` is a relative URL, `base` is
+    required, and will be used as the base URL. If `url` is an
+    absolute URL, a given `base` will be ignored.
 - `base` {{optional_inline}}
-  - : `url` 매개변수가 상대 URL인 경우 사용할 기준 URL을 나타내는 {{domxref("USVString")}}. 기본값은 `''`입니다.
+  - : A string representing the base URL to use in cases where
+    `url` is a relative URL. If not specified, it defaults to
+    `undefined`.
 
-> **참고:** `base`에는 기존에 존재하는 {{domxref("URL")}} 객체도 사용할 수 있습니다. 그러면 {{domxref("URI.href", "href")}} 속성을 사용해 스스로 문자열화합니다.
+> **Note:** The `url` and `base` arguments will
+> each be stringified from whatever value you pass, just like with other Web APIs
+> that accept a string. In particular, you can use an existing
+> {{domxref("URL")}} object for either argument, and it will stringify to the
+> object's {{domxref("URL.href", "href")}} property.
 
-### 예외
+### Exceptions
 
-| 예외                             | 설명                                                                              |
-| -------------------------------- | --------------------------------------------------------------------------------- |
-| {{jsxref("TypeError")}} | 절대 URL인 경우 `url`, 상대 URL인 경우 `base` + `url`이 유효하지 않은 URL인 경우. |
+| Exception               | Explanation                                                                                               |
+| ----------------------- | --------------------------------------------------------------------------------------------------------- |
+| {{jsxref("TypeError")}} | `url` (in the case of absolute URLs) or `base` + `url` (in the case of relative URLs) is not a valid URL. |
 
-## 예제
+## Examples
 
 ```js
-// Base urls
-let m = 'https://developer.mozilla.org';
-let a = new URL("/", m);                                // => 'https://developer.mozilla.org/'
-let b = new URL(m);                                     // => 'https://developer.mozilla.org/'
+// Base URLs:
+let baseUrl = "https://developer.mozilla.org";
 
-        new URL('en-US/docs', b);                      // => 'https://developer.mozilla.org/en-US/docs'
-let d = new URL('/en-US/docs', b);                     // => 'https://developer.mozilla.org/en-US/docs'
-        new URL('/en-US/docs', d);                     // => 'https://developer.mozilla.org/en-US/docs'
-        new URL('/en-US/docs', a);                     // => 'https://developer.mozilla.org/en-US/docs'
+let A = new URL("/", baseUrl);
+// => 'https://developer.mozilla.org/'
 
-        new URL('/en-US/docs', "https://developer.mozilla.org/fr-FR/toto");
-                                                       // => 'https://developer.mozilla.org/en-US/docs'
+let B = new URL(baseUrl);
+// => 'https://developer.mozilla.org/'
 
-        new URL('/en-US/docs', '');                    // Raises a TypeError exception as '' is not a valid URL
-        new URL('/en-US/docs');                        // Raises a TypeError exception as '/en-US/docs' is not a valid URL
-        new URL('http://www.example.com', );           // => 'http://www.example.com/'
-        new URL('http://www.example.com', b);          // => 'http://www.example.com/'
+new URL("en-US/docs", B);
+// => 'https://developer.mozilla.org/en-US/docs'
 
-        new URL("//foo.com", "https://example.com")    // => 'https://foo.com' (see relative URLs)
+let D = new URL("/en-US/docs", B);
+// => 'https://developer.mozilla.org/en-US/docs'
+
+new URL("/en-US/docs", D);
+// => 'https://developer.mozilla.org/en-US/docs'
+
+new URL("/en-US/docs", A);
+// => 'https://developer.mozilla.org/en-US/docs'
+
+new URL("/en-US/docs", "https://developer.mozilla.org/fr-FR/toto");
+// => 'https://developer.mozilla.org/en-US/docs'
+
+// Invalid URLs:
+
+new URL("/en-US/docs", "");
+// Raises a TypeError exception as '' is not a valid URL
+
+new URL("/en-US/docs");
+// Raises a TypeError exception as '/en-US/docs' is not a valid URL
+
+// Other cases:
+
+new URL("http://www.example.com");
+// => 'http://www.example.com/'
+
+new URL("http://www.example.com", B);
+// => 'http://www.example.com/'
+
+new URL("", "https://example.com/?query=1");
+// => 'https://example.com/?query=1' (Edge before 79 removes query arguments)
+
+new URL("/a", "https://example.com/?query=1");
+// => 'https://example.com/a' (see relative URLs)
+
+new URL("//foo.com", "https://example.com");
+// => 'https://foo.com/' (see relative URLs)
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 생성자가 속한 {{domxref("URL")}} 인터페이스.
+- [Polyfill of `URL` in `core-js`](https://github.com/zloirock/core-js#url-and-urlsearchparams)
+- The interface it belongs to: {{domxref("URL")}}.

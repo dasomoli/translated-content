@@ -1,52 +1,60 @@
 ---
 title: Math.exp()
 slug: Web/JavaScript/Reference/Global_Objects/Math/exp
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Math.exp
 ---
 
 {{JSRef}}
 
-**`Math.exp()`**함수는 `x`를 인수로 하는 `e^x` 값을 반환합니다. 그리고 `e`는 {{jsxref("Math.E", "오일러 상수(또는 네이피어 상수)", "", 1)}}는 자연 로그의 밑입니다.
+The **`Math.exp()`** static method returns [e](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/E) raised to the power of a number. That is
+
+<math display="block"><semantics><mrow><mrow><mo lspace="0em" rspace="0.16666666666666666em">𝙼𝚊𝚝𝚑.𝚎𝚡𝚙</mo><mo stretchy="false">(</mo><mi>𝚡</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><msup><mi mathvariant="normal">e</mi><mi>x</mi></msup></mrow><annotation encoding="TeX">\mathtt{\operatorname{Math.exp}(x)} = \mathrm{e}^x</annotation></semantics></math>
 
 {{EmbedInteractiveExample("pages/js/math-exp.html")}}
 
-## 구문
+## Syntax
 
-```js
-    Math.exp(x)
+```js-nolint
+Math.exp(x)
 ```
 
-### 매개변수
+### Parameters
 
 - `x`
-  - : 숫자
+  - : A number.
 
-### 반환 값
+### Return value
 
-`e`는 {{jsxref("Math.E", "오일러 상수", "", 1)}}이고 `x`는 인수인 `e^x`값
+A nonnegative number representing e<sup>x</sup>, where e is [the base of the natural logarithm](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/E).
 
 ## Description
 
-`exp()`는 `Math`의 정적 메소드이기 때문에 새로 작성한 `Math` 오브젝트 대신에 항상 `Math.exp()`의 형태로 써야 합니다. (`Math`는 생성자가 아닙니다.)
+Because `exp()` is a static method of `Math`, you always use it as `Math.exp()`, rather than as a method of a `Math` object you created (`Math` is not a constructor).
 
-## 예시
+Beware that `e` to the power of a number very close to 0 will be very close to 1 and suffer from loss of precision. In this case, you may want to use {{jsxref("Math.expm1")}} instead, and obtain a much higher-precision fractional part of the answer.
 
-### `Math.exp()` 사용 예
+## Examples
+
+### Using Math.exp()
 
 ```js
+Math.exp(-Infinity); // 0
 Math.exp(-1); // 0.36787944117144233
-Math.exp(0);  // 1
-Math.exp(1);  // 2.718281828459045
+Math.exp(0); // 1
+Math.exp(1); // 2.718281828459045
+Math.exp(Infinity); // Infinity
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Math.E")}}
 - {{jsxref("Math.expm1()")}}

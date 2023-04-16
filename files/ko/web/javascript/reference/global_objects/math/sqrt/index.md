@@ -1,57 +1,60 @@
 ---
 title: Math.sqrt()
 slug: Web/JavaScript/Reference/Global_Objects/Math/sqrt
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Math.sqrt
 ---
 
 {{JSRef}}
 
-**`Math.sqrt()`** 함수는 숫자의 제곱근을 반환합니다.
+The **`Math.sqrt()`** static method returns the square root of a number. That is
 
-<math display="block"><semantics><mrow><mo>∀</mo><mi>x</mi><mo>≥</mo><mn>0</mn><mo>,</mo><mstyle mathvariant="monospace"><mrow><mi>M</mi><mi>a</mi><mi>t</mi><mi>h</mi><mo>.</mo><mi>s</mi><mi>q</mi><mi>r</mi><mi>t</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mstyle><mo>=</mo><msqrt><mi>x</mi></msqrt><mo>=</mo><mtext>the unique</mtext><mspace width="thickmathspace"></mspace><mi>y</mi><mo>≥</mo><mn>0</mn><mspace width="thickmathspace"></mspace><mtext>such that</mtext><mspace width="thickmathspace"></mspace><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mi>x</mi></mrow><annotation encoding="TeX">\forall x \geq 0, \mathtt{Math.sqrt(x)} = \sqrt{x} = \text{the unique} \; y \geq 0 \; \text{such that} \; y^2 = x</annotation></semantics></math>
+<math display="block"><semantics><mrow><mo>∀</mo><mi>x</mi><mo>≥</mo><mn>0</mn><mo>,</mo><mspace width="0.2777777777777778em"></mspace><mrow><mo lspace="0em" rspace="0.16666666666666666em">𝙼𝚊𝚝𝚑.𝚜𝚚𝚛𝚝</mo><mo stretchy="false">(</mo><mi>𝚡</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><msqrt><mi>x</mi></msqrt><mo>=</mo><mtext>the unique&nbsp;</mtext><mi>y</mi><mo>≥</mo><mn>0</mn><mtext>&nbsp;such that&nbsp;</mtext><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><mi>x</mi></mrow><annotation encoding="TeX">\forall x \geq 0,\;\mathtt{\operatorname{Math.sqrt}(x)} = \sqrt{x} = \text{the unique } y \geq 0 \text{ such that } y^2 = x</annotation></semantics></math>
 
-## 문법
+{{EmbedInteractiveExample("pages/js/math-sqrt.html")}}
 
-```js
-    Math.sqrt(x)
+## Syntax
+
+```js-nolint
+Math.sqrt(x)
 ```
 
-### 매개변수
+### Parameters
 
 - `x`
-  - : 숫자.
+  - : A number greater than or equal to 0.
 
-### 반환 값
+### Return value
 
-주어진 숫자에 루트(**√** )를 씌웁니다. 만약 숫자가 음수이면 {{jsxref("NaN")}}를 반환합니다.
+The square root of `x`, a nonnegative number. If `x < 0`, returns {{jsxref("NaN")}}.
 
-## 설명
+## Description
 
-만약 `x` 가 음수라면 `Math.sqrt()` 함수는 {{jsxref("NaN")}}를 반환합니다.
+Because `sqrt()` is a static method of `Math`, you always use it as `Math.sqrt()`, rather than as a method of a `Math` object you created (`Math` is not a constructor).
 
-`sqrt()`는 `Math`의 정적 메서드 이므로 만든 `Math` 객체의 메서드가 아니라 항상 `Math.sqrt()`함수를 사용해야합니다. (`Math`는 생성자가 없습니다.)
+## Examples
 
-## 예제
-
-### `Math.sqrt()`
+### Using Math.sqrt()
 
 ```js
-Math.sqrt(9); // 3
-Math.sqrt(2); // 1.414213562373095
-
-Math.sqrt(1);  // 1
-Math.sqrt(0);  // 0
 Math.sqrt(-1); // NaN
+Math.sqrt(-0); // -0
+Math.sqrt(0); // 0
+Math.sqrt(1); // 1
+Math.sqrt(2); // 1.414213562373095
+Math.sqrt(9); // 3
+Math.sqrt(Infinity); // Infinity
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
 - {{jsxref("Math.cbrt()")}}
 - {{jsxref("Math.exp()")}}

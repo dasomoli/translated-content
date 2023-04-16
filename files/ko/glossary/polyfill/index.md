@@ -1,17 +1,17 @@
 ---
 title: Polyfill
 slug: Glossary/Polyfill
+page-type: glossary-definition
 ---
-polyfill은 기본적으로 지원하지 않는 이전 브라우저에서 최신 기능을 제공하는 데 필요한 코드 (일반적으로 웹의 JavaScript)입니다.
 
-예를 들어, Silverlight 플러그인을 사용하여 Microsoft Internet Explorer 7에서 HTML Canvas 요소의 기능을 모방하거나 CSS rem 단위 또는 {{cssxref("text-shadow")}}를 모방하는 등 필요한 모든 것에 polyfill을 사용할 수 있습니다.
+A polyfill is a piece of code (usually JavaScript on the Web) used to provide modern functionality on older browsers that do not natively support it.
 
-polyfill이 독점적으로 사용되지 않는 이유는 더 나은 기능성과 더 나은 성능을 위해서 입니다. API의 기본 구현은 polyfill보다 더 많은 작업을 수행 할 수 있고 더 빠릅니다. 예를 들어 [Object.create polyfill](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/create#Polyfill)에는Object.create 구현에서 가능한 기능 만 포함됩니다.
+For example, a polyfill could be used to mimic the functionality of a {{cssxref("text-shadow")}} in IE7 using proprietary IE filters, or mimic rem units or media queries by using JavaScript to dynamically adjust the styling as appropriate, or whatever else you require.
 
-다른 경우, 폴리 필은 브라우저가 다른 방식으로 동일한 기능을 구현하는 문제를 해결하는 데 사용됩니다. 폴리 필은 특정 브라우저에서 비표준 기능을 사용하여 JavaScript에 기능에 액세스 할 수있는 표준 준수 방법을 제공합니다. 폴리 필링에 대한 이러한 이유는 오늘날 매우 드물지만 각 브라우저가 Javascript를 매우 다르게 구현 한 IE6, Netscape 및 NNav 시대에 특히 널리 퍼졌습니다. [JQuery의 첫번째 버전](https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.js)은 폴리 필의 초기 예입니다. JavaScript 개발자는 모든 브라우저에서 작동하는 단일 공통 API를 가질 수 있도록 기본적으로 브라우저 별 해결 방법을 편집 한 것입니다. 당시 자바 스크립트 개발자는 웹 사이트가 완전히 다른 방식으로 프로그래밍되어야하고 사용자의 브라우저에 따라 다른 사용자 인터페이스를 가져야하는 브라우저 간 불일치로 인해 모든 장치에서 웹 사이트를 작동 시키려고 노력하고있었습니다. . 따라서 JavaScript 개발자는 모든 브라우저에서 거의 일관되게 작동하는 아주 작은 소수의 JavaScript API에만 액세스 할 수있었습니다. 현대 브라우저는 대부분 표준 시맨틱에 따라 광범위한 API 세트를 구현하기 때문에 폴리 필을 사용하여 브라우저 별 구현을 처리하는 것은 오늘날 실제로 존재하지 않습니다.
+The reason why polyfills are not used exclusively is for better functionality and better performance. Native implementations of APIs can do more and are faster than polyfills. For example, the [Object.create polyfill](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create#see_also) only contains the functionalities that are possible in a non-native implementation of Object.create.
 
-## Learn more
+Other times, polyfills are used to address issues where browsers implement the same features in different ways. The polyfill uses non-standard features in a certain browser to give JavaScript a standards-compliant way to access the feature. Although this reason for polyfilling is very rare today, it was especially prevalent back in the days of IE6 and Netscape where each browser implemented JavaScript very differently. The [1st version of jQuery](https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.js) was an early example of a polyfill. It was essentially a compilation of browser-specific workarounds to provide JavaScript developers with a single common API that worked in all browsers. At the time, JavaScript developers were having major problems trying to get their website to work across all devices because there was such a discrepancy between browsers that the website might have to be programmed radically differently and have a much different user interface based upon the user's browser. Thus, the JavaScript developer had access to only a very tiny handful of JavaScript APIs that worked more-or-less consistently across all browsers. Using a polyfill to handle browser-specific implementations is less common today because modern browsers mostly implement a broad set of APIs according to standard semantics.
 
-### General knowledge
+## See also
 
-- [What is a polyfill?](https://remysharp.com/2010/10/08/what-is-a-polyfill) (article by Remy Sharp, originator of the term)
+- [What is a polyfill?](https://remysharp.com/2010/10/08/what-is-a-polyfill) (article by Remy Sharp, the originator of the term)

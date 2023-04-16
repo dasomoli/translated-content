@@ -1,149 +1,175 @@
 ---
-title: '<meta>: 문서 레벨 메타데이터 요소'
+title: "<meta>: The metadata element"
 slug: Web/HTML/Element/meta
+page-type: html-element
+browser-compat: html.elements.meta
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<meta>` 요소**는 {{HTMLElement("base")}}, {{HTMLElement("link")}}, {{HTMLElement("script")}}, {{HTMLElement("style")}}, {{HTMLElement("title")}}과 같은 다른 메타관련 요소로 나타낼 수 없는 {{glossary("Metadata", "메타데이터")}}를 나타냅니다.
+The **`<meta>`** [HTML](/en-US/docs/Web/HTML) element represents {{Glossary("Metadata","metadata")}} that cannot be represented by other HTML meta-related elements, like {{HTMLElement("base")}}, {{HTMLElement("link")}}, {{HTMLElement("script")}}, {{HTMLElement("style")}} or {{HTMLElement("title")}}.
 
 <table class="properties">
   <tbody>
     <tr>
       <th>
-        <a
-          href="/ko/docs/Web/Guide/HTML/%EC%BB%A8%ED%85%90%ED%8A%B8_%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC"
-          >콘텐츠 카테고리</a
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
         >
       </th>
       <td>
-        메타데이터 콘텐츠.
-        <code
-          ><a href="/ko/docs/Web/HTML/Global_attributes/itemprop"
-            >itemprop</a
-          ></code
-        >이 존재하면
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >
-        및
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#구문_콘텐츠"
-          >구문 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#metadata_content"
+          >Metadata content</a
+        >. If the <a href="/en-US/docs/Web/HTML/Global_attributes/itemprop"><code>itemprop</code></a> attribute is present:
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >flow content</a
+        >,
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
         >.
       </td>
     </tr>
     <tr>
-      <th>가능한 콘텐츠</th>
+      <th>Permitted content</th>
+      <td>None; it is a {{Glossary("void element")}}.</td>
+    </tr>
+    <tr>
+      <th>Tag omission</th>
       <td>
-        없음. {{Glossary("empty element", "빈 요소")}}입니다.
+        As it is a void element, the start tag must be present and the end tag
+        must not be present.
       </td>
     </tr>
     <tr>
-      <th>태그 생략</th>
+      <th>Permitted parents</th>
       <td>
-        빈 요소이므로 여는 태그는 존재해야 하고 닫는 태그는 존재해선 안됩니다.
+        <ul>
+          <li>
+            <code>&#x3C;meta charset></code>,
+            <code>&#x3C;meta http-equiv></code>: a
+            {{HTMLElement("head")}} element. If the
+            <a href="/en-US/docs/Web/HTML/Element/meta#http-equiv"><code>http-equiv</code></a> is not an
+            encoding declaration, it can also be inside a
+            {{HTMLElement("noscript")}} element, itself inside a
+            <code>&#x3C;head></code> element.
+          </li>
+          <li>
+            <code>&#x3C;meta name></code>: any element that accepts
+            <a
+              href="/en-US/docs/Web/HTML/Content_categories#metadata_content"
+              >metadata content</a
+            >.
+          </li>
+          <li>
+            <code>&#x3C;meta itemprop></code>: any element that accepts
+            <a
+              href="/en-US/docs/Web/HTML/Content_categories#metadata_content"
+              >metadata content</a
+            >
+            or
+            <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+              >flow content</a
+            >.
+          </li>
+        </ul>
       </td>
     </tr>
     <tr>
-      <th>가능한 부모 요소</th>
-      <td>
-        <code>&#x3C;meta charset></code>, <code>&#x3C;meta http-equiv></code>인
-        경우 {{htmlelement("head")}} 요소.
-        {{htmlattrxref("http-equiv", "meta")}}가 인코딩 선언이
-        아닌 경우 <code>&#x3C;head></code> 내의
-        {{htmlelement("noscript")}} 요소도 가능합니다.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">암시적 ARIA 역할</th>
+      <th scope="row">Implicit ARIA role</th>
       <td>
         <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
-          >대응하는 역할 없음</a
+          >No corresponding role</a
         >
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>없음</td>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>No <code>role</code> permitted</td>
     </tr>
     <tr>
-      <th>DOM 인터페이스</th>
+      <th>DOM interface</th>
       <td>{{domxref("HTMLMetaElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-`meta` 요소가 제공하는 메타데이터는 다음 네 유형 중 하나입니다.
+The type of metadata provided by the `<meta>` element can be one of the following:
 
-- {{htmlattrxref("name", "meta")}} 특성을 지정하면 전체 페이지에 적용되는 "문서 레벨 메타데이터"를 제공합니다.
-- {{htmlattrxref("http-equiv", "meta")}} 특성을 지정하면 유사한 이름의 HTTP 헤더가 제공하는 정보와 동일한 "프래그마 지시문"이 됩니다.
-- {{htmlattrxref("charset", "meta")}} 특성을 지정하면 문서 인코딩에 사용한 문자 인코딩을 나타내는 "문자 집합 선언"이 됩니다.
-- {{htmlattrxref("itemprop")}} 특성을 지정하면 "사용자 정의 메타데이터"를 제공합니다.
+- If the [`name`](#name) attribute is set, the `<meta>` element provides _document-level metadata_, applying to the whole page.
+- If the [`http-equiv`](#http-equiv) attribute is set, the `<meta>` element is a _pragma directive_, providing information equivalent to what can be given by a similarly-named HTTP header.
+- If the [`charset`](#charset) attribute is set, the `<meta>` element is a _charset declaration_, giving the character encoding in which the document is encoded.
+- If the [`itemprop`](/en-US/docs/Web/HTML/Global_attributes/itemprop) attribute is set, the `<meta>` element provides _user-defined metadata_.
 
-## 특성
+## Attributes
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)을 포함합니다.
+This element includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-> **참고:** {{htmlattrxref("name", "meta")}} 특성은 `<meta>` 요소에 대해 특정한 의미를 가집니다. 하나의 `<meta>` 요소에서, {{htmlattrxref("itemprop", "meta")}} 특성을 {{htmlattrxref("name", "meta")}}, {{htmlattrxref("http-equiv", "meta")}} 또는 {{htmlattrxref("charset", "meta")}} 특성과 함께 설정할 수 없습니다.
+> **Note:** the attribute [`name`](#name) has a specific meaning for the `<meta>` element, and the [`itemprop`](/en-US/docs/Web/HTML/Global_attributes/itemprop) attribute must not be set on the same `<meta>` element that has any existing [`name`](#name), [`http-equiv`](#http-equiv) or [`charset`](#charset) attributes.
 
-- {{htmlattrdef("charset")}}
-  - : 페이지의 문자 인코딩을 선언합니다. 이 특성이 존재할 경우, 그 값은 반드시 문자열 "`utf-8`"의 대소문자 구분 없는 {{glossary("ASCII")}} 표현이어야 합니다.
-- {{htmlattrdef("content")}}
-  - : {{htmlattrxref("http-equiv", "meta")}} 또는 {{htmlattrxref("name", "meta")}} 특성의 값을 담습니다.
-- {{htmlattrdef("http-equiv")}}
+- `charset`
+  - : This attribute declares the document's character encoding. If the attribute is present, its value must be an ASCII case-insensitive match for the string "`utf-8`", because UTF-8 is the only valid encoding for HTML5 documents. `<meta>` elements which declare a character encoding must be located entirely within the first 1024 bytes of the document.
+- `content`
+  - : This attribute contains the value for the [`http-equiv`](#http-equiv) or [`name`](#name) attribute, depending on which is used.
+- `http-equiv`
 
-  - : 프래그마 지시문을 정의합니다. 특성의 이름(`http-equiv(alent)`)에서 알 수 있듯이, 가능한 값은 특정 HTTP 헤더입니다.
+  - : Defines a pragma directive. The attribute is named `http-equiv(alent)` because all the allowed values are names of particular HTTP headers:
 
     - `content-security-policy`
 
-      현재 페이지의 [콘텐츠 정책](/ko/docs/Web/HTTP/Headers/Content-Security-Policy)을 정의할 수 있습니다. 대부분의 콘텐츠 정책은 허용하는 서버 출처와 스크립트 엔드포인트를 지정해 사이트 간 스크립트 공격 방어에 도움을 줍니다.
+      Allows page authors to define a [content policy](/en-US/docs/Web/HTTP/Headers/Content-Security-Policy) for the current page. Content policies mostly specify allowed server origins and script endpoints which help guard against cross-site scripting attacks.
 
     - `content-type`
 
-      지정할 경우, `content` 특성의 값은 반드시 "`text/html; charset=utf-8`"이어야 합니다. **참고:** `text/html` [MIME 유형](/ko/docs/Web/HTTP/Basics_of_HTTP/MIME_types)으로 제공하는 문서에서만 사용할 수 있으며, XML MIME 유형의 문서에서는 사용할 수 없습니다.
+      Declares the [MIME type](/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) and the document's character encoding. The `content` attribute must have the value "`text/html; charset=utf-8`" if specified. This is equivalent to a `<meta>` element with the [`charset`](#charset) attribute specified and carries the same restriction on placement within the document. **Note:** Can only be used in documents served with a `text/html` — not in documents served with an XML MIME type.
 
     - `default-style`
 
-      기본 [CSS 스타일 시트](/ko/docs/Web/CSS) 세트의 이름을 지정합니다.
+      Sets the name of the default [CSS style sheet](/en-US/docs/Web/CSS) set.
 
     - `x-ua-compatible`
 
-      지정할 경우, `content` 특성의 값은 반드시 "`IE=edge`"여야 합니다. 사용자 에이전트는 이 프래그마를 무시해야 합니다.
+      If specified, the `content` attribute must have the value "`IE=edge`". User agents are required to ignore this pragma.
 
-    - `refresh` 다음을 지정합니다.
+    - `refresh` This instruction specifies:
 
-      - {{htmlattrxref("content", "meta")}} 특성에 양의 정수 값을 설정한 경우, 페이지를 다시 불러오기 전까지의 초 단위 대기시간.
-      - {{htmlattrxref("content", "meta")}} 특성이 양의 정수 값을 가지고 그 뒤를 문자열 `;url=`과 유효한 URL이 뒤따른다면, 해당 URL로 이동하기 전까지의 초 단위 대기시간.
+      - The number of seconds until the page should be reloaded - only if the [`content`](#content) attribute contains a non-negative integer.
+      - The number of seconds until the page should redirect to another - only if the [`content`](#content) attribute contains a non-negative integer followed by the string '`;url=`', and a valid URL.
 
-      > > **경고:**
+      > **Warning:**
       >
-      > `refresh` 값을 지정한 페이지의 경우 새로고침 사이 간격이 너무 짧을 우려가 있습니다. 스크린 리더 등의 보조 기술로 탐색하는 사용자는 자동 새로고침 이전에 페이지의 내용을 읽고 이해하지 못할 수 있습니다. 또한 저시력 사용자에게 있어, 갑작스럽고 사전 안내도 없는 콘텐츠 업데이트는 어지러울 수 있습니다.
+      > Pages set with a `refresh` value run the risk of having the time interval being too short. People navigating with the aid of assistive technology such as a screen reader may be unable to read through and understand the page's content before being automatically redirected. The abrupt, unannounced updating of the page content may also be disorienting for people experiencing low vision conditions.
       >
-      > - [MDN Understanding WCAG, Guideline 2.1 explanations](/ko/docs/Web/Accessibility/Understanding_WCAG/Operable#Guideline_2.2_—_Enough_Time_Provide_users_enough_time_to_read_and_use_content)
-      > - [MDN Understanding WCAG, Guideline 3.1 explanations](/ko/docs/Web/Accessibility/Understanding_WCAG/Understandable#Guideline_3.2_—_Predictable_Make_Web_pages_appear_and_operate_in_predictable_ways)
+      > - [MDN Understanding WCAG, Guideline 2.1 explanations](/en-US/docs/Web/Accessibility/Understanding_WCAG/Operable#guideline_2.2_—_enough_time_provide_users_enough_time_to_read_and_use_content)
+      > - [MDN Understanding WCAG, Guideline 3.1 explanations](/en-US/docs/Web/Accessibility/Understanding_WCAG/Understandable#guideline_3.2_—_predictable_make_web_pages_appear_and_operate_in_predictable_ways)
       > - [Understanding Success Criterion 2.2.1 | W3C Understanding WCAG 2.0](https://www.w3.org/TR/UNDERSTANDING-WCAG20/time-limits-required-behaviors.html)
       > - [Understanding Success Criterion 2.2.4 | W3C Understanding WCAG 2.0](https://www.w3.org/TR/UNDERSTANDING-WCAG20/time-limits-postponed.html)
       > - [Understanding Success Criterion 3.2.5 | W3C Understanding WCAG 2.0](https://www.w3.org/TR/UNDERSTANDING-WCAG20/consistent-behavior-no-extreme-changes-context.html)
 
-- {{htmlattrdef("name")}}
+- `name`
 
-  - : `name`과 `content` 특성을 함께 사용하면 문서의 메타데이터를 이름-값 쌍으로 제공할 수 있습니다. `name`은 이름, `content`는 값을 담당합니다.
+  - : The `name` and `content` attributes can be used together to provide document metadata in terms of name-value pairs, with the `name` attribute giving the metadata name, and the `content` attribute giving the value.
 
-    [표준 메타데이터 이름](/ko/docs/Web/HTML/Element/meta/name) 문서에서 HTML 명세에 포함된 표준 메타데이터 목록을 살펴보세요.
+    See [standard metadata names](/en-US/docs/Web/HTML/Element/meta/name) for details about the set of standard metadata names defined in the HTML specification.
 
-## 예제
+## Examples
 
 ```html
-<meta charset="utf-8">
+<meta charset="utf-8" />
 
-<!-- 3초 후 리다이렉트 -->
-<meta http-equiv="refresh" content="3;url=https://www.mozilla.org">
+<!-- Redirect page after 3 seconds -->
+<meta http-equiv="refresh" content="3;url=https://www.mozilla.org" />
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- [Standard metadata names](/en-US/docs/Web/HTML/Element/meta/name)
+- [Learn: `<meta>`](/en-US/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML#metadata_the_meta_element)
+- [The viewport meta tag](/en-US/docs/Web/HTML/Viewport_meta_tag)

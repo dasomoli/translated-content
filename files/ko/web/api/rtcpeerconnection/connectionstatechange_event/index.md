@@ -1,50 +1,92 @@
 ---
-title: RTCPeerConnection.onconnectionstatechange
+title: "RTCPeerConnection: connectionstatechange event"
+short-title: connectionstatechange
 slug: Web/API/RTCPeerConnection/connectionstatechange_event
-original_slug: Web/API/RTCPeerConnection/onconnectionstatechange
+page-type: web-api-event
+browser-compat: api.RTCPeerConnection.connectionstatechange_event
 ---
 
 {{APIRef("WebRTC")}}
 
-**`RTCPeerConnection.onconnectionstatechange`** 속성에 {{domxref("RTCPeerConnection")}} 인스턴스에서 발생하는 {{event("connectionstatechange")}} 이벤트를 처리하기 위해 호출되는 {{event("Event_handlers", "event handler")}}를 정의하게됩니다. 이 이벤트는 연결의 상태 집합체가 변할 때마다 발생합니다. 이 상태 집합체는 연결에 의해 사용되는 각각의 네트워크 전송 상태들의 묶음입니다.
+The **`connectionstatechange`** event is sent to the `onconnectionstatechange` event handler on an {{domxref("RTCPeerConnection")}} object after a new track has been added to an {{domxref("RTCRtpReceiver")}} which is part of the connection.
+The new connection state can be found in {{domxref("RTCPeerConnection.connectionState", "connectionState")}},
+and is one of the string values:
+`new`, `connecting`, `connected`, `disconnected`,
+`failed`, or `closed`.
+
+This event is not cancelable and does not bubble.
 
 ## Syntax
 
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
+
 ```js
-RTCPeerConnection.onconnectionstatechange = eventHandler;
+addEventListener("connectionstatechange", (event) => {});
+
+onconnectionstatechange = (event) => {};
 ```
 
-### 값
+## Event type
 
-{{domxref("RTCPeerConnection")}}에서 {{event("connectionstatechange")}} 이벤트가 생길 때, 브라우저에 의해 호출되는 함수입니다. 이 함수는 {{domxref("Event")}} 타입의 객체인 단일 패러미터를 입력인자로 받습니다. 해당 이벤트 객체는 특별한 정보를 담고 있지는 않습니다. 새로운 상태를 확인하려면 피어 연결의 {{domxref("RTCPeerConnection.connectionState", "connectionState")}}에 해당하는 값을 살펴보십시오.
+A generic {{domxref("Event")}}.
 
-## 예시
+## Examples
+
+For an {{domxref("RTCPeerConnection")}}, `pc`, this example sets up a handler for `connectionstatechange` messages to handle changes to the connectivity of the WebRTC session. It calls an app-defined function called `setOnlineStatus()` to update a status display.
 
 ```js
-pc.onconnectionstatechange = function(event) {
-  switch(pc.connectionState) {
+pc.onconnectionstatechange = (ev) => {
+  switch (pc.connectionState) {
+    case "new":
+    case "checking":
+      setOnlineStatus("Connecting…");
+      break;
     case "connected":
-      // The connection has become fully connected
+      setOnlineStatus("Online");
       break;
     case "disconnected":
-    case "failed":
-      // One or more transports has terminated unexpectedly or in an error
+      setOnlineStatus("Disconnecting…");
       break;
     case "closed":
-      // The connection has been closed
+      setOnlineStatus("Offline");
+      break;
+    case "failed":
+      setOnlineStatus("Error");
+      break;
+    default:
+      setOnlineStatus("Unknown");
       break;
   }
-}
+};
 ```
 
-## 명세
+You can also create a handler for `connectionstatechange` by using {{domxref("EventTarget.addEventListener", "addEventListener()")}}:
+
+```js
+pc.addEventListener(
+  "connectionstatechange",
+  (ev) => {
+    switch (
+      pc.connectionState
+      // …
+    ) {
+    }
+  },
+  false
+);
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
-- {{event("connectionstatechange")}} 이벤트와 이 이벤트의 타입인 {{domxref("Event")}}을 참조하십시오.
+- [WebRTC API](/en-US/docs/Web/API/WebRTC_API)
+- [WebRTC connectivity](/en-US/docs/Web/API/WebRTC_API/Connectivity)
+- [Lifetime of a WebRTC session](/en-US/docs/Web/API/WebRTC_API/Session_lifetime)
+- {{domxref("RTCPeerConnection.connectionState")}}

@@ -1,13 +1,14 @@
 ---
 title: Origin
 slug: Web/HTTP/Headers/Origin
+page-type: http-header
+browser-compat: http.headers.Origin
 ---
 
 {{HTTPSidebar}}
 
-**`Origin`** request 헤더는 fetch가 시작되는 위치입니다. 경로 정보는 포함하지 않고 서버 이름만 포함합니다. {{HTTPMethod("POST")}} requests에 포함되는 것처럼, {{Glossary("CORS")}} requests 와 함께 전송합니다. {{HTTPHeader("Referer")}} 헤더와 비슷하지만, origin 헤더는 전체 경로를 공개하지 않습니다.
-
-> **참고:** **주의**: {{HTTPMethod("HEAD")}} 와 {{HTTPMethod("GET")}} 메서드를 통해 [Fetch requests](/ko/docs/Web/API/WindowOrWorkerGlobalScope/fetch)를 사용할 때 {{httpheader("Origin")}} 헤더가 설정되지 않았습니다. (이 문제는 파이어폭스 65에서 수정되었습니다 — [Firefox bug 1508661](https://bugzil.la/1508661)참조).
+The **`Origin`** request header indicates the {{glossary("origin")}} (scheme, hostname, and port) that _caused_ the request.
+For example, if a user agent needs to request resources included in a page, or fetched by scripts that it executes, then the origin of the page may be included in the request.
 
 <table class="properties">
   <tbody>
@@ -22,33 +23,68 @@ slug: Web/HTTP/Headers/Origin
   </tbody>
 </table>
 
-## 문법
+## Syntax
 
-```
+```http
 Origin: null
-Origin: <scheme> "://" <hostname> [ ":" <port> ]
+Origin: <scheme>://<hostname>
+Origin: <scheme>://<hostname>:<port>
 ```
 
-## 지시
+## Directives
 
-- \<scheme>
-  - : 사용하는 프로토콜. 일반적으로 HTTP 프로토콜 혹은 보안 버전인 HTTPS를 사용합니다.
-- \<hostname>
-  - : 서버(가상 호스팅)의 이름 또는 IP 입니다.
-- \<port> {{optional_inline}}
-  - : 서버와 연결을 맺기 위한 TCP 포트 번호. 포트번호를 입력하지 않으면, 요청한 서비스의 기본 포트(HTTP의 경우 "80")가 사용됩니다.
+- `null`
 
-## 예제
+  - : The origin is "privacy sensitive", or is an _opaque origin_ as defined by the HTML specification (specific cases are listed in the [description](#description) section).
 
-```
+- `<scheme>`
+  - : The protocol that is used.
+    Usually, it is the HTTP protocol or its secured version, HTTPS.
+- `<hostname>`
+  - : The domain name or the IP address of the origin server.
+- `<port>` {{optional_inline}}
+  - : Port number on which the server is listening.
+    If no port is given, the default port for the requested service is implied (e.g., "80" for an HTTP URL) .
+
+## Description
+
+The `Origin` header is similar to the {{HTTPHeader("Referer")}} header, but does not disclose the path, and may be `null`.
+It is used to provide the "security context" for the origin request, except in cases where the origin information would be sensitive or unnecessary.
+
+Broadly speaking, user agents add the {{httpheader("Origin")}} request header to:
+
+- {{Glossary("CORS", "cross origin")}} requests.
+- [same-origin](/en-US/docs/Web/Security/Same-origin_policy) requests except for {{HTTPMethod("GET")}} or {{HTTPMethod("HEAD")}} requests (i.e. they are added to same-origin {{HTTPMethod("POST")}}, {{HTTPMethod("OPTIONS")}}, {{HTTPMethod("PUT")}}, {{HTTPMethod("PATCH")}}, and {{HTTPMethod("DELETE")}} requests).
+
+There are some exceptions to the above rules; for example, if a cross-origin {{HTTPMethod("GET")}} or {{HTTPMethod("HEAD")}} request is made in [no-cors mode](/en-US/docs/Web/API/Request/mode#value), the `Origin` header will not be added.
+
+The `Origin` header value may be `null` in a number of cases, including (non-exhaustively):
+
+- Origins whose scheme is not one of `http`, `https`, `ftp`, `ws`, `wss`, or `gopher` (including `blob`, `file` and `data`).
+- Cross-origin images and media data, including that in `<img>`, `<video>` and `<audio>` elements.
+- Documents created programmatically using `createDocument()`, generated from a `data:` URL, or that do not have a creator browsing context.
+- Redirects across origins.
+- iframes with a sandbox attribute that doesn't contain the value `allow-same-origin`.
+- Responses that are network errors.
+- [`Referrer-Policy`](/en-US/docs/Web/HTTP/Headers/Referrer-Policy) set to `no-referrer` for non-`cors` request modes (e.g. simple form posts).
+
+> **Note:** There is a more detailed listing of cases that may return `null` on Stack Overflow: [When do browsers send the Origin header? When do browsers set the origin to null?](https://stackoverflow.com/questions/42239643/when-do-browsers-send-the-origin-header-when-do-browsers-set-the-origin-to-null/42242802)
+
+## Examples
+
+```http
 Origin: https://developer.mozilla.org
 ```
 
-## 명세
+```http
+Origin: http://developer.mozilla.org:80
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 적합성
+## Browser compatibility
 
 {{Compat}}
 
@@ -56,4 +92,5 @@ Origin: https://developer.mozilla.org
 
 - {{HTTPHeader("Host")}}
 - {{HTTPHeader("Referer")}}
-- [Same-origin policy](/ko/docs/Web/Security/Same-origin_policy)
+- [Same-origin policy](/en-US/docs/Web/Security/Same-origin_policy)
+- [When do browsers send the Origin header? When do browsers set the origin to null?](https://stackoverflow.com/questions/42239643/when-do-browsers-send-the-origin-header-when-do-browsers-set-the-origin-to-null/42242802) (Stack Overflow)

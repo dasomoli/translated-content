@@ -1,142 +1,199 @@
 ---
-title: '<img>: 이미지 삽입 요소'
+title: "<img>: The Image Embed element"
 slug: Web/HTML/Element/img
+page-type: html-element
+browser-compat: html.elements.img
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<img>` 요소**는 문서에 이미지를 넣습니다.
+The **`<img>`** [HTML](/en-US/docs/Web/HTML) element embeds an image into the document.
 
 {{EmbedInteractiveExample("pages/tabbed/img.html", "tabbed-standard")}}
 
-위의 예제를 통해 `<img>` 요소의 사용법을 알 수 있습니다.
+The above example shows usage of the `<img>` element:
 
-- `src` 특성은 **필수**이며, 포함하고자 하는 이미지로의 경로를 지정합니다.
-- `alt` 특성은 이미지의 텍스트 설명이며 필수는 아니지만, 스크린 리더가 `alt`의 값을 읽어 사용자에게 이미지를 설명하므로, 접근성 차원에서 **매우 유용**합니다. 또한 네트워크 오류, 콘텐츠 차단, 죽은 링크 등 이미지를 표시할 수 없는 경우에도 이 속성의 값을 대신 보여줍니다.
+- The `src` attribute is **required**, and contains the path to the image you want to embed.
+- The `alt` attribute holds a text description of the image, which isn't mandatory but is **incredibly useful** for accessibility — screen readers read this description out to their users so they know what the image means. Alt text is also displayed on the page if the image can't be loaded for some reason: for example, network errors, content blocking, or linkrot.
 
-다양한 목적을 위한 많은 수의 속성이 더 존재합니다.
+There are many other attributes to achieve various purposes:
 
-- [Referrer](/ko/docs/Web/HTTP/Headers/Referrer-Policy) {{glossary("CORS")}} control for security and privacy: see {{htmlattrxref("crossorigin", "img")}} and {{htmlattrxref("referrerpolicy", "img")}}.
-- Setting an {{glossary("intrinsic size")}} using {{htmlattrxref("width", "img")}}, {{htmlattrxref("height", "img")}}, and {{htmlattrxref("intrinsicsize", "img")}}: this sets the space taken up by an image to ensure the page layout is stable before it loads.
-- Responsive image hints with {{htmlattrxref("sizes", "img")}} and {{htmlattrxref("srcset", "img")}} (see also the {{htmlelement("picture")}} element and our [Responsive images](/ko/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images) tutorial).
+- [Referrer](/en-US/docs/Web/HTTP/Headers/Referrer-Policy)/{{glossary("CORS")}} control for security and privacy: see [`crossorigin`](#crossorigin) and [`referrerpolicy`](#referrerpolicy).
+- Use both [`width`](#width) and [`height`](#height) to set the intrinsic size of the image, allowing it to take up space before it loads, to mitigate content layout shifts.
+- Responsive image hints with [`sizes`](#sizes) and [`srcset`](#srcset) (see also the {{htmlelement("picture")}} element and our [Responsive images](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images) tutorial).
 
-## 지원하는 이미지 형식
+## Supported image formats
 
-HTML 표준은 지원해야 하는 이미지 형식을 명시하고 있지 않으므로, 각각의 {{glossary("user agent", "사용자 에이전트")}}는 서로 다른 형식을 지원합니다. 전체 목록은 [웹 브라우저가 지원하는 이미지 형식 안내서](/ko/docs/Web/Media/Formats/Image_types)를 참고하세요.
+The HTML standard doesn't list what image formats to support, so {{glossary("user agent","user agents")}} may support different formats.
 
-## 이미지를 가져올 수 없을 때
+> **Note:** The [Image file type and format guide](/en-US/docs/Web/Media/Formats/Image_types) provides comprehensive information about image formats and their web browser support.
+> This section is just a summary!
 
-이미지를 불러오거나 그릴 때 오류가 발생했고, {{htmlattrxref("onerror")}} 속성에 오류 처리기를 등록했다면 {{event("error")}} 이벤트와 함께 처리기를 호출합니다. 오류는 다양한 상황에서 발생할 수 있는데, 그 중 일부 원인은 다음과 같습니다.
+The image file formats that are most commonly used on the web are:
 
-- {{htmlattrxref("src", "img")}} 속성이 비었거나 {{jsxref("null")}}임.
-- `src`의 URL이 현재 사용자가 보는 페이지의 URL과 같음.
-- 지정한 이미지가 손상돼 불러올 수 없음.
-- 이미지의 메타데이터가 손상돼 원본 크기를 알아낼 수 없고, `<img>` 요소의 속성에도 크기를 지정하지 않음.
-- {{Glossary("user agent", "사용자 에이전트")}}가 지원하지 않는 이미지 형식임.
+- [APNG (Animated Portable Network Graphics)](/en-US/docs/Web/Media/Formats/Image_types#apng_animated_portable_network_graphics) — Good choice for lossless animation sequences (GIF is less performant)
+- [AVIF (AV1 Image File Format)](/en-US/docs/Web/Media/Formats/Image_types#avif_image) — Good choice for both images and animated images due to high performance.
+- [GIF (Graphics Interchange Format)](/en-US/docs/Web/Media/Formats/Image_types#gif_graphics_interchange_format) — Good choice for _simple_ images and animations.
+- [JPEG (Joint Photographic Expert Group image)](/en-US/docs/Web/Media/Formats/Image_types#jpeg_joint_photographic_experts_group_image) — Good choice for lossy compression of still images (currently the most popular).
+- [PNG (Portable Network Graphics)](/en-US/docs/Web/Media/Formats/Image_types#png_portable_network_graphics) — Good choice for lossless compression of still images (slightly better quality than JPEG).
+- [SVG (Scalable Vector Graphics)](/en-US/docs/Web/Media/Formats/Image_types#svg_scalable_vector_graphics) — Vector image format. Use for images that must be drawn accurately at different sizes.
+- [WebP (Web Picture format)](/en-US/docs/Web/Media/Formats/Image_types#webp_image) — Excellent choice for both images and animated images
 
-## 특성
+Formats like [WebP](/en-US/docs/Web/Media/Formats/Image_types#webp_image) and [AVIF](/en-US/docs/Web/Media/Formats/Image_types#avif_image) are recommended as they perform much better than PNG, JPEG, GIF for both still and animated images. WebP is widely supported while AVIF lacks support in Edge.
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)을 포함합니다.
+SVG remains the recommended format for images that must be drawn accurately at different sizes.
 
-- {{htmlattrdef("alt")}}
-  - : 이미지의 대체 텍스트 설명.
+## Image loading errors
 
-  > **참고:** 브라우저가 항상 이미지를 표시하는건 아닙니다. 예를 들어,
+If an error occurs while loading or rendering an image, and an `onerror` event handler has been set for the {{domxref("Element/error_event", "error")}} event, that event handler will get called. This can happen in several situations, including:
 
-  - 비 시각적 브라우저 (시각 장애인이 사용하는 일부 브라우저 등)
-  - 사용자가 이미지 불러오기 거부 (대역폭 절약, 개인정보 보호 등)
-  - 유효하지 않은 이미지거나, [지원하지 않는 형식](/ko/docs/Web/HTML/Element/img#지원하는_이미지_형식)
+- The `src` attribute is empty (`""`) or `null`.
+- The `src` {{glossary("URL")}} is the same as the URL of the page the user is currently on.
+- The image is corrupted in some way that prevents it from being loaded.
+- The image's metadata is corrupted in such a way that it's impossible to retrieve its dimensions, and no dimensions were specified in the `<img>` element's attributes.
+- The image is in a format not supported by the {{Glossary("user agent")}}.
 
-  위와 같은 경우 브라우저가 이미지를 `alt` 특성의 텍스트로 대체할 수 있습니다. 그러므로 가능한 경우 `alt` 특성에 항상 유용한 값을 제공해야 합니다.
+## Attributes
 
-  `alt` 특성을 아예 지정하지 않은 경우 이미지가 콘텐츠의 중요 부분이나 텍스트로 표현할 수 없음을 의미합니다. 빈 문자열(`alt=""`)을 사용한 경우, 이미지가 콘텐츠의 중요 부분이 **아니므로**(장식 또는 추적용 픽셀 등), 비 시각적 브라우저가 {{glossary("Rendering engine", "렌더링")}}을 하지 않아도 된다는 의미입니다. 시각적 브라우저도 `alt` 특성이 비어있을 경우 깨진 이미지 아이콘을 표시하지 않습니다.
+This element includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-  이미지를 텍스트로서 복사-붙여넣기할 때와, 이미지 링크를 북마크 할 때도 `alt`의 값을 사용합니다. {{htmlattrdef("crossorigin")}}
-  - : CORS를 사용해 지정한 이미지 파일을 가져와야 하는지의 여부. [교차 출처 활성화 리소스](/ko/docs/Web/HTML/CORS_enabled_image)는 {{HTMLElement("canvas")}} 요소에 사용해도 캔버스를 "오염"시키지 않습니다. 가능한 값은 다음과 같습니다.
+- `alt`
 
-- `anonymous`
-  - : 자격 증명 없이 교차 출처 요청을 전송합니다. 즉, {{httpheader("Origin")}} {{glossary("HTTP")}} 헤더를 쿠키, [X.509 인증서](https://tools.ietf.org/html/rfc5280), [HTTP Basic 인증](/ko/docs/Web/HTTP/Authentication#Basic_인증_스킴) 없이 전송합니다. 서버에서 {{httpheader("Access-Control-Allow-Origin")}} HTTP 헤더를 지정하지 않음으로써 요청 출처 사이트에 자격 증명을 보내지 않는다면 이미지는 "오염"되고, 사용처가 제한됩니다.
+  - : Defines an alternative text description of the image.
 
-- `use-credentials`
-  - : 자격 증명과 함께 교차 출처 요청을 전송합니다. 즉, `Origin` HTTP 헤더를 쿠키, X 509 인증서, 또는 HTTP Basic 이증과 함께 전송합니다. 서버에서 `Access-Control-Allow-Credentials` HTTP 헤더를 통한 자격 증명을 요청 출처 사이트에 보내지 않는다면 이미지는 "오염"되고, 사용처가 제한됩니다.
+    > **Note:** Browsers do not always display images. There are a number of situations in which a browser might not display images, such as:
+    >
+    > - Non-visual browsers (such as those used by people with visual impairments)
+    > - The user chooses not to display images (saving bandwidth, privacy reasons)
+    > - The image is invalid or an [unsupported type](#supported_image_formats)
+    >
+    > In these cases, the browser may replace the image with the text in the element's `alt` attribute. For these reasons and others, provide a useful value for `alt` whenever possible.
 
-  특성이 존재하지 않으면 리소스를 CORS 요청 없이(`Origin` HTTP 헤더 없이) 가져오므로, {{htmlelement("canvas")}}를 오염시키게 됩니다. 유효하지 않은 값의 경우 `anonymous` 키워드를 사용한 것으로 간주합니다.
+    Setting this attribute to an empty string (`alt=""`) indicates that this image is _not_ a key part of the content (it's decoration or a tracking pixel), and that non-visual browsers may omit it from {{glossary("Rendering engine", "rendering")}}. Visual browsers will also hide the broken image icon if the `alt` is empty and the image failed to display.
 
-- {{htmlattrdef("decoding")}}
-  - : 이미지 디코딩에 관해 브라우저에 제공할 힌트. 가능한 값은 다음과 같습니다.
+    This attribute is also used when copying and pasting the image to text, or saving a linked image to a bookmark.
 
-- `sync`
-  - : 다른 콘텐츠와 함께 표시하기 위해 이미지를 동기적으로 디코딩 합니다.
-- `async`
-  - : 다른 콘텐츠의 표시 지연을 피하기 위해 이미지를 비동기적으로 디코딩 합니다.
-- `auto`
-  - : 선호하는 디코딩 모드가 없음을 나타내는 기본값입니다. 사용자에게 제일 적절한 값을 브라우저가 결정합니다.
-- {{htmlattrdef("height")}}
-  - : 픽셀 단위의 이미지의 고유 크기. 단위 없는 정수여야 합니다.
-- {{htmlattrdef("importance")}} {{experimental_inline}}
-  - : 리소스의 상대적인 다운로드 중요도. 가능한 값은 다음과 같습니다.
+- `crossorigin`
 
-  `auto`: **설정 안함**. 브라우저가 자체 휴리스틱을 사용해 이미지의 우선순위를 결정합니다.
+  - : Indicates if the fetching of the image must be done using a {{glossary("CORS")}} request. Image data from a [CORS-enabled image](/en-US/docs/Web/HTML/CORS_enabled_image) returned from a CORS request can be reused in the {{HTMLElement("canvas")}} element without being marked "[tainted](/en-US/docs/Web/HTML/CORS_enabled_image#what_is_a_tainted_canvas)".
 
-  `high`: 이미지가 **높은** 우선순위를 지님.
+    If the `crossorigin` attribute is _not_ specified, then a non-CORS request is sent (without the {{httpheader("Origin")}} request header), and the browser marks the image as tainted and restricts access to its image data, preventing its usage in {{HTMLElement("canvas")}} elements.
 
-  `low`: 이미지가 **낮은** 우선순위를 지님.
+    If the `crossorigin` attribute _is_ specified, then a CORS request is sent (with the {{httpheader("Origin")}} request header); but if the server does not opt into allowing cross-origin access to the image data by the origin site (by not sending any {{httpheader("Access-Control-Allow-Origin")}} response header, or by not including the site's origin in any {{httpheader("Access-Control-Allow-Origin")}} response header it does send), then the browser blocks the image from loading, and logs a CORS error to the devtools console.
 
-  - {{htmlattrdef("intrinsicsize")}} {{deprecated_inline}}
-    - This attribute tells the browser to ignore the actual intrinsic size of the image and pretend it’s the size specified in the attribute. Specifically, the image would raster at these dimensions and `naturalWidth`/`naturalHeight` on images would return the values specified in this attribute. [Explainer](https://github.com/ojanvafai/intrinsicsize-attribute), [examples](https://googlechrome.github.io/samples/intrinsic-size/index.html)
-- {{htmlattrdef("ismap")}}
-  - : 이미지가 [서버 사이드 맵](https://ko.wikipedia.org/wiki/%EC%9D%B4%EB%AF%B8%EC%A7%80_%EB%A7%B5)의 일부인지 나타냄. 서버 사이드 맵에 속하는 경우, 사용자가 이미지에서 클릭한 위치를 서버로 전송합니다.
+    Allowed values:
 
-  > **참고:** 포인팅 장치가 없는 사용자도 갈 수 있는 대체 목적지를 제공하기 위해, `ismap`은 `&#x3C;img>` 요소가 유효한 {{htmlattrxref("href", "a")}} 특성을 가진 {{htmlelement("a")}} 요소의 자손인 경우에만 사용 가능합니다.
+    - `anonymous`
+      - : A CORS request is sent with credentials omitted (that is, no {{glossary("cookie", "cookies")}}, [X.509 certificates](https://datatracker.ietf.org/doc/html/rfc5280), or {{httpheader("Authorization")}} request header).
+    - `use-credentials`
+      - : The CORS request is sent with any credentials included (that is, cookies, X.509 certificates, and the `Authorization` request header). If the server does not opt into sharing credentials with the origin site (by sending back the `Access-Control-Allow-Credentials: true` response header), then the browser marks the image as tainted and restricts access to its image data.
 
-- {{htmlattrdef("loading")}}
-  - : 브라우저가 이미지를 불러올 때 사용할 방식을 지정합니다.
+    If the attribute has an invalid value, browsers handle it as if the `anonymous` value was used. See [CORS settings attributes](/en-US/docs/Web/HTML/Attributes/crossorigin) for additional information.
 
-  - `eager`: 뷰포트 안에 위치하는지 여부에 상관하지 않고 이미지를 즉시 불러옵니다. (기본값)
-  - `lazy`: 이미지가 뷰포트의 일정 거리 안으로 들어와야 불러옵니다. 거리는 브라우저가 정의합니다. 이미지를 보게 될 것으로 충분히 예상 가능한 상황에만 불러옴으로써, 불필요하게 네트워크와 저장소 대역폭을 낭비하지 않을 수 있습니다. 또한 일반적인 사용처에서는 대개 성능을 향상할 수 있습니다.
-- {{htmlattrdef("referrerpolicy")}} {{experimental_inline}}
-  - : 리소스를 가져올 때 사용할 리퍼러를 나타내는 문자열.
+- `decoding`
 
-  - `no-referrer:` {{httpheader("Referer")}} 헤더를 전송하지 않습니다.
-  - `no-referrer-when-downgrade:` TLS(HTTPS) 지원을 하지 않는 출처에 대해서는 `Referer` 헤더를 전송하지 않습니다. 따로 지정하지 않은 경우 사용하는 기본 정책입니다.
-  - `origin:` `Referer` 헤더가 요청 출처의 {{glossary("schema", "스킴")}}, {{glossary("host", "호스트")}}, {{glossary("port", "포트")}}를 포함합니다.
-  - `origin-when-cross-origin:` 다른 출처로 요청할 땐 리퍼럴 데이터를 스킴, 호스트, 포트로 제한합니다. 동일 출처로 요청할 땐 전체 경로와 쿼리 문자열도 포함합니다.
-  - `unsafe-url:` `Referrer` 헤더가 항상 출처, 경로, 쿼리 문자열을 포함합니다. 하지만 프래그먼트, 비밀번호, 사용자 이름은 포함하지 않습니다. TLS로 보호받는 리소스에서 그렇지 않은 출처로 정보를 누출할 수 있으므로 **안전하지 않습니다**.
-- {{htmlattrdef("sizes")}}
-  - : 소스 크기를 나타내는, 쉼표로 구분한 하나 이상의 문자열. 각각의 문자열은 다음 구성요소로 이루어집니다.
+  - : Provides an image decoding hint to the browser. Allowed values:
 
-    - [미디어 조건](/ko/docs/Web/Guide/CSS/Media_queries#구문). 마지막 항목에서는 생략해야 합니다.
-    - 소스 크기 값.
+    - `sync`
+      - : Decode the image synchronously, for atomic presentation with other content.
+    - `async`
+      - : Decode the image asynchronously, to reduce delay in presenting other content.
+    - `auto`
+      - : Default: no preference for the decoding mode. The browser decides what is best for the user.
 
-  미디어 조건은 이미지의 속성이 아니라** {{glossary("viewport", "뷰포트")}}** 속성을 가리킵니다. 예를 들어, `(max-height: 500px) 1000px`은 1000px 너비의 소스를 사용하려면 **뷰포트**가 500px 이하여야 한다는 뜻입니다.
+- `elementtiming`
 
-  소스 크기는 의도한 이미지 표시 크기를 지정합니다. {{glossary("user agent", "사용자 에이전트")}}는 현재 소스 크기를 사용해, 너비(`w`) 서술자를 사용한 `srcset` 특성의 소스 중 하나를 선택합니다. 선택한 소스 크기는 이미지의 {{glossary("intrinsic size", "고유 크기")}}({{glossary("CSS")}} 스타일을 입히지 않은 경우 이미지의 표시 크기)에 영향을 줍니다. `srcset`이 비어있거나 너비 서술자를 사용하지 않은 경우, `sizes` 특성은 아무 효과도 없습니다.
-- {{htmlattrdef("src")}}
-  - : 이미지의 {{glossary("URL")}}. 필수 사항입니다. `srcset`을 지원하는 {{glossary("Browser", "브라우저")}}의 `srcset`에 픽셀 밀도 `1x`와 `w` 서술자가 없는 경우, `src`는 픽셀 밀도 `1x`의 이미지 후보로 취급합니다.
-- {{htmlattrdef("srcset")}}
-  - : {{glossary("user agent", "사용자 에이전트")}}가 사용할 수 있는 이미지 소스의 후보. 쉼표로 구분하는 한 개 이상의 문자열 목록입니다. 각각의 문자열은 다음 구성요소로 이루어집니다.
+  - : Marks the image for observation by the {{domxref("PerformanceElementTiming")}} API. The value given becomes an identifier for the observed image element. See also the [`elementtiming`](/en-US/docs/Web/HTML/Attributes/elementtiming) attribute page.
 
-    - 이미지의 {{glossary("URL")}}.
-    - 선택적으로, 공백과 함께 그 뒤를 잇는...
+- `fetchpriority` {{experimental_inline}}
 
-    - 너비 서술자(양의 정수와 바로 뒤의 '`w`' 문자). 너비 서술자의 값을 `sizes` 특성으로 지정한 소스 크기로 나눠서 픽셀 밀도를 구합니다.
-    - 픽셀 밀도 서술자(양의 실수와 바로 뒤의 '`x`' 문자).
+  - : Provides a hint of the relative priority to use when fetching the image. Allowed values:
 
-  서술자를 포함하지 않은 경우 기본값인 `1x`로 간주합니다.
+    - `high`
+      - : Signals a high-priority fetch relative to other images.
+    - `low`
+      - : Signals a low-priority fetch relative to other images.
+    - `auto`
+      - : Default: Signals automatic determination of fetch priority relative to other images.
 
-  같은 `srcset` 특성에 너비와 픽셀 밀도 서술자를 함께 사용하거나, 동일한 서술자를 두 개 이상 사용하는건 유효하지 않습니다.
+- `height`
 
-  사용자 에이전트 스스로 가능한 소스 중 하나를 선택합니다. 따라서 사용자 에이전트는 사용자의 개인 설정 또는 대역폭 상황에 따라 선택을 조절할 수 있는 상당한 여지를 가집니다. [반응형 이미지 자습서](/ko/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)를 방문해 예제를 살펴보세요.
-- {{htmlattrdef("width")}}
-  - : 이미지의 픽셀 기준 고유 너비. 단위 없는 정수여야 합니다.
-- {{htmlattrdef("usemap")}}
-  - : 요소와 연결할 [이미지 맵](/ko/docs/HTML/Element/map)의 프래그먼트.
+  - : The intrinsic height of the image, in pixels. Must be an integer without a unit.
 
-  > **참고: **`&#x3C;img>` 요소가 {{htmlelement("a")}} 또는 {{HTMLElement("button")}} 요소의 자손이면 사용할 수 없습니다.
+    > **Note:** Including `height` and [`width`](#width) enables the aspect ratio of the image to be calculated by the browser prior to the image being loaded. This aspect ratio is used to reserve the space needed to display the image, reducing or even preventing a layout shift when the image is downloaded and painted to the screen. Reducing layout shift is a major component of good user experience and web performance.
+
+- `ismap`
+
+  - : This Boolean attribute indicates that the image is part of a [server-side map](https://en.wikipedia.org/wiki/Image_map#Server-side). If so, the coordinates where the user clicked on the image are sent to the server.
+
+    > **Note:** This attribute is allowed only if the `<img>` element is a descendant of an {{htmlelement("a")}} element with a valid [`href`](/en-US/docs/Web/HTML/Element/a#href) attribute. This gives users without pointing devices a fallback destination.
+
+- `loading`
+
+  - : Indicates how the browser should load the image:
+
+    - `eager`
+      - : Loads the image immediately, regardless of whether or not the image is currently within the visible viewport (this is the default value).
+    - `lazy`
+      - : Defers loading the image until it reaches a calculated distance from the viewport, as defined by the browser. The intent is to avoid the network and storage bandwidth needed to handle the image until it's reasonably certain that it will be needed. This generally improves the performance of the content in most typical use cases.
+
+    > **Note:** Loading is only deferred when JavaScript is enabled. This is an anti-tracking measure, because if a user agent supported lazy loading when scripting is disabled, it would still be possible for a site to track a user's approximate scroll position throughout a session, by strategically placing images in a page's markup such that a server can track how many images are requested and when.
+
+- `referrerpolicy`
+
+  - : A string indicating which referrer to use when fetching the resource:
+
+    - `no-referrer`: The {{HTTPHeader("Referer")}} header will not be sent.
+    - `no-referrer-when-downgrade`: The {{HTTPHeader("Referer")}} header will not be sent to {{Glossary("origin")}}s without {{Glossary("TLS")}} ({{Glossary("HTTPS")}}).
+    - `origin`: The sent referrer will be limited to the origin of the referring page: its [scheme](/en-US/docs/Learn/Common_questions/Web_mechanics/What_is_a_URL), {{Glossary("host")}}, and {{Glossary("port")}}.
+    - `origin-when-cross-origin`: The referrer sent to other origins will be limited to the scheme, the host, and the port. Navigations on the same origin will still include the path.
+    - `same-origin`: A referrer will be sent for {{Glossary("Same-origin policy", "same origin")}}, but cross-origin requests will contain no referrer information.
+    - `strict-origin`: Only send the origin of the document as the referrer when the protocol security level stays the same (HTTPS→HTTPS), but don't send it to a less secure destination (HTTPS→HTTP).
+    - `strict-origin-when-cross-origin` (default): Send a full URL when performing a same-origin request, only send the origin when the protocol security level stays the same (HTTPS→HTTPS), and send no header to a less secure destination (HTTPS→HTTP).
+    - `unsafe-url`: The referrer will include the origin _and_ the path (but not the [fragment](/en-US/docs/Web/API/HTMLAnchorElement/hash), [password](/en-US/docs/Web/API/HTMLAnchorElement/password), or [username](/en-US/docs/Web/API/HTMLAnchorElement/username)). **This value is unsafe**, because it leaks origins and paths from TLS-protected resources to insecure origins.
+
+- `sizes`
+
+  - : One or more strings separated by commas, indicating a set of source sizes. Each source size consists of:
+
+    1. A [media condition](/en-US/docs/Web/CSS/Media_Queries/Using_media_queries#syntax). This must be omitted for the last item in the list.
+    2. A source size value.
+
+    Media Conditions describe properties of the _viewport_, not of the _image_. For example, `(max-height: 500px) 1000px` proposes to use a source of 1000px width, if the _viewport_ is not higher than 500px.
+
+    Source size values specify the intended display size of the image. {{glossary("User agent", "User agents")}} use the current source size to select one of the sources supplied by the `srcset` attribute, when those sources are described using width (`w`) descriptors. The selected source size affects the {{glossary("intrinsic size")}} of the image (the image's display size if no {{glossary("CSS")}} styling is applied). If the `srcset` attribute is absent, or contains no values with a width descriptor, then the `sizes` attribute has no effect.
+
+- `src`
+  - : The image {{glossary("URL")}}. Mandatory for the `<img>` element. On {{glossary("Browser", "browsers")}} supporting `srcset`, `src` is treated like a candidate image with a pixel density descriptor `1x`, unless an image with this pixel density descriptor is already defined in `srcset`, or unless `srcset` contains `w` descriptors.
+- `srcset`
+
+  - : One or more strings separated by commas, indicating possible image sources for the {{glossary("user agent")}} to use. Each string is composed of:
+
+    1. A {{glossary("URL")}} to an image
+    2. Optionally, whitespace followed by one of:
+
+       - A width descriptor (a positive integer directly followed by `w`). The width descriptor is divided by the source size given in the `sizes` attribute to calculate the effective pixel density.
+       - A pixel density descriptor (a positive floating point number directly followed by `x`).
+
+    If no descriptor is specified, the source is assigned the default descriptor of `1x`.
+
+    It is incorrect to mix width descriptors and pixel density descriptors in the same `srcset` attribute. Duplicate descriptors (for instance, two sources in the same `srcset` which are both described with `2x`) are also invalid.
+
+    If the `srcset` attribute uses width descriptors, the `sizes` attribute must also be present, or the `srcset` itself will be ignored.
+
+    The user agent selects any of the available sources at its discretion. This provides them with significant leeway to tailor their selection based on things like user preferences or {{glossary("bandwidth")}} conditions. See our [Responsive images](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images) tutorial for an example.
+
+- `width`
+  - : The intrinsic width of the image in pixels. Must be an integer without a unit.
+- `usemap`
+
+  - : The partial {{glossary("URL")}} (starting with `#`) of an [image map](/en-US/docs/Web/HTML/Element/map) associated with the element.
+
+    > **Note:** You cannot use this attribute if the `<img>` element is inside an {{htmlelement("a")}} or {{HTMLElement("button")}} element.
 
 ### Deprecated attributes
 
-- {{htmlattrdef("align")}} {{deprecated_inline}}
+- `align` {{deprecated_inline}}
 
   - : Aligns the image with its surrounding context. Use the {{cssxref('float')}} and/or {{cssxref('vertical-align')}} {{glossary("CSS")}} properties instead of this attribute. Allowed values:
 
@@ -151,188 +208,268 @@ HTML 표준은 지원해야 하는 이미지 형식을 명시하고 있지 않�
     - `right`
       - : Equivalent to `float: right`
 
-- {{htmlattrdef("border")}} {{deprecated_inline}}
+- `border` {{deprecated_inline}}
   - : The width of a border around the image. Use the {{cssxref('border')}} {{glossary("CSS")}} property instead.
-- {{htmlattrdef("hspace")}} {{deprecated_inline}}
+- `hspace` {{deprecated_inline}}
   - : The number of pixels of white space on the left and right of the image. Use the {{cssxref('margin')}} CSS property instead.
-- {{htmlattrdef("longdesc")}} {{deprecated_inline}}
+- `longdesc` {{deprecated_inline}}
 
-  - : A link to a more detailed description of the image. Possible values are a {{glossary("URL")}} or an element {{htmlattrxref("id")}}.
+  - : A link to a more detailed description of the image. Possible values are a {{glossary("URL")}} or an element [`id`](/en-US/docs/Web/HTML/Global_attributes#id).
 
     > **Note:** This attribute is mentioned in the latest {{glossary("W3C")}} version, [HTML 5.2](https://html.spec.whatwg.org/multipage/obsolete.html#element-attrdef-img-longdesc), but has been removed from the {{glossary("WHATWG")}}'s [HTML Living Standard](https://html.spec.whatwg.org/multipage/embedded-content.html#the-img-element). It has an uncertain future; authors should use a {{glossary("WAI")}}-{{glossary("ARIA")}} alternative such as [`aria-describedby`](https://www.w3.org/TR/wai-aria-1.1/#aria-describedby) or [`aria-details`](https://www.w3.org/TR/wai-aria-1.1/#aria-details).
 
-- {{htmlattrdef("name")}} {{deprecated_inline}}
-  - : A name for the element. Use the {{htmlattrxref("id")}} attribute instead.
-- {{htmlattrdef("vspace")}} {{deprecated_inline}}
+- `name` {{deprecated_inline}}
+  - : A name for the element. Use the [`id`](/en-US/docs/Web/HTML/Global_attributes#id) attribute instead.
+- `vspace` {{deprecated_inline}}
   - : The number of pixels of white space above and below the image. Use the {{cssxref('margin')}} CSS property instead.
 
-## CSS 스타일링
+## Styling with CSS
 
-`<img>`는 [대체 요소](/ko/docs/Web/CSS/Replaced_element)입니다. 기본적으로 {{cssxref("display")}}는 `inline`이나, 기본 크기는 내장한 이미지의 고유 크기로 정해지므로 마치 `inline-block`처럼 보입니다. {{cssxref("border")}}/{{cssxref("border-radius")}}, {{cssxref("padding")}}/{{cssxref("margin")}}, {{cssxref("width")}}, {{cssxref("height")}} 등의 속성을 이미지에 지정할 수 있습니다.
+`<img>` is a [replaced element](/en-US/docs/Web/CSS/Replaced_element); it has a {{cssxref("display")}} value of `inline` by default, but its default dimensions are defined by the embedded image's intrinsic values, like it were `inline-block`. You can set properties like {{cssxref("border")}}/{{cssxref("border-radius")}}, {{cssxref("padding")}}/{{cssxref("margin")}}, {{cssxref("width")}}, {{cssxref("height")}}, etc. on an image.
 
-`<img>`는 기준선을 갖지 않으므로, {{cssxref("vertical-align")}}`: baseline`을 지정한 인라인 서식 맥락에서는 이미지의 아래쪽 모서리가 텍스트 기준선으로 가게 됩니다.
+`<img>` has no baseline, so when images are used in an inline formatting context with {{cssxref("vertical-align")}}`: baseline`, the bottom of the image will be placed on the text baseline.
 
-요소 박스 내의 이미지 위치는 {{cssxref("object-position")}} 속성으로 바꿀 수 있습니다. 크기는 {{cssxref("object-fit")}} 속성을 통해 요소 크기에 맞출지, 요소를 채울지 등을 지정할 수 있습니다.
+You can use the {{cssxref("object-position")}} property to position the image within the element's box, and the {{cssxref("object-fit")}} property to adjust the sizing of the image within the box (for example, whether the image should fit the box or fill it even if clipping is required).
 
-이미지는 고유 너비와 높이를 가질 수 있지만, 일부 유형의 이미지는 그렇지 않습니다. 예를 들어, {{glossary("SVG")}} 요소는 루트 {{svgelement("svg")}} 요소에 `width`와 `height`가 없는 경우 고유 크기를 가지지 않습니다.
+Depending on its type, an image may have an intrinsic width and height. For some image types, however, intrinsic dimensions are unnecessary. {{glossary("SVG")}} images, for instance, have no intrinsic dimensions if their root {{SVGElement("svg")}} element doesn't have a `width` or `height` set on it.
 
-## 예제
+## Examples
 
-### 보조 텍스트
+### Alternative text
 
-페이지에 이미지를 삽입하고, 접근성을 높이기 위해 대체 텍스트를 제공하는 간단한 예제입니다.
+The following example embeds an image into the page and includes alternative text for accessibility.
 
 ```html
-<img src="favicon144.png"
-     alt="MDN logo">
+<img src="favicon144.png" alt="MDN logo" />
 ```
 
 {{ EmbedLiveSample('Alternative_text', '100%', '160') }}
 
-### 이미지 링크
+### Image link
 
-이 예제는 이전 코드에 더해 이미지를 링크로 바꾸는 법을 보입니다. 단순히 `<img>` 태그를 {{htmlelement("a")}} 안에 넣기만 하면 됩니다. 다만 고려할 점 하나는, 해당 링크가 가리키는 곳을 설명하는 대체 텍스트를 포함해야 한다는 것입니다.
+This example builds upon the previous one, showing how to turn the image into a link. To do so, nest the `<img>` tag inside the {{HTMLElement("a")}}. You should make the alternative text describe the resource the link is pointing to, as if you were using a text link instead.
 
 ```html
 <a href="https://developer.mozilla.org">
-     <img src="favicon144.png" alt="Visit the MDN site">
-   </a>
+  <img src="favicon144.png" alt="Visit the MDN site" />
+</a>
 ```
 
 {{ EmbedLiveSample('Image_link', '100%', '160') }}
 
-### `srcset` 특성 사용하기
+### Using the srcset attribute
 
-이번 예제에서는 {{htmlattrxref("srcset", "img")}} 특성에 고해상도 버전 로고를 추가했습니다. 그러면 고해상도 장치에서는 일반 `src` 이미지 대신 고해상도 이미지를 사용합니다. `srcset` 특성을 지원하는 {{glossary("user agent", "사용자 에이전트")}}는 `src` 특성을 `srcset` `1x` 로 간주합니다.
+In this example we include a `srcset` attribute with a reference to a high-resolution version of the logo; this will be loaded instead of the `src` image on high-resolution devices. The image referenced in the `src` attribute is counted as a `1x` candidate in {{glossary("User agent", "user agents")}} that support `srcset`.
 
 ```html
-<img src="favicon72.png"
-     alt="MDN logo"
-     srcset="favicon144.png 2x">
+<img src="favicon72.png" alt="MDN logo" srcset="favicon144.png 2x" />
 ```
 
 {{EmbedLiveSample("Using_the_srcset_attribute", "100%", "160")}}
 
-### `srcset`과 `sizes` 특성 사용하기
+### Using the srcset and sizes attributes
 
-{{htmlattrxref("srcset", "img")}}를 지원하는 {{glossary("user agent", "사용자 에이전트")}}는, `srcset`에 `w` 서술자를 사용한 경우 `src` 특성을 무시합니다. 다음 코드는 미디어 조건 `(max-width: 600px)`을 만족할 때 200px 너비의 이미지를 불러오고, 그 외의 경우엔 다른 이미지(400px)를 불러옵니다.
+The `src` attribute is ignored in {{glossary("User agent", "user agents")}} that support `srcset` when `w` descriptors are included. When the `(max-width: 600px)` media condition matches, the 200 pixel-wide image will load (it is the one that matches `200px` most closely), otherwise the other image will load.
 
 ```html
-<img src="clock-demo-200px.png"
-     alt="Clock"
-     srcset="clock-demo-200px.png 200w,
-             clock-demo-400px.png 400w"
-     sizes="(min-width: 600px) 200px, 50vw">
+<img
+  src="clock-demo-200px.png"
+  alt="Clock"
+  srcset="clock-demo-200px.png 200w, clock-demo-400px.png 400w"
+  sizes="(max-width: 600px) 200px, 50vw" />
 ```
 
 {{EmbedLiveSample("Using_the_srcset_and_sizes_attributes", "100%", 350)}}
 
-> **참고:** 직접 창 크기를 조절하면서 이미지의 변화를 관측하려면 {{LiveSampleLink('Using_the_srcset_and_sizes_attributes', '별도 페이지')}}를 방문하세요.
+> **Note:** To see the resizing in action, {{LiveSampleLink('Using_the_srcset_and_sizes_attributes', 'view the example on a separate page')}}, so you can actually resize the content area.
 
-## 보안 및 개인정보 고려사항
+## Security and privacy concerns
 
-`<img>` 요소를 사용하는 것에는 문제가 없으나, 의도치 않게 사용자 개인정보와 보안에 악영향을 줄 수 있습니다. [Referer 헤더: 개인정보 및 보안 고려사항](/ko/docs/Web/Security/Referer_header:_privacy_and_security_concerns) 문서를 방문해 더 많은 정보를 알아보세요.
+Although `<img>` elements have innocent uses, they can have undesirable consequences for user security and privacy. See [Referer header: privacy and security concerns](/en-US/docs/Web/Security/Referer_header:_privacy_and_security_concerns) for more information and mitigations.
 
-## 접근성 고려사항
+## Accessibility concerns
 
-### 적합한 대체 설명 작성
+### Authoring meaningful alternate descriptions
 
-{{htmlattrxref("alt", "img")}} 특성의 값은 이미지 콘텐츠를 간단하고 명료하게 설명해야 합니다. 그러나 이미지의 존재 여부나, 이미지 파일의 이름을 나타내서는 안됩니다. 이미지를 텍스트로 설명할 방법이 없어서 의도적으로 `alt`를 지정하지 않은 경우, 해당 이미지가 나타내려는 바를 알려줄 수 있는 다른 방법을 고려해보세요.
+An `alt` attribute's value should clearly and concisely describe the image's content. It should not describe the presence of the image itself or the file name of the image. If the `alt` attribute is purposefully left off because the image has no textual equivalent, consider alternate methods to present what the image is trying to communicate.
 
-#### 부적절
+#### Don't
 
 ```html example-bad
-<img alt="이미지" src="penguin.jpg">
+<img alt="image" src="penguin.jpg" />
 ```
 
-#### 적절
+#### Do
 
 ```html example-good
-<img alt="해변에 서있는 바위뛰기펭귄." src="penguin.jpg">
+<img alt="A Rockhopper Penguin standing on a beach." src="penguin.jpg" />
 ```
 
-일부 스크린 리더는 `alt` 특성을 가지지 않는 이미지를 보면 파일 이름을 표현하는 경우가 있는데, 이 때 파일의 이름이 이미지의 콘텐츠를 설명하지 않는다면 사용자가 혼란스러울 수 있습니다.
+When an `alt` attribute is not present on an image, some screen readers may announce the image's file name instead. This can be a confusing experience if the file name isn't representative of the image's contents.
 
 - [An alt Decision Tree • Images • WAI Web Accessibility Tutorials](https://www.w3.org/WAI/tutorials/images/decision-tree/)
 - [Alt-texts: The Ultimate Guide — Axess Lab](https://axesslab.com/alt-texts/)
 - [How to Design Great Alt Text: An Introduction | Deque](https://www.deque.com/blog/great-alt-text-introduction/)
-- [MDN Understanding WCAG, Guideline 1.1 explanations](/ko/docs/Web/Accessibility/Understanding_WCAG/Perceivable#Guideline_1.1_—_Providing_text_alternatives_for_non-text_content)
+- [MDN Understanding WCAG, Guideline 1.1 explanations](/en-US/docs/Web/Accessibility/Understanding_WCAG/Perceivable#guideline_1.1_—_providing_text_alternatives_for_non-text_content)
 - [Understanding Success Criterion 1.1.1 | W3C Understanding WCAG 2.0](https://www.w3.org/TR/UNDERSTANDING-WCAG20/text-equiv-all.html)
 
-### `title` 특성
+### Identifying SVG as an image
 
-{{htmlattrxref("title")}} 특성은 {{htmlattrxref("alt", "img")}} 특성을 적합하게 대체할 수 없습니다. 또한, `alt`의 값을 `title`에도 반복하는 것을 피해야 합니다. 같은 값을 지정할 경우 일부 스크린 리더가 설명을 두 번씩 읽게 되므로 사용자가 혼란스러울 수 있습니다.
+Due to a [VoiceOver bug](https://webkit.org/b/216364), VoiceOver does not correctly announce SVG images as images. Include [`role="img"`](/en-US/docs/Web/Accessibility/ARIA/Roles/img_role) to all `<img>` elements with SVG source files to ensure assistive technologies correctly announce the SVG as image content.
 
-`title` 요소를 사용해 `alt` 설명에 대한 부연 설명을 제공해서도 안됩니다. 이미지가 설명을 필요로 하는 경우 {{htmlelement("figure")}}와 {{htmlelement("figcaption")}} 요소를 사용하세요.
+```html
+<img src="mdn.svg" alt="MDN logo" role="img" />
+```
 
-`title` 특성은 보통 툴팁, 즉 사용자가 커서를 이미지 위에 올리고 가만히 있으면 짧은 시간 뒤에 나타나는 형태로 표현합니다. 따라서 추가 정보를 제공할 수는 있겠으나 터치 화면, 또는 키보드만 사용하는 경우도 존재하므로 사용자가 툴팁을 볼 수 있을 것이라고 기대해서는 안됩니다. 사용자에게 많이 중요한 정보를 포함해야 하면 `title` 특성 대신 위에 명시한 다른 방법을 사용하세요.
+### The title attribute
 
-- [Using the HTML title attribute – updated | The Paciello Group](https://developer.paciellogroup.com/blog/2013/01/using-the-html-title-attribute-updated/)
+The [`title`](/en-US/docs/Web/HTML/Global_attributes#title) attribute is not an acceptable substitute for the `alt` attribute. Additionally, avoid duplicating the `alt` attribute's value in a `title` attribute declared on the same image. Doing so may cause some screen readers to announce the description twice, creating a confusing experience.
 
-## 기술 요약
+The `title` attribute should also not be used as supplemental captioning information to accompany an image's `alt` description. If an image needs a caption, use the [`figure`](/en-US/docs/Web/HTML/Element/figure) and [`figcaption`](/en-US/docs/Web/HTML/Element/figcaption) elements.
+
+The value of the `title` attribute is usually presented to the user as a tooltip, which appears shortly after the cursor stops moving over the image. While this _can_ provide additional information to the user, you should not assume that the user will ever see it: the user may only have keyboard or touchscreen. If you have information that's particularly important or valuable for the user, present it inline using one of the methods mentioned above instead of using `title`.
+
+- [Using the HTML title attribute – updated | The Paciello Group](https://www.tpgi.com/using-the-html-title-attribute-updated/)
+
+## Technical summary
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
       </th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
         >,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
         >,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#내장_콘텐츠"
-          >내장 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#embedded_content"
+          >embedded content</a
         >,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#뚜렷한_콘텐츠"
-          >뚜렷한 콘텐츠</a
-        >. `usemap` 특성을 가진 경우
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#대화형_콘텐츠"
-          >대화형 콘텐츠</a
-        >.
+        <a href="/en-US/docs/Web/HTML/Content_categories#palpable_content"
+          >palpable content</a
+        >. If the element has a <code>usemap</code> attribute, it also is a part
+        of the interactive content category.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
+      <td>None; it is a {{Glossary("void element")}}.</td>
+    </tr>
+    <tr>
+      <th scope="row">Tag omission</th>
+      <td>Must have a start tag and must not have an end tag.</td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted parents</th>
+      <td>Any element that accepts embedded content.</td>
+    </tr>
+    <tr>
+      <th scope="row">Implicit ARIA role</th>
       <td>
-        없음. {{glossary("empty element", "빈 요소")}}입니다.
+        <ul>
+          <li>
+            with non-empty <code>alt</code> attribute or no
+            <code>alt</code> attribute:
+            <code
+              ><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/img_role"
+                ><code>img</code></a
+              ></code
+            >
+          </li>
+          <li>
+            with empty <code>alt</code> attribute:
+            <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/presentation_role"
+              ><code>presentation</code></a
+            >
+          </li>
+        </ul>
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
-      <td>여는 태그는 필수입니다. 닫는 태그는 존재해선 안됩니다.</td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Permitted ARIA roles</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#내장_콘텐츠"
-          >내장 콘텐츠</a
-        >를 허용하는 모든 요소.
+        <ul>
+          <li>
+            with non-empty <code>alt</code> attribute:
+            <ul>
+              <li>
+                <code
+                  ><a
+                    href="/en-US/docs/Web/Accessibility/ARIA/Roles/button_role"
+                    >button</a
+                  ></code
+                >
+              </li>
+              <li>
+                <code
+                  ><a
+                    href="/en-US/docs/Web/Accessibility/ARIA/Roles/checkbox_role"
+                    >checkbox</a
+                  ></code
+                >
+              </li>
+              <li><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/link_role"><code>link</code></a></li>
+              <li><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/menuitem_role"><code>menuitem</code></a></li>
+              <li><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/menuitemcheckbox_role"><code>menuitemcheckbox</code></a></li>
+              <li><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/menuitemradio_role"><code>menuitemradio</code></a></li>
+              <li><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/option_role"><code>option</code></a></li>
+              <li><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/progressbar_role"><code>progressbar</code></a></li>
+              <li><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/scrollbar_role"><code>scrollbar</code></a></li>
+              <li><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/separator_role"><code>separator</code></a></li>
+              <li><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/slider_role"><code>slider</code></a></li>
+              <li>
+                <code
+                  ><a
+                    href="/en-US/docs/Web/Accessibility/ARIA/Roles/Switch_role"
+                    >switch</a
+                  ></code
+                >
+              </li>
+              <li>
+                <code
+                  ><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/Tab_Role"
+                    >tab</a
+                  ></code
+                >
+              </li>
+              <li><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/treeitem_role"><code>treeitem</code></a></li>
+            </ul>
+          </li>
+          <li>
+            with empty <code>alt</code> attribute, <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/none_role"><code>none</code></a>
+            or <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/presentation_role"><code>presentation</code></a>
+          </li>
+          <li>
+            with no <code>alt</code> attribute, no <code>role</code> permitted
+          </li>
+        </ul>
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>모두</td>
-    </tr>
-    <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLImageElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{HTMLElement("picture")}}, {{HTMLElement("object")}}, {{HTMLElement("embed")}} 요소
-- 이미지 관련 CSS 속성: {{cssxref("object-fit")}}, {{cssxref("object-position")}}, {{cssxref("image-orientation")}}, {{cssxref("image-rendering")}}, {{cssxref("image-resolution")}}.
+- [Images in HTML](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Images_in_HTML)
+- [Image file type and format guide](/en-US/docs/Web/Media/Formats/Image_types)
+- [Responsive images](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
+- {{HTMLElement("picture")}}, {{HTMLElement("object")}} and {{HTMLElement("embed")}} elements
+- Other image-related CSS properties: {{cssxref("object-fit")}}, {{cssxref("object-position")}}, {{cssxref("image-orientation")}}, {{cssxref("image-rendering")}}, and {{cssxref("image-resolution")}}.

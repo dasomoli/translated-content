@@ -1,42 +1,45 @@
 ---
-title: DOMRect()
+title: "DOMRect: DOMRect() constructor"
+short-title: DOMRect()
 slug: Web/API/DOMRect/DOMRect
+page-type: web-api-constructor
+browser-compat: api.DOMRect.DOMRect
 ---
 
 {{APIRef("Geometry Interfaces")}}
 
-**`DOMRect()`** 생성자는 새로운 {{domxref("DOMRect")}} 객체를 생성합니다.
+The **`DOMRect()`** constructor creates a new {{domxref("DOMRect")}} object.
 
-## 구문
+## Syntax
 
-```js
-new DOMRect(x, y, width, height);
+```js-nolint
+new DOMRect(x, y, width, height)
 ```
 
-### 매개변수
+### Parameters
 
 - `x`
-  - : `DOMRect` 원점의 X 좌표입니다.
+  - : The `x` coordinate of the `DOMRect`'s origin.
 - `y`
-  - : `DOMRect` 원점의 Y 좌표입니다.
+  - : The `y` coordinate of the `DOMRect`'s origin.
 - `width`
-  - : `DOMRect`의 너비입니다.
+  - : The width of the `DOMRect`.
 - `height`
-  - : `DOMRect`의 높이입니다.
+  - : The height of the `DOMRect`.
 
-### 반환 값
+### Return value
 
-새로운 {{domxref("DOMRect")}} 객체.
+A new {{domxref("DOMRect")}} object.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("DOMPoint")}}
 - {{domxref("DOMRect")}}

@@ -1,37 +1,47 @@
 ---
 title: <frameset>
 slug: Web/HTML/Element/frameset
+page-type: html-element
+status:
+  - deprecated
+browser-compat: html.elements.frameset
 ---
 
-{{Deprecated_header}}
+{{HTMLSidebar}}{{Deprecated_header}}
 
-## 요약
+The **`<frameset>`** [HTML](/en-US/docs/Web/HTML) element is used to contain {{HTMLElement("frame")}} elements.
 
-`<frameset>`은 HTML element로써 {{HTMLElement("frame")}} element을 포함하고 사용된다.
+> **Note:** Because the use of frames is now discouraged in favor of using {{HTMLElement("iframe")}}, this element is not typically used by modern websites.
 
-> **참고:**frame의 사용이 지금 {{HTMLElement("iframe")}}의 사용에 따라줄어드는 추세이기 때문에 , 이 element는 최근 웹사이트에서 잘 쓰이지 않는다.
+## Attributes
 
-## 속성(=Attributes)
+Like all other HTML elements, this element supports the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-다른 모든 HTML elments와 마찬가지로, \<frameset> element는 전역속성([global attributes](/en-US/HTML/Global_attributes))이 적용된다.
+- `cols` {{Deprecated_Inline}}
+  - : This attribute specifies the number and size of horizontal spaces in a frameset.
+- `rows` {{Deprecated_Inline}}
+  - : This attribute specifies the number and size of vertical spaces in a frameset.
 
-- {{htmlattrdef("cols")}}
-  - : 이 속성은 프레임셋안의 가로공간의 갯수와 크기를 정합니다.
-- {{htmlattrdef("rows")}}
-  - : 이 속성은 프레임셋안의 세로공간의 갯수와 크기를 정합니다.
-
-## 예시
+## Example
 
 ```html
 <frameset cols="50%,50%">
-  <frame src="https://developer.mozilla.org/en/HTML/Element/frameset" />
-  <frame src="https://developer.mozilla.org/en/HTML/Element/frame" />
+  <frame
+    src="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/frameset" />
+  <frame
+    src="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/frame" />
 </frameset>
 ```
 
-## 참조
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
+
+{{Compat}}
+
+## See also
 
 - {{HTMLElement("frame")}}
 - {{HTMLElement("iframe")}}
-
-{{HTMLSidebar}}

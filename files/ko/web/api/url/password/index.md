@@ -1,42 +1,42 @@
 ---
-title: URL.password
+title: "URL: password property"
+short-title: password
 slug: Web/API/URL/password
+page-type: web-api-instance-property
+browser-compat: api.URL.password
 ---
 
 {{ApiRef("URL API")}}
 
-{{domxref("URL")}} 인터페이스의 **`password`** 속성은 도메인 이름 이전의 비밀번호를 포함한 {{domxref("USVString")}}을 반환합니다.
+The **`password`** property of the {{domxref("URL")}} interface
+is a string containing the password specified before the domain name.
 
-{{domxref("URL.username", "username")}} 설정 전에 `password`를 먼저 지정하려 시도하면 조용히 실패합니다.
+If it is set without first setting the {{domxref("URL.username", "username")}}
+property, it silently fails.
 
 {{AvailableInWorkers}}
 
-## 구문
+## Value
+
+A string.
+
+## Examples
 
 ```js
-const passwordString = url.password
-url.password = newPassword
+const url = new URL(
+  "https://anonymous:flabada@developer.mozilla.org/en-US/docs/Web/API/URL/password"
+);
+console.log(url.password); // Logs "flabada"
 ```
 
-### 값
-
-{{domxref("USVString")}}.
-
-## 예제
-
-```js
-const url = new URL('https://anonymous:flabada@developer.mozilla.org/en-US/docs/Web/API/URL/password');
-console.log(url.password) // Logs "flabada"
-```
-
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 속성이 속한 {{domxref("URL")}} 인터페이스.
+- The {{domxref("URL")}} interface it belongs to.

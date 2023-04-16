@@ -1,39 +1,40 @@
 ---
-title: Document.compatMode
+title: "Document: compatMode property"
+short-title: compatMode
 slug: Web/API/Document/compatMode
+page-type: web-api-instance-property
+browser-compat: api.Document.compatMode
 ---
 
-{{ApiRef("DOM")}}
+{{ ApiRef("DOM") }}
 
-**`Document.compatMode`** 속성은 문서 렌더링을 [호환 모드](/ko/docs/Web/HTML/Quirks_Mode_and_Standards_Mode)에서 진행했는지, 표준 모드에서 진행했는지 나타냅니다.
+The **`Document.compatMode`** read-only property indicates
+whether the document is rendered in [Quirks mode](/en-US/docs/Web/HTML/Quirks_Mode_and_Standards_Mode) or
+Standards mode.
 
-## 구문
+## Value
 
-```js
-const mode = document.compatMode
-```
+An enumerated value that can be:
 
-### 값
+- "`BackCompat`" if the document is in quirks mode.
+- "`CSS1Compat`" if the document is in no-quirks (also known as
+  "standards") mode or limited-quirks (also known as "almost standards") mode.
 
-다음 중 하나.
+> **Note:** All these modes are now standardized, so the older "standards"
+> and "almost standards" names are nonsensical and no longer used in standards.
 
-- 문서가 호환 모드이면 `"BackCompat"`
-- 문서가 호환 모드가 아니거나("표준") 제한적 호환("거의 표준") 모드이면 `"CSS1Compat"`
-
-> **참고:** 위의 모든 모드는 표준화됐으므로, 오래 전에 사용하던 "표준"과 "거의 표준"이라는 이름은 말이 되지 않아 이제 사용하지 않습니다.
-
-## 예제
+## Examples
 
 ```js
-if (document.compatMode == "BackCompat") {
+if (document.compatMode === "BackCompat") {
   // in Quirks mode
 }
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

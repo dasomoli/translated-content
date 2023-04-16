@@ -1,33 +1,43 @@
 ---
-title: console.group()
+title: "console: group() method"
+short-title: group()
 slug: Web/API/console/group
+page-type: web-api-instance-method
+browser-compat: api.console.group
 ---
 
 {{APIRef("Console API")}}
 
-**`console.group()`** 메서드는 [웹 콘솔](/ko/docs/Tools/Web_Console) 로그에 새로운 인라인 그룹을 만듭니다. 이는 {{domxref("console.groupEnd()")}}가 호출될 때까지 모든 다음 출력을 추가 수준으로 들여씁니다.
+The **`console.group()`** method creates a new inline group in the [Web console](https://firefox-source-docs.mozilla.org/devtools-user/web_console/index.html) log, causing any subsequent console messages to be indented by an additional level,
+until {{domxref("console.groupEnd()")}} is called.
 
 {{AvailableInWorkers}}
 
-## 구문
+## Syntax
 
-```js
-console.group([label]);
+```js-nolint
+group()
+group(label)
 ```
 
-## 매개변수
+### Parameters
 
-- `label`
-  - : 그룹의 레이블입니다. 이 매개변수는 선택사항입니다. (Chrome 59에서 테스트됨) `console.groupEnd()`와 함께 작동하지 않습니다.
+- `label` {{optional_inline}}
+  - : Label for the group.
 
-### 콘솔에서 그룹 사용하기
+### Return value
 
-중첩 그룹을 사용하여 관련 메시지를 시각적으로 연결하여 출력을 구성할 수 있습니다. 새 중첩 블록을 만들려면 `console.group()`을 호출하세요. `console.groupCollapsed()` 메서드와 비슷하지만 새 블록이 접혀 있고 이를 읽으려면 공개 버튼을 클릭해야 합니다.
+None ({{jsxref("undefined")}}).
 
-> **참고:** Gecko 9부터 Gecko 51까지 `groupCollapsed()` 메소드는 `group()`과 동일했습니다.
-> 축소된 그룹은 Gecko 52부터 완전히 지원됩니다. [Firefox bug 1088360](https://bugzil.la/1088360)를 참조하세요.
+## Examples
 
-현재 그룹을 종료하려면 `console.groupEnd()`를 호출하세요. 예를 들어...
+You can use nested groups to help organize your output by visually associating related
+messages. To create a new nested block, call `console.group()`. The
+`console.groupCollapsed()` method is similar, but the new block is
+collapsed and requires clicking a disclosure button to read it.
+
+To exit the current group, call `console.groupEnd()`.
+For example, given this code:
 
 ```js
 console.log("This is the outer level");
@@ -42,16 +52,20 @@ console.groupEnd();
 console.log("Back to the outer level");
 ```
 
-실행 결과는 다음과 같습니다.
+The output looks like this:
 
 ![A screenshot of messages nested in the console output.](nesting.png)
 
-자세한 내용은 {{domxref("console")}} 문서의 [콘솔 그룹 사용하기](/ko/docs/Web/API/console#콘솔_그룹_사용하기)를 참조하세요.
+See [Using groups in the console](/en-US/docs/Web/API/console#using_groups_in_the_console) in the documentation of {{domxref("console")}} for more details.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- {{domxref("console.groupEnd()")}}

@@ -1,37 +1,62 @@
 ---
-title: RTCPeerConnection.getSenders()
+title: "RTCPeerConnection: getSenders() method"
+short-title: getSenders()
 slug: Web/API/RTCPeerConnection/getSenders
+page-type: web-api-instance-method
+browser-compat: api.RTCPeerConnection.getSenders
 ---
 
 {{APIRef("WebRTC")}}
 
-{{domxref("RTCPeerConnection")}}의 **`getSenders()`** 메소드는 {{domxref("RTCRtpSender")}} 객체의 배열을 반환합니다. 배열의 각 객체는 하나의 트랙의 데이터의 송신을 담당하는 RTP sender를 나타냅니다. Sender 객체는 트랙 데이터의 인코딩과 송신을 확인하고, 조작 할 수 있는 메소드와 속성들을 제공합니다.
+The {{domxref("RTCPeerConnection")}} method
+**`getSenders()`** returns an array of
+{{domxref("RTCRtpSender")}} objects, each of which represents the RTP sender
+responsible for transmitting one track's data. A sender object provides methods
+and properties for examining and controlling the encoding and transmission of the
+track's data.
 
 ## Syntax
 
-```js
-var senders = RTCPeerConnection.getSenders();
+```js-nolint
+getSenders()
 ```
 
-### 반환 값
+### Return value
 
-연결의 각 트랙마다 한 개의 {{domxref("RTCRtpSender")}} 객체 배열을 반환합니다. 연결의 RTP sender가 존재하지 않으면, 배열은 빈 상태입니다.
+An array of {{domxref("RTCRtpSender")}} objects, one for each track on the connection.
+The array is empty if there are no RTP senders on the connection.
 
-`RTCRtpSender`s 의 반환 값 순서는 정의되어있지 않고, `getSenders()` 호출을 통해서 다음 배열 요소로 바꿀 수 있습니다.
+The order of the returned `RTCRtpSender`s is not defined by the
+specification, and may change from one call to `getSenders()` to the next.
 
-## 예시
+## Example
 
-tbd
+In this example, a `setMuting()` function is shown. This function takes as
+input an {{domxref("RTCPeerConnection")}}, `pc`, and a Boolean,
+`muting`. The function gets the list of the peer connection's senders and
+iterates over every sender, setting the corresponding media track's
+{{domxref("MediaStreamTrack.enabled", "enabled")}} to the inverse of the specified
+`muting`.
 
-## 명세
+```js
+function setMuting(pc, muting) {
+  let senderList = pc.getSenders();
+
+  senderList.forEach((sender) => {
+    sender.track.enabled = !muting;
+  });
+}
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
-- [WebRTC](/ko/docs/Web/Guide/API/WebRTC_API)
+- [WebRTC](/en-US/docs/Web/API/WebRTC_API)
 - {{domxref("RTCRtpSender")}}

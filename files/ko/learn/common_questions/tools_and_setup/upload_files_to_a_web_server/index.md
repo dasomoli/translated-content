@@ -1,135 +1,172 @@
 ---
-title: How do you upload files to a web server?
+title: How do you upload your files to a web server?
 slug: Learn/Common_questions/Tools_and_setup/Upload_files_to_a_web_server
-original_slug: Learn/Common_questions/Upload_files_to_a_web_server
 ---
 
-본 글은 어떻게 {{Glossary("FTP")}} 도구를 사용하여 사이트를 발행(publish) 할 수 있는지를 다루고 있습니다.
+{{QuicklinksWithSubPages("Learn/Common_questions")}}
 
-<table class="learn-box standard-table">
+This article shows you how to publish your site online using file transfer tools.
+
+<table>
   <tbody>
     <tr>
-      <th scope="row">선행조건:</th>
+      <th scope="row">Prerequisites:</th>
       <td>
-        <p>
-          먼저 웹 서버가 무엇인지(<a
-            href="https://developer.mozilla.org/en-US/Learn/What_is_a_web_server"
-            >what a web server is</a
-          >)와 어떤 식으로 도메인이 작동하는지(<a
-            href="https://developer.mozilla.org/en-US/Learn/Understanding_domain_names"
-            >how domain names work</a
-          >)를 알아야 합니다. 더불어 어떻게 기본 환경을 구성하는지(<a
-            href="/en-US/Learn/Set_up_a_basic_working_environment"
-            >set up a basic environment</a
-          >)와 간단한 웹 페이지 작성법(<a
-            href="/en-US/Learn/HTML/Write_a_simple_page_in_HTML"
-            >write a simple webpage</a
-          >)을 알고 있어야 합니다.
-        </p>
+        You must know
+        <a href="/en-US/docs/Learn/Common_questions/Web_mechanics/What_is_a_web_server"
+          >what a web server is</a
+        >
+        and
+        <a href="/en-US/docs/Learn/Common_questions/Web_mechanics/What_is_a_domain_name"
+          >how domain names work</a
+        >. You must also know how to
+        <a
+          href="/en-US/docs/Learn/Common_questions/Tools_and_setup/set_up_a_local_testing_server"
+          >set up a basic environment</a
+        >
+        and how to
+        <a href="/en-US/docs/Learn/Getting_started_with_the_web"
+          >write a simple webpage</a
+        >.
       </td>
     </tr>
     <tr>
-      <th scope="row">목표:</th>
-      <td>FTP를 이용해 파일들을 서버에 올리기.</td>
+      <th scope="row">Objective:</th>
+      <td>
+        Learn how to push files to a server using the various file transfer
+        tools available.
+      </td>
     </tr>
   </tbody>
 </table>
 
-## 개요
+## Summary
 
-당신은 이미 간단한 웹 페이지를 만들었습니다.([you have built a simple page](/en-US/Learn/HTML/Write_a_simple_page_in_HTML) 참조), 이제 웹 서버에 올려 온라인에 공개하고 싶을 겁니다. 우리는 이러한 방법을 {{Glossary("FTP")}}를 통해 다뤄보고자 합니다.
+If you have built a simple web page (see [HTML basics](/en-US/docs/Learn/Getting_started_with_the_web/HTML_basics) for an example), you will probably want to put it online, on a web server. In this article we'll discuss how to do that, using various available options such as SFTP clients, RSync and GitHub.
 
-## 따라해보기
+## SFTP
 
-_아직 좋은 예제가 없습니다. 누군가 나서 주세요([Please, consider contributing](/ko/docs/MDN/Getting_started))._
+There are several SFTP clients out there. Our demo covers [FileZilla](https://filezilla-project.org/), since it's free and available for Windows, macOS and Linux. To install FileZilla go to the [FileZilla downloads page](https://filezilla-project.org/download.php?type=client), click the big Download button, then install from the installer file in the usual way.
 
-## 깊이 파보기
+> **Note:** Of course there are lots of other options. See [Publishing tools](/en-US/docs/Learn/Common_questions/Tools_and_setup/How_much_does_it_cost#publishing_tools) for more information.
 
-### FTP 클라이언트와 함께 해보기: FireFTP
+Open the FileZilla application; you should see something like this:
 
-세상에는 다양한 종류의 FTP 클라이언트들이 있습니다. 본 문서에서는 FireFTP를 다룰 겁니다. FireFTP는 파이어 폭스에서 다루기 쉽습니다. 만약 파이어폭스를 사용하신다면 FireFTP 애드온 페이지([FireFTP's addons page](https://addons.mozilla.org/firefox/addon/fireftp/)) 에 가셔서l FireFTP를 설치하시면 됩니다.
+![Screenshot of the user interface of Filezilla FTP application. Host input has focus.](filezilla-ui.png)
 
-> **참고:** 물론 FireFTP 외에도 수 많은 대안이 있습니다. 관심이 있다면 퍼블리싱 도구: FTP 클라이언트([Publishing tools: FTP clients](/en-US/Learn/How_much_does_it_cost#Publishing_tools.3A_FTP_client)) 항목을 참조하시면 되겠습니다.
+### Logging in
 
-FireFTP를 새로운 탭에서 열어보세요. 파이어폭스에서 열기 위한 방법도 두가지 있습니다.
+For this example, we'll suppose that our hosting provider (the service that will host our HTTP web server) is a fictitious company "Example Hosting Provider" whose URLs look like this: `mypersonalwebsite.examplehostingprovider.net`.
 
-1. **Firefox menu ![](2014-01-10-13-08-08-f52b8c.png) ➤ ![Developer](screenshot_from_2014-11-26_14-24-56.png) ➤ FireFTP**
-2. **Tools** ➤ **Web Develope**r ➤ **FireFTP**
+We have just opened an account and received this info from them:
 
-이제 다음과 같이 보이게 될겁니다.
+> Congratulations for opening an account at Example Hosting Provider.
+>
+> Your account is: `demozilla`
+>
+> Your website will be visible at `demozilla.examplehostingprovider.net`
+>
+> To publish to this account, please connect through SFTP with the following credentials:
+>
+> - SFTP server: `sftp://demozilla.examplehostingprovider.net`
+> - Username: `demozilla`
+> - Password: `quickbrownfox`
+> - Port: `5548`
+> - To publish on the web, put your files into the `Public/htdocs` directory.
 
-![FireFTP : the interface, not connected to a server](fireftp-default.png)
-
-### 로그인 하기
-
-이 예시에서 우리는 호스팅 제공자가 "Example Hosting Provider"라는 가상의 회사라고 가정합니다. 이 회사의 URLs는 다음과 같습니다 : `mypersonalwebsite.examplehostingprovider.net`.
-
-우리는 방금 계정을 만들었고 호스팅제공자로부터 아래와 같은 계정정보를 받았습니다.
-
-```plain
-Congratulations for opening an account at Example Hosting Provider.
-
-Your account is: `demozilla`
-
-Your website will be visible at `demozilla.examplehostingprovider.net`
-
-To publish to this account, please connect through FTP with the following credentials:
-
-- FTP server: `ftp://demozilla.examplehostingprovider.net`
-- User: `demozilla`
-- Password: `quickbrownfox`
-- To publish on the web, put your files into the `Public/htdocs` directory.
-```
-
-먼저 이곳을 봅시다. `http://demozilla.examplehostingprovider.net/` — 보시다시피 아직 아무런 정보도 없습니다.
+Let's first look at `http://demozilla.examplehostingprovider.net/` — as you can see, so far there is nothing there:
 
 ![Our demozilla personal website, seen in a browser: it's empty](demozilla-empty.png)
 
-> **참고:** 보이는 화면은 여러분의 호스팅 제공자에 따라 다릅니다. 대부분은 “This website is hosted by \[Hosting Service].”과 같은 페이지를 보게될 것입니다.
+> **Note:** Depending on your hosting provider, most of the time you'll see a page saying something like "This website is hosted by \[Hosting Service]." when you first go to your web address.
 
-이제 우리의 FTP 클라이언트를 멀리 떨어진 서버에 접속하기 위해 _"Create an account..." 버튼을 누릅니다._ 그리고 호스팅제공자로 부터 받은 정보를 해당 필드에 채워줍니다.
+To connect your SFTP client to the distant server, follow these steps:
 
-![FireFTP: creating an account](fireftp-createlogin.png)
+1. Choose _File > Site Manager…_ from the main menu.
+2. In the _Site Manager_ window, press the _New Site_ button, then fill in the site name as **demozilla** in the provided space.
+3. Fill in the SFTP server your host provided in the _Host:_ field.
+4. In the _Logon Type:_ drop down, choose _Normal_, then fill in your provided username and password in the relevant fields.
+5. Fill in the correct port and other information.
 
-### 이곳과 "저곳" : 로컬 과 원격 화면
+Your window should look something like this:
 
-이제 새로 만든 계정으로 접속을 해봅시다.
+![Screenshot of default landing page of a fictitious website when the file directory is empty](site-manager.png)
 
-![The FTP interface, once logged](fireftp-logged.png)
+Now press _Connect_ to connect to the SFTP server.
 
-어떤 것이 보이는지 조사해봅시다.
+Note: Make sure your hosting provider offers SFTP (Secure FTP) connection to your hosting space. FTP is inherently insecure, and you shouldn't use it.
 
-- 왼쪽에는, 여러분 컴퓨터의 로컬파일들이 보입니다. 여러분이 올리고 싶은 파일들이 있는 디렉토리로 이동합시다. (여기에서는 `mdn`폴더입니다)
-- 오른쪽에는, 원격 파일이 보입니다. 우리는 멀리 떨어진 FTP서버의 디렉토리에 들어온 것입니다. (in this case, `users/demozilla`)
-- 아래부분은 지금은 무시하셔도 좋습니다. 이 부분은 여러분의 FTP클라이언트와 서버사이의 상호작용(업로드, 다운로드)을 기록해 놓은 곳입니다.
+### Here and there: local and remote view
 
-### 서버에 업로딩
+Once connected, your screen should look something like this (we've connected to an example of our own to give you an idea):
 
-여러분이 기억하듯이, 우리의 호스팅제공자는 우리에게 `Public/htdocs` 디렉토리에 파일을 저장해야한다고 했습니다. 오른쪽 패널에서 해당 디렉토리로 이동해봅시다.
+![SFTP client displaying website contents once it has been connected to the SFTP server. Local files are on the left. Remote files are on the right.](connected.png)
 
-![Changing to the htdocs folder on the remote server](remote-htdocs-empty.png)
+Let's examine what you're seeing:
 
-이제, 여러분의 파일을 서버에 업로드하기 위해서 드래그-앤-드롭하여 파일들을 왼쪽에서 오른쪽 패널로 이동합니다.
+- On the center left pane, you see your local files. Navigate into the directory where you store your website (e.g. `mdn`).
+- On the center right pane, you see remote files. We are logged into our distant FTP root (in this case, `users/demozilla`)
+- You can ignore the bottom and top panes for now. Respectively, these are a log of messages showing the connection status between your computer and the SFTP server, and a live log of every interaction between your SFTP client and the server.
 
-![The files show in the remote view: they have been pushed to the server](files-dropped-onto-the-server.png)
+### Uploading to the server
 
-### 우리가 올린 것이 진짜로 온라인으로 되어있나요?
+Our example host instructions told us "To publish on the web, put your files into the `Public/htdocs` directory." You need to navigate to the specified directory in your right pane. This directory is effectively the root of your website — where your `index.html` file and other assets will go.
 
-지금까지는 좋습니다. 하지만 여러분의 브라우저에서 `http://demozilla.examplehostingprovider.net/` 주소로 이동하여 재확인 해봅시다.
+Once you've found the correct remote directory to put your files in, to upload your files to the server you need to drag-and-drop them from the left pane to the right pane.
+
+### Are they really online?
+
+So far, so good, but are the files really online? You can double-check by going back to your website (e.g. `http://demozilla.examplehostingprovider.net/`) in your browser:
 
 ![Here we go: our website is live!](here-we-go.png)
 
-맙소사! 우리의 웹사이트가 잘 올라와있습니다!
+And our website is live!
 
-### 파일 업로드를 위한 다른 방법들
+## Rsync
 
-FTP 프로토콜은 웹사이트를 출시하기 위해 잘 알려진 방법입니다. 하지만 유일한 방법은 아닙니다. 여기 몇개의 다른 방법들도 있습니다.
+{{Glossary("Rsync")}} is a local-to-remote file synchronizing tool, which is generally available on most Unix-based systems (like macOS and Linux), but Windows versions exist too.
 
-- **Web interfaces**. An HTML interface acting as front-end for a remote file upload service. Provided by your hosting service. 여러분의 호스팅제공자는 HTML 인터페이스로 된(브라우저에서 업로드 가능한) 원격 파일 업로드 서비스를 지원해줄 수도 있습니다.
-- **GitHub** (advanced). {{Glossary("git")}}을 이용해 commit/push 와 같은 방법으로 업로드할 수도 있습니다. [Getting started with the Web](/en-US/Learn/Getting_started_with_the_web) 가이드에서 [Publishing your website](/en-US/Learn/Getting_started_with_the_web/Publishing_your_website) 를 읽어보세요.
-- **{{Glossary("Rsync")}}** (advanced). 로컬과 원격의 파일을 동기화하는 방법입니다.
-- **{{Glossary("WebDAV")}}**. An extension of the {{Glossary("HTTP")}} 프로토콜의 확장으로 보다 나은 파일 관리를 가능하게 해주는 확장입니다.
+It is seen as a more advanced tool than SFTP, because by default it is used on the command line. A basic command looks like this:
 
-## 다음 단계
+```bash
+rsync [-options] SOURCE user@x.x.x.x:DESTINATION
+```
 
-잘하셨습니다. 이제 거의 끝났습니다. 마지막으로 중요한 일은 [make sure your web site is working properly](/ko/docs/Learn/Checking_that_your_web_site_is_working_properly) 입니다.
+- `-options` is a dash followed by a one or more letters, for example `-v` for verbose error messages, and `-b` to make backups. You can see the full list at the [rsync man page](https://linux.die.net/man/1/rsync) (search for "Options summary").
+- `SOURCE` is the path to the local file or directory that you want to copy files over from.
+- `user@` is the credentials of the user on the remote server you want to copy files over to.
+- `x.x.x.x` is the IP address of the remote server.
+- `DESTINATION` is the path to the location you want to copy your directory or files to on the remote server.
+
+You'd need to get such details from your hosting provider.
+
+For more information and further examples, see [How to Use Rsync to Copy/Sync Files Between Servers](https://www.atlantic.net/vps-hosting/how-to-use-rsync-copy-sync-files-servers/).
+
+Of course, it is a good idea to use a secure connection, as with FTP. In the case of Rsync, you specify SSH details to make the connection over SSH, using the `-e` option. For example:
+
+```bash
+rsync [-options] -e "ssh [SSH DETAILS GO HERE]" SOURCE user@x.x.x.x:DESTINATION
+```
+
+You can find more details of what is needed at [How To Copy Files With Rsync Over SSH](https://www.digitalocean.com/community/tutorials/how-to-copy-files-with-rsync-over-ssh).
+
+### Rsync GUI tools
+
+GUI tools are available for Rsync (for those who are not as comfortable using the command line). [Acrosync](https://acrosync.com/mac.html) is one such tool, and it is available for Windows and macOS.
+
+Again, you would have to get the connection credentials from your hosting provider, but this way you'd have a GUI to enter them in.
+
+## GitHub
+
+GitHub allows you to publish websites via [GitHub pages](https://pages.github.com/) (gh-pages).
+
+We've covered the basics of using this in the [Publishing your website](/en-US/docs/Learn/Getting_started_with_the_web/Publishing_your_website) article from our [Getting started with the Web](/en-US/docs/Learn/Getting_started_with_the_web) guide, so we aren't going to repeat it all here.
+
+However, it is worth knowing that you can also host a website on GitHub, but use a custom domain with it. See [Using a custom domain with GitHub Pages](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site) for a detailed guide.
+
+## Other methods to upload files
+
+The FTP protocol is one well-known method for publishing a website, but not the only one. Here are a few other possibilities:
+
+- **Web interfaces**. An HTML interface acting as front-end for a remote file upload service. Provided by your hosting service.
+- **{{Glossary("WebDAV")}}**. An extension of the {{Glossary("HTTP")}} protocol to allow more advanced file management.

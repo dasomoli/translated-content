@@ -1,47 +1,52 @@
 ---
-title: History.scrollRestoration
+title: "History: scrollRestoration property"
+short-title: scrollRestoration
 slug: Web/API/History/scrollRestoration
+page-type: web-api-instance-property
+browser-compat: api.History.scrollRestoration
 ---
-{{APIRef("HTML DOM")}}
 
-**`History.scrollRestoration`** 속성을 사용하면 기록 탐색 시 사용할 스크롤 위치 복원 기능의 기본값을 웹 애플리케이션이 지정할 수 있습니다.
+{{APIRef("History API")}}
 
-## 구문
+The **`scrollRestoration`** property of {{DOMxRef("History")}}
+interface allows web applications to explicitly set default scroll restoration behavior
+on history navigation.
+
+## Value
+
+One of the following:
+
+- `auto`
+  - : The location on the page to which the user has scrolled will be restored.
+- `manual`
+  - : The location on the page is not restored. The user will have to scroll to the
+    location manually.
+
+## Examples
+
+### Query the current scroll restoration behavior
 
 ```js
-let scrollRestore = history.scrollRestoration;
-```
-
-### 값
-
-- `"auto"`
-  - : 페이지 내에서 사용자의 스크롤이 위치했던 장소로 복원합니다.
-- `"manual"`
-  - : 스크롤을 복원하지 않습니다. 사용자가 직접 스크롤해야 합니다.
-
-## 예제
-
-### 현재 스크롤 복원 여부 알아내기
-
-```js
-const scrollRestoration = history.scrollRestoration
-if (scrollRestoration === 'manual') {
-  console.log('The location on the page is not restored, user will need to scroll manually.');
+const scrollRestoration = history.scrollRestoration;
+if (scrollRestoration === "manual") {
+  console.log(
+    "The location on the page is not restored, user will need to scroll manually."
+  );
 }
 ```
 
-### 스크롤 복원 비활성화
+### Prevent automatic page location restoration
 
 ```js
 if (history.scrollRestoration) {
-  window.history.scrollRestoration = 'manual';
+  history.scrollRestoration = "manual";
 }
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

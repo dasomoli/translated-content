@@ -1,51 +1,96 @@
 ---
-title: 'ReferenceError: invalid assignment left-hand side'
+title: "SyntaxError: invalid assignment left-hand side"
 slug: Web/JavaScript/Reference/Errors/Invalid_assignment_left-hand_side
+page-type: javascript-error
 ---
 
 {{jsSidebar("Errors")}}
 
-## 메시지
+The JavaScript exception "invalid assignment left-hand side" occurs when there was an unexpected assignment somewhere. It may be triggered when a single `=` sign was used instead of `==` or `===`.
+
+## Message
 
 ```
-    ReferenceError: invalid assignment left-hand side
+SyntaxError: Invalid left-hand side in assignment (V8-based)
+SyntaxError: invalid assignment left-hand side (Firefox)
+SyntaxError: Left side of assignment is not a reference. (Safari)
 ```
 
-## 에러 타입
+## Error type
 
-{{jsxref("ReferenceError")}}.
+{{jsxref("SyntaxError")}} or {{jsxref("ReferenceError")}}, depending on the syntax.
 
-## 무엇이 잘못되었을까?
+## What went wrong?
 
-예상치 못한 할당이 일어났습니다. 이것은 할당 연산자([assignment operator](/en-US/docs/Web/JavaScript/Reference/Operators/Assignment_Operators))와 비교 연산자([comparison operator](/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators)) 간의 불일치로 인한 것일 겁니다. 예를 들면, "`=`" 부호는 값을 변수에 할당합니다. "`==`" 나 "`===`"는 값을 비교하는 연산을 합니다.
+There was an unexpected assignment somewhere. This might be due to a mismatch of an [assignment operator](/en-US/docs/Web/JavaScript/Reference/Operators#assignment_operators) and an [equality operator](/en-US/docs/Web/JavaScript/Reference/Operators#equality_operators), for example. While a single `=` sign assigns a value to a variable, the `==` or `===` operators compare a value.
 
-## 예
+## Examples
+
+### Typical invalid assignments
 
 ```js example-bad
-if (Math.PI = 3 || Math.PI = 4) {
-  console.log('no way!');
+if (Math.PI + 1 = 3 || Math.PI + 1 = 4) {
+  console.log("no way!");
 }
-// ReferenceError: invalid assignment left-hand side
+// SyntaxError: invalid assignment left-hand side
 
-var str = 'Hello, '
-+= 'is it me '
-+= 'you\'re looking for?';
-// ReferenceError: invalid assignment left-hand side
+const str = "Hello, "
++= "is it me "
++= "you're looking for?";
+// SyntaxError: invalid assignment left-hand side
 ```
 
-`if` 구문에서, 비교 연산자 ("==")로 비교하려 할 때, 문자열의 연속적인 결합의 경우에는, 플러스("+") 연산자가 필요합니다.
+In the `if` statement, you want to use an equality operator (`===`), and for the string concatenation, the plus (`+`) operator is needed.
 
 ```js example-good
-if (Math.PI == 3 || Math.PI == 4) {
-  console.log('no way!');
+if (Math.PI + 1 === 3 || Math.PI + 1 === 4) {
+  console.log("no way!");
 }
 
-var str = 'Hello, '
-+ 'from the '
-+ 'other side!';
+const str = "Hello, "
+  + "from the "
+  + "other side!";
 ```
 
-## 참조
+### Assignments producing ReferenceErrors
 
-- [Assignment operators](/en-US/docs/Web/JavaScript/Reference/Operators/Assignment_Operators)
-- [Comparison operators](/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators)
+Invalid assignments don't always produce syntax errors. Sometimes the syntax is almost correct, but at runtime, the left hand side expression evaluates to a _value_ instead of a _reference_, so the assignment is still invalid. Such errors occur later in execution, when the line is actually executed.
+
+```js example-bad
+function foo() {
+  return { a: 1 };
+}
+foo() = 1; // ReferenceError: invalid assignment left-hand side
+```
+
+Function calls, [`new`](/en-US/docs/Web/JavaScript/Reference/Operators/new) calls, [`super()`](/en-US/docs/Web/JavaScript/Reference/Operators/super), and [`this`](/en-US/docs/Web/JavaScript/Reference/Operators/this) are all values instead of references. If you want to use them on the left hand side, the assignment target needs to be a property of their produced values instead.
+
+```js example-good
+function foo() {
+  return { a: 1 };
+}
+foo().a = 1;
+```
+
+> **Note:** In Firefox and Safari, the first example produces a `ReferenceError` in non-strict mode, and a `SyntaxError` in [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode). Chrome throws a runtime `ReferenceError` for both strict and non-strict modes.
+
+### Using optional chaining as assignment target
+
+[Optional chaining](/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining) is not a valid target of assignment.
+
+```js example-bad
+obj?.foo = 1; // SyntaxError: invalid assignment left-hand side
+```
+
+Instead, you have to first guard the nullish case.
+
+```js example-good
+if (obj) {
+  obj.foo = 1;
+}
+```
+
+## See also
+
+- [Assignment operators](/en-US/docs/Web/JavaScript/Reference/Operators#assignment_operators)
+- [Equality operators](/en-US/docs/Web/JavaScript/Reference/Operators#equality_operators)

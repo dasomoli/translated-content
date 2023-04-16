@@ -1,181 +1,283 @@
 ---
 title: contain
 slug: Web/CSS/contain
+page-type: css-property
+browser-compat: css.properties.contain
 ---
+
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`contain`** 속성은 특정 요소와 콘텐츠가 문서 트리의 다른 부위와 독립되어있음을 나타낼 때 사용합니다. 브라우저는 이 정보를 사용해 레이아웃, 스타일, 페인트, 크기, 또는 그 조합의 계산을 전체 페이지 DOM 대신 일부에서만 수행할 수 있으므로 뚜렷한 성능 상 이점을 얻을 수 있습니다.
+The **`contain`** [CSS](/en-US/docs/Web/CSS) property indicates that an element and its contents are, as much as possible, independent from the rest of the document tree.
+Containment enables isolating a subsection of the DOM, providing performance benefits by limiting calculations of layout, style, paint, size, or any combination to a DOM subtree rather than the entire page. Containment can also be used to scope CSS counters and quotes.
 
-`contain` 속성은 위젯 내부 콘텐츠가 외부에 부작용을 끼치는 것을 방지할 수 있으므로 서로 독립된 많은 양의 위젯이 존재하는 페이지에서 유용합니다.
+{{EmbedInteractiveExample("pages/css/contain.html")}}
 
-> **참고:** `paint`, `strict`, `content` 값을 설정할 경우 다음을 생성합니다.
+There are four types of CSS containment: size, layout, style, and paint, which are set on the container.
+The property is a space-separated list of a subset of the five standard values or one of the two shorthand values.
+Changes to the contained properties within the container are not propagated outside of the contained element to the rest of the page.
+The main benefit of containment is that the browser does not have to re-render the DOM or page layout as often, leading to small performance benefits during the rendering of static pages and greater performance benefits in more dynamic applications.
+
+Using the `contain` property is useful on pages with groups of elements that are supposed to be independent, as it can prevent element internals from having side effects outside of its bounding-box.
+
+> **Note:** using `layout`, `paint`, `strict` or `content` values for this property creates:
 >
-> 1. 새로운 [컨테이닝 블록](/ko/docs/Web/CSS/All_About_The_Containing_Block) ({{cssxref("position")}} 속성이 `absolute` 또는 `fixed`인 자손을 위함).
-> 2. 새로운 [쌓임 맥락](/ko/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context).
-> 3. 새로운 [블록 서식 맥락](/ko/docs/Web/Guide/CSS/Block_formatting_context).
+> 1. A new [containing block](/en-US/docs/Web/CSS/Containing_block) (for the descendants whose {{cssxref("position")}} property is `absolute` or `fixed`).
+> 2. A new [stacking context](/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context).
+> 3. A new [block formatting context](/en-US/docs/Web/Guide/CSS/Block_formatting_context).
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
 contain: none;
 contain: strict;
 contain: content;
 contain: size;
+contain: inline-size;
 contain: layout;
 contain: style;
 contain: paint;
 
-/* 다중 값 */
+/* Multiple keywords */
 contain: size paint;
 contain: size layout paint;
+contain: inline-size layout;
 
-/* 전역 값 */
+/* Global values */
 contain: inherit;
 contain: initial;
+contain: revert;
+contain: revert-layer;
 contain: unset;
 ```
 
-`contain` 속성은 다음 방법 중 하나를 사용해 지정합니다.
+### Values
 
-- `none`, `strict`, `content` 키워드 중 하나를 사용.
-- `size`, `layout`, `style`, `paint` 키워드를 임의 순서로 하나 이상 사용.
+The `contain` property can have any of the following values:
 
-### 값
+- The keyword `none` **or**
+- One or more of the space-separated keywords `size` (or `inline-size`), `layout`, `style`, and `paint` in any order **or**
+- One of the shorthand values `strict` or `content`
+
+The keywords have the following meanings:
 
 - `none`
-  - : 아무것도 격리하지 않고 요소를 평범하게 렌더링합니다.
+  - : The element renders as normal, with no containment applied.
 - `strict`
-  - : `style`을 제외한 모든 격리 규칙을 적용합니다. `contain: size layout paint`와 같습니다.
+  - : All containment rules are applied to the element. This is equivalent to `contain: size layout paint style`.
 - `content`
-  - : `size`와 `style`을 제외한 모든 격리 규칙을 적용합니다. `contain: layout paint`와 같습니다.
+  - : All containment rules except `size` are applied to the element. This is equivalent to `contain: layout paint style`.
 - `size`
-  - : 요소의 크기를 계산할 때 자손의 크기는 고려하지 않아도 됨을 나타냅니다.
+  - : Size containment is applied to the element in both the inline and block directions. The size of the element can be computed in isolation, ignoring the child elements. This value cannot be combined with `inline-size`.
+- `inline-size`
+  - : Inline size containment is applied to the element. The inline size of the element can be computed in isolation, ignoring the child elements. This value cannot be combined with `size`.
 - `layout`
-  - : 요소 외부의 어느 것도 내부 레이아웃에 영향을 주지 않고, 그 반대도 성립함을 나타냅니다.
+  - : The internal layout of the element is isolated from the rest of the page. This means nothing outside the element affects its internal layout, and vice versa.
 - `style`
-  - : 요소 자신과 자손 외에도 영향을 주는 속성이라도 그 영향 범위가 자신을 벗어나지 않음을 나타냅니다. 이 값은 명세에서 "제외 고려" 대상이므로 모든 브라우저가 지원하지 않을 수도 있음을 참고하세요.
+  - : For properties that can affect more than just an element and its descendants, the effects don't escape the containing element. Counters and quotes are scoped to the element and its contents.
 - `paint`
-  - : 요소의 자손이 자신의 범위 바깥에 그려지지 않음을 나타냅니다. 이 값을 지정한 요소의 경우, 요소가 화면 밖에 위치할 경우 당연히 그 안의 자손도 화면 안에 들어오지 않을 것이므로 브라우저는 그 안의 요소를 고려하지 않아도 됩니다. 그러나 만약 자손이 범위 밖으로 넘칠 경우에는 요소의 테두리 상자에서 잘라냅니다.
+  - : Descendants of the element don't display outside its bounds. If the containing box is offscreen, the browser does not need to paint its contained elements — these must also be offscreen as they are contained completely by that box. If a descendant overflows the containing element's bounds, then that descendant will be clipped to the containing element's border-box.
 
-## 형식 정의
+## Formal definition
 
 {{cssinfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 간단한 레이아웃
+### Paint containment
 
-다음 마크업은 각각의 콘텐츠를 가진 여러 개의 글을 가정합니다.
-
-```html
-<h1>My blog</h1>
-<article>
-  <h2>Heading of a nice article</h2>
-  <p>Content here.</p>
-</article>
-<article>
-  <h2>Another heading of another article</h2>
-  <img src="graphic.jpg" alt="photo">
-  <p>More content here.</p>
-</article>
-```
-
-각 `<article>`과 `<img>`엔 테두리를 부여하고, 이미지는 모두 좌측으로 플로팅합니다.
+The following example shows how to use `contain: paint` to prevent an element's descendants from painting outside of its bounds.
 
 ```css
-img {
-  float: left;
-  border: 3px solid black;
-}
-
-article {
-  border: 1px solid black;
+div {
+  width: 100px;
+  height: 100px;
+  background: red;
+  margin: 10px;
+  font-size: 20px;
 }
 ```
 
-{{EmbedLiveSample('간단한_레이아웃', '100%', '300')}}
+```html
+<div style="contain: paint">
+  <p>This text will be clipped to the bounds of the box.</p>
+</div>
+<div>
+  <p>This text will not be clipped to the bounds of the box.</p>
+</div>
+```
 
-### 플로팅 간섭
+{{EmbedLiveSample("Paint_containment", "100%", 280)}}
 
-첫 번째 글의 마지막에 다른 이미지를 넣게 되면 많은 양의 DOM 트리가 다시 레이아웃이나 페인트 과정을 거쳐야 하며, 두 번째 글의 레이아웃에도 간섭하게 됩니다.
+### Layout containment
+
+Consider the example below which shows how elements behave with and without layout containment applied:
 
 ```html
-<h1>My blog</h1>
-<article>
-  <h2>Heading of a nice article</h2>
-  <p>Content here.</p>
-  <img src="i-just-showed-up.jpg" alt="social">
-</article>
-<article>
-  <h2>Another heading of another article</h2>
-  <img src="graphic.jpg" alt="photo">
-  <p>More content here.</p>
-</article>
+<div class="card" style="contain: layout;">
+  <h2>Card 1</h2>
+  <div class="fixed"><p>Fixed box 1</p></div>
+  <div class="float"><p>Float box 1</p></div>
+</div>
+<div class="card">
+  <h2>Card 2</h2>
+  <div class="fixed"><p>Fixed box 2</p></div>
+  <div class="float"><p>Float box 2</p></div>
+</div>
+<div class="card">
+  <h2>Card 3</h2>
+  <!-- ... -->
+</div>
 ```
 
 ```css hidden
-img {
-  float: left;
-  border: 3px solid black;
+p {
+  margin: 4px;
+  padding: 4px;
 }
 
-article {
-  border: 1px solid black;
+h2 {
+  margin-bottom: 4px;
+  padding: 10px;
 }
-```
 
-아래의 라이브 샘플에서, 플로팅 작동 방식으로 인해 첫 번째 이미지가 두 번째 글 안으로 들어가버린 모습을 볼 수 있습니다.
-
-{{EmbedLiveSample('플로팅_간섭', '100%', '300')}}
-
-### `contain`으로 수정하기
-
-각각의 `article`에 `contain: content`를 지정해주면, 새로운 요소를 추가할 때 그 하위 트리만 계산하고 바깥은 고려하지 않아도 된다는 것을 브라우저가 인식합니다.
-
-```html hidden
-<h1>My blog</h1>
-<article>
-  <h2>Heading of a nice article</h2>
-  <p>Content here.</p>
-  <img src="i-just-showed-up.jpg" alt="social">
-</article>
-<article>
-  <h2>Another heading of another article</h2>
-  <img src="graphic.jpg" alt="photo">
-  <p>More content here.</p>
-</article>
+div {
+  border-radius: 4px;
+  box-shadow: 0 2px 4px 0 gray;
+  padding: 6px;
+  margin: 6px;
+}
 ```
 
 ```css
-img {
-  float: left;
-  border: 3px solid black;
+.card {
+  width: 70%;
+  height: 90px;
 }
 
-article {
-  border: 1px solid black;
-  contain: content;
+.fixed {
+  position: fixed;
+  right: 10px;
+  top: 10px;
+  background: coral;
+}
+
+.float {
+  float: left;
+  margin: 10px;
+  background: aquamarine;
 }
 ```
 
-또한 첫 번째 이미지가 플로팅으로 인해 아래로 넘어가지 않고, 컨테이너 요소의 범위 안에 머무르는 것도 확인할 수 있습니다.
+The first card has layout containment applied, and its layout is isolated from the rest of the page.
+We can reuse this card in other places on the page without worrying about layout recalculation of the other elements.
+If floats overlap the card bounds, elements on the rest of the page are not affected.
+When the browser recalculates the containing element's subtree, only that element is recalculated. Nothing outside of the contained element needs to be recalculated.
+Additionally, the fixed box uses the card as a layout container to position itself.
 
-{{EmbedLiveSample('contain으로_수정하기', '100%', '330')}}
+The second and third cards have no containment.
+The layout context for the fixed box in the second card is the root element so the fixed box is positioned in the top right corner of the page.
+A float overlaps the second card's bounds causing the third card to have unexpected layout shift that's visible in the positioning of the `<h2>` element.
+When recalculation occurs, it is not limited to a container.
+This impacts performance and interferes with the rest of the page layout.
 
-## 명세
+{{EmbedLiveSample("Layout_containment", "100%", 350)}}
+
+### Style containment
+
+Style containment scopes [counters](/en-US/docs/Web/CSS/CSS_Counter_Styles/Using_CSS_counters) and [quotes](/en-US/docs/Web/CSS/quotes) to the contained element.
+For CSS counters, the {{cssxref("counter-increment")}} and {{cssxref("counter-set")}} properties are scoped to the element as if the element is at the root of the document.
+
+#### Containment and counters
+
+The example below takes a look at how counters work when style containment is applied:
+
+```html
+<ul>
+  <li>Item A</li>
+  <li>Item B</li>
+  <li class="container">Item C</li>
+  <li>Item D</li>
+  <li>Item E</li>
+</ul>
+```
+
+```css
+body {
+  counter-reset: list-items;
+}
+
+li::before {
+  counter-increment: list-items;
+  content: counter(list-items) ": ";
+}
+
+.container {
+  contain: style;
+}
+```
+
+Without containment, the counter would increment from 1 to 5 for each list item.
+Style containment causes the {{cssxref("counter-increment")}} property to be scoped to the element's subtree and the counter begins again at 1:
+
+{{EmbedLiveSample('Containment_and_counters', '100%', 140)}}
+
+#### Containment and quotes
+
+CSS quotes are similarly affected in that the [`content`](/en-US/docs/Web/CSS/content) values relating to quotes are scoped to the element:
+
+```html
+<!-- With style containment -->
+<span class="open-quote">
+  outer
+  <span style="contain: style;">
+    <span class="open-quote"> inner </span>
+  </span>
+</span>
+<span class="close-quote"> close </span>
+<br />
+<!-- Without containment -->
+<span class="open-quote">
+  outer
+  <span>
+    <span class="open-quote"> inner </span>
+  </span>
+</span>
+<span class="close-quote"> close </span>
+```
+
+```css
+body {
+  quotes: "[" "]" "‹" "›";
+}
+.open-quote:before {
+  content: open-quote;
+}
+
+.close-quote:after {
+  content: close-quote;
+}
+```
+
+Because of containment, the first closing quote ignores the inner span and uses the outer span's closing quote instead:
+
+{{EmbedLiveSample('Containment_and_quotes', '100%', 40)}}
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [CSS Containment](/ko/docs/Web/CSS/CSS_Containment)
-- CSS {{cssxref("position")}} 속성
+- [CSS containment](/en-US/docs/Web/CSS/CSS_Containment)
+- [CSS container queries](/en-US/docs/Web/CSS/CSS_Container_Queries)
+- CSS {{cssxref("content-visibility")}} property
+- CSS {{cssxref("position")}} property

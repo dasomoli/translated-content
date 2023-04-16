@@ -1,110 +1,109 @@
 ---
 title: Intl.supportedValuesOf()
 slug: Web/JavaScript/Reference/Global_Objects/Intl/supportedValuesOf
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Intl.supportedValuesOf
 ---
 
 {{JSRef}}
 
-**`Intl.supportedValuesOf()`** 메서드는 지원되는 역법(calendar), 콜레이터, 통화, 수 체계 또는 구현시 지원되는 단위 값을 포함하는 배열을 반환합니다.
+The **`Intl.supportedValuesOf()`** static method returns an array containing the supported calendar, collation, currency, numbering systems, or unit values supported by the implementation.
 
-중복 값들은 제거되며, 배열은 알파벳 오름차순으로 정렬(정확하게는 {{jsxref("Array/sort", "Array.prototype.sort()")}})에 `undefined` 비교 함수를 사용하여 정렬)됩니다.
+Duplicates are omitted and the array is sorted in ascending alphabetic order (or more precisely, using {{jsxref("Array/sort", "Array.prototype.sort()")}} with an `undefined` compare function)
 
-이 메서드는 특정 기능 구현시에 값이 지원되는지 여부를 테스트하고, 필요한 경우에만 폴리필을 다운로드받는데 사용할 수 있습니다.
-또한 사용자가 선호하는 지역화된 값을 선택할 수 있게 하는 UI(예를 들어 UI가 WebGL 또는 서버사이드로 구현되었을 때)를 만드는 데에도 사용됩니다.
+The method can be used to feature-test whether values are supported in a particular implementation and download a polyfill only if necessary.
+It can also be used to build UIs that allow users to select their preferred localized values, for example when the UI is created from WebGL or server-side.
 
 {{EmbedInteractiveExample("pages/js/intl-supportedvaluesof.html", "taller")}}
 
-<!-- The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone https://github.com/mdn/interactive-examples and send us a pull request. -->
-
-## 구문
+## Syntax
 
 ```js-nolint
 Intl.supportedValuesOf(key)
 ```
 
-### 매개변수
+### Parameters
 
 - `key`
-  - : 반환할 값의 범주를 나타내는 키 문자열로,
-    `"calendar"`, `"collation"`, `"currency"`,`"numberingSystem"`, `"timeZone"`, `"unit"` 중의 하나입니다.
+  - : A key string indicating the category of values to be returned. This is one of: `"calendar"`, `"collation"`, `"currency"`, `"numberingSystem"`, `"timeZone"`, `"unit"`.
 
-### 반환 값
+### Return value
 
-지정된 Key에 대해 구현시 지원하는 값을 나타내는 고유한 문자열 값의 정렬된 배열입니다.
+A sorted array of unique string values indicating the values supported by the implementation for the given key.
 
-### 예외
+### Exceptions
 
-- `RangeError`
-  - : 지원되지 않는 Key가 인자로 전달되었을 때
+- {{jsxref("RangeError")}}
+  - : Thrown if an unsupported key was passed as a parameter.
 
-## 예제
+## Examples
 
-### 기능 테스트
+### Feature testing
 
-메서드가 지원되는지 여부를 `undefined`과 비교하여 확인할 수 있습니다.
+You can check that the method is supported by comparing to `undefined`:
 
 ```js
-if (typeof Intl.supportedValuesOf !== 'undefined') {
-  // 메서드가 지원됩니다.
+if (typeof Intl.supportedValuesOf !== "undefined") {
+  // method is supported
 }
 ```
 
-### Key의 모든 값 가져오기
+### Get all values for key
 
-달력에 지원되는 값을 확인하기 위해서는 `"calendar"` 키로 메서드를 실행합니다.
-아래와 같이 반환된 배열을 반복 탐색합니다.
+To get the supported values for calendar you call the method with the key `"calendar"`.
+You can then iterate through the returned array as shown below:
 
 ```js
 Intl.supportedValuesOf("calendar").forEach((calendar) => {
-  // "buddhist", "chinese", "coptic", "dangi", 등.
+  // "buddhist", "chinese", "coptic", "dangi", etc.
 });
 ```
 
-> **참고:** calendar 값으로 반환된 배열은 항상 "gregory" (그레고리력)을 포함합니다.
+> **Note:** The array returned for calendar values will always include the value "gregory" (gregorian).
 
-다른 값도 동일한 방식으로 확인할 수 있습니다.
+The other values are all obtained in the same way:
 
 ```js
 Intl.supportedValuesOf("collation").forEach((collation) => {
-  // "big5han", "compat", "dict", "emoji", 등.
+  // "compat", "dict", "emoji", etc.
 });
 
 Intl.supportedValuesOf("currency").forEach((currency) => {
-  // "ADP", "AED", "AFA", "AFN", "ALK", "ALL", "AMD", 등.
+  // "ADP", "AED", "AFA", "AFN", "ALK", "ALL", "AMD", etc.
 });
 
 Intl.supportedValuesOf("numberingSystem").forEach((numberingSystem) => {
-  // "adlm", "ahom", "arab", "arabext", "bali", 등.
+  // "adlm", "ahom", "arab", "arabext", "bali", etc.
 });
 
 Intl.supportedValuesOf("timeZone").forEach((timeZone) => {
-  // "Africa/Abidjan", "Africa/Accra", "Africa/Addis_Ababa", "Africa/Algiers", 등.
+  // "Africa/Abidjan", "Africa/Accra", "Africa/Addis_Ababa", "Africa/Algiers", etc.
 });
 
 Intl.supportedValuesOf("unit").forEach((unit) => {
-  // "acre", "bit", "byte", "celsius", "centimeter", 등.
+  // "acre", "bit", "byte", "celsius", "centimeter", etc.
 });
 ```
 
-### 유효하지 않은 Key 사용시 RangeError 발생
+### Invalid key throws RangeError
 
 ```js
 try {
-  Intl.supportedValuesOf("유효하지 않은 키");
+  Intl.supportedValuesOf("someInvalidKey");
 } catch (err) {
-  //Error: RangeError: invalid key: "유효하지 않은 키"
+  //Error: RangeError: invalid key: "someInvalidKey"
 }
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Global_Objects/Intl", "Intl")}}
 - [A polyfill of `Intl.supportedValuesOf` in FormatJS](https://github.com/formatjs/formatjs/tree/main/packages/intl-enumerator)

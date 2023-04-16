@@ -1,43 +1,57 @@
 ---
-title: 할당 연산자 (=)
+title: Assignment (=)
 slug: Web/JavaScript/Reference/Operators/Assignment
+page-type: javascript-operator
+browser-compat: javascript.operators.assignment
 ---
 
 {{jsSidebar("Operators")}}
 
-**할당(`=`)** 연산자는 변수에 값을 대입하는 데 사용됩니다. 할당 연산은 할당된 값으로 평가됩니다. 할당 연산자를
-연결하여 사용하면 단일 값을 여러 변수에 할당할 수 있습니다.
+The **assignment (`=`)** operator is used to assign a value to a
+variable. The assignment operation evaluates to the assigned value. Chaining the
+assignment operator is possible in order to assign a single value to multiple variables.
 
 {{EmbedInteractiveExample("pages/js/expressions-assignment.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 x = y
 ```
 
-## 예제
+## Examples
 
-### 간단한 대입과 연결하여 사용
+### Simple assignment and chaining
 
 ```js
 let x = 5;
 let y = 10;
 let z = 25;
 
-x = y; // x 는 10입니다.
-x = y = z; // x, y, z 는 모두 25입니다.
+x = y; // x is 10
+x = y = z; // x, y and z are all 25
 ```
 
-## 명세
+### Value of assignment expressions
+
+The assignment expression itself evaluates to the value of the right-hand side, so you can log the value and assign to a variable at the same time.
+
+```js
+let x;
+console.log(x); // undefined
+console.log(x = 2); // 2
+console.log(x); // 2
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [JavaScript 가이드에서 할당 연산자](/ko/docs/Web/JavaScript/Guide/Expressions_and_Operators#assignment_operators)
-- [구조 분해 할당](/ko/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
+- [Assignment operators in the JS guide](/en-US/docs/Web/JavaScript/Guide/Expressions_and_operators#assignment_operators)
+- [Destructuring assignment](/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)

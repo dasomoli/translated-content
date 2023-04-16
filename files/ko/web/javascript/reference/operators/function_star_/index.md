@@ -1,61 +1,84 @@
 ---
 title: function* expression
 slug: Web/JavaScript/Reference/Operators/function*
+page-type: javascript-operator
+browser-compat: javascript.operators.generator_function
 ---
 
 {{jsSidebar("Operators")}}
 
-**`function*`** keyword 는 표현식 내에서 generator function 을 정의합니다.
+The **`function*`** keyword can be used to define a generator function inside an expression.
 
-{{EmbedInteractiveExample("pages/js/expressions-functionasteriskexpression.html")}}
+You can also define generator functions using the [`function*` declaration](/en-US/docs/Web/JavaScript/Reference/Statements/function*).
+
+{{EmbedInteractiveExample("pages/js/expressions-functionasteriskexpression.html", "taller")}}
 
 ## Syntax
 
-```js
-    function* [name]([param1[, param2[, ..., paramN]]]) {
-       statements
-    }
+```js-nolint
+function* (param0) {
+  statements
+}
+function* (param0, param1) {
+  statements
+}
+function* (param0, param1, /* … ,*/ paramN) {
+  statements
+}
+
+function* name(param0) {
+  statements
+}
+function* name(param0, param1) {
+  statements
+}
+function* name(param0, param1, /* … ,*/ paramN) {
+  statements
+}
 ```
+
+> **Note:** An expression statement cannot begin with the keyword `function` to avoid ambiguity with a [`function*` declaration](/en-US/docs/Web/JavaScript/Reference/Statements/function*). The `function` keyword only begins an expression when it appears in a context that cannot accept statements.
 
 ### Parameters
 
-- `name`
-  - : 함수명. 생략하면, 익명 함수가 됩니다. 함수명은 함수내에만 한정됩니다.
-- `paramN`
-  - : 함수에 전달되는 인수의 이름. 함수는 최대 255 개의 인수를 가질 수 있습니다.
-- `statements`
-  - : 함수의 본체를 구성하는 구문들.
+- `name` {{optional_inline}}
+  - : The function name. Can be omitted, in which case the function is _anonymous_. The name is only local to the function body.
+- `paramN` {{optional_inline}}
+  - : The name of an argument to be passed to the function.
+- `statements` {{optional_inline}}
+  - : The statements which comprise the body of the function.
 
 ## Description
 
-`function*` expression 은 {{jsxref('Statements/function*', 'function* statement')}} 과 매우 유사하고 형식도 같습니다. `function*` expression 과 `function*` statement 의 주요한 차이점은 함수명으로,\* _`function_` expressions 에서는 익명 함수로 만들기 위해 함수명이 생략될 수 있습니다.보다 자세한 내용은 [functions](/ko/docs/Web/JavaScript/Reference/Functions) 을 참조하십시오.
+A `function*` expression is very similar to, and has almost the same syntax as, a [`function*` declaration](/en-US/docs/Web/JavaScript/Reference/Statements/function). The main difference between a `function*` expression and a `function*` declaration is the _function name_, which can be omitted in `function*` expressions to create _anonymous_ functions. A `function*` expression can be used as an [IIFE](/en-US/docs/Glossary/IIFE) (Immediately Invoked Function Expression) which runs as soon as it is defined, allowing you to create an ad-hoc [iterable iterator object](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterable_protocol). See also the chapter about [functions](/en-US/docs/Web/JavaScript/Reference/Functions) for more information.
 
 ## Examples
 
-아래의 예제는 이름이 없는 generator function 을 정의하고 이를 x 에 할당합니다. function 은 인자로 들어온 값의 제곱을 생산(yield)합니다.
+### Using function\*
+
+The following example defines an unnamed generator function and assigns it to `x`. The function yields the square of its argument:
 
 ```js
-var x = function*(y) {
-   yield y * y;
+const x = function* (y) {
+  yield y * y;
 };
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- {{jsxref("Statements/function*", "function* statement")}}
+- {{jsxref("Statements/function*", "function*")}} statement
 - {{jsxref("GeneratorFunction")}} object
-- [The Iterator protocol](/en-US/docs/Web/JavaScript/Guide/The_Iterator_protocol)
+- [The Iterator protocol](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)
 - {{jsxref("Operators/yield", "yield")}}
 - {{jsxref("Operators/yield*", "yield*")}}
 - {{jsxref("Function")}} object
-- {{jsxref("Statements/function", "function statement")}}
-- {{jsxref("Operators/function", "function expression")}}
-- {{jsxref("Functions_and_function_scope", "Functions and function scope")}}
+- {{jsxref("Statements/function", "function")}} statement
+- {{jsxref("Operators/function", "function")}} expression

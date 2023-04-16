@@ -1,37 +1,69 @@
 ---
-title: 웹 소켓
+title: The WebSocket API (WebSockets)
 slug: Web/API/WebSockets_API
-original_slug: WebSockets
+page-type: web-api-overview
+browser-compat: api.WebSocket
 ---
 
-웹 소켓은 사용자의 브라우저와 서버 사이의 인터액티브 통신 세션을 설정할 수 있게 하는 고급 기술입니다. 개발자는 웹 소켓 API를 통해 서버로 메시지를 보내고 서버의 응답을 위해 서버를 폴링하지 않고도 이벤트 중심 응답을 받는 것이 가능합니다.
+{{DefaultAPISidebar("Websockets API")}}
 
-## 인터페이스
+The **WebSocket API** is an advanced technology that makes it possible to open a two-way interactive communication session between the user's browser and a server. With this API, you can send messages to a server and receive event-driven responses without having to poll the server for a reply.
 
-- [`WebSocket`](/ko/docs/Web/API/WebSocket)
-  - : 웹 소켓 서버로 연결하고 연결을 통해 데이터를 보내고 받는 기본 인터페이스<
-- [`CloseEvent`](/ko/docs/Web/API/CloseEvent)
-  - : 연결이 종료 되었을 때 웹 소켓 객체에 의해 전달된 이벤트
-- [`MessageEvent`](/ko/docs/Web/API/MessageEvent)
-  - : 서버로 부터 메시지가 수신 되었을 때 웹 소켓 객체에 의해 전달된 이벤트
+> **Note:** While a WebSocket connection is functionally somewhat similar to standard Unix-style sockets, they are not related.
 
-## 도구
+## Interfaces
 
-- [Socket.IO](http://socket.io): [Node.js](http://nodejs.org)를 위한 강력한 크로스 플랫폼 웹 소켓 API
-- [WebSocket-Node](https://github.com/Worlize/WebSocket-Node): [Node.js](http://nodejs.org)를 위한 웹 소켓 서버 API 구현
-- [더 많은 프레임워크, 라이브러리 보기](http://ajf.me/websocket/#libs)
+- [`WebSocket`](/en-US/docs/Web/API/WebSocket)
+  - : The primary interface for connecting to a WebSocket server and then sending and receiving data on the connection.
+- [`CloseEvent`](/en-US/docs/Web/API/CloseEvent)
+  - : The event sent by the WebSocket object when the connection closes.
+- [`MessageEvent`](/en-US/docs/Web/API/MessageEvent)
+  - : The event sent by the WebSocket object when a message is received from the server.
 
-## 관련 주제
+## Guides
 
-- [AJAX](/ko/docs/AJAX), [JavaScript](/ko/docs/JavaScript)
+- [Writing WebSocket client applications](/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications)
+- [Writing WebSocket servers](/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers)
+- [Writing a WebSocket server in C#](/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_server)
+- [Writing a WebSocket server in Java](/en-US/docs/Web/API/WebSockets_API/Writing_a_WebSocket_server_in_Java)
 
-## `같이 보기`
+## Tools
 
-- [RFC 6455 - 웹 소켓 프로토콜](http://tools.ietf.org/html/rfc6455)
-- [웹 소켓 API 규격](http://www.w3.org/TR/websockets/)
-- [서버로부터의 이벤트](/ko/docs/Server-sent_events)
-- [WebSocket.us](http://websocket.us/) - 웹 소켓에 대한 비영리 커뮤니티
+- [AsyncAPI](https://www.asyncapi.com/): A specification for describing event-driven architectures based on protocols like WebSocket. You can use it to describe WebSocket-based APIs just as you would describe REST APIs with the OpenAPI specification. Learn [why you should consider using AsyncAPI with WebSocket](https://www.asyncapi.com/blog/websocket-part1) and [how to do so](https://www.asyncapi.com/blog/websocket-part2).
+- [HumbleNet](https://hacks.mozilla.org/2017/06/introducing-humblenet-a-cross-platform-networking-library-that-works-in-the-browser/): A cross-platform networking library that works in the browser. It consists of a C wrapper around WebSockets and WebRTC that abstracts away cross-browser differences, facilitating the creation of multi-user networking functionality for games and other apps.
+- [µWebSockets](https://github.com/uNetworking/uWebSockets): Highly scalable WebSocket server and client implementation for [C++11](https://isocpp.org/) and [Node.js](https://nodejs.org).
+- [Socket.IO](https://socket.io): A long polling/WebSocket based third party transfer protocol for [Node.js](https://nodejs.org).
+- [SocketCluster](https://socketcluster.io/): A pub/sub WebSocket framework for [Node.js](https://nodejs.org) with a focus on scalability.
+- [WebSocket-Node](https://github.com/theturtle32/WebSocket-Node): A WebSocket server API implementation for [Node.js](https://nodejs.org).
+- [Total.js](https://www.totaljs.com): Web application framework for [Node.js](https://nodejs.org/en/) (Example: [WebSocket chat](https://github.com/totaljs/examples/tree/master/websocket))
+- [Faye](https://www.npmjs.com/package/faye-websocket): A {{DOMxRef("WebSocket")}} (two-ways connections) and [EventSource](/en-US/docs/Web/API/EventSource) (one-way connections) for [Node.js](https://nodejs.org) Server and Client.
+- [SignalR](https://dotnet.microsoft.com/en-us/apps/aspnet/signalr): SignalR will use WebSockets under the covers when it's available, and gracefully fallback to other techniques and technologies when it isn't, while your application code stays the same.
+- [Caddy](https://caddyserver.com/): A web server capable of proxying arbitrary commands (stdin/stdout) as a websocket.
+- [ws](https://github.com/websockets/ws): a popular WebSocket client & server library for [Node.js](https://nodejs.org/).
+- [jsonrpc-bidirectional](https://github.com/bigstepinc/jsonrpc-bidirectional): Asynchronous RPC which, on a single connection, may have functions exported on the server and, and the same time, on the client (client may call server, server may also call client).
+- [cowboy](https://github.com/ninenines/cowboy): Cowboy is a small, fast and modern HTTP server for Erlang/OTP with WebSocket support.
+- [ZeroMQ](https://zeromq.org): ZeroMQ is embeddable networking library that carries messages across in-process, IPC, TCP, UDP, TIPC, multicast and WebSocket.
+- [WebSocket King](https://websocketking.com): A client tool to help develop, test and work with WebSocket servers.
+- [PHP WebSocket Server](https://github.com/napengam/phpWebSocketServer): Server written in PHP to handle connections via websockets wss\:// or ws\://and normal sockets over ssl:// ,tcp\://
+- [Channels](https://channels.readthedocs.io/en/stable/index.html): Django library that adds support for WebSockets (and other protocols that require long running asynchronous connections).
+- [Flask-SocketIO](https://flask-socketio.readthedocs.io/en/latest/): gives Flask applications access to low latency bi-directional communications between the clients and the server.
+- [Gorilla WebSocket](https://pkg.go.dev/github.com/gorilla/websocket): Gorilla WebSocket is a [Go](https://go.dev/) implementation of the WebSocket protocol.
 
-## `브라우저 호환성`
+## Related Topics
+
+- [AJAX](/en-US/docs/Web/Guide/AJAX)
+- [JavaScript](/en-US/docs/Web/JavaScript)
+
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- [RFC 6455 — The WebSocket Protocol](https://datatracker.ietf.org/doc/html/rfc6455)
+- [WebSocket API Specification](https://websockets.spec.whatwg.org/)
+- [Server-Sent Events](/en-US/docs/Web/API/Server-sent_events)

@@ -1,67 +1,100 @@
 ---
 title: Symbol.iterator
 slug: Web/JavaScript/Reference/Global_Objects/Symbol/iterator
+page-type: javascript-static-data-property
+browser-compat: javascript.builtins.Symbol.iterator
 ---
 
 {{JSRef}}
 
-잘 알려진 **`Symbol.iterator`** 심볼은 객체에 대응하는 기본 이터레이터를 지정합니다. [`for...of`](/ko/docs/docs/Web/JavaScript/Reference/Statements/for...of)와 같이 사용됩니다.
+The **`Symbol.iterator`** static data property represents the [well-known symbol](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol#well-known_symbols) `@@iterator`. The [iterable protocol](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterable_protocol) looks up this symbol for the method that returns the iterator for an object. In order for an object to be iterable, it must have an `@@iterator` key.
 
-{{EmbedInteractiveExample("pages/js/symbol-iterator.html")}}{{js_property_attributes(0,0,0)}}
+{{EmbedInteractiveExample("pages/js/symbol-iterator.html")}}
 
-## 설명
+## Value
 
-(`for..of` 루프의 시작부분과 같이) 객체가 반환될 필요가 있을때는 언제든지`@@iterator` 메서드는 인수 없이도 호출 할 수 있습니다. 반환된 **iterator**는 반복할 값을 취득하기 위해 사용됩니다.
+The well-known symbol `@@iterator`.
 
-{{jsxref("Object")}}와 같이 반복동작을 내장하고 있는 형태도 있지만 그렇지 않은 경우도 있습니다. `@@iterator` 메서드를 가지고 있는 내장형 타입은 아래와 같습니다.
+{{js_property_attributes(0, 0, 0)}}
 
-- {{jsxref("Array.@@iterator", "Array.prototype[@@iterator]()")}}
-- {{jsxref("TypedArray.@@iterator", "TypedArray.prototype[@@iterator]()")}}
-- {{jsxref("String.@@iterator", "String.prototype[@@iterator]()")}}
-- {{jsxref("Map.@@iterator", "Map.prototype[@@iterator]()")}}
-- {{jsxref("Set.@@iterator", "Set.prototype[@@iterator]()")}}
+## Description
 
-상세한 내용은 [반복처리 프로토콜](/ko/docs/Web/JavaScript/Reference/Iteration_protocols)도 확인 해 주시기 바랍니다.
+Whenever an object needs to be iterated (such as at the beginning of a `for...of` loop), its `@@iterator` method is called with no arguments, and the returned **iterator** is used to obtain the values to be iterated.
 
-## 예제
+Some built-in types have a default iteration behavior, while other types (such as {{jsxref("Object")}}) do not. Some built-in types with a `@@iterator` method are:
 
-### 유저 정의 이터레이터
+- [`Array.prototype[@@iterator]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/@@iterator)
+- [`TypedArray.prototype[@@iterator]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/@@iterator)
+- [`String.prototype[@@iterator]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/@@iterator)
+- [`Map.prototype[@@iterator]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/@@iterator)
+- [`Set.prototype[@@iterator]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/@@iterator)
 
-앞에서 기술한 바와 같이 독자적으로 이터레이터를 만드는 것이 가능합니다.
+See also [Iteration protocols](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) for more information.
+
+## Examples
+
+### User-defined iterables
+
+We can make our own iterables like this:
 
 ```js
-var myIterable = {}
+const myIterable = {};
 myIterable[Symbol.iterator] = function* () {
+  yield 1;
+  yield 2;
+  yield 3;
+};
+[...myIterable]; // [1, 2, 3]
+```
+
+Or iterables can be defined directly inside a class or object using a [computed property](/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer#computed_property_names):
+
+```js
+class Foo {
+  *[Symbol.iterator]() {
     yield 1;
     yield 2;
     yield 3;
+  }
+}
+
+const someObj = {
+  *[Symbol.iterator]() {
+    yield "a";
+    yield "b";
+  },
 };
-[...myIterable] // [1, 2, 3]
+
+console.log(...new Foo()); // 1, 2, 3
+console.log(...someObj); // 'a', 'b'
 ```
 
-### 비정형 이터레이터
+### Non-well-formed iterables
 
-iterable의 `@@iterator` 메서드가 이터레이터 객체를 반환하지 않는 경우 비정형 이터레이터입니다. 이와 같이 사용하는 경우 실행시 예외 혹은 예상치 못한 버그를 발생할 가능성이 있습니다.
+If an iterable's `@@iterator` method does not return an iterator object, then it is a non-well-formed iterable. Using it as such is likely to result in runtime exceptions or buggy behavior:
 
-```js
-var nonWellFormedIterable = {}
-nonWellFormedIterable[Symbol.iterator] = () => 1
-[...nonWellFormedIterable] // TypeError: [] is not a function
+```js example-bad
+const nonWellFormedIterable = {};
+nonWellFormedIterable[Symbol.iterator] = () => 1;
+[...nonWellFormedIterable]; // TypeError: [Symbol.iterator]() returned a non-object value
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 관련 정보
+## See also
 
-- [반복처리 프로토콜](/ko/docs/Web/JavaScript/Reference/Iteration_protocols)
-- {{jsxref("Array.@@iterator", "Array.prototype[@@iterator]()")}}
-- {{jsxref("TypedArray.@@iterator", "TypedArray.prototype[@@iterator]()")}}
-- {{jsxref("String.@@iterator", "String.prototype[@@iterator]()")}}
-- {{jsxref("Map.@@iterator", "Map.prototype[@@iterator]()")}}
-- {{jsxref("Set.@@iterator", "Set.prototype[@@iterator]()")}}
+- [Polyfill of `Symbol.iterator` in `core-js`](https://github.com/zloirock/core-js#ecmascript-symbol)
+- [Iteration protocols](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)
+- [`Array.prototype[@@iterator]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/@@iterator)
+- [`TypedArray.prototype[@@iterator]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/@@iterator)
+- [`String.prototype[@@iterator]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/@@iterator)
+- [`Map.prototype[@@iterator]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/@@iterator)
+- [`Set.prototype[@@iterator]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/@@iterator)
+- [`arguments[@@iterator]()`](/en-US/docs/Web/JavaScript/Reference/Functions/arguments/@@iterator)
+- [`Segments.prototype[@@iterator]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter/segment/Segments/@@iterator)

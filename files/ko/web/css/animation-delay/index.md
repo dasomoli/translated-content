@@ -1,16 +1,19 @@
 ---
 title: animation-delay
 slug: Web/CSS/animation-delay
+page-type: css-property
+browser-compat: css.properties.animation-delay
 ---
+
 {{CSSRef}}
 
-**`animation-delay`** [CSS](/ko/docs/Web/CSS) 속성은 애니메이션이 시작할 시점을 지정합니다. 시작 즉시, 잠시 후에, 또는 애니메이션이 일부 진행한 시점부터 시작할 수 있습니다.
+The **`animation-delay`** [CSS](/en-US/docs/Web/CSS) property specifies the amount of time to wait from applying the animation to an element before beginning to perform the animation. The animation can start later, immediately from its beginning, or immediately and partway through the animation.
 
 {{EmbedInteractiveExample("pages/css/animation-delay.html")}}
 
-{{cssxref("animation")}} 단축 속성을 사용해 애니메이션 관련 속성을 편리하게 같이 지정할 수 있습니다.
+It is often convenient to use the shorthand property {{cssxref("animation")}} to set all animation properties at once.
 
-## 구문
+## Syntax
 
 ```css
 /* Single animation */
@@ -20,38 +23,91 @@ animation-delay: -1500ms;
 
 /* Multiple animations */
 animation-delay: 2.1s, 480ms;
+
+/* Global values */
+animation-delay: inherit;
+animation-delay: initial;
+animation-delay: revert;
+animation-delay: revert-layer;
+animation-delay: unset;
 ```
 
-### 값
+### Values
 
 - `{{cssxref("&lt;time&gt;")}}`
-  - : 애니메이션이 시작될 요소가 적용되는 순간부터의 시간 오프셋입니다. 이 값은 초 또는 밀리 초 (ms)로 지정할 수 있습니다. 이 값은 필수입니다.
 
-    양수 값은 지정된 시간이 경과 한 후 애니메이션이 시작되어야 함을 나타냅니다. 기본값인 0의 값은 애니메이션이 적용되는 즉시 시작해야 함을 나타냅니다.
+  - : The time offset, from the moment at which the animation is applied to the element, at which the animation should begin. This may be specified in either seconds (`s`) or milliseconds (`ms`). The unit is required.
 
-    음수 값을 지정하면 애니메이션이 즉시 시작되지만 애니메이션 주기의 도중에 시작됩니다. 예를 들어 애니메이션 지연 시간으로 -1s를 지정하면 애니메이션이 즉시 시작되지만 애니메이션 시퀀스의 1초부터 시작됩니다. 만약 animation-delay에 음수 값을 지정했지만 시작값이 절대값이면 시작값은 애니메이션이 요소에 적용된 시점부터 가져옵니다.
+    A positive value indicates that the animation should begin after the specified amount of time has elapsed. A value of `0s`, which is the default, indicates that the animation should begin as soon as it's applied.
 
-> **참고:** `animation- *` 속성에 여러 개의 쉼표로 구분 된 값을 지정하면 [`animation-name`](/ko/docs/Web/CSS/animation-name) 속성에 지정된 애니메이션에 할당되는 값의 수에 따라 다른 방식으로 지정됩니다. 자세한 내용은 [여러 애니메이션 속성 값 설정](/ko/docs/Web/CSS/CSS_Animations/Using_CSS_animations#Setting_multiple_animation_property_values)을 참조하십시오.
+    A negative value causes the animation to begin immediately, but partway through its cycle. For example, if you specify `-1s` as the animation delay time, the animation will begin immediately but will start 1 second into the animation sequence. If you specify a negative value for the animation delay, but the starting value is implicit, the starting value is taken from the moment the animation is applied to the element.
 
-### 형식 구문
+> **Note:** When you specify multiple comma-separated values on an `animation-*` property, they are applied to the animations in the order in which the {{cssxref("animation-name")}}s appear. For situations where the number of animations and `animation-*` property values do not match, see [Setting multiple animation property values](/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations#setting_multiple_animation_property_values).
 
-{{csssyntax}}
-
-## 예제
-
-[CSS 애니메이션 사용하기](/ko/docs/Web/CSS/CSS_Animations/Using_CSS_animations)를 보세요.
-
-## 명세
-
-{{Specifications}}
+## Formal definition
 
 {{cssinfo}}
 
-## 브라우저 호환성
+## Formal syntax
+
+{{csssyntax}}
+
+## Examples
+
+### Setting an animation delay
+
+This animation has a delay of 2 seconds.
+
+#### HTML
+
+```html
+<div class="box"></div>
+```
+
+#### CSS
+
+```css
+.box {
+  background-color: rebeccapurple;
+  border-radius: 10px;
+  width: 100px;
+  height: 100px;
+}
+
+.box:hover {
+  animation-name: rotate;
+  animation-duration: 0.7s;
+  animation-delay: 2s;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+```
+
+#### Result
+
+Hover over the rectangle to start the animation.
+
+{{EmbedLiveSample("Setting an animation delay","100%","250")}}
+
+See [CSS animations](/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations) for examples.
+
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [CSS 애니메이션 사용하기](/ko/docs/Web/CSS/CSS_Animations/Using_CSS_animations)
+- [Using CSS animations](/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations)
 - JavaScript {{domxref("AnimationEvent")}} API
+- Other related animation properties: {{cssxref("animation")}}, {{cssxref("animation-composition")}}, {{cssxref("animation-direction")}}, {{cssxref("animation-duration")}}, {{cssxref("animation-fill-mode")}}, {{cssxref("animation-iteration-count")}}, {{cssxref("animation-name")}}, {{cssxref("animation-play-state")}}, {{cssxref("animation-timeline")}}, {{cssxref("animation-timing-function")}}

@@ -1,65 +1,72 @@
 ---
-title: Error.prototype.cause
+title: "Error: cause"
 slug: Web/JavaScript/Reference/Global_Objects/Error/cause
+page-type: javascript-instance-data-property
+browser-compat: javascript.builtins.Error.cause
 ---
 
 {{JSRef}}
 
-**`cause`** 속성은 오류의 구체적인 원래 원인을 나타냅니다.
+The **`cause`** data property of an {{jsxref("Error")}} instance indicates the specific original cause of the error.
 
-예외를 잡아서 다시 예외를 발생시킬 때 원래 발생한 오류에 접근 할 수 있으면서 보다 구체적인 혹은 유용한 에러 메시지를 추가할때 사용합니다.
+It is used when catching and re-throwing an error with a more-specific or useful error message in order to still have access to the original error.
 
-## 값
+## Value
 
-`options.cause` 인자의 [`Error()` 생성자](/ko/docs/Web/JavaScript/Reference/Global_Objects/Error/Error)에 전달되는 값입니다.
+The value that was passed to the [`Error()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/Error) constructor in the `options.cause` argument. It may not be present.
 
-값은 어떤 타입이든 가능합니다. `catch`문의 변수 역시 `Error`라고 확신할 수 없는 것과 마찬가지로 여러분이 처리할 오류의 `cause`에 `Error`가 있다고 가정하지 마시기 바랍니다. 아래의 예제 "오류 원인으로 구조화된 데이터 제공"는 의도적으로 오류가 아닌 것을 `cause`로 제공하는 경우를 보여줍니다.
+{{js_property_attributes(1, 0, 1)}}
 
-## 예제
+## Description
 
-### cause와 함께 오류 재발생시키기
+The value of `cause` can be of any type. You should not make assumptions that the error you caught has an `Error` as its `cause`, in the same way that you cannot be sure the variable bound in the `catch` statement is an `Error` either. The "Providing structured data as the error cause" example below shows a case where a non-error is deliberately provided as the cause.
 
-오류를 발견하고 새 메시지로 다시 던지는 것이 유용할 수 있습니다. 이 경우 그림과 같이 새 `Error`에 대한 원래 오류를 생성자에 전달해야 합니다.
+## Examples
+
+### Rethrowing an error with a cause
+
+It is sometimes useful to catch an error and re-throw it with a new message.
+In this case you should pass the original error into the constructor for the new `Error`, as shown.
 
 ```js
 try {
   connectToDatabase();
 } catch (err) {
-  throw new Error('Connecting to database failed.', { cause: err });
+  throw new Error("Connecting to database failed.", { cause: err });
 }
 ```
 
-보다 자세한 예제는 [Error > Differentiate between similar errors](/ko/docs/Web/JavaScript/Reference/Global_Objects/Error#differentiate_between_similar_errors)를 참조하세요.
+For a more detailed example see [Error > Differentiate between similar errors](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error#differentiate_between_similar_errors).
 
-### 오류 원인으로 구조화된 데이터 제공
+### Providing structured data as the error cause
 
-사람을 위해 쓰인 오류 메시지는 기계 구문 분석에는 적합하지 않을 수 있습니다. 왜냐하면 기계 구문 분석은 단어 변경이나 구두점 변경으로도 기존 분석이 제대로 동작하지 않을 수 있기 때문입니다. 그래서 함수에서 오류를 발생시킬 때, 사람이 읽을 수 있는 오류 메시지의 대안으로 기계 구문 분석을 위해 구조화된 데이터로 원인을 제공할 수 있습니다.
+Error messages written for human consumption may be inappropriate for machine parsing — since they're subject to rewording or punctuation changes that may break any existing parsing written to consume them. So when throwing an error from a function, as an alternative to a human-readable error message, you can instead provide the cause as structured data, for machine parsing.
 
 ```js
 function makeRSA(p, q) {
   if (!Number.isInteger(p) || !Number.isInteger(q)) {
-    throw new Error('RSA key generation requires integer inputs.', {
-      cause: { code: 'NonInteger', values: [p, q] },
+    throw new Error("RSA key generation requires integer inputs.", {
+      cause: { code: "NonInteger", values: [p, q] },
     });
   }
   if (!areCoprime(p, q)) {
-    throw new Error('RSA key generation requires two co-prime integers.', {
-      cause: { code: 'NonCoprime', values: [p, q] },
+    throw new Error("RSA key generation requires two co-prime integers.", {
+      cause: { code: "NonCoprime", values: [p, q] },
     });
   }
   // rsa algorithm…
 }
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Error.prototype.message")}}
 - {{jsxref("Error.prototype.toString()")}}

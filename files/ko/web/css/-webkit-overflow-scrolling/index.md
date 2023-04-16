@@ -1,38 +1,59 @@
 ---
-title: '-webkit-overflow-scrolling'
+title: "-webkit-overflow-scrolling"
 slug: Web/CSS/-webkit-overflow-scrolling
+page-type: css-property
+status:
+  - non-standard
+browser-compat: css.properties.-webkit-overflow-scrolling
 ---
+
 {{CSSRef}} {{Non-standard_header}}
 
-[CSS](/ko/docs/Web/CSS) **`-webkit-overflow-scrolling`** 속성은 터치 단말기에서 주어진 요소의 모멘텀 기반 스크롤 활성화 여부를 결정합니다.
+The `-webkit-overflow-scrolling` [CSS](/en-US/docs/Web/CSS) property controls whether or not touch devices use momentum-based scrolling for a given element.
 
-{{cssinfo}}
+## Syntax
 
-## 값
+```css
+/* Keyword values */
+-webkit-overflow-scrolling: auto;
+-webkit-overflow-scrolling: touch;
+
+/* Global values */
+-webkit-overflow-scrolling: inherit;
+-webkit-overflow-scrolling: initial;
+-webkit-overflow-scrolling: revert;
+-webkit-overflow-scrolling: revert-layer;
+-webkit-overflow-scrolling: unset;
+```
+
+### Values
 
 - `auto`
-  - : "일반적"인 스크롤을 사용합니다. 즉 손가락을 터치 화면에서 떼는 순간 스크롤이 멈춥니다.
+  - : Use "regular" scrolling, where the content immediately ceases to scroll when you remove your finger from the touchscreen.
 - `touch`
-  - : 모멘텀 기반 스크롤을 사용합니다. 스크롤 제스쳐가 끝나고 손가락을 터치 화면에서 떼어도 잠시 스크롤이 지속됩니다. 지속 속도와 시간은 스크롤 제스쳐의 세기에 따라 달라집니다. 또한 새로운 {{glossary("stacking context", "쌓임 맥락")}}을 생성합니다.
+  - : Use momentum-based scrolling, where the content continues to scroll for a while after finishing the scroll gesture and removing your finger from the touchscreen. The speed and duration of the continued scrolling is proportional to how vigorous the scroll gesture was. Also creates a new stacking context.
 
-### 형식 구문
+## Formal definition
 
-{{csssyntax}}
+{{CSSInfo}}
 
-## 예제
+## Formal syntax
+
+```plain
+-webkit-overflow-scrolling =
+  auto | touch
+```
+
+## Examples
 
 ### HTML
 
 ```html
 <div class="scroll-touch">
-  <p>
-    This paragraph has momentum scrolling
-  </p>
+  <p>This paragraph has momentum scrolling</p>
 </div>
 <div class="scroll-auto">
-  <p>
-    This paragraph does not.
-  </p>
+  <p>This paragraph does not.</p>
 </div>
 ```
 
@@ -60,20 +81,20 @@ p {
 }
 ```
 
-### 결과
+### Results
 
-{{EmbedLiveSample('예제')}}
+{{EmbedLiveSample('Examples')}}
 
-## 명세
+## Specifications
 
-명세에 속하지 않습니다. Apple의 [Safari CSS Reference에 설명이 있습니다](https://developer.apple.com/library/safari/documentation/AppleApplications/Reference/SafariCSSRef/Articles/StandardCSSProperties.html#//apple_ref/css/property/-webkit-overflow-scrolling).
+Not part of any standard. Apple has [a description in the Safari CSS Reference](https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariCSSRef/Articles/StandardCSSProperties.html#//apple_ref/css/property/-webkit-overflow-scrolling).
 
-{{cssinfo}}
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [CSS-Tricks article with demo](http://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements/)
+- [CSS-Tricks article with demo](https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements/)
+- [Smashing Magazine - describing the effect of scroll bouncing and how it works on different web browsers](https://www.smashingmagazine.com/2018/08/scroll-bouncing-websites/)
+- [Safari 13 Release notes](https://developer.apple.com/documentation/safari-release-notes/safari-13-release-notes): Indicates the addition of support for one-finger accelerated scrolling to all frames and `overflow:scroll` elements, eliminating the need to set `-webkit-overflow-scrolling: touch`.

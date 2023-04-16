@@ -1,42 +1,55 @@
 ---
-title: console.warn()
+title: "console: warn() method"
+short-title: warn()
 slug: Web/API/console/warn
+page-type: web-api-instance-method
+browser-compat: api.console.warn
 ---
 
 {{APIRef("Console API")}}
 
-**`console.warn()`** 메서드는 웹 콘솔에 경고 메시지를 출력합니다.
+The **`console.warn()`** method outputs a warning message to the Web
+console.
 
 {{AvailableInWorkers}}
 
-> **참고:** Firefox에서는 웹 콘솔의 경고 옆에 작은 느낌표 아이콘이 나타납니다.
+> **Note:** In Chrome and Firefox, warnings have a small exclamation point icon next to them in the Web
+> console log.
 
-## 구문
+## Syntax
 
-```js
-console.warn(obj1 [, obj2, ..., objN]);
-console.warn(msg [, subst1, ..., substN]);
+```js-nolint
+warn(obj1)
+warn(obj1, /* …, */ objN)
+warn(msg)
+warn(msg, subst1, /* …, */ substN)
 ```
 
-## 매개변수
+### Parameters
 
-- `obj1` ... `objN`
-  - : 출력할 JavaScript 객체의 리스트. 각 객체의 문자열 표현은 입력한 순서대로 함께 출력됩니다.
+- `obj1` … `objN`
+  - : A list of JavaScript objects to output. The string representations of each of these
+    objects are appended together in the order listed and output.
 - `msg`
-  - : 0개 이상의 치환 문자열을 포함하는 JavaScript 문자열.
-- `subst1` ... `substN`
-  - : `msg` 안의 문자열을 치환하기 위한 JavaScript 객체. 출력 형식에 추가 제어를 할 수 있게 해줍니다.
+  - : A JavaScript string containing zero or more substitution strings.
+- `subst1` … `substN`
+  - : JavaScript objects with which to replace substitution strings within
+    `msg`. This gives you additional control over the format of the output.
 
-자세한 내용은 {{domxref("console")}} 문서의 [콘솔에 텍스트 출력하기](/ko/docs/Web/API/console#콘솔에_텍스트_출력하기)를 참고하세요.
+See [Outputting text to the console](/en-US/docs/Web/API/console#outputting_text_to_the_console) in the documentation of {{domxref("console")}} for details.
 
-## 명세
+### Return value
+
+None ({{jsxref("undefined")}}).
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [MSDN: F12 도구 콘솔을 사용하여 오류 및 상태 보기](https://msdn.microsoft.com/library/gg589530)
+- [MSDN: Using the F12 Tools Console to View Errors and Status](<https://docs.microsoft.com/previous-versions/windows/internet-explorer/ie-developer/samples/gg589530(v=vs.85)>)

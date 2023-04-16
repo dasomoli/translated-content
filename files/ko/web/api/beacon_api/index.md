@@ -1,33 +1,35 @@
 ---
 title: Beacon API
 slug: Web/API/Beacon_API
+page-type: web-api-overview
+browser-compat: api.Navigator.sendBeacon
 ---
 
 {{DefaultAPISidebar("Beacon")}}
 
-**`Beacon`** API는 웹 서버에 비동기적인 논블로킹 요청을 보내기 위해 사용됩니다. 이 요청은 서버로부터 응답을 요구하지 않습니다. {{domxref("XMLHttpRequest")}} 나 [Fetch API](/ko/docs/Web/API/Fetch_API) 로 만들어진 요청과는 다르게, 브라우저는 Beacon 요청이 페이지가 닫히기 전에 보내지게 하고, 그것이 완료될 수 있게 보장합니다.
+The **`Beacon`** API is used to send an asynchronous and non-blocking request to a web server. The request does not expect a response. Unlike requests made using {{domxref("XMLHttpRequest")}} or the [Fetch API](/en-US/docs/Web/API/Fetch_API), the browser guarantees to initiate beacon requests before the page is unloaded and to run them to completion.
 
-Beacon API의 주된 용도로는 클라이언트 사이드 이벤트나 세션 데이터 같은 분석 정보를 서버로 보내는 것입니다. 과거에는 이를 위해 웹사이트들은 {{domxref("XMLHttpRequest")}}를 사용했습니다. 하지만 브라우저는 페이지가 전송 전에 닫힐 때 등, 몇몇 상황에선 브라우저가 이러한 비동기적 요청이 전송되는 것을 보장하지 않습니다. 이처럼 요청이 전송되지 않는 것을 방지하기 위해서, 웹사이트들은 동기적으로 요청하는 등의 응답성에 부정적인 영향을 주는 여러가지 기술에 기대왔습니다. Beacon 요청들은 비동기적이고 서버로 전송되기로 보장되어 있는 덕분에 Beacon은 신뢰성과 좋은 성능을 겸비하고 있습니다.
+The main use case for the Beacon API is to send analytics such as client-side events or session data to the server. Historically, websites have used {{domxref("XMLHttpRequest")}} for this, but browsers do not guarantee to send these asynchronous requests in some circumstances (for example, if the page is about to be unloaded). To combat this, websites have resorted to various techniques, such as making the request synchronous, that have a bad effect on responsiveness. Because beacon requests are both asynchronous and guaranteed to be sent, they combine good performance characteristics and reliability.
 
-이 API의 동기 및 사용에 대한 자세한 내용은, {{domxref("navigator.sendBeacon()")}} 메서드 문서를 참조하세요.
+For more details about the motivation for and usage of this API, see the documentation for the {{domxref("navigator.sendBeacon()")}} method.
 
-> **참고:** 이 API는 [Web Workers](/ko/docs/Web/API/Web_Workers_API) 에서 사용이 불가능 합니다. ({{domxref("WorkerNavigator")}} 에 포함되어 있지 않음)
+> **Note:** This API is _not available_ in [Web Workers](/en-US/docs/Web/API/Web_Workers_API) (not exposed via {{domxref("WorkerNavigator")}}).
 
-## 인터페이스
+## Interfaces
 
-이 API는 {{domxref("navigator.sendBeacon()")}} 라는 하나의 메서드를 정의합니다.
+This API defines a single method: {{domxref("navigator.sendBeacon()")}}.
 
-이 메서드는 URL과 서버로 보낼 데이터, 두 개의 인수를 필요로 합니다. 서버로 보낼 데이터는 필수 사항이 아니며, 데이터의 타입은 {{jsxref("TypedArray")}}, {{jsxref("DataView")}}, {{domxref("Blob")}}, 문자열 이나 객체, {{domxref("FormData")}} 객체가 될 수도 있습니다. 브라우저가 요청을 성공적으로 대기열에 넣으면 `true` 를 반환하고 그 외에는 `false` 를 반환합니다.
+The method takes two arguments, the URL and the data to send in the request. The data argument is optional and its type may be a {{jsxref("TypedArray")}}, a {{jsxref("DataView")}}, a {{domxref("Blob")}}, a string literal or object, or a {{domxref("FormData")}} object. If the browser successfully queues the request for delivery, the method returns "`true`"; otherwise, it returns "`false`".
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - [Beacon standard](https://w3c.github.io/beacon/)
 - [Beacon CanIUse data](https://caniuse.com/#search=beacon)

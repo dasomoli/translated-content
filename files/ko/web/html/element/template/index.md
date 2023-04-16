@@ -1,71 +1,27 @@
 ---
-title: '<template>: 콘텐츠 템플릿 요소'
+title: "<template>: The Content Template element"
 slug: Web/HTML/Element/template
+page-type: html-element
+browser-compat: html.elements.template
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<template>` 요소**는 페이지를 불러온 순간 즉시 그려지지는 않지만, 이후 JavaScript를 사용해 인스턴스를 생성할 수 있는 {{glossary("HTML")}} 코드를 담을 방법을 제공합니다.
+The **`<template>`** [HTML](/en-US/docs/Web/HTML) element is a mechanism for holding {{Glossary("HTML")}} that is not to be rendered immediately when a page is loaded but may be instantiated subsequently during runtime using JavaScript.
 
-템플릿은 콘텐츠 조각을 나중에 사용하기 위해 담아놓는 컨테이너로 생각하세요. 페이지를 불러오는 동안 구문 분석기가 `<template>` 요소의 콘텐츠도 읽기는 하지만, 이는 유효성을 검증하기 위함이며 렌더링 하기 위함은 아닙니다.
+Think of a template as a content fragment that is being stored for subsequent use in the document. While the parser does process the contents of the **`<template>`** element while loading the page, it does so only to ensure that those contents are valid; the element's contents are not rendered, however.
 
-<table class="properties">
-  <tbody>
-    <tr>
-      <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
-      </th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#메타데이터_콘텐츠"
-          >메타데이터 콘텐츠</a
-        >,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#스크립트_지원_요소"
-          >스크립트 지원 요소</a
-        >.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 콘텐츠</th>
-      <td>제한 없음.</td>
-    </tr>
-    <tr>
-      <th scope="row">태그 생략</th>
-      <td>{{no_tag_omission}}</td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 부모 요소</th>
-      <td>
-        메타데이터 콘텐츠, 구문 콘텐츠, 또는 스크립트 지원 요소를 허용하는 모든
-        요소. 또한, {{htmlattrxref("span", "colgroup")}} 특성이 없는
-        {{htmlelement("colgroup")}} 요소도 가능.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>없음</td>
-    </tr>
-    <tr>
-      <th scope="row">DOM 인터페이스</th>
-      <td>{{domxref("HTMLTemplateElement")}}</td>
-    </tr>
-  </tbody>
-</table>
+## Attributes
 
-## 특성
+The only standard attributes that the `<template>` element supports are the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)만 포함합니다.
+In Chromium-based browsers, the `<template>` element also supports a non-standard [`shadowrootmode` attribute](https://github.com/mfreed7/declarative-shadow-dom/blob/master/README.md#syntax), as part of an experimental ["Declarative Shadow DOM"](https://developer.chrome.com/articles/declarative-shadow-dom/) proposal. In supporting browsers, a `<template>` element with the `shadowrootmode` attribute is detected by the HTML parser and immediately applied as the shadow root of its parent element. `shadowrootmode` can take a value of `open` or `closed`; these are equivalent to the `open` and `closed` values of the {{domxref("Element.attachShadow()")}} `mode` option.
 
-다만, {{domxref("HTMLTemplateElement")}}는 읽기 전용 {{domxref("HTMLTemplateElement.content", "content")}} 속성을 가집니다. `content`는 템플릿이 담고 있는 DOM 하위 트리를 나타내는 {{domxref("DocumentFragment")}}입니다.
+Also, the corresponding {{domxref("HTMLTemplateElement")}} interface has a standard {{domxref("HTMLTemplateElement.content", "content")}} property (without an equivalent content/markup attribute), which is a read-only {{domxref("DocumentFragment")}} containing the DOM subtree which the template represents. Note that directly using the value of the {{domxref("HTMLTemplateElement.content", "content")}} property could lead to unexpected behavior; for details, see the [Avoiding DocumentFragment pitfall](#avoiding_documentfragment_pitfall) section below.
 
-## 예제
+## Examples
 
-우선 예제의 HTML부터 보겠습니다.
+First we start with the HTML portion of the example.
 
 ```html
 <table id="producttable">
@@ -76,7 +32,7 @@ slug: Web/HTML/Element/template
     </tr>
   </thead>
   <tbody>
-    <!-- 존재하는 데이터는 선택적으로 여기에 포함됩니다 -->
+    <!-- existing data could optionally be included here -->
   </tbody>
 </table>
 
@@ -88,42 +44,42 @@ slug: Web/HTML/Element/template
 </template>
 ```
 
-먼저, 나중에 JavaScript 코드를 사용해 컨텐츠를 삽입할 테이블이 있습니다. 그 다음 테이블의 열을 표현하는 HTML 조각의 구조를 설명하는 템플릿이 옵니다.
+First, we have a table into which we will later insert content using JavaScript code. Then comes the template, which describes the structure of an HTML fragment representing a single table row.
 
-이제 테이블이 생성되었고 템플릿이 정의되었으므로, JavaScript 를 사용해 템플릿을 사용해 구성된 열을 기반으로 각 열을 테이블로 삽입합니다.
+Now that the table has been created and the template defined, we use JavaScript to insert rows into the table, with each row being constructed using the template as its basis.
 
 ```js
-// 템플릿 엘리먼트의 컨텐츠 존재 유무를 통해
-// 브라우저가 HTML 템플릿 엘리먼트를 지원하는지 확인합니다
+// Test to see if the browser supports the HTML template element by checking
+// for the presence of the template element's content attribute.
 if ('content' in document.createElement('template')) {
+    // Instantiate the table with the existing HTML tbody
+    // and the row with the template
+    const tbody = document.querySelector("tbody");
+    const template = document.querySelector('#productrow');
 
-    // 기존 HTML tbody 와 템플릿 열로 테이블을 인스턴스화합니다
-    var t = document.querySelector('#productrow');
-
-    // 새로운 열을 복제하고 테이블에 삽입합니다
-    var tb = document.querySelector("tbody");
-    var clone = document.importNode(t.content, true);
-    td = clone.querySelectorAll("td");
+    // Clone the new row and insert it into the table
+    const clone = template.content.cloneNode(true);
+    let td = clone.querySelectorAll("td");
     td[0].textContent = "1235646565";
     td[1].textContent = "Stuff";
 
-    tb.appendChild(clone);
+    tbody.appendChild(clone);
 
-    // 새로운 열을 복제하고 테이블에 삽입합니다
-    var clone2 = document.importNode(t.content, true);
+    // Clone the new row and insert it into the table
+    const clone2 = template.content.cloneNode(true);
     td = clone2.querySelectorAll("td");
     td[0].textContent = "0384928528";
     td[1].textContent = "Acme Kidney Beans 2";
 
-    tb.appendChild(clone2);
+    tbody.appendChild(clone2);
 
 } else {
-  // HTML 템플릿 엘리먼트를 지원하지 않으므로
-  // 테이블에 열을 추가하는 다른 방법을 찾습니다.
+  // Find another way to add the rows to the table because
+  // the HTML template element is not supported.
 }
 ```
 
-결과는 JavaScript 를 통해 추가된 두 개의 새로운 열을 포함하는 기존 HTML 테이블입니다.
+The result is the original HTML table, with two new rows appended to it via JavaScript:
 
 ```css hidden
 table {
@@ -134,16 +90,129 @@ table td {
 }
 ```
 
-{{EmbedLiveSample("예제", 500, 120)}}
+{{EmbedLiveSample("Examples", 500, 120)}}
 
-## 명세
+## Avoiding DocumentFragment pitfall
+
+A {{domxref("DocumentFragment")}} is not a valid target for various events, as such it is often preferable to clone or refer to the elements within it.
+
+Consider the following HTML and JavaScript:
+
+### HTML
+
+```html
+<div id="container"></div>
+
+<template id="template">
+  <div>Click me</div>
+</template>
+```
+
+### JavaScript
+
+```js
+const container = document.getElementById("container");
+const template = document.getElementById("template");
+
+function clickHandler(event) {
+  event.target.append(" — Clicked this div");
+}
+
+const firstClone = template.content.cloneNode(true);
+firstClone.addEventListener("click", clickHandler);
+container.appendChild(firstClone);
+
+const secondClone = template.content.firstElementChild.cloneNode(true);
+secondClone.addEventListener("click", clickHandler);
+container.appendChild(secondClone);
+```
+
+### Result
+
+`firstClone` is a DocumentFragment instance, so while it gets appended inside the container as expected, clicking on it does not trigger the click event. `secondClone` is an [HTMLDivElement](/en-US/docs/Web/API/HTMLDivElement) instance, clicking on it works as one would expect.
+
+{{EmbedLiveSample('Avoiding_DocumentFragment_pitfall')}}
+
+## Technical summary
+
+<table class="properties">
+  <tbody>
+    <tr>
+      <th scope="row">
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
+      </th>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Content_categories#metadata_content"
+          >Metadata content</a
+        >,
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >flow content</a
+        >,
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >,
+        <a
+          href="/en-US/docs/Web/HTML/Content_categories#script-supporting_elements"
+          >script-supporting element</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted content</th>
+      <td>No restrictions</td>
+    </tr>
+    <tr>
+      <th scope="row">Tag omission</th>
+      <td>{{no_tag_omission}}</td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted parents</th>
+      <td>
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#metadata_content"
+          >metadata content</a
+        >,
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >, or
+        <a
+          href="/en-US/docs/Web/HTML/Content_categories#script-supporting_elements"
+          >script-supporting elements</a
+        >. Also allowed as a child of a {{HTMLElement("colgroup")}}
+        element that does <em>not</em> have a
+        <a href="/en-US/docs/Web/HTML/Element/colgroup#span"><code>span</code></a> attribute.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
+          >No corresponding role</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>No <code>role</code> permitted</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
+      <td>{{domxref("HTMLTemplateElement")}}</td>
+    </tr>
+  </tbody>
+</table>
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [템플릿과 슬롯 사용하기](/ko/docs/Web/Web_Components/Using_templates_and_slots)
+- Web components: {{HTMLElement("slot")}} (and historical: `<shadow>`)}})
+- [Using templates and slots](/en-US/docs/Web/API/Web_components/Using_templates_and_slots)

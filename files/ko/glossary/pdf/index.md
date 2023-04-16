@@ -1,12 +1,11 @@
 ---
 title: PDF
 slug: Glossary/PDF
+page-type: glossary-definition
 ---
 
-**PDF** (Portable Document Format)는 특정 소프트웨어 구현, 하드웨어 플랫폼 또는 운영 체제에 의존하지 않고 문서를 공유하는 데 사용되는 파일 형식이다. PDF는 인쇄된 문서의 디지털 이미지를 제공하며 인쇄될 때 동일한 형태를 유지한다.
+**PDF** (Portable Document Format) is a file format used to share documentation without depending on any particular software implementation, hardware platform, or operating system. PDF provides a digital image of a printed document, and keeps the same appearance when printed.
 
-## 더 알아보기
+## See also
 
-### 일반적인 지식
-
-- Wikipedia의 [PDF](https://ko.wikipedia.org/wiki/PDF)
+- [PDF](https://en.wikipedia.org/wiki/Portable_Document_Format) on Wikipedia

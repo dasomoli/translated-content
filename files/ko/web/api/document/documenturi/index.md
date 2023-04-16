@@ -1,27 +1,49 @@
 ---
-title: Document.documentURI
+title: "Document: documentURI property"
+short-title: documentURI
 slug: Web/API/Document/documentURI
+page-type: web-api-instance-property
+browser-compat: api.Document.documentURI
 ---
+
 {{ApiRef("DOM")}}
 
-{{domxref("Document")}} 인터페이스의 **`documentURI`** 속성은 document location 을 string 으로 반환합니다.
+The **`documentURI`** read-only property of the
+{{domxref("Document")}} interface returns the document location as a string.
 
-DOM3 에서 원래 이 속성은 읽기/쓰기 속성으로 정의되어 있습니다. DOM4 명세에서는 읽기 전용입니다.
+## Value
 
-## Syntax
+A string.
+
+## Examples
+
+### JavaScript
 
 ```js
-var string = document.documentURI;
+document.getElementById("url").textContent = document.documentURI;
 ```
 
-## Notes
+### HTML
 
-HTML documents 는 동일한 값을 반환하는 {{domxref("document.URL")}} 속성을 가집니다. `URL` 과는 달리, `documentURI` 는 모든 타입의 documents 에서 이용 가능합니다.
+```html
+<p id="urlText">
+  URL:<br />
+  <span id="url">URL goes here</span>
+</p>
+```
 
-## 명세서
+### Result
+
+{{EmbedLiveSample("Examples", "100%", 100)}}
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- The {{domxref("document.URL")}} property which returns the same value.

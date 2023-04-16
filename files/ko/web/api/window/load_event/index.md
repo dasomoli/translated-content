@@ -1,71 +1,148 @@
 ---
-title: load
+title: "Window: load event"
+short-title: load
 slug: Web/API/Window/load_event
-original_slug: Web/Events/load
+page-type: web-api-event
+browser-compat: api.Window.load_event
 ---
 
-`load` 이벤트는 리소스와 그것에 의존하는 리소스들의 로딩이 완료되면 실행됩니다.
+{{APIRef}}
 
-## 예제
+The **`load`** event is fired when the whole page has loaded, including all dependent resources such as stylesheets, scripts, iframes, and images.
+This is in contrast to {{domxref("Document/DOMContentLoaded_event", "DOMContentLoaded")}}, which is fired as soon as the page DOM has been loaded, without waiting for resources to finish loading.
 
-<h3 class="brush: html" id="Window">Window</h3>
+This event is not cancelable and does not bubble.
 
-```html
-<script>
-  window.addEventListener("load", function(event) {
-    console.log("All resources finished loading!");
-  });
-</script>
+> **Note:** _All events named `load` will not propagate to `Window`_, even with `bubbles` initialized to `true`. To catch `load` events on the `window`, that `load` event must be dispatched directly to the `window`.
+
+> **Note:** The `load` event that is dispatched when the main document has loaded _is_ dispatched on the `window`, but has two mutated properties: `target` is `document`, and `path` is `undefined`. These two properties are mutated due to legacy conformance.
+
+## Syntax
+
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
+
+```js
+addEventListener("load", (event) => {});
+
+onload = (event) => {};
 ```
 
-<h3 class="brush: html" id="script_엘리먼트"><code>script</code> 엘리먼트</h3>
+## Event type
 
-```html
-<script>
-  var script = document.createElement("script");
-  script.addEventListener("load", function(event) {
-    console.log("Script finished loading and executing");
-  });
-  script.src = "http://example.com/example.js";
-  script.async = true;
-  document.getElementsByTagName("script")[0].parentNode.appendChild(script);
-</script>
+A generic {{domxref("Event")}}.
+
+## Examples
+
+Log a message when the page is fully loaded:
+
+```js
+window.addEventListener("load", (event) => {
+  console.log("page is fully loaded");
+});
 ```
 
-## 일반 정보
+The same, but using the `onload` event handler property:
 
-- 스펙
-  - : [DOM L3](http://www.w3.org/TR/DOM-Level-3-Events/#event-type-load)
-- 인터페이스
-  - : UIEvent
-- Bubbles
-  - : No
-- 취소가능 여부
-  - : No
-- 타겟
-  - : Window,Document,Element
-- 기본 동작
-  - : None.
+```js
+window.onload = (event) => {
+  console.log("page is fully loaded");
+};
+```
 
-## 속성
+### Live example
 
-| 속성                                  | 타입                                   | 설명                                                                                                          |
-| ------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `target` {{readonlyInline}}     | `{{domxref("EventTarget")}}` | The event target (the topmost target in the DOM tree).                                                        |
-| `type` {{readonlyInline}}       | `{{domxref("DOMString")}}`     | The type of event.                                                                                            |
-| `bubbles` {{readonlyInline}}    | `{{domxref("Boolean")}}`         | Whether the event normally bubbles or not.                                                                    |
-| `cancelable` {{readonlyInline}} | `{{domxref("Boolean")}}`         | Whether the event is cancellable or not.                                                                      |
-| `view` {{readonlyInline}}       | `{{domxref("WindowProxy")}}` | `{{domxref("Document.defaultView", "document.defaultView")}}` (`window` of the document) |
-| `detail` {{readonlyInline}}     | `long` (`float`)                       | 0.                                                                                                            |
+#### HTML
 
-## 명세서
+```html
+<div class="controls">
+  <button id="reload" type="button">Reload</button>
+</div>
+
+<div class="event-log">
+  <label for="eventLog">Event log:</label>
+  <textarea
+    readonly
+    class="event-log-contents"
+    rows="8"
+    cols="30"
+    id="eventLog"></textarea>
+</div>
+```
+
+```css hidden
+body {
+  display: grid;
+  grid-template-areas: "control log";
+}
+
+.controls {
+  grid-area: control;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.event-log {
+  grid-area: log;
+}
+
+.event-log-contents {
+  resize: none;
+}
+
+label,
+button {
+  display: block;
+}
+
+#reload {
+  height: 2rem;
+}
+```
+
+#### JavaScript
+
+```js
+const log = document.querySelector(".event-log-contents");
+const reload = document.querySelector("#reload");
+
+reload.addEventListener("click", () => {
+  log.textContent = "";
+  setTimeout(() => {
+    window.location.reload(true);
+  }, 200);
+});
+
+window.addEventListener("load", (event) => {
+  log.textContent += "load\n";
+});
+
+document.addEventListener("readystatechange", (event) => {
+  log.textContent += `readystate: ${document.readyState}\n`;
+});
+
+document.addEventListener("DOMContentLoaded", (event) => {
+  log.textContent += `DOMContentLoaded\n`;
+});
+```
+
+#### Result
+
+{{ EmbedLiveSample('Live_example', '100%', '160px') }}
+
+## Specifications
 
 {{Specifications}}
 
-## 관련 이벤트
+## Browser compatibility
 
-- {{event("DOMContentLoaded")}}
-- {{event("readystatechange")}}
-- {{event("load")}}
-- {{event("beforeunload")}}
-- {{event("unload")}}
+{{Compat}}
+
+## See also
+
+- Document [readyState](/en-US/docs/Web/API/Document/readyState) API
+- Related events:
+  - {{domxref("Window/DOMContentLoaded_event", "DOMContentLoaded")}}
+  - {{domxref("Document/readystatechange_event", "readystatechange")}}
+  - {{domxref("Window/beforeunload_event", "beforeunload")}}
+  - {{domxref("Window/unload_event", "unload")}}

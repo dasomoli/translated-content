@@ -1,57 +1,60 @@
 ---
 title: border-left-width
 slug: Web/CSS/border-left-width
+page-type: css-property
+browser-compat: css.properties.border-left-width
 ---
 
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`border-left-width`** 속성은 요소의 왼쪽 테두리 너비를 지정합니다.
+The **`border-left-width`** [CSS](/en-US/docs/Web/CSS) property sets the width of the left border of an element.
 
 {{EmbedInteractiveExample("pages/css/border-left-width.html")}}
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
 border-left-width: thin;
 border-left-width: medium;
 border-left-width: thick;
 
-/* <length> 값 */
+/* <length> values */
 border-left-width: 10em;
 border-left-width: 3vmax;
 border-left-width: 6px;
 
-/* 전역 값 */
+/* Global keywords */
 border-left-width: inherit;
 border-left-width: initial;
+border-left-width: revert;
+border-left-width: revert-layer;
 border-left-width: unset;
 ```
 
-### 값
+### Values
 
 - `<line-width>`
 
-  - : 테두리의 너비입니다. 0 이상의 {{cssxref("&lt;length&gt;")}} 또는 키워드를 사용할 수 있습니다. 키워드는 다음 세 가지 중 하나여야 합니다.
+  - : Defines the width of the border, either as an explicit nonnegative {{cssxref("&lt;length&gt;")}} or a keyword. If it's a keyword, it must be one of the following values:
 
-    | `thin`   |     | 얇은 테두리 |
-    | -------- | --- | ----------- |
-    | `medium` |     | 중간 테두리 |
-    | `thick`  |     | 굵은 테두리 |
+    - `thin`
+    - `medium`
+    - `thick`
 
-    > **참고:** 각 키워드의 굵기를 정의한 명세는 없기 때문에 결과는 구현별로 상이할 수 있습니다. 다만 굵기는 언제나 `thin ≤ medium ≤ thick`이고, 하나의 문서 내에서 동일합니다.
+> **Note:** Because the specification doesn't define the exact thickness denoted by each keyword, the precise result when using one of them is implementation-specific. Nevertheless, they always follow the pattern `thin ≤ medium ≤ thick`, and the values are constant within a single document.
 
-## 형식 정의
+## Formal definition
 
-{{cssinfo}}
+{{CSSInfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 테두리의 너비 비교
+### Comparing border widths
 
 #### HTML
 
@@ -76,19 +79,19 @@ div:nth-child(2) {
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('테두리의_너비_비교', '100%')}}
+{{EmbedLiveSample('Comparing_border_widths', '100%')}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 테두리 너비 관련 CSS 속성: {{Cssxref("border-top-width")}}, {{Cssxref("border-right-width")}}, {{Cssxref("border-bottom-width")}}, and {{Cssxref("border-width")}}.
-- 왼쪽 테두리 관련 CSS 속성: {{Cssxref("border")}}, {{Cssxref("border-left")}}, {{Cssxref("border-left-style")}}, and {{Cssxref("border-left-color")}}.
+- The other border-width-related CSS properties: {{Cssxref("border-top-width")}}, {{Cssxref("border-right-width")}}, {{Cssxref("border-bottom-width")}}, and {{Cssxref("border-width")}}.
+- The other border-left-related CSS properties: {{Cssxref("border")}}, {{Cssxref("border-left")}}, {{Cssxref("border-left-style")}}, and {{Cssxref("border-left-color")}}.

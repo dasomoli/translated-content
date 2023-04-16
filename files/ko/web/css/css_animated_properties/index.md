@@ -1,12 +1,15 @@
 ---
-title: CSS animated properties
+title: Animatable CSS properties
 slug: Web/CSS/CSS_animated_properties
+page-type: landing-page
 ---
 
 {{CSSRef}}
 
-일부 CSS 속성은 애니메이션될 수 있습니다, 즉 그 값을 바꿀 때 [CSS animation](/ko/docs/Web/CSS/CSS_Animations) 또는 [CSS transition](/ko/docs/Web/CSS/CSS_Transitions)이 사용된 경우 부드러운 방식으로 바꿀 수 있습니다.
+A CSS property is _animatable_ if its value can be made to change over a given amount of time. **Certain CSS properties can be animated** using [CSS Animations](/en-US/docs/Web/CSS/CSS_Animations) or [CSS Transitions](/en-US/docs/Web/CSS/CSS_Transitions). CSS properties that define animation parameters such as [animation-direction](/en-US/docs/Web/CSS/animation-direction) and [animation-name](/en-US/docs/Web/CSS/animation-name) are not animatable because animating them would create complex recursive behavior.
 
-다음은 애니메이션 가능한 속성 목록입니다:
+> **Note:** To check whether or not a CSS property can be animated, see the "Formal definition" section on the property's page on MDN Web Docs. For example, check out the "Animation type" field in the "Formal definition" section for [padding-bottom](/en-US/docs/Web/CSS/padding-bottom#formal_definition) and [animation-direction](/en-US/docs/Web/CSS/animation-direction#formal_definition).
+
+The following CSS properties are animatable:
 
 {{CSSAnimatedProperties}}

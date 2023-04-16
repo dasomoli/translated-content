@@ -1,161 +1,182 @@
 ---
-title: HTTP 리다이렉트
+title: Redirections in HTTP
 slug: Web/HTTP/Redirections
+page-type: guide
 ---
 
 {{HTTPSidebar}}
 
-URL 리다이렉션 혹은 URL 포워딩은 페이지 단위의 실제 리소스, 폼 혹은 전체 웹 애플리케이션이 다른 URL에 위치하고 있는 상태에서 링크를 존속시키는 기술입니다. HTTP는 많은 목표를 위해 사용되는 이런 동작을 수행하기 위해 특별한 종류의 응답인 *HTTP 리다이렉트*를 제공합니다: 사이트 유지관리가 진행 중인 상태에서의 일시적인 리다이렉션, 사이트 아키텍쳐의 변경 이후에도 외부 링크를 동작하는 상태로 유지시키기 위한 영구적인 리다이렉션, 파일 업로드 시 진행 상태 페이지 그리고 그 외의 수많은 리다이렉션들 ...
+**URL redirection**, also known as _URL forwarding_, is a technique to give more than one URL address to a page, a form, a whole website, or a web application. HTTP has a special kind of response, called a **_HTTP redirect_**, for this operation.
 
-## 원칙
+Redirects accomplish numerous goals:
 
-HTTP에서, 리다이렉션은 요청에 대해 특별한 응답(_리다이렉트_)을 전송함으로써 촉발됩니다. HTTP 리다이렉트는 `3xx` 상태 코드를 지닌 응답입니다. 리다이렉트 응답을 수신한 브라우저는, 제공된 새로운 URL을 사용하며 그것을 즉시 로드합니다: 대부분의 경우, 리다이렉션은 사용자에게는 보이지 않는데다가, 적은 성능 저하를 일으킵니다.
+- Temporary redirects during site maintenance or downtime
+- Permanent redirects to preserve existing links/bookmarks after changing the site's URLs, progress pages when uploading a file, etc.
 
-![](httpredirect.png)
+## Principle
 
-리다이렉트에는 몇 가지 유형이 있으며 세 가지 카테고리로 나누어집니다: 영속적, 일시적 그리고 특수 리다이렉션.
+In HTTP, redirection is triggered by a server sending a special _redirect_ response to a request. Redirect responses have [status codes](/en-US/docs/Web/HTTP/Status) that start with `3`, and a {{ httpheader("Location") }} header holding the URL to redirect to.
 
-### 영속적인 리다이렉션
+When browsers receive a redirect, they immediately load the new URL provided in the `Location` header. Besides the small performance hit of an additional round-trip, users rarely notice the redirection.
 
-이 리다이렉션은 영원히 지속됨을 의미합니다. 원래의 URL이 더 이상 사용되지 않아야 하며 새로운 URL을 더 선호해야 함을 시사합니다. 검색 엔진 로봇은 그들의 인덱스 내에서 리소스에 대한 연관 URL의 갱신을 촉발시킵니다.
+![Initial request goes from client to server. Server responds with a 301:moved permanently, with the URL for the redirect. Client makes an a GET request for the new URL which is returned by the server, with a 200 OK response.](httpredirect.png)
 
-| 코드  | 텍스트               | 메서드 핸들링                                                                                                                                             | 일반적인 유스케이스                              |
-| ----- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| `301` | `Moved Permanently`  | {{HTTPMethod("GET")}} 메서드는 변경되지 않습니다. 다른 메서드들은 {{HTTPMethod("GET")}}로 변하거나 변하지 않을수도 있습니다.[\[1\]](#attr1) | 웹 사이트의 재편성.                              |
-| `308` | `Permanent Redirect` | 메서드와 본문은 변하지 않습니다.                                                                                                                          | GET이 아닌 링크/동작을 지닌, 웹 사이트의 재편성. |
+There are several types of redirects, sorted into three categories:
 
-\[1] 명세는 메서드 변경을 허용할 의도가 없으나, 사실 상 사용자 에이전트들이 그렇게 하고 있습니다. `308` 은 `GET`이 아닌 메서드를 사용할 때 동작의 애매모호함을 제거하고자 만들어졌습니다.
+1. [Permanent redirections](#permanent_redirections)
+2. [Temporary redirections](#temporary_redirections)
+3. [Special redirections](#special_redirections)
 
-### 일시적인 리다이렉션
+### Permanent redirections
 
-때때로 요청된 리소스는 그것의 표준 위치에서 접근할 수 없고 다른 위치에서 접근 가능한 경우가 있습니다. 이런 경우 일시적인 리다이렉트가 사용될 수 있습니다. 검색 엔진 로봇은 새로운, 일시적인 링크를 기억하지 못합니다. 일시적인 리다이렉션은 일시적인 진행율 페이지를 표시하고자 리소스를 만들고 갱신하며 삭제할 때 사용될 수 도 있습니다.
+These redirections are meant to last forever. They imply that the original URL should no longer be used, and replaced with the new one. Search engine robots, RSS readers, and other crawlers will update the original URL for the resource.
 
-| 코드  | 텍스트               | 메서드 핸들링                                                                                                                                             | 일반적인 유스 케이스                                                                                                                                                                                        |
-| ----- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `302` | `Found`              | {{HTTPMethod("GET")}} 메서드는 변경되지 않습니다. 다른 메서드들은 {{HTTPMethod("GET")}}로 변하거나 변하지 않을수도 있습니다.[\[2\]](#attr2) | 웹 페이지가 예측하지 못한 이유로 일시적으로 이용 불가능할 때 가 있습니다. 그런 이유로, 검색 엔진은 그들의 링크를 갱신하지 않습니다.                                                                         |
-| `303` | `See Other`          | {{HTTPMethod("GET")}} 메서드는 변경되지 않습니다. 다른 메서들은 `GET` 메서드로 _변경됩니다_(본문을 잃게 됩니다).                                   | 동작을 다시 촉발시키는 페이지 리프레시를 막기 위해 {{HTTPMethod("PUT")}} 혹은 {{HTTPMethod("POST")}} 뒤에 사용됩니다.                                                                          |
-| `307` | `Temporary Redirect` | 메서드와 본문은 변경되지 않습니다.                                                                                                                        | 웹 페이지가 예측하지 못한 이유로 일시적으로 이용 불가능할 때 가 있습니다. 그런 이유로, 검색 엔진은 그들의 링크를 갱신하지 않습니다. GET이 아닌 링크/동작이 사이트에서 이용 가능할 때 `302`보다 더 좋습니다. |
+| Code  | Text                 | Method handling                                                                                         | Typical use case                                            |
+| ----- | -------------------- | ------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| `301` | `Moved Permanently`  | {{HTTPMethod("GET")}} methods unchanged. Others may or may not be changed to {{HTTPMethod("GET")}}. [1] | Reorganization of a website.                                |
+| `308` | `Permanent Redirect` | Method and body not changed.                                                                            | Reorganization of a website, with non-GET links/operations. |
 
-\[2] 명세에는 메서드 변경을 허용할 의도가 없으나, 실질적으로 사용자 에이전트들이 그렇게 하고 있습니다. `307` 은 `GET`이 아닌 메서드들을 사용하는 경우 동작의 애매모호함을 제거하기 위해 만들어집니다.
+\[1] The specification did not intend to allow method changes, but there are existing user agents that do change their method. {{HTTPStatus("308")}} was created to remove the ambiguity of the behavior when using non-`GET` methods.
 
-### 특수 리다이렉션
+### Temporary redirections
 
-이런 보통 리다이렉션과 더불어, 특별한 두 가지 리다이렉션이 더 있습니다. {{HTTPStatus("304")}} (수정되지 않음)은 (오랜된)로컬에 캐시된 복사본으로 페이지를 리다이렉트시키며, {{HTTPStatus("300")}} (다중 선택)은 수동 리다이렉션입니다:브라우저에 의해 웹 페이지로 표현되는 분문은 가능한 리다이렉션을 나열하며 사용자는 그 중 하나를 선택하기 위해 클릭합니다.
+Sometimes the requested resource can't be accessed from its canonical location, but it can be accessed from another place. In this case, a temporary redirect can be used.
 
-| 코드  | 텍스트            | 일반적인 유스케이스                                                                                                                         |
-| ----- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `300` | `Multiple Choice` | 이런 경우가 많지는 않습니다: 본문의 HTML 페이지 내에 선택지가 나열됩니다. {{HTTPStatus("200")}} `OK` 상태와 함께 서브될 수 있습니다. |
-| `304` | `Not Modified`    | 캐시 리프레시: 캐시 값이 여전히 사용 가능할 정도로 신선함을 가리킵니다.                                                                     |
+Search engine robots and other crawlers don't memorize the new, temporary URL. Temporary redirections are also used when creating, updating, or deleting resources, to show temporary progress pages.
 
-## 리다이렉션을 명시하는 대체 방법
+| Code  | Text                 | Method handling                                                                                         | Typical use case                                                                                                                                 |
+| ----- | -------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `302` | `Found`              | {{HTTPMethod("GET")}} methods unchanged. Others may or may not be changed to {{HTTPMethod("GET")}}. [2] | The Web page is temporarily unavailable for unforeseen reasons.                                                                                  |
+| `303` | `See Other`          | {{HTTPMethod("GET")}} methods unchanged. Others _changed_ to `GET` (body lost).                         | Used to redirect after a {{HTTPMethod("PUT")}} or a {{HTTPMethod("POST")}}, so that refreshing the result page doesn't re-trigger the operation. |
+| `307` | `Temporary Redirect` | Method and body not changed                                                                             | The Web page is temporarily unavailable for unforeseen reasons. Better than `302` when non-`GET` operations are available on the site.           |
 
-HTTP 리다이렉트가 리다이렉션을 정의하는 유일한 방법은 아닙니다. 두 개의 다른 방법이 존재합니다: {{HTMLElement("meta")}} 엘리먼트를 사용하는 HTML 리다이렉션과 [DOM](/ko/docs/Web/API/Document_Object_Model)을 사용하는 자바스크립트 리다이렉션이 있습니다.
+\[2] The specification did not intend to allow method changes, but there are existing user agents that do change their method. {{HTTPStatus("307")}} was created to remove the ambiguity of the behavior when using non-`GET` methods.
 
-### HTML 리다이렉션
+### Special redirections
 
-HTTP 리다이렉트는 리다이렉션을 만드는 가장 좋은 방법이지만, 때때로 웹 개발자는 서버에 대한 제어권을 가지고 있지 않거나 그것을 구성할 수 없는 경우가 있습니다. 이런 특수한 상황들 때문에, 웹 개발자들은 `refresh`를 설정하기 위해 페이지의 {{HTMLElement("head")}} 내에 {{HTMLElement("meta")}} 엘리먼트와 {{htmlattrxref("http-equiv", "meta")}} 속성으로 HTML 페이지를 만들 수 있습니다. 해당 페이지를 디스플레이할 때, 브라우저는 이 엘리먼트를 발견하고 표시된 페이지로 이동할 것입니다.
+{{HTTPStatus("304")}} (Not Modified) redirects a page to the locally cached copy (that was stale), and {{HTTPStatus("300")}} (Multiple Choice) is a manual redirection: the body, presented by the browser as a Web page, lists the possible redirections and the user clicks on one to select it.
+
+| Code  | Text              | Typical use case                                                                                                                                                         |
+| ----- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `300` | `Multiple Choice` | Not many: the choices are listed in an HTML page in the body. Machine-readable choices are encouraged to be sent as {{HTTPHeader("Link")}} headers with `rel=alternate`. |
+| `304` | `Not Modified`    | Sent for revalidated conditional requests. Indicates that the cached response is still fresh and can be used.                                                            |
+
+## Alternative way of specifying redirections
+
+HTTP redirects aren't the only way to define redirections. There are two others:
+
+1. HTML redirections with the {{HTMLElement("meta")}} element
+2. JavaScript redirections via the [DOM](/en-US/docs/Web/API/Document_Object_Model)
+
+### HTML redirections
+
+HTTP redirects are the best way to create redirections, but sometimes you don't have control over the server. In that case, try a {{HTMLElement("meta")}} element with its [`http-equiv`](/en-US/docs/Web/HTML/Element/meta#http-equiv) attribute set to `Refresh` in the {{HTMLElement("head")}} of the page. When displaying the page, the browser will go to the indicated URL.
 
 ```html
 <head>
-  <meta http-equiv="refresh" content="0;URL='http://www.example.com/'" />
+  <meta http-equiv="Refresh" content="0; URL=https://example.com/" />
 </head>
 ```
 
-{{htmlattrxref("content")}} 속성은 주어진 URL로 리다이렉트 하기 이전에 브라우저가 얼마만큼의 시간(초)을 기다려야 하는지를 나타내는 숫자로 시작됩니다. 더 나은 접근성을 위해 항상 0으로 설정하시기 바랍니다.
+The [`content`](/en-US/docs/Web/HTML/Element/meta#content) attribute should start with a number indicating how many seconds the browser should wait before redirecting to the given URL. Always set it to `0` for accessibility compliance.
 
-두 말할 필요없이, 이 메서드는 HTML 페이지(혹은 그와 유사한 무언가)에서만 동작하며 이미지나 다른 어떤 종류의 컨텐츠에 대해서 사용될 수 없습니다.
+Obviously, this method only works with HTML, and cannot be used for images or other types of content.
 
-> **참고:** 이런 리다이렉션들이 브라우저에서 뒤로 가기 버튼을 무용지물로 만든다는 것을 기억하시기 바랍니다: 해당 헤더가 있는 페이지로 다시 돌아갈 수 있는지만 즉시 앞으로 이동하게 될겁니다.
+### JavaScript redirections
 
-### 자바스크립트 리다이렉션
-
-자바스크립트 내에서의 리다이렉션은 {{domxref("window.location")}} 프로퍼티에 값을 설정해서 만들어지며 새로운 페이지가 로드됩니다.
+Redirections in JavaScript are performed by setting a URL string to the {{domxref("window.location")}} property, loading the new page:
 
 ```js
-window.location = "http://www.example.com/";
+window.location = "https://example.com/";
 ```
 
-HTML 리다이렉션처럼, 모든 리소스에서 동작하는 것은 아니며, 명백하게 자바스크립트를 실행한 클라이언트 상에서만 동작합니다. 하지만 다른점은, 예를 들어 어떤 조건이 충족되는 경우에만 리다이렉션을 촉발시킬 수 있다는 점에서 더 많은 가능성을 가지고 있습니다.
+Like HTML redirections, this can't work on all resources, and obviously, this will only work on clients that execute JavaScript. On the other hand, there are more possibilities: for example, you can trigger the redirect only if some conditions are met.
 
-### 우선 순위
+### Order of precedence
 
-URL 리다이렉션에 대한 세 가지 가능성이 있기에, 몇 가지 방법이 동시에 지정될 수 있는데, 어떤 것이 먼저 적용될까요? 우선 순위는 다음과 같습니다:
+With three ways to trigger redirections, several ways can be used at the same time. But which is applied first?
 
-1. 페이지가 읽힌 적도 없고 전송된 적도 없는 경우, HTTP 리다이렉트가 항상 먼저 실행됩니다.
-2. 어떤 HTTP 리다이렉트로 없는 경우에, HTML 리다이렉트 ({{HTMLElement("meta")}})가 실행됩니다.
-3. 자바스크립트 리다이렉트는 최후의 수단으로써 사용되며, 클라이언트 측에서 자바스크립트를 활성화시킨 경우에만 사용할 수 있습니다.
+1. HTTP redirects always execute first — they exist when there is not even a transmitted page.
+2. HTML redirects ({{HTMLElement("meta")}}) execute if there weren't any HTTP redirects.
+3. JavaScript redirects execute last, and only if JavaScript is enabled.
 
-가능한 경우, 항상 HTTP 리다이렉트를 사용해야 하며, {{HTMLElement("meta")}} 엘리먼트를 사용해서는 안됩니다. 만약 개발자가 HTTP 리다이렉트를 변경하고 HTML 리다이렉트를 잊는다면, 리다이렉트는 더 이상 동일한 한 것이 아니거나, 무한 루프로 종료되거나 다른 악몽이 시작될 수도 있습니다.
+When possible, use HTTP redirects and don't add {{HTMLElement("meta")}} element redirects. If someone changes the HTTP redirects but forgets to change the HTML redirects, the redirects will no longer be identical, which could cause an infinite loop or other nightmares.
 
-## 유스 케이스
+## Use cases
 
-리다이렉트에 대한 많은 유스 케이스들이 존재하지만, 모든 리다이렉트들이 성능과 직결되므로, 리다이렉트의 사용은 최소한으로 유지되어야 합니다.
+There are numerous use cases for redirects, but as performance is impacted with every redirect, their use should be kept to a minimum.
 
-### 도메인 앨리어싱
+### Domain aliasing
 
-이상적으로, 하나의 로케이션이 존재하고, 그래서 하나의 리소스에 대해 하나의 URL이 존재한다고 가정하겠습니다. 그러나 하나의 리소스에 대한 대체 이름을 갖고자 할 때가 있을 수 있습니다 (www 접두사를 갖거나 갖지 않는 몇몇 도메인 혹은 URL을 더 짧고 기억하기 쉽도록하는 등...). 이런 경우, 리소스를 복제하기 보다는 실제 (정식) URL에 대한 리다이렉트를 사용하는 것이 더 유용합니다.
+Ideally, there is one location, and therefore one URL, for each resource. But there are reasons for alternative names for a resource:
 
-도메인 앨리어싱을 하는 경우는 다음과 같습니다.
+- Expanding the reach of your site
+  - : A common case is when a site resides at `www.example.com`, but accessing it from `example.com` should also work. Redirections for `example.com` to `www.example.com` are thus set up. You might also redirect from common synonyms or frequent typos of your domains.
+- Moving to a new domain
+  - : For example, your company was renamed, but you want existing links or bookmarks to still find you under the new name.
+- Forcing [HTTPS](/en-US/docs/Glossary/HTTPS)
+  - : Requests to the `http://` version of your site will redirect to the `https://` version of your site.
 
-- 사이트 범위 확장. 당신의 사이트가 `www.example.com` 도메인을 가지고 있을 때 `example.com`을 통한 접근도 가능한 경우가 가장 흔한 경우입니다. `example.com` 페이지를 `www.example.com` 로 리다이렉션하는 것이 이 경우에 해당됩니다. 일반적으로 사용되는 별칭 혹은, 도메인 이름에 빈번히 일어나는 오자를 제공할 수도 있습니다.
-- 다른 도메인으로의 이동. 예를 들어, 당신의 회사가 이름을 변경했고 이전 이름으로 검색하는 경우 여전히 회사의 옛날 이름으로 웹 사이트를 사용하는 사람들이 새로운 이름의 사이트를 이용하길 바라는 경우에 해당됩니다.
-- HTTPS 강제. 사이트에 대한 HTTP 버전 요청은 사이트의 HTTPS 버전으로 리다이렉트될 것입니다.
+### Keeping links alive
 
-### 링크 유지하기
+When you restructure websites, URLs change. Even if you update your site's links to match the new URLs, you have no control over the URLs used by external resources.
 
-웹 사이트를 다시 만들때, 리소스의 URL이 변경되기 마련입니다. 새로운 네이밍 계획과 일치하도록 웹 사이트의 내부 링크를 갱신할 수 있는 경우조차도, 외부 리소스에 의해 사용되는 URL에 대해서는 어쩔 수가 없습니다. 그들은 당신에게 소중한 사용자이므로(또 SEO에 도움이 되길 바라는 마음으로) 해당 링크를 깨뜨리고 싶지 않을 것이기에, 이전 URL에서 새로운 URL로의 리다이렉트를 설정하려 할 겁니다.
+You don't want to break these links, as they bring valuable users and help your SEO, so you set up redirects from the old URLs to the new ones.
 
-> **참고:** 이 기술 또한 내부 링크에 대해서 동작하므로, 내부 리다이렉트는 피해야 할 겁니다. 리다이렉트는 상당한 성능 비용이 드므로(추가적인 HTTP 요청이 수행되므로) 내부 링크를 바로잡아 내부 다이렉트를 피할 수 있다면 해당 링크를 수정해야 합니다.
+> **Note:** This technique does work for internal links, but try to avoid having internal redirects. A redirect has a significant performance cost (as an extra HTTP request occurs). If you can avoid it by correcting internal links, you should fix those links instead.
 
-### 안전하지 않은 요청에 대한 일시적인 응답
+### Temporary responses to unsafe requests
 
-{{Glossary("safe", "Unsafe")}} 요청이 서버의 상태를 수정할 경우, 사용자가 이를 우연히 재연할 수 있어서는 안됩니다. 일반적으로, 당신은 사용자가 {{HTTPMethod("PUT")}}, {{HTTPMethod("POST")}} 혹은 {{HTTPMethod("DELETE")}} 요청을 재전송하기를 바라지는 않을 겁니다. 만약 당신이 해당 요청의 결과로 지금 막 응답을 전송했다면, 단순히 새로고침 버전을 누르는 것만으로 요청은 재전송될 겁니다(아마도 확인 메시지 이후에).
+{{Glossary("Safe/HTTP", "Unsafe")}} requests modify the state of the server and the user shouldn't resend them unintentionally.
 
-이런 경우, 서버는 올바른 정보를 포함하게 될 {{HTTPStatus("303")}} (See Other) 요청을 회신할 수 있는데, 새로 고침 버튼이 눌린 경우, 안전하지 않은 요청이 재연되지 않고 동일한 페이지가 다시 디스플레이될 것입니다.
+Typically, you don't want your users to resend {{HTTPMethod("PUT")}}, {{HTTPMethod("POST")}} or {{HTTPMethod("DELETE")}} requests. If you serve the response as the result of this request, a simple press of the reload button will resend the request (possibly after a confirmation message).
 
-### 긴 요청에 대한 일시적인 응답
+In this case, the server can send back a {{HTTPStatus("303")}} (See Other) response for a URL that will contain the right information. If the reload button is pressed, only that page is redisplayed, without replaying the unsafe requests.
 
-어떤 요청들은 때때로 후처리를 위해 예정되는 {{HTTPHeader("DELETE")}} 요청처럼, 서버 상에서 좀 더 많은 시간을 필요로 하는 경우가 있습니다. 이와 같은 경우에, 응답은 {{HTTPStatus("303")}} (See Other) 리다이렉트로, 어떤 동작이 예정되어 있고 진행률에 관해 알려주고 그 동작을 취소할 수 있도록 해주는 페이지로 리다이렉트됩니다.
+### Temporary responses to long requests
 
-## 일반 서버 내 리다이렉트 구성
+Some requests may need more time on the server, like {{HTTPMethod("DELETE")}} requests that are scheduled for later processing. In this case, the response is a {{HTTPStatus("303")}} (See Other) redirect that links to a page indicating that the action has been scheduled, and eventually informs about its progress, or allows to cancel it.
+
+## Configuring redirects in common servers
 
 ### Apache
 
-리다이렉트는 서버 구성 파일 혹은 각 디렉토리의 `.htaccess` 내에서 설정될 수 있습니다.
+Redirects can be set either in the server config file or in the `.htaccess` of each directory.
 
-[mod_alias](https://httpd.apache.org/docs/current/mod/mod_alias.html) 모듈은 (기본값으로) {{HTTPStatus("302")}} 응답을 설정하는 `Redirect` 그리고 `Redirect_Match` 디렉티브를 가지고 있습니다:
+The [`mod_alias`](https://httpd.apache.org/docs/current/mod/mod_alias.html) module has `Redirect` and `RedirectMatch` directives that set up {{HTTPStatus("302")}} redirects by default:
 
-```
-<VirtualHost *:80>
+```xml
+<VirtualHost *:443>
   ServerName example.com
-  Redirect / http://www.example.com
+  Redirect / https://www.example.com
 </VirtualHost>
 ```
 
-URL `http://example.com/` 은 `http://www.example.com/` 로 리다이렉트됩니다(하지만 `http://example.com/other.html`은 리다이렉트되지 않습니다).
+The URL `https://example.com/` will be redirected to `https://www.example.com/`, as will any files or directories under it (`https://example.com/some-page` will be redirected to `https://www.example.com/some-page`)
 
-`Redirect_Match` 도 똑같이 동작하지만 영향을 받은 URL 컬렉션 정의를 위해 정규 표현식을 받습니다:
+`RedirectMatch` does the same, but takes a {{glossary("regular expression")}} to define a collection of affected URLs:
 
-```
-RedirectMatch ^/images/(.*)$ http://images.example.com/$1
-```
-
-`images/` 폴더 내 모든 문서들은 다른 도메인으로 리다이렉트될 것입니다.
-
-일시적인 리다이렉트를 설정하고 싶지 않다면, 다른 리다이렉트를 설정하는데 여분의 파라메터(사용하고자 하는 HTTP 상태 코드 혹은 `permanent` 키워드)를 사용할 수 있습니다:
-
-```
-Redirect permanent / http://www.example.com
-Redirect 301 / http://www.example.com
+```plain
+RedirectMatch ^/images/(.*)$ https://images.example.com/$1
 ```
 
-[mod_rewrite](https://httpd.apache.org/docs/current/mod/mod_rewrite.html) 모듈도 리다이렉트를 만드는데 사용될 수 있습니다. 이것은 약간 더 복잡한데, 사용은 약간 더 복잡합니다.
+All documents in the `images/` directory will redirect to a different domain.
+
+If you don't want a temporary redirect, an extra parameter (either the HTTP status code to use or the `permanent` keyword) can be used to set up a different redirect:
+
+```plain
+Redirect permanent / https://www.example.com
+# …acts the same as:
+Redirect 301 / https://www.example.com
+```
+
+The [`mod_rewrite`](https://httpd.apache.org/docs/current/mod/mod_rewrite.html) module can also create redirects. It is more flexible, but a bit more complex.
 
 ### Nginx
 
-Nginx에서는, 당신이 리다이렉트하고자 하는 컨텐츠에 대한 특정 서버 블록을 만들 수 있습니다:
+In Nginx, you create a specific server block for the content you want to redirect:
 
-```
+```plain
 server {
   listen 80;
   server_name example.com;
@@ -163,33 +184,31 @@ server {
 }
 ```
 
-폴더 혹은 페이지의 하위 집합에만 적용되는 리다이렉트를 원한다면, `rewrite` 디렉티브를 사용하시기 바랍니다:
+To apply a redirect to a directory or only certain pages, use the `rewrite` directive:
 
-```
-rewrite ^/images/(.*)$ http://images.example.com/$1 redirect;
-rewrite ^/images/(.*)$ http://images.example.com/$1 permanent;
+```plain
+rewrite ^/images/(.*)$ https://images.example.com/$1 redirect;
+rewrite ^/images/(.*)$ https://images.example.com/$1 permanent;
 ```
 
 ### IIS
 
-IIS에서는, 리다이렉션 구성을 위해 [`<httpRedirect>`](https://www.iis.net/configreference/system.webserver/httpredirect) 요소를 사용할 수 있습니다.
+In IIS, you use the [`<httpRedirect>`](https://docs.microsoft.com/iis/configuration/system.webServer/httpRedirect/) element to configure redirections.
 
-## 리다이렉션 루프
+## Redirection loops
 
-리다이렉션 루프는 성공적인 리다이렉션이 이전의 리다이렉션을 다시 따라갈 때 일어납니다. 다시 말해, 결코 끝나지 않으면, 끝까지 어떤 페이지도 볼 수 없는 루프가 존재한다는 말입니다.
+Redirection loops happen when additional redirections follow the one that has already been followed. In other words, there is a loop that will never be finished and no page will ever be found.
 
-대부분의 경우, 이런 문제는 서버 측 문제이며 서버가 이를 감지할 수 없다면, {{HTTPStatus("500")}} `Internal Server Error`를 회신할 것입니다. 서버 구성을 수정한 직후에 그런 오류를 보게 된다면, 그것은 리다이렉션 루프일 가능성이 큽니다.
+Most of the time this is a server problem, and if the server can detect it, it will send back a {{HTTPStatus("500")}} `Internal Server Error`. If you encounter such an error soon after modifying a server configuration, this is likely a redirection loop.
 
-때로는, 서버가 그것을 감지하지 않을 때도 있을 겁니다: 전체적인 그림을 모르는 몇 개의 서버에 리다이렉션 루프가 행해지기 때문입니다. 이런 경우, 브라우저가 이를 감지하고 오류 메시지를 보여줄 것입니다. 파이어폭스는 다음과 같이 디스플레이하게 됩니다:
+Sometimes, the server won't detect it: a redirection loop can spread over several servers which each don't have the full picture. In this case, browsers will detect it and display an error message. Firefox displays:
 
-<pre class="bz_comment_text notranslate" id="comment_text_0">Firefox has detected that the server is redirecting the request for this address in a way that will never complete.</pre>
+> Firefox has detected that the server is redirecting the request for this address in a way that will never terminate.
 
-반면, 크롬은 다음과 같이 디스플레이합니다:
+…while Chrome displays:
 
-```
-This Webpage has a redirect loop
-```
+> This Webpage has a redirect loop
 
-모든 경우에, 사용자가 할 수 있는 일은 그리 많지 않습니다(사용자 측에서 캐시 혹은 쿠키의 불일치와 같은 어떤 변화를 주지 않은 이상말이죠).
+In both cases, the user can't do much (unless corruption is happening on their side, like a mismatch of cache or cookies).
 
-리다이렉션 루프는 사용자 경험을 완전히 망쳐놓기에 리다이렉션 루프를 피하는 것은 대단히 중요합니다.
+It is important to avoid redirection loops, as they completely break the user experience.

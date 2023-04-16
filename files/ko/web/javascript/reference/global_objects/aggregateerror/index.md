@@ -1,70 +1,76 @@
 ---
 title: AggregateError
 slug: Web/JavaScript/Reference/Global_Objects/AggregateError
+page-type: javascript-class
+browser-compat: javascript.builtins.AggregateError
 ---
 
 {{JSRef}}
 
-**`AggregateError`** 객체는 다수의 에러가 한 에러로 포장되어야 할 때의 오류를 나타냅니다. 한 작업에서 여러 개의 오류가
-보고될 때 발생하는데, 대표적으로 {{JSxRef("Promise.any()")}}에 전달된 모든 프로미스가 거부되었을 때 발생합니다.
+The **`AggregateError`** object represents an error when several errors need to be wrapped in a single error. It is thrown when multiple errors need to be reported by an operation, for example by {{JSxRef("Promise.any()")}}, when all promises passed to it reject.
 
-## 생성자
+`AggregateError` is a subclass of {{jsxref("Error")}}.
 
-- {{jsxref("Global_Objects/AggregateError/AggregateError", "AggregateError()")}}
-  - : 새로운`AggregateError` 객체를 생성합니다.
+## Constructor
 
-## 인스턴스 속성
+- {{jsxref("AggregateError/AggregateError", "AggregateError()")}}
+  - : Creates a new `AggregateError` object.
 
-- {{JSxRef("Error.prototype.message", "AggregateError.prototype.message")}}
-  - : 에러 메시지. {{jsxref("Error")}}로부터 상속되었습니다.
-- {{JSxRef("Error.prototype.name", "AggregateError.prototype.name")}}
-  - : 에러 이름. {{jsxref("Error")}}로부터 상속되었습니다.
-- {{jsxref("Error.prototype.cause", "AggregateError.prototype.cause")}}
-  - : 에러 원인. {{jsxref("Error")}}로부터 상속되었습니다.
-- `AggregateError.prototype.errors`
-  - : `AggregateError`와 함께 인스턴스화되는 반복 가능한 객체를 반영하는 배열. 예를 들면 `AggregateError`가
-    {{JSxRef("AggregateError/AggregateError", "AggregateError()")}} 생성자로 생성된다면,
-    반복가능한 어떤 객체로든 만들어진 배열이 생성자에 첫 번째 인자로 전달됩니다.
+## Instance properties
 
-## 예제
+_Also inherits instance properties from its parent {{jsxref("Error")}}_.
 
-### AggregateError 다루기
+These properties are defined on `AggregateError.prototype` and shared by all `AggregateError` instances.
+
+- {{jsxref("Object/constructor", "AggregateError.prototype.constructor")}}
+  - : The constructor function that created the instance object. For `AggregateError` instances, the initial value is the {{jsxref("AggregateError/AggregateError", "AggregateError")}} constructor.
+- {{jsxref("Error/name", "AggregateError.prototype.name")}}
+  - : Represents the name for the type of error. For `AggregateError.prototype.name`, the initial value is `"AggregateError"`.
+
+These properties are own properties of each `AggregateError` instance.
+
+- {{jsxref("AggregateError/errors", "errors")}}
+  - : An array representing the errors that were aggregated.
+
+## Instance methods
+
+_Inherits instance methods from its parent {{jsxref("Error")}}_.
+
+## Examples
+
+### Catching an AggregateError
 
 ```js
-Promise.any([
-  Promise.reject(new Error("some error")),
-]).catch(e => {
+Promise.any([Promise.reject(new Error("some error"))]).catch((e) => {
   console.log(e instanceof AggregateError); // true
-  console.log(e.message);                   // "All Promises rejected"
-  console.log(e.name);                      // "AggregateError"
-  console.log(e.errors);                    // [ Error: "some error" ]
+  console.log(e.message); // "All Promises rejected"
+  console.log(e.name); // "AggregateError"
+  console.log(e.errors); // [ Error: "some error" ]
 });
 ```
 
-### AggregateError 발생시키기
+### Creating an AggregateError
 
 ```js
 try {
-  throw new AggregateError([
-    new Error("some error"),
-  ], 'Hello');
+  throw new AggregateError([new Error("some error")], "Hello");
 } catch (e) {
   console.log(e instanceof AggregateError); // true
-  console.log(e.message);                   // "Hello"
-  console.log(e.name);                      // "AggregateError"
-  console.log(e.errors);                    // [ Error: "some error" ]
+  console.log(e.message); // "Hello"
+  console.log(e.name); // "AggregateError"
+  console.log(e.errors); // [ Error: "some error" ]
 }
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - [Polyfill of `AggregateError` in `core-js`](https://github.com/zloirock/core-js#ecmascript-promise)
 - {{JSxRef("Error")}}

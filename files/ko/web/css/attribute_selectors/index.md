@@ -1,11 +1,13 @@
 ---
-title: 특성 선택자
+title: Attribute selectors
 slug: Web/CSS/Attribute_selectors
+page-type: css-selector
+browser-compat: css.selectors.attribute
 ---
 
-{{CSSRef("Selectors")}}
+{{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **특성 선택자**는 주어진 특성의 존재 여부나 그 값에 따라 요소를 선택합니다.
+The CSS **attribute selector** matches elements based on the presence or value of a given attribute.
 
 ```css
 /* <a> elements with a title attribute */
@@ -14,7 +16,8 @@ a[title] {
 }
 
 /* <a> elements with an href matching "https://example.org" */
-a[href="https://example.org"] {
+a[href="https://example.org"]
+{
   color: green;
 }
 
@@ -34,30 +37,30 @@ a[class~="logo"] {
 }
 ```
 
-## 구문
+## Syntax
 
 - `[attr]`
-  - : `attr`이라는 이름의 특성을 가진 요소를 선택합니다.
+  - : Represents elements with an attribute name of _attr_.
 - `[attr=value]`
-  - : `attr`이라는 이름의 특성값이 정확히 `value`인 요소를 선택합니다.
+  - : Represents elements with an attribute name of _attr_ whose value is exactly _value_.
 - `[attr~=value]`
-  - : `attr`이라는 이름의 특성값이 정확히 `value`인 요소를 선택합니다. `attr` 특성은 공백으로 구분한 여러 개의 값을 가지고 있을 수 있습니다.
+  - : Represents elements with an attribute name of _attr_ whose value is a whitespace-separated list of words, one of which is exactly _value_.
 - `[attr|=value]`
-  - : `attr`이라는 특성값을 가지고 있으며, 그 특성값이 정확히 `value`이거나 `value`로 시작하면서 `-`(U+002D) 문자가 곧바로 뒤에 따라 붙으면 이 요소를 선택합니다. 보통 언어 서브코드(`en-US`, `ko-KR` 등)가 일치하는지 확인할 때 사용합니다.
+  - : Represents elements with an attribute name of _attr_ whose value can be exactly _value_ or can begin with _value_ immediately followed by a hyphen, `-` (U+002D). It is often used for language subcode matches.
 - `[attr^=value]`
-  - : `attr`이라는 특성값을 가지고 있으며, 접두사로 `value`가 값에 포함되어 있으면 이 요소를 선택합니다.
+  - : Represents elements with an attribute name of _attr_ whose value is prefixed (preceded) by _value_.
 - `[attr$=value]`
-  - : `attr`이라는 특성값을 가지고 있으며, 접미사로 `value`가 값에 포함되어 있으면 이 요소를 선택합니다.
+  - : Represents elements with an attribute name of _attr_ whose value is suffixed (followed) by _value_.
 - `[attr*=value]`
-  - : `attr`이라는 특성값을 가지고 있으며, 값 안에 `value`라는 문자열이 적어도 하나 이상 존재한다면 이 요소를 선택합니다.
+  - : Represents elements with an attribute name of _attr_ whose value contains at least one occurrence of _value_ within the string.
 - `[attr operator value i]`
-  - : 괄호를 닫기 전에 `i` 혹은 `I`를 붙여주면 값의 대소문자를 구분하지 않습니다. (ASCII 범위 내에 존재하는 문자에 한해서 적용됩니다)
-- `[attr operator value s]` {{experimental_inline}}
-  - : 괄호를 닫기 전에 `s` 혹은 `S`를 붙여주면 값의 대소문자를 구분합니다. (ASCII 범위 내에 존재하는 문자에 한해서 적용됩니다)
+  - : Adding an `i` (or `I`) before the closing bracket causes the value to be compared case-insensitively (for characters within the ASCII range).
+- `[attr operator value s]` {{Experimental_Inline}}
+  - : Adding an `s` (or `S`) before the closing bracket causes the value to be compared case-sensitively (for characters within the ASCII range).
 
-## 예제
+## Examples
 
-### 링크
+### Links
 
 #### CSS
 
@@ -92,6 +95,11 @@ a[href*="cAsE" s] {
 a[href$=".org"] {
   color: red;
 }
+
+/* Links that start with "https" and end in ".org" */
+a[href^="https"][href$=".org"] {
+  color: green;
+}
 ```
 
 #### HTML
@@ -102,14 +110,15 @@ a[href$=".org"] {
   <li><a href="http://example.com">Example link</a></li>
   <li><a href="#InSensitive">Insensitive internal link</a></li>
   <li><a href="http://example.org">Example org link</a></li>
+  <li><a href="https://example.org">Example https org link</a></li>
 </ul>
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("링크")}}
+{{EmbedLiveSample("Links")}}
 
-### 언어
+### Languages
 
 #### CSS
 
@@ -117,6 +126,11 @@ a[href$=".org"] {
 /* All divs with a `lang` attribute are bold. */
 div[lang] {
   font-weight: bold;
+}
+
+/* All divs without a `lang` attribute are italicized. */
+div:not([lang]) {
+  font-style: italic;
 }
 
 /* All divs in US English are blue. */
@@ -154,31 +168,37 @@ div[data-lang="zh-TW"] {
 <div data-lang="zh-TW">世界您好！</div>
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("언어")}}
+{{EmbedLiveSample("Languages")}}
 
-### HTML 정렬 목록
+### HTML ordered lists
 
-{{htmlattrxref("type", "input")}} 특성은 주로 {{htmlelement("input")}} 요소에 사용하므로, HTML 명세는 type의 대소문자를 구분하지 않고 선택하도록 요구하고 있습니다. 그러므로 {{htmlelement("ol")}}의 {{htmlattrxref("type", "ol")}}을 특성 선택자로 선택할 땐 [대소문자 구분](#case-sensitive) 수정자를 지정하지 않으면 동작하지 않습니다.
+The HTML specification requires the [`type`](/en-US/docs/Web/HTML/Element/input#type) attribute to be matched case-insensitively because it is primarily used in the {{HTMLElement("input")}} element.
+Note that if the modifiers are not supported by the user agent, then the selector will not match.
 
 #### CSS
 
 ```css
-/* List types require the case sensitive flag due to a quirk in how HTML treats the type attribute. */
+/* Case-sensitivity depends on document language */
 ol[type="a"] {
   list-style-type: lower-alpha;
   background: red;
 }
 
-ol[type="a" s] {
+ol[type="b" s] {
   list-style-type: lower-alpha;
   background: lime;
 }
 
-ol[type="A" s] {
+ol[type="B" s] {
   list-style-type: upper-alpha;
-  background: lime;
+  background: grey;
+}
+
+ol[type="c" i] {
+  list-style-type: upper-alpha;
+  background: green;
 }
 ```
 
@@ -186,22 +206,37 @@ ol[type="A" s] {
 
 ```html
 <ol type="A">
-  <li>Example list</li>
+  <li>
+    Red background for case-insensitive matching (default for the type selector)
+  </li>
+</ol>
+<ol type="b">
+  <li>Lime background if `s` modifier is supported (case-sensitive match)</li>
+</ol>
+<ol type="B">
+  <li>Grey background if `s` modifier is supported (case-sensitive match)</li>
+</ol>
+<ol type="C">
+  <li>
+    Green background if `i` modifier is supported (case-insensitive match)
+  </li>
 </ol>
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("HTML_정렬_목록")}}
+{{EmbedLiveSample("HTML_ordered_lists")}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- CSS {{cssxref("attr")}} 함수
+- {{CSSxRef("attr")}}
+- Selecting a single element: {{DOMxRef("Document.querySelector()")}}, {{DOMxRef("DocumentFragment.querySelector()")}}, or {{DOMxRef("Element.querySelector()")}}
+- Selecting all matching elements: {{DOMxRef("Document.querySelectorAll()")}}, {{DOMxRef("DocumentFragment.querySelectorAll()")}}, or {{DOMxRef("Element.querySelectorAll()")}}

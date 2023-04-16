@@ -1,130 +1,179 @@
 ---
-title: 함수 선언
+title: function declaration
 slug: Web/JavaScript/Reference/Statements/function
+page-type: javascript-statement
+browser-compat: javascript.statements.function
 ---
+
 {{jsSidebar("Statements")}}
 
-**함수 선언**(**function declaration**)은 지정된 매개변수(parameter)를 갖는 함수를 정의합니다.
+The **`function`** declaration defines a function with
+the specified parameters.
 
-{{jsxref("Function")}} 생성자나 {{jsxref("Operators/function", "함수 표현식(function expression)")}}을 사용해서 정의할 수도 있습니다.
+You can also define functions using the {{jsxref("Function")}} constructor and a
+{{jsxref("Operators/function", "function expression", "", 1)}}.
 
-{{EmbedInteractiveExample("pages/js/statement-function.html")}}
+{{EmbedInteractiveExample("pages/js/statement-function.html","shorter")}}
 
-## 구문
+## Syntax
 
-```js
-    function name([param[, param,[..., param]]]) { [statements] }
+```js-nolint
+function name(param0) {
+  statements
+}
+function name(param0, param1) {
+  statements
+}
+function name(param0, param1, /* … ,*/ paramN) {
+  statements
+}
 ```
 
 - `name`
-  - : 함수 이름.
-- `param`
-  - : 함수로 전달되는 인수(argument)의 이름. 인수의 최대 개수는 엔진마다 다름.
-- `statements`
-  - : 함수의 몸통(body)을 구성하는 문(statement).
+  - : The function name.
+- `param` {{optional_inline}}
+  - : The name of an argument to be passed to the function. Maximum number of arguments
+    varies in different engines.
+- `statements` {{optional_inline}}
+  - : The statements which comprise the body of the function.
 
-## 설명
+## Description
 
-함수 선언으로 생성된 함수는 `Function` 객체로, `Function` 객체의 모든 속성(property), 메서드 및 행위 특성(behavior)을 갖습니다. 함수에 관한 더 자세한 정보는 {{jsxref("Function")}} 참조하시기 바랍니다.
+A function created with a function declaration is a `Function` object and
+has all the properties, methods and behavior of `Function` objects. See
+{{jsxref("Function")}} for detailed information on functions.
 
-함수는 또한 표현식({{jsxref("Operators/function", "함수 표현식")}} 참조)을 사용하여 생성될 수 있습니다.
+A function can also be created using an expression (see {{jsxref("Operators/function",
+  "function expression", "", 1)}}).
 
-기본적으로 함수는 `undefined`를 반환합니다. 다른 값을 반환하기 위해서는, 함수는 반환값을 지정하는 {{jsxref("Statements/return", "return")}} 문이 있어야 합니다.
+By default, functions return `undefined`. To return any other value, the
+function must have a {{jsxref("Statements/return", "return")}} statement that specifies
+the value to return.
 
-### 조건부로 생성되는 함수
+### Block-level function declaration
 
-함수는 조건부로 선언될 수 있습니다. 즉, function 문은 `if` 문 안에 들어갈 수 있습니다. 하지만, 구현에 따라 결과에 일관성이 없으므로 이 패턴은 실제 코드에서는 사용해선 안됩니다. 조건부로 함수를 생성하고자 한다면, 함수 표현식(function expression)을 대신 사용하세요.
+> **Warning:** In [non-strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode), function declarations inside blocks behave strangely. Only declare functions in blocks if you are in strict mode.
+
+Functions can be conditionally declared — that is, a function statement can be nested within an [`if`](/en-US/docs/Web/JavaScript/Reference/Statements/if...else) statement. However, in non-strict mode, the results are inconsistent across implementations.
 
 ```js
-var hoisted = "foo" in this;
-console.log(`'foo' name ${hoisted ? "is" : "is not"} hoisted. typeof foo is ${typeof foo}`);
+console.log(
+  `'foo' name ${
+    "foo" in globalThis ? "is" : "is not"
+  } global. typeof foo is ${typeof foo}`,
+);
 if (false) {
-  function foo(){ return 1; }
+  function foo() {
+    return 1;
+  }
 }
 
 // In Chrome:
-// 'foo' name is hoisted. typeof foo is undefined
+// 'foo' name is global. typeof foo is undefined
 //
 // In Firefox:
-// 'foo' name is hoisted. typeof foo is undefined
-//
-// In Edge:
-// 'foo' name is not hoisted. typeof foo is undefined
+// 'foo' name is global. typeof foo is undefined
 //
 // In Safari:
-// 'foo' name is hoisted. typeof foo is function
+// 'foo' name is global. typeof foo is function
 ```
 
-결과는 참으로 평가되는 조건과 정확하게 일치합니다.
+The scoping and hoisting effect won't change regardless of whether the `if` body is actually executed.
 
 ```js
-var hoisted = "foo" in this;
-console.log(`'foo' name ${hoisted ? "is" : "is not"} hoisted. typeof foo is ${typeof foo}`);
+console.log(
+  `'foo' name ${
+    "foo" in globalThis ? "is" : "is not"
+  } global. typeof foo is ${typeof foo}`,
+);
 if (true) {
-  function foo(){ return 1; }
+  function foo() {
+    return 1;
+  }
 }
 
 // In Chrome:
-// 'foo' name is hoisted. typeof foo is undefined
+// 'foo' name is global. typeof foo is undefined
 //
 // In Firefox:
-// 'foo' name is hoisted. typeof foo is undefined
-//
-// In Edge:
-// 'foo' name is not hoisted. typeof foo is undefined
+// 'foo' name is global. typeof foo is undefined
 //
 // In Safari:
-// 'foo' name is hoisted. typeof foo is function
+// 'foo' name is global. typeof foo is function
 ```
 
-### 함수 선언 끌어올리기
-
-자바스크립트에서 함수 선언은 그 선언을 둘러싼 함수의 최상부나 전역 범위(global scope)로 끌어올려집니다.
+In [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode), [block](/en-US/docs/Web/JavaScript/Reference/Statements/block)-level function declarations are scoped to that block and are hoisted to the top of the block.
 
 ```js
-hoisted(); // logs "foo"
+"use strict";
+
+{
+  foo(); // Logs "foo"
+  function foo() {
+    console.log("foo");
+  }
+}
+
+console.log(
+  `'foo' name ${
+    "foo" in globalThis ? "is" : "is not"
+  } global. typeof foo is ${typeof foo}`,
+);
+// 'foo' name is not global. typeof foo is undefined
+```
+
+### Function declaration hoisting
+
+Function declarations in JavaScript are [hoisted](/en-US/docs/Glossary/Hoisting) to the top of the enclosing function or
+global scope. You can use the function before you declared it:
+
+```js
+hoisted(); // Logs "foo"
 
 function hoisted() {
   console.log("foo");
 }
 ```
 
-{{jsxref("Operators/function", "함수 표현식")}}은 끌어올려지지 않으므로 주의하세요:
+Note that {{jsxref("Operators/function", "function expressions", "", 1)}} are not
+hoisted:
 
 ```js
 notHoisted(); // TypeError: notHoisted is not a function
 
-var notHoisted = function() {
-   console.log("bar");
+var notHoisted = function () {
+  console.log("bar");
 };
 ```
 
-## 예제
+## Examples
 
-### `function` 사용하기
+### Using function
 
-다음 코드는 제품 `a`, `b` 및 `c`의 단위 판매량이 주어졌을 때, 총 판매량을 반환하는 함수를 선언합니다.
+The following code declares a function that returns the total amount of sales, when
+given the number of units sold of three products.
 
 ```js
-function calc_sales(units_a, units_b, units_c) {
-   return units_a*79 + units_b * 129 + units_c * 699;
+function calcSales(unitsA, unitsB, unitsC) {
+  return unitsA * 79 + unitsB * 129 + unitsC * 699;
 }
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{jsxref("Functions", "함수 및 함수 범위")}}
 - {{jsxref("Function")}}
-- {{jsxref("Operators/function", "함수 표현식")}}
-- {{jsxref("Statements/function*", "function* 문")}}
-- {{jsxref("Operators/function*", "function* 식")}}
-- {{jsxref("Functions/Arrow_functions", "화살표 함수")}}
+- {{jsxref("Operators/function", "function expression", "", 1)}}
+- {{jsxref("Statements/function*", "function* statement", "", 1)}}
+- {{jsxref("Operators/function*", "function* expression", "", 1)}}
+- {{jsxref("Functions/Arrow_functions", "Arrow functions", "", 1)}}
 - {{jsxref("GeneratorFunction")}}
+- {{jsxref("Statements/async_function", "async function", "", 1)}}
+- {{jsxref("Operators/async_function", "async function expression", "", 1)}}

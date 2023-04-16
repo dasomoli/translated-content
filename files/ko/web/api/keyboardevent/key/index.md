@@ -1,57 +1,78 @@
 ---
-title: KeyboardEvent.key
+title: "KeyboardEvent: key property"
+short-title: key
 slug: Web/API/KeyboardEvent/key
+page-type: web-api-instance-property
+browser-compat: api.KeyboardEvent.key
 ---
 
 {{APIRef("UI Events")}}
 
-{{domxref("KeyboardEvent")}} 인터페이스의 읽기 전용 속성인 **`key`** 는 키보드 로케일과 레이아웃뿐만 아니라 <kbd>Shift</kbd>와 같은 보조 키의 상태까지 고려하여, 사용자가 누른 키의 값을 반환합니다.
+The {{domxref("KeyboardEvent")}} interface's **`key`** read-only property returns the value of the key pressed by the user, taking into consideration the state of modifier keys such as <kbd>Shift</kbd> as well as the keyboard locale and layout.
 
-## 값
+## Value
 
-문자열입니다.
+A string.
 
-이 값은 다음과 같이 결정됩니다.
+Its value is determined as follows:
 
-- 만약 눌린 키의 값이 인쇄 가능할 경우, 반환되는 값은 키의 인쇄 가능한 값을 나타내는 비어 있지 않은 유니코드 문자열입니다.
-- 만약 눌린 키가 제어 문자 또는 특수 문자라면, 반환되는 값은 [사전 정의된 key 값들의 목록](/ko/docs/Web/API/KeyboardEvent/key/Key_Values) 중의 하나입니다.
-- 만약 `KeyboardEvent` 가 [dead key](https://wikipedia.org/wiki/Dead_key)의 눌림을 나타낸다면, 키의 값은 "`Dead`"여야 합니다.
-- Windows에서는 일부 특수 키보드의 키(멀티미디어 키보드에서 미디어를 제어하는 확장 키 등)들의 키 코드가 만들어지지 않습니다. 대신에 이 키들은 `WM_APPCOMMAND` 이벤트를 발생시킵니다. 이 이벤트들은 실제 키 코드가 아니더라도 DOM 키보드 이벤트에 매핑되어 있으며, Windows의 "Virtual key codes"에 명시되어 있습니다.
-- 키를 식별할 수 없는 경우, 반환되는 값은 `Unidentified`입니다.
+- If the pressed key has a printed representation, the returned value is a non-empty Unicode character string containing the printable representation of the key.
+- If the pressed key is a control or special character, the returned value is one of the [pre-defined key values](/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values).
+- If the `KeyboardEvent` represents the press of a [dead key](https://en.wikipedia.org/wiki/Dead_key), the key value must be "`Dead`".
+- Some specialty keyboard keys (such as the extended keys for controlling media on multimedia keyboards) don't generate key codes on Windows; instead, they trigger `WM_APPCOMMAND` events. These events get mapped to DOM keyboard events, and are listed among the "Virtual key codes" for Windows, even though they aren't actually key codes.
+- If the key cannot be identified, the returned value is `Unidentified`.
 
-> **콜아웃:**
+> **Callout:**
 >
-> [key 값들의 전체 목록을 확인하려면 누르세요](/ko/docs/Web/API/KeyboardEvent/key/Key_Values).
+> [See a full list of key values](/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values).
 
-## KeyboardEvent 시퀀스
+## KeyboardEvent sequence
 
-모든 `KeyboardEvent` 는 미리 정해진 시퀀스 안에서 발생합니다. 키가 눌렸을 때, {{domxref("Event.preventDefault")}}가 호출되지 않았다고 가정하면 `KeyboardEvent` 의 시퀀스는 다음과 같습니다.
+Every `KeyboardEvent` is fired in a pre-determined sequence. For a given key press, the sequence of `KeyboardEvent`s fired is as follows assuming that {{domxref("Event.preventDefault")}} is not called:
 
-1. {{domxref("Element/keydown_event", "keydown")}} 이벤트가 먼저 발생합니다. 만약 키가 추가로 눌리고 그 키가 문자 키를 생성한다면, 이벤트는 플랫폼 구현에 의존하는 간격으로 계속 발생하고, 읽기 전용 속성인 {{domxref("KeyboardEvent.repeat")}}는 `true`로 설정됩니다.
-2. 만약 키가 {{HTMLElement("input")}}, {{HTMLElement("textarea")}} 또는 {{domxref("HTMLElement.contentEditable")}}이 true로 설정된 요소 안에 삽입될 수 있는 문자 키를 생성하는 경우, {{domxref("HTMLElement/beforeinput_event", "beforeinput")}} 과 {{domxref("HTMLElement/input_event", "input")}} 이벤트 타입이 순서대로 실행됩니다. 일부 다른 구현에서는 `keypress` 이벤트가 지원된다면 {{domxref("Element/keypress_event", "keypress")}}를 발생시킬 수 있음에 주의해야 합니다. 이 이벤트들은 키를 누르고 있는 동안 반복해서 발생하게 됩니다.
-3. 키를 떼면 {{domxref("Element/keyup_event", "keyup")}} 이벤트가 발생합니다. 이것으로 프로세스가 완료됩니다.
+1. A {{domxref("Element/keydown_event", "keydown")}} event is first fired. If the key is held down further and the key produces a character key, then the event continues to be emitted in a platform implementation dependent interval and the {{domxref("KeyboardEvent.repeat")}} read only property is set to `true`.
+2. If the key produces a character key that would result in a character being inserted into possibly an {{HTMLElement("input")}}, {{HTMLElement("textarea")}} or an element with {{domxref("HTMLElement.contentEditable")}} set to true, the {{domxref("HTMLElement/beforeinput_event", "beforeinput")}} and {{domxref("HTMLElement/input_event", "input")}} event types are fired in that order. Note that some other implementations may fire {{domxref("Element/keypress_event", "keypress")}} event if supported. The events will be fired repeatedly while the key is held down.
+3. A {{domxref("Element/keyup_event", "keyup")}} event is fired once the key is released. This completes the process.
 
-시퀀스 1과 3에서 `KeyboardEvent.key` 속성이 정의되고, 앞서 정의되어 있는 규칙에 따라 적절한 값으로 설정됩니다.
+In sequence 1 & 3, the `KeyboardEvent.key` attribute is defined and is set appropriately to a value according to the rules defined earlier.
 
-## KeyboardEvent 시퀀스 예제
+## KeyboardEvent sequence example
 
-영국식 키보드 레이아웃을 사용할 때와 비교해서, 미국식 키보드 레이아웃을 사용한 <kbd>Shift</kbd> 와 <kbd>2</kbd> 키의 상호작용에서 발생하는 이벤트 시퀀스에 대해 고려해 보겠습니다.
+Consider the event sequence generated when we interact with the <kbd>Shift</kbd> and the <kbd>2</kbd> key using a U.S keyboard layout as compared to when we do so using a UK keyboard layout.
 
-다음의 두 개의 테스트 케이스를 사용하여 실험해 보세요.
+Try experimenting using the following two test cases:
 
-1. <kbd>Shift</kbd> 키를 누르면서,
+1. Press and hold the
 
-   <kbd>2</kbd> 키를 누른 다음 떼세요. 그 다음
+   <kbd>Shift</kbd>
 
-   <kbd>Shift</kbd> 키를 떼세요.
+   key, then press
 
-2. <kbd>Shift</kbd> 키를 누르면서,
+   <kbd>2</kbd>
 
-   <kbd>2</kbd> 키를 누르고 있으세요. 그 다음
+   and release it. Next, release the
 
-   <kbd>Shift</kbd> 키를 떼세요. 마지막으로
+   <kbd>Shift</kbd>
 
-   <kbd>2</kbd> 키를 떼세요.
+   key.
+
+2. Press and hold the
+
+   <kbd>Shift</kbd>
+
+   key, then press and hold
+
+   <kbd>2</kbd>
+
+   . Release the
+
+   <kbd>Shift</kbd>
+
+   key. Finally, release
+
+   <kbd>2</kbd>
+
+   .
 
 ### HTML
 
@@ -106,12 +127,15 @@ let textarea = document.getElementById("test-target"),
   btnReset = document.getElementById("btn-reset");
 
 function logMessage(message) {
-  consoleLog.innerHTML += message + "<br>";
+  consoleLog.innerHTML += `${message}<br>`;
 }
 
 textarea.addEventListener("keydown", (e) => {
-  if (!e.repeat) logMessage(`Key "${e.key}" pressed [event: keydown]`);
-  else logMessage(`Key "${e.key}" repeating [event: keydown]`);
+  if (!e.repeat) {
+    logMessage(`Key "${e.key}" pressed [event: keydown]`);
+  } else {
+    logMessage(`Key "${e.key}" repeating [event: keydown]`);
+  }
 });
 
 textarea.addEventListener("beforeinput", (e) => {
@@ -136,83 +160,83 @@ btnReset.addEventListener("click", (e) => {
 });
 ```
 
-### 결과
+### Result
 
 {{EmbedLiveSample('KeyboardEvent_sequence_example')}}
 
-> **참고:** {{domxref("HTMLElement/beforeinput_event", "beforeinput")}} 과 {{domxref("HTMLElement/input_event", "input")}} 이벤트에 사용되는 {{domxref("InputEvent")}} 인터페이스가 완전히 구현되지 않은 브라우저에서는 잘못된 출력 결과를 얻을 수도 있습니다.
+> **Note:** On browsers that don't fully implement the {{domxref("InputEvent")}} interface which is used for the {{domxref("HTMLElement/beforeinput_event", "beforeinput")}} and {{domxref("HTMLElement/input_event", "input")}} events, you may get incorrect output on those lines of the log output.
 
 ### Case 1
 
-`shift` 키가 눌렸을 때 {{domxref("Element/keydown_event", "keydown")}} 이벤트가 먼저 발생하고, `key` 속성의 값은 문자열 `Shift`가 됩니다. `shift` 키를 계속 누르고 있더라도, 문자 키가 아니기 때문에 {{domxref("Element/keydown_event", "keydown")}} 이벤트가 반복적으로 발생하지는 않습니다.
+When the shift key is pressed, a {{domxref("Element/keydown_event", "keydown")}} event is first fired, and the `key` property value is set to the string `Shift`. As we keep holding this key, the {{domxref("Element/keydown_event", "keydown")}} event does not continue to fire repeatedly because it does not produce a character key.
 
-`key 2`가 눌리면 또 하나의 새로운 {{domxref("Element/keydown_event", "keydown")}} 이벤트가 발생하고, 활성화된 보조 키 `shift` 때문에 이 이벤트의 `key` 속성의 값은 미국식 키보드에서의 `@` 또는 영국식 키보드에서의 `"`로 변경됩니다. 문자 키가 생성되었기 때문에 그 다음은 {{domxref("HTMLElement/beforeinput_event", "beforeinput")}} 와 {{domxref("HTMLElement/input_event", "input")}} 이벤트들이 발생합니다.
+When `key 2` is pressed, another {{domxref("Element/keydown_event", "keydown")}} event is fired for this new key press, and the `key` property value for the event is set to the string `@` for the U.S keyboard type and `"` for the UK keyboard type, because of the active modifier `shift` key. The {{domxref("HTMLElement/beforeinput_event", "beforeinput")}} and {{domxref("HTMLElement/input_event", "input")}} events are fired next because a character key has been produced.
 
-`key 2`를 떼면 {{domxref("Element/keyup_event", "keyup")}} 이벤트가 발생하고, `key` 속성은 키보드 레이아웃에 따라서 `@` 나 `"` 의 문자열 값을 유지합니다.
+As we release the `key 2`, a {{domxref("Element/keyup_event", "keyup")}} event is fired and the `key` property will maintain the string values `@` and `"` for the different keyboard layouts respectively.
 
-마지막으로 `shift` 키를 떼면 또 다른 {{domxref("Element/keyup_event", "keyup")}} 이벤트가 발생하고, `key` 속성의 값은 `Shift`로 유지됩니다.
+As we finally release the `shift` key, another {{domxref("Element/keyup_event", "keyup")}} event is fired for it, and the key attribute value remains `Shift`.
 
 ### Case 2
 
-`shift` 키가 눌렸을 때 {{domxref("Element/keydown_event", "keydown")}} 이벤트가 먼저 발생하고, `key` 속성의 값은 문자열 `Shift`가 됩니다. `shift` 키를 계속 누르고 있더라도, 문자 키가 아니기 때문에 {{domxref("Element/keydown_event", "keydown")}} 이벤트가 반복적으로 발생하지는 않습니다.
+When the shift key is pressed, a {{domxref("Element/keydown_event", "keydown")}} event is first fired, and the `key` property value is set to be the string `Shift`. As we keep holding this key, the keydown event does not continue to fire repeatedly because it produced no character key.
 
-`key 2`가 눌리면 또 하나의 새로운 {{domxref("Element/keydown_event", "keydown")}} 이벤트가 발생하고, 활성화된 보조 키 `shift` 때문에 이 이벤트의 `key` 속성의 값은 미국식 키보드에서의 `@` 또는 영국식 키보드에서의 `"`로 변경됩니다. 문자 키가 생성되었기 때문에 그 다음은 {{domxref("HTMLElement/beforeinput_event", "beforeinput")}} 와 {{domxref("HTMLElement/input_event", "input")}} 이벤트들이 발생합니다. 키가 계속 눌리는 동안 {{domxref("Element/keydown_event", "keydown")}} 이벤트가 반복적으로 발생하고, {{domxref("KeyboardEvent.repeat")}} 속성은 `true`가 됩니다. 또한 {{domxref("HTMLElement/beforeinput_event", "beforeinput")}}과 {{domxref("HTMLElement/input_event", "input")}} 이벤트도 반복적으로 발생합니다.
+When `key 2` is pressed, another {{domxref("Element/keydown_event", "keydown")}} event is fired for this new key press, and the `key` property value for the event is set to be the string `@` for the U.S keyboard type and `"` for the UK keyboard type, because of the active modifier `shift` key. The {{domxref("HTMLElement/beforeinput_event", "beforeinput")}} and {{domxref("HTMLElement/input_event", "input")}} events are fired next because a character key has been produced. As we keep holding the key, the {{domxref("Element/keydown_event", "keydown")}} event continues to fire repeatedly and the {{domxref("KeyboardEvent.repeat")}} property is set to `true`. The {{domxref("HTMLElement/beforeinput_event", "beforeinput")}} and {{domxref("HTMLElement/input_event", "input")}} events are fired repeatedly as well.
 
-`shift` 키를 떼면 {{domxref("Element/keyup_event", "keyup")}} 이벤트가 발생하고, `key` 속성은 `Shift`로 유지됩니다. 이 때, 보조 키인 `shift`가 더 이상 활성화되어 있지 않기 때문에 `key 2`의 반복되는 {{domxref("Element/keydown_event", "keydown")}} 이벤트에 대한 `key` 속성의 값이 이제 "2"가 되었다는 것에 주의해야 합니다. 이것은 {{domxref("HTMLElement/beforeinput_event", "beforeinput")}}과 {{domxref("HTMLElement/input_event", "input")}} 이벤트의 {{domxref("InputEvent.data")}} 속성에도 똑같이 적용됩니다.
+As we release the `shift` key, a {{domxref("Element/keyup_event", "keyup")}} event is fired for it, and the key attribute value remains `Shift`. At this point, notice that the `key` property value for the repeating keydown event of the `key 2` key press is now "2" because the modifier `shift` key is no longer active. The same goes for the {{domxref("InputEvent.data")}} property of the {{domxref("HTMLElement/beforeinput_event", "beforeinput")}} and {{domxref("HTMLElement/input_event", "input")}} events.
 
-마지막으로 `key 2`를 떼면 {{domxref("Element/keyup_event", "keyup")}} 이벤트가 발생하지만, 보조 키인 `shift`가 더 이상 활성화되어 있지 않으므로 `key` 속성은 두 키보드 모두에서 문자열 `2`로 설정됩니다.
+As we finally release the `key 2`, a {{domxref("Element/keyup_event", "keyup")}} event is fired but the `key` property will be set to the string value `2` for both keyboard layouts because the modifier `shift` key is no longer active.
 
-## 예제
+## Examples
 
-이 예제는 {{domxref("Element/keydown_event", "keydown")}} 이벤트를 처리하기 위해 {{domxref("EventTarget.addEventListener()")}}를 사용합니다. 이벤트가 발생하면 키의 값이 코드에서 언급된 키 중의 하나인지 확인하고, 만약 그렇다면 각각의 방식(게임에서 우주선을 조종하거나, 스프레드시트에서 선택한 셀을 변경하는 등)으로 처리됩니다.
+This example uses {{domxref("EventTarget.addEventListener()")}} to listen for {{domxref("Element/keydown_event", "keydown")}} events. When they occur, the key's value is checked to see if it's one of the keys the code is interested in, and if it is, it gets processed in some way (possibly by steering a spacecraft, perhaps by changing the selected cell in a spreadsheet).
 
 ```js
 window.addEventListener(
   "keydown",
-  function (event) {
+  (event) => {
     if (event.defaultPrevented) {
-      return; // 이미 이벤트가 실행되는 중이라면 아무 동작도 하지 않습니다.
+      return; // Do nothing if the event was already processed
     }
 
     switch (event.key) {
-      case "Down": // IE/Edge에서 사용되는 값
+      case "Down": // IE/Edge specific value
       case "ArrowDown":
-        // "아래 화살표" 키가 눌렸을 때의 동작입니다.
+        // Do something for "down arrow" key press.
         break;
-      case "Up": // IE/Edge에서 사용되는 값
+      case "Up": // IE/Edge specific value
       case "ArrowUp":
-        // "위 화살표" 키가 눌렸을 때의 동작입니다.
+        // Do something for "up arrow" key press.
         break;
-      case "Left": // IE/Edge에서 사용되는 값
+      case "Left": // IE/Edge specific value
       case "ArrowLeft":
-        // "왼쪽 화살표" 키가 눌렸을 때의 동작입니다.
+        // Do something for "left arrow" key press.
         break;
-      case "Right": // IE/Edge에서 사용되는 값
+      case "Right": // IE/Edge specific value
       case "ArrowRight":
-        // "오른쪽 화살표" 키가 눌렸을 때의 동작입니다.
+        // Do something for "right arrow" key press.
         break;
       case "Enter":
-        // "enter" 또는 "return" 키가 눌렸을 때의 동작입니다.
+        // Do something for "enter" or "return" key press.
         break;
-      case "Esc": // IE/Edge에서 사용되는 값
+      case "Esc": // IE/Edge specific value
       case "Escape":
-        // "esc" 키가 눌렸을 때의 동작입니다.
+        // Do something for "esc" key press.
         break;
       default:
-        return; // 키 이벤트를 처리하지 않는다면 종료합니다.
+        return; // Quit when this doesn't handle the key event.
     }
 
-    // 두 번 동작하는 것을 막기 위해 기본 동작을 취소합니다.
+    // Cancel the default action to avoid it being handled twice
     event.preventDefault();
   },
   true
 );
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

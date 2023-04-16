@@ -1,21 +1,23 @@
 ---
 title: Method
 slug: Glossary/Method
+page-type: glossary-definition
 ---
 
-**메소드**(**method**)는 {{glossary("object","객체")}}의 {{glossary("property", "속성")}}인 {{glossary("function", "함수")}}이다. 두 가지 종류의 메소드가 있다. 객체 인스턴스에 의해 수행되는 태스크에 내장된 인스턴스 메소드 또는 오브젝트 생성자에서 직접 호출되는 태스크인 *{{Glossary("static method", "정적 메소드")}}*가 여기에 해당된다.
+A **method** is a {{glossary("function")}} which is a {{glossary("property")}} of an {{glossary("object")}}. There are two kinds of methods: _instance methods_ which are built-in tasks performed by an object instance, or _{{Glossary("static method", "static methods")}}_ which are tasks that are called directly on an object constructor.
 
-> **참고:** 자바스크립트 함수에서 그 자체는 객체이므로, 그런 맥락에서 메소드는 실제로 함수에 대한 객체 {{glossary("object reference", "참조")}}인 것이다.
+> **Note:** In JavaScript functions themselves are objects, so, in that context, a method is actually an {{glossary("object reference")}} to a function.
 
-## 더 알아보기
+When `F` is said to be a _method_ of `O`, it often means that `F` uses `O` as its [`this`](/en-US/docs/Web/JavaScript/Reference/Operators/this) binding. Function properties that do not have different behaviors based on their `this` value (or those that don't have a dynamic `this` binding at all — like [bound functions](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind) and [arrow functions](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)) may not be universally recognized as methods.
 
-### 이것에 대해 알아보기
+## See also
 
-- Wikipedia의 [Method (computer programming)](<https://en.wikipedia.org/wiki/Method_(computer_programming)>)
-- [JavaScrip에서 메소드의 정의](/ko/docs/Web/JavaScript/Reference/Functions/Method_definitions) (comparison of the traditional syntax and the new shorthand)
+- [Method (computer programming)](<https://en.wikipedia.org/wiki/Method_(computer_programming)>) in Wikipedia
+- [Defining a method in JavaScript](/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions) (comparison of the traditional syntax and the new shorthand)
+- [List of JavaScript built-in methods](/en-US/docs/Web/JavaScript/Reference)
+- [MDN Web Docs Glossary](/en-US/docs/Glossary)
 
-### 기술적 참조
-
-- [List of JavaScript built-in methods](/ko/docs/Web/JavaScript/Reference/Methods_Index)
-
-<section id="Quick_links"><ul><li><a href="/en-US/docs/Glossary">MDN Web Docs Glossary</a><ul><li>{{Glossary("function")}}</li><li>{{Glossary("object")}}</li><li>{{Glossary("property")}}</li><li>{{Glossary("static method")}}</li></ul></li><li><a href="/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions">Defining a method in JavaScript</a></li></ul></section>
+  - {{Glossary("function")}}
+  - {{Glossary("object")}}
+  - {{Glossary("property")}}
+  - {{Glossary("static method")}}

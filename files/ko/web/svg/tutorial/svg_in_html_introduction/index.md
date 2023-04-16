@@ -1,81 +1,128 @@
 ---
 title: SVG In HTML Introduction
 slug: Web/SVG/Tutorial/SVG_In_HTML_Introduction
+page-type: guide
 ---
 
-### 개요
+{{SVGRef}}
 
-이 문서와 관련된 예제는 form의 배경 그림을 제공하기 위해서 inline [SVG](/ko/SVG)를 어떻게 사용하는지를 보여줍니다. 정규 XHTML을 작성하는 것과 같은 방식으로 그 그림들을 조작하기 위해 [JavaScript](/ko/JavaScript)와 [CSS](/ko/CSS)의 사용법도 설명합니다. 예제들은 XHTML(HTML이 아님)과 SVG integration을 지원하는 웹브라우져에서만 동작함을 유의하시기 바랍니다.
+## Overview
 
-### 소스
+This article and its associated example shows how to use inline [SVG](/en-US/docs/Web/SVG).
 
-예제에 대한 소스는 [여기](http://developer.mozilla.org/presentations/xtech2005/svg-canvas/SVGDemo.xml):
+## Basic example
 
-```
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <title>XTech SVG Demo</title>
-  <style>
-    stop.begin { stop-color:yellow; }
-    stop.end { stop-color:green; }
-    body.invalid stop.end { stop-color:red; }
-    #err { display:none; }
-    body.invalid #err { display:inline; }
-  </style>
-  <script>
-    function signalError() {
-      document.getElementById('body').setAttribute("class", "invalid");
-    }
-  </script>
-</head>
-<body id="body"
-   style="position:absolute; z-index:0; border:1px solid black; left:5%; top:5%; width:90%; height:90%;">
-  <form>
-     <fieldset>
-       <legend>HTML Form</legend>
-       <p><label>Enter something:</label>
-          <input type="text"/>
-          <span id="err">Incorrect value!</span></p>
-       <p><button onclick="signalError();">Activate!</button></p>
-     </fieldset>
-  </form>
-  <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
-    viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice"
-    style="width:100%; height:100%; position:absolute; top:0; left:0; z-index:-1;">
-    <linearGradient id="gradient">
-      <stop class="begin" offset="0%"/>
-      <stop class="end" offset="100%"/>
-    </linearGradient>
-    <rect x="0" y="0" width="100" height="100" style="fill:url(#gradient)" />
-    <circle cx="50" cy="50" r="30" style="fill:url(#gradient)" />
-  </svg>
-</body>
+To include an inline SVG in an HTML file, paste the entire SVG file into the HTML file.
+
+```html
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>SVG Demo</title>
+    <meta name="viewport" content="width=device-width" />
+  </head>
+  <body>
+    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" role="img">
+      <title>A gradient</title>
+      <linearGradient id="gradient">
+        <stop class="begin" offset="0%" />
+        <stop class="end" offset="100%" />
+      </linearGradient>
+      <rect x="0" y="0" width="100" height="100" style="fill:url(#gradient)" />
+      <circle cx="50" cy="50" r="30" style="fill:url(#gradient)" />
+    </svg>
+  </body>
 </html>
 ```
 
-### Discussion
+## Discussion
 
-위 페이지는 주로 정규 XHTML, CSS, JavaScript입니다. 다만 흥미로운 부분은 위 페이지에 포함되어 있는 `<svg>`원소입니다. 이 원소와 그 자식들은 SVG 네임스페이스 상에서 선언되어 있습니다. 이 원소는 하나의 색변화도(그라데이션)와 이 색변화도에 따라 내부가 채워진 두개의 도형을 포함하고 있습니다. 색변화도의 양끝의 색깔은 CSS에서 지정된 색을 가집니다. 만약 사용자가 form에 잘못된 내용을 입력하였다면 스크립트는 `<body>`태그에 `invalid`속성을 설정하고 스타일 규칙은 색변화도의 `end-stop`색을 빨간색으로 변경합니다. (나머지 스타일 규칙에 따라 에러 메시지가 출력됩니다.)
+The page is regular HTML and CSS with a single SVG. The only interesting part is the `<svg>` element it contains. This element and its children are declared to be in the SVG namespace. The element contains a gradient and two shapes filled with the gradient. The gradient color stops have their colors set by CSS.
 
-이 방식은 수고면에서 다음과 같은 특징을 가집니다:
+There are three attributes and one nested element worth noting:
 
-- 우리는 기존의 웹사이트들에서 이전부터 사용되어온 정규 XHTML의 form을 사용했으며 여기에 매력적이고 인터랙티브한 배경그림까지도 추가했습니다.
-- 이 방식은 SVG를 지원하지 않는 웹브라우져와 하위 호완성을 가집니다; 단순히 이들 웹브라우져에서는 배경그림만 없을 뿐입니다.
-- 단순한 방식이며 아주 잘 동작합니다.
-- 그림은 동적으로 필요한 크기에 따라 영리하게 스스로 크기를 변경합니다.
-- HTML과 SVG 모두에게 적용될 수 있는 선언적 스타일 규칙들을 가질 수 있습니다.
-- 같은 스크립트가 HTML과 SVG 모두를 조작할 수 있습니다.
-- 문서는 완전히 표준에 기반하고 있습니다.
+1. The [`viewBox`](/en-US/docs/Web/SVG/Attribute/viewBox) attribute establishes a logical coordinate system which the SVG picture's coordinates are relative to. In this case our picture is laid out in a 100 by 100 viewport.
 
-### Details
+2. The [`preserveAspectRatio`](/en-US/docs/Web/SVG/Attribute/preserveAspectRatio) attribute specifies that the aspect ratio must be preserved by centering the picture in the available size, sizing to the maximum of the height or width and then cutting off any overflow.
 
-`viewBox`속성은 SVG 그림의 좌표계에 상대적인 논리적 좌표계를 생성합니다. 이 경우 그림은 100x100크기의 뷰포트에 놓여집니다.
+3. Including [`role="img"`](/en-US/docs/Web/Accessibility/ARIA/Roles/img_role) ensures assistive technologies handle the SVG as an image.
 
-`preserveAspectRatio`속성은 주어진 크기내에 그림을 넣을때 그림의 높이나 폭을 최대로 해서 주어진 크기에 맞게 그림을 맞추고 넘어가는 부분들을 잘라냄으로써 그림의 비율이 보존되도록 지정합니다.
+4. A [`<title>`](/en-US/docs/Web/SVG/Element/title) within an SVG provides the accessible, short-text description of the graphic. The title text is not rendered, but browsers may display it as a tooltip when the SVG is hovered. The `<title>` should be the first element after the `<svg>` opening tag.
 
-`style`속성은 SVG 원소를 form의 배경에 고정시킵니다.
+## Best practices
 
-### Related Links
+When an SVG is included via with {{HTMLElement('img')}}, the `alt` attribute provides alternative text making the image accessible. Inline SVG does not support the `alt` attribute. But it does support several other ways of making it accessible. With inline SVGs, the source is available in the DOM, meaning all the markup within an inline SVG file is accessible to the Accessibility Object Model, or AOM. Including the `<title>` element provides that alternative text.
 
-- Another SVG in XHTML example: [A swarm of motes](/ko/SVG/Namespaces_Crash_Course/Example)
-- [Inline SVG](http://svg-whiz.com/wiki/index.php?title=Inline_SVG) page on SVG wiki
+If the image conveys more than a short title, include a longer description with the [`<desc>`](/en-US/docs/Web/SVG/Element/desc) element. The `<desc>` element provides an accessible, long-text description. Similar to `<title>` text, the text within the `<desc>` is not rendered to the screen.
+
+If the SVG can be labeled by visible text, reference that text with an [`aria-labelledby`](/en-US/docs/Web/accessibility/aria/attributes/aria-labelledby) attribute. Alternatively, include the `aria-labelledby` attribute with the [`id`](/en-US/docs/Web/SVG/Attribute/id) of the `<title>`.
+
+```html
+<svg viewBox="0 0 100 125" role="img" aria-labelledby="svgTitle svgDescription">
+  <title id="svgTitle">Manual</title>
+  <desc id="svgDescription">
+    A non-descript twelve page booklet opened to the middle page
+  </desc>
+  <defs>
+    <style>
+      rect {
+        fill: #cccccc;
+        stroke: #666;
+        transform-origin: top;
+      }
+    </style>
+  </defs>
+
+  <rect
+    width="36"
+    height="60"
+    x="13"
+    y="18"
+    ry="2"
+    style="transform: skewy(24deg)" />
+  <rect
+    width="39"
+    height="60"
+    x="11"
+    y="20"
+    ry="2"
+    style="transform: skewy(18deg)" />
+  <rect
+    width="42"
+    height="90"
+    x="8"
+    y="22"
+    ry="2"
+    style="transform: skewy(12deg)" />
+  <rect
+    width="36"
+    height="60"
+    x="50"
+    y="18"
+    ry="2"
+    style="transform: skewy(-24deg)" />
+  <rect
+    width="39"
+    height="60"
+    x="50"
+    y="20"
+    ry="2"
+    style="transform: skewy(-18deg)" />
+  <rect
+    width="42"
+    height="90"
+    x="50"
+    y="22"
+    ry="2"
+    style="transform: skewy(-12deg)" />
+</svg>
+```
+
+If the SVG can be described by visible text, that text can be referenced with the [`aria-describedby`](/en-US/docs/Web/accessibility/aria/attributes/aria-describedby) attribute. If aria-describedby is used, it will take precedence over `<desc>`.
+
+In our example, we've included both the description and title in our `aria-labelledby` attribute, as it has better assistive technology support than `aria-describedby`.
+
+## See also
+
+- [Getting started with SVG](/en-US/docs/Web/SVG/Tutorial/Getting_Started)

@@ -1,45 +1,84 @@
 ---
-title: RTCPeerConnection.ondatachannel
+title: "RTCPeerConnection: datachannel event"
+short-title: datachannel
 slug: Web/API/RTCPeerConnection/datachannel_event
-original_slug: Web/API/RTCPeerConnection/ondatachannel
+page-type: web-api-event
+browser-compat: api.RTCPeerConnection.datachannel_event
 ---
-{{APIRef("WebRTC")}}{{SeeCompatTable}}
 
-**`RTCPeerConnection.ondatachannel`** 속성은 {{domxref("RTCPeerConnection")}}에서 발생하는 {{event("datachannel")}} 이벤트에 의해 호출되는 {{event("Event_handlers", "event handler")}}입니다. 이 속성에는 함수를 정의하게됩니다. {{domxref("RTCDataChannelEvent")}}의 한 종류인 이 이벤트는 원격 유저가 {{domxref("RTCPeerConnection.createDataChannel", "createDataChannel()")}}를 호출해서 연결에 {{domxref("RTCDataChannel")}}가 추가되었을 때, 전달됩니다.
+{{APIRef("WebRTC")}}
 
-이 이벤트를 수신하게되는 시점에서는 {{domxref("RTCDataChannel")}}가 아직 열리지 않았을 수 있습니다. 사용하기 전에 꼭 신규 `RTCDataChannel`에 `"open"`이벤트가 발생하는 것을 확인하십시오.
+A **`datachannel`** event is sent to an {{domxref("RTCPeerConnection")}} instance when an {{domxref("RTCDataChannel")}} has been added to the connection, as a result of the remote peer calling {{domxref("RTCPeerConnection.createDataChannel()")}}.
+
+> **Note:** This event is _not_ dispatched when the local end of the connection creates the channel.
+
+This event is not cancelable and does not bubble.
 
 ## Syntax
 
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
+
 ```js
-RTCPeerConnection.ondatachannel = function;
+addEventListener("datachannel", (event) => {});
+
+ondatachannel = (event) => {};
 ```
 
-### 값
+## Event type
 
-이 속성에 지정하는 함수는 단일 패러미터를 입력 인자로 받습니다. `channel` 속성에 생성된 {{domxref("RTCDataChannel")}}를 제공하는 {{domxref("RTCDataChannelEvent")}} 입니다.
+An {{domxref("RTCDataChannelEvent")}}. Inherits from {{domxref("Event")}}.
 
-## 예시
+{{InheritanceDiagram("RTCDataChannelEvent")}}
+
+## Event properties
+
+_Also inherits properties from {{DOMxRef("Event")}}._
+
+- {{DOMxRef("RTCDataChannelEvent.channel", "channel")}} {{ReadOnlyInline}}
+  - : Returns the {{domxref("RTCDataChannel")}} associated with the event.
+
+## Examples
+
+This example sets up a function that handles `datachannel` events by gathering the information needed to communicate with the newly added {{domxref("RTCDataChannel")}} and by adding event handlers for the events that occur on that channel.
 
 ```js
-pc.ondatachannel = function(ev) {
-  console.log('Data channel is created!');
-  ev.channel.onopen = function() {
-    console.log('Data channel is open and ready to be used.');
-  };
+pc.addEventListener(
+  "datachannel",
+  (ev) => {
+    receiveChannel = ev.channel;
+    receiveChannel.onmessage = myHandleMessage;
+    receiveChannel.onopen = myHandleOpen;
+    receiveChannel.onclose = myHandleClose;
+  },
+  false
+);
+```
+
+`receiveChannel` is set to the value of the event's {{domxref("RTCDataChannelEvent.channel", "channel")}} property, which specifies the `RTCDataChannel` object representing the data channel linking the remote peer to the local one.
+
+This same code can also instead use the {{domxref("RTCPeerConnection")}} interface's `ondatachannel` event handler property, like this:
+
+```js
+pc.ondatachannel = (ev) => {
+  receiveChannel = ev.channel;
+  receiveChannel.onmessage = myHandleMessage;
+  receiveChannel.onopen = myHandleOpen;
+  receiveChannel.onclose = myHandleClose;
 };
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
-- The {{event("datachannel")}} event and its type, {{domxref("RTCDataChannelEvent")}}.
+- [WebRTC API](/en-US/docs/Web/API/WebRTC_API)
+- [Using WebRTC data channels](/en-US/docs/Web/API/WebRTC_API/Using_data_channels)
+- [A simple RTCDataChannel sample](/en-US/docs/Web/API/WebRTC_API/Simple_RTCDataChannel_sample)
+- {{domxref("RTCDataChannelEvent")}}
 - {{domxref("RTCPeerConnection.createDataChannel()")}}
-- [A simple RTCDataChannel sample](/ko/docs/Web/API/WebRTC_API/Simple_RTCDataChannel_sample)

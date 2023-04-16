@@ -1,12 +1,12 @@
 ---
 title: Head
 slug: Glossary/Head
+page-type: glossary-definition
 ---
-**Head** 란 {{glossary("HTML")}} 문서의 일부분으로써 해당 문서의 {{glossary("metadata")}} 를 포함하는데, 예를 들면 저자, 설명, 그리고 HTML에 적용될 수 있는 {{glossary("CSS")}} 또는 {{glossary("JavaScript")}} 파일들로 연결되는 것들이 이에 해당될 수 있다.
 
-## 더 알아보기
+The **Head** is the part of an {{glossary("HTML")}} document that contains {{glossary("metadata")}} about that document, such as author, description, and links to {{glossary("CSS")}} or {{glossary("JavaScript")}} files that should be applied to the HTML.
 
-### HTML head
+## See also
 
-- MDN에서의 {{htmlelement("head")}} 요소 참조
-- MDN Learning Area의 [The HTML \<head>](/ko/docs/Learn/HTML/Introduction_to_HTML/The_HTML_head) 참고
+- {{htmlelement("head")}} element reference on MDN
+- [The HTML \<head>](/en-US/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML) on the MDN Learning Area

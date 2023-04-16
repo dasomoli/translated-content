@@ -1,73 +1,79 @@
 ---
 title: Object.isExtensible()
 slug: Web/JavaScript/Reference/Global_Objects/Object/isExtensible
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Object.isExtensible
 ---
+
 {{JSRef}}
 
-**`Object.isExtensible()`** 메서드는 객체가 확장 가능한지(객체에 새 속성을 추가할 수 있는지 여부)를 결정합니다.
+The **`Object.isExtensible()`** static method determines if an object
+is extensible (whether it can have new properties added to it).
 
 {{EmbedInteractiveExample("pages/js/object-isextensible.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 Object.isExtensible(obj)
 ```
 
-### 매개변수
+### Parameters
 
 - `obj`
-  - : 판별할 객체.
+  - : The object which should be checked.
 
-### 반환 값
+### Return value
 
-객체의 확장 가능 여부를 나타내는 {{jsxref("Boolean")}}.
+A {{jsxref("Boolean")}} indicating whether or not the given object is extensible.
 
-## 설명
+## Description
 
-객체는 기본으로 확장 가능입니다: 새로운 속성이 추가될 수 있고 ([`Object.prototype.__proto__`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/proto) {{deprecated_inline}} 속성을 지원하는 엔진에서는) 수정될 수 있습니다. 객체는 {{jsxref("Object.preventExtensions()")}}, {{jsxref("Object.seal()")}} 또는 {{jsxref("Object.freeze()")}}를 사용하여 확장 불가로 표시될 수 있습니다.
+Objects are extensible by default: they can have new properties added to them, and their `[[Prototype]]` can be re-assigned. An object can be marked as non-extensible using one of {{jsxref("Object.preventExtensions()")}}, {{jsxref("Object.seal()")}}, {{jsxref("Object.freeze()")}}, or {{jsxref("Reflect.preventExtensions()")}}.
 
-## 예제
+## Examples
+
+### Using Object.isExtensible
 
 ```js
-// 새로운 객체는 확장 가능입니다.
-var empty = {};
-Object.isExtensible(empty); // === true
+// New objects are extensible.
+const empty = {};
+Object.isExtensible(empty); // true
 
-// ...하지만 변경될 수 있습니다.
+// They can be made un-extensible
 Object.preventExtensions(empty);
-Object.isExtensible(empty); // === false
+Object.isExtensible(empty); // false
 
-// 봉인된 객체는 정의에 의해 확장 불가입니다.
-var sealed = Object.seal({});
-Object.isExtensible(sealed); // === false
+// Sealed objects are by definition non-extensible.
+const sealed = Object.seal({});
+Object.isExtensible(sealed); // false
 
-// 동결된 객체 또한 정의에 의해 확장 불가입니다.
-var frozen = Object.freeze({});
-Object.isExtensible(frozen); // === false
+// Frozen objects are also by definition non-extensible.
+const frozen = Object.freeze({});
+Object.isExtensible(frozen); // false
 ```
 
-## 주의
+### Non-object argument
 
-ES5에서, 이 메서드의 인수가 비객체(원시형)인 경우, 그러면 {{jsxref("TypeError")}}가 발생합니다. ES6에서, 비객체 인수는 확장 불가인 보통 객체처럼 다뤄집니다, 그저 `false`를 반환하는.
+In ES5, if the argument to this method is not an object (a primitive), then it will cause a {{jsxref("TypeError")}}. In ES2015, it will return `false` without any errors if a non-object argument is passed, since primitives are, by definition, immutable.
 
 ```js
 Object.isExtensible(1);
-// TypeError: 1은 객체가 아닙니다 (ES5 코드)
+// TypeError: 1 is not an object (ES5 code)
 
 Object.isExtensible(1);
-// false                         (ES6 코드)
+// false                         (ES2015 code)
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Object.preventExtensions()")}}
 - {{jsxref("Object.seal()")}}

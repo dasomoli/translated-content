@@ -1,29 +1,27 @@
 ---
-title: ':first-child'
+title: ":first-child"
 slug: Web/CSS/:first-child
+page-type: css-pseudo-class
+browser-compat: css.selectors.first-child
 ---
 
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`:first-child`** [의사 클래스](/ko/docs/Web/CSS/Pseudo-classes)는 형제 요소 중 제일 첫 요소를 나타냅니다.
+The **`:first-child`** [CSS](/en-US/docs/Web/CSS) [pseudo-class](/en-US/docs/Web/CSS/Pseudo-classes) represents the first element among a group of sibling elements.
+
+{{EmbedInteractiveExample("pages/tabbed/pseudo-class-first-child.html", "tabbed-shorter")}}
+
+## Syntax
 
 ```css
-/* Selects any <p> that is the first element
-   among its siblings */
-p:first-child {
-  color: lime;
+:first-child {
+  /* ... */
 }
 ```
 
-> **참고:** 초기 정의에서는 부모가 있는 요소만 선택할 수 있었습니다. Selectors Level 4부터는 이 제한이 사라졌습니다.
+## Examples
 
-## 구문
-
-{{csssyntax}}
-
-## 예제
-
-### 기본 예제
+### Basic example
 
 #### HTML
 
@@ -49,11 +47,11 @@ p:first-child {
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('기본_예제', 500, 200)}}
+{{EmbedLiveSample('Basic_example', 500, 200)}}
 
-### 목록 스타일링
+### Styling a list
 
 #### HTML
 
@@ -61,7 +59,8 @@ p:first-child {
 <ul>
   <li>Item 1</li>
   <li>Item 2</li>
-  <li>Item 3
+  <li>
+    Item 3
     <ul>
       <li>Item 3.1</li>
       <li>Item 3.2</li>
@@ -84,19 +83,19 @@ ul li:first-child {
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('목록_스타일링')}}
+{{EmbedLiveSample('Styling_a_list')}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{CSSxRef(":-moz-first-node")}} {{Non-standard_Inline}}
 - {{CSSxRef(":first-of-type")}}

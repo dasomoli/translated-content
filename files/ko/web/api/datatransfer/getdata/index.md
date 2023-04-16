@@ -1,90 +1,111 @@
 ---
-title: DataTransfer.getData()
+title: "DataTransfer: getData() method"
+short-title: getData()
 slug: Web/API/DataTransfer/getData
+page-type: web-api-instance-method
+browser-compat: api.DataTransfer.getData
 ---
+
 {{APIRef("HTML DOM")}}
 
-**`DataTransfer.getData()`** 메소드는 특정 형태를 위해 ({{domxref("DOMString")}}로) 끌어낸 데이터를 회수한다. 가령, 끌어내는 동작이 데이터를 포함하지 않는다면, 이 메소드는 빈 문자열을 반환한다.
+The **`DataTransfer.getData()`**
+method retrieves drag data (as a string) for the specified type.
+If the drag operation does not include data, this method returns an empty
+string.
 
-예시 데이터 형식으로는 `text/plain` 와 `text/uri-list` 이 있다.
+Example data types are `text/plain` and `text/uri-list`.
 
-## 구문
+## Syntax
 
-```js
-dataTransfer.getData(format);
+```js-nolint
+getData(format)
 ```
 
-### 매개변수
+### Parameters
 
 - `format`
-  - : 회수할 데이터 형식을 나타내는 {{domxref("DOMString")}}
+  - : A string representing the type of data to retrieve.
 
-### 반환 값
+### Return value
 
-- {{domxref("DOMString")}}
-  - : 특정 `format`을 위해 끌어낸 데이터를 나타내는 {{domxref("DOMString")}}. 만약 끌어내는 동작이 데이터를 가지고 있지 않거나 동작이 특정 `format` 에 대한 데이터를 가지고 있지 않다면, 이 메소드는 빈 문자열을 반환한다.
+A string representing the drag data for the specified `format`. If the drag operation has no data or the operation has no data for the specified `format`, this method returns an empty string.
 
-## 예제
+### Caveats
 
-이 예시는 {{domxref("DataTransfer")}} 객체의 {{domxref("DataTransfer.getData()","getData()")}} 와 {{domxref("DataTransfer.setData()","setData()")}} 메소드의 사용을 보여준다.
+- Data availability
 
-### HTML 내용
+  - : The [HTML Drag and Drop Specification](https://www.w3.org/TR/2011/WD-html5-20110113/dnd.html#drag-data-store-mode) dictates a `drag data store mode`.
+    This may result in unexpected behavior, being
+    **`DataTransfer.getData()`** not returning an expected
+    value, because not all browsers enforce this restriction.
+
+    During the `dragstart` and `drop` events, it is safe to access the data. For all other events, the data should be considered unavailable. Despite this, the items and their formats can still be enumerated.
+
+## Examples
+
+This example shows the use of the {{domxref("DataTransfer")}} object's
+{{domxref("DataTransfer.getData()","getData()")}} and
+{{domxref("DataTransfer.setData()","setData()")}} methods.
+
+### HTML Content
 
 ```html
 <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
-    <span id="drag" draggable="true" ondragstart="drag(event)">drag me to the other box</span>
+  <span id="drag" draggable="true" ondragstart="drag(event)"
+    >drag me to the other box</span
+  >
 </div>
 <div id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
 ```
 
-### CSS 내용
+### CSS Content
 
 ```css
-#div1, #div2 {
-    width:100px;
-    height:50px;
-    padding:10px;
-    border:1px solid #aaaaaa;
+#div1,
+#div2 {
+  width: 100px;
+  height: 50px;
+  padding: 10px;
+  border: 1px solid #aaaaaa;
 }
 ```
 
-### JavaScript 내용
+### JavaScript
 
 ```js
 function allowDrop(allowdropevent) {
-    allowdropevent.target.style.color = 'blue';
-    allowdropevent.preventDefault();
+  allowdropevent.target.style.color = "blue";
+  allowdropevent.preventDefault();
 }
 
 function drag(dragevent) {
-    dragevent.dataTransfer.setData("text", dragevent.target.id);
-    dragevent.target.style.color = 'green';
+  dragevent.dataTransfer.setData("text", dragevent.target.id);
+  dragevent.target.style.color = "green";
 }
 
 function drop(dropevent) {
-    dropevent.preventDefault();
-    var data = dropevent.dataTransfer.getData("text");
-    dropevent.target.appendChild(document.getElementById(data));
-    document.getElementById("drag").style.color = 'black';
+  dropevent.preventDefault();
+  const data = dropevent.dataTransfer.getData("text");
+  dropevent.target.appendChild(document.getElementById(data));
+  document.getElementById("drag").style.color = "black";
 }
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample('예제', 600) }}
+{{EmbedLiveSample('Examples', 600) }}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Drag and drop](/ko/docs/Web/API/HTML_Drag_and_Drop_API)
-- [Drag Operations](/ko/docs/Web/API/HTML_Drag_and_Drop_API/Drag_operations)
-- [Recommended Drag Types](/ko/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types)
-- [Dragging and Dropping Multiple Items](/ko/docs/Web/API/HTML_Drag_and_Drop_API/Multiple_items)
+- [Drag and drop](/en-US/docs/Web/API/HTML_Drag_and_Drop_API)
+- [Drag Operations](/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Drag_operations)
+- [Recommended Drag Types](/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types)
 - [DataTransfer test - Paste or Drag](https://codepen.io/tech_query/pen/MqGgap)

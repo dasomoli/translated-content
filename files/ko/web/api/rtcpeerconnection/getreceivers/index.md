@@ -1,37 +1,46 @@
 ---
-title: RTCPeerConnection.getReceivers()
+title: "RTCPeerConnection: getReceivers() method"
+short-title: getReceivers()
 slug: Web/API/RTCPeerConnection/getReceivers
+page-type: web-api-instance-method
+browser-compat: api.RTCPeerConnection.getReceivers
 ---
 
-{{APIRef("WebRTC")}}{{SeeCompatTable}}
+{{APIRef("WebRTC")}}
 
-**`RTCPeerConnection.getReceivers()`** 메소드는 {{domxref("RTCRtpReceiver")}} 객체의 배열을 반환합니다. 이 배열의 각 요소들은 RTP 리시버를 나타냅니다. 각각의 RTP 리시버는 {{domxref("RTCPeerConnection")}}에 대한 {{domxref("MediaStreamTrack")}}의 데이터를 수신하고 디코딩 합니다.
+The **`RTCPeerConnection.getReceivers()`** method returns an
+array of {{domxref("RTCRtpReceiver")}} objects, each of which represents one RTP
+receiver. Each RTP receiver manages the reception and decoding of data for
+a {{domxref("MediaStreamTrack")}} on an {{domxref("RTCPeerConnection")}}
 
 ## Syntax
 
-```js
-var receivers[] = RTCPeerConnection.getReceivers();
+```js-nolint
+getReceivers()
 ```
 
-### 반환 값
+### Return value
 
-연결에 대한 각 트랙마다 한 개씩 {{domxref("RTCRtpReceiver")}} 객체의 배열을 반환합니다. R연결에 대한 RTP 리시버가 없으면, 배열은 빈 상태입니다.
+An array of {{domxref("RTCRtpReceiver")}} objects, one for each track on the
+connection. The array is empty if there are no RTP receivers on the connection.
 
-`RTCReceiver` 인스턴스에서 반환되는 순서는 명세서에 정의되어있지 않고, `getSenders()`호출을 사용해서 다음 배열의 요소로 바꿀 수 있습니다.
+The order of the returned `RTCRtpReceiver` instances is not defined by the
+specification, and may change from one call to `getReceivers()` to the
+next.
 
-## 예시
+## Example
 
 tbd
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
-- [WebRTC](/ko/docs/Web/Guide/API/WebRTC_API)
+- [WebRTC](/en-US/docs/Web/API/WebRTC_API)
 - {{domxref("RTCRtpSender")}}

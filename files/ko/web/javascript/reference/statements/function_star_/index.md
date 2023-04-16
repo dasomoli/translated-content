@@ -1,59 +1,104 @@
 ---
 title: function*
 slug: Web/JavaScript/Reference/Statements/function*
+page-type: javascript-statement
+browser-compat: javascript.statements.generator_function
 ---
+
 {{jsSidebar("Statements")}}
 
-**`function*`** 선언 (끝에 별표가 있는 `function` keyword) 은 _generator function_ 을 정의하는데, 이 함수는 {{jsxref("Global_Objects/Generator","Generator")}} 객체를 반환합니다.
+The **`function*`** declaration (`function` keyword
+followed by an asterisk) defines a _generator function_, which returns a
+{{jsxref("Global_Objects/Generator","Generator")}} object.
+
+You can also define generator functions using the {{jsxref("GeneratorFunction")}}
+constructor, or the function expression syntax.
 
 {{EmbedInteractiveExample("pages/js/statement-functionasterisk.html")}}
 
-generator function 은 {{jsxref("Global_Objects/GeneratorFunction", "GeneratorFunction")}} 생성자와 {{jsxref("Operators/function*", "function* expression")}} 을 사용해서 정의할 수 있습니다.
+## Syntax
 
-## 문법
-
-```js
-    function* name([param[, param[, ... param]]]) {
-       statements
-    }
+```js-nolint
+function* name(param0) {
+  statements
+}
+function* name(param0, param1) {
+  statements
+}
+function* name(param0, param1, /* … ,*/ paramN) {
+  statements
+}
 ```
 
+> **Note:** Generator functions do not have arrow function counterparts.
+
+### Parameters
+
 - `name`
-  - : 함수명.
-- `param`
-  - : 함수에 전달되는 인수의 이름. 함수는 인수를 255개까지 가질 수 있다.
-- `statements`
-  - : 함수의 본체를 구성하는 구문들.
+  - : The function name.
+- `param` {{optional_inline}}
+  - : The name of a formal parameter for the function.
+- `statements` {{optional_inline}}
+  - : The statements comprising the body of the function.
 
-## 설명
+## Description
 
-Generator는 빠져나갔다가 나중에 다시 돌아올 수 있는 함수입니다. 이때 컨텍스트(변수 값)는 출입 과정에서 저장된 상태로 남아 있습니다.
+Generators are functions that can be exited and later re-entered. Their context
+(variable bindings) will be saved across re-entrances.
 
-Generator 함수는 호출되어도 즉시 실행되지 않고, 대신 함수를 위한 [Iterator](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterator) 객체가 반환됩니다. Iterator의 `next()` 메서드를 호출하면 Generator 함수가 실행되어 **{{jsxref("Operators/yield", "yield")}}** 문을 만날 때까지 진행하고, 해당 표현식이 명시하는 Iterator로부터의 반환값을 반환합니다. **{{jsxref("Operators/yield*", "yield*")}}** 표현식을 마주칠 경우, 다른 Generator 함수가 위임(delegate)되어 진행됩니다.
+Generators in JavaScript — especially when combined with Promises — are a very
+powerful tool for asynchronous programming as they mitigate — if not entirely eliminate
+\-- the problems with callbacks, such as [Callback Hell](http://callbackhell.com/) and
+[Inversion of Control](https://frontendmasters.com/courses/rethinking-async-js/callback-problems-inversion-of-control/).
+However, an even simpler solution to these problems can be achieved
+with {{jsxref("Statements/async_function", "async functions", "", 1)}}.
 
-이후 `next()` 메서드가 호출되면 진행이 멈췄던 위치에서부터 재실행합니다. `next()` 가 반환하는 객체는 `yield`문이 반환할 값(yielded value)을 나타내는 `value` 속성과, Generator 함수 안의 모든 `yield` 문의 실행 여부를 표시하는 boolean 타입의 `done` 속성을 갖습니다. `next()` 를 인자값과 함께 호출할 경우, 진행을 멈췄던 위치의 `yield` 문을 `next()` 메서드에서 받은 인자값으로 치환하고 그 위치에서 다시 실행하게 됩니다.
+Calling a generator function does not execute its body immediately; a [generator](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator)
+object for the function is returned instead. When the iterator's `next()`
+method is called, the generator function's body is executed until the first
+{{jsxref("Operators/yield", "yield")}} expression, which specifies the value to be
+returned from the iterator or, with {{jsxref("Operators/yield*", "yield*")}}, delegates
+to another generator function. The `next()` method returns an object with a
+`value` property containing the yielded value and a `done`
+property which indicates whether the generator has yielded its last value, as a boolean.
+Calling the `next()` method with an argument will resume the generator
+function execution, replacing the `yield` expression where an execution was
+paused with the argument from `next()`.
 
-## 예시
+A `return` statement in a generator, when executed, will make the generator
+finish (i.e. the `done` property of the object returned by it will be set to
+`true`). If a value is returned, it will be set as the `value`
+property of the object returned by the generator.
+Much like a `return` statement, an error thrown inside the generator will
+make the generator finished — unless caught within the generator's body.
+When a generator is finished, subsequent `next()` calls will not execute any
+of that generator's code, they will just return an object of this form:
+`{value: undefined, done: true}`.
 
-### 간단한 예제
+`function*` declarations are [hoisted](/en-US/docs/Glossary/Hoisting) to the top of their scope and can be called anywhere in their scope.
+
+## Examples
+
+### Simple example
 
 ```js
-function* idMaker(){
-  var index = 0;
-  while(index < 3)
+function* idMaker() {
+  let index = 0;
+  while (true) {
     yield index++;
+  }
 }
 
-var gen = idMaker();
+const gen = idMaker();
 
 console.log(gen.next().value); // 0
 console.log(gen.next().value); // 1
 console.log(gen.next().value); // 2
-console.log(gen.next().value); // undefined
-// ...
+console.log(gen.next().value); // 3
+// …
 ```
 
-### yield\* 를 사용한 예제
+### Example with yield\*
 
 ```js
 function* anotherGenerator(i) {
@@ -62,13 +107,13 @@ function* anotherGenerator(i) {
   yield i + 3;
 }
 
-function* generator(i){
+function* generator(i) {
   yield i;
   yield* anotherGenerator(i);
   yield i + 10;
 }
 
-var gen = generator(10);
+const gen = generator(10);
 
 console.log(gen.next().value); // 10
 console.log(gen.next().value); // 11
@@ -77,54 +122,164 @@ console.log(gen.next().value); // 13
 console.log(gen.next().value); // 20
 ```
 
-### Generator 에 인자값을 넘기는 예제
+### Passing arguments into Generators
 
 ```js
 function* logGenerator() {
-  console.log(yield);
-  console.log(yield);
-  console.log(yield);
+  console.log(0);
+  console.log(1, yield);
+  console.log(2, yield);
+  console.log(3, yield);
 }
 
-var gen = logGenerator();
+const gen = logGenerator();
 
 // the first call of next executes from the start of the function
 // until the first yield statement
-gen.next();
-gen.next('pretzel'); // pretzel
-gen.next('california'); // california
-gen.next('mayonnaise'); // mayonnaise
+gen.next(); // 0
+gen.next("pretzel"); // 1 pretzel
+gen.next("california"); // 2 california
+gen.next("mayonnaise"); // 3 mayonnaise
 ```
 
-### Generator 는 생성자로서 사용될 수 없다
+### Return statement in a generator
 
 ```js
-    function* f() {}
-    var obj = new f; // throws "TypeError: f is not a constructor"
+function* yieldAndReturn() {
+  yield "Y";
+  return "R";
+  yield "unreachable";
+}
+
+const gen = yieldAndReturn();
+console.log(gen.next()); // { value: "Y", done: false }
+console.log(gen.next()); // { value: "R", done: true }
+console.log(gen.next()); // { value: undefined, done: true }
 ```
 
-## 명세서
+### Generator as an object property
+
+```js
+const someObj = {
+  *generator() {
+    yield "a";
+    yield "b";
+  },
+};
+
+const gen = someObj.generator();
+
+console.log(gen.next()); // { value: 'a', done: false }
+console.log(gen.next()); // { value: 'b', done: false }
+console.log(gen.next()); // { value: undefined, done: true }
+```
+
+### Generator as an object method
+
+```js
+class Foo {
+  *generator() {
+    yield 1;
+    yield 2;
+    yield 3;
+  }
+}
+
+const f = new Foo();
+const gen = f.generator();
+
+console.log(gen.next()); // { value: 1, done: false }
+console.log(gen.next()); // { value: 2, done: false }
+console.log(gen.next()); // { value: 3, done: false }
+console.log(gen.next()); // { value: undefined, done: true }
+```
+
+### Generator as a computed property
+
+```js
+class Foo {
+  *[Symbol.iterator]() {
+    yield 1;
+    yield 2;
+  }
+}
+
+const SomeObj = {
+  *[Symbol.iterator]() {
+    yield "a";
+    yield "b";
+  },
+};
+
+console.log(Array.from(new Foo())); // [ 1, 2 ]
+console.log(Array.from(SomeObj)); // [ 'a', 'b' ]
+```
+
+### Generators are not constructable
+
+```js
+function* f() {}
+const obj = new f(); // throws "TypeError: f is not a constructor
+```
+
+### Generator defined in an expression
+
+```js
+const foo = function* () {
+  yield 10;
+  yield 20;
+};
+
+const bar = foo();
+console.log(bar.next()); // {value: 10, done: false}
+```
+
+### Generator example
+
+```js
+function* powers(n) {
+  //endless loop to generate
+  for (let current = n; ; current *= n) {
+    yield current;
+  }
+}
+
+for (const power of powers(2)) {
+  // controlling generator
+  if (power > 32) {
+    break;
+  }
+  console.log(power);
+  // 2
+  // 4
+  // 8
+  // 16
+  // 32
+}
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 관련 항목
+## See also
 
-- {{jsxref("Operators/function*", "function* expression")}}
+- {{jsxref("Operators/function*", "function*")}} expression
 - {{jsxref("GeneratorFunction")}} object
-- [The Iterator protocol](/en-US/docs/Web/JavaScript/Guide/The_Iterator_protocol)
+- [Iteration protocols](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)
 - {{jsxref("Operators/yield", "yield")}}
 - {{jsxref("Operators/yield*", "yield*")}}
 - {{jsxref("Function")}} object
-- {{jsxref("Statements/function", "function declaration")}}
-- {{jsxref("Operators/function", "function expression")}}
-- {{jsxref("Functions_and_function_scope", "Functions and function scope")}}
+- {{jsxref("Statements/function", "function")}} declaration
+- {{jsxref("Operators/function", "function")}} expression
+- {{jsxref("Functions", "Functions and function scope", "", 1)}}
 - Other web resources:
 
-  - [Regenerator](http://facebook.github.io/regenerator/) an ES2015 generator compiler to ES5
-  - [Forbes Lindesay: Promises and Generators: control flow utopia -- JSConf EU 2013](http://www.youtube.com/watch?v=qbKWsbJ76-s)
-  - [Hemanth.HM: The New gen of \*gen(){}](https://www.youtube.com/watch?v=ZrgEZykBHVo&list=PLuoyIZT5fPlG44bPq50Wgh0INxykdrYX7&index=1)
-  - [Task.js](http://taskjs.org/)
+  - [Regenerator](https://facebook.github.io/regenerator/) an ES2015 generator compiler to ES5
+  - [Forbes Lindesay: Promises and Generators: control flow utopia — JSConf EU 2013](https://www.youtube.com/watch?v=qbKWsbJ76-s)
+  - [Task.js](https://github.com/mozilla/task.js)
+  - [Iterating generators asynchronously](https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/async%20%26%20performance/ch4.md#iterating-generators-asynchronously)

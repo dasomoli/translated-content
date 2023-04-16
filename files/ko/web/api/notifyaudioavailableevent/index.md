@@ -1,13 +1,19 @@
 ---
 title: NotifyAudioAvailableEvent
 slug: Web/API/NotifyAudioAvailableEvent
+page-type: web-api-interface
+status:
+  - deprecated
+  - non-standard
 ---
 
-{{APIRef("Web Audio API")}}{{Non-standard_header}}{{Deprecated_header}}This interface defines the event for audio elements triggered when the Audiobuffer is full.
+{{APIRef("Web Audio API")}}{{Non-standard_header}}{{Deprecated_header}}
 
-### Attributes
+The non-standard, obsolete, **`NotifyAudioAvailableEvent`** interface defines the event sent to audio elements when the audio buffer is full.
 
-| Attribute     | Type                                                            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| ------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `frameBuffer` | [`Float32Array`](/ko/docs/JavaScript/Typed_arrays/Float32Array) | The **frameBuffer** attribute contains a typed array (`Float32Array`) with the raw audio data (32-bit float values) obtained from decoding the audio (e.g., the raw data being sent to the audio hardware vs. encoded audio). This is of the form [channel1, channel2, ..., channelN, channel1, channel2, ..., channelN, ...]. All audio frames are normalized to a length of channels \* 1024 by default, but could be any length between 512 and 16384 if the user has set a different length using the **mozFrameBufferLength** attribute. **Read only.** |
-| `time`        | `float`                                                         | The **time** attribute contains a float representing the time in seconds of the first sample in the **frameBuffer** array since the start of the audio track.                                                                                                                                                                                                                                                                                                                                                                                                |
+## Instance properties
+
+- `frameBuffer` {{ReadOnlyInline}}
+  - : A {{jsxref("Float32Array")}} containing the raw 32-bit floating-point audio data obtained from decoding the audio (e.g., the raw data being sent to the audio hardware vs. encoded audio). The data is a series of audio samples, each sample containing one 32-bit value per audio channel. All audio frames are normalized to contain 1024 samples by default, but could be any length between 512 and 16384 samples if the user has set a different length using the **`mozFrameBufferLength`** attribute.
+- `time`
+  - : A floating-point value indicating the time in seconds at which the first sample in the `frameBuffer` occurs, relative to the start of the audio track.

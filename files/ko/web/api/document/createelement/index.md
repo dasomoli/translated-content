@@ -1,43 +1,56 @@
 ---
-title: Document.createElement()
+title: "Document: createElement() method"
+short-title: createElement()
 slug: Web/API/Document/createElement
+page-type: web-api-instance-method
+browser-compat: api.Document.createElement
 ---
+
 {{APIRef("DOM")}}
 
-HTML 문서에서, **`Document.createElement()`** 메서드는 지정한 `tagName`의 HTML 요소를 만들어 반환합니다. `tagName`을 인식할 수 없으면 {{domxref("HTMLUnknownElement")}}를 대신 반환합니다.
+In an [HTML](/en-US/docs/Web/HTML) document, the **`document.createElement()`** method creates the HTML element specified by _tagName_, or an {{domxref("HTMLUnknownElement")}} if _tagName_ isn't recognized.
 
-## 구문
+## Syntax
 
-```js
-let element = document.createElement(tagName[, options]);
+```js-nolint
+createElement(tagName)
+createElement(tagName, options)
 ```
 
-### 매개변수
+### Parameters
 
 - `tagName`
-  - : 생성할 요소의 유형을 가리키는 문자열.
+  - : A string that specifies the type of element to be created. The {{domxref("Node.nodeName", "nodeName")}} of the created element is initialized with the value of _tagName_. Don't use qualified names (like "html:a") with this method. When called on an HTML document, `createElement()` converts _tagName_ to lower case before creating the element. In Firefox, Opera, and Chrome, `createElement(null)` works like `createElement("null")`.
 - `options` {{optional_inline}}
-  - : `is` 속성 하나를 가진 `ElementCreationOptions` 객체. 속성의 값은 `customElements.define()`을 사용해 정의한 사용자 정의 요소입니다.
+  - : An object with the following properties:
+    - `is`
+      - : The tag name of a custom element previously defined via `customElements.define()`.
+        See [Web component example](#web_component_example) for more details.
 
-### 반환 값
+### Return value
 
-새로운 {{domxref("Element")}}.
+The new {{domxref("Element")}}.
 
-## 예제
+> **Note:** A new {{domxref("HTMLElement", "HTMLElement", "", "1")}} is returned if the document is an {{domxref("HTMLDocument", "HTMLDocument", "", "1")}}, which is the most common case. Otherwise a new {{domxref("Element","Element","","1")}} is returned.
 
-아래 예제는 새로운 `<div>` 엘리먼트를 생성한 후, ID가 "div1" 인 요소 이전에 추가합니다.
+## Examples
+
+### Basic example
+
+This creates a new `<div>` and inserts it before the element with the ID "`div1`".
 
 #### HTML
 
 ```html
 <!DOCTYPE html>
-<html>
-<head>
-  <title>||Working with elements||</title>
-</head>
-<body>
-  <div id="div1">위의 텍스트는 동적으로 추가했습니다.</div>
-</body>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Working with elements</title>
+  </head>
+  <body>
+    <div id="div1">The text above has been created dynamically.</div>
+  </body>
 </html>
 ```
 
@@ -46,31 +59,65 @@ let element = document.createElement(tagName[, options]);
 ```js
 document.body.onload = addElement;
 
-function addElement () {
+function addElement() {
   // create a new div element
-  var newDiv = document.createElement("div");
+  const newDiv = document.createElement("div");
+
   // and give it some content
-  var newContent = document.createTextNode("환영합니다!");
+  const newContent = document.createTextNode("Hi there and greetings!");
+
   // add the text node to the newly created div
   newDiv.appendChild(newContent);
 
   // add the newly created element and its content into the DOM
-  var currentDiv = document.getElementById("div1");
+  const currentDiv = document.getElementById("div1");
   document.body.insertBefore(newDiv, currentDiv);
 }
 ```
 
-{{EmbedLiveSample("예제", 500, 50)}}
+#### Result
 
-## 명세
+{{EmbedLiveSample("Basic_example", 500, 80)}}
+
+### Web component example
+
+The following example snippet is taken from our [expanding-list-web-component](https://github.com/mdn/web-components-examples/tree/main/expanding-list-web-component) example ([see it live also](https://mdn.github.io/web-components-examples/expanding-list-web-component/)). In this case, our custom element extends the {{domxref("HTMLUListElement")}}, which represents the {{htmlelement("ul")}} element.
+
+```js
+// Create a class for the element
+class ExpandingList extends HTMLUListElement {
+  constructor() {
+    // Always call super first in constructor
+    super();
+
+    // constructor definition left out for brevity
+    // …
+  }
+}
+
+// Define the new element
+customElements.define("expanding-list", ExpandingList, { extends: "ul" });
+```
+
+If we wanted to create an instance of this element programmatically, we'd use a call along the following lines:
+
+```js
+let expandingList = document.createElement("ul", { is: "expanding-list" });
+```
+
+The new element will be given an [`is`](/en-US/docs/Web/HTML/Global_attributes/is) attribute whose value is the custom element's tag name.
+
+> **Note:** For backwards compatibility with previous versions of the [Custom Elements specification](https://www.w3.org/TR/custom-elements/), some browsers will allow you to pass a string here instead of an object, where the string's value is the custom element's tag name.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("Node.removeChild()")}}
 - {{domxref("Node.replaceChild()")}}

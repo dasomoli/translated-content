@@ -1,14 +1,15 @@
 ---
-title: Accent (악센트)
+title: Accent
 slug: Glossary/Accent
+page-type: glossary-definition
 ---
 
-**악센트**는 일반적으로 색 구성표 내에서 보다 실용적인 배경 및 전경 색과 대조되는 밝은 색입니다. 이는 전부는 아니지만 많은 플랫폼의 시각적 스타일에서 존재합니다.
+An **accent** is a typically bright color that contrasts with the more utilitarian background and foreground colors within a color scheme. These are present in the visual style of many platforms (though not all).
 
-웹에서는 {{HTMLElement("input")}} 요소의 컨트롤의 활성에 대해 악센트가 사용되는 경우가 있고, 그 예로 [체크박스](/ko/docs/Web/HTML/Element/input/checkbox)의 체크된 배경이 있습니다.
+On the web, an accent is sometimes used in {{HTMLElement("input")}} elements for the active portion of the control, for instance the background of a checked [checkbox](/en-US/docs/Web/HTML/Element/input/checkbox).
 
-## 같이 보기
+## See also
 
-### 악센트 관련 CSS
+### CSS related to the accent
 
-요소의 CSS {{cssxref("accent-color")}} 속성을 적절한 {{cssxref("&lt;color&gt;")}} 값으로 설정하여 지정된 요소의 악센트 색상을 설정할 수 있습니다.
+You can set the color of the accent for a given element by setting the element's CSS {{cssxref("accent-color")}} property to the appropriate {{cssxref("&lt;color&gt;")}} value.

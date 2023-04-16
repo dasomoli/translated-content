@@ -1,44 +1,57 @@
 ---
-title: ImageCapture() 생성자
+title: "ImageCapture: ImageCapture() constructor"
+short-title: ImageCapture()
 slug: Web/API/ImageCapture/ImageCapture
+page-type: web-api-constructor
+status:
+  - experimental
+browser-compat: api.ImageCapture.ImageCapture
 ---
-{{APIRef("MediaStream Image")}}
 
-**`ImageCapture()`** 생성자는 새로운 {{domxref("ImageCapture")}} 객체를 생성합니다.
+{{APIRef("MediaStream Image")}}{{SeeCompatTable}}
 
-## 구문
+The **`ImageCapture()`** constructor
+creates a new {{domxref("ImageCapture")}} object.
 
-```js
-const imageCapture = new ImageCapture(videoTrack)
+## Syntax
+
+```js-nolint
+new ImageCapture(videoTrack)
 ```
 
-### 매개변수
+### Parameters
 
 - `videoTrack`
-  - : 이미지를 가져올 때 사용할 {{domxref("MediaStreamTrack")}}. 화상전화 스트림, 재생 중인 영화, 웹캠 스트림 등 모든 출처를 사용할 수 있습니다.
+  - : A {{domxref("MediaStreamTrack")}} from which the still images will be taken. This
+    can be any source, such as an incoming stream of a video conference, a playing movie,
+    or the stream from a webcam.
 
-### 반환 값
+### Return value
 
-지정한 비디오 트랙에서 정지 프레임을 캡처할 수 있는 `ImageCapture` 객체.
+A new `ImageCapture` object which can be used to capture still frames from
+the specified video track.
 
-## 예제
+## Examples
 
-다음 예제는 {{domxref("MediaDevices.getUserMedia()")}}을 사용해, `ImageCapture()` 생성자에 필요한 {{domxref("MediaStreamTrack")}}을 가져오는 법을 보입니다.
+The following example shows how to use a call to
+{{domxref("MediaDevices.getUserMedia()")}} to retrieve the
+{{domxref("MediaStreamTrack")}} needed by the `ImageCapture()` constructor.
 
 ```js
- navigator.mediaDevices.getUserMedia({video: true})
-  .then(mediaStream => {
-    document.querySelector('video').srcObject = mediaStream
+navigator.mediaDevices
+  .getUserMedia({ video: true })
+  .then((mediaStream) => {
+    document.querySelector("video").srcObject = mediaStream;
     const track = mediaStream.getVideoTracks()[0];
     imageCapture = new ImageCapture(track);
   })
-  .catch(error => console.log(error));
+  .catch((error) => console.error(error));
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

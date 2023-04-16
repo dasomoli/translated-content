@@ -1,59 +1,66 @@
 ---
 title: Number.NEGATIVE_INFINITY
 slug: Web/JavaScript/Reference/Global_Objects/Number/NEGATIVE_INFINITY
+page-type: javascript-static-data-property
+browser-compat: javascript.builtins.Number.NEGATIVE_INFINITY
 ---
 
 {{JSRef}}
 
-**`Number.NEGATIVE_INFINITY`** 속성은 음의 무한대를 나타냅니다.
+The **`Number.NEGATIVE_INFINITY`** static data property represents the negative Infinity value.
 
-{{EmbedInteractiveExample("pages/js/number-negative-infinity.html")}}{{js_property_attributes(0, 0, 0)}}
+{{EmbedInteractiveExample("pages/js/number-negative-infinity.html")}}
 
-## 설명
+## Value
 
-`Number.NEGATIVE_INFINITY`의 값은 전역 객체 {{jsxref("Infinity")}} 속성의 부호를 바꾼 값과 동일합니다.
+The same as the negative value of the global {{jsxref("Infinity")}} property.
 
-`NEGATIVE_INFINITY`는 수학에서의 무한대와 약간 다릅니다.
+{{js_property_attributes(0, 0, 0)}}
 
-- {{jsxref("Number.POSITIVE_INFINITY", "POSITIVE_INFINITY")}}를 포함한 아무 양의 수와 `NEGATIVE_INFINITY`를 곱한 결과는 `NEGATIVE_INFINITY`입니다.
-- `NEGATIVE_INFINITY`를 포함한 아무 음의 수와 `NEGATIVE_INFINITY`를 곱한 결과는 {{jsxref("Number.POSITIVE_INFINITY", "POSITIVE_INFINITY")}}입니다.
-- 아무 양의 수를 `NEGATIVE_INFINITY`로 나눈 결과는 음의 부호를 가진 0입니다.
-- 아무 음의 수를 `NEGATIVE_INFINITY`로 나눈 결과는 0입니다.
-- 0을 `NEGATIVE_INFINITY`로 나눈 결과는 {{jsxref("NaN")}}입니다.
-- {{jsxref("NaN")}}에 `NEGATIVE_INFINITY`를 곱한 결과는 {{jsxref("NaN")}}입니다.
-- `NEGATIVE_INFINITY`를, `NEGATIVE_INFINITY`를 제외한 아무 음의 수로 나눈 결과는 {{jsxref("Number.POSITIVE_INFINITY", "POSITIVE_INFINITY")}}입니다.
-- `NEGATIVE_INFINITY`를, {{jsxref("Number.POSITIVE_INFINITY", "POSITIVE_INFINITY")}}를 제외한 아무 양의 수로 나눈 결과는 `NEGATIVE_INFINITY`입니다.
-- `NEGATIVE_INFINITY`를 `NEGATIVE_INFINITY` 또는 {{jsxref("Number.POSITIVE_INFINITY", "POSITIVE_INFINITY")}}로 나눈 결과는 {{jsxref("NaN")}}입니다.
+## Description
 
-`Number.NEGATIVE_INFINITY`를 사용해 성공 시 유한수를 반환하는 식의 결과를 판별할 수 있습니다. 그러나 이런 경우 {{jsxref("isFinite", "isFinite()")}}를 사용하는 편이 더 적합합니다.
+The `Number.NEGATIVE_INFINITY` value behaves slightly differently than mathematical infinity:
 
-`NEGATIVE_INFINITY`는 {{jsxref("Number")}}의 정적 속성이기 때문에, 직접 생성한 {{jsxref("Number")}} 객체의 속성이 아니라 `Number.NEGATIVE_INFINITY`의 형식으로 사용해야 합니다.
+- Any positive value, including {{jsxref("Number.POSITIVE_INFINITY", "POSITIVE_INFINITY")}}, multiplied by `NEGATIVE_INFINITY` is `NEGATIVE_INFINITY`.
+- Any negative value, including `NEGATIVE_INFINITY`, multiplied by `NEGATIVE_INFINITY` is {{jsxref("Number.POSITIVE_INFINITY", "POSITIVE_INFINITY")}}.
+- Any positive value divided by `NEGATIVE_INFINITY` is [negative zero](https://en.wikipedia.org/wiki/Signed_zero) (as defined in [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)).
+- Any negative value divided by `NEGATIVE_INFINITY` is [positive zero](https://en.wikipedia.org/wiki/Signed_zero) (as defined in [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)).
+- Zero multiplied by `NEGATIVE_INFINITY` is {{jsxref("NaN")}}.
+- {{jsxref("NaN")}} multiplied by `NEGATIVE_INFINITY` is {{jsxref("NaN")}}.
+- `NEGATIVE_INFINITY`, divided by any negative value except `NEGATIVE_INFINITY`, is {{jsxref("Number.POSITIVE_INFINITY", "POSITIVE_INFINITY")}}.
+- `NEGATIVE_INFINITY`, divided by any positive value except {{jsxref("Number.POSITIVE_INFINITY", "POSITIVE_INFINITY")}}, is `NEGATIVE_INFINITY`.
+- `NEGATIVE_INFINITY`, divided by either `NEGATIVE_INFINITY` or {{jsxref("Number.POSITIVE_INFINITY", "POSITIVE_INFINITY")}}, is {{jsxref("NaN")}}.
+- `x > Number.NEGATIVE_INFINITY` is true for any number _x_ that isn't `NEGATIVE_INFINITY`.
 
-## 예제
+You might use the `Number.NEGATIVE_INFINITY` property to indicate an error condition that returns a finite number in case of success. Note, however, that {{jsxref("NaN")}} would be more appropriate in such a case.
 
-### `NEGATIVE_INFINITY` 사용하기
+Because `NEGATIVE_INFINITY` is a static property of {{jsxref("Number")}}, you always use it as `Number.NEGATIVE_INFINITY`, rather than as a property of a number value.
 
-다음 코드에서 `smallNumber`는 JavaScript의 최솟값보다 작은 값을 할당받습니다. {{jsxref("Statements/if...else", "if")}} 문이 실행되면, `smallNumber`의 값이 `-Infinity`이므로 `smallNumber`는 계산에 좀 더 적합한 값을 다시 할당합니다.
+## Examples
+
+### Using NEGATIVE_INFINITY
+
+In the following example, the variable `smallNumber` is assigned a value that is smaller than the minimum value. When the {{jsxref("Statements/if...else", "if")}} statement executes, `smallNumber` has the value `-Infinity`, so `smallNumber` is set to a more manageable value before continuing.
 
 ```js
-var smallNumber = (-Number.MAX_VALUE) * 2;
+let smallNumber = -Number.MAX_VALUE * 2;
 
 if (smallNumber === Number.NEGATIVE_INFINITY) {
   smallNumber = returnFinite();
 }
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Number.POSITIVE_INFINITY")}}
 - {{jsxref("Number.isFinite()")}}
-- {{jsxref("Infinity")}}
-- {{jsxref("isFinite", "isFinite()")}}
+- {{jsxref("Global_Objects/Infinity", "Infinity")}}
+- {{jsxref("Global_Objects/isFinite", "isFinite()")}}

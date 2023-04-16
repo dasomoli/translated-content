@@ -1,39 +1,50 @@
 ---
-title: MutationObserver.disconnect()
+title: "MutationObserver: disconnect() method"
+short-title: disconnect()
 slug: Web/API/MutationObserver/disconnect
-l10n:
-  sourceCommit: 76c7e0502bb6bfa765946c32562fdc93e8456e19
+page-type: web-api-instance-method
+browser-compat: api.MutationObserver.disconnect
 ---
 
 {{APIRef("DOM WHATWG")}}
 
-{{domxref("MutationObserver")}}의 **`disconnect()`** 메서드는 감지기의 주시를 중단합니다.
+The {{domxref("MutationObserver")}} method
+**`disconnect()`** tells the observer to stop watching for
+mutations.
 
-감지기의 {{domxref("MutationObserver.observe", "observe()")}} 메서드를 다시 호출해서 인스턴스를 재사용할 수 있습니다.
+The observer can be reused by calling its
+{{domxref("MutationObserver.observe", "observe()")}} method again.
 
-## 구문
+## Syntax
 
 ```js-nolint
 disconnect()
 ```
 
-### 매개변수
+### Parameters
 
-없음.
+None.
 
-### 반환 값
+### Return value
 
-없음 ({{jsxref("undefined")}}).
+`undefined`.
 
-> **참고:** 감지기가 '감지'했으나 아직 콜백으로 '보고'하지 못한 알림들은 모두 버려집니다. 이런 알림들도 처리하려면 {{domxref("MutationObserver.takeRecords()", "takeRecords()")}} 메서드를 사용해 저장하세요.
+> **Note:** All notifications of mutations that have already been
+> _detected_, but _not yet reported_ to the observer, are discarded.
+> To hold on to and handle the detected but unreported mutations, use
+> the {{domxref("MutationObserver.takeRecords()", "takeRecords()")}} method.
 
-## 사용 일람
+## Usage notes
 
-주시 중인 요소가 DOM에서 제거되어 브라우저의 가비지 컬렉션에 의해 해제된 경우, `MutationObserver`는 자동으로 해당 요소의 주시를 중단합니다. `MutationObserver` 인스턴스 자체는 계속 존재하므로 다른 요소의 주시에 사용할 수 있습니다.
+If the element being observed is removed from the DOM, and then subsequently released
+by the browser's garbage collection mechanism, the `MutationObserver` will stop observing
+the removed element. However, the `MutationObserver` itself can continue to exist to observe
+other existing elements.
 
-## 예제
+## Examples
 
-이 예제는 감지기를 생성하고 주시를 시작했다가, 나중에 다시 사용하기 위해 주시를 중단하는 모습을 보입니다.
+This example creates an observer, then disconnects from it, leaving it available for
+possible reuse.
 
 ```js
 const targetNode = document.querySelector("#someElement");
@@ -45,15 +56,15 @@ const observerOptions = {
 const observer = new MutationObserver(callback);
 observer.observe(targetNode, observerOptions);
 
-/* 이후... */
+/* some time later… */
 
 observer.disconnect();
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

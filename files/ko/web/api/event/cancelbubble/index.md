@@ -1,24 +1,38 @@
 ---
-title: Event.cancelBubble
+title: "Event: cancelBubble property"
+short-title: cancelBubble
 slug: Web/API/Event/cancelBubble
+page-type: web-api-instance-property
+status:
+  - deprecated
+browser-compat: api.Event.cancelBubble
 ---
-{{APIRef("DOM Events")}} {{Deprecated_Header}}
 
-**Event.cancelBubble** 속성은 {{domxref("Event.stopPropagation()")}}의 별칭입니다. 이벤트 핸들러에서 반환되기 전에 값을 true로 설정하면 이벤트가 전파되지 않습니다.
+{{APIRef("DOM")}} {{Deprecated_Header}}
 
-## 예제
+The **`cancelBubble`** property of the {{domxref("Event")}}
+interface is deprecated. Use {{domxref("Event.stopPropagation()")}} instead.
+Setting its value to `true` before returning from an event handler prevents propagation
+of the event. In later implementations, setting this to `false` does nothing.
+See [Browser compatibility](#browser_compatibility) for details.
+
+## Value
+
+A boolean value. The value `true` means that the event must not be propagated further.
+
+## Example
 
 ```js
-elem.onclick = function(event) {
+elem.onclick = (event) => {
   // Do cool things here
   event.cancelBubble = true;
-}
+};
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

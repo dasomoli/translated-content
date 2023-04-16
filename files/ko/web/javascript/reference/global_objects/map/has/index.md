@@ -1,32 +1,36 @@
 ---
 title: Map.prototype.has()
 slug: Web/JavaScript/Reference/Global_Objects/Map/has
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Map.has
 ---
 
 {{JSRef}}
 
-**`has()`** 메서드는 주어진 키에 해당하는 요소가 존재 여부를 가리키는 불리언 값을 반환합니다.
+The **`has()`** method returns a boolean indicating whether an element with the
+specified key exists or not.
 
 {{EmbedInteractiveExample("pages/js/map-prototype-has.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 has(key)
 ```
 
-### 매개변수
+### Parameters
 
 - `key`
-  - : `Map` 객체에서 존재를 확인할 요소의 키
+  - : The key of the element to test for presence in the `Map` object.
 
-### 반환 값
+### Return value
 
-만약 주어진 키에 해당하는 요소가 `Map`객체에 존재한다면 `true`, 그렇지 않으면 `false`
+`true` if an element with the specified key exists in the `Map` object;
+otherwise `false`.
 
-## 예제
+## Examples
 
-### has() 사용하기
+### Using has()
 
 ```js
 const myMap = new Map();
@@ -36,15 +40,15 @@ console.log(myMap.has("bar")); // true
 console.log(myMap.has("baz")); // false
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Map")}}
 - {{jsxref("Map.prototype.set()")}}

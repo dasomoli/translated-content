@@ -1,79 +1,89 @@
 ---
-title: React todo list 시작하기
+title: Beginning our React todo list
 slug: >-
   Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_todo_list_beginning
 ---
 
-{{LearnSidebar}}
+{{LearnSidebar}}{{PreviousMenuNext("Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_getting_started","Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_components", "Learn/Tools_and_testing/Client-side_JavaScript_frameworks")}}
 
-{{PreviousMenuNext("Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_getting_started","Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_components", "Learn/Tools_and_testing/Client-side_JavaScript_frameworks")}}
+Let's say that we've been tasked with creating a proof-of-concept in React – an app that allows users to add, edit, and delete tasks they want to work on, and also mark tasks as complete without deleting them. This article will walk you through putting the basic `App` component structure and styling in place, ready for individual component definition and interactivity, which we'll add later.
 
-여러분이 React로 개념 증명을 만드는, 곧 사용자가 원하는 작업을 추가, 편집, 그리고 삭제할 수 있으며, 작업을 삭제하지 않고 완료로 표시할 수도 있는 앱을 만드는 작업을 맡게 되었다고 가정해 보겠습니다. 이 기사는 기본 `App` 컴포넌트 구조와 스타일링을 설정하는 방법에 대해서 다루며, 여러분은 개별 컴포넌트 정의와 상호작용성을 배울 준비를 갖추게 될 겁니다.
+> **Note:** If you need to check your code against our version, you can find a finished version of the sample React app code in our [todo-react repository](https://github.com/mdn/todo-react). For a running live version, see <https://mdn.github.io/todo-react/>.
 
-> **참고:** 여러분의 코드를 우리의 것과 비교하고 싶다면 [todo-react repository](https://github.com/mdn/todo-react) 에서 최종적인 버전의 샘플 React 앱 코드를 확인해보세요. 실행 중인 라이브 버전은 <https://mdn.github.io/todo-react-build/> 에서 볼 수 있습니다.
-
-<table class="learn-box standard-table">
- <tbody>
-  <tr>
-   <th scope="row">필요한 사전 지식:</th>
-   <td>
-    코어 <a href="/ko/docs/Learn/HTML">HTML</a>, <a href="/ko/docs/Learn/CSS">CSS</a>, 및 <a href="/ko/docs/Learn/JavaScript">JavaScript</a> 언어에 익숙할 것. <a href="/ko/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line">터미널/커맨드라인</a>에 대한 지식.
-   </td>
-  </tr>
-  <tr>
-   <th scope="row">목표:</th>
-   <td>투두 리스트를 만들고 기본 <code>App</code> 구조와 스타일링을 설정한다.</td>
-  </tr>
- </tbody>
+<table>
+  <tbody>
+    <tr>
+      <th scope="row">Prerequisites:</th>
+      <td>
+        <p>
+          Familiarity with the core <a href="/en-US/docs/Learn/HTML">HTML</a>,
+          <a href="/en-US/docs/Learn/CSS">CSS</a>, and
+          <a href="/en-US/docs/Learn/JavaScript">JavaScript</a> languages,
+          knowledge of the
+          <a
+            href="/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line"
+            >terminal/command line</a
+          >.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Objective:</th>
+      <td>
+        To introduce our todo list case study, and get the basic
+        <code>App</code> structure and styling in place.
+      </td>
+    </tr>
+  </tbody>
 </table>
 
-## 우리가 만들 애플리케이션의 유저 스토리
+## Our app's user stories
 
-소프트웨어 개발에서 유저 스토리(user story)는 사용자의 관점에서 실행 가능한 목표를 뜻합니다. 개발을 시작하기 전에 유저 스토리를 정의하는 것은 매우 도움이 됩니다. 우리의 애플리케이션은 다음과 같은 스토리를 만족해야 합니다:
+In software development, a user story is an actionable goal from the perspective of the user. Defining user stories before we begin our work will help us focus our work. Our app should fulfill the following stories:
 
-나는 사용자로서, 다음의 것들을 할 수 있다:
+As a user, I can
 
-- 작업 목록 읽기
-- 마우스나 키보드로 작업 추가하기
-- 마우스나 키보드를 사용하여 작업을 완료로 표시하기
-- 마우스나 키보드를 사용하여 작업 삭제하기
-- 마우스나 키보드를 사용하여 작업 편집하기
-- 작업을 특정한 집합으로 나누어 보기: 전체 작업, 진행 중인 작업, 혹은 완료된 작업들.
+- read a list of tasks.
+- add a task using the mouse or keyboard.
+- mark any task as completed, using the mouse or keyboard.
+- delete any task, using the mouse or keyboard.
+- edit any task, using the mouse or keyboard.
+- view a specific subset of tasks: All tasks, only the active task, or only the completed tasks.
 
-이 스토리들을 하나하나 다뤄보겠습니다.
+We'll tackle these stories one-by-one.
 
-## 프로젝트를 실행하기 전 점검하기
+## Pre-project housekeeping
 
-create-react-app은 우리의 프로젝트에서 전혀 사용하지 않을 파일을 몇 개 만듭니다.
+create-react-app has made a few files we won't be using at all for our project.
 
-- 컴포넌트마다 스타일 시트를 만들지 않을 것이므로, 우선 `App.js`의 상단에 `App.css`를 임포트하고 있는 문을 지웁니다.
-- `logo.svg` 파일 역시 사용하지 않을 것이므로, 이것을 임포트하고 있는 문 역시 삭제합니다.
+- We're not going to write per-component stylesheets, so first delete the `App.css` import from the top of `App.js`.
+- We are also not going to be using the `logo.svg` file, so remove that import too.
 
-그러고 나서 필요하지 않은 파일들을 삭제하기 위해 터미널에 아래의 커맨드들을 복사, 붙여넣기 합니다. 애플리케이션의 루트 디렉토리에서 터미널을 실행하고 있는지 확인하세요!
+Then, copy and paste the following commands into your terminal to delete some unneeded files. Make sure you're starting in the app's root directory!
 
-```shell
-# 프로젝트의 src 디렉토리로 이동
+```bash
+# Move into the src directory of your project
 cd src
-# 파일들을 삭제
-rm -- App.test.js App.css logo.svg serviceWorker.js setupTests.js
-# 프로젝트의 루트 디렉토리로 다시 돌아오기
+# Delete a few files
+rm -- App.test.js App.css logo.svg reportWebVitals.js setupTests.js
+# Move back up to the root of the project
 cd ..
 ```
 
-참고:
+Notes:
 
-- 삭제하려는 파일 중 두 개는 애플리케이션을 테스트하기 위해 사용됩니다. 이 기사에서는 테스팅에 대해 다루지 않습니다.
-- 위의 터미널 작업을 수행하기 위해 서버를 멈추었다면, `npm start`를 사용하여 다시 시작해야 합니다.
+- Two of the files we're deleting are for testing the application. We will not cover testing here.
+- If you stopped your server to do the terminal tasks mentioned above, you'll have to start it again using `npm start`.
 
-## 프로젝트 시작 코드
+## Project starter code
 
-프로젝트를 시작하기 위해 여러분이 지금 가지고 있는 것을 대신할 `App()` 함수와 애플리케이션을 꾸밀 CSS를 제공하겠습니다.
+As a starting point for this project, we're going to provide two things: an `App()` function to replace the one you have now, and some CSS to style your app.
 
-### JSX
+### The JSX
 
-아래의 스니펫을 복사하고 기존의 `App()` 함수 대신 `App.js`에 붙여넣으세요.
+Copy the following snippet to your clipboard, then paste it into `App.js` so that it replaces the existing `App()` function:
 
-```js
+```jsx
 function App(props) {
   return (
     <div className="todoapp stack-large">
@@ -112,14 +122,11 @@ function App(props) {
           <span className="visually-hidden"> tasks</span>
         </button>
       </div>
-      <h2 id="list-heading">
-        3 tasks remaining
-      </h2>
+      <h2 id="list-heading">3 tasks remaining</h2>
       <ul
         role="list"
         className="todo-list stack-large stack-exception"
-        aria-labelledby="list-heading"
-      >
+        aria-labelledby="list-heading">
         <li className="todo stack-small">
           <div className="c-cb">
             <input id="todo-0" type="checkbox" defaultChecked={true} />
@@ -174,30 +181,30 @@ function App(props) {
 }
 ```
 
-이제 `public/index.html`을 열고 [`<title>`](/ko/docs/Web/HTML/Element/title) 요소의 텍스트를 `TodoMatic`으로 바꾸세요. 이렇게 하면 우리의 애플리케이션 상단의 [`<h1>`](/ko/docs/Web/HTML/Element/Heading_Elements)과 일치할 겁니다.
+Now open `public/index.html` and change the [`<title>`](/en-US/docs/Web/HTML/Element/title) element's text to `TodoMatic`. This way, it will match the [`<h1>`](/en-US/docs/Web/HTML/Element/Heading_Elements) at the top of our app.
 
-```js
+```html
 <title>TodoMatic</title>
 ```
 
-브라우저를 새로고침하면, 아래 이미지처럼 보일 거예요.
+When your browser refreshes, you should see something like this:
 
-![todo-matic app, unstyled, showing a jumbled mess of labels, inputs, and buttons](./unstyled-app.png)
+![todo-matic app, unstyled, showing a jumbled mess of labels, inputs, and buttons](unstyled-app.png)
 
-예쁘지 않고 아무런 기능도 갖추지 않았지만, 괜찮습니다! 곧 꾸밀 거니까요. 우선, JSX가 유저 스토리에 어떻게 대응하는지 살펴봅시다:
+It's ugly, and doesn't function yet, but that's okay — we'll style it in a moment. First, consider the JSX we have, and how it corresponds to our user stories:
 
-- 새로운 작업을 쓰기 위한 [`<input type="text">`](/ko/docs/Web/HTML/Element/input/text)와 폼(form)을 제출하기 위한 버튼을 가진 [`<form>`](/ko/docs/Web/HTML/Element/form) 요소가 있습니다.
-- 작업을 필터링하기 위한 여러 개의 버튼이 있습니다.
-- 작업이 몇 개 남아있는지 알려주는 헤딩(heading)이 있습니다.
-- 순서가 매겨지지 않은 세 개의 작업이 있습니다. 각각의 작업은 리스트 아이템([`<li>`](/ko/docs/Web/HTML/Element/li))이며, 편집하거나 삭제하기 위한 버튼과 완료를 표시할 체크 박스를 가지고 있습니다.
+- We have a [`<form>`](/en-US/docs/Web/HTML/Element/form) element, with an [`<input type="text">`](/en-US/docs/Web/HTML/Element/input/text) for writing out a new task, and a button to submit the form.
+- We have an array of buttons that will be used to filter our tasks.
+- We have a heading that tells us how many tasks remain.
+- We have our 3 tasks, arranged in an unordered list. Each task is a list item ([`<li>`](/en-US/docs/Web/HTML/Element/li)), and has buttons to edit and delete it and a checkbox to check it off as done.
 
-폼은 작업을 *만들* 수 있게 해줍니다; 버튼들은 작업들을 *필터링할* 수 있게 해줍니다; 헤딩과 리스트는 작업들을 *읽을* 수 있게 해줍니다. 작업을 *편집하는* UI는 현재는 없습니다. 이것도 괜찮습니다 – 나중에 만들 거니까요.
+The form will allow us to _make_ tasks; the buttons will let us _filter_ them; the heading and list are our way to _read_ them. The UI for _editing_ a task is conspicuously absent for now. That's okay – we'll write that later.
 
-### 접근성 기능
+### Accessibility features
 
-익숙하지 않은 속성을 발견했을 겁니다. 예를 들어:
+You may notice some unusual attributes here. For example:
 
-```js
+```html
 <button type="button" className="btn toggle-btn" aria-pressed="true">
   <span className="visually-hidden">Show </span>
   <span>all</span>
@@ -205,45 +212,46 @@ function App(props) {
 </button>
 ```
 
-`aria-pressed`은 보조 기술(예: 스크린 리더)에게 하나의 버튼이 두 개의 상태 `pressed`와 `unpressed`로 있을 수 있다는 것을 알려줍니다. `on`과 `off`라고 생각해보세요. 값을 `true`로 설정하는 것은 버튼을 기본적으로 눌린 상태라는 것을 의미합니다.
+Here, `aria-pressed` tells assistive technology (like screen readers) that the button can be in one of two states: `pressed` or `unpressed`. Think of these as analogs for `on` and `off`. Setting a value of `true` means that the button is pressed by default.
 
-클래스 `visually-hidden`는 아직 CSS를 연결하지 않았으므로 아직 아무런 이펙트도 없습니다. 제대로 스타일을 설정하면 이 클래스를 가진 모든 요소가 시력이 정상인 사용자에게는 숨겨지며 스크린 리더 사용자에게만 보입니다 — 이 단어들은 시력이 정상인 사용자들에게 필요하지 않기 때문입니다; 단어들은 추가적인 시각적 맥락(visual context)을 가지고 있지 않은 스크린 리더 사용자들에게 버튼이 무엇을 하는지 더 많은 정보를 제공합니다.
+The class `visually-hidden` has no effect yet, because we have not included any CSS. Once we have put our styles in place, though, any element with this class will be hidden from sighted users and still available to screen reader users — this is because these words are not needed by sighted users; they are there to provide more information about what the button does for screen reader users that do not have the extra visual context to help them.
 
-아래에서 [`<ul>`](/ko/docs/Web/HTML/Element/ul) 요소를 찾을 수 있을 겁니다.
+Further down, you can find our [`<ul>`](/en-US/docs/Web/HTML/Element/ul) element:
 
-```js
+```html
 <ul
   role="list"
   className="todo-list stack-large stack-exception"
-  aria-labelledby="list-heading"
->
+  aria-labelledby="list-heading">
+  …
+</ul>
 ```
 
-`role` 속성은 보조 기술이 태그가 나타내고 있는 요소의 종류가 무엇인지 설명하는 데 도움이 됩니다. `<ul>`은 기본적으로 리스트처럼 취급되지만, 우리가 추가할 스타일은 리스트의 기능성을 해칩니다. `role="list"`는 `<ul>` 요소가 "리스트"의 의미를 회복하도록 합니다. 이것이 왜 필요한지 알고 싶다면, [Scott O'Hara’s article, “Fixing Lists”](https://www.scottohara.me/blog/2019/01/12/lists-and-safari.html)을 참고하세요.
+The `role` attribute helps assistive technology explain what kind of element a tag represents. A `<ul>` is treated like a list by default, but the styles we're about to add will break that functionality. This role will restore the "list" meaning to the `<ul>` element. If you want to learn more about why this is necessary, you can check out [Scott O'Hara's article, "Fixing Lists"](https://www.scottohara.me/blog/2019/01/12/lists-and-safari.html).
 
-`aria-labelledby` 속성은 보조 기술에게 리스트 헤딩을 헤딩 아래의 리스트의 목적을 나타내는 라벨로 사용하고 있음을 알립니다. 이러한 연관을 만드는 것은 리스트가 더욱 정보가 많은 맥락을 가지게 하여, 스크린 리더 사용자가 리스트의 목적을 더 잘 이해할 수 있도록 합니다.
+The `aria-labelledby` attribute tells assistive technologies that we're treating our list heading as the label that describes the purpose of the list beneath it. Making this association gives the list a more informative context, which could help screen reader users better understand the purpose of it.
 
-마지막으로, 리스트 항목 안의 라벨과 인풋들은 JSX에 고유한 속성을 가지고 있습니다.
+Finally, the labels and inputs in our list items have some attributes unique to JSX:
 
-```js
+```jsx
 <input id="todo-0" type="checkbox" defaultChecked={true} />
 <label className="todo-label" htmlFor="todo-0">
   Eat
 </label>
 ```
 
-`<input/ >`의 `defaultChecked` 속성은 React가 초기에 이 체크박스를 체크하도록 합니다. HTML에서처럼 `checked`를 사용한다면, React는 체크박스에 대한 이벤트를 다루는 것과 관련한 경고를 브라우저 콘솔에 출력할 것입니다. 지금은 크게 걱정하지 마세요 — 나중에 이벤트를 사용할 때 이야기할테니까요.
+The `defaultChecked` attribute in the `<input/ >` tag tells React to check this checkbox initially. If we were to use `checked`, as we would in regular HTML, React would log some warnings into our browser console relating to handling events on the checkbox, which we want to avoid. Don't worry too much about this for now — we will cover this later on when we get to using events.
 
-`htmlFor` 속성은 HTML에서는 `for` 속성과 대응합니다. JSX에서는 `for`을 속성으로 사용하지 않는데, `for`이 예약어(reserved word)이기 때문입니다. 그래서 React는 `htmlFor`을 대신 사용합니다.
+The `htmlFor` attribute corresponds to the `for` attribute used in HTML. We cannot use `for` as an attribute in JSX because `for` is a reserved word, so React uses `htmlFor` instead.
 
-참고:
+Notes:
 
-- JSX 속성에 불리언 값들(`true`와 `false`)를 사용하기 위해서는 이 값들을 중괄호로 감싸야 합니다. `defaultChecked="true"`라고 적는다면, `defaultChecked`의 값은 문자열 리터럴인 `"true"`가 될 겁니다. 꼭 기억하세요 — JSX는 JavaScript이지, HTML이 아닙니다!
-- 이전의 코드 스니펫에서 사용되었던 `aria-pressed` 속성은 `"true"`라는 값을 가지는데, 이것은 `aria-pressed`가 `checked`가 있는 방식에서 진짜 불리언 속성이 아니기 때문입니다.
+- To use boolean values (`true` and `false`) in JSX attributes, you must enclose them in curly braces. If you write `defaultChecked="true"`, the value of `defaultChecked` will be `"true"` — a string literal. Remember — this is actually JavaScript, not HTML!
+- The `aria-pressed` attribute used in our earlier code snippet has a value of `"true"` because `aria-pressed` is not a true boolean attribute in the way `checked` is.
 
-### 스타일 적용하기
+### Implementing our styles
 
-`src/index.css`에 기존에 있던 것 대신 아래의 CSS 코드를 붙여넣기하세요.
+Paste the following CSS code into `src/index.css` so that it replaces what's currently there:
 
 ```css
 /* RESETS */
@@ -279,7 +287,7 @@ button {
   line-height: normal;
   -webkit-font-smoothing: inherit;
   -moz-osx-font-smoothing: inherit;
-  -webkit-appearance: none;
+  appearance: none;
 }
 button::-moz-focus-inner {
   border: 0;
@@ -448,10 +456,6 @@ body {
     font-size: 2.4rem;
   }
 }
-.filters {
-  width: 100%;
-  margin: unset auto;
-}
 /* Todo item styles */
 .todo {
   display: flex;
@@ -513,7 +517,7 @@ body {
 .c-cb > label::before {
   content: "";
   position: absolute;
-  border: 2px solid currentColor;
+  border: 2px solid currentcolor;
   background: transparent;
 }
 .c-cb > input[type="checkbox"]:focus + label::before {
@@ -540,10 +544,10 @@ body {
 }
 ```
 
-코드를 저장하고 브라우저로 되돌아오면, 이제 애플리케이션은 적당한 스타일을 가지게 될 겁니다.
+Save and look back at your browser, and your app should now have reasonable styling.
 
-## 요약
+## Summary
 
-이제 우리의 투두 리스트는 조금 더 진짜 애플리케이션 같아졌습니다! 문제는, 이 앱이 실제로는 아무것도 하지 않는다는 거죠. 다음 챕터에서 해결해봅시다!
+Now our todo list app actually looks a bit more like a real app! The problem is: it doesn't actually do anything. We'll start fixing that in the next chapter!
 
 {{PreviousMenuNext("Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_getting_started","Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_components", "Learn/Tools_and_testing/Client-side_JavaScript_frameworks")}}

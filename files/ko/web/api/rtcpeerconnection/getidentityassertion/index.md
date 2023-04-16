@@ -1,39 +1,49 @@
 ---
-title: RTCPeerConnection.getIdentityAssertion()
+title: "RTCPeerConnection: getIdentityAssertion() method"
+short-title: getIdentityAssertion()
 slug: Web/API/RTCPeerConnection/getIdentityAssertion
+page-type: web-api-instance-method
+browser-compat: api.RTCPeerConnection.getIdentityAssertion
 ---
-{{APIRef("WebRTC")}}{{SeeCompatTable}}
 
-**`RTCPeerConnection.getIdentityAssertion()`** 메소드는 식별 주장의 수집을 시작합니다. 이 메소드는 {{domxref("RTCPeerConnection.signalingState", "signalingState")}}가 `"closed"` 상태가 아닐 때에만 유효합니다.
+{{APIRef("WebRTC")}}
 
-이 메소드는 즉시 반환하게됩니다. 식별 주장이 생성 될 수 없다면, 객체에 {{event("idpassertionerror")}}가 전달됩니다.
+The **`RTCPeerConnection.getIdentityAssertion()`** method
+initiates the gathering of an identity assertion. This has an effect only if the
+{{domxref("RTCPeerConnection.signalingState", "signalingState")}} is not
+`"closed"`.
 
-이는 자동으로 수행되기 때문에, 어플리케이션에서 `RTCPeerConnection`을 직접 다룰 일은 없습니다.명시적인 호출로 필요한 것이 무엇인지 정도만 알 수 있습니다.
+The method returns a JavaScript {{jsxref("Promise")}} which resolves to an
+identity assertion encoded as a string.
+
+It is not expected for the application dealing with the `RTCPeerConnection`:
+this is automatically done; an explicit call only allows to anticipate the need.
 
 ## Syntax
 
-```js
-pc.getIdentityAssertion();
+```js-nolint
+getIdentityAssertion()
 ```
 
-_이 메소드에는 매개변수 혹은 반환 값이 없습니다._
+_There is neither parameter nor return value for this method._
 
-## 예시
+## Example
 
 ```js
-var pc = new PeerConnection();
+const pc = new RTCPeerConnection();
 
-pc.getIdentityAssertion(); // Not mandatory, but we know that we will need it in the future.
+pc.setIdentityProvider("developer.mozilla.org");
+const assertion = await pc.getIdentityAssertion();
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
-- [WebRTC](/ko/docs/Web/Guide/API/WebRTC)
+- [WebRTC](/en-US/docs/Web/API/WebRTC_API)

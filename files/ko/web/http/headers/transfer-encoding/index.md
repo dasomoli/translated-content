@@ -1,21 +1,29 @@
 ---
 title: Transfer-Encoding
 slug: Web/HTTP/Headers/Transfer-Encoding
+page-type: http-header
+browser-compat: http.headers.Transfer-Encoding
 ---
 
 {{HTTPSidebar}}
 
-**`Transfer-Encoding`** 헤더는 사용자에게 {{Glossary("Entity header","entity")}}를 안전하게 전송하기 위해 사용하는 인코딩 형식을 지정합니다.
+The **`Transfer-Encoding`** header specifies the form of encoding used to safely transfer the {{Glossary("Payload body","payload body")}} to the user.
 
-`Transfer-Encoding`은 [hop-by-hop 헤더](/ko/docs/Web/HTTP/Headers#hbh)로, 리소스 자체가 아닌 두 노드 사이에 메시지를 적용하는 것입니다. 다중-노드 연결의 각각의 세그먼트는 `Transfer-Encoding` 의 값을 다르게 사용할 수 있습니다. 만약 전체 연결에 있어 데이터를 압축하고자 한다면, end-to-end 헤더인 {{HTTPHeader("Content-Encoding")}} 헤더를 대신 사용하시기 바랍니다.
+> **Note:** [HTTP/2](https://en.wikipedia.org/wiki/HTTP/2) disallows all uses of the Transfer-Encoding header other than the HTTP/2 specific: `"trailers"`. HTTP 2 provides its own more efficient mechanisms for data streaming than chunked transfer and forbids the use of the header. Usage of the header in HTTP/2 may likely result in a specific `protocol error` as HTTP/2 Protocol prohibits the use.
 
-본문이 없는 {{HTTPMethod("HEAD")}} 요청에 대한 응답은 그에 대한 {{HTTPMethod("GET")}} 메시지에 적용될 값을 나타냅니다.
+`Transfer-Encoding` is a [hop-by-hop header](/en-US/docs/Web/HTTP/Headers#hop-by-hop_headers), that is applied to a message between two nodes, not to a resource itself.
+Each segment of a multi-node connection can use different `Transfer-Encoding` values.
+If you want to compress data over the whole connection, use the end-to-end {{HTTPHeader("Content-Encoding")}} header instead.
+
+When present on a response to a {{HTTPMethod("HEAD")}} request that has no body, it indicates the value that would have applied to the corresponding {{HTTPMethod("GET")}} message.
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">Header type</th>
-      <td>{{Glossary("Response header")}}</td>
+      <td>
+        {{Glossary("Request header")}}, {{Glossary("Response header")}}, {{Glossary("Payload header")}}
+      </td>
     </tr>
     <tr>
       <th scope="row">{{Glossary("Forbidden header name")}}</th>
@@ -24,63 +32,65 @@ slug: Web/HTTP/Headers/Transfer-Encoding
   </tbody>
 </table>
 
-## 구문
+## Syntax
 
-```
+```http
 Transfer-Encoding: chunked
 Transfer-Encoding: compress
 Transfer-Encoding: deflate
 Transfer-Encoding: gzip
-Transfer-Encoding: identity
 
-// 어떤 값들은 쉼표로 구분하여 나열될 수 있습니다
+// Several values can be listed, separated by a comma
 Transfer-Encoding: gzip, chunked
 ```
 
-## 디렉티브
+## Directives
 
 - `chunked`
-  - : 데이터가 일련의 청크 내에서 전송됩니다. {{HTTPHeader("Content-Length")}} 헤더는 이 경우 생략되며, 각 청크의 앞부분에 현재 청크의 길이가 16진수 형태로 오고 그 뒤에는 '\r\n'이 오고 그 다음에 청크 자체가 오며, 그 뒤에는 다시 '\r\n'이 옵니다. 종료 청크는 그것의 길이가 0인 것을 제외하면 일반적인 청크와 다르지 않습니다. 그 다음에는 (비어있을수도 있는) 연속된 엔티티 헤더 필드로 구성된 트레일러가 옵니다.
+  - : Data is sent in a series of chunks. The {{HTTPHeader("Content-Length")}} header is omitted in this case and at the beginning of each chunk you need to add the length of the current chunk in hexadecimal format, followed by '`\r\n`' and then the chunk itself, followed by another '`\r\n`'.
+    The terminating chunk is a regular chunk, with the exception that its length is zero.
+    It is followed by the trailer, which consists of a (possibly empty) sequence of header fields.
 - `compress`
-  - : [Lempel-Ziv-Welch](http://en.wikipedia.org/wiki/LZW) (LZW) 알고리즘을 사용하는 형식. 값의 이름은 이 알고리즘을 구현한, UNIX _compress_ 프로그램에서 차용된 것입니다.
-    대부분의 UNIX 배포판에서 제외된 압축 프로그램처럼, 이 content-encoding은 어느 정도는 (2003년에 기한이 만료된) 특허 문제로 인해 오늘날 거의 대부분의 브라우저에서 사용되지 않고 있습니다.
+  - : A format using the [Lempel-Ziv-Welch](https://en.wikipedia.org/wiki/LZW) (LZW) algorithm.
+    The value name was taken from the UNIX _compress_ program, which implemented this algorithm.
+    Like the compress program, which has disappeared from most UNIX distributions, this content-encoding is used by almost no browsers today, partly because of a patent issue (which expired in 2003).
 - `deflate`
-  - : ([RFC 1951](http://tools.ietf.org/html/rfc1952)에 정의된) *[deflate](http://en.wikipedia.org/wiki/DEFLATE) *압축 알고리즘과 함께 ([RFC 1950](http://tools.ietf.org/html/rfc1950)에서 정의된) [zlib](http://en.wikipedia.org/wiki/Zlib) 구조체를 사용합니다.
+  - : Using the [zlib](https://en.wikipedia.org/wiki/Zlib) structure (defined in [RFC 1950](https://datatracker.ietf.org/doc/html/rfc1950)), with the [_deflate_](https://en.wikipedia.org/wiki/DEFLATE) compression algorithm (defined in [RFC 1951](https://datatracker.ietf.org/doc/html/rfc1952)).
 - `gzip`
-  - : 32비트 CRC를 이용한 [Lempel-Ziv coding](http://en.wikipedia.org/wiki/LZ77_and_LZ78#LZ77) (LZ77)을 사용하는 형식. 이것은 근본적으로 UNIX _gzip_ 프로그램의 형식입니다. 또한, HTTP/1.1 표준은 이 content-encoding을 지원하는 서버는 호환성 목적을 위해 `x-gzip` 을 별칭으로 인지할 것을 권고하고 있습니다.
-- `identity`
-  - : 정체성 기능 (즉, 압축이나 수정이 없는) 을 나타냅니다. 이 토크은 명시적으로 지정되는 경우를 제외하고 항상 허용 가능한 것으로 간주됩니다.
+  - : A format using the [Lempel-Ziv coding](https://en.wikipedia.org/wiki/LZ77_and_LZ78#LZ77) (LZ77), with a 32-bit CRC.
+    This is originally the format of the UNIX _gzip_ program.
+    The HTTP/1.1 standard also recommends that the servers supporting this content-encoding should recognize `x-gzip` as an alias, for compatibility purposes.
 
-## 예제
+## Examples
 
-### 청크 분할 인코딩
+### Chunked encoding
 
-청크 분할 인코딩은 더 많은 양의 데이터가 클라이언트에 전송되고 요청이 완전히 처리되기 전까지는 응답의 전체 크기를 알지 못하는 경우 유용하다. 데이터베이스 쿼리의 결과가 될 큰 HTML 테이블을 생성하는 경우나 큰 이미지를 전송하는 경우가 그 예입니다. 청크 분할 응답은 다음과 같습니다:
+Chunked encoding is useful when larger amounts of data are sent to the client and the total size of the response may not be known until the request has been fully processed.
+For example, when generating a large HTML table resulting from a database query or when transmitting large images. \
+A chunked response looks like this:
 
-```
+```http
 HTTP/1.1 200 OK
 Content-Type: text/plain
 Transfer-Encoding: chunked
 
 7\r\n
 Mozilla\r\n
-9\r\n
-Developer\r\n
-7\r\n
-Network\r\n
+11\r\n
+Developer Network\r\n
 0\r\n
 \r\n
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 참고할 내용들
+## See also
 
 - {{HTTPHeader("Accept-Encoding")}}
 - {{HTTPHeader("Content-Encoding")}}

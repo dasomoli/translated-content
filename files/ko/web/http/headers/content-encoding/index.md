@@ -1,19 +1,25 @@
 ---
 title: Content-Encoding
 slug: Web/HTTP/Headers/Content-Encoding
+page-type: http-header
+browser-compat: http.headers.Content-Encoding
 ---
 
 {{HTTPSidebar}}
 
-**`Content-Encoding`** 개체 헤더는 미디어 타입을 압축하기 위해 사용됩니다. 이 헤더가 존재하면, 그 값은 개체 본문에 어떤 추가적인 컨텐츠 인코딩이 적용될지를 나타냅니다. 그것은 `Content-Type` 헤더에 의해 참조되는 미디어 타입을 얻도록 디코드하는 방법을 클라이언트가 알게 해줍니다.
+The **`Content-Encoding`** {{Glossary("representation header")}} lists any encodings that have been applied to the representation (message payload), and in what order.
+This lets the recipient know how to decode the representation in order to obtain the original payload format.
+Content encoding is mainly used to compress the message data without losing information about the origin media type.
 
-가능한 더 많은 데이터를 압축하기 위해 이 필드의 사용이 권고되지만, jpeg 이미지와 같은 어떤 유형의 리소스들은 이미 압축되어 때때로 추가적인 압축이 별 소용이 없고 페이로드를 더 길게 만들수도 있습니다.
+Note that the original media/content type is specified in the {{HTTPHeader("Content-Type")}} header, and that the `Content-Encoding` applies to the representation, or "coded form", of the data. If the original media is encoded in some way (e.g. a zip file) then this information would not be included in the `Content-Encoding` header.
+
+Servers are encouraged to compress data as much as possible, and should use content encoding where appropriate. Compressing a compressed media type such as a zip or jpeg may not be appropriate, as this can make the payload larger.
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">Header type</th>
-      <td>{{Glossary("Entity header")}}</td>
+      <td>{{Glossary("Representation header")}}</td>
     </tr>
     <tr>
       <th scope="row">{{Glossary("Forbidden header name")}}</th>
@@ -22,57 +28,70 @@ slug: Web/HTTP/Headers/Content-Encoding
   </tbody>
 </table>
 
-## 문법
+## Syntax
 
-```
+```http
 Content-Encoding: gzip
 Content-Encoding: compress
 Content-Encoding: deflate
-Content-Encoding: identity
 Content-Encoding: br
+
+// Multiple, in the order in which they were applied
+Content-Encoding: deflate, gzip
 ```
 
-## 디렉티브
+## Directives
 
 - `gzip`
-  - : 32비트 CRC를 지닌, [Lempel-Ziv coding](http://en.wikipedia.org/wiki/LZ77_and_LZ78#LZ77) (LZ77)을 사용하는 포맷. 이는 본래 UNIX _gzip_ 프로그램의 포맷입니다. HTTP/1.1 표준 역시 이 컨텐츠 인코딩을 지원하는 서버는 호환성 목적으로, `x-gzip` 별칭의 인지가 권고됩니다.
+  - : A format using the [Lempel-Ziv coding](https://en.wikipedia.org/wiki/LZ77_and_LZ78#LZ77)
+    (LZ77), with a 32-bit CRC. This is the original format of the UNIX _gzip_
+    program. The HTTP/1.1 standard also recommends that the servers supporting this
+    content-encoding should recognize `x-gzip` as an alias, for compatibility
+    purposes.
 - `compress`
-  - : [Lempel-Ziv-Welch](http://en.wikipedia.org/wiki/LZW) (LZW) 알고리즘을 사용하는 포맷. 그 값의 이름은 이 알고리즘을 구현한 UNIX _compress_ 프로그램으로부터 가져왔습니다.
-    대부분의 UNIX 배포판으로부터 사라져 왔던 압축 프로그램처럼, 이 content-encoding은 (2013년에 만료된)특허권 이슈로 오늘날의 브라우저에서 사용되지 않습니다.
+  - : A format using the [Lempel-Ziv-Welch](https://en.wikipedia.org/wiki/LZW) (LZW) algorithm. The
+    value name was taken from the UNIX _compress_ program, which implemented this
+    algorithm. Like the compress program, which has disappeared from most UNIX
+    distributions, this content-encoding is not used by many browsers today, partly
+    because of a patent issue (it expired in 2003).
 - `deflate`
-  - : ([RFC 1951](http://tools.ietf.org/html/rfc1952)에 정의된) [_deflate_](http://en.wikipedia.org/wiki/DEFLATE) 압축 알고리즘을 이용한, ([RFC 1950](http://tools.ietf.org/html/rfc1950)에 정의된) [zlib](http://en.wikipedia.org/wiki/Zlib) 스트럭쳐를 사용합니다.
-- `identity`
-  - : identity 함수를 나타냅니다(즉, 압축 없음 혹은 변경 없음). 이 토큰은, 명시적으로 지정된 경우를 제외하고, 항상 수용 가능하다고 여겨집니다.
-- `br`
-  - : [Brotli](https://en.wikipedia.org/wiki/Brotli) 알고리즘을 사용하는 포맷.
+  - : Using the [zlib](https://en.wikipedia.org/wiki/Zlib)
+    structure (defined in {{rfc(1950)}}) with the [deflate](https://en.wikipedia.org/wiki/Deflate) compression
+    algorithm (defined in {{rfc(1951)}}).
+- `br` {{Non-standard_Inline}}
+  - : A format using the [Brotli](https://en.wikipedia.org/wiki/Brotli) algorithm.
 
-## 예제
+## Examples
 
-### gzip을 이용해 압축하기
+### Compressing with gzip
 
-클라이언트 측에서, HTTP 요청 내에 함께 전송될 압축 스킴 목록을 알릴 수 있습니다. {{HTTPHeader("Accept-Encoding")}} 헤더는 컨텐츠 인코딩 협상을 위해 사용됩니다.
+On the client side, you can advertise a list of compression schemes that will be sent
+along in an HTTP request. The {{HTTPHeader("Accept-Encoding")}} header is used for
+negotiating content encoding.
 
-```
+```http
 Accept-Encoding: gzip, deflate
 ```
 
-서버는 사용한 스킴을 `Content-Encoding` 응답 헤더에 표시하여 응답합니다.
+The server responds with the scheme used, indicated by the
+`Content-Encoding` response header.
 
-```
+```http
 Content-Encoding: gzip
 ```
 
-서버는 어떤 압축 방법도 사용하도록 강요받지 않는다는 것을 알아두시기 바랍니다. 압축은 서버 설정과 사용되는 서버 모듈에 상당히 의존적입니다.
+Note that the server is not obligated to use any compression method. Compression highly
+depends on server settings and used server modules.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 참고할 내용
+## See also
 
 - {{HTTPHeader("Accept-Encoding")}}
 - {{HTTPHeader("Transfer-Encoding")}}

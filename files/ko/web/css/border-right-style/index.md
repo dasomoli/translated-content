@@ -1,19 +1,22 @@
 ---
 title: border-right-style
 slug: Web/CSS/border-right-style
+page-type: css-property
+browser-compat: css.properties.border-right-style
 ---
+
 {{CSSRef}}
 
-**`border-right-style`** [CSS](/ko/docs/Web/CSS) 속성은 요소 테두리의 오른쪽 스타일을 지정합니다.
+The **`border-right-style`** [CSS](/en-US/docs/Web/CSS) property sets the line style of an element's right {{cssxref("border")}}.
 
 {{EmbedInteractiveExample("pages/css/border-right-style.html")}}
 
-> **참고:** 명세는 서로 다른 스타일의 테두리가 꼭지점에서 만날 때 어떻게 그려야 할지는 정의하고 있지 않습니다.
+> **Note:** The specification doesn't define how borders of different styles connect in the corners.
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
 border-right-style: none;
 border-right-style: hidden;
 border-right-style: dotted;
@@ -25,19 +28,27 @@ border-right-style: ridge;
 border-right-style: inset;
 border-right-style: outset;
 
-/* 전역 값 */
+/* Global values */
 border-right-style: inherit;
 border-right-style: initial;
+border-right-style: revert;
+border-right-style: revert-layer;
 border-right-style: unset;
 ```
 
-`border-right-style` 속성은 {{cssxref("border-style")}} 속성에 사용할 수 있는 키워드 중 하나를 사용해 지정할 수 있습니다.
+The `border-right-style` property is specified as a single keyword chosen from those available for the {{cssxref("border-style")}} property.
 
-### 형식 구문
+## Formal definition
+
+{{CSSInfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
+
+### Border styles
 
 #### HTML
 
@@ -68,40 +79,59 @@ border-right-style: unset;
 /* Define look of the table */
 table {
   border-width: 2px;
-  background-color: #52E385;
+  background-color: #52e385;
 }
-tr, td {
+tr,
+td {
   padding: 3px;
 }
 
 /* border-right-style example classes */
-.b1 {border-right-style: none;}
-.b2 {border-right-style: hidden;}
-.b3 {border-right-style: dotted;}
-.b4 {border-right-style: dashed;}
-.b5 {border-right-style: solid;}
-.b6 {border-right-style: double;}
-.b7 {border-right-style: groove;}
-.b8 {border-right-style: ridge;}
-.b9 {border-right-style: inset;}
-.b10 {border-right-style: outset;}
+.b1 {
+  border-right-style: none;
+}
+.b2 {
+  border-right-style: hidden;
+}
+.b3 {
+  border-right-style: dotted;
+}
+.b4 {
+  border-right-style: dashed;
+}
+.b5 {
+  border-right-style: solid;
+}
+.b6 {
+  border-right-style: double;
+}
+.b7 {
+  border-right-style: groove;
+}
+.b8 {
+  border-right-style: ridge;
+}
+.b9 {
+  border-right-style: inset;
+}
+.b10 {
+  border-right-style: outset;
+}
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('예제', 300, 200)}}
+{{ EmbedLiveSample('Border_styles') }}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-{{cssinfo}}
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 테두리 스타일 관련 CSS 속성: {{cssxref("border-top-style")}}, {{cssxref("border-bottom-style")}}, {{cssxref("border-left-style")}}, {{cssxref("border-style")}}.
-- 오른쪽 테두리 관련 CSS 속성: {{cssxref("border-right")}}, {{cssxref("border-right-color")}}, {{cssxref("border-right-width")}}.
+- The other style-related border properties: {{Cssxref("border-bottom-style")}}, {{Cssxref("border-left-style")}}, {{Cssxref("border-top-style")}}, and {{Cssxref("border-style")}}.
+- The other right-border-related properties: {{Cssxref("border-right")}}, {{Cssxref("border-right-color")}}, and {{Cssxref("border-right-width")}}.

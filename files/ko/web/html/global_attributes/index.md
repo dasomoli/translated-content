@@ -1,102 +1,144 @@
 ---
-title: 전역 특성
+title: Global attributes
 slug: Web/HTML/Global_attributes
+page-type: landing-page
+browser-compat: html.global_attributes
 ---
 
 {{HTMLSidebar("Global_attributes")}}
 
-**전역 특성**(Global attributes)은 모든 HTML에서 공통으로 사용할 수 있는 특성입니다. 그러나 일부 요소에는 아무런 효과도 없을 수 있습니다.
+**Global attributes** are attributes common to all HTML elements; they can be used on all elements, though they may have no effect on some elements.
 
-전역 특성은 모든 [HTML 요소](/ko/docs/Web/HTML/Element)에 지정할 수 있으며, 심지어 표준에 명시되지 않은 요소에도 지정할 수 있습니다. 이는, 비표준 요소를 사용하는 순간 문서가 HTML5를 준수하지 않음에도 불구하고, 비표준 요소 역시 전역 특성을 허용해야 함을 의미합니다. 예를 들어, HTML5를 준수하는 브라우저라면, `<foo>`라는 요소는 유효하지 않지만 그래도 `<foo hidden>...</foo>`는 화면에 나타내지 않을 것입니다.
+Global attributes may be specified on all [HTML elements](/en-US/docs/Web/HTML/Element), _even those not specified in the standard_. That means that any non-standard elements must still permit these attributes, even though using those elements means that the document is no longer HTML5-compliant. For example, HTML5-compliant browsers hide content marked as `<foo hidden>…</foo>`, even though `<foo>` is not a valid HTML element.
 
-기본 HTML 전역 특성 외에 아래와 같은 전역 특성도 존재합니다.
+In addition to the basic HTML global attributes, the following global attributes also exist:
 
-- {{htmlattrdef("xml:lang")}}과 {{htmlattrdef("xml:base")}}는 XHTML 명세에서 상속받은 것으로 더 사용하지 않지만, 호환성 유지를 위해 아직 존재합니다.
-- 여러 개의&#x20;
+- `xml:lang` and `xml:base` — these are inherited from the XHTML specifications and deprecated, but kept for compatibility purposes.
+- The ARIA [`role`](/en-US/docs/Web/Accessibility/ARIA/Roles) attribute and the multiple [`aria-*`](/en-US/docs/Web/Accessibility/ARIA/Attributes) states and properties, used for ensuring accessibility.
+- The [event handler](/en-US/docs/Web/HTML/Attributes#event_handler_attributes) attributes: `onabort`, `onautocomplete`, `onautocompleteerror`, `onblur`, `oncancel`, `oncanplay`, `oncanplaythrough`, `onchange`, `onclick`, `onclose`, `oncontextmenu`, `oncuechange`, `ondblclick`, `ondrag`, `ondragend`, `ondragenter`, `ondragleave`, `ondragover`, `ondragstart`, `ondrop`, `ondurationchange`, `onemptied`, `onended`, `onerror`, `onfocus`, `oninput`, `oninvalid`, `onkeydown`, `onkeypress`, `onkeyup`, `onload`, `onloadeddata`, `onloadedmetadata`, `onloadstart`, `onmousedown`, `onmouseenter`, `onmouseleave`, `onmousemove`, `onmouseout`, `onmouseover`, `onmouseup`, `onmousewheel`, `onpause`, `onplay`, `onplaying`, `onprogress`, `onratechange`, `onreset`, `onresize`, `onscroll`, `onseeked`, `onseeking`, `onselect`, `onshow`, `onsort`, `onstalled`, `onsubmit`, `onsuspend`, `ontimeupdate`, `ontoggle`, `onvolumechange`, `onwaiting`.
 
-  **[aria-\*](/ko/docs/Web/Accessibility/ARIA)`**
+## List of global attributes
 
-  &#x20;특성은 접근성 향상을 위해 사용됩니다.
+- [`accesskey`](/en-US/docs/Web/HTML/Global_attributes/accesskey)
+  - : Provides a hint for generating a keyboard shortcut for the current element. This attribute consists of a space-separated list of characters. The browser should use the first one that exists on the computer keyboard layout.
+- [`autocapitalize`](/en-US/docs/Web/HTML/Global_attributes/autocapitalize)
 
-- [이벤트 처리기](/ko/docs/Web/Guide/Events/Event_handlers) 특성: **`onabort`**, **`onautocomplete`**, **`onautocompleteerror`**, **`onblur`**, **`oncancel`**, **`oncanplay`**, **`oncanplaythrough`**, **`onchange`**, **`onclick`**, **`onclose`**, **`oncontextmenu`**, **`oncuechange`**, **`ondblclick`**, **`ondrag`**, **`ondragend`**, **`ondragenter`**, **`ondragexit`**, **`ondragleave`**, **`ondragover`**, **`ondragstart`**, **`ondrop`**, **`ondurationchange`**, **`onemptied`**, **`onended`**, **`onerror`**, **`onfocus`**, **`oninput`**, **`oninvalid`**, **`onkeydown`**, **`onkeypress`**, **`onkeyup`**, **`onload`**, **`onloadeddata`**, **`onloadedmetadata`**, **`onloadstart`**, **`onmousedown`**, **`onmouseenter`**, **`onmouseleave`**, **`onmousemove`**, **`onmouseout`**, **`onmouseover`**, **`onmouseup`**, **`onmousewheel`**, **`onpause`**, **`onplay`**, **`onplaying`**, **`onprogress`**, **`onratechange`**, **`onreset`**, **`onresize`**, **`onscroll`**, **`onseeked`**, **`onseeking`**, **`onselect`**, **`onshow`**, **`onsort`**, **`onstalled`**, **`onsubmit`**, **`onsuspend`**, **`ontimeupdate`**, **`ontoggle`**, **`onvolumechange`**, **`onwaiting`**.
+  - : Controls whether and how text input is automatically capitalized as it is entered/edited by the user. It can have the following values:
 
-## 전역 특성 목록
+    - `off` or `none`, no autocapitalization is applied (all letters default to lowercase)
+    - `on` or `sentences`, the first letter of each sentence defaults to a capital letter; all other letters default to lowercase
+    - `words`, the first letter of each word defaults to a capital letter; all other letters default to lowercase
+    - `characters`, all letters should default to uppercase
 
-- [{{htmlattrdef("accesskey")}}](/ko/docs/Web/HTML/Global_attributes/accesskey)
-  - : 현재 요소에 대한 키보드 단축키 생성을 위한 힌트를 제공합니다. 이 특성은 공백으로 구분한 문자 목록으로 구성됩니다. 브라우저는 주어진 여러 개의 값 중 장치의 키보드 레이아웃에 존재하는 첫 번째 키를 사용해야 합니다.
-- [{{htmlattrdef("autocapitalize")}}](/ko/docs/Web/HTML/Global_attributes/autocapitalize)
+- [`autofocus`](/en-US/docs/Web/HTML/Global_attributes/autofocus)
+  - : Indicates that an element is to be focused on page load, or as soon as the {{HTMLElement("dialog")}} it is part of is displayed. This attribute is a boolean, initially false.
+- [`class`](/en-US/docs/Web/HTML/Global_attributes/class)
+  - : A space-separated list of the classes of the element. Classes allow CSS and JavaScript to select and access specific elements via the [class selectors](/en-US/docs/Web/CSS/Class_selectors) or functions like the method {{DOMxRef("Document.getElementsByClassName()")}}.
+- [`contenteditable`](/en-US/docs/Web/HTML/Global_attributes/contenteditable)
 
-  - : 사용자가 입력 또는 수정하는 텍스트를 자동으로 대문자로 변환할지 여부와 변환하는 방법을 제어합니다. 다음과 같은 값이 가능합니다.
+  - : An [enumerated](/en-US/docs/Glossary/Enumerated) attribute indicating if the element should be editable by the user. If so, the browser modifies its widget to allow editing. The attribute must take one of the following values:
 
-    - `off` 또는 `none`, 대소문자 자동 변환이 발생하지 않음 (모든 글자가 기본값 소문자)
-    - `on` 또는 `sentences`, 각 문장의 첫 글자를 대문자로 변환, 나머지 글자는 기본값 소문자
-    - `words`, 각 단어의 첫 글자를 대문자로 변환, 나머지 글자는 기본값 소문자
-    - `characters`, 모든 글자의 기본값이 대문자
+    - `true` or the _empty string_, which indicates that the element must be editable;
+    - `false`, which indicates that the element must not be editable.
 
-- [{{htmlattrdef("class")}}](/ko/docs/Web/HTML/Global_attributes/class)
-  - : 공백으로 구분된 해당 요소의 클래스의 목록입니다. 클래스를 이용하면 CSS나 JavaScript에서 [클래스 선택자](/ko/docs/Web/CSS/Class_selectors)나 {{domxref("Document.getElementsByClassName()")}}과 같은 메서드를 이용해 특정 요소를 선택하거나 접근할 수 있습니다.
-- [{{htmlattrdef("contenteditable")}}](/ko/docs/Web/HTML/Global_attributes/contenteditable)
-  - : 해당 요소를 사용자가 편집할 수 있는지를 나타내는 열거형 특성입니다. 편집 가능한 경우에 브라우저는 편집을 허용하도록 위젯을 수정합니다.
-- [{{htmlattrdef("data-*")}}](/ko/docs/Web/HTML/Global_attributes/data-*)
-  - : 사용자 지정 데이터 특성(custom data attributes)이라는 특성 클래스를 형성함으로써 임의의 데이터를 스크립트로 [HTML](/ko/docs/Web/HTML)과 [DOM](/ko/docs/Web/API/Document_Object_Model) 사이에서 교환할 수 있는 방법을 제공합니다.
-- [{{htmlattrdef("dir")}}](/ko/docs/Web/HTML/Global_attributes/dir)
-  - : 요소의 쓰기 방향을 나타내는 열거형 특성입니다.
-- [{{htmlattrdef("draggable")}}](/ko/docs/Web/HTML/Global_attributes/draggable)
-  - : [Drag and Drop API](/ko/docs/Web/API/HTML_드래그_앤_드롭_API)를 사용해 요소를 드래그할 수 있는지 나타내는 열거형 특성입니다.
-- [{{htmlattrdef("exportparts")}}](/ko/docs/Web/HTML/Global_attributes/exportparts) {{experimental_inline}}
-  - : 중첩 섀도우 트리에서 섀도우 파트를 전이적으로 라이트 파트에 내보낼 때 사용합니다.
-- [{{htmlattrdef("hidden")}}](/ko/docs/Web/HTML/Global_attributes/hidden)
-  - : 해당 요소가 아직, 또는 더 이상 관련이 없음을 나타내는 불리언 특성입니다. 브라우저는 `hidden` 특성을 가진 요소를 렌더링 하지 않습니다.
-- [{{htmlattrdef("id")}}](/ko/docs/Web/HTML/Global_attributes/id)
-  - : 문서 전체에서 유일해야 하는 고유 식별자(ID)를 정의합니다. (프래그먼트 식별자를 사용한) 링크, 스크립트, 스타일 적용 시 요소를 식별할 때 사용합니다.
-- [{{htmlattrdef("inputmode")}}](/ko/docs/Web/HTML/Global_attributes/inputmode)
-  - : 사용자가 요소나 요소의 콘텐츠를 편집할 때, 브라우저가 제공해야 하는 가상 키보드 설정을 알려줍니다. 주로 {{htmlelement("input")}} 요소에 사용하지만, {{htmlattrxref("contenteditable")}} 특성을 가진 요소라면 종류 불문하고 사용할 수 있습니다.
-- [{{htmlattrdef("is")}}](/ko/docs/Web/HTML/Global_attributes/is)
-  - : 표준 HTML 요소가 사용자 정의 기본 요소처럼 동작하도록 지정합니다. (자세한 내용은 [사용자 정의 요소 사용하기](/ko/docs/Web/Web_Components/Using_custom_elements)를 참고하세요[)](/ko/docs/Web/Web_Components/Using_custom_elements)
+- [`contextmenu`](/en-US/docs/Web/HTML/Global_attributes/contextmenu) {{deprecated_inline}}
+  - : The [**`id`**](#id) of a {{HTMLElement("menu")}} to use as the contextual menu for this element.
+- [`data-*`](/en-US/docs/Web/HTML/Global_attributes/data-*)
+  - : Forms a class of attributes, called custom data attributes, that allow proprietary information to be exchanged between the [HTML](/en-US/docs/Web/HTML) and its {{glossary("DOM")}} representation that may be used by scripts. All such custom data are available via the {{DOMxRef("HTMLElement")}} interface of the element the attribute is set on. The {{DOMxRef("HTMLElement.dataset")}} property gives access to them.
+- [`dir`](/en-US/docs/Web/HTML/Global_attributes/dir)
 
-> **참고:**`item*` 특성은 [WHATWG HTML Microdata feature](https://html.spec.whatwg.org/multipage/microdata.html#microdata)의 일부입니다.
+  - : An enumerated attribute indicating the directionality of the element's text. It can have the following values:
 
-- [{{htmlattrdef("itemid")}}](/ko/docs/Web/HTML/Global_attributes/itemid)
-  - : 아이템의 고유하고 전역적인 식별자입니다.
-- [{{htmlattrdef("itemprop")}}](/ko/docs/Web/HTML/Global_attributes/itemprop)
-  - : 아이템에 특성(properties)을 추가할 때 사용합니다. 모든 HTML 요소에는 이름과 값의 쌍으로 구성된 `itemprop` 특성을 명시할 수 있습니다.
-- [{{htmlattrdef("itemref")}}](/ko/docs/Web/HTML/Global_attributes/itemref)
-  - : `itemscope` 특성을 가진 요소에 속하지 않는 특성들(properties)은 `itemref`를 사용하여 item에 연결할 수 있습니다. 여기에는 문서 내의 다른 위치에 있는 추가적인 특성을 갖는 요소 id(`itemid`s 가 아닌)목록이 제공됩니다.
-- [{{htmlattrdef("itemscope")}}](/ko/docs/Web/HTML/Global_attributes/itemscope)
-  - : `itemscope`은 (일반적으로) {{htmlattrxref("itemtype")}}과 같이 사용하여 블록에 포함된 HTML이 특정 item에 대한 것임을 나타냅니다. `itemscope`은 item을 생성하고 그 item에 연결된 `itemtype`의 범위를 정의합니다. `itemtype`은 item과 특성 컨텍스트를 설명하는 ([schema.org](https://schema.org/)와 같은) 어휘(vocabulary)에 대한 유효한 URL입니다.
-- [{{htmlattrdef("itemtype")}}](/ko/docs/Web/HTML/Global_attributes/itemtype)
-  - : 데이터 구조에서 `itemprop`s (item properties)을 정의하는 데 사용할 단어의 URL을 지정합니다. [`itemscope`](/ko/docs/Web/HTML/Global_attributes/itemscope)은 데이터 구조 내에서 `itemtype`에 의해 설정된 어휘가 활성화되는 범위를 설정하는 데 사용됩니다.
-- [{{htmlattrdef("lang")}}](/ko/docs/Web/HTML/Global_attributes/lang)
-  - : 요소의 언어를 정의하는데 도움을 줍니다: 편집할 수 없는 요소가 있는 언어 또는 사용자가 요소를 편집할 수 있는 언어를 정의하는 데 도움이 됩니다(the language that non-editable elements are in, or the language that editable elements should be written in by the user). 이 특성은 언어 식별 태그([_Tags for Identifying Languages (BCP47)_](https://www.ietf.org/rfc/bcp/bcp47.txt))에 정의된 형식의 하나의 "언어 태그"(하이픈으로 구분된 "언어 하위 태그(language subtags)"로 구성된)를 포함합니다. [**xml:lang**](#attr-xml:lang)은 이보다 우선합니다.
-- [{{htmlattrdef("part")}}](/ko/docs/Web/HTML/Global_attributes/part)
+    - `ltr`, which means _left to right_ and is to be used for languages that are written from the left to the right (like English);
+    - `rtl`, which means _right to left_ and is to be used for languages that are written from the right to the left (like Arabic);
+    - `auto`, which lets the user agent decide. It uses a basic algorithm as it parses the characters inside the element until it finds a character with a strong directionality, then it applies that directionality to the whole element.
+
+- [`draggable`](/en-US/docs/Web/HTML/Global_attributes/draggable)
+
+  - : An enumerated attribute indicating whether the element can be dragged, using the [Drag and Drop API](/en-US/docs/Web/API/HTML_Drag_and_Drop_API). It can have the following values:
+
+    - `true`, which indicates that the element may be dragged
+    - `false`, which indicates that the element may not be dragged.
+
+- [`enterkeyhint`](/en-US/docs/Web/HTML/Global_attributes/enterkeyhint)
+  - : Hints what action label (or icon) to present for the enter key on virtual keyboards.
+- [`exportparts`](/en-US/docs/Web/HTML/Global_attributes/exportparts) {{Experimental_Inline}}
+  - : Used to transitively export shadow parts from a nested shadow tree into a containing light tree.
+- [`hidden`](/en-US/docs/Web/HTML/Global_attributes/hidden)
+  - : An enumerated attribute indicating that the element is not yet, or is no longer, _relevant_. For example, it can be used to hide elements of the page that can't be used until the login process has been completed. The browser won't render such elements. This attribute must not be used to hide content that could legitimately be shown.
+- [`id`](/en-US/docs/Web/HTML/Global_attributes/id)
+  - : Defines a unique identifier (ID) which must be unique in the whole document. Its purpose is to identify the element when linking (using a fragment identifier), scripting, or styling (with CSS).
+- [`inert`](/en-US/docs/Web/HTML/Global_attributes/inert)
+  - : A boolean value that makes the browser disregard user input events for the element. Useful when click events are present.
+- [`inputmode`](/en-US/docs/Web/HTML/Global_attributes/inputmode)
+  - : Provides a hint to browsers about the type of virtual keyboard configuration to use when editing this element or its contents. Used primarily on {{HTMLElement("input")}} elements, but is usable on any element while in [`contenteditable`](#contenteditable) mode.
+- [`is`](/en-US/docs/Web/HTML/Global_attributes/is)
+  - : Allows you to specify that a standard HTML element should behave like a registered custom built-in element (see [Using custom elements](/en-US/docs/Web/API/Web_components/Using_custom_elements) for more details).
+
+> **Note:** The `item*` attributes are part of the [WHATWG HTML Microdata feature](https://html.spec.whatwg.org/multipage/microdata.html#microdata).
+
+- [`itemid`](/en-US/docs/Web/HTML/Global_attributes/itemid)
+  - : The unique, global identifier of an item.
+- [`itemprop`](/en-US/docs/Web/HTML/Global_attributes/itemprop)
+  - : Used to add properties to an item. Every HTML element may have an `itemprop` attribute specified, where an `itemprop` consists of a name and value pair.
+- [`itemref`](/en-US/docs/Web/HTML/Global_attributes/itemref)
+  - : Properties that are not descendants of an element with the `itemscope` attribute can be associated with the item using an `itemref`. It provides a list of element ids (not `itemid`s) with additional properties elsewhere in the document.
+- [`itemscope`](/en-US/docs/Web/HTML/Global_attributes/itemscope)
+  - : `itemscope` (usually) works along with [`itemtype`](/en-US/docs/Web/HTML/Global_attributes/itemtype) to specify that the HTML contained in a block is about a particular item. `itemscope` creates the Item and defines the scope of the `itemtype` associated with it. `itemtype` is a valid URL of a vocabulary (such as [schema.org](https://schema.org/)) that describes the item and its properties context.
+- [`itemtype`](/en-US/docs/Web/HTML/Global_attributes/itemtype)
+  - : Specifies the URL of the vocabulary that will be used to define `itemprop`s (item properties) in the data structure. [`itemscope`](/en-US/docs/Web/HTML/Global_attributes/itemscope) is used to set the scope of where in the data structure the vocabulary set by `itemtype` will be active.
+- [`lang`](/en-US/docs/Web/HTML/Global_attributes/lang)
+  - : Helps define the language of an element: the language that non-editable elements are in, or the language that editable elements should be written in by the user. The attribute contains one "language tag" (made of hyphen-separated "language subtags") in the format defined in {{RFC(5646, "Tags for Identifying Languages (also known as BCP 47)")}}. [**xml:lang**](#xml:lang) has priority over it.
+- [`nonce`](/en-US/docs/Web/HTML/Global_attributes/nonce)
+  - : A cryptographic nonce ("number used once") which can be used by [Content Security Policy](/en-US/docs/Web/HTTP/CSP) to determine whether or not a given fetch will be allowed to proceed.
+- [`part`](/en-US/docs/Web/HTML/Global_attributes/part)
   - : A space-separated list of the part names of the element. Part names allows CSS to select and style specific elements in a shadow tree via the {{CSSxRef("::part")}} pseudo-element.
-- [{{htmlattrdef("slot")}}](/ko/docs/Web/HTML/Global_attributes/slot)
-  - : 요소에 [shadow DOM](/ko/docs/Web/Web_Components/Shadow_DOM)의 shadow tree에 있는 슬롯을 할당합니다: `slot` 특성을 가진 요소는 {{htmlattrxref("name", "slot")}} 특성의 값이 해당 `slot` 특성의 값과 일치하는 {HTMLElement("slot")}} 요소가 생성한 슬롯에 할당됩니다.
-- [{{htmlattrdef("spellcheck")}}](/ko/docs/Web/HTML/Global_attributes/spellcheck)
-  - : 요소의 맞춤법 검사 여부를 지정합니다.
-- [{{htmlattrdef("style")}}](/ko/docs/Web/HTML/Global_attributes/style)
-  - : 요소에 적용할 [CSS](/ko/docs/Web/CSS) 스타일 선언을 담습니다. 단, 스타일은 별도 파일에 정의하는 것이 추천하는 방식임을 유의하세요. 이 특성과 {{HTMLElement("style")}} 요소는 테스트 등을 위한 빠른 스타일링이 주 용도입니다.
-- [{{htmlattrdef("tabindex")}}](/ko/docs/Web/HTML/Global_attributes/tabindex)
+- [`popover`](/en-US/docs/Web/HTML/Global_attributes/popover)
+  - : Specifies that the element should be treated like a popover. An element with the `popover` attribute is hidden from the page unless it is opened by interacting with an invoking element that has [`popovertarget`](/en-US/docs/Web/HTML/Element/button#popovertarget), or via [`showPopover()`](/en-US/docs/Web/API/HTMLElement/showPopover/).
+- [`role`](/en-US/docs/Web/Accessibility/ARIA/Roles)
+  - : Roles define the semantic meaning of content, allowing screen readers and other tools to present and support interaction with an object in a way that is consistent with user expectations of that type of object. `roles` are added to HTML elements using `role="role_type"`, where `role_type` is the name of a role in the ARIA specification.
+- [`slot`](/en-US/docs/Web/HTML/Global_attributes/slot)
+  - : Assigns a slot in a [shadow DOM](/en-US/docs/Web/API/Web_components/Using_shadow_DOM) shadow tree to an element: An element with a `slot` attribute is assigned to the slot created by the {{HTMLElement("slot")}} element whose [`name`](/en-US/docs/Web/HTML/Element/slot#name) attribute's value matches that `slot` attribute's value.
+- [`spellcheck`](/en-US/docs/Web/HTML/Global_attributes/spellcheck)
 
-  - : An integer attribute indicating if the element can take input focus (is _focusable_), if it should participate to sequential keyboard navigation, and if so, at what position. It can takes several values:
+  - : An enumerated attribute defines whether the element may be checked for spelling errors. It may have the following values:
+
+    - empty string or `true`, which indicates that the element should be, if possible, checked for spelling errors;
+    - `false`, which indicates that the element should not be checked for spelling errors.
+
+- [`style`](/en-US/docs/Web/HTML/Global_attributes/style)
+  - : Contains [CSS](/en-US/docs/Web/CSS) styling declarations to be applied to the element. Note that it is recommended for styles to be defined in a separate file or files. This attribute and the {{HTMLElement("style")}} element have mainly the purpose of allowing for quick styling, for example for testing purposes.
+- [`tabindex`](/en-US/docs/Web/HTML/Global_attributes/tabindex)
+
+  - : An integer attribute indicating if the element can take input focus (is _focusable_), if it should participate to sequential keyboard navigation, and if so, at what position. It can take several values:
 
     - a _negative value_ means that the element should be focusable, but should not be reachable via sequential keyboard navigation;
     - `0` means that the element should be focusable and reachable via sequential keyboard navigation, but its relative order is defined by the platform convention;
-    - a _positive value_ means that the element should be focusable and reachable via sequential keyboard navigation; the order in which the elements are focused is the increasing value of the [**tabindex**](#attr-tabindex). If several elements share the same tabindex, their relative order follows their relative positions in the document.
+    - a _positive value_ means that the element should be focusable and reachable via sequential keyboard navigation; the order in which the elements are focused is the increasing value of the [**tabindex**](#tabindex). If several elements share the same tabindex, their relative order follows their relative positions in the document.
 
-- [{{htmlattrdef("title")}}](/ko/docs/Web/HTML/Global_attributes/title)
-  - : 요소에 대한 추가 정보를 제공하는 텍스트입니다. 사용자에게는 보통 툴팁으로서 보여집니다.
-- [{{htmlattrdef("translate")}}](/ko/docs/Web/HTML/Global_attributes/translate) {{experimental_inline}}
-  - : 페이지를 지역화할 때 요소의 {{domxref("Text")}} 노드 자식 및 번역 가능한 특성의 값을 번역해야 되는지, 아니면 그대로 유지해야 하는지 나타냅니다.
+- [`title`](/en-US/docs/Web/HTML/Global_attributes/title)
+  - : Contains a text representing advisory information related to the element it belongs to. Such information can typically, but not necessarily, be presented to the user as a tooltip.
+- [`translate`](/en-US/docs/Web/HTML/Global_attributes/translate)
 
-## 명세
+  - : An enumerated attribute that is used to specify whether an element's attribute values and the values of its {{DOMxRef("Text")}} node children are to be translated when the page is localized, or whether to leave them unchanged. It can have the following values:
+
+    - empty string or `yes`, which indicates that the element will be translated.
+    - `no`, which indicates that the element will not be translated.
+- [`virtualkeyboardpolicy`](/en-US/docs/Web/HTML/Global_attributes/virtualkeyboardpolicy)
+
+  - : An [enumerated](/en-US/docs/Glossary/Enumerated) attribute used to control the on-screen virtual keyboard behavior on devices such as tablets, mobile phones, or other devices where a hardware keyboard may not be available for elements that also uses the [`contenteditable`](#contenteditable) attribute.
+
+    - `auto` or an _empty string_, which automatically shows the virtual keyboard when the element is focused or tapped.
+    - `manual`, which decouples focus and tap on the element from the virtual keyboard's state.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 대부분의 전역 특성에 접근할 수 있는 {{domxref("Element")}}와 {{domxref("GlobalEventHandlers")}} 인터페이스.
+- {{DOMxRef("Element")}} interface that allows querying most global attributes.

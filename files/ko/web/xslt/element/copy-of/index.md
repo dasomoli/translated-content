@@ -1,36 +1,35 @@
 ---
-title: copy-of
+title: <xsl:copy-of>
 slug: Web/XSLT/Element/copy-of
-original_slug: Web/XSLT/copy-of
 ---
 
 {{ XsltRef() }}
 
-`<xsl:copy-of>` 요소는 select 속성이 출력 문서에 무엇을 지정하든지 (자손 노드를 포함하여) 깊게 복사(deep copy)합니다.
+The `<xsl:copy-of>` element makes a deep copy (including descendant nodes) of whatever the select attribute specifies to the output document.
 
-### 문법
+### Syntax
 
-```
+```xml
 <xsl:copy-of select=EXPRESSION />
 ```
 
-### 필수 속성
+### Required Attributes
 
 - `select`
-  - : 복사할 대상을 지정하는 XPath 식을 씁니다.
+  - : Uses an XPath expression that specifies what is to be copied.
 
-### 선택 속성
+### Optional Attributes
 
-없음.
+None.
 
-### 타입
+### Type
 
-명령, 템플릿 안에 나타남.
+Instruction, appears within a template.
 
-### 정의
+### Defined
 
-[XSLT section 11.3, Using Values of Variables and Parameters with xsl:copy-of](http://www.w3.org/TR/xslt#copy-of)
+XSLT, section 11.3.
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

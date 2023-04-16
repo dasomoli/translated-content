@@ -1,39 +1,45 @@
 ---
 title: Error.prototype.name
 slug: Web/JavaScript/Reference/Global_Objects/Error/name
+page-type: javascript-instance-data-property
+browser-compat: javascript.builtins.Error.name
 ---
 
 {{JSRef}}
 
-**`name`** 속성은 오류 타입을 설명하기 위한 이름을 나타냅니다. 초기값은 "Error"입니다.
+The **`name`** data property of `Error.prototype` is shared by all {{jsxref("Error")}} instances. It represents the name for the type of error. For `Error.prototype.name`, the initial value is `"Error"`. Subclasses like {{jsxref("TypeError")}} and {{jsxref("SyntaxError")}} provide their own `name` properties.
 
-## 설명
+## Value
 
-기본적으로 {{jsxref("Error")}} 인스턴스에는 "Error"라는 이름을 갖습니다. `name` 속성과
-{{jsxref("Error.prototype.message", "message")}} 속성은 {{jsxref("Error.prototype.toString()")}} 메서드에서 오류의 문자열 표현을 생성하는 데
-사용됩니다.
+A string. For `Error.prototype.name`, the initial value is `"Error"`.
 
-## 예제
+{{js_property_attributes(1, 0, 1)}}
 
-### 사용자 정의 에러 발생시키기
+## Description
+
+By default, {{jsxref("Error")}} instances are given the name "Error". The `name` property, in addition to the {{jsxref("Error/message", "message")}} property, is used by the {{jsxref("Error.prototype.toString()")}} method to create a string representation of the error.
+
+## Examples
+
+### Throwing a custom error
 
 ```js
-var e = new Error('Malformed input'); // e.name은 'Error'
+const e = new Error("Malformed input"); // e.name is 'Error'
 
-e.name = 'ParseError';
+e.name = "ParseError";
 throw e;
-// e.toString()은 'ParseError: Malformed input'을 반환합니다
+// e.toString() would return 'ParseError: Malformed input'
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Error.prototype.message")}}
 - {{jsxref("Error.prototype.toString()")}}

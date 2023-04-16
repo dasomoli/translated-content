@@ -1,63 +1,119 @@
 ---
 title: margin-bottom
 slug: Web/CSS/margin-bottom
+page-type: css-property
+browser-compat: css.properties.margin-bottom
 ---
 
 {{CSSRef}}
 
-**`margin-bottom`** [CSS](/ko/docs/Web/CSS) 속성은 요소의 아래쪽에 [바깥 여백 영역](/ko/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)margin area을 설정합니다. 양수 값은 인접 요소와 거리를 넓히고, 음수 값은 더 좁힙니다.
+The **`margin-bottom`** [CSS](/en-US/docs/Web/CSS) property sets the [margin area](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model#margin_area) on the bottom of an element. A positive value places it farther from its neighbors, while a negative value places it closer.
 
 {{EmbedInteractiveExample("pages/css/margin-bottom.html")}}
 
-{{HTMLElement("span")}}, {{HTMLElement("code")}} 등 [비대체](/ko/docs/Web/CSS/Replaced_element)non-replaced 인라인 요소에는 효과가 없습니다.
+![The effect of the CSS margin-bottom property on the element box](margin-bottom.svg)
 
-## 구문
+This property has no effect on _non-[replaced](/en-US/docs/Web/CSS/Replaced_element)_ inline elements, such as {{HTMLElement("span")}} or {{HTMLElement("code")}}.
+
+## Syntax
 
 ```css
-/* <length> 값 */
-margin-bottom: 10px;  /* 절대 길이 */
-margin-bottom: 1em;   /* 글씨 크기에 상대적 */
-margin-bottom: 5%;    /* 가장 가까운 블록 컨테이너의 너비에 상대적 */
+/* <length> values */
+margin-bottom: 10px; /* An absolute length */
+margin-bottom: 1em; /* relative to the text size */
+margin-bottom: 5%; /* relative to the nearest block container's width */
 
-/* 키워드 값 */
+/* Keyword values */
 margin-bottom: auto;
 
-/* 전역 값 */
+/* Global values */
 margin-bottom: inherit;
 margin-bottom: initial;
+margin-bottom: revert;
+margin-bottom: revert-layer;
 margin-bottom: unset;
 ```
 
-`margin-bottom` 속성은 키워드 `auto`, `<length>`, `<percentage>`를 사용해 설정할 수 있습니다. 값은 양수, 0, 음수가 가능합니다.
+The `margin-bottom` property is specified as the keyword `auto`, or a `<length>`, or a `<percentage>`. Its value can be positive, zero, or negative.
 
-### 값
+### Values
 
 - {{cssxref("&lt;length&gt;")}}
-  - : 바깥 여백 크기의 고정 값.
+  - : The size of the margin as a fixed value.
 - {{cssxref("&lt;percentage&gt;")}}
-  - : 바깥 여백 크기와 블록 컨테이너 너비의 비율.
+  - : The size of the margin as a percentage, relative to the inline size (_width_ in a horizontal language, defined by {{cssxref("writing-mode")}}) of the [containing block](/en-US/docs/Web/CSS/Containing_block).
 - `auto`
-  - : 브라우저가 적절한 값 선택. {{cssxref("margin")}}을 참고하세요.
+  - : The browser selects a suitable value to use. See {{cssxref("margin")}}.
 
-### 형식 구문
-
-{{csssyntax}}
-
-## 예제
-
-```css
-.content { margin-bottom:   5%; }
-.sidebox { margin-bottom: 10px; }
-.logo    { margin-bottom: -5px; }
-#footer  { margin-bottom:  1em; }
-```
-
-## 명세
-
-{{Specifications}}
+## Formal definition
 
 {{cssinfo}}
 
-## 브라우저 호환성
+## Formal syntax
+
+{{csssyntax}}
+
+## Examples
+
+### Setting positive and negative bottom margins
+
+#### HTML
+
+```html
+<div class="container">
+  <div class="box0">Box 0</div>
+  <div class="box1">Box 1</div>
+  <div class="box2">Box one's negative margin pulls me up</div>
+</div>
+```
+
+#### CSS
+
+CSS for divs to set margin-bottom and height
+
+```css
+.box0 {
+  margin-bottom: 1em;
+  height: 3em;
+}
+.box1 {
+  margin-bottom: -1.5em;
+  height: 4em;
+}
+.box2 {
+  border: 1px dashed black;
+  border-width: 1px 0;
+  margin-bottom: 2em;
+}
+```
+
+Some definitions for container and divs so margins' effects can be seen more clearly
+
+```css
+.container {
+  background-color: orange;
+  width: 320px;
+  border: 1px solid black;
+}
+div {
+  width: 320px;
+  background-color: gold;
+}
+```
+
+#### Result
+
+{{ EmbedLiveSample('Setting_positive_and_negative_bottom_margins',350,200) }}
+
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- {{cssxref("margin-top")}}, {{cssxref("margin-right")}}, and {{cssxref("margin-left")}} and the {{cssxref("margin")}} shorthand
+- The mapped logical properties: {{cssxref("margin-block-start")}}, {{cssxref("margin-block-end")}}, {{cssxref("margin-inline-start")}}, and {{cssxref("margin-inline-end")}} and the shorthands {{cssxref("margin-block")}} and {{cssxref("margin-inline")}}

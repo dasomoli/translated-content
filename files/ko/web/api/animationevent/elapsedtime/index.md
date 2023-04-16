@@ -1,27 +1,40 @@
 ---
-title: AnimationEvent.elapsedTime
+title: "AnimationEvent: elapsedTime property"
+short-title: elapsedTime
 slug: Web/API/AnimationEvent/elapsedTime
+page-type: web-api-instance-property
+browser-compat: api.AnimationEvent.elapsedTime
 ---
-{{APIRef("Web Animations API")}}
 
-**`AnimationEvent.elapsedTime`** 읽기 전용 속성은 이벤트가 발생한 시점까지 애니메이션이 재생된 총 시간을 나타내는 `float` 값입니다. 초 단위며, 애니메이션이 일시정지된 시간은 제외합니다. {{domxref("Element/animationstart_event", "animationstart")}} 이벤트의 `elapsedTime`은 {{cssxref("animation-delay")}}의 값이 음수인 경우에만 `(-1 * delay)`가 되고, 그 외에는 `0.0`입니다.
+{{APIRef("Web Animations")}}
 
-## 구문
+The **`AnimationEvent.elapsedTime`** read-only property is a
+`float` giving the amount of time the animation has been running, in seconds,
+when this event fired, excluding any time the animation was paused. For an
+{{domxref("Element/animationstart_event", "animationstart")}} event,
+`elapsedTime` is `0.0` unless there was a negative value for
+{{cssxref("animation-delay")}}, in which case the event will be fired with
+`elapsedTime` containing `(-1 * delay)`.
 
-```js
-time = AnimationEvent.elapsedTime
-```
+## Value
 
-## 명세
+A `float` giving the amount of time in seconds.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [CSS 애니메이션 사용하기](/ko/docs/Web/CSS/CSS_Animations/Using_CSS_animations)
-- 애니메이션 관련 CSS 속성과 @규칙: {{cssxref("animation")}}, {{cssxref("animation-delay")}}, {{cssxref("animation-direction")}}, {{cssxref("animation-duration")}}, {{cssxref("animation-fill-mode")}}, {{cssxref("animation-iteration-count")}}, {{cssxref("animation-name")}}, {{cssxref("animation-play-state")}}, {{cssxref("animation-timing-function")}}, {{cssxref("@keyframes")}}
-- 이 속성이 속한 {{domxref("AnimationEvent")}} 인터페이스.
+- [Using CSS animations](/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations)
+- Animation-related CSS properties and at-rules: {{cssxref("animation")}},
+  {{cssxref("animation-delay")}}, {{cssxref("animation-direction")}},
+  {{cssxref("animation-duration")}}, {{cssxref("animation-fill-mode")}},
+  {{cssxref("animation-iteration-count")}}, {{cssxref("animation-name")}},
+  {{cssxref("animation-play-state")}}, {{cssxref("animation-timing-function")}},
+  {{cssxref("@keyframes")}}.
+- The {{domxref("AnimationEvent")}} interface it belongs to.

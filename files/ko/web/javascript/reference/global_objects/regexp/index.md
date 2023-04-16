@@ -1,137 +1,203 @@
 ---
 title: RegExp
 slug: Web/JavaScript/Reference/Global_Objects/RegExp
+page-type: javascript-class
+browser-compat: javascript.builtins.RegExp
 ---
 
 {{JSRef}}
 
-**`RegExp`** 생성자는 패턴을 사용해 텍스트를 판별할 때 사용합니다.
+The **`RegExp`** object is used for matching text with a pattern.
 
-정규 표현식에 대한 소개는 [JavaScript 안내서의 정규 표현식 장](/ko/docs/Web/JavaScript/Guide/Regular_Expressions)을 참고하세요.
+For an introduction to regular expressions, read the [Regular Expressions chapter](/en-US/docs/Web/JavaScript/Guide/Regular_expressions) in the [JavaScript Guide](/en-US/docs/Web/JavaScript/Guide/Regular_expressions).
 
-## 설명
+## Description
 
-### 리터럴 표기법과 생성자
+### Literal notation and constructor
 
-`RegExp` 객체는 리터럴 표기법과 생성자로써 생성할 수 있습니다.
+There are two ways to create a `RegExp` object: a _literal notation_ and a _constructor_.
 
-- **리터럴 표기법**의 매개변수는 두 빗금으로 감싸야 하며 따옴표를 사용하지 않습니다.
-- **생성자 함수**의 매개변수는 빗금으로 감싸지 않으나 따옴표를 사용합니다.
+- The _literal notation_ takes a pattern between two slashes, followed by optional flags, after the second slash.
+- The _constructor function_ takes either a string or a `RegExp` object as its first parameter and a string of optional flags as its second parameter.
 
-다음의 세 표현식은 모두 같은 정규 표현식을 생성합니다.
-
-```js
-/ab+c/i
-new RegExp(/ab+c/, 'i') // 리터럴
-new RegExp('ab+c', 'i') // 생성자
-```
-
-리터럴 표기법은 표현식을 평가할 때 정규 표현식을 컴파일합니다. 정규 표현식이 변하지 않으면 리터럴 표기법을 사용하세요. 예를 들어, 반복문 안에서 사용할 정규 표현식을 리터럴 표기법으로 생성하면 정규 표현식을 매번 다시 컴파일하지 않습니다.
-
-정규 표현식 객체의 생성자(`new RegExp('ab+c')`)를 사용하면 정규 표현식이 런타임에 컴파일됩니다. 패턴이 변할 가능성이 있거나, 사용자 입력과 같이 알 수 없는 외부 소스에서 가져오는 정규 표현식의 경우 생성자 함수를 사용하세요.
-
-### 생성자의 플래그
-
-ECMAScript 6부터는 `new RegExp(/ab+c/, 'i')`처럼, 첫 매개변수가 `RegExp`이면서 `flags`를 지정해도 {{jsxref("TypeError")}} (`"can't supply flags when constructing one RegExp from another"`)가 발생하지 않고, 매개변수로부터 새로운 정규 표현식을 생성합니다.
-
-생성자 함수를 사용할 경우 보통의 문자열 이스케이프 규칙(특수 문자를 문자열에 사용할 때 앞에 역빗금(`\`)을 붙이는 것)을 준수해야 합니다.
-
-예를 들어 다음 두 줄은 동일한 정규 표현식을 생성합니다.
+The following three expressions create the same regular expression object:
 
 ```js
-let re = /\w+/
-let re = new RegExp('\\w+')
+const re = /ab+c/i; // literal notation
+// OR
+const re = new RegExp("ab+c", "i"); // constructor with string pattern as first argument
+// OR
+const re = new RegExp(/ab+c/, "i"); // constructor with regular expression literal as first argument
 ```
 
-### Perl 형태의 `RegExp` 속성
+Before regular expressions can be used, they have to be compiled. This process allows them to perform matches more efficiently. More about the process can be found in [dotnet docs](https://docs.microsoft.com/dotnet/standard/base-types/compilation-and-reuse-in-regular-expressions).
 
-일부 {{JSxRef("RegExp")}} 속성은 같은 값에 대해 긴 이름과 짧은 (Perl 형태의) 이름 모두 가지고 있습니다. (Perl은 JavaScript가 정규 표현식을 만들 때 참고한 프로그래밍 언어입니다.) [사용하지 않는 `RegExp` 속성](/ko/docs/Web/JavaScript/Reference/Deprecated_and_obsolete_features#RegExp_Properties)을 참고하세요.
+The literal notation results in compilation of the regular expression when the expression is evaluated. On the other hand, the constructor of the `RegExp` object, `new RegExp('ab+c')`, results in runtime compilation of the regular expression.
 
-## 생성자
+Use a string as the first argument to the `RegExp()` constructor when you want to [build the regular expression from dynamic input](#building_a_regular_expression_from_dynamic_inputs).
+
+### Flags in constructor
+
+The expression `new RegExp(/ab+c/, flags)` will create a new `RegExp` using the source of the first parameter and the flags provided by the second.
+
+When using the constructor function, the normal string escape rules (preceding special characters with `\` when included in a string) are necessary.
+
+For example, the following are equivalent:
+
+```js
+const re = /\w+/;
+// OR
+const re = new RegExp("\\w+");
+```
+
+### Special handling for regexes
+
+> **Note:** Whether something is a "regex" can be [duck-typed](https://en.wikipedia.org/wiki/Duck_typing). It doesn't have to be a `RegExp`!
+
+Some built-in methods would treat regexes specially. They decide whether `x` is a regex through [multiple steps](https://tc39.es/ecma262/#sec-isregexp):
+
+1. `x` must be an object (not a primitive).
+2. If [`x[Symbol.match]`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/match) is not `undefined`, check if it's [truthy](/en-US/docs/Glossary/Truthy).
+3. Otherwise, if `x[Symbol.match]` is `undefined`, check if `x` had been created with the `RegExp` constructor. (This step should rarely happen, since if `x` is a `RegExp` object that have not been tampered with, it should have a `Symbol.match` property.)
+
+Note that in most cases, it would go through the `Symbol.match` check, which means:
+
+- An actual `RegExp` object whose `Symbol.match` property's value is [falsy](/en-US/docs/Glossary/Falsy) but not `undefined` (even with everything else intact, like [`exec`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec) and [`@@replace`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/@@replace)) can be used as if it's not a regex.
+- A non-`RegExp` object with a `Symbol.match` property will be treated as if it's a regex.
+
+This choice was made because `@@match` is the most indicative property that something is intended to be used for matching. (`exec` could also be used, but because it's not a symbol property, there would be too many false positives.) The places that treat regexes specially include:
+
+- [`String.prototype.endsWith()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith), [`startsWith()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith), and [`includes()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/includes) throw a {{jsxref("TypeError")}} if the first argument is a regex.
+- [`String.prototype.matchAll()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/matchAll) and [`replaceAll()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replaceAll) check whether the [global](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/global) flag is set if the first argument is a regex before invoking its [`@@matchAll`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/matchAll) or [`@@replace`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/replace) method.
+- The [`RegExp()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/RegExp) constructor directly returns the `pattern` argument only if `pattern` is a regex (among a few other conditions). If `pattern` is a regex, it would also interrogate `pattern`'s `source` and `flags` properties instead of coercing `pattern` to a string.
+
+For example, [`String.prototype.endsWith()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith) would coerce all inputs to strings, but it would throw if the argument is a regex, because it's only designed to match strings, and using a regex is likely a developer mistake.
+
+```js
+"foobar".endsWith({ toString: () => "bar" }); // true
+"foobar".endsWith(/bar/); // TypeError: First argument to String.prototype.endsWith must not be a regular expression
+```
+
+You can get around the check by setting `@@match` to a [falsy](/en-US/docs/Glossary/Falsy) value that's not `undefined`. This would mean that the regex cannot be used for `String.prototype.match()` (since without `@@match`, `match()` would construct a new `RegExp` object with the two enclosing slashes added by [`re.toString()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/toString)), but it can be used for virtually everything else.
+
+```js
+const re = /bar/g;
+re[Symbol.match] = false;
+"/bar/g".endsWith(re); // true
+re.exec("bar"); // [ 'bar', index: 0, input: 'bar', groups: undefined ]
+"bar & bar".replace(re, "foo"); // 'foo & foo'
+```
+
+### Perl-like RegExp properties
+
+Note that several of the {{jsxref("RegExp")}} properties have both long and short (Perl-like) names. Both names always refer to the same value. (Perl is the programming language from which JavaScript modeled its regular expressions.) See also [deprecated `RegExp` properties](/en-US/docs/Web/JavaScript/Reference/Deprecated_and_obsolete_features#regexp).
+
+## Constructor
 
 - {{jsxref("RegExp/RegExp", "RegExp()")}}
-  - : 새로운 `RegExp` 객체를 생성합니다.
+  - : Creates a new `RegExp` object.
 
-## 정적 속성
+## Static properties
 
-- {{jsxref("RegExp.@@species", "get RegExp[@@species]")}}
-  - : 파생 객체를 생성할 때 사용하는 생성자입니다.
-- {{jsxref("RegExp.lastIndex")}}
-  - : 다음 판별을 시작할 인덱스입니다.
+- {{jsxref("RegExp/@@species", "RegExp[@@species]")}}
+  - : The constructor function that is used to create derived objects.
+- {{jsxref("RegExp.n", "RegExp.$1, …, RegExp.$9")}} {{Deprecated_Inline}}
+  - : Static read-only properties that contain parenthesized substring matches.
+- {{jsxref("RegExp.input", "RegExp.input ($_)")}} {{Deprecated_Inline}}
+  - : A static property that contains the last string against which a regular expression was successfully matched.
+- {{jsxref("RegExp.lastMatch", "RegExp.lastMatch ($&)")}} {{Deprecated_Inline}}
+  - : A static read-only property that contains the last matched substring.
+- {{jsxref("RegExp.lastParen", "RegExp.lastParen ($+)")}} {{Deprecated_Inline}}
+  - : A static read-only property that contains the last parenthesized substring match.
+- {{jsxref("RegExp.leftContext", "RegExp.leftContext ($`)")}} {{Deprecated_Inline}}
+  - : A static read-only property that contains the substring preceding the most recent match.
+- {{jsxref("RegExp.rightContext", "RegExp.rightContext ($')")}} {{Deprecated_Inline}}
+  - : A static read-only property that contains the substring following the most recent match.
 
-## 인스턴스 속성
+## Instance properties
 
-- {{JSxRef("RegExp.prototype.flags")}}
-  - : `RegExp` 객체의 플래그를 담은 문자열입니다.
-- {{JSxRef("RegExp.prototype.dotAll")}}
-  - : `.`이 줄 바꿈에 일치하는지 여부를 나타냅니다.
-- {{JSxRef("RegExp.prototype.global")}}
-  - : 정규 표현식이 문자열 내에서 가능한 모든 경우에 일치하는지, 아니면 최초에 대해서만 일치하는지 나타냅니다.
-- {{JSxRef("RegExp.prototype.ignoreCase")}}
-  - : 문자열의 대소문자를 구분하는지 나타냅니다.
-- {{JSxRef("RegExp.prototype.multiline")}}
-  - : 여러 줄에 걸쳐 탐색할 것인지 나타냅니다.
-- {{JSxRef("RegExp.prototype.source")}}
-  - : 패턴을 나타내는 문자열입니다.
-- {{JSxRef("RegExp.prototype.sticky")}}
-  - : 검색이 접착(sticky)되어있는지 나타냅니다.
-- {{JSxRef("RegExp.prototype.unicode")}}
-  - : Unicode 기능의 활성화 여부입니다.
+These properties are defined on `RegExp.prototype` and shared by all `RegExp` instances.
 
-## 인스턴스 메서드
+- {{jsxref("Object/constructor", "RegExp.prototype.constructor")}}
+  - : The constructor function that created the instance object. For `RegExp` instances, the initial value is the {{jsxref("RegExp/RegExp", "RegExp")}} constructor.
+- {{jsxref("RegExp.prototype.dotAll")}}
+  - : Whether `.` matches newlines or not.
+- {{jsxref("RegExp.prototype.flags")}}
+  - : A string that contains the flags of the `RegExp` object.
+- {{jsxref("RegExp.prototype.global")}}
+  - : Whether to test the regular expression against all possible matches in a string, or only against the first.
+- {{jsxref("RegExp.prototype.hasIndices")}}
+  - : Whether the regular expression result exposes the start and end indices of captured substrings.
+- {{jsxref("RegExp.prototype.ignoreCase")}}
+  - : Whether to ignore case while attempting a match in a string.
+- {{jsxref("RegExp.prototype.multiline")}}
+  - : Whether or not to search in strings across multiple lines.
+- {{jsxref("RegExp.prototype.source")}}
+  - : The text of the pattern.
+- {{jsxref("RegExp.prototype.sticky")}}
+  - : Whether or not the search is sticky.
+- {{jsxref("RegExp.prototype.unicode")}}
+  - : Whether or not Unicode features are enabled.
 
-- {{JSxRef("RegExp.prototype.compile()")}}
-  - : 스크립트 실행 중 정규 표현식을 (다시) 컴파일합니다.
-- {{JSxRef("RegExp.prototype.exec()")}}
-  - : 문자열 매개변수에 대해 검색을 실행합니다.
-- {{JSxRef("RegExp.prototype.test()")}}
-  - : 문자열 매개변수에 대해 판별을 실행합니다.
-- {{JSxRef("RegExp.prototype.toString()")}}
-  - : 객체의 문자열 표현을 반환합니다. {{JSxRef("Object.prototype.toString()")}} 메서드를 재정의합니다.
-- {{JSxRef("RegExp.prototype.@@match()", "RegExp.prototype[@@match]()")}}
-  - : 주어진 문자열에 대해 일치하는 결과를 반환합니다.
-- {{JSxRef("RegExp.prototype.@@matchAll()", "RegExp.prototype[@@matchAll]()")}}
-  - : 주어진 문자열에 대해 일치하는 모든 결과를 반환합니다.
-- {{JSxRef("RegExp.prototype.@@replace()", "RegExp.prototype[@@replace]()")}}
-  - : 주어진 문자열 내의 일치를 새로운 문자열로 대치합니다.
-- {{JSxRef("RegExp.prototype.@@search()", "RegExp.prototype[@@search]()")}}
-  - : 주어진 문자열에 대해 일치하는 인덱스를 반환합니다.
-- {{JSxRef("RegExp.prototype.@@split()", "RegExp.prototype[@@split]()")}}
-  - : 주어진 문자열을 분할해 배열로 반환합니다.
+These properties are own properties of each `RegExp` instance.
 
-## 예제
+- {{jsxref("RegExp/lastIndex", "lastIndex")}}
+  - : The index at which to start the next match.
 
-### 정규 표현식을 사용해서 데이터 형식 바꾸기
+## Instance methods
 
-다음 스크립트에서는 {{jsxref("String")}} 객체의 {{jsxref("String.prototype.replace()", "replace()")}} 메서드를 사용하여 _이름 성씨_ 형태의 이름을 _성씨, 이름_ 형태 바꿔 반환합니다.
+- {{jsxref("RegExp.prototype.compile()")}} {{Deprecated_Inline}}
+  - : (Re-)compiles a regular expression during execution of a script.
+- {{jsxref("RegExp.prototype.exec()")}}
+  - : Executes a search for a match in its string parameter.
+- {{jsxref("RegExp.prototype.test()")}}
+  - : Tests for a match in its string parameter.
+- {{jsxref("RegExp.prototype.toString()")}}
+  - : Returns a string representing the specified object. Overrides the {{jsxref("Object.prototype.toString()")}} method.
+- [`RegExp.prototype[@@match]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/@@match)
+  - : Performs match to given string and returns match result.
+- [`RegExp.prototype[@@matchAll]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/@@matchAll)
+  - : Returns all matches of the regular expression against a string.
+- [`RegExp.prototype[@@replace]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/@@replace)
+  - : Replaces matches in given string with new substring.
+- [`RegExp.prototype[@@search]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/@@search)
+  - : Searches the match in given string and returns the index the pattern found in the string.
+- [`RegExp.prototype[@@split]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/@@split)
+  - : Splits given string into an array by separating the string into substrings.
 
-대치 문자열에는 `$1`과 `$2`를 사용하여 정규 표현식 패턴의 각 괄호에 일치한 결과를 받아옵니다.
+## Examples
+
+### Using a regular expression to change data format
+
+The following script uses the {{jsxref("String.prototype.replace()", "replace()")}} method of the {{jsxref("Global_Objects/String", "String")}} instance to match a name in the format _first last_ and output it in the format _last, first_.
+
+In the replacement text, the script uses `$1` and `$2` to indicate the results of the corresponding matching parentheses in the regular expression pattern.
 
 ```js
-let re = /(\w+)\s(\w+)/
-let str = 'John Smith'
-let newstr = str.replace(re, '$2, $1')
-console.log(newstr)
+const re = /(\w+)\s(\w+)/;
+const str = "Maria Cruz";
+const newstr = str.replace(re, "$2, $1");
+console.log(newstr);
 ```
 
-실행 결과는 `"Smith, John"`입니다.
+This displays `"Cruz, Maria"`.
 
-### 정규 표현식을 사용해서 여러 가지 줄 바꿈 문자가 있는 문자열 나누기
+### Using regular expression to split lines with different line endings/ends of line/line breaks
 
-기본 줄 바꿈 문자는 플랫폼(Unix, Windows 등)마다 다릅니다. 아래의 분할 스크립트는 모든 플랫폼의 줄 바꿈을 인식합니다.
+The default line ending varies depending on the platform (Unix, Windows, etc.). The line splitting provided in this example works on all platforms.
 
 ```js
-let text = 'Some text\nAnd some more\r\nAnd yet\rThis is the end'
-let lines = text.split(/\r\n|\r|\n/)
-console.log(lines) // logs [ 'Some text', 'And some more', 'And yet', 'This is the end' ]
+const text = "Some text\nAnd some more\r\nAnd yet\rThis is the end";
+const lines = text.split(/\r\n|\r|\n/);
+console.log(lines); // [ 'Some text', 'And some more', 'And yet', 'This is the end' ]
 ```
 
-정규 표현식 패턴의 순서를 바꾸면 작동하지 않을 수 있습니다.
+Note that the order of the patterns in the regular expression matters.
 
-### 여러 줄에서 정규 표현식 사용하기
+### Using regular expression on multiple lines
 
 ```js
-let s = 'Please yes\nmake my day!'
+const s = "Please yes\nmake my day!";
 
 s.match(/yes.*day/);
 // Returns null
@@ -140,79 +206,116 @@ s.match(/yes[^]*day/);
 // Returns ["yes\nmake my day"]
 ```
 
-### 접착 플래그와 함께 사용하기
+### Using a regular expression with the sticky flag
 
-{{JSxRef("Global_Objects/RegExp/sticky", "sticky")}} 플래그는 해당 정규 표현식이 접착 판별, 즉 {{jsxref("RegExp.prototype.lastIndex")}}에서 시작하는 일치만 확인하도록 할 수 있습니다.
+The {{jsxref("Global_Objects/RegExp/sticky", "sticky")}} flag indicates that the regular expression performs sticky matching in the target string by attempting to match starting at {{jsxref("RegExp.prototype.lastIndex")}}.
 
 ```js
-let str = '#foo#'
-let regex = /foo/y
+const str = "#foo#";
+const regex = /foo/y;
 
-regex.lastIndex = 1
-regex.test(str)      // true
-regex.lastIndex = 5
-regex.test(str)      // false (lastIndex is taken into account with sticky flag)
-regex.lastIndex      // 0 (reset after match failure)
+regex.lastIndex = 1;
+regex.test(str); // true
+regex.lastIndex = 5;
+regex.test(str); // false (lastIndex is taken into account with sticky flag)
+regex.lastIndex; // 0 (reset after match failure)
 ```
 
-### 접착과 전역 플래그의 차이
+### The difference between the sticky flag and the global flag
 
-접착 플래그 `y`의 일치는 정확히 `lastIndex` 위치에서만 발생할 수 있으나, 전역 플래그 `g`의 경우 `lastIndex` 또는 그 이후에서도 발생할 수 있습니다.
+With the sticky flag `y`, the next match has to happen at the `lastIndex` position, while with the global flag `g`, the match can happen at the `lastIndex` position or later:
 
 ```js
-re = /\d/y;
-while (r = re.exec("123 456")) console.log(r, "AND re.lastIndex", re.lastIndex);
+const re = /\d/y;
+let r;
+while ((r = re.exec("123 456"))) {
+  console.log(r, "AND re.lastIndex", re.lastIndex);
+}
 
 // [ '1', index: 0, input: '123 456', groups: undefined ] AND re.lastIndex 1
 // [ '2', index: 1, input: '123 456', groups: undefined ] AND re.lastIndex 2
 // [ '3', index: 2, input: '123 456', groups: undefined ] AND re.lastIndex 3
-//   ... and no more match.
+//  … and no more match.
 ```
 
-전역 플래그 `g`를 사용했다면, 3개가 아니고 6개 숫자 모두 일치했을 것입니다.
+With the global flag `g`, all 6 digits would be matched, not just 3.
 
-### 정규 표현식과 Unicode 문자
+### Regular expression and Unicode characters
 
-`\w`와 `\W`는 `a`부터 `z`, `A`부터 `Z`, `0`부터 `9` `_` 등의 {{glossary("ASCII")}} 문자에만 일치합니다.
+`\w` and `\W` only matches ASCII based characters; for example, `a` to `z`, `A` to `Z`, `0` to `9`, and `_`.
 
-러시아어나 히브리어와 같은 다른 언어의 문자까지 일치하려면 `\uhhhh`(이때 hhhh는 해당 문자의 16진법 Unicode 값) 문법을 사용하세요. 아래 예제에서는 문자열에서 Unicode 문자를 추출합니다.
+To match characters from other languages such as Cyrillic or Hebrew, use `\uhhhh`, where `hhhh` is the character's Unicode value in hexadecimal.
+
+This example demonstrates how one can separate out Unicode characters from a word.
 
 ```js
-let text = 'Образец text на русском языке'
-let regex = /[\u0400-\u04FF]+/g
+const text = "Образец text на русском языке";
+const regex = /[\u0400-\u04FF]+/g;
 
-let match = regex.exec(text)
-console.log(match[0])        // logs 'Образец'
-console.log(regex.lastIndex) // logs '7'
+const match = regex.exec(text);
+console.log(match[0]); // 'Образец'
+console.log(regex.lastIndex); // 7
 
-let match2 = regex.exec(text)
-console.log(match2[0])       // logs 'на' [did not log 'text']
-console.log(regex.lastIndex) // logs '15'
+const match2 = regex.exec(text);
+console.log(match2[0]); // 'на' (did not log 'text')
+console.log(regex.lastIndex); // 15
 
 // and so on
 ```
 
-[유니코드 속성 이스케이프](/ko/docs/Web/JavaScript/Guide/Regular_Expressions/Unicode_Property_Escapes) 기능을 사용해 `\p{scx=Cyrl}`과 같은 간단한 구문으로 이 문제를 해결할 수 있습니다.
+The [Unicode property escapes](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Unicode_property_escapes) feature provides a simpler way to target particular Unicode ranges, by allowing for statements like `\p{scx=Cyrl}` (to match any Cyrillic letter), or `\p{L}/u` (to match a letter from any language).
 
-### URL에서 서브도메인 추출하기
+### Extracting subdomain name from URL
 
 ```js
-let url = 'http://xxx.domain.com'
-console.log(/[^.]+/.exec(url)[0].substr(7)) // logs 'xxx'
+const url = "http://xxx.domain.com";
+console.log(/^https?:\/\/(.+?)\./.exec(url)[1]); // 'xxx'
 ```
 
-> **참고:** 이 때는 정규표현식보단 [URL API](/ko/docs/Web/API/URL_API)를 통해 브라우저에 내장된 URL 구문 분석기를 사용하는 것이 좋습니다.
+> **Note:** Instead of using regular expressions for parsing URLs, it is usually better to use the browsers built-in URL parser by using the [URL API](/en-US/docs/Web/API/URL_API).
 
-## 명세
+### Building a regular expression from dynamic inputs
+
+```js
+const breakfasts = ["bacon", "eggs", "oatmeal", "toast", "cereal"];
+const order = "Let me get some bacon and eggs, please";
+
+order.match(new RegExp(`\\b(${breakfasts.join("|")})\\b`, "g"));
+// Returns ['bacon', 'eggs']
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+### Firefox-specific notes
 
-- [JavaScript 안내서의 정규 표현식 장](/ko/docs/Web/JavaScript/Guide/Regular_Expressions)
+Starting with Firefox 34, in the case of a capturing group with quantifiers preventing its exercise, the matched text for a capturing group is now `undefined` instead of an empty string:
+
+```js
+// Firefox 33 or older
+"x".replace(/x(.)?/g, (m, group) => {
+  console.log(`group: ${JSON.stringify(group)}`);
+});
+// group: ""
+
+// Firefox 34 or newer
+"x".replace(/x(.)?/g, (m, group) => {
+  console.log(`group: ${group}`);
+});
+// group: undefined
+```
+
+Note that due to web compatibility, `RegExp.$N` will still return an empty string instead of `undefined` ([bug 1053944](https://bugzil.la/1053944)).
+
+## See also
+
+- [Polyfill of many modern `RegExp` features (`dotAll`, `sticky` flags, named capture groups, etc.) in `core-js`](https://github.com/zloirock/core-js#ecmascript-string-and-regexp)
+- [Regular Expressions](/en-US/docs/Web/JavaScript/Guide/Regular_expressions) chapter in the [JavaScript Guide](/en-US/docs/Web/JavaScript/Guide)
 - {{jsxref("String.prototype.match()")}}
 - {{jsxref("String.prototype.replace()")}}
+- {{jsxref("String.prototype.split()")}}

@@ -1,141 +1,163 @@
 ---
-title: <li>
+title: "<li>: The List Item element"
 slug: Web/HTML/Element/li
+page-type: html-element
+browser-compat: html.elements.li
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<li>` 요소**는 목록의 항목을 나타냅니다. 반드시 정렬 목록({{htmlelement("ol")}}), 비정렬 목록({{htmlelement("ul")}}, 혹은 메뉴({{htmlelement("menu")}}) 안에 위치해야 합니다. 메뉴와 비정렬 목록에서는 보통 불릿으로 항목을 나타내고, 정렬 목록에서는 숫자나 문자를 사용한 오름차순 카운터로 나타냅니다.
+The **`<li>`** [HTML](/en-US/docs/Web/HTML) element is used to represent an item in a list. It must be contained in a parent element: an ordered list ({{HTMLElement("ol")}}), an unordered list ({{HTMLElement("ul")}}), or a menu ({{HTMLElement("menu")}}). In menus and unordered lists, list items are usually displayed using bullet points. In ordered lists, they are usually displayed with an ascending counter on the left, such as a number or letter.
 
 {{EmbedInteractiveExample("pages/tabbed/li.html", "tabbed-shorter")}}
 
-<p class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</p>
+## Attributes
+
+This element includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
+
+- `value`
+  - : This integer attribute indicates the current ordinal value of the list item as defined by the {{HTMLElement("ol")}} element. The only allowed value for this attribute is a number, even if the list is displayed with Roman numerals or letters. List items that follow this one continue numbering from the value set. The **value** attribute has no meaning for unordered lists ({{HTMLElement("ul")}}) or for menus ({{HTMLElement("menu")}}).
+- `type` {{Deprecated_inline}} {{Non-standard_Inline}}
+
+  - : This character attribute indicates the numbering type:
+
+    - `a`: lowercase letters
+    - `A`: uppercase letters
+    - `i`: lowercase Roman numerals
+    - `I`: uppercase Roman numerals
+    - `1`: numbers
+
+    This type overrides the one used by its parent {{HTMLElement("ol")}} element, if any.
+
+    > **Note:** This attribute has been deprecated; use the CSS {{cssxref("list-style-type")}} property instead.
+
+## Examples
+
+For more detailed examples, see the {{htmlelement("ol")}} and {{htmlelement("ul")}} pages.
+
+### Ordered list
+
+```html
+<ol>
+  <li>first item</li>
+  <li>second item</li>
+  <li>third item</li>
+</ol>
+```
+
+#### Result
+
+{{EmbedLiveSample("Ordered_list")}}
+
+### Ordered list with a custom value
+
+```html
+<ol type="I">
+  <li value="3">third item</li>
+  <li>fourth item</li>
+  <li>fifth item</li>
+</ol>
+```
+
+#### Result
+
+{{EmbedLiveSample("Ordered_list_with_a_custom_value")}}
+
+### Unordered list
+
+```html
+<ul>
+  <li>first item</li>
+  <li>second item</li>
+  <li>third item</li>
+</ul>
+```
+
+#### Result
+
+{{EmbedLiveSample("Unordered_list")}}
+
+## Technical summary
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리">콘텐츠 카테고리</a>
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
       </th>
-      <td>없음.</td>
+      <td>None.</td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#플로우_콘텐츠"
-          >플로우 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
         >.
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
+      <th scope="row">Tag omission</th>
       <td>
-        다른 <code>&#x3C;li></code> 요소 바로 뒤따르거나 자신이 부모의 마지막
-        자식인 경우 닫는 태그를 생략할 수 있습니다.
+        The end tag can be omitted if the list item is immediately followed by
+        another {{HTMLElement("li")}} element, or if there is no more
+        content in its parent element.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Permitted parents</th>
       <td>
-        {{HTMLElement("ul")}}, {{HTMLElement("ol")}},
-        {{HTMLElement("menu")}} 요소.
+        An {{HTMLElement("ul")}}, {{HTMLElement("ol")}}, or
+        {{HTMLElement("menu")}} element. Though not a conforming usage,
+        the obsolete {{HTMLElement("dir")}} can also be a parent.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
+      <th scope="row">Implicit ARIA role</th>
       <td>
-        <a href='/ko/docs/Web/Accessibility/ARIA/Roles/menuitem_role'><code>menuitem</code></a>,
-        <a href='/ko/docs/Web/Accessibility/ARIA/Roles/menuitemcheckbox_role'><code>menuitemcheckbox</code></a>,
-        <a href='/ko/docs/Web/Accessibility/ARIA/Roles/menuitemradio_role'><code>menuitemradio</code></a>, <a href='/ko/docs/Web/Accessibility/ARIA/Roles/option_role'><code>option</code></a>,
-        <a href='/ko/docs/Web/Accessibility/ARIA/Roles/presentation_role'><code>presentation</code></a>, <a href='/ko/docs/Web/Accessibility/ARIA/Roles/radio_role'><code>radio</code></a>,
-        <a href='/ko/docs/Web/Accessibility/ARIA/Roles/separator_role'><code>separator</code></a>, <a href='/ko/docs/Web/Accessibility/ARIA/Roles/tab_role'><code>tab</code></a>,
-        <a href='/ko/docs/Web/Accessibility/ARIA/Roles/treeitem_role'><code>treeitem</code></a>
+        <code
+          ><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/Listitem_role"
+            >listitem</a
+          ></code
+        >
+        when child of an
+        <code><a href="/en-US/docs/Web/HTML/Element/ol">ol</a></code
+        >, <code><a href="/en-US/docs/Web/HTML/Element/ul">ul</a></code> or
+        <code><a href="/en-US/docs/Web/HTML/Element/menu">menu</a></code>
       </td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/menuitem_role"><code>menuitem</code></a>,
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/menuitemcheckbox_role"><code>menuitemcheckbox</code></a>,
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/menuitemradio_role"><code>menuitemradio</code></a>, <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/option_role"><code>option</code></a>,
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/none_role"><code>none</code></a>, <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/presentation_role"><code>presentation</code></a>,
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/radio_role"><code>radio</code></a>, <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/separator_role"><code>separator</code></a>,
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role"><code>tab</code></a>, <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/treeitem_role"><code>treeitem</code></a>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLLIElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
-
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)을 포함합니다.
-
-- {{htmlattrdef("value")}}
-
-  - : {{HTMLElement("ol")}} 요소 내부에서 항목의 현재 서수 값을 나타내는 정수. 리스트가 로마 숫자나 문자로 표시되더라도 이 특성에는 숫자만 넣을수 있습니다. `value`를 지정한 항목을 뒤따르는 다른 항목은 이 값에서부터 번호를 매깁니다. `value` 속성은 비정렬 목록({{HTMLElement("ul")}})과 메뉴({{HTMLElement("menu")}})에서는 아무 의미가 없습니다.
-
-    > **참고:** HTML4에서는 `value`의 사용을 중단했지만 HTML5에서 다시 도입했습니다.
-
-- {{htmlattrdef("type")}} {{Deprecated_inline}}
-
-  - : 넘버링 타입을 나타내는 문자.
-
-    - `a`: 소문자 글자
-    - `A`: 대문자 글자
-    - `i`: 소문자 로마 숫자
-    - `I`: 대문자 문자 숫자
-    - `1`: 숫자
-
-    부모 {{HTMLElement("ol")}} 요소에서 지정하는 유형을 덮어씁니다.
-
-    > **참고:** 이 속성은 사용 중단됐습니다. 대신 CSS {{cssxref("list-style-type")}} 속성을 사용하세요.
-
-## 예제
-
-더 자세한 예제는 {{htmlelement("ol")}}과 {{htmlelement("ul")}}을 참고하세요.
-
-### 정렬 목록
-
-```html
-<ol>
-    <li>first item</li>
-    <li>second item</li>
-    <li>third item</li>
-</ol>
-```
-
-{{EmbedLiveSample("정렬_목록")}}
-
-### 사용자 지정 값을 가진 정렬 목록
-
-```html
-<ol type="I">
-    <li value="3">third item</li>
-    <li>fourth item</li>
-    <li>fifth item</li>
-</ol>
-```
-
-{{EmbedLiveSample("사용자_지정_값을_가진_정렬_목록")}}
-
-### 비정렬 목록
-
-```html
-<ul>
-    <li>first item</li>
-    <li>second item</li>
-    <li>third item</li>
-</ul>
-```
-
-{{EmbedLiveSample("비정렬_목록")}}
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 리스트 관련 다른 요소: {{HTMLElement("ul")}}, {{HTMLElement("li")}}, {{HTMLElement("menu")}}.
-- `<li>` 요소와 유용하게 사용할 수 있는 CSS 속성
+- Other list-related HTML Elements: {{HTMLElement("ul")}}, {{HTMLElement("ol")}}, {{HTMLElement("menu")}}, and the obsolete {{HTMLElement("dir")}};
+- CSS properties that may be specially useful to style the `<li>` element:
 
-  - 서수를 표현할 방식을 지정하는 {{cssxref("list-style")}} 속성.
-  - 복잡한 중첩 목록을 처리하기 위한 [CSS 카운터](/ko/docs/Web/CSS/CSS_Lists_and_Counters/Using_CSS_counters)
-  - 항목의 들여쓰기를 조정하기 위한 {{cssxref("margin")}} 속성.
+  - the {{cssxref("list-style")}} property, to choose the way the ordinal is displayed,
+  - [CSS counters](/en-US/docs/Web/CSS/CSS_Counter_Styles/Using_CSS_counters), to handle complex nested lists,
+  - the {{cssxref("margin")}} property, to control the indent of the list item.

@@ -1,32 +1,47 @@
 ---
-title: File()
+title: "File: File() constructor"
+short-title: File()
 slug: Web/API/File/File
+page-type: web-api-constructor
+browser-compat: api.File.File
 ---
+
 {{APIRef("File")}}
 
-**`File()`** 생성자는 {{domxref("File")}} 객체의 새로운 인스턴스를 생성합니다.
+The **`File()`** constructor creates a new {{domxref("File")}}
+object instance.
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 new File(bits, name)
 new File(bits, name, options)
 ```
 
-### 매개변수
+### Parameters
 
 - `bits`
-  - : {{domxref("File")}} 객체 내에 저장할 데이터를 나타내는 {{jsxref("Array")}}입니다. {{jsxref("ArrayBuffer")}}, {{domxref("ArrayBufferView")}}, {{domxref("Blob")}}, 문자열을 요소로 제공할 수 있습니다. `USVString` 객체는 UTF-8로 인코딩해 사용합니다.
+  - : An [iterable](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterable_protocol)
+    object such as an {{jsxref("Array")}}, having {{jsxref("ArrayBuffer")}}s,
+    {{jsxref("TypedArray")}}s, {{jsxref("DataView")}}s, {{domxref("Blob")}}s, strings,
+    or a mix of any of such elements, that will be put inside the {{domxref("File")}}.
+    Note that strings here are encoded as UTF-8, unlike the usual JavaScript UTF-16 strings.
 - `name`
-  - : 파일의 이름이나 경로를 나타내는 문자열입니다.
+  - : A string representing the file name or the path to the file.
 - `options` {{optional_inline}}
 
-  - : 파일 특성을 추가로 지정할 수 있는 옵션 객체입니다. 가능한 옵션은 다음과 같습니다.
+  - : An options object containing optional attributes for the file. Available options are
+    as follows:
 
-    - `type`: 파일 내용의 MIME 유형을 나타내는 문자열입니다. 기본값은 빈 문자열(`""`)입니다.
-    - `lastModified`: 파일이 마지막으로 변경된 시간입니다. Unix 시간에서부터 경과한 밀리초 정수로 지정해야 합니다. 기본값은 {{jsxref("Date.now()")}}와 같습니다.
+    - `type`
+      - : A string representing the MIME type of the
+        content that will be put into the file. Defaults to a value of `""`.
+    - `lastModified`
+      - : A number representing the number of milliseconds
+        between the Unix time epoch and when the file was last modified. Defaults to a
+        value of {{jsxref("Date.now()")}}.
 
-## 예제
+## Examples
 
 ```js
 const file = new File(["foo"], "foo.txt", {
@@ -34,15 +49,15 @@ const file = new File(["foo"], "foo.txt", {
 });
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("FileReader")}}
 - {{domxref("Blob")}}

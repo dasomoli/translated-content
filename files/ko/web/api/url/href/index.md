@@ -1,39 +1,39 @@
 ---
-title: URL.href
+title: "URL: href property"
+short-title: href
 slug: Web/API/URL/href
+page-type: web-api-instance-property
+browser-compat: api.URL.href
 ---
+
 {{ApiRef("URL API")}}
 
-{{domxref("URL")}} 인터페이스의 **`href`** 속성은 전체 URL을 담은 {{domxref("USVString")}}입니다.
+The **`href`** property of the {{domxref("URL")}} interface is
+a string containing the whole URL.
 
 {{AvailableInWorkers}}
 
-## 구문
+## Value
+
+A string.
+
+## Examples
 
 ```js
-const urlString = url.href
-url.href = newUrlString
+const url = new URL(
+  "https://developer.mozilla.org/en-US/docs/Web/API/URL/href"
+);
+console.log(url.href); // Logs: 'https://developer.mozilla.org/en-US/docs/Web/API/URL/href'
 ```
 
-### 값
-
-{{domxref("USVString")}}.
-
-## 예제
-
-```js
-const url = new URL('https://developer.mozilla.org/ko/docs/Web/API/URL/href');
-console.log(url.href); // Logs: 'https://developer.mozilla.org/ko/docs/Web/API/URL/href'
-```
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 속성이 속한 {{domxref("URL")}} 인터페이스.
+- The {{domxref("URL")}} interface it belongs to.

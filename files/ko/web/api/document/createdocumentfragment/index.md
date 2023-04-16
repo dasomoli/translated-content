@@ -1,53 +1,91 @@
 ---
-title: Document.createDocumentFragment()
+title: "Document: createDocumentFragment() method"
+short-title: createDocumentFragment()
 slug: Web/API/Document/createDocumentFragment
+page-type: web-api-instance-method
+browser-compat: api.Document.createDocumentFragment
 ---
 
-{{ApiRef("DOM")}}
+{{APIRef("DOM WHATWG")}}
 
-새로운 빈 {{domxref("DocumentFragment")}} 를 생성합니다.
+Creates a new empty {{domxref("DocumentFragment")}} into which
+DOM nodes can be added to build an offscreen DOM tree.
 
 ## Syntax
 
-```js
-var docFragment = document.createDocumentFragment();
+```js-nolint
+createDocumentFragment()
 ```
 
-`docFragment` 는 빈 {{domxref("DocumentFragment")}} 객체를 나타냅니다.
+### Parameters
 
-## Description
+None.
 
-`DocumentFragment`s 는 DOM 노드들 입니다. 이것들은 메인 DOM 트리의 일부가 되지 않습니다. 일반적인 유즈 케이스는 다큐먼트 조각을 생성하고, 엘리먼트들을 다큐먼트 조각에 추가하고 그 다큐먼트 조각을 DOM 트리에 추가하는 것입니다. DOM 트리 내에서 다큐먼트 조각은 그것의 모든 자식들로 대체됩니다.
+### Return value
 
-메모리 내에 다큐먼트 조각이 존재하고 메인 DOM 트리의 일부가 아니라면, 이것에 자식들을 추가하는 것은 페이지 [reflow](https://developers.google.com/speed/articles/reflow?csw=1) (엘리먼트의 위치와 좌표의 계산) 를 유발하지 않습니다. 따라서, 다큐먼트 조각을 사용하는 것은 보통 [better performance](http://ejohn.org/blog/dom-documentfragments/) 의 결과를 가져옵니다.
+A newly created, empty, {{domxref("DocumentFragment")}} object, which is ready to have
+nodes inserted into it.
 
-## Example
+## Usage notes
+
+`DocumentFragment`s are DOM {{domxref("Node")}} objects which are never part
+of the main DOM tree. The usual use case is to create the document fragment, append
+elements to the document fragment and then append the document fragment to the DOM tree.
+In the DOM tree, the document fragment is replaced by all its children.
+
+Since the document fragment is _in memory_ and not part of the main DOM tree,
+appending children to it does not cause page [reflow](https://developers.google.com/speed/docs/insights/browser-reflow?csw=1)
+(computation of element's position and geometry). Historically, using document fragments
+could result in [better performance](https://johnresig.com/blog/dom-documentfragments/).
+
+You can also use the `DocumentFragment` constructor to create a new
+fragment:
 
 ```js
-var ul = document.getElementsByTagName("ul")[0]; // assuming it exists
-var docfrag = document.createDocumentFragment();
-var browserList = ["Internet Explorer", "Firefox", "Safari",
-    "Chrome", "Opera"];
+const fragment = new DocumentFragment();
+```
 
-browserList.forEach(function(e) {
-  var li = document.createElement("li");
-  li.textContent = e;
-  docfrag.appendChild(li);
+## Examples
+
+This example creates a list of major web browsers in a `DocumentFragment`,
+then adds the new DOM subtree to the document to be displayed.
+
+### HTML
+
+```html
+<ul id="ul"></ul>
+```
+
+### JavaScript
+
+```js
+const element = document.getElementById("ul"); // assuming ul exists
+const fragment = document.createDocumentFragment();
+const browsers = ["Firefox", "Chrome", "Opera", "Safari"];
+
+browsers.forEach((browser) => {
+  const li = document.createElement("li");
+  li.textContent = browser;
+  fragment.appendChild(li);
 });
 
-ul.appendChild(docfrag);
-// a list with well-known web browsers
+element.appendChild(fragment);
 ```
 
-## 명세서
+### Result
+
+{{EmbedLiveSample("Examples", 600, 140)}}
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- {{domxref("DOMImplementation.createDocument", "document.implementation.createDocument()")}}
+- {{domxref("DOMImplementation.createDocument",
+    "document.implementation.createDocument()")}}
 - {{domxref("documentFragment")}}

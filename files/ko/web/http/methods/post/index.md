@@ -1,83 +1,85 @@
 ---
 title: POST
 slug: Web/HTTP/Methods/POST
+page-type: http-method
+browser-compat: http.methods.POST
 ---
 
 {{HTTPSidebar}}
 
-**HTTP `POST` 메서드**는 서버로 데이터를 전송합니다. 요청 본문의 유형은 {{httpheader("Content-Type")}} 헤더로 나타냅니다.
+The **HTTP `POST` method** sends data to the server. The type of the body of the request is indicated by the {{HTTPHeader("Content-Type")}} header.
 
-{{httpmethod("PUT")}}과 `POST`의 차이는 {{glossary("idempotent", "멱등성")}}으로, `PUT`은 멱등성을 가집니다. `PUT`은 한 번을 보내도, 여러 번을 연속으로 보내도 같은 효과를 보입니다. 즉, 부수 효과(side effect)가 없습니다.
+The difference between {{HTTPMethod("PUT")}} and `POST` is that `PUT` is idempotent: calling it once or several times successively has the same effect (that is no _side_ effect), where successive identical `POST` may have additional effects, like passing an order several times.
 
-`POST` 요청은 보통 [HTML 양식](/ko/docs/Learn/HTML/Forms)을 통해 서버에 전송하며, 서버에 변경사항을 만듭니다. 이 경우의 콘텐츠 유형(`Content-Type`)은 *{{HTMLElement("form")}} 요소의 {{htmlattrxref("enctype", "form")}} 특성이나 {{HTMLElement("input") }}, {{HTMLElement("button")}} *요소의 _{{htmlattrxref("formenctype", "input")}} 특성 안에 적당한 문자열을 넣어 결정합니다._
+A `POST` request is typically sent via an [HTML form](/en-US/docs/Learn/Forms) and results in a change on the server. In this case, the content type is selected by putting the adequate string in the [`enctype`](/en-US/docs/Web/HTML/Element/form#enctype) attribute of the {{HTMLElement("form")}} element or the [`formenctype`](/en-US/docs/Web/HTML/Element/input#formenctype) attribute of the {{HTMLElement("input") }} or {{HTMLElement("button")}} elements:
 
-- `application/x-www-form-urlencoded`: &으로 분리되고, "=" 기호로 값과 키를 연결하는 key-value tuple로 인코딩되는 값입니다. 영어 알파벳이 아닌 문자들은 {{glossary("percent encoded")}} 으로 인코딩됩니다. 따라서, 이 content type은 바이너리 데이터에 사용하기에는 적절치 않습니다. (바이너리 데이터에는 use `multipart/form-data` 를 사용해 주세요.)_
-- _`multipart/form-data`_
-- _`text/plain`_
+- `application/x-www-form-urlencoded`: the keys and values are encoded in key-value tuples separated by `'&'`, with a `'='` between the key and the value. Non-alphanumeric characters in both keys and values are [URL encoded](https://en.wikipedia.org/wiki/URL_encoding): this is the reason why this type is not suitable to use with binary data (use `multipart/form-data` instead)
+- `multipart/form-data`: each value is sent as a block of data ("body part"), with a user agent-defined delimiter ("boundary") separating each part. The keys are given in the `Content-Disposition` header of each part.
+- `text/plain`
 
-`POST` 요청을 HTML 양식 외의 다른 방법({{domxref("XMLHttpRequest")}} 등)으로 전송할 땐 요청의 본문이 어떤 형태도 취할 수 있습니다. HTTP 1.1 규격에 정의된 바와 같이, `POST`는 다음의 기능을 포함하는 균일한 메서드를 허용하도록 설계되었습니다.
+When the `POST` request is sent via a method other than an HTML form — like via an {{domxref("XMLHttpRequest")}} — the body can take any type. As described in the HTTP 1.1 specification, `POST` is designed to allow a uniform method to cover the following functions:
 
-- 기존 리소스에 주석달기
-- 게시판, 뉴스 그룹, 메일링 리스트나 이와 유사한 시스템에 글 올리기
-- 회원가입 모달로 새로운 사용자 추가하기
-- 양식 전송 결과 등 데이터 블록을 데이터 처리 프로세스에 보내기
-- 이어붙이기 연산을 통한 데이터베이스 확장
+- Annotation of existing resources
+- Posting a message to a bulletin board, newsgroup, mailing list, or similar group of articles;
+- Adding a new user through a signup modal;
+- Providing a block of data, such as the result of submitting a form, to a data-handling process;
+- Extending a database through an append operation.
 
 <table class="properties">
   <tbody>
     <tr>
-      <th scope="row">요청에 본문 존재</th>
-      <td>예</td>
+      <th scope="row">Request has body</th>
+      <td>Yes</td>
     </tr>
     <tr>
-      <th scope="row">성공 응답에 본문 존재</th>
-      <td>예</td>
+      <th scope="row">Successful response has body</th>
+      <td>Yes</td>
     </tr>
     <tr>
-      <th scope="row">{{Glossary("Safe", "안전함")}}</th>
-      <td>아니오</td>
+      <th scope="row">{{Glossary("Safe/HTTP", "Safe")}}</th>
+      <td>No</td>
     </tr>
     <tr>
-      <th scope="row">{{Glossary("Idempotent", "멱등성")}}</th>
-      <td>아니오</td>
+      <th scope="row">{{Glossary("Idempotent")}}</th>
+      <td>No</td>
+    </tr>
+    <tr>
+      <th scope="row">{{Glossary("Cacheable")}}</th>
+      <td>Only if freshness information is included</td>
     </tr>
     <tr>
       <th scope="row">
-        {{Glossary("Cacheable", "캐시 가능")}}
+        Allowed in <a href="/en-US/docs/Learn/Forms">HTML forms</a>
       </th>
-      <td>신선도 정보 포함 시</td>
-    </tr>
-    <tr>
-      <th scope="row">HTML 양식에서 사용 가능</th>
-      <td>예</td>
+      <td>Yes</td>
     </tr>
   </tbody>
 </table>
 
-## 구문
+## Syntax
 
+```http
+POST /test
 ```
-POST /index.html
-```
 
-## 예제
+## Example
 
-다음은 `application/x-www-form-urlencoded` 콘텐츠 유형을 사용하는 간단한 형태의 양식 제출 예시입니다.
+A simple form using the default `application/x-www-form-urlencoded` content type:
 
-```html
-POST / HTTP/1.1
-Host: foo.com
+```http
+POST /test HTTP/1.1
+Host: foo.example
 Content-Type: application/x-www-form-urlencoded
-Content-Length: 13
+Content-Length: 27
 
-say=Hi&to=Mom
+field1=value1&field2=value2
 ```
 
-`multipart/form-data` 콘텐츠 유형을 사용하는 예시입니다.
+A form using the `multipart/form-data` content type:
 
-```
-POST /test.html HTTP/1.1
-Host: example.org
+```http
+POST /test HTTP/1.1
+Host: foo.example
 Content-Type: multipart/form-data;boundary="boundary"
 
 --boundary
@@ -91,16 +93,16 @@ value2
 --boundary--
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{HTTPHeader("Content-Type")}}
 - {{HTTPHeader("Content-Disposition")}}
-- {{httpmethod("GET")}}
+- {{HTTPMethod("GET")}}

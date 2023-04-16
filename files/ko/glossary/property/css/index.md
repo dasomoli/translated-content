@@ -1,28 +1,29 @@
 ---
 title: Property (CSS)
 slug: Glossary/Property/CSS
+page-type: glossary-definition
 ---
 
-**CSS 특성**은 연관된 값이 어떻게 브라우저가 요소를 표시하는지 한 측면을 정의하는 특성(색상처럼)입니다.
+A **CSS property** is a characteristic (like color) whose associated value defines one aspect of how the browser should display the element.
 
-아래는 CSS 규칙의 예시입니다.
+Here's an example of a CSS rule:
 
 ```css
-/* "div"는 모든 나누는 요소를 나타내는 선택자입니다 */
-/* 문서 내에서 해당 규칙에 따라 스타일이 지정됩니다 */
+/* "div" is a selector indicating that all the div elements */
+/* in the document will be styled by that rule */
 div {
-  /* 값이 "black"인 속성 "color"는 다음을 나타냅니다*/
-  /* 텍스트 색상은 검은색이 될 것입니다*/
+  /* The property "color" with the value "black" indicates */
+  /* that the text will have the color black */
   color: black;
 
-  /* 값이 "white"인 속성 "background-color"은 다음을 나타냅니다*/
-  /* 배경 색상 요소는 하얀색이 될 것입니다*/
+  /* The property "background-color" with the value "white" indicates */
+  /* that the background color of the elements will be white */
   background-color: white;
 }
 ```
 
-## 같이 보기
+## See also
 
-- [CSS 배우기](/ko/docs/Learn/CSS)
-- [MDN에서 CSS 참조](/ko/docs/Web/CSS/Reference)
-- [CSS 작업 그룹의 현재 작업](https://www.w3.org/Style/CSS/current-work)
+- [Learn CSS](/en-US/docs/Learn/CSS)
+- [The CSS reference on MDN](/en-US/docs/Web/CSS/Reference)
+- [The CSS Working Group current work](https://www.w3.org/Style/CSS/current-work)

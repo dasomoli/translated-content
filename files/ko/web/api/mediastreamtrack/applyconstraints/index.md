@@ -1,63 +1,76 @@
 ---
-title: MediaStreamTrack.applyConstraints()
+title: "MediaStreamTrack: applyConstraints() method"
+short-title: applyConstraints()
 slug: Web/API/MediaStreamTrack/applyConstraints
+page-type: web-api-instance-method
+browser-compat: api.MediaStreamTrack.applyConstraints
 ---
+
 {{APIRef("Media Capture and Streams")}}
 
-{{domxref("MediaStreamTrack")}} 인터페이스의 **`applyConstraints()`** 메서드는 트랙에 제약을 적용합니다. 제약을 통해 웹 사이트와 앱은 프레임 레이트, 해상도, 플래시 여부 등, 제약 가능한 속성을 자신이 바라는 이상적인 값과 허용 가능한 범위로 제한할 수 있습니다.
+The **`applyConstraints()`** method of the {{domxref("MediaStreamTrack")}} interface applies a set of constraints to the track; these constraints let the Web site or app establish ideal values and acceptable ranges of values for the constrainable properties of the track, such as frame rate, dimensions, echo cancellation, and so forth.
 
-제약을 통해 미디어를 여러분의 선호 가이드라인에 맞출 수 있습니다. 예를 들면 고해상도 비디오를 선호하되 네트워크 사용량 폭증을 막기 위해 다소 낮은 프레임 레이트를 요구할 수 있습니다. 또한 이상적인 크기나, 허용 가능한 크기의 범위를 지정할 수도 있습니다. [기능, 제약, 설정](/ko/docs/Web/API/Media_Streams_API/Constraints) 문서의 [제약 적용](/ko/docs/Web/API/Media_Streams_API/Constraints#Applying_constraints) 항목에서 원하는 제약을 적용하는 방법에 대해 더 알아보세요.
+Constraints can be used to ensure that the media meets certain guidelines you prefer.
+For example, you may prefer high-density video but require that the frame rate be a little low to help keep the data rate low enough not overtax the network.
+Constraints can also specify ideal and/or acceptable sizes or ranges of sizes.
+See [Applying constraints](/en-US/docs/Web/API/Media_Capture_and_Streams_API/Constraints#applying_constraints) in [Capabilities, constraints, and settings](/en-US/docs/Web/API/Media_Capture_and_Streams_API/Constraints) for more information on how to apply your preferred constraints.
 
-## 구문
+## Syntax
 
-```js
-const appliedPromise = track.applyConstraints([constraints])
+```js-nolint
+applyConstraints()
+applyConstraints(constraints)
 ```
 
-### 매개변수
+### Parameters
 
 - `constraints` {{optional_inline}}
-  - : 트랙에 적용할 제약 속성을 나열하는 {{domxref("MediaTrackConstraints")}} 객체. 기존에 존재하는 제약은 모두 새로운 값으로 대체하고, `constraints` 매개변수에 포함하지 않은 제약의 경우 기본값으로 돌아갑니다. 매개변수를 생략한 경우, 모든 사용자 지정 제약을 기본값으로 초기화합니다. `constraints` 객체는 {{jsxref("Promise")}}가 이행하기 전에 반드시 적용해야 하는 기본 제약 설정을 나타냅니다. 추가로, 반드시 동일한 조건이어야 함을 나타내는 고급 제약도 `MediaTrackConstrants` 객체 배열로 포함할 수 있습니다.
+  - : A {{domxref("MediaTrackConstraints")}} object listing the constraints to apply to the track's constrainable properties; any existing constraints are replaced with the new values specified, and any constrainable properties not included are restored to their default constraints.
+    If this parameter is omitted, all currently set custom constraints are cleared.
+    This object represents the basic set of constraints that must apply for the {{jsxref("Promise")}} to resolve.
+    The object may contain an advanced property containing an array of additional `MediaTrackConstraints` objects, which are treated as exact requires.
 
-### 반환 값
+### Return value
 
-제약을 성공적으로 적용한 경우 이행하는 {{jsxref("Promise")}}. 제약 적용에 실패한 경우, 이름이 `OverconstrainedError`인 {{domxref("MediaStreamError")}}로 거부합니다. 제약이 너무 엄격해서 일치하는 조건을 찾지 못한 경우 발생할 수 있습니다.
+A {{jsxref("Promise")}} which resolves when the constraints have been successfully applied.
+If the constraints cannot be applied, the promise is rejected with a {{domxref("OverconstrainedError")}} that is a {{domxref("DOMException")}} whose name is `OverconstrainedError` with additional parameters, and, to indicate that the constraints could not be met.
+This can happen if the specified constraints are too strict to find a match when attempting to configure the track.
 
-## 예제
+## Examples
 
-다음 코드는 기본과 고급 제약을 지정하는 법을 보입니다. 우선 페이지와 앱이 640에서 1280의 너비, 480에서 720의 높이가 필요하다고 지정합니다. 이때 뒤쪽의 큰 수를 선호하는 값으로 나타냅니다. 고급 제약은 더 나아가 1920\*1280의 이미지를 선호하며, 이 크기를 제공할 수 없는 경우 가로세로비 1.333을 요구합니다. 이렇게 여러 개의 제약을 두는 것을 명세는 "백오프 전략"이라고 말합니다.
+The following shows how to specify a basic and advanced set of constraints.
+It specifies that the page or web app needs a width between 640 and 1280 and a height between 480 and 720, with the later number in each pair being preferred.
+The advanced property further specifies that an image size of 1920 by 1280 is the preferred or an aspect ratio of 1.333 if that is not available.
+Note that these constraints also illustrate what the spec refers to as a _backoff strategy_.
 
 ```js
 const constraints = {
-  width: {min: 640, ideal: 1280},
-  height: {min: 480, ideal: 720},
-  advanced: [
-    {width: 1920, height: 1280},
-    {aspectRatio: 1.333}
-  ]
+  width: { min: 640, ideal: 1280 },
+  height: { min: 480, ideal: 720 },
+  advanced: [{ width: 1920, height: 1280 }, { aspectRatio: 1.333 }],
 };
 
-navigator.mediaDevices.getUserMedia({ video: true })
-.then(mediaStream => {
+navigator.mediaDevices.getUserMedia({ video: true }).then((mediaStream) => {
   const track = mediaStream.getVideoTracks()[0];
-  track.applyConstraints(constraints)
-  .then(() => {
-    // Do something with the track such as using the Image Capture API.
-  })
-  .catch(e => {
-    // The constraints could not be satisfied by the available devices.
-  });
+  track
+    .applyConstraints(constraints)
+    .then(() => {
+      // Do something with the track such as using the Image Capture API.
+    })
+    .catch((e) => {
+      // The constraints could not be satisfied by the available devices.
+    });
 });
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [MediaStream Image Capture API](/ko/docs/Web/API/MediaStream_Image_Capture_API)
+- [MediaStream Image Capture API](/en-US/docs/Web/API/MediaStream_Image_Capture_API)

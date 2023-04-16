@@ -1,68 +1,75 @@
 ---
 title: width
 slug: Web/CSS/width
+page-type: css-property
+browser-compat: css.properties.width
 ---
 
 {{CSSRef}}
 
-CSS **`width`** 속성은 요소의 너비를 설정합니다. 기본값은 콘텐츠 영역의 너비이지만, {{cssxref("box-sizing")}}이 `border-box`라면 테두리 영역의 너비를 설정합니다.
+The **`width`** CSS property sets an element's width. By default, it sets the width of the [content area](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model#content_area), but if {{cssxref("box-sizing")}} is set to `border-box`, it sets the width of the [border area](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model#border_area).
 
 {{EmbedInteractiveExample("pages/css/width.html")}}
 
-{{cssxref("min-width")}}와 {{cssxref("max-width")}} 속성은 `width`를 덮어씁니다.
+The {{cssxref("min-width")}} and {{cssxref("max-width")}} properties override `width`.
 
-## 구문
+## Syntax
 
 ```css
-/* <length> */
+/* <length> values */
 width: 300px;
 width: 25em;
 
-/* <percentage> */
+/* <percentage> value */
 width: 75%;
 
-/* 키워드 */
-width: 25em border-box;
-width: 75% content-box;
+/* Keyword values */
 width: max-content;
 width: min-content;
-width: available;
 width: fit-content(20em);
 width: auto;
 
-/* 전역 값 */
+/* Global values */
 width: inherit;
 width: initial;
+width: revert;
+width: revert-layer;
 width: unset;
 ```
 
-`width` 속성은 다음과 같이 지정합니다.
-
-- [`min-content`](#min-content), [`max-content`](#max-content), [`fit-content`](#fit-content), [`auto`](#auto) 키워드 중 하나.
-- 하나의 [`<length>`](#length) 또는 [`<percentage>`](#percentage) 값.
-
-### 값
+### Values
 
 - {{cssxref("&lt;length&gt;")}}
-  - : 너비의 절댓값.
+  - : Defines the width as an absolute value.
 - {{cssxref("&lt;percentage&gt;")}}
-  - [: 컨테이닝 블록](/ko/docs/Web/CSS/All_About_The_Containing_Block) 너비의 백분율. 컨테이닝 블록이 요소 너비에 영향을 받는 경우의 결과 레이아웃은 정해지지 않습니다.
+  - : Defines the width as a percentage of the containing block's width.
 - `auto`
-  - : 요소의 너비를 브라우저가 계산해 지정합니다.
+  - : The browser will calculate and select a width for the specified element.
 - `max-content`
-  - : 본질적인 선호 너비.
+  - : The intrinsic preferred width.
 - `min-content`
-  - : 본질적인 최소 너비.
-- `fit-content({{cssxref("&lt;length-percentage&gt;")}}`
-  - : `min(max-content, max(min-content, <length-percentage>))`의 결과.
+  - : The intrinsic minimum width.
+- `fit-content({{cssxref("&lt;length-percentage&gt;")}})`
+  - : Uses the fit-content formula with the available space replaced by the specified argument, i.e. `min(max-content, max(min-content, <length-percentage>))`.
 
-### 형식 구문
+## Accessibility concerns
+
+Ensure that elements set with a `width` aren't truncated and/or don't obscure other content when the page is zoomed to increase text size.
+
+- [MDN Understanding WCAG, Guideline 1.4 explanations](/en-US/docs/Web/Accessibility/Understanding_WCAG/Perceivable#guideline_1.4_make_it_easier_for_users_to_see_and_hear_content_including_separating_foreground_from_background)
+- [Understanding Success Criterion 1.4.4 | W3C Understanding WCAG 2.0](https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-scale.html)
+
+## Formal definition
+
+{{CSSInfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 기본 너비
+### Default width
 
 ```css
 p.goldie {
@@ -71,12 +78,12 @@ p.goldie {
 ```
 
 ```html
-<p class="goldie">모질라 커뮤니티는 많은 수의 대단한 소프트웨어를 제작합니다.</p>
+<p class="goldie">The Mozilla community produces a lot of great software.</p>
 ```
 
-{{EmbedLiveSample('기본_너비', '500px', '64px')}}
+{{EmbedLiveSample('Default_width', '500px', '64px')}}
 
-### `px`과 `em`
+### Example using pixels and ems
 
 ```css
 .px_length {
@@ -95,13 +102,13 @@ p.goldie {
 ```
 
 ```html
-<div class="px_length">픽셀 너비</div>
-<div class="em_length">em 너비</div>
+<div class="px_length">Width measured in px</div>
+<div class="em_length">Width measured in em</div>
 ```
 
-{{EmbedLiveSample('px과_em', '500px', '64px')}}
+{{EmbedLiveSample('Example using pixels and ems', '500px', '64px')}}
 
-### 백분율
+### Example with percentage
 
 ```css
 .percent {
@@ -112,61 +119,58 @@ p.goldie {
 ```
 
 ```html
-<div class="percent">백분율 너비</div>
+<div class="percent">Width in percentage</div>
 ```
 
-{{EmbedLiveSample('백분율', '500px', '64px')}}
+{{EmbedLiveSample('Example using percentage', '500px', '64px')}}
 
-### `max-content`
+### Example using "max-content"
 
 ```css
 p.maxgreen {
   background: lightgreen;
-  width: intrinsic;           /* Safari/WebKit uses a non-standard name */
-  width: -moz-max-content;    /* Firefox/Gecko */
+  width: intrinsic; /* Safari/WebKit uses a non-standard name */
+  width: -moz-max-content; /* Firefox/Gecko */
   width: -webkit-max-content; /* Chrome */
   width: max-content;
 }
 ```
 
 ```html
-<p class="maxgreen">Mozilla 커뮤니티는 많은 수의 대단한 소프트웨어를 제작합니다.</p>
+<p class="maxgreen">The Mozilla community produces a lot of great software.</p>
 ```
 
-{{EmbedLiveSample('max-content_2', '500px', '64px')}}
+{{EmbedLiveSample('Example using "max-content"', '500px', '64px')}}
 
-### `min-content`
+### Example using "min-content"
 
 ```css
 p.minblue {
   background: lightblue;
-  width: -moz-min-content;    /* Firefox */
+  width: -moz-min-content; /* Firefox */
   width: -webkit-min-content; /* Chrome */
   width: min-content;
 }
 ```
 
 ```html
-<p class="minblue">Mozilla 커뮤니티는 많은 수의 대단한 소프트웨어를 제작합니다.</p>
+<p class="minblue">The Mozilla community produces a lot of great software.</p>
 ```
 
-{{EmbedLiveSample('min-content_2', '500px', '155px')}}
+{{EmbedLiveSample('Example using "min-content"', '500px', '155px')}}
 
-## 접근성 고려사항
+## Specifications
 
-페이지를 확대하거나 글꼴 크기를 늘렸을 때 `width` 속성을 지정한 요소가 잘리거나 다른 내용을 가리지 않도록 확인하세요.
+{{Specifications}}
 
-- [MDN Understanding WCAG, Guideline 1.4 explanations](/ko/docs/Web/Accessibility/Understanding_WCAG/Perceivable#Guideline_1.4_Make_it_easier_for_users_to_see_and_hear_content_including_separating_foreground_from_background)
-- [Understanding Success Criterion 1.4.4 | Understanding WCAG 2.0](https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-scale.html)
-
-## 명세
-
-{{Specifications}}{{cssinfo}}
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [박스 모델](/ko/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model), {{cssxref("height")}}, {{cssxref("box-sizing")}}, {{cssxref("min-width")}}, {{cssxref("max-width")}}
+- [The box model](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
+- {{cssxref("height")}}
+- {{cssxref("box-sizing")}}
+- {{cssxref("min-width")}}, {{cssxref("max-width")}}
+- The mapped logical properties: {{cssxref("block-size")}}, {{cssxref("inline-size")}}

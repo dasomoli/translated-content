@@ -1,34 +1,34 @@
 ---
 title: clear
 slug: Web/CSS/clear
+page-type: css-property
+browser-compat: css.properties.clear
 ---
 
 {{CSSRef}}
 
-**`clear`** [CSS](/ko/docs/Web/CSS) 속성은 요소가 선행 [부동](/ko/docs/Web/CSS/float)(floating) 요소 다음일 수 있는지 또는 그 아래로 내려가(해제되어(cleared))야 하는 지를 지정합니다. `clear` 속성은 부동 및 비부동 요소 모두에 적용됩니다.
+The **`clear`** [CSS](/en-US/docs/Web/CSS) property sets whether an element must be moved below (cleared) [floating](/en-US/docs/Web/CSS/float) elements that precede it. The `clear` property applies to floating and non-floating elements.
 
 {{EmbedInteractiveExample("pages/css/clear.html")}}
 
-비부동 블록에 적용되는 경우, 모든 관련 부동체(floats)의 [마진 경계](/ko/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model) 아래로까지 요소의 [보더 경계](/ko/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)를 아래로 내립니다. 이 움직임(이 일어나는 경우)은 [마진 상쇄](/ko/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)가 일어나지 않도록 합니다.
+When applied to non-floating blocks, it moves the [border edge](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model#border_area) of the element down until it is below the [margin edge](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model#margin_area) of all relevant floats. The non-floated block's top margin collapses.
 
-부동 요소에 적용되는 경우, 모든 관련 부동체의 [마진 경계](/ko/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model) 아래로 요소의 [마진 경계](/ko/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)를 옮깁니다. 이는 나중(later) 부동체의 위치에 영향을 줍니다, 나중 부동체가 앞선(earlier) 부동체보다 높게 위치될 수 없기에.
+Vertical margins between two floated elements on the other hand will not collapse. When applied to floating elements, the margin edge of the bottom element is moved below the margin edge of all relevant floats. This affects the position of later floats, since later floats cannot be positioned higher than earlier ones.
 
-해제(cleared)와 관련된 부동체는 같은 [블록 형성 문맥](/ko/docs/Web/Guide/CSS/Block_formatting_context) 내 앞선 부동체입니다.
+The floats that are relevant to be cleared are the earlier floats within the same [block formatting context](/en-US/docs/Web/Guide/CSS/Block_formatting_context).
 
-> **참고:** **주의:** 요소가 그 안에 모든 부동 요소를 포함하고 싶은 경우, 컨테이너도 부동하거나 컨테이너의 {{cssxref("::after")}} 대체 [가상 요소](/ko/docs/Web/CSS/Pseudo-elements)에 `clear`를 쓸 수 있습니다.
+> **Note:** If an element contains only floated elements, its height collapses to nothing. If you want it to always be able to resize, so that it contains floating elements inside it, set the value of the element's [`display`](/en-US/docs/Web/CSS/display) property to [`flow-root`](/en-US/docs/Web/CSS/display#flow-root).
 >
 > ```css
-> #container::after {
->    content: "";
->    display: block;
->    clear: both;
+> #container {
+>   display: flow-root;
 > }
 > ```
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
 clear: none;
 clear: left;
 clear: right;
@@ -36,28 +36,34 @@ clear: both;
 clear: inline-start;
 clear: inline-end;
 
-/* 전역 값 */
+/* Global values */
 clear: inherit;
 clear: initial;
+clear: revert;
+clear: revert-layer;
 clear: unset;
 ```
 
-### 값
+### Values
 
 - `none`
-  - : 요소가 지난 부동 요소를 해제하기 위해 아래로 이동되지 *않음*을 나타내는 키워드입니다.
+  - : Is a keyword indicating that the element is _not_ moved down to clear past floating elements.
 - `left`
-  - : 요소가 지난 _left_ 부동체를 해제하기 위해 아래로 이동됨을 나타내는 키워드입니다.
+  - : Is a keyword indicating that the element is moved down to clear past _left_ floats.
 - `right`
-  - : 요소가 지난 _right_ 부동체를 해제하기 위해 아래로 이동됨을 나타내는 키워드입니다.
+  - : Is a keyword indicating that the element is moved down to clear past _right_ floats.
 - `both`
-  - : 요소가 지난 _both_ left 및 right 부동체를 해제하기 위해 아래로 이동됨을 나타내는 키워드입니다.
+  - : Is a keyword indicating that the element is moved down to clear past _both_ left and right floats.
 - `inline-start`
-  - : 요소가 _포함 블록의 시작 쪽_ 부동체를 해제하기 위해 아래로 이동됨을 나타내는 키워드입니다, 즉 ltr 스크립트의 _left_ 부동체 및 rtl 스크립트의 _right_ 부동체.
+  - : Is a keyword indicating that the element is moved down to clear floats on _start side of its containing block_, that is the _left_ floats on ltr scripts and the _right_ floats on rtl scripts.
 - `inline-end`
-  - : 요소가 _포함 블록의 끝 쪽_ 부동체를 해제하기 위해 아래로 이동됨을 나타내는 키워드입니다, 즉 ltr 스크립트의 _right_ 부동체 및 rtl 스크립트의 _left_ 부동체.
+  - : Is a keyword indicating that the element is moved down to clear floats on _end side of its containing block_, that is the _right_ floats on ltr scripts and the _left_ floats on rtl scripts.
 
-### 형식 구문
+## Formal definition
+
+{{cssinfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
@@ -69,7 +75,10 @@ clear: unset;
 
 ```html
 <div class="wrapper">
-  <p class="black">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus sit amet diam. Duis mattis varius dui. Suspendisse eget dolor.</p>
+  <p class="black">
+    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus sit amet
+    diam. Duis mattis varius dui. Suspendisse eget dolor.
+  </p>
   <p class="red">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>
   <p class="left">This paragraph clears left.</p>
 </div>
@@ -78,9 +87,9 @@ clear: unset;
 #### CSS
 
 ```css
-.wrapper{
-  border:1px solid black;
-  padding:10px;
+.wrapper {
+  border: 1px solid black;
+  padding: 10px;
 }
 .left {
   border: 1px solid black;
@@ -97,7 +106,7 @@ clear: unset;
   float: left;
   margin: 0;
   background-color: pink;
-  width:20%;
+  width: 20%;
 }
 p {
   width: 50%;
@@ -112,7 +121,10 @@ p {
 
 ```html
 <div class="wrapper">
-  <p class="black">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus sit amet diam. Duis mattis varius dui. Suspendisse eget dolor.</p>
+  <p class="black">
+    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus sit amet
+    diam. Duis mattis varius dui. Suspendisse eget dolor.
+  </p>
   <p class="red">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>
   <p class="right">This paragraph clears right.</p>
 </div>
@@ -121,9 +133,9 @@ p {
 #### CSS
 
 ```css
-.wrapper{
-  border:1px solid black;
-  padding:10px;
+.wrapper {
+  border: 1px solid black;
+  padding: 10px;
 }
 .right {
   border: 1px solid black;
@@ -134,13 +146,13 @@ p {
   margin: 0;
   background-color: black;
   color: #fff;
-  width:20%;
+  width: 20%;
 }
 .red {
   float: right;
   margin: 0;
   background-color: pink;
-  width:20%;
+  width: 20%;
 }
 p {
   width: 50%;
@@ -155,8 +167,15 @@ p {
 
 ```html
 <div class="wrapper">
-  <p class="black">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus sit amet diam. Duis mattis varius dui. Suspendisse eget dolor. Fusce pulvinar lacus ac dui.</p>
-  <p class="red">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus sit amet diam. Duis mattis varius dui. Suspendisse eget dolor.</p>
+  <p class="black">
+    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus sit amet
+    diam. Duis mattis varius dui. Suspendisse eget dolor. Fusce pulvinar lacus
+    ac dui.
+  </p>
+  <p class="red">
+    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus sit amet
+    diam. Duis mattis varius dui. Suspendisse eget dolor.
+  </p>
   <p class="both">This paragraph clears both.</p>
 </div>
 ```
@@ -164,9 +183,9 @@ p {
 #### CSS
 
 ```css
-.wrapper{
-  border:1px solid black;
-  padding:10px;
+.wrapper {
+  border: 1px solid black;
+  padding: 10px;
 }
 .both {
   border: 1px solid black;
@@ -177,13 +196,13 @@ p {
   margin: 0;
   background-color: black;
   color: #fff;
-  width:20%;
+  width: 20%;
 }
 .red {
   float: right;
   margin: 0;
   background-color: pink;
-  width:20%;
+  width: 20%;
 }
 p {
   width: 45%;
@@ -192,11 +211,11 @@ p {
 
 {{ EmbedLiveSample('clear_both','100%','300') }}
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

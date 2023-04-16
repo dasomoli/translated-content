@@ -1,37 +1,35 @@
 ---
-title: OffscreenCanvas.height
+title: "OffscreenCanvas: height property"
+short-title: height
 slug: Web/API/OffscreenCanvas/height
+page-type: web-api-instance-property
+browser-compat: api.OffscreenCanvas.height
 ---
 
-{{APIRef("Canvas API")}} {{SeeCompatTable}}
+{{APIRef("Canvas API")}}
 
-**`height`** 프로퍼티는 {{domxref("OffscreenCanvas")}} 객체에 할당된 높이를 반환합니다.
+The **`height`** property returns and sets the height of an {{domxref("OffscreenCanvas")}} object.
 
-## 구문
+## Value
 
-```js
-var pxl = offscreen.height;
-offscreen.height = pxl;
-```
+## Examples
 
-## 예시
-
-새로운 offscreen 캔버스를 생성하고 높이를 설정하거나 반환합니다.
+Creating a new offscreen canvas and returning or setting the height of the offscreen canvas:
 
 ```js
-var offscreen = new OffscreenCanvas(256, 256);
+const offscreen = new OffscreenCanvas(256, 256);
 offscreen.height; // 256
 offscreen.height = 512;
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 더 보기
+## See also
 
-- {{domxref("OffscreenCanvas")}}, 프로퍼티가 속한 인터페이스
+- {{domxref("OffscreenCanvas")}}, the interface this property belongs to.

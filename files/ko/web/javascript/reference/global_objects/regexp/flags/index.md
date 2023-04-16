@@ -1,42 +1,42 @@
 ---
 title: RegExp.prototype.flags
 slug: Web/JavaScript/Reference/Global_Objects/RegExp/flags
-l10n:
-  sourceCommit: c4e3558ee1045803df4a685f11f94dca273cd5fe
+page-type: javascript-instance-accessor-property
+browser-compat: javascript.builtins.RegExp.flags
 ---
 
 {{JSRef}}
 
-**`flags`** 접근자 속성은 현재 정규식 객체의 [플래그](/ko/docs/Web/JavaScript/Guide/Regular_Expressions#advanced_searching_with_flags)를 나타냅니다.
+The **`flags`** accessor property of {{jsxref("RegExp")}} instances returns the [flags](/en-US/docs/Web/JavaScript/Guide/Regular_expressions#advanced_searching_with_flags) of this regular expression.
 
 {{EmbedInteractiveExample("pages/js/regexp-prototype-flags.html")}}
 
-## 설명
+## Description
 
-`RegExp.prototype.flags`는 문자열입니다. `flags` 속성의 플래그는 왼쪽에서 오른쪽으로 알파벳 순으로 정렬됩니다(예를 들어 `"dgimsuy"`). 실제로 다른 플래그 접근자([`hasIndices`](/ko/docs/Web/JavaScript/Reference/Global_Objects/RegExp/hasIndices), [`global`](/ko/docs/Web/JavaScript/Reference/Global_Objects/RegExp/global), 등등)를 하나씩 호출하고 결과를 연결합니다.
+`RegExp.prototype.flags` has a string as its value. Flags in the `flags` property are sorted alphabetically (from left to right, e.g. `"dgimsuy"`). It actually invokes the other flag accessors ([`hasIndices`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/hasIndices), [`global`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/global), etc.) one-by-one and concatenates the results.
 
-내장된 모든 함수는 개별 플래그 접근자를 읽는 대신 `flags` 속성을 읽습니다.
+All built-in functions read the `flags` property instead of reading individual flag accessors.
 
-`flags`의 set 접근자는 정의되지 않았습니다. 이 속성을 직접 변경할 수 없습니다.
+The set accessor of `flags` is `undefined`. You cannot change this property directly.
 
-## 예제
+## Examples
 
-### flags 사용하기
+### Using flags
 
 ```js-nolint
 /foo/ig.flags; // "gi"
 /bar/myu.flags; // "muy"
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - [Polyfill of `RegExp.prototype.flags` in `core-js`](https://github.com/zloirock/core-js#ecmascript-string-and-regexp)
 - {{JSxRef("RegExp.prototype.source")}}

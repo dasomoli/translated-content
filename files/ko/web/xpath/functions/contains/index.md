@@ -5,29 +5,29 @@ slug: Web/XPath/Functions/contains
 
 {{ XsltRef() }}
 
-`contains` 함수는 첫 번째 인수 문자열이 두 번째 인수 문자열을 포함하는지 결정하고 부울값 true 또는 false를 반환합니다.
+The `contains` function determines whether the first argument string contains the second argument string and returns boolean true or false.
 
-### 문법
+### Syntax
 
 ```
-contains(haystack ,needle )
+contains(haystack, needle)
 ```
 
-### 인수
+### Arguments
 
 - `haystack`
-  - : 찾을 문자열
+  - : The string to be searched
 - `needle`
-  - : 첫 번째 인수(`haystack`)에서 찾을 부분 문자열
+  - : The string to look for as a substring of `haystack`
 
-### 반환
+### Returns
 
-첫 번째 인수(`haystack`)가 두 번째 인수(`needle`)를 포함하면 `true`. 그렇지 않으면, `false`.
+`true` if `haystack` contains `needle`. Otherwise, `false`.
 
-### 정의
+### Defined
 
-[XPath 1.0 4.2](http://www.w3.org/TR/xpath#function-contains)
+[XPath 1.0 4.2](https://www.w3.org/TR/1999/REC-xpath-19991116/#function-contains)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

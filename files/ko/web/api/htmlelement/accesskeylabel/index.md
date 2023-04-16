@@ -1,34 +1,36 @@
 ---
-title: accessKeyLabel
+title: "HTMLElement: accessKeyLabel property"
+short-title: accessKeyLabel
 slug: Web/API/HTMLElement/accessKeyLabel
+page-type: web-api-instance-property
+browser-compat: api.HTMLElement.accessKeyLabel
 ---
 
 {{ APIRef("HTML DOM") }}
 
-**`HTMLElement.accessKeyLabel`** 읽기 전용 속성은 엘리먼트의 할당된 접근키를 나타내는 {{jsxref("String")}} 를 반환합니다. 존재하지 않는 경우 빈 문자열을 반환합니다.
+The **`HTMLElement.accessKeyLabel`**
+read-only property returns a string containing the element's
+browser-assigned access key (if any); otherwise it returns an empty string.
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 label = element.accessKeyLabel
 ```
 
-## 예시
+## Example
 
 ### JavaScript
 
 ```js
-var node = document.getElementById('btn1');
-if (node.accessKeyLabel) {
-  node.title += ' [' + node.accessKeyLabel + ']';
-} else {
-  node.title += ' [' + node.accessKey + ']';
-}
+const btn = document.getElementById("btn1");
+const shortcutLabel = btn.accessKeyLabel || btn.accessKey;
+btn.title += ` [${shortcutLabel.toUpperCase()}]`;
 
-node.onclick = function () {
-  var p = document.createElement('p');
-  p.textContent = 'Clicked!';
-  node.parentNode.appendChild(p);
+btn.onclick = () => {
+  const feedback = document.createElement("output");
+  feedback.textContent = "Pressed!";
+  btn.insertAdjacentElement("afterend", feedback);
 };
 ```
 
@@ -42,15 +44,16 @@ node.onclick = function () {
 
 {{ EmbedLiveSample('Example') }}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 보기
+## See also
 
-- {{domxref("element.accessKey")}}
-- [accesskey](/ko/docs/Web/HTML/Global_attributes/accesskey) 전역 속성.
+- {{domxref("HTMLElement.accessKey")}}
+- The [accesskey](/en-US/docs/Web/HTML/Global_attributes/accesskey) global
+  attribute.

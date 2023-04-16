@@ -1,119 +1,175 @@
 ---
-title: <time>
+title: "<time>: The (Date) Time element"
 slug: Web/HTML/Element/time
+page-type: html-element
+browser-compat: html.elements.time
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<time>` 요소**는 시간의 특정 지점 또는 구간을 나타냅니다. `datetime` 특성의 값을 지정해 보다 적절한 검색 결과나, 알림 같은 특정 기능을 구현할 때 사용할 수 있습니다.
+The **`<time>`** [HTML](/en-US/docs/Web/HTML) element represents a specific period in time. It may include the `datetime` attribute to translate dates into machine-readable format, allowing for better search engine results or custom features such as reminders.
 
-`<time>` 요소가 나타낼 수 있는 시간은 다음과 같습니다.
+It may represent one of the following:
 
-- 24시간 표기법 시계의 시간.
-- 정확한 [그레고리력](https://ko.wikipedia.org/wiki/%EA%B7%B8%EB%A0%88%EA%B3%A0%EB%A6%AC%EB%A0%A5) 날짜. (시간대 정보 포함 가능)
-- [유효한 시간 범위](https://www.w3.org/TR/2014/REC-html5-20141028/infrastructure.html#valid-duration-string).
+- A time on a 24-hour clock.
+- A precise date in the [Gregorian calendar](https://en.wikipedia.org/wiki/Gregorian_calendar) (with optional time and timezone information).
+- [A valid time duration](https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#valid-duration-string).
 
 {{EmbedInteractiveExample("pages/tabbed/time.html", "tabbed-shorter")}}
+
+## Attributes
+
+Like all other HTML elements, this element supports the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
+
+- `datetime`
+  - : This attribute indicates the time and/or date of the element and must be in one of the formats described below.
+
+## Usage notes
+
+This element is for presenting dates and times in a machine-readable format. For example, this can help a user agent offer to add an event to a user's calendar.
+
+This element should not be used for dates prior to the introduction of the Gregorian calendar (due to complications in calculating those dates).
+
+The _datetime value_ (the machine-readable value of the datetime) is the value of the element's `datetime` attribute, which must be in the proper format (see below). If the element does not have a `datetime` attribute, **it must not have any element descendants**, and the _datetime value_ is the element's child text content.
+
+### Valid datetime values
+
+- a valid year string
+  - : `2011`
+- a valid month string
+  - : `2011-11`
+- a valid date string
+  - : `2011-11-18`
+- a valid yearless date string
+  - : `11-18`
+- a valid week string
+  - : `2011-W47`
+- a valid time string
+
+  - : `14:54`
+
+    `14:54:39`
+
+    `14:54:39.929`
+
+- a valid local date and time string
+
+  - : `2011-11-18T14:54:39.929`
+
+    `2011-11-18 14:54:39.929`
+
+- a valid global date and time string
+
+  - : `2011-11-18T14:54:39.929Z`
+
+    `2011-11-18T14:54:39.929-0400`
+
+    `2011-11-18T14:54:39.929-04:00`
+
+    `2011-11-18 14:54:39.929Z`
+
+    `2011-11-18 14:54:39.929-0400`
+
+    `2011-11-18 14:54:39.929-04:00`
+
+- a valid duration string
+  - : `PT4H18M3S`
+
+## Examples
+
+### Simple example
+
+#### HTML
+
+```html
+<p>The concert starts at <time datetime="2018-07-07T20:00:00">20:00</time>.</p>
+```
+
+#### Result
+
+{{EmbedLiveSample('Simple_example', 250, 80)}}
+
+### `datetime` example
+
+#### HTML
+
+```html
+<p>
+  The concert took place on <time datetime="2001-05-15T19:00">May 15</time>.
+</p>
+```
+
+#### Result
+
+{{EmbedLiveSample('datetime_example', 250, 80)}}
+
+## Technical summary
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
       </th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
         >,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >, 뚜렷한 콘텐츠.
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >, palpable content.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >Phrasing content</a
         >.
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
+      <th scope="row">Tag omission</th>
       <td>{{no_tag_omission}}</td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Permitted parents</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >를 허용하는 모든 요소.
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>모두</td>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
+          >No corresponding role</a
+        >
+      </td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>Any</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLTimeElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
-
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)을 포함합니다.
-
-- {{htmlattrdef("datetime")}}
-  - : 요소의 시간 또는 날짜 값. 아래에서 설명하는 형식 중 하나여야 합니다.
-
-## 사용 일람
-
-`<time>` 요소는 기계가 읽을 수 있는 형태로 날짜와 시간을 표현할 때 사용합니다. 예를 들어, 일정의 경우 사용자 에이전트가 자동으로 달력에 일정을 추가할 수 있도록 정확한 일시를 나타낼 수 있습니다.
-
-복잡한 계산상 문제로 인해, 그레고리력의 도입 이전 시간을 나타낼 때 사용해서는 안됩니다.
-
-기계가 읽을 날짜와 시간 값은 `datetime` 특성의 값으로, 아래의 적절한 형식 중 하나여야 합니다. `datetime` 특성이 없는 경우 **어떠한 자식 요소도 두어서는 안되며**, 요소의 텍스트 콘텐츠를 `datetime` 특성 값으로 간주합니다.
-
-### 유효한 `datetime` 값
-
-<dl><dt>유효한 연도 문자열</dt><dd><code>2011</code></dd><dt>유효한 연-월 문자열</dt><dd><code>2011-11</code></dd><dt>유효한 연-월-일 문자열</dt><dd><code>2011-11-18</code></dd><dt>유효한 월-일 문자열</dt><dd><code>11-18</code></dd><dt>유효한 주차 문자열</dt><dd><code>2011-W47</code></dd><dt>유효한 시간 문자열</dt><dd><code>14:54</code></dd><dd><code>14:54:39</code></dd><dd><code>14:54:39.929</code></dd><dt>유효한 현지 날짜 및 시간 문자열</dt><dd><code>2011-11-18T14:54:39.929</code></dd><dd><code>2011-11-18 14:54:39.929</code></dd><dt>유효한 국제 날짜 및 시간 문자열</dt><dd><code>2011-11-18T14:54:39.929Z</code></dd><dd><code>2011-11-18T14:54:39.929-0400</code></dd><dd><code>2011-11-18T14:54:39.929-04:00</code></dd><dd><code>2011-11-18 14:54:39.929Z</code></dd><dd><code>2011-11-18 14:54:39.929-0400</code></dd><dd><code>2011-11-18 14:54:39.929-04:00</code></dd><dt>유효한 기간 문자열</dt><dd><code>PT4H18M3S</code></dd></dl>
-
-## 예제
-
-### 간단한 예제
-
-#### HTML
-
-```html
-<p>The concert starts at <time>20:00</time>.</p>
-```
-
-#### 결과
-
-{{ EmbedLiveSample('간단한_예제', 250, 60) }}
-
-### `datetime` 예제
-
-#### HTML
-
-```html
-<p>The concert took place on <time datetime="2001-05-15 19:00">May 15</time>.</p>
-```
-
-#### 결과
-
-{{ EmbedLiveSample('datetime_예제', 250, 60) }}
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 날짜와 시간 외 다른 종류의 값을 나타낼 수 있는 {{htmlelement("data")}} 요소.
+- The {{HTMLElement("data")}} element, allowing to signal other kind of values.

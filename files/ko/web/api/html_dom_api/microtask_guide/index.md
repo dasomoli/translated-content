@@ -1,151 +1,156 @@
 ---
-title: JavaScript의 queueMicrotask()와 함께 마이크로태스크 사용하기
+title: Using microtasks in JavaScript with queueMicrotask()
 slug: Web/API/HTML_DOM_API/Microtask_guide
+page-type: guide
 ---
 
 {{APIRef("HTML DOM")}}
 
-**마이크로태스크**는 자신을 생성한 함수 또는 프로그램이 종료됐고 [JavaScript 실행 스택](/ko/docs/Web/JavaScript/EventLoop#스택)이 빈 후에, 그러나 {{glossary("user agent", "사용자 에이전트")}}가 스크립트 실행 환경을 운용하기 위해 사용하는 이벤트 루프로 통제권을 넘기기는 전에 실행되는 짧은 함수입니다.
+A **microtask** is a short function which is executed after the function or program which created it exits _and_ only if the [JavaScript execution stack](/en-US/docs/Web/JavaScript/Event_loop#stack) is empty, but before returning control to the event loop being used by the {{Glossary("user agent")}} to drive the script's execution environment.
 
-이때의 이벤트 루프는 브라우저의 주 이벤트 루프 또는 [웹 워커](/ko/docs/Web/API/Web_Workers_API)를 구동하는 이벤트 루프입니다. 따라서 마이크로태스크를 이용하면 다른 스크립트의 실행을 방해할 위험을 감수하지 않으면서도, 사용자 에이전트가 반응하기 전에 주어진 함수를 실행할 수 있습니다.
+This event loop may be either the browser's main event loop or the event loop driving a [web worker](/en-US/docs/Web/API/Web_Workers_API). This lets the given function run without the risk of interfering with another script's execution, yet also ensures that the microtask runs before the user agent has the opportunity to react to actions taken by the microtask.
 
-JavaScript [프로미스](/ko/docs/Web/JavaScript/Reference/Global_Objects/Promise)와 [Mutation Observer API](/ko/docs/Web/API/MutationObserver) 둘 다 마이크로태스크 큐를 사용해 콜백을 호출하지만, 때로는 현재 이벤트 루프가 정리될 때까지 작업을 미루는 기능이 직접 필요할 때가 있습니다. 그래서 서드파티 라이브러리, 프레임워크, 폴리필에서 마이크로태스크를 사용할 수 있도록, {{domxref("Window")}}와 {{domxref("Worker")}} 인터페이스는 {{domxref("queueMicrotask()")}} 메서드를 노출하고 있습니다.
+JavaScript [promises](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) and the [Mutation Observer API](/en-US/docs/Web/API/MutationObserver) both use the microtask queue to run their callbacks, but there are other times when the ability to defer work until the current event loop pass is wrapping up. In order to allow microtasks to be used by third-party libraries, frameworks, and polyfills, the {{domxref("queueMicrotask()")}} method is exposed on the {{domxref("Window")}} and {{domxref("Worker")}} interfaces.
 
-## 태스크 vs 마이크로태스크
+## Tasks vs. microtasks
 
-마이크로태스크를 올바르게 논하려면, 우선 JavaScript에서의 태스크란 무엇인지, 그리고 마이크로태스크가 태스크와 어떻게 다른지 아는 것이 유용합니다. 다음은 짧고 간략한 설명이지만, 보다 자세히 알아보려면 [심층 탐구: 마이크로태스크와 JavaScript 런타임 환경](/ko/docs/Web/API/HTML_DOM_API/Microtask_guide/In_depth) 글을 확인해보세요.
+To properly discuss microtasks, it's first useful to know what a JavaScript task is and how microtasks differ from tasks. This is a quick, simplified explanation, but if you would like more details, you can read the information in the article [In depth: Microtasks and the JavaScript runtime environment](/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide/In_depth).
 
-### 태스크
+### Tasks
 
-**태스크**는 프로그램 초기 시작, 이벤트 콜백 실행, 인터벌과 타임아웃 실행처럼 표준 방식에 의해 예약된 아무 JavaScript 코드입니다. 태스크는 모두 **태스크 큐**에서 실행까지 대기합니다.
+A **task** is any JavaScript code which is scheduled to be run by the standard mechanisms such as initially starting to run a program, an event callback being run, or an interval or timeout being fired. These all get scheduled on the **task queue**.
 
-태스크가 태스크 큐에 추가되는 상황은 다음과 같습니다.
+Tasks get added to the task queue when:
 
-- 새로운 JavaScript 프로그램 또는 하위 프로그램이 직접 실행(콘솔 사용, 혹은 {{HTMLElement("script")}} 요소에서 코드 실행)되는 경우.
-- 이벤트 발생. 이벤트의 처리기 함수가 태스크 큐에 추가됩니다.
-- {{domxref("setTimeout()")}}과 {{domxref("setInterval()")}}로 추가한 타임아웃/인터벌이 도래하는 경우. 해당 콜백이 태스크 큐에 추가됩니다.
+- A new JavaScript program or subprogram is executed (such as from a console, or by running the code in a {{HTMLElement("script")}} element) directly.
+- An event fires, adding the event's callback function to the task queue.
+- A timeout or interval created with {{domxref("setTimeout()")}} or {{domxref("setInterval()")}} is reached, causing the corresponding callback to be added to the task queue.
 
-우리 코드의 구동을 맡은 이벤트 루프는 태스크를 큐에 추가된 순서대로 차례차례 처리합니다. 이벤트 루프 패스가 시작했을 때 이미 큐에 들어있던 태스크만 현재 주기에 실행되며, 나머지는 다음 주기까지 대기해야 합니다.
+The event loop driving your code handles these tasks one after another, in the order in which they were enqueued. The oldest runnable task in the task queue will be executed during a single iteration of the event loop. After that, microtasks will be executed until the microtask queue is empty, and then the browser may choose to update rendering. Then the browser moves on to the next iteration of event loop.
 
-### 마이크로태스크
+### Microtasks
 
-첫인상만 보면 마이크로태스크와 태스크의 차이점은 사소해보입니다. 실제로 둘은 비슷합니다. 둘 다 큐에 추가되는 JavaScript 코드로, 적절한 시점에 실행됩니다. 그러나 이벤트 루프의 현재 주기가 시작됐을 때 큐에 존재하는 태스크만 순차적으로 처리되는 태스크와 달리, 마이크로태스크는 상당히 다른 방법으로 처리됩니다.
+At first the difference between microtasks and tasks seems minor. And they are similar; both are made up of JavaScript code which gets placed on a queue and run at an appropriate time. However, whereas the event loop runs only the tasks present on the queue when the iteration began, one after another, it handles the microtask queue very differently.
 
-두 개의 큰 차이가 있습니다.
+There are two key differences.
 
-우선, 매번 태스크가 종료될 때마다 이벤트 루프는 이 태스크가 다른 JavaScript 코드로 통제권을 넘기는지 확인합니다. 그렇지 않은 경우 마이크로태스크 큐의 모든 마이크로태스크를 처리합니다. 곧 마이크로태스크 큐는, 이벤트 처리와 기타 콜백 실행 이후마다, 즉 이벤트 루프의 한 주기에 여러 번 처리됩니다.
+First, each time a task exits, the event loop checks to see if the task is returning control to other JavaScript code. If not, it runs all of the microtasks in the microtask queue. The microtask queue is, then, processed multiple times per iteration of the event loop, including after handling events and other callbacks.
 
-두 번째로, 마이크로태스크가 {{domxref("queueMicrotask()")}}를 통해 더 많은 마이크로태스크를 큐에 추가하는 경우, 이렇게 새롭게 추가된 마이크로태스크 또한 다음 태스크 실행 전에 모두 실행됩니다. 이벤트 루프는 대기열이 텅 빌 때까지 마이크로태스크를 계속 호출하기 때문입니다.
+Second, if a microtask adds more microtasks to the queue by calling {{domxref("queueMicrotask()")}}, those newly-added microtasks _execute before the next task is run_. That's because the event loop will keep calling microtasks until there are none left in the queue, even if more keep getting added.
 
-> **경고:** 마이크로태스크 스스로 더 많은 마이크로태스크를 큐에 넣을 수 있으며 큐가 빌 때까지 마이크로태스크 처리는 멈추지 않기 때문에, 이벤트 루프가 끝없는 마이크로태스크 처리 루프에 빠질 현실적인 위험이 있습니다. 재귀적으로 마이크로태스크를 추가할 때 주의하세요.
+> **Warning:** Since microtasks can themselves enqueue more microtasks, and the event loop continues processing microtasks until the queue is empty, there's a real risk of getting the event loop endlessly processing microtasks. Be cautious with how you go about recursively adding microtasks.
 
-## 마이크로태스크 사용하기
+## Using microtasks
 
-여기서 더 나아가기 전에, 대부분의 개발자는 마이크로태스크를 거의, 아마도 전혀, 사용하지 않을 것임을 상기하는 것이 좋습니다. 마이크로태스크는 현대 브라우저 기반 JavaScript 개발에서 고도로 특화된 기능으로서, 사용자 컴퓨터에서 발생할 수많은 것들의 앞에서 다른 것보다 우선해서 실행할 코드를 예약할 수 있는 기능입니다. 이 능력을 남용하면 성능 문제에 빠질 것입니다.
+Before getting farther into this, it's important to note again that most developers won't use microtasks much, if at all. They're a highly specialized feature of modern browser-based JavaScript development, allowing you to schedule code to jump in front of other things in the long set of things waiting to happen on the user's computer. Abusing this capability will lead to performance problems.
 
-### 마이크로태스크 큐에 넣기
+### Enqueueing microtasks
 
-따라서, 마이크로태스크의 사용은 다른 해결책이 전혀 없거나, 프레임워크 또는 라이브러리에서 구현하고자 하는 기능에 필요한 경우에만 사용해야 합니다. 과거에도 마이크로태스크를 큐에 추가하는 우회 방법이 (즉시 이행하는 프로미스 생성처럼) 없지는 않았으나, {{domxref("queueMicrotask()")}} 메서드의 추가 덕분에 마이크로태스크를 안전하고 우회 없이 추가할 수 있는 표준 방법이 생겼습니다.
+As such, you should typically use microtasks only when there's no other solution, or when creating frameworks or libraries that need to use microtasks in order to create the functionality they're implementing. While there have been tricks available that made it possible to enqueue microtasks in the past (such as by creating a promise that resolves immediately), the addition of the {{domxref("queueMicrotask()")}} method adds a standard way to introduce a microtask safely and without tricks.
 
-`queueMicrotask()`를 사용하면 프로미스를 사용해 마이크로태스크를 생성할 때 마주치는 문제에서 벗어날 수 있습니다. 예컨대 프로미스 방법에서는 콜백에서 예외가 발생할 경우 표준 예외가 아니라 거부된 프로미스로 나타나곤 했습니다. 또한 프로미스의 생성과 파괴는 시간과 메모리 양쪽에 추가 부하를 줬습니다.
+By introducing `queueMicrotask()`, the quirks that arise when sneaking in using promises to create microtasks can be avoided. For instance, when using promises to create microtasks, exceptions thrown by the callback are reported as rejected promises rather than being reported as standard exceptions. Also, creating and destroying promises takes additional overhead both in terms of time and memory that a function which properly enqueues microtasks avoids.
 
-현재 맥락이 마이크로태스크를 처리하는 시점에 호출할 JavaScript {{jsxref("Function")}}을 `queueMicrotask()` 메서드의 매개변수로 제공하세요. `queueMicrotask()`는 현재 실행 맥락에 따라 {{domxref("Window")}} 또는 {{domxref("Worker")}} 전역 맥락에 노출되어 있습니다.
+Pass the JavaScript {{jsxref("Function")}} to call while the context is handling microtasks into the `queueMicrotask()` method, which is exposed on the global context as defined by either the {{domxref("Window")}} or {{domxref("Worker")}} interface, depending on the current execution context.
 
 ```js
 queueMicrotask(() => {
-  /* 마이크로태스크에서 실행할 코드 */
+  /* code to run in the microtask here */
 });
 ```
 
-마이크로태스크 함수 자체는 매개변수를 받지 않으며 아무것도 반환하지 않습니다.
+The microtask function itself takes no parameters, and does not return a value.
 
-### 마이크로태스크를 사용해야 할 때
+### When to use microtasks
 
-이 구획에서는 마이크로태스크가 특히 유용한 상황을 살펴보겠습니다. 보통 JavaScript 실행 맥락의 주 본문이 종료됐으나 다른 모든 이벤트 처리기, 타임아웃과 인터벌, 기타 콜백이 호출되기 전에 결과를 포착 또는 검증하거나 정리 작업 등을 수행하는 상황입니다.
+In this section, we'll take a look at scenarios in which microtasks are particularly useful. Generally, it's about capturing or checking results, or performing cleanup, after the main body of a JavaScript execution context exits, but before any event handlers, timeouts and intervals, or other callbacks are processed.
 
-이게 어떤 때에 유용한 것일까요?
+When is that useful?
 
-마이크로태스크를 사용하는 주요 이유는 바로 결과나 데이터가 동기적으로 사용 가능하더라도 태스크 순서의 일관성을 유지하고, 동시에 사용자가 인지할 수 있는 수준의 연산 지연을 줄이는 것에 있습니다.
+The main reason to use microtasks is that: to ensure consistent ordering of tasks, even when results or data is available synchronously, but while simultaneously reducing the risk of user-discernible delays in operations.
 
-#### 조건적 프로미스 사용에 있어 실행 순서 유지
+#### Ensuring ordering on conditional use of promises
 
-마이크로태스크를 사용해 실행 순서를 항상 일정하게 유지할 수 있는 상황은 `if...else` 선언문 (또는 다른 조건 선언문) 중 한 절에서만 프로미스를 사용하고, 다른 절에서는 사용하지 않는 것입니다. 다음과 같은 코드를 고려해보겠습니다.
+One situation in which microtasks can be used to ensure that the ordering of execution is always consistent is when promises are used in one clause of an `if...else` statement (or other conditional statement), but not in the other clause. Consider code such as this:
 
 ```js
-customElement.prototype.getData = url => {
+customElement.prototype.getData = (url) => {
   if (this.cache[url]) {
     this.data = this.cache[url];
     this.dispatchEvent(new Event("load"));
   } else {
-    fetch(url).then(result => result.arrayBuffer()).then(data => {
-      this.cache[url] = data;
-      this.data = data;
-      this.dispatchEvent(new Event("load"));
-    });
+    fetch(url)
+      .then((result) => result.arrayBuffer())
+      .then((data) => {
+        this.cache[url] = data;
+        this.data = data;
+        this.dispatchEvent(new Event("load"));
+      });
   }
 };
 ```
 
-위 코드에서 발생하는 문제는 `if...else` 선언문의 한 분기(위에서는 이미지가 캐시에 들어있을 때)에서는 태스크를 사용하고, `else` 절에서는 프로미스를 사용하기 때문에 실행 순서가 달라질 수 있다는 점입니다.
+The problem introduced here is that by using a task in one branch of the `if...else` statement (in the case in which the image is available in the cache) but having promises involved in the `else` clause, we have a situation in which the order of operations can vary; for example, as seen below.
 
 ```js
 element.addEventListener("load", () => console.log("Loaded data"));
-console.log("Fetching data...");
+console.log("Fetching data…");
 element.getData();
 console.log("Data fetched");
 ```
 
-위 코드를 두 번 연속해서 실행하면 다음과 같은 결과가 나타납니다.
+Executing this code twice in a row gives the following results.
 
-데이터가 아직 캐시에 없을 땐,
+When the data is not cached:
 
 ```
-Fetching data...
+Fetching data
 Data fetched
 Loaded data
 ```
 
-데이터가 캐시에 저장된 후에는,
+When the data is cached:
 
 ```
-Fetching data...
+Fetching data
 Loaded data
 Data fetched
 ```
 
-더 나쁜 점은, 이 코드의 실행이 끝난 후 어떤 때에는 요소의 `data` 속성이 설정된 상태고, 다른 때에는 아닐 것이라는 점입니다.
+Even worse, sometimes the element's `data` property will be set and other times it won't be by the time this code finishes running.
 
-`if` 절에서 마이크로태스크를 사용해 두 절의 균형을 맞춰주는 방법으로 항상 같은 실행 순서를 유지할 수 있습니다.
+We can ensure consistent ordering of these operations by using a microtask in the `if` clause to balance the two clauses:
 
 ```js
-customElement.prototype.getData = url => {
+customElement.prototype.getData = (url) => {
   if (this.cache[url]) {
     queueMicrotask(() => {
       this.data = this.cache[url];
       this.dispatchEvent(new Event("load"));
     });
   } else {
-    fetch(url).then(result => result.arrayBuffer()).then(data => {
-      this.cache[url] = data;
-      this.data = data;
-      this.dispatchEvent(new Event("load"));
-    });
+    fetch(url)
+      .then((result) => result.arrayBuffer())
+      .then((data) => {
+        this.cache[url] = data;
+        this.data = data;
+        this.dispatchEvent(new Event("load"));
+      });
   }
 };
 ```
 
-위의 수정된 코드에서는 두 분기 모두 `data` 속성 설정과 `load` 이벤트 발생을 마이크로태스크 안에서 처리하여 서로의 균형을 맞췄습니다. (`if`에서는 `queueMicrotask()`로, `else`에서는 {{domxref("fetch")}}의 프로미스로)
+This balances the clauses by having both situations handle the setting of `data` and firing of the `load` event within a microtask (using `queueMicrotask()` in the `if` clause and using the promises used by {{domxref("fetch()")}} in the `else` clause).
 
-#### 계산 배칭
+#### Batching operations
 
-마이크로태스크를 사용하면 다양한 출처로부터의 다수의 요청을 하나의 배치로 묶어서, 같은 유형의 작업을 위한 반복적인 호출로 인해 발생할 수 있는 부하를 피할 수 있습니다.
+You can also use microtasks to collect multiple requests from various sources into a single batch, avoiding the possible overhead involved with multiple calls to handle the same kind of work.
 
-다음 코드 조각은 다수의 메시지를 배열에 넣고, 마이크로태스크를 사용해서 실행 컨텍스트 종료 시 넣어놨던 모든 메시지를 한 번에 하나의 객체로 전송하는 모습을 보입니다.
+The snippet below creates a function that batches multiple messages into an array, using a microtask to send them as a single object when the context exits.
 
 ```js
 const messageQueue = [];
 
-let sendMessage = message => {
+let sendMessage = (message) => {
   messageQueue.push(message);
 
   if (messageQueue.length === 1) {
@@ -158,134 +163,131 @@ let sendMessage = message => {
 };
 ```
 
-`sendMessage()`를 호출하면 주어진 메시지는 우선 메시지 큐 배열에 들어갑니다. 그 후에 재밌는 일이 생깁니다.
+When `sendMessage()` gets called, the specified message is first pushed onto the message queue array. Then things get interesting.
 
-방금 배열에 추가한 메시지가 첫 메시지라면 `sendMessage()`는 메시지 전송 배치를 예약합니다. 마이크로태스크는 언제나 그렇듯 JavaScript 실행 경로가 콜백을 호출하기 바로 직전인, 최상위 단계에 도달하면 실행됩니다. 따라서 `sendMessage()`의 후속 호출은 메시지들을 메시지 대기열에는 넣겠지만, 마이크로태스크 추가 전에 수행하는 배열 길이 검사로 인해 새로운 마이크로태스크가 큐에 추가되지는 않습니다.
+If the message we just added to the array is the first one, we enqueue a microtask that will send a batch. The microtask will execute, as always, when the JavaScript execution path reaches the top level, just before running callbacks. That means that any further calls to `sendMessage()` made in the interim will push their messages onto the message queue, but because of the array length check before adding a microtask, no new microtask is enqueued.
 
-마침내 마이크로태스크 실행 시점이 오면 아마 전송을 기다리는 많은 수의 메시지가 대기 중일 것입니다. 마이크로태스크는 우선 {{jsxref("JSON.stringify()")}}를 사용해 메시지를 JSON으로 인코딩합니다. 그 후 배열의 콘텐츠는 필요하지 않으므로 `messageQueue` 배열을 비웁니다. 마지막으로 {{domxref("fetch()")}} 메서드를 사용해 서버로 JSON 문자열을 전송합니다.
+When the microtask runs, then, it has an array of potentially many messages waiting for it. It starts by encoding it as JSON using the {{jsxref("JSON.stringify()")}} method. After that, the array's contents aren't needed anymore, so we empty the `messageQueue` array. Finally, we use the {{domxref("fetch()")}} method to send the JSON string to the server.
 
-이를 통해 이벤트 루프의 같은 주기 내에서 수행한 `sendMessage()` 다수의 호출은 하나의 `fetch()` 연산에 모이게 되고, 타임아웃과 같은 다른 태스크나, 혹은 통신을 지연시키는 일을 피할 수 있었습니다.
+This lets every call to `sendMessage()` made during the same iteration of the event loop add their messages to the same `fetch()` operation, without potentially having other tasks such as timeouts or the like delay the transmission.
 
-서버는 JSON 문자열을 받은 후 아마 문자열을 디코딩한 결과 배열을 사용해 안의 메시지를 처리할 것입니다.
+The server will receive the JSON string, then will presumably decode it and process the messages it finds in the resulting array.
 
-## 예제
+## Examples
 
-### 간단한 마이크로태스크 예제
+### Simple microtask example
 
-다음의 간단한 예제에서는, 큐에 추가한 마이크로태스크의 콜백은 최상위 스크립트의 동작이 끝난 후 실행된다는 것을 보입니다.
+In this simple example, we see that enqueueing a microtask causes the microtask's callback to run after the body of this top-level script is done running.
 
 ```html hidden
-<pre id="log">
-</pre>
+<pre id="log"></pre>
 ```
 
 #### JavaScript
 
 ```js hidden
 let logElem = document.getElementById("log");
-let log = s => logElem.innerHTML += s + "<br>";
+let log = (s) => (logElem.innerHTML += `${s}<br>`);
 ```
 
-이어지는 코드에서 {{domxref("queueMicrotask()")}}를 사용해 실행할 마이크로태스크를 예약하는 것을 볼 수 있습니다. 앞뒤로는 `log()` 호출을 배치했는데, 화면에 텍스트를 출력하는 함수입니다.
+In the following code, we see a call to {{domxref("queueMicrotask()")}} used to schedule a microtask to run. This call is bracketed by calls to `log()`, a custom function that outputs text to the screen.
 
 ```js
-log("마이크로태스크 추가 전");
+log("Before enqueueing the microtask");
 queueMicrotask(() => {
-  log("마이크로태스크를 실행했습니다.")
+  log("The microtask has run.");
 });
-log("마이크로태스크 추가 후");
+log("After enqueueing the microtask");
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("간단한_마이크로태스크_예제", 640, 80)}}
+{{EmbedLiveSample("Simple_microtask_example", 640, 80)}}
 
-### 타임아웃과 마이크로태스크 예제
+### Timeout and microtask example
 
-이 예제에서는 0밀리초의 타임아웃("최대한 빠르게")을 예약합니다. 여기서 확인할 수 있는 것은 (`setTimeout()` 등을 사용해) 태스크를 생성할 때의 "최대한 빠르게"와, 마이크로태스크에서의 "최대한 빠르게"는 다르다는 점입니다.
+In this example, a timeout is scheduled to fire after zero milliseconds (or "as soon as possible"). This demonstrates the difference between what "as soon as possible" means when scheduling a new task (such as by using `setTimeout()`) versus using a microtask.
 
 ```html hidden
-<pre id="log">
-</pre>
+<pre id="log"></pre>
 ```
 
 #### JavaScript
 
 ```js hidden
 let logElem = document.getElementById("log");
-let log = s => logElem.innerHTML += s + "<br>";
+let log = (s) => (logElem.innerHTML += `${s}<br>`);
 ```
 
-이어지는 코드에서 {{domxref("queueMicrotask()")}}를 사용해 실행할 마이크로태스크를 예약하는 것을 볼 수 있습니다. 그 위에서는 타임아웃을 0ms 후 발동하도록 예약합니다. 앞뒤로는 `log()` 호출을 배치했는데, 화면에 텍스트를 출력하는 함수입니다.
+In the following code, we see a call to {{domxref("queueMicrotask()")}} used to schedule a microtask to run. This call is bracketed by calls to `log()`, a custom function that outputs text to the screen.
+
+The code below schedules a timeout to occur in zero milliseconds, then enqueues a microtask. This is bracketed by calls to `log()` to output additional messages.
 
 ```js
-let callback = () => log("일반 타임아웃 콜백을 실행했습니다.");
+let callback = () => log("Regular timeout callback has run");
 
-let urgentCallback = () => log("*** 앗! 긴급 콜백을 실행했습니다!");
+let urgentCallback = () => log("*** Oh noes! An urgent callback has run!");
 
-log("주 프로그램 시작");
+log("Main program started");
 setTimeout(callback, 0);
 queueMicrotask(urgentCallback);
-log("주 프로그램 종료");
+log("Main program exiting");
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("타임아웃과_마이크로태스크_예제", 640, 100)}}
+{{EmbedLiveSample("Timeout_and_microtask_example", 640, 100)}}
 
-결과에 프로그램 본문 코드의 출력이 먼저 나타나고, 그 뒤를 이어 마이크로태스크, 마지막으로 타임아웃 콜백이 출력하는 것에 주목하세요. 주 프로그램의 실행을 맡은 태스크가 종료된 후, 태스크 큐에 올라간 타임아웃 콜백 태스크를 처리하기 전에 마이크로태스크 큐를 우선 처리하기 때문입니다. 태스크와 마이크로태스크 큐가 별도로 관리된다는 것, 그리고 마이크로태스크가 태스크보다 먼저 실행된다는 것을 기억하면 좋습니다.
+Note that the output logged from the main program body appears first, followed by the output from the microtask, followed by the timeout's callback. That's because when the task that's handling the execution of the main program exits, the microtask queue gets processed before the task queue on which the timeout callback is located. Remembering that tasks and microtasks are kept on separate queues, and that microtasks run first will help keep this straight.
 
-### 함수에서 추가한 마이크로태스크
+### Microtask from a function
 
-이 예제는 이전 예제를 약간 확장해, `queueMicrotask()`로 마이크로태스크를 예약한 후 모종의 계산 작업을 수행하는 함수를 사용합니다. 여기서 확인해야 할 것은 마이크로태스크의 실행 시점이 함수의 종료 순간이 아니고 주 프로그램의 종료 시점이라는 점입니다.
+This example expands slightly on the previous one by adding a function that does some work. This function uses `queueMicrotask()` to schedule a microtask. The important thing to take away from this one is that the microtask isn't processed when the function exits, but when the main program exits.
 
 ```html hidden
-<pre id="log">
-</pre>
+<pre id="log"></pre>
 ```
 
 #### JavaScript
 
 ```js hidden
 let logElem = document.getElementById("log");
-let log = s => logElem.innerHTML += s + "<br>";
+let log = (s) => (logElem.innerHTML += `${s}<br>`);
 ```
 
-주 프로그램 코드는 다음과 같습니다. `doWork()` 함수가 `queueMicrotask()`를 호출하지만, 태스크가 종료되어 실행 스택에 아무것도 남지 않은 상태가 되는, 즉 전체 프로그램 실행이 종료되기 전까지 이 마이크로태스크는 처리되지 않는 것을 결과에서 볼 수 있습니다.
+The main program code follows. The `doWork()` function here calls `queueMicrotask()`, yet the microtask still doesn't fire until the entire program exits, since that's when the task exits and there's nothing else on the execution stack.
 
 ```js
-let callback = () => log("일반 타임아웃 콜백을 실행했습니다.");
+let callback = () => log("Regular timeout callback has run");
 
-let urgentCallback = () => log("*** 앗! 긴급 콜백을 실행했습니다!");
+let urgentCallback = () => log("*** Oh noes! An urgent callback has run!");
 
 let doWork = () => {
   let result = 1;
 
   queueMicrotask(urgentCallback);
 
-  for (let i=2; i<=10; i++) {
+  for (let i = 2; i <= 10; i++) {
     result *= i;
   }
   return result;
 };
 
-log("주 프로그램 시작");
+log("Main program started");
 setTimeout(callback, 0);
-log(`10!은 ${doWork()}과 같습니다.`);
-log("주 프로그램 종료");
+log(`10! equals ${doWork()}`);
+log("Main program exiting");
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("함수에서_추가한_마이크로태스크", 640, 100)}}
+{{EmbedLiveSample("Microtask_from_a_function", 640, 100)}}
 
-## 같이 보기
+## See also
 
-- [심층 탐구: 마이크로태스크와 JavaScript 런타임 환경](/ko/docs/Web/API/HTML_DOM_API/Microtask_guide/In_depth)
+- [In depth: Microtasks and the JavaScript runtime environment](/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide/In_depth)
 - {{domxref("queueMicrotask()")}}
-- [비동기 JavaScript](/ko/docs/Learn/JavaScript/Asynchronous)
-  - [일반적인 비동기 프로그래밍 개념](/ko/docs/Learn/JavaScript/Asynchronous/Concepts)
-  - [비동기 JavaScript 소개](/ko/docs/Learn/JavaScript/Asynchronous/Introducing)
-  - [협조적인 비동기 JavaScript: 타임아웃과 인터벌](/ko/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals)
-  - [프로미스와 함께하는 우아한 비동기 프로그래밍](/ko/docs/Learn/JavaScript/Asynchronous/Promises)
-  - [올바른 접근법 선택하기](/ko/docs/Learn/JavaScript/Asynchronous/Choosing_the_right_approach)
+- [Asynchronous JavaScript](/en-US/docs/Learn/JavaScript/Asynchronous)
+  - [Introducing asynchronous JavaScript](/en-US/docs/Learn/JavaScript/Asynchronous/Introducing)
+  - [Cooperative asynchronous JavaScript: Timeouts and intervals](/en-US/docs/Learn/JavaScript/Asynchronous)
+  - [Graceful asynchronous programming with Promises](/en-US/docs/Learn/JavaScript/Asynchronous/Promises)

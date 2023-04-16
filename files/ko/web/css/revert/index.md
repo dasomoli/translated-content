@@ -1,33 +1,52 @@
 ---
 title: revert
 slug: Web/CSS/revert
+page-type: css-keyword
+browser-compat: css.types.global_keywords.revert
 ---
 
 {{CSSRef}}
 
-**`revert`** 는 현재 엘리먼트에 선언 된 캐스캐이딩된 속성으로부터 **{{Glossary("style origin")}}** 으로 되돌립니다. 부모 속성 또는 user agent에 따라 default로 선언 된 속성으로 되돌리는 것입니다. 이 속성은 css 단축속성{{cssxref("all")}}을 포함한 어떤 프로퍼티에도 적용할 수 있습니다.
+The **`revert`** CSS keyword reverts the cascaded value of the property from its current value to the value the property would have had if no changes had been made by the current **{{Glossary("style origin")}}** to the current element. Thus, it resets the property to its inherited value if it inherits from its parent or to the default value established by the user agent's stylesheet (or by user styles, if any exist). It can be applied to any CSS property, including the CSS shorthand property {{cssxref("all")}}.
 
-- 만약 그 사이트만의 css 속성이 지정되어있다면 `revert` 속성은 유저가 지정한 커스텀 스타일로 롤백합니다. 만약 하나만 존재한다면 user agent의 default 스타일로 돌아가는 것입니다.
-- 만약 사용자의 커스텀 스타일을 사용하거나 사용자에 의해서 스타일이 적용되어 있다면, `revert` 는 user agent의 default 스타일로 되돌립니다.
-- 만약 user agent default 스타일만 지정되어있다면, {{cssxref("unset")}}과 마찬가지의 의미입니다.
+This keyword removes from the cascade all of the styles that have been overridden until the style being rolled back to is reached.
 
-`revert` 키워드는 많은 경우에서 [`unset`](/en-US/docs/Web/CSS/unset) 과 같은 성질을 가집니다. 한가지 차이점은 user agent에 의한 스타일이냐 유저가 지정한 스타일이냐의 차이입니다.
+- If used by a site's own styles (the author origin), `revert` rolls back the property's cascaded value to the user's custom style, if one exists; otherwise, it rolls the style back to the user agent's default style.
+- If used in a user's custom stylesheet, or if the style was applied by the user (the user origin), `revert` rolls back the cascaded value to the user agent's default style.
+- If used within the user agent's default styles, this keyword is functionally equivalent to {{cssxref("unset")}}.
 
-Revert 는 자식 요소까지 변경하지는 않습니다. (하지만 자식 요소에 특별히 rule이 지정되어 있지 않다면 적용됩니다.). 그래서 만약에 모든 섹션에 `color: green` 속성을 지정하고 `all: revert` 를 사용하면 모든 섹션의 컬러값은 black으로 돌아갈 것입니다. 하지만 만약, 당신이 section 내의 모든 p에 red를 지정했다면 그것들은 red로 유지될 것입니다.
+The `revert` keyword works exactly the same as [`unset`](/en-US/docs/Web/CSS/unset) in many cases. The only difference is for properties that have values set by the browser or by custom stylesheets created by users (set on the browser side).
 
-> **참고:** Revert는 단순히 값입니다. 그러므로 `revert` 또한 다른 [specificity](/ko/docs/Web/CSS/Specificity)값으로 덮어 쓸 수 있습니다.
+Revert will not affect rules applied to children of an element you reset (but will remove effects of a parent rule on a child). So if you have a `color: green` for all sections and `all: revert` on a specific section, the color of the section will be black. But if you have a rule to make all paragraphs red, then all paragraphs will still be red in all sections.
 
-> **참고:** `revert` 는 {{cssxref("initial")}} 키워드와는 다른데, [initial value](/ko/docs/Web/CSS/initial_value) 는 프로퍼티 단위의 css 특성화입니다. user-agent의 스타일 시트도 default value로 되돌립니다..
+> **Note:** Revert is just a value. It is still possible to override the `revert` value using [specificity](/en-US/docs/Web/CSS/Specificity).
+
+> **Note:** The `revert` keyword is different from and should not be confused with the {{cssxref("initial")}} keyword, which uses the [initial value](/en-US/docs/Web/CSS/initial_value) defined on a per-property basis by the CSS specifications. In contrast, user-agent stylesheets set default values on the basis of CSS selectors.
 >
-> 예를 들어, {{cssxref("display")}} 속성에 대한 [initial value](/ko/docs/Web/CSS/initial_value) 는 `inline` 입니다. 반면에 {{HTMLElement("div")}} 에 대한 {{cssxref("display")}} user agent 속성은 `block` 이고, {{HTMLElement("table")}} 에 대한 속성은 `table` 입니다.
+> For example, the [initial value](/en-US/docs/Web/CSS/initial_value) for the [`display`](/en-US/docs/Web/CSS/display#formal_definition) property is `inline`, whereas a normal user-agent stylesheet sets the default {{cssxref("display")}} value of {{HTMLElement("div")}}s to `block`, of {{HTMLElement("table")}}s to `table`, etc.
 
-## 예시
+## Examples
 
-### Revert vs unset
+### Revert vs. unset
 
-비록 `revert` 와 `unset` 은 비슷하지만 몇몇 엘리먼트와 몇몇 속성에서는 다릅니다.
+Although `revert` and `unset` are similar, they differ for some properties for some elements.
 
-그래서 아래 예시를 보면, 우리는 `font-weight` 를 커스텀으로 글로벌 스타일로 지정하였습니다. 그러나 revert와 unset을 시도해보면 다른 결과를 볼 수 있습니다. Unset text를 default로 설정된 normal로 유지합니다. Revert는 user-agent 상에 font-weight인 bold로 돌아갈 것입니다.
+So in the below example, we set custom [`font-weight`](/en-US/docs/Web/CSS/font-weight#formal_definition), but then try to `revert` and `unset` it inline in the HTML document. The `revert` keyword will revert the text to bold because that is the default value for headers in most browsers. The `unset` keyword will keep the text normal because, as an inherited property, the `font-weight` would then inherit its value from the body.
+
+#### HTML
+
+```html
+<h3 style="font-weight: revert; color: revert;">
+  This should have its original font-weight (bold) and color: black
+</h3>
+<p>Just some text</p>
+<h3 style="font-weight: unset; color: unset;">
+  This will still have font-weight: normal, but color: black
+</h3>
+<p>Just some text</p>
+```
+
+#### CSS
 
 ```css
 h3 {
@@ -36,18 +55,24 @@ h3 {
 }
 ```
 
-```html
-<h3 style="font-weight: unset; color: unset;">This will still have font-weight: normal, but color: black</h3>
-<p>Just some text</p>
-<h3 style="font-weight: revert; color: revert;">This should have its original font-weight (bold) and color: black</h3>
-<p>Just some text</p>
-```
+#### Result
 
-{{EmbedLiveSample('Revert_vs_unset')}}
+{{EmbedLiveSample('Revert_vs_unset', 0, 200)}}
 
 ### Revert all
 
-모든 요소를 revert 하는 것은 당신이 많은 캐스캐이딩에 따른 수정이 있었을 때 default로 돌아가기에 매우 유용합니다. 그래서 font-weight를 리버트 하고 color를 리버트하는 것을 각각 하기보다는 한꺼번에 돌릴 수 있습니다.
+Reverting all values is useful in a situation where you've made several style changes and then you want to revert to the browser default values. So in the above example, instead of reverting `font-weight` and `color` separately, you could just revert all of them at once - by applying the `revert` keyword on `all`.
+
+#### HTML
+
+```html
+<h3>This will have custom styles</h3>
+<p>Just some text</p>
+<h3 style="all: revert">This should be reverted to browser/user defaults.</h3>
+<p>Just some text</p>
+```
+
+#### CSS
 
 ```css
 h3 {
@@ -57,53 +82,61 @@ h3 {
 }
 ```
 
-```html
-<h3>This will have custom styles</h3>
-<p>Just some text</p>
-<h3 style="all: revert">This should be reverted to browser/user defaults</h3>
-<p>Just some text</p>
-```
+#### Result
 
-{{EmbedLiveSample('Revert_all')}}
+{{EmbedLiveSample('Revert_all', 0, 200)}}
 
-### 부모요소에서의 Revert
+### Revert on a parent
 
-효율적으로 revert 하는 것은 당신이 선택한 속성에 대해서만 해당 속성을 제거하는 것입니다. 우리는 paragraph에 한해서는 red 속성을 지정하고 section에는 darkgreen 을 따로 각각 지정할 수 있습니다.
+Reverting effectively removes the value for the element you select with some rule and this happens only for that element. To illustrate this, we will set a green color on a section and red color on a paragraph.
 
-```css
-section { color: darkgreen }
-p { color: red }
-section.with-revert { color: revert }
-```
+#### HTML
 
 ```html
 <section>
-  <h3>따로 지정되지 않은 h3는 다크 그린</h3>
-  <p>paragraph의 텍스트는 빨강</p>
-  섹션 안의 요소니까 다크 그린.
+  <h3>This will be dark green</h3>
+  <p>Text in paragraph will be red.</p>
+  This will also be dark green.
 </section>
 <section class="with-revert">
-  <h3>revert로 따로 지정되어있지 않았던 h3는 검정</h3>
-  <p>특성화되어있는 paragraph는 그대로 빨강</p>
-  섹션 안의 요소가 revert 되면서 검정
+  <h3>This will be black</h3>
+  <p>Text in paragraph will be red.</p>
+  This will also be black.
 </section>
 ```
 
-section 요소가 돌아갔음에도 paragraph는 여전히 빨강인 것에 주목하세요.
+#### CSS
+
+```css
+section {
+  color: darkgreen;
+}
+p {
+  color: red;
+}
+section.with-revert {
+  color: revert;
+}
+```
+
+Notice how paragraph still has a red color even though a color property for the section was reverted. Also note that both the header and plain text node are black. This is exactly the same as if `section { color: darkgreen }` would not exist for the second section.
+
+#### Result
 
 {{EmbedLiveSample('Revert_on_a_parent')}}
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 요약
+## See also
 
-- initial value를 지정할 때는 {{cssxref("initial")}} 를 사용하세요 .
-- 초기 속성을 없애거나, 부모 요소에 대한 상속 된 속성을 지정할 때는 {{cssxref("unset")}} 를 사용하세요.
-- 부모 속성을 지정할 때는 {{cssxref("inherit")}} 를 사용하세요.
-- {{cssxref("all")}} 속성은 unset, initial, revert, inherit 속성을 한꺼번에 지정할 것입니다.
+- Use the {{cssxref("initial")}} keyword to set a property to its initial value.
+- Use the {{cssxref("inherit")}} keyword to make an element's property the same as its parent.
+- Use the {{cssxref("revert-layer")}} keyword to reset a property to the value established in a previous cascade layer.
+- Use the {{cssxref("unset")}} keyword to set a property to its inherited value if it inherits or to its initial value if not.
+- The {{cssxref("all")}} property lets you reset all properties to their initial, inherited, reverted, or unset state at once.

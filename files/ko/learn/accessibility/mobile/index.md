@@ -1,44 +1,39 @@
 ---
-title: 모바일 접근성
+title: Mobile accessibility
 slug: Learn/Accessibility/Mobile
-original_slug: Learn/접근성/모바일
 ---
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/Accessibility/Multimedia","Learn/Accessibility/Accessibility_troubleshooting", "Learn/Accessibility")}}
 
-모바일 기기에서 웹 접근이 매우 자주 발생하고 iOS와 안드로이드와 같은 유명 플랫폼들은 전문적인 접근성 점검도구들이 있기 때문에 웹콘텐츠의 접근성을 고려하는 것이 더욱 중요하다. 여기서는 모바일환경을 중심으로 접근성 고려사항을 살펴본다.
+With web access on mobile devices being so popular and renowned platforms such as iOS and Android having full-fledged accessibility tools, it is important to consider the accessibility of your web content on these platforms. This article looks at mobile-specific accessibility considerations.
 
-<table class="learn-box standard-table">
+<table>
   <tbody>
     <tr>
-      <th scope="row">사전지식:</th>
+      <th scope="row">Prerequisites:</th>
       <td>
-        <p>
-          기본적인 컴퓨터 사용능력, HTML, CSS, JavaScript에 대한 기본적인 이해,
-          그리고
-          <a href="/en-US/docs/Learn/Accessibility">이전 내용들에 대한 이해</a>.
-        </p>
+        Basic computer literacy, a basic understanding of HTML, CSS, and
+        JavaScript, and an understanding of the
+        <a href="/en-US/docs/Learn/Accessibility"
+          >previous articles in the course</a
+        >.
       </td>
     </tr>
     <tr>
-      <th scope="row">목표:</th>
+      <th scope="row">Objective:</th>
       <td>
-        <p>
-          모바일 기기의 접근성에 어떤 문제가 있는지, 그리고 이를 극복하는 방법을
-          이해한다.
-        </p>
+        To understand what problems exist with accessibility on mobile devices,
+        and how to overcome them.
       </td>
     </tr>
   </tbody>
 </table>
 
-## 모바일 장치에서의 접근성
-
-접근성 상태(일반적으로 웹 표준에 대한 지원)는 최근의 모바일 장치에서 좋다. 모바일 기기가 데스크톱 브라우저에 전혀 다른 웹 기술을 실행하면서 개발자들이 브라우저 코웃음을 치며 완전히 별개의 사이트에 서비스를 제공하도록 강요하던 시대는 이미 오래 전에 지났다(아직도 상당수의 회사가 모바일 장치의 사용을 감지하여 별도의 모바일 도메인을 서비스하고 있다).
+## Accessibility on mobile devices
 
 The state of accessibility — and support for web standards in general — is good in modern mobile devices. Long gone are the days when mobile devices ran completely different web technologies to desktop browsers, forcing developers to use browser sniffing and serve them completely separate sites (although quite a few companies still detect usage of mobile devices and serve them a separate mobile domain).
 
-These days, mobile devices can usually handle fully-featured websites, and the main platforms even have screenreaders built in to enable visually impaired users to use them successfully. Modern mobile browsers tend to have good support for [WAI-ARIA](/ko/docs/Learn/Accessibility/WAI-ARIA_basics), too.
+These days, mobile devices can usually handle fully-featured websites, and the main platforms even have screen readers built in to enable visually impaired users to use them successfully. Modern mobile browsers tend to have good support for [WAI-ARIA](/en-US/docs/Learn/Accessibility/WAI-ARIA_basics), too.
 
 To make a website accessible and usable on mobile, you just need to follow general good web design and accessibility best practices.
 
@@ -48,9 +43,9 @@ There are some exceptions that need special consideration for mobile; the main o
 - User input — Make user input requirements as painless as possible on mobile (e.g., in forms, keep typing to a minimum).
 - Responsive design — Make sure layouts work on mobile, conserve image download sizes, and think about the provision of images for high-resolution screens.
 
-## Summary of screenreader testing on Android and iOS
+## Summary of screen reader testing on Android and iOS
 
-The most common mobile platforms have fully functional screen readers. These function in much the same way as desktop screenreaders, except they are largely operated using touch gestures rather than key combinations.
+The most common mobile platforms have fully functional screen readers. These function in much the same way as desktop screen readers, except they are largely operated using touch gestures rather than key combinations.
 
 Let's look at the main two: TalkBack on Android and VoiceOver on iOS.
 
@@ -74,7 +69,7 @@ If you want to turn TalkBack off:
 1. Navigate back to the TalkBack menu screen (using the different gestures that are currently enabled.)
 2. Navigate to the slider switch and activate it to turn it off.
 
-> **참고:** You can get to your home screen at any time by swiping up and left in a smooth motion. If you have more than one home screen, you can move between them by swiping two fingers left and right.
+> **Note:** You can get to your home screen at any time by swiping up and left in a smooth motion. If you have more than one home screen, you can move between them by swiping two fingers left and right.
 
 For a more complete list of TalkBack gestures, see [Use TalkBack gestures](https://support.google.com/accessibility/android/answer/6151827).
 
@@ -88,14 +83,14 @@ You can also explore by touch to find the _Unlock_ button at the bottom middle o
 
 #### Global and local menus
 
-TalkBack allows you to access global and local context menus, wherever you have navigated to on the device. The former provides global options relating to the device as a whole, and the latter provides options relating just to the current app/screen you are in.
+TalkBack allows you to access global and local context menus, wherever you have navigated on the device. The former provides global options relating to the device as a whole, and the latter provides options relating just to the current app/screen you are in.
 
 To get to these menus:
 
 1. Access the global menu by quickly swiping down, and then right.
 2. Access the local menu by quickly swiping up, and then right.
 3. Swipe left and right to cycle between the different options.
-4. Once you've selected the option you want, double-click to choose that option.
+4. Once you've selected the option you want, double-tap to choose that option.
 
 For details on all the options available under the global and local context menus, see [Use global and local context menus](https://support.google.com/accessibility/android/answer/6007066).
 
@@ -109,9 +104,9 @@ For example, with TalkBack turned on:
 2. Activate the URL bar.
 3. Enter a web page that has a bunch of headings on it, such as the front page of bbc.co.uk. To enter the text of the URL:
 
-    - Select the URL bar by swiping left/right till you get to it, and then double-tapping.
-    - Hold your finger down on the virtual keyboard until you get the character you want, and then release your finger to type it. Repeat for each character.
-    - Once you've finished, find the Enter key and press it.
+   - Select the URL bar by swiping left/right till you get to it, and then double-tapping.
+   - Hold your finger down on the virtual keyboard until you get the character you want, and then release your finger to type it. Repeat for each character.
+   - Once you've finished, find the Enter key and press it.
 
 4. Swipe left and right to move between different items on the page.
 5. Swipe up and right with a smooth motion to enter the local content menu.
@@ -119,15 +114,15 @@ For example, with TalkBack turned on:
 7. Double-tap to select it. Now you'll be able to swipe left and right to move between headings and ARIA landmarks.
 8. To go back to the default mode, enter the local context menu again by swiping up and right, select "Default", and then double-tap to activate.
 
-**Note:** See [Get started on Android with TalkBack](https://support.google.com/accessibility/android/answer/6283677?hl=en&ref_topic=3529932) for more complete documentation.
+> **Note:** See [Get started on Android with TalkBack](https://support.google.com/accessibility/android/answer/6283677?hl=en&ref_topic=3529932) for more complete documentation.
 
 ### iOS VoiceOver
 
 A mobile version of VoiceOver is built into the iOS operating system.
 
-To turn it on, go to Your _Settings_ app and select _Accessibility > VoiceOver_. Press the _VoiceOver_ slider to enable it (you'll also see a number of other options related to VoiceOver on this page).
+To turn it on, go to Your _Settings_ app and select _Accessibility > VoiceOver_. Press the _VoiceOver_ slider to enable it (you'll also see several other options related to VoiceOver on this page).
 
-> **참고:** Some older iOS devices have the VoiceOver menu at _Settings app_ > _General_ > _Accessibility_ > _VoiceOver_.
+> **Note:** Some older iOS devices have the VoiceOver menu at _Settings app_ > _General_ > _Accessibility_ > _VoiceOver_.
 
 Once VoiceOver is enabled, iOS's basic control gestures will be a bit different:
 
@@ -150,8 +145,8 @@ When VoiceOver is turned on, you have a navigation feature called the Rotor avai
 1. Twist two fingers around on the screen like you are turning a dial. Each option will be read aloud as you twist further around. You can go back and forth to cycle through the options.
 2. Once you've found the option you want:
 
-    - Release your fingers to select it.
-    - If it is an option you can iterate the value of (such as Volume or Speaking Rate), you can do a swipe up or down to increase or decrease the value of the selected item.
+   - Release your fingers to select it.
+   - If it is an option you can iterate the value of (such as Volume or Speaking Rate), you can do a swipe up or down to increase or decrease the value of the selected item.
 
 The options available under the Rotor are context-sensitive — they will differ depending on what app or view you are in (see below for an example).
 
@@ -163,73 +158,73 @@ Let's have a go at web browsing with VoiceOver:
 2. Activate the URL bar.
 3. Enter a web page that has a bunch of headings on it, such as the front page of bbc.co.uk. To enter the text of the URL:
 
-    - Select the URL bar by swiping left/right until you get to it, and then double-tapping.
-    - For each character, hold your finger down on the virtual keyboard until you get the character you want, and then release your finger to select it. Double-tap to type it.
-    - Once you've finished, find the Enter key and press it.
+   - Select the URL bar by swiping left/right until you get to it, and then double-tapping.
+   - For each character, hold your finger down on the virtual keyboard until you get the character you want, and then release your finger to select it. Double-tap to type it.
+   - Once you've finished, find the Enter key and press it.
 
 4. Swipe left and right to move between items on the page. You can double-tap an item to select it (e.g., follow a link).
 5. By default, the selected Rotor option will be Speaking Rate; you can currently swipe up and down to increase or decrease the speaking rate.
 6. Now turn two fingers around the screen like a dial to show the rotor and move between its options. Here are a few examples of the options available:
 
-    - _Speaking Rate_: Change the speaking rate.
-    - _Containers_: Move between different semantic containers on the page.
-    - _Headings_: Move between headings on the page.
-    - _Links_: Move between links on the page.
-    - _Form Controls_: Move between form controls on the page.
-    - _Language_: Move between different translations, if they are available.
+   - _Speaking Rate_: Change the speaking rate.
+   - _Containers_: Move between different semantic containers on the page.
+   - _Headings_: Move between headings on the page.
+   - _Links_: Move between links on the page.
+   - _Form Controls_: Move between form controls on the page.
+   - _Language_: Move between different translations, if they are available.
 
 7. Select _Headings_. Now you'll be able to swipe up and down to move between headings on the page.
 
-**Note:** For a more complete reference covering the VoiceOver gestures available and other hints on accessibility testing on iOS, see [Test Accessibility on Your Device with VoiceOver](https://developer.apple.com/library/content/technotes/TestingAccessibilityOfiOSApps/TestAccessibilityonYourDevicewithVoiceOver/TestAccessibilityonYourDevicewithVoiceOver.html#//apple_ref/doc/uid/TP40012619-CH3).
+> **Note:** For a more complete reference covering the VoiceOver gestures available and other hints on accessibility testing on iOS, see [Test Accessibility on Your Device with VoiceOver](https://developer.apple.com/library/archive/technotes/TestingAccessibilityOfiOSApps/TestAccessibilityonYourDevicewithVoiceOver/TestAccessibilityonYourDevicewithVoiceOver.html).
 
 ## Control mechanisms
 
-In our CSS and JavaScript accessibility article, we looked at the idea of events that are specific to a certain type of control mechanism (see [Mouse-specific events](/ko/docs/Learn/Accessibility/CSS_and_JavaScript#mouse-specific_events)). To recap, these cause accessibility issues because other control mechanisms can't activate the associated functionality.
+In our CSS and JavaScript accessibility article, we looked at the idea of events that are specific to a certain type of control mechanism (see [Mouse-specific events](/en-US/docs/Learn/Accessibility/CSS_and_JavaScript#mouse-specific_events)). To recap, these cause accessibility issues because other control mechanisms can't activate the associated functionality.
 
-As an example, the [click](/ko/docs/Web/API/GlobalEventHandlers/onclick) event is good in terms of accessibility — an associated event handler can be invoked by clicking the element the handler is set on, tabbing to it and pressing Enter/Return, or tapping it on a touchscreen device. Try our [simple-button-example.html](https://github.com/mdn/learning-area/blob/master/accessibility/mobile/simple-button-example.html) example ([see it running live](http://mdn.github.io/learning-area/accessibility/mobile/simple-button-example.html)) to see what we mean.
+As an example, the [click](/en-US/docs/Web/API/Element/click_event) event is good in terms of accessibility — an associated event handler can be invoked by clicking the element the handler is set on, tabbing to it and pressing Enter/Return, or tapping it on a touchscreen device. Try our [simple-button-example.html](https://github.com/mdn/learning-area/blob/main/accessibility/mobile/simple-button-example.html) example ([see it running live](https://mdn.github.io/learning-area/accessibility/mobile/simple-button-example.html)) to see what we mean.
 
-Alternatively, mouse-specific events such as [mousedown](/ko/docs/Web/API/GlobalEventHandlers/onmousedown) and [mouseup](/ko/docs/Web/API/GlobalEventHandlers/onmouseup) create problems — their event handlers cannot be invoked using non-mouse controls.
+Alternatively, mouse-specific events such as [mousedown](/en-US/docs/Web/API/Element/mousedown_event) and [mouseup](/en-US/docs/Web/API/Element/mouseup_event) create problems — their event handlers cannot be invoked using non-mouse controls.
 
-If you try to control our [simple-box-drag.html](https://github.com/mdn/learning-area/blob/master/accessibility/mobile/simple-box-drag.html) ([see example live](http://mdn.github.io/learning-area/accessibility/mobile/simple-box-drag.html)) example with a keyboard or touch, you'll see the problem. This occurs because we are using code such as the following:
+If you try to control our [simple-box-drag.html](https://github.com/mdn/learning-area/blob/main/accessibility/mobile/simple-box-drag.html) ([see example live](https://mdn.github.io/learning-area/accessibility/mobile/simple-box-drag.html)) example with a keyboard or touch, you'll see the problem. This occurs because we are using code such as the following:
 
-```
-div.onmousedown = function() {
+```js
+div.onmousedown = () => {
   initialBoxX = div.offsetLeft;
   initialBoxY = div.offsetTop;
   movePanel();
-}
+};
 
 document.onmouseup = stopMove;
 ```
 
 To enable other forms of control, you need to use different, yet equivalent events — for example, touch events work on touchscreen devices:
 
-```
-div.ontouchstart = function(e) {
+```js
+div.ontouchstart = (e) => {
   initialBoxX = div.offsetLeft;
   initialBoxY = div.offsetTop;
   positionHandler(e);
   movePanel();
-}
+};
 
 panel.ontouchend = stopMove;
 ```
 
-We've provided a simple example that shows how to use the mouse and touch events together — see [multi-control-box-drag.html](https://github.com/mdn/learning-area/blob/master/accessibility/mobile/multi-control-box-drag.html) ([see the example live](http://mdn.github.io/learning-area/accessibility/mobile/multi-control-box-drag.html) also).
+We've provided a simple example that shows how to use the mouse and touch events together — see [multi-control-box-drag.html](https://github.com/mdn/learning-area/blob/main/accessibility/mobile/multi-control-box-drag.html) ([see the example live](https://mdn.github.io/learning-area/accessibility/mobile/multi-control-box-drag.html) also).
 
-> **참고:** You can also see fully functional examples showing how to implement different control mechanisms at [Implementing game control mechanisms](/ko/docs/Games/Techniques/Control_mechanisms).
+> **Note:** You can also see fully functional examples showing how to implement different control mechanisms at [Implementing game control mechanisms](/en-US/docs/Games/Techniques/Control_mechanisms).
 
 ## Responsive design
 
-[Responsive design](/ko/docs/Web/Apps/Progressive/Responsive) is the practice of making your layouts and other features of your apps dynamically change depending on factors such as screen size and resolution, so they are usable and accessible to users of different device types.
+[Responsive design](/en-US/docs/Web/Progressive_web_apps/Responsive/responsive_design_building_blocks) is the practice of making your layouts and other features of your apps dynamically change depending on factors such as screen size and resolution, so they are usable and accessible to users of different device types.
 
 In particular, the most common problems that need to be addressed for mobile are:
 
-- Suitability of layouts for mobile devices. A multi-column layout won't work as well on a narrow screen, for example, and the text size may need to be increased so it is legible. Such issues can be solved by creating a responsive layout using technologies such as [media queries](/ko/docs/Web/CSS/Media_Queries), [viewport](/ko/docs/Mozilla/Mobile/Viewport_meta_tag), and [flexbox](/ko/docs/Learn/CSS/CSS_layout/Flexbox).
-- Conserving image sizes downloaded. In general, small screen devices won't need images that are as large as their desktop counterparts, and they are more likely to be on slow network connections. Therefore, it is wise to serve smaller images to narrow screen devices as appropriate. You can handle this using [responsive image techniques](/ko/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images).
-- Thinking about high resolutions. Many mobile devices have high-resolution screens, and therefore need higher-resolution images so that the display can continue to look crisp and sharp. Again, you can serve images as appropriate using responsive image techniques. In addition, many image requirements can be fulfilled using the SVG vector images format, which is well-supported across browsers today. SVG has a small file size and will stay sharp regardless of whatever size is being displayed (see [Adding vector graphics to the web](/ko/docs/Learn/HTML/Multimedia_and_embedding/Adding_vector_graphics_to_the_Web) for more details).
+- Suitability of layouts for mobile devices. A multi-column layout won't work as well on a narrow screen, for example, and the text size may need to be increased so it is legible. Such issues can be solved by creating a responsive layout using technologies such as [media queries](/en-US/docs/Web/CSS/Media_Queries), [viewport](/en-US/docs/Web/HTML/Viewport_meta_tag), and [flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox).
+- Conserving image sizes downloaded. In general, small-screen devices won't need images that are as large as their desktop counterparts, and they are more likely to be on slow network connections. Therefore, it is wise to serve smaller images to narrow screen devices as appropriate. You can handle this using [responsive image techniques](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images).
+- Thinking about high resolutions. Many mobile devices have high-resolution screens, and therefore need higher-resolution images so that the display can continue to look crisp and sharp. Again, you can serve images as appropriate using responsive image techniques. In addition, many image requirements can be fulfilled using the SVG vector images format, which is well-supported across browsers today. SVG has a small file size and will stay sharp regardless of whatever size is being displayed (see [Adding vector graphics to the web](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Adding_vector_graphics_to_the_Web) for more details).
 
-**Note:** We won't provide a full discussion of responsive design techniques here, as they are covered in other places around MDN (see above links).
+> **Note:** We won't provide a full discussion of responsive design techniques here, as they are covered in other places around MDN (see the above links).
 
 ### Specific mobile considerations
 
@@ -237,13 +232,13 @@ There are other important issues to consider when making sites more accessible o
 
 #### Not disabling zoom
 
-Using [viewport](/ko/docs/Mozilla/Mobile/Viewport_meta_tag), it is possible to disable zoom. Always ensure resizing is enabled, and set the width to the device's width in the {{htmlelement("head")}}:
+Using [viewport](/en-US/docs/Web/HTML/Viewport_meta_tag), it is possible to disable zoom. Always ensure resizing is enabled, and set the width to the device's width in the {{htmlelement("head")}}:
 
 ```html
-<meta name="viewport" content="width=device-width; user-scalable=yes">
+<meta name="viewport" content="width=device-width; user-scalable=yes" />
 ```
 
-You should never set `user-scalable=no` if at all possible — many people rely on zoom to be able to see the content of your website, so taking this functionality away is a really bad idea. There are certain situations where zooming might break the UI; in such cases, if you feel that you absolutely need to disable zoom, you should provide some other kind of equivalent, such as a control for increasing the text size in a way that doesn't break your UI.
+You should never set `user-scalable=no` if at all possible — many people rely on zoom to be able to see the content of your website, so taking this functionality away is a really bad idea. There are certain situations where zooming might break the UI; in such cases, if you feel that you need to disable zoom, you should provide some other kind of equivalent, such as a control for increasing the text size in a way that doesn't break your UI.
 
 #### Keeping menus accessible
 
@@ -251,28 +246,28 @@ Because the screen is so much narrower on mobile devices, it is very common to u
 
 When implementing such a menu, you need to make sure that the control to reveal it is accessible by appropriate control mechanisms (normally touch for mobile), as discussed in [Control mechanisms](#control_mechanisms) above, and that the rest of the page is moved out of the way or hidden in some way while the menu is being accessed, to avoid confusion with navigating it.
 
-Click here for a [good hamburger menu example](http://fritz-weisshart.de/meg_men/).
+Click here for a [good hamburger menu example](https://fritz-weisshart.de/meg_men/).
 
 ## User input
 
 On mobile devices, inputting data tends to be more annoying for users than the equivalent experience on desktop computers. It is more convenient to type text into form inputs using a desktop or laptop keyboard than a touchscreen virtual keyboard or a tiny mobile physical keyboard.
 
-For this reason, it is worth trying to minimize the amount of typing needed. As an example, instead of getting users to fill out their job title each time using a regular text input, you could instead offer a {{htmlelement("select")}} menu containing the most common options (which also helps with consistency in data entry), and offer an "Other" option that displays a text field to type any outliers into. You can see a simple example of this idea in action in [common-job-types.html](https://github.com/mdn/learning-area/blob/master/accessibility/mobile/common-job-types.html) (see the [common jobs example live](http://mdn.github.io/learning-area/accessibility/mobile/common-job-types.html)).
+For this reason, it is worth trying to minimize the amount of typing needed. As an example, instead of getting users to fill out their job title each time using a regular text input, you could instead offer a {{htmlelement("select")}} menu containing the most common options (which also helps with consistency in data entry) and offer an "Other" option that displays a text field to type any outliers into. You can see a simple example of this idea in action in [common-job-types.html](https://github.com/mdn/learning-area/blob/main/accessibility/mobile/common-job-types.html) (see the [common jobs example live](https://mdn.github.io/learning-area/accessibility/mobile/common-job-types.html)).
 
-It is also worth considering the use of HTML5 form input types such as the date on mobile platforms as they handle them well — both Android and iOS, for example, display usable widgets that fit well with the device experience. See [html5-form-examples.html](https://github.com/mdn/learning-area/blob/master/accessibility/mobile/html5-form-examples.html) for some examples (see the [HTML5 form examples live](http://mdn.github.io/learning-area/accessibility/mobile/html5-form-examples.html)) — try loading these and manipulating them on mobile devices. For example:
+It is also worth considering the use of HTML form input types such as the date on mobile platforms as they handle them well — both Android and iOS, for example, display usable widgets that fit well with the device experience. See [html5-form-examples.html](https://github.com/mdn/learning-area/blob/main/accessibility/mobile/html5-form-examples.html) for some examples (see the [HTML5 form examples live](https://mdn.github.io/learning-area/accessibility/mobile/html5-form-examples.html)) — try loading these and manipulating them on mobile devices. For example:
 
 - Types `number`, `tel`, and `email` display suitable virtual keyboards for entering numbers/telephone numbers.
 - Types `time` and `date` display suitable pickers for selecting times and dates.
 
-If you want to provide a different solution for desktops, you could always serve different markup to your mobile devices using feature detection. See [input types](http://diveinto.html5doctor.com/detect.html#input-types) for raw information on detecting different input types, and also check out our [feature detection article](/ko/docs/Learn/Tools_and_testing/Cross_browser_testing/Feature_detection) for much more information.
+If you want to provide a different solution for desktops, you could always serve different markup to your mobile devices using feature detection. See [input types](https://diveinto.html5doctor.com/detect.html#input-types) for raw information on detecting different input types, and also check out our [feature detection article](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Feature_detection) for much more information.
 
 ## Summary
 
-In this article, we have provided you with some details about common mobile accessibility-specific issues and how to overcome them. We also took you through the usage of the most common screenreaders to aid you in accessibility testing.
+In this article, we have provided you with some details about common mobile accessibility-specific issues and how to overcome them. We also took you through the usage of the most common screen readers to aid you in accessibility testing.
 
 ## See also
 
-- [Guidelines For Mobile Web Development](https://www.smashingmagazine.com/guidelines-for-mobile-web-development/) — A list of articles in _Smashing Magazine_ covering different techniques for mobile web design.
-- [Make your site work on touch devices](http://www.creativebloq.com/javascript/make-your-site-work-touch-devices-51411644) — Useful article about using touch events to get interactions working on mobile devices.
+- [Guidelines For Mobile Web Development](https://www.smashingmagazine.com/2012/07/guidelines-for-mobile-web-development/) — A list of articles in _Smashing Magazine_ covering different techniques for mobile web design.
+- [Make your site work on touch devices](https://www.creativebloq.com/javascript/make-your-site-work-touch-devices-51411644) — Useful article about using touch events to get interactions working on mobile devices.
 
 {{PreviousMenuNext("Learn/Accessibility/Multimedia","Learn/Accessibility/Accessibility_troubleshooting", "Learn/Accessibility")}}

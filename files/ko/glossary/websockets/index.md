@@ -1,23 +1,16 @@
 ---
 title: WebSockets
 slug: Glossary/WebSockets
+page-type: glossary-definition
 ---
 
-_WebSocket_ 은 언제든지 데이터를 교환할 수 있도록 {{Glossary("Server", "서버")}}와 클라이언트 간의 지속적인 {{Glossary("TCP")}} 연결을 허용하는 {{Glossary("protocol", "프로토콜")}}이다.
+_WebSocket_ is a {{Glossary("protocol")}} that allows for a persistent {{Glossary("TCP")}} connection between {{Glossary("Server", "server")}} and client so they can exchange data at any time.
 
-어떤 클라이언트나 서버 애플리케이션도 WebSocket을 사용할 수 있지만, 주로 웹 {{Glossary("Browser", "브라우저")}}와 웹 서버를 사용할 수 있다. WebSocket을 통해 서버는 사전 클라이언트 요청 없이 클라이언트에 데이터를 전달할 수 있으므로 동적 컨텐츠 업데이트가 가능하다.
+Any client or server application can use WebSocket, but principally web {{Glossary("Browser", "browsers")}} and web servers. Through WebSocket, servers can pass data to a client without prior client request, allowing for dynamic content updates.
 
-## 더 알아보기
+## See also
 
-### 일반적 지식
-
-- Wikipedia의 [Websocket](https://ko.wikipedia.org/wiki/%EC%9B%B9%EC%86%8C%EC%BC%93)
-
-### 기술적 참조
-
-- [WebSocket reference on MDN](/ko/docs/Web/API/WebSocket)
-
-### 이것에 대해 알아보기
-
-- [Writing WebSocket client applications](/ko/docs/WebSockets/Writing_WebSocket_client_applications)
-- [Writing WebSocket servers](/ko/docs/WebSockets/Writing_WebSocket_servers)
+- [Websocket](https://en.wikipedia.org/wiki/Websocket) on Wikipedia
+- [WebSocket reference on MDN](/en-US/docs/Web/API/WebSocket)
+- [Writing WebSocket client applications](/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications)
+- [Writing WebSocket servers](/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers)

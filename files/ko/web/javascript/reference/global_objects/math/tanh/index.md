@@ -1,66 +1,60 @@
 ---
 title: Math.tanh()
 slug: Web/JavaScript/Reference/Global_Objects/Math/tanh
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Math.tanh
 ---
 
 {{JSRef}}
 
-**`Math.tanh()`** 함수는 쌍곡탄젠트 값을 반환합니다. 수식으로는 아래와 같습니다.
+The **`Math.tanh()`** static method returns the hyperbolic tangent of a number. That is,
 
-<math display="block"><semantics><mrow><mo lspace="0em" rspace="0em">tanh</mo><mi>x</mi><mo>=</mo><mfrac><mrow><mo lspace="0em" rspace="0em">sinh</mo><mi>x</mi></mrow><mrow><mo lspace="0em" rspace="0em">cosh</mo><mi>x</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><msup><mi>e</mi><mi>x</mi></msup><mo>-</mo><msup><mi>e</mi><mrow><mo>-</mo><mi>x</mi></mrow></msup></mrow><mrow><msup><mi>e</mi><mi>x</mi></msup><mo>+</mo><msup><mi>e</mi><mrow><mo>-</mo><mi>x</mi></mrow></msup></mrow></mfrac><mo>=</mo><mfrac><mrow><msup><mi>e</mi><mrow><mn>2</mn><mi>x</mi></mrow></msup><mo>-</mo><mn>1</mn></mrow><mrow><msup><mi>e</mi><mrow><mn>2</mn><mi>x</mi></mrow></msup><mo>+</mo><mn>1</mn></mrow></mfrac></mrow><annotation encoding="TeX">\tanh x = \frac{\sinh x}{\cosh x} = \frac {e^x - e^{-x}} {e^x + e^{-x}} = \frac{e^{2x} - 1}{e^{2x}+1}</annotation></semantics></math>
+<math display="block"><semantics><mrow><mrow><mo lspace="0em" rspace="0.16666666666666666em">𝙼𝚊𝚝𝚑.𝚝𝚊𝚗𝚑</mo><mo stretchy="false">(</mo><mi>𝚡</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mo lspace="0em" rspace="0em">tanh</mo><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mrow><mo lspace="0em" rspace="0em">sinh</mo><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><mrow><mo lspace="0em" rspace="0em">cosh</mo><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mfrac><mo>=</mo><mfrac><mrow><msup><mi mathvariant="normal">e</mi><mi>x</mi></msup><mo>−</mo><msup><mi mathvariant="normal">e</mi><mrow><mo>−</mo><mi>x</mi></mrow></msup></mrow><mrow><msup><mi mathvariant="normal">e</mi><mi>x</mi></msup><mo>+</mo><msup><mi mathvariant="normal">e</mi><mrow><mo>−</mo><mi>x</mi></mrow></msup></mrow></mfrac><mo>=</mo><mfrac><mrow><msup><mi mathvariant="normal">e</mi><mrow><mn>2</mn><mi>x</mi></mrow></msup><mo>−</mo><mn>1</mn></mrow><mrow><msup><mi mathvariant="normal">e</mi><mrow><mn>2</mn><mi>x</mi></mrow></msup><mo>+</mo><mn>1</mn></mrow></mfrac></mrow><annotation encoding="TeX">\mathtt{\operatorname{Math.tanh}(x)} = \tanh(x) = \frac{\sinh(x)}{\cosh(x)} = \frac{\mathrm{e}^x - \mathrm{e}^{-x}}{\mathrm{e}^x + \mathrm{e}^{-x}} = \frac{\mathrm{e}^{2x} - 1}{\mathrm{e}^{2x}+1}</annotation></semantics></math>
 
 {{EmbedInteractiveExample("pages/js/math-tanh.html")}}
 
 ## Syntax
 
-```js
-    Math.tanh(x)
+```js-nolint
+Math.tanh(x)
 ```
 
-### 파라미터
+### Parameters
 
 - `x`
-  - : 숫자.
+  - : A number.
 
-### 반환 값
+### Return value
 
-주어진 수의 쌍곡탄젠트 값
+The hyperbolic tangent of `x`.
 
-## 설명
+## Description
 
-`tanh()` 은 `Math`의 정적 메서드이므로 사용자가 만든 `Math` 객체의 메서드가 아닌 항상 `Math.tanh()` 으로 사용합니다 (`Math` 는 생성자가 아닙니다.).
+Because `tanh()` is a static method of `Math`, you always use it as `Math.tanh()`, rather than as a method of a `Math` object you created (`Math` is not a constructor).
 
-## 예
+## Examples
 
-### Using `Math.tanh()`
+### Using Math.tanh()
 
 ```js
-Math.tanh(0);        // 0
+Math.tanh(-Infinity); // -1
+Math.tanh(-0); // -0
+Math.tanh(0); // 0
+Math.tanh(1); // 0.7615941559557649
 Math.tanh(Infinity); // 1
-Math.tanh(1);        // 0.7615941559557649
 ```
 
-## Polyfill
-
-This can be emulated with the help of the {{jsxref("Math.exp()")}} function:
-
-```js
-Math.tanh = Math.tanh || function(x){
-    var a = Math.exp(+x), b = Math.exp(-x);
-    return a == Infinity ? 1 : b == Infinity ? -1 : (a - b) / (a + b);
-}
-```
-
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 보기
+## See also
 
+- [Polyfill of `Math.tanh` in `core-js`](https://github.com/zloirock/core-js#ecmascript-math)
 - {{jsxref("Math.acosh()")}}
 - {{jsxref("Math.asinh()")}}
 - {{jsxref("Math.atanh()")}}

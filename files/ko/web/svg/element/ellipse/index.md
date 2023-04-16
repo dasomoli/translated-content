@@ -1,17 +1,17 @@
 ---
 title: <ellipse>
 slug: Web/SVG/Element/ellipse
-l10n:
-  sourceCommit: 6313664032844cea1fa62bcc8577d3f68fcd97db
+page-type: svg-element
+browser-compat: svg.elements.ellipse
 ---
 
 {{SVGRef}}
 
-**`<ellipse>`** 요소는 중심 좌표와 x 및 y 반경을 기반으로 타원을 만드는 SVG 기본 모양입니다.
+The **`<ellipse>`** element is an SVG basic shape, used to create ellipses based on a center coordinate, and both their x and y radius.
 
-> **참고:** 타원은 타원의 정확한 방향을 지정할 수 없지만,(예를 들어 45도 각도로 기울어진 타원을 그리려는 경우) {{SVGAttr("transform")}} 속성을 사용하여 회전할 수 있습니다.
+> **Note:** Ellipses are unable to specify the exact orientation of the ellipse (if, for example, you wanted to draw an ellipse tilted at a 45 degree angle), but it can be rotated by using the {{SVGAttr("transform")}} attribute.
 
-## 예제
+## Example
 
 ```css hidden
 html,
@@ -29,53 +29,53 @@ svg {
 
 {{EmbedLiveSample('Example', 100, '100%')}}
 
-## 속성
+## Attributes
 
 - {{SVGAttr("cx")}}
-  - : 타원 중심의 x좌표.
-    값 유형: [**\<length>**](/ko/docs/Web/SVG/Content_type#length)|[**\<percentage>**](/ko/docs/Web/SVG/Content_type#percentage) ; 기본 값: `0`; 에니메이션 가능: **예**
+  - : The x position of the center of the ellipse.
+    _Value type_: [**\<length>**](/en-US/docs/Web/SVG/Content_type#length)|[**\<percentage>**](/en-US/docs/Web/SVG/Content_type#percentage) ; _Default value_: `0`; _Animatable_: **yes**
 - {{SVGAttr("cy")}}
-  - : 타원 중심의 y좌표
-    값 유형: [**\<length>**](/ko/docs/Web/SVG/Content_type#length)|[**\<percentage>**](/ko/docs/Web/SVG/Content_type#percentage) ; 기본 값: `0`; 에니메이션 가능: **예**
+  - : The y position of the center of the ellipse.
+    _Value type_: [**\<length>**](/en-US/docs/Web/SVG/Content_type#length)|[**\<percentage>**](/en-US/docs/Web/SVG/Content_type#percentage) ; _Default value_: `0`; _Animatable_: **yes**
 - {{SVGAttr("rx")}}
-  - : x축의 타원 반경.
-    값 유형: `auto`|[**\<length>**](/ko/docs/Web/SVG/Content_type#length)|[**\<percentage>**](/ko/docs/Web/SVG/Content_type#percentage) ; 기본 값: `auto`; 에니메이션 가능: **예**
+  - : The radius of the ellipse on the x axis.
+    _Value type_: `auto`|[**\<length>**](/en-US/docs/Web/SVG/Content_type#length)|[**\<percentage>**](/en-US/docs/Web/SVG/Content_type#percentage) ; _Default value_: `auto`; _Animatable_: **yes**
 - {{SVGAttr("ry")}}
-  - : y축의 타원 반경.
-    값 유형: `auto`|[**\<length>**](/ko/docs/Web/SVG/Content_type#length)|[**\<percentage>**](/ko/docs/Web/SVG/Content_type#percentage) ; 기본 값: `auto`; 에니메이션 가능: **예**
+  - : The radius of the ellipse on the y axis.
+    _Value type_: `auto`|[**\<length>**](/en-US/docs/Web/SVG/Content_type#length)|[**\<percentage>**](/en-US/docs/Web/SVG/Content_type#percentage) ; _Default value_: `auto`; _Animatable_: **yes**
 - {{SVGAttr("pathLength")}}
-  - : 이 속성을 사용하면 경로의 총 길이를 사용자 단위로 지정할 수 있습니다.
-    값 유형: [**\<number>**](/ko/docs/Web/SVG/Content_type#number) ; 기본 값: _none_; 에니메이션 가능: **예**
+  - : This attribute lets specify the total length for the path, in user units.
+    _Value type_: [**\<number>**](/en-US/docs/Web/SVG/Content_type#number) ; _Default value_: _none_; _Animatable_: **yes**
 
-> **참고:** SVG2부터 시작하여 `cx`, `cy`, `rx`, 그리고 `ry`는 기하학 속성입니다. 즉, 해당 속성을 해당 요소의 CSS 속성으로도 사용할 수 있습니다.
+> **Note:** Starting with SVG2 `cx`, `cy`, `rx` and `ry` are _Geometry Properties_, meaning those attributes can also be used as CSS properties for that element.
 
-### 전역 속성
+### Global attributes
 
-- [코어 속성](/ko/docs/Web/SVG/Attribute/Core)
-  - : 특히: {{SVGAttr('id')}}, {{SVGAttr('tabindex')}}
-- [스타일 속성](/ko/docs/Web/SVG/Attribute/Styling)
+- [Core Attributes](/en-US/docs/Web/SVG/Attribute/Core)
+  - : Most notably: {{SVGAttr('id')}}, {{SVGAttr('tabindex')}}
+- [Styling Attributes](/en-US/docs/Web/SVG/Attribute/Styling)
   - : {{SVGAttr('class')}}, {{SVGAttr('style')}}
-- [조건부 처리 속성](/ko/docs/Web/SVG/Attribute/Conditional_Processing)
-  - : 특히: {{SVGAttr('requiredExtensions')}}, {{SVGAttr('systemLanguage')}}
-- 이벤트 속성
-  - : [전역 이벤트 속성](/ko/docs/Web/SVG/Attribute/Events#global_event_attributes), [그래픽 이벤트 속성](/ko/docs/Web/SVG/Attribute/Events#graphical_event_attributes)
-- [프레젠테이션 속성](/ko/docs/Web/SVG/Attribute/Presentation)
-  - : 특히: {{SVGAttr('clip-path')}}, {{SVGAttr('clip-rule')}}, {{SVGAttr('color')}}, {{SVGAttr('color-interpolation')}}, {{SVGAttr('color-rendering')}}, {{SVGAttr('cursor')}}, {{SVGAttr('display')}}, {{SVGAttr('fill')}}, {{SVGAttr('fill-opacity')}}, {{SVGAttr('fill-rule')}}, {{SVGAttr('filter')}}, {{SVGAttr('mask')}}, {{SVGAttr('opacity')}}, {{SVGAttr('pointer-events')}}, {{SVGAttr('shape-rendering')}}, {{SVGAttr('stroke')}}, {{SVGAttr('stroke-dasharray')}}, {{SVGAttr('stroke-dashoffset')}}, {{SVGAttr('stroke-linecap')}}, {{SVGAttr('stroke-linejoin')}}, {{SVGAttr('stroke-miterlimit')}}, {{SVGAttr('stroke-opacity')}}, {{SVGAttr('stroke-width')}}, {{SVGAttr("transform")}}, {{SVGAttr('vector-effect')}}, {{SVGAttr('visibility')}}
-- ARIA 속성
+- [Conditional Processing Attributes](/en-US/docs/Web/SVG/Attribute/Conditional_Processing)
+  - : Most notably: {{SVGAttr('requiredExtensions')}}, {{SVGAttr('systemLanguage')}}
+- Event Attributes
+  - : [Global event attributes](/en-US/docs/Web/SVG/Attribute/Events#global_event_attributes), [Graphical event attributes](/en-US/docs/Web/SVG/Attribute/Events#graphical_event_attributes)
+- [Presentation Attributes](/en-US/docs/Web/SVG/Attribute/Presentation)
+  - : Most notably: {{SVGAttr('clip-path')}}, {{SVGAttr('clip-rule')}}, {{SVGAttr('color')}}, {{SVGAttr('color-interpolation')}}, {{SVGAttr('color-rendering')}}, {{SVGAttr('cursor')}}, {{SVGAttr('display')}}, {{SVGAttr('fill')}}, {{SVGAttr('fill-opacity')}}, {{SVGAttr('fill-rule')}}, {{SVGAttr('filter')}}, {{SVGAttr('mask')}}, {{SVGAttr('opacity')}}, {{SVGAttr('pointer-events')}}, {{SVGAttr('shape-rendering')}}, {{SVGAttr('stroke')}}, {{SVGAttr('stroke-dasharray')}}, {{SVGAttr('stroke-dashoffset')}}, {{SVGAttr('stroke-linecap')}}, {{SVGAttr('stroke-linejoin')}}, {{SVGAttr('stroke-miterlimit')}}, {{SVGAttr('stroke-opacity')}}, {{SVGAttr('stroke-width')}}, {{SVGAttr("transform")}}, {{SVGAttr('vector-effect')}}, {{SVGAttr('visibility')}}
+- ARIA Attributes
   - : `aria-activedescendant`, `aria-atomic`, `aria-autocomplete`, `aria-busy`, `aria-checked`, `aria-colcount`, `aria-colindex`, `aria-colspan`, `aria-controls`, `aria-current`, `aria-describedby`, `aria-details`, `aria-disabled`, `aria-dropeffect`, `aria-errormessage`, `aria-expanded`, `aria-flowto`, `aria-grabbed`, `aria-haspopup`, `aria-hidden`, `aria-invalid`, `aria-keyshortcuts`, `aria-label`, `aria-labelledby`, `aria-level`, `aria-live`, `aria-modal`, `aria-multiline`, `aria-multiselectable`, `aria-orientation`, `aria-owns`, `aria-placeholder`, `aria-posinset`, `aria-pressed`, `aria-readonly`, `aria-relevant`, `aria-required`, `aria-roledescription`, `aria-rowcount`, `aria-rowindex`, `aria-rowspan`, `aria-selected`, `aria-setsize`, `aria-sort`, `aria-valuemax`, `aria-valuemin`, `aria-valuenow`, `aria-valuetext`, `role`
 
-## 사용 참고 사항
+## Usage notes
 
 {{svginfo}}
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 기타 기본 SVG 모양: **{{ SVGElement('circle') }}**, {{ SVGElement('line') }}, {{ SVGElement('polygon') }}, {{ SVGElement('polyline') }}, {{ SVGElement('rect') }}
+- Other SVG basic shapes: **{{ SVGElement('circle') }}**, {{ SVGElement('line') }}, {{ SVGElement('polygon') }}, {{ SVGElement('polyline') }}, {{ SVGElement('rect') }}

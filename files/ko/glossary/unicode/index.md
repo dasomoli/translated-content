@@ -1,15 +1,18 @@
 ---
-title: 유니코드
+title: Unicode
 slug: Glossary/Unicode
+page-type: glossary-definition
 ---
 
-**유니코드**는 세계 각국의 서로 다른 언어와 쓰기 방식, 기호 등을 모아 번호를 할당하고 {{glossary("character", "문자")}}를 정의하는 표준 {{Glossary("character set","문자 집합")}}입니다. 각각의 문자에 번호를 매김으로써 프로그래머는 {{Glossary("character encoding", "문자 인코딩")}}을 제작할 수 있고, 컴퓨터는 그 인코딩을 사용해 같은 파일 또는 프로그램 내에서 어떠한 언어 조합을 사용하더라도 저장, 처리, 전송할 수 있습니다.
+Unicode is a standard {{Glossary("Character set","character set")}} that numbers and defines {{Glossary("Character","characters")}} from the world's different languages, writing systems, and symbols.
 
-유니코드 이전에는 하나의 데이터가 여러 언어를 한 번에 가지기 힘들었고, 오류에도 취약했습니다. 예를 들어 하나의 문자 집합은 한글, 다른 집합은 영문 알파벳을 저장할 수 있다고 했을 때, 데이터의 어디서부터 어디까지가 한글이고 어디까지가 영문 알파벳인지 분명하게 표시해놓지 않으면 다른 프로그램이나 컴퓨터가 데이터를 잘못 표시하거나, 처리 과정에서 손상시킬 수 있었습니다. 어떤 글이 `占쏙옙`처럼 말도 안되는 글자로 표시되는걸 본 적이 있다면, 실제로 프로그램이 문자를 적절히 처리하지 못한 예시를 확인한 것입니다.
+By assigning each character a number, programmers can create {{Glossary("Character encoding","character encodings")}}, to let computers store, process, and transmit any combination of languages in the same file or program.
 
-웹에서 제일 널리 쓰이는 유니코드 문자 인코딩은 {{Glossary("UTF-8")}}입니다. UTF-16이나 이제 사용하지 않는 UCS-2 등 다른 인코딩도 존재하지만 UTF-8을 추천합니다.
+Before Unicode, it was difficult and error-prone to mix languages in the same data. For example, one character set would store Japanese characters, and another would store the Arabic alphabet. If it was not clearly marked which parts of the data were in which character set, other programs and computers would display the text incorrectly, or damage it during processing. If you've ever seen text where characters like curly quotes (&ldquo;&rdquo;) were replaced with gibberish like `Ã‚Â£`, then you've seen this problem, known as [Mojibake](https://en.wikipedia.org/wiki/Mojibake).
 
-## 더 알아보기
+The most common Unicode character encoding on the Web is {{Glossary("UTF-8")}}. Other encodings exist, like UTF-16 or the obsolete UCS-2, but UTF-8 is recommended.
 
-- 위키백과 [유니코드](https://ko.wikipedia.org/wiki/%EC%9C%A0%EB%8B%88%EC%BD%94%EB%93%9C)
-- [The Unicode Standard: A Technical Introduction](http://www.unicode.org/standard/principles.html)
+## See also
+
+- [Unicode](https://en.wikipedia.org/wiki/Unicode) on Wikipedia
+- [The Unicode Standard: A Technical Introduction](https://www.unicode.org/standard/principles.html)

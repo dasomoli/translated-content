@@ -1,47 +1,53 @@
 ---
 title: tab-size
 slug: Web/CSS/tab-size
+page-type: css-property
+browser-compat: css.properties.tab-size
 ---
 
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`tab-size`** 속성은 탭 문자(U+0009)의 너비를 조절합니다.
+The **`tab-size`** CSS property is used to customize the width of tab characters (U+0009).
 
-## 구문
+{{EmbedInteractiveExample("pages/css/tab-size.html")}}
+
+## Syntax
 
 ```css
-/* <integer> 값 */
+/* <integer> values */
 tab-size: 4;
 tab-size: 0;
 
-/* <length> 값 */
+/* <length> values */
 tab-size: 10px;
 tab-size: 2em;
 
-/* 전역 값 */
+/* Global values */
 tab-size: inherit;
 tab-size: initial;
+tab-size: revert;
+tab-size: revert-layer;
 tab-size: unset;
 ```
 
-### 값
+### Values
 
 - {{CSSxRef("&lt;integer&gt;")}}
-  - : 공백 문자(U+0020)에 대한 탭 문자의 상대적인 너비. 0 이상의 정수여야 합니다.
+  - : A multiple of the advance width of the space character (U+0020) to be used as the width of tabs. Must be nonnegative.
 - {{CSSxRef("&lt;length&gt;")}}
-  - : 탭 문자의 너비. 양의 값이어야 합니다.
+  - : The width of tabs. Must be nonnegative.
 
-## 형식 정의
+## Formal definition
 
 {{CSSInfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{CSSSyntax}}
 
-## 예제
+## Examples
 
-### 글자 수로 정의
+### Expanding by character count
 
 ```css
 pre {
@@ -49,7 +55,7 @@ pre {
 }
 ```
 
-### 탭 제거
+### Collapse tabs
 
 ```css
 pre {
@@ -57,9 +63,9 @@ pre {
 }
 ```
 
-### 기본 크기와 비교
+### Comparing to the default size
 
-다음 예제는 기본 탭 크기를 사용자 지정 탭 크기와 비교합니다. {{cssxref("white-space")}} 속성을 `pre`로 설정해서 탭 문자가 접히지 않도록 했습니다.
+This example compares a default tab size with a custom tab size. Note that {{cssxref("white-space")}} is set to `pre` to prevent the tabs from collapsing.
 
 #### HTML
 
@@ -79,22 +85,21 @@ p {
 
 .custom {
   tab-size: 3;
-  -moz-tab-size: 3;
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('기본_크기와_비교')}}
+{{EmbedLiveSample('Comparing_to_the_default_size')}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Controlling size of a tab character (U+0009)](https://lists.w3.org/Archives/Public/www-style/2008Dec/0009.html), Anne van Kesteren이 CSSWG에 보낸 이메일.
+- {{cssxref('white-space')}}

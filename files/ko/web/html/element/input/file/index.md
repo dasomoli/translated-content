@@ -1,207 +1,84 @@
 ---
 title: <input type="file">
 slug: Web/HTML/Element/input/file
+page-type: html-element
+browser-compat: html.elements.input.type_file
 ---
 
 {{HTMLSidebar}}
 
-**`file`** 유형의 {{htmlelement("input")}} 요소에는 저장 장치의 파일을 하나 혹은 여러 개 선택할 수 있습니다. 그 후, [양식을 제출](/ko/docs/Learn/HTML/Forms)해 서버로 전송하거나, [File API](/ko/docs/Web/API/File/Using_files_from_web_applications)를 사용한 JavaScript 코드로 조작할 수 있습니다.
+{{HTMLElement("input")}} elements with **`type="file"`** let the user choose one or more files from their device storage. Once chosen, the files can be uploaded to a server using [form submission](/en-US/docs/Learn/Forms), or manipulated using JavaScript code and [the File API](/en-US/docs/Web/API/File_API/Using_files_from_web_applications).
 
 {{EmbedInteractiveExample("pages/tabbed/input-file.html", "tabbed-shorter")}}
 
-<div class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples</a> and send us a pull request.</div>
+## Value
 
-<table class="properties">
-  <tbody>
-    <tr>
-      <td>
-        <strong><a href="#값">값</a></strong>
-      </td>
-      <td>선택한 파일의 경로를 나타내는 {{domxref("DOMString")}}.</td>
-    </tr>
-    <tr>
-      <td><strong>이벤트</strong></td>
-      <td>
-        {{domxref("HTMLElement/change_event", "change")}},
-        {{domxref("HTMLElement/input_event", "input")}}
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <p><strong>지원하는 공통 특성</strong></p>
-      </td>
-      <td>{{htmlattrxref("required", "input")}}</td>
-    </tr>
-    <tr>
-      <td><strong>추가 특성</strong></td>
-      <td>
-        {{htmlattrxref("accept", "input/file")}},
-        {{htmlattrxref("capture", "input/file")}},
-        {{htmlattrxref("files", "input/file")}},
-        {{htmlattrxref("multiple", "input/file")}}
-      </td>
-    </tr>
-    <tr>
-      <td><strong>IDL 특성</strong></td>
-      <td><code>files</code>, <code>value</code></td>
-    </tr>
-    <tr>
-      <td><strong>DOM 인터페이스</strong></td>
-      <td>{{domxref("HTMLInputElement")}}</td>
-    </tr>
-    <tr>
-      <td><strong>메서드</strong></td>
-      <td>
-        {{domxref("HTMLInputElement.select", "select()")}}
-      </td>
-    </tr>
-  </tbody>
-</table>
+A file input's [`value`](/en-US/docs/Web/HTML/Element/input#value) attribute contains a string that represents the path to the selected file(s). If no file is selected yet, the value is an empty string (`""`). When the user selected multiple files, the `value` represents the first file in the list of files they selected. The other files can be identified using the [input's `HTMLInputElement.files` property](/en-US/docs/Web/API/File_API/Using_files_from_web_applications#getting_information_about_selected_files).
 
-## 값
+> **Note:** The value is [always the file's name prefixed with `C:\fakepath\`](https://html.spec.whatwg.org/multipage/input.html#fakepath-srsly), which isn't the real path of the file. This is to prevent malicious software from guessing the user's file structure.
 
-파일 입력 칸의 {{htmlattrxref("value", "input")}} 특성은 선택한 파일의 경로를 나타내는 {{domxref("DOMString")}}을 담습니다. 사용자가 여러 개의 파일을 선택한 경우 `value`는 파일 목록의 첫 번째 파일을 가리키며, 나머지 파일은 요소의 {{domxref("HTMLInputElement.files")}} 속성으로 가져올 수 있습니다.
+## Additional attributes
 
-> **참고:**1. 아직 아무런 파일도 선택하지 않은 경우 빈 문자열(`""`)을 사용합니다. 2. 악의적인 소프트웨어가 사용자의 파일 구조를 알아내는 것을 방지하기 위해, 값 문자열은 항상 [C:\fakepath\를 앞에 포함](https://html.spec.whatwg.org/multipage/input.html#fakepath-srsly)합니다.
+In addition to the common attributes shared by all {{HTMLElement("input")}} elements, inputs of type `file` also support the following attributes.
 
-## 추가 특성
+### accept
 
-모든 {{htmlelement("input")}} 요소의 공용 특성 외에도, `file` 유형은 아래의 특성도 지원합니다.
+The [`accept`](/en-US/docs/Web/HTML/Attributes/accept) attribute value is a string that defines the file types the file input should accept. This string is a comma-separated list of **[unique file type specifiers](#unique_file_type_specifiers)**. Because a given file type may be identified in more than one manner, it's useful to provide a thorough set of type specifiers when you need files of a given format.
 
-| 특성                    | 설명                                                                                      |
-| ----------------------- | ----------------------------------------------------------------------------------------- |
-| [`accept`](#accept)     | 허용하는 파일 유형을 나타내는 하나 이상의 [고유 파일 유형 지정자](#고유_파일_유형_지정자) |
-| [`capture`](#capture)   | 이미지 또는 비디오 데이터를 캡처할 때 사용할 방법                                         |
-| [`files`](#files)       | 선택한 파일을 나열하는 {{domxref("FileList")}}                                   |
-| [`multiple`](#multiple) | 지정할 경우 사용자가 여러 개의 파일을 선택할 수 있음                                      |
-
-### {{htmlattrdef("accept")}}
-
-[`accept`](/ko/docs/Web/HTML/Attributes/accept) 특성은 파일 입력 칸이 허용할 파일 유형을 나타내는 문자열로, 쉼표로 구분한 [**고유 파일 유형 지정자**](#고유_파일_유형_지정자)의 목록입니다. 주어진 파일 유형의 식별 방법이 여러 가지일 수도 있으므로, 특정 파일 형식이 필요할 땐 유형의 집합을 제공하는 것이 좋습니다.
-
-예를 들어, Microsoft Word 파일을 식별하는 방법은 여러가지이므로, Word 파일을 허용하는 `<input>`은 다음과 같은 형태를 갖게 됩니다.
+For instance, there are a number of ways Microsoft Word files can be identified, so a site that accepts Word files might use an `<input>` like this:
 
 ```html
-<input type="file" id="docpicker"
-  accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+<input
+  type="file"
+  id="docpicker"
+  accept=".doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
 ```
 
-### {{htmlattrdef("capture")}}
+### capture
 
-[`accept`](/ko/docs/Web/HTML/Attributes/accept) 특성이 이미지나 비디오 캡처 데이터를 요구할 경우, [`capture`](/ko/docs/Web/HTML/Attributes/capture) 특성으로는 어떤 카메라를 사용할지 지정할 수 있습니다. `user` 값은 전면 카메라(사용자를 향한 카메라)와 마이크를, `environment` 값은 후면 카메라와 마이크를 사용해야 함을 나타냅니다. `capture` 특성을 누락한 경우 {{Glossary("user agent", "사용자 에이전트")}}가 어떤 쪽을 선택할지 스스로 결정합니다. 요청한 방향의 카메라를 사용할 수 없는 경우 사용자 에이전트는 자신이 선호하는 기본 모드로 대체할 수 있습니다.
+The [`capture`](/en-US/docs/Web/HTML/Attributes/capture) attribute value is a string that specifies which camera to use for capture of image or video data, if the [`accept`](/en-US/docs/Web/HTML/Attributes/accept) attribute indicates that the input should be of one of those types. A value of `user` indicates that the user-facing camera and/or microphone should be used. A value of `environment` specifies that the outward-facing camera and/or microphone should be used. If this attribute is missing, the {{Glossary("user agent")}} is free to decide on its own what to do. If the requested facing mode isn't available, the user agent may fall back to its preferred default mode.
 
-> **참고:** `capture`는 과거 불리언 특성이었으며, 존재할 경우 파일 선택 창을 요청하는 대신 장치의 카메라나 마이크 등 미디어 캡처 장치를 요청했었습니다.
+> **Note:** `capture` was previously a Boolean attribute which, if present, requested that the device's media capture device(s) such as camera or microphone be used instead of requesting a file input.
 
-### {{htmlattrdef("files")}}
+### multiple
 
-선택한 모든 파일을 나열하는 {{domxref("FileList")}} 객체입니다. {{htmlattrxref("multiple", "input/file")}} 특성을 지정하지 않았다면 두 개 이상의 파일을 포함하지 않습니다.
+When the [`multiple`](/en-US/docs/Web/HTML/Attributes/multiple) Boolean attribute is specified, the file input allows the user to select more than one file.
 
-### {{htmlattrdef("multiple")}}
+## Non-standard attributes
 
-[`multiple`](/ko/docs/Web/HTML/Attributes/multiple) 불리언 특성을 지정한 경우 사용자가 파일 선택 창에서 복수의 파일을 선택할 수 있습니다.
+In addition to the attributes listed above, the following non-standard attributes are available on some browsers. You should try to avoid using them when possible, since doing so will limit the ability of your code to function in browsers that don't implement them.
 
-## 비표준 특성
+### `webkitdirectory`
 
-위의 표준 특성 외에도, 다음과 같이 일부 브라우저에서만 사용할 수 있는 비표준 특성도 존재합니다. 지원하지 않는 브라우저에서의 코드 동작에 제약이 생길 수 있으므로, 가능하면 사용을 피해야 합니다.
+The Boolean `webkitdirectory` attribute, if present, indicates that only directories should be available to be selected by the user in the file picker interface. See {{domxref("HTMLInputElement.webkitdirectory")}} for additional details and examples.
 
-| 특성                                  | 설명                                                                                                                 |
-| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| [`webkitdirectory`](#webkitdirectory) | 사용자가 디렉토리를 선택할 수 있는지 나타내는 불리언 특성. [`multiple`](#multiple) 특성을 지정한 경우 복수 선택 가능 |
+Though originally implemented only for WebKit-based browsers, `webkitdirectory` is also usable in Microsoft Edge as well as Firefox 50 and later. However, even though it has relatively broad support, it is still not standard and should not be used unless you have no alternative.
 
-### {{htmlattrdef("webkitdirectory")}} {{non-standard_inline}}
+## Unique file type specifiers
 
-`webkitdirectory` 불리언 특성이 존재할 경우 사용자의 파일 선택 창에서 디렉토리만 선택 가능해야 함을 나타냅니다. {{domxref("HTMLInputElement.webkitdirectory")}} 문서를 방문해 보다 자세한 정보와 예제를 알아보세요.
+A **unique file type specifier** is a string that describes a type of file that may be selected by the user in an {{HTMLElement("input")}} element of type `file`. Each unique file type specifier may take one of the following forms:
 
-> **참고:** `webkitdirectory`는 원래 WebKit 기반 브라우저에서만 구현했었으나, Microsoft Edge와 Firefox(50 이상)도 지원합니다. 그러나, 비록 상대적으로 널리 지원하고는 있으나, 여전히 비표준 특성이므로 대안이 없는 경우에만 사용해야 합니다.
+- A valid case-insensitive filename extension, starting with a period (".") character. For example: `.jpg`, `.pdf`, or `.doc`.
+- A valid MIME type string, with no extensions.
+- The string `audio/*` meaning "any audio file".
+- The string `video/*` meaning "any video file".
+- The string `image/*` meaning "any image file".
 
-## 고유 파일 유형 지정자
-
-**고유 파일 유형 지정자**는 `file` 유형의 {{htmlelement("input")}}에서 선택할 수 있는 파일의 종류를 설명하는 문자열입니다. 각각의 유형 지정자는 다음 형태 중 하나를 취할 수 있습니다.
-
-- 마침표로 시작하는 유효한 파일 이름 확장자. 대소문자를 구분하지 않습니다. 예시: `.jpg`, `.pdf`, `.doc`.
-- 확장자를 포함하지 않은 유효한 MIME 유형 문자열.
-- `audio/*`는 "모든 오디오 파일"을 의미합니다.
-- `video/*`는 "모든 비디오 파일"을 의미합니다.
-- `image/*`는 "모든 이미지 파일"을 의미합니다.
-
-`accept` 특성이 고유 파일 유형 지정자를 값으로 받습니다. 쉼표로 구분하면 여러 개의 지정자도 사용할 수 있습니다. 예를 들어, 표준 이미지 형식 뿐만 아니라 PDF 파일도 받을 수 있어야 하는 입력 칸은 다음 코드처럼 작성할 수 있습니다.
+The `accept` attribute takes a string containing one or more of these unique file type specifiers as its value, separated by commas. For example, a file picker that needs content that can be presented as an image, including both standard image formats and PDF files, might look like this:
 
 ```html
-<input type="file" accept="image/*,.pdf">
+<input type="file" accept="image/*,.pdf" />
 ```
 
-## 파일 입력 칸 사용하기
+## Using file inputs
 
-### 기본 예제
-
-```html
-<form method="post" enctype="multipart/form-data">
- <div>
-   <label for="file">Choose file to upload</label>
-   <input type="file" id="file" name="file" multiple>
- </div>
- <div>
-   <button>Submit</button>
- </div>
-</form>
-```
-
-```css hidden
-div {
-  margin-bottom: 10px;
-}
-```
-
-결과는 다음과 같습니다.
-
-{{EmbedLiveSample('기본_예제', 650, 60)}}
-
-> **참고:** 이 예제는 GitHub에서도 볼 수 있습니다. [소스 코드](https://github.com/mdn/learning-area/blob/master/html/forms/file-examples/simple-file.html)와 [라이브 예제](https://mdn.github.io/learning-area/html/forms/file-examples/simple-file.html)를 확인하세요.
-
-사용자의 장치와 운영체제에 상관없이, 파일 입력 칸은 사용자가 파일을 선택할 수 있도록 파일 선택 대화창을 여는 하나의 버튼을 제공합니다.
-
-예제 코드와 같이 {{htmlattrxref("multiple", "input/file")}} 특성을 지정한 경우 파일 여러 개를 한 번에 선택할 수 있습니다. 사용자는 플랫폼이 허용하는 방법(<kbd>Shift</kbd>, <kbd>Ctrl</kbd> 누르기 등)을 통해 파일 선택 창에서 두 개 이상의 파일을 선택합니다. `<input>` 하나에 파일 하나씩만 선택을 허용하고 싶은 경우 `multiple` 특성을 제거하세요.
-
-### 선택한 파일의 정보 가져오기
-
-요소의 {{domxref("HTMLInputElement.files")}} 속성은 선택한 파일({{domxref("File")}}) 목록을 {{domxref("FileList")}} 객체로 반환합니다. `FileList`는 배열처럼 행동하므로, `length` 속성을 사용해 현재 선택한 파일의 수를 알 수 있습니다.
-
-각각의 `File` 객체는 다음과 같은 정보를 가지고 있습니다.
-
-- `name`
-  - : 파일 이름.
-- `lastModified`
-  - : 파일을 마지막으로 수정한 시각을 나타내는 숫자. UNIX 표준시(1970년 1월 1일 자정)으로부터 지난 시간을 밀리초 단위로 나타낸 값입니다.
-- `lastModifiedDate` {{deprecated_inline}}
-  - : 파일을 마지막으로 수정한 시각을 나타내는 {{jsxref("Date")}} 객체. 더 이상 사용하지 않아야 합니다. `lastModified`를 대신 사용하세요.
-- `size`
-  - : 파일의 크기를 바이트 단위로 나타낸 값.
-- `type`
-  - : 파일의 [MIME 유형](/ko/docs/Web/HTTP/Basics_of_HTTP/MIME_types).
-- `webkitRelativePath` {{non-standard_inline}}
-  - : {{htmlattrxref("webkitdirectory", "input/file")}} 특성을 사용한 경우, 기준 디렉토리에 대한 파일의 상대적인 경로. 비표준 특성이므로 사용에 주의가 필요합니다.
-
-<div class="hidden note"><p><strong>Note</strong>: You can set as well as get the value of <code>HTMLInputElement.files</code> in all modern browsers; this was most recently added to Firefox, in version 57 (see [Firefox bug 1384030](https://bugzil.la/1384030)).</p></div>
-
-### 가능한 파일 유형 제한하기
-
-종종, 사용자가 아무 파일이나 선택하지 못하도록 제한하고, 받을 수 있는 파일의 유형을 정해두고 싶을 때가 있습니다. 예를 들어, 프로필 사진을 받는 입력 칸의 경우, {{glossary("JPEG")}}, {{glossary("PNG")}}처럼 웹 호환 가능한 이미지 형식을 선택하도록 해야 할 것입니다.
-
-허용하는 파일 유형은 {{htmlattrxref("accept","input/file")}} 특성을 사용해 지정할 수 있으며, 허용할 파일 확장자나 MIME 유형을 쉼표로 구분한 값을 제공해야 합니다. 다음은 몇 가지 예시입니다.
-
-- `accept="image/png"` or `accept=".png"` — PNG 파일을 허용합니다.
-- `accept="image/png, image/jpeg"` 또는 `accept=".png, .jpg, .jpeg"` — PNG와 JPEG를 허용합니다.
-- `accept="image/*"` — `image/*` MIME 유형을 가진 모든 파일을 허용합니다. 많은 모바일 기기에서는, 이 값을 지정할 경우 사용자가 카메라로 사진을 찍을 수 있도록 설정합니다.
-- `accept=".doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"` — MS Word 문서처럼 보이는 파일을 모두 허용합니다.
-
-보다 완전한 예제 코드를 보겠습니다.
+### A basic example
 
 ```html
 <form method="post" enctype="multipart/form-data">
   <div>
-    <label for="profile_pic">Choose file to upload</label>
-    <input type="file" id="profile_pic" name="profile_pic"
-          accept=".jpg, .jpeg, .png">
+    <label for="file">Choose file to upload</label>
+    <input type="file" id="file" name="file" multiple />
   </div>
   <div>
     <button>Submit</button>
@@ -215,44 +92,113 @@ div {
 }
 ```
 
-위 코드는 이전 예제와 비슷하게 보이는 결과를 냅니다.
+This produces the following output:
 
-{{EmbedLiveSample('가능한_파일_유형_제한하기', 650, 60)}}
+{{EmbedLiveSample('A_basic_example', 650, 90)}}
 
-> **참고:** GitHub에서도 볼 수 있습니다. [소스 코드](https://github.com/mdn/learning-area/blob/master/html/forms/file-examples/file-with-accept.html), [라이브 실행 결과](https://mdn.github.io/learning-area/html/forms/file-examples/file-with-accept.html).
+> **Note:** You can find this example on GitHub too — see the [source code](https://github.com/mdn/learning-area/blob/main/html/forms/file-examples/simple-file.html), and also [see it running live](https://mdn.github.io/learning-area/html/forms/file-examples/simple-file.html).
 
-외형은 유사해 보일지라도, 이번 예제에서 파일을 선택하려고 한다면 `accept`에 지정한 파일 유형만 선택 가능함을 확인할 수 있습니다. (정확한 동작은 브라우저와 운영체제에 따라 다를 수 있습니다)
+Regardless of the user's device or operating system, the file input provides a button that opens up a file picker dialog that allows the user to choose a file.
 
-![Screenshot of a macOS file picker dialog. Files other than JPEG are grayed-out and unselectable.](file-chooser.png)
+Including the [`multiple`](#multiple) attribute, as shown above, specifies that multiple files can be chosen at once. The user can choose multiple files from the file picker in any way that their chosen platform allows (e.g. by holding down <kbd>Shift</kbd> or <kbd>Control</kbd> and then clicking). If you only want the user to choose a single file per `<input>`, omit the `multiple` attribute.
 
-`accept` 특성은 선택한 파일 유형을 검증하지는 않으며, 단순히 브라우저가 사용자를 올바른 파일 유형으로 유도하도록 힌트를 제공할 뿐입니다. (대부분의 경우) 사용자가 파일 선택 창의 옵션을 설정해 `accept`를 덮어쓰고 자신이 원하는 아무 파일이나 선택할 수 있으므로, 파일 입력 칸에 잘못된 유형의 파일이 올 수 있습니다.
+### Getting information on selected files
 
-그러므로, 반드시 적절한 서버 사이드 유효성 검증을 통해 `accept` 특성을 보조해야 합니다.
+The selected files' are returned by the element's `HTMLInputElement.files` property, which is a {{domxref("FileList")}} object containing a list of {{domxref("File")}} objects. The `FileList` behaves like an array, so you can check its `length` property to get the number of selected files.
 
-### 참고
+Each `File` object contains the following information:
 
-1. 파일 입력 칸의 값을 스크립트에서 설정할 수는 없습니다. 따라서 다음 코드는 아무런 효과도 내지 않습니다.
+- `name`
+  - : The file's name.
+- `lastModified`
+  - : A number specifying the date and time at which the file was last modified, in milliseconds since the UNIX epoch (January 1, 1970 at midnight).
+- `lastModifiedDate` {{deprecated_inline}}
+  - : A {{jsxref("Date")}} object representing the date and time at which the file was last modified. _This is deprecated and should not be used. Use `lastModified` instead._
+- `size`
+  - : The size of the file in bytes.
+- `type`
+  - : The file's [MIME type](/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types).
+- `webkitRelativePath` {{non-standard_inline}}
+  - : A string specifying the file's path relative to the base directory selected in a directory picker (that is, a `file` picker in which the [`webkitdirectory`](#webkitdirectory) attribute is set). _This is non-standard and should be used with caution._
 
-    ```js
-    const input = document.querySelector("input[type=file]");
-    input.value = "foo";
-    ```
+> **Note:** You can set as well as get the value of `HTMLInputElement.files` in all modern browsers; this was most recently added to Firefox, in version 57 (see [Firefox bug 1384030](https://bugzil.la/1384030)).
 
-2. `<input type="file">` 로 선택한 원본 파일의 실제 경로는 명확한 보안상 문제로 인해 알 수 없습니다. 대신 앞에 `C:\fakepath\` 를 붙인 파일 이름을 경로로 보여줍니다. 하필 이런 모습이 된 것에는 역사적인 이유가 있지만 이 동작은 모든 최신 브라우저에서 지원하고 있으며, 사실 [명세에도 포함](https://html.spec.whatwg.org/multipage/forms.html#fakepath-srsly)되어 있습니다.
+### Limiting accepted file types
 
-## 예제
+Often you won't want the user to be able to pick any arbitrary type of file; instead, you often want them to select files of a specific type or types. For example, if your file input lets users upload a profile picture, you probably want them to select web-compatible image formats, such as {{Glossary("JPEG")}} or {{Glossary("PNG")}}.
 
-이번 예제에서는 좀 더 발전된 파일 선책 창을 만들어 보겠습니다. `HTMLInputElement.files` 속성에서 알 수 있는 정보도 활용하면서, 몇 가지 재밌는 활용법도 보여드리겠습니다.
+Acceptable file types can be specified with the [`accept`](#accept) attribute, which takes a comma-separated list of allowed file extensions or MIME types. Some examples:
 
-> **참고:** 전체 소스 코드는 GitHub에 있습니다. [file-example.html](https://github.com/mdn/learning-area/blob/master/html/forms/file-examples/file-example.html) ([라이브 실행 결과](https://mdn.github.io/learning-area/html/forms/file-examples/file-example.html)). 주 목적이 JavaScript이므로 CSS는 따로 설명하지 않겠습니다.
+- `accept="image/png"` or `accept=".png"` — Accepts PNG files.
+- `accept="image/png, image/jpeg"` or `accept=".png, .jpg, .jpeg"` — Accept PNG or JPEG files.
+- `accept="image/*"` — Accept any file with an `image/*` MIME type. (Many mobile devices also let the user take a picture with the camera when this is used.)
+- `accept=".doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"` — accept anything that smells like an MS Word document.
 
-우선 HTML을 살펴보겠습니다.
+Let's look at a more complete example:
+
+```html
+<form method="post" enctype="multipart/form-data">
+  <div>
+    <label for="profile_pic">Choose file to upload</label>
+    <input
+      type="file"
+      id="profile_pic"
+      name="profile_pic"
+      accept=".jpg, .jpeg, .png" />
+  </div>
+  <div>
+    <button>Submit</button>
+  </div>
+</form>
+```
+
+```css hidden
+div {
+  margin-bottom: 10px;
+}
+```
+
+This produces a similar-looking output to the previous example:
+
+{{EmbedLiveSample('Limiting_accepted_file_types', 650, 90)}}
+
+> **Note:** You can find this example on GitHub too — see the [source code](https://github.com/mdn/learning-area/blob/main/html/forms/file-examples/file-with-accept.html), and also [see it running live](https://mdn.github.io/learning-area/html/forms/file-examples/file-with-accept.html).
+
+It may look similar, but if you try selecting a file with this input, you'll see that the file picker only lets you select the file types specified in the `accept` value (the exact interface differs across browsers and operating systems).
+
+The `accept` attribute doesn't validate the types of the selected files; it provides hints for browsers to guide users towards selecting the correct file types. It is still possible (in most cases) for users to toggle an option in the file chooser that makes it possible to override this and select any file they wish, and then choose incorrect file types.
+
+Because of this, you should make sure that the `accept` attribute is backed up by appropriate server-side validation.
+
+### Notes
+
+1. You cannot set the value of a file picker from a script — doing something like the following has no effect:
+
+   ```js
+   const input = document.querySelector("input[type=file]");
+   input.value = "foo";
+   ```
+
+2. When a file is chosen using an `<input type="file">`, the real path to the source file is not shown in the input's `value` attribute for obvious security reasons. Instead, the filename is shown, with `C:\fakepath\` prepended to it. There are some historical reasons for this quirk, but it is supported across all modern browsers, and in fact is [defined in the spec](https://html.spec.whatwg.org/multipage/forms.html#fakepath-srsly).
+
+## Examples
+
+In this example, we'll present a slightly more advanced file chooser that takes advantage of the file information available in the `HTMLInputElement.files` property, as well as showing off a few clever tricks.
+
+> **Note:** You can see the complete source code for this example on GitHub — [file-example.html](https://github.com/mdn/learning-area/blob/main/html/forms/file-examples/file-example.html) ([see it live also](https://mdn.github.io/learning-area/html/forms/file-examples/file-example.html)). We won't explain the CSS; the JavaScript is the main focus.
+
+First of all, let's look at the HTML:
 
 ```html
 <form method="post" enctype="multipart/form-data">
   <div>
     <label for="image_uploads">Choose images to upload (PNG, JPG)</label>
-    <input type="file" id="image_uploads" name="image_uploads" accept=".jpg, .jpeg, .png" multiple>
+    <input
+      type="file"
+      id="image_uploads"
+      name="image_uploads"
+      accept=".jpg, .jpeg, .png"
+      multiple />
   </div>
   <div class="preview">
     <p>No files currently selected for upload</p>
@@ -280,7 +226,8 @@ form ol {
   padding-left: 0;
 }
 
-form li, div > p {
+form li,
+div > p {
   background: #eee;
   display: flex;
   justify-content: space-between;
@@ -299,8 +246,9 @@ form p {
   padding-left: 10px;
 }
 
-form label, form button {
-  background-color: #7F9CCB;
+form label,
+form button {
+  background-color: #7f9ccb;
   padding: 5px 10px;
   border-radius: 5px;
   border: 1px ridge black;
@@ -308,51 +256,53 @@ form label, form button {
   height: auto;
 }
 
-form label:hover, form button:hover {
-  background-color: #2D5BA3;
+form label:hover,
+form button:hover {
+  background-color: #2d5ba3;
   color: white;
 }
 
-form label:active, form button:active {
-  background-color: #0D3F8F;
+form label:active,
+form button:active {
+  background-color: #0d3f8f;
   color: white;
 }
 ```
 
-지금까지 봤던 것과 거의 같으므로 설명할 부분은 없겠습니다.
+This is similar to what we've seen before — nothing special to comment on.
 
-이제 JavaScript 차례입니다.
+Next, let's walk through the JavaScript.
 
-우선 양식의 파일 입력 칸과, `.preview` 클래스를 가진 {{htmlelement("div")}} 요소에 대한 참조를 가져옵니다. 그 후, {{htmlelement("input")}} 요소를 숨겨버립니다. 파일 입력 칸은 보통 못생겼고, 스타일을 적용하기도 어려우며 브라우저마다 디자인이 다르기 때문입니다. `<input>`은 연결된 {{htmlelement("label")}}을 클릭해도 활성화할 수 있으므로, 시각적으로 `<input>`을 숨긴 후 레이블에 버튼처럼 스타일을 적용해서, 파일을 업로드하고 싶은 경우 레이블을 누르라는 것을 알려주는 편이 낫습니다.
+In the first lines of script, we get references to the form input itself, and the {{htmlelement("div")}} element with the class of `.preview`. Next, we hide the {{htmlelement("input")}} element — we do this because file inputs tend to be ugly, difficult to style, and inconsistent in their design across browsers. You can activate the `input` element by clicking its {{htmlelement("label")}}, so it is better to visually hide the `input` and style the label like a button, so the user will know to interact with it if they want to upload files.
 
 ```js
-var input = document.querySelector('input');
-var preview = document.querySelector('.preview');
+const input = document.querySelector('input');
+const preview = document.querySelector('.preview');
 
 input.style.opacity = 0;
 ```
 
-> **참고:** {{cssxref("visibility", "visibility: hidden")}}, {{cssxref("display", "display: none")}}로 숨길 경우 접근성 보조 기술이 파일 입력 칸을 상호작용 할 수 없는 상태라고 인식하기 때문에 {{cssxref("opacity")}}를 대신 사용합니다.
+> **Note:** {{cssxref("opacity")}} is used to hide the file input instead of {{cssxref("visibility", "visibility: hidden")}} or {{cssxref("display", "display: none")}}, because assistive technology interprets the latter two styles to mean the file input isn't interactive.
 
-그 다음으로는 입력 칸에 [이벤트 수신기](/ko/docs/Web/API/EventTarget/addEventListener)를 부착해 그 값이 달라지는지(예제의 경우, 파일을 선택할 때) 지켜봅니다. 이벤트 수신기는 밑에서 만들 `updateImageDisplay()` 함수를 호출하게 됩니다.
+Next, we add an [event listener](/en-US/docs/Web/API/EventTarget/addEventListener) to the input to listen for changes to its selected value (in this case, when files are selected). The event listener invokes our custom `updateImageDisplay()` function.
 
 ```js
 input.addEventListener('change', updateImageDisplay);
 ```
 
-`updateImageDisplay()` 함수를 호출하면 다음 작업을 수행하게 됩니다.
+Whenever the `updateImageDisplay()` function is invoked, we:
 
-- {{jsxref("Statements/while", "while")}} 반복문을 사용해 `<div>`에 존재하는 이전 파일의 미리보기를 제거합니다.
-- 선택한 모든 파일의 정보를 들고 있는 {{domxref("FileList")}} 객체를 가져온 후 `curFiles` 변수에 저장합니다.
-- `curFiles.length`가 0과 같은지 검사해 아무런 파일도 선택하지 않았는지 검사합니다. 그렇다면, `<div>`에 아무런 파일도 선택하지 않았다는 메시지를 출력합니다.
-- 반면, 파일을 선택한 경우라면, 각각의 파일을 순회하며 각각의 정보를 미리보기 `<div>`에 출력합니다. 참고할 점:
-- 뒤에서 작성할 `validFileType()` 함수를 사용해 순회 중인 파일이 올바른 유형, 즉 `accept` 특성에 속한 파일인지 판별합니다.
-- 올바른 파일이라면,
+- Use a {{jsxref("Statements/while", "while")}} loop to empty the previous contents of the preview `<div>`.
+- Grab the {{domxref("FileList")}} object that contains the information on all the selected files, and store it in a variable called `curFiles`.
+- Check to see if no files were selected, by checking if `curFiles.length` is equal to 0. If so, print a message into the preview `<div>` stating that no files have been selected.
+- If files _have_ been selected, we loop through each one, printing information about it into the preview `<div>`. Things to note here:
+- We use the custom `validFileType()` function to check whether the file is of the correct type (e.g. the image types specified in the `accept` attribute).
+- If it is, we:
 
-  - `<div>` 안의 목록에 해당 파일의 이름과 크기를 항목으로 추가합니다. 이름은 `file.name`과 `file.size`로 가져옵니다. 또 다른 함수인 `returnFileSize()`는 파일 크기를 보기 좋게 바이트/KB/MB로 서식해 출력합니다. (브라우저는 바이트 크기로만 알려줍니다)
-  - {{domxref("URL.createObjectURL", "URL.createObjectURL(curFiles[i])")}}를 호출해 이미지 미리보기 썸네일을 생성하고, 새로 만든 {{htmlelement("img")}} 태그의 {{htmlattrxref("src", "img")}}에 지정한 후, 이미지도 목록의 항목에 추가합니다.
+  - Print out its name and file size into a list item inside the previous `<div>` (obtained from `file.name` and `file.size`). The custom `returnFileSize()` function returns a nicely-formatted version of the size in bytes/KB/MB (by default the browser reports the size in absolute bytes).
+  - Generate a thumbnail preview of the image by calling {{domxref("URL.createObjectURL", "URL.createObjectURL(curFiles[i])")}}. Then, insert the image into the list item too by creating a new {{htmlelement("img")}} and setting its [`src`](/en-US/docs/Web/HTML/Element/img#src) to the thumbnail.
 
-- 파일 유형이 유효하지 않은 경우 사용자에게 다른 파일을 선택해야 한다고 알려주는 메시지를 표시합니다.
+- If the file type is invalid, we display a message inside a list item telling the user that they need to select a different file type.
 
 ```js
 function updateImageDisplay() {
@@ -361,7 +311,7 @@ function updateImageDisplay() {
   }
 
   const curFiles = input.files;
-  if(curFiles.length === 0) {
+  if (curFiles.length === 0) {
     const para = document.createElement('p');
     para.textContent = 'No files currently selected for upload';
     preview.appendChild(para);
@@ -369,10 +319,10 @@ function updateImageDisplay() {
     const list = document.createElement('ol');
     preview.appendChild(list);
 
-    for(const file of curFiles) {
+    for (const file of curFiles) {
       const listItem = document.createElement('li');
       const para = document.createElement('p');
-      if(validFileType(file)) {
+      if (validFileType(file)) {
         para.textContent = `File name ${file.name}, file size ${returnFileSize(file.size)}.`;
         const image = document.createElement('img');
         image.src = URL.createObjectURL(file);
@@ -390,7 +340,7 @@ function updateImageDisplay() {
 }
 ```
 
-`validFileType()` 함수는 매개변수로 {{domxref("File")}} 객체를 받아서, 그 파일의 `type`이 `fileTypes`의 아무 값과 동일한지 판별합니다. {{jsxref("Array.prototype.includes()")}}를 사용하여 type과 일치하는 값이 존재하면 `true`, 아니면 `false`를 반환합니다.
+The custom `validFileType()` function takes a {{domxref("File")}} object as a parameter, then uses {{jsxref("Array.prototype.includes()")}} to check if any value in the `fileTypes` matches the file's `type` property. If a match is found, the function returns `true`. If no match is found, it returns `false`.
 
 ```js
 // https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types
@@ -412,33 +362,84 @@ function validFileType(file) {
 }
 ```
 
-`returnFileSize()` 함수는 숫자(현재 파일의 `size` 속성에서 가져온, 파일의 바이트 크기)를 받은 후, 읽기 좋게 바이트/KB/MB 단위로 서식을 적용합니다.
+The `returnFileSize()` function takes a number (of bytes, taken from the current file's `size` property), and turns it into a nicely formatted size in bytes/KB/MB.
 
 ```js
 function returnFileSize(number) {
-  if(number < 1024) {
-    return number + 'bytes';
-  } else if(number >= 1024 && number < 1048576) {
-    return (number/1024).toFixed(1) + 'KB';
-  } else if(number >= 1048576) {
-    return (number/1048576).toFixed(1) + 'MB';
+  if (number < 1024) {
+    return `${number} bytes`;
+  } else if (number >= 1024 && number < 1048576) {
+    return `${(number / 1024).toFixed(1)} KB`;
+  } else if (number >= 1048576) {
+    return `${(number / 1048576).toFixed(1)} MB`;
   }
 }
 ```
 
-결과는 다음과 같습니다. 한번 직접 파일을 선택해보세요.
+The example looks like this; have a play:
 
-{{EmbedLiveSample('예제', '100%', 200)}}
+{{EmbedLiveSample('Examples', '100%', 200)}}
 
-## 명세
+## Technical summary
+
+<table class="properties">
+  <tbody>
+    <tr>
+      <td><strong><a href="#value">Value</a></strong></td>
+      <td>
+        A string representing the path to the selected
+        file.
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Events</strong></td>
+      <td>
+        {{domxref("HTMLElement/change_event", "change")}} and
+        {{domxref("HTMLElement/input_event", "input")}}
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Supported common attributes</strong></td>
+      <td><a href="/en-US/docs/Web/HTML/Element/input#required"><code>required</code></a></td>
+    </tr>
+    <tr>
+      <td><strong>Additional Attributes</strong></td>
+      <td>
+        <a href="#accept" aria-current="page"><code>accept</code></a>,
+        <a href="#capture" aria-current="page"><code>capture</code></a>,
+        <a href="#multiple" aria-current="page"><code>multiple</code></a>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>IDL attributes</strong></td>
+      <td><code>files</code> and <code>value</code></td>
+    </tr>
+    <tr>
+      <td><strong>DOM interface</strong></td>
+      <td><p>{{domxref("HTMLInputElement")}}</p></td>
+    </tr>
+    <tr>
+      <td><strong>Methods</strong></td>
+      <td>
+        {{domxref("HTMLInputElement.select", "select()")}}
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Implicit ARIA Role</strong></td>
+      <td><a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"><code>no corresponding role</code></a></td>
+    </tr>
+  </tbody>
+</table>
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보 기
+## See also
 
-- [웹 애플리케이션에서 파일 사용하기](/ko/docs/Web/API/File/Using_files_from_web_applications) — `<input type="file">`과 File API에 대한 유용한 예제를 더 가지고 있습니다.
-- [CSS 속성 호환성](/ko/docs/Learn/Forms/Property_compatibility_table_for_form_controls)
+- [Using files from web applications](/en-US/docs/Web/API/File_API/Using_files_from_web_applications) — contains a number of other useful examples related to `<input type="file">` and the [File API](/en-US/docs/Web/API/File).
+- [Compatibility of CSS properties](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)

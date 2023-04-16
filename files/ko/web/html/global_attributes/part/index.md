@@ -1,22 +1,24 @@
 ---
 title: part
 slug: Web/HTML/Global_attributes/part
+page-type: html-attribute
+browser-compat: html.global_attributes.part
 ---
 
 {{HTMLSidebar("Global_attributes")}}
 
-**`part`** [전역 특성](/ko/docs/Web/HTML/Global_attributes)은 요소의 파트 이름을 공백으로 구분한 목록을 지정합니다. CSS에서는 {{CSSxRef("::part")}} 의사 요소를 사용해, 섀도 트리 내의 특정 요소에 스타일을 적용할 수 있습니다.
+The **`part`** [global attribute](/en-US/docs/Web/HTML/Global_attributes) contains a space-separated list of the part names of the element. Part names allows CSS to select and style specific elements in a shadow tree via the {{CSSxRef("::part")}} pseudo-element.
 
-[섀도 파트 예제](https://mdn.github.io/web-components-examples/shadow-part/)에서 사용 예를 살펴보세요.
+See our [Shadow part example](https://mdn.github.io/web-components-examples/shadow-part/) for a usage example.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 모든 [전역 특성](/ko/docs/Web/HTML/Global_attributes).
+- All [global attributes](/en-US/docs/Web/HTML/Global_attributes).

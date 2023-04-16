@@ -1,16 +1,20 @@
 ---
-title: 기본 도형
+title: Basic shapes
 slug: Web/SVG/Tutorial/Basic_Shapes
+page-type: guide
 ---
+
+{{SVGRef}}
+
 {{ PreviousNext("Web/SVG/Tutorial/Positions", "Web/SVG/Tutorial/Paths") }}
 
-SVG 드로잉에는 몇 가지 기본 도형들이 있다. 도형들의 목적은 이름에서 명백하게 알 수 있다. 도형들의 위치와 크기를 지정하는 몇몇 속성들은 주어지지만, 여기에서 다뤄지지 않는 다른 속성들과 함께 더 정확하고 완전한 설명이 있는 레퍼런스를 첨부해 두겠다. 그러나, 대부분의 SVG 문서에서 사용되기 때문에 몇 가지 소개를 해줘야한다.
+There are several basic shapes used for most SVG drawing. The purpose of these shapes is fairly obvious from their names. Some of the parameters that determine their position and size are given, but an element reference would probably contain more accurate and complete descriptions along with other properties that won't be covered in here. However, since they're used in most SVG documents, it's necessary to give them some sort of introduction.
 
-## 기본적인 도형들
+To insert a shape, you create an element in the document. Different elements correspond to different shapes and take different parameters to describe the size and position of those shapes. Some are slightly redundant in that they can be created by other shapes, but they're all there for your convenience and to keep your SVG documents as short and as readable as possible. All the basic shapes are shown in the following image.
 
-도형을 삽입하기 위해서는 당신은 문서안에 요소를 만들어야 한다. 서로다른 요소들은 다른 모양에 해당하며, 서로 다른 속성들을 사용하여 해당 모양의 크기와 위치를 나타낸다. 일부는 다른 모양으로 생성 될 수 있다는 점에서 약간 중복되지만, 사용자의 편의를 위해 SVG 문서를 가능한 짧고 가독성있게 유지하기 위해서 모두 제공된다. 모든 기본 도형은 오른쪽 이미지에 표시된다. 기본 도형을 생성하는 코드는 다음과 같다.
+![Succession of eight different shapes and drawings. At the top left, a black outline square follow by a black rounded outline square. Below at the left, a red outline circle follow by a red outline ellipse. Below at the left a yellow line, follow by a yellow zigzag. Below the yellow lines, a green outline star and at the end of the image a blue wavy line.](shapes.png)
 
-![8개의 다른 도형입니다. 왼쪽 상단에는 검은색 테두리의 사각형이 그 옆에는 검은색 둥근 윤곽선 사각형이 있습니다. 왼쪽 아래에는 빨간색 테두리의 원이 그 뒤에 빨간색 테두리의 타원이 있습니다. 왼쪽 아래에 노란색 선이 있고, 그 옆에는 지그재그로 된 노란선이 있습니다. 노란색 선 아래에는 녹색 테두리의 별이 있고 이미지 끝에는 파란색 물결 모양의 선이 있습니다.](shapes.png)
+The code to generate that image looks something like this:
 
 ```xml
 <?xml version="1.0" standalone="no"?>
@@ -33,11 +37,11 @@ SVG 드로잉에는 몇 가지 기본 도형들이 있다. 도형들의 목적�
 </svg>
 ```
 
-> **참고:** `stroke`, `stroke-width` 그리고 `fill` 속성들은 튜토리얼 뒤쪽에서 설명한다.
+> **Note:** The `stroke`, `stroke-width`, and `fill` attributes are explained later in the tutorial.
 
-### 사각형
+## Rectangle
 
-[rect](/en-US/Web/SVG/Element/rect) 요소는 당신이 생각하는 것과 일치하며 화면에 사각형을 그린다. 여기에는 화면상에서 직사각형의 위치와 모양을 제어하는 6가지 기본 속성만 있다. 앞서 보여준 이미지는 두 개의 rect 요소를 보여주며 약간 중복된다. 오른쪽에 있는 이미지는 rx 와 ry 속성이 설정되어 있어서 모서리가 둥글다. rx 와 ry 가 설정되지 않은 경우에는 기본값 0으로 들어간다.
+The {{SVGElement("rect")}} element draws a rectangle on the screen. There are six basic attributes that control the position and shape of the rectangles on screen. The one on the right has its `rx` and `ry` parameters set, giving it rounded corners. If they're not set, they default to `0`.
 
 ```xml
 <rect x="10" y="10" width="30" height="30"/>
@@ -45,98 +49,102 @@ SVG 드로잉에는 몇 가지 기본 도형들이 있다. 도형들의 목적�
 ```
 
 - `x`
-  - : 사각형의 좌측 상단의 `x` 값을 의미한다.
+  - : The x position of the top left corner of the rectangle.
 - `y`
-  - : 사각형의 좌측 상단의 `y` 값을 의미한다.
+  - : The y position of the top left corner of the rectangle.
 - `width`
-  - : 사각형의 폭을 나타낸다.
+  - : The width of the rectangle.
 - `height`
-  - : 사각형의 높이를 나타낸다.
+  - : The height of the rectangle.
 - `rx`
-  - : 사각형의 둥근 꼭짓점의 `x` 방향으로의 반지름이다.
+  - : The x radius of the corners of the rectangle.
 - `ry`
-  - : 사각형의 둥근 꼭짓점의 `y` 방향으로의 반지름이다.
+  - : The y radius of the corners of the rectangle.
 
-### 원
+## Circle
 
-당신이 추측한 것 처럼, [circle](/en-US/Web/SVG/Element/circle) 요소는 화면에 원을 그린다. circle 요소에 실제로 적용할 수 있는 속성은 세 가지 뿐이다.
+The {{SVGElement("circle")}} element draws a circle on the screen. It takes three basic parameters to determine the shape and size of the element.
 
-```html
+```xml
 <circle cx="25" cy="75" r="20"/>
 ```
 
 - `r`
-  - : 원의 반지름을 의미한다.
+  - : The radius of the circle.
 - `cx`
-  - : 원의 중심 중 `x` 값을 의미한다.
+  - : The x position of the center of the circle.
 - `cy`
-  - : 원의 중심 중 `y` 값을 의미한다.
+  - : The y position of the center of the circle.
 
-### 타원
+## Ellipse
 
-[Ellipse](/en-US/Web/SVG/Element/ellipse)는 원의 x와 y 반경 (수학자들은 장반경, 단반경 이라고 함)을 개별적으로 확장 할 수 있는 circle 요소의 좀 더 일반적인 형태이다.
+An {{SVGElement("ellipse")}} is a more general form of the {{SVGElement("circle")}} element, where you can scale the x and y radius (commonly referred to as the _semimajor_ and _semiminor_ axes in maths) of the circle separately.
 
-```html
+```xml
 <ellipse cx="75" cy="75" rx="20" ry="5"/>
 ```
 
 - `rx`
-  - : 타원의 `x` 방향으로의 반지름의 길이를 의미한다.
+  - : The x radius of the ellipse.
 - `ry`
-  - : 타원의 `y` 방향으로의 반지름의 길이를 의미한다.
+  - : The y radius of the ellipse.
 - `cx`
-  - : 타원의 중심 중 `x` 값을 의미한다.
+  - : The x position of the center of the ellipse.
 - `cy`
-  - : 타원의 중심 중 `y` 값을 의미한다.
+  - : The y position of the center of the ellipse.
 
-### 선
+## Line
 
-[Line](/en-US/Web/SVG/Element/line)s은 단지 직선이다. line 요소는 선의 시작과 끝 지점을 지정하는 두 점을 속성으로 갖는다.
+The {{SVGElement("line")}} element takes the positions of two points as parameters and draws a straight line between them.
 
-```html
-<line x1="10" x2="50" y1="110" y2="150"/>
+```xml
+<line x1="10" x2="50" y1="110" y2="150" stroke="black" stroke-width="5"/>
 ```
 
 - `x1`
-  - : 점 1의 `x` 값이다.
+  - : The x position of point 1.
 - `y1`
-  - : 점 1의 `y` 값이다.
+  - : The y position of point 1.
 - `x2`
-  - : 점 2의 `x` 값이다.
+  - : The x position of point 2.
 - `y2`
-  - : 점 2의 `y` 값이다.
+  - : The y position of point 2.
 
-### Polyline
+## Polyline
 
-[Polyline](/en-US/Web/SVG/Element/polyline)s은 연결된 직선들의 그룹이다. 그 목록(직선들)은 꽤 길어질 수 있기 때문에 모든 포인트가 하나의 속성에 포함된다.
+A {{SVGElement("polyline")}} is a group of connected straight lines. Since the list of points can get quite long, all the points are included in one attribute:
 
-```html
-<polyline points="60 110, 65 120, 70 115, 75 130, 80 125, 85 140, 90 135, 95 150, 100 145"/>
+```xml
+<polyline points="60, 110 65, 120 70, 115 75, 130 80, 125 85, 140 90, 135 95, 150 100, 145"/>
 ```
 
-- points
-  - : 포인트들의 목록, 각 숫자는 공백, 쉼표, EOL 또는 줄 바꿈 문자로 구분된다. 각 포인트는 반드시 `x` 좌표와 `y` 좌표를 가지고 있어야 한다. 따라서 포인트 목록 (0,0), (1,1) 및 (2,2)는 "0 0, 1 1, 2 2"라고 쓸 수 있다.
+- `points`
+  - : A list of points. Each number must be separated by a space, comma, EOL, or a line feed character with additional whitespace permitted. Each point must contain two numbers: an x coordinate and a y coordinate. So, the list `(0,0)`, `(1,1)`, and `(2,2)` could be written as `0, 0 1, 1 2, 2`.
 
-### 다각형
+## Polygon
 
-[Polygon](/en-US/Web/SVG/Element/polygon)s은 점을 연결하는 직선으로 구성된다는 점에서 polyline과 매우 유사하다. 하지만 다각형의 경우, 자동으로 마지막 포인트로부터 첫 번째 포인트로 직선을 만들어서 닫힌 모양을 만든다. 사각형은 다각형의 하나이므로, 융통성있는 사각형을 필요로 하는 경우 polygon 요소를 사용해서 rect 요소를 만들 수 있다.
+A {{SVGElement("polygon")}} is similar to a {{SVGElement("polyline")}}, in that it is composed of straight line segments connecting a list of points. For polygons though, the path automatically connects the last point with the first, creating a closed shape.
 
-```html
-<polygon points="50 160, 55 180, 70 180, 60 190, 65 205, 50 195, 35 205, 40 190, 30 180, 45 180"/>
+> **Note:** A rectangle is a type of polygon, so a polygon can be used to create a `<rect/>` element that does not have rounded corners.
+
+```xml
+<polygon points="50, 160 55, 180 70, 180 60, 190 65, 205 50, 195 35, 205 40, 190 30, 180 45, 180"/>
 ```
 
-- points
-  - : 포인트들의 목록, 각 숫자는 공백, 쉼표, EOL 또는 줄 바꿈 문자로 구분된다. 각 포인트는 반드시 `x` 좌표와 `y` 좌표를 가지고 있어야 한다. 따라서 포인트 목록 (0,0), (1,1) 및 (2,2)는 "0 0, 1 1, 2 2"라고 쓸 수 있다. 그러면 (2,2)에서 (0,0)으로 최종 직선이 그려져서 다각형이 완성된다.
+- `points`
+  - : A list of points, each number separated by a space, comma, EOL, or a line feed character with additional whitespace permitted. Each point must contain two numbers: an x coordinate and a y coordinate. So, the list `(0,0)`, `(1,1)`, and `(2,2)` could be written as `0, 0 1, 1 2, 2`. The drawing then closes the path, so a final straight line would be drawn from `(2,2)` to `(0,0)`.
 
-### 패스
+## Path
 
-[패스](/ko/Web/SVG/Element/path)는 아마 SVG에서 사용할 수 있는 가장 일반적인 형태일 것이다. path 요소를 사용해서 당신은 사각형(둥근 모서리가 있거나 없는), 원, 타원, 폴리라인 및 다각형을 그릴 수 있다. 기본적으로 다른 모든 종류의 모양, 베지에 곡선, 2차원 곡선 등이 가능하다. 그러한 이유로, paths 는 튜토리얼의 [the next section](/en-US/Web/SVG/Tutorial/Paths) 에 들어가지만, 지금은 모양을 제어하는 데 사용되는 단일 속성이 있음을 알려주겠다.
+A {{SVGElement("path")}} is the most general shape that can be used in SVG. Using a `path` element, you can draw rectangles (with or without rounded corners), circles, ellipses, polylines, and polygons. Basically any of the other types of shapes, bezier curves, quadratic curves, and many more.
 
-```html
-<path d="M 20 230 Q 40 205, 50 230 T 90230"/>
+For this reason, [the next section](/en-US/docs/Web/SVG/Tutorial/Paths) in this tutorial will be focused on paths. But for now, note that there is a single parameter used to control its shape.
+
+```xml
+<path d="M20,230 Q40,205 50,230 T90,230" fill="none" stroke="blue" stroke-width="5"/>
 ```
 
 - `d`
-  - : A list of points and other information about how to draw the path. See the [Paths](/en-US/Web/SVG/Tutorial/Paths) section for more information.
+  - : A list of points and other information about how to draw the path. See the [Paths](/en-US/docs/Web/SVG/Tutorial/Paths) section for more information.
 
 {{ PreviousNext("Web/SVG/Tutorial/Positions", "Web/SVG/Tutorial/Paths") }}

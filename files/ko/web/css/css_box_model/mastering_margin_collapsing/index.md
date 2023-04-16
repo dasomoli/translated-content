@@ -1,39 +1,53 @@
 ---
-title: 여백 상쇄 정복
+title: Mastering margin collapsing
 slug: Web/CSS/CSS_Box_Model/Mastering_margin_collapsing
+page-type: guide
+spec-urls: https://www.w3.org/TR/CSS22/box.html#collapsing-margins
 ---
 
 {{CSSRef}}
 
-여러 블록의 [위쪽](/ko/docs/Web/CSS/margin-top) 및 [아래쪽](/ko/docs/Web/CSS/margin-bottom) 바깥 여백(마진)은 경우에 따라 제일 큰 여백의 크기를 가진 단일 여백으로 결합(상쇄)되곤 합니다. 이런 동작을 **여백 상쇄**라고 부릅니다. 단, [플로팅](/ko/docs/Web/CSS/float) 요소와 [절대 위치를 지정](/ko/docs/Web/CSS/position#absolute)한 요소의 여백은 절대 상쇄되지 않습니다.
+The [top](/en-US/docs/Web/CSS/margin-top) and [bottom](/en-US/docs/Web/CSS/margin-bottom) margins of blocks are sometimes combined (collapsed) into a single margin whose size is the largest of the individual margins (or just one of them, if they are equal), a behavior known as **margin collapsing**. Note that the margins of [floating](/en-US/docs/Web/CSS/float) and [absolutely positioned](/en-US/docs/Web/CSS/position#types_of_positioning) elements never collapse.
 
-여백 상쇄는 다음과 같은 세 가지 기본 상황에 발생합니다.
+Margin collapsing occurs in three basic cases:
 
-- 인접 형제
-  - : 인접 형제 요소간의 바깥 여백은 서로 상쇄됩니다. (단, 뒤쪽 형제가 플로팅을 [해제](/ko/docs/Web/CSS/clear)해야 하는 경우는 예외)
-- 부모와 자손을 분리하는 콘텐츠 없음
-  - : 부모 블록에 테두리, 안쪽 여백, 인라인 부분이 없고 블록 서식 맥락이 생성되지 않았으며 부모의 {{cssxref("margin-top")}}을 자손의 `margin-top`과 분리할 [권한](/ko/docs/Web/CSS/clear)이 없는 경우, 또는, 부모 블록에 테두리, 안쪽 여백, 인라인 콘텐츠가 없으며 부모의 {{cssxref("margin-bottom")}}과 자손의 `margin-bottom`을 분리할 {{cssxref("height")}}, {{cssxref("min-height")}}, {{cssxref("max-height")}}가 존재하지 않는 경우 부모와 자손의 여백이 상쇄됩니다. 상쇄된 여백은 부모 블록 바깥에 위치합니다.
-- 빈 블록
-  - : 테두리, 안쪽 여백, 인라인 콘텐츠, {{cssxref("height")}}, {{cssxref("min-height")}}, {{cssxref("max-height")}}가 없으면 블록의 {{cssxref("margin-top")}}과 {{cssxref("margin-bottom")}}이 서로 상쇄됩니다.
+- Adjacent siblings
+  - : The margins of adjacent siblings are collapsed (except when the latter sibling needs to be [cleared](/en-US/docs/Web/CSS/clear) past floats).
+- No content separating parent and descendants
+  - : If there is no border, padding, inline part, [block formatting context](/en-US/docs/Web/Guide/CSS/Block_formatting_context) created, or _[clearance](/en-US/docs/Web/CSS/clear)_ to separate the {{cssxref("margin-top")}} of a block from the {{cssxref("margin-top")}} of one or more of its descendant blocks; or no border, padding, inline content, {{cssxref("height")}}, or {{cssxref("min-height")}} to separate the {{cssxref("margin-bottom")}} of a block from the {{cssxref("margin-bottom")}} of one or more of its descendant blocks, then those margins collapse. The collapsed margin ends up outside the parent.
+- Empty blocks
+  - : If there is no border, padding, inline content, {{cssxref("height")}}, or {{cssxref("min-height")}} to separate a block's {{cssxref("margin-top")}} from its {{cssxref("margin-bottom")}}, then its top and bottom margins collapse.
 
-다음은 참고할만한 사항입니다.
+Some things to note:
 
-- (세 개 이상의 여백 사이의) 더 복잡한 여백 상쇄는 위의 기본 상황이 서로 결합되어 발생합니다.
-- 위의 규칙은 바깥 여백이 0이어도 적용되므로, 두 번째 규칙을 만족하는 경우 부모의 바깥 여백이 0이건 아니건 자손의 바깥 여백은 부모 밖으로 나오게 됩니다.
-- 음수 값을 가진 바깥 여백을 포함할 경우, 상쇄된 여백의 크기는 제일 큰 양수 여백과 제일 작은(음의 방향으로, 절댓값이 제일 큰) 여백의 합이 됩니다.
-- 모든 바깥 여백이 음수 값을 가질 경우, 상쇄된 여백의 크기는 제일 작은(음의 방향으로, 절댓값이 제일 큰) 여백의 크기가 됩니다. 인접 요소와 중첩 요소 모두에 적용됩니다.
+- More complex margin collapsing (of more than two margins) occurs when the above cases are combined.
+- These rules apply even to margins that are zero, so the margin of a descendant ends up outside its parent (according to the rules above) whether or not the parent's margin is zero.
+- When negative margins are involved, the size of the collapsed margin is the sum of the largest positive margin and the smallest (most negative) negative margin.
+- When all margins are negative, the size of the collapsed margin is the smallest (most negative) margin. This applies to both adjacent elements and nested elements.
+- Collapsing margins is only relevant in the vertical direction.
+- Margins don't collapse in a container with `display` set to `flex` or `grid`.
 
-## 예제
+## Examples
 
 ### HTML
 
 ```html
 <p>The bottom margin of this paragraph is collapsed …</p>
-<p>… with the top margin of this paragraph, yielding a margin of <code>1.2rem</code> in between.</p>
+<p>
+  … with the top margin of this paragraph, yielding a margin of
+  <code>1.2rem</code> in between.
+</p>
 
-<div>This parent element contains two paragraphs!
-  <p>This paragraph has a <code>.4rem</code> margin between it and the text above.</p>
-  <p>My bottom margin collapses with my parent, yielding a bottom margin of <code>2rem</code>.</p>
+<div>
+  This parent element contains two paragraphs!
+  <p>
+    This paragraph has a <code>.4rem</code> margin between it and the text
+    above.
+  </p>
+  <p>
+    My bottom margin collapses with my parent, yielding a bottom margin of
+    <code>2rem</code>.
+  </p>
 </div>
 
 <p>I am <code>2rem</code> below the element above.</p>
@@ -48,15 +62,35 @@ div {
 }
 
 p {
-  margin: .4rem 0 1.2rem 0;
+  margin: 0.4rem 0 1.2rem 0;
   background: yellow;
 }
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample('예제', 'auto', 350)}}
+{{EmbedLiveSample('Examples', 'auto', 350)}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
+
+## See also
+
+- CSS key concepts:
+  - [CSS syntax](/en-US/docs/Web/CSS/Syntax)
+  - [At-rules](/en-US/docs/Web/CSS/At-rule)
+  - [Comments](/en-US/docs/Web/CSS/Comments)
+  - [Specificity](/en-US/docs/Web/CSS/Specificity)
+  - [Inheritance](/en-US/docs/Web/CSS/Inheritance)
+  - [Box model](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
+  - [Layout modes](/en-US/docs/Web/CSS/Layout_mode)
+  - [Visual formatting models](/en-US/docs/Web/CSS/Visual_formatting_model)
+  - Values
+    - [Initial values](/en-US/docs/Web/CSS/initial_value)
+    - [Computed values](/en-US/docs/Web/CSS/computed_value)
+    - [Used values](/en-US/docs/Web/CSS/used_value)
+    - [Actual values](/en-US/docs/Web/CSS/actual_value)
+  - [Value definition syntax](/en-US/docs/Web/CSS/Value_definition_syntax)
+  - [Shorthand properties](/en-US/docs/Web/CSS/Shorthand_properties)
+  - [Replaced elements](/en-US/docs/Web/CSS/Replaced_element)

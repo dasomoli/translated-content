@@ -1,28 +1,25 @@
 ---
 title: SEO
 slug: Glossary/SEO
+page-type: glossary-definition
 ---
-**SEO**(검색 엔진 최적화)는 웹사이트가 검색 결과에 더 잘 보이도록 최적화하는 과정입니다. 검색 랭크 개선이라고도 합니다.
 
-검색 엔진은 웹을 {{Glossary("Crawler", "크롤링")}}하면서 페이지에서 페이지로 링크를 따라가고, 찾은 콘텐츠의 색인을 생성합니다. 검색 결과에 보이는 것은 바로 그 콘텐츠 색인입니다. 크롤러는 일정 규칙을 따르므로, SEO를 진행하며 해당 규칙을 밀접하게 따라가면 웹사이트가 검색 결과의 보다 높은 곳에 노출돼 (전자상거래와 광고라면) 수익으로 연결될 수도 있습니다.
+**SEO** (Search Engine Optimization) is the process of making a website more visible in search results, also termed improving search rankings.
 
-검색 엔진은 일부 SEO 가이드라인을 제공하긴 하지만 대형 검색 엔진의 경우 결과 랭킹은 영업 비밀로 취급합니다. 따라서 SEO는 검색 엔진의 공식 가이드라인에 더해 경험적인 지식, 논문과 특허 등에서 가져온 이론적 지식을 결합한 과정입니다.
+Search engines {{Glossary("Crawler", "crawl")}} the web, following links from page to page, and index the content found. When you search, the search engine displays the indexed content. Crawlers follow rules. If you follow those rules closely when doing SEO for a website, you give the site the best chances of showing up among the first results, increasing traffic and possibly revenue (for e-commerce and ads).
 
-SEO는 세 가지 큰 방향으로 나눌 수 있습니다.
+Search engines give some guidelines for SEO, but big search engines keep result ranking as a trade secret. SEO combines official search engine guidelines, empirical knowledge, and theoretical knowledge from science papers or patents.
 
-- 기술적
-  - : 콘텐츠 마크업을 작성할 때 시맨틱 {{Glossary("HTML")}}을 사용하세요. 색인하길 원했던 콘텐츠만 크롤러가 긁어갈 것입니다.
-- 콘텐츠 작성
-  - : 방문자층에 맞는 언어로 콘텐츠를 작성하세요. 이미지와 더불어 텍스트를 사용해, 크롤러가 주제를 이해할 수 있도록 도우세요.
-- 인기도
-  - : 다른 유명한 사이트에서 여러분의 사이트로 링크를 했다면 더 많은 트래픽을 받습니다.
+SEO methods fall into three broad classes:
 
-## 더 알아보기
+- Technical
+  - : Tag the content using semantic {{Glossary("HTML")}}. When exploring the website, crawlers should only find the content you want indexed.
+- Copywriting
+  - : Write content using your visitors' vocabulary. Use text as well as images so that crawlers can understand the subject.
+- Popularity
+  - : You get most traffic when other established sites link to your site.
 
-### 일반 지식
+## See also
 
-- [검색 엔진 최적화](https://ko.wikipedia.org/wiki/%EA%B2%80%EC%83%89_%EC%97%94%EC%A7%84_%EC%B5%9C%EC%A0%81%ED%99%94) on Wikipedia
-
-### SEO 배우기
-
-- [Google Webmasters 학습 문서](https://www.google.com/webmasters/learn/)
+- [SEO](https://en.wikipedia.org/wiki/SEO) on Wikipedia
+- [Google Search Central](https://developers.google.com/search/docs)

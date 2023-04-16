@@ -1,34 +1,41 @@
 ---
 title: var()
 slug: Web/CSS/var
-original_slug: Web/CSS/var()
+page-type: css-function
+browser-compat: css.properties.custom-property.var
 ---
+
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`var()`** 함수는 [사용자 지정 속성](/ko/docs/Web/CSS/--*), 또는 "CSS 변수"의 값을 다른 속성의 값으로 지정할 때 사용합니다.
+The **`var()`** [CSS](/en-US/docs/Web/CSS) [function](/en-US/docs/Web/CSS/CSS_Functions) can be used to insert the value of a [custom property](/en-US/docs/Web/CSS/--*) (sometimes called a "CSS variable") instead of any part of a value of another property.
 
-```css
-var(--header-color, blue);
-```
+{{EmbedInteractiveExample("pages/css/var.html")}}
 
-`var()` 함수는 값이 아닌 속성 이름, 선택자 등 다른 곳에 사용할 수 없습니다. 시도할 경우 유효하지 않은 구문이 되거나, 변수와 관계없는 값이 됩니다.
+The `var()` function cannot be used in property names, selectors or anything else besides property values. (Doing so usually produces invalid syntax, or else a value whose meaning has no connection to the variable.)
 
-## 구문
+## Syntax
 
-첫 번째 인수는 값을 가져올 사용자 지정 속성의 이름입니다. 선택적으로 제공할 수 있는 두 번째 인수는 대체값으로, 대상 사용자 지정 속성이 유효하지 않은 경우 대신 사용합니다.
+The first argument to the function is the name of the custom property to be substituted. An optional second argument to the function serves as a fallback value. If the custom property referenced by the first argument is invalid, the function uses the second value.
 
 {{csssyntax}}
 
-> **참고:** 대체값 구문은 사용자 지정 속성 구문과 동일하게 쉼표를 허용합니다. 그러므로 `var(--foo, red, blue)`의 대체값은 쉼표까지 포함한 `red, blue`입니다. 말하자면 첫 번째 쉼표의 뒤쪽은 모두 대체값이 되는 것입니다.
+> **Note:** The syntax of the fallback, like that of custom properties, allows commas. For example, `var(--foo, red, blue)` defines a fallback of `red, blue`; that is, anything between the first comma and the end of the function is considered a fallback value.
 
-### 값
+### Values
 
 - `<custom-property-name>`
-  - : 두 개의 대시로 시작하는, 사용자 지정 속성의 이름을 나타내는 식별자.
+  - : A custom property's name represented by an identifier that starts with two dashes. Custom properties are solely for use by authors and users; CSS will never give them a meaning beyond what is presented here.
 - `<declaration-value>`
-  - : 현재 맥락에서, 주어진 사용자 지정 속성이 유효하지 않으면 대신 사용할 대체값. 새 줄, 짝 없이 닫는 괄호(`)`, `]`, `}`) 세미콜론, 느낌표 등 특별한 의미를 가진 문자를 제외한 모든 문자를 사용할 수 있습니다.
 
-## 예제
+  - : The custom property's fallback value, which is used in case the custom property is invalid in the used context. This value may contain any character except some characters with special meaning like newlines, unmatched closing brackets, i.e. `)`, `]`, or `}`, top-level semicolons, or exclamation marks. The fallback value can itself be a custom property using the `var()` syntax.
+
+    > **Note:** `var(--a,)` is valid, specifying that if the `--a` custom property is invalid or missing, the `var()` should be replaced with nothing.
+
+## Examples
+
+### Using a custom property set on :root
+
+#### CSS
 
 ```css
 :root {
@@ -40,32 +47,136 @@ body {
 }
 ```
 
+#### Result
+
+{{EmbedLiveSample("Using a custom property set on :root")}}
+
+Here, the value of the `background-color` property has been set via the custom property `--main-bg-color`. So the background color of the HTML body will be pink.
+
+### Using a custom property before it is set
+
+#### CSS
+
 ```css
-/* Fallback */
-/* In the component’s style: */
+body {
+  background-color: var(--main-bg-color);
+}
+
+:root {
+  --main-bg-color: pink;
+}
+```
+
+#### Result
+
+{{EmbedLiveSample("Using a custom property before it is set")}}
+
+In this example, the background color of the HTML body will be pink even though the custom property is set later.
+
+### Using a custom property set in another file
+
+#### HTML
+
+```html
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="1.css"></link>
+    <link rel="stylesheet" href="2.css"></link>
+  </head>
+  <body>
+  </body>
+</html>
+```
+
+#### CSS
+
+```css
+/* 1.css */
+body {
+  background-color: var(--main-bg-color);
+}
+```
+
+```css
+/* 2.css */
+:root {
+  --main-bg-color: pink;
+}
+```
+
+#### Result
+
+{{EmbedLiveSample("Using a custom property set in another file")}}
+
+The background color of the HTML body will be pink in this case even though the custom property is declared in another file.
+
+### Custom properties with fallbacks for use when the property has not been set
+
+#### HTML
+
+```html
+<div class="component">
+  <h1 class="header">Header</h1>
+  <p class="text">Text</p>
+</div>
+```
+
+#### CSS
+
+```css
+/* In the component's style: */
 .component .header {
-  color: var(--header-color, blue); /* header-color isn’t set, and so remains blue, the fallback value */
+  /* header-color isn't set, and so remains blue, the fallback value */
+  color: var(--header-color, blue);
 }
 
 .component .text {
   color: var(--text-color, black);
 }
 
-/* In the larger application’s style: */
+/* In the larger application's style: */
 .component {
   --text-color: #080;
 }
 ```
 
-## 명세
+#### Result
+
+{{EmbedLiveSample("Custom properties with fallbacks for use when the property has not been set")}}
+
+Since `--header-color` isn't set, the text "Header" will be blue, the fallback value.
+
+### Using a custom property as a fallback
+
+#### CSS
+
+```css
+:root {
+  --backup-bg-color: teal;
+}
+
+body {
+  background-color: var(--main-bg-color, var(--backup-bg-color, white));
+}
+```
+
+#### Result
+
+{{EmbedLiveSample("Using a custom property as a fallback")}}
+
+Since `--main-bg-color` isn't set, the body's `background-color` will fall back to `--backup-bg-color`, which is teal.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{cssxref("env","env(…)")}} – 사용자 에이전트가 통제하는 읽기 전용 환경 변수.
-- [CSS 변수 사용하기](/ko/docs/Web/CSS/Using_CSS_variables)
+- {{cssxref("env","env(…)")}} – read‑only environment variables controlled by the user‑agent.
+- [Using CSS variables](/en-US/docs/Web/CSS/Using_CSS_custom_properties)

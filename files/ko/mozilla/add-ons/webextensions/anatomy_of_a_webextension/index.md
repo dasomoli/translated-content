@@ -1,128 +1,93 @@
 ---
 title: Anatomy of an extension
 slug: Mozilla/Add-ons/WebExtensions/Anatomy_of_a_WebExtension
+page-type: guide
 ---
+
 {{AddonSidebar}}
 
-확장앱은 배포 및 설치를 위해 패키징 된 파일 모음으로 구성됩니다. 이 아티클은 확장앱에 있을 수 있는 파일들을 빠르게 살펴봅니다.
+An extension consists of a collection of files, packaged for distribution and installation. In this article, we will quickly go through the files that might be present in an extension.
 
 ## manifest.json
 
-manifest.json 파일은 모든 확장앱이 가져야하는 유일한 파일입니다. 이 파일에는 이름, 버전 및 필요한 권한과 같은 메타정보가 들어 있습니다.
+This is the only file that must be present in every extension. It contains basic metadata such as its name, version, and the permissions it requires. It also provides pointers to other files in the extension.
 
-또한 확장앱에 포함될 다른 파일들(하단 목록)을 가리킵니다.
+The manifest can also contain pointers to several other types of files:
 
-- [Background pages](/en-US/Add-ons/WebExtensions/Anatomy_of_a_WebExtension#Background_scripts): (브라우저 창의 수명과 독립적으로) 오랜 시간 실행되는 로직 구현.
-- 확장앱의 아이콘 및 기타 버튼들.
-- [사이드바, 팝업, 옵션 페이지](/en-US/Add-ons/WebExtensions/Anatomy_of_a_WebExtension#Sidebars_popups_options_pages): UI 컴포넌트를 제공하는 HTML 파일들
-- [컨텐츠 스크립트](/en-US/Add-ons/WebExtensions/Anatomy_of_a_WebExtension#Content_scripts): 웹페이지에 주입할 자바스크립트 파일
+- [Background scripts](#background_scripts_2)
+  - : Scripts that respond to browser events.
+- Icons
+  - : For the extension and any buttons it might define.
+- [Sidebars, popups, and options pages](#sidebars_popups_and_options_pages_2)
+  - : HTML documents that provide content for various user interface components.
+- [Content scripts](#content_scripts_2)
+  - : JavaScript included with your extension, that you will inject into web pages.
+- [Web-accessible resources](#web_accessible_resources)
+  - : Make packaged content accessible to web pages and content scripts.
 
-![](webextension-anatomy.png)
+![The components of a web extension. The manifest.JSON must be present in all extensions. It provides pointers to background pages, content scripts, browser actions, page actions, options pages, and web accessible resources. Background pages consist of HTML and JS. Content scripts consist of JS and CSS. The user clicks on an icon to trigger browser actions and page actions and the resulting pop-up consists of HTML, CSS, and JS. Options pages consist of HTML, CSS, and JS.](webextension-anatomy.png)
 
-세부 내용: [manifest.json](/ko/docs/Mozilla/Add-ons/WebExtensions/manifest.json) 참조.
+See the [`manifest.json`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json) reference page for all the details.
 
-manifest에 참조 된 항목 외에도, [Extension pages](/en-US/Add-ons/WebExtensions/Anatomy_of_a_WebExtension#Extension_pages)와 해당 페이지의 리소스가 확장앱 번들에 포함될 수 있습니다.
+Along with those already listed in the manifest, an extension may also include additional [Extension pages](/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Extension_pages) and supporting files.
 
 ## Background scripts
 
-확장앱은 종종 특정 웹 페이지나 브라우저 창의 수명과 독립적으로 장기간 상태를 유지하거나 작업을 수행해야 합니다. 그때 필요한 것이 백그라운드 스크립트입니다.
+Extensions often need to respond to events that occur in the browser independently of the lifetime of any particular web page or browser window. That is what background scripts are for.
 
-백그라운드 스크립트는 확장앱이 로드 되자마자 로드되며 확장앱이 다시 비활성화 또는 제거될 때까지 로드된 상태를 유지합니다. 적절한 [권한](/en-US/Add-ons/WebExtensions/manifest.json/permissions)을 요청했다면 이 스크립트에서 [WebExtension APIs](/en-US/Add-ons/WebExtensions/API)를 사용할 수 있습니다.
+Background scripts can be persistent or non-persistent. Persistent background scripts load as soon as the extension loads and stay loaded until the extension is disabled or uninstalled. This background script behavior is only available in Manifest V2. Non-persistent background scripts load when needed to respond to an event and unload when they become idle. This background script behavior is an option in Manifest V2 and the only background script behavior available in Manifest V3.
 
-### 백그라운드 스크립트 정의
+You can use any of the [WebExtension APIs](/en-US/docs/Mozilla/Add-ons/WebExtensions/API) in the script, if you have requested the necessary [permissions](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions).
 
-"manifest.json"에 `background` 키로 백그라운드 스크립트를 포함할 수 있습니다:
+See the [background scripts](/en-US/docs/Mozilla/Add-ons/WebExtensions/Background_scripts) article to learn more.
 
-```json
-// manifest.json
+## Sidebars, popups, and options pages
 
-"background": {
-  "scripts": ["background-script.js"]
-}
-```
+Your extension can include various user interface components whose content is defined using an HTML document:
 
-여러 개의 백그라운드 스크립트를 지정할 수 있습니다: 그 경우 한 웹페이지에서 여러 스크립트들이 실행되듯이 백그라운드 스크립트들이 동일한 context에서 실행됩니다.
+- [Sidebar](/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Sidebars)
+  - : A pane that is displayed at the left-hand side of the browser window, next to the web page.
+- [Popup](/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Popups)
+  - : A dialog that you can display when the user clicks on a [toolbar button](/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Browser_action) or [address bar button](/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Page_actions)
+- [Options](/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Options_pages)
+  - : A page that's shown when the user accesses your add-on's preferences in the browser's native add-ons manager.
 
-### 백그라운드 스크립트 환경
+For each of these components, you create an HTML file and point to it using a specific property in [`manifest.json`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json). The HTML file can include CSS and JavaScript files, just like a normal web page.
 
-#### DOM APIs
-
-백그라운드 스크립트는 background pages라는 특별한 페이지의 context에서 실행됩니다. 이것은 백그라운드 스크립트에 모든 표준 DOM API들을 제공하는 전역 [`window`](/en-US/docs/Web/API/Window) 객체를 제공합니다.
-
-background page를 제공할 필요는 없습니다. 백그라운드 스크립트를 추가했다면 빈 background page가 생성됩니다.
-
-그러나 background page를 별도의 HTML 파일로 제공하도록 선택할 수 있습니다.
-
-```json
-// manifest.json
-
-"background": {
-  "page": "background-page.html"
-}
-```
-
-#### WebExtension APIs
-
-백그라운드 스크립트는 선언된 [권한](/ko/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions) 내의 모든 [WebExtension APIs](/en-US/Add-ons/WebExtensions/API)를 사용할 수 있습니다.
-
-#### Cross-origin access
-
-백그라운드 스크립트는 선언된 [host 권한](/ko/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions) 내의 모든 서버(host)에 XHR 요청을 할 수 있습니다.
-
-#### Web content
-
-백그라운드 스크립트는 웹 페이지에 직접 엑세스하지 못합니다. 그러나 웹페이지에 [컨텐츠 스크립트](/ko/docs/Mozilla/Add-ons/WebExtensions/Content_scripts)를 삽입할 수 있으며 [메시지 전달 API를 통해 컨텐츠 스크립트와 통신할 수 있습니다](/en-US/Add-ons/WebExtensions/Content_scripts#Communicating_with_background_scripts).
-
-#### Content security policy
-
-백그라운드 스크립트는 [`eval()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval) 사용과 같이 잠재적으로 위험할 수 있는 특정 작업을 제한합니다. 자세한 내용은 [컨텐츠 보안 정책](/ko/docs/Mozilla/Add-ons/WebExtensions/Content_Security_Policy)을 참조하십시오.
-
-## Sidebars, popups, options pages
-
-확장앱은 HTML를 이용하여 다양한 UI를 포함할 수 있습니다.
-
-- [사이드바](/ko/docs/Mozilla/Add-ons/WebExtensions/user_interface/Sidebars)는 브라우저 창의 왼쪽, 웹 페이지 옆에 표시되는 창입니다.
-- [팝업](/ko/docs/Mozilla/Add-ons/WebExtensions/user_interface/Popups)은 사용자가 [툴바 버튼](/ko/docs/Mozilla/Add-ons/WebExtensions/user_interface/Browser_action) 이나 [주소창 버튼](/ko/docs/Mozilla/Add-ons/WebExtensions/user_interface/Page_actions)를 클릭 할 때 표시되는 다이얼로그입니다
-- [옵션 페이지](/ko/docs/Mozilla/Add-ons/WebExtensions/user_interface/Options_pages)는 브라우저의 애드온 매니저에서 확장앱의 환경 설정에 접근할 때 표시 되는 페이지입니다.
-
-이러한 각 구성 요소에 대해 HTML 파일을 만들고 [manifest.json](/ko/docs/Mozilla/Add-ons/WebExtensions/manifest.json)의 특정 속성에 지정합니다. 이 HTML 파일은 일반 웹 페이지와 마찬가지로 CSS 및 JavaScript 파일이 포함될 수 있습니다.
-
-이 페이지들은 모두 [Extension pages](/ko/docs/Mozilla/Add-ons/WebExtensions/user_interface/Extension_pages) 유형이며, 일반 웹 페이지와 달리 이 페이지에서 실행되는 javaScript는 권한이 부여된 WebExtension API를 모두 사용할 수 있습니다(백그라운드 스크립트와 동일).
-{{WebExtAPIRef("runtime.getBackgroundPage()")}}
-심지어 위와 같이 background page에서 사용하는 변수에 직접 접근할 수도 있습니다.
+All of these are a type of [Extension pages](/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Extension_pages). Unlike a normal web page, your JavaScript can use all the same privileged WebExtension APIs as your background script.
 
 ## Extension pages
 
-또한 미리 정의된 UI에 연결되지 않은 HTML 문서를 확장앱에 포함할 수 있습니다. 사이드바, 팝업 또는 옵션 페이지에 제공할 문서와 달리 manifest.json에 이 페이지를 정의하는 항목은 없습니다. 그러나 이 페이지 또한 백그라운드 스크립트와 동일하게 권한이 부여된 WebExtension API에 대한 접근 권한을 가집니다.
+You can also include HTML documents in your extension which are not attached to some predefined user interface component. Unlike the documents you might provide for sidebars, popups, or options pages, these don't have an entry in `manifest.json`. However, they do also get access to all the same privileged WebExtension APIs as your background script.
 
-일반적으로 {{WebExtAPIRef("windows.create()")}} 또는 {{WebExtAPIRef("tabs.create()")}}를 사용하여 Extension page를 로드할 수 있습니다.
+You'd typically load a page like this using {{WebExtAPIRef("windows.create()")}} or {{WebExtAPIRef("tabs.create()")}}.
 
-세부 내용 : [Extension pages](/ko/docs/Mozilla/Add-ons/WebExtensions/user_interface/Extension_pages) 참조.
+See [Extension pages](/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Extension_pages) to learn more.
 
 ## Content scripts
 
-컨텐츠 스크립트를 사용하여 웹 페이지에 접근하고 수정하십시오. 컨텐츠 스크립트는 웹 페이지에 로드되고 해당 페이지의 context에서 실행됩니다.
+Use content scripts to access and manipulate web pages. Content scripts are loaded into web pages and run in the context of that particular page.
 
-컨텐츠 스크립트는 웹 페이지의 context에서 실행되는, 확장앱용 스크립트입니다. 이는 페이지 내의 {{HTMLElement ( "script")}} 요소 등 페이지 자체가 로드하는 스크립트와 다릅니다.
+Content scripts are extension-provided scripts which run in the context of a web page; this differs from scripts which are loaded by the page itself, including those which are provided in {{HTMLElement("script")}} elements within the page.
 
-컨텐츠 스크립트는 웹페이지가 로드하는 일반 스크립트처럼 DOM에 접근 및 조작을 할 수 있습니다.
+Content scripts can see and manipulate the page's DOM, just like normal scripts loaded by the page.
 
-일반 페이지 스크립트와 달리 다음 작업을 수행 할 수 있습니다.
+Unlike normal page scripts, content scripts can:
 
-- 크로스 도메인의 XHR 요청
-- [WebExtension APIs](/ko/docs/Mozilla/Add-ons/WebExtensions/API) 일부 사용
-- 백그라운드 스크립트와 메시지를 교환함으로 모든 WebExtension API에 간접적으로 접근
+- Make cross-domain XHR requests.
+- Use a small subset of the [WebExtension APIs](/en-US/docs/Mozilla/Add-ons/WebExtensions/API).
+- [Exchange messages with their background scripts](/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts#communicating_with_background_scripts) and can in this way indirectly access all the WebExtension APIs.
 
-컨텐츠 스크립트는 일반 페이지 스크립트에 직접 접근할 수는 없지만 [window.postMessage()](/ko/docs/Web/API/Window/postMessage) API를 사용하여 메시지를 교환할 수 있습니다.
+Content scripts cannot directly access normal page scripts but can exchange messages with them using the standard [`window.postMessage()`](/en-US/docs/Web/API/Window/postMessage) API.
 
-일반적으로 컨텐츠 스크립트는 자바 스크립트를 지칭하지만, 동일한 매커니즘으로 웹 페이지에 CSS를 삽입할 수 있습니다.
+Usually, when we talk about content scripts, we are referring to JavaScript, but you can inject CSS into web pages using the same mechanism.
 
-세부내용: [content scripts](/ko/docs/Mozilla/Add-ons/WebExtensions/Content_scripts) 참조.
+See the [content scripts](/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts) article to learn more.
 
 ## Web accessible resources
 
-Web accessible resources는 확장앱에 포함되어 있고 컨텐츠 스크립트 및 페이지 스크립트에 엑세스할 수 있게 하려는 이미지, HTML, CSS 및 JavaScript와 같은 리소스입니다. 이 리소스는 특수한 URI를 사용하여 페이지 스크립트 및 컨텐츠 스크립트에서 참조할 수 있습니다.
+Web accessible resources are resources—such as images, HTML, CSS, and JavaScript—that you include in the extension and want to make accessible to content scripts and page scripts. Resources which are made web-accessible can be referenced by page scripts and content scripts using a special URI scheme.
 
-예를 들어 컨텐츠 스크립트가 일부 이미지를 웹 페이지에 삽입하려는 경우, 확장앱에 포함시키고 web accessible하게 할 수 있습니다. 그러면 컨텐츠 스크립트에서 src 속성을 통해 이미지를 참조하는 img 태그를 만들고 추가할 수 있습니다.
+For example, if a content script wants to insert some images into web pages, you could include them in the extension and make them web accessible. Then the content script could create and append [`img`](/en-US/docs/Web/HTML/Element/img) tags which reference the images via the `src` attribute.
 
-자세한 내용은 manifest.json의 [web_accessible_resources](/ko/docs/Mozilla/Add-ons/WebExtensions/manifest.json/web_accessible_resources) key의 스펙을 확인하세요.
+To learn more, see the documentation for the [`"web_accessible_resources"`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/web_accessible_resources) `manifest.json` key.

@@ -1,75 +1,103 @@
 ---
 title: Number.prototype.toString()
 slug: Web/JavaScript/Reference/Global_Objects/Number/toString
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Number.toString
 ---
 
 {{JSRef}}
 
-**`toString()`** 메서드는 특정한 {{jsxref("Number")}} 객체를 나타내는 문자열을 반환합니다.
+The **`toString()`** method returns a string representing the specified number value.
 
 {{EmbedInteractiveExample("pages/js/number-tostring.html")}}
 
-## 구문
+## Syntax
 
-```js
-    numObj.toString([radix])
+```js-nolint
+toString()
+toString(radix)
 ```
 
-### 매개변수
+### Parameters
 
 - `radix` {{optional_inline}}
-  - : 수의 값을 나타내기 위해 사용되기 위한 기준을 정하는 2와 36사이의 정수. (진수를 나타내는 기수의 값.)
+  - : An integer in the range `2` through `36` specifying the base to use for representing the number value. Defaults to 10.
 
-### 반환 값
+### Return value
 
-{{jsxref("Number")}} 객체를 명시하는 문자열.
+A string representing the specified number value.
 
-### 예외
+### Exceptions
 
 - {{jsxref("RangeError")}}
-  - : 만약 `toString()` 에 `2` 와 `36` 의 사잇 값이 아닌 `radix` 가 주어지면, {{jsxref("RangeError")}} 에러가 발생합니다.
+  - : Thrown if `radix` is less than 2 or greater than 36.
 
-## 설명
+## Description
 
-{{jsxref("Number")}} 객체는 {{jsxref("Object")}} 객체의 `toString()`메소드를 오버라이딩하며, {{jsxref("Object.prototype.toString()")}} 를 상속받지 않습니다. {{jsxref( "Number")}} 객체에서 `toString()` 메소드는 특정 진수로 객체를 표현한 문자열을 환원합니다.
+The {{jsxref("Number")}} object overrides the `toString` method of {{jsxref("Object")}}; it does not inherit
+{{jsxref("Object.prototype.toString()")}}. For `Number` values, the `toString` method returns a string representation of the value in the specified radix.
 
-`toString()` 메소드는 메소드의 첫 번째 아규먼트를 파싱하여, 메소드는 특정 기수(radix)를 기준으로 한 진수 값의 문자열을 환원하기 위한 시도를 합니다. 진수를 나타내는 기수 값(radix) 이 10 이상의 값일 때는, 알파벳의 글자는 9보다 큰 수를 나타냅니다. 예를 들면, 16진수(base 16)는, 알파벳 f 까지 사용하여 표현됩니다.
+For radixes above 10, the letters of the alphabet indicate digits greater than 9. For example, for hexadecimal numbers (base 16) `a` through `f` are used.
 
-만약에 `radix`값 이 지정되지 않으면, 임의로 10진수로 가정하게 됩니다.
+If the specified number value is negative, the sign is preserved. This is the case even if the radix is 2; the string returned is the positive binary representation of the number value preceded by a `-` sign, **not** the two's complement of the number value.
 
-또, `numObj`가 음수라면, - 부호는 유지됩니다. 이는 기수(radix) 값이 2일 경우에라도 적용됩니다. 리턴된 문자열은 - 부호가 앞에 있는 `numObj` 의 양의 2진수 표시이지, `numObj`의 두 개의 조합이 아니기 때문입니다.
+Both `0` and `-0` have `"0"` as their string representation. {{jsxref("Infinity")}} returns `"Infinity"` and {{jsxref("NaN")}} returns `"NaN"`.
 
-`numObj` 가 정수가 아니면, 점(.) 부호는 소수 자리와 분리하기 위해 사용됩니다.
-
-## 예제
-
-### `toString` 사용
+If the number is not a whole number, the decimal point `.` is used to separate the decimal places. [Scientific notation](/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#exponential) is used if the radix is 10 and the number's magnitude (ignoring sign) is greater than or equal to 10<sup>21</sup> or less than 10<sup>-6</sup>. In this case, the returned string always explicitly specifies the sign of the exponent.
 
 ```js
-var count = 10;
-
-console.log(count.toString());    // displays '10'
-console.log((17).toString());     // displays '17'
-console.log((17.2).toString());   // displays '17.2'
-
-var x = 6;
-
-console.log(x.toString(2));       // displays '110'
-console.log((254).toString(16));  // displays 'fe'
-
-console.log((-10).toString(2));   // displays '-1010'
-console.log((-0xff).toString(2)); // displays '-11111111'
+console.log((10 ** 21.5).toString()); // "3.1622776601683794e+21"
+console.log((10 ** 21.5).toString(8)); // "526665530627250154000000"
 ```
 
-## 명세
+The `toString()` method requires its `this` value to be a `Number` primitive or wrapper object. It throws a {{jsxref("TypeError")}} for other `this` values without attempting to coerce them to number values.
+
+Because `Number` doesn't have a [`[@@toPrimitive]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toPrimitive) method, JavaScript calls the `toString()` method automatically when a `Number` _object_ is used in a context expecting a string, such as in a [template literal](/en-US/docs/Web/JavaScript/Reference/Template_literals). However, Number _primitive_ values do not consult the `toString()` method to be [coerced to strings](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_coercion) — rather, they are directly converted using the same algorithm as the initial `toString()` implementation.
+
+```js
+Number.prototype.toString = () => "Overridden";
+console.log(`${1}`); // "1"
+console.log(`${new Number(1)}`); // "Overridden"
+```
+
+## Examples
+
+### Using toString()
+
+```js
+const count = 10;
+console.log(count.toString()); // "10"
+
+console.log((17).toString()); // "17"
+console.log((17.2).toString()); // "17.2"
+
+const x = 6;
+console.log(x.toString(2)); // "110"
+console.log((254).toString(16)); // "fe"
+console.log((-10).toString(2)); // "-1010"
+console.log((-0xff).toString(2)); // "-11111111"
+```
+
+### Converting radix of number strings
+
+If you have a string representing a number in a non-decimal radix, you can use [`parseInt()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt) and `toString()` to convert it to a different radix.
+
+```js
+const hex = "CAFEBABE";
+const bin = parseInt(hex, 16).toString(2); // "11001010111111101011101010111110"
+```
+
+Beware of loss of precision: if the original number string is too large (larger than [`Number.MAX_SAFE_INTEGER`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER), for example), you should use a [`BigInt`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt/BigInt) instead. However, the `BigInt` constructor only has support for strings representing number literals (i.e. strings starting with `0b`, `0o`, `0x`). In case your original radix is not one of binary, octal, decimal, or hexadecimal, you may need to hand-write your radix converter, or use a library.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Number.prototype.toFixed()")}}
 - {{jsxref("Number.prototype.toExponential()")}}

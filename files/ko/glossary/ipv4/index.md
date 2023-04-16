@@ -1,14 +1,13 @@
 ---
 title: IPv4
 slug: Glossary/IPv4
+page-type: glossary-definition
 ---
 
-IPv4는 {{glossary("Internet", "인터넷")}}기반 통신 {{Glossary("protocol", "프로토콜")}}의 네 번째 버전이며, 널리 보급된 첫 번째 버전이다.
+IPv4 is the fourth version of the communication {{Glossary("protocol")}} underlying the {{glossary("Internet")}} and the first version to be widely deployed.
 
-1981년에 처음 공식화된 IPv4는 ARPAnet의 초기 개발 작업에 그 뿌리를 두고 있다. IPv4는 패킷 교환 링크 계층 네트워크(ethernet)에서 사용되는 무연결 프로토콜이다. {{glossary("IPv6")}}은 IPv4의 보안 문제 및 주소 필드의 제한 때문에 IPv4를 점진적으로 대체하고 있다.(버전 번호 5는 1979년에 실험적인 인터넷 스트림 프로토콜에 할당되었는데, IPv5라고 불린 적은 없다.)
+First formalized in 1981, IPv4 traces its roots to the initial development work for ARPAnet. IPv4 is a connectionless protocol to be used on packet-switched Link layer networks (ethernet). {{glossary("IPv6")}} is gradually replacing IPv4 owing to IPv4's security problems and the limitations of its address field. (Version number 5 was assigned in 1979 to the experimental Internet Stream Protocol, which however has never been called IPv5.)
 
-## 더 알아보기
+## See also
 
-### 일반적인 지식
-
-Wikipedia의 [IPv4](https://ko.wikipedia.org/wiki/IPv4)
+- [IPv4](https://en.wikipedia.org/wiki/IPv4) on Wikipedia

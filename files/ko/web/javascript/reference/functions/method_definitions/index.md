@@ -1,131 +1,250 @@
 ---
-title: 메서드 정의
+title: Method definitions
 slug: Web/JavaScript/Reference/Functions/Method_definitions
+page-type: javascript-language-feature
+browser-compat: javascript.functions.method_definitions
 ---
+
 {{JsSidebar("Functions")}}
 
-ECMAScript 2015 를 시작으로, 객체 초기자(initializer)에 메서드 정의를 위한 더 짧은 구문이 도입되었습니다. 이는 메서드 명에 할당된 함수를 위한 단축입니다.
+**Method definition** is a shorter syntax for defining a function property in an object initializer. It can also be used in [classes](/en-US/docs/Web/JavaScript/Reference/Classes).
 
-## 구문
+{{EmbedInteractiveExample("pages/js/functions-definitions.html")}}
 
-```js
-    var obj = {
-      property( parameters… ) {},
-      *generator( parameters… ) {},
-    // 키(속성) 계산값과도 함께:
-      [property]( parameters… ) {},
-      *[generator]( parameters… ) {},
-    // ES5 getter/setter 구문과 비교해 보세요:
-      get property() {},
-      set property(value) {}
-    };
+## Syntax
+
+```js-nolint
+({
+  property(parameters) {},
+  *generator(parameters) {},
+  async property(parameters) {},
+  async *generator(parameters) {},
+
+  // with computed keys
+  [expression](parameters) {},
+  *[expression](parameters) {},
+  async [expression](parameters) {},
+  async *[expression](parameters) {},
+})
 ```
 
-## 설명
+## Description
 
-단축 구문은 ECMAScript 5에 도입된 [getter](/ko/docs/Web/JavaScript/Reference/Functions/get) 및 [setter](/ko/docs/Web/JavaScript/Reference/Functions/set) 구문과 비슷합니다.
+The shorthand syntax is similar to the [getter](/en-US/docs/Web/JavaScript/Reference/Functions/get) and [setter](/en-US/docs/Web/JavaScript/Reference/Functions/set) syntax.
 
-다음 코드가 주어지면:
+Given the following code:
 
 ```js
-var obj = {
-  foo: function() {},
-  bar: function() {}
+const obj = {
+  foo: function () {
+    // …
+  },
+  bar: function () {
+    // …
+  },
 };
 ```
 
-이제 이를 아래로 줄일 수 있습니다:
+You are now able to shorten this to:
 
 ```js
-var obj = {
-  foo() {},
-  bar() {}
+const obj = {
+  foo() {
+    // …
+  },
+  bar() {
+    // …
+  },
 };
 ```
 
-<div class="note"><p><strong>주의 :</strong> 단축 구문은 익명(anonymous) 함수 (…<code>foo: function() {}</code>… 에서처럼) 대신 유명(named) 함수를 사용합니다. 유명 함수는 함수 본체에서 호출될 수 있습니다 (이는 참조할 식별자가 없기에 익명 함수에게는 불가능합니다). 자세한 사항은, {{jsxref("Operators/function","function","#Examples")}} 참조.</p></div>
+[`function*`](/en-US/docs/Web/JavaScript/Reference/Statements/function*), [`async function`](/en-US/docs/Web/JavaScript/Reference/Statements/async_function), and [`async function*`](/en-US/docs/Web/JavaScript/Reference/Statements/async_function*) properties all have their respective method syntaxes; see examples below.
 
-### 단축 생성기 메서드
+However, note that the method syntax is not equivalent to a normal property with a function as its value — there are semantic differences. This makes methods defined in object literals more consistent with methods in [classes](/en-US/docs/Web/JavaScript/Reference/Classes).
 
-[생성기 메서드](/ko/docs/Web/JavaScript/Reference/Statements/function*)는 단축 구문을 사용해서도 정의될 수 있습니다. 단축 구문 내 별표(\*)는 생성기 속성명 앞에 와야 함을 주의하세요. 즉, `* g(){}`는 작동하지만 `g *(){}`는 아닙니다.
+### Method definitions are not constructable
 
-```js
-// 유명 속성 사용 (ES2015 이전)
-var obj2 = {
-  g: function*() {
-    var index = 0;
-    while(true)
-      yield index++;
-  }
-};
-
-// 단축 구문을 쓰는 같은 객체
-var obj2 = {
-  * g() {
-    var index = 0;
-    while(true)
-      yield index++;
-  }
-};
-
-var it = obj2.g();
-console.log(it.next().value); // 0
-console.log(it.next().value); // 1
-```
-
-### 메서드 정의는 생성 불가능합니다
-
-모든 메서드 정의는 생성자가 아니고 인스턴스화하려고 하는 경우 {{jsxref("TypeError")}} 예외가 발생합니다.
+Methods cannot be constructors! They will throw a {{jsxref("TypeError")}} if you try to instantiate them. On the other hand, a property created as a function can be used as a constructor.
 
 ```js example-bad
-var obj = {
+const obj = {
   method() {},
 };
-new obj.method; // TypeError: obj.method는 생성자가 아닙니다
-
-var obj = {
-  * g() {}
-};
-new obj.g; // TypeError: obj.g는 생성자가 아닙니다 (ES2016에서 바뀜)
+new obj.method(); // TypeError: obj.method is not a constructor
 ```
 
-## 예
+### Using super in method definitions
 
-### 간단한 테스트 사례
+Only functions defined as methods have access to the [`super`](/en-US/docs/Web/JavaScript/Reference/Operators/super) keyword. `super.prop` looks up the property on the prototype of the object that the method was initialized on.
 
-<pre class="brush: js;highlight[3]">var obj = {
-  a : "foo",
-  b(){ return this.a; }
+```js example-bad
+const obj = {
+  __proto__: {
+    prop: "foo",
+  },
+  method: function () {
+    console.log(super.prop); // SyntaxError: 'super' keyword unexpected here
+  },
 };
-console.log(obj.b()); // "foo"
-</pre>
+```
 
-### 속성 계산명
+## Examples
 
-단축 구문은 속성 계산명(computed property name)도 지원합니다.
+### Using method definitions
 
 ```js
-var bar = {
-  foo0 : function (){return 0;},
-  foo1(){return 1;},
-  ["foo" + 2](){return 2;},
+const obj = {
+  a: "foo",
+  b() {
+    return this.a;
+  },
+};
+console.log(obj.b()); // "foo"
+```
+
+### Method definitions in classes
+
+You can use the exact same syntax to define public instance methods that are available on class instances. In classes, you don't need the comma separator between methods.
+
+```js
+class ClassWithPublicInstanceMethod {
+  publicMethod() {
+    return "hello world";
+  }
+}
+
+const instance = new ClassWithPublicInstanceMethod();
+console.log(instance.publicMethod()); // "hello world"
+```
+
+Public instance methods are defined on the `prototype` property of the class and are thus shared by all instances of the class. They are writable, non-enumerable, and configurable.
+
+Inside instance methods, [`this`](/en-US/docs/Web/JavaScript/Reference/Operators/this) and [`super`](/en-US/docs/Web/JavaScript/Reference/Operators/super) work like in normal methods. Usually, `this` refers to the instance itself. In subclasses, `super` lets you access the prototype of the object that the method is attached to, allowing you to call methods from the superclass.
+
+```js
+class BaseClass {
+  msg = "hello world";
+  basePublicMethod() {
+    return this.msg;
+  }
+}
+
+class SubClass extends BaseClass {
+  subPublicMethod() {
+    return super.basePublicMethod();
+  }
+}
+
+const instance = new SubClass();
+console.log(instance.subPublicMethod()); // "hello world"
+```
+
+Static methods and private methods use similar syntaxes, which are described in the [`static`](/en-US/docs/Web/JavaScript/Reference/Classes/static) and [private class features](/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields) pages.
+
+### Computed property names
+
+The method syntax also supports [computed property names](/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer#computed_property_names).
+
+```js
+const bar = {
+  foo0: function () {
+    return 0;
+  },
+  foo1() {
+    return 1;
+  },
+  ["foo" + 2]() {
+    return 2;
+  },
 };
 
 console.log(bar.foo0()); // 0
 console.log(bar.foo1()); // 1
-console.log(bar.foo2()); // 2</pre>
+console.log(bar.foo2()); // 2
 ```
 
-## 명세
+### Generator methods
+
+Note that the asterisk (`*`) in the generator method syntax must be _before_ the generator property name. (That is, `* g(){}` will work, but `g *(){}` will not.)
+
+```js
+// Using a named property
+const obj2 = {
+  g: function* () {
+    let index = 0;
+    while (true) {
+      yield index++;
+    }
+  },
+};
+
+// The same object using shorthand syntax
+const obj2 = {
+  *g() {
+    let index = 0;
+    while (true) {
+      yield index++;
+    }
+  },
+};
+
+const it = obj2.g();
+console.log(it.next().value); // 0
+console.log(it.next().value); // 1
+```
+
+### Async methods
+
+```js
+// Using a named property
+const obj3 = {
+  f: async function () {
+    await somePromise;
+  },
+};
+
+// The same object using shorthand syntax
+const obj3 = {
+  async f() {
+    await somePromise;
+  },
+};
+```
+
+### Async generator methods
+
+```js
+const obj4 = {
+  f: async function* () {
+    yield 1;
+    yield 2;
+    yield 3;
+  },
+};
+
+// The same object using shorthand syntax
+const obj4 = {
+  async *f() {
+    yield 1;
+    yield 2;
+    yield 3;
+  },
+};
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
-- [`get`](/ko/docs/Web/JavaScript/Reference/Functions/get)
-- [`set`](/ko/docs/Web/JavaScript/Reference/Functions/set)
-- [어휘 문법](/ko/docs/Web/JavaScript/Reference/Lexical_grammar)
+- [Working with objects](/en-US/docs/Web/JavaScript/Guide/Working_with_objects)
+- [Functions](/en-US/docs/Web/JavaScript/Reference/Functions)
+- [`get`](/en-US/docs/Web/JavaScript/Reference/Functions/get)
+- [`set`](/en-US/docs/Web/JavaScript/Reference/Functions/set)
+- [Object initializer](/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer)
+- {{jsxref("Statements/class", "class")}}

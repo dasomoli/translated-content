@@ -1,18 +1,22 @@
 ---
-title: Document.documentElement
+title: "Document: documentElement property"
+short-title: documentElement
 slug: Web/API/Document/documentElement
+page-type: web-api-instance-property
+browser-compat: api.Document.documentElement
 ---
+
 {{ApiRef("DOM")}}
 
-**`Document.documentElement`** 읽기 전용 속성은 [문서](/ko/docs/Web/API/Document)의 루트 요소를 나타내는 {{domxref("Element")}}를 반환합니다. HTML 문서를 예로 들면 {{htmlelement("html")}} 요소를 반환합니다.
+**`Document.documentElement`** returns the
+{{domxref("Element")}} that is the root element of the {{domxref("document")}} (for
+example, the {{HTMLElement("html")}} element for HTML documents).
 
-## 구문
+## Value
 
-```js
-const element = document.documentElement
-```
+A {{domxref("Element")}} object.
 
-## 예제
+## Examples
 
 ```js
 const rootElement = document.documentElement;
@@ -21,18 +25,21 @@ const firstTier = rootElement.childNodes;
 // such as <head> and <body>
 
 for (const child of firstTier) {
-   // do something with each direct child of the root element
+  // do something with each direct child of the root element
 }
 ```
 
-## 참고
+## Notes
 
-모든 비어있지 않은 HTML 문서의 `documentElement`는 항상 {{htmlelement("html")}} 요소를 가리킵니다. 모든 비어있지 않은 XML 문서의 `documentElement`는 종류불문하고 해당 문서의 루트 요소를 가리킵니다.
+For any non-empty HTML document, `documentElement` will always be an
+{{HTMLElement("html")}} element. For any non-empty XML document,
+`documentElement` will always be whatever element is the root element of the
+document.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

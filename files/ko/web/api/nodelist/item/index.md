@@ -1,43 +1,55 @@
 ---
-title: NodeList.item()
+title: "NodeList: item() method"
+short-title: item()
 slug: Web/API/NodeList/item
+page-type: web-api-instance-method
+browser-compat: api.NodeList.item
 ---
 
 {{APIRef("DOM")}}
 
-[`NodeList`](/ko/docs/Web/API/NodeList) 의 node를 index로 돌려줍니다. 이 메서드는 인수(arguments)를 제공하는 한 exceptions 을 throw 하지 않습니다. index가 범위를 벗어나면 `null` 값이 반환되고, 인수가 제공되지 않으면 `TypeError` 가 throw 됩니다.
+Returns a node from a [`NodeList`](/en-US/docs/Web/API/NodeList) by index. This method
+doesn't throw exceptions as long as you provide arguments. A value of `null`
+is returned if the index is out of range, and a {{jsxref("TypeError")}} is thrown if no
+argument is provided.
 
 ## Syntax
 
-```js
-nodeItem = nodeList.item(index)
+```js-nolint
+item(index)
 ```
 
-- `nodeList` 는 `NodeList` 입니다. 일반적으로 [childNodes](/ko/docs/Web/API/Node/childNodes) 와 같은 다른 DOM 속성(property) 또는 메서드에서 가져옵니다.
-- `index` 는 fetch될 node의 index입니다. index는 0 에서 부터 시작합니다.
-- `nodeItem` 은 `item` 메서드가 반환 한 `nodeList` 의 node `index` 입니다.
-
-## Alternate Syntax
-
-자바스크립트는 NodeList 에서 index를 얻기 위한, 배열과 같은 브라켓 문법(\[])을 제공합니다 :
+JavaScript also offers an array-like bracketed syntax for obtaining an item from a
+NodeList by index:
 
 ```js
-nodeItem = nodeList[index]
+nodeItem = nodeList[index];
 ```
 
-## Example
+### Parameters
+
+- `index` is the index of the node to be fetched. The index is zero-based.
+
+### Return value
+
+The `index`th node in the `nodeList` returned by the `item` method.
+
+### Exceptions
+
+- {{jsxref("TypeError")}}
+  - : Thrown if no argument is provided.
+
+## Examples
 
 ```js
-var tables = document.getElementsByTagName("table");
-var firstTable = tables.item(1); // or simply tables[1] - returns the second table in the DOM
+const tables = document.getElementsByTagName("table");
+const firstTable = tables.item(1); // or tables[1] - returns the second table in the DOM
 ```
 
-## Specification
+## Specifications
 
-[DOM Level 1 Core: NodeList.item()](https://www.w3.org/TR/REC-DOM-Level-1/level-one-core.html#method-item)
+{{Specifications}}
 
-[DOM Level 2 Core: NodeList.item()](https://www.w3.org/TR/DOM-Level-2-Core/core.html#ID-844377136)
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

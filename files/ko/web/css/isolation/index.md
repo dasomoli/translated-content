@@ -1,91 +1,107 @@
 ---
 title: isolation
 slug: Web/CSS/isolation
+page-type: css-property
+browser-compat: css.properties.isolation
 ---
 
 {{CSSRef}}
 
-**`isolation`** [CSS](/ko/docs/Web/CSS) 속성은 요소가 새로운 {{glossary("stacking context", "쌓임 맥락")}}을 생성해야 하는지 지정합니다.
+The **`isolation`** [CSS](/en-US/docs/Web/CSS) property determines whether an element must create a new {{glossary("stacking context")}}.
 
 {{EmbedInteractiveExample("pages/css/isolation.html")}}
 
-{{cssxref("mix-blend-mode")}}와 함께 사용했을 때 특히 유용합니다.
+This property is especially helpful when used in conjunction with {{cssxref("mix-blend-mode")}} and {{cssxref("z-index")}}.
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
 isolation: auto;
 isolation: isolate;
 
-/* 전역 값 */
+/* Global values */
 isolation: inherit;
 isolation: initial;
+isolation: revert;
+isolation: revert-layer;
 isolation: unset;
 ```
 
-`isolation` 속성은 다음 키워드 값 중 하나를 사용해 지정합니다.
+The `isolation` property is specified as one of the keyword values listed below.
 
-### 값
+### Values
 
 - `auto`
-  - : 요소에 적용한 속성 중 새로운 쌓임 맥락을 요구하는 속성이 있을 때만 쌓임 맥락을 생성합니다.
+  - : A new stacking context is created only if one of the properties applied to the element requires it.
 - `isolate`
-  - : 항상 새로운 쌓임 맥락을 생성합니다.
+  - : A new stacking context must be created.
 
-### 형식 구문
+## Formal definition
+
+{{cssinfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
+
+### Forcing a new stacking context for an element
+
+#### HTML
 
 ```html
-<div id="b" class="a">
-  <div id="d">
-    <div class="a c">auto</div>
+<div class="big-square ">
+  <div class="isolation-auto">
+    <div class="small-square">auto</div>
   </div>
-  <div id="e">
-    <div class="a c">isolate</div>
+  <div class="isolation-isolate">
+    <div class="small-square">isolate</div>
   </div>
 </div>
 ```
 
+#### CSS
+
 ```css
-.a {
-  background-color: rgb(0,255,0);
+.isolation-auto {
+  isolation: auto;
 }
-#b {
+
+.isolation-isolate {
+  isolation: isolate;
+}
+
+.big-square {
+  background-color: rgb(0, 255, 0);
   width: 200px;
   height: 210px;
 }
-.c {
+
+.small-square {
+  background-color: rgb(0, 255, 0);
   width: 100px;
   height: 100px;
   border: 1px solid black;
   padding: 2px;
   mix-blend-mode: difference;
 }
-#d {
-  isolation: auto;
-}
-#e {
-  isolation: isolate;
-}
 ```
 
-{{ EmbedLiveSample('예제', 230, 230) }}
+#### Result
 
-## 명세
+{{ EmbedLiveSample('Forcing_a_new_stacking_context_for_an_element', 230, 230) }}
+
+## Specifications
 
 {{Specifications}}
 
-{{cssinfo}}
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{cssxref("&lt;blend-mode&gt;")}}
 - {{cssxref("mix-blend-mode")}}, {{cssxref("background-blend-mode")}}

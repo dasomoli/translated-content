@@ -1,29 +1,32 @@
 ---
-title: MediaStreamTrack.label
+title: "MediaStreamTrack: label property"
+short-title: label
 slug: Web/API/MediaStreamTrack/label
+page-type: web-api-instance-property
+browser-compat: api.MediaStreamTrack.label
 ---
+
 {{APIRef("Media Capture and Streams")}}
 
-**`MediaStreamTrack.label`** 읽기 전용 속성은 {{glossary("user agent", "사용자 에이전트")}}가 트랙 소스를 식별하기 위해 지정한 레이블을 담은 {{domxref("DOMString")}}을 반환합니다. 소스가 연결되지 않은 경우 빈 문자열이며, 연결됐던 트랙이 소스에서 분리되더라도 레이블은 바뀌지 않습니다.
+The **`MediaStreamTrack.label`** read-only property returns a string containing a {{glossary("user agent")}}-assigned label that identifies the track source, as in `"internal microphone"`.
 
-## 구문
+The string may be left empty and is empty as long as no source has been connected.
+When the track is disassociated from its source, the label is not changed.
 
-```js
+## Syntax
+
+```js-nolint
 const label = track.label
 ```
 
-### 값
-
-사용자 에이전트가 지정한 식별 레이블. `"internal microphone"` 등의 형태입니다.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [WebRTC](/ko/docs/Web/Guide/API/WebRTC)
+- [WebRTC](/en-US/docs/Web/API/WebRTC_API)

@@ -1,45 +1,61 @@
 ---
-title: Element.setAttribute()
+title: "Element: setAttribute() method"
+short-title: setAttribute()
 slug: Web/API/Element/setAttribute
-l10n:
-  sourceCommit: 049632675ccb83fe2e257c43071d366d3f80ee2b
+page-type: web-api-instance-method
+browser-compat: api.Element.setAttribute
 ---
 
 {{APIRef("DOM")}}
 
-지정된 요소의 속성 값을 설정합니다. 속성이 이미 있으면 값은 업데이트됩니다. 속성이 없다면 지정된 이름과 값으로 새 속성이 추가됩니다.
+Sets the value of an attribute on the specified element. If
+the attribute already exists, the value is updated; otherwise a new attribute is added
+with the specified name and value.
 
-속성의 현재 값을 얻으려면 {{domxref("Element.getAttribute", "getAttribute()")}}를 사용하고, 속성을 제거하려면 {{domxref("Element.removeAttribute","removeAttribute()")}}를 호출하세요.
+To get the current value of an attribute, use {{domxref("Element.getAttribute",
+  "getAttribute()")}}; to remove an attribute, call {{domxref("Element.removeAttribute",
+  "removeAttribute()")}}.
 
-## 구문
+## Syntax
 
 ```js-nolint
 setAttribute(name, value)
 ```
 
-### 매개변수
+### Parameters
 
 - `name`
-  - : 값을 설정할 속성의 이름을 지정하는 문자열입니다. 속성 이름은 HTML 문서의 HTML 요소에서 `setAttribute()`가 호출될 때 모두 자동으로 소문자로 변환됩니다.
+  - : A string specifying the name of the attribute whose value is to be
+    set. The attribute name is automatically converted to all lower-case when
+    `setAttribute()` is called on an HTML element in an HTML document.
 - `value`
-  - : 속성에 할당할 값이 포함된 문자열입니다. 지정된 문자열이 아닌 값은 자동으로 문자열로 변환됩니다.
+  - : A string containing the value to assign to the attribute. Any
+    non-string value specified is converted automatically into a string.
 
-불리언 속성은 값이 요소에 존재하는 경우 `true`로 간주됩니다. 선행 또는 후행 공백 없이 값을 빈 문자열(`""`)로 설정하거나 속성의 이름으로 설정해야 합니다. 실제 [예제](#예제)는 아래를 참조하세요.
+Boolean attributes are considered to be `true` if they're present on the
+element at all. You should set `value` to the empty string (`""`)
+or the attribute's name, with no leading or trailing whitespace. See the [example](#examples) below for a practical demonstration.
 
-지정된 `value`가 문자열로 변환되기 때문에 `null`을 지정한다고 해서 반드시 예상대로 작동하지 않습니다. 속성을 제거하거나 해당 값을 [`null`](/ko/docs/Web/JavaScript/Reference/Operators/null)로 설정하는 대신 속성 값을 문자열 `"null"`로 설정합니다. 속성을 제거하려면 {{domxref("Element.removeAttribute", "removeAttribute()")}}를 호출하세요.
+Since the specified `value` gets converted into a string, specifying
+`null` doesn't necessarily do what you expect. Instead of removing the
+attribute or setting its value to be [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null), it instead sets the attribute's
+value to the string `"null"`. If you wish to remove an attribute, call
+{{domxref("Element.removeAttribute", "removeAttribute()")}}.
 
-### 반환 값
+### Return value
 
-없음 ({{jsxref("undefined")}}).
+None ({{jsxref("undefined")}}).
 
-### 예외
+### Exceptions
 
 - `InvalidCharacterError` {{domxref("DOMException")}}
-  - : 지정된 속성 `name`에 속성 이름에 유효하지 않은 문자가 하나 이상 포함되어 있습니다.
+  - : The specified attribute `name` contains one or more characters which are
+    not valid in attribute names.
 
-## 예제
+## Examples
 
-다음 예제에서 `setAttribute()`는 {{HTMLElement("button")}}에 속성을 설정합니다.
+In the following example, `setAttribute()` is used to set attributes on a
+{{HTMLElement("button")}}.
 
 ### HTML
 
@@ -64,24 +80,31 @@ button.setAttribute("name", "helloButton");
 button.setAttribute("disabled", "");
 ```
 
-{{ EmbedLiveSample('예제', '300', '50') }}
+{{ EmbedLiveSample('Examples', '300', '50') }}
 
-이 예제는 다음 두 가지를 보여줍니다.
+This demonstrates two things:
 
-- 위의 `setAttribute()`에 대한 첫 번째 호출은 `name` 속성의 값을 "helloButton"으로 변경하는 것을 보여줍니다. 브라우저의 페이지 검사기([Chrome](https://developer.chrome.com/docs/devtools/dom/properties/), [Edge](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/css/inspect), [Firefox](https://firefox-source-docs.mozilla.org/devtools-user/page_inspector/how_to/open_the_inspector/index.html), [Safari](https://support.apple.com/en-us/guide/safari-developer/welcome/mac))를 사용하여 이를 확인할 수 있습니다.
-- `disabled`와 같은 불리언 속성의 값을 설정하려면 아무 값으로든 설정할 수 있습니다.
-  빈 문자열 또는 속성의 이름이 권장되는 값입니다. 중요한 것은 속성이 존재하는 경우 **실제 값에 관계없이** 해당 값이 참으로 간주된다는 것입니다. 속성이 없다는 것은 해당 값이 `false`임을 의미합니다. `disabled` 속성의 값을 빈 문자열(`""`)로 설정하면 `disabled`를 `true`로 설정하여 버튼이 비활성화됩니다.
+- The first call to `setAttribute()` above shows changing the `name` attribute's value to "helloButton".
+  You can see this using your browser's page inspector ([Chrome](https://developer.chrome.com/docs/devtools/dom/properties/), [Edge](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/css/inspect),
+  [Firefox](https://firefox-source-docs.mozilla.org/devtools-user/page_inspector/how_to/open_the_inspector/index.html), [Safari](https://support.apple.com/en-us/guide/safari-developer/welcome/mac)).
+- To set the value of a Boolean attribute, such as `disabled`, you can specify any value.
+  An empty string or the name of the attribute are recommended values.
+  All that matters is that if the attribute is present at all, _regardless of its actual value_, its value is considered to be `true`.
+  The absence of the attribute means its value is `false`. By setting the value of the `disabled` attribute to the empty string (`""`), we are setting `disabled` to `true`, which results in the button being disabled.
 
 {{DOMAttributeMethods}}
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-### Gecko 참고
+### Gecko notes
 
-`setAttribute()`를 사용하여 특정 속성, 특히 XUL의 `value`를 수정하는 것은 속성이 기본값을 지정하기 때문에 일관되지 않게 작동합니다. 현재 값에 액세스하거나 수정하려면 속성을 사용해야 합니다. 예를 들어 `Element.setAttribute()` 대신 `Element.value`를 사용합니다.
+Using `setAttribute()` to modify certain attributes, most notably
+`value` in XUL, works inconsistently, as the attribute specifies the default
+value. To access or modify the current values, you should use the properties. For
+example, use `Element.value` instead of `Element.setAttribute()`.

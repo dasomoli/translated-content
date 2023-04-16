@@ -1,10 +1,9 @@
 ---
 title: Prerequisites
 slug: Mozilla/Add-ons/WebExtensions/Prerequisites
+page-type: guide
 ---
 
 {{AddonSidebar}}
 
-파이어폭스 45 이후 버젼만 있으면 됩니다.
-
-시작하려면 [Your first WebExtension](/ko/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension) 을 보세요.
+All you need is Firefox 45 or higher. See [Your first extension](/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension) to get started.

@@ -1,19 +1,21 @@
 ---
 title: Node.js
 slug: Glossary/Node.js
+page-type: glossary-definition
 ---
-{{QuickLinksWithSubpages("/ko/docs/Glossary")}}
 
-**Node.js**는 개발자가 서버 측과 네트워크 응용 프로그램을 만들 수 있도록 지원하는 크로스 플랫폼 {{Glossary("JavaScript")}} 런타임 환경입니다.
+Node.js is a cross-platform {{Glossary("JavaScript")}} runtime environment that allows developers to build server-side and network applications with JavaScript.
 
-## 더 알아보기
+## Node Package Manager (npm)
 
-### 일반 지식
+[npm](https://www.npmjs.com) is a package manager that is downloaded and bundled alongside Node.js. Its command-line (CLI) client `npm` can be used to download, configure and create packages for use in Node.js projects. Downloaded packages can be imported by [ES imports](/en-US/docs/Web/JavaScript/Reference/Statements/import) and [CommonJS `require()`](https://en.wikipedia.org/wiki/CommonJS) without including the dependency directory `node_modules/` they are downloaded to, as Node.js [resolves](https://nodejs.org/api/modules.html#loading-from-node_modules-folders) packages without a relative or absolute path specified in their import.
 
-- 위키백과 [Node.js](https://ko.wikipedia.org/wiki/Node.js)
-- [Node.js 웹사이트](https://nodejs.org/)
+Packages hosted on npm are downloaded from the registry at [https://registry.npmjs.org/](https://registry.npmjs.org/), but the CLI be configured to use any compatible instance.
 
-### 기술 정보
+## See also
 
-- [API 참조 문서](https://nodejs.org/api/)
-- [자습서](https://nodejs.org/documentation/tutorials/)
+- [Node.js](https://en.wikipedia.org/wiki/Node.js) on Wikipedia
+- [Node.js website](https://nodejs.org/)
+- [API reference documentation](https://nodejs.org/api/)
+- [Guides](https://nodejs.org/en/docs/guides/)
+- [npm Documentation](https://docs.npmjs.com/)

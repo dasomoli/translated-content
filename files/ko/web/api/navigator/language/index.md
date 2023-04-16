@@ -1,25 +1,27 @@
 ---
-title: Navigator.language
+title: "Navigator: language property"
+short-title: language
 slug: Web/API/Navigator/language
+page-type: web-api-instance-property
+browser-compat: api.Navigator.language
 ---
 
 {{APIRef("HTML DOM")}}
 
-**`Navigator.language`** 읽기 전용 속성은 사용자의 선호 언어(일반적으로 브라우저 UI의 언어)를 나타내는 문자열을 반환합니다.
+The **`Navigator.language`** read-only property returns
+a string representing the preferred language of the user, usually the language of the
+browser UI.
 
-## 구문
+## Value
 
-```js
-const lang = navigator.language
-```
+A string representing the
+language version as defined in {{RFC(5646, "Tags for Identifying Languages (also known as BCP 47)")}}. Examples of valid language
+codes include "en", "en-US", "fr", "fr-FR", "es-ES", etc.
 
-### 값
+Note that in Safari on iOS prior to 10.2, the country code returned is lowercase:
+"en-us", "fr-fr" etc.
 
-{{RFC(5646, "Tags for Identifying Languages(BCP 47)")}}가 정의한 언어 태그의 {{domxref("DOMString")}}입니다. 유효한 값은 "en", "en-US", "ko", "ko-KR" 등입니다.
-
-iOS Safari 버전 10.2 이전에서는 "en-us", "ko-kr"처럼 국가 코드를 소문자로 반환합니다.
-
-## 예제
+## Examples
 
 ```js
 if (/^en\b/.test(navigator.language)) {
@@ -27,15 +29,15 @@ if (/^en\b/.test(navigator.language)) {
 }
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("navigator.languages")}}
 - {{domxref("navigator")}}

@@ -1,10 +1,19 @@
 ---
 title: animation-fill-mode
 slug: Web/CSS/animation-fill-mode
+page-type: css-property
+browser-compat: css.properties.animation-fill-mode
 ---
+
 {{CSSRef}}
 
-**`animation-fill-mode`** [CSS](/en/CSS) 속성은 CSS 애니메이션이 실행 전과 후에 대상에 스타일을 적용하는 방법을 지정합니다.
+The **`animation-fill-mode`** [CSS](/en-US/docs/Web/CSS) property sets how a CSS animation applies styles to its target before and after its execution.
+
+{{EmbedInteractiveExample("pages/css/animation-fill-mode.html")}}
+
+It is often convenient to use the shorthand property {{cssxref("animation")}} to set all animation properties at once.
+
+## Syntax
 
 ```css
 /* Single animation */
@@ -16,21 +25,22 @@ animation-fill-mode: both;
 /* Multiple animations */
 animation-fill-mode: none, backwards;
 animation-fill-mode: both, forwards, none;
+
+/* Global values */
+animation-fill-mode: inherit;
+animation-fill-mode: initial;
+animation-fill-mode: revert;
+animation-fill-mode: revert-layer;
+animation-fill-mode: unset;
 ```
 
-축약 속성 [`animation`](/ko/docs/Web/CSS/animation)을 사용하여 모든 애니메이션 속성을 한꺼번에 설정하는 것이 편리합니다.
-
-{{cssinfo}}
-
-## 문법(Syntax)
-
-### 값(Values)
+### Values
 
 - `none`
-  - : 애니메이션은 실행되지 않을 때 대상에 스타일을 적용하지 않습니다. 요소는 대신 적용된 다른 CSS 규칙을 사용하여 표시됩니다. 이것은 기본값입니다.
+  - : The animation will not apply any styles to the target when it's not executing. The element will instead be displayed using any other CSS rules applied to it. This is the default value.
 - `forwards`
 
-  - : 대상은 실행 된 애니메이션의 마지막 [keyframe](/ko/docs/CSS/@keyframes)에 의해 설정된 계산 된 값을 유지합니다. 마지막 키 프레임은 {{cssxref("animation-direction")}}및 {{cssxref("animation-iteration-count")}}의 값에 따라 다릅니다.
+  - : The target will retain the computed values set by the last [keyframe](/en-US/docs/Web/CSS/@keyframes) encountered during execution. The last keyframe depends on the value of {{cssxref("animation-direction")}} and {{cssxref("animation-iteration-count")}}:
 
     | `animation-direction` | `animation-iteration-count` | last keyframe encountered |
     | --------------------- | --------------------------- | ------------------------- |
@@ -43,7 +53,7 @@ animation-fill-mode: both, forwards, none;
 
 - `backwards`
 
-  - : 애니메이션은 대상에 적용되는 즉시 첫 번째 관련 [keyframe](/ko/docs/CSS/@keyframes) 에 정의 된 값을 적용하고 {{cssxref("animation-delay")}} 기간 동안 이 값을 유지합니다. 첫 번째 관련 키프레임은 {{cssxref("animation-direction")}}의 값에 따라 다릅니다.
+  - : The animation will apply the values defined in the first relevant [keyframe](/en-US/docs/Web/CSS/@keyframes) as soon as it is applied to the target, and retain this during the {{cssxref("animation-delay")}} period. The first relevant keyframe depends on the value of {{cssxref("animation-direction")}}:
 
     | `animation-direction`            | first relevant keyframe |
     | -------------------------------- | ----------------------- |
@@ -51,29 +61,35 @@ animation-fill-mode: both, forwards, none;
     | `reverse` or `alternate-reverse` | `100%` or `to`          |
 
 - `both`
-  - : 애니메이션은 앞뒤 양쪽 모두의 규칙을 따르므로 애니메이션 속성이 양방향으로 확장됩니다.
+  - : The animation will follow the rules for both forwards and backwards, thus extending the animation properties in both directions.
 
-> **참고:** animation- \* 속성에 여러 개의 쉼표로 구분 된 값을 지정하면 [`animation-name`](/ko/docs/Web/CSS/animation-name) 속성에 지정된 애니메이션에 할당되는 값의 수에 따라 다른 방식으로 지정됩니다. 자세한 내용은 [여러 애니메이션 속성 값 설정](/ko/docs/Web/CSS/CSS_Animations/Using_CSS_animations#Setting_multiple_animation_property_values)을 참조하십시오.
+> **Note:** When you specify multiple comma-separated values on an `animation-*` property, they are applied to the animations in the order in which the {{cssxref("animation-name")}}s appear. For situations where the number of animations and `animation-*` property values do not match, see [Setting multiple animation property values](/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations#setting_multiple_animation_property_values).
 
-### Formal syntax
+## Formal definition
+
+{{cssinfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제(Examples)
+## Examples
 
-다음 예제에서 animation-fill-mode의 효과를 볼 수 있습니다. 무한 시간 동안 실행되는 애니메이션의 경우 원래 상태 (기본값)로 되돌리기보다는 최종 상태로 유지하는 방법을 보여줍니다.
+### Setting fill mode
 
-### HTML
+You can see the effect of `animation-fill-mode` in the following example. It demonstrates how you can make the animation remain in its final state rather than reverting to the original state (which is the default).
+
+#### HTML
 
 ```html
-<p>회색 박스 위에 마우스를 올려보세요!</p>
+<p>Move your mouse over the gray box!</p>
 <div class="demo">
-  <div class="grows">이 글씨는 커집니다.</div>
-  <div class="growsandstays">이 글씨는 커지며, 커진 상태를 유지합니다.</div>
+  <div class="growsandstays">This grows and stays big.</div>
+  <div class="grows">This just grows.</div>
 </div>
 ```
 
-### CSS
+#### CSS
 
 ```css
 .demo {
@@ -82,8 +98,12 @@ animation-fill-mode: both, forwards, none;
 }
 
 @keyframes grow {
-  0% { font-size: 0; }
-  100% { font-size: 40px; }
+  0% {
+    font-size: 0;
+  }
+  100% {
+    font-size: 40px;
+  }
 }
 
 .demo:hover .grows {
@@ -98,19 +118,22 @@ animation-fill-mode: both, forwards, none;
 }
 ```
 
-{{EmbedLiveSample('Example',700,300)}}
+#### Result
 
-자세한 예제는 [CSS animations](/ko/docs/Web/CSS/CSS_Animations/Using_CSS_animations)를 보십시오.
+{{EmbedLiveSample('Setting fill mode',700,300)}}
 
-## 명세
+See [CSS animations](/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations) for more examples.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성(Browser compatibility)
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기(See also)
+## See also
 
-- [Using CSS animations](/ko/docs/Web/CSS/CSS_Animations/Using_CSS_animations)
+- [Using CSS animations](/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations)
 - JavaScript {{domxref("AnimationEvent")}} API
+- Other related animation properties: {{cssxref("animation")}}, {{cssxref("animation-composition")}}, {{cssxref("animation-delay")}}, {{cssxref("animation-direction")}}, {{cssxref("animation-duration")}}, {{cssxref("animation-iteration-count")}}, {{cssxref("animation-name")}}, {{cssxref("animation-play-state")}}, {{cssxref("animation-timeline")}}, {{cssxref("animation-timing-function")}}

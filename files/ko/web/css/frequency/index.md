@@ -1,50 +1,56 @@
 ---
 title: <frequency>
 slug: Web/CSS/frequency
+page-type: css-type
+browser-compat: css.types.frequency
 ---
+
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`<frequency>`** [자료형](/ko/docs/Web/CSS/CSS_Types)은 목소리의 높낮이 등 주파수를 나타냅니다. 현재 어떤 CSS 속성도 `<frequency>`를 사용하지 않습니다.
+The **`<frequency>`** [CSS](/en-US/docs/Web/CSS) [data type](/en-US/docs/Web/CSS/CSS_Types) represents a frequency dimension, such as the pitch of a speaking voice. It is not currently used in any CSS properties.
 
-## 구문
+## Syntax
 
-`<frequency>` 자료형은 {{cssxref("&lt;number&gt;")}} 다음에 아래 나열한 단위 중 하나를 붙여 구성핳합니다. 다른 CSS 단위와 마찬가지로 숫자와 단위 문자 사이에 공백은 존재하지 않습니다.
+The `<frequency>` data type consists of a {{cssxref("&lt;number&gt;")}} followed by one of the units listed below. As with all CSS dimensions, there is no space between the unit literal and the number.
 
-### 단위
+### Units
 
 - `Hz`
-  - : 헤르츠로 주파수를 나타냅니다. 예시: `0Hz`, `1500Hz`, `10000Hz`.
+  - : Represents a frequency in hertz. Examples: `0Hz`, `1500Hz`, `10000Hz`.
 - `kHz`
-  - : 킬로헤르츠로 주파수를 나타냅니다. 예시: `0kHz`, `1.5kHz`, `10kHz`.
+  - : Represents a frequency in kilohertz. Examples: `0kHz`, `1.5kHz`, `10kHz`.
 
-> **참고:** `0`은 단위와 상관없이 언제나 같은 값을 나타내지만, 주파수에서는 단위를 생략할 수 없습니다. 즉 `0`은 유효한 주파수가 아니며 `0Hz`나 `0kHz`를 나타내지 않습니다. 단위 문자가 대소문자를 구분하지 않기는 하지만, [SI](https://ko.wikipedia.org/wiki/%EA%B5%AD%EC%A0%9C%EB%8B%A8%EC%9C%84%EA%B3%84)에서 명시한 대로 "H"는 대문자로 표기하는 게 좋습니다.
+> **Note:** Although the number `0` is always the same regardless of unit, the unit may not be omitted. In other words, `0` is invalid and does not represent `0Hz` or `0kHz`. Though the units are case-insensitive, it is good practice to use a capital "H" for `Hz` and `kHz`, as specified in the [SI](https://en.wikipedia.org/wiki/International_System_of_Units).
 
-## 예제
+## Examples
 
-### 유효한 주파수
+Valid frequency values:
 
+```plain example-good
+12Hz     Positive integer
+4.3Hz    Non-integer
+14KhZ    The unit is case-insensitive, though non-SI capitalization is not recommended.
++0Hz     Zero, with a leading + and a unit
+-0kHz    Zero, with a leading - and a unit
 ```
-12Hz     양의 정수
-4.3Hz    실수
-14KhZ    단위가 대소문자를 구분하지 않지만, SI 표준에서 벗어난 표기는 비추천
-+0Hz     0, 양의 부호와 단위
--0kHz    0, 음의 부호와 단위
-```
 
-### 유효하지 않은 주파수
+Invalid frequency values:
 
 ```plain example-bad
-12.0     단위가 없으므로 <number>지만 <frequency>가 아님
-7 Hz     수와 단위 사이에 공백은 불허
-0        <length>는 단위 없는 0을 받을 수 있지만, <frequency>는 불가능
+12.0     This is a <number>, not an <frequency>, because it is missing a unit.
+7 Hz     No space is allowed between the number and the unit.
+0        Although unitless zero is an allowable <length>, it's an invalid <frequency>.
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-> **참고:** `<frequency>`는 [CSS Level 2](https://www.w3.org/TR/CSS2/aural.html#q19.0)의, 지금은 사용하지 않는 청각적 [미디어 특성](/ko/docs/Web/CSS/@media#미디어_특성)에서 음성의 높낮이를 설정할 때 사용했습니다. 이후 CSS3에서 다시 추가됐지만, 지금으로써는 어떤 CSS 속성에서도 사용하지 않습니다.
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- {{cssxref("&lt;frequency-percentage&gt;")}}
+- [CSS Values and Units](/en-US/docs/Web/CSS/CSS_Values_and_Units)

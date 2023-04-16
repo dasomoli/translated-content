@@ -1,42 +1,53 @@
 ---
 title: Date.prototype.getUTCFullYear()
 slug: Web/JavaScript/Reference/Global_Objects/Date/getUTCFullYear
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.getUTCFullYear
 ---
 
 {{JSRef}}
 
-**getUTCFullYear()** 메서드는 표준시에 따라 지정된 날짜의 연도를 반환합니다.
+The **`getUTCFullYear()`** method returns the year in the
+specified date according to universal time.
+
+{{EmbedInteractiveExample("pages/js/date-getutcfullyear.html")}}
 
 ## Syntax
 
-```js
-    dateObj.getUTCFullYear()
+```js-nolint
+getUTCFullYear()
 ```
 
 ### Return value
 
-주어진 날짜의 연도를 표준시에 따라 나타내는 숫자입니다.
+A number.
+If the `Date` object represents a valid date, an integer representing the year in the given date
+according to universal time.
+Otherwise, [`NaN`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/NaN)
+if the `Date` object doesn't represent a valid date.
 
 ## Description
 
-**getUTCFullYear()** 에 의해 반환 된 값은 1995 년과 같이 2000 년과 호환되는 절대 숫자입니다.
+The value returned by `getUTCFullYear()` is an absolute number that is
+compliant with year-2000, for example, 1995.
 
 ## Examples
 
-### Using `getUTCFullYear()`
+### Using getUTCFullYear()
 
-다음 예제에서는 현재 연도의 4 자리 값을 변수 year에 할당합니다.
+The following example assigns the four-digit value of the current year to the variable
+`year`.
 
 ```js
-var today = new Date();
-var year = today.getUTCFullYear();
+const today = new Date();
+const year = today.getUTCFullYear();
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

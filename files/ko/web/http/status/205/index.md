@@ -1,25 +1,31 @@
 ---
 title: 205 Reset Content
 slug: Web/HTTP/Status/205
+page-type: http-status-code
+spec-urls: https://httpwg.org/specs/rfc9110.html#status.205
 ---
 
 {{HTTPSidebar}}
 
-HTTP의 **`205 Reset Content`** 응답상태는 form의 내용을 지우거나 캔버스 상태를 재설정하거나 UI를 새로 고치려면 client의 문서뷰를 새로고침하라고 알려준다.
+The HTTP **`205 Reset Content`** response status tells the
+client to reset the document view, so for example to clear the content of a form, reset
+a canvas state, or to refresh the UI.
 
-## 상태
+## Status
 
-```
+```http
 205 Reset Content
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Compatibility notes
 
-- Browser behavior differs if this response erroneously includes a body on persistent connections See [204 No Content](/ko/docs/Web/HTTP/Status/204) for more detail.
+- Browser behavior differs if this response erroneously includes a body on persistent
+  connections See [204 No Content](/en-US/docs/Web/HTTP/Status/204) for more
+  detail.
 
 ## See also
 

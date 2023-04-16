@@ -1,165 +1,212 @@
 ---
-title: HTTP 상태 코드
+title: HTTP response status codes
 slug: Web/HTTP/Status
+page-type: landing-page
+browser-compat: http.status
 ---
 
 {{HTTPSidebar}}
 
-HTTP 응답 상태 코드는 특정 HTTP 요청이 성공적으로 완료되었는지 알려줍니다. 응답은 5개의 그룹으로 나누어집니다: 정보를 제공하는 응답, 성공적인 응답, 리다이렉트, 클라이언트 에러, 그리고 서버 에러. 상태 코드는 [section 10 of RFC 2616](https://tools.ietf.org/html/rfc2616#section-10)에 정의되어 있습니다.
+HTTP response status codes indicate whether a specific [HTTP](/en-US/docs/Web/HTTP) request has been successfully completed.
+Responses are grouped in five classes:
 
-## 정보 응답
+1. [Informational responses](#information_responses) (`100` – `199`)
+2. [Successful responses](#successful_responses) (`200` – `299`)
+3. [Redirection messages](#redirection_messages) (`300` – `399`)
+4. [Client error responses](#client_error_responses) (`400` – `499`)
+5. [Server error responses](#server_error_responses) (`500` – `599`)
+
+The status codes listed below are defined by [RFC 9110](https://httpwg.org/specs/rfc9110.html#overview.of.status.codes).
+
+> **Note:** If you receive a response that is not in [this list](#information_responses), it is a non-standard response, possibly custom to the server's software.
+
+## Information responses
 
 - {{HTTPStatus(100, "100 Continue")}}
-  - : 이 임시적인 응답은 지금까지의 상태가 괜찮으며 클라이언트가 계속해서 요청을 하거나 이미 요청을 완료한 경우에는 무시해도 되는 것을 알려줍니다.
-- {{HTTPStatus(101, "101 Switching Protocol")}}
-  - : 이 코드는 클라이언트가 보낸 {{HTTPHeader("Upgrade")}} 요청 헤더에 대한 응답에 들어가며 서버에서 프로토콜을 변경할 것임을 알려줍니다.
+  - : This interim response indicates that the client should continue the request or ignore the response if the request is already finished.
+- {{HTTPStatus(101, "101 Switching Protocols")}}
+  - : This code is sent in response to an {{HTTPHeader("Upgrade")}} request header from the client and indicates the protocol the server is switching to.
 - {{HTTPStatus(102, "102 Processing")}} ({{Glossary("WebDAV")}})
+  - : This code indicates that the server has received and is processing the request, but no response is available yet.
+- {{HTTPStatus(103, "103 Early Hints")}} {{experimental_inline}}
+  - : This status code is primarily intended to be used with the {{HTTPHeader("Link")}} header, letting the user agent start [preloading](/en-US/docs/Web/HTML/Attributes/rel/preload) resources while the server prepares a response.
 
-  - : 이 코드는 서버가 요청을 수신하였으며 이를 처리하고 있지만, 아직 제대로 된 응답을 알려줄 수 없음을 알려줍니다.
-
-- {{HTTPStatus(103, "103 Early Hints")}}
-  - : 이 상태 코드는 주로 {{HTTPHeader("Link")}} 헤더와 함께 사용되어 서버가 응답을 준비하는 동안 사용자 에이전트가(user agent) 사전 로딩([preloading](/ko/docs/Web/HTML/Preloading_content))을 시작할 수 있도록 한다.
-
-## 성공 응답
+## Successful responses
 
 - {{HTTPStatus(200, "200 OK")}}
-  - : 요청이 성공적으로 되었습니다. 성공의 의미는 HTTP 메소드에 따라 달라집니다:
-    GET: 리소스를 불러와서 메시지 바디에 전송되었습니다.
-    HEAD: 개체 해더가 메시지 바디에 있습니다.
-    PUT 또는 POST: 수행 결과에 대한 리소스가 메시지 바디에 전송되었습니다.
-    TRACE: 메시지 바디는 서버에서 수신한 요청 메시지를 포함하고 있습니다.
+
+  - : The request succeeded. The result meaning of "success" depends on the HTTP method:
+
+    - `GET`: The resource has been fetched and transmitted in the message body.
+    - `HEAD`: The representation headers are included in the response without any message body.
+    - `PUT` or `POST`: The resource describing the result of the action is transmitted in the message body.
+    - `TRACE`: The message body contains the request message as received by the server.
 
 - {{HTTPStatus(201, "201 Created")}}
-  - : 요청이 성공적이었으며 그 결과로 새로운 리소스가 생성되었습니다. 이 응답은 일반적으로 POST 요청 또는 일부 PUT 요청 이후에 따라옵니다.
+  - : The request succeeded, and a new resource was created as a result. This is typically the response sent after `POST` requests, or some `PUT` requests.
 - {{HTTPStatus(202, "202 Accepted")}}
-  - : 요청을 수신하였지만 그에 응하여 행동할 수 없습니다. 이 응답은 요청 처리에 대한 결과를 이후에 HTTP로 비동기 응답을 보내는 것에 대해서 명확하게 명시하지 않습니다. 이것은 다른 프로세스에서 처리 또는 서버가 요청을 다루고 있거나 배치 프로세스를 하고 있는 경우를 위해 만들어졌습니다.
+  - : The request has been received but not yet acted upon.
+    It is noncommittal, since there is no way in HTTP to later send an asynchronous response indicating the outcome of the request.
+    It is intended for cases where another process or server handles the request, or for batch processing.
 - {{HTTPStatus(203, "203 Non-Authoritative Information")}}
-  - : 이 응답 코드는 돌려받은 메타 정보 세트가 오리진 서버의 것과 일치하지 않지만 로컬이나 서드 파티 복사본에서 모아졌음을 의미합니다. 이러한 조건에서는 이 응답이 아니라 200 OK 응답을 반드시 우선됩니다.
+  - : This response code means the returned metadata is not exactly the same as is available from the origin server, but is collected from a local or a third-party copy.
+    This is mostly used for mirrors or backups of another resource.
+    Except for that specific case, the `200 OK` response is preferred to this status.
 - {{HTTPStatus(204, "204 No Content")}}
-  - : 요청에 대해서 보내줄 수 있는 콘텐츠가 없지만, 헤더는 의미있을 수 있습니다. 사용자-에이전트는 리소스가 캐시된 헤더를 새로운 것으로 업데이트 할 수 있습니다.
+  - : There is no content to send for this request, but the headers may be useful.
+    The user agent may update its cached headers for this resource with the new ones.
 - {{HTTPStatus(205, "205 Reset Content")}}
-  - : 이 응답 코드는 요청을 완수한 이후에 사용자 에이전트에게 이 요청을 보낸 문서 뷰를 리셋하라고 알려줍니다.
+  - : Tells the user agent to reset the document which sent this request.
 - {{HTTPStatus(206, "206 Partial Content")}}
-  - : 이 응답 코드는 클라이언트에서 복수의 스트림을 분할 다운로드를 하고자 범위 헤더를 전송했기 때문에 사용됩니다.
+  - : This response code is used when the {{HTTPHeader("Range")}} header is sent from the client to request only part of a resource.
 - {{HTTPStatus(207, "207 Multi-Status")}} ({{Glossary("WebDAV")}})
-  - : 멀티-상태 응답은 여러 리소스가 여러 상태 코드인 상황이 적절한 경우에 해당되는 정보를 전달합니다.
-- {{HTTPStatus(208, "208 Multi-Status")}} ({{Glossary("WebDAV")}})
-  - : DAV에서 사용됩니다: propstat(property와 status의 합성어) 응답 속성으로 동일 컬렉션으로 바인드된 복수의 내부 멤버를 반복적으로 열거하는 것을 피하기 위해 사용됩니다.
+  - : Conveys information about multiple resources, for situations where multiple status codes might be appropriate.
+- {{HTTPStatus(208, "208 Already Reported")}} ({{Glossary("WebDAV")}})
+  - : Used inside a `<dav:propstat>` response element to avoid repeatedly enumerating the internal members of multiple bindings to the same collection.
+- {{HTTPStatus(226, "226 IM Used")}} ([HTTP Delta encoding](https://datatracker.ietf.org/doc/html/rfc3229))
+  - : The server has fulfilled a `GET` request for the resource, and the response is a representation of the result of one or more instance-manipulations applied to the current instance.
 
-- {{HTTPStatus(226, "226 IM Used")}} ([HTTP Delta encoding](https://tools.ietf.org/html/rfc3229))
-  - : 서버가 GET 요청에 대한 리소스의 의무를 다 했고, 그리고 응답이 하나 또는 그 이상의 인스턴스 조작이 현재 인스턴스에 적용이 되었음을 알려줍니다.
+## Redirection messages
 
-## 리다이렉션 메시지
-
-- {{HTTPStatus(300, "300 Multiple Choice")}}
-  - : 요청에 대해서 하나 이상의 응답이 가능합니다. 사용자 에이전트 또는 사용자는 그중에 하나를 반드시 선택해야 합니다. 응답 중 하나를 선택하는 방법에 대한 표준화 된 방법은 존재하지 않습니다.
+- {{HTTPStatus(300, "300 Multiple Choices")}}
+  - : The request has more than one possible response. The user agent or user should choose one of them. (There is no standardized way of choosing one of the responses, but HTML links to the possibilities are recommended so the user can pick.)
 - {{HTTPStatus(301, "301 Moved Permanently")}}
-  - : 이 응답 코드는 요청한 리소스의 URI가 변경되었음을 의미합니다. 새로운 URI가 응답에서 아마도 주어질 수 있습니다.
+  - : The URL of the requested resource has been changed permanently. The new URL is given in the response.
 - {{HTTPStatus(302, "302 Found")}}
-  - : 이 응답 코드는 요청한 리소스의 URI가 일시적으로 변경되었음을 의미합니다. 새롭게 변경된 URI는 나중에 만들어질 수 있습니다. 그러므로, 클라이언트는 향후의 요청도 반드시 동일한 URI로 해야합니다.
+  - : This response code means that the URI of requested resource has been changed _temporarily_.
+    Further changes in the URI might be made in the future. Therefore, this same URI should be used by the client in future requests.
 - {{HTTPStatus(303, "303 See Other")}}
-  - : 클라이언트가 요청한 리소스를 다른 URI에서 GET 요청을 통해 얻어야 할 때, 서버가 클라이언트로 직접 보내는 응답입니다.
+  - : The server sent this response to direct the client to get the requested resource at another URI with a GET request.
 - {{HTTPStatus(304, "304 Not Modified")}}
-  - : 이것은 캐시를 목적으로 사용됩니다. 이것은 클라이언트에게 응답이 수정되지 않았음을 알려주며, 그러므로 클라이언트는 계속해서 응답의 캐시된 버전을 사용할 수 있습니다.
-
+  - : This is used for caching purposes.
+    It tells the client that the response has not been modified, so the client can continue to use the same cached version of the response.
 - `305 Use Proxy` {{deprecated_inline}}
-  - : 이전 버전의 HTTP 기술 사양에서 정의되었으며, 요청한 응답은 반드시 프록시를 통해서 접속해야 하는 것을 알려줍니다. 이것은 프록시의 in-band 설정에 대한 보안상의 걱정으로 인하여 사라져가고 있습니다.
+  - : Defined in a previous version of the HTTP specification to indicate that a requested response must be accessed by a proxy.
+    It has been deprecated due to security concerns regarding in-band configuration of a proxy.
 - `306 unused`
-  - : 이 응답 코드는 더이상 사용되지 않으며, 현재는 추후 사용을 위해 예약되어 있습니다. 이것은 HTTP 1.1 기술사양 이전 버전에서 사용되었습니다.
+  - : This response code is no longer used; it is just reserved. It was used in a previous version of the HTTP/1.1 specification.
 - {{HTTPStatus(307, "307 Temporary Redirect")}}
-  - : 클라리언트가 요청한 리소스가 다른 URI에 있으며, 이전 요청과 동일한 메소드를 사용하여 요청해야할 때, 서버가 클라이언트에 이 응답을 직접 보냅니다. 이것은 `302 Found` HTTP 응답 코드와 동일한 의미를 가지고 있으며, 사용자 에이전트가 반드시 사용된 HTTP 메소드를 변경하지 말아야 하는 점만 다릅니다: 만약 첫 요청에 `POST`가 사용되었다면, 두번째 요청도 반드시 `POST`를 사용해야 합니다.
+  - : The server sends this response to direct the client to get the requested resource at another URI with the same method that was used in the prior request.
+    This has the same semantics as the `302 Found` HTTP response code, with the exception that the user agent _must not_ change the HTTP method used: if a `POST` was used in the first request, a `POST` must be used in the second request.
 - {{HTTPStatus(308, "308 Permanent Redirect")}}
-  - : 이것은 리소스가 이제 HTTP 응답 헤더의 `Location:` 에 명시된 영구히 다른 URI에 위치하고 있음을 의미합니다. 이것은 `301 Moved Permanently` HTTP 응답 코드와 동일한 의미를 가지고 있으며, 사용자 에이전트가 반드시 HTTP 메소드를 변경하지 말아야 하는 점만 다릅니다: 만약 첫 요청에 `POST`가 사용되었다면, 두번째 요청도 반드시 `POST`를 사용해야 합니다.
+  - : This means that the resource is now permanently located at another URI, specified by the `Location:` HTTP Response header.
+    This has the same semantics as the `301 Moved Permanently` HTTP response code, with the exception that the user agent _must not_ change the HTTP method used: if a `POST` was used in the first request, a `POST` must be used in the second request.
 
-## 클라이언트 에러 응답
+## Client error responses
 
 - {{HTTPStatus(400, "400 Bad Request")}}
-  - : 이 응답은 잘못된 문법으로 인하여 서버가 요청을 이해할 수 없음을 의미합니다.
+  - : The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
 - {{HTTPStatus(401, "401 Unauthorized")}}
-  - : 비록 HTTP 표준에서는 "미승인(unauthorized)"를 명확히 하고 있지만, 의미상 이 응답은 "비인증(unauthenticated)"을 의미합니다. 클라이언트는 요청한 응답을 받기 위해서는 반드시 스스로를 인증해야 합니다.
-- `402 Payment Required`
-  - : 이 응답 코드는 나중에 사용될 것을 대비해 예약되었습니다. 첫 목표로는 디지털 결제 시스템에 사용하기 위하여 만들어졌지만 지금 사용되고 있지는 않습니다.
+  - : Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated".
+    That is, the client must authenticate itself to get the requested response.
+- {{HTTPStatus(402, "402 Payment Required")}} {{experimental_inline}}
+  - : This response code is reserved for future use.
+    The initial aim for creating this code was using it for digital payment systems, however this status code is used very rarely and no standard convention exists.
 - {{HTTPStatus(403, "403 Forbidden")}}
-  - : 클라이언트는 콘텐츠에 접근할 권리를 가지고 있지 않습니다. 예를들어 그들은 미승인이어서 서버는 거절을 위한 적절한 응답을 보냅니다. 401과 다른 점은 서버가 클라이언트가 누구인지 알고 있습니다.
+  - : The client does not have access rights to the content; that is, it is unauthorized, so the server is refusing to give the requested resource.
+    Unlike `401 Unauthorized`, the client's identity is known to the server.
 - {{HTTPStatus(404, "404 Not Found")}}
-  - : 서버는 요청받은 리소스를 찾을 수 없습니다. 브라우저에서는 알려지지 않은 URL을 의미합니다. 이것은 API에서 종점은 적절하지만 리소스 자체는 존재하지 않음을 의미할 수도 있습니다. 서버들은 인증받지 않은 클라이언트로부터 리소스를 숨기기 위하여 이 응답을 403 대신에 전송할 수도 있습니다. 이 응답 코드는 웹에서 반복적으로 발생하기 때문에 가장 유명할지도 모릅니다.
+  - : The server cannot find the requested resource.
+    In the browser, this means the URL is not recognized.
+    In an API, this can also mean that the endpoint is valid but the resource itself does not exist.
+    Servers may also send this response instead of `403 Forbidden` to hide the existence of a resource from an unauthorized client.
+    This response code is probably the most well known due to its frequent occurrence on the web.
 - {{HTTPStatus(405, "405 Method Not Allowed")}}
-  - : 요청한 메소드는 서버에서 알고 있지만, 제거되었고 사용할 수 없습니다. 예를 들어, 어떤 API에서 리소스를 삭제하는 것을 금지할 수 있습니다. 필수적인 메소드인 `GET`과 `HEAD`는 제거될 수 없으며 이 에러 코드를 리턴할 수 없습니다.
+  - : The request method is known by the server but is not supported by the target resource.
+    For example, an API may not allow calling `DELETE` to remove a resource.
 - {{HTTPStatus(406, "406 Not Acceptable")}}
-  - : 이 응답은 서버가 [서버 주도 콘텐츠 협상](/ko/docs/Web/HTTP/Content_negotiation#%EC%84%9C%EB%B2%84_%EC%A3%BC%EB%8F%84_%EC%BB%A8%ED%85%90%EC%B8%A0_%ED%98%91%EC%83%81) 을 수행한 이후, 사용자 에이전트에서 정해준 규격에 따른 어떠한 콘텐츠도 찾지 않았을 때, 웹서버가 보냅니다.
+  - : This response is sent when the web server, after performing [server-driven content negotiation](/en-US/docs/Web/HTTP/Content_negotiation#server-driven_negotiation), doesn't find any content that conforms to the criteria given by the user agent.
 - {{HTTPStatus(407, "407 Proxy Authentication Required")}}
-  - : 이것은 401과 비슷하지만 프록시에 의해 완료된 인증이 필요합니다.
+  - : This is similar to `401 Unauthorized` but authentication is needed to be done by a proxy.
 - {{HTTPStatus(408, "408 Request Timeout")}}
-  - : 이 응답은 요청을 한지 시간이 오래된 연결에 일부 서버가 전송하며, 어떨 때에는 이전에 클라이언트로부터 어떠한 요청이 없었다고 하더라도 보내지기도 합니다. 이것은 서버가 사용되지 않는 연결을 끊고 싶어한다는 것을 의미합니다. 이 응답은 특정 몇몇 브라우저에서 빈번하게 보이는데, Chrome, Firefox 27+, 또는 IE9와 같은 웹서핑 속도를 올리기 위해 HTTP 사전 연결 메카니즘을 사용하는 브라우저들이 해당됩니다. 또한 일부 서버는 이 메시지를 보내지 않고 연결을 끊어버리기도 합니다.
+  - : This response is sent on an idle connection by some servers, even without any previous request by the client.
+    It means that the server would like to shut down this unused connection.
+    This response is used much more since some browsers, like Chrome, Firefox 27+, or IE9, use HTTP pre-connection mechanisms to speed up surfing.
+    Also note that some servers merely shut down the connection without sending this message.
 - {{HTTPStatus(409, "409 Conflict")}}
-  - : 이 응답은 요청이 현재 서버의 상태와 충돌될 때 보냅니다.
+  - : This response is sent when a request conflicts with the current state of the server.
 - {{HTTPStatus(410, "410 Gone")}}
-  - : 이 응답은 요청한 콘텐츠가 서버에서 영구적으로 삭제되었으며, 전달해 줄 수 있는 주소 역시 존재하지 않을 때 보냅니다. 클라이언트가 그들의 캐쉬와 리소스에 대한 링크를 지우기를 기대합니다. HTTP 기술 사양은 이 상태 코드가 "일시적인, 홍보용 서비스"에 사용되기를 기대합니다. API는 알려진 리소스가 이 상태 코드와 함께 삭제되었다고 강요해서는 안된다.
+  - : This response is sent when the requested content has been permanently deleted from server, with no forwarding address.
+    Clients are expected to remove their caches and links to the resource.
+    The HTTP specification intends this status code to be used for "limited-time, promotional services".
+    APIs should not feel compelled to indicate resources that have been deleted with this status code.
 - {{HTTPStatus(411, "411 Length Required")}}
-  - : 서버에서 필요로 하는 `Content-Length` 헤더 필드가 정의되지 않은 요청이 들어왔기 때문에 서버가 요청을 거절합니다.
+  - : Server rejected the request because the `Content-Length` header field is not defined and the server requires it.
 - {{HTTPStatus(412, "412 Precondition Failed")}}
-  - : 클라이언트의 헤더에 있는 전제조건은 서버의 전제조건에 적절하지 않습니다.
+  - : The client has indicated preconditions in its headers which the server does not meet.
 - {{HTTPStatus(413, "413 Payload Too Large")}}
-  - : 요청 엔티티는 서버에서 정의한 한계보다 큽니다; 서버는 연결을 끊거나 혹은 `Retry-After` 헤더 필드로 돌려보낼 것이다.
+  - : Request entity is larger than limits defined by server.
+    The server might close the connection or return an `Retry-After` header field.
 - {{HTTPStatus(414, "414 URI Too Long")}}
-  - : 클라이언트가 요청한 URI는 서버에서 처리하지 않기로 한 길이보다 깁니다.
+  - : The URI requested by the client is longer than the server is willing to interpret.
 - {{HTTPStatus(415, "415 Unsupported Media Type")}}
-  - : 요청한 미디어 포맷은 서버에서 지원하지 않습니다, 서버는 해당 요청을 거절할 것입니다.
-- {{HTTPStatus(416, "416 Requested Range Not Satisfiable")}}
-  - : `Range` 헤더 필드에 요청한 지정 범위를 만족시킬 수 없습니다; 범위가 타겟 URI 데이터의 크기를 벗어났을 가능성이 있습니다.
+  - : The media format of the requested data is not supported by the server, so the server is rejecting the request.
+- {{HTTPStatus(416, "416 Range Not Satisfiable")}}
+  - : The range specified by the `Range` header field in the request cannot be fulfilled.
+    It's possible that the range is outside the size of the target URI's data.
 - {{HTTPStatus(417, "417 Expectation Failed")}}
-  - : 이 응답 코드는 `Expect` 요청 헤더 필드로 요청한 예상이 서버에서는 적당하지 않음을 알려줍니다.
+  - : This response code means the expectation indicated by the `Expect` request header field cannot be met by the server.
 - {{HTTPStatus(418, "418 I'm a teapot")}}
-  - : 서버는 커피를 찻 주전자에 끓이는 것을 거절합니다.
+  - : The server refuses the attempt to brew coffee with a teapot.
 - {{HTTPStatus(421, "421 Misdirected Request")}}
-  - : 서버로 유도된 요청은 응답을 생성할 수 없습니다. 이것은 서버에서 요청 URI와 연결된 스킴과 권한을 구성하여 응답을 생성할 수 없을 때 보내집니다.
-- {{HTTPStatus(422, "422 Unprocessable Entity")}} ({{Glossary("WebDAV")}})
-  - : 요청은 잘 만들어졌지만, 문법 오류로 인하여 따를 수 없습니다.
+  - : The request was directed at a server that is not able to produce a response.
+    This can be sent by a server that is not configured to produce responses for the combination of scheme and authority that are included in the request URI.
+- {{HTTPStatus(422, "422 Unprocessable Content")}} ({{Glossary("WebDAV")}})
+  - : The request was well-formed but was unable to be followed due to semantic errors.
 - {{HTTPStatus(423, "423 Locked")}} ({{Glossary("WebDAV")}})
-  - : 리소스는 접근하는 것이 잠겨있습니다.
+  - : The resource that is being accessed is locked.
 - {{HTTPStatus(424, "424 Failed Dependency")}} ({{Glossary("WebDAV")}})
-  - : 이전 요청이 실패하였기 때문에 지금의 요청도 실패하였습니다.
+  - : The request failed due to failure of a previous request.
+- {{HTTPStatus(425, "425 Too Early")}} {{experimental_inline}}
+  - : Indicates that the server is unwilling to risk processing a request that might be replayed.
 - {{HTTPStatus(426, "426 Upgrade Required")}}
-  - : 서버는 지금의 프로토콜을 사용하여 요청을 처리하는 것을 거절하였지만, 클라이언트가 다른 프로토콜로 업그레이드를 하면 처리를 할지도 모릅니다. 서버는 {{HTTPHeader("Upgrade")}} 헤더와 필요로 하는 프로토콜을 알려주기 위해 426 응답에 보냅니다.
+  - : The server refuses to perform the request using the current protocol but might be willing to do so after the client upgrades to a different protocol.
+    The server sends an {{HTTPHeader("Upgrade")}} header in a 426 response to indicate the required protocol(s).
 - {{HTTPStatus(428, "428 Precondition Required")}}
-  - : 오리진 서버는 요청이 조건적이어야 합니다. 클라이언트가 리소스를 GET해서, 수정하고, 그리고 PUT으로 서버에 돌려놓는 동안 서드파티가 서버의 상태를 수정하여 발생하는 충돌인 '업데이트 상실'을 예방하기 위한 목적입니다.
+  - : The origin server requires the request to be conditional.
+    This response is intended to prevent the 'lost update' problem, where a client `GET`s a resource's state, modifies it and `PUT`s it back to the server, when meanwhile a third party has modified the state on the server, leading to a conflict.
 - {{HTTPStatus(429, "429 Too Many Requests")}}
-  - : 사용자가 지정된 시간에 너무 많은 요청을 보냈습니다("rate limiting").
+  - : The user has sent too many requests in a given amount of time ("rate limiting").
 - {{HTTPStatus(431, "431 Request Header Fields Too Large")}}
-  - : 요청한 헤더 필드가 너무 크기 때문에 서버는 요청을 처리하지 않을 것입니다. 요청은 크기를 줄인 다음에 다시 전송해야 합니다.
+  - : The server is unwilling to process the request because its header fields are too large.
+    The request may be resubmitted after reducing the size of the request header fields.
 - {{HTTPStatus(451, "451 Unavailable For Legal Reasons")}}
-  - : 사용자가 요청한 것은 정부에 의해 검열된 웹 페이지와 같은 불법적인 리소스입니다.
+  - : The user agent requested a resource that cannot legally be provided, such as a web page censored by a government.
 
-## 서버 에러 응답
+## Server error responses
 
 - {{HTTPStatus(500, "500 Internal Server Error")}}
-  - : 서버가 처리 방법을 모르는 상황이 발생했습니다. 서버는 아직 처리 방법을 알 수 없습니다.
+  - : The server has encountered a situation it does not know how to handle.
 - {{HTTPStatus(501, "501 Not Implemented")}}
-  - : 요청 방법은 서버에서 지원되지 않으므로 처리할 수 없습니다. 서버가 지원해야 하는 유일한 방법은 `GET`와 `HEAD`이다. 이 코드는 반환하면 안됩니다.
+  - : The request method is not supported by the server and cannot be handled. The only methods that servers are required to support (and therefore that must not return this code) are `GET` and `HEAD`.
 - {{HTTPStatus(502, "502 Bad Gateway")}}
-  - : 이 오류 응답은 서버가 요청을 처리하는 데 필요한 응답을 얻기 위해 게이트웨이로 작업하는 동안 잘못된 응답을 수신했음을 의미합니다.
+  - : This error response means that the server, while working as a gateway to get a response needed to handle the request, got an invalid response.
 - {{HTTPStatus(503, "503 Service Unavailable")}}
-  - : 서버가 요청을 처리할 준비가 되지 않았습니다. 일반적인 원인은 유지보수를 위해 작동이 중단되거나 과부하가 걸렸을 때 입니다. 이 응답과 함께 문제를 설명하는 사용자 친화적인 페이지가 전송되어야 한다는 점에 유의하십시오. 이 응답은 임시 조건에 사용되어야 하며, `Retry-After:` HTTP 헤더는 가능하면 서비스를 복구하기 전 예상 시간을 포함해야 합니다. 웹마스터는 또한 이러한 일시적인 조건 응답을 캐시하지 않아야 하므로 이 응답과 함께 전송되는 캐싱 관련 헤더에 대해서도 주의해야 합니다.
+  - : The server is not ready to handle the request.
+    Common causes are a server that is down for maintenance or that is overloaded.
+    Note that together with this response, a user-friendly page explaining the problem should be sent.
+    This response should be used for temporary conditions and the `Retry-After` HTTP header should, if possible, contain the estimated time before the recovery of the service.
+    The webmaster must also take care about the caching-related headers that are sent along with this response, as these temporary condition responses should usually not be cached.
 - {{HTTPStatus(504, "504 Gateway Timeout")}}
-  - : 이 오류 응답은 서버가 게이트웨이 역할을 하고 있으며 적시에 응답을 받을 수 없을 때 주어집니다.
+  - : This error response is given when the server is acting as a gateway and cannot get a response in time.
 - {{HTTPStatus(505, "505 HTTP Version Not Supported")}}
-  - : 요청에 사용된 HTTP 버전은 서버에서 지원되지 않습니다.
+  - : The HTTP version used in the request is not supported by the server.
 - {{HTTPStatus(506, "506 Variant Also Negotiates")}}
-  - : 서버에 내부 구성 오류가 있다. 즉, 요청을 위한 투명한 컨텐츠 협상이 순환 참조로 이어진다.
-- {{HTTPStatus(507, "507 Insufficient Storage")}}
-  - : 서버에 내부 구성 오류가 있다. 즉, 선택한 가변 리소스는 투명한 콘텐츠 협상에 참여하도록 구성되므로 협상 프로세스의 적절한 종료 지점이 아닙니다.
+  - : The server has an internal configuration error: the chosen variant resource is configured to engage in transparent content negotiation itself, and is therefore not a proper end point in the negotiation process.
+- {{HTTPStatus(507, "507 Insufficient Storage")}} ({{Glossary("WebDAV")}})
+  - : The method could not be performed on the resource because the server is unable to store the representation needed to successfully complete the request.
 - {{HTTPStatus(508, "508 Loop Detected")}} ({{Glossary("WebDAV")}})
-  - : 서버가 요청을 처리하는 동안 무한 루프를 감지했습니다.
+  - : The server detected an infinite loop while processing the request.
 - {{HTTPStatus(510, "510 Not Extended")}}
-  - : 서버가 요청을 이행하려면 요청에 대한 추가 확장이 필요합니다.
+  - : Further extensions to the request are required for the server to fulfill it.
 - {{HTTPStatus(511, "511 Network Authentication Required")}}
-  - : 511 상태 코드는 클라이언트가 네트워크 액세스를 얻기 위해 인증을 받아야 할 필요가 있음을 나타냅니다.
+  - : Indicates that the client needs to authenticate to gain network access.
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 더 보기
+## See also
 
-- [위키백과에서 상태코드 목록](https://ko.wikipedia.org/wiki/HTTP_%EC%83%81%ED%83%9C_%EC%BD%94%EB%93%9C)
-- [상태코드의 최상위 도메인 등록 단체 공식 등록](http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml)
+- [List of HTTP status codes on Wikipedia](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes)
+- [IANA official registry of HTTP status codes](https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml)

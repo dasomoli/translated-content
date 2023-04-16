@@ -1,102 +1,162 @@
 ---
 title: JSON
 slug: Web/JavaScript/Reference/Global_Objects/JSON
+page-type: javascript-namespace
+browser-compat: javascript.builtins.JSON
 ---
 
 {{JSRef}}
 
-**`JSON`** 객체는 [JavaScript Object Notation](http://json.org/)({{glossary("JSON")}})을 분석하거나 값을 JSON으로 변환하는 메서드를 가지고 있습니다. `JSON`을 직접 호출하거나 인스턴스를 생성할 수 없으며, 두 개의 메서드를 제외하면 자신만의 흥미로운 기능은 없습니다.
+The **`JSON`** namespace object contains static methods for parsing values from and converting values to [JavaScript Object Notation](https://json.org/) ({{glossary("JSON")}}).
 
-## JavaScript와 JSON의 차이
+## Description
 
-JSON은 객체, 배열, 숫자, 문자열, 불리언과 {{jsxref("null")}}을 직렬화하기 위한 구문으로, JavaScript 구문에 기반을 두고 있지만 분명한 차이점을 가지고 있습니다. 즉, 어떤 JavaScript는 JSON이 아닙니다.
+Unlike most global objects, `JSON` is not a constructor. You cannot use it with the [`new` operator](/en-US/docs/Web/JavaScript/Reference/Operators/new) or invoke the `JSON` object as a function. All properties and methods of `JSON` are static (just like the {{jsxref("Math")}} object).
 
-- 객체와 배열
-  - : 속성의 이름은 반드시 큰따옴표로 표시된 문자열이어야 합니다. [후행 쉼표](/ko/docs/Web/JavaScript/Reference/Trailing_commas)는 허용하지 않습니다.
-- 숫자
-  - : 선행 0은 허용하지 않습니다. 소숫점 뒤에는 적어도 한 자릿수가 뒤따라야 합니다. {{jsxref("NaN")}}과 {{jsxref("Infinity")}}는 지원하지 않습니다.
-- 모든 JSON 텍스트는 유효한 JavaScript 표현식...
-  - : ...이지만, [모든 JSON 텍스트를 올바른 ECMA-262로 만드는 제안](https://github.com/tc39/proposal-json-superset)을 구현한 JavaScript 엔진에서만 그러합니다. 다른 엔진에서는, U+2028 LINE SEPARATOR와 U+2029 PARAGRAPH SEPARATOR를 JSON에서 스트링 리터럴과 속성의 키로 사용할 수 있지만, JavaScript 문자열 리터럴에서 사용하면 {{jsxref("SyntaxError")}}가 발생합니다.
+### JavaScript and JSON differences
 
-{{jsxref("JSON.parse()")}}로 JSON 문자열을 분석하고 {{jsxref("eval")}}이 JavaScript 문자열로 실행하는 다음 예시를 참고하세요.
+JSON is a syntax for serializing objects, arrays, numbers, strings, booleans, and [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null). It is based upon JavaScript syntax, but is distinct from JavaScript: most of JavaScript is _not_ JSON. For example:
 
-```js
-const code = '"\u2028\u2029"'
-JSON.parse(code) // 모든 엔진에서 "\u2028\u2029"로 평가
-eval(code)       // 오래된 엔진에서 SyntaxError
+- Objects and Arrays
+  - : Property names must be double-quoted strings; [trailing commas](/en-US/docs/Web/JavaScript/Reference/Trailing_commas) are forbidden.
+- Numbers
+  - : Leading zeros are prohibited. A decimal point must be followed by at least one digit. `NaN` and `Infinity` are unsupported.
+
+Any JSON text is a valid JavaScript expression, but only after the [JSON superset](https://github.com/tc39/proposal-json-superset) revision. Before the revision, U+2028 LINE SEPARATOR and U+2029 PARAGRAPH SEPARATOR are allowed in string literals and property keys in JSON; but the same use in JavaScript string literals is a {{jsxref("SyntaxError")}}.
+
+Other differences include allowing only double-quoted strings and no support for {{jsxref("undefined")}} or comments. For those who wish to use a more human-friendly configuration format based on JSON, there is [JSON5](https://json5.org/), used by the Babel compiler, and the more commonly used [YAML](https://en.wikipedia.org/wiki/YAML).
+
+The same text may represent different values in JavaScript object literals vs. JSON as well. For more information, see [Object literal syntax vs. JSON](/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer#object_literal_syntax_vs._json).
+
+### Full JSON grammar
+
+Valid JSON syntax is formally defined by the following grammar, expressed in [ABNF](https://en.wikipedia.org/wiki/Augmented_Backus%E2%80%93Naur_form), and copied from [IETF JSON standard (RFC)](https://datatracker.ietf.org/doc/html/rfc8259):
+
+```
+JSON-text = object / array
+begin-array     = ws %x5B ws  ; [ left square bracket
+begin-object    = ws %x7B ws  ; { left curly bracket
+end-array       = ws %x5D ws  ; ] right square bracket
+end-object      = ws %x7D ws  ; } right curly bracket
+name-separator  = ws %x3A ws  ; : colon
+value-separator = ws %x2C ws  ; , comma
+ws = *(
+     %x20 /              ; Space
+     %x09 /              ; Horizontal tab
+     %x0A /              ; Line feed or New line
+     %x0D                ; Carriage return
+     )
+value = false / null / true / object / array / number / string
+false = %x66.61.6c.73.65   ; false
+null  = %x6e.75.6c.6c      ; null
+true  = %x74.72.75.65      ; true
+object = begin-object [ member *( value-separator member ) ]
+         end-object
+member = string name-separator value
+array = begin-array [ value *( value-separator value ) ] end-array
+number = [ minus ] int [ frac ] [ exp ]
+decimal-point = %x2E       ; .
+digit1-9 = %x31-39         ; 1-9
+e = %x65 / %x45            ; e E
+exp = e [ minus / plus ] 1*DIGIT
+frac = decimal-point 1*DIGIT
+int = zero / ( digit1-9 *DIGIT )
+minus = %x2D               ; -
+plus = %x2B                ; +
+zero = %x30                ; 0
+string = quotation-mark *char quotation-mark
+char = unescaped /
+    escape (
+        %x22 /          ; "    quotation mark  U+0022
+        %x5C /          ; \    reverse solidus U+005C
+        %x2F /          ; /    solidus         U+002F
+        %x62 /          ; b    backspace       U+0008
+        %x66 /          ; f    form feed       U+000C
+        %x6E /          ; n    line feed       U+000A
+        %x72 /          ; r    carriage return U+000D
+        %x74 /          ; t    tab             U+0009
+        %x75 4HEXDIG )  ; uXXXX                U+XXXX
+escape = %x5C              ; \
+quotation-mark = %x22      ; "
+unescaped = %x20-21 / %x23-5B / %x5D-10FFFF
+HEXDIG = DIGIT / %x41-46 / %x61-66   ; 0-9, A-F, or a-f
+       ; HEXDIG equivalent to HEXDIG rule in [RFC5234]
+DIGIT = %x30-39            ; 0-9
+      ; DIGIT equivalent to DIGIT rule in [RFC5234]
 ```
 
-다른 차이점으로는 문자열의 작은따옴표 금지와, 주석 및 {{jsxref("undefined")}} 미지원이 있습니다. JSON에 기반한, 보다 사람 친화적인 설정 형식을 원하면 Babel 컴파일러가 사용하는 [JSON5](https://json5.org/)가 있고, 좀 더 많이 쓰이는 [YAML](https://ko.wikipedia.org/wiki/YAML)도 있습니다.
+Insignificant {{glossary("whitespace")}} may be present anywhere except within a `JSONNumber` (numbers must contain no whitespace) or `JSONString` (where it is interpreted as the corresponding character in the string, or would cause an error). The tab character ([U+0009](https://unicode-table.com/en/0009/)), carriage return ([U+000D](https://unicode-table.com/en/000D/)), line feed ([U+000A](https://unicode-table.com/en/000A/)), and space ([U+0020](https://unicode-table.com/en/0020/)) characters are the only valid whitespace characters.
 
-## 전체 JSON 구문
+## Static properties
 
-```js
-    JSON = null
-        or true or false
-        or JSONNumber
-        or JSONString
-        or JSONObject
-        or JSONArray
+- `JSON[@@toStringTag]`
+  - : The initial value of the [`@@toStringTag`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toStringTag) property is the string `"JSON"`. This property is used in {{jsxref("Object.prototype.toString()")}}.
 
-    JSONNumber = - PositiveNumber
-              or PositiveNumber
-    PositiveNumber = DecimalNumber
-                  or DecimalNumber . Digits
-                  or DecimalNumber . Digits ExponentPart
-                  or DecimalNumber ExponentPart
-    DecimalNumber = 0
-                 or OneToNine Digits
-    ExponentPart = e Exponent
-                or E Exponent
-    Exponent = Digits
-            or + Digits
-            or - Digits
-    Digits = Digit
-          or Digits Digit
-    Digit = 0 through 9
-    OneToNine = 1 through 9
-
-    JSONString = ""
-              or " StringCharacters "
-    StringCharacters = StringCharacter
-                    or StringCharacters StringCharacter
-    StringCharacter = any character
-                      except " or \ or U+0000 through U+001F
-                   or EscapeSequence
-    EscapeSequence = \" or \/ or \\ or \b or \f or \n or \r or \t
-                  or \u HexDigit HexDigit HexDigit HexDigit
-    HexDigit = 0 through 9
-            or A through F
-            or a through f
-
-    JSONObject = { }
-              or { Members }
-    Members = JSONString : JSON
-           or Members , JSONString : JSON
-
-    JSONArray = [ ]
-             or [ ArrayElements ]
-    ArrayElements = JSON
-                 or ArrayElements , JSON
-```
-
-중요하지 않은 공백은 `JSONNumber`(숫자에는 공백이 없어야 함) 또는 `JSONString`(문자열에서 해당 문자로 해석되거나 오류를 일으킴) 내를 제외하고 어디에나 존재할 수 있습니다. 탭 문자([U+0009](http://unicode-table.com/en/0009/)), 캐리지 리턴([U+000D](http://unicode-table.com/en/000D/)), 라인 피드([U+000A](http://unicode-table.com/en/000A/)) 및 스페이스([U+0020](http://unicode-table.com/en/0020/)) 문자만이 유효한 공백 문자입니다.
-
-## 메서드
+## Static methods
 
 - {{jsxref("JSON.parse()")}}
-  - : 문자열을 JSON으로서 구문 분석하고, 선택적으로 분석 결과의 값과 속성을 변환해 반환합니다.
+  - : Parse a piece of string text as JSON, optionally transforming the produced value and its properties, and return the value.
 - {{jsxref("JSON.stringify()")}}
-  - : 주어진 값에 해당하는 JSON 문자열을 반환합니다. 선택 사항으로 특정 속성만 포함하거나 사용자 정의 방식으로 속성을 대체합니다.
+  - : Return a JSON string corresponding to the specified value, optionally including only certain properties or replacing property values in a user-defined manner.
 
-## 명세
+## Examples
+
+### Example JSON
+
+```json
+{
+  "browsers": {
+    "firefox": {
+      "name": "Firefox",
+      "pref_url": "about:config",
+      "releases": {
+        "1": {
+          "release_date": "2004-11-09",
+          "status": "retired",
+          "engine": "Gecko",
+          "engine_version": "1.7"
+        }
+      }
+    }
+  }
+}
+```
+
+You can use the {{jsxref("JSON.parse()")}} method to convert the above JSON string into a JavaScript object:
+
+```js
+const jsonText = `{
+  "browsers": {
+    "firefox": {
+      "name": "Firefox",
+      "pref_url": "about:config",
+      "releases": {
+        "1": {
+          "release_date": "2004-11-09",
+          "status": "retired",
+          "engine": "Gecko",
+          "engine_version": "1.7"
+        }
+      }
+    }
+  }
+}`;
+
+console.log(JSON.parse(jsonText));
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Date.prototype.toJSON()")}}
+- [JSON Diff](https://json-diff.com/) checker
+- [JSON Beautifier/editor](https://jsonbeautifier.org/)
+- [JSON Parser](https://jsonparser.org/)
+- [JSON Validator](https://tools.learningcontainer.com/json-validator/)

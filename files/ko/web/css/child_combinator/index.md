@@ -1,11 +1,13 @@
 ---
-title: 자식 결합자
+title: Child combinator
 slug: Web/CSS/Child_combinator
+page-type: css-combinator
+browser-compat: css.selectors.child
 ---
 
 {{CSSRef("Selectors")}}
 
-**자식 결합자**(`>`)는 두 개의 CSS 선택자 사이에 위치하여 뒤쪽 선택자의 요소가 앞쪽 선택자 요소의 바로 밑에 위치할 경우에만 선택합니다.
+The **child combinator** (`>`) is placed between two CSS selectors. It matches only those elements matched by the second selector that are the direct children of elements matched by the first.
 
 ```css
 /* List items that are children of the "my-things" list */
@@ -14,25 +16,25 @@ ul.my-things > li {
 }
 ```
 
-뒤쪽 선택자의 요소는 앞쪽 선택자 요소의 바로 아래에 위치해야 하므로, DOM 트리의 깊이에 상관하지 않고 아래의 모든 요소를 선택하는 [자손 결합자](/ko/docs/Web/CSS/Descendant_combinator)보다 더 엄격합니다.
+Elements matched by the second selector must be the immediate children of the elements matched by the first selector. This is stricter than the [descendant combinator](/en-US/docs/Web/CSS/Descendant_combinator), which matches all elements matched by the second selector for which there exists an ancestor element matched by the first selector, regardless of the number of "hops" up the DOM.
 
-## 구문
+## Syntax
 
-```
+```css
 selector1 > selector2 { style properties }
 ```
 
-## 예제
+## Examples
 
 ### CSS
 
 ```css
 span {
-  background-color: white;
+  background-color: aqua;
 }
 
 div > span {
-  background-color: DodgerBlue;
+  background-color: yellow;
 }
 ```
 
@@ -40,25 +42,26 @@ div > span {
 
 ```html
 <div>
-  <span>Span #1, in the div.
+  <span>
+    Span #1, in the div.
     <span>Span #2, in the span that's in the div.</span>
   </span>
 </div>
 <span>Span #3, not in the div at all.</span>
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample("예제", "100%", 100)}}
+{{EmbedLiveSample("Examples", "100%", 100)}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [자손 결합자](/ko/docs/Web/CSS/Descendant_combinator)
+- [Descendant combinator](/en-US/docs/Web/CSS/Descendant_combinator)

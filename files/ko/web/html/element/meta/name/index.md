@@ -1,131 +1,261 @@
 ---
-title: 표준 메타데이터 이름
+title: Standard metadata names
 slug: Web/HTML/Element/meta/name
+page-type: html-attribute
+browser-compat: html.elements.meta.name
 ---
 
 {{HTMLSidebar}}
 
-{{htmlelement("meta")}} 요소는 {{htmlattrxref("name", "meta")}} 특성을 메타데이터 이름으로, {{htmlattrxref("content", "meta")}} 특성을 값으로 하여 문서 메타데이터를 이름-값 쌍의 형태로 제공할 때 사용할 수 있습니다.
+The {{htmlelement("meta")}} element can be used to provide document metadata in terms of name-value pairs, with the [`name`](/en-US/docs/Web/HTML/Element/meta#name) attribute giving the metadata name, and the [`content`](/en-US/docs/Web/HTML/Element/meta#content) attribute giving the value.
 
-### HTML 명세가 정의하는 표준 메타데이터 이름
+### Standard metadata names defined in the HTML specification
 
-HTML 명세는 다음과 같은 표준 메타데이터 이름을 정의하고 있습니다.
+The HTML specification defines the following set of standard metadata names:
 
-- `application-name`: 웹 페이지에서 구동 중인 애플리케이션의 이름.
+- `application-name`: the name of the application running in the web page.
 
-  > **참고:**- 브라우저가 이 값을 사용해 애플리케이션을 식별할 수 있습니다. {{htmlelement("title")}} 요소 역시 보통 애플리케이션 이름을 포함하지만, `application-name`과는 달리 문서 이름이나 상태 등 다른 정보도 존재할 수 있다는 점에서 차이가 있습니다.
+  > **Note:**
   >
-  > - 단순한 웹 페이지에서는 `application-name`을 지정하지 말아야 합니다.
+  > - Browsers may use this to identify the application. It is different from the {{HTMLElement("title")}} element, which usually contain the application name, but may also contain information like the document name or a status.
+  > - Simple web pages shouldn't define an application-name.
 
-- `author`: 문서 저작자.
-- `description`: 페이지에 대한 짧고 정확한 요약. Firefox, Opera 등 여러 브라우저는 즐겨찾기 페이지의 기본 설명 값으로 `description` 메타데이터를 사용합니다.
-- `generator`: 페이지를 생성한 소프트웨어의 식별자.
-- `keywords`: 페이지의 콘텐츠와 관련된, 쉼표로 구분한 키워드 목록.
-- `referrer`: 문서에서 시작하는 요청의 HTTP {{httpheader("Referer")}} 헤더를 아래 표와 같이 통제합니다.
+- `author`: the name of the document's author.
+- `description`: a short and accurate summary of the content of the page. Several browsers, like Firefox and Opera, use this as the default description of bookmarked pages.
+- `generator`: the identifier of the software that generated the page.
+- `keywords`: words relevant to the page's content separated by commas.
+- `referrer`: controls the HTTP {{httpheader("Referer")}} header of requests sent from the document:
 
-  | `no-referrer`                     | HTTP {{httpheader("Referer")}} 헤더를 전송하지 않습니다.                                                                                                                                                     |
-  | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | `origin`                          | 문서의 {{glossary("origin", "출처")}}를 전송합니다.                                                                                                                                                   |
-  | `no-referrer-when-downgrade`      | 목적지가 현재 문서와 동일하거나 더 높은(HTTP(S)→HTTPS) 보안 수준을 가진 경우 전체 URL을 전송하고, 더 취약(HTTPS→HTTP)한 경우 전송하지 않습니다. 기본 동작 방식입니다.                                               |
-  | `origin-when-cross-origin`        | 동일 출처 요청에는 매개변수를 제거한 전체 URL을 전송합니다. 교차 출처 요청에는 출처만 전송합니다.                                                                                                                   |
-  | `same-origin`                     | 동일 출처 요청에는 매개변수를 제거한 전체 URL을 전송합니다. 교차 출처 요청에는 아무 레퍼러 정보도 보내지 않습니다.                                                                                                  |
-  | `strict-origin`                   | 목적지가 현재 문서와 동일하거나 더 높은(HTTP(S)→HTTPS) 보안 수준을 가진 경우 출처를 전송하고, 더 취약(HTTPS→HTTP)한 경우 전송하지 않습니다.                                                                         |
-  | `strict-origin-when-cross-origin` | 동일 출처 요청에는 매개변수를 제거한 전체 URL을 전송합니다. 목적지가 현재 문서와 동일하거나 더 높은 보안 수준(HTTP(S)→HTTPS)을 가진 경우 자신의 출처를 전송합니다. 그 외의 경우 아무 레퍼러 정보도 보내지 않습니다. |
-  | `unsafe-URL`                      | 동일 출처와 교차 출처 요청 모두에 대해서 전체 URL을 전송합니다.                                                                                                                                                     |
+  <table class="standard-table">
+    <caption>
+      Values for the
+      <code>content</code>
+      attribute of
+      <code>&#x3C;meta name="referrer"></code>
+    </caption>
+    <tbody>
+      <tr>
+        <td><code>no-referrer</code></td>
+        <td>Do not send a HTTP {{httpheader("Referer")}} header.</td>
+      </tr>
+      <tr>
+        <td><code>origin</code></td>
+        <td>Send the {{glossary("origin")}} of the document.</td>
+      </tr>
+      <tr>
+        <td><code>no-referrer-when-downgrade</code></td>
+        <td>
+          Send the full URL when the destination is at least as secure as the
+          current page (HTTP(S)→HTTPS), but send no referrer when it's less secure
+          (HTTPS→HTTP). This is the default behavior.
+        </td>
+      </tr>
+      <tr>
+        <td><code>origin-when-cross-origin</code></td>
+        <td>
+          Send the full URL (stripped of parameters) for same-origin requests, but
+          only send the origin for other cases.
+        </td>
+      </tr>
+      <tr>
+        <td><code>same-origin</code></td>
+        <td>
+          Send the full URL (stripped of parameters) for same-origin requests.
+          Cross-origin requests will contain no referrer header.
+        </td>
+      </tr>
+      <tr>
+        <td><code>strict-origin</code></td>
+        <td>
+          Send the origin when the destination is at least as secure as the
+          current page (HTTP(S)→HTTPS), but send no referrer when it's less secure
+          (HTTPS→HTTP).
+        </td>
+      </tr>
+      <tr>
+        <td><code>strict-origin-when-cross-origin</code></td>
+        <td>
+          Send the full URL (stripped of parameters) for same-origin requests.
+          Send the origin when the destination is at least as secure as the
+          current page (HTTP(S)→HTTPS). Otherwise, send no referrer.
+        </td>
+      </tr>
+      <tr>
+        <td><code>unsafe-URL</code></td>
+        <td>
+          Send the full URL (stripped of parameters) for same-origin or
+          cross-origin requests.
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-  > **참고:**- `<meta name="referrer">`의 값을 {{domxref("Document.write", "document.write()")}} 또는 {{domxref("Node.appendChild", "appendChild()")}}를 사용해 동적으로 삽입할 경우 레퍼러 동작을 예측할 수 없습니다.
+  > **Note:**
   >
-  > - 여러 정책이 서로 충돌할 경우에는 `no-referrer` 정책을 사용합니다.
+  > - Dynamically inserting `<meta name="referrer">` (with {{domxref("Document.write", "document.write()")}} or {{domxref("Node.appendChild", "appendChild()")}}) makes the referrer behavior unpredictable.
+  > - When several conflicting policies are defined, the `no-referrer` policy is applied.
 
-- [`theme-color`](/ko/docs/Web/HTML/Element/meta/name/theme-color): 사용자 에이전트가 페이지 혹은 주위의 사용자 인터페이스를 표시할 때 사용해야 할 색상에 대한 힌트. `content` 특성은 유효한 CSS {{cssxref("&lt;color&gt;")}} 색상을 포함해야 합니다.
+- [`theme-color`](/en-US/docs/Web/HTML/Element/meta/name/theme-color): indicates a suggested color that user agents should use to customize the display of the page or of the surrounding user interface. The `content` attribute contains a valid CSS {{cssxref("&lt;color&gt;")}}. The `media` attribute with a valid media query list can be included to set the media the theme color metadata applies to.
+- `color-scheme`: specifies one or more color schemes with which the document is compatible.
 
-### 다른 명세가 정의하는 표준 메타데이터 이름
+  The browser will use this information in tandem with the user's browser or device settings to determine what colors to use for everything from background and foregrounds to form controls and scrollbars. The primary use for `<meta name="color-scheme">` is to indicate compatibility with—and order of preference for—light and dark color modes.
 
-CSS Color Adjustment 명세는 다음과 같은 메타데이터 이름을 정의합니다.
-
-- `color-scheme`: 문서와 호환되는 하나 이상의 색채 조합.
-
-  브라우저는 이 정보에 더해 자신과 장치의 사용자 설정을 함께 사용해 배경, 전경, 양식 컨트롤, 스크롤 바 등 대부분의 색상을 결정합니다. `<meta name="color-scheme">`의 주 용도는 문서의 "다크 모드"와 "라이트 모드"중 호환 가능한 조합 및 둘 중 선호하는 쪽을 나타내는 것입니다.
-
-  `color-scheme`과 사용 가능한 {{htmlattrxref("content", "meta")}} 특성의 값은 다음과 같습니다.
+  The value of the [`content`](/en-US/docs/Web/HTML/Element/meta#content) property for `color-scheme` may be one of the following:
 
   - `normal`
-    - : 문서가 특별한 색채 조합을 알지 못합니다. 렌더링 시 기본 색상 팔레트를 사용해야 합니다.
+    - : The document is unaware of color schemes and should be rendered using the default color palette.
   - \[`light` | `dark`]+
-    - : 문서와 호환되는 하나 이상의 색채 조합. 동일한 색채 조합을 여러 번 지정하더라도 한 번 지정한 것과 다르지 않습니다. 여러 색채 조합을 명시하는 경우 문서는 맨 앞 항목을 선호하지만, 사용자가 원할 경우 다른 조합도 사용할 수 있음을 나타냅니다.
+    - : One or more color schemes supported by the document. Specifying the same color scheme more than once has the same effect as specifying it only once. Indicating multiple color schemes indicates that the first scheme is preferred by the document, but that the second specified scheme is acceptable if the user prefers it.
   - `only light`
-    - : 문서가 오직 라이트 모드, 즉 밝은 배경과 어두운 전경색만 지원함을 나타냅니다. 명세에 따라 `only dark`는 유효하지 않습니다. 완전히 호환되지 않음에도 불구하고 문서를 다크 모드로만 렌더링 할 경우 콘텐츠를 읽을 수 없기 때문입니다. 지정하지 않은 경우, 모든 주요 브라우저는 라이트 모드를 기본값으로 사용합니다.
+    - : Indicates that the document _only_ supports light mode, with a light background and dark foreground colors. By specification, `only dark` _is not valid_, because forcing a document to render in dark mode when it isn't truly compatible with it can result in unreadable content; all major browsers default to light mode if not otherwise configured.
 
-  예를 들어, 문서가 다크 모드를 선호하나 라이트 모드도 지원 가능하다는 것을 알리려면 다음과 같이 작성하세요.
+  For example, to indicate that a document prefers dark mode but does render functionally in light mode as well:
 
   ```html
-  <meta name="color-scheme" content="dark light">
+  <meta name="color-scheme" content="dark light" />
   ```
 
-  `name="color-scheme"`은 문서 전체의 선호 및 가능한 색채 조합을 지정한다면, CSS {{cssxref("color-scheme")}} 속성은 개별 요소 단위로 지정합니다. CSS {{cssxref("@media/prefers-color-scheme", "prefers-color-scheme")}} 미디어 기능을 사용하면 스타일이 현재 색채 조합에 적응하도록 작성할 수도 있습니다.
+  This works at the document level in the same way that the CSS {{cssxref("color-scheme")}} property lets individual elements specify their preferred and accepted color schemes. Your styles can adapt to the current color scheme using the {{cssxref("@media/prefers-color-scheme", "prefers-color-scheme")}} CSS media feature.
 
-CSS Device Adaptation 명세는 다음과 같은 메타데이터 이름을 정의합니다.
+### Standard metadata names defined in other specifications
 
-- `viewport`: {{glossary("viewport", "뷰포트")}}의 초기 사이즈에 대한 힌트. 모바일 장치에서만 사용합니다.
+The CSS Device Adaptation specification defines the following metadata name:
 
-  | 값              | 가능한 하위 값                 | 설명                                                                                                                                                                                                                                                                                                                                                                          |
-  | --------------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | `width`         | 양의 정수 또는 `device-width`  | 웹 사이트를 렌더링 하고자 하는 뷰포트 너비를 정의합니다.                                                                                                                                                                                                                                                                                                                      |
-  | `height`        | 양의 정수 또는 `device-height` | 웹 사이트를 렌더링 하고자 하는 뷰포트 높이를 정의합니다.                                                                                                                                                                                                                                                                                                                      |
-  | `initial-scale` | `0.0`과 `10.0` 사이의 수       | 장치 너비(세로 모드에서는 `device-width`, 가로 모드에서는 `device-height`)와 뷰포트 너비의 비율을 정의합니다.                                                                                                                                                                                                                                                                 |
-  | `maximum-scale` | `0.0`과 `10.0` 사이의 수       | 가능한 최대 확대 비율을 정의합니다. `minimum-scale` 이상이어야 하며, 미만으로 지정한 경우의 동작은 정의되지 않았습니다. 브라우저 설정에 따라 무시할 수 있고, iOS10 이상은 기본값으로 무시합니다.                                                                                                                                                                              |
-  | `minimum-scale` | `0.0`과 `10.0` 사이의 수       | 가능한 최소 확대 비율을 정의합니다. `maximum-scale` 이하여야 하며, 초과한 값을 지정한 경우의 동작은 정의되지 않았습니다. 브라우저 설정에 따라 무시할 수 있고, iOS10 이상은 기본값으로 무시합니다.                                                                                                                                                                             |
-  | `user-scalable` | `yes` 또는 `no`                | `no`인 경우 사용자가 웹 페이지를 확대할 수 없습니다. 기본값은 `yes`입니다. 브라우저 설정에 따라 무시할 수 있고, iOS10 이상은 기본값으로 무시합니다.                                                                                                                                                                                                                           |
-  | `viewport-fit`  | `auto`, `contain`, `cover`     | `auto` 값은 초기 뷰포트 레이아웃에 영향을 주지 않으며, 전체 웹 페이지를 볼 수 있습니다.`contain` 값은 디스플레이 내에 맞출 수 있는 가장 큰 사각형에 맞춰 뷰포트의 크기를 조절합니다.`cover` 값은 뷰포트의 크기를 조절해 디스플레이 전체를 채웁니다. [안전 영역](/ko/docs/Web/CSS/env) 환경 변수를 사용해 중요한 콘텐츠가 화면 밖에 놓이는 불상사가 없도록 하는 것이 좋습니다. |
+- `viewport`: gives hints about the size of the initial size of the {{glossary("viewport")}}.
 
-  > **참고:**- 비록 표준은 아니지만, `viewport`의 사실상 표준적인 위치로 인해 대부분의 모바일 브라우저가 선언을 준수합니다.
+  <table class="fullwidth-table">
+    <caption>
+      Values for the content of
+      <code>&#x3C;meta name="viewport"></code>
+    </caption>
+    <thead>
+      <tr>
+        <th scope="col">Value</th>
+        <th scope="col">Possible subvalues</th>
+        <th scope="col">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>width</code></td>
+        <td>A positive integer number, or the text <code>device-width</code></td>
+        <td>
+          Defines the pixel width of the viewport that you want the website to be
+          rendered at.
+        </td>
+      </tr>
+      <tr>
+        <td><code>height</code></td>
+        <td>A positive integer, or the text <code>device-height</code></td>
+        <td>Defines the height of the viewport. Not used by any browser.</td>
+      </tr>
+      <tr>
+        <td><code>initial-scale</code></td>
+        <td>A positive number between <code>0.0</code> and <code>10.0</code></td>
+        <td>
+          Defines the ratio between the device width (<code>device-width</code> in
+          portrait mode or <code>device-height</code> in landscape mode) and the
+          viewport size.
+        </td>
+      </tr>
+      <tr>
+        <td><code>maximum-scale</code></td>
+        <td>A positive number between <code>0.0</code> and <code>10.0</code></td>
+        <td>
+          Defines the maximum amount to zoom in. It must be greater or equal to
+          the <code>minimum-scale</code> or the behavior is undefined. Browser
+          settings can ignore this rule and iOS10+ ignores it by default.
+        </td>
+      </tr>
+      <tr>
+        <td><code>minimum-scale</code></td>
+        <td>A positive number between <code>0.0</code> and <code>10.0</code></td>
+        <td>
+          Defines the minimum zoom level. It must be smaller or equal to the
+          <code>maximum-scale</code> or the behavior is undefined. Browser
+          settings can ignore this rule and iOS10+ ignores it by default.
+        </td>
+      </tr>
+      <tr>
+        <td><code>user-scalable</code></td>
+        <td><code>yes</code> or <code>no</code></td>
+        <td>
+          If set to <code>no</code>, the user is not able to zoom in the webpage.
+          The default is <code>yes</code>. Browser settings can ignore this rule,
+          and iOS10+ ignores it by default.
+        </td>
+      </tr>
+      <tr>
+        <td><code>viewport-fit</code></td>
+        <td><code>auto</code>, <code>contain</code> or <code>cover</code></td>
+        <td>
+          <p>
+            The <code>auto</code> value doesn't affect the initial layout
+            viewport, and the whole web page is viewable.
+          </p>
+          <p>
+            The <code>contain</code> value means that the viewport is scaled to
+            fit the largest rectangle inscribed within the display.
+          </p>
+          <p>
+            The <code>cover</code> value means that the viewport is scaled to fill
+            the device display. It is highly recommended to make use of the
+            <a href="/en-US/docs/Web/CSS/env()">safe area inset</a> variables to
+            ensure that important content doesn't end up outside the display.
+          </p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  > **Warning:**
   >
-  > - 장치와 브라우저마다 기본값이 다를 수 있습니다.
-
-##### Accessibility concerns with viewport scaling
-
-`user-scalable` 을 `no` 로 지정해 확대 기능을 비활성화하면 저시력 사용자가 페이지의 내용을 읽고 이해하는 것을 방해합니다.
-
-- [MDN Understanding WCAG, Guideline 1.4 explanations](/ko/docs/Web/Accessibility/Understanding_WCAG/Perceivable#Guideline_1.4_Make_it_easier_for_users_to_see_and_hear_content_including_separating_foreground_from_background)
-- [Understanding Success Criterion 1.4.4 | W3C Understanding WCAG 2.0](https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-scale.html)
-
-##### 같이 보기
-
-CSS {{cssxref("@viewport")}} @-규칙
-
-### 다른 메타데이터 이름
-
-[WHATWG Wiki MetaExtensions 페이지](https://wiki.whatwg.org/wiki/MetaExtensions)는 거대한 수의 비표준 메타데이터 목록을 포함합니다. 그러나 다음 메타데이터 이름을 포함한 일부 항목은 실제로도 꽤 자주 사용하고 있습니다.
-
-- `creator`: 단체, 협회 등 문서 저작자의 이름. 다수의 저작자가 존재할 경우 다수의 {{HTMLElement("meta")}} 요소를 사용해야 합니다.
-- `googlebot`은 `robots`의 동의어로, Googlebot(Google의 색인 크롤러)만 준수합니다..
-- `publisher`: 문서를 출판한 자의 이름.
-- `robots`: 협조적인 크롤러, 또는 "로봇"의 동작을 지정합니다. 아래 표의 항목을 쉼표로 구분한 목록을 값으로 사용합니다
-
-  | 값             | 설명                                                     | 사용처                                                                                                                                                                                                                       |
-  | -------------- | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | `index`        | 크롤러가 페이지를 색인할 수 있습니다. (기본값)           | 모두                                                                                                                                                                                                                         |
-  | `noindex`      | 크롤러가 페이지를 색인하지 않도록 요청합니다.            | 모두                                                                                                                                                                                                                         |
-  | `follow`       | 크롤러가 페이지 내의 링크를 따라갈 수 있습니다. (기본값) | 모두                                                                                                                                                                                                                         |
-  | `nofollow`     | 크롤러가 페이지 내의 링크를 따라가지 않도록 요청합니다.  | 모두                                                                                                                                                                                                                         |
-  | `all`          | `index, follow`와 동일합니다.                            | [Google](https://support.google.com/webmasters/answer/79812)                                                                                                                                                                 |
-  | `none`         | `noindex, nofollow`와 동일합니다.                        | [Google](https://support.google.com/webmasters/answer/79812)                                                                                                                                                                 |
-  | `noarchive`    | 크롤러가 페이지를 캐시에 포함하지 않도록 요청합니다.     | [Google](https://developers.google.com/webmasters/control-crawl-index/docs/robots_meta_tag#valid-indexing--serving-directives), [Bing](https://www.bing.com/webmaster/help/which-robots-metatags-does-bing-support-5198d240) |
-  | `nosnippet`    | 검색 엔진 결과에 어떤 설명도 표시하지 않도록 지정합니다. | [Google](https://developers.google.com/webmasters/control-crawl-index/docs/robots_meta_tag#valid-indexing--serving-directives), [Bing](https://www.bing.com/webmaster/help/which-robots-metatags-does-bing-support-5198d240) |
-  | `noimageindex` | 크롤러가 페이지 이미지를 색인하지 않도록 요청합니다.     | [Google](https://developers.google.com/webmasters/control-crawl-index/docs/robots_meta_tag#valid-indexing--serving-directives)                                                                                               |
-  | `nocache`      | `noarchive`와 동일합니다.                                | [Bing](https://www.bing.com/webmaster/help/which-robots-metatags-does-bing-support-5198d240)                                                                                                                                 |
-
-  > **참고:**- 협조적인 크롤러만 규칙을 존중합니다. 이메일 주소 수집기가 요청을 따를 것이라고 기대하지 마세요.
+  > Disabling zooming capabilities by setting `user-scalable` to a value of `no` prevents people experiencing low vision conditions from being able to read and understand page content.
   >
-  > - 메타 태그의 규칙을 읽기 위해선 크롤러가 페이지에 접근을 하긴 해야 합니다. 대역폭을 아끼려면 {{glossary("robots.txt")}}를 사용하세요.
-  > - 이미 등록된 페이지를 검색 결과에서 제거할 수단으로 `noindex`를 사용하는 것도 가능하지만, 수정 후 크롤러가 페이지에 재방문해야만 반영되므로 `robots.txt` 파일이 방문을 방지하고 있지는 않은지 확인하세요.
-  > - `index`와 `noindex`, `follow`와 `nofollow`처럼 특정 값은 서로 배타적입니다. 그러나 같은 페이지에서 동시에 사용한 경우 크롤러의 행동은 정의되지 않았으며 둘 중 어느 것이라도 취할 수 있습니다.
-  > - Google과 Bing 등 일부 크롤러는 위의 값을 HTTP `X-Robot-Tags` 헤더에 추가해도 인식하므로, 이미지처럼 HTML이 아닌 문서에서도 동일한 설정을 적용할 수 있습니다.
+  > - [MDN Understanding WCAG, Guideline 1.4 explanations](/en-US/docs/Web/Accessibility/Understanding_WCAG/Perceivable#guideline_1.4_make_it_easier_for_users_to_see_and_hear_content_including_separating_foreground_from_background)
+  > - [Understanding Success Criterion 1.4.4 | W3C Understanding WCAG 2.0](https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-scale.html)
 
-## 명세
+### Other metadata names
+
+The [WHATWG Wiki MetaExtensions page](https://wiki.whatwg.org/wiki/MetaExtensions) contains a large set of non-standard metadata names that have not been formally accepted yet; however, some of the names included there are already used quite commonly in practice — including the following:
+
+- `creator`: the name of the creator of the document, such as an organization or institution. If there are more than one, several {{HTMLElement("meta")}} elements should be used.
+- `googlebot`, a synonym of `robots`, is only followed by Googlebot (the indexing crawler for Google).
+- `publisher`: the name of the document's publisher.
+- `robots`: the behavior that cooperative crawlers, or "robots", should use with the page. It is a comma-separated list of the values below:
+
+  | Value          | Description                                                                 | Used by                                                                                                                                                                                                                                                |
+  | -------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+  | `index`        | Allows the robot to index the page (default).                               | All                                                                                                                                                                                                                                                    |
+  | `noindex`      | Requests the robot to not index the page.                                   | All                                                                                                                                                                                                                                                    |
+  | `follow`       | Allows the robot to follow the links on the page (default).                 | All                                                                                                                                                                                                                                                    |
+  | `nofollow`     | Requests the robot to not follow the links on the page.                     | All                                                                                                                                                                                                                                                    |
+  | `all`          | Equivalent to `index, follow`                                               | [Google](https://developers.google.com/search/docs/advanced/crawling/special-tags?visit_id=637855965067987211-415685194&rd=1)                                                                                                                          |
+  | `none`         | Equivalent to `noindex, nofollow`                                           | [Google](https://developers.google.com/search/docs/advanced/crawling/special-tags?visit_id=637855965074074862-574753619&rd=1)                                                                                                                          |
+  | `noarchive`    | Requests the search engine not to cache the page content.                   | [Google](https://developers.google.com/search/docs/advanced/robots/robots_meta_tag), [Yahoo](https://help.yahoo.com/kb/search-for-desktop/SLN2213.html), [Bing](https://www.bing.com/webmasters/help/which-robots-metatags-does-bing-support-5198d240) |
+  | `nosnippet`    | Prevents displaying any description of the page in search engine results.   | [Google](https://developers.google.com/search/docs/advanced/robots/robots_meta_tag), [Bing](https://www.bing.com/webmasters/help/which-robots-metatags-does-bing-support-5198d240)                                                                     |
+  | `noimageindex` | Requests this page not to appear as the referring page of an indexed image. | [Google](https://developers.google.com/search/docs/advanced/robots/robots_meta_tag)                                                                                                                                                                    |
+  | `nocache`      | Synonym of `noarchive`.                                                     | [Bing](https://www.bing.com/webmasters/help/which-robots-metatags-does-bing-support-5198d240)                                                                                                                                                          |
+
+  > **Note:**
+  >
+  > - Only cooperative robots follow these rules. Do not expect to prevent email harvesters with them.
+  > - The robot still needs to access the page in order to read these rules. To prevent bandwidth consumption, use a _{{Glossary("robots.txt")}}_ file.
+  > - If you want to remove a page, `noindex` will work, but only after the robot visits the page again. Ensure that the `robots.txt` file is not preventing revisits.
+  > - Some values are mutually exclusive, like `index` and `noindex`, or `follow` and `nofollow`. In these cases the robot's behavior is undefined and may vary between them.
+  > - Some crawler robots, like Google, Yahoo and Bing, support the same values for the HTTP header `X-Robots-Tag`; this allows non-HTML documents like images to use these rules.
+
+<!-- ## Technical summary -->
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- [Viewport `<meta>` tag](/en-US/docs/Web/HTML/Viewport_meta_tag)
+- [Metadata: the `<meta>` element](/en-US/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML#metadata_the_meta_element) in [What's in the head? Metadata in HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML)

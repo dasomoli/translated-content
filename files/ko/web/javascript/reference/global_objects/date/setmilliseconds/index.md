@@ -1,45 +1,52 @@
 ---
 title: Date.prototype.setMilliseconds()
 slug: Web/JavaScript/Reference/Global_Objects/Date/setMilliseconds
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.setMilliseconds
 ---
 
 {{JSRef}}
 
-setMilliseconds () 메서드는 현지 시간에 따라 지정된 날짜의 밀리 초를 설정합니다.
+The **`setMilliseconds()`** method sets the milliseconds for a
+specified date according to local time.
+
+{{EmbedInteractiveExample("pages/js/date-setmilliseconds.html")}}
 
 ## Syntax
 
-```js
-    dateObj.setMilliseconds(millisecondsValue)
+```js-nolint
+setMilliseconds(millisecondsValue)
 ```
 
 ### Parameters
 
 - `millisecondsValue`
-  - : 밀리 초를 나타내는 0에서 999 사이의 숫자입니다.
+  - : A number between 0 and 999, representing the milliseconds.
 
 ### Return value
 
-1970 년 1 월 1 일 00:00:00 UTC와 업데이트 된 날짜 사이의 밀리 초 숫자입니다.
+The number of milliseconds between 1 January 1970 00:00:00 UTC and the updated date.
 
 ## Description
 
-예상되는 범위를 벗어난 숫자를 지정하면 {{jsxref ( "Date")}} 객체의 날짜 정보가 그에 따라 업데이트됩니다. 예를 들어, 1005를 지정하면 초 수가 1 씩 증가하고 5는 밀리 초 단위로 사용됩니다.
+If you specify a number outside the expected range, the date information in the
+{{jsxref("Date")}} object is updated accordingly. For example, if you specify 1005, the
+number of seconds is incremented by 1, and 5 is used for the milliseconds.
 
 ## Examples
 
-### Using `setMilliseconds()`
+### Using setMilliseconds()
 
 ```js
-var theBigDay = new Date();
+const theBigDay = new Date();
 theBigDay.setMilliseconds(100);
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

@@ -1,80 +1,127 @@
 ---
-title: <object>
+title: "<object>: The External Object element"
 slug: Web/HTML/Element/object
+page-type: html-element
+browser-compat: html.elements.object
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<object>` 요소**는 이미지나, 중첩된 브라우저 컨텍스트, 플러그인에 의해 다뤄질수 있는 리소스와 같은 외부 리소스를 나타냅니다.
+The **`<object>`** [HTML](/en-US/docs/Web/HTML) element represents an external resource, which can be treated as an image, a nested browsing context, or a resource to be handled by a plugin.
 
 {{EmbedInteractiveExample("pages/tabbed/object.html", "tabbed-standard")}}
 
-- `[컨텐츠 범주](/ko/docs/HTML/Content_categories)` [플로우 컨텐츠](/ko/docs/HTML/Content_categories#Flow_content); [구문 컨텐츠](/ko/docs/HTML/Content_categories#Phrasing_content); [포함된 컨텐츠](/ko/docs/HTML/Content_categories#Embedded_content), palpable 컨텐츠; 만약 요소가 **usemap ** 속성을 가지고 있다면, [대화형 컨텐츠](/ko/docs/HTML/Content_categories#Interactive_content); [listed](/ko/docs/HTML/Content_categories#Form_listed), [submittable](/ko/docs/HTML/Content_categories#Form_submittable) [form-associated](/ko/docs/HTML/Content_categories#Form-associated_content) element.
-- `허용된 컨텐츠`  0개 이상의 {{HTMLElement("param")}} elements, then [Transparent content](/ko/docs/HTML/Content_categories#Transparent_content_models).
-- `태그 생략`  {{no_tag_omission}}
-- `허용된 부모 요소` [포함된 컨텐츠](/ko/docs/HTML/Content_categories#Embedded_content)를 허용하는 모든 요소
-- `DOM 인터페이스`  {{domxref("HTMLObjectElement")}}
+## Attributes
 
-## 속성
+This element includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-이 속성은 [전역 속성](/ko/docs/HTML/Global_attributes)을 포함합니다.
-
-- {{htmlattrdef("archive")}} {{deprecated_inline}}
+- `archive` {{deprecated_inline}}
   - : A space-separated list of URIs for archives of resources for the object.
-- {{htmlattrdef("border")}} {{deprecated_inline}}
+- `border` {{deprecated_inline}}
   - : The width of a border around the control, in pixels.
-- {{htmlattrdef("classid")}} {{deprecated_inline}}
+- `classid` {{deprecated_inline}}
   - : The URI of the object's implementation. It can be used together with, or in place of, the **data** attribute.
-- {{htmlattrdef("codebase")}} {{deprecated_inline}}
+- `codebase` {{deprecated_inline}}
   - : The base path used to resolve relative URIs specified by **classid**, **data**, or **archive**. If not specified, the default is the base URI of the current document.
-- {{htmlattrdef("codetype")}} {{deprecated_inline}}
+- `codetype` {{deprecated_inline}}
   - : The content type of the data specified by **classid**.
-- {{htmlattrdef("data")}}
-  - : 리소스의 URL. 최소 하나의 **data**와 **type**가 정의되어야 합니다.
-- {{htmlattrdef("declare")}} {{deprecated_inline}}
-  - : The presence of this Boolean attribute makes this element a declaration only. The object must be instantiated by a subsequent `<object>` element. In HTML5, repeat the \<object> element completely each that that the resource is reused.
-- {{htmlattrdef("form")}}
-  - : object 요소와 관련된 form 요소. 이 속성의 값은 같은 문서의 {{HTMLElement("form")}} 요소의 ID 속성의 값이여야 합니다.
-- {{htmlattrdef("height")}}
-  - : 표시될 리소스의 높이를 CSS 픽셀 단위로 지정합니다.
-- {{htmlattrdef("name")}}
-  - : 유효한 브라우징 컨텍스트의 이름(HTML5) 또는, 컨트롤의 이름(HTML 4)
-- {{htmlattrdef("standby")}} {{deprecated_inline}}
+- `data`
+  - : The address of the resource as a valid URL. At least one of **data** and **type** must be defined.
+- `declare` {{deprecated_inline}}
+  - : The presence of this Boolean attribute makes this element a declaration only. The object must be instantiated by a subsequent `<object>` element. Repeat the `<object>` element completely each time the resource is reused.
+- `form`
+  - : The form element, if any, that the object element is associated with (its _form owner_). The value of the attribute must be an ID of a {{HTMLElement("form")}} element in the same document.
+- `height`
+  - : The height of the displayed resource, in [CSS pixels](https://drafts.csswg.org/css-values/#px). — (Absolute values only. [NO percentages](https://html.spec.whatwg.org/multipage/embedded-content.html#dimension-attributes))
+- `name`
+  - : The name of valid browsing context (HTML5), or the name of the control (HTML 4).
+- `standby` {{deprecated_inline}}
   - : A message that the browser can show while loading the object's implementation and data.
-- {{htmlattrdef("tabindex")}} {{deprecated_inline}}
-  - : The position of the element in the tabbing navigation order for the current document.
-- {{htmlattrdef("type")}}
-  - : **data**에 의해 지정된 리소스의 [컨텐츠 타입](/ko/docs/Glossary/Content_type). 최소 한 개의 **data**와 **type**가 정의되어야 합니다.
-- {{htmlattrdef("typemustmatch")}}
-  - : **type**와 리소스의 실제 [컨텐츠 타입](/ko/docs/Glossary/Content_type)이 일치해야되는지를 나타내는 불리언 속성
-- {{htmlattrdef("usemap")}}
-  - : {{HTMLElement("map")}} 요소에 대한 해쉬-이름 참조; #와 그 뒤에 map 요소의 {{htmlattrxref("name", "map")}} 값이 붙음
-- {{htmlattrdef("width")}}
-  - : 표시될 리소스의 가로 길이를 CSS 픽셀단위로 지정합니다.
+- `type`
+  - : The [content type](/en-US/docs/Glossary/MIME_type) of the resource specified by **data**. At least one of **data** and **type** must be defined.
+- `usemap`
+  - : A hash-name reference to a {{HTMLElement("map")}} element; that is a '#' followed by the value of a [`name`](/en-US/docs/Web/HTML/Element/map#name) of a map element.
+- `width`
+  - : The width of the display resource, in [CSS pixels](https://drafts.csswg.org/css-values/#px). — (Absolute values only. [NO percentages](https://html.spec.whatwg.org/multipage/embedded-content.html#dimension-attributes))
 
-## 예제
+## Examples
 
-### 포함된 플래시 무비
+### Embed a YouTube Video
 
 ```html
-<!-- Embed a flash movie -->
-<object data="move.swf" type="application/x-shockwave-flash"></object>
-
-<!-- Embed a flash movie with parameters -->
-<object data="move.swf" type="application/x-shockwave-flash">
-  <param name="foo" value="bar">
-</object>
+<object
+  type="video/mp4"
+  data="https://www.youtube.com/watch?v=Sp9ZfSvpf7A"
+  width="1280"
+  height="720"></object>
 ```
 
-## 명세
+Note that a `type` field is normally specified, but is not needed for YouTube videos.
+
+## Technical summary
+
+<table class="properties">
+  <tbody>
+    <tr>
+      <th scope="row">
+        <a href="/en-US/docs/Web/HTML/Content_categories">Content categories</a>
+      </th>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content">Flow content</a>;
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content">phrasing content</a>;
+        <a href="/en-US/docs/Web/HTML/Content_categories#embedded_content">embedded content</a>, palpable content; if the element has a
+        <a href="/en-US/docs/Web/HTML/Element/object#usemap"><code>usemap</code></a> attribute, <a href="/en-US/docs/Web/HTML/Content_categories#interactive_content">interactive content</a>;
+        <a href="/en-US/docs/Web/HTML/Content_categories#form_listed">listed</a>,
+        <a href="/en-US/docs/Web/HTML/Content_categories#form_submittable">submittable</a>
+        <a href="/en-US/docs/Web/HTML/Content_categories#form-associated_content">form-associated</a> element.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted content</th>
+      <td>
+        zero or more {{HTMLElement("param")}} elements, then
+        <a href="/en-US/docs/Web/HTML/Content_categories#transparent_content_model">transparent</a>.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Tag omission</th>
+      <td>{{no_tag_omission}}</td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted parents</th>
+      <td>
+        Any element that accepts <a href="/en-US/docs/Web/HTML/Content_categories#embedded_content">embedded content</a>.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role">No corresponding role</a>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/application_role"><code>application</code></a>, <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/document_role"><code>document</code></a>, <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/img_role"><code>img</code></a>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
+      <td>{{domxref("HTMLObjectElement")}}</td>
+    </tr>
+  </tbody>
+</table>
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- {{HTMLElement("applet")}} {{deprecated_inline}}
 - {{HTMLElement("embed")}}
 - {{HTMLElement("param")}}

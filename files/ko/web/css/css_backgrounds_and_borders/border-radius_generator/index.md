@@ -1,9 +1,18 @@
 ---
-title: Border-radius 생성기
+title: Border-radius generator
 slug: Web/CSS/CSS_Backgrounds_and_Borders/Border-radius_generator
-original_slug: Web/CSS/CSS_Background_and_Borders/Border-radius_generator
+page-type: guide
 ---
 
-이 도구를 사용해 CSS3 {{cssxref("border-radius")}} 값을 생성할 수 있습니다.
+{{CSSRef}}
+
+This tool can be used to generate CSS {{cssxref("border-radius")}} effects.
 
 {{EmbedGHLiveSample("css-examples/tools/border-radius-generator/", '100%', 900)}}
+
+## See also
+
+- [Border-image generator](/en-US/docs/Web/CSS/CSS_Backgrounds_and_Borders/Border-image_generator)
+  - : This interactive tool lets you visually create border images (the {{cssxref("border-image")}} property).
+- [Box-shadow generator](/en-US/docs/Web/CSS/CSS_Backgrounds_and_Borders/Box-shadow_generator)
+  - : This interactive tool lets you visually create shadows behind elements (the {{cssxref("box-shadow")}} property).

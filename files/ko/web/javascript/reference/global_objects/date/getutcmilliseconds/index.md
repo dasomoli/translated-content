@@ -1,38 +1,51 @@
 ---
 title: Date.prototype.getUTCMilliseconds()
 slug: Web/JavaScript/Reference/Global_Objects/Date/getUTCMilliseconds
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.getUTCMilliseconds
 ---
 
 {{JSRef}}
 
-**getUTCMilliseconds()** 메서드는 표준시에 따라 지정된 날짜의 밀리 초를 반환합니다.
+The **`getUTCMilliseconds()`** method returns the milliseconds
+portion of the time object's value according to universal time.
+
+{{EmbedInteractiveExample("pages/js/date-getutcmilliseconds.html","shorter")}}
 
 ## Syntax
 
-```js
-    dateObj.getUTCMilliseconds()
+```js-nolint
+getUTCMilliseconds()
 ```
 
 ### Return value
 
-0부터 999까지의 정수로, 표준시에 따라 지정된 날짜의 밀리 초를 나타냅니다.
+A number.
+If the `Date` object represents a valid date, an integer between 0 and 999, representing
+the milliseconds portion of the given `Date` object according to universal time.
+Otherwise, [`NaN`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/NaN)
+if the `Date` object doesn't represent a valid date.
+
+Not to be confused with Unix epoch time. To get the total milliseconds since 1970/01/01,
+use the [`getTime()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime) method.
 
 ## Examples
 
-### Using `getUTCMilliseconds()`
+### Using getUTCMilliseconds()
 
-다음 예제에서는 현재 시간의 밀리 초 부분을 밀리 초 변수에 할당합니다.
+The following example assigns the milliseconds portion of the current time to the
+variable `milliseconds`.
 
 ```js
-var today = new Date();
-var milliseconds = today.getUTCMilliseconds();
+const today = new Date();
+const milliseconds = today.getUTCMilliseconds();
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

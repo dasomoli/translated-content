@@ -1,101 +1,114 @@
 ---
-title: <noscript>
+title: "<noscript>: The Noscript element"
 slug: Web/HTML/Element/noscript
+page-type: html-element
+browser-compat: html.elements.noscript
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<noscript>` 요소**는 페이지의 스크립트 유형을 지원하지 않거나, 브라우저가 스크립트를 비활성화한 경우 보여줄 HTML 구획을 정의합니다.
+The **`<noscript>`** [HTML](/en-US/docs/Web/HTML) element defines a section of HTML to be inserted if a script type on the page is unsupported or if scripting is currently turned off in the browser.
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
       </th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#메타데이터_콘텐츠"
-          >메타데이터 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#metadata_content"
+          >Metadata content</a
         >,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >flow content</a
         >,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
         >.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
       <td>
-        <p>
-          스크립트가 비활성 상태이며 자신이 {{HTMLElement("head")}}
-          요소의 자손인 경우, 순서대로
-        </p>
-        <ul>
-          <li>0개 이상의 {{htmlelement("link")}} 요소</li>
-          <li>0개 이상의 {{htmlelement("style")}} 요소</li>
-          <li>0개 이상의 {{htmlelement("meta")}} 요소</li>
-        </ul>
-        <p>
-          스크립트가 비활성 상태이나 <code>&#x3C;head></code> 요소의 자손이 아닌
-          경우 모든 투명 콘텐츠. 단, 다른 <code>&#x3C;noscript></code> 요소는
-          불가능합니다.
-        </p>
-        <p>그 외의 경우 플로우 콘텐츠와 구문 콘텐츠.</p>
+        When scripting is disabled and when it is a descendant of the
+        {{HTMLElement("head")}} element: in any order, zero or more
+        {{HTMLElement("link")}} elements, zero or more
+        {{HTMLElement("style")}} elements, and zero or more
+        {{HTMLElement("meta")}} elements.<br />When scripting is
+        disabled and when it isn't a descendant of the
+        {{HTMLElement("head")}} element: any
+        <a
+          href="/en-US/docs/Web/HTML/Content_categories#transparent_content_model"
+          >transparent content</a
+        >, but no <code>&#x3C;noscript></code> element must be among its
+        descendants.<br />Otherwise: flow content or phrasing content.
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
+      <th scope="row">Tag omission</th>
       <td>{{no_tag_omission}}</td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Permitted parents</th>
       <td>
-        구문 콘텐츠를 허용하는 모든 요소, 또는 {{htmlelement("head")}}.
-        단, 두 경우 모두 다른 <code>&#x3C;noscript></code> 요소가 존재하는 경우
-        불가능합니다.
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >, if there are no ancestor <code>&#x3C;noscript></code> element, or in
+        a {{HTMLElement("head")}} element (but only for an HTML
+        document), here again if there are no ancestor
+        <code>&#x3C;noscript></code> element.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>없음</td>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
+          >No corresponding role</a
+        >
+      </td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>No <code>role</code> permitted</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
+## Attributes
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)만 포함합니다.
+This element only includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-## 예제
+## Examples
 
 ```html
 <noscript>
   <!-- anchor linking to external file -->
-  <a href="http://www.mozilla.com/">External Link</a>
+  <a href="https://www.mozilla.org/">External Link</a>
 </noscript>
 <p>Rocks!</p>
 ```
 
-### 스크립트 활성화 상태에서의 결과
+### Result with scripting enabled
 
 Rocks!
 
-### 스크립트 비활성화 상태에서의 결과
+### Result with scripting disabled
 
-[External Link](http://www.mozilla.com/)
+[External Link](https://www.mozilla.org/)
 
 Rocks!
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

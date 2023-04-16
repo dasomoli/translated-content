@@ -1,54 +1,85 @@
 ---
 title: decodeURIComponent()
 slug: Web/JavaScript/Reference/Global_Objects/decodeURIComponent
+page-type: javascript-function
+browser-compat: javascript.builtins.decodeURIComponent
 ---
+
 {{jsSidebar("Objects")}}
 
-**`decodeURIComponent()`** 함수는 {{jsxref("encodeURIComponent")}} 나 비슷한 방법으로 생성된 Uniform Resource Identifier(URI) 컴포넌트를 해독합니다.
+The **`decodeURIComponent()`** function decodes a Uniform Resource Identifier (URI) component previously created by {{jsxref("encodeURIComponent()")}} or by a similar routine.
 
 {{EmbedInteractiveExample("pages/js/globalprops-decodeuricomponent.html")}}
 
-## 구문
+## Syntax
 
-```js
-    decodeURIComponent(encodedURI)
+```js-nolint
+decodeURIComponent(encodedURI)
 ```
 
-### 매개변수
+### Parameters
 
 - `encodedURI`
-  - : 암호화된 Uniform Resource Identifier(URI) 컴포넌트.
+  - : An encoded component of a Uniform Resource Identifier.
 
-### 반환 값
+### Return value
 
-이스케이프되지 않은 특정 글자들 중 새로운 문자열.
+A new string representing the decoded version of the given encoded Uniform Resource Identifier (URI) component.
 
-### 예외
+### Exceptions
 
-잘못 사용되었을 경우 {{jsxref ( "URIError")}} ( " malformed URI sequence ") 예외를 발생시킵니다.
+- {{jsxref("URIError")}}
+  - : Thrown if `encodedURI` contains a `%` not followed by two hexadecimal digits, or if the escape sequence does not encode a valid UTF-8 character.
 
-## 설명
+## Description
 
-암호화된 URI 컴포넌트에서 각각의 이스케이프 시퀀스(확장 문자열)를 자신을 나타내는 문자로 바꿉니다.
+`decodeURIComponent()` is a function property of the global object.
 
-## 예제
+`decodeURIComponent()` uses the same decoding algorithm as described in {{jsxref("decodeURI()")}}. It decodes _all_ escape sequences, including those that are not created by {{jsxref("encodeURIComponent")}}, like `-.!~*'()`.
 
-### 키릴문자 URL 컴포넌트의 복호화
+## Examples
+
+### Decoding a Cyrillic URL component
 
 ```js
 decodeURIComponent("JavaScript_%D1%88%D0%B5%D0%BB%D0%BB%D1%8B");
 // "JavaScript_шеллы"
 ```
 
-## 명세
+### Catching errors
+
+```js
+try {
+  const a = decodeURIComponent("%E0%A4%A");
+} catch (e) {
+  console.error(e);
+}
+
+// URIError: malformed URI sequence
+```
+
+### Decoding query parameters from a URL
+
+`decodeURIComponent()` cannot be used directly to parse query parameters from a URL. It needs a bit of preparation.
+
+```js
+function decodeQueryParam(p) {
+  return decodeURIComponent(p.replace(/\+/g, " "));
+}
+
+decodeQueryParam("search+query%20%28correct%29");
+// 'search query (correct)'
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("decodeURI")}}
 - {{jsxref("encodeURI")}}

@@ -1,37 +1,46 @@
 ---
 title: break
 slug: Web/JavaScript/Reference/Statements/break
+page-type: javascript-statement
+browser-compat: javascript.statements.break
 ---
 
 {{jsSidebar("Statements")}}
 
-**`break` 문**은 현재 반복문, {{jsxref("Statements/switch", "switch")}} 문, 또는 {{jsxref("Statements/label", "label")}} 문을 종료하고, 그 다음 문으로 프로그램 제어를 넘깁니다.
+The **`break`** statement terminates the current loop or {{jsxref("Statements/switch", "switch")}} statement and transfers program control to the statement following the terminated statement. It can also be used to jump past a [labeled statement](/en-US/docs/Web/JavaScript/Reference/Statements/label) when used within that labeled statement.
 
 {{EmbedInteractiveExample("pages/js/statement-break.html")}}
 
-## 구문
+## Syntax
 
-```js
-    break [label];
+```js-nolint
+break;
+break label;
 ```
 
 - `label` {{optional_inline}}
-  - : 문의 라벨에 연결한 {{glossary("identifier", "식별자")}}. 반복문이나 {{jsxref("Statements/switch", "switch")}}에서 사용하는게 아니면 필수로 제공해야 합니다.
+  - : Identifier associated with the label of the statement to break to. If the `break` statement is not nested within a loop or {{jsxref("Statements/switch", "switch")}}, then the label identifier is required.
 
-## 설명
+## Description
 
-`break` 문은 프로그램이 label 달린 문에서 빠져나오게 하는 선택사항 label을 포함합니다. `break` 문은 참조되는 label 내에 중첩되어야 합니다. label 달린 문은 어떤 {{jsxref("Statements/block", "block")}} 문이든 될 수 있습니다. 꼭, loop 문을 달 필요가 없습니다.
+When `break;` is encountered, the program breaks out of the innermost `switch` or [looping](/en-US/docs/Web/JavaScript/Reference/Statements#iterations) statement and continues executing the next statement after that.
 
-## 예제
+When `break label;` is encountered, the program breaks out of the statement labeled with `label` and continues executing the next statement after that. The `break` statement needs to be nested within the referenced label. The labeled statement can be any statement (commonly a {{jsxref("Statements/block", "block", "", 1)}} statement); it does not have to be another loop statement.
 
-다음 함수는 `i`가 3일 때 {{jsxref("Statements/while", "while")}} loop를 종료하는 break 문이 있고, 그러고는 3 \* `x`값을 반환합니다.
+A `break` statement, with or without a following label, cannot be used at the top level of a script, module, function's body, or [static initialization block](/en-US/docs/Web/JavaScript/Reference/Classes/Static_initialization_blocks), even when the function or class is further contained within a loop.
+
+## Examples
+
+### break in while loop
+
+The following function has a `break` statement that terminates the {{jsxref("Statements/while", "while")}} loop when `i` is 3, and then returns the value `3 * x`.
 
 ```js
 function testBreak(x) {
-  var i = 0;
+  let i = 0;
 
-  while (i &#x3C; 6) {
-    if (i == 3) {
+  while (i < 6) {
+    if (i === 3) {
       break;
     }
     i += 1;
@@ -41,42 +50,96 @@ function testBreak(x) {
 }
 ```
 
-다음 코드는 label 달린 블록이 있는 `break` 문을 사용합니다. `break` 문은 자신이 참조하는 label 내에 중첩되어야 합니다. `inner_block`은 `outer_block`내에 중첩되어야 함을 주의하세요.
+### break in switch statements
+
+The following code has a `break` statement that terminates the {{jsxref("Statements/switch", "switch")}} statement when a case is matched and the corresponding code has run.
 
 ```js
-outer_block: {
-  inner_block: {
-    console.log('1');
-    break outer_block; // inner_block과 outer_block 둘다 빠져나옴
-    console.log(':-('); // 건너뜀
+const food = "sushi";
+
+switch (food) {
+  case "sushi":
+    console.log("Sushi is originally from Japan.");
+    break;
+  case "pizza":
+    console.log("Pizza is originally from Italy.");
+    break;
+  default:
+    console.log("I have never heard of that dish.");
+    break;
+}
+```
+
+### break in labeled blocks
+
+The following code uses `break` statements with labeled blocks. By using `break outerBlock`, control is transferred to the end of the block statement marked as `outerBlock`.
+
+```js
+outerBlock: {
+  innerBlock: {
+    console.log("1");
+    break outerBlock; // breaks out of both innerBlock and outerBlock
+    console.log(":-("); // skipped
   }
-  console.log('2'); // 건너뜀
+  console.log("2"); // skipped
 }
 ```
 
-다음 코드는 또한 label 달린 블록이 있는 break 문을 사용하지만 그 `break` 문이 `block_2`를 참조하지만 `block_1` 내에 있기에 구문 오류(Syntax Error)가 발생합니다. `break` 문은 항상 자신이 참조하는 label 내에 중첩되어야 합니다.
+### Unsyntactic break statements
 
-```js
-block_1: {
-  console.log('1');
-  break block_2; // SyntaxError: label을 찾을 수 없음
+A `break` statement must be nested within any label it references. The following code also uses `break` statements with labeled blocks, but generates a syntax error because its `break` statement references `block2` but it's not nested within `block2`.
+
+```js example-bad
+block1: {
+  console.log("1");
+  break block2; // SyntaxError: label not found
 }
 
-block_2: {
-  console.log('2');
+block2: {
+  console.log("2");
 }
 ```
 
-## 명세서
+Syntax errors are also generated in the following code examples which use `break` statements within functions that are nested within a loop, or labeled block that the `break` statements are intended to break out of.
+
+```js example-bad
+function testBreak(x) {
+  let i = 0;
+
+  while (i < 6) {
+    if (i === 3) {
+      (() => {
+        break;
+      })();
+    }
+    i += 1;
+  }
+
+  return i * x;
+}
+
+testBreak(1); // SyntaxError: Illegal break statement
+```
+
+```js example-bad
+block1: {
+  console.log("1");
+  (() => {
+    break block1; // SyntaxError: Undefined label 'block1'
+  })();
+}
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Statements/continue", "continue")}}
-- {{jsxref("Statements/label", "label")}}
+- {{jsxref("Statements/label", "label", "", 1)}}
 - {{jsxref("Statements/switch", "switch")}}

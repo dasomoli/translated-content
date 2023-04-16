@@ -1,74 +1,100 @@
 ---
 title: Promise.prototype.finally()
 slug: Web/JavaScript/Reference/Global_Objects/Promise/finally
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Promise.finally
 ---
 
 {{JSRef}}
 
-**`finally()`** 메소드는 {{jsxref("Promise")}} 객체를 반환합니다. Promise가 처리되면 충족되거나 거부되는지 여부에 관계없이 지정된 콜백 함수가 실행됩니다. 이것은 Promise가 성공적으로 수행 되었는지 거절되었는지에 관계없이 `Promise`가 처리 된 후에 코드가 무조건 한 번은 실행되는 것을 제공합니다.
+The **`finally()`** method of a {{jsxref("Promise")}} object schedules a function to be called when the promise is settled (either fulfilled or rejected). It immediately returns an equivalent {{jsxref("Promise")}} object, allowing you to [chain](/en-US/docs/Web/JavaScript/Guide/Using_promises#chaining) calls to other promise methods.
 
-이것은 Promise의 {{jsxref("Promise.then", "then()")}}과 {{jsxref("Promise.catch", "catch()")}} 핸들러에서의 코드 중복을 피하게 합니다.
+This lets you avoid duplicating code in both the promise's {{jsxref("Promise/then", "then()")}} and {{jsxref("Promise/catch", "catch()")}} handlers.
 
-## 문법
+{{EmbedInteractiveExample("pages/js/promise-finally.html", "taller")}}
 
-```js
-p.finally(onFinally);
+## Syntax
 
-p.finally(function() {
-    // settled (fulfilled or rejected)
-});
+```js-nolint
+finally(onFinally)
 ```
 
 ### Parameters
 
 - `onFinally`
-  - : `Promise`가 처리된 후 {{jsxref("Function")}} 이 호출됩니다.
+  - : A function to asynchronously execute when this promise becomes settled. Its return value is ignored unless the returned value is a rejected promise. The function is called with no arguments.
 
 ### Return value
 
-`finally` 핸들러는 `onFinally` 라는 지정된 함수의 {{jsxref("Promise")}}가 반환됩니다.
+Returns an equivalent {{jsxref("Promise")}}. If the handler throws an error or returns a rejected promise, the promise returned by `finally()` will be rejected with that value instead. Otherwise, the return value of the handler does not affect the state of the original promise.
 
-## 설명
+## Description
 
-`finally()` 메서드는 결과에 관계없이 promise가 처리되면 무언가를 프로세싱 또는 정리를 수행하려는 경우에 유용합니다.
+The `finally()` method can be useful if you want to do some processing or cleanup once the promise is settled, regardless of its outcome.
 
-`finally()` 메서드는 `.then(onFinally, onFinally)` 를 호출하는 것과 매우 비슷하지만 몇 가지 차이점이 있습니다:
+The `finally()` method is very similar to calling {{jsxref("Promise/then", "then(onFinally, onFinally)")}}. However, there are a couple of differences:
 
-- 함수를 인라인으로 만들 때, 두 번 선언해야 하지 않고 한 번만 전달하거나 그것을 위한 변수를 만들 수 있습니다.
-- `finally` 콜백은 어떠한 인수도 전달받지 않습니다, 왜냐하면 promise가 이행되었는지 또는 거부되었는지를 판단할 수 없기 때문입니다. promise의 왜 거부되었는지 또는 이행되었을때 반환되는 값이 필요하지 않거나 제공할 필요가 없을 때 활용합니다.
-- Promise.reject (3) .finally (() => {}) Promise.reject (3) .finally (() => {}) (약속 안 함) )는 3으로 거부됩니다.
-- `Promise.resolve(2).then(() => {}, () => {})`(`undefined`로 해결될) 와 달리, `Promise.resolve(2).finally(() => {})` 는 값 `2`로 해결됩니다.
-- 유사하게 `Promise.reject(3).then(() => {}, () => {})` (`undefined`로 거부될)와는 달리 `Promise.reject(3).finally(() => {})` 는 값 `3`로 거부됩니다.
+- When creating a function inline, you can pass it once, instead of being forced to either declare it twice, or create a variable for it.
+- The `onFinally` callback does not receive any argument. This use case is for precisely when you _do not care_ about the rejection reason or the fulfillment value, and so there's no need to provide it.
+- A `finally()` call is usually transparent and does not change the eventual state of the original promise. So for example:
+  - Unlike `Promise.resolve(2).then(() => 77, () => {})`, which returns a promise eventually fulfilled with the value `77`, `Promise.resolve(2).finally(() => 77)` returns a promise eventually fulfilled with the value `2`.
+  - Similarly, unlike `Promise.reject(3).then(() => {}, () => 88)`, which returns a promise eventually fulfilled with the value `88`, `Promise.reject(3).finally(() => 88)` returns a promise eventually rejected with the reason `3`.
 
-> **참고:** `finally` 콜백에서 `throw` (또는 거부된 promise를 반환)하면 `throw()`를 호출 할 때 지정된 거부 이유로 새롭게 만들어진 promise를 반환합니다.
+> **Note:** A `throw` (or returning a rejected promise) in the `finally` callback still rejects the returned promise. For example, both `Promise.reject(3).finally(() => { throw 99; })` and `Promise.reject(3).finally(() => Promise.reject(99))` reject the returned promise with the reason `99`.
 
-## 예제
+Like {{jsxref("Promise/catch", "catch()")}}, `finally()` internally calls the `then` method on the object upon which it was called. If `onFinally` is not a function, `then()` is called with `onFinally` as both arguments — which, for {{jsxref("Promise.prototype.then()")}}, means that no useful handler is attached. Otherwise, `then()` is called with two internally created functions, which behave like the following:
+
+> **Warning:** This is only for demonstration purposes and is not a polyfill.
+
+```js
+promise.then(
+  (value) => Promise.resolve(onFinally()).then(() => value),
+  (reason) =>
+    Promise.resolve(onFinally()).then(() => {
+      throw reason;
+    }),
+);
+```
+
+Because `finally()` calls `then()`, it supports subclassing. Moreover, notice the {{jsxref("Promise.resolve()")}} call above — in reality, `onFinally()`'s return value is resolved using the same algorithm as `Promise.resolve()`, but the actual constructor used to construct the resolved promise will be the subclass. `finally()` gets this constructor through [`promise.constructor[@@species]`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/@@species).
+
+## Examples
+
+### Using finally()
 
 ```js
 let isLoading = true;
 
-fetch(myRequest).then(function(response) {
-    var contentType = response.headers.get("content-type");
-    if(contentType && contentType.includes("application/json")) {
+fetch(myRequest)
+  .then((response) => {
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
       return response.json();
     }
     throw new TypeError("Oops, we haven't got JSON!");
   })
-  .then(function(json) { /* process your JSON further */ })
-  .catch(function(error) { console.log(error); })
-  .finally(function() { isLoading = false; });
+  .then((json) => {
+    /* process your JSON further */
+  })
+  .catch((error) => {
+    console.error(error); // this line can also throw, e.g. when console = {}
+  })
+  .finally(() => {
+    isLoading = false;
+  });
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 더보기
+## See also
 
+- [Polyfill of `Promise.prototype.finally` in `core-js`](https://github.com/zloirock/core-js#ecmascript-promise)
 - {{jsxref("Promise")}}
 - {{jsxref("Promise.prototype.then()")}}
 - {{jsxref("Promise.prototype.catch()")}}

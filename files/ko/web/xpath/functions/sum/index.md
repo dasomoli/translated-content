@@ -5,31 +5,31 @@ slug: Web/XPath/Functions/sum
 
 {{ XsltRef() }}
 
-`sum` 함수는 인수로 준 노드 집합의 각 노드의 숫자값의 합을 반환합니다.
+The `sum` function returns a number that is the sum of the numeric values of each node in a given node-set.
 
-### 구문
+### Syntax
 
 ```
-sum(node-set )
+sum(node-set)
 ```
 
-### 인수
+### Arguments
 
 - `node-set`
-  - : 평가될 노드 집합. 이 노드 집합의 각 노드는 마치 `number` 함수에 넘겨준 것처럼 평가되고 결과 수의 합이 반환됩니다.
+  - : The node-set to be evaluated. Each node in this node-set is evaluated as if it were passed to the [number()](/en-US/docs/Web/XPath/Functions/number) function, and a sum of the resulting numbers is returned.
 
-### 반환
+### Returns
 
-숫자.
+A number.
 
-### 주의
+### Notes
 
-_(없음)_
+None.
 
-### 정의
+### Defined
 
-[XPath 1.0 4.3](http://www.w3.org/TR/xpath#function-sum)
+[XPath 1.0 4.3](https://www.w3.org/TR/1999/REC-xpath-19991116/#function-sum)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

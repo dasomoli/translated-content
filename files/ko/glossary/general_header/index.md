@@ -1,8 +1,9 @@
 ---
-title: General 헤더
+title: General header
 slug: Glossary/General_header
+page-type: glossary-definition
 ---
 
-**General 헤더**는 요청 및 응답 메시지 모두에서 사용되지만 컨텐츠 자체에는 적용되지 않는 {{glossary('Header', 'HTTP 헤더')}}입니다. 헤더가 사용되고있는 컨텍스트에따라, general 헤더는 {{glossary("Response header", "response")}} 또는 {{glossary("request header", "request 헤더")}}입니다. 하지만, {{glossary("entity header", "entity 헤더")}}는 아닙니다.
+**General header** is an outdated term used to refer to an {{glossary('HTTP_header', 'HTTP header')}} that can be used in both request and response messages, but which doesn't apply to the content itself (a header that applied to the content was called an {{glossary("entity header")}}). Depending on the context they are used in, general headers might either be {{glossary("Response header", "response")}} or {{glossary("request header", "request headers")}} (e.g. {{HTTPheader("Cache-Control")}}).
 
-가장 흔한 general 헤더는 {{HTTPHeader('Date')}}, {{HTTPheader("Cache-Control")}} 및 {{HTTPHeader("Connection")}} 입니다.
+> **Note:** Current versions of the HTTP/1.1 specification do not specifically categorize headers as "general headers". These are now simply referred to as {{glossary("Response header", "response")}} or {{glossary("request header", "request headers")}} depending on context.

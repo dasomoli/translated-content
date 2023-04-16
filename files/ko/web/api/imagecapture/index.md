@@ -1,97 +1,115 @@
 ---
 title: ImageCapture
 slug: Web/API/ImageCapture
+page-type: web-api-interface
+status:
+  - experimental
+browser-compat: api.ImageCapture
 ---
 
-{{APIRef("MediaStream Image")}}
+{{APIRef("MediaStream Image")}}{{SeeCompatTable}}
 
-[MediaStream Image Capture API](/ko/docs/Web/API/MediaStream_Image_Capture_API)의 **`ImageCapture`** 인터페이스는 유효한 {{domxref("MediaStreamTrack")}}이 참조하는 카메라 또는 기타 촬영 장치를 통해 이미지나 사진을 촬영하기 위한 메서드를 제공합니다.
+The **`ImageCapture`** interface of the [MediaStream Image Capture API](/en-US/docs/Web/API/MediaStream_Image_Capture_API) provides methods to enable the capture of images or photos from a camera or other photographic device. It provides an interface for capturing images from a photographic device referenced through a valid {{domxref("MediaStreamTrack")}}.
 
-## 생성자
+## Constructor
 
-- {{domxref("ImageCapture.ImageCapture()", "ImageCapture()")}}
-  - : 비디오 스트림을 나타내는 {{domxref("MediaStreamTrack")}}에서 정지 프레임(사진)을 캡처하기 위한 `ImageCapture` 객체를 반환합니다.
+- {{domxref("ImageCapture.ImageCapture()", "ImageCapture()")}} {{Experimental_Inline}}
+  - : Creates a new `ImageCapture` object which can be used to capture still frames (photos) from a given {{domxref("MediaStreamTrack")}} which represents a video stream.
 
-## 속성
+## Instance properties
 
-- {{domxref("ImageCapture.track")}} {{readonlyinline}}
-  - : 생성자에 전달한 {{domxref("MediaStreamTrack")}}의 참조를 반환합니다.
+- {{domxref("ImageCapture.track")}} {{ReadOnlyInline}} {{Experimental_Inline}}
+  - : Returns a reference to the {{domxref("MediaStreamTrack")}} passed to the constructor.
 
-## 메서드
+## Instance methods
 
-`ImageCapture` 인터페이스는 {{domxref("EventTarget")}}의 메서드를 상속하며, 다음 메서드도 포함합니다.
+The `ImageCapture` interface is based on {{domxref("EventTarget")}}, so it includes the methods defined by that interface as well as the ones listed below.
 
-- {{domxref("ImageCapture.takePhoto()")}}
-  - : {{domxref("MediaStreamTrack")}}의 출처 비디오 캡처 장치를 통해 단일 노출 촬영을 한 후, 그 데이터를 담은 {{domxref("Blob")}}으로 이행하는 {{jsxref("Promise")}}를 반환합니다.
-- {{domxref("ImageCapture.getPhotoCapabilities()")}}
-  - : 가능한 설정 옵션을 담은 {{domxref("PhotoCapabilities")}} 객체로 이행하는 {{jsxref("Promise")}}를 반환합니다.
-- {{domxref("ImageCapture.getPhotoSettings()")}}
-  - : 현재 사진 설정을 담은 {{domxref("PhotoSettings")}} 객체로 이행하는 {{jsxref("Promise")}}를 반환합니다.
-- {{domxref("ImageCapture.grabFrame()")}}
-  - : {{domxref("MediaStreamTrack")}}의 라이브 비디오에서 스냅샷을 찍은 후, 성공했으면 {{domxref("ImageBitmap")}}을 반환합니다.
+- {{domxref("ImageCapture.takePhoto()")}} {{Experimental_Inline}}
+  - : Takes a single exposure using the video capture device sourcing a {{domxref("MediaStreamTrack")}} and returns a {{jsxref("Promise")}} that resolves with a {{domxref("Blob")}} containing the data.
+- {{domxref("ImageCapture.getPhotoCapabilities()")}} {{Experimental_Inline}}
+  - : Returns a {{jsxref("Promise")}} that resolves with a {{domxref("PhotoCapabilities")}} object containing the ranges of available configuration options.
+- {{domxref("ImageCapture.getPhotoSettings()")}} {{Experimental_Inline}}
+  - : Returns a {{jsxref("Promise")}} that resolves with a {{domxref("PhotoSettings")}} object containing the current photo configuration settings.
+- {{domxref("ImageCapture.grabFrame()")}} {{Experimental_Inline}}
+  - : Takes a snapshot of the live video in a {{domxref("MediaStreamTrack")}}, returning an {{domxref("ImageBitmap")}}, if successful.
 
-## 예제
+## Example
 
-다음 코드는 [Chrome의 Grab Frame - Take Photo Sample](https://googlechrome.github.io/samples/image-capture/grab-frame-take-photo.html)에서 가져온 것입니다. `ImageCapture`는 이미지를 캡처할 도구가 필요하므로, 다음 예제는 브라우저 단말기의 미디어 장치(카메라)로 시작합니다.
+The following code is taken from [Chrome's Grab Frame - Take Photo Sample](https://googlechrome.github.io/samples/image-capture/grab-frame-take-photo.html). Since `ImageCapture` requires some place to capture an image from, the example below starts with a device's media device (in other words a camera).
 
-이 예제는 {{domxref("MediaStream")}}으로부터 추출한 {{domxref("MediaStreamTrack")}}부터 시작합니다. 그 다음엔 해당 트랙을 사용해 `takePhoto()`와 `grabFrame()`을 호출할 `ImageCapture` 객체를 생성합니다. 마침내, 최종 결과를 캔버스 객체에 적용합니다.
+This example shows, roughly, a {{domxref("MediaStreamTrack")}} extracted from a device's {{domxref("MediaStream")}}. The track is then used to create an `ImageCapture` object so that `takePhoto()` and `grabFrame()` can be called. Finally, it shows how to apply the results of these calls to a canvas object.
 
 ```js
-var imageCapture;
+let imageCapture;
 
 function onGetUserMediaButtonClick() {
-  navigator.mediaDevices.getUserMedia({video: true})
-  .then(mediaStream => {
-    document.querySelector('video').srcObject = mediaStream;
+  navigator.mediaDevices
+    .getUserMedia({ video: true })
+    .then((mediaStream) => {
+      document.querySelector("video").srcObject = mediaStream;
 
-    const track = mediaStream.getVideoTracks()[0];
-    imageCapture = new ImageCapture(track);
-  })
-  .catch(error => console.log(error));
+      const track = mediaStream.getVideoTracks()[0];
+      imageCapture = new ImageCapture(track);
+    })
+    .catch((error) => console.error(error));
 }
 
 function onGrabFrameButtonClick() {
-  imageCapture.grabFrame()
-  .then(imageBitmap => {
-    const canvas = document.querySelector('#grabFrameCanvas');
-    drawCanvas(canvas, imageBitmap);
-  })
-  .catch(error => console.log(error));
+  imageCapture
+    .grabFrame()
+    .then((imageBitmap) => {
+      const canvas = document.querySelector("#grabFrameCanvas");
+      drawCanvas(canvas, imageBitmap);
+    })
+    .catch((error) => console.error(error));
 }
 
 function onTakePhotoButtonClick() {
-  imageCapture.takePhoto()
-  .then(blob => createImageBitmap(blob))
-  .then(imageBitmap => {
-    const canvas = document.querySelector('#takePhotoCanvas');
-    drawCanvas(canvas, imageBitmap);
-  })
-  .catch(error => console.log(error));
+  imageCapture
+    .takePhoto()
+    .then((blob) => createImageBitmap(blob))
+    .then((imageBitmap) => {
+      const canvas = document.querySelector("#takePhotoCanvas");
+      drawCanvas(canvas, imageBitmap);
+    })
+    .catch((error) => console.error(error));
 }
 
 /* Utils */
 
 function drawCanvas(canvas, img) {
-  canvas.width = getComputedStyle(canvas).width.split('px')[0];
-  canvas.height = getComputedStyle(canvas).height.split('px')[0];
-  let ratio  = Math.min(canvas.width / img.width, canvas.height / img.height);
+  canvas.width = getComputedStyle(canvas).width.split("px")[0];
+  canvas.height = getComputedStyle(canvas).height.split("px")[0];
+  let ratio = Math.min(canvas.width / img.width, canvas.height / img.height);
   let x = (canvas.width - img.width * ratio) / 2;
   let y = (canvas.height - img.height * ratio) / 2;
-  canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-  canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height,
-      x, y, img.width * ratio, img.height * ratio);
+  canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+  canvas
+    .getContext("2d")
+    .drawImage(
+      img,
+      0,
+      0,
+      img.width,
+      img.height,
+      x,
+      y,
+      img.width * ratio,
+      img.height * ratio
+    );
 }
 
-document.querySelector('video').addEventListener('play', function() {
-  document.querySelector('#grabFrameButton').disabled = false;
-  document.querySelector('#takePhotoButton').disabled = false;
+document.querySelector("video").addEventListener("play", () => {
+  document.querySelector("#grabFrameButton").disabled = false;
+  document.querySelector("#takePhotoButton").disabled = false;
 });
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

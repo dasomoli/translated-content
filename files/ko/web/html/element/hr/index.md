@@ -1,109 +1,113 @@
 ---
-title: <hr>
+title: "<hr>: The Thematic Break (Horizontal Rule) element"
 slug: Web/HTML/Element/hr
+page-type: html-element
+browser-compat: html.elements.hr
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<hr>` 요소**는 이야기 장면 전환, 구획 내 주제 변경 등, 문단 레벨 요소에서 주제의 분리를 나타냅니다.
+The **`<hr>`** [HTML](/en-US/docs/Web/HTML) element represents a thematic break between paragraph-level elements: for example, a change of scene in a story, or a shift of topic within a section.
 
 {{EmbedInteractiveExample("pages/tabbed/hr.html", "tabbed-shorter")}}
 
-역사적으로 `<hr>`은 가로줄로 표현했습니다. 시각적 브라우저에서도 가로줄로 그려질 수 있지만, 이제 시각 표현에 그치지 않고 의미를 가지게 됐습니다. 따라서 가로줄을 그리고 싶다면 적절한 CSS를 사용해야 합니다.
+Historically, this has been presented as a horizontal rule or line. While it may still be displayed as a horizontal rule in visual browsers, this element is now defined in semantic terms, rather than presentational terms, so if you wish to draw a horizontal line, you should do so using appropriate CSS.
 
-<table class="properties">
-  <tbody>
-    <tr>
-      <th scope="row">
-        <a
-          href="/ko/docs/Web/Guide/HTML/%EC%BB%A8%ED%85%90%ED%8A%B8_%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC"
-          >콘텐츠 카테고리</a
-        >
-      </th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 콘텐츠</th>
-      <td>
-        없음. {{glossary("empt element", "빈 요소")}}입니다.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">태그 생략</th>
-      <td>여는 태그는 필수입니다. 닫는 태그는 존재해선 안됩니다.</td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 부모 요소</th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >를 허용하는 모든 요소.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td><a href='/ko/docs/Web/Accessibility/ARIA/Roles/presentation_role'><code>presentation</code></a></td>
-    </tr>
-    <tr>
-      <th scope="row">DOM 인터페이스</th>
-      <td>{{domxref("HTMLHRElement")}}</td>
-    </tr>
-  </tbody>
-</table>
+## Attributes
 
-## 특성
+This element's attributes include the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)을 포함합니다.
-
-- {{htmlattrdef("align")}} {{deprecated_inline}}
-  - : 줄의 정렬을 지정합니다. 기본값은 `left`입니다.
-- {{htmlattrdef("color")}} {{Non-standard_inline}}
-  - : 색깔 이름 또는 16 진수의 값으로 줄의 색깔을 지정합니다.
-- {{htmlattrdef("noshade")}} {{deprecated_inline}}
+- `align` {{deprecated_inline}} {{Non-standard_Inline}}
+  - : Sets the alignment of the rule on the page. If no value is specified, the default value is `left`.
+- `color` {{deprecated_inline}} {{Non-standard_Inline}}
+  - : Sets the color of the rule through color name or hexadecimal value.
+- `noshade` {{deprecated_inline}} {{Non-standard_Inline}}
   - : Sets the rule to have no shading.
-- {{htmlattrdef("size")}} {{deprecated_inline}}
-  - : 줄의 높이를 픽셀 단위로 지정합니다.
-- {{htmlattrdef("width")}} {{deprecated_inline}}
-  - : 줄의 가로 길이를 픽셀이나 퍼센트 값으로 지정합니다.
+- `size` {{deprecated_inline}} {{Non-standard_Inline}}
+  - : Sets the height, in pixels, of the rule.
+- `width` {{deprecated_inline}} {{Non-standard_Inline}}
+  - : Sets the length of the rule on the page through a pixel or percentage value.
 
-## 예제
+## Example
 
 ### HTML
 
 ```html
 <p>
-This is the first paragraph of text.
-This is the first paragraph of text.
-This is the first paragraph of text.
-This is the first paragraph of text.
+  This is the first paragraph of text. This is the first paragraph of text. This
+  is the first paragraph of text. This is the first paragraph of text.
 </p>
 
-<hr>
+<hr />
 
 <p>
-This is second paragraph of text.
-This is second paragraph of text.
-This is second paragraph of text.
-This is second paragraph of text.
+  This is the second paragraph of text. This is the second paragraph of text.
+  This is the second paragraph of text. This is the second paragraph of text.
 </p>
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample("예제")}}
+{{EmbedLiveSample("Example")}}
 
-## 명세
+## Technical summary
+
+<table class="properties">
+  <tbody>
+    <tr>
+      <th scope="row">
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
+      </th>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
+        >.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted content</th>
+      <td>None; it is a {{Glossary("void element")}}.</td>
+    </tr>
+    <tr>
+      <th scope="row">Tag omission</th>
+      <td>It must have start tag, but must not have an end tag.</td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted parents</th>
+      <td>
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >flow content</a
+        >.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Implicit ARIA role</th>
+      <td><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/separator_role"><code>separator</code></a></td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/presentation_role"><code>presentation</code></a> or <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/none_role"><code>none</code></a>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
+      <td>{{domxref("HTMLHRElement")}}</td>
+    </tr>
+  </tbody>
+</table>
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{htmlelement("p")}}
+- {{HTMLElement('p')}}

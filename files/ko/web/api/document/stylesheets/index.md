@@ -1,36 +1,38 @@
 ---
-title: DocumentOrShadowRoot.styleSheets
+title: "Document: styleSheets property"
+short-title: styleSheets
 slug: Web/API/Document/styleSheets
-original_slug: Web/API/DocumentOrShadowRoot/styleSheets
+page-type: web-api-instance-property
+browser-compat: api.Document.styleSheets
 ---
-{{SeeCompatTable}}{{APIRef("Shadow DOM")}}
 
-{{domxref("DocumentOrShadowRoot")}} 인터페이스의 **`styleSheets`** 읽기 전용 속성은 문서에서 명시적으로 링크했거나, 안에 포함된 스타일시트에 대한 {{domxref('CSSStyleSheet')}} 객체의 {{domxref('StyleSheetList')}}를 반환합니다.
+{{APIRef("CSSOM")}}
 
-## 예제
+The **`styleSheets`** read-only property of the {{domxref("Document")}} interface returns a {{domxref('StyleSheetList')}} of {{domxref('CSSStyleSheet')}} objects, for stylesheets explicitly linked into or embedded in a document.
+
+## Value
+
+The returned list is ordered as follows:
+
+- StyleSheets retrieved from {{htmlelement("link")}} headers are placed first, sorted in header order.
+- StyleSheets retrieved from the DOM are placed after, sorted in [tree order](https://dom.spec.whatwg.org/#concept-tree-order).
+
+## Examples
 
 ```js
 function getStyleSheet(unique_title) {
-  for(var i=0; i<document.styleSheets.length; i++) {
-    var sheet = document.styleSheets[i];
-    if(sheet.title == unique_title) {
+  for (const sheet of document.styleSheets) {
+    if (sheet.title === unique_title) {
       return sheet;
     }
   }
 }
 ```
 
-### 참고
-
-반환 된 목록은 다음과 같이 정렬됩니다:
-
-- {{htmlelement("link")}} 헤더에서 검색된 스타일시트가 먼저 배치되고, 헤더 순서로 정렬됩니다.
-- DOM에서 검색된 스타일시트는 [tree order](https://dom.spec.whatwg.org/#concept-tree-order)로 정렬되어 배치됩니다.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

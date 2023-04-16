@@ -1,14 +1,15 @@
 ---
 title: IP Address
 slug: Glossary/IP_Address
+page-type: glossary-definition
 ---
 
-IP 주소는 인터넷 프로토콜을 사용하는 네트워크에 연결된 모든 장치에 할당된 번호다.
+An **IP address** is a number used to address each device on an IP network uniquely.
 
-"IP address"는 IPv6이 보다 광범위하게 배포될 때까지 여전히 32비트 IPv4 주소를 가리킨다.
+_IP_ stands for _Internet Protocol_ which is the [protocol layer](https://docs.oracle.com/cd/E19683-01/806-4075/ipov-7/index.html) with which the address is associated.
 
-## 더 알아보기
+"IP address" typically still refers to 32-bit IPv4 addresses until IPv6 is deployed more broadly.
 
-### 일반적인 지식
+## See also
 
-- Wikipedia의 [IP 주소](https://ko.wikipedia.org/wiki/IP_%EC%A3%BC%EC%86%8C)
+- [IP address](https://en.wikipedia.org/wiki/IP_address) on Wikipedia

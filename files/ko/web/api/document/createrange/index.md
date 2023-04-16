@@ -1,33 +1,48 @@
 ---
-title: Document.createRange()
+title: "Document: createRange() method"
+short-title: createRange()
 slug: Web/API/Document/createRange
+page-type: web-api-instance-method
+browser-compat: api.Document.createRange
 ---
 
 {{APIRef("DOM")}}
 
-새 {{domxref("Range")}} 객체를 리턴합니다.
+The **`Document.createRange()`** method returns a new
+{{domxref("Range")}} object.
 
-## 문법
+## Syntax
 
-```js
-range = document.createRange();
+```js-nolint
+createRange()
 ```
 
-`range` 는 생성된 {{domxref("Range")}} 객체입니다.
+### Parameters
 
-## 예제
+None.
+
+### Return value
+
+The created {{domxref("Range")}} object.
+
+## Examples
 
 ```js
-var range = document.createRange();
+let range = document.createRange();
 
 range.setStart(startNode, startOffset);
 range.setEnd(endNode, endOffset);
 ```
 
-## 노트
+## Notes
 
-Range 객체의 대부분의 메소드들은 Range 객체가 생성 된 후, 바운더리 포인트를 지정해야 사용할 수 있습니다.
+Once a `Range` is created, you need to set its boundary points before you
+can make use of most of its methods.
 
-## 명세
+## Specifications
 
 {{Specifications}}
+
+## Browser compatibility
+
+{{Compat}}

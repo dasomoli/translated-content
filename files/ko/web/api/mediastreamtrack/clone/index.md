@@ -1,26 +1,38 @@
 ---
-title: MediaStreamTrack.clone()
+title: "MediaStreamTrack: clone() method"
+short-title: clone()
 slug: Web/API/MediaStreamTrack/clone
+page-type: web-api-instance-method
+browser-compat: api.MediaStreamTrack.clone
 ---
 
 {{APIRef("Media Capture and Streams")}}
 
-{{domxref("MediaStreamTrack")}} 인터페이스의 **`clone()`** 메서드는 `MediaStreamTrack` 객체의 사본을 반환합니다. 사본은 새로운 {{domxref("MediaStreamTrack.id", "id")}}를 제외하면 모든 값이 원본과 동일합니다.
+The **`clone()`** method of the {{domxref("MediaStreamTrack")}}
+interface creates a duplicate of the `MediaStreamTrack`. This new
+`MediaStreamTrack` object is identical except for its unique
+{{domxref("MediaStreamTrack.id", "id")}}.
 
-## 구문
+## Syntax
 
-```js
-const newTrack = track.clone()
+```js-nolint
+clone()
 ```
 
-### 반환 값
+### Parameters
 
-`clone()`을 호출한 {{domxref("MediaStreamTrack")}}에서 {{domxref("MediaStreamTrack.id", "id")}}를 제외하면 똑같은 새로운 `MediaStreamTrack`.
+None.
 
-## 명세
+### Return value
+
+A new {{domxref("MediaStreamTrack")}} instance which is identical to the one
+`clone()` was called, except for its new unique
+{{domxref("MediaStreamTrack.id", "id")}}.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

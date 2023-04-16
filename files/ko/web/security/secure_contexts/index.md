@@ -1,59 +1,58 @@
 ---
-title: 보안 컨텍스트
+title: Secure contexts
 slug: Web/Security/Secure_Contexts
-l10n:
-  sourceCommit: 199c317d91bf506a81a6f68f53d6c63499651dff
+spec-urls: https://w3c.github.io/webappsec-secure-contexts/
 ---
 
-{{QuickLinksWithSubpages("/ko/docs/Web/Security")}}
+{{QuickLinksWithSubpages("/en-US/docs/Web/Security")}}
 
-**보안 컨텍스트**는 특정한 최소 인증 및 기밀성 표준이 충족되는 `Window` 또는 `Worker`입니다. 많은 웹 API와 기능들은 보안 컨텍스트에서만 액세스할 수 있습니다. 보안 컨텍스트의 주요 목표는 [MITM 공격자](https://en.wikipedia.org/wiki/Man-in-the-middle_attack)가 공격의 피해자를 추가로 손상시킬 수 있는 강력한 API에 접근하지 못하도록 방지하는 것입니다.
+A **secure context** is a `Window` or `Worker` for which certain minimum standards of authentication and confidentiality are met. Many Web APIs and features are accessible only in a secure context. The primary goal of secure contexts is to prevent [MITM attackers](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) from accessing powerful APIs that could further compromise the victim of an attack.
 
-## 왜 일부 기능을 제한해야하나요?
+## Why should some features be restricted?
 
-웹의 일부 API는 매우 강력하여 공격자가 다음과 같은 작업을 수행할 수 있습니다.
+Some APIs on the web are very powerful, giving an attacker the ability to do the following and more:
 
-- 사용자의 프라이버시 침해
-- 사용자 컴퓨터에 대한 저수준 엑세스 권한을 얻음
-- 사용자 자격 증명과 같은 데이터에 대한 액세스 권한을 얻음
+- Invade a user's privacy.
+- Get low-level access to a user's computer.
+- Get access to data such as user credentials.
 
-## 컨텍스트는 언제 안전한가요?
+## When is a context considered secure?
 
-컨텍스트는 [보안 컨텍스트](https://w3c.github.io/webappsec-secure-contexts/) 명세서에 정의된 특정한 최소 인증 및 기밀성 표준을 충족할 때 안전하다고 간주됩니다. 특정 문서는 보안 컨텍스트인 [최상위 브라우징 컨텍스트](https://html.spec.whatwg.org/multipage/browsers.html#top-level-browsing-context)(창 또는 탭)의 [활성 문서](https://html.spec.whatwg.org/multipage/browsers.html#active-document)일 때 보안 컨텍스트에 있는 것으로 간주됩니다.
+A context is considered secure when it meets certain minimum standards of authentication and confidentiality defined in the [Secure Contexts](https://w3c.github.io/webappsec-secure-contexts/) specification. A particular document is considered to be in a secure context when it is the [active document](https://html.spec.whatwg.org/multipage/browsers.html#active-document) of a [top-level browsing context](https://html.spec.whatwg.org/multipage/browsers.html#top-level-browsing-context) (basically, a containing window or tab) that is a secure context.
 
-예를 들어 {{HTMLElement("iframe")}} 내에서 TLS를 통해 전달된 문서의 경우에도 TLS를 통해 전달되지 **않은** 상위 항목이 있는 경우 해당 컨텍스트는 안전한 것으로 간주되지 않습니다.
+For example, even for a document delivered over TLS within an {{HTMLElement("iframe")}}, its context is **not** considered secure if it has an ancestor that was not also delivered over TLS.
 
-그러나 비(非)보안 컨텍스트로 인해 새 창이 생성되는 경우([noopener](/ko/docs/Web/API/Window/open)를 지정하거나 지정하지 않고), 오프너가 안전하지 않다는 사실은 새 창이 안전한 것으로 간주되는것에 영향을 미치지 않는다는 점에 유의해야 합니다. 특정 문서가 보안 컨텍스트에 있는지 여부를 결정하는 것은 비보안 컨텍스트가 문서를 만들었는지가 아니라 연결된 최상위 브라우징 컨텍스트 내에서만 고려하기 때문입니다.
+However, it's important to note that if a non-secure context causes a new window to be created (with or without specifying [noopener](/en-US/docs/Web/API/Window/open)), then the fact that the opener was insecure has no effect on whether the new window is considered secure. That's because the determination of whether a particular document is in a secure context is based only on considering it within the top-level browsing context with which it is associated — and not whether a non-secure context happened to be used to create it.
 
-`http://127.0.0.1` URL, `http://localhost` 및 `http://*.localhost` URL(예: `http://dev.whatever.localhost/`) 그리고 `file://`과 같은 로컬에서 제공된 리소스도 안전하게 전달된 것으로 간주됩니다.
+Locally-delivered resources such as those with `http://127.0.0.1` URLs, `http://localhost` and `http://*.localhost` URLs (e.g. `http://dev.whatever.localhost/`), and `file://` URLs are also considered to have been delivered securely.
 
-> **참고:** Firefox 84 이상에서는 `http://localhost`와 `http://*.localhost` URL을 신뢰할 수 있는 원본으로 지원합니다(`localhost`가 로컬/루프백 주소로 매핑되는 것이 보장되지 않았기 때문에 이전 버전에서는 지원하지 않음).
+> **Note:** Firefox 84 and later support `http://localhost` and `http://*.localhost` URLs as trustworthy origins (earlier versions did not, because `localhost` was not guaranteed to map to a local/loopback address).
 
-로컬이 아닌 리소스가 안전한 것으로 간주되려면 다음 기준을 충족해야 합니다.
+Resources that are not local, to be considered secure, must meet the following criteria:
 
-- `https://` 또는 `wss://` URL을 통해 제공되어야 한다.
-- 리소스를 전달하는 데 사용되는 네트워크 채널의 보안 속성이 더 이상 사용되지 않는(deprecated) 것이 아니어야 한다.
+- must be served over `https://` or `wss://` URLs
+- the security properties of the network channel used to deliver the resource must not be considered deprecated
 
-## 기능 감지
+## Feature detection
 
-페이지는 전역 스코프에 있는 {{domxref("isSecureContext")}} 불리언 값을 사용하여 보안 컨텍스트에 있는지 여부를 확인하기 위해 기능 감지를 사용할 수 있습니다.
+Pages can use feature detection to check whether they are in a secure context or not by using the {{domxref("isSecureContext")}} boolean, which is exposed on the global scope.
 
 ```js
 if (window.isSecureContext) {
-  // 페이지는 보안 컨텍스트이므로 이제 서비스 워커를 사용할 수 있습니다.
+  // Page is a secure context so service workers are now available
   navigator.serviceWorker.register("/offline-worker.js").then(() => {
     // …
   });
 }
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 같이 보기
+## See also
 
-- [보안 컨텍스트로 제한된 플랫폼 기능](/ko/docs/Web/Security/Secure_Contexts/features_restricted_to_secure_contexts) — 보안 컨텍스트에서만 사용할 수 있는 기능 목록
+- [Platform features restricted to secure contexts](/en-US/docs/Web/Security/Secure_Contexts/features_restricted_to_secure_contexts) — a list of the features available only in secure contexts
 - {{domxref("isSecureContext")}}
-- <https://permission.site> — HTTP 및 HTTPS를 통해 브라우저가 사용하는 API 권한 검사를 확인할 수 있는 사이트
-- [Strict-Transport-Security](/ko/docs/Web/HTTP/Headers/Strict-Transport-Security) HTTP 헤더
+- <https://permission.site> — A site that allows you to check what API permission checks your browser employs, over HTTP and HTTPS
+- [Strict-Transport-Security](/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security) HTTP header

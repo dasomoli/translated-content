@@ -1,60 +1,56 @@
 ---
-title: 'Document: drag 이벤트'
+title: "HTMLElement: drag event"
+short-title: drag
 slug: Web/API/HTMLElement/drag_event
-original_slug: Web/API/Document/drag_event
+page-type: web-api-event
+browser-compat: api.HTMLElement.drag_event
 ---
 
 {{APIRef}}
 
-`drag` 이벤트는 사용자가 요소 또는 텍스트를 드래그하는 동안 매 수백 밀리초마다 발생합니다.
+The `drag` event is fired every few hundred milliseconds as an element or text selection is being dragged by the user.
 
-<table class="properties">
-  <tbody>
-    <tr>
-      <th scope="row">버블링</th>
-      <td>예</td>
-    </tr>
-    <tr>
-      <th scope="row">취소 가능</th>
-      <td>예</td>
-    </tr>
-    <tr>
-      <th scope="row">기본 동작</th>
-      <td>드래그 앤 드롭 작업을 지속합니다.</td>
-    </tr>
-    <tr>
-      <th scope="row">인터페이스</th>
-      <td>{{domxref("DragEvent")}}</td>
-    </tr>
-    <tr>
-      <th scope="row">이벤트 처리기 속성</th>
-      <td>
-        {{domxref("GlobalEventHandlers/ondrag", "ondrag")}}
-      </td>
-    </tr>
-  </tbody>
-</table>
+## Syntax
 
-## 예제
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
 
-### 드래그 앤 드롭 예제
+```js
+addEventListener("drag", (event) => {});
+
+ondrag = (event) => {};
+```
+
+## Event type
+
+A {{domxref("DragEvent")}}. Inherits from {{domxref("Event")}}.
+
+{{InheritanceDiagram("DragEvent")}}
+
+## Event properties
+
+_In addition to the properties listed below, properties from the parent interface, {{domxref("Event")}}, are available._
+
+- {{domxref('DragEvent.dataTransfer')}} {{ReadOnlyInline}}
+  - : The data that is transferred during a drag and drop interaction.
+
+## Examples
+
+### Drag and drop example
 
 #### HTML
 
 ```html
 <div class="dropzone">
-  <div id="draggable" draggable="true">
-    드래그 가능
-  </div>
+  <div id="draggable" draggable="true">This div is draggable</div>
 </div>
-<div class="dropzone"></div>
+<div class="dropzone" id="droptarget"></div>
 ```
 
 #### CSS
 
 ```css
 body {
-  /* 사용자가 예제의 텍스트를 선택하지 못하도록 */
+  /* Prevent the user selecting text in the example */
   user-select: none;
 }
 
@@ -76,7 +72,7 @@ body {
 }
 
 .dragging {
-  opacity: .5;
+  opacity: 0.5;
 }
 ```
 
@@ -85,80 +81,85 @@ body {
 ```js
 let dragged;
 
-/* 드래그 가능한 대상에서 발생하는 이벤트 */
-document.addEventListener("drag", event => {
+/* events fired on the draggable target */
+const source = document.getElementById("draggable");
+source.addEventListener("drag", (event) => {
   console.log("dragging");
 });
 
-document.addEventListener("dragstart", event => {
-  // 드래그한 요소에 대한 참조 저장
+source.addEventListener("dragstart", (event) => {
+  // store a ref. on the dragged elem
   dragged = event.target;
-  // 반투명하게 만들기
+  // make it half transparent
   event.target.classList.add("dragging");
 });
 
-document.addEventListener("dragend", event => {
-  // 투명도 초기화
+source.addEventListener("dragend", (event) => {
+  // reset the transparency
   event.target.classList.remove("dragging");
 });
 
-/* 드롭 대상에서 발생하는 이벤트 */
-document.addEventListener("dragover", event => {
-  // 드롭을 허용하기 위해 기본 동작 취소
-  event.preventDefault();
-}, false);
+/* events fired on the drop targets */
+const target = document.getElementById("droptarget");
+target.addEventListener(
+  "dragover",
+  (event) => {
+    // prevent default to allow drop
+    event.preventDefault();
+  },
+  false
+);
 
-document.addEventListener("dragenter", event => {
-  // 드래그 가능한 요소가 대상 위로 오면 강조
+target.addEventListener("dragenter", (event) => {
+  // highlight potential drop target when the draggable element enters it
   if (event.target.classList.contains("dropzone")) {
     event.target.classList.add("dragover");
   }
 });
 
-document.addEventListener("dragleave", event => {
-  // 드래그 가능한 요소가 대상 밖으로 나가면 강조 제거
+target.addEventListener("dragleave", (event) => {
+  // reset background of potential drop target when the draggable element leaves it
   if (event.target.classList.contains("dropzone")) {
     event.target.classList.remove("dragover");
   }
 });
 
-document.addEventListener("drop", event => {
-  // 일부 요소의 링크 열기와 같은 기본 동작 취소
+target.addEventListener("drop", (event) => {
+  // prevent default action (open as link for some elements)
   event.preventDefault();
-  // 드래그한 요소를 선택한 드롭 대상으로 이동
+  // move dragged element to the selected drop target
   if (event.target.classList.contains("dropzone")) {
     event.target.classList.remove("dragover");
-    dragged.parentNode.removeChild(dragged);
     event.target.appendChild(dragged);
   }
 });
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('드래그 앤 드롭 예제')}}
+{{EmbedLiveSample('Drag and drop example')}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 다른 드래그 앤 드롭 이벤트:
+- Other drag and drop events:
 
-  - {{domxref("Document/dragstart_event", "dragstart")}}
-  - {{domxref("Document/dragend_event", "dragend")}}
-  - {{domxref("Document/dragover_event", "dragover")}}
-  - {{domxref("Document/dragenter_event", "dragenter")}}
-  - {{domxref("Document/dragleave_event", "dragleave")}}
-  - {{domxref("Document/drop_event", "drop")}}
+  - {{domxref("HTMLElement/dragstart_event", "dragstart")}}
+  - {{domxref("HTMLElement/dragend_event", "dragend")}}
+  - {{domxref("HTMLElement/dragover_event", "dragover")}}
+  - {{domxref("HTMLElement/dragenter_event", "dragenter")}}
+  - {{domxref("HTMLElement/dragleave_event", "dragleave")}}
+  - {{domxref("HTMLElement/drop_event", "drop")}}
 
-- 이 이벤트의 다른 대상:
+- This event on other targets:
 
-  - {{domxref("Window")}}: {{domxref("Window/drag_event", "drag")}} 이벤트
-  - {{domxref("HTMLElement")}}: {{domxref("HTMLElement/drag_event", "drag")}} 이벤트
-  - {{domxref("SVGElement")}}: {{domxref("SVGElement/drag_event", "drag")}} 이벤트
+  - {{domxref("Window")}}: {{domxref("Window/drag_event", "drag")}} event
+  - {{domxref("Document")}}: {{domxref("Document/drag_event", "drag")}} event
+  - {{domxref("SVGElement")}}: {{domxref("SVGElement/drag_event", "drag")}} event

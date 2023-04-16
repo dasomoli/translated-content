@@ -1,84 +1,96 @@
 ---
-title: WebAssembly.Memory()
+title: WebAssembly.Memory
 slug: WebAssembly/JavaScript_interface/Memory
-original_slug: Web/JavaScript/Reference/Global_Objects/WebAssembly/Memory
+browser-compat: javascript.builtins.WebAssembly.Memory
 ---
 
 {{WebAssemblySidebar}}
 
-**`WebAssembly.Memory()`** 생성자는 WebAssembly `Instance`가 액세스하는 메모리의 원시 바이트를 가진 [ArrayBuffer](/ko/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)(크기조정이 가능)인 새 `Memory` 객체를 만듭니다.
+The **`WebAssembly.Memory`** object is a resizable {{jsxref("ArrayBuffer")}} or {{jsxref("SharedArrayBuffer")}} that holds the raw bytes of memory accessed by a [`WebAssembly.Instance`](/en-US/docs/WebAssembly/JavaScript_interface/Instance).
 
-메모리는 자바스크립트 혹은 WebAssembly 코드 안에서 만들어지며 자바스크립트 그리고 WebAssembly에서 접근하거나 변경이 가능합니다.
+Both WebAssembly and JavaScript can create `Memory` objects. If you want to access the memory created in JS from Wasm or vice versa, you can pass a reference to the memory from one side to the other.
 
-## Syntax
+## Constructor
 
-```js
-var myMemory = new WebAssembly.Memory(memoryDescriptor);
-```
+- [`WebAssembly.Memory()`](/en-US/docs/WebAssembly/JavaScript_interface/Memory/Memory)
+  - : Creates a new `Memory` object.
 
-### Parameters
+## Instance properties
 
-- _memoryDescriptor_
-  - : 다음의 멤버를 가질수 있는 객체입니다._ *initial*
-    _ : WebAssembly Page의 단위별 WebAssembly 메모리의 초기 크기입니다.
-    - _maximum {{optional_inline}}_
-      - : WebAssembly 메모리의 최대 크기는 WebAssembly 페이지 단위로 증가 할 수 있습니다. 이 매개 변수가 있으면 `maximum` 매개 변수는 엔진에 대해 메모리를 전면에 예약하도록 합니다. 그러나 엔진은 이 예약 요청을 무시하거나 클램핑 할 수 있습니다. 일반적으로 대부분의 WebAssembly 모듈은 `maximum` 값을 설정할 필요가 없습니다.
+- [`Memory.prototype.buffer`](/en-US/docs/WebAssembly/JavaScript_interface/Memory/buffer) {{ReadOnlyInline}}
+  - : An accessor property that returns the buffer contained in the memory.
 
-> **참고:** WebAssembly 페이지의 크기는 65,536 바이트로 64KiB로 고정되어 있습니다.
+## Instance methods
 
-### Exceptions
-
-- `memoryDescriptor`가 object 유형이 아닌 경우 {{jsxref ( "TypeError")}}가 발생합니다.
-- `maximum`이 지정되고 `initial`보다 작은 경우 {{jsxref ( "RangeError")}}가 발생합니다.
-
-## `Memory` instances
-
-모든 `Memory` 인스턴스는 `Memory()`생성자의 [prototype object](/ko/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Memory/prototype)를 상속합니다.이 인스턴스는 모든 `Memory` 인스턴스에 적용되도록 수정할 수 있습니다.
-
-### Instance properties
-
-- `Memory.prototype.constructor`
-  - : 이 객체의 인스턴스를 생성 한 함수를 돌려줍니다. 기본적으로 이것은 {{jsxref("WebAssembly.Memory()")}} 생성자입니다.
-- {{jsxref("WebAssembly/Memory/buffer","Memory.prototype.buffer")}}
-  - : 메모리에 포함 된 버퍼를 반환하는 접근 자 속성입니다.
-
-### Instance methods
-
-- {{jsxref("WebAssembly/Memory/grow","Memory.prototype.grow()")}}
-  - : 지정된 수의 WebAssembly 페이지 (각각 64KB 크기)만큼 메모리 인스턴스의 크기를 늘립니다.
+- [`Memory.prototype.grow()`](/en-US/docs/WebAssembly/JavaScript_interface/Memory/grow)
+  - : Increases the size of the memory instance by a specified number of WebAssembly pages (each one is 64KB in size). Detaches the previous `buffer`.
 
 ## Examples
 
-`WebAssembly.Memory` 객체를 가져 오는 두 가지 방법이 있습니다. 첫 번째 방법은 JavaScript에서 생성하는 것입니다. 다음 예제에서는 초기 크기가 10 페이지 (640KiB)이고 최대 크기가 100 페이지 (6.4MiB) 인 새 WebAssembly 메모리 인스턴스를 만듭니다.
+### Creating a new Memory object
+
+There are two ways to get a `WebAssembly.Memory` object. The first way is to construct it from JavaScript. The following snippet creates a new WebAssembly Memory instance with an initial size of 10 pages (640KiB), and a maximum size of 100 pages (6.4MiB). Its [`buffer`](/en-US/docs/WebAssembly/JavaScript_interface/Memory/buffer) property will return an {{jsxref("ArrayBuffer")}}.
 
 ```js
-var memory = new WebAssembly.Memory({initial:10, maximum:100});
+const memory = new WebAssembly.Memory({
+  initial: 10,
+  maximum: 100,
+});
 ```
 
-`WebAssembly.Memory` 객체를 가져 오는 두 번째 방법은 WebAssembly 모듈에서 내보냅니다. 다음 예제는 (GitHub의 [memory.html](https://github.com/mdn/webassembly-examples/blob/master/js-api-examples/memory.html)을 보세요. [라이브로 보기](https://mdn.github.io/webassembly-examples/js-api-examples/memory.html)) 생성된 메모리를 가져 오는 동안 {{jsxref("WebAssembly.instantiateStreaming()")}} 메소드를 사용하여로드 된 memory.wasm 바이트 코드를 가져 와서 인스턴스화합니다. 위의 줄에. 그런 다음 메모리에 일부 값을 저장 한 다음 함수를 내 보낸 다음 일부 값의 합계에 사용합니다.
+The following example (see [memory.html](https://github.com/mdn/webassembly-examples/blob/master/js-api-examples/memory.html) on GitHub, and [view it live also](https://mdn.github.io/webassembly-examples/js-api-examples/memory.html)) fetches and instantiates the loaded memory.wasm bytecode using the [`WebAssembly.instantiateStreaming()`](/en-US/docs/WebAssembly/JavaScript_interface/instantiateStreaming) function, while importing the memory created in the line above. It then stores some values in that memory, exports a function, and uses the exported function to sum those values.
 
 ```js
-WebAssembly.instantiateStreaming(fetch('memory.wasm'), { js: { mem: memory } })
-.then(obj => {
-  var i32 = new Uint32Array(memory.buffer);
-  for (var i = 0; i < 10; i++) {
-    i32[i] = i;
+const memory = new WebAssembly.Memory({
+  initial: 10,
+  maximum: 100,
+});
+
+WebAssembly.instantiateStreaming(fetch("memory.wasm"), {
+  js: { mem: memory },
+}).then((obj) => {
+  const summands = new Uint32Array(memory.buffer);
+  for (let i = 0; i < 10; i++) {
+    summands[i] = i;
   }
-  var sum = obj.instance.exports.accumulate(0, 10);
+  const sum = obj.instance.exports.accumulate(0, 10);
   console.log(sum);
 });
 ```
 
-## 명세서
+The second way to get a WebAssembly.Memory object is to have it exported by a WebAssembly module. This memory can be accessed in the `exports` property of the WebAssembly instance (after the memory is exported within the WebAssembly module). The following example imports a memory exported from WebAssembly with the name `memory`, and then prints out the first element of the memory, interpreted as an {{jsxref("Uint32Array")}}.
+
+```js
+WebAssembly.instantiateStreaming(fetch("memory.wasm")).then((obj) => {
+  const values = new Uint32Array(obj.instance.exports.memory.buffer);
+  console.log(values[0]);
+});
+```
+
+### Creating a shared memory
+
+By default, WebAssembly memories are unshared. You can create a [shared memory](/en-US/docs/WebAssembly/Understanding_the_text_format#shared_memories) from JavaScript by passing `shared: true` in the constructor's initialization object:
+
+```js
+const memory = new WebAssembly.Memory({
+  initial: 10,
+  maximum: 100,
+  shared: true,
+});
+```
+
+This memory's `buffer` property will return a {{jsxref("SharedArrayBuffer")}}.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- [WebAssembly](/ko/docs/WebAssembly) overview page
-- [WebAssembly concepts](/ko/docs/WebAssembly/Concepts)
-- [Using the WebAssembly JavaScript API](/ko/docs/WebAssembly/Using_the_JavaScript_API)
+- [WebAssembly](/en-US/docs/WebAssembly) overview page
+- [WebAssembly concepts](/en-US/docs/WebAssembly/Concepts)
+- [Using the WebAssembly JavaScript API](/en-US/docs/WebAssembly/Using_the_JavaScript_API)

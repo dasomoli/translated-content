@@ -1,11 +1,13 @@
 ---
-title: <data>
+title: "<data>: The Data element"
 slug: Web/HTML/Element/data
+page-type: html-element
+browser-compat: html.elements.data
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<data>` 요소**는 주어진 콘텐츠를 기계가 읽을 수 있는 해석본과 연결합니다. 콘텐츠가 시간 혹은 날짜 관련 정보라면 대신 {{htmlelement("time")}} 요소를 사용하세요.
+The **`<data>`** [HTML](/en-US/docs/Web/HTML) element links a given piece of content with a machine-readable translation. If the content is time- or date-related, the {{HTMLElement("time")}} element must be used.
 
 {{EmbedInteractiveExample("pages/tabbed/data.html", "tabbed-shorter")}}
 
@@ -13,76 +15,91 @@ slug: Web/HTML/Element/data
   <tbody>
     <tr>
       <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
       </th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
         >,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >, 뚜렷한 콘텐츠.
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >, palpable content.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >Phrasing content</a
         >.
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
+      <th scope="row">Tag omission</th>
       <td>{{no_tag_omission}}</td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Permitted parents</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >를 허용하는 모든 요소.
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>모두</td>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
+          >No corresponding role</a
+        >
+      </td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>Any</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLDataElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
+## Attributes
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)을 포함합니다
+This element's attributes include the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-- {{htmlattrdef("value")}}
-  - : 기계가 읽을 수 있는 형태의 콘텐츠 해석본.
+- `value`
+  - : This attribute specifies the machine-readable translation of the content of the element.
 
-## 예제
+## Examples
 
-밑의 예제는 상품의 이름을 표시하면서, 각각의 상품 번호도 연결합니다.
+The following example displays product names but also associates each name with a product number.
 
 ```html
-<p>새로운 상품들</p>
+<p>New Products</p>
 <ul>
- <li><data value="398">미니 케찹</data></li>
- <li><data value="399">점보 케찹</data></li>
- <li><data value="400">메가 점보 케찹</data></li>
+  <li><data value="398">Mini Ketchup</data></li>
+  <li><data value="399">Jumbo Ketchup</data></li>
+  <li><data value="400">Mega Jumbo Ketchup</data></li>
 </ul>
 ```
 
-## 명세
+### Result
+
+{{EmbedLiveSample('Examples')}}
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- HTML {{HTMLElement("time")}} 요소.
+- The HTML {{HTMLElement("time")}} element.

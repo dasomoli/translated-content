@@ -1,35 +1,51 @@
 ---
-title: URL.toJSON()
+title: "URL: toJSON() method"
+short-title: toJSON()
 slug: Web/API/URL/toJSON
+page-type: web-api-instance-method
+browser-compat: api.URL.toJSON
 ---
 
 {{APIRef("URL API")}}
 
-{{domxref("URL")}} 인터페이스의 **`toJSON()`** 메서드는 URL을 직렬화한 {{domxref("USVString")}}을 반환합니다. 그러나, 사실상 {{domxref("URL.toString", "toString()")}}과 같습니다..
+The **`toJSON()`** method of the {{domxref("URL")}} interface
+returns a string containing a serialized version of the URL,
+although in practice it seems to have the same effect as
+{{domxref("URL.toString()")}}.
 
 {{AvailableInWorkers}}
 
-## 구문
+## Syntax
 
-```js
-const href = url.toJSON()
+```js-nolint
+toJSON()
 ```
 
-### 반환 값
+### Parameters
 
-{{domxref("USVString")}}.
+None.
 
-## 예제
+### Return value
+
+A string.
+
+## Examples
 
 ```js
-const url = new URL("https://developer.mozilla.org/en-US/docs/Web/API/URL/toString");
+const url = new URL(
+  "https://developer.mozilla.org/en-US/docs/Web/API/URL/toString"
+);
 url.toJSON(); // should return the URL as a string
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- [Polyfill of `URL.prototype.toJSON` in `core-js`](https://github.com/zloirock/core-js#url-and-urlsearchparams)

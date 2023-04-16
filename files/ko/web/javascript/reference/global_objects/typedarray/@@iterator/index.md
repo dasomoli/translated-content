@@ -1,54 +1,65 @@
 ---
 title: TypedArray.prototype[@@iterator]()
 slug: Web/JavaScript/Reference/Global_Objects/TypedArray/@@iterator
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.TypedArray.@@iterator
 ---
 
 {{JSRef}}
 
-@@iterator 속성의 초기값은 {{jsxref("TypedArray.prototype.values()", "values")}} 속성의 초기값과 같은 함수 객체입니다.
+The **`[@@iterator]()`** method of {{jsxref("TypedArray")}} instances implements the [iterable protocol](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) and allows typed arrays to be consumed by most syntaxes expecting iterables, such as the [spread syntax](/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) and {{jsxref("Statements/for...of", "for...of")}} loops. It returns an [array iterator object](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator) that yields the value of each index in the typed array.
 
-## 구문
+The initial value of this property is the same function object as the initial value of the {{jsxref("TypedArray.prototype.values")}} property.
 
-```js
-arr[Symbol.iterator]()
+## Syntax
+
+```js-nolint
+typedArray[Symbol.iterator]()
 ```
 
-## 예
+### Return value
 
-### `for...of` 루프를 사용하는 반복
+The same return value as {{jsxref("TypedArray.prototype.values()")}}: a new [iterable iterator object](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator) that yields the value of each index in the typed array.
+
+## Examples
+
+### Iteration using for...of loop
+
+Note that you seldom need to call this method directly. The existence of the `@@iterator` method makes typed arrays [iterable](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterable_protocol), and iterating syntaxes like the `for...of` loop automatically calls this method to obtain the iterator to loop over.
 
 ```js
-var arr = new Uint8Array([10, 20, 30, 40, 50]);
-// 브라우저가 for..of 루프 및 for 루프에서
-// let 스코프인 변수를 지원해야 합니다
-for (let n of arr) {
+const arr = new Uint8Array([10, 20, 30, 40, 50]);
+for (const n of arr) {
   console.log(n);
 }
 ```
 
-### 대안 반복
+### Manually hand-rolling the iterator
+
+You may still manually call the `next()` method of the returned iterator object to achieve maximum control over the iteration process.
 
 ```js
-var arr = new Uint8Array([10, 20, 30, 40, 50]);
-var eArr = arr[Symbol.iterator]();
-console.log(eArr.next().value); // 10
-console.log(eArr.next().value); // 20
-console.log(eArr.next().value); // 30
-console.log(eArr.next().value); // 40
-console.log(eArr.next().value); // 50
+const arr = new Uint8Array([10, 20, 30, 40, 50]);
+const arrIter = arr[Symbol.iterator]();
+console.log(arrIter.next().value); // 10
+console.log(arrIter.next().value); // 20
+console.log(arrIter.next().value); // 30
+console.log(arrIter.next().value); // 40
+console.log(arrIter.next().value); // 50
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
-- [JavaScript 형식화 배열](/ko/docs/Web/JavaScript/Typed_arrays)
+- [Polyfill of `TypedArray.prototype[@@iterator]` in `core-js`](https://github.com/zloirock/core-js#ecmascript-typed-arrays)
+- [JavaScript typed arrays](/en-US/docs/Web/JavaScript/Typed_arrays)
 - {{jsxref("TypedArray")}}
 - {{jsxref("TypedArray.prototype.entries()")}}
 - {{jsxref("TypedArray.prototype.keys()")}}

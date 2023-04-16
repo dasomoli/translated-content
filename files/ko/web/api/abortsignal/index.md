@@ -1,77 +1,157 @@
 ---
 title: AbortSignal
 slug: Web/API/AbortSignal
+page-type: web-api-interface
+browser-compat: api.AbortSignal
 ---
 
-{{APIRef("DOM")}}{{SeeCompatTable}}
+{{APIRef("DOM")}}
 
-**`AbortSignal`** 인터페이스는 DOM 요청(Fetch와 같은)과 통신하고 필요한 경우 {{domxref("AbortController")}} 객체를 통해 취소할 수 있게 해주는 신호 객체를 나타냅니다.
+The **`AbortSignal`** interface represents a signal object that allows you to communicate with a DOM request (such as a fetch request) and abort it if required via an {{domxref("AbortController")}} object.
 
-## 프로퍼티
+{{InheritanceDiagram}}
 
-_AbortSignal 인터페이스는 또한 부모 인터페이스 {{domxref("EventTarget")}}으로부터 프로퍼티를 상속받습니다._
+## Instance properties
 
-- {{domxref("AbortSignal.aborted")}} {{readonlyInline}}
-  - : 신호가 통신하는 요청이 취소되었는지(`true`) 그렇지 않은지(`false`)를 나타내는 {{domxref("Boolean")}}입니다.
+_The AbortSignal interface may also inherit properties from its parent interface, {{domxref("EventTarget")}}._
 
-## 이벤트
+- {{domxref("AbortSignal.aborted")}} {{ReadOnlyInline}}
+  - : A {{Glossary("Boolean")}} that indicates whether the request(s) the signal is communicating with is/are aborted (`true`) or not (`false`).
+- {{domxref("AbortSignal.reason")}} {{ReadOnlyInline}}
+  - : A JavaScript value providing the abort reason, once the signal has aborted.
 
-[`addEventListener()`](/ko/docs/Web/API/EventTarget/addEventListener)를 사용하거나 이 인터페이스의 `oneventname` 프로퍼티로 이벤트 리스너를 할당하여 이벤트를 리슨합니다.
+## Static methods
+
+- {{domxref("AbortSignal.abort()")}}
+  - : Returns an **`AbortSignal`** instance that is already set as aborted.
+- {{domxref("AbortSignal.timeout()")}}
+  - : Returns an **`AbortSignal`** instance that will automatically abort after a specified time.
+
+## Instance methods
+
+_The **`AbortSignal`** interface may also inherit methods from its parent interface, {{domxref("EventTarget")}}._
+
+- {{domxref("AbortSignal.throwIfAborted()")}}
+  - : Throws the signal's abort {{domxref("AbortSignal.reason", "reason")}} if the signal has been aborted; otherwise it does nothing.
+
+## Events
+
+Listen to this event using [`addEventListener()`](/en-US/docs/Web/API/EventTarget/addEventListener) or by assigning an event listener to the `oneventname` property of this interface.
 
 - [`abort`](/en-US/docs/Web/API/AbortSignal/abort_event)
-  - : 신호가 통신하는 요청이 취소되었을 때 호출됩니다. [`onabort`](/ko/docs/Web/API/AbortSignal/onabort) 프로퍼티를 통해서도 사용이 가능합니다.
+  - : Invoked when the DOM requests the signal is communicating with is/are aborted.
+    Also available via the `onabort` property.
 
-## 메소드
+## Examples
 
-_AbortSignal 인터페이스는 부모인 {{domxref("EventTarget")}}로부터 메소드를 상속받습니다._
+### Aborting a fetch operation using an explicit signal
 
-## 예제
+The following snippet shows how we might use a signal to abort downloading a video using the [Fetch API](/en-US/docs/Web/API/Fetch_API).
 
-다음 스니펫에서는 [Fetch API](/ko/docs/Web/API/Fetch_API)를 사용해 비디오를 다운로드하는 것을 목표로 합니다.
+We first create an abort controller using the {{domxref("AbortController.AbortController","AbortController()")}} constructor, then grab a reference to its associated {{domxref("AbortSignal")}} object using the {{domxref("AbortController.signal")}} property.
 
-먼저 {{domxref("AbortController.AbortController","AbortController()")}} 생성자를 사용해 컨트롤러를 {{domxref("AbortController.signal")}} 프로퍼티를 사용해 {{domxref("AbortSignal")}} 객체와 관계된 참조를 얻습니다.
-
-[Fetch 요청](/ko/docs/Web/API/WindowOrWorkerGlobalScope/fetch)을 시작할 때, 요청의 옵션 객체 내부에 `AbortSignal` 옵션을 전달합니다(아래의 `{signal}` 참고). 이것은 신호와 컨트롤러를 fetch 요청과 관계짓고, 아래의 두 번째 이벤트 리스너에서 보여주듯이 {{domxref("AbortController.abort()")}}를 호출하여 이를 취소할 수 있게 합니다.
+When the [fetch request](/en-US/docs/Web/API/fetch) is initiated, we pass in the `AbortSignal` as an option inside the request's options object (the `{signal}` below). This associates the signal and controller with the fetch request, and allows us to abort it by calling {{domxref("AbortController.abort()")}}.
+Below you can see that the fetch operation is aborted in the second event listener, which triggered when the abort button (`abortBtn`) is clicked.
 
 ```js
-var controller = new AbortController();
-var signal = controller.signal;
+const controller = new AbortController();
+const signal = controller.signal;
 
-var downloadBtn = document.querySelector('.download');
-var abortBtn = document.querySelector('.abort');
+const url = "video.mp4";
+const downloadBtn = document.querySelector(".download");
+const abortBtn = document.querySelector(".abort");
 
-downloadBtn.addEventListener('click', fetchVideo);
+downloadBtn.addEventListener("click", fetchVideo);
 
-abortBtn.addEventListener('click', function() {
+abortBtn.addEventListener("click", () => {
   controller.abort();
-  console.log('Download aborted');
+  console.log("Download aborted");
 });
 
 function fetchVideo() {
-  ...
-  fetch(url, {signal}).then(function(response) {
-    ...
-  }).catch(function(e) {
-    reports.textContent = 'Download error: ' + e.message;
-  })
+  fetch(url, { signal })
+    .then((response) => {
+      console.log("Download complete", response);
+    })
+    .catch((err) => {
+      console.error(`Download error: ${err.message}`);
+    });
 }
 ```
 
-> **참고:** `abort()`가 호출되면, `fetch()` promise는 <code dir="ltr">AbortError</code>과 함께 reject됩니다.
+> **Note:** When `abort()` is called, the `fetch()` promise rejects with an "`AbortError`" `DOMException`.
 
-> **경고:** 현재 버전의 Firefox는 `DOMException`으로 promise를 reject합니다.
+You can find a [full working example on GitHub](https://github.com/mdn/dom-examples/tree/main/abort-api); you can also see it [running live](https://mdn.github.io/dom-examples/abort-api/).
 
-동작하는 완전한 예제는 GitHub에서 확인 할 수 있습니다 — [abort-api](https://github.com/mdn/dom-examples/tree/master/abort-api) 참고([라이브 실행도 확인할 수 있습니다](https://mdn.github.io/dom-examples/abort-api/)).
+### Aborting a fetch operation with a timeout
 
-## 명세
+If you need to abort the operation on timeout then you can use the static {{domxref("AbortSignal.timeout()")}} method.
+This returns an `AbortSignal` that will automatically timeout after a certain number of milliseconds.
+
+The code snippet below shows how you would either succeed in downloading a file, or handle a timeout error after 5 seconds.
+Note that when there is a timeout the `fetch()` promise rejects with a "`TimeoutError`" `DOMException`.
+This allows code to differentiate between timeouts (for which user notification is probably required), and user aborts.
+
+```js
+const url = "video.mp4";
+
+try {
+  const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+  const result = await res.blob();
+  // …
+} catch (err) {
+  if (err.name === "TimeoutError") {
+    console.error("Timeout: It took more than 5 seconds to get the result!");
+  } else if (err.name === "AbortError") {
+    console.error(
+      "Fetch aborted by user action (browser stop button, closing tab, etc."
+    );
+  } else if (err.name === "TypeError") {
+    console.error("AbortSignal.timeout() method is not supported");
+  } else {
+    // A network error, or some other problem.
+    console.error(`Error: type: ${err.name}, message: ${err.message}`);
+  }
+}
+```
+
+### Aborting a fetch with timeout or explicit abort
+
+`fetch()` isn't designed to combine multiple signals, so you can't abort a download "directly" due to either of {{domxref("AbortController.abort()")}} being called or an `AbortSignal` timeout (though as in the preceding example, a timeout signal will abort if triggered by _inbuilt_ browser mechanisms like a stop button).
+
+To trigger on multiple signals they must be daisy chained.
+The code snippet below shows how you might call {{domxref("AbortController.abort()")}} in the handler for a separate timer.
+
+```js
+try {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5000);
+  const res = await fetch(url, { signal: controller.signal });
+  const body = await res.json();
+} catch (e) {
+  if (e.name === "AbortError") {
+    // Notify the user of abort.
+    // Note this will never be a timeout error!
+  } else {
+    // A network error, or some other problem.
+    console.log(`Type: ${e.name}, Message: ${e.message}`);
+  }
+} finally {
+  clearTimeout(timeoutId);
+}
+```
+
+> **Note:** Unlike when using {{domxref("AbortSignal.timeout()")}}, there is no way to tell whether the final abort was caused by a timeout.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 보기
+## See also
 
-- [Fetch API](/ko/docs/Web/API/Fetch_API)
-- [Abortable Fetch](https://developers.google.com/web/updates/2017/09/abortable-fetch) by Jake Archibald
+- [Fetch API](/en-US/docs/Web/API/Fetch_API)
+- [Abortable Fetch](https://developer.chrome.com/blog/abortable-fetch/) by Jake Archibald

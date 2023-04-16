@@ -1,45 +1,45 @@
 ---
-title: ':checked'
+title: ":checked"
 slug: Web/CSS/:checked
+page-type: css-pseudo-class
+browser-compat: css.selectors.checked
 ---
 
 {{CSSRef}}
 
-**`:checked`** [CSS](/ko/docs/Web/CSS) [의사 클래스](/ko/docs/Web/CSS/Pseudo-classes) 선택자는 선택했거나 `on` 상태인 **라디오**([`<input type="radio">`](/ko/docs/Web/HTML/Element/input/radio)), **체크박스**([`<input type="checkbox">`](/ko/docs/Web/HTML/Element/input/checkbox)), **옵션**({{HTMLElement("option")}} 요소를 나타냅니다.
+The **`:checked`** [CSS](/en-US/docs/Web/CSS) [pseudo-class](/en-US/docs/Web/CSS/Pseudo-classes) selector represents any **radio** ([`<input type="radio">`](/en-US/docs/Web/HTML/Element/input/radio)), **checkbox** ([`<input type="checkbox">`](/en-US/docs/Web/HTML/Element/input/checkbox)), or **option** ({{HTMLElement("option")}} in a {{HTMLElement("select")}}) element that is checked or toggled to an `on` state.
+
+{{EmbedInteractiveExample("pages/tabbed/pseudo-class-checked.html", "tabbed-shorter")}}
+
+The user can engage this state by checking/selecting an element, or disengage it by unchecking/deselecting the element.
+
+> **Note:** Because browsers often treat `<option>`s as [replaced elements](/en-US/docs/Web/CSS/Replaced_element), the extent to which they can be styled with the `:checked` pseudo-class varies from browser to browser.
+
+## Syntax
 
 ```css
-/* Matches any checked/selected radio, checkbox, or option */
 :checked {
-  margin-left: 25px;
-  border: 1px solid blue;
+  /* ... */
 }
 ```
 
-사용자가 요소를 체크했거나 선택한 경우 활성화되고, 체크나 선택을 해제하는 경우 비활성화됩니다.
+## Examples
 
-> **참고:** 많은 경우 브라우저는 `<option>` 요소를 [대체 요소](/ko/docs/Web/CSS/Replaced_element)로 취급하므로, `:checked` 의사 클래스를 사용한 스타일을 적용할 수 있는 범위도 브라우저마다 다릅니다.
-
-## 구문
-
-{{csssyntax}}
-
-## 예제
-
-### 기본 예제
+### Basic example
 
 #### HTML
 
 ```html
 <div>
-  <input type="radio" name="my-input" id="yes">
+  <input type="radio" name="my-input" id="yes" value="yes" />
   <label for="yes">Yes</label>
 
-  <input type="radio" name="my-input" id="no">
+  <input type="radio" name="my-input" id="no" value="no" />
   <label for="no">No</label>
 </div>
 
 <div>
-  <input type="checkbox" name="my-checkbox" id="opt-in">
+  <input type="checkbox" name="my-checkbox" id="opt-in" />
   <label for="opt-in">Check me!</label>
 </div>
 
@@ -80,13 +80,13 @@ option:checked {
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("기본_예제")}}
+{{EmbedLiveSample("Basic_example")}}
 
-### 숨겨진 체크박스를 사용해 요소 켜고 끄기
+### Toggling elements with a hidden checkbox
 
-다음 예제 코드는 `:checked` 의사 클래스와 체크박스를 사용해, [JavaScript](/ko/docs/Web/JavaScript) 없이도 사용자가 켜거나 끌 수 있는 콘텐츠를 구현합니다.
+This example utilizes the `:checked` pseudo-class to let the user toggle content based on the state of a checkbox, all without using [JavaScript](/en-US/docs/Web/JavaScript).
 
 #### HTML
 
@@ -95,14 +95,38 @@ option:checked {
 
 <table>
   <thead>
-    <tr><th>Column #1</th><th>Column #2</th><th>Column #3</th></tr>
+    <tr>
+      <th>Column #1</th>
+      <th>Column #2</th>
+      <th>Column #3</th>
+    </tr>
   </thead>
   <tbody>
-    <tr class="expandable"><td>[more text]</td><td>[more text]</td><td>[more text]</td></tr>
-    <tr><td>[cell text]</td><td>[cell text]</td><td>[cell text]</td></tr>
-    <tr><td>[cell text]</td><td>[cell text]</td><td>[cell text]</td></tr>
-    <tr class="expandable"><td>[more text]</td><td>[more text]</td><td>[more text]</td></tr>
-    <tr class="expandable"><td>[more text]</td><td>[more text]</td><td>[more text]</td></tr>
+    <tr class="expandable">
+      <td>[more text]</td>
+      <td>[more text]</td>
+      <td>[more text]</td>
+    </tr>
+    <tr>
+      <td>[cell text]</td>
+      <td>[cell text]</td>
+      <td>[cell text]</td>
+    </tr>
+    <tr>
+      <td>[cell text]</td>
+      <td>[cell text]</td>
+      <td>[cell text]</td>
+    </tr>
+    <tr class="expandable">
+      <td>[more text]</td>
+      <td>[more text]</td>
+      <td>[more text]</td>
+    </tr>
+    <tr class="expandable">
+      <td>[more text]</td>
+      <td>[more text]</td>
+      <td>[more text]</td>
+    </tr>
   </tbody>
 </table>
 
@@ -144,14 +168,21 @@ option:checked {
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("숨겨진_체크박스를_사용해_요소_켜고_끄기", "auto", 220)}}
+{{EmbedLiveSample("Toggling_elements_with_a_hidden_checkbox", "auto", 220)}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- [Web forms — working with user data](/en-US/docs/Learn/Forms)
+- [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
+- Related HTML elements: [`<input type="checkbox">`](/en-US/docs/Web/HTML/Element/input/checkbox), [`<input type="radio">`](/en-US/docs/Web/HTML/Element/input/radio), {{HTMLElement("select")}}, and {{HTMLElement("option")}}
+- [Replaced elements](/en-US/docs/Web/CSS/Replaced_element)

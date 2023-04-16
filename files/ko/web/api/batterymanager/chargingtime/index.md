@@ -1,50 +1,56 @@
 ---
-title: BatteryManager.chargingTime (배터리관리기 충전시간)
+title: "BatteryManager: chargingTime property"
+short-title: chargingTime
 slug: Web/API/BatteryManager/chargingTime
+page-type: web-api-instance-property
+browser-compat: api.BatteryManager.chargingTime
 ---
 
 {{APIRef("Battery API")}}
 
-몇 초 단위로, 배터리가 완전히 충전될 때까지 남은 시간량을 가리킵니다.
+The **`BatteryManager.chargingTime`** property indicates the amount of time, in seconds, that remain until the battery is fully charged or `0` if the battery is already fully charged. If the battery is currently
+discharging, its value is
+[`Infinity`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity). When its value changes, the [`chargingtimechange`](/en-US/docs/Web/API/BatteryManager/chargingtimechange_event) event is fired.
 
-> **참고:** 반환되는 시간이 정확하더라도, 개인정보보호 정책 사유로 브라우저들이 더 큰 간격(대개 15분)으로 시간량을 반올림합니다.
+> **Note:** Even if the time returned is precise to the second,
+> browsers round them to a higher interval
+> (typically to the closest 15 minutes) for privacy reasons.
 
-```js
-    var time = battery.chargingTime
-```
+## Value
 
-반환되는 중에, 건전지가 완전히 충전될 때까지 또는 이미 완전히 충전되어 있다면 0이 될 때까지 `time` 은 몇 초 뒤에 남게 되는 시간입니다. 이는 {{domxref("BatteryManager")}} object (객체),입니다. 배터리의 전류가 방전되어 있다면, 이 값은 [`Infinity`](/en-US/docs/JavaScript/Reference/Global_Objects/Infinity), 즉 무한 값이 됩니다.
+A number.
 
-## 예제
+## Examples
 
-### HTML 콘텐츠
+### HTML Content
 
 ```html
 <div id="chargingTime">(charging time unknown)</div>
 ```
 
-### 자바언어 콘텐츠
+### JavaScript Content
 
 ```js
-navigator.getBattery().then(function(battery) {
+navigator.getBattery().then((battery) => {
+  const time = battery.chargingTime;
 
-   var time = battery.chargingTime;
-
-   document.querySelector('#chargingTime').textContent = battery.chargingTime;
+  document.querySelector(
+    "#chargingTime"
+  ).textContent = `Time to fully charge the battery: ${time}s`;
 });
 ```
 
-{{ EmbedLiveSample('Example', '100%', 30) }}
+{{ EmbedLiveSample('Examples', '100%', 30) }}
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보세요
+## See also
 
 - {{domxref("BatteryManager")}}
 - {{domxref("Navigator.getBattery")}}

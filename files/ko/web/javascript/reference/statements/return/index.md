@@ -1,37 +1,46 @@
 ---
 title: return
 slug: Web/JavaScript/Reference/Statements/return
+page-type: javascript-statement
+browser-compat: javascript.statements.return
 ---
+
 {{jsSidebar("Statements")}}
 
-**`return` 명령문**은 함수 실행을 종료하고, 주어진 값을 함수 호출 지점으로 반환합니다.
+The **`return`** statement ends function execution and
+specifies a value to be returned to the function caller.
 
 {{EmbedInteractiveExample("pages/js/statement-return.html")}}
 
-## 구문
+## Syntax
 
-```js
-    return [[expression]];
+```js-nolint
+return;
+return expression;
 ```
 
 - `expression`
-  - : 반환할 값으로 사용할 표현식. 생략할 경우 {{jsxref("undefined")}}를 대신 반환합니다.
+  - : The expression whose value is to be returned. If omitted, `undefined` is
+    returned instead.
 
-## 설명
+## Description
 
-함수 본문에서 `return` 명령문에 도달하면 함수의 실행은 그 지점에서 중단됩니다. 값을 제공한 경우 함수를 호출한 곳에 그 값을 반환합니다. 예를 들어, 다음 함수는 숫자 매개변수 `x`의 제곱을 반환합니다.
+When a `return` statement is used in a function body, the execution of the
+function is stopped. If specified, a given value is returned to the function caller. For
+example, the following function returns the square of its argument, `x`,
+where `x` is a number.
 
 ```js
 function square(x) {
-   return x * x;
+  return x * x;
 }
-var demo = square(3);
-// demo는 9
+const demo = square(3);
+// demo will equal 9
 ```
 
-값을 명시하지 않으면 대신 `undefined`를 반환합니다.
+If the value is omitted, `undefined` is returned instead.
 
-다음 `return` 명령문 모두 함수 실행을 끊습니다.
+The following return statements all break the function execution:
 
 ```js
 return;
@@ -41,53 +50,59 @@ return x;
 return x + y / 3;
 ```
 
-### 자동 세미콜론 삽입
+### Automatic Semicolon Insertion
 
-`return` 명령문은 [자동 세미콜론 삽입(ASI)](/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#Automatic_semicolon_insertion)의 영향을 받습니다. `return` 키워드와 표현식 사이에는 줄바꿈 문자가 올 수 없습니다.
+The `return` statement is affected by
+[automatic semicolon insertion (ASI)](/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#automatic_semicolon_insertion).
+No line terminator is allowed between the `return` keyword and the expression.
 
-```js
+```js-nolint example-bad
 return
 a + b;
 ```
 
-위 코드는 ASI로 인해 아래처럼 처리됩니다.
+is transformed by ASI into:
 
 ```js
 return;
 a + b;
 ```
 
-콘솔이 "unreachable code after return statement" 경고를 출력할 것입니다.
+The console will warn "unreachable code after return statement".
 
-문제를 해결하려면 괄호를 사용해 ASI를 방지해야 합니다.
+> **Note:** Starting with Firefox 40, a warning is shown in the console if
+> unreachable code is found after a `return` statement.
 
-```js
+To avoid this problem (to prevent ASI), you could use parentheses:
+
+```js-nolint
 return (
   a + b
 );
 ```
 
-## 예제
+## Examples
 
-### 함수 중단
+### Interrupt a function
 
-함수는 `return`을 호출하는 지점에서 즉시 실행을 멈춥니다.
+A function immediately stops at the point where `return` is called.
 
 ```js
 function counter() {
-  for (var count = 1; ; count++) {  // 무한 반복
-    console.log(count + "A"); // 5까지
-      if (count === 5) {
-        return;
-      }
-      console.log(count + "B");  // 4까지
+  // Infinite loop
+  for (let count = 1; ; count++) {
+    console.log(`${count}A`); // Until 5
+    if (count === 5) {
+      return;
     }
-  console.log(count + "C");  // 절대 나타나지 않음
+    console.log(`${count}B`); // Until 4
+  }
+  console.log(`${count}C`); // Never appears
 }
 
 counter();
 
-// 출력:
+// Logs:
 // 1A
 // 1B
 // 2A
@@ -99,28 +114,30 @@ counter();
 // 5A
 ```
 
-### 함수 반환하기
+### Returning a function
 
-[클로저](/ko/docs/Web/JavaScript/Guide/Closures)에 대해서도 더 알아보세요.
+See also the article about [Closures](/en-US/docs/Web/JavaScript/Closures).
 
 ```js
-function magic(x) {
-  return function calc(x) { return x * 42 };
+function magic() {
+  return function calc(x) {
+    return x * 42;
+  };
 }
 
-var answer = magic();
+const answer = magic();
 answer(1337); // 56154
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [함수](/ko/docs/Web/JavaScript/Reference/Functions)
-- [클로저](/ko/docs/Web/JavaScript/Guide/Closures)
+- [Functions](/en-US/docs/Web/JavaScript/Reference/Functions)
+- [Closures](/en-US/docs/Web/JavaScript/Closures)

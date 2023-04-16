@@ -1,37 +1,36 @@
 ---
-title: fallback
+title: <xsl:fallback>
 slug: Web/XSLT/Element/fallback
-original_slug: Web/XSLT/fallback
 ---
 
 {{ XsltRef() }}
 
-`<xsl:fallback>` 요소는 주어진 확장(이나 결국에는 새 버전) 요소에서 지원하지 않으면 쓸 템플릿을 지정합니다.
+The `<xsl:fallback>` element specifies what template to use if a given extension (or, eventually, newer version) element is not supported.
 
-### 문법
+### Syntax
 
-```
+```xml
 <xsl:fallback>
   TEMPLATE
 </xsl:fallback>
 ```
 
-### 필수 속성
+### Required Attributes
 
-없음.
+None.
 
-### 선택 속성
+### Optional Attributes
 
-없음.
+None.
 
-### 타입
+### Type
 
-명령, 템플릿 안에 나타남.
+Instruction, appears within a template.
 
-### 정의
+### Defined
 
-[XSLT section 15, Fallback](http://www.w3.org/TR/xslt#fallback)
+XSLT, section 15
 
-### Gecko 지원
+### Gecko support
 
-이번에 지원 안 함.
+Not supported at this time.

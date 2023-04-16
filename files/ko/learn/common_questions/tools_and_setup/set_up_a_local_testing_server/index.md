@@ -1,95 +1,119 @@
 ---
-title: 로컬 테스트 서버 설치하기
+title: How do you set up a local testing server?
 slug: Learn/Common_questions/Tools_and_setup/set_up_a_local_testing_server
-original_slug: Learn/Common_questions/set_up_a_local_testing_server
 ---
 
-이 글에서는 간단한 로컬 테스트 서버를 여러분의 장비에 설치하는 법과 기본적인 사용법을 설명합니다.
+{{QuicklinksWithSubPages("Learn/Common_questions")}}
 
-<table class="learn-box standard-table">
+This article explains how to set up a simple local testing server on your machine, and the basics of how to use it.
+
+<table>
   <tbody>
     <tr>
-      <th scope="row">사전 준비:</th>
+      <th scope="row">Prerequisites:</th>
       <td>
-        <a href="/en-US/docs/Learn/How_the_Internet_works">인터넷의 작동 방법</a
-        >과 <a href="/en-US/docs/Learn/What_is_a_Web_server">웹서버</a>에 대해
-        알고 있어야 합니다.
+        You need to first know
+        <a href="/en-US/docs/Learn/Common_questions/Web_mechanics/How_does_the_Internet_work"
+          >how the Internet works</a
+        >, and
+        <a href="/en-US/docs/Learn/Common_questions/Web_mechanics/What_is_a_web_server"
+          >what a Web server is</a
+        >.
       </td>
     </tr>
     <tr>
-      <th scope="row">목표:</th>
-      <td>로컬 테스트 서버를 설치하는 법을 배울 것입니다.</td>
+      <th scope="row">Objective:</th>
+      <td>You will learn how to set up a local testing server.</td>
     </tr>
   </tbody>
 </table>
 
-## 로컬 파일과 원격 파일
+## Local files vs. remote files
 
-대부분의 학습 분야에 걸쳐서 여러분은 그냥 웹브라우저로 예제들을 직접 열어보기만 하면 됩니다. — 브라우저를 통해 예제들을 직접 열어보는 것은 HTML 파일을 더블 클릭하거나 브라우저 창으로 예제들을 드래그 앤 드롭하거나 또는 _File_ > _Open..._ 메뉴에서 해당하는 HTML 파일을 선택하면 됩니다. 이를 수행하는 방법은 많습니다.
+Throughout most of the learning area, we tell you to just open your examples directly in a browser — this can be done by double-clicking the HTML file, dragging and dropping it into the browser window, or choosing _File_ > _Open…_ and navigating to the HTML file. There are many ways to achieve this.
 
-웹 주소 경로가 `file://`로 시작하고 뒤에 오는 경로가 여러분의 로컬 하드 드라이브에 있는 파일의 경로인 경우, 로컬 파일이 사용되는 것입니다. 이와는 달리, GitHub (또는 다른 원격 서버에 있는) 예제를 보는 경우에는 웹 주소가 `http://`나 `https://`로 시작하며, 이는 그 파일이 HTTP를 통해 수신된 파일이라는 것을 나타냅니다.
+If the web address path starts with `file://` followed by the path to the file on your local hard drive, a local file is being used. In contrast, if you view one of our examples hosted on GitHub (or an example on some other remote server), the web address will start with `http://` or `https://`, to show that the file has been received via HTTP.
 
-## 로컬 파일로 테스트할 때의 문제점
+## The problem with testing local files
 
-일부 예제는 로컬 파일과 같은 방식으로 열면 동작하지 않습니다. 여기에는 여러 가지 원인이 있을 수 있으며, 대부분은 다음과 같습니다:
+Some examples won't run if you open them as local files. This can be due to a variety of reasons, the most likely being:
 
-- **비동기 요청인 경우**. 일부 브라우저(크롬을 포함하는)에서는 로컬 파일의 예제를 실행할 경우에 비동기 요청([서버로부터 데이터 가져오기 - Fetching data from the server](/ko/docs/Learn/JavaScript/Client-side_web_APIs/Fetching_data)를 참고)이 작동하지 않을 것입니다. 이는 보안 제한(웹 보안과 관련된 자세한 내용은 [웹사이트 보안- Website security](/ko/docs/Learn/Server-side/First_steps/Website_security)을 참고하세요) 때문입니다.
-- **서버측 언어인 경우**. 서버측 언어(PHP나 Python과 같은)는 코드를 해석하고 결과를 내보낼 수 있는 특별한 서버가 필요합니다.
+- **They feature asynchronous requests**. Some browsers (including Chrome) will not run async requests (see [Fetching data from the server](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Fetching_data)) if you just run the example from a local file. This is because of security restrictions (for more on web security, read [Website security](/en-US/docs/Learn/Server-side/First_steps/Website_security)).
+- **They feature a server-side language**. Server-side languages (such as PHP or Python) require a special server to interpret the code and deliver the results.
+- **They include other files**. Browsers commonly treat requests to load resources using the `file://` schema as cross-origin requests.
+  So if you load a local file that includes other local files, this may trigger a {{Glossary("CORS")}} error.
 
-## 간단한 로컬 HTTP 서버 실행하기
+## Running a simple local HTTP server
 
-비동기 요청 문제를 해결하려면 로컬 웹 서버에서 예제를 실행하여 테스트해야 합니다. 이를 위한 가장 쉬운 방법은 파이썬(Python)의 `SimpleHTTPServer` 모듈을 사용하는 것입니다. (설치된 파이썬 버전에 따라 `http.server` 모듈을 사용해야 할 수도 있습니다.)
+To get around the problem of async requests, we need to test such examples by running them through a local web server.
 
-이를 위해:
+### Using an extension in your code editor
 
-1. 파이썬을 설치합니다. 리눅스나 맥OS 사용자라면 이미 시스템에 설치되어 있을 것입니다. 윈도우 사용자일 경우, 다음과 같이 파이썬 홈페이지로부터 설치 프로그램을 다운 받고 설치합니다:
+If you only need HTML, CSS and JavaScript, and no server-side language, the easiest way may be to check for extensions in your code editor. As well as automating installation and set-up for your local HTTP server, they also integrate nicely with your code editors. Testing local files in an HTTP server may be one click away.
 
-    - 파이썬 홈페이지([python.org](https://www.python.org/))로 이동합니다.
-    - 다운로드(download) 영역에서 Python "3.xxx" 링크를 클릭합니다.
-    - 페이지의 아래쪽에 있는 *Windows x86 executable installer*를 선택하고 다운로드 받습니다.
-    - 다운로드가 완료되면 실행합니다.
-    - 설치 프로그램의 첫 번째 페이지에서 "Add Python 3.xxx to PATH" 체크박스를 체크해야 합니다.
-    - *Install*을 클릭하고 설치가 완료되면 *Close*를 클릭합니다.
+For VSCode, you can check the following free extension:
 
-2. 명령 실행창(윈도우의 경우는 command prompt, OS/X나 리눅스인 경우에는 터미널창)을 엽니다. 파이썬이 설치되었는지 확인하기 위해 다음 명령을 입력합니다.:
+- `vscode-preview-server`. You can check it on its [home page](https://marketplace.visualstudio.com/items?itemName=yuichinukiyama.vscode-preview-server).
 
-    ```bash
-    python -V
-    ```
+### Using Python
 
-3. 이 명령은 버전 번호를 반환합니다. 정상적으로 작동하면, `cd` 명령을 이용해 여러분의 예제가 존재하는 디렉토리로 이동합니다.
+Another way to achieve this is to use Python's `http.server` module.
 
-    ```bash
-    # 들어가고자 하는 디렉토리 명을 입력합니다. 예를 들어,
-    cd Desktop
-    # 한 단계 상위 디렉토리로 이동하려면 점 두 개를 사용합니다.
-    cd ..
-    ```
+> **Note:** Older versions of Python (up to version 2.7) provided a similar module named `SimpleHTTPServer`. If you are using Python 2.x, you can follow this guide by replacing all uses of `http.server` with `SimpleHTTPServer`. However, we recommend you use the latest version of Python.
 
-4. 그 경로에 있는 서버를 구동하기 위한 명령을 입력합니다:
+To do this:
 
-    ```bash
-    # 위에서 반환된 파이썬 버전이 3.X인 경우
-    python -m http.server
-    # 위에서 반환된 파이썬 버전이 2.X인 경우
-    python -m SimpleHTTPServer
-    ```
+1. Install Python. If you are using Linux or macOS, it should be available on your system already. If you are a Windows user, you can get an installer from the Python homepage and follow the instructions to install it:
 
-5. 이 명령은 기본적으로 로컬 웹 서버의 8000번 포트를 이용해 해당 경로의 컨텐츠를 실행시킵니다. 웹 브라우저에서 주소줄에 `localhost:8000`를 입력하면 이 서버로 이동할 수 있습니다. 그러면 그 디렉토리의 컨텐츠 목록을 볼 수 있는데 실행하고자 하는 HTML 파일을 클릭합니다.
+   - Go to [python.org](https://www.python.org/)
+   - Under the Download section, click the link for Python "3.xxx".
+   - At the bottom of the page, click the _Windows Installer_ link to download the installer file.
+   - When it has downloaded, run it.
+   - On the first installer page, make sure you check the "Add Python 3.xxx to PATH" checkbox.
+   - Click _Install_, then click _Close_ when the installation has finished.
 
-> **참고:** 8000번 포트에 이미 실행 중인 무언가가 있다면 서버 실행 명령에 다음과 같이 대체 포트 번호를 명시함으로써 다른 포트로 서버를 구동할 수 있습니다.
->
-> 예: `python -m http.server 7800` (Python 3.x일 경우) 또는 `python -m SimpleHTTPServer 7800` (Python 2.x일 경우). 이 경우, `localhost:7800`를 통해 서버로 이동할 수 있습니다.
+2. Open your command prompt (Windows) / terminal (macOS/ Linux). To check if Python is installed, enter the following command:
 
-## 서버측 언어를 로컬에서 실행하기
+   ```bash
+   python -V
+   # If the above fails, try:
+   python3 -V
+   # Or, if the "py" command is available, try:
+   py -V
+   ```
 
-파이썬의 `SimpleHTTPServer (python 2.0) http.server (python 3.0)` 모듈은 유용하기는 하나 파이썬이나 PHP 또는 자바스크립트와 같은 언어로 작성된 코드를 실행하지 못합니다. 이런 코드를 처리하기 위해서는 뭔가가 더 필요합니다 — 정확하게 무엇이 필요한지는 실행하고자 하는 서버측 언어가 무엇인지에 따라 다릅니다. 다음에 몇 가지 사례를 소개합니다:
+3. This should return a version number. If this is OK, navigate to the directory that your example is inside, using the `cd` command.
 
-- 파이썬으로된 서버측 코드를 실행하기 위해서는 파이썬 웹 프레임워크(Python web framework)를 사용할 필요가 있습니다. [Django Web Framework (Python)](/ko/docs/Learn/Server-side/Django)를 읽어보면 Django framework를 이용하는 법을 알 수 있습니다. [Flask](http://flask.pocoo.org/)는 Djang를 대신할 좋은(조금 더 가벼운) 대안이될 수 있습니다. Flask를 실행하기 위해서는 Python/PIP([install Python/PIP](/ko/docs/Learn/Server-side/Django/development_environment#Installing_Python_3))를 설치하고, `pip3 install flask` 명령으로 Flask를 설치해야 합니다. 이 때부터 파이썬 Flask 예제를 실행할 수 있는데, 예를 들어, `python3 python-example.py`명령을 실행하고 브라우저에서 `localhost:5000`으로 이동하면 됩니다.
-- Node.js (JavaScript)라는 서버측 코드를 실행하기 위해서는 기본 node(raw node)나 그 위에 설치되는 프레임워크를 이용해야 합니다. Express가 좋은 선택이될 수 있습니다 — [Express Web Framework (Node.js/JavaScript)](/ko/docs/Learn/Server-side/Express_Nodejs)를 살펴보시기 바랍니다.
-- PHP로된 서버측 코드를 실행하려면 PHP에 내장된 개발서버([PHP's built-in development server](http://php.net/manual/en/features.commandline.webserver.php))를 실행시킵니다:
+   ```bash
+   # include the directory name to enter it, for example
+   cd Desktop
+   # use two dots to jump up one directory level if you need to
+   cd ..
+   ```
 
-```bash
-cd path/to/your/php/code
-php -S localhost:8000
-```
+4. Enter the command to start up the server in that directory:
+
+   ```bash
+   # If Python version returned above is 3.X
+   # On Windows, try "python -m http.server" or "py -3 -m http.server"
+   python3 -m http.server
+   # If Python version returned above is 2.X
+   python -m SimpleHTTPServer
+   ```
+
+5. By default, this will run the contents of the directory on a local web server, on port 8000. You can go to this server by going to the URL `localhost:8000` in your web browser. Here you'll see the contents of the directory listed — click the HTML file you want to run.
+
+> **Note:** If you already have something running on port 8000, you can choose another port by running the server command followed by an alternative port number, e.g. `python3 -m http.server 7800` (Python 3.x) or `python -m SimpleHTTPServer 7800` (Python 2.x). You can then access your content at `localhost:7800`.
+
+## Running server-side languages locally
+
+Python's `http.server` (or `SimpleHTTPServer` for Python 2) module is useful, but it is merely a _static_ file server; it doesn't know how to run code written in languages such as Python, PHP or JavaScript. To handle them, you'll need something more — exactly what you'll need depends on the server-side language you are trying to run. Here are a few examples:
+
+- To run Python server-side code, you'll need to use a Python web framework. There are many popular Python web frameworks, such as Django (a [guide](/en-US/docs/Learn/Server-side/Django) is available), [Flask](https://flask.palletsprojects.com/), and [Pyramid](https://trypyramid.com).
+- To run Node.js (JavaScript) server-side code, you'll need to use raw node or a framework built on top of it. Express is a good choice — see [Express Web Framework (Node.js/JavaScript)](/en-US/docs/Learn/Server-side/Express_Nodejs).
+- To run PHP server-side code, launch [PHP's built-in development server](https://www.php.net/manual/en/features.commandline.webserver.php):
+
+  ```bash
+  cd path/to/your/php/code
+  php -S localhost:8000
+  ```

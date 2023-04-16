@@ -5,26 +5,26 @@ slug: Web/XPath/Functions/unparsed-entity-url
 
 {{ XsltRef() }}
 
-`unparsed-entity-url()` 함수는 구문해석되지 않은 엔티티의 URI를 반환합니다. 이는 소스 문서의 DTD에서 참조하는 비 XML 데이터입니다.
+The `unparsed-entity-url()` function returns the URI of the unparsed entity with the given name. This is non-XML data referenced in the DTD of the source document.
 
-### 문법
+### Syntax
 
 ```
 string unparsed-entity-url(string)
 ```
 
-### 인수
+### Arguments
 
-구문해석되지 않은 엔티티의 이름. 인수가 문자열이 아니면, string() 함수의 규칙을 써서 변환합니다. 이름은 XML 이름입니다.
+The name of the unparsed entity. If the argument is not a string, it is converted using the rules of the string() function. The name should be an XML Name.
 
-### 반환
+### Returns
 
-엔티티가 있으면, DTD에서 찾은 구문해석되지 않은 엔티티의 URI. 그렇지 않으면 빈 문자열.
+The URI of the unparsed entity retrieved from the DTD, if it exists. Otherwise an empty string.
 
-### 정의
+### Defined
 
-[XSLT 1.0 12.4](http://www.w3.org/TR/xslt#function-unparsed-entity-uri)
+[XSLT 1.0 12.4](https://www.w3.org/TR/1999/REC-xslt-19991116/#function-unparsed-entity-uri)
 
-### Gecko 지원
+### Gecko support
 
-지원 안 함.
+Not supported.

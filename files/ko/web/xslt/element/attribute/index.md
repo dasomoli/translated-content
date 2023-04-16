@@ -1,39 +1,38 @@
 ---
-title: attribute
+title: <xsl:attribute>
 slug: Web/XSLT/Element/attribute
-original_slug: Web/XSLT/attribute
 ---
 
 {{ XsltRef() }}
 
-`<xsl:attribute>` 요소는 스타일시트에서 접근할 수 있는 어떤 값을 써서 출력 문서에 속성을 만듭니다. 요소는 속성값을 자리 잡게 하는 출력 문서 요소 안에 정의한 것 가운데 처음이어야 합니다.
+The `<xsl:attribute>` element creates an attribute in the output document, using any values that can be accessed from the stylesheet. The element must be defined before any other output document element inside the output document element for which it establishes attribute values. But it may be after or inside elements that won't be part of the output (like `<xsl:choose>` or `<xsl:apply-templates>` etc.).
 
-### 문법
+### Syntax
 
-```
+```xml
 <xsl:attribute name=NAME namespace=URI>
   TEMPLATE
 </xsl:attribute>
 ```
 
-### 필수 속성
+### Required Attributes
 
 - `name`
-  - : 출력 문서에 만들려는 속성에 이름을 지정합니다. 이름은 유효한 QName이어야 합니다.
+  - : Specifies the name of the attribute to be created in the output document. The name must be a valid QName.
 
-### 선택 속성
+### Optional Attributes
 
 - `namespace`
-  - : 출력 문서에 이 속성을 위한 이름공간(namespace) URI를 정의합니다. 이 요소와 관련된 이름공간 접두사를 설정할 수 없습니다.
+  - : Defines the namespace URI for this attribute in the output document. You cannot set the related namespace prefix with this element.
 
-### 타입
+### Type
 
-명령, 템플릿이나 `<xsl:attribute-set>` 요소 안에 나타남.
+Instruction, appears within a template or an `<xsl:attribute-set>` element.
 
-### 정의
+### Defined
 
-[XSLT section 7.1.3, Creating Attributes with xsl:attribute](http://www.w3.org/TR/xslt#creating-attributes)
+XSLT, section 7.1.3.
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

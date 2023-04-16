@@ -1,77 +1,79 @@
 ---
 title: globalThis
 slug: Web/JavaScript/Reference/Global_Objects/globalThis
+page-type: javascript-global-property
+browser-compat: javascript.builtins.globalThis
 ---
 
 {{jsSidebar("Objects")}}
 
-전역 **`globalThis`** 속성에는 일반적으로 [전역 객체](/ko/docs/Glossary/Global_object)와 유사한
-[전역 `this`](/ko/docs/Web/JavaScript/Reference/Operators/this#global_context) 값이 포함됩니다.
+The global **`globalThis`** property contains the [global `this`](/en-US/docs/Web/JavaScript/Reference/Operators/this#global_context) value, which is usually akin to the [global object](/en-US/docs/Glossary/Global_object).
 
 {{EmbedInteractiveExample("pages/js/globalprops-globalthis.html","shorter")}}
 
-## 값
+## Value
 
-전역 `this` 객체입니다.
+The global `this` object.
 
 {{js_property_attributes(1, 0, 1)}}
 
-> **참고:** `globalThis` 속성은 구성 및 쓰기가 가능하므로 코드 작성자가 신뢰할 수 없는 코드를 실행할 때 숨길 수 있고 전역 객체 노출을 방지할 수 있습니다.
+> **Note:** The `globalThis` property is configurable and writable so that code authors can hide it when executing untrusted code and prevent exposing the global object.
 
-## 설명
+## Description
 
-역사적으로 전역 객체에 접근하려면 다른 JavaScript 환경에서 다른 구문이 필요했습니다. 웹에서는 {{domxref("Window.window", "window")}}, {{domxref("Window.self", "self")}}, {{domxref("Window.frames", "frames")}}를 사용할 수 있지만, [Web Workers](/ko/docs/Web/API/Worker)에서는 `self`만 동작합니다. Node.js에서는 이 중 어느 것도 작동하지 않으며 대신 `global`을 사용해야 합니다.
-`this` 키워드는 비엄격 모드에서 실행되는 함수 내부에서 사용될 수 있지만, `this`는 엄격 모드에서 실행되는 모듈 및 내부 함수에서 `undefined`가 됩니다. `Function('return this')()`를 사용하는 방법도 존재하지만, 브라우저의 {{glossary("CSP")}}와 같이 {{jsxref("eval", "eval()")}}을 비활성화하는 환경에서는 이러한 방식으로 {{jsxref("Function")}}을 사용할 수 없습니다.
+Historically, accessing the global object has required different syntax in different JavaScript environments. On the web you can use {{domxref("Window/window", "window")}}, {{domxref("Window/self", "self")}}, or {{domxref("Window/frames", "frames")}} - but in [Web Workers](/en-US/docs/Web/API/Worker) only `self` will work. In Node.js none of these work, and you must instead use `global`. The `this` keyword could be used inside functions running in non–strict mode, but `this` will be `undefined` in modules and inside functions running in strict mode. You can also use `Function('return this')()`, but environments that disable {{jsxref("Global_Objects/eval", "eval()")}}, like {{Glossary("CSP")}} in browsers, prevent use of {{jsxref("Function")}} in this way.
 
-`globalThis` 속성은 환경에 무관하게 전역 `this` 값, 즉 전역 객체에 접근하는 표준 방법을 제공합니다. `window`, `self` 등 유사한 속성과는 다르게 window와 non-window 컨텍스트 모두에서의 동작을 보장합니다. 따라서 코드를 구동하는 환경을 모르더라도 전역 객체에 일관된 방식으로 접근할 수 있습니다. 이름을 기억하는 데 도움이 되도록 전역 범위에서 `this` 값은 `globalThis`라는 점만 기억하세요.
+The `globalThis` property provides a standard way of accessing the global `this` value (and hence the global object itself) across environments. Unlike similar properties such as `window` and `self`, it's guaranteed to work in window and non-window contexts. In this way, you can access the global object in a consistent manner without having to know which environment the code is being run in. To help you remember the name, just remember that in global scope the `this` value is `globalThis`.
 
-> **참고:** 브라우저와 Node의 경우에서 `globalThis`는 일반적으로 전역 객체와 동일한 개념입니다(즉, `globalThis`에 속성을 추가하면 전역 변수가 됨). 그러나 호스트는 전역 객체와 관련이 없는 `globalThis`에 대해 다른 값을 제공할 수 있습니다.
+> **Note:** `globalThis` is generally the same concept as the global object (i.e. adding properties to `globalThis` makes them global variables) — this is the case for browsers and Node — but hosts are allowed to provide a different value for `globalThis` that's unrelated to the global object.
 
-### HTML과 WindowProxy
+### HTML and the WindowProxy
 
-많은 엔진에서 `globalThis`는 실제 전역 객체를 대한 참조이지만 웹 브라우저는 {{htmlelement("iframe")}}과 교차 창 보안 문제로 인해 전역 객체를 감싼 {{jsxref("Proxy")}}를 대신 참조합니다(직접 액세스할 수 없음). 일반적인 사용에는 차이가 없다고 봐도 무방하지만, 알아두는 것이 중요합니다.
+In many engines `globalThis` will be a reference to the actual global object, but in web browsers, due to iframe and cross-window security considerations, it references a {{jsxref("Proxy")}} around the actual global object (which you can't directly access). This distinction is rarely relevant in common usage, but important to be aware of.
 
-### 이름 지정
+### Naming
 
-`self` 및 `global`과 같은 다른 유명한 이름 제안들은 기존 코드와의 호환성 문제를 우려해 고려 대상에서 제외되었습니다. 자세한 내용은 [언어 제안서의 "NAMING" 문서](https://github.com/tc39/proposal-global/blob/master/NAMING.md)를 참조하세요.
+Several other popular name choices such as `self` and `global` were removed from consideration because of their potential to break compatibility with existing code. See the [language proposal's "naming" document](https://github.com/tc39/proposal-global/blob/master/NAMING.md) for more details.
 
-`globalThis`는 문자 그대로 전역 `this` 값입니다. 객체 없이 호출되는 비엄격 함수의 `this` 값과 같은 값입니다. 스크립트의 전역 범위에서 `this`의 값이기도 합니다.
+`globalThis` is, quite literally, the global `this` value. It's the same value as the `this` value in a non-strict function called without an object. It's also the value of `this` in the global scope of a script.
 
-## 예제
+## Examples
 
-### 환경별 전역 접근
+### Search for the global across environments
 
-일반적으로 전역 객체는 명시적으로 지정할 필요가 없습니다. 해당 속성은 자동으로 전역 변수로 액세스할 수 있습니다.
+Usually, the global object does not need to be explicitly specified — its properties are automatically accessible as global variables.
 
 ```js
 console.log(window.Math === Math); // true
 ```
 
-그러나 전역 객체에 명시적으로 접근해야 하는 한 가지 경우는 일반적으로 [폴리필](/ko/docs/Glossary/Polyfill)을 위해 전역 개체에 **작성** 할 때입니다.
+However, one case where one needs to explicitly access the global object is when _writing_ to it, usually for the purpose of [polyfills](/en-US/docs/Glossary/Polyfill).
 
-`globalThis` 이전에는 환경에 대한 전역 객체를 가져오는 방법 중 유일하게 믿을만한 교차 플랫폼 방법은 `Function('return this')()` 이었습니다. 그러나 이로 인해 일부 설정에서 [CSP](/ko/docs/Web/HTTP/CSP) 위반이 발생하므로 작성자는 이와 같은 조각별 정의를 사용합니다([원래 core-js 소스](https://github.com/zloirock/core-js/blob/master/packages/core-js/internals/global.js)).
+Prior to `globalThis`, the only reliable cross-platform way to get the global object for an environment was `Function('return this')()`. However, this causes [CSP](/en-US/docs/Web/HTTP/CSP) violations in some settings, so authors would use a piecewise definition like this (slightly adapted from the [original core-js source](https://github.com/zloirock/core-js/blob/master/packages/core-js/internals/global.js)):
 
 ```js
 function check(it) {
-  // Math는 모든 환경에서 전역으로 존재하는 것으로 알려져 있습니다.
+  // Math is known to exist as a global in every environment.
   return it && it.Math === Math && it;
 }
 
 const globalObject =
-  check(typeof window === 'object' && window) ||
-  check(typeof self === 'object' && self) ||
-  check(typeof global === 'object' && global) ||
-  // 엄격 모드에서 실행할 때 undefined를 반환합니다.
-  (function () { return this; })() ||
-  Function('return this')();
+  check(typeof window === "object" && window) ||
+  check(typeof self === "object" && self) ||
+  check(typeof global === "object" && global) ||
+  // This returns undefined when running in strict mode
+  (function () {
+    return this;
+  })() ||
+  Function("return this")();
 ```
 
-전역 객체를 얻은 후 새로운 전역을 정의할 수 있습니다. 예를 들어 [`Intl`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Intl)에 대한 구현을 추가합니다.
+After obtaining the global object, we can define new globals on it. For example, adding an implementation for [`Intl`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl):
 
 ```js
-if (typeof globalObject.Intl === 'undefined') {
+if (typeof globalObject.Intl === "undefined") {
   // No Intl in this environment; define our own on the global scope
-  Object.defineProperty(globalObject, 'Intl', {
+  Object.defineProperty(globalObject, "Intl", {
     value: {
       // Our Intl implementation
     },
@@ -82,11 +84,11 @@ if (typeof globalObject.Intl === 'undefined') {
 }
 ```
 
-`globalThis`를 사용할 수 있으므로 환경 전체에 대한 추가 검색이 더 이상 필요하지 않습니다.
+With `globalThis` available, the additional search for the global across environments is not necessary anymore:
 
 ```js
-if (typeof globalThis.Intl === 'undefined') {
-  Object.defineProperty(globalThis, 'Intl', {
+if (typeof globalThis.Intl === "undefined") {
+  Object.defineProperty(globalThis, "Intl", {
     value: {
       // Our Intl implementation
     },
@@ -97,15 +99,15 @@ if (typeof globalThis.Intl === 'undefined') {
 }
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - [Polyfill of `globalThis` in `core-js`](https://github.com/zloirock/core-js#ecmascript-globalthis)
 - {{jsxref("Operators/this", "this")}}

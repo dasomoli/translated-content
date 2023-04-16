@@ -1,68 +1,74 @@
 ---
 title: Math.abs()
 slug: Web/JavaScript/Reference/Global_Objects/Math/abs
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Math.abs
 ---
 
 {{JSRef}}
 
-**`Math.abs()`** 함수는 주어진 숫자의 절대값을
-반환합니다. `x`가 양수이거나 0이라면 `x`를 리턴하고,
-`x`가 음수라면 `x`의 반대값, 즉 양수를 반환합니다.
+The **`Math.abs()`** static method returns the absolute value of a number.
 
 {{EmbedInteractiveExample("pages/js/math-abs.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 Math.abs(x)
 ```
 
-### 매개변수
+### Parameters
 
 - `x`
-  - : 숫자.
+  - : A number.
 
-### 반환 값
+### Return value
 
-주어진 숫자의 절대값.
+The absolute value of `x`. If `x` is negative (including `-0`), returns `-x`. Otherwise, returns `x`. The result is therefore always a positive number or `0`.
 
-## 설명
+## Description
 
-`abs()`는 `Math`의 정적 메서드이므로, 사용자가 생성한
-`Math` 객체의 메서드로 호출할 수 없고 항상
-`Math.abs()`를 사용해야 합니다. (`Math`는 생성자가
-아닙니다)
+Because `abs()` is a static method of `Math`, you always use it as `Math.abs()`, rather than as a method of a `Math` object you created (`Math` is not a constructor).
 
-## 예제
+## Examples
 
-### Math.abs()의 작동 방식
-
-빈 객체, 하나 이상의 요소를 가진 배열, 숫자가 아닌 문자열,
-{{jsxref("undefined")}}나 빈 매개변수를 받으면 {{jsxref("NaN")}}을 반환합니다.
-{{jsxref("null")}}, 빈 문자열이나 빈 배열을 제공하면 0을 반환합니다.
+### Using Math.abs()
 
 ```js
-Math.abs('-1');     // 1
-Math.abs(-2);       // 2
-Math.abs(null);     // 0
-Math.abs('');       // 0
-Math.abs([]);       // 0
-Math.abs([2]);      // 2
-Math.abs([1,2]);    // NaN
-Math.abs({});       // NaN
-Math.abs('string'); // NaN
-Math.abs();         // NaN
+Math.abs(-Infinity); // Infinity
+Math.abs(-1); // 1
+Math.abs(-0); // 0
+Math.abs(0); // 0
+Math.abs(1); // 1
+Math.abs(Infinity); // Infinity
 ```
 
-## 명세
+### Coercion of parameter
+
+`Math.abs()` [coerces its parameter to a number](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number#number_coercion). Non-coercible values will become `NaN`, making `Math.abs()` also return `NaN`.
+
+```js
+Math.abs("-1"); // 1
+Math.abs(-2); // 2
+Math.abs(null); // 0
+Math.abs(""); // 0
+Math.abs([]); // 0
+Math.abs([2]); // 2
+Math.abs([1, 2]); // NaN
+Math.abs({}); // NaN
+Math.abs("string"); // NaN
+Math.abs(); // NaN
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Math.ceil()")}}
 - {{jsxref("Math.floor()")}}

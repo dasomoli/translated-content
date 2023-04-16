@@ -1,37 +1,41 @@
 ---
-title: element.lastChild
+title: "Node: lastChild property"
+short-title: lastChild
 slug: Web/API/Node/lastChild
+page-type: web-api-instance-property
+browser-compat: api.Node.lastChild
 ---
 
-{{ ApiRef() }}
+{{APIRef("DOM")}}
 
-## 요약
+The read-only **`lastChild`** property of the {{domxref("Node")}} interface
+returns the last child of the node, or `null` if there are no child nodes.
 
-**lastChild**는 노드의 마지막 자식을 반환합니다.
+> **Note:** This property returns any type of node that is the last child of this one.
+> It may be a {{domxref("Text")}} or a {{domxref("Comment")}} node.
+> If you want to get the last {{domxref("Element")}} that is a child of another element,
+> consider using {{domxref("Element.lastElementChild")}}.
 
-## 구문과 값
+## Value
+
+A {{domxref("Node")}} that is the last child of the node, or `null` is there are no child nodes.
+
+## Example
 
 ```js
-last_child = element.lastChild
+const tr = document.getElementById("row1");
+const corner_td = tr.lastChild;
 ```
 
-반환되는 `last_child`는 노드입니다. 노드의 부모가 요소이면, 자식은 보통 요소 노드, 텍스트 노드, 주석 노드입니다.
-
-## 예시
-
-```js
-var tr = document.getElementById("row1");
-corner_td = tr.lastChild;
-```
-
-## 주의
-
-자식 요소가 없으면 `null`을 반환합니다.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- {{domxref("Node.firstChild")}}
+- {{domxref("Element.lastElementChild")}}

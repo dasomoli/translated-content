@@ -1,23 +1,27 @@
 ---
 title: <position>
 slug: Web/CSS/position_value
+page-type: css-type
+browser-compat: css.types.position
 ---
 
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`<position>`** (또는 **`<bg-position>`**) [자료형](/ko/docs/Web/CSS/CSS_Types)은 요소 박스에 대한 상대 좌표를 나타내는 2차원 좌표입니다. {{cssxref("background-position")}}, {{cssxref("offset-anchor")}} 속성에서 사용합니다.
+The **`<position>`** (or **`<bg-position>`**) [CSS](/en-US/docs/Web/CSS) [data type](/en-US/docs/Web/CSS/CSS_Types) denotes a two-dimensional coordinate used to set a location relative to an element box. It is used in the {{cssxref("background-position")}} and {{cssxref("offset-anchor")}} properties.
 
-> **참고:** `<position>` 값이 설명하는 최종 위치가 요소 박스 내에 위치해야 할 필요는 없습니다.
+> **Note:** The final position described by the `<position>` value does not need to be inside the element's box.
 
-## 구문
+## Syntax
 
-![](position_type.png)`<position>` 자료형은 하나 혹은 두 개의 키워드와 함께 선택적인 오프셋을 사용해 지정합니다.
+![Grid showing placement of various values. 0 0 is the top left corner. The four values, right, right center, center left 100%, and top 50% left 100%, are all equivalent, being on the right edge in the middle vertically. The two values, top 75px left 100px and left 100px top 75px, are the same. Bottom left 25% is the same as top 100% left 25%.](position_type.png)
 
-키워드에는 `center`, `top`, `right`, `bottom`, `left`가 있으며, 각각 요소 박스의 해당하는 방향 모서리 또는 마주보는 두 모서리의 가운데 지점을 의미합니다. 맥락에 따라, `center`는 좌우 모서리의 중간점일 수도 있고, 상하 모서리의 중간점일 수도 있습니다.
+The `<position>` data type is specified with one or two keywords, with optional offsets.
 
-오프셋은 상대적인 {{cssxref("&lt;percentage&gt;")}} 값 또는 절대적인 {{cssxref("&lt;length&gt;")}} 값으로 지정할 수 있습니다. 양수는 오른쪽과 아래쪽 중 적합한 방향으로 이동하며, 음수는 그 반대입니다.
+The keyword values are `center`, `top`, `right`, `bottom`, and `left`. Each keyword represents either an edge of the element's box or the center line between two edges. Depending on the context, `center` represents either the center between the left and right edges, or the center between the top and bottom edges.
 
-하나의 오프셋 값만 지정할 경우 x 좌표를 정의하는 것이며, 다른 축의 값은 기본값으로 `center`를 사용합니다.
+If specified, an offset can be either a relative {{cssxref("&lt;percentage&gt;")}} value or an absolute {{cssxref("&lt;length&gt;")}} value. Positive values are offset towards the right or the bottom, whichever is appropriate. Negative values are offset in the opposite directions.
+
+If only a single offset value is specified, it defines the x-coordinate, with the value for the other axis defaulting to `center`.
 
 ```css
 /* 1-value syntax */
@@ -31,34 +35,24 @@ value keyword            /* A value for horizontal position, keyword for vertica
 value value              /* A value for each direction (horizontal then vertical) */
 
 /* 4-value syntax */
-keyword value keyword value /* Each value is an offset from the keyword that preceeds it */
+keyword value keyword value /* Each value is an offset from the keyword that precedes it */
 ```
 
-### 형식 구문
+> **Note:** The {{cssxref("background-position")}} property also accepts a three-value syntax. This is not allowed in other properties that use `<position>`.
 
-```
-[
- [ left | center | right ] || [ top | center | bottom ]
-|
- [ left | center | right | <length> | <percentage> ]
- [ top | center | bottom | <length> | <percentage> ]?
-|
- [ [ left | right ] [ <length> | <percentage> ] ] &&
- [ [ top | bottom ] [ <length> | <percentage> ] ]
-]
-```
+## Interpolation
 
-> **참고:** {{cssxref("background-position")}} 속성은 세 값 구문도 허용하나, `<position>`을 사용하는 다른 속성에서는 허용하지 않습니다.
+When animated, a point's abscissa and ordinate values are interpolated independently. However, because the speed of the interpolation is determined by a single [timing function](/en-US/docs/Web/CSS/easing-function) for both coordinates, the point will move in a straight line.
 
-## 보간
+## Formal syntax
 
-애니메이션에서 점의 가로 값과 세로 값은 각각 따로 보간됩니다. 그러나 두 좌표 모두에 대한 보간 속도는 하나의 [타이밍 함수](/ko/docs/Web/CSS/single-transition-timing-function)가 결정하므로, 점은 직선을 따라 이동하게 됩니다.
+{{csssyntax}}
 
-## 예제
+## Examples
 
-### 유효한 위치
+### Valid positions
 
-```
+```plain example-good
 center
 left
 center top
@@ -70,7 +64,7 @@ bottom 12vmin right -6px
 8rem 14px
 ```
 
-### 유효하지 않은 위치
+### Invalid positions
 
 ```plain example-bad
 left right
@@ -78,18 +72,18 @@ bottom top
 10px 15px 20px 15px
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [CSS 값과 단위](/ko/docs/Web/CSS/CSS_Values_and_Units)
-- [CSS 값과 단위 소개](/ko/docs/Learn/CSS/Introduction_to_CSS/Values_and_units)
+- [CSS Values and Units](/en-US/docs/Web/CSS/CSS_Values_and_Units)
+- [CSS Values and Units introduction](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units)
 - {{cssxref("background-position")}}
-- {{cssxref("radial-gradient()")}}
-- {{cssxref("conic-gradient()")}}
+- {{cssxref("gradient/radial-gradient", "radial-gradient()")}}
+- {{cssxref("gradient/conic-gradient", "conic-gradient()")}}

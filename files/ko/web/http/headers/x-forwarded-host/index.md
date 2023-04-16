@@ -1,17 +1,27 @@
 ---
 title: X-Forwarded-Host
 slug: Web/HTTP/Headers/X-Forwarded-Host
+page-type: http-header
+status:
+  - non-standard
 ---
 
 {{HTTPSidebar}}
 
-**`X-Forwarded-Host`** (XFH) 헤더는 HTTP 요청 헤더에서 클라이언트가 요청한 원래 {{HTTPHeader("Host")}} 헤더를 식별하는 사실상의 표준 헤더입니다.
+The **`X-Forwarded-Host`** (XFH) header is a de-facto standard
+header for identifying the original host requested by the client in the
+{{HTTPHeader("Host")}} HTTP request header.
 
-리버스 프록시(로드발란서, CDN) 에서 Host 이름과 포트는 요청을 처리 하는 Origin 서버와 다를 수 있습니다. 이러한 경우 `X-Forwarded-Host` 헤더는 원래 사용된 Host 를 확인 하는데 유용 합니다.
+Host names and ports of reverse proxies (load balancers, CDNs) may differ from the
+origin server handling the request, in that case the `X-Forwarded-Host`
+header is useful to determine which Host was originally used.
 
-이 헤더는 디버깅, 통계 및 위치 종속 컨텐츠 생성에 사용되며 설계 상 클라이언트의 IP 주소와 같은 개인 정보에 민감한 정보를 노출합니다. 따라서이 헤더가 사용될 때 사용자의 개인 정보를 염두에 두어야합니다.
+This header is used for debugging, statistics, and generating location-dependent
+content and by design it exposes privacy sensitive information, such as the IP address
+of the client. Therefore the user's privacy must be kept in mind when deploying this
+header.
 
-이 헤더의 표준화된 버전은 HTTP {{HTTPHeader("Forwarded")}} 헤더 입니다.
+A standardized version of this header is the HTTP {{HTTPHeader("Forwarded")}} header.
 
 <table class="properties">
   <tbody>
@@ -26,32 +36,29 @@ slug: Web/HTTP/Headers/X-Forwarded-Host
   </tbody>
 </table>
 
-## 문법
+## Syntax
 
-```
+```http
 X-Forwarded-Host: <host>
 ```
 
-## 지시자
+## Directives
 
 - \<host>
-  - : 전달된 서버의 도메인 이름.
+  - : The domain name of the forwarded server.
 
-## 예제
+## Examples
 
-```
+```http
 X-Forwarded-Host: id42.example-cdn.com
 ```
 
-## 기술명세
+## Specifications
 
-현재 어떠한 표준 명세에도 속하지 않는다. 이 헤더의 표준화 버전은 {{HTTPHeader("Forwarded")}} 입니다.
+Not part of any current specification. The standardized version of this header is
+{{HTTPHeader("Forwarded")}}.
 
-## 브라우저 호환성
-
-{{Compat}}
-
-## 함께 참고할 내용
+## See also
 
 - {{HTTPHeader("Host")}}
 - {{HTTPHeader("Forwarded")}}

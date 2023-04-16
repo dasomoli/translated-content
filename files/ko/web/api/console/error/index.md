@@ -1,36 +1,53 @@
 ---
-title: console.error()
+title: "console: error() method"
+short-title: error()
 slug: Web/API/console/error
+page-type: web-api-instance-method
+browser-compat: api.console.error
 ---
 
 {{APIRef("Console API")}}
 
-**`console.error()`** 메서드는 웹 콘솔에 에러 메시지를 출력합니다.
+The **`console.error()`** method outputs an error message to the Web console.
 
 {{AvailableInWorkers}}
 
-## 구문
+## Syntax
 
-```js
-console.error(obj1 [, obj2, ..., objN]);
-console.error(msg [, subst1, ..., substN]);
+```js-nolint
+error(obj1)
+error(obj1, /* …, */ objN)
+error(msg)
+error(msg, subst1, /* …, */ substN)
 ```
 
-### 매개변수
+### Parameters
 
-- `obj1` ... `objN`
-  - : 출력할 JavaScript 객체의 리스트. 각 객체의 문자열 표현은 나열된 순서로 함께 출력됩니다.
+- `obj1` … `objN`
+  - : A list of JavaScript objects to output. The string representations of each of
+    these objects are appended together in the order listed and output.
 - `msg`
-  - : 0개 이상의 하위 문자열을 포함하는 JavaScript 문자열.
-- `subst1` ... `substN`
-  - : `msg` 안의 대체할 하위 문자열을 포함하는 JavaScript 객체. 출력 형식에 추가 제어를 할 수 있게 해줍니다.
+  - : A JavaScript string containing zero or more substitution strings.
+- `subst1` … `substN`
+  - : JavaScript objects with which to replace substitution strings within
+    `msg`. This gives you additional control over the format of the output.
 
-자세한 내용은 [콘솔에 텍스트 출력하기](/ko/docs/Web/API/Console#콘솔에_텍스트_출력하기)를 확인하세요.
+See [Outputting text to the console](/en-US/docs/Web/API/console#outputting_text_to_the_console) in the documentation of {{domxref("console")}} for
+details.
 
-## 명세
+### Return value
+
+None ({{jsxref("undefined")}}).
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- [MSDN: Using the F12 Tools Console to View Errors and Status](<https://docs.microsoft.com/previous-versions/windows/internet-explorer/ie-developer/samples/gg589530(v=vs.85)>)
+- [Chrome Developer Tools: Using the Console](https://developer.chrome.com/docs/devtools/console/api/#error)

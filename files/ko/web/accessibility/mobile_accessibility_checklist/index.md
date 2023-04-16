@@ -1,70 +1,82 @@
 ---
-title: 모바일 접근성 점검항목
+title: Mobile accessibility checklist
 slug: Web/Accessibility/Mobile_accessibility_checklist
+page-type: guide
 ---
 
-이 문서는 모바일 앱 개발자를 위한 접근성 요구 사항에 대한 간결한 체크리스트를 제공한다. 더 많은 패턴이 발생할수록 지속적으로 진화하려는 의도다.
+<section id="Quick_links">
+  {{ListSubpagesForSidebar("Web/Accessibility", 1)}}
+</section>
 
-## 색
+This document provides a concise checklist of accessibility requirements for mobile app developers. It is intended to continuously evolve as more patterns arise.
 
-- 색상 대비는 반드시 WCAG 2.0 AA 레벨 요건을 준수해야 한다:
+## Color
 
-  - 일반적인 크기의 텍스트(18pt 보다 작거나 14pt 볼드체)는 4.5:1
-  - 큰 크기의 텍스트(적어도 18pt 보다 크거나 14pt 볼드체)는 3 :1
+- Color contrast must comply with [WCAG 2.1 AA level requirements](https://www.w3.org/TR/WCAG/#contrast-minimum):
 
-- 색상을 통해 전달되는 정보는 반드시 다른 수단으로도 제공되어야 한다(링크 등에 대한 밑줄 텍스트).
+  - Contrast ratio of 4.5:1 for normal text (less than 18 point or 14 point bold.)
+  - Contrast ratio of 3:1 for large text (at least 18 point or 14 point bold.)
 
-## 가시성
+- Information conveyed via color must be also available by other means too (underlined text for links, etc.)
 
-- opacity:0, z-index 깊이 조정 및 화면 밖 배치와 같은 콘텐츠 숨기기 기법은 단순히 가시성을 처리하기 위해서만 사용되어서는 안 된다.
-- 현재 가시화된 화면 이외의 모든 것은 반드시 진정으로 보이지 않아야 한다(특히 여러 개의 카드가 있는 단일 페이지 앱에 관련됨).
+## Visibility
 
-  - `hidden` 속성 또는 `visibility` 또는 `display` 스타일 속성값을 **이용**해야 한다.
-  - 불가피한 경우를 제외 하고 `aria-hidden` **속성을 사용해서는 안된다.**
+- Content hiding techniques such as zero opacity, z-index order and off-screen placement must not be used exclusively to handle visibility.
+- Everything other than the currently visible screen must be _truly_ invisible (especially relevant for single page apps with multiple _cards_):
 
-## 초점
+  - Use the `hidden` attribute or `visibility` or `display` style properties.
+  - Unless absolutely unavoidable, `aria-hidden` attribute should not be used.
 
-- 모든 활성화 가능한 요소는 **초점 가능해야 한다.**
+## Focus
 
-  - 링크, 버튼 및 양식 필드와 같은 표준 control들는 기본적으로 초점을 맞출 수 있다.
-  - 비표준 control들은 반드시 버튼, 링크 또는 체크박스와 같은 적절한 [ARIA Role](http://www.w3.org/TR/wai-aria/roles) 역할이 할당되어야 한다.
+- All activatable elements must be focusable:
 
-  초점은 논리적이고 일관된 방식으로 다루어야 한다.
+  - Standard controls such as links, buttons, and form fields are focusable by default.
+  - Non-standard controls must have an appropriate [ARIA Role](/en-US/docs/Web/Accessibility/ARIA/Roles) assigned to them, such as `button`, `link`, or `checkbox`.
 
-## 텍스트 동등성
+- Focus should be handled in a logical order and consistent manner.
 
-- 앱 내 모든 엄격하지 않은 현재 텍스트 요소에 대해 동일한 의미의 텍스트가 제공되어야 한다.
+## Text equivalents
 
-  - _alt 와_ _title 속성은 적절하게 사용되어야 한다._ ( 스티브 폴크너의 [Using the HTML title attribute](http://blog.paciellogroup.com/2013/01/using-the-html-title-attribute-updated/) 위한 좋은 가이드 보기.)
-  - 위 속성을 사용하기 어려운 경우 `aria-label`, `aria-labelledby`, or `aria-describedby` 등과 같은 [ARIA Properties](http://www.w3.org/WAI/PF/aria/states_and_properties#global_states_header) 를 사용하세요
+- Text equivalent must be provided for every non-strictly presentational non-text element within the app.
 
-- 텍스트 이미지 사용은 가급적 자제 해야 한다.
-- 모든 form 콘트롤 요소는 스크린 리더 사용자를 위해 lable 요소를 가져야 한다.
+  - Use _alt_ and _title_ where appropriate (read Steve Faulkner's post about [Using the HTML title attribute](https://www.tpgi.com/using-the-html-title-attribute-updated/) for a good guide.)
+  - If the above attributes are not applicable, use appropriate [ARIA States and Properties](https://www.w3.org/TR/wai-aria-1.1/#state_prop_def) such as `aria-label`, `aria-labelledby`, or `aria-describedby`.
 
-## 처리 상태
+- Images of text must be avoided.
+- All user interface components with visible text (or image of text) as labels must have the same text available in the programmatic [name](https://www.w3.org/TR/WCAG21/#dfn-name) of the component. [WCAG 2.1: Label in name.](https://www.w3.org/WAI/WCAG21/Understanding/label-in-name.html)
+- All form controls must have labels ({{ htmlelement("label") }} elements) for the benefit of screen reader users.
 
-- 라디오 버튼 및 체크박스와 같은 표준 제어장치는 운영체제가 취급한다. 그러나 다른 사용자 정의 제어의 경우, `aria-checked`, `aria-disabled`, `aria-selected`, `aria-expanded`, and `aria-pressed`과 같은 [ARIA States](http://www.w3.org/TR/wai-aria/states_and_properties#attrs_widgets_header)를 통해 상태 변경이 제공되어야 한다.
+## Handling state
 
-## 방향
+- Standard controls such as radio buttons and checkboxes are handled by the operating system. However, for other custom controls state changes must be provided via [ARIA States](https://www.w3.org/TR/wai-aria-1.1/#state_prop_def) such as `aria-checked`, `aria-disabled`, `aria-selected`, `aria-expanded`, and `aria-pressed`.
 
-- 콘텐츠는 특수한 경우를 제외하고 가로 또는 세로 방향등 단일 방향으로 제한해서는 안된다. [WCAG 2.1: Orientation](https://www.w3.org/WAI/WCAG21/Understanding/orientation.html)
+## Orientation
 
-  - 특수한 경우는 피아노 앱이나 은행 수표 앱 같은 경우가 있다.
+- Content should not be restricted to a single orientation, such as portrait or landscape, unless essential. [WCAG 2.1: Orientation](https://www.w3.org/WAI/WCAG21/Understanding/orientation.html)
 
-## General Guidelines
+  - Examples of when an orientation is essential is a piano application or a bank check.
 
-- An app title **MUST** be provided.
-- Headings **MUST** not break hierarchical structure
+## General guidelines
+
+- An app title must be provided.
+- Headings must not break hierarchical structure
 
   ```html
   <h1>Top level heading</h1>
-    <h2>Secondary heading</h2>
-    <h2>Another secondary heading</h2>
-      <h3>Low level heading</h3>
+  <h2>Secondary heading</h2>
+  <h2>Another secondary heading</h2>
+  <h3>Low level heading</h3>
   ```
 
-- [ARIA Landmark Roles](http://www.w3.org/TR/wai-aria/roles#landmark_roles_header) **SHOULD** be used to describe an app or document structure, such as `banner`, `complementary`, `contentinfo`, `main`, `navigation`, `search`.
-- Touch event handlers **MUST** only be triggered on the `touchend` event.
-- Touch targets **MUST** be large enough for the user to interact with (see the [BBC Mobile Accessibility Guidelines](http://www.bbc.co.uk/guidelines/futuremedia/accessibility/mobile/design/touch-target-size) for useful touch target size guidelines).
+- [ARIA Landmark Roles](https://www.washington.edu/accessibility/websites/regions/) should be used to describe an app or document structure, such as `banner`, `complementary`, `contentinfo`, `main`, `navigation`, `search`.
+- For touch events, at least one of the following must be true ([WCAG 2.1: Pointer Cancellation](https://www.w3.org/WAI/WCAG21/Understanding/pointer-cancellation.html)):
 
-> **참고:** The [original version of this document](http://yzen.github.io/firefoxos/2014/04/30/mobile-accessibility-checklist.html) was written by [Yura Zenevich](http://yzen.github.io/).
+  - The down-event should not be used to trigger any action
+  - The action is triggered on the up event and an option to abort the action before its completion is available or an option to undo the action after its completion
+  - The up-event will undo any action that was triggered on a down event
+  - It is essential to trigger the action on the down event. For example, playing a game or a piano application.
+
+- Touch targets must be large enough for the user to interact with (see the [BBC Mobile Accessibility Guidelines](https://www.bbc.co.uk/accessibility/forproducts/guides/mobile/target-touch-size) for useful touch target size guidelines).
+
+> **Note:** The [original version of this document](https://yzen.github.io/firefoxos/2014/04/30/mobile-accessibility-checklist.html) was written by [Yura Zenevich](https://yzen.github.io/).

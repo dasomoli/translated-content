@@ -1,169 +1,184 @@
 ---
-title: 웹 어플리케이션에서 파일 사용하기
+title: Using files from web applications
 slug: Web/API/File_API/Using_files_from_web_applications
-original_slug: Web/API/File/Using_files_from_web_applications
+page-type: guide
 ---
+
 {{APIRef("File API")}}
 
-HTML5의 DOM으로 추가된 File API를 사용하여, 이제 웹 컨텐츠가 사용자에게 로컬 파일을 선택한 후 파일의 컨텐츠를 읽도록 요청할 수 있습니다. 이 선택은 HTML {{HTMLElement("input")}} 엘리먼트나 드래그 앤 드랍을 사용하는 것으로도 수행할 수 있습니다.
+Using the File API, web content can ask the user to select local files and then read the contents of those files. This selection can be done by either using an HTML `{{HTMLElement("input/file", '&lt;input type="file"&gt;')}}` element or by drag and drop.
 
-원하신다면 확장 기능이나 다른 브라우저 크롬 코드에서도 DOM File API를 사용하실 수 있습니다. 하지만, 조심해야할 몇 가지 부가적인 기능들이 있음을 유의하세요. 자세한 내용은 [크롬 코드에서 DOM File API 사용하기](/ko/docs/Extensions/Using_the_DOM_File_API_in_chrome_code) 글을 확인하세요.
+## Accessing selected file(s)
 
-## 선택한 파일에 접근하기
-
-다음 HTML을 생각해봅시다.
+Consider this HTML:
 
 ```html
-<input type="file" id="input">
+<input type="file" id="input" multiple />
 ```
 
-File API는 사용자에 의해 선택된 파일을 나타내는 객체인 {{DOMxRef("File")}}을 포함하는 {{DOMxRef("FileList")}}에 접근할 수 있게 해줍니다.
+The File API makes it possible to access a {{DOMxRef("FileList")}} containing {{DOMxRef("File")}} objects representing the files selected by the user.
 
-사용자가 하나의 파일만을 선택한 경우, 리스트의 첫 번째 파일만 고려하면 됩니다.
+The `multiple` attribute on the `input` element allows the user to select multiple files.
 
-기존의 DOM 셀렉터를 사용하여 선택된 하나의 파일에 접근하기:
+Accessing the first selected file using a classical DOM selector:
 
 ```js
-const selectedFile = document.getElementById('input').files[0];
+const selectedFile = document.getElementById("input").files[0];
 ```
 
-### change 이벤트에서 선택한 파일에 접근하기
+### Accessing selected file(s) on a change event
 
-`change` 이벤트를 통해 {{DOMxRef("FileList")}}에 접근할수도 있습니다(필수는 아닙니다).
-
-```html
-<input type="file" id="input" onchange="handleFiles(this.files)">
-```
-
-사용자가 하나의 파일을 선택할 때, 사용자에 의해 선택된 파일을 나타내는 객체인 {{DOMxRef("File")}}을 포함하는 {{DOMxRef("FileList")}}와 함께 `handlerFiles()` 함수가 호출됩니다.
-
-사용자가 여러 파일을 선택할 수 있도록 하길 원할 경우, 간단히 `input` 엘리먼트에서 `multiple` 속성을 사용하면됩니다.
-
-```html
-<input type="file" id="input" multiple onchange="handleFiles(this.files)">
-```
-
-이 경우, `handleFiles()` 함수로 전달된 파일 리스트는 사용자가 선택한 각 파일에 대해 하나의 {{DOMxRef("File")}} 객체를 갖습니다.
-
-### 동적으로 change 리스너 추가하기
-
-`change` 이벤트 리스너를 추가하려면 {{DOMxRef("EventTarget.addEventListener()")}}를 다음과 같이 사용해야합니다.
+It is also possible (but not mandatory) to access the {{DOMxRef("FileList")}} through the `change` event. You need to use {{DOMxRef("EventTarget.addEventListener()")}} to add the `change` event listener, like this:
 
 ```js
 const inputElement = document.getElementById("input");
 inputElement.addEventListener("change", handleFiles, false);
 function handleFiles() {
-  const fileList = this.files; /* 이제 파일 리스트로 작업할 수 있습니다 */
+  const fileList = this.files; /* now you can work with the file list */
 }
 ```
 
-이 경우에는, 파라미터를 전달한 이벤트 핸들러에의해 호출된 이전 예제에서와 달리, `handleFiles()` 함수 자체가 이벤트 핸들러임을 유의하세요.
+## Getting information about selected file(s)
 
-## 선택한 파일에 대한 정보 얻기
-
-DOM에 의해 제공된 {{DOMxRef("FileList")}} 객체는 사용자에 의해 선택된 모든 파일을 각각 {{DOMxRef("File")}} 객체로 지정하여 나열합니다. 파일 리스트의 `length` 속성의 값을 확인하여 사용자가 선택한 파일의 수를 결정할 수 있습니다.
+The {{DOMxRef("FileList")}} object provided by the DOM lists all of the files selected by the user, each specified as a {{DOMxRef("File")}} object. You can determine how many files the user selected by checking the value of the file list's `length` attribute:
 
 ```js
-const numFiles = files.length;
+const numFiles = fileList.length;
 ```
 
-개별 {{DOMxRef("File")}} 객체는 리스트를 간단히 배열처럼 접근하여 얻을 수 있습니다.
+Individual {{DOMxRef("File")}} objects can be retrieved by accessing the list as an array.
 
-```js
-for (let i = 0, numFiles = files.length; i < numFiles; i++) {
-  const file = files[i];
-  ..
-}
-```
-
-위 반복문은 파일 리스트의 모든 파일을 순회합니다.
-
-파일에 대한 유용한 정보를 포함하는 {{DOMxRef("File")}} 객체는 세 가지 속성을 제공합니다.
+There are three attributes provided by the {{DOMxRef("File")}} object that contain useful information about the file.
 
 - `name`
-  - : 읽기 전용 문자열인 파일의 이름입니다. 단순한 파일 이름이며, 경로에 대한 정보는 포함하지 않습니다.
+  - : The file's name as a read-only string. This is just the file name, and does not include any path information.
 - `size`
-  - : 읽기 전용 64비트 정수의 바이트 단위 파일의 크기입니다.
+  - : The size of the file in bytes as a read-only 64-bit integer.
 - `type`
-  - : 읽기 전용 문자열인 파일의 MIME 타입입니다. 결정할 수 없는 타입인 경우 `""`입니다.
+  - : The MIME type of the file as a read-only string or `""` if the type couldn't be determined.
 
-### 예시: 파일 크기 보기
+### Example: Showing file(s) size
 
-다음 예시는 `size` 프로퍼티를 사용하는 방법을 보여줍니다.
+The following example shows a possible use of the `size` property:
 
 ```html
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>File(s) size</title>
-<script>
-function updateSize() {
-  let nBytes = 0,
-      oFiles = document.getElementById("uploadInput").files,
-      nFiles = oFiles.length;
-  for (let nFileId = 0; nFileId < nFiles; nFileId++) {
-    nBytes += oFiles[nFileId].size;
-  }
-  let sOutput = nBytes + " bytes";
-  // multiples approximation을 위한 선택적 코드
-  for (let aMultiples = ["KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"], nMultiple = 0, nApprox = nBytes / 1024; nApprox > 1; nApprox /= 1024, nMultiple++) {
-    sOutput = nApprox.toFixed(3) + " " + aMultiples[nMultiple] + " (" + nBytes + " bytes)";
-  }
-  // 선택적 코드의 끝
-  document.getElementById("fileNum").innerHTML = nFiles;
-  document.getElementById("fileSize").innerHTML = sOutput;
-}
-</script>
-</head>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <title>File(s) size</title>
+  </head>
 
-<body onload="updateSize();">
-<form name="uploadForm">
-<p><input id="uploadInput" type="file" name="myFiles" onchange="updateSize();" multiple> selected files: <span id="fileNum">0</span>; total size: <span id="fileSize">0</span></p>
-<p><input type="submit" value="Send file"></p>
-</form>
-</body>
+  <body>
+    <form name="uploadForm">
+      <div>
+        <input id="uploadInput" type="file" multiple />
+        <label for="fileNum">Selected files:</label>
+        <output id="fileNum">0</output>;
+        <label for="fileSize">Total size:</label>
+        <output id="fileSize">0</output>
+      </div>
+      <div><input type="submit" value="Send file" /></div>
+    </form>
+
+    <script>
+      const uploadInput = document.getElementById("uploadInput");
+      uploadInput.addEventListener(
+        "change",
+        () => {
+          // Calculate total size
+          let numberOfBytes = 0;
+          for (const file of uploadInput.files) {
+            numberOfBytes += file.size;
+          }
+
+          // Approximate to the closest prefixed unit
+          const units = [
+            "B",
+            "KiB",
+            "MiB",
+            "GiB",
+            "TiB",
+            "PiB",
+            "EiB",
+            "ZiB",
+            "YiB",
+          ];
+          const exponent = Math.min(
+            Math.floor(Math.log(numberOfBytes) / Math.log(1024)),
+            units.length - 1
+          );
+          const approx = numberOfBytes / 1024 ** exponent;
+          const output =
+            exponent === 0
+              ? `${numberOfBytes} bytes`
+              : `${approx.toFixed(3)} ${
+                  units[exponent]
+                } (${numberOfBytes} bytes)`;
+
+          document.getElementById("fileNum").textContent =
+            uploadInput.files.length;
+          document.getElementById("fileSize").textContent = output;
+        },
+        false
+      );
+    </script>
+  </body>
 </html>
 ```
 
-## click() 메소드를 사용하여 숨겨진 파일 input 엘리먼트 사용하기
+## Using hidden file input elements using the click() method
 
-세련되지 않은 파일 {{HTMLElement("input")}} 엘리먼트를 숨기고 파일 선택기를 열고 사용자에 의해 선택된 파일 또는 파일들을 보여주는 여러분만의 인터페이스를 제공할 수 있습니다. input 엘리먼트를 `display:none` 으로 스타일링하고 {{HTMLElement("input")}} 엘리먼트에 {{DOMxRef("element.click","click()")}} 메소드를 호출하는 것으로 이를 수행할 수 있습니다.
+You can hide the admittedly ugly file {{HTMLElement("input")}} element and present your own interface for opening the file picker and displaying which file or files the user has selected. You can do this by styling the input element with `display:none` and calling the {{DOMxRef("HTMLElement.click","click()")}} method on the {{HTMLElement("input")}} element.
 
-다음 HTML을 생각해봅시다.
+Consider this HTML:
 
 ```html
-<input type="file" id="fileElem" multiple accept="image/*" style="display:none" onchange="handleFiles(this.files)">
-<button id="fileSelect">Select some files</button>
+<input
+  type="file"
+  id="fileElem"
+  multiple
+  accept="image/*"
+  style="display:none" />
+<button id="fileSelect" type="button">Select some files</button>
 ```
 
-`click` 이벤트를 다루는 코드는 다음과 같을 것입니다.
+The code that handles the `click` event can look like this:
 
 ```js
-const fileSelect = document.getElementById("fileSelect"),
-  fileElem = document.getElementById("fileElem");
+const fileSelect = document.getElementById("fileSelect");
+const fileElem = document.getElementById("fileElem");
 
-fileSelect.addEventListener("click", function (e) {
-  if (fileElem) {
-    fileElem.click();
-  }
-}, false);
+fileSelect.addEventListener(
+  "click",
+  (e) => {
+    if (fileElem) {
+      fileElem.click();
+    }
+  },
+  false
+);
 ```
 
-여러분이 원하는 파일 선택기를 열기위한 새로운 버튼을 스타일링할 수 있습니다.
+You can style the {{HTMLElement("button")}} however you wish.
 
-## label 엘리먼트를 사용하여 숨겨진 파일 input 엘리먼트 실행하기
+## Using a label element to trigger a hidden file input element
 
-JavaScript(click() 메소드)를 사용하지 않고 파일 선택기를 열도록 허용하기 위해 {{HTMLElement("label")}} 엘리먼트가 사용될 수 있습니다. 이 경우에는 input 엘리먼트가 반드시 `display: none`(또는 `visibility: hidden`)을 사용하여 숨긴상태가 아니어야하며, 그렇지 않을 경우 라벨은 키보드로 접근이 불가하다는 것을 유의하세요. 대신 [외관상으로 숨기기 테크닉](https://a11yproject.com/posts/how-to-hide-content/)을 사용하세요.
+To allow opening the file picker without using JavaScript (the click() method), a {{HTMLElement("label")}} element can be used. Note that in this case the input element must not be hidden using `display: none` (nor `visibility: hidden`), otherwise the label would not be keyboard-accessible. Use the [visually-hidden technique](https://www.a11yproject.com/posts/how-to-hide-content/) instead.
 
-다음 HTML과
+Consider this HTML:
 
 ```html
-<input type="file" id="fileElem" multiple accept="image/*" class="visually-hidden">
+<input
+  type="file"
+  id="fileElem"
+  multiple
+  accept="image/*"
+  class="visually-hidden" />
 <label for="fileElem">Select some files</label>
 ```
 
-CSS를 생각해봅시다.
+and this CSS:
 
 ```css
 .visually-hidden {
@@ -174,18 +189,18 @@ CSS를 생각해봅시다.
   clip: rect(1px, 1px, 1px, 1px);
 }
 
-input.visually-hidden:focus + label {
+input.visually-hidden:is(:focus, :focus-within) + label {
   outline: thin dotted;
 }
 ```
 
-`fileElem.click()`을 호출하기위해 JavaScript 코드를 추가할 필요가 없습니다. 또한 이 경우에는 여러분이 원하는대로 label 엘리먼트를 스타일링 할 수 있습니다. 여러분은 숨겨진 input 필드의 포커싱 상태를 시각적인 신호(위에서 보여진 outline이나, background-color 또는 box-shadow)로 label에 제공해야합니다. (이 글의 작성 시점에서, Firefox는 `<input type="file">` 엘리먼트에 대한 시각적 신호를 보여주지 않습니다.)
+There is no need to add JavaScript code to call `fileElem.click()`. Also in this case you can style the label element as you wish. You need to provide a visual cue for the focus status of the hidden input field on its label, be it an outline as shown above, or background-color or box-shadow. (As of time of writing, Firefox doesn't show this visual cue for `<input type="file">` elements.)
 
-## 드래그 앤 드랍을 사용하여 파일 선택하기
+## Selecting files using drag and drop
 
-사용자가 파일을 웹 어플리케이션으로 드래그 앤 드랍하도록 할 수도 있습니다.
+You can also let the user drag and drop files into your web application.
 
-첫 단계는 드랍 영역을 설정하는 것입니다. 드랍을 허용할 컨텐츠의 정확한 영역은 어플리케이션의 디자인에따라 아주 달라질 수 있지만, 드랍 이벤트를 받는 엘리먼트를 만드는 것은 간단합니다.
+The first step is to establish a drop zone. Exactly what part of your content will accept drops may vary depending on the design of your application, but making an element receive drop events is easy:
 
 ```js
 let dropbox;
@@ -196,9 +211,9 @@ dropbox.addEventListener("dragover", dragover, false);
 dropbox.addEventListener("drop", drop, false);
 ```
 
-이 예시에서는, `dropbox`라는 ID를 갖는 엘리먼트를 드랍 영역으로 변경합니다. {{event('dragenter')}}, {{event('dragover')}}, {{event('drop')}} 이벤트를위한 리스너를 추가하는 것으로 이를 수행할 수 있습니다.
+In this example, we're turning the element with the ID `dropbox` into our drop zone. This is done by adding listeners for the {{domxref("HTMLElement/dragenter_event", "dragenter")}}, {{domxref("HTMLElement/dragover_event", "dragover")}}, and {{domxref("HTMLElement/drop_event", "drop")}} events.
 
-우리의 경우에는, `dragenter`와 `dragover` 이벤트로 무언가를 진짜 할 필요는 없으므로, 두 함수는 모두 단순합니다. 두 함수는 단지 이벤트의 전파를 중단하고 기본 동작이 발생하는 것을 방지합니다.
+We don't actually need to do anything with the `dragenter` and `dragover` events in our case, so these functions are both simple. They just stop propagation of the event and prevent the default action from occurring:
 
 ```js
 function dragenter(e) {
@@ -212,7 +227,7 @@ function dragover(e) {
 }
 ```
 
-진짜 마법은 `drop()` 함수에서 발생합니다.
+The real magic happens in the `drop()` function:
 
 ```js
 function drop(e) {
@@ -226,127 +241,140 @@ function drop(e) {
 }
 ```
 
-여기에서, 우리는 이벤트로부터 `dataTransfer` 필드를 추출하고, 그로부터 파일 리스트를 가져온 후, `handleFiles()`로 전달합니다. 이 지점부터, 파일을 다루는 것은 사용자가 `input` 엘리먼트를 사용했든 드래그 앤 드랍을 사용했든 동일합니다.
+Here, we retrieve the `dataTransfer` field from the event, pull the file list out of it, and then pass that to `handleFiles()`. From this point on, handling the files is the same whether the user used the `input` element or drag and drop.
 
-## 예시: 사용자가 선택한 이미지의 섬네일 보여주기
+## Example: Showing thumbnails of user-selected images
 
-여러분이 차세대 사진 공유 웹사이트를 개발중이며 HTML5를 사용하여 사진이 실제로 업로드되기 전에 이미지의 섬네일 미리보기를 표시하길 원한다고 가정해봅시다. 여러분은 앞서 설명한대로 input 엘리먼트나 드랍 영역을 설정하고 아래와 같은 `handleFiles()` 함수를 호출하면됩니다.
+Let's say you're developing the next great photo-sharing website and want to use HTML to display thumbnail previews of images before the user actually uploads them. You can establish your input element or drop zone as discussed previously and have them call a function such as the `handleFiles()` function below.
 
 ```js
 function handleFiles(files) {
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
 
-    if (!file.type.startsWith('image/')){ continue }
+    if (!file.type.startsWith("image/")) {
+      continue;
+    }
 
     const img = document.createElement("img");
     img.classList.add("obj");
     img.file = file;
-    preview.appendChild(img); // "preview"가 결과를 보여줄 div 출력이라 가정.
+    preview.appendChild(img); // Assuming that "preview" is the div output where the content will be displayed.
 
     const reader = new FileReader();
-    reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
+    reader.onload = (e) => {
+      img.src = e.target.result;
+    };
     reader.readAsDataURL(file);
   }
 }
 ```
 
-H여기에서 사용자가 선택한 파일을 다루는 반복문은 각 파일의 `type` 속성을 보고 MIME 타입이 "`image/`" 문자열로 시작하는지를 확인합니다. 이미지인 각 파일에 대해서는, 새로운 `img` 엘리먼트를 생성합니다. CSS를 사용하여 보기 좋은 테두리나 그림자를 설정할 수 있고 이미지의 크기를 지정할 수 있으므로, 스타일링에 대해서는 여기에서 다룰 필요는 없습니다.
+Here our loop handling the user-selected files looks at each file's `type` attribute to see if its MIME type begins with the string "`image/`"). For each file that is an image, we create a new `img` element. CSS can be used to establish any pretty borders or shadows and to specify the size of the image, so that doesn't need to be done here.
 
-각 이미지는 각각에 추가된 CSS 클래스 `obj`를 가져, DOM 트리에서의 탐색을 더 쉽게만듭니다. 각 이미지에 이미지에 대한 {{DOMxRef("File")}}을 지정하는 `file` 속성도 추가합니다(이는 나중에 실제로 업로드를 위한 이미지를 fetch 할 수 있게해줍니다). {{DOMxRef("Node.appendChild()")}}를 사용하여 다큐먼트의 미리보기 영역에 새로운 섬네일을 추가합니다.
+Each image has the CSS class `obj` added to it, making it easy to find in the DOM tree. We also add a `file` attribute to each image specifying the {{DOMxRef("File")}} for the image; this will let us fetch the images for actual upload later. We use {{DOMxRef("Node.appendChild()")}} to add the new thumbnail to the preview area of our document.
 
-다음으로, {{DOMxRef("FileReader")}}를 설정하여 이미지 로딩과 이를 `img` 엘리먼트에 추가하는 것을 비동기적으로 처리합니다. 새로운 `FileReader` 객체를 생성한 후에, `onload` 함수를 설정하고 `readAsDataURL()`을 호출하여 백그라운드에서 읽기 작업을 시작합니다. 이미지 파일의 전체 컨텐츠가 로드되었을 때, onload 콜백으로 전달되는 `data:` URL로 변환됩니다. 이 루틴을 구현하면 img 엘리먼트의 src 속성을 로드된 이미지로 설정하여 사용자 화면의 섬네일에 이미지가 나타나납니다.
+Next, we establish the {{DOMxRef("FileReader")}} to handle asynchronously loading the image and attaching it to the `img` element. After creating the new `FileReader` object, we set up its `onload` function and then call `readAsDataURL()` to start the read operation in the background. When the entire contents of the image file are loaded, they are converted into a `data:` URL which is passed to the `onload` callback. Our implementation of this routine sets the `img` element's `src` attribute to the loaded image which results in the image appearing in the thumbnail on the user's screen.
 
-## 객체 URL 사용하기
+## Using object URLs
 
-DOM {{DOMxRef("window.URL.createObjectURL()")}} 및 {{DOMxRef("window.URL.revokeObjectURL()")}} 메소드에 대한 지원을 소개했습니다. 이 메소드들은 사용자의 컴퓨터에 있는 로컬 파일을 포함해, DOM {{DOMxRef("File")}} 객체를 사용해 참조된 데이터에 대한 참조로 사용할 수 있는 간단한 URL 문자열을 생성할 수 있게 해줍니다.
+The DOM {{DOMxRef("URL.createObjectURL()")}} and {{DOMxRef("URL.revokeObjectURL()")}} methods let you create simple URL strings that can be used to reference any data that can be referred to using a DOM {{DOMxRef("File")}} object, including local files on the user's computer.
 
-HTML에 URL로 참조하길 원하는 {{DOMxRef("File")}} 객체가 있다면, 다음과 같이 객체 URL을 생성할 수 있습니다.
+When you have a {{DOMxRef("File")}} object you'd like to reference by URL from HTML, you can create an object URL for it like this:
 
 ```js
 const objectURL = window.URL.createObjectURL(fileObj);
 ```
 
-객체 URL은 {{DOMxRef("File")}} 객체를 식별하는 문자열입니다. {{DOMxRef("window.URL.createObjectURL()")}}을 호출할때마다, 여러분이 이미 해당 파일에 대한 객체 URL을 생성했더라도 고유한 객체 URL이 생성됩니다. 각각은 반드시 해제되어야 합니다. 객체 URL은 다큐먼트가 unload될 때 자동으로 해제되지만, 여러분의 페이지가 동적으로 이를 사용할 경우 {{DOMxRef("window.URL.revokeObjectURL()")}}을 호출하여 명시적으로 해제해야합니다.
+The object URL is a string identifying the {{DOMxRef("File")}} object. Each time you call {{DOMxRef("URL.createObjectURL()")}}, a unique object URL is created even if you've created an object URL for that file already. Each of these must be released. While they are released automatically when the document is unloaded, if your page uses them dynamically you should release them explicitly by calling {{DOMxRef("URL.revokeObjectURL()")}}:
 
 ```js
-window.URL.revokeObjectURL(objectURL);
+URL.revokeObjectURL(objectURL);
 ```
 
-## 예시: 객체 URL을 사용하여 이미지 표시하기
+## Example: Using object URLs to display images
 
-다음 예시는 객체 URL을 사용하여 이미지 섬네일을 표시합니다. 부가적으로, 파일의 이름과 크기를 포함한 다른 정보도 표시합니다.
+This example uses object URLs to display image thumbnails. In addition, it displays other file information including their names and sizes.
 
-인터페이스를 나타내는 HTML은 다음과 같습니다.
+The HTML that presents the interface looks like this:
 
 ```html
-<input type="file" id="fileElem" multiple accept="image/*" style="display:none" onchange="handleFiles(this.files)">
+<input
+  type="file"
+  id="fileElem"
+  multiple
+  accept="image/*"
+  style="display:none" />
 <a href="#" id="fileSelect">Select some files</a>
 <div id="fileList">
   <p>No files selected!</p>
 </div>
 ```
 
-위 코드는 파일 선택기를 불러오는 링크와 우리의 파일 {{HTMLElement("input")}} 엘리먼트를 설정합니다(파일 input을 숨겨 덜 매력적인 사용자 인터페이스가 표시되는 것을 방지하였으므로). 이는 파일 선택기를 불러오는 메소드와 마찬가지로, [Using hidden file input elements using the click() method](#using_hidden_file_input_elements_using_the_click_method) 섹션에서 설명합니다.
+This establishes our file {{HTMLElement("input")}} element as well as a link that invokes the file picker (since we keep the file input hidden to prevent that less-than-attractive user interface from being displayed). This is explained in the section [Using hidden file input elements using the click() method](#using_hidden_file_input_elements_using_the_click_method), as is the method that invokes the file picker.
 
-`handleFiles()` 메소드는 다음과 같습니다.
+The `handleFiles()` method follows:
 
 ```js
-window.URL = window.URL || window.webkitURL;
-
 const fileSelect = document.getElementById("fileSelect"),
-    fileElem = document.getElementById("fileElem"),
-    fileList = document.getElementById("fileList");
+  fileElem = document.getElementById("fileElem"),
+  fileList = document.getElementById("fileList");
 
-fileSelect.addEventListener("click", function (e) {
-  if (fileElem) {
-    fileElem.click();
-  }
-  e.preventDefault(); // "#" 해시로 이동을 방지
-}, false);
+fileSelect.addEventListener(
+  "click",
+  (e) => {
+    if (fileElem) {
+      fileElem.click();
+    }
+    e.preventDefault(); // prevent navigation to "#"
+  },
+  false
+);
 
-function handleFiles(files) {
-  if (!files.length) {
+fileElem.addEventListener("change", handleFiles, false);
+
+function handleFiles() {
+  if (!this.files.length) {
     fileList.innerHTML = "<p>No files selected!</p>";
   } else {
     fileList.innerHTML = "";
     const list = document.createElement("ul");
     fileList.appendChild(list);
-    for (let i = 0; i < files.length; i++) {
+    for (let i = 0; i < this.files.length; i++) {
       const li = document.createElement("li");
       list.appendChild(li);
 
       const img = document.createElement("img");
-      img.src = window.URL.createObjectURL(files[i]);
+      img.src = URL.createObjectURL(this.files[i]);
       img.height = 60;
-      img.onload = function() {
-        window.URL.revokeObjectURL(this.src);
-      }
+      img.onload = () => {
+        URL.revokeObjectURL(img.src);
+      };
       li.appendChild(img);
       const info = document.createElement("span");
-      info.innerHTML = files[i].name + ": " + files[i].size + " bytes";
+      info.innerHTML = `${this.files[i].name}: ${this.files[i].size} bytes`;
       li.appendChild(info);
     }
   }
 }
 ```
 
-`fileList` ID로 {{HTMLElement("div")}}의 URL을 페칭하는 것으로 시작합니다. 이는 섬네일을 포함하여 파일 리스트로 삽입하는 블록입니다.
+This starts by fetching the URL of the {{HTMLElement("div")}} with the ID `fileList`. This is the block into which we'll insert our file list, including thumbnails.
 
-`handleFiles()`로 전달된 {{DOMxRef("FileList")}} 객체가 `null`인 경우, 블록의 inner HTML을 간단하게 "No files selected!"를 표시하도록 설정합니다. `null`이 아닌 경우, 다음과 같이 파일 리스트를 구축합니다.
+If the {{DOMxRef("FileList")}} object passed to `handleFiles()` is `null`, we set the inner HTML of the block to display "No files selected!". Otherwise, we start building our file list, as follows:
 
-1. 새로운 순서가 없는 리스트({{HTMLElement("ul")}}) 엘리먼트가 생성됩니다.
-2. 새로운 리스트 엘리먼트가 {{DOMxRef("Node.appendChild()")}} 메소드 호출에 의해 {{HTMLElement("div")}} 블록으로 삽입됩니다.
-3. `files`에 의해 나타나는 {{DOMxRef("FileList")}} 내의 각 {{DOMxRef("File")}}에 대해 :
+1. A new unordered list ({{HTMLElement("ul")}}) element is created.
+2. The new list element is inserted into the {{HTMLElement("div")}} block by calling its {{DOMxRef("Node.appendChild()")}} method.
+3. For each {{DOMxRef("File")}} in the {{DOMxRef("FileList")}} represented by `files`:
 
-    1. 새로운 리스트 항목({{HTMLElement("li")}}) 엘리먼트를 생성하고 리스트로 삽입합니다.
-    2. 새로운 이미지({{HTMLElement("img")}}) 엘리먼트를 생성합니다.
-    3. {{DOMxRef("window.URL.createObjectURL()")}}을 사용하여 이미지의 소스를 파일을 나타내는 새로운 객체 URL로 설정해 blob URL을 생성합니다.
-    4. 이미지의 height를 60 픽셀로 설정합니다.
-    5. 이미지가 로드된 이후에 더 이상 필요하지 않게되므로 객체 URL을 해제하기 위한 이미지의 로드 이벤트 핸들러를 설정합니다. {{DOMxRef("window.URL.revokeObjectURL()")}} 메소드를 호출하고 `img.src`로 지정한 객체 URL 문자열을 전달하면됩니다.
-    6. 리스트로 새로운 리스트 항목을 추가합니다.
+   1. Create a new list item ({{HTMLElement("li")}}) element and insert it into the list.
+   2. Create a new image ({{HTMLElement("img")}}) element.
+   3. Set the image's source to a new object URL representing the file, using {{DOMxRef("URL.createObjectURL()")}} to create the blob URL.
+   4. Set the image's height to 60 pixels.
+   5. Set up the image's load event handler to release the object URL since it's no longer needed once the image has been loaded. This is done by calling the {{DOMxRef("URL.revokeObjectURL()")}} method and passing in the object URL string as specified by `img.src`.
+   6. Append the new list item to the list.
 
-다음은 위 코드의 라이브 데모입니다.
+Here is a live demo of the code above:
 
 {{EmbedLiveSample('Example_Using_object_URLs_to_display_images', '100%', '300px')}}
 
@@ -382,24 +410,60 @@ function FileUpload(img, file) {
   this.xhr = xhr;
 
   const self = this;
-  this.xhr.upload.addEventListener("progress", function(e) {
-        if (e.lengthComputable) {
-          const percentage = Math.round((e.loaded * 100) / e.total);
-          self.ctrl.update(percentage);
-        }
-      }, false);
+  this.xhr.upload.addEventListener(
+    "progress",
+    (e) => {
+      if (e.lengthComputable) {
+        const percentage = Math.round((e.loaded * 100) / e.total);
+        self.ctrl.update(percentage);
+      }
+    },
+    false
+  );
 
-  xhr.upload.addEventListener("load", function(e){
-          self.ctrl.update(100);
-          const canvas = self.ctrl.ctx.canvas;
-          canvas.parentNode.removeChild(canvas);
-      }, false);
-  xhr.open("POST", "http://demos.hacks.mozilla.org/paul/demos/resources/webservices/devnull.php");
-  xhr.overrideMimeType('text/plain; charset=x-user-defined-binary');
-  reader.onload = function(evt) {
+  xhr.upload.addEventListener(
+    "load",
+    (e) => {
+      self.ctrl.update(100);
+      const canvas = self.ctrl.ctx.canvas;
+      canvas.parentNode.removeChild(canvas);
+    },
+    false
+  );
+  xhr.open(
+    "POST",
+    "http://demos.hacks.mozilla.org/paul/demos/resources/webservices/devnull.php"
+  );
+  xhr.overrideMimeType("text/plain; charset=x-user-defined-binary");
+  reader.onload = (evt) => {
     xhr.send(evt.target.result);
   };
   reader.readAsBinaryString(file);
+}
+
+function createThrobber(img) {
+  const throbberWidth = 64;
+  const throbberHeight = 6;
+  const throbber = document.createElement("canvas");
+  throbber.classList.add("upload-progress");
+  throbber.setAttribute("width", throbberWidth);
+  throbber.setAttribute("height", throbberHeight);
+  img.parentNode.appendChild(throbber);
+  throbber.ctx = throbber.getContext("2d");
+  throbber.ctx.fillStyle = "orange";
+  throbber.update = (percent) => {
+    throbber.ctx.fillRect(
+      0,
+      0,
+      (throbberWidth * percent) / 100,
+      throbberHeight
+    );
+    if (percent === 100) {
+      throbber.ctx.fillStyle = "green";
+    }
+  };
+  throbber.update(0);
+  return throbber;
 }
 ```
 
@@ -418,7 +482,7 @@ Before actually transferring the data, several preparatory steps are taken:
 
 This example, which uses PHP on the server side and JavaScript on the client side, demonstrates asynchronous uploading of a file.
 
-```js
+```php
 <?php
 if (isset($_FILES['myFile'])) {
     // Example:
@@ -426,10 +490,10 @@ if (isset($_FILES['myFile'])) {
     exit;
 }
 ?><!DOCTYPE html>
-<html>
+<html lang="en-US">
 <head>
-    <title>dnd binary upload</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="UTF-8">
+  <title>dnd binary upload</title>
     <script type="application/javascript">
         function sendFile(file) {
             const uri = "/index.php";
@@ -437,8 +501,8 @@ if (isset($_FILES['myFile'])) {
             const fd = new FormData();
 
             xhr.open("POST", uri, true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4 && xhr.status == 200) {
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4 && xhr.status === 200) {
                     alert(xhr.responseText); // handle response.
                 }
             };
@@ -447,14 +511,14 @@ if (isset($_FILES['myFile'])) {
             xhr.send(fd);
         }
 
-        window.onload = function() {
+        window.onload = () => {
             const dropzone = document.getElementById("dropzone");
-            dropzone.ondragover = dropzone.ondragenter = function(event) {
+            dropzone.ondragover = dropzone.ondragenter = (event) => {
                 event.stopPropagation();
                 event.preventDefault();
             }
 
-            dropzone.ondrop = function(event) {
+            dropzone.ondrop = (event) => {
                 event.stopPropagation();
                 event.preventDefault();
 
@@ -468,7 +532,7 @@ if (isset($_FILES['myFile'])) {
 </head>
 <body>
     <div>
-        <div id="dropzone" style="margin:30px; width:500px; height:300px; border:1px dotted grey;">Drag & drop your file here...</div>
+        <div id="dropzone" style="margin:30px; width:500px; height:300px; border:1px dotted grey;">Drag & drop your file here</div>
     </div>
 </body>
 </html>
@@ -481,16 +545,16 @@ Object URLs can be used for other things than just images! They can be used to d
 In Firefox, to have the PDF appear embedded in the iframe (rather than proposed as a downloaded file), the preference `pdfjs.disabled` must be set to `false` {{non-standard_inline()}}.
 
 ```html
-<iframe id="viewer">
+<iframe id="viewer"></iframe>
 ```
 
 And here is the change of the `src` attribute:
 
 ```js
-const obj_url = window.URL.createObjectURL(blob);
-const iframe = document.getElementById('viewer');
-iframe.setAttribute('src', obj_url);
-window.URL.revokeObjectURL(obj_url);
+const obj_url = URL.createObjectURL(blob);
+const iframe = document.getElementById("viewer");
+iframe.setAttribute("src", obj_url);
+URL.revokeObjectURL(obj_url);
 ```
 
 ## Example: Using object URLs with other file types
@@ -498,22 +562,18 @@ window.URL.revokeObjectURL(obj_url);
 You can manipulate files of other formats the same way. Here is how to preview uploaded video:
 
 ```js
-const video = document.getElementById('video');
-const obj_url = window.URL.createObjectURL(blob);
+const video = document.getElementById("video");
+const obj_url = URL.createObjectURL(blob);
 video.src = obj_url;
-video.play()
-window.URL.revokeObjectURL(obj_url);
+video.play();
+URL.revokeObjectURL(obj_url);
 ```
-
-## 명세서
-
-{{Specifications}}
 
 ## See also
 
 - {{DOMxRef("File")}}
 - {{DOMxRef("FileList")}}
 - {{DOMxRef("FileReader")}}
-- [Using XMLHttpRequest](/en/DOM/XMLHttpRequest/Using_XMLHttpRequest)
-- [Using the DOM File API in chrome code](/en/Extensions/Using_the_DOM_File_API_in_chrome_code)
+- {{DOMxRef("URL")}}
 - {{DOMxRef("XMLHttpRequest")}}
+- [Using XMLHttpRequest](/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest)

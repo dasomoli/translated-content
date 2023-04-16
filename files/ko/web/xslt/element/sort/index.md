@@ -1,49 +1,48 @@
 ---
-title: sort
+title: <xsl:sort>
 slug: Web/XSLT/Element/sort
-original_slug: Web/XSLT/sort
 ---
 
 {{ XsltRef() }}
 
-`<xsl:sort>` 요소는 `<xsl:apply-templates>`나 `<xsl:for-each>`가 선택한 노드에 정렬키를 정의하고 노드를 처리할 순서를 결정합니다.
+The `<xsl:sort>` element defines a sort key for nodes selected by `<xsl:apply-templates>` or `<xsl:for-each>` and determines the order in which they are processed.
 
-### 문법
+### Syntax
 
-```
+```xml
 <xsl:sort
   select=EXPRESSION
   order="ascending" | "descending"
-  case-order="upper-first"| "lower-first"
+  case-order="upper-first" | "lower-first"
   lang=XML:LANG-CODE
-  data-type="html" | "xml" | "text" />
+  data-type="text" | "number" />
 ```
 
-### 필수 속성
+### Required Attributes
 
-없음.
+None.
 
-### 선택 속성
+### Optional Attributes
 
 - `select`
-  - : 정렬할 노드를 지정하는 XPath 식을 씁니다.
+  - : Uses an XPath expression to specify the nodes to be sorted.
 - `order`
-  - : "`ascending`"나 "`descending`"으로 처리하면 좋을 노드를 지정합니다. 기본값은 "`ascending`"입니다.
+  - : Specifies whether the nodes should be processed in "`ascending`" or "`descending`" order. The default is "`ascending`".
 - `case-order`
-  - : 처음에 오는 게 대문자인지 소문자인지를 나타냅니다. 가능한 값은 "`upper-first`"와 "`lower-first`"입니다.
+  - : Indicates whether upper- or lowercase letters are to be ordered first. The allowable values are "`upper-first`" and "`lower-first`".
 - `lang`
-  - : 어떤 언어를 정렬에 쓸지를 지정합니다.
+  - : Specifies which language is to be used by the sort.
 - `data-type`
-  - : 어떤 항목을 알파벳순이나 숫자순으로 순서 매길지를 정의합니다. 가능한 값은 "`text`"와 기본값인 "`text`"가 있는 "`number`"입니다.
+  - : Defines whether items are to be ordered alphabetically or numerically. The allowable values are "`text`" and "`number`" with "`text`" being the default.
 
-### 타입
+### Type
 
-하위명령, 항상 `<xsl:for-each>`의 자식으로 나타나고 고유(proper) 템플릿이나 `<xsl:apply-templates>` 앞에 나타나야 함.
+Subinstruction, always appears as a child of \<xsl:for-each>, where it must appear before the template proper or of \<xsl:apply-templates>.
 
-### 정의
+### Defined
 
-[XSLT section 10, Sorting](http://www.w3.org/TR/xslt#sorting)
+XSLT, section10.
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

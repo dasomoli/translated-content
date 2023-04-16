@@ -1,38 +1,48 @@
 ---
 title: Date.prototype.getUTCMinutes()
 slug: Web/JavaScript/Reference/Global_Objects/Date/getUTCMinutes
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.getUTCMinutes
 ---
 
 {{JSRef}}
 
-**getUTCMinutes()** 메서드는 표준시에 따라 지정된 날짜의 분을 반환합니다.
+The **`getUTCMinutes()`** method returns the minutes in the
+specified date according to universal time.
+
+{{EmbedInteractiveExample("pages/js/date-getutcminutes.html")}}
 
 ## Syntax
 
-```js
-    dateObj.getUTCMinutes()
+```js-nolint
+getUTCMinutes()
 ```
 
 ### Return value
 
-0부터 59까지의 정수로, 표준시에 따라 지정된 날짜의 분을 나타냅니다.
+A number.
+If the `Date` object represents a valid date, an integer between 0 and 59,
+representing the minutes in the given date according to universal time.
+Otherwise, [`NaN`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/NaN)
+if the `Date` object doesn't represent a valid date.
 
 ## Examples
 
-### Using `getUTCMinutes()`
+### Using getUTCMinutes()
 
-다음 예제에서는 현재 시간의 분 부분을 minutes 변수에 할당합니다.
+The following example assigns the minutes portion of the current time to the variable
+`minutes`.
 
 ```js
-var today = new Date();
-var minutes = today.getUTCMinutes();
+const today = new Date();
+const minutes = today.getUTCMinutes();
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

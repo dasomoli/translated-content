@@ -1,152 +1,200 @@
 ---
-title: 접근자
+title: get
 slug: Web/JavaScript/Reference/Functions/get
+page-type: javascript-language-feature
+browser-compat: javascript.functions.get
 ---
 
 {{jsSidebar("Functions")}}
 
-**`get`** 구문은 객체의 속성 접근 시 호출할 함수를 바인딩합니다.
+The **`get`** syntax binds an object property to a function that will be called when that property is looked up. It can also be used in [classes](/en-US/docs/Web/JavaScript/Reference/Classes).
 
 {{EmbedInteractiveExample("pages/js/functions-getter.html")}}
 
-## 구문
+## Syntax
 
-```js
-{get prop() { ... } }
-{get [expression]() { ... } }
+```js-nolint
+{ get prop() { /* … */ } }
+{ get [expression]() { /* … */ } }
 ```
 
-### 매개변수
+There are some additional syntax restrictions:
+
+- A getter must have exactly zero parameters.
+
+### Parameters
 
 - `prop`
-  - : 주어진 함수를 바인딩할 속성 이름.
+  - : The name of the property to bind to the given function. In the same way as other properties in [object initializers](/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer), it can be a string literal, a number literal, or an identifier.
 - `expression`
-  - : ECMAScript 2015 이후, 주어진 함수를 바인딩할 속성 이름을 구하는 표현식을 사용할 수도 있습니다.
+  - : You can also use expressions for a computed property name to bind to the given function.
 
-## 설명
+## Description
 
-때로는 동적으로 계산한 값을 반환하는 속성이 필요하거나, 명시적인 함수 호출 없이도 객체의 내부 변수 상태를 반영하는 값을 나타내고 싶은 경우가 있습니다. JavaScript에서는 이런 경우 사용할 수 있도록 접근자(_getter_)라는 기능을 제공합니다.
+Sometimes it is desirable to allow access to a property that returns a dynamically
+computed value, or you may want to reflect the status of an internal variable without
+requiring the use of explicit method calls. In JavaScript, this can be accomplished with
+the use of a _getter_.
 
-어떤 속성에 접근자를 바인딩하는 동시에, 해당 속성이 값도 가지도록 할 수는 없습니다. 그러나 접근자와 설정자(_setter_)를 함께 사용해서, 접근과 할당 모두 되는 '유사 속성'을 만들 수는 있습니다.
+It is not possible to simultaneously have a getter bound to a property and have that
+property actually hold a value, although it _is_ possible to use a getter and a
+setter in conjunction to create a type of pseudo-property.
 
-`get` 구문을 이용할 때는 다음 사항을 주의하세요.
+## Examples
 
-- 접근자의 식별자는 숫자나 문자열일 수 있습니다.
-- 접근자 함수는 매개변수를 가질 수 없습니다.
-- 객체 리터럴에서, 같은 속성 키에 다수의 접근자를 바인딩할 수 없습니다.
+### Defining a getter on new objects in object initializers
 
-  ```js example-bad
-  {
-    get x() { }, get x() { }
-  }
-  ```
-
-- 객체 리터럴에서, 접근자는 데이터 속성과 같은 키를 사용할 수 없습니다.
-
-  ```js example-bad
-  {
-    x: ..., get x() { }
-  }
-  ```
-
-## 예제
-
-### 객체 초기자에서 새로운 객체의 접근자 정의하기
-
-다음 예제는 객체 `obj`에 유사 속성 `latest`를 생성합니다. `latest`는 배열 `log`의 마지막 요소를 반환합니다.
+This will create a pseudo-property `latest` for object `obj`,
+which will return the last array item in `log`.
 
 ```js
 const obj = {
-  log: ['example','test'],
+  log: ["example", "test"],
   get latest() {
     if (this.log.length === 0) return undefined;
     return this.log[this.log.length - 1];
-  }
-}
+  },
+};
 console.log(obj.latest); // "test"
 ```
 
-`latest`에 다른 값을 할당하려 해도 아무 변화도 없을 것입니다.
+Note that attempting to assign a value to `latest` will not change it.
 
-### `delete` 연산자로 접근자 제거하기
+### Using getters in classes
 
-접근자를 삭제하려면 간단히 {{jsxref("Operators/delete", "delete")}} 연산자를 사용하세요.
+You can use the exact same syntax to define public instance getters that are available on class instances. In classes, you don't need the comma separator between methods.
+
+```js
+class ClassWithGetSet {
+  #msg = "hello world";
+  get msg() {
+    return this.#msg;
+  }
+  set msg(x) {
+    this.#msg = `hello ${x}`;
+  }
+}
+
+const instance = new ClassWithGetSet();
+console.log(instance.msg); // "hello world"
+
+instance.msg = "cake";
+console.log(instance.msg); // "hello cake"
+```
+
+Getter properties are defined on the `prototype` property of the class and are thus shared by all instances of the class. Unlike getter properties in object literals, getter properties in classes are not enumerable.
+
+Static setters and private setters use similar syntaxes, which are described in the [`static`](/en-US/docs/Web/JavaScript/Reference/Classes/static) and [private class features](/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields) pages.
+
+### Deleting a getter using the `delete` operator
+
+If you want to remove the getter, you can just {{jsxref("Operators/delete", "delete")}}
+it:
 
 ```js
 delete obj.latest;
 ```
 
-### `defineProperty`를 이용해 이미 존재하는 객체에 접근자 정의하기
+### Defining a getter on existing objects using `defineProperty`
 
-이미 존재하는 객체에 접근자를 추가하려면 {{jsxref("Object.defineProperty()")}}를 사용하세요.
+To append a getter to an existing object later at any time, use
+{{jsxref("Object.defineProperty()")}}.
 
 ```js
-const o = {a: 0};
+const o = { a: 0 };
 
-Object.defineProperty(o, 'b', { get: function() { return this.a + 1; } });
+Object.defineProperty(o, "b", {
+  get() {
+    return this.a + 1;
+  },
+});
 
-console.log(o.b) // 접근자 실행, a + 1 반환 (0 + 1 = 1)
+console.log(o.b); // Runs the getter, which yields a + 1 (which is 1)
 ```
 
-### 계산된 속성 이름 사용하기
+### Using a computed property name
 
 ```js
-const expr = 'foo';
+const expr = "foo";
 
 const obj = {
-  get [expr]() { return 'bar'; }
+  get [expr]() {
+    return "bar";
+  },
 };
 
 console.log(obj.foo); // "bar"
 ```
 
-### 정적 접근자 정의하기
+### Defining static getters
 
 ```js
 class MyConstants {
   static get foo() {
-    return 'foo';
+    return "foo";
   }
 }
 
 console.log(MyConstants.foo); // 'foo'
-MyConstants.foo = 'bar';
-console.log(MyConstants.foo); // 'foo', 정적 접근자의 값 변경 불가
+MyConstants.foo = "bar";
+console.log(MyConstants.foo); // 'foo', a static getter's value cannot be changed
 ```
 
-### 똑똑한 / 느긋한 접근자
+### Smart / self-overwriting / lazy getters
 
-접근자를 사용하면 객체에 속성을 **정의**하되, 접근하기 전에는 속성의 값을 **계산**하지 않을 수 있습니다. 접근자는 값이 실제로 필요한 상황이 오기 전까지 계산 비용을 미루는 것입니다. 사용하지 않으면 비용을 지불할 일도 없습니다.
+Getters give you a way to _define_ a property of an object, but they do not
+_calculate_ the property's value until it is accessed. A getter defers the cost
+of calculating the value until the value is needed. If it is never needed, you never pay
+the cost.
 
-속성 값의 계산을 느긋(_lazy_)하게 만들거나 미루고, 추가 접근에 사용할 수 있도록 캐시에 저장하는 추가 최적화 기법은 **똑똑한(_smart_) 또는 메모화([메모이제이션](https://ko.wikipedia.org/wiki/%EB%A9%94%EB%AA%A8%EC%9D%B4%EC%A0%9C%EC%9D%B4%EC%85%98)) 접근자**라고 합니다. 똑똑한 접근자 속성의 값은 접근자를 처음 호출할 때 계산하는 동시에 캐시에 저장됩니다. 덕분에 속성에 추가 접근 시 캐시에서 값을 즉시 반환하므로 값을 다시 계산하는 수고를 피할 수 있습니다. 똑똑한 접근자는 다음과 같은 상황에 유용합니다.
+An additional optimization technique to lazify or delay the calculation of a property
+value and cache it for later access are _smart_ (or _[memoized](https://en.wikipedia.org/wiki/Memoization)_) getters.
+The value is calculated the first time the getter is called, and is then cached so
+subsequent accesses return the cached value without recalculating it. This is useful in
+the following situations:
 
-- 값의 계산 비용이 큰 경우. (RAM이나 CPU 시간을 많이 소모하거나, 워커 스레드를 생성하거나, 원격 파일을 불러오는 등)
-- 값이 지금 당장 필요하지 않은 경우. 나중에 사용할 수도 있고, 일부 상황에선 아예 사용하지 않을 수 있는 경우입니다.
-- 절대 바뀌지 않는 값이거나 다시 계산해서는 안 되는 값을 여러 번 사용하는 경우.
+- If the calculation of a property value is expensive (takes much RAM or CPU time,
+  spawns worker threads, retrieves remote file, etc.).
+- If the value isn't needed just now. It will be used later, or in some case it's not
+  used at all.
+- If it's used, it will be accessed several times, and there is no need to
+  re-calculate that value will never be changed or shouldn't be re-calculated.
 
-> **참고:** 달리 말하자면, 변화할 수 있는 값에 똑똑한 접근자를 사용해서는 안됩니다. 값이 바뀌어야 하는 상황에서도 접근자의 값은 항상 동일할 것이기 때문입니다.
+> **Note:** This means that you shouldn't write a lazy getter for a property whose value you
+> expect to change, because if the getter is lazy then it will not recalculate the
+> value.
 >
-> 모든 접근자가 처음부터 '느긋'하며 '메모화'되는 것은 아닙니다. 이런 동작이 필요하면 직접 구현해야 합니다.
+> Note that getters are not "lazy" or "memoized" by nature; you must implement this
+> technique if you desire this behavior.
 
-다음 예제의 접근자 속성은 어느 객체의 자체 속성으로 존재합니다. 이 속성에 접근하는 순간, 접근자는 스스로 자신을 객체에서 제거하는 동시에 같은 이름의 속성을 다시 추가하지만, 이때는 접근자가 아니라 데이터 속성으로 추가합니다. 마지막으로 그 속성의 값을 반환합니다.
+In the following example, the object has a getter as its own property. On getting the
+property, the property is removed from the object and re-added, but implicitly as a data
+property this time. Finally, the value gets returned.
 
 ```js
-get notifier() {
-  delete this.notifier;
-  return this.notifier = document.getElementById("bookmarked-notification-anchor");
-},
+const obj = {
+  get notifier() {
+    delete this.notifier;
+    this.notifier = document.getElementById("bookmarked-notification-anchor");
+    return this.notifier;
+  },
+};
 ```
 
-### `get` Vs. `defineProperty`
+### get vs. defineProperty
 
-`get` 키워드와 {{jsxref("Object.defineProperty()")}}는 비슷한 결과를 내지만, {{jsxref("classes", "클래스", "", 1)}}에 사용할 경우 미묘한 차이가 생깁니다.
+While using the `get` keyword and {{jsxref("Object.defineProperty()")}} have
+similar results, there is a subtle difference between the two when used on
+{{jsxref("classes")}}.
 
-`get`을 사용할 경우, 해당 속성은 인스턴스의 프로토타입에 정의됩니다. 그러나 {{jsxref("Object.defineProperty()")}}를 사용할 경우 속성을 인스턴스 자체에 직접 정의하게 됩니다.
+When using `get` the property will be defined on the instance's prototype,
+while using {{jsxref("Object.defineProperty()")}} the property will be defined on the
+instance it is applied to.
 
 ```js
 class Example {
   get hello() {
-    return 'world';
+    return "world";
   }
 }
 
@@ -154,30 +202,30 @@ const obj = new Example();
 console.log(obj.hello);
 // "world"
 
-console.log(Object.getOwnPropertyDescriptor(obj, 'hello'));
+console.log(Object.getOwnPropertyDescriptor(obj, "hello"));
 // undefined
 
 console.log(
-  Object.getOwnPropertyDescriptor(
-    Object.getPrototypeOf(obj), 'hello'
-  )
+  Object.getOwnPropertyDescriptor(Object.getPrototypeOf(obj), "hello"),
 );
 // { configurable: true, enumerable: false, get: function get hello() { return 'world'; }, set: undefined }
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [설정자](/ko/docs/Web/JavaScript/Reference/Functions/set)
-- {{jsxref("Operators/delete", "delete")}}
+- [Working with objects](/en-US/docs/Web/JavaScript/Guide/Working_with_objects)
+- [Functions](/en-US/docs/Web/JavaScript/Reference/Functions)
+- [`set`](/en-US/docs/Web/JavaScript/Reference/Functions/set)
 - {{jsxref("Object.defineProperty()")}}
-- [`Object.prototype.__defineGetter__()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/__defineGetter__)
-- [`Object.prototype.__defineSetter__()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/__defineSetter__)
-- JavaScript 안내서의 [접근자와 설정자 정의하기](/ko/docs/Web/JavaScript/Guide/Working_with_Objects#Defining_getters_and_setters)
+- [Object initializer](/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer)
+- {{jsxref("Statements/class", "class")}}
+- [Property accessors](/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors)
+- [Incompatible ES5 change: literal getter and setter functions must now have exactly zero or one arguments](https://whereswalden.com/2010/08/22/incompatible-es5-change-literal-getter-and-setter-functions-must-now-have-exactly-zero-or-one-arguments/) by Jeff Walden (August 22, 2010)

@@ -1,95 +1,103 @@
 ---
 title: handler.deleteProperty()
 slug: Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/deleteProperty
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Proxy.handler.deleteProperty
 ---
 
 {{JSRef}}
 
-**`handler.deleteProperty()`** 메서드는 {{jsxref("Operators/delete", "delete")}} 연산자에 대한 트랩입니다.
+The **`handler.deleteProperty()`** method is a trap for the `[[Delete]]` [object internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods), which is used by operations such as the {{jsxref("Operators/delete", "delete")}} operator.
 
 {{EmbedInteractiveExample("pages/js/proxyhandler-deleteproperty.html", "taller")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 new Proxy(target, {
   deleteProperty(target, property) {
   }
 });
 ```
 
-### 매개 변수
+### Parameters
 
-다음 매개변수는 `deleteProperty()` 메서드에 전달됩니다. `this`는 처리기에 바인딩됩니다.
+The following parameters are passed to the `deleteProperty()` method.
+`this` is bound to the handler.
 
 - `target`
-  - : 대상 객체
+  - : The target object.
 - `property`
-  - : 삭제할 이름 또는 속성의 {{jsxref("Symbol")}}입니다.
+  - : The name or {{jsxref("Symbol")}} of the property to delete.
 
-### 반환 값
+### Return value
 
-`deleteProperty()` 메서드는 속성이 성공적으로 삭제되었는지를 나타내는 {{jsxref("Boolean", "불리언")}}을 반환합니다.
+The `deleteProperty()` method must return a boolean value indicating
+whether or not the property has been successfully deleted.
 
-## 설명
+## Description
 
-**`handler.deleteProperty()`** 메서드는 {{jsxref("Operators/delete", "delete")}} 연산자에 대한 트랩입니다.
+### Interceptions
 
-### 가로채기
+This trap can intercept these operations:
 
-이 트랩은 다음 작업을 가로챌 수 있습니다.
-
-- 속성 삭제: `delete proxy[foo]`와
+- The [`delete`](/en-US/docs/Web/JavaScript/Reference/Operators/delete) operator: `delete proxy[foo]` and
   `delete proxy.foo`
 - {{jsxref("Reflect.deleteProperty()")}}
 
-### 불변 조건
+Or any other operation that invokes the `[[Delete]]` [internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods).
 
-다음 불변 조건이 위반되면 프록시에서 {{jsxref("TypeError")}}가 발생합니다.
+### Invariants
 
-- 속성이 대상 객체의 구성할 수 없는 자체 속성으로 존재하는 경우, 속성을 삭제할 수 없습니다.
+If the following invariants are violated, the trap throws a {{jsxref("TypeError")}} when invoked.
 
-## 예제들
+- A property cannot be deleted, if it exists as a non-configurable own property of the
+  target object.
 
-### delete 연산자 가로채기
+## Examples
 
-다음 코드는 {{jsxref("Operators/delete", "delete")}} 연산자를 트랩합니다.
+### Trapping the delete operator
+
+The following code traps the {{jsxref("Operators/delete", "delete")}} operator.
 
 ```js
-const p = new Proxy({}, {
-  deleteProperty(target, prop) {
-    if (!(prop in target)) {
-      console.log(`property not found: ${prop}`);
-      return false;
-    }
-    delete target[prop];
-    console.log(`property removed: ${prop}`);
-    return true;
+const p = new Proxy(
+  {},
+  {
+    deleteProperty(target, prop) {
+      if (!(prop in target)) {
+        console.log(`property not found: ${prop}`);
+        return false;
+      }
+      delete target[prop];
+      console.log(`property removed: ${prop}`);
+      return true;
+    },
   },
-});
+);
 
 p.a = 10;
-console.log('a' in p); // true
+console.log("a" in p); // true
 
 const result1 = delete p.a; // "property removed: a"
 console.log(result1); // true
-console.log('a' in p); // false
+console.log("a" in p); // false
 
 const result2 = delete p.a; // "property not found: a"
 console.log(result2); // false
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Proxy")}}
-- [`Proxy()` 생성자](/ko/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy)
-- {{jsxref("Operators/delete", "delete")}} 연산자
+- [`Proxy()` constructor](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy)
+- {{jsxref("Operators/delete", "delete")}} operator
 - {{jsxref("Reflect.deleteProperty()")}}

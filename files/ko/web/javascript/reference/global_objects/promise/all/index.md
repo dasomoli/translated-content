@@ -1,215 +1,288 @@
 ---
 title: Promise.all()
 slug: Web/JavaScript/Reference/Global_Objects/Promise/all
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Promise.all
 ---
+
 {{JSRef}}
 
-**`Promise.all()`** 메서드는 순회 가능한 객체에 주어진 모든 프로미스가 이행한 후, 혹은 프로미스가 주어지지 않았을 때 이행하는 {{jsxref("Promise")}}를 반환합니다. 주어진 프로미스 중 하나가 거부하는 경우, 첫 번째로 거절한 프로미스의 이유를 사용해 자신도 거부합니다.
+The **`Promise.all()`** static method takes an iterable of promises as input and returns a single {{jsxref("Promise")}}. This returned promise fulfills when all of the input's promises fulfill (including when an empty iterable is passed), with an array of the fulfillment values. It rejects when any of the input's promises rejects, with this first rejection reason.
 
 {{EmbedInteractiveExample("pages/js/promise-all.html")}}
 
-## 구문
+## Syntax
 
-```js
-Promise.all(iterable);
+```js-nolint
+Promise.all(iterable)
 ```
 
-### 매개변수
+### Parameters
 
 - `iterable`
-  - : {{jsxref("Array")}}와 같이 [순회 가능](/ko/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol)한(iterable) 객체.
+  - : An [iterable](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterable_protocol) (such as an {{jsxref("Array")}}) of promises.
 
-### 반환 값
+### Return value
 
-- 매개변수로 주어진 순회 가능한 객체가 비어 있으면 **이미 이행한** {{jsxref("Promise")}}.
-- 객체에 프로미스가 없으면, **비동기적으로 이행하는** {{jsxref("Promise")}}. 단, Google Chrome 58은 **이미 이행한** 프로미스를 반환합니다.
-- 그렇지 않은 경우, **대기 중**인 {{jsxref("Promise")}}. 결과로 반환하는 프로미스는 인자의 모든 프로미스가 이행하거나 어떤 프로미스가 거부할 때 (호출 스택이 비는 즉시) **비동기적으로** 이행/거부합니다. "`Promise.all`의 동기성/비동기성" 예제를 참고하세요. 반환하는 프로미스의 이행 값은 매개변수로 주어진 프로미스의 순서와 일치하며, 완료 순서에 영향을 받지 않습니다.
+A {{jsxref("Promise")}} that is:
 
-## 설명
+- **Already fulfilled**, if the `iterable` passed is empty.
+- **Asynchronously fulfilled**, when all the promises in the given `iterable` fulfill. The fulfillment value is an array of fulfillment values, in the order of the promises passed, regardless of completion order. If the `iterable` passed is non-empty but contains no pending promises, the returned promise is still asynchronously (instead of synchronously) fulfilled.
+- **Asynchronously rejected**, when any of the promises in the given `iterable` rejects. The rejection reason is the rejection reason of the first promise that was rejected.
 
-이 메서드는 여러 프로미스의 결과를 집계할 때 유용하게 사용할 수 있습니다. 일반적으로 다음 코드를 계속 실행하기 전에 서로 연관된 비동기 작업 여러 개가 모두 이행되어야 하는 경우에 사용됩니다.
+## Description
 
-입력 값으로 들어온 프로미스 중 **하나라도** 거부 당하면 `Promise.all()`은 즉시 거부합니다. 이에 비해, {{jsxref("Promise.allSettled()")}}가 반환하는 프로미스는 이행/거부 여부에 관계없이 주어진 프로미스가 모두 완료될 때까지 기다립니다. 결과적으로, 주어진 이터러블의 모든 프로미스와 함수의 결과 값을 최종적으로 반환합니다.
+The `Promise.all()` method is one of the [promise concurrency](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#promise_concurrency) methods. It can be useful for aggregating the results of multiple promises. It is typically used when there are multiple related asynchronous tasks that the overall code relies on to work successfully — all of whom we want to fulfill before the code execution continues.
 
-### 이행
+`Promise.all()` will reject immediately upon **any** of the input promises rejecting. In comparison, the promise returned by {{jsxref("Promise.allSettled()")}} will wait for all input promises to complete, regardless of whether or not one rejects. Use `allSettled()` if you need the final result of every promise in the input iterable.
 
-반환한 프로미스의 이행 결과값은 (프로미스가 아닌 값을 포함하여) 매개변수로 주어진 순회 가능한 객체에 포함된 **모든** 값을 담은 배열입니다.
+## Examples
 
-- 빈 객체를 전달한 경우, (동기적으로) 이미 이행한 프로미스를 반환합니다.
-- 전달받은 모든 프로미스가 이미 이행되어 있거나 프로미스가 없는 경우, 비동기적으로 이행하는 프로미스를 반환합니다.
+### Using Promise.all()
 
-### 거부
-
-주어진 프로미스 중 하나라도 거부하면, 다른 프로미스의 이행 여부에 상관없이 첫 번째 거부 이유를 사용해 거부합니다.
-
-## 예제
-
-### `Promise.all` 사용하기
-
-`Promise.all`은 배열 내 모든 값의 이행(또는 첫 번째 거부)을 기다립니다.
+`Promise.all` waits for all fulfillments (or the first rejection).
 
 ```js
-var p1 = Promise.resolve(3);
-var p2 = 1337;
-var p3 = new Promise((resolve, reject) => {
+const p1 = Promise.resolve(3);
+const p2 = 1337;
+const p3 = new Promise((resolve, reject) => {
   setTimeout(() => {
     resolve("foo");
   }, 100);
 });
 
-Promise.all([p1, p2, p3]).then(values => {
+Promise.all([p1, p2, p3]).then((values) => {
   console.log(values); // [3, 1337, "foo"]
 });
 ```
 
-순회 가능한 객체에 프로미스가 아닌 값이 들어있다면 무시하지만, 이행 시 결과 배열에는 포함합니다.
+If the `iterable` contains non-promise values, they will be ignored, but still counted in the returned promise array value (if the promise is fulfilled):
 
 ```js
-// 매개변수 배열이 빈 것과 동일하게 취급하므로 이행함
-var p = Promise.all([1,2,3]);
-// 444로 이행하는 프로미스 하나만 제공한 것과 동일하게 취급하므로 이행함
-var p2 = Promise.all([1,2,3, Promise.resolve(444)]);
-// 555로 거부하는 프로미스 하나만 제공한 것과 동일하게 취급하므로 거부함
-var p3 = Promise.all([1,2,3, Promise.reject(555)]);
+// All values are non-promises, so the returned promise gets fulfilled
+const p = Promise.all([1, 2, 3]);
+// The only input promise is already fulfilled,
+// so the returned promise gets fulfilled
+const p2 = Promise.all([1, 2, 3, Promise.resolve(444)]);
+// One (and the only) input promise is rejected,
+// so the returned promise gets rejected
+const p3 = Promise.all([1, 2, 3, Promise.reject(555)]);
 
-// setTimeout()을 사용해 스택이 빈 후에 출력할 수 있음
-setTimeout(function() {
-    console.log(p);
-    console.log(p2);
-    console.log(p3);
+// Using setTimeout, we can execute code after the queue is empty
+setTimeout(() => {
+  console.log(p);
+  console.log(p2);
+  console.log(p3);
 });
 
-// 출력
+// Logs:
 // Promise { <state>: "fulfilled", <value>: Array[3] }
 // Promise { <state>: "fulfilled", <value>: Array[4] }
 // Promise { <state>: "rejected", <reason>: 555 }
 ```
 
-### `Promise.all`의 동기성/비동기성
+### Asynchronicity or synchronicity of Promise.all
 
-다음 예제는 `Promise.all`의 비동기성(주어진 인자가 빈 경우엔 동기성)을 보입니다.
+This following example demonstrates the asynchronicity of `Promise.all` when a non-empty `iterable` is passed:
 
 ```js
-// Promise.all을 최대한 빨리 완료시키기 위해
-// 이미 이행된 프로미스로 배열을 만들어 인자로 전달
-var resolvedPromisesArray = [Promise.resolve(33), Promise.resolve(44)];
+// Passing an array of promises that are already resolved,
+// to trigger Promise.all as soon as possible
+const resolvedPromisesArray = [Promise.resolve(33), Promise.resolve(44)];
 
-var p = Promise.all(resolvedPromisesArray);
-// 실행 즉시 p의 값을 기록
+const p = Promise.all(resolvedPromisesArray);
+// Immediately logging the value of p
 console.log(p);
 
-// 호출 스택을 비운 다음 실행하기 위해 setTimeout을 사용
-setTimeout(function() {
-    console.log('the stack is now empty');
-    console.log(p);
+// Using setTimeout, we can execute code after the queue is empty
+setTimeout(() => {
+  console.log("the queue is now empty");
+  console.log(p);
 });
 
-// 로그 출력 결과 (순서대로):
+// Logs, in order:
 // Promise { <state>: "pending" }
-// the stack is now empty
+// the queue is now empty
 // Promise { <state>: "fulfilled", <value>: Array[2] }
 ```
 
-`Promise.all()`이 거부하는 경우에도 동일한 일이 발생합니다:
+The same thing happens if `Promise.all` rejects:
 
 ```js
-var mixedPromisesArray = [Promise.resolve(33), Promise.reject(44)];
-var p = Promise.all(mixedPromisesArray);
+const mixedPromisesArray = [Promise.resolve(33), Promise.reject(44)];
+const p = Promise.all(mixedPromisesArray);
 console.log(p);
-setTimeout(function() {
-    console.log('the stack is now empty');
-    console.log(p);
+setTimeout(() => {
+  console.log("the queue is now empty");
+  console.log(p);
 });
 
-// 출력
+// Logs:
 // Promise { <state>: "pending" }
-// the stack is now empty
+// the queue is now empty
 // Promise { <state>: "rejected", <reason>: 44 }
 ```
 
-그러나, `Promise.all`은 주어진 순회 가능한 객체가 비어있는 경우에만 동기적으로 이행됩니다.
+`Promise.all` resolves synchronously if and only if the `iterable` passed is empty:
 
 ```js
-var p = Promise.all([]); // 즉시 이행함
-var p2 = Promise.all([1337, "hi"]); // 프로미스가 아닌 값은 무시하지만 비동기적으로 실행됨
+const p = Promise.all([]); // Will be immediately resolved
+const p2 = Promise.all([1337, "hi"]); // Non-promise values are ignored, but the evaluation is done asynchronously
 console.log(p);
 console.log(p2);
-setTimeout(function() {
-    console.log('the stack is now empty');
-    console.log(p2);
+setTimeout(() => {
+  console.log("the queue is now empty");
+  console.log(p2);
 });
 
-// 출력
+// Logs:
 // Promise { <state>: "fulfilled", <value>: Array[0] }
 // Promise { <state>: "pending" }
-// the stack is now empty
+// the queue is now empty
 // Promise { <state>: "fulfilled", <value>: Array[2] }
 ```
 
-### `Promise.all()` 실패 우선성
+### Using Promise.all() with async functions
 
-`Promise.all()`은 배열 내 요소 중 어느 하나라도 거부하면 즉시 거부합니다. 예를 들어, 일정 시간이 지난 이후 이행하는 네 개의 프로미스와, 즉시 거부하는 하나의 프로미스를 전달한다면 `Promise.all()`도 즉시 거부합니다.
+Within [async functions](/en-US/docs/Web/JavaScript/Reference/Statements/async_function), it's very common to "over-await" your code. For example, given the following functions:
 
 ```js
-var p1 = new Promise((resolve, reject) => {
-  setTimeout(() => resolve('하나'), 1000);
+function promptForDishChoice() {
+  return new Promise((resolve, reject) => {
+    const dialog = document.createElement("dialog");
+    dialog.innerHTML = `
+<form method="dialog">
+  <p>What would you like to eat?</p>
+  <select>
+    <option value="pizza">Pizza</option>
+    <option value="pasta">Pasta</option>
+    <option value="salad">Salad</option>
+  </select>
+  <menu>
+    <li><button value="cancel">Cancel</button></li>
+    <li><button type="submit" value="ok">OK</button></li>
+  </menu>
+</form>
+    `;
+    dialog.addEventListener("close", () => {
+      if (dialog.returnValue === "ok") {
+        resolve(dialog.querySelector("select").value);
+      } else {
+        reject(new Error("User cancelled dialog"));
+      }
+    });
+    document.body.appendChild(dialog);
+    dialog.showModal();
+  });
+}
+
+async function fetchPrices() {
+  const response = await fetch("/prices");
+  return await response.json();
+}
+```
+
+You may write a function like this:
+
+```js example-bad
+async function getPrice() {
+  const choice = await promptForDishChoice();
+  const prices = await fetchPrices();
+  return prices[choice];
+}
+```
+
+However, note that the execution of `promptForDishChoice` and `fetchPrices` don't depend on the result of each other. While the user is choosing their dish, it's fine for the prices to be fetched in the background, but in the code above, the [`await`](/en-US/docs/Web/JavaScript/Reference/Operators/await) operator causes the async function to pause until the choice is made, and then again until the prices are fetched. We can use `Promise.all` to run them concurrently, so that the user doesn't have to wait for the prices to be fetched before the result is given:
+
+```js example-good
+async function getPrice() {
+  const [choice, prices] = await Promise.all([
+    promptForDishChoice(),
+    fetchPrices(),
+  ]);
+  return prices[choice];
+}
+```
+
+`Promise.all` is the best choice of [concurrency method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#promise_concurrency) here, because error handling is intuitive — if any of the promises reject, the result is no longer available, so the whole `await` expression throws.
+
+`Promise.all` accepts an iterable of promises, so if you are using it to parallelize execution of several async functions, you need to call the async functions and use the returned promises. Directly passing the functions to `Promise.all` does not work, since they are not promises.
+
+```js example-bad
+async function getPrice() {
+  const [choice, prices] = await Promise.all([
+    promptForDishChoice,
+    fetchPrices,
+  ]);
+  // `choice` and `prices` are still the original async functions;
+  // Promise.all() does nothing to non-promises
+}
+```
+
+### Promise.all fail-fast behavior
+
+`Promise.all` is rejected if any of the elements are rejected. For example, if you pass in four promises that resolve after a timeout and one promise that rejects immediately, then `Promise.all` will reject immediately.
+
+```js
+const p1 = new Promise((resolve, reject) => {
+  setTimeout(() => resolve("one"), 1000);
 });
-var p2 = new Promise((resolve, reject) => {
-  setTimeout(() => resolve('둘'), 2000);
+const p2 = new Promise((resolve, reject) => {
+  setTimeout(() => resolve("two"), 2000);
 });
-var p3 = new Promise((resolve, reject) => {
-  setTimeout(() => resolve('셋'), 3000);
+const p3 = new Promise((resolve, reject) => {
+  setTimeout(() => resolve("three"), 3000);
 });
-var p4 = new Promise((resolve, reject) => {
-  setTimeout(() => resolve('넷'), 4000);
+const p4 = new Promise((resolve, reject) => {
+  setTimeout(() => resolve("four"), 4000);
 });
-var p5 = new Promise((resolve, reject) => {
-  reject(new Error('거부'));
+const p5 = new Promise((resolve, reject) => {
+  reject(new Error("reject"));
 });
 
-
-// .catch 사용:
+// Using .catch:
 Promise.all([p1, p2, p3, p4, p5])
-.then(values => {
-  console.log(values);
-})
-.catch(error => {
-  console.log(error.message)
-});
+  .then((values) => {
+    console.log(values);
+  })
+  .catch((error) => {
+    console.error(error.message);
+  });
 
-// 콘솔 출력값:
-// "거부"
+// Logs:
+// "reject"
 ```
 
-발생할 수 있는 거부를 사전에 처리해 동작 방식을 바꿀 수 있습니다.
+It is possible to change this behavior by handling possible rejections:
 
 ```js
-var p1 = new Promise((resolve, reject) => {
-  setTimeout(() => resolve('p1_지연_이행'), 1000);
+const p1 = new Promise((resolve, reject) => {
+  setTimeout(() => resolve("p1_delayed_resolution"), 1000);
 });
 
-var p2 = new Promise((resolve, reject) => {
-  reject(new Error('p2_즉시_거부'));
+const p2 = new Promise((resolve, reject) => {
+  reject(new Error("p2_immediate_rejection"));
 });
 
-Promise.all([
-  p1.catch(error => { return error }),
-  p2.catch(error => { return error }),
-]).then(values => {
-  console.log(values[0]) // "p1_지연_이행"
-  console.log(values[1]) // "Error: p2_즉시_거부"
-})
+Promise.all([p1.catch((error) => error), p2.catch((error) => error)]).then(
+  (values) => {
+    console.log(values[0]); // "p1_delayed_resolution"
+    console.error(values[1]); // "Error: p2_immediate_rejection"
+  },
+);
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Promise")}}
+- {{jsxref("Promise.allSettled()")}}
+- {{jsxref("Promise.any()")}}
 - {{jsxref("Promise.race()")}}

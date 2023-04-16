@@ -1,36 +1,45 @@
 ---
-title: Error.prototype.message
+title: "Error: message"
 slug: Web/JavaScript/Reference/Global_Objects/Error/message
+page-type: javascript-instance-data-property
+browser-compat: javascript.builtins.Error.message
 ---
+
 {{JSRef}}
 
-**`message`** 속성은 사람이 읽을 수 있는 오류의 설명입니다.
+The **`message`** data property of an {{jsxref("Error")}} instance is a human-readable description of the error.
 
-## 설명
+## Value
 
-이 속성은 오류가 있거나 설정된 경우 오류에 대한 간략한 설명을 포함합니다. [SpiderMonkey](/ko/docs/Mozilla/Projects/SpiderMonkey)는 예외적으로 `message` 속성을 광범위하게 사용합니다. {{jsxref("Error.prototype.name", "name")}} 속성과 결합된 `message` 속성은 {{jsxref("Error.prototype.toString()")}} 메서드에서 오류의 문자열 표현을 생성하는 데 사용됩니다.
+A string corresponding to the value passed to the [`Error()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/Error) constructor as the first argument.
 
-기본적으로 `message` 속성은 빈 문자열이지만, {{jsxref("Error/Error", "Error")}} 생성자에 대한 첫 번째 인수로 메시지를 지정하여 인스턴스에 대해 이 동작을 재정의할 수 있습니다.
+{{js_property_attributes(1, 0, 1)}}
 
-## 예제
+## Description
 
-### 사용자 정의 오류 발생시키기
+This property contains a brief description of the error if one is available or has been set. The `message` property combined with the {{jsxref("Error.prototype.name", "name")}} property is used by the {{jsxref("Error.prototype.toString()")}} method to create a string representation of the Error.
+
+By default, the `message` property is an empty string, but this behavior can be overridden for an instance by specifying a message as the first argument to the {{jsxref("Error/Error", "Error")}} constructor.
+
+## Examples
+
+### Throwing a custom error
 
 ```js
-var e = new Error('Could not parse input');
+const e = new Error("Could not parse input");
 // e.message is 'Could not parse input'
 throw e;
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Error.prototype.name")}}
 - {{jsxref("Error.prototype.toString()")}}

@@ -1,66 +1,85 @@
 ---
-title: <legend>
+title: "<legend>: The Field Set Legend element"
 slug: Web/HTML/Element/legend
+page-type: html-element
+browser-compat: html.elements.legend
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<legend>` 요소**는 부모 {{HTMLElement("fieldset")}} 콘텐츠의 설명을 나타냅니다.
+The **`<legend>`** [HTML](/en-US/docs/Web/HTML) element represents a caption for the content of its parent {{HTMLElement("fieldset")}}.
 
 {{EmbedInteractiveExample("pages/tabbed/legend.html", "tabbed-standard")}}
 
-<p class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</p>
+## Attributes
+
+This element only includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
+
+## Examples
+
+See {{HTMLElement("form")}} for examples on `<legend>`.
+
+## Technical summary
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
       </th>
-      <td>없음.</td>
+      <td>None.</td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >.
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >Phrasing content</a
+        >
+        and
+        <a href="/en-US/docs/Web/HTML/Element/Heading_Elements">headings</a>
+        (h1–h6 elements).
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
+      <th scope="row">Tag omission</th>
       <td>{{no_tag_omission}}</td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Permitted parents</th>
       <td>
-        {{htmlelement("fieldset")}} 요소. <code>&#x3C;legend></code>가
-        첫 번째 자식이어야 합니다.
+        A {{HTMLElement("fieldset")}} whose first child is this
+        <code>&#x3C;legend></code> element
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>없음</td>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
+          >No corresponding role</a
+        >
+      </td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>No <code>role</code> permitted</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLLegendElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
-
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)만 포함합니다.
-
-## 예제
-
-{{HTMLElement("form")}}의 예제를 참고하세요.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- [ARIA: Form role](/en-US/docs/Web/Accessibility/ARIA/Roles/form_role)

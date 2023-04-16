@@ -1,76 +1,111 @@
 ---
 title: label
 slug: Web/JavaScript/Reference/Statements/label
+page-type: javascript-statement
+browser-compat: javascript.statements.label
 ---
 
 {{jsSidebar("Statements")}}
 
-**레이블 구문**은 {{jsxref("Statements/break", "break")}}나 {{jsxref("Statements/continue", "continue")}} 구문과 함께 사용할 수 있다. 원하는 식별자로 구문 앞에 레이블을 추가할 수 있다.
+A **labeled statement** is any [statement](/en-US/docs/Web/JavaScript/Reference/Statements) that is prefixed with an identifier. You can jump to this label using a {{jsxref("Statements/break", "break")}} or {{jsxref("Statements/continue", "continue")}} statement nested within the labeled statement.
 
-> **Note:** 레이블을 붙인 반복문이나 블록가 자주 사용되는 것은 아니다. 반복문으로 점프하는 대신에 함수를 호출할 수도 있다.
+{{EmbedInteractiveExample("pages/js/statement-label.html")}}
 
-## 문법
+## Syntax
 
-```js
-    label :
-       statement
+```js-nolint
+label:
+  statement
 ```
 
 - `label`
-  - : 자바스크립트에서 사용할 수 있는 식별자면 모두 가능하다.
+  - : Any JavaScript [identifier](/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#identifiers) that is not a reserved word.
 - `statement`
-  - : 구문. break는 모든 레이블 구문에서 사용될 수 있으며, continue는 반복 레이블 구문에서만 사용할 수 있다.
+  - : A JavaScript statement. `break` can be used within any labeled statement, and `continue` can be used within labeled looping statements.
 
-## 설명
+## Description
 
-반복문에 레이블을 붙이고, break나 continue 구문을 사용해 반복문의 어느 위치에서 작업을 멈추고 어느 위치에서 다시 수행할지를 알려줄 수 있다.
+You can use a label to identify a statement, and later refer to it using a `break` or `continue` statement. Note that JavaScript has _no_ `goto` statement; you can only use labels with `break` or `continue`.
 
-자바스크립트에는 goto 구문이 없다는 것에 주의. break나 continue에서만 레이블을 사용할 수 있다.
+Any `break` or `continue` that references `label` must be contained within the `statement` that's labeled by `label`. Think about `label` as a variable that's only available in the scope of `statement`.
 
-[strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode) 코드에서 "let"을 레이블 이름으로 사용할 수 없다. {{jsxref("SyntaxError")}}를 발생시킨다. (let은 허용되지 않는 식별자이다.)
+If a `break label;` statement is encountered when executing `statement`, execution of `statement` terminates, and execution continues at the statement immediately following the labeled statement.
 
-## 예제
+`continue label;` can only be used if `statement` is one of the [looping statements](/en-US/docs/Web/JavaScript/Reference/Statements#iterations). If a `continue label;` statement is encountered when executing `statement`, execution of `statement` continues at the next iteration of the loop. `continue;` without a label can only continue the innermost loop, while `continue label;` allows continuing any given loop even when the statement is nested within other loops.
 
-### for문에서 레이블 continue 사용하기
+A statement can have multiple labels. In this case, the labels are all functionally equivalent.
+
+## Examples
+
+### Using a labeled continue with for loops
 
 ```js
-var i, j;
-
-loop1:
-for (i = 0; i < 3; i++) {      //첫번째 for문은 "loop1" 레이블을 붙였다.
-   loop2:
-   for (j = 0; j < 3; j++) {   //두번째 for문은 "loop2" 레이블을 붙였다.
-      if (i === 1 && j === 1) {
-         continue loop1;
-      }
-      console.log('i = ' + i + ', j = ' + j);
-   }
+// The first for statement is labeled "loop1"
+loop1: for (let i = 0; i < 3; i++) {
+  // The second for statement is labeled "loop2"
+  loop2: for (let j = 0; j < 3; j++) {
+    if (i === 1 && j === 1) {
+      continue loop1;
+    }
+    console.log(`i = ${i}, j = ${j}`);
+  }
 }
 
-// 출력 결과:
-//   "i = 0, j = 0"
-//   "i = 0, j = 1"
-//   "i = 0, j = 2"
-//   "i = 1, j = 0"
-//   "i = 2, j = 0"
-//   "i = 2, j = 1"
-//   "i = 2, j = 2"
-// 다음 두 경우를 어떻게 스킵하는지 주목 : "i = 1, j = 1", "i = 1, j = 2"
+// Logs:
+// i = 0, j = 0
+// i = 0, j = 1
+// i = 0, j = 2
+// i = 1, j = 0
+// i = 2, j = 0
+// i = 2, j = 1
+// i = 2, j = 2
 ```
 
-### 레이블 continue문 사용하기
+Notice how it skips both "i = 1, j = 1" and "i = 1, j = 2".
 
-items, tests 배열을 보면 이 예제는 tests를 통과하는 items의 수를 세고 있다.
+### Using a labeled break with for loops
 
 ```js
-var itemsPassed = 0;
-var i, j;
+let i, j;
 
-top:
-for (i = 0; i < items.length; i++) {
-  for (j = 0; j < tests.length; j++) {
-    if (!tests[j].pass(items[i])) {
-      continue top;
+// The first for statement is labeled "loop1"
+loop1: for (i = 0; i < 3; i++) {
+  // The second for statement is labeled "loop2"
+  loop2: for (j = 0; j < 3; j++) {
+    if (i === 1 && j === 1) {
+      break loop1;
+    }
+    console.log(`i = ${i}, j = ${j}`);
+  }
+}
+
+// Logs:
+// i = 0, j = 0
+// i = 0, j = 1
+// i = 0, j = 2
+// i = 1, j = 0
+```
+
+Notice the difference with the previous `continue` example: when `break loop1` is encountered, the execution of the outer loop is terminated, so there are no further logs beyond "i = 1, j = 0"; when `continue loop1` is encountered, the execution of the outer loop continues at the next iteration, so only "i = 1, j = 1" and "i = 1, j = 2" are skipped.
+
+### Using a labeled continue statement
+
+Given an array of items and an array of tests, this example counts the number of items that pass all the tests.
+
+```js
+// Numbers from 1 to 100
+const items = Array.from({ length: 100 }, (_, i) => i + 1));
+const tests = [
+  { pass: (item) => item % 2 === 0 },
+  { pass: (item) => item % 3 === 0 },
+  { pass: (item) => item % 5 === 0 },
+];
+let itemsPassed = 0;
+
+itemIteration: for (const item of items) {
+  for (const test of tests) {
+    if (!test.pass(item)) {
+      continue itemIteration;
     }
   }
 
@@ -78,97 +113,134 @@ for (i = 0; i < items.length; i++) {
 }
 ```
 
-### for문에 레이블 break문 사용하기
+Note how the `continue itemIteration;` statement skips the rest of the tests for the current item as well as the statement that updates the `itemsPassed` counter, and continues with the next item. If you don't use a label, you would need to use a boolean flag instead.
 
 ```js
-var i, j;
+// Numbers from 1 to 100
+const items = Array.from({ length: 100 }, (_, i) => i + 1));
+const tests = [
+  { pass: (item) => item % 2 === 0 },
+  { pass: (item) => item % 3 === 0 },
+  { pass: (item) => item % 5 === 0 },
+];
+let itemsPassed = 0;
 
-loop1:
-for (i = 0; i < 3; i++) {      //The first for statement is labeled "loop1"
-   loop2:
-   for (j = 0; j < 3; j++) {   //The second for statement is labeled "loop2"
-      if (i === 1 && j === 1) {
-         break loop1;
-      }
-      console.log('i = ' + i + ', j = ' + j);
-   }
-}
-
-// Output is:
-//   "i = 0, j = 0"
-//   "i = 0, j = 1"
-//   "i = 0, j = 2"
-//   "i = 1, j = 0"
-// Notice the difference with the previous continue example
-```
-
-### 레이블 break문 사용하기
-
-items, tests 배열을 보면, 다음 예제는 items가 tests를 모두 통과하는지 판단한다.
-
-```js
-var allPass = true;
-var i, j;
-
-top:
-for (i = 0; items.length; i++)
-  for (j = 0; j < tests.length; i++)
-    if (!tests[j].pass(items[i])) {
-      allPass = false;
-      break top;
+for (const item of items) {
+  let passed = true;
+  for (const test of tests) {
+    if (!test.pass(item)) {
+      passed = false;
+      break;
     }
+  }
+  if (passed) {
+    itemsPassed++;
+  }
+}
 ```
 
-### 레이블 붙인 블록에 break 사용하기
+### Using a labeled break statement
 
-간단한 블록에도 레이블을 사용할 수 있지만, 반복문 아닌 레이블에는 break문만 사용할 수 있다.
+Given an array of items and an array of tests, this example determines whether all items pass all tests.
+
+```js
+// Numbers from 1 to 100
+const items = Array.from({ length: 100 }, (_, i) => i + 1));
+const tests = [
+  { pass: (item) => item % 2 === 0 },
+  { pass: (item) => item % 3 === 0 },
+  { pass: (item) => item % 5 === 0 },
+];
+let allPass = true;
+
+itemIteration: for (const item of items) {
+  for (const test of tests) {
+    if (!test.pass(item)) {
+      allPass = false;
+      break itemIteration;
+    }
+  }
+}
+```
+
+Again, if you don't use a label, you would need to use a boolean flag instead.
+
+```js
+// Numbers from 1 to 100
+const items = Array.from({ length: 100 }, (_, i) => i + 1));
+const tests = [
+  { pass: (item) => item % 2 === 0 },
+  { pass: (item) => item % 3 === 0 },
+  { pass: (item) => item % 5 === 0 },
+];
+let allPass = true;
+
+for (const item of items) {
+  let passed = true;
+  for (const test of tests) {
+    if (!test.pass(item)) {
+      passed = false;
+      break;
+    }
+  }
+  if (!passed) {
+    allPass = false;
+    break;
+  }
+}
+```
+
+### Using a labeled block with break
+
+You can label statements other than loops, such as simple blocks, but only `break` statements can reference non-loop labels.
 
 ```js
 foo: {
-  console.log('face');
+  console.log("face");
   break foo;
-  console.log('this will not be executed');
+  console.log("this will not be executed");
 }
-console.log('swap');
+console.log("swap");
 
-// 로그는 이렇게 출력된다:
-
+// Logs:
 // "face"
-// "swap
+// "swap"
 ```
 
-### 레이블 붙인 함수 선언문
+### Labeled function declarations
 
-ECMAScript 2015에서, 레이블 붙인 함수 선언문은 [web compatibility annex of the specification](http://www.ecma-international.org/ecma-262/6.0/#sec-labelled-function-declarations)의 non-strict 모드에서 표준화되어 있다.
+Labels can only be applied to [statements, not declarations](/en-US/docs/Web/JavaScript/Reference/Statements#difference_between_statements_and_declarations). There is a legacy grammar that allows function declarations to be labeled in non-strict code:
 
 ```js
 L: function F() {}
 ```
 
-[strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode) 에서는 {{jsxref("SyntaxError")}}를 발생시킨다.
+In [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode) code, however, this will throw a {{jsxref("SyntaxError")}}:
 
-```js
-'use strict';
+```js example-bad
+"use strict";
 L: function F() {}
 // SyntaxError: functions cannot be labelled
 ```
 
-[Generator functions](/en-US/docs/Web/JavaScript/Reference/Statements/function*)는 strict code도 non-strict code에서도 레이블 붙일 수 없다.
+Non-plain functions, such as [generator functions](/en-US/docs/Web/JavaScript/Reference/Statements/function*) and [async functions](/en-US/docs/Web/JavaScript/Reference/Statements/async_function) can neither be labeled in strict code, nor in non-strict code:
 
-```js
+```js example-bad
 L: function* F() {}
 // SyntaxError: generator functions cannot be labelled
 ```
 
-## 명세
+The labeled function declaration syntax is [deprecated](/en-US/docs/Web/JavaScript/Reference/Deprecated_and_obsolete_features) and you should not use it, even in non-strict code. You cannot actually jump to this label within the function body.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 더 알아보기
+## See also
 
 - {{jsxref("Statements/break", "break")}}
 - {{jsxref("Statements/continue", "continue")}}

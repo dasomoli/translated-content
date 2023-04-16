@@ -3,125 +3,134 @@ title: Transforming XML with XSLT
 slug: Web/XSLT/Transforming_XML_with_XSLT
 ---
 
-### [개요](/ko/Transforming_XML_with_XSLT/An_Overview)
+{{XSLTRef}}
 
-내용과 겉모양의 분리가 [XML](/ko/XML)의 중요한 설계 특징입니다. XML 문서 구조는 결국 이 데이터를 어떻게 표시하는 게 좋을지에 관한 어떤 암시를 줄 필요로 방해받지 않은 내용 자체의 서로 다른 면(aspect) 사이의 중요한 관계를 반영하고 명확히 하기 위해 설계했습니다. 이 지적인 구조화는 데이터 전송이 더욱 자동화되는 것만큼 특히 중요하고 네트워크로 연결된 매우 이질적인 컴퓨터 사이에 일어난다.
+## An Overview
 
-아직은 결국 XML 문서에 저장된 많은 내용을 읽는 사람에게 표시할 필요가 있습니다. 왜냐하면 브라우저가 친근하고 유연성이 높은 인터페이스를 제공하기 때문에, 그것은 XML 내용의 표시 버전 같은 이상적인 전달 메커니즘입니다. 철저하게 아주 다양한 XML 기술을 이용하게 만들었기 때문에, Mozilla는 원 XML 문서와 스타일 입히기와 클라이언트 측 처리로 인한 서버 부담을 줄이기 위해 HTML 표시에 그들을 놓기로 쓰는 특수 스타일시트 둘 다를 처리할 필요가 있는 모든 메커니즘을 자체에 통합시킵니다.
+[An Overview](/en-US/docs/Web/XSLT/Transforming_XML_with_XSLT/An_Overview)
 
-오늘날, Gecko(the layout engine behind Mozilla와 Firefox)는 두 형태(form)의 XML 스타일시트를 지원합니다. 겉모습(글꼴, 색, 자리들)의 기본 조절을 위해 Gecko는 [DHTML](/ko/DHTML)과 친근한 [CSS](/ko/CSS)를 씁니다. CSS1 전부와 CSS2 대부분을 지원합니다. 최근 생겨난 CSS3 표준 지원은 개발중입니다. CSS에 관한 추가 정보는 [Eric Meyer's CSS pages](http://www.meyerweb.com/eric/css/)를 보시기 바랍니다.
+The separation of content and presentation is a key design feature of [XML](/en-US/docs/Web/XML). The structure of an XML document is designed to reflect and clarify important relationships among the individual aspects of the content itself, unhindered by a need to provide any indication about how this data should eventually be presented. This intelligent structuring is particularly important as more and more data transfers are automated and take place between highly heterogeneous machines linked by a network.
 
-여기서 우리의 관심은 Gecko가 지원하는 스타일시트의 두 번째 형태인 XSLT 스타일시트에 대해서입니다. XSLT는 eXtensible Stylesheet Language/Transform을 나타내고 그 이름은 적절합니다. XSLT는 스타일시트 만든 이가 그러길 바란다면 컨텐트를 모조리 다시 정리하고 다른 형식으로 변환하는 것을 포함하는 컨텐트 조작(manipulating)과 정렬이라는 중요한 두 방식으로 본래 XML 문서를 변환하게 합니다(그리고 Mozilla의 경우에, 초점은 브라우저에 표시될 수 있는 HTML로 즉시 변환하는 데 있습니다).
+Yet eventually much of the content stored in XML documents will need to be presented to human readers. Because a browser provides a familiar and highly flexible interface, it is an ideal mechanism for delivering such presentation versions of XML content. Built from the ground up utilizing a wide variety of XML technologies, Firefox incorporates within itself all of the mechanisms needed to process both original XML documents and the specialized stylesheets used to style and lay them out for HTML display, reducing server load with client-side processing.
 
-### XSLT/XPath 참조
+At present, Gecko (the layout engine behind Firefox) supports two forms of XML stylesheets. For basic control of appearance — fonts, colors, position, and so forth — Gecko uses [CSS](/en-US/docs/Web/CSS).
 
-#### [요소](/ko/XSLT/Elements)
+Our focus here is on the second type of stylesheet that Gecko supports: the XSLT stylesheet. XSLT stands for eXtensible Stylesheet Language/Transform and the name is apt. XSLT allows a stylesheet author to transform a primary XML document in two significant ways: manipulating and sorting the content, including a wholesale reordering of it if so desired, and transforming the content into a different format (and in the case of Firefox, the focus is on converting it on the fly into HTML which can then be displayed by the browser).
 
-- [xsl:apply-imports](/ko/XSLT/apply-imports) _(지원함)_
-- [xsl:apply-templates](/ko/XSLT/apply-templates) _(지원함)_
-- [xsl:attribute](/ko/XSLT/attribute) _(지원함)_
-- [xsl:attribute-set](/ko/XSLT/attribute-set) _(지원함)_
-- [xsl:call-template](/ko/XSLT/call-template) _(지원함)_
-- [xsl:choose](/ko/XSLT/choose) _(지원함)_
-- [xsl:comment](/ko/XSLT/comment) _(지원함)_
-- [xsl:copy](/ko/XSLT/copy) _(지원함)_
-- [xsl:copy-of](/ko/XSLT/copy-of) _(지원함)_
-- [xsl:decimal-format](/ko/XSLT/decimal-format) _(지원함)_
-- [xsl:element](/ko/XSLT/element) _(지원함)_
-- [xsl:fallback](/ko/XSLT/fallback) _(지원 안 함)_
-- [xsl:for-each](/ko/XSLT/for-each) _(지원함)_
-- [xsl:if](/ko/XSLT/if) _(지원함)_
-- [xsl:import](/ko/XSLT/import) _(대부분 지원)_
-- [xsl:include](/ko/XSLT/include) _(지원함)_
-- [xsl:key](/ko/XSLT/key) _(지원함)_
-- [xsl:message](/ko/XSLT/message) _(지원함)_
-- [xsl:namespace-alias](/ko/XSLT/namespace-alias) _(지원 안 함)_
-- [xsl:number](/ko/XSLT/number) _(부분 지원)_
-- [xsl:otherwise](/ko/XSLT/otherwise) _(지원함)_
-- [xsl:output](/ko/XSLT/output) _(부분 지원)_
-- [xsl:param](/ko/XSLT/param) _(지원함)_
-- [xsl:preserve-space](/ko/XSLT/preserve-space) _(지원함)_
-- [xsl:processing-instruction](/ko/XSLT/processing-instruction)
-- [xsl:sort](/ko/XSLT/sort) _(지원함)_
-- [xsl:strip-space](/ko/XSLT/strip-space) _(지원함)_
-- [xsl:stylesheet](/ko/XSLT/stylesheet) _(부분 지원)_
-- [xsl:template](/ko/XSLT/template) _(지원함)_
-- [xsl:text](/ko/XSLT/text) _(부분 지원)_
-- [xsl:transform](/ko/XSLT/transform) _(지원함)_
-- [xsl:value-of](/ko/XSLT/value-of) _(부분 지원)_
-- [xsl:variable](/ko/XSLT/variable) _(지원함)_
-- [xsl:when](/ko/XSLT/when) _(지원함)_
-- [xsl:with-param](/ko/XSLT/with-param) _(지원함)_
+## XSLT/XPath reference
 
-#### [축](/ko/XPath/Axes)
+### Elements
 
-- [ancestor](/ko/XPath/Axes/ancestor)
-- [ancestor-or-self](/ko/XPath/Axes/ancestor-or-self)
-- [attribute](/ko/XPath/Axes/attribute)
-- [child](/ko/XPath/Axes/child)
-- [descendant](/ko/XPath/Axes/descendant)
-- [descendant-or-self](/ko/XPath/Axes/descendant-or-self)
-- [following](/ko/XPath/Axes/following)
-- [following-sibling](/ko/XPath/Axes/following-sibling)
-- [namespace](/ko/XPath/Axes/namespace) _(지원 안 함)_
-- [parent](/ko/XPath/Axes/parent)
-- [preceding](/ko/XPath/Axes/preceding)
-- [preceding-sibling](/ko/XPath/Axes/preceding-sibling)
-- [self](/ko/XPath/Axes/self)
+[Elements](/en-US/docs/Web/XSLT/Element)
 
-#### [함수](/ko/XPath/Functions)
+- [xsl:apply-imports](/en-US/docs/Web/XSLT/Element/apply-imports) _(supported)_
+- [xsl:apply-templates](/en-US/docs/Web/XSLT/Element/apply-templates) _(supported)_
+- [xsl:attribute](/en-US/docs/Web/XSLT/Element/attribute) _(supported)_
+- [xsl:attribute-set](/en-US/docs/Web/XSLT/Element/attribute-set) _(supported)_
+- [xsl:call-template](/en-US/docs/Web/XSLT/Element/call-template) _(supported)_
+- [xsl:choose](/en-US/docs/Web/XSLT/Element/choose) _(supported)_
+- [xsl:comment](/en-US/docs/Web/XSLT/Element/comment) _(supported)_
+- [xsl:copy](/en-US/docs/Web/XSLT/Element/copy) _(supported)_
+- [xsl:copy-of](/en-US/docs/Web/XSLT/Element/copy-of) _(supported)_
+- [xsl:decimal-format](/en-US/docs/Web/XSLT/Element/decimal-format) _(supported)_
+- [xsl:element](/en-US/docs/Web/XSLT/Element/element) _(supported)_
+- [xsl:fallback](/en-US/docs/Web/XSLT/Element/fallback) _(not supported)_
+- [xsl:for-each](/en-US/docs/Web/XSLT/Element/for-each) _(supported)_
+- [xsl:if](/en-US/docs/Web/XSLT/Element/if) _(supported)_
+- [xsl:import](/en-US/docs/Web/XSLT/Element/import) _(mostly supported)_
+- [xsl:include](/en-US/docs/Web/XSLT/Element/include) _(supported)_
+- [xsl:key](/en-US/docs/Web/XSLT/Element/key) _(supported)_
+- [xsl:message](/en-US/docs/Web/XSLT/Element/message) _(supported)_
+- [xsl:namespace-alias](/en-US/docs/Web/XSLT/Element/namespace-alias) _(not supported)_
+- [xsl:number](/en-US/docs/Web/XSLT/Element/number) _(partially supported)_
+- [xsl:otherwise](/en-US/docs/Web/XSLT/Element/otherwise) _(supported)_
+- [xsl:output](/en-US/docs/Web/XSLT/Element/output) _(partially supported)_
+- [xsl:param](/en-US/docs/Web/XSLT/Element/param) _(supported)_
+- [xsl:preserve-space](/en-US/docs/Web/XSLT/Element/preserve-space) _(supported)_
+- [xsl:processing-instruction](/en-US/docs/Web/XSLT/Element/processing-instruction)
+- [xsl:sort](/en-US/docs/Web/XSLT/Element/sort) _(supported)_
+- [xsl:strip-space](/en-US/docs/Web/XSLT/Element/strip-space) _(supported)_
+- [xsl:stylesheet](/en-US/docs/Web/XSLT/Element/stylesheet) _(partially supported)_
+- [xsl:template](/en-US/docs/Web/XSLT/Element/template) _(supported)_
+- [xsl:text](/en-US/docs/Web/XSLT/Element/text) _(partially supported)_
+- [xsl:transform](/en-US/docs/Web/XSLT/Element/transform) _(supported)_
+- [xsl:value-of](/en-US/docs/Web/XSLT/Element/value-of) _(partially supported)_
+- [xsl:variable](/en-US/docs/Web/XSLT/Element/variable) _(supported)_
+- [xsl:when](/en-US/docs/Web/XSLT/Element/when) _(supported)_
+- [xsl:with-param](/en-US/docs/Web/XSLT/Element/with-param) _(supported)_
 
-- [boolean()](/ko/XPath/Functions/boolean) _(지원함)_
-- [ceiling()](/ko/XPath/Functions/ceiling) _(지원함)_
-- [concat()](/ko/XPath/Functions/concat) _(지원함)_
-- [contains()](/ko/XPath/Functions/contains) _(지원함)_
-- [count()](/ko/XPath/Functions/count) _(지원함)_
-- [current()](/ko/XPath/Functions/current) _(지원함)_
-- [document()](/ko/XPath/Functions/document) _(지원함)_
-- [element-available()](/ko/XPath/Functions/element-available) _(지원함)_
-- [false()](/ko/XPath/Functions/false) _(지원함)_
-- [floor()](/ko/XPath/Functions/floor) _(지원함)_
-- [format-number()](/ko/XPath/Functions/format-number) _(지원함)_
-- [function-available()](/ko/XPath/Functions/function-available) _(지원함)_
-- [generate-id()](/ko/XPath/Functions/generate-id) _(지원함)_
-- [id()](/ko/XPath/Functions/id) _(부분 지원)_
-- [key()](/ko/XPath/Functions/key) _(지원함)_
-- [lang()](/ko/XPath/Functions/lang) _(지원함)_
-- [last()](/ko/XPath/Functions/last) _(지원함)_
-- [local-name()](/ko/XPath/Functions/local-name) _(지원함)_
-- [name()](/ko/XPath/Functions/name) _(지원함)_
-- [namespace-uri()](/ko/XPath/Functions/namespace-uri) _(지원함)_
-- [normalize-space()](/ko/XPath/Functions/normalize-space) _(지원함)_
-- [not()](/ko/XPath/Functions/not) _(지원함)_
-- [number()](/ko/XPath/Functions/number) _(지원함)_
-- [position()](/ko/XPath/Functions/position) _(지원함)_
-- [round()](/ko/XPath/Functions/round) _(지원함)_
-- [starts-with()](/ko/XPath/Functions/starts-with) _(지원함)_
-- [string()](/ko/XPath/Functions/string) _(지원함)_
-- [string-lenght()](/ko/XPath/Functions/string-length) _(지원함)_
-- [substring()](/ko/XPath/Functions/substring) _(지원함)_
-- [substring-after()](/ko/XPath/Functions/substring-after) _(지원함)_
-- [substring-before()](/ko/XPath/Functions/substring-before) _(지원함)_
-- [sum()](/ko/XPath/Functions/sum) _(지원함)_
-- [system-property()](/ko/XPath/Functions/system-property) _(지원함)_
-- [translate()](/ko/XPath/Functions/translate) _(지원함)_
-- [true()](/ko/XPath/Functions/true) _(지원함)_
-- [unparsed-entity-url()](/ko/XPath/Functions/unparsed-entity-url) _(지원 안 함)_
+### Axes
 
-### [더 읽을 거리](/ko/Transforming_XML_with_XSLT/For_Further_Reading)
+[Axes](/en-US/docs/Web/XPath/Axes)
 
-- [Books](/ko/Transforming_XML_with_XSLT/For_Further_Reading#Books)
-- [Online](/ko/Transforming_XML_with_XSLT/For_Further_Reading#Online)
+- [ancestor](/en-US/docs/Web/XPath/Axes#ancestor)
+- [ancestor-or-self](/en-US/docs/Web/XPath/Axes#ancestor-or-self)
+- [attribute](/en-US/docs/Web/XPath/Axes#attribute)
+- [child](/en-US/docs/Web/XPath/Axes#child)
+- [descendant](/en-US/docs/Web/XPath/Axes#descendant)
+- [descendant-or-self](/en-US/docs/Web/XPath/Axes#descendant-or-self)
+- [following](/en-US/docs/Web/XPath/Axes#following)
+- [following-sibling](/en-US/docs/Web/XPath/Axes#following-sibling)
+- [namespace](/en-US/docs/Web/XPath/Axes#namespace) _(not supported)_
+- [parent](/en-US/docs/Web/XPath/Axes#parent)
+- [preceding](/en-US/docs/Web/XPath/Axes#preceding)
+- [preceding-sibling](/en-US/docs/Web/XPath/Axes#preceding-sibling)
+- [self](/en-US/docs/Web/XPath/Axes#self)
 
-  - [The World Wide Web Consortium](/ko/Transforming_XML_with_XSLT/For_Further_Reading#The_World_Wide_Web_Consortium)
-  - [Portals](/ko/Transforming_XML_with_XSLT/For_Further_Reading#Portals)
-  - [Articles](/ko/Transforming_XML_with_XSLT/For_Further_Reading#Articles)
-  - [Tutorials/Examples](/ko/Transforming_XML_with_XSLT/For_Further_Reading#Tutorials.2FExamples)
-  - [Mailing Lists/Newsgroups](/ko/Transforming_XML_with_XSLT/For_Further_Reading#Mailing_Lists.2FNewsgroups)
+### Functions
 
-### [찾아보기](/ko/Transforming_XML_with_XSLT/Index)
+[Functions](/en-US/docs/Web/XPath/Functions)
 
-### 원본 문서 정보
+- [boolean()](/en-US/docs/Web/XPath/Functions/boolean) _(supported)_
+- [ceiling()](/en-US/docs/Web/XPath/Functions/ceiling) _(supported)_
+- [concat()](/en-US/docs/Web/XPath/Functions/concat) _(supported)_
+- [contains()](/en-US/docs/Web/XPath/Functions/contains) _(supported)_
+- [count()](/en-US/docs/Web/XPath/Functions/count) _(supported)_
+- [current()](/en-US/docs/Web/XPath/Functions/current) _(supported)_
+- [document()](/en-US/docs/Web/XPath/Functions/document) _(supported)_
+- [element-available()](/en-US/docs/Web/XPath/Functions/element-available) _(supported)_
+- [false()](/en-US/docs/Web/XPath/Functions/false) _(supported)_
+- [floor()](/en-US/docs/Web/XPath/Functions/floor) _(supported)_
+- [format-number()](/en-US/docs/Web/XPath/Functions/format-number) _(supported)_
+- [function-available()](/en-US/docs/Web/XPath/Functions/function-available) _(supported)_
+- [generate-id()](/en-US/docs/Web/XPath/Functions/generate-id) _(supported)_
+- [id()](/en-US/docs/Web/XPath/Functions/id) _(partially supported)_
+- [key()](/en-US/docs/Web/XPath/Functions/key) _(supported)_
+- [lang()](/en-US/docs/Web/XPath/Functions/lang) _(supported)_
+- [last()](/en-US/docs/Web/XPath/Functions/last) _(supported)_
+- [local-name()](/en-US/docs/Web/XPath/Functions/local-name) _(supported)_
+- [name()](/en-US/docs/Web/XPath/Functions/name) _(supported)_
+- [namespace-uri()](/en-US/docs/Web/XPath/Functions/namespace-uri) _(supported)_
+- [normalize-space()](/en-US/docs/Web/XPath/Functions/normalize-space) _(supported)_
+- [not()](/en-US/docs/Web/XPath/Functions/not) _(supported)_
+- [number()](/en-US/docs/Web/XPath/Functions/number) _(supported)_
+- [position()](/en-US/docs/Web/XPath/Functions/position) _(supported)_
+- [round()](/en-US/docs/Web/XPath/Functions/round) _(supported)_
+- [starts-with()](/en-US/docs/Web/XPath/Functions/starts-with) _(supported)_
+- [string()](/en-US/docs/Web/XPath/Functions/string) _(supported)_
+- [string-length()](/en-US/docs/Web/XPath/Functions/string-length) _(supported)_
+- [substring()](/en-US/docs/Web/XPath/Functions/substring) _(supported)_
+- [substring-after()](/en-US/docs/Web/XPath/Functions/substring-after) _(supported)_
+- [substring-before()](/en-US/docs/Web/XPath/Functions/substring-before) _(supported)_
+- [sum()](/en-US/docs/Web/XPath/Functions/sum) _(supported)_
+- [system-property()](/en-US/docs/Web/XPath/Functions/system-property) _(supported)_
+- [translate()](/en-US/docs/Web/XPath/Functions/translate) _(supported)_
+- [true()](/en-US/docs/Web/XPath/Functions/true) _(supported)_
+- [unparsed-entity-url()](/en-US/docs/Web/XPath/Functions/unparsed-entity-url) _(not supported)_
 
-- 저작권 정보: Copyright © 2001-2003 Netscape. All rights reserved.
-- 주의: 이 재판 article은 원래 DevEdge 사이트 부분이었습니다.
+## For Further Reading
+
+[For Further Reading](/en-US/docs/Web/XSLT/Transforming_XML_with_XSLT/For_Further_Reading)
+
+- [Books](/en-US/docs/Web/XSLT/Transforming_XML_with_XSLT/For_Further_Reading#books)
+- [Digital](/en-US/docs/Web/XSLT/Transforming_XML_with_XSLT/For_Further_Reading#digital)
+
+  - [Websites](/en-US/docs/Web/XSLT/Transforming_XML_with_XSLT/For_Further_Reading#websites)
+  - [Articles](/en-US/docs/Web/XSLT/Transforming_XML_with_XSLT/For_Further_Reading#articles)
+  - [Tutorials/Examples](/en-US/docs/Web/XSLT/Transforming_XML_with_XSLT/For_Further_Reading#tutorialsexamples)
+  - [Other](/en-US/docs/Web/XSLT/Transforming_XML_with_XSLT/For_Further_Reading#other)
+
+## Original Document Information
+
+- Copyright Information: Copyright © 2001-2003 Netscape. All rights reserved.
+- Note: This reprinted article was originally part of the DevEdge site.

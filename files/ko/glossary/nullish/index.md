@@ -1,6 +1,7 @@
 ---
 title: Nullish value
 slug: Glossary/Nullish
+page-type: glossary-definition
 ---
 
-[JavaScript](/ko/docs/Glossary/JavaScript) 에서 Nullish value는 [`null`](/ko/docs/Web/JavaScript/Reference/Operators/null)또는 {{JSxRef("undefined")}}값 중 하나입니다. Nullish values는 항상 [falsy](/ko/docs/Glossary/Falsy) 입니다.
+In [JavaScript](/en-US/docs/Glossary/JavaScript), a nullish value is the value which is either [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null) or {{JSxRef("undefined")}}. Nullish values are always [falsy](/en-US/docs/Glossary/Falsy).

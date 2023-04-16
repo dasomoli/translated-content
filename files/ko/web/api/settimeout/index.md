@@ -1,165 +1,265 @@
 ---
-title: setTimeout()
+title: setTimeout() global function
+short-title: setTimeout()
 slug: Web/API/setTimeout
+page-type: web-api-global-function
+browser-compat: api.setTimeout
 ---
+
 {{APIRef("HTML DOM")}}
 
-전역 **`setTimeout()`** 메서드는 만료된 후 함수나 지정한 코드 조각을 실행하는 타이머를 설정합니다.
+The global **`setTimeout()`** method sets a timer which executes a function or specified
+piece of code once the timer expires.
 
-## 구문
+## Syntax
 
-```js
-var timeoutID = setTimeout(function[, delay, arg1, arg2, ...]);
-var timeoutID = setTimeout(function[, delay]);
-var timeoutID = setTimeout(code[, delay]);
+```js-nolint
+setTimeout(code)
+setTimeout(code, delay)
+
+setTimeout(functionRef)
+setTimeout(functionRef, delay)
+setTimeout(functionRef, delay, param1)
+setTimeout(functionRef, delay, param1, param2)
+setTimeout(functionRef, delay, param1, param2, /* … ,*/ paramN)
 ```
 
-### 매개변수
+### Parameters
 
-- `function`
-  - : 타이머가 만료된 뒤 실행할 {{jsxref("function")}}입니다.
+- `functionRef`
+  - : A {{jsxref("function")}} to be executed after the timer expires.
 - `code`
-  - : 함수 대신 문자열을 지정하는 대체 구문으로, 타이머가 만료될 때 코드로 컴파일 후 실행합니다. {{jsxref("Global_Objects/eval", "eval()")}}이 보안 취약점인 것과 같은 이유로 **사용을 권장하지 않습니다**.
+  - : An alternative syntax that allows you to include a string instead of a function,
+    which is compiled and executed when the timer expires. This syntax is **not
+    recommended** for the same reasons that make using
+    {{jsxref("Global_Objects/eval", "eval()")}} a security risk.
 - `delay` {{optional_inline}}
-  - : 주어진 함수 또는 코드를 실행하기 전에 기다릴 밀리초 단위 시간입니다. 생략하거나 0을 지정할 경우 "즉시", 더 정확히는 다음 이벤트 사이클에 실행한다는 뜻입니다. 그러나 실제 딜레이는 의도했던 것보다 더 길 수 있습니다. 아래의 [딜레이가 지정한 값보다 더 긴 이유](#딜레이가_지정한_값보다_더_긴_이유)를 참고하세요.
-- `arg1, ..., argN` {{optional_inline}}
-  - : `function`에 전달할 추가 매개변수입니다.
 
-### 반환 값
+  - : The time, in milliseconds that the timer should wait before
+    the specified function or code is executed. If this parameter is omitted, a value of 0
+    is used, meaning execute "immediately", or more accurately, the next event cycle.
 
-반환하는 `timeoutID`는 양의 정수로서 `setTimeout()`이 생성한 타이머를 식별할 때 사용합니다. 이 값을 {{domxref("clearTimeout()")}}에 전달하면 타이머를 취소할 수 있습니다.
+    Note that in either case, the actual delay may be longer than intended; see [Reasons for delays longer than specified](#reasons_for_delays_longer_than_specified) below.
 
-같은 객체({{domxref("window")}}, 워커 등)에서 반복해 호출하는 `setTimeout()` 또는 {{domxref("setInterval()")}} 메서드는 절대 같은 `timeoutID`를 사용하지 않습니다. 그러나 다른 객체끼리는 다른 ID 풀을 사용합니다.
+    Also note that if the value isn't a number, implicit [type coercion](/en-US/docs/Glossary/Type_coercion) is silently done on the value to convert it to a number — which can lead to unexpected and surprising results; see [Non-number delay values are silently coerced into numbers](#non-number_delay_values_are_silently_coerced_into_numbers) for an example.
 
-## 설명
+- `param1`, …, `paramN` {{optional_inline}}
 
-{{domxref("clearTimeout()")}}으로 타이머를 취소할 수 있습니다.
+  - : Additional arguments which are passed through to the function specified by
+    `functionRef`.
 
-어떤 함수를 몇 밀리초마다 반복적으로 호출해야 할 필요가 있으면 {{domxref("setInterval()")}}을 사용하세요.
+### Return value
 
-### 비동기 함수로 작업하기
+The returned `timeoutID` is a positive integer value which
+identifies the timer created by the call to `setTimeout()`. This value can be
+passed to {{domxref("clearTimeout","clearTimeout()")}} to
+cancel the timeout.
 
-`setTimeout()`은 비동기 함수로서, 함수 스택의 다른 함수 호출을 막지 않습니다. 달리 말하자면, `setTimeout()`을 사용해서 다음 함수 호출을 "일시정지" 할 수는 없습니다.
+It is guaranteed that a `timeoutID` value will never be reused by a subsequent call to
+`setTimeout()` or `setInterval()` on the same object (a window or
+a worker). However, different objects use separate pools of IDs.
 
-다음 예제를 살펴보세요.
+## Description
 
-```js
-setTimeout(() => {console.log("첫 번째 메시지")}, 5000);
-setTimeout(() => {console.log("두 번째 메시지")}, 3000);
-setTimeout(() => {console.log("세 번째 메시지")}, 1000);
+Timeouts are cancelled using
+{{domxref("clearTimeout()")}}.
 
-// 콘솔 출력:
+To call a function repeatedly (e.g., every _N_ milliseconds), consider using
+{{domxref("setInterval()")}}.
 
-// 세 번째 메시지
-// 두 번째 메시지
-// 첫 번째 메시지
+### Non-number delay values are silently coerced into numbers
+
+If `setTimeout()` is called with [_delay_](#delay) value that's not a number, implicit [type coercion](/en-US/docs/Glossary/Type_coercion) is silently done on the value to convert it to a number. For example, the following code incorrectly uses the string `"1000"` for the _delay_ value, rather than the number `1000` – but it nevertheless works, because when the code runs, the string is coerced into the number `1000`, and so the code executes 1 second later.
+
+```js example-bad
+setTimeout(() => {
+  console.log("Delayed for 1 second.");
+}, "1000");
 ```
 
-첫 번째 `setTimeout()` 호출이 두 번째 호출 전에 5초의 "정지" 구간을 만들지 않음에 주의하세요. 그 대신, 위 코드는 첫 함수 실행을 5초간 대기하는 동시에 두 번째 함수 실행을 3초간 대기하고, 다시 동시에 세 번째 함수의 실행도 1초간 대기합니다. 그 후 1초가 지나면 첫 함수와 두 번째 함수 모두 아직 타이머가 끝나지 않았기 때문에 세 번째 함수 먼저 실행됩니다. 그 후에 두 번째, 그리고 마지막으로 첫 번째 함수가 각자의 타이머 만료 후 실행됩니다.
+But in many cases, the implicit type coercion can lead to unexpected and surprising results. For example, when the following code runs, the string `"1 second"` ultimately gets coerced into the number `0` — and so, the code executes immediately, with zero delay.
 
-함수의 실행이 완료된 후에 다른 함수를 호출하는 구조가 필요하면 [프로미스](/ko/docs/Web/JavaScript/Reference/Global_Objects/Promise) 문서를 살펴보세요.
+```js example-bad
+setTimeout(() => {
+  console.log("Delayed for 1 second.");
+}, "1 second");
+```
 
-### "this" 문제
+Therefore, don't use strings for the _delay_ value but instead always use numbers:
 
-`setTimeout()`에 메서드를 지정할 경우, 내부의 `this` 값이 예상과 다를 수도 있습니다. 이 문제에 대한 일반적인 설명은 [JavaScript
-참고서](/ko/docs/Web/JavaScript/Reference/Operators/this#객체의_메서드로서)가 자세히 설명합니다.
+```js example-good
+setTimeout(() => {
+  console.log("Delayed for 1 second.");
+}, 1000);
+```
 
-`setTimeout()`이 실행하는 코드는 `setTimeout()`을 호출했던 함수와는 다른 실행 맥락에서 호출됩니다. 호출 함수의 `this` 키워드 값을 설정하는 일반적인 규칙이 여기서도 적용되며, `this`를 호출 시 지정하지도 않았고 `bind`로 바인딩하지도 않은 경우 기본 값인 `window` (또는 `global`) 객체를 가리키게 됩니다. 따라서 `setTimeout()`을 호출한 함수의 `this` 값과는 다르게 되는 것입니다.
+### Working with asynchronous functions
 
-다음 코드를 살펴보세요.
+`setTimeout()` is an asynchronous function, meaning that the timer function will not pause execution of other functions in the functions stack.
+In other words, you cannot use `setTimeout()` to create a "pause" before the next function in the function stack fires.
+
+See the following example:
 
 ```js
-const myArray = ['zero', 'one', 'two'];
+setTimeout(() => {
+  console.log("this is the first message");
+}, 5000);
+setTimeout(() => {
+  console.log("this is the second message");
+}, 3000);
+setTimeout(() => {
+  console.log("this is the third message");
+}, 1000);
+
+// Output:
+
+// this is the third message
+// this is the second message
+// this is the first message
+```
+
+Notice that the first function does not create a 5-second "pause" before calling the second function. Instead, the first function is called, but waits 5 seconds to
+execute. While the first function is waiting to execute, the second function is called, and a 3-second wait is applied to the second function before it executes. Since neither
+the first nor the second function's timers have completed, the third function is called and completes its execution first. Then the second follows. Then finally the first function
+is executed after its timer finally completes.
+
+To create a progression in which one function only fires after the completion of another function, see the documentation on [Promises](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
+
+### The "this" problem
+
+When you pass a method to `setTimeout()`, it will be invoked with a `this` value that may differ from your
+expectation. The general issue is explained in detail in the [JavaScript reference](/en-US/docs/Web/JavaScript/Reference/Operators/this#callbacks).
+
+Code executed by `setTimeout()` is called from an execution context separate
+from the function from which `setTimeout` was called. The usual rules for
+setting the `this` keyword for the called function apply, and if you have not
+set `this` in the call or with `bind`, it will default to
+the `window` (or `global`) object. It will not be the same as the
+`this` value for the function that called `setTimeout`.
+
+See the following example:
+
+```js
+const myArray = ["zero", "one", "two"];
 myArray.myMethod = function (sProperty) {
   console.log(arguments.length > 0 ? this[sProperty] : this);
 };
 
-myArray.myMethod();  // "zero,one,two" 기록
-myArray.myMethod(1); // "one" 기록
+myArray.myMethod(); // prints "zero,one,two"
+myArray.myMethod(1); // prints "one"
 ```
 
-위의 코드는 `myMethod`를 호출할 때, 호출로 인해 `this`가 `myArray`로 설정되기 때문에 정상적으로 동작합니다. `this[sProperty]`가 `myArray[sProperty]`와 동일함을 확인하세요. 그러나, 다음의 코드도 살펴보세요.
+The above works because when `myMethod` is called, its `this` is
+set to `myArray` by the call, so within the function,
+`this[sProperty]` is equivalent to `myArray[sProperty]`. However,
+in the following:
 
 ```js
-setTimeout(myArray.myMethod, 1.0*1000);      // 1초 후 "[object Window]" 기록
-setTimeout(myArray.myMethod, 1.5*1000, '1'); // 1.5초 후 "undefined" 기록
+setTimeout(myArray.myMethod, 1.0 * 1000); // prints "[object Window]" after 1 second
+setTimeout(myArray.myMethod, 1.5 * 1000, "1"); // prints "undefined" after 1.5 seconds
 ```
 
-`myArray.myMethod`를 `setTimeout`에 전달했고, 타이머 만료 후 호출 시점에 `this`가 따로 설정되지 않으므로 기본 값인 `window` 객체를 가리키게 돼 정상적인 동작을 하지 않습니다.
+The `myArray.myMethod` function is passed to `setTimeout`, then
+when it's called, its `this` is not set, so it defaults to the
+`window` object.
 
-{{jsxref("Array.forEach()", "forEach()")}}와 {{jsxref("Array.reduce()", "reduce()")}} 등 {{jsxref("Array")}}의 메서드와는 달리 `setTimeout()`에는 `thisArg`를 설정할 수 있는 방법 또한 존재하지 않습니다. 그리고 `call`을 사용해 `this`를 설정하는 것 역시 작동하지 않습니다.
+There's also no option to pass a `thisArg` to
+`setTimeout` as there is in Array methods such as {{jsxref("Array.forEach()", "forEach()")}} and {{jsxref("Array.reduce()", "reduce()")}}. As shown below,
+using `call` to set `this` doesn't work either.
 
 ```js
-setTimeout.call(myArray, myArray.myMethod, 2.0*1000);    // 오류
-setTimeout.call(myArray, myArray.myMethod, 2.5*1000, 2); // 같은 오류
+setTimeout.call(myArray, myArray.myMethod, 2.0 * 1000); // error
+setTimeout.call(myArray, myArray.myMethod, 2.5 * 1000, 2); // same error
 ```
 
-#### 해결법
+#### Solutions
 
-##### 함수 감싸기
+##### Use a wrapper function
 
-이 문제를 해결할 때 자주 사용하는 방법 중 하나는 `this`를 설정할 수 있도록 함수를 다른 함수로 감싸는 것입니다.
+A common way to solve the problem is to use a wrapper function that sets
+`this` to the required value:
 
 ```js
-setTimeout(function(){myArray.myMethod()}, 2.0*1000);    // 2초 후 "zero,one,two" 기록
-setTimeout(function(){myArray.myMethod('1')}, 2.5*1000); // 2.5초 후 "one" 기록
+setTimeout(function () {
+  myArray.myMethod();
+}, 2.0 * 1000); // prints "zero,one,two" after 2 seconds
+setTimeout(function () {
+  myArray.myMethod("1");
+}, 2.5 * 1000); // prints "one" after 2.5 seconds
 ```
 
-화살표 함수로 감쌀 수도 있습니다.
+The wrapper function can be an arrow function:
 
 ```js
-setTimeout(() => {myArray.myMethod()}, 2.0*1000);    // 2초 후 "zero,one,two" 기록
-setTimeout(() => {myArray.myMethod('1')}, 2.5*1000); // 2.5초 후 "one" 기록
+setTimeout(() => {
+  myArray.myMethod();
+}, 2.0 * 1000); // prints "zero,one,two" after 2 seconds
+setTimeout(() => {
+  myArray.myMethod("1");
+}, 2.5 * 1000); // prints "one" after 2.5 seconds
 ```
 
-##### bind() 사용하기
+##### Use bind()
 
-다른 방법으로는 {{jsxref("Function.bind()", "bind()")}}를 사용해서 주어진 함수의 모든 호출에서 `this` 값을 설정하는 것입니다.
+Alternatively, you can use {{jsxref("Function.bind()", "bind()")}} to set the value of `this` for all calls to a given function:
 
 ```js
-const myArray = ['zero', 'one', 'two'];
-const myBoundMethod = (function (sProperty) {
-    console.log(arguments.length > 0 ? this[sProperty] : this);
-}).bind(myArray);
+const myArray = ["zero", "one", "two"];
+const myBoundMethod = function (sProperty) {
+  console.log(arguments.length > 0 ? this[sProperty] : this);
+}.bind(myArray);
 
-myBoundMethod();  // "zero,one,two" 기록, this가 myArray에 바인딩됐기 때문
-myBoundMethod(1); // "one" 기록
-setTimeout(myBoundMethod, 1.0*1000);      // 1초 후, 바인딩으로 인해 여전히 "zero,one,two" 기록
-setTimeout(myBoundMethod, 1.5*1000, "1"); // 1.5초 후 "one" 기록
+myBoundMethod(); // prints "zero,one,two" because 'this' is bound to myArray in the function
+myBoundMethod(1); // prints "one"
+setTimeout(myBoundMethod, 1.0 * 1000); // still prints "zero,one,two" after 1 second because of the binding
+setTimeout(myBoundMethod, 1.5 * 1000, "1"); // prints "one" after 1.5 seconds
 ```
 
-### 문자열 리터럴 지정하기
+### Passing string literals
 
-`setTimeout()`에 함수 대신 문자열을 지정하는 것은 [`eval()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/eval)을 사용하는 것과 같은 문제를 가집니다.
+Passing a string instead of a function to `setTimeout()` has the same problems as using
+[`eval()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval).
 
 ```js example-bad
-// 하지 마세요
+// Don't do this
 setTimeout("console.log('Hello World!');", 500);
 ```
 
 ```js example-good
-// 이렇게 사용하세요
-setTimeout(function() {
-  console.log('Hello World!');
+// Do this instead
+setTimeout(() => {
+  console.log("Hello World!");
 }, 500);
 ```
 
-`setTimeout()`에 전달한 문자열은 전역 맥락에서 평가되므로, `setTimeout()` 호출 시점에 접근 가능했던 로컬 심볼은 문자열 평가 시점에서는 접근 불가능합니다.
+A string passed to {{domxref("setTimeout()")}} is evaluated in the global context, so local symbols in the context where {{domxref("setTimeout()")}} was called will not be available when the string is evaluated as code.
 
-### 딜레이가 지정한 값보다 더 긴 이유
+### Reasons for delays longer than specified
 
-지정한 타임아웃 값보다 실행에 긴 시간이 걸리는 이유에는 여러가지가 있습니다. 여기서는 가장 흔한 상황을 설명하겠습니다.
+There are a number of reasons why a timeout may take longer to fire than anticipated.
+This section describes the most common reasons.
 
-#### 중첩 타임아웃
+#### Nested timeouts
 
-[HTML 표준](https://www.whatwg.org/specs/web-apps/current-work/multipage/timers.html#timers)에 명시된 것과 같이, 브라우저는 `setTimeout` 호출이 5번 이상 중첩된 경우 4ms의 최소 타임아웃을 강제합니다.
+As specified in the [HTML standard](https://html.spec.whatwg.org/multipage/timers-and-user-prompts.html#timers),
+browsers will enforce a minimum timeout of 4 milliseconds once a nested call to `setTimeout` has been scheduled 5 times.
 
-다음 예제에서 이 동작을 확인할 수 있습니다. 딜레이로 `0`을 지정한 `setTimeout`을 여러 번 중첩하고, 각각의 콜백이 실제로 호출되기까지의 딜레이를 기록하는데, 첫 네 번 까지는 대략 0ms에 근접하지만, 그 이후로는 4ms에 근접함을 볼 수 있습니다.
+This can be seen in the following example, in which we nest a call to `setTimeout` with a delay of `0` milliseconds,
+and log the delay each time the handler is called. The first four times, the delay is approximately 0 milliseconds, and after that it is
+approximately 4 milliseconds:
 
 ```html
-<button id="run">시작</button>
-<pre>이전        현재         실제 딜레이</pre>
-<div id="log"></div>
+<button id="run">Run</button>
+<table>
+  <thead>
+    <tr>
+      <th>Previous</th>
+      <th>This</th>
+      <th>Actual delay</th>
+    </tr>
+  </thead>
+  <tbody id="log"></tbody>
+</table>
 ```
 
 ```js
@@ -169,7 +269,6 @@ let iterations = 10;
 function timeout() {
   // log the time of this call
   logline(new Date().getMilliseconds());
-
   // if we are not finished, schedule the next call
   if (iterations-- > 0) {
     setTimeout(timeout, 0);
@@ -186,88 +285,123 @@ function run() {
   // initialize iteration count and the starting timestamp
   iterations = 10;
   last = new Date().getMilliseconds();
-
   // start timer
   setTimeout(timeout, 0);
 }
 
-function pad(number) {
-  return number.toString().padStart(3, "0");
-}
-
 function logline(now) {
   // log the last timestamp, the new timestamp, and the difference
-  const newLine = document.createElement("pre");
-  newLine.textContent = `${pad(last)}         ${pad(now)}          ${now - last}`;
-  document.getElementById("log").appendChild(newLine);
+  const tableBody = document.getElementById("log");
+  const logRow = tableBody.insertRow();
+  logRow.insertCell().textContent = last;
+  logRow.insertCell().textContent = now;
+  logRow.insertCell().textContent = now - last;
   last = now;
 }
 
 document.querySelector("#run").addEventListener("click", run);
 ```
 
-{{EmbedLiveSample("중첩_타임아웃", 100, 420)}}
+```css hidden
+* {
+  font-family: monospace;
+}
+th,
+td {
+  padding: 0 10px 0 10px;
+  text-align: center;
+  border: 1px solid;
+}
+table {
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+```
 
-#### 비활성 탭의 타임아웃
+{{EmbedLiveSample("Nested_timeouts", 100, 420)}}
 
-백그라운드 탭으로 인한 부하(와 그로 인한 배터리 사용량)를 경감하기 위해, 브라우저는 비활성 탭에서의 최소 딜레이에 최소 값을 강제합니다. 또한 Web Audio API {{domxref("AudioContext")}}를 사용해 소리를 재생 중일 땐 이 최소 값 정책이 면제될 수도 있습니다.
+#### Timeouts in inactive tabs
 
-정확한 동작은 브라우저에 따라 다릅니다.
+To reduce the load (and associated battery usage) from background tabs, browsers will enforce
+a minimum timeout delay in inactive tabs. It may also be waived if a page is playing sound
+using a Web Audio API {{domxref("AudioContext")}}.
 
-- Firefox Desktop과 Chrome 모두 비활성 탭에 최소 1초의 타임아웃을 강제합니다.
-- Firefox Android에서는 15분의 최소 타임아웃이 존재하고, 탭 전체를 언로드하는 경우도 있습니다.
-- Firefox는 비활성 탭이 {{domxref("AudioContext")}}를 포함하는 경우 최소 타임아웃을 강제하지 않습니다.
+The specifics of this are browser-dependent:
 
-#### 추적 스크립트 스로틀링
+- Firefox Desktop and Chrome both have a minimum timeout of 1 second for inactive tabs.
+- Firefox for Android has a minimum timeout of 15 minutes for inactive tabs and may unload them entirely.
+- Firefox does not throttle inactive tabs if the tab contains an {{domxref("AudioContext")}}.
 
-Firefox는 추적 스크립트로 인식한 스크립트에 대해 추가 스로틀링을 적용합니다. 전역 탭의 경우 스로틀링의 최소 딜레이는 여전히 4ms지만, 백그라운드 탭에서는 페이지의 첫 로드 이후 30초가 지나면 10,000ms, 또는 10초의 스로틀링을 적용합니다.
+#### Throttling of tracking scripts
 
-[추적 방어](https://wiki.mozilla.org/Security/Tracking_protection) 문서에서 자세한 정보를 알아보세요.
+Firefox enforces additional throttling for scripts that it recognizes as tracking scripts.
+When running in the foreground, the throttling minimum delay is still 4ms. In background tabs, however,
+the throttling minimum delay is 10,000 ms, or 10 seconds, which comes into effect 30 seconds after a
+document has first loaded.
 
-#### 늦은 타임아웃
+See [Tracking Protection](https://wiki.mozilla.org/Security/Tracking_protection) for
+more details.
 
-페이지, 운영체제, 브라우저가 다른 작업으로 인해 바쁠 경우 타임아웃이 예쌍보다 늦게 실행될 수 있습니다. 한 가지 중요한 점은, `setTimeout()`을 호출한 스레드가 종료되기 전에는 지정한 함수 또는 코드 조각을 실행할 수 없다는 것입니다.
+#### Late timeouts
+
+The timeout can also fire later than expected if the page (or the OS/browser) is busy with other tasks.
+One important case to note is that the function or code snippet cannot be executed until
+the thread that called `setTimeout()` has terminated. For example:
 
 ```js
 function foo() {
-  console.log('foo 호출');
+  console.log("foo has been called");
 }
 setTimeout(foo, 0);
-console.log('setTimeout 완료');
+console.log("After setTimeout");
 ```
 
-위 코드의 콘솔 기록 결과는 다음과 같습니다.
+Will write to the console:
 
 ```
-setTimeout 완료
-foo 호출
+After setTimeout
+foo has been called
 ```
 
-이렇게 되는 이유는, `setTimeout`을 0의 딜레이로 호출하기는 했으나, 이는 지정한 함수를 대기열에 넣고 가능한 바로 다음 기회에 실행하라는 것과 같으며 즉시 호출하라는 것은 아니기 때문입니다. 대기열의 함수를 실행하려면 현재 실행 중인 코드가 반드시 먼저 완료돼야 하므로, 실제 실행 결과는 예상하던 것과 다를 수 있습니다.
+This is because even though `setTimeout` was called with a delay of zero,
+it's placed on a queue and scheduled to run at the next opportunity; not immediately.
+Currently-executing code must complete before functions on the queue are executed, thus
+the resulting execution order may not be as expected.
 
-#### 페이지 로드 중 타임아웃 지연
+#### Deferral of timeouts during pageload
 
-Firefox는 현재 탭이 로딩 중일 땐 `setTimeout()` 타이머 실행을 지연시킵니다. 실제 실행은 메인 스레드가 대기 상태에 들어가기 전까지({{domxref("window.requestIdleCallback()")}}과 비슷), 또는 `load` 이벤트가 발생하기 전까지 미뤄집니다.
+Firefox will defer firing `setTimeout()` timers
+while the current tab is loading. Firing is deferred until the main thread is deemed
+idle (similar to [window.requestIdleCallback()](/en-US/docs/Web/API/Window/requestIdleCallback)),
+or until the load event is fired.
 
-### WebExtension 백그라운드 페이지와 타이머
+### WebExtension background pages and timers
 
-[WebExtensions](/ko/docs/Mozilla/Add-ons/WebExtensions)에서는 `setTimeout()`을 신뢰할 수 없습니다. 확장 개발자는 `setTimeout()` 대신 [`alarms`](/ko/docs/Mozilla/Add-ons/WebExtensions/API/alarms) API를 사용해야 합니다.
+In [WebExtensions](/en-US/docs/Mozilla/Add-ons/WebExtensions), `setTimeout()`
+does not work reliably. Extension authors should use the [`alarms`](/en-US/docs/Mozilla/Add-ons/WebExtensions/API/alarms)
+API instead.
 
-### 최대 딜레이
+### Maximum delay value
 
-Internet Explorer, Chrome, Safari, Firefox를 포함한 브라우저는 딜레이를 내부적으로 32비트 부호 있는 정수 값으로 저장합니다. 따라서 2,147,483,647ms(약 24.8일)보다 큰 값을 지정하면 정수 오버플로가 발생해서 타이머가 즉시 만료됩니다.
+Browsers store the delay as a 32-bit signed integer internally. This causes an integer
+overflow when using delays larger than 2,147,483,647 ms (about 24.8 days), resulting in
+the timeout being executed immediately.
 
-## 예제
+## Examples
 
-### 타임아웃 설정 및 해제
+### Setting and clearing timeouts
 
-다음 예제는 웹 페이지에 두 개의 간단한 버튼을 추가하고, 각각 `setTimeout()`과 `clearTimeout()`을 실행하도록 합니다. 첫 번째 버튼을 누르면 2초 뒤 메시지가 나타나는 타이머를 설정하고, `clearTimeout()`에서 사용할 수 있는 타임아웃 ID를 저장합니다. 두 번째 버튼을 누르면 첫 번째 버튼으로 설정한 타이머를 해제할 수 있습니다.
+The following example sets up two simple buttons in a web page and hooks them to the
+`setTimeout()` and `clearTimeout()` routines. Pressing the first
+button will set a timeout which shows a message after two seconds and stores the
+timeout id for use by `clearTimeout()`. You may optionally cancel this
+timeout by pressing on the second button.
 
 #### HTML
 
 ```html
-<button onclick="delayedMessage();">2초 뒤 메시지 표시</button>
-<button onclick="clearMessage();">메시지가 나타나기 전에 취소</button>
+<button onclick="delayedMessage();">Show a message after two seconds</button>
+<button onclick="clearMessage();">Cancel message before it happens</button>
 
 <div id="output"></div>
 ```
@@ -278,12 +412,12 @@ Internet Explorer, Chrome, Safari, Firefox를 포함한 브라우저는 딜레�
 let timeoutID;
 
 function setOutput(outputContent) {
-  document.querySelector('#output').textContent = outputContent;
+  document.querySelector("#output").textContent = outputContent;
 }
 
 function delayedMessage() {
-  setOutput('');
-  timeoutID = setTimeout(setOutput, 2*1000, '너무 느려요!');
+  setOutput("");
+  timeoutID = setTimeout(setOutput, 2 * 1000, "That was really slow!");
 }
 
 function clearMessage() {
@@ -293,27 +427,27 @@ function clearMessage() {
 
 ```css hidden
 #output {
-  padding: .5rem 0;
+  padding: 0.5rem 0;
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('타임아웃_설정_및_해제')}}
+{{EmbedLiveSample('Setting_and_clearing_timeouts')}}
 
-[`clearTimeout()` 예제](/ko/docs/Web/API/clearTimeout#example)도 확인해보세요.
+See also the [`clearTimeout()` example](/en-US/docs/Web/API/clearTimeout#examples).
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- `core-js`의 [콜백 매개변수 지원 폴리필](https://github.com/zloirock/core-js#settimeout-and-setinterval)
+- [Polyfill of `setTimeout` which allows passing arguments to the callback in `core-js`](https://github.com/zloirock/core-js#settimeout-and-setinterval)
 - {{domxref("clearTimeout")}}
 - {{domxref("setInterval()")}}
 - {{domxref("window.requestAnimationFrame")}}

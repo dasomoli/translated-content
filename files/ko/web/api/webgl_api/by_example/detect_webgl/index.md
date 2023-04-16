@@ -1,19 +1,20 @@
 ---
-title: WebGL 찾기
+title: Detect WebGL
 slug: Web/API/WebGL_API/By_example/Detect_WebGL
+page-type: guide
 ---
 
 {{PreviousNext("Learn/WebGL/By_example","Learn/WebGL/By_example/Clearing_with_colors")}}
 
-이 예시는 어떻게 {{Glossary("WebGL")}} 랜더링 컨텐츠를 찾고, 유저에게 결과를 보고할지를 보여줍니다.
+This example demonstrates how to detect a {{Glossary("WebGL")}} rendering context and reports the result to the user.
 
-{{EmbedLiveSample("detect-webgl-source",660,150)}}
+## Feature-detecting WebGL
 
-### 기능-검색 WebGl
+{{EmbedLiveSample("Feature-detecting_WebGL",660,150)}}
 
-이 첫 예시에서, 우리는 브라우저가 {{Glossary("WebGL")}}를 지원하는지 아닌 지를 확인합니다. 우리는 {{domxref("HTMLCanvasElement","canvas")}} element로 부터 {{domxref("WebGLRenderingContext","WebGL rendering context","",1)}}을 얻기 위하여 노력합니다. {{domxref("WebGLRenderingContext","WebGL rendering context", "", 1)}}는 당신이 설정하고 그래픽 기계의 상태를 쿼리하고, WebGl에 데이터를 전송하고, 그리기 명령어들을 실행할 수 있는 인터페이스입니다.
+In this first example we are going to check whether the browser supports {{Glossary("WebGL")}}. To that end we will try to obtain the {{domxref("WebGLRenderingContext","WebGL rendering context","",1)}} from a {{domxref("HTMLCanvasElement","canvas")}} element. The {{domxref("WebGLRenderingContext","WebGL rendering context", "", 1)}} is an interface, through which you can set and query the state of the graphics machine, send data to the WebGL, and execute draw commands.
 
-한 문장 인터페이스에서 그래픽 기계의 상태를 저장하는 것은 {{Glossary("WebGL")}}에 고유하지 않습니다. 이것은 또한 다른 그래픽 {̣{Glossary("API")}}, {{domxref("CanvasRenderingContext2D","canvas 2D rendering context", "", 1)}}에 의해 행해집니다. 하지만 특성과 당신이 만드는 변수들은 각 {̣{Glossary("API")}}에서 다를 수 있습니다.
+Saving the state of the graphics machine within a single context interface is not unique to {{Glossary("WebGL")}}. This is also done in other graphics {{Glossary("API")}}, such as the {{domxref("CanvasRenderingContext2D","canvas 2D rendering context", "", 1)}}. However, the properties and variables you can tweak are different for each {{Glossary("API")}}.
 
 ```html
 <p>[ Here would go the result of WebGL feature detection ]</p>
@@ -22,42 +23,46 @@ slug: Web/API/WebGL_API/By_example/Detect_WebGL
 
 ```css
 body {
-  text-align : center;
+  text-align: center;
 }
 button {
-  display : block;
-  font-size : inherit;
-  margin : auto;
-  padding : 0.6em;
+  display: block;
+  font-size: inherit;
+  margin: auto;
+  padding: 0.6em;
 }
 ```
 
 ```js
 // Run everything inside window load event handler, to make sure
 // DOM is fully loaded and styled before trying to manipulate it.
-window.addEventListener("load", function() {
-  var paragraph = document.querySelector("p"),
-    button = document.querySelector("button");
-  // Adding click event handler to button.
-  button.addEventListener("click", detectWebGLContext, false);
-  function detectWebGLContext () {
-    // Create canvas element. The canvas is not added to the
-    // document itself, so it is never displayed in the
-    // browser window.
-    var canvas = document.createElement("canvas");
-    // Get WebGLRenderingContext from canvas element.
-    var gl = canvas.getContext("webgl")
-      || canvas.getContext("experimental-webgl");
-    // Report the result.
-    if (gl && gl instanceof WebGLRenderingContext) {
-      paragraph.innerHTML =
-        "Congratulations! Your browser supports WebGL.";
-    } else {
-      paragraph.innerHTML = "Failed to get WebGL context. "
-        + "Your browser or device may not support WebGL.";
+window.addEventListener(
+  "load",
+  () => {
+    const paragraph = document.querySelector("p");
+    const button = document.querySelector("button");
+
+    // Adding click event handler to button.
+    button.addEventListener("click", detectWebGLContext, false);
+    function detectWebGLContext() {
+      // Create canvas element. The canvas is not added to the
+      // document itself, so it is never displayed in the
+      // browser window.
+      const canvas = document.createElement("canvas");
+
+      // Get WebGLRenderingContext from canvas element.
+      const gl =
+        canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+
+      // Report the result.
+      paragraph.textContent =
+        gl instanceof WebGLRenderingContext
+          ? "Congratulations! Your browser supports WebGL."
+          : "Failed. Your browser or device may not support WebGL.";
     }
-  }
-}, false);
+  },
+  false
+);
 ```
 
 The source code of this example is also available on [GitHub](https://github.com/idofilin/webgl-by-example/tree/master/detect-webgl).

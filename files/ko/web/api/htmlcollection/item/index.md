@@ -1,42 +1,55 @@
 ---
-title: HTMLCollection.item
+title: "HTMLCollection: item() method"
+short-title: item()
 slug: Web/API/HTMLCollection/item
+page-type: web-api-instance-method
+browser-compat: api.HTMLCollection.item
 ---
 
 {{APIRef("HTML DOM")}}
 
-{{domxref("HTMLCollection")}} 의 메소드 `item()` 은 컬렉션 안의 특정 인덱스에 위치한 노드를 반환합니다.
+The {{domxref("HTMLCollection")}} method `item()`
+returns the node located at the specified offset into the collection.
 
-> **참고:**`HTMLCollection`은 실시간이기 때문에, DOM을 변경하면 컬렉션 내의 노드도 변경됩니다. 따라서, 한 노드의 인덱스 값이 항상 일정하지는 않습니다.
+> **Note:** Because the contents of an `HTMLCollection` are
+> live, changes to the underlying DOM can and will cause the position of individual
+> nodes in the collection to change, so the index value will not necessarily remain
+> constant for a given node.
 
 ## Syntax
 
-```js
-var element = HTMLCollection.item(index)
+```js-nolint
+item(index)
 ```
 
-### 파라미터
+### Parameters
 
 - `index`
-  - : 반환받을 {{domxref("Node")}}의 위치. `HTMLCollection`에 들어있는 요소들은 도큐먼트에 나타나는 순서와 동일합니다.
+  - : The position of the {{domxref("Node")}} to be returned. Elements appear in an
+    `HTMLCollection` in the same order in which they appear in the document's
+    source.
 
-### 반환값
+### Return value
 
-주어진 인덱스의 {{domxref("Node")}}. `index`가 0보다 작거나 length 속성보다 크다면 `null`을 반환합니다.
+The {{domxref("Node")}} at the specified index, or `null` if
+`index` is less than zero or greater than or equal to the length property.
 
-## 참고사항
+## Usage notes
 
-`item()` 메소드는 `HTMLCollection`으로부터 순서가 매겨진 하나의 요소를 반환합니다. 자바스크립트에서, `HTMLCollection`을 배열처럼 다루는건 아주 쉽습니다. 아래의 [예시](#example)를 보세요.
+The `item()` method returns a numbered element from an
+`HTMLCollection`. In JavaScript, it is easier to treat the
+`HTMLCollection` as an array and to index it using array notation. See the
+[example](#examples) below.
 
-## Example
+## Examples
 
 ```js
-var c = document.images;  // HTMLCollection입니다
-var img0 = c.item(0);     // 이렇게 item() 메소드를 이용할 수 있지만
-var img1 = c[1];          // 이렇게 표기하는게 쉽고 더 보편적입니다
+const images = document.images; // This is an HTMLCollection
+const img0 = images.item(0); // You can use the item() method this way
+const img1 = images[1]; // But this notation is easier and more common
 ```
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

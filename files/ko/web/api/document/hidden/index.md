@@ -1,25 +1,48 @@
 ---
-title: Document.hidden
+title: "Document: hidden property"
+short-title: hidden
 slug: Web/API/Document/hidden
+page-type: web-api-instance-property
+browser-compat: api.Document.hidden
 ---
 
 {{ ApiRef("DOM") }}
 
-**`Document.hidden`** 읽기 전용 속성은 페이지가 숨겨졌는지 여부를 {{jsxref("Boolean")}} 값으로 나타냅니다.
+The **`Document.hidden`** read-only property returns a Boolean
+value indicating if the page is considered hidden or not.
 
-## 예제
+> **Note:** This property is described as "historical" in the [Page Visibility Level 2 specification](https://www.w3.org/TR/page-visibility-2/). Consider using the {{domxref("Document.visibilityState")}}
+> property instead.
+
+## Syntax
+
+```js-nolint
+document.hidden
+```
+
+## Examples
 
 ```js
-document.addEventListener("visibilitychange", function() {
+document.addEventListener("visibilitychange", () => {
   console.log(document.hidden);
-  // 숨김 여부가 변했을 때의 행동
+  // Modify behavior…
 });
 ```
 
-## 명세
+## Usage notes
+
+> **Warning:** Due to prerendering, it may happen that `document.hidden` is
+> `true`, even if the page is actually visible to the user. In such scenario
+> the page load starts with
+> `document.visibilityState = "prerender"`
+> and transitions to `document.visibilityState = "visible"` after some delay.
+> This scenario can be reproduced by opening a new browser tab in Safari, pasting a URL
+> in the URL bar, and navigating to that URL.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

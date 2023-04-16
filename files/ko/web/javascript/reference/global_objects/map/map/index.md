@@ -1,52 +1,53 @@
 ---
 title: Map() constructor
 slug: Web/JavaScript/Reference/Global_Objects/Map/Map
-l10n:
-  sourceCommit: effd5de5e42bfe045c3bf44b2d7b14f4d6146785
+page-type: javascript-constructor
+browser-compat: javascript.builtins.Map.Map
 ---
 
 {{JSRef}}
 
-**`Map()`constructor(생성자)** 는 {{jsxref("Map")}} 객체를 생성합니다.
+The **`Map()`** constructor creates {{jsxref("Map")}} objects.
 
-## 구문
+## Syntax
 
 ```js-nolint
 new Map()
 new Map(iterable)
 ```
 
-> **참고:** `Map()`은 오직 [`new`](/ko/docs/Web/JavaScript/Reference/Operators/new)로만 생성할 수 있습니다. `new` 없이 호출하면 {{jsxref("TypeError")}}가 발생합니다.
+> **Note:** `Map()` can only be constructed with [`new`](/en-US/docs/Web/JavaScript/Reference/Operators/new). Attempting to call it without `new` throws a {{jsxref("TypeError")}}.
 
-### 매개변수
+### Parameters
 
 - `iterable` {{optional_inline}}
-  - : 하나의 {{jsxref("Array")}} 혹은 키-값 쌍인 요소를 가진
-    [반복 가능](/ko/docs/Web/JavaScript/Reference/Iteration_protocols) 객체. (예를 들어
-    `[[ 1, 'one' ],[ 2, 'two' ]]`과 같이 2개의 요소를 가진 배열). 각각의 키-값 쌍은 새로운 `Map`에
-    추가됩니다.
+  - : An {{jsxref("Array")}} or other
+    [iterable](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) object
+    whose elements are key-value pairs. (For example, arrays with two elements,
+    such as `[[ 1, 'one' ],[ 2, 'two' ]]`.) Each key-value pair is added to the
+    new `Map`.
 
-## 예제
+## Examples
 
-### 새로운 Map 생성하기
+### Creating a new Map
 
 ```js
 const myMap = new Map([
-  [1, 'one'],
-  [2, 'two'],
-  [3, 'three'],
+  [1, "one"],
+  [2, "two"],
+  [3, "three"],
 ]);
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - A polyfill of `Map` is available in
   [`core-js`](https://github.com/zloirock/core-js#map)

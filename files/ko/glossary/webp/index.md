@@ -1,10 +1,11 @@
 ---
 title: WebP
 slug: Glossary/WebP
+page-type: glossary-definition
 ---
 
-**WebP**는 Google이 개발한 무손실/손실 압축 이미지 포맷입니다.
+**WebP** is a lossless and lossy compression image format developed by Google.
 
-### 일반적인 지식
+## See also
 
-- 위키백과의 [WebP](https://ko.wikipedia.org/wiki/WebP)
+- [WebP](https://en.wikipedia.org/wiki/WebP) on Wikipedia

@@ -1,49 +1,53 @@
 ---
-title: 캔버스(canvas)를 이용한 도형 그리기
+title: Drawing shapes with canvas
 slug: Web/API/Canvas_API/Tutorial/Drawing_shapes
-original_slug: Web/HTML/Canvas/Tutorial/Drawing_shapes
+page-type: guide
 ---
 
 {{DefaultAPISidebar("Canvas API")}} {{PreviousNext("Web/API/Canvas_API/Tutorial/Basic_usage", "Web/API/Canvas_API/Tutorial/Applying_styles_and_colors")}}
 
-앞서 캔버스 환경 설정([canvas environment](/ko/docs/Web/API/Canvas_API/Tutorial/Basic_usage))을 완료 하였다면, 이제 어떻게 캔버스에 그릴수 있는지에 대하여 자세하게 알아봅시다. 이 글을 끝내고 난 후, 여러분은 어떻게 사각형, 삼각형, 선, 아치, 곡선 등 의 기본적인 도형을 그릴수 있는지 익히실 수 있을 것 입니다. 캔버스 위에 물체를 그릴 때에는 path를 사용하는것이 필수적이므로 우리는 이것이 어떻게 사용되는지 볼 것입니다.
+Now that we have set up our [canvas environment](/en-US/docs/Web/API/Canvas_API/Tutorial/Basic_usage), we can get into the details of how to draw on the canvas. By the end of this article, you will have learned how to draw rectangles, triangles, lines, arcs and curves, providing familiarity with some of the basic shapes. Working with paths is essential when drawing objects onto the canvas and we will see how that can be done.
 
-## 그리드
+## The grid
 
-![](canvas_default_grid.png)드로잉을 시작 하기에 앞서, 캔버스 그리드 혹은 좌표공간 (**coordinate space)** 에 대하여 이야기 해보겠습니다. 이전 페이지에서 이야기 했던 HTML 골격(skeleton)는 가로 세로 각각 150 픽셀의 캔버스 요소를 가지고 있습니다. 오른쪽에 보시면, 캔버스와 기본 그리드가 놓인것을 보실 수 있습니다. 기본적으로 그리드의 1단위는 캔버스의 1픽셀과 같습니다. 이 그리드의 원점은 좌측상단의 (0,0) 입니다. 모든 요소들은 이 원점을 기준으로 위치됩니다. 그렇기 때문에, 파란 사각형의 좌측상단은 왼쪽에서 x 픽셀, 위에서 y 픽셀 떨어진 것이라 볼 수 있고, 이 사각형의 좌표는 (x,y)가 됩니다. 이 튜토리얼 후반부에서 어떻게 원점을 이동하며, 그리드를 회전하고 같은 비율로 확대/축소할 수 있는지 살펴볼 것이지만, 지금은 기본에 충실하도록 합시다.
+Before we can start drawing, we need to talk about the canvas grid or **coordinate space**. Our HTML skeleton from the previous page had a canvas element 150 pixels wide and 150 pixels high.
 
-## 직사각형 그리기
+![Canvas grid with a blue square demonstrating coordinates and axes.](canvas_default_grid.png)
 
-{{Glossary("SVG")}} 와는 다르게, {{HTMLElement("canvas")}}는 오직 하나의 원시적인 도형만을 제공합니다. 바로 **직사각형** 입니다. 다른 모든 도형들은 무조건 하나 혹은 하나 이상의 path 와 여러 점으로 이어진 선으로 만들어집니다. 다행히도, 우리는 여러 path drawing 함수(function)들을 통해 아주 어려운 도형들도 그릴수 있습니다.
+Normally 1 unit in the grid corresponds to 1 pixel on the canvas. The origin of this grid is positioned in the _top left_ corner at coordinate (0,0). All elements are placed relative to this origin. So the position of the top left corner of the blue square becomes x pixels from the left and y pixels from the top, at coordinate (x,y). Later in this tutorial we'll see how we can translate the origin to a different position, rotate the grid and even scale it, but for now we'll stick to the default.
 
-첫번째로, 직사각형을 봅시다. 캔버스 위에 직사각형을 그리는데에는 세가지 함수(function)가 있습니다:
+## Drawing rectangles
+
+Unlike {{Glossary("SVG")}}, {{HTMLElement("canvas")}} only supports two primitive shapes: rectangles and paths (lists of points connected by lines). All other shapes must be created by combining one or more paths. Luckily, we have an assortment of path drawing functions which make it possible to compose very complex shapes.
+
+First let's look at the rectangle. There are three functions that draw rectangles on the canvas:
 
 - {{domxref("CanvasRenderingContext2D.fillRect", "fillRect(x, y, width, height)")}}
-  - : 색칠된 직사각형을 그립니다.
+  - : Draws a filled rectangle.
 - {{domxref("CanvasRenderingContext2D.strokeRect", "strokeRect(x, y, width, height)")}}
-  - : 직사각형 윤곽선을 그립니다.
+  - : Draws a rectangular outline.
 - {{domxref("CanvasRenderingContext2D.clearRect", "clearRect(x, y, width, height)")}}
-  - : 특정 부분을 지우는 직사각형이며, 이 지워진 부분은 완전히 투명해집니다.
+  - : Clears the specified rectangular area, making it fully transparent.
 
-각각의 세 함수는 모두 같은 변수를 가집니다. `x`와 `y`는 캔버스의 좌측상단에서 사각형의 (원점으로부터 상대적인) 위치를 뜻하며, `width` 와 `height`는 사각형의 크기를 뜻하게 됩니다.
+Each of these three functions takes the same parameters. `x` and `y` specify the position on the canvas (relative to the origin) of the top-left corner of the rectangle. `width` and `height` provide the rectangle's size.
 
-전 페이지에서 보여드렸던 `draw()` 함수(function)를 이용하여 위의 세가지 함수를 아래의 예제에 적용해 보았습니다.
+Below is the `draw()` function from the previous page, but now it is making use of these three functions.
 
-### 직사각형 도형 예제
+### Rectangular shape example
 
 ```html hidden
-<html>
- <body onload="draw();">
-   <canvas id="canvas" width="150" height="150"></canvas>
- </body>
+<html lang="en">
+  <body onload="draw();">
+    <canvas id="canvas" width="150" height="150"></canvas>
+  </body>
 </html>
 ```
 
 ```js
 function draw() {
-  var canvas = document.getElementById('canvas');
+  const canvas = document.getElementById("canvas");
   if (canvas.getContext) {
-    var ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
 
     ctx.fillRect(25, 25, 100, 100);
     ctx.clearRect(45, 45, 60, 60);
@@ -52,64 +56,64 @@ function draw() {
 }
 ```
 
-위 예제의 결과는 다음과 같습니다.
+This example's output is shown below.
 
 {{EmbedLiveSample("Rectangular_shape_example", 160, 160, "canvas_rect.png")}}
 
-`fillRect()` 함수는 가로 세로 100 픽셀 사이즈의 검정 사각형을 그립니다. 이후 `clearRect()` 함수가 60x60 픽셀의 사각형 크기로 도형 중앙을 지우게 되고, `strokeRect()`은 이 빈 사각형 공간 안에 50x50 픽셀 사이즈의 윤곽선만 있는 사각형을 만들게 됩니다.
+The `fillRect()` function draws a large black square 100 pixels on each side. The `clearRect()` function then erases a 60x60 pixel square from the center, and then `strokeRect()` is called to create a rectangular outline 50x50 pixels within the cleared square.
 
-다음 페이지에서, 우리는 `clearRect()`를 대신하는 두개의 함수에 대해 살펴보고, 만들어진 도형의 색이나 윤곽선의 스타일을 바꾸는 방법들에 대하여 알아보도록 하겠습니다.
+In upcoming pages we'll see two alternative methods for `clearRect()`, and we'll also see how to change the color and stroke style of the rendered shapes.
 
-우리가 다음 섹션에서 보게될 path 함수와 다르게 세개의 직사각형 함수는 캔버스에 바로 그릴 수 있습니다.
+Unlike the path functions we'll see in the next section, all three rectangle functions draw immediately to the canvas.
 
-## 경로 그리기
+## Drawing paths
 
-*경로(path)*는 직사각형 이외의 유일한 원시적인(primitive) 도형입니다. 경로는 점들의 집합이며, 선의 한 부분으로 연결되어 여러가지 도형, 곡선을 이루고 두께와 색을 나타내게 됩니다. 경로나 하위 경로(sub-path)는 닫힐 수 있습니다. 경로를 이용하여 도형을 만들 때에는 몇가지 추가적인 단계를 거쳐야 합니다:
+Now let's look at paths. A path is a list of points, connected by segments of lines that can be of different shapes, curved or not, of different width and of different color. A path, or even a subpath, can be closed. To make shapes using paths, we take some extra steps:
 
-1. 경로를 생성합니다.
-2. [그리기 명령어](/ko/docs/Web/API/CanvasRenderingContext2D#Paths)를 사용하여 경로상에 그립니다.
-3. 경로가 한번 만들어졌다면, 경로를 렌더링 하기 위해서 윤곽선을 그리거나 도형 내부를 채울수 있습니다.
+1. First, you create the path.
+2. Then you use [drawing commands](/en-US/docs/Web/API/CanvasRenderingContext2D#paths) to draw into the path.
+3. Once the path has been created, you can stroke or fill the path to render it.
 
-다음은 위의 단계들을 실행하기 위해 사용되는 함수입니다:
+Here are the functions used to perform these steps:
 
 - {{domxref("CanvasRenderingContext2D.beginPath", "beginPath()")}}
-  - : 새로운 경로를 만듭니다. 경로가 생성됬다면, 이후 그리기 명령들은 경로를 구성하고 만드는데 사용하게 됩니다.
-- Path 메소드 ([Path methods](/ko/docs/Web/API/CanvasRenderingContext2D#Paths))
-  - : 물체를 구성할 때 필요한 여러 경로를 설정하는데 사용하는 함수입니다.
+  - : Creates a new path. Once created, future drawing commands are directed into the path and used to build the path up.
+- [Path methods](/en-US/docs/Web/API/CanvasRenderingContext2D#paths)
+  - : Methods to set different paths for objects.
 - {{domxref("CanvasRenderingContext2D.closePath", "closePath()")}}
-  - : 현재 하위 경로의 시작 부분과 연결된 직선을 추가합니다.
+  - : Adds a straight line to the path, going to the start of the current sub-path.
 - {{domxref("CanvasRenderingContext2D.stroke", "stroke()")}}
-  - : 윤곽선을 이용하여 도형을 그립니다.
+  - : Draws the shape by stroking its outline.
 - {{domxref("CanvasRenderingContext2D.fill", "fill()")}}
-  - : 경로의 내부를 채워서 내부가 채워진 도형을 그립니다.
+  - : Draws a solid shape by filling the path's content area.
 
-경로를 만들기 위한 첫번째 단계는 `beginPath()` 메소드를 사용하는 것 입니다. 내부적으로, 경로는 도형을 이루는 하위경로(선, 아치 등)들의 집합으로 이루어져있습니다. 이 메소드가 호출될 때 마다, 하위 경로의 모음은 초기화되며, 우리는 새로운 도형을 그릴 수 있게 됩니다.
+The first step to create a path is to call the `beginPath()`. Internally, paths are stored as a list of sub-paths (lines, arcs, etc.) which together form a shape. Every time this method is called, the list is reset and we can start drawing new shapes.
 
-> **참고:** 현재 열린 path가 비어있는 경우 ( `beginPath()` 메소드를 사용한 직 후, 혹은캔버스를 새로 생성한 직후), 첫 경로 생성 명령은 실제 동작에 상관 없이 `moveTo()`로 여겨지게 됩니다. 그렇기 때문에 경로를 초기화한 직후에는 항상 명확하게 시작 위치를 설정해 두는것이 좋습니다.
+> **Note:** When the current path is empty, such as immediately after calling `beginPath()`, or on a newly created canvas, the first path construction command is always treated as a `moveTo()`, regardless of what it actually is. For that reason, you will almost always want to specifically set your starting position after resetting a path.
 
-두번째 단계는 실제로 경로가 그려지는 위치를 설정하는 메소드를 호출하는 것 입니다. 이 내용에 대해서는 곧 보실수 있습니다.
+The second step is calling the methods that actually specify the paths to be drawn. We'll see these shortly.
 
-세번째 단계는 선택사항으로 `closePath()` 메소드를 호출하는 것 입니다. 이 메소드는 현재 점 위치와 시작점 위치를 직선으로 이어서 도형을 닫습니다. 이미 도형이 닫혔거나 한 점만 존재한다면, 이 메소드는 아무것도 하지 않습니다.
+The third, and an optional step, is to call `closePath()`. This method tries to close the shape by drawing a straight line from the current point to the start. If the shape has already been closed or there's only one point in the list, this function does nothing.
 
-> **참고:** `fill()` 메소드 호출 시, 열린 도형은 자동으로 닫히게 되므로 `closePath()`메소드를 호출하지 않아도 됩니다. 이것은 `stroke()` 메소드에는 **적용되지 않습니다**.
+> **Note:** When you call `fill()`, any open shapes are closed automatically, so you don't have to call `closePath()`. This is **not** the case when you call `stroke()`.
 
-### 삼각형 그리기
+### Drawing a triangle
 
-예를 들어, 삼각형을 그리기 위한 코드는 다음과 같습니다:
+For example, the code for drawing a triangle would look something like this:
 
 ```html hidden
-<html>
- <body onload="draw();">
-   <canvas id="canvas" width="100" height="100"></canvas>
- </body>
+<html lang="en">
+  <body onload="draw();">
+    <canvas id="canvas" width="100" height="100"></canvas>
+  </body>
 </html>
 ```
 
 ```js
 function draw() {
-  var canvas = document.getElementById('canvas');
+  const canvas = document.getElementById("canvas");
   if (canvas.getContext) {
-    var ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
 
     ctx.beginPath();
     ctx.moveTo(75, 50);
@@ -120,80 +124,80 @@ function draw() {
 }
 ```
 
-위 코드의 실행 결과는 다음과 같습니다:
+The result looks like this:
 
 {{EmbedLiveSample("Drawing_a_triangle", 110, 110, "triangle.png")}}
 
-### 펜(pen) 이동하기
+### Moving the pen
 
-가장 유용한 함수중에 실제로 어떤 것도 그리지 않지만 위에서 언급한 경로의 일부가 되는 `moveTo()` 함수가 있습니다. 이는 펜이나 연필을 종이위에서 들어 옆으로 옮기는것이라고 보시면 됩니다.
+One very useful function, which doesn't actually draw anything but becomes part of the path list described above, is the `moveTo()` function. You can probably best think of this as lifting a pen or pencil from one spot on a piece of paper and placing it on the next.
 
 - {{domxref("CanvasRenderingContext2D.moveTo", "moveTo(x, y)")}}
-  - : 펜을 x와 y 로 지정된 좌표로 옮깁니다.
+  - : Moves the pen to the coordinates specified by `x` and `y`.
 
-캔버스가 초기화 되었거나 `beginPath()` 메소드가 호출되었을 때, 특정 시작점 설정을 위해 `moveTo()` 함수를 사용하는것이 좋습니다. 또한 `moveTo()` 함수는 연결되지 않은 경로를 그리는데에도 사용 할 수 있습니다. 아래의 스마일 아이콘을 봅시다.
+When the canvas is initialized or `beginPath()` is called, you typically will want to use the `moveTo()` function to place the starting point somewhere else. We could also use `moveTo()` to draw unconnected paths. Take a look at the smiley face below.
 
-코드 snippet을 사용해하여 직접 시도하여 보세요. 앞에서 보았던 `draw()` 함수(function)를 붙혀넣기 해 보세요.
+To try this for yourself, you can use the code snippet below. Just paste it into the `draw()` function we saw earlier.
 
 ```html hidden
-<html>
- <body onload="draw();">
-   <canvas id="canvas" width="150" height="150"></canvas>
- </body>
+<html lang="en">
+  <body onload="draw();">
+    <canvas id="canvas" width="150" height="150"></canvas>
+  </body>
 </html>
 ```
 
 ```js
 function draw() {
-  var canvas = document.getElementById('canvas');
+  const canvas = document.getElementById("canvas");
   if (canvas.getContext) {
-     var ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
 
     ctx.beginPath();
     ctx.arc(75, 75, 50, 0, Math.PI * 2, true); // Outer circle
     ctx.moveTo(110, 75);
-    ctx.arc(75, 75, 35, 0, Math.PI, false);  // Mouth (clockwise)
+    ctx.arc(75, 75, 35, 0, Math.PI, false); // Mouth (clockwise)
     ctx.moveTo(65, 65);
-    ctx.arc(60, 65, 5, 0, Math.PI * 2, true);  // Left eye
+    ctx.arc(60, 65, 5, 0, Math.PI * 2, true); // Left eye
     ctx.moveTo(95, 65);
-    ctx.arc(90, 65, 5, 0, Math.PI * 2, true);  // Right eye
+    ctx.arc(90, 65, 5, 0, Math.PI * 2, true); // Right eye
     ctx.stroke();
   }
 }
 ```
 
-결과는 다음과 같습니다:
+The result looks like this:
 
 {{EmbedLiveSample("Moving_the_pen", 160, 160, "canvas_smiley.png")}}
 
-`moveTo()`를 사용한 코드라인을 지우면 연결된 선들을 확인 할 수 있습니다
+If you'd like to see the connecting lines, you can remove the lines that call `moveTo()`.
 
-> **참고:** `arc()` function에 대하여 더 알아보고 싶다면 아래의 [Arcs](#arcs) 를 확인하세요.
+> **Note:** To learn more about the `arc()` function, see the [Arcs](#arcs) section below.
 
-### 선
+### Lines
 
-직선을 그리기 위해서는 `lineTo()` 메소드를 사용할 수 있습니다.
+For drawing straight lines, use the `lineTo()` method.
 
 - {{domxref("CanvasRenderingContext2D.lineTo", "lineTo(x, y)")}}
-  - : 현재의 드로잉 위치에서 x와 y로 지정된 위치까지 선을 그립니다.
+  - : Draws a line from the current drawing position to the position specified by `x` and `y`.
 
-이 메소드는 선의 끝점의 좌표가 되는 x와 y의 두개의 인자가 필요합니다. 시작점은 이전에 그려진 경로에 의해 결정 되며, 이전 경로의 끝점이 다음 그려지는 경로의 시작점이 됩니다. 또한 시작점은 `moveTo()` 메소드를 통해 변경될 수 있습니다.
+This method takes two arguments, `x` and `y`, which are the coordinates of the line's end point. The starting point is dependent on previously drawn paths, where the end point of the previous path is the starting point for the following, etc. The starting point can also be changed by using the `moveTo()` method.
 
-아래의 예시는 하나의 두 삼각형 (윤곽선 삼각형, 색칠된 삼각형)을 그립니다.
+The example below draws two triangles, one filled and one outlined.
 
 ```html hidden
-<html>
- <body onload="draw();">
-   <canvas id="canvas" width="150" height="150"></canvas>
- </body>
+<html lang="en">
+  <body onload="draw();">
+    <canvas id="canvas" width="150" height="150"></canvas>
+  </body>
 </html>
 ```
 
 ```js
 function draw() {
-  var canvas = document.getElementById('canvas');
+  const canvas = document.getElementById("canvas");
   if (canvas.getContext) {
-    var ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
 
     // Filled triangle
     ctx.beginPath();
@@ -213,60 +217,60 @@ function draw() {
 }
 ```
 
-새로운 경로를 지정하기 위해 `beginPath()` 메소드를 먼저 실행합니다. 그 다음 `moveTo()` 메소드를 가지고 시작점을 원하는 위치로 새롭게 지정 해 줍니다. 다음은, 두선을 그어 삼각형의 두 면을 그려줍니다.
+This starts by calling `beginPath()` to start a new shape path. We then use the `moveTo()` method to move the starting point to the desired position. Below this, two lines are drawn which make up two sides of the triangle.
 
 {{EmbedLiveSample("Lines", 160, 160, "canvas_lineto.png")}}
 
-여러분은 채워진 삼각형과 윤곽선 삼각형의 차이를 확인 하셨을 겁니다. 위에 언급했던 것 처럼, 경로가 채워지게 되면 그 도형은 자동으로 닫히게 되지만 윤곽선 삼각형에서는 그렇지 않기 때문입니다. 만약에 `closePath()` 메소드를 윤곽선 삼각형 코드에서 지운다면, 오직 두 선만 그려지게 되며 완벽한 삼각형으로 만들어지지 않습니다.
+You'll notice the difference between the filled and stroked triangle. This is, as mentioned above, because shapes are automatically closed when a path is filled, but not when they are stroked. If we left out the `closePath()` for the stroked triangle, only two lines would have been drawn, not a complete triangle.
 
-### 호(arc)
+### Arcs
 
-호나 원을 그리기위해서는 `arc()` 혹은 `arcTo()` 메소드를 사용합니다..
+To draw arcs or circles, we use the `arc()` or `arcTo()` methods.
 
-- {{domxref("CanvasRenderingContext2D.arc", "arc(x, y, radius, startAngle, endAngle, anticlockwise)")}}
-  - : _(x, y)_ 위치에 원점을 두면서, 반지름 r을 가지고, _startAngle_ 에서 시작하여 _endAngle_ 에서 끝나며 주어진 _anticlockwise_ 방향으로 향하는 (기본값은 시계방향 회전) 호를 그리게 됩니다.
+- {{domxref("CanvasRenderingContext2D.arc", "arc(x, y, radius, startAngle, endAngle, counterclockwise)")}}
+  - : Draws an arc which is centered at _(x, y)_ position with radius _r_ starting at _startAngle_ and ending at _endAngle_ going in the given direction indicated by _counterclockwise_ (defaulting to clockwise).
 - {{domxref("CanvasRenderingContext2D.arcTo", "arcTo(x1, y1, x2, y2, radius)")}}
-  - : 주어진 제어점들과 반지름으로 호를 그리고, 이전 점과 직선으로 연결합니다.
+  - : Draws an arc with the given control points and radius, connected to the previous point by a straight line.
 
-`arc` 메소드의 여섯개의 매개변수에 대하여 좀 더 자세하게 알아봅시다: `x` 와 `y`는 호를 그릴 때 필요한 원점 좌표입니다. 반지름(`radius`) 은 말 그대로 호의 반지름을 뜻합니다. `startAngle` 및 `endAngle` 매개 변수는 원의 커브를 따라 호의 시작점과 끝점을 라디안 단위로 정의합니다. 이 변수들은 x축을 기준으로 계산됩니다. Boolean 값을 가지는 `anticlockwise` 변수는 `true`일 때 호를 반시계 방향으로 그리게 되며, 그렇지 않을 경우에는 시계 방향으로 그리게 됩니다.
+Let's have a more detailed look at the `arc` method, which takes six parameters: `x` and `y` are the coordinates of the center of the circle on which the arc should be drawn. `radius` is self-explanatory. The `startAngle` and `endAngle` parameters define the start and end points of the arc in radians, along the curve of the circle. These are measured from the x axis. The `counterclockwise` parameter is a Boolean value which, when `true`, draws the arc counterclockwise; otherwise, the arc is drawn clockwise.
 
-> **참고:** `arc` 함수에서 각도는 각이 아닌 라디안 값을 사용합니다. 각도를 라디안으로 바꾸려면 다음의 자바스크립트(JavaScript) 코드를 사용하실 수 있습니다: `radians = (Math.PI/180)*degrees`.
+> **Note:** Angles in the `arc` function are measured in radians, not degrees. To convert degrees to radians you can use the following JavaScript expression: `radians = (Math.PI/180)*degrees`.
 
-다음의 예제는 우리가 이제껏 봐 왔던 예제들 보다 약간 더 복잡합니다. 이 예제는 12가지의 다양한 각도로 채워진 각기 다른 호를 그립니다.
+The following example is a little more complex than the ones we've seen above. It draws 12 different arcs all with different angles and fills.
 
-두개의 [`for` loops](/ko/docs/Web/JavaScript/Reference/Statements/for)은 루프를 통해 호(arc)들의 행과 열을 읽기 위해 사용되었습니다. `beginPath()`를 사용해 각 호의 새로운 경로를 만듭니다. 코드 내에서, 각각의 매개변수들을 명확하게 보여주기 위해 변수로 정의 하였지만, 실제로 사용할때 꼭 필요한 것은 아닙니다.
+The two [`for` loops](/en-US/docs/Web/JavaScript/Reference/Statements/for) are for looping through the rows and columns of arcs. For each arc, we start a new path by calling `beginPath()`. In the code, each of the parameters for the arc is in a variable for clarity, but you wouldn't necessarily do that in real life.
 
-`x`와 `y` 좌표는 충분히 명확하게 표기되어야 합니다. `radius` 와 `startAngle`은 고정되어 있습니다. `endAngle`는 처음 180도 (반원) 에서 시작하고 이후 매번 90도씩 증가하다가 마지막 열에서 완벽한 원을 그립니다.
+The `x` and `y` coordinates should be clear enough. `radius` and `startAngle` are fixed. The `endAngle` starts at 180 degrees (half a circle) in the first column and is increased by steps of 90 degrees, culminating in a complete circle in the last column.
 
-`clockwise` 매개 변수를 지정한 결과로 첫번째와 세번째 줄은 시계방향으로 원호들이 그려졌고 두번째와 네번째 줄에는 반시계방향의 원호들이 그려졌습니다. 마지막으로 `if` 문은 위 반쪽이 윤곽선으로, 아래 반쪽이 색으로 채워진 호들을 만들어 냅니다.
+The statement for the `clockwise` parameter results in the first and third row being drawn as clockwise arcs and the second and fourth row as counterclockwise arcs. Finally, the `if` statement makes the top half stroked arcs and the bottom half filled arcs.
 
-> **참고:** 이 예제는 다른 예제들 보다 더 큰사이즈의 캔버스가 필요합니다: 150 x 200 픽셀
+> **Note:** This example requires a slightly larger canvas than the others on this page: 150 x 200 pixels.
 
 ```html hidden
-<html>
- <body onload="draw();">
-   <canvas id="canvas" width="150" height="200"></canvas>
- </body>
+<html lang="en">
+  <body onload="draw();">
+    <canvas id="canvas" width="150" height="200"></canvas>
+  </body>
 </html>
 ```
 
 ```js
 function draw() {
-  var canvas = document.getElementById('canvas');
+  const canvas = document.getElementById("canvas");
   if (canvas.getContext) {
-    var ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
 
-    for (var i = 0; i &#x3C; 4; i++) {
-      for (var j = 0; j &#x3C; 3; j++) {
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 3; j++) {
         ctx.beginPath();
-        var x = 25 + j * 50; // x coordinate
-        var y = 25 + i * 50; // y coordinate
-        var radius = 20; // Arc radius
-        var startAngle = 0; // Starting point on circle
-        var endAngle = Math.PI + (Math.PI * j) / 2; // End point on circle
-        var anticlockwise = i % 2 == 0 ? false : true; // clockwise or anticlockwise
+        const x = 25 + j * 50; // x coordinate
+        const y = 25 + i * 50; // y coordinate
+        const radius = 20; // Arc radius
+        const startAngle = 0; // Starting point on circle
+        const endAngle = Math.PI + (Math.PI * j) / 2; // End point on circle
+        const counterclockwise = i % 2 !== 0; // clockwise or counterclockwise
 
-        ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
+        ctx.arc(x, y, radius, startAngle, endAngle, counterclockwise);
 
         if (i > 1) {
           ctx.fill();
@@ -281,42 +285,43 @@ function draw() {
 
 {{EmbedLiveSample("Arcs", 160, 210, "canvas_arc.png")}}
 
-### 베지어(Bezier) 곡선과 이차(Quadratic )곡선
+### Bezier and quadratic curves
 
-다음 경로 타입은 베지어 곡선 ([Bézier curves](https://ko.wikipedia.org/wiki/%EB%B2%A0%EC%A7%80%EC%97%90_%EA%B3%A1%EC%84%A0))으로, 삼차(cubic)와 이차(quadric) 변수가 모두 가능합니다. 이 타입은 대게 복잡한 유기체적 형태 (organic shape)를 그리는데 사용됩니다.
+The next type of paths available are [Bézier curves](/en-US/docs/Glossary/Bezier_curve), available in both cubic and quadratic varieties. These are generally used to draw complex organic shapes.
 
 - {{domxref("CanvasRenderingContext2D.quadraticCurveTo", "quadraticCurveTo(cp1x, cp1y, x, y)")}}
-  - : `cp1x` 및 `cp1y`로 지정된 제어점을 사용하여 현재 펜의 위치에서 `x`와 `y`로 지정된 끝점까지 이차 베지어 곡선을 그립니다.
+  - : Draws a quadratic Bézier curve from the current pen position to the end point specified by `x` and `y`, using the control point specified by `cp1x` and `cp1y`.
 - {{domxref("CanvasRenderingContext2D.bezierCurveTo", "bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y)")}}
-  - : (`cp1x`, `cp1y`) 및 (cp2x, cp2y)로 지정된 제어점을 사용하여 현재 펜 위치에서 `x` 및 `y`로 지정된 끝점까지 삼차 베지어 곡선을 그립니다.
+  - : Draws a cubic Bézier curve from the current pen position to the end point specified by `x` and `y`, using the control points specified by (`cp1x`, `cp1y`) and (cp2x, cp2y).
 
-![](canvas_curves.png)오른쪽의 사진은 두 곡선의 차이를 가장 잘 설명해주고 있습니다. 이차 베지에 곡선은 시작점과 끝점 (파란색 점) 그리고 하나의 **제어점** (control point, 빨간 점으로 표시)을 가지고 있지만, 삼차 베지에 곡선은 두개의 제어점을 사용하고 있습니다.
+The difference between these is that a quadratic Bézier curve has a start and an end point (blue dots) and just one **control point** (indicated by the red dot) while a cubic Bézier curve uses two control points.
+![Quadratic and Bezier curve comparison.](canvas_curves.png)
 
-두 메소드에 모두 사용되는 `x`와 `y` 변수는 모두 끝점의 좌표를 나타냅니다. 첫번째 제어점은 `cp1x` 와 `cp1y` 좌표로, 두번째 제어점은 `cp2x` 와 `cp2y` 좌표로 표시되었습니다.
+The `x` and `y` parameters in both of these methods are the coordinates of the end point. `cp1x` and `cp1y` are the coordinates of the first control point, and `cp2x` and `cp2y` are the coordinates of the second control point.
 
-이차 및 삼차 베지어 곡선을 사용하는 것은 매우 어려울 수 있습니다. Adobe Illustrator와 같은 벡터 드로잉 소프트웨어와는 달리, 우리는 현재 수행중인 작업에 대해 직접적인 시각적 피드백을 받을 수 없기 때문입니다. 이런 점은 복잡한 모양을 그리기 어렵도록 합니다. 다음 예제에서 우리는 간단한 유기체적 형태만 그리도록 하겠지만, 여러분이 연습과 시간을 투자 하신다면, 이후에 더욱 복잡한 도형을 그릴수 있게 될 것입니다.
+Using quadratic and cubic Bézier curves can be quite challenging, because unlike vector drawing software like Adobe Illustrator, we don't have direct visual feedback as to what we're doing. This makes it pretty hard to draw complex shapes. In the following example, we'll be drawing some simple organic shapes, but if you have the time and, most of all, the patience, much more complex shapes can be created.
 
-이 예제는 아주 어려운 점은 없습니다. 두 경우 모두 연속된 곡선이 그려지면서 최종 모양이 완성됩니다.
+There's nothing very difficult in these examples. In both cases we see a succession of curves being drawn which finally result in a complete shape.
 
-#### 이차 베지에 곡선(Quadratic Bezier curves)
+#### Quadratic Bezier curves
 
-이 예제는 여러개의 이차 베지어 곡선을 이용해 말풍선을 만들어 냅니다.
+This example uses multiple quadratic Bézier curves to render a speech balloon.
 
 ```html hidden
-<html>
- <body onload="draw();">
-   <canvas id="canvas" width="150" height="150"></canvas>
- </body>
+<html lang="en">
+  <body onload="draw();">
+    <canvas id="canvas" width="150" height="150"></canvas>
+  </body>
 </html>
 ```
 
 ```js
 function draw() {
-  var canvas = document.getElementById('canvas');
+  const canvas = document.getElementById("canvas");
   if (canvas.getContext) {
-    var ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
 
-    // Quadratric curves example
+    // Quadratic curves example
     ctx.beginPath();
     ctx.moveTo(75, 25);
     ctx.quadraticCurveTo(25, 25, 25, 62.5);
@@ -332,23 +337,23 @@ function draw() {
 
 {{EmbedLiveSample("Quadratic_Bezier_curves", 160, 160, "canvas_quadratic.png")}}
 
-#### 삼차 베지어 곡선 (Cubic Bezier curves)
+#### Cubic Bezier curves
 
-이 예제는 삼차 곡선을 이용하여 하트를 그립니다.
+This example draws a heart using cubic Bézier curves.
 
 ```html hidden
-<html>
- <body onload="draw();">
-   <canvas id="canvas" width="150" height="150"></canvas>
- </body>
+<html lang="en">
+  <body onload="draw();">
+    <canvas id="canvas" width="150" height="150"></canvas>
+  </body>
 </html>
 ```
 
 ```js
 function draw() {
-  var canvas = document.getElementById('canvas');
+  const canvas = document.getElementById("canvas");
   if (canvas.getContext) {
-    var ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
 
     // Cubic curves example
     ctx.beginPath();
@@ -366,32 +371,32 @@ function draw() {
 
 {{EmbedLiveSample("Cubic_Bezier_curves", 160, 160, "canvas_bezier.png")}}
 
-### 직사각형
+### Rectangles
 
-직사각형을 캔버스에 직접 그리는 [직사각형 그리기](#직사각형_그리기)에서 본 세 가지 메소드 외에 `rect()` 메소드도 있습니다. 이 메소드는 현재 열린 패스에 직사각형 경로를 추가합니다.
+In addition to the three methods we saw in [Drawing rectangles](#drawing_rectangles), which draw rectangular shapes directly to the canvas, there's also the `rect()` method, which adds a rectangular path to a currently open path.
 
 - {{domxref("CanvasRenderingContext2D.rect", "rect(x, y, width, height)")}}
-  - : 좌측상단이 (x, y)이고 폭과 높이가 `width`와 `height`인 직사각형을 그립니다.
+  - : Draws a rectangle whose top-left corner is specified by (`x`, `y`) with the specified `width` and `height`.
 
-이 메소드가 실행되기 전에, (x,y) 매개변수를 가진 `moveTo()` 메소드가 자동으로 호출됩니다. 즉, 현재의 펜위치가 자동으로 기본 좌표로 초기화 됩니다.
+Before this method is executed, the `moveTo()` method is automatically called with the parameters (x,y). In other words, the current pen position is automatically reset to the default coordinates.
 
-### 조합하기
+### Making combinations
 
-이제까지 이 페이지의 예제들은 각각의 도형마다 하나의 path 함수를 가지고 있었습니다. 하지만 도형을 만드는데에 사용되는 경로의 종류와 개수는 제한이 없습니다. 그렇기 때문에 이 마지막 예제에서는 모든 경로 함수를 합쳐 여러 게임 캐릭터들을 그려보도록 하겠습니다.
+So far, each example on this page has used only one type of path function per shape. However, there's no limitation to the number or types of paths you can use to create a shape. So in this final example, let's combine all of the path functions to make a set of very famous game characters.
 
 ```html hidden
-<html>
- <body onload="draw();">
-   <canvas id="canvas" width="150" height="150"></canvas>
- </body>
+<html lang="en">
+  <body onload="draw();">
+    <canvas id="canvas" width="150" height="150"></canvas>
+  </body>
 </html>
 ```
 
 ```js
 function draw() {
-  var canvas = document.getElementById('canvas');
+  const canvas = document.getElementById("canvas");
   if (canvas.getContext) {
-    var ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
 
     roundedRect(ctx, 12, 12, 150, 150, 15);
     roundedRect(ctx, 19, 19, 150, 150, 9);
@@ -405,15 +410,15 @@ function draw() {
     ctx.lineTo(31, 37);
     ctx.fill();
 
-    for (var i = 0; i < 8; i++) {
+    for (let i = 0; i < 8; i++) {
       ctx.fillRect(51 + i * 16, 35, 4, 4);
     }
 
-    for (i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; i++) {
       ctx.fillRect(115, 51 + i * 16, 4, 4);
     }
 
-    for (i = 0; i < 8; i++) {
+    for (let i = 0; i < 8; i++) {
       ctx.fillRect(51 + i * 16, 99, 4, 4);
     }
 
@@ -431,7 +436,7 @@ function draw() {
     ctx.lineTo(83, 116);
     ctx.fill();
 
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = "white";
     ctx.beginPath();
     ctx.moveTo(91, 96);
     ctx.bezierCurveTo(88, 96, 87, 99, 87, 101);
@@ -445,7 +450,7 @@ function draw() {
     ctx.bezierCurveTo(107, 99, 106, 96, 103, 96);
     ctx.fill();
 
-    ctx.fillStyle = 'black';
+    ctx.fillStyle = "black";
     ctx.beginPath();
     ctx.arc(101, 102, 2, 0, Math.PI * 2, true);
     ctx.fill();
@@ -461,71 +466,65 @@ function draw() {
 function roundedRect(ctx, x, y, width, height, radius) {
   ctx.beginPath();
   ctx.moveTo(x, y + radius);
-  ctx.lineTo(x, y + height - radius);
   ctx.arcTo(x, y + height, x + radius, y + height, radius);
-  ctx.lineTo(x + width - radius, y + height);
-  ctx.arcTo(x + width, y + height, x + width, y + height-radius, radius);
-  ctx.lineTo(x + width, y + radius);
+  ctx.arcTo(x + width, y + height, x + width, y + height - radius, radius);
   ctx.arcTo(x + width, y, x + width - radius, y, radius);
-  ctx.lineTo(x + radius, y);
   ctx.arcTo(x, y, x, y + radius, radius);
   ctx.stroke();
 }
 ```
 
-결과 이미지는 다음과 같습니다:
+The resulting image looks like this:
 
 {{EmbedLiveSample("Making_combinations", 160, 160, "combinations.png")}}
 
-이 예제는 보기보다 아주 간단하기 때문에 자세한 설명은 생략하겠습니다. 알아 두어야할 가장 중요한 부분은 `fillStyle` 코드와 사용된 유틸리티 함수 (`roundedRect()` 부분) 입니다. 유틸리티 함수를 사용하게 되면, 사용해야 할 코드의 양과 복잡함을 줄여주는데 도움을 줍니다.
+We won't go over this in detail, since it's actually surprisingly simple. The most important things to note are the use of the `fillStyle` property on the drawing context, and the use of a utility function (in this case `roundedRect()`). Using utility functions for bits of drawing you do often can be very helpful and reduce the amount of code you need, as well as its complexity.
 
-이 튜토리얼에서 나중에 `fillStyle`에 대하여 조금 더 자세하게 알아보도록 하겠지만, 지금은 경로의 채우는 색을 기본값(흑백)에서 바꾸었다가 다시 기본값으로 바꾸는 정도로만 사용하였습니다.
+We'll take another look at `fillStyle`, in more detail, later in this tutorial. Here, all we're doing is using it to change the fill color for paths from the default color of black to white, and then back again.
 
-## Path2D 오브젝트 (Path2D objects)
+## Path2D objects
 
-마지막 예제에서 보았 듯이, 캔버스에 객체를 그리는 일련의 경로와 그리기 명령이 있을 수 있습니다. 코드를 단순화하고 성능을 향상시키기 위해 최근 버전의 브라우저에서 사용할 수있는 {{domxref("Path2D")}} 객체를 사용하여 이러한 드로잉 명령을 캐시하거나 기록 할 수 있습니다. 이로써 여러분은 경로를 빠르게 다시 실행 시킬 수 있습니다.
-
-어떻게 `Path2D` object를 생성 할 수 있는지 확인해 봅시다:
+As we have seen in the last example, there can be a series of paths and drawing commands to draw objects onto your canvas. To simplify the code and to improve performance, the {{domxref("Path2D")}} object, available in recent versions of browsers, lets you cache or record these drawing commands. You are able to play back your paths quickly.
+Let's see how we can construct a `Path2D` object:
 
 - {{domxref("Path2D.Path2D", "Path2D()")}}
-  - : **`Path2D()`** 생성자는 새로운 `Path2D` 객체를 반환합니다. 선택적으로 다른 경로를 인수로 받거나(복사본을 생성), SVG 경로 데이터로 구성된 문자열을 받아서 객체로 반환합니다.
+  - : The **`Path2D()`** constructor returns a newly instantiated `Path2D` object, optionally with another path as an argument (creates a copy), or optionally with a string consisting of [SVG path](/en-US/docs/Web/SVG/Tutorial/Paths) data.
 
 ```js
-new Path2D();     // empty path object
+new Path2D(); // empty path object
 new Path2D(path); // copy from another Path2D object
-new Path2D(d);    // path from SVG path data
+new Path2D(d); // path from SVG path data
 ```
 
-`moveTo`, `rect`, `arc` 혹은 `quadraticCurveTo` 등과 같은 모든 경로 메소드 ([path methods](/ko/docs/Web/API/CanvasRenderingContext2D#Paths))들은 `Path2D` 객체에서 사용 가능합니다.
+All [path methods](/en-US/docs/Web/API/CanvasRenderingContext2D#paths) like `moveTo`, `rect`, `arc` or `quadraticCurveTo`, etc., which we got to know above, are available on `Path2D` objects.
 
-`Path2D` API는 또한 `addPath` 메소드를 사용하여 경로를 결합하는 방법을 추가합니다. 예를 들자면, 여러 요소를 사용하는 오브젝트를 만들 때 유용하게 사용 될 수 있습니다.
+The `Path2D` API also adds a way to combine paths using the `addPath` method. This can be useful when you want to build objects from several components, for example.
 
 - {{domxref("Path2D.addPath", "Path2D.addPath(path [, transform])")}}
-  - : 옵션으로 변환 행렬(transformation matrix)을 사용하여 현재 경로에 경로를 추가합니다.
+  - : Adds a path to the current path with an optional transformation matrix.
 
-### Path2D 예제
+### Path2D example
 
-이 예제에서는, 직사각형과 원을 만들어 볼 것입니다. 나중에 사용할 것을 고려하여, 두 도형 모두 `Path2D` object로 저장 될 것입니다. 새로운 버전의 `Path2D` API에서는 여러 메소드들이 지금 사용하고있는 path가 아닌 `Path2D` object를 옵션으로 선택하여 사용 할 수 있도록 업데이트 되었습니다. 아래의 예제에서 보시면, `stroke` 와 `fill` 메소드가 오브젝트를 캔버스 위에 그리도록 path 변수와 함께 사용되었습니다.
+In this example, we are creating a rectangle and a circle. Both are stored as a `Path2D` object, so that they are available for later usage. With the new `Path2D` API, several methods got updated to optionally accept a `Path2D` object to use instead of the current path. Here, `stroke` and `fill` are used with a path argument to draw both objects onto the canvas, for example.
 
 ```html hidden
-<html>
- <body onload="draw();">
-   <canvas id="canvas" width="130" height="100"></canvas>
- </body>
+<html lang="en">
+  <body onload="draw();">
+    <canvas id="canvas" width="130" height="100"></canvas>
+  </body>
 </html>
 ```
 
 ```js
 function draw() {
-  var canvas = document.getElementById('canvas');
+  const canvas = document.getElementById("canvas");
   if (canvas.getContext) {
-    var ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
 
-    var rectangle = new Path2D();
+    const rectangle = new Path2D();
     rectangle.rect(10, 10, 50, 50);
 
-    var circle = new Path2D();
-    circle.moveTo(125, 35);
+    const circle = new Path2D();
     circle.arc(100, 35, 25, 0, 2 * Math.PI);
 
     ctx.stroke(rectangle);
@@ -536,14 +535,14 @@ function draw() {
 
 {{EmbedLiveSample("Path2D_example", 130, 110, "path2d.png")}}
 
-### SVG paths 사용하기
+### Using SVG paths
 
-새로운 캔버스 path2D API 또다른 강력한 특징 중 하나는, 캔버스의 path를 초기화 하기 위해 [SVG path data](/ko/docs/Web/SVG/Tutorial/Paths)를 사용한다는 것입니다. 이는 path 데이터를 이동시키며, SVG와 canvas 에서 재사용 할 수 있도록 해줍니다.
+Another powerful feature of the new canvas `Path2D` API is using [SVG path data](/en-US/docs/Web/SVG/Tutorial/Paths) to initialize paths on your canvas. This might allow you to pass around path data and re-use them in both, SVG and canvas.
 
-path는 (`M10 10`) 점으로 이동한 다음, 수평하게 오른쪽으로 으로 80 포인트 (`h 80`) 만큼 이동합니다. 이후 수직으로 80포인트 (v 80) 내려간 다음, 80 포인트 왼쪽으로 (`h -80`) 수평하게 이동하고 다시 시작점 (`z`)으로 돌아갑니다. 예시는 [이곳](/ko/docs/Web/API/Path2D.Path2D#Using_SVG_paths)( `Path2D` constructor )에서 확인하실 수 있습니다.
+The path will move to point (`M10 10`) and then move horizontally 80 points to the right (`h 80`), then 80 points down (`v 80`), then 80 points to the left (`h -80`), and then back to the start (`z`). You can see this example on the [`Path2D` constructor](/en-US/docs/Web/API/Path2D/Path2D#using_svg_paths) page.
 
 ```js
-var p = new Path2D('M10 10 h 80 v 80 h -80 Z');
+const p = new Path2D("M10 10 h 80 v 80 h -80 Z");
 ```
 
 {{PreviousNext("Web/API/Canvas_API/Tutorial/Basic_usage", "Web/API/Canvas_API/Tutorial/Applying_styles_and_colors")}}

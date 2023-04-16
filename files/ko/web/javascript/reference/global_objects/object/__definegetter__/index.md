@@ -1,79 +1,101 @@
 ---
 title: Object.prototype.__defineGetter__()
 slug: Web/JavaScript/Reference/Global_Objects/Object/__defineGetter__
+page-type: javascript-instance-method
+status:
+  - deprecated
+browser-compat: javascript.builtins.Object.defineGetter
 ---
 
-{{JSRef}}
+{{JSRef}}{{Deprecated_Header}}
 
-> **경고:** 이 기능은 object initializer 문법 혹은 {{jsxref("Object.defineProperty()")}} API를 사용한 getter 정의가 표준화됨으로써 비표준화되었습니다.
-> 이 기능은 이제까지의 ECMAScript 사양에서만 사용되고 있습니다.
-> 보다 좋은 방법이 있으므로, 이 메소드는 사용하지 말아야합니다.
+> **Note:** This feature is deprecated in favor of defining [getters](/en-US/docs/Web/JavaScript/Reference/Functions/get) using the [object initializer syntax](/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer) or the {{jsxref("Object.defineProperty()")}} API. This method's behavior is only specified for web compatibility, and is not required to be implemented in any platform. It may not work everywhere.
 
-**`__defineGetter__`** 메소드는 오브젝트의 프로퍼티와 함수를 바인드합니다.
-프로퍼티의 값이 조회될 때 바인드된 함수가 호출됩니다.
+The **`__defineGetter__()`** method binds an object's property to a function to be called when that property is looked up.
 
-## 문법
+## Syntax
 
-```js
-    obj.__defineGetter__(prop, func)
+```js-nolint
+__defineGetter__(prop, func)
 ```
 
-### 인자
+### Parameters
 
 - `prop`
-  - : 함수와 바인드된 프로퍼티의 이름을 나타내는 문자열
+  - : A string containing the name of the property that the getter `func` is bound to.
 - `func`
-  - : 프로퍼티 값이 조회되었을 때 호출되는 함수
+  - : A function to be bound to a lookup of the specified property.
 
-### 리턴 값
+### Return value
 
 {{jsxref("undefined")}}.
 
+### Exceptions
+
+- {{jsxref("TypeError")}}
+  - : Thrown if `func` is not a function.
+
 ## Description
 
-`__defineGetter__` 를 사용하여 기존 오브젝트의 {{jsxref("Operators/get", "getter", "", 1)}}를 사용할 수 있습니다.
+All objects that inherit from `Object.prototype` (that is, all except [`null`-prototype objects](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#null-prototype_objects)) inherit the `__defineGetter__()` method. This method allows a [getter](/en-US/docs/Web/JavaScript/Reference/Functions/get) to be defined on a pre-existing object. This is equivalent to [`Object.defineProperty(obj, prop, { get: func, configurable: true, enumerable: true })`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty), which means the property is enumerable and configurable, and any existing setter, if present, is preserved.
+
+`__defineGetter__()` is defined in the spec as "normative optional", which means no implementation is required to implement this. However, all major browsers implement it, and due to its continued usage, it's unlikely to be removed. If a browser implements `__defineGetter__()`, it also needs to implement the [`__lookupGetter__()`](Web/JavaScript/Reference/Global_Objects/Object/__lookupGetter__), [`__lookupSetter__()`](Web/JavaScript/Reference/Global_Objects/Object/__lookupSetter__), and [`__defineSetter__()`](Web/JavaScript/Reference/Global_Objects/Object/__defineSetter__) methods.
 
 ## Examples
 
+### Using \_\_defineGetter\_\_()
+
 ```js
-// Non-standard and deprecated way
-
-var o = {};
-o.__defineGetter__('gimmeFive', function() { return 5; });
-console.log(o.gimmeFive); // 5
-
-
-// Standard-compliant ways
-
-// Using the get operator
-var o = { get gimmeFive() { return 5; } };
-console.log(o.gimmeFive); // 5
-
-// Using Object.defineProperty
-var o = {};
-Object.defineProperty(o, 'gimmeFive', {
-  get: function() {
-    return 5;
-  }
+const o = {};
+o.__defineGetter__("gimmeFive", function () {
+  return 5;
 });
 console.log(o.gimmeFive); // 5
 ```
 
-## 명세서
+### Defining a getter property in standard ways
+
+You can use the `get` syntax to define a getter when the object is first initialized.
+
+```js
+const o = {
+  get gimmeFive() {
+    return 5;
+  },
+};
+console.log(o.gimmeFive); // 5
+```
+
+You may also use {{jsxref("Object.defineProperty()")}} to define a getter on an object after it's been created. Compared to `__defineGetter__()`, this method allows you to control the getter's enumerability and configurability, as well as defining [symbol](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol) properties. The `Object.defineProperty()` method also works with [`null`-prototype objects](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#null-prototype_objects), which don't inherit from `Object.prototype` and therefore don't have the `__defineGetter__()` method.
+
+```js
+const o = {};
+Object.defineProperty(o, "gimmeFive", {
+  get() {
+    return 5;
+  },
+  configurable: true,
+  enumerable: true,
+});
+console.log(o.gimmeFive); // 5
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- [`Object.prototype.__defineSetter__()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/__defineSetter__)
-- {{jsxref("Operators/get", "get")}} operator
+- [Polyfill of `Object.prototype.__defineGetter__` in `core-js`](https://github.com/zloirock/core-js#ecmascript-object)
+- [`Object.prototype.__defineSetter__()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/__defineSetter__)
+- {{jsxref("Functions/get", "get")}} syntax
 - {{jsxref("Object.defineProperty()")}}
-- [`Object.prototype.__lookupGetter__()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/__lookupGetter__)
-- [`Object.prototype.__lookupSetter__()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/__lookupSetter__)
-- [JS Guide: Defining Getters and Setters](/ko/docs/Web/JavaScript/Guide/Working_with_Objects#Defining_getters_and_setters)
+- [`Object.prototype.__lookupGetter__()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/__lookupGetter__)
+- [`Object.prototype.__lookupSetter__()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/__lookupSetter__)
+- [JS Guide: Defining Getters and Setters](/en-US/docs/Web/JavaScript/Guide/Working_with_objects#defining_getters_and_setters)
 - [\[Blog Post\] Deprecation of \_\_defineGetter\_\_ and \_\_defineSetter\_\_](https://whereswalden.com/2010/04/16/more-spidermonkey-changes-ancient-esoteric-very-rarely-used-syntax-for-creating-getters-and-setters-is-being-removed/)
 - [Firefox bug 647423](https://bugzil.la/647423)

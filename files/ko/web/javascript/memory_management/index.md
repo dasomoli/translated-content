@@ -1,142 +1,153 @@
 ---
-title: 자바스크립트의 메모리 관리
-slug: Web/JavaScript/Memory_Management
+title: Memory management
+slug: Web/JavaScript/Memory_management
+page-type: guide
 ---
 
 {{JsSidebar("Advanced")}}
 
-C 언어같은 저수준 언어에서는 메모리 관리를 위해 [malloc()](https://pubs.opengroup.org/onlinepubs/009695399/functions/malloc.html) 과 [free()](https://en.wikipedia.org/wiki/C_dynamic_memory_allocation#Overview_of_functions)를 사용합니다. 반면, 자바스크립트는 객체가 생성되었을 때 자동으로 메모리를 할당하고 더 이상 필요하지 않을 때 자동으로 해제합니다(_가비지 컬렉션_). 이러한 자동 메모리 관리는 잠재적 혼란의 원인이기도 한데, 개발자가 메모리 관리에 대해 고민할 필요가 없다는 잘못된 인상을 줄 수 있기 때문입니다.
+Low-level languages like C, have manual memory management primitives such as [`malloc()`](https://pubs.opengroup.org/onlinepubs/009695399/functions/malloc.html) and [`free()`](https://en.wikipedia.org/wiki/C_dynamic_memory_allocation#Overview_of_functions). In contrast, JavaScript automatically allocates memory when objects are created and frees it when they are not used anymore (_garbage collection_). This automaticity is a potential source of confusion: it can give developers the false impression that they don't need to worry about memory management.
 
-## 메모리 생존주기
+## Memory life cycle
 
-메모리 생존주기는 프로그래밍 언어와 관계없이 비슷합니다.
+Regardless of the programming language, the memory life cycle is pretty much always the same:
 
-1. 필요할 때 할당합니다.
-2. 할당된 메모리를 사용합니다. (읽기, 쓰기)
-3. 더 이상 필요하지 않으면 해제합니다.
+1. Allocate the memory you need
+2. Use the allocated memory (read, write)
+3. Release the allocated memory when it is not needed anymore
 
-두 번째 부분은 모든 언어에서 명시적으로 사용됩니다. 그러나 첫 번째 부분과 마지막 부분은 저수준 언어에서는 명시적이며, 자바스크립트와 같은 대부분의 고수준 언어에서는 암묵적으로 작동합니다.
+The second part is explicit in all languages. The first and last parts are explicit in low-level languages but are mostly implicit in high-level languages like JavaScript.
 
-### 자바스크립트에서 메모리 할당
+### Allocation in JavaScript
 
-#### 값 초기화
+#### Value initialization
 
-프로그래머를 할당 문제로 괴롭히지 않기 위해서, 자바스크립트는 값을 선언할 때 자동으로 메모리를 할당합니다.
+In order to not bother the programmer with allocations, JavaScript will automatically allocate memory when values are initially declared.
 
 ```js
-var n = 123; // 정수를 담기 위한 메모리 할당
-var s = 'azerty'; // 문자열을 담기 위한 메모리 할당
+const n = 123; // allocates memory for a number
+const s = "azerty"; // allocates memory for a string
 
-var o = {
+const o = {
   a: 1,
-  b: null
-}; // 오브젝트와 그 오브젝트에 포함된 값들을 담기 위한 메모리 할당
+  b: null,
+}; // allocates memory for an object and contained values
 
-// (오브젝트처럼) 배열과 배열에 담긴 값들을 위한 메모리 할당
-var a = [1, null, 'abra'];
+// (like object) allocates memory for the array and
+// contained values
+const a = [1, null, "abra"];
 
 function f(a) {
   return a + 2;
-} // 함수를 위한 할당(함수는 호출 가능한 오브젝트)
+} // allocates a function (which is a callable object)
 
-// 함수식 또한 오브젝트를 담기 위한 메모리를 할당합니다.
-someElement.addEventListener('click', function(){
-  someElement.style.backgroundColor = 'blue';
-}, false);
+// function expressions also allocate an object
+someElement.addEventListener(
+  "click",
+  () => {
+    someElement.style.backgroundColor = "blue";
+  },
+  false,
+);
 ```
 
-#### 함수 호출을 통한 할당
+#### Allocation via function calls
 
-함수 호출의 결과 메모리 할당이 일어나기도 합니다.
+Some function calls result in object allocation.
 
 ```js
-var d = new Date(); // Date 개체를 위해 메모리를 할당
+const d = new Date(); // allocates a Date object
 
-var e = document.createElement('div'); // DOM 엘리먼트를 위해 메모리를 할당
+const e = document.createElement("div"); // allocates a DOM element
 ```
 
-메소드가 새로운 값이나 오브젝트를 할당하기도 합니다.
+Some methods allocate new values or objects:
 
 ```js
-var s = 'azerty';
-var s2 = s.substr(0, 3); // s2는 새로운 문자열
-// 자바스크립트에서 문자열은 immutable 값이기 때문에,
-// 메모리를 새로 할당하지 않고 단순히 [0, 3] 이라는 범위만 저장합니다.
+const s = "azerty";
+const s2 = s.substr(0, 3); // s2 is a new string
+// Since strings are immutable values,
+// JavaScript may decide to not allocate memory,
+// but just store the [0, 3] range.
 
-var a = ['ouais ouais', 'nan nan'];
-var a2 = ['generation', 'nan nan'];
-var a3 = a.concat(a2);
-// a 와 a2 를 이어붙여, 4개의 원소를 가진 새로운 배열
+const a = ["ouais ouais", "nan nan"];
+const a2 = ["generation", "nan nan"];
+const a3 = a.concat(a2);
+// new array with 4 elements being
+// the concatenation of a and a2 elements.
 ```
 
-### 값 사용
+### Using values
 
-값 사용이란 기본적으로는 할당된 메모리를 읽고 쓰는 것을 의미합니다. 변수나 객체 속성의 값을 읽고 쓰거나 함수 호출 시 함수에 인수를 전달하여 수행 할 수 있습니다.
+Using values basically means reading and writing in allocated memory. This can be done by reading or writing the value of a variable or an object property or even passing an argument to a function.
 
-### 할당된 메모리가 더 이상 필요없을 때 해제하기
+### Release when the memory is not needed anymore
 
-이 단계에서 대부분의 문제가 발생합니다. "할당된 메모리가 더 이상 필요없을 때"를 알아내기가 어렵기 때문입니다.
+The majority of memory management issues occur at this phase. The most difficult aspect of this stage is determining when the allocated memory is no longer needed.
 
-저수준 언어에서는 메모리가 필요없어질 때를 개발자가 직접 결정하고 해제하는 방식을 사용합니다.
+Low-level languages require the developer to manually determine at which point in the program the allocated memory is no longer needed and to release it.
 
-자바스크립트와 같은 고수준 언어들은 "[가비지 콜렉션](<https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)>)(GC)"이라는 자동 메모리 관리 방법을 사용합니다. 가비지 콜렉터의 목적은 메모리 할당을 추적하고 할당된 메모리 블록이 더 이상 필요하지 않게 되었는지를 판단하여 회수하는 것입니다. 이러한 자동 메모리 관리 프로세스가 궁극의 방법은 아닙니다. 왜냐하면 어떤 메모리가 여전히 필요한지 아닌지를 판단하는 것은 [비결정적](http://en.wikipedia.org/wiki/Decidability_%28logic%29) 문제이기 때문입니다.
+Some high-level languages, such as JavaScript, utilize a form of automatic memory management known as [garbage collection](<https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)>) (GC). The purpose of a garbage collector is to monitor memory allocation and determine when a block of allocated memory is no longer needed and reclaim it. This automatic process is an approximation since the general problem of determining whether or not a specific piece of memory is still needed is [undecidable](https://en.wikipedia.org/wiki/Decidability_%28logic%29).
 
-## 가비지 콜렉션
+## Garbage collection
 
-위에서 언급한 것처럼 "더 이상 필요하지 않은" 모든 메모리를 찾는건 비결정적 문제입니다. 따라서 가비지 컬렉터들은 이 문제에 대한 제한적인 해결책을 구현합니다. 이 섹션에서는 주요한 가비지 컬렉션 알고리즘들과 그 한계를 이해하는데 필요한 개념을 설명합니다.
+As stated above, the general problem of automatically finding whether some memory "is not needed anymore" is undecidable. As a consequence, garbage collectors implement a restriction of a solution to the general problem. This section will explain the concepts that are necessary for understanding the main garbage collection algorithms and their respective limitations.
 
-### 참조
+### References
 
-가비지 콜렉션 알고리즘의 핵심 개념은 *참조*입니다. A라는 메모리를 통해 (명시적이든 암시적이든) B라는 메모리에 접근할 수 있다면 "B는 A에 참조된다" 라고 합니다. 예를 들어 모든 자바스크립트 오브젝트는 [prototype](/en/JavaScript/Guide/Inheritance_and_the_prototype_chain) 을 암시적으로 참조하고 그 오브젝트의 속성을 명시적으로 참조합니다.
+The main concept that garbage collection algorithms rely on is the concept of _reference_. Within the context of memory management, an object is said to reference another object if the former has access to the latter (either implicitly or explicitly). For instance, a JavaScript object has a reference to its [prototype](/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain) (implicit reference) and to its properties values (explicit reference).
 
-이 컨텍스트에서 "오브젝트"의 개념은 일반 JavaScript 오브젝트와 함수 범위(또는 정적 어휘 범위)를 포함하여 더 넓게 확장됩니다.
+In this context, the notion of an "object" is extended to something broader than regular JavaScript objects and also contain function scopes (or the global lexical scope).
 
-### 참조-세기(Reference-counting) 가비지 콜렉션
+### Reference-counting garbage collection
 
-참조-세기 알고리즘은 가장 소박한 알고리즘입니다. 이 알고리즘은 "더 이상 필요없는 오브젝트"를 "어떤 다른 오브젝트도 참조하지 않는 오브젝트"라고 정의합니다. 이 오브젝트를 "가비지"라 부르며, 이를 참조하는 다른 오브젝트가 하나도 없는 경우, 수집이 가능합니다.
+> **Note:** no modern browser uses reference-counting for garbage collection anymore.
 
-#### 예제
+This is the most naïve garbage collection algorithm. This algorithm reduces the problem from determining whether or not an object is still needed to determining if an object still has any other objects referencing it. An object is said to be "garbage", or collectible if there are zero references pointing to it.
+
+For example:
 
 ```js
-var x = {
+let x = {
   a: {
-    b: 2
-  }
+    b: 2,
+  },
 };
-// 2개의 오브젝트가 생성되었습니다. 하나의 오브젝트는 다른 오브젝트의 속성으로 참조됩니다.
-// 나머지 하나는 'x' 변수에 할당되었습니다.
-// 명백하게 가비지 콜렉션 수행될 메모리는 하나도 없습니다.
+// 2 objects are created. One is referenced by the other as one of its properties.
+// The other is referenced by virtue of being assigned to the 'x' variable.
+// Obviously, none can be garbage-collected.
 
+let y = x;
+// The 'y' variable is the second thing that has a reference to the object.
 
-var y = x;      // 'y' 변수는 위의 오브젝트를 참조하는 두 번째 변수입니다.
+x = 1;
+// Now, the object that was originally in 'x' has a unique reference
+// embodied by the 'y' variable.
 
-x = 1;          // 이제 'y' 변수가 위의 오브젝트를 참조하는 유일한 변수가 되었습니다.
+let z = y.a;
+// Reference to 'a' property of the object.
+// This object now has 2 references: one as a property,
+// the other as the 'z' variable.
 
-var z = y.a;    // 위의 오브젝트의 'a' 속성을 참조했습니다.
-                // 이제 'y.a'는 두 개의 참조를 가집니다.
-                // 'y'가 속성으로 참조하고 'z'라는 변수가 참조합니다.
+y = "mozilla";
+// The object that was originally in 'x' has now zero
+// references to it. It can be garbage-collected.
+// However its 'a' property is still referenced by
+// the 'z' variable, so it cannot be freed.
 
-y = "mozilla";  // 이제 맨 처음 'y' 변수가 참조했던 오브젝트를 참조하는 오브젝트는 없습니다.
-                // (역자: 참조하는 유일한 변수였던 y에 다른 값을 대입했습니다)
-                // 이제 오브젝트에 가비지 콜렉션이 수행될 수 있을까요?
-                // 아닙니다. 오브젝트의 'a' 속성이 여전히 'z' 변수에 의해 참조되므로
-                // 메모리를 해제할 수 없습니다.
-
-z = null;       // 'z' 변수에 다른 값을 할당했습니다.
-                // 이제 맨 처음 'x' 변수가 참조했던 오브젝트를 참조하는
-                // 다른 변수는 없으므로 가비지 콜렉션이 수행됩니다.
+z = null;
+// The 'a' property of the object originally in x
+// has zero references to it. It can be garbage collected.
 ```
 
-#### 한계: 순환 참조
-
-순환 참조를 다루는 일에는 한계가 있습니다. 다음 예제에서는 두 객체가 서로 참조하는 속성으로 생성되어 순환 구조를 생성합니다. 함수 호출이 완료되면 이 두 객체는 스코프를 벗어나게 될 것이며, 그 시점에서 두 객체는 불필요해지므로 할당된 메모리는 회수되어야 합니다. 그러나 두 객체가 서로를 참조하고 있으므로, 참조-세기 알고리즘은 둘 다 가비지 컬렉션의 대상으로 표시하지 않습니다. 이러한 순환 참조는 메모리 누수의 흔한 원인입니다.
+There is a limitation when it comes to circular references. In the following example, two objects are created with properties that reference one another, thus creating a cycle. They will go out of scope after the function call has completed. At that point they become unneeded and their allocated memory should be reclaimed. However, the reference-counting algorithm will not consider them reclaimable since each of the two objects has at least one reference pointing to them, resulting in neither of them being marked for garbage collection. Circular references are a common cause of memory leaks.
 
 ```js
 function f() {
-  var x = {};
-  var y = {};
-  x.a = y;         // x는 y를 참조합니다.
-  y.a = x;         // y는 x를 참조합니다.
+  const x = {};
+  const y = {};
+  x.a = y; // x references y
+  y.a = x; // y references x
 
   return "azerty";
 }
@@ -144,63 +155,146 @@ function f() {
 f();
 ```
 
-#### 실제 예제
+### Mark-and-sweep algorithm
 
-인터넷 익스플로러 6, 7 은 DOM 오브젝트에 대해 참조-세기 알고리즘으로 가비지 콜렉션을 수행합니다. 흔히, 이 두 브라우저에서는 다음과 같은 패턴의 메모리 누수가 발생합니다.
+This algorithm reduces the definition of "an object is no longer needed" to "an object is unreachable".
 
-```js
-var div;
-window.onload = function() {
-  div = document.getElementById('myDivElement');
-  div.circularReference = div;
-  div.lotsOfData = new Array(10000).join('*');
-};
-```
+This algorithm assumes the knowledge of a set of objects called _roots._ In JavaScript, the root is the global object. Periodically, the garbage collector will start from these roots, find all objects that are referenced from these roots, then all objects referenced from these, etc. Starting from the roots, the garbage collector will thus find all _reachable_ objects and collect all non-reachable objects.
 
-위의 예에서 DOM 요소 "myDivElement"는 "circularReference" 속성에서 자신에 대한 순환 참조를 가지고 있습니다. 속성이 명시적으로 제거되거나 null이 되지않으면 참조-계산 가비지 수집기는 항상 하나 이상의 참조를 그대로 유지하며 DOM 트리에서 제거된 경우에도 DOM 요소를 메모리에 유지합니다. DOM 요소가 많은 양의 데이터를 보유하는 경우 (위의 예에서 'lotsOfData'속성으로 설명됨)이 데이터에 사용된 메모리는 절대 해제되지 않으며 브라우저가 점점 더 느려지는 등 메모리 관련 문제로 이어질 수 있습니다.
+This algorithm is an improvement over the previous one since an object having zero references is effectively unreachable. The opposite does not hold true as we have seen with circular references.
 
-### 표시하고-쓸기(Mark-and-sweep) 알고리즘
+Currently, all modern engines ship a mark-and-sweep garbage collector. All improvements made in the field of JavaScript garbage collection (generational/incremental/concurrent/parallel garbage collection) over the last few years are implementation improvements of this algorithm, but not improvements over the garbage collection algorithm itself nor its reduction of the definition of when "an object is no longer needed".
 
-이 알고리즘은 "더 이상 필요없는 오브젝트"를 "닿을 수 없는 오브젝트"로 정의합니다.
+The immediate benefit of this approach is that cycles are no longer a problem. In the first example above, after the function call returns, the two objects are no longer referenced by any resource that is reachable from the global object. Consequently, they will be found unreachable by the garbage collector and have their allocated memory reclaimed.
 
-이 알고리즘은 _roots_ 라는 오브젝트의 집합을 가지고 있습니다(자바스크립트에서는 전역 변수들을 의미합니다). 주기적으로 가비지 콜렉터는 roots로 부터 시작하여 roots가 참조하는 오브젝트들, roots가 참조하는 오브젝트가 참조하는 오브젝트들... 을 *닿을 수 있는 오브젝트*라고 표시합니다. 그리고 닿을 수 있는 오브젝트가 아닌 닿을 수 없는 오브젝트에 대해 가비지 콜렉션을 수행합니다.
+However, the inability to manually control garbage collection remains. There are times when it would be convenient to manually decide when and what memory is released. In order to release the memory of an object, it needs to be made explicitly unreachable. It is also not possible to programmatically trigger garbage collection in JavaScript — and will likely never be within the core language, although engines may expose APIs behind opt-in flags.
 
-이 알고리즘은 위에서 설명한 참조-세기 알고리즘보다 효율적입니다. 왜냐하면 "참조되지 않는 오브젝트"는 모두 "닿을 수 없는 오브젝트" 이지만 역은 성립하지 않기 때문입니다. 위에서 반례인 순환 참조하는 오브젝트들을 설명했습니다.
+## Configuring an engine's memory model
 
-2012년 기준으로 모든 최신 브라우저들은 가비지 콜렉션에서 표시하고-쓸기 알고리즘을 사용합니다. 지난 몇 년간 연구된 자바스크립트 가비지 콜렉션 알고리즘의 개선들은 모두 이 알고리즘에 대한 것입니다. 개선된 알고리즘도 여전히 "더 이상 필요없는 오브젝트"를 "닿을 수 없는 오브젝트"로 정의하고 있습니다.
+JavaScript engines typically offer flags that expose the memory model. For example, Node.js offers additional options and tools that expose the underlying V8 mechanisms for configuring and debugging memory issues. This configuration may not be available in browsers, and even less so for web pages (via HTTP headers, etc.).
 
-#### 순환 참조는 이제 문제가 되지 않습니다.
-
-첫 번째 예제에서 함수가 반환되고 나서 두 오브젝트는 닿을 수 없습니다. 따라서 가비지 콜렉션이 일어납니다.
-
-두 번째 예제에서도 마찬가지입니다. div 변수와 이벤트 핸들러가 roots로 부터 닿을 수 없으면 순환 참조가 일어났음에도 불구하고 가비지 콜렉션이 일어납니다. (역자2: div 선언을 블럭안에다 넣어야 됩니다.(테스트는 못 해봤습니다.))
-
-#### 한계: 수동 메모리 해제.
-
-어떤 메모리를 언제 해제할지에 대해 수동으로 결정하는 것이 편리할 때가 있습니다. 그리고 수동으로 객체의 메모리를 해제하려면, 객체 메모리에 도달할 수 없도록 명시하는 기능이 있어야 합니다.
-
-2019년 현재의 JavaScript에서는 명시적으로 또는 프로그래밍 방식으로 가비지 컬렉션을 작동할 수 없습니다.
-
-## Node.js
-
-Node.js는 브라우저 환경에서 실행되는 JavaScript에 사용할 수 없는 메모리 문제를 구성하고 디버깅하기 위한 추가 옵션과 도구를 제공합니다.
-
-#### V8 엔진 플래그
-
-사용 가능한 힙 메모리의 최대 양은 플래그를 사용하여 늘릴 수 있습니다.
+The max amount of available heap memory can be increased with a flag:
 
 ```bash
 node --max-old-space-size=6000 index.js
 ```
 
-플래그 및 [Chrome Debugger](https://nodejs.org/en/docs/guides/debugging-getting-started/) 디버거를 사용하여 메모리 문제를 디버깅하기 위해 가비지 수집기를 노출할 수도 있습니다:
+We can also expose the garbage collector for debugging memory issues using a flag and the [Chrome Debugger](https://nodejs.org/en/docs/guides/debugging-getting-started/):
 
 ```bash
 node --expose-gc --inspect index.js
 ```
 
-더 보기
+## Data structures aiding memory management
 
-- ["JavaScript의 메모리 누수 패턴"에 대한 IBM 기사 (2007)](http://www.ibm.com/developerworks/web/library/wa-memleak/)
-- [이벤트 핸들러를 등록하고 메모리 누수를 방지하는 방법에 대한 Kangax 기사 (2010)](http://msdn.microsoft.com/en-us/magazine/ff728624.aspx)
-- [성능](/en-US/docs/Mozilla/Performance)
+Although JavaScript does not directly expose the garbage collector API, the language offers several data structures that indirectly observe garbage collection and can be used to manage memory usage.
+
+### WeakMaps and WeakSets
+
+[`WeakMap`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) and [`WeakSet`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet) are data structures whose APIs closely mirror their non-weak counterparts: [`Map`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) and [`Set`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set). `WeakMap` allows you to maintain a collection of key-value pairs, while `WeakSet` allows you to maintain a collection of unique values, both with performant addition, deletion, and querying.
+
+`WeakMap` and `WeakSet` got the name from the concept of _weakly held_ values. If `x` is weakly held by `y`, it means that although you can access the value of `x` via `y`, the mark-and-sweep algorithm won't consider `x` as reachable if nothing else _strongly holds_ to it. Most data structures, except the ones discussed here, strongly holds to the objects passed in so that you can retrieve them at any time. The keys of `WeakMap` and `WeakSet` can be garbage-collected (for `WeakMap` objects, the values would then be eligible for garbage collection as well) as long as nothing else in the program is referencing the key. This is ensured by two characteristics:
+
+- `WeakMap` and `WeakSet` can only store objects or symbols. This is because only objects are garbage collected — primitive values can always be forged (that is, `1 === 1` but `{} !== {}`), making them stay in the collection forever. [Registered symbols](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol#shared_symbols_in_the_global_symbol_registry) (like `Symbol.for("key")`) can also be forged and thus not garbage collectable, but symbols created with `Symbol("key")` are garbage collectable. [Well-known symbols](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol#well-known_symbols) like `Symbol.iterator` come in a fixed set and are unique throughout the lifetime of the program, similar to intrinsic objects such as `Array.prototype`, so they are also allowed as keys.
+- `WeakMap` and `WeakSet` are not iterable. This prevents you from using `Array.from(map.keys()).length` to observe the liveliness of objects, or get hold of an arbitrary key which should otherwise be eligible for garbage collection. (Garbage collection should be as invisible as possible.)
+
+In typical explanations of `WeakMap` and `WeakSet` (such as the one above), it's often implied that the key is garbage-collected first, freeing the value for garbage collection as well. However, consider the case of the value referencing the key:
+
+```js
+const wm = new WeakMap();
+const key = {};
+wm.set(key, { key });
+// Now `key` cannot be garbage collected,
+// because the value holds a reference to the key,
+// and the value is strongly held in the map!
+```
+
+If `key` is stored as an actual reference, it would create a cyclic reference and make both the key and value ineligible for garbage collection, even when nothing else references `key` — because if `key` is garbage collected, it means that at some particular instant, `value.key` would point to a non-existent address, which is not legal. To fix this, the entries of `WeakMap` and `WeakSet` aren't actual references, but [ephemerons](https://dl.acm.org/doi/pdf/10.1145/263700.263733), an enhancement to the mark-and-sweep mechanism. [Barros et al.](https://www.jucs.org/jucs_14_21/eliminating_cycles_in_weak/jucs_14_21_3481_3497_barros.pdf) offers a good summary of the algorithm (page 4). To quote a paragraph:
+
+> Ephemerons are a refinement of weak pairs where neither the key nor the value can be classified as weak or strong. The connectivity of the key determines the connectivity of the value, but the connectivity of the value does not affect the connectivity of the key. […] when the garbage collection offers support to ephemerons, it occurs in three phases instead of two (mark and sweep).
+
+As a rough mental model, think of a `WeakMap` as the following implementation:
+
+> **Warning:** This is not a polyfill nor is anywhere close to how it's implemented in the engine (which hooks into the garbage collection mechanism).
+
+```js
+class MyWeakMap {
+  #marker = Symbol("MyWeakMapData");
+  get(key) {
+    return key[this.#marker];
+  }
+  set(key, value) {
+    key[this.#marker] = value;
+  }
+  has(key) {
+    return this.#marker in key;
+  }
+  delete(key) {
+    delete key[this.#marker];
+  }
+}
+```
+
+As you can see, the `MyWeakMap` never actually holds a collection of keys. It simply adds metadata to each object being passed in. The object is then garbage-collectable via mark-and-sweep. Therefore, it's not possible to iterate over the keys in a `WeakMap`, nor clear the `WeakMap` (as that also relies on the knowledge of the entire key collection).
+
+For more information on their APIs, see the [keyed collections](/en-US/docs/Web/JavaScript/Guide/Keyed_collections) guide.
+
+### WeakRefs and FinalizationRegistry
+
+> **Note:** `WeakRef` and `FinalizationRegistry` offer direct introspection into the garbage collection machinery. [Avoid using them where possible](/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef#avoid_where_possible) because the runtime semantics are almost completely unguaranteed.
+
+All variables with an object as value are references to that object. However, such references are _strong_ — their existence would prevent the garbage collector from marking the object as eligible for collection. A [`WeakRef`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef) is a _weak reference_ to an object that allows the object to be garbage collected, while still retaining the ability to read the object's content during its lifetime.
+
+One use case for `WeakRef` is a cache system which maps string URLs to large objects. We cannot use a `WeakMap` for this purpose, because `WeakMap` objects have their _keys_ weakly held, but not their _values_ — if you access a key, you would always deterministically get the value (since having access to the key means it's still alive). Here, we are okay to get `undefined` for a key (if the corresponding value is no longer alive) since we can just re-compute it, but we don't want unreachable objects to stay in the cache. In this case, we can use a normal `Map`, but with each value being a `WeakRef` of the object instead of the actual object value.
+
+```js
+function cached(getter) {
+  // A Map from string URLs to WeakRefs of results
+  const cache = new Map();
+  return async (key) => {
+    if (cache.has(key)) {
+      return cache.get(key).deref();
+    }
+    const value = await getter(key);
+    cache.set(key, new WeakRef(value));
+    return value;
+  };
+}
+
+const getImage = cached((url) => fetch(url).then((res) => res.blob()));
+```
+
+[`FinalizationRegistry`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry) provides an even stronger mechanism to observe garbage collection. It allows you to register objects and be notified when they are garbage collected. For example, for the cache system exemplified above, even when the blobs themselves are free for collection, the `WeakRef` objects that hold them are not — and over time, the `Map` may accumulate a lot of useless entries. Using a `FinalizationRegistry` allows one to perform cleanup in this case.
+
+```js
+function cached(getter) {
+  // A Map from string URLs to WeakRefs of results
+  const cache = new Map();
+  // Every time after a value is garbage collected, the callback is
+  // called with the key in the cache as argument, allowing us to remove
+  // the cache entry
+  const registry = new FinalizationRegistry((key) => {
+    // Note: it's important to test that the WeakRef is indeed empty.
+    // Otherwise, the callback may be called after a new object has been
+    // added with this key, and that new, alive object gets deleted
+    if (!cache.get(key)?.deref()) {
+      cache.delete(key);
+    }
+  });
+  return async (key) => {
+    if (cache.has(key)) {
+      return cache.get(key).deref();
+    }
+    const value = await getter(key);
+    cache.set(key, new WeakRef(value));
+    registry.register(value, key);
+    return value;
+  };
+}
+
+const getImage = cached((url) => fetch(url).then((res) => res.blob()));
+```
+
+Due to performance and security concerns, there is no guarantee of when the callback will be called, or if it will be called at all. It should only be used for cleanup — and non-critical cleanup. There are other ways for more deterministic resource management, such as [`try...finally`](/en-US/docs/Web/JavaScript/Reference/Statements/try...catch), which will always execute the `finally` block. `WeakRef` and `FinalizationRegistry` exist solely for optimization of memory usage in long-running programs.
+
+For more information on the API of [`WeakRef`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef) and [`FinalizationRegistry`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry), see their reference pages.

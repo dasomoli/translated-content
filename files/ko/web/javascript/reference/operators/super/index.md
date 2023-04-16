@@ -1,158 +1,345 @@
 ---
 title: super
 slug: Web/JavaScript/Reference/Operators/super
+page-type: javascript-language-feature
+browser-compat: javascript.operators.super
 ---
 
 {{jsSidebar("Operators")}}
 
-**super** 키워드는 부모 오브젝트의 함수를 호출할 때 사용됩니다.
+The **`super`** keyword is used to access properties on an object literal or class's [[Prototype]], or invoke a superclass's constructor.
 
-`super.prop` 와 `super[expr]` 표현식은 [클래스](/ko/docs/Web/JavaScript/Reference/Classes) 와 [객체리터럴](/ko/docs/Web/JavaScript/Reference/Operators/Object_initializer)의 어떠한 [메서드 정의](/ko/docs/Web/JavaScript/Reference/Functions/Method_definitions) 방법에서도 유효합니다.
+The `super.prop` and `super[expr]` expressions are valid in any [method definition](/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions) in both [classes](/en-US/docs/Web/JavaScript/Reference/Classes) and [object literals](/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer). The `super(...args)` expression is valid in class constructors.
 
-## 문법
+{{EmbedInteractiveExample("pages/js/expressions-super.html", "taller")}}
 
-```js
-    super([arguments]); // 부모 생성자 호출
-    super.functionOnParent([arguments]);
+## Syntax
+
+```js-nolint
+super([arguments]) // calls the parent constructor.
+super.propertyOnParent
+super[expression]
 ```
 
-## 설명
+## Description
 
-생성자에서는 `super` 키워드 하나만 사용되거나 `this` 키워드가 사용되기 전에 호출되어야 합니다. 또한 `super` 키워드는 부모 객체의 함수를 호출하는데 사용될 수 있습니다.
+The `super` keyword can be used in two ways: as a "function call" (`super(...args)`), or as a "property lookup" (`super.prop` and `super[expr]`).
 
-## 예제
+> **Note:** `super` is a keyword and these are special syntactic constructs. `super` is not a variable that points to the prototype object. Attempting to read `super` itself is a {{jsxref("SyntaxError")}}.
+>
+> ```js example-bad
+> const child = {
+>   myParent() {
+>     console.log(super); // SyntaxError: 'super' keyword unexpected here
+>   },
+> };
+> ```
 
-### 클래스에서 `super` 사용하기
+In the [constructor](/en-US/docs/Web/JavaScript/Reference/Classes/constructor) body of a derived class (with `extends`), the `super` keyword may appear as a "function call" (`super(...args)`), which must be called before the `this` keyword is used, and before the constructor returns. It calls the parent class's constructor and binds the parent class's public fields, after which the derived class's constructor can further access and modify `this`.
 
-이 예제는 옆의 링크에서 발췌하였습니다. [classes sample](https://github.com/GoogleChrome/samples/blob/gh-pages/classes-es6/index.html) ([live demo](https://googlechrome.github.io/samples/classes-es6/index.html)).
+The "property lookup" form can be used to access methods and properties of an object literal's or class's [[Prototype]]. Within a class's body, the reference of `super` can be either the superclass's constructor itself, or the constructor's `prototype`, depending on whether the execution context is instance creation or class initialization. See the Examples section for more details.
+
+Note that the reference of `super` is determined by the class or object literal `super` was declared in, not the object the method is called on. Therefore, unbinding or re-binding a method doesn't change the reference of `super` in it (although they do change the reference of [`this`](/en-US/docs/Web/JavaScript/Reference/Operators/this)). You can see `super` as a variable in the class or object literal scope, which the methods create a closure over. (But also beware that it's not actually a variable, as explained above.)
+
+When setting properties through `super`, the property is set on `this` instead.
+
+## Examples
+
+### Using super in classes
+
+This code snippet is taken from the [classes sample](https://github.com/GoogleChrome/samples/blob/gh-pages/classes-es6/index.html) ([live demo](https://googlechrome.github.io/samples/classes-es6/index.html)). Here `super()` is called to avoid duplicating the constructor parts' that are common between `Rectangle` and `Square`.
 
 ```js
-class Polygon {
+class Rectangle {
   constructor(height, width) {
-    this.name = 'Polygon';
+    this.name = "Rectangle";
     this.height = height;
     this.width = width;
   }
   sayName() {
-    console.log('Hi, I am a ', this.name + '.');
+    console.log(`Hi, I am a ${this.name}.`);
   }
-}
-
-class Square extends Polygon {
-  constructor(length) {
-    this.height; // 참조오류가 발생합니다. super가 먼저 호출되어야 합니다.
-
-    // 여기서, 부모클래스의 생성자함수를 호출하여 높이값을 넘겨줍니다.
-    // Polygon의 길이와 높이를 넘겨줍니다.
-    super(length, length);
-
-    // 참고: 파생 클래스에서 super() 함수가 먼저 호출되어야
-    // 'this' 키워드를 사용할 수 있습니다. 그렇지 않을 경우 참조오류가 발생합니다.
-    this.name = 'Square';
-  }
-
   get area() {
     return this.height * this.width;
   }
-
   set area(value) {
-    this.area = value;
+    this._area = value;
+  }
+}
+
+class Square extends Rectangle {
+  constructor(length) {
+    this.height; // ReferenceError, super needs to be called first!
+
+    // Here, it calls the parent class's constructor with lengths
+    // provided for the Rectangle's width and height
+    super(length, length);
+
+    // Note: In derived classes, super() must be called before you
+    // can use 'this'. Leaving this out will cause a reference error.
+    this.name = "Square";
   }
 }
 ```
 
-### 정적 메서드에서 Super 호출
+### Super-calling static methods
 
-[static](/ko/docs/Web/JavaScript/Reference/Classes/static) 메서드에서도 super를 호출할 수 있습니다.
+You are also able to call super on [static](/en-US/docs/Web/JavaScript/Reference/Classes/static) methods.
 
 ```js
-class Human {
-  constructor() {}
-  static ping() {
-    return 'ping';
+class Rectangle {
+  static logNbSides() {
+    return "I have 4 sides";
   }
 }
 
-class Computer extends Human {
-  constructor() {}
-  static pingpong() {
-    return super.ping() + ' pong';
+class Square extends Rectangle {
+  static logDescription() {
+    return `${super.logNbSides()} which are all equal`;
   }
 }
-Computer.pingpong(); // 'ping pong'
+Square.logDescription(); // 'I have 4 sides which are all equal'
 ```
 
-### super의 속성 삭제
+### Accessing super in class field declaration
 
-[delete 연산자](/ko/docs/Web/JavaScript/Reference/Operators/delete)를 사용할 수 없으며 `super.prop` 또는 `super[expr]` 표현식을 사용하여 부모 클래스의 속성을 삭제할 경우 {{jsxref("ReferenceError")}} 오류가 발생합니다.
+`super` can also be accessed during class field initialization. The reference of `super` depends on whether the current field is an instance field or a static field.
 
 ```js
 class Base {
-  constructor() {}
-  foo() {}
-}
-class Derived {
-  constructor() {}
-  delete() {
-    delete super.foo;
+  static baseStaticField = 90;
+  baseMethod() {
+    return 10;
   }
 }
 
-new Derived().delete(); // 참조오류: 'super'완 관련된 삭제가 유효하지 않습니다.
+class Extended extends Base {
+  extendedField = super.baseMethod(); // 10
+  static extendedStaticField = super.baseStaticField; // 90
+}
 ```
 
-### `Super.prop`은 non-writable 속성을 덮어 쓸 수 없습니다
+Note that instance fields are set on the instance instead of the constructor's `prototype`, so you can't use `super` to access the instance field of a superclass.
 
-예를 들어 {{jsxref("Object.defineProperty")}}로 속성을 정의할 때, `super`의 속성 값을 덮어 쓸 수 없습니다.
+```js example-bad
+class Base {
+  baseField = 10;
+}
+
+class Extended extends Base {
+  extendedField = super.baseField; // undefined
+}
+```
+
+Here, `extendedField` is `undefined` instead of 10, because `baseField` is defined as an own property of the `Base` instance, instead of `Base.prototype`. `super`, in this context, only looks up properties on `Base.prototype`, because that's the [[Prototype]] of `Extended.prototype`.
+
+### Deleting super properties will throw an error
+
+You cannot use the [`delete` operator](/en-US/docs/Web/JavaScript/Reference/Operators/delete) and `super.prop` or `super[expr]` to delete a parent class' property — it will throw a {{jsxref("ReferenceError")}}.
+
+```js
+class Base {
+  foo() {}
+}
+class Derived extends Base {
+  delete() {
+    delete super.foo; // this is bad
+  }
+}
+
+new Derived().delete(); // ReferenceError: invalid delete involving 'super'.
+```
+
+### Using super.prop in object literals
+
+Super can also be used in the [object initializer](/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer) notation. In this example, two objects define a method. In the second object, `super` calls the first object's method. This works with the help of {{jsxref("Object.setPrototypeOf()")}} with which we are able to set the prototype of `obj2` to `obj1`, so that `super` is able to find `method1` on `obj1`.
+
+```js
+const obj1 = {
+  method1() {
+    console.log("method 1");
+  },
+};
+
+const obj2 = {
+  method2() {
+    super.method1();
+  },
+};
+
+Object.setPrototypeOf(obj2, obj1);
+obj2.method2(); // Logs "method 1"
+```
+
+### Methods that read super.prop do not behave differently when bound to other objects
+
+Accessing `super.x` behaves like `Reflect.get(Object.getPrototypeOf(objectLiteral), "x", this)`, which means the property is always seeked on the object literal/class declaration's prototype, and unbinding and re-binding a method won't change the reference of `super`.
+
+```js
+class Base {
+  baseGetX() {
+    return 1;
+  }
+}
+class Extended extends Base {
+  getX() {
+    return super.baseGetX();
+  }
+}
+
+const e = new Extended();
+console.log(e.getX()); // 1
+const { getX } = e;
+console.log(getX()); // 1
+```
+
+The same happens in object literals.
+
+```js
+const parent1 = { prop: 1 };
+const parent2 = { prop: 2 };
+
+const child = {
+  myParent() {
+    console.log(super.prop);
+  },
+};
+
+Object.setPrototypeOf(child, parent1);
+child.myParent(); // Logs "1"
+
+const myParent = child.myParent;
+myParent(); // Still logs "1"
+
+const anotherChild = { __proto__: parent2, myParent };
+anotherChild.myParent(); // Still logs "1"
+```
+
+Only resetting the entire inheritance chain will change the reference of `super`.
+
+```js
+class Base {
+  baseGetX() {
+    return 1;
+  }
+  static staticBaseGetX() {
+    return 3;
+  }
+}
+class AnotherBase {
+  baseGetX() {
+    return 2;
+  }
+  static staticBaseGetX() {
+    return 4;
+  }
+}
+class Extended extends Base {
+  getX() {
+    return super.baseGetX();
+  }
+  static staticGetX() {
+    return super.staticBaseGetX();
+  }
+}
+
+const e = new Extended();
+// Reset instance inheritance
+Object.setPrototypeOf(Extended.prototype, AnotherBase.prototype);
+console.log(e.getX()); // Logs "2" instead of "1", because the prototype chain has changed
+console.log(Extended.staticGetX()); // Still logs "3", because we haven't modified the static part yet
+// Reset static inheritance
+Object.setPrototypeOf(Extended, AnotherBase);
+console.log(Extended.staticGetX()); // Now logs "4"
+```
+
+### Calling methods from super
+
+When calling `super.prop` as a function, the `this` value inside the `prop` function is the current `this`, not the object that `super` points to. For example, the `super.getName()` call logs `"Extended"`, despite the code looking like it's equivalent to `Base.getName()`.
+
+```js
+class Base {
+  static getName() {
+    console.log(this.name);
+  }
+}
+
+class Extended extends Base {
+  static getName() {
+    super.getName();
+  }
+}
+
+Extended.getName(); // Logs "Extended"
+```
+
+This is especially important when interacting with [static private properties](/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields#private_static_fields).
+
+### Setting super.prop sets the property on this instead
+
+Setting properties of `super`, such as `super.x = 1`, behaves like `Reflect.set(Object.getPrototypeOf(objectLiteral), "x", 1, this)`. This is one of the cases where understanding `super` as simply "reference of the prototype object" falls short, because it actually sets the property on `this` instead.
+
+```js
+class A {}
+class B extends A {
+  setX() {
+    super.x = 1;
+  }
+}
+
+const b = new B();
+b.setX();
+console.log(b); // B { x: 1 }
+console.log(Object.hasOwn(b, "x")); // true
+```
+
+`super.x = 1` will look for the property descriptor of `x` on `A.prototype` (and invoke the setters defined there), but the `this` value will be set to `this`, which is `b` in this context. You can read [`Reflect.set`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect/set) for more details on the case when `target` and `receiver` differ.
+
+This means that while methods that _get_ `super.prop` are usually not susceptible to changes in the `this` context, those that _set_ `super.prop` are.
+
+```js example-bad
+/* Reusing same declarations as above */
+
+const b2 = new B();
+b2.setX.call(null); // TypeError: Cannot assign to read only property 'x' of object 'null'
+```
+
+However, `super.x = 1` still consults the property descriptor of the prototype object, which means you cannot rewrite non-writable properties, and setters will be invoked.
 
 ```js
 class X {
   constructor() {
+    // Create a non-writable property
     Object.defineProperty(this, "prop", {
       configurable: true,
       writable: false,
-      value: 1
+      value: 1,
     });
   }
-  f() {
-    super.prop = 2;
+}
+
+class Y extends X {
+  constructor() {
+    super();
+  }
+  foo() {
+    super.prop = 2; // Cannot overwrite the value.
   }
 }
 
-var x = new X();
-x.f();
-console.log(x.prop); // 1
+const y = new Y();
+y.foo(); // TypeError: "prop" is read-only
+console.log(y.prop); // 1
 ```
 
-### 객체 리터럴에서 `super.prop` 사용하기
-
-Super는 [object initializer / literal](/ko/docs/Web/JavaScript/Reference/Operators/Object_initializer) 표기법에서 사용할 수 있습니다. 아래의 예제에서, 두개의 객체는 메서드를 정의합니다. 두번째 객체에서, `super`는 첫번째 객체의 메서드를 호출합니다. 이 예제는 {{jsxref("Object.setPrototypeOf()")}}를 이용하여 obj2 prototype에 obj1을 세팅하여, `super`가 obj1의 method1을 찾을 수 있도록 합니다.
-
-```js
-var obj1 = {
-  method1() {
-    console.log("method 1");
-  }
-}
-
-var obj2 = {
-  method2() {
-   super.method1();
-  }
-}
-
-Object.setPrototypeOf(obj2, obj1);
-obj2.method2(); // logs "method 1"
-```
-
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참고
+## See also
 
-- [Classes](/ko/docs/Web/JavaScript/Reference/Classes)
+- [Classes](/en-US/docs/Web/JavaScript/Reference/Classes)

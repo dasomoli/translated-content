@@ -1,72 +1,60 @@
 ---
 title: inputmode
 slug: Web/HTML/Global_attributes/inputmode
+page-type: html-attribute
+browser-compat: html.global_attributes.inputmode
 ---
 
 {{HTMLSidebar("Global_attributes")}}
 
-**`inputmode`** [전역 특성](/ko/docs/Web/HTML/Global_attributes)은 사용자가 요소나 요소의 콘텐츠를 편집할 때 입력할 수 있는 데이터 유형의 힌트를 제공하는 열거형 특성입니다. 가능한 값은 다음과 같습니다.
+The **`inputmode`** [global attribute](/en-US/docs/Web/HTML/Global_attributes) is an [enumerated](/en-US/docs/Glossary/Enumerated) attribute that hints at the type of data that might be entered by the user while editing the element or its contents.
+This allows a browser to display an appropriate virtual keyboard.
+
+It is used primarily on {{HTMLElement("input")}} elements, but is usable on any element in [`contenteditable`](/en-US/docs/Web/HTML/Global_attributes#contenteditable) mode.
+
+It's important to understand that the `inputmode` attribute doesn't cause any validity requirements to be enforced on input. To require that input conforms to a particular data type, choose an appropriate [`<input> element type`](/en-US/docs/Web/HTML/Element/input#input_types). For specific guidance on choosing {{HTMLElement("input")}} types, see the [Values](#values) section.
+
+## Values
+
+The attribute can have any of the following values:
 
 - `none`
-  - : 가상 키보드를 사용하지 않습니다. 페이지가 자체 키보드나 입력 컨트롤을 구현할 때 사용합니다.
-- `text` (기본값)
-  - : 사용자의 현재 로케일에 맞는 표준 키보드를 제공합니다.
+  - : No virtual keyboard.
+    For when the page implements its own keyboard input control.
+- `text` (default value)
+  - : Standard input keyboard for the user's current locale.
 - `decimal`
-
-  - : 사용자의 로케일에 맞는 소숫점(보통&#x20;
-
-    <kbd>,</kbd>
-
-    &#x20;또는&#x20;
-
-    <kbd>.</kbd>
-
-    )을 제공하는 숫자형 키보드를 제공합니다. 장치에 따라 음의 부호(
-
-    <kbd>-</kbd>
-
-    )는 제공할 수도, 제공하지 않을 수도 있습니다.
-
+  - : Fractional numeric input keyboard containing the digits and decimal separator for the user's locale (typically <kbd>.</kbd> or <kbd>,</kbd>).
+    Devices may or may not show a minus key (<kbd>-</kbd>).
 - `numeric`
-  - : 숫자형 키보드를 제공합니다. 소숫점은 없으며, 음의 부호는 제공할 수도, 제공하지 않을 수도 있습니다.
+  - : Numeric input keyboard, but only requires the digits 0–9.
+    Devices may or may not show a minus key.
 - `tel`
-
-  - : 전화번호 키보드를 제공합니다. 숫자 0\~9, 별표(
-
-    <kbd>\*</kbd>
-
-    ), 해시(샵,&#x20;
-
-    <kbd>#</kbd>
-
-    ) 키를 포함합니다. 일반적인 경우, 반드시 전화번호를 필요로 하는 입력 칸에는 `{{htmlelement("input/tel", '&lt;input type="tel"&gt;')}}`을 사용해야 합니다.
-
+  - : A telephone keypad input, including the digits 0–9, the asterisk (<kbd>*</kbd>), and the pound (<kbd>#</kbd>) key.
+    Inputs that *require\* a telephone number should typically use `{{HTMLElement("input/tel", '&lt;input type="tel"&gt;')}}` instead.
 - `search`
-  - : 검색 입력 칸에 최적화한 가상 키보드를 제공합니다. 예를 들면, 엔터/제출 키가 "검색" 아이콘이나 레이블을 가질 수 있습니다. 일반적인 경우, 반드시 검색 질의를 필요로 하는 입력 칸에는 `{{HTMLElement("input/search", '&lt;input type="search"&gt;')}}`를 사용해야 합니다.
+  - : A virtual keyboard optimized for search input.
+    For instance, the [return/submit key](https://html.spec.whatwg.org/dev/interaction.html#input-modalities:-the-enterkeyhint-attribute) may be labeled "Search", along with possible other optimizations.
+    Inputs that _require_ a search query should typically use `{{HTMLElement("input/search", '&lt;input type="search"&gt;')}}` instead.
 - `email`
-
-  - : 이메일 입력에 최적화한 가상 키보드를 제공합니다. 보통&#x20;
-
-    <kbd>@</kbd>
-
-    &#x20;키 등을 제공합니다. 일반적인 경우, 반드시 이메일을 필요로 하는 입력 칸에는 `{{htmlelement("input/email", '&lt;input type="email"&gt;')}}`을 사용해야 합니다.
-
+  - : A virtual keyboard optimized for entering email addresses.
+    Typically includes the <kbd>@</kbd>character as well as other optimizations.
+    Inputs that _require_ email addresses should typically use `{{HTMLElement("input/email", '&lt;input type="email"&gt;')}}` instead.
 - `url`
+  - : A keypad optimized for entering URLs.
+    This may have the <kbd>/</kbd> key more prominent, for example.
+    Enhanced features could include history access and so on.
+    Inputs that _require_ a URL should typically use `{{HTMLElement("input/url", '&lt;input type="url"&gt;')}}` instead.
 
-  - : {{glossary("URL")}} 입력에 최적화한 가상 키보드를 제공합니다. 보통&#x20;
-
-    <kbd>/</kbd>
-
-    &#x20;키를 누르기 편한 곳에 배치하며, 세션 히스토리 접근 기능 등을 추가하기도 합니다. 일반적인 경우, 반드시 URL을 필요로 하는 입력 칸에는 `inputmode` 대신 `{{htmlelement("input/url", '&lt;input type="url"&gt;')}}`을 사용해야 합니다.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 모든 [전역 특성](/ko/docs/Web/HTML/Global_attributes).
+- All [global attributes](/en-US/docs/Web/HTML/Global_attributes).
+- [`enterkeyhint`](/en-US/docs/Web/HTML/Global_attributes/enterkeyhint) global attribute

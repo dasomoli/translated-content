@@ -1,43 +1,39 @@
 ---
-title: 레이아웃 모드
+title: Layout mode
 slug: Web/CSS/Layout_mode
+page-type: guide
 ---
 
-{{cssref}}
+{{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **레이아웃 모드**, 줄여서 **레이아웃**은 형제(sibling) 및 조상(ancestor) 박스와 상호 작용하는 방식을 기반으로 박스의 위치와 크기를 결정하는 알고리즘입니다. 그 중 몇 가지입니다:
+A [CSS](/en-US/docs/Web/CSS) **layout mode**, sometimes called _layout_, is an algorithm that determines the position and size of boxes based on the way they interact with their sibling and ancestor boxes. There are several of them:
 
-- 블록 레이아웃(_block layout_), 문서 배치를 위해 설계됨. 블록 레이아웃은 요소(element)를 [_float_](/ko/docs/Web/CSS/float) 하거나 여러 단([_multiple columns_](/ko/docs/Web/CSS/CSS_Columns/Using_multi-column_layouts))에 걸쳐 배치하는 기술 같은 문서 중심 기능을 포함합니다.
-- 인라인 레이아웃(_inline layout_), 텍스트 배치를 위해 설계됨.
-- 테이블 레이아웃(_table layout_), 표 배치를 위해 설계됨.
-- 위치지정 레이아웃(_positioned layout_), 다른 요소와 상호 작용이 많이 없는 요소의 위치지정을 위해 설계됨.
-- 신축 박스 레이아웃([_flexible box layout_](/ko/docs/Web/CSS/CSS_Flexible_Box_Layout/Using_CSS_flexible_boxes)), 부드럽게 크기조정이 될 수 있는 복잡한 페이지 배치를 위해 설계됨. {{experimental_inline}}
-- 그리드 레이아웃(_grid layout_), 고정된 격자(grid)에 상대적인 요소 배치를 위해 설계됨. {{experimental_inline}}
+- _[Normal flow](/en-US/docs/Web/CSS/CSS_Flow_Layout)_ — all elements are part of normal flow until you do something to take them out of it. Normal flow includes _block layout_, designed for laying out boxes such as paragraphs and _inline layout_, which lays out inline items such as text.
+- [_Table layout_](/en-US/docs/Web/CSS/CSS_Table), designed for laying out tables.
+- _Float layout_, designed to cause an item to position itself left or right with the rest of the content in normal flow wrapping around it.
+- [_Positioned layout_](/en-US/docs/Web/CSS/CSS_Positioning), designed for positioning elements without much interaction with other elements.
+- [_Multi-column layout_](/en-US/docs/Web/CSS/CSS_Columns), designed for laying content out in columns as in a newspaper.
+- [_Flexible box layout_](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout), designed for laying out complex pages that can be resized smoothly.
+- [_Grid layout_](/en-US/docs/Web/CSS/CSS_Grid_Layout), designed for laying out elements relative to a fixed grid.
 
-> **참고:** CSS 속성([CSS properties](/ko/docs/Web/CSS/CSS_Reference)) 모두가 모든 *레이아웃 모드*에 적용되지는 않습니다. 속성 대부분은 한 두 모드에 적용되고 속성이 다른 레이아웃 모드에 참여하는 요소에 설정되면 효과가 없습니다.
+> **Note:** Not all [CSS properties](/en-US/docs/Web/CSS/Reference) apply to all _layout modes_. Most of them apply to one or two of them and have no effect if they are set on an element participating in another layout mode.
 
-## 같이 보기
+## See also
 
-- CSS 주요 개념
-
-  - [CSS 문법](/ko/docs/Web/CSS/Syntax)
-  - [@규칙](/ko/docs/Web/CSS/At-rule)
-  - [주석](/ko/docs/Web/CSS/Comments)
-  - [명시도](/ko/docs/Web/CSS/Specificity)
-  - [상속](/ko/docs/Web/CSS/inheritance)
-  - [박스 모델](/ko/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
-  - [레이아웃 모드](/ko/docs/Web/CSS/Layout_mode)
-  - [시각적 서식 모델](/ko/docs/Web/CSS/Visual_formatting_model)
-  - [마진 중첩](/ko/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)
-  - 값
-
-    - [초깃값](/ko/docs/Web/CSS/initial_value)
-    - [계산값](/ko/docs/Web/CSS/computed_value)
-    - [결정값](/ko/docs/Web/CSS/resolved_value)
-    - [지정값](/ko/docs/Web/CSS/specified_value)
-    - [사용값](/ko/docs/Web/CSS/used_value)
-    - [실제값](/ko/docs/Web/CSS/actual_value)
-
-  - [값 정의 구문](/ko/docs/Web/CSS/Value_definition_syntax)
-  - [단축 속성](/ko/docs/Web/CSS/Shorthand_properties)
-  - [대체 요소](/ko/docs/Web/CSS/Replaced_element)
+- CSS key concepts:
+  - [CSS syntax](/en-US/docs/Web/CSS/Syntax)
+  - [At-rules](/en-US/docs/Web/CSS/At-rule)
+  - [Comments](/en-US/docs/Web/CSS/Comments)
+  - [Specificity](/en-US/docs/Web/CSS/Specificity)
+  - [Inheritance](/en-US/docs/Web/CSS/Inheritance)
+  - [Box model](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
+  - [Visual formatting models](/en-US/docs/Web/CSS/Visual_formatting_model)
+  - [Margin collapsing](/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)
+  - Values
+    - [Initial values](/en-US/docs/Web/CSS/initial_value)
+    - [Computed values](/en-US/docs/Web/CSS/computed_value)
+    - [Used values](/en-US/docs/Web/CSS/used_value)
+    - [Actual values](/en-US/docs/Web/CSS/actual_value)
+  - [Value definition syntax](/en-US/docs/Web/CSS/Value_definition_syntax)
+  - [Shorthand properties](/en-US/docs/Web/CSS/Shorthand_properties)
+  - [Replaced elements](/en-US/docs/Web/CSS/Replaced_element)

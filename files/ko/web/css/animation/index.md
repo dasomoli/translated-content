@@ -1,231 +1,65 @@
 ---
 title: animation
 slug: Web/CSS/animation
+page-type: css-shorthand-property
+browser-compat: css.properties.animation
 ---
+
 {{CSSRef}}
 
-**`animation`** [CSS](/ko/docs/Web/CSS) 속성은 다수의 스타일을 전환하는 애니메이션을 적용합니다. {{cssxref("animation-name")}}, {{cssxref("animation-duration")}}, {{cssxref("animation-timing-function")}}, {{cssxref("animation-delay")}}, {{cssxref("animation-iteration-count")}}, {{cssxref("animation-direction")}}, {{cssxref("animation-fill-mode")}}, {{cssxref("animation-play-state")}}의 [단축 속성](/ko/docs/Web/CSS/Shorthand_properties)입니다.
+The **`animation`** [shorthand](/en-US/docs/Web/CSS/Shorthand_properties) [CSS](/en-US/docs/Web/CSS) property applies an animation between styles. It is a shorthand for {{cssxref("animation-name")}}, {{cssxref("animation-duration")}}, {{cssxref("animation-timing-function")}}, {{cssxref("animation-delay")}}, {{cssxref("animation-iteration-count")}}, {{cssxref("animation-direction")}}, {{cssxref("animation-fill-mode")}}, and {{cssxref("animation-play-state")}}.
+
+A [description of which properties are animatable](/en-US/docs/Web/CSS/CSS_animated_properties) is available; it's worth noting that this description is also valid for [CSS transitions](/en-US/docs/Web/CSS/CSS_Transitions/Using_CSS_transitions).
 
 {{EmbedInteractiveExample("pages/css/animation.html")}}
 
+## Constituent properties
+
+This property is a shorthand for the following CSS properties:
+
+- [`animation-delay`](/en-US/docs/Web/CSS/animation-delay)
+- [`animation-direction`](/en-US/docs/Web/CSS/animation-direction)
+- [`animation-duration`](/en-US/docs/Web/CSS/animation-duration)
+- [`animation-fill-mode`](/en-US/docs/Web/CSS/animation-fill-mode)
+- [`animation-iteration-count`](/en-US/docs/Web/CSS/animation-iteration-count)
+- [`animation-name`](/en-US/docs/Web/CSS/animation-name)
+- [`animation-play-state`](/en-US/docs/Web/CSS/animation-play-state)
+- [`animation-timing-function`](/en-US/docs/Web/CSS/animation-timing-function)
+
+## Syntax
+
 ```css
-/* @keyframes duration | timing-function | delay |
+/* @keyframes duration | easing-function | delay |
 iteration-count | direction | fill-mode | play-state | name */
 animation: 3s ease-in 1s 2 reverse both paused slidein;
 
-/* @keyframes duration | timing-function | delay | name */
+/* @keyframes duration | easing-function | delay | name */
 animation: 3s linear 1s slidein;
 
-/* @keyframes duration | name */
-animation: 3s slidein;
+/* two animations */
+animation: 3s linear slidein, 3s ease-out 5s slideout;
 ```
-
-```html hidden
-<div class="grid">
-  <div class="col">
-    <div class="note">
-      Given the following animation:
-      <pre>@keyframes slidein {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
-}</pre>
-    </div>
-    <div class="row">
-      <div class="cell">
-        <button class="play" title="PLAY"></button>
-      </div>
-      <div class="cell flx">
-        <div class="overlay">animation: 3s ease-in 1s 2 reverse both paused slidein;</div>
-        <div class="animation a1"></div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="cell">
-        <button class="pause" title="PAUSE"></button>
-      </div>
-      <div class="cell flx">
-        <div class="overlay">animation: 3s linear 1s slidein;</div>
-        <div class="animation a2"></div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="cell">
-        <button class="pause" title="PAUSE"></button>
-      </div>
-      <div class="cell flx">
-        <div class="overlay">animation: 3s slidein;</div>
-        <div class="animation a3"></div>
-      </div>
-    </div>
-  </div>
-</div>
-```
-
-```css hidden
-html,body {
-  height: 100%;
-  box-sizing: border-box;
-}
-
-pre { margin-bottom: 0; }
-svg { width: 1.5em; height: 1.5em; }
-
-button {
-  width: 27px;
-  height: 27px;
-  background-size: 16px;
-  background-position: center;
-  background-repeat: no-repeat;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-button.play {
-  background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cstyle%3Epath%20%7Bdisplay%3Anone%7D%20path%3Atarget%7Bdisplay%3Ablock%7D%3C%2Fstyle%3E%3Cpath%20id%3D%22play%22%20d%3D%22M3%2C3%20L3%2C13%20L13%2C8%20Z%22%20%2F%3E%3Cpath%20id%3D%22pause%22%20d%3D%22M5%2C4%20L7%2C4%20L7%2C13%20L5%2C13%20Z%20M9%2C4%20L11%2C4%20L11%2C13%20L9%2C13%20Z%22%20%2F%3E%3Cpath%20id%3D%22restart%22%20d%3D%22M13%2C9%20A5%2C5%2C1%2C1%2C1%2C8%2C4%20L8%2C2%20L12%2C5%20L8%2C8%20L8%2C6%20A3%2C3%2C1%2C1%2C0%2C11%2C9%20A1%2C1%2C1%2C1%2C1%2C13%2C9%20z%22%20%2F%3E%3C%2Fsvg%3E#play');
-}
-
-button.pause {
-  background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cstyle%3Epath%20%7Bdisplay%3Anone%7D%20path%3Atarget%7Bdisplay%3Ablock%7D%3C%2Fstyle%3E%3Cpath%20id%3D%22play%22%20d%3D%22M3%2C3%20L3%2C13%20L13%2C8%20Z%22%20%2F%3E%3Cpath%20id%3D%22pause%22%20d%3D%22M5%2C4%20L7%2C4%20L7%2C13%20L5%2C13%20Z%20M9%2C4%20L11%2C4%20L11%2C13%20L9%2C13%20Z%22%20%2F%3E%3Cpath%20id%3D%22restart%22%20d%3D%22M13%2C9%20A5%2C5%2C1%2C1%2C1%2C8%2C4%20L8%2C2%20L12%2C5%20L8%2C8%20L8%2C6%20A3%2C3%2C1%2C1%2C0%2C11%2C9%20A1%2C1%2C1%2C1%2C1%2C13%2C9%20z%22%20%2F%3E%3C%2Fsvg%3E#pause');
-}
-
-button.restart {
-  background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cstyle%3Epath%20%7Bdisplay%3Anone%7D%20path%3Atarget%7Bdisplay%3Ablock%7D%3C%2Fstyle%3E%3Cpath%20id%3D%22play%22%20d%3D%22M3%2C3%20L3%2C13%20L13%2C8%20Z%22%20%2F%3E%3Cpath%20id%3D%22pause%22%20d%3D%22M5%2C4%20L7%2C4%20L7%2C13%20L5%2C13%20Z%20M9%2C4%20L11%2C4%20L11%2C13%20L9%2C13%20Z%22%20%2F%3E%3Cpath%20id%3D%22restart%22%20d%3D%22M13%2C9%20A5%2C5%2C1%2C1%2C1%2C8%2C4%20L8%2C2%20L12%2C5%20L8%2C8%20L8%2C6%20A3%2C3%2C1%2C1%2C0%2C11%2C9%20A1%2C1%2C1%2C1%2C1%2C13%2C9%20z%22%20%2F%3E%3C%2Fsvg%3E#restart');
-}
-
-.grid {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  background: #EEE;
-  font: 1em monospace;
-}
-
-.row {
-  display: flex;
-  flex: 1 auto;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.col {
-  display: flex;
-  flex: 1 auto;
-  flex-direction: column;
-}
-
-.cell {
-  box-sizing: border-box;
-  margin: .5em;
-  padding: 0;
-  background-color: #FFF;
-  overflow: hidden;
-  text-align: left;
-}
-
-.flx {
-  flex: 1 0;
-}
-
-.note {
-  background: #fff3d4;
-  padding: 1em;
-  margin: .5em;
-  font: .8em sans-serif;
-  text-align: left;
-  flex: none;
-}
-
-.overlay { padding: .5em; }
-
-@keyframes slidein {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
-}
-
-.a1 { animation: 3s ease-in 1s 2 reverse both paused slidein; }
-.a2 { animation: 3s linear 1s slidein; }
-.a3 { animation: 3s slidein; }
-
-.animation {
-  background: #3F87A6;
-  width: 100%;
-  height: calc(100% - 1.5em);
-  transform-origin: left center;
-}
-```
-
-```js hidden
-window.addEventListener('load', function () {
-  var ANIMATION = Array.from(document.querySelectorAll('.animation'));
-  var BUTTON    = Array.from(document.querySelectorAll('button'));
-
-  function toggleButton (btn, type) {
-    btn.classList.remove('play', 'pause', 'restart');
-    btn.classList.add(type);
-    btn.title = type.toUpperCase(type);
-  }
-
-  function playPause (i) {
-    var btn  = BUTTON[i];
-    var anim = ANIMATION[i];
-
-    if (btn.classList.contains('play')) {
-      anim.style.animationPlayState = 'running';
-      toggleButton(btn, 'pause');
-    } else if (btn.classList.contains('pause')) {
-      anim.style.animationPlayState = 'paused';
-      toggleButton(btn, 'play');
-    } else {
-      anim.classList.remove('a' + (i + 1));
-      setTimeout(function () {
-        toggleButton(btn, i === 0 ? 'play' : 'pause');
-        anim.style.animationPlayState = '';
-        anim.classList.add('a' + (i + 1));
-      }, 100)
-    }
-  }
-
-  ANIMATION.forEach(function (node, index) {
-    node.addEventListener('animationstart', function () { toggleButton(BUTTON[index], 'pause');   });
-    node.addEventListener('animationend',   function () { toggleButton(BUTTON[index], 'restart'); });
-  });
-
-  BUTTON.forEach(function (btn, index) {
-    btn.addEventListener('click', function () { playPause(index); });
-  });
-})
-```
-
-{{EmbedLiveSample("animation", "100%", 260, "", "", "example-outcome-frame")}}
-
-[애니메이션 가능한 속성](/ko/docs/Web/CSS/CSS_animated_properties)을 확인해보세요. [CSS 트랜지션](/ko/docs/Web/CSS/CSS_Transitions/Using_CSS_transitions)에도 적용된다는 점을 참고하세요.
-
-{{cssinfo}}
-
-## 구문
 
 The `animation` property is specified as one or more single animations, separated by commas.
 
 Each individual animation is specified as:
 
+- zero, one, or two occurrences of the {{cssxref("&lt;time&gt;")}} value
+
 - zero or one occurrences of the following values:
 
-  - {{cssxref("&lt;single-transition-timing-function&gt;")}}
-  - {{cssxref("animation", "&lt;single-animation-iteration-count&gt;", "#&lt;single-animation-iteration-count&gt;")}}
-  - {{cssxref("animation", "&lt;single-animation-direction&gt;", "#&lt;single-animation-direction&gt;")}}
-  - {{cssxref("animation", "&lt;single-animation-fill-mode&gt;", "#&lt;single-animation-fill-mode&gt;")}}
-  - {{cssxref("animation", "&lt;single-animation-play-state&gt;", "#&lt;single-animation-play-state&gt;")}}
+  - {{cssxref("animation", "&lt;single-easing-function&gt;", "#single-easing-function")}}
+  - {{cssxref("animation", "&lt;single-animation-iteration-count&gt;", "#single-animation-iteration-count")}}
+  - {{cssxref("animation", "&lt;single-animation-direction&gt;", "#single-animation-direction")}}
+  - {{cssxref("animation", "&lt;single-animation-fill-mode&gt;", "#single-animation-fill-mode")}}
+  - {{cssxref("animation", "&lt;single-animation-play-state&gt;", "#single-animation-play-state")}}
 
 - an optional name for the animation, which may be `none`, a {{cssxref("&lt;custom-ident&gt;")}}, or a {{cssxref("&lt;string&gt;")}}
-- zero, one, or two {{cssxref("&lt;time&gt;")}} values
 
-The order of values within each animation definition is important: the first value that can be parsed as a {{cssxref("&lt;time&gt;")}} is assigned to the {{cssxref("animation-duration")}}, and the second one is assigned to {{cssxref("animation-delay")}}.
+### Values
 
-The order within each animation definition is also important for distinguishing {{cssxref("animation-name")}} values from other keywords. When parsed, keywords that are valid for properties other than {{cssxref("animation-name")}}, and whose values were not found earlier in the shorthand, must be accepted for those properties rather than for {{cssxref("animation-name")}}. Furthermore, when serialized, default values of other properties must be output in at least the cases necessary to distinguish an {{cssxref("animation-name")}} that could be a value of another property, and may be output in additional cases.
-
-### 값
-
+- `<single-easing-function>`
+  - : Determines the type of transition. The value must be one of those available in {{cssxref("easing-function")}}.
 - `<single-animation-iteration-count>`
   - : The number of times the animation is played. The value must be one of those available in {{cssxref("animation-iteration-count")}}.
 - `<single-animation-direction>`
@@ -235,86 +69,234 @@ The order within each animation definition is also important for distinguishing 
 - `<single-animation-play-state>`
   - : Determines whether the animation is playing or not. The value must be one of those available in {{cssxref("animation-play-state")}}.
 
-### 형식 구문
+## Description
 
-{{csssyntax}}
+The order of time values within each animation definition is important: the first value that can be parsed as a {{cssxref("&lt;time&gt;")}} is assigned to the {{cssxref("animation-duration")}}, and the second one is assigned to {{cssxref("animation-delay")}}.
 
-## 예제
+The order of other values within each animation definition is also important for distinguishing an {{cssxref("animation-name")}} value from other values. If a value in the `animation` shorthand can be parsed as a value for an animation property other than `animation-name`, then the value will be applied to that property first and not to `animation-name`. For this reason, the recommended practice is to specify a value for `animation-name` as the last value in a list of values when using the `animation` shorthand; this holds true even when you specify multiple, comma-separated animations using the `animation` shorthand.
 
-### Cylon Eye
+An `animation-name` value is not required to be declared in the `animation` shorthand property. If no name exists, there is no animation to apply on any of the properties.
 
-```html
-<div class="view_port">
-  <div class="polling_message">
-    Listening for dispatches
-  </div>
-  <div class="cylon_eye"></div>
-</div>
-```
+When the `animation-duration` value is omitted from the `animation` shorthand property, the value for this property defaults to `0s`. In this case, the animation will still occur (the [`animationStart`](/en-US/docs/Web/API/Element/animationstart_event) and [`animationEnd`](/en-US/docs/Web/API/Element/animationend_event) events will be fired) but no animation will be visible.
 
-```css
-.polling_message {
-  color: white;
-  float: left;
-  margin-right: 2%;
-}
-
-.view_port {
-  background-color: black;
-  height: 25px;
-  width: 100%;
-  overflow: hidden;
-}
-
-.cylon_eye {
-  background-color: red;
-  background-image: linear-gradient(to right,
-      rgba(0, 0, 0, .9) 25%,
-      rgba(0, 0, 0, .1) 50%,
-      rgba(0, 0, 0, .9) 75%);
-  color: white;
-  height: 100%;
-  width: 20%;
-
-  -webkit-animation: 4s linear 0s infinite alternate move_eye;
-          animation: 4s linear 0s infinite alternate move_eye;
-}
-
-@-webkit-keyframes move_eye { from { margin-left: -20%; } to { margin-left: 100%; }  }
-        @keyframes move_eye { from { margin-left: -20%; } to { margin-left: 100%; }  }
-```
-
-{{EmbedLiveSample('Cylon_Eye')}}
-
-See [Using CSS animations](/ko/docs/Web/CSS/CSS_Animations/Using_CSS_animations#Examples) for additional examples.
-
-## 접근성 고려사항
+## Accessibility concerns
 
 Blinking and flashing animation can be problematic for people with cognitive concerns such as Attention Deficit Hyperactivity Disorder (ADHD). Additionally, certain kinds of motion can be a trigger for Vestibular disorders, epilepsy, and migraine and Scotopic sensitivity.
 
-Consider providing a mechanism for pausing or disabling animation, as well as using the [Reduced Motion Media Query](/ko/docs/Web/CSS/@media/prefers-reduced-motion) to create a complimentary experience for users who have expressed a preference for no animated experiences.
+Consider providing a mechanism for pausing or disabling animation as well as using the [Reduced Motion Media Query](/en-US/docs/Web/CSS/@media/prefers-reduced-motion) to create a complimentary experience for users who have expressed a preference for reduced animated experiences.
 
-- [Designing Safer Web Animation For Motion Sensitivity · An A List Apart Article](https://alistapart.com/article/designing-safer-web-animation-for-motion-sensitivity)
+- [Designing Safer Web Animation For Motion Sensitivity · An A List Apart Article](https://alistapart.com/article/designing-safer-web-animation-for-motion-sensitivity/)
 - [An Introduction to the Reduced Motion Media Query | CSS-Tricks](https://css-tricks.com/introduction-reduced-motion-media-query/)
 - [Responsive Design for Motion | WebKit](https://webkit.org/blog/7551/responsive-design-for-motion/)
-- [MDN Understanding WCAG, Guideline 2.2 explanations](/ko/docs/Web/Accessibility/Understanding_WCAG/Operable#Guideline_2.2_%E2%80%94_Enough_Time_Provide_users_enough_time_to_read_and_use_content)
+- [MDN Understanding WCAG, Guideline 2.2 explanations](/en-US/docs/Web/Accessibility/Understanding_WCAG/Operable#guideline_2.2_%e2%80%94_enough_time_provide_users_enough_time_to_read_and_use_content)
 - [Understanding Success Criterion 2.2.2 | W3C Understanding WCAG 2.0](https://www.w3.org/TR/UNDERSTANDING-WCAG20/time-limits-pause.html)
 
-## 명세
+## Formal definition
+
+{{cssinfo}}
+
+## Formal syntax
+
+{{csssyntax}}
+
+## Examples
+
+> **Note:** Animating [CSS Box Model](/en-US/docs/Web/CSS/CSS_Box_Model) properties is discouraged. Animating any box model property is inherently CPU intensive; consider animating the [transform](/en-US/docs/Web/CSS/transform) property instead.
+
+### Sun Rise
+
+Here we animate a yellow sun across a light blue sky. The sun rises
+to the center of the viewport and then falls out of sight.
+
+```html
+<div class="sun"></div>
+```
+
+```css
+:root {
+  overflow: hidden; /* hides any part of the sun below the horizon */
+  background-color: lightblue;
+  display: flex;
+  justify-content: center; /* centers the sun in the background */
+}
+
+.sun {
+  background-color: yellow;
+  border-radius: 50%; /* creates a circular background */
+  height: 100vh; /* makes the sun the size of the viewport */
+  aspect-ratio: 1 / 1;
+  animation: 4s linear 0s infinite alternate sun-rise;
+}
+
+@keyframes sun-rise {
+  from {
+    /* pushes the sun down past the viewport */
+    transform: translateY(110vh);
+  }
+  to {
+    /* returns the sun to its default position */
+    transform: translateY(0);
+  }
+}
+```
+
+{{EmbedLiveSample('Sun_Rise')}}
+
+### Animating Multiple Properties
+
+Adding onto the sun animation in the previous example, we add a second animation changing the color of the sun as it rises and sets. The sun starts off dark red when it is below the horizon and changes to a bright orange as it reaches the top.
+
+```html
+<div class="sun"></div>
+```
+
+```css
+:root {
+  overflow: hidden;
+  background-color: lightblue;
+  display: flex;
+  justify-content: center;
+}
+
+.sun {
+  background-color: yellow;
+  border-radius: 50%;
+  height: 100vh;
+  aspect-ratio: 1 / 1;
+  animation: 4s linear 0s infinite alternate animating-multiple-properties;
+}
+
+/* it is possible to animate multiple properties in a single animation */
+@keyframes animating-multiple-properties {
+  from {
+    transform: translateY(110vh);
+    background-color: red;
+    filter: brightness(75%);
+  }
+  to {
+    transform: translateY(0);
+    background-color: orange;
+    /* unset properties i.e. 'filter' will revert to default values */
+  }
+}
+```
+
+{{EmbedLiveSample('Animating Multiple Properties')}}
+
+### Applying Multiple Animations
+
+Here is a sun that rises and falls on a lightblue background. The sun
+gradually rotates through a rainbow of colors. The timing of the sun's
+position and color are independent.
+
+```html
+<div class="sun"></div>
+```
+
+```css
+:root {
+  overflow: hidden;
+  background-color: lightblue;
+  display: flex;
+  justify-content: center;
+}
+
+.sun {
+  background-color: yellow;
+  border-radius: 50%;
+  height: 100vh;
+  aspect-ratio: 1 / 1;
+  /* multiple animations are separated by commas, each animation's parameters are set independently */
+  animation: 4s linear 0s infinite alternate rise, 24s linear 0s infinite
+      psychedelic;
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(110vh);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes psychedelic {
+  from {
+    filter: hue-rotate(0deg);
+  }
+  to {
+    filter: hue-rotate(360deg);
+  }
+}
+```
+
+{{EmbedLiveSample('Applying Multiple Animations')}}
+
+### Cascading Multiple Animations
+
+Here is a yellow sun on a lightblue background. The sun bounces between the
+left and right sides of the viewport. The sun remains in the viewport even
+though a rise animation is defined. The rise animation's transform property
+is 'overwritten' by the bounce animation.
+
+```html
+<div class="sun"></div>
+```
+
+```css
+:root {
+  overflow: hidden;
+  background-color: lightblue;
+  display: flex;
+  justify-content: center;
+}
+
+.sun {
+  background-color: yellow;
+  border-radius: 50%;
+  height: 100vh;
+  aspect-ratio: 1 / 1;
+  /*
+    animations declared later in the cascade will override the
+    properties of previously declared animations
+  */
+  /* bounce 'overwrites' the transform set by rise, hence the sun only moves horizontally */
+  animation: 4s linear 0s infinite alternate rise, 4s linear 0s infinite
+      alternate bounce;
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(110vh);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  from {
+    transform: translateX(-50vw);
+  }
+  to {
+    transform: translateX(50vw);
+  }
+}
+```
+
+{{EmbedLiveSample('Cascading Multiple Animations')}}
+
+See [Using CSS animations](/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations#examples) for additional examples.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-### Quantum CSS notes
+## See also
 
-- Gecko has a bug whereby when you animate an offscreen element onscreen but specify a delay, Gecko does not repaint on some platforms, e.g. Windows ([Firefox bug 1383239](https://bugzil.la/1383239)). This has been fixed in Firefox's new parallel CSS engine (also known as [Quantum CSS](https://wiki.mozilla.org/Quantum) or [Stylo](https://wiki.mozilla.org/Quantum/Stylo), planned for release in Firefox 57).
-- Another Gecko bug means that {{htmlelement("details")}} elements can't be made open by default using the `open` attribute if they have an animation active on them ([Firefox bug 1382124](https://bugzil.la/1382124)). Quantum CSS fixes this.
-- A further bug means that animations using em units are not affected by changes to the {{cssxref("font-size")}} on the animated element's parent, whereas they should be ([Firefox bug 1254424](https://bugzil.la/1254424)). Quantum CSS fixes this.
-
-## 같이 보기
-
-- [CSS 애니메이션 사용하기](/ko/docs/Web/CSS/CSS_Animations/Using_CSS_animations)
+- [Using CSS animations](/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations)
 - JavaScript {{domxref("AnimationEvent")}} API

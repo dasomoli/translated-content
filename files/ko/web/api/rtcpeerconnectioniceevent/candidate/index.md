@@ -1,40 +1,42 @@
 ---
-title: RTCPeerConnectionIceEvent.candidate
+title: "RTCPeerConnectionIceEvent: candidate property"
+short-title: candidate
 slug: Web/API/RTCPeerConnectionIceEvent/candidate
+page-type: web-api-instance-property
+browser-compat: api.RTCPeerConnectionIceEvent.candidate
 ---
+
 {{APIRef("WebRTC")}}
 
-{{domxref("RTCPeerConnectionIceEvent")}} 인터페이스의 candidate 속성은 읽기 전용입니다. 이 속성은 {{domxref("RTCIceCandidate")}}와 관련된 이벤트를 반환합니다.
+The read-only **`candidate`** property
+of the {{domxref("RTCPeerConnectionIceEvent")}} interface returns the
+{{domxref("RTCIceCandidate")}} associated with the event.
 
-## Syntax
+## Value
 
-```js
- var candidate = event.candidate;
-```
+An {{domxref("RTCIceCandidate")}} object representing the ICE candidate that has been
+received, or `null` to indicate that there are no further candidates for this
+negotiation session.
 
-### 값
-
-ICE candidate를 나타내는 {{domxref("RTCIceCandidate")}} 객체. 해당 네고시에이션 세션에 대한 candidate가 더 이상 존재하지 않으면, `null`을 반환합니다.
-
-## 예시
+## Example
 
 ```js
-pc.onicecandidate = function( ev ) {
-  alert("The ICE candidate (transport address: '" +
-    ev.candidate.candidate +
-    "') has been added to this connection.");
-}
+pc.onicecandidate = (ev) => {
+  alert(
+    `The ICE candidate (transport address: '${ev.candidate.candidate}') has been added to this connection.`
+  );
+};
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
-- {{event("icecandidate")}}
+- {{domxref("RTCPeerConnection.icecandidate_event", "icecandidate")}}
 - {{domxref("RTCPeerConnection")}}

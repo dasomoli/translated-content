@@ -1,33 +1,35 @@
 ---
 title: HTMLDivElement
 slug: Web/API/HTMLDivElement
+page-type: web-api-interface
+browser-compat: api.HTMLDivElement
 ---
 
 {{ APIRef("HTML DOM") }}
 
-**`HTMLDivElement`** 인터페이스는 {{domxref("HTMLElement")}} 인터페이스를 확장해, {{htmlelement("div")}} 요소를 조작할 때 사용할 수 있는 추가 속성을 제공합니다.
+The **`HTMLDivElement`** interface provides special properties (beyond the regular {{domxref("HTMLElement")}} interface it also has available to it by inheritance) for manipulating {{HtmlElement("div")}} elements.
 
-{{InheritanceDiagram(600,120)}}
+{{InheritanceDiagram}}
 
-## 속성
+## Instance properties
 
-_부모인 {{domxref("HTMLElement")}}로부터 상속합니다._
+_Inherits properties from its parent, {{domxref("HTMLElement")}}._
 
 - {{domxref("HTMLDivElement.align")}} {{deprecated_inline}}
-  - : 주변 맥락에 대해 요소 콘텐츠의 정렬 위치를 나타내는 {{domxref("DOMString")}}입니다. 가능한 값은 `"left"`, `"right"`, `"justify"`, `"center"`입니다.
+  - : A string representing an enumerated property indicating alignment of the element's contents with respect to the surrounding context. The possible values are `"left"`, `"right"`, `"justify"`, and `"center"`.
 
-## 메서드
+## Instance methods
 
-_부모인 {{domxref("HTMLElement")}}로부터 상속합니다._
+_No specific method; inherits methods from its parent, {{domxref("HTMLElement")}}._
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 인터페이스를 구현하는 HTML 요소 {{ HTMLElement("div") }}.
+- The HTML element implementing this interface: {{ HTMLElement("div") }}.

@@ -1,13 +1,16 @@
 ---
 title: Object
 slug: Glossary/Object
+page-type: glossary-definition
 ---
-[객체](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object)는 데이터 및 데이터 작업에 대한 지침을 포함하는 데이터 구조를 말한다. 객체는 때때로 레이싱 게임에서 `car` 나 `map` 과 같은 실생활에서의 것들을 지칭할 수 있다. {{glossary("JavaScript")}}, Java, C++, Python, and Ruby 는 {{glossary("OOP","객체 지향적 프로그래밍")}} 언어의 예이다.
 
-## 더 알아보기
+In JavaScript, objects can be seen as a collection of properties. With the [object literal syntax](/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#object_literals), a limited set of properties are initialized; then properties can be added and removed. Property values can be values of any type, including other objects, which enables building complex data structures. Properties are identified using _key_ values. A _key_ value is either a {{Glossary("String", "String value")}} or a [Symbol value](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol).
 
-### 일반적인 지식
+There are two types of object properties: The [_data_ property](/en-US/docs/Web/JavaScript/Data_structures#data_property) and the [_accessor_ property](/en-US/docs/Web/JavaScript/Data_structures#accessor_property).
 
-- Wikipedia의 [객체 지향 프로그래밍](https://ko.wikipedia.org/wiki/%EA%B0%9D%EC%B2%B4_%EC%A7%80%ED%96%A5_%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D)
-- {{jsxref("Object")}} in the [JavaScript reference](/ko/docs/Web/JavaScript/Reference)
-- [Object data structures in JavaScript](/ko/docs/Web/JavaScript/Data_structures#Objects)
+> **Note:** It's important to recognize it's accessor _property_ — not accessor _method_. We can give a JavaScript object class-_like_ accessors by using a function as a value — but that doesn't make the object a class.
+
+## See also
+
+- [Detailed explanation of JavaScript objects](/en-US/docs/Web/JavaScript/Data_structures#objects) in the [JavaScript data types and data structures](/en-US/docs/Web/JavaScript/Data_structures) article
+- {{jsxref("Object")}} in the [JavaScript reference](/en-US/docs/Web/JavaScript/Reference)

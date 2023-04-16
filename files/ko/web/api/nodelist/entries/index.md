@@ -1,58 +1,60 @@
 ---
-title: NodeList.entries()
+title: "NodeList: entries() method"
+short-title: entries()
 slug: Web/API/NodeList/entries
+page-type: web-api-instance-method
+browser-compat: api.NodeList.entries
 ---
 
 {{APIRef("DOM")}}
 
-**`NodeList.entries()`** 메서드는 이 객체에 포함된 모든 key/value 쌍을 통과하는 {{jsxref("Iteration_protocols",'iterator')}} 를 반환합니다. 이 값(value)은 {{domxref("Node")}} 객체입니다.
+The **`NodeList.entries()`** method returns an
+{{jsxref("Iteration_protocols",'iterator')}} allowing to go through all key/value pairs
+contained in this object. The values are {{domxref("Node")}} objects.
 
 ## Syntax
 
-```js
-list.entries();
+```js-nolint
+entries()
 ```
 
 ### Return value
 
-{{jsxref("Iteration_protocols","iterator")}} 를 반환합니다.
+Returns an {{jsxref("Iteration_protocols","iterator")}}.
 
 ## Example
 
 ```js
-var node = document.createElement("div");
-var kid1 = document.createElement("p");
-var kid2 = document.createTextNode("hey");
-var kid3 = document.createElement("span");
+const node = document.createElement("div");
+const kid1 = document.createElement("p");
+const kid2 = document.createTextNode("hey");
+const kid3 = document.createElement("span");
 node.appendChild(kid1);
 node.appendChild(kid2);
 node.appendChild(kid3);
 
-var list = node.childNodes;
+const list = node.childNodes;
 
-// Using for..of
-for(var entry of list.entries()) {
+// Using for...of
+for (const entry of list.entries()) {
   console.log(entry);
 }
 ```
 
-결과는 다음과 같습니다:
+results in:
 
-```
+```plain
 Array [ 0, <p> ]
 Array [ 1, #text "hey" ]
 Array [ 2, <span> ]
 ```
 
-## 명세서
-
-{{Specifications}}
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
+- [Polyfill of `NodeList.prototype.entries` in `core-js`](https://github.com/zloirock/core-js#iterable-dom-collections)
 - {{domxref("Node")}}
 - {{domxref("NodeList")}}

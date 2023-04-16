@@ -1,40 +1,57 @@
 ---
-title: URL.revokeObjectURL()
+title: "URL: revokeObjectURL() static method"
+short-title: revokeObjectURL()
 slug: Web/API/URL/revokeObjectURL
+page-type: web-api-static-method
+browser-compat: api.URL.revokeObjectURL
 ---
 
 {{ApiRef("URL API")}}
 
-**`URL.revokeObjectURL()`** 정적 메서드는 이전에 {{domxref("URL.createObjectURL()") }}을 통해 생성한 객체 URL을 해제합니다. 객체 URL을 더는 쓸 일이 없을 때 사용해서, 브라우저가 이제 해당 객체를 메모리에 들고 있지 않아도 된다고 알려주세요.
+The **`URL.revokeObjectURL()`** static
+method releases an existing object URL which was previously created by calling
+{{domxref("URL.createObjectURL()") }}.
+
+Call this method when you've finished
+using an object URL to let the browser know not to keep the reference to the file any
+longer.
 
 {{AvailableInWorkers}}
 
-> **참고:** 이 기능은 {{domxref("Blob")}} 인터페이스의 생명 주기 문제와 잠재적인 메모리 누수 가능성으로 인해 [Service Worker](/ko/docs/Web/API/Service_Worker_API)에서 사용할 수 없습니다.
+> **Note:** This method is not available from service workers, due to
+> issues with the {{domxref("Blob")}} interface's life cycle and the potential for
+> leaks.
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 URL.revokeObjectURL(objectURL)
 ```
 
-### 매개변수
+### Parameters
 
 - `objectURL`
-  - : {{domxref("URL.createObjectURL", "createObjectURL()") }}을 통해 생성한 객체 URL을 나타내는 {{domxref("DOMString")}}.
+  - : A string representing an object URL that was previously created by
+    calling {{domxref("URL.createObjectURL", "createObjectURL()") }}.
 
-## 예제
+### Return value
 
-[객체 URL을 사용하여 이미지 표시하기](/ko/docs/Web/API/File/Using_files_from_web_applications#예시_객체_URL을_사용하여_이미지_표시하기)를 보세요.
+None ({{jsxref("undefined")}}).
 
-## 명세
+## Examples
+
+See [Using object URLs to display images](/en-US/docs/Web/API/File_API/Using_files_from_web_applications#example_using_object_urls_to_display_images).
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [웹 애플리케이션에서 파일 사용하기](/ko/docs/Web/API/File/Using_files_from_web_applications)
-- {{domxref("URL.createObjectURL()")}}
+- [Using files from web applications](/en-US/docs/Web/API/File_API/Using_files_from_web_applications)
+- [Using object URLs to display images](/en-US/docs/Web/API/File_API/Using_files_from_web_applications#example_using_object_urls_to_display_images)
+- {{domxref("URL.createObjectURL()") }}

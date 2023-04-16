@@ -1,125 +1,161 @@
 ---
-title: 속성 접근자
-slug: Web/JavaScript/Reference/Operators/Property_Accessors
+title: Property accessors
+slug: Web/JavaScript/Reference/Operators/Property_accessors
+page-type: javascript-operator
+browser-compat: javascript.operators.property_accessors
 ---
+
 {{jsSidebar("Operators")}}
 
-**속성 접근자**는 점 또는 괄호 표기법으로 객체의 속성에 접근할 수 있도록 해줍니다.
+**Property accessors** provide access to an object's properties by using the dot notation or the bracket notation.
 
-{{EmbedInteractiveExample("pages/js/expressions-propertyaccessors.html")}}
+{{EmbedInteractiveExample("pages/js/expressions-propertyaccessors.html", "taller")}}
 
-## 구문
+## Syntax
 
-```js
-    object.property
-    object['property']
+```js-nolint
+object.propertyName
+object[expression]
 ```
 
-## 설명
+## Description
 
-객체는 속성의 이름을 키로 사용하는 연관 배열(다른 이름으로는 맵, 딕셔너리, 해시, 룩업 테이블)로 생각할 수 있습니다. 보통 객체의 속성을 메서드와 구별해서 말하곤 하지만, 서로의 차이는 관례에 불과합니다. 메서드는 호출할 수 있는 속성일 뿐으로, 속성의 값이 {{jsxref("Function")}}을 가리키는 참조라면 그 속성을 메서드라고 합니다.
+One can think of an object as an _associative array_ (a.k.a. _map_, _dictionary_, _hash_, _lookup table_). The _keys_ in this array are the names of the object's [properties](/en-US/docs/Glossary/Property/JavaScript).
 
-속성에 접근하는 법은 점 표기법과 괄호 표기법 두 가지가 있습니다.
+There are two ways to access properties: _dot notation_ and _bracket notation_.
 
-### 점 표기법
+### Dot notation
+
+In the `object.propertyName` syntax, the `propertyName` must be a valid JavaScript [identifier](/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#identifiers) which can also be a [reserved word](/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#keywords). For example, `object.$1` is valid, while `object.1` is not.
 
 ```js
-get = object.property;
-object.property = set;
+const variable = object.propertyName;
+object.propertyName = value;
 ```
 
-이 코드에서, `property`는 유효한 JavaScript {{glossary("identifier", "식별자")}}여야합니다. 따라서 `object.$1`은 유효하지만 `object.1`은 아닙니다.
-
 ```js
-document.createElement('pre');
+const object = {};
+object.$1 = "foo";
+console.log(object.$1); // 'foo'
 ```
 
-여기서는 "createElement"라는 이름을 가진 메서드를 `document`에서 찾아 호출하고 있습니다.
-
-소숫점 없는 숫자 리터럴의 메서드를 호출하고 싶으면, 메서드의 접근자 앞에 공백을 한 칸 추가해 점이 소숫점으로 인식되지 않도록 해야 합니다.
-
-```js
-    77 .toExponential();
-    // or
-    77
-    .toExponential();
-    // or
-    (77).toExponential();
-    // or
-    77..toExponential();
-    // or
-    77.0.toExponential();
-    // because 77. === 77.0, no ambiguity
+```js example-bad
+const object = {};
+object.1 = 'bar'; // SyntaxError
+console.log(object.1); // SyntaxError
 ```
 
-### 괄호 표기법
+Here, the method named `createElement` is retrieved from `document` and is called.
 
 ```js
-get = object[property_name];
-object[property_name] = set;
+document.createElement("pre");
 ```
 
-괄호 표기법에서는 `property_name` 으로 문자열이나 {{jsxref("Symbol")}}을 사용할 수 있습니다. 문자열은 유효한 식별자가 아니어도 괜찮습니다. "`1foo`", "`!bar!`", 심지어 " "(공백)도 가능합니다.
+If you use a method for a numeric literal, and the numeric literal has no exponent and no decimal point, you should leave [white-space(s)](/en-US/docs/Glossary/Whitespace) before the dot preceding the method call, so that the dot is not interpreted as a decimal point.
 
-```js
-document['createElement']('pre');
+```js-nolint
+77 .toExponential();
+// or
+77
+.toExponential();
+// or
+(77).toExponential();
+// or
+77..toExponential();
+// or
+77.0.toExponential();
+// because 77. === 77.0, no ambiguity
 ```
 
-이 코드는 점 표기법의 예시와 동일합니다.
+### Bracket notation
 
-괄호 앞에 공백이 올 수도 있습니다.
+In the `object[expression]` syntax, the `expression` should evaluate to a string or [Symbol](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol) that represents the property's name. So, it can be any string literal, for example, including `'1foo'`, `'!bar!'`, or even `' '` (a space).
 
 ```js
-    document ['createElement']('pre');
+const variable = object[propertyName];
+object[propertyName] = value;
 ```
 
-### 속성 이름
-
-속성의 이름은 문자열이나 {{jsxref("Symbol")}}입니다. 숫자 등의 다른 자료형은 문자열로 변환됩니다.
+This does the exact same thing as the previous example.
 
 ```js
-var object = {};
-object['1'] = 'value';
+document["createElement"]("pre");
+```
+
+A space before bracket notation is allowed.
+
+```js-nolint
+document ["createElement"]("pre");
+```
+
+Passing expressions that evaluate to property name will do the same thing as directly passing the property name.
+
+```js
+const key = "name";
+const getKey = () => "name";
+const Obj = { name: "Michel" };
+
+Obj["name"]; // returns "Michel"
+Obj[key]; // evaluates to Obj["name"], and returns "Michel"
+Obj[getKey()]; // evaluates to Obj["name"], and returns "Michel"
+```
+
+However, beware of using square brackets to access properties whose names are given by external input. This may make your code susceptible to [object injection attacks](https://github.com/nodesecurity/eslint-plugin-security/blob/main/docs/the-dangers-of-square-bracket-notation.md).
+
+### Property names
+
+Property names are string or [Symbol](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol). Any other value, including a number, is coerced to a string. This outputs `'value'`, since `1` is coerced into `'1'`.
+
+```js
+const object = {};
+object["1"] = "value";
 console.log(object[1]);
 ```
 
-위 코드의 `1`은 `'1'`로 변환되므로, 출력 결과는 "value"입니다.
+This also outputs `'value'`, since both `foo` and `bar` are converted to the same string.
 
 ```js
-var foo = {unique_prop: 1}, bar = {unique_prop: 2}, object = {};
-object[foo] = 'value';
+const foo = { uniqueProp: 1 };
+const bar = { uniqueProp: 2 };
+const object = {};
+object[foo] = "value";
 console.log(object[bar]);
 ```
 
-위의 코드 역시 `foo`와 `bar`가 같은 문자열([SpiderMonkey](/ko/docs/SpiderMonkey) JavaScript 엔진에서는 문자열 "`['object Object']`")로 변환되므로, 출력 결과는 동일하게 "value"입니다.
+### Method binding
 
-### 메서드 바인딩
+It's typical when speaking of an object's properties to make a distinction between properties and methods. However, the property/method distinction is little more than a convention. A method is a property that can be called (for example, if it has a reference to a {{jsxref("Function")}} instance as its value).
 
-메서드는 해당 메서드의 객체에 바인딩되지 않습니다. 특히 `this`는 메서드 내에 고정되지 않으므로 `this`가 항상 현재 메서드를 포함하는 객체를 참조하는건 아닙니다. 대신, `this`는 함수 호출 방식에 따라 "전달"됩니다. [메서드 바인딩](/ko/docs/Web/JavaScript/Reference/Operators/this#bind_메서드)을 참고하세요.
+A method is not bound to the object that it is a property of. Specifically, `this` is not fixed in a method and does not necessarily refer to the object containing the method. Instead, `this` is "passed" by the function call. See [the reference for `this`](/en-US/docs/Web/JavaScript/Reference/Operators/this).
 
-### `eval()` 주의사항
+## Examples
 
-JavaScript 초심자로써는 괄호 표기법을 사용할 수 있는 장소에 {{jsxref("eval", "eval()")}}을 남용하기 쉽습니다. 간혹 스크립트에서 다음과 같은 구문을 찾아볼 수 있습니다.
+### Bracket notation vs. eval()
 
-```js
-x = eval('document.forms.form_name.elements.' + strFormControl + '.value');
-```
+JavaScript novices often make the mistake of using {{jsxref("Global_Objects/eval", "eval()")}} where the bracket notation can be used instead.
 
-`eval()`은 느리고, 가능하다면 최대한 피해야 합니다. 또한, `strFormControl`은 유효한 식별자여야 하지만, 폼 컨트롤의 ID나 이름은 식별자가 아닐 수도 있습니다. 따라서 괄호 표기법을 대신 사용하는 것이 좋습니다.
+For example, the following syntax is often seen in many scripts.
 
 ```js
-x = document.forms["form_name"].elements[strFormControl].value;
+const x = eval(`document.forms.form_name.elements.${strFormControl}.value`);
 ```
 
-## 명세서
+`eval()` is slow and should be avoided whenever possible. Also, `strFormControl` would have to hold an identifier, which is not required for names and `id`s of form controls. It is better to use bracket notation instead:
+
+```js
+const x = document.forms.form_name.elements[strFormControl].value;
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Object")}}
 - {{jsxref("Object.defineProperty()")}}
+- [Optional chaining](/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)

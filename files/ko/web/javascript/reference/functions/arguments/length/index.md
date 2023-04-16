@@ -1,47 +1,59 @@
 ---
 title: arguments.length
 slug: Web/JavaScript/Reference/Functions/arguments/length
+page-type: javascript-instance-data-property
+browser-compat: javascript.functions.arguments.length
 ---
 
 {{jsSidebar("Functions")}}
 
-**`arguments.length`** 속성은 함수에 전달된 인수의 수를 포함하고 있습니다.
+The **`arguments.length`** data property contains the number of arguments passed to the function.
 
-## 구문
+## Value
 
-```
-    arguments.length
-```
+A non-negative integer.
 
-## 설명
+{{js_property_attributes(1, 0, 1)}}
 
-arguments.length 속성은 실제로 함수에 전달된 arguments 의 수를 제공합니다. 이것은 정의된 매개변수의 수보다 작을 수도 클 수도 있습니다. ({{jsxref("Function.length")}} 보기).
+## Description
 
-## 예제
-
-### `arguments.length` 사용하기
-
-이 예시에서는 둘 또는 그 이상의 수를 더할 수 있는 함수를 정의합니다.
+The `arguments.length` property provides the number of arguments actually passed to a function. This can be more or less than the defined parameter's count (see {{jsxref("Function.prototype.length")}}). For example, for the function below:
 
 ```js
-function adder(base /*, n2, ... */) {
+function func1(a, b, c) {
+  console.log(arguments.length);
+}
+```
+
+`func1.length` returns `3`, because `func1` declares three formal parameters. However, `func1(1, 2, 3, 4, 5)` logs `5`, because `func1` was called with five arguments. Similarly, `func1(1)` logs `1`, because `func1` was called with one argument.
+
+## Examples
+
+### Using arguments.length
+
+In this example, we define a function that can add two or more numbers together.
+
+```js
+function adder(base /*, num1, …, numN */) {
   base = Number(base);
-  for (var i = 1; i < arguments.length; i++) {
+  for (let i = 1; i < arguments.length; i++) {
     base += Number(arguments[i]);
   }
   return base;
 }
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{jsxref("Function")}}
-- {{jsxref("Function.length")}}
+- [Functions guide](/en-US/docs/Web/JavaScript/Guide/Functions)
+- [Functions](/en-US/docs/Web/JavaScript/Reference/Functions)
+- {{jsxref("Functions/arguments", "arguments")}}
+- [`Function`: `length`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/length)

@@ -1,59 +1,78 @@
 ---
 title: background-clip
 slug: Web/CSS/background-clip
+page-type: css-property
+browser-compat: css.properties.background-clip
 ---
+
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`background-clip`** 속성은 요소의 배경이 테두리, 안쪽 여백, 콘텐츠 상자 중 어디까지 차지할 지 지정합니다.
+The **`background-clip`** [CSS](/en-US/docs/Web/CSS) property sets whether an element's background extends underneath its border box, padding box, or content box.
 
 {{EmbedInteractiveExample("pages/css/background-clip.html")}}
 
-<div class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples</a> and send us a pull request.</div>
+If the element has no {{cssxref("background-image")}} or {{cssxref("background-color")}}, this property will only have a visual effect when the border has transparent regions or partially opaque regions (due to {{cssxref("border-style")}} or {{cssxref("border-image")}}); otherwise, the border masks the difference.
 
-요소가 {{cssxref("background-image")}} 또는 {{cssxref("background-color")}}를 가지지 않으면, `background-clip`은 ({{cssxref("border-style")}} 또는 {{cssxref("border-image")}} 등으로 인해) 테두리에 투명하거나 반투명한 부분이 존재하는 경우에만 시각적 차이가 발생합니다. 그렇지 않은 경우 테두리가 차이점을 가립니다.
+> **Note:** Because the [root element](/en-US/docs/Web/HTML/Element/html) has a different background painting area, the `background-clip` property has no effect when specified on it. See "[The backgrounds of special elements.](https://drafts.csswg.org/css-backgrounds-3/#special-backgrounds)"
 
-## 구문
+> **Note:** For documents whose [root element](/en-US/docs/Web/HTML/Element/html) is an HTML element: if the computed value of {{cssxref("background-image")}} on the root element is `none` and its {{cssxref("background-color")}} is `transparent`, user agents must instead propagate the computed values of the `background` properties from that element's first HTML {{HTMLElement("body")}} child element. The used values of that `<body>` element's `background` properties are their initial values, and the propagated values are treated as if they were specified on the root element. It is recommended that authors of HTML documents specify the canvas background for the `<body>` element rather than the HTML element.
+
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
 background-clip: border-box;
 background-clip: padding-box;
 background-clip: content-box;
 background-clip: text;
 
-/* 전역 값 */
+/* Global values */
 background-clip: inherit;
 background-clip: initial;
+background-clip: revert;
+background-clip: revert-layer;
 background-clip: unset;
 ```
 
-### 값
+### Values
 
 - `border-box`
-  - : 배경이 테두리의 바깥 경계까지 차지합니다. (Z축 순서 상 테두리 아래 위치)
+  - : The background extends to the outside edge of the border (but underneath the border in z-ordering).
 - `padding-box`
-  - : 배경이 안쪽 여백의 바깥 경계까지 차지합니다. 테두리 밑에는 배경을 그리지 않습니다.
+  - : The background extends to the outside edge of the padding. No background is drawn beneath the border.
 - `content-box`
-  - : 배경을 콘텐츠 상자에 맞춰 그립니다.
-- `text` {{experimental_inline}}
-  - : 배경을 전경 텍스트 위에만 그립니다.
+  - : The background is painted within (clipped to) the content box.
+- `text`
+  - : The background is painted within (clipped to) the foreground text.
 
-## 형식 정의
+## Accessibility concerns
+
+When using `background-clip: text` check that the contrast ratio between the background color and the color of the text placed over it is high enough that people experiencing low vision conditions will be able to read the content of the page.
+
+If the background image does not load, this could also lead to the text becoming unreadable. Add a fallback {{cssxref("background-color")}} to prevent this from happening, and test without the image.
+
+Consider using feature queries with {{cssxref("@supports")}} to test for support of `background-clip: text` and provide an accessible alternative where it is not supported.
+
+## Formal definition
 
 {{cssinfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
 ### HTML
 
 ```html
 <p class="border-box">The background extends behind the border.</p>
-<p class="padding-box">The background extends to the inside edge of the border.</p>
-<p class="content-box">The background extends only to the edge of the content box.</p>
+<p class="padding-box">
+  The background extends to the inside edge of the border.
+</p>
+<p class="content-box">
+  The background extends only to the edge of the content box.
+</p>
 <p class="text">The background is clipped to the foreground text.</p>
 ```
 
@@ -61,7 +80,7 @@ background-clip: unset;
 
 ```css
 p {
-  border: .8em darkviolet;
+  border: 0.8em darkviolet;
   border-style: dotted double;
   margin: 1em 0;
   padding: 1.4em;
@@ -70,31 +89,37 @@ p {
   text-decoration: underline;
 }
 
-.border-box { background-clip: border-box; }
-.padding-box { background-clip: padding-box; }
-.content-box { background-clip: content-box; }
+.border-box {
+  background-clip: border-box;
+}
+.padding-box {
+  background-clip: padding-box;
+}
+.content-box {
+  background-clip: content-box;
+}
 
 .text {
   background-clip: text;
   -webkit-background-clip: text;
-  color: rgba(0,0,0,.2);
+  color: rgba(0, 0, 0, 0.2);
 }
 ```
 
-### 결과
+#### Result
 
-{{EmbedLiveSample('예제', 600, 580)}}
+{{EmbedLiveSample('Examples', 600, 580)}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{cssxref("clip-path")}} 속성은 배경 뿐 아니라 하나의 **요소 전체**에서 표시할 부분을 지정하는 클리핑 영역을 생성합니다.
-- 배경 속성: {{cssxref("background")}}, {{cssxref("background-color")}}, {{cssxref("background-image")}}, {{cssxref("background-origin")}}
-- [CSS 기본 박스 모델 입문](/ko/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
+- The {{cssxref("clip-path")}} property creates a clipping region that defines what part of an _entire element_ should be displayed.
+- Background properties: {{cssxref("background")}}, {{cssxref("background-color")}}, {{cssxref("background-image")}}, {{cssxref("background-origin")}}
+- [Introduction to the CSS box model](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)

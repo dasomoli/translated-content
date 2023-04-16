@@ -1,90 +1,78 @@
 ---
 title: String.prototype.substr()
 slug: Web/JavaScript/Reference/Global_Objects/String/substr
+page-type: javascript-instance-method
+status:
+  - deprecated
+browser-compat: javascript.builtins.String.substr
 ---
-{{JSRef}}
 
-> **경고:** 경고: 엄밀히 말해서 `String.prototype.substr()` 메서드가 더 이상 사용되지 않는, 즉 "웹 표준에서 제거된" 건 아닙니다. 그러나 `substr()`이 포함된 ECMA-262 표준의 [부록 B](https://www.ecma-international.org/ecma-262/9.0/index.html#sec-additional-ecmascript-features-for-web-browsers)는 다음과 같이 명시하고 있습니다.> … 본 부록이 포함한 모든 언어 기능과 행동은 하나 이상의 바람직하지 않은 특징을 갖고 있으며 사용처가 없어질 경우 명세에서 제거될 것입니다. …
->
-> > … 프로그래머는 새로운 ECMAScript 코드를 작성할 때 본 부록이 포함한 기능을 사용하거나 존재함을 가정해선 안됩니다. …
+{{JSRef}} {{deprecated_header}}
 
-**`substr()`** 메서드는 문자열에서 특정 위치에서 시작하여 특정 문자 수 만큼의 문자들을 반환합니다.
+The **`substr()`** method returns a portion of the string, starting at the specified index and extending for a given number of characters afterwards.
+
+> **Note:** `substr()` is not part of the main ECMAScript specification — it's defined in [Annex B: Additional ECMAScript Features for Web Browsers](https://tc39.es/ecma262/#sec-additional-ecmascript-features-for-web-browsers), which is normative optional for non-browser runtimes. Therefore, people are advised to use the standard [`String.prototype.substring()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substring) and [`String.prototype.slice()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/slice) methods instead to make their code maximally cross-platform friendly. The [`String.prototype.substring()` page](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substring#the_difference_between_substring_and_substr) has some comparisons between the three methods.
 
 {{EmbedInteractiveExample("pages/js/string-substr.html")}}
 
-## 구문
+## Syntax
 
-```js
-str.substr(start[, length])
+```js-nolint
+substr(start)
+substr(start, length)
 ```
 
-### 매개변수
+### Parameters
 
 - `start`
-  - : 추출하고자 하는 문자들의 시작위치입니다. 만약 음수가 주어진다면, `문자열총길이 + start`의 값으로 취급합니다. 예를 들면, `start`에 -3을 설정하면, 자동적으로 `문자열총길이 - 3`으로 설정하게 됩니다.
-- `length`
-  - : 옵션값. 추출할 문자들의 총 숫자.
+  - : The index of the first character to include in the returned substring.
+- `length` {{optional_inline}}
+  - : The number of characters to extract.
 
-## 설명
+### Return value
 
-`start` 는 문자 인덱스입니다. 문자열에서 첫 번째 문자의 인덱스는 0이며, 마지막 문자의 인덱스는 문자열 전체 길이에서 1을 뺀 값입니다. `substr()` 는 `start` 에서 문자들을 추출을 시작하여 `length` 만큼 문자들을 수집합니다.
+A new string containing the specified part of the given string.
 
-만약 `start` 값이 양수이고 문자열 전체 길이보다 크거가 같을 경우, `substr()`은 빈 문자열을 반환합니다.
+## Description
 
-만약 `start`가 음수이면, `substr()`은 문자열 끝에서 `start` 숫자만큼 뺀 곳에서 시작하게 됩니다. 만약 `start`가 음수이고 절대값이 문자열 전체보다 크다면, `substr()`은 문자열의 0 인덱스부터 시작하게 됩니다. (주의: `start`의 음수값은 Microsoft JScript에서는 위의 설명과 같이 동작하지 않습니다.)
+A string's `substr()` method extracts `length` characters from the string, counting from the `start` index.
 
-만약 `length`가 0 혹은 음수이면, `substr()`은 빈 문자열을 반환합니다. 만약 `length`가 생략되면, `substr()`은 문자열의 끝까지 추출하여 반환합니다.
+- If `start >= str.length`, an empty string is returned.
+- If `start < 0`, the index starts counting from the end of the string. More formally, in this case the substring starts at `max(start + str.length, 0)`.
+- If `start` is omitted or {{jsxref("undefined")}}, it's treated as `0`.
+- If `length` is omitted or {{jsxref("undefined")}}, or if `start + length >= str.length`, `substr()` extracts characters to the end of the string.
+- If `length < 0`, an empty string is returned.
+- For both `start` and `length`, {{jsxref("NaN")}} is treated as `0`.
 
-## 예제
+Although you are encouraged to avoid using `substr()`, there is no trivial way to migrate `substr()` to either `slice()` or `substring()` in legacy code without essentially writing a polyfill for `substr()`. For example, `str.substr(a, l)`, `str.slice(a, a + l)`, and `str.substring(a, a + l)` all have different results when `str = "01234", a = 1, l = -2` — `substr()` returns an empty string, `slice()` returns `"123"`, while `substring()` returns `"0"`. The actual refactoring path depends on the knowledge of the range of `a` and `l`.
 
-### `substr()` 사용하기
+## Examples
 
-```js
-var str = 'abcdefghij';
-
-console.log('(1, 2): '   + str.substr(1, 2));   // '(1, 2): bc'
-console.log('(-3, 2): '  + str.substr(-3, 2));  // '(-3, 2): hi'
-console.log('(-3): '     + str.substr(-3));     // '(-3): hij'
-console.log('(1): '      + str.substr(1));      // '(1): bcdefghij'
-console.log('(-20, 2): ' + str.substr(-20, 2)); // '(-20, 2): ab'
-console.log('(20, 2): '  + str.substr(20, 2));  // '(20, 2): '
-```
-
-## 폴리필
-
-Microsoft의 JScript는 시작 인덱스에서 음수값을 지원하지 않습니다. 만약 여러분이 이렇게 동작하길 원한다면, 아래 코드를 사용하여 해결할 수 있습니다:
+### Using substr()
 
 ```js
-// only run when the substr() function is broken
-if ('ab'.substr(-1) != 'b') {
-  /**
-   *  Get the substring of a string
-   *  @param  {integer}  start   where to start the substring
-   *  @param  {integer}  length  how many characters to return
-   *  @return {string}
-   */
-  String.prototype.substr = function(substr) {
-    return function(start, length) {
-      // call the original method
-      return substr.call(this,
-        // did we get a negative start, calculate how much it is from the beginning of the string
-        // adjust the start parameter for negative value
-        start < 0 ? this.length + start : start,
-        length)
-    }
-  }(String.prototype.substr);
-}
+const aString = "Mozilla";
+
+console.log(aString.substr(0, 1)); // 'M'
+console.log(aString.substr(1, 0)); // ''
+console.log(aString.substr(-1, 1)); // 'a'
+console.log(aString.substr(1, -1)); // ''
+console.log(aString.substr(-3)); // 'lla'
+console.log(aString.substr(1)); // 'ozilla'
+console.log(aString.substr(-20, 2)); // 'Mo'
+console.log(aString.substr(20, 2)); // ''
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `String.prototype.substr` in `core-js`](https://github.com/zloirock/core-js#ecmascript-string-and-regexp)
 - {{jsxref("String.prototype.slice()")}}
 - {{jsxref("String.prototype.substring()")}}

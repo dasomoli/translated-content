@@ -1,23 +1,25 @@
 ---
-title: Web API
+title: Web APIs
 slug: Web/API
+page-type: landing-page
 ---
-웹 코드를 작성한다면 많은 API를 사용할 수 있습니다. 아래 목록은 웹 앱이나 웹 사이트를 만들 때 사용할 수 있는 모든 인터페이스(객체의 유형)입니다.
 
-Web API는 보통 JavaScript와 함께 사용하지만, 항상 그렇지는 않습니다.
+When writing code for the Web, there are a large number of Web APIs available. Below is a list of all the APIs and interfaces (object types) that you may be able to use while developing your Web app or site.
 
-## 명세
+Web APIs are typically used with JavaScript, although this doesn't always have to be the case.
 
-사용 가능한 API의 전체 목록입니다.
+## Specifications
+
+This is a list of all the APIs that are available.
 
 {{ListGroups}}
 
-## 인터페이스
+## Interfaces
 
-사용 가능한 인터페이스(객체의 유형) 전체 목록입니다.
+This is a list of all the interfaces (that is, types of objects) that are available.
 
 {{APIListAlpha}}
 
-## 같이 보기
+## See also
 
-- [웹 API 이벤트 참고서](/ko/docs/Web/Reference/Events)
+- [Web API event reference](/en-US/docs/Web/Events)

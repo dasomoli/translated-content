@@ -1,46 +1,57 @@
 ---
-title: Element.className
+title: "Element: className property"
+short-title: className
 slug: Web/API/Element/className
+page-type: web-api-instance-property
+browser-compat: api.Element.className
 ---
+
 {{APIRef("DOM")}}
 
-## 개요
+The **`className`** property of the
+{{domxref("Element")}} interface gets and sets the value of the [`class` attribute](/en-US/docs/Web/HTML/Global_attributes/class)
+of the specified element.
 
-**className** 특정 엘리먼트의 클래스 속성의 값을 가져오거나 설정할 수 있다.
+## Value
 
-## 문법
+A string variable representing the class or space-separated classes of the current element.
 
-```js
-var cName = elementNodeReference.className;
-elementNodeReference.className = cName;
-```
-
-- _cName은 현재 요소의 클래스 혹은 공백으로 구분된 클래스들을 표현하는 문자열 변수이다._
-
-## 예제
+## Examples
 
 ```js
-let elm = document.getElementById('item');
-
-if(elm.className === 'active'){
-    elm.className = 'inactive';
-} else {
-    elm.className = 'active';
-}
+const el = document.getElementById("item");
+el.className = el.className === "active" ? "inactive" : "active";
 ```
 
-## 주의
+## Notes
 
-많은 언어에서 DOM 조작을 위해 사용되는 "class " 키워드와의 혼란을 줄이기 위하여 class 대신 className이라는 프로퍼티 명을 사용한다.
+The name `className` is used for this property instead of `class`
+because of conflicts with the "class" keyword in many languages which are used to
+manipulate the DOM.
 
-## 명세
+`className` can also be an instance of {{domxref("SVGAnimatedString")}} if
+the `element` is an {{domxref("SVGElement")}}. It is better to get/set the
+`className` of an element using {{domxref("Element.getAttribute")}} and
+{{domxref("Element.setAttribute")}} if you are dealing with SVG elements. However, take
+into account that {{domxref("Element.getAttribute")}} returns
+[`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null)
+instead of `""` if the `element` has an empty [`class` attribute](/en-US/docs/Web/HTML/Global_attributes/class).
+
+```js
+elm.setAttribute("class", elm.getAttribute("class"));
+```
+
+> **Note:** The `class` is an **HTML Attribute**, while the
+> `className` is a **DOM Property**.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 살펴보기
+## See also
 
 - {{domxref("element.classList")}}

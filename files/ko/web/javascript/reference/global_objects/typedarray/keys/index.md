@@ -1,29 +1,29 @@
 ---
 title: TypedArray.prototype.keys()
 slug: Web/JavaScript/Reference/Global_Objects/TypedArray/keys
-l10n:
-  sourceCommit: 2eb202adbe3d83292500ed46344d63fbbae410b5
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.TypedArray.keys
 ---
 
 {{JSRef}}
 
-**`keys()`** 메서드는 배열의 각 인덱스의 키를 포함하는 새로운 배열 반복자 객체를 반환합니다.
+The **`keys()`** method returns a new _[array iterator](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator)_ object that contains the keys for each index in the array.
 
 {{EmbedInteractiveExample("pages/js/typedarray-keys.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 keys()
 ```
 
-### 반환 값
+### Return value
 
-새로운 배열 반복자 객체.
+A new [iterable iterator object](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator).
 
-## 예제
+## Examples
 
-### for...of 루프를 사용한 반복
+### Iteration using for...of loop
 
 ```js
 const arr = new Uint8Array([10, 20, 30, 40, 50]);
@@ -33,7 +33,7 @@ for (const n of arrKeys) {
 }
 ```
 
-### 다른 반복 방법
+### Alternative iteration
 
 ```js
 const arr = new Uint8Array([10, 20, 30, 40, 50]);
@@ -45,21 +45,21 @@ console.log(arrKeys.next().value); // 3
 console.log(arrKeys.next().value); // 4
 ```
 
-## 명새서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - [Polyfill of `TypedArray.prototype.keys` in `core-js`](https://github.com/zloirock/core-js#ecmascript-typed-arrays)
-- [JavaScript typed arrays](/ko/docs/Web/JavaScript/Typed_arrays)
+- [JavaScript typed arrays](/en-US/docs/Web/JavaScript/Typed_arrays)
 - {{jsxref("TypedArray")}}
 - {{jsxref("TypedArray.prototype.entries()")}}
 - {{jsxref("TypedArray.prototype.values()")}}
-- {{jsxref("TypedArray.prototype.@@iterator()", "TypedArray.prototype[@@iterator]()")}}
-- [for...of](/ko/docs/Web/JavaScript/Reference/Statements/for...of)
-- [Iteration protocols](/ko/docs/Web/JavaScript/Reference/Iteration_protocols)
+- [`TypedArray.prototype[@@iterator]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/@@iterator)
+- [for...of](/en-US/docs/Web/JavaScript/Reference/Statements/for...of)
+- [Iteration protocols](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)

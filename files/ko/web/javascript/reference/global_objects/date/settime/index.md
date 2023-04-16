@@ -1,38 +1,42 @@
 ---
 title: Date.prototype.setTime()
 slug: Web/JavaScript/Reference/Global_Objects/Date/setTime
-l10n:
-  sourceCommit: 6b728699f5f38f1070a94673b5e7afdb1102a941
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.setTime
 ---
+
 {{JSRef}}
 
-**`setTime()`** 메서드는 {{jsxref("Date")}} 객체를 1970년 1월 1일 00:00:00 UTC부터
-밀리 초 단위로 나타내는 시간으로 설정합니다.
+The **`setTime()`** method sets the {{jsxref("Date")}} object
+to the time represented by a number of milliseconds since January 1, 1970, 00:00:00 UTC.
 
 {{EmbedInteractiveExample("pages/js/date-settime.html", "taller")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 setTime(timeValue)
 ```
 
-### 매개변수
+### Parameters
 
 - `timeValue`
-  - : 1970년 1월 1일 00:00:00 UTC 이후의 밀리 초 수를 나타내는 정수 값 입니다.
+  - : An integer representing the number of milliseconds since 1 January 1970, 00:00:00
+    UTC.
 
-### 반환 값
+### Return value
 
-1970년 1월 1일 00:00:00 UTC와 업데이트 된 날짜 (사실상 인수의 값) 사이의 밀리 초 수입니다.
+The number of milliseconds between 1 January 1970 00:00:00 UTC and the updated date
+(effectively, the value of the argument).
 
-## 설명
+## Description
 
-`setTime()` 메서드를 사용하면 다른 {{jsxref("Date")}} 객체에 날짜와 시간을 지정할 수 있습니다.
+Use the `setTime()` method to help assign a date and time to another
+{{jsxref("Date")}} object.
 
-## 예제
+## Examples
 
-### `setTime()` 사용하기
+### Using setTime()
 
 ```js
 const theBigDay = new Date("July 1, 1999");
@@ -40,15 +44,15 @@ const sameAsBigDay = new Date();
 sameAsBigDay.setTime(theBigDay.getTime());
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Date.prototype.getTime()")}}
 - {{jsxref("Date.prototype.setUTCHours()")}}

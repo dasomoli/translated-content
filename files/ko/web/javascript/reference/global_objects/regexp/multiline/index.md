@@ -1,28 +1,25 @@
 ---
 title: RegExp.prototype.multiline
 slug: Web/JavaScript/Reference/Global_Objects/RegExp/multiline
-l10n:
-  sourceCommit: f3df52530f974e26dd3b14f9e8d42061826dea20
+page-type: javascript-instance-accessor-property
+browser-compat: javascript.builtins.RegExp.multiline
 ---
 
 {{JSRef}}
 
-**`multiline`** 접근자 속성은 `m` 플래그가 정규표현식에 사용되었는지 여부를 나타냅니다.
+The **`multiline`** accessor property of {{jsxref("RegExp")}} instances returns whether or not the `m` flag is used with this regular expression.
 
 {{EmbedInteractiveExample("pages/js/regexp-prototype-multiline.html", "taller")}}
 
-## 설명
+## Description
 
-`m` 플래그가 사용된 경우 `RegExp.prototype.multiline`은 `true` 값을 가지며,
-그렇지 않으면 `false` 값을 갖습니다. `m` 플래그는 여러 줄 입력 문자열을 여러 줄로 처리해야 함을 나타냅니다.
-예를 들어, `m`이 사용되면 `^`와 `$`는 전체 문자열의 시작 또는 끝에서만 일치하는 것에서
-문자열 내의 모든 줄의 시작 또는 끝에서 일치하는 것으로 변경됩니다.
+`RegExp.prototype.multiline` has the value `true` if the `m` flag was used; otherwise, `false`. The `m` flag indicates that a multiline input string should be treated as multiple lines. For example, if `m` is used, `^` and `$` change from matching at only the start or end of the entire string to the start or end of any line within the string.
 
-`multiline`의 set 접근자는 `undefined`, 즉 정의되지 않았습니다. 이 속성은 직접 변경할 수 없습니다.
+The set accessor of `multiline` is `undefined`. You cannot change this property directly.
 
-## 예제
+## Examples
 
-### multiline 사용하기
+### Using multiline
 
 ```js
 const regex = /foo/m;
@@ -30,15 +27,15 @@ const regex = /foo/m;
 console.log(regex.multiline); // true
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("RegExp.prototype.lastIndex")}}
 - {{JSxRef("RegExp.prototype.dotAll")}}

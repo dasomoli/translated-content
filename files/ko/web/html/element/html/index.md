@@ -1,97 +1,106 @@
 ---
-title: '<html>: HTML 문서 / 루트 요소'
+title: "<html>: The HTML Document / Root element"
 slug: Web/HTML/Element/html
+page-type: html-element
+browser-compat: html.elements.html
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<html>` 요소**는 HTML 문서의 루트(최상단 요소)를 나타내며, "루트 요소"라고도 부릅니다. 모든 다른 요소는 `<html>` 요소의 후손이어야 합니다.
+The **`<html>`** [HTML](/en-US/docs/Web/HTML) element represents the root (top-level element) of an HTML document, so it is also referred to as the _root element_. All other elements must be descendants of this element.
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
       </th>
-      <td>없음.</td>
+      <td>None.</td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
       <td>
-        하나의 {{HTMLElement("head")}} 요소와 그 뒤를 따르는 하나의
-        {{HTMLElement("body")}} 요소.
+        One {{HTMLElement("head")}} element, followed by one
+        {{HTMLElement("body")}} element.
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
+      <th scope="row">Tag omission</th>
       <td>
-        <code>&#x3C;html></code> 요소 내부의 첫 번째 것이 주석이 아니라면 시작
-        태그를 생략할 수 있습니다.<br /><code>&#x3C;html></code> 요소 바로 뒤에
-        주석이 따라오지 않는다면 종료 태그를 생략할 수 있습니다.
+        The start tag may be omitted if the first thing inside the
+        <code>&#x3C;html></code> element is not a comment.<br>The end tag may
+        be omitted if the <code>&#x3C;html></code> element is not immediately
+        followed by a comment.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모 요소</th>
-      <td>없음. <code>&#x3C;html></code>이 문서의 루트 요소입니다.</td>
+      <th scope="row">Permitted parents</th>
+      <td>None. This is the root element of a document.</td>
     </tr>
     <tr>
-      <th scope="row">암시적 ARIA 역할</th>
+      <th scope="row">Implicit ARIA role</th>
       <td>
-        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
-          >대응하는 역할 없음</a
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/Document_role"
+          >document</a
         >
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>없음</td>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>No <code>role</code> permitted</td>
     </tr>
     <tr>
-      <th scope="row">DOM 역할</th>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLHtmlElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
+## Attributes
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)을 포함합니다.
+This element includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-- {{htmlattrdef("manifest")}} {{deprecated_inline}}
-  - : 지역적으로 캐시되어야하는 리소스를 가리키는 매니페스트 리소스의 URI를 나타냅니다. 자세한 내용은 [애플리케이션 캐시 사용하기](/ko/docs/HTML/Using_the_application_cache)를 보세요.
-- {{htmlattrdef("version")}} {{deprecated_inline}}
-  - : 현재 문서를 제어하는 HTML 문서 타입 정의의 버전을 나타냅니다. 하지만 이미 문서 타입 선언이 버전을 나타내고 있기 떄문에 이 속성은 필요하지 않습니다.
-- {{htmlattrdef("xmlns")}}
-  - : 문서의 {{glossary("XML")}} {{glossary("네임스페이스")}}를 지정합니다. 기본값은 `"http://www.w3.org/1999/xhtml"`입니다. XML {{glossary("parser", "구문 분석기")}}로 분석한 문서에는 필수이고, `text/html` 문서에서는 선택사항입니다.
+- `manifest` {{deprecated_inline}} {{Non-standard_Inline}}
+  - : Specifies the {{glossary("URI")}} of a resource manifest indicating resources that should be cached locally.
+- `version` {{deprecated_inline}}
+  - : Specifies the version of the HTML {{glossary("Doctype", "Document Type Definition")}} that governs the current document. This attribute is not needed, because it is redundant with the version information in the document type declaration.
+- `xmlns`
+  - : Specifies the {{glossary("XML")}} {{glossary("Namespace")}} of the document. Default value is `"http://www.w3.org/1999/xhtml"`. This is required in documents parsed with XML {{glossary("parser", "parsers")}}, and optional in text/html documents.
 
-## 예제
+## Example
 
 ```html
 <!DOCTYPE html>
-<html lang="ko">
-  <head>...</head>
-  <body>...</body>
+<html lang="en">
+  <head>
+    <!-- … -->
+  </head>
+  <body>
+    <!-- … -->
+  </body>
 </html>
 ```
 
-## 접근성 고려사항
+## Accessibility concerns
 
-`html` 요소의 {{htmlattrxref("lang")}} 특성에 [유효한 IETF 언어 식별 태그](https://www.ietf.org/rfc/bcp/bcp47.txt)를 지정하면 스크린 리더가 음성 표현에 사용할 언어를 선택할 때 도움이 됩니다. 언어 식별 태그는 페이지의 주 언어를 가리켜야 합니다. 아무런 값도 지정하지 않을 시 보통 운영체제의 언어 설정을 따라가므로, 잘못된 발음을 사용할 수 있습니다.
+While HTML does not require authors to specify `<html>` element start and ending tags, it is important for authors to do so as it will allow them to specify the [`lang`](/en-US/docs/Web/HTML/Global_attributes#lang) for the webpage. Providing a `lang` attribute with a valid language tag according to {{RFC(5646, "Tags for Identifying Languages (also known as BCP 47)")}} on the `<html>` element will help screen reading technology determine the proper language to announce. The identifying language tag should describe the language used by the majority of the content of the page. Without it, screen readers will typically default to the operating system's set language, which may cause mispronunciations.
 
-또한 `<html>` 요소에 유효한 `lang` 선언이 존재해야 {{htmlelement("title")}}과 같은 {{htmlelement("head")}} 내부의 중요한 메타데이터를 정확한 발음으로 표현할 수 있습니다.
+Including a valid `lang` declaration on the `<html>` element also ensures that important metadata contained in the page's {{HTMLElement("head")}}, such as the page's {{HTMLElement("title")}}, are also announced properly.
 
-- [MDN Understanding WCAG, Guideline 3.1 explanations](/ko/docs/Web/Accessibility/Understanding_WCAG/Understandable#Guideline_3.1_%E2%80%94_Readable_Make_text_content_readable_and_understandable)
-- [Understanding Success Criterion 3.1.1 | W3C Understanding WCAG 2.0](https://www.w3.org/TR/2016/NOTE-UNDERSTANDING-WCAG20-20161007/meaning-doc-lang-id.html)
+- [MDN Understanding WCAG, Guideline 3.1 explanations](/en-US/docs/Web/Accessibility/Understanding_WCAG/Understandable#guideline_3.1_%e2%80%94_readable_make_text_content_readable_and_understandable)
+- [Understanding Success Criterion 3.1.1 | W3C Understanding WCAG 2.1](https://www.w3.org/WAI/WCAG21/Understanding/language-of-page.html)
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- MathML 최상위 요소 {{MathMLElement("math")}}
-- SVG 최상위 요소 {{SVGElement("svg")}}
+- MathML top-level element: {{MathMLElement("math")}}
+- SVG top-level element: {{SVGElement("svg")}}

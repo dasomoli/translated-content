@@ -1,79 +1,90 @@
 ---
 title: WeakMap
 slug: Web/JavaScript/Reference/Global_Objects/WeakMap
+page-type: javascript-class
+browser-compat: javascript.builtins.WeakMap
 ---
 
 {{JSRef}}
 
-**`WeakMap`** 은 키에 대한 강력한 참조를 생성하지 않는 키/값 쌍의 모음으로 키는 반드시 객체이며, 값은 임의의 [JavaScript 타입](/ko/docs/Web/JavaScript/Data_structures#javascript_types)입니다. 강력한 참조를 생성하지 않는 이유는 객체가 `WeakMap`의 키로 존재한다고 해도 가비지 컬렉터로 수집되는 것을 막을 수 없기에 키로 사용되던 객체가 수집되면 `WeakMap`의 해당 값도 다른 곳에서 강력하게 참조되지 않는 한 수집의 대상이 되기 때문입니다.
+A **`WeakMap`** is a collection of key/value pairs whose keys must be objects or [non-registered symbols](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol#shared_symbols_in_the_global_symbol_registry), with values of any arbitrary [JavaScript type](/en-US/docs/Web/JavaScript/Data_structures), and which does not create strong references to its keys. That is, an object's presence as a key in a `WeakMap` does not prevent the object from being garbage collected. Once an object used as a key has been collected, its corresponding values in any `WeakMap` become candidates for garbage collection as well — as long as they aren't strongly referred to elsewhere. The only primitive type that can be used as a `WeakMap` key is symbol — more specifically, [non-registered symbols](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol#shared_symbols_in_the_global_symbol_registry) — because non-registered symbols are guaranteed to be unique and cannot be re-created.
 
-`WeakMap`을 사용하면 값이 키를 참조하더라도 키 객체가 가비지 컬렉터에 수집되는 것을 방지하지 않는 방식으로 데이터를 객체에 연결할 수 있습니다. 그러나 `WeakMap`은 키의 활성을 관찰하는 것이 허용되지 않으므로 키 열거를 할 수 없습니다. `WeakMap`이 키 목록을 얻을 수 있는 어떤 메서드를 제공한다면, 가비지 컬렉터의 상태에 따라 키 목록이 달라지므로 비결정성이 발생합니다. 키 목록을 갖고 싶다면 `WeakMap` 대신 [`Map`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Map)을 사용해야 합니다.
+`WeakMap` allows associating data to objects in a way that doesn't prevent the key objects from being collected, even if the values reference the keys. However, a `WeakMap` doesn't allow observing the liveness of its keys, which is why it doesn't allow enumeration; if a `WeakMap` exposed any method to obtain a list of its keys, the list would depend on the state of garbage collection, introducing non-determinism. If you want to have a list of keys, you should use a {{jsxref("Map")}} rather than a `WeakMap`.
 
-[키기반의 컬렉션](/ko/docs/Web/JavaScript/Guide/Keyed_collections) 가이드의 [WeakMap 객체](/ko/docs/Web/JavaScript/Guide/Keyed_collections#weakmap_object) 섹션에서 `WeakMap`에 대해 자세히 알아볼 수 있습니다.
+You can learn more about `WeakMap` in the [WeakMap object](/en-US/docs/Web/JavaScript/Guide/Keyed_collections#weakmap_object) section of the [Keyed collections](/en-US/docs/Web/JavaScript/Guide/Keyed_collections) guide.
 
-## 설명
+## Description
 
-WeakMap의 키는 `Object` 타입뿐입니다. {{jsxref("Symbol")}}과 같은 {{Glossary("Primitive", "원시 값")}}은 `WeakMap`의 키로 사용될 수 없습니다.
+Keys of WeakMaps must be garbage-collectable. Most {{Glossary("Primitive", "primitive data types")}} can be arbitrarily created and don't have a lifetime, so they cannot be used as keys. Objects and [non-registered symbols](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol#shared_symbols_in_the_global_symbol_registry) can be used as keys because they are garbage-collectable.
 
-### 왜 *Weak*Map인가?
+### Why WeakMap?
 
-JavaScript의 맵 API는 4개의 API 메서드와 이들이 공유하는 두 개의 배열(키용 하나, 값용 하나)을 사용하여 구현 _할 수 있습니다._ 이 맵에서 요소를 추가하려면 키와 값을 동시에 각 배열의 끝으로 넣는 작업을 수행합니다. 결과적으로 키와 값의 인덱스는 두 배열 모두 일치할 것입니다. 맵에서 값을 가져오려면 모든 키를 반복하여 일치하는 항목을 찾은 다음 이 일치 항목의 인덱스를 사용하여 값 배열에서 해당 값을 검색해야 합니다.
+A map API _could_ be implemented in JavaScript with two arrays (one for keys, one for values) shared by the four API methods. Setting elements on this map would involve pushing a key and value onto the end of each of those arrays simultaneously. As a result, the indices of the key and value would correspond to both arrays. Getting values from the map would involve iterating through all keys to find a match, then using the index of this match to retrieve the corresponding value from the array of values.
 
-이러한 구현에는 다음과 같은 두 가지 주요 불편 사항이 있습니다.
+Such an implementation would have two main inconveniences:
 
-1. 첫 번째는 설정 및 검색이 *O(*n*)*(_n_ 은 맵의 키 수) 이라는 것입니다. 두 작업 모두 일치하는 값을 찾기 위해 키 목록을 반복해야 하기 때문입니다.
-2. 두 번째 불편한 점은 메모리 누수입니다. 배열은 각 키와 각 값에 대한 참조가 무기한 유지되도록 보장하기 때문인데, 이러한 참조는 객체에 대한 또 다른 참조가 없더라도 키가 가비지 컬렉터로 수집되지 못하도록 합니다. 값도 마찬가지입니다.
+1. The first one is an `O(n)` set and search (_n_ being the number of keys in the map) since both operations must iterate through the list of keys to find a matching value.
+2. The second inconvenience is a memory leak because the arrays ensure that references to each key and each value are maintained indefinitely. These references prevent the keys from being garbage collected, even if there are no other references to the object. This would also prevent the corresponding values from being garbage collected.
 
-반면, `WeakMap`에서 키 객체는 키가 가비지 컬력센이 되지 않는 한 키를 강력하게 참조하고 그 이후로는 약하게 참조합니다. 따라서 `WeakMap`은 다음과 같습니다.
+By contrast, in a `WeakMap`, a key object refers strongly to its contents as long as the key is not garbage collected, but weakly from then on. As such, a `WeakMap`:
 
-- 가비지 컬렉션을 방지하지 않아 결국 키 객체에 대한 참조를 제거합니다.
-- 키 객체가 `WeakMap`이 아닌 다른 곳에서 참조되지 않는 경우 모든 값의 가비지 컬렉션을 허용합니다.
+- does not prevent garbage collection, which eventually removes references to the key object
+- allows garbage collection of any values if their key objects are not referenced from somewhere other than a `WeakMap`
 
-`WeakMap`은 _오직_ 가비지 컬렉션이 되지 않은 키에 대한 정보를 매핑할 때 특히 유용한 구조가 될 수 있습니다.
+A `WeakMap` can be a particularly useful construct when mapping keys to information about the key that is valuable _only if_ the key has not been garbage collected.
 
-그러나 `WeakMap`은 키의 활성을 관찰하는 것이 허용되지 않기 때문에 키를 열거할 수 없으며, 키 목록을 얻을 수 있는 방법은 존재하지 않습니다. 만약 열거한다면, 키 목록은 가비지 컬렉션 상태에 따라 달라지기에 비결정성이 발생합니다. 키 목록을 얻고 싶다면 [`Map`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Map)을 사용해야 합니다.
+But because a `WeakMap` doesn't allow observing the liveness of its keys, its keys are not enumerable. There is no method to obtain a list of the keys. If there were, the list would depend on the state of garbage collection, introducing non-determinism. If you want to have a list of keys, you should use a {{jsxref("Map")}}.
 
-## 생성자
+## Constructor
 
-- [`WeakMap()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/WeakMap/WeakMap)
-  - : 새로운 `WeakMap` 객체를 생성합니다.
+- {{jsxref("WeakMap/WeakMap", "WeakMap()")}}
+  - : Creates a new `WeakMap` object.
 
-## 인스턴스 메서드
+## Instance properties
 
-- {{jsxref("WeakMap.delete", "WeakMap.prototype.delete(<var>key</var>)")}}
-  - : `key`에 연결된 값을 제거합니다. 이후 `WeakMap.prototype.has(key)`는 `false`를 반환할 것입니다.
-- {{jsxref("WeakMap.get", "WeakMap.prototype.get(<var>key</var>)")}}
-  - : `key`에 연결된 값을 반환합니다. 값이 없으면 `undefined`를 반환합니다.
-- {{jsxref("WeakMap.has", "WeakMap.prototype.has(<var>key</var>)")}}
-  - : `key`에 연결된 값이 `WeakMap` 객체에 존재하는지 나타내는 불리언 값을 반환합니다.
-- {{jsxref("WeakMap.set", "WeakMap.prototype.set(<var>key</var>, <var>value</var>)")}}
-  - : `WeakMap` 객체의 `key`에 `value`를 연결합니다. `WeakMap` 객체를 반환합니다.
+These properties are defined on `WeakMap.prototype` and shared by all `WeakMap` instances.
 
-## 예제
+- {{jsxref("Object/constructor", "WeakMap.prototype.constructor")}}
+  - : The constructor function that created the instance object. For `WeakMap` instances, the initial value is the {{jsxref("WeakMap/WeakMap", "WeakMap")}} constructor.
+- `WeakMap.prototype[@@toStringTag]`
+  - : The initial value of the [`@@toStringTag`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toStringTag) property is the string `"WeakMap"`. This property is used in {{jsxref("Object.prototype.toString()")}}.
 
-### WeakMap 사용하기
+## Instance methods
+
+- {{jsxref("WeakMap.prototype.delete()")}}
+  - : Removes any value associated to the `key`. `WeakMap.prototype.has(key)` will return `false` afterwards.
+- {{jsxref("WeakMap.prototype.get()")}}
+  - : Returns the value associated to the `key`, or `undefined` if there is none.
+- {{jsxref("WeakMap.prototype.has()")}}
+  - : Returns a Boolean asserting whether a value has been associated to the `key` in the `WeakMap` object or not.
+- {{jsxref("WeakMap.prototype.set()")}}
+  - : Sets the `value` for the `key` in the `WeakMap` object. Returns the `WeakMap` object.
+
+## Examples
+
+### Using WeakMap
 
 ```js
-const wm1 = new WeakMap(),
-      wm2 = new WeakMap(),
-      wm3 = new WeakMap();
-const o1 = {},
-      o2 = function() {},
-      o3 = window;
+const wm1 = new WeakMap();
+const wm2 = new WeakMap();
+const wm3 = new WeakMap();
+const o1 = {};
+const o2 = function () {};
+const o3 = window;
 
 wm1.set(o1, 37);
-wm1.set(o2, 'azerty');
-wm2.set(o1, o2); // 값은 함수와 객체를 포함해 아무거나 가능
+wm1.set(o2, "azerty");
+wm2.set(o1, o2); // a value can be anything, including an object or a function
 wm2.set(o3, undefined);
-wm2.set(wm1, wm2); // 키는 아무 객체나 가능. 다른 WeakMap도 가능합니다!
+wm2.set(wm1, wm2); // keys and values can be any objects. Even WeakMaps!
 
 wm1.get(o2); // "azerty"
-wm2.get(o2); // undefined, wm2에는 o2에 연결된 값이 없음
-wm2.get(o3); // undefined, o3에 undefined를 연결함
+wm2.get(o2); // undefined, because there is no key for o2 on wm2
+wm2.get(o3); // undefined, because that is the set value
 
 wm1.has(o2); // true
 wm2.has(o2); // false
-wm2.has(o3); // true (값이 undefined지만)
+wm2.has(o3); // true (even if the value itself is 'undefined')
 
 wm3.set(o1, 37);
 wm3.get(o1); // 37
@@ -83,39 +94,40 @@ wm1.delete(o1);
 wm1.has(o1); // false
 ```
 
-### .clear() 메서드가 있는 WeakMap과 유사한 클래스 구현
+### Implementing a WeakMap-like class with a .clear() method
 
 ```js
 class ClearableWeakMap {
+  #wm;
   constructor(init) {
-    this._wm = new WeakMap(init);
+    this.#wm = new WeakMap(init);
   }
   clear() {
-    this._wm = new WeakMap();
+    this.#wm = new WeakMap();
   }
   delete(k) {
-    return this._wm.delete(k);
+    return this.#wm.delete(k);
   }
   get(k) {
-    return this._wm.get(k);
+    return this.#wm.get(k);
   }
   has(k) {
-    return this._wm.has(k);
+    return this.#wm.has(k);
   }
   set(k, v) {
-    this._wm.set(k, v);
+    this.#wm.set(k, v);
     return this;
   }
 }
 ```
 
-### 비공개 멤버 에뮬레이션
+### Emulating private members
 
-개발자는 {{jsxref("WeakMap")}}을 사용하여 개인 데이터를 객체에 연결할 수 있으며, 이는 다음과 같은 이점이 있습니다.
+Developers can use a {{jsxref("WeakMap")}} to associate private data to an object, with the following benefits:
 
-- [`Map`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Map)과 대비하여 WeakMap은 키로 사용되는 객체에 대한 강력한 참조를 보유하지 않으므로 메타데이터는 객체 자체와 동일한 수명을 공유하여 메모리 누수를 방지할 수 있습니다.
-- 열거할 수 없거나 {{jsxref("Symbol")}} 속성을 사용하는 것과 비교하여 WeakMap은 객체 외부에 있으며 {{jsxref("Object.getOwnPropertySymbols")}}와 같은 검색 메서드를 통해 메타데이터를 찾을 수 없습니다.
-- [클로저](/ko/docs/Web/JavaScript/Closures)와 비교할 때 동일한 WeakMap은 생성자에서 생성된 모든 인스턴스에 재사용될 수 있으므로 메모리 효율성이 더 높고 동일한 클래스의 다른 인스턴스가 서로의 private 멤버를 읽을 수 있습니다.
+- Compared to a {{jsxref("Map")}}, a WeakMap does not hold strong references to the object used as the key, so the metadata shares the same lifetime as the object itself, avoiding memory leaks.
+- Compared to using non-enumerable and/or {{jsxref("Symbol")}} properties, a WeakMap is external to the object and there is no way for user code to retrieve the metadata through reflective methods like {{jsxref("Object.getOwnPropertySymbols")}}.
+- Compared to a [closure](/en-US/docs/Web/JavaScript/Closures), the same WeakMap can be reused for all instances created from a constructor, making it more memory-efficient, and allows different instances of the same class to read the private members of each other.
 
 ```js
 let Thing;
@@ -124,19 +136,19 @@ let Thing;
   const privateScope = new WeakMap();
   let counter = 0;
 
-  Thing = function() {
-    this.someProperty = 'foo';
+  Thing = function () {
+    this.someProperty = "foo";
 
     privateScope.set(this, {
       hidden: ++counter,
     });
   };
 
-  Thing.prototype.showPublic = function() {
+  Thing.prototype.showPublic = function () {
     return this.someProperty;
   };
 
-  Thing.prototype.showPrivate = function() {
+  Thing.prototype.showPrivate = function () {
     return privateScope.get(this).hidden;
   };
 }
@@ -156,14 +168,14 @@ thing.showPrivate();
 // 1
 ```
 
-이는 [private fields](/ko/docs/Web/JavaScript/Reference/Classes/Private_class_fields) 사용하는 다음 예제와 거의 동일합니다.
+This is roughly equivalent to the following, using [private fields](/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields):
 
 ```js
 class Thing {
   static #counter = 0;
   #hidden;
   constructor() {
-    this.someProperty = 'foo';
+    this.someProperty = "foo";
     this.#hidden = ++Thing.#counter;
   }
   showPublic() {
@@ -184,19 +196,81 @@ thing.showPrivate();
 // 1
 ```
 
-## 명세
+### Associating metadata
+
+A {{jsxref("WeakMap")}} can be used to associate metadata with an object, without affecting the lifetime of the object itself. This is very similar to the private members example, since private members are also modelled as external metadata that doesn't participate in [prototypical inheritance](/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain).
+
+This use case can be extended to already-created objects. For example, on the web, we may want to associate extra data with a DOM element, which the DOM element may access later. A common approach is to attach the data as a property:
+
+```js
+const buttons = document.querySelectorAll(".button");
+buttons.forEach((button) => {
+  button.clicked = false;
+  button.addEventListener("click", () => {
+    button.clicked = true;
+    const currentButtons = [...document.querySelectorAll(".button")];
+    if (currentButtons.every((button) => button.clicked)) {
+      console.log("All buttons have been clicked!");
+    }
+  });
+});
+```
+
+This approach works, but it has a few pitfalls:
+
+- The `clicked` property is enumerable, so it will show up in [`Object.keys(button)`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys), [`for...in`](/en-US/docs/Web/JavaScript/Reference/Statements/for...in) loops, etc. This can be mitigated by using {{jsxref("Object.defineProperty()")}}, but that makes the code more verbose.
+- The `clicked` property is a normal string property, so it can be accessed and overwritten by other code. This can be mitigated by using a {{jsxref("Symbol")}} key, but the key would still be accessible via {{jsxref("Object.getOwnPropertySymbols()")}}.
+
+Using a `WeakMap` fixes these:
+
+```js
+const buttons = document.querySelectorAll(".button");
+const clicked = new WeakMap();
+buttons.forEach((button) => {
+  clicked.set(button, false);
+  button.addEventListener("click", () => {
+    clicked.set(button, true);
+    const currentButtons = [...document.querySelectorAll(".button")];
+    if (currentButtons.every((button) => clicked.get(button))) {
+      console.log("All buttons have been clicked!");
+    }
+  });
+});
+```
+
+Here, only code that has access to `clicked` knows the clicked state of each button, and external code can't modify the states. In addition, if any of the buttons gets removed from the DOM, the associated metadata will automatically get garbage-collected.
+
+### Caching
+
+You can associate objects passed to a function with the result of the function, so that if the same object is passed again, the cached result can be returned without re-executing the function. This is useful if the function is pure (i.e. it doesn't mutate any outside objects or cause other observable side effects).
+
+```js
+const cache = new WeakMap();
+function handleObjectValues(obj) {
+  if (cache.has(obj)) {
+    return cache.get(obj);
+  }
+  const result = Object.values(obj).map(heavyComputation);
+  cache.set(obj, result);
+  return result;
+}
+```
+
+This only works if your function's input is an object. Moreover, even if the input is never passed in again, the result still remains forever in the cache. A more effective way is to use a {{jsxref("Map")}} paired with {{jsxref("WeakRef")}} objects, which allows you to associate any type of input value with its respective (potentially large) computation result. See the [WeakRefs and FinalizationRegistry](/en-US/docs/Web/JavaScript/Memory_management#weakrefs_and_finalizationregistry) example for more details.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [`core-js`의 `WeakMap` 폴리필](https://github.com/zloirock/core-js#weakmap)
-- [키기반의 컬렉션](/ko/docs/Web/JavaScript/Guide/Keyed_collections) 가이드의 [WeakMap object](/ko/docs/Web/JavaScript/Guide/Keyed_collections#weakmap_object)
+- [Polyfill of `WeakMap` in `core-js`](https://github.com/zloirock/core-js#weakmap)
+- [WeakMap object](/en-US/docs/Web/JavaScript/Guide/Keyed_collections#weakmap_object) in the [Keyed collections](/en-US/docs/Web/JavaScript/Guide/Keyed_collections) guide
 - [Hiding Implementation Details with ECMAScript 6 WeakMaps](https://fitzgeraldnick.com/2014/01/13/hiding-implementation-details-with-e6-weakmaps.html)
-- [`Map`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Map)
+- {{jsxref("Map")}}
 - {{jsxref("Set")}}
 - {{jsxref("WeakSet")}}

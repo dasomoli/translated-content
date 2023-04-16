@@ -1,147 +1,149 @@
 ---
-title: Nullish coalescing operator
+title: Nullish coalescing operator (??)
 slug: Web/JavaScript/Reference/Operators/Nullish_coalescing
-original_slug: Web/JavaScript/Reference/Operators/Nullish_coalescing_operator
+page-type: javascript-operator
+browser-compat: javascript.operators.nullish_coalescing
 ---
 
 {{JSSidebar("Operators")}}
 
-**널 병합 연산자 (`??`)** 는 왼쪽 피연산자가 [null](/ko/docs/Web/JavaScript/Reference/Global_Objects/null) 또는 [undefined](/ko/docs/Web/JavaScript/Reference/Global_Objects/undefined)일 때 오른쪽 피연산자를 반환하고, 그렇지 않으면 왼쪽 피연산자를 반환하는 논리 연산자이다.
-
-이는 왼쪽 피연산자가 `null` 또는 `undefined` 뿐만 아니라 *[falsy](/en-US/docs/Web/JavaScript/Reference/Operators/Logical_Operators#Description) *값에 해당할 경우 오른쪽 피연산자를 반환하는 [논리 연산자 OR (`||`)](/en-US/docs/Web/JavaScript/Reference/Operators/Logical_Operators#Logical_OR_2)와는 대조된다. 다시 말해 만약 어떤 변수 foo에게 *[falsy](/en-US/docs/Web/JavaScript/Reference/Operators/Logical_Operators#Description) *값( `''` 또는 `0`)을 포함한 값을 제공하기 위해 `||`을 사용하는 것을 고려했다면 예기치 않는 동작이 발생할 수 있다. 하단에 더 많은 예제가 있다.
-
-널 병합 연산자는 [연산자 우선 순위](/ko/docs/Web/JavaScript/Reference/Operators/Operator_Precedence)가 다섯번째로 낮은데, `||` 의 바로 아래이며 [조건부 (삼항) 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Conditional_Operator)의 바로 위이다.
+The **nullish coalescing (`??`)** operator is a logical
+operator that returns its right-hand side operand when its left-hand side operand is
+[`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null) or {{jsxref("undefined")}}, and otherwise returns its left-hand side
+operand.
 
 {{EmbedInteractiveExample("pages/js/expressions-nullishcoalescingoperator.html")}}
 
-## 문법
+## Syntax
 
-```js
-    leftExpr ?? rightExpr
+```js-nolint
+leftExpr ?? rightExpr
 ```
 
-## 설명
+## Description
 
-널 병합 연산자는 만약 왼쪽 표현식이 {{jsxref("null")}} 또는 {{jsxref("undefined")}}인 경우, 오른쪽 표현식의 결과를 반환한다.
+The nullish coalescing operator can be seen as a special case of the [logical OR (`||`) operator](/en-US/docs/Web/JavaScript/Reference/Operators/Logical_OR). The latter returns the right-hand side operand if the left operand is _any_ {{Glossary("falsy")}} value, not only `null` or `undefined`. In other words, if you use `||` to provide some default value to another variable `foo`, you may encounter unexpected behaviors if you consider some falsy values as usable (e.g., `''` or `0`). See [below](#assigning_a_default_value_to_a_variable) for more examples.
 
-### 변수에 기본값 할당
+The nullish coalescing operator has the fifth-lowest [operator precedence](/en-US/docs/Web/JavaScript/Reference/Operators/Operator_precedence), directly lower than `||` and directly higher than the [conditional (ternary) operator](/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_operator).
 
-이전에는 변수에 기본값을 할당하고 싶을 때, 논리 연산자 OR ([`||`](/en-US/docs/Web/JavaScript/Reference/Operators/Logical_Operators#Logical_OR_2))을 사용하는 것이 일반적인 패턴이다:
+It is not possible to combine both the AND (`&&`) and OR operators (`||`) directly with `??`. A [syntax error](/en-US/docs/Web/JavaScript/Reference/Errors/Cant_use_nullish_coalescing_unparenthesized) will be thrown in such cases.
+
+```js example-bad
+null || undefined ?? "foo"; // raises a SyntaxError
+true && undefined ?? "foo"; // raises a SyntaxError
+```
+
+Instead, provide parenthesis to explicitly indicate precedence:
+
+```js example-good
+(null || undefined) ?? "foo"; // returns "foo"
+```
+
+## Examples
+
+### Using the nullish coalescing operator
+
+In this example, we will provide default values but keep values other than `null` or `undefined`.
+
+```js
+const nullValue = null;
+const emptyText = ""; // falsy
+const someNumber = 42;
+
+const valA = nullValue ?? "default for A";
+const valB = emptyText ?? "default for B";
+const valC = someNumber ?? 0;
+
+console.log(valA); // "default for A"
+console.log(valB); // "" (as the empty string is not null or undefined)
+console.log(valC); // 42
+```
+
+### Assigning a default value to a variable
+
+Earlier, when one wanted to assign a default value to a variable, a common pattern was to use the logical OR operator ([`||`](/en-US/docs/Web/JavaScript/Reference/Operators/Logical_OR)):
 
 ```js
 let foo;
-...
-//  foo is never assigned any value so it is still undefined
-let someDummyText = foo || 'Hello!';
+
+// foo is never assigned any value so it is still undefined
+const someDummyText = foo || "Hello!";
 ```
 
-그러나 `||` boolean 논리 연산자 때문에, 왼쪽 피연산자는 boolean으로 강제로 변환되었고 _falsy_ 한 값(`0`, `''`, `NaN`, `null`, `undefined`)은 반환되지 않았다. 이 동작은 만약 `0`, `''` or `NaN`을 유효한 값으로 생각한 경우 예기치 않는 결과를 초래할 수 있다.
+However, due to `||` being a boolean logical operator, the left-hand-side operand was coerced to a boolean for the evaluation and any _falsy_ value (including `0`, `''`, `NaN`, `false`, etc.) was not returned. This behavior may cause unexpected consequences if you consider `0`, `''`, or `NaN` as valid values.
 
 ```js
-let count;
-let text;
-...
-count = 0;
-text = "";
-...
-let qty = count || 42;
-let message = text || "hi!";
-console.log(qty);     // 42 and not 0
+const count = 0;
+const text = "";
+
+const qty = count || 42;
+const message = text || "hi!";
+console.log(qty); // 42 and not 0
 console.log(message); // "hi!" and not ""
 ```
 
-널 병합 연산자는 첫 번째 연산자가 `null` 또는 `undefined`로 평가될 때만, 두 번째 피연산자를 반환함으로써 이러한 위험을 피한다:
+The nullish coalescing operator avoids this pitfall by only returning the second operand when the first one evaluates to either `null` or `undefined` (but no other falsy values):
 
 ```js
-let myText = ''; // An empty string (which is also a falsy value)
+const myText = ""; // An empty string (which is also a falsy value)
 
-let notFalsyText = myText || 'Hello world';
+const notFalsyText = myText || "Hello world";
 console.log(notFalsyText); // Hello world
 
-let preservingFalsy = myText ?? 'Hi neighborhood';
+const preservingFalsy = myText ?? "Hi neighborhood";
 console.log(preservingFalsy); // '' (as myText is neither undefined nor null)
 ```
 
-### 단락
+### Short-circuiting
 
-OR과 AND 같은 논리 연산자들과 마찬가지로, 만약 왼쪽이 `null` 또는 `undefined`가 아님이 판명되면 오른쪽 표현식은 평가되지 않는다.
+Like the OR and AND logical operators, the right-hand side expression is not evaluated if the left-hand side proves to be neither `null` nor `undefined`.
 
 ```js
-function A() { console.log('A was called'); return undefined;}
-function B() { console.log('B was called'); return false;}
-function C() { console.log('C was called'); return "foo";}
+function A() {
+  console.log("A was called");
+  return undefined;
+}
+function B() {
+  console.log("B was called");
+  return false;
+}
+function C() {
+  console.log("C was called");
+  return "foo";
+}
 
-console.log( A() ?? C() );
-// logs "A was called" then "C was called" and then "foo"
+console.log(A() ?? C());
+// Logs "A was called" then "C was called" and then "foo"
 // as A() returned undefined so both expressions are evaluated
 
-console.log( B() ?? C() );
-// logs "B was called" then "false"
+console.log(B() ?? C());
+// Logs "B was called" then "false"
 // as B() returned false (and not null or undefined), the right
 // hand side expression was not evaluated
 ```
 
-### No chaining with AND or OR operators
+### Relationship with the optional chaining operator (?.)
 
-AND (`&&`) 와 OR 연산자 (`||`)를 `??`와 직접적으로 결합하여 사용하는 것은 불가능하다. 이 경우 [`SyntaxError`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError)가 발생된다.
-
-```js
-null || undefined ?? "foo"; // raises a SyntaxError
-true || undefined ?? "foo"; // raises a SyntaxError
-```
-
-그러나 우선 순위를 명시적으로 나타내기 위해 괄호를 사용하면 가능하다:
+The nullish coalescing operator treats `undefined` and `null` as specific values. So does the [optional chaining operator (`?.`)](/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining), which is useful to access a property of an object which may be `null` or `undefined`. Combining them, you can safely access a property of an object which may be nullish and provide a default value if it is.
 
 ```js
-(null || undefined ) ?? "foo"; // returns "foo"
+const foo = { someFooProp: "hi" };
+
+console.log(foo.someFooProp?.toUpperCase() ?? "not available"); // "HI"
+console.log(foo.someBarProp?.toUpperCase() ?? "not available"); // "not available"
 ```
 
-### Optional chaining 연산자(`?.`)와의 관계
-
-널 병합 연산자는 명확한 값으로 `undefined`과 `null`을 처리하고, [optional chaining 연산자 (`?.`)](/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)는 `null` or `undefined`일 수 있는 객체의 속성에 접근할 때 유용하다.
-
-```js
-let foo = { someFooProp: "hi" };
-
-console.log(foo.someFooProp?.toUpperCase());  // "HI"
-console.log(foo.someBarProp?.toUpperCase()); // undefined
-```
-
-## 예제
-
-이 예제는 기본 값을 제공하지만 `null` or `undefined` 이외의 값을 를 유지한다.
-
-```js
-function getMiscObj(){
-  return {
-    aNullProperty: null,
-    emptyText: "", // this is not falsy
-    someNumber: 42
-  };
-};
-
-const miscObj = getMiscObj();
-
-const newObj = {};
-newObj.propA = miscObj.aNullProperty ?? "default for A";
-newObj.propB = miscObj.emptyText ?? "default for B";
-newObj.propC = miscObj.someNumber ?? 0;
-
-console.log(newObj.propA); // "default for A"
-console.log(newObj.propB); // "" (as the empty string is not null or undefined)
-console.log(newObj.propC); // 42
-```
-
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참고
+## See also
 
-- [The optional chaining operator](/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
-- [The logical OR (`||`) operator](/en-US/docs/Web/JavaScript/Reference/Operators/Logical_Operators#Logical_OR_2)
-- [Default paramaters in functions](/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)
+- The [nullish coalescing assignment (`??=`) operator](/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_assignment)
+- The [optional chaining (`?.`) operator](/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
+- The [logical OR (`||`) operator](/en-US/docs/Web/JavaScript/Reference/Operators/Logical_OR)
+- [Default parameters in functions](/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters)

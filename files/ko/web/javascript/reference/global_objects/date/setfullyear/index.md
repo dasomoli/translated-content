@@ -1,50 +1,68 @@
 ---
 title: Date.prototype.setFullYear()
 slug: Web/JavaScript/Reference/Global_Objects/Date/setFullYear
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.setFullYear
 ---
+
 {{JSRef}}
 
-**setFullYear()** 메서드는 현지 시간에 따라 지정된 날짜의 전체 연도를 설정합니다. 새로운 타임 스탬프를 반환합니다.
+The **`setFullYear()`** method sets the full year for a
+specified date according to local time. Returns new timestamp.
+
+{{EmbedInteractiveExample("pages/js/date-setfullyear.html")}}
 
 ## Syntax
 
-```js
-    dateObj.setFullYear(yearValue[, monthValue[, dayValue]])
+```js-nolint
+setFullYear(yearValue)
+setFullYear(yearValue, monthValue)
+setFullYear(yearValue, monthValue, dateValue)
 ```
 
 ### Parameters
 
 - `yearValue`
-  - : 연도의 숫자 값을 지정하는 정수입니다 (예 : 1995).
+  - : An integer specifying the numeric value of the year, for example, 1995.
 - `monthValue`
-  - : 선택 과목. 1 월에서 12 월까지의 월을 나타내는 0에서 11 사이의 정수입니다.
-- `dayValue`
-  - : 선택 과목. 한 달의 날짜를 나타내는 1 - 31 사이의 정수입니다. dayValue 매개 변수를 지정하는 경우 monthValue도 지정해야합니다.
+  - : Optional. An integer between 0 and 11 representing the months January through
+    December.
+- `dateValue`
+  - : Optional. An integer between 1 and 31 representing the day of the month. If you
+    specify the `dateValue` parameter, you must also specify the
+    `monthValue`.
 
 ### Return value
 
-1970 년 1 월 1 일 00:00:00 UTC와 업데이트 된 날짜 사이의 밀리 초 숫자입니다.
+The number of milliseconds between 1 January 1970 00:00:00 UTC and the updated date.
 
 ## Description
 
-monthValue 및 dayValue 매개 변수를 지정하지 않으면 {{jsxref ("Date.prototype.getMonth()", "getMonth()")}} 및 {{jsxref("Date.prototype.getDate)","getDate()")}} 메소드가 사용됩니다.
+If you do not specify the `monthValue` and
+`dateValue` parameters, the values returned from the
+{{jsxref("Date.prototype.getMonth()", "getMonth()")}} and
+{{jsxref("Date.prototype.getDate()", "getDate()")}} methods are used.
 
-지정한 매개 변수가 예상 범위를 벗어나면 setFullYear ()가 다른 매개 변수와 {{jsxref ( "Date")}} 객체의 날짜 정보를 그에 따라 업데이트하려고 시도합니다. 예를 들어, monthValue에 15를 지정하면 연도가 1 (yearValue + 1)만큼 증가하고 3은 해당 월에 사용됩니다.
+If a parameter you specify is outside of the expected range, `setFullYear()`
+attempts to update the other parameters and the date information in the
+{{jsxref("Date")}} object accordingly. For example, if you specify 15 for
+`monthValue`, the year is incremented by 1
+(`yearValue + 1`), and 3 is used for the month.
 
 ## Examples
 
-### Using `setFullYear()`
+### Using setFullYear()
 
 ```js
-var theBigDay = new Date();
+const theBigDay = new Date();
 theBigDay.setFullYear(1997);
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

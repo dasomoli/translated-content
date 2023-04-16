@@ -1,52 +1,66 @@
 ---
 title: font-synthesis
 slug: Web/CSS/font-synthesis
+page-type: css-property
+browser-compat: css.properties.font-synthesis
 ---
+
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`font-synthesis`** 속성은 브라우저가 굵은 글꼴과 이탤릭 글꼴을 합성하는 것을 허용할지 설정합니다.
+The **`font-synthesis`** [CSS](/en-US/docs/Web/CSS) property controls which missing typefaces, bold, italic, or small-caps, may be synthesized by the browser.
 
 {{EmbedInteractiveExample("pages/css/font-synthesis.html")}}
 
-## 구문
+## Syntax
 
-`font-synthesis`는 다음 방법 중 하나를 사용해 지정합니다.
+```css
+font-synthesis: none;
+font-synthesis: weight;
+font-synthesis: style;
+font-synthesis: small-caps;
+font-synthesis: weight style small-caps;
 
-- `none` 키워드.
-- `weight` 또는 `style` 키워드.
-- `weight`와 `style` 키워드.
+/* Global values */
+font-synthesis: inherit;
+font-synthesis: initial;
+font-synthesis: revert;
+font-synthesis: revert-layer;
+font-synthesis: unset;
+```
 
-### 값
+### Values
 
 - `none`
-  - : 굵은 글꼴과 이탤릭 글꼴의 합성을 금지합니다.
+  - : Indicates that no bold, italic, nor small-caps typeface may be synthesized.
 - `weight`
-  - : 필요한 경우 굵은 글꼴을 합성할 수 있습니다.
+  - : Indicates that a bold typeface may be synthesized if needed.
 - `style`
-  - : 필요한 경우 이탤릭 글꼴을 합성할 수 있습니다.
+  - : Indicates that an italic typeface may be synthesized if needed.
+- `small-caps`
+  - : Indicates that a small-caps typeface may be synthesized if needed.
 
-## 설명
+## Description
 
-대부분의 표준 서양 글꼴은 이탤릭과 굵은 글꼴을 포함하고 있으나 상용 글꼴은 그렇지 않은 경우도 많습니다. 한국, 중국, 일본을 포함한 비 알파벳 문화권의 문자 체계는 보통 이런 변형을 포함하지 않으며 브라우저의 글꼴 합성으로 인해 가독성이 떨어질 수 있습니다. 이 두 가지 경우에 대해 `font-synthesis`를 사용해 기본 글꼴 합성을 끄는 것이 좋을 수도 있습니다.
+Most standard Western fonts include italic and bold variants, and some fonts include a small-caps variant. However, many fonts do not. Fonts used for Chinese, Japanese, Korean and other logographic scripts tend not to include these variants, and synthesizing them may impede the legibility of the text. In these cases, it may be desirable to switch off the browser's default font-synthesis.
 
-## 형식 정의
+## Formal definition
 
 {{cssinfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 글꼴 합성 비활성화
+### Disabling font synthesis
 
 #### HTML
 
 ```html
-<em class="syn">절 합성하세요! Synthesize!</em>
-<br/>
-<em class="no-syn">절 합성하지 마세요! Synthesize!</em>
+<em class="syn">Synthesize me! 站直。</em>
+<br />
+<em class="no-syn">Don't synthesize me! 站直。</em>
 ```
 
 #### CSS
@@ -56,26 +70,26 @@ em {
   font-weight: bold;
 }
 .syn {
-  font-synthesis: style weight;
+  font-synthesis: style weight small-caps;
 }
 .no-syn {
   font-synthesis: none;
 }
 ```
 
-#### 결과
+#### Result
 
-{{ EmbedLiveSample('글꼴_합성_비활성화', '', '50') }}
+{{ EmbedLiveSample('Disabling_font_synthesis', '', '75') }}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{cssxref("font-style")}}
 - {{cssxref("font-weight")}}

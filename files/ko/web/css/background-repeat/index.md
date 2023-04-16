@@ -1,19 +1,22 @@
 ---
 title: background-repeat
 slug: Web/CSS/background-repeat
+page-type: css-property
+browser-compat: css.properties.background-repeat
 ---
+
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`background-repeat`** 속성은 배경 이미지의 반복 방법을 지정합니다. 가로축 및 세로축을 따라 반복할 수 있고, 아예 반복하지 않을 수도 있습니다.
+The **`background-repeat`** [CSS](/en-US/docs/Web/CSS) property sets how background images are repeated. A background image can be repeated along the horizontal and vertical axes, or not repeated at all.
 
 {{EmbedInteractiveExample("pages/css/background-repeat.html")}}
 
-반복한 이미지는 기본값에선 요소 크기에 따라 잘릴 수 있지만, 잘리지 않도록 배경 이미지 크기를 조절하거나(`round`) 끝에서 끝까지 고르게 분배(`space`)할 수 있습니다.
+By default, the repeated images are clipped to the size of the element, but they can be scaled to fit (using `round`) or evenly distributed from end to end (using `space`).
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
 background-repeat: repeat-x;
 background-repeat: repeat-y;
 background-repeat: repeat;
@@ -21,28 +24,31 @@ background-repeat: space;
 background-repeat: round;
 background-repeat: no-repeat;
 
-/* 2개 값 구문: 가로 | 세로 */
+/* Two-value syntax: horizontal | vertical */
 background-repeat: repeat space;
 background-repeat: repeat repeat;
 background-repeat: round space;
 background-repeat: no-repeat round;
 
-/* 전역 값 */
+/* Global values */
 background-repeat: inherit;
 background-repeat: initial;
+background-repeat: revert;
+background-repeat: revert-layer;
 background-repeat: unset;
 ```
 
-### 값
+### Values
 
 - `<repeat-style>`
-  - : 한 개 값 구문은 두 개 값 구문의 단축 형태입니다.
+
+  - : The one-value syntax is a shorthand for the full two-value syntax:
 
     <table class="standard-table">
       <tbody>
         <tr>
-          <td><strong>한 개 값</strong></td>
-          <td><strong>두 개 값</strong></td>
+          <td><strong>Single value</strong></td>
+          <td><strong>Two-value equivalent</strong></td>
         </tr>
         <tr>
           <td><code>repeat-x</code></td>
@@ -71,68 +77,101 @@ background-repeat: unset;
       </tbody>
     </table>
 
-    두 개 값 구문의 앞쪽은 가로 반복 방법을, 뒤쪽은 세로 반복 방법을 설정합니다. 각 방법의 동작 방식은 아래 표와 같습니다.
+    In the two-value syntax, the first value represents the horizontal repetition behavior and the second value represents the vertical behavior. Here is an explanation of how each option works for either direction:
 
     <table class="standard-table">
       <tbody>
         <tr>
           <td><code>repeat</code></td>
-          <td>요소의 배경 영역을 채울 때까지 이미지를 반복합니다. 마지막 반복 이미지가 넘칠 경우 잘라냅니다.</td>
+          <td>
+            The image is repeated as much as needed to cover the whole background
+            image painting area. The last image will be clipped if it doesn't fit.
+          </td>
         </tr>
         <tr>
           <td><code>space</code></td>
-          <td>요소가 잘리지 않을 만큼 이미지를 반복합니다. 제일 처음과 마지막 반복 이미지는 요소의 양쪽 끝에 고정되고, 각 이미지 사이에 남은 여백을 고르게 분배합니다. 잘리지 않고 배치할 수 있는 이미지가 단 한 장인 경우가 아니라면 {{cssxref("background-position")}} 속성은 무시합니다. <code>space</code>를 사용했는데 이미지가 잘리는 경우는 그 크기가 너무 커서 한 장 조차 넣을 수 없는 경우뿐입니다.</td>
+          <td>
+            The image is repeated as much as possible without clipping. The first
+            and last images are pinned to either side of the element, and whitespace
+            is distributed evenly between the images. The
+            {{cssxref("background-position")}} property is ignored unless
+            only one image can be displayed without clipping. The only case where
+            clipping happens using <code>space</code> is when there isn't enough
+            room to display one image.
+          </td>
         </tr>
         <tr>
           <td><code>round</code></td>
-          <td>가용 영역이 늘어나면 반복 이미지도 늘어나 여백을 남기지 않습니다. 이미지를 하나 더 추가할 공간이 생기면 (남은 공간 >= 이미지 너비의 절반) 비로소 반복 횟수를 하나 추가합니다. 이 때, 원래 존재하던 이미지는 모두 줄어들어 새로운 이미지를 위한 공간을 확보합니다. 예시: 원래 너비가 260px이고, 세 번 반복된 이미지는 각자 300px 너비가 될 때까지 늘어날 수 있습니다. 그 후에는 이미지를 추가하고, 각자 225px로 줄어듭니다.</td>
+          <td>
+            As the allowed space increases in size, the repeated images will stretch
+            (leaving no gaps) until there is room (space left >= half of the image
+            width) for another one to be added. When the next image is added, all of
+            the current ones compress to allow room. Example: An image with an
+            original width of 260px, repeated three times, might stretch until each
+            repetition is 300px wide, and then another image will be added. They
+            will then compress to 225px.
+          </td>
         </tr>
         <tr>
           <td><code>no-repeat</code></td>
-          <td>이미지를 반복하지 않습니다. 따라서 배경 이미지 영역이 다 차지 않을 수 있습니다. 반복하지 않은 이미지의 위치는 {{cssxref("background-position")}} CSS속성이 설정합니다.</td>
+          <td>
+            The image is not repeated (and hence the background image painting area
+            will not necessarily be entirely covered). The position of the
+            non-repeated background image is defined by the
+            {{cssxref("background-position")}} CSS property.
+          </td>
         </tr>
       </tbody>
     </table>
 
-## 형식 정의
+## Formal definition
 
 {{cssinfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### HTML
+### Setting background-repeat
+
+#### HTML
 
 ```html
 <ol>
-  <li>no-repeat
+  <li>
+    no-repeat
     <div class="one"></div>
   </li>
-  <li>repeat
+  <li>
+    repeat
     <div class="two"></div>
   </li>
-  <li>repeat-x
+  <li>
+    repeat-x
     <div class="three"></div>
   </li>
-  <li>repeat-y
+  <li>
+    repeat-y
     <div class="four"></div>
   </li>
-  <li>space
+  <li>
+    space
     <div class="five"></div>
   </li>
-  <li>round
+  <li>
+    round
     <div class="six"></div>
   </li>
-  <li>repeat-x, repeat-y (multiple images)
+  <li>
+    repeat-x, repeat-y (multiple images)
     <div class="seven"></div>
   </li>
 </ol>
 ```
 
-### CSS
+#### CSS
 
 ```css
 /* Shared for all DIVS in example */
@@ -145,9 +184,9 @@ li {
   margin-bottom: 12px;
 }
 div {
-    background-image: url(starsolid.gif);
-    width: 160px;
-    height: 70px;
+  background-image: url(starsolid.gif);
+  width: 160px;
+  height: 70px;
 }
 
 /* Background repeats */
@@ -172,26 +211,26 @@ div {
 
 /* Multiple images */
 .seven {
-  background-image:  url(starsolid.gif),
-                     url(https://developer.mozilla.org/static/img/favicon32.png);
-  background-repeat: repeat-x,
-                     repeat-y;
+  background-image: url(starsolid.gif), url(favicon32.png);
+  background-repeat: repeat-x, repeat-y;
   height: 144px;
 }
 ```
 
-### 결과
+#### Result
 
-{{EmbedLiveSample('예제', 240, 560)}}
+In this example, each list item is matched with a different value of `background-repeat`.
 
-## 명세
+{{EmbedLiveSample('Setting_background-repeat', 240, 560)}}
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [한 번에 여러 배경 사용하기](/ko/docs/Web/CSS/CSS_Backgrounds_and_Borders/Using_multiple_backgrounds)
+- [Using multiple backgrounds](/en-US/docs/Web/CSS/CSS_Backgrounds_and_Borders/Using_multiple_backgrounds)

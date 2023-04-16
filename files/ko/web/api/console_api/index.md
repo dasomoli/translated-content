@@ -1,48 +1,53 @@
 ---
 title: Console API
 slug: Web/API/Console_API
+page-type: guide
+browser-compat: api.console
 ---
+
 {{DefaultAPISidebar("Console API")}}
 
-**Console API**는 코드의 특정 지점에서 값이나 변수를 기록하고, 작업의 소요 시간을 알아내는 등 개발자가 사용할 수 있는 디버깅 기능을 제공합니다.
+The Console API provides functionality to allow developers to perform debugging tasks, such as logging messages or the values of variables at set points in your code, or timing how long an operation takes to complete.
 
-## 개념과 사용법
+{{AvailableInWorkers}}
 
-Console API는 사유 API로 시작하였으며, 브라우저가 각자 다른 구현을 했습니다. 이후 [Console API 명세](https://console.spec.whatwg.org/)가 만들어져 일관적인 동작 방식을 정의하였으며, 결국 모든 최신 브라우저가 같은 동작을 따르게 되었습니다. 그러나 일부 구현체는 여전히 자신만의 사유 함수를 가지고 있습니다. 다음 링크에서 알아보세요.
+## Concepts and usage
 
-- [Google Chrome DevTools implementation](https://developers.google.com/chrome-developer-tools/docs/console-api)
-- [Safari DevTools implementation](https://developer.apple.com/library/safari/documentation/AppleApplications/Conceptual/Safari_Developer_Guide/Console/Console.html)
+The Console API started as a largely proprietary API, with different browsers implementing it, albeit in inconsistent ways. [The Console API spec](https://console.spec.whatwg.org/) was created to define consistent behavior, and all modern browsers eventually settled on implementing this behavior — although some implementations still have their own additional proprietary functions. Find out about these at:
 
-사용은 매우 간단합니다. {{domxref("Window.console")}}, 워커에서는 {{domxref("WorkerGlobalScope.console")}}, 아니면 그냥 `console`로 접근 가능한 {{domxref("console")}} 객체는 브라우저의 [웹 콘솔](/ko/docs/Tools/Web_Console)에 값을 기록하는 등 기초적인 디버깅 작업에 사용할 수 있는 메서드를 제공합니다.
+- [Google Chrome DevTools implementation](https://developer.chrome.com/docs/devtools/console/api/)
+- [Safari DevTools implementation](https://developer.apple.com/library/archive/documentation/AppleApplications/Conceptual/Safari_Developer_Guide/Console/Console.html)
 
-가장 자주 쓰이는 메서드는 {{domxref("console.log()")}}이며, 변수의 값을 기록할 때 사용합니다.
+Usage is very simple — the {{domxref("console")}} object — available via {{domxref("window.console")}}, or {{domxref("WorkerGlobalScope.console")}} in workers; accessible using just `console` — contains many methods that you can call to perform rudimentary debugging tasks, generally focused around logging various values to the browser's [Web Console](https://firefox-source-docs.mozilla.org/devtools-user/web_console/index.html).
 
-## 인터페이스
+By far the most commonly-used method is {{domxref("console.log")}}, which is used to log the current value contained inside a specific variable.
+
+## Interfaces
 
 - {{domxref("console")}}
-  - : 로깅, 스택 추적, 타이머, 카운터 등 기초적인 디버깅 기능을 제공합니다.
+  - : Provides rudimentary debugging functionality, including logging, stack traces, timers, and counters.
 
-## 예제
+## Examples
 
 ```js
-let myString = 'Hello world';
+let myString = "Hello world";
 
 // Output "Hello world" to the console
 console.log(myString);
 ```
 
-{{domxref("console")}} 문서의 [예제](/ko/docs/Web/API/Console#예제) 항목에서 더 많은 예제를 확인하세요.
+See the [console](/en-US/docs/Web/API/console#usage) reference page for more examples.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Firefox Developer Tools](/ko/docs/Tools)
-- [Web Console](/ko/docs/Tools/Web_Console) — how the Web Console in Firefox handles console API calls
-- [Remote debugging](/ko/docs/Tools/Remote_Debugging) — how to see console output when the debugging target is a mobile device
+- [Tools](https://firefox-source-docs.mozilla.org/devtools-user/index.html)
+- [Web Console](https://firefox-source-docs.mozilla.org/devtools-user/web_console/index.html) — how the Web Console in Firefox handles console API calls
+- [about:debugging](https://firefox-source-docs.mozilla.org/devtools-user/about_colon_debugging/index.html) — how to see console output when the debugging target is a mobile device

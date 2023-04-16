@@ -1,114 +1,113 @@
 ---
-title: 벽돌 만들기
+title: Build the brick field
 slug: Games/Tutorials/2D_Breakout_game_pure_JavaScript/Build_the_brick_field
-original_slug: Games/Tutorials/순수한_자바스크립트를_이용한_2D_벽돌깨기_게임/Build_the_brick_field
 ---
 
 {{GamesSidebar}}
 
-{{PreviousNext("Games/Tutorials/순수한_자바스크립트를_이용한_2D_벽돌깨기_게임/Game_over", "Games/Tutorials/순수한_자바스크립트를_이용한_2D_벽돌깨기_게임/Collision_detection")}}
+{{PreviousNext("Games/Workflows/2D_Breakout_game_pure_JavaScript/Game_over", "Games/Workflows/2D_Breakout_game_pure_JavaScript/Collision_detection")}}
 
-이번 단계는 [Gamedev Canvas tutorial](/ko/docs/Games/Workflows/Breakout_game_from_scratch)의 여섯 번째 학습입니다. [Gamedev-Canvas-workshop/lesson6.html](https://github.com/end3r/Gamedev-Canvas-workshop/blob/gh-pages/lesson06.html)에서 이번 학습의 소스코드를 확인할 수 있습니다.
+This is the **6th step** out of 10 of the [Gamedev Canvas tutorial](/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript). You can find the source code as it would look after completing this lesson at [Gamedev-Canvas-workshop/lesson6.html](https://github.com/end3r/Gamedev-Canvas-workshop/blob/gh-pages/lesson06.html).
 
-게임플레이 원리를 수정한 후에, 우리는 게임에서 패배할 수 있게 되었습니다. 이것은 실제 게임에 보다 가까운 느낌이기 때문에 훌륭합니다. 하지만 벽과 패들에 공이 튀기는 것 말고 할 수 있는 것이 없기 때문에 금방 지루해집니다. 벽돌깨기 게임에서 진정으로 필요로 한 것은 공으로 파괴할 벽돌입니다. 이 것이 지금 우리가 만들 것입니다!
+After modifying the gameplay mechanics, we are now able to lose — this is great as it means the game is finally feeling more like a game. However, it will quickly get boring if all you do is bounce the ball off the walls and the paddle. What a breakout game really needs is some bricks to destroy with the ball, and this is what we'll create now!
 
-## 벽돌에 대한 변수 설정하기
+## Setting up the brick variables
 
-이번 학습의 모든 목표는 벽돌들을 위한 코드를 2차원 배열로 동작하는 반복문을 통해 제공하는 것입니다. 그러나 먼저 우리는 가로, 세로, 행, 열 등 벽돌에 대한 값을 정의할 몇몇 변수들을 설정해야 합니다. 지난 학습에서 작성한 코드에 아래 코드를 추가해봅시다.
+The overall aim of this lesson is to render a few lines of code for the bricks, using a nested loop that works through a two-dimensional array. First however we need to set up some variables to define information about the bricks such as their width and height, rows and columns, etc. Add the following lines to your code below the variables which you have previously declared in your program.
 
 ```js
-var brickRowCount = 3;
-var brickColumnCount = 5;
-var brickWidth = 75;
-var brickHeight = 20;
-var brickPadding = 10;
-var brickOffsetTop = 30;
-var brickOffsetLeft = 30;
+const brickRowCount = 3;
+const brickColumnCount = 5;
+const brickWidth = 75;
+const brickHeight = 20;
+const brickPadding = 10;
+const brickOffsetTop = 30;
+const brickOffsetLeft = 30;
 ```
 
-우리는 벽돌 배열 행과 열의 수, 그것들의 가로, 세로길이, 각 벽돌이 서로 닿지 않을 정도의 간격과 벽돌이 캔버스의 모서리에 닿지 않게 할 오프셋 변수들을 정의했습니다.
+Here we've defined the number of rows and columns of bricks, their width and height, the padding between the bricks so they won't touch each other and a top and left offset so they won't start being drawn right from the edge of the Canvas.
 
-우리는 2차원 배열에 벽돌을 담았습니다. 배열은 열 `c`, 행 `r`, 그리고 배열의 각 객체엔 화면에 벽돌을 그릴 위치를 나타낼 `x`, `y` 위치를 가지고 있습니다. 위에서 변수를 선언한 코드 뒤에 아래 코드를 추가해봅시다.
+We will hold all our bricks in a two-dimensional array. It will contain the brick columns (c), which in turn will contain the brick rows (r), which in turn will each contain an object containing the `x` and `y` position to paint each brick on the screen. Add the following just below your variables:
 
 ```js
-var bricks = [];
-for(var c=0; c<brickColumnCount; c++) {
-    bricks[c] = [];
-    for(var r=0; r<brickRowCount; r++) {
-        bricks[c][r] = { x: 0, y: 0 };
-    }
+const bricks = [];
+for (let c = 0; c < brickColumnCount; c++) {
+  bricks[c] = [];
+  for (let r = 0; r < brickRowCount; r++) {
+    bricks[c][r] = { x: 0, y: 0 };
+  }
 }
 ```
 
-위 코드는 행과 열 수만큼 반복되면서 새로운 벽돌을 만듭니다. 각 벽돌 객체는 이후에 충돌감지에 사용됩니다.
+The code above will loop through the rows and columns and create the new bricks. NOTE that the brick objects will also be used for collision detection purposes later.
 
-## 벽돌을 그리는 방법
+## Brick drawing logic
 
-이제 배열안의 모든 벽돌을 반복해서 화면에 그려줄 함수를 만들어봅시다. 코드는 아래와 같습니다.
+Now let's create a function to loop through all the bricks in the array and draw them on the screen. Our code might look like this:
 
 ```js
 function drawBricks() {
-    for(var c=0; c<brickColumnCount; c++) {
-        for(var r=0; r<brickRowCount; r++) {
-            bricks[c][r].x = 0;
-            bricks[c][r].y = 0;
-            ctx.beginPath();
-            ctx.rect(0, 0, brickWidth, brickHeight);
-            ctx.fillStyle = "#0095DD";
-            ctx.fill();
-            ctx.closePath();
-        }
+  for (let c = 0; c < brickColumnCount; c++) {
+    for (let r = 0; r < brickRowCount; r++) {
+      bricks[c][r].x = 0;
+      bricks[c][r].y = 0;
+      ctx.beginPath();
+      ctx.rect(0, 0, brickWidth, brickHeight);
+      ctx.fillStyle = "#0095DD";
+      ctx.fill();
+      ctx.closePath();
     }
+  }
 }
 ```
 
-다시 행, 열 반복을 통해 각 벽돌의 `x`, `y` 값을 설정하고, 캔버스에 `brickWidth` \* `brickHeight` 크기의 벽돌들을 그립니다. 문제는 모든 벽돌들이 좌표 (0, 0) 위치해있다는 것입니다. 우리는 약간의 연산을 통해 각 벽돌의 `x`, `y` 값을 계산해야 합니다.
+Again, we're looping through the rows and columns to set the `x` and `y` position of each brick, and we're also painting a brick on the Canvas — size `brickWidth` x `brickHeight` — with each loop iteration. The problem is that we're painting them all in one place, at coordinates `(0,0)`. What we need to do is include some calculations that will work out the `x` and `y` position of each brick for each loop iteration:
 
 ```js
-var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
-var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
+const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
+const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
 ```
 
-`brickX`는 `brickWidth` + `brickPadding`에 `c`를 곱하고, `brickOffsetLeft`를 더한 값입니다. `brickY`는 변수 `r`, `brickHeight`, `brickOffsetTop` 변수를 사용한다는 것을 제외하곤 동일합니다. 이제 모든 벽돌들을 올바른 위치에, 알맞은 간격을 두고, 캔버스 모서리로부터 오프셋 값만큼의 거리를 둔 상태로 그릴수 있게되었습니다.
+Each `brickX` position is worked out as `brickWidth` + `brickPadding`, multiplied by the column number, `c`, plus the `brickOffsetLeft`; the logic for the brickY is identical except that it uses the values for row number, `r`, `brickHeight`, and `brickOffsetTop`. Now every single brick can be placed in its correct place row and column, with padding between each brick, drawn at an offset from the left and top canvas edges.
 
-`brickX`와 `brickY` 값을 (0, 0) 대신에 좌표 값으로 할당한 후에 `drawBricks` 함수의 마지막 버전은 아래와 같을 것입니다. 이 코드는 `drawpaddle` 함수 아래에 추가해봅시다.
+The final version of the `drawBricks()` function, after assigning the `brickX` and `brickY` values as the coordinates instead of `(0,0)` each time, will look like this — add this into your code below the `drawPaddle()` function:
 
 ```js
 function drawBricks() {
-    for(var c=0; c<brickColumnCount; c++) {
-        for(var r=0; r<brickRowCount; r++) {
-            var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
-            var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
-            bricks[c][r].x = brickX;
-            bricks[c][r].y = brickY;
-            ctx.beginPath();
-            ctx.rect(brickX, brickY, brickWidth, brickHeight);
-            ctx.fillStyle = "#0095DD";
-            ctx.fill();
-            ctx.closePath();
-        }
+  for (let c = 0; c < brickColumnCount; c++) {
+    for (let r = 0; r < brickRowCount; r++) {
+      const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
+      const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
+      bricks[c][r].x = brickX;
+      bricks[c][r].y = brickY;
+      ctx.beginPath();
+      ctx.rect(brickX, brickY, brickWidth, brickHeight);
+      ctx.fillStyle = "#0095DD";
+      ctx.fill();
+      ctx.closePath();
     }
+  }
 }
 ```
 
-## 실제 벽돌을 그리기
+## Actually drawing the bricks
 
-이 학습에서 마지막으로 할 일은 `drawBrick`함수를 호출하는 코드를 `draw`함수 어딘가에, 되도록이면 시작하는 부분에, 캔버스를 초기화하는 부분과 공을 그리는 사이에 추가하는 것입니다. 아래 코드를 `drawBall()` 코드 위에 추가해봅시다.
+The last thing to do in this lesson is to add a call to `drawBricks()` somewhere in the `draw()` function, preferably at the beginning, between the clearing of the Canvas and drawing the ball. Add the following just above the `drawBall()` call:
 
 ```js
 drawBricks();
 ```
 
-## 코드 비교해보기
+## Compare your code
 
-이 부분에서 게임은 조금 더 흥미로워졌습니다.
+At this point, the game has got a little more interesting again:
 
-{{JSFiddleEmbed("https://jsfiddle.net/yumetodo/t1zqmzLp/","","395")}}
+{{JSFiddleEmbed("https://jsfiddle.net/raymondjplante/Lu3vtejz/","","395")}}
 
-> **참고:** 연습하기: 행과 열의 수를 바꿔서 벽돌의 수를 변경해보거나, 위치를 변경해봅시다.
+> **Note:** Try changing the number of bricks in a row or a column, or their positions.
 
-## 다음 단계
+## Next steps
 
-이제 우리에겐 벽돌이 있습니다! 하지만 공은 벽돌들과의 반응이 없습니다. 우리는 다음 단계에서 이 문제에 대해 다룰 것입니다: [충돌 감지](/ko/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/Collision_detection)
+So now we have bricks! But the ball isn't interacting with them at all — we'll change that as we continue to the seventh chapter: [Collision detection](/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/Collision_detection).
 
-{{PreviousNext("Games/Tutorials/순수한_자바스크립트를_이용한_2D_벽돌깨기_게임/Game_over", "Games/Tutorials/순수한_자바스크립트를_이용한_2D_벽돌깨기_게임/Collision_detection")}}
+{{PreviousNext("Games/Workflows/2D_Breakout_game_pure_JavaScript/Game_over", "Games/Workflows/2D_Breakout_game_pure_JavaScript/Collision_detection")}}

@@ -1,171 +1,295 @@
 ---
 title: var
 slug: Web/JavaScript/Reference/Statements/var
+page-type: javascript-statement
+browser-compat: javascript.statements.var
 ---
 
 {{jsSidebar("Statements")}}
 
-**`var`**문은 변수를 선언하고, 선택적으로 초기화할 수 있습니다.
+The **`var`** statement declares a function-scoped or
+globally-scoped variable, optionally initializing it to a value.
 
 {{EmbedInteractiveExample("pages/js/statement-var.html")}}
 
-## 구문
+## Syntax
 
-```js
-    var varname1 [= value1 [, varname2 [, varname3 ... [, varnameN]]]];
+```js-nolint
+var name1;
+var name1 = value1;
+var name1 = value1, name2 = value2;
+var name1, name2 = value2;
+var name1 = value1, name2, /* …, */ nameN = valueN;
 ```
 
-- `varnameN`
-  - : 변수 이름. 어떤 유효한 식별자도 될 수 있습니다.
-- `valueN`
-  - : 변수의 초기값. 어떤 유효한 표현도 될 수 있습니다.
+- `nameN`
+  - : Variable name. It can be any legal identifier.
+- `valueN` {{optional_inline}}
+  - : Initial value of the variable. It can be any legal expression. Default value is
+    `undefined`.
 
-## 설명
-
-어디에 선언이 되어있든 간에 변수들은 어떠한 코드가 실행되기 전에 처리가 됩니다. var로 선언된 변수의 범위는 현재 실행 문맥인데, 그 문맥은 둘러싼 함수, 혹은 함수의 외부에 전역으로 선언된 변수도 될 수 있습니다.
-
-선언된 변수들의 값 할당은 할당이 실행될 때 전역변수(이것은 전역 오브젝트의 프로퍼티가 됩니다)처럼 생성이 됩니다. 선언된 변수들과 선언되지 않은 변수들의 차이점은 다음과 같습니다:
-
-1. 선언된 변수들은 변수가 선언된 실행 콘텍스트(execution context) 안에서 만들어집니다. 선언되지 않은 변수들은 항상 전역변수 입니다.
-
-    ```js
-    function x() {
-      y = 1;   // strict 모드에서는 ReferenceError를 출력합니다.
-      var z = 2;
-    }
-
-    x();
-
-    console.log(y); // 로그에 "1" 출력합니다.
-    console.log(z); // ReferenceError: z is not defined outside x를 출력합니다.
-    ```
-
-2. 선언된 변수들은 어떠한 코드가 실행되기 전에 만들어집니다. 선언되지 않은 변수들은 변수들을 할당하는 코드가 실행되기 전까지는 존재하지 않습니다.
-
-    ```js
-    console.log(a);                // ReferenceError를 출력합니다.
-    console.log('still going...'); // 결코 실행되지 않습니다.
-    ```
-
-    ```js
-    var a;
-    console.log(a);                // 브라우저에 따라 로그에 "undefined" 또는 "" 출력합니다.
-    console.log('still going...'); // 로그에 "still going..." 출력합니다.
-    ```
-
-3. 선언된 변수들은 변수들의 실행 콘텍스트(execution context)의 프로퍼티를 변경되지 않습니다. 선언되지 않은 변수들은 변경 가능합니다. (e.g 삭제 될 수도 있습니다.)
-
-    ```js
-    var a = 1;
-    b = 2;
-
-    delete this.a; // strict 모드에서는 TypeError를 출력합니다. 그렇지 않으면 자동적으로 실패합니다.
-    delete this.b;
-
-    console.log(a, b); // ReferenceError를 출력합니다.
-    // 'b' 프로퍼티는 삭제되었고, 어디에도 존재하지 않습니다.
-    ```
-
-이러한 세가지 다른점 때문에, 변수 선언 오류는 예기치않은 결과로 이어질 가능성이 높습니다. 그러므로 **함수 또는 전역 범위인지 여부와 상관없이, 항상 변수를 선언 하는 것을 추천합니다.** 그리고 ECMAScript 5 안에 [strict mode](/en-US/docs/Web/JavaScript/Reference/Functions_and_function_scope/Strict_mode), 선언되지 않은 변수에 할당하면 오류를 출력합니다.
-
-### var 호이스팅(hoisting)
-
-변수 선언들 (그리고 일반적인 선언)은 어느 코드가 실행 되기 전에 처리하기 때문에, 코드 안에서 어디서든 변수 선언은 최상위에 선언한 것과 동등합니다. 이것은 변수가 선언되기 전에 사용 될 수 있다는 것을 의미합니다. 변수 선언이 함수 또는 전역 코드의 상단에 이동하는 것과 같은 행동을 "호이스팅(hoisting)"이라고 불립니다.
+Alternatively, the [Destructuring Assignment](/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
+syntax can also be used to declare variables.
 
 ```js
-bla = 2
+var { bar } = foo; // where foo = { bar:10, baz:12 };
+/* This creates a variable with the name 'bar', which has a value of 10 */
+```
+
+## Description
+
+`var` declarations, wherever they occur, are processed before any code is
+executed. This is called {{Glossary("Hoisting", "hoisting")}} and is
+discussed further below.
+
+The scope of a variable declared with `var` is its current _execution
+context and closures thereof_, which is either the enclosing function and
+functions declared within it, or, for variables declared outside any function, global.
+Duplicate variable declarations using `var` will not trigger an error, even
+in strict mode, and the variable will not lose its value, unless another assignment is
+performed.
+
+```js
+function foo() {
+  var x = 1;
+  function bar() {
+    var y = 2;
+    console.log(x); // 1 (function `bar` closes over `x`)
+    console.log(y); // 2 (`y` is in scope)
+  }
+  bar();
+  console.log(x); // 1 (`x` is in scope)
+  console.log(y); // ReferenceError, `y` is scoped to `bar`
+}
+
+foo();
+```
+
+Variables declared using `var` are created before any code is executed in a
+process known as [hoisting](/en-US/docs/Glossary/Hoisting). Their initial value is `undefined`.
+
+```js
+console.log(x); // undefined (note: not ReferenceError)
+console.log("still going..."); // still going...
+var x = 1;
+console.log(x); // 1
+console.log("still going..."); // still going...
+```
+
+In the global context, a variable declared using `var` is added as a
+non-configurable property of the global object. This means its property descriptor
+cannot be changed and it cannot be deleted using {{JSxRef("Operators/delete", "delete")}}. The corresponding
+name is also added to a list on the internal `[[VarNames]]` slot on the
+[global environment record](https://tc39.es/ecma262/#sec-global-environment-records)
+(which forms part of the global lexical environment). The list
+of names in `[[VarNames]]` enables the runtime to distinguish between global
+variables and straightforward properties on the global object.
+
+The property created on the global object for global variables, is set to be
+non-configurable because the identifier is to be treated as a variable, rather than a
+straightforward property of the global object. JavaScript has automatic memory
+management, and it would make no sense to be able to use the `delete`
+operator on a global variable.
+
+```js example-bad
+"use strict";
+var x = 1;
+Object.hasOwn(globalThis, "x"); // true
+delete globalThis.x; // TypeError in strict mode. Fails silently otherwise.
+delete x; // SyntaxError in strict mode. Fails silently otherwise.
+```
+
+Note that in both NodeJS [CommonJS](https://www.commonjs.org/) modules and
+native [ECMAScript modules](/en-US/docs/Web/JavaScript/Guide/Modules),
+top-level variable declarations are scoped to the module, and are not, therefore added
+as properties to the global object.
+
+### Unqualified identifier assignments
+
+The global object sits at the top of the scope chain. When attempting to resolve a name
+to a value, the scope chain is searched. This means that properties on the global object
+are conveniently visible from every scope, without having to qualify the names with
+`globalThis.` or `window.` or `global.`.
+
+Because the global object has a `String` property (`Object.hasOwn(globalThis, 'String')`), you can use the following code:
+
+```js
+function foo() {
+  String("s"); // Note the function `String` is implicitly visible
+}
+```
+
+So the global object will ultimately be searched for unqualified identifiers. You don't
+have to type `globalThis.String`, you can just type the unqualified
+`String`. The corollary, in non-strict mode, is that assignment to
+unqualified identifiers will, if there is no variable of the same name declared in the
+scope chain, assume you want to create a property with that name on the global object.
+
+```js
+foo = "f"; // In non-strict mode, assumes you want to create a property named `foo` on the global object
+Object.hasOwn(globalThis, "foo"); // true
+```
+
+In [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode), assignment to an unqualified identifier in strict mode will result in a `ReferenceError`, to avoid the accidental creation of properties on the global object.
+
+Note that the implication of the above, is that, contrary to popular misinformation,
+JavaScript does not have implicit or undeclared variables, it merely has a syntax that
+looks like it does.
+
+### var hoisting
+
+Because `var` declarations are processed before any
+code is executed, declaring a variable anywhere in the code is equivalent to declaring
+it at the top. This also means that a variable can appear to be used before it's
+declared. This behavior is called [_hoisting_](/en-US/docs/Glossary/Hoisting), as it appears that the variable
+declaration is moved to the top of the function or global code.
+
+```js
+bla = 2;
 var bla;
-// ...
+```
 
-// 위 선언을 다음과 같이 암묵적으로 이해하면 됩니다:
+This is implicitly understood as:
 
+```js
 var bla;
 bla = 2;
 ```
 
-이러한 이유로, 그들의 범위(전역 코드의 상단 그리고 함수 코드의 상단) 상단에 변수를 항상 선언하기를 권장합니다. 그러면 변수는 함수 범위 (지역)이 되며, 스코프 체인으로 해결될 것이 분명합니다.
+For that reason, it is recommended to always declare variables at the top of their
+scope (the top of global code and the top of function code) so it's clear which
+variables are function scoped (local) and which are resolved on the scope chain.
 
-## 예제
-
-### 두 변수들의 선언 및 초기화
+It's important to point out that only a variable's declaration is hoisted,
+not its initialization. The initialization happens only when the assignment
+statement is reached. Until then the variable remains `undefined` (but declared):
 
 ```js
-var a = 0, b = 0;
+function do_something() {
+  console.log(bar); // undefined
+  var bar = 111;
+  console.log(bar); // 111
+}
 ```
 
-### 단일 문자열 값으로 두 변수들 할당
+This is implicitly understood as:
+
+```js
+function do_something() {
+  var bar;
+  console.log(bar); // undefined
+  bar = 111;
+  console.log(bar); // 111
+}
+```
+
+## Examples
+
+### Declaring and initializing two variables
+
+```js
+var a = 0,
+  b = 0;
+```
+
+### Assigning two variables with single string value
 
 ```js
 var a = "A";
 var b = a;
-
-// 다음과 같음:
-
-var a, b = a = "A";
 ```
 
-순서에 유의:
+This is equivalent to:
+
+```js-nolint
+var a, b = a = 'A';
+```
+
+Be mindful of the order:
 
 ```js
-var x = y, y = 'A';
+var x = y,
+  y = "A";
 console.log(x + y); // undefinedA
 ```
 
-여기, x와 y는 어떠한 코드 실행하기 전에 선언되었다, 할당은 후에 발생하였다. "`x = y`"가 실행될 때, `y`는 존재하여 `ReferenceError를 출력하진 않고` 값은 '`undefined`' 입니다. 그래서, `x는` undefined 값이 할당 됩니다. 그리고나서, `y` 는 `'A'` 값이 할당 됩니다. 결과적으로, 첫번째 줄 이후에, `x === undefined && y === 'A'`, 이와 같은 결과가 됩니다.
+Here, `x` and `y` are declared before any code is executed, but
+the assignments occur later. At the time `x = y` is evaluated,
+`y` exists so no `ReferenceError` is thrown and its value is
+`undefined`. So, `x` is assigned the undefined value. Then,
+`y` is assigned the value `'A'`. Consequently, after the first
+line, `x === undefined && y === 'A'`, hence the result.
 
-### 다수의 변수들의 초기화
+### Initialization of several variables
 
-```js
+```js-nolint
 var x = 0;
-
-function f(){
-  var x = y = 1; // x는 지역변수로 선언됩니다. y는 아닙니다!
+function f() {
+  var x = y = 1; // Declares x locally; declares y globally.
 }
 f();
 
-console.log(x, y); // 0, 1
-// x는 예상대로 전역이다
-// y leaked outside of the function, though!
+console.log(x, y); // 0 1
+
+// In non-strict mode:
+// x is the global one as expected;
+// y is leaked outside of the function, though!
 ```
 
-### 암묵적인 전역변수와 외부 함수 범위
+The same example as above but with a strict mode:
 
-암묵적인 전역변수가 될 것으로 보이는 변수는 함수 범위 밖에서 변수들을 참조할 수 있다.
+```js-nolint
+"use strict";
+
+var x = 0;
+function f() {
+  var x = y = 1; // Throws a ReferenceError in strict mode.
+}
+f();
+
+console.log(x, y);
+```
+
+### Implicit globals and outer function scope
+
+Variables that appear to be implicit globals may be references to variables in an outer
+function scope:
 
 ```js
-var x = 0;  // x는 전역으로 선언되었고, 0으로 할당됩니다.
+var x = 0; // Declares x within file scope, then assigns it a value of 0.
 
-console.log(typeof z); // undefined, z는 아직 존재하지 않습니다.
+console.log(typeof z); // "undefined", since z doesn't exist yet
 
-function a() { // a 함수를 호출했을 때,
-  var y = 2;   // y는 함수 a에서 지역변수로 선언되었으며, 2로 할당됩니다.
+function a() {
+  var y = 2; // Declares y within scope of function a, then assigns it a value of 2.
 
-  console.log(x, y);   // 0 2
+  console.log(x, y); // 0 2
 
-  function b() {       // b 함수를 호출하였을때,
-    x = 3;  // 존재하는 전역 x값에 3을 할당, 새로운 전역 var 변수를 만들지 않습니다.
-    y = 4;  // 존재하는 외부 y값에 4를 할당, 새로운 전역 var 변수를 만들지 않습니다.
-    z = 5;  // 새로운 전역 z 변수를 생성하고 5를 할당 합니다.
-  }         // (strict mode에서는 ReferenceError를 출력합니다.)
+  function b() {
+    x = 3; // Assigns 3 to existing file scoped x.
+    y = 4; // Assigns 4 to existing outer y.
+    z = 5; // Creates a new global variable z, and assigns it a value of 5.
+    // (Throws a ReferenceError in strict mode.)
+  }
 
-  b();     // 호출되는 b는 전역 변수로 z를 생성합니다.
-  console.log(x, y, z);  // 3 4 5
+  b(); // Creates z as a global variable.
+  console.log(x, y, z); // 3 4 5
 }
 
-a();                   // 호출되는 a는 또한 b를 호출합니다.
-console.log(x, z);     // 3 5
-console.log(typeof y); // undefined y는 function a에서 지역 변수입니다.
+a(); // Also calls b.
+console.log(x, z); // 3 5
+console.log(typeof y); // "undefined", as y is local to function a
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Statements/let", "let")}}
 - {{jsxref("Statements/const", "const")}}

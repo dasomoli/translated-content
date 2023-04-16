@@ -5,35 +5,34 @@ slug: Web/XPath/Functions/number
 
 {{ XsltRef() }}
 
-`number` 함수는 개체를 숫자로 변환하고 그 숫자를 반환합니다.
+The `number` function converts an object to a number and returns the number.
 
-### 구문
+### Syntax
 
 ```
 number( [object] )
 ```
 
-### 인수
+### Arguments
 
-- `object`
-  (optional)
-  - : 숫자로 변환할 개체.
+- `object` (optional)
+  - : The object to be converted to a number. If this argument is omitted, the current context node will be used.
 
-### 반환
+### Returns
 
-개체를 변환한 뒤 결과 숫자.
+The resulting number after converting the object.
 
-### 주의
+### Notes
 
-- 문자열은 숫자 앞 문자열의 앞 공백 문자를 떼고(strip) 숫자 뒤의 것을 무시하여 숫자로 변환됩니다. 문자열이 패턴과 일치하지 않으면, 그 문자열은 NaN으로 변환됩니다.
-- Boolean true는 1로 false는 0으로 변환됩니다.
-- 노드 집합은 먼저 as if by a call to the string function 문자열로 변환되고 나서 같은 식으로 문자열 인수로 변환됩니다.
-- 네 가지 기본 타입 말고 다른 타입의 개체는 그 타입에 의존하는 방법으로 숫자로 변환됩니다.
+- Strings are converted to a number by stripping the leading whitespace in the string before the number and ignoring whitespace after the number. If the string does not match this pattern, then the string is converted to NaN.
+- Boolean true is converted to 1. False is converted to 0.
+- A node-set is first converted to a string as if by a call to the [string()](/en-US/docs/Web/XPath/Functions/string) function and then converted in the same way as a string argument.
+- An object of a type other than the four basic types is converted to a number in a way that is dependent on that type.
 
-### 정의
+### Defined
 
-[XPath 1.0 4.4](http://www.w3.org/TR/xpath#function-number)
+[XPath 1.0 4.4](https://www.w3.org/TR/1999/REC-xpath-19991116/#function-number)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

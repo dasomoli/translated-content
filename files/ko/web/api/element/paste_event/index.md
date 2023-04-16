@@ -1,92 +1,93 @@
 ---
-title: 'Element: paste 이벤트'
+title: "Element: paste event"
+short-title: paste
 slug: Web/API/Element/paste_event
+page-type: web-api-event
+browser-compat: api.Element.paste_event
 ---
 
 {{APIRef}}
 
-**`paste`** 이벤트는 사용자가 브라우저의 사용자 인터페이스를 통해 붙여넣기를 했을 때 발생합니다.
+The **`paste`** event is fired when the user has initiated a "paste" action through the browser's user interface.
 
-<table class="properties">
-  <tbody>
-    <tr>
-      <th scope="row">버블링</th>
-      <td>예</td>
-    </tr>
-    <tr>
-      <th scope="row">취소 가능</th>
-      <td>예</td>
-    </tr>
-    <tr>
-      <th scope="row">인터페이스</th>
-      <td>{{domxref("ClipboardEvent")}}</td>
-    </tr>
-    <tr>
-      <th scope="row">이벤트 처리기 속성</th>
-      <td>{{domxref("HTMLElement/onpaste", "onpaste")}}</td>
-    </tr>
-  </tbody>
-</table>
+If the cursor is in an editable context (for example, in a {{HTMLElement("textarea")}} or an element with [`contenteditable`](/en-US/docs/Web/HTML/Global_attributes/contenteditable) attribute set to `true`) then the default action is to insert the contents of the clipboard into the document at the cursor position.
 
-현재 커서가 편집 가능한 맥락 ({{htmlelement("textarea")}} 등, 또는 [`contenteditable`](/ko/docs/Web/HTML/Global_attributes/contenteditable) 특성이 `true`인 요소) 내에 위치한 경우, 이벤트의 기본 동작은 커서 위치에 클립보드의 내용을 삽입하는 것입니다.
+A handler for this event can access the clipboard contents by calling {{domxref("DataTransfer/getData", "getData()")}} on the event's `clipboardData` property.
 
-`paste` 이벤트 처리기는 이벤트의 {{domxref("ClipboardEvent.clipboardData")}} 속성에 대해 {{domxref("DataTransfer.getData", "getData()")}} 메서드를 호출해 클립보드 콘텐츠를 읽을 수 있습니다.
+To override the default behavior (for example to insert some different data or a transformation of the clipboard contents) an event handler must cancel the default action using {{domxref("Event/preventDefault", "event.preventDefault()")}}, and then insert its desired data manually.
 
-데이터 가공 등을 위해 기본 동작을 재정의해야 할 필요가 있는 경우 {{domxref("Event.preventDefault", "event.preventDefault()")}}을 호출해 취소하고, 직접 데이터를 삽입하면 됩니다.
+It's possible to construct and dispatch a [synthetic](/en-US/docs/Web/Events/Creating_and_triggering_events) `paste` event, but this will not affect the document's contents.
 
-[합성](/ko/docs/Web/Events/Creating_and_triggering_events) `paste` 이벤트를 생성해서 발송할 수는 있지만, 이 방법으로는 문서 내용에 영향을 줄 수 없습니다.
+## Syntax
 
-## 예제
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
 
-### HTML
+```js
+addEventListener("paste", (event) => {});
+
+onpaste = (event) => {};
+```
+
+## Event type
+
+A {{domxref("ClipboardEvent")}}. Inherits from {{domxref("Event")}}.
+
+{{InheritanceDiagram("ClipboardEvent")}}
+
+## Examples
+
+### Live example
+
+#### HTML
 
 ```html
-<div class="source" contenteditable="true">이 상자에서 텍스트를 복사해보세요...</div>
-<div class="target" contenteditable="true">...여기에 붙여 넣어 보세요.</div>
+<div class="source" contenteditable="true">Copy text from this box.</div>
+<div class="target" contenteditable="true">And paste it into this one.</div>
 ```
 
 ```css hidden
-div.source, div.target {
-    border: 1px solid gray;
-    margin: .5rem;
-    padding: .5rem;
-    height: 1rem;
-    background-color: #e9eef1;
+div.source,
+div.target {
+  border: 1px solid gray;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  height: 1rem;
+  background-color: #e9eef1;
 }
 ```
 
-### JS
+#### JavaScript
 
 ```js
-const target = document.querySelector('div.target');
+const target = document.querySelector("div.target");
 
-target.addEventListener('paste', (event) => {
-    const paste = (event.clipboardData || window.clipboardData).getData('text');
-    const reversed = Array.from(paste).reverse().join('');
+target.addEventListener("paste", (event) => {
+  event.preventDefault();
 
-    const selection = window.getSelection();
-    if (!selection.rangeCount) return false;
-    selection.deleteFromDocument();
-    selection.getRangeAt(0).insertNode(document.createTextNode(reversed));
-
-    event.preventDefault();
+  let paste = (event.clipboardData || window.clipboardData).getData("text");
+  paste = paste.toUpperCase();
+  const selection = window.getSelection();
+  if (!selection.rangeCount) return;
+  selection.deleteFromDocument();
+  selection.getRangeAt(0).insertNode(document.createTextNode(paste));
+  selection.collapseToEnd();
 });
 ```
 
-### 결과
+#### Result
 
-{{ EmbedLiveSample('예제', '100%', '120px') }}
+{{ EmbedLiveSample('Live_example', '100%', '120px') }}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 관련 이벤트: {{domxref("Element/copy_event", "copy")}}, {{domxref("Element/cut_event", "cut")}}
-- {{domxref("Document")}}를 대상으로 한 같은 이벤트: {{domxref("Document/paste_event", "paste")}}
-- {{domxref("Window")}}를 대상으로 한 같은 이벤트: {{domxref("Window/paste_event", "paste")}}
+- Related events: {{domxref("Element/cut_event", "cut")}}, {{domxref("Element/copy_event", "copy")}}
+- This event on {{domxref("Document")}} targets: {{domxref("Document/paste_event", "paste")}}
+- This event on {{domxref("Window")}} targets: {{domxref("Window/paste_event", "paste")}}

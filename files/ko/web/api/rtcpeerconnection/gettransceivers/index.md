@@ -1,46 +1,56 @@
 ---
-title: RTCPeerConnection.getTransceivers()
+title: "RTCPeerConnection: getTransceivers() method"
+short-title: getTransceivers()
 slug: Web/API/RTCPeerConnection/getTransceivers
+page-type: web-api-instance-method
+browser-compat: api.RTCPeerConnection.getTransceivers
 ---
+
 {{APIRef("WebRTC")}}
 
-{{domxref("RTCPeerConnection")}} 인터페이스의 **`getTransceivers()`** 메소드는 연결에서 데이터 전송 및 수신에 사용되는 {{domxref("RTCRtpTransceiver")}} 객체의 리스트를 반환합니다.
+The {{domxref("RTCPeerConnection")}} interface's
+**`getTransceivers()`** method returns a list of the
+{{domxref("RTCRtpTransceiver")}} objects being used to send and receive data on the
+connection.
 
 ## Syntax
 
-```js
-transceiverList = RTCPeerConnection.getTransceivers();
+```js-nolint
+getTransceivers()
 ```
 
-### 매개변수
+### Parameters
 
-없음.
+None.
 
-### 반환 값
+### Return value
 
-`RTCPeerConnection`에 대한 모든 미디어의 전송/수신을 관리하는 트랜시버를 나타내는 {{domxref("RTCRtpTransceiver")}} 객체의 배열입니다. 리스트의 순서는 트랜시버가 연결에 추가된 순서대로 정렬되어있습니다.
+An array of the {{domxref("RTCRtpTransceiver")}} objects representing the transceivers
+handling sending and receiving all media on the `RTCPeerConnection`. The list
+is in the order in which the transceivers were added to the connection.
 
-## 예시
+## Examples
 
-아래 코드는 `RTCPeerConnection`와 연관된 모든 트랜시버를 중지시킵니다.
+The following snippet of code stops all transceivers associated with an
+`RTCPeerConnection`.
 
 ```js
-pc.getTransceivers.forEach(transceiver => {
+pc.getTransceivers().forEach((transceiver) => {
   transceiver.stop();
 });
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
-- [WebRTC API](/ko/docs/Web/API/WebRTC_API)
-- [Signaling and video calling](/ko/docs/Web/API/WebRTC_API/Signaling_and_video_calling)
+- [WebRTC API](/en-US/docs/Web/API/WebRTC_API)
+- [Signaling and video calling](/en-US/docs/Web/API/WebRTC_API/Signaling_and_video_calling)
 - {{domxref("RTCPeerConnection.addTransceiver()")}}
 - {{jsxref("Array.forEach()")}}

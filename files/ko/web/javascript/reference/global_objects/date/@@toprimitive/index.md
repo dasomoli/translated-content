@@ -1,37 +1,51 @@
 ---
-title: Date.prototype[@@toPrimitive]
+title: Date.prototype[@@toPrimitive]()
 slug: Web/JavaScript/Reference/Global_Objects/Date/@@toPrimitive
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.@@toPrimitive
 ---
 
 {{JSRef}}
 
-**`[@@toPrimitive]()`** 메서드는 `Date` 개체를 원시 값으로 변환합니다.
+The **`[@@toPrimitive]()`** method converts a `Date`
+object to a primitive value.
 
 {{EmbedInteractiveExample("pages/js/date-toprimitive.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 Date()[Symbol.toPrimitive](hint)
 ```
 
-### 반환 값
+### Return value
 
-{{jsxref("Date")}} 객체로부터 받은 원시 값. 인수에 따라서, 메서드는 문자열이나 숫자를 반환할 수 있습니다.
+The primitive value of the given {{jsxref("Date")}} object. Depending on the argument,
+the method can return either a string or a number.
 
-## 설명
+## Description
 
-{{jsxref("Date")}} 객체의 `[@@toPrimitive]()` 메서드는 숫자 형식이나 문자열 형식인 원시 값을 반환합니다.
+The `[@@toPrimitive]()` method of the {{jsxref("Date")}} object returns a
+primitive value, that is either of type number or of type string.
 
-`hint`가 `string`이나 `default`이면, `[@@toPrimitive]()`는 {{jsxref("Object.prototype.toString()", "toString")}} 메서드를 호출하려고 합니다. `toString` 속성이 존재하지 않다면, {{jsxref("Object.prototype.valueOf()", "valueOf")}} 메서드를 호출하려 할 것이고 `valueOf`이 존재하지 않다면, `[@@toPrimitive]()`는 {{jsxref("TypeError")}}를 발생시킵니다.
+If `hint` is `string` or `default`,
+`[@@toPrimitive]()` tries to call the {{jsxref("Object.prototype.toString()",
+  "toString")}} method. If the `toString` property does not exist, it tries to
+call the {{jsxref("Object.prototype.valueOf()", "valueOf")}} method and if the
+`valueOf` does not exist either, `[@@toPrimitive]()` throws a
+{{jsxref("TypeError")}}.
 
-`hint`가 `number`이면, `[@@toPrimitive]()`는 한 번 `valueOf`를 호출하려고 시도합니다, 그리고 실패한다면, `toString`를 호출합니다.
+If `hint` is `number`, `[@@toPrimitive]()` first tries
+to call `valueOf`, and if that fails, it calls `toString`.
 
-JavaScript는 `[@@toPrimitive]()` 메서드를 원시 값으로 변환하기 위해 호출합니다. 당신은 `[@@toPrimitive]()` 메서드를 호출할 필요가 거의 없습니다. JavaScript가 원시 값이 예상되는 객체를 발견할 때 자동으로 호출합니다.
+JavaScript calls the `[@@toPrimitive]()` method to convert an object to a
+primitive value. You rarely need to invoke the `[@@toPrimitive]()` method
+yourself; JavaScript automatically invokes it when encountering an object where a
+primitive value is expected.
 
-## 예제
+## Examples
 
-### 원시 날짜 반환
+### Returning date primitives
 
 ```js
 const testDate = new Date(1590757517834);
@@ -47,14 +61,14 @@ testDate[Symbol.toPrimitive]("default");
 // Returns "Date Fri May 29 2020 14:05:17 GMT+0100 (British Summer Time)"
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Symbol.toPrimitive")}}

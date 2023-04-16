@@ -1,34 +1,74 @@
 ---
-title: Notification.permission
+title: "Notification: permission static property"
+short-title: permission
 slug: Web/API/Notification/permission
+page-type: web-api-static-property
+browser-compat: api.Notification.permission
 ---
+
 {{APIRef("Web Notifications")}}{{AvailableInWorkers}}{{securecontext_header}}
 
-`permission` 속성은 웹 알림에 있어서 사용자에 의해 현재 앱에 허가된 현재 권한을 가리킵니다.
+The `permission` read-only property of the {{domxref("Notification")}}
+interface indicates the current permission granted by the user for the current origin to
+display web notifications.
 
-## 구문
+## Value
+
+A string representing the current permission. The value can be:
+
+- `granted`
+  - : The user has explicitly granted permission for the current
+    origin to display system notifications.
+- `denied`
+  - : The user has explicitly denied permission for the current
+    origin to display system notifications.
+- `default`
+  - : The user decision is unknown; in this case the application
+    will act as if permission was `denied`.
+
+## Examples
+
+The following snippet could be used if you wanted to first check whether notifications
+are supported, then check if permission has been granted for the current origin to send
+notifications, then request permission if required, before then sending a notification.
 
 ```js
-var permission = Notification.permission;
+function notifyMe() {
+  if (!("Notification" in window)) {
+    // Check if the browser supports notifications
+    alert("This browser does not support desktop notification");
+  } else if (Notification.permission === "granted") {
+    // Check whether notification permissions have already been granted;
+    // if so, create a notification
+    const notification = new Notification("Hi there!");
+    // …
+  } else if (Notification.permission !== "denied") {
+    // We need to ask the user for permission
+    Notification.requestPermission().then((permission) => {
+      // If the user accepts, let's create a notification
+      if (permission === "granted") {
+        const notification = new Notification("Hi there!");
+        // …
+      }
+    });
+  }
+
+  // At last, if the user has denied notifications, and you
+  // want to be respectful there is no need to bother them anymore.
+}
 ```
 
-### 값
-
-다음은 현재 권한을 표현하는 문자열입니다.
-
-- `granted`: 사용자가 의도하여 어플리케이션이 알림을 보낼 수 있도록 허가.
-- `denied`: 사용자가 의도하여 어플리케이션이 알림을 보내는 것을 거부.
-- `default`: 사용자의 결정은 알 수 없으나, 어플리케이션 기본적으로 denied 와 같이 동작할 것 입니다.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{domxref("Notification")}}
-- [Using Web Notifications](/ko/docs/WebAPI/Using_Web_Notifications)
+- [Notifications API](/en-US/docs/Web/API/Notifications_API)
+- [Using the Notifications API](/en-US/docs/Web/API/Notifications_API/Using_the_Notifications_API)
+- [Permissions API](/en-US/docs/Web/API/Permissions_API)
+- [Using the Permissions API](/en-US/docs/Web/API/Permissions_API/Using_the_Permissions_API)

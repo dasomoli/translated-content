@@ -1,78 +1,96 @@
 ---
-title: <option>
+title: "<option>: The HTML Option element"
 slug: Web/HTML/Element/option
+page-type: html-element
+browser-compat: html.elements.option
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<option>` 요소**는 {{HTMLElement("select")}}, {{HTMLElement("optgroup")}}, {{HTMLElement("datalist")}} 요소의 항목을 정의합니다. 그러므로, `<option>`을 사용해 팝업 메뉴 등 목록에서 하나의 항목을 나타낼 수 있습니다.
+The **`<option>`** [HTML](/en-US/docs/Web/HTML) element is used to define an item contained in a {{HTMLElement("select")}}, an {{HTMLElement("optgroup")}}, or a {{HTMLElement("datalist")}} element. As such, `<option>` can represent menu items in popups and other lists of items in an HTML document.
 
 {{EmbedInteractiveExample("pages/tabbed/option.html", "tabbed-standard")}}
 
-<p class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</p>
+## Attributes
+
+This element includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
+
+- `disabled`
+  - : If this Boolean attribute is set, this option is not checkable. Often browsers grey out such control and it won't receive any browsing event, like mouse clicks or focus-related ones. If this attribute is not set, the element can still be disabled if one of its ancestors is a disabled {{HTMLElement("optgroup")}} element.
+- `label`
+  - : This attribute is text for the label indicating the meaning of the option. If the `label` attribute isn't defined, its value is that of the element text content.
+- `selected`
+  - : If present, this Boolean attribute indicates that the option is initially selected. If the `<option>` element is the descendant of a {{HTMLElement("select")}} element whose [`multiple`](/en-US/docs/Web/HTML/Element/select#multiple) attribute is not set, only one single `<option>` of this {{HTMLElement("select")}} element may have the `selected` attribute.
+- `value`
+  - : The content of this attribute represents the value to be submitted with the form, should this option be selected. If this attribute is omitted, the value is taken from the text content of the option element.
+
+## Styling with CSS
+
+Styling the **`<option>`** element is highly limited. Options don't inherit the font set on the parent. In Firefox, only [`color`](/en-US/docs/Web/CSS/color) and [`background-color`](/en-US/docs/Web/CSS/background-color) can be set, however in Safari it's not possible to set any properties. You can find more details about styling in [our guide to advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling).
+
+## Examples
+
+See {{HTMLElement("select")}} for examples.
+
+## Technical summary
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
       </th>
-      <td>없음.</td>
+      <td>None.</td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
       <td>
-        텍스트. 이스케이프 처리한 문자(<code>&#x26;eacute;</code> 등)도 가능.
+        Text, possibly with escaped characters (like
+        <code>&#x26;eacute;</code>).
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
+      <th scope="row">Tag omission</th>
       <td>
-        여는 태그는 필수입니다. 바로 뒤따르는 요소가
-        {{htmlelement("optgroup")}}, 다른
-        <code>&#x3C;option></code>이거나, 자신이 부모의 마지막 자식이라면 닫는
-        태그를 생략할 수 있습니다.
+        The start tag is mandatory. The end tag is optional if this element is
+        immediately followed by another <code>&#x3C;option></code> element or an
+        {{HTMLElement("optgroup")}}, or if the parent element has no
+        more content.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Permitted parents</th>
       <td>
-        {{HTMLElement("select")}}, {{HTMLElement("optgroup")}},
-        {{HTMLElement("datalist")}} 요소.
+        A {{HTMLElement("select")}}, an
+        {{HTMLElement("optgroup")}} or a
+        {{HTMLElement("datalist")}} element.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>없음</td>
+      <th scope="row">Implicit ARIA role</th>
+      <td><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/option_role"><code>option</code></a></td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>No <code>role</code> permitted</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLOptionElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
-
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)을 포함합니다.
-
-- {{htmlattrdef("disabled")}}
-  - : 지정한 경우 이 옵션을 선택할 수 없습니다. 브라우저에서, 비활성화 옵션은 주로 회색으로 보이며, 클릭과 포커스 등 모든 이벤트를 받지 않습니다. `<option>`에 `disabled` 특성을 추가하지 않더라도, {{HTMLElement("optgroup")}} 등 조상 요소로 인해 비활성화될 수 있습니다.
-- {{htmlattrdef("label")}}
-  - : 옵션의 뜻을 나타내는 텍스트. 지정하지 않은 경우, 요소의 텍스트 콘텐츠를 대신 사용합니다.
-- {{htmlattrdef("selected")}}
-  - : 지정한 경우 초기에 이 옵션을 선택한 상태로 설정합니다. {{htmlattrxref("multiple", "select")}}를 지정하지 않은 {{HTMLElement("select")}} 요소의 자손인 경우, 하나의 `<option>`만 `selected` 특성을 가질 수 있습니다.
-- {{htmlattrdef("value")}}
-  - : 양식 데이터를 구성할 때 사용할 값. 지정하지 않은 경우, 요소의 텍스트 콘텐츠를 대신 사용합니다.
-
-## 예제
-
-{{HTMLElement("select")}} 요소를 참고하세요.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- Other form-related elements: {{HTMLElement("form")}}, {{HTMLElement("legend")}}, {{HTMLElement("label")}}, {{HTMLElement("button")}}, {{HTMLElement("select")}}, {{HTMLElement("datalist")}}, {{HTMLElement("optgroup")}}, {{HTMLElement("fieldset")}}, {{HTMLElement("textarea")}}, {{HTMLElement("keygen")}}, {{HTMLElement("input")}}, {{HTMLElement("output")}}, {{HTMLElement("progress")}} and {{HTMLElement("meter")}}.

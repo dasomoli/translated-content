@@ -1,14 +1,13 @@
 ---
 title: Pixel
 slug: Glossary/Pixel
+page-type: glossary-definition
 ---
 
-픽셀(pixel)은 컴퓨터 화면과 같은 그래픽 디스플레이의 가장 작은 구성 단위이다.
+A pixel is the smallest building block of a graphical display like a computer screen.
 
-디스플레이 해상도는 픽셀 단위로 표시된다. 예를 들어: "800 x 600" 픽셀 해상도는 폭 800 픽셀, 높이 600 픽셀을 표시할 수 있음을 의미한다.
+Display resolution is expressed in the unit of pixels. For example, a "800 x 600" pixel resolution means that 800 pixels can be displayed in width and 600 pixels in height.
 
-## 더 알아보기
+## See also
 
-### 기술적 참조
-
-- Wikipedia의 [Pixel](https://en.wikipedia.org/wiki/Pixel)
+- [Pixel](https://en.wikipedia.org/wiki/Pixel) on Wikipedia

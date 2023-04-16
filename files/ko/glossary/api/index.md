@@ -1,25 +1,21 @@
 ---
 title: API
 slug: Glossary/API
+page-type: glossary-definition
 ---
 
-API(Application Programming Interface)는 소프트웨어 프로그램(애플리케이션) 내부에 존재하는 기능 및 규칙의 집합이다. API는 Human User Interface와 달리 소프트웨어를 통해 상호작용할 수 있다. 즉, API는 API를 제공하는 애플리케이션과 서드파티 소프트웨어 및 하드웨어 등의 것들 사이의 간단한 계약(인터페이스)이라고도 볼 수 있다.
+An API (Application Programming Interface) is a set of features and rules that exist inside a software program (the application) enabling interaction with it through software - as opposed to a human user interface. The API can be seen as a simple contract (the interface) between the application offering it and other items, such as third party software or hardware.
 
-웹 개발에서 보통 API는 개발자가 앱을 통해 사용자의 웹 브라우저에서 상호작용할 수 있도록 하는 코드 기능들( e.g. {{glossary("method","methods")}}, {{Glossary("property","properties")}}, 이벤트, {{Glossary("URL","URLs")}}), 사용자의 컴퓨터 상에 있는 다른 소프트웨어 및 하드웨어, 또는 서드파티 웹사이트나 서비스의 집합을 의미한다.
+In Web development, an API is generally a set of code features (e.g. {{glossary("method","methods")}}, {{Glossary("property","properties")}}, events, and {{Glossary("URL","URLs")}}) that a developer can use in their apps for interacting with components of a user's web browser, or other software/hardware on the user's computer, or third party websites and services.
 
-예를 들면 다음과 같다:
+For example:
 
-- [getUserMedia API](/ko/docs/Web/API/MediaDevices/getUserMedia)는 사용자의 웹캠으로부터 오디오나 비디오를 감지하고, 이를 개발자가 원하는대로 사용할 수 있게끔 하는 API다. 예를 들자면 비디오 및 오디오 녹음하기, 컨퍼런스 콜에서 다른 유저들에게 방송하기, 비디오에서 스틸 이미지 캡쳐하기 등을 할 수 있다.
-- [Geolocation API](/ko/docs/Web/API/Geolocation)는 사용자의 디바이스에서 위치 정보를 제공할 수 있는 모든 종류의 서비스로부터 위치 정보를 반환한다. 이는 [Google Maps API](https://developers.google.com/maps/)와 결합하여 사용자의 정보를 커스텀 지도에서 나타내거나, 현재 위치 근처에 어떤 관광 명소가 있는지를 보여주는 등에 사용될 수 있다.
-- [Twitter API](https://dev.twitter.com/overview/api)는 가장 최근 트윗을 웹 페이지에서 보여주는 등, 사용자의 트위터 계정에서 정보를 반환하는 데에 쓸 수 있다.
-- [Web Animations API](/ko/docs/Web/API/Web_Animations_API)는 예를 들어 이미지를 여기저기 움직이거나 회전시키는 등, 웹 페이지 일부를 움직이도록 하는 데에 쓸 수 있다.
+- The [getUserMedia](/en-US/docs/Web/API/MediaDevices/getUserMedia) API can be used to grab audio and video from a user's webcam, which can then be used in any way the developer likes, for example, recording video and audio, broadcasting it to another user in a conference call, or capturing image stills from the video.
+- The [Geolocation API](/en-US/docs/Web/API/Geolocation) can be used to retrieve location information from whatever service the user has available on their device (e.g. GPS), which can then be used in conjunction with the [Google Maps APIs](https://developers.google.com/maps/) to plot the user's location on a custom map and show them what tourist attractions are in their area.
+- The [Twitter APIs](https://developer.twitter.com/en/docs) can be used to retrieve data from a user's twitter accounts, for example, to display their latest tweets on a web page.
+- The [Web Animations API](/en-US/docs/Web/API/Web_Animations_API) can be used to animate parts of a web page — for example, to make images move around or rotate.
 
-## Learn more
+## See also
 
-### General knowledge
-
-- [API](https://ko.wikipedia.org/wiki/API) on Wikipedia
-
-### Technical reference
-
-- [Web API reference](/ko/docs/Web/API)
+- [API](https://en.wikipedia.org/wiki/API) on Wikipedia
+- [Web API reference](/en-US/docs/Web/API)

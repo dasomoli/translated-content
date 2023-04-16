@@ -2,49 +2,41 @@
 title: substring-after
 slug: Web/XPath/Functions/substring-after
 ---
+
 {{ XsltRef() }}
 
-`substring-after` 함수는 첫 번째 인수에서 두 번째 인수가 나타난 다음의 나머지를 반환합니다.
+The `substring-after` function returns a string that is the rest of a given string after a given substring.
 
-### 구문
+### Syntax
 
 ```
-substring-after(haystack ,needle )
+substring-after( haystack, needle )
 ```
 
-### 인수
+### Arguments
 
 - `haystack`
-  - : 평가할 문자열. 이 문자열의 부분이 반환됩니다.
+  - : The string to be evaluated. Part of this string will be returned.
 - `needle`
-  - : 찾을 부분 문자열.
-    `haystack`
-    에서
-    `needle`
-    의 첫 출현 뒤의 문자열이 반환됩니다.
+  - : The substring to search for. Everything after the first occurrence of `needle` in `haystack` will be returned.
 
-### 반환
+### Returns
 
-문자열.
+A string.
 
-### 주의
+### Examples
 
-XSL 예:
+| XPath Example                  | Output         |
+| ------------------------------ | -------------- |
+| `substring-after('aa-bb','-')` | `bb`           |
+| `substring-after('aa-bb','a')` | `a-bb`         |
+| `substring-after('aa-bb','b')` | `b`            |
+| `substring-after('aa-bb','q')` | (empty string) |
 
-```
-<xsl:value-of select="substring-after('1999/04/01','/')" />
-```
+### Defined
 
-출력
+[XPath 1.0 4.2](https://www.w3.org/TR/1999/REC-xpath-19991116/#function-substring-after)
 
-```
-04/01
-```
+### Gecko support
 
-### 정의
-
-[XPath 1.0 4.2](http://www.w3.org/TR/xpath#function-substring-after)
-
-### Gecko 지원
-
-지원함.
+Supported.

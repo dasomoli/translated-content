@@ -1,34 +1,55 @@
 ---
 title: blur()
 slug: Web/CSS/filter-function/blur
-original_slug: Web/CSS/filter-function/blur()
+page-type: css-function
+browser-compat: css.types.filter-function.blur
 ---
 
-{{cssref}}
+{{CSSRef}}
 
-**`blur()`** [CSS](/ko/docs/Web/CSS) 함수는 주어진 이미지에 [가우시안 블러](https://en.wikipedia.org/wiki/Gaussian_blur)를 적용합니다. 반환 값은 {{cssxref("&lt;filter-function&gt;")}}입니다.
+The **`blur()`** [CSS](/en-US/docs/Web/CSS) [function](/en-US/docs/Web/CSS/CSS_Functions) applies a [Gaussian blur](https://en.wikipedia.org/wiki/Gaussian_blur) to the input image. Its result is a {{cssxref("&lt;filter-function&gt;")}}.
 
 {{EmbedInteractiveExample("pages/css/function-blur.html")}}
 
-## 구문
+## Syntax
 
-```
+```css
 blur(radius)
 ```
 
-### 매개변수
+### Parameters
 
 - `radius`
-  - : {{cssxref("&lt;length&gt;")}}로 지정한 블러 효과의 지름. 가우시안 함수의 표준 편차, 즉 화면에 보이는 픽셀의 색상이 어느 범위까지 섞일지를 지정합니다. 따라서 큰 값은 이미지를 더 흐리게 만듭니다. `0`은 주어진 입력 결과를 그대로 반환합니다. 보간 시, 누락 값은 0입니다.
+  - : The radius of the blur, specified as a {{cssxref("&lt;length&gt;")}}. It defines the value of the standard deviation to the Gaussian function, i.e., how many pixels on the screen blend into each other; thus, a larger value will create more blur. A value of `0` leaves the input unchanged. The initial value for {{Glossary("interpolation")}} is `0`.
 
-## 예제
+## Examples
+
+### Setting a blur with pixels and with rem
 
 ```css
-blur(0)        /* 변화 없음 */
-blur(8px)      /* 8px 블러 */
-blur(1.17rem)  /* 1.17rem 블러 */
+blur(0)        /* No effect */
+blur(8px)      /* Blur with 8px radius */
+blur(1.17rem)  /* Blur with 1.17rem radius */
 ```
 
-## 같이 보기
+## Specifications
 
-- {{cssxref("&lt;filter-function&gt;")}}
+{{Specifications}}
+
+## Browser compatibility
+
+{{Compat}}
+
+## See also
+
+The other {{cssxref("&lt;filter-function&gt;")}} functions available to be used in values of the {{cssxref("filter")}} and {{cssxref("backdrop-filter")}} properties include:
+
+- {{cssxref("filter-function/brightness", "brightness()")}}
+- {{cssxref("filter-function/contrast", "contrast()")}}
+- {{cssxref("filter-function/drop-shadow", "drop-shadow()")}}
+- {{cssxref("filter-function/grayscale", "grayscale()")}}
+- {{cssxref("filter-function/hue-rotate", "hue-rotate()")}}
+- {{cssxref("filter-function/invert", "invert()")}}
+- {{cssxref("filter-function/opacity", "opacity()")}}
+- {{cssxref("filter-function/saturate", "saturate()")}}
+- {{cssxref("filter-function/sepia", "sepia()")}}

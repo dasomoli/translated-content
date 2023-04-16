@@ -1,70 +1,79 @@
 ---
-title: AbortController.abort()
+title: "AbortController: abort() method"
+short-title: abort()
 slug: Web/API/AbortController/abort
+page-type: web-api-instance-method
+browser-compat: api.AbortController.abort
 ---
 
-{{APIRef("DOM")}}{{SeeCompatTable}}
+{{APIRef("DOM")}}
 
-{{domxref("AbortController")}} 인터페이스의 **`abort()`** 메소드는 DOM 요청(Fetch 요청과 같은)이 완료되기 전에 취소한다. 이를 통해 [fetch 요청](/ko/docs/Web/API/WindowOrWorkerGlobalScope/fetch), 모든 응답 {{domxref("Body")}} 소비, 스트림을 취소할 수 있다.
+The **`abort()`** method of the {{domxref("AbortController")}} interface aborts a DOM request before it has completed.
+This is able to abort [fetch requests](/en-US/docs/Web/API/fetch), the consumption of any response bodies, or streams.
 
-## 구문
+## Syntax
 
-```js
-controller.abort();
+```js-nolint
+abort()
+abort(reason)
 ```
 
-### 파라미터
+### Parameters
 
-없음.
+- `reason` {{optional_inline}}
+  - : The reason why the operation was aborted, which can be any JavaScript value.
+    If not specified, the reason is set to "AbortError" {{domxref("DOMException")}}.
 
-### 반환 값
+### Return value
 
-Void.
+None ({{jsxref("undefined")}}).
 
-## 예제
+## Examples
 
-다음 스니펫에서는 [Fetch API](/ko/docs/Web/API/Fetch_API)를 사용해 비디오를 다운로드하는 것을 목표로 한다.
+In the following snippet, we aim to download a video using the [Fetch API](/en-US/docs/Web/API/Fetch_API).
 
-먼저 {{domxref("AbortController.AbortController","AbortController()")}} 생성자를 사용해 컨트롤러를 {{domxref("AbortController.signal")}} 프로퍼티를 사용해 {{domxref("AbortSignal")}} 객체와 관계된 참조를 얻는다.
+We first create a controller using the {{domxref("AbortController.AbortController","AbortController()")}} constructor, then grab a reference to its associated {{domxref("AbortSignal")}} object using the {{domxref("AbortController.signal")}} property.
 
-[Fetch 요청](/ko/docs/Web/API/WindowOrWorkerGlobalScope/fetch)을 시작할 때, 요청의 옵션 객체 내부에 `AbortSignal` 옵션을 전달한다(아래의 `{signal}` 참고). 이것은 신호와 컨트롤러를 fetch 요청과 관계짓고, 아래의 두 번째 이벤트 리스너에서 보여주듯이 {{domxref("AbortController.abort()")}}를 호출하여 이를 취소할 수 있게한다.
+When the [fetch request](/en-US/docs/Web/API/fetch) is initiated, we pass in the `AbortSignal` as an option inside the request's options object (the `{signal}` below). This associates the signal and controller with the fetch request and allows us to abort it by calling {{domxref("AbortController.abort()")}}, as seen below in the second event listener.
 
 ```js
-var controller = new AbortController();
-var signal = controller.signal;
+const controller = new AbortController();
+const signal = controller.signal;
 
-var downloadBtn = document.querySelector('.download');
-var abortBtn = document.querySelector('.abort');
+const url = "video.mp4";
+const downloadBtn = document.querySelector(".download");
+const abortBtn = document.querySelector(".abort");
 
-downloadBtn.addEventListener('click', fetchVideo);
+downloadBtn.addEventListener("click", fetchVideo);
 
-abortBtn.addEventListener('click', function() {
+abortBtn.addEventListener("click", () => {
   controller.abort();
-  console.log('Download aborted');
+  console.log("Download aborted");
 });
 
 function fetchVideo() {
-  ...
-  fetch(url, {signal}).then(function(response) {
-    ...
-  }).catch(function(e) {
-    reports.textContent = 'Download error: ' + e.message;
-  })
+  fetch(url, { signal })
+    .then((response) => {
+      console.log("Download complete", response);
+    })
+    .catch((err) => {
+      console.error(`Download error: ${err.message}`);
+    });
 }
 ```
 
-> **참고:** `abort()`가 호출되면, `fetch()` promise는 <code dir="ltr">AbortError</code>과 함께 reject된다.
+> **Note:** When `abort()` is called, the `fetch()` promise rejects with an `Error` of type `DOMException`, with name `AbortError`.
 
-동작하는 완전한 예제는 GitHub에서 확인 할 수 있다 — [abort-api](https://github.com/mdn/dom-examples/tree/master/abort-api) 참고([라이브 실행도 확인할 수 있다](https://mdn.github.io/dom-examples/abort-api/)).
+You can find a [full working example on GitHub](https://github.com/mdn/dom-examples/tree/main/abort-api); you can also see it [running live](https://mdn.github.io/dom-examples/abort-api/).
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 보기
+## See also
 
-- [Fetch API](/ko/docs/Web/API/Fetch_API)
+- [Fetch API](/en-US/docs/Web/API/Fetch_API)

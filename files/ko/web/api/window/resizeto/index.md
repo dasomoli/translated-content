@@ -1,46 +1,60 @@
 ---
-title: Window.resizeTo()
+title: "Window: resizeTo() method"
+short-title: resizeTo()
 slug: Web/API/Window/resizeTo
+page-type: web-api-instance-method
+browser-compat: api.Window.resizeTo
 ---
 
 {{APIRef}}
 
-**`Window.resizeTo()`** 메서드는 동적으로 창의 크기를 변경합니다.
+The **`Window.resizeTo()`** method dynamically resizes the
+window.
 
-## 구문
+## Syntax
 
-```js
-window.resizeTo(width, height)
+```js-nolint
+resizeTo(width, height)
 ```
 
-### 매개변수
+### Parameters
 
 - `width`
-  - : 새로운 {{domxref("window.outerWidth","outerWidth")}}를 나타내는 픽셀 단위 정수. 스크롤 바, 제목 표시줄 등을 모두 포함한 너비입니다.
+  - : An integer representing the new {{domxref("window.outerWidth","outerWidth")}} in
+    pixels (including scroll bars, title bars, etc.).
 - `height`
-  - : 새로운 {{domxref("window.outerHeight","outerHeight")}}를 나타내는 픽셀 단위 정수. 스크롤 바, 제목 표시줄 등을 모두 포함한 높이입니다.
+  - : An integer value representing the new
+    {{domxref("window.outerHeight","outerHeight")}} in pixels (including scroll bars,
+    title bars, etc.).
 
-## 예제
+### Return value
 
-다음 함수는 창의 크기를 화면에서 사용 가능한 크기의 1/4로 설정합니다. {{domxref("Screen.availWidth")}}, {{domxref("Screen.availHeight")}} 속성도 참고하세요.
+None ({{jsxref("undefined")}}).
+
+## Examples
+
+This function resizes the window so that it takes up one quarter of the available
+screen. See the {{domxref("Screen.availWidth")}} and {{domxref("Screen.availHeight")}}
+properties.
 
 ```js
 function quarter() {
-  window.resizeTo(
-    window.screen.availWidth / 2,
-    window.screen.availHeight / 2
-  );
+  window.resizeTo(window.screen.availWidth / 2, window.screen.availHeight / 2);
 }
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+Note: It's not possible to resize a window or tab that wasn't created by
+**`window.open()`**. It's also not possible to resize when the
+window has multiple tabs.
+
+## See also
 
 - {{domxref("window.resizeBy()")}}

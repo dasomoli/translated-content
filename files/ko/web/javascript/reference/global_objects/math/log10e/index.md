@@ -1,25 +1,31 @@
 ---
 title: Math.LOG10E
 slug: Web/JavaScript/Reference/Global_Objects/Math/LOG10E
+page-type: javascript-static-data-property
+browser-compat: javascript.builtins.Math.LOG10E
 ---
 
 {{JSRef}}
 
-**`Math.LOG10E`** 속성은 e의 로그 10 값, 약 0.434의 값을 가집니다.
+The **`Math.LOG10E`** static data property represents the base 10 logarithm of [e](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/E), approximately 0.434.
 
-<math display="block"><semantics><mrow><mstyle mathvariant="monospace"><mi>Math.LOG10E</mi></mstyle><mo>=</mo><msub><mo lspace="0em" rspace="0em">log</mo><mn>10</mn></msub><mo stretchy="false">(</mo><mi>e</mi><mo stretchy="false">)</mo><mo>≈</mo><mn>0.434</mn></mrow><annotation encoding="TeX">\mathtt{\mi{Math.LOG10E}} = \log_10(e) \approx 0.434</annotation></semantics></math>
+{{EmbedInteractiveExample("pages/js/math-log10e.html", "shorter")}}
 
-{{EmbedInteractiveExample("pages/js/math-log10e.html")}}{{js_property_attributes(0, 0, 0)}}
+## Value
 
-## 설명
+<math display="block"><semantics><mrow><mi>𝙼𝚊𝚝𝚑.𝙻𝙾𝙶𝟷𝟶𝙴</mi><mo>=</mo><msub><mo lspace="0em" rspace="0em">log</mo><mn>10</mn></msub><mo stretchy="false">(</mo><mi mathvariant="normal">e</mi><mo stretchy="false">)</mo><mo>≈</mo><mn>0.434</mn></mrow><annotation encoding="TeX">\mathtt{\mi{Math.LOG10E}} = \log\_{10}(\mathrm{e}) \approx 0.434</annotation></semantics></math>
 
-`LOG10E`는 `Math`의 정적 속성이므로, 사용자가 생성한 `Math` 객체의 속성으로 접근할 수 없고 항상 `Math.LOG10E`를 사용해야 합니다. (`Math`는 생성자가 아닙니다)
+{{js_property_attributes(0, 0, 0)}}
 
-## 예제
+## Description
 
-### `Math.LOG10E` 사용하기
+Because `LOG10E` is a static property of `Math`, you always use it as `Math.LOG10E`, rather than as a property of a `Math` object you created (`Math` is not a constructor).
 
-다음 함수는 e의 로그 10 값을 반환합니다.
+## Examples
+
+### Using Math.LOG10E
+
+The following function returns the base 10 logarithm of e:
 
 ```js
 function getLog10e() {
@@ -29,15 +35,15 @@ function getLog10e() {
 getLog10e(); // 0.4342944819032518
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
 - {{jsxref("Math.exp()")}}
 - {{jsxref("Math.log()")}}

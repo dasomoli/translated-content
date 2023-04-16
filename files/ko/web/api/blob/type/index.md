@@ -1,25 +1,30 @@
 ---
-title: Blob.type
+title: "Blob: type property"
+short-title: type
 slug: Web/API/Blob/type
+page-type: web-api-instance-property
+browser-compat: api.Blob.type
 ---
 
 {{APIRef("File API")}}
 
-{{domxref("Blob")}} 객체의 **`type`** 속성은 데이터의 {{Glossary("MIME type", "MIME 유형")}}을 반환합니다.
+The **`type`** property of a {{domxref("Blob")}} object returns the {{Glossary("MIME type")}} of the file.
 
-## 값
+## Value
 
-파일의 MIME 유형을 나타내는 {{domxref("DOMString")}}. 유형을 알아낼 수 없는 경우 빈 문자열입니다.
+A string containing the file's MIME type, or an empty string if the
+type could not be determined.
 
-## 예제
+## Examples
 
-이 예제는 사용자가 선택한 모든 파일 각각에 대해, 허용된 이미지 파일 유형 중 하나인지 검사합니다.
+This example asks the user to select a number of files, then checks each file to make
+sure it's one of a given set of image file types.
 
 ### HTML
 
 ```html
-<input type="file" id="input" multiple>
-<output id="output">이미지 파일 선택...</output>
+<input type="file" id="input" multiple />
+<output id="output">Choose image files…</output>
 ```
 
 ```css hidden
@@ -32,41 +37,42 @@ output {
 ### JavaScript
 
 ```js
-// 우리 애플리케이션에서는 GIF, PNG, JPEG 이미지만 허용
+// Our application only allows GIF, PNG, and JPEG images
 const allowedFileTypes = ["image/png", "image/jpeg", "image/gif"];
 
-const input = document.getElementById('input');
-const output = document.getElementById('output');
+const input = document.getElementById("input");
+const output = document.getElementById("output");
 
-input.addEventListener('change', (event) => {
+input.addEventListener("change", (event) => {
   const files = event.target.files;
 
   if (files.length === 0) {
-    output.innerText = '이미지 파일 선택...';
+    output.innerText = "Choose image files…";
     return;
   }
 
-  if (Array.from(files).every((file) => allowedFileTypes.includes(file.type))) {
-    output.innerText = '모든 파일 사용 가능!';
-  } else {
-    output.innerText = '이미지 파일만 선택하세요.';
-  }
+  const allAllowed = Array.from(files).every((file) =>
+    allowedFileTypes.includes(file.type)
+  );
+  output.innerText = allAllowed
+    ? "All files clear!"
+    : "Please choose image files only.";
 });
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample("예제")}}
+{{EmbedLiveSample("Examples")}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("Blob")}}
-- [웹 애플리케이션에서 파일 사용하기](/ko/docs/Web/API/File/Using_files_from_web_applications)
+- [Using files from web applications](/en-US/docs/Web/API/File_API/Using_files_from_web_applications)

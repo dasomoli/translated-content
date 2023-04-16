@@ -1,41 +1,50 @@
 ---
-title: 나머지 할당 (%=)
+title: Remainder assignment (%=)
 slug: Web/JavaScript/Reference/Operators/Remainder_assignment
+page-type: javascript-operator
+browser-compat: javascript.operators.remainder_assignment
 ---
+
 {{jsSidebar("Operators")}}
 
-나머지 할당 연산자(`%=`)는 오른쪽 피연산자의 값으로 변수를 나눴을 때의 나머지를 다시 변수에 할당합니다.
+The **remainder assignment (`%=`)** operator performs [remainder](/en-US/docs/Web/JavaScript/Reference/Operators/Remainder) on the two operands and assigns the result to the left operand.
 
 {{EmbedInteractiveExample("pages/js/expressions-remainder-assignment.html")}}
 
-## 구문
+## Syntax
 
-```js
-x %= y // x = x % y
+```js-nolint
+x %= y
 ```
 
-## 예제
+## Description
 
-### 나머지 할당 사용하기
+`x %= y` is equivalent to `x = x % y`.
+
+## Examples
+
+### Using remainder assignment
 
 ```js
-// bar = 5
-// 위와 같은 변수를 가정할 때
+let bar = 5;
 
-bar %= 2     // 1
-bar %= 'foo' // NaN
-bar %= 0     // NaN
+bar %= 2; // 1
+bar %= "foo"; // NaN
+bar %= 0; // NaN
+
+let foo = 3n;
+foo %= 2n; // 1n
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [JavaScript 안내서의 할당 연산자](/ko/docs/Web/JavaScript/Guide/Expressions_and_Operators#할당_연산자)
-- [나머지 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Remainder)
+- [Assignment operators in the JS guide](/en-US/docs/Web/JavaScript/Guide/Expressions_and_operators#assignment_operators)
+- [Remainder operator](/en-US/docs/Web/JavaScript/Reference/Operators/Remainder)

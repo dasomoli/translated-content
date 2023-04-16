@@ -1,39 +1,46 @@
 ---
-title: Document.doctype
+title: "Document: doctype property"
+short-title: doctype
 slug: Web/API/Document/doctype
+page-type: web-api-instance-property
+browser-compat: api.Document.doctype
 ---
 
 {{ApiRef("DOM")}}
 
-현재 document와 연관된 DTD(Document Type Declaration)를 반환합니다. 반환된 object는 {{domxref("DocumentType")}} 인터페이스를 구현합니다. `DocumentType` 을 작성하려면 {{domxref("DOMImplementation.createDocumentType()")}}를 사용합니다.
+Returns the Document Type Declaration (DTD) associated with current document. The
+returned object implements the {{domxref("DocumentType")}} interface. Use
+{{domxref("DOMImplementation.createDocumentType()")}} to create a
+`DocumentType`.
 
-## Syntax
+- `doctype` is a read-only property.
+
+## Value
+
+A {{domxref("DocumentType")}} object.
+
+## Examples
 
 ```js
-doctype = document.doctype;
-```
+const doctypeObj = document.doctype;
 
-- doctype은 읽기만 가능한 property입니다.
-
-## Example
-
-```js
-var doctypeObj = document.doctype;
-
-console.log(
-  "doctypeObj.name: "           + doctypeObj.name            + "\n" +
-  "doctypeObj.internalSubset: " + doctypeObj.internalSubset  + "\n" +
-  "doctypeObj.publicId: "       + doctypeObj.publicId        + "\n" +
-  "doctypeObj.systemId: "       + doctypeObj.systemId
-);
+console.log(`doctypeObj.name: ${doctypeObj.name}`);
+console.log(`doctypeObj.internalSubset: ${doctypeObj.internalSubset}`);
+console.log(`doctypeObj.publicId: ${doctypeObj.publicId}`);
+console.log(`doctypeObj.systemId: ${doctypeObj.systemId}`);
 ```
 
 ## Notes
 
-현재 document와 연관된 DTD가 없으면, 이 property는 null을 반환합니다.
+The property returns `null` if there is no DTD associated with the current
+document.
 
-DOM level 2는 document type 선언 편집을 지원하지 않습니다. (read-only)
+DOM level 2 doesn't support editing the document type declaration.
 
-## 명세서
+## Specifications
 
 {{Specifications}}
+
+## Browser compatibility
+
+{{Compat}}

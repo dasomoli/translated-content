@@ -1,39 +1,55 @@
 ---
 title: menus.getTargetElement()
 slug: Mozilla/Add-ons/WebExtensions/API/menus/getTargetElement
-original_slug: Mozilla/Add-ons/WebExtensions/API/contextMenus/getTargetElement
+page-type: webextension-api-function
+browser-compat: webextensions.api.menus.getTargetElement
 ---
 
 {{AddonSidebar}}
 
-주어진 `targetElementId`에 해당하는 요소를 돌려준다.
+Returns the element for a given `targetElementId`
 
-이 함수는 오직 클릭된 요소가 있는 문서에서만 동작한다. so everywhere but in the background page.
+This method is available to all extension script contexts (content scripts, background pages and other extension pages) and returns the element for a given `info.targetElementId`, provided that the element still exists in the document where the method is invoked.
 
-## 문법
+The method only works in the document that includes the right-clicked element and the `targetElementId` expires when the user opens another context menu.
 
-```js
+> **Note:** `menus.getTargetElement` only return the requested element if called in the same context as the document that contains the element, for example using content scripts (as shown in the example below).
+
+An extension requires the "menus" permission to use this API.
+
+## Syntax
+
+```js-nolint
 let elem = browser.menus.getTargetElement(targetElementId);
 ```
 
-### 파라메터
+### Parameters
 
 - `targetElementId`
-  - : `{{WebExtAPIRef("menus.onClicked")}}` 핸들러 또는 `{{WebExtAPIRef("menus.onShown")}}` 이벤트에 전달된 `{{WebExtAPIRef("menus.OnClickData")}}` 객체의 속성
+  - : The property of the `{{WebExtAPIRef("menus.OnClickData")}}` object passed to the `{{WebExtAPIRef("menus.onClicked")}}` handler or `{{WebExtAPIRef("menus.onShown")}}` event.
 
-### 반환값
+### Return value
 
-`targetElementId`로 참조되는 요소를 반환한다. `targetElementId`가 유효하지 않으면 `null`를 반환한다.
+The element referred to by the `targetElementId` parameter. If the `targetElementId` parameter is not valid, the method returns `null`.
 
-## 예제
+## Examples
 
-아래 예제는 인수로 전달된 `info.targetElementId` 값으로 요소를 구하고, 그것을 지운다. 하지만 `getTargetElement`는 요소가 있는 문서에서만 동작하므로 문서가 있는 탭에 스크립트를 주입하는 형태로 처리하고 있다.
+The following example uses the `getTargetElement` method to get the element referred to by the `info.targetElementId` property and then removes it.
 
 ```js
 browser.menus.create({
   title: "Remove element",
   documentUrlPatterns: ["*://*/*"],
-  contexts: ["audio", "editable", "frame", "image", "link", "page", "password", "video"],
+  contexts: [
+    "audio",
+    "editable",
+    "frame",
+    "image",
+    "link",
+    "page",
+    "password",
+    "video",
+  ],
   onclick(info, tab) {
     browser.tabs.executeScript(tab.id, {
       frameId: info.frameId,
@@ -45,11 +61,11 @@ browser.menus.create({
 
 {{WebExtExamples}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{WebExtAPIRef("menus.create")}}
 - {{WebExtAPIRef("menus.OnClickData")}}

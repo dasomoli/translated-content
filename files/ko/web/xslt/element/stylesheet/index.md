@@ -1,52 +1,62 @@
 ---
-title: stylesheet
+title: <xsl:stylesheet>
 slug: Web/XSLT/Element/stylesheet
-original_slug: Web/XSLT/stylesheet
+spec-urls: https://www.w3.org/TR/xslt-30/#stylesheet-element
 ---
 
-{{ XsltRef() }}
+{{XSLTRef}}{{QuickLinksWithSubpages("/en-US/docs/Web/XSLT")}}
 
-`<xsl:stylesheet>`(나 동등한 `<xsl:transform>`) 요소는 스타일시트의 최외곽 요소입니다.
+The `<xsl:stylesheet>` element (or the equivalent `<xsl:transform>` element) is the outermost element of a stylesheet.
 
-### 이름공간 선언
+### Namespace Declaration
 
-pseudo 속성은 XSLT 스타일시트로 문서를 식별하기 위해 필요합니다. 대체로 이는 `xmlns:xsl="http://www.w3.org/1999/XSL/Transform"`입니다.
+A pseudo-attribute required to identify the document as an XSLT stylesheet. Typically this is `xmlns:xsl="http://www.w3.org/1999/XSL/Transform"`.
 
-### 문법
+## Syntax
 
-```
+```xml
 <xsl:stylesheet
-  version=NUMBER
+  version="NUMBER"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  id=NAME
-  extension-element-prefixes=LIST-OF-NAMES
-  exclude-result-prefixes=LIST-OF-NAMES>
+  id="NAME"
+  extension-element-prefixes="LIST-OF-NAMES"
+  exclude-result-prefixes="LIST-OF-NAMES">
     ENTIRE STYLESHEET
 </xsl:stylesheet>
 ```
 
-### 필수 속성
+### Required Attributes
 
 - `version`
-  - : 이 스타일시트에 필요한 XSLT의 버전을 지정합니다.
+  - : Specifies the version of XSLT required by this stylesheet.
 
-### 선택 속성
+### Optional Attributes
 
-- `id` (7.0 현재 오직 inline DTD가 명시하여 호출하는 경우만 지원함.)
-  - : 이 스타일시트에 `id`를 지정합니다. 이는 스타일시트를 다른 XML 문서에 포함할 때 가장 자주 씁니다.
-- extension-element-prefixes (지원 안 함.)
-  - : 이 문서의 확장 요소에 빈칸으로 구분한 이름공간 접두사를 지정합니다.
-- exclude-result-prefixes
-  - : 이 문서에 쓸 출력 문서에 보내지 않았으면 하는 이름공간을 지정합니다. 목록은 공백으로 구분합니다.
+- `exclude-result-prefixes`
+  - : Specifies any namespace used in this document that should not be sent to the output document. The list is whitespace separated.
+- `extension-element-prefixes`
+  - : Specifies a space-separated list of any namespace prefixes for extension elements in this document.
+- `default-collation`
+  - : Specifies the default collation used by all {{Glossary("XPath")}} expressions appearing in attributes or text value templates that have the element as an ancestor, unless overridden by another `default-collation` attribute on an inner element. It also determines the collation used by certain XSLT constructs (such as [`<xsl:key>`](/en-US/docs/Web/XSLT/Element/key) and [`<xsl:for-each-group>`](/en-US/docs/Web/XSLT/Element/for-each-group)) within its scope.
+- `default-mode`
+  - : Defines the default value for the `mode` attribute of all [`<xsl:template>`](/en-US/docs/Web/XSLT/Element/template) and [`<xsl:apply-templates>`](/en-US/docs/Web/XSLT/Element/apply-templates) elements within its scope.
+- `default-validation`
+  - : Defines the default value of the `validation` attribute of all relevant instructions appearing within its scope.
+- `expand-text`
+  - : Determines whether descendant text nodes of the element are treated as text value templates.
+- `id`
+  - : Specifies an `id` for this stylesheet. This is most often used when the stylesheet is embedded in another XML document.
+- `input-type-annotations`
+  - : Specifies whether type annotations are stripped from the element so the same results are produced whether the source documents have been validated against a schema or not.
+- `use-when`
+  - : Determines whether the element and all the nodes that have it as ancestor are excluded from the stylesheet.
+- `xpath-default-namespace`
+  - : Specifies the namespace that will be used if the element name is unprefixed or an unprefixed type name within an XPath expression.
 
-### 타입
+### Type
 
-필수 최외곽 스타일시트 요소.
+Required outermost element of stylesheet.
 
-### 정의
+## Specifications
 
-[XSLT section 2.2, Stylesheet Element](http://www.w3.org/TR/xslt#stylesheet-element)
-
-### Gecko 지원
-
-조금 지원. 위 해설을 보세요.
+{{Specifications}}

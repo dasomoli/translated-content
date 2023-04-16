@@ -1,50 +1,63 @@
 ---
-title: HTML 특성 참고서
+title: HTML attribute reference
 slug: Web/HTML/Attributes
+page-type: landing-page
 ---
 
-{{HTMLSidebar}}
+{{HTMLSidebar("Attributes")}}
 
-HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자가 원하는 기준에 맞도록 요소를 설정하거나 다양한 방식으로 요소의 동작을 조절하기 위한 값을 말합니다.
+Elements in HTML have **attributes**; these are additional values that configure the elements or adjust their behavior in various ways to meet the criteria the users want.
 
-## 특성 목록
+## Attribute list
 
 <table class="standard-table">
   <thead>
     <tr>
-      <th>특성 이름</th>
-      <th>요소</th>
-      <th>설명</th>
+      <th>Attribute Name</th>
+      <th>Elements</th>
+      <th>Description</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td><code>accept</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/accept">accept</a></code>
+      </td>
       <td>
         {{ HTMLElement("form") }}, {{ HTMLElement("input") }}
       </td>
-      <td>서버에서 허용하는 유형의 목록. 보통 파일 유형을 의미합니다.</td>
+      <td>List of types the server accepts, typically a file type.</td>
     </tr>
     <tr>
-      <td><code>accept-charset</code></td>
-      <td>{{ HTMLElement("form") }}</td>
-      <td>지원하는 문자 집합의 목록.</td>
-    </tr>
-    <tr>
-      <td><code>accesskey</code></td>
-      <td><a href="/ko/docs/Web/HTML/Global_attributes">전역 특성</a></td>
       <td>
-        해당 요소로 초점을 이동시키거나 활성화시키기 위한 키보드 단축키를
-        정의합니다.
+        <code><a href="/en-US/docs/Web/HTML/Element/form#accept-charset">accept-charset</a></code>
+      </td>
+      <td>{{ HTMLElement("form") }}</td>
+      <td>List of supported charsets.</td>
+    </tr>
+    <tr>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Global_attributes/accesskey">accesskey</a></code>
+      </td>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Global_attributes">Global attribute</a>
+      </td>
+      <td>Keyboard shortcut to activate or add focus to the element.</td>
+    </tr>
+    <tr>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/action">action</a></code>
+      </td>
+      <td>{{ HTMLElement("form") }}</td>
+      <td>
+        The URI of a program that processes the information submitted via the
+        form.
       </td>
     </tr>
     <tr>
-      <td><code>action</code></td>
-      <td>{{ HTMLElement("form") }}</td>
-      <td>폼(form)으로부터 전송된 정보를 처리할 프로그램의 URI입니다.</td>
-    </tr>
-    <tr>
-      <td><code>align</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/align">align</a></code>
+      </td>
       <td>
         {{ HTMLElement("applet") }},
         {{ HTMLElement("caption") }}, {{ HTMLElement("col") }},
@@ -52,52 +65,64 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
         {{ HTMLElement("hr") }}, {{ HTMLElement("iframe") }},
         {{ HTMLElement("img") }}, {{ HTMLElement("table") }},
         {{ HTMLElement("tbody") }}, {{ HTMLElement("td") }},
-        {{ HTMLElement("tfoot") }} , {{ HTMLElement("th") }},
+        {{ HTMLElement("tfoot") }}, {{ HTMLElement("th") }},
         {{ HTMLElement("thead") }}, {{ HTMLElement("tr") }}
       </td>
-      <td>해당 요소의 가로 정렬 방식을 명시합니다.</td>
+      <td>Specifies the horizontal alignment of the element.</td>
     </tr>
     <tr>
       <td>
-        <code><a href="/en-US/docs/Web/HTML/Attributes/allow">allow</a></code>
+        <code><a href="/en-US/docs/Web/HTML/Element/iframe#allow">allow</a></code>
       </td>
       <td>{{ HTMLElement("iframe") }}</td>
       <td>Specifies a feature-policy for the iframe.</td>
     </tr>
     <tr>
-      <td><code>alt</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/alt">alt</a></code>
+      </td>
       <td>
         {{ HTMLElement("applet") }}, {{ HTMLElement("area") }},
         {{ HTMLElement("img") }}, {{ HTMLElement("input") }}
       </td>
-      <td>이미지를 표시할 수 없는 경우 표시할 대체 문구입니다.</td>
+      <td>Alternative text in case an image can't be displayed.</td>
     </tr>
     <tr>
-      <td><code>async</code></td>
-      <td>{{ HTMLElement("script") }}</td>
-      <td>해당 스크립트는 비동기적으로 실행되어야함을 나타냅니다.</td>
-    </tr>
-    <tr>
-      <td><code>autocapitalize</code></td>
-      <td><a href="/ko/docs/Web/HTML/Global_attributes">전역 특성</a></td>
       <td>
-        사용자가 입력하거나 편집하는 문구를 자동으로 대문자로 바꿀지 여부와
-        방법을 제어합니다.
+        <code><a href="/en-US/docs/Web/HTML/Element/script#async">async</a></code>
+      </td>
+      <td>{{ HTMLElement("script") }}</td>
+      <td>Executes the script asynchronously.</td>
+    </tr>
+    <tr>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Global_attributes/autocapitalize">autocapitalize</a></code>
+      </td>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Global_attributes">Global attribute</a>
+      </td>
+      <td>
+        Sets whether input is automatically capitalized when entered by user
       </td>
     </tr>
     <tr>
-      <td><code>autocomplete</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/autocomplete">autocomplete</a></code>
+      </td>
       <td>
         {{ HTMLElement("form") }}, {{ HTMLElement("input") }},
+        {{ HTMLElement("select") }},
         {{ HTMLElement("textarea") }}
       </td>
       <td>
-        이 폼 내의 컨트롤에 대해 브라우저가 지원하는 값 자동완성 기능을 기본으로
-        설정할 것인지를 나타냅니다.
+        Indicates whether controls in this form can by default have their values
+        automatically completed by the browser.
       </td>
     </tr>
     <tr>
-      <td><code>autofocus</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/autofocus">autofocus</a></code>
+      </td>
       <td>
         {{ HTMLElement("button") }},
         {{ HTMLElement("input") }},
@@ -105,15 +130,19 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
         {{ HTMLElement("select") }},
         {{ HTMLElement("textarea") }}
       </td>
-      <td>페이지가 로드된 후 자동으로 해당 요소로 초점이 이동합니다.</td>
+      <td>
+        The element should be automatically focused after the page loaded.
+      </td>
     </tr>
     <tr>
-      <td><code>autoplay</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/autoplay">autoplay</a></code>
+      </td>
       <td>
         {{ HTMLElement("audio") }},
         {{ HTMLElement("video") }}
       </td>
-      <td>오디오나 비디오가 가능한 빠른 시점에 재생됩니다.</td>
+      <td>The audio or video should play as soon as possible.</td>
     </tr>
     <tr>
       <td><code>background</code></td>
@@ -124,9 +153,11 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
       <td>
         Specifies the URL of an image file.
         <div class="note">
-          <strong>Note:</strong> Although browsers and email clients may still
-          support this attribute, it is obsolete. Use CSS
-          {{ Cssxref("background-image") }} instead.
+          <p>
+            <strong>Note:</strong> Although browsers and email clients may still
+            support this attribute, it is obsolete. Use CSS
+            {{ Cssxref("background-image") }} instead.
+          </p>
         </div>
       </td>
     </tr>
@@ -142,12 +173,11 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
         {{ HTMLElement("th") }}, {{ HTMLElement("tr") }}
       </td>
       <td>
-        <p>요소의 배경색입니다.</p>
+        <p>Background color of the element.</p>
         <div class="note">
           <p>
-            <strong>주:</strong> 이 속성은 더 이상 사용하지 않습니다. CSS의
-            {{ Cssxref("background-color") }} 속성을 대신 사용하시기
-            바랍니다.
+            <strong>Note:</strong> This is a legacy attribute. Please use the
+            CSS {{ Cssxref("background-color") }} property instead.
           </p>
         </div>
       </td>
@@ -159,120 +189,139 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
         {{ HTMLElement("table") }}
       </td>
       <td>
-        <p>선의 굵기입니다.</p>
+        <p>The border width.</p>
         <div class="note">
           <p>
-            <strong>주:</strong> 이 속성은 더 이상 사용하지 않습니다. CSS의
-            {{ Cssxref("border") }} 속성을 대신 사용하시기 바랍니다.
+            <strong>Note:</strong> This is a legacy attribute. Please use the
+            CSS {{ Cssxref("border") }} property instead.
           </p>
         </div>
       </td>
     </tr>
     <tr>
-      <td><code>buffered</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/buffered">buffered</a></code>
+      </td>
       <td>
         {{ HTMLElement("audio") }},
         {{ HTMLElement("video") }}
       </td>
-      <td>이미 버퍼링된 미디어의 시간 범위를 가집니다.</td>
+      <td>Contains the time range of already buffered media.</td>
     </tr>
     <tr>
       <td>
-        <code
-          ><a href="/en-US/docs/Web/HTML/Attributes/capture">capture</a></code
-        >
+        <code><a href="/en-US/docs/Web/HTML/Attributes/capture">capture</a></code>
       </td>
       <td>{{ HTMLElement("input") }}</td>
       <td>
-        From the
-        media capture spec,
+        From the <a href="https://w3c.github.io/html-media-capture/#the-capture-attribute">Media Capture specification</a>,
         specifies a new file can be captured.
       </td>
     </tr>
     <tr>
-      <td><code>challenge</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/keygen#challenge">challenge</a></code>
+      </td>
       <td>{{ HTMLElement("keygen") }}</td>
-      <td>공개 키와 같이 전송된 challenge 문자열입니다.</td>
+      <td>A challenge string that is submitted along with the public key.</td>
     </tr>
     <tr>
-      <td><code>charset</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/charset">charset</a></code>
+      </td>
       <td>
         {{ HTMLElement("meta") }}, {{ HTMLElement("script") }}
       </td>
-      <td>페이지 또는 스크립트의 문자 인코딩을 선언합니다.</td>
+      <td>Declares the character encoding of the page or script.</td>
     </tr>
     <tr>
-      <td><code>checked</code></td>
       <td>
-        {{ HTMLElement("command") }},
+        <code><a href="/en-US/docs/Web/HTML/Element/input#checked">checked</a></code>
+      </td>
+      <td>
         {{ HTMLElement("input") }}
       </td>
-      <td>
-        페이지가 로딩될 때, 해당 요소가 체크되어 있어야하는지를 나타냅니다.
-      </td>
+      <td>Indicates whether the element should be checked on page load.</td>
     </tr>
     <tr>
-      <td><code>cite</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/cite">cite</a></code>
+      </td>
       <td>
         {{ HTMLElement("blockquote") }},
         {{ HTMLElement("del") }}, {{ HTMLElement("ins") }},
         {{ HTMLElement("q") }}
       </td>
-      <td>변경 또는 인용구문의 출처를 가리키는 URI를 가집니다.</td>
+      <td>Contains a URI which points to the source of the quote or change.</td>
     </tr>
     <tr>
-      <td><code>class</code></td>
-      <td><a href="/ko/docs/Web/HTML/Global_attributes">전역 특성</a></td>
       <td>
-        공통적인 속성으로 요소의 스타일을 지정할 때 CSS와 함께 자주 사용됩니다.
+        <code><a href="/en-US/docs/Web/HTML/Global_attributes/class">class</a></code>
+      </td>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Global_attributes">Global attribute</a>
+      </td>
+      <td>Often used with CSS to style elements with common properties.</td>
+    </tr>
+    <tr>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/applet#code">code</a></code>
+      </td>
+      <td>{{ HTMLElement("applet") }}</td>
+      <td>
+        Specifies the URL of the applet's class file to be loaded and executed.
       </td>
     </tr>
     <tr>
-      <td><code>code</code></td>
-      <td>{{ HTMLElement("applet") }}</td>
-      <td>로딩 후 실행할 애플릿의 클래스 파일의 URL을 명시합니다.</td>
-    </tr>
-    <tr>
-      <td><code>codebase</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/applet#codebase">codebase</a></code>
+      </td>
       <td>{{ HTMLElement("applet") }}</td>
       <td>
-        이 속성은 코드(code) 속성이 참조하는 애플릿의 .class 파일이 저장되어
-        있는 디렉토리의 절대경로 또는 상대경로 URL을 제공합니다.
+        This attribute gives the absolute or relative URL of the directory where
+        applets' .class files referenced by the code attribute are stored.
       </td>
     </tr>
     <tr>
       <td><code>color</code></td>
       <td>
-        {{ HTMLElement("basefont") }},
         {{ HTMLElement("font") }}, {{ HTMLElement("hr") }}
       </td>
       <td>
         <p>
-          이 속성은 미리 정의된 색상 명칭 또는 #RRGGBB 형식의 16진수로 명시된
-          색상으로 텍스트 색상을 설정한다.
+          This attribute sets the text color using either a named color or a
+          color specified in the hexadecimal #RRGGBB format.
         </p>
         <div class="note">
           <p>
-            <strong>주:</strong> 이 속성은 더 이상 사용하지 않습니다. CSS의
-            {{ Cssxref("color") }} 속성을 대신 사용하시기 바랍니다.
+            <strong>Note:</strong> This is a legacy attribute. Please use the
+            CSS {{ Cssxref("color") }} property instead.
           </p>
         </div>
       </td>
     </tr>
     <tr>
-      <td><code>cols</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/textarea#cols">cols</a></code>
+      </td>
       <td>{{ HTMLElement("textarea") }}</td>
-      <td>textarea에 표시할 컬럼의 수를 정의한다.</td>
+      <td>Defines the number of columns in a textarea.</td>
     </tr>
     <tr>
-      <td><code>colspan</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/colspan">colspan</a></code>
+      </td>
       <td>
         {{ HTMLElement("td") }}, {{ HTMLElement("th") }}
       </td>
-      <td>colspan 속성은 어떤 셀이 확장되어야 할 컬럼의 수를 정의한다.</td>
+      <td>
+        The colspan attribute defines the number of columns a cell should span.
+      </td>
     </tr>
     <tr>
-      <td><code>content</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/meta#content">content</a></code>
+      </td>
       <td>{{ HTMLElement("meta") }}</td>
       <td>
         A value associated with <code>http-equiv</code> or
@@ -280,20 +329,30 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
       </td>
     </tr>
     <tr>
-      <td><code>contenteditable</code></td>
-      <td><a href="/ko/docs/Web/HTML/Global_attributes">전역 특성</a></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Global_attributes/contenteditable">contenteditable</a></code>
+      </td>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Global_attributes">Global attribute</a>
+      </td>
       <td>Indicates whether the element's content is editable.</td>
     </tr>
     <tr>
-      <td><code>contextmenu</code></td>
-      <td><a href="/ko/docs/Web/HTML/Global_attributes">전역 특성</a></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/contextmenu">contextmenu</a></code>
+      </td>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Global_attributes">Global attribute</a>
+      </td>
       <td>
         Defines the ID of a {{ HTMLElement("menu") }} element which will
         serve as the element's context menu.
       </td>
     </tr>
     <tr>
-      <td><code>controls</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/controls">controls</a></code>
+      </td>
       <td>
         {{ HTMLElement("audio") }},
         {{ HTMLElement("video") }}
@@ -303,7 +362,9 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
       </td>
     </tr>
     <tr>
-      <td><code>coords</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/area#coords">coords</a></code>
+      </td>
       <td>{{ HTMLElement("area") }}</td>
       <td>
         A set of values specifying the coordinates of the hot-spot region.
@@ -311,11 +372,7 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
     </tr>
     <tr>
       <td>
-        <code
-          ><a href="/en-US/docs/Web/HTML/CORS_settings_attributes"
-            >crossorigin</a
-          ></code
-        >
+        <code><a href="/en-US/docs/Web/HTML/Attributes/crossorigin">crossorigin</a></code>
       </td>
       <td>
         {{ HTMLElement("audio") }}, {{ HTMLElement("img") }},
@@ -326,7 +383,7 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
     </tr>
     <tr>
       <td>
-        <code><a href="/ko/docs/Web/API/HTMLiframeElement/csp">csp</a></code>
+        <code><a href="/en-US/docs/Web/API/HTMLIFrameElement/csp">csp</a></code>
         {{experimental_inline}}
       </td>
       <td>{{ HTMLElement("iframe") }}</td>
@@ -336,17 +393,25 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
       </td>
     </tr>
     <tr>
-      <td><code>data</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/object#data">data</a></code>
+      </td>
       <td>{{ HTMLElement("object") }}</td>
       <td>Specifies the URL of the resource.</td>
     </tr>
     <tr>
-      <td><code>data-*</code></td>
-      <td><a href="/ko/docs/Web/HTML/Global_attributes">전역 특성</a></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Global_attributes/data-*">data-*</a></code>
+      </td>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Global_attributes">Global attribute</a>
+      </td>
       <td>Lets you attach custom attributes to an HTML element.</td>
     </tr>
     <tr>
-      <td><code>datetime</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/datetime">datetime</a></code>
+      </td>
       <td>
         {{ HTMLElement("del") }}, {{ HTMLElement("ins") }},
         {{ HTMLElement("time") }}
@@ -355,15 +420,15 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
     </tr>
     <tr>
       <td>
-        <code
-          ><a href="/en-US/docs/Web/HTML/Attributes/decoding">decoding</a></code
-        >
+        <code><a href="/en-US/docs/Web/HTML/Element/img#decoding">decoding</a></code>
       </td>
       <td>{{ HTMLElement("img") }}</td>
       <td>Indicates the preferred method to decode the image.</td>
     </tr>
     <tr>
-      <td><code>default</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/track#default">default</a></code>
+      </td>
       <td>{{ HTMLElement("track") }}</td>
       <td>
         Indicates that the track should be enabled unless the user's preferences
@@ -371,7 +436,9 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
       </td>
     </tr>
     <tr>
-      <td><code>defer</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/script#defer">defer</a></code>
+      </td>
       <td>{{ HTMLElement("script") }}</td>
       <td>
         Indicates that the script should be executed after the page has been
@@ -379,15 +446,21 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
       </td>
     </tr>
     <tr>
-      <td><code>dir</code></td>
-      <td><a href="/ko/docs/Web/HTML/Global_attributes">전역 특성</a></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Global_attributes/dir">dir</a></code>
+      </td>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Global_attributes">Global attribute</a>
+      </td>
       <td>
         Defines the text direction. Allowed values are ltr (Left-To-Right) or
         rtl (Right-To-Left)
       </td>
     </tr>
     <tr>
-      <td><code>dirname</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/dirname">dirname</a></code>
+      </td>
       <td>
         {{ HTMLElement("input") }},
         {{ HTMLElement("textarea") }}
@@ -395,10 +468,11 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
       <td></td>
     </tr>
     <tr>
-      <td><code>disabled</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/disabled">disabled</a></code>
+      </td>
       <td>
         {{ HTMLElement("button") }},
-        {{ HTMLElement("command") }},
         {{ HTMLElement("fieldset") }},
         {{ HTMLElement("input") }},
         {{ HTMLElement("keygen") }},
@@ -410,51 +484,44 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
       <td>Indicates whether the user can interact with the element.</td>
     </tr>
     <tr>
-      <td><code>download</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/download">download</a></code>
+      </td>
       <td>{{ HTMLElement("a") }}, {{ HTMLElement("area") }}</td>
       <td>
         Indicates that the hyperlink is to be used for downloading a resource.
       </td>
     </tr>
     <tr>
-      <td><code>draggable</code></td>
-      <td><a href="/ko/docs/Web/HTML/Global_attributes">전역 특성</a></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Global_attributes/draggable">draggable</a></code>
+      </td>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Global_attributes">Global attribute</a>
+      </td>
       <td>Defines whether the element can be dragged.</td>
     </tr>
     <tr>
-      <td><code>dropzone</code></td>
-      <td><a href="/ko/docs/Web/HTML/Global_attributes">전역 특성</a></td>
-      <td>Indicates that the element accept the dropping of content on it.</td>
-    </tr>
-    <tr>
-      <td><code>enctype</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/form#enctype">enctype</a></code>
+      </td>
       <td>{{ HTMLElement("form") }}</td>
       <td>
-        Defines the content type of the form date when the
+        Defines the content type of the form data when the
         <code>method</code> is POST.
       </td>
     </tr>
     <tr>
       <td>
-        <code
-          ><a href="/en-US/docs/Web/HTML/Attributes/enterkeyhint"
-            >enterkeyhint</a
-          ></code
-        >
+        <code><a href="/en-US/docs/Web/HTML/Attributes/enterkeyhint">enterkeyhint</a></code>
         {{experimental_inline}}
       </td>
       <td>
         {{ HTMLElement("textarea") }},
-        <a href="/en-US/docs/Web/HTML/Global_attributes/contenteditable"
-          ><code>contenteditable</code></a
-        >
+        <a href="/en-US/docs/Web/HTML/Global_attributes/contenteditable"><code>contenteditable</code></a>
       </td>
       <td>
-        The
-        <a
-          href="https://html.spec.whatwg.org/dev/interaction.html#input-modalities:-the-enterkeyhint-attribute"
-          ><code>enterkeyhint</code></a
-        >
+        The <a href="https://html.spec.whatwg.org/dev/interaction.html#input-modalities:-the-enterkeyhint-attribute"><code>enterkeyhint</code></a>
         specifies what action label (or icon) to present for the enter key on
         virtual keyboards. The attribute can be used with form controls (such as
         the value of <code>textarea</code> elements), or in elements in an
@@ -462,7 +529,9 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
       </td>
     </tr>
     <tr>
-      <td><code>for</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/for">for</a></code>
+      </td>
       <td>
         {{ HTMLElement("label") }},
         {{ HTMLElement("output") }}
@@ -470,7 +539,9 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
       <td>Describes elements which belongs to this one.</td>
     </tr>
     <tr>
-      <td><code>form</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/form">form</a></code>
+      </td>
       <td>
         {{ HTMLElement("button") }},
         {{ HTMLElement("fieldset") }},
@@ -487,7 +558,9 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
       <td>Indicates the form that is the owner of the element.</td>
     </tr>
     <tr>
-      <td><code>formaction</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/formaction">formaction</a></code>
+      </td>
       <td>
         {{ HTMLElement("input") }},
         {{ HTMLElement("button") }}
@@ -499,18 +572,14 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
     </tr>
     <tr>
       <td>
-        <code
-          ><a href="/en-US/docs/Web/HTML/Attributes/formenctype"
-            >formenctype</a
-          ></code
-        >
+        <code><a href="/en-US/docs/Web/HTML/Attributes/formenctype">formenctype</a></code>
       </td>
       <td>
         {{ HTMLElement("button") }},
         {{ HTMLElement("input") }}
       </td>
       <td>
-        If the button/input is a submit button (<code>type="submit"</code>),
+        If the button/input is a {{Glossary("submit button")}} (e.g. <code>type="submit"</code>),
         this attribute sets the encoding type to use during form submission. If
         this attribute is specified, it overrides the
         <code>enctype</code> attribute of the button's
@@ -519,18 +588,14 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
     </tr>
     <tr>
       <td>
-        <code
-          ><a href="/en-US/docs/Web/HTML/Attributes/formmethod"
-            >formmethod</a
-          ></code
-        >
+        <code><a href="/en-US/docs/Web/HTML/Attributes/formmethod">formmethod</a></code>
       </td>
       <td>
         {{ HTMLElement("button") }},
         {{ HTMLElement("input") }}
       </td>
       <td>
-        If the button/input is a submit button (<code>type="submit"</code>),
+        If the button/input is a {{Glossary("submit button")}} (e.g. <code>type="submit"</code>),
         this attribute sets the submission method to use during form submission
         (<code>GET</code>, <code>POST</code>, etc.). If this attribute is
         specified, it overrides the <code>method</code> attribute of the
@@ -539,18 +604,14 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
     </tr>
     <tr>
       <td>
-        <code
-          ><a href="/en-US/docs/Web/HTML/Attributes/formnovalidate"
-            >formnovalidate</a
-          ></code
-        >
+        <code><a href="/en-US/docs/Web/HTML/Attributes/formnovalidate">formnovalidate</a></code>
       </td>
       <td>
         {{ HTMLElement("button") }},
         {{ HTMLElement("input") }}
       </td>
       <td>
-        If the button/input is a submit button (<code>type="submit"</code>),
+        If the button/input is a {{Glossary("submit button")}} (e.g. <code>type="submit"</code>),
         this boolean attribute specifies that the form is not to be validated
         when it is submitted. If this attribute is specified, it overrides the
         <code>novalidate</code> attribute of the button's
@@ -559,18 +620,14 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
     </tr>
     <tr>
       <td>
-        <code
-          ><a href="/en-US/docs/Web/HTML/Attributes/formtarget"
-            >formtarget</a
-          ></code
-        >
+        <code><a href="/en-US/docs/Web/HTML/Attributes/formtarget">formtarget</a></code>
       </td>
       <td>
         {{ HTMLElement("button") }},
         {{ HTMLElement("input") }}
       </td>
       <td>
-        If the button/input is a submit button (<code>type="submit"</code>),
+        If the button/input is a {{Glossary("submit button")}} (e.g. <code>type="submit"</code>),
         this attribute specifies the browsing context (for example, tab, window,
         or inline frame) in which to display the response that is received after
         submitting the form. If this attribute is specified, it overrides the
@@ -579,7 +636,9 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
       </td>
     </tr>
     <tr>
-      <td><code>headers</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/headers">headers</a></code>
+      </td>
       <td>
         {{ HTMLElement("td") }}, {{ HTMLElement("th") }}
       </td>
@@ -613,112 +672,96 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
         </div>
       </td>
     </tr>
-    <tr></tr>
     <tr>
-      <td><code>hidden</code></td>
-      <td><a href="/ko/docs/Web/HTML/Global_attributes">전역 특성</a></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Global_attributes/hidden">hidden</a></code>
+      </td>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Global_attributes">Global attribute</a>
+      </td>
       <td>
         Prevents rendering of given element, while keeping child elements, e.g.
         script elements, active.
       </td>
     </tr>
     <tr>
-      <td><code>high</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/meter#high">high</a></code>
+      </td>
       <td>{{ HTMLElement("meter") }}</td>
       <td>Indicates the lower bound of the upper range.</td>
     </tr>
     <tr>
-      <td><code>href</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/href">href</a></code>
+      </td>
       <td>
         {{ HTMLElement("a") }}, {{ HTMLElement("area") }},
         {{ HTMLElement("base") }}, {{ HTMLElement("link") }}
       </td>
-      <td>링크된 리소스의 URL</td>
+      <td>The URL of a linked resource.</td>
     </tr>
     <tr>
-      <td><code>hreflang</code></td>
       <td>
-        {{ HTMLElement("a") }}, {{ HTMLElement("area") }},
-        {{ HTMLElement("link") }}
+        <code><a href="/en-US/docs/Web/HTML/Attributes/hreflang">hreflang</a></code>
       </td>
-      <td>링크된 리소스의 언어를 나타냄</td>
+      <td>
+        {{ HTMLElement("a") }}, {{ HTMLElement("link") }}
+      </td>
+      <td>Specifies the language of the linked resource.</td>
     </tr>
     <tr>
-      <td><code>http-equiv</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/meta#http-equiv">http-equiv</a></code>
+      </td>
       <td>{{ HTMLElement("meta") }}</td>
-      <td></td>
+      <td>Defines a pragma directive.</td>
     </tr>
     <tr>
-      <td><code>icon</code></td>
-      <td>{{ HTMLElement("command") }}</td>
-      <td>Specifies a picture which represents the command.</td>
-    </tr>
-    <tr>
-      <td><code>id</code></td>
-      <td><a href="/ko/docs/Web/HTML/Global_attributes">전역 특성</a></td>
       <td>
-        일반적으로, 특정한 요소를 스타일하기 위해 CSS와 함꼐 사용됨. 이 속성의
-        값은 유일해야함.
+        <code><a href="/en-US/docs/Web/HTML/Global_attributes/id">id</a></code>
+      </td>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Global_attributes">Global attribute</a>
+      </td>
+      <td>
+        Often used with CSS to style a specific element. The value of this
+        attribute must be unique.
       </td>
     </tr>
     <tr>
       <td>
-        <code
-          ><a href="/en-US/docs/Web/HTML/Attributes/importance"
-            >importance</a
-          ></code
-        >
-        {{experimental_inline}}
-      </td>
-      <td>
-        {{ HTMLElement("iframe") }}, {{ HTMLElement("img") }},
-        {{ HTMLElement("link") }}, {{ HTMLElement("script") }}
-      </td>
-      <td>Indicates the relative fetch priority for the resource.</td>
-    </tr>
-    <tr>
-      <td>
-        <code
-          ><a href="/en-US/docs/Web/Security/Subresource_Integrity"
-            >integrity</a
-          ></code
-        >
+        <code><a href="/en-US/docs/Web/Security/Subresource_Integrity">integrity</a></code>
       </td>
       <td>
         {{ HTMLElement("link") }}, {{ HTMLElement("script") }}
       </td>
       <td>
-        Specifies a
-        <a href="/en-US/docs/Web/Security/Subresource_Integrity"
-          >Subresource Integrity</a
-        >
-        value that allows browsers to verify what they fetch.
+        <p>
+          Specifies a
+          <a href="/en-US/docs/Web/Security/Subresource_Integrity">Subresource Integrity</a>
+          value that allows browsers to verify what they fetch.
+        </p>
       </td>
     </tr>
     <tr>
       <td>
-        <a href="/en-US/docs/Web/HTML/Element/img#attr-intrinsicsize"
-          ><code>intrinsicsize</code></a
-        >
+        <a href="/en-US/docs/Web/HTML/Element/img#intrinsicsize"><code>intrinsicsize</code></a>
         {{deprecated_inline}}
       </td>
       <td>{{ HTMLElement("img") }}</td>
       <td>
         This attribute tells the browser to ignore the actual intrinsic size of
-        the image and pretend it’s the size specified in the attribute.
+        the image and pretend it's the size specified in the attribute.
       </td>
     </tr>
     <tr>
       <td>
-        <a href="/en-US/docs/Web/HTML/Global_attributes/inputmode"
-          ><code>inputmode</code></a
-        >
+        <a href="/en-US/docs/Web/HTML/Global_attributes/inputmode"><code>inputmode</code></a>
       </td>
       <td>
         {{ HTMLElement("textarea") }},
-        <a href="/en-US/docs/Web/HTML/Global_attributes/contenteditable"
-          ><code>contenteditable</code></a
-        >
+        <a href="/en-US/docs/Web/HTML/Global_attributes/contenteditable"><code>contenteditable</code></a>
       </td>
       <td>
         Provides a hint as to the type of data that might be entered by the user
@@ -729,44 +772,62 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
       </td>
     </tr>
     <tr>
-      <td><code>ismap</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/img#ismap">ismap</a></code>
+      </td>
       <td>{{ HTMLElement("img") }}</td>
       <td>Indicates that the image is part of a server-side image map.</td>
     </tr>
     <tr>
-      <td><code>itemprop</code></td>
-      <td><a href="/ko/docs/Web/HTML/Global_attributes">전역 특성</a></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Global_attributes/itemprop">itemprop</a></code>
+      </td>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Global_attributes">Global attribute</a>
+      </td>
       <td></td>
     </tr>
     <tr>
-      <td><code>keytype</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/keygen#keytype">keytype</a></code>
+      </td>
       <td>{{ HTMLElement("keygen") }}</td>
       <td>Specifies the type of key generated.</td>
     </tr>
     <tr>
-      <td><code>kind</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/track#kind">kind</a></code>
+      </td>
       <td>{{ HTMLElement("track") }}</td>
       <td>Specifies the kind of text track.</td>
     </tr>
     <tr>
-      <td><code>label</code></td>
-      <td>{{ HTMLElement("track") }}</td>
-      <td>Specifies a user-readable title of the text track.</td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/label">label</a></code>
+      </td>
+      <td>
+        {{ HTMLElement("optgroup") }},
+        {{ HTMLElement("option") }},
+        {{ HTMLElement("track") }}
+      </td>
+      <td>Specifies a user-readable title of the element.</td>
     </tr>
     <tr>
-      <td><code>lang</code></td>
-      <td><a href="/ko/docs/Web/HTML/Global_attributes">전역 특성</a></td>
-      <td>요소에서 사용된 언어를 정의합니다.</td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Global_attributes/lang">lang</a></code>
+      </td>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Global_attributes">Global attribute</a>
+      </td>
+      <td>Defines the language used in the element.</td>
     </tr>
     <tr>
-      <td><code>language</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/script#language">language</a></code>
+        {{deprecated_inline}}
+      </td>
       <td>{{ HTMLElement("script") }}</td>
-      <td>요소에서 사용된 스크립트 언어를 정의합니다.</td>
-    </tr>
-    <tr>
-      <td><code>list</code></td>
-      <td>{{ HTMLElement("input") }}</td>
-      <td>Identifies a list of pre-defined options to suggest to the user.</td>
+      <td>Defines the script language used in the element.</td>
     </tr>
     <tr>
       <td><code>loading</code> {{experimental_inline}}</td>
@@ -781,55 +842,74 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
     </tr>
     <tr>
       <td>
-        <code><a href="/en-US/docs/Web/HTML/Attributes/list">list</a></code>
+        <code><a href="/en-US/docs/Web/HTML/Element/input#list">list</a></code>
       </td>
       <td>{{ HTMLElement("input") }}</td>
       <td>Identifies a list of pre-defined options to suggest to the user.</td>
     </tr>
     <tr>
-      <td><code>loop</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/loop">loop</a></code>
+      </td>
       <td>
         {{ HTMLElement("audio") }},
         {{ HTMLElement("bgsound") }},
         {{ HTMLElement("marquee") }},
         {{ HTMLElement("video") }}
       </td>
-      <td>미디어가 재생을 완료했을때 다시 재생을 시작해야할지를 나타냅니다.</td>
+      <td>
+        Indicates whether the media should start playing from the start when
+        it's finished.
+      </td>
     </tr>
     <tr>
-      <td><code>low</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/meter#low">low</a></code>
+      </td>
       <td>{{ HTMLElement("meter") }}</td>
       <td>Indicates the upper bound of the lower range.</td>
     </tr>
     <tr>
-      <td><code>manifest</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/html#manifest">manifest</a></code>
+        {{deprecated_inline}}
+      </td>
       <td>{{ HTMLElement("html") }}</td>
-      <td>문서의 캐시 매니페스트의 URL을 가리킵니다.</td>
+      <td>
+        Specifies the URL of the document's cache manifest.
+        <div class="note">
+          <p>
+            <strong>Note:</strong> This attribute is obsolete, use
+            <a href="/en-US/docs/Web/Manifest"><code>&#x3C;link rel="manifest"></code></a>
+            instead.
+          </p>
+        </div>
+      </td>
     </tr>
     <tr>
-      <td><code>max</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/max">max</a></code>
+      </td>
       <td>
         {{ HTMLElement("input") }},
         {{ HTMLElement("meter") }},
         {{ HTMLElement("progress") }}
       </td>
-      <td>허용되는 최대 값을 나타냅니다.</td>
+      <td>Indicates the maximum value allowed.</td>
     </tr>
     <tr>
-      <td><code>maxlength</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/maxlength">maxlength</a></code>
+      </td>
       <td>
         {{ HTMLElement("input") }},
         {{ HTMLElement("textarea") }}
       </td>
-      <td>요소에 허용되는 문자의 최대 길이를 나타냅니다.</td>
+      <td>Defines the maximum number of characters allowed in the element.</td>
     </tr>
     <tr>
       <td>
-        <code
-          ><a href="/en-US/docs/Web/HTML/Attributes/minlength"
-            >minlength</a
-          ></code
-        >
+        <code><a href="/en-US/docs/Web/HTML/Attributes/minlength">minlength</a></code>
       </td>
       <td>
         {{ HTMLElement("input") }},
@@ -838,7 +918,9 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
       <td>Defines the minimum number of characters allowed in the element.</td>
     </tr>
     <tr>
-      <td><code>media</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/media">media</a></code>
+      </td>
       <td>
         {{ HTMLElement("a") }}, {{ HTMLElement("area") }},
         {{ HTMLElement("link") }}, {{ HTMLElement("source") }},
@@ -850,23 +932,30 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
       </td>
     </tr>
     <tr>
-      <td><code>method</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/form#method">method</a></code>
+      </td>
       <td>{{ HTMLElement("form") }}</td>
       <td>
-        폼을 제출할때 사용할 HTTP 메소드를 정의함. GET(기본값) 또는 POST 가 될수
-        있음.
+        Defines which <a href="/en-US/docs/Web/HTTP">HTTP</a> method to use when
+        submitting the form. Can be <code>GET</code> (default) or
+        <code>POST</code>.
       </td>
     </tr>
     <tr>
-      <td><code>min</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/min">min</a></code>
+      </td>
       <td>
         {{ HTMLElement("input") }},
         {{ HTMLElement("meter") }}
       </td>
-      <td>허용되는 최소 값을 나타냄.</td>
+      <td>Indicates the minimum value allowed.</td>
     </tr>
     <tr>
-      <td><code>multiple</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/multiple">multiple</a></code>
+      </td>
       <td>
         {{ HTMLElement("input") }},
         {{ HTMLElement("select") }}
@@ -889,7 +978,9 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
       </td>
     </tr>
     <tr>
-      <td><code>name</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/name">name</a></code>
+      </td>
       <td>
         {{ HTMLElement("button") }}, {{ HTMLElement("form") }},
         {{ HTMLElement("fieldset") }},
@@ -904,12 +995,14 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
         {{ HTMLElement("param") }}
       </td>
       <td>
-        요소의 이름. For example used by the server to identify the fields in
-        form submits.
+        Name of the element. For example used by the server to identify the
+        fields in form submits.
       </td>
     </tr>
     <tr>
-      <td><code>novalidate</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/form#novalidate">novalidate</a></code>
+      </td>
       <td>{{ HTMLElement("form") }}</td>
       <td>
         This attribute indicates that the form shouldn't be validated when
@@ -917,17 +1010,31 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
       </td>
     </tr>
     <tr>
-      <td><code>open</code></td>
-      <td>{{ HTMLElement("details") }}</td>
-      <td>Indicates whether the details will be shown on page load.</td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/open">open</a></code>
+      </td>
+      <td>
+        {{ HTMLElement("details") }},
+        {{ HTMLElement("dialog") }}
+      </td>
+      <td>
+        Indicates whether the contents are currently visible (in the case of
+        a <code>&#x3C;details></code> element) or whether the dialog is active
+        and can be interacted with (in the case of a
+        <code>&#x3C;dialog></code> element).
+      </td>
     </tr>
     <tr>
-      <td><code>optimum</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/meter#optimum">optimum</a></code>
+      </td>
       <td>{{ HTMLElement("meter") }}</td>
       <td>Indicates the optimal numeric value.</td>
     </tr>
     <tr>
-      <td><code>pattern</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/pattern">pattern</a></code>
+      </td>
       <td>{{ HTMLElement("input") }}</td>
       <td>
         Defines a regular expression which the element's value will be validated
@@ -935,50 +1042,81 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
       </td>
     </tr>
     <tr>
-      <td><code>ping</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/a#ping">ping</a></code>
+      </td>
       <td>{{ HTMLElement("a") }}, {{ HTMLElement("area") }}</td>
-      <td></td>
+      <td>
+        The <code>ping</code> attribute specifies a space-separated list of URLs
+        to be notified if a user follows the hyperlink.
+      </td>
     </tr>
     <tr>
-      <td><code>placeholder</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/placeholder">placeholder</a></code>
+      </td>
       <td>
         {{ HTMLElement("input") }},
         {{ HTMLElement("textarea") }}
       </td>
-      <td>필드에 무엇이 들어갈수 있는지 사용자에게 힌트를 제공합니다.</td>
+      <td>Provides a hint to the user of what can be entered in the field.</td>
     </tr>
     <tr>
-      <td><code>poster</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/video#playsinline">playsinline</a></code>
+      </td>
+      <td>
+        {{ HTMLElement("video") }}
+      </td>
+      <td>A Boolean attribute indicating that the video is to be played "inline"; that is, within the element's playback area. Note that the absence of this attribute does not imply that the video will always be played in fullscreen.</td>
+    </tr>
+    <tr>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/video#poster">poster</a></code>
+      </td>
       <td>{{ HTMLElement("video") }}</td>
       <td>
         A URL indicating a poster frame to show until the user plays or seeks.
       </td>
     </tr>
     <tr>
-      <td><code>preload</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/preload">preload</a></code>
+      </td>
       <td>
         {{ HTMLElement("audio") }},
         {{ HTMLElement("video") }}
       </td>
       <td>
-        전체,부분,또는 아무런 리소스가 미리 로드되어야하는지를 나타냅니다.
+        Indicates whether the whole resource, parts of it or nothing should be
+        preloaded.
       </td>
     </tr>
     <tr>
-      <td><code>radiogroup</code></td>
-      <td>{{ HTMLElement("command") }}</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td><code>readonly</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/readonly">readonly</a></code>
+      </td>
       <td>
         {{ HTMLElement("input") }},
         {{ HTMLElement("textarea") }}
       </td>
-      <td>요소가 수정될 수 있는지를 나타냅니다.</td>
+      <td>Indicates whether the element can be edited.</td>
     </tr>
     <tr>
-      <td><code>rel</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/referralpolicy">referrerpolicy</a></code>
+      </td>
+      <td>
+        {{ HTMLElement("a") }}, {{ HTMLElement("area") }},
+        {{ HTMLElement("iframe") }}, {{ HTMLElement("img") }},
+        {{ HTMLElement("link") }}, {{ HTMLElement("script") }}
+      </td>
+      <td>Specifies which referrer is sent when fetching the resource.</td>
+    </tr>
+    <tr>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/rel">rel</a></code>
+      </td>
       <td>
         {{ HTMLElement("a") }}, {{ HTMLElement("area") }},
         {{ HTMLElement("link") }}
@@ -988,61 +1126,95 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
       </td>
     </tr>
     <tr>
-      <td><code>required</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/required">required</a></code>
+      </td>
       <td>
         {{ HTMLElement("input") }},
         {{ HTMLElement("select") }},
         {{ HTMLElement("textarea") }}
       </td>
-      <td>이 요소가 채워져야 하는지를 나타냅니다.</td>
+      <td>Indicates whether this element is required to fill out or not.</td>
     </tr>
     <tr>
-      <td><code>reversed</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/ol#reversed">reversed</a></code>
+      </td>
       <td>{{ HTMLElement("ol") }}</td>
       <td>
         Indicates whether the list should be displayed in a descending order
-        instead of a ascending.
+        instead of an ascending order.
       </td>
     </tr>
     <tr>
-      <td><code>rows</code></td>
-      <td>{{ HTMLElement("textarea") }}</td>
-      <td>textarea의 줄 개수를 정의합니다.</td>
+      <td>
+        <code><a href="/en-US/docs/Web/Accessibility/ARIA/Roles">role</a></code>
+      </td>
+      <td><a href="/en-US/docs/Web/HTML/Global_attributes">Global attribute</a></td>
+      <td>Defines an explicit role for an element for use by assistive technologies.</td>
     </tr>
     <tr>
-      <td><code>rowspan</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/textarea#rows">rows</a></code>
+      </td>
+      <td>{{ HTMLElement("textarea") }}</td>
+      <td>Defines the number of rows in a text area.</td>
+    </tr>
+    <tr>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/rowspan">rowspan</a></code>
+      </td>
       <td>
         {{ HTMLElement("td") }}, {{ HTMLElement("th") }}
       </td>
       <td>Defines the number of rows a table cell should span over.</td>
     </tr>
     <tr>
-      <td><code>sandbox</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/iframe#sandbox">sandbox</a></code>
+      </td>
       <td>{{ HTMLElement("iframe") }}</td>
-      <td></td>
+      <td>
+        Stops a document loaded in an iframe from using certain features (such
+        as submitting forms or opening new windows).
+      </td>
     </tr>
     <tr>
-      <td><code>scope</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/th#scope">scope</a></code>
+      </td>
       <td>{{ HTMLElement("th") }}</td>
-      <td></td>
+      <td>
+        Defines the cells that the header test (defined in the
+        <code>th</code> element) relates to.
+      </td>
     </tr>
     <tr>
-      <td><code>scoped</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/style#scoped">scoped</a></code>
+        {{non-standard_inline}} {{deprecated_inline}}
+      </td>
       <td>{{ HTMLElement("style") }}</td>
       <td></td>
     </tr>
     <tr>
-      <td><code>selected</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/option#selected">selected</a></code>
+      </td>
       <td>{{ HTMLElement("option") }}</td>
       <td>Defines a value which will be selected on page load.</td>
     </tr>
     <tr>
-      <td><code>shape</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/shape">shape</a></code>
+      </td>
       <td>{{ HTMLElement("a") }}, {{ HTMLElement("area") }}</td>
       <td></td>
     </tr>
     <tr>
-      <td><code>size</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/size">size</a></code>
+      </td>
       <td>
         {{ HTMLElement("input") }},
         {{ HTMLElement("select") }}
@@ -1054,17 +1226,28 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
       </td>
     </tr>
     <tr>
-      <td><code>sizes</code></td>
-      <td>{{ HTMLElement("link") }}</td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/sizes">sizes</a></code>
+      </td>
+      <td>
+        {{ HTMLElement("link") }}, {{ HTMLElement("img") }},
+        {{ HTMLElement("source") }}
+      </td>
       <td></td>
     </tr>
     <tr>
-      <td><code>slot</code></td>
-      <td><a href="/ko/docs/Web/HTML/Global_attributes">전역 특성</a></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Global_attributes/slot">slot</a></code>
+      </td>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Global_attributes">Global attribute</a>
+      </td>
       <td>Assigns a slot in a shadow DOM shadow tree to an element.</td>
     </tr>
     <tr>
-      <td><code>span</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/span">span</a></code>
+      </td>
       <td>
         {{ HTMLElement("col") }},
         {{ HTMLElement("colgroup") }}
@@ -1073,17 +1256,17 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
     </tr>
     <tr>
       <td>
-        <code
-          ><a href="/en-US/docs/Web/HTML/Attributes/spellcheck"
-            >spellcheck</a
-          ></code
-        >
+        <code><a href="/en-US/docs/Web/HTML/Global_attributes/spellcheck">spellcheck</a></code>
       </td>
-      <td><a href="/ko/docs/Web/HTML/Global_attributes">전역 특성</a></td>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Global_attributes">Global attribute</a>
+      </td>
       <td>Indicates whether spell checking is allowed for the element.</td>
     </tr>
     <tr>
-      <td><code>src</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/src">src</a></code>
+      </td>
       <td>
         {{ HTMLElement("audio") }},
         {{ HTMLElement("embed") }},
@@ -1094,100 +1277,132 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
         {{ HTMLElement("track") }},
         {{ HTMLElement("video") }}
       </td>
-      <td>내장 컨텐츠의 URL</td>
+      <td>The URL of the embeddable content.</td>
     </tr>
     <tr>
-      <td><code>srcdoc</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/iframe#srcdoc">srcdoc</a></code>
+      </td>
       <td>{{ HTMLElement("iframe") }}</td>
       <td></td>
     </tr>
     <tr>
-      <td><code>srclang</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/track#srclang">srclang</a></code>
+      </td>
       <td>{{ HTMLElement("track") }}</td>
       <td></td>
     </tr>
     <tr>
-      <td><code>srcset</code></td>
-      <td>{{ HTMLElement("img") }}</td>
-      <td></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/srcset">srcset</a></code>
+      </td>
+      <td>
+        {{ HTMLElement("img") }}, {{ HTMLElement("source") }}
+      </td>
+      <td>One or more responsive image candidates.</td>
     </tr>
     <tr>
-      <td><code>start</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/ol#start">start</a></code>
+      </td>
       <td>{{ HTMLElement("ol") }}</td>
       <td>Defines the first number if other than 1.</td>
     </tr>
     <tr>
-      <td><code>step</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/step">step</a></code>
+      </td>
       <td>{{ HTMLElement("input") }}</td>
       <td></td>
     </tr>
     <tr>
-      <td><code>style</code></td>
-      <td><a href="/ko/docs/Web/HTML/Global_attributes">전역 특성</a></td>
-      <td>이전 스타일을 오버라이드할 CSS 스타일을 정의함.</td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Global_attributes/style">style</a></code>
+      </td>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Global_attributes">Global attribute</a>
+      </td>
+      <td>Defines CSS styles which will override styles previously set.</td>
     </tr>
     <tr>
-      <td><code>summary</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/table#summary">summary</a></code>
+        {{deprecated_inline}}
+      </td>
       <td>{{ HTMLElement("table") }}</td>
       <td></td>
     </tr>
     <tr>
-      <td><code>tabindex</code></td>
-      <td><a href="/ko/docs/Web/HTML/Global_attributes">전역 특성</a></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Global_attributes/tabindex">tabindex</a></code>
+      </td>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Global_attributes">Global attribute</a>
+      </td>
       <td>
         Overrides the browser's default tab order and follows the one specified
         instead.
       </td>
     </tr>
     <tr>
-      <td><code>target</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/target">target</a></code>
+      </td>
       <td>
         {{ HTMLElement("a") }}, {{ HTMLElement("area") }},
         {{ HTMLElement("base") }}, {{ HTMLElement("form") }}
       </td>
-      <td></td>
-    </tr>
-    <tr>
-      <td><code>title</code></td>
-      <td><a href="/ko/docs/Web/HTML/Global_attributes">전역 특성</a></td>
-      <td>요소 위에 호버링했을떄 표시될 툴팁의 텍스트</td>
-    </tr>
-    <tr>
       <td>
-        <code
-          ><a href="/en-US/docs/Web/HTML/Attributes/translate"
-            >translate</a
-          ></code
-        >
-      </td>
-      <td><a href="/ko/docs/Web/HTML/Global_attributes">전역 특성</a></td>
-      <td>
-        Specify whether an element’s attribute values and the values of its
-        <code
-          ><a href="https://dom.spec.whatwg.org/#text" id="ref-for-text①⑦"
-            >Text</a
-          ></code
-        >
-        node children are to be translated when the page is localized, or
-        whether to leave them unchanged.
+        Specifies where to open the linked document (in the case of an
+        <code>&#x3C;a></code> element) or where to display the response received
+        (in the case of a <code>&#x3C;form></code> element)
       </td>
     </tr>
     <tr>
-      <td><code>type</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Global_attributes/title">title</a></code>
+      </td>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Global_attributes">Global attribute</a>
+      </td>
+      <td>Text to be displayed in a tooltip when hovering over the element.</td>
+    </tr>
+    <tr>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Global_attributes/translate">translate</a></code>
+      </td>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Global_attributes">Global attribute</a>
+      </td>
+      <td>
+        Specify whether an element's attribute values and the values of its
+        <code><a href="https://dom.spec.whatwg.org/#text">Text</a></code> node
+        children are to be translated when the page is localized, or whether to
+        leave them unchanged.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/type">type</a></code>
+      </td>
       <td>
         {{ HTMLElement("button") }},
         {{ HTMLElement("input") }},
-        {{ HTMLElement("command") }},
         {{ HTMLElement("embed") }},
         {{ HTMLElement("object") }},
+        {{ HTMLElement("ol") }},
         {{ HTMLElement("script") }},
         {{ HTMLElement("source") }},
-        {{ HTMLElement("style") }}, {{ HTMLElement("menu") }}
+        {{ HTMLElement("style") }}, {{ HTMLElement("menu") }},
+        {{ HTMLElement("link") }}
       </td>
-      <td>요소의 타입을 정의함</td>
+      <td>Defines the type of the element.</td>
     </tr>
     <tr>
-      <td><code>usemap</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/usemap">usemap</a></code>
+      </td>
       <td>
         {{ HTMLElement("img") }}, {{ HTMLElement("input") }},
         {{ HTMLElement("object") }}
@@ -1195,19 +1410,26 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
       <td></td>
     </tr>
     <tr>
-      <td><code>value</code></td>
       <td>
-        {{ HTMLElement("button") }},
-        {{ HTMLElement("option") }},
+        <code><a href="/en-US/docs/Web/HTML/Attributes/value">value</a></code>
+      </td>
+      <td>
+        {{ HTMLElement("button") }}, {{ HTMLElement("data") }},
         {{ HTMLElement("input") }}, {{ HTMLElement("li") }},
         {{ HTMLElement("meter") }},
+        {{ HTMLElement("option") }},
         {{ HTMLElement("progress") }},
         {{ HTMLElement("param") }}
       </td>
-      <td>페이지가 로드된뒤 요소에 표시될 기본값을 지정합니다.</td>
+      <td>
+        Defines a default value which will be displayed in the element on page
+        load.
+      </td>
     </tr>
     <tr>
-      <td><code>width</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Attributes/width">width</a></code>
+      </td>
       <td>
         {{ HTMLElement("canvas") }},
         {{ HTMLElement("embed") }},
@@ -1217,15 +1439,23 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
         {{ HTMLElement("video") }}
       </td>
       <td>
-        Note: In some instances, such as {{ HTMLElement("div") }}, this
-        is a legacy attribute, in which case the CSS
-        {{ Cssxref("width") }} property should be used instead. In other
-        cases, such as {{ HTMLElement("canvas") }}, the width must be
-        specified with this attribute.
+        <p>
+          For the elements listed here, this establishes the element's width.
+        </p>
+        <div class="note">
+          <p>
+            <strong>Note:</strong> For all other instances, such as
+            {{ HTMLElement("div") }}, this is a legacy attribute, in
+            which case the CSS {{ Cssxref("width") }} property should be
+            used instead.
+          </p>
+        </div>
       </td>
     </tr>
     <tr>
-      <td><code>wrap</code></td>
+      <td>
+        <code><a href="/en-US/docs/Web/HTML/Element/textarea#wrap">wrap</a></code>
+      </td>
       <td>{{ HTMLElement("textarea") }}</td>
       <td>Indicates whether the text should be wrapped.</td>
     </tr>
@@ -1234,18 +1464,49 @@ HTML의 요소들은 **특성**을 가지고 있습니다. 특성은 사용자�
 
 ## Content versus IDL attributes
 
-In HTML, most attributes have two faces: the **content attribute** and the **IDL attribute**.
+In HTML, most attributes have two faces: the **content attribute** and the **IDL (Interface Definition Language) attribute**.
 
 The content attribute is the attribute as you set it from the content (the HTML code) and you can set it or get it via {{domxref("element.setAttribute()")}} or {{domxref("element.getAttribute()")}}. The content attribute is always a string even when the expected value should be an integer. For example, to set an {{HTMLElement("input")}} element's `maxlength` to 42 using the content attribute, you have to call `setAttribute("maxlength", "42")` on that element.
 
-The IDL attribute is also known as a JavaScript property. These are the attributes you can read or set using JavaScript properties like <code class="moz-txt-verticalline">element.foo</code>. The IDL attribute is always going to use (but might transform) the underlying content attribute to return a value when you get it and is going to save something in the content attribute when you set it. In other words, the IDL attributes, in essence, reflect the content attributes.
+The IDL attribute is also known as a JavaScript property. These are the attributes you can read or set using JavaScript properties like `element.foo`. The IDL attribute is always going to use (but might transform) the underlying content attribute to return a value when you get it and is going to save something in the content attribute when you set it. In other words, the IDL attributes, in essence, reflect the content attributes.
 
 Most of the time, IDL attributes will return their values as they are really used. For example, the default `type` for {{HTMLElement("input")}} elements is "text", so if you set `input.type="foobar"`, the `<input>` element will be of type text (in the appearance and the behavior) but the "type" content attribute's value will be "foobar". However, the `type` IDL attribute will return the string "text".
 
-IDL attributes are not always strings; for example, `input.maxlength` is a number (a signed long). When using IDL attributes, you read or set values of the desired type, so `input.maxlength` is always going to return a number and when you set `input.maxlength` ,it wants a number. If you pass another type, it is automatically converted to a number as specified by the standard JavaScript rules for type conversion.
+IDL attributes are not always strings; for example, `input.maxlength` is a number (a signed long). When using IDL attributes, you read or set values of the desired type, so `input.maxlength` is always going to return a number and when you set `input.maxlength`, it wants a number. If you pass another type, it is automatically converted to a number as specified by the standard JavaScript rules for type conversion.
 
-IDL attributes can [reflect other types](http://www.whatwg.org/specs/web-apps/current-work/multipage/urls.html#reflecting-content-attributes-in-idl-attributes) such as unsigned long, URLs, booleans, etc. Unfortunately, there are no clear rules and the way IDL attributes behave in conjunction with their corresponding content attributes depends on the attribute. Most of the time, it will follow [the rules laid out in the specification](http://www.whatwg.org/specs/web-apps/current-work/multipage/urls.html#reflecting-content-attributes-in-idl-attributes), but sometimes it doesn't. HTML specifications try to make this as developer-friendly as possible, but for various reasons (mostly historical), some attributes behave oddly (`select.size`, for example) and you should read the specifications to understand how exactly they behave.
+IDL attributes can [reflect other types](https://html.spec.whatwg.org/multipage/urls-and-fetching.html) such as unsigned long, URLs, booleans, etc. Unfortunately, there are no clear rules and the way IDL attributes behave in conjunction with their corresponding content attributes depends on the attribute. Most of the time, it will follow [the rules laid out in the specification](https://html.spec.whatwg.org/multipage/urls-and-fetching.html), but sometimes it doesn't. HTML specifications try to make this as developer-friendly as possible, but for various reasons (mostly historical), some attributes behave oddly (`select.size`, for example) and you should read the specifications to understand how exactly they behave.
 
-## 같이 보기
+## Boolean Attributes
 
-- [HTML 요소](/ko/docs/HTML/Element)
+Some content attributes (e.g. `required`, `readonly`, `disabled`) are called [boolean attributes](https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#boolean-attributes). If a boolean attribute is present, its value is **true**, and if it's absent, its value is **false**.
+
+HTML defines restrictions on the allowed values of boolean attributes: If the attribute is present, its value must either be the empty string (equivalently, the attribute may have an unassigned value), or a value that is an ASCII case-insensitive match for the attribute's canonical name, with no leading or trailing whitespace. The following examples are valid ways to mark up a boolean attribute:
+
+```html-nolint
+<div itemscope>This is valid HTML but invalid XML.</div>
+<div itemscope=itemscope>This is also valid HTML but invalid XML.</div>
+<div itemscope="">This is valid HTML and also valid XML.</div>
+<div itemscope="itemscope">
+  This is also valid HTML and XML, but perhaps a bit verbose.
+</div>
+```
+
+To be clear, the values "`true`" and "`false`" are not allowed on boolean attributes. To represent a false value, the attribute has to be omitted altogether. This restriction clears up some common misunderstandings: With `checked="false"` for example, the element's `checked` attribute would be interpreted as **true** because the attribute is present.
+
+## Event handler attributes
+
+> **Warning:** The use of event handler content attributes is discouraged. The mix of HTML and JavaScript often produces unmaintainable code, and the execution of event handler attributes may also be blocked by content security policies.
+
+In addition to the attributes listed in the table above, global [event handlers](/en-US/docs/Web/Events/Event_handlers#using_onevent_properties) — such as [`onclick`](/en-US/docs/Web/API/Element/click_event) — can also be specified as [content attributes](#content_versus_idl_attributes) on all elements.
+
+All event handler attributes accept a string. The string will be used to synthesize a [JavaScript function](/en-US/docs/Web/JavaScript/Reference/Functions) like `function name(/*args*/) {body}`, where `name` is the attribute's name, and `body` is the attribute's value. The handler receives the same parameters as its JavaScript event handler counterpart — most handlers receive only one `event` parameter, while `onerror` receives five: `event`, `source`, `lineno`, `colno`, `error`. This means you can, in general, use the `event` variable within the attribute.
+
+```html
+<div onclick="console.log(event)">Click me!</div>
+<!-- The synthesized handler has a name; you can reference itself -->
+<div onclick="console.log(onclick)">Click me!</div>
+```
+
+## See also
+
+- [HTML elements](/en-US/docs/Web/HTML/Element)

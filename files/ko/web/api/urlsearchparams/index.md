@@ -1,170 +1,174 @@
 ---
 title: URLSearchParams
 slug: Web/API/URLSearchParams
+page-type: web-api-interface
+browser-compat: api.URLSearchParams
 ---
 
 {{ApiRef("URL API")}}
 
-**`URLSearchParams`** 인터페이스는 URL의 쿼리 문자열을 대상으로 작업할 수 있는 유틸리티 메서드를 정의합니다.
+The **`URLSearchParams`** interface defines utility methods to work with the query string of a URL.
 
-`URLSearchParams`를 구현하는 객체는 {{jsxref("Statements/for...of", "for...of")}} 반복문으로 직접 키/값 쌍을 순회할 수 있습니다. 키/값 쌍의 순회 순서는 쿼리 문자열에 나타나는 순서와 같습니다. 예를 들어, 다음 두 줄의 코드는 동일합니다.
+An object implementing `URLSearchParams` can directly be used in a {{jsxref("Statements/for...of", "for...of")}} structure to iterate over key/value pairs in the same order as they appear in the query string, for example the following two lines are equivalent:
 
 ```js
-for (const [key, value] of mySearchParams) {}
-for (const [key, value] of mySearchParams.entries()) {}
+for (const [key, value] of mySearchParams) {
+}
+for (const [key, value] of mySearchParams.entries()) {
+}
 ```
 
 {{availableinworkers}}
 
-## 생성자
+## Constructor
 
 - {{domxref("URLSearchParams.URLSearchParams", 'URLSearchParams()')}}
-  - : `URLSearchParams` 객체 인스턴스를 반환합니다.
+  - : Returns a `URLSearchParams` object instance.
 
-## 메서드
+## Instance methods
 
 - {{domxref("URLSearchParams.append()")}}
-  - : 주어진 키/값 쌍을 새로운 검색 매개변수로 추가합니다.
+  - : Appends a specified key/value pair as a new search parameter.
 - {{domxref("URLSearchParams.delete()")}}
-  - : 주어진 검색 매개변수와 그 값을 모두 삭제합니다.
+  - : Deletes the given search parameter, and its associated value, from the list of all search parameters.
 - {{domxref("URLSearchParams.entries()")}}
-  - : 객체의 모든 키/값 쌍을 쿼리 문자열과 같은 순서로 순회할 수 있는 [순회기](/ko/docs/Web/JavaScript/Reference/Iteration_protocols)를 반환합니다.
+  - : Returns an {{jsxref("Iteration_protocols","iterator")}} allowing iteration through all key/value pairs contained in this object in the same order as they appear in the query string.
 - {{domxref("URLSearchParams.forEach()")}}
-  - : 객체의 모든 값을 순회하면서 지정한 콜백을 호출합니다.
+  - : Allows iteration through all values contained in this object via a callback function.
 - {{domxref("URLSearchParams.get()")}}
-  - : 주어진 검색 매개변수에 연결된 첫 번째 값을 반환합니다.
+  - : Returns the first value associated with the given search parameter.
 - {{domxref("URLSearchParams.getAll()")}}
-  - : 주어진 검색 매개변수에 연결된 모든 값을 반환합니다.
+  - : Returns all the values associated with a given search parameter.
 - {{domxref("URLSearchParams.has()")}}
-  - : 주어진 검색 매개변수의 존재 여부를 나타내는 불리언 값을을 반환합니다.
+  - : Returns a boolean value indicating if such a given parameter exists.
 - {{domxref("URLSearchParams.keys()")}}
-  - : 객체의 모든 키/값 쌍에서 키만 순회할 수 있는 [순회기](/ko/docs/Web/JavaScript/Reference/Iteration_protocols)를 반환합니다.
+  - : Returns an {{jsxref("Iteration_protocols", "iterator")}} allowing iteration through all keys of the key/value pairs contained in this object.
 - {{domxref("URLSearchParams.set()")}}
-  - : 주어진 검색 매개변수에 값을 설정합니다. 이미 해당 매개변수에 연결된 값이 있으면 우선 모두 제거합니다.
+  - : Sets the value associated with a given search parameter to the given value. If there are several values, the others are deleted.
 - {{domxref("URLSearchParams.sort()")}}
-  - : 모든 키/값 쌍을 키의 순서로 정렬합니다.
+  - : Sorts all key/value pairs, if any, by their keys.
 - {{domxref("URLSearchParams.toString()")}}
-  - : URL에 쓰기 적합한 형태의 쿼리 문자열을 반환합니다.
+  - : Returns a string containing a query string suitable for use in a URL.
 - {{domxref("URLSearchParams.values()")}}
-  - : 객체의 모든 키/값 쌍에서 값만 순회할 수 있는 [순회기](/ko/docs/Web/JavaScript/Reference/Iteration_protocols)를 반환합니다.
+  - : Returns an {{jsxref("Iteration_protocols", "iterator")}} allowing iteration through all values of the key/value pairs contained in this object.
 
-## 예제
+## Examples
 
 ```js
-const paramsString = 'q=URLUtils.searchParams&topic=api';
-let searchParams = new URLSearchParams(paramsString);
+const paramsString = "q=URLUtils.searchParams&topic=api";
+const searchParams = new URLSearchParams(paramsString);
 
-// 검색 매개변수 순회
-for (let p of searchParams) {
+// Iterating the search parameters
+for (const p of searchParams) {
   console.log(p);
 }
 
-searchParams.has('topic') === true;      // true
-searchParams.get('topic') === "api";     // true
-searchParams.getAll('topic');            // ["api"]
-searchParams.get('foo') === null;        // true
-searchParams.append('topic', 'webdev');
-searchParams.toString();                 // "q=URLUtils.searchParams&topic=api&topic=webdev"
-searchParams.set('topic', 'More webdev');
-searchParams.toString();                 // "q=URLUtils.searchParams&topic=More+webdev"
-searchParams.delete('topic');
-searchParams.toString();                 // "q=URLUtils.searchParams"
+console.log(searchParams.has("topic")); // true
+console.log(searchParams.get("topic") === "api"); // true
+console.log(searchParams.getAll("topic")); // ["api"]
+console.log(searchParams.get("foo") === null); // true
+console.log(searchParams.append("topic", "webdev"));
+console.log(searchParams.toString()); // "q=URLUtils.searchParams&topic=api&topic=webdev"
+console.log(searchParams.set("topic", "More webdev"));
+console.log(searchParams.toString()); // "q=URLUtils.searchParams&topic=More+webdev"
+console.log(searchParams.delete("topic"));
+console.log(searchParams.toString()); // "q=URLUtils.searchParams"
 ```
 
 ```js
-// 검색 매개변수는 객체도 가능
-let paramsObj = {foo: 'bar', baz: 'bar'};
-let searchParams = new URLSearchParams(paramsObj);
+// Search parameters can also be an object
+const paramsObj = { foo: "bar", baz: "bar" };
+const searchParams = new URLSearchParams(paramsObj);
 
-searchParams.toString();                 // "foo=bar&baz=bar"
-searchParams.has('foo');                 // true
-searchParams.get('foo');                 // bar
+console.log(searchParams.toString()); // "foo=bar&baz=bar"
+console.log(searchParams.has("foo")); // true
+console.log(searchParams.get("foo")); // "bar"
 ```
 
-### 중복된 검색 매개변수
+### Duplicate search parameters
 
 ```js
-let paramStr = 'foo=bar&foo=baz';
-let searchParams = new URLSearchParams(paramStr);
+const paramStr = "foo=bar&foo=baz";
+const searchParams = new URLSearchParams(paramStr);
 
-searchParams.toString();                 // "foo=bar&foo=baz"
-searchParams.has('foo');                 // true
-searchParams.get('foo');                 // bar, 첫 번째 값만 반환
-searchParams.getAll('foo');              // ["bar", "baz"]
+console.log(searchParams.toString()); // "foo=bar&foo=baz"
+console.log(searchParams.has("foo")); // true
+console.log(searchParams.get("foo")); // bar, only returns the first value
+console.log(searchParams.getAll("foo")); // ["bar", "baz"]
 ```
 
-### URL 파싱 없음
+### No URL parsing
 
-`URLSearchParams` 생성자에 URL 파싱 기능은 없습니다. 다만 쿼리 문자열이 `?`로 시작하면 무시합니다.
+The `URLSearchParams` constructor does _not_ parse full URLs. However, it will strip an initial leading `?` off of a string, if present.
 
 ```js
-const paramsString1 = 'http://example.com/search?query=%40';
+const paramsString1 = "http://example.com/search?query=%40";
 const searchParams1 = new URLSearchParams(paramsString1);
 
-searchParams1.has('query'); // false
-searchParams1.has('http://example.com/search?query'); // true
+console.log(searchParams1.has("query")); // false
+console.log(searchParams1.has("http://example.com/search?query")); // true
 
-searchParams1.get('query'); // null
-searchParams1.get('http://example.com/search?query'); // "@" (decodeURIComponent('%40')과 동일)
+console.log(searchParams1.get("query")); // null
+console.log(searchParams1.get("http://example.com/search?query")); // "@" (equivalent to decodeURIComponent('%40'))
 
-const paramsString2 = '?query=value';
+const paramsString2 = "?query=value";
 const searchParams2 = new URLSearchParams(paramsString2);
-searchParams2.has('query'); // true
+console.log(searchParams2.has("query")); // true
 
-const url = new URL('http://example.com/search?query=%40');
+const url = new URL("http://example.com/search?query=%40");
 const searchParams3 = new URLSearchParams(url.search);
-searchParams3.has('query') // true
+console.log(searchParams3.has("query")); // true
 ```
 
-### 더하기 기호 보존하기
+### Preserving plus signs
 
-`URLSearchParams` 생성자는 더하기 기호(`+`)를 공백으로 취급하므로 원하지 않는 결과를 낳을 수 있습니다.
+The `URLSearchParams` constructor interprets plus signs (`+`) as spaces, which might cause problems.
 
 ```js
-const rawData = '\x13à\x17@\x1F\x80';
+const rawData = "\x13à\x17@\x1F\x80";
 const base64Data = btoa(rawData); // 'E+AXQB+A'
 
 const searchParams = new URLSearchParams(`bin=${base64Data}`); // 'bin=E+AXQB+A'
-const binQuery = searchParams.get('bin'); // 'E AXQB A', '+'가 공백으로 대체됨
+const binQuery = searchParams.get("bin"); // 'E AXQB A', '+' is replaced by spaces
 
 console.log(atob(binQuery) === rawData); // false
 ```
 
-{{jsxref("encodeURIComponent", "encodeURIComponent()")}}로 값을 먼저 인코딩하면 이 문제를 피할 수 있습니다.
+You can avoid this by encoding the data with the {{jsxref("encodeURIComponent", "encodeURIComponent()")}}.
 
 ```js
-const rawData = '\x13à\x17@\x1F\x80';
+const rawData = "\x13à\x17@\x1F\x80";
 const base64Data = btoa(rawData); // 'E+AXQB+A'
 const encodedBase64Data = encodeURIComponent(base64Data); // 'E%2BAXQB%2BA'
 
 const searchParams = new URLSearchParams(`bin=${encodedBase64Data}`); // 'bin=E%2BAXQB%2BA'
-const binQuery = searchParams.get('bin'); // 'E+AXQB+A'
+const binQuery = searchParams.get("bin"); // 'E+AXQB+A'
 
 console.log(atob(binQuery) === rawData); // true
 ```
 
-### 빈 값과 없는 값
+### Empty value vs. no value
 
-`URLSearchParams`는 `=` 뒤에 값이 없는 것과, 아예 `=`조차 없는 매개변수를 구분하지 않습니다.
+`URLSearchParams` doesn't distinguish between a parameter with nothing after the `=`, and a parameter that doesn't have a `=` altogether.
 
 ```js
-const emptyVal = new URLSearchParams('foo=&bar=baz');
-emptyVal.get('foo'); // '' 반환
-const noEquals = new URLSearchParams('foo&bar=baz');
-noEquals.get('foo'); // '' 반환, 동일함
-noEquals.toString(); // 'foo=&bar=baz'
+const emptyVal = new URLSearchParams("foo=&bar=baz");
+console.log(emptyVal.get("foo")); // returns ''
+const noEquals = new URLSearchParams("foo&bar=baz");
+console.log(noEquals.get("foo")); // also returns ''
+console.log(noEquals.toString()); // 'foo=&bar=baz'
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [`core-js`의 `URLSearchParams` 폴리필](https://github.com/zloirock/core-js#url-and-urlsearchparams)
-- {{domxref("URL")}} 인터페이스
-- [Google Developers: Easy URL manipulation with URLSearchParams](https://developers.google.com/web/updates/2016/01/urlsearchparams?hl=en)
+- [Polyfill of `URLSearchParams` in `core-js`](https://github.com/zloirock/core-js#url-and-urlsearchparams)
+- The {{domxref("URL")}} interface.
+- [Google Developers: Easy URL manipulation with URLSearchParams](https://developer.chrome.com/blog/urlsearchparams/)

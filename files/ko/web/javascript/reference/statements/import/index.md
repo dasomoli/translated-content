@@ -1,148 +1,231 @@
 ---
 title: import
 slug: Web/JavaScript/Reference/Statements/import
+page-type: javascript-statement
+browser-compat: javascript.statements.import
 ---
 
 {{jsSidebar("Statements")}}
 
-정적 **`import`** 문은 다른 모듈에서 내보낸 바인딩을 가져올 때 사용합니다.
+The static **`import`** declaration is used to import read-only live bindings which are [exported](/en-US/docs/Web/JavaScript/Reference/Statements/export) by another module. The imported bindings are called _live bindings_ because they are updated by the module that exported the binding, but cannot be re-assigned by the importing module.
 
-가져오는 모듈은 `"use strict"`의 존재 유무와 상관없이 무조건 [엄격 모드](/ko/docs/Web/JavaScript/Reference/Strict_mode)입니다. HTML 안에 작성한 스크립트에서는 `import`를 사용할 수 없습니다.
+In order to use the `import` declaration in a source file, the file must be interpreted by the runtime as a [module](/en-US/docs/Web/JavaScript/Guide/Modules). In HTML, this is done by adding `type="module"` to the {{HTMLElement("script")}} tag. Modules are automatically interpreted in [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode).
 
-함수형 구문을 가진 동적 **`import()`**도 있으며, `type="module"`을 필요로 하지 않습니다.
+There is also a function-like dynamic [`import()`](/en-US/docs/Web/JavaScript/Reference/Operators/import), which does not require scripts of `type="module"`.
 
-{{htmlelement("script")}} 태그의 `nomodule` 속성을 사용해 하위호환성을 유지할 수 있습니다.
+## Syntax
 
-동적 가져오기는 모듈을 조건적으로 가져오고 싶거나, 필요할 때에만 가져올 때 유용합니다. 반면 초기 의존성을 불러올 때엔 정적 가져오기가 더 좋고, 정적 코드 분석 도구와 {{glossary("Tree shaking", "트리 셰이킹")}}을 적용하기 쉽습니다.
-
-## 구문
-
-```js
-    import defaultExport from "module-name";
-    import * as name from "module-name";
-    import { export1 } from "module-name";
-    import { export1 as alias1 } from "module-name";
-    import { export1 , export2 } from "module-name";
-    import { foo , bar } from "module-name/path/to/specific/un-exported/file";
-    import { export1 , export2 as alias2 , [...] } from "module-name";
-    import defaultExport, { export1 [ , [...] ] } from "module-name";
-    import defaultExport, * as name from "module-name";
-    import "module-name";
-    var promise = import("module-name");
+```js-nolint
+import defaultExport from "module-name";
+import * as name from "module-name";
+import { export1 } from "module-name";
+import { export1 as alias1 } from "module-name";
+import { default as alias } from "module-name";
+import { export1, export2 } from "module-name";
+import { export1, export2 as alias2, /* … */ } from "module-name";
+import { "string name" as alias } from "module-name";
+import defaultExport, { export1, /* … */ } from "module-name";
+import defaultExport, * as name from "module-name";
+import "module-name";
 ```
 
 - `defaultExport`
-  - : 모듈에서 가져온 기본 내보내기를 가리킬 이름.
+  - : Name that will refer to the default export from the module. Must be a valid JavaScript identifier.
 - `module-name`
-  - : 가져올 대상 모듈. 보통, 모듈을 담은 `.js` 파일로의 절대 또는 상대 경로입니다. 번들러에 따라 확장자를 허용하거나, 필요로 할 수도 있으므로 작업 환경을 확인하세요. 따옴표와 쌍따옴표 문자열만 사용 가능합니다.
+  - : The module to import from. The evaluation of the specifier is host-specified. This is often a relative or absolute URL to the `.js` file containing the module. In Node, extension-less imports often refer to packages in `node_modules`. Certain bundlers may permit importing files without extensions; check your environment. Only single quoted and double quoted Strings are allowed.
 - `name`
-  - : 가져온 대상에 접근할 때 일종의 이름공간으로 사용할, 모듈 객체의 이름.
+  - : Name of the module object that will be used as a kind of namespace when referring to the imports. Must be a valid JavaScript identifier.
 - `exportN`
-  - : 내보낸 대상 중 가져올 것의 이름.
+  - : Name of the exports to be imported. The name can be either an identifier or a string literal, depending on what `module-name` declares to export. If it is a string literal, it must be aliased to a valid identifier.
 - `aliasN`
-  - : 가져온 유명 내보내기를 가리킬 이름.
+  - : Names that will refer to the named imports. Must be a valid JavaScript identifier.
 
-## 설명
+## Description
 
-`name` 파라미터는 export 되는 멤버를 받을 오브젝트의 이름입니다. `member` 파라미터는 각각의 멤버를 지정하지만, `name` 파라미터는 모두를 가져옵니다. 모듈에서 name 은 멤버 대신 하나의 default 파라미터를 통해 export 하는 경우에도 동작할 수 있습니다. 다음의 명확한 예제 문법을 살펴봅시다.
+`import` declarations can only be present in modules, and only at the top-level (i.e. not inside blocks, functions, etc.). If an `import` declaration is encountered in non-module contexts (for example, `<script>` tags without `type="module"`, `eval`, `new Function`, which all have "script" or "function body" as parsing goals), a `SyntaxError` is thrown. To load modules in non-module contexts, use the [dynamic import](/en-US/docs/Web/JavaScript/Reference/Operators/import) syntax instead.
 
-모듈 전체를 가져옵니다. export 한 모든 것들을 현재 범위(스크립트 파일 하나로 구분되는 모듈 범위) 내에 `myModule` 로 바인딩되어 들어갑니다.
+`import` declarations are designed to be syntactically rigid (for example, only string literal specifiers, only permitted at the top-level, all bindings must be identifiers), which allows modules to be statically analyzed and linked before getting evaluated. This is the key to making modules asynchronous by nature, powering features like [top-level await](/en-US/docs/Web/JavaScript/Guide/Modules#top_level_await).
+
+There are four forms of `import` declarations:
+
+- [Named import](#named_import): `import { export1, export2 } from "module-name";`
+- [Default import](#default_import): `import defaultExport from "module-name";`
+- [Namespace import](#namespace_import): `import * as name from "module-name";`
+- [Side effect import](#import_a_module_for_its_side_effects_only): `import "module-name";`
+
+Below are examples to clarify the syntax.
+
+### Named import
+
+Given a value named `myExport` which has been exported from the module `my-module` either implicitly as `export * from "another.js"` or explicitly using the {{jsxref("Statements/export", "export")}} statement, this inserts `myExport` into the current scope.
 
 ```js
-import * as myModule from "my-module.js";
+import { myExport } from "/modules/my-module.js";
 ```
 
-모듈에서 하나의 멤버만 가져옵니다. 현재 범위 내에 `myMember` 이 들어갑니다.
+You can import multiple names from the same module.
 
 ```js
-import {myMember} from "my-module.js";
+import { foo, bar } from "/modules/my-module.js";
 ```
 
-모듈에서 여러 멤버들을 가져옵니다. 현재 범위 내에 `foo` 와 `bar` 이 들어갑니다.
+You can rename an export when importing it. For example, this inserts `shortName` into the current scope.
 
 ```js
-import {foo, bar} from "my-module.js";
+import { reallyReallyLongModuleExportName as shortName } from "/modules/my-module.js";
 ```
 
-멤버를 가져올 때 좀 더 편리한 별명을 지정해줍니다. 현재 범위 내에 `shortName` 이 들어갑니다.
+A module may also export a member as a string literal which is not a valid identifier, in which case you must alias it in order to use it in the current module.
 
 ```js
-import {reallyReallyLongModuleMemberName as shortName} from "my-module.js";
+// /modules/my-module.js
+const a = 1;
+export { a as "a-b" };
 ```
 
-모듈에서 여러 멤버들을 편리한 별명을 지정하며 가져옵니다.
-
 ```js
-    import {reallyReallyLongModuleMemberName as shortName, anotherLongModuleName as short} from "my-module.js";
+import { "a-b" as a } from "/modules/my-module.js";
 ```
 
-어떠한 바인딩 없이 모듈 전체의 사이드 이펙트만 가져옵니다.
+> **Note:** `import { x, y } from "mod"` is not equivalent to `import defaultExport from "mod"` and then destructuring `x` and `y` from `defaultExport`. Named and default imports are distinct syntaxes in JavaScript modules.
+
+### Default import
+
+Default exports need to be imported with the corresponding default import syntax. The simplest version directly imports the default:
 
 ```js
-import "my-module.js";
+import myDefault from "/modules/my-module.js";
 ```
 
-### 기본값 가져오기
+Since the default export doesn't explicitly specify a name, you can give the identifier any name you like.
 
-default export 를 통해 내보낸 것을 기본값으로 가져올 수 있습니다. (object, function, class 등). export 와 상반된 `import` 명령어를 통해 기본값을 가져오는 것이 가능합니다.
-
-기본값으로 바로 가져오는 가장 간단한 버전:
+It is also possible to specify a default import with namespace imports or named imports. In such cases, the default import will have to be declared first. For instance:
 
 ```js
-import myModule from "my-module.js";
+import myDefault, * as myModule from "/modules/my-module.js";
+// myModule.default and myDefault point to the same binding
 ```
 
-위와 함께 기본 구문도 같이 사용할 수 있습니다 (namespace 가져오기 또는 이름 지정하여 가져오기). 이러한 경우, 기본값 가져오는 부분을 먼저 선언해야 할 것입니다. 예를 들어:
+or
 
 ```js
-import myDefault, * as myModule from "my-module.js";
-// myModule used as a namespace
+import myDefault, { foo, bar } from "/modules/my-module.js";
 ```
 
-또는
+Importing a name called `default` has the same effect as a default import. It is necessary to alias the name because `default` is a reserved word.
 
 ```js
-import myDefault, {foo, bar} from "my-module.js";
-// specific, named imports
+import { default as myDefault } from "/modules/my-module.js";
 ```
 
-## 예제
+### Namespace import
 
-AJAX JSON 리퀘스트 처리를 돕는 보조 파일을 가져옵니다.
+The following code inserts `myModule` into the current scope, containing all the exports from the module located at `/modules/my-module.js`.
 
 ```js
-// --file.js--
-function getJSON(url, callback) {
-  let xhr = new XMLHttpRequest();
-  xhr.onload = function () {
-    callback(this.responseText)
-  };
-  xhr.open("GET", url, true);
-  xhr.send();
+import * as myModule from "/modules/my-module.js";
+```
+
+Here, `myModule` represents a _namespace_ object which contains all exports as properties. For example, if the module imported above includes an export `doAllTheAmazingThings()`, you would call it like this:
+
+```js
+myModule.doAllTheAmazingThings();
+```
+
+`myModule` is a [sealed](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/isSealed) object with [`null` prototype](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#null-prototype_objects). The default export available as a key called `default`. For more information, see [module namespace object](/en-US/docs/Web/JavaScript/Reference/Operators/import#module_namespace_object).
+
+> **Note:** JavaScript does not have wildcard imports like `import * from "module-name"`, because of the high possibility of name conflicts.
+
+### Import a module for its side effects only
+
+Import an entire module for side effects only, without importing anything. This runs
+the module's global code, but doesn't actually import any values.
+
+```js
+import "/modules/my-module.js";
+```
+
+This is often used for [polyfills](/en-US/docs/Glossary/Polyfill), which mutate the global variables.
+
+## Examples
+
+### Standard Import
+
+In this example, we create a re-usable module that exports a function to get all primes within a given range.
+
+```js
+// getPrimes.js
+/**
+ * Returns a list of prime numbers that are smaller than `max`.
+ */
+export function getPrimes(max) {
+  const isPrime = Array.from({ length: max }, () => true);
+  isPrime[0] = isPrime[1] = false;
+  isPrime[2] = true;
+  for (let i = 2; i * i < max; i++) {
+    if (isPrime[i]) {
+      for (let j = i ** 2; j < max; j += i) {
+        isPrime[j] = false;
+      }
+    }
+  }
+  return [...isPrime.entries()]
+    .filter(([, isPrime]) => isPrime)
+    .map(([number]) => number);
 }
-
-export function getUsefulContents(url, callback) {
-  getJSON(url, data => callback(JSON.parse(data)));
-}
-
-// --main.js--
-import { getUsefulContents } from "file.js";
-getUsefulContents("http://www.example.com", data => {
-  doSomethingUseful(data);
-});
 ```
 
-## 명세서
+```js
+import { getPrimes } from "/modules/getPrimes.js";
+
+console.log(getPrimes(10)); // [2, 3, 5, 7]
+```
+
+### Imported values can only be modified by the exporter
+
+The identifier being imported is a _live binding_, because the module exporting it may re-assign it and the imported value would change. However, the module importing it cannot re-assign it. Still, any module holding an exported object can mutate the object, and the mutated value can be observed by all other modules importing the same value.
+
+You can also observe the new value through the [module namespace object](/en-US/docs/Web/JavaScript/Reference/Operators/import#module_namespace_object).
+
+```js
+// my-module.js
+export let myValue = 1;
+setTimeout(() => {
+  myValue = 2;
+}, 500);
+```
+
+```js
+// main.js
+import { myValue } from "/modules/my-module.js";
+import * as myModule from "/modules/my-module.js";
+
+console.log(myValue); // 1
+console.log(myModule.myValue); // 1
+setTimeout(() => {
+  console.log(myValue); // 2; my-module has updated its value
+  console.log(myModule.myValue); // 2
+  myValue = 3; // TypeError: Assignment to constant variable.
+  // The importing module can only read the value but can't re-assign it.
+}, 1000);
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{jsxref("Statements/export", "export")}}
-- [Previewing ES6 Modules and more from ES2015, ES2016 and beyond](https://blogs.windows.com/msedgedev/2016/05/17/es6-modules-and-beyond/)
-- [ES6 in Depth: Modules](https://hacks.mozilla.org/2015/08/es6-in-depth-modules/), Hacks blog post by Jason Orendorff
-- [Axel Rauschmayer's book: "Exploring JS: Modules"](http://exploringjs.com/es6/ch_modules.html)
+- {{JSxRef("Statements/export", "export")}}
+- [Dynamic imports](/en-US/docs/Web/JavaScript/Reference/Operators/import)
+- [`import.meta`](/en-US/docs/Web/JavaScript/Reference/Operators/import.meta)
+- Limin Zhu, Brian Terlson and Microsoft Edge Team:
+  [Previewing ES6 Modules and more from ES2015, ES2016 and beyond](https://blogs.windows.com/msedgedev/2016/05/17/es6-modules-and-beyond/)
+- Hacks blog post by Jason Orendorff: [ES6 in Depth: Modules](https://hacks.mozilla.org/2015/08/es6-in-depth-modules/)
+- Hacks blog post by Lin Clark: [ES modules: A cartoon deep-dive](https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/)
+- Axel Rauschmayer's book: ["Exploring JS: Modules"](https://exploringjs.com/es6/ch_modules.html)
+- The Modern JavaScript Tutorial(javascript.info): [Export and Import](https://javascript.info/import-export)

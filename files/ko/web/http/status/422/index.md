@@ -1,20 +1,25 @@
 ---
-title: 422 Unprocessable Entity
+title: 422 Unprocessable Content
 slug: Web/HTTP/Status/422
+page-type: http-status-code
+spec-urls: https://httpwg.org/specs/rfc9110.html#status.422
 ---
 
 {{HTTPSidebar}}
 
-이 응답은 서버가 요청을 이해하고 요청 문법도 올바르지만 요청된 지시를 따를 수 없음을 나타냅니다.
+The HyperText Transfer Protocol (HTTP)
+**`422 Unprocessable Content`** response status code indicates
+that the server understands the content type of the request entity, and the syntax of
+the request entity is correct, but it was unable to process the contained instructions.
 
-> **경고:** **중요**: 클라이언트는 요청을 수정하지 않고 동일한 형태로 다시 보내서는 안됩니다.
+> **Warning:** The client should not repeat this request without modification.
 
-## 상태
+## Status
 
+```http
+422 Unprocessable Content
 ```
-422 Unprocessable Entity
-```
 
-## 명세
+## Specifications
 
 {{Specifications}}

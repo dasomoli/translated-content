@@ -1,90 +1,110 @@
 ---
 title: Content-Type
 slug: Web/HTTP/Headers/Content-Type
+page-type: http-header
+browser-compat: http.headers.Content-Type
 ---
 
 {{HTTPSidebar}}
 
-**`Content-Type`** 개체 헤더는 리소스의 {{Glossary("MIME type","media type")}}을 나타내기 위해 사용됩니다.
+The **`Content-Type`** representation header is used to indicate the original {{Glossary("MIME type","media type")}} of the resource (prior to any content encoding applied for sending).
 
-응답 내에 있는 `Content-Type` 헤더는 클라이언트에게 반환된 컨텐츠의 컨텐츠 유형이 실제로 무엇인지를 알려줍니다. 브라우저들은 어떤 경우에는 MIME 스니핑을 해서 이 헤더의 값을 꼭 따르지는 않을 겁니다; 이를 막기 위해, {{HTTPHeader("X-Content-Type-Options")}} 헤더를 `nosniff`으로 설정할 수 있습니다.
+In responses, a `Content-Type` header provides the client with the actual content type of the returned content. This header's value may be ignored, for example when browsers perform MIME sniffing; set the {{HTTPHeader("X-Content-Type-Options")}} header value to `nosniff` to prevent this behavior.
 
-요청 내에서, ({{HTTPMethod("POST")}} 혹은 {{HTTPMethod("PUT")}}처럼), 클라이언트는 서버에게 어떤 유형의 데이터가 실제로 전송됐는지를 알려줍니다.
+In requests, (such as {{HTTPMethod("POST")}} or {{HTTPMethod("PUT")}}), the client tells the server what type of data is actually sent.
 
 <table class="properties">
   <tbody>
     <tr>
-      <th scope="row">헤더 유형</th>
-      <td>{{Glossary("Entity header")}}</td>
+      <th scope="row">Header type</th>
+      <td>{{Glossary("Representation header")}}</td>
     </tr>
     <tr>
       <th scope="row">{{Glossary("Forbidden header name")}}</th>
       <td>no</td>
     </tr>
+    <tr>
+      <th scope="row">
+        {{Glossary("CORS-safelisted response header")}}
+      </th>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <th scope="row">
+        {{Glossary("CORS-safelisted request header")}}
+      </th>
+      <td>
+        yes, with the additional restriction that values can't contain a
+        <em>CORS-unsafe request header byte</em>: 0x00-0x1F (except 0x09 (HT)),
+        <code>"():&#x3C;>?@[\]{}</code>, and 0x7F (DEL).<br />It also needs to
+        have a MIME type of its parsed value (ignoring parameters) of either
+        <code>application/x-www-form-urlencoded</code>,
+        <code>multipart/form-data</code>, or <code>text/plain</code>.
+      </td>
+    </tr>
   </tbody>
 </table>
 
-## 문법
+## Syntax
 
-```
+```http
 Content-Type: text/html; charset=utf-8
 Content-Type: multipart/form-data; boundary=something
 ```
 
-## 디렉티브
+## Directives
 
 - `media-type`
-  - : 리소스 혹은 데이터의 [MIME type](/ko/docs/Web/HTTP/Basics_of_HTTP/MIME_types).
+  - : The [MIME type](/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) of the resource or the data.
 - charset
-  - : 문자 인코딩 표준.
+  - : The character encoding standard. Case insensitive, lowercase is preferred.
 - boundary
-  - : 멀티파트 개체에 대해 `boundary` 디렉티브는 필수인데, 이메일 게이트를 통해 매우 탄탄해졌다고 알려진 캐릭터셋의 1\~70개의 문자들로 구성되며, 빈 공백으로 끝나지 않습니다. 이는 메시지의 멀티 파트 경계선을 캡슐화하기 위해 사용됩니다.
+  - : For multipart entities the `boundary` directive is required. The directive consists of 1 to 70 characters from a set of characters (and not ending with white space) known to be very robust through email gateways. It is used to encapsulate the boundaries of the multiple parts of the message. Often, the header boundary is prepended with two dashes and the final boundary has two dashes appended at the end.
 
-## 예제
+## Examples
 
 ### `Content-Type` in HTML forms
 
-HTML 폼 전송으로 일어나는 {{HTTPMethod("POST")}} 요청 내에서, 요청의 `Content-Type`은 {{HTMLElement("form")}} 요소 상의 `enctype` 속성에 의해 지정됩니다.
+In a {{HTTPMethod("POST")}} request, resulting from an HTML form submission, the `Content-Type` of the request is specified by the `enctype` attribute on the {{HTMLElement("form")}} element.
 
 ```html
 <form action="/" method="post" enctype="multipart/form-data">
-  <input type="text" name="description" value="some text">
-  <input type="file" name="myFile">
+  <input type="text" name="description" value="some text" />
+  <input type="file" name="myFile" />
   <button type="submit">Submit</button>
 </form>
 ```
 
-요청은 다음과 같을 겁니다(여기서 설명할 필요가 없는 헤더들은 생략되었습니다):
+The request looks something like this (less interesting headers are omitted here):
 
-```
+```http
 POST /foo HTTP/1.1
 Content-Length: 68137
 Content-Type: multipart/form-data; boundary=---------------------------974767299852498929531610575
+
+-----------------------------974767299852498929531610575
 Content-Disposition: form-data; name="description"
----------------------------974767299852498929531610575
 
 some text
-
----------------------------974767299852498929531610575
+-----------------------------974767299852498929531610575
 Content-Disposition: form-data; name="myFile"; filename="foo.txt"
 Content-Type: text/plain
 
 (content of the uploaded file foo.txt)
-
----------------------------974767299852498929531610575--
+-----------------------------974767299852498929531610575--
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 참고할 내용
+## See also
 
-- {{HTTPHeader("Accept")}}과 {{HTTPHeader("Accept-Charset")}}
+- {{HTTPHeader("Accept")}}
 - {{HTTPHeader("Content-Disposition")}}
 - {{HTTPStatus("206")}} Partial Content
-- {{HTTPStatus("X-Content-Type-Options")}}
+- {{HTTPHeader("X-Content-Type-Options")}}

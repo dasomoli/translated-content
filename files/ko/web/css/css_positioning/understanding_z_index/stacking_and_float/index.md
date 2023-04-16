@@ -1,34 +1,31 @@
 ---
-title: floating 엘리먼트의 쌓임
+title: Stacking with floated blocks
 slug: Web/CSS/CSS_Positioning/Understanding_z_index/Stacking_and_float
+page-type: guide
 ---
 
 {{CSSRef}}
 
-« [CSS](/ko/docs/Web/CSS) « [CSS z-index 이해하기](/ko/docs/Web/CSS/CSS_Positioning/Understanding_z_index)
+For floated elements, the stacking order is a bit different. Floating elements are placed between non-positioned elements and positioned elements:
 
-### floating 엘리먼트의 쌓임
+1. The background and borders of the root element.
+2. Descendant non-positioned elements, in order of appearance in the HTML.
+3. _Floating elements_.
+4. Descendant positioned elements, in order of appearance in the HTML.
 
-floating 엘리먼트들의 쌓임 순서는 약간 다르다. floating 엘리먼트들은 position이 지정된 블록과 지정되지 않은 블록 사이에 쌓인다.
+See [types of positioning](/en-US/docs/Web/CSS/position#types_of_positioning) for an explanation of positioned and non-positioned elements.
 
-1. 뿌리 엘리먼트의 배경과 테두리
-2. 자식 엘리먼트들은 HTML에서 등장하는 순서대로
-3. floating 엘리먼트
-4. position이 지정된 자식 엘리먼트들은 HTML에서 등장하는 순서대로
+> **Note:** If an `opacity` value is applied to a non-positioned element (i.e., DIV #4 in the example below), something strange happens: the background and border of that block pop up above the floating blocks and the positioned blocks. This is due to a peculiar part of the specification: applying an `opacity` value creates a new stacking context (see [What No One Told You About Z-Index](https://philipwalton.com/articles/what-no-one-told-you-about-z-index/)).
 
-사실 다음 예제에서 보는 것처럼 position이 지정되지 않은 엘리먼트(DIV #4)의 배경과 테두리는 floating 엘리먼트들에 의해 영향을 받지 않는다. 반면 컨텐츠는 영향을 받는다. 이것은 CSS 표준 float 명세에 따른 것이다.
+## Example
 
-위의 규칙 리스트를 수정하여 이 명세를 포함시켜보자.
+You can see in this example that the background and border of the non-positioned element (DIV #4) is completely unaffected by floating elements, but the content is affected. This happens according to standard float behavior which can be shown with a rule added to the above list:
 
-1. 뿌리 엘리먼트의 배경과 테두리
-2. 자식 엘리먼트들은 HTML에서 등장하는 순서대로
-3. floating 엘리먼트
-4. inline 자식 엘리먼트는 보통의 흐름대로
-5. position이 지정된 자식 엘리먼트들은 HTML에서 등장하는 순서대로
-
-> **참고:** **노트:** 아래 예제에서 position이 지정되지 않은 엘리먼트 이외에는 모든 엘리먼트가 쌓임 순서를 보여주기 위해 반투명하게 설정되었다. 만약 position이 지정되지 않은 엘리먼트 (DIV #4)의 투명도를 낮추면 이상한 일이 일어난다. 배경과 테두리가 (원래에는 floating 엘리먼트 아래에 있어야 함에도 불구하고) floating 엘리먼트와 position이 지정된 엘리먼트 사이에 보이는 것이다. 이것이 명세의 일부인지 아니면 버그인지 확실하지 않다. 투명도를 적용하는것이 새로운 쌓임 맥락(stacking context)를 만드는 것일까?
-
-## 예제
+1. The background and borders of the root element.
+2. Descendant non-positioned elements, in order of appearance in the HTML.
+3. Floating elements.
+4. _Descendant non-positioned inline elements_.
+5. Descendant positioned elements, in order of appearance in the HTML.
 
 ### HTML
 
@@ -115,21 +112,15 @@ strong {
 }
 ```
 
-## 결과
+## Result
 
-{{EmbedLiveSample("예제", 600, 250)}}
+{{EmbedLiveSample("Example", 600, 250)}}
 
-### See also
+## See also
 
-- [Stacking without z-index](/ko/CSS/Understanding_z-index/Stacking_without_z-index) : Default stacking rules
-- [Adding z-index](/ko/CSS/Understanding_z-index/Adding_z-index) : Using z-index to change default stacking
-- [The stacking context](/ko/CSS/Understanding_z-index/The_stacking_context) : Notes on the stacking context
-- [Stacking context example 1](/ko/CSS/Understanding_z-index/Stacking_context_example_1) : 2-level HTML hierarchy, z-index on the last level
-- [Stacking context example 2](/ko/CSS/Understanding_z-index/Stacking_context_example_2) : 2-level HTML hierarchy, z-index on all levels
-- [Stacking context example 3](/ko/CSS/Understanding_z-index/Stacking_context_example_3) : 3-level HTML hierarchy, z-index on the second level
-
-### Original Document Information
-
-- Author(s): Paolo Lombardi
-- This article is the english translation of an article I wrote in italian for [YappY](https://www.yappy.it). I grant the right to share all the content under [Creative Commons: Attribution-Sharealike license](https://creativecommons.org/licenses/by-sa/2.0/)
-- Last Updated Date: July 9th, 2005
+- [Stacking without the z-index property](/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/Stacking_without_z-index): The stacking rules that apply when `z-index` is not used.
+- [Using z-index](/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/Adding_z-index): How to use `z-index` to change default stacking.
+- [The stacking context](/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context): Notes on the stacking context.
+- [Stacking context example 1](/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/Stacking_context_example_1): 2-level HTML hierarchy, z-index on the last level
+- [Stacking context example 2](/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/Stacking_context_example_2): 2-level HTML hierarchy, z-index on all levels
+- [Stacking context example 3](/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/Stacking_context_example_3): 3-level HTML hierarchy, z-index on the second level

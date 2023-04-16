@@ -1,46 +1,44 @@
 ---
-title: element.length
+title: "NodeList: length property"
+short-title: length
 slug: Web/API/NodeList/length
+page-type: web-api-instance-property
+browser-compat: api.NodeList.length
 ---
 
-{{ ApiRef() }}
+{{APIRef("DOM")}}
 
-## 요약
+The **`NodeList.length`** property returns the number of items
+in a {{domxref("NodeList")}}.
 
-`length`는 `NodeList`의 항목수를 반환합니다.
+## Value
 
-## 구문
+An integer value representing the number of items in a `NodeList`.
+
+## Examples
+
+The `length` property is often useful in DOM programming. It's often used to
+test the length of a list, to see if it exists at all. It's also commonly used as the
+iterator in a `for` loop, as in this example.
 
 ```js
-numItems =nodeList.length
-```
+// All the paragraphs in the document
+const items = document.getElementsByTagName("p");
 
-- `numItems`은 `NodeList`의 항목수를 나타내는 정수값입니다.
-
-## 예
-
-```js
-// 문서의 모든 paragraph
-var items = document.getElementsByTagName("p");
-// 목록의 각 항목에,
-// HTML의 문자열로 전체 요소를 추가
-var gross = "";
-for (var i = 0; i < items.length; i++) {
+// For each item in the list,
+// append the entire element as a string of HTML
+let gross = "";
+for (let i = 0; i < items.length; i++) {
   gross += items[i].innerHTML;
 }
-// gross는 이제 모두 paragraph을 위한 HTML
+
+// gross is now all the HTML for the paragraphs
 ```
 
-## 주의
-
-reference에서 이 페이지의 위치에도 불구하고, `length`는 [Element](/ko/DOM/element)의 프로퍼티가 아니고, `NodeList`의 프로퍼티입니다. NodeList 개체는 [document.getElementsByTagName](/ko/DOM/document.getElementsByTagName)과 같은 많은 DOM 메소드에서 반환됩니다.
-
-`length`는 DOM 프로그래밍에서 아주 흔한 프로퍼티입니다. 위 예에서처럼 목록의 길이(적어도 있는 지 보기 위해)를 조사하고 for 루프에서 훑개(반복자, iterator)로 널리 쓰입니다.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

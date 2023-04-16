@@ -1,72 +1,87 @@
 ---
-title: 'ReferenceError: deprecated caller or arguments usage'
+title: "ReferenceError: deprecated caller or arguments usage"
 slug: Web/JavaScript/Reference/Errors/Deprecated_caller_or_arguments_usage
+page-type: javascript-error
 ---
 
 {{jsSidebar("Errors")}}
 
-## 메시지
+The JavaScript [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode)-only exception
+"deprecated caller or arguments usage" occurs when the
+deprecated {{jsxref("Function.prototype.caller")}} or {{jsxref("Function.prototype.arguments")}} properties
+are used.
+
+## Message
 
 ```
-  Warning: ReferenceError: deprecated caller usage (Firefox)
-  Warning: ReferenceError: deprecated arguments usage (Firefox)
-  TypeError: 'callee' and 'caller' cannot be accessed in strict mode. (Safari)
+TypeError: 'caller', 'callee', and 'arguments' properties may not be accessed on strict mode functions or the arguments objects for calls to them (V8-based & Firefox)
+TypeError: 'arguments', 'callee', and 'caller' cannot be accessed in this context. (Safari)
 ```
 
-## 에러 형식
+## Error type
 
-엄격 모드에서만 {{jsxref("ReferenceError")}} 경고가 발생합니다. JavaScript 실행이 중단되지는 않을 것입니다.
+{{jsxref("TypeError")}} in [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode) only.
 
-## 무엇이 잘못되었을까?
+## What went wrong?
 
-엄격모드에서, {{jsxref("Function.caller")}} 나 {{jsxref("Function.arguments")}} 속성이 사용되었고, 그러지 말아야 했습니다. 이 속성들은 사라지게 되었는데, 함수 호출자를 흘려보내거나, 비 표준이었으며, 최적화 하기 어렵고, 잠재적으로 퍼포먼스에 무리를 주었기 때문입니다.
+In [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode), the
+{{jsxref("Function.prototype.caller")}} or {{jsxref("Function.prototype.arguments")}} properties are used
+and shouldn't be. They are deprecated, because they leak the function caller, are
+non-standard, hard to optimize and potentially a performance-harmful feature.
 
-## 예
+## Examples
 
-### `function.caller` or `arguments.callee.caller`
+### Deprecated function.caller or arguments.callee.caller
 
-{{jsxref("Function.caller")}} 와 [`arguments.callee.caller`](/en-US/docs/Web/JavaScript/Reference/Functions/arguments/callee) 는 사라지게 되었습니다. (자세한 정보는 레퍼런스 문서를 확인해 보세요.)
+{{jsxref("Function.prototype.caller")}} and
+[`arguments.callee.caller`](/en-US/docs/Web/JavaScript/Reference/Functions/arguments/callee)
+are deprecated (see the reference articles for more information).
 
 ```js example-bad
 "use strict";
 
 function myFunc() {
-  if (myFunc.caller == null) {
-    return 'The function was called from the top!';
+  if (myFunc.caller === null) {
+    return "The function was called from the top!";
   } else {
-    return 'This function\'s caller was ' + myFunc.caller;
+    return `This function's caller was ${myFunc.caller}`;
   }
 }
 
 myFunc();
-// Warning: ReferenceError: deprecated caller usage
-// "The function was called from the top!"
+// TypeError: 'caller', 'callee', and 'arguments' properties may not be accessed on strict mode functions or the arguments objects for calls to them
 ```
 
-### `Function.arguments`
+### Function.prototype.arguments
 
-{{jsxref("Function.arguments")}} 는 사라졌습니다. (자세한 정보는 레퍼런스 문서를 확인해 주세요.)
+{{jsxref("Function.prototype.arguments")}} is deprecated (see the reference article for more
+information).
 
 ```js example-bad
 "use strict";
 
-function f(n) { g(n - 1); }
+function f(n) {
+  g(n - 1);
+}
 
 function g(n) {
-  console.log('before: ' + g.arguments[0]);
-  if (n > 0) { f(n); }
-  console.log('after: ' + g.arguments[0]);
+  console.log(`before: ${g.arguments[0]}`);
+  if (n > 0) {
+    f(n);
+  }
+  console.log(`after: ${g.arguments[0]}`);
 }
 
 f(2);
 
-console.log('returned: ' + g.arguments);
-// Warning: ReferenceError: deprecated arguments usage
+console.log(`returned: ${g.arguments}`);
+// TypeError: 'caller', 'callee', and 'arguments' properties may not be accessed on strict mode functions or the arguments objects for calls to them
 ```
 
-## 참조
+## See also
 
 - [Deprecated and obsolete features](/en-US/docs/Web/JavaScript/Reference/Deprecated_and_obsolete_features)
 - [Strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode)
-- {{jsxref("Function.arguments")}}
-- {{jsxref("Function.caller")}} and [`arguments.callee.caller`](/en-US/docs/Web/JavaScript/Reference/Functions/arguments/callee)
+- {{jsxref("Function.prototype.arguments")}}
+- {{jsxref("Function.prototype.caller")}} and
+  [`arguments.callee.caller`](/en-US/docs/Web/JavaScript/Reference/Functions/arguments/callee)

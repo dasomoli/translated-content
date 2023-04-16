@@ -1,60 +1,67 @@
 ---
-title: CSS 기본 박스 모델 입문
+title: Introduction to the CSS basic box model
 slug: Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model
+page-type: guide
+spec-urls: https://drafts.csswg.org/css-box/#intro
 ---
 
 {{CSSRef}}
 
-문서의 레이아웃을 계산할 때, 브라우저의 렌더링 엔진은 표준 **CSS 기본 박스 모델**에 따라 각각의 요소를 사각형 박스로 표현합니다. CSS는 박스의 크기, 위치, 속성(색, 배경, 테두리 모양 등)을 결정합니다.
+When laying out a document, the browser's rendering engine represents each element as a rectangular box according to the standard **CSS basic box model**. CSS determines the size, position, and properties (color, background, border size, etc.) of these boxes.
 
-하나의 박스는 네 부분(영역)으로 이루어집니다. 각 영역을 콘텐츠 영역, 안쪽 여백(패딩) 영역, 테두리 영역, 그리고 바깥 여백(마진) 영역이라고 부릅니다.
+Every box is composed of four parts (or _areas_), defined by their respective edges: the _content edge_, _padding edge_, _border edge_, and _margin edge_.
 
-![CSS Box model](<boxmodel-(3).png>)
+![CSS Box model](boxmodel.png)
 
-**콘텐츠 영역**(content area)은 콘텐츠 경계(content edge)가 감싼 영역으로, 글이나 이미지, 비디오 등 요소의 실제 내용을 포함합니다. 콘텐츠 영역의 크기는 콘텐츠 너비(콘텐츠 박스 너비)와 콘텐츠 높이(콘텐츠 박스 높이)입니다. 배경색과 배경 이미지를 가지고 있기도 합니다.
+## Content area
 
-{{cssxref("box-sizing")}} 속성의 값이 기본값인 `content-box`이며 요소가 블록 레벨 요소인 경우, 콘텐츠 영역의 크기를 {{cssxref("width")}}, {{cssxref("min-width")}}, {{cssxref("max-width")}}, {{ cssxref("height") }}, {{cssxref("min-height")}}, {{cssxref("max-height")}} 속성을 사용해 사용해 명시적으로 설정할 수 있습니다.
+The **content area**, bounded by the content edge, contains the "real" content of the element, such as text, an image, or a video player. Its dimensions are the _content width_ (or _content-box width_) and the _content height_ (or _content-box height_). It often has a background color or background image.
 
-**안쪽 여백 영역**(패딩 영역, padding area)은 안쪽 여백 경계(padding edge)가 감싼 영역으로, 콘텐츠 영역을 요소의 안쪽 여백까지 포함하는 크기로 확장합니다. 영역의 크기는 안쪽 여백 박스 너비와 안쪽 여백 박스 높이입니다.
+If the {{cssxref("box-sizing")}} property is set to `content-box` (default) and if the element is a block element, the content area's size can be explicitly defined with the {{cssxref("width")}}, {{cssxref("min-width")}}, {{cssxref("max-width")}}, {{ cssxref("height") }}, {{cssxref("min-height")}}, and {{cssxref("max-height")}} properties.
 
-안쪽 여백의 두께는 {{cssxref("padding-top")}}, {{cssxref("padding-right")}}, {{cssxref("padding-bottom")}}, {{cssxref("padding-left")}}와 단축 속성인 {{cssxref("padding")}}이 결정합니다.
+## Padding area
 
-**테두리 영역**(border area)은 테두리 경계(border edge)가 감싼 영역으로, 안쪽 여백 영역을 요소의 테두리까지 포함하는 크기로 확장합니다. 영역의 크기는 테두리 박스 너비와 테두리 박스 높이입니다.
+The **padding area**, bounded by the padding edge, extends the content area to include the element's padding. Its dimensions are the _padding-box width_ and the _padding-box height_.
 
-테두리의 두께는 {{cssxref("border-width")}}와 단축 속성인 {{cssxref("border")}}가 결정합니다. {{cssxref("box-sizing")}} 속성의 값이 `border-box`라면 테두리 영역의 크기를 {{cssxref("width")}}, {{cssxref("min-width")}}, {{cssxref("max-width")}}, {{ cssxref("height") }}, {{cssxref("min-height")}}, {{cssxref("max-height")}} 속성을 사용해 명시적으로 설정할 수 있습니다. 박스의 배경({{cssxref("background-color")}} 또는 {{cssxref("background-image")}})은 테두리의 바깥 경계까지 늘어나고, 그릴 땐 테두리에 가려집니다. 이 동작 방식은 {{cssxref("background-clip")}} 속성으로 바꿀 수 있습니다.
+The thickness of the padding is determined by the {{cssxref("padding-top")}}, {{cssxref("padding-right")}}, {{cssxref("padding-bottom")}}, {{cssxref("padding-left")}}, and shorthand {{cssxref("padding")}} properties.
 
-**바깥 여백 영역**(마진 영역, margin area)은 바깥 여백 경계(margin edge)가 감싼 영역으로, 테두리 요소를 확장해 요소와 인근 요소 사이의 빈 공간까지 포함하도록 만듭니다. 영역의 크기는 바깥 여백 박스 너비와 바깥 여백 박스 높이입니다.
+## Border area
 
-바깥 여백 영역의 크기는 {{cssxref("margin-top")}}, {{cssxref("margin-right")}}, {{cssxref("margin-bottom")}}, {{cssxref("margin-left")}}와 단축 속성인 {{cssxref("margin")}}이 결정합니다. [여백 상쇄](/ko/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)가 발생할 때는 요소 간에 바깥 여백이 공유되므로 여백 영역이 명확하게 결정되지 않습니다.
+The **border area**, bounded by the border edge, extends the padding area to include the element's borders. Its dimensions are the _border-box width_ and the _border-box height_.
 
-끝으로, 비대체 인라인 요소가 차지하는 공간의 크기(줄 높이에 기여하는 양)는, 요소 주위에 테두리와 안쪽 여백이 표시되더라도 {{cssxref("line-height")}} 속성으로 결정한다는 점을 주의하세요.
+The thickness of the borders are determined by the {{cssxref("border-width")}} and shorthand {{cssxref("border")}} properties. If the {{cssxref("box-sizing")}} property is set to `border-box`, the border area's size can be explicitly defined with the {{cssxref("width")}}, {{cssxref("min-width")}}, {{cssxref("max-width")}}, {{ cssxref("height") }}, {{cssxref("min-height")}}, and {{cssxref("max-height")}} properties. When there is a background ({{cssxref("background-color")}} or {{cssxref("background-image")}}) set on a box, it extends to the outer edge of the border (i.e. extends underneath the border in z-ordering). This default behavior can be altered with the {{cssxref("background-clip")}} CSS property.
 
-## 명세서
+## Margin area
+
+The **margin area**, bounded by the margin edge, extends the border area to include an empty area used to separate the element from its neighbors. Its dimensions are the _margin-box width_ and the _margin-box height_.
+
+The size of the margin area is determined by the {{cssxref("margin-top")}}, {{cssxref("margin-right")}}, {{cssxref("margin-bottom")}}, {{cssxref("margin-left")}}, and shorthand {{cssxref("margin")}} properties. When [margin collapsing](/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing) occurs, the margin area is not clearly defined since margins are shared between boxes.
+
+Finally, note that for non-replaced inline elements, the amount of space taken up (the contribution to the height of the line) is determined by the {{cssxref('line-height')}} property, even though the borders and padding are still displayed around the content.
+
+## Specifications
 
 {{Specifications}}
 
-## 같이 보기
+## See also
 
-- CSS 주요 개념
-
-  - [CSS 문법](/ko/docs/Web/CSS/Syntax)
-  - [@규칙](/ko/docs/Web/CSS/At-rule)
-  - [주석](/ko/docs/Web/CSS/Comments)
-  - [명시도](/ko/docs/Web/CSS/Specificity)
-  - [상속](/ko/docs/Web/CSS/inheritance)
-  - [박스 모델](/ko/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
-  - [레이아웃 모드](/ko/docs/Web/CSS/Layout_mode)
-  - [시각적 서식 모델](/ko/docs/Web/CSS/Visual_formatting_model)
-  - [마진 중첩](/ko/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)
-  - 값
-
-    - [초깃값](/ko/docs/Web/CSS/initial_value)
-    - [계산값](/ko/docs/Web/CSS/computed_value)
-    - [결정값](/ko/docs/Web/CSS/resolved_value)
-    - [지정값](/ko/docs/Web/CSS/specified_value)
-    - [사용값](/ko/docs/Web/CSS/used_value)
-    - [실제값](/ko/docs/Web/CSS/actual_value)
-
-  - [값 정의 구문](/ko/docs/Web/CSS/Value_definition_syntax)
-  - [단축 속성](/ko/docs/Web/CSS/Shorthand_properties)
-  - [대체 요소](/ko/docs/Web/CSS/Replaced_element)
+- [Layout and the containing block](/en-US/docs/Web/CSS/Containing_block)
+- [Introducing the CSS Cascade](/en-US/docs/Web/CSS/Cascade)
+- [Cascade, specificity, and inheritance](/en-US/docs/Learn/CSS/Building_blocks/Cascade_and_inheritance)
+- CSS key concepts:
+  - [CSS syntax](/en-US/docs/Web/CSS/Syntax)
+  - [At-rules](/en-US/docs/Web/CSS/At-rule)
+  - [Comments](/en-US/docs/Web/CSS/Comments)
+  - [Specificity](/en-US/docs/Web/CSS/Specificity)
+  - [Inheritance](/en-US/docs/Web/CSS/Inheritance)
+  - [Layout modes](/en-US/docs/Web/CSS/Layout_mode)
+  - [Visual formatting models](/en-US/docs/Web/CSS/Visual_formatting_model)
+  - [Margin collapsing](/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)
+  - Values
+    - [Initial values](/en-US/docs/Web/CSS/initial_value)
+    - [Computed values](/en-US/docs/Web/CSS/computed_value)
+    - [Used values](/en-US/docs/Web/CSS/used_value)
+    - [Actual values](/en-US/docs/Web/CSS/actual_value)
+  - [Value definition syntax](/en-US/docs/Web/CSS/Value_definition_syntax)
+  - [Shorthand properties](/en-US/docs/Web/CSS/Shorthand_properties)
+  - [Replaced elements](/en-US/docs/Web/CSS/Replaced_element)

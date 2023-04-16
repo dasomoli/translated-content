@@ -1,61 +1,65 @@
 ---
 title: DOMRect
 slug: Web/API/DOMRect
+page-type: web-api-interface
+browser-compat: api.DOMRect
 ---
 
 {{APIRef("Geometry Interfaces")}}
 
-**`DOMRect`** 인터페이스는 직사각형의 크기와 위치를 나타냅니다.
+A **`DOMRect`** describes the size and position of a rectangle.
 
-`DOMRect`가 나타내는 사각형의 유형은 `DOMRect`를 반환한 메서드나 속성이 지정합니다. 예를 들어 WebVR API의 {{domxref("VREyeParameters.renderRect")}}는, 헤드 마운트 디스플레이에서 한쪽 눈의 뷰포트가 [캔버스](/ko/docs/Web/API/HTMLCanvasElement)의 어디에 위치하는지 나타냅니다.
+The type of box represented by the `DOMRect` is specified by the method or property that returned it. For example, {{domxref("Range.getBoundingClientRect()")}} specifies the rectangle that bounds the content of the range using such objects.
 
-부모인 {{domxref("DOMRectReadOnly")}}을 상속합니다.
+It inherits from its parent, {{domxref("DOMRectReadOnly")}}.
 
 {{InheritanceDiagram}}
 
-## 생성자
+## Constructor
 
 - {{domxref("DOMRect.DOMRect","DOMRect()")}}
-  - : 새로운 `DOMRect` 객체를 생성합니다.
+  - : Creates a new `DOMRect` object.
 
-## 속성
+## Instance properties
 
-부모인 {{domxref("DOMRectReadOnly")}}의 속성을 상속합니다. 읽기 전용 속성이 아니라는 차이점이 있습니다.
+_`DOMRect` inherits properties from its parent, {{domxref("DOMRectReadOnly")}}. The difference is that they are not read-only anymore._
 
 - {{domxref("DOMRectReadOnly.x")}}
-  - : `DOMRect` 원점의 X 좌표입니다. 원점은 보통 직사각형의 왼쪽 상단 꼭지점입니다.
+  - : The x coordinate of the `DOMRect`'s origin (typically the top-left corner of the rectangle).
 - {{domxref("DOMRectReadOnly.y")}}
-  - : `DOMRect` 원점의 Y 좌표입니다. 원점은 보통 직사각형의 왼쪽 상단 꼭지점입니다.
+  - : The y coordinate of the `DOMRect`'s origin (typically the top-left corner of the rectangle).
 - {{domxref("DOMRectReadOnly.width")}}
-  - : `DOMRect`의 너비입니다.
+  - : The width of the `DOMRect`.
 - {{domxref("DOMRectReadOnly.height")}}
-  - : `DOMRect`의 높이입니다.
+  - : The height of the `DOMRect`.
 - {{domxref("DOMRectReadOnly.top")}}
-  - : `DOMRect` 위쪽 모서리의 Y 좌표입니다. `y` 또는, `height`가 음수인 경우, `y + height`와 같은 값입니다.
+  - : Returns the top coordinate value of the `DOMRect` (has the same value as `y`, or `y + height` if `height` is negative).
 - {{domxref("DOMRectReadOnly.right")}}
-  - : `DOMRect` 오른쪽 모서리의 X 좌표입니다. `x` 또는, `width`가 음수인 경우, `x + height`와 같은 값입니다.
+  - : Returns the right coordinate value of the `DOMRect` (has the same value as `x + width`, or `x` if `width` is negative).
 - {{domxref("DOMRectReadOnly.bottom")}}
-  - : `DOMRect` 아래쪽 모서리의 Y 좌표입니다. `y + height` 또는, `height`가 음수인 경우, `y`와 같은 값입니다.
+  - : Returns the bottom coordinate value of the `DOMRect` (has the same value as `y + height`, or `y` if `height` is negative).
 - {{domxref("DOMRectReadOnly.left")}}
-  - : `DOMRect` 왼쪽 모서리의 X 좌표입니다. `x + width` 또는, `width`가 음수인 경우, `x`와 같은 값입니다.
+  - : Returns the left coordinate value of the `DOMRect` (has the same value as `x`, or `x + width` if `width` is negative).
 
-## 메서드
+## Static methods
 
-부모인 {{domxref("DOMRectReadOnly")}}의 메서드를 상속합니다.
+_`DOMRect` may also inherit static methods from its parent, {{domxref("DOMRectReadOnly")}}._
 
-## 정적 메서드
+- {{domxref("DOMRect.fromRect()")}}
+  - : Creates a new `DOMRect` object with a given location and dimensions.
 
-- {{domxref("DOMRectReadOnly.fromRect()")}}
-  - : 주어진 위치와 면적을 갖는 새로운 `DOMRect` 객체를 생성합니다.
+## Instance methods
 
-## 명세
+_`DOMRect` may inherit methods from its parent, {{domxref("DOMRectReadOnly")}}._
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("DOMPoint")}}

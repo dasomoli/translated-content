@@ -1,60 +1,61 @@
 ---
 title: Set.prototype.has()
 slug: Web/JavaScript/Reference/Global_Objects/Set/has
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Set.has
 ---
 
 {{JSRef}}
 
-**`has()`** 메서드는 `Set` 객체에 주어진 요소가 존재하는지 여부를 판별해 반환합니다.
+The **`has()`** method returns a boolean indicating whether an
+element with the specified value exists in a `Set` object or not.
 
 {{EmbedInteractiveExample("pages/js/set-prototype-has.html")}}
 
-## 구문
+## Syntax
 
-```js
-mySet.has(value);
+```js-nolint
+has(value)
 ```
 
-### 매개변수
+### Parameters
 
 - `value`
-  - : `Set` 객체에서 존재 여부를 판별할 값.
+  - : The value to test for presence in the `Set` object.
 
-### 반환 값
+### Return value
 
-`Set` 객체에 값이 존재하면 `true`, 아니면 `false`.
+Returns `true` if an element with the specified value exists in the `Set` object; otherwise `false`.
 
-> **참고:** 기술적으로, `has()`는 [`sameValueZero`](/ko/docs/Web/JavaScript/Equality_comparisons_and_sameness#등가0_같음) 알고리즘을 사용해 요소의 존재 여부를 판별합니다.
+## Examples
 
-## 예제
-
-### `has()` 사용하기
+### Using the has() method
 
 ```js
-var mySet = new Set();
-mySet.add('foo');
+const mySet = new Set();
+mySet.add("foo");
 
-mySet.has('foo');  // true
-mySet.has('bar');  // false
+console.log(mySet.has("foo")); // true
+console.log(mySet.has("bar")); // false
 
-var set1 = new Set();
-var obj1 = {'key1': 1};
+const set1 = new Set();
+const obj1 = { key1: 1 };
 set1.add(obj1);
 
-set1.has(obj1);        // true
-set1.has({'key1': 1}); // false, 형태만 같은 서로 다른 객체의 참조이기 때문
-set1.add({'key1': 1}); // set1의 요소가 2개로 늘어남
+console.log(set1.has(obj1)); // true
+console.log(set1.has({ key1: 1 })); // false, because they are different object references
+console.log(set1.add({ key1: 1 })); // now set1 contains 2 entries
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Set")}}
 - {{jsxref("Set.prototype.add()")}}

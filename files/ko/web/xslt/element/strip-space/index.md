@@ -1,36 +1,35 @@
 ---
-title: strip-space
+title: <xsl:strip-space>
 slug: Web/XSLT/Element/strip-space
-original_slug: Web/XSLT/strip-space
 ---
 
 {{ XsltRef() }}
 
-`<xsl:strip-space>` 요소는 공백을 지웠으면 하는 소스 문서의 요소를 정의합니다.
+The `<xsl:strip-space>` element defines the elements in the source document for which whitespace should be removed.
 
-### 문법
+### Syntax
 
+```xml
+<xsl:strip-space elements=LIST-OF-ELEMENT-NAMES />
 ```
-<xsl:strip-space elements=LIST-OF-ELEMENT-NAMES  />
-```
 
-### 필수 속성
+### Required Attributes
 
 - `elements`
-  - : 지우면 좋을 공백뿐인 텍스트 노드가 있는 소스의 요소 목록(빈칸으로 구분)을 지정합니다.
+  - : Specifies a space-separated list of elements in the source whose whitespace-only text nodes should be removed.
 
-### 선택 속성
+### Optional Attributes
 
-없음.
+None.
 
-### 타입
+### Type
 
-최상위, `<xsl:stylesheet>`나 `<xsl:transform>`의 자식이어야 함.
+Top-level, must be a child of `<xsl:stylesheet>` or `<xsl:transform>`.
 
-### 정의
+### Defined
 
-[XSLT section 3.4, Whitespace Stripping](http://www.w3.org/TR/xslt#strip)
+XSLT, section 3.4
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

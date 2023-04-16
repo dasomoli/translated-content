@@ -1,75 +1,95 @@
 ---
-title: Node server without framework
+title: Node.js server without a framework
 slug: Learn/Server-side/Node_server_without_framework
-original_slug: Node_server_without_framework
 ---
 
-## 소개
+{{LearnSidebar}}
 
-물론 [Node](https://nodejs.org/en/) 는 서버를 만들고 실행하는데 도움을 주는 많은 프레임워크가 있습니다, 예를 들면:
+This article provides a simple static file server built with pure [Node.js](https://nodejs.org/en/) without the use of a framework.
+The current state of Node.js is such that almost everything we needed is provided by the inbuilt APIs and just a few lines of code.
 
-- [Express](http://expressjs.com/): 가장 많이 사용하는 프레임워크
-- [Total](https://www.totaljs.com/): 올인원 통합 프레임워크로, 다른 프레임워크나 모듈에 의존성이 없습니다.
+## Example
 
-하지만, 모든 것에 꼭 맞는 사이즈가 없듯이, 개발자들은 어떤 다른 의존성 없이 스스로 서버를 만들어야 할 때가 있습니다.
-
-## 예제
-
-다음은 짧고 간단한 정적 파일 nodejs 서버입니다.
+A simple static file server built with Node.js:
 
 ```js
-var http = require('http');
-var fs = require('fs');
-var path = require('path');
+import * as fs from 'node:fs';
+import * as http from 'node:http';
+import * as path from 'node:path';
 
-http.createServer(function (request, response) {
-    console.log('request ', request.url);
+const PORT = 8000;
 
-    var filePath = '.' + request.url;
-    if (filePath == './') {
-        filePath = './index.html';
-    }
+const MIME_TYPES = {
+  default: 'application/octet-stream',
+  html: 'text/html; charset=UTF-8',
+  js: 'application/javascript',
+  css: 'text/css',
+  png: 'image/png',
+  jpg: 'image/jpg',
+  gif: 'image/gif',
+  ico: 'image/x-icon',
+  svg: 'image/svg+xml',
+};
 
-    var extname = String(path.extname(filePath)).toLowerCase();
-    var mimeTypes = {
-        '.html': 'text/html',
-        '.js': 'text/javascript',
-        '.css': 'text/css',
-        '.json': 'application/json',
-        '.png': 'image/png',
-        '.jpg': 'image/jpg',
-        '.gif': 'image/gif',
-        '.svg': 'image/svg+xml',
-        '.wav': 'audio/wav',
-        '.mp4': 'video/mp4',
-        '.woff': 'application/font-woff',
-        '.ttf': 'application/font-ttf',
-        '.eot': 'application/vnd.ms-fontobject',
-        '.otf': 'application/font-otf',
-        '.wasm': 'application/wasm'
-    };
+const STATIC_PATH = path.join(process.cwd(), './static');
 
-    var contentType = mimeTypes[extname] || 'application/octet-stream';
+const toBool = [() => true, () => false];
 
-    fs.readFile(filePath, function(error, content) {
-        if (error) {
-            if(error.code == 'ENOENT') {
-                fs.readFile('./404.html', function(error, content) {
-                    response.writeHead(404, { 'Content-Type': 'text/html' });
-                    response.end(content, 'utf-8');
-                });
-            }
-            else {
-                response.writeHead(500);
-                response.end('Sorry, check with the site admin for error: '+error.code+' ..\n');
-            }
-        }
-        else {
-            response.writeHead(200, { 'Content-Type': contentType });
-            response.end(content, 'utf-8');
-        }
-    });
+const prepareFile = async (url) => {
+  const paths = [STATIC_PATH, url];
+  if (url.endsWith('/')) paths.push('index.html');
+  const filePath = path.join(...paths);
+  const pathTraversal = !filePath.startsWith(STATIC_PATH);
+  const exists = await fs.promises.access(filePath).then(...toBool);
+  const found = !pathTraversal && exists;
+  const streamPath = found ? filePath : STATIC_PATH + '/404.html';
+  const ext = path.extname(streamPath).substring(1).toLowerCase();
+  const stream = fs.createReadStream(streamPath);
+  return { found, ext, stream };
+};
 
-}).listen(8125);
-console.log('Server running at http://127.0.0.1:8125/');
+http.createServer(async (req, res) => {
+  const file = await prepareFile(req.url);
+  const statusCode = file.found ? 200 : 404;
+  const mimeType = MIME_TYPES[file.ext] || MIME_TYPES.default;
+  res.writeHead(statusCode, { 'Content-Type': mimeType });
+  file.stream.pipe(res);
+  console.log(`${req.method} ${req.url} ${statusCode}`);
+}).listen(PORT);
+
+console.log(`Server running at http://127.0.0.1:${PORT}/`);
+```
+
+### Breakdown
+
+The following lines import internal Node.js modules.
+
+```js
+import * as fs from 'node:fs';
+import * as http from 'node:http';
+import * as path from 'node:path';
+```
+
+Next we have a function for creating the server. `https.createServer` returns a `Server` object, which we can start up by listening on `PORT`.
+
+```js
+http.createServer((req, res) => {
+  /* handle http requests */
+}).listen(PORT);
+
+console.log(`Server running at http://127.0.0.1:${PORT}/`);
+```
+
+The asynchronous function `prepareFile` returns the structure: `{ found: boolean , ext: string, stream: ReadableStream }`.
+If the file can be served (the server process has access and no path-traversal vulnerability is found), we will return the HTTP status of `200` as a `statusCode` indicating success (otherwise we return `HTTP 404`).
+Note that other status codes can be found in `http.STATUS_CODES`.
+With `404` status we will return content of `'/404.html'` file.
+
+The extension of the file being requested will be parsed and lower-cased. After that we will search `MIME_TYPES` collection for the right [MIME types](/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types). If no matches are found, we use the `application/octet-stream` as the default type.
+
+Finally, if there are no errors, we send the requested file. The `file.stream` will contain a `Readable` stream that will be piped into `res` (an instance of the `Writable` stream).
+
+```js
+res.writeHead(statusCode, { 'Content-Type': mimeType });
+file.stream.pipe(res);
 ```

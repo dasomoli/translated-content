@@ -1,29 +1,45 @@
 ---
 title: Array.prototype.flat()
 slug: Web/JavaScript/Reference/Global_Objects/Array/flat
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Array.flat
 ---
+
 {{JSRef}}
 
-**`flat()`** 메서드는 모든 하위 배열 요소를 지정한 깊이까지 재귀적으로 이어붙인 새로운 배열을 생성합니다.
+The **`flat()`** method creates a new array with all sub-array
+elements concatenated into it recursively up to the specified depth.
 
-## 구문
+{{EmbedInteractiveExample("pages/js/array-flat.html")}}
 
-```js
-    const newArr = arr.flat([depth])
+## Syntax
+
+```js-nolint
+flat()
+flat(depth)
 ```
 
-### 매개변수
+### Parameters
 
 - `depth` {{optional_inline}}
-  - : 중첩 배열 구조를 평탄화할 때 사용할 깊이 값. 기본값은 1입니다.
+  - : The depth level specifying how deep a nested array structure should be flattened.
+    Defaults to 1.
 
-### 반환 값
+### Return value
 
-하위 배열을 이어붙인 새로운 배열.
+A new array with the sub-array elements concatenated into it.
 
-## 예제
+## Description
 
-### 중첩 배열 평탄화
+The `flat()` method is a [copying method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#copying_methods_and_mutating_methods). It does not alter `this` but instead returns a [shallow copy](/en-US/docs/Glossary/Shallow_copy) that contains the same elements as the ones from the original array.
+
+The `flat()` method ignores empty slots if the array being flattened is [sparse](/en-US/docs/Web/JavaScript/Guide/Indexed_collections#sparse_arrays). For example, if `depth` is 1, both empty slots in the root array and in the first level of nested arrays are ignored, but empty slots in further nested arrays are preserved with the arrays themselves.
+
+The `flat()` method is [generic](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#generic_array_methods). It only expects the `this` value to have a `length` property and integer-keyed properties. However, its elements must be arrays if they are to be flattened.
+
+## Examples
+
+### Flattening nested arrays
 
 ```js
 const arr1 = [1, 2, [3, 4]];
@@ -43,107 +59,49 @@ arr4.flat(Infinity);
 // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 ```
 
-### 배열 구멍 제거
+### Using flat() on sparse arrays
 
-`flat` 메서드는 배열의 구멍도 제거합니다.
+The `flat()` method removes empty slots in arrays:
 
 ```js
 const arr5 = [1, 2, , 4, 5];
-arr5.flat();
-// [1, 2, 4, 5]
+console.log(arr5.flat()); // [1, 2, 4, 5]
+
+const array = [1, , 3, ["a", , "c"]];
+console.log(array.flat()); // [ 1, 3, "a", "c" ]
+
+const array2 = [1, , 3, ["a", , ["d", , "e"]]];
+console.log(array2.flat()); // [ 1, 3, "a", ["d", empty, "e"] ]
+console.log(array2.flat(2)); // [ 1, 3, "a", "d", "e"]
 ```
 
-## 대안
+### Calling flat() on non-array objects
 
-### `reduce`와 `concat`
-
-```js
-const arr = [1, 2, [3, 4]];
-
-// To flat single level array
-arr.flat();
-// is equivalent to
-arr.reduce((acc, val) => acc.concat(val), []);
-// [1, 2, 3, 4]
-
-// or with decomposition syntax
-const flattened = arr => [].concat(...arr);
-```
-
-### `reduce` + `concat` + `isArray` + 재귀
+The `flat()` method reads the `length` property of `this` and then accesses each integer index. If the element is not an array, it's directly appended to the result. If the element is an array, it's flattened according to the `depth` parameter.
 
 ```js
-const arr = [1, 2, [3, 4, [5, 6]]];
-
-// to enable deep level flatten use recursion with reduce and concat
-function flatDeep(arr, d = 1) {
-   return d > 0 ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatDeep(val, d - 1) : val), [])
-                : arr.slice();
+const arrayLike = {
+  length: 3,
+  0: [1, 2],
+  // Array-like objects aren't flattened
+  1: { length: 2, 0: 3, 1: 4 },
+  2: 5,
 };
-
-flatDeep(arr, Infinity);
-// [1, 2, 3, 4, 5, 6]
+console.log(Array.prototype.flat.call(arrayLike));
+// [ 1, 2, { '0': 3, '1': 4, length: 2 }, 5 ]
 ```
 
-### 스택
-
-```js
-// non recursive flatten deep using a stack
-// note that depth control is hard/inefficient as we will need to tag EACH value with its own depth
-// also possible w/o reversing on shift/unshift, but array OPs on the end tends to be faster
-function flatten(input) {
-  const stack = [...input];
-  const res = [];
-  while(stack.length) {
-    // pop value from stack
-    const next = stack.pop();
-    if(Array.isArray(next)) {
-      // push back array items, won't modify the original input
-      stack.push(...next);
-    } else {
-      res.push(next);
-    }
-  }
-  // reverse to restore input order
-  return res.reverse();
-}
-
-const arr = [1, 2, [3, 4, [5, 6]]];
-flatten(arr);
-// [1, 2, 3, 4, 5, 6]
-```
-
-### `Generator` 함수
-
-```js
-function* flatten(array, depth) {
-    if(depth === undefined) {
-      depth = 1;
-    }
-    for(const item of array) {
-        if(Array.isArray(item) && depth > 0) {
-          yield* flatten(item, depth - 1);
-        } else {
-          yield item;
-        }
-    }
-}
-
-const arr = [1, 2, [3, 4, [5, 6]]];
-const flattened = [...flatten(arr, Infinity)];
-// [1, 2, 3, 4, 5, 6]
-```
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `Array.prototype.flat` in `core-js`](https://github.com/zloirock/core-js#ecmascript-array)
 - {{jsxref("Array.prototype.flatMap()")}}
 - {{jsxref("Array.prototype.map()")}}
 - {{jsxref("Array.prototype.reduce()")}}

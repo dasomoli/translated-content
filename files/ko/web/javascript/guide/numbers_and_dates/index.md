@@ -1,203 +1,164 @@
 ---
-title: 숫자와 날짜
+title: Numbers and dates
 slug: Web/JavaScript/Guide/Numbers_and_dates
+page-type: guide
 ---
 
-{{jsSidebar("JavaScript Guide")}} {{PreviousNext("Web/JavaScript/Guide/Expressions_and_Operators", "Web/JavaScript/Guide/Text_formatting")}}
+{{jsSidebar("JavaScript Guide")}} {{PreviousNext("Web/JavaScript/Guide/Expressions_and_operators", "Web/JavaScript/Guide/Text_formatting")}}
 
-이 장에서는 JavaScript에서 숫자와 날짜를 사용하기 위한 개념과 객체, 함수에 대해 소개합니다. 그리고 숫자를 10진법, 2진법, 16진법 등의 다양한 형태로 표현하는 방법과 더불어 {{jsxref("Math")}} 객체를 사용해 다양한 수학 연산을 수행하는 방법을 알 수 있습니다.
+This chapter introduces the concepts, objects and functions used to work with and perform calculations using numbers and dates in JavaScript. This includes using numbers written in various bases including decimal, binary, and hexadecimal, as well as the use of the global {{jsxref("Math")}} object to perform a wide variety of mathematical operations on numbers.
 
-## 숫자
+## Numbers
 
-JavaScript에서 모든 숫자는 [double-precision 64-bit binary format IEEE 754](https://en.wikipedia.org/wiki/Double-precision_floating-point_format) (즉, ±2^−1022 과 ±2^+1023 또는 대략 ±10^−308 to ±10^+308 사이의 숫자이며 53bits의 수치정밀도 )로 구현되어 있습니다. ±2^53 - 1까지의 정수 값을 정확하게 나타낼 수 있습니다.
+In JavaScript, numbers are implemented in [double-precision 64-bit binary format IEEE 754](https://en.wikipedia.org/wiki/Double-precision_floating-point_format) (i.e., a number between ±2^−1022 and ±2^+1023, or about ±10^−308 to ±10^+308, with a numeric precision of 53 bits). Integer values up to ±2^53 − 1 can be represented exactly.
 
-여기 부동 소수점 숫자를 나타낼 수 있으며, 숫자 형식은 세 개의 상징적인 값: `+`{{jsxref("Infinity")}}, `-`{{jsxref("Infinity")}}, and {{jsxref("NaN")}} (숫자가 아닌 값)을 갖습니다.
+In addition to being able to represent floating-point numbers, the number type has three symbolic values: `+`{{jsxref("Infinity")}}, `-`{{jsxref("Infinity")}}, and {{jsxref("NaN")}} (not-a-number).
 
-JavaScript에 최근 추가 된 것은 {{jsxref ( "BigInt")}}로, 매우 큰 정수를 나타낼 수 있습니다. `BigInt`를사용할땐 다음을 주의해야 합니다. 예를 들면, `BigInt`와 {{jsxref ( "Number")}} 값을 같은 연산으로 혼합하고 일치시킬 수는 없으며 {{jsxref ( "Math")}} 객체를 `BigInt`값과 함께 사용할 수 없습니다.
+See also [JavaScript data types and structures](/en-US/docs/Web/JavaScript/Data_structures) for context with other primitive types in JavaScript.
 
-JavaScript에서 다른 기본형과 문맥에 대한 내용은 [JavaScript data types and structures](/en-US/docs/Web/JavaScript/Data_structures)를 참조하세요.
+You can use four types of number literals: decimal, binary, octal, and hexadecimal.
 
-여러분은 숫자 리터럴의 네 가지 유형을 사용할 수 있습니다: 10진수, 2진수, 8진수, 16진수
+### Decimal numbers
 
-### 10진수
-
-```js
+```js-nolint
 1234567890
 42
-
-// 앞에 0이 붙은 숫자를 조심하세요:
-
-0888 // 10진수 888로 해석됩니다.
-0777 // non-strict mode에서 10진수 511로 해석됩니다.
 ```
 
-10진수 리터럴도 영(`0`)으로 시작될 수 있다는 점에 유의하세요. 그러나 만약 영`0` 다음 숫자가 8보다 작으면, 그 숫자는 8진법으로 해석됩니다.
+Decimal literals can start with a zero (`0`) followed by another decimal digit, but if all digits after the leading `0` are smaller than 8, the number is interpreted as an octal number. This is considered a legacy syntax, and number literals prefixed with `0`, whether interpreted as octal or decimal, cause a syntax error in [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode#legacy_octal_literals) — so, use the `0o` prefix instead.
 
-### 2진수
+```js-nolint example-bad
+0888 // 888 parsed as decimal
+0777 // parsed as octal, 511 in decimal
+```
 
-2진수 구문은 앞에 오는 0과 소문자 또는 대문자 라틴 문자 "B"(0B 또는 0b)를 사용합니다. 0b 다음의 숫자가 0 또는 1이 아니면 다음의 [SyntaxError](/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError)가 발생합니다. "0b 이후에 누락 된 2 진수"("Missing binary digits after 0b")입니다.
+### Binary numbers
+
+Binary number syntax uses a leading zero followed by a lowercase or uppercase Latin letter "B" (`0b` or `0B`). If the digits after the `0b` are not 0 or 1, the following {{jsxref("SyntaxError")}} is thrown: "Missing binary digits after 0b".
+
+```js-nolint
+0b10000000000000000000000000000000 // 2147483648
+0b01111111100000000000000000000000 // 2139095040
+0B00000000011111111111111111111111 // 8388607
+```
+
+### Octal numbers
+
+The standard syntax for octal numbers is to prefix them with `0o`. For example:
+
+```js-nolint
+0O755 // 493
+0o644 // 420
+```
+
+There's also a legacy syntax for octal numbers — by prefixing the octal number with a zero: `0644 === 420` and `"\045" === "%"`. If the digits after the `0` are outside the range 0 through 7, the number will be interpreted as a decimal number.
 
 ```js
-var FLT_SIGNBIT  = 0b10000000000000000000000000000000; // 2147483648
-var FLT_EXPONENT = 0b01111111100000000000000000000000; // 2139095040
-var FLT_MANTISSA = 0B00000000011111111111111111111111; // 8388607
+const n = 0755; // 493
+const m = 0644; // 420
 ```
 
-### 8진수
+[Strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode) forbids this octal syntax.
 
-8 진수 구문은 앞에 0을 사용합니다. `0` 이후의 숫자가 0에서 7까지 범위 밖에 있는 경우, 숫자는 10진수로 해석됩니다.
+### Hexadecimal numbers
 
-```js
-var n = 0755; // 493
-var m = 0644; // 420
-```
+Hexadecimal number syntax uses a leading zero followed by a lowercase or uppercase Latin letter "X" (`0x` or `0X`). If the digits after 0x are outside the range (0123456789ABCDEF), the following {{jsxref("SyntaxError")}} is thrown: "Identifier starts immediately after numeric literal".
 
-ECMAScript 5의 Strict 모드는 8 진수 구문을 금지합니다. 8 진수 구문은 ECMAScript 5의 일부가 아니지만, `0644 === 420` 및 `"\ 045"=== "%"`의 8 진수에 접두사를 붙이면 모든 브라우저에서 지원됩니다. ECMAScript 2015에서는 접두어가 `0o`인 경우 8 진수가 지원됩니다 (예 :
-
-```javascript
-    var a = 0o10; // ES2015: 8
-```
-
-### 16진수
-
-16진수 구문은 앞에 0 다음에 소문자나 대문자 라틴어 문자 "X"(`0x` 또는 `0X`)를 사용합니다. 0X 이후 숫자가 범위(0123456789ABCDEF) 밖에 있는 경우, 다음 [SyntaxError](/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError)가 발생합니다: "식별자는 숫자 리터럴 후 즉시 시작됩니다".
-
-```js
+```js-nolint
 0xFFFFFFFFFFFFFFFFF // 295147905179352830000
 0x123456789ABCDEF   // 81985529216486900
 0XA                 // 10
 ```
 
-### 지수 계산
+### Exponentiation
 
+```js-nolint
+0e-5   // 0
+0e+5   // 0
+5e1    // 50
+175e-2 // 1.75
+1e3    // 1000
+1e-3   // 0.001
+1E3    // 1000
 ```
-1E3   // 1000
-2e6   // 2000000
-0.1e2 // 10
-```
 
-## `Number` 객체
+## Number object
 
-{{jsxref("Number")}} 내장객체는 최대값, not-a-number, 무한대와 같은 숫자 상수를 위한 속성들이 있습니다. 여러분은 이러한 속성의 값을 변경 할 수 없고 다음과 같이 사용합니다:
+The built-in {{jsxref("Number")}} object has properties for numerical constants, such as maximum value, not-a-number, and infinity. You cannot change the values of these properties and you use them as follows:
 
 ```js
-var biggestNum = Number.MAX_VALUE;
-var smallestNum = Number.MIN_VALUE;
-var infiniteNum = Number.POSITIVE_INFINITY;
-var negInfiniteNum = Number.NEGATIVE_INFINITY;
-var notANum = Number.NaN;
+const biggestNum = Number.MAX_VALUE;
+const smallestNum = Number.MIN_VALUE;
+const infiniteNum = Number.POSITIVE_INFINITY;
+const negInfiniteNum = Number.NEGATIVE_INFINITY;
+const notANum = Number.NaN;
 ```
 
-여러분은 직접 생성한 `Number` 객체의 속성이 아닌, 위와같이 항상 미리 정의된 `Number` 객체의 속성을 참조해야합니다.
+You always refer to a property of the predefined `Number` object as shown above, and not as a property of a `Number` object you create yourself.
 
-다음 표에서는 `Number` 객체의 속성이 요약되어 있습니다.
+The following table summarizes the `Number` object's properties.
 
-| 특성                                                 | 묘사                                                                          |
-| ---------------------------------------------------- | ----------------------------------------------------------------------------- |
-| {{jsxref("Number.MAX_VALUE")}}             | 표현가능한 가장 큰 수 (`±1.7976931348623157e+308`)                            |
-| {{jsxref("Number.MIN_VALUE")}}             | 표현가능한 가장 작은 수(`±5e-324`)                                            |
-| {{jsxref("Number.NaN")}}                     | "숫자가 아닌" 특수값                                                          |
-| {{jsxref("Number.NEGATIVE_INFINITY")}} | 음의 무한대값; 오버 플로로 반환됨.                                            |
-| {{jsxref("Number.POSITIVE_INFINITY")}} | 양의 무한대 값; 오버 플로로 반환됨.                                           |
-| {{jsxref("Number.EPSILON")}}                 | 표현가능한 매우 작은 값{{jsxref("Number")}}.(`2.220446049250313e-16`) |
-| {{jsxref("Number.MIN_SAFE_INTEGER")}}     | 자바스크립트에서 안전한 최소의 정수.(−2^53 + 1, or `−9007199254740991`)       |
-| {{jsxref("Number.MAX_SAFE_INTEGER")}}     | 자바스크립트에서 안전한 최대의 정수.(+2^53 − 1, or `+9007199254740991`)       |
+| Property                               | Description                                                                                                                                |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| {{jsxref("Number.MAX_VALUE")}}         | The largest positive representable number (`1.7976931348623157e+308`)                                                                      |
+| {{jsxref("Number.MIN_VALUE")}}         | The smallest positive representable number (`5e-324`)                                                                                      |
+| {{jsxref("Number.NaN")}}               | Special "not a number" value                                                                                                               |
+| {{jsxref("Number.NEGATIVE_INFINITY")}} | Special negative infinite value; returned on overflow                                                                                      |
+| {{jsxref("Number.POSITIVE_INFINITY")}} | Special positive infinite value; returned on overflow                                                                                      |
+| {{jsxref("Number.EPSILON")}}           | Difference between `1` and the smallest value greater than `1` that can be represented as a {{jsxref("Number")}} (`2.220446049250313e-16`) |
+| {{jsxref("Number.MIN_SAFE_INTEGER")}}  | Minimum safe integer in JavaScript (−2^53 + 1, or `−9007199254740991`)                                                                     |
+| {{jsxref("Number.MAX_SAFE_INTEGER")}}  | Maximum safe integer in JavaScript (+2^53 − 1, or `+9007199254740991`)                                                                     |
+
+| Method                               | Description                                                                                                                                                               |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| {{jsxref("Number.parseFloat()")}}    | Parses a string argument and returns a floating point number. Same as the global {{jsxref("parseFloat", "parseFloat()")}} function.                                       |
+| {{jsxref("Number.parseInt()")}}      | Parses a string argument and returns an integer of the specified radix or base. Same as the global {{jsxref("parseInt", "parseInt()")}} function.                         |
+| {{jsxref("Number.isFinite()")}}      | Determines whether the passed value is a finite number.                                                                                                                   |
+| {{jsxref("Number.isInteger()")}}     | Determines whether the passed value is an integer.                                                                                                                        |
+| {{jsxref("Number.isNaN()")}}         | Determines whether the passed value is {{jsxref("Global_Objects/NaN", "NaN")}}. More robust version of the original global {{jsxref("Global_Objects/isNaN", "isNaN()")}}. |
+| {{jsxref("Number.isSafeInteger()")}} | Determines whether the provided value is a number that is a _safe integer_.                                                                                               |
+
+The `Number` prototype provides methods for retrieving information from `Number` objects in various formats. The following table summarizes the methods of `Number.prototype`.
+
+| Method                                                | Description                                                                                |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| {{jsxref("Number/toExponential", "toExponential()")}} | Returns a string representing the number in exponential notation.                          |
+| {{jsxref("Number/toFixed", "toFixed()")}}             | Returns a string representing the number in fixed-point notation.                          |
+| {{jsxref("Number/toPrecision", "toPrecision()")}}     | Returns a string representing the number to a specified precision in fixed-point notation. |
+
+## Math object
+
+The built-in {{jsxref("Math")}} object has properties and methods for mathematical constants and functions. For example, the `Math` object's `PI` property has the value of pi (3.141…), which you would use in an application as
+
+```js
+Math.PI;
+```
+
+Similarly, standard mathematical functions are methods of `Math`. These include trigonometric, logarithmic, exponential, and other functions. For example, if you want to use the trigonometric function sine, you would write
+
+```js
+Math.sin(1.56);
+```
+
+Note that all trigonometric methods of `Math` take arguments in radians.
+
+The following table summarizes the `Math` object's methods.
 
 <table class="standard-table">
   <caption>
-    <code>Number</code>
-    메소드들
+    Methods of
+    <code>Math</code>
   </caption>
   <thead>
     <tr>
-      <th>방법</th>
-      <th>묘사</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>{{jsxref("Number.parseFloat()")}}</td>
-      <td>
-        <p>
-          문자열 인수를 파싱하고 부동 소수점 숫자를 반환합니다. 전역
-          {{jsxref("parseFloat", "parseFloat()")}} 함수와
-          동일합니다.
-        </p>
-      </td>
-    </tr>
-    <tr>
-      <td>{{jsxref("Number.parseInt()")}}</td>
-      <td>
-        문자열 라인 인수를 파싱해, 지정된 기수 또는 밑줄의 정수를 돌려줍니다.
-        전역 {{jsxref("parseInt", "parseInt()")}}함수와 동일합니다.
-      </td>
-    </tr>
-    <tr>
-      <td>{{jsxref("Number.isFinite()")}}</td>
-      <td>전달된 값이 유한한 수인지 판정합니다.</td>
-    </tr>
-    <tr>
-      <td>{{jsxref("Number.isInteger()")}}</td>
-      <td>전달된 값이 정수인지 판정합니다.</td>
-    </tr>
-    <tr>
-      <td>{{jsxref("Number.isNaN()")}}</td>
-      <td>
-        이 전달된 값
-        {{jsxref("Global_Objects/NaN", "Not-a-Number")}}여부를
-        확인합니다. 원본 글로벌
-        {{jsxref("Global_Objects/isNaN", "(isNaN)")}}의 더욱
-        강력한 버전입니다.
-      </td>
-    </tr>
-    <tr>
-      <td>{{jsxref("Number.isSafeInteger()")}}</td>
-      <td>제공된 값이 안전한 정수인지 여부를 확인합니다.</td>
-    </tr>
-  </tbody>
-</table>
-
-`Number` 프로토 타입은 다양한 형식의 `Number` 객체에서 정보를 검색하는 메소드를 제공합니다. 다음 표는 `Number.prototype`의 메소드를 요약 한 것입니다.
-
-| 방법                                                                     | Description                                                            |
-| ------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
-| {{jsxref("Number.toExponential", "toExponential()")}} | 지수표기법 안에서 번호를 나타내는 문자열을 반환합니다.                 |
-| {{jsxref("Number.toFixed", "toFixed()")}}                 | 문자열 고정 소수 점 표기법의 수를 나타내는 문자열을 반환합니다.        |
-| {{jsxref("Number.toPrecision", "toPrecision()")}}         | 지정된 정밀에 고정 소수 점 표기법의 수를 나타내는 문자열을 반환합니다. |
-
-## `Math` 객체
-
-내장 {{jsxref ( "Math")}} 객체는 수학 상수 및 함수에 대한 속성 및 메서드를 포함합니다. 예를 들어, `Math` 객체의 `PI` 속성에는 pi (3.141 ...) 값이 있습니다.이 값은 응용 프로그램에서 다음과 같이 사용합니다.
-
-```js
-Math.PI
-```
-
-마찬가지로 표준 수학 함수도 `Math`의 함수입니다. 여기에는 삼각 함수, 로그 함수, 지수 함수 및 기타 함수가 포함됩니다. 예를 들어 삼각 함수 sine을 사용하려면 다음과 같이 작성합니다.
-
-```js
-Math.sin(1.56)
-```
-
-`Math`의 모든 삼각 함수에는 라디안으로 매게변수를 입력해야 합니다.
-
-다음 표에서는 `Math` 개체의 방법을 요약하였습니다.
-
-<table class="standard-table">
-  <caption>
-    <code>Math</code
-    >의 메소드들
-  </caption>
-  <thead>
-    <tr>
-      <th scope="col">방법</th>
-      <th scope="col">묘사</th>
+      <th scope="col">Method</th>
+      <th scope="col">Description</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>{{jsxref("Math.abs", "abs()")}}</td>
-      <td>절대 값</td>
+      <td>Absolute value</td>
     </tr>
     <tr>
       <td>
@@ -205,7 +166,7 @@ Math.sin(1.56)
         {{jsxref("Math.cos", "cos()")}},
         {{jsxref("Math.tan", "tan()")}}
       </td>
-      <td>표준 삼각 함수; 라디안에서의 인수</td>
+      <td>Standard trigonometric functions; with the argument in radians.</td>
     </tr>
     <tr>
       <td>
@@ -214,7 +175,7 @@ Math.sin(1.56)
         {{jsxref("Math.atan", "atan()")}},
         {{jsxref("Math.atan2", "atan2()")}}
       </td>
-      <td>역삼각 함수; 라디안에 반환 값</td>
+      <td>Inverse trigonometric functions; return values in radians.</td>
     </tr>
     <tr>
       <td>
@@ -222,7 +183,7 @@ Math.sin(1.56)
         {{jsxref("Math.cosh", "cosh()")}},
         {{jsxref("Math.tanh", "tanh()")}}
       </td>
-      <td>쌍곡삼각함수; 라디안에 반환 값.</td>
+      <td>Hyperbolic functions; argument in hyperbolic angle.</td>
     </tr>
     <tr>
       <td>
@@ -230,7 +191,7 @@ Math.sin(1.56)
         {{jsxref("Math.acosh", "acosh()")}},
         {{jsxref("Math.atanh", "atanh()")}}
       </td>
-      <td>역쌍곡삼각함수; 라디안에 반환 값.</td>
+      <td>Inverse hyperbolic functions; return values in hyperbolic angle.</td>
     </tr>
     <tr>
       <td>
@@ -238,12 +199,13 @@ Math.sin(1.56)
           {{jsxref("Math.pow", "pow()")}},
           {{jsxref("Math.exp", "exp()")}},
           {{jsxref("Math.expm1", "expm1()")}},
+          {{jsxref("Math.log", "log()")}},
           {{jsxref("Math.log10", "log10()")}},
           {{jsxref("Math.log1p", "log1p()")}},
           {{jsxref("Math.log2", "log2()")}}
         </p>
       </td>
-      <td>지수와 로그 기능.</td>
+      <td>Exponential and logarithmic functions.</td>
     </tr>
     <tr>
       <td>
@@ -251,7 +213,8 @@ Math.sin(1.56)
         {{jsxref("Math.ceil", "ceil()")}}
       </td>
       <td>
-        가장큰/가장작은 정수 보다 적은/많은 또는 그와 동등한 원칙으로 반환해라.
+        Returns the largest/smallest integer less/greater than or equal to an
+        argument.
       </td>
     </tr>
     <tr>
@@ -259,11 +222,14 @@ Math.sin(1.56)
         {{jsxref("Math.min", "min()")}},
         {{jsxref("Math.max", "max()")}}
       </td>
-      <td>더적거나 더많은 쉼표의 (각각) 숫자 인수의 나뉜목록으로 반환해라.</td>
+      <td>
+        Returns the minimum or maximum (respectively) value of a comma separated
+        list of numbers as arguments.
+      </td>
     </tr>
     <tr>
       <td>{{jsxref("Math.random", "random()")}}</td>
-      <td>0과 1사이의 난수를 반환해라.</td>
+      <td>Returns a random number between 0 and 1.</td>
     </tr>
     <tr>
       <td>
@@ -271,7 +237,7 @@ Math.sin(1.56)
         {{jsxref("Math.fround", "fround()")}},
         {{jsxref("Math.trunc", "trunc()")}},
       </td>
-      <td>반올림과 절단 기능들.</td>
+      <td>Rounding and truncation functions.</td>
     </tr>
     <tr>
       <td>
@@ -279,125 +245,171 @@ Math.sin(1.56)
         {{jsxref("Math.cbrt", "cbrt()")}},
         {{jsxref("Math.hypot", "hypot()")}}
       </td>
-      <td>제곱 근, 세 제곱 근, 평방 인수의 합의 제곱 근.</td>
+      <td>
+        Square root, cube root, Square root of the sum of square arguments.
+      </td>
     </tr>
     <tr>
       <td>{{jsxref("Math.sign", "sign()")}}</td>
-      <td>그 수가 양수인지 음수인지 0인지를 가르키는 숫자의 표시.</td>
+      <td>
+        The sign of a number, indicating whether the number is positive,
+        negative or zero.
+      </td>
     </tr>
     <tr>
       <td>
         {{jsxref("Math.clz32", "clz32()")}},<br />{{jsxref("Math.imul", "imul()")}}
       </td>
       <td>
-        32비트 이진 표시의 주요 제로 비트 수.<br />그 두 인수의 C-like 32비트
-        곱셈의 결과.
+        Number of leading zero bits in the 32-bit binary representation.<br />The
+        result of the C-like 32-bit multiplication of the two arguments.
       </td>
     </tr>
   </tbody>
 </table>
 
-다른 많은 객체와 달리 자신의 `Math` 개체를 만들필요가 없습니다. 언제든 내장 된 `Math` 객체 바로 사용할 수 있습니다.
+Unlike many other objects, you never create a `Math` object of your own. You always use the built-in `Math` object.
 
-## `Date` 객체
+## BigInts
 
-자바스크립트에는 날짜 데이터 타입이 없습니다. 그러나, {{jsxref ( "Date")}} 객체와 그 메소드를 사용하여 응용 프로그램에서 날짜와 시간을 처리 할 수 있습니다. `Date` 객체에는 날짜 설정, 가져 오기 및 조작을위한 많은 메소드가 있습니다. 속성(properties)이 없습니다.
+One shortcoming of number values is they only have 64 bits. In practice, due to using IEEE 754 encoding, they cannot represent any integer larger than [`Number.MAX_SAFE_INTEGER`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER) (which is 2<sup>53</sup> - 1) accurately. To solve the need of encoding binary data and to interoperate with other languages that offer wide integers like `i64` (64-bit integers) and `i128` (128-bit integers), JavaScript also offers another data type to represent _arbitrarily large integers_: [`BigInt`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt).
 
-자바스크립트는 자바와 비슷하게 날짜를 처리합니다. 두 언어에는 동일한 날짜 메소드가 많으며 두 언어 모두 1970 년 1 월 1 일 00:00:00 이후의 밀리 초 수로 날짜를 저장합니다. 유닉스 타임 스탬프는 1970 년 1 월 1 일 00:00:00 이후의 초 수입니다.
-
-Date 개체 범위는 UTC 1970 년 1 월 1 일을 기준으로 -100,000,000 일에서 100,000,000 일입니다.
-
-Date 객체를 만들려면 :
+A BigInt can be defined as an integer literal suffixed by `n`:
 
 ```js
-var dateObjectName = new Date([parameters]);
+const b1 = 123n;
+// Can be arbitrarily large.
+const b2 = -1234567890987654321n;
 ```
 
-여기서 `dateObjectName`은 만들려는 `Date` 객체의 이름입니다. 새로운 객체 또는 기존 객체의 속성 일 수 있습니다.
-
-`new` 키워드없이 `Date`를 호출하면 현재 날짜와 시간을 나타내는 문자열이 반환됩니다.
-
-앞 구문에서 `parameters`는 아래 규칙을 따릅니다.
-
-- 아무것도없을때: 오늘의 날짜와 시간을 만듭니다. 예를 들어, `today = new Date();`.
-- 날짜를 나타내는 문자열의 형식: "Month day, year hours:minutes:seconds."예를 들어, `var Xmas95 = new Date("December 25, 1995 13:30:00")`.만약 당신이 시간, 분, 또는 초를 빠뜨린다면, 값은 0이 됩니다.
-- 정수 값의 연도, 월, 날의 집합입니다. 예를 들어, `var Xmas95 = new Date(1995, 11, 25)`.
-- 연도, 월, 일, 시, 분,초 동안 정수 값의 집합입니다.. 예를 들어, `var Xmas95 = new Date(1995, 11, 25, 9, 30, 0);`.
-
-### `Data` 개체의 표현 방법
-
-날짜와 시간을 조절하는 `Date`객체표현 방법은 아래 종류로 나뉩니다:
-
-- "set" 함수, 날짜 개체 안에서의 날짜 및 시간 값을 설정합니다.
-- "get" 함수, 날짜 개체 안에서의 날짜 및 시간 값을 얻습니다.
-- "to" 함수, 날짜 개체로부터 문자열 값을 반환합니다.
-- `Date` 문자열을 분석하기위해 parse와 UTC함수를 사용합니다.
-
-"get"및 "set"메소드를 사용하여 초, 분,시, 일, 요일, 월 및 연도를 별도로 가져 와서 설정할 수 있습니다. 요일이 자동적으로 설정되기 (위해) 때문에, 요일을 돌려주는 getDay 메소드가 있습니다만, 대응하는 setDay 메소드는 없습니다. 이러한 메서드는 정수를 사용하여 다음과 같이 값을 나타냅니다.
-
-- 초와 분: 0 to 59
-- 시간: 0 to 23
-- 요일: 0 (Sunday) to 6 (Saturday)
-- 날짜: 1 to 31 (day of the month)
-- 월: 0 (January) to 11 (December)
-- 연도: years since 1900
-
-예를 들어, 아래와 같이 값들을 정의해봅시다 :
+BigInts can also be constructed from number values or string values using the [`BigInt`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt/BigInt) constructor.
 
 ```js
-var Xmas95 = new Date("December 25, 1995");
+const b1 = BigInt(123);
+// Using a string prevents loss of precision, since long number
+// literals don't represent what they seem like.
+const b2 = BigInt("-1234567890987654321");
 ```
 
-그러면 `Xmas95.getMonth()`는 11을 반환합니다, 그리고 `Xmas95.getFullYear()`는 1995를 반환합니다.
-
-`getTime`과 `setTime`방법들은 날짜를 나눌때 유용합니다. `getTime`함수는 `Date`객체에 대해 1970년 1월 1일 00:00시부터 밀리초단위로 리턴합니다.
-
-예를 들어, 다음 코드는 현재 년도에 남아 수를 표시합니다:
+Conceptually, a BigInt is just an arbitrarily long sequence of bits which encodes an integer. You can safely do any arithmetic operations without losing precision or over-/underflowing.
 
 ```js
-var today = new Date();
-var endYear = new Date(1995, 11, 31, 23, 59, 59, 999); // Set day and month
+const integer = 12 ** 34; // 4.9222352429520264e+36; only has limited precision
+const bigint = 12n ** 34n; // 4922235242952026704037113243122008064n
+```
+
+Compared to numbers, BigInt values yield higher precision when representing large _integers_; however, they cannot represent _floating-point numbers_. For example, division would round to zero:
+
+```js
+const bigintDiv = 5n / 2n; // 2n, because there's no 2.5 in BigInt
+```
+
+`Math` functions cannot be used on BigInt values. There is [an open proposal](https://github.com/tc39/proposal-bigint-math) to overload certain `Math` functions like `Math.max()` to allow BigInt values.
+
+Choosing between BigInt and number depends on your use-case and your input's range. The precision of numbers should be able to accommodate most day-to-day tasks already, and BigInts are most suitable for handling binary data.
+
+Read more about what you can do with BigInt values in the [Expressions and Operators](/en-US/docs/Web/JavaScript/Guide/Expressions_and_operators#bigint_operators) section, or the [BigInt reference](/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt).
+
+## Date object
+
+JavaScript does not have a date data type. However, you can use the {{jsxref("Date")}} object and its methods to work with dates and times in your applications. The `Date` object has a large number of methods for setting, getting, and manipulating dates. It does not have any properties.
+
+JavaScript handles dates similarly to Java. The two languages have many of the same date methods, and both languages store dates as the number of milliseconds since January 1, 1970, 00:00:00, with a Unix Timestamp being the number of seconds since January 1, 1970, 00:00:00.
+
+The `Date` object range is -100,000,000 days to 100,000,000 days relative to 01 January, 1970 UTC.
+
+To create a `Date` object:
+
+```js
+const dateObjectName = new Date([parameters]);
+```
+
+where `dateObjectName` is the name of the `Date` object being created; it can be a new object or a property of an existing object.
+
+Calling `Date` without the `new` keyword returns a string representing the current date and time.
+
+The `parameters` in the preceding syntax can be any of the following:
+
+- Nothing: creates today's date and time. For example, `today = new Date();`.
+- A string representing a date in the following form: "Month day, year hours:minutes:seconds." For example, `let Xmas95 = new Date("December 25, 1995 13:30:00")`. If you omit hours, minutes, or seconds, the value will be set to zero.
+- A set of integer values for year, month, and day. For example, `let Xmas95 = new Date(1995, 11, 25)`.
+- A set of integer values for year, month, day, hour, minute, and seconds. For example, `let Xmas95 = new Date(1995, 11, 25, 9, 30, 0);`.
+
+### Methods of the Date object
+
+The `Date` object methods for handling dates and times fall into these broad categories:
+
+- "set" methods, for setting date and time values in `Date` objects.
+- "get" methods, for getting date and time values from `Date` objects.
+- "to" methods, for returning string values from `Date` objects.
+- parse and UTC methods, for parsing `Date` strings.
+
+With the "get" and "set" methods you can get and set seconds, minutes, hours, day of the month, day of the week, months, and years separately. There is a `getDay` method that returns the day of the week, but no corresponding `setDay` method, because the day of the week is set automatically. These methods use integers to represent these values as follows:
+
+- Seconds and minutes: 0 to 59
+- Hours: 0 to 23
+- Day: 0 (Sunday) to 6 (Saturday)
+- Date: 1 to 31 (day of the month)
+- Months: 0 (January) to 11 (December)
+- Year: years since 1900
+
+For example, suppose you define the following date:
+
+```js
+const Xmas95 = new Date("December 25, 1995");
+```
+
+Then `Xmas95.getMonth()` returns 11, and `Xmas95.getFullYear()` returns 1995.
+
+The `getTime` and `setTime` methods are useful for comparing dates. The `getTime` method returns the number of milliseconds since January 1, 1970, 00:00:00 for a `Date` object.
+
+For example, the following code displays the number of days left in the current year:
+
+```js
+const today = new Date();
+const endYear = new Date(1995, 11, 31, 23, 59, 59, 999); // Set day and month
 endYear.setFullYear(today.getFullYear()); // Set year to this year
-var msPerDay = 24 * 60 * 60 * 1000; // Number of milliseconds per day
-var daysLeft = (endYear.getTime() - today.getTime()) / msPerDay;
-var daysLeft = Math.round(daysLeft); //returns days left in the year
+const msPerDay = 24 * 60 * 60 * 1000; // Number of milliseconds per day
+let daysLeft = (endYear.getTime() - today.getTime()) / msPerDay;
+daysLeft = Math.round(daysLeft); //returns days left in the year
 ```
 
-이 예제에는 오늘 날짜가 포함된 `today`라는 명칭을 가진 `Date`객체를 만듭니다. 그리고 나서 `endYear`라는 `Date`객체를 만들고 현재연도를 설정합니다. 그런 다음 하루에 밀리 초 수를 사용하여 `getTime`을 사용하고 전체 일 수를 반올림하여 `today`와 `endYear` 사이의 일 수를 계산합니다.
+This example creates a `Date` object named `today` that contains today's date. It then creates a `Date` object named `endYear` and sets the year to the current year. Then, using the number of milliseconds per day, it computes the number of days between `today` and `endYear`, using `getTime` and rounding to a whole number of days.
 
-`Parse` 함수는 날짜문자열부터 기존의 `Date`객체까지의 값을 할당하기에 유용합니다. 예를 들어, 다음 코드는 그 `IPOdate` 객체에 날짜값을 할당하기위해 `parse`와 `setTime`을 사용합니다;
+The `parse` method is useful for assigning values from date strings to existing `Date` objects. For example, the following code uses `parse` and `setTime` to assign a date value to the `ipoDate` object:
 
 ```js
-var IPOdate = new Date();
-IPOdate.setTime(Date.parse("Aug 9, 1995"));
+const ipoDate = new Date();
+ipoDate.setTime(Date.parse("Aug 9, 1995"));
 ```
 
-### 예제
+### Example
 
-다음 예제 에서 `JSClock()`는 digital 시계형식의 시간을 반환합니다.
+In the following example, the function `JSClock()` returns the time in the format of a digital clock.
 
 ```js
 function JSClock() {
-  var time = new Date();
-  var hour = time.getHours();
-  var minute = time.getMinutes();
-  var second = time.getSeconds();
-  var temp = "" + ((hour > 12) ? hour - 12 : hour);
-  if (hour == 0)
+  const time = new Date();
+  const hour = time.getHours();
+  const minute = time.getMinutes();
+  const second = time.getSeconds();
+  let temp = String(hour % 12);
+  if (temp === "0") {
     temp = "12";
-  temp += ((minute < 10) ? ":0" : ":") + minute;
-  temp += ((second < 10) ? ":0" : ":") + second;
-  temp += (hour >= 12) ? " P.M." : " A.M.";
+  }
+  temp += (minute < 10 ? ":0" : ":") + minute;
+  temp += (second < 10 ? ":0" : ":") + second;
+  temp += hour >= 12 ? " P.M." : " A.M.";
   return temp;
 }
 ```
 
-`JSClock` 함수는 먼저 time이라는 새 `Date` 객체를 만듭니다. 인수가 없으므로 현재 날짜와 시간으로 시간이 생성됩니다. 그런 다음 `getHours`, `getMinutes` 및 `getSeconds` 메소드를 호출하면 현재 시간, 분 및 초 값이`hour`, `minute`, `second`로 할당됩니다.
+The `JSClock` function first creates a new `Date` object called `time`; since no arguments are given, time is created with the current date and time. Then calls to the `getHours`, `getMinutes`, and `getSeconds` methods assign the value of the current hour, minute, and second to `hour`, `minute`, and `second`.
 
-다음 네 문장은 시간을 기준으로 문자열 값을 만듭니다. 첫 번째 명령문은 변수 temp를 작성하고 조건식을 사용하여 값을 할당합니다. hour가 12보다 큰 경우 (hour - 12), 그렇지 않은 경우 시간이 0이 아닌 경우 시간이 12 일 경우 시간이 12가됩니다.
+The following statements build a string value based on the time. The first statement creates a variable `temp`. Its value is `hour % 12`, which is `hour` in the 12-hour system. Then, if the hour is `0`, it gets re-assigned to `12`, so that midnights and noons are displayed as `12:00` instead of `0:00`.
 
-다음 명령문은 `temp` 값에 `minute` 값을 추가합니다. 분(`minute`)의 값이 10보다 작 으면 조건식은 앞에 0이 있는 문자열을 추가합니다. 그렇지 않으면 콜론을 구분하는 문자열을 추가합니다. 그런 다음 같은 방법으로 temp에 초 값을 추가합니다.
+The next statement appends a `minute` value to `temp`. If the value of `minute` is less than 10, the conditional expression adds a string with a preceding zero; otherwise it adds a string with a demarcating colon. Then a statement appends a seconds value to `temp` in the same way.
 
-마지막으로 조건부 표현식에 "P.M."이 추가됩니다. 시간(`hour`)이 12 시간 이상이면 임시(`temp`)로; 그렇지 않으면 "A.M."을 `temp`에 추가합니다.
+Finally, a conditional expression appends "P.M." to `temp` if `hour` is 12 or greater; otherwise, it appends "A.M." to `temp`.
 
-{{PreviousNext("Web/JavaScript/Guide/Expressions_and_Operators", "Web/JavaScript/Guide/Text_formatting")}}
+{{PreviousNext("Web/JavaScript/Guide/Expressions_and_operators", "Web/JavaScript/Guide/Text_formatting")}}

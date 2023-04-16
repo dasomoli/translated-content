@@ -1,10 +1,11 @@
 ---
 title: Bandwidth
 slug: Glossary/Bandwidth
+page-type: glossary-definition
 ---
 
-대역폭은 주어진 시간 내에 얼마나 많은 정보가 데이터 연결을 통과 할 수 있는지를 나타냅니다. 대개 초당 메가 비트 (Mbps) 또는 초당 기가비트 (Gbps)와 같이 초당 비트 수 (bps)의 배수로 측정됩니다.
+Bandwidth is the measure of how much information can pass through a data connection in a given amount of time. It is usually measured in multiples of bits-per-second (bps), for example megabits-per-second (Mbps) or gigabits-per-second (Gbps).
 
-## Learn more
+## See also
 
 - [Bandwidth](https://en.wikipedia.org/wiki/Bandwidth) on Wikipedia

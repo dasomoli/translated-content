@@ -1,100 +1,94 @@
 ---
 title: Array.isArray()
 slug: Web/JavaScript/Reference/Global_Objects/Array/isArray
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Array.isArray
 ---
 
 {{JSRef}}
 
-**`Array.isArray()`** 메서드는 인자가 {{jsxref("Array")}}인지 판별합니다.
+The **`Array.isArray()`** static method determines whether the passed value is an {{jsxref("Array")}}.
 
-```js
-    Array.isArray([1, 2, 3]);  // true
-    Array.isArray({foo: 123}); // false
-    Array.isArray('foobar');   // false
-    Array.isArray(undefined);  // false
+{{EmbedInteractiveExample("pages/js/array-isarray.html")}}
+
+## Syntax
+
+```js-nolint
+Array.isArray(value)
 ```
 
-## 구문
+### Parameters
+
+- `value`
+  - : The value to be checked.
+
+### Return value
+
+`true` if `value` is an {{jsxref("Array")}}; otherwise, `false`. `false` is always returned if `value` is a {{jsxref("TypedArray")}} instance.
+
+## Description
+
+`Array.isArray()` checks if the passed value is an {{jsxref("Array")}}. It does not check the value's prototype chain, nor does it rely on the `Array` constructor it is attached to. It returns `true` for any value that was created using the array literal syntax or the `Array` constructor. This makes it safe to use with cross-realm objects, where the identity of the `Array` constructor is different and would therefore cause [`instanceof Array`](/en-US/docs/Web/JavaScript/Reference/Operators/instanceof) to fail.
+
+See the article ["Determining with absolute accuracy whether or not a JavaScript object is an array"](https://web.mit.edu/jwalden/www/isArray.html) for more details.
+
+`Array.isArray()` also rejects objects with `Array.prototype` in its prototype chain but aren't actual arrays, which `instanceof Array` would accept.
+
+## Examples
+
+### Using Array.isArray()
 
 ```js
-    Array.isArray(obj)
+// all following calls return true
+Array.isArray([]);
+Array.isArray([1]);
+Array.isArray(new Array());
+Array.isArray(new Array("a", "b", "c", "d"));
+Array.isArray(new Array(3));
+// Little known fact: Array.prototype itself is an array:
+Array.isArray(Array.prototype);
+
+// all following calls return false
+Array.isArray();
+Array.isArray({});
+Array.isArray(null);
+Array.isArray(undefined);
+Array.isArray(17);
+Array.isArray("Array");
+Array.isArray(true);
+Array.isArray(false);
+Array.isArray(new Uint8Array(32));
+// This is not an array, because it was not created using the
+// array literal syntax or the Array constructor
+Array.isArray({ __proto__: Array.prototype });
 ```
 
-### 매개변수
+### instanceof vs. Array.isArray()
 
-- `obj`
-  - : 검사할 객체.
-
-### 반환 값
-
-객체가 {{jsxref("Array")}}라면 `true`, 아니라면 `false`.
-
-## 설명
-
-객체가 {{jsxref("Array")}}라면 `true`를 반환하고, 아니라면 `false`를 반환합니다.
-
-자세한 정보는 [“Determining with absolute accuracy whether or not a JavaScript object is an array”](http://web.mit.edu/jwalden/www/isArray.html)(자바스크립트 객체가 배열인지 정확히 판별하는 방법) 문서를 참조하세요.
-
-## 예제
+When checking for `Array` instance, `Array.isArray()` is preferred over `instanceof` because it works across realms.
 
 ```js
-    // 모두 true 반환
-    Array.isArray([]);
-    Array.isArray([1]);
-    Array.isArray(new Array());
-    Array.isArray(new Array('a', 'b', 'c', 'd'));
-    Array.isArray(new Array(3));
-    // Array.prototype은 스스로도 배열입니다
-    Array.isArray(Array.prototype);
+const iframe = document.createElement("iframe");
+document.body.appendChild(iframe);
+const xArray = window.frames[window.frames.length - 1].Array;
+const arr = new xArray(1, 2, 3); // [1, 2, 3]
 
-    // 모두 false 반환
-    Array.isArray();
-    Array.isArray({});
-    Array.isArray(null);
-    Array.isArray(undefined);
-    Array.isArray(17);
-    Array.isArray('Array');
-    Array.isArray(true);
-    Array.isArray(false);
-    Array.isArray({ __proto__: Array.prototype });
+// Correctly checking for Array
+Array.isArray(arr); // true
+// The prototype of arr is xArray.prototype, which is a
+// different object from Array.prototype
+arr instanceof Array; // false
 ```
 
-### `instanceof` vs `isArray`
-
-`Array` 객체를 판별할 때, `Array.isArray`는 `iframe`을 통해서도 작동하기 때문에 `instanceof` 보다 적합합니다.
-
-```js
-    var iframe = document.createElement('iframe');
-    document.body.appendChild(iframe);
-    xArray = window.frames[window.frames.length-1].Array;
-    var arr = new xArray(1,2,3); // [1,2,3]
-
-    // 올바른 Array 판별
-    Array.isArray(arr);  // true
-    // iframe을 통해서 작동하지 않기 때문에 올바르지 않은 방법
-    arr instanceof Array; // false
-```
-
-## 폴리필
-
-아래 코드를 실행하면 지원하지 않는 환경에서도 `Array.isArray()`를 사용할 수 있습니다.
-
-```js
-if (!Array.isArray) {
-  Array.isArray = function(arg) {
-    return Object.prototype.toString.call(arg) === '[object Array]';
-  };
-}
-```
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참고
+## See also
 
+- [Polyfill of `Array.isArray` in `core-js`](https://github.com/zloirock/core-js#ecmascript-array)
 - {{jsxref("Array")}}

@@ -1,70 +1,175 @@
 ---
 title: margin-left
 slug: Web/CSS/margin-left
+page-type: css-property
+browser-compat: css.properties.margin-left
 ---
 
 {{CSSRef}}
 
-**`margin-left`** [CSS](/ko/docs/Web/CSS) 속성은 요소의 왼쪽에 [바깥 여백 영역](/ko/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)margin area을 설정합니다. 양수 값은 인접 요소와 거리를 넓히고, 음수 값은 더 좁힙니다.
+The **`margin-left`** [CSS](/en-US/docs/Web/CSS) property sets the [margin area](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model#margin_area) on the left side of an element. A positive value places it farther from its neighbors, while a negative value places it closer.
 
 {{EmbedInteractiveExample("pages/css/margin-left.html")}}
 
-## 구문
+The vertical margins of two adjacent boxes may fuse. This is called [_margin collapsing_](/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing).
+
+In the rare cases where width is overconstrained (i.e., when all of `width`, `margin-left`, `border`, `padding`, the content area, and `margin-right` are defined), `margin-left` is ignored, and will have the same calculated value as if the `auto` value was specified.
+
+## Syntax
 
 ```css
-/* <length> 값 */
-margin-left: 20px;  /* 절대 길이 */
-margin-left: 1em;   /* 글씨 크기에 상대적 */
-margin-left: 5%;    /* 가장 가까운 블록 컨테이너의 너비에 상대적 */
+/* <length> values */
+margin-left: 10px; /* An absolute length */
+margin-left: 1em; /* relative to the text size */
+margin-left: 5%; /* relative to the nearest block container's width */
 
-/* 키워드 값 */
+/* Keyword values */
 margin-left: auto;
 
-/* 전역 값 */
+/* Global values */
 margin-left: inherit;
 margin-left: initial;
+margin-left: revert;
+margin-left: revert-layer;
 margin-left: unset;
 ```
 
-`margin-left` 속성은 키워드 `auto`, `<length>`, `<percentage>`를 사용해 설정할 수 있습니다. 값은 양수, 0, 음수가 가능합니다.
+The `margin-left` property is specified as the keyword `auto`, or a `<length>`, or a `<percentage>`. Its value can be positive, zero, or negative.
 
-### 값
+### Values
 
 - {{cssxref("&lt;length&gt;")}}
-  - : 바깥 여백 크기의 고정 값.
+  - : The size of the margin as a fixed value.
 - {{cssxref("&lt;percentage&gt;")}}
-  - : 바깥 여백 크기와 블록 컨테이너 너비의 비율.
+  - : The size of the margin as a percentage, relative to the inline size (_width_ in a horizontal language, defined by {{cssxref("writing-mode")}}) of the [containing block](/en-US/docs/Web/CSS/Containing_block).
 - `auto`
 
-  - : 사용한 레이아웃 모드에 따라 가로축 미사용 공간 너비의 일부를 바깥 여백에 할당. `margin-left`와 `margin-right`의 값이 모두 `auto`라면 너비를 양 여백에 동일하게 배정합니다. 아래 표가 가능한 여러 경우를 보입니다.
+  - : The left margin receives a share of the unused horizontal space, as determined mainly by the layout mode that is used. If the values of `margin-left` and `margin-right` are both `auto`, the calculated space is evenly distributed. This table summarizes the different cases:
 
-    | {{cssxref("display")}} 값                                                                   | {{cssxref("float")}} 값 | {{cssxref("position")}} 값 | `auto`의 계산 값                                                                                                                                                               | 설명                                                                                                           |
-    | ------------------------------------------------------------------------------------------------- | ------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
-    | `inline`, `inline-block`, `inline-table`                                                          | _any_                           | `static` or `relative`              | `0`                                                                                                                                                                            | 인라인 레이아웃 모드                                                                                           |
-    | `block`, `inline`, `inline-block`, `block`, `table`, `inline-table`, `list-item`, `table-caption` | _any_                           | `static` or `relative`              | `0`, except if both `margin-left` and `margin-right` are set to `auto`. In this case, it is set to the value centering the element inside its parent.                          | 블록 레이아웃 모드                                                                                             |
-    | `block`, `inline`, `inline-block`, `block`, `table`, `inline-table`, `list-item`, `table-caption` | `left` or `right`               | `static` or `relative`              | `0`                                                                                                                                                                            | 블록 레이아웃 모드 (플로팅 요소)                                                                               |
-    | _any_ `table-*`_, except_ `table-caption`                                                         | _any_                           | _any_                               | `0`                                                                                                                                                                            | 내부 `table-*` 요소는 바깥 여백을 가지지 않습니다. 대신 {{ cssxref("border-spacing") }}을 사용하세요. |
-    | _any, except `flex`,_ `inline-flex`_, or_ `table-*`                                               | _any_                           | _`fixed`_ or `absolute`             | `0`, except if both `margin-left` and `margin-right` are set to `auto`. In this case, it is set to the value centering the border area inside the available `width`, if fixed. | 절대위치 레이아웃 모드                                                                                         |
-    | `flex`, `inline-flex`                                                                             | _any_                           | _any_                               | `0`, except if there is any positive horizontal free space. In this case, it is evenly distributed to all horizontal `auto` margins.                                           | 플렉스박스 레이아웃 모드                                                                                       |
+    <table class="standard-table">
+      <thead>
+        <tr>
+          <th scope="col">Value of {{cssxref("display")}}</th>
+          <th scope="col">Value of {{cssxref("float")}}</th>
+          <th scope="col">Value of {{cssxref("position")}}</th>
+          <th scope="col">Computed value of <code>auto</code></th>
+          <th scope="col">Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>
+            <code>inline</code>, <code>inline-block</code>,
+            <code>inline-table</code>
+          </th>
+          <th><em>any</em></th>
+          <th><code>static</code> or <code>relative</code></th>
+          <td><code>0</code></td>
+          <td>Inline layout mode</td>
+        </tr>
+        <tr>
+          <th>
+            <code>block</code>, <code>inline</code>, <code>inline-block</code>,
+            <code>block</code>, <code>table</code>, <code>inline-table</code>,
+            <code>list-item</code>, <code>table-caption</code>
+          </th>
+          <th><em>any</em></th>
+          <th><code>static</code> or <code>relative</code></th>
+          <td>
+            <code>0</code>, except if both <code>margin-left</code> and
+            <code>margin-right</code> are set to <code>auto</code>. In this case, it
+            is set to the value centering the element inside its parent.
+          </td>
+          <td>Block layout mode</td>
+        </tr>
+        <tr>
+          <th>
+            <code>block</code>, <code>inline</code>, <code>inline-block</code>,
+            <code>block</code>, <code>table</code>, <code>inline-table</code>,
+            <code>list-item</code>, <code>table-caption</code>
+          </th>
+          <th><code>left</code> or <code>right</code></th>
+          <th><code>static</code> or <code>relative</code></th>
+          <td><code>0</code></td>
+          <td>Block layout mode (floating element)</td>
+        </tr>
+        <tr>
+          <th>
+            <em>any </em><code>table-*</code><em>, except </em
+            ><code>table-caption</code>
+          </th>
+          <th><em>any</em></th>
+          <th><em>any</em></th>
+          <td><code>0</code></td>
+          <td>
+            Internal <code>table-*</code> elements don't have margins, use
+            {{ cssxref("border-spacing") }} instead
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <em>any, except <code>flex</code>,</em> <code>inline-flex</code
+            ><em>, or </em><code>table-*</code>
+          </th>
+          <th><em>any</em></th>
+          <th>
+            <em><code>fixed</code></em> or <code>absolute</code>
+          </th>
+          <td>
+            <code>0</code>, except if both <code>margin-left</code> and
+            <code>margin-right</code> are set to <code>auto</code>. In this case, it
+            is set to the value centering the border area inside the available
+            <code>width</code>, if fixed.
+          </td>
+          <td>Absolutely positioned layout mode</td>
+        </tr>
+        <tr>
+          <th><code>flex</code>, <code>inline-flex</code></th>
+          <th><em>any</em></th>
+          <th><em>any</em></th>
+          <td>
+            <code>0</code>, except if there is any positive horizontal free space.
+            In this case, it is evenly distributed to all horizontal
+            <code>auto</code> margins.
+          </td>
+          <td>Flexbox layout mode</td>
+        </tr>
+      </tbody>
+    </table>
 
-### 형식 구문
-
-{{csssyntax}}
-
-## 예제
-
-```css
-.content { margin-left: 5%; }
-.sidebox { margin-left: 10px; }
-.logo    { margin-left: -5px; }
-```
-
-## 명세
-
-{{Specifications}}
+## Formal definition
 
 {{cssinfo}}
 
-## 브라우저 호환성
+## Formal syntax
+
+{{csssyntax}}
+
+## Examples
+
+### Setting left margin using pixels and percentages
+
+```css
+.content {
+  margin-left: 5%;
+}
+.sidebox {
+  margin-left: 10px;
+}
+.logo {
+  margin-left: -5px;
+}
+```
+
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- {{cssxref("margin-top")}}, {{cssxref("margin-right")}}, and {{cssxref("margin-bottom")}} and the {{cssxref("margin")}} shorthand
+- The mapped logical properties: {{cssxref("margin-block-start")}}, {{cssxref("margin-block-end")}}, {{cssxref("margin-inline-start")}}, and {{cssxref("margin-inline-end")}} and the shorthands {{cssxref("margin-block")}} and {{cssxref("margin-inline")}}

@@ -1,29 +1,53 @@
 ---
-title: Location.reload()
+title: "location: reload() method"
+short-title: reload()
 slug: Web/API/Location/reload
+page-type: web-api-instance-method
+browser-compat: api.Location.reload
 ---
 
 {{ APIRef("HTML DOM") }}
 
-**`Location.reload()`** 메서드는 새로고침 버튼처럼 현재 리소스를 다시 불러옵니다.
+The **`location.reload()`** method reloads the current URL, like the Refresh button.
 
-새로고침은 `SECURITY_ERROR` {{domxref("DOMException")}}과 함께 거부당할 수 있습니다. 이는 `location.reload()`를 호출한 스크립트의 {{glossary("origin", "출처")}}와 {{domxref("Location")}} 객체를 소유한 문서의 출처가 다를 때 발생합니다. 더 자세한 정보는 [동일 출처 정책](/ko/docs/Web/Security/Same-origin_policy) 문서를 참고하세요.
+The reload may be blocked and a `SECURITY_ERROR` {{domxref("DOMException")}}
+thrown. This happens if the {{Glossary("origin")}} of the script calling
+`location.reload()` differs from the origin of the page that owns the
+{{domxref("Location")}} object. See [Same-origin policy](/en-US/docs/Web/Security/Same-origin_policy) for more
+information.
 
-## 구문
+## Syntax
 
-```js
-location.reload();
+```js-nolint
+reload()
 ```
 
-## 명세
+### Parameters
+
+None.
+
+> **Note:** Firefox supports a non-standard [`forceGet` boolean parameter](https://searchfox.org/mozilla-central/source/dom/base/Location.cpp#551) for `location.reload()`, to tell Firefox to bypass its cache and force-reload the current document. However, in all other browsers, any parameter you specify in a `location.reload()` call will be ignored and have no effect of any kind.
+
+You may, though, come across instances of `location.reload(true)` in existing code that was written with the assumption the force-reload effect occurs in all browsers. A GitHub "`location.reload(true)`" search returns [several hundred thousand results](https://github.com/search?q=%22location.reload%28true%29%22&type=code). So there's a lot of existing code which has it.
+
+The history of it is: some version of Netscape Navigator added support for it, which apparently eventually got picked up in Firefox. And at one point the W3C Web APIs Working Group [took up an issue](https://www.w3.org/2005/06/tracker/webapi/issues/69) to consider adding it to the specification for `location.reload()`. However, it was never actually added.
+
+So a boolean parameter is not part of the current specification for `location.reload()` — and in fact has _never_ been part of any specification for `location.reload()` ever published.
+
+### Return value
+
+None ({{jsxref("undefined")}}).
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 메서드가 속한 {{domxref("Location")}} 인터페이스.
-- 비슷한 메서드: {{domxref("Location.assign()")}}, {{domxref("Location.replace()")}}.
+- The {{domxref("Location")}} interface it belongs to.
+- Similar methods: {{domxref("Location.assign()")}} and
+  {{domxref("Location.replace()")}}.

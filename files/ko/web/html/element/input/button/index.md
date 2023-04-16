@@ -1,207 +1,194 @@
 ---
 title: <input type="button">
 slug: Web/HTML/Element/input/button
+page-type: html-element
+browser-compat: html.elements.input.type_button
 ---
 
 {{HTMLSidebar}}
 
-**`button`** 유형의 {{htmlelement("input")}} 요소는 단순한 푸시 버튼으로 렌더링 됩니다. 이벤트 처리기(주로 [`click`](/ko/docs/Web/API/Element/click_event) 이벤트)를 부착하면, 사용자 지정 기능을 웹 페이지 어느 곳에나 제공할 수 있습니다.
+{{HTMLElement("input")}} elements of type **`button`** are rendered as simple push buttons, which can be programmed to control custom functionality anywhere on a webpage as required when assigned an event handler function (typically for the {{domxref("Element/click_event", "click")}} event).
 
-{{EmbedInteractiveExample("pages/tabbed/input-button.html", "tabbed-standard")}}
+{{EmbedInteractiveExample("pages/tabbed/input-button.html", "tabbed-shorter")}}
 
-> **참고:** `<input>` 요소의 `button` 유형도 전혀 틀리지 않은 방법이지만, 이후에 생긴 {{HTMLElement("button")}} 요소를 사용하는 것이 선호되는 방식입니다. `<button>`의 레이블 텍스트는 여는 태그와 닫는 태그 사이에 넣기 때문에, 심지어 이미지까지도 포함할 수 있습니다.
+> **Note:** While `<input>` elements of type `button` are still perfectly valid HTML, the newer {{HTMLElement("button")}} element is now the favored way to create buttons. Given that a {{HTMLElement("button")}}'s label text is inserted between the opening and closing tags, you can include HTML in the label, even images.
 
-<table class="properties">
-  <tbody>
-    <tr>
-      <td>
-        <strong><a href="#값">값</a></strong>
-      </td>
-      <td>버튼의 레이블로 사용할 {{domxref("DOMString")}}</td>
-    </tr>
-    <tr>
-      <td>이벤트</td>
-      <td>[`click`](/ko/docs/Web/API/Element/click_event)</td>
-    </tr>
-    <tr>
-      <td>지원하는 공용 특성</td>
-      <td>
-        {{htmlattrxref("type", "input")}},
-        {{htmlattrxref("value", "input")}}
-      </td>
-    </tr>
-    <tr>
-      <td><strong>IDL 특성</strong></td>
-      <td><code>value</code></td>
-    </tr>
-    <tr>
-      <td>메서드</td>
-      <td>없음</td>
-    </tr>
-  </tbody>
-</table>
+## Value
 
-## 값
+### Button with a value
 
-`<input type="button">` 요소의 {{htmlattrxref("value", "input")}} 특성은 버튼의 레이블로 사용할 {{domxref("DOMString")}}을 담습니다.
+An `<input type="button">` elements' [`value`](/en-US/docs/Web/HTML/Element/input#value) attribute contains a string that is used as the button's label.
 
 ```html
-<input type="button" value="클릭하세요">
+<input type="button" value="Click Me" />
 ```
 
-{{EmbedLiveSample("summary-example3", 650, 30)}}
+{{EmbedLiveSample("Button_with_a_value", 650, 30)}}
 
-`value`를 지정하지 않으면 빈 버튼이 됩니다.
+### Button without a value
+
+If you don't specify a `value`, you get an empty button:
 
 ```html
-<input type="button">
+<input type="button" />
 ```
 
-{{EmbedLiveSample("summary-example1", 650, 30)}}
+{{EmbedLiveSample("Button_without_a_value", 650, 30)}}
 
-## 버튼 사용하기
+## Using buttons
 
-`<input type="button">` 요소는 아무런 기본 기능도 가지지 않습니다. (유사한 요소인 [`<input type="submit">`](/ko/docs/Web/HTML/Element/input/submit)과 [`<input type="reset">`](/ko/docs/Web/HTML/Element/input/reset)은 각각 양식을 제출하고 초기화할 수 있습니다.) 버튼이 뭐라도 하게 만들려면 JavaScript 코드를 작성해야 합니다.
+`<input type="button">` elements have no default behavior (their cousins, `<input type="submit">` and [`<input type="reset">`](/en-US/docs/Web/HTML/Element/input/reset) are used to submit and reset forms, respectively). To make buttons do anything, you have to write JavaScript code to do the work.
 
-### 간단한 버튼
+### A simple button
 
-[`click`](/ko/docs/Web/API/Element/click_event) 이벤트 처리기를 부착한 간단한 버튼을 통해 기계를 켜고 끄는 기능을 만드는 것으로 시작해보겠습니다. (기계라고는 하지만, 그냥 버튼의 `value`와 문단 내용을 바꾸는 것입니다.)
+We'll begin by creating a simple button with a {{domxref("Element/click_event", "click")}} event handler that starts our machine (well, it toggles the `value` of the button and the text content of the following paragraph):
 
 ```html
 <form>
-  <input type="button" value="기계 켜기">
+  <input type="button" value="Start machine" />
 </form>
-<p>기계가 멈췄습니다.</p>
+<p>The machine is stopped.</p>
 ```
 
 ```js
-var btn = document.querySelector('input');
-var txt = document.querySelector('p');
+const button = document.querySelector('input');
+const paragraph = document.querySelector('p');
 
-btn.addEventListener('click', updateBtn);
+button.addEventListener('click', updateButton);
 
-function updateBtn() {
-  if (btn.value === '기계 켜기') {
-    btn.value = '기계 끄기';
-    txt.textContent = '기계가 켜졌습니다!';
+function updateButton() {
+  if (button.value === 'Start machine') {
+    button.value = 'Stop machine';
+    paragraph.textContent = 'The machine has started!';
   } else {
-    btn.value = '기계 켜기';
-    txt.textContent = '기계가 멈췄습니다.';
+    button.value = 'Start machine';
+    paragraph.textContent = 'The machine is stopped.';
   }
 }
 ```
 
-위의 스크립트는 DOM의 `<input>`을 나타내는 {{domxref("HTMLInputElement")}} 객체의 참조를 획득해 변수 `button`에 저장합니다. 그 후 {{domxref("EventTarget.addEventListener", "addEventListener()")}}를 사용해, [`click`](/ko/docs/Web/API/Element/click_event) 이벤트가 발생했을 때 실행할 함수를 생성합니다.
+The script gets a reference to the {{domxref("HTMLInputElement")}} object representing the `<input>` in the DOM, saving this reference in the variable `button`. {{domxref("EventTarget.addEventListener", "addEventListener()")}} is then used to establish a function that will be run when {{domxref("Element/click_event", "click")}} events occur on the button.
 
-{{EmbedLiveSample("간단한_버튼", 650, 100)}}
+{{EmbedLiveSample("A_simple_button", 650, 100)}}
 
-### 버튼에 키보드 단축키 추가하기
+### Adding keyboard shortcuts to buttons
 
-접근 키라고도 불리는 키보드 단축키는 사용자가 키보드의 키 혹은 키 조합을 통해 버튼을 누를 수 있는 방법을 제공합니다. 단축키를 추가하는 법은, 다른 {{htmlelement("input")}}과 마찬가지로, {{htmlattrxref("accesskey")}} 전역 특성을 추가하는 것입니다.
+Keyboard shortcuts, also known as access keys and keyboard equivalents, let the user trigger a button using a key or combination of keys on the keyboard. To add a keyboard shortcut to a button — just as you would with any {{HTMLElement("input")}} for which it makes sense — you use the [`accesskey`](/en-US/docs/Web/HTML/Global_attributes/accesskey) global attribute.
 
-이번 예제에서는 이전 예제에 더해 <kbd>s</kbd> 키를 접근 키로 지정합니다. (브라우저/운영체제에 따라 특정 조합키를 같이 눌러야 할 수도 있습니다. [`accesskey`](/ko/docs/Web/HTML/Global_attributes/accesskey) 문서를 방문해 조합키 목록을 확인하세요.)
+In this example, <kbd>s</kbd> is specified as the access key (you'll need to press <kbd>s</kbd> plus the particular modifier keys for your browser/OS combination; see [accesskey](/en-US/docs/Web/HTML/Global_attributes/accesskey) for a useful list of those).
 
 ```html
 <form>
-  <input type="button" value="기계 켜기" accesskey="s">
+  <input type="button" value="Start machine" accesskey="s" />
 </form>
-<p>기계가 멈췄습니다.</p>
+<p>The machine is stopped.</p>
 ```
 
 ```js hidden
-var btn = document.querySelector('input');
-var txt = document.querySelector('p');
+const button = document.querySelector('input');
+const paragraph = document.querySelector('p');
 
-btn.addEventListener('click', updateBtn);
+button.addEventListener('click', updateButton);
 
-function updateBtn() {
-  if (btn.value === '기계 켜기') {
-    btn.value = '기계 끄기';
-    txt.textContent = '기계가 켜졌습니다!';
+function updateButton() {
+  if (button.value === 'Start machine') {
+    button.value = 'Stop machine';
+    paragraph.textContent = 'The machine has started!';
   } else {
-    btn.value = '기계 켜기';
-    txt.textContent = '기계가 멈췄습니다.';
+    button.value = 'Start machine';
+    paragraph.textContent = 'The machine is stopped.';
   }
 }
 ```
 
-{{EmbedLiveSample("버튼에_키보드_단축키_추가하기", 650, 100)}}
+{{EmbedLiveSample("Adding_keyboard_shortcuts_to_buttons", 650, 100)}}
 
-> **참고:** 위 예제의 문제는, 사용자 입장에선 어떤 단축키가 있는지 알 수도 없다는 것입니다! 실제 웹 사이트에서는, 쉽게 접근 가능한 곳에 놓인 링크로 단축키 정보를 설명하는 문서를 가리키는 등 사이트 디자인을 방해하지 않는 선에서 단축키 정보를 제공해야 할 것입니다.
+> **Note:** The problem with the above example of course is that the user will not know what the access key is! In a real site, you'd have to provide this information in a way that doesn't interfere with the site design (for example by providing an easily accessible link that points to information on what the site accesskeys are).
 
-### 버튼 활성화와 비활성화
+### Disabling and enabling a button
 
-버튼을 비활성화하려면 간단히 {{htmlattrxref("disabled")}} 전역 특성을 지정하는 것으로 충분합니다.
+To disable a button, specify the [`disabled`](/en-US/docs/Web/HTML/Attributes/disabled) global attribute on it, like so:
 
 ```html
-<input type="button" value="Disable me" disabled>
+<input type="button" value="Disable me" disabled />
 ```
 
-런타임에서 바꿀 땐 요소의 `disabled` 속성에 `true`나 `false`를 설정하면 끝입니다. 이번 예제의 버튼은 활성화 상태지만, 누르는 순간 `btn.disabled = true`를 통해 비활성화합니다. 그 후, {{domxref("WindowTimers.setTimeout","setTimeout()")}} 함수를 통해 2초 후 다시 활성화 상태로 되돌립니다.
+#### Setting the disabled attribute
 
-```html hidden
-<input type="button" value="활성">
+You can enable and disable buttons at run time by setting `disabled` to `true` or `false`. In this example our button starts off enabled, but if you press it, it is disabled using `button.disabled = true`. A {{domxref("setTimeout()")}} function is then used to reset the button back to its enabled state after two seconds.
+
+```html
+<input type="button" value="Enabled" />
 ```
 
-```js hidden
-var btn = document.querySelector('input');
+```js
+const button = document.querySelector('input');
 
-btn.addEventListener('click', disableBtn);
+button.addEventListener('click', disableButton);
 
-function disableBtn() {
-  btn.disabled = true;
-  btn.value = '비활성';
-  window.setTimeout(function() {
-    btn.disabled = false;
-    btn.value = '활성';
+function disableButton() {
+  button.disabled = true;
+  button.value = 'Disabled';
+  setTimeout(() => {
+    button.disabled = false;
+    button.value = 'Enabled';
   }, 2000);
 }
 ```
 
-{{EmbedLiveSample("Hidden_code_1", 650, 60)}}
+{{EmbedLiveSample("Setting_the_disabled_attribute", 650, 60)}}
 
-`disabled` 특성을 지정하지 않은 경우 부모 요소의 `disabled`를 상속합니다. 이 점을 이용하면, 여러 개의 요소를 {{HTMLElement("fieldset")}} 등 부모 요소로 감싸고, 그 부모의 `disabled` 를 사용해 한꺼번에 상태를 통제할 수 있습니다.
+#### Inheriting the disabled state
 
-다음 예제로 한 번에 비활성화하는 예제를 볼 수 있습니다. 이전 예제와 거의 똑같지만, 다른 점은 `disabled` 특성을 `<fieldset>`에 설정한다는 점입니다. 1번 버튼을 눌러보세요. 모든 버튼이 비활성화되고, 2초 후 활성화됩니다.
+If the `disabled` attribute isn't specified, the button inherits its `disabled` state from its parent element. This makes it possible to enable and disable groups of elements all at once by enclosing them in a container such as a {{HTMLElement("fieldset")}} element, and then setting `disabled` on the container.
 
-```html hidden
+The example below shows this in action. This is very similar to the previous example, except that the `disabled` attribute is set on the `<fieldset>` when the first button is pressed — this causes all three buttons to be disabled until the two second timeout has passed.
+
+```html
 <fieldset>
   <legend>Button group</legend>
-  <input type="button" value="Button 1">
-  <input type="button" value="Button 2">
-  <input type="button" value="Button 3">
+  <input type="button" value="Button 1" />
+  <input type="button" value="Button 2" />
+  <input type="button" value="Button 3" />
 </fieldset>
 ```
 
-```js hidden
-var btn = document.querySelector('input');
-var fieldset = document.querySelector('fieldset');
+```js
+const button = document.querySelector('input');
+const fieldset = document.querySelector('fieldset');
 
-btn.addEventListener('click', disableBtn);
+button.addEventListener('click', disableButton);
 
-function disableBtn() {
+function disableButton() {
   fieldset.disabled = true;
-  window.setTimeout(function() {
+  setTimeout(() => {
     fieldset.disabled = false;
   }, 2000);
 }
 ```
 
-{{EmbedLiveSample("Hidden_code_2", 650, 60)}}
+{{EmbedLiveSample("Inheriting_the_disabled_state", 650, 100)}}
 
-## 유효성 검사
+> **Note:** Firefox will, unlike other browsers, by default, [persist the dynamic disabled state](https://stackoverflow.com/questions/5985839/bug-with-firefox-disabled-attribute-of-input-not-resetting-when-refreshing) of a {{HTMLElement("button")}} across page loads. Use the [`autocomplete`](/en-US/docs/Web/HTML/Element/button#autocomplete) attribute to control this feature.
 
-버튼은 제한할 값이 없으므로 유효성 검사의 대상이 아닙니다.
+## Validation
 
-## 예제
+Buttons don't participate in constraint validation; they have no real value to be constrained.
 
-아래 예제는 {{htmlelement("canvas")}} 요소와 CSS(분량 조절을 위해 생략), JavaScript를 사용해 만든 매우 단순한 그림 그리기 앱입니다. 위쪽 두 컨트롤은 색과 펜 크기를 조절할 때 사용하고, 버튼은 클릭하면 캔버스의 그림을 모두 지우는 함수를 호출합니다.
+## Examples
+
+The below example shows a very simple drawing app created using a {{htmlelement("canvas")}} element and some simple CSS and JavaScript (we'll hide the CSS for brevity). The top two controls allow you to choose the color and size of the drawing pen. The button, when clicked, invokes a function that clears the canvas.
 
 ```html
 <div class="toolbar">
-  <input type="color" aria-label="펜 색상">
-  <input type="range" min="2" max="50" value="30" aria-label="펜 크기"><span class="output">30</span>
-  <input type="button" value="캔버스 지우기">
+  <input type="color" aria-label="select pen color" />
+  <input
+    type="range"
+    min="2"
+    max="50"
+    value="30"
+    aria-label="select pen size" /><span class="output">30</span>
+  <input type="button" value="Clear canvas" />
 </div>
 
 <canvas class="myCanvas">
@@ -211,19 +198,20 @@ function disableBtn() {
 
 ```css hidden
 body {
+  background: #ccc;
   margin: 0;
   overflow: hidden;
-  background: #ccc;
 }
 
 .toolbar {
+  background: #ccc;
   width: 150px;
   height: 75px;
-  background: #ccc;
   padding: 5px;
 }
 
-input[type="color"], input[type="button"] {
+input[type="color"],
+input[type="button"] {
   width: 90%;
   margin: 0 auto;
   display: block;
@@ -233,25 +221,25 @@ input[type="range"] {
   width: 70%;
 }
 
- span {
-   position: relative;
-   bottom: 5px;
- }
+span {
+  position: relative;
+  bottom: 5px;
+}
 ```
 
 ```js
-var canvas = document.querySelector('.myCanvas');
-var width = canvas.width = window.innerWidth;
-var height = canvas.height = window.innerHeight-85;
-var ctx = canvas.getContext('2d');
+const canvas = document.querySelector('.myCanvas');
+const width = canvas.width = window.innerWidth;
+const height = canvas.height = window.innerHeight - 85;
+const ctx = canvas.getContext('2d');
 
 ctx.fillStyle = 'rgb(0,0,0)';
 ctx.fillRect(0,0,width,height);
 
-var colorPicker = document.querySelector('input[type="color"]');
-var sizePicker = document.querySelector('input[type="range"]');
-var output = document.querySelector('.output');
-var clearBtn = document.querySelector('input[type="button"]');
+const colorPicker = document.querySelector('input[type="color"]');
+const sizePicker = document.querySelector('input[type="range"]');
+const output = document.querySelector('.output');
+const clearBtn = document.querySelector('input[type="button"]');
 
 // covert degrees to radians
 function degToRad(degrees) {
@@ -260,39 +248,39 @@ function degToRad(degrees) {
 
 // update sizepicker output value
 
-sizePicker.oninput = function() {
+sizePicker.oninput = () => {
   output.textContent = sizePicker.value;
 }
 
 // store mouse pointer coordinates, and whether the button is pressed
-var curX;
-var curY;
-var pressed = false;
+let curX;
+let curY;
+let pressed = false;
 
 // update mouse pointer coordinates
-document.onmousemove = function(e) {
-  curX = (window.Event) ? e.pageX : e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
-  curY = (window.Event) ? e.pageY : e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+document.onmousemove = (e) => {
+  curX = e.pageX;
+  curY = e.pageY;
 }
 
-canvas.onmousedown = function() {
+canvas.onmousedown = () => {
   pressed = true;
 };
 
-canvas.onmouseup = function() {
+canvas.onmouseup = () => {
   pressed = false;
 }
 
-clearBtn.onclick = function() {
+clearBtn.onclick = () => {
   ctx.fillStyle = 'rgb(0,0,0)';
   ctx.fillRect(0,0,width,height);
 }
 
 function draw() {
-  if(pressed) {
+  if (pressed) {
     ctx.fillStyle = colorPicker.value;
     ctx.beginPath();
-    ctx.arc(curX, curY-85, sizePicker.value, degToRad(0), degToRad(360), false);
+    ctx.arc(curX, curY - 85, sizePicker.value, degToRad(0), degToRad(360), false);
     ctx.fill();
   }
 
@@ -302,17 +290,56 @@ function draw() {
 draw();
 ```
 
-{{EmbedLiveSample("예제", '100%', 600)}}
+{{EmbedLiveSample("Examples", '100%', 600)}}
 
-## 명세
+## Technical summary
+
+<table class="properties">
+  <tbody>
+    <tr>
+      <td><strong><a href="#value">Value</a></strong></td>
+      <td>A string used as the button's label</td>
+    </tr>
+    <tr>
+      <td><strong>Events</strong></td>
+      <td>{{domxref("Element/click_event", "click")}}</td>
+    </tr>
+    <tr>
+      <td><strong>Supported common attributes</strong></td>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Element/input#type"><code>type</code></a> and
+        <a href="/en-US/docs/Web/HTML/Element/input#value"><code>value</code></a>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>IDL attributes</strong></td>
+      <td><code>value</code></td>
+    </tr>
+    <tr>
+      <td><strong>DOM interface</strong></td>
+      <td><p>{{domxref("HTMLInputElement")}}</p></td>
+    </tr>
+    <tr>
+      <td><strong>Methods</strong></td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td><strong>Implicit ARIA Role</strong></td>
+      <td><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/button_role"><code>button</code></a></td>
+    </tr>
+  </tbody>
+</table>
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{HTMLElement("input")}} 요소와 그 인터페이스 {{domxref("HTMLInputElement")}}.
-- 보다 현대적인 {{HTMLElement("button")}} 요소.
+- {{HTMLElement("input")}} and the {{domxref("HTMLInputElement")}} interface which implements it.
+- The more modern {{HTMLElement("button")}} element.
+- [Compatibility of CSS properties](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)

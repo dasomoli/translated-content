@@ -1,56 +1,68 @@
 ---
-title: RTCPeerConnection.close()
+title: "RTCPeerConnection: close() method"
+short-title: close()
 slug: Web/API/RTCPeerConnection/close
+page-type: web-api-instance-method
+browser-compat: api.RTCPeerConnection.close
 ---
 
-{{APIRef("WebRTC")}}{{SeeCompatTable}}
+{{APIRef("WebRTC")}}
 
-**`RTCPeerConnection.close()`** 메소드로 피어 연결을 종료합니다.
+The **`RTCPeerConnection.close()`** method closes the current
+peer connection.
 
 ## Syntax
 
-```js
-RTCPeerConnection.close();
+```js-nolint
+close()
 ```
 
-_이 메소드는 입력 패러미터가 없으며, 반환 값도 없습니다._
+_This method has no parameters, and returns nothing._
 
-이 메소드를 호출하게되면, 모든 진행 중인 ICE 프로세싱 및 활성화된 스트림을 종료하고, `RTCPeerConnection`의 ICE 에이전트를 종료합니다. 이 방법으로 ICE 에이전트에 의해 사용되는 리소스들 (TURN 허가 포함) 을 해제시킵니다. 모든 {{domxref("RTCRtpSender")}} 객체들은 이 메소드가 반환되면 정지됩니다. (아직 종료 중인 과정에 있을 수도 있습니다만, 사실상 정지됩니다.)
+Calling this method terminates the RTCPeerConnection's ICE agent, ending any ongoing
+ICE processing and any active streams. This also releases any resources in use by the
+ICE agent, including TURN permissions. All {{domxref("RTCRtpSender")}} objects are
+considered to be stopped once this returns (they may still be in the process of
+stopping, but for all intents and purposes, they're stopped).
 
-이 메소드가 반환되면, {{domxref("RTCPeerConnection.signalingState")}}에 의해 반환된 signaling 상태가 `closed`로 됩니다.
+Once this method returns, the signaling state as returned by
+{{domxref("RTCPeerConnection.signalingState")}} is `closed`.
 
-같은 원격 유저와의 새로운 연결 생성을 시도하기전에 이전에 존재하던 {{domxref("RTCPeerConnection")}}의 모든 참조 값들을 `delete`하십시오. 삭제되지 않은 참조 값들이 브라우저에서 오류를 초래 할 수 있습니다.
+Make sure that you `delete` all references to the previous
+{{domxref("RTCPeerConnection")}} before attempting to create a new one that connects
+to the same remote peer, as not doing so might result in some errors depending on the
+browser.
 
-## 예시
+## Example
 
 ```js
-var pc = new RTCPeerConnection();
-var dc = pc.createDataChannel("my channel");
+const pc = new RTCPeerConnection();
+const dc = pc.createDataChannel("my channel");
 
-dc.onmessage = function (event) {
-  console.log("received: " + event.data);
-  pc.close(); // 첫 메세지를 받으면, 연결을 종료
+dc.onmessage = (event) => {
+  console.log(`received: ${event.data}`);
+  pc.close(); // We decided to close after the first received message
 };
 
-dc.onopen = function () {
+dc.onopen = () => {
   console.log("datachannel open");
 };
 
-dc.onclose = function () {
+dc.onclose = () => {
   console.log("datachannel close");
 };
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
-- [WebRTC](/ko/docs/Web/Guide/API/WebRTC)
+- [WebRTC](/en-US/docs/Web/API/WebRTC_API)
 - {{domxref("RTCPeerConnection")}}
 - {{domxref("RTCPeerConnection.signalingState")}}

@@ -1,31 +1,40 @@
 ---
-title: 'Reason: CORS request not HTTP'
+title: "Reason: CORS request not HTTP"
 slug: Web/HTTP/CORS/Errors/CORSRequestNotHttp
+page-type: http-cors-error
 ---
 
 {{HTTPSidebar}}
 
-## 이유
+## Reason
 
-```
+```plain
 Reason: CORS request not HTTP
 ```
 
-## 무엇이 잘못되었는가?
+## What went wrong?
 
-{{Glossary("CORS")}} 요청은 오직 HTTPS URL 스키마만을 사용할 수 있지만 요청에 의해 지정된 URL은 다른 타입이다. 이는 URL이 `file:///` URL을 사용해 로컬 파일을 지정할 경우 종종 발생한다.
+{{Glossary("CORS")}} requests may only use the HTTP or HTTPS URL scheme, but the URL specified by the request is of a different type.
+This often occurs if the URL specifies a local file, using the `file:///` scheme.
 
-이 문제를 해결하려면, {{domxref("XMLHttpRequest")}}, [Fetch](/ko/docs/Web/API/Fetch_API) APIs, 웹 폰트 (`@font-face`), [WebGL textures](/ko/docs/Web/API/WebGL_API/Tutorial/Using_textures_in_WebGL), XSL 스타일시트와 같은 CORS를 포함하는 요청이 발생할 때 HTTPS URL을 사용하고 있는지 확인하도록 한다.
+To fix this problem, make sure you use HTTPS URLs when issuing requests involving CORS, such as {{domxref("XMLHttpRequest")}}, [Fetch](/en-US/docs/Web/API/Fetch_API) APIs, Web Fonts (`@font-face`), and [WebGL textures](/en-US/docs/Web/API/WebGL_API/Tutorial/Using_textures_in_WebGL), and XSL stylesheets.
 
-### Firefox 68에서의 로컬 파일 보안
+### Loading a local file
 
-Firefox 67 이전 버전에서 `file:///` URI를 사용하는 페이지를 열때 페이지의 오리진은 페이지가 열린 디렉토리로 정의된다. 동일한 디렉토리와 그 하위 디렉토리의 리소스들은 CORS 동일-오리진 규칙의 목적을 위한 동일 오리진을 갖는 것으로 처리된다.
+Local files from the same directory and subdirectories were historically treated as being from the [same origin](/en-US/docs/Web/Security/Same-origin_policy).
+This meant that a file and all its resources could be loaded from a local directory or subdirectory during testing, without triggering a CORS error.
 
-[CVE-2019-11730](https://www.mozilla.org/en-US/security/advisories/mfsa2019-21/#CVE-2019-11730)에 대한 응답으로, Firefox 68 이후 버전에서는 `file:///` URI를 사용해 열린 페이지의 오리진은 유니크한 것으로 정의된다. 그러므로, 동일 디렉토리나 그 하위 디렉토리의 다른 리소스들은 더 이상 CORS 동일-오리진 규칙을 충족하지 않는다. 이는 `privacy.file_unique_origin` 구성을 사용하여 기본으로 활성화되는 새로운 동작이다.
+Unfortunately this had security implications, as noted in this advisory: [CVE-2019-11730](https://www.mozilla.org/en-US/security/advisories/mfsa2019-21/#CVE-2019-11730).
+Many browsers, including Firefox and Chrome, now treat all local files as having _opaque origins_ (by default).
+As a result, loading a local file with included local resources will now result in CORS errors.
 
-## 함께 보기
+Developers who need to perform local testing should now [set up a local server](/en-US/docs/Learn/Common_questions/Tools_and_setup/set_up_a_local_testing_server).
+As all files are served from the same scheme and domain (`localhost`) they all have the same origin, and do not trigger cross-origin errors.
 
-- [CORS 에러](/ko/docs/Web/HTTP/CORS/Errors)
-- Glossary: {{Glossary("CORS")}}
-- [CORS 소개](/ko/docs/Web/HTTP/CORS)
-- [URL이 무엇인가?](/ko/docs/Learn/Common_questions/What_is_a_URL)
+> **Note:** This change is in line with the [URL specification](https://url.spec.whatwg.org/#origin), which leaves the origin behavior for files to the implementation, but recommends that file origins are treated as opaque if in doubt.
+
+## See also
+
+- [CORS errors](/en-US/docs/Web/HTTP/CORS/Errors)
+- [CORS introduction](/en-US/docs/Web/HTTP/CORS)
+- [What is a URL?](/en-US/docs/Learn/Common_questions/Web_mechanics/What_is_a_URL)

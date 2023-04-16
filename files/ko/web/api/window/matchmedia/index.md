@@ -1,51 +1,106 @@
 ---
-title: Window.matchMedia()
+title: "Window: matchMedia() method"
+short-title: matchMedia()
 slug: Web/API/Window/matchMedia
+page-type: web-api-instance-method
+browser-compat: api.Window.matchMedia
 ---
+
 {{APIRef}}
 
-**`Window.matchMedia()`** 메서드는 주어진 [미디어 쿼리](/ko/docs/Web/Guide/CSS/Media_queries) 문자열의 분석 결과를 나타내는 {{domxref("MediaQueryList")}} 객체를 반환합니다.
+The {{domxref("Window")}} interface's **`matchMedia()`** method
+returns a new {{domxref("MediaQueryList")}} object that can then be used to determine if
+the {{domxref("document")}} matches the [media query](/en-US/docs/Web/CSS/Media_Queries/Using_media_queries) string,
+as well as to monitor the document to detect when it matches (or stops matching) that
+media query.
 
-## 구문
+## Syntax
 
-```js
-window.matchMedia(mediaQueryString)
+```js-nolint
+matchMedia(mediaQueryString)
 ```
 
-### 매개변수
+### Parameters
 
 - `mediaQueryString`
-  - : 분석할 미디어 쿼리를 나타내는 문자열.
+  - : A string specifying the media query to parse into a {{domxref("MediaQueryList")}}.
 
-### 반환 값
+### Return value
 
-주어진 미디어 쿼리에 대한 {{domxref("MediaQueryList")}} 객체,
+A new {{domxref("MediaQueryList")}} object for the media query. Use this object's
+properties and events to detect matches and to monitor for changes to those matches over
+time.
 
-## 예제
+## Usage notes
 
-다음 예제는 화면이 매우 좁을 때 다른 작업을 수행합니다.
+You can use the returned media query to perform both instantaneous and event-driven
+checks to see if the document matches the media query.
+
+To perform a one-time, instantaneous check to see if the document matches the media
+query, look at the value of the {{domxref("MediaQueryList.matches", "matches")}}
+property, which will be `true` if the document meets the media query's
+requirements.
+
+If you need to be kept aware of whether or not the document matches the media query at
+all times, you can instead watch for the {{domxref("MediaQueryList.change_event",
+  "change")}} event to be delivered to the object. There's [a good example of this](/en-US/docs/Web/API/Window/devicePixelRatio#monitoring_screen_resolution_or_zoom_level_changes)
+in the article on {{domxref("Window.devicePixelRatio")}}.
+
+## Examples
+
+This example runs the media query `(max-width: 600px)` and displays the
+value of the resulting `MediaQueryList`'s `matches` property in a
+{{HTMLElement("span")}}; as a result, the output will say "true" if the viewport is less
+than or equal to 600 pixels wide, and will say "false" if the window is wider than that.
+
+### JavaScript
 
 ```js
-if (window.matchMedia("(min-width: 400px)").matches) {
-  /* 뷰포트 너비가 400 픽셀 이상 */
-} else {
-  /* 뷰포트 너비가 400 픽셀 미만 */
+let mql = window.matchMedia("(max-width: 600px)");
+
+document.querySelector(".mq-value").innerText = mql.matches;
+```
+
+The JavaScript code passes the media query to match into {{domxref("Window.matchMedia",
+  "matchMedia()")}} to compile it, then sets the `<span>`'s
+{{domxref("HTMLElement.innerText", "innerText")}} to the value of the results'
+{{domxref("MediaQueryList.matches", "matches")}} property, so that it indicates whether or
+not the document matches the media query at the moment the page was loaded.
+
+### HTML
+
+```html
+<span class="mq-value"></span>
+```
+
+A simple `<span>` to receive the output.
+
+```css hidden
+.mq-value {
+  font: 18px arial, sans-serif;
+  font-weight: bold;
+  color: #88f;
+  padding: 0.4em;
+  border: 1px solid #dde;
 }
 ```
 
-더 많은 예제는 [Testing media queries programmatically](/ko/docs/Web/CSS/Media_Queries/Testing_media_queries)를 참고하세요.
+### Result
 
-## 명세
+{{EmbedLiveSample("Examples", "100%", "60")}}
+
+See [Testing media queries programmatically](/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries) for additional code examples.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [미디어 쿼리 사용하기](/ko/docs/Web/Guide/CSS/Media_queries)
-- [Using media queries from code](/ko/docs/DOM/Using_media_queries_from_code)
+- [Media queries](/en-US/docs/Web/CSS/Media_Queries/Using_media_queries)
+- [Using media queries from code](/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries)
 - {{domxref("MediaQueryList")}}
-- {{domxref("MediaQueryListListener")}}

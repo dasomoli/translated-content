@@ -1,17 +1,19 @@
 ---
 title: background
 slug: Web/CSS/background
+page-type: css-shorthand-property
+browser-compat: css.properties.background
 ---
 
 {{CSSRef("CSS Background")}}
 
-[CSS](/ko/docs/Web/API/CSS) **`background`** [단축 속성](/ko/docs/Web/CSS/Shorthand_properties)은 색상, 이미지, 원점, 크기, 반복 등 여러 배경 스타일을 한 번에 지정합니다.
+The **`background`** [shorthand](/en-US/docs/Web/CSS/Shorthand_properties) [CSS](/en-US/docs/Web/CSS) property sets all background style properties at once, such as color, image, origin and size, or repeat method. Component properties not set in the `background` shorthand property value declaration are set to their default values.
 
 {{EmbedInteractiveExample("pages/css/background.html")}}
 
-## 구성 속성
+## Constituent properties
 
-`background`는 단축 속성으로서 다음의 하위 속성을 포함합니다.
+This property is a shorthand for the following CSS properties:
 
 - {{cssxref("background-attachment")}}
 - {{cssxref("background-clip")}}
@@ -22,83 +24,99 @@ slug: Web/CSS/background
 - {{cssxref("background-repeat")}}
 - {{cssxref("background-size")}}
 
-## 구문
+## Syntax
 
 ```css
-/* <background-color> 사용 */
+/* Using a <background-color> */
 background: green;
 
-/* <bg-image>와 <repeat-style> 사용 */
+/* Using a <bg-image> and <repeat-style> */
 background: url("test.jpg") repeat-y;
 
-/* <box>와 <background-color> 사용 */
+/* Using a <box> and <background-color> */
 background: border-box red;
 
-/* 단일 이미지, 중앙 배치 및 크기 조절 */
+/* A single image, centered and scaled */
 background: no-repeat center/80% url("../img/image.png");
+
+/* Global values */
+background: inherit;
+background: initial;
+background: revert;
+background: revert-layer;
+background: unset;
 ```
 
-`background` 속성을 쉼표로 구분해서 배경 레이어를 여러 개 지정할 수 있습니다.
+The `background` property is specified as one or more background layers, separated by commas.
 
-각 레이어의 구문은 다음과 같습니다.
+The syntax of each layer is as follows:
 
-- 각 레이어는 다음 값을 가지거나 가지지 않을 수 있습니다.
+- Each layer may include zero or one occurrences of any of the following values:
 
-  - [`<attachment>`](#attachment)
-  - [`<bg-image>`](#bg-image)
-  - [`<position>`](#position)
-  - [`<bg-size>`](#bg-size)
-  - [`<repeat-style>`](#repeat-style)
+  - `<attachment>`
+  - `<bg-image>`
+  - `<position>`
+  - `<bg-size>`
+  - `<repeat-style>`
 
-- [`<bg-size>`](#bg-size) 값은 [`<position>`](#position) 바로 뒤에만 위치할 수 있으며 '/' 문자로 구분해야 합니다. 예를 들면 "`center/80%`" 처럼 사용합니다.
-- [`<box>`](#box) 값은 2개까지 가지거나 가지지 않을 수 있습니다. 1개 가진다면 {{cssxref("background-origin")}}과 {{cssxref("background-clip")}}을 모두 설정합니다. 2개 가진다면 처음 값은 {{cssxref("background-origin")}}, 두 번째 값은 {{cssxref("background-clip")}}을 설정합니다.
-- [`<background-color>`](#background-color) 값은 마지막 레이어만 가질 수 있습니다.
+- The `<bg-size>` value may only be included immediately after `<position>`, separated with the '/' character, like this: "`center/80%`".
+- The `<box>` value may be included zero, one, or two times. If included once, it sets both {{cssxref("background-origin")}} and {{cssxref("background-clip")}}. If it is included twice, the first occurrence sets {{cssxref("background-origin")}}, and the second sets {{cssxref("background-clip")}}.
+- The `<background-color>` value may only be included in the last layer specified.
 
-### 값
+### Values
 
 - `<attachment>`
-  - : {{cssxref("background-attachment")}}
+  - : See {{cssxref("background-attachment")}}. Default: `scroll`.
 - `<box>`
-  - : {{cssxref("background-clip")}}, {{cssxref("background-origin")}}
+  - : See {{cssxref("background-clip")}} and {{cssxref("background-origin")}}. Default: `border-box` and `padding-box` respectively.
 - `<background-color>`
-  - : {{cssxref("background-color")}}
+  - : See {{cssxref("background-color")}}. Default: `transparent`.
 - `<bg-image>`
-  - : {{Cssxref("background-image")}}
+  - : See {{Cssxref("background-image")}}. Default: `none`.
 - `<position>`
-  - : {{cssxref("background-position")}}
+  - : See {{cssxref("background-position")}}. Default: 0% 0%.
 - `<repeat-style>`
-  - : {{cssxref("background-repeat")}}
+  - : See {{cssxref("background-repeat")}}. Default: `repeat`.
 - `<bg-size>`
-  - : {{cssxref("background-size")}}
+  - : See {{cssxref("background-size")}}. Default: `auto`.
 
-## 접근성 고려사항
+The following three lines of CSS are equivalent:
 
-브라우저는 배경 이미지에 대한 어떠한 추가 정보도 접근성 보조 기술에 제공하지 않습니다. 특히 스크린 리더의 경우 배경 이미지의 존재 유무조차 알려주지 않습니다. 이미지가 페이지 목적의 이해에 필수적인 정보를 갖고 있다면 문서에서 구조적으로 설명하는 편이 좋습니다.
+```css
+background: none;
+background: transparent;
+background: repeat scroll 0% 0% / auto padding-box border-box none transparent;
+```
 
-- [MDN Understanding WCAG, Guideline 1.1 explanations](/ko/docs/Web/Accessibility/Understanding_WCAG/Perceivable#Guideline_1.1_%E2%80%94_Providing_text_alternatives_for_non-text_content)
+## Accessibility concerns
+
+Browsers do not provide any special information on background images to assistive technology. This is important primarily for screen readers, as a screen reader will not announce its presence and therefore convey nothing to its users. If the image contains information critical to understanding the page's overall purpose, it is better to describe it semantically in the document.
+
+- [MDN Understanding WCAG, Guideline 1.1 explanations](/en-US/docs/Web/Accessibility/Understanding_WCAG/Perceivable#guideline_1.1_%e2%80%94_providing_text_alternatives_for_non-text_content)
 - [Understanding Success Criterion 1.1.1 | W3C Understanding WCAG 2.0](https://www.w3.org/TR/2016/NOTE-UNDERSTANDING-WCAG20-20161007/text-equiv-all.html)
 
-## 형식 정의
+## Formal definition
 
 {{cssinfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 색상 키워드와 이미지를 사용한 배경
+### Setting backgrounds with color keywords and images
 
 #### HTML
 
 ```html
 <p class="topbanner">
-  작은 별<br/>
-  반짝 반짝<br/>
-  작은 별
+  Starry sky<br />
+  Twinkle twinkle<br />
+  Starry sky
 </p>
-<p class="warning">문단 하나<p>
+<p class="warning">Here is a paragraph</p>
+<p></p>
 ```
 
 #### CSS
@@ -113,20 +131,20 @@ background: no-repeat center/80% url("../img/image.png");
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("색상_키워드와_이미지를_사용한_배경")}}
+{{EmbedLiveSample("Setting_backgrounds_with_color_keywords_and_images")}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{cssxref("box-decoration-break")}}
-- [CSS 그레이디언트 사용하기](/ko/docs/Web/CSS/CSS_Images/Using_CSS_gradients)
-- [한 번에 여러 배경 사용하기](/ko/docs/Web/CSS/CSS_Backgrounds_and_Borders/Using_multiple_backgrounds)
+- [Using gradients](/en-US/docs/Web/CSS/CSS_Images/Using_CSS_gradients)
+- [Using multiple backgrounds](/en-US/docs/Web/CSS/CSS_Backgrounds_and_Borders/Using_multiple_backgrounds)

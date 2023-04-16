@@ -1,69 +1,79 @@
 ---
-title: Window.localStorage
+title: "Window: localStorage property"
+short-title: localStorage
 slug: Web/API/Window/localStorage
+page-type: web-api-instance-property
+browser-compat: api.Window.localStorage
 ---
 
 {{APIRef("Web Storage API")}}
 
-**`localStorage`** 읽기 전용 속성을 사용하면 {{domxref("Document")}} {{glossary("origin", "출처")}}의 {{domxref("Storage")}} 객체에 접근할 수 있습니다. 저장한 데이터는 브라우저 세션 간에 공유됩니다. `localStorage`는 {{domxref("Window.sessionStorage", "sessionStorage")}}와 비슷하지만, `localStorage`의 데이터는 만료되지 않고 `sessionStorage`의 데이터는 페이지 세션이 끝날 때, 즉 페이지를 닫을 때 사라지는 점이 다릅니다. ("사생활 보호 모드" 중 생성한 `localStorage` 데이터는 마지막 "사생활 보호" 탭이 닫힐 때 지워집니다.)
+The **`localStorage`** read-only property of the {{domxref("window")}} interface allows you to access a {{DOMxRef("Storage")}} object for the {{DOMxRef("Document")}}'s {{glossary("origin")}}; the stored data is saved across browser sessions.
 
-`localStorage`에 저장한 자료는 **페이지 프로토콜별로 구분**합니다. 특히 HTTP(<http://example.com>)로 방문한 페이지에서 저장한 데이터는 같은 페이지의 HTTPS(<https://example.com>)와는 다른 `localStorage`에 저장됩니다.
+`localStorage` is similar to {{DOMxRef("Window.sessionStorage", "sessionStorage")}}, except that while `localStorage` data has no expiration time, `sessionStorage` data gets cleared when the page session ends — that is, when the page is closed. (`localStorage` data for a document loaded in a "private browsing" or "incognito" session is cleared when the last "private" tab is closed.)
 
-키와 값은 **항상** 각 문자에 2바이트를 할당하는 UTF-16 {{domxref("DOMString")}}의 형태로 저장합니다. 객체와 마찬가지로 정수 키는 자동으로 문자열로 변환합니다.
+## Value
 
-## 구문
+A {{DOMxRef("Storage")}} object which can be used to access the current origin's local storage space.
 
-```js
-myStorage = window.localStorage;
-```
-
-### 값
-
-현재 {{glossary("origin", "출처")}}의 로컬 저장 공간에 접근할 수 있는 {{domxref("Storage")}} 객체.
-
-### 예외
+### Exceptions
 
 - `SecurityError`
-  - : 요청이 정책의 결정을 위반했거나, 출처가 [유효한 스킴/호스트/포트 튜플](/ko/docs/Web/Security/Same-origin_policy#출처의_정의)이 아닌 경우. 유효하지 않은 튜플은 출처가 `file:`이나 `data:` 스킴을 사용했을 때 발생할 수 있습니다. 예외의 예를 들자면 사용자가 특정 출처의 지속성 데이터를 거부하도록 브라우저를 설정하는 경우가 있습니다.
 
-## 예제
+  - : Thrown in one of the following cases:
 
-아래 코드는 현재 도메인의 로컬 {{domxref("Storage")}} 객체에 접근한 후, {{domxref("Storage.setItem()")}}을 사용해 항목 하나를 추가합니다.
+    - The origin is not [a valid scheme/host/port tuple](/en-US/docs/Web/Security/Same-origin_policy#definition_of_an_origin). This can happen if the origin uses the `file:` or `data:` schemes, for example.
+    - The request violates a policy decision. For example, the user has configured the browsers to prevent the page from persisting data.
+
+    Note that if the user blocks cookies, browsers will probably interpret this as an instruction to prevent the page from persisting data.
+
+## Description
+
+The keys and the values stored with `localStorage` are _always_ in the UTF-16 string format, which uses two bytes per character. As with objects, integer keys are automatically converted to strings.
+
+`localStorage` data **is specific to the protocol of the document**. In particular, for a site loaded over HTTP (e.g., `http://example.com`), `localStorage` returns a different object than `localStorage` for the corresponding site loaded over HTTPS (e.g., `https://example.com`).
+
+For documents loaded from `file:` URLs (that is, files opened in the browser directly from the user's local filesystem, rather than being served from a web server) the requirements for `localStorage` behavior are undefined and may vary among different browsers.
+
+In all current browsers, `localStorage` seems to return a different object for each `file:` URL. In other words, each `file:` URL seems to have its own unique local-storage area. But there are no guarantees about that behavior, so you shouldn't rely on it because, as mentioned above, the requirements for `file:` URLs remain undefined. So it's possible that browsers may change their `file:` URL handling for `localStorage` at any time. In fact some browsers _have_ changed their handling for it over time.
+
+## Examples
+
+The following snippet accesses the current domain's local {{DOMxRef("Storage")}} object and adds a data item to it using {{DOMxRef("Storage.setItem()")}}.
 
 ```js
-localStorage.setItem('myCat', 'Tom');
+localStorage.setItem("myCat", "Tom");
 ```
 
-위에서 추가한 `localStorage` 항목을 읽는 법은 다음과 같습니다.
+The syntax for reading the `localStorage` item is as follows:
 
 ```js
-const cat = localStorage.getItem('myCat');
+const cat = localStorage.getItem("myCat");
 ```
 
-그리고 제거는 아래와 같습니다.
+The syntax for removing the `localStorage` item is as follows:
 
 ```js
-localStorage.removeItem('myCat');
+localStorage.removeItem("myCat");
 ```
 
-`localStorage` 항목의 전체 제거 구문입니다.
+The syntax for removing all the `localStorage` items is as follows:
 
 ```js
 localStorage.clear();
 ```
 
-> **참고:** 참고: [Web Storage API 사용하기](/ko/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API) 문서에서 전체 예제를 살펴보세요.
+> **Note:** Please refer to the [Using the Web Storage API](/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API) article for a full example.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 보기
+## See also
 
-- [Web Storage API 사용하기](/ko/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API)
-- [Local storage with Window.localStorage](/ko/docs/Web/API/Web_Storage_API/Local_storage)
-- {{domxref("Window.sessionStorage")}}
+- [Using the Web Storage API](/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API)
+- {{DOMxRef("Window.sessionStorage")}}

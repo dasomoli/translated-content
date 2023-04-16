@@ -1,198 +1,278 @@
 ---
 title: Set
 slug: Web/JavaScript/Reference/Global_Objects/Set
+page-type: javascript-class
+browser-compat: javascript.builtins.Set
 ---
 
 {{JSRef}}
 
-**`Set`** 객체는 자료형에 관계 없이 {{Glossary("Primitive", "원시 값")}}과 객체 참조 모두 유일한 값을 저장할 수 있습니다.
+The **`Set`** object lets you store unique values of any type, whether {{Glossary("Primitive", "primitive values")}} or object references.
 
-## 설명
+## Description
 
-`Set` 객체는 값 콜렉션으로, 삽입 순서대로 요소를 순회할 수 있습니다. 하나의 `Set` 내 값은 한 번만 나타날 수 있습니다. 즉, 어떤 값은 그 `Set` 콜렉션 내에서 유일합니다.
+`Set` objects are collections of values. A value in the set **may only occur once**; it is unique in the set's collection. You can iterate through the elements of a set in insertion order. The _insertion order_ corresponds to the order in which each element was inserted into the set by the [`add()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/add) method successfully (that is, there wasn't an identical element already in the set when `add()` was called).
 
-### 값 같음
+The specification requires sets to be implemented "that, on average, provide access times that are sublinear on the number of elements in the collection". Therefore, it could be represented internally as a hash table (with O(1) lookup), a search tree (with O(log(N)) lookup), or any other data structure, as long as the complexity is better than O(N).
 
-`Set` 내의 값은 유일해야 하기 때문에 값이 같은지 검사를 수행합니다. 이전 ECMAScript 명세에서는 검사 알고리즘이 `===` 연산자와는 다른 것이었습니다. 특히, `+0 === -0`이었지만 `Set`에서는 `+0`과 `-0`이 다른 값이었습니다. 그러나 이는 ECMAScript 2015 명세에서 변경되었습니다. [브라우저 호환성](#브라우저_호환성)의 "Key equality for -0 and 0"을 참고하세요.
+### Value equality
 
-{{jsxref("NaN")}}과 {{jsxref("undefined")}}도 `Set`에 저장할 수 있습니다. 원래 `NaN !== NaN`이지만, `Set`에서 `NaN`은 `NaN`과 같은 것으로 간주됩니다.
+Value equality is based on the [SameValueZero](/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#same-value-zero_equality) algorithm. (It used to use [SameValue](/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#same-value_equality_using_object.is), which treated `0` and `-0` as different. Check [browser compatibility](#browser_compatibility).) This means {{jsxref("NaN")}} is considered the same as `NaN` (even though `NaN !== NaN`) and all other values are considered equal according to the semantics of the `===` operator.
 
-## 생성자
+### Performance
+
+The [`has`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/has) method checks if a value is in the set, using an approach that is, on average, quicker than testing most of the elements that have previously been added to the set. In particular, it is, on average, faster than the [`Array.prototype.includes`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes) method when an array has a `length` equal to a set's `size`.
+
+## Constructor
 
 - {{jsxref("Set/Set", "Set()")}}
   - : Creates a new `Set` object.
 
-## 정적 속성
+## Static properties
 
-- {{jsxref("Set.@@species", "get Set[@@species]")}}
-  - : 파생 객체를 생성하는데 사용하는 생성자 함수입니다.
+- {{jsxref("Set/@@species", "Set[@@species]")}}
+  - : The constructor function that is used to create derived objects.
 
-## 인스턴스 속성
+## Instance properties
 
+These properties are defined on `Set.prototype` and shared by all `Set` instances.
+
+- {{jsxref("Object/constructor", "Set.prototype.constructor")}}
+  - : The constructor function that created the instance object. For `Set` instances, the initial value is the {{jsxref("Set/Set", "Set")}} constructor.
 - {{jsxref("Set.prototype.size")}}
   - : Returns the number of values in the `Set` object.
+- `Set.prototype[@@toStringTag]`
+  - : The initial value of the [`@@toStringTag`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toStringTag) property is the string `"Set"`. This property is used in {{jsxref("Object.prototype.toString()")}}.
 
-### 인스턴스 메서드
+## Instance methods
 
-- {{jsxref("Set.add", "Set.prototype.add(<var>value</var>)")}}
-  - : Appends `value` to the `Set` object. Returns the `Set` object with added value.
+- {{jsxref("Set.prototype.add()")}}
+  - : Inserts a new element with a specified value in to a `Set` object, if there isn't an element with the same value already in the `Set`.
 - {{jsxref("Set.prototype.clear()")}}
   - : Removes all elements from the `Set` object.
-- {{jsxref("Set.delete", "Set.prototype.delete(<var>value</var>)")}}
+- {{jsxref("Set.prototype.delete()")}}
   - : Removes the element associated to the `value` and returns a boolean asserting whether an element was successfully removed or not. `Set.prototype.has(value)` will return `false` afterwards.
-- {{jsxref("Set.has", "Set.prototype.has(<var>value</var>)")}}
+- {{jsxref("Set.prototype.entries()")}}
+  - : Returns a new iterator object that contains **an array of `[value, value]`** for each element in the `Set` object, in insertion order. This is similar to the {{jsxref("Map")}} object, so that each entry's _key_ is the same as its _value_ for a `Set`.
+- {{jsxref("Set.prototype.forEach()")}}
+  - : Calls `callbackFn` once for each value present in the `Set` object, in insertion order. If a `thisArg` parameter is provided, it will be used as the `this` value for each invocation of `callbackFn`.
+- {{jsxref("Set.prototype.has()")}}
   - : Returns a boolean asserting whether an element is present with the given value in the `Set` object or not.
+- {{jsxref("Set.prototype.keys()")}}
+  - : An alias for {{jsxref("Set.prototype.values()")}}.
+- {{jsxref("Set.prototype.values()")}}
+  - : Returns a new iterator object that yields the **values** for each element in the `Set` object in insertion order.
+- [`Set.prototype[@@iterator]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/@@iterator)
+  - : Returns a new iterator object that yields the **values** for each element in the `Set` object in insertion order.
 
-## 예제
+## Examples
 
-### `Set` 객체 사용
+### Using the Set object
 
 ```js
-var mySet = new Set();
+const mySet1 = new Set();
 
-mySet.add(1); // Set { 1 }
-mySet.add(5); // Set { 1, 5 }
-mySet.add(5); // Set { 1, 5 }
-mySet.add('some text'); // Set { 1, 5, 'some text' }
-var o = {a: 1, b: 2};
-mySet.add(o);
+mySet1.add(1); // Set(1) { 1 }
+mySet1.add(5); // Set(2) { 1, 5 }
+mySet1.add(5); // Set(2) { 1, 5 }
+mySet1.add("some text"); // Set(3) { 1, 5, 'some text' }
+const o = { a: 1, b: 2 };
+mySet1.add(o);
 
-mySet.add({a: 1, b: 2}); // o와 다른 객체를 참조하므로 괜찮음
+mySet1.add({ a: 1, b: 2 }); // o is referencing a different object, so this is okay
 
-mySet.has(1); // true
-mySet.has(3); // false, 3은 set에 추가되지 않았음
-mySet.has(5);              // true
-mySet.has(Math.sqrt(25));  // true
-mySet.has('Some Text'.toLowerCase()); // true
-mySet.has(o); // true
+mySet1.has(1); // true
+mySet1.has(3); // false, since 3 has not been added to the set
+mySet1.has(5); // true
+mySet1.has(Math.sqrt(25)); // true
+mySet1.has("Some Text".toLowerCase()); // true
+mySet1.has(o); // true
 
-mySet.size; // 5
+mySet1.size; // 5
 
-mySet.delete(5); // set에서 5를 제거함
-mySet.has(5);    // false, 5가 제거되었음
+mySet1.delete(5); // removes 5 from the set
+mySet1.has(5); // false, 5 has been removed
 
-mySet.size; // 4, 방금 값을 하나 제거했음
-console.log(mySet);// Set {1, "some text", Object {a: 1, b: 2}, Object {a: 1, b: 2}}
+mySet1.size; // 4, since we just removed one value
+
+mySet1.add(5); // Set(5) { 1, 'some text', {...}, {...}, 5 } - a previously deleted item will be added as a new item, it will not retain its original position before deletion
+
+console.log(mySet1); // Set(5) { 1, "some text", {…}, {…}, 5 }
 ```
 
-### Set 반복
+### Iterating sets
+
+The iteration over a set visits elements in insertion order.
 
 ```js
-// set 내 항목에 대해 반복
-// 순서대로 항목을 (콘솔에) 기록: 1, "some text", {"a": 1, "b": 2}
-for (let item of mySet) console.log(item);
+for (const item of mySet1) {
+  console.log(item);
+}
+// 1, "some text", { "a": 1, "b": 2 }, { "a": 1, "b": 2 }, 5
 
-// 순서대로 항목을 기록: 1, "some text", {"a": 1, "b": 2}
-for (let item of mySet.keys()) console.log(item);
+for (const item of mySet1.keys()) {
+  console.log(item);
+}
+// 1, "some text", { "a": 1, "b": 2 }, { "a": 1, "b": 2 }, 5
 
-// 순서대로 항목을 기록: 1, "some text", {"a": 1, "b": 2}
-for (let item of mySet.values()) console.log(item);
+for (const item of mySet1.values()) {
+  console.log(item);
+}
+// 1, "some text", { "a": 1, "b": 2 }, { "a": 1, "b": 2 }, 5
 
-// 순서대로 항목을 기록: 1, "some text", {"a": 1, "b": 2}
-// (여기서 key와 value는 같음)
-for (let [key, value] of mySet.entries()) console.log(key);
+// key and value are the same here
+for (const [key, value] of mySet1.entries()) {
+  console.log(key);
+}
+// 1, "some text", { "a": 1, "b": 2 }, { "a": 1, "b": 2 }, 5
 
-// Set 객체를 배열 객체로 변환 (Array.from으로)
-var myArr = Array.from(mySet); // [1, "some text", {"a": 1, "b": 2}]
+// Convert Set object to an Array object, with Array.from
+const myArr = Array.from(mySet1); // [1, "some text", {"a": 1, "b": 2}, {"a": 1, "b": 2}, 5]
 
-// 다음도 HTML 문서에서 실행하는 경우 작동함
-mySet.add(document.body);
-mySet.has(document.querySelector('body')); // true
+// the following will also work if run in an HTML document
+mySet1.add(document.body);
+mySet1.has(document.querySelector("body")); // true
 
-// Set과 Array 사이 변환
-mySet2 = new Set([1, 2, 3, 4]);
-mySet2.size; // 4
-[...mySet2]; // [1, 2, 3, 4]
+// converting between Set and Array
+const mySet2 = new Set([1, 2, 3, 4]);
+console.log(mySet2.size); // 4
+console.log([...mySet2]); // [1, 2, 3, 4]
 
-// 교집합은 다음으로 흉내(simulate)낼 수 있음
-var intersection = new Set([...set1].filter(x => set2.has(x)));
+// intersect can be simulated via
+const intersection = new Set([...mySet1].filter((x) => mySet2.has(x)));
 
-// 차집합은 다음으로 흉내낼 수 있음
-var difference = new Set([...set1].filter(x => !set2.has(x)));
+// difference can be simulated via
+const difference = new Set([...mySet1].filter((x) => !mySet2.has(x)));
 
-// forEach로 set 항목 반복
-mySet.forEach(function(value) {
+// Iterate set entries with forEach()
+mySet2.forEach((value) => {
   console.log(value);
 });
-
 // 1
 // 2
 // 3
 // 4
 ```
 
-### 기본 집합 연산 구현
+### Implementing basic set operations
 
 ```js
-Set.prototype.isSuperset = function(subset) {
-    for (var elem of subset) {
-        if (!this.has(elem)) {
-            return false;
-        }
+function isSuperset(set, subset) {
+  for (const elem of subset) {
+    if (!set.has(elem)) {
+      return false;
     }
-    return true;
+  }
+  return true;
 }
 
-Set.prototype.union = function(setB) {
-    var union = new Set(this);
-    for (var elem of setB) {
-        union.add(elem);
-    }
-    return union;
+function union(setA, setB) {
+  const _union = new Set(setA);
+  for (const elem of setB) {
+    _union.add(elem);
+  }
+  return _union;
 }
 
-Set.prototype.intersection = function(setB) {
-    var intersection = new Set();
-    for (var elem of setB) {
-        if (this.has(elem)) {
-            intersection.add(elem);
-        }
+function intersection(setA, setB) {
+  const _intersection = new Set();
+  for (const elem of setB) {
+    if (setA.has(elem)) {
+      _intersection.add(elem);
     }
-    return intersection;
+  }
+  return _intersection;
 }
 
-Set.prototype.difference = function(setB) {
-    var difference = new Set(this);
-    for (var elem of setB) {
-        difference.delete(elem);
+function symmetricDifference(setA, setB) {
+  const _difference = new Set(setA);
+  for (const elem of setB) {
+    if (_difference.has(elem)) {
+      _difference.delete(elem);
+    } else {
+      _difference.add(elem);
     }
-    return difference;
+  }
+  return _difference;
 }
 
-//Examples
-var setA = new Set([1, 2, 3, 4]),
-    setB = new Set([2, 3]),
-    setC = new Set([3, 4, 5, 6]);
+function difference(setA, setB) {
+  const _difference = new Set(setA);
+  for (const elem of setB) {
+    _difference.delete(elem);
+  }
+  return _difference;
+}
 
-setA.isSuperset(setB); // => true
-setA.union(setC); // => Set [1, 2, 3, 4, 5, 6]
-setA.intersection(setC); // => Set [3, 4]
-setA.difference(setC); // => Set [1, 2]
+// Examples
+const setA = new Set([1, 2, 3, 4]);
+const setB = new Set([2, 3]);
+const setC = new Set([3, 4, 5, 6]);
+
+isSuperset(setA, setB); // returns true
+union(setA, setC); // returns Set {1, 2, 3, 4, 5, 6}
+intersection(setA, setC); // returns Set {3, 4}
+symmetricDifference(setA, setC); // returns Set {1, 2, 5, 6}
+difference(setA, setC); // returns Set {1, 2}
 ```
 
-### `Array` 객체와의 관계
+### Relation to arrays
 
 ```js
-var myArray = ['value1', 'value2', 'value3'];
+const myArray = ["value1", "value2", "value3"];
 
-// Array를 Set으로 변환하기 위해서는 정규 Set 생성자 사용
-var mySet = new Set(myArray);
+// Use the regular Set constructor to transform an Array into a Set
+const mySet = new Set(myArray);
 
-mySet.has('value1'); // true 반환
+mySet.has("value1"); // returns true
 
-// set을 Array로 변환하기 위해 전개 연산자 사용함.
-console.log([...mySet]); // myArray와 정확히 같은 배열을 보여줌
+// Use the spread syntax to transform a set into an Array.
+console.log([...mySet]); // Will show you exactly the same Array as myArray
 ```
 
-## 명세
+### Remove duplicate elements from an array
+
+```js
+// Use to remove duplicate elements from an array
+
+const numbers = [2, 3, 4, 4, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 5, 32, 3, 4, 5];
+
+console.log([...new Set(numbers)]);
+
+// [2, 3, 4, 5, 6, 7, 32]
+```
+
+### Relation to strings
+
+```js
+const text = "India";
+
+const mySet = new Set(text); // Set(5) {'I', 'n', 'd', 'i', 'a'}
+mySet.size; // 5
+
+// case sensitive & duplicate omission
+new Set("Firefox"); // Set(7) { "F", "i", "r", "e", "f", "o", "x" }
+new Set("firefox"); // Set(6) { "f", "i", "r", "e", "o", "x" }
+```
+
+### Use a set to ensure the uniqueness of a list of values
+
+```js
+const array = Array.from(document.querySelectorAll("[id]")).map((e) => e.id);
+
+const set = new Set(array);
+console.assert(set.size === array.length);
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - [Polyfill of `Set` in `core-js`](https://github.com/zloirock/core-js#set)
 - {{jsxref("Map")}}

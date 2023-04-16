@@ -1,39 +1,38 @@
 ---
-title: attribute-set
+title: <xsl:attribute-set>
 slug: Web/XSLT/Element/attribute-set
-original_slug: Web/XSLT/attribute-set
 ---
 
 {{ XsltRef() }}
 
-`<xsl:attribute-set>` 요소는 CSS 안에 이름 붙인 스타일과 비슷한 방식으로 이름 붙인 속성 집합을 만듭니다. 그러면, 출력 문서에 전체로서 적용할 수 있습니다.
+The `<xsl:attribute-set>` element creates a named set of attributes, which can then be applied as whole to the output document, in a manner similar to named styles in CSS.
 
-### 문법
+### Syntax
 
-```
+```xml
 <xsl:attribute-set name=NAME use-attribute-sets=LIST-OF-NAMES>
   <xsl:attribute>
 </xsl:attribute-set>
 ```
 
-### 필수 속성
+### Required Attributes
 
 - `name`
-  - : 속성 집합에 이름을 지정합니다. 이름은 유효한 QName이어야 합니다.
+  - : Specifies the name of the attribute set. The name must be a valid QName.
 
-### 선택 속성
+### Optional Attributes
 
 - `use-attribute-sets`
-  - : 다른 속성 집합으로부터 속성 집합을 빌드합니다. 기여한 집합의 이름은 공백 문자로 구분해야 하고 직접 혹은 간접으로 서로 임베드하지 않아야 합니다.
+  - : Builds an attribute set from other attribute sets. The names of the contributing sets must be separated with whitespace characters and must not directly or indirectly embed themselves.
 
-### 타입
+### Type
 
-최상위, `<xsl:stylesheet>`나 `<xsl:transform>`의 자식이어야 함.
+Top-level, must be the child of `<xsl:stylesheet>` or `<xsl:transform>`.
 
-### 정의
+### Defined
 
-[XSLT section 7.1.4, Named Attribute Sets](http://www.w3.org/TR/xslt#attribute-sets)
+XSLT, section 7.1.4.
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

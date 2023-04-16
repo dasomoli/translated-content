@@ -1,62 +1,74 @@
 ---
 title: handler.setPrototypeOf()
 slug: Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/setPrototypeOf
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Proxy.handler.setPrototypeOf
 ---
 
 {{JSRef}}
 
-**`handler.setPrototypeOf()`** 메서드는 {{jsxref("Object.setPrototypeOf()")}}에 대한 트랩입니다.
+The **`handler.setPrototypeOf()`** method is a trap for the `[[SetPrototypeOf]]` [object internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods), which is used by operations such as {{jsxref("Object.setPrototypeOf()")}}.
 
 {{EmbedInteractiveExample("pages/js/proxyhandler-setprototypeof.html", "taller")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 new Proxy(target, {
   setPrototypeOf(target, prototype) {
   }
 });
 ```
 
-### 매개변수
+### Parameters
 
-다음 매개변수는 `setPrototypeOf()` 메서드에 전달됩니다. `this`는 처리기에 바인딩됩니다.
+The following parameters are passed to the `setPrototypeOf()` method.
+`this` is bound to the handler.
 
 - `target`
-  - : 대상 객체
+  - : The target object.
 - `prototype`
-  - : 대상 객체의 새 프로토타입 또는 `null`
+  - : The object's new prototype or `null`.
 
-### 반환 값
+### Return value
 
-`setPrototypeOf()` 메서드는 `[[Prototype]]`이 성공적으로 변경되었으면 `true`를 반환하고 그렇지 않으면 `false`를 반환합니다.
+The `setPrototypeOf()` method returns `true` if the
+`[[Prototype]]` was successfully changed, otherwise `false`.
 
-## 설명
+## Description
 
-**`handler.setPrototypeOf()`** 메서드는 {{jsxref("Object.setPrototypeOf()")}}에 대한 트랩입니다.
+### Interceptions
 
-### 가로채기
-
-이 트랩은 다음 작업을 가로챌 수 있습니다.
+This trap can intercept these operations:
 
 - {{jsxref("Object.setPrototypeOf()")}}
 - {{jsxref("Reflect.setPrototypeOf()")}}
 
-### 불변 조건
+Or any other operation that invokes the `[[SetPrototypeOf]]` [internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods).
 
-다음 불변 조건이 위반되면 프록시에서 {{jsxref("TypeError")}}가 발생합니다.
+### Invariants
 
-- `target`을 확장할 수 없는 경우, 프로토타입 매개변수는 `Object.getPrototypeOf(target)`과 동일한 값이어야 합니다.
+If the following invariants are violated, the trap throws a {{jsxref("TypeError")}} when invoked.
 
-## 예제
+- If `target` is not extensible, the `prototype`
+  parameter must be the same value as
+  `Object.getPrototypeOf(target)`.
 
-객체에 대한 새 프로토타입 설정을 허용하지 않으려면 처리기의 `setPrototypeOf()` 메서드에서 `false`를 반환하거나 예외를 발생시키면 됩니다.
+## Examples
 
-### 접근 방식 1: false 반환하기
+If you want to disallow setting a new prototype for your object, your handler's
+`setPrototypeOf()` method can either return `false`, or it can
+throw an exception.
 
-이 접근 방식은 변경 실패 시 예외를 발생시키는 모든 작업이 해당 작업 자체에서 직접 예외를 생성해야 함을 뜻합니다.
+### Approach 1: Returning false
 
-예를 들어 {{jsxref("Object.setPrototypeOf()")}}가 {{jsxref("TypeError")}}를 발생시킬때, {{jsxref("Reflect.setPrototypeOf()")}}와 같이 실패 시 일반적으로 예외를 발생시키지않는 연산이 수행된다면 예외가 발생하지 **않습니다.**
+This approach means that any mutating operation that throws an exception on failure to
+mutate, must create the exception itself.
+
+For example, {{jsxref("Object.setPrototypeOf()")}} will create and throw a
+{{jsxref("TypeError")}} itself. If the mutation is performed by an operation that
+_doesn't_ ordinarily throw in case of failure, such as
+{{jsxref("Reflect.setPrototypeOf()")}}, no exception will be thrown.
 
 ```js
 const handlerReturnsFalse = {
@@ -65,42 +77,46 @@ const handlerReturnsFalse = {
   },
 };
 
-const newProto = {}, target = {};
+const newProto = {},
+  target = {};
 
 const p1 = new Proxy(target, handlerReturnsFalse);
 Object.setPrototypeOf(p1, newProto); // throws a TypeError
 Reflect.setPrototypeOf(p1, newProto); // returns false
 ```
 
-### 접근 방식 2: 예외 발생 시키기
+### Approach 2: Throwing an Exception
 
-후자의 접근 방식은 변경을 시도하거나 예외를 발생시키는 **모든** 작업을 실행시킵니다. 이 접근 방식은 예외가 발생하지 않는 작업도 실패 시 예외가 발생하거나 사용자 지정 예외 값을 발생시키려는 경우에 좋은 선택지가 될 수 있습니다.
+The latter approach will cause _any_ operation that attempts to mutate, to
+throw. This approach is best if you want even non-throwing operations to throw on
+failure, or you want to throw a custom exception value.
 
 ```js
 const handlerThrows = {
   setPrototypeOf(target, newProto) {
-    throw new Error('custom error');
+    throw new Error("custom error");
   },
 };
 
-const newProto = {}, target = {};
+const newProto = {},
+  target = {};
 
 const p2 = new Proxy(target, handlerThrows);
-Object.setPrototypeOf(p2, newProto);  // throws new Error("custom error")
+Object.setPrototypeOf(p2, newProto); // throws new Error("custom error")
 Reflect.setPrototypeOf(p2, newProto); // throws new Error("custom error")
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Proxy")}}
-- [`Proxy()` 생성자](/ko/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy)
+- [`Proxy()` constructor](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy)
 - {{jsxref("Object.setPrototypeOf()")}}
 - {{jsxref("Reflect.setPrototypeOf()")}}

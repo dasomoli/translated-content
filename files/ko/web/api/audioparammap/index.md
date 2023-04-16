@@ -1,19 +1,22 @@
 ---
 title: AudioParamMap
 slug: Web/API/AudioParamMap
+page-type: web-api-interface
+browser-compat: api.AudioParamMap
 ---
+
 {{APIRef("Web Audio API")}}
 
-Web Audio API의 **`AudioParamMap`** 인터페이스는 다수의 오디오 파라미터의 집합을 나타내는데, 각 파라미터는 {{domxref("DOMString")}}의 매핑으로 기술되고, DOMString은 {{domxref("AudioParam")}} 객체에 대한 파라미터를 명시하며, AudioParam 객체는 자신의 값을 나타냅니다.
+The Web Audio API interface **`AudioParamMap`** represents a set of multiple audio parameters, each described as a mapping of a string identifying the parameter to the {{domxref("AudioParam")}} object representing its value.
 
-## 속성
+## Instance properties
 
-`AudioParamMap` 객체는 {{jsxref("Map")}}으로써 이용되는데, 이 Map에서 각 파라미터는 이 파라미터의 값을 포함하고 있는 `AudioParam`에 매핑된 name 문자열에 의해 식별됩니다. 추가적으로, 다음의 속성들을 사용할 수 있습니다.
+The `AudioParamMap` object is accessed as a {{jsxref("Map")}} in which each parameter is identified by a name string which is mapped to an `AudioParam` containing the value of that parameter. In addition, there are the following properties available:
 
 - {{domxref("AudioParamMap.size", "size")}}
   - : ?
 
-## 메서드
+## Instance methods
 
 - {{domxref("AudioParamMap.entries", "entries()")}}
   - : ?
@@ -26,6 +29,6 @@ Web Audio API의 **`AudioParamMap`** 인터페이스는 다수의 오디오 파�
 - {{domxref("AudioParamMap.values", "values()")}}
   - : ?
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

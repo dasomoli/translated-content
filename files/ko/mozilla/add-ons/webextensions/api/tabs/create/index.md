@@ -1,67 +1,81 @@
 ---
 title: tabs.create()
 slug: Mozilla/Add-ons/WebExtensions/API/tabs/create
+page-type: webextension-api-function
+browser-compat: webextensions.api.tabs.create
 ---
 
 {{AddonSidebar()}}
 
-새 탭을 만든다.
+Creates a new tab.
 
-이것은 비동기 함수로 [`Promise`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)를 돌려준다.
+This is an asynchronous function that returns a [`Promise`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
-## 문법
+## Syntax
 
-```js
-var creating = browser.tabs.create(
+```js-nolint
+let creating = browser.tabs.create(
   createProperties   // object
 )
 ```
 
-### 매개변수
+### Parameters
 
 - `createProperties`
-  - : `object`. 새 탭에 대한 속성들. 속성들에 대해 더 배우려면 {{WebExtAPIRef("tabs.Tab")}} 문서를 보라.
-    - `active`{{optional_inline}}
-      - : `boolean`. 활성탭이 되는지를 정한다. 윈도우의 포커스에는 영향이 없다({{WebExtAPIRef('windows.update')}} 참조). 기본값은 `true`.
+
+  - : `object`. Properties to give the new tab. To learn more about these properties, see the {{WebExtAPIRef("tabs.Tab")}} documentation.
+
+    - `active` {{optional_inline}}
+      - : `boolean`. Whether the tab should become the active tab in the window. If `false`, it has no effect. Does not affect whether the window is focused (see {{WebExtAPIRef('windows.update')}}). Defaults to `true`.
     - `cookieStoreId` {{optional_inline}}
-      - : `string`. 탭의 쿠키 저장 ID를 `cookieStoreId`로 지정한다. 이 옵션은 확장이 `"cookies"` [권한](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions)을 가져야 쓸 수 있다.
-    - `index`{{optional_inline}}
-      - : `integer`. 윈도우에서 탭의 위치를 지정한다. 쓸 수 있는 값은 0에서 윈도에 있는 탭의 수까지다.
-    - `openerTabId`{{optional_inline}}
+      - : `string`. Use this to create a tab whose cookie store ID is `cookieStoreId`. This option is only available if the extension has the `"cookies"` [permission](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions).
+    - `discarded` {{optional_inline}}
+      - : `boolean`. Whether the tab is created and made visible in the tab bar without any content loaded into memory, a state known as discarded. The tab's content is loaded when the tab is activated.
+    - `index` {{optional_inline}}
+      - : `integer`. The position the tab should take in the window. The provided value will be clamped to between zero and the number of tabs in the window.
+    - `muted` {{optional_inline}}
+      - : `boolean`. Whether the tab should be muted. Defaults to `false`.
+    - `openerTabId` {{optional_inline}}
       - : `integer`. The ID of the tab that opened this tab. If specified, the opener tab must be in the same window as the newly created tab.
-    - `openInReaderMode`{{optional_inline}}
-      - : `boolean`. If `true`, open this tab in [Reader Mode](/en-US/Add-ons/WebExtensions/API/tabs/toggleReaderMode). Defaults to `false`.
-    - `pinned`{{optional_inline}}
+    - `openInReaderMode` {{optional_inline}}
+      - : `boolean`. If `true`, open this tab in [Reader Mode](/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/toggleReaderMode). Defaults to `false`.
+    - `pinned` {{optional_inline}}
       - : `boolean`. Whether the tab should be pinned. Defaults to `false`.
-    - `selected`{{optional_inline}}
-      - : `boolean`. 윈도우에서 탭이 선택되는지를 지정한다. 기본값은 `true`.
+    - `selected` {{optional_inline}}
 
-        > **경고:** 이 속성은 사용이 중단되었다. 파이어폭스에서는 지원하지 않는다. `active`가 대신한다.
+      - : `boolean`. Whether the tab should become the selected tab in the window. Defaults to `true`.
+
+        > **Warning:** This property is deprecated, and is not supported in Firefox. Use `active` instead.
+
+    - `title` {{optional_inline}}
+      - : `string`. The title of the tab. Allowed only if the tab is created with `discarded` set to `true`.
     - `url` {{optional_inline}}
-      - : `string`. 최초 표시될 URL. 기본값은 새 탭 페이지다.
-        URL은 반드시 scheme를 포함해야 한다 (가령은 'http://www.google.com'은 되지만, 'www.google.com'은 안된다).
-        보안상 파이어폭스에서 특권이 있는 URL은 안된다. 그래서 아래와 같은 URL을 주면 실패할 것이다:
 
-        - chrome: URL
-        - javascript: URL
-        - data: URL
-        - file: URL (예, 파일시스템의 파일들. 단, 확장 안에 포함된 파일의 사용은 아래를 보라)
-        - 특권이 있는 about: URL (예, `about:config`, `about:addons`, `about:debugging`). 특권이 없는 URL은 된다 (예, `about:blank`).
-        - 새 탭 페이지 ( `about:newtab`)는 URL 값이 주어지지 않으면 열린다.
+      - : `string`. The URL to navigate the tab to initially. Defaults to the New Tab Page.
 
-        확장에 포함된 페이지의 로딩은 확장의 manifest.json 파일이 있는데서 시작하는 절대 경로를 써라. 예를 들면: '/path/to/my-page.html'. 만약 첫 '/'를 빼면 URL은 상대 경로로 취급되고, 다른 브라우저들은 다른 절대 경로를 생성해낼 것이다.
-    - `windowId`{{optional_inline}}
-      - : `integer`. 새 탭이 만들어질 윈도우. 기본값은 현재 윈도우.
+        Fully-qualified URLs must include a scheme (for example, 'http\://www\.google.com' not 'www\.google.com').
+
+        For security reasons, in Firefox, this may not be a privileged URL. So passing any of the following URLs will fail:
+
+        - chrome: URLs
+        - javascript: URLs
+        - data: URLs
+        - file: URLs (i.e., files on the filesystem. However, to use a file packaged inside the extension, see below)
+        - privileged about: URLs (for example, `about:config`, `about:addons`, `about:debugging`). Non-privileged URLs (e.g., `about:blank`) are allowed.
+        - The New Tab page (`about:newtab`) can be opened if no value for URL is provided.
+
+        To load a page that's packaged with your extension, specify an absolute URL starting at the extension's manifest.json file. For example: '/path/to/my-page.html'. If you omit the leading '/', the URL is treated as a relative URL, and different browsers may construct different absolute URLs.
+
+    - `windowId` {{optional_inline}}
+      - : `integer`. The window to create the new tab in. Defaults to the current window.
 
 ### Return value
 
 A [`Promise`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) that will be fulfilled with a {{WebExtAPIRef('tabs.Tab')}} object containing details about the created tab. If the tab could not be created (for example, because `url` used a privileged scheme) the promise will be rejected with an error message.
 
-## 브라우저 호환성
+The promise returned by `browser.tabs.create()` resolves as soon as the tab has been created. The tab may still be loading. To detect when the tab has finished loading, listen to the {{WebExtAPIRef('tabs.onUpdated')}} or the {{WebExtAPIRef('webNavigation.onCompleted')}} event before calling `tabs.create`.
 
-{{Compat}}
-
-## 예제
+## Examples
 
 Open "https\://example.org" in a new tab:
 
@@ -74,8 +88,8 @@ function onError(error) {
   console.log(`Error: ${error}`);
 }
 
-browser.browserAction.onClicked.addListener(function() {
-  var creating = browser.tabs.create({
+browser.browserAction.onClicked.addListener(() => {
+  let creating = browser.tabs.create({
     url:"https://example.org"
   });
   creating.then(onCreated, onError);
@@ -84,7 +98,11 @@ browser.browserAction.onClicked.addListener(function() {
 
 {{WebExtExamples}}
 
-> **참고:** **Acknowledgements**This API is based on Chromium's [`chrome.tabs`](https://developer.chrome.com/extensions/tabs#method-create) API. This documentation is derived from [`tabs.json`](https://chromium.googlesource.com/chromium/src/+/master/chrome/common/extensions/api/tabs.json) in the Chromium code.Microsoft Edge compatibility data is supplied by Microsoft Corporation and is included here under the Creative Commons Attribution 3.0 United States License.
+## Browser compatibility
+
+{{Compat}}
+
+> **Note:** This API is based on Chromium's [`chrome.tabs`](https://developer.chrome.com/docs/extensions/reference/tabs/#method-create) API. This documentation is derived from [`tabs.json`](https://chromium.googlesource.com/chromium/src/+/master/chrome/common/extensions/api/tabs.json) in the Chromium code.
 
 <!--
 // Copyright 2015 The Chromium Authors. All rights reserved.

@@ -1,38 +1,37 @@
 ---
-title: copy
+title: <xsl:copy>
 slug: Web/XSLT/Element/copy
-original_slug: Web/XSLT/copy
 ---
 
 {{ XsltRef() }}
 
-`<xsl:copy>` 요소는 출력 문서에 현재 노드의 노드와 어떤 관련 이름공간 노드만을 얕게 복사(shallow copy) 전달합니다. 속성이나 자식은 복사하지 않습니다.
+The `<xsl:copy>` element transfers a shallow copy (the node and any associated namespace node) of the current node to the output document. It does not copy any children or attributes of the current node.
 
-### 문법
+### Syntax
 
-```
+```xml
 <xsl:copy use-attribute-sets=LIST-OF-NAMES>
   TEMPLATE
 </xsl:copy>
 ```
 
-### 필수 속성
+### Required Attributes
 
-없음.
+None.
 
-### 선택 속성
+### Optional Attributes
 
 - `use-attribute-sets`
-  - : 요소이면, 출력 노드에 적용해도 좋을 속성 집합을 나열합니다. 집합의 이름은 공백 문자로 구분해야 합니다.
+  - : Lists attribute sets that should be applied to the output node, if it is an element. Names of the sets should be separated with whitespace characters.
 
-### 타입
+### Type
 
-명령, 템플릿 안에 나타남.
+Instruction, appears within a template.
 
-### 정의
+### Defined
 
-[XSLT section 7.5, Copying](http://www.w3.org/TR/xslt#copying)
+XSLT, section 7.5.
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

@@ -1,40 +1,45 @@
 ---
 title: Reflect.getPrototypeOf()
 slug: Web/JavaScript/Reference/Global_Objects/Reflect/getPrototypeOf
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Reflect.getPrototypeOf
 ---
 
 {{JSRef}}
 
-**`Reflect.getPrototypeOf()`** 정적 메서드는 주어진 객체의 프로토타입을 반환합니다. {{jsxref("Object.getPrototypeOf()")}}와 거의 동일합니다.
+The **`Reflect.getPrototypeOf()`** static method is like {{jsxref("Object.getPrototypeOf()")}}. It returns the prototype of the specified object.
 
 {{EmbedInteractiveExample("pages/js/reflect-getprototypeof.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 Reflect.getPrototypeOf(target)
 ```
 
-### 매개변수
+### Parameters
 
 - `target`
-  - : 프로토타입을 가져올 대상 객체.
+  - : The target object of which to get the prototype.
 
-### 반환 값
+### Return value
 
-주어진 객체의 프로토타입. 상속한 속성이 없으면 {{jsxref("null")}}을 반환합니다.
+The prototype of the given object, which may be an object or `null`.
 
-### 예외
+### Exceptions
 
-`target`이 {{jsxref("Object")}}가 아니면 {{jsxref("TypeError")}}.
+- {{jsxref("TypeError")}}
+  - : Thrown if `target` is not an object.
 
-## 설명
+## Description
 
-`Reflect.getPrototypeOf()` 메서드는 주어진 객체의 프로토타입(`[[Prototype]]` 내부 객체의 값 등)을 반환합니다.
+`Reflect.getPrototypeOf()` provides the reflective semantic of retrieving the prototype of an object. The only difference with {{jsxref("Object.getPrototypeOf()")}} is how non-object targets are handled. `Reflect.getPrototypeOf()` throws a {{jsxref("TypeError")}} if the target is not an object, while `Object.getPrototypeOf()` coerces it to an object.
 
-## 예제
+`Reflect.getPrototypeOf()` invokes the `[[GetPrototypeOf]]` [object internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods) of `target`.
 
-### `Reflect.getPrototypeOf()` 사용하기
+## Examples
+
+### Using Reflect.getPrototypeOf()
 
 ```js
 Reflect.getPrototypeOf({}); // Object.prototype
@@ -42,34 +47,36 @@ Reflect.getPrototypeOf(Object.prototype); // null
 Reflect.getPrototypeOf(Object.create(null)); // null
 ```
 
-### `Object.getPrototypeOf()`와 비교
+### Difference with Object.getPrototypeOf()
 
 ```js
-// 객체에는 동일한 결과
-Object.getPrototypeOf({});  // Object.prototype
+// Same result for Objects
+Object.getPrototypeOf({}); // Object.prototype
 Reflect.getPrototypeOf({}); // Object.prototype
 
-// ES5에서는 비객체 대상에서 모두 오류
-Object.getPrototypeOf('foo');  // Throws TypeError
-Reflect.getPrototypeOf('foo'); // Throws TypeError
+// Both throw in ES5 for non-Objects
+Object.getPrototypeOf("foo"); // Throws TypeError
+Reflect.getPrototypeOf("foo"); // Throws TypeError
 
-// ES2015에서는 Reflect만 오류, Object는 객체로 변환
-Object.getPrototypeOf('foo');  // String.prototype
-Reflect.getPrototypeOf('foo'); // Throws TypeError
+// In ES2015 only Reflect throws, Object coerces non-Objects
+Object.getPrototypeOf("foo"); // String.prototype
+Reflect.getPrototypeOf("foo"); // Throws TypeError
 
-// ES2015 Object 동작을 따라하려면 객체 변환과정 필요
-Reflect.getPrototypeOf(Object('foo')); // String.prototype
+// To mimic the Object ES2015 behavior you need to coerce
+Reflect.getPrototypeOf(Object("foo")); // String.prototype
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `Reflect.getPrototypeOf` in `core-js`](https://github.com/zloirock/core-js#ecmascript-reflect)
 - {{jsxref("Reflect")}}
 - {{jsxref("Object.getPrototypeOf()")}}
+- [`Proxy`'s `getPrototypeOf` handler](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/getPrototypeOf)

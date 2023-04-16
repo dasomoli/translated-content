@@ -1,85 +1,103 @@
 ---
 title: word-break
 slug: Web/CSS/word-break
+page-type: css-property
+browser-compat: css.properties.word-break
 ---
+
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`word-break`** 속성은 텍스트가 자신의 콘텐츠 박스 밖으로 오버플로 할 때 줄을 바꿀 지 지정합니다.
+The **`word-break`** [CSS](/en-US/docs/Web/CSS) property sets whether line breaks appear wherever the text would otherwise overflow its content box.
 
 {{EmbedInteractiveExample("pages/css/word-break.html")}}
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
 word-break: normal;
 word-break: break-all;
 word-break: keep-all;
-word-break: break-word; /* 사용 안함 */
+word-break: break-word; /* deprecated */
 
-/* 전역 값 */
+/* Global values */
 word-break: inherit;
 word-break: initial;
+word-break: revert;
+word-break: revert-layer;
 word-break: unset;
 ```
 
-`word-break` 속성은 아래의 값 중 하나를 선택해서 지정할 수 있습니다.
+The `word-break` property is specified as a single keyword chosen from the list of values below.
 
-<h3 class="brush:css" id="값">값</h3>
+### Values
 
 - `normal`
-  - : 기본 줄 바꿈 규칙을 사용합니다.
+  - : Use the default line break rule.
 - `break-all`
-  - : 오버플로를 방지하기 위해서는 어떠한 두 문자 사이에서도 줄 바꿈이 발생할 수 있습니다. (한중일 텍스트 제외)
+  - : To prevent overflow, word breaks should be inserted between any two characters (excluding Chinese/Japanese/Korean text).
 - `keep-all`
-  - : 한중일(CJK) 텍스트에서는 줄을 바꿀 때 단어를 끊지 않습니다. 비 CJK 텍스트에서는 `normal`과 동일합니다.
-- `break-word` {{Deprecated_inline}}
-  - : 실제 {{cssxref("overflow-wrap")}} 속성에 상관하지 않고, `word-break: normal`과 `overflow-wrap: anywhere`를 설정한 것과 같은 효과를 냅니다.
+  - : Word breaks should not be used for Chinese/Japanese/Korean (CJK) text. Non-CJK text behavior is the same as for `normal`.
+- `break-word` {{Deprecated_Inline}}
+  - : Has the same effect as `word-break: normal` and `overflow-wrap: anywhere`, regardless of the actual value of the {{cssxref("overflow-wrap")}} property.
 
-> **참고:** `word-break: break-word`와 `overflow-wrap: break-word`({{cssxref("overflow-wrap")}} 참고)와 달리, `word-break: break-all`은 텍스트의 오버플로가 시작하는 정확한 지점에서 줄을 바꿉니다. 단어 전체를 다음 줄로 이동하면 중간을 끊지 않아도 될 상황에서도 마찬가지입니다.
+> **Note:** In contrast to `word-break: break-word` and `overflow-wrap: break-word` (see {{cssxref("overflow-wrap")}}), `word-break: break-all` will create a break at the exact place where text would otherwise overflow its container (even if putting an entire word on its own line would negate the need for a break).
 
-## 형식 정의
+> **Note:** While `word-break: break-word` is deprecated, it has the same effect, when specified, as `word-break: normal` and `overflow-wrap: anywhere` — regardless of the actual value of the {{CSSXref('overflow-wrap')}} property.
 
-{{cssinfo}}
+## Formal definition
 
-## 형식 구문
+{{CSSInfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
 ### HTML
 
 ```html
 <p>1. <code>word-break: normal</code></p>
-<p class="normal narrow">This is a long and
- Honorificabilitudinitatibus califragilisticexpialidocious Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu
- グレートブリテンおよび北アイルランド連合王国という言葉は本当に長い言葉</p>
+<p class="normal narrow">
+  This is a long and Honorificabilitudinitatibus califragilisticexpialidocious
+  Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu
+  グレートブリテンおよび北アイルランド連合王国という言葉は本当に長い言葉
+</p>
 
 <p>2. <code>word-break: break-all</code></p>
-<p class="breakAll narrow">This is a long and
- Honorificabilitudinitatibus califragilisticexpialidocious Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu
- グレートブリテンおよび北アイルランド連合王国という言葉は本当に長い言葉</p>
+<p class="breakAll narrow">
+  This is a long and Honorificabilitudinitatibus califragilisticexpialidocious
+  Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu
+  グレートブリテンおよび北アイルランド連合王国という言葉は本当に長い言葉
+</p>
 
 <p>3. <code>word-break: keep-all</code></p>
-<p class="keepAll narrow">This is a long and
- Honorificabilitudinitatibus califragilisticexpialidocious Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu
- グレートブリテンおよび北アイルランド連合王国という言葉は本当に長い言葉</p>
+<p class="keepAll narrow">
+  This is a long and Honorificabilitudinitatibus califragilisticexpialidocious
+  Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu
+  グレートブリテンおよび北アイルランド連合王国という言葉は本当に長い言葉
+</p>
 
 <p>4. <code>word-break: break-word</code></p>
-<p class="breakWord narrow">This is a long and
-  Honorificabilitudinitatibus califragilisticexpialidocious Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu
- グレートブリテンおよび北アイルランド連合王国という言葉は本当に長い言葉</p>
+<p class="breakWord narrow">
+  This is a long and Honorificabilitudinitatibus califragilisticexpialidocious
+  Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu
+  グレートブリテンおよび北アイルランド連合王国という言葉は本当に長い言葉
+</p>
 ```
 
 ### CSS
 
 ```css
 .narrow {
-  padding: 5px;
+  padding: 10px;
   border: 1px solid;
-  display: table;
-  max-width: 100%;
+  width: 500px;
+  margin: 0 auto;
+  font-size: 20px;
+  line-height: 1.5;
+  letter-spacing: 1px;
 }
 
 .normal {
@@ -99,16 +117,19 @@ word-break: unset;
 }
 ```
 
-{{EmbedLiveSample('예제', '100%', 600)}}
+{{EmbedLiveSample('Examples', '100%', 600)}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{cssxref("overflow-wrap")}}
+- {{cssxref("hyphens")}}
+- {{cssxref("line-break")}}
+- [Guide to wrapping and breaking text](/en-US/docs/Web/CSS/CSS_Text/Wrapping_Text)

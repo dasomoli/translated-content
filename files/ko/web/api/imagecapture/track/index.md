@@ -1,26 +1,28 @@
 ---
-title: ImageCapture.track
+title: "ImageCapture: track property"
+short-title: track
 slug: Web/API/ImageCapture/track
+page-type: web-api-instance-property
+status:
+  - experimental
+browser-compat: api.ImageCapture.track
 ---
 
-{{APIRef("MediaStream Image")}}
+{{APIRef("MediaStream Image")}}{{SeeCompatTable}}
 
-{{domxref("ImageCapture")}} 인터페이스의 **`track`** 읽기 전용 속성은 {{domxref("ImageCapture.ImageCapture","ImageCapture()")}} 생성자에 제공한 {{domxref("MediaStreamTrack")}}의 참조를 반환합니다.
+The **`track`** read-only property of the
+{{domxref("ImageCapture")}} interface returns a reference to the
+{{domxref("MediaStreamTrack")}} passed to the
+{{domxref("ImageCapture.ImageCapture","ImageCapture()")}} constructor.
 
-## 구문
+## Value
 
-```js
-const mediaStreamTrack = imageCaptureObj.track
-```
+A {{domxref("MediaStreamTrack")}} object.
 
-### 값
-
-{{domxref("MediaStreamTrack")}} 객체.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

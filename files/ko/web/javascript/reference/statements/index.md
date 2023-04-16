@@ -1,92 +1,156 @@
 ---
-title: 문 및 선언
+title: Statements and declarations
 slug: Web/JavaScript/Reference/Statements
+page-type: landing-page
+browser-compat: javascript.statements
 ---
 
 {{jsSidebar("Statements")}}
 
-JavaScript 응용 프로그램은 적절한 구문을 갖는 문으로 구성됩니다. 한 문이 여러 줄에 걸칠 수 있습니다. 여러 문은 각 문이 세미콜론으로 구분된 경우 한 줄에 나올 수 있습니다. 이는 키워드 하나가 아니라, 키워드 그룹입니다.
+JavaScript applications consist of statements with an appropriate syntax. A single statement may span multiple lines. Multiple statements may occur on a single line if each statement is separated by a semicolon. This isn't a keyword, but a group of keywords.
 
-## 항목별 문 및 선언
+## Statements and declarations by category
 
-알파벳순 목록은 왼쪽 사이드바를 보세요.
+For an alphabetical listing see the sidebar on the left.
 
-### 흐름 제어
+### Control flow
 
-- {{jsxref("Statements/block", "Block")}}
-  - : 블록문은 0개 이상의 문을 묶을 때 쓰입니다. 블록은 중괄호 한 쌍으로 구분됩니다.
+- {{jsxref("Statements/return", "return")}}
+  - : Specifies the value to be returned by a function.
 - {{jsxref("Statements/break", "break")}}
-  - : 현재 루프, `switch` 또는 `label` 문을 종료하고 프로그램 제어를 종료된 문의 다음 문으로 넘겨줍니다.
+  - : Terminates the current loop, switch, or label statement and transfers program control to the statement following the terminated statement.
 - {{jsxref("Statements/continue", "continue")}}
-  - : 현재 또는 레이블 달린 루프의 현재 반복 중인 문의 실행을 종료하고 루프의 실행은 다음 반복으로 이어집니다.
-- {{jsxref("Statements/Empty", "empty")}}
-  - : empty 문은 내용이 없는 빈 문을 제공하기 위해 사용됩니다, 비록 JavaScript 구문이 문을 기대할 것이지만.
-- {{jsxref("Statements/if...else", "if...else")}}
-  - : 지정된 조건이 true면 문을 실행. 조건이 false인 경우, 다른 문이 실행될 수 있습니다.
-- {{jsxref("Statements/switch", "switch")}}
-  - : 식의 값이 case 절과 일치하는지 식을 평가하고 case 절과 관련된 문을 실행합니다.
+  - : Terminates execution of the statements in the current iteration of the current or labeled loop, and continues execution of the loop with the next iteration.
 - {{jsxref("Statements/throw", "throw")}}
-  - : 사용자 정의 예외가 발생합니다.
+  - : Throws a user-defined exception.
+- {{jsxref("Statements/if...else", "if...else")}}
+  - : Executes a statement if a specified condition is true. If the condition is false, another statement can be executed.
+- {{jsxref("Statements/switch", "switch")}}
+  - : Evaluates an expression, matching the expression's value to a case clause, and executes statements associated with that case.
 - {{jsxref("Statements/try...catch", "try...catch")}}
-  - : 시도(try)할 문 블록을 표시하고 예외가 발생되어야 하는 응답을 지정합니다.
+  - : Marks a block of statements to try, and specifies a response, should an exception be thrown.
 
-### 선언
+### Declaring variables
 
 - {{jsxref("Statements/var", "var")}}
-  - : 변수를 선언합니다, 변수를 값으로 초기화할 수 있습니다.
+  - : Declares a variable, optionally initializing it to a value.
 - {{jsxref("Statements/let", "let")}}
-  - : 블록 범위 지역 변수를 선언합니다, 변수를 값으로 초기화할 수 있습니다.
+  - : Declares a block scope local variable, optionally initializing it to a value.
 - {{jsxref("Statements/const", "const")}}
-  - : 읽기 전용 유명(named) 상수를 선언합니다.
+  - : Declares a read-only named constant.
 
-### 함수 및 클래스
+### Functions and classes
 
 - {{jsxref("Statements/function", "function")}}
-  - : 지정된 매개변수를 갖는 함수를 선언합니다.
+  - : Declares a function with the specified parameters.
 - {{jsxref("Statements/function*", "function*")}}
-  - : [반복기](/ko/docs/Web/JavaScript/Guide/The_Iterator_protocol)를 더 쉽게 작성할 수 있게 하는 생성기 함수.
-- {{jsxref("Statements/return", "return")}}
-  - : 함수에 의해 반환되는 값을 지정합니다.
+  - : Generator Functions enable writing [iterators](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) more easily.
+- {{jsxref("Statements/async_function", "async function")}}
+  - : Declares an async function with the specified parameters.
+- {{jsxref("Statements/async_function*", "async function*")}}
+  - : Asynchronous Generator Functions enable writing async [iterators](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) more easily.
 - {{jsxref("Statements/class", "class")}}
-  - : 클래스를 선언합니다.
+  - : Declares a class.
 
-### 반복
+### Iterations
 
 - {{jsxref("Statements/do...while", "do...while")}}
-  - : 테스트 조건이 거짓으로 평가될 때까지 지정된 문을 실행하는 루프를 만듭니다. 조건은 문을 실행한 후 평가됩니다, 그 결과 지정된 문은 적어도 한 번 실행됩니다.
+  - : Creates a loop that executes a specified statement until the test condition evaluates to false. The condition is evaluated after executing the statement, resulting in the specified statement executing at least once.
 - {{jsxref("Statements/for", "for")}}
-  - : 괄호로 묶이고 세미콜론으로 구분된 선택사항 식 셋으로 구성된 루프를 만듭니다, 루프에서 실행되는 문이 뒤따릅니다.
-- {{jsxref("Statements/for_each...in", "for each...in")}} {{deprecated_inline}} {{non-standard_inline}}
-  - : 객체의 모든 속성값에 대해 지정된 변수를 반복합니다. 각 개별 속성에 대해, 지정된 문이 실행됩니다.
+  - : Creates a loop that consists of three optional expressions, enclosed in parentheses and separated by semicolons, followed by a statement executed in the loop.
 - {{jsxref("Statements/for...in", "for...in")}}
-  - : 임의의 순서로 객체의 열거 속성을 반복합니다. 각 개별 속성에 대해, 문은 실행될 수 있습니다.
+  - : Iterates over the enumerable properties of an object, in arbitrary order. For each distinct property, statements can be executed.
 - {{jsxref("Statements/for...of", "for...of")}}
-  - : 반복 가능한 객체 ({{jsxref("Global_Objects/Array","배열","","true")}}, 배열 같은 객체, [반복기 및 생성기](/ko/docs/Web/JavaScript/Guide/Iterators_and_Generators) 포함) 를 반복합니다, 각 개별 속성값에 대해 실행되는 문을 가진 사용자 정의 반복 후크를 호출하는.
+  - : Iterates over iterable objects (including {{jsxref("Global_Objects/Array","arrays","","true")}}, array-like objects, [iterators and generators](/en-US/docs/Web/JavaScript/Guide/Iterators_and_generators)), invoking a custom iteration hook with statements to be executed for the value of each distinct property.
+- {{jsxref("Statements/for-await...of", "for await...of")}}
+  - : Iterates over async iterable objects, array-like objects, [iterators and generators](/en-US/docs/Web/JavaScript/Guide/Iterators_and_generators), invoking a custom iteration hook with statements to be executed for the value of each distinct property.
 - {{jsxref("Statements/while", "while")}}
-  - : 테스트 조건이 true로 평가되는 한 지정된 문을 실행하는 루프를 만듭니다. 조건은 문을 실행하기 전에 평가됩니다.
+  - : Creates a loop that executes a specified statement as long as the test condition evaluates to true. The condition is evaluated before executing the statement.
 
-### 기타
+### Others
 
+- {{jsxref("Statements/Empty", "Empty", "", 1)}}
+  - : An empty statement is used to provide no statement, although the JavaScript syntax would expect one.
+- {{jsxref("Statements/block", "Block", "", 1)}}
+  - : A block statement is used to group zero or more statements. The block is delimited by a pair of curly brackets.
+- {{jsxref("Statements/Expression_statement", "Expression statement", "", 1)}}
+  - : An expression statement evaluates an expression and discards its result. It allows the expression to perform side effects, such as executing a function or updating a variable.
 - {{jsxref("Statements/debugger", "debugger")}}
-  - : 이용 가능한 디버깅 기능을 호출합니다. 이용 가능한 기능이 없는 경우, 이 문은 아무 효과가 없습니다.
+  - : Invokes any available debugging functionality. If no debugging functionality is available, this statement has no effect.
 - {{jsxref("Statements/export", "export")}}
-  - : 외부 모듈, 다른 스크립트에 가져올(import) 수 있도록 함수를 내보내(export)는데 사용됩니다.
+  - : Used to export functions to make them available for imports in external modules, and other scripts.
 - {{jsxref("Statements/import", "import")}}
-  - : 외부 모듈, 다른 스크립트에서 내보낸 함수를 가져오는데 사용됩니다.
-- {{jsxref("Statements/label", "label")}}
-  - : `break` 또는 `continue` 문을 사용하여 참조할 수 있는 식별자 있는 문을 제공합니다.
+  - : Used to import functions exported from an external module, another script.
+- {{jsxref("Statements/label", "label", "", 1)}}
+  - : Provides a statement with an identifier that you can refer to using a `break` or `continue` statement.
+- {{jsxref("Statements/with", "with")}} {{Deprecated_Inline}}
+  - : Extends the scope chain for a statement.
 
-- {{jsxref("Statements/with", "with")}} {{deprecated_inline}}
-  - : 문의 스코프 체인을 확장합니다.
+## Difference between statements and declarations
 
-## 명세서
+In this section, we will be mixing two kinds of constructs: [_statements_](https://tc39.es/ecma262/#prod-Statement) and [_declarations_](https://tc39.es/ecma262/#prod-Declaration). They are two disjoint sets of grammars. The following are declarations:
 
-{{Specifications}}
+- {{jsxref("Statements/let", "let")}}
+- {{jsxref("Statements/const", "const")}}
+- {{jsxref("Statements/function", "function")}}
+- {{jsxref("Statements/function*", "function*")}}
+- {{jsxref("Statements/async_function", "async function")}}
+- {{jsxref("Statements/async_function*", "async function*")}}
+- {{jsxref("Statements/class", "class")}}
+- {{jsxref("Statements/export", "export")}} (Note: it can only appear at the top-level of a [module](/en-US/docs/Web/JavaScript/Guide/Modules))
+- {{jsxref("Statements/import", "import")}} (Note: it can only appear at the top-level of a [module](/en-US/docs/Web/JavaScript/Guide/Modules))
 
-## 브라우저 호환성
+Everything else in the [list above](#statements_and_declarations_by_category) is a statement.
+
+The terms "statement" and "declaration" have a precise meaning in the formal syntax of JavaScript that affects where they may be placed in code. For example, in most control-flow structures, the body only accepts statements — such as the two arms of an [`if...else`](/en-US/docs/Web/JavaScript/Reference/Statements/if...else):
+
+```js-nolint
+if (condition)
+  statement1;
+else
+  statement2;
+```
+
+If you use a declaration instead of a statement, it would be a {{jsxref("SyntaxError")}}. For example, a [`let`](/en-US/docs/Web/JavaScript/Reference/Statements/let) declaration is not a statement, so you can't use it in its bare form as the body of an `if` statement.
+
+```js-nolint example-bad
+if (condition)
+  let i = 0; // SyntaxError: Lexical declaration cannot appear in a single-statement context
+```
+
+On the other hand, [`var`](/en-US/docs/Web/JavaScript/Reference/Statements/var) is a statement, so you can use it on its own as the `if` body.
+
+```js-nolint example-good
+if (condition)
+  var i = 0;
+```
+
+You can see declarations as "binding identifiers to values", and statements as "carrying out actions". The fact that `var` is a statement instead of a declaration is a special case, because it doesn't follow normal lexical scoping rules and may create side effects — in the form of creating global variables, mutating existing `var`-defined variables, and defining variables that are visible outside of its block (because `var`-defined variables aren't block-scoped).
+
+As another example, [labels](/en-US/docs/Web/JavaScript/Reference/Statements/label) can only be attached to statements.
+
+```js example-bad
+label: const a = 1; // SyntaxError: Lexical declaration cannot appear in a single-statement context
+```
+
+> **Note:** there's a legacy grammar that allows [function declarations to have labels](/en-US/docs/Web/JavaScript/Reference/Statements/label#labeled_function_declarations), but it's only standardized for compatibility with web reality.
+
+To get around this, you can wrap the declaration in braces — this makes it part of a [block statement](/en-US/docs/Web/JavaScript/Reference/Statements/block).
+
+```js example-good
+label: {
+  const a = 1;
+}
+
+if (condition) {
+  let i = 0;
+}
+```
+
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [연산자](/ko/docs/Web/JavaScript/Reference/Operators)
+- [Operators](/en-US/docs/Web/JavaScript/Reference/Operators)

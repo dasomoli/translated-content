@@ -1,49 +1,53 @@
 ---
 title: Map.prototype.delete()
 slug: Web/JavaScript/Reference/Global_Objects/Map/delete
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Map.delete
 ---
 
 {{JSRef}}
 
-**`delete()`** 메서드는 키로 `Map` 객체에서 특정 요소를 제거합니다.
+The **`delete()`** method removes the specified element from a `Map` object by
+key.
 
 {{EmbedInteractiveExample("pages/js/map-prototype-delete.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 delete(key)
 ```
 
-### 매개 변수
+### Parameters
 
 - `key`
-  - : `Map` 객체에서 제거할 요소의 키
+  - : The key of the element to remove from the `Map` object.
 
-### 반환 값
+### Return value
 
-`Map` 객체에서 요소가 존재하고 제거된 경우 `true`, 그렇지 않고 해당 요소가 존재하지 않으면 `false`를 반환합니다.
+`true` if an element in the `Map` object existed and has been removed, or
+`false` if the element does not exist.
 
-## 예제
+## Examples
 
-### delete() 사용하기
+### Using delete()
 
 ```js
 const myMap = new Map();
-myMap.set('bar', 'foo');
+myMap.set("bar", "foo");
 
-console.log(myMap.delete('bar')); // Returns true. Successfully removed.
-console.log(myMap.has('bar')); // Returns false. The "bar" element is no longer present.
+console.log(myMap.delete("bar")); // Returns true. Successfully removed.
+console.log(myMap.has("bar")); // Returns false. The "bar" element is no longer present.
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Map")}}

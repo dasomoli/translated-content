@@ -1,39 +1,44 @@
 ---
-title: TreeWalker.currentNode
+title: "TreeWalker: currentNode property"
+short-title: currentNode
 slug: Web/API/TreeWalker/currentNode
+page-type: web-api-instance-property
+browser-compat: api.TreeWalker.currentNode
 ---
 
 {{ APIRef("DOM") }}
 
-**`TreeWalker.currentNode`** 속성은 {{domxref("TreeWalker")}}가 현재 가리키고 있는 {{domxref("Node")}}를 나타낸다.
+The **`TreeWalker.currentNode`** property represents the
+{{domxref("Node")}} which the {{domxref("TreeWalker")}} is currently pointing at.
 
-## 구문
+## Value
 
-```js
-node = treeWalker.currentNode;
-treeWalker.currentNode = node;
-```
+A {{domxref("Node")}}.
 
-## 예제
+## Examples
 
 ```js
-var treeWalker = document.createTreeWalker(
-    document.body,
-    NodeFilter.SHOW_ELEMENT,
-    { acceptNode: function(node) { return NodeFilter.FILTER_ACCEPT; } },
-    false
+const treeWalker = document.createTreeWalker(
+  document.body,
+  NodeFilter.SHOW_ELEMENT,
+  {
+    acceptNode(node) {
+      return NodeFilter.FILTER_ACCEPT;
+    },
+  },
+  false
 );
-root = treeWalker.currentNode; // 첫번째 엘리먼트인 루트 엘리먼트!
+root = treeWalker.currentNode; // the root element as it is the first element!
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{domxref("TreeWalker")}} 인터페이스
+- The {{domxref("TreeWalker")}} interface.

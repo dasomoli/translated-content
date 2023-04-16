@@ -1,122 +1,130 @@
 ---
-title: 이건 MDN에 있나요?
+title: What we write
 slug: MDN/Writing_guidelines/What_we_write
-original_slug: MDN/Guidelines/Does_this_belong_on_MDN
+page-type: mdn-writing-guide
 ---
 
 {{MDNSidebar}}
 
-무엇인가를 문서로 남겨두겠다는 생각을 하기 시작했다면, 그 문서를 어디에 둘지도 고민해보았을 겁니다. 문서가 위치할 수 있는 몇 가지 장소가 있고, MDN이 웹에서 가장 큰 문서 저장소 중 하나이지만 유일한 옵션은 아닙니다. 또한 소스 코드에 문서를 보관해둘 수도 있고, [Mozilla 위키](https://wiki.mozilla.org/)나 git 저장소의 README 파일에 저장해 두어도 좋습니다. 이 글에서는 어느 방법이 여러분들의 문서와 어울릴지를 판단하는데 도움이 되기 위해서 쓰였습니다.
+MDN Web Docs contains _browser-neutral_ documentation that enables web developers to write _browser-agnostic_ code. In this article, you'll find information about whether or not a given topic and/or type of content should be included on MDN Web Docs.
 
-## MDN에는 뭐가 있죠?
+## Editorial Policies
 
-우리는 MDN에 정말 다양한 주제를 다룹니다. 하지만 완전히 MDN에 있어서는 안될 몇 가지도 있습니다. 이 섹션은 여러분의 문서가 MDN에 있어도 괜찮은지 판단할 수 있도록 도와주겠습니다.
+This section describes the policies set by the Mozilla MDN staff to govern the content on MDN Web Docs. All contributors to MDN Web Docs are expected to abide by these policies.
 
-### MDN에서 다루는 것
+### Relevance
 
-우리는 MDN에서 정말 많은 내용을 다루고 있습니다. 일반적으로 완전히 제작되었거나 배포 중인 Mozilla 제품이나, 웹에 공개된 열린 기술이라면, MDN에 문서로 남겨둡니다.
+All content on MDN Web Docs must be relevant to the technology section in which it appears. Spam (commercial advertisement) and other irrelevant content will never be accepted onto the site. Contributors who keep trying to submit spam may be banned from MDN at the discretion of Mozilla MDN staff.
 
-우리들이 다루고 있는 내용 몇가지를 맛보기로 보여드리겠습니다. 전체 리스트는 아니지만 몇가지 아이디어는 줄 수 있을 겁니다.
+Outbound links to commercial sites that are relevant to the topic from which they are linked will be judged on a case-by-case basis. Their value in aiding web developers must outweigh the commercial benefit to the linked site.
 
-- 열린 웹 기술
+### Neutrality
 
-  - HTML
-  - CSS
-  - JavaScript
-  - Web에 공개된 API
-  - 그 외 기타
+Articles on MDN Web Docs must maintain a [neutral point-of-view](https://en.wikipedia.org/wiki/Wikipedia:Neutral_point_of_view), reporting on browser variations without editorial bias. Derogatory comments about any browser or user agent is not acceptable.
 
-- Firefox OS
+### Standardization
 
-  - 오픈 웹 애플리케이션
-  - Firefox OS 빌드하고 설치하기
-  - Firefox OS 프로젝트에 기여하기
-  - Gaia 설정 변경하기
-  - 그 외 기타
+Web technologies to be documented on MDN Web Docs should be on a standards track and must be implemented by at least one rendering engine. Variations in browser support are documented in the [browser compatibility](/en-US/docs/MDN/Writing_guidelines/Page_structures/Compatibility_tables) section of an article.
 
-- Mozilla 플랫폼
+## Suggesting content
 
-  - Gecko
-  - Firefox를 빌드하고 설정하기
-  - XUL
-  - XPCOM
-  - 그 외 기타
+If you'd like to suggest content for MDN Web Docs, please make sure you read this page before submitting to ensure what you are suggesting is appropriate.
 
-> **참고:** **참고하세요:** 우리는 Mozilla 기술이 아니더라도 Web에 공개되어 있는 한 다룰 수 있다는 점이 중요합니다. 가령, 우리는 Webkit 전용 CSS 프로퍼티를 설명해놓은 문서도 있습니다.
+For new reference pages or guides, please open a discussion on [our community repository](https://github.com/mdn/mdn-community/discussions/categories/content-suggestions) outlining what content you are suggesting and why (please be as explicit as possible).
 
-### 우리가 다루지 않는 것
+For suggesting larger projects that involve new sections of content, please refer to the [Criteria for inclusion](/en-US/docs/MDN/Writing_guidelines/What_we_write/Criteria_for_inclusion) page, which also outlines the application process.
 
-MDN에 문서로 남겨져서는 안되는 명백한 것인지 아닌지에 대해 스스로 질문해볼 수 있습니다.
+## Topics that belong on MDN Web Docs
 
-- 아직 계획중인 문서인가?
-- 아직 존재하지 않는 기술을 설명해놓은 설계 문서인가?
-- 프로젝트를 제안하는 문서인가?
-- 단순히 기술 스펙만 나열했는가?
-- Mozilla 브라우저가 아닌 특정 브라우저에만 사용되는 웹에 노출되지 않은 기술인가?
+In general, if it's an open web technology, we document it on MDN Web Docs. This includes any feature that can be used by web developers to create websites and applications, now and in the near future.
 
-저 질문 중 하나라도 "예"라고 답변할 수 있다면, MDN에 있어서는 안될 문서입니다. 저 질문 모두에 "아니요"라고 대답할 수 있다면, MDN에 문서로 보관할지 진지하게 고민할 때가 되었다는 겁니다!
+If a feature is implemented by multiple browsers and either accepted as standard or is progressing towards standardization, then yes, we definitely document it here. If a feature is still very experimental and not implemented in multiple browsers and/or liable to change, then it is still suitable for inclusion, but may not be seen as a priority for the writing team to work on.
 
-## MDN에 문서로 남겨두면 좋은 점
+In other words, web technologies to be documented on MDN Web Docs should fulfil the following criteria:
 
-MDN에 문서로 남겨두면 좋은 점이 굉장히 많답니다.
+- Be on a standards track.
+- Be specified in a specification published by a reliable standards body.
+- Be implemented by at least one rendering engine.
+- Be released in a stable browser version.
 
-### 글을 쓰는 사람들이 굉장히 많습니다
+Our primary focus is to write about the following front-end web technologies:
 
-MDN 공동체는 굉장히 큽니다. 정말 큽니다. 큰 것들을 작게 보이게 만들 정도로 큽니다. 농담이 아니라, 우리는 굉장히 많은 사람들과 MDN에 있는 자료를 만들어내며 관리하고 있습니다. 전세계 모든 땅(인정할게요. 남극까지는 잘 모르겠어요.)의 작가, 편집자들과 함께하고 있기 때문에, 글을 쓰려는 사람들은 무조건 득 보는 거에요.
+- [HTML](/en-US/docs/Web/HTML)
+- [CSS](/en-US/docs/Web/CSS)
+- [JavaScript](/en-US/docs/Web/JavaScript)
+- [Web APIs](/en-US/docs/Web/API)
+- [HTTP](/en-US/docs/Web/HTTP)
 
-- 우리에게는 우리의 컨텐츠를 최대한 좋게 만들어 보겠다는 **사명**을 갖고 있는 유급 편집 스탭이 있습니다.
-- 우리는 충분한 양의 컨텐츠를 기여하고 여러분들을 도와줄 수 있는 핵심 커뮤니티와 함께하고 있습니다.
-- **사실은 다른 사람들에게 여러분의 글의 대부분 혹은 전부를 쓰게 할 수 있는 절호의 찬스입니다!**
-- 넓디넓은 MDN 커뮤니티에게서 많은 것들을 얻어갈 수 있습니다. 오타를 잡아주는 것부터 시작해서 편집에 관한 논평까지, 여러분들의 소원을 들어줄 수 있습니다.
-- [Matrix](https://chat.mozilla.org/#/room/#mdn:mozilla.org) 채널을 통해 글쓰기 커뮤니티와 이야기를 하거나 조언을 들을 수 있고, 여러분들의 문서 제작이나 유지보수에 도움을 청할 수도 있습니다
-- 전세계에 분포한 기여자들과 함께하고 있기 때문에, 언제나 누군가 주변에서 문제를 발견하고 해결해 줄 겁니다.
+We also document some broader topics, such as [SVG](/en-US/docs/Web/SVG), [XML](/en-US/docs/Web/XML), [WebAssembly](/en-US/docs/WebAssembly), and [Accessibility](/en-US/docs/Learn/Accessibility). In addition, we provide extensive [learning guides](/en-US/docs/Learn) for these technologies and also a [glossary](/en-US/docs/Glossary).
 
-Do you want your development team to be entirely responsible for the production of documentation? That's likely if your documentation is maintained elsewhere.
+> **Note:** Backend technologies usually have their own documentation elsewhere that MDN Web Docs does not attempt to supersede, although we [do have some exceptions](/en-US/docs/Learn/Server-side).
 
-### 유지보수
+All content on MDN Web Docs must be relevant to the technology section in which it appears. Contributors are expected to follow these [MDN writing guidelines](/en-US/docs/MDN/Writing_guidelines) for writing style, code samples, and other topics.
 
-Because of the sheer number of contributors, there's usually someone on hand to watch for problems with your content: from spam control to copy-editing, things can happen around the clock. Here's just a taste of what our team can do:
+For more details about the criteria for whether or not a technology can be documented on MDN Web Docs, see the [Criteria for inclusion](/en-US/docs/MDN/Writing_guidelines/What_we_write/Criteria_for_inclusion) page.
 
-- 스팸 제거
-  - : 스팸이 발생하면 우리들이 처리합니다.
-- 편집
-  - : 여러분 생각보다 필력이 달려도 걱정하실 것 없습니다. 여러분이 쓴 글을 다른 사람들이 읽을 수 있도록 해주겠습니다.
-- 스타일의 일관성
-  - : 여러분이 작성한 문서 하나에서만 지켜지는 일관성이 아니라, 다른 문서와 함께 있을 때에도 일관적인 스타일을 가지고 있을지 봐주겠습니다.
-- 컨텐츠 관리
-  - : Our team will help ensure that the documentation is cross-linked with other relevant materials, that articles are put in the right places, and that menus and other infrastructure is built to make it easy to follow and understand.
+### When we document a new technology
 
-## 다른 곳에 문서로 남겨두는 경우
+On MDN Web Docs, we are constantly looking to document new web standards technologies as appropriate.
+We try to strike a balance between publishing the documentation early enough so that developers can learn about new features as soon as they need to and publishing it late enough so that the technology is mature and stable so that the documentation won't need constant updates or rapid removal.
 
-MDN 말고 다른 곳에다가 여러분이 만든 작업물을 문서로 남겨둘 이유도 없는 건 아닙니다. 그런 이유에 대해서 몇가지 살펴보도록 하고, 각각 장단점을 찾아보도록 할게요.
+In general, our definition of the earliest we'll consider documenting a new technology is: _When the feature is on a standards track and is implemented somewhere._
 
-### 계획이나 진행 상황
+We consider documenting a new technology if it is:
 
-간단합니다. 계획, 진행 상황, 요청에 대한 문서는 MDN에 남기면 안됩니다.
+- Specified in a specification document published under a reliable standards organization (such as W3C, WHATWG, Khronos, IETF, etc.) and has reached a reasonable level of stability (e.g., a W3C working draft or candidate recommendation or when the specification is looking fairly stable judging by the flow of issues filed against it).
+- Implemented consistently in at least one browser, with other browser developers showing signs of interest (such as an active ticket or an "intent to implement" process is in effect).
 
-### Github에 올라온 프로젝트
+We do not document a new technology if:
 
-Mozilla의 몇몇 프로젝트는 Github에 올라와 있습니다. 또, Github에는 문서를 보관하기 위해 자기네들만의 위키 비스무리한 시스템을 가지고 있어요. 몇몇 팀은 거기에다가 문서를 남겨두기를 더 좋아합니다. 여러분만의 문서를 만들어갈 생각이라면 아무래도 그쪽이 더 편하고 좋겠죠. 하지만 몇가지 사실을 기억하세요.
+- It doesn't have a specification or the specification is a rough note that looks liable to change.
+- One or zero browsers have currently implemented it and non-supporting browsers are not showing signs of interest in implementing it. You can gauge this by asking engineers who work on those browsers and by looking at browser bug trackers and mailing lists, etc.
+- Isn't a web-exposed technology and/or is completely proprietary.
+- It's already showing signs of being deprecated or superseded by a similar feature.
 
-- MDN 문서 팀이 여러분들을 도와드릴 수 없을지도 모릅니다. 우리는 일반적으로(때로 예외가 있기는 합니다만) MDN 바깥의 문서화에는 참여하지 않습니다.
-- 여러분들의 문서다 다른 관련된 내용과 상호 링크하기가 힘들거나 불가능합니다.
-- 다른 문서와 일관된 스타일을 가지지 못할 수도 있습니다.
-- 다른 문서 사이에 없기 때문에 발견될 가능성이 줄어듭니다.
-- Github에 저장된 문서는 MDN에 있는 문서에 비해 별로 매력적으로 보이지도 않으면서 가독성도 영 좋지는 않습니다.
+## Topics that don't belong on MDN Web Docs
 
-물론 이런 점들이 여러분들에게 별로 문제가 되지 않거나 문제가 되더라도 딱히 불편한 점이 없을 수도 있습니다. 몇몇 팀은 문서로 남기겠다는 필요성이 별로 없어서 코드 안에서만 작업하고 문서를 남겨두기도 합니다.
+In general, anything that isn't an open web standard does not belong on MDN Web Docs. Spam (commercial advertisement) and other irrelevant content will never be accepted into the site. Contributors who keep trying to submit spam may be banned from MDN at the discretion of Mozilla MDN staff.
 
-### 소스 안에 문서를 남겨두고 싶은 경우
+Examples of inappropriate topics for MDN Web Docs include:
 
-몇몇 팀은 소스 저장소에다가 자신들의 문서를 저장하는 걸 더 선호하기도 합니다. 내부 프로젝트나 라이브러리 프로젝트에서는 꽤나 흔한 일이긴 한데요. 코드를 쓰듯이 자신들의 기술을 문서로 남길 수 있다는 점에서 이점이 있기는 합니다. 하지만 그만큼 단점도 있지요.
+- Technology that is not exposed to the web and is specific to a browser.
+- Technology that is not related to the web.
+- Documentation for end-users. For Mozilla products, for example, such documentation belongs on the [Mozilla support site](https://support.mozilla.org).
+- Self-linking or self-promoting external links. Check out these guidelines in our [writing style guide](/en-US/docs/MDN/Writing_guidelines/Writing_style_guide#external_links) before adding an external link.
 
-- MDN 문서 팀이 여러분들을 도와드릴 수 없습니다. 코드가 Mozilla의 소스 저장소에 있더라도, 리뷰나 체크인 시스템은 문서 팀이 참여하기에는 그닥 효율적이지 못합니다.
-- 관련 있는 다른 문서와 상호 링크할 수 있는 간편한 도구를 찾기가 힘듭니다. 상호 링크를 하면 읽는 이들에게 맥락과 중요한 정보를 더 잘 전달할 수 있을텐데 말이죠.
-- 다른 문서 사이에 없기 때문에 발견될 가능성이 줄어듭니다.
-- (JavaDoc 같은) 변환 도구를 사용하여 웹에서 읽을 수 있는 문서를 만들더라도, MDN에서 할 수 있는것보다 예쁘거나 매력적이지도 않을 겁니다.
+### When we remove documentation
 
-여전히 몇몇 프로젝트에서 이런 방법을 사용할 수 없는 건 아닙니다. (오히려 좋은 방법일 수도 있습니다.) 작은 프로젝트나 별로 관심을 얻을 생각을 하지 않는 프로젝트에는 특히 그렇죠.
+Pages are deleted from MDN Web Docs if they don't contain information that is useful in any way anymore, are out-of-date enough, and/or might be incorrect to the point where keeping them around might be misleading.
 
-## 나중에는
+The following examples describe situations when pages/content might be deleted:
 
-It's worth mentioning that someday we intend to make it possible to present off-site content as if it were part of MDN, and that we hope to one day have tools to actually import content from other sites onto MDN. However, there's no timeline in place for making this happen, and even once it does, it will not be as effective as building the documentation directly on MDN.
+- Articles contain information about features that weren't implemented across all browsers and were later withdrawn (usually experimental features such as prefixed functionality).
+- Reference pages describe features that were removed from the specification before they were implemented in any browser.
+- Articles cover techniques that were later shown to be bad practices and superseded by better techniques.
+- Articles contain information that were later replaced by other, better quality articles.
+- Articles contain content that is inappropriate for MDN Web Docs.
+- Sections of MDN Web Docs are not focused on open web technologies and are a maintenance burden.
+
+For more information on _how_ to delete documents, please see the [Creating, moving and deleting pages](/en-US/docs/MDN/Writing_guidelines/Howto/Creating_moving_deleting) guide.
+
+## Types of documents allowed on MDN Web Docs
+
+Generally, our documentation falls into the following categories:
+
+- Reference
+- Guide
+- Glossary
+- Learn/Tutorials
+
+In general, MDN Web Docs is for _product_ documentation, not for _project_ or _process_ documentation. So, if the document is about "how to use a thing" or "how a thing works" (where, the "thing" is in one of the topic categories mentioned above), then it can go on MDN Web Docs.
+
+If a document is about "who's working on developing a thing" or "plans for developing a thing", then it shouldn't go on MDN Web Docs.
+
+Here are some examples of types of documents that should _not_ be placed on MDN Web Docs:
+
+- Planning documents
+- Design documents
+- Project proposals
+- Specifications or standards
+- Promotional material, advertising, or personal information

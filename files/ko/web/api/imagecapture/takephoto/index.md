@@ -1,55 +1,83 @@
 ---
-title: ImageCapture.takePhoto()
+title: "ImageCapture: takePhoto() method"
+short-title: takePhoto()
 slug: Web/API/ImageCapture/takePhoto
+page-type: web-api-instance-method
+status:
+  - experimental
+browser-compat: api.ImageCapture.takePhoto
 ---
 
-{{APIRef("MediaStream Image")}}
+{{APIRef("MediaStream Image")}}{{SeeCompatTable}}
 
-{{domxref("ImageCapture")}} 인터페이스의 **`takePhoto()`** 메서드는 {{domxref("MediaStreamTrack")}}을 제공하는 비디오 캡처 장치를 사용해 단일 노출 촬영을 하고, 그 데이터를 담은 {{domxref("Blob")}}으로 이행하는 {{jsxref("Promise")}}를 반환합니다.
+The **`takePhoto()`** method of the
+{{domxref("ImageCapture")}} interface takes a single exposure using the video capture
+device sourcing a {{domxref("MediaStreamTrack")}} and returns a {{jsxref("Promise")}}
+that resolves with a {{domxref("Blob")}} containing the data.
 
-## 구문
+## Syntax
 
-```js
-const blobPromise = imageCaptureObj.takePhoto([photoSettings])
+```js-nolint
+takePhoto()
+takePhoto(photoSettings)
 ```
 
-### 매개변수
+### Parameters
 
 - `photoSettings` {{optional_inline}}
-  - : 사진을 촬영할 때 사용할 옵션을 나타내는 객체. 가능한 옵션은 다음과 같습니다.\* `fillLightMode`: 캡처 장치의 플래시 설정. `"auto"`, `"off"`, `"flash"` 중 하나를 사용할 수 있습니다.
-    - `imageHeight`: 원하는 이미지 크기의 높이를 나타내는 정숫값. 일련의 정해진 크기만 지원하는 경우, {{glossary("user agent", "사용자 에이전트")}}는 이 값과 제일 가까운 높이를 사용합니다.
-    - `imageWidth`: 원하는 이미지 크기의 너비를 나타내는 정숫값. 일련의 정해진 크기만 지원하는 경우, 사용자 에이전트는 이 값과 제일 가까운 너비를 사용합니다.
-    - `redEyeReduction`: 적목 현상 감소 기능이 존재하는 경우, 사용할지 나타내는 불리언 값.
 
-### 반환 값
+  - : An object that sets options for the photo to be taken. The available options are:
 
-{{domxref("Blob")}}으로 이행하는 {{jsxref("Promise")}}.
+    - `fillLightMode`
+      - : The flash setting of the capture device, one of
+        `"auto"`, `"off"`, or `"flash"`.
+    - `imageHeight`
+      - : The desired image height as an integer. The user agent
+        selects the closest height value to this setting if it only supports discrete
+        heights.
+    - `imageWidth`
+      - : The desired image width as an integer. The user agent
+        selects the closest width value to this setting if it only supports discrete
+        widths.
+    - `redEyeReduction`
+      - : A boolean indicating whether the red-eye reduction
+        should be used if it is available.
 
-## 예제
+### Return value
 
-다음 코드는 [Simple Image Capture 데모](https://simpl.info/imagecapture/)에서 가져온 것으로, `takePhoto()`가 반환한 {{jsxref("Promise")}}의 {{domxref("Blob")}}을 사용해 {{htmlelement("img")}} 요소에 할당하는 방법을 보입니다. 코드를 짧게 유지하기 위해 {{domxref("ImageCapture")}} 객체의 초기화 과정은 생략했습니다.
+A {{jsxref("Promise")}} that resolves with a {{domxref("Blob")}}.
+
+## Examples
+
+This example is extracted from this [Simple Image Capture demo](https://simpl.info/imagecapture/). It shows how to use the {{jsxref("Promise")}} returned by
+`takePhoto()` to copy the returned {{domxref("Blob")}} to an
+{{htmlelement("img")}} element. For simplicity it does not show how to instantiate the
+{{domxref("ImageCapture")}} object.
 
 ```js
-var takePhotoButton = document.querySelector('button#takePhoto');
-var canvas = document.querySelector('canvas');
+let takePhotoButton = document.querySelector("button#takePhoto");
+let canvas = document.querySelector("canvas");
 
 takePhotoButton.onclick = takePhoto;
 
 function takePhoto() {
-  imageCapture.takePhoto().then(function(blob) {
-    console.log('Took photo:', blob);
-    img.classList.remove('hidden');
-    img.src = URL.createObjectURL(blob);
-  }).catch(function(error) {
-    console.log('takePhoto() error: ', error);
-  });
+  imageCapture
+    .takePhoto()
+    .then((blob) => {
+      console.log("Took photo:", blob);
+      img.classList.remove("hidden");
+      img.src = URL.createObjectURL(blob);
+    })
+    .catch((error) => {
+      console.error("takePhoto() error: ", error);
+    });
 }
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

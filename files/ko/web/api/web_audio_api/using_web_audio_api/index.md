@@ -1,256 +1,258 @@
 ---
-title: Web Audio API 사용하기
+title: Using the Web Audio API
 slug: Web/API/Web_Audio_API/Using_Web_Audio_API
+page-type: guide
 ---
+
 {{DefaultAPISidebar("Web Audio API")}}
 
-[Web Audio API](/ko/docs/Web/API/Web_Audio_API) 시작하기를 한번 봐 봅시다. 우리는 몇 가지 개념들을 간략하게 살펴보고, 그 다음에 오디오 트랙의 로드, 재생, 정지하고 볼륨 및 스테레오 패닝을 변경할 수 있는 간단한 카세트 플레이어 예제를 공부할 것입니다.
+Let's take a look at getting started with the [Web Audio API](/en-US/docs/Web/API/Web_Audio_API). We'll briefly look at some concepts, then study a simple boombox example that allows us to load an audio track, play and pause it, and change its volume and stereo panning.
 
-{{HTMLElement("canvas")}}가 {{HTMLElement("img")}} 요소와 나란히 공존하는 것처럼, Web Audio API는 {{HTMLElement("audio")}} 미디어 요소를 대체하기보다는 보완합니다. 사용하는 경우에 따라 오디오를 구현하기 위해 무슨 도구를 사용해야 할 지가 결정될 것입니다. 단순히 오디오 트랙의 재생을 제어하려는 경우 `<audio>` 미디어 요소는 Web Audio API보다 더 빠르고 나은 해결책을 제공합니다. 더욱 복잡한 오디오 프로세싱을 수행하기를 원한다면, Web Audio API가 더욱 강한 기능과 제어를 제공합니다.
+The Web Audio API does not replace the {{HTMLElement("audio")}} media element, but rather complements it, just like {{HTMLElement("canvas")}} coexists alongside the {{HTMLElement("img")}} element. Your use case will determine what tools you use to implement audio. If you want to control playback of an audio track, the `<audio>` media element provides a better, quicker solution than the Web Audio API. If you want to carry out more complex audio processing, as well as playback, the Web Audio API provides much more power and control.
 
-Web Audio API의 강력한 기능은 이것이 엄격한 "사운드 호출 제한(sound call limitation)"을 가지고 있지 않다는 것입니다. 예를 들어, 한 번에 32 또는 64개의 사운드 호출 제한이 없습니다. 일부 프로세서는 버벅거림 없이 1,000개 이상의 사운드를 동시에 재생할 수 있을 지도 모릅니다.
+A powerful feature of the Web Audio API is that it does not have a strict "sound call limitation". For example, there is no ceiling of 32 or 64 sound calls at one time. Some processors may be capable of playing more than 1,000 simultaneous sounds without stuttering.
 
-## 예제 코드
+## Example code
 
-우리의 카세트 플레이어는 다음과 같이 생겼습니다:
+Our boombox looks like this:
 
-![재생, 패닝, 그리고 볼륨 제어가 있는 카세트 플레이어](boombox.png)
+![A boombox with play, pan, and volume controls](boombox.png)
 
-플레이 재생 버튼과, 음량과 스테레오 패닝을 조절할 수 있는 볼륨 그리고 패닝 슬라이더가 있는 복고풍의 카세트 덱에 주목해 주세요. 우리는 이 라디오를 더욱 복잡하게 만들 수도 있지만, 이 단계에서의 간단한 학습을 위해서는 이것은 이상적입니다.
+Note the retro cassette deck with a play button, and vol and pan sliders to allow you to alter the volume and stereo panning. We could make this a lot more complex, but this is ideal for simple learning at this stage.
 
-[Codepen에서 최종 데모를 확인](https://codepen.io/Rumyra/pen/qyMzqN/)하거나, [GitHub에서 소스 코드를 확인](https://github.com/mdn/webaudio-examples/tree/master/audio-basics)하실 수 있습니다.
+[Check out the final demo here on Codepen](https://codepen.io/Rumyra/pen/qyMzqN/), or see the [source code on GitHub](https://github.com/mdn/webaudio-examples/tree/master/audio-basics).
 
-## 브라우저 지원
+## Browser support
 
-현대의 브라우저들은 Web Audio API의 대부분의 기능들에 대해 좋은 지원을 가지고 있습니다. 이 API에는 많은 기능들이 있으므로, 더욱 정확한 정보를 위해서는 각 참조 페이지 하단의 브라우저 호환성 목록을 확인해야 할 것입니다.
+Modern browsers have good support for most features of the Web Audio API. There are a lot of features of the API, so for more exact information, you'll have to check the browser compatibility tables at the bottom of each reference page.
 
-## 오디오 그래프
+## Audio graphs
 
-Web Audio API 내부의 모든 것은 오디오 그래프의 개념에 근거하고 있는데, 이는 노드로 구성되어 있습니다.
+Everything within the Web Audio API is based around the concept of an audio graph, which is made up of nodes.
 
-Web Audio API는 **오디오 컨텍스트**내에서 오디오 작업을 다루고, **모듈러 라우팅**(modular routing)을 허용하도록 설계되었습니다. 기본적인 오디오 작업은 **오디오 노드**와 함께 수행되는데, 이는 **오디오 라우팅 그래프**를 형성하기 위해 함께 연결되어 있습니다. 여러분은 조작할 사운드 소스인 입력 노드, 사운드를 원하는 대로 변경하는 수정 노드, 사운드를 저장하거나 듣게 허용하는 출력 노드(도착지)를 가지고 있습니다.
+The Web Audio API handles audio operations inside an **audio context**, and has been designed to allow **modular routing**. Basic audio operations are performed with **audio nodes**, which are linked together to form an **audio routing graph**. You have input nodes, which are the source of the sounds you are manipulating, modification nodes that change those sounds as desired, and output nodes (destinations), which allow you to save or hear those sounds.
 
-다른 채널 레이아웃을 가진 몇몇 오디오 소스들은 심지어 단일 컨텍스트 내에서도 지원됩니다. 이 모듈러 디자인 때문에, 여러분은 역동적인 효과를 가진 복잡한 오디오 기능을 생성할 수 있습니다.
+Several audio sources with different channel layouts are supported, even within a single context. Because of this modular design, you can create complex audio functions with dynamic effects.
 
-## 오디오 컨텍스트
+## Audio context
 
-Web Audio API로 무엇인가를 하기 위해서는 오디오 컨텍스트의 인스턴스를 생성할 필요가 있습니다. 이는 우리에게 API의 모든 기능에 접근할 수 있게 합니다.
+To be able to do anything with the Web Audio API, we need to create an instance of the audio context. This then gives us access to all the features and functionality of the API.
 
 ```js
-// 레거시 브라우저를 위해
+// for legacy browsers
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 
 const audioContext = new AudioContext();
 ```
 
-우리가 이것을 할 때 무슨 일이 벌어질까요? {{domxref("BaseAudioContext")}}가 자동적으로 생성되고 온라인 오디오 컨텍스트로 확장됩니다. 우리는 라이브 사운드를 재생하기 때문에 이것을 원할 것입니다.
+So what's going on when we do this? A {{domxref("BaseAudioContext")}} is created for us automatically and extended to an online audio context. We'll want this because we're looking to play live sound.
 
-> **참고:** 예를 들어, 만약 여러분이 단지 오디오 데이터를 처리하고, 그것을 버퍼링하고 스트리밍 하지만 재생하기를 원하지 않는다면, 여러분은 {{domxref("OfflineAudioContext")}}를 만드는 방법을 살펴볼 수 있습니다.
+> **Note:** If you just want to process audio data, for instance, buffer and stream it but not play it, you might want to look into creating an {{domxref("OfflineAudioContext")}}.
 
-## 사운드 로딩하기
+## Loading sound
 
-이제, 생성된 오디오 컨텍스트는 재생할 사운드가 필요합니다. API를 사용해 사운드를 재생하는 몇 가지 방법이 있습니다. 간단한 방법으로 시작해 봅시다 — 우리는 카세트 플레이어를 가지고 있으므로, 노래의 전체 트랙을 재생하기를 원할 것입니다. 또한, 접근성을 위해서, 트랙을 DOM에 노출시키는 것은 좋습니다. 우리는 {{htmlelement("audio")}} 요소를 사용하여 페이지에 노래를 노출시킬 것입니다.
+Now, the audio context we've created needs some sound to play through it. There are a few ways to do this with the API. Let's begin with a simple method — as we have a boombox, we most likely want to play a full song track. Also, for accessibility, it's nice to expose that track in the DOM. We'll expose the song on the page using an {{htmlelement("audio")}} element.
 
 ```html
-<audio src="myCoolTrack.mp3" ></audio>
+<audio src="myCoolTrack.mp3"></audio>
 ```
 
-> **참고:** 만약 로딩한 사운드 파일이 다른 도메인에 있다면 `crossorigin` 특성을 사용할 필요가 있습니다; 더 많은 정보를 보시려면 [Cross Origin Resource Sharing (CORS)](/ko/docs/Web/HTTP/CORS)를 참고해 보세요.
+> **Note:** If the sound file you're loading is held on a different domain you will need to use the `crossorigin` attribute; see [Cross Origin Resource Sharing (CORS)](/en-US/docs/Web/HTTP/CORS) for more information.
 
-Web Audio API로 얻을 수 있는 모든 것을 사용하려면 이 요소에서 소스를 가져와 우리가 만든 컨텍스트에 연결해야 합니다. 운 좋게도 이걸 할 수 있는 메서드가 있습니다 — {{domxref("AudioContext.createMediaElementSource")}}입니다:
+To use all the nice things we get with the Web Audio API, we need to grab the source from this element and _pipe_ it into the context we have created. Lucky for us there's a method that allows us to do just that — {{domxref("AudioContext.createMediaElementSource")}}:
 
 ```js
-// 오디오 요소를 얻습니다
-const audioElement = document.querySelector('audio');
+// get the audio element
+const audioElement = document.querySelector("audio");
 
-// 오디오 요소를 오디오 컨텍스트에 전달합니다
+// pass it into the audio context
 const track = audioContext.createMediaElementSource(audioElement);
 ```
 
-> **참고:**
->
-> 위의 `<audio>` 요소는 {{domxref("HTMLMediaElement")}} 유형의 객체에 의해 DOM에 표현되는데, 이는 고유한 기능을 가지고 있습니다.
->
-> 이것의 모든 것은 그대로 남아 있습니다. Web Audio API에서 사운드를 사용할 수 있도록 허용할 뿐입니다.
+> **Note:** The `<audio>` element above is represented in the DOM by an object of type {{domxref("HTMLMediaElement")}}, which comes with its own set of functionality. All of this has stayed intact; we are merely allowing the sound to be available to the Web Audio API.
 
-## 사운드 제어하기
+## Controlling sound
 
-웹에서 사운드가 재생될 때, 사용자가 사운드를 제어할 수 있게 허용하는 것은 중요합니다. 사용하는 경우에 따라, 무수한 옵션이 있지만, 우리는 사운드를 재생/정지하고, 트랙의 볼륨을 변경하고, 그리고 좌에서 우로 이동하는 기능을 제공할 것입니다.
+When playing sound on the web, it's important to allow the user to control it. Depending on the use case, there's a myriad of options, but we'll provide functionality to play/pause the sound, alter the track's volume, and pan it from left to right.
 
-JavaScript 코드에서 프로그래밍적으로 사운드를 제어하는 것은 브라우저의 자동 재생 지원 정책에 의해 다뤄지는데, 그러한 것은 허가가 사용자 (또는 화이트리스트)에 의해 승인되지 않은 채로 차단될 가능성이 있습니다. 자동 재생 정책은 보통 스크립트가 오디오를 재생하게 할 수 있게 하기 전에 페이지에서 명시적인 허가나 사용자의 허락 중 하나를 요구합니다.
+Controlling sound programmatically from JavaScript code is covered by browsers' autoplay support policies, as such is likely to be blocked without permission being granted by the user (or an allowlist). Autoplay policies typically require either explicit permission or a user engagement with the page before scripts can trigger audio to play.
 
-이 특별한 요구는 필수적으로 가동 중인데 그 이유는 예기치 않은 사운드는 짜증나고 거슬릴 수 있고, 접근성 문제를 유발할 수 있기 때문입니다. [미디어와 Web Audio API에 대한 자동 재생 가이드](/ko/docs/Web/Media/Autoplay_guide) 문서에서 이것에 대해 더 배울 수 있습니다.
+These special requirements are in place essentially because unexpected sounds can be annoying and intrusive, and can cause accessibility problems. You can learn more about this in our article [Autoplay guide for media and Web Audio APIs](/en-US/docs/Web/Media/Autoplay_guide).
 
-우리의 스크립트는 사용자의 입력 이벤트 (예를 들자면 재생 버튼의 클릭)에 응답하여 오디오를 재생하므로, 우리는 이상이 없고 자동 재생 방지로부터 문제가 없어야만 합니다. 그러므로, 우리의 재생과 정지 기능을 살펴봄으로써 시작해 봅시다. 우리는 트랙이 재생중일 때 정지 버튼으로 바뀌는 재생 버튼을 가지고 있습니다:
+Since our scripts are playing audio in response to a user input event (a click on a play button, for instance), we're in good shape and should have no problems from autoplay blocking. So, let's start by taking a look at our play and pause functionality. We have a play button that changes to a pause button when the track is playing:
 
 ```html
 <button data-playing="false" role="switch" aria-checked="false">
-    <span>Play/Pause</span>
+  <span>Play/Pause</span>
 </button>
 ```
 
-트랙을 재생하기 전에 우리는 오디오 소스/입력 노드에서 목적지로 오디오 그래프를 연결할 필요가 있습니다.
+Before we can play our track we need to connect our audio graph from the audio source/input node to the destination.
 
-우리는 이미 오디오 요소를 API에 전달함으로써 입력 노드를 생성했습니다. 대개 여러분은 출력 노드를 생성할 필요가 없습니다, 여러분은 단지 다른 노드를, 여러분을 위해 상황을 다루는 {{domxref("BaseAudioContext.destination")}}에 연결할 수 있습니다.
+We've already created an input node by passing our audio element into the API. For the most part, you don't need to create an output node, you can just connect your other nodes to {{domxref("BaseAudioContext.destination")}}, which handles the situation for you:
 
 ```js
 track.connect(audioContext.destination);
 ```
 
-이 노드들을 시각화하는 좋은 방법은 오디오 그래프를 그리는 것입니다. 이것이 현재 우리의 오디오 그래프입니다:
+A good way to visualize these nodes is by drawing an audio graph so you can visualize it. This is what our current audio graph looks like:
 
-![기본 목적지에 연결된 오디오 요소 소스를 가진 오디오 그래프](graph1.jpg)
+![an audio graph with an audio element source connected to the default destination](graph1.jpg)
 
-이제 우리는 재생과 정지 기능을 추가할 수 있습니다.
-
-```js
-// 재생 버튼을 선택합니다
-const playButton = document.querySelector('button');
-
-playButton.addEventListener('click', function() {
-
-    // 컨텍스트가 연기된(suspended) 상태에 있는지 검사합니다 (자동 재생 정책)
-    if (audioContext.state === 'suspended') {
-        audioContext.resume();
-    }
-
-    // 상태에 따라 트랙을 재생하거나 정지합니다
-    if (this.dataset.playing === 'false') {
-        audioElement.play();
-        this.dataset.playing = 'true';
-    } else if (this.dataset.playing === 'true') {
-        audioElement.pause();
-        this.dataset.playing = 'false';
-    }
-
-}, false);
-```
-
-우리는 또한 트랙이 재생을 마쳤을 때 무엇을 할 지를 고려할 필요가 있습니다. `HTMLMediaElement`는 재생이 완료되었을 때 `ended` 이벤트를 한 번 발생시키므로, 우리는 그에 맞춰 코드를 실행시킬 수 있습니다.
+Now we can add the play and pause functionality.
 
 ```js
-audioElement.addEventListener('ended', () => {
-    playButton.dataset.playing = 'false';
-}, false);
+// Select our play button
+const playButton = document.querySelector("button");
+
+playButton.addEventListener(
+  "click",
+  () => {
+    // Check if context is in suspended state (autoplay policy)
+    if (audioContext.state === "suspended") {
+      audioContext.resume();
+    }
+
+    // Play or pause track depending on state
+    if (playButton.dataset.playing === "false") {
+      audioElement.play();
+      playButton.dataset.playing = "true";
+    } else if (playButton.dataset.playing === "true") {
+      audioElement.pause();
+      playButton.dataset.playing = "false";
+    }
+  },
+  false
+);
 ```
 
-## 사운드 수정하기
+We also need to take into account what to do when the track finishes playing. Our `HTMLMediaElement` fires an `ended` event once it's finished playing, so we can listen for that and run code accordingly:
 
-우리가 가지고 있는 사운드를 변경하기 위해, 몇몇 기본적인 수정 노드에 대해 공부해 봅시다. 여기가 Web Audio API가 정말 쓸모있어지기 시작하는 곳입니다. 우선, 볼륨을 변경해 봅시다. 이것은 {{domxref("GainNode")}}를 사용하여 구현될 수 있는데, 이는 음파가 얼마나 큰지를 표현합니다.
+```js
+audioElement.addEventListener(
+  "ended",
+  () => {
+    playButton.dataset.playing = "false";
+  },
+  false
+);
+```
 
-Web Audio API로 노드를 생성하는 두 가지 방법이 있습니다. 컨텍스트 그 자체에 있는 팩토리 메서드를 사용하거나 (예: `audioContext.createGain()`) 노드의 생성자(constructor)를 사용할 수 있습니다 (예: `new GainNode()`). 우리는 팩토리 메서드를 사용할 것입니다.
+## Modifying sound
+
+Let's delve into some basic modification nodes, to change the sound that we have. This is where the Web Audio API really starts to come in handy. First of all, let's change the volume. This can be done using a {{domxref("GainNode")}}, which represents how big our sound wave is.
+
+There are two ways you can create nodes with the Web Audio API. You can use the factory method on the context itself (e.g. `audioContext.createGain()`) or via a constructor of the node (e.g. `new GainNode()`). We'll use the factory method in our code:
 
 ```js
 const gainNode = audioContext.createGain();
 ```
 
-이제 우리는 입력이 gain에 연결되고, 그리고 gain 노드가 목적지에 연결되도록 이전으로부터 우리의 오디오 그래프를 업데이트해야 합니다:
+Now we have to update our audio graph from before, so the input is connected to the gain, then the gain node is connected to the destination:
 
 ```js
 track.connect(gainNode).connect(audioContext.destination);
 ```
 
-이는 우리의 오디오 그래프를 다음과 같이 보이게 만들 것입니다:
+This will make our audio graph look like this:
 
-![오디오 소스를 수정하는 gain 노드가 연결되고, 그리고 나서 기본 목적지로 가는 오디오 요소 소스를 가진 오디오 그래프](graph2.jpg)
+![an audio graph with an audio element source, connected to a gain node that modifies the audio source, and then going to the default destination](graph2.jpg)
 
-gain의 기본값은 1입니다; 이것은 현재 볼륨을 같게 유지할 것입니다. gain은 약 -3.4의 최소값과 약 3.4의 최대값으로 설정될 수 있습니다. 여기서 우리는 카세트 플레이어가 gain을 2까지 (기존 볼륨의 2배) 그리고 0까지 (이것은 효과적으로 사운드를 무음으로 만들 것입니다) 움직일 수 있게 허용할 것입니다.
+The default value for gain is 1; this keeps the current volume the same. Gain can be set to a minimum of about -3.4028235E38 and a max of about 3.4028235E38 (float number range in JavaScript). Here we'll allow the boombox to move the gain up to 2 (double the original volume) and down to 0 (this will effectively mute our sound).
 
-사용자에게 이것을 하기 위한 제어 방법을 제공합시다 — 우리는 [범위 입력](/ko/docs/Web/HTML/Element/input/range)을 사용할 것입니다:
+Let's give the user control to do this — we'll use a [range input](/en-US/docs/Web/HTML/Element/input/range):
 
 ```html
-<input type="range" id="volume" min="0" max="2" value="1" step="0.01">
+<input type="range" id="volume" min="0" max="2" value="1" step="0.01" />
 ```
 
-> **참고:**
-> 범위 입력은 오디오 노드의 값을 갱신하는 데 있어 정말로 유용한 입력 유형입니다.
-> 여러분은 범위의 값을 명시할 수 있고 오디오 노드의 파라미터와 함께 이것을 바로 사용할 수 있습니다.
+> **Note:** Range inputs are a really handy input type for updating values on audio nodes. You can specify a range's values and use them directly with the audio node's parameters.
 
-그러므로 이 입력값을 취하고 입력 노드가 유저에 의해 바뀐 값을 가지고 있을 때 gain 값을 업데이트해 봅시다:
+So let's grab this input's value and update the gain value when the input node has its value changed by the user:
 
 ```js
-const volumeControl = document.querySelector('#volume');
+const volumeControl = document.querySelector("#volume");
 
-volumeControl.addEventListener('input', function() {
-    gainNode.gain.value = this.value;
-}, false);
+volumeControl.addEventListener(
+  "input",
+  () => {
+    gainNode.gain.value = volumeControl.value;
+  },
+  false
+);
 ```
 
-> **참고:**
-> 노드 객체의 값 (예: `GainNode.gain`)은 단순한 값이 아닙니다.
-> 이 값은 실제로는 {{domxref("AudioParam")}} 유형의 객체입니다 — 이것은 파라미터라고 불립니다.
-> 이것이 바로 `gain`에 직접 값을 설정하기보다, `GainNode.gain`의 `value` 속성을 설정해야 하는 이유입니다.
-> 이렇게 함은 이 객체가 좀 더 유연해 질 수 있게 하는데, 예를 들자면 파라미터에 주어진 시간 사이에서 변화시킬 값들의 집합을 전달하는 것을 고려해 볼 수 있겠습니다.
+> **Note:** The values of node objects (e.g. `GainNode.gain`) are not simple values; they are actually objects of type {{domxref("AudioParam")}} — these called parameters. This is why we have to set `GainNode.gain`'s `value` property, rather than just setting the value on `gain` directly. This enables them to be much more flexible, allowing for passing the parameter a specific set of values to change between over a set period of time, for example.
 
-좋습니다, 이제 사용자는 트랙의 볼륨을 업데이트할 수 있습니다! gain 노드는 만약 여러분이 무음 기능을 추가하기를 원한다면 사용하기에 완벽한 노드입니다.
+Great, now the user can update the track's volume! The gain node is the perfect node to use if you want to add mute functionality.
 
-## 스테레오 패닝을 추가하기
+## Adding stereo panning to our app
 
-우리가 방금 배운 것을 연습하기 위해 또 다른 수정 노드를 추가해 봅시다.
+Let's add another modification node to practice what we've just learnt.
 
-{{domxref("StereoPannerNode")}} 노드가 있는데, 이는 만약 사용자가 스테레오를 사용할 수 있다면, 좌측과 우측 스피커 사이의 소리의 균형을 변화시킵니다.
+There's a {{domxref("StereoPannerNode")}} node, which changes the balance of the sound between the left and right speakers, if the user has stereo capabilities.
 
-> **참고:**
->
-> `StereoPannerNode`는 여러분이 단지 좌에서 우로 스테레오 패닝을 원하는 단순한 상황을 위한 것입니다.
-> {{domxref("PannerNode")}}도 있는데, 이는 더욱 복잡한 효과를 생성하기 위해, 3D 공간, 즉 사운드 _공간화_ 제어의 훌륭한 방법을 고려합니다.
-> 예를 들자면 이것은 머리 위를 나는 새나 사용자의 뒤로부터 오는 소리를 생성하기 위해 게임과 3D 앱에서 사용됩니다.
+> **Note:** The `StereoPannerNode` is for simple cases in which you just want stereo panning from left to right.
+> There is also a {{domxref("PannerNode")}}, which allows for a great deal of control over 3D space, or sound _spatialization_, for creating more complex effects.
+> This is used in games and 3D apps to create birds flying overhead, or sound coming from behind the user for instance.
 
-이것을 시각화하기 위해서, 우리는 우리의 오디오 그래프를 다음과 같이 보이게 만들 것입니다.
+To visualize it, we will be making our audio graph look like this:
 
-![입력 노드, 두 개의 수정 노드 (gain 노드와 stereo panner 노드) 그리고 도착지 노드를 보여주는 오디오 그래프를 보여주는 이미지](graphpan.jpg)
+![An image showing the audio graph showing an input node, two modification nodes (a gain node and a stereo panner node) and a destination node.](graphpan.jpg)
 
-이번엔 노드 생성의 생성자 메서드를 사용해 봅시다. 이 방법으로 할 때에는, 이 특정한 노드가 취할지도 모르는 어떠한 옵션들과 컨텍스트를 전달해야만 합니다.
+Let's use the constructor method of creating a node this time. When we do it this way, we have to pass in the context and any options that the particular node may take:
 
 ```js
 const pannerOptions = { pan: 0 };
 const panner = new StereoPannerNode(audioContext, pannerOptions);
 ```
 
-> **참고:**
->
-> 노드 생성의 생성자 메서드는 이 시점에서 모든 브라우저에서 지원되지 않습니다. 오래된 팩토리 메서드는 더욱 널리 지원됩니다.
+> **Note:** The constructor method of creating nodes is not supported by all browsers at this time. The older factory methods are supported more widely.
 
-여기서 우리의 값은 범위가 -1 (극좌)에서 1 (극우)까지입니다. 이 파라미터를 달라지게 하기 위해 다시 범위 유형 입력을 사용합시다:
+Here our values range from -1 (far left) and 1 (far right). Again let's use a range type input to vary this parameter:
 
 ```html
-<input type="range" id="panner" min="-1" max="1" value="0" step="0.01">
+<input type="range" id="panner" min="-1" max="1" value="0" step="0.01" />
 ```
 
-패너의 값을 조정하기 위해 전에 했던 것과 같은 방법으로 우리는 이 입력으로부터의 값을 사용합니다:
+We use the values from that input to adjust our panner values in the same way as we did before:
 
 ```js
-const pannerControl = document.querySelector('#panner');
+const pannerControl = document.querySelector("#panner");
 
-pannerControl.addEventListener('input', function() {
-    panner.pan.value = this.value;
-}, false);
+pannerControl.addEventListener(
+  "input",
+  () => {
+    panner.pan.value = pannerControl.value;
+  },
+  false
+);
 ```
 
-모든 노드를 같이 연결하기 위해, 우리의 오디오 그래프를 다시 조정해 봅시다:
+Let's adjust our audio graph again, to connect all the nodes together:
 
 ```js
 track.connect(gainNode).connect(panner).connect(audioContext.destination);
 ```
 
-유일하게 남은 것은 테스트해보는 것입니다. [Codepen에서 최종 데모를 확인해 보세요.](https://codepen.io/Rumyra/pen/qyMzqN/)
+The only thing left to do is give the app a try: [Check out the final demo here on Codepen](https://codepen.io/Rumyra/pen/qyMzqN/).
 
-## 요약
+## Summary
 
-훌륭합니다! 우리는 우리의 '테이프'를 재생하는 카세트 플레이어를 가지고 있고, 볼륨과 스테레오 패닝을 조정할 수 있는데, 이는 우리에게 작동하는 상당히 기본적인 오디오 그래프를 제공합니다.
+Great! We have a boombox that plays our 'tape', and we can adjust the volume and stereo panning, giving us a fairly basic working audio graph.
 
-이것은 여러분의 웹사이트나 웹 앱에 오디오를 추가하기 위해 필요할 상당수의 기본을 구성합니다. Web Audio API에는 더 많은 기능이 있지만, 여러분이 한 번 노드의 개념을 잡고 오디오 그래프를 함께 합하면, 우리는 더욱 복잡한 기능을 보는 것으로 이동할 수 있습니다.
+This makes up quite a few basics that you would need to start to add audio to your website or web app. There's a lot more functionality to the Web Audio API, but once you've grasped the concept of nodes and putting your audio graph together, we can move on to looking at more complex functionality.
 
-## 더 많은 예제
+## More examples
 
-Web Audio API에 대해 더 배우기 위해 이용해볼 수 있는 다른 예제들이 있습니다.
+There are other examples available to learn more about the Web Audio API.
 
-[Voice-change-O-matic](https://github.com/mdn/voice-change-o-matic)는 다른 효과와 시각화를 고를 수 있게 허용하는 재미있는 목소리 변조기와 소리 시각화 웹 앱입니다. 이 애플리케이션은 상당히 기본적이지만, 다수의 Web Audio API 기능의 동시 사용을 보여줍니다. ([Voice-change-O-matic를 실행해 보세요](https://mdn.github.io/voice-change-o-matic/)).
+The [Voice-change-O-matic](https://github.com/mdn/webaudio-examples/tree/main/voice-change-o-matic) is a fun voice manipulator and sound visualization web app that allows you to choose different effects and visualizations. The application is fairly rudimentary, but it demonstrates the simultaneous use of multiple Web Audio API features. ([run the Voice-change-O-matic live](https://mdn.github.io/webaudio-examples/voice-change-o-matic/)).
 
-![음파와, 목소리 효과와 시각화를 선택하기 위한 옵션이 보여지고 있는 UI](voice-change-o-matic.png)
+![A UI with a sound wave being shown, and options for choosing voice effects and visualizations.](voice-change-o-matic.png)
 
-Web Audio API를 보여주기 위해 명확하게 개발된 또 다른 애플리케이션은 [Violent Theremin](https://mdn.github.io/violent-theremin/)인데, 이는 마우스 포인터를 움직임으로써 음 높이(pitch)와 볼륨을 변경하는 것을 허용하는 간단한 웹 애플리케이션입니다. 이것은 또한 사이키델릭한 라이트 쇼를 제공합니다 ([Violent Theremin 소스 코드를 확인해 보세요](https://github.com/mdn/violent-theremin)).
+Another application developed specifically to demonstrate the Web Audio API is the [Violent Theremin](https://mdn.github.io/webaudio-examples/violent-theremin/), a simple web application that allows you to change pitch and volume by moving your mouse pointer. It also provides a psychedelic lightshow ([see Violent Theremin source code](https://github.com/mdn/webaudio-examples/tree/master/violent-theremin)).
 
-![화면 지우기와 음소거라고 써진 두 개의 버튼을 가진, 무지개 색으로 가득 찬 페이지 ](violent-theremin.png)
+![A page full of rainbow colors, with two buttons labeled Clear screen and mute.](violent-theremin.png)
 
-또한 더 많은 예시를 보시려면 [webaudio-examples repo](https://github.com/mdn/webaudio-examples)를 참고해 보세요.
+Also see our [webaudio-examples repo](https://github.com/mdn/webaudio-examples) for more examples.

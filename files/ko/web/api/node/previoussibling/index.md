@@ -1,40 +1,79 @@
 ---
-title: Node.previousSibling
+title: "Node: previousSibling property"
+short-title: previousSibling
 slug: Web/API/Node/previousSibling
+page-type: web-api-instance-property
+browser-compat: api.Node.previousSibling
 ---
 
 {{APIRef("DOM")}}
 
-`Node.previousSibling` 은 읽기전용 속성이며 현재 호출하는 노드가 속해 있는 부모의 {{domxref("Node.childNodes", "childNodes")}} 목록에서 특정 자식 노드를 리턴하거나 `childNodes` 목록의 첫번째 노드일 경우 Null값을 리턴합니다.`
+The read-only **`previousSibling`** property of the {{domxref("Node")}} interface
+returns the node immediately preceding the specified one in its parent's
+{{domxref("Node.childNodes", "childNodes")}} list,
+or `null` if the specified node is the first in that list.
 
-## Syntax
+> **Note:** Browsers insert text nodes into a document to represent whitespace in the source markup.
+> Therefore a node obtained, for example, using [`Node.firstChild`](/en-US/docs/Web/API/Node/firstChild)
+> or `Node.previousSibling`
+> may refer to a whitespace text node rather than the actual element the author intended to get.
+>
+> See [Whitespace in the DOM](/en-US/docs/Web/API/Document_Object_Model/Whitespace) for more information.
+>
+> You can use [`previousElementSibling`](/en-US/docs/Web/API/Element/previousElementSibling)
+> to get the previous element node (skipping text nodes and any other non-element nodes).
+>
+> To navigate the opposite way through the child nodes list use [Node.nextSibling](/en-US/docs/Web/API/Node/nextSibling).
 
-```js
-previousNode = node.previousSibling;
+## Value
+
+A {{domxref("Node")}} representing the previous sibling of the current node,
+or `null` if there are none.
+
+## Examples
+
+The following examples demonstrate how `previousSibling` works with and without text nodes mixed in with elements.
+
+### First example
+
+In this example, we have a series of `img` elements directly adjacent to each other, with no whitespace between them.
+
+```html
+<img id="b0" /><img id="b1" /><img id="b2" />
 ```
 
-## Example
-
 ```js
-// <a><b1 id="b1"/><b2 id="b2"/></a>
-
-alert(document.getElementById("b1").previousSibling); // null
-alert(document.getElementById("b2").previousSibling.id); // "b1"
+document.getElementById("b1").previousSibling; // <img id="b0">
+document.getElementById("b2").previousSibling.id; // "b1"
 ```
 
-## Notes
+### Second example
 
-Gecko 기반 브라우저는 소스 마크업에서 공백을 나타내기 위해 문서 내에 텍스트 노드를 삽입합니다.
-그러므로 예를 들어 [`Node.firstChild`](/ko/docs/Web/API/Node/firstChild)나 [`Node.previousSibling`](/ko/docs/Web/API/Node/previousSibling)을 통해서 얻은 노드는 작성자가 얻으려 한 실제 요소와는
-달리 공백 텍스트 노드를 참조할 지도 모릅니다.
+In this example, there are whitespace text nodes (line breaks) between the `img` elements.
 
-더 많은 정보는 [Whitespace in the DOM](/ko/docs/Whitespace_in_the_DOM)과
-[W3C DOM 3 FAQ: Why are some Text nodes empty?](http://www.w3.org/DOM/faq.html#emptytext)를 보세요.
+```html
+<img id="b0" />
+<img id="b1" />
+<img id="b2" />
+```
 
-To navigate the opposite way through the child nodes list use [Node.nextSibling](/ko/docs/Web/API/Node.nextSibling).
+```js
+document.getElementById("b1").previousSibling; // #text
+document.getElementById("b1").previousSibling.previousSibling; // <img id="b0">
+document.getElementById("b2").previousSibling.previousSibling; // <img id="b1">
+document.getElementById("b2").previousSibling; // #text
+document.getElementById("b2").previousSibling.id; // undefined
+```
 
-## Specification
+## Specifications
 
-- [DOM Level 1 Core: previousSibling](http://www.w3.org/TR/REC-DOM-Level-1/level-one-core.html#attribute-previousSibling)
-- [DOM Level 2 Core: previousSibling](http://www.w3.org/TR/DOM-Level-2-Core/core.html#ID-640FB3C8)
-- [DOM Level 3 Core: previousSibling](http://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-640FB3C8)
+{{Specifications}}
+
+## Browser compatibility
+
+{{Compat}}
+
+## See also
+
+- {{domxref("Node.nextSibling")}}
+- {{domxref("Element.previousElementSibling")}}

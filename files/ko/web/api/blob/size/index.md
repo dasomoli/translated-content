@@ -1,25 +1,32 @@
 ---
-title: Blob.size
+title: "Blob: size property"
+short-title: size
 slug: Web/API/Blob/size
+page-type: web-api-instance-property
+browser-compat: api.Blob.size
 ---
 
-{{APIRef("File API") }}
+{{APIRef("File API")}}
 
-{{domxref("Blob")}} 인터페이스의 **`size`** 속성은 {{domxref("Blob")}} 또는 {{domxref("File")}}의 크기를 바이트 단위로 반환합니다.
+The {{domxref("Blob")}} interface's **`size`** property returns
+the size of the {{domxref("Blob")}} or {{domxref("File")}} in bytes.
 
-## 값
+## Value
 
-`Blob` 또는 {{domxref("File")}}과 같은 `Blob` 기반 객체의 데이터 크기를 바이트 단위로 나타낸 숫자입니다.
+The number of bytes of data contained within the `Blob` (or
+`Blob`-based object, such as a {{domxref("File")}}).
 
-## 예제
+## Examples
 
-이 예제는 `file` 유형의 {{htmlelement("input")}} 요소를 통해 사용자가 선택한 여러 파일을 순회하면서, 각각의 파일 이름과 바이트 크기를 출력합니다.
+This example uses an {{HTMLElement("input")}} element of type `file` to ask
+the user for a group of files, then iterates over those files outputting their names and
+lengths in bytes.
 
 ### HTML
 
 ```html
-<input type="file" id="input" multiple>
-<output id="output">파일 선택...</output>
+<input type="file" id="input" multiple />
+<output id="output">Choose files…</output>
 ```
 
 ```css hidden
@@ -32,31 +39,31 @@ output {
 ### JavaScript
 
 ```js
-const input = document.getElementById('input');
-const output = document.getElementById('output');
+const input = document.getElementById("input");
+const output = document.getElementById("output");
 
-input.addEventListener('change', (event) => {
-  output.innerText = '';
+input.addEventListener("change", (event) => {
+  output.innerText = "";
 
   for (const file of event.target.files) {
-    output.innerText += `${file.name}의 크기는 ${file.size} 바이트입니다.\n`;
+    output.innerText += `${file.name} has a size of ${file.size} bytes.\n`;
   }
 });
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample("예제")}}
+{{EmbedLiveSample("Examples")}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("Blob")}}
-- [웹 애플리케이션에서 파일 사용하기](/ko/docs/Web/API/File/Using_files_from_web_applications)
+- [Using files from web applications](/en-US/docs/Web/API/File_API/Using_files_from_web_applications)

@@ -1,45 +1,46 @@
 ---
-title: 어떤 HTML 기능이 접근성을 촉진할까?
+title: What HTML features promote accessibility?
 slug: >-
   Learn/Common_questions/Design_and_accessibility/HTML_features_for_accessibility
-original_slug: Learn/Common_questions/HTML_features_for_accessibility
 ---
 
-이번 내용은 웹 페이지를 좀 더 서로 다른 장애를 가진 사람들에게 좀 더 접근하기 쉽게 만들 수 있는 HTML의 특정한 기능을 서술합니다.
+{{QuicklinksWithSubPages("Learn/Common_questions")}}
 
-## 탭(Tabbing)
+The following content describes specific features of HTML that should be used to make a web page more accessible to people with different disabilities.
 
-pointing devices를 사용 하지 않거나 사용 할 수 없는 유저들은 <kbd>Tab</kbd> 을 links를 통해 할 수 있습니다.(links는 논리적 순서로 이루어져 있어야 합니다.) tabindex 속성은 당신이 이러한 순서를 정의 할 수 있도록 허락합니다. 만약 HTML이 선형이라면, 논리적 탭 순서는 자동적으로 맞춰집니다.
+## Link text
 
-```html
-<ul>
-  <li><a href="here.html" tabindex="1">Here</a></li>
-  <li><a href="there.html" tabindex="3">There</a></li>
-  <li><a href="anywhere.html" tabindex="2">Anywhere</a></li>
-</ul>
-```
-
-이번 예시는(순수히 데모를 위해 사용되었으니 따라하지 마세요), 탭이 여기서부터 여기저기를 점프합니다.
-
-## 링크 제목(Link Titles)
-
-만약 당신이 자신을 설명하지 않는 링크를 가지고 있거나, 링크 목적지가 더 자세하게 설명되지 않으면, 그 링크에 제목 속성을 추가 할 수 있습니다.
+If you have a link that isn't self-descriptive, or the link destination could benefit from being explained in more detail, you can add information to a link using the [`aria-label`](/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-label) or [`aria-labelledby`](/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-labelledby) attributes.
 
 ```html
-<p>I'm really bad at writing link text. <a href="inept.html" title="Why I'm rubbish at writing link text: An explanation and an apology.">Click here</a> to find out more.</p>
+<p>
+  I'm really bad at writing link text.
+  <a
+    href="inept.html"
+    aria-label="Why I'm rubbish at writing link text: An explanation and an apology."
+    >Click here</a
+  >
+  to find out more.
+</p>
+<p>
+  I'm really <span id="incompetence">bad at writing link text</span>.
+  <a href="inept.html" aria-labelledby="incompetence">Click here</a> to find out
+  more.
+</p>
 ```
 
-## 접근 키(Access Keys)
-
-_접근 키는_ 링크에 사용자가 <kbd>Alt</kbd> or <kbd>Ctrl</kbd> + 접근 키를 입력하여 얻을 수 있는 키보드 단축키를 할당하여 쉬운 네비게이션을 제공합니다. 정확한 키 조합은 플래폼에 따라 다릅니다.
+Note that, most of the time, it is better to instead write useful link text:
 
 ```html
-<a href="somepage.html" accesskey="s">Some page</a>
+<p>
+  I wrote a
+  <a href="capable.html">blog post about how good I am at writing link text</a>.
+</p>
 ```
 
-## 링크 넘어가기(Skip Links)
+## Skip Links
 
-탭을 지원하기 위하여, 당신은 유저가 당신의 웹 페이지 모음으로 넘어갈 수 있는 링크를 제공할 수 있습니다. 당신은 아마도 다른 사람이 네비게이션 링크를 따라 점프하기를 원할 것입니다. 그렇게 함으로써, 페이지의 메인 내용을 읽을 수 있습니다.
+To aid tabbing, you can supply a [skip link](/en-US/docs/Web/HTML/Element/a#skip_links) that allow users to jump over chunks of your web page. You might want to allow someone to jump over a plethora of navigation links that are found on every page. This enables keyboard users to quickly tab over repeated content and go directly to the page's main content:
 
 ```html
 <header>
@@ -54,4 +55,34 @@ _접근 키는_ 링크에 사용자가 <kbd>Alt</kbd> or <kbd>Ctrl</kbd> + 접�
 <section id="content">
   <!--your content -->
 </section>
+```
+
+## Alt attribute for image
+
+Every image should have an [`alt`](/en-US/docs/Web/HTML/Element/img#alt) attribute. If the image is purely decoration and adds no meaning to the content or context of the document, the `alt` attribute should be present, but empty. You can optionally also add [`role="presentation"`](/en-US/docs/Web/Accessibility/ARIA/Roles/presentation_role). All other images should include an `alt` attribute providing [alternative text describing the image](/en-US/docs/Web/API/HTMLImageElement/alt#usage_notes) in a way that is helpful to users who can read the rest of the content but can't see the image. Think about how you would describe the image to someone who can't load your image: that's the information you should include as the value of the `alt` attribute.
+
+```html
+<!-- decorative image -->
+<img alt="" src="blueswish.png" role="presentation" />
+<img
+  alt="The Open Web Docs logo: Carle the book worm smiling"
+  src="carle.svg"
+  role="img" />
+```
+
+The `alt` attribute for the same content may vary depending on the context. In the following example, an animated gif is used instead of a progress bar to show the page load progress for a document teaching developers how to use the HTML [`<progress>`](/en-US/docs/Web/HTML/Element/progress) element:
+
+```html
+<img alt="20% complete" src="load-progress.gif" />
+<img
+  alt="The progress bar is a thick green square to the left of the thumb and a thin grey line to the right. The thumb is a circle with a diameter the height of the green area."
+  src="screenshot-progressbar.png" />
+```
+
+## ARIA role attribute
+
+By default, all semantic elements in HTML have a [`role`](/en-US/docs/Web/Accessibility/ARIA/Roles); for example, `<input type="radio">` has the `radio` role. Non-semantic elements in HTML do not have a role. ARIA roles can be used to describe elements that don't natively exist in HTML, such as a [`tablist`](/en-US/docs/Web/Accessibility/ARIA/Roles/tablist_role) widget. Roles are also helpful for newer elements that exist but don't yet have full browser support. For example, when using SVG images, add `role="img"` to the opening tag, as there is an [SVG VoiceOver bug](https://webkit.org/b/216364) whereby VoiceOver does not correctly announce SVG images.
+
+```html
+<img src="mdn.svg" alt="MDN logo" role="img" />
 ```

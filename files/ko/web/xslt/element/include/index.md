@@ -1,36 +1,35 @@
 ---
-title: include
+title: <xsl:include>
 slug: Web/XSLT/Element/include
-original_slug: Web/XSLT/include
 ---
 
 {{ XsltRef() }}
 
-`<xsl:include>` 요소는 한 스타일시트의 컨텐트를 다른 스타일시트에 합칩니다. `<xsl:import>`와는 달리, 포함되는 스타일시트의 컨텐트는 포함하는 스타일시트의 컨텐트와 우선순위가 정확히 같습니다.
+The `<xsl:include>` element merges the contents of one stylesheet with another. Unlike the case of `<xsl:import>`, the contents of an included stylesheet have exactly the same precedence as the contents of the including stylesheet.
 
-### 문법
+### Syntax
 
-```
+```xml
 <xsl:include href=URI />
 ```
 
-### 필수 속성
+### Required Attributes
 
 - `href`
-  - : 포함할 스타일시트의 URI를 지정합니다.
+  - : Specifies the URI of the stylesheet to include.
 
-### 선택 속성
+### Optional Attributes
 
-없음.
+None.
 
-### 타입
+### Type
 
-최상위, `<xsl:stylesheet>`나 `<xsl:transform>`의 자식으로 나타남.
+Top-level, may appear in any order as a child of `<xsl:stylesheet>` or `<xsl:transform>`.
 
-### 정의
+### Defined
 
-[XSLT section 2.6.1, Stylesheet Inclusion](http://www.w3.org/TR/xslt#include)
+XSLT, section 2.6.1.
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

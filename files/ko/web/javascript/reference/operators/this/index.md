@@ -1,378 +1,533 @@
 ---
 title: this
 slug: Web/JavaScript/Reference/Operators/this
+page-type: javascript-language-feature
+browser-compat: javascript.operators.this
 ---
 
 {{jsSidebar("Operators")}}
 
-JavaScript에서 **함수의 `this` 키워드**는 다른 언어와 조금 다르게 동작합니다. 또한 [엄격 모드](/ko/docs/Web/JavaScript/Reference/Strict_mode)와 비엄격 모드에서도 일부 차이가 있습니다.
+A function's **`this`** keyword behaves a little differently in JavaScript compared to other languages. It also has some differences between [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode) and non-strict mode.
 
-대부분의 경우 `this`의 값은 함수를 호출한 방법에 의해 결정됩니다. 실행중에는 할당으로 설정할 수 없고 함수를 호출할 때 마다 다를 수 있습니다. ES5는 {{jsxref('Operators/this', "함수를 어떻게 호출했는지 상관하지 않고 <code>this</code> 값을 설정할 수 있는")}} {{jsxref("Function.prototype.bind()", "bind")}} 메서드를 도입했고, ES2015는 스스로의 `this` 바인딩을 제공하지 않는 [화살표 함수](/ko/docs/Web/JavaScript/Reference/Functions/%EC%95%A0%EB%A1%9C%EC%9A%B0_%ED%8E%91%EC%85%98)를 추가했습니다(이는 렉시컬 컨텍스트안의 `this`값을 유지합니다).
+In most cases, the value of `this` is determined by how a function is called (runtime binding). It can't be set by assignment during execution, and it may be different each time the function is called. The {{jsxref("Function.prototype.bind()", "bind()")}} method can [set the value of a function's `this` regardless of how it's called](#the_bind_method), and [arrow functions](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions) don't provide their own `this` binding (it retains the `this` value of the enclosing lexical context).
 
 {{EmbedInteractiveExample("pages/js/expressions-this.html")}}
 
-## 구문
+## Syntax
 
-```js
-    this
+```js-nolint
+this
 ```
 
-### 값
+### Value
 
-실행 컨텍스트(global, function 또는 eval)의 프로퍼티는 비엄격 모드에서 항상 객체를 참조하며, 엄격 모드에서는 어떠한 값이든 될 수 있습니다.
+In non–strict mode, `this` is always a reference to an object. In strict mode, it can be any value. For more information on how the value is determined, see the description below.
 
-## 전역 문맥
+## Description
 
-전역 실행 맥락에서 `this`는 엄격 모드 여부에 관계 없이 전역 객체를 참조합니다.
+The value of `this` depends on in which context it appears: function, class, or global.
 
-```js
-// 웹 브라우저에서는 window 객체가 전역 객체
-console.log(this === window); // true
+### Function context
 
-a = 37;
-console.log(window.a); // 37
+Inside a function, the value of `this` depends on how the function is called. Think about `this` as a hidden parameter of a function — just like the parameters declared in the function definition, `this` is a binding that the language creates for you when the function body is evaluated.
 
-this.b = "MDN";
-console.log(window.b)  // "MDN"
-console.log(b)         // "MDN"
-```
-
-> **노트:** global {{jsxref("globalThis")}} 프로퍼티를 사용하여 코드가 실행중인 현재 컨텍스트와 관계없이 항상 전역 객체를 얻을 수 있습니다.
-
-## 함수 문맥
-
-함수 내부에서 `this`의 값은 함수를 호출한 방법에 의해 좌우됩니다.
-
-### 단순 호출
-
-다음 예제는 엄격 모드가 아니며 `this`의 값이 호출에 의해 설정되지 않으므로, 기본값으로 브라우저에서는 {{domxref("Window", "window")}}인 전역 객체를 참조합니다.
+For a typical function, the value of `this` is the object that the function is accessed on. In other words, if the function call is in the form `obj.f()`, then `this` refers to `obj`. For example:
 
 ```js
-function f1() {
+function getThis() {
   return this;
 }
 
-// 브라우저
-f1() === window; // true
+const obj1 = { name: "obj1" };
+const obj2 = { name: "obj2" };
 
-// Node.js
-f1() === global; // true
+obj1.getThis = getThis;
+obj2.getThis = getThis;
+
+console.log(obj1.getThis()); // { name: 'obj1', getThis: [Function: getThis] }
+console.log(obj2.getThis()); // { name: 'obj2', getThis: [Function: getThis] }
 ```
 
-반면에 엄격 모드에서 `this` 값은 실행 문맥에 진입하며 설정되는 값을 유지하므로 다음 예시에서 보여지는 것 처럼 `this`는 `undefined`로 남아있습니다.
+Note how the function is the same, but based on how it's invoked, the value of `this` is different. This is analogous to how function parameters work.
+
+The value of `this` is not the object that has the function as an own property, but the object that is used to call the function. You can prove this by calling a method of an object up in the [prototype chain](/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain).
 
 ```js
-function f2(){
-  "use strict"; // 엄격 모드 참고
+const obj3 = {
+  __proto__: obj1,
+  name: "obj3",
+};
+
+console.log(obj3.getThis()); // { name: 'obj3' }
+```
+
+The value of `this` always changes based on how a function is called, even when the function was defined on an object at creation:
+
+```js
+const obj4 = {
+  name: "obj4",
+  getThis() {
+    return this;
+  },
+};
+
+const obj5 = { name: "obj5" };
+
+obj5.getThis = obj4.getThis;
+console.log(obj5.getThis()); // { name: 'obj5', getThis: [Function: getThis] }
+```
+
+If the value that the method is accessed on is a primitive, `this` will be a primitive value as well — but only if the function is in strict mode.
+
+```js
+function getThisStrict() {
+  "use strict"; // Enter strict mode
   return this;
 }
 
-f2() === undefined; // true
+// Only for demonstration — you should not mutate built-in prototypes
+Number.prototype.getThisStrict = getThisStrict;
+console.log(typeof (1).getThisStrict()); // "number"
 ```
 
-<div class="blockIndicator note"><p>두번째 예제에서 <code>f2</code>를 객체의 메서드나 속성(예: <code>window.f2()</code>)으로써가 아닌 직접 호출했기 때문에 <code>this</code>는 {{jsxref("undefined")}}여야 합니다. 그러나 엄격 모드를 처음 지원하기 시작한 초기 브라우저에서는 구현하지 않았고, <code>window</code> 객체를 잘못 반환했습니다.</p></div>
-
-`this`의 값을 한 문맥에서 다른 문맥으로 넘기려면 다음 예시와 같이 {{jsxref("Function.prototype.call()", "call()")}}이나 {{jsxref("Function.prototype.apply", "apply()")}}를 사용하세요.
-
-**예시 1**
+If the function is called without being accessed on anything, `this` will be `undefined` — but only if the function is in strict mode.
 
 ```js
-// call 또는 apply의 첫 번째 인자로 객체가 전달될 수 있으며 this가 그 객체에 묶임
-var obj = {a: 'Custom'};
+console.log(typeof getThisStrict()); // "undefined"
+```
 
-// 변수를 선언하고 변수에 프로퍼티로 전역 window를 할당
-var a = 'Global';
+In non-strict mode, a special process called [`this` substitution](/en-US/docs/Web/JavaScript/Reference/Strict_mode#no_this_substitution) ensures that the value of `this` is always an object. This means:
 
-function whatsThis() {
-  return this.a;  // 함수 호출 방식에 따라 값이 달라짐
+- If a function is called with `this` set to `undefined` or `null`, `this` gets substituted with {{jsxref("globalThis")}}.
+- If the function is called with `this` set to a primitive value, `this` gets substituted with the primitive value's wrapper object.
+
+```js
+function getThis() {
+  return this;
 }
 
-whatsThis();          // this는 'Global'. 함수 내에서 설정되지 않았으므로 global/window 객체로 초기값을 설정한다.
-whatsThis.call(obj);  // this는 'Custom'. 함수 내에서 obj로 설정한다.
-whatsThis.apply(obj); // this는 'Custom'. 함수 내에서 obj로 설정한다.
+// Only for demonstration — you should not mutate built-in prototypes
+Number.prototype.getThis = getThis;
+console.log(typeof (1).getThis()); // "object"
+console.log(getThis() === globalThis); // true
 ```
 
-**예시 2**
+In typical function calls, `this` is implicitly passed like a parameter through the function's prefix (the part before the dot). You can also explicitly set the value of `this` using the {{jsxref("Function.prototype.call()")}}, {{jsxref("Function.prototype.apply()")}}, or {{jsxref("Reflect.apply()")}} methods. Using {{jsxref("Function.prototype.bind()")}}, you can create a new function with a specific value of `this` that doesn't change regardless of how the function is called. When using these methods, the `this` substitution rules above still apply if the function is non-strict.
+
+#### Callbacks
+
+When a function is passed as a callback, the value of `this` depends on how the callback is called, which is determined by the implementor of the API. Callbacks are _typically_ called with a `this` value of `undefined` (calling it directly without attaching it to any object), which means if the function is non–strict, the value of `this` is the global object ({{jsxref("globalThis")}}). This is the case for [iterative array methods](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#iterative_methods), the [`Promise()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/Promise) constructor, etc.
 
 ```js
-function add(c, d) {
-  return this.a + this.b + c + d;
+function logThis() {
+  "use strict";
+  console.log(this);
 }
 
-var o = {a: 1, b: 3};
-
-// 첫 번째 인자는 'this'로 사용할 객체이고,
-// 이어지는 인자들은 함수 호출에서 인수로 전달된다.
-add.call(o, 5, 7); // 16
-
-// 첫 번째 인자는 'this'로 사용할 객체이고,
-// 두 번째 인자는 함수 호출에서 인수로 사용될 멤버들이 위치한 배열이다.
-add.apply(o, [10, 20]); // 34
+[1, 2, 3].forEach(logThis); // undefined, undefined, undefined
 ```
 
-비엄격 모드에서 `this`로 전달된 값이 객체가 아닌 경우, `call`과 `apply`는 이를 객체로 변환하기 위한 시도를 합니다. `null`과 `undefined` 값은 전역 객체가 됩니다. `7`이나 `'foo'`와 같은 원시값은 관련된 생성자를 사용해 객체로 변환되며, 따라서 원시 숫자 `7`은 `new Number(7)`에 의해 객체로 변환되고 문자열 `'foo'`는 `new String('foo')`에 의해 객체로 변환됩니다.
+Some APIs allow you to set a `this` value for invocations of the callback. For example, all iterative array methods and related ones like {{jsxref("Set.prototype.forEach()")}} accept an optional `thisArg` parameter.
 
 ```js
-function bar() {
-  console.log(Object.prototype.toString.call(this));
-}
-
-bar.call(7);     // [object Number]
-bar.call('foo'); // [object String]
-bar.call(undefined); // [object global]
+[1, 2, 3].forEach(logThis, { name: "obj" });
+// { name: 'obj' }, { name: 'obj' }, { name: 'obj' }
 ```
 
-### `bind` 메서드
+Occasionally, a callback is called with a `this` value other than `undefined`. For example, the `reviver` parameter of {{jsxref("JSON.parse()")}} and the `replacer` parameter of {{jsxref("JSON.stringify()")}} are both called with `this` set to the object that the property being parsed/serialized belongs to.
 
-ECMAScript 5는 {{jsxref("Function.prototype.bind")}}를 도입했습니다. `f.bind(someObject)`를 호출하면 `f`와 같은 본문(코드)과 범위를 가졌지만 this는 원본 함수를 가진 새로운 함수를 생성합니다. 새 함수의 `this`는 호출 방식과 상관없이 영구적으로`bind()`의 첫 번째 매개변수로 고정됩니다.
+#### Arrow functions
 
-```js
-function f() {
-  return this.a;
-}
+In [arrow functions](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions), `this` retains the value of the enclosing lexical context's `this`. In other words, when evaluating an arrow function's body, the language does not create a new `this` binding.
 
-var g = f.bind({a: 'azerty'});
-console.log(g()); // azerty
-
-var h = g.bind({a: 'yoo'}); // bind는 한 번만 동작함!
-console.log(h()); // azerty
-
-var o = {a: 37, f: f, g: g, h: h};
-console.log(o.a, o.f(), o.g(), o.h()); // 37, 37, azerty, azerty
-```
-
-### 화살표 함수
-
-[화살표 함수](/ko/docs/Web/JavaScript/Reference/Functions/%EC%95%A0%EB%A1%9C%EC%9A%B0_%ED%8E%91%EC%85%98)에서 `this`는 자신을 감싼 정적 범위입니다. 전역 코드에서는 전역 객체를 가리킵니다.
+For example, in global code, `this` is always `globalThis` regardless of strictness, because of the [global context](#global_context) binding:
 
 ```js
-var globalObject = this;
-var foo = (() => this);
+const globalObject = this;
+const foo = () => this;
 console.log(foo() === globalObject); // true
 ```
 
-<div class="blockIndicator note"><p><strong>참고</strong>: 화살표 함수를 <code>call()</code>, <code>bind()</code>, <code>apply()</code>를 사용해 호출할 때 <code>this</code>의 값을 정해주더라도 무시합니다. 사용할 매개변수를 정해주는 건 문제 없지만, 첫 번째 매개변수(<code>thisArg</code>)는 <code>null</code>을 지정해야 합니다.</p></div>
+Arrow functions create a [closure](/en-US/docs/Web/JavaScript/Closures) over the `this` value of its surrounding scope, which means arrow functions behave as if they are "auto-bound" — no matter how it's invoked, `this` is set to what it was when the function was created (in the example above, the global object). The same applies to arrow functions created inside other functions: their `this` remains that of the enclosing lexical context. [See example below](#this_in_arrow_functions).
+
+Furthermore, when invoking arrow functions using `call()`, `bind()`, or `apply()`, the `thisArg` parameter is ignored. You can still pass other arguments using these methods, though.
 
 ```js
-// 객체로서 메서드 호출
-var obj = {func: foo};
-console.log(obj.func() === globalObject); // true
+const obj = { name: "obj" };
 
-// call을 사용한 this 설정 시도
+// Attempt to set this using call
 console.log(foo.call(obj) === globalObject); // true
 
-// bind를 사용한 this 설정 시도
-foo = foo.bind(obj);
-console.log(foo() === globalObject); // true
+// Attempt to set this using bind
+const boundFoo = foo.bind(obj);
+console.log(boundFoo() === globalObject); // true
 ```
 
-어떤 방법을 사용하든 `foo`의 `this`는 생성 시점의 것으로 설정됩니다(위 예시에서는 global 객체). 다른 함수 내에서 생성된 화살표 함수에도 동일하게 적용됩니다. `this`는 싸여진 렉시컬 컨텍스트의 것으로 유지됩니다.
+#### Constructors
+
+When a function is used as a constructor (with the {{jsxref("Operators/new", "new")}} keyword), its `this` is bound to the new object being constructed, no matter which object the constructor function is accessed on. The value of `this` becomes the value of the `new` expression unless the constructor returns another non–primitive value.
 
 ```js
-// this를 반환하는 메소드 bar를 갖는 obj를 생성합니다.
-// 반환된 함수는 화살표 함수로 생성되었으므로,
-// this는 감싸진 함수의 this로 영구적으로 묶입니다.
-// bar의 값은 호출에서 설정될 수 있으며, 이는 반환된 함수의 값을 설정하는 것입니다.
-var obj = {
-  bar: function() {
-    var x = (() => this);
-    return x;
-  }
-};
-
-// obj의 메소드로써 bar를 호출하고, this를 obj로 설정
-// 반환된 함수로의 참조를 fn에 할당
-var fn = obj.bar();
-
-// this 설정 없이 fn을 호출하면,
-// 기본값으로 global 객체 또는 엄격 모드에서는 undefined
-console.log(fn() === obj); // true
-
-// 호출 없이 obj의 메소드를 참조한다면 주의하세요.
-var fn2 = obj.bar;
-// 화살표 함수의 this를 bar 메소드 내부에서 호출하면
-// fn2의 this를 따르므로 window를 반환할것입니다.
-console.log(fn2()() == window); // true
-```
-
-위 예시에서, `obj.bar`에 할당된 함수(익명 함수 A라고 지칭)는 화살표 함수로 생성된 다른 함수(익명 함수 B라고 지칭)를 반환합니다. 결과로써 함수 B가 호출될 때 B의 `this`는 영구적으로 `obj.bar`(함수 A)의 `this`로 설정됩니다. 반환됨 함수(함수 B)가 호출될 때, `this`는 항상 초기에 설정된 값일 것입니다. 위 코드 예시에서, 함수 B의 `this`는 함수 A의 `this`인 `obj`로 설정되므로, 일반적으로 `this`를 `undefined`나 global 객체로 설정하는 방식으로 호출할 때도(또는 이전 예시에서처럼 global 실행 컨텍스트에서 다른 방법을 사용할 때에도) obj의 설정은 유지됩니다.
-
-### 객체의 메서드로서
-
-함수를 어떤 객체의 메서드로 호출하면 `this`의 값은 그 객체를 사용합니다.
-
-다음 예제에서 `o.f()`를 실행할 때 `o` 객체가 함수 내부의 `this`와 연결됩니다.
-
-```js
-var o = {
-  prop: 37,
-  f: function() {
-    return this.prop;
-  }
-};
-
-console.log(o.f()); // 37
-```
-
-이 행동이 함수가 정의된 방법이나 위치에 전혀 영향을 받지 않는 것에 유의해라. 이전 예제에서, `o` 의 정의 중 `f` 함수를 구성원으로 내부에 정의 하였다. 그러나, 간단하게 함수를 먼저 정의하고 나중에 `o.f`를 추가할 수 있다. 이렇게 하면 동일한 동작 결과 이다 :
-
-```js
-var o = {prop: 37};
-
-function independent() {
-  return this.prop;
-}
-
-o.f = independent;
-
-console.log(o.f()); // logs 37
-```
-
-이는 함수가 `o`의 멤버 `f`로 부터 호출 된 것만이 중요하다는 것을 보여준다.
-
-마찬가지로, 이 `this` 바인딩은 가장 즉각으로 멤버 대상에 영향을 받는다. 다음 예제에서, 함수를 실행할 때, 객체 `o.b`의 메소드 `g` 로서 호출한다. 이것이 실행되는 동안, 함수 내부의 `this`는 `o.b`를 나타낸다. 객체는 그 자신이 `o`의 멤버 중 하나라는 사실은 중요하지 않다. 가장 즉각적인 참조가 중요한 것이다.
-
-```js
-o.b = {g: independent, prop: 42};
-console.log(o.b.g()); // logs 42
-```
-
-#### 객체의 프로토타입 체인에서의 `this`
-
-같은 개념으로 객체의 프로토타입 체인 어딘가에 정의한 메서드도 마찬가지입니다. 메서드가 어떤 객체의 프로토타입 체인 위에 존재하면, `this`의 값은 그 객체가 메서드를 가진 것 마냥 설정됩니다.
-
-```js
-var o = {
-  f:function() { return this.a + this.b; }
-};
-var p = Object.create(o);
-p.a = 1;
-p.b = 4;
-
-console.log(p.f()); // 5
-```
-
-이 예제에서, `f` 속성을 가지고 있지 않은 변수 `p` 가 할당된 객체는, 프로토타입으로 부터 상속받는다. 그러나 그것은 결국 `o` 에서 `f` 이름을 가진 멤버를 찾는 되는 문제가 되지 않는다; `p.f` 를 찾아 참조하기 시작하므로, 함수 내부의 `this` 는 `p` 처럼 나타나는 객체 값을 취한다. 즉, `f` 는 `p` 의 메소드로서 호출된 이후로, `this` 는 `p` 를 나타낸다. 이것은 JavaScript 의 프로토타입 상속의 흥미로운 기능이다.
-
-#### 접근자와 설정자의 `this`
-
-다시 한 번 같은 개념으로, 함수를 접근자와 설정자에서 호출하더라도 동일합니다. 접근자나 설정자로 사용하는 함수의 `this`는 접근하거나 설정하는 속성을 가진 객체로 묶입니다.
-
-```js
-function sum() {
-  return this.a + this.b + this.c;
-}
-
-var o = {
-  a: 1,
-  b: 2,
-  c: 3,
-  get average() {
-    return (this.a + this.b + this.c) / 3;
-  }
-};
-
-Object.defineProperty(o, 'sum', {
-    get: sum, enumerable: true, configurable: true});
-
-console.log(o.average, o.sum); // 2, 6
-```
-
-### 생성자로서
-
-함수를 {{jsxref("Operators/new", "new")}} 키워드와 함께 생성자로 사용하면 `this`는 새로 생긴 객체에 묶입니다.
-
-<div class="blockIndicator note"><p>While the default for a constructor is to return the object referenced by <code>this</code>, it can instead return some other object (if the return value isn't an object, then the <code>this</code> object is returned).</p></div>
-
-```js
-/*
- * Constructors work like this:
- *
- * function MyConstructor(){
- *   // Actual function body code goes here.
- *   // Create properties on |this| as
- *   // desired by assigning to them.  E.g.,
- *   this.fum = "nom";
- *   // et cetera...
- *
- *   // If the function has a return statement that
- *   // returns an object, that object will be the
- *   // result of the |new| expression.  Otherwise,
- *   // the result of the expression is the object
- *   // currently bound to |this|
- *   // (i.e., the common case most usually seen).
- * }
- */
-
 function C() {
   this.a = 37;
 }
 
-var o = new C();
+let o = new C();
 console.log(o.a); // 37
-
 
 function C2() {
   this.a = 37;
-  return {a: 38};
+  return { a: 38 };
 }
 
 o = new C2();
 console.log(o.a); // 38
 ```
 
-### DOM 이벤트 처리기로서
+In the second example (`C2`), because an object was returned during construction, the new object that `this` was bound to gets discarded. (This essentially makes the statement `this.a = 37;` dead code. It's not exactly dead because it gets executed, but it can be eliminated with no outside effects.)
 
-함수를 이벤트 처리기로 사용하면 this는 이벤트를 발사한 요소로 설정됩니다. 일부 브라우저는 {{domxref("EventTarget.addEventListener()", "addEventListener()")}} 외의 다른 방법으로 추가한 처리기에 대해선 이 규칙을 따르지 않습니다.
+#### super
+
+When a function is invoked in the `super.method()` form, the `this` inside the `method` function is the same value as the `this` value around the `super.method()` call, and is generally not equal to the object that `super` refers to. This is because `super.method` is not an object member access like the ones above — it's a special syntax with different binding rules. For examples, see the [`super` reference](/en-US/docs/Web/JavaScript/Reference/Operators/super#calling_methods_from_super).
+
+### Class context
+
+A [class](/en-US/docs/Web/JavaScript/Reference/Classes) can be split into two contexts: static and instance. [Constructors](/en-US/docs/Web/JavaScript/Reference/Classes/constructor), methods, and instance field initializers ([public](/en-US/docs/Web/JavaScript/Reference/Classes/Public_class_fields) or [private](/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields)) belong to the instance context. [Static](/en-US/docs/Web/JavaScript/Reference/Classes/static) methods, static field initializers, and [static initialization blocks](/en-US/docs/Web/JavaScript/Reference/Classes/Static_initialization_blocks) belong to the static context. The `this` value is different in each context.
+
+Class constructors are always called with `new`, so their behavior is the same as [function constructors](#constructors): the `this` value is the new instance being created. Class methods behave like methods in object literals — the `this` value is the object that the method was accessed on. If the method is not transferred to another object, `this` is generally an instance of the class.
+
+Static methods are not properties of `this`. They are properties of the class itself. Therefore, they are generally accessed on the class, and `this` is the value of the class (or a subclass). Static initialization blocks are also evaluated with `this` set to the current class.
+
+Field initializers are also evaluated in the context of the class. Instance fields are evaluated with `this` set to the instance being constructed. Static fields are evaluated with `this` set to the current class. This is why arrow functions in field initializers are [bound to the class](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#cannot_be_used_as_methods).
 
 ```js
-// 처리기로 호출하면 관련 객체를 파랗게 만듦
+class C {
+  instanceField = this;
+  static staticField = this;
+}
+
+const c = new C();
+console.log(c.instanceField === c); // true
+console.log(C.staticField === C); // true
+```
+
+#### Derived class constructors
+
+Unlike base class constructors, derived constructors have no initial `this` binding. Calling {{jsxref("Operators/super", "super()")}} creates a `this` binding within the constructor and essentially has the effect of evaluating the following line of code, where `Base` is the base class:
+
+```js
+this = new Base();
+```
+
+> **Warning:** Referring to `this` before calling `super()` will throw an error.
+
+Derived classes must not return before calling `super()`, unless the constructor returns an object (so the `this` value is overridden) or the class has no constructor at all.
+
+```js
+class Base {}
+class Good extends Base {}
+class AlsoGood extends Base {
+  constructor() {
+    return { a: 5 };
+  }
+}
+class Bad extends Base {
+  constructor() {}
+}
+
+new Good();
+new AlsoGood();
+new Bad(); // ReferenceError: Must call super constructor in derived class before accessing 'this' or returning from derived constructor
+```
+
+### Global context
+
+In the global execution context (outside of any functions or classes; may be inside [blocks](/en-US/docs/Web/JavaScript/Reference/Statements/block) or [arrow functions](#arrow_functions) defined in the global scope), the `this` value depends on what execution context the script runs in. Like [callbacks](#callbacks), the `this` value is determined by the runtime environment (the caller).
+
+At the top level of a script, `this` refers to {{jsxref("globalThis")}} whether in strict mode or not. This is generally the same as the global object — for example, if the source is put inside an HTML [`<script>`](/en-US/docs/Web/HTML/Element/script) element and executed as a script, `this === window`.
+
+> **Note:** `globalThis` is generally the same concept as the global object (i.e. adding properties to `globalThis` makes them global variables) — this is the case for browsers and Node — but hosts are allowed to provide a different value for `globalThis` that's unrelated to the global object.
+
+```js
+// In web browsers, the window object is also the global object:
+console.log(this === window); // true
+
+this.b = "MDN";
+console.log(window.b); // "MDN"
+console.log(b); // "MDN"
+```
+
+If the source is loaded as a [module](/en-US/docs/Web/JavaScript/Guide/Modules) (for HTML, this means adding `type="module"` to the `<script>` tag), `this` is always `undefined` at the top level.
+
+If the source is executed with [`eval()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval), `this` is the same as the enclosing context for [direct eval](/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval#direct_and_indirect_eval), or `globalThis` (as if it's run in a separate global script) for indirect eval.
+
+```js
+function test() {
+  // Direct eval
+  console.log(eval("this") === this);
+  // Indirect eval, non-strict
+  console.log(eval?.("this") === globalThis);
+  // Indirect eval, strict
+  console.log(eval?.("'use strict'; this") === globalThis);
+}
+
+test.call({ name: "obj" }); // Logs 3 "true"
+```
+
+Note that some source code, while looking like the global scope, is actually wrapped in a function when executed. For example, Node.js CommonJS modules are wrapped in a function and executed with the `this` value set to `module.exports`. [Event handler attributes](#this_in_inline_event_handlers) are executed with `this` set to the element they are attached to.
+
+Object literals don't create a `this` scope — only functions (methods) defined within the object do. Using `this` in an object literal inherits the value from the surrounding scope.
+
+```js
+const obj = {
+  a: this,
+};
+
+console.log(obj.a === window); // true
+```
+
+## Examples
+
+### this in function contexts
+
+The value of `this` depends on how the function is called, not how it's defined.
+
+```js
+// An object can be passed as the first argument to call
+// or apply and this will be bound to it.
+const obj = { a: "Custom" };
+
+// Variables declared with var become properties of the global object.
+var a = "Global";
+
+function whatsThis() {
+  return this.a; // The value of this is dependent on how the function is called
+}
+
+whatsThis(); // 'Global'; this in the function isn't set, so it defaults to the global/window object in non–strict mode
+obj.whatsThis = whatsThis;
+obj.whatsThis(); // 'Custom'; this in the function is set to obj
+```
+
+Using `call()` and `apply()`, you can pass the value of `this` as if it's an actual parameter.
+
+```js
+function add(c, d) {
+  return this.a + this.b + c + d;
+}
+
+const o = { a: 1, b: 3 };
+
+// The first parameter is the object to use as 'this'; subsequent
+// parameters are used as arguments in the function call
+add.call(o, 5, 7); // 16
+
+// The first parameter is the object to use as 'this', the second is an
+// array whose members are used as arguments in the function call
+add.apply(o, [10, 20]); // 34
+```
+
+### this and object conversion
+
+In non–strict mode, if a function is called with a `this` value that's not an object, the `this` value is substituted with an object. `null` and `undefined` become `globalThis`. Primitives like `7` or `'foo'` are converted to an object using the related constructor, so the primitive number `7` is converted to a {{jsxref("Number")}} wrapper class and the string `'foo'` to a {{jsxref("String")}} wrapper class.
+
+```js
+function bar() {
+  console.log(Object.prototype.toString.call(this));
+}
+
+bar.call(7); // [object Number]
+bar.call("foo"); // [object String]
+bar.call(undefined); // [object Window]
+```
+
+### The bind() method
+
+Calling [`f.bind(someObject)`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind) creates a new function with the same body and scope as `f`, but the value of `this` is permanently bound to the first argument of `bind`, regardless of how the function is being called.
+
+```js
+function f() {
+  return this.a;
+}
+
+const g = f.bind({ a: "azerty" });
+console.log(g()); // azerty
+
+const h = g.bind({ a: "yoo" }); // bind only works once!
+console.log(h()); // azerty
+
+const o = { a: 37, f, g, h };
+console.log(o.a, o.f(), o.g(), o.h()); // 37,37, azerty, azerty
+```
+
+### this in arrow functions
+
+Arrow functions create closures over the `this` value of the enclosing execution context. In the following example, we create `obj` with a method `getThisGetter` that returns a function that returns the value of `this`. The returned function is created as an arrow function, so its `this` is permanently bound to the `this` of its enclosing function. The value of `this` inside `getThisGetter` can be set in the call, which in turn sets the return value of the returned function.
+
+```js
+const obj = {
+  getThisGetter() {
+    const getter = () => this;
+    return getter;
+  },
+};
+```
+
+We can call `getThisGetter` as a method of `obj`, which sets `this` inside the body to `obj`. The returned function is assigned to a variable `fn`. Now, when calling `fn`, the value of `this` returned is still the one set by the call to `getThisGetter`, which is `obj`. If the returned function is not an arrow function, such calls would cause the `this` value to be `globalThis` or `undefined` in strict mode.
+
+```js
+const fn = obj.getThisGetter();
+console.log(fn() === obj); // true
+```
+
+But be careful if you unbind the method of `obj` without calling it, because `getThisGetter` is still a method that has a varying `this` value. Calling `fn2()()` in the following example returns `globalThis`, because it follows the `this` from `fn2`, which is `globalThis` since it's called without being attached to any object.
+
+```js
+const fn2 = obj.getThisGetter;
+console.log(fn2()() === globalThis); // true
+```
+
+This behavior is very useful when defining callbacks. Usually, each function expression creates its own `this` binding, which shadows the `this` value of the upper scope. Now, you can define functions as arrow functions if you don't care about the `this` value, and only create `this` bindings where you do (e.g. in class methods). See [example with `setTimeout()`](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#using_call_bind_and_apply).
+
+### this with a getter or setter
+
+`this` in getters and setters is based on which object the property is accessed on, not which object the property is defined on. A function used as getter or setter has its `this` bound to the object from which the property is being set or gotten.
+
+```js
+function sum() {
+  return this.a + this.b + this.c;
+}
+
+const o = {
+  a: 1,
+  b: 2,
+  c: 3,
+  get average() {
+    return (this.a + this.b + this.c) / 3;
+  },
+};
+
+Object.defineProperty(o, "sum", {
+  get: sum,
+  enumerable: true,
+  configurable: true,
+});
+
+console.log(o.average, o.sum); // 2, 6
+```
+
+### As a DOM event handler
+
+When a function is used as an event handler, its `this` is set to the element on which the listener is placed (some browsers do not follow this convention for listeners added dynamically with methods other than {{domxref("EventTarget/addEventListener", "addEventListener()")}}).
+
+```js
+// When called as a listener, turns the related element blue
 function bluify(e) {
-  // 언제나 true
+  // Always true
   console.log(this === e.currentTarget);
-  // currentTarget과 target이 같은 객체면 true
+  // true when currentTarget and target are the same object
   console.log(this === e.target);
-  this.style.backgroundColor = '#A5D9F3';
+  this.style.backgroundColor = "#A5D9F3";
 }
 
-// 문서 내 모든 요소의 목록
-var elements = document.getElementsByTagName('*');
+// Get a list of every element in the document
+const elements = document.getElementsByTagName("*");
 
-// 어떤 요소를 클릭하면 파랗게 변하도록
-// bluify를 클릭 처리기로 등록
-for (var i = 0; i < elements.length; i++) {
-  elements[i].addEventListener('click', bluify, false);
+// Add bluify as a click listener so when the
+// element is clicked on, it turns blue
+for (const element of elements) {
+  element.addEventListener("click", bluify, false);
 }
 ```
 
-### 인라인 이벤트 핸들러에서
+### this in inline event handlers
 
-코드를 인라인 이벤트 처리기로 사용하면 `this`는 처리기를 배치한 DOM 요소로 설정됩니다.
+When the code is called from an inline [event handler attribute](/en-US/docs/Web/HTML/Attributes#event_handler_attributes), its `this` is set to the DOM element on which the listener is placed:
 
-```js
-<button onclick="alert(this.tagName.toLowerCase());">
-  this 표시
+```html
+<button onclick="alert(this.tagName.toLowerCase());">Show this</button>
+```
+
+The above alert shows `button`. Note, however, that only the outer code has its `this` set this way:
+
+```html
+<button onclick="alert((function () { return this; })());">
+  Show inner this
 </button>
 ```
 
-위의 경고창은 `button`을 보여줍니다. 다만 바깥쪽 코드만 `this`를 이런 방식으로 설정합니다.
+In this case, the inner function's `this` isn't set, so it returns the global/window object (i.e. the default object in non–strict mode where `this` isn't set by the call).
+
+### Bound methods in classes
+
+Just like with regular functions, the value of `this` within methods depends on how they are called. Sometimes it is useful to override this behavior so that `this` within classes always refers to the class instance. To achieve this, bind the class methods in the constructor:
 
 ```js
-<button onclick="alert((function() { return this; })());">
-  내부 this 표시
-</button>
+class Car {
+  constructor() {
+    // Bind sayBye but not sayHi to show the difference
+    this.sayBye = this.sayBye.bind(this);
+  }
+  sayHi() {
+    console.log(`Hello from ${this.name}`);
+  }
+  sayBye() {
+    console.log(`Bye from ${this.name}`);
+  }
+  get name() {
+    return "Ferrari";
+  }
+}
+
+class Bird {
+  get name() {
+    return "Tweety";
+  }
+}
+
+const car = new Car();
+const bird = new Bird();
+
+// The value of 'this' in methods depends on their caller
+car.sayHi(); // Hello from Ferrari
+bird.sayHi = car.sayHi;
+bird.sayHi(); // Hello from Tweety
+
+// For bound methods, 'this' doesn't depend on the caller
+bird.sayBye = car.sayBye;
+bird.sayBye(); // Bye from Ferrari
 ```
 
-위의 경우, 내부 함수의 this는 정해지지 않았으므로 전역/`window` 객체를 반환합니다. 즉 비엄격 모드에서 `this`를 설정하지 않은 경우의 기본값입니다.
+> **Note:** Classes are always in strict mode. Calling methods with an undefined `this` will throw an error if the method tries to access properties on `this`.
 
-## 명세서
+Note, however, that auto-bound methods suffer from the same problem as [using arrow functions for class properties](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#cannot_be_used_as_methods): each instance of the class will have its own copy of the method, which increases memory usage. Only use it where absolutely necessary. You can also mimic the implementation of [`Intl.NumberFormat.prototype.format()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/format#using_format_with_map): define the property as a getter that returns a bound function when accessed and saves it, so that the function is only created once and only created when necessary.
+
+### this in with statements
+
+Although [`with`](/en-US/docs/Web/JavaScript/Reference/Statements/with) statements are deprecated and not available in strict mode, they still serve as an exception to the normal `this` binding rules. If a function is called within a `with` statement and that function is a property of the scope object, the `this` value is set to the scope object, as if the `obj1.` prefix exists.
+
+```js
+const obj1 = {
+  foo() {
+    return this;
+  },
+};
+
+with (obj1) {
+  console.log(foo() === obj1); // true
+}
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [엄격 모드](/ko/docs/Web/JavaScript/Reference/Strict_mode)
+- [Strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode)
+- [Gentle explanation of 'this' keyword in JavaScript](https://dmitripavlutin.com/gentle-explanation-of-this-in-javascript/)
+- Getting the global context: {{jsxref("globalThis")}}

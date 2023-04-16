@@ -1,68 +1,81 @@
 ---
 title: Reflect.deleteProperty()
 slug: Web/JavaScript/Reference/Global_Objects/Reflect/deleteProperty
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Reflect.deleteProperty
 ---
 
 {{JSRef}}
 
-**`Reflect.deleteProperty()`** 정적 메서드는 속성을 제거할 수 있습니다. [`delete` 연산자](/ko/docs/Web/JavaScript/Reference/Operators/delete)의 함수판이라고 할 수 있습니다.
+The **`Reflect.deleteProperty()`** static method is like the {{jsxref("Operators/delete", "delete")}} operator, but as a function. It deletes a property from an object.
 
 {{EmbedInteractiveExample("pages/js/reflect-deleteproperty.html", "taller")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 Reflect.deleteProperty(target, propertyKey)
 ```
 
-### 매개변수
+### Parameters
 
 - `target`
-  - : 속성을 제거할 대상 객체.
+  - : The target object on which to delete the property.
 - `propertyKey`
-  - : 제거할 속성의 이름.
+  - : The name of the property to be deleted.
 
-### 반환 값
+### Return value
 
-속성이 성공적으로 제거됐는지 나타내는 {{jsxref("Boolean")}}.
+A boolean indicating whether or not the property was successfully deleted.
 
 ### Exceptions
 
-`target`이 {{jsxref("Object")}}가 아니면 {{jsxref("TypeError")}}.
+- {{jsxref("TypeError")}}
+  - : Thrown if `target` is not an object.
 
-## 설명
+## Description
 
-`Reflect.deleteProperty` 메서드는 객체의 속성을 제거할 수 있습니다. 반환값은 속성의 제거 성공 여부를 나타내는 {{jsxref("Boolean")}}입니다. 비엄격 모드의 [`delete` 연산자](/ko/docs/Web/JavaScript/Reference/Operators/delete)와 거의 동일합니다.
-
-## 예제
-
-### `Reflect.deleteProperty()` 사용하기
+`Reflect.deleteProperty()` provides the reflective semantic of the [`delete`](/en-US/docs/Web/JavaScript/Reference/Operators/delete) operator. That is, `Reflect.deleteProperty(target, propertyKey)` is semantically equivalent to:
 
 ```js
-var obj = { x: 1, y: 2 };
-Reflect.deleteProperty(obj, 'x'); // true
-obj; // { y: 2 }
-
-var arr = [1, 2, 3, 4, 5];
-Reflect.deleteProperty(arr, '3'); // true
-arr; // [1, 2, 3, , 5]
-
-// 주어진 속성이 존재하지 않으면 true 반환
-Reflect.deleteProperty({}, 'foo'); // true
-
-// 주어진 속성이 설정 불가능하면 false 반환
-Reflect.deleteProperty(Object.freeze({foo: 1}), 'foo'); // false
+delete target.propertyKey;
 ```
 
-## 명세
+At the very low level, deleting a property returns a boolean (as is the case with [the proxy handler](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/deleteProperty)). `Reflect.deleteProperty()` directly returns the status, while `delete` would throw a {{jsxref("TypeError")}} in [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode) if the status is `false`. In non-strict mode, `delete` and `Reflect.deleteProperty()` have the same behavior.
+
+`Reflect.deleteProperty()` invokes the `[[Delete]]` [object internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods) of `target`.
+
+## Examples
+
+### Using Reflect.deleteProperty()
+
+```js
+const obj = { x: 1, y: 2 };
+Reflect.deleteProperty(obj, "x"); // true
+console.log(obj); // { y: 2 }
+
+const arr = [1, 2, 3, 4, 5];
+Reflect.deleteProperty(arr, "3"); // true
+console.log(arr); // [1, 2, 3, undefined, 5]
+
+// Returns true if no such property exists
+Reflect.deleteProperty({}, "foo"); // true
+
+// Returns false if a property is unconfigurable
+Reflect.deleteProperty(Object.freeze({ foo: 1 }), "foo"); // false
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `Reflect.deleteProperty` in `core-js`](https://github.com/zloirock/core-js#ecmascript-reflect)
 - {{jsxref("Reflect")}}
-- [`delete` 연산자](/ko/docs/Web/JavaScript/Reference/Operators/delete)
+- [`delete`](/en-US/docs/Web/JavaScript/Reference/Operators/delete)
+- [`Proxy`'s `deleteProperty` handler](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/deleteProperty)

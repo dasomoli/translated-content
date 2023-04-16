@@ -1,62 +1,135 @@
 ---
-title: Function.prototype.toSource()
+title: Function.prototype.toString()
 slug: Web/JavaScript/Reference/Global_Objects/Function/toString
-original_slug: Web/JavaScript/Reference/Global_Objects/Function/toSource
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Function.toString
 ---
-{{JSRef}} {{non-standard_header}}
 
-**`toSource()`** 메소드는 객체의 소스 코드를 나타내는 스트링을 반환합니다.
+{{JSRef}}
 
-## 구문
+The **`toString()`** method returns a string representing the source code of the specified {{jsxref("Function")}}.
 
-```js
-    function.toSource();
+{{EmbedInteractiveExample("pages/js/function-tostring.html")}}
+
+## Syntax
+
+```js-nolint
+toString()
 ```
 
-### 반환 값
+### Return value
 
-객체의 소스 코드를 나타내는 스트링.
+A string representing the source code of the function.
 
-## 설명
+## Description
 
-`toSource` 메소드는 다음 값들을 반환합니다.
+The {{jsxref("Function")}} object overrides the `toString()` method
+inherited from {{jsxref("Object")}}; it does not inherit
+{{jsxref("Object.prototype.toString")}}. For user-defined `Function`
+objects, the `toString` method returns a string containing the source text
+segment which was used to define the function.
 
-- 내장 {{jsxref("Function")}} 객체에 대한 `toSource()` 는 소스 코드 사용이 불가함을 나타내는 다음 스트링을 반환합니다.
+JavaScript calls the `toString` method automatically when a
+`Function` is to be represented as a text value, e.g. when a function is
+concatenated with a string.
 
-  ```js
-  function Function() {
-      [native code]
-  }
-  ```
+The `toString()` method will throw a {{jsxref("TypeError")}} exception
+("Function.prototype.toString called on incompatible object"), if its
+`this` value object is not a `Function` object.
 
-- 커스텀 함수에 대한 `toSource()` 는 객체를 정의하는 JavaScript 코드를 스트링으로 반환합니다.
+```js example-bad
+Function.prototype.toString.call("foo"); // throws TypeError
+```
 
-  ```js
-  // 예시:
-  function hello() {
-      console.log("Hello, World!");
-  }
+If the `toString()` method is called on built-in function objects, a
+function created by {{jsxref("Function.prototype.bind()")}}, or
+other non-JavaScript functions, then `toString()` returns a
+_native function string_ which looks like
 
-  hello.toSource();
-  ```
+```
+function someName() { [native code] }
+```
 
-  ```js
-  // 결과:
-  "function hello() {
-      console.log(\"Hello, World!\");
-  }"
-  ```
+For intrinsic object methods and functions, `someName` is the initial name of the function; otherwise its content may be implementation-defined, but will always be in property name syntax, like `[1 + 1]`, `someName`, or `1`.
 
-이 메소드는 보통 JavaScript 에 의해 내부적으로 호출되며 코드에서 명시적으로 사용되지 않습니다. 디버깅할 때 객체의 컨텐츠를 검사하기 위해 `toSource` 를 호출해보실 수 있습니다.
+> **Note:** This means using [`eval()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval) on native function strings is a guaranteed syntax error.
 
-## 명세
+If the `toString()` method is called on a function created by the `Function` constructor, `toString()` returns the source code of a synthesized function declaration named "anonymous" using the provided parameters and function body. For example, `Function("a", "b", "return a + b").toString()` will return:
 
-어떠한 표준의 일부도 아닙니다. JavaScript 1.3 에서 구현되었습니다.
+```
+function anonymous(a,b
+) {
+return a + b
+}
+```
 
-## 브라우저 호환성
+Since ES2018, the spec requires the return value of `toString()` to be the exact same source code as it was declared, including any whitespace and/or comments — or, if the host doesn't have the source code available for some reason, requires returning a native function string. Support for this revised behavior can be found in the [compatibility table](#browser_compatibility).
+
+## Examples
+
+### Comparing actual source code and toString results
+
+```js
+function test(fn) {
+  console.log(fn.toString());
+}
+
+function f() {}
+class A {
+  a() {}
+}
+function* g() {}
+
+test(f); // "function f() {}"
+test(A); // "class A { a() {} }"
+test(g); // "function* g() {}"
+test((a) => a); // "(a) => a"
+test({ a() {} }.a); // "a() {}"
+test({ *a() {} }.a); // "*a() {}"
+test({ [0]() {} }[0]); // "[0]() {}"
+test(Object.getOwnPropertyDescriptor({ get a() {} }, "a").get); // "get a() {}"
+test(Object.getOwnPropertyDescriptor({ set a(x) {} }, "a").set); // "set a(x) {}"
+test(Function.prototype.toString); // "function toString() { [native code] }"
+test(function f() {}.bind(0)); // "function () { [native code] }"
+test(Function("a", "b")); // function anonymous(a\n) {\nb\n}
+```
+
+Note that after the `Function.prototype.toString()` revision, when `toString()` is called, implementations are never allowed to synthesize a function's source that is not a native function string. The method always returns the exact source code used to create the function — including the [getter](/en-US/docs/Web/JavaScript/Reference/Functions/get) and [setter](/en-US/docs/Web/JavaScript/Reference/Functions/set) examples above. The [`Function`](/en-US/docs/Web/JavaScript/Reference/Functions) constructor itself has the capability of synthesizing the source code for the function (and is therefore a form of implicit [`eval()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval)).
+
+### Getting source text of a function
+
+It is possible to get the source text of a function by coercing it to a string — for example, by wrapping it in a template literal:
+
+```js
+function foo() {
+  return "bar";
+}
+console.log(`${foo}`);
+// function foo() {
+//   return "bar";
+// }
+```
+
+This source text is _exact_, including any interspersed comments (which won't be stored by the engine's internal representation otherwise).
+
+```js
+function foo /* a comment */() {
+  return "bar";
+}
+console.log(foo.toString());
+// function foo /* a comment */() {
+//   return "bar";
+// }
+```
+
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 보기
+## See also
 
-- {{jsxref("Object.prototype.toSource()")}}
+- {{jsxref("Object.prototype.toString()")}}

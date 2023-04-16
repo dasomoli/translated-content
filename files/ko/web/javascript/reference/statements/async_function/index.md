@@ -1,165 +1,308 @@
 ---
 title: async function
 slug: Web/JavaScript/Reference/Statements/async_function
+page-type: javascript-statement
+browser-compat: javascript.statements.async_function
 ---
 
 {{jsSidebar("Statements")}}
 
-**`async function`** 선언은 {{jsxref("Global_Objects/AsyncFunction","AsyncFunction")}}객체를 반환하는 하나의 비동기 함수를 정의합니다. 비동기 함수는 이벤트 루프를 통해 비동기적으로 작동하는 함수로, 암시적으로 {{jsxref("Promise")}}를 사용하여 결과를 반환합니다. 그러나 비동기 함수를 사용하는 코드의 구문과 구조는, 표준 동기 함수를 사용하는것과 많이 비슷합니다.
+The **`async function`** declaration declares an async function where the `await` keyword is permitted within the function body. The `async` and `await` keywords enable asynchronous, promise-based behavior to be written in a cleaner style, avoiding the need to explicitly configure promise chains.
 
-또한 {{jsxref("Operators/async_function", "async function expression", "", 1)}}을 사용해서 async function을 선언할 수 있습니다.
+Async functions may also be defined {{jsxref("Operators/async_function", "as
+  expressions", "", 1)}}.
 
 {{EmbedInteractiveExample("pages/js/statement-async.html", "taller")}}
 
 ## Syntax
 
-```js
-    async function name([param[, param[, ... param]]]) {
-        statements
-    }
+```js-nolint
+async function name(param0) {
+  statements
+}
+async function name(param0, param1) {
+  statements
+}
+async function name(param0, param1, /* … ,*/ paramN) {
+  statements
+}
 ```
 
-### 매개변수
+### Parameters
 
 - `name`
-  - : 함수의 이름.
+  - : The function's name.
 - `param` {{optional_inline}}
-  - : 함수에게 전달되기 위한 인자의 이름.
+  - : The name of an argument to be passed to the function.
 - `statements` {{optional_inline}}
-  - : 함수 본문을 구성하는 내용. await 메커니즘이 사용될 수 있다.
+  - : The statements comprising the body of the function. The `await`
+    mechanism may be used.
+
+### Return value
+
+A {{jsxref("Promise")}} which will be resolved with the value returned by the async
+function, or rejected with an exception thrown from, or uncaught within, the async
+function.
 
 ## Description
 
-`async` 함수에는 {{jsxref ( "Operators / await", "await")}}식이 포함될 수 있습니다. 이 식은 `async` 함수의 실행을 일시 중지하고 전달 된 `Promise`의 해결을 기다린 다음 `async` 함수의 실행을 다시 시작하고 완료후 값을 반환합니다.
+Async functions can contain zero or more {{jsxref("Operators/await", "await")}} expressions. Await expressions make promise-returning functions behave as though they're synchronous by suspending execution until the returned promise is fulfilled or rejected. The resolved value of the promise is treated as the return value of the await expression. Use of `async` and `await` enables the use of ordinary `try` / `catch` blocks around asynchronous code.
 
-> **Note:** `await` 키워드는 `async` 함수에서만 유효하다는 것을 기억하십시오. `async` 함수의 본문 외부에서 사용하면 [SyntaxError](/ko/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError)가 발생합니다.
+> **Note:** The `await` keyword is only valid inside async functions within regular JavaScript code. If you use it outside of an async function's body, you will get a {{jsxref("SyntaxError")}}.
+>
+> `await` can be used on its own with [JavaScript modules.](/en-US/docs/Web/JavaScript/Guide/Modules)
 
-> **Note:** async/await함수의 목적은 사용하는 여러 promise의 동작을 동기스럽게 사용할 수 있게 하고, 어떠한 동작을 여러 promise의 그룹에서 간단하게 동작하게 하는 것이다. promise가 구조화된 callback과 유사한 것 처럼 `async/await` 또한 제네레이터(generator)와 프로미스(promise)를 묶는것과 유사하다.
+> **Note:** The purpose of `async`/`await` is to simplify the syntax
+> necessary to consume promise-based APIs. The behavior
+> of `async`/`await` is similar to combining [generators](/en-US/docs/Web/JavaScript/Guide/Iterators_and_generators) and
+> promises.
 
-`async` 함수는 항상 promise를 반환합니다. 만약 `async` 함수의 반환값이 명시적으로 promise가 아니라면 암묵적으로 promise로 감싸집니다.
+Async functions always return a promise. If the return value of an async function is
+not explicitly a promise, it will be implicitly wrapped in a promise.
 
-예를 들어
-
-```js
-    async function foo() {
-        return 1
-    }
-```
-
-위 코드는 아래와 같습니다.
+For example, consider the following code:
 
 ```js
-    function foo() {
-        return Promise.resolve(1)
-    }
+async function foo() {
+  return 1;
+}
 ```
 
-`async` 함수의 본문은 0개 이상의 `await` 문으로 분할된 것으로 생각할 수 있습니다. 첫번째 `await` 문을 포함하는 최상위 코드는 동기적으로 실행됩니다. 따라서 `await` 문이 없는 `async` 함수는 동기적으로 실행됩니다. 하지만 `await` 문이 있다면 `async` 함수는 항상 비동기적으로 완료됩니다.
-
-예를 들어
+It is similar to:
 
 ```js
-    async function foo() {
-        await 1
-    }
+function foo() {
+  return Promise.resolve(1);
+}
 ```
 
-위 코드는 아래와 같습니다.
+> **Note:**
+>
+> Even though the return value of an async function behaves as if it's wrapped in a `Promise.resolve`, they are not equivalent.
+>
+> An async function will return a different _reference_, whereas `Promise.resolve` returns the same reference if the given value is a promise.
+>
+> It can be a problem when you want to check the equality of a promise and a return value of an async function.
+>
+> ```js
+> const p = new Promise((res, rej) => {
+>   res(1);
+> });
+>
+> async function asyncReturn() {
+>   return p;
+> }
+>
+> function basicReturn() {
+>   return Promise.resolve(p);
+> }
+>
+> console.log(p === basicReturn()); // true
+> console.log(p === asyncReturn()); // false
+> ```
+
+The body of an async function can be thought of as being split by zero or more await
+expressions. Top-level code, up to and including the first await expression (if there is
+one), is run synchronously. In this way, an async function without an await expression
+will run synchronously. If there is an await expression inside the function body,
+however, the async function will always complete asynchronously.
+
+For example:
 
 ```js
-    function foo() {
-        return Promise.resolve(1).then(() => undefined)
-    }
+async function foo() {
+  await 1;
+}
 ```
+
+It is also equivalent to:
+
+```js
+function foo() {
+  return Promise.resolve(1).then(() => undefined);
+}
+```
+
+Code after each await expression can be thought of as existing in a `.then`
+callback. In this way a promise chain is progressively constructed with each reentrant
+step through the function. The return value forms the final link in the chain.
+
+In the following example, we successively await two promises. Progress moves through
+function `foo` in three stages.
+
+1. The first line of the body of function `foo` is executed synchronously,
+   with the await expression configured with the pending promise. Progress through
+   `foo` is then suspended and control is yielded back to the function that
+   called `foo`.
+2. Some time later, when the first promise has either been fulfilled or rejected,
+   control moves back into `foo`. The result of the first promise fulfillment
+   (if it was not rejected) is returned from the await expression. Here `1` is
+   assigned to `result1`. Progress continues, and the second await expression
+   is evaluated. Again, progress through `foo` is suspended and control is
+   yielded.
+3. Some time later, when the second promise has either been fulfilled or rejected,
+   control re-enters `foo`. The result of the second promise resolution is
+   returned from the second await expression. Here `2` is assigned to
+   `result2`. Control moves to the return expression (if any). The default
+   return value of `undefined` is returned as the resolution value of the
+   current promise.
+
+```js
+async function foo() {
+  const result1 = await new Promise((resolve) =>
+    setTimeout(() => resolve("1")),
+  );
+  const result2 = await new Promise((resolve) =>
+    setTimeout(() => resolve("2")),
+  );
+}
+foo();
+```
+
+Note how the promise chain is not built-up in one go. Instead, the promise chain is
+constructed in stages as control is successively yielded from and returned to the async
+function. As a result, we must be mindful of error handling behavior when dealing with
+concurrent asynchronous operations.
+
+For example, in the following code an unhandled promise rejection error will be thrown,
+even if a `.catch` handler has been configured further along the promise
+chain. This is because `p2` will not be "wired into" the promise chain until
+control returns from `p1`.
+
+```js
+async function foo() {
+  const p1 = new Promise((resolve) => setTimeout(() => resolve("1"), 1000));
+  const p2 = new Promise((_, reject) => setTimeout(() => reject("2"), 500));
+  const results = [await p1, await p2]; // Do not do this! Use Promise.all or Promise.allSettled instead.
+}
+foo().catch(() => {}); // Attempt to swallow all errors...
+```
+
+`async function` declarations are [hoisted](/en-US/docs/Glossary/Hoisting) to the top of their scope and can be called anywhere in their scope.
 
 ## Examples
 
-### Simple example
+### Async functions and execution order
 
 ```js
-    var resolveAfter2Seconds = function() {
-      console.log("starting slow promise");
-      return new Promise(resolve => {
-        setTimeout(function() {
-          resolve(20);
-          console.log("slow promise is done");
-        }, 2000);
-      });
-    };
+function resolveAfter2Seconds() {
+  console.log("starting slow promise");
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("slow");
+      console.log("slow promise is done");
+    }, 2000);
+  });
+}
 
-    var resolveAfter1Second = function() {
-      console.log("starting fast promise");
-      return new Promise(resolve => {
-        setTimeout(function() {
-          resolve(10);
-          console.log("fast promise is done");
-        }, 1000);
-      });
-    };
+function resolveAfter1Second() {
+  console.log("starting fast promise");
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("fast");
+      console.log("fast promise is done");
+    }, 1000);
+  });
+}
 
-    var sequentialStart = async function() {
-      console.log('==SEQUENTIAL START==');
+async function sequentialStart() {
+  console.log("==SEQUENTIAL START==");
 
-      // If the value of the expression following the await operator is not a Promise, it's converted to a resolved Promise.
-      const slow = await resolveAfter2Seconds();
-      console.log(slow);
+  // 1. Execution gets here almost instantly
+  const slow = await resolveAfter2Seconds();
+  console.log(slow); // 2. this runs 2 seconds after 1.
 
-      const fast = await resolveAfter1Second();
-      console.log(fast);
-    }
+  const fast = await resolveAfter1Second();
+  console.log(fast); // 3. this runs 3 seconds after 1.
+}
 
-    var concurrentStart = async function() {
-      console.log('==CONCURRENT START with await==');
-      const slow = resolveAfter2Seconds(); // starts timer immediately
-      const fast = resolveAfter1Second();
+async function concurrentStart() {
+  console.log("==CONCURRENT START with await==");
+  const slow = resolveAfter2Seconds(); // starts timer immediately
+  const fast = resolveAfter1Second(); // starts timer immediately
 
-      console.log(await slow);
-      console.log(await fast); // waits for slow to finish, even though fast is already done!
-    }
+  // 1. Execution gets here almost instantly
+  console.log(await slow); // 2. this runs 2 seconds after 1.
+  console.log(await fast); // 3. this runs 2 seconds after 1., immediately after 2., since fast is already resolved
+}
 
-    var stillConcurrent = function() {
-      console.log('==CONCURRENT START with Promise.all==');
-      Promise.all([resolveAfter2Seconds(), resolveAfter1Second()]).then((messages) => {
-        console.log(messages[0]); // slow
-        console.log(messages[1]); // fast
-      });
-    }
+function concurrentPromise() {
+  console.log("==CONCURRENT START with Promise.all==");
+  return Promise.all([resolveAfter2Seconds(), resolveAfter1Second()]).then(
+    (messages) => {
+      console.log(messages[0]); // slow
+      console.log(messages[1]); // fast
+    },
+  );
+}
 
-    var parallel = function() {
-      console.log('==PARALLEL with Promise.then==');
-      resolveAfter2Seconds().then((message)=>console.log(message));
-      resolveAfter1Second().then((message)=>console.log(message));
-    }
+async function parallel() {
+  console.log("==PARALLEL with await Promise.all==");
 
-    sequentialStart(); // after 2 seconds, logs "slow", then after 1 more second, "fast"
-    // wait above to finish
-    setTimeout(concurrentStart, 4000); // after 2 seconds, logs "slow" and then "fast"
-    // wait again
-    setTimeout(stillConcurrent, 7000); // same as concurrentStart
-    // wait again
-    setTimeout(parallel, 10000); // trully parallel: after 1 second, logs "fast", then after 1 more second, "slow"
+  // Start 2 "jobs" in parallel and wait for both of them to complete
+  await Promise.all([
+    (async () => console.log(await resolveAfter2Seconds()))(),
+    (async () => console.log(await resolveAfter1Second()))(),
+  ]);
+}
+
+sequentialStart(); // after 2 seconds, logs "slow", then after 1 more second, "fast"
+
+// wait above to finish
+setTimeout(concurrentStart, 4000); // after 2 seconds, logs "slow" and then "fast"
+
+// wait again
+setTimeout(concurrentPromise, 7000); // same as concurrentStart
+
+// wait again
+setTimeout(parallel, 10000); // truly parallel: after 1 second, logs "fast", then after 1 more second, "slow"
 ```
 
-> **Warning:** `await` 와 `Promise#then`을 혼동하지 마세요. `sequentialStart` 에서, 첫 번째 `await`는 2초의 대기 시간을 갖고, 다시 두 번째 `await`에서 1초의 대기 시간을 갖습니다. 두 번째 타이머는 첫 번째 타이머가 완료될 때 까지 생성되지 않습니다. `concurrentStart` 에서, 두 타이머 모두 생성 된 다음 `await` 합니다. 타이머가 동시에 실행되고 있지만, `await` 호출은 여전히 연속적 실행중이므로, 두 번째 `await` 는 첫 번째 호출이 끝날 때 까지 대기합니다. 이렇게하면 3초가 아니라, 가장 느린 타이머에 필요한 2초가 필요합니다. `stillConcurrent` 에서도 `Promise.all` 을 사용하여 같은 일이 발생합니다. 두 개 이상의 프러미스를 동시에 wait 하고 싶다면, `Promise#then`을 사용하여 예제와 같이 `parallel` 를 수행할 수 있습니다.
+#### await and parallelism
 
-### `async`함수를 사용한 promise chain 재작성
+In `sequentialStart`, execution suspends 2 seconds for the first
+`await`, and then another second for the second `await`. The
+second timer is not created until the first has already fired, so the code finishes
+after 3 seconds.
 
-{{jsxref("Promise")}} 를 반환하는 API는 promise chain을 만들며 여러 파트의 함수로 나뉜다.
-아래 코드를 보자.
+In `concurrentStart`, both timers are created and then `await`ed.
+The timers run concurrently, which means the code finishes in 2 rather than 3 seconds,
+i.e. the slowest timer.
+However, the `await` calls still run in series, which means the second
+`await` will wait for the first one to finish. In this case, the result of
+the fastest timer is processed after the slowest.
+
+If you wish to safely perform two or more jobs in parallel, you must await a call
+to [`Promise.all`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all),
+or
+[`Promise.allSettled`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled).
+
+> **Warning:** The functions `concurrentStart` and `concurrentPromise`
+> are not functionally equivalent.
+>
+> In `concurrentStart`, if promise `fast` rejects before promise
+> `slow` is fulfilled, then an unhandled promise rejection error will be
+> raised, regardless of whether the caller has configured a catch clause.
+>
+> In `concurrentPromise`, `Promise.all` wires up the promise
+> chain in one go, meaning that the operation will fail-fast regardless of the order of
+> rejection of the promises, and the error will always occur within the configured
+> promise chain, enabling it to be caught in the normal way.
+
+### Rewriting a Promise chain with an async function
+
+An API that returns a {{jsxref("Promise")}} will result in a promise chain, and it
+splits the function into many parts. Consider the following code:
 
 ```js
 function getProcessedData(url) {
   return downloadData(url) // returns a promise
-    .catch(e => {
-      return downloadFallbackData(url) // returns a promise
-    })
-    .then(v => {
-      return processDataInWorker(v); // returns a promise
-    });
+    .catch((e) => downloadFallbackData(url)) // returns a promise
+    .then((v) => processDataInWorker(v)); // returns a promise
 }
 ```
 
-위의 코드는 하나의 async함수로 아래와 같이 쓰여질 수도 있다.
+it can be rewritten with a single async function as follows:
 
 ```js
 async function getProcessedData(url) {
@@ -173,19 +316,31 @@ async function getProcessedData(url) {
 }
 ```
 
-위 예제에서는 return 구문에 await 구문이 없다는 것에 주목하자. 이는 async function의 반환값이 암묵적으로 {{jsxref("Promise.resolve")}}로 감싸지기 때문이다.
+Alternatively, you can chain the promise with `catch()`:
 
-## 명세서
+```js
+async function getProcessedData(url) {
+  const v = await downloadData(url).catch((e) => downloadFallbackData(url));
+  return processDataInWorker(v);
+}
+```
+
+In the two rewritten versions, notice there is no `await` statement after the
+`return` keyword, although that would be valid too: The return value of an
+async function is implicitly wrapped in {{jsxref("Promise.resolve")}} - if
+it's not already a promise itself (as in the examples).
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 보기
+## See also
 
-- {{jsxref("Operators/async_function", "async function expression")}}
+- {{jsxref("Operators/async_function", "async function expression", "", 1)}}
 - {{jsxref("AsyncFunction")}} object
 - {{jsxref("Operators/await", "await")}}
-- ["Decorating Async Javascript Functions" on "innolitics.com"](http://innolitics.com/10x/javascript-decorators-for-promise-returning-functions/)
+- [Decorating Async JavaScript Functions](https://innolitics.com/10x/javascript-decorators-for-promise-returning-functions/) on _innolitics.com_

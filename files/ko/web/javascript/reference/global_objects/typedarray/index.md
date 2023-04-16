@@ -1,43 +1,127 @@
 ---
 title: TypedArray
 slug: Web/JavaScript/Reference/Global_Objects/TypedArray
+page-type: javascript-class
+browser-compat: javascript.builtins.TypedArray
 ---
 
 {{JSRef}}
 
-**_TypedArray_** 객체는 [이진 데이터 버퍼](/ko/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)에 기초하여 배열과 같은 보기를 만들어냅니다.
-하지만 `TypedArray`라는 전역 속성은 존재하지 않으며, 직접 볼 수 있는 `TypedArray` 생성자도 존재하지 않습니다. 대신 아래에 있는 특정 요소 유형에 대한 형식화 배열 생성자를 가지는 다양한 전역 속성을 사용할 수 있습니다. 다음 페이지에서는 모든 유형의 요소를 포함하는 모든 유형의 배열에서 사용할 수 있는 공통 속성과 메서드를 살펴보겠습니다.
+A **_TypedArray_** object describes an array-like view of an
+underlying [binary data buffer](/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
+There is no global property named `TypedArray`, nor is there a
+directly visible `TypedArray` constructor. Instead, there are a number of
+different global properties, whose values are typed array constructors for specific
+element types, listed below. On the following pages you will find common properties and
+methods that can be used with any typed array containing elements of any type.
 
 {{EmbedInteractiveExample("pages/js/typedarray-constructor.html")}}
 
-## 설명
+## Description
 
-`TypedArray` 생성자는 모든 `TypedArray` 생성자의 `[[Prototype]]` 역할을 하는 숨겨진 전역입니다.
-이 생성자는 직접 노출되지 않아 전역 `%TypedArray%` 또는 `TypedArray` 속성이 없습니다. 그래서 `Object.getPrototypeOf(Int8Array)` 등을 통해서만 직접 액세스할 수 있습니다. 모든 `TypedArrays` 생성자는 `%TypedArray%` 생성자 함수에서 공통 속성을 상속받고, 모든 형식화 배열의 프로토타입(`TypedArray.prototype`)은 `%TypedArray%.prototype`을 `[[Prototype]]`으로 가지고 있습니다.
+The `TypedArray` constructor (often referred to as `%TypedArray%` to indicate its "intrinsicness", since it does not correspond to any global exposed to a JavaScript program) serves as the common superclass of all `TypedArray` subclasses. Think about `%TypedArray%` as an "abstract class" providing a common interface of utility methods for all typed array subclasses. This constructor is not directly exposed: there is no global `TypedArray` property. It is only accessible through `Object.getPrototypeOf(Int8Array)` and similar.
 
-`TypedArray`(예: `Int8Array`)의 인스턴스를 생성하거나 배열 버퍼가 내부적으로 메모리에 생성되거나 `ArrayBuffer` 객체가 생성자 인수로 주어지면 이들이 대신 사용됩니다. 버퍼 주소는 인스턴스의 내부 속성으로 저장되며 `%TypedArray%.prototype`의 모든 메서드(예: 값 설정 및 값 가져오기 등)는 해당 배열 버퍼 주소에서 작동합니다.
+When creating an instance of a `TypedArray` subclass (e.g. `Int8Array`), an array buffer is created internally in memory or, if an `ArrayBuffer` object is given as constructor argument, that `ArrayBuffer` is used instead. The buffer address is saved as an internal property of the instance and all the methods of `%TypedArray%.prototype` will set and get values based on that array buffer address.
 
-## TypedArray 객체
+### TypedArray objects
 
-| 형식                                     | 값 범위                                                 | 바이트 크기| 설명                                                                        | Web IDL 형식          | 동일한 C 형식               |
-| ---------------------------------------- | --------------------------------------------------------------- | ------------- | ---------------------------------------------------------------------------------- | --------------------- | ------------------------------- |
-| {{jsxref("Int8Array")}}         | -128 to 127                                                 | 1             | 부호 있는 8비트 2의 보수 정수                                             | `byte`                | `int8_t`                        |
-| {{jsxref("Uint8Array")}}         | 0 to 255                                                    | 1             | 부호 없는 8비트 정수                                                             | `octet`               | `uint8_t`                       |
-| {{jsxref("Uint8ClampedArray")}} | 0 to 255                                                    | 1             | 부호 없는 8비트 정수 (고정)                                                   | `octet`               | `uint8_t`                       |
-| {{jsxref("Int16Array")}}         | -32768 to 32767                                             | 2             | 부호 있는 16비트 2의 보수 정수                                             | `short`               | `int16_t`                       |
-| {{jsxref("Uint16Array")}}         | 0 to 65535                                                  | 2             | 부호 없는 16비트 정수                                                            | `unsigned short`      | `uint16_t`                      |
-| {{jsxref("Int32Array")}}         | -2147483648 to 2147483647                                   | 4             | 부호 있는 32비트 2의 보수 정수                                             | `long`                | `int32_t`                       |
-| {{jsxref("Uint32Array")}}         | 0 to 4294967295                                             | 4             | 부호 없는 32비트 정수                                                            | `unsigned long`       | `uint32_t`                      |
-| {{jsxref("Float32Array")}}     | `-3.4E38`에서 `3.4E38`. `1.2E-38`은 최초 양수  | 4             | 32비트 IEEE 부동 소수점 숫자 (유효한 7자리 숫자, 예: `1.234567`)          | `unrestricted float`  | `float`                         |
-| {{jsxref("Float64Array")}}     | `-1.8E308`에서 `1.8E308`. `5E-324`는 최소 양수 | 8             | 64비트 IEEE 부동 소수점 숫자 (유효한 16자리 숫자, 예: `1.23456789012345`) | `unrestricted double` | `double`                        |
-| {{jsxref("BigInt64Array")}}     | -2<sup>63</sup>에서 2<sup>63</sup> - 1                                           | 8             | 부호 있는 64비트 2의 보수 정수                                             | `bigint`              | `int64_t (signed long long)`    |
-| {{jsxref("BigUint64Array")}}     | 0 에서 2<sup>64</sup> - 1                                               | 8             | 부호 없는 64비트 정수                                                            | `bigint`              | `uint64_t (unsigned long long)` |
+| Type                            | Value Range                                                     | Size in bytes | Description                                                                        | Web IDL type          | Equivalent C type               |
+| ------------------------------- | --------------------------------------------------------------- | ------------- | ---------------------------------------------------------------------------------- | --------------------- | ------------------------------- |
+| {{jsxref("Int8Array")}}         | -128 to 127                                                     | 1             | 8-bit two's complement signed integer                                              | `byte`                | `int8_t`                        |
+| {{jsxref("Uint8Array")}}        | 0 to 255                                                        | 1             | 8-bit unsigned integer                                                             | `octet`               | `uint8_t`                       |
+| {{jsxref("Uint8ClampedArray")}} | 0 to 255                                                        | 1             | 8-bit unsigned integer (clamped)                                                   | `octet`               | `uint8_t`                       |
+| {{jsxref("Int16Array")}}        | -32768 to 32767                                                 | 2             | 16-bit two's complement signed integer                                             | `short`               | `int16_t`                       |
+| {{jsxref("Uint16Array")}}       | 0 to 65535                                                      | 2             | 16-bit unsigned integer                                                            | `unsigned short`      | `uint16_t`                      |
+| {{jsxref("Int32Array")}}        | -2147483648 to 2147483647                                       | 4             | 32-bit two's complement signed integer                                             | `long`                | `int32_t`                       |
+| {{jsxref("Uint32Array")}}       | 0 to 4294967295                                                 | 4             | 32-bit unsigned integer                                                            | `unsigned long`       | `uint32_t`                      |
+| {{jsxref("Float32Array")}}      | `-3.4E38` to `3.4E38` and `1.2E-38` is the min positive number  | 4             | 32-bit IEEE floating point number (7 significant digits e.g., `1.234567`)          | `unrestricted float`  | `float`                         |
+| {{jsxref("Float64Array")}}      | `-1.8E308` to `1.8E308` and `5E-324` is the min positive number | 8             | 64-bit IEEE floating point number (16 significant digits e.g., `1.23456789012345`) | `unrestricted double` | `double`                        |
+| {{jsxref("BigInt64Array")}}     | -2<sup>63</sup> to 2<sup>63</sup> - 1                           | 8             | 64-bit two's complement signed integer                                             | `bigint`              | `int64_t (signed long long)`    |
+| {{jsxref("BigUint64Array")}}    | 0 to 2<sup>64</sup> - 1                                         | 8             | 64-bit unsigned integer                                                            | `bigint`              | `uint64_t (unsigned long long)` |
 
-## 생성자
+### Behavior when viewing a resizable buffer
 
-이 객체는 직접 인스턴스화할 수 없습니다. 대신 {{jsxref("Int8Array")}} 또는 {{jsxref("BigInt64Array")}}와 같은 특정 유형의 배열 인스턴스를 만들 수 있습니다. 이러한 객체에는 모두 생성자에 대한 공통적인 구문이 있습니다.
+When a `TypedArray` is created as a view of a [resizable buffer](/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer#resizing_arraybuffers), resizing the underlying buffer will have different effects on the size of the `TypedArray` depending on whether the `TypedArray` is constructed as length-tracking.
+
+If a typed array is created without a specific size by omitting the third parameter or passing `undefined`, the typed array will become _length-tracking_, and will automatically resize to fit the underlying `buffer` as the latter is resized:
 
 ```js
+const buffer = new ArrayBuffer(8, { maxByteLength: 16 });
+const float32 = new Float32Array(buffer);
+
+console.log(float32.byteLength); // 8
+console.log(float32.length); // 2
+
+buffer.resize(12);
+
+console.log(float32.byteLength); // 12
+console.log(float32.length); // 3
+```
+
+If a typed array is created with a specific size using the third `length` parameter, it won't resize to contain the `buffer` as the latter is grown:
+
+```js
+const buffer = new ArrayBuffer(8, { maxByteLength: 16 });
+const float32 = new Float32Array(buffer, 0, 2);
+
+console.log(float32.byteLength); // 8
+console.log(float32.length); // 2
+console.log(float32[0]) // 0, the initial value
+
+buffer.resize(12);
+
+console.log(float32.byteLength); // 8
+console.log(float32.length); // 2
+console.log(float32[0]); // 0, the initial value
+```
+
+When a `buffer` is shrunk, the viewing typed array may become out of bounds, in which case the typed array's observed size will decrease to 0. This is the only case where a non-length-tracking typed array's length may change.
+
+```js
+const buffer = new ArrayBuffer(8, { maxByteLength: 16 });
+const float32 = new Float32Array(buffer, 0, 2);
+
+buffer.resize(7);
+
+console.log(float32.byteLength); // 0
+console.log(float32.length); // 0
+console.log(float32[0]); // undefined
+```
+
+If you then grow the `buffer` again to bring the typed array back in bounds, the typed array's size will be restored to its original value.
+
+```js
+buffer.resize(8);
+
+console.log(float32.byteLength); // 8
+console.log(float32.length); // 2
+console.log(float32[0]); // 0 - back in bounds again!
+```
+
+The same can happen for length-tracking typed arrays as well, if the buffer is shrunk beyond the `byteOffset`.
+
+```js
+const buffer = new ArrayBuffer(8, { maxByteLength: 16 });
+const float32 = new Float32Array(buffer, 4);
+// float32 is length-tracking, but it only extends from the 4th byte
+// to the end of the buffer, so if the buffer is resized to be shorter
+// than 4 bytes, the typed array will become out of bounds
+buffer.resize(3);
+console.log(float32.byteLength); // 0
+```
+
+## Constructor
+
+This object cannot be instantiated directly — attempting to construct it with `new` throws a {{jsxref("TypeError")}}.
+
+```js
+new (Object.getPrototypeOf(Int8Array))();
+// TypeError: Abstract class TypedArray not directly constructable
+```
+
+Instead, you create an instance of a typed array of a particular type, such as an {{jsxref("Int8Array")}} or a {{jsxref("BigInt64Array")}}. These objects all have a common syntax for their constructors:
+
+```js-nolint
 new TypedArray()
 new TypedArray(length)
 new TypedArray(typedArray)
@@ -48,146 +132,186 @@ new TypedArray(buffer, byteOffset)
 new TypedArray(buffer, byteOffset, length)
 ```
 
-여기서 _TypedArray_ 는 구체적인 유형 중 하나의 생성자입니다.
+Where `TypedArray` is a constructor for one of the concrete types.
 
-> **참고:** 모든 `TypedArray` 생성자는 [`new`](/ko/docs/Web/JavaScript/Reference/Operators/new)로만 생성할 수 있습니다. `new` 없이 호출하려고 하면 {{jsxref("TypeError")}}가 발생합니다.
+> **Note:** All `TypedArray` subclasses' constructors can only be constructed with [`new`](/en-US/docs/Web/JavaScript/Reference/Operators/new). Attempting to call one without `new` throws a {{jsxref("TypeError")}}.
 
-## 매개변수
+### Parameters
 
-- `length`
-  - : `length` 인수와 함께 호출되면, `length`에 _`BYTES_PER_ELEMENT`_ 바이트를 **곱한** 크기의 0으로 채워진 내부 배열 버퍼가 메모리에 생성됩니다.
 - `typedArray`
-  - : `typedArray` 인수를 사용하여 호출하면, `typedArray`가 새 형식화 배열에 복사됩니다. **non-{{glossary("bigint")}}** `TypedArray`의 경우, `typedArray` 매개변수는 오직 **non**-{{glossary("bigint")}} 종류의 형식화 배열 객체만(예: {{JSxRef("Int32Array")}}) 될 수 있습니다. 마찬가지로 **{{glossary("bigint")}}** `TypedArray`의 경우, `typedArray` 매개변수는 {{glossary("bigint")}} 형식화 배열 종류의 객체(예: {{JSxRef("BigInt64Array")}})만 될 수 있습니다. `typedArray`의 각 값은 새 배열에 복사되기 전에 해당 생성자의 형식으로 변환됩니다. 새로운 형식화 배열의 길이는 `typedArray` 인수의 길이와 동일합니다.
+  - : When called with an instance of a `TypedArray` subclass, the `typedArray` gets copied into a new typed array. For a non-[bigint](/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) `TypedArray` constructor, the `typedArray` parameter can only be of one of the non-[bigint](/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) types (such as {{JSxRef("Int32Array")}}). Similarly, for a [bigint](/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) `TypedArray` constructor ({{JSxRef("BigInt64Array")}} or {{JSxRef("BigUint64Array")}}), the `typedArray` parameter can only be of one of the [bigint](/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) types. Each value in `typedArray` is converted to the corresponding type of the constructor before being copied into the new array. The length of the new typed array will be same as the length of the `typedArray` argument.
 - `object`
-  - : `object` 인수를 사용하여 호출하면, `TypedArray.from()` 메서드에서와 같이 새로운 형식화 배열이 생성됩니다.
-- `buffer`, `byteOffset`,
-  `length`
-  - : `buffer`와 선택적으로 전달할 수 있는 `byteOffset` 및 `length` 인수가 함께 호출되면, 지정된 {{jsxref("ArrayBuffer")}}를 보는 새로운 형식화 배열 뷰가 생성됩니다. `byteOffset` 및 `length` 매개변수는 형식화 배열 보기에 의해 노출될 메모리 범위를 지정합니다. 둘 다 생략하면 모든 버퍼가 표시되고, `length`만 생략하면 `buffer`의 나머지 부분이 표시됩니다.
+  - : When called with an object that's not a `TypedArray` instance, a new typed array is created in the same way as the [`TypedArray.from()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/from) method.
+- `length` {{optional_inline}}
+  - : When called with a non-object, the parameter will be treated as a number specifying the length of the typed array. An internal array buffer is created in memory, of size `length` multiplied by [`BYTES_PER_ELEMENT`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/BYTES_PER_ELEMENT) bytes, filled with zeros. Omitting all parameters is equivalent to using `0` as `length`.
+- `buffer`, `byteOffset` {{optional_inline}}, `length` {{optional_inline}}
+  - : When called with an [`ArrayBuffer`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) or [`SharedArrayBuffer`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) instance, and optionally a `byteOffset` and a `length` argument, a new typed array view is created that views the specified buffer. The `byteOffset` and `length` parameters specify the memory range that will be exposed by the typed array view. If both are omitted, all of `buffer` is viewed; if only `length` is omitted, the remainder of `buffer` starting from `byteOffset` is viewed. If `length` is omitted, the typed array becomes [length-tracking](#behavior_when_viewing_a_resizable_buffer).
 
-## 정적 속성
+### Exceptions
+
+All `TypeArray` subclass constructors operate in the same way. They would all throw the following exceptions:
+
+- {{jsxref("TypeError")}}
+  - : Thrown in one of the following cases:
+    - A `typedArray` is passed but it is a [bigint](/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) type while the current constructor is not, or vice versa.
+    - A `typedArray` is passed but the buffer it's viewing is detached, or a detached `buffer` is directly passed.
+- {{jsxref("RangeError")}}
+  - : Thrown in one of the following cases:
+    - The new typed array's length is too large.
+    - The length of `buffer` (if the `length` parameter is not specified) or `byteOffset` is not an integral multiple of the new typed array's element size.
+    - `byteOffset` is not a valid array index (an integer between 0 and 2<sup>53</sup> - 1).
+    - When creating a view from a buffer, the bounds are outside the buffer. In other words, `byteOffset + length * TypedArray.BYTES_PER_ELEMENT > buffer.byteLength`.
+
+## Static properties
+
+These properties are defined on the `TypedArray` constructor object and are thus shared by all `TypedArray` subclass constructors.
+
+- {{jsxref("TypedArray/@@species", "TypedArray[@@species]")}}
+  - : The constructor function used to create derived objects.
+
+All `TypedArray` subclasses also have the following static properties:
 
 - {{jsxref("TypedArray.BYTES_PER_ELEMENT")}}
-  - : `TypedArray` 객체 요소의 크기를 숫자 값으로 반환합니다.
-- {{jsxref("TypedArray.name")}}
-  - : 생성자 이름을 문자열로 반환합니다(예: `"Int8Array"`).
-- {{jsxref("TypedArray.@@species", "get TypedArray[@@species]")}}
-  - : 파생된 객체를 만드는 데 사용되는 생성자 함수입니다.
-- {{jsxref("TypedArray")}}
-  - : `TypedArray` 객체의 프로토타입.
+  - : Returns a number value of the element size for the different `TypedArray` objects.
 
-## 정적 메서드
+## Static methods
+
+These methods are defined on the `TypedArray` constructor object and are thus shared by all `TypedArray` subclass constructors.
 
 - {{jsxref("TypedArray.from()")}}
-  - : 배열과 유사하거나 반복 가능한 객체에서 새 `TypedArray`를 만듭니다. {{jsxref("Array.from()")}}도 참조하시기 바랍니다.
+  - : Creates a new `TypedArray` from an array-like or iterable object. See also {{jsxref("Array.from()")}}.
 - {{jsxref("TypedArray.of()")}}
-  - : 가변 개수의 인수를 사용하여 새 `TypedArray`를 만듭니다. {{jsxref("Array.of()")}}도 참조하시기 바랍니다.
+  - : Creates a new `TypedArray` with a variable number of arguments. See also {{jsxref("Array.of()")}}.
 
-## 인스턴스 속성
+## Instance properties
+
+These properties are defined on `TypedArray.prototype` and shared by all `TypedArray` subclass instances.
 
 - {{jsxref("TypedArray.prototype.buffer")}}
-  - : 형식화 배열이 참조하는 {{jsxref("ArrayBuffer")}} 반환합니다. 생성 시 고정되는 값으로 **읽기 전용**입니다.
+  - : Returns the {{jsxref("ArrayBuffer")}} referenced by the typed array.
 - {{jsxref("TypedArray.prototype.byteLength")}}
-  - : 형식화 배열의 길이(바이트)를 반환합니다. 생성 시 고정되는 값으로 **읽기 전용**입니다.
+  - : Returns the length (in bytes) of the typed array.
 - {{jsxref("TypedArray.prototype.byteOffset")}}
-  - : {{jsxref("ArrayBuffer")}}의 시작 부터 형식화 배열의 지정된 오프셋(바이트)을 반환합니다. 생성시 시 고정되는 값으로 **읽기 전용**입니다.
+  - : Returns the offset (in bytes) of the typed array from the start of its {{jsxref("ArrayBuffer")}}.
+- {{jsxref("Object/constructor", "TypedArray.prototype.constructor")}}
+  - : The constructor function that created the instance object. `TypedArray.prototype.constructor` is the hidden `TypedArray` constructor function, but each typed array subclass also defines its own `constructor` property.
 - {{jsxref("TypedArray.prototype.length")}}
-  - : 형식화 배열에 포함된 요소의 수를 반환합니다. 생성 시 고정되는 값으로 **읽기 전용**입니다.
+  - : Returns the number of elements held in the typed array.
+- `TypedArray.prototype[@@toStringTag]`
+  - : The initial value of the [`TypedArray.prototype[@@toStringTag]`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toStringTag) property is a getter that returns the same string as the typed array constructor's name. It returns `undefined` if the `this` value is not one of the typed array subclasses. This property is used in {{jsxref("Object.prototype.toString()")}}. However, because `TypedArray` also has its own [`toString()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/toString) method, this property is not used unless you call [`Object.prototype.toString.call()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call) with a typed array as `thisArg`.
 
-## 인스턴스 메서드
+All `TypedArray` subclasses also have the following instance properties:
+
+- {{jsxref("TypedArray.prototype.BYTES_PER_ELEMENT")}}
+  - : Returns a number value of the element size for the different `TypedArray` objects.
+
+## Instance methods
+
+These methods are defined on the `TypedArray` prototype object and are thus shared by all `TypedArray` subclass instances.
 
 - {{jsxref("TypedArray.prototype.at()")}}
-  - : 정수 값으로 해당 인덱스의 항목을 반환합니다. 이 메서드는 마지막 항목부터 접근하는 음의 정수를 허용합니다.
+  - : Takes an integer value and returns the item at that index. This method allows for negative integers, which count back from the last item.
 - {{jsxref("TypedArray.prototype.copyWithin()")}}
-  - : 배열 내의 배열 요소 시퀀스를 복사합니다. {{jsxref("Array.prototype.copyWithin()")}}도 참조하시기 바랍니다.
+  - : Copies a sequence of array elements within the array. See also {{jsxref("Array.prototype.copyWithin()")}}.
 - {{jsxref("TypedArray.prototype.entries()")}}
-  - : 배열의 각 인덱스에 대한 키/값 쌍을 포함하는 새 **배열 반복기** 객체를 반환합니다. {{jsxref("Array.prototype.entries()")}}도 참조하시기 바랍니다.
+  - : Returns a new _array iterator_ object that contains the key/value pairs for each index in the array. See also {{jsxref("Array.prototype.entries()")}}.
 - {{jsxref("TypedArray.prototype.every()")}}
-  - : 배열의 모든 요소가 함수에서 제공하는 테스트를 통과하는지 확인합니다. {{jsxref("Array.prototype.every()")}}도 참조하시기 바랍니다.
+  - : Tests whether all elements in the array pass the test provided by a function. See also {{jsxref("Array.prototype.every()")}}.
 - {{jsxref("TypedArray.prototype.fill()")}}
-  - : 시작 인덱스에서 끝 인덱스까지 배열의 모든 요소를 정적 값으로 채웁니다. {{jsxref("Array.prototype.fill()")}}도 참조하시기 바랍니다.
+  - : Fills all the elements of an array from a start index to an end index with a static value. See also {{jsxref("Array.prototype.fill()")}}.
 - {{jsxref("TypedArray.prototype.filter()")}}
-  - : 제공된 필터링 함수가 `true`를 반환하는 이 배열의 모든 요소를 사용하여 새 배열을 만듭니다. {{jsxref("Array.prototype.filter()")}}도 참조하시기 바랍니다.
+  - : Creates a new array with all of the elements of this array for which the provided filtering function returns `true`. See also {{jsxref("Array.prototype.filter()")}}.
 - {{jsxref("TypedArray.prototype.find()")}}
-  - : 제공된 테스트 함수를 충족하는 첫번 째 `element`를 반환하고, 찾지 못하면 `undefined`를 반환합니다. {{jsxref("Array.prototype.find()")}}도 참조하시기 바랍니다.
+  - : Returns the first `element` in the array that satisfies a provided testing function, or `undefined` if no appropriate element is found. See also {{jsxref("Array.prototype.find()")}}.
 - {{jsxref("TypedArray.prototype.findIndex()")}}
-  - : 제공된 테스트 함수를 충족하는 첫 번째 요소의 인덱스 값을 반환하고, 찾지 못한 경우는 `-1`을 반환합니다. {{jsxref("Array.prototype.findIndex()")}}도 참조하시기 바랍니다.
+  - : Returns the first index value in the array that has an element that satisfies a provided testing function, or `-1` if no appropriate element was found. See also {{jsxref("Array.prototype.findIndex()")}}.
 - {{jsxref("TypedArray.prototype.findLast()")}}
-  - : 제공된 테스트 함수를 충족하는 배열의 마지막 요소 값을 반환하고, 요소가 없으면 `undefined`를 반환합니다. {{jsxref("Array.prototype.findLast()")}}도 참조하시기 바랍니다.
+  - : Returns the value of the last element in the array that satisfies a provided testing function, or `undefined` if no appropriate element is found. See also {{jsxref("Array.prototype.findLast()")}}.
 - {{jsxref("TypedArray.prototype.findLastIndex()")}}
-  - : 제공된 테스트 함수를 충족하는 배열의 마지막 요소의 인덱스를 반환하고, 요소를 찾지 못한 경우는 `-1`을 반환합니다. {{jsxref("Array.prototype.findLastIndex()")}}도 참조하시기 바랍니다..
+  - : Returns the index of the last element in the array that satisfies a provided testing function, or `-1` if no appropriate element was found. See also {{jsxref("Array.prototype.findLastIndex()")}}.
 - {{jsxref("TypedArray.prototype.forEach()")}}
-  - : 배열의 각 요소에 대해 함수를 호출합니다. {{jsxref("Array.prototype.forEach()")}}도 참조하시기 바랍니다.
+  - : Calls a function for each element in the array. See also {{jsxref("Array.prototype.forEach()")}}.
 - {{jsxref("TypedArray.prototype.includes()")}}
-  - : 형식화 배열에 특정 요소가 포함되어 있는지 여부를 결정하여 `true` 또는 `false`를 반환합니다 {{jsxref("Array.prototype.includes()")}}도 참조하시기 바랍니다.
+  - : Determines whether a typed array includes a certain element, returning `true` or `false` as appropriate. See also {{jsxref("Array.prototype.includes()")}}.
 - {{jsxref("TypedArray.prototype.indexOf()")}}
-  - : 지정된 값과 동일한 배열 내 요소의 첫 번째(최소) 인덱스를 반환하고, 아무 것도 발견되지 않으면 `-1`을 반환합니다. {{jsxref("Array.prototype.indexOf()")}}도 참조하시기 바랍니다.
+  - : Returns the first (least) index of an element within the array equal to the specified value, or `-1` if none is found. See also {{jsxref("Array.prototype.indexOf()")}}.
 - {{jsxref("TypedArray.prototype.join()")}}
-  - : 배열의 모든 요소를 문자열로 결합합니다. {{jsxref("Array.prototype.join()")}}도 참조하시기 바랍니다.
+  - : Joins all elements of an array into a string. See also {{jsxref("Array.prototype.join()")}}.
 - {{jsxref("TypedArray.prototype.keys()")}}
-  - : 배열의 각 인덱스에 대한 키를 포함하는 새 배열 반복자를 반환합니다. {{jsxref("Array.prototype.keys()")}}도 참조하시기 바랍니다.
+  - : Returns a new array iterator that contains the keys for each index in the array. See also {{jsxref("Array.prototype.keys()")}}.
 - {{jsxref("TypedArray.prototype.lastIndexOf()")}}
-  - : 지정된 값과 동일한 배열 내 요소의 마지막(가장 큰) 인덱스를 반환고, 찾지 못한 경우엔 `-1`을 반환합니다. {{jsxref("Array.prototype.lastIndexOf()")}}도 참조하시기 바랍니다..
+  - : Returns the last (greatest) index of an element within the array equal to the specified value, or `-1` if none is found. See also {{jsxref("Array.prototype.lastIndexOf()")}}.
 - {{jsxref("TypedArray.prototype.map()")}}
-  - : 배열의 모든 요소에 대해 제공된 함수를 호출한 결과로 새 배열을 만듭니다. {{jsxref("Array.prototype.map()")}}도 참조하시기 바랍니다.
+  - : Creates a new array with the results of calling a provided function on every element in this array. See also {{jsxref("Array.prototype.map()")}}.
 - {{jsxref("TypedArray.prototype.reduce()")}}
-  - : 누산기와 배열의 각 값(왼쪽에서 오른쪽으로)에 대해 함수를 적용하여 단일 값으로 줄입니다. {{jsxref("Array.prototype.reduce()")}}도 참조하시기 바랍니다.
+  - : Apply a function against an accumulator and each value of the array (from left-to-right) as to reduce it to a single value. See also {{jsxref("Array.prototype.reduce()")}}.
 - {{jsxref("TypedArray.prototype.reduceRight()")}}
-  - : 누산기와 배열의 각 값(오른쪽에서 왼쪽으로)에 대해 함수를 적용하여 단일 값으로 줄입니다. {{jsxref("Array.prototype.reduceRight()")}}도 참조하시기 바랍니다.
+  - : Apply a function against an accumulator and each value of the array (from right-to-left) as to reduce it to a single value. See also {{jsxref("Array.prototype.reduceRight()")}}.
 - {{jsxref("TypedArray.prototype.reverse()")}}
-  - : 배열 요소의 순서를 뒤집습니다. 첫 번째 요소가 마지막 요소가 되고 마지막 요소가 첫 번째 요소가 됩니다. {{jsxref("Array.prototype.reverse()")}}도 참조하시기 바랍니다.
+  - : Reverses the order of the elements of an array — the first becomes the last, and the last becomes the first. See also {{jsxref("Array.prototype.reverse()")}}.
 - {{jsxref("TypedArray.prototype.set()")}}
-  - : 형식화 배열에 여러 값을 저장하고 지정된 배열에서 입력 값을 읽습니다.
+  - : Stores multiple values in the typed array, reading input values from a specified array.
 - {{jsxref("TypedArray.prototype.slice()")}}
-  - : 배열의 부분을 추출하여 새 배열을 반환합니다. {{jsxref("Array.prototype.slice()")}}도 참조하시기 바랍니다.
+  - : Extracts a section of an array and returns a new array. See also {{jsxref("Array.prototype.slice()")}}.
 - {{jsxref("TypedArray.prototype.some()")}}
-  - : 이 배열의 하나 이상의 요소가 제공된 테스트 함수를 충족하는 경우, `true`를 반환합니다. {{jsxref("Array.prototype.some()")}}도 참조하시기 바랍니다.
+  - : Returns `true` if at least one element in this array satisfies the provided testing function. See also {{jsxref("Array.prototype.some()")}}.
 - {{jsxref("TypedArray.prototype.sort()")}}
-  - : 배열의 요소를 정렬하고 배열을 반환합니다. {{jsxref("Array.prototype.sort()")}}도 참조하시기 바랍니다.
+  - : Sorts the elements of an array in place and returns the array. See also {{jsxref("Array.prototype.sort()")}}.
 - {{jsxref("TypedArray.prototype.subarray()")}}
-  - : 주어진 시작 인덱스에서 끝 인덱스 까지의 요소로 만든 새로운 `TypedArray`를 반환합니다.
-- {{jsxref("TypedArray.prototype.values()")}}
-  - : 배열의 각 인덱스에 대한 값을 포함하는 새 **배열 반복기** 객체를 반환합니다.{{jsxref("Array.prototype.values()")}}도 참조하시기 바랍니다.
+  - : Returns a new `TypedArray` from the given start and end element index.
 - {{jsxref("TypedArray.prototype.toLocaleString()")}}
-  - : 배열 및 해당 요소를 나타내는 지역화된 문자열을 반환합니다. {{jsxref("Array.prototype.toLocaleString()")}}도 참조하시기 바랍니다.
+  - : Returns a localized string representing the array and its elements. See also {{jsxref("Array.prototype.toLocaleString()")}}.
+- {{jsxref("TypedArray.prototype.toReversed()")}}
+  - : Returns a new array with the elements in reversed order, without modifying the original array.
+- {{jsxref("TypedArray.prototype.toSorted()")}}
+  - : Returns a new array with the elements sorted in ascending order, without modifying the original array.
 - {{jsxref("TypedArray.prototype.toString()")}}
-  - : 배열과 해당 요소를 나타내는 문자열을 반환합니다. {{jsxref("Array.prototype.toString()")}}도 참조하시기 바랍니다.
-- {{jsxref("TypedArray.prototype.@@iterator()",
-    "TypedArray.prototype[@@iterator]()")}}
-  - : 배열의 각 인덱스에 대한 값을 포함하는 새 **배열 반복기** 객체를 반환합니다.
+  - : Returns a string representing the array and its elements. See also {{jsxref("Array.prototype.toString()")}}.
+- {{jsxref("TypedArray.prototype.values()")}}
+  - : Returns a new _array iterator_ object that contains the values for each index in the array. See also {{jsxref("Array.prototype.values()")}}.
+- {{jsxref("TypedArray.prototype.with()")}}
+  - : Returns a new array with the element at the given index replaced with the given value, without modifying the original array.
+- [`TypedArray.prototype[@@iterator]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/@@iterator)
+  - : Returns a new _array iterator_ object that contains the values for each index in the array.
 
-## 예제
+## Examples
 
-## 속성 접근
+### Property access
 
-표준 배열 인덱스 구문(즉, 대괄호 표기법 사용)을 사용하여 배열의 요소를 참조할 수 있습니다.
-그러나 형식화 배열에서는 인덱스된 속성을 가져오거나 설정하면 인덱스가 범위를 벗어난 경우에도 프로토타입 체인에서 이 속성을 검색하지 않습니다.
-인덱싱된 속성은 {{jsxref("ArrayBuffer")}} 참조하고 객체 속성을 절대 확인하지 않습니다.
-모든 객체와 마찬가지로 이름을 지정한 속성은 계속 사용할 수 있습니다.
+You can reference elements in the array using standard array index syntax (that is,
+using bracket notation). However, getting or setting indexed properties on typed arrays
+will not search in the prototype chain for this property, even when the indices are out
+of bound. Indexed properties will consult the {{jsxref("ArrayBuffer")}} and will never
+look at object properties. You can still use named properties, just like with all
+objects.
 
 ```js
-// 표준 배열 구문을 사용하여 설정 및 가져오기
+// Setting and getting using standard array syntax
 const int16 = new Int16Array(2);
 int16[0] = 42;
 console.log(int16[0]); // 42
 
-// 프로토타입의 인덱싱된 속성이 참조되지 않음 (Fx 25)
-Int8Array.prototype[20] = 'foo';
-(new Int8Array(32))[20]; // 0
-// 범위를 벗어나더라도
-Int8Array.prototype[20] = 'foo';
-(new Int8Array(8))[20]; // undefined
-// 또는 음수를 사용하더라도
-Int8Array.prototype[-1] = 'foo';
-(new Int8Array(8))[-1]; // undefined
+// Indexed properties on prototypes are not consulted (Fx 25)
+Int8Array.prototype[20] = "foo";
+new Int8Array(32)[20]; // 0
+// even when out of bound
+Int8Array.prototype[20] = "foo";
+new Int8Array(8)[20]; // undefined
+// or with negative integers
+Int8Array.prototype[-1] = "foo";
+new Int8Array(8)[-1]; // undefined
 
-// 그래도 이름을 지정한 속성은 허용됨 (Fx 30)
-Int8Array.prototype.foo = 'bar';
-(new Int8Array(32)).foo; // "bar"
+// Named properties are allowed, though (Fx 30)
+Int8Array.prototype.foo = "bar";
+new Int8Array(32).foo; // "bar"
 ```
 
-### 고정될 수 없음
+### Cannot be frozen
 
-비어 있지 않은 `TypedArray`는 고정될 수 없습니다. 기본 `ArrayBuffer`가 버퍼의 다른 `TypedArray` 보기를 통해 변경될 수 있기 때문입니다. 이것은 객체가 고정되지 않을것 임을 의미합니다.
+`TypedArray`s that aren't empty cannot be frozen, as their
+underlying `ArrayBuffer` could be mutated through another
+`TypedArray` view of the buffer. This would mean that the object
+would never genuinely be frozen.
 
 ```js example-bad
 const i8 = Int8Array.of(1, 2, 3);
@@ -195,9 +319,12 @@ Object.freeze(i8);
 // TypeError: Cannot freeze array buffer views with elements
 ```
 
-### ByteOffset는 반드시 정렬되어야 합니다.
+### ByteOffset must be aligned
 
-`TypedArray`를 `ArrayBuffer`에 대한 보기로 구성할 때 `byteOffset` 인수는 요소 크기에 맞춰 정렬되어야 합니다. 즉, 오프셋은 B`YTES_PER_ELEMENT`의 배수여야 합니다.
+When constructing a `TypedArray` as a view onto an
+`ArrayBuffer`, the `byteOffset` argument must be aligned to its
+element size; in other words, the offset must be a multiple of
+`BYTES_PER_ELEMENT`.
 
 ```js example-bad
 const i32 = new Int32Array(new ArrayBuffer(4), 1);
@@ -208,9 +335,11 @@ const i32 = new Int32Array(new ArrayBuffer(4), 1);
 const i32 = new Int32Array(new ArrayBuffer(4), 0);
 ```
 
-### ByteLength는 반드시 정렬되어야 합니다.
+### ByteLength must be aligned
 
-`byteOffset` 매개변수와 마찬가지로 `TypedArray`의 생성자에 전달된 `ArrayBuffer`의 `byteLength` 속성은 생성자의 `BYTES_PER_ELEMENT`의 배수여야 합니다.
+Like the `byteOffset` parameter, the `byteLength` property of an
+`ArrayBuffer` passed to a `TypedArray`'s constructor
+must be a multiple of the constructor's `BYTES_PER_ELEMENT`.
 
 ```js example-bad
 const i32 = new Int32Array(new ArrayBuffer(3));
@@ -221,18 +350,19 @@ const i32 = new Int32Array(new ArrayBuffer(3));
 const i32 = new Int32Array(new ArrayBuffer(4));
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - [Polyfill of typed arrays in `core-js`](https://github.com/zloirock/core-js#ecmascript-typed-arrays)
-- [JavaScript 형식화 배열](/ko/docs/Web/JavaScript/Typed_arrays)
+- [JavaScript typed arrays](/en-US/docs/Web/JavaScript/Typed_arrays)
 - {{jsxref("ArrayBuffer")}}
 - {{jsxref("DataView")}}
-- [TextDecoder](/ko/docs/Web/API/TextDecoder) — 숫자 데이터에서 문자열을 디코딩하는 헬퍼
+- [TextDecoder](/en-US/docs/Web/API/TextDecoder) — Helper that decode
+  strings from numerical data

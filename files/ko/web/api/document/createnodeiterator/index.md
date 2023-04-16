@@ -1,70 +1,105 @@
 ---
-title: NodeFilter
+title: "Document: createNodeIterator() method"
+short-title: createNodeIterator()
 slug: Web/API/Document/createNodeIterator
-original_slug: Web/API/NodeFilter
+page-type: web-api-instance-method
+browser-compat: api.Document.createNodeIterator
 ---
 
 {{APIRef("DOM")}}
 
-**`NodeFilter`** 인터페이스는 {{ domxref("NodeIterator") }}나 {{ domxref("TreeWalker") }}에서 노드를 거를 때 사용하는 객체를 나타냅니다. `NodeFilter`는 DOM이나 노드 순회 방법은 알지 못하며, 주어진 필터에 대해 단일 노드를 평가하는 방법만 알 수 있습니다.
+The **`Document.createNodeIterator()`** method returns a new [`NodeIterator`](/en-US/docs/Web/API/NodeIterator) object.
 
-> **참고:** The browser doesn't provide any object implementing this interface. It is the user who is expected to write one, tailoring the `acceptNode()` method to its needs, and using it with some {{domxref("TreeWalker")}} or {{domxref("NodeIterator")}} objects.
+## Syntax
 
-## Properties
+```js-nolint
+createNodeIterator(root)
+createNodeIterator(root, whatToShow)
+createNodeIterator(root, whatToShow, filter)
+```
 
-_This interface neither implements, nor inherits, any properties._
+### Parameters
 
-## Methods
+- `root`
 
-_This interface doesn't inherit any methods._
+  - : The root node at which to begin the {{ domxref("NodeIterator") }}'s traversal.
 
-- {{domxref("NodeFilter.acceptNode()")}}
-  - | : Returns an `unsigned short` that will be used to tell if a given {{domxref("Node")}} must be accepted or not by the {{ domxref("NodeIterator") }} or {{ domxref("TreeWalker") }} iteration algorithm. This method is expected to be written by the user of a `NodeFilter`. Possible return values are: | Constant                                                                                                                                                                                                                                                                                                           | Description |
-    | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
-    | `FILTER_ACCEPT`                                                                                                                                                                                                                                                                                                                   | Value returned by the {{ domxref("NodeFilter.acceptNode()") }} method when a node should be accepted.                                                                                                                                                                                                  |
-    | `FILTER_REJECT`                                                                                                                                                                                                                                                                                                                   | Value to be returned by the {{ domxref("NodeFilter.acceptNode()") }} method when a node should be rejected. For {{ domxref("TreeWalker") }}, child nodes are also rejected. For {{ domxref("NodeIterator") }}, this flag is synonymous with FILTER_SKIP.                           |
-    | `FILTER_SKIP`                                                                                                                                                                                                                                                                                                                     | Value to be returned by {{ domxref("NodeFilter.acceptNode()") }} for nodes to be skipped by the {{ domxref("NodeIterator") }} or {{ domxref("TreeWalker") }} object. The children of skipped nodes are still considered. This is treated as "skip this node but not its children". |
+- `whatToShow` {{optional_inline}}
 
-## Example
+  - : An optional `unsigned long` representing a bitmask created by
+    combining the constant properties of
+    [`NodeFilter`](https://www.w3.org/TR/DOM-Level-2-Traversal-Range/traversal.html#Traversal-NodeFilter).
+    It is a convenient way of filtering for certain types of node. It defaults to
+    `0xFFFFFFFF` representing the `SHOW_ALL` constant.
+
+    | Constant                                                 | Numerical value                                         | Description                                                                                                                                                                                                                                                                                                                                                                                     |
+    | -------------------------------------------------------- | ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | `NodeFilter.SHOW_ALL`                                    | `4294967295` (that is the max value of `unsigned long`) | Shows all nodes.                                                                                                                                                                                                                                                                                                                                                                                |
+    | `NodeFilter.SHOW_ATTRIBUTE` {{deprecated_inline}}        | `2`                                                     | Shows attribute {{ domxref("Attr") }} nodes. This is meaningful only when creating a {{ domxref("TreeWalker") }} with an {{ domxref("Attr") }} node as its root. In this case, it means that the attribute node will appear in the first position of the iteration or traversal. Since attributes are never children of other nodes, they do not appear when traversing over the document tree. |
+    | `NodeFilter.SHOW_CDATA_SECTION` {{deprecated_inline}}    | `8`                                                     | Shows {{ domxref("CDATASection") }} nodes.                                                                                                                                                                                                                                                                                                                                                      |
+    | `NodeFilter.SHOW_COMMENT`                                | `128`                                                   | Shows {{ domxref("Comment") }} nodes.                                                                                                                                                                                                                                                                                                                                                           |
+    | `NodeFilter.SHOW_DOCUMENT`                               | `256`                                                   | Shows {{ domxref("Document") }} nodes.                                                                                                                                                                                                                                                                                                                                                          |
+    | `NodeFilter.SHOW_DOCUMENT_FRAGMENT`                      | `1024`                                                  | Shows {{ domxref("DocumentFragment") }} nodes.                                                                                                                                                                                                                                                                                                                                                  |
+    | `NodeFilter.SHOW_DOCUMENT_TYPE`                          | `512`                                                   | Shows {{ domxref("DocumentType") }} nodes.                                                                                                                                                                                                                                                                                                                                                      |
+    | `NodeFilter.SHOW_ELEMENT`                                | `1`                                                     | Shows {{ domxref("Element") }} nodes.                                                                                                                                                                                                                                                                                                                                                           |
+    | `NodeFilter.SHOW_ENTITY` {{deprecated_inline}}           | `32`                                                    | Legacy, no more usable.                                                                                                                                                                                                                                                                                                                                                                         |
+    | `NodeFilter.SHOW_ENTITY_REFERENCE` {{deprecated_inline}} | `16`                                                    | Legacy, no more usable.                                                                                                                                                                                                                                                                                                                                                                         |
+    | `NodeFilter.SHOW_NOTATION` {{deprecated_inline}}         | `2048`                                                  | Legacy, no more usable.                                                                                                                                                                                                                                                                                                                                                                         |
+    | `NodeFilter.SHOW_PROCESSING_INSTRUCTION`                 | `64`                                                    | Shows {{ domxref("ProcessingInstruction") }} nodes.                                                                                                                                                                                                                                                                                                                                             |
+    | `NodeFilter.SHOW_TEXT`                                   | `4`                                                     | Shows {{ domxref("Text") }} nodes.                                                                                                                                                                                                                                                                                                                                                              |
+
+- `filter` {{optional_inline}}
+  - : A callback function or an object with an `acceptNode()` method. The function or method will be called for each node in the subtree based at root which is accepted as included by the whatToShow flag to determine whether or not to include it in the list of iterable nodes. The method should return one of `NodeFilter.FILTER_ACCEPT`, `NodeFilter.FILTER_REJECT`, or `NodeFilter.FILTER_SKIP`. See the [Example](#examples).
+
+### Return value
+
+A new [`NodeIterator`](/en-US/docs/Web/API/NodeIterator) object.
+
+## Examples
 
 ```js
-var nodeIterator = document.createNodeIterator(
-  // Node to use as root
-  document.getElementById('someId'),
-
-  // Only consider nodes that are text nodes (nodeType 3)
-  NodeFilter.SHOW_TEXT,
-
-  // Object containing the function to use for the acceptNode method
-  // of the NodeFilter
-    { acceptNode: function(node) {
-      // Logic to determine whether to accept, reject or skip node
-      // In this case, only accept nodes that have content
-      // other than whitespace
-      if ( ! /^\s*$/.test(node.data) ) {
-        return NodeFilter.FILTER_ACCEPT;
-      }
-    }
-  },
-  false
+const nodeIterator = document.createNodeIterator(
+  document.body,
+  NodeFilter.SHOW_ELEMENT,
+  (node) =>
+    node.nodeName.toLowerCase() === "p"
+      ? NodeFilter.FILTER_ACCEPT
+      : NodeFilter.FILTER_REJECT
 );
+const pars = [];
+let currentNode;
 
-// Show the content of every non-empty text node that is a child of root
-var node;
-
-while ((node = nodeIterator.nextNode())) {
-  alert(node.data);
+while ((currentNode = nodeIterator.nextNode())) {
+  pars.push(currentNode);
 }
 ```
 
-## 명세서
+The same, but using an object with an `acceptNode()` method:
+
+```js
+const nodeIterator = document.createNodeIterator(
+  document.body,
+  NodeFilter.SHOW_ELEMENT,
+  {
+    acceptNode(node) {
+      return node.nodeName.toLowerCase() === "p"
+        ? NodeFilter.FILTER_ACCEPT
+        : NodeFilter.FILTER_REJECT;
+    },
+  }
+);
+const pars = [];
+let currentNode;
+
+while ((currentNode = nodeIterator.nextNode())) {
+  pars.push(currentNode);
+}
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
-
-## See also
-
-- Related interfaces: {{domxref("TreeWalker")}}, {{domxref("NodeIterator")}}.

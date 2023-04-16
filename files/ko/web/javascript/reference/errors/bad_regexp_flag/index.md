@@ -1,49 +1,68 @@
 ---
-title: 'SyntaxError: invalid regular expression flag "x"'
+title: "SyntaxError: invalid regular expression flag \"x\""
 slug: Web/JavaScript/Reference/Errors/Bad_regexp_flag
+page-type: javascript-error
 ---
 
 {{jsSidebar("Errors")}}
 
-## 메세지
+The JavaScript exception "invalid regular expression flag" occurs when the flags in a regular expression contain any flag that is not one of: `g`, `i`, `m`, `s`, `u`, `y` or `d`.
+
+It may also be raised if the expression contains more than one instance of a valid flag.
+
+## Message
 
 ```
-  SyntaxError: Syntax error in regular expression (Edge)
-  SyntaxError: invalid regular expression flag "x" (Firefox)
-  SyntaxError: Invalid regular expression flags (Chrome)
+SyntaxError: Invalid regular expression flags (V8-based)
+SyntaxError: invalid regular expression flag x (Firefox)
+SyntaxError: Invalid regular expression: invalid flags (Safari)
 ```
 
-## 에러 타입
+## Error type
 
 {{jsxref("SyntaxError")}}
 
-## 무엇이 잘못되었을까?
+## What went wrong?
 
-코드에 잘못된 정규 표현식 플래그가 있습니다. 슬래시로 묶인 패턴으로 구성되어 있는 정규 표현식 문자에서 플래그는 두 번째 플래그 뒤에 정의됩니다. 플래그는 또한 {{jsxref("RegExp")}} 객체의 생성자 함수에서도 정의될 수 있습니다(두 번째 매개변수). 정규 표현식 플래그는 따로 또는 순서에 상관 없이 같이 사용될 수 있지만 ECMAScript에는 오직 5개만 있습니다.
+The regular expression contains invalid flags, or valid flags have been used more than once in the expression.
 
-정규 표현식에 플래그를 포함시키려면 아래의 문법을 사용하세요:
+The valid (allowed) flags are listed in [Regular expressions > Advanced searching with flags](/en-US/docs/Web/JavaScript/Guide/Regular_expressions#advanced_searching_with_flags), and reproduced below:
+
+| Flag | Description                                                                                                                             |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `g`  | Global search. See {{jsxref("RegExp/global", "global")}}                                                                                |
+| `i`  | Case-insensitive search. See {{jsxref("RegExp/sticky", "ignoreCase")}}.                                                                 |
+| `m`  | Multi-line search. See {{jsxref("RegExp/multiline", "multiline")}}.                                                                     |
+| `s`  | Allow `.` to match newlines. See {{jsxref("RegExp/dotAll", "dotAll")}}.                                                                 |
+| `u`  | Unicode; treat pattern as a sequence of Unicode code points. See {{jsxref("RegExp/unicode", "unicode")}}.                               |
+| `y`  | Perform a "sticky" search that matches starting at the current position in the target string. See {{jsxref("RegExp/sticky", "sticky")}} |
+| `d`  | Indices. Generate indices for substring matches. See {{jsxref("RegExp/hasIndices", "hasIndices")}}                                      |
+
+## Examples
+
+In a regular expression literal, which consists of a pattern enclosed between slashes, the flags are defined after the second slash.
+Regular expression flags can be used separately or together in any order.
+This syntax shows how to declare the flags using the regular expression literal:
 
 ```js
-var re = /pattern/flags;
+const re = /pattern/flags;
 ```
 
-또는
+They can also be defined in the constructor function of the {{jsxref("RegExp")}} object (second parameter):
 
 ```js
-var re = new RegExp('pattern', 'flags');
+const re = new RegExp("pattern", "flags");
 ```
 
-| 플래그 | 설명                                                                                        |
-| ------ | ------------------------------------------------------------------------------------------- |
-| `g`    | 전역 검색.                                                                                  |
-| i      | 대소문자 구별 없이 검색.                                                                    |
-| m      | 여러 줄(Multi-line) 검색.                                                                   |
-| u      | 유니코드; 패턴을 유니코드 코드 포인트의 나열로 취급.                                        |
-| y      | 현재 위치에서 검색. ("sticky" 검색). {{jsxref("RegExp.sticky", "sticky")}} 참조. |
+Here is an example showing use of only correct flags.
 
-## 예제
+```js example-good
+/foo/g;
+/foo/gims;
+/foo/uy;
+```
 
-5개의 플래그만이 유효합니다.
+Below is an example showing the use of some invalid flags `b`, `a` and `r`:
 
 ```js example-bad
 /foo/bar;
@@ -51,35 +70,26 @@ var re = new RegExp('pattern', 'flags');
 // SyntaxError: invalid regular expression flag "b"
 ```
 
-정규 표현식을 만들려고 했나요? 두 개의 슬래시가 포함된 표현식은 정규 표현식 문자로 해석됩니다.
+The code below is incorrect, because `W`, `e` and `b` are not valid flags.
 
 ```js example-bad
-let obj = {
-  url: /docs/Web
+const obj = {
+  url: /docs/Web,
 };
 
 // SyntaxError: invalid regular expression flag "W"
 ```
 
-아니면 문자열로 만들려고 했나요? 작은 따옴표 또는 큰 따옴표를 추가하여 문자열을 만듭니다.
+An expression containing two slashes is interpreted as a regular expression literal.
+Most likely the intent was to create a string literal, using single or double quotes as shown below:
 
 ```js example-good
-let obj = {
-  url: '/docs/Web'
+const obj = {
+  url: "/docs/Web",
 };
 ```
 
-### 유효한 정규 표현식 플래그
+## See also
 
-자바스크립트에서 허용하는 5개의 유효한 정규 표현식 플래그를 위의 표에서 확인하세요.
-
-```js example-good
-/foo/g;
-/foo/gim;
-/foo/uy;
-```
-
-## 같이 보기
-
-- [정규 표현식](/ko/docs/Web/JavaScript/Guide/%EC%A0%95%EA%B7%9C%EC%8B%9D)
-- [XRegEx flags](http://xregexp.com/flags/) – 새로운 4개의 플래그(`n`, `s`, `x`, `A`)를 제공하는 정규 표현식 라이브러리
+- [Regular expressions](/en-US/docs/Web/JavaScript/Guide/Regular_expressions)
+- [XRegEx flags](https://xregexp.com/flags/) – regular expression library that provides four new flags (`n`, `s`, `x`, `A`)

@@ -1,65 +1,70 @@
 ---
-title: Window.scrollY
+title: "Window: scrollY property"
+short-title: scrollY
 slug: Web/API/Window/scrollY
+page-type: web-api-instance-property
+browser-compat: api.Window.scrollY
 ---
 
 {{APIRef("CSSOM View")}}
 
-{{domxref("Window")}} 인터페이스의 **`scrollY`** 읽기 전용 속성은 문서가 수직으로 얼마나 스크롤됐는지 픽셀 단위로 반환합니다. 최신 브라우저에서는 값의 정밀도가 픽셀보다 작으므로 반드시 정숫값을 반환하는건 아닙니다. 수평 스크롤은 {{domxref("Window.scrollX", "scrollX")}} 속성을 사용하여 가져올 수 있습니다.
+The read-only **`scrollY`** property
+of the {{domxref("Window")}} interface returns the number of pixels that the document
+is currently scrolled vertically.
 
-## 구문
+This value is subpixel precise in modern
+browsers, meaning that it isn't necessarily a whole number. You can get the number of
+pixels the document is scrolled horizontally from the {{domxref("Window.scrollX",
+  "scrollX")}} property.
 
-```js
-var y = window.scrollY
-```
+## Value
 
-### 값
+In practice, the returned value is a double-precision floating-point value with the range of
+2^(-1022) to 2^(+1023). It indicates the number of pixels the document is currently scrolled
+vertically from the origin, where a positive value means the content is scrolled to upward.
+If the document is rendered on a subpixel-precise device, then the returned value is also
+subpixel-precise and may contain a decimal component. If the document isn't scrolled at all
+up or down, then `scrollY` is 0.
 
-원점으로부터 문서를 수직방향으로 스크롤한 픽셀의 수를 나타내는, 배정밀도 부동소수점 값. 양의 값이 위쪽 스크롤을 의미합니다. 문서를 단일 픽셀보다 높은 정밀도의 장치에서 렌더링한 경우 반환값의 정밀도도 높아져 소숫값을 반환할 수 있습니다. 문서가 위나 아래로 전혀 움직이지 않은 상태면 `0`을 반환합니다.
+> **Note:** If you need an integer value, you can use {{jsxref("Math.round()")}} to round it off.
 
-> **참고:** 정숫값이 필요하면 {{jsxref("Math.round()")}}를 사용해 반올림할 수 있습니다.
+In more technical terms, `scrollY` returns the Y coordinate of the top edge
+of the current {{Glossary("viewport")}}. If there is no viewport, the returned value is
+0\.
 
-더 기술적인 용어로, `scrollY`는 현재 {{Glossary("viewport", "뷰포트")}} 위쪽 모서리의 Y좌표를 반환하고, 뷰포트가 없으면 0을 반환합니다.
-
-## 예제
+## Examples
 
 ```js
 // make sure and go down to the second page
 if (window.scrollY) {
-  window.scroll(0, 0);  // reset the scroll position to the top left of the document.
+  window.scroll(0, 0); // reset the scroll position to the top left of the document.
 }
 
 window.scrollByPages(1);
 ```
 
-## 참고
+## Notes
 
-`scrollY` 속성을 사용하면 {{domxref("window.scrollBy", "scrollBy()")}}, {{domxref("window.scrollByLines", "scrollByLines()")}}, {{domxref("window.scrollByPages", "scrollByPages()")}}와 같은 상대적 스크롤 함수를 사용할 때, 문서가 이미 스크롤되지는 않았는지 판별할 수 있습니다.
+Use this property to check that the document hasn't already been scrolled when using
+relative scroll functions such as {{domxref("window.scrollBy", "scrollBy()")}},
+{{domxref("window.scrollByLines", "scrollByLines()")}}, or
+{{domxref("window.scrollByPages", "scrollByPages()")}}.
 
-{{domxref("Window.pageYOffset", "pageYOffset")}} 속성은 `scrollY`의 다른 이름입니다.
-
-```js
-window.pageYOffset === window.scrollY; // 항상 true
-```
-
-브라우저간 호환성을 위해서는 `window.scrollY` 대신 `window.pageYOffset`을 사용하세요. 이에 더해, Internet Explorer 9 미만의 구형 환경에서는 두 속성 모두 지원하지 않으므로 또 다른 비표준 속성을 사용해야 합니다. 다음은 완벽히 호환되는 코드의 예시입니다.
+The `pageYOffset` property is an alias for the `scrollY`
+property:
 
 ```js
-var supportPageOffset = window.pageXOffset !== undefined;
-var isCSS1Compat = ((document.compatMode || "") === "CSS1Compat");
-
-var x = supportPageOffset ? window.pageXOffset : isCSS1Compat ? document.documentElement.scrollLeft : document.body.scrollLeft;
-var y = supportPageOffset ? window.pageYOffset : isCSS1Compat ? document.documentElement.scrollTop : document.body.scrollTop;
+window.pageYOffset === window.scrollY; // always true
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("window.scrollX")}}

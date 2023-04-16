@@ -1,38 +1,42 @@
 ---
 title: contenteditable
 slug: Web/HTML/Global_attributes/contenteditable
+page-type: html-attribute
+browser-compat: html.global_attributes.contenteditable
 ---
 
 {{HTMLSidebar("Global_attributes")}}
 
-**`contenteditable`** [전역 특성](/ko/docs/Web/HTML/Global_attributes)은 사용자가 요소를 편집할 수 있는지 나타내는 열거형 특성입니다.
+The **`contenteditable`** [global attribute](/en-US/docs/Web/HTML/Global_attributes) is an enumerated attribute indicating if the element should be editable by the user. If so, the browser modifies its widget to allow editing.
 
 {{EmbedInteractiveExample("pages/tabbed/attribute-contenteditable.html","tabbed-shorter")}}
 
-<p class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</p>
+The attribute must take one of the following values:
 
-가능한 값은 다음과 같습니다.
+- `true` or an _empty string_, which indicates that the element is editable.
+- `false`, which indicates that the element is not editable.
 
-- `true` 또는 빈 문자열은 요소가 편집 가능함을 나타냅니다.
-- `false`는 요소가 편집 불가능함을 나타냅니다.
+If the attribute is given without a value, like `<label contenteditable>Example Label</label>`, its value is treated as an empty string.
 
-값 없이, `<label contenteditable>예제</label>`처럼 사용할 경우 빈 문자열 값으로 간주합니다.
+If this attribute is missing or its value is invalid, its value is _inherited_ from its parent element: so the element is editable if its parent is editable.
 
-특성이 없거나, 값이 유효하지 않은 경우 부모 요소로부터 상속합니다. 즉, 부모 요소를 편집 가능한 경우 자신도 편집 가능합니다.
+Note that although its allowed values include `true` and `false`, this attribute is an _[enumerated](/en-US/docs/Glossary/Enumerated)_ one and not a _Boolean_ one.
 
-가능한 값에 `true`와 `false`가 있긴 하지만, `contenteditable` 특성은 불리언 특성이 아닌 열거형 특성입니다.
+You can set the color used to draw the text insertion {{Glossary("caret")}} with the CSS {{cssxref("caret-color")}} property.
 
-텍스트 삽입 시 표시되는 커서의 색은 CSS {{cssxref("caret-color")}} 특성으로 바꿀 수 있습니다.
+Elements that are made editable, and therefore interactive, by using the `contenteditable` attribute can be focused. They participate in sequential keyboard navigation. However, elements with the `contenteditable` attribute nested within other `contenteditable` elements are not added to the tabbing sequence by default. You can add the nested `contenteditable` elements to the keyboard navigation sequence by specifying the `tabindex` value ([`tabindex="0"`](/en-US/docs/Web/HTML/Global_attributes/tabindex)).
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 모든 [전역 특성](/ko/docs/Web/HTML/Global_attributes).
-- {{domxref("HTMLElement.contentEditable")}}, {{domxref("HTMLElement.isContentEditable")}}
+- All [global attributes](/en-US/docs/Web/HTML/Global_attributes)
+- {{domxref("HTMLElement.contentEditable")}} and {{domxref("HTMLElement.isContentEditable")}}
+- The CSS {{cssxref("caret-color")}} property
+- [HTMLElement `input` event](/en-US/docs/Web/API/HTMLElement/input_event)

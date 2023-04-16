@@ -1,52 +1,51 @@
 ---
-title: 'Window: copy 이벤트'
+title: "Window: copy event"
+short-title: copy
 slug: Web/API/Window/copy_event
+page-type: web-api-event
+browser-compat: api.Element.copy_event
 ---
+
 {{APIRef}}
 
-**`copy`** 이벤트는 사용자가 브라우저의 사용자 인터페이스를 통해 복사했을 때 발생합니다.
+The **`copy`** event fires when the user initiates a copy action through the browser's user interface.
 
-<table class="properties">
-  <tbody>
-    <tr>
-      <th scope="row">버블링</th>
-      <td>예</td>
-    </tr>
-    <tr>
-      <th scope="row">취소 가능</th>
-      <td>예</td>
-    </tr>
-    <tr>
-      <th scope="row">인터페이스</th>
-      <td>{{domxref("ClipboardEvent")}}</td>
-    </tr>
-    <tr>
-      <th scope="row">이벤트 처리기 속성</th>
-      <td>{{domxref("HTMLElement/oncopy", "oncopy")}}</td>
-    </tr>
-  </tbody>
-</table>
+The original target for this event is the {{domxref("Element")}} that was the intended target of the copy action. You can listen for this event on the {{domxref("Window")}} interface to handle it in the capture or bubbling phases. For full details on this event please see the page on the [Element: copy event](/en-US/docs/Web/API/Element/copy_event).
 
-`copy` 이벤트의 원 대상은 복사 동작의 대상인 {{domxref("Element")}}입니다. {{domxref("Window")}}에서 수신할 경우 캡처 또는 버블링 단계의 이벤트를 받게 됩니다. 이벤트에 대한 자세한 정보는 [Element: copy 이벤트](/ko/docs/Web/API/Element/copy_event)에서 확인하세요.
+## Syntax
 
-## 예제
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
 
 ```js
-window.addEventListener('copy', (event) => {
-    console.log('복사 동작 실행')
+addEventListener("copy", (event) => {});
+
+oncopy = (event) => {};
+```
+
+## Event type
+
+A {{domxref("ClipboardEvent")}}. Inherits from {{domxref("Event")}}.
+
+{{InheritanceDiagram("ClipboardEvent")}}
+
+## Examples
+
+```js
+window.addEventListener("copy", (event) => {
+  console.log("copy action initiated");
 });
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 관련 이벤트: {{domxref("Window/cut_event", "cut")}}, {{domxref("Window/paste_event", "paste")}}
-- {{domxref("Element")}}를 대상으로 한 같은 이벤트: {{domxref("Element/copy_event", "copy")}}
-- {{domxref("Document")}}를 대상으로 한 같은 이벤트: {{domxref("Document/copy_event", "copy")}}
+- Related events: {{domxref("Window/cut_event", "cut")}}, {{domxref("Window/paste_event", "paste")}}
+- This event on {{domxref("Element")}} targets: {{domxref("Element/copy_event", "copy")}}
+- This event on {{domxref("Document")}} targets: {{domxref("Document/copy_event", "copy")}}

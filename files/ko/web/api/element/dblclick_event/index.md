@@ -1,55 +1,149 @@
 ---
-title: GlobalEventHandlers.ondblclick
+title: "Element: dblclick event"
+short-title: dblclick
 slug: Web/API/Element/dblclick_event
-original_slug: Web/API/GlobalEventHandlers/ondblclick
+page-type: web-api-event
+browser-compat: api.Element.dblclick_event
 ---
-{{ApiRef("HTML DOM")}}
 
-**`ondblclick`** property는 현재 요소(element)의 onDblClick 이벤트 핸들러 코드를 돌려줍니다.
+{{APIRef}}
 
-## 구문
+The **`dblclick`** event fires when a pointing device button (such as a mouse's primary button) is double-clicked; that is, when it's rapidly clicked twice on a single element within a very short span of time.
+
+`dblclick` fires after two {{domxref("Element/click_event", "click")}} events (and by extension, after two pairs of {{domxref("Element.mousedown_event", "mousedown")}} and {{domxref("Element.mouseup_event", "mouseup")}} events).
+
+## Syntax
+
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
 
 ```js
-element.ondblclick = function;
+addEventListener("dblclick", (event) => {});
+
+ondblclick = (event) => {};
 ```
 
-- `function` 은 사용자 정의 함수이며, () 나 변수를 제외하고 생성할 수 있고 또는 아래와 같이 함수명을 선언하지 않고 생성할 수 있습니다.
+## Event type
 
-```js
-element.ondblclick = function() { console.log("ondblclick event detected!"); };
-```
+A {{domxref("MouseEvent")}}. Inherits from {{domxref("Event")}}.
 
-## 예제
+{{InheritanceDiagram("MouseEvent")}}
 
-다음 예제는 더블클릭의 위치를 기록합니다.
+## Event properties
 
-### HTML
+_This interface also inherits properties of its parents, {{domxref("UIEvent")}} and {{domxref("Event")}}._
 
-```html
-<p>Double click anywhere in this example.</p>
-<p id="log"></p>
-```
+- {{domxref("MouseEvent.altKey")}} {{ReadOnlyInline}}
+  - : Returns `true` if the <kbd>alt</kbd> key was down when the mouse event was fired.
+- {{domxref("MouseEvent.button")}} {{ReadOnlyInline}}
+  - : The button number that was pressed (if applicable) when the mouse event was fired.
+- {{domxref("MouseEvent.buttons")}} {{ReadOnlyInline}}
+  - : The buttons being pressed (if any) when the mouse event was fired.
+- {{domxref("MouseEvent.clientX")}} {{ReadOnlyInline}}
+  - : The X coordinate of the mouse pointer in local (DOM content) coordinates.
+- {{domxref("MouseEvent.clientY")}} {{ReadOnlyInline}}
+  - : The Y coordinate of the mouse pointer in local (DOM content) coordinates.
+- {{domxref("MouseEvent.ctrlKey")}} {{ReadOnlyInline}}
+  - : Returns `true` if the <kbd>control</kbd> key was down when the mouse event was fired.
+- {{domxref("MouseEvent.layerX")}} {{Non-standard_inline}} {{ReadOnlyInline}}
+  - : Returns the horizontal coordinate of the event relative to the current layer.
+- {{domxref("MouseEvent.layerY")}} {{Non-standard_inline}} {{ReadOnlyInline}}
+  - : Returns the vertical coordinate of the event relative to the current layer.
+- {{domxref("MouseEvent.metaKey")}} {{ReadOnlyInline}}
+  - : Returns `true` if the <kbd>meta</kbd> key was down when the mouse event was fired.
+- {{domxref("MouseEvent.movementX")}} {{ReadOnlyInline}}
+  - : The X coordinate of the mouse pointer relative to the position of the last {{domxref("Element/mousemove_event", "mousemove")}} event.
+- {{domxref("MouseEvent.movementY")}} {{ReadOnlyInline}}
+  - : The Y coordinate of the mouse pointer relative to the position of the last {{domxref("Element/mousemove_event", "mousemove")}} event.
+- {{domxref("MouseEvent.offsetX")}} {{ReadOnlyInline}}
+  - : The X coordinate of the mouse pointer relative to the position of the padding edge of the target node.
+- {{domxref("MouseEvent.offsetY")}} {{ReadOnlyInline}}
+  - : The Y coordinate of the mouse pointer relative to the position of the padding edge of the target node.
+- {{domxref("MouseEvent.pageX")}} {{ReadOnlyInline}}
+  - : The X coordinate of the mouse pointer relative to the whole document.
+- {{domxref("MouseEvent.pageY")}} {{ReadOnlyInline}}
+  - : The Y coordinate of the mouse pointer relative to the whole document.
+- {{domxref("MouseEvent.relatedTarget")}} {{ReadOnlyInline}}
+  - : The secondary target for the event, if there is one.
+- {{domxref("MouseEvent.screenX")}} {{ReadOnlyInline}}
+  - : The X coordinate of the mouse pointer in global (screen) coordinates.
+- {{domxref("MouseEvent.screenY")}} {{ReadOnlyInline}}
+  - : The Y coordinate of the mouse pointer in global (screen) coordinates.
+- {{domxref("MouseEvent.shiftKey")}} {{ReadOnlyInline}}
+  - : Returns `true` if the <kbd>shift</kbd> key was down when the mouse event was fired.
+- {{domxref("MouseEvent.mozPressure")}} {{non-standard_inline()}} {{deprecated_inline}} {{ReadOnlyInline}}
+  - : The amount of pressure applied to a touch or tablet device when generating the event; this value ranges between `0.0` (minimum pressure) and `1.0` (maximum pressure).
+    Instead of using this deprecated (and non-standard) property, you should use {{domxref("PointerEvent")}} and look at its {{domxref("PointerEvent.pressure", "pressure")}} property.
+- {{domxref("MouseEvent.mozInputSource")}} {{non-standard_inline()}} {{ReadOnlyInline}}
+  - : The type of device that generated the event (one of the `MOZ_SOURCE_*` constants).
+    This lets you, for example, determine whether a mouse event was generated by an actual mouse or by a touch event (which might affect the degree of accuracy with which you interpret the coordinates associated with the event).
+- {{domxref("MouseEvent.webkitForce")}} {{non-standard_inline()}} {{ReadOnlyInline}}
+  - : The amount of pressure applied when clicking.
+- {{domxref("MouseEvent.x")}} {{ReadOnlyInline}}
+  - : Alias for {{domxref("MouseEvent.clientX")}}.
+- {{domxref("MouseEvent.y")}} {{ReadOnlyInline}}
+  - : Alias for {{domxref("MouseEvent.clientY")}}.
+
+## Examples
+
+This example toggles the size of a card when you double click on it.
 
 ### JavaScript
 
 ```js
-let log = document.getElementById('log');
+const card = document.querySelector("aside");
 
-document.ondblclick = logDoubleClick;
+card.addEventListener("dblclick", (e) => {
+  card.classList.toggle("large");
+});
+```
 
-function logDoubleClick(e) {
-  log.textContent = `Position: (${e.clientX}, ${e.clientY})`;
+### HTML
+
+```html
+<aside>
+  <h3>My Card</h3>
+  <p>Double click to resize this object.</p>
+</aside>
+```
+
+### CSS
+
+```css
+aside {
+  background: #fe9;
+  border-radius: 1em;
+  display: inline-block;
+  padding: 1em;
+  transform: scale(0.9);
+  transform-origin: 0 0;
+  transition: transform 0.6s;
+  user-select: none;
+}
+
+.large {
+  transform: scale(1.3);
 }
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample("예제")}}
+{{EmbedLiveSample("Examples", 700, 200)}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- [Introduction to events](/en-US/docs/Learn/JavaScript/Building_blocks/Events)
+- {{domxref("Element/auxclick_event", "auxclick")}}
+- {{domxref("Element/click_event", "click")}}
+- {{domxref("Element/contextmenu_event", "contextmenu")}}
+- {{domxref("Element/mousedown_event", "mousedown")}}
+- {{domxref("Element/mouseup_event", "mouseup")}}
+- {{domxref("Element/pointerdown_event", "pointerdown")}}
+- {{domxref("Element/pointerup_event", "pointerup")}}

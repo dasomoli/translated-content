@@ -3,34 +3,37 @@ title: >-
   SyntaxError: a declaration in the head of a for-of loop can't have an
   initializer
 slug: Web/JavaScript/Reference/Errors/Invalid_for-of_initializer
+page-type: javascript-error
 ---
 
 {{jsSidebar("Errors")}}
 
-## 메세지
+The JavaScript exception "a declaration in the head of a for-of loop can't have an initializer" occurs when the head of a [for...of](/en-US/docs/Web/JavaScript/Reference/Statements/for...of) loop contains an initializer expression such as `for (const i = 0 of iterable)`. This is not allowed in for-of loops.
+
+## Message
 
 ```
-  SyntaxError: for-of loop head declarations cannot have an initializer (Edge)
-  SyntaxError: a declaration in the head of a for-of loop can't have an initializer (Firefox)
-  SyntaxError: for-of loop variable declaration may not have an initializer. (Chrome)
+SyntaxError: for-of loop variable declaration may not have an initializer. (V8-based)
+SyntaxError: a declaration in the head of a for-of loop can't have an initializer (Firefox)
+SyntaxError: Cannot assign to the loop variable inside a for-of loop header. (Safari)
 ```
 
-## 에러 타입
+## Error type
 
 {{jsxref("SyntaxError")}}
 
-## 무엇이 잘못되었을까?
+## What went wrong?
 
-[for...of](/en-US/docs/Web/JavaScript/Reference/Statements/for...of) 반복문의 식이 초기화 구문을 포함한 것이 문제입니다. 즉, |`for (var i = 0 of iterable)`| 구문을 통해 변수가 정의되고 값이 할당된 것을 말합니다. 이 구문은 for-of 반복문에서 허용되지 않습니다. 이 경우 초기화를 할 수 있는 for 반복문이 필요합니다.
+The head of a [for...of](/en-US/docs/Web/JavaScript/Reference/Statements/for...of) loop contains an initializer expression. That is, a variable is declared and assigned a value `for (const i = 0 of iterable)`. This is not allowed in for-of loops. You might want a [`for`](/en-US/docs/Web/JavaScript/Reference/Statements/for) loop that does allow an initializer.
 
-## 예제
+## Examples
 
-### 잘못된 for-of 반복문
+### Invalid for-of loop
 
 ```js example-bad
-let iterable = [10, 20, 30];
+const iterable = [10, 20, 30];
 
-for (let value = 50 of iterable) {
+for (const value = 50 of iterable) {
   console.log(value);
 }
 
@@ -38,12 +41,12 @@ for (let value = 50 of iterable) {
 // have an initializer
 ```
 
-### 올바른 `for-of` 반복문
+### Valid for-of loop
 
-for-of 반복문에서 초기화 구문(`value = 50`)을 삭제해야 합니다. 50을 더하고 싶다면 다음 예제와 같이 반복문 안에 추가할 수 있습니다.
+You need to remove the initializer (`value = 50`) in the head of the `for-of` loop. Maybe you intended to make 50 an offset value, in that case you could add it to the loop body, for example.
 
 ```js example-good
-let iterable = [10, 20, 30];
+const iterable = [10, 20, 30];
 
 for (let value of iterable) {
   value += 50;
@@ -54,8 +57,8 @@ for (let value of iterable) {
 // 80
 ```
 
-## 같이 보기
+## See also
 
 - [`for...of`](/en-US/docs/Web/JavaScript/Reference/Statements/for...of)
-- [`for...in`](/en-US/docs/Web/JavaScript/Reference/Statements/for...in) – 엄격(Strict) 모드에서는 마찬가지로 초기화를 허용하지 않습니다. ([SyntaxError: for-in loop head declarations may not have initializers](/en-US/docs/Web/JavaScript/Reference/Errors/Invalid_for-in_initializer))
-- [`for`](/en-US/docs/Web/JavaScript/Reference/Statements/for) – 초기화를 허용합니다.
+- [`for...in`](/en-US/docs/Web/JavaScript/Reference/Statements/for...in) – disallows an initializer in strict mode as well ([SyntaxError: for-in loop head declarations may not have initializers](/en-US/docs/Web/JavaScript/Reference/Errors/Invalid_for-in_initializer))
+- [`for`](/en-US/docs/Web/JavaScript/Reference/Statements/for) – allows to define an initializer when iterating.

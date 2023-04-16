@@ -1,37 +1,58 @@
 ---
 title: CSSMediaRule
 slug: Web/API/CSSMediaRule
+page-type: web-api-interface
+browser-compat: api.CSSMediaRule
 ---
 
-{{APIRef("CSSOM")}}
+{{ APIRef("CSSOM") }}
 
-**`CSSMediaRule`** 인터페이스는 하나의 CSS {{cssxref("@media")}} 규칙을 나타냅니다. {{domxref("CSSConditionRule")}} 인터페이스를 구현하므로, {{domxref("CSSGroupingRule")}}과 {{domxref("CSSRule")}} 인터페이스도 유형값 `4` (`CSSRule.MEDIA_RULE`)로 구현합니다.
+The **`CSSMediaRule`** interface represents a single CSS {{cssxref("@media")}} rule.
 
-## 구문
+{{InheritanceDiagram}}
 
-[WebIDL](https://heycam.github.io/webidl/) 형식을 사용해 서술합니다.
+## Instance properties
 
+_Inherits properties from its ancestors {{domxref("CSSConditionRule")}}, {{domxref("CSSGroupingRule")}}, and {{domxref("CSSRule")}}._
+
+- {{domxref("CSSMediaRule.media")}} {{ReadOnlyInline}}
+  - : Returns a {{domxref("MediaList")}} representing the intended destination medium for style information.
+
+## Instance methods
+
+_No specific methods; inherits methods from its ancestors {{domxref("CSSConditionRule")}}, {{domxref("CSSGroupingRule")}}, and {{domxref("CSSRule")}}._
+
+## Examples
+
+The CSS below includes a media query with one style rule.
+As this rule lives in the last stylesheet added to the document, it will be the first CSSRule returned by the last stylesheet in the document (`document.styleSheets[document.styleSheets.length-1].cssRules`).
+`myRules[0]` returns a {{domxref("CSSMediaRule")}} object, from which we can get the `mediaText`.
+
+```html
+<p id="log"></p>
 ```
-interface CSSMediaRule : CSSConditionRule {
-    readonly attribute MediaList media;
+
+```css
+@media (min-width: 500px) {
+  body {
+    color: blue;
+  }
 }
 ```
 
-## 속성
+```js
+const log = document.getElementById("log");
+const myRules = document.styleSheets[document.styleSheets.length - 1].cssRules;
+const mediaList = myRules[0]; // a CSSMediaRule representing the media query.
+log.textContent += ` ${mediaList.media.mediaText}`;
+```
 
-`CSSMediaRule`은 {{domxref("CSSConditionRule")}}, 그리고 {{domxref("CSSGroupingRule")}}와 {{domxref("CSSRule")}}로서 해당 인터페이스의 속성을 구현합니다. 다음과 같은 자체 속성을 가집니다.
+{{EmbedLiveSample("Examples","100%","50px")}}
 
-- {{domxref("CSSMediaRule.media")}} {{readonlyinline}}
-  - : 스타일 정보를 적용할 매체 정보를 나타내는 {{domxref("MediaList")}}입니다.
-
-## 메서드
-
-`CSSMediaRule`은 {{domxref("CSSConditionRule")}}, 그리고 {{domxref("CSSGroupingRule")}}와 {{domxref("CSSRule")}}로서 해당 인터페이스의 메서드를 구현합니다. 자체 메서드는 가지지 않습니다.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

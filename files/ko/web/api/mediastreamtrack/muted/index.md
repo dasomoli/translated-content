@@ -1,29 +1,35 @@
 ---
-title: MediaStreamTrack.muted
+title: "MediaStreamTrack: muted property"
+short-title: muted
 slug: Web/API/MediaStreamTrack/muted
+page-type: web-api-instance-property
+browser-compat: api.MediaStreamTrack.muted
 ---
 
 {{APIRef("Media Capture and Streams")}}
 
-{{domxref("MediaStreamTrack")}} 인터페이스의 **`muted`** 읽기 전용 속성은 트랙이 현재 미디어 출력을 제공할 수 없는 상태인지를 나타내는 {{jsxref("Boolean")}}을 반환합니다.
+The **`muted`** read-only property of the
+{{domxref("MediaStreamTrack")}} interface returns a boolean value
+indicating whether or not the track is currently unable to provide media output.
 
-> **참고:** 사용자가 트랙을 음소거할 수 있는 기능을 구현하려면 {{domxref("MediaStreamTrack.enabled", "enabled")}} 속성을 사용하세요. `enabled`를 `false`로 바꿔 트랙을 비활성하면 빈 프레임(모든 샘플이 0인 오디오 프레임, 모든 픽셀이 검은색인 비디오 프레임)만 생성합니다.
+> **Note:** To implement a way for users to mute and unmute a track, use the
+> {{domxref("MediaStreamTrack.enabled", "enabled")}} property. When a track is disabled
+> by setting `enabled` to `false`, it generates only empty frames
+> (audio frames in which every sample is 0, or video frames in which every pixel is
+> black).
 
-## 구문
+## Value
 
-```js
-const mutedFlag = track.muted
-```
+A boolean which is `true` if the track is currently muted, or
+`false` if the track is currently unmuted.
 
-### 값
+> **Note:** When possible, avoid polling `muted` to monitor the track's muting status.
+> Instead, add event listeners for the {{domxref("MediaStreamTrack.mute_event", "mute")}} and {{domxref("MediaStreamTrack.unmute_event", "unmute")}} events.
 
-트랙이 중단된 상태면 `true`, 아니면 `false`.
+## Examples
 
-> **참고:** 되도록이면 트랙의 중단 상태를 알기 위해 `muted`를 폴링 하는 것보다는 {{event("mute")}}와 {{event("unmute")}} 이벤트를 수신하세요.
-
-## 예제
-
-다음 예제 코드는 {{domxref("MediaStreamTrack")}} 배열에서 중단된 트랙의 수를 셉니다.
+This example counts the number of tracks in an array of {{domxref("MediaStreamTrack")}}
+objects which are currently muted.
 
 ```js
 let mutedCount = 0;
@@ -35,10 +41,10 @@ trackList.forEach((track) => {
 });
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

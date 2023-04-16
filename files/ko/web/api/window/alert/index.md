@@ -1,48 +1,67 @@
 ---
-title: Window.alert()
+title: "Window: alert() method"
+short-title: alert()
 slug: Web/API/Window/alert
+page-type: web-api-instance-method
+browser-compat: api.Window.alert
 ---
-{{APIRef}}
 
-**`Window.alert()`** 메서드는 확인 버튼을 가지며 메시지를 지정할 수 있는 경고 대화 상자를 띄웁니다.
+{{ APIRef }}
 
-## 구문
+`window.alert()` instructs the browser to display a dialog with an optional message, and to wait until the user dismisses the dialog.
 
-```js
-window.alert([message]);
+Under some conditions — for example, when the user switches tabs — the browser may not actually display a dialog, or may not wait for the user to dismiss the dialog.
+
+## Syntax
+
+```js-nolint
+alert()
+alert(message)
 ```
 
-### 매개변수
+### Parameters
 
 - `message` {{optional_inline}}
-  - : 경고 대화 상자에 표시할 텍스트 문자열이거나, 문자열로 변환해 나타낼 객체.
+  - : A string you want to display in the alert dialog, or, alternatively, an object that
+    is converted into a string and displayed.
 
-## 예제
+### Return value
+
+None ({{jsxref("undefined")}}).
+
+## Examples
 
 ```js
 window.alert("Hello world!");
 alert("Hello world!");
 ```
 
-상기 두 코드의 동작은 모두 다음과 같습니다.
+Both produce:
 
-![Image:AlertHelloWorld.png](alerthelloworld.png)
+![Black alert dialog box. At the top left small circle icon follow by white open and close brackets containing this white text: JavaScript application. Below on the left, a Hello world! white text. And on the bottom right a small blue button. The button's text is: ok in black.](alerthelloworld.png)
 
-## 참고
+## Notes
 
-경고 대화 상자는 사용자의 확인을 제외한 다른 입력을 요구하지 않는 메시지를 전달할 때에 쓰여야 합니다.
+The alert dialog should be used for messages which do not require any response on the
+part of the user, other than the acknowledgement of the message.
 
-대화 상자는 모달 창(부모 창으로 돌아가기 전에 사용자의 상호 작용을 요구하는 자식 창)으로, 사용자는 대화 상자가 닫힐 때까지 다른 모든 인터페이스에 접근할 수 없습니다. 따라서 대화 상자(또는 모달 창)를 만드는 함수를 남용하면 안 됩니다.
+Dialog boxes are modal windows - they
+prevent the user from accessing the rest of the program's interface until the dialog box
+is closed. For this reason, you should not overuse any function that creates a dialog
+box (or modal window).
 
-## 명세
+Alternatively {{HTMLElement("dialog")}} element can be used to display alerts.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 관련 문서
+## See also
 
+- {{HTMLElement("dialog")}} element
 - {{domxref("window.confirm","confirm")}}
 - {{domxref("window.prompt","prompt")}}

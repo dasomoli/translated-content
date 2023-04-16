@@ -1,46 +1,60 @@
 ---
 title: Date.prototype.toDateString()
 slug: Web/JavaScript/Reference/Global_Objects/Date/toDateString
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.toDateString
 ---
 
 {{JSRef}}
 
-**`toDateString()`** 메서드는 미국 영어로 사람이 읽을 수있는 형태로 {{jsxref("Date")}} 객체의 날짜 부분을 반환합니다.
+The **`toDateString()`** method returns the date portion of a {{jsxref("Date")}} object interpreted in the local timezone in English.
 
 {{EmbedInteractiveExample("pages/js/date-todatestring.html")}}
 
-## 구문
+## Syntax
 
-```js
-    dateObj.toDateString()
+```js-nolint
+toDateString()
 ```
 
-### 반환 값
+### Return value
 
-주어진 {{jsxref ( "Date")}} 객체의 날짜 부분을 사람이 읽을 수있는 형태로 미국 영어로 나타내는 문자열입니다.
+A string representing the date portion of the given {{jsxref("Date")}} object in human-readable form in English.
 
-## 설명
+## Description
 
-{{jsxref ( "Date")}} 인스턴스는 특정 시점을 참조합니다. {{jsxref ( "Date.prototype.toString ()", "toString ()")}}을 호출하면 사람이 읽을 수있는 형식의 미국식 영어로 된 날짜가 반환됩니다. SpiderMonkey에서는 날짜 부분 (일, 월, 연도)과 시간 부분 (시, 분, 초 및 시간대)으로 구성됩니다. 때로는 날짜 부분의 문자열을 얻는 것이 바람직합니다. 이러한 일은 toDateString () 메서드를 사용하여 수행 할 수 있습니다.
+{{jsxref("Date")}} instances refer to a specific point in time. `toDateString()` interprets the date in the local timezone and formats the _date_ part in English. It always uses the following format, separated by spaces:
 
-toDateString () 메서드는 ECMA-262를 구현하는 호환 엔진이 {{jsxref ( "Date.prototype.toString ()", "toString ()")}} 날짜 ")}} 객체를 사용할 수 있습니다. 형식은 구현에 따라 다르며 간단한 문자열 분할 방법은 여러 엔진에서 일관된 결과를 생성하지 않을 수 있습니다.
+1. First three letters of the week day name
+2. First three letters of the month name
+3. Two-digit day of the month, padded on the left a zero if necessary
+4. Four-digit year (at least), padded on the left with zeros if necessary. May have a negative sign
 
-## 예제
+For example: "Thu Jan 01 1970".
 
-### A basic usage of `toDateString()`
+- If you want to get the _time_ part, use [`toTimeString()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toTimeString).
+- If you want to get both the date and time, use [`toString()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toString).
+- If you want to make the date interpreted as UTC instead of local timezone, use [`toUTCString()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toUTCString).
+- If you want to format the date in a more user-friendly format (e.g. localization), use [`toLocaleDateString()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString).
+
+## Examples
+
+### A basic usage of toDateString()
 
 ```js
-var d = new Date(1993, 6, 28, 14, 39, 7);
+const d = new Date(1993, 5, 28, 14, 39, 7);
 
-console.log(d.toString());     // logs Wed Jul 28 1993 14:39:07 GMT-0600 (PDT)
-console.log(d.toDateString()); // logs Wed Jul 28 1993
+console.log(d.toString()); // Mon Jun 28 1993 14:39:07 GMT-0600 (PDT)
+console.log(d.toDateString()); // Mon Jun 28 1993
 ```
 
-## 명세
+> **Note:** Month are 0-indexed when used as an argument of {{jsxref("Date")}} (thus 0 corresponds to January and 11 to December).
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

@@ -1,95 +1,49 @@
 ---
-title: '<dfn>: 정의 요소'
+title: "<dfn>: The Definition element"
 slug: Web/HTML/Element/dfn
+page-type: html-element
+browser-compat: html.elements.dfn
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<dfn>` 요소**는 현재 맥락이나 문장에서 정의하고 있는 용어를 나타냅니다. `<dfn>`에서 가장 가까운 {{htmlelement("p")}}, {{htmlelement("dt")}}/{{htmlelement("dd")}} 쌍, {{htmlelement("section")}} 조상 요소를 용어 정의로 간주합니다.
+The **`<dfn>`** [HTML](/en-US/docs/Web/HTML) element is used to indicate the term being defined within the context of a definition phrase or sentence. The ancestor {{HTMLElement("p")}} element, the {{HTMLElement("dt")}}/{{HTMLElement("dd")}} pairing, or the nearest {{HTMLElement("section")}} ancestor of the `<dfn>` element, is considered to be the definition of the term.
 
 {{EmbedInteractiveExample("pages/tabbed/dfn.html", "tabbed-shorter")}}
 
-<table class="properties">
-  <tbody>
-    <tr>
-      <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
-      </th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >, 뚜렷한 콘텐츠.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 콘텐츠</th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >. 단, 다른 {{htmlelement("dfn")}} 요소는 불가능.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">태그 생략</th>
-      <td>{{no_tag_omission}}</td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 부모 요소</th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >를 허용하는 모든 요소.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">암시적 ARIA 역할</th>
-      <td><a href='/ko/docs/Web/Accessibility/ARIA/Roles/definition_role'><code>definition</code></a></td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>모두</td>
-    </tr>
-    <tr>
-      <th scope="row">DOM 인터페이스</th>
-      <td>{{domxref("HTMLElement")}}</td>
-    </tr>
-  </tbody>
-</table>
+## Attributes
 
-## 특성
+This element's attributes include the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)만 포함합니다.
+The [`title`](/en-US/docs/Web/HTML/Global_attributes#title) attribute has special meaning, as noted below.
 
-## 사용 일람
+## Usage notes
 
-`<dfn>` 요소를 보는 것 만으로는 그다지 명확하지 않은 부분이 있습니다.
+There are some not-entirely-obvious aspects to using the `<dfn>` element. We examine those here.
 
-### 정의하고 있는 용어 지정하기
+### Specifying the term being defined
 
-다음 규칙을 따라 현재 용어가 어느건지 판별합니다.
+The term being defined is identified following these rules:
 
-1. `<dfn>` 요소가 {{htmlattrxref("title")}} 특성을 가지고 있으면 그 값을 현재 정의 중인 용어로 간주합니다. `<dfn>`은 여전히 텍스트 콘텐츠를 가지고 있겠지만, 완전한 용어 대신 준말({{htmlelement("abbr")}})을 넣을 수도 있고, 다른 대체 형태일 수도 있습니다.
-2. `<dfn>`이 다른 텍스트는 없이 하나의 자식만 가지는데, 그 자식이 `title` 특성을 가진{{htmlelement("abbr")}}인 경우, 자식 `<abbr>`의 `title` 특성 값을 현재 용어로 간주합니다.
-3. 모두 아닌 경우 `<dfn>`의 텍스트 콘텐츠를 현재 용어로 간주합니다. [아래의 첫 번째 예제](#기본적인_용어_식별)에서 확인할 수 있습니다.
+1. If the `<dfn>` element has a [`title`](/en-US/docs/Web/HTML/Global_attributes#title) attribute, the value of the `title` attribute is considered to be the term being defined. The element must still have text within it, but that text may be an abbreviation (perhaps using {{HTMLElement("abbr")}}) or another form of the term.
+2. If the `<dfn>` contains a single child element and does not have any text content of its own, and the child element is an {{HTMLElement("abbr")}} element with a `title` attribute itself, then the exact value of the `<abbr>` element's `title` is the term being defined.
+3. Otherwise, the text content of the `<dfn>` element is the term being defined. This is shown [in the first example below](#basic_identification_of_a_term).
 
-> **참고:** `<dfn>` 요소가 `title` 특성을 가진 경우, 그 값은 정의 중인 용어여야 하며 다른 텍스트는 들어가선 안됩니다.
+> **Note:** If the `<dfn>` element has a `title` attribute, it _must_ contain the term being defined and no other text.
 
-### `<dfn>` 요소를 가리키는 링크
+### Links to `<dfn>` elements
 
-`<dfn>` 요소에 {{htmlattrxref("id")}} 특성을 지정하면 {{HTMLElement("a")}} 요소로 `<dfn>`을 가리킬 수 있습니다. 사용자가 용어 뜻을 잘 모를 경우, 링크를 클릭해 빠르게 정의를 확인할 수 있습니다. 따라서 링크 콘텐츠는 용어의 사용 예시 등을 담고 있어야 합니다.
+If you include an [`id`](/en-US/docs/Web/HTML/Global_attributes#id) attribute on the `<dfn>` element, you can then link to it using {{HTMLElement("a")}} elements. Such links should be uses of the term, with the intent being that the reader can quickly navigate to the term's definition if they're not already aware of it, by clicking on the term's link.
 
-[정의로 링크 예제](#정의로_링크)에서 확인할 수 있습니다.
+This is shown in the example under [Links to definitions](#links_to_definitions) below.
 
-## 예제
+## Examples
 
-다양한 상황의 예제를 살펴보겠습니다.
+Let's take a look at some examples of various usage scenarios.
 
-### 기본적인 용어 식별
+### Basic identification of a term
 
-아래 코드는 간단하게 `<dfn>` 요소를 사용해, 정의 문단 내의 용어를 식별합니다.
+This example uses a plain `<dfn>` element to identify the location of a term within the definition.
 
 #### HTML
 
@@ -100,15 +54,15 @@ term being defined within the context of a definition phrase or
 sentence.</p>
 ```
 
-`<dfn>` 요소에 `title`이 없으므로 `<dfn>`의 텍스트 콘텐츠가 현재 정의 중인 용어입니다.
+Since the `<dfn>` element has no `title`, the text contents of the `<dfn>` element itself are used as the term being defined.
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("기본적인_용어_식별", 650, 120)}}
+{{EmbedLiveSample("Basic_identification_of_a_term", 650, 120)}}
 
-### 정의로 링크
+### Links to definitions
 
-용어의 정의로 링크하는 건 {{htmlelement("a")}} 요소로 다른 링크를 만드는 방법과 같습니다.
+To add links to the definitions, you create the link the same way you always do, with the {{HTMLElement("a")}} element.
 
 #### HTML
 
@@ -118,61 +72,124 @@ sentence.</p>
 used to indicate the term being defined within the context of a
 definition phrase or sentence.</p>
 
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Graece
-donan, Latine voluptatem vocant. Confecta res esset. Duo Reges:
-constructio interrete. Scrupulum, inquam, abeunti; </p>
+<p>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Graece donan, Latine
+  voluptatem vocant. Confecta res esset. Duo Reges: constructio interrete.
+  Scrupulum, inquam, abeunti;
+</p>
 
-<p>Negare non possum. Dat enim intervalla et relaxat. Quonam modo?
-Equidem e Cn. Quid de Pythagora? In schola desinis. </p>
+<p>
+  Negare non possum. Dat enim intervalla et relaxat. Quonam modo? Equidem e Cn.
+  Quid de Pythagora? In schola desinis.
+</p>
 
-<p>Ubi ut eam caperet aut quando? Cur iustitia laudatur? Aperiendum
-est igitur, quid sit voluptas; Quid enim? Non est igitur voluptas
-bonum. Urgent tamen et nihil remittunt. Quid enim possumus hoc
-agere divinius? </p>
+<p>
+  Ubi ut eam caperet aut quando? Cur iustitia laudatur? Aperiendum est igitur,
+  quid sit voluptas; Quid enim? Non est igitur voluptas bonum. Urgent tamen et
+  nihil remittunt. Quid enim possumus hoc agere divinius?
+</p>
 
 <p>Because of all of that, we decided to use the
 <code><a href="#definition-dfn">&lt;dfn&gt;</a></code> element for
 this project.</p>
 ```
 
-이번에는 {{htmlattrxref("id")}} 특성에 `"definition-dfn"`을 사용한 용어 정의입니다. 코드 뒤쪽에서는 `<a>` 태그와 {{htmlattrxref("href", "a")}} 특성 값 `"#definition-dfn"`으로, 정의를 가리키는 링크를 생성합니다.
+Here we see the definition — now with an [`id`](/en-US/docs/Web/HTML/Global_attributes#id) attribute, `"definition-dfn"`, which can be used as the target of a link. Later on, a link is created using `<a>` with the [`href`](/en-US/docs/Web/HTML/Element/a#href) attribute set to `"#definition-dfn"` to set up the link back to the definition.
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("정의로_링크", 650, 300)}}
+{{EmbedLiveSample("Links_to_definitions", 650, 300)}}
 
-### 준말과 정의 같이 사용하기
+### Using abbreviations and definitions together
 
-어떤 경우, 용어를 정의할 때 머리글자 등 준말을 사용하고 싶을 때가 있습니다. 그럴 땐 `<dfn>`과 {{HTMLElement("abbr")}} 요소를 조합하면 됩니다.
+In some cases, you may wish to use an abbreviation for a term when defining it. This can be done by using the `<dfn>` and {{HTMLElement("abbr")}} elements in tandem, like this:
 
 #### HTML
 
 ```html
-<p>The <dfn><abbr title="Hubble Space Telescope">HST</abbr></dfn>
-is among the most productive scientific instruments ever constructed.
-It has been in orbit for over 20 years, scanning the sky and
-returning data and photographs of unprecedented quality and
-detail.</p>
+<p>
+  The <dfn><abbr title="Hubble Space Telescope">HST</abbr></dfn> is among the
+  most productive scientific instruments ever constructed. It has been in orbit
+  for over 20 years, scanning the sky and returning data and photographs of
+  unprecedented quality and detail.
+</p>
 
-<p>Indeed, the <abbr title="Hubble Space Telescope">HST</abbr> has
-arguably done more to advance science than any device ever built.</p>
+<p>
+  Indeed, the <abbr title="Hubble Space Telescope">HST</abbr> has arguably done
+  more to advance science than any device ever built.
+</p>
 ```
 
-`<dfn>` 요소 안에 배치한 `<abbr>`을 주목하세요. `<abbr>`은 준말("HST")과 함께 `title` 특성으로 전체 용어("Hubble Space Telescope")를 지정합니다. `<dfn>`은 `<abbr>`의 준말을 현재 정의하고 있음을 나타냅니다.
+Note the `<abbr>` element nested inside the `<dfn>`. The former establishes that the term is an abbreviation ("HST") and specifies the full term ("Hubble Space Telescope") in its `title` attribute. The latter indicates that the abbreviated term represents a term being defined.
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("준말과_정의_같이_사용하기", 650, 200)}}
+{{EmbedLiveSample("Using_abbreviations_and_definitions_together", 650, 200)}}
 
-## 명세
+## Technical summary
+
+<table class="properties">
+  <tbody>
+    <tr>
+      <th scope="row">
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
+      </th>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
+        >,
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >, palpable content.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted content</th>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >Phrasing content</a
+        >, but no {{HTMLElement("dfn")}} element must be a descendant.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Tag omission</th>
+      <td>{{no_tag_omission}}</td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted parents</th>
+      <td>
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Implicit ARIA role</th>
+      <td><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/term_role"><code>term</code></a></td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>Any</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
+      <td>{{domxref("HTMLElement")}}</td>
+    </tr>
+  </tbody>
+</table>
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 용어 정의 관련 요소: {{HTMLElement("dl")}}, {{HTMLElement("dt")}}, {{HTMLElement("dd")}}
+- Elements related to definition lists: {{HTMLElement("dl")}}, {{HTMLElement("dt")}}, {{HTMLElement("dd")}}
 - {{HTMLElement("abbr")}}

@@ -1,50 +1,58 @@
 ---
 title: Date.prototype.getFullYear()
 slug: Web/JavaScript/Reference/Global_Objects/Date/getFullYear
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.getFullYear
 ---
 
 {{JSRef}}
 
-**`getFullYear()`** 메서드는 주어진 날짜의 현지 시간 기준 연도를 반환합니다.
+The **`getFullYear()`** method returns the year of the
+specified date according to local time.
 
-{{jsxref("Date.prototype.getYear()", "getYear()")}} 메서드 대신 이 메서드를 사용하세요.
+Use this method instead of the {{jsxref("Date.prototype.getYear()", "getYear()")}}
+method.
 
-{{EmbedInteractiveExample("pages/js/date-getfullyear.html")}}
+{{EmbedInteractiveExample("pages/js/date-getfullyear.html","shorter")}}
 
-## 구문
+## Syntax
 
-```js
-    dateObj.getFullYear()
+```js-nolint
+getFullYear()
 ```
 
-### 반환 값
+### Return value
 
-현지 시간에 따라, 주어진 날짜의 연도에 해당하는 숫자.
+A number corresponding to the year of the given date, according to local time.
 
-## 설명
+## Description
 
-`getFullYear()`가 반환하는 값은 절댓값입니다. `getFullYear()`는 1000년과 9999년 사이의, 1995년과 같은 날짜에 대해서는 네 자리 숫자를 반환합니다. 이 메서드를 사용해야 2000년 이후의 날짜에 대해서도 호환을 유지할 수 있습니다.
+The value returned by `getFullYear()` is an absolute number. For dates
+between the years 1000 and 9999, `getFullYear()` returns a four-digit number,
+for example, 1995. Use this function to make sure a year is compliant with years after
+2000\.
 
-## 예제
+## Examples
 
-### `getFullYear()` 사용하기
+### Using getFullYear()
 
-다음 예제에서는 현재 연도의 네 자릿값을 변수 `year`에 할당합니다.
+The following example assigns the four-digit value of the current year to the variable
+`year`.
 
 ```js
-var today = new Date();
-var year = today.getFullYear();
+const today = new Date();
+const year = today.getFullYear();
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Date.prototype.getUTCFullYear()")}}
 - {{jsxref("Date.prototype.setFullYear()")}}

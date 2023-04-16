@@ -1,75 +1,69 @@
 ---
-title: 웹사이트의 외관은 어떻게 할까요?
+title: What will your website look like?
 slug: Learn/Getting_started_with_the_web/What_will_your_website_look_like
+status:
+  - deprecated
 ---
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/Getting_started_with_the_web/Installing_basic_software", "Learn/Getting_started_with_the_web/Dealing_with_files", "Learn/Getting_started_with_the_web")}}
 
-_웹사이트의 외관은 어떻게 할까요?_ 에서는 "나의 웹사이트가 무슨 정보를 제공할 것인지?" "무슨 글꼴과 색상을 사용할 것인지?" "나의 웹사이트가 무엇을 하는지?" 를 포함해, 코드를 작성하기 _전에_ 여러분이 해야할 계획 세우기와 디자인에 대해 이야기 할 것입니다.
+_What will your website look like?_ discusses the planning and design work you have to do for your website before writing code, including "What information does my website offer?", "What fonts and colors do I want?", and "What does my site do?"
 
-## 중요한것 먼저 하기: 계획 세우기
+## First things first: planning
 
-무언가를 하기 전에, 여러분은 어떤 아이디어가 필요합니다. 웹사이트가 실제로 무엇을 해야하는지? 웹사이트가 기본적으로 무엇을 할 수 있는지, 하지만 여러분의 첫 시도를 위해선 이것을 간단히 할 필요가 있습니다. 우리는 제목과 사진, 그리고 몇 개의 문단을 포함한 간단한 웹페이지를 제작하는 것부터 시작할 것입니다.
+Before doing anything, you need some ideas. What should your website actually do? A website can do basically anything, but, for your first try, you should keep things simple. We'll start by creating a simple webpage with a heading, an image, and a few paragraphs.
 
-시작하기 위해, 여러분은 몇 가지 질문에 답해야 합니다.
+To begin, you'll need to answer these questions:
 
-1. **여러분의 웹사이트는 무엇에 관한 것인가요?** 강아지나 뉴욕, 또는 팩맨 좋아하세요?
-2. **주제에 대해 어떤 정보를 나타낼 것인가요?** 여러분의 웹페이지에 나타내기 원하는 제목과 몇개의 문단들, 그리고 그림에 대한 생각을 작성하세요.
-3. **웹사이트의 외관은 어떻게 할까요,** in simple high-level terms. 배경색은 무엇으로 할 것인지?어떤 글꼴(폰트)이 적합한지: 딱딱하게, 만화스럽게, 굵고 크게, 얇게?
+1. **What is your website about?** Do you like dogs, New York, or Pac-Man?
+2. **What information are you presenting on the subject?** Write a title and a few paragraphs and think of an image you'd like to show on your page.
+3. **What does your website look like,** in simple high-level terms? What's the background color? What kind of font is appropriate: formal, cartoony, bold and loud, subtle?
 
-> **참고:** 복잡한 프로젝트들은 색상, 글꼴, 페이지의 항목간 공간, 적절한 문체 등 세부적인 가이드라인을 필요로 합니다. 이것은 디자인 가이드 또는 브랜드 북이라고 불리기도 합니다. [파이어폭스 OS 가이드라인](https://www.mozilla.org/en-US/styleguide/products/firefox-os/)_에서 그 예시를 볼 수 있습니다._.
+> **Note:** Complex projects need detailed guidelines that go into all the details of colors, fonts, spacing between items on a page, appropriate writing style, and so on. This is sometimes called a design guide, design system, or brand book, and you can see an example at the [Firefox Photon Design System](https://design.firefox.com/photon/).
 
-## 디자인을 스케치하기
+## Sketching out your design
 
-다음으로, 펜과 종이를 가져와 여러분의 사이트가 어떻게 나타날 것인지 대략적으로 스케치하세요. 여러분의 첫 번째 간단한 웹페이지를 위해선, 과도한 스케치는 필요 없지만, 지금 습관으로 만드는게 좋습니다. 정말 도움이 됩니다--반 고흐가 될 필요는 없습니다!
+Next, grab pen and paper and sketch out roughly how you want your site to look. For your first simple webpage, there's not much to sketch out, but you should get in the habit of doing this now. It really helps — you don't have to be Van Gogh!
 
-![](website-drawing-scan.png)
+![A rough drawing and sketch of a website on paper](website-drawing-scan.png)
 
-> **참고:** 실제로도, 복잡한 웹사이트들에서, 디자인팀은 보통 종이에 대략적인 스케치를 하는 것으로 일을 시작합니다. 그리고 이후에 시각적인 편집기나 웹 기술을 사용해 디지털 모형화 합니다.
+> **Note:** Even on real, complex websites, the design teams usually start out with rough sketches on paper and later on build digital mockups using a graphics editor or web technologies.
 >
-> 웹 팀들은 그래픽 디자이너와 사용자 경험 (UX) 디자이너 모두와 일합니다. 그래픽 디자이너들은, 분명히, 웹사이트의 시각적인 것들을 합칩니다. UX 디자이너는 사용자들이 웹사이트를 어떻게 경험하고 반응하는지에 대한 무언가 더 추상적인 것을 합니다.
+> Web teams often include both a graphic designer and a {{Glossary("UX", "user experience")}} (UX) designer. Graphic designers put together the visuals of the website. UX designers have a somewhat more abstract role in addressing how users will experience and interact with the website.
 
-## 자원 선택하기
+## Choosing your assets
 
-여기에서, 여러분의 웹페이지에 최종적으로 나타나게될 내용을 합치는 것을 시작하기에 좋습니다.
+At this point, it's good to start putting together the content that will eventually appear on your webpage.
 
-### 문자
+### Text
 
-여러분은 제목이나 문단들을 일찍 작성해야 합니다. 항상 신경쓰는것이 좋습니다.
+You should still have your paragraphs and title from earlier. Keep these close by.
 
-### 주요 색상
+### Theme color
 
-색상을 선택하기 위해, [the Color Picker](/ko/docs/Web/CSS/CSS_Colors/Color_picker_tool)로 가서 여러분이 원하는 색을 찾아보세요. 한 색을 선택하면, 여러분은 #660066같은 여섯 문자의 이상한 코드를 보게 될 것입니다. 이것은 _hex(adecimal)_ 코드로 불리고, 여러분의 색을 나타냅니다. 안전한 어느 곳에 복사해두세요.
+To choose a color, go to [the Color Picker](/en-US/docs/Web/CSS/CSS_Colors/Color_picker_tool) and find a color you like. When you click on a color, you'll see a strange six-character code like `#660066`. That's called a _hex code_ (short for hexadecimal), and represents your color. Copy the code down somewhere safe for now.
 
-![](screenshot_from_2014-11-03_17-40-49.png)
+![Color-Picker-Tool on MDN Docs website with RGB, HSL, and HEX colors ](color-picker.png)
 
-### 그림들
+### Images
 
-그림을 선택하기 위해, [Google Images](https://www.google.com/imghp?gws_rd=ssl)에 가서 적합한 것을 찾아보세요.
+To choose an image, go to [Google Images](https://www.google.com/imghp?gws_rd=ssl) and search for something suitable.
 
-1. 원하는 그림을 찾으면, 이미지를 클릭하세요.
-2. *이미지 보기(View image)*버튼을 누르세요.
-3. 다음 페이지에서, 이미지를 우클릭하고 (맥에서는 Ctrl + click), *다른 이름으로 이미지 저장(Save Image As...)*를 누르고, 이미지를 저장할 안전한 공간을 선택하세요. 다른 방법으로는, 나중에 사용하기 위해 여러분의 웹 브라우저의 주소에서 이미지의 웹 주소를 복사하는 것이 있습니다.
+1. When you find the image you want, click on the image to get an enlarged view of it.
+2. Right-click the image (Ctrl + click on a Mac), choose _Save Image As…_, and choose a safe place to save your image. Alternatively, copy the image's web address from your browser's address bar for later use.
 
-![](screenshot_from_2014-11-04_15-09-21.png)
+![Search results for a search term on Google Images](updated-google-images.png)
 
-![](screenshot_from_2014-11-04_15-20-48.png)
+Note that most images on the web, including in Google Images, are copyrighted. To reduce your likelihood of violating copyright, you can use Google's license filter. Click on the _Tools_ button, then on the resulting _Usage rights_ option that appears below. You should choose the option _Creative Commons licenses_.
 
-> **참고:** Google Images를 포함한, 웹에 있는 대부분의 그림들은 저작권이 있습니다. 저작권 침해의 가능성을 줄이기 위해선, Google's license filter를 사용하는 방법이 있습니다. 1) **검색 도구**(**Search tools**)를 클릭하고, 2) **사용 권한**(**Usage rights**)를 선택하면 됩니다:
->
-> ![](screenshot_from_2014-11-04_14-27-45.png)
+![Filtered search results to get images of Creative Commons Licenses on Google Images](updated-google-images-licensing.png)
 
-### 글꼴
+### Font
 
-글꼴을 선택하기 위해:
+To choose a font:
 
-1. [Google Fonts](http://www.google.com/fonts)에 가서 원하는 것을 찾을 때까지 스크롤을 내리세요. 결과에 대한 필터를 위해선 왼쪽 메뉴를 사용하면 됩니다.
-2. 원하는 폰트의 옆에 있는 _Add to collection_ 버튼을 클릭하세요.
-3. 페이지의 아래에 있는 _Use_ 버튼을 클릭하세요.
-4. 다음 페이지에서, 3 과 4 구역으로 스크롤을 내리고, 구글에서 제공한 코드를 여러분의 텍스트 편집기에 복사하고 나중을 위해 저장하세요.
-
-![](screenshot_from_2014-11-04_15-38-14.png)
-
-![](screenshot_from_2014-11-04_15-51-36.png)
+1. Go to [Google Fonts](https://fonts.google.com/) and find one you like.
+2. Copy the lines of code Google gives you into your text editor to save for later.
+3. For more details about using Google Fonts, see [this page](https://developers.google.com/fonts/docs/getting_started)
 
 {{PreviousMenuNext("Learn/Getting_started_with_the_web/Installing_basic_software", "Learn/Getting_started_with_the_web/Dealing_with_files", "Learn/Getting_started_with_the_web")}}

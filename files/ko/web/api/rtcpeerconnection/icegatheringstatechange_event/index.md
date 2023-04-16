@@ -1,69 +1,87 @@
 ---
-title: 'RTCPeerConnection: icegatheringstatechange event'
+title: "RTCPeerConnection: icegatheringstatechange event"
+short-title: icegatheringstatechange
 slug: Web/API/RTCPeerConnection/icegatheringstatechange_event
+page-type: web-api-event
+browser-compat: api.RTCPeerConnection.icegatheringstatechange_event
 ---
 
 {{APIRef("WebRTC")}}
 
-**`icegatheringstatechange`** 이벤트는 {{Glossary("ICE")}} candidate 수집 과정이 변경되면, {{domxref("RTCPeerConnection")}}의 이벤트 핸들러인 {{domxref("RTCPeerConnection.onicegatheringstatechange", "onicegatheringstatechange")}}로 전달됩니다. 이는 연결의 {{domxref("RTCPeerConnection.iceGatheringState", "iceGatheringState")}} 속성이 변경되었다는 것을 뜻합니다.
+The **`icegatheringstatechange`** event is sent to the `onicegatheringstatechange` event handler on an {{domxref("RTCPeerConnection")}} when the state of the {{Glossary("ICE")}} candidate gathering process changes.
+This signifies that the value of the connection's {{domxref("RTCPeerConnection.iceGatheringState", "iceGatheringState")}} property has changed.
 
-ICE가 처음 연결 candidate들을 수집하게되면 값이 `new`에서 `gathering`으로 바뀌게 되고, 이는 연결에 대한 candidate 설정들을 수집하는 과정 중에 있다는 뜻입니다. 값이 complete가 되면, RTCPeerConnection을 구성하는 모든 트랜스포트들이 ICE candidate 수집을 완료한 상태입니다.
+When ICE first starts to gather connection candidates, the value changes from `new` to `gathering` to indicate that the process of collecting candidate configurations for the connection has begun. When the value changes to `complete`, all of the transports that make up the `RTCPeerConnection` have finished gathering ICE candidates.
 
-| Bubbles       | No                                                                                                                   |
-| ------------- | -------------------------------------------------------------------------------------------------------------------- |
-| 취소가능여부  | No                                                                                                                   |
-| 인터페이스    | {{domxref("Event")}}                                                                                         |
-| 이벤트 핸들러 | {{domxref("RTCPeerConnection.onicegatheringstatechange", "onicegatheringstatechange")}} |
+> **Note:** While you can determine that ICE candidate gathering is complete by watching for `icegatheringstatechange` events and checking for the value of {{domxref("RTCPeerConnection.iceGatheringState", "iceGatheringState")}} to become `complete`, you can also have your handler for the {{domxref("RTCPeerConnection.icecandidate_event", "icecandidate")}} event look to see if its {{domxref("RTCPeerConnectionIceEvent.candidate", "candidate")}} property is `null`. This also indicates that collection of candidates is finished.
 
-> **참고:** ICE candidate 수집 과정이 완료되었는지는 `icegatheringstatechange`이벤트와 {{domxref("RTCPeerConnection.iceGatheringState", "iceGatheringState")}}의 값이 `complete`로 바뀌는 것을 확인하면 알 수 있습니다. 하지만, 더 쉬운 방법으로는 {{domxref("RTCPeerConnection.icecandidate_event", "icecandidate")}} 이벤트에 대한 핸들러가 {{domxref("RTCPeerConnectionIceEvent.candidate", "candidate")}} 속성의 값이 null로 변하는 시점을 체크하도록 할 수 있습니다. 이 속성이 `null` 값으로 바뀌었다는 것은 즉 모든 candidate 수집이 완료되었다는 뜻입니다.
+This event is not cancelable and does not bubble.
 
-## 예시
+## Syntax
 
-아래 예제는 `icegatheringstatechange` 이벤트에대한 핸들러를 생성합니다.
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
 
 ```js
-pc.onicegatheringstatechange = ev => {
-  let connection = ev.target;
+addEventListener("icegatheringstatechange", (event) => {});
 
-  switch(connection.iceGatheringState) {
-    case "gathering":
-      /* candidate 수집 과정 시작 */
-      break;
-    case "complete":
-      /* candidate 수집 완료 */
-      break;
-  }
-}
+onicegatheringstatechange = (event) => {};
 ```
 
-아래처럼 {{domxref("EventTarget.addEventListener", "addEventListener()")}}을 사용해서 `icegatheringstatechange` 이벤트에 대한 변경을 감지하는 리스너를 추가 할 수 있습니다.
+## Event type
+
+A generic {{domxref("Event")}}.
+
+## Examples
+
+This example creates a handler for `icegatheringstatechange` events.
 
 ```js
-pc.addEventListener("icegatheringstatechange", ev => {
+pc.onicegatheringstatechange = (ev) => {
   let connection = ev.target;
 
-  switch(connection.iceGatheringState) {
+  switch (connection.iceGatheringState) {
     case "gathering":
-      /* candidate 수집 과정 시작 */
+      /* collection of candidates has begun */
       break;
     case "complete":
-      /* candidate 수집 완료 */
+      /* collection of candidates is finished */
       break;
   }
-}, false);
+};
 ```
 
-## 명세
+Likewise, you can use {{domxref("EventTarget.addEventListener", "addEventListener()")}} to add a listener for `icegatheringstatechange` events:
+
+```js
+pc.addEventListener(
+  "icegatheringstatechange",
+  (ev) => {
+    let connection = ev.target;
+
+    switch (connection.iceGatheringState) {
+      case "gathering":
+        // collection of candidates has begun
+        break;
+      case "complete":
+        // collection of candidates is finished
+        break;
+    }
+  },
+  false
+);
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
-- [WebRTC API](/ko/docs/Web/API/WebRTC_API)
-- [Signaling and video calling](/ko/docs/Web/API/WebRTC_API/Signaling_and_video_calling)
-- [WebRTC connectivity](/ko/docs/Web/API/WebRTC_API/Connectivity)
-- [Lifetime of a WebRTC session](/ko/docs/Web/API/WebRTC_API/Session_lifetime)
+- [WebRTC API](/en-US/docs/Web/API/WebRTC_API)
+- [Signaling and video calling](/en-US/docs/Web/API/WebRTC_API/Signaling_and_video_calling)
+- [WebRTC connectivity](/en-US/docs/Web/API/WebRTC_API/Connectivity)
+- [Lifetime of a WebRTC session](/en-US/docs/Web/API/WebRTC_API/Session_lifetime)

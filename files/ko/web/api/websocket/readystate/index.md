@@ -1,27 +1,31 @@
 ---
-title: WebSocket.readyState
+title: "WebSocket: readyState property"
+short-title: readyState
 slug: Web/API/WebSocket/readyState
+page-type: web-api-instance-property
+browser-compat: api.WebSocket.readyState
 ---
 
 {{APIRef("Web Sockets API")}}
 
-**`WebSocket.readyState`** 읽기 전용 속성은 {{domxref("WebSocket")}} 연결의 현재 상태를 반환합니다.
+The **`WebSocket.readyState`** read-only property returns the
+current state of the {{domxref("WebSocket")}} connection.
 
-## 값
+## Value
 
-아래의 `unsigned short` 값 중 하나입니다.
+One of the following `unsigned short` values:
 
-| 값  | 상태         | 설명                                               |
-| --- | ------------ | -------------------------------------------------- |
-| `0` | `CONNECTING` | 소켓이 생성됐으나 연결은 아직 개방되지 않았습니다. |
-| `1` | `OPEN`       | 연결이 개방되어 통신할 수 있습니다.                |
-| `2` | `CLOSING`    | 연결을 닫는 중입니다.                              |
-| `3` | `CLOSED`     | 연결이 닫혔거나, 개방할 수 없었습니다.             |
+| Value | State        | Description                                              |
+| ----- | ------------ | -------------------------------------------------------- |
+| `0`   | `CONNECTING` | Socket has been created. The connection is not yet open. |
+| `1`   | `OPEN`       | The connection is open and ready to communicate.         |
+| `2`   | `CLOSING`    | The connection is in the process of closing.             |
+| `3`   | `CLOSED`     | The connection is closed or couldn't be opened.          |
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

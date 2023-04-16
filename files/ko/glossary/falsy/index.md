@@ -1,56 +1,82 @@
 ---
-title: 거짓같은 값
+title: Falsy
 slug: Glossary/Falsy
+page-type: glossary-definition
 ---
 
-**거짓 같은 값**(Falsy, **falsey**로 쓰이기도 함) 값은 {{Glossary("Boolean","불리언")}} 문맥에서 `false`로 평가되는 값입니다.
+A **falsy** (sometimes written **falsey**) value is a value that is considered false when encountered in a {{Glossary("Boolean")}} context.
 
-{{Glossary("JavaScript")}}는 {{Glossary("Conditional", "조건절")}}, {{Glossary("Loop", "반복문")}} 등 불리언 값이 필요한 곳에서 {{Glossary("Type_Conversion", "형 변환")}}을 이용해 특정 값을 불리언 값으로 변환합니다.
+{{Glossary("JavaScript")}} uses {{Glossary("Type_Conversion", "type conversion")}} to coerce any value to a Boolean in contexts that require it, such as {{Glossary("Conditional", "conditionals")}} and {{Glossary("Loop", "loops")}}.
 
-다음은 8가지 거짓 같은 값들입니다:
+The following table provides a complete list of JavaScript falsy values:
 
-| `false`                          | 키워드 [false](/ko/docs/Web/JavaScript/Reference/Lexical_grammar#구형_표준의_확장_예약_키워드)                                           |
-| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `0`                              | 숫자 [zero](/ko/docs/Web/JavaScript/Data_structures#Number_타입)                                                                         |
-| `-0`                             | 음수 [zero](/ko/docs/Web/JavaScript/Data_structures#Number_타입)                                                                         |
-| `0n`                             | [BigInt](/ko/docs/Web/JavaScript/Reference/Global_Objects/BigInt). 불리언으로 사용될 경우, 숫자와 같은 규칙을 따름. `0n`은 거짓 같은 값. |
-| `""`                             | 빈 [string](/ko/docs/Web/JavaScript/Reference/Global_Objects/String)                                                                     |
-| {{Glossary("null")}}     | [null](/ko/docs/Web/JavaScript/Reference/Global_Objects/null) - 아무런 값도 없음                                                         |
-| {{Glossary("undefined")}} | [undefined](/ko/docs/Web/JavaScript/Reference/Global_Objects/undefined) - 원시값                                                         |
-| {{Glossary("NaN")}}         | [NaN](/ko/docs/Web/JavaScript/Reference/Global_Objects/NaN) - 숫자가 아님                                                                |
+| Value                       | Type      | Description                                                                                                                                         |
+| --------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| {{Glossary("null")}}        | Null      | The keyword [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null) — the absence of any value.                                               |
+| {{Glossary("undefined")}}   | Undefined | [`undefined`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined) — the primitive value.                                                 |
+| `false`                     | Boolean   | The keyword [`false`](/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#reserved_words).                                                         |
+| {{Glossary("NaN")}}         | Number    | [`NaN`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN) — not a number.                                                                    |
+| `0`                         | Number    | The {{jsxref("Number")}} zero, also including `0.0`, `0x0`, etc.                                                                                    |
+| `-0`                        | Number    | The {{jsxref("Number")}} negative zero, also including `-0.0`, `-0x0`, etc.                                                                         |
+| `0n`                        | BigInt    | The {{jsxref("BigInt")}} zero, also including `0x0n`, etc. Note that there is no {{jsxref("BigInt")}} negative zero — the negation of `0n` is `0n`. |
+| `""`                        | String    | Empty [string](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) value, also including `''` and ` `` `.                                   |
+| {{domxref("document.all")}} | Object    | The only falsy object in JavaScript is the built-in {{domxref("document.all")}}.                                                                    |
 
-> **참고:** 오브젝트는 [\[\[IsHTMLDDA\]\] internal slot](https://tc39.es/ecma262/#sec-IsHTMLDDA-internal-slot) 을 가지고 있어야 거짓같은 값이 됩니다. 이 슬롯은 [`document.all`](/ko/docs/Web/API/Document/all) 에만 존재하며 자바스크립트로 설정될 수 없습니다.
+The values `null` and `undefined` are also [nullish](/en-US/docs/Glossary/Nullish).
 
-## 예제
+## Examples
 
-다음은 거짓 같은 값의 예시입니다. 거짓 같은 값은 불리언 문맥에서 false로 변환되므로, 아래의 모든 `if` 블록은 실행되지 않습니다.
+Examples of _falsy_ values in JavaScript (which are coerced to false in Boolean contexts, and thus _bypass_ the `if` block):
 
 ```js
-if (false)
-if (null)
-if (undefined)
-if (0)
-if (-0)
-if (0n)
-if (NaN)
-if ("")
+if (false) {
+  // Not reachable
+}
+
+if (null) {
+  // Not reachable
+}
+
+if (undefined) {
+  // Not reachable
+}
+
+if (0) {
+  // Not reachable
+}
+
+if (-0) {
+  // Not reachable
+}
+
+if (0n) {
+  // Not reachable
+}
+
+if (NaN) {
+  // Not reachable
+}
+
+if ("") {
+  // Not reachable
+}
 ```
 
-### 논리 AND 연산자, &&
+### The logical AND operator, &&
 
-첫 번째 객체가 거짓 같은 값이라면, 해당 객체를 반환합니다.
+If the first object is falsy, it returns that object:
 
 ```js
-false && "dog"
+console.log(false && "dog");
 // ↪ false
 
-0 && "dog"
+console.log(0 && "dog");
 // ↪ 0
 ```
 
-## 같이 보기
+## See also
 
-- {{Glossary("Truthy", "참 같은 값")}}
-- {{Glossary("Boolean", "불리언")}}
-
-{{QuickLinksWithSubpages("/ko/docs/Glossary")}}
+- {{Glossary("Truthy")}}
+- {{Glossary("Type_coercion", "Coercion")}}
+- {{Glossary("Boolean")}}
+- [Boolean coercion](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean#boolean_coercion)

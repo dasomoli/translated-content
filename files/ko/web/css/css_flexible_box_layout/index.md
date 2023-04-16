@@ -1,21 +1,23 @@
 ---
 title: CSS Flexible Box Layout
 slug: Web/CSS/CSS_Flexible_Box_Layout
+page-type: css-module
+spec-urls: https://drafts.csswg.org/css-flexbox/
 ---
 
 {{CSSRef}}
 
-**CSS Flexible Box Layout**은 사용자 인터페이스 디자인과 단방향 레이아웃에 최적화된 [CSS](/ko/docs/Web/CSS) 모듈입니다. 플렉스 레이아웃 모델에서는, 플렉스 컨테이너의 자식을 어떤 방향으로도 배치할 수 있으며, 자식의 크기도 유연하게("플렉시블") 빈 공간을 채우거나, 컨테이너를 넘어가지 않도록 줄어듭니다. 자식 간의 수평 및 수직 정렬 또한 쉽게 조작할 수 있습니다.
+**CSS Flexible Box Layout** is a module of [CSS](/en-US/docs/Web/CSS) that defines a CSS box model optimized for user interface design, and the layout of items in one dimension. In the flex layout model, the children of a flex container can be laid out in any direction, and can "flex" their sizes, either growing to fill unused space or shrinking to avoid overflowing the parent. Both horizontal and vertical alignment of the children can be easily manipulated.
 
-## 기본 예제
+## Basic example
 
-다음 예제의 컨테이너는 `display: flex`를 적용한 상태입니다. 따라서 컨테이너의 세 자식은 플렉스 항목이 됩니다. `justify-content`의 값은 `space-between`으로, 각 아이템을 주축(가로축)에 균일한 간격으로 배치합니다. 그래서 같은 양의 공간이 자식 사이에 균일하게 생기며 왼쪽과 오른쪽 아이템이 플렉스 컨테이너의 양 모서리에 붙어서 배치됩니다. 또한 `align-items`의 기본값인 `stretch`로 인해, 각 항목의 높이가 플렉스 컨테이너의 높이까지 늘어나서 세 자식 모두 제일 높이가 큰 항목과 같은 높이가 되는 것도 확인할 수 있습니다.
+In the following example a container has been set to `display: flex`, which means that the three child items become flex items. The value of `justify-content` has been set to `space-between` in order to space the items out evenly on the main axis. An equal amount of space is placed between each item with the left and right items being flush with the edges of the flex container. You can also see that the items are stretching on the cross axis, due to the default value of `align-items` being `stretch`. The items stretch to the height of the flex container, making them each appear as tall as the tallest item.
 
-{{EmbedGHLiveSample("css-examples/flexbox/basics/simple-example.html", '100%', 500)}}
+{{EmbedGHLiveSample("css-examples/flexbox/basics/simple-example.html", '100%', 600)}}
 
-## 참고서
+## Reference
 
-### CSS 속성
+### Properties
 
 - {{cssxref("flex")}}
 - {{cssxref("flex-basis")}}
@@ -26,9 +28,9 @@ slug: Web/CSS/CSS_Flexible_Box_Layout
 - {{cssxref("flex-wrap")}}
 - {{cssxref("order")}}
 
-### 정렬 속성
+### Properties for alignment
 
-`align-content`, `align-self`, `align-items`, `justify-content` 속성은 플렉스박스 명세에서 처음 나왔지만, 지금은 박스 정렬 명세가 정의하며 플렉스박스 명세는 박스 정렬 명세를 참조하고 있습니다. 추가 정렬 속성도 박스 정렬 명세가 가지고 있습니다.
+The properties `align-content`, `align-self`, `align-items` and `justify-content` initially appeared in the Flexbox specification, but are now defined in Box Alignment. The Flexbox spec now refers to the Box Alignment specification for up to date definitions. Also additional alignment properties are now defined in Box Alignment.
 
 - {{cssxref("justify-content")}}
 - {{cssxref("align-content")}}
@@ -40,34 +42,33 @@ slug: Web/CSS/CSS_Flexible_Box_Layout
 - {{cssxref("column-gap")}}
 - {{cssxref("gap")}}
 
-### 용어
+## Guides
 
-- {{Glossary("Flexbox", "플렉스박스")}}
-- {{Glossary("Flex Container", "플렉스 컨테이너")}}
-- {{Glossary("Flex Item", "플렉스 항목")}}
-- {{Glossary("Main Axis", "주축")}}
-- {{Glossary("Cross Axis", "교차축")}}
-- {{Glossary("Flex", "플렉스")}}
+- [Basic concepts of flexbox](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox)
+  - : An overview of the features of Flexbox
+- [Relationship of flexbox to other layout methods](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Relationship_of_Flexbox_to_Other_Layout_Methods)
+  - : How Flexbox relates to other layout methods, and other CSS specifications
+- [Aligning items in a flex container](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Aligning_Items_in_a_Flex_Container)
+  - : How the Box Alignment properties work with Flexbox.
+- [Ordering flex items](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Ordering_Flex_Items)
+  - : Explaining the different ways to change the order and direction of items, and covering the potential issues in doing so.
+- [Controlling ratios of flex items along the main axis](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Controlling_Ratios_of_Flex_Items_Along_the_Main_Ax)
+  - : Explaining the flex-grow, flex-shrink and flex-basis properties.
+- [Mastering wrapping of flex items](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Mastering_Wrapping_of_Flex_Items)
+  - : How to create flex containers with multiple lines and control the display of the items in those lines.
+- [Typical use cases of flexbox](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Typical_Use_Cases_of_Flexbox)
+  - : Common design patterns that are typical Flexbox use cases.
 
-## 안내서
-
-- [플렉스박스의 기본 개념](/ko/docs/Web/CSS/CSS_Flexible_Box_Layout/Flexbox%EC%9D%98_%EA%B8%B0%EB%B3%B8_%EA%B0%9C%EB%85%90)
-  - : 플렉스박스의 기능 개요입니다.
-- [다른 레이아웃과 플렉스박스의 관계](/ko/docs/Web/CSS/CSS_Flexible_Box_Layout/Relationship_of_Flexbox_to_Other_Layout_Methods)
-  - : 플렉스박스와 다른 레이아웃 방법, 그리고 다른 CSS 명세가 가진 관계를 설명합니다.
-- [플렉스 컨테이너의 아이템 정렬하기](/ko/docs/Web/CSS/CSS_Flexible_Box_Layout/Aligning_Items_in_a_Flex_Container)
-  - : 박스 정렬 속성이 플렉스박스에서 동작하는 방식을 설명합니다.
-- [플렉스 아이템 배치하기](/ko/docs/Web/CSS/CSS_Flexible_Box_Layout/Ordering_Flex_Items)
-  - : 아이템의 순서와 방향을 바꾸는 여러 방법과, 이 때 발생할 수 있는 여러 문제를 다룹니다.
-- [플렉스 아이템의 주요 축 비율 조절하기](/ko/docs/Web/CSS/CSS_Flexible_Box_Layout/Controlling_Ratios_of_Flex_Items_Along_the_Main_Ax)
-  - : `flex-grow`, `flex-shrink`, `flex-basis` 속성을 설명합니다.
-- [플렉스 아이템 줄바꿈 마스터하기](/ko/docs/Web/CSS/CSS_Flexible_Box_Layout/Mastering_Wrapping_of_Flex_Items)
-  - : 여러 줄로 이뤄진 플렉스 컨테이너를 만드는 방법과, 컨테이너 아이템의 표시 방법 설정을 설명합니다.
-- [플렉스박스의 일반적인 용례](/ko/docs/Web/CSS/CSS_Flexible_Box_Layout/Typical_Use_Cases_of_Flexbox)
-  - : 일반적인 플렉스박스 디자인 패턴입니다.
-- [플렉스박스의 하위 호환성](/ko/docs/Web/CSS/CSS_Flexible_Box_Layout/Backwards_Compatibility_of_Flexbox)
-  - : 플렉스박스의 브라우저 상태, 상호 호환성 이슈와 함께 구형 브라우저와 이전 명세를 지원하는 방법을 설명합니다.
-
-## 명세
+## Specifications
 
 {{Specifications}}
+
+## See also
+
+- Glossary terms:
+  - {{Glossary("Flexbox")}}
+  - {{Glossary("Flex Container")}}
+  - {{Glossary("Flex Item")}}
+  - {{Glossary("Main Axis")}}
+  - {{Glossary("Cross Axis")}}
+  - {{Glossary("Flex")}}

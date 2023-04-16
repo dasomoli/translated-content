@@ -1,32 +1,46 @@
 ---
-title: console.countReset()
+title: "console: countReset() method"
+short-title: countReset()
 slug: Web/API/console/countReset
+page-type: web-api-instance-method
+browser-compat: api.console.countReset
 ---
+
 {{APIRef("Console API")}}
 
-**`console.countReset()`** 메서드는 {{domxref("console.count()")}}의 카운터를 초기화합니다.
+The **`console.countReset()`** method resets counter used with
+{{domxref("console.count()")}}.
 
 {{AvailableInWorkers}}
 
-## 구문
+## Syntax
 
-```js
-console.countReset([label]);
+```js-nolint
+countReset()
+countReset(label)
 ```
 
-### 매개변수
+### Parameters
 
 - `label` {{optional_inline}}
-  - : {{jsxref("String")}}. 지정한 경우, 이 레이블을 지정한 `count()`를 0으로 초기화합니다. 누락한 경우 default 카운터를 0으로 초기화합니다.
+  - : A string. If supplied, `countReset()` resets the count for
+    that label to 0. If omitted, `countReset()` resets the default counter to
+    0\.
 
-## 예제
+### Return value
+
+None ({{jsxref("undefined")}}).
+
+## Examples
+
+For example, given code like this:
 
 ```js
 let user = "";
 
 function greet() {
   console.count();
-  return "hi " + user;
+  return `hi ${user}`;
 }
 
 user = "bob";
@@ -38,7 +52,7 @@ console.count();
 console.countReset();
 ```
 
-위 코드의 출력 결과는 다음과 같습니다.
+Console output will look something like this:
 
 ```
 "default: 1"
@@ -48,16 +62,19 @@ console.countReset();
 "default: 0"
 ```
 
-`console.countReset()`이 기본 카운터를 0으로 초기화했음을 알 수 있습니다.
+Note that the call to `console.counterReset()` resets the value of the
+default counter to zero.
 
-첫 번째 `count()`의 매개변수에는 문자열 "bob"을 제공하고, 두 번째에는 문자열 "alice"를 제공할 경우...
+If we pass the `user` variable as the `label` argument with the
+string "bob" to the first invocation of `count()`, and the string "alice" to
+the second:
 
 ```js
 let user = "";
 
 function greet() {
   console.count(user);
-  return "hi " + user;
+  return `hi ${user}`;
 }
 
 user = "bob";
@@ -69,7 +86,7 @@ console.countReset("bob");
 console.count("alice");
 ```
 
-다음과 같이 출력합니다.
+We will see output like this:
 
 ```
 "bob: 1"
@@ -79,12 +96,13 @@ console.count("alice");
 "alice: 3"
 ```
 
-카운터 "bob"을 초기화해도 "alice"의 값에는 영향이 없습니다.
+Resetting the value of the counter "bob" only changes the value of that counter. The
+value of "alice" is unchanged.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

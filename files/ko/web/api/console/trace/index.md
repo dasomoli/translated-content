@@ -1,27 +1,42 @@
 ---
-title: console.trace()
+title: "console: trace() method"
+short-title: trace()
 slug: Web/API/console/trace
+page-type: web-api-instance-method
+browser-compat: api.console.trace
 ---
+
 {{APIRef("Console API")}}
 
-**`console.trace()`** 메서드는 [웹 콘솔](/ko/docs/Tools/Web_Console)에 스택 추적을 출력합니다.
+The **`console.trace()`** method outputs a stack trace to the
+[Web console](https://firefox-source-docs.mozilla.org/devtools-user/web_console/index.html).
 
 {{AvailableInWorkers}}
 
-자세한 내용과 예제는 {{domxref("console")}} 문서의 [스택 추적](/ko/docs/Web/API/console#스택_추적)을 참고하세요.
+> **Note:** In some browsers, `console.trace()` may also output the sequence of calls and asynchronous events leading to the current `console.trace()` which are not on the call stack — to help identify the origin of the current event evaluation loop.
 
-## 구문
+See [Stack traces](/en-US/docs/Web/API/console#stack_traces) in the
+{{domxref("console")}} documentation for details and examples.
 
-```js
-console.trace( [...any, ...data ]);
+## Syntax
+
+```js-nolint
+trace()
+trace(object1, /* …, */ objectN)
 ```
 
-### 매개변수
+### Parameters
 
-- `...any, ...data` {{optional_inline}}
-  - : 스택 추적과 함께 콘솔에 출력할 0개 이상의 객체. {{domxref("console.log()")}} 메서드에 전달되는 것과 동일한 방식으로 조합되고 형식이 지정됩니다.
+- `objects` {{optional_inline}}
+  - : Zero or more objects to be output to console along with the trace. These are
+    assembled and formatted the same way they would be if passed to the
+    {{domxref("console.log()")}} method.
 
-## 예제
+### Return value
+
+None ({{jsxref("undefined")}}).
+
+## Examples
 
 ```js
 function foo() {
@@ -34,7 +49,7 @@ function foo() {
 foo();
 ```
 
-콘솔에 다음과 같은 추적이 표시됩니다.
+In the console, the following trace will be displayed:
 
 ```
 bar
@@ -42,10 +57,10 @@ foo
 <anonymous>
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

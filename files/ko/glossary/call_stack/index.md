@@ -1,67 +1,69 @@
 ---
-title: 호출 스택
+title: Call stack
 slug: Glossary/Call_stack
+page-type: glossary-definition
 ---
 
-**호출 스택**은 여러 함수들({{glossary("function","functions")}})을 호출하는 스크립트에서 해당 위치를 추적하는 인터프리터 (웹 브라우저의 자바스크립트 인터프리터같은)를 위한 메커니즘입니다. 현재 어떤 함수가 동작하고있는 지, 그 함수 내에서 어떤 함수가 동작하는 지, 다음에 어떤 함수가 호출되어야하는 지 등을 제어합니다.
+A **call stack** is a mechanism for an interpreter (like the JavaScript interpreter in a web browser) to keep track of its place in a script that calls multiple {{glossary("function","functions")}} — what function is currently being run and what functions are called from within that function, etc.
 
-- 스크립트가 함수를 호출하면 인터프리터는 이를 호출 스택에 추가한 다음 함수를 수행하기 시작합니다.
-- 해당 함수에 의해 호출되는 모든 함수는 호출 스택에 추가되고 호출이 도달하는 위치에서 실행합니다.
-- 메인 함수가 끝나면 인터프리터는 스택을 제거하고 메인 코드 목록에서 중단된 실행을 다시 시작합니다.
-- 스택이 할당된 공간보다 많은 공간을 차지하면 "stack overflow" 에러가 발생합니다.
+- When a script calls a function, the interpreter adds it to the call stack and then starts carrying out the function.
+- Any functions that are called by that function are added to the call stack further up, and run where their calls are reached.
+- When the current function is finished, the interpreter takes it off the stack and resumes execution where it left off in the last code listing.
+- If the stack takes up more space than it was assigned, a "stack overflow" error is thrown.
 
-## 예제
+## Example
 
 ```js
 function greeting() {
-   // [1] Some codes here
-   sayHi();
-   // [2] Some codes here
+  // [1] Some code here
+  sayHi();
+  // [2] Some code here
 }
 function sayHi() {
-   return "Hi!";
+  return "Hi!";
 }
 
 // Invoke the `greeting` function
 greeting();
 
-// [3] Some codes here
+// [3] Some code here
 ```
 
-위 코드는 다음과 같이 실행될 것입니다.
+The code above would be executed like this:
 
-1. `greeting()` 함수에 도달할 때까지, 모든 함수를 무시합니다.
-2. `greeting()` 함수를 호출합니다.
-3. `greeting()` 함수를 호출 스택 리스트에 추가합니다.
+1. Ignore all functions, until it reaches the `greeting()` function invocation.
+2. Add the `greeting()` function to the call stack list.
 
-    > **참고:** 호출 스택 리스트:
-    > \- greeting
+   > **Note:** Call stack list:
+   > \- greeting
 
-4. `greeting` 함수 내부의 모든 코드를 실행합니다.
-5. `sayHi()` 함수를 얻습니다.
-6. `sayHi()` 함수를 호출 스택 리스트에 추가합니다.
+3. Execute all lines of code inside the `greeting()` function.
+4. Get to the `sayHi()` function invocation.
+5. Add the `sayHi()` function to the call stack list.
 
-    > **참고:** 호출 스택 리스트:
-    > \- greeting
-    > \- sayHi
+   > **Note:** Call stack list:
+   > \- sayHi
+   > \- greeting
 
-7. `sayHi()` 함수의 끝에 도달할 때까지, 함수 내부의 모든 코드를 실행합니다.
-8. `sayHi()` 가 호출된 라인으로 돌아와 `greeting()` 함수의 나머지를 계속 실행합니다.
-9. 호출 스택 리스트에서 `sayHi()` 함수를 제거합니다.
+6. Execute all lines of code inside the `sayHi()` function, until reaches its end.
+7. Return execution to the line that invoked `sayHi()` and continue executing the rest of the `greeting()` function.
+8. Delete the `sayHi()` function from our call stack list.
 
-    > **참고:** 호출 스택 리스트:
-    > \- greeting
+   > **Note:** Call stack list:
+   > \- greeting
 
-10. `greeting()` 함수 내부의 모든 코드가 실행되었을 때, 이를 호출한 라인으로 돌아와 JS 코드의 나머지를 계속 실행합니다.
-11. 호출 스택 리스트에서 `greeting()` 함수를 제거합니다.
+9. When everything inside the `greeting()` function has been executed, return to its invoking line to continue executing the rest of the JS code.
+10. Delete the `greeting()` function from the call stack list.
 
-> **참고:** 호출 스택 리스트:
-> EMPTY
+    > **Note:** Call stack list:
+    > EMPTY
 
-우리는 빈 호출 스택으로 시작하며, 함수를 호출할 때마다 자동으로 호출 스택에 추가되고, 해당 코드가 모두 실행된 후, 호출 스택에서 자동으로 제거됩니다. 결국, 마찬가지로 빈 호출 스택으로 끝납니다.
+In summary, then, we start with an empty Call Stack. Whenever we invoke a function, it is automatically added to the Call Stack. Once the function has executed all of its code, it is automatically removed from the Call Stack. Ultimately, the Stack is empty again.
 
-## 더 알아보기
+## See also
 
-### 일반 지식
+- [Call stack](https://en.wikipedia.org/wiki/Call_stack) on Wikipedia
+- [Glossary](/en-US/docs/Glossary)
 
-- [콜 스택](https://ko.wikipedia.org/wiki/%EC%BD%9C_%EC%8A%A4%ED%83%9D) on Wikipedia
+  - {{Glossary("Call stack")}}
+  - {{Glossary("Function")}}

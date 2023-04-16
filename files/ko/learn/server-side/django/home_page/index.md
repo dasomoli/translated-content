@@ -1,92 +1,86 @@
 ---
-title: 'Django Tutorial Part 5: Creating our home page'
+title: "Django Tutorial Part 5: Creating our home page"
 slug: Learn/Server-side/Django/Home_page
 ---
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/Server-side/Django/Admin_site", "Learn/Server-side/Django/Generic_views", "Learn/Server-side/Django")}}
 
-우리는 이제 첫 전체 페이지를 보여주는 코드를 추가할 때가 되었습니다 — [LocalLibrary](/ko/docs/Learn/Server-side/Django/Tutorial_local_library_website) website를 위한 홈페이지를요. 이 홈페이지는 각각의 모델 타입마다 갖고 있는 레코드들의 숫자를 보여주고, 우리의 다른 페이지들로 이동할 수 있는 사이드바 내비게이션 링크들을 제공합니다. 이 섹션에서 우리는 기본 URL 맵과 뷰들을 작성하고, 데이터베이스에서 레코드들을 가져오고 그리고 탬플릿을 사용하는 것에 대한 연습 경험을 가질 수 있습니다.
+We're now ready to add the code that displays our first complete page — a home page for the [LocalLibrary](/en-US/docs/Learn/Server-side/Django/Tutorial_local_library_website) website. The home page will show the number of records we have for each model type and provide sidebar navigation links to our other pages. Along the way we'll gain practical experience in writing basic URL maps and views, getting records from the database, and using templates.
 
-<table class="learn-box standard-table">
+<table>
   <tbody>
     <tr>
-      <th scope="row">사전 준비:</th>
+      <th scope="row">Prerequisites:</th>
       <td>
-        <a href="/en-US/docs/Learn/Server-side/Django/Introduction"
-          >Django Introduction</a
-        >을 읽어보세요. 이전 튜토리얼들을 완료하세요 (<a
-          href="/en-US/docs/Learn/Server-side/Django/Admin_site"
-          >Django Tutorial Part 4: Django admin site</a
-        >
-        포함).
+        Read the <a href="/en-US/docs/Learn/Server-side/Django/Introduction">Django Introduction</a>. Complete previous tutorial topics (including <a href="/en-US/docs/Learn/Server-side/Django/Admin_site">Django Tutorial Part 4: Django admin site</a>).
       </td>
     </tr>
     <tr>
-      <th scope="row">목표:</th>
+      <th scope="row">Objective:</th>
       <td>
-        간단한 url 맵과 뷰를 생성하고(URL 안에 아무런 데이터도 인코드되지 않은),
-        모델로부터 데이터를 가져오고, 탬플릿을 생성하는 방법을 배우기.
+        Learn to create simple URL maps and views (where no data is encoded in the URL), get data from models, and create templates.
       </td>
     </tr>
   </tbody>
 </table>
 
-## 개요
+## Overview
 
-지금까지는 우리의 모델을 정의하고 약간의 초기 도서관 레코드들을 만들어 왔고, 이제는 사용자에게 정보를 제공하기 위한 코드를 작성할 때입니다. 첫 번째 우리가 할 일은 우리의 페이지에서 어떤 정보를 보여줄 것인지를 결정하고, 그 요소들을 반환하는 데 사용되는 URL들을 정의하는 것입니다. 다음으로 우리는 페이지를 나타내기 위한 URL 매퍼, views, 그리고 탬플릿들을 생성할 것입니다.
+After we defined our models and created some initial library records to work with, it's time to write the code that presents that information to users. The first thing we need to do is determine what information we want to display in our pages, and define the URLs to use for returning those resources. Then we'll create a URL mapper, views, and templates to display the pages.
 
-아래 다이어그램은 주요 데이터 흐름 그리고 HTTP 요청과 응답을 처리하는 데 필요한 요소들을 보여줍니다. 모델은 이미 구현되었기 떄문에, 우리가 생성할 주요 요소들은 다음과 같습니다:
+The following diagram describes the main data flow, and the components required when handling HTTP requests and responses. As we already implemented the model, the main components we'll create are:
 
-- URL 매퍼들 : 적절한 view 함수들을 위해 지원되는 URL들(그리고 URL들 안에 인코딩된 어떤 정보라도)을 포워딩하기 위해.
-- View 함수들: 요청된 데이터를 모델들에게서 가져오고, 데이터를 표시하는 HTML 페이지를 생성하고 그리고 브라우저 안의 view로 페이지들을 사용자에게 반환하기 위해.
-- 탬플릿들: 데이터를 뷰들 안에 렌더링할 때 사용하기 위해.
+- URL mappers to forward the supported URLs (and any information encoded in the URLs) to the appropriate view functions.
+- View functions to get the requested data from the models, create HTML pages that display the data, and return the pages to the user to view in the browser.
+- Templates to use when rendering data in the views.
 
-![](basic-django.png)
+![Main data flow diagram: URL, Model, View & Template component required when handling HTTP requests and responses in a Django application. A HTTP request hits a Django server gets forwarded to the 'urls.py' file of the URLS component. The request is forwarded to the appropriate view. The view can read and write data from the Models 'models.py' file containing the code related to models. The view also accesses the HTML file template component. The view returns the response back to the user.](basic-django.png)
 
-우리가 표시해야 할 페이지는 총 다섯 페이지입니다. 하나의 글에 담기에는 너무 많은 정보죠. 따라서, 이 글의 대부분은 홈 페이지를 어떻게 구현하는 지에 대해 집중하고, 다음 글에서 다른 페이지들에 대해 다루겠습니다. 이렇게 하면 URL 매퍼들, view들, 그리고 모델이 실제로 작동하는 방식에 대해 완벽하고 철저하게 이해할 수 있을 것입니다.
+As you'll see in the next section, we have 5 pages to display, which is too much information to document in a single article. Therefore, this article will focus on how to implement the home page, and we'll cover the other pages in a subsequent article. This should give you a good end-to-end understanding of how URL mappers, views, and models work in practice.
 
-## resource URLs 정의하기
+## Defining the resource URLs
 
-이 버전의 LocalLibrary는 근본적으로 최종 사용자들에게는 읽기 전용이기 때문에, 우리는 사이트의 방문 페이지(홈 페이지) 그리고 책들과 저자들에 대한 목록 및 세부 view들을 보여주는 페이지만 제공하면 됩니다.
+As this version of [LocalLibrary](/en-US/docs/Learn/Server-side/Django/Tutorial_local_library_website) is essentially read-only for end users, we just need to provide a landing page for the site (a home page), and pages that _display_ list and detail views for books and authors.
 
-우리의 페이지들을 위해 필요한 URL들은:
+The URLs that we'll need for our pages are:
 
-- `catalog/` — 홈/색인(index) 페이지.
-- `catalog/books/` — 모든 책들의 목록.
-- `catalog/authors/` — 모든 저자들의 목록.
-- `catalog/book/<id>` — `<id>` 라는 이름의(기본값) 프라이머리 키(primary key) 필드를 가지는 특정한 책을 위한 세부 사항 뷰(detail view). 예를 들어, 목록에 추가된 세 번째 책은 `/catalog/book/3`이 될 것입니다.
-- `catalog/author/<id>` — `<id>` 라는 이름의 프라이머리 키(primary key) 필드를 가지는 특정한 저자를 위한 세부 사항 뷰(detail view). 예를 들어, 목록에 추가된 11번째 저자는 `/catalog/author/11`이 될 것입니다.
+- `catalog/` — The home (index) page.
+- `catalog/books/` — A list of all books.
+- `catalog/authors/` — A list of all authors.
+- `catalog/book/<id>` — The detail view for a particular book, with a field primary key of `<id>` (the default). For example, the URL for the third book added to the list will be `/catalog/book/3`.
+- `catalog/author/<id>` — The detail view for the specific author with a primary key field of `<id>`. For example, the URL for the 11th author added to the list will be `/catalog/author/11`.
 
-처음 세 개의 URL들은 인덱스 페이지, 책 목록, 그리고 저자 목록을 반환합니다. 이것들은 아무런 추가적인 정보도 인코드하지 않고, 데이터베이스에서 데이터를 가져오는 쿼리들도 항상 똑같습니다. 그러나, 쿼리들이 반환할 결과들은 데이터베이스의 내용물에 따라 다를 것입니다.
+The first three URLs will return the index page, books list, and authors list. These URLs do not encode any additional information, and the queries that fetch data from the database will always be the same. However, the results that the queries return will depend on the contents of the database.
 
-그에 반해서 마지막 두 개의 URL들은 특정한 책 또는 저자에 대한 세부 정보를 나타낼 것입니다. 이 URL들은 표시할 항목의 ID를 인코딩합니다(위에서 `<id>` 로 표시). URL 매퍼는 인코딩된 정보를 추출하여 view로 전달합니다. 그리고 view는 데이터베이스에서 무슨 정보를 가져올지 동적으로 결정합니다. URL의 정보를 인코딩하여 우리는 모든 책들(또는 저자들)을 처리하기 위해 단일 모임의 url 매핑, 뷰, 탬플릿을 사용할 것입니다.
+By contrast the final two URLs will display detailed information about a specific book or author. These URLs encode the identity of the item to display (represented by `<id>` above). The URL mapper will extract the encoded information and pass it to the view, and the view will dynamically determine what information to get from the database. By encoding the information in the URL we will use a single set of a URL mapping, a view, and a template to handle all books (or authors).
 
-> **참고:** **주의:** 장고를 이용해서 당신이 필요로 하는 대로 URL들을 만들 수 있습니다 — 위와 같이 URL의 본문(body)에 정보를 인코딩할 수도 있고, 또는 URL 안에 GET 매개 변수들을 포함시킬 수 있습니다(예: /book/?id=6). 어떤 방식이건 URL들은 깨끗하고, 논리적이고, 읽기 쉬워야 합니다. ([check out the W3C advice here](https://www.w3.org/Provider/Style/URI)).
-> 장고 문서는 더 나은 URL 설계(design)를 위해 URL의 본문(body)에 정보를 인코딩하는 것을 권장합니다.
+> **Note:** With Django, you can construct your URLs however you require — you can encode information in the body of the URL as shown above, or include `GET` parameters in the URL, for example `/book/?id=6`. Whichever approach you use, the URLs should be kept clean, logical, and readable, as [recommended by the W3C](https://www.w3.org/Provider/Style/URI).
+> The Django documentation recommends encoding information in the body of the URL to achieve better URL design.
 
-개요에서 다룬 것 처럼, 이 글의 나머지는 색인(index) 페이지를 만드는 방법을 보여줍니다.
+As mentioned in the overview, the rest of this article describes how to construct the index page.
 
-## index page 만들기
+## Creating the index page
 
-우리가 만들 첫 번째 페이지는 index page입니다 (`catalog/`). index 페이지는 데이터베이스 안의 서로 다른 레코드들의 생성된 "개수(count)" 와 함께 몇 가지 정적 HTML을 포함합니다. 이것이 작동하도록 하기 위해서 우리는 URL 매핑, 뷰 그리고 탬플릿을 생성하겠습니다.
+The first page we'll create is the index page (`catalog/`). The index page will include some static HTML, along with generated "counts" of different records in the database. To make this work we'll create a URL mapping, a view, and a template.
 
-> **참고:** **주의**:이 섹션에 조금 더 집중해 봅시다. 대부분의 정보들이 우리가 생성할 다른 페이지들에도 적용되기 때문입니다.
+> **Note:** It's worth paying a little extra attention in this section. Most of the information also applies to the other pages we'll create.
 
-### URL 매핑
+### URL mapping
 
-[skeleton website](/ko/docs/Learn/Server-side/Django/skeleton_website)를 만들었을 때, 우리는 **locallibrary/urls.py** 파일을 업데이트했습니다. `catalog/`로 시작하는 URL을 받았을 때, URLConf 모듈인 `catalog.urls` 가 나머지 문자열을 처리하도록 하기 위해서죠.
+When we created the [skeleton website](/en-US/docs/Learn/Server-side/Django/skeleton_website), we updated the **locallibrary/urls.py** file to ensure that whenever a URL that starts with `catalog/` is received, the _URLConf_ module `catalog.urls` will process the remaining substring.
 
-**locallibrary/urls.py** 의 아래 코드 조각은 `catalog.urls` 모듈을 포함합니다:
+The following code snippet from **locallibrary/urls.py** includes the `catalog.urls` module:
 
-```
+```python
 urlpatterns += [
     path('catalog/', include('catalog.urls')),
 ]
 ```
 
-> **참고:** **주의**: 장고는 import 함수 django.urls.include()를 만날 때 마다 지정된 마지막 문자에서 문자열을 나누고, 나머지 부분 문자열을 추가 작업을 위해 포함된 URLconf 모듈로 보냅니다.
+> **Note:** Whenever Django encounters the import function [`django.urls.include()`](https://docs.djangoproject.com/en/4.0/ref/urls/#django.urls.include), it splits the URL string at the designated end character and sends the remaining substring to the included _URLconf_ module for further processing.
 
-우리는 또한 **/catalog/urls.py**로 이름지어진 URLConf 모듈을 위한 자리 표시자(placeholder) 파일도 생성했습니다. 그 파일에 아래 줄을 추가하세요
+We also created a placeholder file for the _URLConf_ module, named **/catalog/urls.py**.
+Add the following lines to that file:
 
 ```python
 urlpatterns = [
@@ -94,24 +88,25 @@ urlpatterns = [
 ]
 ```
 
-이 `path()` 함수는 아래를 정의합니다 :
+The `path()` function defines the following:
 
-- 빈 문자열인 URL 패턴 :`''`. 다른 뷰들을 작업할 때 URL 패턴들에 관해 자세히 다룰겁니다.
-- URL 패턴이 감지되었을 때 호출될 view 함수:`views.index`. 이 함수는 **views.py** 파일 안에서 `index()`로 이름지어져 있습니다.
+- A URL pattern, which is an empty string: `''`. We'll discuss URL patterns in detail when working on the other views.
+- A view function that will be called if the URL pattern is detected: `views.index`, which is the function named `index()` in the **views.py** file.
 
-이 `path()` 함수는 또한 `name` 매개 변수를 지정합니다. 그것은 이 특정한 URL 매핑을 위한 고유 ID 입니다. 당신은 이 이름을 매퍼를 "반전" 시킬 수 있습니다. 즉, 매퍼가 처리하도록 설계된 리소스를 향하는 URL을 동적으로 생성하기 위해서죠. 예를 들자면, 우리는 아래 링크를 탬플릿에 추가해서 이름 매개 변수를 사용하여 다른 모든 페이지에서 홈 페이지로 링크를 걸 수 있습니다:
+The `path()` function also specifies a `name` parameter, which is a unique identifier for _this_ particular URL mapping. You can use the name to "reverse" the mapper, i.e. to dynamically create a URL that points to the resource that the mapper is designed to handle.
+For example, we can use the name parameter to link to our home page from any other page by adding the following link in a template:
 
 ```html
 <a href="{% url 'index' %}">Home</a>.
 ```
 
-> **참고:** **주의**: 우리는 위 링크를 하드코딩할 수 있지만(예: `<a href="/catalog/">Home</a>`), 그렇게 하면 만약에 우리가 홈페이지를 바꿨을 때 (예: `/catalog/index`로 바꿨을 때) 탬플릿들은 더이상 알맞게 링크되지 않습니다. 반전된 url 매핑을 사용하는 것이 훨씬 유연하고 강력합니다.
+> **Note:** We can hard code the link as in `<a href="/catalog/">Home</a>`), but if we change the pattern for our home page, for example, to `/catalog/index`) the templates will no longer link correctly. Using a reversed URL mapping is more robust.
 
-### View (함수-기반의)
+### View (function-based)
 
-뷰는 HTTP 요청을 처리하고, 데이터베이스에서 요청된 데이터를 가져오고, HTML 탬플릿을 이용해서 데이터를 HTML 페이지에 렌더링하고 그리고 생성된 HTML을 HTTP 응답으로 반환하여 사용자들에게 페이지를 보여주는 함수입니다. 색인(index) 뷰는 이 구조(model)를 따라갑니다 — 이것은 데이터베이스 안에 있는`Book`, `BookInstance`, 사용 가능한 `BookInstance` 그리고 `Author` 레코드들의 개수에 대한 정보를 가져오고, 그 정보를 디스플레이(display)를 위해 탬플릿으로 전달합니다.
+A view is a function that processes an HTTP request, fetches the required data from the database, renders the data in an HTML page using an HTML template, and then returns the generated HTML in an HTTP response to display the page to the user. The index view follows this model — it fetches information about the number of `Book`, `BookInstance`, available `BookInstance` and `Author` records that we have in the database, and passes that information to a template for display.
 
-**catalog/views.py** 를 열어서, 파일이 이미 탬플릿과 데이터를 이용해 HTML 파일을 생성하는 [render()](https://docs.djangoproject.com/en/2.0/topics/http/shortcuts/#django.shortcuts.render) 바로가기 함수를 포함(import)하고 있음을 확인하세요.
+Open **catalog/views.py** and note that the file already imports the [render()](https://docs.djangoproject.com/en/4.0/topics/http/shortcuts/#django.shortcuts.render) shortcut function to generate an HTML file using a template and data:
 
 ```python
 from django.shortcuts import render
@@ -119,10 +114,10 @@ from django.shortcuts import render
 # Create your views here.
 ```
 
-파일의 하단에 아래 코드를 복사 붙여넣기 하세요.
+Paste the following lines at the bottom of the file:
 
 ```python
-from catalog.models import Book, Author, BookInstance, Genre
+from .models import Book, Author, BookInstance, Genre
 
 def index(request):
     """View function for home page of site."""
@@ -148,31 +143,40 @@ def index(request):
     return render(request, 'index.html', context=context)
 ```
 
-첫번째 줄은 우리의 모든 뷰들 안에서 데이터에 접근하는 데 사용할 모델 클래스들을 포함(import)합니다.
+The first line imports the model classes that we'll use to access data in all our views.
 
-view 함수의 첫번째 부분은 모델 클래스들에서 `objects.all()` 속성을 사용하는 레코드들의 개수를 가져옵니다. 이 함수는 또한 상태 필드에서 'a'(Available) 값을 가지고 있는 `BookInstance` 객체들의 목록도 가져옵니다. 이전 튜토리얼에서 모델 데이터에 접근하는 방법에 대한 더 많은 정보를 찾을 수 있습니다 : [Django Tutorial Part 3: Using models > Searching for records](/ko/docs/Learn/Server-side/Django/Models#Searching_for_records).
+The first part of the view function fetches the number of records using the `objects.all()` attribute on the model classes. It also gets a list of `BookInstance` objects that have a value of 'a' (Available) in the status field. You can find more information about how to access model data in our previous tutorial [Django Tutorial Part 3: Using models > Searching for records](/en-US/docs/Learn/Server-side/Django/Models#searching_for_records).
 
-view 함수의 마지막에선 HTML 페이지를 생성하고 이 페이지를 응답으로서 반환하기 위해 `render()` 함수를 호출합니다. 이 바로가기(shortcut) 함수는 아주 일반적으로 사용되는 경우들을 간단히 하기 위해 여러 다른 함수들을 포함합니다. `render()` 함수는 아래 매개 변수들을 허용합니다:
+At the end of the view function we call the `render()` function to create an HTML page and return the page as a response. This shortcut function wraps a number of other functions to simplify a very common use case. The `render()` function accepts the following parameters:
 
-- `HttpRequest`인 원본 `request` 객체.
-- 데이터에 대한 플레이스홀더(placeholder)들을 갖고 있는 HTML 탬플릿.
-- 파이썬 딕셔너리(dictionary)인, 플레이스홀더에 삽입할 데이터를 갖고 있는 `context`변수.
+- the original `request` object, which is an `HttpRequest`.
+- an HTML template with placeholders for the data.
+- a `context` variable, which is a Python dictionary, containing the data to insert into the placeholders.
 
-다음 섹션에서 탬플릿과 context 변수에 대해 더 다루도록 하겠습니다. 이제 탬플릿을 생성하여 사용자들에게 실제로 무언가를 표시해 봅시다!
+We'll talk more about templates and the `context` variable in the next section. Let's get to creating our template so we can actually display something to the user!
 
-### 탬플릿(Template)
+### Template
 
-탬플릿은 파일(HTML 페이지 같은)의 구조(structure)나 배치(layout)을 정의하는 텍스트 파일입니다. 탬플릿은 실제 내용물(content)를 나타내기 위해 플레이스홀더(placeholder)들을 사용합니다. 장고는 당신의 어플리케이션 안에서 'templates' 라고 이름지어진 경로 안에서 자동적으로 탬플릿들을 찾을 것입니다. 예를 들어서, 우리가 방금 추가한 색인(index) 뷰 안에서, `render()` 함수는 **/locallibrary/catalog/templates/** 경로 안에서** _index.html_ **_파일을 찾으려 할 것이고, 파일이 없다면 에러를 표시할 것입니다. 이것은 이전의 변경점들을 저장하고 브라우저에서 `127.0.0.1:8000`으로 접근해서 확인할 수 있습니다 - 이것은 다른 세부 사항들과 함께 상당히 직관적인 오류 메세지를 표시할 것입니다 : "`TemplateDoesNotExist at /catalog/`"._
+A template is a text file that defines the structure or layout of a file (such as an HTML page), it uses placeholders to represent actual content.
 
-> **참고:** **주의:** 프로젝트의 settings 파일에 기초해서, 장고는 여러 장소에서 탬플릿들을 찾아볼 것입니다. 기본적으로는 설치된 어플리케이션에서 검색합니다. 장고가 어떻게 탬플릿들을 찾는지, 그리고 어떤 탬플릿 양식(format)들을 지원하는지에 관해 여기([Templates](https://docs.djangoproject.com/en/2.0/topics/templates/) (Django docs))에서 찾아볼 수 있습니다.
+A Django application created using **startapp** (like the skeleton of this example) will look for templates in a subdirectory named '**templates**' of your applications. For example, in the index view that we just added, the `render()` function will expect to find the file **_index.html_** in **/locallibrary/catalog/templates/** and will raise an error if the file is not present.
 
-#### 탬플릿 확장(extend)하기
+You can check this by saving the previous changes and accessing `127.0.0.1:8000` in your browser - it will display a fairly intuitive error message: "`TemplateDoesNotExist at /catalog/`", and other details.
 
-색인(index) 팀플릿은 head 및 body를 위해 표준 HTML 마크업이 필요할 것입니다. 우리가 아직 생성하지 않은 사이트들의 다른 페이지들을 향한 링크를 걸기 위한 탐색(navigation) 섹션도 필요하고요. 그리고 소개 텍스트 및 책 데이터를 표시하는 섹션 또한 필요합니다. 대부분의 HTML과 탐색 구조는 사이트의 모든 페이지에서 동일할 것입니다. 모든 페이지마다 똑같은 코드를 복사하는 대신, 기본 템플릿을 선언하기 위해 장고 탬플릿 언어(Django templating language)를 사용하고, 탬플릿을 확장하여 각각의 페이지 마다 다른 부분들만을 대체(replace)할 수 있습니다.
+> **Note:** Based on your project's settings file, Django will look for templates in a number of places, searching in your installed applications by default. You can find out more about how Django finds templates and what template formats it supports in [the Templates section of the Django documentation](https://docs.djangoproject.com/en/4.0/topics/templates/).
 
-아래 코드 조각은 **base_generic.html** 파일의 기본 탬플릿 샘플입니다. 이 샘플은 제목, 사이드바를 위한 섹션과 이름이 지정된 `block` 및 `endblock` 탬플릿 태그(굵게 표시)가 마크된 주요 내용(main contents)들이 포함된 일반적인 HTML을 포함합니다. 블럭(block)들을 비워두거나, 또는 탬플릿에서 파생된 페이지들을 렌더링할 때 사용할 기본 내용을 포함할 수 있습니다.
+#### Extending templates
 
-> **참고:** **주의:** 탬플릿 태그들은 목록을 반복하거나, 변수 값을 기반으로 조건부 연산을 수행하거나, 여타 다른 일들을 할 수 있는 함수입니다. 탬플릿 태그 외에도 탬플릿 구문(syntax)을 사용하면 view에서 탬플릿으로 전달된 변수들을 참조할 수 있고, 탬플릿 필터(filters)를 사용해서 변수의 형식을 지정할 수 있습니다(예를 들어, 문자열을 소문자로 변환).
+The index template will need standard HTML markup for the head and body, along with navigation sections to link to the other pages of the site (which we haven't created yet), and to sections that display introductory text and book data.
+
+Much of the HTML and navigation structure will be the same in every page of our site. Instead of duplicating boilerplate code on every page, you can use the Django templating language to declare a base template, and then extend it to replace just the bits that are different for each specific page.
+
+The following code snippet is a sample base template from a **base_generic.html** file.
+We'll be creating the template for LocalLibrary shortly.
+The sample below includes common HTML with sections for a title, a sidebar, and main contents marked with the named `block` and `endblock` template tags.
+You can leave the blocks empty, or include default content to use when rendering pages derived from the template.
+
+> **Note:** Template _tags_ are functions that you can use in a template to loop through lists, perform conditional operations based on the value of a variable, and so on. In addition to template tags, the template syntax allows you to reference variables that are passed into the template from the view, and use _template filters_ to format variables (for example, to convert a string to lower case).
 
 ```html
 <!DOCTYPE html>
@@ -187,9 +191,9 @@ view 함수의 마지막에선 HTML 페이지를 생성하고 이 페이지를 �
 </html>
 ```
 
-특정한 view를 위해 탬플릿을 정의할 땐, 먼저 `extends` 탬플릿 태그를 이용하여 기본 탬플릿을 지정합니다 — 아래 코드 샘플을 참조하세요. 그리고 나서 기본 탬플릿에서와 같이 `block`/`endblock` 섹션들을 이용해서 대체할 탬플릿의 섹션들을 선언합니다(있을 경우).
+When defining a template for a particular view, we first specify the base template using the `extends` template tag — see the code sample below. Then we declare what sections from the template we want to replace (if any), using `block`/`endblock` sections as in the base template.
 
-예를 들어, 아래 코드 조각은 extends 탬플릿 태그의 사용 및 content 블럭(block)을 재정의하는 방법을 보여줍니다. 생성된 HTML은 기본 탬플릿에서 정의된 코드와 구조를 포함할 것입니다(`title` 블럭에서 정의한 기본 내용은 포함하지만, 기본 `contents` 블럭 대신 새로운 `contents` 블럭 포함).
+For example, the code snippet below shows how to use the `extends` template tag and override the `content` block. The generated HTML will include the code and structure defined in the base template, including the default content you defined in the `title` block, but the new `content` block in place of the default one.
 
 ```html
 {% extends "base_generic.html" %}
@@ -200,13 +204,13 @@ view 함수의 마지막에선 HTML 페이지를 생성하고 이 페이지를 �
 {% endblock %}
 ```
 
-#### LocalLibrary 기본 탬플릿
+#### The LocalLibrary base template
 
-우리는 아래 코드 조각을 LocalLibrary 웹사이트의 베이스 탬플릿으로 사용할 것입니다. 보시는 바와 같이, 이것은 HTML 코드를 조금 포함하고 `title`, `sidebar` 그리고 `content` 블럭을 정의합니다. 우리는 기본 제목과 모든 책들 및 저자들에 대한 링크를 갖고 있는 기본 사이드바를 갖고 있습니다. 둘 다 미래에 쉽게 변경하기 위해 블럭들 안에 묶여 있습니다.
+We will use the following code snippet as the base template for the _LocalLibrary_ website. As you can see, it contains some HTML code and defines blocks for `title`, `sidebar`, and `content`. We have a default title and a default sidebar with links to lists of all books and authors, both enclosed in blocks to be easily changed in the future.
 
-> **참고:** **주의**: 우리는 또한 두 개의 추가적인 탬플릿 태그를 소개합니다: `url` 과 `load static`. 이 태그들은 아래 섹션들에서 설명될 것입니다.
+> **Note:** We also introduce two additional template tags: `url` and `load static`. These tags will be explained in following sections.
 
-새로운 파일 **base_generic.html** 을 **/locallibrary/catalog/templates/_base_generic.html_** 경로 안에 생성해서 아래 코드를 파일에 복사 붙여넣기 하세요:
+Create a new file **base_generic.html** in **/locallibrary/catalog/templates/** and paste the following code to the file:
 
 ```html
 <!DOCTYPE html>
@@ -215,7 +219,7 @@ view 함수의 마지막에선 HTML 페이지를 생성하고 이 페이지를 �
   {% block title %}<title>Local Library</title>{% endblock %}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   <!-- Add additional CSS in static file -->
   {% load static %}
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
@@ -239,21 +243,22 @@ view 함수의 마지막에선 HTML 페이지를 생성하고 이 페이지를 �
 </html>
 ```
 
-탬플릿에는 HTML 페이지의 레이아웃과 프리젠테이션을 개선하기 위한 [Bootstrap](http://getbootstrap.com/) 의 CSS가 포함되어 있습니다. 부스트스트랩(또는 다른 클라이언트-사이드 웹 프레임워크)를 사용해서 서로 다른 크기의 화면에서도 잘 표시되는 매력적인 페이지를 빠르게 만들 수 있습니다.
+The template includes CSS from [Bootstrap](https://getbootstrap.com/) to improve the layout and presentation of the HTML page. Using Bootstrap (or another client-side web framework) is a quick way to create an attractive page that displays well on different screen sizes.
 
-또한 기본 탬플릿은 추가적인 꾸미기(styling)를 제공하는 로컬 css 파일(styles.css)을 참조합니다. **styles.css** 파일을 **/locallibrary/catalog/static/css/** 경로 안에 생성하고 아래 코드를 파일 안에 복사 붙여넣기 하세요:
+The base template also references a local CSS file (**styles.css**) that provides additional styling. Create a **styles.css** file in **/locallibrary/catalog/static/css/** and paste the following code in the file:
 
 ```css
 .sidebar-nav {
-    margin-top: 20px;
-    padding: 0;
-    list-style: none;
+  margin-top: 20px;
+  padding: 0;
+  list-style: none;
 }
 ```
 
-#### 색인(index) 탬플릿
+#### The index template
 
-새로운 HTML 파일 **index.html** 을 **/locallibrary/catalog/templates/** 경로 안에 생성해서 아래 코드를 파일 안에 복사 붙여넣기 하세요. 보시는 바와 같이 첫째 행에서 우리의 기본 탬플릿을 확장하고, 탬플릿의 기본 `content` 블럭을 새로운 블럭으로 대체합니다.
+Create a new HTML file **index.html** in **/locallibrary/catalog/templates/** and paste the following code in the file.
+This code extends our base template on the first line, and then replaces the default `content` block for the template.
 
 ```html
 {% extends "base_generic.html" %}
@@ -272,11 +277,13 @@ view 함수의 마지막에선 HTML 페이지를 생성하고 이 페이지를 �
 {% endblock %}
 ```
 
-동적 콘텐츠 섹션에서 우리는 우리가 포함하고 싶은 view의 정보를 위한 플레이스홀더(탬플릿 변수)를 선언합니다. 이 변수들은 코드 샘플에서 굵게 표시된 것과 같이 이중 중괄호로(핸들 바)로 묶입니다.
+In the _Dynamic content_ section we declare placeholders (_template variables_) for the information from the view that we want to include.
+The variables are enclosed with double brace (handlebars).
 
-> **참고:** **주의:** 탬플릿 변수와 탬플릿 태그(함수)들을 쉽게 알 수 있습니다 - 변수들은 이중 중괄호로 감싸여져 있고(`\{{ num_books }}`) , 태그들은 퍼센트 기호와 단일 중괄호로 감싸여 있습니다(`{% extends "base_generic.html" %}`).
+> **Note:** You can easily recognize template variables and template tags (functions) - variables are enclosed in double braces (`\{{ num_books }}`), and tags are enclosed in single braces with percentage signs (`{% extends "base_generic.html" %}`).
 
-여기서 주의해야 할 중요한 것은 변수들의 이름은 열쇠(key)들로 정해진다는 것입니다. 이 열쇠(key)들은 우리의 view의 `render()`함수 안의 `context` 사전(dictionary)로 전달하는 열쇠입니다(아래를 확인하세요). 변수들은 탬플릿이 렌더링 될 때 그것들과 연관된 값들로 대체될 것입니다.
+The important thing to note here is that variables are named with the _keys_ that we pass into the `context` dictionary in the `render()` function of our view (see sample below).
+Variables will be replaced with their associated _values_ when the template is rendered.
 
 ```python
 context = {
@@ -289,50 +296,49 @@ context = {
 return render(request, 'index.html', context=context)
 ```
 
-#### Templates 에 정적 파일 참조하기(referencing)
+#### Referencing static files in templates
 
-당신의 프로젝트는 자바스크립트, CSS 그리고 이미지를 포함하는 정적 리소스들을 사용할 가능성이 높습니다. 이 파일들의 위치가 알 수 없기 때문에(또는 바뀔 수 있기 때문에), 장고는 `STATIC_URL` 전역 설정을 기준으로 탬플릿에서의 위치를 특정할 수 있도록 합니다. 기본 뼈대 웹사이트(skeleton website)는 `STATIC_URL`의 값을 '`/static/`'으로 설정하지만, 당신은 이것들을 콘텐츠 전달 네트워크(content delivery network)나 다른 곳에서 호스트할 수도 있습니다.
+Your project is likely to use static resources, including JavaScript, CSS, and images. Because the location of these files might not be known (or might change), Django allows you to specify the location in your templates relative to the `STATIC_URL` global setting. The default skeleton website sets the value of `STATIC_URL` to '`/static/`', but you might choose to host these on a content delivery network or elsewhere.
 
-아래 코드 샘플처럼, 탬플릿 안에서 당신은 먼저 탬플릿 라이브러리를 추가하기 위해 "static"을 지정하는 `load` 탬플릿 태그를 호출합니다. 그러고 나서 `static` 탬플릿 태그를 사용할 수 있고 관련 URL을 요구되는 파일에 지정할 수 있습니다.
+Within the template you first call the `load` template tag specifying "static" to add the template library, as shown in the code sample below. You can then use the `static` template tag and specify the relative URL to the required file.
 
 ```html
 <!-- Add additional CSS in static file -->
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+<link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 ```
 
-비슷한 방법으로 이미지를 페이지에 추가할 수 있습니다. 예를 들어:
+You can add an image into the page in a similar way, for example:
 
 ```html
 {% load static %}
-<img src="{% static 'catalog/images/local_library_model_uml.png' %}" alt="UML diagram" style="width:555px;height:540px;">
+<img src="{% static 'catalog/images/local_library_model_uml.png' %}" alt="UML diagram" style="width:555px;height:540px;" />
 ```
 
-> **참고:** **주의**: 위의 샘플은 파일들의 위치를 특정하지만, 장고는 기본적으로 파일을 제공하지 않습니다. 우리는 우리가 웹사이트 뼈대를 생성했을 때([created the website skeleton](/ko/docs/Learn/Server-side/Django/skeleton_website)) 전역 URL 매퍼(/locallibrary/locallibrary/urls.py)를 수정하여 개발 웹 서버가 파일을 제공하도록 설정했습니다만, 제품화되었을(in production)때도 파일을 제공할 수 있어야 합니다. 이것에 관해 차후에 다루겠습니다.
+> **Note:** The samples above specify where the files are located, but Django does not serve them by default. We configured the development web server to serve files by modifying the global URL mapper (**/locallibrary/locallibrary/urls.py**) when we [created the website skeleton](/en-US/docs/Learn/Server-side/Django/skeleton_website), but still need to enable file serving in production. We'll look at this later.
 
-정적 파일들로 작업하는 것에 대한 더 많은 정보는 장고 문서 안의 [Managing static files](https://docs.djangoproject.com/en/2.0/howto/static-files/) 를 참고하세요.
+For more information on working with static files see [Managing static files](https://docs.djangoproject.com/en/4.0/howto/static-files/) in the Django documentation.
 
-#### URL 링크하기(Linking to URLs)
+#### Linking to URLs
 
-위의 기본 탬플릿은 `url` 탬플릿 태그를 소개했습니다.
+The base template above introduced the `url` template tag.
 
 ```python
 <li><a href="{% url 'index' %}">Home</a></li>
 ```
 
-이 태그는 **urls.py**에서 호출된 `path()` 함수의 이름 및 연관된 view가 그 함수에서 수신받을 모든 인자들을 위한 값들을 허용하고, 리소스에 링크하는 데 사용할 수 있는 URL을 반환합니다 .
+This tag accepts the name of a `path()` function called in your **urls.py** and the values for any arguments that the associated view will receive from that function, and returns a URL that you can use to link to the resource.
 
-#### 탬플릿을 찾을 수 있는 곳 설정하기
+#### Configuring where to find the templates
 
-탬플릿 폴더 안에서 탬플릿을 찾아볼 수 있도록 장고에게 위치를 가르쳐 주어야 합니다. 그것을 하기 위해서, 아래 코드 샘플에 굵게 표시된 것 처럼 **settings.py** 파일을 수정하여 TEMPLATES 객체에 templates 경로(dir)를 추가하세요.
+The location where Django searches for templates is specified in the `TEMPLATES` object in the **settings.py** file.
+The default **settings.py** (as created for this tutorial) looks something like this:
 
-```
+```python
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(BASE_DIR, 'templates'),
-        ],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -346,37 +352,43 @@ TEMPLATES = [
 ]
 ```
 
-## 어떻게 보일까요?
+The setting of `'APP_DIRS': True`, is the most important, as it tells Django to search for templates in a subdirectory of each application in the project, named "templates" (this makes it easier to group templates with their associated application for easy re-use).
 
-이 시점에서 우리는 색인(index) 페이지를 나타내기 위해 필요한 모든 요소들을 생성했습니다. 서버를 실행하고 (`python3 manage.py runserver`) 브라우저에서 <http://127.0.0.1:8000/>으로 이동하세요. 모든 것이 알맞게 설정되었다면, 당신의 사이트는 아래 스크린샷과 같이 보여야 합니다.
+We can also specify specific locations for Django to search for directories using `'DIRS': []` (but that isn't needed yet).
+
+> **Note:** You can find out more about how Django finds templates and what template formats it supports in [the Templates section of the Django documentation](https://docs.djangoproject.com/en/4.0/topics/templates/).
+
+## What does it look like?
+
+At this point we have created all required resources to display the index page. Run the server (`python3 manage.py runserver`) and open `http://127.0.0.1:8000/` in your browser. If everything is configured correctly, your site should look like the following screenshot.
 
 ![Index page for LocalLibrary website](index_page_ok.png)
 
-> **참고:** **주의:** All books와 All authors 링크들에 대한 경로, 뷰 그리고 탬플릿들이 정의되지 않았기 때문에 그 링크들은 작동하지 않을 것입니다. 우리는 단지 `base_generic.html` 탬플릿 안에 그 링크들을 위한 플레이스홀더(placeholder)들을 삽입했을 뿐입니다.
+> **Note:** The **All books** and **All authors** links will not work yet because the paths, views, and templates for those pages are not defined. We just inserted placeholders for those links in the `base_generic.html` template.
 
-## 도전 과제
+## Challenge yourself
 
-모델 쿼리, 뷰 그리고 탬플릿들과의 친밀함을 시험할 수 있는 두 가지 임무가 있습니다.
+Here are a couple of tasks to test your familiarity with model queries, views, and templates.
 
-1. LocalLibrary 기본 탬플릿([base template](#The_LocalLibrary_base_template))에는 `title` 블록이 정의되어 있습니다. 색인 탬플릿([index template](#The_index_template)) 안에 이 블록을 덮어쓰기하고 페이지를 위한 새로운 제목을 만들어 보세요.
+1. The LocalLibrary [base template](#the_locallibrary_base_template) includes a `title` block. Override this block in the [index template](#the_index_template) and create a new title for the page.
 
-    > **참고:** **힌트:** [Extending templates](#Extending_templates) 섹션은 블럭(block)을 생성하고 다른 탬플릿에서 블럭을 확장(extend)하는 방법을 설명합니다.
+   > **Note:** The section [Extending templates](#extending_templates) explains how to create blocks and extend a block in another template.
 
-2. 대소문자 구분 없이 특정한 단어를 포함하는 장르와 책들의 개수(count)를 생성하도록 [view](<#View_(function-based)>) 를 수정하고, 결과를 `context`에 전달해 보세요. 이것은 `num_books`와 `num_instances_available`을 생성하고 사용하는 것과 비슷한 방법으로 달성할 수 있습니다. 그리고 나서 이 변수들을 포함시키기 위해 [index template](#The_index_template) 를 업데이트 하세요.
+2. Modify the [view](<#view_(function-based)>) to generate counts for _genres_ and _books_ that contain a particular word (case insensitive), and pass the results to the `context`. You accomplish this in a similar way to creating and using `num_books` and `num_instances_available`. Then update the [index template](#the_index_template) to include these variables.
 
-## 요약
+## Summary
 
-이제 우리의 사이트를 위한 홈 페이지를 생성했습니다 — 데이터베이스의 여러 레코드들을 표시하고 아직 생성되지 않은 페이지로 링크하는 HTML 페이지 입니다. 그 과정에서 우리는 url 매퍼, view, 모델을 이용한 데이터베이스 쿼리, view에서 탬플릿으로의 정보 전달 그리고 탬플릿의 생성과 확장에 관한 기본적인 정보를 배웠습니다.
+We just created the home page for our site — an HTML page that displays a number of records from the database and links to other yet-to-be-created pages. Along the way we learned fundamental information about URL mappers, views, querying the database with models, passing information to a template from a view, and creating and extending templates.
 
-다음 글에서는 이 지식들을 토대로 우리 웹사이트의 나머지 네 개의 페이지들을 생성할 것입니다.
+In the next article we'll build upon this knowledge to create the remaining four pages of our website.
 
 ## See also
 
-- [Writing your first Django app, part 3: Views and Templates](https://docs.djangoproject.com/en/2.0/intro/tutorial03/) (Django docs)
-- [URL dispatcher](https://docs.djangoproject.com/en/2.0/topics/http/urls/) (Django docs)
-- [View functions](https://docs.djangoproject.com/en/2.0/topics/http/views/) (DJango docs)
-- [Templates](https://docs.djangoproject.com/en/2.0/topics/templates/) (Django docs)
-- [Managing static files](https://docs.djangoproject.com/en/2.0/howto/static-files/) (Django docs)
-- [Django shortcut functions](https://docs.djangoproject.com/en/2.0/topics/http/shortcuts/#django.shortcuts.render) (Django docs)
+- [Writing your first Django app, part 3: Views and Templates](https://docs.djangoproject.com/en/4.0/intro/tutorial03/) (Django docs)
+- [URL dispatcher](https://docs.djangoproject.com/en/4.0/topics/http/urls/) (Django docs)
+- [View functions](https://docs.djangoproject.com/en/4.0/topics/http/views/) (DJango docs)
+- [Templates](https://docs.djangoproject.com/en/4.0/topics/templates/) (Django docs)
+- [Managing static files](https://docs.djangoproject.com/en/4.0/howto/static-files/) (Django docs)
+- [Django shortcut functions](https://docs.djangoproject.com/en/4.0/topics/http/shortcuts/#django.shortcuts.render) (Django docs)
 
 {{PreviousMenuNext("Learn/Server-side/Django/Admin_site", "Learn/Server-side/Django/Generic_views", "Learn/Server-side/Django")}}

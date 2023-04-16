@@ -1,95 +1,104 @@
 ---
 title: handler.preventExtensions()
 slug: Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/preventExtensions
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Proxy.handler.preventExtensions
 ---
 
 {{JSRef}}
 
-**`handler.preventExtensions()`** 메서드는 {{jsxref("Object.preventExtensions()")}}에 대한 트랩입니다.
+The **`handler.preventExtensions()`** method is a trap for the `[[PreventExtensions]]` [object internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods), which is used by operations such as {{jsxref("Object.preventExtensions()")}}.
 
 {{EmbedInteractiveExample("pages/js/proxyhandler-preventextensions.html", "taller")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 new Proxy(target, {
   preventExtensions(target) {
   }
 });
 ```
 
-### 매개 변수
+### Parameters
 
-다음 매개변수는 `preventExtensions()` 메서드에 전달됩니다. `this`는 처리기에 바인딩됩니다.
+The following parameter is passed to the `preventExtensions()` method. `this` is bound to the handler.
 
 - `target`
-  - : 대상 객체
+  - : The target object.
 
-### 반환 값
+### Return value
 
-`preventExtensions()` 메서드는 불리언 값을 반환합니다.
+The `preventExtensions()` method must return a boolean value.
 
-## 설명
+## Description
 
-**`handler.preventExtensions()`** 메서드는 {{jsxref("Object.preventExtensions()")}}에 대한 트랩입니다.
+### Interceptions
 
-### 가로채기
-
-이 트랩은 다음 작업을 가로챌 수 있습니다.
+This trap can intercept these operations:
 
 - {{jsxref("Object.preventExtensions()")}}
 - {{jsxref("Reflect.preventExtensions()")}}
 - {{jsxref("Object.seal()")}}
 - {{jsxref("Object.freeze()")}}
 
-### 불변 조건
+Or any other operation that invokes the `[[PreventExtensions]]` [internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods).
 
-다음 불변 조건이 위반되면 프록시에서 {{jsxref("TypeError")}}가 발생합니다.
+### Invariants
 
-- `Object.preventExtensions(proxy)`는 `Object.isExtensible(proxy)`가 `false`인 경우에만 `true`를 반환합니다.
+If the following invariants are violated, the trap throws a {{jsxref("TypeError")}} when invoked.
 
-## 예제
+- `Object.preventExtensions(proxy)` only returns `true` if `Object.isExtensible(proxy)` is `false`.
 
-### preventExtensions 트랩
+## Examples
 
-다음 코드는 {{jsxref("Object.preventExtensions()")}}를 트랩합니다.
+### Trapping of preventExtensions
+
+The following code traps {{jsxref("Object.preventExtensions()")}}.
 
 ```js
-const p = new Proxy({}, {
-  preventExtensions(target) {
-    console.log('called');
-    Object.preventExtensions(target);
-    return true;
-  }
-});
+const p = new Proxy(
+  {},
+  {
+    preventExtensions(target) {
+      console.log("called");
+      Object.preventExtensions(target);
+      return true;
+    },
+  },
+);
 
-console.log(Object.preventExtensions(p)); // "called"
-                                          // false
+console.log(Object.preventExtensions(p));
+// "called"
+// false
 ```
 
-다음 코드는 불변 조건을 위반합니다.
+The following code violates the invariant.
 
 ```js example-bad
-const p = new Proxy({}, {
-  preventExtensions(target) {
-    return true;
-  }
-});
+const p = new Proxy(
+  {},
+  {
+    preventExtensions(target) {
+      return true;
+    },
+  },
+);
 
 Object.preventExtensions(p); // TypeError is thrown
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Proxy")}}
-- [`Proxy()` 생성자](/ko/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy)
+- [`Proxy()` constructor](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy)
 - {{jsxref("Object.preventExtensions()")}}
 - {{jsxref("Reflect.preventExtensions()")}}

@@ -1,49 +1,125 @@
 ---
-title: XML Introduction
+title: XML introduction
 slug: Web/XML/XML_introduction
 ---
 
-### XML이란?
+{{QuickLinksWithSubpages("/en-US/docs/Web/XML")}}
 
-XML은 **Extensible Markup Language**을 뜻하며, [W3C 권고](http://www.w3.org/) 범용 마크업 언어다. XML은 SGML의 부분집합이다.
+XML (Extensible Markup Language) is a markup language similar to {{Glossary("HTML")}}, but without predefined tags to use. Instead, you define your own tags designed specifically for your needs. This is a powerful way to store data in a format that can be stored, searched, and shared. Most importantly, since the fundamental format of XML is standardized, if you share or transmit XML across systems or platforms, either locally or over the internet, the recipient can still parse the data due to the standardized XML syntax.
 
-많은 언어가 XML을 기반으로 한다; 예로 [XHTML](/ko/XHTML), [MathML](/ko/MathML), [SVG](/ko/SVG), [XUL](/ko/XUL), [RSS](/ko/RSS), 그리고 [RDF](/ko/RDF) 는 모두 XML기반이다.
+There are many languages based on XML, including [XHTML](/en-US/docs/Glossary/XHTML), [MathML](/en-US/docs/Web/MathML), [SVG](/en-US/docs/Web/SVG), [RSS](/en-US/docs/Glossary/RSS), and [RDF](/en-US/docs/Glossary/RDF). You can also define your own.
 
-### 왜 HTML 이 제대로 동작하지 않는가
+## Structure of an XML document
 
-HTML 마크업은 오로지 표시 목적으로 설계된 고정된 언어이고, 반면 XML은 사용자 정의이고 데이터 내용을 정의할 때 사용된다.
+The whole structure of XML and XML-based languages is built on {{Glossary("tag")}}s.
 
-HTML은 세 영역으로 제한된다: 지능, 유지보수, 그리고 적용. XML은 강력하다 지능, 적용, 유지보수, 그리고 간결성.
+### XML declaration
 
-XML은 HTML과 다르지만, [XSLT](http://developer.mozilla.org/docs/XSLT)과 함께하면 함께 사용할 수 있다 .
+XML - declaration is not a tag. It is used for the transmission of the meta-data of a document.
 
-### "바른" XML
-
-XML 문서가 바르기 위해 well-formed 문서여야 하며, 모든 XML의 문법 규칙을 지켜야 한다. Mozilla를 포함한 대부분의 브라우저는 poorly-formed XML 문서를 식별할 수 있는 디버거를 제공한다 .
-
-### XML 표시
-
-XML이 presentation을 도울 수 있는 두 가지 방법이 있어, HTML을 변환하여 PDF 또는 image code를 만드는 것으로부터 다양한 표현방법에 적용한다.
-
-스타일을 사용하는 한 방법은 XML 페이지가 `xml-stylesheet` 선언을 가진 CSS를 사용하는 것이다 .
-
+```html
+<?xml version="1.0" encoding="UTF-8"?>
 ```
+
+#### Attributes
+
+- `version`
+  - : Used version XML in this document.
+- `encoding`
+  - : Used encoding in this document.
+
+### Comments
+
+```html
+<!-- Comment -->
+```
+
+## "Correct" XML (valid and well-formed)
+
+### Correct design rules
+
+For an XML document to be correct, the following conditions must be fulfilled:
+
+- Document must be well-formed.
+- Document must conform to all XML syntax rules.
+- Document must conform to semantic rules, which are usually set in an XML schema or a DTD (**[Document Type Definition](/en-US/docs/Glossary/Doctype))**.
+
+### Example
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<message>
+    <warning>
+        Hello World
+    <!--missing </warning> -->
+</message>
+```
+
+Now let's look at a corrected version of that same document:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<message>
+    <warning>
+         Hello World
+    </warning>
+</message>
+```
+
+A document that contains an undefined tag is invalid. For example, if we never defined the `<warning>` tag, the document above wouldn't be valid.
+
+Most browsers offer a debugger that can identify poorly-formed XML documents.
+
+## Entities
+
+Like HTML, XML offers methods (called entities) for referring to some special reserved characters (such as a greater than sign which is used for tags). There are five of these characters that you should know:
+
+| Entity     | Character | Description                               |
+| ---------- | --------- | ----------------------------------------- |
+| &amp;lt;   | <         | Less than sign                            |
+| &amp;gt;   | >         | Greater than sign                         |
+| &amp;amp;  | &         | Ampersand                                 |
+| &amp;quot; | "         | One double-quotation mark                 |
+| &amp;apos; | '         | One apostrophe (or single-quotation mark) |
+
+Even though there are only 5 declared entities, more can be added using the document's [Document Type Definition](/en-US/docs/Glossary/Doctype). For example, to create a new `&warning;` entity, you can do this:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE body [
+  <!ENTITY warning "Warning: Something bad happened... please refresh and try again.">
+]>
+<body>
+  <message> &warning; </message>
+</body>
+```
+
+You can also use numeric character references to specify special characters; for example, \&#xA9; is the "©" symbol.
+
+## Displaying XML
+
+XML is usually used for descriptive purposes, but there are ways to display XML data. If you don't define a specific way for the XML to be rendered, the raw XML is displayed in the browser.
+
+One way to style XML output is to specify [CSS](/en-US/docs/Web/CSS) to apply to the document using the `xml-stylesheet` processing instruction.
+
+```xml
 <?xml-stylesheet type="text/css" href="stylesheet.css"?>
 ```
 
-XML 마크업을 다른 형식으로 변환할 수 있는 강력한 XSLT와 결합하여, XML은 믿을 수 없을 정도로 다재다능하다.
+There is also another more powerful way to display XML: the **Extensible Stylesheet Language Transformations** ([XSLT](/en-US/docs/Web/XSLT)) which can be used to transform XML into other languages such as HTML. This makes XML incredibly versatile.
 
-```
+```xml
 <?xml-stylesheet type="text/xsl" href="transform.xsl"?>
 ```
 
-### 권고
+## Recommendations
 
-이 글은 XML이 무엇인가에 대한 짧은 소개일 뿐이다 ; XML에 대한 좀 더 자세한 것을 위해서는 좀더 깊이 있는 글을 웹에서 찾아보아야 할 것이다.
+This article is obviously only a very brief introduction to what XML is, with a few small examples and references to get you started. For more details about XML, you should look around on the Web for more in-depth articles.
 
-HTML 마크업 언어를 배우는 것은 XML을 잘 이해하는 데 도움이 될 것이다. 더 많은 정보를 위해 Mozilla Developer Center를 여행해야 할 것입니다.
+Learning the HyperText Markup Language ([HTML](/en-US/docs/Web/HTML)) will help you better understand XML.
 
-### 문서 정보
+## See also
 
-- 저자: Justin G. Shreve
-- 최종 변경일: 5월 19일
+- [XML.com](https://www.xml.com/)
+- [Extensible Markup Language (XML) @ W3.org](https://www.w3.org/XML/)
+- [Using XML: A List Apart](https://alistapart.com/article/usingxml/)

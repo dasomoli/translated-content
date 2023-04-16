@@ -5,26 +5,26 @@ slug: Web/XPath/Functions/last
 
 {{ XsltRef() }}
 
-`last` 함수는 식 평가 문맥(expression evaluation context)과 크기가 같은 숫자를 반환합니다.
+The `last` function returns a number equal to the context size from the expression evaluation context.
 
-### 구문
+### Syntax
 
 ```
 last()
 ```
 
-### 반환
+### Returns
 
-식 평가 문맥과 크기가 같은 정수.
+An integer equal to the context size from the expression evaluation context.
 
-### 주의
+### Notes
 
-- 이 함수는 특정 노드가 노드 집합의 마지막 노드인지를 결정하기 위해 [position()](/ko/XPath/Functions/position) 함수와 함께 자주 씁니다.
+- This is often used with the [position()](/en-US/docs/Web/XPath/Functions/position) function to determine if a particular node is the last in a node-set.
 
-### 정의
+### Defined
 
-[XPath 1.0 4.1](http://www.w3.org/TR/xpath#function-last)
+[XPath 1.0 4.1](https://www.w3.org/TR/1999/REC-xpath-19991116/#function-last)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

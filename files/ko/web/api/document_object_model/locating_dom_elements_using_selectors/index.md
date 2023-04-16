@@ -1,48 +1,55 @@
 ---
-title: 선택자로 DOM 요소 선택하기
+title: Locating DOM elements using selectors
 slug: Web/API/Document_object_model/Locating_DOM_elements_using_selectors
+page-type: guide
 ---
 
 {{DefaultAPISidebar("DOM")}}
 
-선택자 API는 DOM에서 {{domxref("Element")}} 노드를 선택자를 통해 빠르고 쉽게 가져올 수 있는 메서드를 제공합니다. 이 방법은 JavaScript 코드에서 반복문을 통해 특성 요소를 탐색하던 이전 방법보다 훨씬 빠릅니다.
+The Selectors API provides methods that make it quick and easy to retrieve {{domxref("Element")}} nodes from the DOM by matching against a set of [selectors](/en-US/docs/Web/CSS/CSS_Selectors). This is much faster than past techniques, wherein it was necessary to, for example, use a loop in JavaScript code to locate the specific items you needed to find.
 
-## NodeSelector 인터페이스
+## The NodeSelector interface
 
-본 명세는 {{domxref("Document")}}, {{domxref("DocumentFragment")}}, {{domxref("Element")}} 인터페이스를 구현하는 모든 객체에 메서드 두 개를 추가합니다.
+This specification adds two new methods to any objects implementing the {{domxref("Document")}}, {{domxref("DocumentFragment")}}, or {{domxref("Element")}} interfaces:
 
-- `querySelector`
-  - : 노드의 하위 트리에서 첫 번째로 일치하는 {{domxref("Element")}} 노드를 반환합니다. 결과가 없으면 `null`을 반환합니다.
-- `querySelectorAll`
-  - : 노드의 하위 트리 안에서 일치하는 모든 `Element`를 포함한 {{domxref("NodeList")}}를 반환합니다. 결과가 없으면 빈 `NodeList`를 반환합니다.
+- {{domxref("Element.querySelector", "querySelector()")}}
+  - : Returns the first matching {{domxref("Element")}} node within the node's subtree. If no matching node is found, `null` is returned.
+- {{domxref("Element.querySelectorAll", "querySelectorAll()")}}
+  - : Returns a {{domxref("NodeList")}} containing all matching `Element` nodes within the node's subtree, or an empty `NodeList` if no matches are found.
 
-> **참고:** The [`NodeList`](/en-US/docs/DOM/NodeList) returned by [`querySelectorAll()`](/en-US/docs/DOM/Element.querySelectorAll) is not live, which means that changes in the DOM are not reflected in the collection. This is different from other DOM querying methods that return live node lists.
+> **Note:** The {{domxref("NodeList")}} returned by {{domxref("Element.querySelectorAll()", "querySelectorAll()")}} is not live, which means that changes in the DOM are not reflected in the collection. This is different from other DOM querying methods that return live node lists.
 
-You may find examples and details by reading the documentation for the [`querySelector()`](/ko/docs/DOM/Element.querySelector) and [`querySelectorAll()`](/ko/docs/DOM/Element.querySelectorAll) methods, as well as in the article [Code snippets for querySelector](/ko/docs/Code_snippets/QuerySelector).
+You may find examples and details by reading the documentation for the {{domxref("Element.querySelector()")}} and {{domxref("Element.querySelectorAll()")}} methods.
 
-## 선택자
+## Selectors
 
-The selector methods accept one or more comma-separated selectors to determine what element or elements should be returned. For example, to select all paragraph (`p`) elements in a document whose CSS class is either `warning` or `note`, you can do the following:
+The selector methods accept [selectors](/en-US/docs/Web/CSS/CSS_Selectors) to determine what element or elements should be returned. This includes [selector lists](/en-US/docs/Web/CSS/Selector_list) so you can group multiple selectors in a single query.
+
+To protect the user's privacy, some [pseudo-classes](/en-US/docs/Web/CSS/Pseudo-classes) are not supported or behave differently. For example {{cssxref(":visited")}} will return no matches and {{cssxref(":link")}} is treated as {{cssxref(":any-link")}}.
+
+Only elements can be selected, so [pseudo-classes](/en-US/docs/Web/CSS/Pseudo-classes) are not supported.
+
+## Examples
+
+To select all paragraph (`p`) elements in a document whose classes include `warning` or `note`, you can do the following:
 
 ```js
-var special = document.querySelectorAll( "p.warning, p.note" );
+const special = document.querySelectorAll("p.warning, p.note");
 ```
 
 You can also query by ID. For example:
 
 ```js
-var el = document.querySelector( "#main, #basic, #exclamation" );
+const el = document.querySelector("#main, #basic, #exclamation");
 ```
 
 After executing the above code, `el` contains the first element in the document whose ID is one of `main`, `basic`, or `exclamation`.
 
-You may use any CSS selectors with the `querySelector()` and `querySelectorAll()` methods.
+## See also
 
-## 같이 보기
-
-- [Selectors API](http://www.w3.org/TR/selectors-api/)
-- [`element.querySelector`](/ko/docs/DOM/Element.querySelector)
-- [`element.querySelectorAll`](/ko/docs/DOM/Element.querySelectorAll)
-- [`document.querySelector`](/ko/docs/DOM/Document.querySelector)
-- [`document.querySelectorAll`](/ko/docs/DOM/Document.querySelectorAll)
-- [Code snippets for querySelector](/ko/docs/Code_snippets/QuerySelector)
+- [Selectors specification](https://drafts.csswg.org/selectors/)
+- [CSS Selectors](/en-US/docs/Web/CSS/CSS_Selectors)
+- {{domxref("Element.querySelector()")}}
+- {{domxref("Element.querySelectorAll()")}}
+- {{domxref("Document.querySelector()")}}
+- {{domxref("Document.querySelectorAll()")}}

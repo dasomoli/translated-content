@@ -2,36 +2,36 @@
 title: system-property
 slug: Web/XPath/Functions/system-property
 ---
+
 {{ XsltRef() }}
 
-`system-property` 함수는 인수로 준 시스템 속성을 나타내는 개체를 반환합니다.
+The `system-property` function returns an object representing the given system-property.
 
-### 문법
+### Syntax
 
 ```
-system-property(name )
+system-property(name)
 ```
 
-### 인수
+### Arguments
 
-- _`name`_
-  (선택사항)
-  - : 시스템 속성의 이름. 인수는 QName인 문자열로 평가해야 합니다. QName은 식의 범위에서 이름공간 선언을 써 이름으로 확장합니다. system-property 함수는 이름으로 식별하는 시스템 속성값을 나타내는 개체를 반환합니다. 그러한 시스템 속성이 없으면, 빈 문자열을 반환합니다.
+- `name` (optional)
+  - : The name of the system property. The argument must evaluate to a string that is a QName. The QName is expanded into a name using the namespace declarations in scope for the expression. The system-property function returns an object representing the value of the system property identified by the name. If there is no such system property, the empty string should be returned.
 
-### 반환
+### Returns
 
-인수 system-property를 나타내는 개체
+An object representing the given system-property.
 
-### 주의
+### Notes
 
-- xsl:version, 처리기가 구현한 XSLT 버전을 제공하는 숫자. 이 문서에서 지정한 XSLT 버전을 구현하는 XSLT 처리기에는, 이 숫자가 1.0입니다.
-- xsl:vendor, XSLT 처리기의 공급자(vendor)를 식별하는 문자열
-- xsl:vendor-url, XSLT 처리기의 공급자를 식별하는 URL을 포함하는 문자열. 보통 이는 공급자 웹 사이트의 홈 페이지입니다.
+- xsl:version, a number giving the version of XSLT implemented by the processor; for XSLT processors implementing the version of XSLT specified by this document, this is the number 1.0
+- xsl:vendor, a string identifying the vendor of the XSLT processor
+- xsl:vendor-url, a string containing a URL identifying the vendor of the XSLT processor; typically this is the host page (home page) of the vendor's Web site.
 
-### 정의
+### Defined
 
-[XSLT 1.0 12.4](http://www.w3.org/TR/xslt#function-system-property)
+[XSLT 1.0 12.4](https://www.w3.org/TR/1999/REC-xslt-19991116/#function-system-property)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

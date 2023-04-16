@@ -1,68 +1,73 @@
 ---
-title: Node.nextSibling
+title: "Node: nextSibling property"
+short-title: nextSibling
 slug: Web/API/Node/nextSibling
+page-type: web-api-instance-property
+browser-compat: api.Node.nextSibling
 ---
+
 {{APIRef("DOM")}}
 
-읽기 전용 속성인 **`Node.nextSibling`** 은 부모의 {{domxref("Node.childNodes","childNodes")}} 목록에서 지정된 노드 바로 다음에 있는 노드를 반환하거나 지정된 노드가 해당 목록의 마지막 노드이면 `null` 값을 반환합니다.
+The read-only **`nextSibling`** property of the {{domxref("Node")}} interface
+returns the node immediately following the specified one in their
+parent's {{domxref("Node.childNodes","childNodes")}}, or returns `null`
+if the specified node is the last child in the parent element.
 
-## Syntax
+> **Note:** Browsers insert {{domxref("Text")}} nodes into a document to represent whitespace in the source markup.
+> Therefore a node obtained, for example, using [`Node.firstChild`](/en-US/docs/Web/API/Node/firstChild)
+> or [`Node.previousSibling`](/en-US/docs/Web/API/Node/previousSibling)
+> may refer to a whitespace text node rather than the actual element the author
+> intended to get.
+>
+> The article [Whitespace in the DOM](/en-US/docs/Web/API/Document_Object_Model/Whitespace)
+> contains more information about this behavior.
+>
+> You can use {{domxref("Element.nextElementSibling")}} to obtain the next element
+> skipping any whitespace nodes, other between-element text, or comments.
+>
+> To navigate the opposite way through the child nodes list use [Node.previousSibling](/en-US/docs/Web/API/Node/previousSibling).
 
-```js
-nextNode = node.nextSibling
-```
+## Value
 
-## Notes
-
-Gecko 기반 브라우저는 소스 마크업에서 공백을 나타내기 위해 문서 내에 텍스트 노드를 삽입합니다.
-그러므로 예를 들어 [`Node.firstChild`](/ko/docs/Web/API/Node/firstChild)나 [`Node.previousSibling`](/ko/docs/Web/API/Node/previousSibling)을 통해서 얻은 노드는 작성자가 얻으려 한 실제 요소와는
-달리 공백 텍스트 노드를 참조할 지도 모릅니다.
-
-더 많은 정보는 [Whitespace in the DOM](/ko/docs/Whitespace_in_the_DOM)과
-[W3C DOM 3 FAQ: Why are some Text nodes empty?](http://www.w3.org/DOM/faq.html#emptytext)를 보세요.
+A {{domxref("Node")}} representing the next sibling of the current node,
+or `null` if there are none.
 
 ## Example
 
 ```html
-<div id="div-01">Here is div-01</div>
-<div id="div-02">Here is div-02</div>
+<div id="div-1">Here is div-1</div>
+<div id="div-2">Here is div-2</div>
+<br />
+<output><em>Not calculated.</em></output>
+```
 
-<script type="text/javascript">
-var el = document.getElementById('div-01').nextSibling,
-    i = 1;
+```js
+let el = document.getElementById("div-1").nextSibling;
+let i = 1;
 
-console.log('Siblings of div-01:');
+let result = "Siblings of div-1:<br/>";
 
 while (el) {
-  console.log(i + '. ' + el.nodeName);
+  result += `${i}. ${el.nodeName}<br/>`;
   el = el.nextSibling;
   i++;
 }
 
-</script>
-
-/**************************************************
-   로드될 때 다음과 같이 콘솔에 기록됩니다. :
-
-     Siblings of div-01
-
-      1. #text
-      2. DIV
-      3. #text
-      4. SCRIPT
-
-**************************************************/
+const output = document.querySelector("output");
+output.innerHTML = result;
 ```
 
-위의 예에서 `#text` 노드는 태그 사이의 마크 업 에서 공백이 발생하는 DOM에 삽입되며 ( 즉 요소의 닫기 태그와 다음 태그의 열기 태그 사이에 있습니다 ) `document.write` 구문에 의해 삽입 된 요소간에 공백이 생성되지 않습니다.
+{{ EmbedLiveSample("Example", "100%", 500)}}
 
-`nextSibling` 을 사용하여 DOM을 탐색 할 때, DOM에 텍스트 노드를 포함시킬 수 있어야 합니다. 노트 섹션의 리소스를 참조하세요.
+## Specifications
 
-## Specification
+{{Specifications}}
 
-- [DOM Level 1 Core: nextSibling](http://www.w3.org/TR/REC-DOM-Level-1/level-one-core.html#attribute-nextSibling)
-- [DOM Level 2 Core: nextSibling](http://www.w3.org/TR/DOM-Level-2-Core/core.html#ID-6AC54C2F)
+## Browser compatibility
+
+{{Compat}}
 
 ## See also
 
 - {{domxref("Element.nextElementSibling")}}
+- {{domxref("Node.previousSibling")}}

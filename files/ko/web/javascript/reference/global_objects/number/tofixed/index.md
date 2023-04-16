@@ -1,68 +1,102 @@
 ---
 title: Number.prototype.toFixed()
 slug: Web/JavaScript/Reference/Global_Objects/Number/toFixed
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Number.toFixed
 ---
 
 {{JSRef}}
 
-**`toFixed()`** 메서드는 숫자를 고정 소수점 표기법(fixed-point notation)으로 표시합니다.
+The **`toFixed()`** method formats a number using fixed-point notation.
 
 {{EmbedInteractiveExample("pages/js/number-tofixed.html")}}
 
-## 구문
+## Syntax
 
-```js
-    numObj.toFixed([digits])
+```js-nolint
+toFixed()
+toFixed(digits)
 ```
 
-### 매개변수
+### Parameters
 
 - `digits` {{optional_inline}}
-  - : 소수점 뒤에 나타날 자릿수. 0 이상 20 이하의 값을 사용할 수 있으며, 구현체에 따라 더 넓은 범위의 값을 지원할 수도 있습니다. 값을 지정하지 않으면 0을 사용합니다.
+  - : The number of digits to appear after the decimal point; should be a value between `0` and `100`, inclusive. If this argument is omitted, it is treated as `0`.
 
-### 반환 값
+### Return value
 
-고정 소수점 표기법을 사용하여 나타낸 수를 문자열로 바꾼 값.
+A string representing the given number using fixed-point notation.
 
-### 예외
+### Exceptions
 
 - {{jsxref("RangeError")}}
-  - : `digits`가 너무 작거나 너무 클 때. 값이 0과 100사이의 값이라면 {{jsxref("RangeError")}}를 유발하지 않습니다. 구현체에 따라 더 크거나 작은 값을 지원할 수 있습니다.
+  - : Thrown if `digits` is not between `1` and `100` (inclusive).
 - {{jsxref("TypeError")}}
-  - : {{jsxref("Number")}}가 아닌 객체에서 호출한 경우.
+  - : Thrown if this method is invoked on an object that is not a {{jsxref("Number")}}.
 
-## 설명
+## Description
 
-`toFixed()`는 {{jsxref("Number")}} 객체를 주어진 `digits` 만큼의 소수점 이하 자리수를 정확하게 갖는 문자열 표현으로 반환합니다. 소수점 이하가 길면 숫자를 반올림하고, 짧아서 부족할 경우 뒤를 0으로 채울 수 있습니다. 메서드를 호출한 숫자의 크기가 1e+21보다 크다면 {{jsxref("Number.prototype.toString()")}}을 호출하여 받은 지수 표기법 결과를 대신 반환합니다.
+The `toFixed()` method returns a string representation of `numObj` that does not use exponential notation and has exactly `digits` digits after the decimal place. The number is rounded if necessary, and the fractional part is padded with zeros if necessary so that it has the specified length.
 
-## 예제
+If the absolute value of `numObj` is greater or equal to 10<sup>21</sup>, this method uses the same algorithm as {{jsxref("Number.prototype.toString()")}} and returns a string in exponential notation. `toFixed()` returns `"Infinity"`, `"NaN"`, or `"-Infinity"` if the value of `numObj` is non-finite.
 
-### `toFixed()` 사용하기
+The output of `toFixed()` may be more precise than [`toString()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toString) for some values, because `toString()` only prints enough significant digits to distinguish the number from adjacent number values. For example:
 
 ```js
-var numObj = 12345.6789;
-
-numObj.toFixed();       // Returns '12346': 반올림하며, 소수 부분을 남기지 않습니다.
-numObj.toFixed(1);      // Returns '12345.7': 반올림합니다.
-numObj.toFixed(6);      // Returns '12345.678900': 빈 공간을 0으로 채웁니다.
-(1.23e+20).toFixed(2);  // Returns '123000000000000000000.00'
-(1.23e-10).toFixed(2);  // Returns '0.00'
-2.34.toFixed(1);        // Returns '2.3'
-2.35.toFixed(1);        // Returns '2.4'. 이 경우에는 올림을 합니다.
--2.34.toFixed(1);       // Returns -2.3 (연산자의 적용이 우선이기 때문에, 음수의 경우 문자열로 반환하지 않습니다...)
-(-2.34).toFixed(1);     // Returns '-2.3' (...괄호를 사용할 경우 문자열을 반환합니다.)
+(1000000000000000128).toString(); // '1000000000000000100'
+(1000000000000000128).toFixed(0); // '1000000000000000128'
 ```
 
-## 명세
+However, choosing a `digits` precision that's too high can return unexpected results, because decimal fractional numbers cannot be represented precisely in floating point. For example:
+
+```js
+(0.3).toFixed(50); // '0.29999999999999998889776975374843459576368331909180'
+```
+
+## Examples
+
+### Using toFixed()
+
+```js
+const numObj = 12345.6789;
+
+numObj.toFixed(); // '12346'; rounding, no fractional part
+numObj.toFixed(1); // '12345.7'; it rounds up
+numObj.toFixed(6); // '12345.678900'; additional zeros
+(1.23e20).toFixed(2); // '123000000000000000000.00'
+(1.23e-10).toFixed(2); // '0.00'
+(2.34).toFixed(1); // '2.3'
+(2.35).toFixed(1); // '2.4'; it rounds up
+(2.55).toFixed(1); // '2.5'
+// it rounds down as it can't be represented exactly by a float and the
+// closest representable float is lower
+(2.449999999999999999).toFixed(1); // '2.5'
+// it rounds up as it's less than NUMBER.EPSILON away from 2.45.
+// This literal actually encodes the same number value as 2.45
+
+(6.02 * 10 ** 23).toFixed(50); // 6.019999999999999e+23; large numbers still use exponential notation
+```
+
+### Using toFixed() with negative numbers
+
+Because member access has higher [precedence](/en-US/docs/Web/JavaScript/Reference/Operators/Operator_precedence) than unary minus, you need to group the negative number expression to get a string.
+
+```js-nolint
+-2.34.toFixed(1); // -2.3, a number
+(-2.34).toFixed(1); // '-2.3'
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
 - {{jsxref("Number.prototype.toExponential()")}}
 - {{jsxref("Number.prototype.toPrecision()")}}
 - {{jsxref("Number.prototype.toString()")}}
+- {{jsxref("Number.EPSILON")}}

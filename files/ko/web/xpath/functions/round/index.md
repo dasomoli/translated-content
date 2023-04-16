@@ -5,33 +5,31 @@ slug: Web/XPath/Functions/round
 
 {{ XsltRef() }}
 
-`round` 함수는 인수로 준 수에 가장 가까운 정수를 반환합니다.
+The `round` function returns a number that is the nearest integer to the given number.
 
-### 구문
+### Syntax
 
 ```
-round(decimal )
+round( decimal )
 ```
 
-### 인수
+### Arguments
 
 - `decimal`
-  - : 정수 처리(round)될 10진수.
+  - : The decimal number to be rounded.
 
-### 반환
+### Returns
 
-인수
-_`decimal`_
-보다 작거나 크거나 같은 가장 가까운 정수.
+The nearest integer less then, greater than, or equal to `decimal`.
 
-### 주의
+### Notes
 
-- \-0.5는 음수 0으로 0.4는 양수 0으로 정수 처리됩니다.
+- \-0.5 rounds to negative zero. 0.4 rounds to positive zero.
 
-### 정의
+### Defined
 
-[XPath 1.0 4.4](http://www.w3.org/TR/xpath#function-round)
+[XPath 1.0 4.4](https://www.w3.org/TR/1999/REC-xpath-19991116/#function-round)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

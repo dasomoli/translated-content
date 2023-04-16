@@ -2,35 +2,32 @@
 title: starts-with
 slug: Web/XPath/Functions/starts-with
 ---
+
 {{ XsltRef() }}
 
-`starts-with` 함수는 첫 번째 문자열이 두 번째 문자열로 시작하는 지를 확인한 뒤 true나 false를 반환합니다.
+The `starts-with` checks whether the first string starts with the second string and returns true or false.
 
-### 구문
+### Syntax
 
 ```
-starts-with(haystack ,needle)
+starts-with(haystack, needle)
 ```
 
-### 인수
+### Arguments
 
 - `haystack`
-  - : 들여다볼(look in) 문자열.
+  - : The string to look in.
 - `needle`
-  - : 찾을(look for) 문자열.
+  - : The string to look for.
 
-### 반환
+### Returns
 
-만약
-`haystack`
-이
-`needle`
-로 시작하면 `true`. 그렇지 않으면, `false`.
+`true` if `haystack` starts with `needle`. Otherwise, `false`.
 
-### 정의
+### Defined
 
-[XPath 1.0 4.2](http://www.w3.org/TR/xpath#function-starts-with)
+[XPath 1.0 4.2](https://www.w3.org/TR/1999/REC-xpath-19991116/#function-starts-with)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

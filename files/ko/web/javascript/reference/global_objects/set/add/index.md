@@ -1,52 +1,54 @@
 ---
 title: Set.prototype.add()
 slug: Web/JavaScript/Reference/Global_Objects/Set/add
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Set.add
 ---
 
 {{JSRef}}
 
-**`add()`** 메서드는 `Set` 개체의 맨 뒤에 주어진 `value`의 새 요소를 추가합니다.
+The **`add()`** method inserts a new element with a specified value in to a `Set` object, if there isn't an element with the same value already in the `Set`.
 
 {{EmbedInteractiveExample("pages/js/set-prototype-add.html")}}
 
-## 구문
+## Syntax
 
-```js
-mySet.add(value);
+```js-nolint
+add(value)
 ```
 
-### 매개변수
+### Parameters
 
 - `value`
-  - : `Set` 객체에 추가할 요소의 값.
+  - : The value of the element to add to the `Set` object.
 
-### 반환 값
+### Return value
 
-`Set` 객체.
+The `Set` object with added value.
 
-## 예제
+## Examples
 
-### `add` 메서드 사용하기
+### Using the add() method
 
 ```js
-var mySet = new Set();
+const mySet = new Set();
 
 mySet.add(1);
-mySet.add(5).add('어떤 문자열'); // 계속 붙일 수 있음
+mySet.add(5).add("some text"); // chainable
 
 console.log(mySet);
-// Set [1, 5, "어떤 문자열"]
+// Set [1, 5, "some text"]
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Set")}}
 - {{jsxref("Set.prototype.delete()")}}

@@ -2,35 +2,36 @@
 title: ceiling
 slug: Web/XPath/Functions/ceiling
 ---
+
 {{ XsltRef() }}
 
-`ceiling` 함수는 10진수를 평가하고 10진수보다 작지 않은 가장 작은 정수를 반환합니다.
+The `ceiling` function evaluates a decimal number and returns the smallest integer greater than or equal to the decimal number.
 
-### 문법
+### Syntax
 
 ```
-ceiling(number )
+ceiling( number )
 ```
 
-### 인수
+### Arguments
 
 - `number`
-  - : 평가할 수.
+  - : The number to be evaluated.
 
-### 반환
+### Returns
 
-`number`보다 작지 않은 가장 작은 정수.
+The nearest integer greater than or equal to `number`.
 
-예를 들어,
+for example:
 
 `ceiling (5.2)` = _6_
 
 `ceiling (-5.2)` = _-5_
 
-### 정의
+### Defined
 
-[XPath 1.0 4.4](http://www.w3.org/TR/xpath#function-ceiling)
+[XPath 1.0 4.4](https://www.w3.org/TR/1999/REC-xpath-19991116/#function-ceiling)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

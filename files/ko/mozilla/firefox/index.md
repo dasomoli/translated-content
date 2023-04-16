@@ -5,53 +5,60 @@ slug: Mozilla/Firefox
 
 {{FirefoxSidebar}}
 
-[Firefox](https://www.mozilla.org/firefox/)는 모질라 재단의 유명한 웹브라우저로서 윈도우, OS X, 리눅스, 솔라리스(비공식), 안드로이드 기기 등의 다양한 플랫폼을 지원합니다. 호환성과 최신 웹기술, 그리고 강력한 개발 도구로서 Firefox는 웹 개발자들과 사용자들에겐 최고의 선택입니다.
+[Firefox](https://www.mozilla.org/firefox/) is Mozilla's popular Web browser, available for multiple platforms including Windows, macOS, and Linux on the desktop and all Android and iOS mobile devices. With broad compatibility, the latest in Web technologies, and powerful development tools, Firefox is a great choice for both Web developers and end users.
 
-Firefox는 오픈소스 프로젝트이기 때문에 대부분의 코드가 커뮤니티의 봉사자들에 의해 작성됩니다. 여기서 당신은 Firefox 프로젝트에 어떻게 봉사하는지 배우거나 Firefox 애드온이나 개발툴의 사용법 또는 다른 것에 대한 정보를 얻을 수 있습니다.
+Firefox is an open source project; much of the code is contributed by our huge community of volunteers. Here you can learn about how to contribute to the Firefox project and you will also find links to information about the construction of Firefox add-ons, using the developer tools in Firefox, and other topics.
 
-[Firefox](https://www.mozilla.org/firefox/)를 위한 애드온을 어떻게 만드는 지, 어떻게 파이어폭스를 스스로 빌드하고 개발하는 지, Firefox와 그 하위 프로젝트들이 어떻게 이루어 지는 지 알아보세요.
+Learn how to create add-ons for [Firefox](https://www.mozilla.org/firefox/), how to develop and build Firefox itself, and how the internals of Firefox and its subprojects work.
 
-- 개발자 릴리즈노트 [개발자를 위한 릴리즈 노트 읽기](/en-US/Firefox/Releases) 어떤 기능이나 애드온이 파이어폭스에 추가되었는지, 웹사이트에 대한 지원이 어떻게 바뀌었는지 알아보세요.
-- 프로젝트 문서 [Firefox의 내부 구성물](/en-US/docs/Mozilla)에서 더 자세한 정보를 알아보세요. 그 다음에는 빌드시스템에 대한 정보를 알아내어 코드를 어떻게 작성할 지 알아보세요.
-- 개발자 가이드 [개발자 가이드](/en-US/docs/Developer_Guide)는 어떻게 파이어폭스 소스코드를 얻고 컴파일 하는지에 대한 가이드를 제공합니다. 또한 이를 통해 어떻게 프로젝트에 기여하는 지 알 수 있습니다.
+## Key resources
 
-## Firefox 채널
+- Firefox developer guide
+  - : Our [developer guide](https://firefox-source-docs.mozilla.org/contributing/index.html) explains how to get Firefox source code, how to build it on Linux, macOS and Windows, how to find your way around, and how to contribute to the project.
+- Firefox add-on guide
+  - : The [Add-on guide](/en-US/docs/Mozilla/Add-ons) provides information about developing and deploying Firefox extensions.
+- Developer release notes
+  - : [Developer-focused release notes](/en-US/docs/Mozilla/Firefox/Releases); learn what new capabilities for both Web sites and add-ons arrive in each version of Firefox.
 
-Firefox는 네 가지 **채널**로 이루어져 있습니다.
+## Firefox channels
+
+Firefox is available in five **channels**.
 
 ### Firefox Nightly
 
-우리는 매일 밤마다 [mozilla-central](/ko/docs/mozilla-central) 저장소의 최신 코드를 기반으로 파이어폭스를 빌드합니다. 이 빌드들은 파이어폭스 개발자들이나 새로운 기능을 미리 체험해보고 싶은 사람들에게 제공되며 언제나 활성화된 개발환경에서 개발될 것입니다.
+Each night we build Firefox from the latest code in [mozilla-central](https://hg.mozilla.org/mozilla-central/). These builds are for Firefox developers or those who want to try out the very latest cutting edge features while they're still under active development.
 
-[Firefox Nightly 내려받기](https://nightly.mozilla.org/)
+[Download Firefox Nightly](https://www.mozilla.org/en-US/firefox/channel/desktop/)
 
-### Firefox 개발자 에디션
+### Firefox Developer Edition
 
-이 버전은 오직 개발자들을 위해 만들어진 파이어폭스입니다. 6주마다, 저희는 Firefox Nightly에서 안정화된 기능을 파이어폭스 개발자 에디션에 넣어 빌드합니다. 저희는 또한 몇가지 개발자들만을 위한 이 에디션에서만 사용할 수 있는 기능을 추가합니다.
+This is a version of Firefox tailored for developers. Firefox Developer Edition has all the latest developer tools that have reached beta. We also add some extra features for developers that are only available in this channel. It uses its own path and profile, so that you can run it alongside Release or Beta Firefox.
 
-[파이어폭스 개발자 에디션에 대하여 더 자세히 알아보기](/ko/docs/Firefox/Developer_Edition)
+[Download Firefox Developer Edition](https://www.mozilla.org/firefox/developer/)
 
 ### Firefox Beta
 
-Firefox 개발자 에디션이 출시된지 6주가 지난 후, 저희는 충분히 안정적인 기능들을 넣고, 새 버전의 Firefox Beta를 빌드합니다. Firefox 베타 빌드는 Firefox의 다음버전을 미리 보고 싶은 얼리어답터에게 적합합니다.
+Every four weeks, we take the features that are stable enough, and create a new version of Firefox Beta. Firefox Beta builds are for Firefox enthusiasts to test what's destined to become the next released Firefox version.
 
-[Firefox Beta 내려받기](https://www.mozilla.org/firefox/channel/#beta)
+[Download Firefox Beta](https://www.mozilla.org/firefox/channel/#beta)
 
 ### Firefox
 
-Beta 버전에서의 6주가 지나고, 우리는 새 기능을 1억명 이상의 사용자들에게 새 버전에 담아 선보입니다.
+After stabilizing for another four weeks in Beta, we're ready to ship the new features to hundreds of millions of users in a new release version of Firefox.
 
-[파이어폭스 내려받기](https://www.mozilla.org/firefox/channel/#firefox)
+[Download Firefox](https://www.mozilla.org/firefox/channel/#firefox)
 
-## 콘텐츠
+### Firefox Extended Support Release (ESR)
+
+Firefox ESR is the long-term support edition of Firefox for desktop for use by organizations including schools, universities, businesses and others who need extended support for mass deployments.
+
+[Download Firefox ESR](https://www.mozilla.org/en-US/firefox/all/#product-desktop-esr)
+
+## Contents
 
 {{LandingPageListSubpages}}
 
-## 파이어폭스 프로파일
+## See also
 
-만일 당신이 규칙적으로 다양한 파이어폭스의 채널들을 같이 사용하고 있거나 다양한 설정을 같이 사용하고 있다면 당신은 사전에 파이어 폭스의 프로필 매니저나 다른 프로필 관리 도구를 이용하여 [멀티 파이어폭스 프로파일 사용하기](/ko/docs/Mozilla/Firefox/Multiple_profiles) 를 읽으셔야 합니다.
-
-## 바깥 고리
-
-- [Mailing list](https://mail.mozilla.org/listinfo/firefox-dev)
+- [Mailing list](https://groups.google.com/a/mozilla.org/g/firefox-dev)
 - [Release schedule](https://wiki.mozilla.org/Release_Management/Calendar)

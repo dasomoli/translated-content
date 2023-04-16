@@ -1,41 +1,49 @@
 ---
 title: ArrayBuffer.isView()
 slug: Web/JavaScript/Reference/Global_Objects/ArrayBuffer/isView
+page-type: javascript-static-method
+browser-compat: javascript.builtins.ArrayBuffer.isView
 ---
 
 {{JSRef}}
 
-**`ArrayBuffer.isView()`** 메서드는 주어진 값이 `ArrayBuffer` 뷰, 즉 [형식화 배열 객체](/ko/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) 또는 {{jsxref("DataView")}}인지 판별합니다..
+The **`ArrayBuffer.isView()`** static method determines whether the
+passed value is one of the `ArrayBuffer` views,
+such as [typed array objects](/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)
+or a {{jsxref("DataView")}}.
 
-{{EmbedInteractiveExample("pages/js/arraybuffer-isview.html")}}
+{{EmbedInteractiveExample("pages/js/arraybuffer-isview.html","shorter")}}
 
-## 구문
+## Syntax
 
-```js
-    ArrayBuffer.isView(value)
+```js-nolint
+ArrayBuffer.isView(value)
 ```
 
-### 매개변수
+### Parameters
 
 - `value`
-  - : 판별할 값.
+  - : The value to be checked.
 
-### 반환 값
+### Return value
 
-주어진 값이 {{jsxref("ArrayBuffer")}} 뷰라면 `true`, 아니면 `false`.
+`true` if the given argument is one of the {{jsxref("ArrayBuffer")}} views;
+otherwise, `false`.
 
-## 예제
+## Examples
+
+### Using isView
 
 ```js
-ArrayBuffer.isView();                    // false
-ArrayBuffer.isView([]);                  // false
-ArrayBuffer.isView({});                  // false
-ArrayBuffer.isView(null);                // false
-ArrayBuffer.isView(undefined);           // false
+ArrayBuffer.isView(); // false
+ArrayBuffer.isView([]); // false
+ArrayBuffer.isView({}); // false
+ArrayBuffer.isView(null); // false
+ArrayBuffer.isView(undefined); // false
 ArrayBuffer.isView(new ArrayBuffer(10)); // false
 
-ArrayBuffer.isView(new Uint8Array());    // true
-ArrayBuffer.isView(new Float32Array());  // true
+ArrayBuffer.isView(new Uint8Array()); // true
+ArrayBuffer.isView(new Float32Array()); // true
 ArrayBuffer.isView(new Int8Array(10).subarray(0, 3)); // true
 
 const buffer = new ArrayBuffer(2);
@@ -43,14 +51,14 @@ const dv = new DataView(buffer);
 ArrayBuffer.isView(dv); // true
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [JavaScript 형식화 배열](/ko/docs/Web/JavaScript/Typed_arrays)
+- [JavaScript typed arrays](/en-US/docs/Web/JavaScript/Typed_arrays)

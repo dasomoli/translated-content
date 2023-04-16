@@ -1,42 +1,49 @@
 ---
-title: Window.scroll()
+title: "Window: scroll() method"
+short-title: scroll()
 slug: Web/API/Window/scroll
+page-type: web-api-instance-method
+browser-compat: api.Window.scroll
 ---
 
 {{APIRef}}
 
-**`Window.scroll()`** 메서드는 문서 내 창을 특정 위치로 스크롤합니다.
+The **`Window.scroll()`** method scrolls the window to a
+particular place in the document.
 
-## 구문
+## Syntax
 
 ```js-nolint
 scroll(x-coord, y-coord)
 scroll(options)
 ```
 
-### 매개변수
+### Parameters
 
-- `x-coord`는 왼쪽 상단에 표시하고 싶은 문서의 수평축에 따른 픽셀입니다.
-- `y-coord`는 왼쪽 상단에 표시하고 싶은 문서의 수직축에 따른 픽셀입니다.
+- `x-coord` is the pixel along the horizontal axis of the document that you
+  want displayed in the upper left.
+- `y-coord` is the pixel along the vertical axis of the document that you
+  want displayed in the upper left.
 
-\- 혹은 -
+\- or -
 
 - `options`
-  - : 다음 매개변수를 포함하는 사전.
+  - : A dictionary containing the following parameters:
     - `top`
-      - : 창이나 요소를 스크롤할 Y축의 픽셀의 수를 지정합니다.
+      - : Specifies the number of pixels along the Y axis to scroll the window or element.
     - `left`
-      - : 창이나 요소를 스크롤할 X축의 픽셀의 수를 지정합니다.
+      - : Specifies the number of pixels along the X axis to scroll the window or element.
     - `behavior`
-      - : 요소를 위치로 스크롤하는 브라우저는 다음 스크롤 동작 중 하나를 가질 수 있습니다.
-        - `auto` (기본): 스크롤 동작은 스크롤 요소에 의해 설정되거나 상속된 [`scroll-behavior`](/en-US/docs/Web/CSS/scroll-behavior) CSS 스타일에 의해 제어됩니다.
-        - `smooth`: 스크롤이 부드럽게 작동합니다.
+      - : Determines whether scrolling is instant or animates smoothly. This option is a string which must take one of the following values:
+        - `smooth`: scrolling should animate smoothly
+        - `instant`: scrolling should happen instantly in a single jump
+        - `auto`: scroll behavior is determined by the computed value of {{cssxref("scroll-behavior")}}
 
-### 반환 값
+### Return value
 
-없음 ({{jsxref("undefined")}}).
+None ({{jsxref("undefined")}}).
 
-## 예제
+## Examples
 
 ```html
 <!-- put the 100th vertical pixel at the top of the window -->
@@ -44,31 +51,34 @@ scroll(options)
 <button onclick="scroll(0, 100);">click to scroll to the 100th pixel</button>
 ```
 
-`options` 사용:
+Using `options`:
 
 ```js
 window.scroll({
   top: 100,
   left: 100,
-  behavior: 'smooth'
+  behavior: "smooth",
 });
 ```
 
-## 참고
+## Notes
 
-{{domxref("Window.scrollTo()")}}는 이 메서드와 사실상 같습니다. 상대적인 스크롤의 경우 {{domxref("Window.scrollBy()")}}, {{domxref("Window.scrollByLines()")}} 그리고 {{domxref("Window.scrollByPages()")}}를 참고하십시오.
+{{domxref("Window.scrollTo()")}} is effectively the same as this method. For relative
+scrolling, see {{domxref("Window.scrollBy()")}}, {{domxref("Window.scrollByLines()")}},
+and {{domxref("Window.scrollByPages()")}}.
 
-스크롤 요소의 경우, {{domxref("Element.scrollTop")}} 그리고 {{domxref("Element.scrollLeft")}}를 참고하십시오.
+For scrolling elements, see {{domxref("Element.scrollTop")}} and
+{{domxref("Element.scrollLeft")}}.
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("Window.scrollByLines()")}}
 - {{domxref("Window.scrollByPages()")}}

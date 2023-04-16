@@ -1,15 +1,17 @@
 ---
 title: CSS Transitions
 slug: Web/CSS/CSS_Transitions
+page-type: css-module
+spec-urls: https://drafts.csswg.org/css-transitions/
 ---
 
 {{CSSRef}}
 
-**CSS Transitions**는 특정 CSS 속성의 값을 점진적으로 바꿀 수 있는 CSS 모듈입니다. 타이밍 함수, 시간 등 여러 속성을 통해 값이 바뀌는 방식을 조절할 수 있습니다.
+**CSS Transitions** is a module of CSS that lets you create gradual transitions between the values of specific CSS properties. The behavior of these transitions can be controlled by specifying their timing function, duration, and other attributes.
 
-## 참고서
+## Reference
 
-### 속성
+### Properties
 
 - {{cssxref("transition")}}
 - {{cssxref("transition-delay")}}
@@ -17,15 +19,15 @@ slug: Web/CSS/CSS_Transitions
 - {{cssxref("transition-property")}}
 - {{cssxref("transition-timing-function")}}
 
-## 안내서
+## Guides
 
-- [CSS 트랜지션 사용하기](/ko/docs/Web/Guide/CSS/Using_CSS_transitions)
-  - : CSS 트랜지션을 사용하는 법이 단계별로 적혀있습니다. 각각의 CSS 트랜지션 속성의 설명과, 서로 합치면 어떻게 동작하는지 설명합니다.
+- [Using CSS transitions](/en-US/docs/Web/CSS/CSS_Transitions/Using_CSS_transitions)
+  - : Step-by-step tutorial about how to create transitions using CSS. This article describes each relevant CSS property and explains how they interact with each other.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 같이 보기
+## See also
 
-- [CSS Animations](/ko/docs/Web/CSS/CSS_Animations)를 사용하면 값의 전환을 CSS Transitions보다 더 세밀하게 조절할 수 있습니다.
+- Related to CSS Transitions, [CSS Animations](/en-US/docs/Web/CSS/CSS_Animations) provide finer control over animated properties.

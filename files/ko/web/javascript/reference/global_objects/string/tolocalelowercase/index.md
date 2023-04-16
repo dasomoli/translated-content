@@ -1,42 +1,48 @@
 ---
 title: String.prototype.toLocaleLowerCase()
 slug: Web/JavaScript/Reference/Global_Objects/String/toLocaleLowerCase
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.String.toLocaleLowerCase
 ---
 
 {{JSRef}}
 
-**`toLocaleLowerCase()`** 메서드는 어떤 지역 특정 대/소문자 매핑에 따른 소문자로 변환된 문자열 값을 반환합니다.
+The **`toLocaleLowerCase()`** method returns the calling string
+value converted to lower case, according to any locale-specific case mappings.
 
 {{EmbedInteractiveExample("pages/js/string-tolocalelowercase.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 toLocaleLowerCase()
 toLocaleLowerCase(locales)
 ```
 
-### 매개변수
+### Parameters
 
 - `locales` {{optional_inline}}
-  - : BCP 47 언어 태그가 있는 문자열 또는 이런 문자열을 가진 배열. 어떤 지역 특정 대/소문자 매핑에 따른 소문자로 변환하는데 사용된 지역을 나타냅니다. 일반 양식과 `locales` 인수의 설명에 대해서 [Locale identification and negotiation](/ko/docs/Web/JavaScript/Reference/Global_Objects/Intl#locale_identification_and_negotiation)를 참조하세요.
+  - : A string with a BCP 47 language tag, or an array of such strings. Indicates the locale to be used to convert to lower case according to any locale-specific case mappings. For the general form and interpretation of the `locales` argument, see [the parameter description on the `Intl` main page](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#locales_argument).
 
-### 반환 값
+    Unlike other methods that use the `locales` argument, `toLocaleLowerCase()` does not allow locale matching. Therefore, after checking the validity of the `locales` argument, `toLocaleLowerCase()` always uses the first locale in the list (or the default locale if the list is empty), even if this locale is not supported by the implementation.
 
-어떤 지역 특정 대/소문자 매핑에 따른 소문자로 변환된 문자열을 나타낸 새 문자열.
+### Return value
 
-### 예외
+A new string representing the calling string converted to lower case, according to any
+locale-specific case mappings.
 
-- `locale` 인수가 올바른 언어 태그가 아닌 경우 {{jsxref("RangeError")}} ("잘못된 언어 태그: xx_yy")가 발생합니다.
-- 배열 요소가 문자열 유형이 아닌 경우 {{jsxref("TypeError")}} ("지역 인수에 있는 잘못된 요소")가 발생합니다.
+## Description
 
-## 설명
+The `toLocaleLowerCase()` method returns the value of the string converted
+to lower case according to any locale-specific case mappings.
+`toLocaleLowerCase()` does not affect the value of the string itself. In most
+cases, this will produce the same result as {{jsxref("String.prototype.toLowerCase()",
+  "toLowerCase()")}}, but for some locales, such as Turkish, whose case mappings do not
+follow the default case mappings in Unicode, there may be a different result.
 
-`theLocaleLowerCase()` 메서드는 지역 특정 대/소문자 맴핑에 따른 소문자로 변환된 문자열 값을 반환합니다. `toLocaleUpperCase()`는 문자열 자체 값에 영향을 미치지 않습니다. 대부분의 경우, {{jsxref("String.prototype.toLowerCase()", "toLowerCase()")}}와 같은 결과를 제공하지만 터키와 같은 일부 지역에서는 대/소문자 매핑이 유니코드의 기존 대/소문자 매핑을 따르지 않아 다른 결과가 있을 수 있습니다.
+## Examples
 
-## 예제
-
-### toLocaleLowerCase() 사용
+### Using toLocaleLowerCase()
 
 ```js
 "ALPHABET".toLocaleLowerCase(); // 'alphabet'
@@ -48,15 +54,15 @@ const locales = ["tr", "TR", "tr-TR", "tr-u-co-search", "tr-x-turkish"];
 "\u0130".toLocaleLowerCase(locales) === "i"; // true
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("String.prototype.toLocaleUpperCase()")}}
 - {{jsxref("String.prototype.toLowerCase()")}}

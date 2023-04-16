@@ -1,88 +1,113 @@
 ---
-title: '<code>: 인라인 코드 요소'
+title: "<code>: The Inline Code element"
 slug: Web/HTML/Element/code
+page-type: html-element
+browser-compat: html.elements.code
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<code>` 요소**는 짧은 코드 조각을 나타내는 스타일을 사용해 자신의 콘텐츠를 표시합니다. 기본 스타일은 {{glossary("user agent", "사용자 에이전트")}}의 고정폭 글씨체입니다.
+The **`<code>`** [HTML](/en-US/docs/Web/HTML) element displays its contents styled in a fashion intended to indicate that the text is a short fragment of computer code. By default, the content text is displayed using the {{Glossary("user agent", "user agent's")}} default monospace font.
 
 {{EmbedInteractiveExample("pages/tabbed/code.html", "tabbed-shorter")}}
+
+## Attributes
+
+This element only includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
+
+## Examples
+
+A paragraph of text that includes `<code>`:
+
+```html
+<p>
+  The function <code>selectAll()</code> highlights all the text in the input
+  field so the user can, for example, copy or delete the text.
+</p>
+```
+
+### Result
+
+{{EmbedLiveSample("Example", 640, 70)}}
+
+## Notes
+
+To represent multiple lines of code, wrap the `<code>` element within a {{HTMLElement("pre")}} element. The `<code>` element by itself only represents a single phrase of code or line of code.
+
+A CSS rule can be defined for the `code` selector to override the browser's default font face. Preferences set by the user might take precedence over the specified CSS.
+
+## Technical summary
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
       </th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
         >,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >, 뚜렷한 콘텐츠.
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >, palpable content.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >Phrasing content</a
         >.
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
+      <th scope="row">Tag omission</th>
       <td>{{no_tag_omission}}</td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Permitted parents</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >를 허용하는 모든 요소.
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>모두</td>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
+          >No corresponding role</a
+        >
+      </td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
-      <td>{{domxref("HTMLElement")}}</td>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>Any</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
+      <td>
+        {{domxref("HTMLElement")}} Up to Gecko 1.9.2 (Firefox 4)
+        inclusive, Firefox implements the
+        {{domxref("HTMLSpanElement")}} interface for this element.
+      </td>
     </tr>
   </tbody>
 </table>
 
-## 특성
-
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)만 포함합니다.
-
-## 예제
-
-```html
-<p>함수 <code>selectAll()</code>는 입력 필드의 모든 텍스트를 선택하므로,
-사용자가 복사 혹은 삭제를 손쉽게 할 수 있습니다.</p>
-```
-
-{{EmbedLiveSample("예제", 640, 70)}}
-
-## 참고
-
-여러 줄의 코드를 나타내려면 `<code>` 요소를 {{htmlelement("pre")}}로 감싸세요. 보통 상황에서 `<code>`는 코드 한 줄만 나타냅니다.
-
-CSS `code` 태그 선택자를 사용해 브라우저의 기본 글씨체를 바꿀 수 있습니다. 그러나 사용자 설정이 CSS보다 우선할 수도 있습니다.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{HTMLElement("samp")}}
 - {{HTMLElement("kbd")}}

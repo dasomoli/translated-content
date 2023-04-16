@@ -1,50 +1,91 @@
 ---
-title: 'HTMLMediaElement: canplaythrough'
+title: "HTMLMediaElement: canplaythrough event"
+short-title: canplaythrough
 slug: Web/API/HTMLMediaElement/canplaythrough_event
+page-type: web-api-event
+browser-compat: api.HTMLMediaElement.canplaythrough_event
 ---
-`canplaythrough` 이벤트는 user agent 가 media 를 재생할 수 있을 때 발생되며, 컨텐츠의 추가 버퍼링을 위한 정지 없이 media 를 끝까지 재생하기에 로드된 데이터가 충분할 것으로 추산한다.
 
-## General info
+{{APIRef("HTMLMediaElement")}}
 
-- Specification
-  - : [HTML5 media](http://www.whatwg.org/specs/web-apps/current-work/multipage/the-video-element.html#event-media-canplaythrough)
-- Interface
-  - : Event
-- Bubbles
-  - : No
-- Cancelable
-  - : No
-- Target
-  - : Element
-- Default Action
-  - : None.
+The `canplaythrough` event is fired when the user agent can play the media, and estimates that enough data has been loaded to play the media up to its end without having to stop for further buffering of content.
 
-## Properties
+This event is not cancelable and does not bubble.
 
-| Property                              | Type                                 | Description                                            |
-| ------------------------------------- | ------------------------------------ | ------------------------------------------------------ |
-| `target` {{readonlyInline}}     | {{domxref("EventTarget")}} | The event target (the topmost target in the DOM tree). |
-| `type` {{readonlyInline}}       | {{domxref("DOMString")}}     | The type of event.                                     |
-| `bubbles` {{readonlyInline}}    | {{jsxref("Boolean")}}         | Whether the event normally bubbles or not.             |
-| `cancelable` {{readonlyInline}} | {{jsxref("Boolean")}}         | Whether the event is cancellable or not.               |
+## Syntax
+
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
+
+```js
+addEventListener("canplaythrough", (event) => {});
+
+oncanplaythrough = (event) => {};
+```
+
+## Event type
+
+A generic {{domxref("Event")}}.
+
+## Examples
+
+These examples add an event listener for the HTMLMediaElement's `canplaythrough` event, then post a message when that event handler has reacted to the event firing.
+
+Using `addEventListener()`:
+
+```js
+const video = document.querySelector("video");
+
+video.addEventListener("canplaythrough", (event) => {
+  console.log(
+    "I think I can play through the entire video without having to stop to buffer."
+  );
+});
+```
+
+Using the `oncanplaythrough` event handler property:
+
+```js
+const video = document.querySelector("video");
+
+video.oncanplaythrough = (event) => {
+  console.log(
+    "I think I can play through the entire video without having to stop to buffer."
+  );
+};
+```
+
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
+
+{{Compat}}
 
 ## Related Events
 
-- {{event("playing")}}
-- {{event("waiting")}}
-- {{event("seeking")}}
-- {{event("seeked")}}
-- {{event("ended")}}
-- {{event("loadedmetadata")}}
-- {{event("loadeddata")}}
-- {{event("canplay")}}
-- {{event("canplaythrough")}}
-- {{event("durationchange")}}
-- {{event("timeupdate")}}
-- {{event("play")}}
-- {{event("pause")}}
-- {{event("ratechange")}}
-- {{event("volumechange")}}
-- {{event("suspend")}}
-- {{event("emptied")}}
-- {{event("stalled")}}
+- The HTMLMediaElement {{domxref("HTMLMediaElement.playing_event", 'playing')}} event
+- The HTMLMediaElement {{domxref("HTMLMediaElement.waiting_event", 'waiting')}} event
+- The HTMLMediaElement {{domxref("HTMLMediaElement.seeking_event", 'seeking')}} event
+- The HTMLMediaElement {{domxref("HTMLMediaElement.seeked_event", 'seeked')}} event
+- The HTMLMediaElement {{domxref("HTMLMediaElement.ended_event", 'ended')}} event
+- The HTMLMediaElement {{domxref("HTMLMediaElement.loadedmetadata_event", 'loadedmetadata')}} event
+- The HTMLMediaElement {{domxref("HTMLMediaElement.loadeddata_event", 'loadeddata')}} event
+- The HTMLMediaElement {{domxref("HTMLMediaElement.canplay_event", 'canplay')}} event
+- The HTMLMediaElement {{domxref("HTMLMediaElement.canplaythrough_event", 'canplaythrough')}} event
+- The HTMLMediaElement {{domxref("HTMLMediaElement.durationchange_event", 'durationchange')}} event
+- The HTMLMediaElement {{domxref("HTMLMediaElement.timeupdate_event", 'timeupdate')}} event
+- The HTMLMediaElement {{domxref("HTMLMediaElement.play_event", 'play')}} event
+- The HTMLMediaElement {{domxref("HTMLMediaElement.pause_event", 'pause')}} event
+- The HTMLMediaElement {{domxref("HTMLMediaElement.ratechange_event", 'ratechange')}} event
+- The HTMLMediaElement {{domxref("HTMLMediaElement.volumechange_event", 'volumechange')}} event
+- The HTMLMediaElement {{domxref("HTMLMediaElement.suspend_event", 'suspend')}} event
+- The HTMLMediaElement {{domxref("HTMLMediaElement.emptied_event", 'emptied')}} event
+- The HTMLMediaElement {{domxref("HTMLMediaElement.stalled_event", 'stalled')}} event
+
+## See also
+
+- {{domxref("HTMLAudioElement")}}
+- {{domxref("HTMLVideoElement")}}
+- {{HTMLElement("audio")}}
+- {{HTMLElement("video")}}

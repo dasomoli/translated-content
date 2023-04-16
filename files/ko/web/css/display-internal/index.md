@@ -1,46 +1,54 @@
 ---
 title: <display-internal>
 slug: Web/CSS/display-internal
+page-type: css-type
+browser-compat:
+  - css.properties.display.table_values
+  - css.properties.display.ruby_values
 ---
 
 {{CSSRef}}
 
-`table`과 `ruby` 같은 몇몇 레이아웃 모델은 복잡한 내부 구조를 가지고 있으며, 자식이나 자손들로 채울 수 있는 다양한 역할을 가지고 있습니다. 이 페이지는 이러한 "내재적인" 디스플레이 값을 정의하며, 이들은 특정 레이아웃 모드 안에서만 의미를 가집니다.
+Some layout models such as `table` and `ruby` have a complex internal structure, with several different roles that their children and descendants can fill. This page defines those "internal" display values, which only have meaning within that particular layout mode.
 
-## 문법
+## Syntax
 
-유효한 `<display-internal>` 값들:
+Valid `<display-internal>` values:
 
 - `table-row-group`
-  - : 이 요소는 {{HTMLElement("tbody")}} HTML 요소처럼 동작합니다.
+  - : These elements behave like {{HTMLElement("tbody")}} HTML elements.
 - `table-header-group`
-  - : 이 요소는 {{HTMLElement("thead")}} HTML 요소처럼 동작합니다.
+  - : These elements behave like {{HTMLElement("thead")}} HTML elements.
 - `table-footer-group`
-  - : 이 요소는 {{HTMLElement("tfoot")}} HTML 요소처럼 동작합니다.
+  - : These elements behave like {{HTMLElement("tfoot")}} HTML elements.
 - `table-row`
-  - : 이 요소는 {{HTMLElement("tr")}} HTML 요소처럼 동작합니다.
+  - : These elements behave like {{HTMLElement("tr")}} HTML elements.
 - `table-cell`
-  - : 이 요소는 {{HTMLElement("td")}} HTML 요소처럼 동작합니다.
+  - : These elements behave like {{HTMLElement("td")}} HTML elements.
 - `table-column-group`
-  - : 이 요소는 {{HTMLElement("colgroup")}} HTML 요소처럼 동작합니다.
+  - : These elements behave like {{HTMLElement("colgroup")}} HTML elements.
 - `table-column`
-  - : 이 요소는 {{HTMLElement("col")}} HTML 요소처럼 동작합니다.
+  - : These elements behave like {{HTMLElement("col")}} HTML elements.
 - `table-caption`
-  - : 이 요소는 {{HTMLElement("caption")}} HTML 요소처럼 동작합니다.
+  - : These elements behave like {{HTMLElement("caption")}} HTML elements.
 - `ruby-base` {{Experimental_Inline}}
-  - : 이 요소는 {{HTMLElement("rb")}} HTML 요소처럼 동작합니다.
+  - : These elements behave like {{HTMLElement("rb")}} HTML elements.
 - `ruby-text` {{Experimental_Inline}}
-  - : 이 요소는 {{HTMLElement("rt")}} HTML 요소처럼 동작합니다.
+  - : These elements behave like {{HTMLElement("rt")}} HTML elements.
 - `ruby-base-container` {{Experimental_Inline}}
-  - : 이 요소는 익명의 박스로 만들어지는 {{HTMLElement("rbc")}} HTML 요소처럼 동작합니다.
+  - : These elements are generated as anonymous boxes.
 - `ruby-text-container` {{Experimental_Inline}}
-  - : 이 요소는 {{HTMLElement("rtc")}} HTML 요소처럼 동작합니다.
+  - : These elements behave like {{HTMLElement("rtc")}} HTML elements.
 
-## 예제
+## Formal syntax
 
-### CSS 테이블의 예시
+{{csssyntax}}
 
-다음 예시에서는 CSS 테이블 레이아웃을 이용해 간단한 폼을 배치합니다.
+## Examples
+
+### CSS tables example
+
+The following example demonstrates laying out a simple form using CSS table layout.
 
 #### HTML
 
@@ -48,11 +56,11 @@ slug: Web/CSS/display-internal
 <main>
   <div>
     <label for="name">Name</label>
-    <input type="text" id="name" name="name">
+    <input type="text" id="name" name="name" />
   </div>
   <div>
     <label for="age">Age</label>
-    <input type="text" id="age" name="age">
+    <input type="text" id="age" name="age" />
   </div>
 </main>
 ```
@@ -68,25 +76,26 @@ div {
   display: table-row;
 }
 
-label, input {
+label,
+input {
   display: table-cell;
   margin: 5px;
 }
 ```
 
-#### 결과
+#### Result
 
 {{EmbedLiveSample('CSS_tables_example', '100%', 100)}}
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{CSSxRef("display")}}
 

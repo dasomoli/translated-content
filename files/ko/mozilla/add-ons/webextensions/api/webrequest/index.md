@@ -1,29 +1,31 @@
 ---
 title: webRequest
 slug: Mozilla/Add-ons/WebExtensions/API/webRequest
+page-type: webextension-api
+browser-compat: webextensions.api.webRequest
 ---
 
 {{AddonSidebar}}
 
-Add event listeners for the various stages of making an HTTP request. The event listener receives detailed information about the request and can modify or cancel the request.
+Add event listeners for the various stages of making an HTTP request, which includes websocket requests on `ws://` and `wss://`. The event listener receives detailed information about the request and can modify or cancel the request.
 
 Each event is fired at a particular stage of the request. The typical sequence of events is like this:
 
-![](webrequest-flow.png)
+![Order of requests is onBeforeRequest, onBeforeSendHeader, onSendHeaders, onHeadersReceived, onResponseStarted, and onCompleted. The onHeadersReceived can cause an onBeforeRedirect and an onAuthRequired. Events caused by onHeadersReceived start at the beginning onBeforeRequest. Events caused by onAuthRequired start at onBeforeSendHeader.](webrequest-flow.png)
 
-{{WebExtAPIRef("webRequest.onErrorOccurred", "onErrorOccurred")}} can be fired at any time during the request. Also, note that sometimes the sequence of events may differ from this: for example, in Firefox, on an [HSTS](/ko/docs/Web/HTTP/Headers/Strict-Transport-Security) upgrade, the `onBeforeRedirect` event will be triggered immediately after `onBeforeRequest`.
+{{WebExtAPIRef("webRequest.onErrorOccurred", "onErrorOccurred")}} can fire at any time during the request. Also, note that sometimes the sequence of events may differ from this. For example, in Firefox, on an [HSTS](/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security) upgrade, the `onBeforeRedirect` event is triggered immediately after `onBeforeRequest`. `onErrorOccurred` is also fired if [Firefox Tracking Protection](https://support.mozilla.org/en-US/kb/enhanced-tracking-protection-firefox-desktop) blocks a request.
 
-All the events, except `onErrorOccurred`, can take three arguments to `addListener()`:
+All events – _except_ `onErrorOccurred` – can take three arguments to `addListener()`:
 
 - the listener itself
 - a {{WebExtAPIRef("webRequest.RequestFilter", "filter")}} object, so you can only be notified for requests made to particular URLs or for particular types of resource
 - an optional `extraInfoSpec` object. You can use this to pass additional event-specific instructions.
 
-리스너는 요청 정보가 담긴 `details` 객체를 받는다. This includes a request ID, which is provided to enable an add-on to correlate events associated with a single request. It is unique within a browser session and the add-on's context. It stays the same throughout a request, even across redirections and authentication exchanges.
+The listener function is passed a `details` object containing information about the request. This includes a request ID, which is provided to enable an add-on to correlate events associated with a single request. It is unique within a browser session and the add-on's context. It stays the same throughout a request, even across redirections and authentication exchanges.
 
-webRequest API를 사용하려면 확장 프로그램은 "webRequest" [API 권한](/en-US/Add-ons/WebExtensions/manifest.json/permissions#API_permissions)을 가져야 하고, 대상 호스트에 대해서도 [호스트 권한](/en-US/Add-ons/WebExtensions/manifest.json/permissions#Host_permissions)을 가져야 한다. "blocking" 기능을 사용하려면 추가로 "webRequestBlocking" API 권한도 가져야 한다.
+To use the `webRequest` API for a given host, an extension must have the `"webRequest"` [API permission](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions#api_permissions) and the [host permission](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions#host_permissions) for that host. To use the `"blocking"` feature, the extension must also have the `"webRequestBlocking"` API permission.
 
-To intercept resources loaded by a page (such as images, scripts, or stylesheets), the extension must have the host permission for the resource as well as for the main page requesting the resource. For example, if a page at "https\://developer.mozilla.org" loads an image from "https\://mdn.mozillademos.org", then an extension must have both host permissions if it is to intercept the image request.
+To intercept resources loaded by a page (such as images, scripts, or stylesheets), the extension must have the host permission for the resource as well as for the main page requesting the resource. For example, if a page at `https://developer.mozilla.org` loads an image from `https://mdn.mozillademos.org`, then an extension must have both host permissions if it is to intercept the image request.
 
 ## Modifying requests
 
@@ -52,11 +54,21 @@ On some of these events, you can modify the request. Specifically, you can:
 
   - {{WebExtAPIRef("webRequest.onAuthRequired", "onAuthRequired")}}
 
-To do this, you need to pass an option with the value "blocking" in the `extraInfoSpec` argument to the event's `addListener()`. This makes the listener synchronous. In the listener, you can then return a {{WebExtAPIRef("webRequest.BlockingResponse", "BlockingResponse")}} object, which indicates the modification you need to make: for example, the modified request header you want to send.
+To do this, you need to pass an option with the value `"blocking"` in the `extraInfoSpec` argument to the event's `addListener()`. This makes the listener synchronous.
+
+In the listener, you can then return a {{WebExtAPIRef("webRequest.BlockingResponse", "BlockingResponse")}} object, which indicates the modification you need to make: for example, the modified request header you want to send.
+
+## Requests at browser startup
+
+When a listener is registered with the `"blocking"` option and is registered during the extension startup, if a request is made during the browser startup that matches the listener the extension starts early. This enables the extension to observe the request at browser startup. If you don't take these steps, requests made at startup could be missed.
+
+## Speculative requests
+
+The browser can make speculative connections, where it determines that a request to a URI may be coming soon. This type of connection does not provide valid tab information, so request details such as `tabId`, `frameId`, `parentFrameId`, etc. are inaccurate. These connections have a {{WebExtAPIRef("webRequest.ResourceType")}} of `speculative`.
 
 ## Accessing security information
 
-In the {{WebExtAPIRef("webRequest.onHeadersReceived", "onHeadersReceived")}} listener you can access the [TLS](/ko/docs/Glossary/TLS) properties of a request by calling {{WebExtAPIRef("webRequest.getSecurityInfo()", "getSecurityInfo()")}}. To do this you must also pass "blocking" in the `extraInfoSpec` argument to the event's `addListener()`.
+In the {{WebExtAPIRef("webRequest.onHeadersReceived", "onHeadersReceived")}} listener you can access the [TLS](/en-US/docs/Glossary/TLS) properties of a request by calling {{WebExtAPIRef("webRequest.getSecurityInfo()", "getSecurityInfo()")}}. To do this you must also pass "blocking" in the `extraInfoSpec` argument to the event's `addListener()`.
 
 You can read details of the TLS handshake, but can't modify them or override the browser's trust decisions.
 
@@ -64,7 +76,7 @@ You can read details of the TLS handshake, but can't modify them or override the
 
 To modify the HTTP response bodies for a request, call {{WebExtAPIRef("webRequest.filterResponseData")}}, passing it the ID of the request. This returns a {{WebExtAPIRef("webRequest.StreamFilter")}} object that you can use to examine and modify the data as it is received by the browser.
 
-To do this, you must have the "webRequestBlocking" API permission as well as the "webRequest" [API permission](/en-US/Add-ons/WebExtensions/manifest.json/permissions#API_permissions) and the [host permission](/en-US/Add-ons/WebExtensions/manifest.json/permissions#Host_permissions) for the relevant host.
+To do this, you must have the `"webRequestBlocking"` API permission as well as the `"webRequest"` [API permission](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions#api_permissions) and the [host permission](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions#host_permissions) for the relevant host.
 
 ## Types
 
@@ -75,7 +87,7 @@ To do this, you must have the "webRequestBlocking" API permission as well as the
 - {{WebExtAPIRef("webRequest.HttpHeaders")}}
   - : An array of HTTP headers. Each header is represented as an object with two properties: `name` and either `value` or `binaryValue`.
 - {{WebExtAPIRef("webRequest.RequestFilter")}}
-  - : An object describing filters to apply to webRequest events.
+  - : An object describing filters to apply to `webRequest` events.
 - {{WebExtAPIRef("webRequest.ResourceType")}}
   - : Represents a particular kind of resource fetched in a web request.
 - {{WebExtAPIRef("webRequest.SecurityInfo")}}
@@ -88,7 +100,7 @@ To do this, you must have the "webRequestBlocking" API permission as well as the
 ## Properties
 
 - {{WebExtAPIRef("webRequest.MAX_HANDLER_BEHAVIOR_CHANGED_CALLS_PER_10_MINUTES", "webRequest.MAX_HANDLER_BEHAVIOR_CHANGED_CALLS_PER_10_MINUTES")}}
-  - : The maximum number of times that <code><a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/WebRequest/handlerBehaviorChanged" title="Suppose an add-on&#x27;s job is to block web requests against a pattern, and the following scenario happens:"><code>handlerBehaviorChanged()</code></a></code> can be called in a 10 minute period.
+  - : The maximum number of times that {{WebExtAPIRef("WebRequest.handlerBehaviorChanged", "handlerBehaviorChanged()")}} can be called in a 10 minute period.
 
 ## Methods
 
@@ -97,7 +109,7 @@ To do this, you must have the "webRequestBlocking" API permission as well as the
 - {{WebExtAPIRef("webRequest.filterResponseData()")}}
   - : Returns a {{WebExtAPIRef("webRequest.StreamFilter")}} object for a given request.
 - {{WebExtAPIRef("webRequest.getSecurityInfo()")}}
-  - : Gets detailed information about the [TLS](/ko/docs/Glossary/TLS) connection associated with a given request.
+  - : Gets detailed information about the [TLS](/en-US/docs/Glossary/TLS) connection associated with a given request.
 
 ## Events
 
@@ -120,15 +132,15 @@ To do this, you must have the "webRequestBlocking" API permission as well as the
 - {{WebExtAPIRef("webRequest.onErrorOccurred")}}
   - : Fired when an error occurs.
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-[Extra notes on Chrome incompatibilities](/ko/docs/Mozilla/Add-ons/WebExtensions/Chrome_incompatibilities#webRequest_incompatibilities).
+[Additional notes on Chrome incompatibilities](/en-US/docs/Mozilla/Add-ons/WebExtensions/Chrome_incompatibilities#webrequest_api).
 
 {{WebExtExamples("h2")}}
 
-> **참고:** **Acknowledgments**This API is based on Chromium's [`chrome.webRequest`](https://developer.chrome.com/extensions/webRequest) API. This documentation is derived from [`web_request.json`](https://chromium.googlesource.com/chromium/src/+/master/extensions/common/api/web_request.json) in the Chromium code.Microsoft Edge compatibility data is supplied by Microsoft Corporation and is included here under the Creative Commons Attribution 3.0 United States License.
+> **Note:** This API is based on Chromium's [`chrome.webRequest`](https://developer.chrome.com/docs/extensions/reference/webRequest/) API. This documentation is derived from [`web_request.json`](https://chromium.googlesource.com/chromium/src/+/master/extensions/common/api/web_request.json) in the Chromium code.
 
 <!--
 // Copyright 2015 The Chromium Authors. All rights reserved.

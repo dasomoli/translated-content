@@ -1,20 +1,25 @@
 ---
-title: Document.embeds
+title: "Document: embeds property"
+short-title: embeds
 slug: Web/API/Document/embeds
+page-type: web-api-instance-property
+browser-compat: api.Document.embeds
 ---
 
-{{ ApiRef() }}
+{{ApiRef}}
 
-### Summary
+The **`embeds`** read-only property of the
+{{domxref("Document")}} interface returns a list of the embedded
+{{htmlelement("embed")}} elements within the current document.
 
-`embeds` 는 현재 document 에 embed되어 있는 OBJECT 들의 list 를 반환합니다.
+## Value
 
-### Syntax
+An {{domxref("HTMLCollection")}}.
 
-```js
-nodeList = document.embeds
-```
-
-### 명세서
+## Specifications
 
 {{Specifications}}
+
+## Browser compatibility
+
+{{Compat}}

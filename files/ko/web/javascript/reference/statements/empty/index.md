@@ -1,68 +1,69 @@
 ---
 title: empty
 slug: Web/JavaScript/Reference/Statements/Empty
+page-type: javascript-statement
+browser-compat: javascript.statements.empty
 ---
 
 {{jsSidebar("Statements")}}
 
-**empty** 문은 JavaScript 아무것도 동작하지 않습니다.
+An **empty statement** is used to provide no statement, although the
+JavaScript syntax would expect one.
 
 {{EmbedInteractiveExample("pages/js/statement-empty.html")}}
 
-## 구문
+## Syntax
 
-```js
-    ;
+```js-nolint
+;
 ```
 
-## 설명
+## Description
 
-empty statement은 JavaScript구문에 하나가 필요할 때 어떤 문도 실행되지 않을 것이라는 것을 나타내는 세미 콜론(;)입니다. 여러개의 문장을 원하지만 JavaScript는 [block statement](/ko/docs/Web/JavaScript/Reference/Statements/block)을 사용하여 하나만 허용하며 여러개의 문장을 하나로 결합합니다.
+The empty statement is a semicolon (`;`) indicating that no statement will
+be executed, even if JavaScript syntax requires one.
 
-## 예제
+The opposite behavior, where you want multiple statements, but JavaScript only allows a
+single one, is possible using a [block statement](/en-US/docs/Web/JavaScript/Reference/Statements/block),
+which combines several statements into a single one.
 
-빈 문은 루프 문과 함께 사용되기도합니다. 빈 루프 본문이있는 다음 예제를 참조하십시오.
+## Examples
 
-```js
-var arr = [1, 2, 3];
+### Empty loop body
+
+The empty statement is sometimes used with loop statements. See the following example
+with an empty loop body:
+
+```js-nolint
+const arr = [1, 2, 3];
 
 // Assign all array values to 0
-for (i = 0; i < arr.length; arr[i++] = 0) /* empty statement */ ;
+for (let i = 0; i < arr.length; arr[i++] = 0) /* empty statement */ ;
 
-console.log(arr)
+console.log(arr);
 // [0, 0, 0]
 ```
 
-**참고:** 정상적인 세미 콜론을 구분하는 것이 그리 쉽지 않기 때문에, empty statement를 사용할 때는 의도적으로 주석을 달아주는것이 좋습니다. 다음 예 에서는 의도한대로 코드가 동작하지 않을것입니다. 아마도 killTheUniverse()를 if문 안에서 실행하고자 했던것 같습니다.
+### Unintentional usage
 
-```js
-if (condition);       // Caution, this "if" does nothing!
-   killTheUniverse()  // So this always gets executed!!!
+It is a good idea to comment _intentional_ use of the empty statement, as it is
+not really obvious to distinguish from a normal semicolon.
+
+In the following example, the usage is probably not intentional:
+
+```js-nolint example-bad
+if (condition);      // Caution, this "if" does nothing!
+  killTheUniverse(); // So this always gets executed!!!
 ```
 
-다른 예 : 중괄호 ({})가없는 [`if...else`](/ko/docs/Web/JavaScript/Reference/Statements/if...else) 문에서 `three`가 `true`이면 아무 일도 일어나지 않고 `four`를 건너 뛰고 else case의 launchRocket() 함수도 실행되지 않습니다.
-
-```js
-if (one)
-  doOne();
-else if (two)
-  doTwo();
-else if (three)
-  ; // nothing here
-else if (four)
-  doFour();
-else
-  launchRocket();
-```
-
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- {{jsxref("Statements/block", "Block statement")}}
+- [Block statement](/en-US/docs/Web/JavaScript/Reference/Statements/block)

@@ -1,39 +1,41 @@
 ---
 title: Geolocation
 slug: Web/API/Geolocation
+page-type: web-api-interface
+browser-compat: api.Geolocation
 ---
 
 {{securecontext_header}}{{APIRef("Geolocation API")}}
 
-**`Geolocation`** 인터페이스는 장치의 위치를 가져오는 방법을 나타냅니다. `Geolocation`을 사용하면 웹 사이트나 웹 앱이 위치 정보를 활용해, 현재 위치에 대해 맞춤 콘텐츠를 제공할 수 있습니다.
+The **`Geolocation`** interface represents an object able to obtain the position of the device programmatically. It gives Web content access to the location of the device. This allows a website or app to offer customized results based on the user's location.
 
-{{domxref("Navigator")}} 객체의 {{domxref("Navigator.geolocation", "geolocation")}} 속성으로 이 인터페이스를 구현하는 객체에 접근할 수 있습니다.
+An object with this interface is obtained using the {{domxref("navigator.geolocation")}} property implemented by the {{domxref("Navigator")}} object.
 
-> **참고:** 보안 상의 문제로, 웹 페이지가 위치 정보에 접근을 시도하면 사용자에게 알림을 보내고 권한을 허용할지 묻습니다. 각 브라우저는 자신만의 권한 정책과 요청 방식을 가지고 있으므로 주의해야 합니다.
+> **Note:** For security reasons, when a web page tries to access location information, the user is notified and asked to grant permission. Be aware that each browser has its own policies and methods for requesting this permission.
 
-## 속성
+## Instance properties
 
-_`Geolocation` 인터페이스는 어떤 속성도 구현하거나 상속하지 않습니다._
+_The `Geolocation` interface neither implements, nor inherits any property._
 
-## 메서드
+## Instance methods
 
-**`Geolocation` 인터페이스는 어떤 메서드도 상속하지 않습니다.**
+_The `Geolocation` interface doesn't inherit any method._
 
 - {{domxref("Geolocation.getCurrentPosition()")}} {{securecontext_inline}}
-  - : 장치의 현재 위치를 조사한 후 {{domxref("GeolocationPosition")}} 객체로 반환합니다.
+  - : Determines the device's current location and gives back a {{domxref("GeolocationPosition")}} object with the data.
 - {{domxref("Geolocation.watchPosition()")}} {{securecontext_inline}}
-  - : 장치의 위치가 변경될 때마다 호출하는 콜백을 등록합니다. 반환값은 콜백의 식별자로 쓸 수 있는 `long` 값입니다.
+  - : Returns a `long` value representing the newly established callback function to be invoked whenever the device location changes.
 - {{domxref("Geolocation.clearWatch()")}} {{securecontext_inline}}
-  - : `watchPosition()`을 이용해 등록한 특정 콜백을 삭제합니다.
+  - : Removes the particular handler previously installed using `watchPosition()`.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Geolocation API 사용하기](/ko/docs/Web/API/Geolocation_API/Using_the_Geolocation_API)
+- [Using geolocation](/en-US/docs/Web/API/Geolocation_API/Using_the_Geolocation_API)

@@ -1,33 +1,42 @@
 ---
-title: window.screen.onorientationchange
+title: "Screen: orientationchange event"
+short-title: orientationchange
 slug: Web/API/Screen/orientationchange_event
-original_slug: Web/API/Screen/onorientationchange
+page-type: web-api-event
+status:
+  - deprecated
+  - non-standard
+browser-compat: api.Screen.orientationchange_event
 ---
-{{ ApiRef() }}
 
-{{SeeCompatTable}}
+{{APIRef("Screen Orientation API")}}{{Deprecated_Header}}{{Non-standard_Header}}
 
-## Summary
-
-{{ event("orientationchange")}} 이벤트를 화면 객체로 보내는 이벤트 핸들러이다.
+The `orientationchange` event fires when the device's orientation has changed.
 
 ## Syntax
 
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
+
 ```js
-screen.onorientationchange = funcRef;
+addEventListener("orientationchange", (event) => {});
+
+onorientationchange = (event) => {};
 ```
 
-`funcRef` 는 함수로의 참조 이다.
+## Event type
 
-## 명세서
+A generic {{domxref("Event")}}.
 
-{{Specifications}}
+## Specifications
 
-## 브라우저 호환성
+This feature is not part of any specification. It is no longer on track to becoming a standard.
+
+Use {{domxref("ScreenOrientation.onchange")}} instead.
+
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- {{ event("orientationchange") }}
-- [Managing screen orientation](/ko/docs/Managing_screen_orientation)
+- [Managing screen orientation](/en-US/docs/Web/API/CSS_Object_Model/Managing_screen_orientation)

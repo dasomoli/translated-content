@@ -1,16 +1,15 @@
 ---
-title: template
+title: <xsl:template>
 slug: Web/XSLT/Element/template
-original_slug: Web/XSLT/template
 ---
 
 {{ XsltRef() }}
 
-`<xsl:template>` 요소는 출력 생성 템플릿을 정의합니다. 이 요소는 match 속성이나 name 속성 집합이 있어야 합니다.
+The `<xsl:template>` element defines an output producing template. This element must have either the match attribute or the name attribute set.
 
-### 문법
+### Syntax
 
-```
+```xml
 <xsl:template
   match=PATTERN
   name=NAME
@@ -21,29 +20,29 @@ original_slug: Web/XSLT/template
 </xsl:template>
 ```
 
-### 필수 속성
+### Required Attributes
 
-없음.
+None.
 
-### 선택 속성
+### Optional Attributes
 
 - `match`
-  - : 이 템플릿을 쓰면 좋을 요소를 결정하는 패턴을 지정합니다. `name` 속성이 없다면, 필수 속성입니다.
+  - : Specifies a pattern that determines the elements for which this template should be used. It is a required attribute if there is no `name` attribute.
 - `name`
-  - : `<xsl:call-template>` 요소가 호출할 수 있는 이 템플릿에 이름을 지정합니다.
+  - : Specifies a name for this template, by which it can be invoked through the `<xsl:call-template>` element.
 - `mode`
-  - : 이 템플릿에 `<xsl:apply-templates>` 요소의 속성과 일치할 수 있는 특유한 모드를 지정합니다. 이는 같은 정보를 다양한 방식으로 처리하는데 유용합니다.
+  - : Specifies a particular mode for this template, which can be matched by an attribute of the `<xsl:apply-templates>` element. This is useful for processing the same information in multiple ways.
 - `priority`
-  - : 이 템플릿에 숫자로 된 우선권을 지정합니다. 이는 `Infinity`와 다른 아무 숫자일 수 있습니다. 처리기는 하나 이상의 템플릿이 같은 노드와 일치할 때 이 숫자를 씁니다.
+  - : Specifies a numeric priority for this template. This can be any number other than `Infinity`. The processor uses this number when more than one template matches the same node.
 
-### 타입
+### Type
 
-최상위, `<xsl:stylesheet>`나 `<xsl:transform>`의 자식이어야 함.
+Top-level, must be the child of `<xsl:stylesheet>` or `<xsl:transform>`.
 
-### 정의
+### Defined
 
-[XSLT section 5.3, Defining Template Rules](http://www.w3.org/TR/xslt#section-Defining-Template-Rules)
+XSLT, section 5.3.
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

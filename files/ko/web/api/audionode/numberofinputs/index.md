@@ -1,22 +1,23 @@
 ---
-title: AudioNode.numberOfInputs
+title: "AudioNode: numberOfInputs property"
+short-title: numberOfInputs
 slug: Web/API/AudioNode/numberOfInputs
+page-type: web-api-instance-property
+browser-compat: api.AudioNode.numberOfInputs
 ---
+
 {{APIRef("Web Audio API")}}
 
-{{domxref("AudioNode")}} 인터페이스의 `numberOfInputs` 속성은 해당 노드에 공급되는 입력의 수를 반환합니다. 소스 노드는 `numberOfInputs` 속성의 값이 0인 노드로 정의됩니다.
+The `numberOfInputs` property of
+the {{domxref("AudioNode")}} interface returns the number of inputs feeding the
+node. Source nodes are defined as nodes having a `numberOfInputs`
+property with a value of 0.
 
-## 구문
+## Value
 
-```js
-var numInputs = audioNode.numberOfInputs;
-```
+An integer ≥ 0.
 
-### 값
-
-integer ≥ 0.
-
-## 예제
+## Examples
 
 ```js
 const audioCtx = new AudioContext();
@@ -31,15 +32,14 @@ console.log(gainNode.numberOfInputs); // 1
 console.log(audioCtx.destination.numberOfInputs); // 1
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Web Audio
-  API 사용하기](/ko/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)
+- [Using the Web Audio API](/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)

@@ -1,93 +1,105 @@
 ---
 title: Array.prototype.find()
 slug: Web/JavaScript/Reference/Global_Objects/Array/find
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Array.find
 ---
 
 {{JSRef}}
 
-**`find()`** 메서드는 주어진 판별 함수를 만족하는 **첫 번째 요소**의 **값**을 반환합니다. 그런 요소가 없다면 {{jsxref("undefined")}}를 반환합니다.
+The **`find()`** method returns the first element in the provided array that satisfies the provided testing function.
+If no values satisfy the testing function, {{jsxref("undefined")}} is returned.
 
-{{EmbedInteractiveExample("pages/js/array-find.html")}}
+- If you need the **index** of the found element in the array, use {{jsxref("Array/findIndex", "findIndex()")}}.
+- If you need to find the **index of a value**, use {{jsxref("Array/indexOf", "indexOf()")}}.
+  (It's similar to {{jsxref("Array/findIndex", "findIndex()")}}, but checks each element for equality with the value instead of using a testing function.)
+- If you need to find if a value **exists** in an array, use {{jsxref("Array/includes", "includes()")}}.
+  Again, it checks each element for equality with the value instead of using a testing function.
+- If you need to find if any element satisfies the provided testing function, use {{jsxref("Array/some", "some()")}}.
 
-찾은 요소의 값 대신 **인덱스**를 반환하는 {{jsxref("Array.findIndex", "findIndex()")}} 메서드도 살펴보세요.
+{{EmbedInteractiveExample("pages/js/array-find.html","shorter")}}
 
-배열 요소의 위치를 찾고자 하는 경우에는 {{jsxref("Array.prototype.indexOf()")}}를 사용하세요.
+## Syntax
 
-배열 요소가 해당 배열에 존재하는지 확인하고자 하는 경우에는 {{jsxref("Array.prototype.indexOf()")}} 또는 {{jsxref("Array.prototype.includes()")}}를 사용세요.
-
-## 구문
-
-```js
-    arr.find(callback[, thisArg])
+```js-nolint
+find(callbackFn)
+find(callbackFn, thisArg)
 ```
 
-### 매개변수
+### Parameters
 
-- `callback`
-  - : 배열의 각 값에 대해 실행할 함수. 아래의 세 인자를 받습니다._ `element`
-    _ : 콜백함수에서 처리할 현재 요소.
-    - `index`{{optional_inline}}
-      - : 콜백함수에서 처리할 현재 요소의 인덱스.
-    - `array`{{optional_inline}}
-      - : `find` 함수를 호출한 배열.
-- `thisArg`
-  - : 선택 항목. 콜백이 호출될 때 `this`로 사용할 객체.
+- `callbackFn`
+  - : A function to execute for each element in the array. It should return a [truthy](/en-US/docs/Glossary/Truthy) value to indicate a matching element has been found, and a [falsy](/en-US/docs/Glossary/Falsy) value otherwise. The function is called with the following arguments:
+    - `element`
+      - : The current element being processed in the array.
+    - `index`
+      - : The index of the current element being processed in the array.
+    - `array`
+      - : The array `find()` was called upon.
+- `thisArg` {{optional_inline}}
+  - : A value to use as `this` when executing `callbackFn`. See [iterative methods](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#iterative_methods).
 
-### 반환 값
+### Return value
 
-주어진 판별 함수를 만족하는 **첫 번째 요소**의 **값**. 그 외에는 {{jsxref("undefined")}}.
+The first element in the array that satisfies the provided testing function.
+Otherwise, {{jsxref("undefined")}} is returned.
 
-## 설명
+## Description
 
-`find` 메서드는 `callback` 함수가 참을 반환 할 때까지 해당 배열의 각 요소에 대해서 `callback` 함수를 실행합니다. 만약 어느 요소를 찾았다면 `find` 메서드는 해당 요소의 값을 즉시 반환하고, 그렇지 않았다면 {{jsxref("undefined")}}를 반환합니다. `callback`은 `0` 부터 `length - 1` 까지 배열의 모든 인덱스에 대해 호출되며, 값이 지정되지 않은 요소도 포함하여 모든 인덱스에 대해 호출됩니다. 따라서, 희소 배열 (sparse arrays)의 경우에는 값이 지정된 요소만 탐색하는 다른 메소드에 비해 더 비효율적입니다.
+The `find()` method is an [iterative method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#iterative_methods). It calls a provided `callbackFn` function once for each element in an array in ascending-index order, until `callbackFn` returns a [truthy](/en-US/docs/Glossary/Truthy) value. `find()` then returns that element and stops iterating through the array. If `callbackFn` never returns a truthy value, `find()` returns {{jsxref("undefined")}}.
 
-`callback`은 다음의 세가지 인자를 가지고 호출됩니다: 요소의 값, 요소의 인덱스, 순회의 대상이 되는 배열.
+`callbackFn` is invoked for _every_ index of the array, not just those with assigned values. Empty slots in [sparse arrays](/en-US/docs/Web/JavaScript/Guide/Indexed_collections#sparse_arrays) behave the same as `undefined`.
 
-`thisArg` 파라미터가 주어진 경우에는 제공되었다면 `thisArg`가 `callback`안에서 `this`로 사용되고, 그렇지 않은 경우 {{jsxref("undefined")}} 가 `this`로 사용됩니다.
+`find()` does not mutate the array on which it is called, but the function provided as `callbackFn` can. Note, however, that the length of the array is saved _before_ the first invocation of `callbackFn`. Therefore:
 
-`find`는 호출의 대상이 된 배열을 변경(mutate)하지 않습니다.
+- `callbackFn` will not visit any elements added beyond the array's initial length when the call to `find()` began.
+- Changes to already-visited indexes do not cause `callbackFn` to be invoked on them again.
+- If an existing, yet-unvisited element of the array is changed by `callbackFn`, its value passed to the `callbackFn` will be the value at the time that element gets visited. [Deleted](/en-US/docs/Web/JavaScript/Reference/Operators/delete) elements are visited as if they were `undefined`.
 
-`find`가 처리할 배열 요소의 범위는 첫 `callback`이 호출되기 전에 먼저 결정됩니다. `find`메서드가 실행 된 이후에 배열에 추가된 요소들에 대해서는 `callback`이 호출되지 않습니다. 아직 `callback`이 호출되지 않았던 배열 요소가 `callback`에 의해서 변경된 경우, `find`가 해당 요소의 인덱스를 방문할 때의 값으로 `callback`함수에 전달될 것입니다. 즉, 삭제된 요소에도 `callback`이 호출됩니다.
+> **Warning:** Concurrent modifications of the kind described above frequently lead to hard-to-understand code and are generally to be avoided (except in special cases).
 
-## 예제
+The `find()` method is [generic](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#generic_array_methods). It only expects the `this` value to have a `length` property and integer-keyed properties.
 
-### 속성 중 하나를 사용하여 배열에서 객체 찾기
+## Examples
 
-```js
-var inventory = [
-    {name: 'apples', quantity: 2},
-    {name: 'bananas', quantity: 0},
-    {name: 'cherries', quantity: 5}
-];
-
-function findCherries(fruit) {
-    return fruit.name === 'cherries';
-}
-
-console.log(inventory.find(findCherries)); // { name: 'cherries', quantity: 5 }
-```
-
-#### ES2015 화살표 함수 사용하기
+### Find an object in an array by one of its properties
 
 ```js
 const inventory = [
-    {name: 'apples', quantity: 2},
-    {name: 'bananas', quantity: 0},
-    {name: 'cherries', quantity: 5}
+  { name: "apples", quantity: 2 },
+  { name: "bananas", quantity: 0 },
+  { name: "cherries", quantity: 5 },
 ];
 
-const result = inventory.find(fruit => fruit.name === 'cherries');
+function isCherries(fruit) {
+  return fruit.name === "cherries";
+}
 
-console.log(result) // { name: 'cherries', quantity: 5 }
+console.log(inventory.find(isCherries));
+// { name: 'cherries', quantity: 5 }
 ```
 
-### 배열에서 소수 찾기
+#### Using arrow function and destructuring
 
-다음 예제에서는 배열의 요소 중 소수인 요소를 찾습니다(소수가 없는 경우에는 {{jsxref("undefined")}}를 반환).
+```js
+const inventory = [
+  { name: "apples", quantity: 2 },
+  { name: "bananas", quantity: 0 },
+  { name: "cherries", quantity: 5 },
+];
+
+const result = inventory.find(({ name }) => name === "cherries");
+
+console.log(result); // { name: 'cherries', quantity: 5 }
+```
+
+### Find a prime number in an array
+
+The following example finds an element in the array that is a prime number (or returns {{jsxref("undefined")}} if there is no prime number):
 
 ```js
 function isPrime(element, index, array) {
-  var start = 2;
+  let start = 2;
   while (start <= Math.sqrt(element)) {
     if (element % start++ < 1) {
       return false;
@@ -100,94 +112,74 @@ console.log([4, 6, 8, 12].find(isPrime)); // undefined, not found
 console.log([4, 5, 8, 12].find(isPrime)); // 5
 ```
 
-### 탐색 중 삭제된 배열 요소
+### Using find() on sparse arrays
 
-다음 예제에서는 삭제되어 존재하지 않는 배열의 요소에도 `callback`이 호출되어 해당 시점의 값이 `callback`에 전달되는 것을 보여줍니다.
+Empty slots in sparse arrays _are_ visited, and are treated the same as `undefined`.
 
 ```js
-// Declare array with no element at index 2, 3 and 4
-var a = [0,1,,,,5,6];
+// Declare array with no elements at indexes 2, 3, and 4
+const array = [0, 1, , , , 5, 6];
 
-// Shows all indexes, not just those that have been assigned values
-a.find(function(value, index) {
-  console.log('Visited index ' + index + ' with value ' + value);
+// Shows all indexes, not just those with assigned values
+array.find((value, index) => {
+  console.log("Visited index", index, "with value", value);
 });
+// Visited index 0 with value 0
+// Visited index 1 with value 1
+// Visited index 2 with value undefined
+// Visited index 3 with value undefined
+// Visited index 4 with value undefined
+// Visited index 5 with value 5
+// Visited index 6 with value 6
+
 // Shows all indexes, including deleted
-  a.find(function(value, index) {
+array.find((value, index) => {
   // Delete element 5 on first iteration
-  if (index == 0) {
-    console.log('Deleting a[5] with value ' + a[5]);
-    delete a[5];
+  if (index === 0) {
+    console.log("Deleting array[5] with value", array[5]);
+    delete array[5];
   }
   // Element 5 is still visited even though deleted
-  console.log('Visited index ' + index + ' with value ' + value);
+  console.log("Visited index", index, "with value", value);
 });
+// Deleting array[5] with value 5
+// Visited index 0 with value 0
+// Visited index 1 with value 1
+// Visited index 2 with value undefined
+// Visited index 3 with value undefined
+// Visited index 4 with value undefined
+// Visited index 5 with value undefined
+// Visited index 6 with value 6
 ```
 
-## 폴리필
+### Calling find() on non-array objects
 
-`find`는 ECMAScript 2015 명세에 추가됐으므로 어떤 표준 구현체에서는 사용지 못할 수도 있습니다. 다른 모든 코드 이전에 아래 코드를 포함하면 `find`를 지원하지 않는 환경에서도 사용할 수 있습니다.
+The `find()` method reads the `length` property of `this` and then accesses each integer index.
 
 ```js
-// https://tc39.github.io/ecma262/#sec-array.prototype.find
-if (!Array.prototype.find) {
-  Object.defineProperty(Array.prototype, 'find', {
-    value: function(predicate) {
-     // 1. Let O be ? ToObject(this value).
-      if (this == null) {
-        throw new TypeError('"this" is null or not defined');
-      }
-
-      var o = Object(this);
-
-      // 2. Let len be ? ToLength(? Get(O, "length")).
-      var len = o.length >>> 0;
-
-      // 3. If IsCallable(predicate) is false, throw a TypeError exception.
-      if (typeof predicate !== 'function') {
-        throw new TypeError('predicate must be a function');
-      }
-
-      // 4. If thisArg was supplied, let T be thisArg; else let T be undefined.
-      var thisArg = arguments[1];
-
-      // 5. Let k be 0.
-      var k = 0;
-
-      // 6. Repeat, while k < len
-      while (k < len) {
-        // a. Let Pk be ! ToString(k).
-        // b. Let kValue be ? Get(O, Pk).
-        // c. Let testResult be ToBoolean(? Call(predicate, T, « kValue, k, O »)).
-        // d. If testResult is true, return kValue.
-        var kValue = o[k];
-        if (predicate.call(thisArg, kValue, k, o)) {
-          return kValue;
-        }
-        // e. Increase k by 1.
-        k++;
-      }
-
-      // 7. Return undefined.
-      return undefined;
-    },
-    configurable: true,
-    writable: true
-  });
-}
+const arrayLike = {
+  length: 3,
+  0: 2,
+  1: 7.3,
+  2: 4,
+};
+console.log(Array.prototype.find.call(arrayLike, (x) => !Number.isInteger(x)));
+// 7.3
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{jsxref("Array.prototype.findIndex()")}} – 찾기 이후 인덱스 반환
-- {{jsxref("Array.prototype.includes()")}} – 배열에 어떤 값이 존재하는지 검사
-- {{jsxref("Array.prototype.filter()")}} – 매칭되는 모든 요소 찾기
-- {{jsxref("Array.prototype.every()")}} – 모든 요소에 대해서 검사
+- [Polyfill of `Array.prototype.find` in `core-js`](https://github.com/zloirock/core-js#ecmascript-array)
+- {{jsxref("Array.prototype.findIndex()")}} – find and return an index
+- {{jsxref("Array.prototype.includes()")}} – test whether a value exists in the array
+- {{jsxref("Array.prototype.filter()")}} – remove all non-matching elements
+- {{jsxref("Array.prototype.every()")}} – test all elements
+- {{jsxref("Array.prototype.some()")}} – test until one element matches

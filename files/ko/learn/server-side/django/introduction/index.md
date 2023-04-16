@@ -1,122 +1,113 @@
 ---
-title: Django 소개
+title: Django introduction
 slug: Learn/Server-side/Django/Introduction
 ---
 
-{{LearnSidebar}}
+{{LearnSidebar}}{{NextMenu("Learn/Server-side/Django/development_environment", "Learn/Server-side/Django")}}
 
-{{NextMenu("Learn/Server-side/Django/development_environment", "Learn/Server-side/Django")}}
+In this first Django article, we answer the question "What is Django?" and give you an overview of what makes this web framework special.
 
-Django의 첫번째 문서에서는 "Django가 뭐지?"라는 질문에 답해보고, Django 웹 프레임워크의 특별한 부분에 대해 전반적으로 살펴봅니다. 우리가 이 수업에서 자세히 다루지는 않을 고급 기능들까지 포함하여 간단하게 전반적인 부분을 살펴 볼겁니다. 또한, Django 애플리케이션을 구성하는 중요한 요소도 살펴보겠습니다. (물론 지금 시점에서는 테스트를 할 개발환경을 가지고 있지 않겠지만요.)
+We'll outline the main features, including some of the advanced functionality that we won't have time to cover in detail in this module. We'll also show you some of the main building blocks of a Django application (although at this point you won't yet have a development environment in which to test it).
 
-<table class="learn-box standard-table">
+<table>
   <tbody>
     <tr>
-      <th scope="row">요구 사항</th>
+      <th scope="row">Prerequisites:</th>
       <td>
-        기본적인 컴퓨터 지식.
-        <a
-          href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/First_steps"
-          >server-side website 프로그래밍</a
-        >에 대한 전반적인 이해, 그리고 웹사이트의
-        <a
-          href="/en-US/docs/Learn/Server-side/First_steps/Client-Server_overview"
-          >client-server interactions</a
-        >
-        의 매커니즘에 대한 특정한 지식.
+        Basic computer literacy.
+        A general understanding of <a href="/en-US/docs/Learn/Server-side/First_steps">server-side website programming</a>, and in particular the mechanics of <a href="/en-US/docs/Learn/Server-side/First_steps/Client-Server_overview">client-server interactions in websites</a>.
       </td>
     </tr>
     <tr>
-      <th scope="row">목표</th>
+      <th scope="row">Objective:</th>
       <td>
-        <p>
-          Django란 무엇인지, 어떤 기능이 있는지, Django 어플리케이션의 주요
-          구성요소는 어떤것들인지에 대해 익숙해지기
-        </p>
+        To gain familiarity with what Django is, what functionality it provides, and the main building blocks of a Django application.
       </td>
     </tr>
   </tbody>
 </table>
 
-## Django란?
+## What is Django?
 
-Django란 보안이 우수하고 유지보수가 편리한 웹사이트를 신속하게 개발하는 하도록 도움을 주는 파이썬 웹 프레임워크입니다. 훌륭한 개발자에 의해 만들어진 이 프레임워크는, 웹 개발을 하는데 많은 도움을 주기 때문에 새롭게 웹 개발을 시작할 필요없이 그저 프레임워크를 활용하여 앱 개발에만 집중할 수 있게되죠. 무료 오픈소스인데다가, 활발한 커뮤니티들이 있고, 좋은 참고자료와 무료 및 유료 지원을 하는 옵션들이 제공됩니다.
+Django is a high-level Python web framework that enables rapid development of secure and maintainable websites. Built by experienced developers, Django takes care of much of the hassle of web development, so you can focus on writing your app without needing to reinvent the wheel. It is free and open source, has a thriving and active community, great documentation, and many options for free and paid-for support.
 
-Django는 다음과 같은 소프트웨어를 개발하는데 도움을 줍니다.
+Django helps you write software that is:
 
-- Complete(완결성 있는)
-  - : Django는 "Batteries included" 의 철학을 기반으로 개발자들이 개발하고 싶은 거의 모든것을 개발하는데 도움을 줍니다. 개발자들이 원하는 것은 모두 하나의 "결과물"의 일부일 것이기 때문에 도달하고자 하는 목표지점은 같으며 이 덕분에 일관된 디자인 룰을 적용하여 [광범위한 최신 문서](https://docs.djangoproject.com/en/2.2/)를 제공합니다.
-- Versatile(다용도의)
+- Complete
+  - : Django follows the "Batteries included" philosophy and provides almost everything developers might want to do "out of the box". Because everything you need is part of the one "product", it all works seamlessly together, follows consistent design principles, and has extensive and [up-to-date documentation](https://docs.djangoproject.com/en/stable/).
+- Versatile
 
-  - : Django는 문서관리시스템과 Wiki부터 SNS, 뉴스에 이르기까지 다양한 종류의 웹 사이트를 빌드하는데 사용할 수 있고 사용되어 왔습니다. 또한 어떠한 클라이언트측 프레임워크와도 협업할 수 있고, 대부분의 형식(HTML, RSS 피드, JSON, XML 등)으로 컨텐츠를 전송할 수 있습니다. 당신이 보고 있는 이 사이트도 Django 기반입니다!
+  - : Django can be (and has been) used to build almost any type of website — from content management systems and wikis, through to social networks and news sites. It can work with any client-side framework, and can deliver content in almost any format (including HTML, RSS feeds, JSON, and XML).
 
-    내부적으로 Django는 당신이 원하는 대부분의 기능들(몇몇 유명한 데이터베이스들, 템플릿 엔진 등)을 제공하지만, 필요하다면 다른 컴포넌트들을 사용하기 위해 확장될 수 있습니다.
+    Internally, while it provides choices for almost any functionality you might want (e.g. several popular databases, templating engines, etc.), it can also be extended to use other components if needed.
 
-- Secure(안전한)
+- Secure
 
-  - : Django 는 개발자들이 웹사이트를 개발할 때 실수하기 쉽지만 고려해야하는 보안 문제에 대해서 많은 도움을 줍니다. 예를 들면, 장고는 유저의 계정과 비밀번호를 관리하는 안전한 방법을 제공합니다. 이 예에서 발생할 수 있는 개발자들의 실수로 세션의 정보를 보안에 취약한 위치에 있는 쿠키(해결책은 쿠키는 그저 key값을 가지도록 하는 반면 실제 데이터는 데이터 베이스에 저장하도록 하는 것입니다)에 넣는 실수를 하는 것입니다. 또 달리 쉽게할 수 있는 실수는 비밀번호를 hash를 통하지 않고 그대로 변형없이 저장하는 것이 있습니다.
+  - : Django helps developers avoid many common security mistakes by providing a framework that has been engineered to "do the right things" to protect the website automatically. For example, Django provides a secure way to manage user accounts and passwords, avoiding common mistakes like putting session information in cookies where it is vulnerable (instead cookies just contain a key, and the actual data is stored in the database) or directly storing passwords rather than a password hash.
 
-    _비밀번호에 사용되는 hash 는 [cryptographic hash function](https://en.wikipedia.org/wiki/Cryptographic_hash_function)에 의해 생성된 고정된 길이의 값을 가집니다. Django는 이렇게 변형되어 입력된 비밀번호가 유효한지 hash 함수를 통해 확인할 수 있습니다. 하지만 "단방향" 적인 함수의 특성상, 저장된 hash 값을 웹을 공격하는 사람들이 알아낸다고 하더라도 원본 비밀번호는 알아낼 수 없습니다._
+    _A password hash is a fixed-length value created by sending the password through a [cryptographic hash function](https://en.wikipedia.org/wiki/Cryptographic_hash_function). Django can check if an entered password is correct by running it through the hash function and comparing the output to the stored hash value. However due to the "one-way" nature of the function, even if a stored hash value is compromised it is hard for an attacker to work out the original password._
 
-    Django 는 SQL 인젝션, 크로스사이트 스크립팅, 크로스사이트 요청 위조 그리고 클릭 하이젝킹 (이러한 공격 방법에 대한 상세 정보는 [Website security](/ko/docs/Learn/Server-side/First_steps/Website_security)에서 볼 수 있습니다)과 같은 보안 취약점을 보완할 방법 기본적으로 제공합니다.
+    Django enables protection against many vulnerabilities by default, including SQL injection, cross-site scripting, cross-site request forgery and [clickjacking](/en-US/docs/Glossary/Clickjacking) (see [Website security](/en-US/docs/Learn/Server-side/First_steps/Website_security) for more details of such attacks).
 
-- Scalable(확장성 있는)
-  - : Django는 컴포넌트 기반의 “[shared-nothing](https://en.wikipedia.org/wiki/Shared_nothing_architecture)” 아키텍쳐(각각의 아키텍쳐가 독립적이어서 필요하다면 교체 및 변경할 수 있는)를 사용합니다. 각 부분이 분명하게 분리되면 어떤 레벨에서든(예를 들면 캐싱 서버, 데이터베이스 서버, 혹은 어플리케이션 서버) 하드웨어를 추가해서 발생하는 늘어난 트래픽에 대응해 크기를 변경할 수 있게 됩니다. 사용자가 가장 많은 몇몇 사이트는 요구사항에 맞춰서 Django의 크기를 성공적으로 변경했습니다. (예를들면 Instagram, Disqus 등)
-- Maintainable(유지보수가 쉬운)
-  - : Django 코드는 유지보수가 쉽고 재사용하기 좋게끔 하는 디자인 원칙들과 패턴들을 이용하여 작성됩니다. 특히 Don't Repeat Yourself (DRY) 원칙을 적용해서 불필요한 중복이 없고 많은 양의 코드를 줄였습니다. 또한 Django는 관련된 기능들을 재사용 가능한 "applications"로 그룹화했고, 더 낮은 레벨에서 관련된 코드들을 모듈로 만들었습니다. ([Model View Controller (MVC)](/en-US/Apps/Fundamentals/Modern_web_app_architecture/MVC_architecture) 패턴과 유사합니다).
-- Portable(포터블한)
-  - : 장고는 파이썬으로 작성되어 있으며, 파이썬은 많은 플랫폼에서 작동합니다. 그것은 특정한 서버 플랫폼에 얽매이지 않는다는 것을 의미하며, 리눅스, 윈도우 그리고 맥 OS X 등등 다양한 운영체제에서 작동할 수 있다는 뜻입니다. 나아가, 장고는 많은 웹 호스팅 공급자들에 의해서 지원되고 있습니다. 그들은 장고 사이트의 호스팅과 관련해서 특정한 인프라와 문서를 제공합니다.
+- Scalable
+  - : Django uses a component-based "[shared-nothing](https://en.wikipedia.org/wiki/Shared_nothing_architecture)" architecture (each part of the architecture is independent of the others, and can hence be replaced or changed if needed). Having a clear separation between the different parts means that it can scale for increased traffic by adding hardware at any level: caching servers, database servers, or application servers. Some of the busiest sites have successfully scaled Django to meet their demands (e.g. Instagram and Disqus, to name just two).
+- Maintainable
+  - : Django code is written using design principles and patterns that encourage the creation of maintainable and reusable code. In particular, it makes use of the Don't Repeat Yourself (DRY) principle so there is no unnecessary duplication, reducing the amount of code. Django also promotes the grouping of related functionality into reusable "applications" and, at a lower level, groups related code into modules (along the lines of the [Model View Controller (MVC)](/en-US/docs/Glossary/MVC) pattern).
+- Portable
+  - : Django is written in Python, which runs on many platforms. That means that you are not tied to any particular server platform, and can run your applications on many flavors of Linux, Windows, and macOS. Furthermore, Django is well-supported by many web hosting providers, who often provide specific infrastructure and documentation for hosting Django sites.
 
-## 탄생 배경은 어떻게 되나요?
+## Where did it come from?
 
-장고는 신문 웹사이트를 제작 및 관리하던 어떤 웹 팀에 의해 2003년에서 2005년 사이에 처음으로 개발이 시작되었습니다. 여러 사이트들을 만들면서 웹 팀은 많은 공통 코드와 설계 패턴을 뽑아내어 재사용하였습니다. 이 공통 코드는 일반 웹 개발 프레임워크로 발전했습니다. 그리고 2005년 7월 "장고" 프로젝트로서 오픈소스화 되었죠..
+Django was initially developed between 2003 and 2005 by a web team who were responsible for creating and maintaining newspaper websites. After creating a number of sites, the team began to factor out and reuse lots of common code and design patterns. This common code evolved into a generic web development framework, which was open-sourced as the "Django" project in July 2005.
 
-장고는 2008년 9월 첫 번째 주요 릴리즈(1.0)에서부터 2017년의 최근 버전(2.0)까지 성장하고 발전했습니다. 장고는 각각의 버전에서 기능을 추가하고 버그를 수정했습니다. 새로운 유형의 데이터베이스, 탬플릿 엔진들 그리고 캐싱에 대한 지원에서부터 일반 보기 함수와 클래스들의 추가까지요(이를 통해 여러 프로그래밍 작업을 위해 개발자들이 작성해야 할 코드를 줄여줍니다).
+Django has continued to grow and improve, from its first milestone release (1.0) in September 2008 through to the recently-released version 4.0 (2022). Each release has added new functionality and bug fixes, ranging from support for new types of databases, template engines, and caching, through to the addition of "generic" view functions and classes (which reduce the amount of code that developers have to write for a number of programming tasks).
 
-> **참고:** 장고를 더 좋게 만들기 위해 어떤 작업이 이루어지고 있는지, 최근 버전에서 어떤 변경이 있었는지 확인하려면 장고 웹사이트의 [release notes](https://docs.djangoproject.com/en/1.10/releases/) 를 살펴보세요.
+> **Note:** Check out the [release notes](https://docs.djangoproject.com/en/stable/releases/) on the Django website to see what has changed in recent versions, and how much work is going into making Django better.
 
-장고는 수많은 사용자와 기여자가 있는 협력적이고 번성하는 프로젝트입니다. 여전히 몇 가지 장고만의 특징이 있지만, 장고는 모든 유형의 웹사이트를 개발할 수 있는 다용도적인 웹 프레임워크로 발전했습니다.
+Django is now a thriving, collaborative open source project, with many thousands of users and contributors. While it does still have some features that reflect its origin, Django has evolved into a versatile framework that is capable of developing any type of website.
 
-## Django의 인기는 어떤가요?
+## How popular is Django?
 
-사실 서버 측 프레임워크의 인기에 대해 쉽고 확정적인 측정값은 없습니다(다만 [Hot Frameworks](http://hotframeworks.com/) 와 같은 사이트는 각 플랫폼에 대해 GitHub 프로젝트와 StackOverflow 질문의 숫자를 세는 방법으로 인기에 대해 접근하려고 합니다). 장고가 인기없는 플랫폼의 문제를 피할 수 있을 만큼 "충분히 인기있는지"가 더 좋은 질문입니다. 장고가 계속 발전하나요? 도움이 필요할 때 받을 수 있나요? 장고를 배우면 돈을 받고 일할 기회가 생기나요?
+There isn't any readily-available and definitive measurement of popularity of server-side frameworks (although you can estimate popularity using mechanisms like counting the number of GitHub projects and StackOverflow questions for each platform). A better question is whether Django is "popular enough" to avoid the problems of unpopular platforms. Is it continuing to evolve? Can you get help if you need it? Is there an opportunity for you to get paid work if you learn Django?
 
-장고를 사용하는 상위 사이트의 숫자, 장고 코드베이스에 기여하는 사람들의 숫자, 그리고 급여가 지불되거나 지불되지 않거나에 상관없이 지원을 제공하는 사람들의 숫자에 근거해서, 맞습니다. 장고는 인기있는 프레임워크 입니다!
+Based on the number of high profile sites that use Django, the number of people contributing to the codebase, and the number of people providing both free and paid for support, then yes, Django is a popular framework!
 
-장고를 사용하는 상위 사이트는 다음을 포함합니다 : Disqus, Instagram, Knight Foundation, MacArthur Foundation, Mozilla, National Geographic, Open Knowledge Foundation, Pinterest, and Open Stack (출처: [Django home page](https://www.djangoproject.com/)).
+High-profile sites that use Django include: Disqus, Instagram, Knight Foundation, MacArthur Foundation, Mozilla, National Geographic, Open Knowledge Foundation, Pinterest, and Open Stack (source: [Django overview page](https://www.djangoproject.com/start/overview/)).
 
-## Django는 독선적인가요?
+## Is Django opinionated?
 
-많은 웹 프레임웍들이 흔히 스스로를 "독선적(opinionated)"이라거나 "관용적(unopinionated)"이라고 표현합니다.
+Web frameworks often refer to themselves as "opinionated" or "unopinionated".
 
-독선적인 프레임웍들은 어떤 특정 작업을 다루는 "올바른 방법"에 대한 분명한 의견을 가지고 있습니다. 그것들은 대체로 특정 도메인(특정 타입의 문제를 해결하는)내에서 빠른 개발방법을 제시합니다. 어떤 작업에 대한 올바른 방법이란 보통 잘 알려져있고 문서화가 잘되어있기 때문입니다. 하지만 그것들은 주요 도메인을 벗어난 문제에 대해서는 그리 유연하지 못한 해결책을 제시할 수 있습니다. 또한 이용할수 있는 접근법이나 선택가능한 구성요소가 그리 많지 않을것입니다.
+Opinionated frameworks are those with opinions about the "right way" to handle any particular task. They often support rapid development _in a particular domain_ (solving problems of a particular type) because the right way to do anything is usually well-understood and well-documented. However they can be less flexible at solving problems outside their main domain, and tend to offer fewer choices for what components and approaches they can use.
 
-반면에, 관용적인 프레임웍들은, 구성요소를 한데 붙여서 해결해야 한다거나 심지어 어떤 컴퍼넌트를 써야한다는 '올바른 방법'에 대한 제약이 거의 없다시피 합니다. 그것들은 개발자들이 특정 작업을 완수하는데에 가장 적절한 도구들을 이용하기 쉽게 만들어줍니다. 비록 당신 스스로가 그 컴퍼넌트들을 찾아야 한다는 수고는 해야하긴 하지만 말이죠.
+Unopinionated frameworks, by contrast, have far fewer restrictions on the best way to glue components together to achieve a goal, or even what components should be used. They make it easier for developers to use the most suitable tools to complete a particular task, albeit at the cost that you need to find those components yourself.
 
-Django는 "다소 독선적" 입니다. 그럼으로써 "양쪽 세계의 최선"의 결과를 전달합니다. Django는 대부분의 웹 개발 작업을 다루는 컴퍼넌트 세트와 그 세트를 이용하는 한, 두가지의 인기있는 방법을 제공합니다. 하지만 Django의 비결합 구조 (decoupled architecture) 덕분에 당신은 꽤 많은 옵션들중에서 다른 방법을 선택하거나 원한다면 완전히 새로운 방법을 만들어 낼 수도 있습니다.
+Django is "somewhat opinionated", and hence delivers the "best of both worlds". It provides a set of components to handle most web development tasks and one (or two) preferred ways to use them. However, Django's decoupled architecture means that you can usually pick and choose from a number of different options, or add support for completely new ones if desired.
 
-## Django 코드는 어떻게 생겼나요?
+## What does Django code look like?
 
-전형적인 데이터 기반 웹 사이트에서 웹 어플리케이션은 웹 브라우저(또는 다른 클라이언트)로부터 HTTP 요청(Request)을 기다립니다. 요청을 받으면, 웹 어플리케이션은 URL과 `POST` 데이터 또는 `GET` 데이터의 정보에 기반하여 요구사항을 알아냅니다. 그 다음 무엇이 필요한 지에 따라, 데이터베이스로부터 정보를 읽거나 쓰고, 또는 필요한 다른 작업들을 수행할 것입니다. 그 다음 웹 어플리케이션은 웹 브라우저에 응답(Response)을 반환하는데, 주로 동적인 HTML 페이지를 생성하면서 응답합니다.
+In a traditional data-driven website, a web application waits for HTTP requests from the web browser (or other client). When a request is received the application works out what is needed based on the URL and possibly information in `POST` data or `GET` data. Depending on what is required it may then read or write information from a database or perform other tasks required to satisfy the request. The application will then return a response to the web browser, often dynamically creating an HTML page for the browser to display by inserting the retrieved data into placeholders in an HTML template.
 
-Django 웹 어플리케이션은 전형적으로 아래와 같이 분류된 파일들에 대해 일련의 단계를 수행하는 코드로 구성되어 있습니다:
+Django web applications typically group the code that handles each of these steps into separate files:
 
-![](basic-django.png)
+![Django - files for views, model, URLs, template](basic-django.png)
 
-- **URLs:** 단일 함수를 통해 모든 URL 요청을 처리하는 것이 가능하지만, 분리된 뷰 함수를 작성하는 것이 각각의 리소스를 유지보수하기 훨씬 쉽습니다. URL mapper는 요청 URL을 기준으로 HTTP 요청을 적절한 뷰(view)로 보내주기 위해 사용됩니다. 또한 URL mapper는 URL에 나타나는 특정한 문자열이나 숫자의 패턴을 일치시켜 데이터로서 뷰 함수에 전달할 수 있습니다.
-- **View:** 뷰는 HTTP 요청을 수신하고 HTTP 응답을 반환하는 요청 처리 함수입니다. 뷰는 Model을 통해 요청을 충족시키는데 필요한 데이터에 접근합니다. 그리고 탬플릿에게 응답의 서식 설정을 맡깁니다.
-- **Models:** 모델은 응용프로그램의 데이터 구조를 정의하고 데이터베이스의 기록을 관리(추가, 수정, 삭제)하고 쿼리하는 방법을 제공하는 파이썬 객체입니다.
-- **Templates:** 탬플릿은 파일의 구조나 레이아웃을 정의하고(예: HTML 페이지), 실제 내용을 보여주는 데 사용되는 플레이스홀더를 가진 텍스트 파일입니다. 뷰는 HTML 탬플릿을 이용하여 동적으로 HTML 페이지를 만들고 모델에서 가져온 데이터로 채웁니다. 탬플릿으로 모든 파일의 구조를 정의할 수 있습니다.탬플릿이 꼭 HTML 타입일 필요는 없습니다!
+- **URLs:** While it is possible to process requests from every single URL via a single function, it is much more maintainable to write a separate view function to handle each resource. A URL mapper is used to redirect HTTP requests to the appropriate view based on the request URL. The URL mapper can also match particular patterns of strings or digits that appear in a URL and pass these to a view function as data.
+- **View:** A view is a request handler function, which receives HTTP requests and returns HTTP responses. Views access the data needed to satisfy requests via _models_, and delegate the formatting of the response to _templates_.
+- **Models:** Models are Python objects that define the structure of an application's data, and provide mechanisms to manage (add, modify, delete) and query records in the database.
+- **Templates:** A template is a text file defining the structure or layout of a file (such as an HTML page), with placeholders used to represent actual content. A _view_ can dynamically create an HTML page using an HTML template, populating it with data from a _model_. A template can be used to define the structure of any type of file; it doesn't have to be HTML!
 
-> **참고:** 장고는 이 구조를 "모델 뷰 템플릿(Model View Template)(MVT)" 아키텍처라고 부릅니다. 이것은 더 익숙한 [Model View Controller](/ko/docs/Web/Apps/Fundamentals/Modern_web_app_architecture/MVC_architecture) 아키텍처와 많은 유사점을 가지고 있습니다.
+> **Note:** Django refers to this organization as the "Model View Template (MVT)" architecture. It has many similarities to the more familiar [Model View Controller](/en-US/docs/Glossary/MVC) architecture.
 
-아래 부문들은 장고 앱의 주요 부분들이 어떻게 보일지에 대한 단서를 보여줄 것입니다 (우리는 개발 환경을 설치한 이후에 세부적인 디테일에 대해 다룰겁니다).
+The sections below will give you an idea of what these main parts of a Django app look like (we'll go into more detail later on in the course, once we've set up a development environment).
 
-### 요청을 알맞은 뷰로 전달 (urls.py)
+### Sending the request to the right view (urls.py)
 
-URL mapper는 보통 **urls.py**라는 이름의 파일에 저장되어 있습니다. 아래 예시에서 `urlpatterns` 맵퍼는 경로들(특정 URL 패턴들)과 해당하는 뷰 함수에 대한 맵핑 목록들을 정의합니다. 만약 지정된 URL 패턴과 일치하는 HTTP 요청이 수신된다면 관련된 view 함수가 요청을 전달합니다.
+A URL mapper is typically stored in a file named **urls.py**.
+In the example below, the mapper (`urlpatterns`) defines a list of mappings between _routes_ (specific URL _patterns)_ and corresponding view functions.
+If an HTTP Request is received that has a URL matching a specified pattern, then the associated view function will be called and passed the request.
 
-```
+```python
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('book/<int:id>/', views.book_detail, name='book_detail'),
@@ -125,20 +116,20 @@ urlpatterns = [
 ]
 ```
 
-`urlpatterns` 객체는 `path()`함수와 `re_path()` 함수를 항목으로 가지는 리스트입니다 (파이썬 리스트는 대괄호를 사용하여 구분되며, 항목은 쉼표로 분리되고 선택적으로 후행 쉼표가 있을 수 있습니다. 예시: \[item1, item2, item3, ]).
+The `urlpatterns` object is a list of `path()` and/or `re_path()` functions (Python lists are defined using square brackets, where items are separated by commas and may have an [optional trailing comma](https://docs.python.org/3/faq/design.html#why-does-python-allow-commas-at-the-end-of-lists-and-tuples). For example: `[item1, item2, item3,]`).
 
-두 메소드의 첫 번째 인수는 일치시킬 경로(패턴)입니다. `path()` 메소드는 꺾쇠 괄호(<, >)를 사용해서 인수를 정의합니다. 이 인수는 URL의 한 부분으로, 명명된 인수로 수집되어 뷰 함수로 보내집니다. `re_path()` 함수는 정규식이라는 유연한 패턴 매칭 접근을 사용합니다. 이것에 대해서는 나중에 다루도록 하겠습니다!
+The first argument to both methods is a route (pattern) that will be matched. The `path()` method uses angle brackets to define parts of a URL that will be captured and passed through to the view function as named arguments. The `re_path()` function uses a flexible pattern matching approach known as a regular expression. We'll talk about these in a later article!
 
-두 번째 인수는 패턴이 일치할 때 호출되는 다른 함수입니다. `views.book_detail`은 이 함수가 `book_detail()`이며 `views` 모듈 안에서 찾을 수 있다는 것을 나타냅니다 (즉, `views.py`라는 파일 안에서요).
+The second argument is another function that will be called when the pattern is matched. The notation `views.book_detail` indicates that the function is called `book_detail()` and can be found in a module called `views` (i.e. inside a file named `views.py`)
 
-### 요청 처리하기 (views.py)
+### Handling the request (views.py)
 
-뷰들은 웹 클라이언트로부터 HTTP 요청을 수신하고 HTTP 응답을 되돌려주는 웹 어플리케이션의 심장입니다. 그 사이에 그들은 데이터베이스에 접근하고 템플릿을 렌더링하기 위해 프레임워크의 다른 자원들을 정리합니다.
+Views are the heart of the web application, receiving HTTP requests from web clients and returning HTTP responses. In between, they marshal the other resources of the framework to access databases, render templates, etc.
 
-아래 예시는 이전 예시의 URL mapper가 불러올 수 있는 최소 뷰 함수 `index()`를 보여줍니다. 다른 모든 뷰 함수처럼 이 함수도 `HttpRequest` 객체를 인자(`request`)로 받고 `HttpResponse` 객체를 반환합니다. 이 예시에서는 요청에 관해서는 아무것도 하지 않고, 단순히 하드코딩된 문자열을 반환합니다. 요청에 관련해서는 이후 글에서 더 자세하게 다루겠습니다.
+The example below shows a minimal view function `index()`, which could have been called by our URL mapper in the previous section. Like all view functions it receives an `HttpRequest` object as a parameter (`request`) and returns an `HttpResponse` object. In this case we don't do anything with the request, and our response returns a hard-coded string. We'll show you a request that does something more interesting in a later section.
 
 ```python
-## filename: views.py (Django view functions)
+# filename: views.py (Django view functions)
 
 from django.http import HttpResponse
 
@@ -149,19 +140,18 @@ def index(request):
     return HttpResponse('Hello from Django!')
 ```
 
-> **참고:** 파이썬에 관하여:
+> **Note:** A little bit of Python:
 >
-> - [Python modules](https://docs.python.org/3/tutorial/modules.html)은 우리가 코드에 쓰고 싶을지도 모르며 분리된 파일로 저장되어 있는 함수의 "라이브러리" 입니다.
-> - `from django.http import HttpResponse`와 같은 방법으로 `django.http` 모듈에서 `HttpResponse` 객체만 가져와서 뷰에서 사용할 수 있습니다. 모듈에서 여럿, 아니면 전체 모듈을 임포트할 수 있는 몇 가지 방법이 있습니다.
-> - 함수들은 위에 보여진 것과 같이`def` 키워드로 정의됩니다. 함수의 이름 뒤 괄호 안에 는 명명된 인자들이 나열되어 있습니다. 전체 줄은 콜론으로 끝납니다. 그 아랫 줄이 모두 **들여쓰기 되어있다는 것**에 유의하세요. 들여쓰기는 코드 행이 특정한 블록 안에 있다는 것을 나타내기 때문에 중요합니다(필수적인 들여쓰기는 파이썬의 주요 기능이며, 파이썬 코드가 읽기 쉬운 이유 중 하나이기도 합니다).
+> - [Python modules](https://docs.python.org/3/tutorial/modules.html) are "libraries" of functions, stored in separate files, that we might want to use in our code. Here we import just the `HttpResponse` object from the `django.http` module so that we can use it in our view: `from django.http import HttpResponse`. There are other ways of importing some or all objects from a module.
+> - Functions are declared using the `def` keyword as shown above, with named parameters listed in brackets after the name of the function; the whole line ends in a colon. Note how the next lines are all **indented**. The indentation is important, as it specifies that the lines of code are inside that particular block (mandatory indentation is a key feature of Python, and is one reason that Python code is so easy to read).
 
-뷰들은 보통 **views.py**.라는 파일 안에 저장되어 있습니다.
+Views are usually stored in a file called **views.py**.
 
-### 데이터 모델 정의하기 (models.py)
+### Defining data models (models.py)
 
-장고 웹 어플리케이션은 모델(models)이라는 파이썬 객체를 통해 데이터를 관리하고 쿼리합니다. 모델은 필드 타입과 그들의 최대 크기, 기본 값들, 선택 목록 옵션, 문서의 도움말 텍스트, 폼(form)을 위한 label text등을 포함하여 저장된 데이터의 구조를 정의합니다. 모델의 정의는 기본 데이터베이스와 별개입니다. 본인의 프로젝트 설정의 일부로써 여러 모델 중 하나를 선택할 수 있습니다. 본인이 사용할 데이터베이스를 정했다면, 그것에 직접적으로 접근할 필요가 없습니다. 그저 모델 구조와 다른 코드들을 작성하면, 장고가 당신과 데이터베이스가 소통하는 데 필요한 모든 더러운 작업들을 처리합니다.
+Django web applications manage and query data through Python objects referred to as models. Models define the structure of stored data, including the field _types_ and possibly also their maximum size, default values, selection list options, help text for documentation, label text for forms, etc. The definition of the model is independent of the underlying database — you can choose one of several as part of your project settings. Once you've chosen what database you want to use, you don't need to talk to it directly at all — you just write your model structure and other code, and Django handles all the "dirty work" of communicating with the database for you.
 
-아래 코드는 `Team` 객체를 위한 아주 간단한 장고 모델을 보여줍니다. `Team` 객체는 장고 클래스`models.Model`에서 파생되었습니다. 이 객체는 팀 이름과 팀 레벨을 캐릭터 필드로 정의하고 각각의 기록에 저장될 최대 캐릭터 숫자를 정합니다. `team_level`은 랜덤으로 값이 선정되기 때문에, 우리는 이를 choice 필드로 정의하며, choices들 간에 선택된 값이 보여지고 디폴트 값에 따른 데이터가 저장되도록 합니다.
+The code snippet below shows a very simple Django model for a `Team` object. The `Team` class is derived from the Django class `models.Model`. It defines the team name and team level as character fields and specifies a maximum number of characters to be stored for each record. The `team_level` can be one of several values, so we define it as a choice field and provide a mapping between choices to be displayed and data to be stored, along with a default value.
 
 ```python
 # filename: models.py
@@ -175,22 +165,23 @@ class Team(models.Model):
         ('U09', 'Under 09s'),
         ('U10', 'Under 10s'),
         ('U11', 'Under 11s'),
-        ...  #list other team levels
+        # …
+        # list other team levels
     )
     team_level = models.CharField(max_length=3, choices=TEAM_LEVELS, default='U11')
 ```
 
-> **참고:** **참고 : 파이썬에 대해**
+> **Note:** A little bit of Python:
 >
-> 파이썬은 코드를 객체로 구성하는 프로그래밍 스타일인 "객체 지향 프로그래밍"을 지원합니다. 여기에는 관련 데이터 및 해당 데이터를 조작하기위한 함수가 포함됩니다. 객체는 다른 객체로부터 상속, 확장, 파생할 수 있어 관련 객체 간의 공통 동작을 공유 할 수 있습니다. 파이썬에서는 키워드 클래스를 사용하여 객체의 "청사진"을 정의합니다. 클래스의 모델을 기반으로 객체 유형의 여러 특정 인스턴스를 만들 수 있습니다.
+> Python supports "object-oriented programming", a style of programming where we organize our code into objects, which include related data and functions for operating on that data. Objects can also inherit/extend/derive from other objects, allowing common behavior between related objects to be shared. In Python we use the keyword `class` to define the "blueprint" for an object. We can create multiple specific _instances_ of the type of object based on the model in the class.
 >
-> 예를 들어 여기 Model 클래스에서 파생된 Team 클래스가 있습니다. 이는 모델이며 모델의 모든 방법을 포함할 것이지만 고유한 기능도 제공 할 수 있습니다. 이 모델에서는 데이터베이스가 데이터를 저장하는데 필요한 필드를 정의하여 특정 이름을 지정합니다. 장고는 필드 이름을 포함한 이러한 정의를 사용하여 기본 데이터베이스를 만듭니다.
+> So for example, here we have a `Team` class, which derives from the `Model` class. This means it is a model, and will contain all the methods of a model, but we can also give it specialized features of its own too. In our model we define the fields our database will need to store our data, giving them specific names. Django uses these definitions, including the field names, to create the underlying database.
 
-### 데이터 쿼리하기 (views.py)
+### Querying data (views.py)
 
-장고 모델은 데이터베이스를 간단히 탐색하기 위한 쿼리 API를 제공합니다. 이 API는 다양한 조건을 통해 수 많은 필드를 빠르게 매칭시킵니다. (예를 들어, 정확하게 일치(exact), 대소문자 구분없이(case-insensitive), 해당 숫자보다 큰(greater than) 등이 있습니다.) 그리고 복잡한 쿼리문을 지원합니다. 예를 들어, 당신은 팀의 이름이 "Fr"로 시작하거나 "al"로 끝나는 U11 레벨의 팀만을 지정할 수 있습니다.
+The Django model provides a simple query API for searching the associated database. This can match against a number of fields at a time using different criteria (e.g. exact, case-insensitive, greater than, etc.), and can support complex statements (for example, you can specify a search on U11 teams that have a team name that starts with "Fr" or ends with "al").
 
-굵게 표시된 줄은 모델 쿼리 API를 사용하여 `team_level` 필드의 텍스트가 정확히 'U09'인 모든 레코드를 필터링하는 방법을 보여줍니다 (이 기준이 필드 이름의 인수로 `filter()` 함수에 전달되는 방법에 유의하십시오. 일치 유형은 **`team_level__exact`**와 같이 이중 밑줄로 구분됩니다).
+The code snippet shows a view function (resource handler) for displaying all of our U09 teams. The `list_teams = Team.objects.filter(team_level__exact="U09")` line shows how we can use the model query API to filter for all records where the `team_level` field has exactly the text '`U09`' (note how this criteria is passed to the `filter()` function as an argument, with the field name and match type separated by a double underscore: **`team_level__exact`**).
 
 ```python
 ## filename: views.py
@@ -204,15 +195,15 @@ def index(request):
     return render(request, '/best/index.html', context)
 ```
 
-이 함수는 `render()` 함수를 사용하여 브라우저로 다시 전송되는 `HttpResponse`를 만듭니다. 지정된 HTML 템플릿과 템플릿에 삽입할 일부 데이터( "컨텍스트"라는 변수에 제공)를 결합하여 HTML 파일을 생성합니다. 다음 섹션에서는 템플릿을 생성하기 위해 템플릿에 데이터를 삽입하는 방법을 보여줍니다.
+This function uses the `render()` function to create the `HttpResponse` that is sent back to the browser. This function is a _shortcut_; it creates an HTML file by combining a specified HTML template and some data to insert in the template (provided in the variable named "`context`"). In the next section we show how the template has the data inserted in it to create the HTML.
 
-### 데이터 렌더링 (HTML 템플릿)
+### Rendering data (HTML templates)
 
-템플릿 시스템을 사용하면 페이지가 생성될 때 채워질 데이터에 자리 표시자를 사용하여 출력 문서의 구조를 지정할 수 있습니다. 템플릿은 종종 HTML을 만드는 데 사용되지만 다른 유형의 문서를 만들 수도 있습니다. 장고는 기본 템플릿 시스템과 Jinja2라는 인기있는 파이썬 라이브러리를 모두 지원합니다 (필요한 경우 다른 시스템을 지원하도록 만들 수도 있음).
+Template systems allow you to specify the structure of an output document, using placeholders for data that will be filled in when a page is generated. Templates are often used to create HTML, but can also create other types of document. Django supports both its native templating system and another popular Python library called Jinja2 out of the box (it can also be made to support other systems if needed).
 
-아래 코드는 이전 섹션의 `render()` 함수가 호출한 HTML 템플릿의 모양을 보여줍니다. 이 템플릿은 렌더링될 때 (위의 `render()` 함수 내의 컨텍스트 변수에 포함 된) "youngest_teams"라는 목록 변수에 액세스할 수 있다는 가정하에 작성되었습니다. HTML 스켈레톤에는 먼저 youngest_teams 변수가 있는지 확인한 후 `for` 루프에서 반복하는 표현식이 있습니다. 각 반복에서 템플리트는 각 팀의 `team_name` 값을 `<li>` 태그의 값으로 표시합니다.
+The code snippet shows what the HTML template called by the `render()` function in the previous section might look like. This template has been written under the assumption that it will have access to a list variable called `youngest_teams` when it is rendered (this is contained in the `context` variable inside the `render()` function above). Inside the HTML skeleton we have an expression that first checks if the `youngest_teams` variable exists, and then iterates it in a `for` loop. On each iteration the template displays each team's `team_name` value in an `{{htmlelement("li")}}` element.
 
-```
+```python
 ## filename: best/templates/best/index.html
 
 <!DOCTYPE html>
@@ -235,20 +226,20 @@ def index(request):
 </html>
 ```
 
-## 또 무엇을 할수 있나요?
+## What else can you do?
 
-이전 섹션에서는 거의 모든 웹 응용 프로그램에서 사용할 주요 기능인 URL 매핑, 뷰, 모델 및 템플릿을 보여줍니다. 추가로 장고가 제공하는 기능들은 다음과 같습니다.
+The preceding sections show the main features that you'll use in almost every web application: URL mapping, views, models and templates. Just a few of the other things provided by Django include:
 
-- **양식** : HTML 양식은 서버에서 처리할 사용자 데이터를 수집하는 데 사용됩니다. 장고는 양식 작성, 유효성 검사 및 처리를 단순화합니다.
-- **사용자 인증 및 권한** : 장고에는 보안을 염두에 두고 구축된 강력한 사용자 인증 및 권한 시스템이 포함되어 있습니다.
-- **캐싱** : 컨텐츠를 동적으로 작성하는 것은 정적 컨텐츠를 제공하는 것 보다 많은 연산을 필요로 하기 때문에 느립니다. 장고는 유연한 캐싱을 제공하여 렌더링된 페이지 전체 또는 일부를 저장하여 필요할 때를 제외하고 다시 렌더링하지 않도록 할 수 있습니다.
-- **관리 사이트** : 기본 스켈레톤을 사용하여 앱을 만들 때 장고 관리 사이트가 기본적으로 포함됩니다. 사이트 관리자가 사이트의 모든 데이터 모델을 작성, 편집 및 볼 수있는 관리 페이지를 쉽게 제공할 수 있습니다.
-- **데이터 직렬화** : 장고를 사용하면 데이터를 XML 또는 JSON으로 직렬화하고 제공할 수 있습니다. 이 기능은 웹 서비스 (다른 응용 프로그램이나 사이트에서 사용하기 위해 순수하게 데이터를 제공하고 자체를 표시하지 않는 웹 사이트)를 만들거나 클라이언트 쪽 코드가 모든 데이터 렌더링을 처리하는 웹 사이트를 만들 때 유용할 수 있습니다.
+- **Forms**: HTML Forms are used to collect user data for processing on the server. Django simplifies form creation, validation, and processing.
+- **User authentication and permissions**: Django includes a robust user authentication and permission system that has been built with security in mind.
+- **Caching**: Creating content dynamically is much more computationally intensive (and slow) than serving static content. Django provides flexible caching so that you can store all or part of a rendered page so that it doesn't get re-rendered except when necessary.
+- **Administration site**: The Django administration site is included by default when you create an app using the basic skeleton. It makes it trivially easy to provide an admin page for site administrators to create, edit, and view any data models in your site.
+- **Serializing data**: Django makes it easy to serialize and serve your data as XML or JSON. This can be useful when creating a web service (a website that purely serves data to be consumed by other applications or sites, and doesn't display anything itself), or when creating a website in which the client-side code handles all the rendering of data.
 
-## 요약하기
+## Summary
 
-축하합니다. 이제 장고 여행의 첫발을 떼셨군요! 이제 우리는 장고의 주요 이점과 역사를 조금 알게됐고 장고 응용프로그램의 주요한 부분을 대략 이해했습니다. 또한 목록, 함수 및 클래스 구문을 포함하여 파이썬 프로그래밍 언어에 대해 몇 가지 사실을 배워야합니다.
+Congratulations, you've completed the first step in your Django journey! You should now understand Django's main benefits, a little about its history, and roughly what each of the main parts of a Django app might look like. You should have also learned a few things about the Python programming language, including the syntax for lists, functions, and classes.
 
-위의 실제 장고 코드를 이미 보았지만 클라이언트 측 코드와 달리 실행하기 위해서는 개발 환경을 설정해야합니다. 그것이 우리의 다음 단계입니다.
+You've already seen some real Django code above, but unlike with client-side code, you need to set up a development environment to run it. That's our next step.
 
 {{NextMenu("Learn/Server-side/Django/development_environment", "Learn/Server-side/Django")}}

@@ -1,30 +1,54 @@
 ---
 title: <gradient>
 slug: Web/CSS/gradient
+page-type: css-type
+browser-compat: css.types.image.gradient
 ---
 
 {{CSSRef}}
 
-**`<gradient>`** [CSS](/ko/docs/Web/CSS) [자료형](/ko/docs/Web/CSS/CSS_Types)은 {{cssxref("&lt;image&gt;")}}의 특별한 종류로 여러 색의 점진적인 변화를 나타냅니다.
+The **`<gradient>`** [CSS](/en-US/docs/Web/CSS) [data type](/en-US/docs/Web/CSS/CSS_Types) is a special type of {{cssxref("&lt;image&gt;")}} that consists of a progressive transition between two or more colors.
 
 {{EmbedInteractiveExample("pages/css/type-gradient.html")}}
 
-<div class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples</a> and send us a pull request.</div>
+A CSS gradient has [no intrinsic dimensions](/en-US/docs/Web/CSS/image#description); i.e., it has no natural or preferred size, nor a preferred ratio. Its concrete size will match the size of the element to which it applies.
 
-CSS 그레이디언트는 [원본 크기가 없습니다](/ko/docs/Web/CSS/image#no_intrinsic). 즉 실제 크기나 선호 크기가 없습니다. 그레이디언트의 크기는 적용하는 요소의 크기와 동일해집니다.
+## Syntax
 
-## 구문
+The `<gradient>` data type is defined with one of the function types listed below.
 
-### 그레이디언트 함수
+### Linear gradient
 
-`<gradient>` 자료형은 아래 나열한 함수 중 하나를 사용해 생성합니다.
+Linear gradients transition colors progressively along an imaginary line. They are generated with the {{cssxref("gradient/linear-gradient", "linear-gradient()")}} function.
 
-#### 선형 그레이디언트
+### Radial gradient
 
-가상의 선을 따라 여러 색 사이를 전이합니다. {{cssxref("linear-gradient()")}} 함수를 사용해 생성합니다.
+Radial gradients transition colors progressively from a center point (origin). They are generated with the {{cssxref("gradient/radial-gradient", "radial-gradient()")}} function.
+
+### Repeating gradient
+
+Repeating gradients duplicate a gradient as much as necessary to fill a given area. They are generated with the {{cssxref("gradient/repeating-linear-gradient", "repeating-linear-gradient()")}} and {{cssxref("gradient/repeating-radial-gradient", "repeating-radial-gradient()")}} functions.
+
+### Conic gradient
+
+Conic gradients transition colors progressively around a circle. They are generated with the {{cssxref("gradient/conic-gradient", "conic-gradient()")}} function.
+
+## Interpolation
+
+As with any interpolation involving colors, gradients are calculated in the alpha-premultiplied color space. This prevents unexpected shades of gray from appearing when both the color and the opacity are changing. (Be aware that older browsers may not use this behavior when using the [transparent keyword](/en-US/docs/Web/CSS/named-color#transparent).)
+
+## Formal syntax
+
+{{csssyntax}}
+
+## Examples
+
+### Linear gradient example
+
+A simple linear gradient.
 
 ```html hidden
-<div class="linear-gradient">선형 그레이디언트</div>
+<div class="linear-gradient">Linear gradient</div>
 ```
 
 ```css hidden
@@ -36,19 +60,27 @@ div {
 
 ```css
 .linear-gradient {
-  background: linear-gradient(to right,
-      red, orange, yellow, green, blue, indigo, violet);
+  background: linear-gradient(
+    to right,
+    red,
+    orange,
+    yellow,
+    green,
+    blue,
+    indigo,
+    violet
+  );
 }
 ```
 
-{{EmbedLiveSample('선형_그레이디언트', 240, 80)}}
+{{EmbedLiveSample('Linear_gradient_example', 240, 120)}}
 
-#### 원형 그레이디언트
+### Radial gradient example
 
-중심점으로부터 바깥으로 여러 색 사이를 전이합니다. {{cssxref("radial-gradient()")}} 함수를 사용해 생성합니다.
+A simple radial gradient.
 
 ```html hidden
-<div class="radial-gradient">원형 그레이디언트</div>
+<div class="radial-gradient">Radial gradient</div>
 ```
 
 ```css hidden
@@ -64,16 +96,16 @@ div {
 }
 ```
 
-{{EmbedLiveSample('원형_그레이디언트', 240, 80)}}
+{{EmbedLiveSample('Radial_gradient_example', 240, 120)}}
 
-#### 반복 그레이디언트
+### Repeating gradient examples
 
-요소를 꽉 채울 때까지 그레이디언트를 필요한 만큼 반복합니다. {{cssxref("repeating-linear-gradient()")}}나 {{cssxref("repeating-radial-gradient()")}} 함수를 사용해 생성합니다.
+Simple repeating linear and radial gradient examples.
 
 ```html hidden
-<div class="linear-repeat">반복하는 선형 그레이디언트</div>
-<br>
-<div class="radial-repeat">반복하는 원형 그레이디언트</div>
+<div class="linear-repeat">Repeating linear gradient</div>
+<br />
+<div class="radial-repeat">Repeating radial gradient</div>
 ```
 
 ```css hidden
@@ -85,23 +117,33 @@ div {
 
 ```css
 .linear-repeat {
-  background: repeating-linear-gradient(to top left,
-      lightpink, lightpink 5px, white 5px, white 10px);
+  background: repeating-linear-gradient(
+    to top left,
+    lightpink,
+    lightpink 5px,
+    white 5px,
+    white 10px
+  );
 }
 
 .radial-repeat {
-  background: repeating-radial-gradient(powderblue, powderblue 8px, white 8px, white 16px);
+  background: repeating-radial-gradient(
+    powderblue,
+    powderblue 8px,
+    white 8px,
+    white 16px
+  );
 }
 ```
 
-{{EmbedLiveSample('반복_그레이디언트', 220, 180)}}
+{{EmbedLiveSample('Repeating_gradient_examples', 240, 220)}}
 
-#### 원뿔 그레이디언트
+### Conic gradient example
 
-원을 따라 여러 색 사이를 전이합니다. {{cssxref("conic-gradient", "conic-gradient()")}} 함수를 사용해 생성합니다.
+A simple conic gradient example. Note that this isn't supported widely across browser as of yet.
 
 ```html hidden
-<div class="conic-gradient">원뿔 그레이디언트</div>
+<div class="conic-gradient">Conic gradient</div>
 ```
 
 ```css hidden
@@ -117,21 +159,20 @@ div {
 }
 ```
 
-{{EmbedLiveSample('원뿔_그레이디언트', 240, 80)}}
+{{EmbedLiveSample('Conic_gradient_example', 240, 240)}}
 
-## 보간
-
-색과 관련한 다른 보간과 마찬가지로, 그레이디언트도 색과 투명도가 동시에 변할 때 예상하지 못한 회색이 등장하는걸 방지하기 위해 알파 채널을 미리 곱한 색 공간을 사용해 계산합니다. 오래 된 브라우저에서 {{cssxref("&lt;color&gt;", "", "#transparent_키워드")}} 키워드를 사용할 땐 다르게 행동할 수 있음을 주의하세요.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [CSS 그레이디언트 사용하기](/ko/docs/CSS/Using_CSS_gradients)
-- 그레이디언트 함수: {{cssxref("linear-gradient", "linear-gradient()")}}, {{cssxref("radial-gradient", "radial-gradient()")}}, {{cssxref("repeating-linear-gradient", "repeating-linear-gradient()")}}, {{cssxref("repeating-radial-gradient", "repeating-radial-gradient()")}}
+- [Using CSS gradients](/en-US/docs/Web/CSS/CSS_Images/Using_CSS_gradients)
+- Gradient functions: {{cssxref("gradient/linear-gradient", "linear-gradient()")}}, {{cssxref("gradient/repeating-linear-gradient", "repeating-linear-gradient()")}}, {{cssxref("gradient/radial-gradient", "radial-gradient()")}}, {{cssxref("gradient/repeating-radial-gradient", "repeating-radial-gradient()")}}, {{cssxref("gradient/conic-gradient", "conic-gradient()")}}, {{cssxref("gradient/repeating-conic-gradient", "repeating-conic-gradient()")}}
+- [CSS Basic Data Types](/en-US/docs/Web/CSS/CSS_Types)
+- [CSS Units and Values](/en-US/docs/Web/CSS/CSS_Values_and_Units)
+- [Introduction to CSS: Values and Units](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units)

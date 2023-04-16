@@ -1,39 +1,41 @@
 ---
 title: Set.prototype.size
 slug: Web/JavaScript/Reference/Global_Objects/Set/size
+page-type: javascript-instance-accessor-property
+browser-compat: javascript.builtins.Set.size
 ---
 
 {{JSRef}}
 
-**`size`** 접근자 속성은 {{jsxref("Set")}} 객체의 원소 수를 반환합니다.
+The **`size`** accessor property of {{jsxref("Set")}} instances returns the number of (unique) elements in this set.
 
 {{EmbedInteractiveExample("pages/js/set-prototype-size.html")}}
 
-## 설명
+## Description
 
-`size`의 값은 `Set` 객체가 가진 원소의 수를 나타내는 정수입니다. `size` 값의 설정자는 {{jsxref("undefined")}}입니다. 즉 값을 직접 바꿀 수는 없습니다.
+The value of `size` is an integer representing how many entries the `Set` object has. A set accessor function for `size` is `undefined`; you cannot change this property.
 
-## 예제
+## Examples
 
-### `size` 사용하기
+### Using size
 
 ```js
-var mySet = new Set();
+const mySet = new Set();
 mySet.add(1);
 mySet.add(5);
-mySet.add('some text')
+mySet.add("some text");
 
-mySet.size; // 3
+console.log(mySet.size); // 3
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Set")}}

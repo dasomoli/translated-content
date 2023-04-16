@@ -1,88 +1,88 @@
 ---
 title: handler.apply()
 slug: Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/apply
-original_slug: Web/JavaScript/Reference/Global_Objects/Proxy/handler/apply
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Proxy.handler.apply
 ---
 
 {{JSRef}}
 
-**`handler.apply()`** 메서드는 함수 호출에 대한 트랩입니다.
+The **`handler.apply()`** method is a trap for the `[[Call]]` [object internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods), which is used by operations such as function calls.
 
 {{EmbedInteractiveExample("pages/js/proxyhandler-apply.html", "taller")}}
 
-## 구문
+## Syntax
 
-```js
-var p = new Proxy(target, {
-  apply: function(target, thisArg, argumentsList) {
+```js-nolint
+new Proxy(target, {
+  apply(target, thisArg, argumentsList) {
   }
 });
 ```
 
-### 매개 변수
+### Parameters
 
-다음 매개변수는 `apply()` 메소드에 전달됩니다.
-`this`는 핸들러에 바인딩됩니다.
+The following parameters are passed to the `apply()` method. `this` is bound to the handler.
 
 - `target`
-  - : 호출할 수 있는 대상 객체
+  - : The target callable object.
 - `thisArg`
-  - : 호출에 대한 `this` 인수
+  - : The `this` argument for the call.
 - `argumentsList`
-  - : 호출에 대한 인수 목록
+  - : The list of arguments for the call.
 
-### 반환 값
+### Return value
 
-`apply()` 메서드는 어떤 값이든 반환할 수 있습니다.
+The `apply()` method can return any value.
 
-## 설명
+## Description
 
-**`handler.apply()`** 메서드는 함수 호출에 대한 트랩입니다.
+### Interceptions
 
-### 가로채기
+This trap can intercept these operations:
 
-이 트랩은 다음 작업을 가로챌 수 있습니다.
-
-- `proxy(...args)`
-- {{jsxref("Function.prototype.apply()")}}와 {{jsxref("Function.prototype.call()")}}
+- Function call: `proxy(...args)`
+- {{jsxref("Function.prototype.apply()")}} and {{jsxref("Function.prototype.call()")}}
 - {{jsxref("Reflect.apply()")}}
 
-### 불변 조건
+Or any other operation that invokes the `[[Call]]` [internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods).
 
-다음 불변 조건이 위반되면 프록시는 {{jsxref("TypeError")}}를 발생시킵니다.
+### Invariants
 
-대상 객체는 그 자체로 호출이 가능해야합니다. 즉, 함수 객체여야 합니다.
+If the following invariants are violated, the trap throws a {{jsxref("TypeError")}} when invoked.
 
-## 예제
+- The `target` must be a callable itself. That is, it must be a function object.
 
-### 함수 호출 가로채기
+## Examples
 
-다음 코드는 함수 호출을 트랩합니다.
+### Trapping a function call
+
+The following code traps a function call.
 
 ```js
 const p = new Proxy(function () {}, {
   apply(target, thisArg, argumentsList) {
     console.log(`called: ${argumentsList}`);
     return argumentsList[0] + argumentsList[1] + argumentsList[2];
-  }
+  },
 });
 
-console.log(p(1, 2, 3)); // "호출: 1,2,3"
-                         // 6
+console.log(p(1, 2, 3)); // "called: 1,2,3"
+// 6
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Proxy")}}
-- [`Proxy()` 생성자](/ko/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy)
+- [`Proxy()` constructor](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy)
 - {{jsxref("Function.prototype.apply()")}}
 - {{jsxref("Function.prototype.call()")}}
 - {{jsxref("Reflect.apply()")}}

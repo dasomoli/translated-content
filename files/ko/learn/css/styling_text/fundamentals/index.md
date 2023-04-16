@@ -1,73 +1,72 @@
 ---
-title: 기본적인 텍스트 및 글꼴 스타일링
+title: Fundamental text and font styling
 slug: Learn/CSS/Styling_text/Fundamentals
 ---
 
 {{LearnSidebar}}{{NextMenu("Learn/CSS/Styling_text/Styling_lists", "Learn/CSS/Styling_text")}}
 
-이 기사에서는 {{glossary("CSS")}} 를 사용하여 텍스트 스타일링을 마스터하기 위한 과정을 시작합니다. 여기에서는 글꼴 굵기, 종류 및 스타일, 글꼴 약식 (shorthand), 텍스트 정렬 및 기타 효과, 줄 및 문자 간격 설정을 포함하여, 텍스트/글꼴 스타일링의 모든 기본 사항에 대해 자세히 설명합니다.
+In this article we'll start you on your journey towards mastering text styling with {{glossary("CSS")}}. Here we'll go through all the basic fundamentals of text/font styling in detail, including setting font weight, family and style, font shorthand, text alignment and other effects, and line and letter spacing.
 
-<table class="learn-box standard-table">
+<table>
   <tbody>
     <tr>
-      <th scope="row">전제조건</th>
+      <th scope="row">Prerequisites:</th>
       <td>
         Basic computer literacy, HTML basics (study
         <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML"
           >Introduction to HTML</a
         >), CSS basics (study
-        <a href="/en-US/docs/Learn/CSS/Introduction_to_CSS"
-          >Introduction to CSS</a
-        >).
+        <a href="/en-US/docs/Learn/CSS/First_steps">Introduction to CSS</a>).
       </td>
     </tr>
     <tr>
-      <th scope="row">목적:</th>
+      <th scope="row">Objective:</th>
       <td>
-        웹 페이지에서 텍스트 스타일을 지정하는 데 필요한 기본 속성 및 기술
-        습득하기.
+        To learn the fundamental properties and techniques needed to style text
+        on web pages.
       </td>
     </tr>
   </tbody>
 </table>
 
-## CSS 에서 텍스트 스타일링과 관련이 있는 것은 무엇입니까?
+## What is involved in styling text in CSS?
 
-HTML 및 CSS 를 사용한 작업에서 이미 경험한 것처럼 요소 내부의 텍스트는 요소의 내용 박스안에 배치됩니다. 콘텐츠 영역의 왼쪽 상단 (또는 RTL 언어 콘텐츠의 경우, 오른쪽 상단) 에서 시작하여 행의 끝으로 흐릅니다. 끝까지 도달하면 다음 줄로 내려가서 모든 내용이 박스에 들어갈 때까지 다음 줄로 계속 진행합니다. 텍스트 내용은 일련의 인라인 요소처럼 효과적으로 작동하며, 서로 인접한 줄에 배치되면 줄 끝에 도달할 때까지 줄 바꿈을 만들지 않거나, {{htmlelement("br")}} 요소를 사용하여 수동으로 줄 바꿈을 수행하지 않습니다.
+If you have worked with HTML or CSS already, e.g., by working through these tutorials in order, then you know that text inside an element is laid out inside the element's content box. It starts at the top left of the content area (or the top right, in the case of RTL language content), and flows towards the end of the line. Once it reaches the end, it goes down to the next line and flows to the end again. This pattern repeats until all the content has been placed in the box. Text content effectively behaves like a series of inline elements, being laid out on lines adjacent to one another, and not creating line breaks until the end of the line is reached, or unless you force a line break manually using the {{htmlelement("br")}} element.
 
-> **참고:** 위의 단락으로 인해 혼동을 느끼게 되더라도 상관없이 — go back and review our [박스 모델](/ko/docs/Learn/CSS/Introduction_to_CSS/Box_model) 기사를 검토하여, 박스 모델 이론을 정리하십시오.
+> **Note:** If the above paragraph leaves you feeling confused, then no matter — go back and review our [Box model](/en-US/docs/Learn/CSS/Building_blocks/The_box_model) article to brush up on the box model theory before carrying on.
 
-텍스트 스타일을 지정하는 데 사용되는 CSS 속성은 일반적으로 두 가지 카테고리로 분류되며, 이 기사에서는 별도로 살펴보겠습니다.properties used to style text generally fall into two categories, which we'll look at separately in this article:
+The CSS properties used to style text generally fall into two categories, which we'll look at separately in this article:
 
-- **글꼴 스타일**: 텍스트에 적용되는 글꼴에 영향을 주고, 적용되는 글꼴, 크기, 굵기, 이탤릭체 등에 영향을 주는 속성입니다.
-- **텍스트 레이아웃 스타일**: 텍스트의 간격 및 기타 레이아웃 기능에 영향을 주는 속성으로, 예를 들어 선 과 문자 사이의 간격 및 내용 박스 내에서 텍스트가 정렬되는 방식을 조작할 수 있습니다.
+- **Font styles**: Properties that affect a text's font, e.g., which font gets applied, its size, and whether it's bold, italic, etc.
+- **Text layout styles**: Properties that affect the spacing and other layout features of the text, allowing manipulation of, for example, the space between lines and letters, and how the text is aligned within the content box.
 
-> **참고:** 요소 내부의 텍스트는 모두 하나의 단일 entity 로 영향을 받습니다. 텍스트의 하위 섹션은 적절한 요소 (예: {{htmlelement("span")}} 또는 {{htmlelement("strong")}}) 으로 감싸거나, or use a text-specific pseudo-element like [::first-letter](/ko/docs/Web/CSS/::first-letter) (요소 텍스트의 첫 번째 문자 선택), [::first-line](/ko/docs/Web/CSS/::first-line) (요소 텍스트의 첫 번째 행 선택) 또는 [::selection](/ko/docs/Web/CSS/::selection) (커서로 현재 강조 표시된 텍스트 선택) 과 같은 텍스트 특정 pseudo-element 를 사용하십시오.
+> **Note:** Bear in mind that the text inside an element is all affected as one single entity. You can't select and style subsections of text unless you wrap them in an appropriate element (such as a {{htmlelement("span")}} or {{htmlelement("strong")}}), or use a text-specific pseudo-element like [::first-letter](/en-US/docs/Web/CSS/::first-letter) (selects the first letter of an element's text), [::first-line](/en-US/docs/Web/CSS/::first-line) (selects the first line of an element's text), or [::selection](/en-US/docs/Web/CSS/::selection) (selects the text currently highlighted by the cursor).
 
-## 글꼴
+## Fonts
 
-글꼴 스타일링의 속성을 살펴보도록 하겠습니다. 이 예에서는 동일한 HTML 샘플에 몇 가지 다른 CSS 속성을 적용합니다:
+Let's move straight on to look at properties for styling fonts. In this example, we'll apply some CSS properties to the following HTML sample:
 
 ```html
 <h1>Tommy the cat</h1>
 
-<p>I remember as if it were a meal ago...</p>
+<p>Well I remember it as though it were a meal ago…</p>
 
-<p>Said Tommy the Cat as he reeled back to clear whatever foreign matter
- may have nestled its way into his mighty throat. Many a fat alley rat
-had met its demise while staring point blank down the cavernous barrel of
- this awesome prowling machine. Truly a wonder of nature this urban
-predator — Tommy the cat had many a story to tell. But it was a rare
-occasion such as this that he did.</p>
+<p>
+  Said Tommy the Cat as he reeled back to clear whatever foreign matter may have
+  nestled its way into his mighty throat. Many a fat alley rat had met its
+  demise while staring point blank down the cavernous barrel of this awesome
+  prowling machine. Truly a wonder of nature this urban predator — Tommy the cat
+  had many a story to tell. But it was a rare occasion such as this that he did.
+</p>
 ```
 
-[완성된 예제는 Github](http://mdn.github.io/learning-area/css/styling-text/fundamentals/) 에서 찾을 수 있습니다 ([소스 코드](https://github.com/mdn/learning-area/blob/master/css/styling-text/fundamentals/index.html) 참조.)
+You can find the [finished example on GitHub](https://mdn.github.io/learning-area/css/styling-text/fundamentals/) (see also [the source code](https://github.com/mdn/learning-area/blob/main/css/styling-text/fundamentals/index.html)).
 
-### 색상
+### Color
 
-{{cssxref("color")}} 속성은 선택한 요소의 전경 내용의 색상을 설정합니다 (일반적으로 텍스트이지만, {{cssxref("text-decoration")}} 속성을 사용하여 텍스트에 배치되는 밑줄이나 오버라인과 같은 몇 가지 다른 것도 포함할 수 있습니다.
+The {{cssxref("color")}} property sets the color of the foreground content of the selected elements, which is usually the text, but can also include a couple of other things, such as an underline or overline placed on text using the {{cssxref("text-decoration")}} property.
 
-`color` 은 모든 [CSS 색상 단위](/en-US/Learn/CSS/Introduction_to_CSS/Values_and_units#Colors) 를 사용할 수 있습니다. 예를 들면 다음과 같습니다:
+`color` can accept any [CSS color unit](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#colors), for example:
 
 ```css
 p {
@@ -75,73 +74,203 @@ p {
 }
 ```
 
-이렇게하면 다음과 같이 표준 브라우저 기본값이 검은색이 아닌 빨간색으로 표시됩니다:
+This will cause the paragraphs to become red, rather than the standard browser default of black, like so:
 
 ```html hidden
 <h1>Tommy the cat</h1>
 
-<p>I remember as if it were a meal ago...</p>
+<p>Well I remember it as though it were a meal ago…</p>
 
-<p>Said Tommy the Cat as he reeled back to clear whatever foreign matter
- may have nestled its way into his mighty throat. Many a fat alley rat
-had met its demise while staring point blank down the cavernous barrel of
- this awesome prowling machine. Truly a wonder of nature this urban
-predator — Tommy the cat had many a story to tell. But it was a rare
-occasion such as this that he did.</p>
+<p>
+  Said Tommy the Cat as he reeled back to clear whatever foreign matter may have
+  nestled its way into his mighty throat. Many a fat alley rat had met its
+  demise while staring point blank down the cavernous barrel of this awesome
+  prowling machine. Truly a wonder of nature this urban predator — Tommy the cat
+  had many a story to tell. But it was a rare occasion such as this that he did.
+</p>
 ```
 
-{{ EmbedLiveSample('Color', '100%', 220) }}
+{{ EmbedLiveSample('Color', '100%', 230) }}
 
-### 글꼴 종류
+### Font families
 
-텍스트에 다른 글꼴을 설정하려면, {{cssxref("font-family")}} 속성을 사용하여 브라우저에서 선택한 요소에 적용할 글꼴 (또는 글꼴 목록) 을 지정할 수 있습니다. 브라우저는 웹 사이트에 액세스하는 컴퓨터에서 글꼴을 사용할 수 있는 경우에만 글꼴을 적용합니다; 그렇지 않으면, 브라우저 [default font](#default_fonts) 만 사용합니다. 간단한 예는 다음과 같습니다:
+To set a different font for your text, you use the {{cssxref("font-family")}} property — this allows you to specify a font (or list of fonts) for the browser to apply to the selected elements. The browser will only apply a font if it is available on the machine the website is being accessed on; if not, it will just use a browser [default font](#default_fonts). A simple example looks like so:
 
 ```css
 p {
-  font-family: arial;
+  font-family: Arial;
 }
 ```
 
-이렇게하면 페이지의 모든 단락이 임의의 컴퓨터에 있는 arial 글꼴을 채택하게 됩니다.
+This would make all paragraphs on a page adopt the arial font, which is found on any computer.
 
-#### 웹 안전 글꼴
+#### Web safe fonts
 
-글꼴 사용가능 여부에 대해 말하자면, 일반적으로 모든 시스템에서 사용할 수 있는 글꼴의 수는 한정되어 있으므로 큰 걱정없이 사용할 수 있습니다. 이른바 **웹 안전 글꼴** 입니다.
+Speaking of font availability, there are only a certain number of fonts that are generally available across all systems and can therefore be used without much worry. These are the so-called **web safe fonts**.
 
-대부분의 경우, 웹 개발자로서 텍스트 내용을 표시하는 데 사용되는 글꼴을 보다 구체적으로 제어하려고 합니다. 문제는 웹 페이지를 보는 데 사용되는 컴퓨터에서 어떤 글꼴을 사용할 수 있는지 알 수 있는 방법을 찾는 것입니다. 모든 경우에 이것을 알 수 있는 방법은 없지만, 웹 안전 글꼴은 가장 많이 사용되는 운영 체제 (윈도우, 맥, 가장 일반적인 리눅스 배포판, 안드로이드 및 iOS) 의 거의 모든 인스턴스에서 사용할 수 있는 것으로 알려져 있습니다.
+Most of the time, as web developers we want to have more specific control over the fonts used to display our text content. The problem is to find a way to know which font is available on the computer used to see our web pages. There is no way to know this in every case, but the web safe fonts are known to be available on nearly all instances of the most used operating systems (Windows, macOS, the most common Linux distributions, Android, and iOS).
 
-실제 웹 안전 글꼴 목록은 운영 체제가 발전함에 따라 변경될 수 있지만, 최소한 다음과 같은 웹 안전 글꼴을 고려하는 것이 좋습니다 (이중 많은 글꼴이 90 년대 후반과 2000 년대 초에 웹 initiative 를 위한 Microsoft _[Core 글꼴](https://en.wikipedia.org/wiki/Core_fonts_for_the_Web)_ 덕분에 많은 사람들이 대중화 되었습니다):
+The list of actual web safe fonts will change as operating systems evolve, but it's reasonable to consider the following fonts web safe, at least for now (many of them have been popularized thanks to the Microsoft _[Core fonts for the Web](https://en.wikipedia.org/wiki/Core_fonts_for_the_Web)_ initiative in the late 90s and early 2000s):
 
-| 이름            | 일반 유형  | 참고                                                                                                                                                                                                                                              |
-| --------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Arial           | sans-serif | It's often considered best practice to also add _Helvetica_ as a preferred alternative to _Arial_ as, although their font faces are almost identical, _Helvetica_ is considered to have a nicer shape, even if _Arial_ is more broadly available. |
-| Courier New     | monospace  | Some OSes have an alternative (possibly older) version of the _Courier New_ font called _Courier_. It's considered best practice to use both with _Courier New_ as the preferred alternative.                                                     |
-| Georgia         | serif      |                                                                                                                                                                                                                                                   |
-| Times New Roman | serif      | Some OSes have an alternative (possibly older) version of the _Times New Roman_ font called _Times_. It's considered best practice to use both with _Times New Roman_ as the preferred alternative.                                               |
-| Trebuchet MS    | sans-serif | You should be careful with using this font — it isn't widely available on mobile OSes.                                                                                                                                                            |
-| Verdana         | sans-serif |                                                                                                                                                                                                                                                   |
+<table class="standard-table no-markdown">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Generic type</th>
+      <th scope="col">Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Arial</td>
+      <td>sans-serif</td>
+      <td>
+        It's often considered best practice to also add <em>Helvetica</em> as a
+        preferred alternative to <em>Arial</em> as, although their font faces
+        are almost identical, <em>Helvetica</em> is considered to have a nicer
+        shape, even if <em>Arial</em> is more broadly available.
+      </td>
+    </tr>
+    <tr>
+      <td>Courier New</td>
+      <td>monospace</td>
+      <td>
+        Some OSes have an alternative (possibly older) version of the
+        <em>Courier New</em> font called <em>Courier</em>. It's considered best
+        practice to use both with <em>Courier New</em> as the preferred
+        alternative.
+      </td>
+    </tr>
+    <tr>
+      <td>Georgia</td>
+      <td>serif</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Times New Roman</td>
+      <td>serif</td>
+      <td>
+        Some OSes have an alternative (possibly older) version of the
+        <em>Times New Roman</em> font called <em>Times</em>. It's considered
+        best practice to use both with <em>Times New Roman</em> as the preferred
+        alternative.
+      </td>
+    </tr>
+    <tr>
+      <td>Trebuchet MS</td>
+      <td>sans-serif</td>
+      <td>
+        You should be careful with using this font — it isn't widely available
+        on mobile OSes.
+      </td>
+    </tr>
+    <tr>
+      <td>Verdana</td>
+      <td>sans-serif</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
 
-> **참고:** Among various resources, the [cssfontstack.com](http://www.cssfontstack.com/) website maintains a list of web safe fonts available on Windows and macOS operating systems, which can help you make your decision about what you consider safe for your usage.
+> **Note:** Among various resources, the [cssfontstack.com](https://www.cssfontstack.com/) website maintains a list of web safe fonts available on Windows and macOS operating systems, which can help you make your decision about what you consider safe for your usage.
 
-> **참고:** There is a way to download a custom font along with a webpage, to allow you to customize your font usage in any way you want: **web fonts**. This is a little bit more complex, and we will be discussing this in a separate article later on in the module.
+> **Note:** There is a way to download a custom font along with a webpage, to allow you to customize your font usage in any way you want: **web fonts**. This is a little bit more complex, and we will discuss it in a [separate article](/en-US/docs/Learn/CSS/Styling_text/Web_fonts) later on in the module.
 
-#### 기본 글꼴
+#### Default fonts
 
-CSS 는 글꼴의 일반적인 다섯 가지 이름: `serif`, `sans-serif`, `monospace`, `cursive` 및 `fantasy` 를 정의합니다. 이러한 일반 이름을 사용할 때 사용되는 정확한 글꼴은 각 브라우저에 달려 있으며, 실행중인 운영체제에 따라 다를 수 있습니다. 브라우저가 최소한 적합한 글꼴을 제공하기 위해 최선을 다하는 최악의 시나리오를 나타나냅니다. `serif`, `sans-serif` 및 `monospace` 는 상당히 예측가능하며 합리적인 무언가를 제공해야 합니다. 반면에 , `cursive` 및 `fantasy` 는 예측하기 어렵기 때문에, 테스트할 때 신중하게 사용하는 것이 좋습니다.
+CSS defines five generic names for fonts: `serif`, `sans-serif`, `monospace`, `cursive`, and `fantasy`. These are very generic and the exact font face used from these generic names can vary between each browser and each operating system that they are displayed on. It represents a _worst case scenario_ where the browser will try its best to provide a font that looks appropriate. `serif`, `sans-serif`, and `monospace` are quite predictable and should provide something reasonable. On the other hand, `cursive` and `fantasy` are less predictable and we recommend using them very carefully, testing as you go.
 
-5 개의 이름은 다음과 같이 정의됩니다:
+The five names are defined as follows:
 
-| 용어         | 정의                                                                                                              | 예제                |
-| ------------ | ----------------------------------------------------------------------------------------------------------------- | ------------------- |
-| `serif`      | serifs 가 있는 글꼴 (the flourishes and other small details you see at the ends of the strokes in some typefaces) | My big red elephant |
-| `sans-serif` | serifs 가 없는 글꼴.                                                                                              | My big red elephant |
-| `monospace`  | 모든 문자의 너비가 같은 글꼴로, 일반적으로 코드 목록에 사용됩니다.                                                | My big red elephant |
-| `cursive`    | Fonts that are intended to emulate handwriting, with flowing, connected strokes.                                  | My big red elephant |
-| `fantasy`    | 장식용 글꼴.                                                                                                      | My big red elephant |
+<table class="standard-table no-markdown">
+  <thead>
+    <tr>
+      <th scope="col">Term</th>
+      <th scope="col">Definition</th>
+      <th scope="col">Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>serif</code></td>
+      <td>
+        Fonts that have serifs (the flourishes and other small details you see
+        at the ends of the strokes in some typefaces).
+      </td>
+      <td id="serif-example">
+        <pre class="brush: html hidden">My big red elephant</pre>
+        <pre class="brush: css hidden">
+body {
+  font-family: serif;
+}</pre
+        >
+        {{EmbedLiveSample("serif-example", 100, 60)}}
+      </td>
+    </tr>
+    <tr>
+      <td><code>sans-serif</code></td>
+      <td>Fonts that don't have serifs.</td>
+      <td id="sans-serif-example">
+        <pre class="brush: html hidden">My big red elephant</pre>
+        <pre class="brush: css hidden">
+body {
+  font-family: sans-serif;
+}</pre
+        >
+        {{EmbedLiveSample("sans-serif-example", 100, 60)}}
+      </td>
+    </tr>
+    <tr>
+      <td><code>monospace</code></td>
+      <td>
+        Fonts where every character has the same width, typically used in code
+        listings.
+      </td>
+      <td id="monospace-example">
+        <pre class="brush: html hidden">My big red elephant</pre>
+        <pre class="brush: css hidden">
+body {
+  font-family: monospace;
+}</pre
+        >
+        {{EmbedLiveSample("monospace-example", 100, 60)}}
+      </td>
+    </tr>
+    <tr>
+      <td><code>cursive</code></td>
+      <td>
+        Fonts that are intended to emulate handwriting, with flowing, connected
+        strokes.
+      </td>
+      <td id="cursive-example">
+        <pre class="brush: html hidden">My big red elephant</pre>
+        <pre class="brush: css hidden">
+body {
+  font-family: cursive;
+}</pre
+        >
+        {{EmbedLiveSample("cursive-example", 100, 60)}}
+      </td>
+    </tr>
+    <tr>
+      <td><code>fantasy</code></td>
+      <td>Fonts that are intended to be decorative.</td>
+      <td id="fantasy-example">
+        <pre class="brush: html hidden">My big red elephant</pre>
+        <pre class="brush: css hidden">
+body {
+  font-family: fantasy;
+}</pre
+        >
+        {{EmbedLiveSample("fantasy-example", 100, 60)}}
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 #### Font stacks
 
-웹 페이지에서 글꼴의 사용가능 여부를 보장할 수 없으므로 (어똔 이유로 웹 글꼴이 실패할 수 있음) 브라우저에서 선택할 수 있는 **글꼴 스택 (font stack)** 을 제공할 수 있습니다. 여기에는 여러 글꼴 이름으로 구성된 `font-family` 값이 포함됩니다. 예제:
+Since you can't guarantee the availability of the fonts you want to use on your webpages (even a web font _could_ fail for some reason), you can supply a **font stack** so that the browser has multiple fonts it can choose from. This involves a `font-family` value consisting of multiple font names separated by commas, e.g.,
 
 ```css
 p {
@@ -149,15 +278,15 @@ p {
 }
 ```
 
-이 경우, 브라우저는 목록 시작 부분에서 시작하여 해당 글꼴이 시스템에서 사용 가능한지 확인합니다. 이 글꼴이 있으면, 해당 글꼴이 선택한 요소에 적용됩니다. 그렇지 않으면, 다음 글꼴로 이동합니다.
+In such a case, the browser starts at the beginning of the list and looks to see if that font is available on the machine. If it is, it applies that font to the selected elements. If not, it moves on to the next font, and so on.
 
-나열된 글꼴 중 사용 가능한 글꼴이 없는 경우, 브라우저가 최소한 대략 비슷한 것을 제공할 수 있도록 스택 끝에 적절한 일반 글꼴 이름을 제공하는 것이 좋습니다.이 점을 강조하기 위해 다른 옵션 — 일반적으로 Time New Roman — 을 사용할 수 없는 경우 단락에 기본 serif 글꼴이 제공됩니다. 이는 san-serif 글꼴에 적합하지 않습니다!
+It is a good idea to provide a suitable generic font name at the end of the stack so that if none of the listed fonts are available, the browser can at least provide something approximately suitable. To emphasize this point, paragraphs are given the browser's default serif font if no other option is available — which is usually Times New Roman — this is no good for a sans-serif font!
 
-> **참고:** `Trebuchet MS` 와 같이 둘 이상의 단어가 있는 글꼴 이름은 따옴표로 묶어야합니다, 예를 들면 `"Trebuchet MS"`.
+> **Note:** Font names that have more than one word — like `Trebuchet MS` — need to be surrounded by quotes, for example `"Trebuchet MS"`.
 
-#### font-family 예제
+#### A font-family example
 
-단락에 sans-serif 글꼴을 제공하여 이전 예제에 추가하겠습니다:
+Let's add to our previous example, giving the paragraphs a sans-serif font:
 
 ```css
 p {
@@ -166,96 +295,62 @@ p {
 }
 ```
 
-결과는 다음과 같습니다:
+This gives us the following result:
 
 ```html hidden
 <h1>Tommy the cat</h1>
 
-<p>I remember as if it were a meal ago...</p>
+<p>Well I remember it as though it were a meal ago…</p>
 
-<p>Said Tommy the Cat as he reeled back to clear whatever foreign matter
- may have nestled its way into his mighty throat. Many a fat alley rat
-had met its demise while staring point blank down the cavernous barrel of
- this awesome prowling machine. Truly a wonder of nature this urban
-predator — Tommy the cat had many a story to tell. But it was a rare
-occasion such as this that he did.</p>
+<p>
+  Said Tommy the Cat as he reeled back to clear whatever foreign matter may have
+  nestled its way into his mighty throat. Many a fat alley rat had met its
+  demise while staring point blank down the cavernous barrel of this awesome
+  prowling machine. Truly a wonder of nature this urban predator — Tommy the cat
+  had many a story to tell. But it was a rare occasion such as this that he did.
+</p>
 ```
 
 {{ EmbedLiveSample('A_font-family_example', '100%', 220) }}
 
-### 글꼴 크기
+### Font size
 
-In our previous module's [CSS values and units](/ko/docs/Learn/CSS/Introduction_to_CSS/Values_and_units) article, we reviewed [length and size units](/en-US/Learn/CSS/Introduction_to_CSS/Values_and_units#Length_and_size). Font size (set with the {{cssxref("font-size")}} property) can take values measured in most of these units (and others, such as [percentages](/en-US/Learn/CSS/Introduction_to_CSS/Values_and_units#Percentages)), however the most common units you'll use to size text are:
+In our previous module's [CSS values and units](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units) article, we reviewed length and size units. Font size (set with the {{cssxref("font-size")}} property) can take values measured in most of these units (and others, such as [percentages](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#percentages)); however, the most common units you'll use to size text are:
 
 - `px` (pixels): The number of pixels high you want the text to be. This is an absolute unit — it results in the same final computed value for the font on the page in pretty much any situation.
-- `em`s: 1em is equal to the font size set on the parent element of the current element we are styling (more specifically, the width of a capital letter M contained inside the parent element.) This can become tricky to work out if you have a lot of nested elements with different font sizes set, but it is doable, as you'll see below. Why bother? It is quite natural once you get used to it, and you can use `em`s to size everything, not just text. You can have an entire website sized using ems, which makes maintenance easy.
-- `rem`s: These work just like `em`s, except that 1`rem` is equal to the font size set on the root element of the document (i.e. {{htmlelement("html")}}), not the parent element. This makes doing the maths to work out your font sizes much easier, but unfortunately `rem`s are not supported in Internet Explorer 8 and below. If you need to support older browsers with your project, you can either stick to using `em`s or `px`, or use a {{glossary("polyfill")}} such as [REM-unit-polyfill](https://github.com/chuckcarpenter/REM-unit-polyfill).
+- `em`s: 1 `em` is equal to the font size set on the parent element of the current element we are styling (more specifically, the width of a capital letter M contained inside the parent element). This can become tricky to work out if you have a lot of nested elements with different font sizes set, but it is doable, as you'll see below. Why bother? It is quite natural once you get used to it, and you can use `em` to size everything, not just text. You can have an entire website sized using `em`, which makes maintenance easy.
+- `rem`s: These work just like `em`, except that 1 `rem` is equal to the font size set on the root element of the document (i.e. {{htmlelement("html")}}), not the parent element. This makes doing the maths to work out your font sizes much easier, although if you want to support really old browsers, you might struggle — `rem` is not supported in Internet Explorer 8 and below.
 
-The `font-size` of an element is inherited from that element's parent element. This all starts with the root element of the entire document — {{htmlelement("html")}} — the `font-size` of which is set to 16px as standard across browsers. Any paragraph (or other element that doesn't have a different size set by the browser) inside the root element will have a final size of 16px. Other elements may have different default sizes, for example an {{htmlelement("h1")}} element has a size of 2ems set by default, so will have a final size of 32px.
+The `font-size` of an element is inherited from that element's parent element. This all starts with the root element of the entire document — {{htmlelement("html")}} — the standard `font-size` of which is set to `16px` across browsers. Any paragraph (or another element that doesn't have a different size set by the browser) inside the root element will have a final size of `16px`. Other elements may have different default sizes. For example, an {{htmlelement("Heading_Elements", "h1")}} element has a size of `2em` set by default, so it will have a final size of `32px`.
 
-Things become more tricky when you start altering the font size of nested elements. For example, if you had an {{htmlelement("article")}} element in your page, and set its font-size to `1.5em`s (which would compute to 24px final size), and then wanted the paragraphs inside the `<article>` elements to have a computed font size of 20px, what em value would you use?
+Things become more tricky when you start altering the font size of nested elements. For example, if you had an {{htmlelement("article")}} element in your page, and set its `font-size` to 1.5 `em` (which would compute to 24 `px` final size), and then wanted the paragraphs inside the `<article>` elements to have a computed font size of 20 `px`, what `em` value would you use?
 
 ```html
 <!-- document base font-size is 16px -->
-<article> <!-- If my font-size is 1.5em -->
-  <p>My paragraph</p> <!-- How do I compute to 20px font-size? -->
+<article>
+  <!-- If my font-size is 1.5em -->
+  <p>My paragraph</p>
+  <!-- How do I compute to 20px font-size? -->
 </article>
 ```
 
-You would need to set its em value to 20/24, or `0.83333333em`s. The maths can be complicated, so you need to be careful about how you style things. It is best to use rems where you can, to keep things simple, and avoid setting the font-size of container elements where possible.
-
-#### A simple sizing example
-
-When sizing your text, it is usually a good idea to set the base `font-size` of the document to 10px, so that then the maths is a lot easier to work out — required (r)em values are then the pixel font size divided by 10, not 16. After doing that, you can easily size the different types of text in your document to what you want. It is a good idea to list all your `font-size` rulesets in a designated area in your stylesheet, so they are easy to find.
-
-Our new result is like so:
-
-```html hidden
-<h1>Tommy the cat</h1>
-
-<p>I remember as if it were a meal ago...</p>
-
-<p>Said Tommy the Cat as he reeled back to clear whatever foreign matter
- may have nestled its way into his mighty throat. Many a fat alley rat
-had met its demise while staring point blank down the cavernous barrel of
- this awesome prowling machine. Truly a wonder of nature this urban
-predator — Tommy the cat had many a story to tell. But it was a rare
-occasion such as this that he did.</p>
-```
-
-```css
-html {
-  font-size: 10px;
-}
-
-h1 {
-  font-size: 2.6rem;
-}
-
-p {
-  font-size: 1.4rem;
-  color: red;
-  font-family: Helvetica, Arial, sans-serif;
-}
-```
-
-{{ EmbedLiveSample('A_simple_sizing_example', '100%', 220) }}
+You would need to set its `em` value to 20/24, or 0.83333333 `em`. The maths can be complicated, so you need to be careful about how you style things. It is best to use `rem` where you can to keep things simple, and avoid setting the `font-size` of container elements where possible.
 
 ### Font style, font weight, text transform, and text decoration
 
 CSS provides four common properties to alter the visual weight/emphasis of text:
 
-- {{cssxref("font-style")}}: Used to turn italic text on and off. Possible values are as follows (you'll rarely use this, unless you want to turn some italic styling off for some reason):
+- {{cssxref("font-style")}}: Used to turn italic text on or off. Possible values are as follows (you'll rarely use this, unless you want to turn some italic styling off for some reason):
 
-  - `normal`: Sets the text to the normal font (turns existing italics off.)
-  - `italic`: Sets the text to use the _italic version of the font_ if available; if not available, it will simulate italics with oblique instead.
+  - `normal`: Sets the text to the normal font (turns existing italics off).
+  - `italic`: Sets the text to use the italic version of the font, if available; if not, it will simulate italics with oblique instead.
   - `oblique`: Sets the text to use a simulated version of an italic font, created by slanting the normal version.
 
 - {{cssxref("font-weight")}}: Sets how bold the text is. This has many values available in case you have many font variants available (such as _-light_, _-normal_, _-bold_, _-extrabold_, _-black_, etc.), but realistically you'll rarely use any of them except for `normal` and `bold`:
 
-  - `normal`, `bold`: Normal and **bold** font weight
+  - `normal`, `bold`: Normal and bold font weight.
   - `lighter`, `bolder`: Sets the current element's boldness to be one step lighter or heavier than its parent element's boldness.
-  - `100`–`900`: Numeric boldness values that provide finer grained control than the above keywords, if needed.
+  - `100` – `900`: Numeric boldness values that provide finer grained control than the above keywords, if needed.
 
 - {{cssxref("text-transform")}}: Allows you to set your font to be transformed. Values include:
 
@@ -263,16 +358,16 @@ CSS provides four common properties to alter the visual weight/emphasis of text:
   - `uppercase`: Transforms all text to capitals.
   - `lowercase`: Transforms all text to lower case.
   - `capitalize`: Transforms all words to have the first letter capitalized.
-  - `full-width`: Transforms all glyphs to be written inside a fixed-width square, similar to a monospace font, allowing aligning of e.g. latin characters along with asian language glyphs (like Chinese, Japanese, Korean.)
+  - `full-width`: Transforms all glyphs to be written inside a fixed-width square, similar to a monospace font, allowing aligning of, e.g., Latin characters along with Asian language glyphs (like Chinese, Japanese, Korean).
 
-- {{cssxref("text-decoration")}}: Sets/unsets text decorations on fonts (you'll mainly use this to unset the default underline on links when styling them.) Available values are:
+- {{cssxref("text-decoration")}}: Sets/unsets text decorations on fonts (you'll mainly use this to unset the default underline on links when styling them). Available values are:
 
   - `none`: Unsets any text decorations already present.
-  - `underline`: **Underlines the text**.
+  - `underline`: Underlines the text.
   - `overline`: Gives the text an overline.
-  - `line-through`: Puts a ~~strikethrough over the text~~.
+  - `line-through`: Puts a strikethrough over the text.
 
-  You should note that {{cssxref("text-decoration")}} can accept multiple values at once, if you want to add multiple decorations simultaneously, for example `text-decoration: underline overline`. Also note that {{cssxref("text-decoration")}} is a shorthand property for {{cssxref("text-decoration-line")}}, {{cssxref("text-decoration-style")}}, and {{cssxref("text-decoration-color")}}. You can use combinations of these property values to create interesting effects, for example `text-decoration: line-through red wavy`.
+  You should note that {{cssxref("text-decoration")}} can accept multiple values at once if you want to add multiple decorations simultaneously, for example, `text-decoration: underline overline`. Also note that {{cssxref("text-decoration")}} is a shorthand property for {{cssxref("text-decoration-line")}}, {{cssxref("text-decoration-style")}}, and {{cssxref("text-decoration-color")}}. You can use combinations of these property values to create interesting effects, for example: `text-decoration: line-through red wavy`.
 
 Let's look at adding a couple of these properties to our example:
 
@@ -281,14 +376,15 @@ Our new result is like so:
 ```html hidden
 <h1>Tommy the cat</h1>
 
-<p>I remember as if it were a meal ago...</p>
+<p>Well I remember it as though it were a meal ago…</p>
 
-<p>Said Tommy the Cat as he reeled back to clear whatever foreign matter
- may have nestled its way into his mighty throat. Many a fat alley rat
-had met its demise while staring point blank down the cavernous barrel of
- this awesome prowling machine. Truly a wonder of nature this urban
-predator — Tommy the cat had many a story to tell. But it was a rare
-occasion such as this that he did.</p>
+<p>
+  Said Tommy the Cat as he reeled back to clear whatever foreign matter may have
+  nestled its way into his mighty throat. Many a fat alley rat had met its
+  demise while staring point blank down the cavernous barrel of this awesome
+  prowling machine. Truly a wonder of nature this urban predator — Tommy the cat
+  had many a story to tell. But it was a rare occasion such as this that he did.
+</p>
 ```
 
 ```css
@@ -297,7 +393,7 @@ html {
 }
 
 h1 {
-  font-size: 2.6rem;
+  font-size: 5rem;
   text-transform: capitalize;
 }
 
@@ -306,13 +402,13 @@ h1 + p {
 }
 
 p {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   color: red;
   font-family: Helvetica, Arial, sans-serif;
 }
 ```
 
-{{ EmbedLiveSample('Font_style_font_weight_text_transform_and_text_decoration', '100%', 220) }}
+{{ EmbedLiveSample('Font_style_font_weight_text_transform_and_text_decoration', '100%', 260) }}
 
 ### Text drop shadows
 
@@ -324,37 +420,35 @@ text-shadow: 4px 4px 5px red;
 
 The four properties are as follows:
 
-1. The horizontal offset of the shadow from the original text — this can take most available CSS [length and size units](/en-US/Learn/CSS/Introduction_to_CSS/Values_and_units#Length_and_size), but you'll most commonly use px. This value has to be included.
-2. The vertical offset of the shadow from the original text; behaves basically just like the horizontal offset, except that it moves the shadow up/down, not left/right. This value has to be included.
-3. The blur radius — a higher value means the shadow is dispersed more widely. If this value is not included, it defaults to 0, which means no blur. This can take most available CSS [length and size units](/en-US/Learn/CSS/Introduction_to_CSS/Values_and_units#Length_and_size).
-4. The base color of the shadow, which can take any [CSS color unit](/en-US/Learn/CSS/Introduction_to_CSS/Values_and_units#Colors). If not included, it defaults to `black`.
-
-> **참고:** Positive offset values move the shadow right and down, but you can also use negative offset values to move the shadow left and up, for example `-1px -1px`.
+1. The horizontal offset of the shadow from the original text — this can take most available CSS [length and size units](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#length_and_size), but you'll most commonly use `px`; positive values move the shadow right, and negative values left. This value has to be included.
+2. The vertical offset of the shadow from the original text. This behaves similarly to the horizontal offset, except that it moves the shadow up/down, not left/right. This value has to be included.
+3. The blur radius: a higher value means the shadow is dispersed more widely. If this value is not included, it defaults to 0, which means no blur. This can take most available CSS [length and size units](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#length_and_size).
+4. The base color of the shadow, which can take any [CSS color unit](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#colors). If not included, it defaults to [`currentcolor`](/en-US/docs/Web/CSS/color_value#currentcolor_keyword), i.e. the shadow's color is taken from the element's [`color`](/en-US/docs/Web/CSS/color) property.
 
 #### Multiple shadows
 
 You can apply multiple shadows to the same text by including multiple shadow values separated by commas, for example:
 
 ```css
-text-shadow: -1px -1px 1px #aaa,
-             0px 4px 1px rgba(0,0,0,0.5),
-             4px 4px 5px rgba(0,0,0,0.7),
-             0px 0px 7px rgba(0,0,0,0.4);
+h1 {
+  text-shadow: 1px 1px 1px red, 2px 2px 1px red;
+}
 ```
 
-If we applied this to the {{htmlelement("h1")}} element in our Tommy the cat example, we'd end up with this:
+If we applied this to the {{htmlelement("Heading_Elements", "h1")}} element in our Tommy The Cat example, we'd end up with this:
 
 ```html hidden
 <h1>Tommy the cat</h1>
 
-<p>I remember as if it were a meal ago...</p>
+<p>Well I remember it as though it were a meal ago…</p>
 
-<p>Said Tommy the Cat as he reeled back to clear whatever foreign matter
- may have nestled its way into his mighty throat. Many a fat alley rat
-had met its demise while staring point blank down the cavernous barrel of
- this awesome prowling machine. Truly a wonder of nature this urban
-predator — Tommy the cat had many a story to tell. But it was a rare
-occasion such as this that he did.</p>
+<p>
+  Said Tommy the Cat as he reeled back to clear whatever foreign matter may have
+  nestled its way into his mighty throat. Many a fat alley rat had met its
+  demise while staring point blank down the cavernous barrel of this awesome
+  prowling machine. Truly a wonder of nature this urban predator — Tommy the cat
+  had many a story to tell. But it was a rare occasion such as this that he did.
+</p>
 ```
 
 ```css hidden
@@ -363,12 +457,8 @@ html {
 }
 
 h1 {
-  font-size: 26px;
+  font-size: 5rem;
   text-transform: capitalize;
-  text-shadow: -1px -1px 1px #aaa,
-               0px 2px 1px rgba(0,0,0,0.5),
-               2px 2px 2px rgba(0,0,0,0.7),
-               0px 0px 3px rgba(0,0,0,0.4);
 }
 
 h1 + p {
@@ -376,56 +466,54 @@ h1 + p {
 }
 
 p {
-  font-size: 14px;
+  font-size: 1.5rem;
   color: red;
   font-family: Helvetica, Arial, sans-serif;
 }
 ```
 
-{{ EmbedLiveSample('Multiple_shadows', '100%', 220) }}
+{{ EmbedLiveSample('Multiple_shadows', '100%', 260) }}
 
-> **참고:** You can see more interesting examples of `text-shadow` usage in the Sitepoint article [Moonlighting with CSS text-shadow](http://www.sitepoint.com/moonlighting-css-text-shadow/).
+> **Note:** You can see more interesting examples of `text-shadow` usage in the Sitepoint article [Moonlighting with CSS text-shadow](https://www.sitepoint.com/moonlighting-css-text-shadow/).
 
-## 텍스트 레이아웃
+## Text layout
 
-With basic font properties out the way, let's now have a look at properties we can use to affect text layout.
+With basic font properties out of the way, let's have a look at properties we can use to affect text layout.
 
-### 텍스트 정렬
+### Text alignment
 
-The {{cssxref("text-align")}} property is used to control how text is aligned within its containing content box. The available values are as follows, and work in pretty much the same way as they do in a regular word processor application:
+The {{cssxref("text-align")}} property is used to control how text is aligned within its containing content box. The available values are listed below. They work in pretty much the same way as they do in a regular word processor application:
 
-- `left`: Left justifies the text.
-- `right`: Right justifies the text.
+- `left`: Left-justifies the text.
+- `right`: Right-justifies the text.
 - `center`: Centers the text.
 - `justify`: Makes the text spread out, varying the gaps in between the words so that all lines of text are the same width. You need to use this carefully — it can look terrible, especially when applied to a paragraph with lots of long words in it. If you are going to use this, you should also think about using something else along with it, such as {{cssxref("hyphens")}}, to break some of the longer words across lines.
 
-If we applied `text-align: center;` to the {{htmlelement("h1")}} in our example, we'd end up with this:
+If we applied `text-align: center;` to the {{htmlelement("Heading_Elements", "h1")}} in our example, we'd end up with this:
 
 ```html hidden
 <h1>Tommy the cat</h1>
 
-<p>I remember as if it were a meal ago...</p>
+<p>Well I remember it as though it were a meal ago…</p>
 
-<p>Said Tommy the Cat as he reeled back to clear whatever foreign matter
- may have nestled its way into his mighty throat. Many a fat alley rat
-had met its demise while staring point blank down the cavernous barrel of
- this awesome prowling machine. Truly a wonder of nature this urban
-predator — Tommy the cat had many a story to tell. But it was a rare
-occasion such as this that he did.</p>
+<p>
+  Said Tommy the Cat as he reeled back to clear whatever foreign matter may have
+  nestled its way into his mighty throat. Many a fat alley rat had met its
+  demise while staring point blank down the cavernous barrel of this awesome
+  prowling machine. Truly a wonder of nature this urban predator — Tommy the cat
+  had many a story to tell. But it was a rare occasion such as this that he did.
+</p>
 ```
 
-```css hidden
+```css
 html {
   font-size: 10px;
 }
 
 h1 {
-  font-size: 2.6rem;
+  font-size: 5rem;
   text-transform: capitalize;
-  text-shadow: -1px -1px 1px #aaa,
-               0px 2px 1px rgba(0,0,0,0.5),
-               2px 2px 2px rgba(0,0,0,0.7),
-               0px 0px 3px rgba(0,0,0,0.4);
+  text-shadow: 1px 1px 1px red, 2px 2px 1px red;
   text-align: center;
 }
 
@@ -434,20 +522,22 @@ h1 + p {
 }
 
 p {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   color: red;
   font-family: Helvetica, Arial, sans-serif;
 }
 ```
 
-{{ EmbedLiveSample('Text_alignment', '100%', 220) }}
+{{ EmbedLiveSample('Text_alignment', '100%', 260) }}
 
 ### Line height
 
-The {{cssxref("line-height")}} property sets the height of each line of text — this can take most [length and size units](/en-US/Learn/CSS/Introduction_to_CSS/Values_and_units#Length_and_size), but can also take a unitless value, which acts as a multiplier and is generally considered the best option — the {{cssxref("font-size")}} is multiplied to get the `line-height`. Body text generally looks nicer and is easier to read when the lines are spaced apart; the recommended line height is around 1.5–2 (double spaced.) So to set our lines of text to 1.5 times the height of the font, you'd use this:
+The {{cssxref("line-height")}} property sets the height of each line of text. This property can not only take most [length and size units](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#length_and_size), but can also take a unitless value, which acts as a multiplier and is generally considered the best option. With a unitless value, the {{cssxref("font-size")}} gets multiplied and results in the `line-height`. Body text generally looks nicer and is easier to read when the lines are spaced apart. The recommended line height is around 1.5 – 2 (double spaced). To set our lines of text to 1.6 times the height of the font, we'd use:
 
 ```css
-line-height: 1.5;
+p {
+  line-height: 1.6;
+}
 ```
 
 Applying this to the {{htmlelement("p")}} elements in our example would give us this result:
@@ -455,28 +545,26 @@ Applying this to the {{htmlelement("p")}} elements in our example would give us 
 ```html hidden
 <h1>Tommy the cat</h1>
 
-<p>I remember as if it were a meal ago...</p>
+<p>Well I remember it as though it were a meal ago…</p>
 
-<p>Said Tommy the Cat as he reeled back to clear whatever foreign matter
- may have nestled its way into his mighty throat. Many a fat alley rat
-had met its demise while staring point blank down the cavernous barrel of
- this awesome prowling machine. Truly a wonder of nature this urban
-predator — Tommy the cat had many a story to tell. But it was a rare
-occasion such as this that he did.</p>
+<p>
+  Said Tommy the Cat as he reeled back to clear whatever foreign matter may have
+  nestled its way into his mighty throat. Many a fat alley rat had met its
+  demise while staring point blank down the cavernous barrel of this awesome
+  prowling machine. Truly a wonder of nature this urban predator — Tommy the cat
+  had many a story to tell. But it was a rare occasion such as this that he did.
+</p>
 ```
 
-```css hidden
+```css
 html {
   font-size: 10px;
 }
 
 h1 {
-  font-size: 2.6rem;
+  font-size: 5rem;
   text-transform: capitalize;
-  text-shadow: -1px -1px 1px #aaa,
-               0px 2px 1px rgba(0,0,0,0.5),
-               2px 2px 2px rgba(0,0,0,0.7),
-               0px 0px 3px rgba(0,0,0,0.4);
+  text-shadow: 1px 1px 1px red, 2px 2px 1px red;
   text-align: center;
 }
 
@@ -485,78 +573,73 @@ h1 + p {
 }
 
 p {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   color: red;
   font-family: Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 ```
 
-{{ EmbedLiveSample('Line_height', '100%', 250) }}
+{{ EmbedLiveSample('Line_height', '100%', 300) }}
 
 ### Letter and word spacing
 
-The {{cssxref("letter-spacing")}} and {{cssxref("word-spacing")}} properties allow you to set the spacing between letters and words in your text. You won't use these very often, but might find a use for them to get a certain look, or to improve the legibility of a particularly dense font. They can take most [length and size units](/en-US/Learn/CSS/Introduction_to_CSS/Values_and_units#Length_and_size).
+The {{cssxref("letter-spacing")}} and {{cssxref("word-spacing")}} properties allow you to set the spacing between letters and words in your text. You won't use these very often, but might find a use for them to obtain a specific look, or to improve the legibility of a particularly dense font. They can take most [length and size units](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#length_and_size).
 
-So as an example, if we applied the following to the first line of the {{htmlelement("p")}} elements in our example:
+To illustrate, we could apply some word- and letter-spacing to the first line of each {{htmlelement("p")}} element in our HTML sample with:
 
 ```css
 p::first-line {
-  letter-spacing: 2px;
+  letter-spacing: 4px;
   word-spacing: 4px;
 }
 ```
 
-We'd get the following:
+This renders our HTML as:
 
 ```html hidden
 <h1>Tommy the cat</h1>
 
-<p>I remember as if it were a meal ago...</p>
+<p>Well I remember it as though it were a meal ago…</p>
 
-<p>Said Tommy the Cat as he reeled back to clear whatever foreign matter
- may have nestled its way into his mighty throat. Many a fat alley rat
-had met its demise while staring point blank down the cavernous barrel of
- this awesome prowling machine. Truly a wonder of nature this urban
-predator — Tommy the cat had many a story to tell. But it was a rare
-occasion such as this that he did.</p>
+<p>
+  Said Tommy the Cat as he reeled back to clear whatever foreign matter may have
+  nestled its way into his mighty throat. Many a fat alley rat had met its
+  demise while staring point blank down the cavernous barrel of this awesome
+  prowling machine. Truly a wonder of nature this urban predator — Tommy the cat
+  had many a story to tell. But it was a rare occasion such as this that he did.
+</p>
 ```
 
-```css hidden
+```css
 html {
   font-size: 10px;
 }
 
 h1 {
-  font-size: 2.6rem;
+  font-size: 5rem;
   text-transform: capitalize;
-  text-shadow: -1px -1px 1px #aaa,
-               0px 2px 1px rgba(0,0,0,0.5),
-               2px 2px 2px rgba(0,0,0,0.7),
-               0px 0px 3px rgba(0,0,0,0.4);
+  text-shadow: 1px 1px 1px red, 2px 2px 1px red;
   text-align: center;
+  letter-spacing: 2px;
 }
 
 h1 + p {
   font-weight: bold;
 }
 
-p::first-line {
-  letter-spacing: 2px;
-  word-spacing: 4px;
-}
-
 p {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   color: red;
   font-family: Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  line-height: 1.6;
+  letter-spacing: 1px;
 }
 ```
 
-{{ EmbedLiveSample('Letter_and_word_spacing', '100%', 250) }}
+{{ EmbedLiveSample('Letter_and_word_spacing', '100%', 330) }}
 
-### 볼 가치가 있는 다른 속성들
+### Other properties worth looking at
 
 The above properties give you an idea of how to start styling text on a webpage, but there are many more properties you could use. We just wanted to cover the most important ones here. Once you've become used to using the above, you should also explore the following:
 
@@ -576,21 +659,21 @@ Font styles:
 - {{cssxref("text-underline-position")}}: Specify the position of underlines set using the `text-decoration-line` property `underline` value.
 - {{cssxref("text-rendering")}}: Try to perform some text rendering optimization.
 
-Text layout styles
+Text layout styles:
 
 - {{cssxref("text-indent")}}: Specify how much horizontal space should be left before the beginning of the first line of the text content.
 - {{cssxref("text-overflow")}}: Define how overflowed content that is not displayed is signaled to users.
 - {{cssxref("white-space")}}: Define how whitespace and associated line breaks inside the element are handled.
 - {{cssxref("word-break")}}: Specify whether to break lines within words.
-- {{cssxref("direction")}}: Define the text direction (This depends on the language and usually it's better to let HTML handle that part as it is tied to the text content.)
+- {{cssxref("direction")}}: Define the text direction. (This depends on the language and usually it's better to let HTML handle that part as it is tied to the text content.)
 - {{cssxref("hyphens")}}: Switch on and off hyphenation for supported languages.
 - {{cssxref("line-break")}}: Relax or strengthen line breaking for Asian languages.
 - {{cssxref("text-align-last")}}: Define how the last line of a block or a line, right before a forced line break, is aligned.
 - {{cssxref("text-orientation")}}: Define the orientation of the text in a line.
-- {{cssxref("word-wrap")}}: Specify whether or not the browser may break lines within words in order to prevent overflow.
+- {{cssxref("overflow-wrap")}}: Specify whether or not the browser may break lines within words in order to prevent overflow.
 - {{cssxref("writing-mode")}}: Define whether lines of text are laid out horizontally or vertically and the direction in which subsequent lines flow.
 
-## 글꼴 약식 (shorthand)
+## Font shorthand
 
 Many font properties can also be set through the shorthand property {{cssxref("font")}}. These are written in the following order: {{cssxref("font-style")}}, {{cssxref("font-variant")}}, {{cssxref("font-weight")}}, {{cssxref("font-stretch")}}, {{cssxref("font-size")}}, {{cssxref("line-height")}}, and {{cssxref("font-family")}}.
 
@@ -606,39 +689,56 @@ font: italic normal bold normal 3em/1.5 Helvetica, Arial, sans-serif;
 
 ## Active learning: Playing with styling text
 
-In this active learning session, we don't have any specific exercises for you to do: we'd just like you to have a good play with some font/text layout properties, and see what you can produce! You can either do this using offline HTML/CSS files, or enter your code into the live editable example below.
+In this active learning session we don't have any specific exercises for you to do. We'd just like you to have a good play with some font/text layout properties. See for yourself what you can come up with! You can either do this using offline HTML/CSS files, or enter your code into the live editable example below.
 
 If you make a mistake, you can always reset it using the _Reset_ button.
 
 ```html hidden
-<div class="body-wrapper" style="font-family: 'Open Sans Light',Helvetica,Arial,sans-serif;">
+<div
+  class="body-wrapper"
+  style="font-family: 'Open Sans Light',Helvetica,Arial,sans-serif;">
   <h2>HTML Input</h2>
-  <textarea id="code" class="html-input" style="width: 90%;height: 10em;padding: 10px;border: 1px solid #0095dd;">
-  <p>Some sample text for your delight</p></textarea>
+  <textarea
+    id="code"
+    class="html-input"
+    style="width: 90%;height: 10em;padding: 10px;border: 1px solid #0095dd;">
+<p>Some sample text for your delight</p>
+  </textarea>
 
   <h2>CSS Input</h2>
-  <textarea id="code" class="css-input" style="width: 90%;height: 10em;padding: 10px;border: 1px solid #0095dd;">p {
+  <textarea
+    id="code"
+    class="css-input"
+    style="width: 90%;height: 10em;padding: 10px;border: 1px solid #0095dd;">
+p {
 
-  }</textarea>
+}
+</textarea>
 
   <h2>Output</h2>
-  <div class="output" style="width: 90%;height: 10em;padding: 10px;border: 1px solid #0095dd;"></div>
+  <div
+    class="output"
+    style="width: 90%;height: 10em;padding: 10px;border: 1px solid #0095dd;"></div>
   <div class="controls">
-    <input id="reset" type="button" value="Reset" style="margin: 10px 10px 0 0;">
+    <input
+      id="reset"
+      type="button"
+      value="Reset"
+      style="margin: 10px 10px 0 0;" />
   </div>
 </div>
 ```
 
 ```js hidden
-var htmlInput = document.querySelector(".html-input");
-var cssInput = document.querySelector(".css-input");
-var reset = document.getElementById("reset");
-var htmlCode = htmlInput.value;
-var cssCode = cssInput.value;
-var output = document.querySelector(".output");
+const htmlInput = document.querySelector(".html-input");
+const cssInput = document.querySelector(".css-input");
+const reset = document.getElementById("reset");
+let htmlCode = htmlInput.value;
+let cssCode = cssInput.value;
+const output = document.querySelector(".output");
 
-var styleElem = document.createElement('style');
-var headElem = document.querySelector('head');
+const styleElem = document.createElement("style");
+const headElem = document.querySelector("head");
 headElem.appendChild(styleElem);
 
 function drawOutput() {
@@ -646,7 +746,7 @@ function drawOutput() {
   styleElem.textContent = cssInput.value;
 }
 
-reset.addEventListener("click", function() {
+reset.addEventListener("click", () => {
   htmlInput.value = htmlCode;
   cssInput.value = cssCode;
   drawOutput();
@@ -657,10 +757,10 @@ cssInput.addEventListener("input", drawOutput);
 window.addEventListener("load", drawOutput);
 ```
 
-{{ EmbedLiveSample('Playable_code', 700, 800) }}
+{{ EmbedLiveSample('Active_learning_Playing_with_styling_text', 700, 800) }}
 
 ## Summary
 
-We hoped you enjoyed playing with text in this article! The next article will give you all you need to know about styling HTML lists.
+We hope you enjoyed playing with text in this article! The next article will provide you with all you need to know about [styling HTML lists](/en-US/docs/Learn/CSS/Styling_text/Styling_lists).
 
 {{NextMenu("Learn/CSS/Styling_text/Styling_lists", "Learn/CSS/Styling_text")}}

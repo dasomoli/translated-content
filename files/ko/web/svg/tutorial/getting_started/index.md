@@ -1,17 +1,19 @@
 ---
-title: 시작하기
+title: Getting started
 slug: Web/SVG/Tutorial/Getting_Started
+page-type: guide
 ---
+
+{{SVGRef}}
 
 {{ PreviousNext("Web/SVG/Tutorial/Introduction", "Web/SVG/Tutorial/Positions") }}
 
-### 간단한 예제
+## A simple example
 
-다음의 코드와 같이 간단한 예제로 시작해보겠습니다.
+Let us dive straight in with a simple example. Take a look at the following code.
 
 ```xml
 <svg version="1.1"
-     baseProfile="full"
      width="300" height="200"
      xmlns="http://www.w3.org/2000/svg">
 
@@ -24,73 +26,71 @@ slug: Web/SVG/Tutorial/Getting_Started
 </svg>
 ```
 
-코드를 복사하여 demo1.svg로 저장하고, 파이어폭스 에서 실행해 봅시다. 아래와 같은 화면이 그려질 것입니다.(Firefox 사용자 : [링크](https://media.prod.mdn.mozit.cloud/attachments/2012/07/09/3075/89b1e0a26e8421e19f907e0522b188bd/svgdemo1.xml))
+Copy the code and paste it in a file, demo1.svg. Then open the file in a browser. It will render as shown in the following screenshot. (Firefox users: click [here](https://media.prod.mdn.mozit.cloud/attachments/2012/07/09/3075/89b1e0a26e8421e19f907e0522b188bd/svgdemo1.xml))
 
-![빨간색 배경 중앙에 녹색 원이 있습니다. 원 가운데에 있는 흰색 텍스트는 SVG입니다.](svgdemo1.png)
+![Red background composed of a centered green circle. White text centered inside the circle is SVG.](svgdemo1.png)
 
-화면이 그려지는 과정은 다음과 같습니다.
+The rendering process involves the following:
 
-1. SVG 루트 요소(Element)부터 시작합니다.
+1. We start with the {{SVGElement("svg")}} root element:
 
-    - DTD기반의 SVG유효성 검사는 해결할 수 있는 것보다 많은 문제를 야기하기 때문에 (X)HTML로 알려진 Doctype 선언은 사용하지 않습니다.
-    - 다른 유형의 유효성 검사를 위해 SVG버전을 식별하려면 항상 version과 baseProfile 속성(Attribute)을 사용해야 합니다.
-    - XML 특수언어(dialect)로서 SVG는 (xmlsn 속성에서) 항상 네임 스페이스(namespace)를 올바르게 바인딩 해야합니다. 자세한 내용은[네임 스페이스 충돌 과정](/ko/docs/Web/SVG/Namespaces_Crash_Course) 페이지를 참조하십시오.
+   - A doctype declaration as known from (X)HTML should be left off because DTD based SVG validation leads to more problems than it solves.
+   - Before SVG 2, to identify the version of the SVG for other types of validation the `version` and `baseProfile` attributes should always be used instead. Both `version` and `baseProfile` attributes are deprecated in SVG 2.
+   - As an XML dialect, SVG must always bind the namespaces correctly (in the xmlns attribute). See the [Namespaces Crash Course](/en-US/docs/Web/SVG/Namespaces_Crash_Course) page for more info.
 
-2. 전체 이미지 영역을 포함하는 사각형 \<rect />을 그려 배경을 빨간색으로 설정합니다.
-3. 빨간색 직사각형의 중앙에 반경 80px의 녹색 원 \<circle />이 그려집니다
-4. 텍스트 "SVG"가 그려집니다. 각 문자의 내부는 흰색으로 채워집니다. 텍스트는 중심점이 되고자 하는 지점에 앵커를 설정하여 배치됩니다.이 경우 중심점은 녹색 원의 중심에 일치해야합니다. 글꼴 크기와 수직 위치를 미세 조정하여 심미적으로 뛰어난 최종 결과를 얻을 수 있습니다.
+2. The background is set to red by drawing a rectangle {{SVGElement("rect")}} that covers the complete image area.
+3. A green circle {{SVGElement("circle")}} with a radius of 80px is drawn atop the center of the red rectangle (center of circle offset 150px to the right, and 100px downward from the top left corner).
+4. The text "SVG" is drawn. The interior of each letter is filled in with white. The text is positioned by setting an anchor where we want the midpoint to be: in this case, the midpoint should correspond to the center of the green circle. Fine adjustments can be made to the font size and vertical position to ensure the final result is aesthetically pleasing.
 
-### SVG 파일의 기본 속성
+## Basic properties of SVG files
 
-- 가장 먼저 주목해야 할 것은 요소를 렌더링하는 순서입니다. SVG 파일 전체에서 유효한 규칙은, 내용의 _위에서 부터 아래로_ 렌더링된다는 것입니다. 요소는 아래에 위치할수록 더 잘보이게 됩니다.
-- 웹의 SVG 파일은 브라우저에 직접 표시되거나 HTML파일에 여러가지 방법을 통해 포함될 수 있습니다:
+- The first important thing to notice is the order of rendering elements. The globally valid rule for SVG files is that _later_ elements are rendered _atop previous_ elements. The further down an element is the more it will be visible.
+- SVG files on the web can be displayed directly in the browser or embedded in HTML files via several methods:
 
-  - HTML이 XHTML이고 application/xhtml+xml 유형으로 제공되는 경우 SVG는 XML 소스에 직접 포함될 수 있습니다.
-  - HTML이 HTML5이고 브라우저가 HTML5 브라우저를 준수하는 경우 SVG를 직접 삽입 할 수도 있습니다. 그러나 HTML5 사양을 준수하는 데 필요한 구문 변경이 있을 수 있습니다.
-  - SVG 파일은 object 요소로 참조 할 수 있습니다:
+  - If the HTML is XHTML and is delivered as type `application/xhtml+xml`, the SVG can be directly embedded in the XML source.
+  - The SVG can also be directly embedded in HTML.
+  - An `img` element can be used.
+  - The SVG file can be referenced with an `object` element:
 
-    ```
-            <object data="image.svg" type="image/svg+xml" />
-    ```
-
-  - 마찬가지로 iframe 요소로 사용할 수 있습니다:
-
-    ```
-            <iframe src="image.svg"></iframe>
+    ```html
+    <object data="image.svg" type="image/svg+xml"></object>
     ```
 
-  - 이론적으로, img 요소로 사용될 수 있습니다만 4.0 이전의 Firefox에서는 작동하지 않습니다.
-  - 마지막으로 SVG는 JavaScript로 동적으로 생성되어 HTML DOM에 삽입 될 수 있습니다. 이는 SVG를 처리 할 수없는 브라우저에서 대체하여 구현할 수 있다는 장점이 있습니다.
+  - Likewise an `iframe` element can be used:
 
-  이 주제에 대해 깊이있게 다루기 위해 [이 문서](/ko/docs/Web/SVG/Tutorial/SVG_In_HTML_Introduction)를 참조하십시오.
+    ```html
+    <iframe src="image.svg"></iframe>
+    ```
 
-- SVG에서 크기와 단위를 처리하는 방법에 대해서는 [다음 페이지](/ko/docs/Web/SVG/Tutorial/Positions)에서 설명 할 것입니다.
+  - Finally, SVG can be created dynamically with JavaScript and injected into the HTML DOM.
 
-### SVG 파일 형식
+- How SVG handles sizes and units will be explained [on the next page](/en-US/docs/Web/SVG/Tutorial/Positions).
 
-SVG 파일은 두 가지 형태로 제공됩니다. 일반 SVG 파일은 SVG 마크업이 포함 된 간단한 텍스트 파일입니다. 이러한 파일의 권장 파일 확장자는 소문자로 ".svg"입니다.
+## SVG file types
 
-일부 응용 프로그램 (예 : 지리적 응용 프로그램)에 사용될 때 매우 큰 크기의 SVG 파일이 있을 수 있기 때문에 SVG 사양에서는 gzip으로 압축 된 SVG 파일을 허용합니다. 이러한 파일의 권장 파일 확장자는 소문자로 ".svgz"입니다. 하지만 안타깝게도 gzip으로 압축 된 SVG 파일을 Microsoft IIS 서버에서 서비스 할 때 모든 SVG 가능 브라우저(사용자 에이전트)에서 안정적으로 작동하게 하려면 문제가 많습니다. 그리고 Firefox는 로컬 컴퓨터에서 gzip으로 압축 된 SVG를 로드 할 수 없습니다. 웹 서버에 게시 할 때를 제외하고는 gzip으로 압축 된 SVG를 피하십시오 (아래 참조).
+SVG files come in two flavors. Normal SVG files are simple text files containing SVG markup. The recommended filename extension for these files is ".svg" (all lowercase).
 
-### 웹서버 관련 한 마디
+Due to the potentially massive size SVG files can reach when used for some applications (e.g., geographical applications), the SVG specification also allows for gzip-compressed SVG files. The recommended filename extension for these files is ".svgz" (all lowercase). Unfortunately, it is very problematic to get gzip-compressed SVG files to work reliably across all SVG capable user agents when served from a Microsoft IIS server, and Firefox cannot load gzip-compressed SVG from the local computer. Avoid gzip-compressed SVG except when you are publishing to a web server that you know will serve it correctly (see below).
 
-이제 기본 SVG 파일을 만드는 방법에 대해 알아봤으므로 다음 단계는 웹 서버에 업로드하는 것입니다. 이 단계에서는 몇 가지 문제가 있습니다. 보통, SVG 파일의 경우 서버는 다음과 같이 HTTP 헤더를 보내야합니다.
+## A word on web servers for .svgz files
 
-```
+Now that you have an idea of how to create basic SVG files, the next stage is to upload them to a web server. There are some gotchas at this stage though. For normal SVG files, servers should send the HTTP headers:
+
+```http
 Content-Type: image/svg+xml
 Vary: Accept-Encoding
 ```
 
-gzip으로 압축 된 SVG 파일의 경우, 서버는 다음과 같이 HTTP 헤더를 보내야합니다.
+For gzip-compressed SVG files, servers should send the HTTP headers:
 
-```
+```http
 Content-Type: image/svg+xml
 Content-Encoding: gzip
 Vary: Accept-Encoding
 ```
 
-네트워크 모니터 패널이나 [web-sniffer.net](http://web-sniffer.net/)과 같은 사이트를 사용하여 서버가 SVG 파일과 함께 올바른 HTTP 헤더를 보내고 있는지 확인할 수 있습니다. SVG 파일 중 하나의 URL을 전송하고 HTTP 응답 헤더를 확인해 보십시오. 서버가 위의 값으로 헤더를 보내지 않으면 웹 호스트에 문의해야합니다. 서버에 SVG를 올바르게 구성하도록하는 데 문제가 있으면 직접 할 수있는 방법이있을 수 있습니다. 다양한 간단한 솔루션에 대해서는 w3.org의 [서버 구성 페이지](https://www.w3.org/services/svg-server/)를 참조하십시오.
+You can check that your server is sending the correct HTTP headers with your SVG files by using the [Network Monitor panel](https://firefox-source-docs.mozilla.org/devtools-user/network_monitor/index.html#headers) or a site such as [websniffer.cc](https://websniffer.cc/). Submit the URL of one of your SVG files and look at the HTTP response headers. If you find that your server is not sending the headers with the values given above, then you should contact your web host. If you have problems convincing them to correctly configure their servers for SVG, there may be ways to do it yourself. See the [server configuration page](https://www.w3.org/services/svg-server/) on the w3.org for a range of simple solutions.
 
-SVG를 사용하는데 있어 서버 구성 오류가 SVG로드에 실패하는 가장 일반적인 이유이기에 확인하십시오. 서버가 SVG 파일을 제공하면서 올바른 헤더를 보내도록 설정되어 있지 않다면 Firefox는 SVG파일의 마크업을 텍스트 또는 인코딩된 의미없는 값으로 표시하거나 뷰어에게 열어 볼 응용 프로그램을 선택하도록 요청할 가능성이 큽니다.
+Server misconfiguration is a very common reason for SVG failing to load, so make sure you check yours. If your server is not configured to send the correct headers with the SVG files it serves, then Firefox will most likely show the markup of the files as text or encoded garbage, or even ask the viewer to choose an application to open them.
 
 {{ PreviousNext("Web/SVG/Tutorial/Introduction", "Web/SVG/Tutorial/Positions") }}

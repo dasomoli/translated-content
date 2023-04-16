@@ -1,67 +1,77 @@
 ---
 title: border-image-outset
 slug: Web/CSS/border-image-outset
+page-type: css-property
+browser-compat: css.properties.border-image-outset
 ---
 
 {{CSSRef}}
 
-**`border-image-outset`** [CSS](/ko/docs/Web/CSS) 속성은 요소의 테두리 상자와 [테두리 이미지](/ko/docs/Web/CSS/border-image)의 거리를 설정합니다.
+The **`border-image-outset`** [CSS](/en-US/docs/Web/CSS) property sets the distance by which an element's [border image](/en-US/docs/Web/CSS/border-image) is set out from its border box.
 
-`border-image-outset`으로 인해 요소 바깥에 그려지는 테두리로는 스크롤이 생기지 않으며 마우스 이벤트를 잡아낼 수도 없습니다.
+The parts of the border image that are rendered outside the element's border box with `border-image-outset` do not trigger overflow scrollbars and don't capture mouse events.
 
 {{EmbedInteractiveExample("pages/css/border-image-outset.html")}}
 
-## 구문
+## Syntax
 
 ```css
-/* <length> 값 */
+/* <length> value */
 border-image-outset: 1rem;
 
-/* <number> 값 */
+/* <number> value */
 border-image-outset: 1.5;
 
-/* 세로방향 | 가로방향 */
+/* top and bottom | left and right */
 border-image-outset: 1 1.2;
 
-/* 위 | 가로방향 | 아래 */
+/* top | left and right | bottom */
 border-image-outset: 30px 2 45px;
 
-/* 위 | 오른쪽 | 아래 | 왼쪽 */
+/* top | right | bottom | left */
 border-image-outset: 7px 12px 14px 5px;
 
-/* 전역 값 */
+/* Global values */
 border-image-outset: inherit;
 border-image-outset: initial;
+border-image-outset: revert;
+border-image-outset: revert-layer;
 border-image-outset: unset;
 ```
 
-`border-image-outset` 속성은 한 개, 두 개, 세 개, 혹은 네 개의 값으로 지정할 수 있습니다. 각 값은 {{cssxref("&lt;length&gt;")}}나 {{cssxref("&lt;number&gt;")}}입니다. 음수는 유효하지 않습니다.
+The `border-image-outset` property may be specified as one, two, three, or four values. Each value is a {{cssxref("&lt;length&gt;")}} or {{cssxref("&lt;number&gt;")}}. Negative values are invalid and will cause the `border-image-outset` declaration to be ignored.
 
-- **한 개의 값**은 모든 네 면의 거리를 설정합니다.
-- **두 개의 값**을 지정하면 첫 번째는 **위와 아래**, 두 번째는 **왼쪽과 오른쪽** 거리를 설정합니다.
-- **세 개의 값**을 지정하면 첫 번째는 **위**, 두 번째는 **왼쪽과 오른쪽,** 세 번째 값은 **아래** 거리를 설정합니다.
-- **네 개의 값**을 지정하면 각각 **상, 우, 하, 좌** 순서로 거리를 지정합니다. (시계방향)
+1. If **one** value is specified, it applies to **all four sides**.
+2. If **two** values are specified, the first applies to the **top and bottom** and the second to the **left and right**.
+3. If **three** values are specified, the first applies to the **top**, the second to the **left and right**, and the third to the **bottom**.
+4. If **four** values are specified, they apply to the **top**, **right**, **bottom**, and **left** in that order (clockwise).
 
-### 값
+### Values
 
 - {{cssxref("&lt;length&gt;")}}
-  - : 테두리 거리의 크기로 고정값 사용.
+  - : The size of the `border-image` outset as a dimension — a number with a unit.
 - {{cssxref("&lt;number&gt;")}}
-  - : 테두리 거리의 크기로 {{cssxref("border-width")}}의 배수 사용.
+  - : The size of the `border-image` outset as a multiple of the element's corresponding {{cssxref("border-width")}}s. For example, if an element has `border-width: 1em 2px 0 1.5rem`, and `border-image-outset: 2`, the final `border-image-outset` would be calculated as `2em 4px 0 3rem`.
 
-### 형식 구문
+## Formal definition
+
+{{CSSInfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### HTML
+### Outsetting a border image
+
+#### HTML
 
 ```html
-<div id="outset">밖으로 나간 테두리를 가지고 있어요!</div>
+<div id="outset">This element has an outset border image!</div>
 ```
 
-### CSS
+#### CSS
 
 ```css
 #outset {
@@ -69,19 +79,24 @@ border-image-outset: unset;
   background: #cef;
   border: 1.4rem solid;
   border-image: radial-gradient(#ff2, #55f) 40;
-  border-image-outset: 1.5;  /* = 1.5 * 1.4rem = 2.1rem */
+  border-image-outset: 1.5; /* 1.5 × 1.4rem = 2.1rem */
   margin: 2.1rem;
 }
 ```
 
-### 결과
+#### Result
 
-{{EmbedLiveSample("예제", "auto", 200)}}
+{{EmbedLiveSample("Outsetting_a_border_image", "auto", 200)}}
 
-## 명세
+## Specifications
 
-{{Specifications}}{{cssinfo}}
+{{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- [Backgrounds and borders](/en-US/docs/Web/CSS/CSS_Backgrounds_and_Borders)
+- [Learn CSS: Backgrounds and borders](/en-US/docs/Learn/CSS/Building_blocks/Backgrounds_and_borders)

@@ -1,19 +1,21 @@
 ---
-title: 사용값
+title: Used value
 slug: Web/CSS/used_value
+page-type: guide
+spec-urls: https://www.w3.org/TR/CSS22/cascade.html#used-value
 ---
 
-{{cssref}}
+{{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) 속성의 **사용값**은 [계산값](/ko/docs/Web/CSS/computed_value)에 모든 계산을 수행한 후의 결과 값입니다.
+The **used value** of a [CSS](/en-US/docs/Web/CSS) property is its value after all calculations have been performed on the [computed value](/en-US/docs/Web/CSS/computed_value).
 
-모든 CSS 속성은 {{glossary("user agent", "사용자 에이전트")}}가 계산을 끝낸 후 사용값을 가집니다. 크기({{cssxref("width")}}, {{cssxref("line-height")}} 등)는 픽셀 단위로 정해집니다. 단축 속성({{cssxref("background")}} 등)의 값은 그 구성요소({{cssxref("background-color")}}, {{cssxref("background-size")}} 등)와 {{cssxref("position")}}, {{cssxref("float")}}이 가질 값과 일치합니다.
+After the {{glossary("user agent")}} has finished its calculations, every CSS property has a used value. The used values of dimensions (e.g., {{cssxref("width")}}, {{cssxref("line-height")}}) are in pixels. The used values of shorthand properties (e.g., {{cssxref("background")}}) are consistent with those of their component properties (e.g., {{cssxref("background-color")}} or {{cssxref("background-size")}}) and with {{cssxref("position")}} and {{cssxref("float")}}.
 
-> **참고:** {{domxref("Window.getComputedStyle", "getComputedStyle()")}} DOM API는 [결정값](/ko/docs/Web/CSS/resolved_value)을 반환합니다. 결정값은 속성에 따라 [계산값](/ko/docs/Web/CSS/computed_value)일 수도, 사용값일 수도 있습니다.
+> **Note:** The {{domxref("Window.getComputedStyle", "getComputedStyle()")}} DOM API returns the [resolved value](/en-US/docs/Web/CSS/resolved_value), which may either be the [computed value](/en-US/docs/Web/CSS/computed_value) or the used value, depending on the property.
 
-## 예제
+## Example
 
-다음 예제는 요소 세 개 `width` 속성의 사용값을 계산하고 보여줍니다. (창 크기 조절 시 업데이트)
+This example computes and displays the used `width` value of three elements (updates on resize):
 
 ### HTML
 
@@ -60,9 +62,9 @@ div {
 
 ```js
 function updateUsedWidth(id) {
-  var div = document.querySelector(`#${id}`);
-  var par = div.querySelector('.show-used-width');
-  var wid = window.getComputedStyle(div)["width"];
+  const div = document.getElementById(id);
+  const par = div.querySelector(".show-used-width");
+  const wid = window.getComputedStyle(div)["width"];
   par.textContent = `Used width: ${wid}.`;
 }
 
@@ -73,16 +75,16 @@ function updateAllUsedWidths() {
 }
 
 updateAllUsedWidths();
-window.addEventListener('resize', updateAllUsedWidths);
+window.addEventListener("resize", updateAllUsedWidths);
 ```
 
-### 결과
+### Result
 
-{{ EmbedLiveSample('예제', '80%', 372) }}
+{{ EmbedLiveSample('Example', '80%', 372) }}
 
-## 계산값과의 차이
+## Difference from computed value
 
-CSS 2.0은 속성의 계산에서 마지막 단계로 [계산값](/ko/docs/Web/CSS/computed_value)만 정의했고, 그 다음 CSS 2.1에서 사용값의 분명한 정의를 도입했습니다. 덕분에, 부모의 너비/높이 계산값이 백분율이더라도 상속받을 수 있게 됐습니다. 레이아웃에 의존하지 않는 CSS 속성(가령, `display`, `font-size`, `line-height`)의 경우, 계산값과 사용값은 같습니다. 다음은 레이아웃에 의존하는 CSS 2.1 속성으로, 계산값과 사용값이 다릅니다. ([CSS 2.1 Changes: Specified, computed, and actual values](https://www.w3.org/TR/CSS2/changes.html#q21.36)에서 가져옴)
+CSS 2.0 defined only _computed value_ as the last step in a property's calculation. Then, CSS 2.1 introduced the distinct definition of used value. An element could then explicitly inherit a width/height of a parent, whose computed value is a percentage. For CSS properties that don't depend on layout (e.g., `display`, `font-size`, or `line-height`), the computed values and used values are the same. The following are the CSS 2.1 properties that do depend on layout, so they have a different computed value and used value: (taken from [CSS 2.1 Changes: Specified, computed, and actual values](https://www.w3.org/TR/CSS2/changes.html#q21.36)):
 
 - `background-position`
 - `bottom`, `left`, `right`, `top`
@@ -92,33 +94,27 @@ CSS 2.0은 속성의 계산에서 마지막 단계로 [계산값](/ko/docs/Web/C
 - `padding-bottom`, `padding-left`, `padding-right`, `padding-top`
 - `text-indent`
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 같이 보기
+## See also
 
 - {{domxref("window.getComputedStyle")}}
-- CSS 주요 개념
-
-  - [CSS 문법](/ko/docs/Web/CSS/Syntax)
-  - [@규칙](/ko/docs/Web/CSS/At-rule)
-  - [주석](/ko/docs/Web/CSS/Comments)
-  - [명시도](/ko/docs/Web/CSS/Specificity)
-  - [상속](/ko/docs/Web/CSS/inheritance)
-  - [박스 모델](/ko/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
-  - [레이아웃 모드](/ko/docs/Web/CSS/Layout_mode)
-  - [시각적 서식 모델](/ko/docs/Web/CSS/Visual_formatting_model)
-  - [마진 중첩](/ko/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)
-  - 값
-
-    - [초깃값](/ko/docs/Web/CSS/initial_value)
-    - [계산값](/ko/docs/Web/CSS/computed_value)
-    - [결정값](/ko/docs/Web/CSS/resolved_value)
-    - [지정값](/ko/docs/Web/CSS/specified_value)
-    - [사용값](/ko/docs/Web/CSS/used_value)
-    - [실제값](/ko/docs/Web/CSS/actual_value)
-
-  - [값 정의 구문](/ko/docs/Web/CSS/Value_definition_syntax)
-  - [단축 속성](/ko/docs/Web/CSS/Shorthand_properties)
-  - [대체 요소](/ko/docs/Web/CSS/Replaced_element)
+- CSS key concepts:
+  - [CSS syntax](/en-US/docs/Web/CSS/Syntax)
+  - [Comments](/en-US/docs/Web/CSS/Comments)
+  - [Specificity](/en-US/docs/Web/CSS/Specificity)
+  - [Inheritance](/en-US/docs/Web/CSS/Inheritance)
+  - [Box model](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
+  - [Layout modes](/en-US/docs/Web/CSS/Layout_mode)
+  - [Visual formatting models](/en-US/docs/Web/CSS/Visual_formatting_model)
+  - [Margin collapsing](/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)
+  - Values
+    - [Initial values](/en-US/docs/Web/CSS/initial_value)
+    - [Computed values](/en-US/docs/Web/CSS/computed_value)
+    - **Used values**
+    - [Actual values](/en-US/docs/Web/CSS/actual_value)
+  - [Value definition syntax](/en-US/docs/Web/CSS/Value_definition_syntax)
+  - [Shorthand properties](/en-US/docs/Web/CSS/Shorthand_properties)
+  - [Replaced elements](/en-US/docs/Web/CSS/Replaced_element)

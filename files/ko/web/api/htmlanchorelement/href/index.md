@@ -1,29 +1,37 @@
 ---
-title: HTMLHyperlinkElementUtils.href
+title: "HTMLAnchorElement: href property"
+short-title: href
 slug: Web/API/HTMLAnchorElement/href
-original_slug: Web/API/HTMLHyperlinkElementUtils/href
+page-type: web-api-instance-property
+browser-compat: api.HTMLAnchorElement.href
 ---
 
-{{ApiRef("URL API")}}
+{{ApiRef("HTML DOM")}}
 
-**`HTMLHyperlinkElementUtils.href`** 속성은 온전한 URL을 값으로 가지는 {{domxref("USVString")}}입니다.
+The **`HTMLAnchorElement.href`** property is a
+{{Glossary("stringifier")}} that returns a string containing the whole URL, and allows
+the href to be updated.
 
-## 예제
+## Value
+
+A string.
+
+## Examples
 
 ```js
-// Lets imagine an <a id="myAnchor" href="https://developer.mozilla.org/en-US/HTMLHyperlinkElementUtils/href"> element is in the document
-var anchor = document.getElementById("myAnchor");
-var result = anchor.href; // Returns: 'https://developer.mozilla.org/en-US/HTMLHyperlinkElementUtils/href'
+// An <a id="myAnchor" href="https://developer.mozilla.org/en-US/HTMLAnchorElement"> element is in the document
+const anchor = document.getElementById("myAnchor");
+anchor.href; // returns 'https://developer.mozilla.org/en-US/HTMLAnchorElement'
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{domxref("HTMLHyperlinkElementUtils")}}
+- The {{domxref("HTMLAnchorElement")}} interface it belongs to.

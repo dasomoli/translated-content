@@ -5,35 +5,35 @@ slug: Web/XPath/Functions/key
 
 {{ XsltRef() }}
 
-`key` 함수는 인수로 준 키와 값을 갖는 노드 집합을 반환합니다.
+The `key` function returns a node-set of nodes that have the given value for the given key.
 
-### 문법
+### Syntax
 
 ```
-key(keyname ,value )
+key( keyname, value )
 ```
 
-### 인수
+### Arguments
 
 - `keyname`
-  - : 사용할 [`xsl:key`](/ko/XSLT/key) 요소의 이름을 포함하는 문자열
+  - : A string containing the name of the [`xsl:key`](/en-US/docs/Web/XSLT/Element/key) element to be used.
 - `value`
-  - : 반환되는 노드 집합은 제공한 키와 이 값을 갖는 각 노드를 포함합니다.
+  - : The returned node-set will contain every node that has this value for the given key.
 
-### 반환
+### Returns
 
-노드 집합.
+A node set.
 
-### 주의
+### Notes
 
-- [`xsl:key`](/ko/XSLT/key) 요소는 키와 일치하는데 쓰는 제공한 요소의 속성을 정의합니다.
+- The [`xsl:key`](/en-US/docs/Web/XSLT/Element/key) element defines what attribute on what given elements will be used to match the key.
 
-이 함수는 XPath에 더한 XSLT 고유 추가분입니다. 기본 XPath 함수 라이브러리의 일부가 아닙니다.
+This function is an XSLT-specific addition to XPath. It is not a part of the core XPath function library.
 
-### 정의
+### Defined
 
-[XSLT 1.0 12.2](http://www.w3.org/TR/xslt#function-key)
+[XSLT 1.0 12.2](https://www.w3.org/TR/1999/REC-xslt-19991116/#function-key)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

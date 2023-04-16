@@ -1,142 +1,188 @@
 ---
-title: 기본값 매개변수
+title: Default parameters
 slug: Web/JavaScript/Reference/Functions/Default_parameters
+page-type: javascript-language-feature
+browser-compat: javascript.functions.default_parameters
 ---
 
 {{jsSidebar("Functions")}}
 
-기본값 함수 매개변수 (**default function parameter**)를 사용하면 값이 없거나 `undefined`가 전달될 경우 이름붙은 매개변수를 기본값으로 초기화할 수 있습니다.
+**Default function parameters** allow named parameters to be initialized with default values if no value or `undefined` is passed.
 
 {{EmbedInteractiveExample("pages/js/functions-default.html")}}
 
-## 구문
+## Syntax
 
-```js
-function fnName(param1 = defaultValue1, ..., paramN = defaultValueN) { ... }
+```js-nolint
+function fnName(param1 = defaultValue1, /* … ,*/ paramN = defaultValueN) {
+  // …
+}
 ```
 
-## 설명
+## Description
 
-JavaScript에서, 함수의 매개변수는 `{{jsxref("undefined")}}`가 기본입니다. 그러나, 일부 상황에서는 다른 기본 값을 설정하는 것이 유용할 수 있습니다. 이때가 바로 기본값 매개변수가 필요할 때 입니다.
+In JavaScript, function parameters default to {{jsxref("undefined")}}. However, it's often useful to set a different default value. This is where default parameters can help.
 
-과거에 기본값 설정을 위한 일반적인 방법은 함수 내부(body)에서 매개변수 값을 검사해 `undefined`인 경우 값을 할당하는 것이었습니다.
-
-다음 예제에서, `multiply`호출시 `b`에 할당된 값이 없다면, `b` 값은 `a*b`를 평가할 때 `undefined`일 거고 `multiply` 호출은 `NaN`이 반환됩니다.
+In the following example, if no value is provided for `b` when `multiply` is called, `b`'s value would be `undefined` when evaluating `a * b` and `multiply` would return `NaN`.
 
 ```js
 function multiply(a, b) {
-  return a * b
+  return a * b;
 }
 
-multiply(5, 2)  // 10
-multiply(5)     // NaN !
+multiply(5, 2); // 10
+multiply(5); // NaN !
 ```
 
-이를 방지하기 위해서, 아래 두번째 줄과 같이 `multiply` 함수가 오직 한 개의 인수만 있다면 `b`를 `1`로 설정하는 방식을 사용하곤 했습니다.
+In the past, the general strategy for setting defaults was to test parameter values in the function body and assign a value if they are `undefined`. In the following example, `b` is set to `1` if `multiply` is called with only one argument:
 
 ```js
 function multiply(a, b) {
-  b = (typeof b !== 'undefined') ?  b : 1
-  return a*b
+  b = typeof b !== "undefined" ? b : 1;
+  return a * b;
 }
 
-multiply(5, 2)   // 10
-multiply(5)      // 5
+multiply(5, 2); // 10
+multiply(5); // 5
 ```
 
-ES2015의 기본값 매개변수로 함수 내부 에서의 검사는 더 이상 필요치 않습니다. 이제, 간단히 함수 머리(head)에서 `b`의 기본값으로 `1` 로 설정할 수 있습니다:
+With default parameters, checks in the function body are no longer necessary. Now, you can assign `1` as the default value for `b` in the function head:
 
 ```js
 function multiply(a, b = 1) {
-  return a*b
+  return a * b;
 }
 
-multiply(5, 2)          // 10
-multiply(5)             // 5
-multiply(5, undefined)  // 5
+multiply(5, 2); // 10
+multiply(5); // 5
+multiply(5, undefined); // 5
 ```
 
-## 예제
+Parameters are still set left-to-right, overwriting default parameters even if there are later parameters without defaults.
 
-### `undefined` vs. 다른 거짓같은 값(falsy values) 전달하기
+```js
+function f(x = 1, y) {
+  return [x, y];
+}
 
-아래 예제중 두 번째 호출에서, 설사 두 번째 인수를 호출할 때 명시해서 `undefined` (`null` 혹은 {{glossary("falsy")}} 값이 아니긴 하지만 )로 설정하더라도 , `num` 인수의 값은 여전히 기본값입니다.
+f(); // [1, undefined]
+f(2); // [2, undefined]
+```
+
+> **Note:** The first default parameter and all parameters after it will not contribute to the function's [`length`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/length).
+
+The default parameter initializers live in their own scope, which is a parent of the scope created for the function body.
+
+This means that earlier parameters can be referred to in the initializers of later parameters. However, functions and variables declared in the function body cannot be referred to from default value parameter initializers; attempting to do so throws a run-time {{jsxref("ReferenceError")}}. This also includes [`var`](/en-US/docs/Web/JavaScript/Reference/Statements/var)-declared variables in the function body.
+
+For example, the following function will throw a `ReferenceError` when invoked, because the default parameter value does not have access to the child scope of the function body:
+
+```js example-bad
+function f(a = go()) {
+  function go() {
+    return ":P";
+  }
+}
+
+f(); // ReferenceError: go is not defined
+```
+
+This function will print the value of the _parameter_ `a`, because the variable `var a` is hoisted only to the top of the scope created for the function body, not the parent scope created for the parameter list, so its value is not visible to `b`.
+
+```js example-bad
+function f(a, b = () => console.log(a)) {
+  var a = 1;
+  b();
+}
+
+f(); // undefined
+f(5); // 5
+```
+
+## Examples
+
+### Passing undefined vs. other falsy values
+
+In the second call in this example, even if the first argument is set explicitly to `undefined` (though not `null` or other {{glossary("falsy")}} values), the value of the `num` argument is still the default.
 
 ```js
 function test(num = 1) {
-  console.log(typeof num)
+  console.log(typeof num);
 }
 
-test()            // 'number' (num 은 1로 설정됨)
-test(undefined)   // 'number' (num 이 역시 1로 설정됨)
+test(); // 'number' (num is set to 1)
+test(undefined); // 'number' (num is set to 1 too)
 
-// 다른 falsy values로 테스트 하기:
-test('')          // 'string' (num 은 ''로 설정됨)
-test(null)        // 'object' (num 은 null로 설정됨)
+// test with other falsy values:
+test(""); // 'string' (num is set to '')
+test(null); // 'object' (num is set to null)
 ```
 
-### 호출 시 평가
+### Evaluated at call time
 
-기본 인수는 _호출_ _시_ 에 평가됩니다, 그래서 Python의 경우 와는 달리, 함수가 호출될 때마다 새로운 객체가 생성됩니다.
+The default argument is evaluated at _call time_. Unlike with Python (for example), a new object is created each time the function is called.
 
 ```js
 function append(value, array = []) {
-  array.push(value)
-  return array
+  array.push(value);
+  return array;
 }
 
-append(1)  // [1]
-append(2)  // [2], [1, 2]가 아니라
+append(1); // [1]
+append(2); // [2], not [1, 2]
 ```
 
-이는 심지어 함수 및 변수에도 적용됩니다:
+This even applies to functions and variables:
 
 ```js
 function callSomething(thing = something()) {
-  return thing
+  return thing;
 }
 
-let numberOfTimesCalled = 0
-function something(){
-  numberOfTimesCalled += 1
-  return numberOfTimesCalled
+let numberOfTimesCalled = 0;
+function something() {
+  numberOfTimesCalled += 1;
+  return numberOfTimesCalled;
 }
 
-callSomething()  // 1
-callSomething()  // 2
+callSomething(); // 1
+callSomething(); // 2
 ```
 
-### 앞쪽 매개변수는 뒷쪽의 매개변수 기본값에 사용할 수 있습니다
+### Earlier parameters are available to later default parameters
 
-매개 변수가 여러개일 때 앞쪽에( 왼쪽 부분) 정의된 매개변수는 뒷쪽에 정의된 매개변수의 기본값에 바로 사용할 수 있습니다.
+Parameters defined earlier (to the left) are available to later default parameters:
 
 ```js
-function greet(name, greeting, message = greeting + ' ' + name) {
-  return [name, greeting, message]
+function greet(name, greeting, message = `${greeting} ${name}`) {
+  return [name, greeting, message];
 }
 
-greet('David', 'Hi')                      // ["David", "Hi", "HiDavid"]
-greet('David', 'Hi', 'Happy Birthday!')   // ["David", "Hi", "Happy Birthday!"]
+greet("David", "Hi"); // ["David", "Hi", "Hi David"]
+greet("David", "Hi", "Happy Birthday!"); // ["David", "Hi", "Happy Birthday!"]
 ```
 
-이 기능은, 얼마나 많은 경계 조건(edge case)를 다룰수 있는지 보여주는, 아래 예제로 거의 설명 가능합니다.
+This functionality can be approximated like this, which demonstrates how many edge cases are handled:
 
 ```js
 function go() {
-  return ':P'
+  return ":P";
 }
 
-// 함수 정의가 간단해짐
-function withDefaults(a, b = 5, c = b, d = go(), e = this,
-                      f = arguments, g = this.value) {
-  return [a,b,c,d,e,f,g]
+function withDefaults(
+  a,
+  b = 5,
+  c = b,
+  d = go(),
+  e = this,
+  f = arguments,
+  g = this.value,
+) {
+  return [a, b, c, d, e, f, g];
 }
 
-// 함수 정의가 길고 장황함
-function withoutDefaults(a, b, c, d, e, f, g){
-  switch(arguments.length){
-    case 0:
-      a;
+function withoutDefaults(a, b, c, d, e, f, g) {
+  switch (arguments.length) {
     case 1:
       b = 5;
     case 2:
@@ -149,78 +195,54 @@ function withoutDefaults(a, b, c, d, e, f, g){
       f = arguments;
     case 6:
       g = this.value;
-    default:
   }
-  return [a,b,c,d,e,f,g];
+  return [a, b, c, d, e, f, g];
 }
 
-// 아래와 같이 함수 호출하면 동일한 결과를 보임
-
-withDefaults.call({value:"=^_^="});
+withDefaults.call({ value: "=^_^=" });
 // [undefined, 5, 5, ":P", {value:"=^_^="}, arguments, "=^_^="]
 
-withoutDefaults.call({value:"=^_^="});
+withoutDefaults.call({ value: "=^_^=" });
 // [undefined, 5, 5, ":P", {value:"=^_^="}, arguments, "=^_^="]
 ```
 
-### 유효범위 효과 (Scope Effects)
+### Destructured parameter with default value assignment
 
-한개 이상의 매개변수에 기본값이 지정되면 특별히 매개변수 목록내의 식별자들(identifiers) 대상으로, [두번째 스코프](https://tc39.es/ecma262/#sec-functiondeclarationinstantiation) (Environment Record) 가 생성됩니다.
+You can use default value assignment with the [destructuring assignment](/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) syntax.
 
-이 말은 함수 내부에 선언된 함수와 변수들은 매개변수 기본값 초기화시에 참조할 수 없다는 말입니다; 그렇게 하려고 하면 실행시간 에러인 {{jsxref("ReferenceError")}} 를 유발합니다.
-
-이 말은 또한 함수 내부에서 `var` 로 선언된 변수는 동일한 이름을 가진 매개변수를 가리게 되는, 중첩 `var` 선언 으로 인한 일반적인 동작이 일어나지 않는다는 말입니다.
-
-아래 함수는 호출되면 `ReferenceError` 를 발생시킵니다. 매개변수 기본값이 함수 내부의 자식 유효범위를 참조할 수 없기 때문입니다.
-
-```js example-bad
-function f(a = go()) { // `f`가 호출 되면 `ReferenceError` 발생
-  function go() { return ':P' }
-}
-```
-
-...그리고 아래 함수는 `undefined` 를 프린트 하는데, `var a` 가 함수 내부 대상의 유효범위내에서만 효과를 가지기 때문입니다. ( 매개변수 목록이 대상인 부모 스코프가 아니라)
-
-```js example-bad
-function f(a, b = () => console.log(a)) {
-  var a = 1
-  b() // `undefined`를 인쇄하는데, 매개변수 기본값이 자체 스코프에 있기 때문입니다
-}
-```
-
-### 기본값 매개변수 뒤쪽의 기본값 없는 매개변수
-
-매개변수는 여전히 왼쪽에서 오른쪽으로 설정됩니다. 아래 예제에서 뒷쪽에 기본값이 없는 매개변수가 있지만 기본값 매개변수를 덮어씁니다.
+A common way of doing that is to set an empty object/array as the default value the destructured parameter; for example: `[x = 1, y = 2] = []`. This makes it possible to pass nothing to the function and still have those values prefilled:
 
 ```js
-function f(x=1, y) {
-  return [x, y];
+function preFilledArray([x = 1, y = 2] = []) {
+  return x + y;
 }
 
-f()   // [1, undefined]
-f(2)  // [2, undefined]
-```
+preFilledArray(); // 3
+preFilledArray([]); // 3
+preFilledArray([2]); // 4
+preFilledArray([2, 3]); // 5
 
-### 기본값 할당 있는 해체된 매개변수
-
-기본값 할당을 {{jsxref("Operators/Destructuring_assignment", "destructuring assignment", "", 1)}} 표기와 함께 사용할 수 있습니다:
-
-```js
-function f([x, y] = [1, 2], {z: z} = {z: 3}) {
-  return x + y + z
+// Works the same for objects:
+function preFilledObject({ z = 3 } = {}) {
+  return z;
 }
 
-f()  // 6
+preFilledObject(); // 3
+preFilledObject({}); // 3
+preFilledObject({ z: 2 }); // 2
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
-- [Original proposal at ecmascript.org](http://wiki.ecmascript.org/doku.php?id=harmony:parameter_default_values)
+- [Functions guide](/en-US/docs/Web/JavaScript/Guide/Functions)
+- [Functions](/en-US/docs/Web/JavaScript/Reference/Functions)
+- [Rest parameters](/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters)
+- [Nullish coalescing operator (`??`)](/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing)

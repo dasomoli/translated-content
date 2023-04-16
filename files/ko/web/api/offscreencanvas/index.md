@@ -1,124 +1,132 @@
 ---
 title: OffscreenCanvas
 slug: Web/API/OffscreenCanvas
+page-type: web-api-interface
+browser-compat: api.OffscreenCanvas
 ---
 
-{{APIRef("Canvas API")}} {{SeeCompatTable}}
+{{APIRef("Canvas API")}}
 
-**`OffscreenCanvas`** 는 화면 밖에서 렌더링되는 캔버스 인터페이스입니다. window 객체와 [worker](/ko/docs/Web/API/Web_Workers_API) 객체 모두 지원합니다.
+When using the {{HtmlElement("canvas")}} element or the [Canvas API](/en-US/docs/Web/API/Canvas_API), rendering, animation, and user interaction usually happen on the main execution thread of a web application.
+The computation relating to canvas animations and rendering can have a significant impact on application performance.
 
-## 생성자
+The **`OffscreenCanvas`** interface provides a canvas that can be rendered off screen, decoupling the DOM and the Canvas API so that the {{HtmlElement("canvas")}} element is no longer entirely dependent on the DOM.
+Rendering operations can also be run inside a [worker](/en-US/docs/Web/API/Web_Workers_API) context, allowing you to run some tasks in a separate thread and avoid heavy work on the main thread.
+
+`OffscreenCanvas` is a [transferable object](/en-US/docs/Web/API/Web_Workers_API/Transferable_objects).
+
+{{AvailableInWorkers}}
+
+{{InheritanceDiagram}}
+
+## Constructors
 
 - {{domxref("OffscreenCanvas.OffscreenCanvas", "OffscreenCanvas()")}}
-  - : `OffscreenCanvas` 생성자. 새 `OffscreenCanvas` 객체를 생성합니다.
+  - : `OffscreenCanvas` constructor. Creates a new `OffscreenCanvas` object.
 
-## 프로퍼티
+## Instance properties
 
 - {{domxref("OffscreenCanvas.height")}}
-  - : 캔버스의 높이
+  - : The height of the offscreen canvas.
 - {{domxref("OffscreenCanvas.width")}}
-  - : 캔버스의 너비
+  - : The width of the offscreen canvas.
 
-## 메소드
+## Instance methods
 
 - {{domxref("OffscreenCanvas.getContext()")}}
-  - : 렌더링된 캔버스 컨텍스트 객체를 반환합니다.
-
+  - : Returns a rendering context for the offscreen canvas.
 - {{domxref("OffscreenCanvas.convertToBlob()")}}
-  - : 캔버스에 들어있는 이미지에 대한 {{domxref("Blob")}} 객체를 생성합니다.
-
+  - : Creates a {{domxref("Blob")}} object representing the image contained in the canvas.
 - {{domxref("OffscreenCanvas.transferToImageBitmap()")}}
-  - : `OffscreenCanvas`에 렌더링된 이미지중에서 가장 최근에 렌더링된 이미지를 {{domxref("ImageBitmap")}} 객체로 생성합니다.
+  - : Creates an {{domxref("ImageBitmap")}} object from the most recently rendered image of the `OffscreenCanvas`.
 
-## 예시
+## Examples
 
-### `OffscreenCanvas` 에서 만들어진 프레임을 동기적으로 화면에 보여주는 방법
+### Synchronous display of frames produced by an `OffscreenCanvas`
 
-`OffscreenCanvas` API를 사용하는 방법은 `OffscreenCanvas`에 속한 {{domxref("RenderingContext")}}를 이용해 새로운 프레임 객체를 생성하는 것입니다. 새 프레임이 컨텍스트에 렌더링이 되고나면, 가장 최근에 렌더링 된 이미지를 저장하는 {{domxref("OffscreenCanvas.transferToImageBitmap", "transferToImageBitmap()")}} 메소드를 호출할 수 있습니다. 이 메소드는 다른 수 많은 Web API에서 사용되고 있는 {{domxref("ImageBitmap")}} 객체를 리턴합니다.
+One way to use the `OffscreenCanvas` API is to use a rendering context that has been obtained from an `OffscreenCanvas` object to generate new frames. Once a new frame has finished rendering in this context, the {{domxref("OffscreenCanvas.transferToImageBitmap", "transferToImageBitmap()")}} method can be called to save the most recent rendered image. This method returns an {{domxref("ImageBitmap")}} object, which can be used in a variety of Web APIs and also in a second canvas without creating a transfer copy.
 
-`ImageBitmap`을 화면에 표시하려면, 현재 (화면에 보여지고 있는) 캔버스 요소의 `canvas.getContext("bitmaprenderer")` 메소드를 호출했을 때 생성되는 {{domxref("ImageBitmapRenderingContext")}} 객체를 사용하면 됩니다. 이 컨텍스트는 캔버스의 내용을 주어진 `ImageBitmap`으로 전환하는 기능을 제공합니다. `OffscreenCanvas`에서 이전에 렌더링이 되어서 등록된 `ImageBitmap`을 이용한 {{domxref("ImageBitmapRenderingContext.transferFromImageBitmap()")}}을 호출하면 `ImageBitmap`이 캔버스에 표시되고 소유권 역시 캔버스로 넘어갑니다. 단일 `OffscreenCanvas`는 프레임들을 임의의 다른 `ImageBitmapRenderingContext` 객체로 전달합니다.
+To display the `ImageBitmap`, you can use an {{domxref("ImageBitmapRenderingContext")}} context, which can be created by calling `canvas.getContext("bitmaprenderer")` on a (visible) canvas element. This context only provides functionality to replace the canvas's contents with the given `ImageBitmap`. A call to {{domxref("ImageBitmapRenderingContext.transferFromImageBitmap()")}} with the previously rendered and saved `ImageBitmap` from the OffscreenCanvas, will display the `ImageBitmap` on the canvas and transfer its ownership to the canvas. A single `OffscreenCanvas` may transfer frames into an arbitrary number of other `ImageBitmapRenderingContext` objects.
 
-아래에 두 개의 {{HTMLElement("canvas")}} 요소가 있습니다.
+Given these two {{HTMLElement("canvas")}} elements
 
 ```html
-<canvas id="one"></canvas>
-<canvas id="two"></canvas>
+<canvas id="one"></canvas> <canvas id="two"></canvas>
 ```
 
-다음의 코드는 위에서 설명한 것처럼 `OffscreenCanvas`를 이용해 렌더링합니다.
+the following code will provide the rendering using `OffscreenCanvas` as described above.
 
 ```js
-var one = document.getElementById("one").getContext("bitmaprenderer");
-var two = document.getElementById("two").getContext("bitmaprenderer");
+const one = document.getElementById("one").getContext("bitmaprenderer");
+const two = document.getElementById("two").getContext("bitmaprenderer");
 
-var offscreen = new OffscreenCanvas(256, 256);
-var gl = offscreen.getContext('webgl');
+const offscreen = new OffscreenCanvas(256, 256);
+const gl = offscreen.getContext("webgl");
 
-// ... gl 컨텍스트를 이용해 첫 번째 캔버스에 무언가를 그립니다 ...
-
-// 첫 번째 캔버스에 렌더링을 수행합니다.
-var bitmapOne = offscreen.transferToImageBitmap();
+// Perform some drawing for the first canvas using the gl context
+const bitmapOne = offscreen.transferToImageBitmap();
 one.transferFromImageBitmap(bitmapOne);
 
-// ... gl 컨텍스트를 이용해 두 번째 캔버스에 무언가를 그립니다 ...
-
-// 두 번째 캔버스에 렌더링을 수행합니다.
-var bitmapTwo = offscreen.transferToImageBitmap();
+// Perform some more drawing for the second canvas
+const bitmapTwo = offscreen.transferToImageBitmap();
 two.transferFromImageBitmap(bitmapTwo);
 ```
 
-### `OffscreenCanvas` 에서 만들어진 프레임을 비동기적으로 화면에 보여주는 방법
+### Asynchronous display of frames produced by an `OffscreenCanvas`
 
-`OffscreenCanvas` API를 이용하는 또 다른 방법은 [worker](/ko/docs/Web/API/Web_Workers_API) 또는 메인 스레드위에서 {{HTMLElement("canvas")}} 요소의 {{domxref("HTMLCanvasElement.transferControlToOffscreen", "transferControlToOffscreen()")}}를 호출하는 것입니다. 여기서 메인 스레드는 `OffscreenCanvas` 객체를 반환하는 {{domxref("HTMLCanvasElement")}} 객체를 가지고 있습니다. {{domxref("OffscreenCanvas.getContext", "getContext()")}}를 호출하면 `OffscreenCanvas`에서 `RenderingContext`를 얻을 수 있습니다.
+Another way to use the `OffscreenCanvas` API, is to call {{domxref("HTMLCanvasElement.transferControlToOffscreen", "transferControlToOffscreen()")}} on a {{HTMLElement("canvas")}} element, either on a [worker](/en-US/docs/Web/API/Web_Workers_API) or the main thread, which will return an `OffscreenCanvas` object from an {{domxref("HTMLCanvasElement")}} object from the main thread. Calling {{domxref("OffscreenCanvas.getContext", "getContext()")}} will then obtain a rendering context from that `OffscreenCanvas`.
 
-main.js (메인 스레드 코드):
+main.js (main thread code):
 
 ```js
-var htmlCanvas = document.getElementById("canvas");
-var offscreen = htmlCanvas.transferControlToOffscreen();
+const htmlCanvas = document.getElementById("canvas");
+const offscreen = htmlCanvas.transferControlToOffscreen();
 
-var worker = new Worker("offscreencanvas.js");
-worker.postMessage({canvas: offscreen}, [offscreen]);
+const worker = new Worker("offscreencanvas.js");
+worker.postMessage({ canvas: offscreen }, [offscreen]);
 ```
 
-offscreencanvas.js (worker 코드):
+offscreencanvas.js (worker code):
 
 ```js
-onmessage = function(evt) {
-  var canvas = evt.data.canvas;
-  var gl = canvas.getContext("webgl");
+onmessage = (evt) => {
+  const canvas = evt.data.canvas;
+  const gl = canvas.getContext("webgl");
 
-  // ... gl 컨텍스트를 이용해 무언가를 그립니다 ...
+  // Perform some drawing using the gl context
 };
 ```
 
-worker 내에서 requestAnimationFrame 또한 사용할 수 있습니다.
+You can also use requestAnimationFrame in workers
 
 ```js
-onmessage = function(evt) {
+onmessage = (evt) => {
   const canvas = evt.data.canvas;
   const gl = canvas.getContext("webgl");
 
   function render(time) {
-    // ... gl 컨텍스트를 이용해 무언가를 그립니다 ...
+    // Perform some drawing using the gl context
     requestAnimationFrame(render);
   }
   requestAnimationFrame(render);
 };
 ```
 
-## 상세
+For a full example, see our [OffscreenCanvas worker example](https://github.com/mdn/dom-examples/tree/main/web-workers/offscreen-canvas-worker) ([run OffscreenCanvas worker](https://mdn.github.io/dom-examples/web-workers/offscreen-canvas-worker/)).
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 더 보기
+## See also
 
 - [WebGL Off the Main Thread – Mozilla Hacks](https://hacks.mozilla.org/2016/01/webgl-off-the-main-thread/)
 - {{domxref("CanvasRenderingContext2D")}}
+- {{domxref("OffscreenCanvasRenderingContext2D")}}
 - {{domxref("ImageBitmap")}}
 - {{domxref("ImageBitmapRenderingContext")}}
 - {{domxref("HTMLCanvasElement.transferControlToOffscreen()")}}

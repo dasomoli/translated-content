@@ -1,24 +1,87 @@
 ---
-title: document.anchors
+title: "Document: anchors property"
+short-title: anchors
 slug: Web/API/Document/anchors
+page-type: web-api-instance-property
+status:
+  - deprecated
+browser-compat: api.Document.anchors
 ---
-{{APIRef("DOM")}} {{deprecated_header()}}
 
-{{domxref("Document")}} 인터페이스의 **`anchors`** 읽기 전용 속성은 문서 내의 모든 앵커 목록을 반환합니다.
+{{APIRef("DOM")}} {{Deprecated_Header}}
 
-## 예제
+The **`anchors`** read-only property of the
+{{domxref("Document")}} interface returns a list of all of the anchors in the document.
+
+## Value
+
+An {{domxref("HTMLCollection")}}.
+
+## Examples
 
 ```js
-if ( document.anchors.length >= 5 ) {
-    dump("dump found too many anchors");
-    window.location = "http://www.google.com";
+if (document.anchors.length >= 5) {
+  dump("found too many anchors");
 }
 ```
 
-## 알아두기
+The following is an example that auto populates a Table of Contents with every anchor
+on the page:
 
-이전 버전과의 호환성을 제공하기 위해, 반환된 anchor들의 목록은 `name` 속성(attribute)으로 생성된 anchors들만 포함하고 `id` 속성(attribute)으로 생성된 것들은 포함하지 않습니다.
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Test</title>
+    <script>
+      function init() {
+        const toc = document.getElementById("toc");
+        for (const anchor of document.anchors) {
+          const li = document.createElement("li");
+          const newAnchor = document.createElement("a");
+          newAnchor.href = "#" + anchor.name;
+          newAnchor.textContent = anchor.text;
+          li.appendChild(newAnchor);
+          toc.appendChild(li);
+        }
+      }
+    </script>
+  </head>
+  <body onload="init()">
+    <h1>Title</h1>
+    <h2><a name="contents">Contents</a></h2>
+    <ul id="toc"></ul>
 
-## 브라우저 호환성
+    <h2><a name="plants">Plants</a></h2>
+    <ol>
+      <li>Apples</li>
+      <li>Oranges</li>
+      <li>Pears</li>
+    </ol>
+
+    <h2><a name="veggies">Veggies</a></h2>
+    <ol>
+      <li>Carrots</li>
+      <li>Celery</li>
+      <li>Beats</li>
+    </ol>
+  </body>
+</html>
+```
+
+[View on JSFiddle](https://jsfiddle.net/S4yNp)
+
+## Notes
+
+For reasons of backwards compatibility, the returned set of anchors only contains those
+anchors created with the `name` attribute, not those created with the
+`id` attribute.
+
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
 
 {{Compat}}

@@ -1,45 +1,59 @@
 ---
-title: Geolocation.getCurrentPosition()
+title: "Geolocation: getCurrentPosition() method"
+short-title: getCurrentPosition()
 slug: Web/API/Geolocation/getCurrentPosition
+page-type: web-api-instance-method
+browser-compat: api.Geolocation.getCurrentPosition
 ---
+
 {{securecontext_header}}{{ APIRef("Geolocation API") }}
 
-**`Geolocation.getCurrentPosition()`** 메서드는 장치의 현재 위치를 가져옵니다.
+The
+**`Geolocation.getCurrentPosition()`** method is used to get
+the current position of the device.
 
-## 구문
+## Syntax
 
-```js
-navigator.geolocation.getCurrentPosition(success, error, [options])
+```js-nolint
+getCurrentPosition(success)
+getCurrentPosition(success, error)
+getCurrentPosition(success, error, options)
 ```
 
-### 매개변수
+### Parameters
 
 - `success`
-  - : {{domxref("GeolocationPosition")}} 객체를 유일한 매개변수로 받는 콜백 함수입니다.
+  - : A callback function that takes a {{domxref("GeolocationPosition")}} object as its
+    sole input parameter.
 - `error` {{optional_inline}}
-  - : {{domxref("GeolocationPositionError")}} 객체를 유일한 매개변수로 받는 콜백 함수입니다.
+  - : An optional callback function that takes a {{domxref("GeolocationPositionError")}}
+    object as its sole input parameter.
 - `options` {{optional_inline}}
-  - : 다음을 포함하는 객체입니다.
+  - : An optional object including the following parameters:
     - `maximumAge`
-      - : 캐시에 저장한 위치정보를 대신 반환할 수 있는 최대 시간을 나타내는 양의 `long` 값입니다. `0`을 지정한 경우 장치가 위치정보 캐시를 사용할 수 없으며 반드시 실시간으로 위치를 알아내려 시도해야 한다는 뜻입니다. {{jsxref("Infinity")}}를 지정한 경우 지난 시간에 상관없이 항상 캐시에 저장된 위치정보를 반환해야 함을 나타냅니다. 기본 값은 0입니다.
+      - : A positive `long` value indicating the maximum age in milliseconds of a possible cached position that is acceptable to return. If set to `0`, it means that the device cannot use a cached position and must attempt to retrieve the real current position. If set to [`Infinity`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity) the device must return a cached position regardless of its age. Default: 0.
     - `timeout`
-      - : 기기가 위치를 반환할 때 소모할 수 있는 최대 시간(밀리초)을 나타내는 양의 `long` 값입니다. 기본 값은 {{jsxref("Infinity")}}로, 위치를 알아내기 전에는 `getCurrentPosition()`이 반환하지 않을 것임을 나타냅니다.
+      - : A positive `long` value representing the maximum length of time (in milliseconds) the device is allowed to take in order to return a position. The default value is [`Infinity`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity), meaning that `getCurrentPosition()` won't return until the position is available.
     - `enableHighAccuracy`
-      - : 위치정보를 가장 높은 정확도로 수신하고 싶음을 나타내는 불리언 값입니다. `true`를 지정했으면, 지원하는 경우 장치가 더 정확한 위치를 제공합니다. 그러나 응답 속도가 느려지며 전력 소모량이 증가하는 점에 주의해야 합니다. 반면 `false`를 지정한 경우 기기가 더 빠르게 반응하고 전력 소모도 줄일 수 있는 대신 정확도가 떨어집니다. 기본 값은 `false`입니다.
+      - : A boolean value that indicates the application would like to receive the best possible results. If `true` and if the device is able to provide a more accurate position, it will do so. Note that this can result in slower response times or increased power consumption (with a GPS chip on a mobile device for example). On the other hand, if `false`, the device can take the liberty to save resources by responding more quickly and/or using less power. Default: `false`.
 
-## 예제
+### Return value
+
+None ({{jsxref("undefined")}}).
+
+## Examples
 
 ```js
-var options = {
+const options = {
   enableHighAccuracy: true,
   timeout: 5000,
-  maximumAge: 0
+  maximumAge: 0,
 };
 
 function success(pos) {
-  var crd = pos.coords;
+  const crd = pos.coords;
 
-  console.log('Your current position is:');
+  console.log("Your current position is:");
   console.log(`Latitude : ${crd.latitude}`);
   console.log(`Longitude: ${crd.longitude}`);
   console.log(`More or less ${crd.accuracy} meters.`);
@@ -52,15 +66,15 @@ function error(err) {
 navigator.geolocation.getCurrentPosition(success, error, options);
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Geolocation API 사용하기](/ko/docs/Web/API/Geolocation_API/Using_the_Geolocation_API)
+- [Using the Geolocation API](/en-US/docs/Web/API/Geolocation_API/Using_the_Geolocation_API)
 - {{domxref("Navigator.geolocation")}}

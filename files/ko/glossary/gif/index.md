@@ -1,12 +1,11 @@
 ---
 title: GIF
 slug: Glossary/GIF
+page-type: glossary-definition
 ---
 
-GIF (Graphics Interchange Format)는 무손실 압축을 사용하며 애니메이션에 사용되는 이미지 형식이다. GIF는 픽셀 당 최대 8비트를 사용하며 최대 256가지의 색을 24비트 색 공간에서 사용한다.
+GIF (Graphics Interchange Format) is an image format that uses lossless compression and can be used for animations. A GIF uses up to 8 bits per pixel and a maximum of 256 colors from the 24-bit color space.
 
-## 더 알아보기
+## See also
 
-### 일반적인 지식
-
-- Wikipedia의 [GIF](https://ko.wikipedia.org/wiki/GIF)
+- [GIF](https://en.wikipedia.org/wiki/GIF) on Wikipedia

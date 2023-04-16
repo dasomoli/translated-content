@@ -1,119 +1,146 @@
 ---
-title: 함수 표현식
+title: Function expression
 slug: Web/JavaScript/Reference/Operators/function
+page-type: javascript-operator
+browser-compat: javascript.operators.function
 ---
 
 {{jsSidebar("Operators")}}
 
-**`function`** 키워드는 어떤 표현식(expression) 내에서 함수를 정의하는 데 사용될 수 있습니다.
+The **`function`** keyword can be used to define a function inside an expression.
 
-또한 [Function](/ko/docs/Web/JavaScript/Reference/Global_Objects/Function) 생성자와 [함수 선언(function declaration)](/ko/docs/Web/JavaScript/Reference/Statements/function)을 이용해 함수를 정의할 수도 있습니다.
+You can also define functions using the [`function` declaration](/en-US/docs/Web/JavaScript/Reference/Statements/function) or the [arrow syntax](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions).
 
-{{EmbedInteractiveExample("pages/js/expressions-functionexpression.html")}}
+{{EmbedInteractiveExample("pages/js/expressions-functionexpression.html", "shorter")}}
 
-## 구문
+## Syntax
 
-```js
-    var myFunction = function [name]([param1[, param2[, ..., paramN]]]) { statements };
+```js-nolint
+function (param0) {
+  statements
+}
+function (param0, param1) {
+  statements
+}
+function (param0, param1, /* … ,*/ paramN) {
+  statements
+}
+
+function name(param0) {
+  statements
+}
+function name(param0, param1) {
+  statements
+}
+function name(param0, param1, /* … ,*/ paramN) {
+  statements
+}
 ```
 
-[ES2015](/ko/docs/)에서 [화살표 함수(arrow functions)](/ko/docs/Web/JavaScript/Reference/Functions/%EC%95%A0%EB%A1%9C%EC%9A%B0_%ED%8E%91%EC%85%98)를 사용할 수도 있습니다.
+> **Note:** An expression statement cannot begin with the keyword `function` to avoid ambiguity with a [`function` declaration](/en-US/docs/Web/JavaScript/Reference/Statements/function). The `function` keyword only begins an expression when it appears in a context that cannot accept statements.
 
-### 매개변수
+### Parameters
 
-- `name`
-  - : 함수 이름. 함수가 이름 없는(anonymous) 함수인 경우, 생략될 수 있음. 이 함수 이름은 함수의 몸통 내에서만 사용할 수 있습니다.
-- `paramN`
-  - : 함수로 전달되는 인수(argument) 의 이름.
-- `statements`
-  - : 함수 몸통을 구성하는 문(statement).
+- `name` {{optional_inline}}
+  - : The function name. Can be omitted, in which case the function is _anonymous_. The name is only local to the function body.
+- `paramN` {{optional_inline}}
+  - : The name of an argument to be passed to the function.
+- `statements` {{optional_inline}}
+  - : The statements which comprise the body of the function.
 
-## 설명
+## Description
 
-함수 표현식(function expression)은 function 문과 매우 비슷하고 구문(syntax)이 거의 같습니다 (자세한 사항은 [function 문](/ko/docs/Web/JavaScript/Reference/Statements/function) 참조). 함수 표현식과 function 문 사이의 주요 차이점은 함수 이름으로, 함수 표현식으로 _익명_ 함수를 만들 경우 이 이름을 생략할 수 있습니다. 함수 표현식은 정의하자마자 실행되는 [IIFE (즉시 호출되는 함수 표현식)](/en-US/docs/Glossary/IIFE)로 사용될 수 있습니다. 더 자세한 정보는 [함수](/ko/docs/Web/JavaScript/Reference/Functions) 장 참조.
+A `function` expression is very similar to, and has almost the same syntax as, a [`function` declaration](/en-US/docs/Web/JavaScript/Reference/Statements/function). The main difference between a `function` expression and a `function` declaration is the _function name_, which can be omitted in `function` expressions to create _anonymous_ functions. A `function` expression can be used as an [IIFE](/en-US/docs/Glossary/IIFE) (Immediately Invoked Function Expression) which runs as soon as it is defined. See also the chapter about [functions](/en-US/docs/Web/JavaScript/Reference/Functions) for more information.
 
-### Function expression 끌어올리기
+### Function expression hoisting
 
-자바스크립트에서 함수 표현식은 {{jsxref("Statements/function", "함수 선언", "#Function_declaration_hoisting")}}과는 달리 끌어올려지지 않습니다. 함수 표현식을 정의하기 전에는 사용할 수 없습니다.
-
-```js
-    console.log(notHoisted) // undefined
-    //even the variable name is hoisted, the definition wasn't. so it's undefined.
-    notHoisted(); // TypeError: notHoisted is not a function
-
-    var notHoisted = function() {
-       console.log('bar');
-    };
-```
-
-### 유명(named) 함수 표현식
-
-함수 몸통 안 쪽에서 현재 함수를 참고하고 싶다면, 유명 함수를 생성해야 합니다. ***이 함수 이름은 함수의 몸통(범위) 안에서만 사용할 수 있습니다***. 이로써 비표준 [`arguments.callee`](/en-US/docs/Web/JavaScript/Reference/Functions/arguments/callee) 속성을 사용하는 것을 피할 수도 있습니다.
+Function expressions in JavaScript are not hoisted, unlike [function declarations](/en-US/docs/Web/JavaScript/Reference/Statements/function#function_declaration_hoisting). You can't use function expressions before you create them:
 
 ```js
-    var math = {
-      'factit': function factorial(n) {
-        console.log(n)
-        if (n <= 1)
-          return 1;
-        return n * factorial(n - 1);
-      }
-    };
+console.log(notHoisted); // undefined
+// Even though the variable name is hoisted,
+// the definition isn't. so it's undefined.
+notHoisted(); // TypeError: notHoisted is not a function
 
-    math.factit(3) //3;2;1;
+var notHoisted = function () {
+  console.log("bar");
+};
 ```
 
-함수가 할당된 변수는 `name` 속성을 가지게됩니다. 다른 변수에 할당되더라도 그 name 속성의 값은 변하지 않습니다. 함수의 이름이 생략되었다면, name 속성의 값은 그 변수의 이름(암묵적 이름)이 될 것입니다. 함수의 이름이 있다면 name 속성의 값은 그 함수의 이름(명시적 이름)이 될 것입니다. 이는 [화살표 함수(arrow functions)](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)에도 적용됩니다 (화살표 함수는 이름을 가지지 않으므로 해당 변수에 암묵적인 이름만 줄 수 있습니다).
+### Named function expression
+
+If you want to refer to the current function inside the function body, you need to create a named function expression. This name is then local only to the function body (scope). This avoids using the deprecated {{jsxref("Functions/arguments/callee", "arguments.callee")}} property to call the function recursively.
 
 ```js
-    var foo = function() {}
-    foo.name // "foo"
+const math = {
+  factit: function factorial(n) {
+    console.log(n);
+    if (n <= 1) {
+      return 1;
+    }
+    return n * factorial(n - 1);
+  },
+};
 
-    var foo2 = foo
-    foo2.name // "foo"
-
-    var bar = function baz() {}
-    bar.name // "baz"
-
-    console.log(foo === foo2); // true
-    console.log(typeof baz); // undefined
-    console.log(bar === baz); // false (errors because baz == undefined)
+math.factit(3); //3;2;1;
 ```
+
+If a function expression is named, the [`name`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name) property of the function is set to that name, instead of the implicit name inferred from syntax (such as the variable the function is assigned to).
 
 ## Examples
 
-다음 예제는 이름 없는 함수를 정의하고 그 함수를 `x`에 할당합니다. 함수는 인수의 제곱을 반환합니다:
+### Creating an unnamed function
+
+The following example defines an unnamed function and assigns it to `x`. The function returns the square of its argument:
 
 ```js
-    var x = function(y) {
-       return y * y;
-    };
+const x = function (y) {
+  return y * y;
+};
 ```
 
-[callback](/ko/docs/Glossary/Callback_function)으로 더 자주 사용됩니다:
+### Using a function as a callback
+
+More commonly it is used as a {{Glossary("Callback_function", "callback")}}:
 
 ```js
-    button.addEventListener('click', function(event) {
-        console.log('button is clicked!')
-    })
+button.addEventListener("click", function (event) {
+  console.log("button is clicked!");
+});
 ```
 
-## 명세서
+### Using an Immediately Invoked Function Expression (IIFE)
+
+An anonymous function is created and called:
+
+```js-nolint
+(function () {
+  console.log("Code runs!");
+})();
+
+// or
+
+!function () {
+  console.log("Code runs!");
+}();
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
-- {{jsxref("Arrow_functions", "Arrow functions")}}
-- {{jsxref("Functions_and_function_scope", "Functions and function scope")}}
-- {{jsxref("Function")}}
-- {{jsxref("Statements/function", "function statement")}}
-- {{jsxref("Statements/function*", "function* statement")}}
-- {{jsxref("Operators/function*", "function* expression")}}
-- {{jsxref("GeneratorFunction")}}
-- {{jsxref("Statements/async_function", "async function")}}
-- {{jsxref("Operators/async_function", "async function expression")}}
+- {{jsxref("Functions/Arrow_functions", "Arrow functions", "", 1)}}
+- {{jsxref("Functions", "Functions", "", 1)}}
+- {{jsxref("Function")}} object
+- {{jsxref("Statements/function", "function")}} statement
+- {{jsxref("Statements/function*", "function*")}} statement
+- {{jsxref("Operators/function*", "function*")}} expression
+- {{jsxref("GeneratorFunction")}} object
+- {{jsxref("Statements/async_function", "async function")}} declaration
+- {{jsxref("Operators/async_function", "async function")}} expression

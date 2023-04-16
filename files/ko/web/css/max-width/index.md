@@ -1,65 +1,78 @@
 ---
 title: max-width
 slug: Web/CSS/max-width
+page-type: css-property
+browser-compat: css.properties.max-width
 ---
 
 {{CSSRef}}
 
-**`max-width`** [CSS](/ko/docs/CSS) 속성은 요소의 최대 너비를 설정합니다. `max-width`는 {{cssxref("width")}} 속성의 [사용값](/ko/docs/Web/CSS/used_value)이 자신의 값보다 커지는걸 방지합니다.
+The **`max-width`** [CSS](/en-US/docs/Web/CSS) property sets the maximum width of an element. It prevents the [used value](/en-US/docs/Web/CSS/used_value) of the {{cssxref("width")}} property from becoming larger than the value specified by `max-width`.
 
 {{EmbedInteractiveExample("pages/css/max-width.html")}}
 
-`max-width`가 {{cssxref("width")}}를 재설정하고, {{cssxref("min-height")}}가 `max-width`를 재설정합니다.
+`max-width` overrides {{cssxref("width")}}, but {{cssxref("min-width")}} overrides `max-width`.
 
-## 구문
+## Syntax
 
 ```css
-/* <length> 값 */
+/* <length> value */
 max-width: 3.5em;
 
-/* <percentage> 값 */
+/* <percentage> value */
 max-width: 75%;
 
-/* 키워드 값 */
+/* Keyword values */
 max-width: none;
 max-width: max-content;
 max-width: min-content;
-max-width: fit-content;
-max-width: fill-available;
+max-width: fit-content(20em);
 
-/* 전역 값 */
+/* Global values */
 max-width: inherit;
 max-width: initial;
+max-width: revert;
+max-width: revert-layer;
 max-width: unset;
 ```
 
-### 값
+### Values
 
 - {{cssxref("&lt;length&gt;")}}
-  - : 고정 길이로 나타낸 최대 너비.
+  - : Defines the `max-width` as an absolute value.
 - {{cssxref("&lt;percentage&gt;")}}
-  - [: 컨테이닝 블록](/ko/docs/Web/CSS/All_About_The_Containing_Block) 너비에 대한 백분율로 나타낸 최대 너비.
-
-#### 키워드 값
-
+  - : Defines the `max-width` as a percentage of the containing block's width.
 - `none`
-  - : 최대 너비를 정하지 않음.
-- `max-content` {{experimental_inline()}}
-  - : 본질적인 선호 높이.
-- `min-content` {{experimental_inline()}}
-  - : 본질적인 최소 높이.
-- `fill-available` {{experimental_inline()}}
-  - : 컨테이닝 블록의 높이에서 가로축 안쪽 및 바깥 여백과 테두리의 공간을 제외한 높이. (일부 브라우저는 매우 오래 된 이름인 `available`로 구현함을 참고하세요.)
-- `fit-content` {{experimental_inline()}}
-  - : `max-content`와 동일.
+  - : No limit on the size of the box.
+- `max-content`
+  - : The intrinsic preferred `max-width`.
+- `min-content`
+  - : The intrinsic minimum `max-width`.
+- `fit-content({{cssxref("&lt;length-percentage&gt;")}})`
+  - : Uses the `fit-content` formula with the available space replaced by the specified argument, i.e. `min(max-content, max(min-content, argument))`.
 
-### 형식 구문
+## Accessibility concerns
+
+Ensure that elements set with a `max-width` are not truncated and/or do not obscure other content when the page is zoomed to increase text size.
+
+- [MDN Understanding WCAG, Guideline 1.4 explanations](/en-US/docs/Web/Accessibility/Understanding_WCAG/Perceivable#guideline_1.4_make_it_easier_for_users_to_see_and_hear_content_including_separating_foreground_from_background)
+- [Understanding Success Criterion 1.4.4 | W3C Understanding WCAG 2.0](https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-scale.html)
+
+## Formal definition
+
+{{cssinfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-다음 예제에서, 자식(`child`) 요소의 너비는 150픽셀과 부모(`parent`) 요소의 너비 중 더 작은 값이 됩니다.
+### Setting max width in pixels
+
+In this example, the "child" will be either 150 pixels wide or the width of the "parent," whichever is smaller.
+
+#### HTML
 
 ```html
 <div id="parent">
@@ -68,6 +81,8 @@ max-width: unset;
   </div>
 </div>
 ```
+
+#### CSS
 
 ```css
 #parent {
@@ -82,52 +97,20 @@ max-width: unset;
 }
 ```
 
-{{EmbedLiveSample("basic-max-width-demo", 350, 100)}}
+#### Result
 
-`fit-content` 값을 사용하여 해당 요소의 내용이 필요로 하는 너비만 차지하도록 설정할 수 있습니다.
+{{EmbedLiveSample("Setting_max_width_in_pixels", 350, 100)}}
 
-```html
-<div id="parent">
-    <div id="child">
-        Child Text
-    </div>
-</div>
-```
-
-```css
-#parent {
-  background: lightblue;
-  width: 300px;
-}
-
-#child  {
-  background: gold;
-  width: 100%;
-  max-width: -moz-fit-content;
-  max-width: -webkit-fit-content;
-}
-```
-
-{{EmbedLiveSample("fit-content-demo", 400, 100)}}
-
-## 접근성 고려사항
-
-페이지의 확대 또는 글씨 크기를 키운 후에도 `max-width`를 설정한 요소의 내용이 잘리거나, 다른 요소를 가리지 않도록 주의하세요.
-
-- [MDN Understanding WCAG, Guideline 1.4 explanations](/ko/docs/Web/Accessibility/Understanding_WCAG/Perceivable#Guideline_1.4_Make_it_easier_for_users_to_see_and_hear_content_including_separating_foreground_from_background)
-- [Understanding Success Criterion 1.4.4 | W3C Understanding WCAG 2.0](https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-scale.html)
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-{{cssinfo}}
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [박스 모델 입문](/ko/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
-- {{cssxref("box-sizing")}}, {{cssxref("width")}}, {{ Cssxref("min-width") }}
+- [The box model](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model), {{cssxref("box-sizing")}}
+- {{cssxref("width")}}, {{cssxref("min-width")}}
+- The mapped logical properties: {{cssxref("max-inline-size")}}, {{cssxref("max-block-size")}}

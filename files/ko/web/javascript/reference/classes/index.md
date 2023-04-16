@@ -1,18 +1,88 @@
 ---
 title: Classes
 slug: Web/JavaScript/Reference/Classes
+page-type: guide
+browser-compat: javascript.classes
 ---
+
 {{JsSidebar("Classes")}}
 
-Class는 객체를 생성하기 위한 템플릿입니다. 클래스는 데이터와 이를 조작하는 코드를 하나로 추상화합니다. 자바스크립트에서 클래스는 프로토타입을 이용해서 만들어졌지만 ES5의 클래스 의미와는 다른 문법과 의미를 가집니다.
+Classes are a template for creating objects. They encapsulate data with code to work on that data. Classes in JS are built on [prototypes](/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain) but also have some syntax and semantics that are unique to classes.
 
-## Class 정의
+For more examples and explanations, see the [Using classes](/en-US/docs/Web/JavaScript/Guide/Using_classes) guide.
 
-Class는 사실 "특별한 {{jsxref("Functions", "함수", "", "true")}}"입니다. 함수를 {{jsxref("Operators/function", "함수 표현식", "", "true")}}과 {{jsxref("Statements/function", "함수 선언", "", "true")}}으로 정의할 수 있듯이 class 문법도 {{jsxref("Operators/class", "class 표현식", "", "true")}} and {{jsxref("Statements/class", "class 선언", "", "true")}} 두 가지 방법을 제공합니다.
+## Description
 
-### Class 선언
+### Defining classes
 
-Class를 정의하는 한 가지 방법은 **class 선언**을 이용하는 것입니다. class를 선언하기 위해서는 클래스의 이름(여기서 "Rectangle")과 함께 `class` 키워드를 사용해야 합니다.
+Classes are in fact "special [functions](/en-US/docs/Web/JavaScript/Reference/Functions)", and just as you can define [function expressions](/en-US/docs/Web/JavaScript/Reference/Operators/function) and [function declarations](/en-US/docs/Web/JavaScript/Reference/Statements/function), a class can be defined in two ways: a [class expression](/en-US/docs/Web/JavaScript/Reference/Operators/class) or a [class declaration](/en-US/docs/Web/JavaScript/Reference/Statements/class).
+
+```js
+// Declaration
+class Rectangle {
+  constructor(height, width) {
+    this.height = height;
+    this.width = width;
+  }
+}
+
+// Expression; the class is anonymous but assigned to a variable
+const Rectangle = class {
+  constructor(height, width) {
+    this.height = height;
+    this.width = width;
+  }
+};
+
+// Expression; the class has its own name
+const Rectangle = class Rectangle2 {
+  constructor(height, width) {
+    this.height = height;
+    this.width = width;
+  }
+};
+```
+
+Like function expressions, class expressions may be anonymous, or have a name that's different from the variable that it's assigned to. However, unlike function declarations, class declarations have the same [temporal dead zone](/en-US/docs/Web/JavaScript/Reference/Statements/let#temporal_dead_zone_tdz) restrictions as `let` or `const` and behave as if they are [not hoisted](/en-US/docs/Web/JavaScript/Guide/Using_classes#class_declaration_hoisting).
+
+### Class body
+
+The body of a class is the part that is in curly brackets `{}`. This is where you define class members, such as methods or constructor.
+
+The body of a class is executed in [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode) even without the `"use strict"` directive.
+
+A class element can be characterized by three aspects:
+
+- Kind: Getter, setter, method, or field
+- Location: Static or instance
+- Visibility: Public or private
+
+Together, they add up to 16 possible combinations. To divide the reference more logically and avoid overlapping content, the different elements are introduced in detail in different pages:
+
+- [Method definitions](/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions)
+  - : Public instance method
+- [getter](/en-US/docs/Web/JavaScript/Reference/Functions/get)
+  - : Public instance getter
+- [setter](/en-US/docs/Web/JavaScript/Reference/Functions/set)
+  - : Public instance setter
+- [Public class fields](/en-US/docs/Web/JavaScript/Reference/Classes/Public_class_fields)
+  - : Public instance field
+- [`static`](/en-US/docs/Web/JavaScript/Reference/Classes/static)
+  - : Public static method, getter, setter, and field
+- [Private class features](/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields)
+  - : Everything that's private
+
+> **Note:** Private features have the restriction that all property names declared in the same class must be unique. All other public properties do not have this restriction — you can have multiple public properties with the same name, and the last one overwrites the others. This is the same behavior as in [object initializers](/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer#duplicate_property_names).
+
+In addition, there are two special class element syntaxes: [`constructor`](#constructor) and [static initialization blocks](#static_initialization_blocks), with their own references.
+
+#### Constructor
+
+The {{jsxref("Classes/constructor", "constructor")}} method is a special method for creating and initializing an object created with a class. There can only be one special method with the name "constructor" in a class — a {{jsxref("SyntaxError")}} is thrown if the class contains more than one occurrence of a `constructor` method.
+
+A constructor can use the [`super`](/en-US/docs/Web/JavaScript/Reference/Operators/super) keyword to call the constructor of the super class.
+
+You can create instance properties inside the constructor:
 
 ```js
 class Rectangle {
@@ -23,63 +93,17 @@ class Rectangle {
 }
 ```
 
-#### Hoisting
+Alternatively, if your instance properties' values do not depend on the constructor's arguments, you can define them as [class fields](#field_declarations).
 
-**함수 선언**과 **클래스 선언**의 중요한 차이점은 함수의 경우 정의하기 하기 전에 호출할 수 있지만, 클래스는 반드시 정의한 뒤에 사용할 수 있다는 점입니다. 다음 코드는 {{jsxref("ReferenceError")}}를 던질 것입니다.
+#### Static initialization blocks
 
-```js
-const p = new Rectangle(); // ReferenceError
+[Static initialization blocks](/en-US/docs/Web/JavaScript/Reference/Classes/Static_initialization_blocks) allow flexible initialization of [static properties](#static_methods_and_fields), including the evaluation of statements during initialization, while granting access to the private scope.
 
-class Rectangle {}
-```
+Multiple static blocks can be declared, and these can be interleaved with the declaration of static fields and methods (all static items are evaluated in declaration order).
 
-예외가 발생하는 이유는 클래스가 {{Glossary("Hoisting", "호이스팅")}}될 때 초기화는 되지 않기 때문입니다.
+#### Methods
 
-### Class 표현식
-
-**Class 표현식**은 class를 정의하는 또 다른 방법입니다. Class 표현식은 이름을 가질 수도 있고, 갖지 않을 수도 있습니다. 이름을 가진 class 표현식의 이름은 클래스 body의 local scope에 한해 유효합니다. (하지만, 클래스의 (인스턴스 이름이 아닌) {{jsxref("Function.name", "name")}} 속성을 통해 찾을 수 있습니다).
-
-```js
-// unnamed
-let Rectangle = class {
-  constructor(height, width) {
-    this.height = height;
-    this.width = width;
-  }
-};
-console.log(Rectangle.name);
-// 출력: "Rectangle"
-
-// named
-let Rectangle = class Rectangle2 {
-  constructor(height, width) {
-    this.height = height;
-    this.width = width;
-  }
-};
-console.log(Rectangle.name);
-// 출력: "Rectangle2"
-```
-
-> **참고:** 클래스 **표현식**에는 [Class 선언](#class_선언) 섹션에 설명된 것과 동일한 호이스팅 제한이 적용됩니다.
-
-## Class body 와 메서드 정의
-
-Class body는 중괄호 `{}` 로 묶여 있는 안쪽 부분입니다. 이곳은 여러분이 메서드나 constructor와 같은 class 멤버를 정의할 곳입니다.
-
-### Strict mode
-
-클래스의 본문(body)은 {{jsxref("Strict_mode", "strict mode", "", "true")}}에서 실행됩니다. 즉, 여기에 적힌 코드는 성능 향상을 위해 더 엄격한 문법이 적용됩니다. 그렇지 않으면, 조용히 오류가 발생할 수 있습니다. 특정 키워드는 미래의 ECMAScript 버전용으로 예약됩니다.
-
-### Constructor (생성자)
-
-{{jsxref("Classes/constructor", "constructor", "", "true")}} 메서드는 `class` 로 생성된 객체를 생성하고 초기화하기 위한 특수한 메서드입니다. "constructor" 라는 이름을 가진 특수한 메서드는 클래스 안에 한 개만 존재할 수 있습니다. 만약 클래스에 여러 개의 `constructor` 메서드가 존재하면 {{jsxref("SyntaxError")}} 가 발생할 것입니다.
-
-constructor는 부모 클래스의 constructor를 호출하기 위해 `super` 키워드를 사용할 수 있습니다.
-
-### 프로토타입 메서드
-
-{{jsxref("Functions/Method_definitions", "메서드 정의", "", "true")}}도 참조해보세요.
+Methods are defined on the prototype of each class instance and are shared by all instances. Methods can be plain functions, async functions, generator functions, or async generator functions. For more information, see [method definitions](/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions).
 
 ```js
 class Rectangle {
@@ -91,20 +115,27 @@ class Rectangle {
   get area() {
     return this.calcArea();
   }
-  // 메서드
+  // Method
   calcArea() {
     return this.height * this.width;
+  }
+  *getSides() {
+    yield this.height;
+    yield this.width;
+    yield this.height;
+    yield this.width;
   }
 }
 
 const square = new Rectangle(10, 10);
 
 console.log(square.area); // 100
+console.log([...square.getSides()]); // [10, 10, 10, 10]
 ```
 
-### 정적 메서드와 속성
+#### Static methods and fields
 
-{{jsxref("Classes/static", "static", "", "true")}} 키워드는 클래스를 위한 정적(static) 메서드를 정의합니다. 정적 메서드는 클래스의 인스턴스화([instantiating](<https://developer.mozilla.org/ko/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript#The_object_(class_instance)> 'An example of class instance is "var john = new Person();"')) 없이 호출되며, 클래스의 인스턴스에서는 호출할 수 없습니다. 정적 메서드는 어플리케이션(application)을 위한 유틸리티(utility) 함수를 생성하는 데 주로 사용됩니다. 반면, 정적 속성은 캐시, 고정 환경설정 또는 인스턴스 간에 복제할 필요가 없는 기타 데이터에 유용합니다.
+The {{jsxref("Classes/static", "static")}} keyword defines a static method or field for a class. Static properties (fields and methods) are defined on the class itself instead of each instance. Static methods are often used to create utility functions for an application, whereas static fields are useful for caches, fixed-configuration, or any other data that don't need to be replicated across instances.
 
 ```js
 class Point {
@@ -125,86 +156,17 @@ class Point {
 const p1 = new Point(5, 5);
 const p2 = new Point(10, 10);
 p1.displayName; // undefined
-p1.distance;    // undefined
+p1.distance; // undefined
 p2.displayName; // undefined
-p2.distance;    // undefined
+p2.distance; // undefined
 
-console.log(Point.displayName);      // "Point"
+console.log(Point.displayName); // "Point"
 console.log(Point.distance(p1, p2)); // 7.0710678118654755
 ```
 
-### 프로토타입 및 정적 메서드를 사용한 `this` 바인딩
+#### Field declarations
 
-메서드를 변수에 할당 한 다음 호출하는 것과 같이, 정적 메서드나 프로토타입 메서드가 {{jsxref("Operators/this", "this")}} 값 없이 호출될 때, `this` 값은 메서드 안에서 `undefined`가 됩니다. 이 동작은 {{jsxref("Strict_mode", "\"use strict\"")}} 명령어 없이도 같은 방식으로 동작하는데, `class` 문법 안에 있는 코드는 항상 strict mode 로 실행되기 때문입니다.
-
-```js
-class Animal {
-  speak() {
-    return this;
-  }
-  static eat() {
-    return this;
-  }
-}
-
-let obj = new Animal();
-obj.speak(); // the Animal object
-let speak = obj.speak;
-speak(); // undefined
-
-Animal.eat() // class Animal
-let eat = Animal.eat;
-eat(); // undefined
-```
-
-위에 작성된 코드를 전통적 방식의 함수기반의 non–strict mode 구문으로 재작성하면, `this` 메서드 호출은 기본적으로 {{Glossary("Global_object", "전역 객체")}}인 초기 `this` 값에 자동으로 바인딩 됩니다. Strict mode에서는 자동 바인딩이 발생하지 않습니다; `this` 값은 전달된 대로 유지됩니다.
-
-```js
-function Animal() { }
-
-Animal.prototype.speak = function() {
-  return this;
-}
-
-Animal.eat = function() {
-  return this;
-}
-
-let obj = new Animal();
-let speak = obj.speak;
-speak(); // global object (in non–strict mode)
-
-let eat = Animal.eat;
-eat(); // global object (in non-strict mode)
-```
-
-### 인스턴스 속성
-
-인스턴스 속성은 반드시 클래스 메서드 내에 정의되어야 합니다:
-
-```js
-class Rectangle {
-  constructor(height, width) {
-    this.height = height;
-    this.width = width;
-  }
-}
-```
-
-정적 (클래스사이드) 속성과 프로토타입 데이터 속성은 반드시 클래스 선언부 바깥쪽에서 정의되어야 합니다.
-
-```js
-Rectangle.staticWidth = 20;
-Rectangle.prototype.prototypeWidth = 25;
-```
-
-### Field 선언
-
-> **Warning:** public과 private 필드 선언은 자바스크립트 표준화 위원회에 [실험적 기능 (stage 3)](https://github.com/tc39/proposal-class-fields) [TC39](https://tc39.es/) 로 제안되어있습니다. 현재 이를 지원하는 브라우져는 제한적인 상태입니다만, [Babel](https://babeljs.io/) 과 같은 build 시스템을 사용한다면 이 기능을 사용해볼 수 있습니다.
-
-#### Public 필드 선언
-
-자바스크립트의 필드 선언 문법을 사용해서 위의 예제는 아래와 같이 다시 쓰여질 수 있습니다.
+With the class field declaration syntax, the [constructor](#constructor) example can be written as:
 
 ```js
 class Rectangle {
@@ -217,15 +179,15 @@ class Rectangle {
 }
 ```
 
-필드를 먼저 선언함으로서 클래스 정의는 self-documenting에 가까워졌고 필드는 언제나 존재하는 상태가 됩니다.
+Class fields are similar to object properties, not variables, so we don't use keywords such as `const` to declare them. In JavaScript, [private features](#private_class_features) use a special identifier syntax, so modifier keywords like `public` and `private` should not be used either.
 
-위의 예에서 봤듯이 필드 선언은 기본 값과 같이 선언될 수도 있습니다.
+As seen above, the fields can be declared with or without a default value. Fields without default values default to `undefined`. By declaring fields up-front, class definitions become more self-documenting, and the fields are always present, which help with optimizations.
 
-자세한 내용은 {{jsxref("Classes/Public_class_fields", "public class fields", "", "true")}}를 참조하세요.
+See [public class fields](/en-US/docs/Web/JavaScript/Reference/Classes/Public_class_fields) for more information.
 
-#### Private 필드 선언
+#### Private class features
 
-private 필드를 사용하면 아래와 같이 예제를 개선할 수 있습니다.
+Using private fields, the definition can be refined as below.
 
 ```js
 class Rectangle {
@@ -238,17 +200,16 @@ class Rectangle {
 }
 ```
 
-클래스의 바깥에서 private 필드를 접근하려고 하면 에러가 발생합니다. private필드는 클래스 내부에서만 읽고 쓰기가 가능합니다. 클래스 외부에서 보이지 않도록 정의하였으므로 클래스가 버젼업 되면서 내부 구현이 바뀌더라도 클래스 사용자 입장에서는 이에 아무런 영항을 받지 않도록 할 수 있습니다.
+It's an error to reference private fields from outside of the class; they can only be read or written within the class body.
+By defining things that are not visible outside of the class, you ensure that your classes' users can't depend on internals, which may change from version to version.
 
-> **Note:** Private 필드는 사용전에 선언되어야 합니다.
+Private fields can only be declared up-front in a field declaration. They cannot be created later through assigning to them, the way that normal properties can.
 
-일반적인 프로퍼티와는 다르게 private 필드는 값을 할당하면서 만들어질 수 없습니다.
+For more information, see [private class features](/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields).
 
-자세한 내용은 {{jsxref("Classes/Private_class_fields", "private class fields", "", "true")}}를 참조하세요.
+### Inheritance
 
-## `extends`를 통한 클래스 상속(sub classing)
-
-{{jsxref("Classes/extends", "extends")}} 키워드는 *클래스 선언*이나 *클래스 표현식*에서 다른 클래스의 자식 클래스를 생성하기 위해 사용됩니다.
+The {{jsxref("Classes/extends", "extends")}} keyword is used in _class declarations_ or _class expressions_ to create a class as a child of another constructor (either a class or a function).
 
 ```js
 class Animal {
@@ -263,7 +224,7 @@ class Animal {
 
 class Dog extends Animal {
   constructor(name) {
-    super(name); // super class 생성자를 호출하여 name 매개변수 전달
+    super(name); // call the super class constructor and pass in the name parameter
   }
 
   speak() {
@@ -271,78 +232,11 @@ class Dog extends Animal {
   }
 }
 
-let d = new Dog('Mitzie');
+const d = new Dog("Mitzie");
 d.speak(); // Mitzie barks.
 ```
 
-subclass에 constructor가 있다면, "this"를 사용하기 전에 가장 먼저 super()를 호출해야 합니다.
-
-또한 es5에서 사용되던 전통적인 함수 기반의 클래스를 통하여 확장할 수도 있습니다.
-
-```js
-function Animal (name) {
-  this.name = name;
-}
-
-Animal.prototype.speak = function () {
-  console.log(`${this.name} makes a noise.`);
-}
-
-class Dog extends Animal {
-  speak() {
-    console.log(`${this.name} barks.`);
-  }
-}
-
-let d = new Dog('Mitzie');
-d.speak(); // Mitzie barks.
-
-// 유사한 메서드의 경우, 자식의 메서드가 부모의 메서드보다 우선합니다
-```
-
-클래스는 생성자가 없는 객체(non-constructible)을 확장할 수 없습니다. 만약 기존의 생성자가 없는 객체을 확장하고 싶다면, 이 메서드를 사용하세요. {{jsxref("Object.setPrototypeOf()")}}:
-
-```js
-const Animal = {
-  speak() {
-    console.log(`${this.name} makes a noise.`);
-  }
-};
-
-class Dog {
-  constructor(name) {
-    this.name = name;
-  }
-}
-
-// 이 작업을 수행하지 않으면 speak를 호출할 때 TypeError가 발생합니다
-Object.setPrototypeOf(Dog.prototype, Animal);
-
-let d = new Dog('Mitzie');
-d.speak(); // Mitzie makes a noise.
-```
-
-## Species
-
-배열을 상속 받은 MyArray 클래스에서 {{jsxref("Array")}} Object를 반환하고 싶을 수도 있을 것입니다. 그럴때 Species 패턴은 기본 생성자를 덮어쓰도록 해줍니다.
-
-예를 들어, {{jsxref("Array.map", "map()")}}과 같은 기본 생성자를 반환하는 메서드를 사용할 때 이 메서드가 MyArray 객체 대신 `Array` 객체가 반환하도록 하고 싶을 것입니다. {{jsxref("Symbol.species")}} 심볼은 이러한 것을 가능하게 해줍니다:
-
-```js
-class MyArray extends Array {
-  // 부모 Array 생성자로 species 덮어쓰기
-  static get [Symbol.species]() { return Array; }
-}
-var a = new MyArray(1,2,3);
-var mapped = a.map(x => x * x);
-
-console.log(mapped instanceof MyArray); // false
-console.log(mapped instanceof Array);   // true
-```
-
-## `super` 를 통한 상위 클래스 호출
-
-{{jsxref("Operators/super", "super")}} 키워드는 객체의 부모가 가지고 있는 메서드를 호출하기 위해 사용됩니다. 이는 프로토타입 기반 상속보다 좋은 점 중 하나입니다.
+If there is a constructor present in the subclass, it needs to first call `super()` before using `this`. The {{jsxref("Operators/super", "super")}} keyword can also be used to call corresponding methods of super class.
 
 ```js
 class Cat {
@@ -362,56 +256,88 @@ class Lion extends Cat {
   }
 }
 
-let l = new Lion('Fuzzy');
+const l = new Lion("Fuzzy");
 l.speak();
 // Fuzzy makes a noise.
 // Fuzzy roars.
 ```
 
-## Mix-ins
+### Evaluation order
 
-추상 서브 클래스 또는 믹스-인은 클래스를 위한 템플릿입니다. ECMAScript 클래스는 하나의 단일 슈퍼클래스만을 가질 수 있으며, 예를 들어 툴링 클래스로부터의 다중 상속은 불가능합니다. 기능은 반드시 슈퍼클래스에서 제공되어야 합니다.
+When a [`class` declaration](/en-US/docs/Web/JavaScript/Reference/Statements/class) or [`class` expression](/en-US/docs/Web/JavaScript/Reference/Operators/class) is evaluated, its various components are evaluated in the following order:
 
-슈퍼클래스를 인자로 받고 이 슈퍼클래스를 확장하는 서브클래스를 생성하여 반환하는 함수를 사용하여 ECMAScript에서 믹스-인을 구현할 수 있습니다:
+1. The {{jsxref("Classes/extends", "extends")}} clause, if present, is first evaluated. It must evaluate to a valid constructor function or `null`, or a {{jsxref("TypeError")}} is thrown.
+2. The {{jsxref("Classes/constructor", "constructor")}} method is extracted, substituted with a default implementation if `constructor` is not present. However, because the `constructor` definition is only a method definition, this step is not observable.
+3. The class elements' property keys are evaluated in the order of declaration. If the property key is computed, the computed expression is evaluated, with the `this` value is set to the `this` value surrounding the class (not the class itself). None of the property values are evaluated yet.
+4. Methods and accessors are installed in the order of declaration. Instance methods and accessors are installed on the `prototype` property of the current class, and static methods and accessors are installed on the class itself. Private instance methods and accessors are saved to be installed on the instance directly later. This step is not observable.
+5. The class is now initialized with the prototype specified by `extends` and implementation specified by `constructor`. For all steps above, if an evaluated expression tries to access the name of the class, a {{jsxref("ReferenceError")}} is thrown because the class is not initialized yet.
+6. The class elements' values are evaluated in the order of declaration:
+   - For each [instance field](/en-US/docs/Web/JavaScript/Reference/Classes/Public_class_fields) (public or private), its initializer expression is saved. The initializer is evaluated during instance creation, at the start of the constructor (for base classes) or immediately before the `super()` call returns (for derived classes).
+   - For each [static field](/en-US/docs/Web/JavaScript/Reference/Classes/static) (public or private), its initializer is evaluated with `this` set to the class itself, and the property is created on the class.
+   - [Static initialization blocks](/en-US/docs/Web/JavaScript/Reference/Classes/Static_initialization_blocks) are evaluated with `this` set to the class itself.
+7. The class is now fully initialized and can be used as a constructor function.
+
+For how instances are created, see the {{jsxref("Classes/constructor", "constructor")}} reference.
+
+## Examples
+
+### Binding this with instance and static methods
+
+When a static or instance method is called without a value for {{jsxref("Operators/this", "this")}}, such as by assigning the method to a variable and then calling it, the `this` value will be `undefined` inside the method. This behavior is the same even if the {{jsxref("Strict_mode", "\"use strict\"")}} directive isn't present, because code within the `class` body is always executed in strict mode.
 
 ```js
-var calculatorMixin = Base => class extends Base {
-  calc() { }
-};
+class Animal {
+  speak() {
+    return this;
+  }
+  static eat() {
+    return this;
+  }
+}
 
-var randomizerMixin = Base => class extends Base {
-  randomize() { }
-};
+const obj = new Animal();
+obj.speak(); // the Animal object
+const speak = obj.speak;
+speak(); // undefined
+
+Animal.eat(); // class Animal
+const eat = Animal.eat;
+eat(); // undefined
 ```
 
-위 믹스-인을 사용하는 클래스는 다음과 같이 작성할 수 있습니다:
+If we rewrite the above using traditional function-based syntax in non–strict mode, then `this` method calls are automatically bound to {{jsxref("globalThis")}}. In strict mode, the value of `this` remains as `undefined`.
 
 ```js
-class Foo { }
-class Bar extends calculatorMixin(randomizerMixin(Foo)) { }
+function Animal() {}
+
+Animal.prototype.speak = function () {
+  return this;
+};
+
+Animal.eat = function () {
+  return this;
+};
+
+const obj = new Animal();
+const speak = obj.speak;
+speak(); // global object (in non–strict mode)
+
+const eat = Animal.eat;
+eat(); // global object (in non-strict mode)
 ```
 
-## 클래스 재정의
-
-클래스는 재정의될 수 없습니다. 재정의를 시도하면 `SyntaxError` 가 발생합니다.
-
-이를 실험해보고 싶으면 FireFox Web Console (**Tools** > **Web Developer** > **Web Console**) 에서 같은 이름으로 클래스를 두번 정의하려고 해보세요. 다음과 같은 오류를 보게 될 겁니다. `SyntaxError: redeclaration of let ClassName;`. (See further discussion of this issue in [Firefox bug 1428672](https://bugzil.la/1428672).) Doing something similar in Chrome Developer Tools gives you a message like `Uncaught SyntaxError: Identifier 'ClassName' has already been declared at <anonymous>:1:1`.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
-- {{jsxref("Functions", "함수", "", "true")}}
-- {{jsxref("Statements/class", "class 선언", "", "true")}}
-- {{jsxref("Operators/class", "class 식", "", "true")}}
-- {{jsxref("Classes/Public_class_fields", "Public class fields", "", "true")}}
-- {{jsxref("Classes/Private_class_fields", "Private class fields", "", "true")}}
-- {{jsxref("Operators/super", "super")}}
-- [블로그 게시물: "ES6 In Depth: Classes"](https://hacks.mozilla.org/2015/07/es6-in-depth-classes/)
-- [Fields and public/private class properties proposal (stage 3)](https://github.com/tc39/proposal-class-fields)
+- [Using classes](/en-US/docs/Web/JavaScript/Guide/Using_classes)
+- [`class`](/en-US/docs/Web/JavaScript/Reference/Statements/class)
+- [`class` expression](/en-US/docs/Web/JavaScript/Reference/Operators/class)
+- [Functions](/en-US/docs/Web/JavaScript/Reference/Functions)
+- [ES6 In Depth: Classes](https://hacks.mozilla.org/2015/07/es6-in-depth-classes/) on hacks.mozilla.org (July 22, 2015)

@@ -1,36 +1,35 @@
 ---
-title: OffscreenCanvas.width
+title: "OffscreenCanvas: width property"
+short-title: width
 slug: Web/API/OffscreenCanvas/width
+page-type: web-api-instance-property
+browser-compat: api.OffscreenCanvas.width
 ---
-{{APIRef("Canvas API")}} {{SeeCompatTable}}
 
-**`width`** 프로퍼티는 {{domxref("OffscreenCanvas")}} 객체에 할당된 너비를 반환합니다.
+{{APIRef("Canvas API")}}
 
-## 구문
+The **`width`** property returns and sets the width of an {{domxref("OffscreenCanvas")}} object.
 
-```js
-var pxl = offscreen.width;
-offscreen.width = pxl;
-```
+## Value
 
-## 예시
+## Examples
 
-새로운 offscreen 캔버스를 생성하고 높이를 설정하거나 반환합니다.
+Creating a new offscreen canvas and returning or setting the width of the offscreen canvas:
 
 ```js
-var offscreen = new OffscreenCanvas(256, 256);
+const offscreen = new OffscreenCanvas(256, 256);
 offscreen.width; // 256
 offscreen.width = 512;
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 더 보기
+## See also
 
-- {{domxref("OffscreenCanvas")}}, 프로퍼티가 속한 인터페이스
+- {{domxref("OffscreenCanvas")}}, the interface this property belongs to.

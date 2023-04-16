@@ -1,30 +1,41 @@
 ---
-title: DOMTokenList.contains()
+title: "DOMTokenList: contains() method"
+short-title: contains()
 slug: Web/API/DOMTokenList/contains
+page-type: web-api-instance-method
+browser-compat: api.DOMTokenList.contains
 ---
 
 {{APIRef("DOM")}}
 
-The **`contains()`** method of the {{domxref("DOMTokenList")}} interface returns a {{domxref("Boolean")}} — `true` if the underlying list contains the given _token_, otherwise `false`.
+The **`contains()`** method of the {{domxref("DOMTokenList")}} interface
+returns a boolean value — `true` if the underlying list contains the given token,
+otherwise `false`.
 
 ## Syntax
 
-```js
-tokenList.contains(token);
+```js-nolint
+contains(token)
 ```
 
 ### Parameters
 
-- token
-  - : A {{domxref("DOMString")}} representing the token you want to check for the existance of in the list.
+- `token`
+  - : A string representing the token
+    you want to check for the existence of in the list.
 
 ### Return value
 
-A {{domxref("Boolean")}} — `true` if the underlying list contains the given _token_, otherwise `false`.
+A boolean value, which is `true` if the calling list contains
+`token`, otherwise `false`.
 
 ## Examples
 
-In the following example we retrieve the list of classes set on a {{htmlelement("span")}} element as a `DOMTokenList` using {{domxref("Element.classList")}}. We then test for the existance of "c" in the list, and write the result into the `<span>`'s {{domxref("Node.textContent")}}.
+In the following example we retrieve the list of classes set on a
+{{htmlelement("span")}} element as a `DOMTokenList` using
+{{domxref("Element.classList")}}. We then test for the existence of `"c"` in
+the list, and write the result into the `<span>`'s
+{{domxref("Node.textContent")}}.
 
 First, the HTML:
 
@@ -35,24 +46,20 @@ First, the HTML:
 Now the JavaScript:
 
 ```js
-var span = document.querySelector("span");
-var classes = span.classList;
-var result = classes.contains("c");
-if(result) {
-  span.textContent = "The classList contains 'c'";
-} else {
-   span.textContent = "The classList does not contain 'c'";
-}
+const span = document.querySelector("span");
+span.textContent = span.classList.contains("c")
+  ? "The classList contains 'c'"
+  : "The classList does not contain 'c'";
 ```
 
 The output looks like this:
 
 {{ EmbedLiveSample('Examples', '100%', 60) }}
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

@@ -1,16 +1,24 @@
 ---
 title: Immutable
 slug: Glossary/Immutable
+page-type: glossary-definition
 ---
-불변 [객체](/ko/docs/Glossary/Object) 는 내용을 변경할 수 없는 객체입니다.
-객체는 다양한 이유로 불변일 수 있습니다. 예를 들어 아래와 같습니다.
 
-- 성능 향상하기(향후 객체의 변경에 대한 계획 없음)
-- 메모리 사용을 줄이기(전체 객체를 복제하는 대신 [객체를 참조](/ko/docs/Glossary/Object_reference))
-- 스레드 안전성(여러 스레드가 서로 간섭하지 않고 동일한 객체 참조 가능)
+An immutable value is one whose content cannot be changed without creating an entirely new value.
 
-## 더 알아보기
+In {{glossary("JavaScript")}}, {{Glossary("primitive", "primitive values")}} are immutable — once a primitive value is created, it cannot be changed, although the variable that holds it may be reassigned another value.
+By contrast, {{Glossary("Object","objects")}} and {{Glossary("Array","arrays")}} are mutable by default — their properties and elements can be changed without reassigning a new value.
 
-### 일반적 지식
+It can be beneficial to use immutable objects for several reasons:
 
-- [불변 객체](https://ko.wikipedia.org/wiki/%EB%B6%88%EB%B3%80%EA%B0%9D%EC%B2%B4) on Wikipedia
+- To improve performance (no planning for the object's future changes)
+- To reduce memory use (make {{glossary("object reference","object references")}} instead of cloning the whole object)
+- Thread-safety (multiple threads can reference the same object without interfering with one other)
+- Lower developer mental burden (the object's state won't change and its behavior is always consistent)
+
+Note that you can easily prove mutability: an object is mutable as long as it offers one way to change its properties. On the other hand, _immutability_ is hard to prove if there are no language semantics to secure it — it is a matter of developer contract. For example, {{jsxref("Object.freeze()")}} is a language-level method to make an object immutable in JavaScript.
+
+## See also
+
+- [Immutable](https://en.wikipedia.org/wiki/Immutable_object) on Wikipedia
+- {{glossary("Mutable")}}

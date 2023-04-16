@@ -1,39 +1,38 @@
 ---
 title: IndexedDB key characteristics and basic terminology
 slug: Web/API/IndexedDB_API/Basic_Terminology
-l10n:
-  sourceCommit: 4b9377a26bb7094a8f13551cf328865a6457f5ee
+page-type: guide
 ---
 
 {{DefaultAPISidebar("IndexedDB")}}
 
-이 문서에서는 IndexedDB의 주요 특성을 설명하고, IndexedDB API를 이해하는 데 관련된 몇 가지 필수적인 용어를 소개합니다.
+This article describes the key characteristics of IndexedDB, and introduces some essential terminology relevant to understanding the IndexedDB API.
 
-유용한 문서들:
+You'll also find the following articles useful:
 
-- API 사용법에 대한 상세한 튜토리얼을 원한다면 [IndexedDB 사용하기](/ko/docs/Web/API/IndexedDB_API/Using_IndexedDB)를 확인해보세요.
-- IndexedDB API의 참조 문서를 원한다면, [IndexedDB API](/ko/docs/Web/API/IndexedDB_API) 문서와 IndexedDB에서 사용되는 객체 타입에 대한 하위 문서들을 확인하세요.
-- 브라우저가 어떻게 백그라운드에서 데이터를 저장하는지에 대한 더 자세한 정보는 [Browser storage quotas and eviction criteria](/ko/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria)에서 확인하세요.
+- For a detailed tutorial on how to use the API, see [Using IndexedDB](/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB).
+- For the reference documentation on the IndexedDB API, refer back to the main [IndexedDB API](/en-US/docs/Web/API/IndexedDB_API) article and its subpages, which document the types of objects used by IndexedDB.
+- For more information on how the browser handles storing your data in the background, read [Browser storage quotas and eviction criteria](/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria).
 
-## 주요 특성
+## Key characteristics
 
-IndexedDB는 데이터를 사용자의 브라우저에 영구적으로 저장하는 방법입니다. 네트워크 가용성에 관계 없이 풍부한 쿼리 기능을 갖춘 웹 어플리케이션을 만들 수 있기 때문에, 온라인과 오프라인에서 모두 동작합니다. IndexedDB는 대규모 데이터(예: 도서관의 DVD 목록)를 저장하고 지속적인 인터넷 연결을 필요로 하지 않는 작업(예: 메일 클라이언트, 투두 리스트, 메모장)을 위한 어플리케이션에 유용합니다.
+IndexedDB is a way for you to persistently store data inside a user's browser. Because it lets you create web applications with rich query abilities regardless of network availability, these applications can work both online and offline. IndexedDB is useful for applications that store a large amount of data (for example, a catalog of DVDs in a lending library) and applications that don't need persistent internet connectivity to work (for example, mail clients, to-do lists, and notepads).
 
-IndexedDB는 "키"로 인덱싱된 객체를 저장하고 검색할 수 있습니다. 데이터베이스의 모든 변화는 트랜잭션 내에서 일어납니다. 대부분의 웹 스토리지 솔루션처럼, IndexedDB는 [동일 출처 정책](https://www.w3.org/Security/wiki/Same_Origin_Policy)을 따릅니다. 그래서 어떤 도메인에서 저장된 데이터는 다른 도메인에서 접근할 수 없습니다.
+IndexedDB lets you store and retrieve objects that are indexed with a "key." All changes that you make to the database happen within transactions. Like most web storage solutions, IndexedDB follows a [same-origin policy](https://www.w3.org/Security/wiki/Same_Origin_Policy). So while you can access stored data within a domain, you cannot access data across different domains.
 
-만약 다른 종류의 데이터베이스를 사용하고 있다면, IndexedDB를 사용하면서 당황할 수 있습니다. 그렇기 때문에 IndexedDB의 다음 주요 특성들을 염두에 두어야 합니다:
+If you have assumptions from working with other types of databases, you might get thrown off when working with IndexedDB. So the following key characteristics of IndexedDB are important to keep in mind:
 
-- **IndexedDB 데이터베이스는 키-값 쌍을 저장합니다.** 값은 복잡한 구조의 객체일 수 있고, 키는 그러한 객체의 프로퍼티일 수 있습니다. 인덱스는 빠른 검색이나 정렬된 열거를 위해 객체의 아무 프로퍼티나 사용하여 생성할 수 있습니다. 키는 이진 객체일 수 있습니다.
-- **IndexedDB는 트랜잭션 데이터베이스 모델에 기반합니다.** IndexedDB에서 일어나는 모든 일은 [트랜잭션](#transaction) 내에서 일어납니다. IndexedDB API는 인덱스, 테이블, 커서 등을 나타내는 다양한 객체를 제공하지만, 이 객체들은 모두 특정 트랜잭션에 얽매여 있습니다. 그러므로, 트랜잭션 밖에서 명령을 실행하거나 커서를 열 수 없습니다. 트랜잭션은 지정된 수명이 있기 때문에 종료된 후에 트랜잭션을 사용하려고 시도하면 예외를 발생시킵니다. 또한, 트랜잭션은 자동으로 커밋되며 수동으로 커밋될 수 없습니다.
+- **IndexedDB databases store key-value pairs.** The values can be complex structured objects, and keys can be properties of those objects. You can create indexes that use any property of the objects for quick searching, as well as sorted enumeration. Keys can be binary objects.
+- **IndexedDB is built on a transactional database model**. Everything you do in IndexedDB always happens in the context of a [transaction](#transaction). The IndexedDB API provides lots of objects that represent indexes, tables, cursors, and so on, but each of these is tied to a particular transaction. Thus, you cannot execute commands or open cursors outside of a transaction. Transactions have a well-defined lifetime, so attempting to use a transaction after it has completed throws exceptions. Also, transactions auto-commit and cannot be committed manually.
 
-  이 트랜잭션 모델은 유저가 웹 어플리케이션을 두 개의 다른 탭에서 동시에 열었을 때를 고려하면 매우 유용합니다. 트랜잭션 작업이 없으면, 두 인스턴스는 서로의 변경에 개입할 수 있습니다. 만약 데이터베이스의 트랜잭션이 친숙하지 않다면, [트랜잭션에 대한 Wikipedia 문서](https://en.wikipedia.org/wiki/Database_transaction)를 읽어보세요. 정의 섹션에서 [트랜잭션](#transaction) 문서도 확인해보세요.
+  This transaction model is really useful when you consider what might happen if a user opened two instances of your web app in two different tabs simultaneously. Without transactional operations, the two instances could interfere with each other's modifications. If you are not familiar with transactions in a database, read the [Wikipedia article on transactions](https://en.wikipedia.org/wiki/Database_transaction). Also see [transaction](#transaction) under the Definitions section.
 
-- **IndexedDB API는 대체로 비동기적입니다.** API는 값을 반환하여 데이터를 제공하지 않습니다. 대신 콜백 함수를 전달해야 합니다. 동기적으로 데이터베이스에 값을 "저장"하거나, 데이터베이스에서 값을 "검색"할 수 없습니다. 대신, 데이터베이스 동작이 일어날 것을 "요청"합니다. 동작이 끝나면 DOM 이벤트가 발생하게 되고, 해당 이벤트의 타입을 통해 동작이 성공했는지 실패했는지를 알 수 있습니다. 처음에는 조금 복잡하게 들리겠지만, 이 방식에는 안전장치가 내장되어 있습니다. 이것은 [XMLHttpRequest](/ko-KR/docs/Web/API/XMLHttpRequest)가 동작하는 방식과 크게 다르지 않습니다.
-- **IndexedDB는 많은 요청을 사용합니다.** 요청은 앞서 언급했던 성공 또는 실패 DOM 이벤트를 받는 객체를 말합니다. 이 객체는 `onsuccess`와 `onerror` 프로퍼티를 가지며, `addEventListener()`와 `removeEventListener()`를 호출할 수 있습니다. 또한 요청의 상태를 나타내는 `readyState`, `result`, `errorCode`와 같은 프로퍼티를 가집니다. `result` 프로퍼티는 요청이 어떻게 생성되었는지(예: `IDBCursor`의 인스턴스 또는 데이터베이스에 추가한 어떤 값의 키)에 따라 특별하게 동작합니다.
-- **IndexedDB는 결과를 사용할 수 있을 때 DOM 이벤트를 통해 통지합니다.** DOM 이벤트는 항상 `type` 프로퍼티를 가집니다 (IndexedDB에서는 거의 대부분 `"success"` 또는 `"error"`로 설정됩니다.). DOM 이벤트는 이벤트가 향하는 곳이 어디인지를 나타내는 `target` 프로퍼티도 가집니다. 대부분의 경우에, 이벤트의 `target` 프로퍼티는 데이터베이스 동작의 결과로 생성된 `IDBRequest` 객체를 가리킵니다. 성공 이벤트는 버블링을 일으키지 않으며, 취소될 수 없습니다. 에러 이벤트는 반대로 버블링을 일으키고, 취소될 수도 있습니다. 에러 이벤트는 취소되지 않는 한 실행 중인 모든 트랜잭션을 중단하므로 이는 매우 중요합니다.
-- **IndexedDB는 객체지향적입니다.** IndexedDB는 행과 열의 컬렉션으로 대표되는 테이블을 사용하는 관계형 데이터베이스가 아닙니다. 이는 어플리케이션을 설계하고 구축하는 방식에 영향을 끼치는 중요하고 근본적인 차이입니다.
+- **The IndexedDB API is mostly asynchronous.** The API doesn't give you data by returning values; instead, you have to pass a callback function. You don't "store" a value into the database, or "retrieve" a value out of the database through synchronous means. Instead, you "request" that a database operation happens. You get notified by a DOM event when the operation finishes, and the type of event you get lets you know if the operation succeeded or failed. This sounds a little complicated at first, but there are sanity measures baked in. It's not that different from the way that [XMLHttpRequest](/en-US/docs/Web/API/XMLHttpRequest) works.
+- **IndexedDB uses a lot of requests.** Requests are objects that receive the success or failure DOM events that were mentioned previously. They have `onsuccess` and `onerror` properties, and you can call `addEventListener()` and `removeEventListener()` on them. They also have `readyState`, `result`, and `errorCode` properties that tell you the status of the request. The `result` property is particularly magical, as it can be many different things, depending on how the request was generated (for example, an `IDBCursor` instance, or the key for a value that you just inserted into the database).
+- **IndexedDB uses DOM events to notify you when results are available.** DOM events always have a `type` property (in IndexedDB, it is most commonly set to `"success"` or `"error"`). DOM events also have a `target` property that indicates where the event is headed. In most cases, the `target` of an event is the `IDBRequest` object that was generated as a result of doing some database operation. Success events don't bubble up and they can't be canceled. Error events, on the other hand, do bubble, and can be cancelled. This is quite important, as error events abort whatever transactions they're running in, unless they are cancelled.
+- **IndexedDB is object-oriented.** IndexedDB is not a relational database with tables representing collections of rows and columns. This important and fundamental difference affects the way you design and build your applications.
 
-    전통적인 관계형 데이터 저장소에서는 데이터 행의 컬렉션과 명명된 자료형의 데이터 열을 저장하는 테이블을 갖습니다. 반면에 IndexedDB는 특정 타입의 데이터를 저장할 객체 저장소를 생성하고, 자바스크립트 객체를 저장소에 저장합니다. 각 객체 저장소는 쿼리와 순회를 효율적으로 만들어주는 인덱스 컬렉션을 갖습니다. 만약 객체지향 데이터베이스 관리 시스템에 친숙하지 않다면, [객체지향 데이터베이스에 대한 Wikipedia 문서](https://en.wikipedia.org/wiki/Object_database)를 읽어보세요.
+  In a traditional relational data store, you would have a table that stores a collection of rows of data and columns of named types of data. IndexedDB, on the other hand, requires you to create an object store for a type of data and persist JavaScript objects to that store. Each object store can have a collection of indexes that makes it efficient to query and iterate across. If you are not familiar with object-oriented database management systems, read the [Wikipedia article on object database](https://en.wikipedia.org/wiki/Object_database).
 
 - **IndexedDB does not use Structured Query Language (SQL).** It uses queries on an index that produces a cursor, which you use to iterate across the result set. If you are not familiar with NoSQL systems, read the [Wikipedia article on NoSQL](https://en.wikipedia.org/wiki/NoSQL).
 - **IndexedDB adheres to a same-origin policy**. An origin is the domain, application layer protocol, and port of a URL of the document where the script is being executed. Each origin has its own associated set of databases. Every database has a name that identifies it within an origin.

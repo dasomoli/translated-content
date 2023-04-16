@@ -1,60 +1,57 @@
 ---
 title: Vary
 slug: Web/HTTP/Headers/Vary
-l10n:
-  sourceCommit: 36001a269f4d7b2b3ac6de79e942a5f849bb87d8
+page-type: http-header
+browser-compat: http.headers.Vary
 ---
 
 {{HTTPSidebar}}
 
-**`Vary`** HTTP 응답 헤더는 요청 메시지의 메서드 및 URL을 제외하고 응답 내용에 영향을 준 부분을 설명합니다.
-대부분 이 헤더는 [콘텐츠 협상](/ko/docs/Web/HTTP/Content_negotiation)이 사용 중일 때
-캐시 키를 생성하는 데 사용됩니다.
+The **`Vary`** HTTP response header describes the parts of the request message aside from the method and URL that influenced the content of the response it occurs in. Most often, this is used to create a cache key when [content negotiation](/en-US/docs/Web/HTTP/Content_negotiation) is in use.
 
-{{HTTPStatus("304")}} `Not Modified` 응답과 "기본" 응답을 포함하여 지정된 URL에 대한 모든 응답에
-동일한 `Vary` 헤더 값을 사용해야 합니다.
+The same `Vary` header value should be used on all responses for a given URL, including {{HTTPStatus("304")}} `Not Modified` responses and the "default" response.
 
 <table class="properties">
   <tbody>
     <tr>
-      <th scope="row">헤더 타입</th>
-      <td>{{Glossary("Response header", "응답 헤더")}}</td>
+      <th scope="row">Header type</th>
+      <td>{{Glossary("Response header")}}</td>
     </tr>
     <tr>
-      <th scope="row">{{Glossary("Forbidden header name", "금지된 헤더 이름")}}</th>
-      <td>아니오</td>
+      <th scope="row">{{Glossary("Forbidden header name")}}</th>
+      <td>no</td>
     </tr>
   </tbody>
 </table>
 
-## 구문
+## Syntax
 
 ```http
 Vary: *
 Vary: <header-name>, <header-name>, ...
 ```
 
-## 지시어
+## Directives
 
 - \*
-  - : 요청 헤더 이외의 요소가 이 응답 생성에 영향을 미쳤음을 나타냅니다. 응답이 캐시할 수 없음을 의미합니다.
+  - : Indicates that factors other than request headers influenced the generation of this response. Implies that the response is uncacheable.
 - \<header-name>
-  - : 응답 생성에 영향을 줄 수 있는 요청 헤더 이름을 쉼표로 구분한 목록입니다.
+  - : A comma-separated list of request header names that could have influenced the generation of this response.
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 호환성 노트
+### Compatibility notes
 
 - [Vary with care – Vary header problems in IE6-9](https://docs.microsoft.com/archive/blogs/ieinternals/vary-with-care)
 
-## 같이 보기
+## See also
 
 - [Understanding The Vary Header - Smashing Magazine](https://www.smashingmagazine.com/2017/11/understanding-vary-header/)
 - [Best Practices for Using the Vary Header – fastly.com](https://www.fastly.com/blog/best-practices-using-vary-header)
-- [컨텐츠 협상](/ko/docs/Web/HTTP/Content_negotiation)
+- [Content negotiation](/en-US/docs/Web/HTTP/Content_negotiation)

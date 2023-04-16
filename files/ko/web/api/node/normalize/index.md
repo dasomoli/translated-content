@@ -1,43 +1,73 @@
 ---
-title: Node.normalize()
+title: "Node: normalize() method"
+short-title: normalize()
 slug: Web/API/Node/normalize
+page-type: web-api-instance-method
+browser-compat: api.Node.normalize
 ---
+
 {{APIRef("DOM")}}
 
-**`Node.normalize()`** 메소드는 지정된 노드와 하위 트리의 모든 노드를 "정규화된" 형태로 놓습니다. 정규화된 하위 트리의 텍스트 노드는 비어있지 않으며 인접한 텍스트 노드도 존재하지 않습니다.
+The **`normalize()`** method of the {{domxref("Node")}} interface puts the specified node
+and all of its sub-tree into a _normalized_ form.
+In a normalized sub-tree, no text nodes in the sub-tree are empty and there are no adjacent text nodes.
 
-## 문법
+## Syntax
 
-```js
-element.normalize();
+```js-nolint
+normalize()
 ```
 
-## 예제
+### Parameters
+
+None.
+
+### Return value
+
+None.
+
+## Example
+
+```html
+<output id="result"></output>
+```
 
 ```js
-var wrapper = document.createElement("div");
+const wrapper = document.createElement("div");
 
-wrapper.appendChild( document.createTextNode("Part 1 ") );
-wrapper.appendChild( document.createTextNode("Part 2 ") );
+wrapper.appendChild(document.createTextNode("Part 1 "));
+wrapper.appendChild(document.createTextNode("Part 2 "));
 
-// 이 때, wrapper.childNodes.length === 2
-// wrapper.childNodes[0].textContent === "Part 1 "
-// wrapper.childNodes[1].textContent === "Part 2 "
+let node = wrapper.firstChild;
+let result = "Before normalization:<br/>";
+while (node) {
+  result += ` ${node.nodeName}: ${node.nodeValue}<br/>`;
+  node = node.nextSibling;
+}
 
 wrapper.normalize();
 
-// 이제, wrapper.childNodes.length === 1
-// wrapper.childNodes[0].textContent === "Part 1 Part 2 "
+node = wrapper.firstChild;
+result += "<br/><br/>After normalization:<br/>";
+while (node) {
+  result += ` ${node.nodeName}: ${node.nodeValue}<br/>`;
+  node = node.nextSibling;
+}
+
+const output = document.getElementById("result");
+output.innerHTML = result;
 ```
 
-## 명세
+{{ EmbedLiveSample("Example", "100%", "170")}}
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 보기
+## See also
 
-- [`Text.splitText`](/ko/docs/Web/API/Text/splitText)
+- {{domxref("Text.splitText()")}}, its opposite.

@@ -1,47 +1,51 @@
 ---
 title: Boolean.prototype.valueOf()
 slug: Web/JavaScript/Reference/Global_Objects/Boolean/valueOf
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Boolean.valueOf
 ---
 
 {{JSRef}}
 
-**`valueOf()`** 메서드는 {{jsxref("Boolean")}} 객체의 원시 값을 반환합니다.
+The **`valueOf()`** method returns the primitive value of a
+{{jsxref("Boolean")}} object.
 
 {{EmbedInteractiveExample("pages/js/boolean-valueof.html")}}
 
-## 구문
+## Syntax
 
-```js
-    bool.valueOf()
+```js-nolint
+valueOf()
 ```
 
-### 반환 값
+### Return value
 
-{{jsxref("Boolean")}} 객체의 원시 값.
+The primitive value of the given {{jsxref("Boolean")}} object.
 
-## 설명
+## Description
 
-`valueOf()` 메서드는 {{jsxref("Boolean")}} 객체나 불리언 리터럴의 원시 값을 Boolean 자료형의 값으로 반환합니다.
+The `valueOf()` method of {{jsxref("Boolean")}} returns the primitive value
+of a `Boolean` object or literal `Boolean` as a Boolean data type.
 
-`valueOf()` 메서드는 보통 JavaScript 내부에서 호출하며 코드에서 명시적으로 사용하지는 않습니다.
+This method is usually called internally by JavaScript and not explicitly in code.
 
-## 예제
+## Examples
 
-### `valueOf` 사용하기
+### Using `valueOf()`
 
 ```js
-var x = new Boolean();
-x.valueOf(); // false
+x = new Boolean();
+myVar = x.valueOf(); // assigns false to myVar
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Object.prototype.valueOf()")}}

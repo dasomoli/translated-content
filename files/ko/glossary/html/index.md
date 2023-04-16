@@ -1,38 +1,31 @@
 ---
 title: HTML
 slug: Glossary/HTML
+page-type: glossary-definition
 ---
-{{QuickLinksWithSubpages("/ko/docs/Glossary")}}
-**HTML**(Hypertext Markup Language)은 웹페이지의 구조를 지정하는 기술적인 언어입니다.
 
-## 간략한 역사
+**HTML** (HyperText Markup Language) is a descriptive language that specifies webpage structure.
 
-1990년, 팀 버너스리는 {{glossary("World Wide Web","Web")}}의 비전 중 하나로서 {{glossary("hypertext", "하이퍼텍스트")}}라는 개념을 정의하고, 그 이듬해에 {{glossary("SGML")}}에 기초한 마크업을 통해 구체화했습니다. {{glossary("IETF")}}는 1993년에 HTML을 공식 지정했으며, 1995년 몇 차례 초안을 거쳐 2.0 버전을 발표했습니다. 1994년, 팀 버너스리는 웹의 발전을 위해 {{glossary("W3C")}}를 설립했습니다. W3C는 1996년부터 HTML 작업을 시작하고, 1년 후 HTML 3.2 권고안을 발표했습니다. HTML 4.0은 1999년에 발표됐으며 2000년에 {{glossary("ISO")}} 표준이 됐습니다.
+## Brief history
 
-이 때, W3C는 HTML을 버리고 {{glossary("XHTML")}}을 채택하려 했습니다. 이 움직임은, 2004년, {{glossary("WHATWG")}}라는 독립 단체가 만들어지는 계기가 됩니다. WHATWG 덕분에 {{glossary("HTML5")}} 작업이 계속 됐고, 두 단체는 2008년 첫 초안을, 2014년 최종 표준안을 발표합니다.
+In 1990, as part of his vision of the {{Glossary("World Wide Web","Web")}}, Tim Berners-Lee defined the concept of {{Glossary("hypertext")}}, which Berners-Lee formalized the following year through a markup mainly based on {{Glossary("SGML")}}. The {{Glossary("IETF")}} began formally specifying HTML in 1993, and after several drafts released version 2.0 in 1995. In 1994 Berners-Lee founded the {{Glossary("W3C")}} to develop the Web. In 1996, the W3C took over the HTML work and published the HTML 3.2 recommendation a year later. HTML 4.0 was released in 1999 and became an {{Glossary("ISO")}} standard in 2000.
 
-## 개념과 문법
+At that time, the W3C nearly abandoned HTML in favor of {{Glossary("XHTML")}}, prompting the founding of an independent group called {{Glossary("WHATWG")}} in 2004. Thanks to WHATWG, work on HTML continued: the two organizations released the first draft of {{Glossary("HTML5")}} in 2008 and an official standard in 2014. The term "HTML5" is just a buzzword referring to modern web technologies which are part of the [HTML Living Standard](https://html.spec.whatwg.org).
 
-HTML 문서는 {{glossary("element","요소")}}로 구조화한 일반 텍스트 문서입니다. 요소는 한 쌍의 {{Glossary("tag","태그")}}로 열고 닫으며, 각각의 태그는 부등호(`<>`)로 감쌉니다. {{htmlelement("img")}}처럼 텍스트를 감싸지 못하는 "빈 태그"도 있습니다.
+## Concept and syntax
 
-HTML 태그는 {{Glossary("attribute","특성")}}을 사용해 확장할 수 있고, 브라우저가 요소를 읽어들일 때 추가 정보를 제공합니다.
+An HTML document is a plaintext document structured with {{Glossary("element","elements")}}. Elements are surrounded by matching opening and closing {{Glossary("tag","tags")}}. Each tag begins and ends with angle brackets (`<>`). There are a few empty or _void_ elements that cannot enclose any text, for instance {{htmlelement("img")}}.
+
+You can extend HTML tags with {{Glossary("attribute","attributes")}}, which provide additional information affecting how the browser interprets the element:
 
 ![Detail of the structure of an HTML element](anatomy-of-an-html-element.png)
 
-HTML은 보통 `.htm`이나 `.html` 확장자로 저장해 {{glossary("server", "웹 서버")}}로 제공하며, 아무 {{glossary("browser", "브라우저")}}로 렌더링할 수 있습니다.
+An HTML file is normally saved with an `.htm` or `.html` extension, served by a {{Glossary("Server","web server")}}, and can be rendered by any {{Glossary("Browser","Web browser")}}.
 
-## 더 알아보기
+## See also
 
-### 일반 지식
-
-- 위키백과 [HTML](https://ko.wikipedia.org/wiki/HTML)
-
-### HTML 배우기
-
-- [HTML 자습서](http://developer.mozilla.org/ko/Learn/HTML)
-- [The web course on codecademy.com](http://www.codecademy.com/en/tracks/web)
-
-### 기술 참조서
-
-- [MDN의 HTML 문서](/ko/docs/Web/HTML)
-- [HTML 명세](http://www.w3.org/TR/html5/)
+- [HTML](https://en.wikipedia.org/wiki/HTML) on Wikipedia
+- [Our HTML tutorial](/en-US/docs/Learn/HTML)
+- [The web course on codecademy.com](https://www.codecademy.com/learn/learn-html)
+- [The HTML documentation on MDN](/en-US/docs/Web/HTML)
+- [The HTML specification](https://html.spec.whatwg.org/multipage/)

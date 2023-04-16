@@ -1,42 +1,48 @@
 ---
 title: 302 Found
 slug: Web/HTTP/Status/302
+page-type: http-status-code
+browser-compat: http.status.302
 ---
 
 {{HTTPSidebar}}
 
-HTTP(HyperText Transfer Protocol) **`302 Found`** 리디렉션 상태 응답 코드는 요청한 리소스가
-{{HTTPHeader("Location")}} 헤더에 지정된 URL로 일시적으로 이동되었음을 나타냅니다. 브라우저는 이 페이지로
-리디렉션되지만 검색 엔진은 리소스에 대한 링크를 업데이트하지 않습니다('SEO-speak'에서는 'link-juice'가 새
-URL로 전송되지 않는다고 합니다).
+The HyperText Transfer Protocol (HTTP) **`302 Found`** redirect
+status response code indicates that the resource requested has been temporarily moved to
+the URL given by the {{HTTPHeader("Location")}} header. A browser redirects to this page
+but search engines don't update their links to the resource (in 'SEO-speak', it is said
+that the 'link-juice' is not sent to the new URL).
 
-명세서에서 리디렉션이 수행될 때 메서드(및 본문)가 변경되지 않도록 요구하더라도 모든 사용자 에이전트가 이를 준수하는
-것은 아닙니다. 여러분은 여전히 이러한 유형의 버그가 있는 소프트웨어를 찾을 수 있습니다. 따라서 따라서 `302` 코드는
-{{HTTPMethod("GET")}} 또는 {{HTTPMethod("HEAD")}} 메서드에 대한 응답으로만 설정하고 이 경우 메서드
-변경이 명시적으로 금지되므로 {{HTTPStatus("307", "307 Temporary Redirect")}} 를 대신 사용하는 것이
-좋습니다.
+Even if the specification requires the method (and the body) not to be altered when the
+redirection is performed, not all user-agents conform here - you can still find this
+type of bugged software out there. It is therefore recommended to set the
+`302` code only as a response for {{HTTPMethod("GET")}} or
+{{HTTPMethod("HEAD")}} methods and to use {{HTTPStatus("307", "307 Temporary
+  Redirect")}} instead, as the method change is explicitly prohibited in that case.
 
-사용하던 메서드를 {{HTTPMethod("GET")}}으로 변경하려는 경우,
-{{HTTPStatus("303", "303 See Other")}}을 대신 사용하십시오.
-{{HTTPMethod("PUT")}} 메서드에 대한 응답을 업로드된 리소스가 아니라 'You successfully updown XYZ'와
-같은 확인 메시지로 주고 싶을때 유용합니다.
+In the cases where you want the method used to be changed to {{HTTPMethod("GET")}}, use
+{{HTTPStatus("303", "303 See Other")}} instead. This is useful when you want to give a
+response to a {{HTTPMethod("PUT")}} method that is not the uploaded resource but a
+confirmation message such as: 'you successfully uploaded XYZ'.
 
-## 상태
+## Status
 
 ```http
 302 Found
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{HTTPStatus("307", "307 Temporary Redirect")}}, 사용된 메서드가 절대 변경되지 않는 이 상태 코드와 동일합니다.
-- {{HTTPStatus("303", "303 See Other")}}, {{HTTPMethod("GET")}}에 사용되는 메서드를 변경하는 임시 리디렉션입니다.
-- {{HTTPStatus("301", "301 Moved Permanently")}}, 영구 리다이렉션
+- {{HTTPStatus("307", "307 Temporary Redirect")}}, the equivalent of this status code
+  where the method used never changes.
+- {{HTTPStatus("303", "303 See Other")}}, a temporary redirect that changes the method
+  used to {{HTTPMethod("GET")}}.
+- {{HTTPStatus("301", "301 Moved Permanently")}}, a permanent redirect.

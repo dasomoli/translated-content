@@ -1,50 +1,53 @@
 ---
-title: Symbol.prototype[@@toPrimitive]
+title: Symbol.prototype[@@toPrimitive]()
 slug: Web/JavaScript/Reference/Global_Objects/Symbol/@@toPrimitive
-l10n:
-  sourceCommit: f3df52530f974e26dd3b14f9e8d42061826dea20
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Symbol.@@toPrimitive
 ---
 
 {{JSRef}}
 
-**`[@@toPrimitive]()`** 메서드는 Symbol 객체를 원시 값으로 변환합니다.
+The **`[@@toPrimitive]()`** method converts a Symbol object to
+a primitive value.
 
-## 구문
+## Syntax
 
 ```js-nolint
 Symbol()[Symbol.toPrimitive](hint)
 ```
 
-### 반환 값
+### Return value
 
-명시된 {{jsxref("Symbol")}} 객체의 원시 값입니다.
+The primitive value of the specified {{jsxref("Symbol")}} object.
 
-## 설명
+## Description
 
-{{jsxref("Symbol")}}의 `[@@toPrimitive]()` 메서드는 Symbol 객체의 원시 값을
-Symbol 데이터 유형으로 반환합니다. `hint` 인자는 사용되지 않습니다.
+The `[@@toPrimitive]()` method of {{jsxref("Symbol")}} returns the primitive
+value of a Symbol object as a Symbol data type. The `hint`
+argument is not used.
 
-JavaScript는 객체를 원시 값으로 변환하기 위해 `[@@toPrimitive]()` 메서드를 호출합니다. 여러분은
-`[@@toPrimitive]()` 메서드를 직접 호출할 필요가 거의 없습니다. 원시 값이 예상되는 객체를 만나면 JavaScript가
-자동으로 호출합니다.
+JavaScript calls the `[@@toPrimitive]()` method to convert an object to a
+primitive value. You rarely need to invoke the `[@@toPrimitive]()` method
+yourself; JavaScript automatically invokes it when encountering an object where a
+primitive value is expected.
 
-## 예제
+## Examples
 
-### @@toPrimitive 사용하기
+### Using @@toPrimitive
 
 ```js
 const sym = Symbol("example");
 sym === sym[Symbol.toPrimitive](); // true
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Symbol.toPrimitive")}}

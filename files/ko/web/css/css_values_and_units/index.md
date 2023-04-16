@@ -1,25 +1,29 @@
 ---
-title: CSS 단위와 값
+title: CSS values and units
 slug: Web/CSS/CSS_Values_and_Units
-original_slug: Web/CSS/CSS_단위와_값
+page-type: guide
+spec-urls:
+  - https://drafts.csswg.org/css-values/
+  - https://drafts.csswg.org/css-color/
+  - https://drafts.csswg.org/css-images/
 ---
 
 {{CSSRef}}
 
-모든 CSS 선언은 속성 / 값 쌍을 포함합니다. 속성에 따라 값은 하나의 정수 또는 키워드, 여러 개의 키워드, 단위가 있거나 없는 값의 나열이 될 수 있습니다. CSS 속성에 허용되는 공통적인 자료형(단위와 값)의 집합이 있습니다. 아래는 이들 자료형 대부분에 대한 개요입니다. 더 자세한 정보를 보려면 각 자료형의 페이지를 참고하세요.
+Every CSS declaration includes a property / value pair. Depending on the property, the value can include a single integer or keyword, to a series of keywords and values with or without units. There are a common set of data types — values and units — that CSS properties accept. Below is an overview of most of these data types. Refer to the page for each value type for more detailed information.
 
-## 텍스트 자료형
+## Textual data types
 
 - {{cssxref("&lt;custom-ident&gt;")}}
-- `<ident>`로서 미리 정의된 키워드
+- Pre-defined keywords as an `<ident>`
 - {{cssxref("&lt;string&gt;")}}
-- {{cssxref("&lt;url&gt;")}}
+- {{cssxref("url","url()")}}
 
-텍스트 자료형은 `<string>`이거나, 연속된 문자를 따옴표로 감싼 것, 또는 따옴표로 감싸지 않은 "CSS 식별자"인 `<ident>`가 될 수 있습니다. `<string>`은 작은따옴표 또는 큰따옴표로 감싸져야 합니다. 사양에서 `<ident>` 또는 `<custom-ident>`의 목록에 포함되어 있는 CSS 식별자는 따옴표로 감싸서는 안 됩니다.
+Text data types are either `<string>`, a quoted series of characters, or an `<ident>`, a "CSS Identifier" which is an unquoted string. A `<string>` must be quoted with either single or double quotes. CSS Identifiers, listed in the specifications as `<ident>` or `<custom-ident>`, must be unquoted.
 
-CSS 사양에서는 웹 개발자가 정의할 수 있는 값들, 가령 키프레임 애니메이션이나 서체 가족의 이름, 그리드 영역 같은 것들을 {{cssxref("&lt;custom-ident&gt;")}}, {{cssxref("&lt;string&gt;")}}, 또는 둘 다로서 목록에 표시합니다.
+In the CSS specifications, values that can be defined by the web developer, like keyframe animations, font-family names, or grid areas are listed as a {{cssxref("&lt;custom-ident&gt;")}}, {{cssxref("&lt;string&gt;")}}, or both.
 
-사용자가 정의한 텍스트 값을 따옴표로 감싸는 것과 감싸지 않는 것 모두가 허용되는 경우, 사양에서는 `<custom-ident> | <string>`로서 이를 목록에 표시하며, 이는 따옴표가 선택 사항임을 의미합니다. 애니메이션 이름이 바로 그런 경우입니다:
+When both quoted and unquoted user defined text values are permitted, the specification will list `<custom-ident> | <string>`, meaning quotes are optional, such as is the case with animation names:
 
 ```css
 @keyframe validIdent {
@@ -30,7 +34,7 @@ CSS 사양에서는 웹 개발자가 정의할 수 있는 값들, 가령 키프�
 }
 ```
 
-몇몇 텍스트 값은 따옴표로 감싸지 않는 경우 유효하지 않습니다. 예를 들어, {{cssxref("grid-area")}}의 값은 `<custom-ident>`일 수 있으므로, 만약 `content`라는 이름의 그리드 영역이 있을 때 아래처럼 이를 따옴표 없이 사용할 수 있습니다:
+Some text values are not valid if encompassed in quotes. For example, the value of {{cssxref("grid-area")}} can be a `<custom-ident>`, so if we had a grid area named `content` we would use it without quotes:
 
 ```css
 .item {
@@ -38,47 +42,52 @@ CSS 사양에서는 웹 개발자가 정의할 수 있는 값들, 가령 키프�
 }
 ```
 
-반면, {{cssxref("&lt;string&gt;")}}인 자료형의 경우, 예를 들어 {{cssxref("content")}} 속성의 문자열 값은 따옴표로 감싸져야 합니다:
+In comparison, a data type that is a {{cssxref("&lt;string&gt;")}}, such as a string value of the {{cssxref("content")}} property, must be quoted:
 
 ```css
 .item::after {
-    content: "This is my content.";
+  content: "This is my content.";
 }
 ```
 
-일반적으로 이모지를 포함해 여러분이 원하는 아무 이름이나 만들 수 있지만, `none`, `unset`, `initial`, `inherit`, 숫자 또는 2개의 대시로 시작하는 이름은 식별자가 될 수 없으며, 대부분의 경우 미리 정의된 다른 CSS 키워드와 동일한 이름을 사용하고 싶지는 않을 것입니다. 더 자세한 내용을 보려면 {{cssxref("&lt;custom-ident&gt;")}}와 {{cssxref("&lt;string&gt;")}}의 참조 페이지를 확인하세요.
+While you can generally create any name you want, including using emojis, the identifier can't be `none`, `unset`, `initial`, or `inherit`, start with a digit or two dashes, and generally you don't want it to be any other pre-defined CSS keyword. See the {{cssxref("&lt;custom-ident&gt;")}} and {{cssxref("&lt;string&gt;")}} reference pages for more details.
 
-### 미리 정의된 키워드 값
+### Pre-defined keyword values
 
-미리 정의된 키워드 값은 특정 속성의 사양에 정의된 텍스트 값입니다. 이 키워드들은 CSS 식별자이기도 해서 따옴표 없이 사용됩니다.
+Pre-defined keywords are text values defined by the specification for that property. These keywords are also CSS Identifiers and are therefore used without quotes.
 
-CSS 사양 또는 MDN의 속성 페이지에서 CSS 속성의 값에 대한 문법을 보면, 허용되는 키워드가 아래와 같은 형태로 나열됩니다. 아래는 {{cssxref("float")}}에 허용되는 미리 정의된 키워드 값입니다.
+When viewing CSS property value syntax in a CSS specification or the MDN property page, allowable keywords will be listed in the following form. The following values are the pre-defined keyword values allowed for {{cssxref("float")}}.
 
-```
+```plain
 left | right | none | inline-start | inline-end
 ```
 
-이런 값들은 따옴표 없이 사용됩니다:
+Such values are used without quotes:
 
 ```css
 .box {
-    float: left;
+  float: left;
 }
 ```
 
-### CSS 전체에 공유되는 값
+### CSS-wide values
 
-한 속성의 사양의 일부로서 존재하는 미리 정의된 키워드와 더불어, 모든 CSS 속성은 CSS 전체에 걸쳐 공유되는 값인 {{cssxref("initial")}}, {{cssxref("inherit")}}, {{cssxref("unset")}}을 받아들일 수 있으며, 이들은 기본 동작을 명시적으로 지정합니다.
+In addition to the pre-defined keywords that are part of the specification for a property, all CSS properties accept the CSS-wide property values {{cssxref("initial")}}, {{cssxref("inherit")}}, {{cssxref("unset")}}, {{cssxref("revert")}}, and {{cssxref("revert-layer")}}, which explicitly specify defaulting behaviors.
 
-`initial` 키워드는 속성의 초기 값으로 지정된 값을 표현합니다. `inherit` 키워드는 해당 요소의 부모에 적용된 동일 속성의 계산값을 표현하며, 해당 속성이 상속된다고 가정합니다.
+- {{cssxref("initial")}}
+  - : Represents the value specified as the property's initial value.
+- {{cssxref("inherit")}}
+  - : Represents the computed value of the property on the element's parent, provided it is inherited.
+- {{cssxref("unset")}}
+  - : Acts as either `inherit` or `initial`, depending on whether the property is inherited or not.
+- {{cssxref("revert")}}
+  - : Resets the property to its inherited value if it inherits from its parent or to the default value established by the user agent's stylesheet (or by user styles, if any exist).
+- {{cssxref("revert-layer")}}
+  - : Rolls back the value of a property in a [cascade layer](/en-US/docs/Web/CSS/@layer) to the value of the property in a CSS rule matching the element in a previous cascade layer. The value of the property with this keyword is recalculated as if no rules were specified on the target element in the current cascade layer.
 
-`unset` 키워드는 `inherit` 또는 `initial`처럼 동작하는데, 해당 속성이 상속되는 경우 전자, 아닌 경우 후자로 동작합니다.
+### URLs
 
-네번째 값으로 {{cssxref("revert")}}가 Cascade Level 4 사양에 추가되었지만, 지금은 브라우저 지원 상태가 좋지 않습니다.
-
-### URL
-
-{{cssxref("&lt;url&gt;")}} 자료형은 함수 표기법을 사용하며, 함수가 URL에 해당하는 `<string>`을 받는 형태입니다. 이것은 절대 URL 또는 상대 URL일 수 있습니다. 예를 들어, 배경 이미지를 넣고 싶을 때 다음 중 아무거나 사용할 수 있습니다.
+A {{cssxref("url","url()")}} type uses functional notation, which accepts a `<string>` that is a URL. This may be an absolute URL or a relative URL. For example, if you wanted to include a background image, you might use either of the following.
 
 ```css
 .box {
@@ -90,122 +99,144 @@ left | right | none | inline-start | inline-end
 }
 ```
 
-`url()` 의 매개변수는 따옴표로 감싸거나 감싸지 않을 수 있습니다. 감싸지 않는 경우, 이는 `<url-token>`으로 해석되어 특정 문자를 이스케이프하는 등의 추가적인 할 일이 생깁니다. 더 자세한 내용을 보려면 {{cssxref("&lt;url&gt;")}}를 확인하세요.
+The parameter for `url()` can be either quoted or unquoted. If unquoted, it is parsed as a `<url-token>`, which has extra requirements including the escaping of certain characters. See {{cssxref("url","url()")}} for more information.
 
-## 숫자 자료형
+## Numeric data types
 
 - {{cssxref("&lt;integer&gt;")}}
 - {{cssxref("&lt;number&gt;")}}
 - {{cssxref("&lt;dimension&gt;")}}
 - {{cssxref("&lt;percentage&gt;")}}
 
-### 정수
+### Integers
 
-정수는 1개 이상의 10진수 숫자(`0`부터 `9`)로, 예를 들어 `1024`나 `-55`가 이에 속합니다. 정수 앞에는 `+` 또는 `-` 기호를 덧붙일 수 있는데, 기호와 정수 사이에 공백이 없어야 합니다.
+An integer is one or more decimal digits, `0` through `9`, such as `1024` or `-55`. An integer may be preceded by a `+` or `-` symbol, with no space between the symbol and the integer.
 
-### 숫자
+### Numbers
 
-{{cssxref("&lt;number&gt;")}}는 실수를 나타내며, 소수점과 소수부분을 포함할 수도 있고 포함하지 않을 수도 있습니다. 예를 들어 `0.255`, `128`, `-1.2`가 이에 속합니다. 숫자 앞에도 `+`나 `-` 기호를 덧붙일 수 있습니다.
+A {{cssxref("&lt;number&gt;")}} represents a real number, which may or may not have a decimal point with a fractional component, for example `0.255`, `128` or `-1.2`. Numbers may also be preceded by a `+` or `-` symbol.
 
-### 치수
+### Dimensions
 
-{{cssxref("&lt;dimension&gt;")}}은 `<number>`에 단위를 붙인 것으로, 예를 들면 `45deg`, `100ms`, `10px`가 이에 속합니다. 덧붙인 단위 식별자는 대소문자를 구별하지 않습니다. 숫자와 단위 식별자 사이에는 공백 또는 다른 문자가 들어갈 수 없습니다: 즉, `1 cm`는 유효하지 않습니다.
+A {{cssxref("&lt;dimension&gt;")}} is a `<number>` with a unit attached to it, for example `45deg`, `100ms`, or `10px`. The attached unit identifier is case insensitive. There is never a space or any other characters between the number and the unit identifier: i.e. `1 cm` is not valid.
 
-CSS는 치수를 사용해 아래와 같은 것들을 표시합니다:
+CSS uses dimensions to specify:
 
-- {{cssxref("&lt;length&gt;")}} (거리 단위)
+- {{cssxref("&lt;length&gt;")}} (Distance units)
 - {{cssxref("&lt;angle&gt;")}}
 - {{cssxref("&lt;time&gt;")}}
 - {{cssxref("&lt;frequency&gt;")}}
+- {{cssxref("&lt;flex&gt;")}}
 - {{cssxref("&lt;resolution&gt;")}}
 
-다음 절에서 이것들을 다룹니다.
+These are all covered in subsections below.
 
-#### 거리 단위
+#### Distance units
 
-거리 단위, 또는 길이가 값으로 허용되는 속성은 {{cssxref("&lt;length&gt;")}} 자료형으로 표시됩니다. CSS에는 2가지 종류의 길이가 있습니다: 상대적 길이와 절대적 길이입니다.
+Where a distance unit, also known as a length, is allowed as a value for a property, this is described as the {{cssxref("&lt;length&gt;")}} type. There are two types of lengths in CSS: relative and absolute.
 
-상대적 길이 단위는 다른 무언가와 비교해 상대적인 길이를 나타냅니다. 예를 들어, `em`은 해당 요소의 폰트 크기에 상대적이며 `vh`는 뷰포트의 높이에 상대적입니다.
+Relative length units specify a length in relation to something else.
+For example, `em` is relative to the font size on the element and `vh` is relative to the viewport height.
 
-| 단위   | 비교의 대상                                                                                             |
-| ------ | ------------------------------------------------------------------------------------------------------- |
-| `em`   | 해당 요소의 폰트 크기                                                                                   |
-| `ex`   | 해당 요소의 폰트의 x높이                                                                                |
-| `cap`  | 해당 요소의 폰트의 대문자 높이(대문자의 공칭 높이)                                                      |
-| `ch`   | 해당 요소의 폰트의 좁은 문자가 평균적으로 나아가는 길이, “0” (ZERO, U+0030) 문자로 대표됨.              |
-| `ic`   | 해당 요소의 폰트의 전각 문자가 평균적으로 나아가는 길이, “水” (CJK 물 표의 문자, U+6C34) 문자로 대표됨. |
-| `rem`  | 루트 요소의 폰트 크기                                                                                   |
-| `lh`   | 해당 요소의 줄 높이                                                                                     |
-| `rlh`  | 루트 요소의 줄 높이                                                                                     |
-| `vw`   | 뷰포트 너비의 1%                                                                                        |
-| `vh`   | 뷰포트 높이의 1%                                                                                        |
-| `vi`   | 루트 요소의 인라인 축 방향으로 뷰포트 길이의 1%                                                         |
-| `vb`   | 루트 요소의 블록 축 방향으로 뷰포트 길이의 1%                                                           |
-| `vmin` | 뷰포트의 길이 중 더 짧은 것의 1%                                                                        |
-| `vmax` | 뷰포트의 길이 중 더 긴 것의 1%                                                                          |
+| Unit   | Relative to                                                                                                                            |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `em`   | Font size of the element.                                                                                                              |
+| `ex`   | x-height of the element's font.                                                                                                        |
+| `cap`  | Cap height (the nominal height of capital letters) of the element's font.                                                              |
+| `ch`   | Average character advance of a narrow glyph in the element's font, as represented by the "0" (ZERO, U+0030) glyph.                     |
+| `ic`   | Average character advance of a full width glyph in the element's font, as represented by the "水" (CJK water ideograph, U+6C34) glyph. |
+| `rem`  | Font size of the root element.                                                                                                         |
+| `lh`   | Line height of the element.                                                                                                            |
+| `rlh`  | Line height of the root element.                                                                                                       |
+| `vw`   | 1% of viewport's width.                                                                                                                |
+| `vh`   | 1% of viewport's height.                                                                                                               |
+| `vi`   | 1% of viewport's size in the root element's inline axis.                                                                               |
+| `vb`   | 1% of viewport's size in the root element's block axis.                                                                                |
+| `vmin` | 1% of viewport's smaller dimension.                                                                                                    |
+| `vmax` | 1% of viewport's larger dimension.                                                                                                     |
 
-절대적 길이 단위는 인치 또는 센티미터의 물리적 길이로 고정적입니다. 그래서 이 단위들의 다수는 인쇄물과 같은 고정된 크기의 매체로 출력되는 경우에 유용합니다. 예를 들어, `mm`는 물리적인 밀리미터, 즉 센티미터의 1/10입니다.
+Container query length units specify a length relative to the dimensions of a [query container](/en-US/docs/Web/CSS/CSS_Container_Queries).
+For example, `cqw` is relative to the width of the query container and `cqh` is relative to the height of the query container.
 
-| 단위 | 이름          | 다음과 동일함       |
-| ---- | ------------- | ------------------- |
-| `cm` | 센티미터      | 1cm = 96px/2.54     |
-| `mm` | 밀리미터      | 1mm = 1cm의 1/10    |
-| `Q`  | 쿼터-밀리미터 | 1Q = 1cm의 1/40     |
-| `in` | 인치          | 1in = 2.54cm = 96px |
-| `pc` | 피카          | 1pc = 1in의 1/16    |
-| `pt` | 포인트        | 1pt = 1in의 1/72    |
-| `px` | 픽셀          | 1px = 1in의 1/96    |
+| Unit    | Relative to                           |
+| ------- | ------------------------------------- |
+| `cqw`   | 1% of a query container's width       |
+| `cqh`   | 1% of a query container's height      |
+| `cqi`   | 1% of a query container's inline size |
+| `cqb`   | 1% of a query container's block size  |
+| `cqmin` | The smaller value of `cqi` or `cqb`   |
+| `cqmax` | The larger value of `cqi` or `cqb`    |
 
-길이 값을 포함할 때 길이가 `0`이면, 단위 식별자가 필요하지 않습니다. 그 외의 경우 단위 식별자가 필요합니다. 단위 식별자는 대소문자를 구별하지 않으며, 값의 숫자 부분 이후에 공백 없이 바로 나와야 합니다.
+Absolute length units are fixed to a physical length: either an inch or a centimeter. Many of these units are therefore more useful when the output is a fixed size media, such as print. For example, `mm` is a physical millimeter, 1/10th of a centimeter.
 
-#### 각도 단위
+| Unit | Name                | Equivalent to       |
+| ---- | ------------------- | ------------------- |
+| `cm` | Centimeters         | 1cm = 96px/2.54     |
+| `mm` | Millimeters         | 1mm = 1/10th of 1cm |
+| `Q`  | Quarter-millimeters | 1Q = 1/40th of 1cm  |
+| `in` | Inches              | 1in = 2.54cm = 96px |
+| `pc` | Picas               | 1pc = 1/6th of 1in  |
+| `pt` | Points              | 1pt = 1/72th of 1in |
+| `px` | Pixels              | 1px = 1/96th of 1in |
 
-각도 값은 {{cssxref("&lt;angle&gt;")}} 자료형으로 표시되며 다음의 값이 허용됩니다:
+When including a length value, if the length is `0`, the unit identifier is not required. Otherwise, the unit identifier is required, is case insensitive, and must come immediately after the numeric part of the value, with no space in-between.
 
-| 단위   | 이름     | 설명                                 |
-| ------ | -------- | ------------------------------------ |
-| `deg`  | 도       | 360도가 완전한 원을 이룹니다.        |
-| `grad` | 그라디안 | 400 그라디안이 완전한 원을 이룹니다. |
-| `rad`  | 라디안   | 2π 라디안이 완전한 원을 이룹니다.    |
-| `turn` | 턴       | 1턴이 완전한 원을 이룹니다.          |
+#### Angle units
 
-#### 시간 단위
+Angle values are represented by the type {{cssxref("&lt;angle&gt;")}} and accept the following values:
 
-시간 단위는 {{cssxref("&lt;time&gt;")}} 자료형으로 표시됩니다. 시간 단위를 포함할 때는 단위 식별자인 `s` 또는 `ms`가 반드시 필요합니다. 아래의 값이 허용됩니다.
+| Unit   | Name     | Description                              |
+| ------ | -------- | ---------------------------------------- |
+| `deg`  | Degrees  | There are 360 degrees in a full circle.  |
+| `grad` | Gradians | There are 400 gradians in a full circle. |
+| `rad`  | Radians  | There are 2π radians in a full circle.   |
+| `turn` | Turns    | There is 1 turn in a full circle.        |
 
-| 단위 | 이름   | 설명                           |
-| ---- | ------ | ------------------------------ |
-| `s`  | 초     |                                |
-| `ms` | 밀리초 | 1,000 밀리초는 1초와 같습니다. |
+#### Time units
 
-#### 진동수 단위
+Time values are represented by the type {{cssxref("&lt;time&gt;")}}. When including a time value, the unit identifier — the `s` or `ms` — is required. It accepts the following values.
 
-진동수 단위는 {{cssxref("&lt;frequency&gt;")}} 자료형으로 표시됩니다. 아래 값이 허용됩니다.
+| Unit | Name         | Description                               |
+| ---- | ------------ | ----------------------------------------- |
+| `s`  | Seconds      |                                           |
+| `ms` | Milliseconds | There are 1,000 milliseconds in a second. |
 
-| 단위  | 이름       | 설명                                   |
-| ----- | ---------- | -------------------------------------- |
-| `Hz`  | 헤르츠     | 1초당 발생한 횟수를 나타냅니다.        |
-| `kHz` | 킬로헤르츠 | 1 킬로헤르츠는 1000 헤르츠와 같습니다. |
+#### Frequency units
 
-`1Hz`, 또는 `1hz`, `1HZ`는 초당 진동수입니다.
+Frequency values are represented by the type {{cssxref("&lt;frequency&gt;")}}. It accepts the following values.
 
-#### 해상도 단위
+| Unit  | Name      | Description                                      |
+| ----- | --------- | ------------------------------------------------ |
+| `Hz`  | Hertz     | Represents the number of occurrences per second. |
+| `kHz` | KiloHertz | A kiloHertz is 1000 Hertz.                       |
 
-해상도 단위는 {{cssxref("&lt;resolution&gt;")}}로 표시됩니다. 이것들은 스크린과 같은 그래픽 표시에서 CSS 인치당, 센티미터당, 픽셀당 몇 개의 점을 포함할 수 있는지를 나타냄으로써 점 1개의 크기를 표현합니다. 다음의 값이 허용됩니다:
+`1Hz`, which can also be written as `1hz` or `1HZ`, is one cycle per second.
 
-| 단위        | 설명                |
-| ----------- | ------------------- |
-| `dpi`       | 인치당 점의 수.     |
-| `dpcm`      | 센티미터당 점의 수. |
-| `dppx`, `x` | 픽셀당 점의 수.     |
+#### Flex units
 
-### 퍼센트
+Flex units are represented by the type {{cssxref("&lt;flex&gt;")}}. It accepts the following value.
 
-{{cssxref("&lt;percentage&gt;")}}는 다른 값의 일부분을 표현하는 자료형입니다.
+| Unit | Name | Description                                          |
+| ---- | ---- | ---------------------------------------------------- |
+| `fr` | Flex | Represents a flexible length within a grid container |
 
-퍼센트 값은 언제나 다른 양, 예컨대 길이와 같은 것에 상대적입니다. 퍼센트를 허용하는 속성은 그 퍼센트가 참조하는 양 또한 정의합니다. 이 양은 같은 요소가 갖는 다른 속성의 값이거나, 조상 요소가 갖는 속성의 값이거나, 이 요소를 포함하는 블록의 치수 등이 될 수 있습니다.
+#### Resolution units
 
-예를 들면, 어떤 박스의 {{cssxref("width")}}를 퍼센트로 지정한 경우, 그 박스의 부모의 계산된 너비의 퍼센트를 참조합니다:
+Resolution units are represented by the type {{cssxref("&lt;resolution&gt;")}}. They represent the size of a single dot in a graphical representation, such as a screen, by indicating how many of these dots fit in a CSS inch, centimeter, or pixel. It accepts the following values:
+
+| Unit        | Description          |
+| ----------- | -------------------- |
+| `dpi`       | Dots per inch.       |
+| `dpcm`      | Dots per centimeter. |
+| `dppx`, `x` | Dots per px unit.    |
+
+### Percentages
+
+A {{cssxref("&lt;percentage&gt;")}} is a type that represents a fraction of some other value.
+
+Percentage values are always relative to another quantity, for example a length. Each property that allows percentages also defines the quantity to which the percentage refers. This quantity can be a value of another property of the same element, the value of a property of an ancestor element, a measurement of a containing block, or something else.
+
+As an example, if you specify the {{cssxref("width")}} of a box as a percentage, it refers to the percentage of the box's parent's computed width:
 
 ```css
 .box {
@@ -213,52 +244,54 @@ CSS는 치수를 사용해 아래와 같은 것들을 표시합니다:
 }
 ```
 
-### 퍼센트와 치수 함께 사용하기
+### Mixing percentages and dimensions
 
-일부 속성은 두 자료형 중 하나를 선택해서, 예를 들면 `<length>` **또는** `<percentage>`를 골라서 치수를 지정할 수 있습니다. 이 경우 사양에는 허용되는 값이 {{cssxref("&lt;length-percentage&gt;")}}처럼 조합된 단위로 기술됩니다. 다음은 가능한 다른 조합입니다:
+Some properties accept a dimension that could be either one of two types, for example a `<length>` **or** a `<percentage>`. In this case the allowed value is detailed in the specification as a combination unit, e.g. {{cssxref("&lt;length-percentage&gt;")}}. Other possible combinations are as follows:
 
 - {{cssxref("&lt;frequency-percentage&gt;")}}
 - {{cssxref("&lt;angle-percentage&gt;")}}
 - {{cssxref("&lt;time-percentage&gt;")}}
 
-### 특별한 자료형 (다른 사양에서 정의된 것들)
+### Special data types (defined in other specs)
 
 - {{cssxref("&lt;color&gt;")}}
 - {{cssxref("&lt;image&gt;")}}
 - {{cssxref("&lt;position&gt;")}}
 
-#### 색깔
+#### Color
 
-{{cssxref("&lt;color&gt;")}} 값은 요소의 외관 색깔(예: 배경색)을 지정하며, [CSS Color Module](https://drafts.csswg.org/css-color-3/)에 정의되어 있습니다.
+The {{cssxref("&lt;color&gt;")}} value specifies the color of an element feature (e.g. it's background color), and is defined in the [CSS Color Module](https://drafts.csswg.org/css-color-3/).
 
-#### 이미지
+#### Image
 
-{{cssxref("&lt;image&gt;")}} 값은 CSS에서 사용될 수 있는 다양한 종류의 이미지를 지정하며, [CSS Image Values and Replaced Content Module](https://www.w3.org/TR/css-images-4/)에 정의되어 있습니다.
+The {{cssxref("&lt;image&gt;")}} value specifies all the different types of image that can be used in CSS, and is defined in the [CSS Image Values and Replaced Content Module](https://www.w3.org/TR/css-images-4/).
 
-#### 위치
+#### Position
 
-{{cssxref("&lt;position&gt;")}} 자료형은 배치 영역 안에서 객체의 2D 위치를, 예컨대 컨테이너 안에서 배경 이미지의 위치 같은 것을 정의합니다. 이 자료형은 {{cssxref("background-position")}}으로 해석되므로 [CSS Backgrounds and Borders specification](https://www.w3.org/TR/css-backgrounds-3/)에 명시되어 있습니다.
+The {{cssxref("&lt;position&gt;")}} type defines 2D positioning of an object inside a positioning area, for example a background image inside a container. This type is interpreted as a {{cssxref("background-position")}} and therefore specified in the [CSS Backgrounds and Borders specification](https://www.w3.org/TR/css-backgrounds-3/).
 
-### 함수 표기법
+### Functional notation
 
-- {{cssxref("calc()")}}
+- {{cssxref("calc", "calc()")}}
 - {{cssxref("min", "min()")}}
 - {{cssxref("max", "max()")}}
+- {{cssxref("minmax", "minmax()")}}
 - {{cssxref("clamp", "clamp()")}}
 - {{cssxref("toggle", "toggle()")}}
 - {{cssxref("attr", "attr()")}}
 
-[함수 표기법](/ko/docs/Web/CSS/CSS_Functionals)은 더 복잡한 자료형을 표현하거나 CSS가 특별한 처리를 하도록 지시하는 자료형의 값입니다. 이 문법은 함수의 이름으로 시작해서 바로 왼쪽 괄호 `(`가 뒤따르고, 함수의 인자를 나열한 다음, 오른쪽 괄호 `)`로 끝납니다. 함수는 여러 개의 인자를 받을 수 있으며, CSS 속성 값과 비슷한 형식을 가집니다.
+[Functional notation](/en-US/docs/Web/CSS/CSS_Functions) is a type of value that can represent more complex types or invoke special processing by CSS. The syntax starts with the name of the function immediately followed by a left parenthesis `(` followed by the argument(s) to the notation followed by a right parenthesis `)`. Functions can take multiple arguments, which are formatted similarly to a CSS property value.
 
-공백 문자는 허용되지만, 괄호 안에서는 선택 사항입니다. (단 `min()`, `max()`, `clamp()` 함수 페이지의 주의 사항에서 공백 문자에 대한 내용을 확인하세요.)
+White space is allowed, but optional inside the parentheses. (But see notes regarding whitespace within pages for `min()`, `max()`, `minmax()`, and `clamp()` functions.)
 
-`rgba()`와 같은 몇몇 레거시 함수 표기법이 콤마를 사용하지만, 일반적으로 콤마는 목록에서 아이템을 구분하기 위해 사용됩니다. 콤마가 인자를 구분하기 위해 사용된 경우, 콤마 전후의 공백 문자는 선택 사항입니다.
+Some legacy functional notations such as `rgba()` use commas, but generally commas are only used to separate items in a list. If a comma is used to separate arguments, white space is optional before and after the comma.
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 같이 보기
+## See also
 
-- [CSS의 기본 자료형](/ko/docs/Web/CSS/CSS_Types)
-- [CSS 개론: 값과 단위](/ko/docs/Learn/CSS/Introduction_to_CSS/Values_and_units)
+- [CSS Basic Data Types](/en-US/docs/Web/CSS/CSS_Types)
+- [Introduction to CSS: Values and Units](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units)
+- [Trigonometric functions in CSS](https://web.dev/css-trig-functions/)

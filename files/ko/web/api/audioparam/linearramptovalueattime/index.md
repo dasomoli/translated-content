@@ -1,81 +1,89 @@
 ---
-title: AudioParam.linearRampToValueAtTime()
+title: "AudioParam: linearRampToValueAtTime() method"
+short-title: linearRampToValueAtTime()
 slug: Web/API/AudioParam/linearRampToValueAtTime
+page-type: web-api-instance-method
+browser-compat: api.AudioParam.linearRampToValueAtTime
 ---
 
 {{ APIRef("Web Audio API") }}
 
-{{ domxref("AudioParam") }} 인터페이스의 `linearRampToValueAtTime()` 메서드는 `AudioParam` 의 값에 점진적인 선형 변화를 예정합니다. 변화는 _previous_ 이벤트에 명시된 시간에 시작해, 선형적인 ramp를 따라 `value` 매개변수에 주어진 새로운 값으로 향하고, `endTime` 매개변수에 주어진 시간에 새로운 값에 도달합니다.
+The `linearRampToValueAtTime()` method of the {{ domxref("AudioParam") }}
+Interface schedules a gradual linear change in the value of the
+`AudioParam`. The change starts at the time specified for the
+_previous_ event, follows a linear ramp to the new value given in the
+`value` parameter, and reaches the new value at the time given in the
+`endTime` parameter.
 
-## 구문
+## Syntax
 
-```js
-var AudioParam = AudioParam.linearRampToValueAtTime(value, endTime)
+```js-nolint
+linearRampToValueAtTime(value, endTime)
 ```
 
-### 매개변수
+### Parameters
 
-- value
-  - : `AudioParam` 이 주어진 시간까지 ramp할 값을 나타내는 부동점 number.
-- endTime
-  - : ramping이 시작된 이후 값의 변화가 멈출 정확한 시간 (초로 표현됨) 을 나타내는 double.
+- `value`
+  - : A floating point number representing the value the `AudioParam` will ramp
+    to by the given time.
+- `endTime`
+  - : A double representing the exact time (in seconds) after the ramping starts that the
+    changing of the value will stop.
 
-### 반환
+### Return value
 
-이 `AudioParam` 객체에 대한 참조. 몇몇 브라우저에서 이 인터페이스의 오래된 구현은 void를 반환합니다.
+A reference to this `AudioParam` object. In some browsers older
+implementations of this interface return {{jsxref('undefined')}}.
 
-## 예제
+## Examples
 
-이 예제에는 두 개의 제어 버튼을 가진 미디어 소스가 있습니다 (소스 코드는 [audio-param
-repo](https://github.com/mdn/webaudio-examples/tree/master/audio-param)에서 볼 수 있고, [작동 예제](https://mdn.github.io/webaudio-examples/audio-param/)도 볼 수 있습니다). 이 버튼들이 눌렸을 때, `linearRampToValueAtTime()` 가 사용되어 각각 gain 값을 1.0까지, 그리고 0까지 서서히 사라지게(fade) 합니다. 비록 종종 {{
-  domxref("AudioParam.exponentialRampToValueAtTime()") }}가 좀 더 자연스럽다고 여겨지긴 하지만 이것은 페이드 인/페이드 아웃 이펙트에 아주 유용합니다.
+In this example, we have a media source with two control buttons (see the [audio-param repo](https://github.com/mdn/webaudio-examples/tree/master/audio-param) for the source code, or [view the example live](https://mdn.github.io/webaudio-examples/audio-param/).) When these buttons are pressed, `linearRampToValueAtTime()` is
+used to fade the gain value up to 1.0, and down to 0, respectively. This is pretty
+useful for fade in/fade out effects, although {{
+  domxref("AudioParam.exponentialRampToValueAtTime()") }} is often said to be a bit more
+natural.
 
 ```js
-// 오디오 컨텍스트를 생성합니다
-var AudioContext = window.AudioContext || window.webkitAudioContext;
-var audioCtx = new AudioContext();
+// create audio context
+const audioCtx = new AudioContext();
 
-// 예제를 위한 기본 변수를 설정합니다
-var myAudio = document.querySelector('audio');
-var pre = document.querySelector('pre');
-var myScript = document.querySelector('script');
+// set basic variables for example
+const myAudio = document.querySelector("audio");
 
-pre.innerHTML = myScript.innerHTML;
+const linearRampPlus = document.querySelector(".linear-ramp-plus");
+const linearRampMinus = document.querySelector(".linear-ramp-minus");
 
-var linearRampPlus = document.querySelector('.linear-ramp-plus');
-var linearRampMinus = document.querySelector('.linear-ramp-minus');
+// Create a MediaElementAudioSourceNode
+// Feed the HTMLMediaElement into it
+const source = audioCtx.createMediaElementSource(myAudio);
 
-// MediaElementAudioSourceNode를 생성합니다
-// HTMLMediaElement를 노드 내로 전달합니다
-var source = audioCtx.createMediaElementSource(myAudio);
+// Create a gain node and set it's gain value to 0.5
+const gainNode = audioCtx.createGain();
 
-// gain 노드를 생성하고 gain 값을 0.5로 설정합니다
-var gainNode = audioCtx.createGain();
-
-// AudioBufferSourceNode를 gainNode에 연결하고
-// gainNode를 destination에 연결합니다
+// connect the AudioBufferSourceNode to the gainNode
+// and the gainNode to the destination
 gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
 source.connect(gainNode);
 gainNode.connect(audioCtx.destination);
 
-// onclick이 발생했을 때 무언가를 하기 위해 버튼을 설정합니다
-linearRampPlus.onclick = function() {
+// set buttons to do something onclick
+linearRampPlus.onclick = () => {
   gainNode.gain.linearRampToValueAtTime(1.0, audioCtx.currentTime + 2);
-}
+};
 
-linearRampMinus.onclick = function() {
+linearRampMinus.onclick = () => {
   gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 2);
-}
+};
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Web Audio API 사용하기](/ko/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)
+- [Using the Web Audio API](/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)

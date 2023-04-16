@@ -1,50 +1,52 @@
 ---
 title: Set.prototype.values()
 slug: Web/JavaScript/Reference/Global_Objects/Set/values
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Set.values
 ---
 
 {{JSRef}}
 
-**`values()`** method는 `Set` 객체에 요소가 삽입된 순서대로 각 요소의 값을 순환할 수 있는 새로운 [Iterator](/ko/docs/Web/JavaScript/Guide/Iterators_and_Generators) 객체를 반환합니다.
+The **`values()`** method returns a new _[set iterator](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator)_ object that contains the values for each element in the `Set` object in insertion order.
 
-> **참고:** **`keys()`** 메소드는 이 메소드의 별칭입니다({{jsxref("Map")}} 객체와 유사성을 위해).
-> 따라서, `key()` 페이지는 이곳으로 리다이렉트 됩니다.
-> 그것은 정확히 동일하게 작동하며 `Set` 요소의 **값**을 반환합니다.
 {{EmbedInteractiveExample("pages/js/set-prototype-values.html")}}
 
-## 구문
+## Syntax
 
-```js
-values();
+```js-nolint
+values()
 ```
 
-### 반환 값
+### Return value
 
-주어진 `Set`의 각 요소의 값을 삽입 순서대로 포함하는 새로운 iterator 객체
+A new [iterable iterator object](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator).
 
-## 예시
+## Examples
 
-### `values()` 사용하기
+### Using values()
 
 ```js
-var mySet = new Set();
-mySet.add('foo');
-mySet.add('bar');
-mySet.add('baz');
-var setIter = mySet.values();
+const mySet = new Set();
+mySet.add("foo");
+mySet.add("bar");
+mySet.add("baz");
+
+const setIter = mySet.values();
+
 console.log(setIter.next().value); // "foo"
 console.log(setIter.next().value); // "bar"
 console.log(setIter.next().value); // "baz"
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Set.prototype.entries()")}}
+- {{jsxref("Set.prototype.keys()")}}

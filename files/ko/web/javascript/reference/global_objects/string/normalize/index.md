@@ -1,126 +1,238 @@
 ---
 title: String.prototype.normalize()
 slug: Web/JavaScript/Reference/Global_Objects/String/normalize
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.String.normalize
 ---
+
 {{JSRef}}
 
-**`normalize()`** 메서드는 주어진 문자열을 유니코드 정규화 방식(Unicode Normalization Form)에 따라 정규화된 형태로 반환합니다. 만약 주어진 값이 문자열이 아닐 경우에는 우선 문자열로 변환 후 정규화합니다.
+The **`normalize()`** method returns the Unicode Normalization
+Form of the string.
 
-{{EmbedInteractiveExample("pages/js/string-normalize.html")}}
+{{EmbedInteractiveExample("pages/js/string-normalize.html", "taller")}}
 
-## 구문
+## Syntax
 
-```js
-str.normalize([form])
+```js-nolint
+normalize()
+normalize(form)
 ```
 
-### 매개변수
+### Parameters
 
-- `form`
-  - : 유니코드 정규화 방식을 지정합니다. `"NFC"`, `"NFD"`, `"NFKC"`, `"NFKD"` 중 하나이며, 생략되거나 {{jsxref("undefined")}} 일 경우 `"NFC"`가 사용됩니다.\* `NFC` — 정규형 정준 결합(Normalization Form Canonical Composition).
-    - `NFD` — 정규형 정준 분해(Normalization Form Canonical Decomposition).
-    - `NFKC` — 정규형 호환성 결합(Normalization Form Compatibility Composition).
-    - `NFKD` — 정규형 호환성 분해(Normalization Form Compatibility Decomposition).
+- `form` {{optional_inline}}
 
-### 반환 값
+  - : One of `"NFC"`, `"NFD"`, `"NFKC"`, or
+    `"NFKD"`, specifying the Unicode Normalization Form. If omitted or
+    {{jsxref("undefined")}}, `"NFC"` is used.
 
-주어진 문자열을 유니코드 정규화 방식에 따라 정규화된 문자열로 반환합니다.
+    These values have the following meanings:
 
-### 예외
+    - `"NFC"`
+      - : Canonical Decomposition, followed by Canonical Composition.
+    - `"NFD"`
+      - : Canonical Decomposition.
+    - `"NFKC"`
+      - : Compatibility Decomposition, followed by Canonical Composition.
+    - `"NFKD"`
+      - : Compatibility Decomposition.
+
+### Return value
+
+A string containing the Unicode Normalization Form of the given string.
+
+### Errors thrown
 
 - {{jsxref("RangeError")}}
-  - : `form`이 위에서 명시된 값 중 하나가 아닐 경우 {{jsxref("RangeError")}} 에러가 발생합니다.
+  - : A {{jsxref("RangeError")}} is thrown if `form` isn't one of the values
+    specified above.
 
-## 설명
+## Description
 
-`normalize()` 메서드는 문자열을 유니코드 정규화 방식에 따라 정규화된 형태로 반환합니다. 문자열의 값 자체에는 영향을 주지 않습니다.
+Unicode assigns a unique numerical value, called a _code point_, to each
+character. For example, the code point for `"A"` is given as U+0041. However,
+sometimes more than one code point, or sequence of code points, can represent the same
+abstract character — the character `"ñ"` for example can be represented by
+either of:
 
-## 예제
-
-### `normalize()` 사용하기
+- The single code point U+00F1.
+- The code point for `"n"` (U+006E) followed by the code point for the
+  combining tilde (U+0303).
 
 ```js
-// 원본 문자열
+const string1 = "\u00F1";
+const string2 = "\u006E\u0303";
+
+console.log(string1); // ñ
+console.log(string2); // ñ
+```
+
+However, since the code points are different, string comparison will not treat them as
+equal. And since the number of code points in each version is different, they even have
+different lengths.
+
+```js
+const string1 = "\u00F1"; // ñ
+const string2 = "\u006E\u0303"; // ñ
+
+console.log(string1 === string2); // false
+console.log(string1.length); // 1
+console.log(string2.length); // 2
+```
+
+The `normalize()` method helps solve this problem by converting a string
+into a normalized form common for all sequences of code points that represent the same
+characters. There are two main normalization forms, one based on **canonical
+equivalence** and the other based on **compatibility**.
+
+### Canonical equivalence normalization
+
+In Unicode, two sequences of code points have canonical equivalence if they represent
+the same abstract characters, and should always have the same visual appearance and
+behavior (for example, they should always be sorted in the same way).
+
+You can use `normalize()` using the `"NFD"` or `"NFC"`
+arguments to produce a form of the string that will be the same for all canonically
+equivalent strings. In the example below we normalize two representations of the
+character `"ñ"`:
+
+```js
+let string1 = "\u00F1"; // ñ
+let string2 = "\u006E\u0303"; // ñ
+
+string1 = string1.normalize("NFD");
+string2 = string2.normalize("NFD");
+
+console.log(string1 === string2); // true
+console.log(string1.length); // 2
+console.log(string2.length); // 2
+```
+
+#### Composed and decomposed forms
+
+Note that the length of the normalized form under `"NFD"` is
+`2`. That's because `"NFD"` gives you the
+**decomposed** version of the canonical form, in which single code points
+are split into multiple combining ones. The decomposed canonical form for
+`"ñ"` is `"\u006E\u0303"`.
+
+You can specify `"NFC"` to get the **composed** canonical form,
+in which multiple code points are replaced with single code points where possible. The
+composed canonical form for `"ñ"` is `"\u00F1"`:
+
+```js
+let string1 = "\u00F1"; // ñ
+let string2 = "\u006E\u0303"; // ñ
+
+string1 = string1.normalize("NFC");
+string2 = string2.normalize("NFC");
+
+console.log(string1 === string2); // true
+console.log(string1.length); // 1
+console.log(string2.length); // 1
+console.log(string2.codePointAt(0).toString(16)); // f1
+```
+
+### Compatibility normalization
+
+In Unicode, two sequences of code points are compatible if they represent the same
+abstract characters, and should be treated alike in some — but not necessarily all —
+applications.
+
+All canonically equivalent sequences are also compatible, but not vice versa.
+
+For example:
+
+- the code point U+FB00 represents the [ligature](/en-US/docs/Glossary/Ligature) `"ﬀ"`. It is compatible
+  with two consecutive U+0066 code points (`"ff"`).
+- the code point U+24B9 represents the symbol
+  `"Ⓓ"`.
+  It is compatible with the U+0044 code point (`"D"`).
+
+In some respects (such as sorting) they should be treated as equivalent—and in some
+(such as visual appearance) they should not, so they are not canonically equivalent.
+
+You can use `normalize()` using the `"NFKD"` or
+`"NFKC"` arguments to produce a form of the string that will be the same for
+all compatible strings:
+
+```js
+let string1 = "\uFB00";
+let string2 = "\u0066\u0066";
+
+console.log(string1); // ﬀ
+console.log(string2); // ff
+console.log(string1 === string2); // false
+console.log(string1.length); // 1
+console.log(string2.length); // 2
+
+string1 = string1.normalize("NFKD");
+string2 = string2.normalize("NFKD");
+
+console.log(string1); // ff <- visual appearance changed
+console.log(string2); // ff
+console.log(string1 === string2); // true
+console.log(string1.length); // 2
+console.log(string2.length); // 2
+```
+
+When applying compatibility normalization it's important to consider what you intend to
+do with the strings, since the normalized form may not be appropriate for all
+applications. In the example above the normalization is appropriate for search, because
+it enables a user to find the string by searching for `"f"`. But it may not
+be appropriate for display, because the visual representation is different.
+
+As with canonical normalization, you can ask for decomposed or composed compatible
+forms by passing `"NFKD"` or `"NFKC"`, respectively.
+
+## Examples
+
+### Using normalize()
+
+```js
+// Initial string
 
 // U+1E9B: LATIN SMALL LETTER LONG S WITH DOT ABOVE
 // U+0323: COMBINING DOT BELOW
-var str = '\u1E9B\u0323';
+const str = "\u1E9B\u0323";
 
-
-// 정규형 정준 결합 (NFC)
+// Canonically-composed form (NFC)
 
 // U+1E9B: LATIN SMALL LETTER LONG S WITH DOT ABOVE
 // U+0323: COMBINING DOT BELOW
-str.normalize('NFC'); // '\u1E9B\u0323'
-str.normalize();      // 위와 같은 결과
+str.normalize("NFC"); // '\u1E9B\u0323'
+str.normalize(); // same as above
 
-
-// 정규형 정준 분해 (NFD)
+// Canonically-decomposed form (NFD)
 
 // U+017F: LATIN SMALL LETTER LONG S
 // U+0323: COMBINING DOT BELOW
 // U+0307: COMBINING DOT ABOVE
-str.normalize('NFD'); // '\u017F\u0323\u0307'
+str.normalize("NFD"); // '\u017F\u0323\u0307'
 
-
-// 정규형 호환성 결합 (NFKC)
+// Compatibly-composed (NFKC)
 
 // U+1E69: LATIN SMALL LETTER S WITH DOT BELOW AND DOT ABOVE
-str.normalize('NFKC'); // '\u1E69'
+str.normalize("NFKC"); // '\u1E69'
 
-
-// 정규형 호환성 분해 (NFKD)
+// Compatibly-decomposed (NFKD)
 
 // U+0073: LATIN SMALL LETTER S
 // U+0323: COMBINING DOT BELOW
 // U+0307: COMBINING DOT ABOVE
-str.normalize('NFKD'); // '\u0073\u0323\u0307'
+str.normalize("NFKD"); // '\u0073\u0323\u0307'
 ```
 
-### 한글에 `normalize()` 사용하기
-
-```js
-// 결합된 한글 문자열
-
-// U+D55C: 한(HANGUL SYLLABLE HAN)
-// U+AE00: 글(HANGUL SYLLABLE GEUL)
-var first = '\uD55C\uAE00';
-
-
-// 정규형 정준 분해 (NFD)
-// 정준 분해 결과 초성, 중성, 종성의 자소분리가 일어납니다.
-// 일부 브라우저에서는 결과값 '한글'이 자소분리된 상태로 보여질 수 있습니다.
-
-// U+1112: ᄒ(HANGUL CHOSEONG HIEUH)
-// U+1161: ᅡ(HANGUL JUNGSEONG A)
-// U+11AB: ᆫ(HANGUL JONGSEONG NIEUN)
-// U+1100: ᄀ(HANGUL CHOSEONG KIYEOK)
-// U+1173: ᅳ(HANGUL JUNGSEONG EU)
-// U+11AF: ᆯ(HANGUL JONGSEONG RIEUL)
-var second = first.normalize('NFD'); // '\u1112\u1161\u11AB\u1100\u1173\u11AF'
-
-
-// 정규형 정준 결합 (NFC)
-// 정준 결합 결과 자소분리 되었던 한글이 결합됩니다.
-
-// U+D55C: 한(HANGUL SYLLABLE HAN)
-// U+AE00: 글(HANGUL SYLLABLE GEUL)
-var third = second.normalize('NFC'); // '\uD55C\uAE00'
-
-
-console.log(second === third); // 같은 글자처럼 보이지만 false를 출력합니다.
-```
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Unicode Standard Annex #15, Unicode Normalization Forms](http://www.unicode.org/reports/tr15/)
-- [Unicode equivalence](http://en.wikipedia.org/wiki/Unicode_equivalence)
-- [유니코드 정규화](https://ko.wikipedia.org/wiki/%EC%9C%A0%EB%8B%88%EC%BD%94%EB%93%9C_%EC%A0%95%EA%B7%9C%ED%99%94)
+- [Unicode Standard Annex #15, Unicode Normalization Forms](https://www.unicode.org/reports/tr15/)
+- [Unicode equivalence](https://en.wikipedia.org/wiki/Unicode_equivalence)

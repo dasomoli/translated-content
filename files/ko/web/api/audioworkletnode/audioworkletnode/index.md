@@ -1,83 +1,92 @@
 ---
-title: AudioWorkletNode()
+title: "AudioWorkletNode: AudioWorkletNode() constructor"
+short-title: AudioWorkletNode()
 slug: Web/API/AudioWorkletNode/AudioWorkletNode
+page-type: web-api-constructor
+browser-compat: api.AudioWorkletNode.AudioWorkletNode
 ---
 
 {{APIRef("Web Audio API")}}
 
-**`AudioWorkletNode()`** 생성자는 새로운 {{domxref("AudioWorkletNode")}} 객체를 생성하는데, 이는 사용자 정의 오디오 프로세싱을 수행하기 위해 JavaScript 함수를 사용하는 {{domxref("AudioNode")}}를 나타냅니다.
+The **`AudioWorkletNode()`**
+constructor creates a new {{domxref("AudioWorkletNode")}} object, which represents an
+{{domxref("AudioNode")}} that uses a JavaScript function to perform custom audio
+processing.
 
-## 구문
+## Syntax
 
-```js
-var node = new AudioWorkletNode(context, name);
-var node = new AudioWorkletNode(context, name, options);
+```js-nolint
+new AudioWorkletNode(context, name)
+new AudioWorkletNode(context, name, options)
 ```
 
-### 매개변수
+### Parameters
 
 - `context`
-  - : 이 노드가 관련될 {{domxref("BaseAudioContext")}} 인스턴스.
+  - : The {{domxref("BaseAudioContext")}} instance this node will be associated with.
 - `name`
-  - : 이 노드가 기반으로 할 {{domxref("AudioWorkletProcessor")}}의 이름을 나타내는 문자열. 제공된 이름을 가진 프로세서는 {{domxref("AudioWorkletGlobalScope.registerProcessor()")}} 메서드를 사용하여 반드시 맨 먼저 등록되어야 합니다.
+  - : A string, which represents the name of the {{domxref("AudioWorkletProcessor")}} this
+    node will be based on. A processor with the provided name must first be registered
+    using the {{domxref("AudioWorkletGlobalScope.registerProcessor()")}} method.
 - `options` {{optional_inline}}
 
-  - : 새로운 노드를 설정하기 위해 다음의 선택적인 속성들 중 0개 또는 그 이상을 포함하는 객체:
+  - : An object containing zero or more of the following optional properties to configure the new node:
 
-    <!-- 명세는 이 객체를 다음으로 나타냅니다: AudioWorkletNodeOptions -->
+    <!-- The specification refers to this object as: AudioWorkletNodeOptions -->
 
-    > **참고:** 이 객체에 적용된 [structured clone algorithm](/ko/docs/Web/API/Web_Workers_API/Structured_clone_algorithm)의 결과는
-    > 또한 연관된 {{domxref("AudioWorkletProcessor.AudioWorkletProcessor", "AudioWorkletProcessor()")}} 생성자로 내부적으로 전달됩니다
-    > — 이는 근본적인 사용자 정의 {{domxref("AudioWorkletProcessor")}}의 커스텀 초기화를 가능케 합니다.
+    > **Note:** The result of [the structured clone algorithm](/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm)
+    > applied to the object is also internally passed into the associated {{domxref("AudioWorkletProcessor.AudioWorkletProcessor", "AudioWorkletProcessor()")}} constructor
+    > — this allows custom initialization of an underlying user-defined {{domxref("AudioWorkletProcessor")}}.
 
     - `numberOfInputs` {{optional_inline}}
-      - : {{domxref("AudioNode.numberOfInputs", "numberOfInputs")}} 속성을 초기화할 값. 기본값은 1입니다.
+      - : The value to initialize the {{domxref("AudioNode.numberOfInputs", "numberOfInputs")}} property to. Defaults to 1.
     - `numberOfOutputs` {{optional_inline}}
-      - : {{domxref("AudioNode.numberOfOutputs", "numberOfOutputs")}} 속성을 초기화할 값. 기본값은 1입니다.
+      - : The value to initialize the {{domxref("AudioNode.numberOfOutputs", "numberOfOutputs")}} property to. Defaults to 1.
     - `outputChannelCount` {{optional_inline}}
-      - : 각 출력에 대한 채널의 숫자를 정의하는 **배열**. 예를 들자면, _outputChannelCount: \[n, m]_ 은 첫번째 출력의 채널 숫자를 _n_ 으로 그리고 두번째 출력을 _m_ 으로 명시합니다. 배열의 길이는 반드시 `numberOfOutputs`과 일치해야 합니다.
+      - : An **array** defining the number of channels for each output. For example, _outputChannelCount: \[n, m]_ specifies the number of channels in the first output to be _n_ and the second output to be _m_. The array length must match `numberOfOutputs`.
     - `parameterData` {{optional_inline}}
-      - : `key`가 사용자 정의 파라미터의 이름이고 `value`가 이것의 초기 값인 채로, (노드의 {{domxref("AudioWorkletNode.parameters", "parameters")}} 속성에 있는) 이 노드에 있는 사용자 정의 {{domxref("AudioParam")}} 객체의 초기 값을 포함하는 객체.
+      - : An object containing the initial values of custom {{domxref("AudioParam")}} objects on this node (in its {{domxref("AudioWorkletNode.parameters", "parameters")}} property), with `key` being the name of a custom parameter and `value` being its initial value.
     - `processorOptions` {{optional_inline}}
-      - : 근본적인 {{domxref("AudioWorkletProcessor")}}의 사용자 정의 초기화를 위해 사용될 수 있는 모든 추가적인 데이터.
+      - : Any additional data that can be used for custom initialization of the underlying {{domxref("AudioWorkletProcessor")}}.
 
-### 반환 값
-
-새롭게 생성된 {{domxref("AudioWorkletNode")}} 인스턴스.
-
-### 예외
+### Exceptions
 
 - `NotSupportedError` {{domxref("DOMException")}}
-  - : 명시된 `options.outputChannelCount` 이 `0` 또는 현재 구현 지원보다 더 큽니다.
 
-    `options.numberOfInputs`와 `options.numberOfOutputs`가 둘 다 0입니다.
+  - : The specified `options.outputChannelCount` is `0` or larger
+    than the current implementation supports.
+
+    Both `options.numberOfInputs` and `options.numberOfOutputs` are 0.
+
 - `IndexSizeError` {{domxref("DOMException")}}
-  - : `options.outputChannelCount` 배열의 길이가 `options.numberOfOutputs`와 일치하지 않습니다.
+  - : The length of `options.outputChannelCount` array does not match
+    `options.numberOfOutputs`.
 
-## 사용 일람
+## Usage notes
 
-각기 다른 `options` 매개변수 값들은 다음의 영향을 가질 수 있습니다.
+Different `options` parameter values can have the following effects.
 
-만약 입력의 수와 출력의 수가 둘 다 0으로 설정된다면, `NotSupportedError`가 발생될 것이고 노드 구성 과정은 중단됩니다. 만약 `outputChannelCount` 배열의 길이가 `numberOfOutputs`과 일치하지 않다면, `IndexSizeError` {{domxref("DOMException")}}이 발생할 것입니다.
+If the number of inputs and number of outputs are both set to 0, a `NotSupportedError` will be thrown and the node construction process aborted. If the length of the `outputChannelCount` array doesn't match `numberOfOutputs`, an `IndexSizeError` {{domxref("DOMException")}} will be thrown.
 
-만약 `outputChannelCount`이 명시되지 않았고, `numberOfInputs`와 `numberOfOutputs`가 모두 1이라면, `AudioWorkletNode`의 초기 채널 카운트는 1으로 설정됩니다. 이것은 계산된 채널의 수로 동적으로 변화하는 출력 채널 카운트를 변화시키는 효과를 가지는데, 이는 입력의 채널 카운트와 {{domxref("AudioNode")}} 속성 {{domxref("AudioNode.channelCountMode", "channelCountMode")}}의 현재 설정에 기반합니다.
+If `outputChannelCount` isn't specified, and `numberOfInputs` and `numberOfOutputs` are both 1, the `AudioWorkletNode`'s initial channel count is set to 1. This has the effect of changing the output channel count to dynamically change to the computed number of channels, based on the input's channel count and the current setting of the {{domxref("AudioNode")}} property {{domxref("AudioNode.channelCountMode", "channelCountMode")}}.
 
-그렇지 않으면, 만약 `outputChannelCount`이 제공되고 만약 `numberOfInputs`와 `numberOfOutputs`의 값이 둘 다 1이라면, 오디오 worklet 노드의 채널 카운트는 `outputChannelCount`의 값으로 설정됩니다. 그렇지 않으면, 출력 채널의 집합에 있는 각 채널의 채널 카운트는 해당하는 `outputChannelCount` 배열의 값과 일치되도록 설정됩니다.
+Otherwise, if `outputChannelCount` is provided _and_ if the values of `numberOfInputs` and `numberOfOutputs` are both 1, the audio worklet node's channel count is set to the value of `outputChannelCount`. Otherwise, the channel count of each channel in the set of output channels is set to match the corresponding value in the `outputChannelCount` array.
 
-## 예제
+## Examples
 
-_사용자 정의 오디오 프로세싱을 시연하는 완전한 예제는 {{domxref("AudioWorkletNode")}} 페이지에서 찾아보실 수 있습니다._
+_For a complete example demonstrating user-defined audio processing, see the
+{{domxref("AudioWorkletNode")}} page._
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Web Audio API](/ko/docs/Web/API/Web_Audio_API)
-- [AudioWorklet을 사용한 백그라운드 오디오 프로세싱](/ko/docs/Web/API/Web_Audio_API/Using_AudioWorklet)
-- {{domxref("AudioWorkletNode", "AudioWorkletNode")}} 인터페이스
+- [Web Audio API](/en-US/docs/Web/API/Web_Audio_API)
+- [Background audio processing using AudioWorklet](/en-US/docs/Web/API/Web_Audio_API/Using_AudioWorklet)
+- {{domxref("AudioWorkletNode", "AudioWorkletNode")}} interface

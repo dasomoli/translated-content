@@ -1,55 +1,72 @@
 ---
-title: 변형 (transformations)
+title: Transformations
 slug: Web/API/Canvas_API/Tutorial/Transformations
-original_slug: Web/HTML/Canvas/Tutorial/변형
+page-type: guide
 ---
 
 {{DefaultAPISidebar("Canvas API")}} {{PreviousNext("Web/API/Canvas_API/Tutorial/Using_images", "Web/API/Canvas_API/Tutorial/Compositing")}}
 
-이 튜토리얼에 앞서 [canvas 그리드](/ko/docs/Web/HTML/Canvas/Tutorial/Drawing_shapes)와 **좌표 공간**에 대해 알아 보았습니다. 지금까지는 기본적인 그리드를 사용해 요구에 맞추어 전체 canvas의 크기를 바꾸기만 했습니다. Transformation(변형)에는 그리드를 원점에서 다른 위치로 옮기고, 회전하며, 확대·축소까지 하는 더 강력한 방법들이 있습니다.
+Earlier in this tutorial we've learned about the [canvas grid](/en-US/docs/Web/API/Canvas_API/Tutorial/Drawing_shapes) and the **coordinate space**. Until now, we only used the default grid and changed the size of the overall canvas for our needs. With transformations there are more powerful ways to translate the origin to a different position, rotate the grid and even scale it.
 
-## 상태(state)의 저장과 복원
+## Saving and restoring state
 
-변형(transformation) 메소드을 살펴보기 전에 두 가지 다른 메소드를 보도록 하지요. 일단 여러분이 더 복잡한 그림(drawings)을 그리기 시작하면 반드시 있어야 하는 메소드들입니다.
+Before we look at the transformation methods, let's look at two other methods which are indispensable once you start generating ever more complex drawings.
 
 - {{domxref("CanvasRenderingContext2D.save", "save()")}}
-  - : canvas의 모든 상태를 저장합니다.
+  - : Saves the entire state of the canvas.
 - {{domxref("CanvasRenderingContext2D.restore", "restore()")}}
-  - : 가장 최근에 저장된 canvas 상태를 복원합니다.
+  - : Restores the most recently saved canvas state.
 
-Canvas 상태는 스택(stack)에 쌓입니다. `save()` 메소드가 호출될 때마다 현재 drawing 상태가 스택 위로 푸시됩니다. drawing 상태는 다음과 같이 이루어집니다.
+Canvas states are stored on a stack. Every time the `save()` method is called, the current drawing state is pushed onto the stack. A drawing state consists of
 
-- 이전부터 적용된 변형(가령, `translate`과 `rotate`와 `scale` 같은 – 아래의 내용을 보세요).
-- 다음 속성(attributes)의 현재 값:
-  {{domxref("CanvasRenderingContext2D.strokeStyle", "strokeStyle")}}, {{domxref("CanvasRenderingContext2D.fillStyle", "fillStyle")}}, {{domxref("CanvasRenderingContext2D.globalAlpha", "globalAlpha")}}, {{domxref("CanvasRenderingContext2D.lineWidth", "lineWidth")}}, {{domxref("CanvasRenderingContext2D.lineCap", "lineCap")}}, {{domxref("CanvasRenderingContext2D.lineJoin", "lineJoin")}}, {{domxref("CanvasRenderingContext2D.miterLimit", "miterLimit")}}, {{domxref("CanvasRenderingContext2D.lineDashOffset", "lineDashOffset")}}, {{domxref("CanvasRenderingContext2D.shadowOffsetX", "shadowOffsetX")}}, {{domxref("CanvasRenderingContext2D.shadowOffsetY", "shadowOffsetY")}}, {{domxref("CanvasRenderingContext2D.shadowBlur", "shadowBlur")}}, {{domxref("CanvasRenderingContext2D.shadowColor", "shadowColor")}}, {{domxref("CanvasRenderingContext2D.globalCompositeOperation", "globalCompositeOperation")}}, {{domxref("CanvasRenderingContext2D.font", "font")}}, {{domxref("CanvasRenderingContext2D.textAlign", "textAlign")}}, {{domxref("CanvasRenderingContext2D.textBaseline", "textBaseline")}}, {{domxref("CanvasRenderingContext2D.direction", "direction")}}, {{domxref("CanvasRenderingContext2D.imageSmoothingEnabled", "imageSmoothingEnabled")}}.
-- 현재의 [clipping path](/ko/docs/Web/API/Canvas_API/Tutorial/Compositing#Clipping_paths), 이것은 다음 섹션에서 다루겠습니다.
+- The transformations that have been applied (i.e. `translate`, `rotate` and `scale` – see below).
+- The current values of the following attributes:
+  - {{domxref("CanvasRenderingContext2D.strokeStyle", "strokeStyle")}}
+  - {{domxref("CanvasRenderingContext2D.fillStyle", "fillStyle")}}
+  - {{domxref("CanvasRenderingContext2D.globalAlpha", "globalAlpha")}}
+  - {{domxref("CanvasRenderingContext2D.lineWidth", "lineWidth")}}
+  - {{domxref("CanvasRenderingContext2D.lineCap", "lineCap")}}
+  - {{domxref("CanvasRenderingContext2D.lineJoin", "lineJoin")}}
+  - {{domxref("CanvasRenderingContext2D.miterLimit", "miterLimit")}}
+  - {{domxref("CanvasRenderingContext2D.lineDashOffset", "lineDashOffset")}}
+  - {{domxref("CanvasRenderingContext2D.shadowOffsetX", "shadowOffsetX")}}
+  - {{domxref("CanvasRenderingContext2D.shadowOffsetY", "shadowOffsetY")}}
+  - {{domxref("CanvasRenderingContext2D.shadowBlur", "shadowBlur")}}
+  - {{domxref("CanvasRenderingContext2D.shadowColor", "shadowColor")}}
+  - {{domxref("CanvasRenderingContext2D.globalCompositeOperation", "globalCompositeOperation")}}
+  - {{domxref("CanvasRenderingContext2D.font", "font")}}
+  - {{domxref("CanvasRenderingContext2D.textAlign", "textAlign")}}
+  - {{domxref("CanvasRenderingContext2D.textBaseline", "textBaseline")}}
+  - {{domxref("CanvasRenderingContext2D.direction", "direction")}}
+  - {{domxref("CanvasRenderingContext2D.imageSmoothingEnabled", "imageSmoothingEnabled")}}.
+- The current [clipping path](/en-US/docs/Web/API/Canvas_API/Tutorial/Compositing#clipping_paths), which we'll see in the next section.
 
-여러분은 원하는 만큼 `save()` 메소드를 많이 호출할 수 있습니다. `restore()` 메소드를 호출할 때마다 마지막으로 저장된 상태가 스택에서 튀어나와 저장된 설정들을 모두 복원시킵니다.
+You can call the `save()` method as many times as you like. Each time the `restore()` method is called, the last saved state is popped off the stack and all saved settings are restored.
 
-### `save`와 `restore` canvas 상태(state) 예제
+### A `save` and `restore` canvas state example
 
-사각형 세트를 연이어 그려서 drawing 상태를 가진 스택이 어떻게 기능하는지를 이 예제에서 설명하고자 합니다.
+This example tries to illustrate how the stack of drawing states functions by drawing a set of consecutive rectangles.
 
 ```js
 function draw() {
-  var ctx = document.getElementById('canvas').getContext('2d');
+  const ctx = document.getElementById("canvas").getContext("2d");
 
-  ctx.fillRect(0, 0, 150, 150);   // 기본 설정으로 사각형을 그리기
-  ctx.save();                  // 기본 상태를 저장하기
+  ctx.fillRect(0, 0, 150, 150); // Draw a rectangle with default settings
+  ctx.save(); // Save the default state
 
-  ctx.fillStyle = '#09F';      // 설정 변경하기
-  ctx.fillRect(15, 15, 120, 120); // 새로운 설정으로 사각형 그리기
+  ctx.fillStyle = "#09F"; // Make changes to the settings
+  ctx.fillRect(15, 15, 120, 120); // Draw a rectangle with new settings
 
-  ctx.save();                  // 현재 상태 저장하기
-  ctx.fillStyle = '#FFF';      // 설정 변경하기
+  ctx.save(); // Save the current state
+  ctx.fillStyle = "#FFF"; // Make changes to the settings
   ctx.globalAlpha = 0.5;
-  ctx.fillRect(30, 30, 90, 90);   // 새로운 설정으로 사각형 그리기
+  ctx.fillRect(30, 30, 90, 90); // Draw a rectangle with new settings
 
-  ctx.restore();               // 이전 상태 복원하기
-  ctx.fillRect(45, 45, 60, 60);   // 복원된 설정으로 사각형 그리기
+  ctx.restore(); // Restore previous state
+  ctx.fillRect(45, 45, 60, 60); // Draw a rectangle with restored settings
 
-  ctx.restore();               // 초기 상태를 복원하기
-  ctx.fillRect(60, 60, 30, 30);   // 복원된 설정으로 사각형 그리기
+  ctx.restore(); // Restore original state
+  ctx.fillRect(60, 60, 30, 30); // Draw a rectangle with restored settings
 }
 ```
 
@@ -61,36 +78,38 @@ function draw() {
 draw();
 ```
 
-첫 단계로 기본 설정으로 커다란 사각형을 그립니다. 그다음에는 이 상태를 저장하고 fill color를 바꿉니다. 그런 후에 두 번째이자 크기가 더 작은 파란 사각형을 그리고 그 상태를 저장합니다. 다시 한번 일부 drawing 설정을 바꾸고 세 번째 반투명한 흰 사각형을 그립니다.
+The first step is to draw a large rectangle with the default settings. Next we save this state and make changes to the fill color. We then draw the second and smaller blue rectangle and save the state. Again we change some drawing settings and draw the third semi-transparent white rectangle.
 
-여기까지는 이전 섹션에서 했던 작업과 매우 유사합니다. 하지만 일단 첫 번째 `restore()` 문을 호출하면 스택에서 맨 위의 drawing 상태가 지워지고 설정이 복원됩니다. 만일 `save()`로 저장하지 않았다면, 이전 상태로 되돌리기 위해 fill color와 투명도를 일일이 바꿔주어야 했을 것입니다. 두 속성이라서 간단했을 테지만 그보다 더 많았으면 코드가 급속히 길어졌겠지요.
+So far this is pretty similar to what we've done in previous sections. However once we call the first `restore()` statement, the top drawing state is removed from the stack, and settings are restored. If we hadn't saved the state using `save()`, we would need to change the fill color and transparency manually in order to return to the previous state. This would be easy for two properties, but if we have more than that, our code would become very long, very fast.
 
-두 번째 `restore()`문이 호출될 때, 초기 상태( 처음으로 `save`를 호출하기 전에 설정한 상태)가 복원되고 마지막 사각형은 한번 더 검게 그려집니다.
+When the second `restore()` statement is called, the original state (the one we set up before the first call to `save`) is restored and the last rectangle is once again drawn in black.
 
-{{EmbedLiveSample("A_save_and_restore_canvas_state_example", "180", "180", "canvas_savestate.png")}}
+{{EmbedLiveSample("A_save_and_restore_canvas_state_example", "180", "190", "canvas_savestate.png")}}
 
-## 이동(translating)
+## Translating
 
-![](canvas_grid_translate.png)우리가 살펴볼 첫 번째 변형 메소드는 `translate()`입니다. 이 메소드는 그리드에서 canvas를 원점에서 다른 점으로 옮기는 데 사용됩니다.
+The first of the transformation methods we'll look at is `translate()`. This method is used to move the canvas and its origin to a different point in the grid.
 
 - {{domxref("CanvasRenderingContext2D.translate", "translate(x, y)")}}
-  - : 그리드에서 canvas와 그 원점을 이동합니다. `x`는 이동시킬 수평 거리를 가리키고, `y`는 그리드에서 수직으로 얼마나 멀리 떨어지는지를 표시합니다.
+  - : Moves the canvas and its origin on the grid. `x` indicates the horizontal distance to move, and `y` indicates how far to move the grid vertically.
 
-변형하기 전에 canvas 상태를 저장하는 것이 좋습니다. 대다수의 경우, 원래 상태로 되돌리려고 역이동(reverse translation)을 시키는 것보다 `restore` 메소드를 호출하는 것이 더욱 간편합니다. 게다가 루프(loop) 안에서 이동하는 거라면 canvas 상태를 저장하고 복원하지 마세요. canvas 모서리 밖에서 그려지는 바람에 drawing의 일부를 잃어버리게 될지 모릅니다.
+![The canvas is pushed down and to the right, or translated, from its origin point on the grid by 'x' units horizontally and 'y' units vertically.](canvas_grid_translate.png)
 
-### `translate` 예제
+It's a good idea to save the canvas state before doing any transformations. In most cases, it is just easier to call the `restore` method than having to do a reverse translation to return to the original state. Also if you're translating inside a loop and don't save and restore the canvas state, you might end up missing part of your drawing, because it was drawn outside the canvas edge.
 
-이 예제에서 canvas 원점의 이동에 관한 좋은 점을 일부 보여드리겠습니다. `translate()` 메소드를 쓰지 않으면 모든 사각형은 같은 위치 (0, 0)에 그려집니다. 또한, `translate()` 메소드는 사각형을 `fillRect()` function에서 좌표를 일일이 적으며 바꾸지 않아도 어디에나 위치할 수 있게 해줍니다. 이렇게 하면 이해하고 사용하기가 좀 더 쉽습니다.
+### A `translate` example
 
-`draw()` function에서 두 개의 루프(loops)를 이용해 `fillRect()` function을 아홉 번 호출합니다. 루프마다 canvas가 이동하고 사각형이 그려지며, canvas는 원래 상태로 되돌아 갑니다. `fillRect()`로의 호출이 `translate()`에 의지해 drawing 위치를 바꾸는데 어떻게 매번 같은 좌표를 사용하는지 눈여겨 보세요.
+This example demonstrates some of the benefits of translating the canvas origin. Without the `translate()` method, all of the rectangles would be drawn at the same position (0,0). The `translate()` method also gives us the freedom to place the rectangle anywhere on the canvas without having to manually adjust coordinates in the `fillRect()` function. This makes it a little easier to understand and use.
+
+In the `draw()` function, we call the `fillRect()` function nine times using two `for` loops. In each loop, the canvas is translated, the rectangle is drawn, and the canvas is returned back to its original state. Note how the call to `fillRect()` uses the same coordinates each time, relying on `translate()` to adjust the drawing position.
 
 ```js
 function draw() {
-  var ctx = document.getElementById('canvas').getContext('2d');
-  for (var i = 0; i < 3; i++) {
-    for (var j = 0; j < 3; j++) {
+  const ctx = document.getElementById("canvas").getContext("2d");
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
       ctx.save();
-      ctx.fillStyle = 'rgb(' + (51 * i) + ', ' + (255 - 51 * i) + ', 255)';
+      ctx.fillStyle = `rgb(${51 * i}, ${255 - 51 * i}, 255)`;
       ctx.translate(10 + j * 50, 10 + i * 50);
       ctx.fillRect(0, 0, 25, 25);
       ctx.restore();
@@ -107,56 +126,58 @@ function draw() {
 draw();
 ```
 
-{{EmbedLiveSample("A_translate_example", "160", "160", "translate.png")}}
+{{EmbedLiveSample("A_translate_example", "160", "190", "translate.png")}}
 
-## 회전(rotating)
+## Rotating
 
-![](canvas_grid_rotate.png)두 번째 변형 메소드는 `rotate()`입니다. canvas를 현재의 원점 둘레로 회전하는 데 사용합니다.
+The second transformation method is `rotate()`. We use it to rotate the canvas around the current origin.
 
 - {{domxref("CanvasRenderingContext2D.rotate", "rotate(angle)")}}
-  - : canvas를 현재 원점을 기준으로 라디안의 `angle` 숫자만큼 시계방향으로 회전시킵니다.
+  - : Rotates the canvas clockwise around the current origin by the `angle` number of radians.
 
-회전의 중심점은 언제나 canvas 원점입니다. 중심점을 바꾸려면 `translate()` 메소드를 써서 canvas를 이동해야 합니다.
+![The default origin point is at the top left, 0 degrees is horizontal and to the right. The rotation point starts from the origin point and goes clockwise.](canvas_grid_rotate.png)
 
-### `rotate` 예제
+The rotation center point is always the canvas origin. To change the center point, we will need to move the canvas by using the `translate()` method.
 
-이 예제는 사각형을 canvas 원점에서 먼저 회전하고 그다음에 `translate()`의 도움을 받아 사각형 자체의 중심에서 회전하는 데 `rotate()`를 사용합니다.
+### A `rotate` example
 
-> **참고:** **주의**: 각도의 단위는 도(degree)가 아닌 라디안(radian)입니다. 변환하려면 `radians = (Math.PI/180)*degrees`.를 사용합니다.
+In this example, we'll use the `rotate()` method to first rotate a rectangle from the canvas origin and then from the center of the rectangle itself with the help of `translate()`.
+
+> **Note:** Angles are in radians, not degrees. To convert, we are using: `radians = (Math.PI/180)*degrees`.
 
 ```js
 function draw() {
-  var ctx = document.getElementById('canvas').getContext('2d');
+  const ctx = document.getElementById("canvas").getContext("2d");
 
-  // 좌측 사각형, canvas 원점에서 회전하기
+  // left rectangles, rotate from canvas origin
   ctx.save();
-  // 파란 사각형
-  ctx.fillStyle = '#0095DD';
+  // blue rect
+  ctx.fillStyle = "#0095DD";
   ctx.fillRect(30, 30, 100, 100);
   ctx.rotate((Math.PI / 180) * 25);
-  // 회색 사각형
-  ctx.fillStyle = '#4D4E53';
+  // grey rect
+  ctx.fillStyle = "#4D4E53";
   ctx.fillRect(30, 30, 100, 100);
   ctx.restore();
 
-  // 우측 사각형, 사각형 중심에서 회전하기
-  // 파란 사각형 그리기
-  ctx.fillStyle = '#0095DD';
+  // right rectangles, rotate from rectangle center
+  // draw blue rect
+  ctx.fillStyle = "#0095DD";
   ctx.fillRect(150, 30, 100, 100);
 
-  ctx.translate(200, 80); // 사각형 중심으로 이동하기
-                          // x = x + 0.5 * width
-                          // y = y + 0.5 * height
-  ctx.rotate((Math.PI / 180) * 25); // 회전
-  ctx.translate(-200, -80); // 예전 위치로 이동하기
+  ctx.translate(200, 80); // translate to rectangle center
+  // x = x + 0.5 * width
+  // y = y + 0.5 * height
+  ctx.rotate((Math.PI / 180) * 25); // rotate
+  ctx.translate(-200, -80); // translate back
 
-  // 회색 사각형 그리기
-  ctx.fillStyle = '#4D4E53';
+  // draw grey rect
+  ctx.fillStyle = "#4D4E53";
   ctx.fillRect(150, 30, 100, 100);
 }
 ```
 
-사각형 자체의 중심 둘레로 회전하려면 사각형의 중심으로 canvas를 옮기세요. 그런 후에 canvas를 회전하고, 그 canvas를 0, 0로 되돌려 이동합니다. 그다음에 사각형을 그리세요.
+To rotate the rectangle around its own center, we translate the canvas to the center of the rectangle, then rotate the canvas, then translate the canvas back to 0,0, and then draw the rectangle.
 
 ```html hidden
 <canvas id="canvas" width="300" height="200"></canvas>
@@ -166,37 +187,37 @@ function draw() {
 draw();
 ```
 
-{{EmbedLiveSample("A_rotate_example", "310", "210", "rotate.png")}}
+{{EmbedLiveSample("A_rotate_example", "310", "260", "rotate.png")}}
 
-## 확대·축소(scaling)
+## Scaling
 
-다음 변형 메소드는 확대·축소(scaling)입니다. canvas 그리드에서 단위(units)를 키우거나 줄이는 데 사용합니다. 이는 벡터 모양과 비트맵(bitmaps) 요소를 축소하거나 확대해서 그리는 데 사용될 수 있습니다.
+The next transformation method is scaling. We use it to increase or decrease the units in our canvas grid. This can be used to draw scaled down or enlarged shapes and bitmaps.
 
 - {{domxref("CanvasRenderingContext2D.scale", "scale(x, y)")}}
-  - : canvas 단위를 수평으로 x만큼, 수직으로 y만큼 크기를 확대·축소합니다. 둘의 매개 변수는 실수입니다. 1.0보다 작은 값이면 단위의 크기를 축소하고, 1.0보다 큰 값이면 단위의 크기를 확대합니다. 값이 1.0이면 단위의 크기는 그대로입니다.
+  - : Scales the canvas units by x horizontally and by y vertically. Both parameters are real numbers. Values that are smaller than 1.0 reduce the unit size and values above 1.0 increase the unit size. Values of 1.0 leave the units the same size.
 
-음수를 이용해서 축을 대칭 시킬 수 있습니다(가령 `translate(0,canvas.height); scale(1,-1);`로 쓰는 것처럼 말이죠. 좌측 하단 모서리에 있는 원점을 이용한, 잘 알려진 카르테시안 좌표계(Cartesian coordinate)인 것이지요.
+Using negative numbers you can do axis mirroring (for example using `translate(0,canvas.height); scale(1,-1);` you will have the well-known Cartesian coordinate system, with the origin in the bottom left corner).
 
-기본적으로 canvas에서 하나의 단위는 정확히 1픽셀입니다. 예를 들어 0.5라는 확대·축소 비율을 적용한다면, 결과로 나오는 단위는 0.5 픽셀이 될 것이고, 고로 모양도 절반 크기로 그려질 것입니다. 이런 방식으로 크기 비율을 2.0으로 잡으면 단위 크기가 확대되어 하나의 단위는 이제 2픽셀이 되겠지요. 이 결과로 모양은 그만큼 2배로 커집니다.
+By default, one unit on the canvas is exactly one pixel. If we apply, for instance, a scaling factor of 0.5, the resulting unit would become 0.5 pixels and so shapes would be drawn at half size. In a similar way setting the scaling factor to 2.0 would increase the unit size and one unit now becomes two pixels. This results in shapes being drawn twice as large.
 
-### `scale` 예제
+### A `scale` example
 
-마지막 예제로 다양한 확대·축소 비율을 이용해 모양을 그려보겠습니다.
+In this last example, we'll draw shapes with different scaling factors.
 
 ```js
 function draw() {
-  var ctx = document.getElementById('canvas').getContext('2d');
+  const ctx = document.getElementById("canvas").getContext("2d");
 
-  // 간단하지만 확대·축소 비율을 적용한 사각형 그리기
+  // draw a simple rectangle, but scale it.
   ctx.save();
   ctx.scale(10, 3);
   ctx.fillRect(1, 10, 10, 10);
   ctx.restore();
 
-  // 수평으로 대칭하기
+  // mirror horizontally
   ctx.scale(-1, 1);
-  ctx.font = '48px serif';
-  ctx.fillText('MDN', -135, 120);
+  ctx.font = "48px serif";
+  ctx.fillText("MDN", -135, 120);
 }
 ```
 
@@ -208,55 +229,58 @@ function draw() {
 draw();
 ```
 
-{{EmbedLiveSample("A_scale_example", "160", "160", "scale.png")}}
+{{EmbedLiveSample("A_scale_example", "160", "190", "scale.png")}}
 
-## 변형(transforms)
+## Transforms
 
-마지막으로, 다음의 변형(transform) 메소드들은 변환 행렬(transformation matrix)로 변경할 사항을 즉시 적용할 수 있습니다.
+Finally, the following transformation methods allow modifications directly to the transformation matrix.
 
 - {{domxref("CanvasRenderingContext2D.transform", "transform(a, b, c, d, e, f)")}}
-  - : 인수(arguments)에 표시된 행렬을 이용해 현재 변환 행렬을 곱합니다. 변환 행렬은 다음과 같이 작성됩니다. <math><semantics><mrow><mo>[</mo><mtable columnalign="center center center" rowspacing="0.5ex"><mtr><mtd><mi>a</mi></mtd><mtd><mi>c</mi></mtd><mtd><mi>e</mi></mtd></mtr><mtr><mtd><mi>b</mi></mtd><mtd><mi>d</mi></mtd><mtd><mi>f</mi></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow><annotation encoding="TeX">\left[ \begin{array}{ccc} a &#x26; c &#x26; e \\ b &#x26; d &#x26; f \\ 0 &#x26; 0 &#x26; 1 \end{array} \right]</annotation></semantics></math>
 
-<dl><dd>만일 인수 중에 <code><a href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity" title="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity">Infinity</a></code>가 있다면, 변환 행렬은 예외 처리하는 메소드 대신에 반드시 infinite로 표시되어야 합니다.</dd></dl>
+  - : Multiplies the current transformation matrix with the matrix described by its arguments. The transformation matrix is described by:
 
-이 function의 매개 변수들은 다음과 같습니다.
+    <math><semantics><mrow><mo>[</mo><mtable columnalign="center center center" rowspacing="0.5ex"><mtr><mtd><mi>a</mi></mtd><mtd><mi>c</mi></mtd><mtd><mi>e</mi></mtd></mtr><mtr><mtd><mi>b</mi></mtd><mtd><mi>d</mi></mtd><mtd><mi>f</mi></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo>]</mo></mrow><annotation encoding="TeX">\left[ \begin{array}{ccc} a &#x26; c &#x26; e \\ b &#x26; d &#x26; f \\ 0 &#x26; 0 &#x26; 1 \end{array} \right]</annotation></semantics></math>
+
+    If any of the arguments are [`Infinity`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity) the transformation matrix must be marked as infinite instead of the method throwing an exception.
+
+The parameters of this function are:
 
 - `a (m11)`
-  - : 수평으로 확대·축소하기
-- _`b (m12)`_
-  - : 수평으로 비스듬히 기울이기
+  - : Horizontal scaling.
+- `b (m12)`
+  - : Horizontal skewing.
 - `c (m21)`
-  - : 수직으로 비스듬히 기울이기
+  - : Vertical skewing.
 - `d (m22)`
-  - : 수직으로 확대·축소하기
+  - : Vertical scaling.
 - `e (dx)`
-  - : 수평으로 이동하기
+  - : Horizontal moving.
 - `f (dy)`
-  - : 수직으로 이동하기
+  - : Vertical moving.
 - {{domxref("CanvasRenderingContext2D.setTransform", "setTransform(a, b, c, d, e, f)")}}
-  - : 현재 변형 상태를 단위 행렬로 재설정하고 나서 동일한 인수로 `transform()` 메소드를 적용합니다. 이는 기본적으로 현재의 변형을 무효로 한 후에 명시된 변형으로 바뀌는데, 한번에 모든 게 진행됩니다.
+  - : Resets the current transform to the identity matrix, and then invokes the `transform()` method with the same arguments. This basically undoes the current transformation, then sets the specified transform, all in one step.
 - {{domxref("CanvasRenderingContext2D.resetTransform", "resetTransform()")}}
-  - : 현재 변형 상태를 단위 행렬로 재설정합니다. 이는 `ctx.setTransform(1, 0, 0, 1, 0, 0);` 호출과 같습니다.
+  - : Resets the current transform to the identity matrix. This is the same as calling: `ctx.setTransform(1, 0, 0, 1, 0, 0);`
 
-### `transform`과 `setTransform` 예제
+### Example for `transform` and `setTransform`
 
 ```js
 function draw() {
-  var ctx = document.getElementById('canvas').getContext('2d');
+  const ctx = document.getElementById("canvas").getContext("2d");
 
-  var sin = Math.sin(Math.PI / 6);
-  var cos = Math.cos(Math.PI / 6);
+  const sin = Math.sin(Math.PI / 6);
+  const cos = Math.cos(Math.PI / 6);
   ctx.translate(100, 100);
-  var c = 0;
-  for (var i = 0; i <= 12; i++) {
-    c = Math.floor(255 / 12 * i);
-    ctx.fillStyle = 'rgb(' + c + ', ' + c + ', ' + c + ')';
+  let c = 0;
+  for (let i = 0; i <= 12; i++) {
+    c = Math.floor((255 / 12) * i);
+    ctx.fillStyle = `rgb(${c}, ${c}, ${c})`;
     ctx.fillRect(0, 0, 100, 10);
     ctx.transform(cos, sin, -sin, cos, 0, 0);
   }
 
   ctx.setTransform(-1, 0, 0, 1, 100, 100);
-  ctx.fillStyle = 'rgba(255, 128, 255, 0.5)';
+  ctx.fillStyle = "rgba(255, 128, 255, 0.5)";
   ctx.fillRect(0, 50, 100, 100);
 }
 ```
@@ -269,6 +293,6 @@ function draw() {
 draw();
 ```
 
-{{EmbedLiveSample("Example_for_transform_and_setTransform", "230", "280", "canvas_transform.png")}}
+{{EmbedLiveSample("Example_for_transform_and_setTransform", "230", "290", "canvas_transform.png")}}
 
 {{PreviousNext("Web/API/Canvas_API/Tutorial/Using_images", "Web/API/Canvas_API/Tutorial/Compositing")}}

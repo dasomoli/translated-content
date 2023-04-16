@@ -1,70 +1,76 @@
 ---
-title: AND 비트연산(&)
+title: Bitwise AND (&)
 slug: Web/JavaScript/Reference/Operators/Bitwise_AND
+page-type: javascript-operator
+browser-compat: javascript.operators.bitwise_and
 ---
 
 {{jsSidebar("Operators")}}
 
-AND 비트 연산자(`&`)는 두 개의 피연산자의 각 자리마다 대응하는 비트가 모두 `1`일 경우 `1`을 반환합니다.
+The **bitwise AND (`&`)** operator returns a number or BigInt whose binary representation has a `1` in each bit position for which the corresponding bits of both operands are `1`.
 
-{{EmbedInteractiveExample("pages/js/expressions-bitwise-and.html")}}
+{{EmbedInteractiveExample("pages/js/expressions-bitwise-and.html", "shorter")}}
 
-## 구문
+## Syntax
 
-```js
-a & b;
+```js-nolint
+x & y
 ```
 
-## 설명
+## Description
 
-피연산자는 32비트 정수로 변환되며 일련의 비트(0과 1)로 표현됩니다. 32비트 이상인 숫자는 최상위 비트가 삭제됩니다. 예를 들어 32비트 이상인 다음 정수는 32비트 정수로 변환됩니다.
+The `&` operator is overloaded for two types of operands: number and [BigInt](/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt). For numbers, the operator returns a 32-bit integer. For BigInts, the operator returns a BigInt. It first [coerces both operands to numeric values](/en-US/docs/Web/JavaScript/Data_structures#numeric_coercion) and tests the types of them. It performs BigInt AND if both operands becomes BigInts; otherwise, it converts both operands to [32-bit integers](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number#fixed-width_number_conversion) and performs number bitwise AND. A {{jsxref("TypeError")}} is thrown if one operand becomes a BigInt but the other becomes a number.
 
-```js
-Before: 11100110111110100000000000000110000000000001;
-After: 10100000000000000110000000000001;
-```
+The operator operates on the operands' bit representations in [two's complement](https://en.wikipedia.org/wiki/Two's_complement). Each bit in the first operand is paired with the corresponding bit in the second operand: _first bit_ to _first bit_, _second bit_ to _second bit_, and so on. The operator is applied to each pair of bits, and the result is constructed bitwise.
 
-첫 번째 피연산자의 각 비트는 두 번째 피연산자의 해당 비트(_첫 번째 비트_ 와 _첫 번째 비트_, _두 번째 비트_ 와 _두 번째 비트_ 등등)와 쌍을 이룹니다.
+The truth table for the AND operation is:
 
-연산자가 각 비트의 쌍에 적용되며, 결과는 완성된 비트 연산된 값입니다.
-
-AND 연산에 대한 진리표는 다음과 같습니다:
-
-| a   | b   | a AND b |
+| x   | y   | x AND y |
 | --- | --- | ------- |
 | 0   | 0   | 0       |
 | 0   | 1   | 0       |
 | 1   | 0   | 0       |
 | 1   | 1   | 1       |
 
-```js
-.    9 (base 10) = 00000000000000000000000000001001 (base 2)
+```plain
+     9 (base 10) = 00000000000000000000000000001001 (base 2)
     14 (base 10) = 00000000000000000000000000001110 (base 2)
                    --------------------------------
 14 & 9 (base 10) = 00000000000000000000000000001000 (base 2) = 8 (base 10)
 ```
 
-어떤 수 `x`에 `0`을 AND 비트 연산한 결과는 `0`가 됩니다.
+Numbers with more than 32 bits get their most significant bits discarded. For example, the following integer with more than 32 bits will be converted to a 32-bit integer:
 
-## 예제
+```plain
+Before: 11100110111110100000000000000110000000000001
+After:              10100000000000000110000000000001
+```
 
-### AND 비트 연산 사용하기
+For BigInts, there's no truncation. Conceptually, understand positive BigInts as having an infinite number of leading `0` bits, and negative BigInts having an infinite number of leading `1` bits.
+
+Bitwise ANDing any number `x` with `-1` returns `x` converted to a 32-bit integer. Do not use `& -1` to truncate numbers to integers; use [`Math.trunc()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/trunc#using_bitwise_no-ops_to_truncate_numbers) instead.
+
+## Examples
+
+### Using bitwise AND
 
 ```js
 // 5: 00000000000000000000000000000101
 // 2: 00000000000000000000000000000010
 5 & 2; // 0
+
+5n & 2n; // 0n
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [JS의 비트 연산 가이드](/ko/docs/Web/JavaScript/Guide/Expressions_and_Operators#비트_연산자)
-- [비트 AND 할당연산자](/ko/docs/Web/JavaScript/Reference/Operators/Bitwise_AND_assignment)
+- [Bitwise operators in the JS guide](/en-US/docs/Web/JavaScript/Guide/Expressions_and_operators#bitwise_operators)
+- [Bitwise AND assignment operator](/en-US/docs/Web/JavaScript/Reference/Operators/Bitwise_AND_assignment)

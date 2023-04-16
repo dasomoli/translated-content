@@ -1,77 +1,94 @@
 ---
 title: class
 slug: Web/JavaScript/Reference/Statements/class
+page-type: javascript-statement
+browser-compat: javascript.statements.class
 ---
 
 {{jsSidebar("Statements")}}
 
-**`class` 선언**은 프로토타입 기반 상속을 사용하여, 주어진 이름의 새로운 클래스를 만듭니다.
+The **`class`** declaration creates a new class
+with a given name using prototype-based inheritance.
+
+You can also define a class using a {{jsxref("Operators/class", "class expression",
+    "", 1)}}, which allows redeclarations and omitting class names. Attempting to place **class declaration** in the same scope, under the same name, will throw a {{jsxref("SyntaxError")}}.
 
 {{EmbedInteractiveExample("pages/js/statement-class.html")}}
 
-{{jsxref("Operators/class", "클래스 표현", "", 1)}}을 사용하여 클래스를 정의할 수도 있습니다. 표현식과 달리 선언문으로는 같은 클래스를 다시 선언하면 오류가 발생합니다.
+## Syntax
 
-## 구문
-
-```js
-    class name [extends] {
-      // class body
-    }
+```js-nolint
+class name [extends otherName] {
+  // class body
+}
 ```
 
-## 설명
+## Description
 
-클래스 본문은 [엄격 모드](/ko/docs/Web/JavaScript/Reference/Strict_mode)에서 실행됩니다. 생성자 속성은 선택 사항입니다..
+The class body of a class declaration is executed in [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode). The
+`constructor` method is optional.
 
-클래스 선언은 {{jsxref("Statements/function", "함수 선언", "", 0)}}과 달리 {{Glossary("Hoisting", "호이스팅")}}의 대상이 아닙니다.
+Class declarations behave like [`let`](/en-US/docs/Web/JavaScript/Reference/Statements/let) and [`const`](/en-US/docs/Web/JavaScript/Reference/Statements/const) and are not {{Glossary("Hoisting", "hoisted")}}
+(unlike [function declarations](/en-US/docs/Web/JavaScript/Reference/Statements/function)).
 
-## 예제
+## Examples
 
-### 간단한 클래스 선언
+### A simple class declaration
 
-다음 예제는 우선 `Polygon` 클래스를 정의하고, `Square`라는 이름의 새로운 클래스가 `Polygon`을 상속합니다. 생성자 내부의 `super()`는 생성자 내에서만, 그리고 {{jsxref("Operators/this", "this")}} 키워드를 사용하기 전에만 쓸 수 있다는 점을 주의하세요.
+In the following example, we first define a class named `Rectangle`, then
+extend it to create a class named `FilledRectangle`.
+
+Note that `super()`, used in the `constructor`, can only be used
+in constructors, and _must_ be called _before_ the `this`
+keyword can be used.
 
 ```js
-class Polygon {
+class Rectangle {
   constructor(height, width) {
-    this.name = 'Polygon';
+    this.name = "Rectangle";
     this.height = height;
     this.width = width;
   }
 }
 
-class Square extends Polygon {
-  constructor(length) {
-    super(length, length);
-    this.name = 'Square';
+class FilledRectangle extends Rectangle {
+  constructor(height, width, color) {
+    super(height, width);
+    this.name = "Filled rectangle";
+    this.color = color;
   }
 }
 ```
 
-> **Warning:** 같은 클래스를 두 번 선언하려고 시도할 때 클래스 선언문으로 같은 클래스를 두 번 선언하면 오류가 발생합니다.
+### Attempting to declare a class twice
 
-```js
-class Foo {};
-class Foo {}; // Uncaught SyntaxError: Identifier 'Foo' has already been declared
+Re-declaring a class using the class declaration throws a {{jsxref("SyntaxError")}}.
+
+```js example-bad
+class Foo {}
+class Foo {} // Uncaught SyntaxError: Identifier 'Foo' has already been declared
 ```
 
-이전에 표현식으로 정의한 경우에도 오류가 발생합니다.
+The same error is thrown when a class has been defined before using the class
+expression.
 
-```js
-var Foo = class {};
-class Foo {}; // Uncaught TypeError: Identifier 'Foo' has already been declared
+```js example-bad
+let Foo = class {};
+class Foo {} // Uncaught SyntaxError: Identifier 'Foo' has already been declared
 ```
 
-## 명세서
+If you're experimenting in a REPL, such as the Firefox web console (**Tools** > **Web Developer** > **Web Console**), and you run two class declarations with the same name in two separate inputs, you may get the same re-declaration error. See further discussion of this issue in [Firefox bug 1580891](https://bugzil.la/1580891). The Chrome console allows class re-declarations between different REPL inputs.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
-- {{jsxref("Statements/function", "function")}} 선언문
-- {{jsxref("Operators/class", "class")}} 표현식
-- [클래스](/ko/docs/Web/JavaScript/Reference/Classes)
+- [`function` declaration](/en-US/docs/Web/JavaScript/Reference/Statements/function)
+- [`class` expression](/en-US/docs/Web/JavaScript/Reference/Operators/class)
+- [Classes](/en-US/docs/Web/JavaScript/Reference/Classes)

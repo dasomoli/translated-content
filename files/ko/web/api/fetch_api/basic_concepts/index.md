@@ -1,34 +1,37 @@
 ---
 title: Fetch basic concepts
 slug: Web/API/Fetch_API/Basic_concepts
+page-type: guide
 ---
 
 {{DefaultAPISidebar("Fetch API")}}
 
-[Fetch](/ko/docs/Web/API/Fetch_API) 는 네트워크 통신을 포함한 리소스를 가지고 오기 위한 인터페이스를 제공해주는 보다 새로운 API입니다. [XMLHttpRequest](/ko/docs/Web/API/XMLHttpRequest) 와 기능은 같지만 확장 가능하며 효과적으로 구성되어 있습니다. 이 문서에서는 Fetch API의 기본 컨셉들중 일부를 소개합니다.
+The [Fetch API](/en-US/docs/Web/API/Fetch_API) provides an interface for fetching resources (including across the network). It will seem familiar to anyone who has used {{domxref("XMLHttpRequest")}}, but it provides a more powerful and flexible feature set. This article explains some of the basic concepts of the Fetch API.
 
-> **참고:** 이 문서는 수시로 갱신됩니다 。보다 나은 설명이 필요한 Fetch 컨셉트를 발견한 경우에는、[MDN 디스커션 포럼](https://discourse.mozilla-community.org/c/mdn)이나 [Mozilla IRC](https://wiki.mozilla.org/IRC)(#mdn room)에 연락주시기 바랍니다.
+> **Note:** This article will be added to over time. If you find a Fetch concept that you feel needs explaining better, let someone know on the [MDN Web Docs chat rooms](/en-US/docs/MDN/Community/Communication_channels#chat_rooms).
 
-## 개념
+## In a nutshell
 
-Fetch의 핵심은 인터페이스의 추상화입니다. HTTP {{domxref("Request")}}, {{domxref("Response")}}, {{domxref("Headers")}}, {{domxref("Body")}}의 Payload, 그리고 비동기 리소스 Request의 초기화를 위한{{domxref("GlobalFetch.fetch","global fetch")}}메서드가 이 대상입니다. HTTP의 주요 컴포넌트가 자바스크립트 오브젝트로써 추상화되어있기 때문에 다른 API에서 이러한 기능들을 사용하기 쉽게 해줍니다.
+At the heart of Fetch are the Interface abstractions of HTTP {{domxref("Request")}}s, {{domxref("Response")}}s, and {{domxref("Headers")}}, along with a {{domxref("fetch()")}} method for initiating asynchronous resource requests. Because the main components of HTTP are abstracted as JavaScript objects, it is easy for other APIs to make use of such functionality.
 
-[Service Worker](/ko/docs/Web/API/ServiceWorker_API)는 Fetch를 사용하는 API의 일례입니다.
+[Service Workers](/en-US/docs/Web/API/Service_Worker_API) is an example of an API that makes heavy use of Fetch.
 
-Fetch는 이러한 Request의 비동기적인 성질을 한걸음 진화시킨 {{jsxref("Promise")}} 베이스의 API입니다.
+Fetch takes the asynchronous nature of such requests one step further. The API is completely {{jsxref("Promise")}}-based.
 
-## 가드
+## Guard
 
-가드는 {{domxref("Headers")}} 객체의 기능으로, 헤더가 사용하고 있는 장소에 알맞게 `immutable`, `request`, `request-no-cors`, `response`, `none`값을 얻습니다.
+Guard is a feature of {{domxref("Headers")}} objects, with possible values of `immutable`, `request`, `request-no-cors`, `response`, or `none`, depending on where the header is used.
 
-{{domxref("Headers.Headers","Headers()")}}의 {{glossary("constructor")}}를 사용하고 있는 새로운 {{domxref("Headers")}}객체가 생성될 때, 가드는 기본 설정일때 `none`에 위치됩니다. {{domxref("Request")}}객체나 {{domxref("Response")}}객체가 생성되었을 때, 관계지어진 {{domxref("Headers")}}객체의 가드는 아래의 명세와 같이 설정되어 있습니다.
+When a new {{domxref("Headers")}} object is created using the {{domxref("Headers.Headers","Headers()")}} {{glossary("constructor")}}, its guard is set to `none` (the default). When a {{domxref("Request")}} or {{domxref("Response")}} object is created, it has an associated {{domxref("Headers")}} object whose guard is set as summarized below:
 
 <table class="standard-table">
   <thead>
     <tr>
-      <th scope="row">새로운 객체형</th>
-      <th scope="col">생성자</th>
-      <th scope="col">관계한{{domxref("Headers")}} 객체 가드의 설정</th>
+      <th scope="row">new object's type</th>
+      <th scope="col">creating constructor</th>
+      <th scope="col">
+        guard setting of associated {{domxref("Headers")}} object
+      </th>
     </tr>
   </thead>
   <tbody>
@@ -39,8 +42,8 @@ Fetch는 이러한 Request의 비동기적인 성질을 한걸음 진화시킨 {
     </tr>
     <tr>
       <td>
-        <code>no-cors의</code> {{domxref("Request.mode","mode")}}를
-        설정한 {{domxref("Request.Request","Request()")}}
+        {{domxref("Request.Request","Request()")}} with
+        {{domxref("Request.mode","mode")}} of <code>no-cors</code>
       </td>
       <td><code>request-no-cors</code></td>
     </tr>
@@ -51,16 +54,16 @@ Fetch는 이러한 Request의 비동기적인 성질을 한걸음 진화시킨 {
     </tr>
     <tr>
       <td>
-        {{domxref("Response.error","error()")}}메서드나
-        {{domxref("Response.redirect","redirect()")}} 메서드
+        {{domxref("Response.error","error()")}} or
+        {{domxref("Response.redirect","redirect()")}} methods
       </td>
       <td><code>immutable</code></td>
     </tr>
   </tbody>
 </table>
 
-헤더 가드는 헤더의 콘텐츠를 변경하는 {{domxref("Headers.set","set()")}}, {{domxref("Headers.delete","delete()")}}, {{domxref("Headers.append","append()")}} 메서드에 영향을 끼칩니다.가드는 `immutable`의 {{domxref("Headers")}}를 수정하려고 한 경우, `TypeError` 를 반환합니다. 예외의 경우도 있는데 다음과 같은 상황에서는 동작합니다.
+A header's guard affects the {{domxref("Headers.set","set()")}}, {{domxref("Headers.delete","delete()")}}, and {{domxref("Headers.append","append()")}} methods which change the header's contents. A {{jsxref("TypeError")}} is thrown if you try to modify a {{domxref("Headers")}} object whose guard is `immutable`. However, the operation will work if
 
-- 가드가 `request` 에서 헤더의 이름이 {{Glossary("forbidden header name")}} 가 아닌 경우
-- 가드가 `request-no-cors` 에서 헤더의 `name` 또는 `value` 값이 {{Glossary("simple header")}} 인 경우
-- 가드가 `response` 며 헤더의 이름이 {{Glossary("forbidden response header name")}} 가 아닌 경우
+- guard is `request` and the header _name_ isn't a {{Glossary("forbidden header name")}} .
+- guard is `request-no-cors` and the header _name_/_value_ is a {{Glossary("simple header")}} .
+- guard is `response` and the header _name_ isn't a {{Glossary("forbidden response header name")}} .

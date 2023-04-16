@@ -1,20 +1,22 @@
 ---
 title: border-top-style
 slug: Web/CSS/border-top-style
+page-type: css-property
+browser-compat: css.properties.border-top-style
 ---
 
 {{CSSRef}}
 
-**`border-top-style`** [CSS](/ko/docs/Web/CSS) 속성은 요소 테두리의 위쪽 스타일을 지정합니다.
+The **`border-top-style`** [CSS](/en-US/docs/Web/CSS) property sets the line style of an element's top {{CSSxRef("border")}}.
 
 {{EmbedInteractiveExample("pages/css/border-top-style.html")}}
 
-> **참고:** 명세는 서로 다른 스타일의 테두리가 꼭지점에서 만날 때 어떻게 그려야 할지는 정의하고 있지 않습니다.
+> **Note:** The specification doesn't define how borders of different styles connect in the corners.
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
 border-top-style: none;
 border-top-style: hidden;
 border-top-style: dotted;
@@ -26,19 +28,27 @@ border-top-style: ridge;
 border-top-style: inset;
 border-top-style: outset;
 
-/* 전역 값 */
+/* Global values */
 border-top-style: inherit;
 border-top-style: initial;
+border-top-style: revert;
+border-top-style: revert-layer;
 border-top-style: unset;
 ```
 
-`border-top-style` 속성은 {{cssxref("border-style")}} 속성에 사용할 수 있는 키워드 중 하나를 사용해 지정할 수 있습니다.
+The `border-top-style` property is specified as a single keyword chosen from those available for the {{CSSxRef("border-style")}} property.
 
-### 형식 구문
+## Formal definition
 
-{{csssyntax}}
+{{CSSInfo}}
 
-## 예제
+## Formal syntax
+
+{{CSSSyntax}}
+
+## Examples
+
+### Setting border-top-style
 
 #### HTML
 
@@ -69,40 +79,59 @@ border-top-style: unset;
 /* Define look of the table */
 table {
   border-width: 2px;
-  background-color: #52E385;
+  background-color: #52e385;
 }
-tr, td {
+tr,
+td {
   padding: 3px;
 }
 
 /* border-top-style example classes */
-.b1 {border-top-style: none;}
-.b2 {border-top-style: hidden;}
-.b3 {border-top-style: dotted;}
-.b4 {border-top-style: dashed;}
-.b5 {border-top-style: solid;}
-.b6 {border-top-style: double;}
-.b7 {border-top-style: groove;}
-.b8 {border-top-style: ridge;}
-.b9 {border-top-style: inset;}
-.b10 {border-top-style: outset;}
+.b1 {
+  border-top-style: none;
+}
+.b2 {
+  border-top-style: hidden;
+}
+.b3 {
+  border-top-style: dotted;
+}
+.b4 {
+  border-top-style: dashed;
+}
+.b5 {
+  border-top-style: solid;
+}
+.b6 {
+  border-top-style: double;
+}
+.b7 {
+  border-top-style: groove;
+}
+.b8 {
+  border-top-style: ridge;
+}
+.b9 {
+  border-top-style: inset;
+}
+.b10 {
+  border-top-style: outset;
+}
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('예제', 300, 200)}}
+{{EmbedLiveSample('Examples', 300, 200)}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-{{cssinfo}}
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 테두리 스타일 관련 CSS 속성: {{cssxref("border-right-style")}}, {{cssxref("border-bottom-style")}}, {{cssxref("border-left-style")}}, {{cssxref("border-style")}}.
-- 위쪽 테두리 관련 CSS 속성: {{cssxref("border-top")}}, {{cssxref("border-top-color")}}, {{cssxref("border-top-width")}}.
+- The other style-related border properties: {{CSSxRef("border-left-style")}}, {{CSSxRef("border-right-style")}}, {{CSSxRef("border-bottom-style")}}, and {{CSSxRef("border-style")}}.
+- The other top-border-related properties: {{CSSxRef("border-top")}}, {{CSSxRef("border-top-color")}}, and {{CSSxRef("border-top-width")}}.

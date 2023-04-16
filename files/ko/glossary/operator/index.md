@@ -1,15 +1,12 @@
 ---
 title: Operator
 slug: Glossary/Operator
+page-type: glossary-definition
 ---
-연산자는 문장 부호 또는 내장 기능을 수행하는 영어 또는 숫자로 구성된 예약된 **구문**이다. 예를 들어, JavaScript에서 추가 연산자("+")는 숫자를 추가하고 문자열을 연결하며, "not" 연산자("!")는 식을 부정한다 (예를 들어 참 문을 거짓으로 되돌리도록 만든다.).
 
-## 더 알아보기
+Reserved **syntax** consisting of punctuation or alphanumeric characters that carries out built-in functionality. For example, in JavaScript the addition operator ("+") adds numbers together and concatenates strings, whereas the "not" operator ("!") negates an expression — for example making a `true` statement return `false`.
 
-### 일반적인 지식
+## See also
 
-- Wikipedia의 [Operator (computer programming)](<https://en.wikipedia.org/wiki/Operator_(computer_programming)>)
-
-### 기술적 참조
-
-- [JavaScript operators](/ko/docs/Web/JavaScript/Reference/Operators)
+- [Operator (computer programming)](<https://en.wikipedia.org/wiki/Operator_(computer_programming)>) on Wikipedia
+- [JavaScript operators](/en-US/docs/Web/JavaScript/Reference/Operators)

@@ -1,74 +1,92 @@
 ---
 title: Number.isNaN()
 slug: Web/JavaScript/Reference/Global_Objects/Number/isNaN
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Number.isNaN
 ---
+
 {{JSRef}}
 
-**`Number.isNaN()`** 메서드는 주어진 값이 {{jsxref("NaN")}}인지 판별합니다. 기존부터 존재한 전역 {{jsxref("isNaN", "isNaN()")}} 함수의 더 엄격한 버전입니다.
+The **`Number.isNaN()`** static method determines whether the passed value is the number value {{jsxref("NaN")}}, and returns `false` if the input is not of the Number type. It is a more robust version of the original, global {{jsxref("isNaN()")}} function.
 
 {{EmbedInteractiveExample("pages/js/number-isnan.html", "taller")}}
 
-## 구문
+## Syntax
 
-```js
-    Number.isNaN(value)
+```js-nolint
+Number.isNaN(value)
 ```
 
-### 매개변수
+### Parameters
 
 - `value`
-  - : {{jsxref("NaN")}}인지 판별할 값.
+  - : The value to be tested for {{jsxref("NaN")}}.
 
-### 반환 값
+### Return value
 
-주어진 값의 유형이 {{jsxref("Number")}}이고 값이 {{jsxref("NaN")}}이면 `true`, 아니면 `false`.
+The boolean value `true` if the given value is a number with value {{jsxref("NaN")}}. Otherwise, `false`.
 
-## 설명
+## Description
 
-{{jsxref("NaN")}}이 `NaN`인지 계산할 때, 두 동일 연산자 `==`과 `===` 모두 `false`로 평가되므로 값의 `NaN` 여부를 알아내려면 `Number.isNaN()`이 필요합니다. 이 상황은 다른 모든 JavaScript와 다른 특별한 경우입니다.
+The function `Number.isNaN()` provides a convenient way to check for equality with `NaN`. Note that you cannot test for equality with `NaN` using either the [`==`](/en-US/docs/Web/JavaScript/Reference/Operators/Equality) or [`===`](/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality) operators, because unlike all other value comparisons in JavaScript, these evaluate to `false` whenever one operand is {{jsxref("NaN")}}, even if the other operand is also {{jsxref("NaN")}}.
 
-전역 {{jsxref("isNaN", "isNaN()")}} 함수와 달리, `Number.isNaN()`은 강제로 매개변수를 숫자로 변환하는 문제를 겪지 않습니다. 이는 이제 보통{{jsxref("NaN")}}으로 변환됐을 값이 안전하게 전달되지만, 실제로는 {{jsxref("NaN")}}과 같은 값이 아님을 의미합니다. 이는 또한 오직 숫자형이고 또한 {{jsxref("NaN")}}인 값만이 `true`를 반환함을 뜻합니다.
+Since `x !== x` is only true for `NaN` among all possible JavaScript values, `Number.isNaN(x)` can also be replaced with a test for `x !== x`, despite the latter being less readable.
 
-## 예제
+As opposed to the global {{jsxref("isNaN", "isNaN()")}} function, the `Number.isNaN()` method doesn't force-convert the parameter to a number. This makes it safe to pass values that would normally convert to {{jsxref("NaN")}} but aren't actually the same value as {{jsxref("NaN")}}. This also means that only values of the Number type that are also {{jsxref("NaN")}} return `true`.
+
+## Examples
+
+### Using isNaN()
 
 ```js
-Number.isNaN(NaN);        // true
+Number.isNaN(NaN); // true
 Number.isNaN(Number.NaN); // true
-Number.isNaN(0 / 0)       // true
+Number.isNaN(0 / 0); // true
+Number.isNaN(37); // false
+```
 
-// 예를 들면 이들은 global isNaN()으로는 true가 됐을 것임
-Number.isNaN("NaN");      // false
-Number.isNaN(undefined);  // false
-Number.isNaN({});         // false
-Number.isNaN("blabla");   // false
+### Difference between Number.isNaN() and global isNaN()
 
-// 모두
+`Number.isNaN()` doesn't attempt to convert the parameter to a number, so non-numbers always return `false`. The following are all `false`:
+
+```js
+Number.isNaN("NaN");
+Number.isNaN(undefined);
+Number.isNaN({});
+Number.isNaN("blabla");
 Number.isNaN(true);
 Number.isNaN(null);
-Number.isNaN(37);
 Number.isNaN("37");
 Number.isNaN("37.37");
 Number.isNaN("");
 Number.isNaN(" ");
 ```
 
-## 폴리필
+The global {{jsxref("isNaN", "isNaN()")}} coerces its parameter to a number:
 
 ```js
-Number.isNaN = Number.isNaN || function(value) {
-    return value !== value;
-}
+isNaN("NaN"); // true
+isNaN(undefined); // true
+isNaN({}); // true
+isNaN("blabla"); // true
+isNaN(true); // false, this is coerced to 1
+isNaN(null); // false, this is coerced to 0
+isNaN("37"); // false, this is coerced to 37
+isNaN("37.37"); // false, this is coerced to 37.37
+isNaN(""); // false, this is coerced to 0
+isNaN(" "); // false, this is coerced to 0
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `Number.isNaN` in `core-js`](https://github.com/zloirock/core-js#ecmascript-number)
 - {{jsxref("Number")}}
 - {{jsxref("isNaN", "isNaN()")}}

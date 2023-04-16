@@ -1,24 +1,29 @@
 ---
 title: TypedArray.prototype.values()
 slug: Web/JavaScript/Reference/Global_Objects/TypedArray/values
-l10n:
-  sourceCommit: 194d3e00cb93a6e5ea44812548f4131cb17f0381
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.TypedArray.values
 ---
+
 {{JSRef}}
 
-**`values()`** 메서드는 배열 내 각 인덱스에 대한 값을 포함하는 새로운 배열 반복자 객체를 반환합니다.
+The **`values()`** method returns a new _[array iterator](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator)_ object that contains the values for each index in the array.
 
 {{EmbedInteractiveExample("pages/js/typedarray-values.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 values()
 ```
 
-## 예제
+### Return value
 
-### for...of 루프를 사용한 반복
+A new [iterable iterator object](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator).
+
+## Examples
+
+### Iteration using for...of loop
 
 ```js
 const arr = new Uint8Array([10, 20, 30, 40, 50]);
@@ -28,7 +33,7 @@ for (const n of values) {
 }
 ```
 
-### 다른 반복 방법
+### Alternative iteration
 
 ```js
 const arr = new Uint8Array([10, 20, 30, 40, 50]);
@@ -40,19 +45,19 @@ console.log(values.next().value); // 40
 console.log(values.next().value); // 50
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - [Polyfill of `TypedArray.prototype.values` in `core-js`](https://github.com/zloirock/core-js#ecmascript-typed-arrays)
-- [JavaScript 형식화 배열](/ko/docs/Web/JavaScript/Typed_arrays)
+- [JavaScript typed arrays](/en-US/docs/Web/JavaScript/Typed_arrays)
 - {{jsxref("TypedArray")}}
 - {{jsxref("TypedArray.prototype.entries()")}}
 - {{jsxref("TypedArray.prototype.keys()")}}
-- {{jsxref("TypedArray.prototype.@@iterator()", "TypedArray.prototype[@@iterator]()")}}
+- [`TypedArray.prototype[@@iterator]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/@@iterator)

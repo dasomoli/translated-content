@@ -1,174 +1,146 @@
 ---
 title: Notification
 slug: Web/API/Notification
+page-type: web-api-interface
+browser-compat: api.Notification
 ---
 
-{{APIRef("Web Notifications")}}
+{{APIRef("Web Notifications")}}{{AvailableInWorkers}}{{securecontext_header}}
 
-[Notifications API](/ko/docs/Web/API/Notifications_API)의 `Notification` 인터페이스는 사용자에게 데스크톱 알림을 설정하고 보여주는데 사용됩니다.
+The `Notification` interface of the [Notifications API](/en-US/docs/Web/API/Notifications_API) is used to configure and display desktop notifications to the user.
 
-{{AvailableInWorkers}}
+These notifications' appearance and specific functionality vary across platforms but generally they provide a way to asynchronously provide information to the user.
+
+{{InheritanceDiagram}}
 
 ## Constructor
 
 - {{domxref("Notification.Notification", "Notification()")}}
-  - : 새 `Notification` 객체 인스턴스를 생성합니다.
+  - : Creates a new instance of the `Notification` object.
 
-## Properties
+## Static properties
 
-### Static properties
+These properties are available only on the `Notification` object itself.
 
-이 속성은 `Notification` 객체 안에만 존재합니다.
+- {{domxref("Notification.permission")}} {{ReadOnlyInline}}
 
-- {{domxref("Notification.permission")}} {{readonlyinline}}
-  - : 알림을 표시하기 위한 현재의 권한을 나타낸다. 가능한 값: `denied` (사용자가 알림 표시를 거절), `granted` (사용자가 알림 표시를 허용), `default` (사용자의 선택을 알 수 없기 때문에 브라우저가 거절한 상태의 값으로 작동하게됨).
+  - : A string representing the current permission to display notifications. Possible values are:
 
-### Instance properties
+    - `denied` — The user refuses to have notifications displayed.
+    - `granted` — The user accepts having notifications displayed.
+    - `default` — The user choice is unknown and therefore the browser will act as if the value were denied.
 
-이 속성은 `Notification` 객체의 인스턴스 안에만 존재합니다.
+- {{domxref("Notification.maxActions")}} {{ReadOnlyInline}} {{Experimental_Inline}}
+  - : The maximum number of actions supported by the device and the User Agent.
 
-- {{domxref("Notification.actions")}} {{readonlyinline}}
-  - : 생성자의 옵션 파라메터 안에 명시된 알림의 액션 배열입니다.
-- {{domxref("Notification.badge")}} {{readonlyinline}}
-  - : 알림을 나타낼 충분한 여유 공간이 없을 때에 알림을 표시하는 이미지의 URL입니다.
-- {{domxref("Notification.body")}} {{readonlyinline}}
-  - : 생성자의 옵션 파라메터 안에 명시된 알림의 본문입니다.
-- {{domxref("Notification.data")}} {{readonlyinline}}
-  - : 알림 데이타의 구조화된 복사본을 반환합니다.
-- {{domxref("Notification.dir")}} {{readonlyinline}}
-  - : 생성자의 옵션 파라메터 안에 명시된 알림 글의 방향입니다.
-- {{domxref("Notification.lang")}} {{readonlyinline}}
-  - : 생성자의 옵션 파라메터 안에 명시된 알림의 언어 코드입니다.
-- {{domxref("Notification.tag")}} {{readonlyinline}}
-  - : 생성자의 옵션 파라메터 안에 명시된 경우 알림의 ID입니다.
-- {{domxref("Notification.icon")}} {{readonlyinline}}
-  - : 생성자의 옵션 파라메터 안에 명시된 알림의 아이콘으로 사용될 이미지의 URL입니다.
-- {{domxref("Notification.image")}} {{readonlyinline}}
-  - : 생성자의 옵션 파라메터 안에 명시된 알림의 일부분으로 표시될 이미지의 URL입니다.
-- {{domxref("Notification.requireInteraction")}} {{readonlyinline}}
-  - : 자동으로 닫히지 않고 사용자가 클릭할 때 까지 활성화 된 채로 남아 있어야 함을 나타내는 {{jsxref("Boolean")}} 값입니다.
-- {{domxref("Notification.silent")}} {{readonlyinline}}
-  - : 기기의 설정과 상관없이 소리가 없거나 진동이 울려야 한다는 등 알림이 조용해야 하는지를 나타냅니다.
-- {{domxref("Notification.timestamp")}} {{readonlyinline}}
-  - : 알림이 생성되었거나 적용 가능한(과거, 현재, 미래) 시간을 나타냅니다.
-- {{domxref("Notification.title")}} {{readonlyinline}}
-  - : 생성자의 첫번째 파라메터에 명시된 알림의 제목입니다.
-- {{domxref("Notification.vibrate")}} {{readonlyinline}}
-  - : 진동기가 있는 기기가 나타내야할 진동 패턴을 나타냅니다.
+## Instance properties
 
-#### Unsupported properties
+These properties are available only on instances of the `Notification` object.
 
-아래의 속성은 최신 명세에는 등록되어 있지만 아직 구현한 브라우저가 없는 속성입니다. 현재의 상태에서 변경된 사항은 없는지 계속 확인해보아야 하는 내용이고 오래된 내용이 있으면 알려주시기 바랍니다.
+- {{domxref("Notification.actions")}} {{ReadOnlyInline}} {{Experimental_Inline}}
+  - : The actions array of the notification as specified in the constructor's `options` parameter.
+- {{domxref("Notification.badge")}} {{ReadOnlyInline}} {{Experimental_Inline}}
+  - : The URL of the image used to represent the notification when there is not enough space to display the notification itself.
+- {{domxref("Notification.body")}} {{ReadOnlyInline}}
+  - : The body string of the notification as specified in the constructor's `options` parameter.
+- {{domxref("Notification.data")}} {{ReadOnlyInline}}
+  - : Returns a structured clone of the notification's data.
+- {{domxref("Notification.dir")}} {{ReadOnlyInline}}
+  - : The text direction of the notification as specified in the constructor's `options` parameter.
+- {{domxref("Notification.lang")}} {{ReadOnlyInline}}
+  - : The language code of the notification as specified in the constructor's `options` parameter.
+- {{domxref("Notification.tag")}} {{ReadOnlyInline}}
+  - : The ID of the notification (if any) as specified in the constructor's `options` parameter.
+- {{domxref("Notification.icon")}} {{ReadOnlyInline}}
+  - : The URL of the image used as an icon of the notification as specified in the constructor's `options` parameter.
+- {{domxref("Notification.image")}} {{ReadOnlyInline}} {{Experimental_Inline}}
+  - : The URL of an image to be displayed as part of the notification, as specified in the constructor's `options` parameter.
+- {{domxref("Notification.renotify")}} {{ReadOnlyInline}} {{Experimental_Inline}}
+  - : Specifies whether the user should be notified after a new notification replaces an old one.
+- {{domxref("Notification.requireInteraction")}} {{ReadOnlyInline}} {{Experimental_Inline}}
+  - : A boolean value indicating that a notification should remain active until the user clicks or dismisses it, rather than closing automatically.
+- {{domxref("Notification.silent")}} {{ReadOnlyInline}} {{Experimental_Inline}}
+  - : Specifies whether the notification should be silent — i.e., no sounds or vibrations should be issued, regardless of the device settings.
+- {{domxref("Notification.timestamp")}} {{ReadOnlyInline}} {{Experimental_Inline}}
+  - : Specifies the time at which a notification is created or applicable (past, present, or future).
+- {{domxref("Notification.title")}} {{ReadOnlyInline}}
+  - : The title of the notification as specified in the first parameter of the constructor.
+- {{domxref("Notification.vibrate")}} {{ReadOnlyInline}} {{Experimental_Inline}}
+  - : Specifies a vibration pattern for devices with vibration hardware to emit.
 
-- {{domxref("Notification.noscreen")}} {{readonlyinline}}
-  - : 알림이 기기의 화면을 활성화해야 하는지를 나타냅니다.
-- {{domxref("Notification.renotify")}} {{readonlyinline}}
-  - : 새 알림이 오래된 알림을 교체할 때 사용자에게 알려야 하는지를 나타냅니다.
-- {{domxref("Notification.sound")}} {{readonlyinline}}
-  - : 기본 시스템 설정 알림 소리를 대신할 알림 소리로 사용될 소리 자원을 나타냅니다.
-- {{domxref("Notification.sticky")}} {{readonlyinline}}
-  - : 사용자가 쉽게 제거할 수 없게 '달라붙어'있어야 하는지를 나타냅니다.
+## Static methods
 
-#### Event handlers
-
-- {{domxref("Notification.onclick")}}
-  - : [`click`](/ko/docs/Web/API/Element/click_event) 이벤트에 대한 핸들러입니다. 사용자가 알림을 클릭할 때 마다 호출됩니다.
-- {{domxref("Notification.onerror")}}
-  - : {{event("error")}} 이벤트에 대한 핸들러입니다. 알림에 오류가 발생할 때 마다 호출됩니다.
-
-#### Obsolete handlers
-
-아래의 이벤트 핸들러는 [browser compatibility](#browser_compatibility) 섹션에 나타난 대로 아직 지원되지만 현재 명세에 없는 내용입니다. 폐지된 것으로 생각해야 하고 앞으로 나올 브라우저에서는 작동하지 않을 수 있습니다.
-
-- {{domxref("Notification.onclose")}}
-  - : {{event("close")}} 이벤트에 대한 핸들러입니다. 사용자가 알림을 닫을 때 호출됩니다.
-- {{domxref("Notification.onshow")}}
-  - : {{event("show")}} 이벤트에 대한 핸들러입니다. 알림이 표시될 때 호출됩니다.
-
-## Methods
-
-### Static methods
-
-이 메서드는 `Notification` 객체에만 존재합니다.
+These methods are available only on the `Notification` object itself.
 
 - {{domxref("Notification.requestPermission()")}}
-  - : 이 메서드는 페이지에서 알림을 표시할지 요청하는데 사용됩니다.
+  - : Requests permission from the user to display notifications.
 
-### Instance methods
+## Instance methods
 
-이 메서드는 `Notification` 객체의 인스턴스나 그 [`prototype`](/ko/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain)에만 존재합니다. `Notification` 객체는 또한 {{domxref("EventTarget")}} 인터페이스를 상속 받습니다.
+These properties are available only on an instance of the `Notification` object or through its [`prototype`](/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain). The `Notification` object also inherits from the {{domxref("EventTarget")}} interface.
 
 - {{domxref("Notification.close()")}}
-  - : 프로그램으로 알림을 닫습니다.
+  - : Programmatically closes a notification instance.
 
-## Example
+## Events
 
-다음과 같은 기본 HTML이 있을 때:
+- {{domxref("Notification.click_event", "click")}}
+  - : Fires when the user clicks the notification.
+- {{domxref("Notification.close_event", "close")}}
+  - : Fires when the user closes the notification.
+- {{domxref("Notification.error_event", "error")}}
+  - : Fires when the notification encounters an error.
+- {{domxref("Notification.show_event", "show")}}
+  - : Fires when the notification is displayed.
+
+## Examples
+
+Assume this basic HTML:
 
 ```html
 <button onclick="notifyMe()">Notify me!</button>
 ```
 
-다음과 같이 알림을 보낼 수 있습니다. 알림이 지원되는지 우선 확인해 볼 때 사용할 수 있는 풍부하게 완성된 예제코드입니다. 그 다음에 현재 페이지에서 알림을 보낼 수 있게 권한이 있는지를 확인하고 알림을 보내기 전에 권한이 필요하면 요청을 합니다.
+It's possible to send a notification as follows — here we present a fairly verbose and complete set of code you could use if you wanted to first check whether notifications are supported, then check if permission has been granted for the current origin to send notifications, then request permission if required, before then sending a notification.
 
 ```js
 function notifyMe() {
-  // Let's check if the browser supports notifications
   if (!("Notification" in window)) {
+    // Check if the browser supports notifications
     alert("This browser does not support desktop notification");
-  }
-
-  // Let's check whether notification permissions have already been granted
-  else if (Notification.permission === "granted") {
-    // If it's okay let's create a notification
-    var notification = new Notification("Hi there!");
-  }
-
-  // Otherwise, we need to ask the user for permission
-  else if (Notification.permission !== 'denied') {
-    Notification.requestPermission(function (permission) {
+  } else if (Notification.permission === "granted") {
+    // Check whether notification permissions have already been granted;
+    // if so, create a notification
+    const notification = new Notification("Hi there!");
+    // …
+  } else if (Notification.permission !== "denied") {
+    // We need to ask the user for permission
+    Notification.requestPermission().then((permission) => {
       // If the user accepts, let's create a notification
       if (permission === "granted") {
-        var notification = new Notification("Hi there!");
+        const notification = new Notification("Hi there!");
+        // …
       }
     });
   }
 
   // At last, if the user has denied notifications, and you
-  // want to be respectful there is no need to bother them any more.
+  // want to be respectful there is no need to bother them anymore.
 }
 ```
 
-{{EmbedLiveSample('Example', '100%', 30)}}
+We no longer show a live sample on this page, as Chrome and Firefox no longer allow notification permissions to be requested from cross-origin {{htmlelement("iframe")}}s, with other browsers to follow. To see an example in action, check out our [To-do list example](https://github.com/mdn/dom-examples/tree/main/to-do-notifications) (also see [the app running live](https://mdn.github.io/dom-examples/to-do-notifications/)).
 
-많은 경우에 이렇게 장황할 필요는 없습니다. 예를 들어 [Emogotchi 데모](http://mdn.github.io/emogotchi/)([소스코드](https://github.com/mdn/emogotchi))에서는 단순히 알림을 보내기 위해서 권한을 얻을 수 있는지와 상관없이 {{domxref("Notification.requestPermission")}}를 실행합니다(이 경우는 새로운 프로미스 기반 메서드 문법을 사용):
+> **Note:** In the above example we spawn notifications in response to a user gesture (clicking a button). This is not only best practice — you should not be spamming users with notifications they didn't agree to — but going forward browsers will explicitly disallow notifications not triggered in response to a user gesture. Firefox is already doing this from version 72, for example.
 
-```js
-Notification.requestPermission().then(function(result) {
-  console.log(result);
-});
-```
-
-그 다음에 알림이 필요한 때에 단순히 `spawnNotification()` 함수를 실행합니다. 본문과 아이콘, 제목을 인자로 넘기면 필요한 `options` 객체를 만들고 {{domxref("Notification.Notification","Notification()")}} 생성자를 사용해서 알림을 발생시킵니다.
-
-```js
-function spawnNotification(theBody,theIcon,theTitle) {
-  var options = {
-      body: theBody,
-      icon: theIcon
-  }
-  var n = new Notification(theTitle,options);
-}
-```
-
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- [Using the Notifications API](/ko/docs/Web/API/Notifications_API/Using_the_Notifications_API)
+- [Using the Notifications API](/en-US/docs/Web/API/Notifications_API/Using_the_Notifications_API)

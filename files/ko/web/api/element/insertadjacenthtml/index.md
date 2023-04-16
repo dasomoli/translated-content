@@ -1,66 +1,145 @@
 ---
-title: Element.insertAdjacentHTML()
+title: "Element: insertAdjacentHTML() method"
+short-title: insertAdjacentHTML()
 slug: Web/API/Element/insertAdjacentHTML
+page-type: web-api-instance-method
+browser-compat: api.Element.insertAdjacentHTML
 ---
 
 {{APIRef("DOM")}}
 
-**`insertAdjacentHTML()`** 메서드는 HTML or XML 같은 특정 텍스트를 파싱하고, 특정 위치에 DOM tree 안에 원하는 node들을 추가 한다. 이미 사용중인 element 는 다시 파싱하지 않는다. 그러므로 element 안에 존재하는 element를 건드리지 않는다. (innerHtml과는 좀 다름). innerHtml보다 작업이 덜 드므로 빠르다.
+The **`insertAdjacentHTML()`** method of the
+{{domxref("Element")}} interface parses the specified text as HTML or XML and inserts
+the resulting nodes into the DOM tree at a specified position.
 
-## 구문
+## Syntax
 
-```js
-element.insertAdjacentHTML(position, text);
+```js-nolint
+insertAdjacentHTML(position, text)
 ```
 
-position은 아래 있는 단어만 사용 가능하다.
+### Parameters
 
-- `'beforebegin'`
-  - : element 앞에
-- `'afterbegin'`
-  - : element 안에 가장 첫번째 child
-- `'beforeend'`
-  - : element 안에 가장 마지막 child
-- `'afterend'`
-  - : element 뒤에
+- `position`
 
-`text(인자)는 HTML 또는 XML로 해석될 수 있는 문자열이고(html code), (DOM) tree에 삽입할 수 있다.`
+  - : A string representing the position relative to the element. Must be one of the following strings:
 
-### position 의 예시 그림
+    - `"beforebegin"`
+      - : Before the element. Only valid if the element is in the DOM tree and has a parent element.
+    - `"afterbegin"`
+      - : Just inside the element, before its first child.
+    - `"beforeend"`
+      - : Just inside the element, after its last child.
+    - `"afterend"`
+      - : After the element. Only valid if the element is in the DOM tree and has a parent element.
+
+- `text`
+  - : The string to be parsed as HTML or XML and inserted into the tree.
+
+### Return value
+
+None ({{jsxref("undefined")}}).
+
+### Exceptions
+
+This method may raise a {{domxref("DOMException")}} of one of the following types:
+
+- `NoModificationAllowedError` {{domxref("DOMException")}}
+  - : Thrown if `position` is `"beforebegin"` or `"afterend"` and the element either does not have a parent or its parent is the `Document` object.
+- `SyntaxError` {{domxref("DOMException")}}
+  - : Thrown if `position` is not one of the four listed values.
+
+## Description
+
+The `insertAdjacentHTML()` method does not reparse the element it is being used on, and thus it does not corrupt the existing elements inside that element. This avoids the extra step of serialization, making it much faster than direct {{domxref("Element.innerHTML", "innerHTML")}} manipulation.
+
+We can visualize the possible positions for the inserted content as follows:
 
 ```html
 <!-- beforebegin -->
 <p>
-<!-- afterbegin -->
-foo
-<!-- beforeend -->
+  <!-- afterbegin -->
+  foo
+  <!-- beforeend -->
 </p>
 <!-- afterend -->
 ```
 
-> **참고:** `beforebegin` , `afterend position은 element의 부모가 존재해야 하고, node가 tree 안에 있어야 한다.`
+### Security considerations
 
-## 예시
+When inserting HTML into a page by using `insertAdjacentHTML()`, be careful
+not to use user input that hasn't been escaped.
 
-```js
-// <div id="one">one</div>
-var d1 = document.getElementById('one');
-d1.insertAdjacentHTML('afterend', '<div id="two">two</div>');
+You should not use `insertAdjacentHTML()` when inserting plain
+text. Instead, use the {{domxref("Node.textContent")}} property or the
+{{domxref("Element.insertAdjacentText()")}} method. This doesn't interpret the passed
+content as HTML, but instead inserts it as raw text.
 
-// At this point, the new structure is:
-// <div id="one">one</div><div id="two">two</div>
+## Examples
+
+### Inserting HTML
+
+#### HTML
+
+```html
+<select id="position">
+  <option>beforebegin</option>
+  <option>afterbegin</option>
+  <option>beforeend</option>
+  <option>afterend</option>
+</select>
+
+<button id="insert">Insert HTML</button>
+<button id="reset">Reset</button>
+
+<p>
+  Some text, with a <code id="subject">code-formatted element</code> inside it.
+</p>
 ```
 
-## 명세
+#### CSS
+
+```css
+code {
+  color: red;
+}
+```
+
+#### JavaScript
+
+```js
+const insert = document.querySelector("#insert");
+insert.addEventListener("click", () => {
+  const subject = document.querySelector("#subject");
+  const positionSelect = document.querySelector("#position");
+  subject.insertAdjacentHTML(
+    positionSelect.value,
+    "<strong>inserted text</strong>"
+  );
+});
+
+const reset = document.querySelector("#reset");
+reset.addEventListener("click", () => {
+  document.location.reload();
+});
+```
+
+#### Result
+
+{{EmbedLiveSample("Examples", 100, 100)}}
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{domxref("Node.insertBefore()")}}
-- {{domxref("Node.appendChild()")}} ((position)beforeend 와 같은 효과를 갖는다.)
-- [hacks.mozilla.org guest post](http://hacks.mozilla.org/2011/11/insertadjacenthtml-enables-faster-html-snippet-injection/) by Henri Sivonen including benchmark showing that insertAdjacentHTML can be way faster in some cases.
+- {{domxref("Element.insertAdjacentElement()")}}
+- {{domxref("Element.insertAdjacentText()")}}
+- {{domxref("XMLSerializer")}}: Serialize a DOM tree into an XML string
+- [hacks.mozilla.org guest post](https://hacks.mozilla.org/2011/11/insertadjacenthtml-enables-faster-html-snippet-injection/) by Henri Sivonen including benchmark showing
+  that insertAdjacentHTML can be way faster in some cases.

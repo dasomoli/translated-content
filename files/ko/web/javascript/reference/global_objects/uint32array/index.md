@@ -1,69 +1,73 @@
 ---
 title: Uint32Array
 slug: Web/JavaScript/Reference/Global_Objects/Uint32Array
+page-type: javascript-class
+browser-compat: javascript.builtins.Uint32Array
 ---
 
 {{JSRef}}
 
-**`Uint32Array`** 형식화 배열(TypedArray)은 플랫폼의 바이트 순서를 따르는 32비트 부호 없는 정수의 배열입니다.
-바이트 순서를 제어해야 하는 경우 대신 {{jsxref("DataView")}}를 사용합니다. 배열의 내용은 0으로 초기화됩니다.
-배열이 생성되면 객체의 메서드를 사용하거나 표준 배열 인덱스 구문(즉, 대괄호 표기법 사용)을 사용하여 배열의 요소를 참조할 수 있습니다.
+The **`Uint32Array`** typed array represents an array of 32-bit unsigned integers in the platform byte order. If control over byte order is needed, use {{jsxref("DataView")}} instead. The contents are initialized to `0`. Once established, you can reference elements in the array using the object's methods, or using standard array index syntax (that is, using bracket notation).
 
-## 생성자
+`Uint32Array` is a subclass of the hidden {{jsxref("TypedArray")}} class.
 
-- {{jsxref("Global_Objects/Uint32Array/Uint32Array", "Uint32Array()")}}
-  - : 새로운 `Uint32Array` 객체를 생성합니다.
+## Constructor
 
-## 정적 속성
+- {{jsxref("Uint32Array/Uint32Array", "Uint32Array()")}}
+  - : Creates a new `Uint32Array` object.
 
-부모 {{jsxref("TypedArray")}}에서 정적 속성을 상속합니다.
+## Static properties
 
-- {{jsxref("TypedArray.BYTES_PER_ELEMENT", "Uint32Array.BYTES_PER_ELEMENT")}}
-  - : 요소 크기를 숫자로 반환합니다. `Uint32Array`의 경우 `4` 입니다.
-- {{jsxref("TypedArray.name", "Uint32Array.name")}}
-  - : 생성자 이름을 문자열로 반환합니다. `Uint32Array` 타입의 경우 `"Uint32Array"`입니다.
+_Also inherits static properties from its parent {{jsxref("TypedArray")}}_.
 
-## 정적 메서드
+- {{jsxref("TypedArray/BYTES_PER_ELEMENT", "Uint32Array.BYTES_PER_ELEMENT")}}
+  - : Returns a number value of the element size. `4` in the case of `Uint32Array`.
 
-부모 {{jsxref("TypedArray")}}에서 정적 메서드를 상속합니다.
+## Static methods
 
-## 인스턴스 속성
+_Inherits static methods from its parent {{jsxref("TypedArray")}}_.
 
-부모 {{jsxref("TypedArray")}}에서 인스턴스 속성을 상속합니다.
+## Instance properties
 
-- {{jsxref("TypedArray.BYTES_PER_ELEMENT", "Uint32Array.prototype.BYTES_PER_ELEMENT")}}
-  - : 요소 크기를 숫자 값으로 반환합니다. `Uint32Array`의 경우 `4`입니다.
+_Also inherits instance properties from its parent {{jsxref("TypedArray")}}_.
 
-## 인스턴스 메서드
+These properties are defined on `Uint32Array.prototype` and shared by all `Uint32Array` instances.
 
-부모 {{jsxref("TypedArray")}}에서 인스턴스 메서드를 상속합니다.
+- {{jsxref("TypedArray/BYTES_PER_ELEMENT", "Uint32Array.prototype.BYTES_PER_ELEMENT")}}
+  - : Returns a number value of the element size. `4` in the case of a `Uint32Array`.
+- {{jsxref("Object/constructor", "Uint32Array.prototype.constructor")}}
+  - : The constructor function that created the instance object. For `Uint32Array` instances, the initial value is the {{jsxref("Uint32Array/Uint32Array", "Uint32Array")}} constructor.
 
-## 예제
+## Instance methods
 
-### Uint32Array을 생성하기 위한 각기 다른 여러 방법
+_Inherits instance methods from its parent {{jsxref("TypedArray")}}_.
+
+## Examples
+
+### Different ways to create a Uint32Array
 
 ```js
-// 길이로부터 생성
+// From a length
 const uint32 = new Uint32Array(2);
 uint32[0] = 42;
 console.log(uint32[0]); // 42
 console.log(uint32.length); // 2
 console.log(uint32.BYTES_PER_ELEMENT); // 4
 
-// 배열로부터
+// From an array
 const x = new Uint32Array([21, 31]);
 console.log(x[1]); // 31
 
-// 다른 TypedArray로부터
+// From another TypedArray
 const y = new Uint32Array(x);
 console.log(y[0]); // 21
 
-// ArrayBuffer로부터
+// From an ArrayBuffer
 const buffer = new ArrayBuffer(32);
 const z = new Uint32Array(buffer, 4, 4);
 console.log(z.byteOffset); // 4
 
-// 순회로부터
+// From an iterable
 const iterable = (function* () {
   yield* [1, 2, 3];
 })();
@@ -72,17 +76,17 @@ console.log(uint32FromIterable);
 // Uint32Array [1, 2, 3]
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [`core-js`에서 `Uint32Array` 폴리필](https://github.com/zloirock/core-js#ecmascript-typed-arrays)
-- [JavaScript 형식화 배열](/ko/docs/Web/JavaScript/Typed_arrays)
+- [Polyfill of `Uint32Array` in `core-js`](https://github.com/zloirock/core-js#ecmascript-typed-arrays)
+- [JavaScript typed arrays](/en-US/docs/Web/JavaScript/Typed_arrays)
 - {{jsxref("ArrayBuffer")}}
 - {{jsxref("DataView")}}

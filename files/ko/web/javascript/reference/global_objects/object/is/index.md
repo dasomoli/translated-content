@@ -1,93 +1,95 @@
 ---
 title: Object.is()
 slug: Web/JavaScript/Reference/Global_Objects/Object/is
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Object.is
 ---
+
 {{JSRef}}
 
-**`Object.is()`** 메서드는 두 값이 [같은 값](/ko/docs/Web/JavaScript/Equality_comparisons_and_sameness)인지 결정합니다.
+The **`Object.is()`** static method determines whether two values are [the same value](/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#same-value_equality_using_object.is).
 
-## 구문
+{{EmbedInteractiveExample("pages/js/object-is.html")}}
 
-```js
-Object.is(value1, value2);
+## Syntax
+
+```js-nolint
+Object.is(value1, value2)
 ```
 
-### 매개변수
+### Parameters
 
 - `value1`
-  - : 비교할 첫 번째 값.
+  - : The first value to compare.
 - `value2`
-  - : 비교할 두 번째 값.
+  - : The second value to compare.
 
-### 반환 값
+### Return value
 
-두 인수가 같은 값인지 여부를 나타내는 {{jsxref("Boolean")}}.
+A boolean indicating whether or not the two arguments are the same value.
 
-## 설명
+## Description
 
-`Object.is()`는 두 값이 [같은 값](/ko/docs/Web/JavaScript/Equality_comparisons_and_sameness)인지 결정합니다. 다음 중 하나를 만족하면 두 값은 같습니다.
+`Object.is()` determines whether two values are [the same value](/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#same-value_equality_using_object.is). Two values are the same if one of the following holds:
 
-- 둘 다 {{jsxref("undefined")}}
-- 둘 다 {{jsxref("null")}}
-- 둘 다 `true` 또는 둘 다 `false`
-- 둘 다 같은 문자에 같은 길이인 문자열
-- 둘 다 같은 객체
-- 둘 다 숫자이며
+- both {{jsxref("undefined")}}
+- both [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null)
+- both `true` or both `false`
+- both strings of the same length with the same characters in the same order
+- both the same object (meaning both values reference the same object in memory)
+- both [BigInts](/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) with the same numeric value
+- both [symbols](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol) that reference the same symbol value
+- both numbers and
 
-  - 둘 다 `+0`
-  - 둘 다 `-0`
-  - 둘 다 {{jsxref("NaN")}}
-  - 둘 다 0이나 {{jsxref("NaN")}}이 아니고 같은 값을 지님
+  - both `+0`
+  - both `-0`
+  - both {{jsxref("NaN")}}
+  - or both non-zero, not {{jsxref("NaN")}}, and have the same value
 
-이는 {{jsxref("Operators/Comparison_Operators", "==", "#Equality")}} 연산자에 따른 같음과 같지 _않습니다_. {{jsxref("Operators/Comparison_Operators", "==", "#Equality")}} 연산자는 같음을 테스트하기 전에 양 쪽(이 같은 형이 아니라면)에 다양한 강제(coercion)를 적용하지만(`"" == false`가 `true`가 되는 그런 행동을 초래), `Object.is`는 어느 값도 강제하지 않습니다.
+`Object.is()` is not equivalent to the [`==`](/en-US/docs/Web/JavaScript/Reference/Operators/Equality) operator. The `==` operator applies various coercions to both sides (if they are not the same type) before testing for equality (resulting in such behavior as `"" == false` being `true`), but `Object.is()` doesn't coerce either value.
 
-이는 {{jsxref("Operators/Comparison_Operators", "===", "#Identity")}} 연산자에 따른 같음과도 같지 _않습니다_. {{jsxref("Operators/Comparison_Operators", "===", "#Identity")}} 연산자(와 {{jsxref("Operators/Comparison_Operators", "==", "#Equality")}} 연산자 역시)는 숫자값 `-0`과 `+0`을 같게 {{jsxref("Number.NaN")}}은 {{jsxref("NaN")}}과 같지 않게 여깁니다.
+`Object.is()` is also _not_ equivalent to the [`===`](/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality) operator. The only difference between `Object.is()` and `===` is in their treatment of signed zeros and `NaN` values. The `===` operator (and the `==` operator) treats the number values `-0` and `+0` as equal, but treats {{jsxref("NaN")}} as not equal to each other.
 
-## 예제
+## Examples
 
-```js
-Object.is('foo', 'foo');     // true
-Object.is(window, window);   // true
-
-Object.is('foo', 'bar');     // false
-Object.is([], []);           // false
-
-var test = { a: 1 };
-Object.is(test, test);       // true
-
-Object.is(null, null);       // true
-
-// 특별한 경우
-Object.is(0, -0);            // false
-Object.is(-0, -0);           // true
-Object.is(NaN, 0/0);         // true
-```
-
-## 폴리필
+### Using Object.is()
 
 ```js
-if (!Object.is) {
-  Object.is = function(x, y) {
-   // SameValue 알고리즘
-    if (x === y) { // Steps 1-5, 7-10
-     // Steps 6.b-6.e: +0 != -0
-      return x !== 0 || 1 / x === 1 / y;
-   } else {
-     // Step 6.a: NaN == NaN
-     return x !== x && y !== y;
-   }
-  };
-}
+// Case 1: Evaluation result is the same as using ===
+Object.is(25, 25); // true
+Object.is("foo", "foo"); // true
+Object.is("foo", "bar"); // false
+Object.is(null, null); // true
+Object.is(undefined, undefined); // true
+Object.is(window, window); // true
+Object.is([], []); // false
+const foo = { a: 1 };
+const bar = { a: 1 };
+const sameFoo = foo;
+Object.is(foo, foo); // true
+Object.is(foo, bar); // false
+Object.is(foo, sameFoo); // true
+
+// Case 2: Signed zero
+Object.is(0, -0); // false
+Object.is(+0, -0); // false
+Object.is(-0, -0); // true
+
+// Case 3: NaN
+Object.is(NaN, 0 / 0); // true
+Object.is(NaN, Number.NaN); // true
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [같음 비교 및 똑같음](/ko/docs/Web/JavaScript/Equality_comparisons_and_sameness) — 똑같음 내장 기능 3가지 모두 비교
+- [Polyfill of `Object.is` in `core-js`](https://github.com/zloirock/core-js#ecmascript-object)
+- [Equality comparisons and sameness](/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness) — a comparison of all three built-in sameness
+  facilities

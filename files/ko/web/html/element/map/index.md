@@ -1,104 +1,128 @@
 ---
-title: <map>
+title: "<map>: The Image Map element"
 slug: Web/HTML/Element/map
+page-type: html-element
+browser-compat: html.elements.map
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<map>` 요소**는 {{htmlelement("area")}} 요소와 함께 이미지 맵(클릭 가능한 링크 영역)을 정의할 때 사용합니다.
+The **`<map>`** [HTML](/en-US/docs/Web/HTML) element is used with {{HTMLElement("area")}} elements to define an image map (a clickable link area).
 
 {{EmbedInteractiveExample("pages/tabbed/map.html", "tabbed-standard")}}
 
-<p class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</p>
+## Attributes
+
+This element includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
+
+- `name`
+  - : The `name` attribute gives the map a name so that it can be referenced. The attribute must be present and must have a non-empty value with no space characters. The value of the `name` attribute must not be equal to the value of the `name` attribute of another `<map>` element in the same document. If the [`id`](/en-US/docs/Web/HTML/Global_attributes#id) attribute is also specified, both attributes must have the same value.
+
+## Examples
+
+### Image map with two areas
+
+Click the left-hand parrot for JavaScript, or the right-hand parrot for CSS.
+
+#### HTML
+
+```html
+<!-- Photo by Juliana e Mariana Amorim on Unsplash -->
+<map name="primary">
+  <area
+    shape="circle"
+    coords="75,75,75"
+    href="https://developer.mozilla.org/docs/Web/JavaScript"
+    target="_blank"
+    alt="JavaScript" />
+  <area
+    shape="circle"
+    coords="275,75,75"
+    href="https://developer.mozilla.org/docs/Web/CSS"
+    target="_blank"
+    alt="CSS" />
+</map>
+<img
+  usemap="#primary"
+  src="parrots.jpg"
+  alt="350 x 150 picture of two parrots" />
+```
+
+#### Result
+
+{{ EmbedLiveSample('Image map with two areas', '', '250') }}
+
+## Technical summary
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
       </th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
         >,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >, 뚜렷한 콘텐츠.
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >, palpable content.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
       <td>
-        모든
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#투명_콘텐츠_모델"
-          >투명한</a
+        Any
+        <a
+          href="/en-US/docs/Web/HTML/Content_categories#transparent_content_model"
+          >transparent</a
         >
-        콘텐츠.
+        element.
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
+      <th scope="row">Tag omission</th>
       <td>{{no_tag_omission}}</td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Permitted parents</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >를 허용하는 모든 요소.
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>없음</td>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
+          >No corresponding role</a
+        >
+      </td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>No <code>role</code> permitted</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLMapElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
-
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)을 포함합니다.
-
-- {{htmlattrdef("name")}}
-  - : 맵을 참조할 때 사용할 수 있는 이름. 반드시 존재해야 하고, 값이 비면 안되며, 값에 공백 문자가 포함되어도 안됩니다. `name` 특성은 문서 내의 모든 `<map>`에서 유일해야 합니다. {{htmlattrxref("id")}} 특성이 존재하는 경우 `name`과 값이 동일해야 합니다.
-
-## 예제
-
-```html
-<map name="primary">
-  <area shape="circle" coords="75,75,75" href="left.html">
-  <area shape="circle" coords="275,75,75" href="right.html">
-</map>
-<img usemap="#primary" src="https://placehold.it/350x150" alt="350 x 150 pic">
-```
-
-### 결과
-
-{{EmbedLiveSample("예제", "350", "150")}}
-
-### 예상 결과
-
-키보드의 탭을 눌렀을 때, 위의 예제는 아래 사진처럼 나와야 합니다.
-
-`left.html` 링크:
-![](screen_shot_2017-02-02_at_10.48.40_pm.png)
-
-`right:html` 링크:
-![](screen_shot_2017-02-02_at_10.49.04_pm.png)
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{HTMLElement("a")}}
 - {{HTMLElement("area")}}

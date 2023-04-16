@@ -1,57 +1,77 @@
 ---
 title: TypedArray.prototype.set()
 slug: Web/JavaScript/Reference/Global_Objects/TypedArray/set
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.TypedArray.set
 ---
+
 {{JSRef}}
 
-**`set()`** 메서드는 지정된 배열로부터 입력 값을 읽어 형식화 배열 내에 여러 값을 저장합니다.
+The **`set()`** method stores multiple values in the typed
+array, reading input values from a specified array.
 
 {{EmbedInteractiveExample("pages/js/typedarray-set.html")}}
 
-## 구문
+## Syntax
 
-```js
-typedarr.set(array[, offset])
-typedarr.set(typedarray[, offset])
+```js-nolint
+set(array)
+set(array, targetOffset)
+
+set(typedarray)
+set(typedarray, targetOffset)
 ```
 
-### 매개변수
+### Parameters
 
 - `array`
-  - : 값을 복사할 배열. 소스 배열로부터 모든 값이 대상 배열로 복사됩니다, 소스 배열의 길이 + 오프셋이 대상 배열의 길이를 초과하지 않는 한, 그 경우에는 예외가 발생됩니다.
+  - : The array from which to copy values. All values from the source array are copied
+    into the target array, unless the length of the source array plus the target offset exceeds
+    the length of the target array, in which case an exception is thrown.
 - `typedarray`
-  - : 소스 배열이 형식화 배열인 경우, 두 배열은 기본 {{jsxref("ArrayBuffer")}}를 같이 공유할 수 있습니다; 브라우저는 버퍼의 소스 범위를 대상(destination) 범위로 똑똑하게 **복사**합니다.
-- `offset` {{optional_inline}}
-  - : 소스 `array`에서 값을 쓰기 시작하는 대상 배열의 오프셋. 이 값이 생략된 경우, 0으로 간주됩니다 (즉, 소스 `array`는 인덱스 0에서 시작하는 대상 배열 내 값을 덮어씁니다).
+  - : If the source array is a typed array, the two arrays may share the same underlying
+    {{jsxref("ArrayBuffer")}}; the JavaScript engine will intelligently
+    **copy** the source range of the buffer to the destination range.
+- `targetOffset` {{optional_inline}}
+  - : The offset into the target array at which to begin writing values from the source
+    array. If this value is omitted, 0 is assumed (that is, the source array will
+    overwrite values in the target array starting at index 0).
 
-### 예외
+### Return value
+
+{{jsxref("undefined")}}.
+
+### Exceptions
 
 - {{jsxref("RangeError")}}
-  - : `offset`이 가령 형식화 배열의 끝을 넘어서 저장하려고 설정된 경우 발생.
+  - : Thrown if one of the two conditions is met:
+    - An element will be stored beyond the end of the typed array, either because `targetOffset` is too large or because `array` or `typedarray` is too large.
+    - `targetOffset` is negative.
 
-## 예제
+## Examples
 
-### `set()` 사용하기
+### Using set()
 
 ```js
-var buffer = new ArrayBuffer(8);
-var uint8 = new Uint8Array(buffer);
+const buffer = new ArrayBuffer(8);
+const uint8 = new Uint8Array(buffer);
 
-uint8.set([1,2,3], 3);
+uint8.set([1, 2, 3], 3);
 
 console.log(uint8); // Uint8Array [ 0, 0, 0, 1, 2, 3, 0, 0 ]
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [JavaScript 형식화 배열](/ko/docs/Web/JavaScript/Typed_arrays)
+- [Polyfill of `TypedArray.prototype.set` in `core-js`](https://github.com/zloirock/core-js#ecmascript-typed-arrays)
+- [JavaScript typed arrays](/en-US/docs/Web/JavaScript/Typed_arrays)
 - {{jsxref("TypedArray")}}
 - {{jsxref("ArrayBuffer")}}

@@ -1,72 +1,127 @@
 ---
 title: new operator
 slug: Web/JavaScript/Reference/Operators/new
+page-type: javascript-operator
+browser-compat: javascript.operators.new
 ---
 
 {{jsSidebar("Operators")}}
 
-**`new` 연산자**는 사용자 정의 객체 타입 또는 내장 객체 타입의 인스턴스를 생성한다.
+The **`new`** operator lets developers create an instance of a user-defined object type or of one of the built-in object types that has a constructor function.
 
 {{EmbedInteractiveExample("pages/js/expressions-newoperator.html")}}
 
-## 구문
+## Syntax
 
-```js
-    new constructor[([arguments])]
+```js-nolint
+new constructor
+new constructor()
+new constructor(arg1)
+new constructor(arg1, arg2)
+new constructor(arg1, arg2, /* …, */ argN)
 ```
 
-### 매개변수
+### Parameters
 
 - `constructor`
-  - : 객체 인스턴스의 타입을 기술(명세)하는 함수
-- `arguments`
-  - : `constructor`와 함께 호출될 값 목록
+  - : A class or function that specifies the type of the object instance.
+- `arg1`, `arg2`, …, `argN`
+  - : A list of values that the `constructor` will be called with. `new Foo` is equivalent to `new Foo()`, i.e. if no argument list is specified, `Foo` is called without arguments.
 
-## 설명
+## Description
 
-사용자 정의 객체를 생성에는 두 단계가 필요하다:
+When a function is called with the **`new`** keyword, the function will be used as a constructor. `new` will do the following things:
 
-1. 함수를 작성하여 객체 타입을 정의한다.
-2. `new` 연산자로 객체의 인스턴스를 생성한다.
+1. Creates a blank, plain JavaScript object. For convenience, let's call it `newInstance`.
+2. Points `newInstance`'s [[Prototype]] to the constructor function's `prototype` property, if the `prototype` is an {{jsxref("Object")}}. Otherwise, `newInstance` stays as a plain object with `Object.prototype` as its [[Prototype]].
 
-객체의 타입을 정의하기 위해, 객체의 이름과 속성을 명세하는 함수를 만든다. 객체는 그 자체가 또 다른 객체인 속성을 가질 수 있다. 아래의 예를 본다.
+   > **Note:** Properties/objects added to the constructor function's `prototype` property are therefore accessible to all instances created from the constructor function.
 
-코드 `new Foo(...)`가 실행될 때 다음과 같은 일이 발생한다:
+3. Executes the constructor function with the given arguments, binding `newInstance` as the [`this`](/en-US/docs/Web/JavaScript/Reference/Operators/this) context (i.e. all references to `this` in the constructor function now refer to `newInstance`).
+4. If the constructor function returns a [non-primitive](/en-US/docs/Web/JavaScript/Data_structures#primitive_values), this return value becomes the result of the whole `new` expression. Otherwise, if the constructor function doesn't return anything or returns a primitive, `newInstance` is returned instead. (Normally constructors don't return a value, but they can choose to do so to override the normal object creation process.)
 
-1. `Foo.prototype` 을 상속하는 새로운 객체가 하나 생성된다.
-2. 명시된 인자 그리고 새롭게 생성된 객체에 바인드된 this와 함께 생성자 함수 `Foo`가 호출된다.`new Foo`는 `new Foo()`와 동일하다. 즉 인자가 명시되지 않은 경우, 인자 없이 `Foo`가 호출된다.
-3. 생성자 함수에 의해 리턴된 객체는 전체 `new` 호출 결과가 된다. 만약 생성자 함수가 명시적으로 객체를 리턴하지 않는 경우, 첫 번째 단계에서 생성된 객체가 대신 사용된다.(일반적으로 생성자는 값을 리턴하지 않는다. 그러나 일반적인 객체 생성을 재정의(override)하기 원한다면 그렇게 하도록 선택할 수 있다.)
+[Classes](/en-US/docs/Web/JavaScript/Reference/Classes) can only be instantiated with the `new` operator — attempting to call a class without `new` will throw a `TypeError`.
 
-언제든 이전에 정의된 객체에 속성을 추가할 수 있다. 예를 들면, `car1.color = "black"` 구문은 `color` 속성을 `car1`에 추가하고 해당 속성에 "`black`"이란 값을 할당한다. 그러나, 이것이 다른 객체들에게는 영향을 주지 않는다. 동일한 타입의 모든 객체들에게 새로운 속성을 추가하려면, `Car` 객체 타입의 정의에 이 속성을 추가해야한다.
+Creating an object with a user-defined constructor function requires two steps:
 
-[`Function.prototype`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/prototype) 속성을 사용하여 이전에 정의된 객체 타입에 공유 속성을 추가할 수 있다. 이것은 객체 타입의 인스턴스 하나에만 적용되는 것이 아니라 이 함수로 생성하는 모든 객체와 공유하는 속성을 정의한다.
+1. Define the object type by writing a function that specifies its name and properties.
+   For example, a constructor function to create an object `Foo` might look like this:
 
-다음의 코드는 `car` 타입의 모든 객체에 "`original color`" 값을 갖는 color 속성을 추가한다. 그리고 `car1` 객체 인스턴스에서만 이 값을 문자열 "`black`"으로 덮어쓴다. 더 많은 정보는 [prototype](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/prototype)을 참조한다.
+   ```js
+   function Foo(bar1, bar2) {
+     this.bar1 = bar1;
+     this.bar2 = bar2;
+   }
+   ```
+
+2. Create an instance of the object with `new`.
+
+   ```js
+   const myFoo = new Foo("Bar 1", 2021);
+   ```
+
+> **Note:** An object can have a property that is itself another object. See the examples below.
+
+You can always add a property to a previously defined object instance. For example, the statement `car1.color = "black"` adds a property `color` to `car1`, and assigns it a value of `"black"`.
+
+However, this does not affect any other objects. To add the new property to all objects of the same type, you must add the property to the constructor's `prototype` property. This defines a property that is shared by all objects created with that function, rather than by just one instance of the object type. The following code adds a `color` property with value `"original color"` to all objects of type `Car`, and then overwrites that value with the string `"black"` only in the instance object `car1`. For more information, see [prototype](/en-US/docs/Learn/JavaScript/Objects/Object_prototypes).
 
 ```js
 function Car() {}
-car1 = new Car();
-car2 = new Car();
+const car1 = new Car();
+const car2 = new Car();
 
-console.log(car1.color);    // undefined
+console.log(car1.color); // undefined
 
 Car.prototype.color = "original color";
-console.log(car1.color);    // original color
+console.log(car1.color); // 'original color'
 
-car1.color = 'black';
-console.log(car1.color);   // black
+car1.color = "black";
+console.log(car1.color); // 'black'
 
-console.log(car1.__proto__.color) //original color
-console.log(car2.__proto__.color) //original color
-console.log(car1.color)  // black
-console.log(car2.color) // original color
+console.log(Object.getPrototypeOf(car1).color); // 'original color'
+console.log(Object.getPrototypeOf(car2).color); // 'original color'
+console.log(car1.color); // 'black'
+console.log(car2.color); // 'original color'
 ```
 
-## 예제
+> **Note:** While the constructor function can be invoked like any regular function (i.e. without the `new` operator),
+> in this case a new object is not created and the value of `this` is also different.
 
-### 객체 타입과 객체 인스턴스
+A function can know whether it is invoked with `new` by checking [`new.target`](/en-US/docs/Web/JavaScript/Reference/Operators/new.target). `new.target` is only `undefined` when the function is invoked without `new`. For example, you can have a function that behaves differently when it's called versus when it's constructed:
 
-cars를 위한 객체 타입을 생성하기 원한다고 가정해 보자. 이 객체 타입이 `car`로 불리기 원하고, make, model, 그리고 year 속성을 갖게 하고 싶다. 이렇게 하기 위해서 다음과 같은 함수를 작성할 것이다:
+```js
+function Car(color) {
+  if (!new.target) {
+    // Called as function.
+    return `${color} car`;
+  }
+  // Called with new.
+  this.color = color;
+}
+
+const a = Car("red"); // a is "red car"
+const b = new Car("red"); // b is `Car { color: "red" }`
+```
+
+Prior to ES6, which introduced [classes](/en-US/docs/Web/JavaScript/Reference/Classes), most JavaScript built-ins are both callable and constructible, although many of them exhibit different behaviors. To name a few:
+
+- [`Array()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Array), [`Error()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/Error), and [`Function()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/Function) behave the same when called as a function or a constructor.
+- [`Boolean()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean/Boolean), [`Number()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/Number), and [`String()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/String) coerce their argument to the respective primitive type when called, and return wrapper objects when constructed.
+- [`Date()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date) returns a string representing the current date when called, equivalent to `new Date().toString()`.
+
+After ES6, the language is stricter about which are constructors and which are functions. For example:
+
+- [`Symbol()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/Symbol) and [`BigInt()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt/BigInt) can only be called without `new`. Attempting to construct them will throw a `TypeError`.
+- [`Proxy`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy) and [`Map`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/Map) can only be constructed with `new`. Attempting to call them will throw a `TypeError`.
+
+## Examples
+
+### Object type and object instance
+
+Suppose you want to create an object type for cars. You want this type of object to be
+called `Car`, and you want it to have properties for make, model, and year.
+To do this, you would write the following function:
 
 ```js
 function Car(make, model, year) {
@@ -76,23 +131,26 @@ function Car(make, model, year) {
 }
 ```
 
-이제 다음과 같이, `mycar`로 불리는 객체를 생성할 수 있다:
+Now you can create an object called `myCar` as follows:
 
 ```js
-var mycar = new Car("Eagle", "Talon TSi", 1993);
+const myCar = new Car("Eagle", "Talon TSi", 1993);
 ```
 
-이 구문은 `mycar` 를 생성하고 명시한 값을 속성값으로 설정한다. 그래서 `mycar.make`의 값은 문자열 "Eagle"이고, `mycar.year`는 정수 1993이며 나머지도 마찬가지이다.
+This statement creates `myCar` and assigns it the specified values for its
+properties. Then the value of `myCar.make` is the string "Eagle",
+`myCar.year` is the integer 1993, and so on.
 
-`new`를 호출해서 얼마든지 `car` 객체를 생성할 수 있다. 예를 들면:
+You can create any number of `car` objects by calls to `new`. For
+example:
 
 ```js
-var kenscar = new Car("Nissan", "300ZX", 1992);
+const kensCar = new Car("Nissan", "300ZX", 1992);
 ```
 
-### 속성 그 자신이 다른 객체인 객체의 속성
+### Object property that is itself another object
 
-`person`이라고 불리는 객체를 다음과 같이 정의한다고 가정해보자:
+Suppose you define an object called `Person` as follows:
 
 ```js
 function Person(name, age, sex) {
@@ -102,14 +160,15 @@ function Person(name, age, sex) {
 }
 ```
 
-그리고 다음과 같이 두 개의 `person` 객체 인스턴스를 새롭게 생성한다:
+And then instantiate two new `Person` objects as follows:
 
 ```js
-var rand = new Person("Rand McNally", 33, "M");
-var ken = new Person("Ken Jones", 39, "M");
+const rand = new Person("Rand McNally", 33, "M");
+const ken = new Person("Ken Jones", 39, "M");
 ```
 
-그런 다음 `owner` 속성을 포함하는 `car`의 정의를 다시 쓸 수 있다. 이 owner 속성은 다음과 같은 person 객체를 취한다:
+Then you can rewrite the definition of `Car` to include an
+`owner` property that takes a `Person` object, as follows:
 
 ```js
 function Car(make, model, year, owner) {
@@ -120,29 +179,48 @@ function Car(make, model, year, owner) {
 }
 ```
 
-새로운 객체의 인스턴스를 생성하기 위해 다음과 같이 사용한다:
+To instantiate the new objects, you then use the following:
 
 ```js
-var car1 = new Car("Eagle", "Talon TSi", 1993, rand);
-var car2 = new Car("Nissan", "300ZX", 1992, ken);
+const car1 = new Car("Eagle", "Talon TSi", 1993, rand);
+const car2 = new Car("Nissan", "300ZX", 1992, ken);
 ```
 
-새로운 객체를 생성할 때 문자열이나 숫자 값을 넘겨주는 대신에, 위의 구문은 owner를 위한 매개변수로 `rand`와 `ken` 객체를 넘겨준다. `car2`의 owner name을 확인해보기 위해서, 다음의 속성에 접근할 수 있다:
+Instead of passing a literal string or integer value when creating the new objects, the
+above statements pass the objects `rand` and `ken` as the
+parameters for the owners. To find out the name of the owner of `car2`, you
+can access the following property:
 
 ```js
-car2.owner.name
+car2.owner.name;
 ```
 
-## 명세서
+### Using `new` with classes
+
+```js
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+  greet() {
+    console.log(`Hello, my name is ${this.name}`);
+  }
+}
+
+const p = new Person("Caroline");
+p.greet(); // Hello, my name is Caroline
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 관련 문서
+## See also
 
 - {{jsxref("Function")}}
 - {{jsxref("Reflect.construct()")}}
-- {{jsxref("Object.prototype")}}
+- {{jsxref("Object")}}

@@ -1,61 +1,71 @@
 ---
 title: WebAssembly.compile()
 slug: WebAssembly/JavaScript_interface/compile
-original_slug: Web/JavaScript/Reference/Global_Objects/WebAssembly/compile
+browser-compat: javascript.builtins.WebAssembly.compile
 ---
 
 {{WebAssemblySidebar}}
 
-**`WebAssembly.compile()`**함수는 WebAssembly 바이너리 코드에서 {{jsxref ( "WebAssembly.Module")}}을 컴파일합니다. 이 함수는 모듈을 인스턴스화하기 전에 컴파일해야하는 경우에 유용합니다. 그렇지 않으면 {{jsxref ( "WebAssembly.instantiate ()")}} 함수를 사용해야합니다.
+The **`WebAssembly.compile()`** function compiles WebAssembly binary code into a [`WebAssembly.Module`](/en-US/docs/WebAssembly/JavaScript_interface/Module) object.
+This function is useful if it is necessary to compile a module before it can be instantiated (otherwise, the [`WebAssembly.instantiate()`](/en-US/docs/WebAssembly/JavaScript_interface/instantiate) function should be used).
+
+> **Note:** Webpages that have strict [Content Security Policy (CSP)](/en-US/docs/Web/HTTP/CSP) might block WebAssembly from compiling and executing modules.
+> For more information on allowing WebAssembly compilation and execution, see the [script-src CSP](/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src).
 
 ## Syntax
 
-```js
-Promise<WebAssembly.Module> WebAssembly.compile(bufferSource);
+```js-nolint
+WebAssembly.compile(bufferSource)
 ```
 
 ### Parameters
 
-- _bufferSource_
-  - : 컴파일 할 .wasm 모듈의 이진 코드가 들어있는 [typed array](/ko/docs/Web/JavaScript/Typed_arrays) 또는 [ArrayBuffer](/ko/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)입니다.
+- `bufferSource`
+  - : A [typed array](/en-US/docs/Web/JavaScript/Typed_arrays) or {{jsxref("ArrayBuffer")}}
+    containing the binary code of the .wasm module you want to compile.
 
 ### Return value
 
-`Promise`는 컴파일 된 모듈로 표현된 {{jsxref ( "WebAssembly.Module")}} 객체로 반환됩니다.
+A `Promise` that resolves to a [`WebAssembly.Module`](/en-US/docs/WebAssembly/JavaScript_interface/Module) object
+representing the compiled module.
 
 ### Exceptions
 
-- `bufferSource`가 [typed array](/ko/docs/Web/JavaScript/Typed_arrays)가 아니면 {{jsxref("TypeError")}}가 발생합니다.
-- 컴파일에 실패하면 promise는 {{jsxref("WebAssembly.CompileError")}}와 함께 reject가 반환됩니다.
+- If `bufferSource` is not a [typed array](/en-US/docs/Web/JavaScript/Typed_arrays) or {{jsxref("ArrayBuffer")}},
+  the promise rejects with a {{jsxref("TypeError")}}.
+- If compilation fails, the promise rejects with a
+  [`WebAssembly.CompileError`](/en-US/docs/WebAssembly/JavaScript_interface/CompileError).
 
 ## Examples
 
-다음은 `compile()` 함수를 사용하여 simple.wasm 바이트 코드를 컴파일 하고 [postMessage()](/ko/docs/Web/API/Worker/postMessage)를 사용하여 [worker](/ko/docs/Web/API/Web_Workers_API)에 보내는 예제입니다.
+### Using compile
+
+The following example compiles the loaded simple.wasm byte code using the
+`compile()` function and then sends it to a [worker](/en-US/docs/Web/API/Web_Workers_API) using [postMessage()](/en-US/docs/Web/API/Worker/postMessage).
 
 ```js
-var worker = new Worker("wasm_worker.js");
+const worker = new Worker("wasm_worker.js");
 
-fetch('simple.wasm').then(response =>
-  response.arrayBuffer()
-).then(bytes =>
-  WebAssembly.compile(bytes)
-).then(mod =>
-  worker.postMessage(mod)
-);
+fetch("simple.wasm")
+  .then((response) => response.arrayBuffer())
+  .then((bytes) => WebAssembly.compile(bytes))
+  .then((mod) => worker.postMessage(mod));
 ```
 
-> **참고:** 대부분의 경우에 {{jsxref("WebAssembly.compileStreaming()")}}를 사용하는 것이 좋습니다. 이는 `compile()`보다 효율적이기 때문입니다.
+> **Note:** You'll probably want to use
+> [`WebAssembly.compileStreaming()`](/en-US/docs/WebAssembly/JavaScript_interface/compileStreaming) in most cases, as it is more efficient
+> than `compile()`.
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- [WebAssembly](/ko/docs/WebAssembly) overview page
-- [WebAssembly concepts](/ko/docs/WebAssembly/Concepts)
-- [Using the WebAssembly JavaScript API](/ko/docs/WebAssembly/Using_the_JavaScript_API)
+- [WebAssembly](/en-US/docs/WebAssembly) overview page
+- [WebAssembly concepts](/en-US/docs/WebAssembly/Concepts)
+- [Using the WebAssembly JavaScript API](/en-US/docs/WebAssembly/Using_the_JavaScript_API)

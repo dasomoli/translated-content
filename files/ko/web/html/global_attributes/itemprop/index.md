@@ -1,37 +1,40 @@
 ---
 title: itemprop
 slug: Web/HTML/Global_attributes/itemprop
+page-type: html-attribute
+browser-compat: html.global_attributes.itemprop
 ---
 
 {{HTMLSidebar("Global_attributes")}}
 
-**`itemprop`** [전역 특성](/ko/docs/Web/HTML/Global_attributes)은 아이템에 속성을 추가할 때 사용합니다. 모든 요소는 `itemprop` 특성을 가질 수 있으며, 하나의 `itemprop`은 키-값 쌍으로 구성됩니다. 각각의 키-값 쌍은 **속성**이라고 부르고, 하나 이상의 속성으로 구성한 그룹을 **아이템**이라고 부릅니다. 속성의 값으로는 문자열이나 {{glossary("URL")}}을 사용할 수 있고, {{HTMLElement("audio")}}, {{HTMLElement("embed")}}, {{HTMLElement("iframe")}}, {{HTMLElement("img")}}, {{HTMLElement("link")}}, {{HTMLElement("object")}}, {{HTMLElement("source")}} , {{HTMLElement("track")}}, {{HTMLElement("video")}} 등 다양한 요소와 연관지을 수 있습니다.
+The **`itemprop`** [global attribute](/en-US/docs/Web/HTML/Global_attributes) is used to add properties to an item. Every HTML element can have an `itemprop` attribute specified, and an `itemprop` consists of a name-value pair. Each name-value pair is called a **property**, and a group of one or more properties forms an **item**. Property values are either a string or a URL and can be associated with a very wide range of elements including {{HTMLElement("audio")}}, {{HTMLElement("embed")}}, {{HTMLElement("iframe")}}, {{HTMLElement("img")}}, {{HTMLElement("link")}}, {{HTMLElement("object")}}, {{HTMLElement("source")}}, {{HTMLElement("track")}}, and {{HTMLElement("video")}}.
 
-## 예제
+## Examples
 
-다음 예제는 일련의 요소에 `itemprop` 특성을 표기한 소스 코드와, 그 결과인 구조화된 데이터를 나타내는 표를 보입니다.
+The example below shows the source for a set of elements marked up with `itemprop` attributes, followed by a table showing the resulting structured data.
 
 ### HTML
 
 ```html
-<div itemscope itemtype ="http://schema.org/Movie">
+<div itemscope itemtype="http://schema.org/Movie">
   <h1 itemprop="name">Avatar</h1>
   <span>Director:
     <span itemprop="director">James Cameron</span>
     (born August 16, 1954)</span>
   <span itemprop="genre">Science fiction</span>
-  <a href="../movies/avatar-theatrical-trailer.html"
-    itemprop="trailer">Trailer</a>
+  <a href="../movies/avatar-theatrical-trailer.html" itemprop="trailer">
+    Trailer
+  </a>
 </div>
 ```
 
-### 구조화된 데이터
+### Structured data
 
 <table class="standard-table">
   <tbody>
     <tr>
-      <td colspan="1" rowspan="2"></td>
-      <th colspan="2" rowspan="1"><strong>Item</strong></th>
+      <td rowspan="2"> </td>
+      <th colspan="2"><strong>Item</strong></th>
     </tr>
     <tr>
       <th><strong>itemprop name</strong></th>
@@ -60,185 +63,170 @@ slug: Web/HTML/Global_attributes/itemprop
   </tbody>
 </table>
 
-## 속성
+## Properties
 
-속성은 문자열이나 {{glossary("URL")}}을 값으로 가질 수 있습니다. 문자열 값으로 URL을 지정할 경우 {{htmlelement("a")}}와 {{htmlattrxref("href", "a")}} 특성, {{htmlelement("img")}} 요소와 {{htmlelement("src", "img")}} 특성, 또는 그 외의 외부 리소스를 연결하는 기타 요소를 사용해 표현합니다.
+Properties have values that are either a string or a URL. When a string value is a URL, it is expressed using the {{HTMLElement("a")}} element and its [`href`](/en-US/docs/Web/HTML/Element/a#href) attribute, the {{HTMLElement("img")}} element and its [`src`](/en-US/docs/Web/HTML/Element/img#src) attribute, or other elements that link to or embed external resources.
 
-### 문자열을 값으로 갖는 세 개의 속성
-
-```html
-<div itemscope>
- <p>My name is
-   <span itemprop="name">Neil</span>.</p>
- <p>My band is called
-   <span itemprop="band">Four Parts Water</span>.</p>
- <p>I am
-   <span itemprop="nationality">British</span>.</p>
-</div>
-```
-
-### 값이 URL인 "image" 속성
+### Three properties with values that are strings
 
 ```html
 <div itemscope>
- <img itemprop="image"
-   src="google-logo.png" alt="Google">
+  <p>My name is <span itemprop="name">Neil</span>.</p>
+  <p>My band is called <span itemprop="band">Four Parts Water</span>.</p>
+  <p>I am <span itemprop="nationality">British</span>.</p>
 </div>
 ```
 
-숫자와 문자로 구성된 긴 문자열처럼 사람이 쉽게 읽고 이해할 수 없는 문자열이 값일 경우, {{htmlelement("data")}} 요소의 {{htmlattrxref("value", "data")}} 특성 값을 사용해 나타내고, 사람이 보다 쉽게 읽을 수 있도록 표현한 문자열을 `<data>`의 콘텐츠로 지정할 수 있습니다. (`<data>` 콘텐츠는 구조화된 데이터의 일부가 아닙니다. 아래 예제를 참고하세요.)
+### One property, "image", whose value is a URL
 
-### 값이 상품 ID인 속성을 가진 아이템
+```html
+<div itemscope>
+  <img itemprop="image" src="google-logo.png" alt="Google" />
+</div>
+```
 
-ID가 사람에게 친화적인 형태가 아니므로, 사람이 읽을 수 있는 텍스트로는 ID 대신 상품 ID를 사용합니다.
+When a string value can't be easily read and understood by a person (e.g., a long string of numbers and letters), it can be displayed using the value attribute of the data element, with the more easily-understood-by-a human-version given in the element's contents (which is not part of the structured data - see example below).
+
+### An item with a property whose value is a product ID
+
+The ID is not human-friendly, so the product's name is used the human-visible text instead of the ID.
 
 ```html
 <h1 itemscope>
- <data itemprop="product-id"
-   value="9678AOU879">The Instigator 2000</data>
+  <data itemprop="product-id" value="9678AOU879">The Instigator 2000</data>
 </h1>
 ```
 
-숫자 값으로는 {{htmlelement("meter")}} 요소와 그 {{htmlattrxref("value", "meter")}} 특성을 대신 사용할 수 있습니다.
+For numeric data, the meter element and its value attribute can be used.
 
-### `<meter>` 요소
+### A meter element
 
 ```html
 <div itemscope itemtype="http://schema.org/Product">
- <span itemprop="name">Panasonic White
-   60L Refrigerator</span>
- <img src="panasonic-fridge-60l-white.jpg" alt="">
-  <div itemprop="aggregateRating"
-       itemscope
-       itemtype="http://schema.org/AggregateRating">
-   <meter itemprop="ratingValue"
-     min=0 value=3.5 max=5>Rated 3.5/5</meter>
-   (based on <span
-     itemprop="reviewCount">11</span>
-     customer reviews)
+  <span itemprop="name">Panasonic White 60L Refrigerator</span>
+  <img src="panasonic-fridge-60l-white.jpg" alt="" />
+  <div
+    itemprop="aggregateRating"
+    itemscope
+    itemtype="http://schema.org/AggregateRating">
+    <meter itemprop="ratingValue" min="0" value="3.5" max="5">
+      Rated 3.5/5
+    </meter>
+    (based on <span itemprop="reviewCount">11</span>
+    customer reviews)
   </div>
 </div>
 ```
 
-비슷하게, 날짜와 시간 관련 데이터는 {{htmlelement("time")}}과 그 {{htmlattrxref("datetime", "time")}} 특성을 사용할 수 있습니다.
+Similarly, for date- and time-related data, the time element and its datetime attribute can be used.
 
-### 날짜 값인 생년월일 속성을 가지는 아이템
-
-```html
-<div itemscope>
- I was born on <time
-   itemprop="birthday"
-   datetime="2009-05-10">May 10th 2009</time>.
-</div>
-```
-
-속성을 선언하는 요소에 `itemscope` 특성을 지정해, 이름-값 쌍의 그룹으로 만들 수도 있습니다. 각 값은 문자열이거나, 이름-값 쌍 그룹(즉, 아이템)이어야 합니다.
-
-### 사람을 나타내는 바깥쪽 아이템과 밴드를 나타내는 안쪽 아이템
+### An item with one property, "birthday", whose value is a date
 
 ```html
 <div itemscope>
- <p>Name:
-   <span itemprop="name">Amanda</span></p>
- <p>Band:
-   <span itemprop="band" itemscope>
-     <span itemprop="name">Jazz Band</span>
-     (<span itemprop="size">12</span>
-     players)</span></p>
+  I was born on
+  <time itemprop="birthday" datetime="1984-05-10">May 10th 1984</time>.
 </div>
 ```
 
-위의 코드에서 바깥쪽 아이템은 `name`과 `band` 두 개의 속성을 가지고 있습니다. `name`은 `Amanda`이고 `band`는 그 자체로 `name`과 `size`라는 두 가지 속성을 가진 아이템입니다. 밴드의 `name`은 `Jazz Band`이고, `size`는 `12`입니다. 이 예제에서, 바깥쪽 아이템은 최상위 마이크로데이터 아이템입니다. 다른 아이템의 일부가 아닌 아이템을 최상위 마이크로데이터 아이템이라고 합니다.
+Properties can also be groups of name-value pairs, by putting the itemscope attribute on the element that declares the property. Each value is either a string or a group of name-value pairs (i.e. an item).
 
-### 모든 속성이 아이템에서 분리된 경우
+### An outer item representing a person, and an inner one representing a band
 
-이 예제는 앞의 예제와 동일하지만 모든 속성이 아이템에서 분리되어 있습니다.
+```html
+<div itemscope>
+  <p>Name: <span itemprop="name">Amanda</span></p>
+  <p>
+    Band:
+    <span itemprop="band" itemscope>
+      <span itemprop="name">Jazz Band</span>
+      (<span itemprop="size">12</span> players)</span
+    >
+  </p>
+</div>
+```
+
+The outer item above has two properties, "name" and "band". The "name" is "Amanda", and the "band" is an item in its own right, with two properties, "name" and "size". The "name" of the band is "Jazz Band", and the "size" is "12". The outer item in this example is a top-level microdata item. Items that are not part of others are called top-level microdata items.
+
+### All the properties separated from their items
+
+This example is the same as the previous one, but all the properties are separated from their items
 
 ```html
 <div itemscope id="amanda" itemref="a b"></div>
-<p id="a">Name:
-  <span itemprop="name">Amanda</span></p>
-<div id="b"
-  itemprop="band"
-  itemscope itemref="c"></div>
+<p id="a">Name: <span itemprop="name">Amanda</span></p>
+<div id="b" itemprop="band" itemscope itemref="c"></div>
 <div id="c">
- <p>Band:
-   <span itemprop="name">Jazz Band</span></p>
- <p>Size:
-   <span itemprop="size">12</span> players</p>
+  <p>Band: <span itemprop="name">Jazz Band</span></p>
+  <p>Size: <span itemprop="size">12</span> players</p>
 </div>
 ```
 
-이 예제의 결과는 이전 예제와 동일합니다. 첫 번째 아이템은 두 가지 속성을 가지고 있는데, "name"은 "Amanda"로 설정했고, "band"는 다른 아이템으로 연결되어 있습니다. "band"가 가리킨 아이템은 또 다시 두 가지 속성을 가지고 있는데, "name"은 "Jazz Band"이고, "size"는 "12"입니다.
+This gives the same result as the previous example. The first item has two properties, "name", set to "Amanda", and "band", set to another item. That second item has two further properties, "name", set to "Jazz Band", and "size", set to "12".
 
-아이템은 같은 이름을 가지나 서로 다른 값을 갖는 다수의 속성을 가질 수 있습니다.
+An item can have multiple properties with the same name and different values.
 
-### 두 가지 맛의 아이스크림
+### Ice cream with two flavors
 
 ```html
 <div itemscope>
- <p>Flavors in my favorite ice cream:</p>
- <ul>
-  <li itemprop="flavor">Lemon sorbet</li>
-  <li itemprop="flavor">Apricot sorbet</li>
- </ul>
+  <p>Flavors in my favorite ice cream:</p>
+  <ul>
+    <li itemprop="flavor">Lemon sorbet</li>
+    <li itemprop="flavor">Apricot sorbet</li>
+  </ul>
 </div>
 ```
 
-이 예제는 두 가지 프로퍼티를 가지고 있는 아이템을 보여주고 있는데, 두 프로퍼티 모두 "flavor"라는 이름을 가지고 "Lemon sorbet"와 "Apricot sorbet"라는 값을 각각 가지고 있습니다.
+This results in an item with two properties, both with the name "flavor" and having the values "Lemon sorbet" and "Apricot sorbet".
 
-어떤 속성을 가진 요소는 프로퍼티 중 일부가 동일한 값을 가질 때 중복을 피하기 위해 한 번에 여러 프로퍼티를 가질 수도있습니다(An element introducing a property can also introduce multiple properties at once, to avoid duplication when some of the properties have the same value).
+An element introducing a property can also introduce multiple properties at once, to avoid duplication when some of the properties have the same value.
 
-### 값이 모두 "orange"인 "favorit-color"와 "favorite-fruit" 두 프로퍼티를 가진 아이템
+### An item with two properties, "favorite-color" and "favorite-fruit", both set to the value "orange"
 
 ```html
 <div itemscope>
- <span
-  itemprop="favorite-color
+  <span itemprop="favorite-color
     favorite-fruit">orange</span>
 </div>
 ```
 
-> **참고:** 참고: 마이크로 데이터와 마이크로 데이터가 표시된 문서의 컨텐츠 사이에는 아무런 연관관계가 없습니다.
+> **Note:** There is no relationship between the microdata and the content of the document where the microdata is marked up.
 
-### 구조화된 데이터를 두 가지 다른 방식으로 표시하기
+### Same structured data marked up in two different ways
 
-다음의 두 예제는 의미상 차이는 없습니다.
+There is no semantic difference between the following two examples
 
 ```html
 <figure>
- <img src="castle.jpeg">
- <figcaption><span
-   itemscope><span
-   itemprop="name">The Castle</span></span>
-     (1986)</figcaption>
+  <img src="castle.jpeg" />
+  <figcaption>
+    <span itemscope><span itemprop="name">The Castle</span></span> (1986)
+  </figcaption>
 </figure>
 ```
 
 ```html
-<span itemscope><meta
-  itemprop="name"
-  content="The Castle"></span>
+<span itemscope><meta itemprop="name" content="The Castle" /></span>
 <figure>
- <img src="castle.jpeg">
- <figcaption>The Castle
-  (1986)</figcaption>
+  <img src="castle.jpeg" />
+  <figcaption>The Castle (1986)</figcaption>
 </figure>
 ```
 
-두 예제 모두 caption을 가지고 있으며 figure와 전혀 관계가 없고 "name" 이라는 이름과 "The Castle"이라는 값의 쌍을 가진 아이템을 가지고 있습니다. 단 한 가지 차이는 사용자가 문서의 바깥쪽으로 figcaption을 드래그하면 drag-and-drop 데이터에 그 아이템이 포함된다는 점입니다다. 그 아이템과 연관된 이미지는 포함되지 않습니다.
+Both have a figure with a caption, and both, completely unrelated to the figure, have an item with a name-value pair with the name "name" and the value "The Castle". The only difference is that if the user drags the figcaption out of the document, the item will be included in the drag-and-drop data. The image associated with the item won't be included.
 
-## 이름과 값
+## Names and values
 
-프로퍼티는 고유한 토큰으로 이루어진 순서가 없는(unordered) 집합으로 대소문자를 구분하고 이름-값의 쌍을 나타냅니다. 프로퍼티 값은 하나 이상의 토큰을 가지고 있어야 합니다. 다음의 예제에서 각 데이터 셀이 토큰입니다.
+A property is an unordered set of unique tokens that are case-sensitive and represent the name-value pairs. The property value must have at least one token. In the example below, each data cell is a token.
 
-### 이름 예제
+### Names examples
 
 <table class="standard-table">
   <thead>
     <tr>
-      <th colspan="1" rowspan="2" scope="col"></th>
-      <th colspan="2" rowspan="1" scope="col">Item</th>
+      <th rowspan="2" scope="col"> </th>
+      <th colspan="2" scope="col">Item</th>
     </tr>
     <tr>
       <th scope="col">itemprop <strong>name</strong></th>
@@ -279,173 +267,173 @@ ID가 사람에게 친화적인 형태가 아니므로, 사람이 읽을 수 있
   </tbody>
 </table>
 
-**토큰**(**Tokens**)은 문자열이거나 URL일 수 있습니다. item이 URL일 경우는 **typed item**이라고 하고 그렇지 않은 경우는 문자열(string)이라고 합니다. 문자열에는 마침표(period)나 콜론(colon)이 포함되어서는 안됩니다(아래 참고).
+**Tokens** are either strings or URL's. An item is called a **typed item** if it is a URL. Otherwise, it is a string. Strings cannot contain a period or a colon (see below).
 
-1. 아이템이 typed item일 경우 다음 중 하나이어야 합니다:
+1. If the item is a typed item it must be either:
 
-    1. 정의된 프로퍼티 이름이거나
-    2. 어휘(vocabulary)의 정의를 참조하는 유효한 URL이거나
-    3. 전용(proprietary) 아이템 프로퍼티(예: 공개된 명세서에 정의되지 않은)로 사용되는 유효한 URL이어야 합니다.
+   1. A defined property name, or
+   2. A valid URL, which refers to the vocabulary definition, or
+   3. A valid URL that is used as a proprietary item property name (i.e. one not defined in a public specification), or
 
-2. 아이템이 typed item이 아닐 경우 다음을 따라야 합니다:
+2. If the item is not a typed item it must be:
 
-    1. "**.**" (U+002E FULL STOP) 문자나 "**:**" characters (U+003A COLON) 문자를 포함하지 않는 문자열로 전용(proprietary) 아이템 프로퍼티(예: 공개된 명세서에 정의되지 않은)로 사용되는 유효한 URL이어야 합니다.
+   1. A string that contains no "`.`" (U+002E FULL STOP) characters and no "`:`" characters (U+003A COLON) and is used as a proprietary item property name (again, one not defined in a public specification).
 
-> **참고:** 위에서 금지한, URL 값이 아닌 경우 ":" 문자가 포함되면 안되는 이유는 이 문자가 문자열에 포함되어 있으면 URL과 구분할 수 없기 때문입니다. "."를 포함하는 문자는 향후 확장을 고려해 예약된 것입니다. 공백(space) 문자는 공백이 포함되어 있을 경우 여러 개의 토큰으로 파싱될 수 있기 때문에 금지되어 있습니다.
+> **Note:** The rules above disallow ":" characters in non-URL values because otherwise they could not be distinguished from URLs. Values with "." characters are reserved for future extensions. Space characters are disallowed because otherwise the values would be parsed as multiple tokens.
 
-## 값
+## Values
 
-이름-값 쌍의 프로퍼티 값은 다음 목록에서 처음으로 일치하는 값입니다:
+The property value of a name-value pair is as given for the first matching case in the following list:
 
-- 해당 요소가 **itemscope** 속성을 가지고 있을 경우
+- If the element has an `itemscope` attribute
 
-  - 그 값은 해당 요소가 생성한 **아이템**(**item**)입니다.
+  - The value is the **item** created by the element.
 
-- 해당 요소가 **meta** 요소일 경우
+- If the element is a `meta` element
 
-  - 그 값은 해당 요소의 **content** 속성의 값입니다.
+  - The value is the value of the element's `content` attribute
 
-- 해당 요소가 **audio**, **embed**, **iframe**, **img**, **source**, **track**, 또는 **video**일 경우
+- If the element is an `audio`, `embed`, `iframe`, `img`, `source`, `track`, or `video` element
 
-  - 그 값은 src 속성이 해당 요소에 설정될 당시 노드 문서(node document;[Microdata DOM API](/ko/docs/Web/API/Microdata_DOM_API)의 일부)에 상대적인 src 속성의 값을 파싱한 URL 문자열입니다.
+  - The value is the resulting URL string that results from parsing the value of the element's src attribute relative to the node document (part of the [Microdata DOM API](/en-US/docs/Web/HTML/Microdata)) of the element at the time the attribute is set
 
-- 해당 요소가 **a**, **area**, 또는 **link** 요소일 경우
+- If the element is an `a`, `area`, or `link` element
 
-  - 그 값은 href 속성이 해당 요소에 설정될 당시 노드 문서에 상대적인 href 속성의 값을 파싱한 URL 문자열입니다.
+  - The value is the resulting URL string that results from parsing the value of the element's href attribute relative to the node document of the element at the time the attribute is set
 
-- 해당 요소가 **object** 요소일 경우
+- If the element is an `object` element
 
-  - 그 값은 data 속성이 해당 요소에 설정될 당시 노드 문서에 상대적인 data 속성의 값을 파싱한 URL 문자열입니다.
+  - The value is the resulting URL string that results from parsing the value of the element's data attribute relative to the node document of the element at the time the attribute is set
 
-- 해당 요소가 **data**일 경우
+- If the element is a `data` element
 
-  - 그 값은 해당 요소의 value 속성의 값입니다.
+  - The value is the value of the element's value attribute
 
-- 해당 요소가 **meter**일 경우
+- If the element is a `meter` element
 
-  - 그 값은 해당 요소의 **value** 속성의 값입니다.
+  - The value is the value of the element's `value` attribute
 
-- 해당 요소가 **time**일 경우
+- If the element is a `time` element
 
-  - 그 값은 해당 요소의 **datetime** 값 입니다.
+  - The value is the element's `datetime` value
 
-그 외의 경우
+Otherwise
 
-- 그 값은 해당 요소의 **textContent** 입니다.
+- The value is the element's _textContent_.
 
-어떤 프로퍼티의 값이 **URL**이라면, 그 프로퍼티는 URL 속성 요소를 이용해 지정되어야 합니다. URL 속성 요소는 **a**, **area**, **audio**, **embed**, **iframe**, **img**, **link**, **object**, **source**, **track**, 그리고 **video** 요소입니다.
+If a property's value is a `URL`, the property must be specified using a URL property element. The URL property elements are the `a`, `area`, `audio`, `embed`, `iframe`, `img`, `link`, `object`, `source`, `track`, and `video` elements.
 
-### 이름 순서
+### Name order
 
-이름은 서로 순서가 없지만, 특정한 이름이 여러 값을 가지는 경우라면 상대적인 순서를 가집니다.
+Names are unordered relative to each other, but if a particular name has multiple values, they do have a relative order.
 
-#### 다음 예제에서 "a" 프로퍼티는 순서대로 "1"과 "2"의 값을 가지지만, "a" 프로퍼티가 "b" 프로퍼티 보다 먼저 오는지 아닌지는 중요하지 않습니다.
-
-```html
-<div itemscope>
- <p itemprop="a">1</p>
- <p itemprop="a">2</p>
- <p itemprop="b">test</p>
-</div>
-```
-
-#### 다음 세 예제는 모두 같습니다.
+In the following example, the "a" property has the values "1" and "2", _in that order_, but whether the "a" property comes before the "b" property or not is not important
 
 ```html
 <div itemscope>
- <p itemprop="b">test</p>
- <p itemprop="a">1</p>
- <p itemprop="a">2</p>
+  <p itemprop="a">1</p>
+  <p itemprop="a">2</p>
+  <p itemprop="b">test</p>
 </div>
 ```
 
+The following is equivalent
+
 ```html
 <div itemscope>
- <p itemprop="a">1</p>
- <p itemprop="b">test</p>
- <p itemprop="a">2</p>
+  <p itemprop="b">test</p>
+  <p itemprop="a">1</p>
+  <p itemprop="a">2</p>
 </div>
 ```
+
+As is the following
+
+```html
+<div itemscope>
+  <p itemprop="a">1</p>
+  <p itemprop="b">test</p>
+  <p itemprop="a">2</p>
+</div>
+```
+
+And the following
 
 ```html
 <div id="x">
- <p itemprop="a">1</p>
+  <p itemprop="a">1</p>
 </div>
 <div itemscope itemref="x">
- <p itemprop="b">test</p>
- <p itemprop="a">2</p>
+  <p itemprop="b">test</p>
+  <p itemprop="a">2</p>
 </div>
 ```
 
-## 다른 예제
+### Representing structured data for a book
 
-### HTML
-
-```html
-<dl itemscope
-  itemtype="http://vocab.example.net/book"
-  itemid="urn:isbn:0-330-34032-8">
- <dt>Title
-   <dd
-    itemprop="title">The Reality Dysfunction
- <dt>Author
-   <dd
-     itemprop="author">Peter F. Hamilton
- <dt>Publication date
- <dd><time
-   itemprop="pubdate"
-   datetime="1996-01-26">26 January 1996</time>
-</dl>
-```
-
-### 구조화된 데이터
+This example uses microdata attributes to represent the following structured data:
 
 <table class="standard-table">
   <tbody>
     <tr>
-      <td colspan="1" rowspan="14">itemscope</td>
+      <td rowspan="4">itemscope</td>
       <td>itemtype: itemid</td>
-      <td colspan="2" rowspan="1">
-        http://vocab.example.net/book: urn:isbn:0-330-34032-8
-      </td>
+      <td colspan="2">https://schema.org/Book: urn:isbn:0-374-22848-5</td>
     </tr>
     <tr>
       <td>itemprop</td>
       <td>title</td>
-      <td>The Reality Dysfunction</td>
+      <td>Owls of the Eastern Ice</td>
     </tr>
     <tr>
       <td>itemprop</td>
       <td>author</td>
-      <td>Peter F. Hamilton</td>
+      <td>Jonathan C Slaght</td>
     </tr>
     <tr>
       <td>itemprop</td>
-      <td>pubdate</td>
-      <td>1996-01-26</td>
+      <td>datePublished</td>
+      <td>2020-08-04</td>
     </tr>
   </tbody>
 </table>
 
-### 결과
+#### HTML
 
-{{EmbedLiveSample('HTML_2', '', '', '', 'Web/HTML/Global_attributes/itemprop')}}
+```html
+<dl
+  itemscope
+  itemtype="https://schema.org/Book"
+  itemid="urn:isbn:0-374-22848-5<">
+  <dt>Title</dt>
+  <dd itemprop="title">Owls of the Eastern Ice</dd>
+  <dt>Author</dt>
+  <dd itemprop="author">Jonathan C Slaght</dd>
+  <dt>Publication date</dt>
+  <dd>
+    <time itemprop="datePublished" datetime="2020-08-04">August 4 2020</time>
+  </dd>
+</dl>
+```
 
-## 명세
+#### Result
+
+{{EmbedLiveSample('Representing structured data for a book')}}
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
-{{compat}}
+{{Compat}}
 
-## 같이 보기
+## See also
 
-- [다른 전역 특성](/ko/docs/Web/HTML/Global_attributes)
-- 다른 마이크로데이터와 관련된 전역 속성:
+- [Other different global attributes](/en-US/docs/Web/HTML/Global_attributes)
+- Other microdata related global attributes:
 
-  - {{htmlattrxref("itemid")}}
-  - {{htmlattrxref("itemprop")}}
-  - {{htmlattrxref("itemref")}}
-  - {{htmlattrxref("itemscope")}}
-  - {{htmlattrxref("itemtype")}}
+  - [`itemid`](/en-US/docs/Web/HTML/Global_attributes/itemid)
+  - [`itemref`](/en-US/docs/Web/HTML/Global_attributes/itemref)
+  - [`itemscope`](/en-US/docs/Web/HTML/Global_attributes/itemscope)
+  - [`itemtype`](/en-US/docs/Web/HTML/Global_attributes/itemtype)

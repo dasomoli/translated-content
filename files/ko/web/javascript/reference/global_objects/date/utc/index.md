@@ -1,86 +1,116 @@
 ---
 title: Date.UTC()
 slug: Web/JavaScript/Reference/Global_Objects/Date/UTC
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Date.UTC
 ---
+
 {{JSRef}}
 
-**`Date.UTC()`** 메서드는 {{jsxref("Date")}} 생성자와 비슷한 매개변수를 받지만, 모두 UTC로 취급합니다. 반환 값은 1970년 1월 1일 00:00:00 UTC부터 매개변수가 나타내는 시간의 차이를 밀리초로 나타낸 수입니다.
+The **`Date.UTC()`** static method accepts parameters similar to the
+{{jsxref("Date")}} constructor, but treats them as UTC. It returns the number of
+milliseconds since January 1, 1970, 00:00:00 UTC.
 
 {{EmbedInteractiveExample("pages/js/date-utc.html")}}
 
-## 구문
+## Syntax
 
-**ECMAScript 2017 이상:**
-
-```js
-    Date.UTC(year[, month[, day[, hour[, minute[, second[, millisecond]]]]])
+```js-nolint
+Date.UTC(year)
+Date.UTC(year, monthIndex)
+Date.UTC(year, monthIndex, day)
+Date.UTC(year, monthIndex, day, hour)
+Date.UTC(year, monthIndex, day, hour, minute)
+Date.UTC(year, monthIndex, day, hour, minute, second)
+Date.UTC(year, monthIndex, day, hour, minute, second, millisecond)
 ```
-
-**ECMAScript 2016 이하:** (`month` 필수)
-
-```js
-    Date.UTC(year, month[, day[, hour[, minute[, second[, millisecond]]]]])
-```
-
-### 매개변수
 
 - `year`
-  - : 네 자리 연도.
-- `month`
-  - : 월을 나타내는 0(1월)에서 11(12월) 사이의 정수. ECMAScript 2016까지는 필수 매개변수였으나, ECMA2017부터는 선택사항입니다.
+
+  - : Integer value representing the year.
+
+    Values from `0` to `99` map to the years
+    `1900` to `1999`. All other values are the actual year.
+    See the [example](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#interpretation_of_two-digit_years).
+
+- `monthIndex` {{optional_inline}}
+  - : An integer between `0` (January) and `11` (December)
+    representing the month. Since ECMAScript 2017 it defaults to `0` if
+    omitted. _(Up until ECMAScript 2016, `monthIndex` was a required
+    parameter. As of ES2017, it no longer is.)_
 - `day` {{optional_inline}}
-  - : 일을 나타내는 1에서 31 사이의 정수. 기본값은 1입니다.
+  - : An integer between `1` and `31` representing the day of the
+    month. If omitted, defaults to `1`.
 - `hour` {{optional_inline}}
-  - : 시를 나타내는 0에서 23 사이의 정수. 기본값은 0입니다.
+  - : An integer between `0` and `23` representing the hours. If
+    omitted, defaults to `0`.
 - `minute` {{optional_inline}}
-  - : 분을 나타내는 0에서 59 사이의 정수. 기본값은 0입니다.
+  - : An integer between `0` and `59` representing the minutes. If
+    omitted, defaults to `0`.
 - `second` {{optional_inline}}
-  - : 초를 나타내는 0에서 59 사이의 정수. 기본값은 0입니다.
+  - : An integer between `0` and `59` representing the seconds. If
+    omitted, defaults to `0`.
 - `millisecond` {{optional_inline}}
-  - : 밀리초를 나타내는 0에서 999 사이의 정수. 기본값은 0입니다.
+  - : An integer between `0` and `999` representing the
+    milliseconds. If omitted, defaults to `0`.
 
-### 반환 값
+### Return value
 
-주어진 날짜와 1970년 1월 1일 00:00:00 UTC의 차이를 밀리초로 나타낸 숫자.
+A number representing the number of milliseconds for the given date since January 1,
+1970, 00:00:00, UTC.
 
-## 설명
+## Description
 
-`Date.UTC()`는 날짜 및 시간을 받고, 1970년 1월 1일 00:00:00 UTC와의 차이를 밀리초 수로 나타내 반환합니다.
+`UTC()` takes comma-delimited date and time parameters and returns the
+number of milliseconds between January 1, 1970, 00:00:00, universal time and the
+specified date and time.
 
-0에서 99 사이의 연도는 20세기`(1900 + year)`로 취급합니다. 즉 95를 입력할 경우 1995로 취급합니다.
+Years between `0` and `99` are converted to a year in the
+20th century `(1900 + year)`. For example, `95` is
+converted to the year `1995`.
 
-`Date.UTC()` 메서드는 {{jsxref("Date")}} 생성자와 다른 점이 두 가지 있습니다.
+The `UTC()` method differs from the {{jsxref("Date")}} constructor in two
+ways:
 
-- `Date.UTC()`는 현지 시간 대신 국제 표준시(UTC)를 사용합니다.
-- `Date.UTC()`는 {{jsxref("Date")}} 객체를 만드는 대신 시간 값을 숫자로 반환합니다.
+1. `Date.UTC()` uses universal time instead of the local time.
+2. `Date.UTC()` returns a time value as a number instead of creating a
+   {{jsxref("Date")}} object.
 
-주어진 매개변수가 통상적인 범위를 벗어나면 `Date.UTC()` 메서드는 다른 매개변수 값을 조절해 계산합니다. 예를 들어, 월 값으로 15를 사용하면 연도가 1 증가(`year + 1`)하고, 월 계산에는 3을 대신 사용합니다.
+If a parameter is outside of the expected range, the `UTC()` method updates
+the other parameters to accommodate the value. For example, if `15` is used
+for `monthIndex`, the year will be incremented by 1
+`(year + 1)` and `3` will be used for the month.
 
-`Date.UTC()`는 {{jsxref("Date")}}의 정적 메서드이므로, 사용자가 생성한 {{jsxref("Date")}} 인스턴스에서 호출하지 않고 `Date.UTC()` 형태로 사용합니다.
+`UTC()` is a static method of {{jsxref("Date")}}, so it's called as
+`Date.UTC()` rather than as a method of a {{jsxref("Date")}} instance.
 
-## 예제
+## Examples
 
-### `Date.UTC()` 사용하기
+### Using Date.UTC()
 
-다음 예제는 현지 시간 대신 UTC를 사용하여 {{jsxref("Date")}} 객체를 생성합니다.
+The following statement creates a {{jsxref("Date")}} object with the arguments treated
+as UTC instead of local:
 
 ```js
-var utcDate = new Date(Date.UTC(96, 11, 1, 0, 0, 0));
+const utcDate = new Date(Date.UTC(2018, 11, 1, 0, 0, 0));
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 호환성 참고사항
+### Compatibility notes
 
-### 매개변수를 두 개 미만 제공하는 경우
+#### Date.UTC() with fewer than two arguments
 
-Date.UTC()가 두 개 미만의 매개변수를 받은 경우, ECMAScript 2017은 {{jsxref("NaN")}}을 반환할 것을 요구합니다. 이를 지원하지 않던 엔진은 업데이트됐습니다. ([Firefox bug 1050755](https://bugzil.la/1050755), [ecma-262 #642](https://github.com/tc39/ecma262/pull/642)를 참고하세요)
+When providing less than two arguments to `Date.UTC()`, ECMAScript 2017
+requires that {{jsxref("NaN")}} is returned. Engines that weren't supporting this
+behavior have been updated (see [bug 1050755](https://bugzil.la/1050755),
+[ecma-262 #642](https://github.com/tc39/ecma262/pull/642)).
 
 ```js
 Date.UTC();
@@ -96,7 +126,7 @@ Date.UTC(1);
 // Edge: NaN
 ```
 
-## 같이 보기
+## See also
 
 - {{jsxref("Date.parse()")}}
 - {{jsxref("Date")}}

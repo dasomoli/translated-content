@@ -1,66 +1,83 @@
 ---
 title: padding
 slug: Web/CSS/padding
+page-type: css-shorthand-property
+browser-compat: css.properties.padding
 ---
 
 {{CSSRef}}
 
-**`padding`** [CSS](/ko/CSS) 속성은 요소의 네 방향 [안쪽 여백 영역](/ko/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model#padding-area)을 설정합니다. {{cssxref("padding-top")}}, {{cssxref("padding-right")}}, {{cssxref("padding-bottom")}}, {{cssxref("padding-left")}}의 단축 속성입니다.
+The **`padding`** [CSS](/en-US/docs/Web/CSS) [shorthand property](/en-US/docs/Web/CSS/Shorthand_properties) sets the [padding area](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model#padding_area) on all four sides of an element at once.
 
 {{EmbedInteractiveExample("pages/css/padding.html")}}
 
-요소의 안쪽 여백 영역은 콘텐츠와 테두리 사이의 공간입니다.
+An element's padding area is the space between its content and its border.
 
-> **참고:** `padding`은 요소의 내부에 빈 공간을 추가합니다. 반면 {{cssxref("margin")}}은 요소의 **주위**에 빈 공간을 만듭니다.
+> **Note:** Padding creates extra space within an element. In contrast, {{cssxref("margin")}} creates extra space _around_ an element.
 
-## 구문
+## Constituent properties
+
+This property is a shorthand for the following CSS properties:
+
+- {{cssxref("padding-top")}}
+- {{cssxref("padding-right")}}
+- {{cssxref("padding-bottom")}}
+- {{cssxref("padding-left")}}
+
+## Syntax
 
 ```css
-/* 네 면 모두 적용 */
+/* Apply to all four sides */
 padding: 1em;
 
-/* 세로방향 | 가로방향 */
+/* top and bottom | left and right */
 padding: 5% 10%;
 
-/* 위 | 가로방향 | 아래 */
+/* top | left and right | bottom */
 padding: 1em 2em 2em;
 
-/* 위 | 오른쪽 | 아래 | 왼쪽 */
+/* top | right | bottom | left */
 padding: 5px 1em 0 2em;
 
-/* 전역 값 */
+/* Global values */
 padding: inherit;
 padding: initial;
+padding: revert;
+padding: revert-layer;
 padding: unset;
 ```
 
-padding 속성은 한 개, 두 개, 세 개, 혹은 네 개의 값으로 지정할 수 있습니다. 각 값은 {{cssxref("&lt;length&gt;")}}, {{cssxref("&lt;percentage&gt;")}} 중 하나로, 음수 값은 유효하지 않습니다.
+The `padding` property may be specified using one, two, three, or four values. Each value is a {{cssxref("&lt;length&gt;")}} or a {{cssxref("&lt;percentage&gt;")}}. Negative values are invalid.
 
-- **한 개의 값**은 모든 네 면의 여백을 설정합니다.
-- **두 개의 값**을 지정하면 첫 번째는 **위와 아래**, 두 번째는 **왼쪽과 오른쪽** 여백을 설정합니다.
-- **세 개의 값**을 지정하면 첫 번째는 **위**, 두 번째는 **왼쪽과 오른쪽,** 세 번째 값은 **아래** 여백을 설정합니다.
-- **네 개의 값**을 지정하면 각각 **상, 우, 하, 좌** 순서로 여백을 지정합니다. (시계방향)
+- When **one** value is specified, it applies the same padding to **all four sides**.
+- When **two** values are specified, the first padding applies to the **top and bottom**, the second to the **left and right**.
+- When **three** values are specified, the first padding applies to the **top**, the second to the **right and left**, the third to the **bottom**.
+- When **four** values are specified, the paddings apply to the **top**, **right**, **bottom**, and **left** in that order (clockwise).
 
-### 값
+### Values
 
-- **{{cssxref("length")}}**
-  - : 여백의 크기로 고정값 사용.
-- {{cssxref("percentage")}}
-  - : 여백의 크기로 [컨테이닝 블록](/ko/docs/Web/CSS/All_About_The_Containing_Block) 너비의 백분율 사용.
+- {{cssxref("&lt;length&gt;")}}
+  - : The size of the padding as a fixed value.
+- {{cssxref("&lt;percentage&gt;")}}
+  - : The size of the padding as a percentage, relative to the inline size (_width_ in a horizontal language, defined by {{cssxref("writing-mode")}}) of the [containing block](/en-US/docs/Web/CSS/Containing_block).
 
-### 형식 구문
+## Formal definition
+
+{{cssinfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 간단한 예제
+### Setting padding with pixels
 
 #### HTML
 
 ```html
-<h4>평범한 안쪽 여백을 가진 요소.</h4>
-<h3>엄청난 안쪽 여백을 가진 요소!</h3>
+<h4>This element has moderate padding.</h4>
+<h3>The padding is huge in this element!</h3>
 ```
 
 #### CSS
@@ -77,39 +94,40 @@ h3 {
 }
 ```
 
-{{EmbedLiveSample('간단한_예제', '100%', 300)}}
+#### Result
 
-### 더 많은 예제
+{{EmbedLiveSample('Setting_padding_with_pixels', '100%', 300)}}
+
+### Setting padding with pixels and percentages
 
 ```css
-padding: 5%;                /* 모두 5% */
+padding: 5%; /* All sides: 5% padding */
 
-padding: 10px;              /* 모두 10px */
+padding: 10px; /* All sides: 10px padding */
 
-padding: 10px 20px;         /* 상하: 10px */
-                            /* 좌우: 20px */
+padding: 10px 20px; /* top and bottom: 10px padding */
+/* left and right: 20px padding */
 
-padding: 10px 3% 20px;      /* 상: 10px */
-                            /* 좌우: 3% */
-                            /* 하: 20px */
+padding: 10px 3% 20px; /* top:            10px padding */
+/* left and right: 3% padding   */
+/* bottom:         20px padding */
 
-padding: 1em 3px 30px 5px;  /* 상:  1em */
-                            /* 우:  3px */
-                            /* 하: 30px */
-                            /* 좌:  5px */
+padding: 1em 3px 30px 5px; /* top:    1em padding  */
+/* right:  3px padding  */
+/* bottom: 30px padding */
+/* left:   5px padding  */
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-{{cssinfo}}
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [CSS 기본 박스 모델 입문](/ko/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
-- {{cssxref("padding-top")}}, {{cssxref("padding-right")}}, {{cssxref("padding-bottom")}}, {{cssxref("padding-left")}}.
+- [Introduction to the CSS basic box model](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
+- {{cssxref("padding-top")}}, {{cssxref("padding-right")}}, {{cssxref("padding-bottom")}}, and {{cssxref("padding-left")}}.
+- The mapped logical properties: {{cssxref("padding-block-start")}}, {{cssxref("padding-block-end")}}, {{cssxref("padding-inline-start")}}, and {{cssxref("padding-inline-end")}} and the shorthands {{cssxref("padding-block")}} and {{cssxref("padding-inline")}}

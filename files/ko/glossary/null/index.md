@@ -1,23 +1,25 @@
 ---
-title: 'Null'
+title: "Null"
 slug: Glossary/Null
+page-type: glossary-definition
 ---
-컴퓨터 과학에서 `null` 값은 일반적으로 존재하지 않거나 유효하지 않은 {{glossary ("object")}} 또는 주소를 의도적으로 가리키는 참조를 나타냅니다. null 참조의 의미는 언어의 구현에 따라 다양합니다.
 
-{{Glossary("JavaScript")}}에서 `null`은 동작이 원시적으로 보이기 때문에 {{Glossary ( "Primitive", "primitive values")}} 중 하나로 표시됩니다. 하지만 [`typeof`](/ko/docs/Web/JavaScript/Reference/Operators/typeof) 연산자를 사용할 때는 `object`를 반환합니다.
+In computer science, a **`null`** value represents a reference that points, generally intentionally, to a nonexistent or invalid {{glossary("object")}} or address. The meaning of a null reference varies among language implementations.
+
+In {{Glossary("JavaScript")}}, `null` is marked as one of the {{Glossary("Primitive", "primitive values")}}, because its behavior is seemingly primitive. However, when using the [`typeof`](/en-US/docs/Web/JavaScript/Reference/Operators/typeof) operator, it returns `"object"`.
 
 ```js
 console.log(typeof null); // "object"
 ```
 
-이는 [버그](/ko/docs/Web/JavaScript/Reference/Operators/typeof#null)로 여겨지지만 수정하면 많은 스크립트에 문제가 발생할 수 있어서 고칠 수 없습니다.
+This is considered [a bug](/en-US/docs/Web/JavaScript/Reference/Operators/typeof#typeof_null), but one which cannot be fixed because it will break too many scripts.
 
-## 일반적인 지식
+## See also
 
-- [JavaScript의 타입](/ko/docs/Web/JavaScript/Data_structures)
-- JavaScript 전역 객체: [`null`](/ko/docs/Web/JavaScript/Reference/Operators/null)
-- 위키백과의 [널 포인터](https://ko.wikipedia.org/wiki/널_포인터)
-- **[용어 사전](/ko/docs/Glossary)**
+- [JavaScript data types](/en-US/docs/Web/JavaScript/Data_structures)
+- The JavaScript global object: [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null)
+- [Null pointer](https://en.wikipedia.org/wiki/Null_pointer) on Wikipedia
+- **[Glossary](/en-US/docs/Glossary)**
 
   - {{Glossary("JavaScript")}}
   - {{Glossary("string")}}

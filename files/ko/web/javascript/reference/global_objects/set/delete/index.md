@@ -1,69 +1,75 @@
 ---
 title: Set.prototype.delete()
 slug: Web/JavaScript/Reference/Global_Objects/Set/delete
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Set.delete
 ---
 
 {{JSRef}}
 
-**`delete()`** 메서드는 지정한 요소를 `Set` 객체에서 제거합니다.
+The **`delete()`** method removes a specified value from a
+`Set` object, if it is in the set.
 
 {{EmbedInteractiveExample("pages/js/set-prototype-delete.html")}}
 
-## 구문
+## Syntax
 
-```js
-mySet.delete(value);
+```js-nolint
+delete(value)
 ```
 
-### 매개변수
+### Parameters
 
 - `value`
-  - : `Set` 객체에서 제거할 요소의 값.
+  - : The value to remove from `Set`.
 
-### 반환 값
+### Return value
 
-요소를 제거했으면 `true`, 아니면 `false`.
+Returns `true` if `value` was already in
+`Set`; otherwise `false`.
 
-## 예제
+## Examples
 
-### `delete()` 사용하기
+### Using the delete() method
 
 ```js
-var mySet = new Set();
-mySet.add('foo');
+const mySet = new Set();
+mySet.add("foo");
 
-mySet.delete('bar'); // Returns false. No "bar" element found to be deleted.
-mySet.delete('foo'); // Returns true.  Successfully removed.
+console.log(mySet.delete("bar")); // false; no "bar" element found to be deleted.
+console.log(mySet.delete("foo")); // true; successfully removed.
 
-mySet.has('foo');    // Returns false. The "foo" element is no longer present.
+console.log(mySet.has("foo")); // false; the "foo" element is no longer present.
 ```
 
-다음 예제는 `Set`에서 객체를 제거하는 방법을 보입니다.
+### Deleting an object from a set
+
+Because objects are compared by reference, you have to delete them by checking individual properties if you don't have a reference to the original object.
 
 ```js
-var setObj = new Set(); // Create a New Set.
+const setObj = new Set(); // Create a new set.
 
-setObj.add({x: 10, y: 20}); // Add object in the set.
+setObj.add({ x: 10, y: 20 }); // Add object in the set.
 
-setObj.add({x: 20, y: 30}); // Add object in the set.
+setObj.add({ x: 20, y: 30 }); // Add object in the set.
 
 // Delete any point with `x > 10`.
-setObj.forEach(function(point){
-  if(point.x > 10){
-    setObj.delete(point)
+setObj.forEach((point) => {
+  if (point.x > 10) {
+    setObj.delete(point);
   }
-})
+});
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Set")}}
 - {{jsxref("Set.prototype.clear()")}}

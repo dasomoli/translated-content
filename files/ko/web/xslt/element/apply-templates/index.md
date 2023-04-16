@@ -1,41 +1,40 @@
 ---
-title: apply-templates
+title: <xsl:apply-templates>
 slug: Web/XSLT/Element/apply-templates
-original_slug: Web/XSLT/apply-templates
 ---
 
 {{ XsltRef() }}
 
-`<xsl:apply-templates>` 요소는 입력 트리 안 노드 집합을 선택하고 그 집합에 알맞은 템플릿을 적용하도록 처리기에게 지시합니다.
+The `<xsl:apply-templates>` element selects a set of nodes in the input tree and instructs the processor to apply the proper templates to them.
 
-### 문법
+### Syntax
 
-```
+```xml
 <xsl:apply-templates select=EXPRESSION mode=NAME>
   <xsl:with-param> [optional]
   <xsl:sort> [optional]
 </xsl:apply-templates>
 ```
 
-### 필수 속성
+### Required Attributes
 
-없음.
+None.
 
-### 선택 속성
+### Optional Attributes
 
 - `select`
-  - : 처리할 노드를 지정하는 XPath 식을 씁니다. 별표(`*`)는 전체 노드 집합을 선택합니다. 이 속성이 없으면, 현재 노드의 모든 자식 노드를 선택합니다.
+  - : Uses an XPath expression that specifies the nodes to be processed. An asterisk(`*`) selects the entire node-set. If this attribute is not set, all child nodes of the current node are selected.
 - `mode`
-  - : 같은 노드를 정의하는 다양한 처리 방법이 있다면, 그 방법들을 구별합니다.
+  - : If there are multiple ways of processing defined for the same node, distinguishes among them.
 
-### 타입
+### Type
 
-명령, 템플릿 안에 나타남
+Instruction, appears within a template.
 
-### 정의
+### Defined
 
-[XSLT section 5.4, Applying Template Rules](http://www.w3.org/TR/xslt#section-Applying-Template-Rules)
+XSLT section 5.4.
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

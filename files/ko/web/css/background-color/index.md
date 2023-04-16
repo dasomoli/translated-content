@@ -1,124 +1,121 @@
 ---
 title: background-color
 slug: Web/CSS/background-color
+page-type: css-property
+browser-compat: css.properties.background-color
 ---
 
 {{CSSRef}}
 
-[CSS](/en/CSS) **`background-color`** 속성은 요소의 배경 색을 지정합니다.
+The **`background-color`** [CSS](/en-US/docs/Web/CSS) property sets the background color of an element.
 
 {{EmbedInteractiveExample("pages/css/background-color.html")}}
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
 background-color: red;
 background-color: indigo;
 
-/* 16진수 값 */
-background-color: #bbff00;    /* 완전 불투명 */
-background-color: #bf0;       /* 완전 불투명 단축 */
-background-color: #11ffee00;  /* 완전 투명 */
-background-color: #1fe0;      /* 완전 투명 단축 */
-background-color: #11ffeeff;  /* 완전 불투명 */
-background-color: #1fef;      /* 완전 불투명 단축 */
+/* Hexadecimal value */
+background-color: #bbff00; /* Fully opaque */
+background-color: #bf0; /* Fully opaque shorthand */
+background-color: #11ffee00; /* Fully transparent */
+background-color: #1fe0; /* Fully transparent shorthand */
+background-color: #11ffeeff; /* Fully opaque */
+background-color: #1fef; /* Fully opaque shorthand */
 
-/* RGB 값 */
-background-color: rgb(255, 255, 128);        /* 완전 불투명 */
-background-color: rgba(117, 190, 218, 0.5);  /* 50% 불투명도 */
+/* RGB value */
+background-color: rgb(255 255 128); /* Fully opaque */
+background-color: rgb(117 190 218 / 0.5); /* 50% transparent */
 
-/* HSL 값 */
-background-color: hsl(50, 33%, 25%);         /* 완전 불투명 */
-background-color: hsla(50, 33%, 25%, 0.75);  /* 75% 불투명도 */
+/* HSL value */
+background-color: hsl(50 33% 25%); /* Fully opaque */
+background-color: hsl(50 33% 25% / 0.75); /* 75% opaque, i.e. 25% transparent */
 
-/* 특별 키워드 값 */
+/* Special keyword values */
 background-color: currentcolor;
 background-color: transparent;
 
-/* 전역 값 */
+/* Global values */
 background-color: inherit;
 background-color: initial;
+background-color: revert;
+background-color: revert-layer;
 background-color: unset;
 ```
 
-`background-color` 속성은 하나의 {{cssxref("&lt;color&gt;")}} 값을 사용해 지정합니다.
+The `background-color` property is specified as a single `<color>` value.
 
-### 값
+### Values
 
-- {{cssxref("color")}}
-  - : 요소의 배경으로 사용할 단일 색상입니다. {{cssxref("background-image")}} 뒤에 렌더링 되므로, 이미지가 투명한 부분을 가지고 있으면 그 곳을 통해 볼 수 있습니다.
+- {{cssxref("&lt;color&gt;")}}
+  - : The uniform color of the background. It is rendered behind any {{cssxref("background-image")}} that is specified, although the color will still be visible through any transparency in the image.
 
-## 접근성 고려사항
+## Accessibility concerns
 
-낮은 시력을 가진 사용자도 페이지의 콘텐츠를 읽을 수 있도록 글자 색과 배경색의 대비를 높게 유지하는 것이 중요합니다.
+It is important to ensure that the contrast ratio between the background color and the color of the text placed over it is high enough that people experiencing low vision conditions will be able to read the content of the page.
 
-색상 대비율은 배경색과 투명도를 적용한 글자 색의 밝기를 비교해서 얻어낼 수 있습니다. 현재 [웹 콘텐츠 접근성 가이드라인](https://www.w3.org/WAI/standards-guidelines/wcag/)(WCAG)을 만족하려면, 텍스트 콘텐츠는 4.5:1, 제목 등 큰 텍스트는 3:1의 대비율이 필요합니다. 큰 텍스트란 18.66px 이상의 [굵은](/ko/docs/Web/CSS/font-weight) 글씨 혹은 24px 이상의 텍스트로 정의하고 있습니다.
+Color contrast ratio is determined by comparing the luminance of the text and background color values. In order to meet current [Web Content Accessibility Guidelines (WCAG)](https://www.w3.org/WAI/standards-guidelines/wcag/), a ratio of 4.5:1 is required for text content and 3:1 for larger text such as headings. Large text is defined as 18.66px and [bold](/en-US/docs/Web/CSS/font-weight) or larger, or 24px or larger.
 
 - [WebAIM: Color Contrast Checker](https://webaim.org/resources/contrastchecker/)
-- [MDN Understanding WCAG, Guideline 1.4 explanations](/ko/docs/Web/Accessibility/Understanding_WCAG/Perceivable#Guideline_1.4_Make_it_easier_for_users_to_see_and_hear_content_including_separating_foreground_from_background)
+- [MDN Understanding WCAG, Guideline 1.4 explanations](/en-US/docs/Web/Accessibility/Understanding_WCAG/Perceivable#guideline_1.4_make_it_easier_for_users_to_see_and_hear_content_including_separating_foreground_from_background)
 - [Understanding Success Criterion 1.4.3 | W3C Understanding WCAG 2.0](https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html)
 
-## 형식 정의
+## Formal definition
 
 {{cssinfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
 ### HTML
 
 ```html
-<div class="exampleone">
- Lorem ipsum dolor sit amet, consectetuer
-</div>
+<div class="exampleone">Lorem ipsum dolor sit amet, consectetuer</div>
 
-<div class="exampletwo">
-  Lorem ipsum dolor sit amet, consectetuer
-</div>
+<div class="exampletwo">Lorem ipsum dolor sit amet, consectetuer</div>
 
-<div class="examplethree">
-  Lorem ipsum dolor sit amet, consectetuer
-</div>
+<div class="examplethree">Lorem ipsum dolor sit amet, consectetuer</div>
 ```
 
 ### CSS
 
 ```css
 .exampleone {
-  background-color: teal;
-  color: white;
+  background-color: transparent;
 }
 
 .exampletwo {
-  background-color: rgb(153,102,153);
-  color: rgb(255,255,204);
+  background-color: rgb(153, 102, 153);
+  color: rgb(255, 255, 204);
 }
 
 .examplethree {
   background-color: #777799;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample("예제","200","150")}}
+{{EmbedLiveSample("Examples", 200, 150)}}
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 더 보기
+## See also
 
-- [한 번에 여러 배경 사용하기](/ko/docs/Web/CSS/CSS_Backgrounds_and_Borders/Using_multiple_backgrounds)
-- {{cssxref("&lt;color&gt;")}} 자료형
-- 색상 관련 다른 속성: {{cssxref("color")}}, {{cssxref("border-color")}}, {{cssxref("outline-color")}}, {{cssxref("text-decoration-color")}}, {{cssxref("text-emphasis-color")}}, {{cssxref("text-shadow")}}, {{cssxref("caret-color")}}, and {{cssxref("column-rule-color")}}
-- [CSS로 HTML 요소에 색입히기](/ko/docs/Web/HTML/Applying_color)
+- [Multiple backgrounds](/en-US/docs/Web/CSS/CSS_Backgrounds_and_Borders/Using_multiple_backgrounds)
+- The {{cssxref("&lt;color&gt;")}} data type
+- Other color-related properties: {{cssxref("color")}}, {{cssxref("border-color")}}, {{cssxref("outline-color")}}, {{cssxref("text-decoration-color")}}, {{cssxref("text-emphasis-color")}}, {{cssxref("text-shadow")}}, {{cssxref("caret-color")}}, and {{cssxref("column-rule-color")}}
+- [Applying color to HTML elements using CSS](/en-US/docs/Web/CSS/CSS_Colors/Applying_color)

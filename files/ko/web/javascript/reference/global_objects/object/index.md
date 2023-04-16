@@ -1,246 +1,320 @@
 ---
 title: Object
 slug: Web/JavaScript/Reference/Global_Objects/Object
+page-type: javascript-class
+browser-compat: javascript.builtins.Object
 ---
 
 {{JSRef}}
 
-**`Object`** 클래스는 [JavaScript의 데이터 유형](/ko/docs/Web/JavaScript/Data_structures) 중 하나를 나타냅니다. 다양한 키 모음 및 더 복잡한 엔티티들을 저장하는 데 사용됩니다. 객체는 {{jsxref("Object/Object", "Object()")}} 생성자 또는 [객체 초기자 / 리터럴 구문](/ko/docs/Web/JavaScript/Reference/Operators/Object_initializer)를 통해 생성할 수 있습니다.
+The **`Object`** type represents one of [JavaScript's data types](/en-US/docs/Web/JavaScript/Data_structures). It is used to store various keyed collections and more complex entities. Objects can be created using the {{jsxref("Object/Object", "Object()")}} constructor or the [object initializer / literal syntax](/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer).
 
-## 설명
+## Description
 
-JavaScript의 거의 모든 객체는 {{jsxref("Object")}}의 인스턴스입니다. 일반적인 객체는 `Object.prototype`에서 속성(메서드 포함)을 상속하지만, 이러한 속성들은 가려질(재정의될) 수 있습니다. 그러나 `Object`는 의도적으로 가려지지 않게 생성되거나(예: {{jsxref("Object.create", "Object.create(null)")}}), 더이상 가려지지 않도록 변경될 수 있습니다(예: {{jsxref("Object.setPrototypeOf")}}).
+Nearly all [objects](/en-US/docs/Web/JavaScript/Data_structures#objects) in JavaScript are instances of {{jsxref("Object")}}; a typical object inherits properties (including methods) from `Object.prototype`, although these properties may be shadowed (a.k.a. overridden). The only objects that don't inherit from `Object.prototype` are those with [`null` prototype](#null-prototype_objects), or descended from other `null` prototype objects.
 
-`Object` 프로토타입 객체에 대한 변경 사항은 해당 변경 사항의 대상이 되는 프로토타입 체인상의 속성 및 메서드가 추가로 재정의되지 않는 한 프로토타입 체인을 통해 **모든** 객체에서 볼 수 있습니다. 이것은 객체 동작을 재정의하거나 확장하는 매우 강력하지만 잠재적으로 위험한 메커니즘을 제공합니다.
+Changes to the `Object.prototype` object are seen by **all** objects through prototype chaining, unless the properties and methods subject to those changes are overridden further along the prototype chain. This provides a very powerful although potentially dangerous mechanism to override or extend object behavior. To make it more secure, `Object.prototype` is the only object in the core JavaScript language that has [immutable prototype](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf#description) — the prototype of `Object.prototype` is always `null` and not changeable.
 
-`Object` 생성자는 주어진 값에 대한 객체 래퍼를 생성합니다.
+### Object prototype properties
 
-- 값이 {{jsxref("null")}} 또는 {{jsxref("undefined")}}이면 빈 객체를 생성하여 반환합니다.
-- 그렇지 않으면 주어진 값에 해당하는 타입의 객체를 반환합니다.
-- 값이 이미 객체인 경우 그 값을 반환합니다.
+You should avoid calling any `Object.prototype` method, especially those that are not intended to be polymorphic (i.e. only its initial behavior makes sense and no descending object could override it in a meaningful way). All objects descending from `Object.prototype` may define a custom own property that has the same name, but with entirely different semantics from what you expect. Furthermore, these properties are not inherited by [`null`-prototype objects](#null-prototype_objects). All modern JavaScript utilities for working with objects are [static](#static_methods). More specifically:
 
-생성자가 아닌 맥락에서 호출될 때 `Object`는 `new Object()`와 동일하게 작동합니다.
+- [`valueOf()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/valueOf), [`toString()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString), and [`toLocaleString()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toLocaleString) exist to be polymorphic and you should expect the object to define its own implementation with sensible behaviors, so you can call them as instance methods. However, `valueOf()` and `toString()` are usually implicitly called through [type conversion](/en-US/docs/Web/JavaScript/Data_structures#type_coercion) and you don't need to call them yourself in your code.
+- [`__defineGetter__()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/__defineGetter__), [`__defineSetter__()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/__defineSetter__), [`__lookupGetter__()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/__lookupGetter__), and [`__lookupSetter__()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/__lookupSetter__) are deprecated and should not be used. Use the static alternatives {{jsxref("Object.defineProperty()")}} and {{jsxref("Object.getOwnPropertyDescriptor()")}} instead.
+- The [`__proto__`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/proto) property is deprecated and should not be used. The {{jsxref("Object.getPrototypeOf()")}} and {{jsxref("Object.setPrototypeOf()")}} alternatives are static methods.
+- The [`propertyIsEnumerable()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/propertyIsEnumerable) and [`hasOwnProperty()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty) methods can be replaced with the {{jsxref("Object.getOwnPropertyDescriptor()")}} and {{jsxref("Object.hasOwn()")}} static methods, respectively.
+- The [`isPrototypeOf()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/isPrototypeOf) method can usually be replaced with [`instanceof`](/en-US/docs/Web/JavaScript/Reference/Operators/instanceof), if you are checking the `prototype` property of a constructor.
 
-[객체 초기자 / 리터럴 구문](/ko/docs/Web/JavaScript/Reference/Operators/Object_initializer)도 참조하세요.
+In case where a semantically equivalent static method doesn't exist, or if you really want to use the `Object.prototype` method, you should directly [`call()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call) the `Object.prototype` method on your target object instead, to prevent the object from having an overriding property that produces unexpected results.
 
-### 객체의 속성 삭제하기
+```js
+const obj = {
+  foo: 1,
+  // You should not define such a method on your own object,
+  // but you may not be able to prevent it from happening if
+  // you are receiving the object from external input
+  propertyIsEnumerable() {
+    return false;
+  },
+};
 
-객체 자체에는 속성을 삭제하는 메서드가 없습니다(예: {{jsxref("Map.prototype.delete", "Map.prototype.delete()")}}). 삭제하기 위해서는 [delete 연산자](/ko/docs/Web/JavaScript/Reference/Operators/delete)를 사용해야 합니다.
+obj.propertyIsEnumerable("foo"); // false; unexpected result
+Object.prototype.propertyIsEnumerable.call(obj, "foo"); // true; expected result
+```
 
-## 생성자
+### Deleting a property from an object
+
+There isn't any method in an Object itself to delete its own properties (such as {{jsxref("Map.prototype.delete", "Map.prototype.delete()")}}). To do so, one must use the [delete operator](/en-US/docs/Web/JavaScript/Reference/Operators/delete).
+
+### null-prototype objects
+
+Almost all objects in JavaScript ultimately inherit from `Object.prototype` (see [inheritance and the prototype chain](/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain)). However, you may create `null`-prototype objects using [`Object.create(null)`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create) or the [object initializer syntax](/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer) with `__proto__: null` (note: the `__proto__` key in object literals is different from the deprecated [`Object.prototype.__proto__`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/proto) property). You can also change the prototype of an existing object to `null` by calling [`Object.setPrototypeOf(obj, null)`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf).
+
+```js
+const obj = Object.create(null);
+const obj2 = { __proto__: null };
+```
+
+An object with a `null` prototype can behave in unexpected ways, because it doesn't inherit any object methods from `Object.prototype`. This is especially true when debugging, since common object-property converting/detecting utility functions may generate errors, or lose information (especially if using silent error-traps that ignore errors).
+
+For example, the lack of [`Object.prototype.toString()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString) often makes debugging intractable:
+
+```js
+const normalObj = {}; // create a normal object
+const nullProtoObj = Object.create(null); // create an object with "null" prototype
+
+console.log(`normalObj is: ${normalObj}`); // shows "normalObj is: [object Object]"
+console.log(`nullProtoObj is: ${nullProtoObj}`); // throws error: Cannot convert object to primitive value
+
+alert(normalObj); // shows [object Object]
+alert(nullProtoObj); // throws error: Cannot convert object to primitive value
+```
+
+Other methods will fail as well.
+
+```js
+normalObj.valueOf(); // shows {}
+nullProtoObj.valueOf(); // throws error: nullProtoObj.valueOf is not a function
+
+normalObj.hasOwnProperty("p"); // shows "true"
+nullProtoObj.hasOwnProperty("p"); // throws error: nullProtoObj.hasOwnProperty is not a function
+
+normalObj.constructor; // shows "Object() { [native code] }"
+nullProtoObj.constructor; // shows "undefined"
+```
+
+We can add the `toString` method back to the null-prototype object by assigning it one:
+
+```js
+nullProtoObj.toString = Object.prototype.toString; // since new object lacks toString, add the original generic one back
+
+console.log(nullProtoObj.toString()); // shows "[object Object]"
+console.log(`nullProtoObj is: ${nullProtoObj}`); // shows "nullProtoObj is: [object Object]"
+```
+
+Unlike normal objects, in which `toString()` is on the object's prototype, the `toString()` method here is an own property of `nullProtoObj`. This is because `nullProtoObj` has no (`null`) prototype.
+
+In practice, objects with `null` prototype are usually used as a cheap substitute for [maps](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map). The presence of `Object.prototype` properties will cause some bugs:
+
+```js
+const ages = { alice: 18, bob: 27 };
+
+function hasPerson(name) {
+  return name in ages;
+}
+
+function getAge(name) {
+  return ages[name];
+}
+
+hasPerson("hasOwnProperty"); // true
+getAge("toString"); // [Function: toString]
+```
+
+Using a null-prototype object removes this hazard without introducing too much complexity to the `hasPerson` and `getAge` functions:
+
+```js
+const ages = Object.create(null, {
+  alice: { value: 18, enumerable: true },
+  bob: { value: 27, enumerable: true },
+});
+
+hasPerson("hasOwnProperty"); // false
+getAge("toString"); // undefined
+```
+
+In such case, the addition of any method should be done cautiously, as they can be confused with the other key-value pairs stored as data.
+
+Making your object not inherit from `Object.prototype` also prevents prototype pollution attacks. If a malicious script adds a property to `Object.prototype`, it will be accessible on every object in your program, except objects that have null prototype.
+
+```js
+const user = {};
+
+// A malicious script:
+Object.prototype.authenticated = true;
+
+// Unexpectedly allowing unauthenticated user to pass through
+if (user.authenticated) {
+  // access confidential data
+}
+```
+
+JavaScript also has built-in APIs that produce `null`-prototype objects, especially those that use objects as ad hoc key-value collections. For example:
+
+- The return value of {{jsxref("Array.prototype.group()")}}
+- The `groups` and `indices.groups` properties of the result of {{jsxref("RegExp.prototype.exec()")}}
+- [`Array.prototype[@@unscopables]`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/@@unscopables) (all `@@unscopables` objects should have `null`-prototype)
+- [`import.meta`](/en-US/docs/Web/JavaScript/Reference/Operators/import.meta)
+- Module namespace objects, obtained through [`import * as ns from "module";`](/en-US/docs/Web/JavaScript/Reference/Statements/import#namespace_import) or [`import()`](/en-US/docs/Web/JavaScript/Reference/Operators/import)
+
+The term "`null`-prototype object" often also includes any object without `Object.prototype` in its prototype chain. Such objects can be created with [`extends null`](/en-US/docs/Web/JavaScript/Reference/Classes/extends#extending_null) when using classes.
+
+### Object coercion
+
+Many built-in operations that expect objects first coerce their arguments to objects. [The operation](https://tc39.es/ecma262/#sec-toobject) can be summarized as follows:
+
+- Objects are returned as-is.
+- [`undefined`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined) and [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null) throw a {{jsxref("TypeError")}}.
+- {{jsxref("Number")}}, {{jsxref("String")}}, {{jsxref("Boolean")}}, {{jsxref("Symbol")}}, {{jsxref("BigInt")}} primitives are wrapped into their corresponding object wrappers.
+
+The best way to achieve the same effect in JavaScript is through the [`Object()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/Object) constructor. `Object(x)` converts `x` to an object, and for `undefined` or `null`, it returns a plain object instead of throwing a {{jsxref("TypeError")}}.
+
+Places that use object coercion include:
+
+- The `object` parameter of [`for...in`](/en-US/docs/Web/JavaScript/Reference/Statements/for...in) loops.
+- The `this` value of {{jsxref("Array")}} methods.
+- Parameters of `Object` methods such as {{jsxref("Object.keys()")}}.
+- Auto-boxing when a property is accessed on a primitive value, since primitives do not have properties.
+- The [`this`](/en-US/docs/Web/JavaScript/Reference/Operators/this) value when calling a non-strict function. Primitives are boxed while `null` and `undefined` are replaced with the [global object](/en-US/docs/Glossary/Global_object).
+
+Unlike [conversion to primitives](/en-US/docs/Web/JavaScript/Data_structures#primitive_coercion), the object coercion process itself is not observable in any way, since it doesn't invoke custom code like `toString` or `valueOf` methods.
+
+## Constructor
 
 - {{jsxref("Object/Object", "Object()")}}
-  - : 새 `Object` 객체를 만듭니다. 이 때 생성된 객체는 주어진 값에 대한 래퍼입니다.
+  - : Turns the input into an object.
 
-## 정적 메서드
+## Static methods
 
-- {{jsxref("Object.assign","Object.assign()")}}
-  - : 하나 이상의 원본 객체들로부터 모든 열거 가능한 속성들을 대상 객체로 복사합니다.
-- {{jsxref("Object.create","Object.create()")}}
-  - : 지정한 프로토타입(prototype)의 객체 및 속성을 갖고 있는 새 객체를 생성합니다.
-- {{jsxref("Object.defineProperty","Object.defineProperty()")}}
-  - : 지정한 서술자(descriptor)에서 서술한 속성을 객체에 추가합니다.
-- {{jsxref("Object.defineProperties","Object.defineProperties()")}}
-  - : 지정한 서술자들에서 서술한 속성들을 객체에 추가합니다.
-- {{jsxref("Object.entries","Object.entries()")}}
-  - : 지정한 객체 **자신의** 모든 열거 가능한 문자열 속성들의 `[key, value]` 쌍으로 구성된 배열을 반환합니다.
-- {{jsxref("Object.freeze","Object.freeze()")}}
-  - : 객체를 고정(freeze)합니다. 다른 곳의 코드에서 해당 속성을 삭제하거나 변경할 수 없게 됩니다.
-- {{jsxref("Object.fromEntries","Object.fromEntries()")}}
-  - : `[key, value]` 쌍의 iterable로부터 새 객체를 반환합니다. ({{jsxref("Object.entries")}}의 반대입니다.)
-- {{jsxref("Object.getOwnPropertyDescriptor","Object.getOwnPropertyDescriptor()")}}
-  - : 객체의 지정한 속성에 대한 속성 서술자를 반환합니다.
-- {{jsxref("Object.getOwnPropertyDescriptors","Object.getOwnPropertyDescriptors()")}}
-  - : 객체 자신의 모든 속성 서술자들로 구성된 객체를 반환합니다.
-- {{jsxref("Object.getOwnPropertyNames","Object.getOwnPropertyNames()")}}
-  - : 지정한 객체 **자신의** 모든 열거 가능하거나 불가능한 속성들의 이름으로 구성된 배열을 반환합니다.
-- {{jsxref("Object.getOwnPropertySymbols","Object.getOwnPropertySymbols()")}}
-  - : 지정한 객체 자신의 모든 심볼 속성들로 구성된 배열을 반환합니다.
-- {{jsxref("Object.getPrototypeOf","Object.getPrototypeOf()")}}
-  - : 지정한 객체의 프로토타입(내부 `[[Prototype]]` 속성)을 반환합니다.
-- {{jsxref("Object.is","Object.is()")}}
-  - : 두 값이 같은지를 비교합니다. 모든 `NaN` 값을 같다고 처리합니다. (추상 동등 비교 및 엄격한 동등 비교와 다른 점입니다.)
-- {{jsxref("Object.isExtensible","Object.isExtensible()")}}
-  - : 객체의 확장이 가능한지 여부를 확인합니다.
-- {{jsxref("Object.isFrozen","Object.isFrozen()")}}
-  - : 객체가 고정(freeze)되었는지 여부를 확인합니다.
-- {{jsxref("Object.isSealed","Object.isSealed()")}}
-  - : 객체가 봉인(seal)되었는지 여부를 확인합니다.
-- {{jsxref("Object.keys","Object.keys()")}}
-  - : 지정한 객체 **자신의** 모든 열거 가능한 문자열 속성들의 이름으로 구성된 배열을 반환합니다.
-- {{jsxref("Object.preventExtensions","Object.preventExtensions()")}}
-  - : 객체가 확장되지 못하도록 합니다.
-- {{jsxref("Object.seal","Object.seal()")}}
-  - : 다른 코드가 객체의 속성을 삭제하지 못하도록 합니다.
-- {{jsxref("Object.setPrototypeOf","Object.setPrototypeOf()")}}
-  - : 객체의 프로토타입(내부 `[[Prototype]]` 속성)을 설정합니다.
-- {{jsxref("Object.values","Object.values()")}}
-  - : 지정한 객체 **자신의** 모든 열거 가능한 문자열 속성에 해당하는 값들로 구성된 배열을 반환합니다.
+- {{jsxref("Object.assign()")}}
+  - : Copies the values of all enumerable own properties from one or more source objects to a target object.
+- {{jsxref("Object.create()")}}
+  - : Creates a new object with the specified prototype object and properties.
+- {{jsxref("Object.defineProperties()")}}
+  - : Adds the named properties described by the given descriptors to an object.
+- {{jsxref("Object.defineProperty()")}}
+  - : Adds the named property described by a given descriptor to an object.
+- {{jsxref("Object.entries()")}}
+  - : Returns an array containing all of the `[key, value]` pairs of a given object's **own** enumerable string properties.
+- {{jsxref("Object.freeze()")}}
+  - : Freezes an object. Other code cannot delete or change its properties.
+- {{jsxref("Object.fromEntries()")}}
+  - : Returns a new object from an iterable of `[key, value]` pairs. (This is the reverse of {{jsxref("Object.entries")}}).
+- {{jsxref("Object.getOwnPropertyDescriptor()")}}
+  - : Returns a property descriptor for a named property on an object.
+- {{jsxref("Object.getOwnPropertyDescriptors()")}}
+  - : Returns an object containing all own property descriptors for an object.
+- {{jsxref("Object.getOwnPropertyNames()")}}
+  - : Returns an array containing the names of all of the given object's **own** enumerable and non-enumerable properties.
+- {{jsxref("Object.getOwnPropertySymbols()")}}
+  - : Returns an array of all symbol properties found directly upon a given object.
+- {{jsxref("Object.getPrototypeOf()")}}
+  - : Returns the prototype (internal `[[Prototype]]` property) of the specified object.
+- {{jsxref("Object.hasOwn()")}}
+  - : Returns `true` if the specified object has the indicated property as its _own_ property, or `false` if the property is inherited or does not exist.
+- {{jsxref("Object.is()")}}
+  - : Compares if two values are the same value. Equates all `NaN` values (which differs from both `IsLooselyEqual` used by [`==`](/en-US/docs/Web/JavaScript/Reference/Operators/Equality) and `IsStrictlyEqual` used by [`===`](/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality)).
+- {{jsxref("Object.isExtensible()")}}
+  - : Determines if extending of an object is allowed.
+- {{jsxref("Object.isFrozen()")}}
+  - : Determines if an object was frozen.
+- {{jsxref("Object.isSealed()")}}
+  - : Determines if an object is sealed.
+- {{jsxref("Object.keys()")}}
+  - : Returns an array containing the names of all of the given object's **own** enumerable string properties.
+- {{jsxref("Object.preventExtensions()")}}
+  - : Prevents any extensions of an object.
+- {{jsxref("Object.seal()")}}
+  - : Prevents other code from deleting properties of an object.
+- {{jsxref("Object.setPrototypeOf()")}}
+  - : Sets the object's prototype (its internal `[[Prototype]]` property).
+- {{jsxref("Object.values()")}}
+  - : Returns an array containing the values that correspond to all of a given object's **own** enumerable string properties.
 
-## 인스턴스 속성
+## Instance properties
 
+These properties are defined on `Object.prototype` and shared by all `Object` instances.
+
+- [`Object.prototype.__proto__`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/proto) {{Deprecated_Inline}}
+  - : Points to the object which was used as prototype when the object was instantiated.
 - {{jsxref("Object.prototype.constructor")}}
-  - : 객체의 프로토타입을 생성하는 함수를 지정합니다.
-- [`Object.prototype.__proto__`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/proto)
-  - : 객체가 인스턴스화될 때 프로토타입으로 사용된 객체를 가리킵니다.
+  - : The constructor function that created the instance object. For plain `Object` instances, the initial value is the {{jsxref("Object/Object", "Object")}} constructor. Instances of other constructors each inherit the `constructor` property from their respective `Constructor.prototype` object.
 
-## 인스턴스 메서드
+## Instance methods
 
-- [`Object.prototype.__defineGetter__()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/__defineGetter__)
-  - : 액세스(get)할 때 실행되어 값을 반환하는 함수와 지정한 속성을 연결합니다.
-- [`Object.prototype.__defineSetter__()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/__defineSetter__)
-  - : 설정(set)할 때 실행되어 해당 속성을 수정하는 함수와 지정한 속성을 연결합니다.
-- [`Object.prototype.__lookupGetter__()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/__lookupGetter__)
-  - : [`Object.prototype.__defineGetter__()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/__defineGetter__) 메서드에 의해 지정된 속성과 연결된 함수를 반환합니다.
-- [`Object.prototype.__lookupSetter__()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/__lookupSetter__)
-  - : [`Object.prototype.__defineSetter__()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/__defineSetter__) 메서드에 의해 지정된 속성과 연결된 함수를 반환합니다.
+- [`Object.prototype.__defineGetter__()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/__defineGetter__) {{Deprecated_Inline}}
+  - : Associates a function with a property that, when accessed, executes that function and returns its return value.
+- [`Object.prototype.__defineSetter__()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/__defineSetter__) {{Deprecated_Inline}}
+  - : Associates a function with a property that, when set, executes that function which modifies the property.
+- [`Object.prototype.__lookupGetter__()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/__lookupGetter__) {{Deprecated_Inline}}
+  - : Returns the function bound as a getter to the specified property.
+- [`Object.prototype.__lookupSetter__()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/__lookupSetter__) {{Deprecated_Inline}}
+  - : Returns the function bound as a setter to the specified property.
 - {{jsxref("Object.prototype.hasOwnProperty()")}}
-  - : 객체에 지정한 속성이 해당 객체에 직접 포함되어 있고 프로토타입 체인을 통해 상속되지 않는지 여부를 나타내는 불리언 값을 반환합니다.
+  - : Returns a boolean indicating whether an object contains the specified property as a direct property of that object and not inherited through the prototype chain.
 - {{jsxref("Object.prototype.isPrototypeOf()")}}
-  - : 이 메서드를 호출한 객체가 지정한 객체의 프로토타입 체인에 있는지 여부를 나타내는 불리언 값을 반환합니다.
+  - : Returns a boolean indicating whether the object this method is called upon is in the prototype chain of the specified object.
 - {{jsxref("Object.prototype.propertyIsEnumerable()")}}
-  - : 내부 [ECMAScript \[\[Enumerable\]\] 속성](/ko/docs/Web/JavaScript/Data_structures##%ec%86%8d%ec%84%b1_properties)이 설정되었는지 여부를 나타내는 불리언 값을 반환합니다.
+  - : Returns a boolean indicating whether the specified property is the object's [enumerable own](/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties) property.
 - {{jsxref("Object.prototype.toLocaleString()")}}
-  - : {{jsxref("Object.toString", "toString()")}}를 호출합니다.
+  - : Calls {{jsxref("Object/toString", "toString()")}}.
 - {{jsxref("Object.prototype.toString()")}}
-  - : 객체의 문자열 표현을 반환합니다.
+  - : Returns a string representation of the object.
 - {{jsxref("Object.prototype.valueOf()")}}
-  - : 지정한 객체의 원시 값을 반환합니다.
+  - : Returns the primitive value of the specified object.
 
-## 예제
+## Examples
 
-### `undefined` 및 `null` 타입을 지정한 `Object` 사용
+### Constructing empty objects
 
-다음 예제는 변수 `o`에 빈 `Object` 객체를 저장합니다.
+The following examples store an empty `Object` object in `o`:
 
 ```js
-let o = new Object()
+const o1 = new Object();
+const o2 = new Object(undefined);
+const o3 = new Object(null);
+```
+
+### Using Object to create Boolean objects
+
+The following examples store {{jsxref("Boolean")}} objects in `o`:
+
+```js
+// equivalent to const o = new Boolean(true)
+const o = new Object(true);
 ```
 
 ```js
-let o = new Object(undefined)
+// equivalent to const o = new Boolean(false)
+const o = new Object(Boolean());
 ```
 
-```js
-let o = new Object(null)
-```
+### Object prototypes
 
-### `Object`로 `Boolean` 객체 생성하기
+When altering the behavior of existing `Object.prototype` methods, consider injecting code by wrapping your extension before or after the existing logic. For example, this (untested) code will pre-conditionally execute custom logic before the built-in logic or someone else's extension is executed.
 
-다음 예제는 변수 `o`에 {{jsxref("Boolean")}} 객체를 저장합니다.
+When modifying prototypes with hooks, pass `this` and the arguments (the call state) to the current behavior by calling `apply()` on the function. This pattern can be used for any prototype, such as `Node.prototype`, `Function.prototype`, etc.
 
 ```js
-// o = new Boolean(true) 와 같음
-let o = new Object(true)
-```
+const current = Object.prototype.valueOf;
 
-```js
-// o = new Boolean(false) 와 같음
-let o = new Object(Boolean())
-```
-
-### 객체 프로토타입
-
-기존 `Object.prototype` 메서드의 동작을 변경하고자 할 때에는 기존 내용의 앞이나 뒤에 확장할 내용을 래핑하여 코드를 주입하는 것을 고려하세요. 예를 들어, 이 (테스트되지 않은) 코드는 기본 제공 코드 또는 다른 사람의 확장 실행되기 전에 사전 조건부로 사용자 정의 코드를 실행합니다.
-
-함수가 호출되면 호출에 대한 매개변수가 유사배열 "변수" [arguments 객체](/ko/docs/Web/JavaScript/Reference/Functions/arguments)에 보관됩니다. 예를 들어, `myFn(a, b, c)`를 호출하면 `myFn` 본문 내의 arguments 객체에는 `(a, b, c)`에 해당하는 3개의 유사배열요소가 포함됩니다.
-
-hook을 통해 프로토타입을 수정하고자 할 때엔 해당 함수에서 `apply()`를 호출하면서 `this`와 arguments 객체를 현재 동작에 전달합니다. 이 패턴은 `Node.prototype`, `Function.prototype` 등 모든 프로토타입에 적용할 수 있습니다.
-
-```js
-var current = Object.prototype.valueOf;
-
-// 내가 지정한 속성 "-prop-value"은 범분야에 걸쳐 사용되고 있고
-// 항상 동일한 프로토타입 체인에 있지 않기 때문에, Object.prototype을 수정하고 싶습니다.
-Object.prototype.valueOf = function () {
-  if (this.hasOwnProperty('-prop-value')) {
-    return this['-prop-value'];
+// Since my property "-prop-value" is cross-cutting and isn't always
+// on the same prototype chain, I want to modify Object.prototype:
+Object.prototype.valueOf = function (...args) {
+  if (Object.hasOwn(this, "-prop-value")) {
+    return this["-prop-value"];
   } else {
-    // 내가 만든 객체가 아닌 것 같으므로,
-    // 가능한 최선을 다해 원래의 동작을 재현하여 기본 동작으로 돌아가겠습니다.
-    // 'apply' 메서드는 다른 언어에서의 'super'처럼 작동합니다.
-    // valueOf()가 arguments를 취하지 않더라도, 다른 hook이 있으리라 생각합니다.
-    return current.apply(this, arguments);
+    // It doesn't look like one of my objects, so let's fall back on
+    // the default behavior by reproducing the current behavior as best we can.
+    // The apply behaves like "super" in some other languages.
+    // Even though valueOf() doesn't take arguments, some other hook may.
+    return current.apply(this, args);
   }
-}
+};
 ```
 
-JavaScript에는 명확한 하위 클래스 객체가 없기 때문에, 프로토타입은 특정 기능의 "기본 클래스" 객체를 만드는 데 유용한 해결 방법입니다. 예를 들어:
+> **Warning:** Modifying the `prototype` property of any built-in constructor is considered a bad practice and risks forward compatibility.
 
-```js
-var Person = function (name) {
-  this.name = name;
-  this.canTalk = true;
-}
-Person.prototype.greet = function () {
-  if (this.canTalk) {
-    console.log('Hi, I am ' + this.name);
-  }
-};
+You can read more about prototypes in [Inheritance and the prototype chain](/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain).
 
-var Employee = function (name, title) {
-  Person.call(this, name);
-  this.title = title;
-};
-
-Employee.prototype = Object.create(Person.prototype);
-Employee.prototype.constructor = Employee; // Object.prototype.constructor를 Employee로 설정하지 않으면
-                                           // Person (parent)의 prototype.constructor를 사용합니다.
-                                           // 이를 피하기 위해 prototype.constructor를 Employee (child)로 설정합니다.
-Employee.prototype.greet = function () {
-  if (this.canTalk) {
-    console.log('Hi, I am ' + this.name + ', the ' + this.title);
-  }
-};
-
-var Customer = function (name) {
-  Person.call(this, name);
-};
-
-Customer.prototype = Object.create(Person.prototype);
-Customer.prototype.constructor = Customer; // Object.prototype.constructor를 Customer로 설정하지 않으면
-                                           // Person (parent)의 prototype.constructor를 사용합니다.
-                                           // 이를 피하기 위해 prototype.constructor를 Customer (child)로 설정합니다.
-
-var Mime = function (name) {
-  Person.call(this, name);
-  this.canTalk = false;
-};
-
-Mime.prototype = Object.create(Person.prototype);
-Mime.prototype.constructor = Mime; // Object.prototype.constructor를 Mime로 설정하지 않으면
-                                   // Person (parent)의 prototype.constructor를 사용합니다.
-                                   // 이를 피하기 위해 prototype.constructor를 Mime (child)로 설정합니다.
-
-var bob = new Employee('Bob', 'Builder');
-var joe = new Customer('Joe');
-var rg = new Employee('Red Green', 'Handyman');
-var mike = new Customer('Mike');
-var mime = new Mime('Mime');
-
-bob.greet();
-// Hi, I am Bob, the Builder
-
-joe.greet();
-// Hi, I am Joe
-
-rg.greet();
-// Hi, I am Red Green, the Handyman
-
-mike.greet();
-// Hi, I am Mike
-
-mime.greet();
-```
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [객체 초기자](/ko/docs/Web/JavaScript/Reference/Operators/Object_initializer)
+- [Object initializer](/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer)

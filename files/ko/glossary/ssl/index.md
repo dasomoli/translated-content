@@ -1,11 +1,12 @@
 ---
 title: Secure Sockets Layer (SSL)
 slug: Glossary/SSL
+page-type: glossary-definition
 ---
 
-Secure Sockets Layer(SSL)는 클라이언트와 서버 간의 안전한 링크를 통해 송수신되는 모든 데이터를 안전하게 보장하는 과거의 보안 표준 기술이었다. SSL 버전 3.0은 Netscape가 1999년에 발표했으며 현재에는 {{Glossary("TLS", "Transport Layer Security (TLS)")}} 로 대체되었다.
+Secure Sockets Layer, or SSL, was the old standard security technology for creating an encrypted network link between a server and client, ensuring all data passed is private and secure. The current version of SSL is version 3.0, released by Netscape in 1996, and has been superseded by the {{Glossary("TLS", "Transport Layer Security (TLS)")}} protocol.
 
-## 같이 보기
+## See also
 
 - [Transport Layer Security](https://en.wikipedia.org/wiki/Transport_Layer_Security) (Wikipedia)
 - [Transport Layer Security (TLS) protocol](/en-US/docs/Web/Security/Transport_Layer_Security)

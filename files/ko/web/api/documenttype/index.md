@@ -1,48 +1,51 @@
 ---
 title: DocumentType
 slug: Web/API/DocumentType
+page-type: web-api-interface
+browser-compat: api.DocumentType
 ---
 
 {{APIRef("DOM")}}
 
-**`DocumentType`** 인터페이스는 doctype을 포함하는 {{domxref("Node")}} 를 나타냅니다.
+The **`DocumentType`** interface represents a {{domxref("Node")}} containing a doctype.
 
 {{InheritanceDiagram}}
 
-## 프로퍼티
+## Instance properties
 
-_부모 {{domxref("Node")}} 로부터 프로퍼티를 상속받고 {{domxref("ChildNode")}} 인터페이스를 구현합니다._
+_Inherits properties from its parent, {{domxref("Node")}}._
 
-- {{domxref("DocumentType.entities")}} {{readonlyInline}} {{deprecated_inline}}
-  - : DTD에 선언된 엔티티의 {{domxref("NamedNodeMap")}} 입니다. 이 맵의 모든 노드는 {{domxref("Entity")}} 인터페이스를 구현합니다.
-- {{domxref("DocumentType.internalSubset")}} {{readonlyInline}} {{deprecated_inline}}
-  - : 내부 하위 집합의 {{domxref("DOMString")}} 입니다. 하위 집합이 존재하지 않을 경우 `null`입니다. 예, `"<!ELEMENT foo (bar)>"`.
-- {{domxref("DocumentType.name")}} {{readonlyInline}}
-  - : {{domxref("DOMString")}} 입니다. 예, `<!DOCTYPE HTML>` 의 경우 `"html"`.
-- {{domxref("DocumentType.notations")}} {{readonlyInline}} {{deprecated_inline}}
-  - : DTD에 선언된 노테이션을 포함한 {{domxref("NamedNodeMap")}} 입니다. 이 맵의 모든 노드는 {{domxref("Notation")}} 인터페이스를 구현합니다.
-- {{domxref("DocumentType.publicId")}} {{readonlyInline}}
-  - : {{domxref("DOMString")}} 입니다. 예, `"-//W3C//DTD HTML 4.01//EN"`, HTML5의 경우 빈 문자열.
-- {{domxref("DocumentType.systemId")}} {{readonlyInline}}
-  - : {{domxref("DOMString")}} 입니다. 예, `"http://www.w3.org/TR/html4/strict.dtd"`, HTML5의 경우 빈 문자열.
+- {{domxref("DocumentType.name")}} {{ReadOnlyInline}}
+  - : The type of the document. It is always `"html"` for HTML documents, but will vary for XML documents.
+- {{domxref("DocumentType.publicId")}} {{ReadOnlyInline}}
+  - : A string with an identifier of the type of document. Always empty (`""`) for HTML, it will be, for example, `"-//W3C//DTD SVG 1.1//EN"` for SVG documents.
+- {{domxref("DocumentType.systemId")}} {{ReadOnlyInline}}
+  - : A string containing the URL to the associated DTD. Always empty (`""`) for HTML, it will be, for example, `"http://www.w3.org/2000/svg"` for SVG documents.
 
-## 메소드
+## Instance methods
 
-_부모 {{domxref("Node")}} 로부터 메소드를 상속받고 {{domxref("ChildNode")}} 인터페이스를 구현합니다._
+_Inherits methods from its parent, {{domxref("Node")}}._
 
-- {{domxref("ChildNode.remove()")}} {{experimental_inline}}
-  - : 부모의 자식 리스트로부터 객체를 제거합니다.
+- {{domxref("DocumentType.after()")}}
+  - : Inserts a set of {{domxref("Node")}} or string objects in the children list of the
+    object's parent, just before this node.
+- {{domxref("DocumentType.before()")}}
+  - : Inserts a set of {{domxref("Node")}} or string objects in the children list of the
+    object's parent, just before this node.
+- {{domxref("DocumentType.remove()")}}
+  - : Removes this object from its parent children list.
+- {{domxref("DocumentType.replaceWith()")}}
+  - : Replaces the document type with a set of given nodes.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 보기
+## See also
 
-- [DOM 인터페이스 목차.](/ko/docs/DOM/DOM_Reference)
-- {{domxref("Entity")}}
-- {{domxref("Notation")}}
+- [The DOM interfaces index.](/en-US/docs/Web/API/Document_Object_Model)
+- {{domxref("DOMImplementation.createDocumentType()")}} to create a new `DocumentType` node.

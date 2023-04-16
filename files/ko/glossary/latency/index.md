@@ -1,11 +1,13 @@
 ---
 title: Latency
 slug: Glossary/Latency
+page-type: glossary-definition
 ---
-**Latency**는 요청된 리소스가 대상에 도달하는데 걸리는 네트워크 시간입니다. 지연 시간이 짧으면 기다리는 시간이 거의 없거나, 아예 없습니다. 지연 시간이 길면 요청된 리소스가 대상에 도달하는 데 오랜 시간이 걸려 좋지 않습니다.
 
-지연 시간은 모든 종류의 데이터 흐름의 요인이 될 수 있지만, 일반적으로는 네트워크 지연 시간(데이터 패킷이 소스에서 대상으로 이동하는데 걸리는 시간)과 미디어 코덱 지연 시간(소스 데이터가 인코딩 혹은 디코딩되고 결과 데이터가 소비자에게 도달하는데 걸리는 시간) 관점에서 다룹니다.
+**Latency** is the network time it takes for a requested resource to reach its destination. Low latency is good, meaning there is little or no delay. High latency is bad, meaning it takes a long time for the requested resource to reach its destination.
 
-## 같이 보기
+Latency can be a factor in any kind of data flow, but is most commonly discussed in terms of network latency (the time it takes for a packet of data to travel from source to destination) and media codec latency (the time it takes for the source data to be encoded or decoded and reach the consumer of the resulting data).
 
-- [Latency 이해하기](/ko/docs/Web/Performance/Understanding_latency)
+## See also
+
+- [Understanding Latency](/en-US/docs/Web/Performance/Understanding_latency)

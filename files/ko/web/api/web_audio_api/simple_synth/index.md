@@ -1,22 +1,24 @@
 ---
-title: '예제와 튜토리얼: 간단한 신시사이저 키보드'
+title: "Example and tutorial: Simple synth keyboard"
 slug: Web/API/Web_Audio_API/Simple_synth
+page-type: guide
 ---
+
 {{DefaultAPISidebar("Web Audio API")}}
 
-이 문서는 마우스를 사용해 플레이할 수 있는 비디오 키보드의 데모와 코드를 보여줍니다. 이 키보드는 표준 파형들과 사용자 정의 파형 중에서 선택할 수 있는 기능을 제공하고, 키보드 아래에 있는 볼륨 슬라이더를 사용하여 메인 gain을 제어할 수 있습니다. 이 예제는 다음의 Web API 인터페이스를 사용합니다: {{domxref("AudioContext")}}, {{domxref("OscillatorNode")}}, {{domxref("PeriodicWave")}}, 그리고 {{domxref("GainNode")}}.
+This article presents the code and working demo of a video keyboard you can play using the mouse. The keyboard allows you to switch among the standard waveforms as well as one custom waveform, and you can control the main gain using a volume slider beneath the keyboard. This example makes use of the following Web API interfaces: {{domxref("AudioContext")}}, {{domxref("OscillatorNode")}}, {{domxref("PeriodicWave")}}, and {{domxref("GainNode")}}.
 
-{{domxref("OscillatorNode")}}가 {{domxref("AudioScheduledSourceNode")}}에 기반하기 때문에, 이것은 또한 얼마간 그것에 대한 예제이기도 합니다.
+Because {{domxref("OscillatorNode")}} is based on {{domxref("AudioScheduledSourceNode")}}, this is to some extent an example for that as well.
 
-## 비디오 키보드
+## The video keyboard
 
 ### HTML
 
-이 가상 키보드의 디스플레이에는 세 가지 주요한 컴포넌트가 있습니다. 첫번째는 뮤지컬 키보드 그 자체입니다. 우리는 이것을 중첩된 {{HTMLElement("div")}} 요소의 쌍으로 그려 만약 모든 건반이 화면에 맞지 않으면 그것들이 줄바꿈되는 일 없이 키보드를 가로로 스크롤할 수 있게 되도록 만들 것입니다.
+There are three primary components to the display for our virtual keyboard. The first is the musical keyboard itself. We draw this in a pair of nested {{HTMLElement("div")}} elements so that we can make the keyboard horizontally scrollable if all the keys don't fit on the screen, without having them wrap around.
 
-#### 키보드
+#### The keyboard
 
-첫째로, 키보드를 넣을 공간을 만듭니다. 우리는 프로그래밍적으로 키보드를 구성할 것인데, 왜냐하면 그렇게 하는 것은 우리에게 해당하는 음에 대한 적절한 데이터를 결정하면서 각각의 건반을 설정하는 유연성을 주기 때문입니다. 우리의 경우, 우리는 표로부터 각 음의 주파수를 얻지만, 이것은 또한 알고리즘적으로도 계산될 수 있습니다.
+First, we create space to build the keyboard into. We will be programmatically constructing the keyboard, because doing so gives us the flexibility to configure each key as we determine the appropriate data for the corresponding note. In our case, we get each key's frequency from a table, but it could be calculated algorithmically as well.
 
 ```html
 <div class="container">
@@ -24,34 +26,41 @@ slug: Web/API/Web_Audio_API/Simple_synth
 </div>
 ```
 
-`"container"`라는 이름의 {{HTMLElement("div")}}는 만약 이것이 이용 가능한 공간에 대해 너무 넓으면 가로로 스크롤될 수 있는 박스입니다. 건반들 자체는 `"keyboard"` 클래스의 블록 안으로 삽입될 것입니다.
+The {{HTMLElement("div")}} named `"container"` is the scrollable box that lets the keyboard be scrolled horizontally if it's too wide for the available space. The keys themselves will be inserted into the block of class `"keyboard"`.
 
-#### 설정 바
+#### The settings bar
 
-키보드 아래에, 우리는 레이어를 설정하기 위한 조종 장치를 놓을 것입니다. 우선은, 우리는 두 조종 장치를 가지고 있습니다: 하나는 메인 볼륨을 설정하기 위한 것이고 나머지 하나는 노트를 생성할 때 어떤 주기적인 파형을 사용할 지 고르기 위한 것입니다.
+Beneath the keyboard, we'll put some controls for configuring the layer. For now, we will have two controls: one to set the main volume and another to select what periodic waveform to use when generating notes.
 
-##### 볼륨 컨트롤
+##### The volume control
 
-첫째로 우리는 필요한 대로 스타일될 수 있도록, 설정 바를 포함하는 `<div>`를 생성합니다. 그리고 나서 바의 좌측에 나타날 박스를 생성하고 라벨과 `"range"` 유형의 {{HTMLElement("input")}} 요소를 배치합니다. range 요소는 보통 슬라이더로 표현됩니다; 각 위치마다 0.01만큼 움직이며 0.0과 1.0 사이의 모든 값을 허용하게 설정합니다.
+First we create the `<div>` to contain the settings bar, so it can be styled as needed. Then we establish a box that will be presented on the left side of the bar and place a label and an {{HTMLElement("input")}} element of type `"range"`. The range element will typically be presented as a slider control; we configure it to allow any value between 0.0 and 1.0, stepping by 0.01 each position.
 
 ```html
 <div class="settingsBar">
   <div class="left">
     <span>Volume: </span>
-    <input type="range" min="0.0" max="1.0" step="0.01"
-        value="0.5" list="volumes" name="volume">
+    <input
+      type="range"
+      min="0.0"
+      max="1.0"
+      step="0.01"
+      value="0.5"
+      list="volumes"
+      name="volume" />
     <datalist id="volumes">
-      <option value="0.0" label="Mute">
-      <option value="1.0" label="100%">
+      <option value="0.0" label="Mute"></option>
+      <option value="1.0" label="100%"></option>
     </datalist>
   </div>
+</div>
 ```
 
-우리는 기본값을 0.5로 명시하고, ID가 맞는 옵션 목록을 찾기 위해 {{htmlattrxref("name")}} 특성을 사용하여 range에 연결된 {{HTMLElement("datalist")}} 요소를 제공합니다; 이 경우, 데이터셋은 `"volume"`이라는 이름입니다. 이는 우리로 하여금 브라우저가 옵션적으로 어떤 방식으로 디스플레이하기를 선택할지도 모르는 특별한 문자열과 일반적인 값의 집합을 제공하게 합니다; 우리는 값 0.0 ("무음")과 1.0 ("100%")에 대해 이름을 제공합니다.
+We specify a default value of 0.5, and we provide a {{HTMLElement("datalist")}} element which is connected to the range using the [`name`](/en-US/docs/Web/HTML/Global_attributes#name) attribute to find an option list whose ID matches; in this case, the data set is named `"volume"`. This lets us provide a set of common values and special strings which the browser may optionally choose to display in some fashion; we provide names for the values 0.0 ("Mute") and 1.0 ("100%").
 
-##### 파형 선택기
+##### The waveform picker
 
-세팅 바의 우측에, 우리는 라벨과 이용 가능한 파형에 부합하는 옵션을 가지고 있는 `"waveform"`라는 이름의 {{HTMLElement("select")}} 요소를 배치합니다.
+On the right side of the settings bar, we place a label and a {{HTMLElement("select")}} element named `"waveform"` whose options correspond to the available waveforms.
 
 ```html
   <div class="right">
@@ -67,7 +76,9 @@ slug: Web/API/Web_Audio_API/Simple_synth
 </div>
 ```
 
-```css hidden
+### CSS
+
+```css
 .container {
   overflow-x: scroll;
   overflow-y: hidden;
@@ -118,7 +129,8 @@ slug: Web/API/Web_Audio_API/Simple_synth
   background-color: #eef;
 }
 
-.key:active {
+.key:active,
+.active {
   background-color: #000;
   color: #fff;
 }
@@ -145,7 +157,8 @@ slug: Web/API/Web_Audio_API/Simple_synth
   vertical-align: middle;
 }
 
-.left span, .left input {
+.left span,
+.left input {
   vertical-align: middle;
 }
 
@@ -168,29 +181,29 @@ slug: Web/API/Web_Audio_API/Simple_synth
 
 ### JavaScript
 
-JavaScript 코드는 몇 개의 변수를 초기화함으로써 시작합니다.
+The JavaScript code begins by initializing a number of variables.
 
 ```js
-let audioContext = new (window.AudioContext || window.webkitAudioContext)();
-let oscList = [];
+const audioContext = new AudioContext();
+const oscList = [];
 let mainGainNode = null;
 ```
 
-1. `audioContext`는 전역 {{domxref("AudioContext")}} 객체를 (또는 필요하다면 `webkitAudioContext`를) 참조하기 위해 설정되었습니다.
-2. `oscList`는 현재 재생되고 있는 모든 oscillator를 포함할 준비가 되기 위해 설정되었습니다. 이것은 빈 상태로 시작하는데, 왜냐하면 아직 어떤 것도 재생되고 있지 않기 때문입니다.
-3. `mainGainNode`은 null로 설정되었습니다; 설정 과정 중에, 이것은 재생되는 모든 oscillator가 연결되고 슬라이더를 사용해 전체 볼륨이 제어되도록 하는 {{domxref("GainNode")}}를 포함하도록 설정될 것입니다.
+1. `audioContext` is set to reference the global {{domxref("AudioContext")}} object (or `webkitAudioContext` if necessary).
+2. `oscList` is set up to be ready to contain a list of all currently-playing oscillators. It starts off empty, since there are none playing yet.
+3. `mainGainNode` is set to null; during the setup process, it will be configured to contain a {{domxref("GainNode")}} which all playing oscillators will connect to and play through to allow the overall volume to be controlled using a single slider control.
 
 ```js
-let keyboard = document.querySelector(".keyboard");
-let wavePicker = document.querySelector("select[name='waveform']");
-let volumeControl = document.querySelector("input[name='volume']");
+const keyboard = document.querySelector(".keyboard");
+const wavePicker = document.querySelector("select[name='waveform']");
+const volumeControl = document.querySelector("input[name='volume']");
 ```
 
-접근이 필요한 요소들에의 참조는 위와 같이 얻어집니다:
+References to elements we'll need access to are obtained:
 
-- `keyboard`는 건반이 배치될 컨테이너입니다.
-- `wavePicker`는 음에 대해 사용할 파형을 선택하는 데 사용되는 {{HTMLElement("select")}} 요소입니다.
-- `volumeControl`는 메인 오디오 볼륨을 제어하기 위해 사용되는 (`"range"` 유형의) {{HTMLElement("input")}} 요소입니다.
+- `keyboard` is the container element into which the keys will be placed.
+- `wavePicker` is the {{HTMLElement("select")}} element used to choose the waveform to use for the notes.
+- `volumeControl` is the {{HTMLElement("input")}} element (of type `"range"`) used to control the main audio volume.
 
 ```js
 let noteFreq = null;
@@ -199,19 +212,19 @@ let sineTerms = null;
 let cosineTerms = null;
 ```
 
-마지막으로, 파형을 생성할 때 사용될 전역 변수들이 생성됩니다:
+Finally, global variables that will be used when constructing waveforms are created:
 
-- `noteFreq`는 배열들의 배열입니다; 각 배열은 하나의 옥타브를 나타내는데, 그 옥타브에 있는 각 음에 대한 항목을 포함합니다. 각각에 대한 값은 음의 음색을 나타내는 헤르츠로 표현되는 주파수입니다.
-- `customWaveform`는 사용자가 "Custom"을 파형 선택기에서 선택했을 때 사용할 파형을 기술하는 {{domxref("PeriodicWave")}}로 설정될 것입니다.
-- `sineTerms` 와 `cosineTerms`는 파형을 생성하기 위한 데이터를 저장하기 위해 사용될 것입니다; 각각은 사용자가 "Custom"을 선택했을 때 생성되는 배열을 포함할 것입니다.
+- `noteFreq` will be an array of arrays; each array represents one octave, each of which contains one entry for each note in that octave. The value for each is the frequency, in Hertz, of the note's tone.
+- `customWaveform` will be set up as a {{domxref("PeriodicWave")}} describing the waveform to use when the user selects "Custom" from the waveform picker.
+- `sineTerms` and `cosineTerms` will be used to store the data for generating the waveform; each will contain an array that's generated when the user chooses "Custom".
 
-### 음 테이블 생성하기
+### Creating the note table
 
-`createNoteTable()` 함수는 각 옥타브를 나타내는 객체의 배열을 포함하는 `noteFreq` 배열을 만듭니다. 차례로 각 옥타브는 그 옥타브에 있는 각 음에 대한 하나의 지정된 속성을 가집니다; 그 속성의 이름은 음의 이름입니다 (예를 들자면 C-sharp는 "C#"로 표현됩니다), 그리고 값은 헤르츠로 표현되는 그 음의 주파수입니다.
+The `createNoteTable()` function builds the array `noteFreq` to contain an array of objects representing each octave. Each octave, in turn, has one named property for each note in that octave; the property's name is the note's name (such as "C#" to represent C-sharp), and the value is the frequency, in Hertz, of that note.
 
 ```js
 function createNoteTable() {
-  let noteFreq = [];
+  const noteFreq = [];
   for (let i=0; i< 9; i++) {
     noteFreq[i] = [];
   }
@@ -232,75 +245,76 @@ function createNoteTable() {
   noteFreq[1]["A"] = 55.000000000000000;
   noteFreq[1]["A#"] = 58.270470189761239;
   noteFreq[1]["B"] = 61.735412657015513;
+  // …
 ```
 
-... 간결성을 위해 몇몇 옥타브는 생략되었습니다 ...
+Several octaves not shown for brevity.
 
 ```js hidden
-  noteFreq[2]["C"] = 65.406391325149658;
-  noteFreq[2]["C#"] = 69.295657744218024;
-  noteFreq[2]["D"] = 73.416191979351890;
-  noteFreq[2]["D#"] = 77.781745930520227;
-  noteFreq[2]["E"] = 82.406889228217482;
-  noteFreq[2]["F"] = 87.307057858250971;
-  noteFreq[2]["F#"] = 92.498605677908599;
-  noteFreq[2]["G"] = 97.998858995437323;
-  noteFreq[2]["G#"] = 103.826174394986284;
-  noteFreq[2]["A"] = 110.000000000000000;
-  noteFreq[2]["A#"] = 116.540940379522479;
-  noteFreq[2]["B"] = 123.470825314031027;
+noteFreq[2]["C"] = 65.406391325149658;
+noteFreq[2]["C#"] = 69.295657744218024;
+noteFreq[2]["D"] = 73.41619197935189;
+noteFreq[2]["D#"] = 77.781745930520227;
+noteFreq[2]["E"] = 82.406889228217482;
+noteFreq[2]["F"] = 87.307057858250971;
+noteFreq[2]["F#"] = 92.498605677908599;
+noteFreq[2]["G"] = 97.998858995437323;
+noteFreq[2]["G#"] = 103.826174394986284;
+noteFreq[2]["A"] = 110.0;
+noteFreq[2]["A#"] = 116.540940379522479;
+noteFreq[2]["B"] = 123.470825314031027;
 
-  noteFreq[3]["C"] = 130.812782650299317;
-  noteFreq[3]["C#"] = 138.591315488436048;
-  noteFreq[3]["D"] = 146.832383958703780;
-  noteFreq[3]["D#"] = 155.563491861040455;
-  noteFreq[3]["E"] = 164.813778456434964;
-  noteFreq[3]["F"] = 174.614115716501942;
-  noteFreq[3]["F#"] = 184.997211355817199;
-  noteFreq[3]["G"] = 195.997717990874647;
-  noteFreq[3]["G#"] = 207.652348789972569;
-  noteFreq[3]["A"] = 220.000000000000000;
-  noteFreq[3]["A#"] = 233.081880759044958;
-  noteFreq[3]["B"] = 246.941650628062055;
+noteFreq[3]["C"] = 130.812782650299317;
+noteFreq[3]["C#"] = 138.591315488436048;
+noteFreq[3]["D"] = 146.83238395870378;
+noteFreq[3]["D#"] = 155.563491861040455;
+noteFreq[3]["E"] = 164.813778456434964;
+noteFreq[3]["F"] = 174.614115716501942;
+noteFreq[3]["F#"] = 184.997211355817199;
+noteFreq[3]["G"] = 195.997717990874647;
+noteFreq[3]["G#"] = 207.652348789972569;
+noteFreq[3]["A"] = 220.0;
+noteFreq[3]["A#"] = 233.081880759044958;
+noteFreq[3]["B"] = 246.941650628062055;
 
-  noteFreq[4]["C"] = 261.625565300598634;
-  noteFreq[4]["C#"] = 277.182630976872096;
-  noteFreq[4]["D"] = 293.664767917407560;
-  noteFreq[4]["D#"] = 311.126983722080910;
-  noteFreq[4]["E"] = 329.627556912869929;
-  noteFreq[4]["F"] = 349.228231433003884;
-  noteFreq[4]["F#"] = 369.994422711634398;
-  noteFreq[4]["G"] = 391.995435981749294;
-  noteFreq[4]["G#"] = 415.304697579945138;
-  noteFreq[4]["A"] = 440.000000000000000;
-  noteFreq[4]["A#"] = 466.163761518089916;
-  noteFreq[4]["B"] = 493.883301256124111;
+noteFreq[4]["C"] = 261.625565300598634;
+noteFreq[4]["C#"] = 277.182630976872096;
+noteFreq[4]["D"] = 293.66476791740756;
+noteFreq[4]["D#"] = 311.12698372208091;
+noteFreq[4]["E"] = 329.627556912869929;
+noteFreq[4]["F"] = 349.228231433003884;
+noteFreq[4]["F#"] = 369.994422711634398;
+noteFreq[4]["G"] = 391.995435981749294;
+noteFreq[4]["G#"] = 415.304697579945138;
+noteFreq[4]["A"] = 440.0;
+noteFreq[4]["A#"] = 466.163761518089916;
+noteFreq[4]["B"] = 493.883301256124111;
 
-  noteFreq[5]["C"] = 523.251130601197269;
-  noteFreq[5]["C#"] = 554.365261953744192;
-  noteFreq[5]["D"] = 587.329535834815120;
-  noteFreq[5]["D#"] = 622.253967444161821;
-  noteFreq[5]["E"] = 659.255113825739859;
-  noteFreq[5]["F"] = 698.456462866007768;
-  noteFreq[5]["F#"] = 739.988845423268797;
-  noteFreq[5]["G"] = 783.990871963498588;
-  noteFreq[5]["G#"] = 830.609395159890277;
-  noteFreq[5]["A"] = 880.000000000000000;
-  noteFreq[5]["A#"] = 932.327523036179832;
-  noteFreq[5]["B"] = 987.766602512248223;
+noteFreq[5]["C"] = 523.251130601197269;
+noteFreq[5]["C#"] = 554.365261953744192;
+noteFreq[5]["D"] = 587.32953583481512;
+noteFreq[5]["D#"] = 622.253967444161821;
+noteFreq[5]["E"] = 659.255113825739859;
+noteFreq[5]["F"] = 698.456462866007768;
+noteFreq[5]["F#"] = 739.988845423268797;
+noteFreq[5]["G"] = 783.990871963498588;
+noteFreq[5]["G#"] = 830.609395159890277;
+noteFreq[5]["A"] = 880.0;
+noteFreq[5]["A#"] = 932.327523036179832;
+noteFreq[5]["B"] = 987.766602512248223;
 
-  noteFreq[6]["C"] = 1046.502261202394538;
-  noteFreq[6]["C#"] = 1108.730523907488384;
-  noteFreq[6]["D"] = 1174.659071669630241;
-  noteFreq[6]["D#"] = 1244.507934888323642;
-  noteFreq[6]["E"] = 1318.510227651479718;
-  noteFreq[6]["F"] = 1396.912925732015537;
-  noteFreq[6]["F#"] = 1479.977690846537595;
-  noteFreq[6]["G"] = 1567.981743926997176;
-  noteFreq[6]["G#"] = 1661.218790319780554;
-  noteFreq[6]["A"] = 1760.000000000000000;
-  noteFreq[6]["A#"] = 1864.655046072359665;
-  noteFreq[6]["B"] = 1975.533205024496447;
+noteFreq[6]["C"] = 1046.502261202394538;
+noteFreq[6]["C#"] = 1108.730523907488384;
+noteFreq[6]["D"] = 1174.659071669630241;
+noteFreq[6]["D#"] = 1244.507934888323642;
+noteFreq[6]["E"] = 1318.510227651479718;
+noteFreq[6]["F"] = 1396.912925732015537;
+noteFreq[6]["F#"] = 1479.977690846537595;
+noteFreq[6]["G"] = 1567.981743926997176;
+noteFreq[6]["G#"] = 1661.218790319780554;
+noteFreq[6]["A"] = 1760.0;
+noteFreq[6]["A#"] = 1864.655046072359665;
+noteFreq[6]["B"] = 1975.533205024496447;
 ```
 
 ```js
@@ -322,13 +336,13 @@ function createNoteTable() {
 }
 ```
 
-결과는 `noteFreq` 배열인데, 이는 각 옥타브에 대한 객체를 가지고 있습니다. 각 옥타브 객체는 속성 이름이 음의 이름이고 (예를 들자면 C-sharp는 "C#"로 표현됩니다) 속성의 값은 헤르츠로 표현되는 음의 주파수인 지정된 속성들을 가지고 있습니다. 부분적으로는, 결과 객체는 다음과 같이 보입니다:
+The result is an array, `noteFreq`, with an object for each octave. Each octave object has named properties in it where the property name is the name of the note (such as "C#" to represent C-sharp) and the property's value is the note's frequency in Hertz. In part, the resulting object looks like this:
 
 <table class="standard-table">
   <tbody>
     <tr>
-      <th scope="row">옥타브</th>
-      <td colspan="8">음</td>
+      <th scope="row">Octave</th>
+      <td colspan="8">Notes</td>
       <td></td>
       <td></td>
       <td></td>
@@ -371,20 +385,29 @@ function createNoteTable() {
   </tbody>
 </table>
 
-준비된 이 표를 가지고, 우리는 특정한 옥타브에 있는 주어진 음에 대한 주파수를 꽤 쉽게 찾을 수 있습니다. 만약 우리가 옥타브 1의 G# 음의 주파수를 원한다면, 우리는 `noteFreq[1]["G#"]`을 사용하여 결과로 51.9의 값을 얻습니다.
+With this table in place, we can find out the frequency for a given note in a particular octave quite easily. If we want the frequency for the note G# in octave 1, we use `noteFreq[1]["G#"]` and get the value 51.9 as a result.
 
-> **참고:** 위의 예시 표의 값들은 소숫점 둘째 자리까지 반올림되었습니다.
+> **Note:** The values in the example table above have been rounded to two decimal places.
 
-<div class="hidden"><p>This polyfill stands in when <code>Object.entries()</code> doesn't exist.</p><pre class="brush: js">if (!Object.entries) {
-    Object.entries = function entries(O) {
-        return reduce(keys(O), (e, k) => concat(e, typeof k === 'string' &#x26;&#x26; isEnumerable(O, k) ? [[k, O[k]]] : []), []);
-    };
+```js hidden
+if (!Object.entries) {
+  Object.entries = function entries(O) {
+    return reduce(
+      keys(O),
+      (e, k) =>
+        concat(
+          e,
+          typeof k === "string" && isEnumerable(O, k) ? [[k, O[k]]] : []
+        ),
+      []
+    );
+  };
 }
-</pre></div>
+```
 
-### 키보드 만들기
+### Building the keyboard
 
-`setup()` 함수의 역할은 키보드를 만들고 앱이 음악을 재생하도록 준비하는 것입니다.
+The `setup()` function is responsible for building the keyboard and preparing the app to play music.
 
 ```js
 function setup() {
@@ -400,13 +423,13 @@ function setup() {
   // our purposes we don't need them. Each octave is inserted
   // into a <div> of class "octave".
 
-  noteFreq.forEach(function(keys, idx) {
-    let keyList = Object.entries(keys);
-    let octaveElem = document.createElement("div");
+  noteFreq.forEach((keys, idx) => {
+    const keyList = Object.entries(keys);
+    const octaveElem = document.createElement("div");
     octaveElem.className = "octave";
 
-    keyList.forEach(function(key) {
-      if (key[0].length == 1) {
+    keyList.forEach((key) => {
+      if (key[0].length === 1) {
         octaveElem.appendChild(createKey(key[0], idx, key[1]));
       }
     });
@@ -414,45 +437,47 @@ function setup() {
     keyboard.appendChild(octaveElem);
   });
 
-  document.querySelector("div[data-note='B'][data-octave='5']").scrollIntoView(false);
+  document
+    .querySelector("div[data-note='B'][data-octave='5']")
+    .scrollIntoView(false);
 
   sineTerms = new Float32Array([0, 0, 1, 0, 1]);
   cosineTerms = new Float32Array(sineTerms.length);
   customWaveform = audioContext.createPeriodicWave(cosineTerms, sineTerms);
 
-  for (i=0; i<9; i++) {
-      oscList[i] = {};
+  for (let i = 0; i < 9; i++) {
+    oscList[i] = {};
   }
 }
 
 setup();
 ```
 
-1. 음의 이름과 옥타브를 주파수에 대응(map)시키는 표는 `createNoteTable()`를 호출함으로써 생성됩니다.
-2. 메인 gain 제어에서 {{event("change")}} 이벤트를 다루기 위해 {{domxref("EventTarget.addEventListener", "addEventListener()")}}를 호출함으로써 이벤트 핸들러가 생성되었습니다. 이것은 메인 gain 노드의 음량을 제어의 새 값으로 업데이트 합니다.
-3. 다음으로, 음 주파수 표에 있는 각 옥타브에 대해 순회합니다. 각 옥타브에 대해, 우리는 그 옥타브에 있는 음들의 목록을 얻기 위해 {{jsxref("Object.entries()")}}를 사용합니다.
-4. 그 옥타브의 음들을 포함하는 {{HTMLElement("div")}}를 생성하고 (이렇게 함으로써 우리는 옥타브들 사이에 약간의 공간을 가질 수 있습니다), 이것의 클래스명을 "octave"로 설정합니다.
-5. 옥타브에 있는 각 건반에 대해, 우리는 음의 이름이 한 문자보다 많은지 검사합니다. 우리는 이것을 생략하는데, 왜냐하면 우리는 이 예제에서 샤프(#) 음들을 무시하기 때문입니다. 만약 음의 이름이 단지 한 문자라면, 우리는 `createKey()`를 호출하는데, 이는 음의 문자열, 옥타브, 그리고 주파수를 명시합니다. 이 반환된 요소는 단계 4에서 생성된 옥타브 요소에 추가됩니다.
-6. 각 옥타브 요소가 생성되었을 때, 키보드에 추가됩니다.
-7. 키보드가 생성되고 나면, 옥타브 5의 "B" 음이 보이도록 스크롤합니다; 이것은 주변 건반들을 따라 중앙 '다' 음이 보이도록 하는 효과를 가지고 있습니다.
-8. 그리고 나서 새로운 사용자 정의 파형이 {{domxref("AudioContext.createPeriodicWave()")}}를 사용하여 생성됩니다. 이 파형은 언제든지 사용자가 파형 선택기에서 "Custom"을 선택했을 때 사용될 것입니다.
-9. 마지막으로, oscillator 목록이 어떤 oscillator가 어떤 건반과 연관되어 있는지를 식별하는 정보를 받기 위한 준비가 되었다는 것을 보장하도록 초기화됩니다.
+1. The table which maps note names and octaves to their frequencies is created by calling `createNoteTable()`.
+2. An event handler is established (by calling our old friend {{domxref("EventTarget.addEventListener", "addEventListener()")}} to handle {{domxref("HTMLElement/change_event", "change")}} events on the main gain control. This will update the main gain node's volume to the new value of the control.
+3. Next, we iterate over each octave in the note frequencies table. For each octave, we use {{jsxref("Object.entries()")}} to get a list of the notes in that octave.
+4. Create a {{HTMLElement("div")}} to contain that octave's notes (so we can have a small bit of space drawn between octaves), and set its class name to "octave"
+5. For each key in the octave, we check to see if the note's name has more than one character. We skip these, because we're leaving out the sharp notes in this example. If the note's name is only one character, then we call `createKey()`, specifying the note string, octave, and frequency. The returned element is appended to the octave element created in step 4.
+6. When each octave element has been built, it's appended to the keyboard.
+7. Once the keyboard has been constructed, we scroll the note "B" in octave 5 into view; this has the effect of ensuring that middle-C is visible along with its surrounding keys.
+8. Then a new custom waveform is built using {{domxref("BaseAudioContext.createPeriodicWave()")}}. This waveform will be used any time the user selects "Custom" from the waveform picker control.
+9. Finally, the oscillator list is initialized to ensure that it's ready to receive information identifying which oscillators are associated with which keys.
 
-#### 건반 생성하기
+#### Creating a key
 
-`createKey()` 함수는 가상 키보드에 표시하기를 원하는 각각의 건반에 대해 한 번 호출됩니다. 이것은 건반과 건반의 라벨으로 구성되는 요소를 생성하고, 추후의 사용을 위해 그 요소에 데이터 특성을 추가하고, 그리고 우리가 관심을 가지고 있는 이벤트에 대한 이벤트 핸들러를 부여합니다.
+The `createKey()` function is called once for each key that we want to present in the virtual keyboard. It creates the elements that comprise the key and its label, adds some data attributes to the element for later use, and assigns event handlers for the events we care about.
 
 ```js
 function createKey(note, octave, freq) {
-  let keyElement = document.createElement("div");
-  let labelElement = document.createElement("div");
+  const keyElement = document.createElement("div");
+  const labelElement = document.createElement("div");
 
   keyElement.className = "key";
   keyElement.dataset["octave"] = octave;
   keyElement.dataset["note"] = note;
   keyElement.dataset["frequency"] = freq;
 
-  labelElement.innerHTML = note + "<sub>" + octave + "</sub>";
+  labelElement.innerHTML = `${note}<sub>${octave}</sub>`;
   keyElement.appendChild(labelElement);
 
   keyElement.addEventListener("mousedown", notePressed, false);
@@ -464,22 +489,22 @@ function createKey(note, octave, freq) {
 }
 ```
 
-건반과 건반의 라벨을 표현할 요소를 생성한 이후, 건반의 클래스를 (외양을 설정하는) "key"로 설정함으로써 건반의 요소를 설정합니다. 그리고 나서 건반의 옥타브(`data-octave` 특성), 재생할 음을 표현하는 문자열(`data-note` 특성), 헤르츠로 표현되는 주파수(`data-frequency` 특성)를 포함하는 {{htmlattrxref("data-*")}} 특성을 추가합니다. 이것은 우리로 하여금 이벤트를 다룰 때 필요한 경우 쉽게 이 정보를 가져올 수 있도록 할 것입니다.
+After creating the elements that will represent the key and its label, we configure the key's element by setting its class to "key" (which establishes its appearance). Then we add [`data-*`](/en-US/docs/Web/HTML/Global_attributes#data-*) attributes which contain the key's octave (attribute `data-octave`), string representing the note to play (attribute `data-note`), and frequency (attribute `data-frequency`) in Hertz. This will let us easily fetch that information as needed when handling events.
 
-### 음악 만들기
+### Making music
 
-#### 음 재생하기
+#### Playing a tone
 
-`playTone()` 함수의 역할은 주어진 주파수의 음을 재생하는 것입니다. 이것은 적절한 음을 재생하는 키보드 건반의 이벤트 핸들러에 의해 사용될 것입니다.
+The `playTone()` function's job is to play a tone at the given frequency. This will be used by the handler for events triggering keys on the keyboard to start playing the appropriate notes.
 
 ```js
 function playTone(freq) {
-  let osc = audioContext.createOscillator();
+  const osc = audioContext.createOscillator();
   osc.connect(mainGainNode);
 
-  let type = wavePicker.options[wavePicker.selectedIndex].value;
+  const type = wavePicker.options[wavePicker.selectedIndex].value;
 
-  if (type == "custom") {
+  if (type === "custom") {
     osc.setPeriodicWave(customWaveform);
   } else {
     osc.type = type;
@@ -492,23 +517,23 @@ function playTone(freq) {
 }
 ```
 
-`playTone()`은 {{domxref("AudioContext.createOscillator()")}} 메서드를 호출하여 새로운 {{domxref("OscillatorNode")}}를 생성함으로써 시작합니다. 그리고 나서 우리는 이것을 메인 gain 노드에 새로운 oscillator의 {{domxref("OscillatorNode.connect()")}} 메서드를 호출함으로써 연결하는데, 이는 oscillator에게 이것의 결과를 어디로 보낼지 알려줍니다. 이렇게 함으로써, 메인 gain 노드의 gain을 변경하는 것은 생성되는 모든 음의 볼륨에 영향을 미칠 것입니다.
+`playTone()` begins by creating a new {{domxref("OscillatorNode")}} by calling the {{domxref("BaseAudioContext.createOscillator()")}} method. We then connect it to the main gain node by calling the new oscillator's {{domxref("AudioNode/connect", "connect()")}} method;, which tells the oscillator where to send its output to. By doing this, changing the gain of the main gain node will affect the volume of all tones being generated.
 
-그리고 나서 우리는 사용할 파형의 유형을 세팅 바의 파형 선택기의 값을 검사함으로써 얻습니다. 만약 사용자가 이것을 `"custom"`으로 설정했다면, 우리는 사용자 정의 파형을 사용할 oscillator를 설정하기 위하여 {{domxref("OscillatorNode.setPeriodicWave()")}}를 호출합니다. 이를 하는 것은 자동적으로 oscillator의 {{domxref("OscillatorNode.type", "type")}}을 `custom`으로 설정합니다. 만약 파형 선택기에서 다른 파형이 선택되었다면, 우리는 oscillator의 유형을 선택기의 값으로 설정합니다; 그 값은 `sine`, `square`, `triangle`, 그리고 `sawtooth` 중 하나일 것입니다.
+Then we get the type of waveform to use by checking the value of the waveform picker control in the settings bar. If the user has it set to `"custom"`, we call {{domxref("OscillatorNode.setPeriodicWave()")}} to configure the oscillator to use our custom waveform. Doing this automatically sets the oscillator's {{domxref("OscillatorNode.type", "type")}} to `custom`. If any other waveform type is selected in the wave picker, we set the oscillator's type to the value of the picker; that value will be one of `sine`, `square`, `triangle`, and `sawtooth`.
 
-oscillator의 주파수는 {{domxref("Oscillator.frequency")}} {{domxref("AudioParam")}} 객체의 값을 설정함으로써 `freq` 파라미터에 명시된 값으로 설정됩니다. 그리고서, 마침내, oscillator는 상속된 {{domxref("AudioScheduledSourceNode.start()")}} 메서드를 호출하여 소리를 생성하도록 시작됩니다.
+The oscillator's frequency is set to the value specified in the `freq` parameter by setting the value of the {{domxref("OscillatorNode.frequency")}} {{domxref("AudioParam")}} object. Then, at last, the oscillator is started up so that it begins to produce sound by calling the oscillator's inherited {{domxref("AudioScheduledSourceNode.start()")}} method.
 
-#### 음 재생하기
+#### Playing a note
 
-{{event("mousedown")}} 이나 {{domxref("mouseover")}} 이벤트가 건반에서 발생했을 때, 우리는 대응하는 음을 재생하기를 원합니다. `notePressed()` 함수는 이 이벤트들에 대한 이벤트 핸들러로 사용됩니다.
+When the {{domxref("Element/mousedown_event", "mousedown")}} or {{domxref("Element/mouseover_event", "mouseover")}} event occurs on a key, we want to start playing the corresponding note. The `notePressed()` function is used as the event handler for these events.
 
 ```js
 function notePressed(event) {
   if (event.buttons & 1) {
-    let dataset = event.target.dataset;
+    const dataset = event.target.dataset;
 
     if (!dataset["pressed"]) {
-      let octave = +dataset["octave"];
+      const octave = Number(dataset["octave"]);
       oscList[octave][dataset["note"]] = playTone(dataset["frequency"]);
       dataset["pressed"] = "yes";
     }
@@ -516,20 +541,20 @@ function notePressed(event) {
 }
 ```
 
-두 가지 이유로, 우리는 주요 마우스 버튼이 눌러졌는지를 확인함으로써 시작합니다. 첫째로, 우리는 오직 주요 마우스 버튼이 노트 재생을 할 수 있게 허용하기를 원합니다. 둘째로, 그리고 더욱 중요하게, 우리는 유저가 음에서 음으로 드래그하는 경우에 대해 {{event("mouseover")}}를 다루기 위해 이것을 사용하고, 우리는 오직 마우스가 요소에 들어왔을 때 눌러졌다면 노트를 재생하기를 원합니다.
+We start by checking whether the primary mouse button is pressed, for two reasons. First, we want to only allow the primary mouse button to trigger notes playing. Second, and more importantly, we are using this to handle {{domxref("Element/mouseover_event", "mouseover")}} for cases where the user is dragging from note to note, and we only want to start playing the note if the mouse is pressed when it enters the element.
 
-만약 마우스 버튼이 실제로 눌러졌다면, 우리는 눌러진 건반의 {{htmlattrxref("dataset")}} 특성을 얻습니다; 이는 요소의 사용자 정의 데이터 특성에 접근하는 것을 쉽게 해 줍니다. 우리는 `data-pressed` 특성을 찾습니다; 만약 (음이 이미 재생되고 있지 않다는 것을 나타내는) 그것이 없다면, 요소의 `data-frequency` 특성 값을 전달하며, 우리는 음을 재생하기 위해 `playTone()`을 호출합니다. 반환된 oscillator는 `oscList`에 미래의 참조를 위해 저장되고, `data-pressed`는 음이 재생되고 있다는 것을 나타내기 위해 `yes`로 설정되어 다음 번에 이것이 호출되었을 때 이것을 다시 시작하지 않습니다.
+If the mouse button is in fact down, we get the pressed key's [`dataset`](/en-US/docs/Web/HTML/Global_attributes#dataset) attribute; this makes it easy to access the custom data attributes on the element. We look for a `data-pressed` attribute; if there isn't one (which indicates that the note isn't already playing), we call `playTone()` to start playing the note, passing in the value of the element's `data-frequency` attribute. The returned oscillator is stored into `oscList` for future reference, and `data-pressed` is set to `yes` to indicate that the note is playing so we don't start it again next time this is called.
 
-#### 음 멈추기
+#### Stopping a tone
 
-`noteReleased()` 함수는 사용자가 마우스 버튼을 떼거나 마우스를 현재 재생되고 있는 건반 밖으로 이동시켰을 때 호출되는 이벤트 핸들러입니다.
+The `noteReleased()` function is the event handler called when the user releases the mouse button or moves the mouse out of the key that's currently playing.
 
 ```js
 function noteReleased(event) {
-  let dataset = event.target.dataset;
+  const dataset = event.target.dataset;
 
   if (dataset && dataset["pressed"]) {
-    let octave = +dataset["octave"];
+    const octave = Number(dataset["octave"]);
     oscList[octave][dataset["note"]].stop();
     delete oscList[octave][dataset["note"]];
     delete dataset["pressed"];
@@ -537,29 +562,62 @@ function noteReleased(event) {
 }
 ```
 
-`noteReleased()`는 사용자 정의 `data-octave`와 `data-note` 특성을 건반의 oscillator를 찾아보기 위해 사용하고, 그리고 나서 음 재생을 멈추기 위해 oscillator의 상속된 {{domxref("AudioScheduledSourceNode.stop", "stop()")}} 메서드를 호출합니다. 마지막으로, 음이 현재 재생되고 있지 않다는 것을 나타내기 위해, 음에 대한 `oscList` 항목은 지워지고 `data-pressed` 특성은 ({{domxref("event.target")}}에 의해 식별된) 건반 요소로부터 제거됩니다.
+`noteReleased()` uses the `data-octave` and `data-note` custom attributes to look up the key's oscillator, then calls the oscillator's inherited {{domxref("AudioScheduledSourceNode.stop", "stop()")}} method to stop playing the note. Finally, the `oscList` entry for the note is cleared and the `data-pressed` attribute is removed from the key element (as identified by {{domxref("event.target")}}), to indicate that the note is not currently playing.
 
-#### 메인 볼륨 변경하기
+#### Changing the main volume
 
-세팅 바의 볼륨 슬라이더는 메인 gain 노드의 gain 값을 변경하기 위한 간단한 인터페이스를 제공하는데, 이로써 재생되는 모든 음의 세기를 변경합니다. `changeVolume()` 메서드는 슬라이더의 {{event("change")}} 이벤트에 대한 핸들러입니다.
+The volume slider in the settings bar provides a simple interface to change the gain value on the main gain node, thereby changing the loudness of all playing notes. The `changeVolume()` method is the handler for the {{domxref("HTMLElement/change_event", "change")}} event on the slider.
 
 ```js
 function changeVolume(event) {
-  mainGainNode.gain.value = volumeControl.value
+  mainGainNode.gain.value = volumeControl.value;
 }
 ```
 
-이것은 메인 gain 노드의 `gain` {{domxref("AudioParam")}}의 값을 슬라이더의 새로운 값으로 설정합니다.
+This sets the value of the main gain node's `gain` {{domxref("AudioParam")}} to the slider's new value.
 
-### 결과
+#### Keyboard support
 
-이를 모두 합하면, 결과는 간단하지만 작동하는 마우스로 이용 가능한 뮤지컬 키보드입니다.
+The code below adds [`keydown`](/en-US/docs/Web/API/Element/keydown_event) and [`keyup`](/en-US/docs/Web/API/Element/keyup_event) event listeners to handle keyboard input. The `keydown` event handler calls `notePressed()` to start playing the note corresponding to the key that was pressed, and the `keyup` event handler calls `noteReleased()` to stop playing the note corresponding to the key that was released.
+
+```js-nolint
+const synthKeys = document.querySelectorAll(".key");
+const keyCodes = [
+  "Space",
+  "ShiftLeft", "KeyZ", "KeyX", "KeyC", "KeyV", "KeyB", "KeyN", "KeyM", "Comma", "Period", "Slash", "ShiftRight",
+  "KeyA", "KeyS", "KeyD", "KeyF", "KeyG", "KeyH", "KeyJ", "KeyK", "KeyL", "Semicolon", "Quote", "Enter",
+  "Tab", "KeyQ", "KeyW", "KeyE", "KeyR", "KeyT", "KeyY", "KeyU", "KeyI", "KeyO", "KeyP", "BracketLeft", "BracketRight",
+  "Digit1", "Digit2", "Digit3", "Digit4", "Digit5", "Digit6", "Digit7", "Digit8", "Digit9", "Digit0", "Minus", "Equal", "Backspace",
+  "Escape",
+];
+function keyNote(event) {
+  const elKey = synthKeys[keyCodes.indexOf(event.code)];
+  if (elKey) {
+    if (event.type === "keydown") {
+      elKey.tabIndex = -1;
+      elKey.focus();
+      elKey.classList.add("active");
+      notePressed({ buttons: 1, target: elKey });
+    } else {
+      elKey.classList.remove("active");
+      noteReleased({ buttons: 1, target: elKey });
+    }
+    event.preventDefault();
+  }
+}
+addEventListener("keydown", keyNote);
+addEventListener("keyup", keyNote);
+```
+
+### Result
+
+Put all together, the result is a simple but working point-and-click musical keyboard:
 
 {{ EmbedLiveSample('The_video_keyboard', 680, 200) }}
 
-## 같이 보기
+## See also
 
-- [Web Audio API](/ko/docs/Web/API/Web_Audio_API)
+- [Web Audio API](/en-US/docs/Web/API/Web_Audio_API)
 - {{domxref("OscillatorNode")}}
 - {{domxref("GainNode")}}
 - {{domxref("AudioContext")}}

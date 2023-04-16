@@ -1,18 +1,27 @@
 ---
-title: element.scrollIntoView
+title: "Element: scrollIntoView() method"
+short-title: scrollIntoView()
 slug: Web/API/Element/scrollIntoView
+page-type: web-api-instance-method
+browser-compat: api.Element.scrollIntoView
 ---
+
 {{APIRef("DOM")}}
 
-{{domxref("Element")}} 인터페이스의 **`scrollIntoView()`** 메소드는 `scrollIntoView()`가 호출 된 요소가 사용자에게 표시되도록 요소의 상위 컨테이너를 스크롤합니다.
+The {{domxref("Element")}} interface's
+**`scrollIntoView()`** method scrolls the element's ancestor
+containers such that the element on which `scrollIntoView()` is called is
+visible to the user.
 
-## 문법
+## Syntax
 
-```js
-element.scrollIntoView();
-element.scrollIntoView(alignToTop); // Boolean parameter
-element.scrollIntoView(scrollIntoViewOptions); // Object parameter
+```js-nolint
+scrollIntoView()
+scrollIntoView(alignToTop)
+scrollIntoView(scrollIntoViewOptions)
 ```
+
+### Parameters
 
 - `alignToTop` {{optional_inline}}
 
@@ -32,8 +41,10 @@ element.scrollIntoView(scrollIntoViewOptions); // Object parameter
   - : An Object with the following properties:
 
     - `behavior` {{optional_inline}}
-      - : Defines the transition animation.
-        One of `auto` or `smooth`. Defaults to `auto`.
+      - : Determines whether scrolling is instant or animates smoothly. This option is a string which must take one of the following values:
+        - `smooth`: scrolling should animate smoothly
+        - `instant`: scrolling should happen instantly in a single jump
+        - `auto`: scroll behavior is determined by the computed value of {{cssxref("scroll-behavior")}}
     - `block` {{optional_inline}}
       - : Defines vertical alignment.
         One of `start`, `center`, `end`, or
@@ -43,29 +54,34 @@ element.scrollIntoView(scrollIntoViewOptions); // Object parameter
         One of `start`, `center`, `end`, or
         `nearest`. Defaults to `nearest`.
 
-## 예제
+### Return value
+
+None ({{jsxref("undefined")}}).
+
+## Examples
 
 ```js
-var element = document.getElementById("box");
+const element = document.getElementById("box");
 
 element.scrollIntoView();
 element.scrollIntoView(false);
-element.scrollIntoView({block: "end"});
-element.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+element.scrollIntoView({ block: "end" });
+element.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
 ```
 
 ## Notes
 
-다른 요소의 레이아웃에 따라 위쪽 또는 아래쪽으로 완전히 스크롤되지 않을 수 있습니다.
+The element may not be scrolled completely to the top or bottom depending on the layout
+of other elements.
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 더보기
+## See also
 
 - {{domxref("Element.scrollIntoViewIfNeeded()")}} {{non-standard_inline}}

@@ -1,41 +1,38 @@
 ---
 title: <frame>
 slug: Web/HTML/Element/frame
+page-type: html-element
+status:
+  - deprecated
+browser-compat: html.elements.frame
 ---
 
-{{Deprecated_header}}
+{{HTMLSidebar}}{{Deprecated_Header}}
 
-## 요약
+The **`<frame>`** [HTML](/en-US/docs/Web/HTML) element defines a particular area in which another HTML document can be displayed. A frame should be used within a {{HTMLElement("frameset")}}.
 
-`<frame>`은 다른 HTML 문서가 표시될 수 있는 특정 영역을 정의하는 element이다. frame은 {{HTMLElement("frameset")}}내에서 사용되어야 한다.
+Using the `<frame>` element is not encouraged because of certain disadvantages such as performance problems and lack of accessibility for users with screen readers. Instead of the `<frame>` element, {{HTMLElement("iframe")}} may be preferred.
 
-\<frame> element의 사용은 screen reader 사용자들의 접근성 부족과같은 기능문제같은 특정 단점 때문에 권장되지 않는다
-\<frame> element 대신에 {{HTMLElement("iframe")}} 가 아마 더 적합할것이다.
+## Attributes
 
-## 속성(=Attributes)
+Like all other HTML elements, this element supports the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-다른 모든 HTML elments와 마찬가지로, \<frame> element는 전역속성([global attributes](/ko/docs/HTML/Global_attributes))이 적용된다.
+- `src` {{Deprecated_Inline}}
+  - : This attribute specifies the document that will be displayed by the frame.
+- `name` {{Deprecated_Inline}}
+  - : This attribute is used for labeling frames. Without labeling, every link will open in the frame that it's in – the closest parent frame. See the [`target`](/en-US/docs/Web/HTML/Element/a#target) attribute for more information.
+- `noresize` {{Deprecated_Inline}}
+  - : This attribute prevents resizing of frames by users.
+- `scrolling` {{Deprecated_Inline}}
+  - : This attribute defines the existence of a scrollbar. If this attribute is not used, the browser adds a scrollbar when necessary. There are two choices: "yes" for forcing a scrollbar even when it is not necessary and "no" for forcing no scrollbar even when it _is_ necessary.
+- `marginheight` {{Deprecated_Inline}}
+  - : This attribute defines the height of the margin between frames.
+- `marginwidth` {{Deprecated_Inline}}
+  - : This attribute defines the width of the margin between frames.
+- `frameborder` {{Deprecated_Inline}}
+  - : This attribute allows you to specify a frame's border.
 
-- {{htmlattrdef("src")}}
-  - : 이 속성은 frame으로 표시될 문서를 기입합니다.
-- {{htmlattrdef("name")}}
-  - : 이 속성은 프레임을 명명하는데 사용됩니다. 명명되지않은 모든 링크들은 그들이 속해있는 그 프레임 안에서 열릴것입니다
-- {{htmlattrdef("noresize")}}
-
-  - : 이 속성은 사용자가 프레임크기를 조정할수 없게합니다.
-
-- {{htmlattrdef("scrolling")}}
-  - : &#x20;
-    이 속성은 스크롤바의 유무를 결정합니다. 이 속성을 사용하지않으면 특정상황에서 자동으로 브라우져에 스크롤바가 생깁니다.
-    두가지를 선택할 수 있습니다. "yes"면 항상 스크롤바를 보여주고 "no"면 항상 스크롤바를 보여주지 않습니다.
-- {{htmlattrdef("marginheight")}}
-  - : 이 속성은 프레임 사이의 여백 높이를 정의할때 사용됩니다.
-- {{htmlattrdef("marginwidth")}}
-  - : 이 속성은 프레임 사이의 여백 넓이를 정의할때 사용됩니다.
-- {{htmlattrdef("frameborder")}}
-  - : 이 속성을 사용하면 프레임에 대한 경계선을 넣을 수 있습니다.
-
-## 예시
+## Example
 
 ```html
 <frameset cols="50%,50%">
@@ -44,9 +41,15 @@ slug: Web/HTML/Element/frame
 </frameset>
 ```
 
-## 참조
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
+
+{{Compat}}
+
+## See also
 
 - {{HTMLElement("frameset")}}
 - {{HTMLElement("iframe")}}
-
-{{HTMLSidebar}}

@@ -1,87 +1,112 @@
 ---
 title: letter-spacing
 slug: Web/CSS/letter-spacing
+page-type: css-property
+browser-compat: css.properties.letter-spacing
 ---
 
 {{CSSRef}}
 
-**`letter-spacing`** [CSS](/ko/docs/Web/CSS) 속성은 글자 사이의 간격을 조절합니다.
+The **`letter-spacing`** [CSS](/en-US/docs/Web/CSS) property sets the horizontal spacing behavior between text characters. This value is added to the natural spacing between characters while rendering the text. Positive values of `letter-spacing` causes characters to spread farther apart, while negative values of `letter-spacing` bring characters closer together.
 
 {{EmbedInteractiveExample("pages/css/letter-spacing.html")}}
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword value */
 letter-spacing: normal;
 
-/* <length> 값 */
+/* <length> values */
 letter-spacing: 0.3em;
 letter-spacing: 3px;
-letter-spacing: .3px;
+letter-spacing: 0.3px;
 
-/* 전역 값 */
+/* Global values */
 letter-spacing: inherit;
 letter-spacing: initial;
+letter-spacing: revert;
+letter-spacing: revert-layer;
 letter-spacing: unset;
 ```
 
-### 값
+### Values
 
 - `normal`
-  - : 현재 글꼴의 기본 간격. `0`과 달리, `auto`는 {{glossary("user agent", "사용자 에이전트")}}가 양쪽 정렬을 위해 간격을 임의로 조절할 수 있습니다.
+  - : The normal letter spacing for the current font. Unlike a value of `0`, this keyword allows the {{glossary("user agent")}} to alter the space between characters in order to justify text.
 - {{cssxref("&lt;length&gt;")}}
-  - : 기본 간격에 **추가**할 글자간 간격. 음수 값을 지정할 수 있지만 구현에 따라 한계가 있을 수 있습니다. 사용자 에이전트가 간격을 줄이거나 늘리지 않습니다.
+  - : Specifies extra inter-character space _in addition to_ the default space between characters. Values may be negative, but there may be implementation-specific limits. User agents may not further increase or decrease the inter-character space in order to justify text.
 
-### 형식 구문
+## Accessibility concerns
 
-{{csssyntax}}
+A large positive or negative `letter-spacing` value will make the word(s) the styling is applied to unreadable. For text styled with a very large positive value, the letters will be so far apart that the word(s) will appear like a series of individual, unconnected letters. For text styled with a very large negative value, the letters will overlap each other to the point where the word(s) may be unrecognizable.
 
-## 예제
+Legible letter-spacing must be determined on a case-by-case basis, as different font families have different character widths. There is no one value that can ensure all font families automatically maintain their legibility.
 
-### HTML
-
-```html
-<p class="normal">글자 간격</p>
-<p class="em-wide">글자 간격</p>
-<p class="em-wider">글자 간격</p>
-<p class="em-tight">글자 간격</p>
-<p class="px-wide">글자 간격</p>
-```
-
-### CSS
-
-```css
-.normal   { letter-spacing: normal; }
-.em-wide  { letter-spacing: 0.4em; }
-.em-wider { letter-spacing: 1em; }
-.em-tight { letter-spacing: -0.05em; }
-.px-wide  { letter-spacing: 6px; }
-```
-
-### 결과
-
-{{ EmbedLiveSample('예제', 440, 185) }}
-
-## 접근성 고려사항
-
-`letter-spacing` 값의 절댓값이 너무 크면 스타일을 적용한 글을 읽기 힘들어집니다. 지나치게 큰 값으로는 글자 간격이 지나치게 넓어져 단어를 이루지 못하고 따로 따로 보입니다. 반대로 지나친 음숫값은 글자가 서로 겹쳐 알아볼 수 없습니다.
-
-글꼴마다 문자의 너비가 다르므로 읽기에 용이한 간격은 상황에 따라 다릅니다. 모든 글꼴에 적합한 하나의 값은 존재하지 않습니다.
-
-- [MDN Understanding WCAG, Guideline 1.4 explanations](/ko/docs/Web/Accessibility/Understanding_WCAG/Perceivable#Guideline_1.4_Make_it_easier_for_users_to_see_and_hear_content_including_separating_foreground_from_background)
+- [MDN Understanding WCAG, Guideline 1.4 explanations](/en-US/docs/Web/Accessibility/Understanding_WCAG/Perceivable#guideline_1.4_make_it_easier_for_users_to_see_and_hear_content_including_separating_foreground_from_background)
 - [Understanding Success Criterion 1.4.8 | W3C Understanding WCAG 2.0](https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-visual-presentation.html)
 
-## 명세
+## Internationalization concerns
 
-{{Specifications}}
+Some written languages should not have any letter spacing applied. For instance, languages that use the Arabic script expect connected letters to remain visually connected, as in the following example. Applying letter spacing will lead the text to look broken.
+
+> <p lang="ar" dir="rtl">شسيبتنمك</p>
+
+## Formal definition
 
 {{cssinfo}}
 
-## 브라우저 호환성
+## Formal syntax
+
+{{csssyntax}}
+
+## Examples
+
+### Setting letter spacing
+
+#### HTML
+
+```html
+<p class="normal">letter spacing</p>
+<p class="em-wide">letter spacing</p>
+<p class="em-wider">letter spacing</p>
+<p class="em-tight">letter spacing</p>
+<p class="px-wide">letter spacing</p>
+```
+
+#### CSS
+
+```css
+.normal {
+  letter-spacing: normal;
+}
+.em-wide {
+  letter-spacing: 0.4em;
+}
+.em-wider {
+  letter-spacing: 1em;
+}
+.em-tight {
+  letter-spacing: -0.05em;
+}
+.px-wide {
+  letter-spacing: 6px;
+}
+```
+
+#### Result
+
+{{ EmbedLiveSample('Setting_letter_spacing', 440, 185) }}
+
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{cssxref("font-kerning")}}
+- {{cssxref("word-spacing")}}

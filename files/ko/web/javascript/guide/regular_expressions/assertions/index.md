@@ -1,12 +1,12 @@
 ---
 title: Assertions
-slug: Web/JavaScript/Guide/Regular_Expressions/Assertions
-original_slug: Web/JavaScript/Guide/정규식/Assertions
+slug: Web/JavaScript/Guide/Regular_expressions/Assertions
+page-type: guide
 ---
 
 {{jsSidebar("JavaScript Guide")}}
 
-Assertions에는 행이나 단어의 시작 · 끝을 나타내는 경계와 (앞, 뒤 읽고 조건식을 포함한) 어떤 식 으로든 매치가 가능한 것을 나타내는 다른 패턴이 포함됩니다.
+Assertions include boundaries, which indicate the beginnings and endings of lines and words, and other patterns indicating in some way that a match is possible (including look-ahead, look-behind, and conditional expressions).
 
 {{EmbedInteractiveExample("pages/js/regexp-assertions.html", "taller")}}
 
@@ -31,13 +31,13 @@ Assertions에는 행이나 단어의 시작 · 끝을 나타내는 경계와 (�
           <code>/^A/</code> does not match the "A" in "an A", but does match the
           first "A" in "An A".
         </p>
-        <div class="blockIndicator note">
+        <div class="notecard note">
           <p>
-            This character has a different meaning when it appears at the start
-            of a
+            <strong>Note:</strong> This character has a different meaning when
+            it appears at the start of a
             <a
-              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Groups_and_Ranges"
-              >group</a
+              href="/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Character_classes"
+              >character class</a
             >.
           </p>
         </div>
@@ -84,7 +84,7 @@ Assertions에는 행이나 단어의 시작 · 끝을 나타내는 경계와 (�
         <p>
           To match a backspace character (<code>[\b]</code>), see
           <a
-            href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Character_Classes"
+            href="/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Character_classes"
             >Character Classes</a
           >.
         </p>
@@ -110,7 +110,7 @@ Assertions에는 행이나 단어의 시작 · 끝을 나타내는 경계와 (�
 
 ### Other assertions
 
-<div class="blockIndicator note"><p><strong>Note</strong>: The <code>?</code> character may also be used as a quantifier.</p></div>
+> **Note:** The `?` character may also be used as a quantifier.
 
 <table class="standard-table">
   <thead>
@@ -125,7 +125,7 @@ Assertions에는 행이나 단어의 시작 · 끝을 나타내는 경계와 (�
       <td>
         <p>
           <strong>Lookahead assertion: </strong>Matches "x" only if "x" is
-          followed by "y". For example, /<code>Jack(?=Sprat)/</code> matches
+          followed by "y". For example, <code>/Jack(?=Sprat)/</code> matches
           "Jack" only if it is followed by "Sprat".<br /><code
             >/Jack(?=Sprat|Frost)/</code
           >
@@ -140,8 +140,10 @@ Assertions에는 행이나 단어의 시작 · 끝을 나타내는 경계와 (�
         <p>
           <strong>Negative lookahead assertion: </strong>Matches "x" only if "x"
           is not followed by "y". For example, <code>/\d+(?!\.)/</code> matches
-          a number only if it is not followed by a decimal point.
-          <code>/\d+(?!\.)/.exec('3.141')</code> matches "141" but not "3.
+          a number only if it is not followed by a decimal point. <code
+            >/\d+(?!\.)/.exec('3.141')</code
+          >
+          matches "141" but not "3".
         </p>
       </td>
     </tr>
@@ -165,10 +167,9 @@ Assertions에는 행이나 단어의 시작 · 끝을 나타내는 경계와 (�
           <strong>Negative lookbehind assertion: </strong>Matches "x" only if
           "x" is not preceded by "y". For example,
           <code>/(?&#x3C;!-)\d+/</code> matches a number only if it is not
-          preceded by a minus sign.
-          <code>/(?&#x3C;!-)\d+/.exec('3')</code> matches "3".
-          <code>/(?&#x3C;!-)\d+/.exec('-3')</code> match is not found because
-          the number is preceded by the minus sign.
+          preceded by a minus sign. <code>/(?&#x3C;!-)\d+/.exec('3')</code>
+          matches "3". <code>/(?&#x3C;!-)\d+/.exec('-3')</code>  match is not
+          found because the number is preceded by the minus sign.
         </p>
       </td>
     </tr>
@@ -184,49 +185,49 @@ Assertions에는 행이나 단어의 시작 · 끝을 나타내는 경계와 (�
 buggyMultiline = `tey, ihe light-greon apple
 tangs on ihe greon traa`;
 
-// 1) Use ^ to fix the matching at the begining of the string, and right after newline.
-buggyMultiline = buggyMultiline.replace(/^t/gim,'h');
+// 1) Use ^ to fix the matching at the beginning of the string, and right after newline.
+buggyMultiline = buggyMultiline.replace(/^t/gim, "h");
 console.log(1, buggyMultiline); // fix 'tey', 'tangs' => 'hey', 'hangs'. Avoid 'traa'.
 
 // 2) Use $ to fix matching at the end of the text.
-buggyMultiline = buggyMultiline.replace(/aa$/gim,'ee.');
+buggyMultiline = buggyMultiline.replace(/aa$/gim, "ee.");
 console.log(2, buggyMultiline); // fix  'traa' => 'tree'.
 
 // 3) Use \b to match characters right on border between a word and a space.
-buggyMultiline = buggyMultiline.replace(/\bi/gim,'t');
-console.log(3, buggyMultiline); // fix  'ihe' but does not touch 'light'.
+buggyMultiline = buggyMultiline.replace(/\bi/gim, "t");
+console.log(3, buggyMultiline); // fix  'ihe' but do not touch 'light'.
 
 // 4) Use \B to match characters inside borders of an entity.
-fixedMultiline = buggyMultiline.replace(/\Bo/gim,'e');
-console.log(4, fixedMultiline); // fix  'greon' but does not touch 'on'.
+fixedMultiline = buggyMultiline.replace(/\Bo/gim, "e");
+console.log(4, fixedMultiline); // fix  'greon' but do not touch 'on'.
 ```
 
-### Matching the beginning of an input using a ^ control character
+### Matching the beginning of input using a ^ control character
 
-입력 시작시 일치를 위해 `^`를 사용하십시오. 이 예에서는 `/^A/` regex로 'A'로 시작하는 결과를 얻습니다. 여기서 `^`는 한 가지 역할 만합니다. 적절한 결과를 보기위해 [화살표](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions) 함수가있는 [필터](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) 메소드를 사용합니다.
+Use `^` for matching at the beginning of input. In this example, we can get the fruits that start with 'A' by a `/^A/` regex. For selecting appropriate fruits we can use the [filter](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) method with an [arrow](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions) function.
 
 ```js
-let fruits = ["Apple", "Watermelon", "Orange", "Avocado", "Strawberry"];
+const fruits = ["Apple", "Watermelon", "Orange", "Avocado", "Strawberry"];
 
 // Select fruits started with 'A' by /^A/ Regex.
-// Here '^' control symbol used only in one role: Matching begining of an input.
+// Here '^' control symbol used only in one role: Matching beginning of an input.
 
-let fruitsStartsWithA = fruits.filter(fruit => /^A/.test(fruit));
+const fruitsStartsWithA = fruits.filter((fruit) => /^A/.test(fruit));
 console.log(fruitsStartsWithA); // [ 'Apple', 'Avocado' ]
 ```
 
-두 번째 예제에서 `^`는 두 가지 모두에 사용됩니다 : 입력의 일치 시작점, [그룹](/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Groups_and_Ranges)에서 사용될 때 부정 또는 보완 문자 세트.
+In the second example `^` is used both for matching at the beginning of input and for creating negated or complemented character class when used within [character classes](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Character_classes).
 
 ```js
-let fruits = ["Apple", "Watermelon", "Orange", "Avocado", "Strawberry"];
+const fruits = ["Apple", "Watermelon", "Orange", "Avocado", "Strawberry"];
 
-// Selecting fruits that dose not start by 'A' by a /^[^A]/ regex.
+// Selecting fruits that do not start by 'A' with a /^[^A]/ regex.
 // In this example, two meanings of '^' control symbol are represented:
-// 1) Matching begining of the input
-// 2) A negated or complemented character set: [^A]
+// 1) Matching beginning of the input
+// 2) A negated or complemented character class: [^A]
 // That is, it matches anything that is not enclosed in the brackets.
 
-let fruitsStartsWithNotA = fruits.filter(fruit => /^[^A]/.test(fruit));
+const fruitsStartsWithNotA = fruits.filter((fruit) => /^[^A]/.test(fruit));
 
 console.log(fruitsStartsWithNotA); // [ 'Watermelon', 'Orange', 'Strawberry' ]
 ```
@@ -234,10 +235,12 @@ console.log(fruitsStartsWithNotA); // [ 'Watermelon', 'Orange', 'Strawberry' ]
 ### Matching a word boundary
 
 ```js
-let fruitsWithDescription = ["Red apple", "Orange orange", "Green Avocado"];
+const fruitsWithDescription = ["Red apple", "Orange orange", "Green Avocado"];
 
 // Select descriptions that contains 'en' or 'ed' words endings:
-let enEdSelection = fruitsWithDescription.filter(descr => /(en|ed)\b/.test(descr));
+const enEdSelection = fruitsWithDescription.filter((descr) =>
+  /(en|ed)\b/.test(descr),
+);
 
 console.log(enEdSelection); // [ 'Red apple', 'Green Avocado' ]
 ```
@@ -247,12 +250,12 @@ console.log(enEdSelection); // [ 'Red apple', 'Green Avocado' ]
 ```js
 // JS Lookahead assertion x(?=y)
 
-let regex = /First(?= test)/g;
+const regex = /First(?= test)/g;
 
-console.log('First test'.match(regex)); // [ 'First' ]
-console.log('First peach'.match(regex)); // null
-console.log('This is a First test in a year.'.match(regex)); // [ 'First' ]
-console.log('This is a First peach in a month.'.match(regex)); // null
+console.log("First test".match(regex)); // [ 'First' ]
+console.log("First peach".match(regex)); // null
+console.log("This is a First test in a year.".match(regex)); // [ 'First' ]
+console.log("This is a First peach in a month.".match(regex)); // null
 ```
 
 ### Basic negative lookahead assertion
@@ -260,48 +263,42 @@ console.log('This is a First peach in a month.'.match(regex)); // null
 For example, `/\d+(?!\.)/` matches a number only if it is not followed by a decimal point. `/\d+(?!\.)/.exec('3.141')` matches "141" but not "3.
 
 ```js
-console.log(/\d+(?!\.)/g.exec('3.141')); // [ '141', index: 2, input: '3.141' ]
+console.log(/\d+(?!\.)/g.exec("3.141")); // [ '141', index: 2, input: '3.141' ]
 ```
 
-### Different meaning of '?!' combination usage in Assertions and Ranges
+### Different meaning of '?!' combination usage in assertions and character classes
 
-Different meaning of `?!` combination usage in [Assertions](/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Assertions) `/x(?!y)/` and [Ranges](/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Groups_and_Ranges) `[^?!]`.
+The `?!` combination has different meanings in assertions like `/x(?!y)/` and [character classes](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Character_classes) like `[^?!]`.
 
 ```js
-let orangeNotLemon = "Do you want to have an orange? Yes, I do not want to have a lemon!";
+const orangeNotLemon =
+  "Do you want to have an orange? Yes, I do not want to have a lemon!";
 
-// Different meaning of '?!' combination usage in Assertions /x(?!y)/ and  Ranges /[^?!]/
-let selectNotLemonRegex = /[^?!]+have(?! a lemon)[^?!]+[?!]/gi
+// Different meaning of '?!' combination usage in Assertions /x(?!y)/ and Ranges /[^?!]/
+const selectNotLemonRegex = /[^?!]+have(?! a lemon)[^?!]+[?!]/gi;
 console.log(orangeNotLemon.match(selectNotLemonRegex)); // [ 'Do you want to have an orange?' ]
 
-let selectNotOrangeRegex = /[^?!]+have(?! an orange)[^?!]+[?!]/gi
+const selectNotOrangeRegex = /[^?!]+have(?! an orange)[^?!]+[?!]/gi;
 console.log(orangeNotLemon.match(selectNotOrangeRegex)); // [ ' Yes, I do not want to have a lemon!' ]
 ```
 
 ### Lookbehind assertion
 
 ```js
-let oranges = ['ripe orange A ', 'green orange B', 'ripe orange C',];
+const oranges = ["ripe orange A ", "green orange B", "ripe orange C"];
 
-let ripe_oranges = oranges.filter( fruit => fruit.match(/(?<=ripe )orange/));
-console.log(ripe_oranges); // [ 'ripe orange A ', 'ripe orange C' ]
+const ripeOranges = oranges.filter((fruit) => fruit.match(/(?<=ripe )orange/));
+console.log(ripeOranges); // [ 'ripe orange A ', 'ripe orange C' ]
 ```
-
-## 명세서
-
-{{Specifications}}
-
-## Browser compatibility
-
-For browser compatibility information, check out the [main Regular Expressions compatibility table](/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#Browser_compatibility).
 
 ## See also
 
-- [Regular expressions guide](/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)
+- [Regular expressions guide](/en-US/docs/Web/JavaScript/Guide/Regular_expressions)
 
-  - [Character classes](/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Character_Classes)
-  - [Quantifiers](/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Quantifiers)
-  - [Unicode property escapes](/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Unicode_Property_Escapes)
-  - [Groups and ranges](/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Groups_and_Ranges)
+  - [Character classes](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Character_classes)
+  - [Quantifiers](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Quantifiers)
+  - [Unicode property escapes](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Unicode_property_escapes)
+  - [Groups and backreferences](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Groups_and_backreferences)
 
 - [The `RegExp()` constructor](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp)
+- [Assertions in the ECMAScript specification](https://tc39.es/ecma262/multipage/text-processing.html#sec-assertion)

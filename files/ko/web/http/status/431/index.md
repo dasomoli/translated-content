@@ -1,26 +1,36 @@
 ---
 title: 431 Request Header Fields Too Large
 slug: Web/HTTP/Status/431
+page-type: http-status-code
+spec-urls: https://www.rfc-editor.org/rfc/rfc6585#section-5
 ---
 
 {{HTTPSidebar}}
 
-HTTP **`431 Request Header Fields Too Large`** 응답 코드는 [HTTP 헤더](/ko/docs/Web/HTTP/Headers)의 크기가 너무 크기 때문에 처리가 불가능함을 알려준다. 요청 헤더의 크기를 줄인 후, 재요청을 할 수 있다.
+The HTTP **`431 Request Header Fields Too Large`** response status code
+indicates that the server refuses to process the request because the request's
+[HTTP headers](/en-US/docs/Web/HTTP/Headers) are too long.
+The request _may_ be resubmitted after reducing the size of the request headers.
 
-431는 헤더 전체의 크기가 너무 크거나, 단일 헤더 필드가 너무 클 경우에 사용된다. 이 에러를 받는 유저를 위해 응답 body에 둘 중에 어느 경우인지 명시해줄 수 있다 — 이상적으로, 어느 헤더가 처리 불가능한지 알려주면 좋다. 그러면 쿠키를 삭제하는 것과 같이 유저가 문제를 해결할 수 있도록 도와준다.
+431 can be used when the **total size** of request headers is too large,
+or when a **single** header field is too large. To help those running into
+this error, indicate which of the two is the problem in the response body — ideally,
+also include which headers are too large. This lets users attempt to fix the problem,
+such as by clearing their cookies.
 
-서버가 431 상태 코드를 전송할 경우:
+Servers will often produce this status if:
 
-- {{ httpheader("Referer") }} URL이 너무 긴 경우
-- 요청에 많은 양의 [Cookies](/ko/docs/Web/HTTP/Cookies) 포함된 경우
+- The {{ httpheader("Referer") }} URL is too long
+- There are too many [Cookies](/en-US/docs/Web/HTTP/Cookies) sent in the
+  request
 
 ## Status
 
-```
+```http
 431 Request Header Fields Too Large
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 

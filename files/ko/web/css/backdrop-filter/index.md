@@ -1,19 +1,26 @@
 ---
 title: backdrop-filter
 slug: Web/CSS/backdrop-filter
+page-type: css-property
+browser-compat: css.properties.backdrop-filter
 ---
+
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`backdrop-filter`** 는 요소 뒤 영역에 흐림이나 색상 시프트 등 그래픽 효과를 적용할 수 있는 속성입니다. 요소 "뒤"에 적용하기 때문에, 효과를 확인하려면 요소나 요소의 배경을 적어도 반투명하게는 설정해야 합니다.
+The **`backdrop-filter`** [CSS](/en-US/docs/Web/CSS) property lets you apply graphical effects such as blurring or color shifting to the area behind an element. Because it applies to everything _behind_ the element, to see the effect you must make the element or its background at least partially transparent.
+
+{{EmbedInteractiveExample("pages/css/backdrop-filter.html")}}
+
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword value */
 backdrop-filter: none;
 
-/* SVG 필터를 가리키는 URL */
+/* URL to SVG filter */
 backdrop-filter: url(commonfilters.svg#filter);
 
-/* <filter-function> 값 */
+/* <filter-function> values */
 backdrop-filter: blur(2px);
 backdrop-filter: brightness(60%);
 backdrop-filter: contrast(40%);
@@ -25,69 +32,69 @@ backdrop-filter: opacity(20%);
 backdrop-filter: sepia(90%);
 backdrop-filter: saturate(80%);
 
-/* 다중 필터 */
+/* Multiple filters */
 backdrop-filter: url(filters.svg#filter) blur(4px) saturate(150%);
 
-/* 전역 값 */
+/* Global values */
 backdrop-filter: inherit;
 backdrop-filter: initial;
+backdrop-filter: revert;
+backdrop-filter: revert-layer;
 backdrop-filter: unset;
 ```
 
-## 구문
-
-### 값
+### Values
 
 - `none`
-  - : 뒤에 아무런 필터도 적용하지 않습니다.
+  - : No filter is applied to the backdrop.
 - `<filter-function-list>`
-  - : 뒤에 적용할 {{cssxref("&lt;filter-function&gt;")}} 또는 [SVG필터](/ko/docs/Web/SVG/Element/filter)의 공백 구분 목록입니다.
+  - : A space-separated list of {{cssxref("&lt;filter-function&gt;")}}s or an [SVG filter](/en-US/docs/Web/SVG/Element/filter) that will be applied to the backdrop. CSS `<filter-function>`s include {{CSSxRef("filter-function/blur", "blur()")}}, {{CSSxRef("filter-function/brightness", "brightness()")}}, {{CSSxRef("filter-function/contrast", "contrast()")}}, {{CSSxRef("filter-function/drop-shadow", "drop-shadow()")}}, {{CSSxRef("filter-function/grayscale", "grayscale()")}}, {{CSSxRef("filter-function/hue-rotate", "hue-rotate()")}}, {{CSSxRef("filter-function/invert", "invert()")}}, {{CSSxRef("filter-function/opacity", "opacity()")}}, {{CSSxRef("filter-function/saturate", "saturate()")}}, and {{CSSxRef("filter-function/sepia", "sepia()")}}.
 
-## 형식 정의
+## Formal definition
 
 {{cssinfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
 ### CSS
 
 ```css
 .box {
-  background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 5px;
-  font-family: sans-serif;
-  text-align: center;
-  line-height: 1;
- -webkit-backdrop-filter: blur(10px);
+  background-color: rgb(255 255 255 / 0.3);
   backdrop-filter: blur(10px);
-  max-width: 50%;
-  max-height: 50%;
-  padding: 20px 40px;
 }
 
+body {
+  background-image: url("anemones.jpg");
+}
+```
+
+```css hidden
 html,
 body {
   height: 100%;
   width: 100%;
 }
 
-body {
-  background-image: url(https://picsum.photos/id/1080/6858/4574), linear-gradient(rgb(219, 166, 166), rgb(0, 0, 172));
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
 .container {
+  background-size: cover;
   align-items: center;
   display: flex;
   justify-content: center;
   height: 100%;
   width: 100%;
+}
+.box {
+  border-radius: 5px;
+  font-family: sans-serif;
+  text-align: center;
+  max-width: 50%;
+  max-height: 50%;
+  padding: 20px 40px;
 }
 ```
 
@@ -101,18 +108,22 @@ body {
 </div>
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample("예제", 600, 400)}}
+{{EmbedLiveSample("Examples", 600, 400)}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{cssxref("filter")}}
+- {{cssxref("&lt;filter-function&gt;")}}
+- {{cssxref("background-blend-mode")}}, {{cssxref("mix-blend-mode")}}
+- [CSS filter effects](/en-us/docs/Web/CSS/filter_effects/)
+- [CSS compositing and blending](/en-US/docs/Web/CSS/Compositing_and_Blending)

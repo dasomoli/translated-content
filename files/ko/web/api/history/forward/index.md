@@ -1,46 +1,62 @@
 ---
-title: History.forward()
+title: "History: forward() method"
+short-title: forward()
 slug: Web/API/History/forward
+page-type: web-api-instance-method
+browser-compat: api.History.forward
 ---
 
-{{APIRef("DOM")}}
+{{APIRef("History API")}}
 
-**`History.forward()`** 메서드는 브라우저가 세션 기록의 바로 앞 페이지로 이동하도록 지시합니다. {{domxref("History.go", "history.go(1)")}}과 같습니다. 다음 페이지가 없는 경우 아무것도 하지 않습니다.
+The **`History.forward()`** method causes the browser to move
+forward one page in the session history. It has the same effect as calling
+{{domxref("History.go", "history.go(1)")}}.
 
-이 메서드는 비동기적입니다. {{event("popstate")}} 이벤트 처리기를 통해 탐색 완료 시점을 알 수 있습니다.
+This method is {{glossary("asynchronous")}}. Add a listener for the {{domxref("Window/popstate_event", "popstate")}} event in order to determine when the navigation has completed.
 
-## 구문
+## Syntax
 
-```js
-history.forward()
+```js-nolint
+forward()
 ```
 
-## 예제
+### Parameters
 
-다음 예제는 클릭했을 때 앞으로 가는 버튼을 생성합니다.
+None.
+
+### Return value
+
+None ({{jsxref("undefined")}}).
+
+## Examples
+
+The following examples create a button that moves forward one step in the session
+history.
 
 ### HTML
 
 ```html
-<button id='go-forward'>앞으로 가기!</button>
+<button id="go-forward">Go Forward!</button>
 ```
 
 ### JavaScript
 
 ```js
-document.getElementById('go-forward').addEventListener('click', e => {
-  window.history.forward();
-})
+document.getElementById("go-forward").addEventListener("click", (e) => {
+  history.forward();
+});
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("History")}}
+- {{domxref("Window/popstate_event", "popstate")}}
+- [Working with the History API](/en-US/docs/Web/API/History_API/Working_with_the_History_API)

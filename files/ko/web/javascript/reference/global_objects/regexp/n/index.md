@@ -1,62 +1,54 @@
 ---
-title: RegExp.$1-$9
+title: RegExp.$1, …, RegExp.$9
 slug: Web/JavaScript/Reference/Global_Objects/RegExp/n
+page-type: javascript-static-accessor-property
+status:
+  - deprecated
+browser-compat: javascript.builtins.RegExp.n
 ---
 
-{{JSRef}} {{non-standard_header}}
+{{JSRef}} {{deprecated_header}}
 
-비표준 **$1, $2, $3, $4, $5, $6, $7, $8, $9** 속성들은 정적이며, 괄호로 묶인 하위 문자열 match들을 포함하는 정규 표현식의 읽기 전용 속성들입니다.
+> **Note:** All `RegExp` static properties that expose the last match state globally are deprecated. See [deprecated RegExp features](/en-US/docs/Web/JavaScript/Reference/Deprecated_and_obsolete_features#regexp) for more information.
 
-## Syntax
-
-```js
-RegExp.$1
-RegExp.$2
-RegExp.$3
-RegExp.$4
-RegExp.$5
-RegExp.$6
-RegExp.$7
-RegExp.$8
-RegExp.$9
-```
+The **`RegExp.$1, …, RegExp.$9`** static accessor properties return parenthesized substring matches.
 
 ## Description
 
-$1, ..., $9 properties are static, they are not a property of an individual regular expression object. Instead, you always use them as `RegExp.$1`, ..., `RegExp.$9`.
+Because `$1`–`$9` are static properties of {{jsxref("RegExp")}}, you always use them as `RegExp.$1`, `RegExp.$2`, etc., rather than as properties of a `RegExp` object you created.
 
-The values of these properties are read-only and modified whenever successful matches are made.
+The values of `$1, …, $9` update whenever a `RegExp` (but not a `RegExp` subclass) instance makes a successful match. If no matches have been made, or if the last match does not have the corresponding capturing group, the respective property is an empty string. The set accessor of each property is `undefined`, so you cannot change the properties directly.
 
 The number of possible parenthesized substrings is unlimited, but the `RegExp` object can only hold the first nine. You can access all parenthesized substrings through the returned array's indexes.
 
-These properties can be used in the replacement text for the {{jsxref("String.replace")}} method. When used this way, do not prepend them with `RegExp`. The example below illustrates this. When parentheses are not included in the regular expression, the script interprets `$n`'s literally (where `n` is a positive integer).
+`$1, …, $9` can also be used in the replacement string of {{jsxref("String.prototype.replace()")}}, but that's unrelated to the `RegExp.$n` legacy properties.
 
 ## Examples
 
-### Using `$n` with `String.replace`
+### Using $n with RegExp.prototype.test()
 
-아래의 script는 first last 포맷의 이름과 매치하기 위해 {{jsxref("String")}} 인스턴스의 {{jsxref("String.prototype.replace()", "replace()")}} 메소드를 사용하고 그것을 last, first 포맷으로 출력한다. 대체 텍스트에서, 이 script는 정규 표현식 패턴에서 매칭되는 괄호들에 해당하는 결과들을 나타내는 `$1` 과 `$2` 를 사용한다.
+The following script uses the {{jsxref("RegExp.prototype.test()", "test()")}} method of the {{jsxref("RegExp")}} instance to grab a number in a generic string.
 
 ```js
-var re = /(\w+)\s(\w+)/;
-var str = 'John Smith';
-str.replace(re, '$2, $1'); // "Smith, John"
-RegExp.$1; // "John"
-RegExp.$2; // "Smith"
+const str = "Test 24";
+const number = /(\d+)/.test(str) ? RegExp.$1 : "0";
+number; // "24"
 ```
+
+Please note that any operation involving the usage of other regular expressions between a `re.test(str)` call and the `RegExp.$n` property, might have side effects, so that accessing these special properties should be done instantly, otherwise the result might be unexpected.
 
 ## Specifications
 
-Non-standard. Not part of any current specification.
+{{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- {{non-standard_inline}} {{jsxref("RegExp.input", "RegExp.input ($_)")}}
-- {{non-standard_inline}} {{jsxref("RegExp.lastMatch", "RegExp.lastMatch ($&amp;)")}}
-- {{non-standard_inline}} {{jsxref("RegExp.lastParen", "RegExp.lastParen ($+)")}}
-- {{non-standard_inline}} {{jsxref("RegExp.leftContext", "RegExp.leftContext ($`)")}}
-- {{non-standard_inline}} {{jsxref("RegExp.rightContext", "RegExp.rightContext ($')")}}
+- {{jsxref("RegExp.input", "RegExp.input ($_)")}}
+- {{jsxref("RegExp.lastMatch", "RegExp.lastMatch ($&amp;)")}}
+- {{jsxref("RegExp.lastParen", "RegExp.lastParen ($+)")}}
+- {{jsxref("RegExp.leftContext", "RegExp.leftContext ($`)")}}
+- {{jsxref("RegExp.rightContext", "RegExp.rightContext ($')")}}

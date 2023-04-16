@@ -1,14 +1,17 @@
 ---
 title: flex-wrap
 slug: Web/CSS/flex-wrap
+page-type: css-property
+browser-compat: css.properties.flex-wrap
 ---
-{{ CSSRef}}
 
-[CSS](/ko/docs/CSS) **`flex-wrap`** property는 `flex-item` 요소들이 강제로 한줄에 배치되게 할 것인지, 또는 가능한 영역 내에서 벗어나지 않고 여러행으로 나누어 표현 할 것인지 결정하는 속성입니다. 만약 영역 내에서 벗어나지 못하게 설정한다면, 동시에 요소의 방향 축을 결정할 수 있습니다.
+{{CSSRef}}
+
+The **`flex-wrap`** [CSS](/en-US/docs/Web/CSS) property sets whether flex items are forced onto one line or can wrap onto multiple lines. If wrapping is allowed, it sets the direction that lines are stacked.
 
 {{EmbedInteractiveExample("pages/css/flex-wrap.html")}}
 
-여기를 참고하면 관련된 더욱 자세한 정보를 얻을 수 있습니다. [Using CSS flexible boxes](/en/CSS/Using_CSS_flexible_boxes)
+See [Using CSS flexible boxes](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox) for more properties and information.
 
 ## Syntax
 
@@ -20,44 +23,52 @@ flex-wrap: wrap-reverse;
 /* Global values */
 flex-wrap: inherit;
 flex-wrap: initial;
+flex-wrap: revert;
+flex-wrap: revert-layer;
 flex-wrap: unset;
 ```
 
-`flex-wrap` 속성의 값으로, 다음 목록 중 하나의 키워드를 선택할 수 있습니다.
+The `flex-wrap` property is specified as a single keyword chosen from the list of values below.
 
 ### Values
 
-아래는 사용 가능한 속성값들입니다:
+The following values are accepted:
 
 - `nowrap`
-  - : 기본 설정값으로, `flex-container` 부모요소 영역을 벗어나더라도 `flex-item` 요소들을 **한 줄**에 배치합니다. 시작점은 {{cssxref("flex-direction")}} 에 의해 결정된 방향으로 적용됩니다.
+  - : The flex items are laid out in a single line which may cause the flex container to overflow. The **cross-start** is either equivalent to **start** or **before** depending on the {{cssxref("flex-direction")}} value. This is the default value.
 - `wrap`
-  - : `flex-item` 요소들이 내부 로직에 의해 분할되어 여러 행에 걸쳐서 배치됩니다. `nowrap` 속성과 마찬가지로 요소가 배치되는 시작점은 {{cssxref("flex-direction")}} 에 의해 결정됩니다. 일반적으로 위에서 아래로 쌓이는 순서입니다.
+  - : The flex items break into multiple lines. The **cross-start** is either equivalent to **start** or **before** depending `flex-direction` value and the **cross-end** is the opposite of the specified **cross-start**.
 - `wrap-reverse`
-  - : `wrap` 속성값과 동일하지만, 요소가 나열되는 시작점과 끝점의 기준이 반대로 배치됩니다.
+  - : Behaves the same as `wrap` but **cross-start** and **cross-end** are permuted.
 
-### Formal syntax
+## Formal definition
+
+{{cssinfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
 ## Examples
 
-### HTML
+### Setting flex container wrap values
+
+#### HTML
 
 ```html
-<h4>This is an example for flex-wrap:wrap </h4>
+<h4>This is an example for flex-wrap:wrap</h4>
 <div class="content">
   <div class="red">1</div>
   <div class="green">2</div>
   <div class="blue">3</div>
 </div>
-<h4>This is an example for flex-wrap:nowrap </h4>
+<h4>This is an example for flex-wrap:nowrap</h4>
 <div class="content1">
   <div class="red">1</div>
   <div class="green">2</div>
   <div class="blue">3</div>
 </div>
-<h4>This is an example for flex-wrap:wrap-reverse </h4>
+<h4>This is an example for flex-wrap:wrap-reverse</h4>
 <div class="content2">
   <div class="red">1</div>
   <div class="green">2</div>
@@ -65,65 +76,64 @@ flex-wrap: unset;
 </div>
 ```
 
-### CSS
+#### CSS
 
 ```css
 /* Common Styles */
 .content,
 .content1,
 .content2 {
-    color: #fff;
-    font: 100 24px/100px sans-serif;
-    height: 150px;
-    text-align: center;
+  color: #fff;
+  font: 100 24px/100px sans-serif;
+  height: 150px;
+  width: 897px;
+  text-align: center;
 }
 
 .content div,
 .content1 div,
 .content2 div {
-    height: 50%;
-    width: 50%;
+  height: 50%;
+  width: 300px;
 }
 .red {
-    background: orangered;
+  background: orangered;
 }
 .green {
-    background: yellowgreen;
+  background: yellowgreen;
 }
 .blue {
-    background: steelblue;
+  background: steelblue;
 }
 
 /* Flexbox Styles */
 .content {
-    display: flex;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 }
 .content1 {
-    display: flex;
-    flex-wrap: nowrap;
+  display: flex;
+  flex-wrap: nowrap;
 }
 .content2 {
-    display: flex;
-    flex-wrap: wrap-reverse;
+  display: flex;
+  flex-wrap: wrap-reverse;
 }
 ```
 
-### Results
+#### Results
 
-{{ EmbedLiveSample('Examples', '700px', '700px', '', 'Web/CSS/flex-wrap') }}
+{{ EmbedLiveSample('Setting flex container wrap values', '', '700') }}
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-{{cssinfo}}
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- CSS Flexbox Guide: _[Basic Concepts of Flexbox](/ko/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox)_
-- CSS Flexbox Guide: _[Mastering wrapping of flex items](/ko/docs/Web/CSS/CSS_Flexible_Box_Layout/Mastering_Wrapping_of_Flex_Items)_
+- CSS Flexbox Guide: _[Basic Concepts of Flexbox](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox)_
+- CSS Flexbox Guide: _[Mastering wrapping of flex items](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Mastering_Wrapping_of_Flex_Items)_

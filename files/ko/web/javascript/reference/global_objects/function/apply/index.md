@@ -1,79 +1,106 @@
 ---
 title: Function.prototype.apply()
 slug: Web/JavaScript/Reference/Global_Objects/Function/apply
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Function.apply
 ---
 
 {{JSRef}}
 
-**`apply()`** 메서드는 주어진 `this` 값과 배열 (또는 [유사 배열 객체](/ko/docs/Web/JavaScript/Guide/Predefined_Core_Objects#Working_with_Array-like_objects)) 로 제공되는 `arguments` 로 함수를 호출합니다.
-
-> **참고:** 이 함수의 구문은 거의 {{jsxref("Function.call", "call()")}} 구문과 유사합니다. 근본적인 차이점은 `call()` 은 함수에 전달될 **인수 리스트**를 받는데 비해, `apply()` 는 **인수들의 단일 배열**을 받는다는 점입니다.
+The **`apply()`** method calls the specified function with a given `this` value, and `arguments` provided as an array (or an [array-like object](/en-US/docs/Web/JavaScript/Guide/Indexed_collections#working_with_array-like_objects)).
 
 {{EmbedInteractiveExample("pages/js/function-apply.html")}}
 
-## 구문
+## Syntax
 
-```js
-    func.apply(thisArg, [argsArray])
+```js-nolint
+apply(thisArg)
+apply(thisArg, argsArray)
 ```
 
-### 매개변수
+### Parameters
 
 - `thisArg`
-  - : 옵션. `func` 를 호출하는데 제공될 `this` 의 값. `this` 는 메소드에 의해 실제로 보여지는 값이 아닐 수 있음을 유의합니다. 메소드가 {{jsxref("Strict_mode", "non-strict mode", "", 1)}} 코드의 함수일 경우, {{jsxref("null")}} 과 {{jsxref("undefined")}} 가 전역 객체로 대체되며, 기본 값은 제한됩니다.
-- `argsArray`
-  - : 옵션. _`func`_ 이 호출되어야 하는 인수를 지정하는 유사 배열 객체, 함수에 제공된 인수가 없을 경우 {{jsxref("null")}} 또는 {{jsxref("undefined")}}. ECMAScript 5 의 시작으로 이러한 인수들은 배열 대신 제네릭 유사 배열 객체로 사용될 수 있습니다. 아래의 [브라우저 호환성](#browser_compatibility) 정보를 보세요.
+  - : The value of `this` provided for the call to `func`. If the function is not in [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode), [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null) and [`undefined`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined) will be replaced with the global object, and primitive values will be converted to objects.
+- `argsArray` {{optional_inline}}
+  - : An array-like object, specifying the arguments with which `func` should be called, or [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null) or [`undefined`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined) if no arguments should be provided to the function.
 
-### 반환값
+### Return value
 
-지정한 **`this`** 값과 인수들로 호출한 함수의 결과.
+The result of calling the function with the specified `this` value and arguments.
 
-## 설명
+## Description
 
-이미 존재하는 함수를 호출할 때 다른 `this` 객체를 할당할 수 있습니다. `this` 는 현재 객체, 호출하는 객체를 참조합니다. `apply` 를 사용해, 새로운 객체마다 메소드를 재작성할 필요없이 한 번만 작성해 다른 객체에 상속시킬 수 있습니다.
+> **Note:** This function is almost identical to {{jsxref("Function/call", "call()")}}, except that `call()` accepts an **argument list**, while `apply()` accepts a **single array of arguments** — for example, `func.apply(this, ['eat', 'bananas'])` vs. `func.call(this, 'eat', 'bananas')`.
 
-`apply` 는 지원되는 인수의 타입만 제외하면 {{jsxref("Function.call", "call()")}} 과 매우 유사합니다. 인수(파라미터)의 리스트 대신 인수들의 배열을 사용할 수 있습니다. 또한 `apply` 를 사용해, 배열 리터럴이나 (예, _func_.apply(this, \['eat', 'bananas']), {{jsxref("Array")}} 객체 (예, _func_.apply(this, new Array('eat', 'bananas'))) 를 사용할 수 있습니다.
+Normally, when calling a function, the value of [`this`](/en-US/docs/Web/JavaScript/Reference/Operators/this) inside the function is the object that the function was accessed on. With `apply()`, you can assign an arbitrary value as `this` when calling an existing function, without first attaching the function to the object as a property. This allows you to use methods of one object as generic utility functions.
 
-`argsArray` 파라미터를 위한 {{jsxref("Functions/arguments", "arguments")}} 를 사용할 수도 있습니다. `arguments` 는 함수의 지역 변수입니다. 이는 호출된 객체의 지정되지 않은 모든 인수에 대해 사용할 수 있습니다. 따라서, `apply` 메소드를 사용할 때 호출된 객체의 인수를 알 필요가 없습니다. `arguments` 를 사용해 모든 인수들을 호출된 객체로 전달할 수 있습니다. 그럼 호출된 객체는 그 인수들을 처리할 수 있게 됩니다.
-
-ECMAScript 5번 째 판의 시작으로, 모든 유사 배열 객체 타입을 사용할 수 있으며, 실제로 이는 프로퍼티 `length` 와 범위 `(0..length-1)` 내의 정수 프로퍼티를 갖는 다는 것을 의미합니다. 예를 들면, 이제 {{domxref("NodeList")}} 또는 `{ 'length': 2, '0': 'eat', '1': 'bananas' }` 와 같은 커스텀 객체를 사용할 수 있습니다.
-
-> **참고:** Chrome 14와 Internet Explorer 9를 포함한 대부분의 브라우저는 아직 유사배열객체를 apply에 사용할 수 없으며 오류가 출력됩니다.
-
-## 예제
-
-### 배열에 배열을 붙이기 위해 `apply` 사용하기
-
-`push` 를 사용하여 요소를 배열에 추가 할 수 있습니다. `push` 는 가변 인수를 허용하기 때문에 여러 요소를 동시에 추가 할 수 있습니다. 그러나 `push` 에 배열을 전달하면 요소를 개별적으로 추가하는 대신 실제로 해당 배열을 단일 요소로 추가하므로 결국 배열 내부에 배열로 끝납니다. 그것이 우리가 원하는 것이 아니라면? 이 경우 `concat` 은 우리가 원하는 동작을 하지만 실제로는 기존 배열에 추가되지 않고 새 배열을 만들어 반환 합니다. 그러나 우리는 기존 배열에 추가하고 싶었습니다 ... 그럼 이제 어쩌죠? 루프를 작성 할까요? 분명히 아니죠?
-
-방법은 `apply` !
+You can also use any kind of object which is array-like as the second parameter. In practice, this means that it needs to have a `length` property, and integer ("index") properties in the range `(0..length - 1)`. For example, you could use a {{domxref("NodeList")}}, or a custom object like `{ 'length': 2, '0': 'eat', '1': 'bananas' }`. You can also use {{jsxref("Functions/arguments", "arguments")}}, for example:
 
 ```js
-var array = ['a', 'b'];
-var elements = [0, 1, 2];
+function wrapper() {
+  return anotherFn.apply(null, arguments);
+}
+```
+
+With the [rest parameters](/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters) and parameter [spread syntax](/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax), this can be rewritten as:
+
+```js
+function wrapper(...args) {
+  return anotherFn(...args);
+}
+```
+
+In general, `fn.apply(null, args)` is equivalent to `fn(...args)` with the parameter spread syntax, except `args` is expected to be an array-like object in the former case with `apply()`, and an [iterable](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterable_protocol) object in the latter case with spread syntax.
+
+> **Warning:** Do not use `apply()` to chain constructors (for example, to implement inheritance). This invokes the constructor function as a plain function, which means [`new.target`](/en-US/docs/Web/JavaScript/Reference/Operators/new.target) is `undefined`, and classes throw an error because they can't be called without [`new`](/en-US/docs/Web/JavaScript/Reference/Operators/new). Use {{jsxref("Reflect.construct()")}} or [`extends`](/en-US/docs/Web/JavaScript/Reference/Classes/extends) instead.
+
+## Examples
+
+### Using apply() to append an array to another
+
+You can use {{jsxref("Array.prototype.push()")}} to append an element to an array. Because `push()` accepts a variable number of arguments, you can also push multiple elements at once. But if you pass an array to `push()`, it will actually add that array as a single element, instead of adding the elements individually, ending up with an array inside an array. On the other hand, {{jsxref("Array.prototype.concat()")}} does have the desired behavior in this case, but it does not append to the _existing_ array — it creates and returns a new array.
+
+In this case, you can use `apply` to implicitly "spread" an array as a series of arguments.
+
+```js
+const array = ["a", "b"];
+const elements = [0, 1, 2];
 array.push.apply(array, elements);
 console.info(array); // ["a", "b", 0, 1, 2]
 ```
 
-### `apply` 와 내장함수 사용
+The same effect can be achieved with the spread syntax.
 
-`apply` 를 보다 효과적으로 이용하면 일부 내장 함수는 어떤 작업에 대해서는 배열과 루프없이 쉽게 처리됩니다. 다음 예제에서는 배열에서 최대값과 최소값을 구하기 위해 `Math.max`/`Math.min` 함수를 이용하고 있습니다.
+```js
+const array = ["a", "b"];
+const elements = [0, 1, 2];
+array.push(...elements);
+console.info(array); // ["a", "b", 0, 1, 2]
+```
+
+### Using apply() and built-in functions
+
+Clever usage of `apply()` allows you to use built-in functions for some tasks that would probably otherwise require manually looping over a collection (or using the spread syntax).
+
+For example, we can use {{jsxref("Math.max()")}} and {{jsxref("Math.min()")}} to find out the maximum and minimum value in an array.
 
 ```js
 // min/max number in an array
-var numbers = [5, 6, 2, 3, 7];
+const numbers = [5, 6, 2, 3, 7];
 
 // using Math.min/Math.max apply
-var max = Math.max.apply(null, numbers);
-// 이는 Math.max(numbers[0], ...) 또는 Math.max(5, 6, ...)
-// 와 거의 같음
+let max = Math.max.apply(null, numbers);
+// This about equal to Math.max(numbers[0], …)
+// or Math.max(5, 6, …)
 
-var min = Math.min.apply(null, numbers);
+let min = Math.min.apply(null, numbers);
 
 // vs. simple loop based algorithm
-max = -Infinity, min = +Infinity;
+max = -Infinity;
+min = +Infinity;
 
-for (var i = 0; i < numbers.length; i++) {
+for (let i = 0; i < numbers.length; i++) {
   if (numbers[i] > max) {
     max = numbers[i];
   }
@@ -83,107 +110,44 @@ for (var i = 0; i < numbers.length; i++) {
 }
 ```
 
-하지만 이러한 방식으로 `apply` 를 사용하는 경우 주의해야 합니다. JavaScript 엔진의 인수 길이 제한을 초과하는 위험성에 대해 이해할 필요가 있습니다. 함수에 너무 많은(대략 몇 만개 이상) 인수를 줄 때의 상황은 엔진마다 다른데(예를 들어 JavaScriptCore의 경우 [인수의 개수 제한은 65536](https://bugs.webkit.org/show_bug.cgi?id=80797)), 상한이 특별히 정해져 있지 않기 때문입니다. 어떤 엔진은 예외를 던집니다. 더 심한 경우는 실제 함수에 인수를 전달했음에도 불구하고 참조할 수 있는 인수의 수를 제한하고 있는 경우도 있습니다(이러한 엔진에 대해 더 자세히 설명하면, 그 엔진이 arguments의 상한을 4개로 했다고 하면\[실제 상한은 물론 더 위일 것입니다], 위 예제 코드의 전체 배열이 아니라 `5, 6, 2, 3` 만 `apply` 에 전달되어 온 것처럼 작동합니다).
+But beware: by using `apply()` (or the spread syntax) with an arbitrarily long arguments list, you run the risk of exceeding the JavaScript engine's argument length limit.
 
-만약 사용하는 배열 변수의 수가 수만을 초과하는 경우에는 복합적인 전략을 강구해야할 것입니다:한 번에 전달할 배열을 분할하여 사용하기:
+The consequences of calling a function with too many arguments (that is, more than tens of thousands of arguments) is unspecified and varies across engines. (The JavaScriptCore engine has a hard-coded [argument limit of 65536](https://webkit.org/b/80797).) Most engines throw an exception; but there's no normative specification preventing other behaviors, such as arbitrarily limiting the number of arguments actually passed to the applied function. To illustrate this latter case: if such an engine had a limit of four arguments (actual limits are of course significantly higher), it would be as if the arguments `5, 6, 2, 3` had been passed to `apply` in the examples above, rather than the full array.
+
+If your value array might grow into the tens of thousands, use a hybrid strategy: apply your function to chunks of the array at a time:
 
 ```js
 function minOfArray(arr) {
-  var min = Infinity;
-  var QUANTUM = 32768;
+  let min = Infinity;
+  const QUANTUM = 32768;
 
-  for (var i = 0, len = arr.length; i < len; i += QUANTUM) {
-    var submin = Math.min.apply(null,
-                                arr.slice(i, Math.min(i + QUANTUM, len)));
+  for (let i = 0; i < arr.length; i += QUANTUM) {
+    const submin = Math.min.apply(
+      null,
+      arr.slice(i, Math.min(i + QUANTUM, arr.length)),
+    );
     min = Math.min(submin, min);
   }
 
   return min;
 }
 
-var min = minOfArray([5, 6, 2, 3, 7]);
+const min = minOfArray([5, 6, 2, 3, 7]);
 ```
 
-### 생성자 체이닝을 위한 `apply` 사용
-
-Java 와 유사하게, 객체를 위한 {{jsxref("Operators/new", "constructors", "", 1)}} 체이닝을 위해 `apply` 를 사용할 수 있습니다. 다음 예제에서 인수 리스트 대신 생성자로 유사 배열 객체를 사용할 수 있게 해주는 `construct` 라는 전역 {{jsxref("Function")}} 메소드를 생성할 것입니다.
-
-```js
-Function.prototype.construct = function(aArgs) {
-  var oNew = Object.create(this.prototype);
-  this.apply(oNew, aArgs);
-  return oNew;
-};
-```
-
-> **참고:** **알림:** 위에서 사용된 `Object.create()` 메소드는 상대적으로 새로운 것입니다. 대안으로, 다음 접근법 중 하나를 고려하세요.
-
-[`Object.prototype.__proto__`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/proto) 사용:
-
-```js
-Function.prototype.construct = function (aArgs) {
-  var oNew = {};
-  oNew.__proto__ = this.prototype;
-  this.apply(oNew, aArgs);
-  return oNew;
-  };
-```
-
-[클로져](/ko/docs/Web/JavaScript/Guide/Closures) 사용:
-
-```JS
-Function.prototype.construct = function(aArgs) {
-  var fConstructor = this, fNewConstr = function() {
-    fConstructor.apply(this, aArgs);
-  };
-  fNewConstr.prototype = fConstructor.prototype;
-  return new fNewConstr();
-};
-```
-
-{{jsxref("Function")}} 생성자 사용
-
-```JS
-Function.prototype.construct = function (aArgs) {
-  var fNewConstr = new Function("");
-  fNewConstr.prototype = this.prototype;
-  var oNew = new fNewConstr();
-  this.apply(oNew, aArgs);
-  return oNew;
-};
-```
-
-사용 예제
-
-```js
-    function MyConstructor() {
-      for (var nProp = 0; nProp < arguments.length; nProp++) {
-        this['property' + nProp] = arguments[nProp];
-      }
-    }
-
-    var myArray = [4, 'Hello world!', false];
-    var myInstance = MyConstructor.construct(myArray);
-
-    console.log(myInstance.property1);                // logs 'Hello world!'
-    console.log(myInstance instanceof MyConstructor); // logs 'true'
-    console.log(myInstance.constructor);              // logs 'MyConstructor'
-```
-
-**알림:** 네이티브가 아닌 `Function.construct` 메소드는 {{jsxref("Date")}} 와 같은 일부 네이티브 생성자와 동작하지 않을 것입니다. 그런 경우, {{jsxref("Function.prototype.bind")}} 메소드를 사용해야 합니다. 예를 들어, 다음과 같은 배열이 있다고 할 때, {{jsxref("Global_Objects/Date", "Date")}} 생성자: `[2012, 11, 4]` 와 함께 사용되려면 다음과 같이 작성해야 합니다: `new (Function.prototype.bind.apply(Date, [null].concat([2012, 11, 4])))()`. 이는 가장 좋은 방법이 아니며, 어떤 상용 환경에서도 사용되지 않을 수 있습니다.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 보기
+## See also
 
-- {{jsxref("Functions/arguments", "arguments")}} 객체
+- {{jsxref("Functions/arguments", "arguments")}} object
 - {{jsxref("Function.prototype.bind()")}}
 - {{jsxref("Function.prototype.call()")}}
 - {{jsxref("Functions", "Functions and function scope", "", 1)}}
 - {{jsxref("Reflect.apply()")}}
+- [Spread syntax](/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax)

@@ -1,41 +1,39 @@
 ---
 title: TypedArray.BYTES_PER_ELEMENT
 slug: Web/JavaScript/Reference/Global_Objects/TypedArray/BYTES_PER_ELEMENT
-l10n:
-  sourceCommit: 194d3e00cb93a6e5ea44812548f4131cb17f0381
+page-type: javascript-static-data-property
+browser-compat: javascript.builtins.TypedArray.BYTES_PER_ELEMENT
 ---
 
 {{JSRef}}
 
-**`TypedArray.BYTES_PER_ELEMENT`** 속성은 각 형식화 배열 요소의 바이트 크기입니다.
+The **`TypedArray.BYTES_PER_ELEMENT`** static data property represents the size in bytes of each element in a typed array.
 
-{{EmbedInteractiveExample("pages/js/typedarray-bytes-per-element.html", "shorter")}}
+{{EmbedInteractiveExample("pages/js/typedarray-bytes-per-element.html","shorter")}}
 
-## 값
+## Value
 
-`TypedArray`의 타입에 따라 값이 달라지는 숫자입니다.
+A number whose value depends on the type of `TypedArray`.
 
-{{js_property_attributes(0,0,0)}}
+{{js_property_attributes(0, 0, 0)}}
 
-## 설명
+## Description
 
-`TypedArray` 객체는 요소 당 바이트 수 및 바이트가 해석되는 방법이 서로 다릅니다.
-`BYTES_PER_ELEMENT` 상수는 주어진 `TypedArray`의 각 요소가 갖는 바이트 수를 포함합니다.
+`TypedArray` objects differ from each other in the number of bytes per element and in the way the bytes are interpreted. The `BYTES_PER_ELEMENT` constant contains the number of bytes each element in the given `TypedArray` has.
 
-`BYTES_PER_ELEMENT` 속성은 인스턴스 속성이자 정적 속성입니다.
-해당 속성은 `TypedArray` 하위 클래스의 생성자와 해당 생성자의 인스턴스 모두에서 사용 가능합니다.
+The `BYTES_PER_ELEMENT` property is both an _instance property_ and a _static property_. It's available on both `TypedArray` subclass constructors and on instances of those constructors.
 
-인스턴스 속성으로 `BYTES_PER_ELEMENT`는 생성자의 `prototype`에 정의됩니다.
+As an instance property, `BYTES_PER_ELEMENT` is defined on the constructor's `prototype`.
 
 ```js
 console.log(Object.hasOwn(Int8Array.prototype, "BYTES_PER_ELEMENT")); // true
 ```
 
-## 예제
+## Examples
 
-### BYTES_PER_ELEMENT 사용하기
+### Using BYTES_PER_ELEMENT
 
-정적 속성으로 사용하기
+As a static property:
 
 ```js
 Int8Array.BYTES_PER_ELEMENT; // 1
@@ -51,7 +49,7 @@ BigInt64Array.BYTES_PER_ELEMENT; // 8
 BigUint64Array.BYTES_PER_ELEMENT; // 8
 ```
 
-인스턴스 속성으로 사용하기
+As an instance property:
 
 ```js
 new Int8Array([]).BYTES_PER_ELEMENT; // 1
@@ -67,15 +65,15 @@ new BigInt64Array([]).BYTES_PER_ELEMENT; // 8
 new BigUint64Array([]).BYTES_PER_ELEMENT; // 8
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [JavaScript 형식화 배열](/ko/docs/Web/JavaScript/Typed_arrays)
+- [JavaScript typed arrays](/en-US/docs/Web/JavaScript/Typed_arrays)
 - {{jsxref("TypedArray")}}

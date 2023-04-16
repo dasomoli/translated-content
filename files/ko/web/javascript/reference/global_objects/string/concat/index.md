@@ -1,67 +1,75 @@
 ---
 title: String.prototype.concat()
 slug: Web/JavaScript/Reference/Global_Objects/String/concat
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.String.concat
 ---
 
 {{JSRef}}
 
-**`concat()`** 메서드는 매개변수로 전달된 모든 문자열을 호출 문자열에 붙인 새로운 문자열을 반환합니다.
+The **`concat()`** method concatenates
+the string arguments to the calling string and returns a new string.
 
 {{EmbedInteractiveExample("pages/js/string-concat.html")}}
 
-## 구문
+## Syntax
 
-```js
-str.concat(string2, string3[, ..., stringN])
+```js-nolint
+concat(str1)
+concat(str1, str2)
+concat(str1, str2, /* …, */ strN)
 ```
 
-### 매개변수
+### Parameters
 
-- `string2...stringN`
-  - : 합칠 문자열.
+- `strN`
+  - : One or more strings to concatenate to `str`.
 
-### 반환값
+### Return value
 
-주어진 문자열을 모두 붙인 새로운 문자열.
+A new string containing the combined text of the strings provided.
 
-## 설명
+## Description
 
-`concat()` 함수는 호출 문자열에 문자열 인수를 이어 붙인 결과를 반환합니다. 원본 문자열과 결과 문자열의 변형은 서로에게 영향을 미치지 않습니다. 인수가 문자열이 아니면 계산 전에 문자열로 변환합니다.
+The `concat()` function concatenates the string arguments to the calling
+string and returns a new string. Changes to the original string or the returned string
+don't affect the other.
 
-## 예제
+If the arguments are not of the type string, they are converted to string values before
+concatenating.
 
-### `concat()` 사용하기
+The `concat()` method is very similar to the [addition/string concatenation operators](/en-US/docs/Web/JavaScript/Reference/Operators/Addition) (`+`, `+=`), except that `concat()` [coerces its arguments directly to strings](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_coercion), while addition coerces its operands to primitives first. For more information, see the reference page for the [`+` operator](/en-US/docs/Web/JavaScript/Reference/Operators/Addition).
 
-아래 예제에서는 문자열을 결합하여 새로운 문자열을 만듭니다.
+## Examples
+
+### Using concat()
+
+The following example combines strings into a new string.
 
 ```js
-var hello = 'Hello, ';
-console.log(hello.concat('Kevin', '. Have a nice day.'));
-/* Hello, Kevin. Have a nice day. */
+const hello = "Hello, ";
+console.log(hello.concat("Kevin", ". Have a nice day."));
+// Hello, Kevin. Have a nice day.
 
-var greetList = ['Hello', ' ', 'Venkat', '!'];
+const greetList = ["Hello", " ", "Venkat", "!"];
 "".concat(...greetList); // "Hello Venkat!"
 
-"".concat({}); // [object Object]
+"".concat({}); // "[object Object]"
 "".concat([]); // ""
 "".concat(null); // "null"
 "".concat(true); // "true"
 "".concat(4, 5); // "45"
 ```
 
-## 성능
-
-`concat()` 메서드보다 {{jsxref("Operators/Assignment_Operators", "할당 연산자", "", 1)}} (`+`, `+=`)를 사용하는게 더 좋습니다. [성능 테스트](https://web.archive.org/web/20170404182053/https://jsperf.com/concat-vs-plus-vs-join) 결과에 따르면 할당 연산자의 속도가 몇 배 빠릅니다.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 관련문서
+## See also
 
 - {{jsxref("Array.prototype.concat()")}}
-- {{jsxref("Operators/Assignment_Operators", "Assignment operators", "", 1)}}
+- [Addition operator](/en-US/docs/Web/JavaScript/Reference/Operators/Addition)

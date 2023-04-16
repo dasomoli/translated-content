@@ -1,71 +1,93 @@
 ---
 title: Reflect.defineProperty()
 slug: Web/JavaScript/Reference/Global_Objects/Reflect/defineProperty
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Reflect.defineProperty
 ---
+
 {{JSRef}}
 
-**`Reflect.defineProperty()`** 정적 메서드는 {{jsxref("Object.defineProperty()")}}와 같은 동작을 하지만 {{jsxref("Boolean")}}을 반환합니다.
+The **`Reflect.defineProperty()`** static method is like {{jsxref("Object.defineProperty()")}} but returns a {{jsxref("Boolean")}}.
 
 {{EmbedInteractiveExample("pages/js/reflect-defineproperty.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 Reflect.defineProperty(target, propertyKey, attributes)
 ```
 
-### 매개변수
+### Parameters
 
 - `target`
-  - : 속성을 정의할 대상 객체.
+  - : The target object on which to define the property.
 - `propertyKey`
-  - : 정의하거나 수정할 속성의 이름.
+  - : The name of the property to be defined or modified.
 - `attributes`
-  - : 정의하거나 수정하는 속성을 기술하는 객체.
+  - : The attributes for the property being defined or modified.
 
-### 반환 값
+### Return value
 
-속성이 성공적으로 정의됐는지 나타내는 {{jsxref("Boolean")}}.
+A boolean indicating whether or not the property was successfully defined.
 
-### 예외
+### Exceptions
 
-`target`이 {{jsxref("Object")}}가 아니면 {{jsxref("TypeError")}}.
+- {{jsxref("TypeError")}}
+  - : Thrown if `target` or `attributes` is not an object.
 
-## 설명
+## Description
 
-`Reflect.defineProperty` 메서드는 객체에 속성을 정교하게 추가하거나 수정할 수 있습니다. 자세한 내용은 유사한 메서드인 {{jsxref("Object.defineProperty")}}를 참고하세요. `Object.defineProperty`는 성공 시 대상 객체를 반환하고 실패하면 {{jsxref("TypeError")}}를 던지지만, `Reflect.defineProperty`는 성공 여부를 나타내는 {{jsxref("Boolean")}}을 반환합니다.
+`Reflect.defineProperty()` provides the reflective semantic of defining an own property on an object. At the very low level, defining a property returns a boolean (as is the case with [the proxy handler](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/defineProperty)). {{jsxref("Object.defineProperty()")}} provides nearly the same semantic, but it throws a {{jsxref("TypeError")}} if the status is `false` (the operation was unsuccessful), while `Reflect.defineProperty()` directly returns the status.
 
-## 예제
-
-### `Reflect.defineProperty()` 사용하기
-
-```js
-var obj = {};
-Reflect.defineProperty(obj, 'x', {value: 7}); // true
-obj.x; // 7
-```
-
-### 속성 정의의 성공 여부 알아내기
-
-{{jsxref("Object.defineProperty")}}는 성공 시 객체를 반환하고, 실패 시 {{jsxref("TypeError")}}를 던지므로 속성 정의 과정에 발생할 수 있는 오류를 [`try...catch`](/ko/docs/Web/JavaScript/Reference/Statements/try...catch) 블록으로 잡아야 합니다. 반면 `Reflect.defineProperty`는 성공 여부를 나타내는 {{jsxref("Boolean")}}을 반환하므로, 간단하게 [`if...else`](/ko/docs/Web/JavaScript/Reference/Statements/if...else) 블록만 사용하면 됩니다.
+Many built-in operations would also define own properties on objects. The most significant difference between defining properties and [setting](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect/set) them is that [setters](/en-US/docs/Web/JavaScript/Reference/Functions/set) aren't invoked. For example, [class fields](/en-US/docs/Web/JavaScript/Reference/Classes/Public_class_fields) directly define properties on the instance without invoking setters.
 
 ```js
-if (Reflect.defineProperty(target, property, attributes)) {
-  // 성공
-} else {
-  // 실패
+class B extends class A {
+  set a(v) {
+    console.log("Setter called");
+  }
+} {
+  a = 1; // Nothing logged
 }
 ```
 
-## 명세
+`Reflect.defineProperty()` invokes the `[[DefineOwnProperty]]` [object internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods) of `target`.
+
+## Examples
+
+### Using Reflect.defineProperty()
+
+```js
+const obj = {};
+Reflect.defineProperty(obj, "x", { value: 7 }); // true
+console.log(obj.x); // 7
+```
+
+### Checking if property definition has been successful
+
+With {{jsxref("Object.defineProperty()")}}, which returns an object if successful, or throws a {{jsxref("TypeError")}} otherwise, you would use a [`try...catch`](/en-US/docs/Web/JavaScript/Reference/Statements/try...catch) block to catch any error that occurred while defining a property.
+
+Because `Reflect.defineProperty()` returns a Boolean success status, you can just use an [`if...else`](/en-US/docs/Web/JavaScript/Reference/Statements/if...else) block here:
+
+```js
+if (Reflect.defineProperty(target, property, attributes)) {
+  // success
+} else {
+  // failure
+}
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `Reflect.defineProperty` in `core-js`](https://github.com/zloirock/core-js#ecmascript-reflect)
 - {{jsxref("Reflect")}}
 - {{jsxref("Object.defineProperty()")}}
+- [`Proxy`'s `defineProperty` handler](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/defineProperty)

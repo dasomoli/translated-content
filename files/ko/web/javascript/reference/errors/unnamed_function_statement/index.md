@@ -1,58 +1,66 @@
 ---
-title: 'SyntaxError: function statement requires a name'
+title: "SyntaxError: function statement requires a name"
 slug: Web/JavaScript/Reference/Errors/Unnamed_function_statement
+page-type: javascript-error
 ---
 
 {{jsSidebar("Errors")}}
 
-## 메세지
+The JavaScript exception "function statement requires a name" occurs
+when there is a [function statement](/en-US/docs/Web/JavaScript/Reference/Statements/function)
+in the code that requires a name.
+
+## Message
 
 ```
-    Syntax Error: Expected identifier (Edge)
-    SyntaxError: function statement requires a name [Firefox]
-    SyntaxError: Unexpected token ( [Chrome]
+SyntaxError: Function statements require a function name (V8-based)
+SyntaxError: function statement requires a name (Firefox)
+SyntaxError: Function statements must have a name. (Safari)
 ```
 
-## 에러 타입
+## Error type
 
 {{jsxref("SyntaxError")}}
 
-## 무엇이 잘못되었을까?
+## What went wrong?
 
-[함수 구문](/ko/docs/Web/JavaScript/Reference/Statements/function)(Function statement)은 이름이 필수입니다. 함수가 정의된 방법에 따라 함수의 이름을 짓거나 함수 표현식(Function expression) {{Glossary("IIFE")}}으로 작성하거나, 함수가 맥락에 맞게 제대로 작성되었는지 확인해야 합니다.
+There is a [function statement](/en-US/docs/Web/JavaScript/Reference/Statements/function) in the code that requires a name.
+You'll need to check how functions are defined and if you need to provide a name for it, or if the function in question needs to be a function expression, an [IIFE](/en-US/docs/Glossary/IIFE), or if the function code is placed correctly in this context at all.
 
-## 예제
+## Examples
 
-### 구문 vs 표현식
+### Statements vs. expressions
 
-[함수 구문](/ko/docs/Web/JavaScript/Reference/Statements/function)(또는 함수 선언)은 이름이 필요하므로 아래 예제는 동작하지 않습니다:
+A _[function statement](/en-US/docs/Web/JavaScript/Reference/Statements/function)_ (or _function declaration_) requires a name.
+This won't work:
 
 ```js example-bad
 function () {
-  return 'Hello world';
+  return "Hello world";
 }
 // SyntaxError: function statement requires a name
 ```
 
-대신 [함수 표현식](/ko/docs/Web/JavaScript/Reference/Operators/function)을 사용할 수 있습니다:
+You can use a [function expression](/en-US/docs/Web/JavaScript/Reference/Operators/function) (assignment) instead:
 
 ```js example-good
-var greet = function() {
-  return 'Hello world';
+const greet = function () {
+  return "Hello world";
 };
 ```
 
-또는, 선언하자마자 바로 실행되는 [IIFE](https://en.wikipedia.org/wiki/Immediately-invoked_function_expression) (Immediately Invoked Function Expression)를 사용할 수 있습니다. 이 경우 몇 개의 괄호가 더 필요합니다:
+If your function is intended to be an [IIFE](https://en.wikipedia.org/wiki/Immediately-invoked_function_expression) (Immediately Invoked Function Expression, which is a function that runs as soon as it is defined) you will need to add a few more braces:
 
 ```js example-good
 (function () {
-
+  // …
 })();
 ```
 
-### 레이블을 붙인 함수
+### Labeled functions
 
-만약 함수 [레이블](/ko/docs/Web/JavaScript/Reference/Statements/label)을 사용하는 경우 `function` 키워드 뒤에 함수 이름이 필요하므로 아래 예제는 동작하지 않습니다:
+If you are using function [labels](/en-US/docs/Web/JavaScript/Reference/Statements/label), you will still need to provide a function name after the `function` keyword.
+This doesn't work:
 
 ```js example-bad
 function Greeter() {
@@ -63,7 +71,7 @@ function Greeter() {
 // SyntaxError: function statement requires a name
 ```
 
-아래 예제는 동작합니다:
+This would work, for example:
 
 ```js example-good
 function Greeter() {
@@ -73,50 +81,60 @@ function Greeter() {
 }
 ```
 
-### 객체 메소드
+### Object methods
 
-만약 객체 메소드를 만드는 경우 먼저 객체를 만들어야 합니다. 객체 메소드의 경우 아래 예제와 같이 `function` 키워드 뒤에 이름이 없어도 정상적으로 동작합니다.
+If you intended to create a method of an object, you will need to create an object.
+The following syntax without a name after the `function` keyword is valid then.
 
 ```js example-good
-var greeter = {
+const greeter = {
   german: function () {
     return "Moin";
-  }
+  },
+};
+
+// or
+
+const greeter = {
+  german() {
+    return "Moin";
+  },
 };
 ```
 
-### 콜백 구문
+### Callback syntax
 
-콜백을 사용하는 경우 구문을 확인해야 합니다. 괄호와 쉼표는 구문을 어렵게 만듭니다.
+Also, check your syntax when using callbacks.
+Brackets and commas can quickly get confusing.
 
 ```js example-bad
 promise.then(
-  function() {
+  function () {
     console.log("success");
   });
-  function() {
+  function () {
     console.log("error");
 }
 // SyntaxError: function statement requires a name
 ```
 
-올바르게 변경하면:
+Correct would be:
 
-```json example-good
+```js example-good
 promise.then(
-  function() {
+  function () {
     console.log("success");
   },
-  function() {
+  function () {
     console.log("error");
-  }
+  },
 );
 ```
 
-## 같이 보기
+## See also
 
-- [함수](/ko/docs/Web/JavaScript/Guide/%ED%95%A8%EC%88%98)
-- [함수 구문](/ko/docs/Web/JavaScript/Reference/Statements/function)
-- [함수 표현식](/ko/docs/Web/JavaScript/Reference/Operators/function)
-- [IIFE](https://en.wikipedia.org/wiki/Immediately-invoked_function_expression)
-- [레이블](/ko/docs/Web/JavaScript/Reference/Statements/label)
+- [Functions in the JavaScript Guide](/en-US/docs/Web/JavaScript/Guide/Functions)
+- [function statement](/en-US/docs/Web/JavaScript/Reference/Statements/function)
+- [function expression](/en-US/docs/Web/JavaScript/Reference/Operators/function)
+- {{glossary("IIFE")}}
+- [label](/en-US/docs/Web/JavaScript/Reference/Statements/label)

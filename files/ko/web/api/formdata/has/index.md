@@ -1,55 +1,51 @@
 ---
-title: FormData.has()
+title: "FormData: has() method"
+short-title: has()
 slug: Web/API/FormData/has
+page-type: web-api-instance-method
+browser-compat: api.FormData.has
 ---
+
 {{APIRef("XMLHttpRequest")}}
 
-{{domxref("FormData")}} 인터페이스의 **`has()`** 메서드는 `FormData` 객체에 특정 키가 들어 있는지 여부를 나타내는 boolean 을 반환합니다.
+The **`has()`** method of the {{domxref("FormData")}} interface returns whether a `FormData` object contains a certain key.
 
-> **참고:** 이 메서드는 [Web Worker](/ko/docs/Web/API/Web_Workers_API)에서 사용할 수 있습니다.
+> **Note:** This method is available in [Web Workers](/en-US/docs/Web/API/Web_Workers_API).
 
 ## Syntax
 
-```js
-formData.has(name);
+```js-nolint
+has(name)
 ```
 
 ### Parameters
 
 - `name`
-  - : 테스트 하려는 키의 이름을 나타내는 {{domxref("USVString")}} 입니다.
+  - : A string representing the name of the key you want to test for.
 
-### Returns
+### Return value
 
-{{domxref("Boolean")}}.
+`true` if a key of `FormData` matches the specified `name`. Otherwise, `false`.
 
-## Example
+## Examples
 
-다음 코드를 따라 빈 `FormData` 객체를 만듭니다:
-
-```js
-var formData = new FormData();
-```
-
-다음 스니펫(코드 조각)은 `FormData` 객체안에 `username` 이 존재하는지 테스트한 결과와, {{domxref("FormData.append")}}를 사용하여 `username` 에 값을 추가한 이후의 결과를 보여줍니다 :
+The following snippet shows the results of testing for the existence of `username` in a `FormData` object, before and after appending a `username` value to it with {{domxref("FormData.append", "append()")}}:
 
 ```js
-formData.has('username'); // Returns false
-formData.append('username', 'Chris');
-formData.has('username'); // Returns true
+formData.has("username"); // Returns false
+formData.append("username", "Chris");
+formData.has("username"); // Returns true
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- {{domxref("XMLHTTPRequest")}}
-- [Using XMLHttpRequest](/ko/docs/DOM/XMLHttpRequest/Using_XMLHttpRequest)
-- [Using FormData objects](/ko/docs/DOM/XMLHttpRequest/FormData/Using_FormData_Objects)
+- [Using FormData objects](/en-US/docs/Web/API/FormData/Using_FormData_Objects)
 - {{HTMLElement("Form")}}

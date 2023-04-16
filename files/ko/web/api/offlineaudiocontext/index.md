@@ -1,124 +1,124 @@
 ---
 title: OfflineAudioContext
 slug: Web/API/OfflineAudioContext
+page-type: web-api-interface
+browser-compat: api.OfflineAudioContext
 ---
+
 {{APIRef("Web Audio API")}}
 
-`OfflineAudioContext` 인터페이스는 함께 연결된 {{domxref("AudioNode")}}들로부터 만들어진 오디오 프로세싱 그래프를 나타내는 {{domxref("AudioContext")}} 인터페이스입니다. 표준 {{domxref("AudioContext")}}와는 대조적으로, `OfflineAudioContext`는 오디오를 장치 하드웨어로 렌더링하지 않습니다; 대신, 이것은 가능한 한 빨리 오디오를 생성하고, 그 결과를 {{domxref("AudioBuffer")}}에 출력합니다.
+The `OfflineAudioContext` interface is an {{domxref("AudioContext")}} interface representing an audio-processing graph built from linked together {{domxref("AudioNode")}}s. In contrast with a standard {{domxref("AudioContext")}}, an `OfflineAudioContext` doesn't render the audio to the device hardware; instead, it generates it, as fast as it can, and outputs the result to an {{domxref("AudioBuffer")}}.
 
 {{InheritanceDiagram}}
 
-## 생성자
+## Constructor
 
-- {{domxref("OfflineAudioContext.OfflineAudioContext()")}}
-  - : 새로운 `OfflineAudioContext` 인스턴스를 생성합니다.
+- {{domxref("OfflineAudioContext.OfflineAudioContext()", "OfflineAudioContext()")}}
+  - : Creates a new `OfflineAudioContext` instance.
 
-## 속성
+## Instance properties
 
-_또한 부모 인터페이스인 {{domxref("BaseAudioContext")}}로부터 속성을 상속받습니다._
+_Also inherits properties from its parent interface, {{domxref("BaseAudioContext")}}._
 
-- {{domxref('OfflineAudioContext.length')}} {{readonlyinline}}
-  - : 샘플 프레임의 버퍼 사이즈를 나타내는 정수.
+- {{domxref('OfflineAudioContext.length')}} {{ReadOnlyInline}}
+  - : An integer representing the size of the buffer in sample-frames.
 
-### 이벤트 처리기
+## Instance methods
 
-- {{domxref("OfflineAudioContext.oncomplete")}}
-  - : {{domxref("OfflineAudioContext.startRendering()")}}의 이벤트 기반 버전이 사용된 이후, 프로세싱이 종료되었을 때, 즉 ({{domxref("OfflineAudioCompletionEvent")}} 유형의) {{event("complete")}} 이벤트가 발생되었을 때 호출되는 [이벤트 처리기](/ko/docs/Web/Events/Event_handlers)입니다.
-
-## 메서드
-
-_또한 부모 인터페이스인 {{domxref("BaseAudioContext")}}로부터 메서드를 상속받습니다._
+_Also inherits methods from its parent interface, {{domxref("BaseAudioContext")}}._
 
 - {{domxref("OfflineAudioContext.suspend()")}}
-  - : 특정한 시간에서의 오디오 컨텍스트의 시간 진행의 연기를 스케쥴링하고 프로미스를 반환합니다.
+  - : Schedules a suspension of the time progression in the audio context at the specified time and returns a promise.
 - {{domxref("OfflineAudioContext.startRendering()")}}
-  - : 현재 연결과 현재 스케쥴링된 변화를 고려하며 오디오 렌더링을 시작합니다. 이 문서는 이벤트 기반 버전과 프로미스 기반 버전 모두를 다룹니다.
+  - : Starts rendering the audio, taking into account the current connections and the current scheduled changes. This page covers both the event-based version and the promise-based version.
 
-### 더 이상 사용되지 않는 메서드
+### Deprecated methods
 
 - {{domxref("OfflineAudioContext.resume()")}}
-  - : 이전에 연기된 오디오 컨텍스트에서의 시간 진행을 재개합니다.
+  - : Resumes the progression of time in an audio context that has previously been suspended.
 
-> **참고:** `resume()` 메서드는 여전히 사용 가능합니다 — 이것은 이제 {{domxref("BaseAudioContext")}} 인터페이스에 정의되었고 ({{domxref("AudioContext.resume")}}을 참조하세요) 따라서 {{domxref("AudioContext")}}와 {{domxref("OfflineAudioContext")}} 인터페이스 모두에서 접근 가능합니다.
+> **Note:** The `resume()` method is still available — it is now defined on the {{domxref("BaseAudioContext")}} interface (see {{domxref("AudioContext.resume")}}) and thus can be accessed by both the {{domxref("AudioContext")}} and {{domxref("OfflineAudioContext")}} interfaces.
 
-## 이벤트
+## Events
 
-[`addEventListener()`](/en-US/docs/Web/API/EventTarget/addEventListener)를 사용하거나 이벤트 수신기를 이 인터페이스의 `oneventname` 속성에 부여함으로써 이 이벤트들을 수신하세요.
+Listen to these events using [`addEventListener()`](/en-US/docs/Web/API/EventTarget/addEventListener) or by assigning an event listener to the `oneventname` property of this interface:
 
 - [`complete`](/en-US/docs/Web/API/OfflineAudioContext/complete_event)
-  - : 오프라인 오디오 컨텍스트의 렌더링이 완료되었을 때 발생됩니다.
-    또한 [`oncomplete`](/en-US/docs/Web/API/OfflineAudioContext/oncomplete) 이벤트 처리기 속성을 사용하여 이용 가능합니다.
+  - : Fired when the rendering of an offline audio context is complete.
 
-## 예제
+## Examples
 
-이 간단한 예제에서, 우리는 {{domxref("AudioContext")}}와 `OfflineAudioContext` 객체 모두를 선언합니다. 우리는 `AudioContext`을 XHR({{domxref("BaseAudioContext.decodeAudioData")}})을 통해 오디오 트랙을 로드하기 위해 사용하고, 그리고 나서 `OfflineAudioContext`를 오디오를 {{domxref("AudioBufferSourceNode")}}에 렌더링하고 트랙을 재생하기 위해 사용합니다. 오프라인 오디오 그래프가 준비된 후, 여러분은 {{domxref("OfflineAudioContext.startRendering")}}을 사용하여 {{domxref("AudioBuffer")}}에 이것을 렌더링할 필요가 있습니다.
+In this simple example, we declare both an {{domxref("AudioContext")}} and an `OfflineAudioContext` object. We use the `AudioContext` to load an audio track via XHR ({{domxref("BaseAudioContext.decodeAudioData")}}), then the `OfflineAudioContext` to render the audio into an {{domxref("AudioBufferSourceNode")}} and play the track through. After the offline audio graph is set up, you need to render it to an {{domxref("AudioBuffer")}} using {{domxref("OfflineAudioContext.startRendering")}}.
 
-`startRendering()` 프로미스가 이행할 때, 렌더링은 완료되었고 `AudioBuffer` 출력은 프로미스에서 반환됩니다.
+When the `startRendering()` promise resolves, rendering has completed and the output `AudioBuffer` is returned out of the promise.
 
-이 시점에서 우리는 다른 오디오 컨텍스트를 생성하고, 그것의 내부에 {{domxref("AudioBufferSourceNode")}}를 생성하고, 그리고 이것의 버퍼를 `AudioBuffer` 프로미스와 같게 설정합니다. 이것은 그리고 나서 간단한 표준 오디오 그래프의 일부로 재생됩니다.
+At this point we create another audio context, create an {{domxref("AudioBufferSourceNode")}} inside it, and set its buffer to be equal to the promise `AudioBuffer`. This is then played as part of a simple standard audio graph.
 
-> **참고:** 작동하는 예제를 보려면 [offline-audio-context-promise](https://mdn.github.io/webaudio-examples/offline-audio-context-promise/) GitHub 레포지토리를 참고하세요 ([소스 코드](https://github.com/mdn/webaudio-examples/tree/master/offline-audio-context-promise)도 보세요.)
+> **Note:** For a working example, see our [offline-audio-context-promise](https://mdn.github.io/webaudio-examples/offline-audio-context-promise/) GitHub repo (see the [source code](https://github.com/mdn/webaudio-examples/tree/master/offline-audio-context-promise) too.)
 
 ```js
-// 온라인과 오프라인 오디오 컨텍스트를 정의합니다
+// define online and offline audio context
 
-var audioCtx = new AudioContext();
-var offlineCtx = new OfflineAudioContext(2,44100*40,44100);
+const audioCtx = new AudioContext();
+const offlineCtx = new OfflineAudioContext(2, 44100 * 40, 44100);
 
 source = offlineCtx.createBufferSource();
 
-// 오디오 트랙을 로딩하기 위해 XHR를 사용하고,
-// 이것을 디코딩하기 위해 decodeAudioData를 사용하고 렌더링하기 위해 OfflineAudioContext를 사용합니다
+// use XHR to load an audio track, and
+// decodeAudioData to decode it and OfflineAudioContext to render it
 
 function getData() {
   request = new XMLHttpRequest();
 
-  request.open('GET', 'viper.ogg', true);
+  request.open("GET", "viper.ogg", true);
 
-  request.responseType = 'arraybuffer';
+  request.responseType = "arraybuffer";
 
-  request.onload = function() {
-    var audioData = request.response;
+  request.onload = () => {
+    const audioData = request.response;
 
-    audioCtx.decodeAudioData(audioData, function(buffer) {
+    audioCtx.decodeAudioData(audioData, (buffer) => {
       myBuffer = buffer;
       source.buffer = myBuffer;
       source.connect(offlineCtx.destination);
       source.start();
       //source.loop = true;
-      offlineCtx.startRendering().then(function(renderedBuffer) {
-        console.log('Rendering completed successfully');
-        var song = audioCtx.createBufferSource();
-        song.buffer = renderedBuffer;
+      offlineCtx
+        .startRendering()
+        .then((renderedBuffer) => {
+          console.log("Rendering completed successfully");
+          const song = audioCtx.createBufferSource();
+          song.buffer = renderedBuffer;
 
-        song.connect(audioCtx.destination);
+          song.connect(audioCtx.destination);
 
-        play.onclick = function() {
-          song.start();
-        }
-      }).catch(function(err) {
-          console.log('Rendering failed: ' + err);
-          // 참고: 이 프로미스는 OfflineAudioContext에서 startRendering이 두 번째로 호출되었을 때 거부되어야만 합니다
-      });
+          play.onclick = () => {
+            song.start();
+          };
+        })
+        .catch((err) => {
+          console.error(`Rendering failed: ${err}`);
+          // Note: The promise should reject when startRendering is called a second time on an OfflineAudioContext
+        });
     });
-  }
+  };
 
   request.send();
 }
 
-// 프로세스를 시작하기 위해 getData를 실행합니다
+// Run getData to start the process off
 
 getData();
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Web Audio API 사용하기](/ko/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)
+- [Using the Web Audio API](/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)

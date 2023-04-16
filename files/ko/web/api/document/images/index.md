@@ -1,35 +1,51 @@
 ---
-title: Document.images
+title: "Document: images property"
+short-title: images
 slug: Web/API/Document/images
+page-type: web-api-instance-property
+browser-compat: api.Document.images
 ---
+
 {{APIRef("DOM")}}
 
-`document.images` 는 현재 HTML document 내부의 [images](/ko/docs/DOM/Image) collection을 반환합니다.
+The **`images`** read-only property of
+the {{domxref("Document")}} interface returns a [collection](/en-US/docs/Web/API/HTMLCollection) of the [images](/en-US/docs/Web/API/HTMLImageElement/Image) in the current HTML document.
 
-## Syntax
+## Value
+
+An {{domxref("HTMLCollection")}} providing a live list of all of the images contained
+in the current document. Each entry in the collection is an
+{{domxref("HTMLImageElement")}} representing a single image element.
+
+## Usage notes
+
+You can use either JavaScript array notation or the {{domxref("HTMLCollection.item",
+  "item()")}} method on the returned collection to access the items in the collection. The
+following are equivalent:
 
 ```js
-var htmlCollection = document.images;
+firstImage = imageCollection.item(0);
+
+firstImage = imageCollection[0];
 ```
 
-## Example
+## Examples
+
+This example looks through the list of images and finds one whose name is
+`"banner.gif"`.
 
 ```js
-var ilist = document.images;
-
-for(var i = 0; i < ilist.length; i++) {
-    if(ilist[i].src == "banner.gif") {
-        // found the banner
-    }
+for (const image of document.images) {
+  if (image.src === "banner.gif") {
+    console.log("Found the banner");
+  }
 }
 ```
 
-## Notes
-
-`document.images.length` – 페이지의 이미지 갯수를 반환하는 속성
-
-`document.images` 는 DOM HTML의 part이며, HTML documents 에서만 지원된다.
-
-## 명세서
+## Specifications
 
 {{Specifications}}
+
+## Browser compatibility
+
+{{Compat}}

@@ -1,38 +1,40 @@
 ---
 title: dir
 slug: Web/HTML/Global_attributes/dir
+page-type: html-attribute
+browser-compat: html.global_attributes.dir
 ---
 
 {{HTMLSidebar("Global_attributes")}}
 
-**`dir`** [전역 특성](/ko/docs/Web/HTML/Global_attributes)은 요소의 쓰기 방향을 나타내는 열거형 특성입니다.
+The **`dir`** [global attribute](/en-US/docs/Web/HTML/Global_attributes) is an [enumerated](/en-US/docs/Glossary/Enumerated) attribute that indicates the directionality of the element's text.
 
 {{EmbedInteractiveExample("pages/tabbed/attribute-dir.html","tabbed-standard")}}
 
-<p class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</p>
+It can have the following values:
 
-가능한 값은 다음과 같습니다.
+- `ltr`, which means _left to right_ and is to be used for languages that are written from the left to the right (like English);
+- `rtl`, which means _right to left_ and is to be used for languages that are written from the right to the left (like Arabic);
+- `auto`, which lets the user agent decide. It uses a basic algorithm as it parses the characters inside the element until it finds a character with a strong directionality, then applies that directionality to the whole element.
 
-- `ltr`은 왼쪽에서 오른쪽을 뜻하며, 좌횡서 언어인 한국어나 영어에 사용합니다.
-- `rtl`은 오른쪽에서 왼쪽을 뜻하며, 우횡서 언어인 아랍어 등을 사용합니다.
-- `auto`는 {{glossary("user agent", "사용자 에이전트")}}가 결정합니다. 사용자 에이전트는 기본적인 알고리즘을 사용해 요소 내부의 문자를 분석한 후, 명확한 방향성을 가진 문자가 존재하는 경우 전체 요소에 해당 방향성을 적용합니다.
-
-> **참고:** `dir` 특성은{{HTMLElement("bdo")}} 요소에 필수로 지정해야 하며, 다른 뜻을 가집니다.
+> **Note:** This attribute is mandatory for the {{ HTMLElement("bdo") }} element where it has a different semantic meaning.
 >
-> - {{ HTMLElement("bdi") }} 요소는 `dir` 특성을 상속하지 않으며, 지정하지 않은 경우 `auto`를 기본값으로 사용합니다.
-> - {{ cssxref("direction") }}과 {{ cssxref("unicode-bidi") }}를 지원하며 CSS를 활성화한 경우, 특성 값은 무시하고 CSS 값을 대신 사용합니다.
-> - 글자의 쓰기 방향은 외형이 아니라 그 의미에 관여하므로, 웹 개발자로서 되도록 CSS 속성 대신 `dir` 특성을 사용하세요. 관련 속성을 지원하지 않거나, CSS를 비활성화한 브라우저에서도 텍스트가 올바른 방향으로 나타납니다.
-> - 데이터베이스에 저장된 사용자 입력 값처럼 방향성을 알 수 없는 데이터에는 `auto` 값을 사용해야 합니다.
+> - This attribute is _not_ inherited by the {{ HTMLElement("bdi") }} element. If not set, its value is `auto`.
+> - This attribute can be overridden by the CSS properties {{ cssxref("direction") }} and {{ cssxref("unicode-bidi") }}, if a CSS page is active and the element supports these properties.
+> - As the directionality of the text is semantically related to its content and not to its presentation, it is recommended that web developers use this attribute instead of the related CSS properties when possible. That way, the text will display correctly even on a browser that doesn't support CSS or has the CSS deactivated.
+> - The `auto` value should be used for data with an unknown directionality, like data coming from user input, eventually stored in a database.
 
-## 명세
+> **Note:** Browsers might allow users to change the directionality of {{ HTMLElement("input") }} and {{ HTMLElement("textarea") }}s in order to assist with authoring content. Chrome and Safari provide a directionality option in the contextual menu of input fields while Legacy Edge uses the key combinations <kbd>Ctrl</kbd> + <kbd>Left Shift</kbd> and <kbd>Ctrl</kbd> + <kbd>Right Shift</kbd>. Firefox uses <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> but does NOT update the **`dir`** attribute value.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 모든 [전역 특성](/ko/docs/Web/HTML/Global_attributes).
-- 이 특성을 나타내는 {{domxref("HTMLElement.dir")}}.
+- All [global attributes](/en-US/docs/Web/HTML/Global_attributes).
+- {{domxref("HTMLElement.dir")}} that reflects this attribute.

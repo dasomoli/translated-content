@@ -1,42 +1,47 @@
 ---
 title: Reflect.setPrototypeOf()
 slug: Web/JavaScript/Reference/Global_Objects/Reflect/setPrototypeOf
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Reflect.setPrototypeOf
 ---
 
 {{JSRef}}
 
-**`Reflect.setPrototypeOf()`** 정적 메서드는 주어진 객체의 프로토타입(내부 `[[Prototype]]` 속성)을 다른 객체나 {{jsxref("null")}}로 바꿉니다. 반환 값을 제외하면 {{jsxref("Object.setPrototypeOf()")}} 메서드와 같습니다.
+The **`Reflect.setPrototypeOf()`** static method is like {{jsxref("Object.setPrototypeOf()")}} but returns a {{jsxref("Boolean")}}. It sets the prototype (i.e., the internal `[[Prototype]]` property) of a specified object.
 
 {{EmbedInteractiveExample("pages/js/reflect-setprototypeof.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 Reflect.setPrototypeOf(target, prototype)
 ```
 
-### 매개변수
+### Parameters
 
 - `target`
-  - : 프로토타입을 지정할 대상 객체.
+  - : The target object of which to set the prototype.
 - `prototype`
-  - : 대상 객체의 새로운 프로토타입. (객체 또는 {{jsxref("null")}}
+  - : The object's new prototype (an object or [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null)).
 
-### 반환 값
+### Return value
 
-프로토타입 설정 성공 여부를 나타내는 {{jsxref("Boolean")}}.
+A {{jsxref("Boolean")}} indicating whether or not the prototype was successfully set.
 
-### 예외
+### Exceptions
 
-`target`이 {{jsxref("Object")}}가 아니거나, `prototype`이 객체도 {{jsxref("null")}}도 아니면 {{jsxref("TypeError")}}.
+- {{jsxref("TypeError")}}
+  - : Thrown if `target` is not an object or if `prototype` is neither an object nor [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null).
 
-## 설명
+## Description
 
-`Reflect.setPrototypeOf()` 메서드는 주어진 객체의 프로토타입(즉, 내부 `[[Prototype]]` 속성)을 변경합니다.
+`Reflect.setPrototypeOf()` provides the reflective semantic of setting the prototype of an object. At the very low level, setting the prototype returns a boolean (as is the case with [the proxy handler](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/setPrototypeOf)). {{jsxref("Object.setPrototypeOf()")}} provides nearly the same semantic, but it throws a {{jsxref("TypeError")}} if the status is `false` (the operation was unsuccessful), while `Reflect.setPrototypeOf()` directly returns the status.
 
-## 예제
+`Reflect.setPrototypeOf()` invokes the `[[SetPrototypeOf]]` [object internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods) of `target`.
 
-### `Reflect.setPrototypeOf()` 사용하기
+## Examples
+
+### Using Reflect.setPrototypeOf()
 
 ```js
 Reflect.setPrototypeOf({}, Object.prototype); // true
@@ -53,15 +58,17 @@ const proto = Object.create(target);
 Reflect.setPrototypeOf(target, proto); // false
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `Reflect.setPrototypeOf` in `core-js`](https://github.com/zloirock/core-js#ecmascript-reflect)
 - {{jsxref("Reflect")}}
 - {{jsxref("Object.setPrototypeOf()")}}
+- [`Proxy`'s `setPrototypeOf` handler](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/setPrototypeOf)

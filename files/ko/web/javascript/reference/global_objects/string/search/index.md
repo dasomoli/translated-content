@@ -1,58 +1,71 @@
 ---
 title: String.prototype.search()
 slug: Web/JavaScript/Reference/Global_Objects/String/search
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.String.search
 ---
 
 {{JSRef}}
 
-**`search()`** 메서드는 정규 표현식과 이 {{jsxref("String")}} 객체간에 같은 것을 찾기
-위한 검색을 실행한다.
+The **`search()`** method executes a search for a match between a regular expression and this {{jsxref("String")}} object.
 
 {{EmbedInteractiveExample("pages/js/string-search.html")}}
 
-## 구문
+## Syntax
 
-```js
-str.search(regexp)
+```js-nolint
+search(regexp)
 ```
 
-### 매개변수
+### Parameters
 
 - `regexp`
-  - : 정규 표현식 객체. non-RegExp 객체 `obj` 가 전달되면, 그것은 `new RegExp(obj)` 을 이용하여 {{jsxref("RegExp")}} 으로 암묵적으로 변환된다.
 
-### 반환 값
+  - : A regular expression object, or any object that has a [`Symbol.search`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/search) method.
 
-정규표현식과 주어진 스트링간에 첫번째로 매치되는 것의 인덱스를 반환한다.
-찾지 못하면 **-1** 를 반환한다.
+    If `regexp` is not a `RegExp` object and does not have a `Symbol.search` method, it is implicitly converted to a {{jsxref("RegExp")}} by using `new RegExp(regexp)`.
 
-## 설명
+### Return value
 
-When you want to know whether a pattern is found and also its index in a string use `search()` (if you only want to know if it exists, use the similar {{jsxref("RegExp.prototype.test()", "test()")}} method on the RegExp prototype, which returns a boolean); for more information (but slower execution) use {{jsxref("String.prototype.match()", "match()")}} (similar to the regular expression {{jsxref("RegExp.prototype.exec()", "exec()")}} method).
+The index of the first match between the regular expression and the given string, or `-1` if no match was found.
 
-## 예
+## Description
 
-### `search()를 이용하기`
+The implementation of `String.prototype.search()` itself is very simple — it simply calls the `Symbol.search` method of the argument with the string as the first parameter. The actual implementation comes from [`RegExp.prototype[@@search]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/@@search).
 
-The following example searches a string with 2 different regex objects to show a successful search (positive value) vs. an unsuccessful search (-1)
+The `g` flag of `regexp` has no effect on the `search()` result, and the search always happens as if the regex's `lastIndex` is 0. For more information on the behavior of `search()`, see [`RegExp.prototype[@@search]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/@@search).
+
+When you want to know whether a pattern is found, and _also_ know its index within a string, use `search()`.
+
+- If you only want to know if it exists, use the {{jsxref("RegExp.prototype.test()")}} method, which returns a boolean.
+- If you need the content of the matched text, use {{jsxref("String.prototype.match()", "match()")}} or {{jsxref("RegExp.prototype.exec()")}}.
+
+## Examples
+
+### Using search()
+
+The following example searches a string with two different regex objects to show a successful search (positive value) vs. an unsuccessful search (`-1`).
 
 ```js
-var str = "hey JudE";
-var re = /[A-Z]/g;
-var re2 = /[.]/g;
+const str = "hey JudE";
+const re = /[A-Z]/;
+const reDot = /[.]/;
 console.log(str.search(re)); // returns 4, which is the index of the first capital letter "J"
-console.log(str.search(re2)); // returns -1 cannot find '.' dot punctuation
+console.log(str.search(reDot)); // returns -1 cannot find '.' dot punctuation
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `String.prototype.search` in `core-js` with fixes and implementation of modern behavior like `Symbol.search` support](https://github.com/zloirock/core-js#ecmascript-string-and-regexp)
+- [Using regular expressions in JavaScript](/en-US/docs/Web/JavaScript/Guide/Regular_expressions)
 - {{jsxref("String.prototype.match()")}}
 - {{jsxref("RegExp.prototype.exec()")}}
+- [`RegExp.prototype[@@search]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/@@search)

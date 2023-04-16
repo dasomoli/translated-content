@@ -1,37 +1,48 @@
 ---
 title: Date.prototype.getUTCMonth()
 slug: Web/JavaScript/Reference/Global_Objects/Date/getUTCMonth
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.getUTCMonth
 ---
+
 {{JSRef}}
 
-**getUTCMonth()** 는 지정된 날짜의 월을 0부터 시작하는 값 (0은 첫 해를 나타냄)으로 표준시에 따라 반환합니다.
+The **`getUTCMonth()`** returns the month of the specified date
+according to universal time, as a zero-based value (where zero indicates the first month
+of the year).
+
+{{EmbedInteractiveExample("pages/js/date-getutcmonth.html")}}
 
 ## Syntax
 
-```js
-    dateObj.getUTCMonth()
+```js-nolint
+getUTCMonth()
 ```
 
 ### Return value
 
-0부터 11까지의 정수로, 표준시에 따라 주어진 날짜의 달에 해당합니다. 1 월은 0, 2 월은 1, 3 월은 2 등입니다.
+A number. If the `Date` object represents a valid date, an integer number, between 0 and 11,
+corresponding to the month of the given date according to universal time. 0 for January,
+1 for February, 2 for March, and so on. Otherwise, [`NaN`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/NaN)
+if the `Date` object doesn't represent a valid date.
 
 ## Examples
 
-### Using `getUTCMonth()`
+### Using getUTCMonth()
 
-다음 예제에서는 현재 날짜의 월 부분을 month 변수에 할당합니다.
+The following example assigns the month portion of the current date to the variable
+`month`.
 
 ```js
-var today = new Date();
-var month = today.getUTCMonth();
+const today = new Date();
+const month = today.getUTCMonth();
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

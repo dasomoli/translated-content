@@ -1,46 +1,49 @@
 ---
 title: FileList
 slug: Web/API/FileList
+page-type: web-api-interface
+browser-compat: api.FileList
 ---
 
 {{APIRef("File API")}}
 
-**`FileList`** 유형의 객체는 HTML {{htmlelement("input")}} 요소의 `files` 속성이나 [Drag and Drop API](/ko/docs/Web/API/HTML_Drag_and_Drop_API)의 {{domxref("DataTransfer")}}에서 가져올 수 있으며, `<input type="file">` 요소로 선택했거나 웹 콘텐츠 위에 끌어다 놓은 파일 목록에 대한 접근을 제공합니다.
+An object of this type is returned by the `files` property of the HTML {{HTMLElement("input")}} element; this lets you access the list of files selected with the `<input type="file">` element. It's also used for a list of files dropped into web content when using the drag and drop API; see the [`DataTransfer`](/en-US/docs/Web/API/DataTransfer) object for details on this usage.
 
-모든 `<input>` 요소 노드에는 `FileList`를 반환하는 `files` 특성이 있어서 파일의 목록에 접근할 수 있습니다. 예를 들어, 다음과 같은 HTML 코드를 가정하면,
+All `<input>` element nodes have a `files` attribute of type `FileList` on them which allows access to the items in this list. For example, if the HTML includes the following file input:
 
 ```html
-<input id="fileItem" type="file">
+<input id="fileItem" type="file" />
 ```
 
-아래 코드로 노드의 파일 리스트에서 첫 번째 항목을 [`File`](/ko/docs/Web/API/File) 객체로 가져올 수 있습니다.
+The following line of code fetches the first file in the node's file list as a [`File`](/en-US/docs/Web/API/File) object:
 
 ```js
-const file = document.getElementById('fileItem').files[0];
+const file = document.getElementById("fileItem").files[0];
 ```
 
-## 속성
+> **Note:** This interface was an [attempt to create an unmodifiable list](https://stackoverflow.com/questions/74630989/why-use-domstringlist-rather-than-an-array/74641156#74641156) and only continues to be supported to not break code that's already using it. Modern APIs use types that wrap around ECMAScript array types instead, so you can treat them like ECMAScript arrays, and at the same time impose additional semantics on their usage (such as making their items read-only).
 
-- {{DOMxRef("FileList/length", "length")}}{{ReadOnlyInline}}
-  - : 리스트가 포함한 파일의 수를 나타내는 읽기 전용 값입니다.
+## Instance properties
 
-## 메서드
+- {{DOMxRef("FileList/length", "length")}} {{ReadOnlyInline}}
+  - : A read-only value indicating the number of files in the list.
 
-- {{DOMxRef("FileList/item", "item()")}}{{ReadOnlyInline}}
-  - : 파일 리스트에서 지정한 인덱스에 위치한 파일을 나타내는 {{domxref("File")}} 객체를 반환합니다.
+## Instance methods
 
-## 예제
+- {{DOMxRef("FileList/item", "item()")}} {{ReadOnlyInline}}
+  - : Returns a {{domxref("File")}} object representing the file at the specified index in the file list.
 
-### 파일 이름 기록하기
+## Example
 
-이 예제에서는 사용자가 선택한 파일들의 이름을 기록합니다.
+### Logging filenames
+
+In this example, we log the names of all the files selected by the user.
 
 #### HTML
 
 ```html
-<!--'multiple'을 지정해서 여러 파일의 선택을 허용-->
-<input id="myfiles" multiple type="file">
-<div class="output"></div>
+<input id="myfiles" multiple type="file" />
+<pre class="output">Selected files:</pre>
 ```
 
 #### CSS
@@ -56,35 +59,30 @@ const file = document.getElementById('fileItem').files[0];
 #### JavaScript
 
 ```js
-const output = document.querySelector('.output');
-const myFiles = document.querySelector("#myfiles");
+const output = document.querySelector(".output");
+const fileInput = document.querySelector("#myfiles");
 
-function logFilenames(){
-  const fileInput = document.querySelector("#myfiles");
-  const files = fileInput.files;
-  const fileListLength = files.length;
-  for (let i = 0; i < fileListLength; i++) {
-    output.innerText = `${output.innerText}\n${files.item(i).name}`;
+fileInput.addEventListener("change", () => {
+  for (const file of fileInput.files) {
+    output.innerText += `\n${file.name}`;
   }
-}
-
-myFiles.addEventListener("change", logFilenames);
+});
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("파일 이름 기록하기")}}
+{{EmbedLiveSample("Logging filenames")}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [웹 애플리케이션에서 파일 사용하기](/ko/docs/Web/API/File/Using_files_from_web_applications)
-- [`File`](/ko/docs/Web/API/File)
-- [`FileReader`](/ko/docs/Web/API/FileReader)
+- [Using files from web applications](/en-US/docs/Web/API/File_API/Using_files_from_web_applications)
+- [`File`](/en-US/docs/Web/API/File)
+- [`FileReader`](/en-US/docs/Web/API/FileReader)

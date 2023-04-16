@@ -1,28 +1,45 @@
 ---
-title: MediaStreamTrack.getSettings()
+title: "MediaStreamTrack: getSettings() method"
+short-title: getSettings()
 slug: Web/API/MediaStreamTrack/getSettings
+page-type: web-api-instance-method
+browser-compat: api.MediaStreamTrack.getSettings
 ---
 
 {{APIRef("Media Capture and Streams")}}
 
-{{domxref("MediaStreamTrack")}} 인터페이스의 **`getSettings()`** 메서드는 트랙의 각 제약 속성에 지금 적용된 값을 담은 {{domxref("MediaTrackSettings")}} 객체를 반환합니다. [기능, 제약, 설정](/ko/docs/Web/API/Media_Streams_API/Constraints) 문서에서 제약 속성 사용법에 대해 자세히 알아보세요.
+The **`getSettings()`** method of the
+{{domxref("MediaStreamTrack")}} interface returns a {{domxref("MediaTrackSettings")}}
+object containing the current values of each of the constrainable properties for the
+current `MediaStreamTrack`.
 
-## 구문
+See [Capabilities, constraints, and settings](/en-US/docs/Web/API/Media_Capture_and_Streams_API/Constraints) for details on how to work with constrainable properties.
 
-```js
-const settings = track.getSettings()
+## Syntax
+
+```js-nolint
+getSettings()
 ```
 
-### 반환 값
+### Parameters
 
-트랙의 현재 제약 속성 설정을 설명하는 {{domxref("MediaTrackSettings")}} 객체.
+None.
 
-> **참고:** 반환하는 객체는 모든 제약 속성을 포함하며, 사이트 코드에서 수정하지 않은 플랫폼 기본값 역시 들어있습니다. 사이트 코드에서 제일 최근에 적용한 제약 속성만 필요한 경우, {{domxref("MediaStreamTrack.getConstraints", "getConstraints()")}} 메서드를 사용하세요.
+### Return value
 
-## 명세
+A {{domxref("MediaTrackSettings")}} object describing the current configuration of the
+track's constrainable properties.
+
+> **Note:** The returned object identifies the current values of every
+> constrainable property, including those which are platform defaults rather than having
+> been expressly set by the site's code. To instead fetch the most-recently established
+> constraints for the track's properties, as specified by the site's code, use
+> {{domxref("MediaStreamTrack.getConstraints", "getConstraints()")}}.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

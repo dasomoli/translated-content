@@ -1,11 +1,15 @@
 ---
-title: '-moz-image-region'
+title: "-moz-image-region"
 slug: Web/CSS/-moz-image-region
+page-type: css-property
+status:
+  - non-standard
+browser-compat: css.properties.-moz-image-region
 ---
 
-{{CSSRef}}{{Non-standard_header}}
+{{CSSRef}}{{Non-standard_Header}}
 
-XUL 요소와 가상요소들에 대하여 {{ Cssxref("list-style-image") }} 속성을 사용할때 이 속성은 전체이미지에서 사용되는 부분의 령역을 지정합니다. 이것은 요소들이 성능을 향상시키기 위해 같은 이미지의 서로다른 부분을 사용할수 있게 합니다.
+For certain XUL elements and pseudo-elements that use an image from the {{CSSxRef("list-style-image")}} property, this property specifies a region of the image that is used in place of the whole image. This allows elements to use different pieces of the same image to improve performance.
 
 ```css
 /* Keyword value */
@@ -20,23 +24,35 @@ XUL 요소와 가상요소들에 대하여 {{ Cssxref("list-style-image") }} 속
 -moz-image-region: unset;
 ```
 
-문법은 {{ Cssxref("clip") }}속성과 류사합니다. 4개의 값은 모두 이미지의 외쪽 웃모서리로부터 상대적입니다.
+The syntax is similar to the {{CSSxRef("clip")}} property. All four values are relative to the upper left corner of the image.
 
-{{cssinfo}}
+> **Note:** For a system that works on any background, see {{CSSxRef("-moz-image-rect")}}.
 
-## 구문
+## Syntax
 
+### Values
+
+- `auto`
+  - : Automatically defines the region of the image to use.
+- [`<shape>`](/en-US/docs/Web/CSS/shape)
+  - : A shape defining the part of the image to use. The `rect()` function defines a rectangle to use as shape. Its parameters define the top, right, bottom, and left offsets of the edges of the image, in this order.
+
+## Formal definition
+
+{{CSSInfo}}
+
+## Formal syntax
+
+```plain
+ -moz-image-region =
+   <shape> | auto
 ```
--moz-image-region: rect(top, right, bottom, left);
-```
 
-### 형식 구문
+## Examples
 
-{{CSSSyntax}}
+### Clipping an image
 
-## 예제
-
-```
+```css
 #example-button {
   /* display only the 4x4 area from the top left of this image */
   list-style-image: url("chrome://example/skin/example.png");
@@ -48,6 +64,14 @@ XUL 요소와 가상요소들에 대하여 {{ Cssxref("list-style-image") }} 속
 }
 ```
 
-## 브라우저 호환성
+## Specifications
+
+Not part of any standard.
+
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- {{CSSxRef("-moz-image-rect")}}

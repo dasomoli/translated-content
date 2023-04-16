@@ -1,276 +1,407 @@
 ---
-title: CSS 값 과 단위
+title: CSS values and units
 slug: Learn/CSS/Building_blocks/Values_and_units
 ---
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/CSS/Building_blocks/Overflowing_content", "Learn/CSS/Building_blocks/Sizing_items_in_CSS", "Learn/CSS/Building_blocks")}}
 
-CSS 에 사용된 모든 속성에는 해당 속성에 허용되는 값 이 있으며, MDN 의 속성 페이지를 보면 특성 속성에 유효한 값을 이해하는 데 도움이 됩니다. 이 레슨에서는 가장 일반적인 값 과 사용 단위를 살펴 보겠습니다.
+Every property used in CSS has a value type defining the set of values that are allowed for that property. Taking a look at any property page on MDN will help you understand the values associated with a value type that are valid for any particular property. In this lesson we will take a look at some of the most frequently used value types, and their most common values and units.
 
-<table class="learn-box standard-table">
+<table>
   <tbody>
     <tr>
-      <th scope="row">전제조건:</th>
+      <th scope="row">Prerequisites:</th>
       <td>
-        기본 컴퓨터 활용 능력,
+        Basic computer literacy,
         <a
-          href="https://developer.mozilla.org/en-US/Learn/Getting_started_with_the_web/Installing_basic_software"
-          >기본 소프트웨어 설치</a
-        >,
+          href="/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software"
+          >basic software installed</a
+        >, basic knowledge of
         <a
-          href="https://developer.mozilla.org/en-US/Learn/Getting_started_with_the_web/Dealing_with_files"
-          >파일 작업</a
-        >
-        에 대한 기본 지식, HTML 기본 사항 (<a
-          href="/en-US/docs/Learn/HTML/Introduction_to_HTML"
-          >HTML 소개</a
-        >
-        학습) 및 , CSS 작동 방식 이해 (<a
-          href="/en-US/docs/Learn/CSS/First_steps"
-          >CSS 첫 번째 단계</a
-        >
-        학습)
+          href="/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files"
+          >working with files</a
+        >, HTML basics (study
+        <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML"
+          >Introduction to HTML</a
+        >), and an idea of how CSS works (study
+        <a href="/en-US/docs/Learn/CSS/First_steps">CSS first steps</a>).
       </td>
     </tr>
     <tr>
-      <th scope="row">목적:</th>
-      <td>CSS 속성에 사용되는 다양한 유형의 값과 단위에 대해 배우기.</td>
+      <th scope="row">Objective:</th>
+      <td>
+        To learn about the different types of values and units used in CSS
+        properties.
+      </td>
     </tr>
   </tbody>
 </table>
 
-## CSS 값이란 무엇인가?
+## What is a CSS value?
 
-CSS 사양과 MDN 의 속성 페이지에서 [`<color>`](/en-US/docs/Web/CSS/color_value) 또는 [`<length>`](/en-US/docs/Web/CSS/length). 와 같이 꺽쇠 괄호로 묶여 있는 값을 찾을 수 있습니다. `<color>` 값이 특정 속성에 유효한 것으로 표시되면, [`<color>`](/en-US/docs/Web/CSS/color_value) 참조 페이지에 나열된대로 유효한 속성을 해당 속성의 값으로 사용할 수 있습니다.
+In CSS specifications and on the property pages here on MDN you will be able to spot value types as they will be surrounded by angle brackets, such as [`<color>`](/en-US/docs/Web/CSS/color_value) or [`<length>`](/en-US/docs/Web/CSS/length). When you see the value type `<color>` as valid for a particular property, that means you can use any valid color as a value for that property, as listed on the [`<color>`](/en-US/docs/Web/CSS/color_value) reference page.
 
-> **참고:** CSS 값을 _데이터 유형_ 이라고 합니다. 용어는 기본적으로 상호 교환이 가능합니다 — CSS 에서 데이터 유형이라고 하는것을 볼 때, 실제로 가치를 말하는 멋진 방법입니다.
+> **Note:** You'll also see CSS value types referred to as _data types_. The terms are basically interchangeable — when you see something in CSS referred to as a data type, it is really just a fancy way of saying value type. The term _value_ refers to any particular expression supported by a value type that you choose to use.
 
-> **참고:** 예, CSS 값은 CSS 속성과 구별하기 위해, 꺽쇠 괄호를 사용하여 표시되는 경향이 있습니다 (예: {{cssxref("color")}} 속성, [\<color>](/ko/docs/Web/CSS/color_value) 데이터 형식). CSS 데이터 형식과 HTML 요소도 꺽쇠 괄호를 사용하므로 혼동될 수 있지만, 이는 매우 다른 상황에서 사용됩니다.
+> **Note:** Yes, CSS value types tend to be denoted using angle brackets to differentiate them from CSS properties (e.g., the {{cssxref("color")}} property, versus the [`<color>`](/en-US/docs/Web/CSS/color_value) data type). You might get confused between CSS data types and HTML elements too, as they both use angle brackets, but this is unlikely — they are used in very different contexts.
 
-다음 예제에서는 키워드를 사용하여 머리글의 색상을 설정하고, `rgb()` 함수를 사용하여 배경을 설정했습니다:
+In the following example, we have set the color of our heading using a keyword, and the background using the `rgb()` function:
 
 ```css
 h1 {
   color: black;
-  background-color: rgb(197,93,161);
+  background-color: rgb(197, 93, 161);
 }
 ```
 
-CSS 값은 허용가능한 하위값 모음을 정의하는 방법입니다. 즉, `<color>` 가 유효한 것으로 표시되면 — 키워드, 16진수 값, `rgb()` 함수 등 어떤 색상값을 사용할 수 있는지 궁금할 필요가 없습니다. 사용 가능한 `<color>` 값은 브라우저에서 지원한다고 가정합니다. 각 값에 대한 MDN 페이지는 브라우저 지원에 대한 정보를 제공합니다. 예를 들어 [`<color>`](/en-US/docs/Web/CSS/color_value) 페이지를 보면 브라우저 호환성 섹션에 다양한 색상값 유형과 지원이 나열되어 있습니다.
+A value type in CSS is a way to define a collection of allowable values. This means that if you see `<color>` as valid you don't need to wonder which of the different types of color value can be used — keywords, hex values, `rgb()` functions, etc. You can use _any_ available `<color>` values, assuming they are supported by your browser. The page on MDN for each value will give you information about browser support. For example, if you look at the page for [`<color>`](/en-US/docs/Web/CSS/color_value) you will see that the browser compatibility section lists different types of color values and support for them.
 
-여러가지 가능한 값을 시험해 볼 수 있도록 예를 들어 자주 접할 수 있는 몇 가지 유형의 값과 단위를 살펴보겠습니다.
+Let's have a look at some of the types of values and units you may frequently encounter, with examples so that you can try out different possible values.
 
-## 숫자, 길이 및 백분율
+## Numbers, lengths, and percentages
 
-CSS 에서 사용할 수 있는 다양한 숫자 데이터 형식이 있습니다. 다음은 모두 숫자로 분류됩니다:
+There are various numeric value types that you might find yourself using in CSS. The following are all classed as numeric:
 
-| 데이터 형식  | 설명     |
-| ---- | --- |
-| [`<integer>`](/ko/docs/Web/CSS/integer)       | `<integer>` 은 `1024` 또는`-55` 와 같은 정수입니다. |
-| [`<number>`](/ko/docs/Web/CSS/number)         | `<number>` 는 10진수를 나타냅니다 — 소수점 이하의 소수 자릿수 (예: `0.255`, `128` 또는 `-1.2`) 가 있을 수도 있고 없을 수도 있습니다.|
-| [`<dimension>`](/ko/docs/Web/CSS/dimension) | `<dimension>` 은 예를 들어 `45deg`, `5s` 또는 `10px`. 과 같은 단위가 붙어있는 `<number>` 입니다. `<dimension>` 은 [`<length>`](/ko/docs/Web/CSS/length), [`<angle>`](/ko/docs/Web/CSS/angle), [`<time>`](/ko/docs/Web/CSS/time) 및 [`<resolution>`](/ko/docs/Web/CSS/resolution) 의 종류를 포함하는 카테고리입니다[.](/ko/docs/Web/CSS/resolution) |
-| [`<percentage>`](/en-US/docs/Web/CSS/percentage) | `<percentage>` 는 다른 값의 일부, 예를 들어 `50%` 를 나타냅니다. 백분율 값은 항상 다른 수량을 기준으로 합니다. 예를 들어 요소의 길이는 부모 요소의 길이를 기준으로 합니다.                                                                                                                                                                                     |
+<table class="standard-table no-markdown">
+  <thead>
+    <tr>
+      <th scope="col">Data type</th>
+      <th scope="col">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code><a href="/en-US/docs/Web/CSS/integer">&#x3C;integer></a></code>
+      </td>
+      <td>
+        An <code>&#x3C;integer></code> is a whole number such as
+        <code>1024</code> or <code>-55</code>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code><a href="/en-US/docs/Web/CSS/number">&#x3C;number></a></code>
+      </td>
+      <td>
+        A <code>&#x3C;number></code> represents a decimal number — it may or may
+        not have a decimal point with a fractional component. For
+        example, <code>0.255</code>, <code>128</code>, or <code>-1.2</code>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code
+          ><a href="/en-US/docs/Web/CSS/dimension">&#x3C;dimension></a></code
+        >
+      </td>
+      <td>
+        A <code>&#x3C;dimension></code> is a <code>&#x3C;number></code> with a
+        unit attached to it. For example, <code>45deg</code>, <code>5s</code>,
+        or <code>10px</code>. <code>&#x3C;dimension></code> is an umbrella
+        category that includes the
+        <code><a href="/en-US/docs/Web/CSS/length">&#x3C;length></a></code
+        >, <code><a href="/en-US/docs/Web/CSS/angle">&#x3C;angle></a></code
+        >, <code><a href="/en-US/docs/Web/CSS/time">&#x3C;time></a></code
+        >, and
+        <code
+          ><a href="/en-US/docs/Web/CSS/resolution">&#x3C;resolution></a></code
+        >
+        types.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code
+          ><a href="/en-US/docs/Web/CSS/percentage">&#x3C;percentage></a></code
+        >
+      </td>
+      <td>
+        A <code>&#x3C;percentage></code> represents a fraction of some other
+        value. For example, <code>50%</code>. Percentage values are always
+        relative to another quantity. For example, an element's length is
+        relative to its parent element's length.
+      </td>
+    </tr>
+  </tbody>
+</table>
 
-### 길이
+### Lengths
 
-가장 자주 사용되는 숫자 형식은 `<length>` 입니다. 예를 들면 `10px` (픽셀) 또는`30em`. CSS 에서 사용되는 길이는 — 상대 및 절대의 두 가지 유형이 있습니다. 얼마나 커질지 알기 위해서는 차이를 이해하는 것이 중요합니다.
+The numeric type you will come across most frequently is [`<length>`](/en-US/docs/Web/CSS/length). For example, `10px` (pixels) or `30em`. There are two types of lengths used in CSS — relative and absolute. It's important to know the difference in order to understand how big things will become.
 
-#### 절대 길이 단위
+#### Absolute length units
 
-다음은 모두 **절대** 길이 단위이며 — 다른 것과 관련이 없으며 일반적으로 항상 동일한 크기로 간주됩니다.
+The following are all **absolute** length units — they are not relative to anything else, and are generally considered to always be the same size.
 
-| 단위 | 이름             | 다음과 동일함       |
-| ---- | ---------------- | ------------------- |
-| `cm` | 센티미터         | 1cm = 96px/2.54     |
-| `mm` | 밀리미터         | 1mm = 1/10th of 1cm |
-| `Q`  | 4분의 1 밀리미터 | 1Q = 1/40th of 1cm  |
-| `in` | 인치             | 1in = 2.54cm = 96px |
-| `pc` | Picas            | 1pc = 1/6th of 1in  |
-| `pt` | 포인트           | 1pt = 1/72th of 1in |
-| `px` | 픽셀             | 1px = 1/96th of 1in |
+| Unit | Name                | Equivalent to            |
+| ---- | ------------------- | ------------------------ |
+| `cm` | Centimeters         | 1cm = 37.8px = 25.2/64in |
+| `mm` | Millimeters         | 1mm = 1/10th of 1cm      |
+| `Q`  | Quarter-millimeters | 1Q = 1/40th of 1cm       |
+| `in` | Inches              | 1in = 2.54cm = 96px      |
+| `pc` | Picas               | 1pc = 1/6th of 1in       |
+| `pt` | Points              | 1pt = 1/72nd of 1in      |
+| `px` | Pixels              | 1px = 1/96th of 1in      |
 
-이러한 값의 대부분은 화면 출력이 아닌 인쇄에 사용될 때 더 유용합니다. 예를 들어 일반적으로 화면에 `cm` (센티미터) 를 사용하지 않습니다. 보통 사용하는 유일한 값은 `px` (픽셀) 입니다.
+Most of these units are more useful when used for print, rather than screen output. For example, we don't typically use `cm` (centimeters) on screen. The only value that you will commonly use is `px` (pixels).
 
-#### 상대 길이 단위
+#### Relative length units
 
-상대 길이 단위는 다른 요소 (상위 요소의 글꼴 크기 또는 viewport 크기) 와 관련이 있습니다. 상대 단위를 사용하면 텍스트나 다른 요소의 크기가 페이지의 다른 모든 것에 비례하여 조정되도록 신중하게 계획할 수 있다는 이점이 있습니다. 웹 개발에 가장 유용한 단위가 아래 표에 나열되어 있습니다.
+Relative length units are relative to something else, perhaps the size of the parent element's font, or the size of the viewport. The benefit of using relative units is that with some careful planning you can make it so the size of text or other elements scales relative to everything else on the page. Some of the most useful units for web development are listed in the table below.
 
-| 단위   | 관련 사항                                         |
-| ------ | ------------------------------------------------- |
-| `em`   | 요소의 글꼴 크기.                                 |
-| `ex`   | 요소 글꼴의 x-height.                             |
-| `ch`   | 요소 글꼴의 glyph "0" 의 사전 길이 (너비) 입니다. |
-| `rem`  | 루트 요소의 글꼴 크기.                            |
-| `lh`   | 요소의 라인 높이.                                 |
-| `vw`   | viewport 너비의 1%.                               |
-| `vh`   | viewport 높이의 1%.                               |
-| `vmin` | viewport 의 작은 치수의 1%.                       |
-| `vmax` | viewport 의 큰 치수의 1%.                         |
+<table class="standard-table no-markdown">
+  <thead>
+    <tr>
+      <th scope="col">Unit</th>
+      <th scope="col">Relative to</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>em</code></td>
+      <td>
+        Font size of the parent, in the case of typographical properties like
+        <code><a href="/en-US/docs/Web/CSS/font-size">font-size</a></code
+        >, and font size of the element itself, in the case of other properties
+        like <code><a href="/en-US/docs/Web/CSS/width">width</a></code
+        >.
+      </td>
+    </tr>
+    <tr>
+      <td><code>ex</code></td>
+      <td>x-height of the element's font.</td>
+    </tr>
+    <tr>
+      <td><code>ch</code></td>
+      <td>
+        The advance measure (width) of the glyph "0" of the element's font.
+      </td>
+    </tr>
+    <tr>
+      <td><code>rem</code></td>
+      <td>Font size of the root element.</td>
+    </tr>
+    <tr>
+      <td><code>lh</code></td>
+      <td>Line height of the element.</td>
+    </tr>
+    <tr>
+      <td><code>rlh</code></td>
+      <td>Line height of the root element. When used on the <code><a href="/en-US/docs/Web/CSS/font-size">font-size</a></code> or <code><a href="/en-US/docs/Web/CSS/line-height">line-height</a></code
+        > properties of the root element, it refers to the properties' initial value.</td>
+    </tr>
+    <tr>
+      <td><code>vw</code></td>
+      <td>1% of the viewport's width.</td>
+    </tr>
+    <tr>
+      <td><code>vh</code></td>
+      <td>1% of the viewport's height.</td>
+    </tr>
+    <tr>
+      <td><code>vmin</code></td>
+      <td>1% of the viewport's smaller dimension.</td>
+    </tr>
+    <tr>
+      <td><code>vmax</code></td>
+      <td>1% of the viewport's larger dimension.</td>
+    </tr>
+    <tr>
+      <td><code>vb</code></td>
+      <td>1% of the size of the initial containing block in the direction of the root element's <a href="/en-US/docs/Web/CSS/CSS_Logical_Properties#block_vs._inline">block axis</a>.</td>
+    </tr>
+    <tr>
+      <td><code>vi</code></td>
+      <td>1% of the size of the initial containing block in the direction of the root element's <a href="/en-US/docs/Web/CSS/CSS_Logical_Properties#block_vs._inline">inline axis</a>.</td>
+    </tr>
+    <tr>
+      <td><code>svw, svh</code></td>
+      <td>1% of the <a href="/en-US/docs/Web/CSS/length#relative_length_units_based_on_viewport">small viewport</a>'s width and height, respectively.</td>
+    </tr>
+    <tr>
+      <td><code>lvw, lvh</code></td>
+      <td>1% of the <a href="/en-US/docs/Web/CSS/length#relative_length_units_based_on_viewport">large viewport</a>'s width and height, respectively.</td>
+    </tr>
+    <tr>
+      <td><code>dvw, dvh</code></td>
+      <td>1% of the <a href="/en-US/docs/Web/CSS/length#relative_length_units_based_on_viewport">dynamic viewport</a>'s width and height, respectively.</td>
+    </tr>
+  </tbody>
+</table>
 
-#### 예제 살펴보기
+#### Exploring an example
 
-아래 예에서 일부 상대 및 절대 길이 단위의 동작을 확인할 수 있습니다. 첫 번째 박스에는 {{cssxref("width")}} 픽셀 단위로 설정되어 있습니다. 절대 단위로서 이 너비는 다른 사항에 관계없이 동일하게 유지됩니다.
+In the example below, you can see how some relative and absolute length units behave. The first box has a {{cssxref("width")}} set in pixels. As an absolute unit, this width will remain the same no matter what else changes.
 
-두 번째 박스의 너비는 `vw` (viewport 너비) 단위로 설정됩니다. 이 값은 viewport 너비를 기준으로 하므로, 10vw 는 viewport 너비의 10% 입니다. 브라우저 창의 너비를 변경하면, 박스의 크기가 변경되지만, 이 예제는 [`<iframe>`](/en-US/docs/Web/HTML/Element/iframe) 을 사용하여 페이지에 포함되므로 작동하지 않습니다. 이 기능을 실제로 보려면 [브라우저 탭에서 예제를 연 후 에 시도](https://mdn.github.io/css-examples/learn/values-units/length.html) 해야 합니다.
+The second box has a width set in `vw` (viewport width) units. This value is relative to the viewport width, and so 10vw is 10 percent of the width of the viewport. If you change the width of your browser window, the size of the box should change. However this example is embedded into the page using an [`<iframe>`](/en-US/docs/Web/HTML/Element/iframe), so this won't work. To see this in action you'll have to [try the example after opening it in its own browser tab](https://mdn.github.io/css-examples/learn/values-units/length.html).
 
-세 번째 박스는 `em` 단위를 사용합니다. 글꼴 크기에 상대적입니다. `.wrapper` class 를 포함하는 {{htmlelement("div")}} 를 포함하여 글꼴 크기를 `1em` 으로 설정했습니다. 이 값을 `1.5em` 으로 변경하면 모든 요소의 글꼴 크기가 증가하지만, 너비가 해당 글꼴 크기에 비례하므로 마지막 항목만 넓어집니다.
+The third box uses `em` units. These are relative to the font size. I've set a font size of `1em` on the containing {{htmlelement("div")}}, which has a class of `.wrapper`. Change this value to `1.5em` and you will see that the font size of all the elements increases, but only the last item will get wider, as its width is relative to that font size.
 
-위의 지침을 따른 후 다른 방법으로 값을 실습하여 얻은 것을 확인하십시오.
+After following the instructions above, try playing with the values in other ways, to see what you get.
 
-{{EmbedGHLiveSample("css-examples/learn/values-units/length.html", '100%', 820)}}
+{{EmbedGHLiveSample("css-examples/learn/values-units/length.html", '100%', 900)}}
 
-#### ems 및 rems
+#### ems and rems
 
-`em` 과 `rem` 은 박스에서 텍스트로 크기를 조정할 때 가장 자주 발생하는 두 개의 상대 길이입니다. [텍스트 스타일링](/ko/docs/Learn/CSS/Styling_text) 또는 [CSS 레이아웃](/ko/docs/Learn/CSS/CSS_layout) 과 같은 보다 복잡한 주제를 시작할 때, 이러한 작동 방식과 차이점을 이해하는 것이 좋습니다. 아래 예제는 데모를 제공합니다.
+`em` and `rem` are the two relative lengths you are likely to encounter most frequently when sizing anything from boxes to text. It's worth understanding how these work, and the differences between them, especially when you start getting on to more complex subjects like [styling text](/en-US/docs/Learn/CSS/Styling_text) or [CSS layout](/en-US/docs/Learn/CSS/CSS_layout). The below example provides a demonstration.
 
-HTML 은 중첩된 목록의 집합니다 — 총 3개의 목록이 있으며 두 예제 모두 동일한 HTML 을 갖습니다. 유일한 차이점은 첫 번째는 **_ems_** class 이고 두 번째는 **_rems_** class 입니다.
+The HTML illustrated below is a set of nested lists — we have three lists in total and both examples have the same HTML. The only difference is that the first has a class of _ems_ and the second a class of _rems_.
 
-먼저, `<html>` 요소에서 글꼴 크기로 16px 를 설정합니다.
+To start with, we set 16px as the font size on the `<html>` element.
 
-**다시 말해서, em 단위는 "부모 요소의 글꼴 크기" 를 의미합니다**. `ems` `class` 가 있는 {{htmlelement("ul")}} 내부의 {{htmlelement("li")}} 요소는 부모로부터 크기를 가져옵니다. 따라서 각 중첩 부분은 글꼴 크기가 부모 글꼴 크기의 `1.3em` — 1.3 배로 설정되므로 점점 더 커집니다.
+**To recap, the em unit means "my parent element's font-size"** in the case of typography. The {{htmlelement("li")}} elements inside the {{htmlelement("ul")}} with a `class` of `ems` take their sizing from their parent. So each successive level of nesting gets progressively larger, as each has its font size set to `1.3em` — 1.3 times its parent's font size.
 
-**다시 말해서, rem 단위는 "루트 요소의 글꼴 크기" 를 의미합니다**. ("root em" 의 rem 표준입니다.) `rems` `class` 가 있는 {{htmlelement("ul")}} 내부의 {{htmlelement("li")}} 요소는 루트 요소는 (`<html>`) 에서 크기를 가져옵니다. 이것은 각각의 연속적인 중첩 부분이 계속 커지는 것을 의미합니다.
+**To recap, the rem unit means "The root element's font-size"** (rem stands for "root em"). The {{htmlelement("li")}} elements inside the {{htmlelement("ul")}} with a `class` of `rems` take their sizing from the root element (`<html>`). This means that each successive level of nesting does not keep getting larger.
 
-그러나, CSS 에서 `<html>` `font-size` 를 변경하면 다른 모든 텍스트가 변경되는 것을 볼 수 있습니다 — `rem`- 및 `em`-크기 텍스트.
+However, if you change the `<html>` element's `font-size` in the CSS you will see that everything else changes relative to it — both `rem`- and `em`-sized text.
 
-{{EmbedGHLiveSample("css-examples/learn/values-units/em-rem.html", '100%', 1000)}}
+{{EmbedGHLiveSample("css-examples/learn/values-units/em-rem.html", '100%', 1100)}}
 
-### 백분율
+### Percentages
 
-많은 경우 백분율은 길이와 같은 방식으로 처리됩니다. 백분율이 있는 것은 항상 다른 값에 상대적으로 설정된다는 것입니다. 예를 들어, 요소의 `font-size` 를 백분율로 설정하면요소 부모의 글꼴 크기에 대한 백분율이 됩니다. `width` 값에 백분율을 사용하면, 부모 너비의 백분율이 됩니다.
+In a lot of cases, a percentage is treated in the same way as a length. The thing with percentages is that they are always set relative to some other value. For example, if you set an element's `font-size` as a percentage, it will be a percentage of the `font-size` of the element's parent. If you use a percentage for a `width` value, it will be a percentage of the `width` of the parent.
 
-아래 예제에서 두 개의 백분율 크기 박스와 두 개의 픽셀 크기 박스는 동일한 class 이름을 갖습니다. 두 세트의 너비는 각각 200px 및 40% 입니다.
+In the below example the two percentage-sized boxes and the two pixel-sized boxes have the same class names. The sets are 40% and 200px wide respectively.
 
-차이점은 두 박스의 두 번째 세트가 너비가 400 픽셀 안에 있다는 것입니다. 두 번째 200px 너비의 박스는 첫 번째 너비와 동일한 너비이지만, 두 번째 40% 박스는 이제 400px 의 40% 이므로 — 첫 번째 박스보다 훨씬 좁습니다!
+The difference is that the second set of two boxes is inside a wrapper that is 400 pixels wide. The second 200px wide box is the same width as the first one, but the second 40% box is now 40% of 400px — a lot narrower than the first one!
 
-**너비 또는 백분율 값을 변경하여 작동 방식을 확인합니다.**
+**Try changing the width of the wrapper or the percentage value to see how this works.**
 
-{{EmbedGHLiveSample("css-examples/learn/values-units/percentage.html", '100%', 850)}}
+{{EmbedGHLiveSample("css-examples/learn/values-units/percentage.html", '100%', 1000)}}
 
-다음 예제에서는 글꼴 크기가 백분율로 설정되어 있습니다. 각 `<li>` 의 `font-size` 는 80% 이므로, 중첩된 목록 항목은 부모로부터 크기를 상속함에 따라 점차 작아집니다.
+The next example has font sizes set in percentages. Each `<li>` has a `font-size` of 80%; therefore, the nested list items become progressively smaller as they inherit their sizing from their parent.
 
-{{EmbedGHLiveSample("css-examples/learn/values-units/percentage-fonts.html", '100%', 650)}}
+{{EmbedGHLiveSample("css-examples/learn/values-units/percentage-fonts.html", '100%', 800)}}
 
-많은 값이 길이 또는 백분율을 허용하지만, 길이만 허용하는 값도 있습니다. MDN 속성 참조 페이지에서 어떤 값이 허용되는지 확인할 수 있습니다. 허용된 값에 [`<length-percentage>`](/en-US/docs/Web/CSS/length-percentage) 가 포함된 경우 길이 또는 백분율을 사용할 수 있습니다. 허용된 값에 `<length>` 만 포함된 경우, 백분율을 사용할 수 없습니다.
+Note that, while many value types accept a length or a percentage, there are some that only accept length. You can see which values are accepted on the MDN property reference pages. If the allowed value includes [`<length-percentage>`](/en-US/docs/Web/CSS/length-percentage) then you can use a length or a percentage. If the allowed value only includes `<length>`, it is not possible to use a percentage.
 
-### 숫자
+### Numbers
 
-일부 값은 단위를 추가하지 않고 숫자를 허용합니다. 단위가 없는 숫자를 허용하는 속성의 예는 요소의 불투명도 (투명한 정도) 를 제어하는 `opacity` 속성입니다. 이 속성은 `0` (완전 투명) 과 `1` (완전 불투명) 사이의 숫자를 허용합니다.
+Some value types accept numbers, without any unit added to them. An example of a property which accepts a unitless number is the `opacity` property, which controls the opacity of an element (how transparent it is). This property accepts a number between `0` (fully transparent) and `1` (fully opaque).
 
-**아래 예제에서, `opacity` 값을 `0` 과 `1` 사이의 다양한 10진수 값으로 변경하고 박스와 그 내용이 어떻게 붙투명하게 되는지 확인하십시오.**
+**In the below example, try changing the value of `opacity` to various decimal values between `0` and `1` and see how the box and its contents become more or less opaque.**
 
-{{EmbedGHLiveSample("css-examples/learn/values-units/opacity.html", '100%', 500)}}
+{{EmbedGHLiveSample("css-examples/learn/values-units/opacity.html", '100%', 600)}}
 
-> **참고:** CSS 에서 숫자를 값으로 사용하는 경우 따옴표로 묶지 않아야합니다.
+> **Note:** When you use a number in CSS as a value it should not be surrounded in quotes.
 
-## 색상
+## Color
 
-CSS 에서 색상을 지정하는 방법은 여러가지가 있으며, 그 중 일부는 다른것 보다 최근에 구현되었습니다. 텍스트 색상, 배경 색상 등을 지정하든 상관없이 CSS 의 모든 위치에서 동일한 색상 값을 사용할 수 있습니다.
+There are many ways to specify color in CSS, some of which are more recently implemented than others. The same color values can be used everywhere in CSS, whether you are specifying text color, background color, or whatever else.
 
-최신 컴퓨터에서 사용할 수 있는 표준 색상 시스템은 24bit 이며, 채널당 256개의 서로 다른 값 (256 x 256 x 256 = 16,777,216.) 을 갖는 서로 다른 빨강, 녹색 및 파랑 채널의 조합을 통해 약 1670만개의 고유한 색상을 표시할 수 있습니다. CSS 에서 색상을 지정할 수 있는 몇 가지 방법을 살펴보겠습니다.
+The standard color system available in modern computers supports 24-bit colors, which allows the display of about 16.7 million distinct colors via a combination of different red, green and blue channels with 256 different values per channel (256 x 256 x 256 = 16,777,216). Let's have a look at some of the ways in which we can specify colors in CSS.
 
-> **참고:** 이 자습서에서는 브라우저 지원 기능이 우수한 색상을 지정하는 일반적인 방법을 살펴봅니다. 다른 것도 있지만, 지원 기능이 뛰어나지 않고 덜 일반적입니다.
+> **Note:** In this tutorial we will look at the common methods of specifying color that have good browser support; there are others but they don't have as good support and are less common.
 
-### 색상 키워드
+### Color keywords
 
-여기의 학습 섹션이나 MDN 의 다른 예에서 색상 키워드를 지정하는 간단하고 이해하기 쉬운 방법인 색상 키워드를 볼 수 있습니다. 이 키워드에는 여러가지가 있으며 그중 일부는 상당히 재미있는 이름을 가지고 있습니다! [`<color>`](/en-US/docs/Web/CSS/color_value) 값에 대한 전체 목록을 페이지에서 볼 수 있습니다.
+Quite often in examples here in the learn section or elsewhere on MDN you will see the color keywords used, as they are a simple and understandable way of specifying color. There are a number of these keywords, some of which have fairly entertaining names! You can see a full list on the page for the [`<color>`](/en-US/docs/Web/CSS/color_value) value type.
 
-**아래의 라이브 예제에서 다른 색상 값을 사용하여 작동하는 방법에 대한 아이디어를 얻으십시오.**
+**Try playing with different color values in the live examples below, to get more of an idea how they work.**
 
-### 16진수 RGB 값
+{{EmbedGHLiveSample("css-examples/learn/values-units/color-keywords.html", '100%', 800)}}
 
-다음 형식의 색상 값은 16진수 코드입니다. 각 16진수 값은 hash/pound 기호 (#) 와 6개의 16진수로 구성되며, 각 16진수는 0 과 f (15를 나타냄) 사이의 16개 값 중 하나를 사용할 수 있으므로 — `0123456789abcdef` 입니다. 각 값 쌍은 채널 중 하나 — 빨강, 녹색 및 파랑 — 을 나타내며 각각에 대해 256개의 사용 가능한 값 (16 x 16 = 256) 을 지정할 수 있습니다.
+### Hexadecimal RGB values
 
-이 값은 좀 더 복잡하고 이해하기 쉽지 않지만 기워드보다 훨씬 더 다양합니다 — 16진수 값을 사용하여 색상표에 사용하려는 색상을 나타낼 수 있습니다.
+The next type of color value you are likely to encounter is hexadecimal codes. Each hex value consists of a hash/pound symbol (#) followed by six hexadecimal numbers, each of which can take one of 16 values between 0 and f (which represents 15) — so `0123456789abcdef`. Each pair of values represents one of the channels — red, green and blue — and allows us to specify any of the 256 available values for each (16 x 16 = 256).
 
-{{EmbedGHLiveSample("css-examples/learn/values-units/color-hex.html", '100%', 700)}}
+These values are a bit more complex and less easy to understand, but they are a lot more versatile than keywords — you can use hex values to represent any color you want to use in your color scheme.
 
-**다시 한 번, 값을 변경하여 색상이 어떻게 다른지 확인하십시오.**
+{{EmbedGHLiveSample("css-examples/learn/values-units/color-hex.html", '100%', 800)}}
 
-### RGB 및 RGBA 값
+**Again, try changing the values to see how the colors vary.**
 
-여기서 이야기 할 세 번째 방식은 RGB 입니다. RGB 값은 — `rgb()` 함수입니다 — 이 값은 16진수 값과 거의 같은 방식으로 색상의 빨강, 녹색 및 파랑 채널 값을 나타내는 세 개의 매개 변수가 제공됩니다. RGB 와의 차이점은 각 채널이 2개의 16진수가 아니라 0 과 255 사이의 10진수로 표현되어 — 다소 이해하기 쉽다는 것입니다.
+### RGB and RGBA values
+
+The third scheme we'll talk about here is RGB. An RGB value is a function — `rgb()` — which is given three parameters that represent the red, green, and blue channel values of the colors, in much the same way as hex values. The difference with RGB is that each channel is represented not by two hex digits, but by a decimal number between 0 and 255 — somewhat easier to understand.
 
 Let's rewrite our last example to use RGB colors:
 
-{{EmbedGHLiveSample("css-examples/learn/values-units/color-rgb.html", '100%', 700)}}
+{{EmbedGHLiveSample("css-examples/learn/values-units/color-rgb.html", '100%', 800)}}
 
-RGBA 색상을 사용할 수도 있습니다 — 이 색상은 RGB 색상과 정확히 같은 방식으로 작동하므로 RGB 값을 사용할 수 있지만, 색상의 알파 채널을 나타내는 네 번째 값이 있어 불투명도 (opacity) 를 제어합니다. 이 값을 `0` 으로 설정하면 색상이 완전히 투명해지는 반면, `1` 이면 완전히 불투명하게 됩니다. 그 사이의 값은 다른 수준의 투명성을 제공합니다.
+You can pass a fourth parameter to `rgb()`, which represents the alpha channel of the color, which controls opacity. If you set this value to `0` it will make the color fully transparent, whereas `1` will make it fully opaque. Values in between give you different levels of transparency.
 
-> **참고:** 색상에 알파 채널을 설정하면 앞에서 살펴본 {{cssxref("opacity")}} 속성을 사용하는 것과 한 가지 중요한 차이점이 있습니다. 불투명도를 사용하면 요소와 그 안에 있는 모든 것을 불투명하게 만드는 반면, RGBA 색상을 사용하면 불투명하게 지정한 색상만 만들어집니다.
+> **Note:** Setting an alpha channel on a color has one key difference to using the {{cssxref("opacity")}} property we looked at earlier. When you use opacity you make the element and everything inside it opaque, whereas using RGB with an alpha parameter colors only makes the color you are specifying opaque.
 
-아래 예제에서 나는 색상 박스가 포함된 블록에 배경 이미지를 추가했습니다. 그런 다음 박스에 다른 불투명도 값을 갖도록 설정했습니다 — 알파 채널 값이 작을 때 배경이 더 잘 나타나는지 확인하십시오.
+In the example below, we have added a background image to the containing block of our colored boxes. We have then set the boxes to have different opacity values — notice how the background shows through more when the alpha channel value is smaller.
 
-{{EmbedGHLiveSample("css-examples/learn/values-units/color-rgba.html", '100%', 770)}}
+{{EmbedGHLiveSample("css-examples/learn/values-units/color-rgba.html", '100%', 900)}}
 
-**이 예에서는, 알파 채널 값을 변경하여 색상 출력에 어떤 영향을 미치는지 확인하십시오.**
+**In this example, try changing the alpha channel values to see how it affects the color output.**
 
-> **참고:** 어떤 시점에서 최신 브라우저는 `rgba()` 와 `rgb()` 및 `hsl()` 과 `hsla()` (아래 참조) 가 서로의 순수 별칭이 되어 정확히 동일한 동작을 시작하도록 업데이트 되었습니다. 예를 들어`rgba()` 및 `rgb()` 는 모두 알파 채널 값이 있거나 없는 색상을 허용합니다. 위 예제의 `rgba()` 함수를 `rgb()` 로 변경하고 색상이 여전히 작동하는지 확인하십시오! 어떤 스타일을 사용하느냐에 따라 다르지만, 다른 기능을 사용하기 위해 불투명과 투명한 색상 정의를 분리하면 브라우저 지원이 약간 향상되고 코드에서 투명 색상이 정의되는 위치를 시각적으로 표시할 수 있습니다.
+> **Note:** In older versions of CSS, the `rgb()` syntax didn't support an alpha parameter - you needed to use a different function called `rgba()` for that. These days you can pass an alpha parameter to `rgb()`, but for backwards compatibility with old websites, the `rgba()` syntax is still supported, and has exactly the same behavior as `rgb()`.
 
-### HSL 및 HSLA 값
+### HSL and HSLA values
 
-RGB 보다 약간 덜 지원되는 HSL 색상은 (이전 버전의 IE 에서는 지원되지 않음) 디자이너의 관심을 끈 후에 구현되었습니다. `hsl()` 함수는 빨강, 녹색 및 파랑 값 대신 색조 (hue), 채도 (saturation) 및 명도(lightness) 값을 받아들입니다. 이 값은 1670만 가지 색상을 구별하는 데 사용되지만 다른 방식으로 사용됩니다.
+An alternative way to specify colors is the HSL color model. Instead of red, green, and blue values, the `hsl()` function accepts hue, saturation, and lightness values, which are used to distinguish between the 16.7 million colors, but in a different way:
 
-- **색조 (Hue)**: 색상의 기본 음영입니다. 0 에서 360 사이의 값을 사용합니다.
-- **채도 (Saturation)**: 색상이 얼마나 포함되어 있습니까? 0–100% 사이의 값을 취합니다. 여기서 0은 색상이 없고 (회색 음영으로 표시됨), 100% 는 전체 색상 채도입니다.
-- **명도 (Lightness)**: 색상이 얼마나 밝습니까? 0–100% 의 값을 받습니다. 여기서 0은 빛이 없고 (완전히 검은색으로 표시됨), 100% 는 완전한 빛 (완전히 흰색으로 표시됨) 입니다.
+- **Hue**: The base shade of the color. This takes a value between 0 and 360, representing the angles around a {{glossary("color wheel")}}.
+- **Saturation**: How saturated is the color? This takes a value from 0–100%, where 0 is no color (it will appear as a shade of grey), and 100% is full color saturation
+- **Lightness**: How light or bright is the color? This takes a value from 0–100%, where 0 is no light (it will appear completely black) and 100% is full light (it will appear completely white)
 
-다음과 같이 HSL 색상을 사용하도록 RGB 예제를 업데이트 할 수 있습니다:
+We can update the RGB example to use HSL colors like this:
 
-{{EmbedGHLiveSample("css-examples/learn/values-units/color-hsl.html", '100%', 700)}}
+{{EmbedGHLiveSample("css-examples/learn/values-units/color-hsl.html", '100%', 800)}}
 
-RGB 에 RGBA 가 있는 것처럼, HSL 에는 HSLA 에 상응하는 것이 있으므로, 알파 채널을 지정할 수 있는 동일한 기능을 제공합니다. HSLA 색상을 사용하도록 RGBA 예제를 변경하여 아래에서 이것을 시연했습니다.
+Just like with `rgb()` you can pass an alpha parameter to `hsl()` to specify opacity:
 
-{{EmbedGHLiveSample("css-examples/learn/values-units/color-hsla.html", '100%', 770)}}
+{{EmbedGHLiveSample("css-examples/learn/values-units/color-hsla.html", '100%', 900)}}
 
-여러분의 프로젝트에서 이러한 색상 값을 사용할 수 있습니다. 대부분의 프로젝트에서 색상 팔레트를 결정한 다음 전체 프로젝트에서 해당 색상 — 선택한 색상 지정 방법 — 을 사용합니다. 색상 모델을 혼합하고 일치시킬 수 있지만, 일관성을 유지하려면 전체 프로젝트에서 동일한 모델을 사용하는 것이 가장 좋습니다!
+> **Note:** In older versions of CSS, the `hsl()` syntax didn't support an alpha parameter - you needed to use a different function called `hsla()` for that. These days you can pass an alpha parameter to `hsl()`, but for backwards compatibility with old websites, the `hsla()` syntax is still supported, and has exactly the same behavior as `hsl()`.
 
-## 이미지
+You can use any of these color values in your projects. It is likely that for most projects you will decide on a color palette and then use those colors — and your chosen method of specifying color — throughout the whole project. You can mix and match color models, however for consistency it is usually best if your entire project uses the same one!
 
-[`<image>`](/en-US/docs/Web/CSS/image) 데이터 형식은 이미지가 유효한 값인 경우 사용됩니다. 이것은 `url()` 함수 또는 gradient 를 통해 가리키는 실제 이미지 파일일 수 있습니다.
+## Images
 
-아래 예제에서 CSS `background-image` 속성의 값으로 사용되는 이미지와 gradient 를 보여주었습니다.
+The [`<image>`](/en-US/docs/Web/CSS/image) value type is used wherever an image is a valid value. This can be an actual image file pointed to via a `url()` function, or a gradient.
 
-{{EmbedGHLiveSample("css-examples/learn/values-units/image.html", '100%', 740)}}
+In the example below, we have demonstrated an image and a gradient in use as a value for the CSS `background-image` property.
 
-> **참고:** `<image>` 에 대해 가능한 다른 값이 있지만 이 값은 최신이며 최신 브라우저 지원이 좋지 않습니다. \<image> 데이터 형식을 읽으려면 MDN 페이지에서 [`<image>`](/en-US/docs/Web/CSS/image) 데이터 형식을 확인하십시오.
+{{EmbedGHLiveSample("css-examples/learn/values-units/image.html", '100%', 900)}}
 
-## 위치 (Position)
+> **Note:** There are some other possible values for `<image>`, however these are newer and currently have poor browser support. Check out the page on MDN for the [`<image>`](/en-US/docs/Web/CSS/image) data type if you want to read about them.
 
-[`<position>`](/en-US/docs/Web/CSS/position_value) 데이터 형식은 배경 이미지 ([`background-position`](/en-US/docs/Web/CSS/background-position) 를 통해) 와 같은 항목을 배치하는 데 사용되는 2D 좌표를 나타냅니다. `top`, `left`, `bottom`, `right` 및 `center` 와 같은 키워드를 사용하여 항목을 2D 박스의 특정 범위에 맞춰 길이와 함께 박스의 위쪽 및 왼쪽 가장자리에서 offset 을 나타냅니다.
+## Position
 
-일반적인 position 값은 두 가지 값으로 구성됩니다 — 첫 번째는 위치를 가로로 설정하고, 두 번째는 세로로 설정합니다. 한 축의 값만 지정하면 다른 축은 `center` 으로 설정됩니다.
+The [`<position>`](/en-US/docs/Web/CSS/position_value) value type represents a set of 2D coordinates, used to position an item such as a background image (via [`background-position`](/en-US/docs/Web/CSS/background-position)). It can take keywords such as `top`, `left`, `bottom`, `right`, and `center` to align items with specific bounds of a 2D box, along with lengths, which represent offsets from the top and left-hand edges of the box.
 
-다음 예제에서는 키워드를 사용하여 container 의 위쪽과 오른쪽에서 40px 의 배경 이미지를 배치했습니다.
+A typical position value consists of two values — the first sets the position horizontally, the second vertically. If you only specify values for one axis the other will default to `center`.
 
-{{EmbedGHLiveSample("css-examples/learn/values-units/position.html", '100%', 720)}}
+In the following example we have positioned a background image 40px from the top and to the right of the container using a keyword.
 
-**이 값을 가지고 놀면서 이미지를 어떻게 밀어낼 수 있는지 확인하십시오.**
+{{EmbedGHLiveSample("css-examples/learn/values-units/position.html", '100%', 800)}}
 
-## 문자열 및 식별자 (identifiers)
+**Play around with these values to see how you can push the image around.**
 
-위의 예에서, 키워드가 값으로 (예: `red`, `black`, `rebeccapurple` 및 `goldenrod`, 와 같은 `<color>` 키워드) 사용되는 위치를 확인했습니다. 이러한 키워드는 CSS 가 이해하는 특수한 값인 **_식별자 (identifiers)_**로, 보다 정확하게 설명됩니다. 따라서 인용되지 않으며 — 문자열로 취급되지 않습니다.
+## Strings and identifiers
 
-CSS 에서 문자열을 사용하는 장소가 있습니다. 예를 들면, [생성된 콘텐츠를 지정할 때](/ko/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements#Generating_content_with_before_and_after). 이 경우 값은 문자열임을 보여주기 위해 인용됩니다. 아래 예제에서는 인용되지 않은 색상 키워드와 인용된 생성된 콘텐츠 문자열을 사용합니다.
+Throughout the examples above, we've seen places where keywords are used as a value (for example `<color>` keywords like `red`, `black`, `rebeccapurple`, and `goldenrod`). These keywords are more accurately described as _identifiers_, a special value that CSS understands. As such they are not quoted — they are not treated as strings.
 
-{{EmbedGHLiveSample("css-examples/learn/values-units/strings-idents.html", '100%', 550)}}
+There are places where you use strings in CSS. For example, [when specifying generated content](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements#generating_content_with_before_and_after). In this case, the value is quoted to demonstrate that it is a string. In the example below, we use unquoted color keywords along with a quoted generated content string.
 
-## 함수 (Functions)
+{{EmbedGHLiveSample("css-examples/learn/values-units/strings-idents.html", '100%', 600)}}
 
-우리가 살펴볼 마지막 값의 형식은 함수로 알려진 값의 그룹입니다. 프로그래밍에서 함수는 개발자와 컴퓨터 모두에서 최소한의 노력으로 반복적인 작업을 완료하기 위해 여러번 실행할 수 있는 재사용 가능한 코드 섹션입니다. 함수는 일반적으로 JavaScript, Python 또는 C++ 과 같은 언어와 관련이 있지만, 속성 값으로 CSS 에도 존재합니다 — `rgb()`, `hsl()` 등의 색상 섹션에서 작동하는 함수를 이미 보았습니다. 파일에서 이미지를 반환하는 데 사용되는 값인 — `url()` — 도 함수입니다.
+## Functions
 
-전통적인 프로그래밍 언어에서 찾아볼 수 있는 것과 비슷한 값은 `calc()` CSS 함수입니다. 이 함수를 사요하면 CSS 내에서 간단한 계산을 수행할 수 있습니다. 프로젝트의 CSS 를 작성할 때 정의할 수 없는 값을 계산하고 런타임에 브라우저가 작동해야하는 경우 특히 유용합니다.
+The final type of value we will take a look at is the group of values known as functions. In programming, a function is a reusable section of code that can be run multiple times to complete a repetitive task with minimum effort on the part of both the developer and the computer. Functions are usually associated with languages like JavaScript, Python, or C++, but they do exist in CSS too, as property values. We've already seen functions in action in the Colors section — `rgb()`, `hsl()`, etc. The value used to return an image from a file — `url()` — is also a function.
 
-예를 들어, 아래에서는 `calc()` 를 사용하여 박스를 `20% + 100px` 너비로 만듭니다. 20% 는 부모 container `.wrapper` 의 너비에서 계산되므로 너비가 변경되면 변경됩니다. 우리는 부모 요소의 20% 가 무엇인지 알지 못하기 때문에, 이 계산을 미리 수행할 수 없으므로 `calc()` 를 사용하여 브라우저에 지시합니다.
+A value that behaves more like something you might find in a traditional programming language is the `calc()` CSS function. This function gives you the ability to do simple calculations inside your CSS. It's particularly useful if you want to work out values that you can't define when writing the CSS for your project, and need the browser to work out for you at runtime.
 
-{{EmbedGHLiveSample("css-examples/learn/values-units/calc.html", '100%', 450)}}
+For example, below we are using `calc()` to make the box `20% + 100px` wide. The 20% is calculated from the width of the parent container `.wrapper` and so will change if that width changes. We can't do this calculation beforehand because we don't know what 20% of the parent will be, so we use `calc()` to tell the browser to do it for us.
 
-## 요약
+{{EmbedGHLiveSample("css-examples/learn/values-units/calc.html", '100%', 500)}}
 
-이것은 가장 일반적인 형식의 값과 단위를 빠르게 살펴 보았습니다. [CSS 값 및 단위](/ko/docs/Web/CSS/CSS_Values_and_Units) 참조 페이지에서 다양한 유형을 모두 볼 수 있습니다. 이 수업을 진행하면서 사용중인 많은 것들을 보게 될 것입니다.
+## Test your skills!
 
-기억해야 할 중요한 점은 각 속성에 정의된 값 목록이 있고 각 값에는 하위 값이 무엇인지 설명하는 정의가 있다는 것입니다. 그런 다음 MDN 에서 세부 사항을 찾을 수 있습니다.
+You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Values and units](/en-US/docs/Learn/CSS/Building_blocks/Values_tasks).
 
-예를 들어, [`<image>`](/en-US/docs/Web/CSS/image) 를 사용하면 색상 gradient 를 만들 수 있다는 점을 이해하면 유용하지만 명백하지 않은 지식이 있을 수 있습니다!
+## Summary
+
+This has been a quick run-through of the most common types of values and units you might encounter. You can have a look at all of the different types on the [CSS Values and units](/en-US/docs/Web/CSS/CSS_Values_and_Units) reference page — you will encounter many of these in use as you work through these lessons.
+
+The key thing to remember is that each property has a defined list of allowed value types, and each value type has a definition explaining what the values are. You can then look up the specifics here on MDN. For example, understanding that [`<image>`](/en-US/docs/Web/CSS/image) also allows you to create a color gradient is useful but perhaps non-obvious knowledge to have!
+
+In the next article, we'll take a look at how [items are sized](/en-US/docs/Learn/CSS/Building_blocks/Sizing_items_in_CSS) in CSS.
 
 {{PreviousMenuNext("Learn/CSS/Building_blocks/Overflowing_content", "Learn/CSS/Building_blocks/Sizing_items_in_CSS", "Learn/CSS/Building_blocks")}}

@@ -1,46 +1,50 @@
 ---
 title: Atomics.store()
 slug: Web/JavaScript/Reference/Global_Objects/Atomics/store
-l10n:
-  sourceCommit: 3f0cd840cd9575701c65b8c6a1e172a2b0c3bd62
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Atomics.store
 ---
 
 {{JSRef}}
 
-**`Atomics.store()`** 정적 메서드는 배열의 지정된 위치에 지정된 값을 저장하고 해당 값을 반환합니다
+The **`Atomics.store()`** static
+method stores a given value at the given position in the array and returns that value.
 
 {{EmbedInteractiveExample("pages/js/atomics-store.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 Atomics.store(typedArray, index, value)
 ```
 
-### 매개 변수
+### Parameters
 
 - `typedArray`
-  - : 정수형 형식화 배열. {{jsxref("Int8Array")}}, {{jsxref("Uint8Array")}},
+  - : An integer typed array. One of {{jsxref("Int8Array")}}, {{jsxref("Uint8Array")}},
     {{jsxref("Int16Array")}}, {{jsxref("Uint16Array")}}, {{jsxref("Int32Array")}},
-    {{jsxref("Uint32Array")}}, {{jsxref("BigInt64Array")}},
-    {{jsxref("BigUint64Array")}} 중 하나.
+    {{jsxref("Uint32Array")}}, {{jsxref("BigInt64Array")}}, or
+    {{jsxref("BigUint64Array")}}.
 - `index`
-  - : `value`를 저장할 `typedArray`의 인덱스.
+  - : The position in the `typedArray` to store a
+    `value` in.
 - `value`
-  - : 저장할 숫자.
+  - : The number to store.
 
-### 반환 값
+### Return value
 
-저장된 값.
+The value that has been stored.
 
-### 예외
+### Exceptions
 
-- `typedArray`가 허용된 정수형이 아닐 경우 {{jsxref("TypeError")}}가 발생합니다.
-- `index`가 `typedArray`의 범위를 벗어날 경우 {{jsxref("RangeError")}}가 발생합니다.
+- {{jsxref("TypeError")}}
+  - : Thrown if `typedArray` is not one of the allowed integer types.
+- {{jsxref("RangeError")}}
+  - : Thrown if `index` is out of bounds in the `typedArray`.
 
-## 예제
+## Examples
 
-### store() 사용하기
+### Using store()
 
 ```js
 const sab = new SharedArrayBuffer(1024);
@@ -49,15 +53,15 @@ const ta = new Uint8Array(sab);
 Atomics.store(ta, 0, 12); // 12
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Atomics")}}
 - {{jsxref("Atomics.load()")}}

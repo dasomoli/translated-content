@@ -1,55 +1,71 @@
 ---
-title: window.cancelAnimationFrame()
+title: "Window: cancelAnimationFrame() method"
+short-title: cancelAnimationFrame()
 slug: Web/API/Window/cancelAnimationFrame
+page-type: web-api-instance-method
+browser-compat: api.Window.cancelAnimationFrame
 ---
+
 {{APIRef}}
 
-**`window.cancelAnimationFrame()`** 메소드는 이전에 {{domxref("window.requestAnimationFrame()")}} 을 호출하여 스케줄된 애니메이션 프레임 요청을 취소합니다.
+The **`window.cancelAnimationFrame()`** method cancels an
+animation frame request previously scheduled through a call to
+{{domxref("window.requestAnimationFrame()")}}.
 
-## 구문
+## Syntax
 
-```js
-window.cancelAnimationFrame(requestID);
+```js-nolint
+cancelAnimationFrame(requestID)
 ```
 
 ### Parameters
 
 - `requestID`
-  - : 요청된 콜백 {{domxref("window.requestAnimationFrame()")}} 을 호출하여 반환된 ID 값.
+  - : The ID value returned by the call to {{domxref("window.requestAnimationFrame()")}}
+    that requested the callback.
 
-## 예시
+### Return value
+
+None ({{jsxref("undefined")}}).
+
+## Examples
 
 ```js
-var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
-                            window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+const requestAnimationFrame =
+  window.requestAnimationFrame ||
+  window.mozRequestAnimationFrame ||
+  window.webkitRequestAnimationFrame ||
+  window.msRequestAnimationFrame;
 
-var cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
+const cancelAnimationFrame =
+  window.cancelAnimationFrame || window.mozCancelAnimationFrame;
 
-var start = window.mozAnimationStartTime;  // Firefox 에서만 지원됨. 다른 브라우저에서는 Date.now() 같은 것을 사용할 수 있음.
+const start = Date.now();
 
-var myReq;
+let myReq;
 
 function step(timestamp) {
-  var progress = timestamp - start;
-  d.style.left = Math.min(progress / 10, 200) + 'px';
+  const progress = timestamp - start;
+  d.style.left = `${Math.min(progress / 10, 200)}px`;
   if (progress < 2000) {
+    // it's important to update the requestId each time you're calling requestAnimationFrame
     myReq = requestAnimationFrame(step);
   }
 }
 myReq = requestAnimationFrame(step);
-
+// the cancellation uses the last requestId
 cancelAnimationFrame(myReq);
 ```
 
-## 브라우저 호환성
-
-{{Compat}}
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 함께 보기
+## Browser compatibility
 
-- {{domxref("window.mozAnimationStartTime")}}
+{{Compat}}
+
+## See also
+
 - {{domxref("window.requestAnimationFrame()")}}
+- [A polyfill](https://github.com/behnammodi/polyfill/blob/master/window.polyfill.js)

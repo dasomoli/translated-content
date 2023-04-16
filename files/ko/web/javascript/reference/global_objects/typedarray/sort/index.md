@@ -1,46 +1,73 @@
 ---
 title: TypedArray.prototype.sort()
 slug: Web/JavaScript/Reference/Global_Objects/TypedArray/sort
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.TypedArray.sort
 ---
 
 {{JSRef}}
 
-**`sort()`** 메서드는 _적소에_ 형식화 배열의 요소를 정렬하여 그 형식화 배열을 반환합니다. 이 메서드는 {{jsxref("Array.prototype.sort()")}}_와 같은 알고리즘입니다._ *TypedArray*는 여기 [형식화 배열 유형](/ko/docs/Web/JavaScript/Reference/Global_Objects/TypedArray#TypedArray_objects) 중 하나입니다.
+The **`sort()`** method sorts the elements of a typed array
+numerically _in place_ and returns the typed array. This method has the same
+algorithm as {{jsxref("Array.prototype.sort()")}}, except that it sorts the values numerically instead of as strings by default. _TypedArray_ is one of the
+[typed array types](/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray#typedarray_objects) here.
 
-## 구문
+{{EmbedInteractiveExample("pages/js/typedarray-sort.html","shorter")}}
 
-```js
-typedarray.sort([compareFunction])
+## Syntax
+
+```js-nolint
+sort()
+sort(compareFn)
 ```
 
-### 매개변수
+### Parameters
 
 - `compareFunction` {{optional_inline}}
-  - : 정렬 순서를 정의하는 함수를 지정합니다.
+  - : A function that defines the sort order. The return value should be a number whose positivity indicates the relative order of the two elements. The function is called with the following arguments:
 
-## 예
+    - `a`
+      - : The first element for comparison. Will never be `undefined`.
+    - `b`
+      - : The second element for comparison. Will never be `undefined`.
 
-더 많은 예는, {{jsxref("Array.prototype.sort()")}} 메서드도 참조하세요.
+    If omitted, the array elements are converted to strings, then sorted according to each character's Unicode code point value.
+
+### Return value
+
+The sorted typed array.
+
+## Examples
+
+### Using sort
+
+For more examples, see also the {{jsxref("Array.prototype.sort()")}} method.
 
 ```js
-var number = new Uint8Array([40, 1, 5, 200]);
-
-function compareNumbers(a, b) {
-  return a - b;
-}
-
-numbers.sort(compareNumbers);
+let numbers = new Uint8Array([40, 1, 5, 200]);
+numbers.sort();
 // Uint8Array [ 1, 5, 40, 200 ]
+// Unlike plain Arrays, a compare function is not required
+// to sort the numbers numerically.
+
+// Regular Arrays require a compare function to sort numerically:
+numbers = [40, 1, 5, 200];
+numbers.sort();
+// [1, 200, 40, 5]
+
+numbers.sort((a, b) => a - b); // compare numbers
+// [ 1, 5, 40, 200 ]
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
+- [Polyfill of `TypedArray.prototype.sort` with modern behavior like stable sort in `core-js`](https://github.com/zloirock/core-js#ecmascript-typed-arrays)
 - {{jsxref("Array.prototype.sort()")}}

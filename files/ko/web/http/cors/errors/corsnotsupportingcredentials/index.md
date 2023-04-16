@@ -3,30 +3,31 @@ title: >-
   Reason: Credential is not supported if the CORS header
   'Access-Control-Allow-Origin' is '*'
 slug: Web/HTTP/CORS/Errors/CORSNotSupportingCredentials
+page-type: http-cors-error
 ---
 
 {{HTTPSidebar}}
 
-## 원인
+## Reason
 
 ```plain
-원인: Credential is not supported if the CORS header 'Access-Control-Allow-Origin' is '*'
+Reason: Credential is not supported if the CORS header 'Access-Control-Allow-Origin' is '*'
 ```
 
-## 무엇이 문제인가요?
+## What went wrong?
 
-자격 증명 플래그가 설정된 상태에서 {{Glossary("CORS")}}요청이 시도되었지만 서버는 자격 증명 사용을 허용하지 않는 {{HTTPHeader("Access-Control-Allow-Origin")}}값으로 와일드카드(`"*"`)를 사용하여 구성됩니다.
+The {{Glossary("CORS")}} request was attempted with the credentials flag set, but the server is configured using the wildcard (`"*"`) as the value of {{HTTPHeader("Access-Control-Allow-Origin")}}, which doesn't allow the use of credentials.
 
-클라이언트 측에서 이 문제를 해결하려면 CORS 요청을 발행할 때 자격 증명 플래그의 값이 `false`인지 확인하십시오.
+To correct this problem on the client side, ensure that the credentials flag's value is `false` when issuing your CORS request.
 
-- {{domxref("XMLHttpRequest")}}를 사용하여 이슈가 발생하는 경우 {{domxref("XMLHttpRequest.withCredentials", "withCredentials")}}를 `true`로 설정하지 않았는지 확인하십시오.
-- [Server-sent events](/en-US/docs/Web/API/Server-sent_events)를 사용하는 경우 {{domxref("EventSource.withCredentials")}}가 (기본값) `false`인지 확인하십시오.
-- [Fetch API](/en-US/docs/Web/API/Fetch_API)를 사용하는 경우 {{domxref("Request.credentials")}}가 `"omit"`인지 확인하십시오.
+- If the request is being issued using {{domxref("XMLHttpRequest")}}, make sure you're not setting {{domxref("XMLHttpRequest.withCredentials", "withCredentials")}} to `true`.
+- If using [Server-sent events](/en-US/docs/Web/API/Server-sent_events), make sure {{domxref("EventSource.withCredentials")}} is `false` (it's the default value).
+- If using the [Fetch API](/en-US/docs/Web/API/Fetch_API), make sure {{domxref("Request.credentials")}} is `"omit"`.
 
-대신 서버의 동작을 조정해야 하는 경우 클라이언트가 로드되는 원본에 대한 액세스 권한을 부여하도록 `Access-Control-Allow-Origin`값을 변경해야 합니다.
+If, instead, you need to adjust the server's behavior, you'll need to change the value of `Access-Control-Allow-Origin` to grant access to the origin from which the client is loaded.
 
-## 같이 보기
+## See also
 
-- [CORS 에러](/en-US/docs/Web/HTTP/CORS/Errors)
+- [CORS errors](/en-US/docs/Web/HTTP/CORS/Errors)
 - Glossary: {{Glossary("CORS")}}
-- [CORS 소개](/en-US/docs/Web/HTTP/CORS)
+- [CORS introduction](/en-US/docs/Web/HTTP/CORS)

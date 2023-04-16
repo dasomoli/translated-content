@@ -1,63 +1,64 @@
 ---
 title: String.prototype.trimEnd()
 slug: Web/JavaScript/Reference/Global_Objects/String/trimEnd
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.String.trimEnd
 ---
 
 {{JSRef}}
 
-**`trimEnd()`** 메서드는 문자열 끝부분의 공백을 제거합니다.
-또 해당 메서드는 `trimRight()` 라는 별칭으로 호출이 가능합니다.
+The **`trimEnd()`** method removes whitespace from the end of a string and returns a new string, without modifying the original string. `trimRight()` is an alias of this method.
 
 {{EmbedInteractiveExample("pages/js/string-trimend.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 trimEnd()
 
 trimRight()
 ```
 
-### 반환값
+### Return value
 
-`str` 에서 (오른쪽)끝 공백이 제거된 새 문자열을 반환합니다.
-`str` 에 공백이 없을시에도 에러가 발생하지 않고 여전히 새 문자열(본질적으로 `str` 의 복사본)이 반환됩니다.
+A new string representing `str` stripped of whitespace from its end (right side). Whitespace is defined as [white space](/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#white_space) characters plus [line terminators](/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#line_terminators).
 
-### 별칭
+If the end of `str` has no whitespace, a new string is still returned (essentially a copy of `str`).
 
-{{jsxref("String.prototype.padEnd")}} 표준 메서드 이름과 같은 함수의 일관성을 위해서 `trimEnd` 가 되었습니다. 그러나,
-웹 호환성을 위해서 `trimEnd` 는 `trimRight` 이라는 별칭을 가집니다. 일부 엔진에서 이것은 다음 예시를 의미합니다.
+### Aliasing
+
+After {{jsxref("String/trim", "trim()")}} was standardized, engines also implemented the non-standard method `trimRight`. However, for consistency with {{jsxref("String/padEnd", "padEnd()")}}, when the method got standardized, its name was chosen as `trimEnd`. For web compatibility reasons, `trimRight` remains as an alias to `trimEnd`, and they refer to the exact same function object. In some engines this means:
 
 ```js
 String.prototype.trimRight.name === "trimEnd";
 ```
 
-## 예제
+## Examples
 
-### trimEnd() 사용
+### Using trimEnd()
 
-다음 예제는 `'   foo'` 문자열을 표시합니다.
+The following example trims whitespace from the end of `str`, but not from its start.
 
 ```js
-var str = '   foo  ';
+let str = "   foo  ";
 
 console.log(str.length); // 8
 
 str = str.trimEnd();
 console.log(str.length); // 6
-console.log(str);        // '   foo'
+console.log(str); // '   foo'
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- `String.prototype.trimEnd` 의 폴리필은 여기를 [`core-js`](https://github.com/zloirock/core-js#ecmascript-string-and-regexp) 참고하세요.
+- [Polyfill of `String.prototype.trimEnd` in `core-js`](https://github.com/zloirock/core-js#ecmascript-string-and-regexp)
 - {{jsxref("String.prototype.trim()")}}
 - {{jsxref("String.prototype.trimStart()")}}

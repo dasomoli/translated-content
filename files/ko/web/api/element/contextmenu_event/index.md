@@ -1,38 +1,134 @@
 ---
-title: GlobalEventHandlers.oncontextmenu
+title: "Element: contextmenu event"
+short-title: contextmenu
 slug: Web/API/Element/contextmenu_event
-original_slug: Web/API/GlobalEventHandlers/oncontextmenu
+page-type: web-api-event
+browser-compat: api.Element.contextmenu_event
 ---
 
-{{ ApiRef("HTML DOM") }}
+{{APIRef}}
 
-윈도우에서 마우스 오른쪽 클릭시 발생하는 이벤트 이벤트 핸들러 속성 입니다. 기본동작을 막지 않는 한 (아래의 예제를 참조하세요), 브라우저의 컨텍스트 메뉴가 활성화됩니다. (그러나 IE8는 이것과 관련된 버그가 있어 contextmenu 가 정의 되어있다고 할지라도 활성화 되지 않습니다). 이 이벤트는 비활성화되지 않은(non-disabled) 오른쪽 클릭 이벤트와 함께 발생하며 ["contextmenu" 속성](http://hacks.mozilla.org/2011/11/html5-context-menus-in-firefox-screencast-and-code/) 을 가진 엘리먼트에는 달리지 않는다는 것을 유의하세요.
+The **`contextmenu`** event fires when the user attempts to open a context menu. This event is typically triggered by clicking the right mouse button, or by pressing the context menu key.
+
+In the latter case, the context menu is displayed at the bottom left of the focused element, unless the element is a tree, in which case the context menu is displayed at the bottom left of the current row.
+
+Any right-click event that is not disabled (by calling the click event's {{domxref("Event.preventDefault", "preventDefault()")}} method) will result in a `contextmenu` event being fired at the targeted element. One exception to this is that in Firefox, if the user holds down the <kbd>Shift</kbd> key while right-clicking, then the context menu will be shown without a `contextmenu` event being fired.
 
 ## Syntax
 
-```js
-window.oncontextmenu = funcRef;
-//funcRef refers to the function to be called
-```
-
-## Example
-
-페이지상에서 오른쪽 클릭을 막는 예제들 입니다:
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
 
 ```js
-document.oncontextmenu = function () { // Use document as opposed to window for IE8 compatibility
-   return false;
-};
+addEventListener("contextmenu", (event) => {});
 
-window.addEventListener('contextmenu', function (e) { // Not compatible with IE < 9
-    e.preventDefault();
-}, false);
+oncontextmenu = (event) => {};
 ```
 
-## 명세서
+## Event type
+
+A {{domxref("MouseEvent")}}. Inherits from {{domxref("Event")}}.
+
+{{InheritanceDiagram("MouseEvent")}}
+
+## Event properties
+
+_This interface also inherits properties of its parents, {{domxref("UIEvent")}} and {{domxref("Event")}}._
+
+- {{domxref("MouseEvent.altKey")}} {{ReadOnlyInline}}
+  - : Returns `true` if the <kbd>alt</kbd> key was down when the mouse event was fired.
+- {{domxref("MouseEvent.button")}} {{ReadOnlyInline}}
+  - : The button number that was pressed (if applicable) when the mouse event was fired.
+- {{domxref("MouseEvent.buttons")}} {{ReadOnlyInline}}
+  - : The buttons being pressed (if any) when the mouse event was fired.
+- {{domxref("MouseEvent.clientX")}} {{ReadOnlyInline}}
+  - : The X coordinate of the mouse pointer in local (DOM content) coordinates.
+- {{domxref("MouseEvent.clientY")}} {{ReadOnlyInline}}
+  - : The Y coordinate of the mouse pointer in local (DOM content) coordinates.
+- {{domxref("MouseEvent.ctrlKey")}} {{ReadOnlyInline}}
+  - : Returns `true` if the <kbd>control</kbd> key was down when the mouse event was fired.
+- {{domxref("MouseEvent.layerX")}} {{Non-standard_inline}} {{ReadOnlyInline}}
+  - : Returns the horizontal coordinate of the event relative to the current layer.
+- {{domxref("MouseEvent.layerY")}} {{Non-standard_inline}} {{ReadOnlyInline}}
+  - : Returns the vertical coordinate of the event relative to the current layer.
+- {{domxref("MouseEvent.metaKey")}} {{ReadOnlyInline}}
+  - : Returns `true` if the <kbd>meta</kbd> key was down when the mouse event was fired.
+- {{domxref("MouseEvent.movementX")}} {{ReadOnlyInline}}
+  - : The X coordinate of the mouse pointer relative to the position of the last {{domxref("Element/mousemove_event", "mousemove")}} event.
+- {{domxref("MouseEvent.movementY")}} {{ReadOnlyInline}}
+  - : The Y coordinate of the mouse pointer relative to the position of the last {{domxref("Element/mousemove_event", "mousemove")}} event.
+- {{domxref("MouseEvent.offsetX")}} {{ReadOnlyInline}}
+  - : The X coordinate of the mouse pointer relative to the position of the padding edge of the target node.
+- {{domxref("MouseEvent.offsetY")}} {{ReadOnlyInline}}
+  - : The Y coordinate of the mouse pointer relative to the position of the padding edge of the target node.
+- {{domxref("MouseEvent.pageX")}} {{ReadOnlyInline}}
+  - : The X coordinate of the mouse pointer relative to the whole document.
+- {{domxref("MouseEvent.pageY")}} {{ReadOnlyInline}}
+  - : The Y coordinate of the mouse pointer relative to the whole document.
+- {{domxref("MouseEvent.relatedTarget")}} {{ReadOnlyInline}}
+  - : The secondary target for the event, if there is one.
+- {{domxref("MouseEvent.screenX")}} {{ReadOnlyInline}}
+  - : The X coordinate of the mouse pointer in global (screen) coordinates.
+- {{domxref("MouseEvent.screenY")}} {{ReadOnlyInline}}
+  - : The Y coordinate of the mouse pointer in global (screen) coordinates.
+- {{domxref("MouseEvent.shiftKey")}} {{ReadOnlyInline}}
+  - : Returns `true` if the <kbd>shift</kbd> key was down when the mouse event was fired.
+- {{domxref("MouseEvent.mozPressure")}} {{non-standard_inline()}} {{deprecated_inline}} {{ReadOnlyInline}}
+  - : The amount of pressure applied to a touch or tablet device when generating the event; this value ranges between `0.0` (minimum pressure) and `1.0` (maximum pressure).
+    Instead of using this deprecated (and non-standard) property, you should use {{domxref("PointerEvent")}} and look at its {{domxref("PointerEvent.pressure", "pressure")}} property.
+- {{domxref("MouseEvent.mozInputSource")}} {{non-standard_inline()}} {{ReadOnlyInline}}
+  - : The type of device that generated the event (one of the `MOZ_SOURCE_*` constants).
+    This lets you, for example, determine whether a mouse event was generated by an actual mouse or by a touch event (which might affect the degree of accuracy with which you interpret the coordinates associated with the event).
+- {{domxref("MouseEvent.webkitForce")}} {{non-standard_inline()}} {{ReadOnlyInline}}
+  - : The amount of pressure applied when clicking.
+- {{domxref("MouseEvent.x")}} {{ReadOnlyInline}}
+  - : Alias for {{domxref("MouseEvent.clientX")}}.
+- {{domxref("MouseEvent.y")}} {{ReadOnlyInline}}
+  - : Alias for {{domxref("MouseEvent.clientY")}}.
+
+## Examples
+
+### Canceling the `contextmenu` event
+
+In this example, the default action of the `contextmenu` event is canceled using `preventDefault()` when the `contextmenu` event is fired at the first paragraph. As a result, the first paragraph will do nothing when right-clicked, while the second paragraph will show the standard context menu offered by your browser.
+
+Note that in Firefox, if you hold down the <kbd>Shift</kbd> key while right-clicking, then the context menu is shown without the `contextmenu` event being fired, so canceling the event does not stop the context menu from being shown.
+
+#### HTML
+
+```html
+<p id="noContextMenu">The context menu has been disabled on this paragraph.</p>
+<p>But it has not been disabled on this one.</p>
+```
+
+#### JavaScript
+
+```js
+const noContext = document.getElementById("noContextMenu");
+
+noContext.addEventListener("contextmenu", (e) => {
+  e.preventDefault();
+});
+```
+
+#### Result
+
+{{EmbedLiveSample("Canceling the contextmenu event")}}
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- [Introduction to events](/en-US/docs/Learn/JavaScript/Building_blocks/Events)
+- {{domxref("Element/auxclick_event", "auxclick")}}
+- {{domxref("Element/click_event", "click")}}
+- {{domxref("Element/dblclick_event", "dblclick")}}
+- {{domxref("Element/mousedown_event", "mousedown")}}
+- {{domxref("Element/mouseup_event", "mouseup")}}
+- {{domxref("Element/pointerdown_event", "pointerdown")}}
+- {{domxref("Element/pointerup_event", "pointerup")}}

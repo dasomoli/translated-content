@@ -1,69 +1,163 @@
 ---
-title: RTCPeerConnection.addIceCandidate()
+title: "RTCPeerConnection: addIceCandidate() method"
+short-title: addIceCandidate()
 slug: Web/API/RTCPeerConnection/addIceCandidate
+page-type: web-api-instance-method
+browser-compat: api.RTCPeerConnection.addIceCandidate
 ---
 
 {{APIRef("WebRTC")}}
 
-{{domxref("RTCPeerConnection")}}을 사용하는 웹이나 앱이 신규 ICE candidate를 signaling 채널을 통해 원격 유저로부터 수신하게되면, **`RTCPeerConnection.addIceCandidate()`**를 호출해서 브라우저의 {{Glossary("ICE")}} 에이전트에게 새로 수신한 candidate를 전달합니다. 이 메소드는 `RTCPeerConnection`의 원격 설명 (remote description)에 연결의 원격쪽 상태를 설명해주는 신규 원격 candidate를 추가합니다.
+When a web site or app using {{domxref("RTCPeerConnection")}} receives a new ICE candidate from the remote peer over its signaling channel, it delivers the newly-received candidate to the browser's {{Glossary("ICE")}} agent by calling **`RTCPeerConnection.addIceCandidate()`**.
+This adds this new remote candidate to the `RTCPeerConnection`'s remote description, which describes the state of the remote end of the connection.
 
-`addIceCandidate()` 호출시 `candidate` 매개변수가 존재하지 않거나 값이 `null`인 경우에, 추가된 ICE candidate는 "candidate 종료"를 알려줍니다. 지정한 객체의{{domxref("RTCIceCandidate.candidate", "candidate")}} 값이 존재하지 않거나, 빈 문자열 (`""`)인 경우에도 원격 candidate들이 모두 전달되었음을 알려줍니다.
+If the `candidate` parameter is missing or a value of `null` is given when calling `addIceCandidate()`, the added ICE candidate is an "end-of-candidates" indicator.
+The same is the case if the value of the specified object's {{domxref("RTCIceCandidate.candidate", "candidate")}} is either missing or an empty string (`""`), it signals that all remote candidates have been delivered.
 
-"candidate 종료" 알림은 a-line 값의 `end-of-candidates`를 가진 candidate와 함께 원격 유저에 송신됩니다.
+The end-of-candidates notification is transmitted to the remote peer using a candidate with an a-line value of `end-of-candidates`.
 
-네고시에이션 중에 앱이 위의 방법처럼 ICE 에이전트에 전달할 다수의 candidate를 수신 받을 수 있고, 이는 가능한 연결 방법들의 리스트를 만들 수 있도록 도와줍니다. 자세한 내용은 [WebRTC connectivity](/ko/docs/Web/API/WebRTC_API/Connectivity)와 [Signaling and video calling](/ko/docs/Web/API/WebRTC_API/Signaling_and_video_calling)를 참고하십시오.
+During negotiation, your app will likely receive many candidates which you'll deliver to the ICE agent in this way, allowing it to build up a list of potential connection methods.
+This is covered in more detail in the articles [WebRTC connectivity](/en-US/docs/Web/API/WebRTC_API/Connectivity) and
+[Signaling and video calling](/en-US/docs/Web/API/WebRTC_API/Signaling_and_video_calling).
 
 ## Syntax
 
-```js
-aPromise = pc.addIceCandidate(candidate);
+```js-nolint
+addIceCandidate(candidate)
 
-addIceCandidate(candidate, successCallback, failureCallback);
+addIceCandidate(candidate, successCallback) // deprecated
+addIceCandidate(candidate, successCallback, failureCallback) // deprecated
 ```
 
-### 매개변수
+### Parameters
 
 - `candidate` {{optional_inline}}
-  - : {{domxref("RTCIceCandidateInit")}} 딕셔너리 혹은 {{domxref("RTCIceCandidate")}} 객체에 해당하는 객체입니다. 이 객체의 내용은 signaling 채널을 통해 수신 받은 메세지로 구성되어야합니다. 메세지는 이미 로컬 ICE 에이전트에 전달 될 준비가 된 새로 수신받은 ICE candidate를 설명합니다.`candidate` 객체가 지정되어있지 않거나, `null` 이라면, "candidate 종료" 신호가 `end-of-candidates` a-line을 사용해서 원격 유저에게 전달됩니다. a-line의 형식은 아래와 같습니다: a=end-of-candidates
 
-### 더 이상 사용되지 않는 변수 (Deprecated)
+  - : An {{domxref("RTCIceCandidate")}} object, or an object that has the following properties:
 
-이전 버전의 문서에서는 이 함수를 콜백 기반으로 사용하도록 되어있습니다. 콜백 기반 함수는 이제 더 이상 사용되지 않으며, 사용하지 않는 것을 권장합니다. 이미 사용 중이라면, {{jsxref("Promise")}} 버전인 `addIceCandidate()`를 사용하도록 코드를 업데이트 하십시오. 이전 버전의 코드를 업데이트 하는 것을 쉽게 하기 위해 고안된 `addIceCandidate()`의 특정 변수에 대해 아래에서 설명합니다.
+    <!-- RTCIceCandidateInit in spec -->
+
+    - `candidate` {{optional_inline}}
+
+      - : A string describing the properties of the candidate, taken directly from the [SDP](/en-US/docs/Web/API/WebRTC_API/Protocols#sdp) attribute `"candidate"`.
+        The candidate string specifies the network connectivity information for the candidate.
+        If the `candidate` is an empty string (`""`), the end of the candidate list has been reached; this candidate is known as the "end-of-candidates" marker.
+
+        The syntax of the candidate string is described in {{RFC(5245, "", 15.1)}}.
+        For an a-line (attribute line) that looks like this:
+
+        ```
+        a=candidate:4234997325 1 udp 2043278322 192.168.0.56 44323 typ host
+        ```
+
+        the corresponding `candidate` string's value will be
+        `"candidate:4234997325 1 udp 2043278322 192.168.0.56 44323 typ host"`.
+
+        The {{Glossary("user agent")}} always prefers candidates with the highest {{domxref("RTCIceCandidate.priority", "priority")}}, all else being equal.
+        In the example above, the priority is `2043278322`. The attributes are all separated by a single space character, and are in a specific order.
+        The complete list of attributes for this example candidate is:
+
+        - {{domxref("RTCIceCandidate.foundation", "foundation")}} = 4234997325
+        - {{domxref("RTCIceCandidate.component", "component")}} = `"rtp"` (the number 1 is encoded to this string; 2 becomes `"rtcp"`)
+        - {{domxref("RTCIceCandidate.protocol", "protocol")}} = `"udp"`
+        - {{domxref("RTCIceCandidate.priority", "priority")}} = 2043278322
+        - {{domxref("RTCIceCandidate/address", "ip")}} = `"192.168.0.56"`
+        - {{domxref("RTCIceCandidate.port", "port")}} = 44323
+        - {{domxref("RTCIceCandidate.type", "type")}} = `"host"`
+
+        Additional information can be found in {{domxref("RTCIceCandidate.candidate")}}.
+
+        > **Note:** For backward compatibility with older versions of the WebRTC specification, the constructor also accepts this string directly as an argument.
+
+    - `sdpMid` {{optional_inline}}
+
+      - : A string containing the identification tag of the media stream with which the candidate is associated, or `null` if there is no associated media stream. The default is `null`.
+
+        Additional information can be found in {{domxref("RTCIceCandidate.sdpMid")}}.
+
+    - `sdpMLineIndex` {{optional_inline}}
+
+      - : A number property containing the zero-based index of the m-line with which the candidate is associated, within the [SDP](/en-US/docs/Web/API/WebRTC_API/Protocols#sdp) of the media description, or `null` if no such associated exists. The default is `null`.
+
+        Additional information can be found in {{domxref("RTCIceCandidate.sdpMLineIndex")}}.
+
+    - `usernameFragment` {{optional_inline}}
+
+      - : A string containing the username fragment (usually referred to in shorthand as "ufrag" or "ice-ufrag").
+        This fragment, along with the ICE password ("ice-pwd"), uniquely identifies a single ongoing ICE interaction (including for any communication with the {{Glossary("STUN")}} server).
+
+        The string is generated by WebRTC at the beginning of the session.
+        It may be up to 256 characters long, and at least 24 bits must contain random data.
+        It has no default value and is not present unless set explicitly.
+
+        Additional information can be found in {{domxref("RTCIceCandidate.usernameFragment")}}.
+
+    The method will throw a {{jsxref("TypeError")}} exception if both `sdpMid` and `sdpMLineIndex` are `null`.
+
+    The contents of the object should be constructed from a message received over the signaling channel, describing a newly received ICE candidate that's ready to be delivered to the local ICE agent.
+
+    If no `candidate` object is specified, or its value is `null`, an end-of-candidates signal is sent to the remote peer using the `end-of-candidates` a-line, formatted like this:
+
+    ```
+    a=end-of-candidates
+    ```
+
+### Deprecated parameters
+
+In older code and documentation, you may see a callback-based version of this function.
+This has been deprecated and its use is **strongly** discouraged. You
+should update any existing code to use the {{jsxref("Promise")}}-based version of
+`addIceCandidate()` instead. The parameters for the older form of
+`addIceCandidate()` are described below, to aid in updating existing code.
 
 - `successCallback` {{deprecated_inline}}
-  - : ICE candidate가 성공적으로 추가되었을 때에 호출되는 함수입니다. 이 함수는 입력 변수가 없으며, 아무런 값도 반환하지 않도록 되어있습니다.
+  - : A function to be called when the ICE candidate has been successfully added. This
+    function receives no input parameters and doesn't return a value.
 - `failureCallback` {{deprecated_inline}}
-  - : ICE candidate 추가 시도가 실패하면 호출되는 함수입니다. 실패에 대한 이유를 설명하는 객체인 {{domxref("DOMException")}}을 입력 변수로 받습니다.
+  - : A function to be called if attempting to add the ICE candidate fails. Receives as
+    input a {{domxref("DOMException")}} object describing why failure occurred.
 
-### 반환 값
+### Return value
 
-{{jsxref("Promise")}}는 candidate가 ICE 에이전트에 의해 원격 유저의 설명 (description)에 성공적으로 추가되면 fulfilled 됩니다. 프로미스는 입력 변수가 없습니다.
+A {{jsxref("Promise")}} that is fulfilled when the candidate has been successfully
+added to the remote peer's description by the ICE agent. The promise does not receive any input parameters.
 
-### 예외 처리
+### Exceptions
 
-ICE candidate 추가 시도 중 에러가 발생하면, 이 메소드에서 반환되는 {{jsxref("Promise")}}는 거절됩니다. 그리고 거절 핸들러로 전달되는 지정된 {{domxref("DOMException")}} 객체안에 존재하는 {{domxref("DOMException.name", "name")}} 속성으로 아래의 에러 중 하나를 반환하게 됩니다.
+When an error occurs while attempting to add the ICE candidate, the
+{{jsxref("Promise")}} returned by this method is rejected, returning one of the errors
+below as the {{domxref("DOMException.name", "name")}} attribute in the specified
+{{domxref("DOMException")}} object passed to the rejection handler.
 
-- `TypeError`
-  - : 명시한 candidate의 {{domxref("RTCIceCandidate.sdpMid", "sdpMid")}} 및{{domxref("RTCIceCandidate.sdpMLineIndex", "sdpMLineIndex")}}가 모두 `null` 입니다.
-- `InvalidStateError`
-  - : 현재 `RTCPeerConnection`은 어떠한 원격 유저와도 연결이 되어있지 않습니다. {{domxref("RTCPeerConnection.remoteDescription", "remoteDescription")}} 값이 `null`입니다.
-- `OperationError`
+- {{jsxref("TypeError")}}
+  - : Returned if the specified candidate's {{domxref("RTCIceCandidate.sdpMid", "sdpMid")}} and
+    {{domxref("RTCIceCandidate.sdpMLineIndex", "sdpMLineIndex")}} are both `null`.
+- `InvalidStateError` {{domxref("DOMException")}}
+  - : Returned if the `RTCPeerConnection` currently has no remote peer established
+    ({{domxref("RTCPeerConnection.remoteDescription", "remoteDescription")}} is `null`).
+- `OperationError` {{domxref("DOMException")}}
+  - : Returned in one of the following situations:
+    - The value specified for {{domxref("RTCIceCandidate.sdpMid", "sdpMid")}} is
+      non-`null` and doesn't match the media description ID of any
+      media description included within the
+      {{domxref("RTCPeerConnection.remoteDescription", "remoteDescription")}}.
+    - The specified value of {{domxref("RTCIceCandidate.sdpMLineIndex", "sdpMLineIndex")}} is greater than or equal to the number of media
+      descriptions included in the remote description.
+    - The specified {{domxref("RTCIceCandidate.usernameFragment", "ufrag")}}
+      doesn't match the `ufrag` field in any of the remote
+      descriptions being considered.
+    - One or more of the values in the {{domxref("RTCIceCandidate", "candidate")}} string are invalid or could not be parsed.
+    - Attempting to add the candidate fails for any reason.
 
-  - : 이 에러는 여러가지 이유 때문에 발생합니다:\* 지정된 {{domxref("RTCIceCandidate.sdpMid", "sdpMid")}} 값이 non-`null`이고, {{domxref("RTCPeerConnection.remoteDescription", "remoteDescription")}}안에 존재하는 어떠한 미디어 description의 미디어 ID와도 일치하지 않음
+## Examples
 
-    - 지정된 {{domxref("RTCIceCandidate.sdpMLineIndex", "sdpMLineIndex")}}의 값이 원격 설명 (description)에 포함된 미디어의 숫자와 같거나 큼
-    - 지정된 {{domxref("RTCIceCandidate.usernameFragment", "ufrag")}}가 어떠한 원격 설명 (description) 안의 `ufrag` 필드와 일치하지 않음
-    - {{domxref("RTCIceCandidate", "candidate")}} 문자열에 존재하는 하나 혹은 여러개의 값들이 올바르지 않거나, 파싱 될 수 없음
-    - 어떠한 이유에서던 candidate를 추가하려는 시도가 실패
-
-## 예시
-
-아래의 코드는 임의의 signaling 채널을 통해 어떻게 ICE candidate를 알리는지를 보여줍니다.
+This code snippet shows how to signal ICE candidates across an arbitrary signaling
+channel.
 
 ```js
-// 본 예제는 다른 유저가 아래와 같은 signaling 채널을 사용한다고 가정합니다:
+// This example assumes that the other peer is using a signaling channel as follows:
 //
-// pc.onicecandidate = event => {
+// pc.onicecandidate = (event) => {
 //   if (event.candidate) {
 //     signalingChannel.send(JSON.stringify({ice: event.candidate})); // "ice" is arbitrary
 //   } else {
@@ -71,44 +165,48 @@ ICE candidate 추가 시도 중 에러가 발생하면, 이 메소드에서 반�
 //   }
 // }
 
-signalingChannel.onmessage = receivedString => {
+signalingChannel.onmessage = (receivedString) => {
   const message = JSON.parse(receivedString);
   if (message.ice) {
     // A typical value of ice here might look something like this:
     //
-    // {candidate: "candidate:0 1 UDP 2122154243 192.168.1.9 53421 typ host", sdpMid: "0", ...}
+    // {candidate: "candidate:0 1 UDP 2122154243 192.168.1.9 53421 typ host", sdpMid: "0", …}
     //
     // Pass the whole thing to addIceCandidate:
 
-    pc.addIceCandidate(message.ice).catch(e => {
-      console.log("Failure during addIceCandidate(): " + e.name);
+    pc.addIceCandidate(message.ice).catch((e) => {
+      console.log(`Failure during addIceCandidate(): ${e.name}`);
     });
   } else {
     // handle other things you might be signaling, like sdp
   }
-}
+};
 ```
 
-원격 유저에 의해 이러한 방식으로 신호를 전달한 마지막 candiate는 "candidate 종료"를 나타내는 특수한 candidate가 됩니다. "candidate 종료"를 수동으로 설정하려면 다음과 같이 하면 됩니다:
+The last candidate to be signaled this way by the remote peer will be a special
+candidate denoting end-of-candidates. Out of interest, end-of-candidates may be
+manually indicated as follows:
 
 ```js
-pc.addIceCandidate({candidate:''});
+pc.addIceCandidate({ candidate: "" });
 ```
 
-하지만, 대부분의 경우 {{domxref("RTCPeerConnection")}}가 적절한 이벤트를 보내서 처리해주기 때문에 이를 수동으로 확인해야 할 필요는 없습니다.
+However, in most cases you won't need to look for this explicitly, since the events
+driving the {{domxref("RTCPeerConnection")}} will deal with it for you, sending the
+appropriate events.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
-- [WebRTC API](/ko/docs/Web/API/WebRTC_API)
-- [Signaling and video calling](/ko/docs/Web/API/WebRTC_API/Signaling_and_video_calling)
-- [WebRTC architecture overview](/ko/docs/Web/API/WebRTC_API/Architecture)
-- [WebRTC connectivity](/ko/docs/Web/API/WebRTC_API/Connectivity)
-- [Lifetime of a WebRTC session](/ko/docs/Web/API/WebRTC_API/Session_lifetime)
+- [WebRTC API](/en-US/docs/Web/API/WebRTC_API)
+- [Signaling and video calling](/en-US/docs/Web/API/WebRTC_API/Signaling_and_video_calling)
+- [Introduction to WebRTC protocols](/en-US/docs/Web/API/WebRTC_API/Protocols)
+- [WebRTC connectivity](/en-US/docs/Web/API/WebRTC_API/Connectivity)
+- [Lifetime of a WebRTC session](/en-US/docs/Web/API/WebRTC_API/Session_lifetime)

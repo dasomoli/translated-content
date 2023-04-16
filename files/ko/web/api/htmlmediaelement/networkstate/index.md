@@ -1,30 +1,32 @@
 ---
-title: HTMLMediaElement.networkState
+title: "HTMLMediaElement: networkState property"
+short-title: networkState
 slug: Web/API/HTMLMediaElement/networkState
-l10n:
-  sourceCommit: 0230ecc4418a1e52bca6b4d03c4eb794f90d04f1
+page-type: web-api-instance-property
+browser-compat: api.HTMLMediaElement.networkState
 ---
 
 {{APIRef("HTML DOM")}}
 
-**`HTMLMediaElement.networkState`** 속성은 네트워크를
-통한 미디어 가져오기(fetching)의 현재 상태를 나타냅니다.
+The
+**`HTMLMediaElement.networkState`** property indicates the
+current state of the fetching of media over the network.
 
-## 값
+## Value
 
-아래의 `unsigned short` 값 중 하나입니다.
+An `unsigned short`. Possible values are:
 
-| 상수                | 값    | 설명                                                                                    |
-| ------------------- | ----- | --------------------------------------------------------------------------------------- |
-| `NETWORK_EMPTY`     | 0     | 아직 데이터가 없습니다. 또한 `readyState`는 `HAVE_NOTHING`입니다.                       |
-| `NETWORK_IDLE`      | 1     | HTMLMediaElement가 활성 상태이고 리소스를 선택했지만 네트워크를 사용하고 있지 않습니다. |
-| `NETWORK_LOADING`   | 2     | 브라우저가 HTMLMediaElement 데이터를 다운로드하고 있습니다.                             |
-| `NETWORK_NO_SOURCE` | 3     | HTMLMediaElement src를 찾을 수 없습니다.                                                |
+| Constant            | Value | Description                                                                           |
+| ------------------- | ----- | ------------------------------------------------------------------------------------- |
+| `NETWORK_EMPTY`     | 0     | There is no data yet. Also, `readyState` is `HAVE_NOTHING`.                           |
+| `NETWORK_IDLE`      | 1     | HTMLMediaElement is active and has selected a resource, but is not using the network. |
+| `NETWORK_LOADING`   | 2     | The browser is downloading HTMLMediaElement data.                                     |
+| `NETWORK_NO_SOURCE` | 3     | No HTMLMediaElement src found.                                                        |
 
-## 예제
+## Examples
 
-이 예제는 오디오 요소가 재생을 시작할 때까지 수신한 다음
-여전히 데이터를 로드하고 있는지 확인합니다.
+This example will listen for the audio element to begin playing and then check if it is
+still loading data.
 
 ```html
 <audio id="example" preload="auto">
@@ -34,21 +36,22 @@ l10n:
 
 ```js
 const obj = document.getElementById("example");
+
 obj.addEventListener("playing", () => {
   if (obj.networkState === 2) {
-    // 여전히 로딩중입니다...
+    // Still loading…
   }
 });
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- networkState를 정의하는 인터페이스는 {{domxref("HTMLMediaElement")}}입니다.
+- {{domxref("HTMLMediaElement")}}: Interface used to define the `HTMLMediaElement.networkState` property

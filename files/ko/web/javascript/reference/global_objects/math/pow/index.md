@@ -1,78 +1,117 @@
 ---
 title: Math.pow()
 slug: Web/JavaScript/Reference/Global_Objects/Math/pow
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Math.pow
 ---
 
-{{JSRef}}**`Math.pow()`**함수는`base^exponent`처럼
-`base` 에 `exponent`를 제곱한 값을 반환합니다.{{EmbedInteractiveExample("pages/js/math-pow.html")}}
+{{JSRef}}
 
-## 문법
+The **`Math.pow()`** static method returns the value of a base raised to a power. That is
 
-```js
+<math display="block"><semantics><mrow><mrow><mo lspace="0em" rspace="0.16666666666666666em">𝙼𝚊𝚝𝚑.𝚙𝚘𝚠</mo><mo stretchy="false">(</mo><mi>𝚡</mi><mo>,</mo><mi>𝚢</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><msup><mi>x</mi><mi>y</mi></msup></mrow><annotation encoding="TeX">\mathtt{\operatorname{Math.pow}(x, y)} = x^y</annotation></semantics></math>
+
+{{EmbedInteractiveExample("pages/js/math-pow.html")}}
+
+## Syntax
+
+```js-nolint
 Math.pow(base, exponent)
 ```
 
-### 매개변수
+### Parameters
 
 - `base`
-  - : 밑 값.
+  - : The base number.
 - `exponent`
-  - : `밑`
-    을 제곱하기 위해 사용하는 지수.
+  - : The exponent number.
 
-### 반환 값
+### Return value
 
-주어진 밑 값을 주어진 지수 값으로 거듭제곱한 숫자 값.
+A number representing `base` taken to the power of `exponent`. Returns {{jsxref("NaN")}} in one of the following cases:
 
-## 설명
+- `exponent` is `NaN`.
+- `base` is `NaN` and `exponent` is not `0`.
+- `base` is ±1 and `exponent` is ±`Infinity`.
+- `base < 0` and `exponent` is not an integer.
 
-**`Math.pow()`**함수는 `base`의 `exponent`
-곱, 즉 `base^exponent`를 반환합니다.
-`base`와 `exponent`는 10진수입니다.
+## Description
 
-`pow()`는 `Math`의 정적 메서드이므로 `Math`객체를 생성하여 그 메서드로 사용하지 말고, 항상
-`Math.pow()`로 사용하십시오. (`Math`에는 생성자가 없습니다).
-만약 밑(base) 값이 음수이고 지수(exponent)가 정수가 아닌 경우 결과는 NaN입니다.
+`Math.pow()` is equivalent to the [`**`](/en-US/docs/Web/JavaScript/Reference/Operators/Exponentiation) operator, except `Math.pow()` only accepts numbers.
 
-## 예제
+`Math.pow(NaN, 0)` (and the equivalent `NaN ** 0`) is the only case where {{jsxref("NaN")}} doesn't propagate through mathematical operations — it returns `1` despite the operand being `NaN`. In addition, the behavior where `base` is 1 and `exponent` is non-finite (±Infinity or `NaN`) is different from IEEE 754, which specifies that the result should be 1, whereas JavaScript returns `NaN` to preserve backward compatibility with its original behavior.
 
-### Math.pow()사용하기
+Because `pow()` is a static method of `Math`, use it as `Math.pow()`, rather than as a method of a `Math` object you created (`Math` is not a constructor).
+
+## Examples
+
+### Using Math.pow()
 
 ```js
-// 간단한 예
-Math.pow(7, 2);    // 49
-Math.pow(7, 3);    // 343
-Math.pow(2, 10);   // 1024
-// 분수 지수
-Math.pow(4, 0.5);  // 2 (4의 제곱근)
-Math.pow(8, 1/3);  // 2 (8의 세제곱근)
-Math.pow(2, 0.5);  // 1.4142135623730951 (2의 제곱근)
-Math.pow(2, 1/3);  // 1.2599210498948732 (2의 세제곱근)
-// 양의 지수
-Math.pow(7, -2);   // 0.02040816326530612 (1/49)
-Math.pow(8, -1/3); // 0.5
-// 양의 밑
-Math.pow(-7, 2);   // 49 (제곱의 결과값은 양수입니다.)
-Math.pow(-7, 3);   // -343 (세제곱은 음수가 될 수 있습니다.)
-Math.pow(-7, 0.5); // NaN (음수는 실제 제곱근을 가지지 않습니다.)
-// "짝수"와 "홀수" 근이 서로 가깝게 놓여 있고
-// 부동소수점 정밀도의 한계로 인해,
-// 밑이 음수이며 지수가 분수라면 언제나 NaN을 반환합니다.
-Math.pow(-7, 1/3); // NaN
+// Simple cases
+Math.pow(7, 2); // 49
+Math.pow(7, 3); // 343
+Math.pow(2, 10); // 1024
+
+// Fractional exponents
+Math.pow(4, 0.5); // 2 (square root of 4)
+Math.pow(8, 1 / 3); // 2 (cube root of 8)
+Math.pow(2, 0.5); // 1.4142135623730951 (square root of 2)
+Math.pow(2, 1 / 3); // 1.2599210498948732 (cube root of 2)
+
+// Signed exponents
+Math.pow(7, -2); // 0.02040816326530612 (1/49)
+Math.pow(8, -1 / 3); // 0.5
+
+// Signed bases
+Math.pow(-7, 2); // 49 (squares are positive)
+Math.pow(-7, 3); // -343 (cubes can be negative)
+Math.pow(-7, 0.5); // NaN (negative numbers don't have a real square root)
+// Due to "even" and "odd" roots laying close to each other,
+// and limits in the floating number precision,
+// negative bases with fractional exponents always return NaN,
+// even when the mathematical result is real
+Math.pow(-7, 1 / 3); // NaN
+
+// Zero and infinity
+Math.pow(0, 0); // 1 (anything ** ±0 is 1)
+Math.pow(Infinity, 0.1); // Infinity (positive exponent)
+Math.pow(Infinity, -1); // 0 (negative exponent)
+Math.pow(-Infinity, 1); // -Infinity (positive odd integer exponent)
+Math.pow(-Infinity, 1.5); // Infinity (positive exponent)
+Math.pow(-Infinity, -1); // -0 (negative odd integer exponent)
+Math.pow(-Infinity, -1.5); // 0 (negative exponent)
+Math.pow(0, 1); // 0 (positive exponent)
+Math.pow(0, -1); // Infinity (negative exponent)
+Math.pow(-0, 1); // -0 (positive odd integer exponent)
+Math.pow(-0, 1.5); // 0 (positive exponent)
+Math.pow(-0, -1); // -Infinity (negative odd integer exponent)
+Math.pow(-0, -1.5); // Infinity (negative exponent)
+Math.pow(0.9, Infinity); // 0
+Math.pow(1, Infinity); // NaN
+Math.pow(1.1, Infinity); // Infinity
+Math.pow(0.9, -Infinity); // Infinity
+Math.pow(1, -Infinity); // NaN
+Math.pow(1.1, -Infinity); // 0
+
+// NaN: only Math.pow(NaN, 0) does not result in NaN
+Math.pow(NaN, 0); // 1
+Math.pow(NaN, 1); // NaN
+Math.pow(1, NaN); // NaN
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Math.cbrt()")}}
 - {{jsxref("Math.exp()")}}
 - {{jsxref("Math.log()")}}
 - {{jsxref("Math.sqrt()")}}
-- [멱승연산](/ko/docs/Web/JavaScript/Reference/Operators/Exponentiation)
+- [Exponentiation operator](/en-US/docs/Web/JavaScript/Reference/Operators/Exponentiation)

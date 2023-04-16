@@ -1,21 +1,20 @@
 ---
-title: 스타일 출처
+title: Style origin
 slug: Glossary/Style_origin
-l10n:
-  sourceCommit: 424582339e3d3de819667b2e5e2ea52a180fe84c
+page-type: glossary-definition
 ---
 
-{{Glossary("CSS")}}에는 스타일 변경을 위한 소스를 구분하는 세 가지 카테고리가 있습니다. 이 카테고리를 **스타일 출처**라고 합니다. 스타일 출처에는 **사용자 에이전트 출처**, **사용자 출처** 그리고 **작성자 출처**가 있습니다.
+In {{Glossary("CSS")}}, there are three categories of sources for style changes. These categories are called **style origins**. They are the **user agent origin**, **user origin**, and the **author origin**.
 
-- 사용자 에이전트 출처
-  - : 사용자 에이전트 출처는 사용자 웹 브라우저의 기본 스타일로 구성된 스타일 출처입니다. 콘텐츠에 적용할 다른 스타일이 없다면, 요소를 렌더링할 동안 사용자 에이전트 출처의 스타일이 사용됩니다.
-- 사용자 출처
-  - : 사용자 출처는 웹 브라우저 사용자가 추가한 모든 CSS를 포함하는 스타일 출처입니다. 개발자 도구를 사용해서 스타일을 추가하거나 콘텐츠에 사용자 지정 스타일을 자동으로 적용하는 [Stylus](https://add0n.com/stylus.html) 또는 [Stylish](https://userstyles.org/)와 같은 브라우저 확장 기능으로 스타일을 추가할 수 있습니다.
-- 작성자 출처
-  - : 작성자 출처는 문서의 일부인 스타일도 모두 포함하는 스타일 출처입니다. {{Glossary("HTML")}} 내의 스타일과 외부 스타일시트 파일의 스타일 모두 해당합니다.
+- User-agent origin
+  - : The user agent origin is the style origin comprised of the default styles used by the user's web browser. If no other styles are applied to content, the user agent origin's styles are used while rendering elements.
+- User origin
+  - : The user origin is the style origin containing any CSS that the user of the web browser has added. These may be from adding styles using a developer tool or from a browser extension that automatically applies custom styles to content, such as [Stylus](https://add0n.com/stylus.html) or [Stylish](https://userstyles.org/).
+- Author origin
+  - : The author origin is the style origin which contains all of the styles which are part of the document, whether embedded within the {{Glossary("HTML")}} or loaded from an external stylesheet file.
 
-스타일 출처는 {{cssxref("unset")}} 또는 {{cssxref("revert")}} 키워드를 사용할 때와 같이 스타일을 삭제할 때 요소에 적용된 스타일의 종속을 어디까지 되돌릴지(또는 역추적할지) 결정하기 위해 사용됩니다.
+The style origins are used to determine where to stop rolling back (or backtracking through) the cascade of styles that have been applied to an element when removing styles, such as when using the {{cssxref("unset")}} or {{cssxref("revert")}} keywords.
 
-## 같이 보기
+## See also
 
 - [CSS Cascading and Inheritance: Cascading Origins](https://drafts.csswg.org/css-cascade-4/#cascading-origins)

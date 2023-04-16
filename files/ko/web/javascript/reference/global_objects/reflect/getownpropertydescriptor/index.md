@@ -1,74 +1,82 @@
 ---
 title: Reflect.getOwnPropertyDescriptor()
 slug: Web/JavaScript/Reference/Global_Objects/Reflect/getOwnPropertyDescriptor
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Reflect.getOwnPropertyDescriptor
 ---
+
 {{JSRef}}
 
-**`Reflect.getOwnPropertyDescriptor()`** 정적 메서드는 객체에 주어진 속성이 존재하면, 해당 속성의 서술자를 반환합니다. {{jsxref("Object.getOwnPropertyDescriptor()")}}와 유사합니다.
+The **`Reflect.getOwnPropertyDescriptor()`** static method is like {{jsxref("Object.getOwnPropertyDescriptor()")}}. It returns a property descriptor of the given property if it exists on the object, {{jsxref("undefined")}} otherwise.
 
 {{EmbedInteractiveExample("pages/js/reflect-getownpropertydescriptor.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 Reflect.getOwnPropertyDescriptor(target, propertyKey)
 ```
 
-### 매개변수
+### Parameters
 
 - `target`
-  - : 속성을 탐색할 객체.
+  - : The target object in which to look for the property.
 - `propertyKey`
-  - : 자체 속성 서술자를 가져올 속성의 이름.
+  - : The name of the property to get an own property descriptor for.
 
-### 반환 값
+### Return value
 
-대상 속성이 객체에 존재하면, 그 속성의 서술자. 존재하지 않으면 {{jsxref("undefined")}}.
+A property descriptor object if the property exists as an own property of `target`; otherwise, {{jsxref("undefined")}}.
 
-### 예제
+### Exceptions
 
-`target`이 {{jsxref("Object")}}가 아니면 {{jsxref("TypeError")}}.
+- {{jsxref("TypeError")}}
+  - : Thrown if `target` is not an object.
 
-## 설명
+## Description
 
-`Reflect.getOwnPropertyDescriptor` 메서드는 객체 속성의 서술자를 반환합니다. 만약 존재하지 않는 속성이라면 {{jsxref("undefined")}}를 대신 반환합니다. {{jsxref("Object.getOwnPropertyDescriptor()")}}와의 유일한 차이는 객체가 아닌 대상의 처리 방법입니다.
+`Reflect.getOwnPropertyDescriptor()` provides the reflective semantic of retrieving the property descriptor of an object. The only difference with {{jsxref("Object.getOwnPropertyDescriptor()")}} is how non-object targets are handled. `Reflect.getOwnPropertyDescriptor()` throws a {{jsxref("TypeError")}} if the target is not an object, while `Object.getOwnPropertyDescriptor()` coerces it to an object.
 
-## 예제
+`Reflect.getOwnPropertyDescriptor()` invokes the `[[GetOwnProperty]]` [object internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods) of `target`.
 
-### `Reflect.getOwnPropertyDescriptor()` 사용하기
+## Examples
+
+### Using Reflect.getOwnPropertyDescriptor()
 
 ```js
-Reflect.getOwnPropertyDescriptor({x: 'hello'}, 'x');
+Reflect.getOwnPropertyDescriptor({ x: "hello" }, "x");
 // {value: "hello", writable: true, enumerable: true, configurable: true}
 
-Reflect.getOwnPropertyDescriptor({x: 'hello'}, 'y');
+Reflect.getOwnPropertyDescriptor({ x: "hello" }, "y");
 // undefined
 
-Reflect.getOwnPropertyDescriptor([], 'length');
+Reflect.getOwnPropertyDescriptor([], "length");
 // {value: 0, writable: true, enumerable: false, configurable: false}
 ```
 
-### `Object.getOwnPropertyDescriptor()`와의 차이점
+### Difference with Object.getOwnPropertyDescriptor()
 
-`Reflect.getOwnPropertyDescriptor()`의 첫 번째 매개변수가 객체가 아니고 {{glossary("Primitive", "원시값")}}이라면 {{jsxref("TypeError")}}가 발생합니다. 반면 {{jsxref("Object.getOwnPropertyDescriptor()")}}는 같은 상황에서 값을 우선 객체로 변환합니다.
+If the `target` argument to this method is not an object (a primitive), then it will cause a {{jsxref("TypeError")}}. With {{jsxref("Object.getOwnPropertyDescriptor")}}, a non-object first argument will be coerced to an object at first.
 
 ```js
-Reflect.getOwnPropertyDescriptor('foo', 0);
+Reflect.getOwnPropertyDescriptor("foo", 0);
 // TypeError: "foo" is not non-null object
 
-Object.getOwnPropertyDescriptor('foo', 0);
+Object.getOwnPropertyDescriptor("foo", 0);
 // { value: "f", writable: false, enumerable: true, configurable: false }
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `Reflect.getOwnPropertyDescriptor` in `core-js`](https://github.com/zloirock/core-js#ecmascript-reflect)
 - {{jsxref("Reflect")}}
 - {{jsxref("Object.getOwnPropertyDescriptor()")}}
+- [`Proxy`'s `getOwnPropertyDescriptor` handler](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/getOwnPropertyDescriptor)

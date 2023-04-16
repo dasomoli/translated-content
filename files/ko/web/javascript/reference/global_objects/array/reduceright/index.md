@@ -1,170 +1,274 @@
 ---
 title: Array.prototype.reduceRight()
 slug: Web/JavaScript/Reference/Global_Objects/Array/reduceRight
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Array.reduceRight
 ---
 
 {{JSRef}}
 
-**`reduceRight()`** 메서드는 누적기에 대해 함수를 적용하고 배열의 각 값 (오른쪽에서 왼쪽으로)은 값을 단일 값으로 줄여야합니다.
+The **`reduceRight()`** method applies a function against an
+accumulator and each value of the array (from right-to-left) to reduce it to a single
+value.
 
-{{EmbedInteractiveExample("pages/js/array-reduce-right.html")}}
+See also {{jsxref("Array.prototype.reduce()")}} for left-to-right.
 
-왼쪽에서 오른쪽으로 {{jsxref("Array.prototype.reduce()")}}도 참조하십시오.
+{{EmbedInteractiveExample("pages/js/array-reduce-right.html","shorter")}}
 
-## 구문
+## Syntax
 
-```js
-    arr.reduceRight(callback[, initialValue])
+```js-nolint
+reduceRight(callbackFn)
+reduceRight(callbackFn, initialValue)
 ```
 
-### 매개변수
+### Parameters
 
-- `callback`
-  - : 4 개의 인수를 취하여 배열의 각 값에 대해 실행할 함수입니다._ `previousValue`
-    _ : 콜백의 마지막 호출에서 이전에 리턴 된 값 또는 제공된 경우 initialValue. (아래 참조).
+- `callbackFn`
+  - : A function to execute for each element in the array. Its return value becomes the value of the `accumulator` parameter on the next invocation of `callbackFn`. For the last invocation, the return value becomes the return value of `reduceRight()`. The function is called with the following arguments:
+    - `accumulator`
+      - : The value previously returned in the last invocation of the callback, or `initialValue`, if supplied. (See below.)
     - `currentValue`
-      - : 배열에서 처리중인 현재 요소입니다.
+      - : The current element being processed in the array.
     - `index`
-      - : 배열에서 처리중인 현재 요소의 인덱스입니다.
+      - : The index of the current element being processed in the array.
     - `array`
-      - : 배열 reduce가 호출되었습니다.
-- `initialValue`
-  - : 선택 과목. 콜백의 최초의 호출의 최초의 인수로서 사용하는 객체입니다.
+      - : The array `reduceRight()` was called upon.
+- `initialValue` {{optional_inline}}
+  - : Value to use as accumulator to the first call of the `callbackFn`. If no initial value is supplied, the last element in the array will be used and skipped. Calling `reduceRight()` on an empty array without an initial value creates a `TypeError`.
 
-### 반환 값
+### Return value
 
-누적 계산의 결과를 반환합니다.
+The value that results from the reduction.
 
-## 설명
+## Description
 
-`reduceRight는 배열의 구멍을 제외하고 배열에있는 각 요소에 대해 콜백 함수를 한 번 실행합니다.이 인수는 초기 값 (또는 이전 콜백 호출의 값), 현재 요소의 값, 현재 인덱스 및 반복이 일어나는 배열.`
+The `reduceRight()` method is an [iterative method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#iterative_methods). It runs a "reducer" callback function over all elements in the array, in descending-index order, and accumulates them into a single value.
 
-reduceRight 콜백 호출은 다음과 같습니다.
+`callbackFn` is invoked only for array indexes which have assigned values. It is not invoked for empty slots in [sparse arrays](/en-US/docs/Web/JavaScript/Guide/Indexed_collections#sparse_arrays).
+
+Unlike other [iterative methods](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#iterative_methods), `reduce()` does not accept a `thisArg` argument. `callbackFn` is always called with `undefined` as `this`, which gets substituted with `globalThis` if `callbackFn` is non-strict.
+
+`reduceRight()` does not mutate the array on which it is called, but the function provided as `callbackFn` can. Note, however, that the length of the array is saved _before_ the first invocation of `callbackFn`. Therefore:
+
+- `callbackFn` will not visit any elements added beyond the array's initial length when the call to `reduceRight()` began.
+- Changes to already-visited indexes do not cause `callbackFn` to be invoked on them again.
+- If an existing, yet-unvisited element of the array is changed by `callbackFn`, its value passed to the `callbackFn` will be the value at the time that element gets visited. [Deleted](/en-US/docs/Web/JavaScript/Reference/Operators/delete) elements are not visited.
+
+> **Warning:** Concurrent modifications of the kind described above frequently lead to hard-to-understand code and are generally to be avoided (except in special cases).
+
+The `reduceRight()` method is [generic](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#generic_array_methods). It only expects the `this` value to have a `length` property and integer-keyed properties.
+
+## Examples
+
+### How reduceRight() works without an initial value
+
+The call to the reduceRight `callbackFn` would look something like
+this:
 
 ```js
-array.reduceRight(function(previousValue, currentValue, index, array) {
-  // ...
+arr.reduceRight((accumulator, currentValue, index, array) => {
+  // …
 });
 ```
 
-함수가 처음 호출 될 때 previousValue 및 currentValue는 두 값 중 하나가 될 수 있습니다. reduceValue에 대한 호출에 initialValue가 제공된 경우 previousValue는 initialValue와 같고 currentValue는 배열의 마지막 값과 같습니다. initialValue가 제공되지 않으면 previousValue는 배열의 마지막 값과 같고 currentValue는 두 번째 - 마지막 값과 같습니다.
+The first time the function is called, the `accumulator` and
+`currentValue` can be one of two values. If an
+`initialValue` was provided in the call to
+`reduceRight`, then `accumulator` will be equal to
+`initialValue` and `currentValue` will be
+equal to the last value in the array. If no `initialValue` was
+provided, then `accumulator` will be equal to the last value in
+the array and `currentValue` will be equal to the second-to-last
+value.
 
-배열이 비어 있고 initialValue가 제공되지 않으면 {{jsxref ( "TypeError")}}가 발생합니다. 배열에 요소가 1 개만 있어도 (위치에 관계없이) initialValue가 제공되지 않았던 경우, 또는 initialValue가 준비되어 있지만 배열이 비어있는 경우, 콜백을 호출하지 않고 솔로 값이 반환됩니다.
+If the array is empty and no `initialValue` was provided,
+{{jsxref("TypeError")}} would be thrown. If the array has only one element (regardless
+of position) and no `initialValue` was provided, or if
+`initialValue` is provided but the array is empty, the solo value
+would be returned without calling `callbackFn`.
 
-함수의 일부 실행 예제는 다음과 같습니다.
+Some example run-throughs of the function would look like this:
 
 ```js
-[0, 1, 2, 3, 4].reduceRight(function(previousValue, currentValue, index, array) {
-  return previousValue + currentValue;
-});
+[0, 1, 2, 3, 4].reduceRight(
+  (accumulator, currentValue, index, array) => accumulator + currentValue,
+);
 ```
 
-콜백은 네 번 호출되며 각 호출의 인수와 반환 값은 다음과 같습니다.
+The callback would be invoked four times, with the arguments and return values in each
+call being as follows:
 
-| `previousValue` | `currentValue` | `index` | `array` | return value      |      |
-| --------------- | -------------- | ------- | ------- | ----------------- | ---- |
-| first call      | `4`            | `3`     | `3`     | `[0, 1, 2, 3, 4]` | `7`  |
-| second call     | `7`            | `2`     | `2`     | `[0, 1, 2, 3, 4]` | `9`  |
-| third call      | `9`            | `1`     | `1`     | `[0, 1, 2, 3, 4]` | `10` |
-| fourth call     | `10`           | `0`     | `0`     | `[0, 1, 2, 3, 4]` | `10` |
+|             | `accumulator` | `currentValue` | `index` | Return value |
+| ----------- | ------------- | -------------- | ------- | ------------ |
+| First call  | `4`           | `3`            | `3`     | `7`          |
+| Second call | `7`           | `2`            | `2`     | `9`          |
+| Third call  | `9`           | `1`            | `1`     | `10`         |
+| Fourth call | `10`          | `0`            | `0`     | `10`         |
 
-reduceRight에 의해 반환 된 값은 마지막 콜백 호출 (10)의 값이됩니다.
+The `array` parameter never changes through the process — it's always `[0, 1, 2, 3, 4]`. The value returned by `reduceRight` would be that of the last callback invocation (`10`).
 
-initialValue를 제공하면 결과는 다음과 같습니다.
+### How reduceRight() works with an initial value
+
+Here we reduce the same array using the same algorithm, but with an `initialValue` of `10` passed as the second argument to `reduceRight()`:
 
 ```js
-[0, 1, 2, 3, 4].reduceRight(function(previousValue, currentValue, index, array) {
-  return previousValue + currentValue;
-}, 10);
+[0, 1, 2, 3, 4].reduceRight(
+  (accumulator, currentValue, index, array) => accumulator + currentValue,
+  10,
+);
 ```
 
-| `previousValue` | `currentValue` | `index` | `array` | return value      |      |
-| --------------- | -------------- | ------- | ------- | ----------------- | ---- |
-| first call      | `10`           | `4`     | `4`     | `[0, 1, 2, 3, 4]` | `14` |
-| second call     | `14`           | `3`     | `3`     | `[0, 1, 2, 3, 4]` | `17` |
-| third call      | `17`           | `2`     | `2`     | `[0, 1, 2, 3, 4]` | `19` |
-| fourth call     | `19`           | `1`     | `1`     | `[0, 1, 2, 3, 4]` | `20` |
-| fifth call      | `20`           | `0`     | `0`     | `[0, 1, 2, 3, 4]` | `20` |
+|             | `accumulator` | `currentValue` | `index` | Return value |
+| ----------- | ------------- | -------------- | ------- | ------------ |
+| First call  | `10`          | `4`            | `4`     | `14`         |
+| Second call | `14`          | `3`            | `3`     | `17`         |
+| Third call  | `17`          | `2`            | `2`     | `19`         |
+| Fourth call | `19`          | `1`            | `1`     | `20`         |
+| Fifth call  | `20`          | `0`            | `0`     | `20`         |
 
-reduceRight에 의해 이번에 반환 된 값은 물론 20입니다.
+The value returned by `reduceRight` this time would be, of course, `20`.
 
-## 예제
-
-### 배열 내 모든 값의 합계 구하기
+### Sum up all values within an array
 
 ```js
-var sum = [0, 1, 2, 3].reduceRight(function(a, b) {
-  return a + b;
-});
+const sum = [0, 1, 2, 3].reduceRight((a, b) => a + b);
 // sum is 6
 ```
 
-### 이중 배열 전개하기
+### Flatten an array of arrays
 
 ```js
-var flattened = [[0, 1], [2, 3], [4, 5]].reduceRight(function(a, b) {
-    return a.concat(b);
-}, []);
+const arrays = [
+  [0, 1],
+  [2, 3],
+  [4, 5],
+];
+const flattened = arrays.reduceRight((a, b) => a.concat(b), []);
 // flattened is [4, 5, 2, 3, 0, 1]
 ```
 
-### reduce와 reduceRight의 차이점
+### Run a list of asynchronous functions with callbacks in series each passing their results to the next
 
 ```js
-var a = ["1", "2", "3", "4", "5"];
-var left  = a.reduce(function(prev, cur)      { return prev + cur; });
-var right = a.reduceRight(function(prev, cur) { return prev + cur; });
+const waterfall =
+  (...functions) =>
+  (callback, ...args) =>
+    functions.reduceRight(
+      (composition, fn) =>
+        (...results) =>
+          fn(composition, ...results),
+      callback,
+    )(...args);
 
-console.log(left);  // "12345"
+const randInt = (max) => Math.floor(Math.random() * max);
+
+const add5 = (callback, x) => {
+  setTimeout(callback, randInt(1000), x + 5);
+};
+const mult3 = (callback, x) => {
+  setTimeout(callback, randInt(1000), x * 3);
+};
+const sub2 = (callback, x) => {
+  setTimeout(callback, randInt(1000), x - 2);
+};
+const split = (callback, x) => {
+  setTimeout(callback, randInt(1000), x, x);
+};
+const add = (callback, x, y) => {
+  setTimeout(callback, randInt(1000), x + y);
+};
+const div4 = (callback, x) => {
+  setTimeout(callback, randInt(1000), x / 4);
+};
+
+const computation = waterfall(add5, mult3, sub2, split, add, div4);
+computation(console.log, 5); // Logs 14
+
+// same as:
+
+const computation2 = (input, callback) => {
+  const f6 = (x) => div4(callback, x);
+  const f5 = (x, y) => add(f6, x, y);
+  const f4 = (x) => split(f5, x);
+  const f3 = (x) => sub2(f4, x);
+  const f2 = (x) => mult3(f3, x);
+  add5(f2, input);
+};
+```
+
+### Difference between reduce and reduceRight
+
+```js
+const a = ["1", "2", "3", "4", "5"];
+const left = a.reduce((prev, cur) => prev + cur);
+const right = a.reduceRight((prev, cur) => prev + cur);
+
+console.log(left); // "12345"
 console.log(right); // "54321"
 ```
 
-## 폴리필
+### Defining composable functions
 
-`reduceRight`는 5 판에서 ECMA-262 표준에 추가되었습니다. 표준의 모든 구현에 존재하지 않을 수도 있습니다. 이 문제를 해결하려면 스크립트 시작 부분에 다음 코드를 삽입하여 reduceRight를 기본적으로 지원하지 않는 구현에서 사용할 수있게하십시오.
+Function composition is a mechanism for combining functions, in which the
+output of each function is passed into the next one, and the output of the last
+function is the final result. In this example we use `reduceRight()`
+to implement function composition.
+
+See also [Function composition](<https://en.wikipedia.org/wiki/Function_composition_(computer_science)>) on Wikipedia.
 
 ```js
-// ECMA-262, 5 판, 15.4.4.22의 제작 단계
-// 참조 : http://es5.github.io/#x15.4.4.22
-if ('function' !== typeof Array.prototype.reduceRight) {
-  Array.prototype.reduceRight = function(callback /*, initialValue*/) {
-    'use strict';
-    if (null === this || 'undefined' === typeof this) {
-      throw new TypeError('Array.prototype.reduce called on null or undefined' );
-    }
-    if ('function' !== typeof callback) {
-      throw new TypeError(callback + ' is not a function');
-    }
-    var t = Object(this), len = t.length >>> 0, k = len - 1, value;
-    if (arguments.length >= 2) {
-      value = arguments[1];
-    } else {
-      while (k >= 0 && !(k in t)) {
-        k--;
-      }
-      if (k < 0) {
-        throw new TypeError('Reduce of empty array with no initial value');
-      }
-      value = t[k--];
-    }
-    for (; k >= 0; k--) {
-      if (k in t) {
-        value = callback(value, t[k], k, t);
-      }
-    }
-    return value;
-  };
-}
+const compose =
+  (...args) =>
+  (value) =>
+    args.reduceRight((acc, fn) => fn(acc), value);
+
+// Increment passed number
+const inc = (n) => n + 1;
+
+// Doubles the passed value
+const double = (n) => n * 2;
+
+// using composition function
+console.log(compose(double, inc)(2)); // 6
+
+// using composition function
+console.log(compose(inc, double)(2)); // 5
 ```
 
-## 명세
+### Using reduceRight() with sparse arrays
+
+`reduceRight()` skips missing elements in sparse arrays, but it does not skip `undefined` values.
+
+```js
+console.log([1, 2, , 4].reduceRight((a, b) => a + b)); // 7
+console.log([1, 2, undefined, 4].reduceRight((a, b) => a + b)); // NaN
+```
+
+### Calling reduceRight() on non-array objects
+
+The `reduceRight()` method reads the `length` property of `this` and then accesses each integer index.
+
+```js
+const arrayLike = {
+  length: 3,
+  0: 2,
+  1: 3,
+  2: 4,
+};
+console.log(Array.prototype.reduceRight.call(arrayLike, (x, y) => x - y));
+// -1, which is 4 - 3 - 2
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `Array.prototype.reduceRight` in `core-js`](https://github.com/zloirock/core-js#ecmascript-array)
 - {{jsxref("Array.prototype.reduce()")}}

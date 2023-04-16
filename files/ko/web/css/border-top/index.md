@@ -1,58 +1,85 @@
 ---
 title: border-top
 slug: Web/CSS/border-top
+page-type: css-shorthand-property
+browser-compat: css.properties.border-top
 ---
 
 {{CSSRef}}
 
-**`border-top`** [CSS](/ko/docs/Web/CSS) [단축 속성](/ko/docs/Web/CSS/Shorthand_properties)은 요소의 위쪽 테두리를 설정합니다. {{cssxref("border-top-width")}}, {{cssxref("border-top-style")}}, {{cssxref("border-top-color")}}의 값을 지정합니다.
+The **`border-top`** [shorthand](/en-US/docs/Web/CSS/Shorthand_properties) [CSS](/en-US/docs/Web/CSS) property sets all the properties of an element's top [border](/en-US/docs/Web/CSS/border).
 
 {{EmbedInteractiveExample("pages/css/border-top.html")}}
 
-다른 단축 속성과 마찬가지로, `border-top`는 자신이 포함한 모든 값을 지정하며 사용자가 명시하지 않은 속성도 기본값으로 설정합니다. 즉, 아래 두 코드는 사실 동일합니다.
+As with all shorthand properties, `border-top` always sets the values of all of the properties that it can set, even if they are not specified. It sets those that are not specified to their default values. Consider the following code:
 
 ```css
 border-top-style: dotted;
 border-top: thick green;
 ```
 
+It is actually the same as this one:
+
 ```css
 border-top-style: dotted;
 border-top: none thick green;
 ```
 
-따라서 `border-top`보다 먼저 지정한 {{cssxref("border-top-style")}}의 값은 무시됩니다. {{cssxref("border-top-style")}}의 기본값은 `none`이므로, `border-style`을 명시하지 않으면 테두리를 만들지 않습니다.
+The value of {{cssxref("border-top-style")}} given before `border-top` is ignored. Since the default value of {{cssxref("border-top-style")}} is `none`, not specifying the `border-style` part results in no border.
 
-## 구문
+## Constituent properties
+
+This property is a shorthand for the following CSS properties:
+
+- [`border-top-color`](/en-US/docs/Web/CSS/border-top-color)
+- [`border-top-style`](/en-US/docs/Web/CSS/border-top-style)
+- [`border-top-width`](/en-US/docs/Web/CSS/border-top-width)
+
+## Syntax
 
 ```css
 border-top: 1px;
 border-top: 2px dotted;
 border-top: medium dashed green;
+
+/* Global values */
+border-top: inherit;
+border-top: initial;
+border-top: revert;
+border-top: revert-layer;
+border-top: unset;
 ```
 
-`border-top`은 한 개에서 세 개의 값을 사용해 지정할 수 있고, 순서는 상관하지 않습니다.
+The three values of the shorthand property can be specified in any order, and one or two of them may be omitted.
 
-### 값
+### Values
 
 - `<br-width>`
-  - : {{cssxref("border-top-width")}}.
+  - : See {{cssxref("border-top-width")}}.
 - `<br-style>`
-  - : {{cssxref("border-top-style")}}.
+  - : See {{cssxref("border-top-style")}}.
 - {{cssxref("&lt;color&gt;")}}
-  - : {{cssxref("border-top-color")}}.
+  - : See {{cssxref("border-top-color")}}.
 
-### 형식 구문
+## Formal definition
+
+{{CSSInfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
+
+### Applying a top border
+
+#### HTML
 
 ```html
-<div>
-  위쪽 테두리를 가진 요소입니다.
-</div>
+<div>This box has a border on the top side.</div>
 ```
+
+#### CSS
 
 ```css
 div {
@@ -65,12 +92,20 @@ div {
 }
 ```
 
-{{EmbedLiveSample('예제')}}
+#### Results
 
-## 명세
+{{EmbedLiveSample('Applying_a_top_border')}}
 
-{{Specifications}}{{cssinfo}}
+## Specifications
 
-## 브라우저 호환성
+{{Specifications}}
+
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- [`border`](/en-US/docs/Web/CSS/border)
+- [`border-block`](/en-US/docs/Web/CSS/border-block)
+- [`outline`](/en-US/docs/Web/CSS/outline)

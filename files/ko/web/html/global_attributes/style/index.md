@@ -1,26 +1,26 @@
 ---
 title: style
 slug: Web/HTML/Global_attributes/style
+page-type: html-attribute
+browser-compat: html.global_attributes.style
 ---
 
 {{HTMLSidebar("Global_attributes")}}
 
-**`style`** [전역 특성](/ko/docs/Web/HTML/Global_attributes)은 요소에 적용할 [CSS](/ko/docs/Web/CSS) 스타일 선언을 담습니다. 스타일은 별도의 파일에 정의하는 것이 권장된다는 점을 참고하세요. 이 특성과 {{HTMLElement("style")}} 요소는 주로 테스트 등 빠른 스타일링을 위한 목적으로 사용됩니다.
+The **`style`** [global attribute](/en-US/docs/Web/HTML/Global_attributes) contains [CSS](/en-US/docs/Web/CSS) styling declarations to be applied to the element. Note that it is recommended for styles to be defined in a separate file or files. This attribute and the {{HTMLElement("style")}} element have mainly the purpose of allowing for quick styling, for example for testing purposes.
 
 {{EmbedInteractiveExample("pages/tabbed/attribute-style.html","tabbed-shorter")}}
 
-<p class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</p>
+> **Note:** This attribute must not be used to convey semantic information. Even if all styling is removed, a page should remain semantically correct. Typically it shouldn't be used to hide irrelevant information; this should be done using the [`hidden`](/en-US/docs/Web/HTML/Global_attributes/hidden) attribute.
 
-> **참고:** `style` 특성에 의미를 담으면 안됩니다. 페이지의 모든 스타일을 제거하더라도, 그 의미는 옳게 남아있어야 합니다. 보통 `style`을 사용해 불필요한 정보를 숨기기보단 [`hidden`](/ko/docs/Web/HTML/Global_attributes/hidden) 특성을 사용해야 합니다.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 모든 [전역 특성](/ko/docs/Web/HTML/Global_attributes).
+All [global attributes](/en-US/docs/Web/HTML/Global_attributes).

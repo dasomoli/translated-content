@@ -1,23 +1,23 @@
 ---
 title: Compile
 slug: Glossary/Compile
+page-type: glossary-definition
 ---
-컴파일(Compile)은 주어진 {{Glossary("computer programming", "language")}}로 작성된 컴퓨터 프로그램을 다른 언어의 동등한 프로그램으로 변환하는 프로세스입니다. 컴파일러는이 작업을 실행하는 소프트웨어입니다. 때로는이 작업을 "조립(assembling)"또는 "빌드(build)"라고도 합니다. 이 작업들은 보통 컴파일과 같은 것(예를 들면 바이너리 형식으로 패키지를 만드는 일) 이상의 작업을 수행합니다 .
 
-일반적으로 컴파일러는 C 또는 {{Glossary("Java")}} 와 같은 고급 언어를 CPU가 이해할 수 있는, 즉 어셈블리어와 같은 기계 언어로 변환합니다. 유사한 수준의 언어 사이에서 번역하는 일부 컴파일러를 트랜스파일러 또는 크로스 컴파일러 라고 합니다. 예를 들어 TypeScript에서 {{Glossary("JavaScript")}}로 컴파일합니다. 그것들은 생산성 도구로 간주됩니다.
+**Compiling** is the process of transforming a computer program written in a given {{Glossary("computer programming", "language")}} into a set of instructions in another format or language. A **compiler** is a computer program to execute that task.
 
-대부분의 컴파일러는 선행(AOT) 또는 적기(JIT)로 작업한다. 프로그래머로서, 당신은 보통 커맨드 라인이나 당신의 {{Glossary("IDE")}}에서 AOT 컴파일러를 호출한다. 가장 유명한 'gcc'가 그 한 예다.
+Typically, a compiler transforms code written in a higher-level language such as [C++](https://en.wikipedia.org/wiki/C++) or [Rust](<https://en.wikipedia.org/wiki/Rust_(programming_language)>) or [Java](<https://en.wikipedia.org/wiki/Java_(programming_language)>) into executable (runnable) code — so-called **binary code** or **machine code**. [WebAssembly](/en-US/docs/WebAssembly), for example, is a form of executable binary code that [can be compiled from code written in C++, Rust, C#, Go, Swift, and several other languages](https://webassembly.org/getting-started/developers-guide/) and that can then be run on any web page, in any browser.
 
-JIT compilers are usually transparent to you, used for performance. For instance in the browser: Firefox' [SpiderMonkey](/ko/docs/Mozilla/Projects/SpiderMonkey) JavaScript Engine has a JIT built-in that will compile JavaScript in a website to machine code while you're viewing it so it runs faster. Projects like [WebAssembly](/ko/docs/WebAssembly) work on making this even better.
+Most compilers perform either ahead-of-time (AOT) compilation or just-in-time (JIT) compilation.
 
-## 더 알아보기
+The GNU `gcc` compiler is one well-known example of an AOT compiler. AOT compilers are typically invoked from the command line in a shell environment (from within a terminal or console) or within an {{Glossary("IDE")}}.
 
-### General knowledge
+JIT compilers are typically not invoked directly but are instead built into software runtimes internally, for the purpose of improving performance. For example, all major browsers now use JavaScript engines that have built-in JIT compilers.
 
-- Wikipedia의 [Compiler](https://en.wikipedia.org/wiki/Compiler)
-- The [GNU Compiler Collection (GCC)](https://gcc.gnu.org)
+Compilers may also translate among higher-level languages — for example, from TypeScript to {{Glossary("JavaScript")}} — in which case, they are often sometimes referred to as **transpilers**.
 
-### Learning resources
+## See also
 
-- [Base CS Introduction on Compilers](https://medium.com/basecs/a-deeper-inspection-into-compilation-and-interpretation-d98952ebc842)
-- [A big list of learning material on StackOverflow](http://stackoverflow.com/a/1672/133203)
+- [Compiling from C/C++ to WebAssembly](/en-US/docs/WebAssembly/C_to_wasm)
+- [Compiling from Rust to WebAssembly](/en-US/docs/WebAssembly/Rust_to_wasm)
+- Wikipedia: [Compiler](https://en.wikipedia.org/wiki/Compiler)

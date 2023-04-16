@@ -1,69 +1,63 @@
 ---
 title: Atomics
 slug: Web/JavaScript/Reference/Global_Objects/Atomics
-l10n:
-  sourceCommit: 194d3e00cb93a6e5ea44812548f4131cb17f0381
+page-type: javascript-namespace
+browser-compat: javascript.builtins.Atomics
 ---
 
 {{JSRef}}
 
-**`Atomics`** 객체는 아토믹 연산(Atomic operation, 원자적 연산)을 정적 메서드로 제공합니다.
-{{jsxref("SharedArrayBuffer")}} 와 {{jsxref("ArrayBuffer")}} 객체와 함께 사용됩니다.
+The **`Atomics`** namespace object contains static methods for carrying out atomic operations. They are used with {{jsxref("SharedArrayBuffer")}} and {{jsxref("ArrayBuffer")}} objects.
 
-## 설명
+## Description
 
-아토믹 연산은 `Atomic` 모듈에 설치됩니다. 다른 전역 객체와 달리 `Atomics`는 생성자가 아니기 때문에,
-[`new` 연산자](/ko/docs/Web/JavaScript/Reference/Operators/new)와 함께 사용하거나
-`Atomics` 객체를 함수로 호출할 수 없습니다. {{jsxref("Math")}} 객체처럼 `Atomics`의 모든 속성과
-메서드는 정적입니다.
+Unlike most global objects, `Atomics` is not a constructor. You cannot use it with the [`new` operator](/en-US/docs/Web/JavaScript/Reference/Operators/new) or invoke the `Atomics` object as a function. All properties and methods of `Atomics` are static (just like the {{jsxref("Math")}} object).
 
-### 아토믹 연산
+### Atomic operations
 
-메모리가 공유되면 여러 스레드가 메모리에서 동일한 데이터를 읽고 쓸 수 있습니다.
-아토믹 연산은 예측 가능한 값을 쓰고 읽고, 다음 연산이 시작되기 전에 연산을 완료하여 연산이 중단되지 않도록 합니다.
+When memory is shared, multiple threads can read and write the same data in memory. Atomic operations make sure that predictable values are written and read, that operations are finished before the next operation starts and that operations are not interrupted.
 
-### Wait와 notify
+### Wait and notify
 
-`wait()`와 `notify()` 메서드는 Linux 퓨텍스(futex)("빠른 사용자 공간 뮤텍스(mutex)")에서 모델링되어
-특정 조건이 참이 될 때까지 기다리는 방법을 제공하며 일반적으로 차단 구문으로 사용됩니다.
+The `wait()` and `notify()` methods are modeled on Linux futexes ("fast user-space mutex") and provide ways for waiting until a certain condition becomes true and are typically used as blocking constructs.
 
-## 정적 속성
+## Static properties
 
 - `Atomics[@@toStringTag]`
-  - : [`@@toStringTag`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toStringTag) 속성의 초기 값은 `"Atomics"` 문자열입니다. 이 속성은 {{jsxref("Object.prototype.toString()")}}에서 사용됩니다.
+  - : The initial value of the [`@@toStringTag`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toStringTag) property is the string `"Atomics"`. This property is used in {{jsxref("Object.prototype.toString()")}}.
 
-## 정적 메서드
+## Static methods
 
 - {{jsxref("Atomics.add()")}}
-  - : 배열의 특정 인덱스에 있던 값에 전달된 값을 추가합니다. 해당 인덱스의 이전 값을 반환합니다.
+  - : Adds the provided value to the existing value at the specified index of the array. Returns the old value at that index.
 - {{jsxref("Atomics.and()")}}
-  - : 전달된 값과 배열의 지정된 인덱스에 있는 값으로 AND 연산을 수행합니다. 해당 인덱스의 이전 값을 반환합니다.
+  - : Computes a bitwise AND on the value at the specified index of the array with the provided value. Returns the old value at that index.
 - {{jsxref("Atomics.compareExchange()")}}
-  - : 배열의 지정된 인덱스 값과 같으면 그곳에 값을 저장합니다. 이전 값을 반환합니다.
+  - : Stores a value at the specified index of the array, if it equals a value. Returns the old value.
 - {{jsxref("Atomics.exchange()")}}
-  - : 배열의 지정된 위치에 전달받은 값을 저장합니다. 이전 값을 반환합니다.
+  - : Stores a value at the specified index of the array. Returns the old value.
 - {{jsxref("Atomics.isLockFree()", "Atomics.isLockFree(size)")}}
-  - : 잠금 또는 atomic 연산을 사용할지 여부를 결정하는 데 사용할 수 있는 최적화 기본 요소입니다. 주어진 요소 크기의 배열에 대한 atomic 연산이 하드웨어 atomic 연산(잠금과 반대)을 사용하여 구현되는 경우 `true`를 반환합니다. 전문가만 사용합니다.
+  - : An optimization primitive that can be used to determine whether to use locks or atomic operations. Returns `true` if an atomic operation on arrays of the given element size will be implemented using a hardware atomic operation (as opposed to a lock). Experts only.
 - {{jsxref("Atomics.load()")}}
-  - : 배열의 지정된 위치에 있는 값을 반환합니다.
+  - : Returns the value at the specified index of the array.
 - {{jsxref("Atomics.notify()")}}
-  - : 배열의 지정된 인덱스에서 대기 중인 에이전트에 알립니다. 알림을 받은 에이전트 수를 반환합니다.
+  - : Notifies agents that are waiting on the specified index of the array. Returns the number of agents that were notified.
 - {{jsxref("Atomics.or()")}}
-  - : 전달된 값과 배열의 지정된 인덱스에 있는 값으로 OR 연산을 수행합니다. 해당 인덱스의 이전 값을 반환합니다.
+  - : Computes a bitwise OR on the value at the specified index of the array with the provided value. Returns the old value at that index.
 - {{jsxref("Atomics.store()")}}
-  - : 배열의 지정된 인덱스에 값을 저장합니다. 값을 반환합니다.
+  - : Stores a value at the specified index of the array. Returns the value.
 - {{jsxref("Atomics.sub()")}}
-  - : 배열의 지정된 인덱스에서 값을 뺍니다. 해당 인덱스의 이전 값을 반환합니다.
+  - : Subtracts a value at the specified index of the array. Returns the old value at that index.
 - {{jsxref("Atomics.wait()")}}
-  - : 배열의 지정된 인덱스가 여전히 값을 포함하고있고 대기 중이거나 시간 초과됐는지 확인합니다. `"ok"`, `"not-equal"` 또는 `"timed-out"`을 반환합니다. 호출 에이전트에서 대기가 허용되지 않으면 예외가 발생합니다. (대부분의 브라우저는 브라우저의 메인 스레드에서 `wait()`을 허용하지 않습니다.)
+  - : Verifies that the specified index of the array still contains a value and sleeps awaiting or times out. Returns either `"ok"`, `"not-equal"`, or `"timed-out"`. If waiting is not allowed in the calling agent then it throws an exception. (Most browsers will not allow `wait()` on the browser's main thread.)
 - {{jsxref("Atomics.waitAsync()")}}
-  - : 공유 메모리 위치에서 비동기식으로(즉, `Atomics.wait`와 다르게 차단 없이) 대기하고 {{jsxref("Promise", "프로미스")}}를 반환합니다.
+  - : Waits asynchronously (i.e. without blocking, unlike `Atomics.wait`) on a shared memory location and returns a {{jsxref("Promise")}}.
 - {{jsxref("Atomics.xor()")}}
-  - : 제공된 값을 사용하여 배열의 지정된 인덱스에 있는 값에 대해 XOR 연산을 수행합니다. 해당 인덱스의 이전 값을 반환합니다.
+  - : Computes a bitwise XOR on the value at the specified index of the array with the provided value. Returns the old value at that index.
 
-## 예제
+## Examples
 
-### Atomic 사용하기
+### Using Atomics
 
 ```js
 const sab = new SharedArrayBuffer(1024);
@@ -101,24 +95,23 @@ Atomics.xor(ta, 0, 1); // 10
 Atomics.load(ta, 0); // 11
 ```
 
-### Waiting과 notifying
+### Waiting and notifying
 
-`Int32Array`를 공유한다고 했을 때
+Given a shared `Int32Array`:
 
 ```js
 const sab = new SharedArrayBuffer(1024);
 const int32 = new Int32Array(sab);
 ```
 
-읽기 스레드는 0이 될 것으로 예상되는 위치 0에서 sleep 상태이며 대기 중입니다. 이것이 사실인 한 계속되지 않습니다.
-그러나 쓰기 스레드가 새 값을 저장하면 쓰기 스레드에서 이를 알리고 새 값을 반환합니다. (123)
+A reading thread is sleeping and waiting on location 0 which is expected to be 0. As long as that is true, it will not go on. However, once the writing thread has stored a new value, it will be notified by the writing thread and return the new value (123).
 
 ```js
 Atomics.wait(int32, 0, 0);
 console.log(int32[0]); // 123
 ```
 
-쓰기 스레드는 새 값을 저장하고 대기 중인 스레드가 작성되면 알립니다.
+A writing thread stores a new value and notifies the waiting thread once it has written:
 
 ```js
 console.log(int32[0]); // 0;
@@ -126,19 +119,19 @@ Atomics.store(int32, 0, 123);
 Atomics.notify(int32, 0, 1);
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("ArrayBuffer")}}
-- [JavaScript 형식화 배열](/ko/docs/Web/JavaScript/Typed_arrays)
-- [웹 워커](/ko/docs/Web/API/Web_Workers_API)
-- [parlib-simple](https://github.com/lars-t-hansen/parlib-simple) – 동기화 및 작업 배포 추상화를 제공하는 간단한 라이브러리입니다.
-- [Shared Memory – a brief tutorial](https://github.com/tc39/ecmascript_sharedmem/blob/master/TUTORIAL.md)
-- [A Taste of JavaScript’s New Parallel Primitives – Mozilla Hacks](https://hacks.mozilla.org/2016/05/a-taste-of-javascripts-new-parallel-primitives/)
+- [JavaScript typed arrays](/en-US/docs/Web/JavaScript/Typed_arrays)
+- [Web Workers](/en-US/docs/Web/API/Web_Workers_API)
+- [parlib-simple](https://github.com/lars-t-hansen/parlib-simple) – a simple library providing synchronization and work distribution abstractions.
+- [Shared Memory – a brief tutorial](https://github.com/tc39/proposal-ecmascript-sharedmem/blob/main/TUTORIAL.md)
+- [A Taste of JavaScript's New Parallel Primitives – Mozilla Hacks](https://hacks.mozilla.org/2016/05/a-taste-of-javascripts-new-parallel-primitives/)

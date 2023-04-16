@@ -1,35 +1,65 @@
 ---
-title: RTCIceCandidate. toJSON()
+title: "RTCIceCandidate: toJSON() method"
+short-title: toJSON()
 slug: Web/API/RTCIceCandidate/toJSON
+page-type: web-api-instance-method
+browser-compat: api.RTCIceCandidate.toJSON
 ---
+
 {{APIRef("WebRTC")}}
 
-{{domxref("RTCIceCandidate")}} 메소드인 **`toJSON()`**은 JSON 형식으로 호출된 RTCIceCandidate를 {{domxref("RTCIceCandidateInit")}} 객체 형식으로 변환합니다. .
+The {{domxref("RTCIceCandidate")}} method **`toJSON()`** converts the `RTCIceCandidate` on which it's called into JSON.
+
+A stringified version of the object can then be obtained by calling {{jsxref("JSON.stringify", "stringify()")}} on the returned object.
 
 ## Syntax
 
-```js
-json = RTCIceCandidate.toJSON();
+```js-nolint
+toJSON()
 ```
 
-### 반환 값
+### Parameters
 
-{{domxref("RTCIceCandidateInit")}} 딕셔너리에 상응하는 객체로, `RTCIceCandidate` 객체의 해당하는 값으로 설정됩니다.
+None.
 
-반환된 객체에 대한 문자열화된 버전의 객체는 {{jsxref("JSON.stringify", "stringify()")}}를 호출해서 가져올 수 있습니다. 아래의 [예시](#example)를 참조하십시오.
+### Return value
 
-## 예시
+<!-- RTCIceCandidateInit in spec -->
 
-아래의 샘플 코드는 `candidate` 변수의 `RTCIceCandidate`를 나타내는 JSON 문자열을 가져옵니다.
+A JSON object with the following properties, which have been set to the corresponding values in the `RTCIceCandidate` object:
+
+- `candidate` {{optional_inline}}
+  - : A string describing the network connectivity information for the candidate.
+    Additional information can be found in {{domxref("RTCIceCandidate.candidate")}}.
+- `sdpMid` {{optional_inline}}
+
+  - : A string containing the identification tag of the media stream with which the candidate is associated, or `null` if there is no associated media stream.
+    Additional information can be found in {{domxref("RTCIceCandidate.sdpMid")}}.
+
+- `sdpMLineIndex` {{optional_inline}}
+
+  - : A number property containing the zero-based index of the m-line with which the candidate is associated, within the [SDP](/en-US/docs/Web/API/WebRTC_API/Protocols#sdp) of the media description, or `null` if no such associated exists.
+    Additional information can be found in {{domxref("RTCIceCandidate.sdpMLineIndex")}}.
+
+- `usernameFragment` {{optional_inline}}
+  - : A string containing the username fragment (usually referred to in shorthand as "ufrag" or "ice-ufrag").
+    This fragment, along with the ICE password ("ice-pwd"), uniquely identifies a single ongoing ICE interaction (including for any communication with the {{Glossary("STUN")}} server).
+    Additional information can be found in {{domxref("RTCIceCandidate.usernameFragment")}}.
+
+> **Note:** The returned JSON object has the same form/properties as the `candidateInfo` object that can optionally be passed to the {{domxref("RTCIceCandidate.RTCIceCandidate()","RTCIceCandidate() constructor")}} to configure the candidate.
+
+## Examples
+
+This simple example obtains a JSON string representing an `RTCIceCandidate` found in the variable `candidate`.
 
 ```js
-var jsonString = candidate.toJSON().stringify();
+let jsonString = candidate.toJSON().stringify();
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

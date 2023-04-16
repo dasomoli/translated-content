@@ -1,72 +1,95 @@
 ---
-title: Event.preventDefault()
+title: "Event: preventDefault() method"
+short-title: preventDefault()
 slug: Web/API/Event/preventDefault
+page-type: web-api-instance-method
+browser-compat: api.Event.preventDefault
 ---
+
 {{apiref("DOM")}}
 
-{{domxref("Event")}} 인터페이스의 **`preventDefault()`** 메서드는 어떤 이벤트를 명시적으로 처리하지 않은 경우, 해당 이벤트에 대한 {{Glossary("user agent", "사용자 에이전트")}}의 기본 동작을 실행하지 않도록 지정합니다.
+The **`preventDefault()`** method of the {{domxref("Event")}} interface tells the {{Glossary("user agent")}} that if the event does not get explicitly handled, its default action should not be taken as it normally would be.
 
-`preventDefault()`를 호출한 이벤트도 수신기 중 하나에서 {{domxref("Event.stopPropagation", "stopPropagation()")}} 또는 {{domxref("Event.stopImmediatePropagation", "stopImmediatePropagation()")}}을 호출하기 전까지는 다른 이벤트와 마찬가지로 전파됩니다.
+The event continues to propagate as usual,
+unless one of its event listeners calls
+{{domxref("Event.stopPropagation", "stopPropagation()")}}
+or {{domxref("Event.stopImmediatePropagation", "stopImmediatePropagation()")}},
+either of which terminates propagation at once.
 
-아래에도 적혀있지만, `cancelable: true` 없이 {{domxref("EventTarget.dispatchEvent()")}}로 발송한 이벤트처럼 취소 불가능한 이벤트의 경우, `preventDefault()`를 호출해도 아무 효과도 나타나지 않습니다.
+As noted below, calling **`preventDefault()`** for a
+non-cancelable event, such as one dispatched via
+{{domxref("EventTarget.dispatchEvent()")}}, without specifying
+`cancelable: true` has no effect.
 
-## 구문
+## Syntax
 
+```js-nolint
+event.preventDefault()
 ```
-event.preventDefault();
-```
 
-## 예제
+## Examples
 
-### 기본 클릭 동작 방지하기
+### Blocking default click handling
 
-체크박스의 클릭 기본 동작은 체크박스를 체크하거나 체크 해제하는 것입니다. 이 예제는 체크박스의 클릭 기본 동작을 방지하는 모습을 보입니다.
+Toggling a checkbox is the default action of clicking on a checkbox. This example
+demonstrates how to prevent that from happening:
 
 #### JavaScript
 
 ```js
-document.querySelector("#id-checkbox").addEventListener("click", function(event) {
-         document.getElementById("output-box").innerHTML += "죄송합니다! <code>preventDefault()</code> 때문에 체크할 수 없어요!<br>";
-         event.preventDefault();
-}, false);
+const checkbox = document.querySelector("#id-checkbox");
+
+checkbox.addEventListener("click", checkboxClick, false);
+
+function checkboxClick(event) {
+  let warn = "preventDefault() won't let you check this!<br>";
+  document.getElementById("output-box").innerHTML += warn;
+  event.preventDefault();
+}
 ```
 
 #### HTML
 
 ```html
-<p>체크박스를 클릭해주세요.</p>
+<p>Please click on the checkbox control.</p>
 
 <form>
-  <label for="id-checkbox">체크박스:</label>
-  <input type="checkbox" id="id-checkbox"/>
+  <label for="id-checkbox">Checkbox:</label>
+  <input type="checkbox" id="id-checkbox" />
 </form>
 
 <div id="output-box"></div>
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("기본_클릭_동작_방지하기")}}
+{{EmbedLiveSample("Blocking_default_click_handling")}}
 
-### 키 입력이 입력 칸을 채우는 것을 방지하기
+### Stopping keystrokes from reaching an edit field
 
-이 예제에서는 `preventDefault()`를 사용해서 사용자가 입력 칸에 원하지 않는 문자를 입력하지 못하도록 합니다. 실제로 이런 기능이 필요할 땐 [내장 HTML 양식 검증](/ko/docs/Learn/Forms/Form_validation)을 사용하세요.
+The following example demonstrates how invalid text input can be stopped from reaching
+the input field with `preventDefault()`. Nowadays, you should usually use [native HTML form validation](/en-US/docs/Learn/Forms/Form_validation)
+instead.
 
 #### HTML
 
+The HTML form below captures user input.
+Since we're only interested in keystrokes, we're disabling `autocomplete` to prevent the browser from filling in the input field with cached values.
+
 ```html
 <div class="container">
-  <p>이름을 입력하세요. 영문 소문자만 사용할 수 있습니다.</p>
+  <p>Please enter your name using lowercase letters only.</p>
 
   <form>
-    <input type="text" id="my-textbox">
+    <input type="text" id="my-textbox" autocomplete="off" />
   </form>
 </div>
 ```
 
 #### CSS
 
-사용자가 잘못된 키를 누를 때 보여줄 경고창을 그리기 위한 CSS입니다.
+We use a little bit of CSS for the warning box we'll draw when the user presses an
+invalid key:
 
 ```css
 .warning {
@@ -81,68 +104,73 @@ document.querySelector("#id-checkbox").addEventListener("click", function(event)
 
 #### JavaScript
 
-이제 실제 작업을 수행할 JavaScript 코드입니다. 우선 {{event("keypress")}} 이벤트를 수신합니다.
+And here's the JavaScript code that does the job. First, listen for
+{{domxref("Element/keypress_event", "keypress")}} events:
 
 ```js
-var myTextbox = document.getElementById('my-textbox');
-myTextbox.addEventListener('keypress', checkName, false);
+const myTextbox = document.getElementById("my-textbox");
+myTextbox.addEventListener("keypress", checkName, false);
 ```
 
-`checkName()` 함수는 사용자가 누른 키를 관찰해서 허용할지, 허용하지 않을지 결정합니다.
+The `checkName()` function, which looks at the pressed key and decides
+whether to allow it:
 
 ```js
 function checkName(evt) {
-  var charCode = evt.charCode;
-  if (charCode != 0) {
+  const charCode = evt.charCode;
+  if (charCode !== 0) {
     if (charCode < 97 || charCode > 122) {
       evt.preventDefault();
       displayWarning(
-        "영문 소문자만 입력하세요."
-        + "\n" + "charCode: " + charCode + "\n"
+        "Please use lowercase letters only.\n" + `charCode: ${charCode}\n`
       );
     }
   }
 }
 ```
 
-`displayWarning()` 함수는 경고창을 띄웁니다. 완벽한 모습은 아니지만 예제로는 충분합니다.
+The `displayWarning()` function presents a notification of a problem. It's
+not an elegant function but does the job for the purposes of this example:
 
 ```js
-var warningTimeout;
-var warningBox = document.createElement("div");
+let warningTimeout;
+const warningBox = document.createElement("div");
 warningBox.className = "warning";
 
 function displayWarning(msg) {
   warningBox.innerHTML = msg;
 
   if (document.body.contains(warningBox)) {
-    window.clearTimeout(warningTimeout);
+    clearTimeout(warningTimeout);
   } else {
     // insert warningBox after myTextbox
     myTextbox.parentNode.insertBefore(warningBox, myTextbox.nextSibling);
   }
 
-  warningTimeout = window.setTimeout(function() {
-      warningBox.parentNode.removeChild(warningBox);
-      warningTimeout = -1;
-    }, 2000);
+  warningTimeout = setTimeout(() => {
+    warningBox.parentNode.removeChild(warningBox);
+    warningTimeout = -1;
+  }, 2000);
 }
 ```
 
-#### 결과
+#### Result
 
-{{ EmbedLiveSample('키_입력이_입력_칸을_채우는_것을_방지하기', 600, 200) }}
+{{ EmbedLiveSample('Stopping_keystrokes_from_reaching_an_edit_field', 600, 200) }}
 
-## 참고
+## Notes
 
-이벤트 흐름의 어떤 단계에서라도 `preventDefault()`를 호출하면 이벤트를 취소합니다. 즉, 이벤트에 대한 구현체의 기본 동작을 실행하지 않습니다.
+Calling `preventDefault()` during any stage of event flow cancels the event,
+meaning that any default action normally taken by the implementation as a result of the
+event will not occur.
 
-{{domxref("Event.cancelable")}}을 사용해서 이벤트의 취소 가능 여부를 알아낼 수 있습니다. 취소 불가능한 이벤트에 대해 `preventDefault()`를 호출해도 아무 효과가 없습니다.
+You can use {{domxref("Event.cancelable")}} to check if the event is cancelable.
+Calling `preventDefault()` for a non-cancelable event has no effect.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

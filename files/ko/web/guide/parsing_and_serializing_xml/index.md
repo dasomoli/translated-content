@@ -1,138 +1,107 @@
 ---
-title: XML 파싱 및 직렬화
+title: Parsing and serializing XML
 slug: Web/Guide/Parsing_and_serializing_XML
-original_slug: Web/Guide/XML_파싱_및_직렬화
 ---
 
-웹 상에서 XML을 파싱하고 직렬화할 때 사용할 수 있는 객체는 다음과 같습니다.
+<section id="Quick_links">
+  {{ListSubpagesForSidebar("/en-US/docs/Web/Guide")}}
+</section>
 
-- **DOM 트리를 문자열로 직렬화**하는 [XMLSerializer](/en/XMLSerializer)
-- **XML 문서 상의 각기 다른 부분들을 (비 XML 문법을 사용하여) 문자열로 직렬화**하는 [XPath](/en/XPath)
-- XML을 파싱하여 **문자열을 DOM 트리로 변환**하는 [DOMParser](/en/DOM/DOMParser)
-- **URL을 사용하여 주소화 가능한(URL-addressable) 리소스를 DOM 트리로** 파싱하는 [XMLHttpRequest](/en/nsIXMLHttpRequest)
+At times, you may need to parse {{Glossary("XML")}} content and convert it into a {{Glossary("DOM")}} tree, or, conversely, serialize an existing DOM tree into XML. In this article, we'll look at the objects provided by the web platform to make the common tasks of serializing and parsing XML easy.
 
-## Part 1: XML 문서 생성법
+- {{domxref("XMLSerializer")}}
+  - : Serializes DOM trees, converting them into strings containing XML.
+- {{domxref("DOMParser")}}
+  - : Constructs a DOM tree by parsing a string containing XML, returning a {{domxref("XMLDocument")}} or {{domxref("Document")}} as appropriate based on the input data.
+- {{domxref("XMLHttpRequest")}}
+  - : Loads content from a URL; XML content is returned as an XML {{domxref("Document")}} object with a DOM tree built from the XML itself.
+- [XPath](/en-US/docs/Web/XPath)
+  - : A technology for creating strings that contain addresses for specific portions of an XML document, and locating XML nodes based on those addresses.
 
-XML 문서 생성법은 다음과 같습니다. (XML 문서는 `Document`의 인스턴스 입니다.)
+## Creating an XML document
 
-### 문자열을 DOM 트리로 파싱
+Using one of the following approaches to create an XML document (which is an instance of {{domxref("Document")}}).
 
-```js hidden
-var sMyString = '<a id="a"><b id="b">hey!</b></a>';
-var oParser = new DOMParser();
-var oDOM = oParser.parseFromString(sMyString, "text/xml");
-// 루트 요소의 이름, 또는 에러 메시지를 출력합니다.
-dump(oDOM.documentElement.nodeName == "parsererror" ? "error while parsing" : oDOM.documentElement.nodeName);
-```
+### Parsing strings into DOM trees
 
-### 자바스크립트 객체 트리를 시작점으로 하여 XML 문서를 생성(JXON)
-
-[JXON 역(reverse) 알고리즘](/en/JXON#Reverse_Algorithms)을 참고하세요.
-
-### URL 주소화 가능한(URL-addressable) 리소스를 DOM 트리로 파싱
-
-#### XMLHttpRequest를 사용합니다
-
-다음은 URL 주소화 가능한 XML 파일을 DOM 트리로 읽어들인 후 파싱하는 예시 코드입니다.
+This example converts an XML fragment in a string into a DOM tree using a {{domxref("DOMParser")}}:
 
 ```js
-var xhr = new XMLHttpRequest();
-xhr.onload = function() {
+const xmlStr = '<q id="a"><span id="b">hey!</span></q>';
+const parser = new DOMParser();
+const doc = parser.parseFromString(xmlStr, "application/xml");
+// print the name of the root element or error message
+const errorNode = doc.querySelector("parsererror");
+if (errorNode) {
+  console.log("error while parsing");
+} else {
+  console.log(doc.documentElement.nodeName);
+}
+```
+
+### Parsing URL-addressable resources into DOM trees
+
+#### Using XMLHttpRequest
+
+Here is sample code that reads and parses a URL-addressable XML file into a DOM tree:
+
+```js
+const xhr = new XMLHttpRequest();
+
+xhr.onload = () => {
   dump(xhr.responseXML.documentElement.nodeName);
-}
-xhr.onerror = function() {
+};
+
+xhr.onerror = () => {
   dump("Error while getting XML.");
-}
+};
+
 xhr.open("GET", "example.xml");
 xhr.responseType = "document";
 xhr.send();
 ```
 
-`xhr.responseXML는` {{domxref("Document")}}의 인스턴스입니다.
+The value in the `xhr` object's {{domxref("XMLHttpRequest.responseXML", "responseXML")}} field is a {{domxref("Document")}} constructed by parsing the XML.
 
-## Part 2: 특정 XML 문서의 콘텐츠를 직렬화하는 방법
+If the document is {{Glossary("HTML")}}, the code shown above will return a {{domxref("Document")}}. If the document is XML, the resulting object is actually a {{domxref("XMLDocument")}}. The two types are essentially the same; the difference is largely historical, although differentiating has some practical benefits as well.
 
-Part 1에서 생성한 XML 문서의 콘텐츠를 직렬화할 수 있는 방법은 다음과 같습니다.
+> **Note:** There is in fact an {{domxref("HTMLDocument")}} interface as well, but it is not necessarily an independent type. In some browsers it is, while in others it is an alias for the `Document` interface.
 
-### DOM 트리를 문자열로 직렬화
+## Serializing an XML document
 
-제일 먼저 [DOM 트리 생성법](/en/How_to_create_a_DOM_tree)에 나와 있는 대로 DOM 트리를 생성합니다. 다른 방법으로는 {{ domxref("XMLHttpRequest") }}에서 얻어낸 DOM 트리를 사용하는 방법이 있습니다.
+Given a {{domxref("Document")}}, you can serialize the document's DOM tree back into XML using the {{domxref("XMLSerializer.serializeToString()")}} method.
 
-이제 `doc`(DOM 트리)를 문자열로 직렬화 해 봅시다.
+Use the following approaches to serialize the contents of the XML document you created in the previous section.
 
-```js
-var oSerializer = new XMLSerializer();
-var sXML = oSerializer.serializeToString(doc);
-```
+### Serializing DOM trees to strings
 
-`new XMLSerializer()` 생성자는 JS XPCOM 컴포넌트(혹은 [JS module](/en/JavaScript_code_modules)) 내에서는 사용이 불가능합니다. 대신, 다음과 같은 코드를 작성하세요.
+First, create a DOM tree as described in [How to Create a DOM tree](/en-US/docs/Web/API/Document_object_model/How_to_create_a_DOM_tree). Alternatively, use a DOM tree obtained from {{ domxref("XMLHttpRequest") }}.
 
-```js
-var oSerializer = Components.classes["@mozilla.org/xmlextras/xmlserializer;1"]
-                            .createInstance(Components.interfaces.nsIDOMSerializer);
-var sXML = oSerializer.serializeToString(doc);
-```
-
-#### DOM 트리를 문자열로 "예쁘게(pretty)" 직렬화
-
-`XMLSerializer와` [E4X](/en/E4X)를 사용하면 DOM 트리를 [예쁘게 출력(pretty print](http://en.wikipedia.org/wiki/Pretty-print)) 할 수 있습니다. 우선, [DOM 트리 생성법](/en/How_to_create_a_DOM_tree) 글을 참고하여 DOM 트리를 생성합니다. 혹은 {{ domxref("XMLHttpRequest") }}를 통해 DOM 트리를 뽑아내는 방법도 있습니다. 아래 코드에서 변수 `doc`는 DOM 트리를 가지고 있습니다.
+To serialize the DOM tree `doc` into XML text, call {{domxref("XMLSerializer.serializeToString()")}}:
 
 ```js
-var oSerializer = new XMLSerializer();
-var sPrettyXML = XML(oSerializer.serializeToString(doc)).toXMLString();
+const serializer = new XMLSerializer();
+const xmlStr = serializer.serializeToString(doc);
 ```
 
-들여쓰기는 두 번 스페이스가 들어간 것과 같게 되어 있습니다. 좀 더 효율적인 코드를 작성하거나 들여쓰기 문자열을 임의로 설정하고 싶다면 {{ domxref("treeWalker") }}를 사용하십시오.
+### Serializing HTML documents
 
-> **참고:** E4X `toXMLString` 메소드를 쓴다면, **CDATA 요소가 없어지거나**, 요소 안에 담긴 텍스트만 남을 수 있습니다. 그러므로 만약 XML 내에 CDATA 요소가 들어 있다면, 위에 나온 메소드는 그다지 유용하지 않을 수도 있습니다.
-
-```xml
-<content><![CDATA[This is the content]]></content>
-```
-
-위의 코드는 다음과 같이 변환됩니다.
-
-```xml
-<content>This is the content</content>
-```
-
-### DOM 트리를 자바스크립트 객체 트리로 직렬화 (JXON)
-
-[JXON](/en/JXON) (lossless **J**avaScript **X**ML **O**bject **N**otation, 무손실 자바스크립트 XML 객체 표기법)은 XML을 사용하여 자바스크립트 객체를 표현하는 방법입니다. XML 문서의 일부분만 나오게 하고 싶다면, 문서 전체를 JSON으로 변환하지 말고 [XPath](/en/XPath)를 사용하세요! 이 외의 상황이라면 [JSON에 관한 글](/en/JXON)을 참조하세요.
-
-### DOM 트리를 파일로 직렬화
-
-먼저, [DOM 트리 생성법](/en/How_to_create_a_DOM_tree) 글에 나와 있는 대로 DOM 트리를 생성하세요. 만약 {{ domxref("XMLHttpRequest") }}를 사용하여 이미 DOM 트리가 존재한다면 이 절의 마지막 부분으로 건너 뛰십시오.
-
-이제 DOM 트리인 `doc`를 파일로 직렬화 해봅시다. 파일에 대해 더 알아보고 싶다면, [모질라에서 파일 사용과 관련하여](/en/Code_snippets/File_I//O)를 참조하세요.
+If the DOM you have is an HTML document, you can serialize using `serializeToString()`, but there is a simpler option: just use the {{domxref("Element.innerHTML")}} property (if you want just the descendants of the specified node) or the {{domxref("Element.outerHTML")}} property if you want the node and all its descendants.
 
 ```js
-var oFOStream = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
-var oFile = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsILocalFile); // get profile folder
-oFile.append("extensions"); // extensions sub-directory
-oFile.append("{5872365E-67D1-4AFD-9480-FD293BEBD20D}"); // GUID of your extension
-oFile.append("myXMLFile.xml"); // filename
-oFOStream.init(oFile, 0x02 | 0x08 | 0x20, 0664, 0); // write, create, truncate
-(new XMLSerializer()).serializeToStream(doc, oFOStream, ""); // rememeber, doc is the DOM tree
-oFOStream.close();
+const docInnerHtml = document.documentElement.innerHTML;
 ```
 
-### XMLHttpRequest 객체를 파일로 직렬화
+As a result, `docInnerHtml` is a string containing the HTML of the contents of the document; that is, the {{HTMLElement("body")}} element's contents.
 
-이미 {{ domxref("XMLHttpRequest") }}를 사용하여 DOM 트리를 보유한 상태라면, 위의 코드를 사용하되 `serializer.serializeToStream(doc, oFOStream, "")` `부분을` `serializer.serializeToStream(xmlHttpRequest.responseXML.documentElement, oFOStream, "")`로 대체하십시오. `xmlHttpRequest은` `XMLHttpRequest`의 인스턴스입니다.
-
-위 코드는 서버에서 XML을 찾아낸 후 문자열 스트림으로 재직렬화(re-serialize)한다는 것을 알아두세요. 필요에 따라 `xmlHttpRequest.responseText`를 곧장 건너뛸 수 있습니다.
-
-### HTML 문서를 직렬화
-
-만약 보유한 DOM이 HTML 문서라면 다음과 같이 간단하게 직렬화할 수 있습니다.
+You can get HTML corresponding to the `<body>` _and_ its descendants with this code:
 
 ```js
-var serialized = document.documentElement.innerHTML;
+const docOuterHtml = document.documentElement.outerHTML;
 ```
 
-## 참고 자료
+## See also
 
-- [XPath](/en/XPath)
-- [XMLHttpRequest](/en/nsIXMLHttpRequest)
-- [JXO](/en/JXON)
+- [XPath](/en-US/docs/Web/XPath)
+- {{domxref("XMLHttpRequest")}}
+- {{domxref("Document")}}, {{domxref("XMLDocument")}}, and {{domxref("HTMLDocument")}}

@@ -1,36 +1,35 @@
 ---
-title: preserve-space
+title: <xsl:preserve-space>
 slug: Web/XSLT/Element/preserve-space
-original_slug: Web/XSLT/preserve-space
 ---
 
 {{ XsltRef() }}
 
-`<xsl:preserve-space>` 요소는 공백을 보존하면 좋을 소스 문서의 요소를 정의합니다. 하나 이상의 요소가 있으면, 공백 문자로 이름을 구분하세요. 공백 보존하기가 기본 설정이므로 이 요소는 오직 `<xsl:strip-space>` 요소와 거꾸로 동작하기 위해 쓸 필요가 있습니다.
+The `<xsl:preserve-space>` element defines the elements in the source document for which whitespace should be preserved. If there is more than one element, separate the names with a whitespace character. Preserving whitespace is the default setting, so this element only needs to be used to counteract an `<xsl:strip-space>` element.
 
-### 문법
+### Syntax
 
+```xml
+<xsl:preserve-space elements=LIST-OF-ELEMENT-NAMES />
 ```
-<xsl:preserve-space elements=LIST-OF-ELEMENT-NAMES  />
-```
 
-### 필수 속성
+### Required Attributes
 
 - `elements`
-  - : 공백을 보존하면 좋을 요소를 지정합니다.
+  - : Specifies the elements for which whitespace should be preserved.
 
-### 선택 속성
+### Optional Attributes
 
-없음.
+None.
 
-### 타입
+### Type
 
-최상위, `<xsl:stylesheet>`나 `<xsl:transform>`의 자식이어야 함.
+Top-level, must be a child of `<xsl:stylesheet>` or `<xsl:transform>`.
 
-### 정의
+### Defined
 
-[XSLT section 3.4, Whitespace Stripping](http://www.w3.org/TR/xslt#strip)
+XSLT, section 3.4
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

@@ -1,51 +1,53 @@
 ---
 title: WeakMap.prototype.has()
 slug: Web/JavaScript/Reference/Global_Objects/WeakMap/has
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.WeakMap.has
 ---
 
 {{JSRef}}
 
-**`has()`** 메서드는 지정된 키를 가진 요소가 `WeakMap` 객체에 존재하는지를 나타내는 불리언 값을 반환합니다.
+The **`has()`** method returns a boolean indicating whether an
+element with the specified key exists in the `WeakMap` object or not.
 
 {{EmbedInteractiveExample("pages/js/weakmap-prototype-has.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 has(key)
 ```
 
-### 매개변수
+### Parameters
 
 - `key`
-  - : 필수로 요구되며, `WeakMap` 객체에서 존재 여부를 테스트할 요소의 키입니다.
+  - : The key of the element to test for presence in the `WeakMap` object.
 
-### 반환 값
+### Return value
 
-- 불리언
-  - : `WeakMap` 객체에 지정된 키를 가진 요소가 있으면 `true`를 반환하고, 그렇지 않으면 `false`를 반환합니다.
+Returns `true` if an element with the specified key exists in the `WeakMap` object; otherwise `false`. Always returns `false` if `key` is not an object or a [non-registered symbol](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol#shared_symbols_in_the_global_symbol_registry).
 
-## 예제
+## Examples
 
-### has 메서드 사용하기
+### Using the has method
 
 ```js
 const wm = new WeakMap();
-wm.set(window, 'foo');
+wm.set(window, "foo");
 
-wm.has(window); // true 반환
-wm.has('baz');  // false 반환
+wm.has(window); // returns true
+wm.has("baz"); // returns false
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("WeakMap")}}
 - {{jsxref("WeakMap.prototype.set()")}}

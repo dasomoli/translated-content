@@ -1,28 +1,27 @@
 ---
-title: ':first-of-type'
+title: ":first-of-type"
 slug: Web/CSS/:first-of-type
+page-type: css-pseudo-class
+browser-compat: css.selectors.first-of-type
 ---
+
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`:first-of-type`** [의사 클래스](/ko/docs/Web/CSS/Pseudo-classes)는 형제 요소 중 자신의 유형과 일치하는 제일 첫 요소를 나타냅니다.
+The **`:first-of-type`** [CSS](/en-US/docs/Web/CSS) [pseudo-class](/en-US/docs/Web/CSS/Pseudo-classes) represents the first element of its type among a group of sibling elements.
+
+{{EmbedInteractiveExample("pages/tabbed/pseudo-class-first-of-type.html", "tabbed-shorter")}}
+
+## Syntax
 
 ```css
-/* Selects any <p> that is the first element
-   of its type among its siblings */
-p:first-of-type {
-  color: red;
+:first-of-type {
+  /* ... */
 }
 ```
 
-> **참고:** 초기 정의에서는 부모가 있는 요소만 선택할 수 있었습니다. Selectors Level 4부터는 이 제한이 사라졌습니다.
+## Examples
 
-## 구문
-
-{{csssyntax}}
-
-## 예제
-
-### 첫 문단 스타일링
+### Styling the first paragraph
 
 #### HTML
 
@@ -41,13 +40,13 @@ p:first-of-type {
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('첫_문단_스타일링')}}
+{{EmbedLiveSample('Styling_the_first_paragraph')}}
 
-### 중첩 요소
+### Nested elements
 
-아래 코드는 중첩 요소를 선택하는 방법을 보입니다. 기본 선택자를 지정하지 않은 경우 [전체 선택자](/ko/docs/Web/CSS/Universal_selectors)(`*`)가 암시된다는 점도 볼 수 있습니다.
+This example shows how nested elements can also be targeted. Note that the [universal selector](/en-US/docs/Web/CSS/Universal_selectors) (`*`) is implied when no type selector is written.
 
 #### HTML
 
@@ -55,9 +54,11 @@ p:first-of-type {
 <article>
   <div>This `div` is first!</div>
   <div>This <span>nested `span` is first</span>!</div>
-  <div>This <em>nested `em` is first</em>, but this <em>nested `em` is last</em>!</div>
+  <div>
+    This <em>nested `em` is first</em>, but this <em>nested `em` is last</em>!
+  </div>
   <div>This <span>nested `span` gets styled</span>!</div>
-  <b>This `b` qualifies!</b>
+  <p>This `p` qualifies!</p>
   <div>This is the final `div`.</div>
 </article>
 ```
@@ -70,18 +71,18 @@ article :first-of-type {
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('중첩_요소', 500)}}
+{{EmbedLiveSample('Nested_elements', 500)}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{Cssxref(":first-child")}}, {{Cssxref(":last-of-type")}}, {{Cssxref(":nth-of-type")}}

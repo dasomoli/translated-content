@@ -1,21 +1,23 @@
 ---
 title: CSS Fonts
 slug: Web/CSS/CSS_Fonts
+page-type: css-module
+spec-urls: https://drafts.csswg.org/css-fonts/
 ---
 
 {{CSSRef}}
 
-**CSS Fonts**은 글꼴 관련 속성과 글꼴 리소스가 로드되는 방식을 정의하는 CSS 모듈입니다. 패밀리, 크기 및 굵기, 행의 높이, 한 문자에 여러 글자를 사용할 수 있을 때 사용하는 자형(glyph) 변형과 같은 글꼴 스타일을 정의할 수 있습니다.
+**CSS Fonts** is a module of CSS that defines font-related properties and how font resources are loaded. It lets you define the style of a font, such as its family, size and weight, line height, and the glyph variants to use when multiple are available for a single character.
 
-## 기본 예제
+## Basic example
 
-다음 예제에서는 기본 글꼴 속성을 사용하여 텍스트 단락의 스타일을 지정하는 간단한 예제를 보여줍니다.
+The following example shows a simple use of basic font properties to style a paragraph of text.
 
 ```css
 p {
   width: 600px;
   margin: 0 auto;
-  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  font-family: "Helvetica Neue", "Arial", sans-serif;
   font-style: italic;
   font-weight: 100;
   font-variant-ligatures: normal;
@@ -33,17 +35,17 @@ p {
 </p>
 ```
 
-결과는 다음과 같습니다.
+The result is as follows:
 
 {{EmbedLiveSample('Basic_example', '100%', '200')}}
 
-## 가변 글꼴 예제들
+## Variable fonts examples
 
-[v-fonts.com](https://v-fonts.com/) 와 [axis-praxis.org](https://www.axis-praxis.org/)에서 다양한 가변 글꼴 예제를 찾을 수 있습니다. 또한, 자세한 정보와 사용법은 [가변 글꼴 가이드](/ko/docs/Web/CSS/CSS_Fonts/Variable_Fonts_Guide)를 참조하십시오.
+You can find a number of variable fonts examples at [v-fonts.com](https://v-fonts.com/) and [axis-praxis.org](https://www.axis-praxis.org/); see also our [Variable fonts guide](/en-US/docs/Web/CSS/CSS_Fonts/Variable_Fonts_Guide) for more information and usage information.
 
-## 참고서
+## Reference
 
-### 속성
+### Properties
 
 - {{cssxref("font")}}
 - {{cssxref("font-family")}}
@@ -67,24 +69,20 @@ p {
 - {{cssxref("font-weight")}}
 - {{cssxref("line-height")}}
 
-### @-규칙
+### At-rules
 
 - {{cssxref("@font-face")}}
 - {{cssxref("@font-feature-values")}}
 
-## 가이드
+## Guides
 
-- [기본적인 텍스트 및 글꼴 스타일링](/ko/docs/Learn/CSS/Styling_text/Fundamentals)
+- [Fundamental text and font styling](/en-US/docs/Learn/CSS/Styling_text/Fundamentals)
+  - : In this beginner's learning article we go through all the basic fundamentals of text/font styling in detail, including setting font weight, family and style, font shorthand, text alignment and other effects, and line and letter spacing.
+- [OpenType font features guide](/en-US/docs/Web/CSS/CSS_Fonts/OpenType_fonts_guide)
+  - : Font features or variants refer to different glyphs or character styles contained within an OpenType font. These include things like ligatures (special glyphs that combine characters like 'fi' or 'ffl'), kerning (adjustments to the spacing between specific letterform pairings), fractions, numeral styles, and a number of others. These are all referred to as OpenType Features, and are made available to use on the web via specific properties and a low-level control property — {{cssxref("font-feature-settings")}}. This article provides you with all you need to know about using OpenType font features in CSS.
+- [Variable fonts guide](/en-US/docs/Web/CSS/CSS_Fonts/Variable_Fonts_Guide)
+  - : **Variable fonts** are an evolution of the OpenType font specification that enables many different variations of a typeface to be incorporated into a single file, rather than having a separate font file for every width, weight, or style. This article will give you all you need to know to get you started using variable fonts.
 
-  - 초보자를 위한 이 학습 기사에서는 텍스트/글꼴의 스타일링에 있어 기본적인 부분을 상세하게 설명하고 있습니다. 글꼴의 굵기, 패밀리, 스타일링의 설정, 글꼴의 일괄 지정, 텍스트의 배치 등의 효과, 행과 문자의 간격 설정 등을 포함합니다.
-
-- [OpenType 글꼴 특성 가이드](/ko/docs/Web/CSS/CSS_Fonts/OpenType_fonts_guide)
-
-  - 글꼴의 특성 혹은 변형은 OpenType 글꼴에 포함된 다양한 자형(glyphs)이나 문자 스타일을 나타냅니다. 이것에는 합자(ligatures)('fi'나 'ffl'와 같은 특수한 형태의 문자 조합), 커닝(kerning)(특정 글자꼴 쌍 사이의 간격 조정), 분수, 숫자의 스타일, 외에도 다양한 것이 포함됩니다.이러한 기능은 모두 OpenType 특성(OpenType Features)이라고 하며, 특정 속성과 낮은 수준의 제어 속성인 — {{cssxref("font-feature-settings")}}을 통하여 웹에서 사용할 수 있습니다. 이 기사에서는 CSS에서 OpenType 글꼴 특성을 사용하는 것에 있어 알아야 할 모든 것들을 소개합니다.
-
-- [가변 글꼴 가이드](/ko/docs/Web/CSS/CSS_Fonts/Variable_Fonts_Guide)
-  - **가변 글꼴**은 모든 너비, 굵기, 스타일별로 각각의 글꼴 파일을 사용하는 대신 서체의 다양한 변형을 단일 파일로 통합하는 것이 가능해지도록 하는 OpenType 글꼴 사양의 진화입니다. 이 기사에서는 가변 글꼴을 사용하기 위해서 필요한 모든 것을 제공합니다.
-
-## 명세서
+## Specifications
 
 {{Specifications}}

@@ -1,29 +1,18 @@
 ---
 title: QUIC
 slug: Glossary/QUIC
+page-type: glossary-definition
 ---
 
-**Quick UDP Internet Connection** 또는 **QUIC**은 UDP 상에 구현된 실험적인 다중 전송 프로토콜로 TCP 및 웹 애플리케이션 전송을 개선하기 위한 방법을 위해 Google에서 실험적으로 개발하였습니다.
+**QUIC** is a multiplexed transport protocol implemented on UDP. It is used instead of {{Glossary("TCP")}} as the transport layer in HTTP/3.
 
-TCP는 많은 운영 체제 커널에 내장되어 있기 때문에 변경사항을 실험하고 수정을 구현하는 것에 시간이 많이드는 과정이기에, QUIC을 만들어 개발자는 더 빠르게 실험을 할 수 있고, 새로운 것을 시도할 수 있게 되었습니다.
+QUIC was designed to provide quicker setup and lower latency for HTTP connections. In particular:
 
-QUIC은 HTTP/2의 의미론적 지원을 위해 설계되었습니다. 멀티플랙싱, 흐름 제어, 보안 및 혼잡 제어를 제공해줍니다.
+- In TCP, the initial TCP handshake is optionally followed by a TLS handshake, which must complete before data can be transmitted. Since TLS is almost ubiquitous now, QUIC integrates the TLS handshake into the initial QUIC handshake, reducing the number of messages that must be exchanged during setup.
 
-QUIC의 중요한 기능입니다.
+- HTTP/2 is a multiplexed protocol, allowing multiple simultaneous HTTP transactions. However, the transactions are multiplexed over a single TCP connection, meaning that packet loss and subsequent retransmissions at the TCP layer can block all transactions. QUIC avoids this by running over UDP and implementing packet loss detection and retransmission separately for each stream, meaning that packet loss only blocks the particular stream whose packets were lost.
 
-- 연결 설정 시간 단축
-- 혼잡 제어 개선
-- Head of Line Blocking 없는 멀티플렉싱
-- 전달 오류 수정
-- 연결 마이그레이션
+## See also
 
-현재는 QUIC를 지원하는 브라우저와 서버는 그리 많지 않습니다.
-
-### 리소스
-
-- [Chromium Projects Documentation](https://www.chromium.org/quic)
-- [IETF Draft](https://datatracker.ietf.org/doc/html/draft-tsvwg-quic-protocol-02)
-
-## 같이 보기
-
-- [HTTP/2](/ko/docs/Glossary/HTTP_2)
+- {{rfc("9000", "the QUIC specification")}}
+- {{rfc("9114", "the HTTP/3 specification")}}

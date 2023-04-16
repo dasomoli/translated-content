@@ -1,62 +1,81 @@
 ---
-title: RTCPeerConnection.getConfiguration()
+title: "RTCPeerConnection: getConfiguration() method"
+short-title: getConfiguration()
 slug: Web/API/RTCPeerConnection/getConfiguration
+page-type: web-api-instance-method
+browser-compat: api.RTCPeerConnection.getConfiguration
 ---
 
-{{APIRef("WebRTC")}}{{SeeCompatTable}}
+{{APIRef("WebRTC")}}
 
-**`RTCPeerConnection.getConfiguration()`** 메소드는 호출 된 {{domxref("RTCPeerConnection")}}의 현재 설정을 알려주는 {{domxref("RTCConfiguration")}} 객체를 반환합니다.
+The **`RTCPeerConnection.getConfiguration()`** method returns
+an object which indicates the current configuration of
+the {{domxref("RTCPeerConnection")}} on which the method is called.
 
-여기서 반환되는 설정 값 은 가장 최근에 적용했던 {{domxref("RTCPeerConnection.setConfiguration","setConfiguration()")}} 혹은 `setConfiguration()`가 호출 되지 않았다면, `RTCPeerConnection`가 구성되면서 생긴 설정입니다. 이 설정은 연결에 의해 사용되는 ICE 서버의 리스트, 전송 정책에 관한 정보, 그리고 식별 정보를 포함합니다.
+The returned configuration is the last configuration applied via
+{{domxref("RTCPeerConnection.setConfiguration","setConfiguration()")}}, or if
+`setConfiguration()` hasn't been called, the configuration the
+`RTCPeerConnection` was constructed with. The configuration includes a list
+of the ICE servers used by the connection, information about transport policies, and
+identity information.
 
 ## Syntax
 
-```js
-var configuration = RTCPeerConnection.getConfiguration();
+```js-nolint
+getConfiguration()
 ```
 
-### 매개변수
+### Parameters
 
-이 메소드는 입력 변수를 받지 않습니다.
+This method takes no input parameters.
 
-### 반환 값
+### Return value
 
-{{domxref("RTCPeerConnection")}}의 현재 설정을 알려주는 {{domxref("RTCConfiguration")}} 객체입니다.
+An object describing the {{domxref("RTCPeerConnection")}}'s current configuration. See [`RTCPeerConnection()`](/en-US/docs/Web/API/RTCPeerConnection/RTCPeerConnection#parameters) for more information on what options are allowed.
 
-## 예시
+## Examples
 
-아래의 예제는 활성화된 연결에서 이미 사용 중인 인증서가 없다면, 신규 인증서를 추가하는 작업입니다.
+This example adds a new certificate to an active connection if it doesn't already have
+one in use.
 
 ```js
 let configuration = myPeerConnection.getConfiguration();
 
-if ((configuration.certificates != undefined) && (!configuration.certificates.length)) {
-   RTCPeerConnection.generateCertificate({
-      name: 'RSASSA-PKCS1-v1_5',
-      hash: 'SHA-256',
-      modulusLength: 2048,
-      publicExponent: new Uint8Array([1, 0, 1])
-  }).then(function(cert) {
+if (configuration.certificates?.length === 0) {
+  RTCPeerConnection.generateCertificate({
+    name: "RSASSA-PKCS1-v1_5",
+    hash: "SHA-256",
+    modulusLength: 2048,
+    publicExponent: new Uint8Array([1, 0, 1]),
+  }).then((cert) => {
     configuration.certificates = [cert];
     myPeerConnection.setConfiguration(configuration);
   });
 }
 ```
 
-위의 예제에서는 {{domxref("RTCPeerConnection")}}의 현재 설정을 가져 온 다음에, 인증서가 존재하는지 확인하기 위해 (1) 설정에 `certificates`값이 포함되어 있는지, (2) 길이가 0인지를 확인합니다.
+This example fetches the current configuration of the {{domxref("RTCPeerConnection")}},
+then looks to see if it has any certificates set by examining whether or not (a) the
+configuration has a value for `certificates`, and (b) whether its length is
+zero.
 
-만약 인증서가 존재하지 않으면, {{domxref("RTCPeerConnection.generateCertificate()")}}가 호출되어 신규 인증서를 만들어냅니다. 여기에 fulfillment 핸들러를 제공해서 새로 만들어진 인증서를 포함하는 배열을 현재 설정에 추가하고, {{domxref("RTCPeerConnect.setConfiguration", "setConfiguration()")}}에 전달해서 연결에 인증서를 추가합니다.
+If it's determined that there are no certificates in place,
+{{domxref("RTCPeerConnection.generateCertificate()")}} is called to create a new
+certificate; we provide a fulfillment handler which adds a new array containing the one
+newly-created certificate to the current configuration and passes it to
+{{domxref("RTCPeerConnect.setConfiguration", "setConfiguration()")}} to add the
+certificate to the connection.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
 - {{domxref("RTCPeerConnection.setConfiguration()")}}
-- {{domxref("RTCConfiguration")}}
+- {{domxref("RTCPeerConnection.RTCPeerConnection", "RTCPeerConnection()")}}
 - {{domxref("RTCPeerConnection")}}

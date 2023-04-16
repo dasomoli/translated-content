@@ -1,23 +1,23 @@
 ---
-title: AudioParam.defaultValue
+title: "AudioParam: defaultValue property"
+short-title: defaultValue
 slug: Web/API/AudioParam/defaultValue
+page-type: web-api-instance-property
+browser-compat: api.AudioParam.defaultValue
 ---
 
 {{APIRef("Web Audio API")}}
 
-{{ domxref("AudioParam") }} 인터페이스의 읽기 전용 **`defaultValue`** 속성은 `AudioParam` 을 생성하는 특정한 {{domxref("AudioNode")}}에 의해 정의되는 특성들의 초기 값을 나타냅니다.
+The **`defaultValue`**
+read-only property of the {{ domxref("AudioParam") }} interface represents the initial
+value of the attributes as defined by the specific {{domxref("AudioNode")}} creating
+the `AudioParam`.
 
-## 구문
+## Value
 
-```js
-var defaultVal = audioParam.defaultValue;
-```
+A floating-point {{jsxref("Number")}}.
 
-### 값
-
-부동점 {{jsxref("Number")}}.
-
-## 예제
+## Examples
 
 ```js
 const audioCtx = new AudioContext();
@@ -27,14 +27,14 @@ console.log(defaultVal); // 1
 console.log(defaultVal === gainNode.gain.value); // true
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Web Audio API 사용하기](/ko/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)
+- [Using the Web Audio API](/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)

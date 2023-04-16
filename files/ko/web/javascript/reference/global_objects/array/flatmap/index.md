@@ -1,119 +1,176 @@
 ---
 title: Array.prototype.flatMap()
 slug: Web/JavaScript/Reference/Global_Objects/Array/flatMap
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Array.flatMap
 ---
-{{JSRef}} {{SeeCompatTable}}
 
-**`flatMap()`** 메서드는 먼저 매핑함수를 사용해 각 엘리먼트에 대해 map 수행 후, 결과를 새로운 배열로 평탄화합니다. 이는 깊이 1의 [flat](/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/flat) 이 뒤따르는 [map](/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/map) 과 동일하지만, `flatMap` 은 아주 유용하며 둘을 하나의 메소드로 병합할 때 조금 더 효율적입니다.
+{{JSRef}}
 
-## 구문
+The **`flatMap()`** method returns a new array formed by applying a given callback function to each element of the array, and then flattening the result by one level. It is identical to a {{jsxref("Array.prototype.map","map()")}} followed by a {{jsxref("Array.prototype.flat","flat()")}} of depth 1 (`arr.map(...args).flat()`), but slightly more efficient than calling those two methods separately.
 
-```js
-    arr.flatMap(callback(currentValue[, index[, array]])[, thisArg])
+{{EmbedInteractiveExample("pages/js/array-flatmap.html","shorter")}}
+
+## Syntax
+
+```js-nolint
+flatMap(callbackFn)
+flatMap(callbackFn, thisArg)
 ```
 
-### 매개변수
+### Parameters
 
-- `callback`
+- `callbackFn`
+  - : A function to execute for each element in the array. It should return an array containing new elements of the new array, or a single non-array value to be added to the new array. The function is called with the following arguments:
+    - `element`
+      - : The current element being processed in the array.
+    - `index`
+      - : The index of the current element being processed in the array.
+    - `array`
+      - : The array `flatMap()` was called upon.
+- `thisArg` {{optional_inline}}
+  - : A value to use as `this` when executing `callbackFn`. See [iterative methods](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#iterative_methods).
 
-  - : 새로운 배열의 엘리먼트를 생성하는 함수. 3개의 아규먼트를 갖습니다.
+### Return value
 
-    - `currentValue`
-      - : 배열에서 처리되는 현재 엘리먼트.
-    - `index`{{optional_inline}}
-      - : 배열에서 처리되고 있는 현재 엘리먼트의 인덱스.
-    - `array`{{optional_inline}}
-      - : `map` 이 호출된 배열.
+A new array with each element being the result of the callback function and flattened
+by a depth of 1.
 
-- `thisArg`{{optional_inline}}
-  - : `callback` 실행에서 `this` 로 사용할 값.
+## Description
 
-### 반환 값
+The `flatMap()` method is an [iterative method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#iterative_methods). See {{jsxref("Array.prototype.map()")}} for a detailed description of the callback function. The `flatMap()` method is identical to [`map(callbackFn, thisArg)`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) followed by [`flat(1)`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat) — for each element, it produces an array of new elements, and concatenates the resulting arrays together to form a new array.
 
-각 엘리먼트가 callback 함수의 결과이고, 깊이 1로 평탄화된 새로운 배열.
+The `flatMap()` method is [generic](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#generic_array_methods). It only expects the `this` value to have a `length` property and integer-keyed properties. However, the value returned from `callbackFn` must be an array if it is to be flattened.
 
-## 설명
+### Alternative
 
-callback 함수의 상세 설명은 {{jsxref("Array.prototype.map()")}} 문서를 보시기 바랍니다. `flatMap` 메소드는 깊이 1의 [`flat`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat) 이 뒤따르는 [`map`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) 과 동일합니다.
-
-## 예제
-
-### `map` 과 `flatMap`
+#### Pre-allocate and explicitly iterate
 
 ```js
-let arr1 = [1, 2, 3, 4];
+const arr = [1, 2, 3, 4];
 
-arr1.map(x => [x * 2]);
+arr.flatMap((x) => [x, x * 2]);
+// is equivalent to
+const n = arr.length;
+const acc = new Array(n * 2);
+for (let i = 0; i < n; i++) {
+  const x = arr[i];
+  acc[i * 2] = x;
+  acc[i * 2 + 1] = x * 2;
+}
+// [1, 2, 2, 4, 3, 6, 4, 8]
+```
+
+Note that in this particular case the `flatMap` approach is slower than the
+for-loop approach — due to the creation of temporary arrays that must be
+garbage collected, as well as the return array not needing to be frequently
+resized. However, `flatMap` may still be the correct solution in cases where
+its flexibility and readability are desired.
+
+## Examples
+
+### map() and flatMap()
+
+```js
+const arr1 = [1, 2, 3, 4];
+
+arr1.map((x) => [x * 2]);
 // [[2], [4], [6], [8]]
 
-arr1.flatMap(x => [x * 2]);
+arr1.flatMap((x) => [x * 2]);
 // [2, 4, 6, 8]
 
-// 한 레벨만 평탄화됨
-arr1.flatMap(x => [[x * 2]]);
+// only one level is flattened
+arr1.flatMap((x) => [[x * 2]]);
 // [[2], [4], [6], [8]]
 ```
 
-위 코드는 map 자체만을 사용해서 구현할 수 있지만, 다음은 `flatMap` 의 유즈케이스를 더 잘 보여주는 예시입니다.
+While the above could have been achieved by using map itself, here is an example that
+better showcases the use of `flatMap()`.
 
-문장의 리스트로부터 단어의 리스트를 생성해봅시다.
+Let's generate a list of words from a list of sentences.
 
 ```js
-let arr1 = ["it's Sunny in", "", "California"];
+const arr1 = ["it's Sunny in", "", "California"];
 
-arr1.map(x=>x.split(" "));
+arr1.map((x) => x.split(" "));
 // [["it's","Sunny","in"],[""],["California"]]
 
-arr1.flatMap(x => x.split(" "));
-// ["it's","Sunny","in","","California"]
+arr1.flatMap((x) => x.split(" "));
+// ["it's","Sunny","in", "", "California"]
 ```
 
-출력 리스트의 길이는 입력 리스트의 길이와 다를 수 있습니다.
+Notice, the output list length can be different from the input list length.
 
-### `flatMap()` 을 이용한 아이템 추가 및 제거
+### For adding and removing items during a map()
 
-`flatMap`은 `map`을 하는 과정에서 아이템을 추가하거나 제거하여 아이템 개수를 바꿀 수 있습니다. 다른 말로는 각각의 아이템에 대하여 1:1대응관계 뿐만 아니라 다대다 대응도 가능하다는 것입니다. 이러한 측면에서 [filter](/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/filter)가 하는 역할의 반대역할을 한다고 볼 수 있습니다. 단순히 아무런 변화를 주고 싶지 않을때에는 원소 하나를 가진 배열을 반환할 수도, 아이템을 추가하고 싶을 때는 다-원소 배열을 반환할 수도, 아이템을 제거하고 싶을 때에는 빈 배열을 반환할 수도 있습니다.
+`flatMap` can be used as a way to add and remove items (modify the number of
+items) during a `map`. In other words, it allows you to map _many items to
+many items_ (by handling each input item separately), rather than always
+_one-to-one_. In this sense, it works like the opposite of [filter](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter).
+Return a 1-element array to keep the item, a multiple-element array to add items, or a
+0-element array to remove the item.
 
 ```js
-    // 다음은 음수는 제거하고 홀수는 1과 짝수로 분리하는 예시입니다.
-    let a = [5, 4, -3, 20, 17, -33, -4, 18]
-    //       |\  \  x   |  | \   x   x   |
-    //      [4,1, 4,   20, 16, 1,       18]
+// Let's say we want to remove all the negative numbers
+// and split the odd numbers into an even number and a 1
+const a = [5, 4, -3, 20, 17, -33, -4, 18];
+//         |\  \  x   |  | \   x   x   |
+//        [4,1, 4,   20, 16, 1,       18]
 
-    a.flatMap( (n) =>
-      (n < 0) ?      [] :
-      (n % 2 == 0) ? [n] :
-                     [n-1, 1]
-    )
-
-    // expected output: [4, 1, 4, 20, 16, 1, 18]
-    //=> [1, 2, 3, 4, 5, 6, 7, 8, 9]
+const result = a.flatMap((n) => {
+  if (n < 0) {
+    return [];
+  }
+  return n % 2 === 0 ? [n] : [n - 1, 1];
+});
+console.log(result); // [4, 1, 4, 20, 16, 1, 18]
 ```
 
-## 대안
+### Using flatMap() on sparse arrays
 
-### `reduce` 와 `concat`
+The `callbackFn` won't be called for empty slots in the source array because `map()` doesn't, while `flat()` ignores empty slots in the returned arrays.
 
 ```js
-var arr1 = [1, 2, 3, 4];
-
-arr1.flatMap(x => [x * 2]);
-// 다음과 동일합니다
-arr1.reduce((acc, x) => acc.concat([x * 2]), []);
-// [2, 4, 6, 8]
-//=> [1, 2, 3, 4, 5, 6, 7, 8, 9]
+console.log([1, 2, , 4, 5].flatMap((x) => [x, x * 2])); // [1, 2, 2, 4, 4, 8, 5, 10]
+console.log([1, 2, 3, 4].flatMap((x) => [, x * 2])); // [2, 4, 6, 8]
 ```
 
-## 명세
+### Calling flatMap() on non-array objects
+
+The `flatMap()` method reads the `length` property of `this` and then accesses each integer index. If the return value of the callback function is not an array, it is always directly appended to the result array.
+
+```js
+const arrayLike = {
+  length: 3,
+  0: 1,
+  1: 2,
+  2: 3,
+};
+console.log(Array.prototype.flatMap.call(arrayLike, (x) => [x, x * 2]));
+// [1, 2, 2, 4, 3, 6]
+
+// Array-like objects returned from the callback won't be flattened
+console.log(
+  Array.prototype.flatMap.call(arrayLike, (x) => ({
+    length: 1,
+    0: x,
+  })),
+);
+// [ { '0': 1, length: 1 }, { '0': 2, length: 1 }, { '0': 3, length: 1 } ]
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `Array.prototype.flatMap` in `core-js`](https://github.com/zloirock/core-js#ecmascript-array)
 - {{jsxref("Array.prototype.flat()")}}
 - {{jsxref("Array.prototype.map()")}}
 - {{jsxref("Array.prototype.reduce()")}}

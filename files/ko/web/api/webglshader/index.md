@@ -1,63 +1,73 @@
 ---
 title: WebGLShader
 slug: Web/API/WebGLShader
+page-type: web-api-interface
+browser-compat: api.WebGLShader
 ---
-{{APIRef("WebGL")}}**WebGLShader** 는 [WebGL API](/ko/docs/Web/API/WebGL_API) 의 일부이며 정점 혹은 프래그먼트 셰이더가 될 수 있다. {{domxref("WebGLProgram")}} 는 두 타입의 셰이더 모두를 요구한다.
 
-## 설명
+{{APIRef("WebGL")}}
 
-**WebGLShader** 를 생성하려면 {{domxref("WebGLRenderingContext.createShader")}}를 사용한다. 그러고 나서는 {{domxref("WebGLRenderingContext.shaderSource()")}}를 사용해서 GLSL 소스 코드를 연결한다. 마지막으로{{domxref("WebGLRenderingContext.compileShader()")}}를 호출하고 셰이더를 컴파일한다. 이 시점에서 **WebGLShader** 는 여전히 사용할 수 있는 형식은 아니고{{domxref("WebGLProgram")}}에 부착되어야 한다.
+The **WebGLShader** is part of the [WebGL API](/en-US/docs/Web/API/WebGL_API) and can either be a vertex or a fragment shader. A {{domxref("WebGLProgram")}} requires both types of shaders.
+
+{{InheritanceDiagram}}
+
+## Description
+
+To create a **WebGLShader** use {{domxref("WebGLRenderingContext.createShader")}}, then hook up the GLSL source code using {{domxref("WebGLRenderingContext.shaderSource()")}}, and finally invoke {{domxref("WebGLRenderingContext.compileShader()")}} to finish and compile the shader. At this point the **WebGLShader** is still not in a usable form and must still be attached to a {{domxref("WebGLProgram")}}.
 
 ```js
-function createShader (gl, sourceCode, type) {
-  // 셰이더 타입 gl.VERTEX_SHADER 또는 gl.FRAGMENT_SHADER 중 하나를 컴파일한다.
-  var shader = gl.createShader( type );
-  gl.shaderSource( shader, sourceCode );
-  gl.compileShader( shader );
+function createShader(gl, sourceCode, type) {
+  // Compiles either a shader of type gl.VERTEX_SHADER or gl.FRAGMENT_SHADER
+  const shader = gl.createShader(type);
+  gl.shaderSource(shader, sourceCode);
+  gl.compileShader(shader);
 
-  if ( !gl.getShaderParameter(shader, gl.COMPILE_STATUS) ) {
-    var info = gl.getShaderInfoLog( shader );
-    throw "Could not compile WebGL program. \n\n" + info;
+  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+    const info = gl.getShaderInfoLog(shader);
+    throw `Could not compile WebGL program. \n\n${info}`;
   }
+  return shader;
 }
 ```
 
-셰이더 부착에 관한 정보는 {{domxref("WebGLProgram")}} 를 참고한다.
+See {{domxref("WebGLProgram")}} for information on attaching the shaders.
 
-## 예시들
+## Examples
 
-### 정점 셰이더 생성하기
+### Creating a vertex shader
 
-셰이더 소스 코드 문자열들을 작성하고 접근하는 많은 다른 방법들이 있다는 점에 주목하라. 여기의 예는 오직 설명을 목적으로 한다.
-
-```js
-var vertexShaderSource =
-  "attribute vec4 position;\n"
-  "void main() {\n"+
-  "  gl_Position = position;\n"+
-  "}\n";
-
-// 위 예시로부터 createShader 함수를 사용한다.
-var vertexShader = createShader(gl, vertexShaderSource, gl.VERTEX_SHADER)
-```
-
-### 프래그먼트 셰이더 생성하기
+Note that there are many other strategies for writing and accessing shader source code strings. These example are for illustration purposes only.
 
 ```js
-var fragmentShaderSource =
-  "void main() {\n"+
-  "  gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);\n"+
+const vertexShaderSource =
+  "attribute vec4 position;\n" +
+  "void main() {\n" +
+  "  gl_Position = position;\n" +
   "}\n";
 
-// 위 예시로부터 createShader 함수를 사용한다.
-var fragmentShader = createShader(gl, fragmentShaderSource, gl.FRAGMENT_SHADER)
+//Use the createShader function from the example above
+const vertexShader = createShader(gl, vertexShaderSource, gl.VERTEX_SHADER);
 ```
 
-## 명세
+### Creating a fragment shader
+
+```js
+const fragmentShaderSource =
+  "void main() {\n" + "  gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);\n" + "}\n";
+
+//Use the createShader function from the example above
+const fragmentShader = createShader(
+  gl,
+  fragmentShaderSource,
+  gl.FRAGMENT_SHADER
+);
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

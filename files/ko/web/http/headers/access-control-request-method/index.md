@@ -1,11 +1,17 @@
 ---
 title: Access-Control-Request-Method
 slug: Web/HTTP/Headers/Access-Control-Request-Method
+page-type: http-header
+browser-compat: http.headers.Access-Control-Request-Method
 ---
 
 {{HTTPSidebar}}
 
-요청 헤더 **Access-Control-Request-Method**는 실제 요청이 만들어질 때 클라이언트가 보낼 수도 있는 [HTTP headers](/ko/docs/Web/HTTP/Headers)를 서버에게 알리기 위해 브라우저가 {{glossary("preflight request")}}를 발급(issue)할 때 사용됩니다. 사전 요청(preflight request)은 항상 {{HTTPMethod("OPTIONS")}}이며 실제 요청과 동일한 메소드를 사용하지 않으므로 이 헤더가 필요합니다.
+The **`Access-Control-Request-Method`** request header is used
+by browsers when issuing a {{glossary("preflight request")}}, to let the server know
+which [HTTP method](/en-US/docs/Web/HTTP/Methods) will be used when the
+actual request is made. This header is necessary as the preflight request is always an
+{{HTTPMethod("OPTIONS")}} and doesn't use the same method as the actual request.
 
 <table class="properties">
   <tbody>
@@ -20,31 +26,32 @@ slug: Web/HTTP/Headers/Access-Control-Request-Method
   </tbody>
 </table>
 
-## 구문
+## Syntax
 
-```
+```http
 Access-Control-Request-Method: <method>
 ```
 
-## 지시어
+## Directives
 
-- `<method>`
-  - : [HTTP request methods](/ko/docs/Web/HTTP/Methods) 중 하나. 예를 들어 {{HTTPMethod("GET")}}, {{HTTPMethod("POST")}}, 또는 {{HTTPMethod("DELETE")}}.
+- \<method>
+  - : One of the [HTTP request methods](/en-US/docs/Web/HTTP/Methods), for
+    example {{HTTPMethod("GET")}}, {{HTTPMethod("POST")}}, or {{HTTPMethod("DELETE")}}.
 
-## 예제
+## Examples
 
-```
+```http
 Access-Control-Request-Method: POST
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 더보기
+## See also
 
 - {{HTTPHeader("Access-Control-Request-Headers")}}

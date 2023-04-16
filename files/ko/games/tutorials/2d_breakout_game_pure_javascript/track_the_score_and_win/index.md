@@ -1,99 +1,109 @@
 ---
-title: 점수 추가와 승패 판정 방법
+title: Track the score and win
 slug: Games/Tutorials/2D_Breakout_game_pure_JavaScript/Track_the_score_and_win
-original_slug: Games/Tutorials/순수한_자바스크립트를_이용한_2D_벽돌깨기_게임/Track_the_score_and_win
 ---
 
 {{GamesSidebar}}
 
-{{PreviousNext("Games/Tutorials/2D_Breakout_game_pure_JavaScript/Collision_detection", "Games/Tutorials/2D_Breakout_game_pure_JavaScript/Mouse_controls")}}
+{{PreviousNext("Games/Workflows/2D_Breakout_game_pure_JavaScript/Collision_detection", "Games/Workflows/2D_Breakout_game_pure_JavaScript/Mouse_controls")}}
 
-이번 단계는 [Gamedev Canvas tutorial](/ko/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript)의 8번째 단계입니다. [Gamedev-Canvas-workshop/lesson8.html](https://github.com/end3r/Gamedev-Canvas-workshop/blob/gh-pages/lesson08.html)에서 이번 단계의 소스 코드를 확인할 수 있습니다.
+This is the **8th step** out of 10 of the [Gamedev Canvas tutorial](/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript). You can find the source code as it should look after completing this lesson at [Gamedev-Canvas-workshop/lesson8.html](https://github.com/end3r/Gamedev-Canvas-workshop/blob/gh-pages/lesson08.html).
 
-벽돌 깨기 기능은 잘 작동합니다. 하지만 더 나은 게임이 되기 위해서, 유저가 벽돌을 깰 때마다 점수를 얻고, 그 점수를 기록하는 점수 기능을 만들 수 있습니다.
+Destroying the bricks is really cool, but to be even more awesome the game could award points for every brick a user hits, and keep count of the total score.
 
-## 점수 계산하기
+## Counting the score
 
-게임 플레이 도중 점수를 볼 수 있다면, 친구들에게 자랑할 수 있을 것입니다. 그러기 위해서는 점수를 기록할 변수가 필요합니다. 작성중인 JS파일의 변수 영역의 하단에, 아래 코드를 추가합시다.
+If you can see your score throughout the game, eventually you can impress your friends. You need a variable to record the score. Add the following into your JavaScript, after the rest of your variables:
 
 ```js
-var score = 0;
+let score = 0;
 ```
 
-점수 화면을 만들고, 업데이트를 하기 위해서 `drawScore()` 함수가 필요합니다. 아래 코드를 `collisionDetection()` 함수 아래에 추가합시다.
+You also need a `drawScore()` function, to create and update the score display. Add the following after the `collisionDetection()` function:
 
 ```js
 function drawScore() {
-    ctx.font = "16px Arial";
-    ctx.fillStyle = "#0095DD";
-    ctx.fillText("Score: "+score, 8, 20);
+  ctx.font = "16px Arial";
+  ctx.fillStyle = "#0095DD";
+  ctx.fillText(`Score: ${score}`, 8, 20);
 }
 ```
 
-텍스트를 캔버스 안에 그리는 것은 도형을 그리는 작업과 비슷합니다. 폰트를 정의하는 것은 CSS에서의 작업과 같습니다. — {{domxref("CanvasRenderingContext2D.font","font()")}} 함수에서 크기와 타입을 설정할 수 있습니다. 그런 다음 {{domxref("CanvasRenderingContext2D.fillStyle()","fillStyle()")}} 함수를 사용하여 글꼴의 색상을 설정하고 {{domxref("CanvasRenderingContext2D.fillText","fillText()")}} 함수를 이용해서 캔버스에 배치될 실제 텍스트와 배치 위치를 설정하는 데 사용합니다. 첫 번째 매개 변수는 텍스트 자체입니다. 위의 코드는 현재 점수를 나타내며 마지막 두 매개 변수는 텍스트가 캔버스에 배치될 좌표입니다.
+Drawing text on a canvas is similar to drawing a shape. The font definition looks exactly like the one in CSS — you can set the size and font type in the {{domxref("CanvasRenderingContext2D.font","font()")}} method. Then use {{domxref("CanvasRenderingContext2D.fillStyle()","fillStyle()")}} to set the color of the font and {{domxref("CanvasRenderingContext2D.fillText","fillText()")}} to set the actual text that will be placed on the canvas, and where it will be placed. The first parameter is the text itself — the code above shows the current number of points — and the last two parameters are the coordinates where the text will be placed on the canvas.
 
-벽돌이 깨질 때마다 점수 변수의 값을 증가시키기 위해서 `collisionDetection()` 함수에 강조 표시된 코드를 입력하여 수정합시다.
+To award a score each time a brick is hit, add a line to the `collisionDetection()` function to increment the value of the score variable each time a collision is detected. Add the following highlighted line to your code:
 
 ```js
 function collisionDetection() {
-    for(var c=0; c<brickColumnCount; c++) {
-        for(var r=0; r<brickRowCount; r++) {
-            var b = bricks[c][r];
-            if(b.status == 1) {
-                if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {
-                    dy = -dy;
-                    b.status = 0;
-                    score++;
-                }
-            }
+  for (let c = 0; c < brickColumnCount; c++) {
+    for (let r = 0; r < brickRowCount; r++) {
+      const b = bricks[c][r];
+      if (b.status === 1) {
+        if (
+          x > b.x &&
+          x < b.x + brickWidth &&
+          y > b.y &&
+          y < b.y + brickHeight
+        ) {
+          dy = -dy;
+          b.status = 0;
+          score++;
         }
+      }
     }
+  }
 }
 ```
 
-`draw()` 함수 안에서 위 함수를 호출하면 호출 될 때마다 다시 그리기 때문에 점수 변동을 확인할 수 있습니다. `draw()` 아래 코드를 `drawPaddle()` 아래에서 호출합니다.
+Calling `drawScore()` from the `draw()` function keeps the score up to date with every new frame — add the following line inside `draw()`, just below the `drawPaddle()` call:
 
 ```js
 drawScore();
 ```
 
-## 모든 벽돌이 파괴되었을 때 승리 메시지 표시
+## Displaying a winning message when all bricks have been destroyed
 
-점수가 오르는 것은 좋지만, 평생 점수가 올라가진 않을 것입니다. 모든 벽돌의 파괴가 결국 게임의 주된 목적이기 때문에 모든 점수를 얻는다면 승리 메시지를 표시해야 합니다. `collisionDetection()`함수에 강조된 코드를 붙여넣읍시다.
+Collecting the points works well, but you won't be adding them forever — what about when all the bricks have been destroyed? It's the main purpose of the game after all, so you should display a winning message if all available points have been collected. Add the following highlighted section into your `collisionDetection()` function:
 
 ```js
 function collisionDetection() {
-    for(var c=0; c<brickColumnCount; c++) {
-        for(var r=0; r<brickRowCount; r++) {
-            var b = bricks[c][r];
-            if(b.status == 1) {
-                if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {
-                    dy = -dy;
-                    b.status = 0;
-                    score++;
-                    if(score == brickRowCount*brickColumnCount) {
-                        alert("YOU WIN, CONGRATULATIONS!");
-                        document.location.reload();
-                    }
-                }
-            }
+  for (let c = 0; c < brickColumnCount; c++) {
+    for (let r = 0; r < brickRowCount; r++) {
+      const b = bricks[c][r];
+      if (b.status === 1) {
+        if (
+          x > b.x &&
+          x < b.x + brickWidth &&
+          y > b.y &&
+          y < b.y + brickHeight
+        ) {
+          dy = -dy;
+          b.status = 0;
+          score++;
+          if (score === brickRowCount * brickColumnCount) {
+            alert("YOU WIN, CONGRATULATIONS!");
+            document.location.reload();
+            clearInterval(interval); // Needed for Chrome to end game
+          }
         }
+      }
     }
+  }
 }
 ```
 
-결국 사용자는 모든 벽돌을 파괴한 순간, 실제로 게임에서 승리할 수 있습니다. 이는 게임과 관련하여 굉장히 중요합니다. `document.location.reload()`기능은 페이지를 다시 로드하고 경고 버튼이 클릭되면 게임을 다시 시작합니다.
+Thanks to this, your users can actually win the game when they destroy all the bricks, which is quite important when it comes to games. The `document.location.reload()` function reloads the page and starts the game again once the alert button is clicked.
 
-## 코드 비교
+## Compare your code
 
-최종 코드는 아래와 같습니다. 지금까지 작성한 코드와 비교해 봅시다.
+The latest code looks (and works) like this, in case you want to compare and contrast it with yours:
 
-{{JSFiddleEmbed("https://jsfiddle.net/yumetodo/2m74vr9r/1/","","395")}}
+{{JSFiddleEmbed("https://jsfiddle.net/raymondjplante/b3z2Lpu9/","","395")}}
 
-> **참고:** **추가 학습**: 벽돌을 깰 때마다 얻는 점수를 늘리고, 게임 클리어 시 최종 점수를 경고창에 표시해 봅시다.
+> **Note:** Try adding more points per brick hit, print out the number of collected points in the end game alert box.
 
-## 다음 단계
+## Next steps
 
-게임은 현재 꽤 멋지게 보입니다. 다음 단계에서는, [Mouse controls (마우스로 패들 조종하는 방법)](/ko/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/Mouse_controls)을 통해서 게임을 즐길 수 있습니다.
+The game looks pretty good at this point. In the next lesson you will broaden the game's appeal by adding [Mouse controls](/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/Mouse_controls).
 
-{{PreviousNext("Games/Tutorials/2D_Breakout_game_pure_JavaScript/Collision_detection", "Games/Tutorials/2D_Breakout_game_pure_JavaScript/Mouse_controls")}}
+{{PreviousNext("Games/Workflows/2D_Breakout_game_pure_JavaScript/Collision_detection", "Games/Workflows/2D_Breakout_game_pure_JavaScript/Mouse_controls")}}

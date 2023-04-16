@@ -1,51 +1,64 @@
 ---
-title: WindowEventHandlers.onhashchange
+title: "Window: hashchange event"
+short-title: hashchange
 slug: Web/API/Window/hashchange_event
-original_slug: Web/API/WindowEventHandlers/onhashchange
+page-type: web-api-event
+browser-compat: api.Window.hashchange_event
 ---
 
-{{APIRef("HTML DOM")}}{{domxref("WindowEventHandlers")}} 믹스인의 **WindowEventHandlers.onhashchange** 속성은
+{{APIRef}}
 
-**hashchange** 이벤트를 처리하기 위한 {{event("Event_handlers", "event handler")}} 입니다.
+The **`hashchange`** event is fired when the fragment identifier of the URL has changed (the part of the URL beginning with and following the `#` symbol).
 
-hashchange 이벤트는 윈도우의 해시가 변경되면 시작됩니다. ( {{domxref("Window.location")}} 및 {{domxref("HTMLHyperlinkElementUtils.hash")}} 참조)
+## Syntax
 
-## 문법
-
-**event handler:**
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
 
 ```js
-window.onhashchange = funcRef;
+addEventListener("hashchange", (event) => {});
+onhashchange = (event) => {};
 ```
 
-**HTML event handler:**
+## Event type
 
-```html
-<body onhashchange="funcRef();">
-```
+A {{domxref("HashChangeEvent")}}. Inherits from {{domxref("Event")}}.
 
-**event listener:**
+{{InheritanceDiagram("HashChangeEvent")}}
 
-{{domxref("EventTarget.addEventListener()", "addEventListener()")}}를 사용하여 이벤트 리스너 추가하기
+## Event properties
+
+- {{domxref("HashChangeEvent.newURL")}} {{ReadOnlyInline}}
+  - : A string representing the new URL the window is navigating to.
+- {{domxref("HashChangeEvent.oldURL")}} {{ReadOnlyInline}}
+  - : A string representing the previous URL from which the window was navigated.
+
+## Event handler aliases
+
+In addition to the `Window` interface, the event handler property `onhashchange` is also available on the following targets:
+
+- {{domxref("HTMLBodyElement")}}
+- {{domxref("HTMLFrameSetElement")}}
+- {{domxref("SVGSVGElement")}}
+
+## Examples
+
+You can use the `hashchange` event in an {{domxref("EventTarget/addEventListener", "addEventListener")}} method:
 
 ```js
-window.addEventListener("hashchange", funcRef, false);
+window.addEventListener(
+  "hashchange",
+  () => {
+    console.log("The hash has changed!");
+  },
+  false
+);
 ```
 
-### 매개변수
-
-- `funcRef`
-  - : 함수에 대한 참조.
-
-## 예제
-
-### event handler 사용하기
-
-This example uses an event handler (`window.onhashchange`) to check the new hash value whenever it changes. If it equals `#cool-feature`, the script logs a message to the console.
+Or use the `onhashchange` event handler property:
 
 ```js
 function locationHashChanged() {
-  if (location.hash === '#cool-feature') {
+  if (location.hash === "#cool-feature") {
     console.log("You're visiting a cool feature!");
   }
 }
@@ -53,63 +66,14 @@ function locationHashChanged() {
 window.onhashchange = locationHashChanged;
 ```
 
-### Using an event listener
-
-이 예제는 이벤트 리스너를 사용하여 해시가 변경 될 때마다 콘솔에 알림표시합니다.
-
-```js
-function hashHandler() {
-  console.log('The hash has changed!');
-}
-
-window.addEventListener('hashchange', hashHandler, false);
-```
-
-### Overriding the hash
-
-이 함수는 새로운 해시를 동적으로 설정하여 임의로 두 값 중 하나로 설정합니다.
-
-```js
-function changeHash() {
-  location.hash = (Math.random() > 0.5) ? 'location1' : 'location2';
-}
-```
-
-## hashchange 이벤트
-
-`hashchange` 이벤트에는 다음과 같은 필드가 있습니다:
-
-| Field    | Type        | Description             |
-| -------- | ----------- | ----------------------- |
-| `newURL` | `DOMString` | 탐색할 새로운 URL입니다.   |
-| `oldURL` | `DOMString` | 탐색했던 이전의 URL입니다. |
-
-### 제2의 해결책을 위한 event.newURL 와 event.oldURL
-
-```js
-//let this snippet run before your hashchange event binding code
-if(!window.HashChangeEvent)(function(){
-  var lastURL=document.URL;
-  window.addEventListener("hashchange",function(event){
-    Object.defineProperty(event,"oldURL",{enumerable:true,configurable:true,value:lastURL});
-    Object.defineProperty(event,"newURL",{enumerable:true,configurable:true,value:document.URL});
-    lastURL=document.URL;
-  });
-}());
-```
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- [`hashchange`](/en-US/docs/Web/API/Window/hashchange_event) event
-- [Manipulating the browser history](/ko/docs/DOM/Manipulating_the_browser_history)
-- [`history.pushState()` and `history.replaceState()`](/ko/docs/DOM/window.history) methods
-- {{domxref("WindowEventHandlers.onpopstate")}}
-- {{domxref("HTMLHyperlinkElementUtils.hash")}}
+- {{domxref("Window/popstate_event", "popstate")}} event

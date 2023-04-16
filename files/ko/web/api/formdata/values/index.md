@@ -1,56 +1,60 @@
 ---
-title: FormData.values()
+title: "FormData: values() method"
+short-title: values()
 slug: Web/API/FormData/values
+page-type: web-api-instance-method
+browser-compat: api.FormData.values
 ---
 
 {{APIRef("XMLHttpRequest")}}
 
-**`FormData.values()`** 메서드는 이 객체에 포함 된 모든 value를 통과하는 {{jsxref("Iteration_protocols",'iterator')}}를 반환합니다. value는 {{domxref("USVString")}} 또는 {{domxref("Blob")}} 객체입니다.
+The **`FormData.values()`** method returns an [iterator](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) which iterates through all values contained in the {{domxref("FormData")}}. The values are strings or {{domxref("Blob")}} objects.
 
-> **참고:** 이 메서드는 [Web Worker](/ko/docs/Web/API/Web_Workers_API)에서 사용할 수 있습니다.
+> **Note:** This method is available in [Web Workers](/en-US/docs/Web/API/Web_Workers_API).
 
 ## Syntax
 
-```js
-formData.values();
+```js-nolint
+values()
 ```
+
+### Parameters
+
+None.
 
 ### Return value
 
-{{jsxref("Iteration_protocols","iterator")}}를 반환합니다.
+An [`iterator`](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) of {{domxref("FormData")}}'s values.
 
-## Example
+## Examples
 
 ```js
-// Create a test FormData object
-var formData = new FormData();
-formData.append('key1', 'value1');
-formData.append('key2', 'value2');
+const formData = new FormData();
+formData.append("key1", "value1");
+formData.append("key2", "value2");
 
 // Display the values
-for (var value of formData.values()) {
-   console.log(value);
+for (const value of formData.values()) {
+  console.log(value);
 }
 ```
 
-결과는 다음과 같습니다:
+The result is:
 
 ```
 value1
 value2
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- {{domxref("XMLHTTPRequest")}}
-- [Using XMLHttpRequest](/ko/docs/DOM/XMLHttpRequest/Using_XMLHttpRequest)
-- [Using FormData objects](/ko/docs/DOM/XMLHttpRequest/FormData/Using_FormData_Objects)
+- [Using FormData objects](/en-US/docs/Web/API/FormData/Using_FormData_Objects)
 - {{HTMLElement("Form")}}

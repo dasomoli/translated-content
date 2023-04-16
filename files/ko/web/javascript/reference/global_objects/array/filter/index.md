@@ -1,203 +1,222 @@
 ---
 title: Array.prototype.filter()
 slug: Web/JavaScript/Reference/Global_Objects/Array/filter
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Array.filter
 ---
 
 {{JSRef}}
 
-**`filter()`** 메서드는 주어진 함수의 테스트를 통과하는 모든 요소를 모아 새로운 배열로 반환합니다.
+The **`filter()`** method creates a [shallow copy](/en-US/docs/Glossary/Shallow_copy) of a portion of a given array, filtered down to just the elements from the given array that pass the test implemented by the provided function.
 
-{{EmbedInteractiveExample("pages/js/array-filter.html")}}
+{{EmbedInteractiveExample("pages/js/array-filter.html","shorter")}}
 
-## 구문
+## Syntax
 
-```js
-    arr.filter(callback(element[, index[, array]])[, thisArg])
+```js-nolint
+filter(callbackFn)
+filter(callbackFn, thisArg)
 ```
 
-### 매개변수
+### Parameters
 
-- `callback`
-  - : 각 요소를 시험할 함수. `true`를 반환하면 요소를 유지하고, `false`를 반환하면 버립니다.
-
-    다음 세 가지 매개변수를 받습니다.
-
+- `callbackFn`
+  - : A function to execute for each element in the array. It should return a [truthy](/en-US/docs/Glossary/Truthy) value to keep the element in the resulting array, and a [falsy](/en-US/docs/Glossary/Falsy) value otherwise. The function is called with the following arguments:
     - `element`
-      - : 처리할 현재 요소.
-    - `index` {{optional_inline}}
-      - : 처리할 현재 요소의 인덱스.
-    - `array` {{optional_inline}}
-      - : `filter`를 호출한 배열.
-
+      - : The current element being processed in the array.
+    - `index`
+      - : The index of the current element being processed in the array.
+    - `array`
+      - : The array `filter()` was called upon.
 - `thisArg` {{optional_inline}}
-  - : `callback`을 실행할 때 `this`로 사용하는 값.
+  - : A value to use as `this` when executing `callbackFn`. See [iterative methods](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#iterative_methods).
 
-### 반환 값
+### Return value
 
-테스트를 통과한 요소로 이루어진 새로운 배열. 어떤 요소도 테스트를 통과하지 못했으면 빈 배열을 반환합니다.
+A [shallow copy](/en-US/docs/Glossary/Shallow_copy) of a portion of the given array, filtered down to just the elements from the given array that pass the test implemented by the provided function. If no elements pass the test, an empty array will be returned.
 
-## 설명
+## Description
 
-`filter()`는 배열 내 각 요소에 대해 한 번 제공된 `callback` 함수를 호출해, `callback`이 [`true`로 강제하는 값](/ko/docs/Glossary/Truthy)을 반환하는 모든 값이 있는 새로운 배열을 생성합니다. `callback`은 할당된 값이 있는 배열의 인덱스에 대해서만 호출됩니다; 삭제됐거나 값이 할당된 적이 없는 인덱스에 대해서는 호출되지 않습니다. `callback` 테스트를 통과하지 못한 배열 요소는 그냥 건너뛰며 새로운 배열에 포함되지 않습니다.
+The `filter()` method is an [iterative method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#iterative_methods). It calls a provided `callbackFn` function once for each element in an array, and constructs a new array of all the values for which `callbackFn` returns a [truthy](/en-US/docs/Glossary/Truthy) value. Array elements which do not pass the `callbackFn` test are not included in the new array.
 
-`callback`은 다음 세 인수와 함께 호출됩니다:
+`callbackFn` is invoked only for array indexes which have assigned values. It is not invoked for empty slots in [sparse arrays](/en-US/docs/Web/JavaScript/Guide/Indexed_collections#sparse_arrays).
 
-1. 요소값
-2. 요소 인덱스
-3. 순회(traverse)되는 배열 객체
+The `filter()` method is a [copying method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#copying_methods_and_mutating_methods). It does not alter `this` but instead returns a [shallow copy](/en-US/docs/Glossary/Shallow_copy) that contains the same elements as the ones from the original array (with some filtered out). However, the function provided as `callbackFn` can mutate the array. Note, however, that the length of the array is saved _before_ the first invocation of `callbackFn`. Therefore:
 
-`thisArg` 매개변수가 `filter`에 제공된 경우, 호출될 때 그 값은 `callback`의 `this` 값으로 전달됩니다. 그 이외에, `undefined`값도 `callback`의 `this` 값으로 쓰기 위해 전달됩니다. 결국 `callback`에 의해 관찰될 수 있는 `this` 값은 [`this`를 결정하는 함수의 평소 규칙](/ko/docs/Web/JavaScript/Reference/Operators/this)에 따라 결정됩니다.
+- `callbackFn` will not visit any elements added beyond the array's initial length when the call to `filter()` began.
+- Changes to already-visited indexes do not cause `callbackFn` to be invoked on them again.
+- If an existing, yet-unvisited element of the array is changed by `callbackFn`, its value passed to the `callbackFn` will be the value at the time that element gets visited. [Deleted](/en-US/docs/Web/JavaScript/Reference/Operators/delete) elements are not visited.
 
-`filter()`는 호출되는 배열을 변화시키지(mutate) 않습니다.
+> **Warning:** Concurrent modifications of the kind described above frequently lead to hard-to-understand code and are generally to be avoided (except in special cases).
 
-`filter()`에 의해 처리되는 요소의 범위는 `callback`의 첫 호출 전에 설정됩니다. `filter()` 호출 시작 이후로 배열에 추가된 요소는 `callback`에 의해 방문되지 않습니다. 배열의 기존 요소가 변경 또는 삭제된 경우, `callback`에 전달된 그 값은 `filter()`가 그 요소를 방문한 시점에 값이 됩니다; 삭제된 요소는 반영되지 않습니다.
+The `filter()` method is [generic](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#generic_array_methods). It only expects the `this` value to have a `length` property and integer-keyed properties.
 
-## 예제
+## Examples
 
-### 모든 작은 값 걸러내기
+### Filtering out all small values
 
-다음 예는 값이 10 이하인 모든 요소가 제거된 걸러진 배열을 만들기 위해 `filter()`를 사용합니다.
+The following example uses `filter()` to create a filtered array that has all elements with values less than `10` removed.
 
 ```js
 function isBigEnough(value) {
   return value >= 10;
 }
 
-var filtered = [12, 5, 8, 130, 44].filter(isBigEnough);
-// filtered 는 [12, 130, 44]
+const filtered = [12, 5, 8, 130, 44].filter(isBigEnough);
+// filtered is [12, 130, 44]
 ```
 
-### JSON에서 무효한 항목 거르기
+### Find all prime numbers in an array
 
-다음 예는 0이 아닌, 숫자 `id`인 모든 요소의 걸러진 json을 만들기 위해 `filter()`를 사용합니다.
+The following example returns all prime numbers in the array:
 
 ```js
-var arr = [
+const array = [-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+
+function isPrime(num) {
+  for (let i = 2; num > i; i++) {
+    if (num % i === 0) {
+      return false;
+    }
+  }
+  return num > 1;
+}
+
+console.log(array.filter(isPrime)); // [2, 3, 5, 7, 11, 13]
+```
+
+### Filtering invalid entries from JSON
+
+The following example uses `filter()` to create a filtered JSON of all elements with non-zero, numeric `id`.
+
+```js
+const arr = [
   { id: 15 },
   { id: -1 },
   { id: 0 },
   { id: 3 },
   { id: 12.2 },
-  { },
+  {},
   { id: null },
   { id: NaN },
-  { id: 'undefined' }
+  { id: "undefined" },
 ];
 
-var invalidEntries = 0;
-
-function isNumber(obj) {
-  return obj !== undefined && typeof(obj) === 'number' && !isNaN(obj);
-}
+let invalidEntries = 0;
 
 function filterByID(item) {
-  if (isNumber(item.id) && item.id !== 0) {
+  if (Number.isFinite(item.id) && item.id !== 0) {
     return true;
   }
   invalidEntries++;
   return false;
 }
 
-var arrByID = arr.filter(filterByID);
+const arrByID = arr.filter(filterByID);
 
-console.log('Filtered Array\n', arrByID);
+console.log("Filtered Array\n", arrByID);
 // Filtered Array
 // [{ id: 15 }, { id: -1 }, { id: 3 }, { id: 12.2 }]
 
-console.log('Number of Invalid Entries = ', invalidEntries);
+console.log("Number of Invalid Entries =", invalidEntries);
 // Number of Invalid Entries = 5
 ```
 
-### 배열 내용 검색
+### Searching in array
 
-다음 예는 배열 내용을 조건에 따라 검색하기 위해 `filter()` 를 사용합니다.
+Following example uses `filter()` to filter array content based on search criteria.
 
 ```js
-var fruits = ['apple', 'banana', 'grapes', 'mango', 'orange'];
+const fruits = ["apple", "banana", "grapes", "mango", "orange"];
 
 /**
- * 검색 조건에 따른 배열 필터링(쿼리)
+ * Filter array items based on search criteria (query)
  */
-function filterItems(query) {
-  return fruits.filter(function(el) {
-      return el.toLowerCase().indexOf(query.toLowerCase()) > -1;
-  })
+function filterItems(arr, query) {
+  return arr.filter((el) => el.toLowerCase().includes(query.toLowerCase()));
 }
 
-console.log(filterItems('ap')); // ['apple', 'grapes']
-console.log(filterItems('an')); // ['banana', 'mango', 'orange']
+console.log(filterItems(fruits, "ap")); // ['apple', 'grapes']
+console.log(filterItems(fruits, "an")); // ['banana', 'mango', 'orange']
 ```
 
-### ES2015로 구현
+### Using filter() on sparse arrays
+
+`filter()` will skip empty slots.
 
 ```js
-const fruits = ['apple', 'banana', 'grapes', 'mango', 'orange'];
-
-/**
- * 검색 조건에 따른 배열 필터링(쿼리)
- */
-const filterItems = (query) => {
-  return fruits.filter((el) =>
-    el.toLowerCase().indexOf(query.toLowerCase()) > -1
-  );
-}
-
-console.log(filterItems('ap')); // ['apple', 'grapes']
-console.log(filterItems('an')); // ['banana', 'mango', 'orange']
+console.log([1, , undefined].filter((x) => x === undefined)); // [undefined]
+console.log([1, , undefined].filter((x) => x !== 2)); // [1, undefined]
 ```
 
-## 폴리필
+### Calling filter() on non-array objects
 
-`filter`는 ECMA-262 표준 제5판에 추가됐습니다. 따라서 어떤 표준 구현체에서는 사용할 수 없을 수도 있습니다. 다른 모든 코드 이전에 아래 코드를 포함하면 지원하지 않는 환경에서도 `filter`를 사용할 수 있습니다. 아래 알고리즘은 `fn.call`의 계산 값이 원래의 [`Function.prototype.call()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Function/call)과 같고, {{jsxref("Array.prototype.push()")}}가 변형되지 않은 경우 ECMA-262 제5판이 명시한 것과 동일합니다.
+The `filter()` method reads the `length` property of `this` and then accesses each integer index.
 
 ```js
-if (!Array.prototype.filter){
-  Array.prototype.filter = function(func, thisArg) {
-    'use strict';
-    if ( ! ((typeof func === 'Function' || typeof func === 'function') && this) )
-        throw new TypeError();
-
-    var len = this.length >>> 0,
-        res = new Array(len), // preallocate array
-        t = this, c = 0, i = -1;
-    if (thisArg === undefined){
-      while (++i !== len){
-        // checks to see if the key was set
-        if (i in this){
-          if (func(t[i], i, t)){
-            res[c++] = t[i];
-          }
-        }
-      }
-    }
-    else{
-      while (++i !== len){
-        // checks to see if the key was set
-        if (i in this){
-          if (func.call(thisArg, t[i], i, t)){
-            res[c++] = t[i];
-          }
-        }
-      }
-    }
-
-    res.length = c; // shrink down array to proper size
-    return res;
-  };
-}
+const arrayLike = {
+  length: 3,
+  0: "a",
+  1: "b",
+  2: "c",
+};
+console.log(Array.prototype.filter.call(arrayLike, (x) => x <= "b"));
+// [ 'a', 'b' ]
 ```
 
-## 명세
+### Affecting Initial Array (modifying, appending and deleting)
+
+The following example tests the behavior of the `filter` method when the array is modified.
+
+```js
+// Modifying each word
+let words = ["spray", "limit", "exuberant", "destruction", "elite", "present"];
+
+const modifiedWords = words.filter((word, index, arr) => {
+  arr[index + 1] += " extra";
+  return word.length < 6;
+});
+
+console.log(modifiedWords);
+// Notice there are three words below length 6, but since they've been modified one is returned
+// ["spray"]
+
+// Appending new words
+words = ["spray", "limit", "exuberant", "destruction", "elite", "present"];
+const appendedWords = words.filter((word, index, arr) => {
+  arr.push("new");
+  return word.length < 6;
+});
+
+console.log(appendedWords);
+// Only three fits the condition even though the `words` itself now has a lot more words with character length less than 6
+// ["spray" ,"limit" ,"elite"]
+
+// Deleting words
+words = ["spray", "limit", "exuberant", "destruction", "elite", "present"];
+const deleteWords = words.filter((word, index, arr) => {
+  arr.pop();
+  return word.length < 6;
+});
+
+console.log(deleteWords);
+// Notice 'elite' is not even obtained as it's been popped off 'words' before filter can even get there
+// ["spray" ,"limit"]
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `Array.prototype.filter` in `core-js`](https://github.com/zloirock/core-js#ecmascript-array)
 - {{jsxref("Array.prototype.forEach()")}}
 - {{jsxref("Array.prototype.every()")}}
 - {{jsxref("Array.prototype.some()")}}
 - {{jsxref("Array.prototype.reduce()")}}
+- {{jsxref("Array.prototype.find()")}}

@@ -1,52 +1,68 @@
 ---
-title: CSS 레이아웃
+title: CSS layout
 slug: Learn/CSS/CSS_layout
 ---
 
 {{LearnSidebar}}
 
-이 시점에서 우리는 이미 CSS 기본 사항, 텍스트 스타일링 방법, 콘텐츠가 안에 있는 상자를 스타일링하고 조작하는 방법을 살펴 보았습니다. 이제 뷰포트와 관련하여 상자를 올바른 장소에 배치하는 방법을 살펴볼 때입니다. 우리는 필요한 전제조건을 다루었기 때문에 이제 CSS 레이아웃에 깊이 뛰어들어 다른 디스플레이 설정, 플렉스박스, CSS 그리드, 포지셔닝과 같은 현대적인 레이아웃 도구, 그리고 당신이 여전히 알고 싶어할 만한 레거시 기술들을 살펴볼 수 있다.
+At this point, we've looked at CSS fundamentals, how to style text, and how to style and manipulate the boxes that your content sits inside. Now it's time to look at how to correctly arrange your boxes in relation to the viewport as well as to one another. We've covered the necessary prerequisites, so let's dive deep into CSS layout, looking at such various features as: different display settings, positioning, modern layout tools like flexbox and CSS grid, and some of the legacy techniques you might still want to know about.
 
-## 선결사항
+> **Callout:**
+>
+> #### Looking to become a front-end web developer?
+>
+> We have put together a course that includes all the essential information you need to
+> work towards your goal.
+>
+> [**Get started**](/en-US/docs/Learn/Front-end_web_developer)
 
-이번 단위를 시작하기 전에 여러분은 이미 아래 내용을 익혔어야 합니다:
+## Prerequisites
 
-1. [HTML 소개](/ko/docs/Learn/HTML/Introduction_to_HTML) 단위에서 논의했듯이 HTML에 대해 기본적인 친숙도가 있어야 합니다.
-2. [CSS 소개](/ko/docs/Learn/CSS/Introduction_to_CSS) 단위에서 논의한 만큼 CSS 기본 사항에 대해 부담이 없어야 합니다.
-3. [상자 스타일링](/ko/docs/Learn/CSS/Styling_boxes) 방법에 대한 이해가 있어야 합니다.
+Before starting this module, you should already:
 
-> **참고:** 여러분은 본인만의 파일을 생성할 능력이 없는 컴퓨터/태블릿/다른 장치에서 작업하고 있는 경우, [JSBin](http://jsbin.com/)나 [Thimble](https://thimble.mozilla.org/)과 같은 온라인 코딩 프로그램 상에서 코드 예제를 시험해볼 수 있다.
+1. Have basic familiarity with HTML, as discussed in the [Introduction to HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML) module.
+2. Be comfortable with CSS fundamentals, as discussed in [Introduction to CSS](/en-US/docs/Learn/CSS/First_steps).
+3. Understand how to [style boxes](/en-US/docs/Learn/CSS/Building_blocks).
 
-## 안내서
+> **Note:** If you are working on a computer/tablet/other device where you don't have the ability to create your own files, you could try out (most of) the code examples in an online coding program such as [JSBin](https://jsbin.com/) or [Glitch](https://glitch.com/).
 
-이 글은 CSS에서 이용할 수 있는 기본 레이아웃 도구 및 기술에 대한 지침을 제공합니다. 단원 말미에 웹페이지 하나를 예시하는 방식으로 레이아웃 매서드에 대한 이해도를 자가 점검하는데 도움이 되는 학습 평가가 있습니다.
+## Guides
 
-- [CSS 레이아웃 입문서](/ko/docs/Learn/CSS/CSS_layout/Introduction)
-  - : 이 문서에서는 이전 모듈에서 이미 다뤘던 CSS 레이아웃 기능, 예를 들어 서로 다른 {{cssxref("display")}} 속성값의 차이 등을 복습하고, 이번 모듈에서 다룰 예정인 몇몇 CSS 개념을 소개합니다.
-- [일반 대열](/ko/docs/Learn/CSS/CSS_layout/일반_흐름)
-  - : 웹페이지의 엘리먼트 무리는 여러분이 무언가 변화를 주기전까지는 _normal flow_(일반 대열)에 따라 또래 엘리먼트들을 배치합니다. 이 글은 일반 대열을 설명하는데, 그 걸 토대로 일반 대열 자체를 변경하는 방법을 배우겠습니다.
-- [Flexbox](/ko/docs/Learn/CSS/CSS_layout/Flexbox)
-  - [: Flexbox](/ko/docs/Web/CSS/CSS_Flexible_Box_Layout/%EA%B0%80%EB%B3%80%EC%83%81%EC%9E%90%EC%9D%98_%EB%8C%80%ED%91%9C%EC%A0%81%EC%9D%B8_%EC%82%AC%EC%9A%A9%EB%A1%80)는 행과 열의 형태로 항목 무리를 배치하는 일차원 레이아웃 메서드이다. 항목은 부족한 공간에 맞추기 위해 축소되거나 여분의 공간을 채우기 위해 변형된다. 이 글은 근간이 되는 내용 전체를 설명한다.
-- [그리드(Grids)](/ko/docs/Learn/CSS/CSS_layout/Grids)
-  - : CSS 그리드 레이아웃(Grid Layout)은 웹페이지를 위한 이차원 레이아웃 시스템입니다. 이 기능을 통해 콘텐츠를 행과 열에 배치할 수 있으며 복잡한 레이아웃을 직접 직관적으로 구축할 수 있는 많은 기능이 있습니다. 이 글은 페이지 레이아웃을 시작하기 위해 필요한 모든 것을 알려드립니다.
-- [부동체](/ko/docs/Learn/CSS/CSS_layout/Floats)
-  - : 원래 텍스트 블록 내에서 부동 이미지를 위한 {{cssxref("float")}} 속성은 웹 페이지에서 다단 레이아웃을 생성할 용도로 가장 널리 사용되는 도구 중 하나로 자리매김했었습니다. Flexbox와 그리드의 출현과 함께 부동 속성은 이 글에서 설명하겠지만, 원래의 목적대로 돌아갔습니다.
-- [위치잡기](/ko/docs/Learn/CSS/CSS_layout/위치잡기)
-  - : 당신이 일반 문서 레이아웃 대열에서 엘리먼트를 끄집어 내어, 그것이 다르게 행동하게 만들수 있게 해주는 것이 위치잡기다. 예를 들어 상대 엘리먼트 위에 놓거나 브라우저 뷰 포트 내부의 동일한 위치를 항상 유지하게 해준다. 이 글은 서로 다른 {{cssxref("position")}} 값을 설명하고, 그 걸 사용하는 방법에 대해서도 설명한다.
-- [다단 레이아웃](/ko/docs/Learn/CSS/CSS_layout/Multiple-column_Layout)
-  - : CSS 다단 레이아웃 규격은 신문에서 볼 수 있듯이 콘텐츠를 단으로 배치하는 방법을 제공합니다. 이 글은 그 기능을 어떻게 사용하는지 설명합니다.
-- [반응형 디자인](/ko/docs/Learn/CSS/CSS_layout/%EB%B0%98%EC%9D%91%ED%98%95_%EB%94%94%EC%9E%90%EC%9D%B8)
-  - : 웹 기반 장치에 다양한 화면 크기가 등장함에 따라 반응형 웹 디자인(RWD) 개념이 등장했습니다. 말하자면 서로 다른 화면 너비와 해상도 등에 맞게 웹 페이지가 레이아웃과 모양을 변경할 수 있는 일련의 실례를 집대성한 것입니다. 이 아이디어가 우리가 멀티 디바이스 웹에 대한 설계 방식을 바꾸게 만든 장본인입니다. 이 글에서 우리는 그 내용을 숙달하기 위해 당신이 알아야하는 주요 기술을 이해하도록 도울 것입니다.
-- [미디어 쿼리 초보자 안내서](/ko/docs/Learn/CSS/CSS_layout/미디어_쿼리_초보자_안내서)
-  - **: CSS Media Query**는 예를 들어 "뷰포트가 480 픽셀보다 넓다."라고 여러분이 지정한 규칙에 브라우저 및 장치 환경이 일치하는 경우에만 CSS를 적용할 수 있는 방법을 제공합니다. 미디어 쿼리는 반응형 웹 디자인의 핵심 부분이다. 뷰포트의 크기에 따라 서로 다른 레이아웃을 생성할 수 있기 때문이다. 그러나 예를들면 사용자는 마우스가 아닌 터치스크린을 사용하는지와 같이 실행 중인 사이트 환경에 대한 여러 내용들을 탐지하는 데도 사용할 수 있습니다. 이번 단원에서는 먼저 미디어 쿼리에 사용된 구문에 대해 배우고, 이어 해당 구문을 가공의 예제에서 사용하여 간단한 디자인이 어떻게 반응할 수 있는지 살펴보겠습니다.
-- [레거시 레이아웃 메서드](/ko/docs/Learn/CSS/CSS_layout/Legacy_Layout_Methods)
-  - : 그리드 시스템은 CSS 레이아웃에서 사용되는 매우 일반적인 기능이며, CSS 그리드 레이아웃(Grid Layout) 이전에는 부동체 또는 기타 레이아웃 기능을 이용하여 그리드 레이아웃(Grid Layout)이 구현되는 경향이 있었습니다. 자신의 레이아웃을 정해진 수의 열(예를 들어 4, 6 또는 12열)이라 상상한 뒤 여러분의 콘텐츠를 그 가상의 열 안에 콘텐츠 열을 끼워맞춥니다. 이 글에서 우리는 이 오래된 메서드가 어떻게 작동하는지 탐구할 것입니다. 이는 여러분이 오래된 프로젝트에 몸을 담게 될 경우에 그들 메서드의 사용 방법에 대한 이해를 돕기 위함입니다.
-- [이전 브라우저 지원](/ko/docs/Learn/CSS/CSS_layout/%EC%9D%B4%EC%A0%84_%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80_%EC%A7%80%EC%9B%90)
-  - : 이 단위에서는 Flexbox 및 그리드를 여러분의 웹디자인을 위한 주 레이아웃 방법으로 사용할 것을 권장합니다. 그러나 이전 브라우저 또는 당신이 사용하는 메서드를 지원하지 않는 브라우저를 사용하는 사이트 방문자가 있습니다. 이런 일은 웹상에서 항상 있는 일입니다. 즉 새로운 기능이 개발됨에 따라 서로 다른 브라우저가 서로 다른 것들의 우선 순위를 정합니다. 이 글은 구식 기술의 사용자들을 차단하지 않고 현대적인 웹 기술을 사용하는 방법에 대해 설명합니다.
-- [학습 평가: 레이아웃 이해의 핵심 사항](/ko/docs/Learn/CSS/CSS_layout/Fundamental_Layout_Comprehension)
-  - : 웹페이지를 하나 예시하는 방식으로 서로 다른 레이아웃 메서드 지식을 테스트하는 학습 평가
+These articles will provide instruction on the fundamental layout tools and techniques available in CSS. At the end of the lessons is an assessment to help you check your understanding of layout methods by laying out a webpage.
 
-## 참조 항목
+- [Introduction to CSS layout](/en-US/docs/Learn/CSS/CSS_layout/Introduction)
+  - : This article will recap some of the CSS layout features we've already touched upon in previous modules — such as different {{cssxref("display")}} values — and introduce some of the concepts we'll be covering throughout this module.
+- [Normal flow](/en-US/docs/Learn/CSS/CSS_layout/Normal_Flow)
+  - : Elements on webpages lay themselves out according to _normal flow_ - until we do something to change that. This article explains the basics of normal flow as a grounding for learning how to change it.
+- [Flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox)
+  - : [Flexbox](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Typical_Use_Cases_of_Flexbox) is a one-dimensional layout method for laying out items in rows or columns. Items flex to fill additional space and shrink to fit into smaller spaces. This article explains all the fundamentals. After studying this guide you can [test your flexbox skills](/en-US/docs/Learn/CSS/CSS_layout/Flexbox_skills) to check your understanding before moving on.
+- [Grids](/en-US/docs/Learn/CSS/CSS_layout/Grids)
+  - : CSS Grid Layout is a two-dimensional layout system for the web. It lets you lay content out in rows and columns, and has many features that make building complex layouts straightforward. This article will give you all you need to know to get started with page layout, then [test your grid skills](/en-US/docs/Learn/CSS/CSS_layout/Grid_skills) before moving on.
+- [Floats](/en-US/docs/Learn/CSS/CSS_layout/Floats)
+  - : Originally for floating images inside blocks of text, the {{cssxref("float")}} property became one of the most commonly used tools for creating multiple column layouts on webpages. With the advent of Flexbox and Grid it has now returned to its original purpose, as this article explains.
+- [Positioning](/en-US/docs/Learn/CSS/CSS_layout/Positioning)
+  - : Positioning allows you to take elements out of the normal document layout flow and make them behave differently, for example, by sitting on top of one another, or by always remaining in the same place inside the browser viewport. This article explains the different {{cssxref("position")}} values and how to use them.
+- [Multiple-column layout](/en-US/docs/Learn/CSS/CSS_layout/Multiple-column_Layout)
+  - : The multiple-column layout specification gives you a method of laying content out in columns, as you might see in a newspaper. This article explains how to use this feature.
+- [Responsive design](/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design)
+  - : As more diverse screen sizes have appeared on web-enabled devices, the concept of responsive web design (RWD) has appeared: a set of practices that allows web pages to alter their layout and appearance to suit different screen widths, resolutions, etc. It is an idea that changed the way we design for a multi-device web, and in this article we'll help you understand the main techniques you need to know to master it.
+- [Beginner's guide to media queries](/en-US/docs/Learn/CSS/CSS_layout/Media_queries)
+  - : The **CSS Media Query** gives you a way to apply CSS only when the browser and device environment matches a rule that you specify, for example, "viewport is wider than 480 pixels". Media queries are a key part of responsive web design because they allow you to create different layouts depending on the size of the viewport. They can also be used to detect other features of the environment your site is running on, for example, whether the user is using a touchscreen rather than a mouse. In this lesson, you will first learn about the syntax used in media queries, and then you will use them in an interactive example showing how a simple design might be made responsive.
+- [Legacy layout methods](/en-US/docs/Learn/CSS/CSS_layout/Legacy_Layout_Methods)
+  - : Grid systems are a very common feature used in CSS layouts. Prior to **CSS Grid Layout**, they tended to be implemented using floats or other layout features. You'd first imagine your layout as a set number of columns (e.g., 4, 6, or 12), and then you'd fit your content columns inside these imaginary columns. In this article, we'll explore how these older methods work so that you understand how they were used if you work on an older project.
+- [Supporting older browsers](/en-US/docs/Learn/CSS/CSS_layout/Supporting_Older_Browsers)
+  - : In this module, we recommend using Flexbox and Grid as the main layout methods for your designs. However, there are bound to be visitors to a site you develop in the future who use older browsers, or browsers which do not support the methods you have used. This will always be the case on the web — as new features are developed, different browsers will prioritize different features. This article explains how to use modern web techniques without excluding users of older technology.
 
-- [위치잡기 실례](/ko/docs/Learn/CSS/CSS_layout/Practical_positioning_examples)
-  - : 이 글은 위치잡기로 당신이 할 수 있는 일의 종류를 설명하기 위해 실제 사례를 구축하는 방법을 제시합니다.
+## Assessments
+
+The following assessment will test your understanding of the CSS layout methods covered in the guides above.
+
+- [Fundamental layout comprehension](/en-US/docs/Learn/CSS/CSS_layout/Fundamental_Layout_Comprehension)
+  - : An assessment to test your knowledge of different layout methods by laying out a webpage.
+
+## See also
+
+- [Practical positioning examples](/en-US/docs/Learn/CSS/CSS_layout/Practical_positioning_examples)
+  - : This article shows how to build some real-world examples to illustrate what kinds of things you can do with positioning.
+- [CSS layout cookbook](/en-US/docs/Web/CSS/Layout_cookbook)
+  - : The CSS layout cookbook aims to bring together recipes for common layout patterns, things you might need to implement in your sites. In addition to providing code you can use as a starting point in your projects, these recipes highlight the different ways layout specifications can be used and the choices you can make as a developer.

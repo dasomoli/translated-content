@@ -1,17 +1,24 @@
 ---
 title: white-space
 slug: Web/CSS/white-space
+page-type: css-property
+browser-compat: css.properties.white-space
 ---
 
 {{CSSRef}}
 
-CSS **`white-space`** 속성은 요소가 공백 문자를 처리하는 법을 지정합니다.
+The **`white-space`** CSS property sets how {{Glossary("whitespace", "white space")}} inside an element is handled.
 
 {{EmbedInteractiveExample("pages/css/white-space.html")}}
 
-> **참고:** 단어 안에서 줄이 바뀌기를 원하는 경우 {{CSSxRef("overflow-wrap")}}, {{CSSxRef("word-break")}}, {{CSSxRef("hyphens")}}를 사용하세요.
+The property specifies two things:
 
-## 구문
+- Whether and how white space is [collapsed](#collapsing_of_white_space).
+- Whether lines may wrap at soft-wrap opportunities.
+
+> **Note:** To make words break _within themselves_, use {{CSSxRef("overflow-wrap")}}, {{CSSxRef("word-break")}}, or {{CSSxRef("hyphens")}} instead.
+
+## Syntax
 
 ```css
 /* Keyword values */
@@ -25,49 +32,122 @@ white-space: break-spaces;
 /* Global values */
 white-space: inherit;
 white-space: initial;
+white-space: revert;
+white-space: revert-layer;
 white-space: unset;
 ```
 
-`white-space` 속성은 다음 목록의 키워드 값 중 하나를 사용해 설정합니다.
+The `white-space` property is specified as a single keyword chosen from the list of values below.
 
-### 값
+### Values
 
 - `normal`
-  - : 연속 공백을 하나로 합침. 개행 문자도 다른 공백 문자와 동일하게 처리합니다. 한 줄이 너무 길어서 넘칠 경우 자동으로 줄을 바꿉니다.
+  - : Sequences of white space are [collapsed](#collapsing_of_white_space). Newline characters in the source are handled the same as other white space. Lines are broken as necessary to fill line boxes.
 - `nowrap`
-  - : 연속 공백을 하나로 합침. 줄 바꿈은 {{htmlelement("br")}} 요소에서만 일어납니다.
+  - : [Collapses](#collapsing_of_white_space) white space as for `normal`, but suppresses line breaks (text wrapping) within the source.
 - `pre`
-  - : 연속 공백 유지. 줄 바꿈은 개행 문자와 {{htmlelement("br")}} 요소에서만 일어납니다.
+  - : Sequences of white space are preserved. Lines are only broken at newline characters in the source and at {{HTMLElement("br")}} elements.
 - `pre-wrap`
-  - : 연속 공백 유지. 줄 바꿈은 개행 문자와 {{htmlelement("br")}} 요소에서 일어나며, 한 줄이 너무 길어서 넘칠 경우 자동으로 줄을 바꿉니다.
+  - : Sequences of white space are preserved. Lines are broken at newline characters, at {{HTMLElement("br")}}, and as necessary to fill line boxes.
 - `pre-line`
-  - : 연속 공백을 하나로 합침. 줄바꿈은 개행 문자와 {{htmlelement("br")}} 요소에서 일어나며, 한 줄이 너무 길어서 넘칠 경우 자동으로 줄을 바꿉니다.
+  - : Sequences of white space are [collapsed](#collapsing_of_white_space). Lines are broken at newline characters, at {{HTMLElement("br")}}, and as necessary to fill line boxes.
 - `break-spaces`
 
-  - : 다음 차이점을 제외하면 `pre-wrap`과 동일합니다.
+  - : The behavior is identical to that of `pre-wrap`, except that:
 
-    - 연속 공백이 줄의 끝에 위치하더라도 공간을 차지합니다.
-    - 연속 공백의 중간과 끝에서도 자동으로 줄을 바꿀 수 있습니다.
-    - 유지한 연속 공백은 `pre-wrap`과 달리 요소 바깥으로 넘치지 않으며, 공간도 차지하므로 박스의 본질 크기(`min-content`, `max-content`)에 영향을 줍니다.
+    - Any sequence of preserved white space always takes up space, including at the end of the line.
+    - A line breaking opportunity exists after every preserved white space character, including between white space characters.
+    - Such preserved spaces take up space and do not hang, and thus affect the box's intrinsic sizes (min-content size and max-content size).
 
-다음은 여러가지 `white-space` 값의 동작을 정리한 표입니다.
+The following table summarizes the behavior of the various `white-space` values:
 
-|                | 개행 문자 | 스페이스, 탭 | 자동 줄 바꿈 | 줄 끝의 공백 |
-| -------------- | --------- | ------------ | ------------ | ------------ |
-| `normal`       | 병합      | 병합         | 예           | 제거         |
-| `nowrap`       | 병합      | 병합         | 아니오       | 제거         |
-| `pre`          | 유지      | 유지         | 아니오       | 유지         |
-| `pre-wrap`     | 유지      | 유지         | 예           | 넘침         |
-| `pre-line`     | 유지      | 병합         | 예           | 제거         |
-| `break-spaces` | 유지      | 유지         | 예           | 줄 바꿈      |
+<table class="standard-table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>New lines</th>
+      <th>Spaces and tabs</th>
+      <th>Text wrapping</th>
+      <th>End-of-line spaces</th>
+      <th>End-of-line other space separators</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th><code>normal</code></th>
+      <td>Collapse</td>
+      <td>Collapse</td>
+      <td>Wrap</td>
+      <td>Remove</td>
+      <td>Hang</td>
+    </tr>
+    <tr>
+      <th><code>nowrap</code></th>
+      <td>Collapse</td>
+      <td>Collapse</td>
+      <td>No wrap</td>
+      <td>Remove</td>
+      <td>Hang</td>
+    </tr>
+    <tr>
+      <th><code>pre</code></th>
+      <td>Preserve</td>
+      <td>Preserve</td>
+      <td>No wrap</td>
+      <td>Preserve</td>
+      <td>No wrap</td>
+    </tr>
+    <tr>
+      <th><code>pre-wrap</code></th>
+      <td>Preserve</td>
+      <td>Preserve</td>
+      <td>Wrap</td>
+      <td>Hang</td>
+      <td>Hang</td>
+    </tr>
+    <tr>
+      <th><code>pre-line</code></th>
+      <td>Preserve</td>
+      <td>Collapse</td>
+      <td>Wrap</td>
+      <td>Remove</td>
+      <td>Hang</td>
+    </tr>
+    <tr>
+      <th><code>break-spaces</code></th>
+      <td>Preserve</td>
+      <td>Preserve</td>
+      <td>Wrap</td>
+      <td>Wrap</td>
+      <td>Wrap</td>
+    </tr>
+  </tbody>
+</table>
 
-### 형식 구문
+> **Note:** There is a distinction made between **spaces** and **other space separators**. These are defined as follows:
+>
+> - spaces
+>   - : Spaces (U+0020), tabs (U+0009), and segment breaks (such as newlines).
+> - other space separators
+>   - : All other space separators defined in Unicode, other than those already defined as spaces.
+>
+> Where white space is said to _hang_, this can affect the size of the box when measured for intrinsic sizing.
 
-{{csssyntax}}
+## Collapsing of white space
 
-## 예제
+The CSS Text specification contains a [Collapsing and Transformation](https://drafts.csswg.org/css-text-3/#white-space-phase-1) section that precisely defines what "white space is collapsed" means, including an example with an illustration. Usually, it means reducing sequences of multiple white-space characters down to a single space character — though in some cases it means reducing them to no character (the empty string).
 
-### 기본 예제
+## Formal definition
+
+{{CSSInfo}}
+
+## Formal syntax
+
+{{CSSSyntax}}
+
+## Examples
+
+### Basic example
 
 ```css
 code {
@@ -75,16 +155,17 @@ code {
 }
 ```
 
-### {{HTMLElement("pre")}} 요소 내부의 줄 바꿈
+### Line breaks inside \<pre> elements
 
 ```css
 pre {
-  word-wrap: break-word;      /* IE 5.5-7 */
-  white-space: pre-wrap;      /* current browsers */
+  white-space: pre-wrap;
 }
 ```
 
-## 실제로 보기
+### In action
+
+#### HTML
 
 ```html hidden
 <div id="css-code" class="box">
@@ -96,16 +177,18 @@ pre {
     <option>pre-wrap</option>
     <option>pre-line</option>
     <option>break-spaces</option>
-  </select> }
+  </select>
+  }
 </div>
 <div id="results" class="box">
-  <p>    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-
-    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-
-    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-
-    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+  </p>
 </div>
 ```
 
@@ -117,12 +200,17 @@ pre {
 }
 
 #css-code {
-  background-color: rgb(220,220,220);
+  background-color: rgb(220, 220, 220);
   font-size: 16px;
+  font-family: monospace;
+}
+
+#css-code select {
+  font-family: inherit;
 }
 
 #results {
-  background-color: rgb(230,230,230);
+  background-color: rgb(230, 230, 230);
   overflow-x: scroll;
   height: 400px;
   white-space: normal;
@@ -131,39 +219,36 @@ pre {
 ```
 
 ```js hidden
-var select  = document.querySelector("#css-code select");
-var results = document.querySelector("#results p");
-select.addEventListener("change", function(e) {
-  results.setAttribute("style", "white-space: "+e.target.value);
-})
+const select = document.querySelector("#css-code select");
+const results = document.querySelector("#results p");
+select.addEventListener("change", (e) => {
+  results.setAttribute("style", `white-space: ${e.target.value}`);
+});
 ```
-
-### HTML
 
 ```html
-    <p>    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-
-    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-
-    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-
-    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<p>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+  nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
+  eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
+  in culpa qui officia deserunt mollit anim id est laborum.
+</p>
 ```
 
-### CSS + 결과
+#### Result
 
-{{EmbedLiveSample('See_it_in_action_LiveSample', '100%', 500)}}
+{{EmbedLiveSample("In_action", "100%", 500)}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-{{cssinfo}}
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 단어 안에서의 자동 줄 바꿈 방식을 지정하는 속성: {{CSSxRef("overflow-wrap")}}, {{CSSxRef("word-break")}}, {{CSSxRef("hyphens")}}
+- Properties that define how words break _within themselves_: {{CSSxRef("overflow-wrap")}}, {{CSSxRef("word-break")}}, {{CSSxRef("hyphens")}}

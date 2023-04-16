@@ -1,38 +1,37 @@
 ---
-title: call-template
+title: <xsl:call-template>
 slug: Web/XSLT/Element/call-template
-original_slug: Web/XSLT/call-template
 ---
 
 {{ XsltRef() }}
 
-`<xsl:call-template>` 요소는 이름 붙인 템플릿을 호출합니다.
+The `<xsl:call-template>` element invokes a named template.
 
-### 문법
+### Syntax
 
-```
+```xml
 <xsl:call-template name=NAME>
   <xsl:with-param> [optional]
 </xsl:call-template>
 ```
 
-### 필수 속성
+### Required Attribute
 
 - `name`
-  - : 호출하고 싶은 템플릿의 이름을 지정합니다.
+  - : Specifies the name of the template you wish to invoke.
 
-### 선택 속성
+### Optional Attributes
 
-없음.
+None.
 
-### 타입
+### Type
 
-명령, 템플릿 안에 나타남.
+Instruction, appears within a template.
 
-### 정의
+### Defined
 
-[XSLT section 6, Named Templates](http://www.w3.org/TR/xslt#named-templates)
+XSLT, section 6.
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

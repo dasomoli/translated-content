@@ -1,98 +1,122 @@
 ---
-title: 데이터 URIs
+title: Data URLs
 slug: Web/HTTP/Basics_of_HTTP/Data_URLs
-original_slug: Web/HTTP/Basics_of_HTTP/Data_URIs
+page-type: guide
+browser-compat: http.data-url
 ---
 
 {{HTTPSidebar}}
 
-**Data URIs**, `data:` 스킴이 접두어로 붙은 URL은 컨텐츠 작성자가 작은 파일을 문서 내에 인라인으로 삽입할 수 있도록 해줍니다.
+**Data URLs**, URLs prefixed with the `data:` scheme, allow content creators to embed small files inline in documents. They were formerly known as "data URIs" until that name was retired by the WHATWG.
 
-## 구문
+> **Note:** Data URLs are treated as unique opaque origins by modern browsers, rather than inheriting the origin of the settings object responsible for the navigation.
 
-Data URIs는 접두사(`data:`), 데이터의 타입을 가리키는 MIME 타입, 텍스트가 아닌 경우 사용될 부가적인 `base64` 토큰 그리고 데이터 자체 총 네가지 부분으로 구성됩니다.
+## Syntax
 
-```
+Data URLs are composed of four parts: a prefix (`data:`), a [MIME type](/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) indicating the type of data, an optional `base64` token if non-textual, and the data itself:
+
+```plain
 data:[<mediatype>][;base64],<data>
 ```
 
-`mediatype`이란, MIME 타입을 말합니다(JPEG 이미지의 경우 `'image/jpeg'`). 만약 생략된다면, 기본 값으로 `text/plain;charset=US-ASCII`이 사용됩니다.``
+The `mediatype` is a [MIME type](/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) string, such as `'image/jpeg'` for a JPEG image file. If omitted, defaults to `text/plain;charset=US-ASCII`
 
-데이터가 텍스트인 경우, 단순히 텍스트를 (포함된 문서 유형에 따라 적합한 엔티티 혹은 이스케이프를 사용하여) 임베드할 수 있습니다. 그게 아니라면, base64로 인코딩된 이진 데이터를 임베드하기 위해 `base64`를 지정할 수 있습니다.
+If the data contains [characters defined in RFC 3986 as reserved characters](https://datatracker.ietf.org/doc/html/rfc3986#section-2.2), or contains space characters, newline characters, or other non-printing characters, those characters must be [URL encoded](https://en.wikipedia.org/wiki/URL_encoding) (_aka_ "URL encoded").
 
-몇 가지 예제:
+If the data is textual, you can embed the text (using the appropriate entities or escapes based on the enclosing document's type). Otherwise, you can specify `base64` to embed base64-encoded binary data. You can find more info on MIME types [here](/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) and [here](/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types).
 
-- `data:,Hello%2C%20World!`
-  - : 간단한 text/plain 데이터
-- `data:text/plain;base64,SGVsbG8sIFdvcmxkIQ%3D%3D`
-  - : 위 예제의 base64 인코딩 버전
-- `data:text/html,%3Ch1%3EHello%2C%20World!%3C%2Fh1%3E`
-  - : `<h1>Hello, World!</h1>인 HTML 문서`
-- `data:text/html,<script>alert('hi');</script>`
-  - : 자바스크립트 얼럿을 실행하는 HTML 문서입니다. 닫기 스크립트 태그가 필요하다는 것을 기억하세요.
+A few examples:
 
-## base64 포맷으로 데이터 인코딩하기
+- `data:,Hello%2C%20World%21`
+  - : The text/plain data `Hello, World!`. Note how the comma is [URl encoded](https://en.wikipedia.org/wiki/URL_encoding) as `%2C`, and the space character as `%20`.
+- `data:text/plain;base64,SGVsbG8sIFdvcmxkIQ==`
+  - : base64-encoded version of the above
+- `data:text/html,%3Ch1%3EHello%2C%20World%21%3C%2Fh1%3E`
+  - : An HTML document with `<h1>Hello, World!</h1>`
+- `data:text/html,%3Cscript%3Ealert%28%27hi%27%29%3B%3C%2Fscript%3E`
+  - : An HTML document with `<script>alert('hi');</script>` that executes a JavaScript alert. Note that the closing script tag is required.
 
-리눅스와 Mac OS X 시스템의 명령줄에서 `uuencode` 유틸리티를 사용해 쉽게 인코딩할 수 있습니다:
+## Encoding data into base64 format
 
+Base64 is a group of binary-to-text encoding schemes that represent binary data in an ASCII string format by translating it into a radix-64 representation. By consisting only of ASCII characters, base64 strings are generally url-safe, and that's why they can be used to encode data in Data URLs.
+
+### Encoding in JavaScript
+
+The Web APIs have native methods to encode or decode to base64: [Base64](/en-US/docs/Glossary/Base64).
+
+### Encoding on a Unix system
+
+Base64 encoding of a file or string on Linux and macOS systems can be achieved using the command-line `base64` (or, as an alternative, the `uuencode` utility with `-m` argument).
+
+```bash
+echo -n hello|base64
+# outputs to console: aGVsbG8=
+
+echo -n hello>a.txt
+base64 a.txt
+# outputs to console: aGVsbG8=
+
+base64 a.txt>b.txt
+# outputs to file b.txt: aGVsbG8=
 ```
-uuencode -m infile remotename
+
+### Encoding on Microsoft Windows
+
+On Windows, [Convert.ToBase64String](https://docs.microsoft.com/dotnet/api/system.convert.tobase64string?view=net-5.0) from PowerShell can be used to perform the Base64 encoding:
+
+```plain
+[convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("hello"))
+# outputs to console: aGVsbG8=
 ```
 
-`infile` 파라메터는 base64 포맷으로 인코딩하려는 파일의 이름이며, `remotename`는 파일에 대한 원격지 이름으로 `data` URLs내에서는 실제로 사용되지 않습니다.
+Alternatively, a GNU/Linux shell (such as [WSL](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux)) provides the utility `base64`:
 
-출력은 다음과 같은 내용일 겁니다:
-
-```
-begin-base64 664 test
-YSBzbGlnaHRseSBsb25nZXIgdGVzdCBmb3IgdGV2ZXIK
-====
+```bash
+bash$ echo -n hello | base64
+# outputs to console: aGVsbG8=
 ```
 
-Data URI는 초기 헤더줄 다음의 인코딩된 데이터를 사용하게 됩니다.
+## Common problems
 
-### 웹 페이지에서 JavaScript 사용하기
+This section describes problems that commonly occur when creating and using `data` URLs.
 
-웹 API는 base64로 인코딩하거나 디코딩하기 위한 프리미티브를 가지고 있습니다: [Base64 인코딩과 디코딩](/ko/docs/Web/JavaScript/Base64_encoding_and_decoding).
+```html
+data:text/html,lots of text…<p><a name%3D"bottom">bottom</a>?arg=val</p>
+```
 
-## 일반적인 문제점
+This represents an HTML resource whose contents are:
 
-이 섹션에서는 `data` URIs를 만들고 사용할 때 일반적으로 발생하는 문제점들에 대해 설명합니다.
+```html
+lots of text…
+<p><a name="bottom">bottom</a>?arg=val</p>
+```
 
-- 구문
-  - : `data` URIs를 위한 문법은 매우 간단하지만, "data" 세그먼트 앞에 콤마를 넣는 것을 쉽게 잊거나 데이터를 base64 포맷으로 부정확하게 인코딩하는 경우가 있습니다.
-- HTML 내에 포맷시키기
-  - : `data` URI는 동봉된 문서의 너비에 비례할 가능성이 높은 파일 내에 파일을 제공하게 됩니다. URL로 `data`를 공백 문자(라인 피드, 탭 혹은 스페이스)을 사용해 포맷이 가능해야 하지만 [base64 인코딩을 사용할 때](https://bugzilla.mozilla.org/show_bug.cgi?id=73026#c12) 일어나는 실질적인 문제가 있습니다.
-- 길이 제한
-  - : 파이어폭스는 기본적으로 길이 제한이 없는 `data` URIs를 지원하지만, 브라우저들은 데이터의 개별적인 최대 길이를 제공해야 할 의무가 없습니다. 예를 들어, 오페라 11 브라우저는 `data` URL을 65529 문자로 제한하는 65535 개의 character long으로 제한합니다(MIME 타입을 지정하지 않고 plain `data`를 사용한다면, 소스가 아닌 인코딩된 데이터의 길이는 65529자가 됩니다).
-- 오류 처리의 부족
-  - : 미디어 내의 유효하지 않은 파라메터들 또는 '`base64`'를 지정할 때 오타들은 무시되지만 오류가 발생하지는 않습니다.
-- 쿼리 문자열에 대한 미지원 등
+- Syntax
+  - : The format for `data` URLs is very simple, but it's easy to forget to put a comma before the "data" segment, or to incorrectly encode the data into base64 format.
+- Formatting in HTML
+  - : A `data` URL provides a file within a file, which can potentially be very wide relative to the width of the enclosing document. As a URL, the `data` should be formattable with whitespace (linefeed, tab, or spaces), but there are practical issues that arise [when using base64 encoding](https://bugzil.la/73026#c12).
+- Length limitations
+  - : Browsers are not required to support any particular maximum length of data. For example, the Opera 11 browser limited URLs to 65535 characters long which limits `data` URLs to 65529 characters (65529 characters being the length of the encoded data, not the source, if you use the plain `data:`, without specifying a MIME type). Firefox version 97 and newer supports `data` URLs of up to 32MB (before 97 the limit was close to 256MB). Chromium objects to URLs over 512MB, and Webkit (Safari) to URLs over 2048MB.
+- Lack of error handling
+  - : Invalid parameters in media, or typos when specifying `'base64'`, are ignored, but no error is provided.
+- No support for query strings, etc.
+  - : The data portion of a data URL is opaque, so an attempt to use a query string (page-specific parameters, with the syntax `<url>?parameter-data`) with a data URL will just include the query string in the data the URL represents.
+- Security issues
+  - : A number of security issues (for example, phishing) have been associated with data URLs, and navigating to them in the browser's top level. To mitigate such issues, top-level navigation to `data:` URLs is blocked in all modern browsers. See [this blog post from the Mozilla Security Team](https://blog.mozilla.org/security/2017/11/27/blocking-top-level-navigations-data-urls-firefox-59/) for more details.
 
-  - : data URI의 data 일부는 불명확해서 데이터 URI를 이용해 쿼리 문자열(`<url>?parameter-data` 문법을 이용한 페이지 특정의 파라메터)을 사용하려는 시도는 URI가 나타내는 데이터 내에 쿼리 문자열을 포함하게 됩니다. 예를 들어:
-
-    ```
-    data:text/html,lots of text...<p><a name%3D"bottom">bottom</a>?arg=val
-    ```
-
-    이는 내용이 다음과 같은 HTML 리소스를 나타냅니다:
-
-    ```
-    lots of text...<p><a name="bottom">bottom</a>?arg=val
-    ```
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
-{{Compat}}
+{{compat}}
 
-## 함께 참고할 내용
+## See also
 
-- [Base64 인코딩과 디코딩](/ko/docs/Web/JavaScript/Base64_encoding_and_decoding)
-- {{domxref("WindowBase64.atob","atob()")}}
-- {{domxref("WindowBase64.btoa","btoa()")}}
-- [CSS `url()`](/ko/docs/Web/CSS/uri)
-- [URI](/ko/docs/URI)
+- [Base64](/en-US/docs/Glossary/Base64)
+- [URL encoding](https://en.wikipedia.org/wiki/URL_encoding)
+- {{domxref("atob","atob()")}}
+- {{domxref("btoa","btoa()")}}
+- [CSS `url()`](/en-US/docs/Web/CSS/url)
+- [URI](/en-US/docs/Glossary/URI)

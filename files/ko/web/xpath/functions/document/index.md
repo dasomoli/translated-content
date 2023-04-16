@@ -2,40 +2,41 @@
 title: document
 slug: Web/XPath/Functions/document
 ---
+
 {{ XsltRef() }}
 
-`document` 함수는 하나 또는 여러 외부 문서에서 노드 집합을 찾고 결과 노드 집합을 반환합니다.
+The `document` finds a node-set in an external document, or multiple external documents, and returns the resulting node-set.
 
-### 문법
+### Syntax
 
 ```
-document(URI [,node-set] )
+document( URI [,node-set] )
 ```
 
-### 인수
+### Arguments
 
 - `URI`
-  - : 검색하는 문서의 절대 또는 상대 URI. URI는 또한 조각 인식자(fragment identifier)를 포함할지도 모릅니다.
-- `node-set`(선택사항)
-  - : 반환하게 될 외부 문서의 노드 집합을 가리키는 식.
+  - : An absolute or relative URI of the document to be retrieved. The URI may also include a fragment identifier.
+- `node-set` (optional)
+  - : An expression pointing to a node-set in the external document that should be returned.
 
-### 반환
+### Returns
 
-노드 집합.
+A node-set.
 
-### 주의
+### Notes
 
-- URI가 조각 인식자를 포함하고 그 조각이 외부 문서에서 인식될 수 있으면, 그 조각은 `node-set`인수식에서 루트로 다룹니다. `node-set`인수를 빼면, 전체 조각을 반환합니다.
-- `URI`인수가 노드 집합이고 두 번째 인수가 있으면, 노드 집합의 각 노드를 개별 URI로 평가하고 반환한 노드 집합은 마치 `document` 함수가 여러 번 호출되어 결과 노드 집합이 단일 노드 집합으로 합쳐진 것 같이 됩니다.
-- 다른 특정 조건은 지정한 behavior와 함께 있습니다. 자세한 사항은 XSLT 1.0 문서를 보세요.
-- URI가 XSL 문서와 호응하기 때문에, `document("")`는 현재 노드의 루트 노드를 반환할 겁니다.
+- If the URI contains a fragment identifier and that fragment can be identified in the external document, that fragment will be treated as the root in the `node-set` argument's expression. If the `node-set` argument is omitted, the entire fragment will be returned.
+- If the `URI` argument is a node-set, and the second argument is present, each node in the node-set will be evaluated as a separate URI, and the returned node-set will be as if the `document` function has been called multiple times (each time with the same second argument just as given in the function call) and the resulting node-sets had been concatenated into a single node-set.
+- Other specific conditions exist with specified behaviors. See the XSLT 1.0 documentation for details.
+- Since the URI is relative to the XSL document, `document("")` would return the root node of the current document.
 
-이 함수는 XPath에 더한 XSLT 고유 추가분입니다. 기본 XPath 함수 라이브러리의 일부가 아닙니다.
+This function is an XSLT-specific addition to XPath. It is not a part of the core XPath function library.
 
-### 정의
+### Defined
 
-[XSLT 1.0 12.1](http://www.w3.org/TR/xslt#function-document)
+[XSLT 1.0 12.1](https://www.w3.org/TR/1999/REC-xslt-19991116/#function-document)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

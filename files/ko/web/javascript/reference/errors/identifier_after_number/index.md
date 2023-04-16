@@ -1,53 +1,61 @@
 ---
-title: 'SyntaxError: identifier starts immediately after numeric literal'
+title: "SyntaxError: identifier starts immediately after numeric literal"
 slug: Web/JavaScript/Reference/Errors/Identifier_after_number
+page-type: javascript-error
 ---
 
 {{JSSidebar("Errors")}}
 
-## 메세지
+The JavaScript exception "identifier starts immediately after numeric literal" occurs
+when an identifier started with a digit. Identifiers can only start with a letter,
+underscore (\_), or dollar sign ($).
+
+## Message
 
 ```
-  SyntaxError: Unexpected identifier after numeric literal (Edge)
-  SyntaxError: identifier starts immediately after numeric literal (Firefox)
-  SyntaxError: Unexpected number (Chrome)
+SyntaxError: Unexpected identifier after numeric literal (Edge)
+SyntaxError: identifier starts immediately after numeric literal (Firefox)
+SyntaxError: Unexpected number (Chrome)
 ```
 
-## 에러 타입
+## Error type
 
 {{jsxref("SyntaxError")}}
 
-## 무엇이 잘못되었을까?
+## What went wrong?
 
-{{Glossary("식별자", "식별자")}}라고 불리는 변수의 이름은 반드시 지켜야 하는 특정 규칙을 따라야 합니다.
+The names of variables, called [identifiers](/en-US/docs/Glossary/Identifier), conform to certain rules,
+which your code must adhere to!
 
-자바스크립트의 식별자는 반드시 문자, 언더스코어(\_), 또는 달러 표시($)로 시작돼야 합니다. 숫자로 시작될 수 없습니다. 글자 뒤에만 숫자(0-9)가 올 수 있습니다.
+A JavaScript identifier must start with a letter, underscore (\_), or dollar sign ($).
+They can't start with a digit! Only subsequent characters can be digits (0-9).
 
-## 예제
+## Examples
 
-### 숫자로 시작하는 변수 이름
+### Variable names starting with numeric literals
 
-자바스크립트에서 변수 이름은 숫자로 시작될 수 없습니다. 아래 예제는 에러가 발생합니다:
+Variable names can't start with numbers in JavaScript. The following fails:
 
 ```js example-bad
-var 1life = 'foo';
+const 1life = "foo";
 // SyntaxError: identifier starts immediately after numeric literal
 
-var foo = 1life;
+const foo = 1life;
 // SyntaxError: identifier starts immediately after numeric literal
 
 alert(1.foo);
 // SyntaxError: identifier starts immediately after numeric literal
 ```
 
-숫자가 뒤에 오도록 변수 이름을 변경해야 합니다.
+You will need to rename your variable to avoid the leading number.
 
 ```js example-good
-var life1 = 'foo';
-var foo = life1;
+const life1 = "foo";
+const foo = life1;
 ```
 
-## 같이 보기
+## See also
 
-- [문법](/ko/docs/Web/JavaScript/Reference/Lexical_grammar)
-- [변수](/ko/docs/Web/JavaScript/Guide/Values,_variables,_and_literals#%EB%B3%80%EC%88%98)([JavaScript Guide](/en-US/docs/Web/JavaScript/Guide))
+- [Lexical grammar](/en-US/docs/Web/JavaScript/Reference/Lexical_grammar)
+- [Variables](/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#variables)
+  in the [JavaScript Guide](/en-US/docs/Web/JavaScript/Guide)

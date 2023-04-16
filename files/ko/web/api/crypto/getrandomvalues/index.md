@@ -1,63 +1,80 @@
 ---
-title: Crypto.getRandomValues()
+title: "Crypto: getRandomValues() method"
+short-title: getRandomValues()
 slug: Web/API/Crypto/getRandomValues
+page-type: web-api-instance-method
+browser-compat: api.Crypto.getRandomValues
 ---
+
 {{APIRef("Web Crypto API")}}
 
-**`Crypto.getRandomValues()`** 메서드는 암호학적으로 강력한 난수를 생성할 수 있습니다. 매개변수로 제공한 배열을 무작위 (암호학에서의 '무작위') 숫자로 채웁니다.
+The **`Crypto.getRandomValues()`** method lets you get cryptographically strong random values.
+The array given as the parameter is filled with random numbers (random in its cryptographic meaning).
 
-충분한 성능을 확보하기 위해, API 구현체들은 진정한 난수 생성기 대신 충분한 엔트로피를 지닌 값을 시드로 적용한 의사 난수 생성기(pseudo-random number generator, PRNG)를 사용합니다. 정확한 의사 난수 생성 알고리즘은 {{glossary("user agent", "사용자 에이전트")}}마다 다를 수 있지만, 암호학적 용도로는 모두 적합할 것입니다.
+To guarantee enough performance, implementations are not using a truly random number generator, but they are using a pseudo-random number generator _seeded_ with a value with enough entropy.
+The pseudo-random number generator algorithm (PRNG) may vary across {{Glossary("user agent", "user agents")}}, but is suitable for cryptographic purposes.
 
-`getRandomValues()`는 안전하지 않은 연결에서 사용할 수 있는 유일한 `Crypto` 인터페이스 멤버입니다.
+`getRandomValues()` is the only member of the `Crypto` interface which can be used from an insecure context.
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 getRandomValues(typedArray)
 ```
 
-### 매개변수
+### Parameters
 
 - `typedArray`
-  - : 정수형 {{jsxref("TypedArray")}}입니다. 즉 `Float32Array`와 `Float64Array`를 **제외**한 {{jsxref("Int8Array")}}, {{jsxref("Uint8Array")}}, {{jsxref("Uint8ClampedArray")}}, {{jsxref("Int16Array")}}, {{jsxref("Uint16Array")}}, {{jsxref("Int32Array")}}, {{jsxref("Uint32Array")}}, {{jsxref("BigInt64Array")}}, {{jsxref("BigUint64Array")}} 중 하나여야 합니다. 제공한 배열의 모든 원소는 난수로 덮어쓰입니다.
+  - : An integer-based {{jsxref("TypedArray")}}, that is one of: {{jsxref("Int8Array")}}, {{jsxref("Uint8Array")}},
+    {{jsxref("Uint8ClampedArray")}}, {{jsxref("Int16Array")}}, {{jsxref("Uint16Array")}},
+    {{jsxref("Int32Array")}}, {{jsxref("Uint32Array")}}, {{jsxref("BigInt64Array")}},
+    {{jsxref("BigUint64Array")}} (but **not** `Float32Array` nor `Float64Array`).
+    All elements in the array will be overwritten with random numbers.
 
-### 반환 값
+### Return value
 
-`typedArray`로 제공한 배열. 단, 배열의 요소들을 모두 새로 생성한 난수로 덮어쓴 후 반환합니다. `typedArray` 자체를 변경하며, 복사본을 생성하지 않습니다.
+The same array passed as `typedArray` but with its contents replaced with the newly generated random numbers.
+Note that `typedArray` is modified in-place, and no copy is made.
 
-### 예외
+### Exceptions
 
 - `QuotaExceededError` {{domxref("DOMException")}}
-  - : `typedArray`의 {{jsxref("TypedArray.byteLength", "byteLength")}}가 65,536을 초과하면 발생합니다.
+  - : Thrown if the {{jsxref("TypedArray.byteLength", "byteLength")}} of `typedArray` exceeds 65,536.
 
-## 사용 일람
+## Usage notes
 
-`getRandomValues()`를 암호화 키의 생성에 사용하지 마세요. 암호화 키 생성에는 {{domxref("SubtleCrypto.generateKey", "generateKey()")}} 메서드를 사용해야 합니다. 몇 가지 이유가 있는데, 그중 하나는 안전하지 않은 연결에서도 `getRandomValues()`를 실행할 수 있기 때문입니다.
+Don't use `getRandomValues()` to generate encryption keys.
+Instead, use the {{domxref("SubtleCrypto.generateKey", "generateKey()")}} method.
+There are a few reasons for this; for example, `getRandomValues()` is not guaranteed to be running in a secure context.
 
-Web Cryptography 명세는 엔트로피의 하한선을 명시하지는 않고, 사용자 에이전트가 실용적인 선 내에서 최선의 엔트로피를 제공하도록 강하게 권고하고 있습니다. 이를 위해, 명세는 사용자 에이전트가 플랫폼별 난수 생성 기능(Unix `/dev/urandom` 등)을 포함한 고 엔트로피 무작위/의사 무작위 데이터 출처에서 가져온 값을 시드로 사용, 잘 정립되고 효율적인 의사 난수 생성기를 사용해 난수를 생성하도록 추천합니다.
+There is no minimum degree of entropy mandated by the Web Cryptography specification.
+User agents are instead urged to provide the best entropy they can when generating random numbers,
+using a well-defined, efficient pseudorandom number generator built into the user agent itself,
+but seeded with values taken from an external source of pseudorandom numbers, such as a platform-specific random number function,
+the Unix `/dev/urandom` device, or other source of random or pseudorandom data.
 
-## 예제
+## Examples
 
 ```js
 const array = new Uint32Array(10);
 self.crypto.getRandomValues(array);
 
-console.log("오늘자 행운의 수:");
+console.log("Your lucky numbers:");
 for (const num of array) {
   console.log(num);
 }
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Web Crypto API](/ko/docs/Web/API/Web_Crypto_API)
-- {{domxref("Crypto")}} 객체를 가져올 수 있는 {{domxref("crypto_property", "crypto")}} 전역 속성
-- 비암호학적 난수 출처인 {{jsxref("Math.random")}}
+- [Web Crypto API](/en-US/docs/Web/API/Web_Crypto_API)
+- {{domxref("crypto_property", "crypto")}} to get a {{domxref("Crypto")}} object.
+- {{jsxref("Math.random")}}, a non-cryptographic source of random numbers.

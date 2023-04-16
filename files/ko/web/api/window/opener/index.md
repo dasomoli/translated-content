@@ -1,30 +1,51 @@
 ---
-title: Window.opener
+title: "Window: opener property"
+short-title: opener
 slug: Web/API/Window/opener
+page-type: web-api-instance-property
+browser-compat: api.Window.opener
 ---
 
 {{APIRef("HTML DOM")}}
 
-{{domxref("Window")}} 인터페이스의 **`opener`** 속성은 {{domxref("Window.open", "open()")}}을 사용해 현재 창을 열었던 창의 참조를 반환합니다.
+The {{domxref("Window")}} interface's
+**`opener`** property returns a reference to the window that
+opened the window, either with {{domxref("Window.open", "open()")}}, or by navigating
+a link with a [`target`](/en-US/docs/Web/HTML/Element/a#target) attribute.
 
-예제로 설명하자면, 창 `A`가 창 `B`를 열었을 때 `B.opener`는 `A`를 반환합니다.
+In other words, if window `A` opens window `B`,
+`B.opener` returns `A`.
 
-## 구문
+## Value
 
-```js
-const openerWindow = window.opener
-```
+A {{domxref("Window")}}-like object referring to the window that opened the current
+window (using {{domxref("window.open()")}}, or by a link with [`target`](/en-US/docs/Web/HTML/Element/a#target) attribute set). If this window was not opened by being linked to or created by
+another, returns [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null).
 
-### 값
+If the opener is not on the same origin as the current page, functionality of the
+opener object is limited. For example, variables and functions on the window object are
+not accessible. However, navigation of the opener window is possible, which means that
+the opened page can open a URL in the original tab or window. In some cases, this makes
+phishing attacks possible, where a trusted page that is opened in the original window is
+replaced by a phishing page by the newly opened page.
 
-{{domxref("window.open()")}}을 사용하거나 {{htmlattrxref("target", "a")}} 특성을 지정한 링크로 현재 창을 연 {{domxref("Window")}}. 현재 창이 다른 창에 의해 생성됐거나 링크로 열리지 않았다면 {{jsxref("null")}}.
+In the following cases, the browser does not populate `window.opener`, but
+leaves it [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null):
 
-[최근 브라우저](https://caniuse.com/#search=noopener)에서는 {{htmlelement("a")}} 요소에 `rel="noopener noreferrer"` 특성을 지정하면 `window.opener` 참조 설정을 방지합니다. 따라서 생성된 창의 `opener` 속성에 접근해도 `null`을 반환합니다.
+- The opener can be omitted by specifying
+  [`rel=noopener`](/en-US/docs/Web/HTML/Attributes/rel#noopener) on a link, or passing
+  `noopener` in the {{domxref("Window.open", "windowFeatures")}} parameter.
+- Windows opened because of links with a [`target`](/en-US/docs/Web/HTML/Element/a#target) of `_blank` don't get an `opener`, unless explicitly
+  requested with [`rel=opener`](/en-US/docs/Web/HTML/Attributes/rel#opener).
+- Having a {{HTTPHeader("Cross-Origin-Opener-Policy")}} header with a value of
+  `same-origin` prevents setting `opener`. Since the new window is
+  loaded in a different browsing context, it won't have a reference to the opening
+  window.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

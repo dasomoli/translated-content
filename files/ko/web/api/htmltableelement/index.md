@@ -1,63 +1,85 @@
 ---
-title: table
+title: HTMLTableElement
 slug: Web/API/HTMLTableElement
+page-type: web-api-interface
+browser-compat: api.HTMLTableElement
 ---
 
-{{ ApiRef() }}
+{{APIRef("HTML DOM")}}
 
-### HTML Table 요소 인터페이스
+The **`HTMLTableElement`** interface provides special properties and methods (beyond the regular {{DOMxRef("HTMLElement")}} object interface it also has available to it by inheritance) for manipulating the layout and presentation of tables in an HTML document.
 
-`table` 개체는 (상속으로 이용할 수 있는 정규 [element](/ko/DOM/element) 개체 인터페이스 외에) HTML 표의 layout과 presentation을 다루는 특수 프로퍼티와 메소드를 제공하는 [`HTMLTableElement`](http://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-64060425) 인터페이스를 내놓습니다.
+{{InheritanceDiagram}}
 
-### 프로퍼티
+## Instance properties
 
-- [table.caption](/ko/DOM/table.caption)
-  - : **caption**은 표 caption을 반환합니다.
-- [table.tHead](/ko/DOM/table.tHead)
-  - : **tHead**는 표 head를 반환합니다.
-- [table.tFoot](/ko/DOM/table.tFoot)
-  - : **tFoot**은 표 footer를 반환합니다.
-- [table.rows](/ko/DOM/table.rows)
-  - : **rows**는 표의 줄(row)을 반환합니다.
-- [table.tBodies](/ko/DOM/table.tBodies)
-  - : **tBodies**는 표 body를 반환합니다.
+_Inherits properties from its parent, {{DOMxRef("HTMLElement")}}._
 
-<!---->
+- {{DOMxRef("HTMLTableElement.caption")}}
+  - : A {{DOMxRef("HTMLTableCaptionElement")}} representing the first {{HTMLElement("caption")}} that is a child of the element, or `null` if none is found. When set, if the object doesn't represent a `<caption>`, a {{DOMxRef("DOMException")}} with the `HierarchyRequestError` name is thrown. If a correct object is given, it is inserted in the tree as the first child of this element and the first `<caption>` that is a child of this element is removed from the tree, if any.
+- {{DOMxRef("HTMLTableElement.tHead")}}
+  - : A {{DOMxRef("HTMLTableSectionElement")}} representing the first {{HTMLElement("thead")}} that is a child of the element, or `null` if none is found. When set, if the object doesn't represent a `<thead>`, a {{DOMxRef("DOMException")}} with the `HierarchyRequestError` name is thrown. If a correct object is given, it is inserted in the tree immediately before the first element that is neither a {{HTMLElement("caption")}}, nor a {{HTMLElement("colgroup")}}, or as the last child if there is no such element, and the first `<thead>` that is a child of this element is removed from the tree, if any.
+- {{DOMxRef("HTMLTableElement.tFoot")}}
+  - : A {{DOMxRef("HTMLTableSectionElement")}} representing the first {{HTMLElement("tfoot")}} that is a child of the element, or `null` if none is found. When set, if the object doesn't represent a `<tfoot>`, a {{DOMxRef("DOMException")}} with the `HierarchyRequestError` name is thrown. If a correct object is given, it is inserted in the tree immediately before the first element that is neither a {{HTMLElement("caption")}}, a {{HTMLElement("colgroup")}}, nor a {{HTMLElement("thead")}}, or as the last child if there is no such element, and the first `<tfoot>` that is a child of this element is removed from the tree, if any.
+- {{DOMxRef("HTMLTableElement.rows")}} {{ReadOnlyInline}}
+  - : Returns a live {{DOMxRef("HTMLCollection")}} containing all the rows of the element, that is all {{HTMLElement("tr")}} that are a child of the element, or a child of one of its {{HTMLElement("thead")}}, {{HTMLElement("tbody")}} and {{HTMLElement("tfoot")}} children. The rows members of a `<thead>` appear first, in tree order, and those members of a `<tbody>` last, also in tree order. The `HTMLCollection` is live and is automatically updated when the `HTMLTableElement` changes.
+- {{DOMxRef("HTMLTableElement.tBodies")}} {{ReadOnlyInline}}
+  - : Returns a live {{DOMxRef("HTMLCollection")}} containing all the {{HTMLElement("tbody")}} of the element. The `HTMLCollection` is live and is automatically updated when the `HTMLTableElement` changes.
 
-- [table.align](/ko/DOM/table.align)
-  - : **align**은 표 정렬을 get/set합니다.
-- [table.bgColor](/ko/DOM/table.bgColor) {{ Deprecated_inline() }}
-  - : **bgColor**는 표의 배경색을 get/set합니다.
-- [table.border](/ko/DOM/table.border)
-  - : **border**는 표 border를 get/set합니다.
-- [table.cellPadding](/ko/DOM/table.cellPadding)
-  - : **cellPadding**은 cell padding을 get/set합니다.
-- [table.cellSpacing](/ko/DOM/table.cellSpacing)
-  - : **cellSpacing**은 표 주변 spacing을 get/set합니다.
-- [table.frame](/ko/DOM/table.frame)
-  - : **frame**은 표 어느 쪽이 border를 가질 지를 지정합니다.
-- [table.rules](/ko/DOM/table.rules)
-  - : **rules**는 안쪽 border가 보일 지를 지정합니다.
-- [table.summary](/ko/DOM/table.summary)
-  - : **summary**는 표 요약을 get/set합니다.
-- [table.width](/ko/DOM/table.width)
-  - : **width**는 표 너비를 get/set합니다.
+### Obsolete Properties
 
-### 메소드
+> **Warning:** The following properties are obsolete. You should avoid using them.
 
-- [table.createTHead](/ko/DOM/table.createTHead)
-  - : **createTHead**는 표 header를 만듭니다.
-- [table.deleteTHead](/ko/DOM/table.deleteTHead)
-  - : **deleteTHead**는 표 header를 없앱니다.
-- [table.createTFoot](/ko/DOM/table.createTFoot)
-  - : **createTFoot**은 표 footer를 만듭니다.
-- [table.deleteTFoot](/ko/DOM/table.deleteTFoot)
-  - : **deleteTFoot**은 표 footer를 없앱니다.
-- [table.createCaption](/ko/DOM/table.createCaption)
-  - : **createCaption**는 표에 새 caption을 만듭니다.
-- [table.deleteCaption](/ko/DOM/table.deleteCaption)
-  - : **deleteCaption**은 표 caption을 없앱니다.
-- [table.insertRow](/ko/DOM/table.insertRow)
-  - : **insertRow**는 새 줄을 삽입합니다.
-- [table.deleteRow](/ko/DOM/table.deleteRow)
-  - : **deleteRow**는 줄을 없앱니다.
+- {{DOMxRef("HTMLTableElement.align")}} {{deprecated_inline}}
+  - : A string containing an enumerated value reflecting the [`align`](/en-US/docs/Web/HTML/Element/table#align) attribute. It indicates the alignment of the element's contents with respect to the surrounding context. The possible values are `"left"`, `"right"`, and `"center"`.
+- {{DOMxRef("HTMLTableElement.bgColor")}} {{deprecated_inline}}
+  - : A string containing the background color of the cells. It reflects the obsolete [`bgColor`](/en-US/docs/Web/HTML/Element/table#bgcolor) attribute.
+- {{DOMxRef("HTMLTableElement.border")}} {{deprecated_inline}}
+  - : A string containing the width in pixels of the border of the table. It reflects the obsolete [`border`](/en-US/docs/Web/HTML/Element/table#border) attribute.
+- {{DOMxRef("HTMLTableElement.cellPadding")}} {{deprecated_inline}}
+  - : A string containing the width in pixels of the horizontal and vertical space between cell content and cell borders. It reflects the obsolete [`cellpadding`](/en-US/docs/Web/HTML/Element/table#cellpadding) attribute.
+- {{DOMxRef("HTMLTableElement.cellSpacing")}} {{deprecated_inline}}
+  - : A string containing the width in pixels of the horizontal and vertical separation between cells. It reflects the obsolete [`cellspacing`](/en-US/docs/Web/HTML/Element/table#cellspacing) attribute.
+- {{DOMxRef("HTMLTableElement.frame")}} {{deprecated_inline}}
+  - : A string containing the type of the external borders of the table. It reflects the obsolete [`frame`](/en-US/docs/Web/HTML/Element/table#frame) attribute and can take one of the following values: `"void"`, `"above"`, `"below"`, `"hsides"`, `"vsides"`, `"lhs"`, `"rhs"`, `"box"`, or `"border"`.
+- {{DOMxRef("HTMLTableElement.rules")}} {{deprecated_inline}}
+  - : A string containing the type of the internal borders of the table. It reflects the obsolete [`rules`](/en-US/docs/Web/HTML/Element/table#rules) attribute and can take one of the following values: `"none"`, `"groups"`, `"rows"`, `"cols"`, or `"all"`.
+- {{DOMxRef("HTMLTableElement.summary")}} {{deprecated_inline}}
+  - : A string containing a description of the purpose or the structure of the table. It reflects the obsolete [`summary`](/en-US/docs/Web/HTML/Element/table#summary) attribute.
+- {{DOMxRef("HTMLTableElement.width")}} {{deprecated_inline}}
+  - : A string containing the length in pixels or in percentage of the desired width of the entire table. It reflects the obsolete [`width`](/en-US/docs/Web/HTML/Element/table#width) attribute.
+
+## Instance methods
+
+_Inherits methods from its parent, {{DOMxRef("HTMLElement")}}_.
+
+- {{DOMxRef("HTMLTableElement.createTHead()")}}
+  - : Returns an {{DOMxRef("HTMLTableSectionElement")}} representing the first {{HTMLElement("thead")}} that is a child of the element. If none is found, a new one is created and inserted in the tree immediately before the first element that is neither a {{HTMLElement("caption")}}, nor a {{HTMLElement("colgroup")}}, or as the last child if there is no such element.
+- {{DOMxRef("HTMLTableElement.deleteTHead()")}}
+  - : Removes the first {{HTMLElement("thead")}} that is a child of the element.
+- {{DOMxRef("HTMLTableElement.createTFoot()")}}
+  - : Returns an {{DOMxRef("HTMLTableSectionElement")}} representing the first {{HTMLElement("tfoot")}} that is a child of the element. If none is found, a new one is created and inserted in the tree as the last child.
+- {{DOMxRef("HTMLTableElement.deleteTFoot()")}}
+  - : Removes the first {{HTMLElement("tfoot")}} that is a child of the element.
+- {{DOMxRef("HTMLTableElement.createTBody()")}}
+  - : Returns a {{DOMxRef("HTMLTableSectionElement")}} representing a new {{HTMLElement("tbody")}} that is a child of the element. It is inserted in the tree after the last element that is a {{HTMLElement("tbody")}}, or as the last child if there is no such element.
+- {{DOMxRef("HTMLTableElement.createCaption()")}}
+  - : Returns an {{DOMxRef("HTMLElement")}} representing the first {{HTMLElement("caption")}} that is a child of the element. If none is found, a new one is created and inserted in the tree as the first child of the {{HTMLElement("table")}} element.
+- {{DOMxRef("HTMLTableElement.deleteCaption()")}}
+  - : Removes the first {{HTMLElement("caption")}} that is a child of the element.
+- {{DOMxRef("HTMLTableElement.insertRow()")}}
+  - : Returns an {{DOMxRef("HTMLTableRowElement")}} representing a new row of the table. It inserts it in the rows collection immediately before the {{HTMLElement("tr")}} element at the given `index` position. If necessary a {{HTMLElement("tbody")}} is created. If the `index` is `-1`, the new row is appended to the collection. If the `index` is smaller than `-1` or greater than the number of rows in the collection, a {{DOMxRef("DOMException")}} with the value `IndexSizeError` is raised.
+- {{DOMxRef("HTMLTableElement.deleteRow()")}}
+  - : Removes the row corresponding to the `index` given in parameter. If the `index` value is `-1` the last row is removed; if it is smaller than `-1` or greater than the amount of rows in the collection, a {{DOMxRef("DOMException")}} with the value `IndexSizeError` is raised.
+
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
+
+{{Compat}}
+
+## See also
+
+- The HTML element implementing this interface: {{HTMLElement("table")}}.

@@ -1,40 +1,61 @@
 ---
-title: orientationchange
+title: "Window: orientationchange event"
+short-title: orientationchange
 slug: Web/API/Window/orientationchange_event
+page-type: web-api-event
+status:
+  - deprecated
+browser-compat: api.Window.orientationchange_event
 ---
 
-`orientationchange` 이벤트는 장치의 방향이 바뀔 때 호출 된다.
+{{APIRef}}{{Deprecated_Header}}
 
-## General info
+The `orientationchange` event is fired when the orientation of the device has changed.
 
-- Specification
-  - : [Screen Orientation](http://www.w3.org/TR/screen-orientation/#event-handlers)
-- Interface
-  - : Event
-- Bubbles
-  - : No
-- Cancelable
-  - : No
-- Target
-  - : Screen
-- Default Action
-  - : None
+This event is not cancelable and does not bubble.
 
-## Properties
+This event is deprecated. Listen for the {{domxref("ScreenOrientation/onchange", "ScreenOrientation.onchange")}} event instead.
 
-| Property                              | Type                                 | Description                                            |
-| ------------------------------------- | ------------------------------------ | ------------------------------------------------------ |
-| `target` {{readonlyInline}}     | {{domxref("EventTarget")}} | The event target (the topmost target in the DOM tree). |
-| `type` {{readonlyInline}}       | {{domxref("DOMString")}}     | The type of event.                                     |
-| `bubbles` {{readonlyInline}}    | {{jsxref("Boolean")}}         | Whether the event normally bubbles or not.             |
-| `cancelable` {{readonlyInline}} | {{jsxref("Boolean")}}         | Whether the event is cancellable or not.               |
+## Syntax
+
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
+
+```js
+addEventListener("orientationchange", (event) => {});
+
+onorientationchange = (event) => {};
+```
+
+## Event type
+
+A generic {{domxref("Event")}}.
 
 ## Example
 
+You can use the `orientationchange` event in an {{domxref("EventTarget/addEventListener", "addEventListener")}} method:
+
 ```js
-// Note that "orientationchange" and screen.orientation are unprefixed in the following
-// code although this API is still vendor-prefixed browsers implementing it.
-screen.addEventListener("orientationchange", function() {
-    alert("the orientation of the device is now " + screen.orientation);
+window.addEventListener("orientationchange", (event) => {
+  console.log(
+    `the orientation of the device is now ${event.target.screen.orientation.angle}`
+  );
 });
 ```
+
+Or use the `onorientationchange` event handler property:
+
+```js
+window.onorientationchange = (event) => {
+  console.log(
+    `the orientation of the device is now ${event.target.screen.orientation.angle}`
+  );
+};
+```
+
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
+
+{{Compat}}

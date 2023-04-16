@@ -2,33 +2,34 @@
 title: name
 slug: Web/XPath/Functions/name
 ---
+
 {{ XsltRef() }}
 
-`name` 함수는 인수로 준 노드 집합 안 첫 노드의 QName을 나타내는 문자열을 반환합니다.
+The `name` function returns a string representing the QName of the first node in a given node-set.
 
-### 구문
+### Syntax
 
 ```
 name( [node-set] )
 ```
 
-### 인수
+### Arguments
 
-- `node-set`(선택사항)
-  - : 이 노드 집합 안 첫 노드의 QName이 반환됩니다. 이 인수를 빼면, 현재 문맥 노드를 씁니다.
+- `node-set` (optional)
+  - : The QName of the first node in this node-set will be returned. If this argument is omitted, the current context node will be used.
 
-### 반환
+### Returns
 
-노드의 QName을 나타내는 문자열
+A string representing the QName of a node.
 
-### 주의
+### Notes
 
-- [QName](http://www.w3.org/TR/REC-xml-names/#NT-QName)은 이름공간 접두사와 지역 이름을 포함하는 노드의 한정된(qualified) 이름입니다.
+- The [QName](https://www.w3.org/TR/REC-xml-names/#NT-QName) is the node's qualified name, including its namespace prefix and its local name.
 
-### 정의
+### Defined
 
-[XPath 1.0 4.1](http://www.w3.org/TR/xpath#function-local-name)
+[XPath 1.0 4.1](https://www.w3.org/TR/1999/REC-xpath-19991116/#function-local-name)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

@@ -1,128 +1,143 @@
 ---
-title: 정규 표현식
-slug: Web/JavaScript/Guide/Regular_Expressions
+title: Regular expressions
+slug: Web/JavaScript/Guide/Regular_expressions
+page-type: guide
 ---
 
 {{jsSidebar("JavaScript Guide")}} {{PreviousNext("Web/JavaScript/Guide/Text_formatting", "Web/JavaScript/Guide/Indexed_collections")}}
 
-정규 표현식, 또는 정규식은 문자열에서 특정 문자 조합을 찾기 위한 패턴입니다. JavaScript에서는 정규 표현식도 객체로서, {{jsxref("RegExp")}}의 {{jsxref("RegExp.exec", "exec()")}}와 {{jsxref("RegExp.test", "test()")}} 메서드를 사용할 수 있습니다. {{jsxref("String")}}의 {{jsxref("String.match", "match()")}}, {{jsxref("String.matchAll", "matchAll()")}}, {{jsxref("String.replace", "replace()")}}, {{jsxref("String.replaceAll", "replaceAll()")}}, {{jsxref("String.search", "search()")}}, {{jsxref("String.split", "split()")}} 메서드와도 함께 사용할 수 있습니다. 이 장에서는 JavaScript의 정규 표현식을 설명합니다.
+Regular expressions are patterns used to match character combinations in strings.
+In JavaScript, regular expressions are also objects. These patterns are used with the {{jsxref("RegExp/exec", "exec()")}} and {{jsxref("RegExp/test", "test()")}} methods of {{jsxref("RegExp")}}, and with the {{jsxref("String/match", "match()")}}, {{jsxref("String/matchAll", "matchAll()")}}, {{jsxref("String/replace", "replace()")}}, {{jsxref("String/replaceAll", "replaceAll()")}}, {{jsxref("String/search", "search()")}}, and {{jsxref("String/split", "split()")}} methods of {{jsxref("String")}}.
+This chapter describes JavaScript regular expressions.
 
-## 정규 표현식 만들기
+## Creating a regular expression
 
-정규 표현식은 두 가지 방법으로 만들 수 있습니다.
+You construct a regular expression in one of two ways:
 
-- 정규 표현식 리터럴. 다음과 같이 슬래시로 패턴을 감싸서 작성합니다.
-
-  ```js
-  const re = /ab+c/
-  ```
-
-  정규 표현식 리터럴은 스크립트를 불러올 때 컴파일되므로, 바뀔 일이 없는 패턴의 경우 리터럴을 사용하면 성능이 향상될 수 있습니다.
-
-- {{jsxref("RegExp")}} 객체의 생성자 호출.
+- Using a regular expression literal, which consists of a pattern enclosed between slashes, as follows:
 
   ```js
-  const re = new RegExp('ab+c')
+  const re = /ab+c/;
   ```
 
-  생성자 함수를 사용하면 정규 표현식이 런타임에 컴파일됩니다. 바뀔 수 있는 패턴이나, 사용자 입력 등 외부 출처에서 가져오는 패턴의 경우 이렇게 사용하세요.
+  Regular expression literals provide compilation of the regular expression when the script is loaded.
+  If the regular expression remains constant, using this can improve performance.
 
-## 정규 표현식 패턴 작성하기
+- Or calling the constructor function of the {{jsxref("RegExp")}} object, as follows:
 
-정규 표현식 패턴은 `/abc/`처럼 단순한 문자로 구성하거나, `/ab+c/`와 `/Chapter (\d+)\.\d*/`처럼 단순한 문자와 특수 문자의 조합으로 구성할 수도 있습니다. 특히 `(\d+)`에 나타난 괄호는 정규 표현식에서 기억 장치처럼 쓰여서, 괄호의 안쪽 패턴과 일치한 부분을 나중에 사용할 수 있도록 기억합니다. [그룹 사용하기](/ko/docs/Web/JavaScript/Guide/Regular_Expressions/Groups_and_Ranges#using_groups)에서 더 알아보세요.
+  ```js
+  const re = new RegExp("ab+c");
+  ```
 
-### 단순 패턴 사용하기
+  Using the constructor function provides runtime compilation of the regular expression.
+  Use the constructor function when you know the regular expression pattern will be changing, or you don't know the pattern and are getting it from another source, such as user input.
 
-단순 패턴은 문자열을 있는 그대로 탐색할 때 사용합니다. 예를 들어, `/abc/` 패턴은 문자열에서 정확한 순서로 `"abc"`라는 문자의 조합이 나타나는 부분과 일치합니다. 그러므로 이 패턴은 `"Hi, do you know your abc's?"`와 `"The latest airplane designs evolved from slabcraft."` 두 문자열에서 일치에 성공하고, 일치하는 부분은 `"abc"`일 것입니다. 반면 `"Grab crab"`에서는 일치하지 않는데, 이 문자열은 부분 문자열로 `"ab c"`를 포함하긴 하지만, 정확하게 `"abc"`를 포함하지는 않기 때문입니다.
+## Writing a regular expression pattern
 
-### 특수 문자 사용하기
+A regular expression pattern is composed of simple characters, such as `/abc/`, or a combination of simple and special characters, such as `/ab*c/` or `/Chapter (\d+)\.\d*/`.
+The last example includes parentheses, which are used as a memory device.
+The match made with this part of the pattern is remembered for later use, as described in [Using groups](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Groups_and_backreferences#using_groups).
 
-하나 이상의 "b"를 찾는다거나 공백 문자를 찾는 등 직접적인 일치 이상의 탐색이 필요할 땐 특수 문자를 사용합니다. 예컨대 "하나의 `"a"` 이후에 0개 이상의 `"b"`, 그 뒤의 `"c"`"와 일치해야 하면 `/ab*c/` 패턴을 사용할 수 있습니다. `"b"` 뒤의 `*`는 "이전 항목의 0번 이상 반복"을 의미합니다. 이 패턴을 문자열 `"cbbabbbbcdebc"`에 대해 사용하면, 일치하는 부분 문자열은 `"abbbbc"`일 것입니다.
+> **Note:** If you are already familiar with the forms of a regular expression, you may also read [the cheat sheet](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Cheatsheet) for a quick lookup for a specific pattern/construct.
 
-아래의 문서들에선 각각의 범주에 속하는 다양한 특수 문자의 목록과 설명, 예제를 찾아볼 수 있습니다.
+### Using simple patterns
 
-- [어서션](/ko/docs/Web/JavaScript/Guide/Regular_Expressions/Assertions)
-  - : 어서션에는 줄이나 단어의 시작과 끝을 나타내는 경계와, 일치가 가능한 방법을 나타내는 패턴(전방탐색, 후방탐색, 조건 표현식 등)이 포함됩니다.
-- [문자 클래스](/ko/docs/Web/JavaScript/Guide/Regular_Expressions/Character_Classes)
-  - : 글자와 숫자처럼 다른 유형의 문자를 구분합니다.
-- [그룹과 범위](/ko/docs/Web/JavaScript/Guide/Regular_Expressions/Groups_and_Ranges)
-  - : 표현 문자의 그룹과 범위를 나타냅니다.
-- [수량자](/ko/docs/Web/JavaScript/Guide/Regular_Expressions/Quantifiers)
-  - : 일치할 문자나 표현이 반복되어야 할 횟수를 나타냅니다.
-- [유니코드 속성 이스케이프](/ko/docs/Web/JavaScript/Guide/Regular_Expressions/Unicode_Property_Escapes)
-  - : 대/소문자, 수학 기호, 문장 부호처럼, 유니코드 문자 속성에 따라 문자를 구분합니다.
+Simple patterns are constructed of characters for which you want to find a direct match. For example, the pattern `/abc/` matches character combinations in strings only when the exact sequence `"abc"` occurs (all characters together and in that order).
+Such a match would succeed in the strings `"Hi, do you know your abc's?"` and `"The latest airplane designs evolved from slabcraft."`.
+In both cases the match is with the substring `"abc"`.
+There is no match in the string `"Grab crab"` because while it contains the substring `"ab c"`, it does not contain the exact substring `"abc"`.
 
-아래 표는 정규 표현식에서 사용하는 모든 특수문자의 목록입니다.
+### Using special characters
+
+When the search for a match requires something more than a direct match, such as finding one or more b's, or finding white space, you can include special characters in the pattern.
+For example, to match _a single `"a"` followed by zero or more `"b"`s followed by `"c"`_, you'd use the pattern `/ab*c/`: the `*` after `"b"` means "0 or more occurrences of the preceding item."
+In the string `"cbbabbbbcdebc"`, this pattern will match the substring `"abbbbc"`.
+
+The following pages provide lists of the different special characters that fit into each category, along with descriptions and examples.
+
+- [Assertions](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Assertions)
+  - : Assertions include boundaries, which indicate the beginnings and endings of lines and words, and other patterns indicating in some way that a match is possible (including look-ahead, look-behind, and conditional expressions).
+- [Character classes](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Character_classes)
+  - : Distinguish different types of characters. For example, distinguishing between letters and digits.
+- [Groups and backreferences](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Groups_and_backreferences)
+  - : Groups group multiple patterns as a whole, and capturing groups provide extra submatch information when using a regular expression pattern to match against a string. Backreferences refer to a previously captured group in the same regular expression.
+- [Quantifiers](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Quantifiers)
+  - : Indicate numbers of characters or expressions to match.
+- [Unicode property escapes](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Unicode_property_escapes)
+  - : Distinguish based on unicode character properties, for example, upper- and lower-case letters, math symbols, and punctuation.
+
+If you want to look at all the special characters that can be used in regular expressions in a single table, see the following:
 
 <table class="standard-table">
   <caption>
-    정규 표현식 특수문자
+    Special characters in regular expressions.
   </caption>
   <thead>
     <tr>
-      <th scope="col">문자 / 조합</th>
-      <th scope="col">문서</th>
+      <th scope="col">Characters / constructs</th>
+      <th scope="col">Corresponding article</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <code>\</code>, <code>.</code>, <code>\cX</code>, <code>\d</code>,
-        <code>\D</code>, <code>\f</code>, <code>\n</code>, <code>\r</code>,
-        <code>\s</code>, <code>\S</code>, <code>\t</code>, <code>\v</code>,
-        <code>\w</code>, <code>\W</code>, <code>\0</code>, <code>\xhh</code>,
-        <code>\uhhhh</code>, <code>\uhhhhh</code>, <code>[\b]</code>
+        <code>[xyz]</code>, <code>[^xyz]</code>, <code>.</code>,
+        <code>\d</code>, <code>\D</code>, <code>\w</code>, <code>\W</code>,
+        <code>\s</code>, <code>\S</code>, <code>\t</code>, <code>\r</code>,
+        <code>\n</code>, <code>\v</code>, <code>\f</code>, <code>[\b]</code>,
+        <code>\0</code>, <code>\c<em>X</em></code>, <code>\x<em>hh</em></code>,
+        <code>\u<em>hhhh</em></code>, <code>\u<em>{hhhh}</em></code>,
+        <code><em>x</em>|<em>y</em></code>
       </td>
       <td>
         <p>
           <a
-            href="/ko/docs/Web/JavaScript/Guide/Regular_Expressions/Character_Classes"
-            >문자 클래스</a
+            href="/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Character_classes"
+            >Character classes</a
           >
         </p>
       </td>
     </tr>
     <tr>
       <td>
-        <code>^</code>, <code>$</code>, <code>x(?=y)</code>,
-        <code>x(?!y)</code>, <code>(?&#x3C;=y)x</code>,
-        <code>(?&#x3C;!y)x</code>, <code>\b</code>, <code>\B</code>
+        <code>^</code>, <code>$</code>, <code>\b</code>, <code>\B</code>,
+        <code>x(?=y)</code>, <code>x(?!y)</code>, <code>(?&#x3C;=y)x</code>,
+        <code>(?&#x3C;!y)x</code>
       </td>
       <td>
         <p>
           <a
-            href="/ko/docs/Web/JavaScript/Guide/Regular_Expressions/Assertions"
-            >어서션</a
+            href="/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Assertions"
+            >Assertions</a
           >
         </p>
       </td>
     </tr>
     <tr>
       <td>
-        <code>(x)</code>, <code>(?:x)</code>, <code>(?&#x3C;Name>x)</code>,
-        <code>x|y</code>, <code>[xyz]</code>, <code>[^xyz]</code>,
-        <code>\<em>Number</em></code>
+        <code>(<em>x</em>)</code>, <code>(?&#x3C;Name>x)</code>, <code>(?:<em>x</em>)</code>,
+        <code>\<em>n</em></code>, <code>\k&#x3C;Name></code>
       </td>
       <td>
         <p>
           <a
-            href="/ko/docs/Web/JavaScript/Guide/Regular_Expressions/Groups_and_Ranges"
-            >그룹과 범위</a
+            href="/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Groups_and_backreferences"
+            >Groups and backreferences</a
           >
         </p>
       </td>
     </tr>
     <tr>
       <td>
-        <code>*</code>, <code>+</code>, <code>?</code>,
-        <code>x{<em>n</em>}</code>, <code>x{<em>n</em>,}</code>,
-        <code>x{<em>n</em>,<em>m</em>}</code>
+        <code><em>x</em>*</code>, <code><em>x</em>+</code>, <code><em>x</em>?</code>,
+        <code><em>x</em>{<em>n</em>}</code>, <code><em>x</em>{<em>n</em>,}</code>,
+        <code><em>x</em>{<em>n</em>,<em>m</em>}</code>
       </td>
       <td>
         <p>
           <a
-            href="/ko/docs/Web/JavaScript/Guide/Regular_Expressions/Quantifiers"
-            >수량자</a
+            href="/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Quantifiers"
+            >Quantifiers</a
           >
         </p>
       </td>
@@ -134,267 +149,302 @@ slug: Web/JavaScript/Guide/Regular_Expressions
       </td>
       <td>
         <a
-          href="/ko/docs/Web/JavaScript/Guide/Regular_Expressions/Unicode_Property_Escapes"
-          >유니코드 속성 이스케이프</a
+          href="/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Unicode_property_escapes"
+          >Unicode property escapes</a
         >
       </td>
     </tr>
   </tbody>
 </table>
 
-> **참고:** 위 문서의 일부만 발췌해 정리해놓은, [더 큰 치트 시트도 있습니다](/ko/docs/Web/JavaScript/Guide/Regular_Expressions/Cheatsheet).
+> **Note:** [A larger cheat sheet is also available](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Cheatsheet) (only aggregating parts of those individual articles).
 
-### 이스케이핑
+### Escaping
 
-특수 문자를 있는 그대로 탐색(`"*"`을 직접 찾는 등)해야 하는 경우, 특수 문자 앞에 역슬래시(\\)를 배치해서 이스케이프 해야 합니다. 예를 들어 `"a"` 뒤의 별표(`"*"`) 뒤의 `"b"`와 일치해야 하면 `/a\*b/`를 사용하면 됩니다. 역슬래시가 `"*"`를 "이스케이프"해서, 특수 문자가 아닌 문자 리터럴로 취급합니다.
+If you need to use any of the special characters literally (actually searching for a `"*"`, for instance), you must escape it by putting a backslash in front of it.
+For instance, to search for `"a"` followed by `"*"` followed by `"b"`, you'd use `/a\*b/` — the backslash "escapes" the `"*"`, making it literal instead of special.
 
-마찬가지로, 슬래시(/)와 일치해야 하는 경우에도 이스케이프를 해야 합니다. 그냥 빗금을 사용하면 패턴이 끝나버립니다. 예를 들어 문자열 "/example/"과 그 뒤 하나 이상의 알파벳을 찾으려면 `/\/example\/[a-z]/`를 사용할 수 있습니다. 각각의 슬래시 앞에 놓인 역슬래시가 슬래시를 이스케이프합니다.
+Similarly, if you're writing a regular expression literal and need to match a slash ("/"), you need to escape that (otherwise, it terminates the pattern).
+For instance, to search for the string "/example/" followed by one or more alphabetic characters, you'd use `/\/example\/[a-z]+/i`—the backslashes before each slash make them literal.
 
-리터럴 역슬래시에 일치하려면 역슬래시를 이스케이프합니다. "A:\\", "B:\\", "C:\\", ..., "Z:\\"와 일치하는 패턴은 `/[A-Z]:\\/`입니다. 앞의 역슬래시가 뒤의 역슬래시를 이스케이프해서, 결과적으로 하나의 리터럴 역슬래시와 일치하게 됩니다.
+To match a literal backslash, you need to escape the backslash.
+For instance, to match the string "C:\\" where "C" can be any letter, you'd use `/[A-Z]:\\/` — the first backslash escapes the one after it, so the expression searches for a single literal backslash.
 
-`RegExp` 생성자와 문자열 리터럴을 사용하는 경우, 역슬래시가 문자열 리터럴의 이스케이프로도 작동한다는 것을 기억해야 합니다. 그러므로 정규 표현식의 역슬래시를 나타내려면 문자열 리터럴 수준의 이스케이프도 해줘야 합니다. 즉, 앞서 살펴본 `/a\*b/` 패턴을 생성하려면 `new RegExp("a\\*b")`가 되어야 합니다.
+If using the `RegExp` constructor with a string literal, remember that the backslash is an escape in string literals, so to use it in the regular expression, you need to escape it at the string literal level.
+`/a\*b/` and `new RegExp("a\\*b")` create the same expression, which searches for "a" followed by a literal "\*" followed by "b".
 
-이스케이프 되지 않은 문자열을 이미 가지고 있을 땐 {{jsxref("String.replace")}}를 활용해 이스케이프를 해줄 수 있습니다.
+If escape strings are not already part of your pattern you can add them using {{jsxref('String.prototype.replace()')}}:
 
 ```js
 function escapeRegExp(string) {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $&은 일치한 문자열 전체를 의미
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
 }
 ```
 
-정규 표현식 뒤의 "g"는 전체 문자열을 탐색해서 모든 일치를 반환하도록 지정하는 전역 탐색 플래그입니다. 플래그에 대해서는 아래의 [플래그를 활용한 고급 탐색](#플래그를_활용한_고급_탐색)에서 확인할 수 있습니다.
+The "g" after the regular expression is an option or flag that performs a global search, looking in the whole string and returning all matches.
+It is explained in detail below in [Advanced Searching With Flags](#advanced_searching_with_flags).
 
-"왜 `escapeRegExp()`가 JavaScript의 일부가 아닌가요?" 관련 제안은 있었으나 [TC39가 거부했습니다](https://github.com/benjamingr/RegExp.escape/issues/37).
+_Why isn't this built into JavaScript?_ There is a [proposal](https://github.com/tc39/proposal-regex-escaping) to add such a function to RegExp.
 
-### 괄호 사용하기
+### Using parentheses
 
-정규 표현식의 아무 부분이나 괄호로 감싸게 되면, 그 부분과 일치하는 부분 문자열을 기억하게 됩니다. 기억한 부분 문자열은 불러와서 다시 사용할 수 있습니다. [그룹과 범위](/ko/docs/Web/JavaScript/Guide/Regular_Expressions/Groups_and_Ranges#그룹_사용하기) 문서에서 자세히 알아보세요.
+Parentheses around any part of the regular expression pattern causes that part of the matched substring to be remembered.
+Once remembered, the substring can be recalled for other use. See [Groups and backreferences](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Groups_and_backreferences#using_groups) for more details.
 
-## JavaScript에서 정규 표현식 사용하기
+## Using regular expressions in JavaScript
 
-정규 표현식은 {{jsxref("RegExp")}}의 메서드 {{jsxref("RegExp/test", "test()")}}와 {{jsxref("RegExp/exec", "exec()")}}, {{jsxref("String")}}의 메서드 {{jsxref("String/match", "match()")}}, {{jsxref("String/replace", "replace()")}}, {{jsxref("String/search", "search()")}}, {{jsxref("String/split", "split()")}}에서 사용할 수 있습니다.
+Regular expressions are used with the {{jsxref("RegExp")}} methods {{jsxref("RegExp/test", "test()")}} and {{jsxref("RegExp/exec", "exec()")}} and with the {{jsxref("String")}} methods {{jsxref("String/match", "match()")}}, {{jsxref("String/replace", "replace()")}}, {{jsxref("String/search", "search()")}}, and {{jsxref("String/split", "split()")}}.
 
-| 메서드                                          | 설명                                                                                                         |
-| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| {{jsxref("RegExp.exec", "exec()")}}             | 문자열에서 일치하는 부분을 탐색합니다. 일치 정보를 나타내는 배열, 또는 일치가 없는 경우 `null`을 반환합니다. |
-| {{jsxref("RegExp.test", "test()")}}             | 문자열에 일치하는 부분이 있는지 확인합니다. `true` 또는 `false`를 반환합니다.                                |
-| {{jsxref("String.match", "match()")}}           | 캡처 그룹을 포함해서 모든 일치를 담은 배열을 반환합니다. 일치가 없으면 `null`을 반환합니다.                  |
-| {{jsxref("String.matchAll", "matchAll()")}}     | 캡처 그룹을 포함해서 모든 일치를 담은 반복기를 반환합니다.                                                   |
-| {{jsxref("String.search", "search()")}}         | 문자열에서 일치하는 부분을 탐색합니다. 일치하는 부분의 인덱스, 또는 일치가 없는 경우 `-1`을 반환합니다.      |
-| {{jsxref("String.replace", "replace()")}}       | 문자열에서 일치하는 부분을 탐색하고, 그 부분을 대체 문자열로 바꿉니다.                                       |
-| {{jsxref("String.replaceAll", "replaceAll()")}} | 문자열에서 일치하는 부분을 모두 탐색하고, 모두 대체 문자열로 바꿉니다.                                       |
-| {{jsxref("String.split", "split()")}}           | 정규 표현식 또는 문자열 리터럴을 사용해서 문자열을 부분 문자열의 배열로 나눕니다.                            |
+| Method                                          | Description                                                                                                      |
+| ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| {{jsxref("RegExp/exec", "exec()")}}             | Executes a search for a match in a string. It returns an array of information or `null` on a mismatch.           |
+| {{jsxref("RegExp/test", "test()")}}             | Tests for a match in a string. It returns `true` or `false`.                                                     |
+| {{jsxref("String/match", "match()")}}           | Returns an array containing all of the matches, including capturing groups, or `null` if no match is found.      |
+| {{jsxref("String/matchAll", "matchAll()")}}     | Returns an iterator containing all of the matches, including capturing groups.                                   |
+| {{jsxref("String/search", "search()")}}         | Tests for a match in a string. It returns the index of the match, or `-1` if the search fails.                   |
+| {{jsxref("String/replace", "replace()")}}       | Executes a search for a match in a string, and replaces the matched substring with a replacement substring.      |
+| {{jsxref("String/replaceAll", "replaceAll()")}} | Executes a search for all matches in a string, and replaces the matched substrings with a replacement substring. |
+| {{jsxref("String/split", "split()")}}           | Uses a regular expression or a fixed string to break a string into an array of substrings.                       |
 
-문자열 내부에 패턴과 일치하는 부분이 존재하는지만 알아내려면 `test()`나 `search()` 메서드를 사용하세요. 더 느리더라도 일치에 관한 추가 정보가 필요하면 `exec()`과 `match()` 메서드를 사용하세요. 일치하는 부분이 존재하면, `exec()`과 `match()`는 일치에 관한 데이터를 포함한 배열을 반환하고, 일치에 사용한 정규 표현식 객체의 속성을 업데이트합니다. 일치하지 못한 경우 `null`을 반환합니다. (`null`은 조건 평가 시 `false`와 같습니다)
+When you want to know whether a pattern is found in a string, use the `test()` or `search()` methods; for more information (but slower execution) use the `exec()` or `match()` methods.
+If you use `exec()` or `match()` and if the match succeeds, these methods return an array and update properties of the associated regular expression object and also of the predefined regular expression object, `RegExp`.
+If the match fails, the `exec()` method returns `null` (which coerces to `false`).
 
-아래의 예제에서는, 문자열에서 일치하는 부분을 찾기 위해 `exec()` 메서드를 사용합니다.
+In the following example, the script uses the `exec()` method to find a match in a string.
 
 ```js
 const myRe = /d(b+)d/g;
-const myArray = myRe.exec('cdbbdbsbz');
+const myArray = myRe.exec("cdbbdbsbz");
 ```
 
-만약 정규 표현식 객체의 속성에 접근할 필요가 없으면 아래와 같이 짧게 쓸 수도 있습니다.
+If you do not need to access the properties of the regular expression, an alternative way of creating `myArray` is with this script:
 
 ```js
-const myArray = /d(b+)d/g.exec('cdbbdbsbz');
-// 'cdbbdbsbz'.match(/d(b+)d/g); 와 비슷하지만,
-// 'cdbbdbsbz'.match(/d(b+)d/g)의 반환 값은 [ 'dbbd' ]인 반면
-// /d(b+)d/g.exec('cdbbdbsbz')의 반환 값은 [ 'dbbd', 'bb', index: 1, input: 'cdbbdbsbz' ]
+const myArray = /d(b+)d/g.exec("cdbbdbsbz");
+// similar to 'cdbbdbsbz'.match(/d(b+)d/g); however,
+// 'cdbbdbsbz'.match(/d(b+)d/g) outputs [ "dbbd" ]
+// while /d(b+)d/g.exec('cdbbdbsbz') outputs [ 'dbbd', 'bb', index: 1, input: 'cdbbdbsbz' ]
 ```
 
-(아래의 [`exec()`과 전역 탐색 플래그 사용하기](#exec과_전역_탐색_플래그_사용하기)에서 동작 방식의 차이에 대해 더 알아보세요)
+(See [Using the global search flag with `exec()`](#using_the_global_search_flag_with_exec) for further info about the different behaviors.)
 
-정규 표현식을 문자열에서 만들고 싶으면 아래처럼 사용할 수도 있습니다.
+If you want to construct the regular expression from a string, yet another alternative is this script:
 
 ```js
-const myRe = new RegExp('d(b+)d', 'g');
-const myArray = myRe.exec('cdbbdbsbz');
+const myRe = new RegExp("d(b+)d", "g");
+const myArray = myRe.exec("cdbbdbsbz");
 ```
 
-아래의 표는 위 스크립트에서 일치를 성공한 후, 반환하는 배열과 업데이트되는 정규 표현식 객체의 속성입니다.
+With these scripts, the match succeeds and returns the array and updates the properties shown in the following table.
 
 <table class="standard-table">
   <caption>
-    정규 표현식 실행 결과
+    Results of regular expression execution.
   </caption>
   <thead>
     <tr>
-      <th scope="col">객체</th>
-      <th scope="col">속성 또는 인덱스</th>
-      <th scope="col">설명</th>
-      <th scope="col">위 예제에서의 값</th>
+      <th scope="col">Object</th>
+      <th scope="col">Property or index</th>
+      <th scope="col">Description</th>
+      <th scope="col">In this example</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td rowspan="4"><code>myArray</code></td>
       <td></td>
-      <td>일치한 문자열 및 기억한 모든 부분 문자열.</td>
+      <td>The matched string and all remembered substrings.</td>
       <td><code>['dbbd', 'bb', index: 1, input: 'cdbbdbsbz']</code></td>
     </tr>
     <tr>
       <td><code>index</code></td>
-      <td>일치한 부분이 주어진 문자열에서 위치한 인덱스. (0부터 시작)</td>
+      <td>The 0-based index of the match in the input string.</td>
       <td><code>1</code></td>
     </tr>
     <tr>
       <td><code>input</code></td>
-      <td>주어진 원본 문자열.</td>
+      <td>The original string.</td>
       <td><code>'cdbbdbsbz'</code></td>
     </tr>
     <tr>
       <td><code>[0]</code></td>
-      <td>마지막으로 일치한 부분 문자열.</td>
+      <td>The last matched characters.</td>
       <td><code>'dbbd'</code></td>
     </tr>
     <tr>
       <td rowspan="2"><code>myRe</code></td>
       <td><code>lastIndex</code></td>
-      <td>
-        다음 일치를 시작할 인덱스. (g 옵션을 지정한 정규 표현식의 경우에만 설정됩니다.
-        <a href="#플래그를_활용한_고급_탐색">플래그를 활용한 고급 탐색</a>을 참고하세요)
+      <td>The index at which to start the next match.
+        (This property is set only if the regular expression uses the g option, described in
+        <a href="#advanced_searching_with_flags">Advanced Searching With Flags</a>.)
       </td>
       <td><code>5</code></td>
     </tr>
     <tr>
       <td><code>source</code></td>
       <td>
-        패턴의 텍스트. 정규 표현식이 생성될 때 갱신됩니다. 실행 시점에는 갱신되지 않습니다.
+        The text of the pattern. Updated at the time that the regular expression is created, not executed.
       </td>
       <td><code>'d(b+)d'</code></td>
     </tr>
   </tbody>
 </table>
 
-위 예제의 두 번째 형태처럼, 정규 표현식 객체를 변수에 대입하지 않고도 사용할 수 있습니다. 하지만, 이러면 매 사용마다 정규 표현식 객체가 새로 생성되며, 업데이트되는 속성에 접근할 수 없습니다. 다음과 같은 코드를 생각해보겠습니다.
+As shown in the second form of this example, you can use a regular expression created with an object initializer without assigning it to a variable.
+If you do, however, every occurrence is a new regular expression.
+For this reason, if you use this form without assigning it to a variable, you cannot subsequently access the properties of that regular expression.
+For example, assume you have this script:
 
 ```js
 const myRe = /d(b+)d/g;
-const myArray = myRe.exec('cdbbdbsbz');
-console.log(`lastIndex의 값은 ${myRe.lastIndex}`);
+const myArray = myRe.exec("cdbbdbsbz");
+console.log(`The value of lastIndex is ${myRe.lastIndex}`);
 
-// "lastIndex의 값은 5"
+// "The value of lastIndex is 5"
 ```
 
-그러나 위의 코드 대신 아래 코드를 사용하게 되면...
+However, if you have this script:
 
 ```js
-const myArray = /d(b+)d/g.exec('cdbbdbsbz');
-console.log(`lastIndex의 값은 ${/d(b+)d/g.lastIndex}`);
+const myArray = /d(b+)d/g.exec("cdbbdbsbz");
+console.log(`The value of lastIndex is ${/d(b+)d/g.lastIndex}`);
 
-// "lastIndex의 값은 0"
+// "The value of lastIndex is 0"
 ```
 
-두 개의 `/d(b+)d/g` 는 서로 다른 정규 표현식 객체이므로 별개의 `lastIndex` 속성을 갖습니다. 정규 표현식 객체의 속성에 접근해야 하면, 우선 변수에 할당하세요.
+The occurrences of `/d(b+)d/g` in the two statements are different regular expression objects and hence have different values for their `lastIndex` property.
+If you need to access the properties of a regular expression created with an object initializer, you should first assign it to a variable.
 
-### 플래그를 활용한 고급 탐색
+### Advanced searching with flags
 
-정규 표현식은 전역 탐색이나 대소문자 무시와 같은 특성을 지정하는 플래그를 가질 수 있습니다. 플래그는 단독으로 사용할 수도 있고, 순서에 상관 없이 한꺼번에 여럿을 지정할 수도 있습니다.
+Regular expressions have optional flags that allow for functionality like global searching and case-insensitive searching.
+These flags can be used separately or together in any order, and are included as part of the regular expression.
 
-| 플래그 | 설명                                                                                                        | 대응하는 속성                             |
-| ------ | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| `d`    | 부분 문자열 일치에 대해 인덱스 생성.                                                                        | {{jsxref("RegExp.prototype.hasIndices")}} |
-| `g`    | 전역 탐색.                                                                                                  | {{jsxref("RegExp.prototype.global")}}     |
-| `i`    | 대소문자를 구분하지 않음.                                                                                   | {{jsxref("RegExp.prototype.ignoreCase")}} |
-| `m`    | 여러 줄에 걸쳐 탐색.                                                                                        | {{jsxref("RegExp.prototype.multiline")}}  |
-| `s`    | 개행 문자가 `.`과 일치함.                                                                                   | {{jsxref("RegExp.prototype.dotAll")}}     |
-| `u`    | "unicode", 패턴을 유니코드 코드 포인트의 시퀀스로 간주함.                                                   | {{jsxref("RegExp.prototype.unicode")}}    |
-| `y`    | "접착" 탐색, 대상 문자열의 현재 위치에서 탐색을 시작함. {{jsxref("RegExp.sticky", "sticky")}}를 참고하세요. | {{jsxref("RegExp.prototype.sticky")}}     |
+| Flag | Description                                                                                   | Corresponding property                        |
+| ---- | --------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| `d`  | Generate indices for substring matches.                                                       | {{jsxref("RegExp/hasIndices", "hasIndices")}} |
+| `g`  | Global search.                                                                                | {{jsxref("RegExp/global", "global")}}         |
+| `i`  | Case-insensitive search.                                                                      | {{jsxref("RegExp/ignoreCase", "ignoreCase")}} |
+| `m`  | Allows `^` and `$` to match newline characters.                                               | {{jsxref("RegExp/multiline", "multiline")}}   |
+| `s`  | Allows `.` to match newline characters.                                                       | {{jsxref("RegExp/dotAll", "dotAll")}}         |
+| `u`  | "Unicode"; treat a pattern as a sequence of Unicode code points.                              | {{jsxref("RegExp/unicode", "unicode")}}       |
+| `y`  | Perform a "sticky" search that matches starting at the current position in the target string. | {{jsxref("RegExp/sticky", "sticky")}}         |
 
-플래그는 다음과 같은 구문으로 정규 표현식에 지정할 수 있습니다.
+To include a flag with the regular expression, use this syntax:
 
 ```js
 const re = /pattern/flags;
 ```
 
-생성자를 사용할 경우 이렇게 지정합니다.
+or
 
 ```js
-const re = new RegExp('pattern', 'flags');
+const re = new RegExp("pattern", "flags");
 ```
 
-플래그는 정규식과 완전히 합쳐지므로 나중에 추가하거나 제거할 수 없습니다.
+Note that the flags are an integral part of a regular expression. They cannot be added or removed later.
 
-예를 들어, `re = /\w+\s/g`는 한 개 이상의 글자와 그 뒤의 공백 하나를, 문자열 전체에 대해 탐색합니다.
+For example, `re = /\w+\s/g` creates a regular expression that looks for one or more characters followed by a space, and it looks for this combination throughout the string.
 
 ```js
 const re = /\w+\s/g;
-const str = 'fee fi fo fum';
+const str = "fee fi fo fum";
 const myArray = str.match(re);
 console.log(myArray);
 
 // ["fee ", "fi ", "fo "]
 ```
 
-아래 코드는...
+You could replace the line:
 
 ```js
 const re = /\w+\s/g;
 ```
 
-이렇게 생성자를 사용하도록 바꿀 수도 있습니다.
+with:
 
 ```js
-const re = new RegExp('\\w+\\s', 'g');
+const re = new RegExp("\\w+\\s", "g");
 ```
 
-두 구문 모두 동일한 결과를 낳습니다.
+and get the same result.
 
-`m` 플래그는 여러 줄에 걸친 입력 문자열을 여러 줄로 취급하게 합니다. 달리 말해, `m` 플래그를 지정할 경우, `^`와 `$`는 각각 전체 입력 문자열의 시작과 끝이 아니라, 각 줄의 시작과 끝에 대응하게 됩니다.
+The `m` flag is used to specify that a multiline input string should be treated as multiple lines.
+If the `m` flag is used, `^` and `$` match at the start or end of any line within the input string instead of the start or end of the entire string.
 
-#### exec()과 전역 탐색 플래그 사용하기
+#### Using the global search flag with exec()
 
-{{jsxref("RegExp.prototype.exec()")}} 메서드와 `g` 플래그를 사용하면, 일치한 부분 문자열들과 각각의 인덱스를 하나씩 순차적으로 반환합니다.
+{{jsxref("RegExp.prototype.exec()")}} method with the `g` flag returns each match and its position iteratively.
 
 ```js
-const str = 'fee fi fo fum'
-const re = /\w+\s/g
+const str = "fee fi fo fum";
+const re = /\w+\s/g;
 
-console.log(re.exec(str)) // ["fee ", index: 0, input: "fee fi fo fum"]
-console.log(re.exec(str)) // ["fi ", index: 4, input: "fee fi fo fum"]
-console.log(re.exec(str)) // ["fo ", index: 7, input: "fee fi fo fum"]
-console.log(re.exec(str)) // null
+console.log(re.exec(str)); // ["fee ", index: 0, input: "fee fi fo fum"]
+console.log(re.exec(str)); // ["fi ", index: 4, input: "fee fi fo fum"]
+console.log(re.exec(str)); // ["fo ", index: 7, input: "fee fi fo fum"]
+console.log(re.exec(str)); // null
 ```
 
-반면, {{jsxref("String.prototype.match()")}} 메서드는 모든 일치를 한 번에 반환하지만, 각각의 인덱스는 포함하지 않습니다.
+In contrast, {{jsxref("String.prototype.match()")}} method returns all matches at once, but without their position.
 
 ```js
-console.log(str.match(re)) // ["fee ", "fi ", "fo "]
+console.log(str.match(re)); // ["fee ", "fi ", "fo "]
 ```
 
-## 예제
+#### Using unicode regular expressions
 
-> **참고:** 다음 문서에서도 정규 표현식의 사용 예제를 볼 수 있습니다.
+The "u" flag is used to create "unicode" regular expressions; that is, regular expressions which support matching against unicode text. This is mainly accomplished through the use of [Unicode property escapes](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Unicode_property_escapes), which are supported only within "unicode" regular expressions.
+
+For example, the following regular expression might be used to match against an arbitrary unicode "word":
+
+```js
+/\p{L}*/u;
+```
+
+There are a number of other differences between unicode and non-unicode regular expressions that one should be aware of:
+
+- Unicode regular expressions do not support so-called "identity escapes"; that is, patterns where an escaping backslash is not needed and effectively ignored. For example, `/\a/` is a valid regular expression matching the letter 'a', but `/\a/u` is not.
+- Curly brackets need to be escaped when not used as [quantifiers](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Quantifiers). For example, `/{/` is a valid regular expression matching the curly bracket '{', but `/{/u` is not — instead, the bracket should be escaped and `/\\{/u` should be used instead.
+- The `-` character is interpreted differently within character classes. In particular, for Unicode regular expressions, `-` is interpreted as a literal `-` (and not as part of a range) only if it appears at the start or end of the character class. For example, `/[\w-:]/` is a valid regular expression matching a word character, a `-`, or `:`, but `/[\w-:]/u` is an invalid regular expression, as `\w` to `:` is not a well-defined range of characters.
+
+Unicode regular expressions have different execution behavior as well. [`RegExp.prototype.unicode`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicode) contains more explanation about this.
+
+## Examples
+
+> **Note:** Several examples are also available in:
 >
-> - {{jsxref("RegExp.exec", "exec()")}}, {{jsxref("RegExp.test", "test()")}}, {{jsxref("String.match", "match()")}}, {{jsxref("String.matchAll", "matchAll()")}}, {{jsxref("String.search", "search()")}}, {{jsxref("String.replace", "replace()")}}, {{jsxref("String.split", "split()")}} 메서드 참조
-> - 이 안내서의 하위 문서: [문자 클래스](/ko/docs/Web/JavaScript/Guide/Regular_Expressions/Character_Classes), [어서션](/ko/docs/Web/JavaScript/Guide/Regular_Expressions/Assertions), [그룹과 범위](/ko/docs/Web/JavaScript/Guide/Regular_Expressions/Groups_and_Ranges), [수량자](/ko/docs/Web/JavaScript/Guide/Regular_Expressions/Quantifiers), [유니코드 속성 이스케이프](/ko/docs/Web/JavaScript/Guide/Regular_Expressions/Unicode_Property_Escapes)
+> - The reference pages for {{jsxref("RegExp/exec", "exec()")}}, {{jsxref("RegExp/test", "test()")}}, {{jsxref("String/match", "match()")}}, {{jsxref("String/matchAll", "matchAll()")}}, {{jsxref("String/search", "search()")}}, {{jsxref("String/replace", "replace()")}}, {{jsxref("String/split", "split()")}}
+> - The guide articles: [character classes](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Character_classes), [assertions](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Assertions), [groups and backreferences](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Groups_and_backreferences), [quantifiers](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Quantifiers), [Unicode property escapes](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Unicode_property_escapes)
 
-### 정규 표현식 특수 문자를 사용한 입력 값 검증
+### Using special characters to verify input
 
-아래 예제에서는 사용자가 전화번호를 입력해야 합니다. 사용자가 "확인" 버튼을 누르면 입력한 값을 스크립트로 검증합니다. 값이 유효하면, 즉 정규 표현식과 일치하는 문자의 시퀀스를 받았으면, 스크립트는 감사 메시지를 출력합니다. 값이 유효하지 않으면, 사용자에게 올바르지 않은 값임을 알려줍니다.
+In the following example, the user is expected to enter a phone number.
+When the user presses the "Check" button, the script checks the validity of the number.
+If the number is valid (matches the character sequence specified by the regular expression), the script shows a message thanking the user and confirming the number.
+If the number is invalid, the script informs the user that the phone number is not valid.
 
-정규 표현식의 구조는 다음과 같습니다.
+The regular expression looks for:
 
-1. 데이터의 시작점(`^`)
-2. 비캡처 그룹(`(?:)`)으로, 1의 뒤를 잇는 세 개의 숫자(`\d{3}`), 또는(`|`), 여는 괄호(`\(`)의 뒤를 잇는 세 개의 숫자(`\d{3}`)의 뒤를 잇는 닫는 괄호(`\)`)
-3. 캡처 그룹(`()`)으로, 2의 뒤를 잇는 하나의 대시, 슬래시, 또는 마침표
-4. 3의 뒤를 잇는 네 개의 숫자(`\d{4}`)
-5. 4의 뒤를 잇는, 첫 번째 캡처 그룹에서 기억한 부분 문자열(`\1`)
-6. 5의 뒤를 잇는 네 개의 숫자(`\d{4}`)
-7. 데이터의 끝점(`$`)
+1. the beginning of the line of data: `^`
+2. followed by three numeric characters `\d{3}` OR `|` a left parenthesis `\(`, followed by three digits `\d{3}`, followed by a close parenthesis `\)`, in a non-capturing group `(?:)`
+3. followed by one dash, forward slash, or decimal point in a capturing group `()`
+4. followed by three digits `\d{3}`
+5. followed by the match remembered in the (first) captured group `\1`
+6. followed by four digits `\d{4}`
+7. followed by the end of the line of data: `$`
 
 #### HTML
 
 ```html
 <p>
-  전화번호를 입력 후 "확인" 버튼을 누르세요.
+  Enter your phone number (with area code) and then click "Check".
   <br />
-  ###-####-####의 형식으로 입력하세요.
+  The expected format is like ###-###-####.
 </p>
 <form id="form">
   <input id="phone" />
-  <button type="submit">확인</button>
+  <button type="submit">Check</button>
 </form>
 <p id="output"></p>
 ```
@@ -402,39 +452,39 @@ console.log(str.match(re)) // ["fee ", "fi ", "fo "]
 #### JavaScript
 
 ```js
-const form = document.querySelector('#form')
-const input = document.querySelector('#phone')
-const output = document.querySelector('#output')
+const form = document.querySelector("#form");
+const input = document.querySelector("#phone");
+const output = document.querySelector("#output");
 
-const re = /^(?:\d{3}|\(\d{3}\))([-\/\.])\d{4}\1\d{4}$/
+const re = /^(?:\d{3}|\(\d{3}\))([-/.])\d{3}\1\d{4}$/;
 
 function testInfo(phoneInput) {
-  const ok = re.exec(phoneInput.value)
+  const ok = re.exec(phoneInput.value);
 
-  if (!ok) {
-    output.textContent = `형식에 맞지 않는 전화번호입니다. (${phoneInput.value})`
-  } else {
-    output.textContent = `감사합니다. 전화번호는 ${ok[0]} 입니다.`
-  }
+  output.textContent = ok
+    ? `Thanks, your phone number is ${ok[0]}`
+    : `${phoneInput.value} isn't a phone number with area code!`;
 }
 
-form.addEventListener('submit', (event) => {
-  event.preventDefault()
-  testInfo(input)
-})
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  testInfo(input);
+});
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('정규_표현식_특수_문자를_사용한_입력_값_검증')}}
+{{ EmbedLiveSample('Using_special_characters_to_verify_input') }}
 
-## 도구
+## Tools
 
 - [RegExr](https://regexr.com/)
-  - : 정규 표현식을 배우고, 만들고, 시험할 수 있는 온라인 도구입니다.
+  - : An online tool to learn, build, & test Regular Expressions.
 - [Regex tester](https://regex101.com/)
-  - : 정규 표현식 생성기/디버거입니다.
+  - : An online regex builder/debugger
+- [Regex interactive tutorial](https://regexlearn.com/)
+  - : An online interactive tutorials, Cheat sheet, & Playground.
 - [Regex visualizer](https://extendsclass.com/regex-tester.html)
-  - : 시각적 정규 표현식 테스터입니다.
+  - : An online visual regex tester.
 
 {{PreviousNext("Web/JavaScript/Guide/Text_formatting", "Web/JavaScript/Guide/Indexed_collections")}}

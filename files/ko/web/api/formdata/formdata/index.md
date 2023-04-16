@@ -1,77 +1,118 @@
 ---
-title: FormData()
+title: "FormData: FormData() constructor"
+short-title: FormData()
 slug: Web/API/FormData/FormData
+page-type: web-api-constructor
+browser-compat: api.FormData.FormData
 ---
 
 {{APIRef("XMLHttpRequest")}}
 
-**`FormData()`** 생성자(Constructor)는 새로운 {{domxref("FormData")}}객체를 만듭니다.
+The **`FormData()`** constructor creates a new {{domxref("FormData")}} object.
 
-> **참고:** 이 기능은 [Web Worker](/ko/docs/Web/API/Web_Workers_API)에서 사용할 수 있습니다.
+> **Note:** This feature is available in [Web Workers](/en-US/docs/Web/API/Web_Workers_API).
 
 ## Syntax
 
-```js
-var formData = new FormData(form)
+```js-nolint
+new FormData()
+new FormData(form)
+new FormData(form, submitter)
 ```
 
 ### Parameters
 
 - `form` {{optional_inline}}
-  - : HTML {{HTMLElement("form")}} 요소 — 지정된 경우 {{domxref("FormData")}} 객체는 form의 현재 key/value 들로 채워집니다. key/value는 submit한 각 요소의 name property와 value를 사용합니다. 또한 파일 입력 내용을 인코딩합니다.
+  - : An HTML {{HTMLElement("form")}} element — when specified, the {{domxref("FormData")}} object will be populated with the `form`'s current keys/values using the name property of each element for the keys and their submitted value for the values. It will also encode file input content.
+- `submitter` {{optional_inline}}
+  - : A {{Glossary("submit button")}} that is a member of the `form`. If the `submitter` has a `name` attribute or is an `{{HtmlElement('input/image', '&lt;input type="image"&gt;')}}`, its data [will be included](/en-US/docs/Glossary/Submit_button#form_data_entries) in the {{domxref("FormData")}} object (e.g. `btnName=btnValue`).
 
-## Example
+### Exceptions
 
-다음 코드는 빈 `FormData` 객체를 만듭니다:
+- {{jsxref("TypeError")}}
+  - : Thrown if the specified `submitter` is not a {{Glossary("submit button")}}.
+- `NotFoundError` {{domxref("DOMException")}}
+  - : Thrown if the specified `submitter` isn't a member of the `form`. The `submitter` must be either a
+    descendant of the form element or must have a [`form`](/en-US/docs/Web/HTML/Element/input#form)
+    attribute referring to the form.
+
+## Examples
+
+### Creating an empty FormData
+
+The following line creates an empty {{domxref("FormData")}} object:
 
 ```js
-var formData = new FormData(); // Currently empty
+const formData = new FormData();
 ```
 
-{{domxref("FormData.append")}}을 사용하여 key/value 쌍을 추가할 수 있습니다:
+You could add a key/value pair to this using {{domxref("FormData.append", "append()")}}:
 
 ```js
-formData.append('username', 'Chris');
+formData.append("username", "Chris");
 ```
 
-또는 `FormData` 객체를 만들 때 선택적으로 `form` argument를 지정할 수 있는데, 지정된 양식대로 value를 미리 채우는 것입니다:
+### Prepopulating from a HTML form element
+
+You can specify the optional `form` and `submitter` arguments when creating the `FormData` object, to prepopulate it with values from the specified form.
+
+> **Note:** Only successful form controls are included in a FormData object, i.e. those with a name and not in a disabled state.
+
+#### HTML
 
 ```html
-<form id="myForm" name="myForm">
-  <div>
-    <label for="username">Enter name:</label>
-    <input type="text" id="username" name="username">
-  </div>
-  <div>
-    <label for="useracc">Enter account number:</label>
-    <input type="text" id="useracc" name="useracc">
-  </div>
-  <div>
-    <label for="userfile">Upload file:</label>
-    <input type="file" id="userfile" name="userfile">
-  </div>
-<input type="submit" value="Submit!">
+<form id="form">
+  <input type="text" name="text1" value="foo" />
+  <input type="text" name="text2" value="bar" />
+  <input type="text" name="text2" value="baz" />
+  <input type="checkbox" name="check" checked disabled />
+  <button name="intent" value="save">Save</button>
+  <button name="intent" value="saveAsCopy">Save As Copy</button>
 </form>
+
+<output id="output"></output>
 ```
 
-> **참고:** 모든 입력 요소는 'name' 속성(attribute) 을 갖고 있습니다. 나중에 value에 접근하는데 필요합니다.
+```css hidden
+form {
+  display: none;
+}
+
+output {
+  display: block;
+  white-space: pre-wrap;
+}
+```
+
+#### JavaScript
 
 ```js
-var myForm = document.getElementById('myForm');
-formData = new FormData(myForm);
+const form = document.getElementById("form");
+const submitter = document.querySelector("button[value=save]");
+const formData = new FormData(form, submitter);
+
+const output = document.getElementById("output");
+
+for (const [key, value] of formData) {
+  output.textContent += `${key}: ${value}\n`;
+}
 ```
 
-## 명세서
+#### Result
+
+For brevity, the `<form>` element is hidden from view.
+
+{{EmbedLiveSample("prepopulating_from_a_html_form_element", "", 150)}}
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- {{domxref("XMLHTTPRequest")}}
-- [Using XMLHttpRequest](/ko/docs/DOM/XMLHttpRequest/Using_XMLHttpRequest)
-- [Using FormData objects](/ko/docs/DOM/XMLHttpRequest/FormData/Using_FormData_Objects)
+- [Using FormData objects](/en-US/docs/Web/API/FormData/Using_FormData_Objects)
 - {{HTMLElement("Form")}}

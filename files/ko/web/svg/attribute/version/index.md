@@ -1,15 +1,57 @@
 ---
 title: version
 slug: Web/SVG/Attribute/version
+page-type: svg-attribute
+status:
+  - deprecated
+browser-compat: svg.elements.svg.version
 ---
-**`version`** 속성은 해당 SVG 문서가 어떤 명세를 따르고 있는지 표시하기 위해 사용됩니다. 이는 오직 [\<svg>](/ko/docs/Web/SVG/Element/svg) 요소 내에서만 사용되며 순전히 사용되는 버전의 알림을 위한 용도로 프로세싱이나 렌더링에는 영향을 미치지 않습니다.
 
-버전을 명시하기 위해 어떤 숫자든지 입력할 수 있지만, 현재로써 유효하게 사용되는 버전은 1.0과 1.1 두 버전만이 유일합니다.
+{{SVGRef}}{{Deprecated_Header}}
 
-## Usage context
+The **`version`** attribute is used to indicate what specification a SVG document conforms to. It is only allowed on the root {{SVGElement("svg")}} element. It is purely advisory and has no influence on rendering or processing.
 
-| Categories         | None                                                                                                          |
-| ------------------ | ------------------------------------------------------------------------------------------------------------- |
-| Value              | [\<number>](/en/SVG/Content_type#Number)            |
-| Animatable         | No                                                                                                            |
-| Normative document | [SVG 1.1 (2nd Edition): version attribute](http://www.w3.org/TR/SVG11/struct.html#SVGElementVersionAttribute) |
+While it is specified to accept any number, the only two valid choices are currently `1.0` and `1.1`.
+
+You can use this attribute with the following SVG elements:
+
+- {{SVGElement("svg")}}
+
+```html
+<svg version="1.1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <rect x="10" y="10" width="80" height="80" />
+</svg>
+```
+
+## Usage notes
+
+<table class="properties">
+  <tbody>
+    <tr>
+      <th scope="row">Value</th>
+      <td>
+        <code
+          ><a href="/en-US/docs/Web/SVG/Content_type#number"
+            >&#x3C;number></a
+          ></code
+        >
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Default value</th>
+      <td><em>None</em></td>
+    </tr>
+    <tr>
+      <th scope="row">Animatable</th>
+      <td>No</td>
+    </tr>
+  </tbody>
+</table>
+
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
+
+{{Compat}}

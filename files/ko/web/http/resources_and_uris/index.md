@@ -1,21 +1,20 @@
 ---
 title: Resources and URIs
 slug: Web/HTTP/Resources_and_URIs
+page-type: guide
 ---
 
 {{HTTPSidebar}}
 
-HTTP는 브라우저 혹은 사용자 에이전트에게 인터넷 상 다른 리소스와의 통신을 허용합니다: 이를 위해 브라우저에는 자원의 신분(*identity)*와 위치(*location)*가 필요합니다. 이 두 비트의 정보는 {{glossary("URI")}}로 설명됩니다.
+HTTP allows a browser, or another {{Glossary("user agent")}}, to communicate with different _resources_ on the Internet: to do this the browser needs both the _identity_ and the _location_ of the resources. These two bits of information are described by a {{glossary("URI")}}.
 
-- [웹 리소스 식별](/ko/docs/Web/HTTP/Basics_of_HTTP/Identifying_resources_on_the_Web)
-  - : URI와 웹에서의 자원 접근 방법
-- [Data URIs](/ko/docs/Web/HTTP/Basics_of_HTTP/Data_URIs)
-  - : A specific kind of URIs, data URIs, embed the resource itself inside the identifier.
-- [www 와non-www URL 중에서 선택하기](/ko/docs/Web/HTTP/Basics_of_HTTP/Choosing_between_www_and_non-www_URLs)
-  - : 도메인에 접두사로 www을 사용해야할지 말지에 대한 조언을 제공합니다. 이 글에서는 선택에 대한 결과와 과정 또한 설명합니다.
-- [MIME 타입](/ko/docs/Web/HTTP/Basics_of_HTTP/MIME_types)
-  - : MIME 미디어 타입은 특정 자원이 어떤 종류의 문서인지 정의합니다. 이 글에서는 웹에서 사용할 수 있는 가장 유용한 MIME 타입과 구문을 제공합니다.
-- [Complete list of MIME type](/ko/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Complete_list_of_MIME_types)
-  - : 웹 개발자에게 유용한 포괄적인 MIME 타입 목록.
-- [Separating identity and location of a resource: the Alt-Svc header](/ko/docs/Web/HTTP/Basics_of_HTTP/Separating_identity_and_location_of_a_resource)
-  - : 신분(*identity)*와 위치(_location)_ 둘 다 URL에 기술되더라도 둘의 개념은 다르며 둘을 구분하는 것은 때때로 유용합니다.이 글에서는 {{HTTPHeader("Alt-Svc")}} 헤더에 대해 소개합니다.
+- [Identifying resources on the Web](/en-US/docs/Web/HTTP/Basics_of_HTTP/Identifying_resources_on_the_Web)
+  - : URIs and how to access resources on the Web.
+- [Data URLs](/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs)
+  - : A specific kind of URIs, data URLs, embed the resource itself inside the identifier.
+- [Choosing between www and non-www URLs](/en-US/docs/Web/HTTP/Basics_of_HTTP/Choosing_between_www_and_non-www_URLs)
+  - : Advice on using a www-prefixed domain or not, this article explains the consequences of the choice as well as how to make it.
+- [MIME Types](/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)
+  - : MIME media types define what kind of document a specific resource is. This article presents both the syntax and the most useful MIME types for use on the Web.
+- [Common MIME types](/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types)
+  - : List of common MIME types useful for Web developers.

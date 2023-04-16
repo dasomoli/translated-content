@@ -1,66 +1,104 @@
 ---
-title: Window.getSelection()
+title: "Window: getSelection() method"
+short-title: getSelection()
 slug: Web/API/Window/getSelection
+page-type: web-api-instance-method
+browser-compat: api.Window.getSelection
 ---
 
 {{ ApiRef() }}
 
-## 요약
+The **`Window.getSelection()`** method returns a
+{{domxref("Selection")}} object representing the range of text selected by the user or
+the current position of the caret.
 
-사용자 또는 Caret의 위치에 따라 선택된 텍스트의 범위를 나타내는 {{domxref("Selection")}} 객체를 반환한다.
+## Syntax
 
-## 문법
-
-```js
-selection = window.getSelection();
+```js-nolint
+getSelection()
 ```
 
-- selection은 {{domxref("Selection")}} 객체입니다. 빈 문자열("")을 추가하거나 {{domxref("Selection.toString()")}}을 호출하면 선택된 text를 반환합니다.
+### Parameters
 
-## 예제
+None.
+
+### Return value
+
+A {{domxref("Selection")}} object.
+
+When cast to string, either by appending an empty string (`""`) or using
+{{domxref("Selection.toString()")}}, this object returns the text selected.
+
+When called on an {{htmlelement("iframe")}} that is not displayed (e.g., where
+`display: none` is set) Firefox will return `null`, whereas other
+browsers will return a {{domxref("Selection")}} object with
+{{domxref("Selection.type")}} set to `None`.
+
+## Examples
 
 ```js
 function foo() {
-    var selObj = window.getSelection();
-    alert(selObj);
-    var selRange = selObj.getRangeAt(0);
-    // do stuff with the range
+  const selObj = window.getSelection();
+  alert(selObj);
+  const selRange = selObj.getRangeAt(0);
+  // do stuff with the range
 }
 ```
 
-## 노트
+## Notes
 
-### Selection 객체의 문자열 표현
+### String representation of the Selection object
 
-JavaScript에서 문자열을 인자로 받는 함수({{ Domxref("window.alert()") }} 나 {{ Domxref("document.write()") }} 같은)에 객체를 전달하면 해당 객체의 {{jsxref("Object.toString", "toString()")}} 메소드를 호출하고 그 결과를 호출한 함수로 전달합니다. 이를 통해서 실제로는 속성과 메소드를 갖는 문자열이 아닌 일반적인 객체라 하더라도 문자열을 인자로 받는 함수의 인자로 사용할 때에는 객체를 문자열인 것처럼 전달할 수 있습니다.
+In JavaScript, when an object is passed to a function expecting a string (like {{
+  Domxref("window.alert()") }} or {{ Domxref("document.write()") }}), the object's
+{{jsxref("Object.toString", "toString()")}} method is called and the returned value is
+passed to the function. This can make the object appear to be a string when used with
+other functions when it is really an object with properties and methods.
 
-위 예제에서 selObj를 {{domxref("window.alert()")}}의 인자로 전달하면 `selObj.toString()`가 자동적으로 호출됩니다. 하지만, selObj에 대해서 [`length`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/length) 나 [`substr`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substr) 같은 JavaScript [String](/ko/docs/Web/JavaScript/Reference/Global_Objects/String)의 속성이나 메소드를 사용하면 객체에 그러한 속성이나 메소드가 없기 때문에 에러나 예상치 못한 결과가 발생합니다. `Selection` 객체를 문자열로 사용하려면 다음처럼 직접 `toString()` 메소드를 호출해야 합니다:
+In the above example, `selObj.toString()` is automatically called when it is
+passed to {{domxref("window.alert()")}}. However, attempting to use a JavaScript [String](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) property
+or method such as
+[`length`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/length)
+or
+[`substr`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substr)
+directly on a {{domxref("Selection")}} object will result in an error if it does not
+have that property or method and may return unexpected results if it does. To use a
+`Selection` object as a string, call its `toString()` method
+directly:
 
-<pre class="brush:js;gutter:false;">var selectedText = selObj.toString();</pre>
+```js
+const selectedText = selObj.toString();
+```
 
-- `selObj`는 `Selection` 객체입니다.
-- `selectedText`는 문자열 (선택한 문자열)입니다.
+- `selObj` is a `Selection` object.
+- `selectedText` is a string (Selected text).
 
 ### Related objects
 
-It's also useful to note that you can call {{domxref("Document.getSelection()")}}, which works identically.
+You can call {{domxref("Document.getSelection()")}}, which works identically to
+`Window.getSelection()`.
 
-HTML inputs provide simpler helper APIs for working with selection (see {{domxref("HTMLInputElement.setSelectionRange()")}}).
+It is worth noting that currently `getSelection()` doesn't work on the
+content of {{htmlelement("textarea")}} and {{htmlelement("input")}} elements in Firefox
+and Edge (Legacy). {{domxref("HTMLInputElement.setSelectionRange()")}}
+or the `selectionStart` and `selectionEnd` properties could be
+used to work around this.
 
-Notice the difference between _selection_ and _focus_. {{domxref("Document.activeElement")}} returns the focused element.
+Notice also the difference between _selection_ and _focus_.
+{{domxref("Document.activeElement")}} returns the focused element.
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
+- [Selection API](/en-US/docs/Web/API/Selection)
 - {{domxref("Selection")}}
 - {{domxref("Range")}}
 - {{domxref("Document.getSelection()")}}
 - {{domxref("HTMLInputElement.setSelectionRange()")}}
-- {{domxref("Document.activeElement")}}, {{domxref("HTMLElement.focus()")}}, and {{domxref("HTMLElement.blur()")}}

@@ -1,63 +1,76 @@
 ---
 title: Range
 slug: Web/HTTP/Headers/Range
+page-type: http-header
+browser-compat: http.headers.Range
 ---
 
 {{HTTPSidebar}}
 
-**`Range`** HTTP 요청 헤더는 서버에게 문서의 일부분만 돌려주어야 한다는 것을 알려줍니다. `Range` 헤더를 통해 여러 부분을 한번에 요청할 수 있으며, 서버는 이러한 범위에 대해 문서의 여러 부분을 돌려보내줄 것입니다. 만약 서버가 돌려 보낸다면, {{HTTPStatus("206")}} `Partial Content`를 응답으로 사용할 것입니다. 만약 범위가 유효하지 않다면, 서버는 {{HTTPStatus("416")}} `Range Not Satisfiable` 에러를 보낼 것입니다. 또한 서버는 `Range` 헤더를 무시하고 {{HTTPStatus("200")}} 상태 코드와 함께 전체 문서를 돌려줄 수 있습니다.
+The **`Range`** HTTP request header indicates the part of a document that the server should return. Several parts can be requested with one `Range` header at once, and the server may send back these ranges in a multipart document. If the server sends back ranges, it uses the {{HTTPStatus("206", "206 Partial Content")}} for the response. If the ranges are invalid, the server returns the {{HTTPStatus("416", "416 Range Not Satisfiable")}} error. The server can also ignore the `Range` header and return the whole document with a {{HTTPStatus("200")}} status code.
 
 <table class="properties">
   <tbody>
     <tr>
-      <th scope="row">헤더 타입</th>
+      <th scope="row">Header type</th>
       <td>{{Glossary("Request header")}}</td>
     </tr>
     <tr>
       <th scope="row">{{Glossary("Forbidden header name")}}</th>
-      <td>아니오</td>
+      <td>no</td>
     </tr>
   </tbody>
 </table>
 
-## 문법
+## Syntax
 
-```
+```http
 Range: <unit>=<range-start>-
 Range: <unit>=<range-start>-<range-end>
 Range: <unit>=<range-start>-<range-end>, <range-start>-<range-end>
 Range: <unit>=<range-start>-<range-end>, <range-start>-<range-end>, <range-start>-<range-end>
+Range: <unit>=-<suffix-length>
 ```
 
-## 지시자
+## Directives
 
 - \<unit>
-  - : 범위를 결정하는 단위. 보통 `bytes`.
+  - : The unit in which ranges are specified. This is usually `bytes`.
 - \<range-start>
-  - : 범위 요청의 시작 지점을 알리는 단위를 뜻하는 정수.
+  - : An integer in the given unit indicating the beginning of the request range.
 - \<range-end>
-  - : 요청한 범위의 끝을 알리는 단위를 의미하는 정수. 이 값은 옵션으로 사용할 수 있으며, 생략한다면 문서의 끝부분을 요청의 끝으로 사용함.
+  - : An integer in the given unit indicating the end of the requested range. This value is optional and, if omitted, the end of the document is taken as the end of the range.
+- \<suffix-length>
+  - : An integer in the given unit indicating the number of units at the end of the file to return.
 
-## 예제
+## Examples
 
-```
+Requesting three ranges from the file.
+
+```http
 Range: bytes=200-1000, 2000-6576, 19000-
 ```
 
-## 기술 사양
+The ranges-specifier value `19000-` specifies `19000` as the first position, and omits any last position — in order to indicate that all bytes from 19000 onward are part of the third range.
 
-| 기술 사양                                | 제목                                                   |
-| ---------------------------------------- | ------------------------------------------------------ |
-| {{RFC("7233", "Range", "3.1")}} | Hypertext Transfer Protocol (HTTP/1.1): Range Requests |
+Requesting the first 500 and last 500 bytes of the file. The request may be rejected by the server if the ranges overlap.
 
-## 브라우저 호환성
+```http
+Range: bytes=0-499, -500
+```
+
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 참고할 내용
+## See also
 
 - {{HTTPHeader("If-Range")}}
 - {{HTTPHeader("Content-Range")}}
 - {{HTTPHeader("Content-Type")}}
-- {{HTTPStatus("206")}} `Partial Content`
-- {{HTTPStatus("416")}} `Range Not Satisfiable`
+- {{HTTPStatus("206", "206 Partial Content")}}
+- {{HTTPStatus("416", "416 Range Not Satisfiable")}}

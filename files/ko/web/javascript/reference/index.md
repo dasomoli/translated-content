@@ -1,25 +1,29 @@
 ---
-title: JavaScript 참고서
+title: JavaScript reference
 slug: Web/JavaScript/Reference
+page-type: landing-page
 ---
 
 {{JsSidebar}}
 
-이 페이지는 JavaScript 언어에 대한 정보 보관소입니다.
-[이 참고서에 대해 더 읽어보세요](/ko/docs/Web/JavaScript/Reference/About).
+The JavaScript reference serves as a repository of facts about the JavaScript language. The entire language is described here in detail. As you write JavaScript code, you'll refer to these pages often (thus the title "JavaScript reference").
 
-## 내장 객체
+The JavaScript language is intended to be used within some larger environment, be it a browser, server-side scripts, or similar. For the most part, this reference attempts to be environment-agnostic and does not target a web browser environment.
 
-[JavaScript 표준 내장 객체](/ko/docs/Web/JavaScript/Reference/Global_Objects)와 그 메서드 및 속성입니다.
+If you are new to JavaScript, start with the [guide](/en-US/docs/Web/JavaScript/Guide). Once you have a firm grasp of the fundamentals, you can use the reference to get more details on individual objects and language constructs.
 
-### 값 속성
+## Built-ins
+
+[JavaScript standard built-in objects](/en-US/docs/Web/JavaScript/Reference/Global_Objects), along with their methods and properties.
+
+### Value properties
 
 - {{JSxRef("globalThis")}}
 - {{JSxRef("Infinity")}}
 - {{JSxRef("NaN")}}
 - {{JSxRef("undefined")}}
 
-### 함수 속성
+### Function properties
 
 - {{JSxRef("Global_Objects/eval", "eval()")}}
 - {{JSxRef("Global_Objects/isFinite", "isFinite()")}}
@@ -30,38 +34,41 @@ slug: Web/JavaScript/Reference
 - {{JSxRef("Global_Objects/decodeURIComponent", "decodeURIComponent()")}}
 - {{JSxRef("Global_Objects/encodeURI", "encodeURI()")}}
 - {{JSxRef("Global_Objects/encodeURIComponent", "encodeURIComponent()")}}
+- {{JSxRef("Global_Objects/escape", "escape()")}} {{Deprecated_Inline}}
+- {{JSxRef("Global_Objects/unescape", "unescape()")}} {{Deprecated_Inline}}
 
-### 기초 객체
+### Fundamental objects
 
 - {{JSxRef("Object")}}
 - {{JSxRef("Function")}}
 - {{JSxRef("Boolean")}}
 - {{JSxRef("Symbol")}}
 
-### 오류 객체
+### Error objects
 
 - {{JSxRef("Error")}}
+- {{JSxRef("AggregateError")}}
 - {{JSxRef("EvalError")}}
 - {{JSxRef("RangeError")}}
 - {{JSxRef("ReferenceError")}}
 - {{JSxRef("SyntaxError")}}
 - {{JSxRef("TypeError")}}
 - {{JSxRef("URIError")}}
-- {{JSxRef("AggregateError")}}
+- {{JSxRef("InternalError")}} {{Non-Standard_Inline}}
 
-### 숫자와 날짜
+### Numbers and dates
 
 - {{JSxRef("Number")}}
 - {{JSxRef("BigInt")}}
 - {{JSxRef("Math")}}
 - {{JSxRef("Date")}}
 
-### 텍스트 처리
+### Text processing
 
 - {{JSxRef("String")}}
 - {{JSxRef("RegExp")}}
 
-### 인덱스 콜렉션
+### Indexed collections
 
 - {{JSxRef("Array")}}
 - {{JSxRef("Int8Array")}}
@@ -76,28 +83,30 @@ slug: Web/JavaScript/Reference
 - {{JSxRef("Float32Array")}}
 - {{JSxRef("Float64Array")}}
 
-### 키 콜렉션
+### Keyed collections
 
 - {{JSxRef("Map")}}
 - {{JSxRef("Set")}}
 - {{JSxRef("WeakMap")}}
 - {{JSxRef("WeakSet")}}
 
-### 구조화된 데이터
+### Structured data
 
 - {{JSxRef("ArrayBuffer")}}
 - {{JSxRef("SharedArrayBuffer")}}
-- {{JSxRef("Atomics")}}
 - {{JSxRef("DataView")}}
+- {{JSxRef("Atomics")}}
 - {{JSxRef("JSON")}}
 
-### 메모리 관리
+### Managing memory
 
 - {{JSxRef("WeakRef")}}
-- {{JsxRef("FinalizationRegistry")}}
+- {{JSxRef("FinalizationRegistry")}}
 
-### 제어 추상화
+### Control abstraction objects
 
+- {{JSxRef("Iterator")}}
+- {{JSxRef("AsyncIterator")}}
 - {{JSxRef("Promise")}}
 - {{JSxRef("GeneratorFunction")}}
 - {{JSxRef("AsyncGeneratorFunction")}}
@@ -105,12 +114,12 @@ slug: Web/JavaScript/Reference
 - {{JSxRef("AsyncGenerator")}}
 - {{JSxRef("AsyncFunction")}}
 
-### 리플렉션
+### Reflection
 
 - {{JSxRef("Reflect")}}
 - {{JSxRef("Proxy")}}
 
-### 국제화
+### Internationalization
 
 - {{JSxRef("Intl")}}
 - {{JSxRef("Global_Objects/Intl/Collator", "Intl.Collator")}}
@@ -123,92 +132,91 @@ slug: Web/JavaScript/Reference
 - {{JSxRef("Global_Objects/Intl/RelativeTimeFormat", "Intl.RelativeTimeFormat")}}
 - {{JSxRef("Global_Objects/Intl/Segmenter", "Intl.Segmenter")}}
 
-## 명령문
+## Statements
 
-[JavaScript 명령문과 선언문](/ko/docs/Web/JavaScript/Reference/Statements)입니다.
+[JavaScript statements and declarations](/en-US/docs/Web/JavaScript/Reference/Statements)
 
-### 흐름 제어
+### Control flow
 
-- {{jsxref("Statements/block", "블록", "", 1)}}
-- {{jsxref("Statements/Empty", "빈 명령문", "", 1)}}
+- {{jsxref("Statements/return", "return")}}
 - {{jsxref("Statements/break", "break")}}
 - {{jsxref("Statements/continue", "continue")}}
+- {{jsxref("Statements/throw", "throw")}}
 - {{jsxref("Statements/if...else", "if...else")}}
 - {{jsxref("Statements/switch", "switch")}}
-- {{jsxref("Statements/throw", "throw")}}
 - {{jsxref("Statements/try...catch", "try...catch")}}
 
-### 선언
+### Declaring variables
 
 - {{jsxref("Statements/var", "var")}}
 - {{jsxref("Statements/let", "let")}}
 - {{jsxref("Statements/const", "const")}}
 
-### 함수와 클래스
+### Functions and classes
 
 - {{jsxref("Statements/function", "function")}}
 - {{jsxref("Statements/function*", "function*")}}
 - {{jsxref("Statements/async_function", "async function")}}
-- {{jsxref("Statements/return", "return")}}
+- {{jsxref("Statements/async_function*", "async function*")}}
 - {{jsxref("Statements/class", "class")}}
 
-### 순회와 반복
+### Iterations
 
 - {{jsxref("Statements/do...while", "do...while")}}
 - {{jsxref("Statements/for", "for")}}
-- {{jsxref("Statements/for_each...in", "for each...in")}}
 - {{jsxref("Statements/for...in", "for...in")}}
 - {{jsxref("Statements/for...of", "for...of")}}
 - {{jsxref("Statements/for-await...of", "for await...of")}}
 - {{jsxref("Statements/while", "while")}}
 
-### 기타
+### Others
 
+- {{jsxref("Statements/Empty", "Empty", "", 1)}}
+- {{jsxref("Statements/block", "Block", "", 1)}}
+- {{jsxref("Statements/Expression_statement", "Expression statement", "", 1)}}
 - {{jsxref("Statements/debugger", "debugger")}}
 - {{jsxref("Statements/export", "export")}}
 - {{jsxref("Statements/import", "import")}}
-- {{jsxref("Statements/label", "label")}}
-- {{jsxref("Statements/with", "with")}}
+- {{jsxref("Statements/label", "label", "", 1)}}
+- {{jsxref("Statements/with", "with")}} {{Deprecated_Inline}}
 
-## 표현식 및 연산자
+## Expressions and operators
 
-[JavaScript 표현식과 연산자](/ko/docs/Web/JavaScript/Reference/Operators)입니다.
+[JavaScript expressions and operators](/en-US/docs/Web/JavaScript/Reference/Operators).
 
-### 일차 표현식
+### Primary expressions
 
 - {{JSxRef("Operators/this", "this")}}
+- [Literals](/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#literals)
+- {{JSxRef("Global_Objects/Array", "[]")}}
+- {{JSxRef("Operators/Object_initializer", "{}")}}
 - {{JSxRef("Operators/function", "function")}}
 - {{JSxRef("Operators/class", "class")}}
 - {{JSxRef("Operators/function*", "function*")}}
-- {{JSxRef("Operators/yield", "yield")}}
-- {{JSxRef("Operators/yield*", "yield*")}}
 - {{JSxRef("Operators/async_function", "async function")}}
 - {{JSxRef("Operators/async_function*", "async function*")}}
-- {{JSxRef("Operators/await", "await")}}
-- {{JSxRef("Global_Objects/Array", "[]")}}
-- {{JSxRef("Operators/Object_initializer", "{}")}}
 - {{JSxRef("Global_Objects/RegExp", "/ab+c/i")}}
+- {{JSxRef("Template_literals", "`string`")}}
 - {{JSxRef("Operators/Grouping", "( )")}}
-- [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null)
 
-### 좌변 표현식
+### Left-hand-side expressions
 
 - {{JSxRef("Operators/Property_accessors", "Property accessors", "", 1)}}
-- [`?.` (Optional chaining)](/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
+- {{JSxRef("Operators/Optional_chaining", "?.")}}
 - {{JSxRef("Operators/new", "new")}}
 - {{JSxRef("Operators/new%2Etarget", "new.target")}}
 - {{JSxRef("Operators/import%2Emeta", "import.meta")}}
 - {{JSxRef("Operators/super", "super")}}
-- {{JSxRef("Operators/Spread_syntax", "...obj")}}
+- {{JSxRef("Operators/import", "import()")}}
 
-### 증감
+### Increment and decrement
 
 - {{JSxRef("Operators/Increment", "A++")}}
 - {{JSxRef("Operators/Decrement", "A--")}}
 - {{JSxRef("Operators/Increment", "++A")}}
 - {{JSxRef("Operators/Decrement", "--A")}}
 
-### 단항 연산자
+### Unary operators
 
 - {{JSxRef("Operators/delete", "delete")}}
 - {{JSxRef("Operators/void", "void")}}
@@ -217,59 +225,59 @@ slug: Web/JavaScript/Reference
 - {{JSxRef("Operators/Unary_negation", "-")}}
 - {{JSxRef("Operators/Bitwise_NOT", "~")}}
 - {{JSxRef("Operators/Logical_NOT", "!")}}
+- {{JSxRef("Operators/await", "await")}}
 
-### 산술 연산자
+### Arithmetic operators
 
-- {{JSxRef("Operators/Addition", "+")}}
-- {{JSxRef("Operators/Subtraction", "-")}}
-- {{JSxRef("Operators/Division", "/")}}
-- {{JSxRef("Operators/Multiplication", "*")}}
-- {{JSxRef("Operators/Remainder", "%")}}
 - {{JSxRef("Operators/Exponentiation", "**")}}
+- {{JSxRef("Operators/Multiplication", "*")}}
+- {{JSxRef("Operators/Division", "/")}}
+- {{JSxRef("Operators/Remainder", "%")}}
+- {{JSxRef("Operators/Addition", "+")}} (Plus)
+- {{JSxRef("Operators/Subtraction", "-")}}
 
-### 관계 연산자
+### Relational operators
 
-- {{JSxRef("Operators/in", "in")}}
-- {{JSxRef("Operators/instanceof", "instanceof")}}
-- {{JSxRef("Operators/Less_than", "&lt;")}}
-- {{JSxRef("Operators/Greater_than", "&gt;")}}
+- {{JSxRef("Operators/Less_than", "&lt;")}} (Less than)
+- {{JSxRef("Operators/Greater_than", "&gt;")}} (Greater than)
 - {{JSxRef("Operators/Less_than_or_equal", "&lt;=")}}
 - {{JSxRef("Operators/Greater_than_or_equal", "&gt;=")}}
+- {{JSxRef("Operators/instanceof", "instanceof")}}
+- {{JSxRef("Operators/in", "in")}}
 
-### 동일 연산자
+### Equality operators
 
 - {{JSxRef("Operators/Equality", "==")}}
 - {{JSxRef("Operators/Inequality", "!=")}}
 - {{JSxRef("Operators/Strict_equality", "===")}}
 - {{JSxRef("Operators/Strict_inequality", "!==")}}
 
-### 비트 시프트 연산자
+### Bitwise shift operators
 
 - {{JSxRef("Operators/Left_shift", "&lt;&lt;")}}
 - {{JSxRef("Operators/Right_shift", "&gt;&gt;")}}
 - {{JSxRef("Operators/Unsigned_right_shift", "&gt;&gt;&gt;")}}
 
-### 이진 비트 연산자
+### Binary bitwise operators
 
 - {{JSxRef("Operators/Bitwise_AND", "&amp;")}}
 - {{JSxRef("Operators/Bitwise_OR", "|")}}
 - {{JSxRef("Operators/Bitwise_XOR", "^")}}
 
-### 이진 논리 연산자
+### Binary logical operators
 
 - {{JSxRef("Operators/Logical_AND", "&amp;&amp;")}}
 - {{JSxRef("Operators/Logical_OR", "||")}}
-- {{JSxRef("Operators/Nullish_coalescing_operator", "??")}}
+- {{JSxRef("Operators/Nullish_coalescing", "??")}}
 
-### 조건(삼항) 연산자
+### Conditional (ternary) operator
 
-- {{JSxRef("Operators/Conditional_Operator", "(condition ? ifTrue : ifFalse)")}}
+- {{JSxRef("Operators/Conditional_operator", "(condition ? ifTrue : ifFalse)")}}
 
-### 할당 연산자
+### Assignment operators
 
 - {{JSxRef("Operators/Assignment", "=")}}
 - {{JSxRef("Operators/Multiplication_assignment", "*=")}}
-- {{JSxRef("Operators/Exponentiation_assignment", "**=")}}
 - {{JSxRef("Operators/Division_assignment", "/=")}}
 - {{JSxRef("Operators/Remainder_assignment", "%=")}}
 - {{JSxRef("Operators/Addition_assignment", "+=")}}
@@ -280,29 +288,54 @@ slug: Web/JavaScript/Reference
 - {{JSxRef("Operators/Bitwise_AND_assignment", "&amp;=")}}
 - {{JSxRef("Operators/Bitwise_XOR_assignment", "^=")}}
 - {{JSxRef("Operators/Bitwise_OR_assignment", "|=")}}
+- {{JSxRef("Operators/Exponentiation_assignment", "**=")}}
 - {{JSxRef("Operators/Logical_AND_assignment", "&amp;&amp;=")}}
 - {{JSxRef("Operators/Logical_OR_assignment", "||=")}}
-- {{JSxRef("Operators/Logical_nullish_assignment", "??=")}}
-- {{JSxRef("Operators/Destructuring_assignment", "[a, b] = arr")}}
-- {{JSxRef("Operators/Destructuring_assignment", "{ a, b } = obj")}}
+- {{JSxRef("Operators/Nullish_coalescing_assignment", "??=")}}
+- [`[a, b] = arr`, `{ a, b } = obj`](/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
 
-### 쉼표 연산자
+### Yield operators
 
-- {{JSxRef("Operators/Comma_Operator", ",")}}
+- {{JSxRef("Operators/yield", "yield")}}
+- {{JSxRef("Operators/yield*", "yield*")}}
 
-## 함수
+### Spread syntax
 
-이 장은 응용 프로그램을 개발할 때 [JavaScript 함수](/ko/docs/Web/JavaScript/Reference/Functions)를 사용하는
-법을 설명합니다.
+- {{JSxRef("Operators/Spread_syntax", "...obj")}}
 
-- [`arguments`](/ko/docs/Web/JavaScript/Reference/Functions/arguments)
-- [화살표 함수](/ko/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
-- [기본 매개변수](/ko/docs/Web/JavaScript/Reference/Functions/Default_parameters)
-- [나머지 매개변수](/ko/docs/Web/JavaScript/Reference/Functions/rest_parameters)
+### Comma operator
 
-## 추가 참고 페이지
+- {{JSxRef("Operators/Comma_operator", ",")}}
 
-- [어휘 구문](/ko/docs/Web/JavaScript/Reference/Lexical_grammar)
-- [자료형과 자료 구조](/ko/docs/Web/JavaScript/Data_structures)
-- [엄격 모드](/ko/docs/Web/JavaScript/Reference/Strict_mode)
-- [사라진 기능](/ko/docs/Web/JavaScript/Reference/Deprecated_and_obsolete_features)
+## Functions
+
+[JavaScript functions.](/en-US/docs/Web/JavaScript/Reference/Functions)
+
+- {{JSXRef("Functions/Arrow_functions", "Arrow Functions", "", 1)}}
+- {{JSxRef("Functions/Default_parameters", "Default parameters", "", 1)}}
+- {{JSxRef("Functions/rest_parameters", "Rest parameters", "", 1)}}
+- {{JSxRef("Functions/arguments", "arguments")}}
+- {{JSxRef("Functions/Method_definitions", "Method definitions", "", 1)}}
+- {{JSxRef("Functions/get", "getter", "", 1)}}
+- {{JSxRef("Functions/set", "setter", "", 1)}}
+
+## Classes
+
+[JavaScript classes.](/en-US/docs/Web/JavaScript/Reference/Classes)
+
+- {{JSxRef("Classes/Constructor", "constructor")}}
+- {{JSxRef("Classes/extends", "extends")}}
+- [Private class features](/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields)
+- [Public class fields](/en-US/docs/Web/JavaScript/Reference/Classes/Public_class_fields)
+- {{JSxRef("Classes/static", "static")}}
+- [Static initialization blocks](/en-US/docs/Web/JavaScript/Reference/Classes/Static_initialization_blocks)
+
+## Additional reference pages
+
+- {{JSxRef("Lexical_grammar", "Lexical grammar", "", 1)}}
+- [Data types and data structures](/en-US/docs/Web/JavaScript/Data_structures)
+- [Iteration protocols](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)
+- [Trailing commas](/en-US/docs/Web/JavaScript/Reference/Trailing_commas)
+- [Errors](/en-US/docs/Web/JavaScript/Reference/Errors)
+- {{JSxRef("Strict_mode", "Strict mode", "", 1)}}
+- {{JSxRef("Deprecated_and_obsolete_features", "Deprecated features", "", 1)}}

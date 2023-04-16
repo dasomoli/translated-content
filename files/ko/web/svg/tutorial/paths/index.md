@@ -1,74 +1,82 @@
 ---
-title: 패스
+title: Paths
 slug: Web/SVG/Tutorial/Paths
+page-type: guide
 ---
+
+{{SVGRef}}
 
 {{ PreviousNext("Web/SVG/Tutorial/Basic_Shapes", "Web/SVG/Tutorial/Fills_and_Strokes") }}
 
-[`<path>`](/en-US/Web/SVG/Element/path) 엘리먼트는 SVG [기본 도형](/ko/docs/Web/SVG/Tutorial/Basic_Shapes) 라이브러리에서 가장 강력한 엘리먼트이다. 선과 곡선, 호 등 다양한 형태를 그릴 수 있다.
+The {{SVGElement('path')}} element is the most powerful element in the SVG library of [basic shapes](/en-US/docs/Web/SVG/Tutorial/Basic_Shapes). It can be used to create lines, curves, arcs, and more.
 
-패스는 여러 개의 직선과 곡선을 합쳐서 복잡한 도형을 그릴 수 있게 해준다. 직선으로만 이루어진 복잡한 도형은 [polylines](/ko/docs/Web/SVG/Tutorial/Basic_Shapes#Polyline)으로도 그릴 수 있지만, 곡선을 묘사할 때 polylines은 패스로 그린 도형에 비해 더 많은 직선이 필요에 확대가 잘 되지 않을 수 있다. 그렇기에 SVG를 그릴 때 패스에 대해 이해하는 것은 매우 중요하다고 할 수 있다. 복잡한 패스를 XML 편집기 또는 일반적인 텍스트 에디터로 그리는 것은 권장하지 않지만, SVG가 표시될 때 문제점을 찾고 고치는 데는 충분히 도움이 될 것이다.
+Paths create complex shapes by combining multiple straight lines or curved lines. Complex shapes composed only of straight lines can be created as [`<polyline>`s](/en-US/docs/Web/SVG/Tutorial/Basic_Shapes#polyline). While `<polyline>`s and `<path>`s can create similar-looking shapes, `<polyline>`s require a lot of small straight lines to simulate curves, and don't scale well to larger sizes.
 
-패스의 모양은 {{ SVGAttr("d") }} 속성 하나로 정의된다([basic shapes](/ko/docs/) 참조). `"d"` 속성은 여러 개의 명령어와 그 파라미터들로 이루어진다.
+A good understanding of paths is important when drawing SVGs. While creating complex paths using an XML editor or text editor is not recommended, understanding how they work will allow to identify and repair display issues in SVGs.
 
-각각 명령은 특정 알파벳으로 시작한다. 예를 들면 현재 그려지는 위치를 XY 좌표계의 (10, 10)으로 이동할 때 "Move To" 명령을 사용하게 되는데, 이 명령은 알파벳 M으로 호출한다. SVG 처리기가 이 문자를 읽게 되면 다른 위치로 이동하라는 명령으로 이해하게 된다. 즉, (10, 10)으로 이동하려면 명령어 "M 10 10"을 쓰면 된다. 이후에 처리기는 다음 명령어를 읽기 시작한다.
+The shape of a `<path>` element is defined by one parameter: {{ SVGAttr("d") }}. (See more in [basic shapes](/en-US/docs/Web/SVG/Tutorial/Basic_Shapes).) The `d` attribute contains a series of commands and parameters used by those commands.
 
-모든 명령어는 2가지 변형이 존재하는데, 알파벳이 **대문자**일 경우(예를 들면 대문자 M), 뒤따르는 좌표는 페이지의 절대 좌표를 참조하며, **소문자** 알파벳(m)일 경우 마지막 위치에 대한 상대적 좌표로 참조된다.
+Each of the commands is instantiated (for example, creating a class, naming and locating it) by a specific letter. For instance, let's move to the x and y coordinates (`10`, `10`). The "Move to" command is called with the letter `M`. When the parser runs into this letter, it knows it needs to move to a point. So, to move to (`10`, `10`) the command to use would be `M 10 10`. After that, the parser begins reading for the next command.
 
-"d" 속성의 좌표는 **절대 단위가 붙지 않으며,** 패스의 위치나 형태가 어떻게 변형될 수 있는지는 나중에 배우도록 한다.
+All of the commands also come in two variants. An **uppercase letter** specifies absolute coordinates on the page, and a **lowercase letter** specifies relative coordinates (e.g., _move 10px up and 7px to the left from the last point_).
 
-## 선(Line) 명령어
+Coordinates in the `d` parameter are **always unitless** and hence in the user coordinate system. Later, we will learn how paths can be transformed to suit other needs.
 
-`<path>` 노드에는 다섯 개의 선 명령어가 있다. 이름에서 알 수 있듯이 각각의 명령어는 두 점 사이에 선을 그리는 역할을 한다. 첫 번째 명령어는 'Move To(이동하기)' 혹은 'M' 이다. 이 명령어는 두 개의 파라미터로 x와 y 좌표를 받는다. 그리기 커서가 이미 페이지의 다른 곳에 있었더라도 두 점 사이에 점이 그려지지는 않는다. 'Move To' 명령어는 다음과 같이 패스의 맨 처음에 와서 그리기를 시작할 위치를 지정한다:
+## Line commands
 
-```
- M x y
-```
+There are five line commands for {{SVGElement("path")}} nodes. The first command is the "Move To" or `M`, which was described above. It takes two parameters, a coordinate (`x`) and coordinate (`y`) to move to. If the cursor was already somewhere on the page, no line is drawn to connect the two positions. The "Move To" command appears at the beginning of paths to specify where the drawing should start. For example:
 
-혹은
-
-```
- m dx dy
+```plain
+M x y
+(or)
+m dx dy
 ```
 
-아래의 예제에서는 좌표 (10,10)에만 점을 찍었다. 일반적으로 패스를 그릴 때는 이 점이 나타나지 않는다는 점에 주의해야 한다.
+In the following example there's only a point at (`10`, `10`). Note, though, that it wouldn't show up if a path was just drawn normally. For example:
 
-![10x10 크기의 흰색 사각형에 빨간색 점이 그려집니다. 이 점은 일반적으로 표시되지 않지만 "이동 위치" 명령 후 커서가 시작되는 위치의 예로 사용됩니다.](blank_path_area.png)
+![A red dot is drawn on a white square 10 pixels down and 10 pixels to the right. This dot would not normally show but is used as an example of where the cursor will start after the "Move To" command](blank_path_area.png)
 
 ```xml
 <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
 
   <path d="M10 10"/>
 
-  <!-- 점 -->
+  <!-- Points -->
   <circle cx="10" cy="10" r="2" fill="red"/>
 
 </svg>
 ```
 
-선을 그리는 명령어는 세 가지가 있다. 가장 일반적인 것은 'L'이라 부르는 "Line To(선 그리기)" 명령어이다. L 명령어는 x, y라는 두 개의 파라미터를 받아서 현재 위치에서 새 위치로 선을 긋는다.
+There are three commands that draw lines. The most generic is the "Line To" command, called with `L`. `L` takes two parameters—x and y coordinates—and draws a line from the current position to a new position.
 
-```
- L x y (혹은 l dx dy)
-```
-
-가로선과 세로선을 그리는 축약 명령어도 있다. 'H'는 가로선을 그리고, 'V'는 세로선을 그릴 수 있다. 두 명령어는 한 좌표축으로만 이동하므로 하나의 파라미터만을 받는다.
-
-```
- H x (혹은 h dx)
- V y (혹은 v dy)
+```plain
+L x y
+(or)
+l dx dy
 ```
 
-도형 그리기부터 시작해 보자. 사각형을 그려볼 텐데({{SVGElement("rect")}}를 이용해 쉽게 그릴 수도 있다), 시작점부터 가로, 세로선도 함께 사용되었다.
+There are two abbreviated forms for drawing horizontal and vertical lines. `H` draws a horizontal line, and `V` draws a vertical line. Both commands only take one parameter since they only move in one direction.
 
-![검은색으로 채워진 흰색 사각형이 그려집니다. 검은색 사각형의 모서리는 (10,10) 좌표에서 시작하여 (90,10) 위치로 수평 이동하고, (90,90)로 수직 이동하며, (10,90)로 수평 이동한뒤 원래 위치(10,10)로 돌아옵니다](path_line_commands.png)
+```plain
+H x
+(or)
+h dx
+
+V y
+(or)
+v dy
+```
+
+An easy place to start is by drawing a shape. We will start with a rectangle (the same type that could be more easily made with a {{SVGElement("rect")}} element). It's composed of horizontal and vertical lines only.
+
+![A square with black fill is drawn within a white square. The black square's edges begin at position (10,10), move horizontally to position (90,10), move vertically to position (90,90), move horizontally back to position (10,90), and finally move back to the original position (10, 10).](path_line_commands.png)
 
 ```xml
 <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
 
-  <path d="M10 10 H 90 V 90 H 10 L 10 10"/>
+  <path d="M 10 10 H 90 V 90 H 10 L 10 10"/>
 
-  <!-- 점 -->
+  <!-- Points -->
   <circle cx="10" cy="10" r="2" fill="red"/>
   <circle cx="90" cy="90" r="2" fill="red"/>
   <circle cx="90" cy="10" r="2" fill="red"/>
@@ -77,128 +85,148 @@ slug: Web/SVG/Tutorial/Paths
 </svg>
 ```
 
-'Z'라는 "Close Path(패스 닫기)" 명령어를 통해 쉽게 패스를 마무리할 수 있다. 이 명령어는 현 위치에서 시작점으로 직선을 그린다. 항상은 아니지만 패스의 끝에 자주 쓰인다. 대문자와 소문자 사이의 차이는 없다.
+We can shorten the above path declaration a little bit by using the "Close Path" command, called with `Z`. This command draws a straight line from the current position back to the first point of the path. It is often placed at the end of a path node, although not always. There is no difference between the uppercase and lowercase command.
 
-```
- Z (혹은 z)
+```plain
+Z
+(or)
+z
 ```
 
-위 코드를 짧게 줄여보면:
+So our path above could be shortened to:
 
 ```xml
-<path d="M10 10 H 90 V 90 H 10 Z" fill="transparent" stroke="black"/>
+ <path d="M 10 10 H 90 V 90 H 10 Z" fill="transparent" stroke="black"/>
 ```
 
-위의 형태를 상대좌표로도 표현해볼 수 있다. 상대좌표 명령어는 앞서 기술된 바와 같이 소문자로 되어 있는 명령어인데, 패스를 움직일 때 정확한 위치를 지정해주는 것이 아니라 현재 위치로부터 얼마나 움직여야 하는지를 기술해준다. 예를 들면 위 80x80 상자를 아래와 같이 표현할 수 있다.
+The relative forms of these commands can also be used to draw the same picture. Relative commands are called by using lowercase letters, and rather than moving the cursor to an exact coordinate, they move it relative to its last position. For instance, since our box is 80×80, the `<path>` element could have been written as:
 
 ```xml
-<path d="M10 10 h 80 v 80 h -80 Z" fill="transparent" stroke="black"/>
+ <path d="M 10 10 h 80 v 80 h -80 Z" fill="transparent" stroke="black"/>
 ```
 
-여기서 패스는 (10,10)에서 시작하여 수평으로 80포인트**만큼 오른쪽**으로 움직이고 수직으로 80포인트**만큼 아래로** 이동하고 다시 시작점으로 이동하게 된다.
+The path will move to point (`10`, `10`) and then move horizontally 80 points to the right, then 80 points down, then 80 points to the left, and then back to the start.
 
-위 예제의 모양을 만드는 데는 \<polygon> 태그나 \<polyline> 태그가 더 간편해보일 수 있지만, 패스는 SVG를 그릴 때 자주 사용되므로 개발자 입장에서 더 편할 수도 있다. 성능 면에서는 둘 모두 비슷비슷하니, 편한 것으로 사용하자.
+In these examples, it would probably be simpler to use the {{SVGElement("polygon")}} or {{SVGElement("polyline")}} elements. However, paths are used so often in drawing SVG that developers may be more comfortable using them instead. There is no real performance penalty or bonus for using one or the other.
 
-## 곡선 (Curve) 명령어
+## Curve commands
 
-부드러운 곡선을 그릴 수 있는 세 가지 명령어가 있다. 이 중 두 가지는 '베지어 곡선'이며, 나머지 하나는 원의 조각인 '호'이다. 베지어 곡선은 아마 일러스트레이터나 포토샵, 잉크스케이프 등의 벡터 그래픽 기반의 툴을 통해서 경험해봤을 것이다. 베지어 곡선의 수학적 배경은 [위키피디아](https://en.wikipedia.org/wiki/B%C3%A9zier_curve)를 참조하길 바란다. 베지어 곡선의 종류는 무한하지만, 패스 엘리먼트에서는 가장 간단한 두 종류만을 지원한다. 하나는 'C'라고 부르는 3차(Cubic) 베지어 곡선이고, 다른 하나는 'Q'로 사용되는 2차(Quadratic) 베지어 곡선이다.
+There are three different commands that can be used to create smooth curves. Two of those curves are [Bézier curves](/en-US/docs/Glossary/Bezier_curve), and the third is an "arc" or part of a circle. You might have already gained practical experience with Bézier curves using path tools in Inkscape, Illustrator or Photoshop. There are an infinite number of Bézier curves, but only two simple ones are available in `<path>` elements: a cubic one, called with `C`, and a quadratic one, called with `Q`.
 
-### 베지어 곡선
+### Bézier Curves
 
-3차 베지어 곡선인 'C'는 조금 복잡한 곡선이다. 3차 베지어 곡선은 선을 잇는 두 점에 하나씩 제어점을 가지고 있다. 그러므로 3차 베지에 곡선을 그리려면 총 세 개의 좌표가 필요하다.
+The cubic curve, `C`, is the slightly more complex curve. Cubic Béziers take in two control points for each point. Therefore, to create a cubic Bézier, three sets of coordinates need to be specified.
 
+```plain
+C x1 y1, x2 y2, x y
+(or)
+c dx1 dy1, dx2 dy2, dx dy
 ```
- C x1 y1, x2 y2, x y (혹은 c dx1 dy1, dx2 dy2, dx dy)
-```
 
-마지막으로 지정된 좌표 (x, y)는 곡선의 끝점이다. 나머지 두 개는 제어점이며, 첫 번째 제어점은 (x1, y1), 두 번째 제어점은 (x2, y2)이다. 제어점은 기본적으로 시작점과 끝점에서 곡선의 방향을 기술한다. 베지어 함수는 각 제어점의 방향을 이용해 부드러운 곡선을 만드는 기능을 한다.
+The last set of coordinates here (`x`, `y`) specify where the line should end. The other two are control points. (`x1`, `y1`) is the control point for the start of the curve, and (`x2`, `y2`) is the control point for the end. The control points essentially describe the slope of the line starting at each point. The Bézier function then creates a smooth curve that transfers from the slope established at the beginning of the line, to the slope at the other end.
 
-![Cubic Bézier Curves with grid](cubic_bezier_curves_with_grid.png)
+![Cubic Bézier Curves with grid](cubic_bézier_curves_with_grid.png)
 
 ```xml
 <svg width="190" height="160" xmlns="http://www.w3.org/2000/svg">
 
-  <path d="M10 10 C 20 20, 40 20, 50 10" stroke="black" fill="transparent"/>
-  <path d="M70 10 C 70 20, 120 20, 120 10" stroke="black" fill="transparent"/>
-  <path d="M130 10 C 120 20, 180 20, 170 10" stroke="black" fill="transparent"/>
-  <path d="M10 60 C 20 80, 40 80, 50 60" stroke="black" fill="transparent"/>
-  <path d="M70 60 C 70 80, 110 80, 110 60" stroke="black" fill="transparent"/>
-  <path d="M130 60 C 120 80, 180 80, 170 60" stroke="black" fill="transparent"/>
-  <path d="M10 110 C 20 140, 40 140, 50 110" stroke="black" fill="transparent"/>
-  <path d="M70 110 C 70 140, 110 140, 110 110" stroke="black" fill="transparent"/>
-  <path d="M130 110 C 120 140, 180 140, 170 110" stroke="black" fill="transparent"/>
+  <path d="M 10 10 C 20 20, 40 20, 50 10" stroke="black" fill="transparent"/>
+  <path d="M 70 10 C 70 20, 110 20, 110 10" stroke="black" fill="transparent"/>
+  <path d="M 130 10 C 120 20, 180 20, 170 10" stroke="black" fill="transparent"/>
+  <path d="M 10 60 C 20 80, 40 80, 50 60" stroke="black" fill="transparent"/>
+  <path d="M 70 60 C 70 80, 110 80, 110 60" stroke="black" fill="transparent"/>
+  <path d="M 130 60 C 120 80, 180 80, 170 60" stroke="black" fill="transparent"/>
+  <path d="M 10 110 C 20 140, 40 140, 50 110" stroke="black" fill="transparent"/>
+  <path d="M 70 110 C 70 140, 110 140, 110 110" stroke="black" fill="transparent"/>
+  <path d="M 130 110 C 120 140, 180 140, 170 110" stroke="black" fill="transparent"/>
 
 </svg>
 ```
 
-위 예제에서는 아홉 개의 베지어 곡선을 그린다. 왼쪽으로 갈수록 곡선이 수평에 가까워지고, 오른쪽으로 갈수록 제어점이 원점에서 멀어진다. 여기서 주목해야 할 점은 곡선이 첫 번째 제어점 방향으로 시작한 다음, 두 번째 제어점 방향으로 구부러지고 있다는 것이다.
+The example above creates nine cubic Bézier curves. As the curves move toward the right, the control points become spread out horizontally. As the curves move downward, they become further separated from the end points. The thing to note here is that the curve starts in the direction of the first control point, and then bends so that it arrives along the direction of the second control point.
 
-여러 베지어 곡선을 연결하여 확장된 곡선 형태를 만들 수도 있다. 한 선의 제어점을 다른 선의 제어점과 반대 방향으로 그어서 완만한 경사를 만들어야 할 때가 많은데, 이 경우에는 간단한 형태의 3차 베지어 곡선 명령어인 'S' (혹은 's')를 사용해서 구현할 수 있다.
+Several Bézier curves can be strung together to create extended, smooth shapes. Often, the control point on one side of a point will be a reflection of the control point used on the other side to keep the slope constant. In this case, a shortcut version of the cubic Bézier can be used, designated by the command `S` (or `s`).
 
+```plain
+S x2 y2, x y
+(or)
+s dx2 dy2, dx dy
 ```
- S x2 y2, x y (혹은 s dx2 dy2, dx dy)
-```
 
-`S`는 위와 같은 형태의 곡선을 그리지만, 다른 `S`나 `C` 명령어 다음에 올 경우 첫 번째 제어점은 이전에 사용했던 제어점을 뒤집은 것으로 간주된다. `S` 명령어가 다른 `S`나 `C` 명령어 다음에 오지 않을 경우에는 현재 커서 위치가 첫 번째 제어점으로 사용되며, 이 경우에 그려지는 결과는 Q 명령어로 같은 파라미터를 사용해서 그린 결과와 같게 된다. 아래에 이 명령어의 예제가 있으며, 왼쪽의 미리보기에서 패스에 명시적으로 표시된 제어점은 빨간색, 생략된 제어점은 파란색으로 표시한다.
+`S` produces the same type of curve as earlier—but if it follows another `S` command or a `C` command, the first control point is assumed to be a reflection of the one used previously. If the `S` command doesn't follow another `S` or `C` command, then the current position of the cursor is used as the first control point. The result is not the same as what the `Q` command would have produced with the same parameters, but is similar.
 
-![ShortCut_Cubic_Bezier_with_grid.png](shortcut_cubic_bezier_with_grid.png)
+An example of this syntax is shown below, and in the figure to the left the specified control points are shown in red, and the inferred control point in blue.
+
+![A smooth S-shaped curve is drawn from two Bézier curves. The second curve keeps the same slope of the control points as the first curve, which is reflected to the other side.](shortcut_cubic_bézier_with_grid.png)
 
 ```xml
 <svg width="190" height="160" xmlns="http://www.w3.org/2000/svg">
-  <path d="M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80" stroke="black" fill="transparent"/>
+  <path d="M 10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80" stroke="black" fill="transparent"/>
 </svg>
 ```
 
-3차 베지어 곡선보다 간단한 다른 형태의 곡선은 'Q'라고 부르는 2차 베지어 곡선이며, 하나의 제어점이 시작점과 끝점의 방향을 모두 결정한다. 이 명령어는 매개변수로 제어점과 곡선의 끝점 2개를 받는다.
+The other type of Bézier curve, the quadratic curve called with `Q`, is actually a simpler curve than the cubic one. It requires one control point which determines the slope of the curve at both the start point and the end point. It takes two parameters: the control point and the end point of the curve.
 
-```
- Q x1 y1, x y (혹은 q dx1 dy1, dx dy)
+> **Note:** The co-ordinate deltas for `q` are both relative to the previous point (that is, `dx` and `dy` are not relative to `dx1` and `dy1`).
+
+```plain
+Q x1 y1, x y
+(or)
+q dx1 dy1, dx dy
 ```
 
-![격자에 그려진 2차 베지어 곡선](quadratic_bézier_with_grid.png)
+![Quadratic Bézier with grid](quadratic_bézier_with_grid.png)
 
 ```xml
 <svg width="190" height="160" xmlns="http://www.w3.org/2000/svg">
-  <path d="M10 80 Q 95 10 180 80" stroke="black" fill="transparent"/>
+  <path d="M 10 80 Q 95 10 180 80" stroke="black" fill="transparent"/>
 </svg>
 ```
 
-3차 베지어 곡선과 같이 2차 베지어 곡선을 연결하는 단축 명령어가 있으며, T라고 부른다.
+As with the cubic Bézier curve, there is a shortcut for stringing together multiple quadratic Béziers, called with `T`.
 
+```plain
+T x y
+(or)
+t dx dy
 ```
- T x y (혹은 t dx dy)
-```
 
-이 축약 명령어는 이전에 사용한 제어점으로부터 새로운 제어점을 만들어낸다. 즉, 처음에 제어점 하나만을 기술하면 끝점만을 계속 이어서 꽤 복잡한 도형을 만들 수 있다.
+This shortcut looks at the previous control point used and infers a new one from it. This means that after the first control point, fairly complex shapes can be made by specifying only end points.
 
-> **참고:** Q나 T 명령어 다음에 올 때만 적용된다. 그렇지 않을 경우 제어점은 시작점의 좌표로 간주되며, 직선만 그릴 수 있게 된다.
+This only works if the previous command was a `Q` or a `T` command. If not, then the control point is assumed to be the same as the previous point, and only lines will be drawn.
 
-![](shortcut_quadratic_bézier_with_grid.png)
+![Two quadratic curves form one smooth S-shaped curve. The second curve's control points are reflected across the horizontal axis](shortcut_quadratic_bézier_with_grid.png)
 
 ```xml
 <svg width="190" height="160" xmlns="http://www.w3.org/2000/svg">
-  <path d="M10 80 Q 52.5 10, 95 80 T 180 80" stroke="black" fill="transparent"/>
+  <path d="M 10 80 Q 52.5 10, 95 80 T 180 80" stroke="black" fill="transparent"/>
 </svg>
 ```
 
-두 종류의 곡선이 비슷한 결과를 만들어내긴 하지만, 3차 곡선의 경우 모양을 더 자유롭게 수정할 수 있다. 둘 중 어느 것이 좋은지는 그때그때 다르며, 선 모양이 얼마나 대칭적인지에 따라 달라진다.
+Both curves produce similar results, although the cubic one allows greater freedom in exactly what the curve looks like. Deciding which curve to use is situational and depends on the amount of symmetry the line has.
 
-### 원호
+### Arcs
 
-SVG로 그릴 수 있는 다른 형태의 곡선으로는 A라고 부르는 호(arc)가 있다. 호는 원이나 타원의 일부분을 말한다. x, y축 반지름이 주어졌을 때, (두 점이 충분히 가깝다고 가정할 때) 두 점을 연결할 수 있는 타원은 2개가 있으며, 각각의 타원에서 두 점을 잇는 경로 또한 2개씩 있기 때문에 어떤 상황에서든 네 종류의 호를 그릴 수 있다. 이러한 성질 때문에 호 명령어는 꽤 많은 파라미터를 받는다:
+The other type of curved line that can be created using SVG is the arc, called with the `A` command. Arcs are sections of circles or ellipses.
 
+For a given x-radius and y-radius, there are two ellipses that can connect any two points (as long as they're within the radius of the circle). Along either of those circles, there are two possible paths that can be taken to connect the points—so in any situation, there are four possible arcs available.
+
+Because of that, arcs require quite a few parameters:
+
+```plain
+A rx ry x-axis-rotation large-arc-flag sweep-flag x y
+a rx ry x-axis-rotation large-arc-flag sweep-flag dx dy
 ```
- A rx ry x축-회전각 큰-호-플래그 쓸기-방향-플래그 x y
- a rx ry x축-회전각 큰-호-플래그 쓸기-방향-플래그 dx dy
-```
 
-A 명령어는 일단 x축, y축 반지름을 매개변수로 받는다. 혹시 필요하다면 [ellipse](/ko/docs/Web/SVG/Element/ellipse) 문서에서 두 매개변수가 어떻게 작동하는지 확인해볼 수 있다. 세 번째 매개변수는 호의 회전각을 기술한다. 이는 아래 예제에서 잘 확인할 수 있다.
+At its start, the arc element takes in two parameters for the x-radius and y-radius. If needed, see {{SVGElement("ellipse")}}s and how they behave. The final two parameters designate the x and y coordinates to end the stroke. Together, these four values define the basic structure of the arc.
+
+The third parameter describes the rotation of the arc. This is best explained with an example:
 
 ![SVGArcs_XAxisRotation_with_grid](svgarcs_xaxisrotation_with_grid.png)
 
 ```xml
 <svg width="320" height="320" xmlns="http://www.w3.org/2000/svg">
-  <path d="M10 315
+  <path d="M 10 315
            L 110 215
            A 30 50 0 0 1 162.55 162.45
            L 172.55 152.45
@@ -207,35 +235,54 @@ A 명령어는 일단 x축, y축 반지름을 매개변수로 받는다. 혹시 
 </svg>
 ```
 
-이 예제는 페이지를 대각선으로 가로질러 이동하는 패스인데, 그 중간에 두 개의 타원형 호가 절단되어 있다(x축 반지름 = 30, y축 반지름 = 50). 첫 번째는 x축 회전각이 0이므로 호의 기준이 되는 타원(회색으로 표시)은 위아래로 똑바로 서 있다. 두 번째 호는 x축 회전각이 -45도이므로 회전을 해서 예제에서 보이는 것처럼 타원의 단축과 패스 방향이 나란해졌다.
+The example shows a `<path>` element that goes diagonally across the page. At its center, two elliptical arcs have been cut out (x radius = `30`, y radius = `50`). In the first one, the x-axis-rotation has been left at `0`, so the ellipse that the arc travels around (shown in gray) is oriented straight up and down. For the second arc, though, the x-axis-rotation is set to `-45` degrees. This rotates the ellipse so that it is aligned with its minor axis along the path direction, as shown by the second ellipse in the example image.
 
-위에서 언급한 네 가지 경로는 이어지는 두 개의 매개변수 플래그에 의해 결정된다. 앞서 언급했듯이, 두 점을 잇는 타원도 2개, 각각 취할 수 있는 방향도 2개이므로 모두 네 가지 경로가 가능하다. 첫 번째 인수는 큰 호 플래그(large-arc-flag)이며, 중심각이 180도 이상이 될지를 결정한다. 결국, 이 플래그는 호가 주어진 원의 어느 방향을 따라 돌지를 결정한다. 두 번째 인수는 쓸기 방향 플래그(sweep-flag)이며, 호가 이동해야 할 각이 음인지 양인지를 결정한다. 이 각은 본질적으로 두 개의 원 중 어느 쪽을 따를지를 결정한다. 아래 예는 네 가지 가능한 조합을 각 사례별로 두 개의 원과 함께 표시하고 있다.
+For the unrotated ellipse in the image above, there are only two different arcs and not four to choose from because the line drawn from the start and end of the arc goes through the center of the ellipse. In a slightly modified example the two ellipses that form the four different arcs can be seen:
 
 ![Show the 4 arcs on the Ellipse example](svgarcs_xaxisrotation_with_grid_ellipses.png)
 
 ```xml
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320">
+  <path d="M 10 315
+           L 110 215
+           A 36 60 0 0 1 150.71 170.29
+           L 172.55 152.45
+           A 30 50 -45 0 1 215.1 109.9
+           L 315 10" stroke="black" fill="green" stroke-width="2" fill-opacity="0.5"/>
+  <circle cx="150.71" cy="170.29" r="2" fill="red"/>
+  <circle cx="110" cy="215" r="2" fill="red"/>
+  <ellipse cx="144.931" cy="229.512" rx="36" ry="60" fill="transparent" stroke="blue"/>
+  <ellipse cx="115.779" cy="155.778" rx="36" ry="60" fill="transparent" stroke="blue"/>
+</svg>
+```
+
+Notice that each of the blue ellipses are formed by two arcs, depending on traveling clockwise or counter-clockwise. Each ellipse has one short arc and one long arc. The two ellipses are just mirror images of each other. They are flipped along the line formed from the start→end points.
+
+If the start→end points are farther than the ellipse's `x` and `y` radius can reach, the ellipse's radii will be minimally expanded so it could reach the start→end points. The interactive codepen at the bottom of this page demonstrates this well. To determine if an ellipse's radii are large enough to require expanding, a system of equations would need to be solved, such as [this on wolfram alpha](<https://www.wolframalpha.com/input/?i=solve+((110+-+x)%5E2%2F36%5E2)+%2B+((215+-+y)%5E2%2F60%5E2)+%3D+1,+((150.71+-+x)%5E2%2F36%5E2)+%2B+((170.29+-+y)%5E2%2F60%5E2)+%3D+1>). This computation is for the non-rotated ellipse with start→end (`110`, `215`)→(`150.71`, `170.29`). The solution, (`x`, `y`), is the center of the ellipse(s). The solution will be [imaginary](<https://www.wolframalpha.com/input/?i=solve+((110+-+x)%5E2%2F30%5E2)+%2B+((215+-+y)%5E2%2F50%5E2)+%3D+1,+((162.55+-+x)%5E2%2F30%5E2)+%2B+((162.45+-+y)%5E2%2F50%5E2)+%3D+1>) if the ellipse's radii are too small. This second computation is for the non-rotated ellipse with start→end (`110`, `215`)→(`162.55`, `162.45`). The solution has a small imaginary component because the ellipse was just barely expanded.
+
+The four different paths mentioned above are determined by the next two parameter flags. As mentioned earlier, there are still two possible ellipses for the path to travel around and two different possible paths on both ellipses, giving four possible paths. The first parameter is the `large-arc-flag`. It determines if the arc should be greater than or less than 180 degrees; in the end, this flag determines which direction the arc will travel around a given circle. The second parameter is the `sweep-flag`. It determines if the arc should begin moving at positive angles or negative ones, which essentially picks which of the two circles will be traveled around. The example below shows all four possible combinations, along with the two circles for each case.
+
+![Four examples are shown for each combination of large-arc-flag and sweep-flag for two circles overlapping, one in the top right, the other in the bottom left. For sweep-flag = 0, when large-arc-flag = 0, the interior arc of the top right circle is drawn, and when large-arc-flag = 1, the exterior arc of the bottom left circle is drawn. For sweep-flag = 1, when large-arc-flag = 0, the interior arc of the bottom left circle is drawn, and when large-arc-flag = 1, the exterior arc of the top right circle is drawn.](svgarcs_flags.png)
+
+```xml
 <svg width="325" height="325" xmlns="http://www.w3.org/2000/svg">
-  <path d="M80 80
+  <path d="M 80 80
            A 45 45, 0, 0, 0, 125 125
            L 125 80 Z" fill="green"/>
-  <path d="M230 80
+  <path d="M 230 80
            A 45 45, 0, 1, 0, 275 125
            L 275 80 Z" fill="red"/>
-  <path d="M80 230
+  <path d="M 80 230
            A 45 45, 0, 0, 1, 125 275
            L 125 230 Z" fill="purple"/>
-  <path d="M230 230
+  <path d="M 230 230
            A 45 45, 0, 1, 1, 275 275
            L 275 230 Z" fill="blue"/>
 </svg>
 ```
 
-![](svgarcs_flags.png)
+Arcs are an easy way to create pieces of circles or ellipses in drawings. For instance, a pie chart would require a different arc for each piece.
 
-마지막 두 개의 매개변수는 호가 끝나는 x와 y 좌표를 지정한다. 호는 도면에서 원 또는 타원 조각을 쉽게 만들 수 있는 방법이다. 예를 들어 원그래프는 각 조각마다 다른 호가 필요하다.
-
-원을 한 바퀴 도는 패스의 경우 시작점과 끝점이 같으므로 선택할 수 있는 원이 무한히 있으며, 그러므로 실제 패스가 정의되지 않는다. 이때는 시작점과 끝점을 살짝 비뚤어지게 배치하고 이 둘을 다른 패스 선으로 마저 이음으로써 비슷하게 만들 수 있지만, 이때는 실제 원이나 타원 노드를 쓰는 것이 쉬울 때가 많다.
-
-[캔버스](/ko/docs/Web/HTML/Canvas)에서 SVG로 넘어오는 사람에게는 호가 가장 배우기 어려울 수도 있지만, 그런 만큼 강력하기도 하다. 다음 반응형 예제를 보면 SVG 호의 개념을 이해하는 데 도움이 될 것이다. <http://codepen.io/lingtalfi/pen/yaLWJG> (크롬과 파이어폭스로만 테스트했으므로 일부 브라우저에서 동작하지 않을 수 있음)
+If transitioning to SVG from {{HTMLElement("canvas")}}, arcs can be the hardest thing to learn, but are also much more powerful. Complete circles and ellipses are the only shapes that SVG arcs have trouble drawing. Because the start and end points for any path going around a circle are the same point, there are an infinite number of circles that could be chosen, and the actual path is undefined. It's possible to approximate them by making the start and end points of the path slightly askew, and then connecting them with another path segment. For example, it's possible to make a circle with an arc for each semi-circle. At that point, it's often easier to use a real {{SVGElement("circle")}} or {{SVGElement("ellipse")}} node instead. This interactive demo might help understand the concepts behind SVG arcs: <https://codepen.io/lingtalfi/pen/yaLWJG> (tested in Chrome and Firefox only, might not work in your browser)
 
 {{ PreviousNext("Web/SVG/Tutorial/Basic_Shapes", "Web/SVG/Tutorial/Fills_and_Strokes") }}

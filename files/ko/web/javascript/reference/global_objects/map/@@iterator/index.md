@@ -1,36 +1,33 @@
 ---
 title: Map.prototype[@@iterator]()
 slug: Web/JavaScript/Reference/Global_Objects/Map/@@iterator
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Map.@@iterator
 ---
 
 {{JSRef}}
 
-`Map` 객체의 **`@@iterator`** 메서드는 [반복가능 프로토콜](/ko/docs/Web/JavaScript/Reference/Iteration_protocols)을 구현하여
-[전개 구문](/ko/docs/Web/JavaScript/Reference/Operators/Spread_syntax)와 [`for...of`](/ko/docs/Web/JavaScript/Reference/Statements/for...of) 루프같은
-반복이 필요한 대부분의 구문에서 맵을 사용할 수 있게 합니다. 맵의 키-값 쌍을 생성하는 반복자를 반환합니다.
+The **`[@@iterator]()`** method of {{jsxref("Map")}} instances implements the [iterable protocol](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) and allows maps to be consumed by most syntaxes expecting iterables, such as the [spread syntax](/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) and {{jsxref("Statements/for...of", "for...of")}} loops. It returns a [map iterator object](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator) that yields the key-value pairs of the map.
 
-이 속성의 초기 값은 {{jsxref("Map.prototype.entries")}} 속성의 초기 값과 동일한 함수 객체입니다.
+The initial value of this property is the same function object as the initial value of the {{jsxref("Map.prototype.entries")}} property.
 
 {{EmbedInteractiveExample("pages/js/map-prototype-@@iterator.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 map[Symbol.iterator]()
 ```
 
-### 반환 값
+### Return value
 
-{{jsxref("Map.prototype.entries()")}}과 동일한 반환 값을 반환합니다. 이는 맵의 키-값 쌍을 생성하는
-새로운 반복자 객체입니다.
+The same return value as {{jsxref("Map.prototype.entries()")}}: a new [iterable iterator object](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator) that yields the key-value pairs of the map.
 
-## 예제
+## Examples
 
-### for...of 루프를 사용한 반복
+### Iteration using for...of loop
 
-이 메서드를 직접 호출할 필요는 거의 없다는 점을 명심하시기 바랍니다. `@@iterator` 메서드의 존재는 `Map` 객체를
-[반복 가능](/ko/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterable_protocol)하게 만들고,
-`for...of` 루프와 같은 반복 구문이 자동으로 이 메서드를 호출하여 루프를 도는 반복자를 얻기 위함입니다.
+Note that you seldom need to call this method directly. The existence of the `@@iterator` method makes `Map` objects [iterable](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterable_protocol), and iterating syntaxes like the `for...of` loop automatically calls this method to obtain the iterator to loop over.
 
 ```js
 const myMap = new Map();
@@ -53,9 +50,9 @@ for (const [key, value] of myMap) {
 // [Object]: baz
 ```
 
-### 수동으로 반복자 돌리기
+### Manually hand-rolling the iterator
 
-반복 프로세스를 최대로 제어하기 위해 반환된 반복자 객체의 `next()` 메서드를 수동으로 호출할 수도 있습니다.
+You may still manually call the `next()` method of the returned iterator object to achieve maximum control over the iteration process.
 
 ```js
 const myMap = new Map();
@@ -70,15 +67,15 @@ console.log(mapIter.next().value); // [1, "bar"]
 console.log(mapIter.next().value); // [Object, "baz"]
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Map.prototype.entries()")}}
 - {{jsxref("Map.prototype.keys()")}}

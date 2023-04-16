@@ -1,38 +1,37 @@
 ---
-title: when
+title: <xsl:when>
 slug: Web/XSLT/Element/when
-original_slug: Web/XSLT/when
 ---
 
 {{ XsltRef() }}
 
-`<xsl:when>` 요소는 항상 case 문처럼 동작하는 `<xsl:choose>` 요소 안에 나타납니다.
+The `<xsl:when>` element always appears within an `<xsl:choose>` element, acting like a case statement.
 
-### 문법
+### Syntax
 
-```
+```xml
 <xsl:when test=EXPRESSION>
   TEMPLATE
 </xsl:when>
 ```
 
-### 필수 속성
+### Required Attributes
 
 - `test`
-  - : 평가할 boolean 식을 지정합니다. 참이면, 요소의 컨텐트는 처리하고 거짓이면, 무시합니다.
+  - : Specifies a boolean expression to be evaluated. If true, the contents of the element are processed; if false, they are ignored.
 
-### 선택 속성
+### Optional Attributes
 
-없음.
+None.
 
-### 타입
+### Type
 
-하위명령, 항상 `<xsl:choose>` 요소 안에 나타남.
+Subinstruction, always appears within an `<xsl:choose>` element.
 
-### 정의
+### Defined
 
-[XSLT section 9.2, Conditional Processing with xsl:choose](http://www.w3.org/TR/xslt#section-Conditional-Processing-with-xsl:choose)
+XSLT, section 9.2.
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

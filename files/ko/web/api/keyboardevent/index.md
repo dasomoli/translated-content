@@ -1,38 +1,40 @@
 ---
 title: KeyboardEvent
 slug: Web/API/KeyboardEvent
+page-type: web-api-interface
+browser-compat: api.KeyboardEvent
 ---
 
 {{APIRef("UI Events")}}
 
-**`KeyboardEvent`** 객체는 키보드와 사용자의 상호 작용을 나타냅니다. 각 이벤트는 사용자와 키보드의 키(또는 보조 키를 같이 눌렀을 때의 결합)를 나타냅니다. 이벤트 타입 ({{event('keydown')}}, {{event('keypress')}} 또는 {{event('keyup')}})은 키보드에서 어떤 행동이 일어났는지 식별합니다.
+**`KeyboardEvent`** objects describe a user interaction with the keyboard; each event describes a single interaction between the user and a key (or combination of a key with modifier keys) on the keyboard. The event type ({{domxref("Element/keydown_event", "keydown")}}, {{domxref("Element/keypress_event", "keypress")}}, or {{domxref("Element/keyup_event", "keyup")}}) identifies what kind of keyboard activity occurred.
 
-> **참고:** `KeyboardEvent` 이벤트는 로우 레벨에서 사용자가 키보드의 키와 어떤 상호 작용을 했는지를 식별할 뿐이며, 그 상호 작용에 대한 맥락적 의미는 담고 있지 않습니다. 텍스트 입력이 필요할 때는 {{event("input")}} 를 대신 사용하세요. 사용자가 태블릿으로 손글씨를 쓰거나, 태블릿으로 그래픽 텍스트를 입력하는 등의 대체 방법을 사용하는 경우에는 키보드 이벤트가 실행되지 않을 수 있습니다.
+> **Note:** `KeyboardEvent` events just indicate what interaction the user had with a key on the keyboard at a low level, providing no contextual meaning to that interaction. When you need to handle text input, use the {{domxref("HTMLElement/input_event", "input")}} event instead. Keyboard events may not be fired if the user is using an alternate means of entering text, such as a handwriting system on a tablet or graphics tablet.
 
 {{InheritanceDiagram}}
 
-## 생성자
+## Constructor
 
 - {{domxref("KeyboardEvent.KeyboardEvent", "KeyboardEvent()")}}
-  - : 새로운 `KeyboardEvent` 객체를 생성합니다.
+  - : Creates a new `KeyboardEvent` object.
 
-## 상수
+## Constants
 
-`KeyboardEvent` 인터페이스는 다음 상수를 정의합니다.
+The `KeyboardEvent` interface defines the following constants.
 
 ### Keyboard locations
 
-다음의 상수들은 키보드에서 이벤트가 일어난 키의 위치가 어디인지를 식별합니다. 이 상수들은 `KeyboardEvent.DOM_KEY_LOCATION_STANDARD` 등으로 접근할 수 있습니다.
+The following constants identify which part of the keyboard the key event originates from. They are accessed as `KeyboardEvent.DOM_KEY_LOCATION_STANDARD` and so forth.
 
 <table class="standard-table">
   <caption>
-    Keyboard location 식별자
+    Keyboard location identifiers
   </caption>
   <thead>
     <tr>
-      <th scope="col">상수</th>
-      <th scope="col">값</th>
-      <th scope="col">설명</th>
+      <th scope="col">Constant</th>
+      <th scope="col">Value</th>
+      <th scope="col">Description</th>
     </tr>
   </thead>
   <tbody>
@@ -41,10 +43,15 @@ slug: Web/API/KeyboardEvent
       <td>0x00</td>
       <td>
         <p>
-          이벤트가 발생한 키가 키보드의 특정한 영역에 있지 않다고 판단됩니다. 숫자 키패드에 있지 않은 키거나(NumLock 키는 숫자 키패드에 있지만 여기에 포함됨), 키보드의 왼쪽과 오른쪽 중 어느 한 쪽으로 구분되지 않는 키가 이에 해당됩니다.
+          The key described by the event is not identified as being located in a
+          particular area of the keyboard; it is not located on the numeric
+          keypad (unless it's the NumLock key), and for keys that are duplicated
+          on the left and right sides of the keyboard, the key is, for whatever
+          reason, not to be associated with that location.
         </p>
         <p>
-          표준 PC 101 US 키보드의 알파벳 키, NumLock 키, 스페이스 바 키를 예로 들 수 있습니다.
+          Examples include alphanumeric keys on the standard PC 101 US keyboard,
+          the NumLock key, and the space bar.
         </p>
       </td>
     </tr>
@@ -53,10 +60,12 @@ slug: Web/API/KeyboardEvent
       <td>0x01</td>
       <td>
         <p>
-          키보드의 여러 위치에 존재할 수 있지만, 그 중에서 왼쪽에 존재하는 키입니다.
+          The key is one which may exist in multiple locations on the keyboard
+          and, in this instance, is on the left side of the keyboard.
         </p>
         <p>
-          왼쪽 Control 키, Macintosh 키보드의 왼쪽 Command 키, 또는 왼쪽 Shift 키를 예로 들 수 있습니다.
+          Examples include the left Control key, the left Command key on a
+          Macintosh keyboard, or the left Shift key.
         </p>
       </td>
     </tr>
@@ -65,10 +74,12 @@ slug: Web/API/KeyboardEvent
       <td>0x02</td>
       <td>
         <p>
-          키보드의 여러 위치에 존재할 수 있지만, 그 중에서 오른쪽에 존재하는 키입니다.
+          The key is one which may exist in multiple positions on the keyboard
+          and, in this case, is located on the right side of the keyboard.
         </p>
         <p>
-          오른쪽 Shift 키와 오른쪽 Alt 키(Mac 키보드의 Option 키)를 예로 들 수 있습니다.
+          Examples include the right Shift key and the right Alt key (Option on
+          a Mac keyboard).
         </p>
       </td>
     </tr>
@@ -77,154 +88,152 @@ slug: Web/API/KeyboardEvent
       <td>0x03</td>
       <td>
         <p>
-          키가 두 개 이상의 위치에서 시작될 수 있는 경우, 숫자 키패드에 위치한 키 또는 숫자 키패드와 연관된 가상 키입니다. NumLock 키는 이 그룹에 포함되지 않고 언제나 <code>DOM_KEY_LOCATION_STANDARD</code>로 인코딩됩니다.
+          The key is located on the numeric keypad, or is a virtual key
+          associated with the numeric keypad if there's more than one place the
+          key could originate from. The NumLock key does not fall into this
+          group and is always encoded with the location
+          <code>DOM_KEY_LOCATION_STANDARD</code>.
         </p>
         <p>
-          숫자 키패드의 숫자 키, 숫자 키패드의 Enter 키, 숫자 키패드의 소수점(.) 키를 예로 들 수 있습니다.
+          Examples include the digits on the numeric keypad, the keypad's Enter
+          key, and the decimal point on the keypad.
         </p>
       </td>
     </tr>
   </tbody>
 </table>
 
-## 속성
+## Instance properties
 
-_이 인터페이스는 부모인 {{domxref("UIEvent")}} 와 {{domxref("Event")}}의 속성을 상속받습니다._
+_This interface also inherits properties of its parents, {{domxref("UIEvent")}} and {{domxref("Event")}}._
 
-- {{domxref("KeyboardEvent.altKey")}} {{Readonlyinline}}
+- {{domxref("KeyboardEvent.altKey")}} {{ReadOnlyInline}}
 
-  - : 키 이벤트가 일어났을 때 <kbd>Alt</kbd> (macOS의 <kbd>Option</kbd> 또는 <kbd>⌥</kbd>) 키가 활성화되어 있다면 `true` 를 반환합니다.
+  - : Returns a boolean value that is `true` if the <kbd>Alt</kbd> (<kbd>Option</kbd> or <kbd>⌥</kbd> on macOS) key was active when the key event was generated.
 
-- {{domxref("KeyboardEvent.code")}} {{Readonlyinline}}
+- {{domxref("KeyboardEvent.code")}} {{ReadOnlyInline}}
 
-  - : 이벤트가 일어난 키의 물리적인 코드 값을 문자열로 반환합니다.
+  - : Returns a string with the code value of the physical key represented by the event.
 
-    > **경고:** 이는 사용자의 키보드 레이아웃을 무시하므로, 사용자가 QWERTY 키보드의 "Y" 위치의 키를 누르면, 사용자가 QWERTZ 키보드(사용자는 "Y" 대신 "Z"값을 기대함) 또는 Dvorak 키보드(사용자는 "Y" 대신 "F"값을 기대함)를 사용하더라도 항상 "KeyY" 값을 리턴합니다. 만약 사용자에게 맞는 키 값을 보여주길 원한다면, {{domxref("Keyboard.getLayoutMap()")}}를 사용하세요.
+    > **Warning:** This ignores the user's keyboard layout, so that if the user presses the key at the "Y" position in a QWERTY keyboard layout (near the middle of the row above the home row), this will always return "KeyY", even if the user has a QWERTZ keyboard (which would mean the user expects a "Z" and all the other properties would indicate a "Z") or a Dvorak keyboard layout (where the user would expect an "F"). If you want to display the correct keystrokes to the user, you can use {{domxref("Keyboard.getLayoutMap()")}}.
 
-- {{domxref("KeyboardEvent.ctrlKey")}} {{Readonlyinline}}
+- {{domxref("KeyboardEvent.ctrlKey")}} {{ReadOnlyInline}}
 
-  - : 키 이벤트가 일어났을 때 <kbd>Ctrl</kbd> 키가 활성화되어 있다면 `true` 를 반환합니다.
+  - : Returns a boolean value that is `true` if the <kbd>Ctrl</kbd> key was active when the key event was generated.
 
-- {{domxref("KeyboardEvent.isComposing")}} {{Readonlyinline}}
+- {{domxref("KeyboardEvent.isComposing")}} {{ReadOnlyInline}}
+  - : Returns a boolean value that is `true` if the event is fired between after `compositionstart` and before `compositionend`.
+- {{domxref("KeyboardEvent.key")}} {{ReadOnlyInline}}
+  - : Returns a string representing the key value of the key represented by the event.
+- {{domxref("KeyboardEvent.locale")}} {{ReadOnlyInline}}
 
-  - : 키 이벤트가 `compositionstart`이후에 그리고 `compositionend` 이전에 발생했다면 `true` 를 반환합니다.
+  - : Returns a string representing a locale string indicating the locale the keyboard is configured for. This may be the empty string if the browser or device doesn't know the keyboard's locale.
 
-- {{domxref("KeyboardEvent.key")}} {{Readonlyinline}}
-  - : 이벤트가 일어난 키의 키 값을 나타내는 문자열을 반환합니다.
+    > **Note:** This does not describe the locale of the data being entered. A user may be using one keyboard layout while typing text in a different language.
 
-- {{domxref("KeyboardEvent.locale")}} {{Readonlyinline}}
+- {{domxref("KeyboardEvent.location")}} {{ReadOnlyInline}}
+  - : Returns a number representing the location of the key on the keyboard or other input device. A list of the constants identifying the locations is shown above in [Keyboard locations](#keyboard_locations).
+- {{domxref("KeyboardEvent.metaKey")}} {{ReadOnlyInline}}
 
-  - : 키보드가 구성된 로케일을 나타내는 로케일 문자열을 반환합니다. 브라우저나 기기가 키보드의 로케일을 알 수 없는 경우에는 빈 문자열일 수도 있습니다.
+  - : Returns a boolean value that is `true` if the <kbd>Meta</kbd> key (on Mac keyboards, the <kbd>⌘ Command</kbd> key; on Windows keyboards, the Windows key (<kbd>⊞</kbd>)) was active when the key event was generated.
 
-    > **참고:** 이 속성은 입력되는 데이터의 로케일을 설명하지 않습니다. 사용자는 다른 언어로 텍스트를 적으면서도 하나의 키보드 레이아웃을 사용할 수 있습니다.
+- {{domxref("KeyboardEvent.repeat")}} {{ReadOnlyInline}}
+  - : Returns a boolean value that is `true` if the key is being held down such that it is automatically repeating.
+- {{domxref("KeyboardEvent.shiftKey")}} {{ReadOnlyInline}}
 
-- {{domxref("KeyboardEvent.location")}} {{Readonlyinline}}
+  - : Returns a boolean value that is `true` if the <kbd>Shift</kbd> key was active when the key event was generated.
 
-  - : 키보드 또는 기타 입력 장치의 키의 위치를 나타내는 {{jsxref("Number")}}를 반환합니다. 위치를 식별하는 상수 값 목록은 [Keyboard locations](#keyboard_locations) 에서 확인할 수 있습니다.
+## Instance methods
 
-- {{domxref("KeyboardEvent.metaKey")}} {{Readonlyinline}}
-
-  - : 키 이벤트가 일어났을 때 <kbd>Meta</kbd>키 (Mac 키보드의 <kbd>⌘ Command</kbd> 키, Windows 키보드의 Windows 키 (<kbd>⊞</kbd>))가 활성화되어 있다면 `true`를 반환합니다.
-
-- {{domxref("KeyboardEvent.repeat")}} {{Readonlyinline}}
-
-  - : 키를 자동으로 반복되도록 누르고 있다면 `true`를 반환합니다.
-
-- {{domxref("KeyboardEvent.shiftKey")}} {{Readonlyinline}}
-
-  - : 키 이벤트가 일어났을 때 <kbd>Shift</kbd>키가 활성화되어 있다면 `true`를 반환합니다.
-
-## 메서드
-
-_이 인터페이스는 부모인 {{domxref("UIEvent")}} 와 {{domxref("Event")}}의 메서드를 상속받습니다._
+_This interface also inherits methods of its parents, {{domxref("UIEvent")}} and {{domxref("Event")}}._
 
 - {{domxref("KeyboardEvent.getModifierState()")}}
 
-  - : 이벤트가 발생했을 때 <kbd>Alt</kbd>, <kbd>Shift</kbd>, <kbd>Ctrl</kbd>, 또는 <kbd>Meta</kbd> 등의 보조 키가 눌렸는지를 나타내는 부울 값을 반환합니다.
+  - : Returns a boolean value indicating if a modifier key such as <kbd>Alt</kbd>, <kbd>Shift</kbd>, <kbd>Ctrl</kbd>, or <kbd>Meta</kbd>, was pressed when the event was created.
 
-## 더 이상 사용하지 않는 메서드
+## Obsolete methods
 
 - {{domxref("KeyboardEvent.initKeyEvent()")}} {{deprecated_inline}}
-  - : `KeyboardEvent` 객체를 초기화합니다. 이 메서드는 Firefox에서만 구현되었고, 이제는 Firefox에서도 더 이상 지원되지 않습니다. 대신 {{domxref("KeyboardEvent.KeyboardEvent", "KeyboardEvent()")}} 생성자를 사용해야 합니다.
+  - : Initializes a `KeyboardEvent` object. This was implemented only by Firefox, and is no longer supported even there; instead, you should use the {{domxref("KeyboardEvent.KeyboardEvent", "KeyboardEvent()")}} constructor.
 - {{domxref("KeyboardEvent.initKeyboardEvent()")}} {{deprecated_inline}}
-  - : `KeyboardEvent` 객체를 초기화합니다. 이 메서드는 이제 더 이상 사용되지 않습니다. 대신 {{domxref("KeyboardEvent.KeyboardEvent", "KeyboardEvent()")}} 생성자를 사용해야 합니다.
+  - : Initializes a `KeyboardEvent` object. This is now deprecated. You should instead use the {{domxref("KeyboardEvent.KeyboardEvent", "KeyboardEvent()")}} constructor.
 
-## 더 이상 사용하지 않는 속성
+## Obsolete properties
 
-- {{domxref("KeyboardEvent.char")}} {{Non-standard_inline}}{{Deprecated_inline}}{{Readonlyinline}}
+- {{domxref("KeyboardEvent.char")}} {{Non-standard_inline}} {{Deprecated_inline}} {{ReadOnlyInline}}
 
-  - : 키의 문자 값을 나타내는 문자열을 반환합니다. 키가 인쇄 가능한 문자일 경우, 이 값은 해당 문자를 포함하는 비어 있지 않은 유니코드 값입니다. 키가 인쇄 불가능한 문자일 경우, 이 값은 빈 문자열입니다.
+  - : Returns a string representing the character value of the key. If the key corresponds to a printable character, this value is a non-empty Unicode string containing that character. If the key doesn't have a printable representation, this is an empty string.
 
-    > **참고:** 키를 여러 문자를 삽입하는 매크로로 사용하는 경우, 이 특성의 값은 첫 번째 문자가 아니라 전체 문자열입니다.
+    > **Note:** If the key is used as a macro that inserts multiple characters, this property's value is the entire string, not just the first character.
 
-- {{domxref("KeyboardEvent.charCode")}} {{Deprecated_inline}}{{Readonlyinline}}
+- {{domxref("KeyboardEvent.charCode")}} {{Deprecated_inline}} {{ReadOnlyInline}}
 
-  - : 키의 유니코드 숫자를 나타내는 {{jsxref("Number")}}를 리턴합니다. 이 속성은 `keypress` 이벤트에서만 사용됩니다. `char` 특성이 여러 개의 문자를 포함하고 있는 키의 경우, 이 값은 첫 번째 문자의 유니코드 값입니다. Firefox 26에서는 인쇄 가능한 문자의 코드를 반환합니다.
+  - : Returns a number representing the Unicode reference number of the key; this property is used only by the `keypress` event. For keys whose `char` property contains multiple characters, this is the Unicode value of the first character in that property. In Firefox 26 this returns codes for printable characters.
 
-    > **경고:** 이 특성은 더 이상 사용되지 않습니다. 가능하다면, 대신 {{domxref("KeyboardEvent.key")}} 특성을 사용하세요.
+    > **Warning:** This property is deprecated; you should use {{domxref("KeyboardEvent.key")}} instead, if available.
 
-- {{domxref("KeyboardEvent.keyCode")}} {{deprecated_inline}}{{Readonlyinline}}
+- {{domxref("KeyboardEvent.keyCode")}} {{deprecated_inline}} {{ReadOnlyInline}}
 
-  - : 누른 키의 수정되지 않은 값을 식별하는 시스템 및 구현 종속 숫자 코드를 나타내는 {{jsxref("Number")}}를 반환합니다.
+  - : Returns a number representing a system and implementation dependent numerical code identifying the unmodified value of the pressed key.
 
-    > **경고:** 이 특성은 더 이상 사용되지 않습니다. 가능하다면, 대신 {{domxref("KeyboardEvent.key")}} 특성을 사용하세요.
+    > **Warning:** This property is deprecated; you should use {{domxref("KeyboardEvent.key")}} instead, if available.
 
-- {{domxref("KeyboardEvent.keyIdentifier")}} {{Non-standard_inline}}{{deprecated_inline}}{{Readonlyinline}}
-  - : 이 속성은 비표준이고 더 이상 {{domxref("KeyboardEvent.key")}}를 위해 사용되지 않습니다. 이 속성은 이전 버전의 DOM Level 3 이벤트의 일부였습니다.
-- {{domxref("KeyboardEvent.keyLocation")}} {{Non-standard_inline}}{{deprecated_inline}}{{Readonlyinline}}
-  - : 이 속성은 {{domxref("KeyboardEvent.location")}}의 비표준이고 사용되지 않는 별칭입니다. 이 속성은 이전 버전의 DOM Level 3 이벤트의 일부였습니다.
-- {{domxref("KeyboardEvent.which")}} {{deprecated_inline}} {{Readonlyinline}}
+- {{domxref("KeyboardEvent.keyIdentifier")}} {{Non-standard_inline}} {{deprecated_inline}} {{ReadOnlyInline}}
+  - : This property is non-standard and has been deprecated in favor of {{domxref("KeyboardEvent.key")}}. It was part of an old version of DOM Level 3 Events.
+- {{domxref("KeyboardEvent.keyLocation")}} {{Non-standard_inline}} {{deprecated_inline}} {{ReadOnlyInline}}
+  - : This is a non-standard deprecated alias for {{domxref("KeyboardEvent.location")}}. It was part of an old version of DOM Level 3 Events.
+- {{domxref("KeyboardEvent.which")}} {{deprecated_inline}} {{ReadOnlyInline}}
 
-  - : 누른 키의 수정되지 않은 값을 식별하는 시스템 및 구현 종속 숫자 코드를 나타내는 {{jsxref("Number")}}를 반환합니다. 보통은 `keyCode`와 같습니다.
+  - : Returns a number representing a system and implementation dependent numeric code identifying the unmodified value of the pressed key; this is usually the same as `keyCode`.
 
-    > **경고:** 이 특성은 더 이상 사용되지 않습니다. 가능하다면, 대신 {{domxref("KeyboardEvent.key")}} 특성을 사용하세요.
+    > **Warning:** This property is deprecated; you should use {{domxref("KeyboardEvent.key")}} instead, if available.
 
-## 이벤트
+## Events
 
-다음의 이벤트들은 `KeyboardEvent` 타입을 기반으로 합니다. 이 이벤트들은 {{domxref("Element")}}, {{domxref("Document")}}, 그리고 {{domxref("Window")}}를 포함해서 {{domxref("GlobalEventHandlers")}}를 구현하는 모든 개체로 전달될 수 있습니다. 아래의 리스트에서, 각 이벤트는 일반적으로 모든 수신자에게 적용되는 이벤트 처리기에 대한 `Document`로 연결됩니다.
+The following events are based on the `KeyboardEvent` type. In the list below, each event links to the documentation for the `Element` handler for the event, which applies generally to all of the recipients, including {{domxref("Element")}}, {{domxref("Document")}}, and {{domxref("Window")}}.
 
-- {{domxref("Document.keydown_event", "keydown")}}
-  - : 키가 눌렸을 때 발생합니다.
-- {{domxref("Document.keyup_event", "keyup")}}
-  - : 키를 떼었을 때 발생합니다.
+- {{domxref("Element.keydown_event", "keydown")}}
+  - : A key has been pressed.
+- {{domxref("Element.keyup_event", "keyup")}}
+  - : A key has been released.
 
-### 더 이상 사용하지 않는 이벤트
+### Obsolete events
 
-- {{domxref("Document.keypress_event", "keypress")}} {{deprecated_inline}}
-  - : 일반적으로 문자 값을 생성하는 키가 눌렸을 때 발생합니다. 이 이벤트는 매우 장치 의존적이며 더 이상 사용되지 않습니다. 사용해서는 안 됩니다.
+- {{domxref("Element.keypress_event", "keypress")}} {{deprecated_inline}}
+  - : A key that normally produces a character value has been pressed. This event was highly device-dependent and is obsolete. You should not use it.
 
-## 사용 일람
+## Usage notes
 
-키보드 이벤트의 타입은 {{event("keydown")}}, {{event("keypress")}}, 그리고 {{event("keyup")}}의 3가지 타입이 있습니다. 대부분의 키에서, Gecko는 다음과 같은 키 이벤트를 전송합니다.
+There are three types of keyboard events: {{domxref("Element/keydown_event", "keydown")}}, {{domxref("Element/keypress_event", "keypress")}}, and {{domxref("Element/keyup_event", "keyup")}}. For most keys, Gecko dispatches a sequence of key events like this:
 
-1. 키가 처음 눌렸을 때는, `keydown` 이벤트가 전송됩니다.
-2. 그 키가 보조 키가 아니라면, `keypress` 이벤트가 전송됩니다.
-3. 사용자가 키를 떼면, `keyup` 이벤트가 전송됩니다.
+1. When the key is first pressed, the `keydown` event is sent.
+2. If the key is not a modifier key, the `keypress` event is sent.
+3. When the user releases the key, the `keyup` event is sent.
 
-### 특수한 경우
+### Special cases
 
-일부 키는 키보드의 표시등 상태를 전환시키는 기능을 합니다. Caps Lock, Num Lock, 그리고 Scroll Lock 같은 키가 이에 해당됩니다. 윈도우와 리눅스에서는, 이 키들은 `keydown` 와 `keyup` 이벤트만을 전송합니다.
+Some keys toggle the state of an indicator light; these include keys such as Caps Lock, Num Lock, and Scroll Lock. On Windows and Linux, these keys dispatch only the `keydown` and `keyup` events.
 
-> **참고:** 리눅스에서는, Firefox 12와 그 이전 버전에서는 이 키들의 `keypress` 이벤트도 전송했습니다.
+> **Note:** On Linux, Firefox 12 and earlier also dispatched the `keypress` event for these keys.
 
-그러나, macOS의 이벤트 모델의 제한으로 인해 Caps Lock은 `keydown` 이벤트만 전송합니다. Num Lock은 일부 오래된(2007년 이전의) 노트북 모델에서는 지원되었지만, 그 이후로는 macOS에선 외부 키보드에서도 Num Lock을 지원하지 않습니다. Num Lock 키가 있는 옛 맥북에서는 Num Lock은 어떤 이벤트도 생성하지 않습니다. Gecko는 F14 키가 있는 외부 키보드가 연결되어 있다면 Scroll Lock 키를 지원합니다. Firefox의 일부 이전 버전에서는 Scroll Lock 키도 `keypress` 이벤트를 발생시켰습니다. 이 일관성 없는 동작은 [Firefox bug 602812](https://bugzil.la/602812)였습니다.
+However, a limitation of the macOS event model causes Caps Lock to dispatch only the `keydown` event. Num Lock was supported on some older laptop models (2007 models and older), but since then, macOS hasn't supported Num Lock even on external keyboards. On older MacBooks with a Num Lock key, that key doesn't generate any key events. Gecko does support the Scroll Lock key if an external keyboard which has an F14 key is connected. In certain older versions of Firefox, this key generated a `keypress` event; this inconsistent behavior was [Firefox bug 602812](https://bugzil.la/602812).
 
-### 자동 반복 처리
+### Auto-repeat handling
 
-키를 누르고 있는 동안에는 자동으로 반복하기 시작합니다. 그 결과 다음과 같은 이벤트가 전송됩니다.
+When a key is pressed and held down, it begins to auto-repeat. This results in a sequence of events similar to the following being dispatched:
 
 1. `keydown`
 2. `keypress`
 3. `keydown`
 4. `keypress`
-5. <\<사용자가 키를 뗄 때까지 반복>>
+5. <\<repeating until the user releases the key>>
 6. `keyup`
 
-이 동작은 DOM Level 3 명세에서 발생해야 합니다. 그러나 아래에 명시된 것처럼 몇 가지 주의 사항이 있습니다.
+This is what the DOM Level 3 specification says should happen. There are some caveats, however, as described below.
 
-#### Ubuntu 9.4 등의 일부 GTK 환경에서의 자동 반복
+#### Auto-repeat on some GTK environments such as Ubuntu 9.4
 
-일부 GTK 기반 환경에서는 자동 반복 중에 고유 `keyup` 이벤트를 자동으로 전송하므로, Gecko는 키를 반복해서 누르는 것과 자동 반복의 차이를 알 수 없습니다. 그래서 이런 플랫폼에서는 다음의 이벤트가 생성됩니다.
+In some GTK-based environments, auto-repeat dispatches a native key-up event automatically during auto-repeat, and there's no way for Gecko to know the difference between a repeated series of keypresses and an auto-repeat. On those platforms, then, an auto-repeat key will generate the following sequence of events:
 
 1. `keydown`
 2. `keypress`
@@ -232,70 +241,67 @@ _이 인터페이스는 부모인 {{domxref("UIEvent")}} 와 {{domxref("Event")}
 4. `keydown`
 5. `keypress`
 6. `keyup`
-7. <\<사용자가 키를 뗄 때까지 반복>>
+7. <\<repeating until the user releases the key>>
 8. `keyup`
 
-불행하게도 이러한 환경에서는 웹 컨텐츠가 이 키가 자동 반복되고 있는 키인지, 아니면 반복해서 눌리고 있는 키인지를 구별할 수 있는 방법이 없습니다.
+In these environments, unfortunately, there's no way for web content to tell the difference between auto-repeating keys and keys that are just being pressed repeatedly.
 
-## 예제
+## Example
 
 ```js
-<!DOCTYPE html>
-<html>
-<head>
-<script>
-'use strict';
+document.addEventListener(
+  "keydown",
+  (event) => {
+    const keyName = event.key;
 
-document.addEventListener('keydown', (event) => {
-  const keyName = event.key;
+    if (keyName === "Control") {
+      // do not alert when only Control key is pressed.
+      return;
+    }
 
-  if (keyName === 'Control') {
-    // do not alert when only Control key is pressed.
-    return;
-  }
+    if (event.ctrlKey) {
+      // Even though event.key is not 'Control' (e.g., 'a' is pressed),
+      // event.ctrlKey may be true if Ctrl key is pressed at the same time.
+      alert(`Combination of ctrlKey + ${keyName}`);
+    } else {
+      alert(`Key pressed ${keyName}`);
+    }
+  },
+  false
+);
 
-  if (event.ctrlKey) {
-    // Even though event.key is not 'Control' (e.g., 'a' is pressed),
-    // event.ctrlKey may be true if Ctrl key is pressed at the same time.
-    alert(`Combination of ctrlKey + ${keyName}`);
-  } else {
-    alert(`Key pressed ${keyName}`);
-  }
-}, false);
+document.addEventListener(
+  "keyup",
+  (event) => {
+    const keyName = event.key;
 
-document.addEventListener('keyup', (event) => {
-  const keyName = event.key;
-
-  // As the user releases the Ctrl key, the key is no longer active,
-  // so event.ctrlKey is false.
-  if (keyName === 'Control') {
-    alert('Control key was released');
-  }
-}, false);
-
-</script>
-</head>
-
-<body>
-</body>
-</html>
+    // As the user releases the Ctrl key, the key is no longer active,
+    // so event.ctrlKey is false.
+    if (keyName === "Control") {
+      alert("Control key was released");
+    }
+  },
+  false
+);
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-`KeyboardEvent` 인터페이스 명세는 처음에는 합의가 이루어지지 않아서 DOM Level 2 이벤트에서 폐기되었다가, DOM Level 3 이벤트에서 수많은 초안 버전을 거치게 되었습니다. 이는 초기 DOM Level 2 버전의 이벤트인 Gecko 브라우저의 {{domxref("KeyboardEvent.initKeyEvent()")}}와 초기 DOM Events Level 3 버전의 이벤트인 다른 브라우저들의 {{domxref("KeyboardEvent.initKeyboardEvent()")}}의 비표준적인 초기화 메서드의 구현으로 이어졌습니다. 둘 다 현대적인 {{domxref("KeyboardEvent.KeyboardEvent", "KeyboardEvent()")}} 생성자로 대체되었습니다.
+The `KeyboardEvent` interface specification went through numerous draft versions, first under DOM Events Level 2 where it was dropped as no consensus arose, then under DOM Events Level 3. This led to the implementation of non-standard initialization methods, the early DOM Events Level 2 version, {{domxref("KeyboardEvent.initKeyEvent()")}} by Gecko browsers and the early DOM Events Level 3 version, {{domxref("KeyboardEvent.initKeyboardEvent()")}} by others. Both have been superseded by the modern usage of a constructor: {{domxref("KeyboardEvent.KeyboardEvent", "KeyboardEvent()")}}.
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-### 호환성 참고 사항
+### Compatibility notes
 
-- Firefox 65부터는 <kbd>Enter</kbd>
+- As of Firefox 65, the `keypress` event is no longer fired for [non-printable keys](</en-US/docs/Web/API/KeyboardEvent/keyCode#non-printable_keys_(function_keys)>) ([Firefox bug 968056](https://bugzil.la/968056)), except for the
 
-  키, 그리고
+  <kbd>Enter</kbd>
+
+  key, and the
 
   <kbd>Shift</kbd>
 
@@ -303,7 +309,7 @@ document.addEventListener('keyup', (event) => {
 
   <kbd>Enter</kbd>
 
-  와
+  and
 
   <kbd>Ctrl</kbd>
 
@@ -311,9 +317,9 @@ document.addEventListener('keyup', (event) => {
 
   <kbd>Enter</kbd>
 
-  키의 조합(상호 호환성을 위해 유지됨)을 제외한 [non-printable keys](</ko/docs/Web/API/KeyboardEvent/keyCode#non-printable_keys_(function_keys)>)에 대해서는 `keypress` 이벤트가 발생하지 않습니다 ([Firefox bug 968056](https://bugzil.la/968056)).
+  key combinations (these were kept for cross-browser compatibility purposes).
 
-## 같이 보기
+## See also
 
 - {{domxref("KeyboardEvent.code")}}.
 - {{domxref("KeyboardEvent.key")}}.

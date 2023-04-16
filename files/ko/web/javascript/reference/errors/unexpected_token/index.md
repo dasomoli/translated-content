@@ -1,47 +1,88 @@
 ---
-title: 'SyntaxError: Unexpected token'
+title: "SyntaxError: Unexpected token"
 slug: Web/JavaScript/Reference/Errors/Unexpected_token
+page-type: javascript-error
 ---
 
 {{jsSidebar("Errors")}}
 
-## 메시지
+The JavaScript exceptions "unexpected token" occur when a specific language construct
+was expected, but something else was provided. This might be a simple typo.
 
-```
-    SyntaxError: expected expression, got "x"
-    SyntaxError: expected property name, got "x"
-    SyntaxError: expected target, got "x"
-    SyntaxError: expected rest argument name, got "x"
-    SyntaxError: expected closing parenthesis, got "x"
-    SyntaxError: expected '=>' after argument list, got "x"
+## Message
+
+```plain
+SyntaxError: expected expression, got "x"
+SyntaxError: expected property name, got "x"
+SyntaxError: expected target, got "x"
+SyntaxError: expected rest argument name, got "x"
+SyntaxError: expected closing parenthesis, got "x"
+SyntaxError: expected '=>' after argument list, got "x"
 ```
 
-## 에러 타입
+## Error type
 
 {{jsxref("SyntaxError")}}
 
-## 무엇이 잘못되었나요?
+## What went wrong?
 
-특정 언어 구조를 예상했지만 무언가 다른 것이 있었습니다. 아마도, 간단한 오타일 것입니다.
+A specific language construct was expected, but something else was provided. This might
+be a simple typo.
 
-## 예제
+## Examples
 
-### 예상하지 못한 표현식
+### Expression expected
 
-예를 들어, 함수를 호출할 때, 인수에서 마지막 부분에 콤마는 허용되지 않습니다. 자바스크립트는 계속해서 다른 인자가 있을 것이라고 기대하기 때문입니다.
+For example, when chaining expressions, trailing commas are not allowed.
 
 ```js example-bad
-Math.max(2, 42,);
-// SyntaxError: expected expression, got ')'
+for (let i = 0; i < 5,; ++i) {
+  console.log(i);
+}
+// Uncaught SyntaxError: expected expression, got ';'
 ```
 
-콤마를 생략하거나 다른 인수를 추가해 수정할 수 있습니다.
+Correct would be omitting the comma or adding another expression:
 
 ```js example-good
-Math.max(2, 42);
-Math.max(2, 42, 13+37);
+for (let i = 0; i < 5; ++i) {
+  console.log(i);
+}
 ```
 
-## 참조
+### Not enough brackets
 
-- {{jsxref("Math.max()")}}
+Sometimes, you leave out brackets around `if` statements:
+
+```js example-bad
+function round(n, upperBound, lowerBound) {
+  if (n > upperBound) || (n < lowerBound) { // Not enough brackets here!
+    throw new Error(`Number ${n} is more than ${upperBound} or less than ${lowerBound}`);
+  } else if (n < (upperBound + lowerBound) / 2) {
+    return lowerBound;
+  } else {
+    return upperBound;
+  }
+} // SyntaxError: expected expression, got '||'
+```
+
+The brackets may look correct at first, but note how the `||` is outside the
+brackets. Correct would be putting brackets around the `||`:
+
+```js-nolint example-good
+function round(n, upperBound, lowerBound) {
+  if ((n > upperBound) || (n < lowerBound)) {
+    throw new Error(
+      `Number ${n} is more than ${upperBound} or less than ${lowerBound}`,
+    );
+  } else if (n < (upperBound + lowerBound) / 2) {
+    return lowerBound;
+  } else {
+    return upperBound;
+  }
+}
+```
+
+## See also
+
+- {{jsxref("SyntaxError")}}

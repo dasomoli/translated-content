@@ -1,44 +1,46 @@
 ---
 title: Your second extension
 slug: Mozilla/Add-ons/WebExtensions/Your_second_WebExtension
+page-type: guide
 ---
+
 {{AddonSidebar}}
 
-[Your first extension](/ko/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension) 장을 읽었다면, 확장 기능을 만드는 법을 알게 되었을 것입니다. 이번 장에서는 몇개의 API를 사용하는 약간 더 복잡한 확장 기능을 만들어 보겠습니다.
+If you've been through the [Your first extension](/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension) article, you've already got an idea of how to write an extension. In this article, you'll write a slightly more complex extension that demonstrates a few more of the APIs.
 
-이 확장 기능은 Firefox 툴바에 새로운 버튼을 추가합니다. 사용자가 이 버튼을 클릭하면 동물을 선택하는 팝업을 보여줍니다. 동물을 선택하면 현재 웹페이지의 내용을 선택한 동물 이미지로 변경합니다.
+The extension adds a new button to the Firefox toolbar. When the user clicks the button, we display a popup enabling them to choose an animal. Once they choose an animal, we'll replace the current page's content with a picture of the chosen animal.
 
-구현 내용:
+To implement this, we will:
 
-- **Firefox 툴바에 추가된 버튼의 [browser action](/ko/docs/Mozilla/Add-ons/WebExtensions/Browser_action)을 정의합니다.**
-  버튼을 위해 필요한것:
+- **define a [browser action](/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Browser_action), which is a button attached to the Firefox toolbar**.
+  For the button we'll supply:
 
-  - "beasts-32.png" 아이콘
-  - 버튼을 누를때 나오는 팝업. 이 팝업은 HTML과 CSS, JavaScript로 구성됩니다.
+  - an icon, called "beasts-32.png"
+  - a popup to open when the button is pressed. The popup will include HTML, CSS, and JavaScript.
 
-- **애드온 메니저에 보여질 확장 기능 아이콘을 정의합니다.**
-- **웹페이지에 주입될 "beastify.js"라는 content script를 작성합니다.**
-  이것이 실제로 웹페이지를 변경할 코드입니다.
-- **웹페이지를 변경할 동물 이미지를 패키징합니다.**
-  이미지를 "웹 접근 가능 자원"으로 만들어 웹페이지에서 참조하게 합니다.
+- **define an icon for the extension**, called "beasts-48.png". This will be shown in the Add-ons Manager.
+- **write a content script, "beastify.js" that will be injected into web pages**.
+  This is the code that will actually modify the pages.
+- **package some images of the animals, to replace images in the web page**.
+  We'll make the images "web accessible resources" so the web page can refer to them.
 
-확장 기능의 구조를 표현하면 아래와 같습니다.
+You could visualize the overall structure of the extension like this:
 
-![](Untitled-1.png)
+![The manifest.json file includes icons, browser actions, including popups, and web accessible resources. The choose beast javascript popup resource calls in the beastify script.](untitled-1.png)
 
-간단한 확장 기능이지만 WebExtensions API의 기본 개념을 잘 보여줍니다.
+It's a simple extension, but shows many of the basic concepts of the WebExtensions API:
 
-- 툴바에 버튼 추가
-- 팝업에 쓰일 HTML, CSS, JavaScript 정의
-- 웹페이지에 content scripts 주입
-- 컨텐츠 스크립트와 나머지 확장 기능과의 통신
-- 확장 기능의 웹페이지에서 사용할 리소스 패키징
+- adding a button to the toolbar
+- defining a popup panel using HTML, CSS, and JavaScript
+- injecting content scripts into web pages
+- communicating between content scripts and the rest of the extension
+- packaging resources with your extension that can be used by web pages
 
-[GitHub 예제 소스코드](https://github.com/mdn/webextensions-examples/tree/master/beastify).
+You can find [complete source code for the extension on GitHub](https://github.com/mdn/webextensions-examples/tree/master/beastify).
 
 ## Writing the extension
 
-새 디렉토리를 생성하고 들어갑니다.
+Create a new directory and navigate to it:
 
 ```bash
 mkdir beastify
@@ -47,16 +49,15 @@ cd beastify
 
 ### manifest.json
 
-이제 "manifest.json" 파일을 아래와 같은 내용으로 생성합니다.
+Now create a new file called "manifest.json", and give it the following contents:
 
 ```json
 {
-
   "manifest_version": 2,
   "name": "Beastify",
   "version": "1.0",
 
-  "description": "Adds a browser action icon to the toolbar. Click the button to choose a beast. The active tab's body content is then replaced with a picture of the chosen beast. See https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Examples#beastify",
+  "description": "Adds a browser action icon to the toolbar. Click the button to choose a beast. The active tab's body content is then replaced with a picture of the chosen beast. See https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Examples#beastify",
   "homepage_url": "https://github.com/mdn/webextensions-examples/tree/master/beastify",
   "icons": {
     "48": "icons/beasts-48.png"
@@ -77,31 +78,30 @@ cd beastify
     "beasts/turtle.jpg",
     "beasts/snake.jpg"
   ]
-
 }
 ```
 
-- 첫 세 가지 키인 [`manifest_version`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/manifest_version), [`name`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/name), and [`version`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/version)는, 필수로 포함되어야 하며 확장 기능의 기본 정보입니다.
-- [`description`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/description) 과 [`homepage_url`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/homepage_url)은 선택사항이나, 확장 기능에 관한 유용한 정보를 가지기에 권장됩니다.
-- [`icons`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/icons) 도 선택사항이나 애드온 매니저에서 확장 기능 아이콘을 보여줄 수 있기에 권장됩니다.
-- [`permissions`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions) 은 확장 기능이 필요로 하는 권한의 목록입니다. 이 확장 기능에서는 [`activeTab` 권한](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions#activetab_permission) 을 사용합니다.
-- [`browser_action`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/browser_action)는 툴바에 나오는 버튼을 정의하고 세 가지 정보를 정의합니다.
+- The first three keys: [`manifest_version`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/manifest_version), [`name`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/name), and [`version`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/version), are mandatory and contain basic metadata for the extension.
+- [`description`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/description) and [`homepage_url`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/homepage_url) are optional, but recommended: they provide useful information about the extension.
+- [`icons`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/icons) is optional, but recommended: it allows you to specify an icon for the extension, that will be shown in the Add-ons Manager.
+- [`permissions`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions) lists permissions the extension needs. We're just asking for the [`activeTab` permission](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions#activetab_permission) here.
+- [`browser_action`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/browser_action) specifies the toolbar button. We're supplying three pieces of information here:
 
-  - `default_icon` 는 필수이고, 버튼의 아이콘을 정의합니다.
-  - `default_title` 는 선택사항이고 툴팁을 정의합니다.
-  - `default_popup` 은 사용자가 버튼을 클릭할때 팝업을 보여주고 싶을 때 사용합니다. 이 키로 확장 기능에 포함된 HTML파일을 지정합니다.
+  - `default_icon` is mandatory, and points to the icon for the button
+  - `default_title` is optional, and will be shown in a tooltip
+  - `default_popup` is used if you want a popup to be shown when the user clicks the button. We do, so we've included this key and made it point to an HTML file included with the extension.
 
-- [`web_accessible_resources`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/web_accessible_resources)는 웹페이지에서 접근가능한 파일들의 목록입니다. 확장 기능은 이미지로 웹페이지의 컨텐츠를 변경해야하기에 이 이미지들이 페이지에 접근 가능하게 해야 합니다.
+- [`web_accessible_resources`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/web_accessible_resources) lists files that we want to make accessible to web pages. Since the extension replaces the content in the page with images we've packaged with the extension, we need to make these images accessible to the page.
 
-모든 경로는 manifest.json의 위치를 기준으로 한 상대 경로입니다.
+Note that all paths given are relative to manifest.json itself.
 
 ### The icon
 
-확장 기능은 아이콘을 가져야 합니다. 이 아이콘은 애드온 매니저("about:addons" url을 통해 열 수 있습니다)에서 확장 기능의 목록에서 보여집니다. 이번에 만든 manifest.json는 "icons / beasts-48.png" 아이콘을 정의했습니다.
+The extension should have an icon. This will be shown next to the extension's listing in the Add-ons Manager (you can open this by visiting the URL "about:addons"). Our manifest.json promised that we would have an icon for the toolbar at "icons/beasts-48.png".
 
-"icons"라는 디렉토리를 만들고 "beasts-48.png" 파일을 그 아래에 저장하겠습니다. 우리 예제는 [Aha-Soft’s Free Retina iconset](https://www.iconfinder.com/iconsets/free-retina-icon-set)에서 가져온 이미지를 [라이센스](http://www.aha-soft.com/free-icons/free-retina-icon-set/) 조건에 따라 사용했습니다.
+Create the "icons" directory and save an icon there named "beasts-48.png". You could use [the one from our example](https://raw.githubusercontent.com/mdn/webextensions-examples/master/beastify/icons/beasts-48.png), which is taken from the [Aha-Soft's Free Retina iconset](http://www.aha-soft.com/free-icons/free-retina-icon-set/), and used under the terms of its license.
 
-자신만의 아이콘을 사용하려면 48x48 픽셀이어야 합니다. 또한 고해상도를 위한 96x96 픽셀도 지원합니다. 만약 고해상도를 지원하게 하고싶다면 manifest.json의 아이콘 부분을 아래처럼 작성하면 됩니다.
+If you choose to supply your own icon, It should be 48x48 pixels. You could also supply a 96x96 pixel icon, for high-resolution displays, and if you do this it will be specified as the `96` property of the `icons` object in manifest.json:
 
 ```json
 "icons": {
@@ -112,21 +112,21 @@ cd beastify
 
 ### The toolbar button
 
-툴바 버튼도 아이콘이 필요한데, 우리 manifest.json 파일에서 툴바 버튼의 아이콘을 "icons/beasts-32.png"으로 기술하였습니다.
+The toolbar button also needs an icon, and our manifest.json promised that we would have an icon for the toolbar at "icons/beasts-32.png".
 
-"icons" 디렉토리에 "beasts-32.png" 파일을 저장합니다. 우리는 우리 예제의 [이미지](https://github.com/mdn/webextensions-examples/blob/master/beastify/icons/beasts-32.png)는 [IconBeast Lite icon set](http://www.iconbeast.com/free)에서 가져온 이미지를 [라이센스](http://www.iconbeast.com/faq/) 조건에 따라 사용했습니다.
+Save an icon named "beasts-32.png" in the "icons" directory. You could use [the one from our example](https://raw.githubusercontent.com/mdn/webextensions-examples/master/beastify/icons/beasts-32.png), which is taken from the [IconBeast Lite icon set](http://www.iconbeast.com/free/) and used under the terms of its [license](http://www.iconbeast.com/faq/).
 
-팝업을 제공하지 않으면 사용자가 버튼을 클릭할 때 클릭 이벤트가 없어지게 됩니다. 팝업을 제공한다면 이벤트는 없어지지 않고 대신 팝업이 열리게 됩니다. 우리는 팝업을 열어야 하니 바로 다음에 팝업을 생성하겠습니다.
+If you don't supply a popup, then a click event is dispatched to your extension when the user clicks the button. If you do supply a popup, the click event is not dispatched, but instead, the popup is opened. We want a popup, so let's create that next.
 
 ### The popup
 
-이 팝업의 기능은 세 동물중 하나를 선택하는 기능입니다.
+The function of the popup is to enable the user to choose one of three beasts.
 
-확장 기능 루트 아래 "popup" 디렉토리를 생성합니다. 여기에 팝업 관련 파일들을 저장할 것 입니다. 이 팝업이 가지는 세 가지 파일은 다음과 같습니다.
+Create a new directory called "popup" under the extension root. This is where we'll keep the code for the popup. The popup will consist of three files:
 
-- **`choose_beast.html`** 컨텐츠의 패널 정의
-- **`choose_beast.css`** 스타일
-- **`choose_beast.js`** 활성화된 탭에 사용자가 선택한 이미지를 content script를 통해 반영합니다.
+- **`choose_beast.html`** defines the content of the panel
+- **`choose_beast.css`** styles the content
+- **`choose_beast.js`** handles the user's choice by running a content script in the active tab
 
 ```bash
 mkdir popup
@@ -136,40 +136,39 @@ touch choose_beast.html choose_beast.css choose_beast.js
 
 #### choose_beast.html
 
-HTML파일의 내용은 다음과 같습니다.
+The HTML file looks like this:
 
 ```html
 <!DOCTYPE html>
-
 <html>
   <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="choose_beast.css"/>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="choose_beast.css" />
   </head>
 
-<body>
-  <div id="popup-content">
-    <div class="button beast">Frog</div>
-    <div class="button beast">Turtle</div>
-    <div class="button beast">Snake</div>
-    <div class="button reset">Reset</div>
-  </div>
-  <div id="error-content" class="hidden">
-    <p>Can't beastify this web page.</p><p>Try a different page.</p>
-  </div>
-  <script src="choose_beast.js"></script>
-</body>
-
+  <body>
+    <div id="popup-content">
+      <button>Frog</button>
+      <button>Turtle</button>
+      <button>Snake</button>
+      <button type="reset">Reset</button>
+    </div>
+    <div id="error-content" class="hidden">
+      <p>Can't beastify this web page.</p>
+      <p>Try a different page.</p>
+    </div>
+    <script src="choose_beast.js"></script>
+  </body>
 </html>
 ```
 
-각각의 동물들을 보여주는 항목을 가지는 [`<div>`](/en-US/docs/Web/HTML/Element/div) 요소의 ID에 `"popup-content"` 를 정의했습니다. 또 다른 `"error-content"` ID를 가지는 `<div>`는 `"hidden"` 이라는 class를 정의하였고 팝업을 초기화 할때 문제가 생기는 경우 사용할 것입니다.
+We have a [`<div>`](/en-US/docs/Web/HTML/Element/div) element with an ID of `"popup-content"` that contains a button for each animal choice and a reset button. We have another `<div>` with an ID of `"error-content"` and a class `"hidden"`. We'll use that in case there's a problem initializing the popup.
 
-이 HTML파일은 일반 웹페이지처럼 CSS파일과 JS파일을 포함합니다.
+Note that we include the CSS and JS files from this file, just like a web page.
 
 #### choose_beast.css
 
-이 CSS는 팝업의 크기를 정의하고 선택항목의 공간을 정의하는 등 기본적인 스타일링을 합니다. 또한 `class="hidden"` 이라고 정의한 항목을 숨깁니다. 이것은 `"error-content"` `<div>` 가 기본적으로는 숨겨진다는 것을 뜻합니다.
+The CSS fixes the size of the popup, ensures that the three choices fill the space, and gives them some basic styling. It also hides elements with `class="hidden"`: this means that our `<div id="error-content"...` element will be hidden by default.
 
 ```css
 html, body {
@@ -180,34 +179,33 @@ html, body {
   display: none;
 }
 
-.button {
+button {
+  border: none;
+  width: 100%;
   margin: 3% auto;
   padding: 4px;
   text-align: center;
   font-size: 1.5em;
   cursor: pointer;
-}
-
-.beast:hover {
-  background-color: #CFF2F2;
-}
-
-.beast {
   background-color: #E5F2F2;
 }
 
-.reset {
+button:hover {
+  background-color: #CFF2F2;
+}
+
+button[type="reset"] {
   background-color: #FBFBC9;
 }
 
-.reset:hover {
+button[type="reset"]:hover {
   background-color: #EAEA9D;
 }
 ```
 
 #### choose_beast.js
 
-팝업의 JavaScript 코드는 아래와 같습니다.
+Here's the JavaScript for the popup:
 
 ```js
 /**
@@ -224,18 +222,17 @@ const hidePage = `body > :not(.beastify-image) {
  */
 function listenForClicks() {
   document.addEventListener("click", (e) => {
-
     /**
      * Given the name of a beast, get the URL to the corresponding image.
      */
     function beastNameToURL(beastName) {
       switch (beastName) {
         case "Frog":
-          return browser.extension.getURL("beasts/frog.jpg");
+          return browser.runtime.getURL("beasts/frog.jpg");
         case "Snake":
-          return browser.extension.getURL("beasts/snake.jpg");
+          return browser.runtime.getURL("beasts/snake.jpg");
         case "Turtle":
-          return browser.extension.getURL("beasts/turtle.jpg");
+          return browser.runtime.getURL("beasts/turtle.jpg");
       }
     }
 
@@ -245,8 +242,8 @@ function listenForClicks() {
      * send a "beastify" message to the content script in the active tab.
      */
     function beastify(tabs) {
-      browser.tabs.insertCSS({code: hidePage}).then(() => {
-        let url = beastNameToURL(e.target.textContent);
+      browser.tabs.insertCSS({ code: hidePage }).then(() => {
+        const url = beastNameToURL(e.target.textContent);
         browser.tabs.sendMessage(tabs[0].id, {
           command: "beastify",
           beastURL: url
@@ -259,7 +256,7 @@ function listenForClicks() {
      * send a "reset" message to the content script in the active tab.
      */
     function reset(tabs) {
-      browser.tabs.removeCSS({code: hidePage}).then(() => {
+      browser.tabs.removeCSS({ code: hidePage }).then(() => {
         browser.tabs.sendMessage(tabs[0].id, {
           command: "reset",
         });
@@ -277,14 +274,17 @@ function listenForClicks() {
      * Get the active tab,
      * then call "beastify()" or "reset()" as appropriate.
      */
-    if (e.target.classList.contains("beast")) {
-      browser.tabs.query({active: true, currentWindow: true})
-        .then(beastify)
-        .catch(reportError);
-    }
-    else if (e.target.classList.contains("reset")) {
+    if (e.target.tagName !== "BUTTON" || !e.target.closest("#popup-content")) {
+      // Ignore when click is not on a button within <div id="popup-content">.
+      return;
+    } 
+    if (e.target.type === "reset") {
       browser.tabs.query({active: true, currentWindow: true})
         .then(reset)
+        .catch(reportError);
+    } else {
+      browser.tabs.query({active: true, currentWindow: true})
+        .then(beastify)
         .catch(reportError);
     }
   });
@@ -305,37 +305,39 @@ function reportExecuteScriptError(error) {
  * and add a click handler.
  * If we couldn't inject the script, handle the error.
  */
-browser.tabs.executeScript({file: "/content_scripts/beastify.js"})
-.then(listenForClicks)
-.catch(reportExecuteScriptError);
+browser.tabs
+  .executeScript({ file: "/content_scripts/beastify.js" })
+  .then(listenForClicks)
+  .catch(reportExecuteScriptError);
 ```
 
-이 코드의 시작접은 96번째 라인입니다. 이 스크립트는 [`browser.tabs.executeScript()`](/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/executeScript) API를 사용해 팝업이 로드될때 활성화된 탭에 content script (beastify.js)를 주입합니다. content script를 성공적으로 주입하면 사용자가 탭을 닫거나 페이지를 이동할 때까지 content script가 주입 된 상태로 유지됩니다.
+The place to start here is line 99. The popup script executes a content script in the active tab as soon as the popup is loaded, using the [`browser.tabs.executeScript()`](/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/executeScript) API. If executing the content script is successful, then the content script will stay loaded in the page until the tab is closed or the user navigates to a different page.
 
-`browser.tabs.executeScript()`API호출이 실패하는 흔한 이유는 모든 웹페이지에 content scripts를 주입할 수 없기 때문입니다. 예를들어 about:debugging 같은 권한이 있는 페이지에서는 content scripts를 주입할 수 없고 [addons.mozilla.org](https://addons.mozilla.org/) 도 마찬가지입니다. 이처럼 실패할때는 `reportExecuteScriptError()`가 호출되어 `"popup-content"` `<div>` 를 숨기고 `"error-content"` `<div>`를 보여주고 [콘솔](https://extensionworkshop.com/documentation/develop/debugging/)에 에러를 로깅합니다.
+A common reason the `browser.tabs.executeScript()` call might fail is that you can't execute content scripts in all pages. For example, you can't execute them in privileged browser pages like about:debugging, and you can't execute them on pages in the [addons.mozilla.org](https://addons.mozilla.org/) domain. If it does fail, `reportExecuteScriptError()` will hide the `<div id="popup-content">` element, show the `<div id="error-content"...` element, and log an error to the [console](https://extensionworkshop.com/documentation/develop/debugging/).
 
-content script 주입이 성공하면 `listenForClicks()`이 호출 된다. 이 함수는 팝업에서 클릭을 위한 리스너입니다.
+If executing the content script is successful, we call `listenForClicks()`. This listens for clicks on the popup.
 
-- `"beast"`클래스를 가진 버튼을 클릭하면 `beastify()` 함수가 호출됩니다.
-- `"reset"`클래스를 가진 버튼을 클릭하면 `reset()`함수가 호출됩니다.
+- If the click was not on a button in the popup, we ignore it and do nothing.
+- If the click was on a button with `type="reset"`, then we call `reset()`.
+- If the click was on any other button (i.e. the beast buttons), then we call `beastify()`.
 
-`beastify()` 함수는 다음의 3가지 기능을 합니다.
+The `beastify()` function does three things:
 
-- 클릭한 버튼을 동물의 이미지 URL로 매핑
-- [`browser.tabs.insertCSS()`](/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/insertCSS) API로 CSS를 주입하여 페이지의 전체를 숨깁니다.
-- 페이지를 동물 이미지로 변경하도록 짐승 이미지 URL을 전달 요청하기 위해 [`browser.tabs.sendMessage()`](/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/sendMessage) API로 "beastify"메시지를 content script에 보냅니다.
+- map the button clicked to a URL pointing to an image of a particular beast
+- hide the page's whole content by injecting some CSS, using the [`browser.tabs.insertCSS()`](/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/insertCSS) API
+- send a "beastify" message to the content script using the [`browser.tabs.sendMessage()`](/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/sendMessage) API, asking it to beastify the page, and passing it the URL to the beast image.
 
-`reset()` 함수는 페이지가 동물 이미지로 변경된 것을 취소합니다.
+The `reset()` function essentially undoes a beastify:
 
-- [`browser.tabs.removeCSS()`](/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/removeCSS) API로 추가한 CSS를 제거합니다.
-- 페이지를 리셋하기 위해 content script에 "reset" 메시지를 보냅니다.
+- remove the CSS we added, using the [`browser.tabs.removeCSS()`](/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/removeCSS) API
+- send a "reset" message to the content script asking it to reset the page.
 
 ### The content script
 
-확장 기능의 루트에 "content_scripts"라는 디렉토리를 생성하고, "beastify.js" 파일을 아래 내용으로 작성합니다.
+Create a new directory, under the extension root, called "content_scripts" and create a new file in it called "beastify.js", with the following contents:
 
 ```js
-(function() {
+(() => {
   /**
    * Check and set a global guard variable.
    * If this content script is injected into the same page again,
@@ -353,7 +355,7 @@ content script 주입이 성공하면 `listenForClicks()`이 호출 된다. 이 
    */
   function insertBeast(beastURL) {
     removeExistingBeasts();
-    let beastImage = document.createElement("img");
+    const beastImage = document.createElement("img");
     beastImage.setAttribute("src", beastURL);
     beastImage.style.height = "100vh";
     beastImage.className = "beastify-image";
@@ -364,16 +366,16 @@ content script 주입이 성공하면 `listenForClicks()`이 호출 된다. 이 
    * Remove every beast from the page.
    */
   function removeExistingBeasts() {
-    let existingBeasts = document.querySelectorAll(".beastify-image");
-    for (let beast of existingBeasts) {
+    const existingBeasts = document.querySelectorAll(".beastify-image");
+    for (const beast of existingBeasts) {
       beast.remove();
     }
   }
 
   /**
    * Listen for messages from the background script.
-   * Call "beastify()" or "reset()".
-  */
+   * Call "insertBeast()" or "removeExistingBeasts()".
+   */
   browser.runtime.onMessage.addListener((message) => {
     if (message.command === "beastify") {
       insertBeast(message.beastURL);
@@ -381,28 +383,31 @@ content script 주입이 성공하면 `listenForClicks()`이 호출 된다. 이 
       removeExistingBeasts();
     }
   });
-
 })();
 ```
 
-content script는 먼저 전역 변수 `window.hasRun`을 확인합니다. content script가 이미 실행되어 있다면 아무 작업도 하지 않고, 아직 주입되어 있지 않으면 `window.hasRun`를 true로 세팅한뒤 작업을 계속합니다. 이 작업을 하는 이유는, 팝업을 열 때마다 활성화된 탭에 content script를 실행하기 때문에 스크립트가 중복으로 실행되게 됩니다. 따라서 첫번째 팝업 오픈시에만 content script를 실행해야 합니다.
+The first thing the content script does is to check for a global variable `window.hasRun`: if it's set the script returns early, otherwise it sets `window.hasRun` and continues. The reason we do this is that every time the user opens the popup, the popup executes a content script in the active tab, so we could have multiple instances of the script running in a single tab. If this happens, we need to make sure that only the first instance is actually going to do anything.
 
-그런 다음 40번째 라인에서 content script는 [`browser.runtime.onMessage`](/en-US/docs/Mozilla/Add-ons/WebExtensions/API/runtime/onMessage) API로 팝업의 메시지를 받습니다. 위에서 봤던 팝업의 스크립트는 "beastify"와 "reset" 두 종류의 메시지를 보냅니다.
+After that, the place to start is line 40, where the content script listens for messages from the popup, using the [`browser.runtime.onMessage`](/en-US/docs/Mozilla/Add-ons/WebExtensions/API/runtime/onMessage) API. We saw above that the popup script can send two different sorts of messages: "beastify" and "reset".
 
-- "beastify" 메시지를 받으면 메시지에 동물 이미지의 URL이 있다는 걸 예상할 수 있습니다. 이전의 "beastify" 메시지로 추가된 동물을 제거하고 \<img> 요소를 만들어서 src속성에 동물 이미지 URL을 세팅합니다.
-- "reset" 메시지를 받으면 추가된 모든 동물을 삭제합니다.
+- if the message is "beastify", we expect it to contain a URL pointing to a beast image. We remove any beasts that might have been added by previous "beastify" calls, then construct and append an [`<img>`](/en-US/docs/Web/HTML/Element/img) element whose `src` attribute is set to the beast URL.
+- if the message is "reset", we just remove any beasts that might have been added.
 
 ### The beasts
 
-마지막으로 동물의 이미지를 추가합니다.
+Finally, we need to include the images of the beasts.
 
-"beasts" 디렉토리를 만들고 그 아래 적절한 이름의 이미지 세개를 추가합니다. [GitHub 저장소](https://github.com/mdn/webextensions-examples/tree/master/beastify/beasts)에서 이미지를 가져오거나, 아래의 이미지를 사용할 수 있습니다.
+Create a new directory called "beasts", and add the three images in that directory, with the appropriate names. You can get the images from [the GitHub repository](https://github.com/mdn/webextensions-examples/tree/master/beastify/beasts), or from here:
 
-![](frog.jpg)![](snake.jpg)![](turtle.jpg)
+![A brown frog.](frog.jpg)
+
+![An emerald tree boa with white stripes.](snake.jpg)
+
+![A red-eared slider turtle.](turtle.jpg)
 
 ## Testing it out
 
-먼저 모든 파일들이 올바르게 있는지 확인합니다.
+First, double check that you have the right files in the right places:
 
 ```
 beastify/
@@ -427,17 +432,17 @@ beastify/
     manifest.json
 ```
 
-이제 확장 기능을 임시 애드온으로 불러옵니다. Firefox에서 about:debugging를 열고 "Load Temporary Add-on"를 클릭한 다음 manifest.json 파일을 선택합니다. 그러면 Firefox 툴바에서 버튼을 볼 수 있습니다.
+Now load the extension as a temporary add-on. Open "about:debugging" in Firefox, click "Load Temporary Add-on", and select your **manifest.json** file. You should then see the extension's icon appear in the Firefox toolbar:
 
 ![The beastify icon in the Firefox toolbar](beastify_icon.png)
 
-웹페이지를 열고 툴바 버튼을 클릭하고 동물을 선택하면 웹페이지가 바뀌는 것을 볼 수 있습니다.
+Open a web page, click the icon, select a beast, and see the web page change:
 
 ![A page replaced with the image of a turtle](beastify_page.png)
 
 ## Developing from the command line
 
-아래처럼 [web-ext](/en-US/docs/Mozilla/Add-ons/WebExtensions/Getting_started_with_web-ext)툴을 이용해 설치할 수도 있습니다.
+You can automate the temporary installation step by using the [web-ext](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/) tool. Try this:
 
 ```bash
 cd beastify
@@ -446,9 +451,9 @@ web-ext run
 
 ## What's next?
 
-이것으로 보다 발전된 Firefox용 확장 기능을 만들어 보았습니다.
+Now that you've created a more advanced WebExtension for Firefox:
 
-- [확장 기능의 구조에 대해 읽어보기](/en-US/docs/Mozilla/Add-ons/WebExtensions/Anatomy_of_a_WebExtension)
-- [확장 기능 예제 살펴보기](/en-US/docs/Mozilla/Add-ons/WebExtensions/Examples)
-- [확장 기능을 개발하고, 테스트하고, 게시하는 데 필요한 것 찾아보기](/en-US/docs/Mozilla/Add-ons/WebExtensions/What_next_)
-- [더 공부하기](/en-US/docs/Mozilla/Add-ons/WebExtensions/What_next_#continue_your_learning_experience)
+- [read about the anatomy of an extension](/en-US/docs/Mozilla/Add-ons/WebExtensions/Anatomy_of_a_WebExtension)
+- [explore the extension examples](/en-US/docs/Mozilla/Add-ons/WebExtensions/Examples)
+- [find out what you need to develop, test, and publish your extension](/en-US/docs/Mozilla/Add-ons/WebExtensions/What_next_)
+- [take your learning further](/en-US/docs/Mozilla/Add-ons/WebExtensions/What_next_#continue_your_learning_experience).

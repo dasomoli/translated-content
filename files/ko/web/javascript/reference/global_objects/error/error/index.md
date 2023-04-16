@@ -1,57 +1,103 @@
 ---
-title: Error() 생성자
+title: Error() constructor
 slug: Web/JavaScript/Reference/Global_Objects/Error/Error
+page-type: javascript-constructor
+browser-compat: javascript.builtins.Error.Error
 ---
 
 {{JSRef}}
 
-**`Error`** 생성자는 오류 객체를 생성합니다.
+The **`Error()`** constructor creates {{jsxref("Error")}} objects.
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 new Error()
 new Error(message)
+new Error(message, options)
 new Error(message, fileName)
 new Error(message, fileName, lineNumber)
+
+Error()
+Error(message)
+Error(message, options)
+Error(message, fileName)
+Error(message, fileName, lineNumber)
 ```
 
-### 매개변수
+> **Note:** `Error()` can be called with or without [`new`](/en-US/docs/Web/JavaScript/Reference/Operators/new). Both create a new `Error` instance.
 
-- `message` {{Optional_Inline}}
-  - : 사람이 읽을 수 있는 오류 메시지입니다.
-- `fileName` {{Optional_Inline}}{{Non-standard_inline}}
-  - : 생성할 `Error` 객체의 `fileName` 속성으로 설정할 값입니다. 기본 값은
-    `Error()` 생성자를 호출한 파일의 이름입니다.
-- `lineNumber` {{Optional_Inline}}{{Non-standard_inline}}
-  - : 생성할 `Error` 객체의 `lineNumber` 속성으로 설정할 값입니다. 기본 값은
-    `Error()` 생성자를 호출한 줄의 번호입니다.
+### Parameters
 
-## 예제
+- `message` {{optional_inline}}
+  - : A human-readable description of the error.
+- `options` {{optional_inline}}
+  - : An object that has the following properties:
+    - `cause` {{optional_inline}}
+      - : A value indicating the specific cause of the error, reflected in the {{jsxref("Error/cause", "cause")}} property. When catching and re-throwing an error with a more-specific or useful error message, this property can be used to pass the original error.
+- `fileName` {{optional_inline}} {{non-standard_inline}}
+  - : The path to the file that raised this error, reflected in the {{jsxref("Error/fileName", "fileName")}} property. Defaults to the name of the file containing the code that called the `Error()` constructor.
+- `lineNumber` {{optional_inline}} {{non-standard_inline}}
+  - : The line number within the file on which the error was raised, reflected in the {{jsxref("Error/lineNumber", "lineNumber")}} property. Defaults to the line number containing the `Error()` constructor invocation.
 
-### 생성자 또는 함수 호출
+## Examples
 
-`Error`를 {{JSxRef("Operators/new", "new")}} 없이 함수로써 호출한 경우에도 `Error` 객체를
-반환합니다. 따라서 단순히 `Error`를 호출하기만 해도 `new` 키워드를 사용한 것과 같은 결과를
-낳습니다.
+### Function call or new construction
+
+When `Error` is used like a function, that is without {{JSxRef("Operators/new", "new")}}, it will return an `Error` object.
+Therefore, a mere call to `Error` will produce the same output that constructing an `Error` object via the `new` keyword would.
 
 ```js
-// 함수로 호출해도...
-const x = Error('함수 호출로 만들기!')
+const x = Error("I was created using a function call!");
 
-// ...이렇게 생성자로 사용한 것과 같은 결과
-const y = new Error('"new" 키워드를 써서 만들기!')
+// above has the same functionality as following
+const y = new Error('I was constructed via the "new" keyword!');
 ```
 
-## 명세
+### Rethrowing an error with a cause
+
+It is sometimes useful to catch an error and re-throw it with a new message.
+In this case you should pass the original error into the constructor for the new `Error`, as shown.
+
+```js
+try {
+  frameworkThatCanThrow();
+} catch (err) {
+  throw new Error("New error message", { cause: err });
+}
+```
+
+For a more detailed example see [Error > Differentiate between similar errors](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error#differentiate_between_similar_errors).
+
+### Omitting options argument
+
+JavaScript only tries to read `options.cause` if `options` is an object — this avoids ambiguity with the other non-standard `Error(message, fileName, lineNumber)` signature, which requires the second parameter to be a string. If you omit `options`, pass a primitive value as `options`, or pass an object without the `cause` property, then the created `Error` object will have no `cause` property.
+
+```js
+// Omitting options
+const error1 = new Error("Error message");
+console.log("cause" in error1); // false
+
+// Passing a primitive value
+const error2 = new Error("Error message", "");
+console.log("cause" in error2); // false
+
+// Passing an object without a cause property
+const error3 = new Error("Error message", { details: "http error" });
+console.log("cause" in error3); // false
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [A polyfill of `Error`](https://github.com/zloirock/core-js#ecmascript-error) with modern behavior like support `cause` is available in [`core-js`](https://github.com/zloirock/core-js)
 - {{JSxRef("Statements/throw", "throw")}}
 - {{JSxRef("Statements/try...catch", "try...catch")}}
+- [Error causes](https://v8.dev/features/error-cause) (v8.dev/features)

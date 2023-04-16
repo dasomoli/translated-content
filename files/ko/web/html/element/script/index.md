@@ -1,152 +1,176 @@
 ---
-title: '<script>: 스크립트 요소'
+title: "<script>: The Script element"
 slug: Web/HTML/Element/script
+page-type: html-element
+browser-compat: html.elements.script
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<script>` 요소**는 데이터와 실행 가능한 코드를 문서에 포함할 때 사용하며 보통 JavaScript 코드와 함께 씁니다. [WebGL](/ko/docs/Web/API/WebGL_API)의 GLSL 셰이더 프로그래밍 언어, [JSON](/ko/docs/Glossary/JSON) 등 다른 언어와도 사용할 수 있습니다.
+The **`<script>`** [HTML](/en-US/docs/Web/HTML) element is used to embed executable code or data; this is typically used to embed or refer to JavaScript code. The `<script>` element can also be used with other languages, such as [WebGL](/en-US/docs/Web/API/WebGL_API)'s GLSL shader programming language and [JSON](/en-US/docs/Glossary/JSON).
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
+        <a href="/en-US/docs/Web/HTML/Content_categories">Content categories</a>
       </th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#메타데이터_콘텐츠"
-          >메타데이터 콘텐츠</a
-        >,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >.
+        <a href="/en-US/docs/Web/HTML/Content_categories#metadata_content">Metadata content</a>,
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content">Flow content</a>,
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content">Phrasing content</a>.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
-      <td><code>text/javascript</code>와 같은 동적 스크립트.</td>
+      <th scope="row">Permitted content</th>
+      <td>Dynamic script such as <code>text/javascript</code>.</td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
+      <th scope="row">Tag omission</th>
       <td>{{no_tag_omission}}</td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Permitted parents</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#메타데이터_콘텐츠"
-          >메타데이터 콘텐츠</a
-        >
-        또는
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >를 허용한 아무 요소.
+        Any element that accepts <a href="/en-US/docs/Web/HTML/Content_categories#metadata_content">metadata content</a>,
+        or any element that accepts <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content">phrasing content</a>.
       </td>
     </tr>
     <tr>
-      <th scope="row">암시적 ARIA 역할</th>
+      <th scope="row">Implicit ARIA role</th>
       <td>
-        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
-          >대응하는 역할 없음</a
-        >
+        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role">No corresponding role</a>
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>없음</td>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>No <code>role</code> permitted</td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLScriptElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
+## Attributes
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)을 포함합니다.
+This element includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-- {{htmlattrdef("async")}}
+- `async`
 
-  - : 일반 스크립트에 `async` 속성이 존재하면 HTML 구문 분석 중에도 스크립트를 가져오며, 사용 가능해지는 즉시 평가를 수행합니다.
+  - : For classic scripts, if the `async` attribute is present, then the classic script will be fetched in parallel to parsing and evaluated as soon as it is available.
 
-    [모듈 스크립트](/ko/docs/Web/JavaScript/Guide/Modules)에 `async` 속성이 존재하면 모듈 스크립트와 모든 의존 스크립트를 지연 큐에서 실행하므로 함께 병렬로 불러오며, 이와 동시에 구문 분석을 수행하고 사용 가능해지는 즉시 평가합니다.
+    For [module scripts](/en-US/docs/Web/JavaScript/Guide/Modules), if the `async` attribute is present then the scripts and all their dependencies will be executed in the defer queue, therefore they will get fetched in parallel to parsing and evaluated as soon as they are available.
 
-    기존 방식은 브라우저가 HTML 분석을 계속하기 전에 스크립트를 불러오고 평가했어야 하므로, `async` 속성을 사용하면 **분석기를 멈추는 JavaScript**를 제거할 수 있습니다. `defer`도 비슷한 효력을 냅니다.
+    This attribute allows the elimination of **parser-blocking JavaScript** where the browser would have to load and evaluate scripts before continuing to parse. `defer` has a similar effect in this case.
 
-    `async`는 불리언 속성입니다. 속성이 존재하면 참을 나타내고, 속성이 존재하지 않으면 거짓을 나타냅니다.
+    This is a boolean attribute: the presence of a boolean attribute on an element represents the true value, and the absence of the attribute represents the false value.
 
-    [브라우저 호환성](#브라우저_호환성)을 참고하세요.
+    See [Browser compatibility](#browser_compatibility) for notes on browser support. See also [Async scripts for asm.js](/en-US/docs/Games/Techniques/Async_scripts).
 
-- {{htmlattrdef("crossorigin")}}
-  - : 일반 `script` 요소는 표준 {{glossary("CORS")}}를 통과하지 못했을 때 {{domxref('GlobalEventHandlers.onerror', 'window.onerror')}}에 최소한의 정보만 넘깁니다. `crossorigin` 속성은 정적 미디어에 대해 별도의 도메인을 사용하는 사이트의 오류 기록을 허용하기 위해 사용할 수 있습니다. 유효한 인수에 대한 보다 자세한 설명은 [CORS 설정 속](/ko/docs/Web/HTML/Attributes/crossorigin)성 문서를 참고하세요.
-- {{htmlattrdef("defer")}}
+- `crossorigin`
+  - : Normal `script` elements pass minimal information to the {{domxref('Window.error_event', 'window.onerror')}} for scripts which do not pass the standard {{Glossary("CORS")}} checks. To allow error logging for sites which use a separate domain for static media, use this attribute. See [CORS settings attributes](/en-US/docs/Web/HTML/Attributes/crossorigin) for a more descriptive explanation of its valid arguments.
+- `defer`
 
-  - : 브라우저가 스크립트를 문서 분석 이후에, 그러나 {{event("DOMContentLoaded")}} 발생 이전에 실행해야 함을 나타내는 불리언 속성입니다.
+  - : This Boolean attribute is set to indicate to a browser that the script is meant to be executed after the document has been parsed, but before firing {{domxref("Document/DOMContentLoaded_event", "DOMContentLoaded")}}.
 
-    `defer` 속성을 가진 스크립트는 자신의 평가가 끝나기 전까지 `DOMContentLoaded` 이벤트의 발생을 막습니다.
+    Scripts with the `defer` attribute will prevent the `DOMContentLoaded` event from firing until the script has loaded and finished evaluating.
 
-    > **경고:** `src` 속성이 존재하지 않을 때(인라인 스크립트인 경우 등)에는 아무런 효과도 없으므로 사용해서는 안됩니다.
+    > **Warning:** This attribute must not be used if the `src` attribute is absent (i.e. for inline scripts), in this case it would have no effect.
     >
-    > 또한 [모듈 스크립트](/ko/docs/Web/JavaScript/Guide/Modules)는 기본적으로 지연 평가하므로, `defer`를 지정해도 변화가 없습니다.
+    > The `defer` attribute has no effect on [module scripts](/en-US/docs/Web/JavaScript/Guide/Modules) — they defer by default.
 
-    `defer` 속성을 가진 스크립트는 문서상의 순서를 따라 실행됩니다.
+    Scripts with the `defer` attribute will execute in the order in which they appear in the document.
 
-    기존 방식은 브라우저가 HTML 분석을 계속하기 전에 스크립트를 불러오고 평가했어야 하므로, `defer` 속성을 사용하면 **분석기를 멈추는 JavaScript**를 제거할 수 있습니다. `async`도 비슷한 효과를 가집니다.
+    This attribute allows the elimination of **parser-blocking JavaScript** where the browser would have to load and evaluate scripts before continuing to parse. `async` has a similar effect in this case.
 
-- {{htmlattrdef("integrity")}}
-  - : {{glossary("user agent", "사용자 에이전트")}}가 가져온 리소스에 예기치 못한 변형이 존재하는지 검사할 때 사용할 인라인 메타데이터입니다. [하위 리소스 무결성](/ko/docs/Web/Security/Subresource_Integrity) 문서를 참고하세요.
-- {{htmlattrdef("nomodule")}}
-  - : [ES2015 모듈](https://hacks.mozilla.org/2015/08/es6-in-depth-modules/)을 지원하는 브라우저에서는 실행하지 않을 스크립트임을 나타내는 불리언 특성입니다. 모듈화 JavaScript를 지원하지 않는 오래된 브라우저가 사용할 대체 스크립트에 사용할 수 있습니다.
+- `fetchpriority` {{Experimental_Inline}}
 
-- {{htmlattrdef("nonce")}}
-  - : [`script-src` `Content-Security-Policy`](/ko/docs/Web/HTTP/Headers/Content-Security-Policy/script-src)의 화이트리스트에 스크립트를 등록하기 위한, 암호화된 일회용 숫자(논스, nonce)입니다. 서버는 고유한 일회용 숫자값을 정책을 전송할 때마다 생성해야 합니다. 자원의 정책을 우회할 수 없도록, 추측할 수 없는 임시값을 제공하는 것이 중요합니다.
-- {{htmlattrdef("referrerpolicy")}}
+  - : Provides a hint of the relative priority to use when fetching an external script. Allowed values:
 
-  - : 스크립트를 가져올 때, 또는 스크립트가 다른 리소스를 가져올 때 전송할 [리퍼러](/ko/docs/Web/API/Document/referrer)를 나타냅니다.
+    - `high`
+      - : Signals a high-priority fetch relative to other external scripts.
+    - `low`
+      - : Signals a low-priority fetch relative to other external scripts.
+    - `auto`
+      - : Default: Signals automatic determination of fetch priority relative to other external scripts.
 
-    - `no-referrer`: {{HTTPHeader("Referer")}} 헤더를 전송하지 않습니다.
-    - `no-referrer-when-downgrade` (기본값): {{glossary("TLS")}}({{glossary("HTTPS")}}) 지원을 하지 않는 {{glossary("origin", "출처")}}에 대해서는 {{HTTPHeader("Referer")}} 헤더를 전송하지 않습니다.
-    - `origin`: `Referer` 헤더가 요청 출처({{glossary("protocol", "스킴")}}, {{glossary("host", "호스트")}}, {{glossary("port", "포트")}})를 포함합니다.
-    - `origin-when-cross-origin`: [동일 출처](/ko/docs/Web/Security/Same-origin_policy) 요청에는 매개변수를 제거한 전체 URL을 전송합니다. 교차 출처 요청에는 출처만 전송합니다.
-    - `same-origin`: 동일 출처 요청에는 매개변수를 제거한 전체 URL을 전송합니다. 교차 출처 요청에는 아무 레퍼러 정보도 보내지 않습니다.
-    - `strict-origin`: 목적지가 현재 문서와 동일하거나 더 높은(HTTP(S)→HTTPS) 보안 수준을 가진 경우 출처를 전송하고, 더 취약(HTTPS→HTTP)한 경우 전송하지 않습니다.
-    - `strict-origin-when-cross-origin`: 동일 출처 요청에는 매개변수를 제거한 전체 URL을 전송합니다. 목적지가 현재 문서와 동일하거나 더 높은 보안 수준(HTTP(S)→HTTPS)을 가진 경우 자신의 출처를 전송합니다. 그 외의 경우 아무 레퍼러 정보도 보내지 않습니다.
-    - `unsafe-url`: 동일 출처와 교차 출처 요청 모두에 대해서 전체 URL을 전송합니다. TLS로 보호하는 리소스에서 안전하지 않은 출처에 경로까지 노출하므로 **안전하지 않습니다**.
+- `integrity`
+  - : This attribute contains inline metadata that a user agent can use to verify that a fetched resource has been delivered free of unexpected manipulation. See [Subresource Integrity](/en-US/docs/Web/Security/Subresource_Integrity).
+- `nomodule`
+  - : This Boolean attribute is set to indicate that the script should not be executed in browsers that support [ES modules](/en-US/docs/Web/JavaScript/Guide/Modules) — in effect, this can be used to serve fallback scripts to older browsers that do not support modular JavaScript code.
+- `nonce`
+  - : A cryptographic nonce (number used once) to allow scripts in a [script-src Content-Security-Policy](/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src). The server must generate a unique nonce value each time it transmits a policy. It is critical to provide a nonce that cannot be guessed as bypassing a resource's policy is otherwise trivial.
+- `referrerpolicy`
 
-    > **참고:** 빈 문자열 값(`""`)은 기본값이자 `referrerpolicy` 특성을 지원하지 않는 경우 사용하는 대체값입니다. `referrerpolicy`를 `<script>` 요소에 명시하지 않은 경우 더 상위 단계의 정책, 즉 문서 자체나 도메인의 정책을 따라갑니다. 상위 단계 정책도 사용할 수 없을 땐 빈 문자열을 `no-referrer-when-downgrade`로 간주합니다.
+  - : Indicates which [referrer](/en-US/docs/Web/API/Document/referrer) to send when fetching the script, or resources fetched by the script:
 
-- {{htmlattrdef("src")}}
-  - : 외부 스크립트를 가리키는 {{glossary("URI")}}입니다. 문서 내에 스크립트를 직접 삽입하는 것 대신 사용할 수 있습니다.
-- {{htmlattrdef("type")}}
+    - `no-referrer`: The {{HTTPHeader("Referer")}} header will not be sent.
+    - `no-referrer-when-downgrade`: The {{HTTPHeader("Referer")}} header will not be sent to {{Glossary("origin")}}s without {{Glossary("TLS")}} ({{Glossary("HTTPS")}}).
+    - `origin`: The sent referrer will be limited to the origin of the referring page: its [scheme](/en-US/docs/Learn/Common_questions/Web_mechanics/What_is_a_URL), {{Glossary("host")}}, and {{Glossary("port")}}.
+    - `origin-when-cross-origin`: The referrer sent to other origins will be limited to the scheme, the host, and the port. Navigations on the same origin will still include the path.
+    - `same-origin`: A referrer will be sent for {{Glossary("Same-origin policy", "same origin")}}, but cross-origin requests will contain no referrer information.
+    - `strict-origin`: Only send the origin of the document as the referrer when the protocol security level stays the same (HTTPS→HTTPS), but don't send it to a less secure destination (HTTPS→HTTP).
+    - `strict-origin-when-cross-origin` (default): Send a full URL when performing a same-origin request, only send the origin when the protocol security level stays the same (HTTPS→HTTPS), and send no header to a less secure destination (HTTPS→HTTP).
+    - `unsafe-url`: The referrer will include the origin _and_ the path (but not the [fragment](/en-US/docs/Web/API/HTMLAnchorElement/hash), [password](/en-US/docs/Web/API/HTMLAnchorElement/password), or [username](/en-US/docs/Web/API/HTMLAnchorElement/username)). **This value is unsafe**, because it leaks origins and paths from TLS-protected resources to insecure origins.
 
-  - : 스크립트의 유형을 나타냅니다. 다음 다섯개의 범주 중 하나에 속할 수 있습니다.
+    > **Note:** An empty string value (`""`) is both the default value, and a fallback value if `referrerpolicy` is not supported. If `referrerpolicy` is not explicitly specified on the `<script>` element, it will adopt a higher-level referrer policy, i.e. one set on the whole document or domain. If a higher-level policy is not available, the empty string is treated as being equivalent to `strict-origin-when-cross-origin`.
 
-    - **생략 또는 JavaScript MIME 유형:** 스크립트가 JavaScript임을 나타냅니다. 이 경우, HTML5 명세는 웹 작성자가 불필요한 `type`을 포함하지 않고 완전히 제외할 것을 촉구합니다. 보다 오래된 브라우저에서는 `type` 특성의 값으로 삽입 혹은 (`src` 특성으로) 불러온 스크립트의 언어를 표시하곤 했습니다. JavaScript MIME 유형은 [명세에 나열](/ko/docs/Web/HTTP/Basics_of_HTTP/MIME_types#JavaScript_types)되어 있습니다.
-    - **`module`:** 스크립트를 JavaScript 모듈로 간주합니다. 스크립트 콘텐츠 처리가 `charset`과 `defer` 특성의 영향을 받지 않습니다. `module`의 더 자세한 사용법은 MDN의 [JavaScript 모듈 안내서](/ko/docs/Web/JavaScript/Guide/Modules)를 참고하세요. 기존 스크립트와 달리, 모듈 스크립트는 교차 출처 가져오기 시 CORS 프로토콜을 사용해야 합니다.
-    - **다른 모든 값:** 내장 콘텐츠를 브라우저가 처리하지 않을 데이터 블록으로 간주합니다. 개발자는 반드시 유효하면서 JavaScript가 아닌 MIME 유형을 지정해야 합니다. `src` 특성을 무시합니다.
+- `src`
+  - : This attribute specifies the URI of an external script; this can be used as an alternative to embedding a script directly within a document.
+- [**`type`**](/en-US/docs/Web/HTML/Element/script/type)
 
-<div class="hidden"><h3 id="Deprecated_attributes">Deprecated attributes</h3><dl><dt>{{htmlattrdef("charset")}} {{Deprecated_inline}}</dt><dd>If present, its value must be an ASCII case-insensitive match for "<code>utf-8</code>". It’s unnecessary to specify the <code>charset</code> attribute, because documents must use UTF-8, and the <code>script</code> element inherits its character encoding from the document.</dd><dt>{{htmlattrdef("language")}} {{Deprecated_inline}}</dt><dd>Like the <code>type</code> attribute, this attribute identifies the scripting language in use. Unlike the <code>type</code> attribute, however, this attribute’s possible values were never standardized. The <code>type</code> attribute should be used instead.</dd></dl></div>
+  - : This attribute indicates the type of script represented.
+    The value of this attribute will be one of the following:
 
-## 참고
+    - **Attribute is not set (default), an empty string, or a JavaScript MIME type**
+      - : Indicates that the script is a "classic script", containing JavaScript code.
+        Authors are encouraged to omit the attribute if the script refers to JavaScript code rather than specify a MIME type.
+        JavaScript MIME types are [listed in the IANA media types specification](/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types#textjavascript).
+    - `module`
+      - : This value causes the code to be treated as a JavaScript module.
+        The processing of the script contents is deferred.
+        The `charset` and `defer` attributes have no effect.
+        For information on using `module`, see our [JavaScript modules](/en-US/docs/Web/JavaScript/Guide/Modules) guide.
+        Unlike classic scripts, module scripts require the use of the CORS protocol for cross-origin fetching.
+    - [`importmap`](/en-US/docs/Web/HTML/Element/script/type/importmap)
+      - : This value indicates that the body of the element contains an import map.
+        The import map is a JSON object that developers can use to control how the browser resolves module specifiers when importing [JavaScript modules](/en-US/docs/Web/JavaScript/Guide/Modules#importing_modules_using_import_maps).
+    - **Any other value**
+      - : The embedded content is treated as a data block, and won't be processed by the browser.
+        Developers must use a valid MIME type that is not a JavaScript MIME type to denote data blocks.
+        All of the other attributes will be ignored, including the `src` attribute.
 
-브라우저가 구문 분석을 진행하다 인라인 스크립트 또는 {{htmlattrxref("async", "script")}}, {{htmlattrxref("defer", "script")}}, `type="module"` 특성이 없는 스크립트에 도달하면 스크립트를 가져온 후 실행하기 전까지 분석을 중단합니다.
+- `blocking`
+  - : This attribute explicitly indicates that certain operations should be blocked on the fetching of the script. The operations that are to be blocked must be a space-separated list of blocking attributes listed below.
+    - `render`: The rendering of content on the screen is blocked.
 
-스크립트는 `text/javascript` MIME 유형을 설정해야 하나, 브라우저는 관대한 규칙을 적용하여 이미지 형태(`image/*`), 비디오 형태(`video/*`), 오디오 형태(`audio/*`), `text/csv` 형태로 스크립트를 불러오려는 경우만 차단하고 나머지는 허용합니다. 스크립트를 차단한 경우 {{event("load")}} 대신 {{event("error")}} 이벤트를 요소에 전송합니다.
+### Deprecated attributes
 
-## 예제
+- `charset` {{Deprecated_inline}}
+  - : If present, its value must be an ASCII case-insensitive match for "`utf-8`". It's unnecessary to specify the `charset` attribute, because documents must use UTF-8, and the `script` element inherits its character encoding from the document.
+- `language` {{Deprecated_inline}} {{Non-standard_Inline}}
+  - : Like the `type` attribute, this attribute identifies the scripting language in use. Unlike the `type` attribute, however, this attribute's possible values were never standardized. The `type` attribute should be used instead.
 
-### 기본
+## Notes
 
-다음 예제는 `<script>` 요소를 사용해 외부 스크립트를 가져오는 법을 보입니다.
+Scripts without [`async`](#async), [`defer`](#defer) or `type="module"` attributes, as well as inline scripts without the `type="module"` attribute, are fetched and executed immediately before the browser continues to parse the page.
+
+The script should be served with the `text/javascript` MIME type, but browsers are lenient and only block them if the script is served with an image type (`image/*`), a video type (`video/*`), an audio type (`audio/*`), or `text/csv`.
+If the script is blocked, an {{domxref("Element/error_event", "error")}} event is sent to the element; otherwise, a {{domxref("Element/load_event", "load")}} event is sent.
+
+## Examples
+
+### Basic usage
+
+These examples show how to import (an external) script using the `<script>` element.
 
 ```html
 <script src="javascript.js"></script>
 ```
 
-그리고 아래 코드는 `<script>` 요소 내부에 인라인 스크립트를 작성하는 예시입니다.
+And the following examples show how to put (an inline) script inside the `<script>` element.
 
 ```html
 <script>
@@ -154,22 +178,61 @@ slug: Web/HTML/Element/script
 </script>
 ```
 
-### 모듈 대체 스크립트
+### Module fallback
 
-{{htmlattrxref("type", "script")}} 특성이 `module`을 지원하는 브라우저는 `nomodule` 특성을 가진 모든 `<script>`를 무시합니다. 그러므로 모듈 스크립트를 사용하면서도, 미지원 브라우저를 위한 대체 스크립트를 `nomodule`로 표시해 제공할 수 있습니다.
+Browsers that support the `module` value for the [`type`](#type) attribute ignore any script with a `nomodule` attribute. That enables you to use module scripts while providing `nomodule`-marked fallback scripts for non-supporting browsers.
 
-```js
-<script type="module" src="main.mjs"></script>
+```html
+<script type="module" src="main.js"></script>
 <script nomodule src="fallback.js"></script>
 ```
 
-### HTML에 데이터 삽입하기
+### Importing modules with importmap
 
-\<script> 요소와 JavaScript 외의 유효한 MIME 유형을 사용하면 서버사이드 렌더링을 통해 HTML에 데이터를 삽입할 수 있습니다.
+When importing modules in scripts, if you don't use the [`type=importmap`](#importmap) feature, then each module must be imported using a module specifier that is either an absolute or relative URL.
+In the example below, the first module specifier ("./shapes/square.js") resolves relative to the base URL of the document, while the second is an absolute URL.
+
+```js
+import { name as squareName, draw } from "./shapes/square.js";
+import { name as circleName } from "https://example.com/shapes/circle.js";
+```
+
+An import map allows you to provide a mapping that, if matched, can replace the text in the module specifier.
+The import map below defines keys `square` and `circle` that can be used as aliases for the module specifiers shown above.
+
+```html
+<script type="importmap">
+  {
+    "imports": {
+      "square": "./shapes/square.js",
+      "circle": "https://example.com/shapes/circle.js"
+    }
+  }
+</script>
+```
+
+This allows us to import modules using names in the module specifier (rather than absolute or relative URLs).
+
+```js
+import { name as squareName, draw } from "square";
+import { name as circleName } from "circle";
+```
+
+For more examples of what you can do with import maps, see the [Importing modules using import maps](/en-US/docs/Web/JavaScript/Guide/Modules#importing_modules_using_import_maps) section in the JavaScript modules guide.
+
+### Embedding data in HTML
+
+You can also use the `<script>` element to embed data in HTML with server-side rendering by specifying a valid non-JavaScript MIME type in the `type` attribute.
 
 ```html
 <!-- Generated by the server -->
-<script id="data" type="application/json">{"userId":1234,"userName":"John Doe","memberSince":"2000-01-01T00:00:00.000Z"}</script>
+<script id="data" type="application/json">
+  {
+    "userId": 1234,
+    "userName": "Maria Cruz",
+    "memberSince": "2000-01-01T00:00:00.000Z"
+  }
+</script>
 
 <!-- Static -->
 <script>
@@ -178,15 +241,26 @@ slug: Web/HTML/Element/script
 </script>
 ```
 
-## 명세
+### Blocking rendering till a script is fetched and executed
+
+You can include `render` token inside a `blocking` attribute;
+the rendering of the page will be blocked till the script is fetched and executed. In the example below, we block rendering on an async script,
+so that the script doesn't block parsing but is guaranteed to be evaluated before rendering starts.
+
+```html
+<script blocking="render" async src="async-script.js"></script>
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("document.currentScript")}}
-- [Ryan Grove의 `<script>`와 `<link>` 노드 이벤트 호환성 차트](https://pie.gd/test/script-link-events/)
+- [Flavio Copes' article on loading JavaScript efficiently and explaining the differences between `async` and `defer`](https://flaviocopes.com/javascript-async-defer/)
+- [JavaScript modules](/en-US/docs/Web/JavaScript/Guide/Modules) guide

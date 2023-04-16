@@ -1,59 +1,122 @@
 ---
 title: Array.prototype.unshift()
 slug: Web/JavaScript/Reference/Global_Objects/Array/unshift
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Array.unshift
 ---
+
 {{JSRef}}
 
-**`unshift()`** 메서드는 새로운 요소를 배열의 맨 앞쪽에 추가하고, 새로운 길이를 반환합니다.
+The **`unshift()`** method adds the specified elements to the
+beginning of an array and returns the new length of the array.
 
 {{EmbedInteractiveExample("pages/js/array-unshift.html")}}
 
-## 구문
+## Syntax
 
-```js
-    arr.unshift([...elementN])
+```js-nolint
+unshift()
+unshift(element0)
+unshift(element0, element1)
+unshift(element0, element1, /* … ,*/ elementN)
 ```
 
-### 매개변수
+### Parameters
 
 - `elementN`
-  - : 배열 맨 앞에 추가할 요소.
+  - : The elements to add to the front of the `arr`.
 
-### 반환 값
+### Return value
 
-메서드를 호출한 배열의 새로운 {{jsxref("Array.length", "length")}} 속성.
+The new {{jsxref("Array/length", "length")}} property of the object upon which the
+method was called.
 
-## 설명
+## Description
 
-`unshift` 메서드는 배열 형태의 객체 시작점에 주어진 값을 삽입합니다.
+The `unshift()` method inserts the given values to the beginning of an
+array-like object.
 
-`unshift`는 제네릭하도록 설계되었으며, 배열 형태를 가진 객체가 {{jsxref("Function.call", "호출", "", 1)}}하거나 객체에 {{jsxref("Function.apply", "적용", "", 1)}}할 수 있습니다. `length` 속성을 가지지 않고, 대신 마지막 요소를 0부터 시작하는 순차적 인덱스로만 나타내는 객체에서는 의도한 것과 다르게 행동할 수 있습니다.
+{{jsxref("Array.prototype.push()")}} has similar behavior to `unshift()`, but applied to the end of an array.
 
-## 예제
+Please note that, if multiple elements are passed as parameters, they're inserted in
+chunk at the beginning of the object, in the exact same order they were passed as
+parameters. Hence, calling `unshift()` with `n`
+arguments **once**, or calling it `n` times with
+**1** argument (with a loop, for example), don't yield the same results.
+
+See example:
 
 ```js
-var arr = [1, 2];
+let arr = [4, 5, 6];
 
-arr.unshift(0); // result of call is 3, the new array length
-// arr is [0, 1, 2]
+arr.unshift(1, 2, 3);
+console.log(arr);
+// [1, 2, 3, 4, 5, 6]
 
-arr.unshift(-2, -1); // = 5
-// arr is [-2, -1, 0, 1, 2]
+arr = [4, 5, 6]; // resetting the array
 
-arr.unshift([-3]);
-// arr is [[-3], -2, -1, 0, 1, 2]
+arr.unshift(1);
+arr.unshift(2);
+arr.unshift(3);
+
+console.log(arr);
+// [3, 2, 1, 4, 5, 6]
 ```
 
-## 명세
+The `unshift()` method is [generic](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#generic_array_methods). It only expects the `this` value to have a `length` property and integer-keyed properties. Although strings are also array-like, this method is not suitable to be applied on them, as strings are immutable.
+
+## Examples
+
+### Using unshift()
+
+```js
+const arr = [1, 2];
+
+arr.unshift(0); // result of the call is 3, which is the new array length
+// arr is [0, 1, 2]
+
+arr.unshift(-2, -1); // the new array length is 5
+// arr is [-2, -1, 0, 1, 2]
+
+arr.unshift([-4, -3]); // the new array length is 6
+// arr is [[-4, -3], -2, -1, 0, 1, 2]
+
+arr.unshift([-7, -6], [-5]); // the new array length is 8
+// arr is [ [-7, -6], [-5], [-4, -3], -2, -1, 0, 1, 2 ]
+```
+
+### Calling unshift() on non-array objects
+
+The `unshift()` method reads the `length` property of `this`. It then shifts all properties in the range `0` to `length - 1` right by the number of arguments and sets each index starting at `0` with the arguments passed to `unshift()`. Finally, it sets the `length` to the previous length plus the number of prepended elements.
+
+```js
+const arrayLike = {
+  length: 3,
+  unrelated: "foo",
+  2: 4,
+};
+Array.prototype.unshift.call(arrayLike, 1, 2);
+console.log(arrayLike);
+// { '0': 1, '1': 2, '4': 4, length: 5, unrelated: 'foo' }
+
+const plainObj = {};
+// There's no length property, so the length is 0
+Array.prototype.unshift.call(plainObj, 1, 2);
+console.log(plainObj);
+// { '0': 1, '1': 2, length: 2 }
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `Array.prototype.unshift` in `core-js` with fixes of this method](https://github.com/zloirock/core-js#ecmascript-array)
 - {{jsxref("Array.prototype.push()")}}
 - {{jsxref("Array.prototype.pop()")}}
 - {{jsxref("Array.prototype.shift()")}}

@@ -1,82 +1,90 @@
 ---
 title: handler.get()
 slug: Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/get
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Proxy.handler.get
 ---
 
 {{JSRef}}
 
-**`handler.get()`** 메서드는 속성 값을 가져오기 위한 트랩입니다.
+The **`handler.get()`** method is a trap for the `[[Get]]` [object internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods), which is used by operations such as [property accessors](/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors).
 
 {{EmbedInteractiveExample("pages/js/proxyhandler-get.html", "taller")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 new Proxy(target, {
   get(target, property, receiver) {
   }
 });
 ```
 
-### 매개 변수
+### Parameters
 
-다음 매개변수는 `get()` 메서드에 전달됩니다. `this`는 처리기에 바인딩됩니다.
+The following parameters are passed to the `get()` method. `this`
+is bound to the handler.
 
 - `target`
-  - : 대상 객체
+  - : The target object.
 - `property`
-  - : 가져올 속성의 이름 또는 {{jsxref("Symbol")}}입니다.
+  - : The name or {{jsxref("Symbol")}} of the property to get.
 - `receiver`
-  - : 프록시 또는 프록시에서 상속되는 객체입니다.
+  - : Either the proxy or an object that inherits from the proxy.
 
-### 반환 값
+### Return value
 
-`get()` 메서드는 어떤 값이든 반환할 수 있습니다.
+The `get()` method can return any value.
 
-## 설명
+## Description
 
-**`handler.get()`** 메서드는 속성 값을 가져오기 위한 트랩입니다.
+### Interceptions
 
-### 가로채기
+This trap can intercept these operations:
 
-이 트랩은 다음 작업을 가로챌 수 있습니다.
-
-- 속성 접근: `proxy[foo]`와
-  `proxy.bar`
-- 상속된 속성 액세스:
-  `Object.create(proxy)[foo]`
+- Property access: `proxy[foo]` and `proxy.bar`
 - {{jsxref("Reflect.get()")}}
 
-### 불변 조건
+Or any other operation that invokes the `[[Get]]` [internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods).
 
-다음 불변량이 위반되면 프록시에서 {{jsxref("TypeError")}}가 발생합니다.
+### Invariants
 
-- 대상 객체의 속성이 쓸 수 없거나 구성할 수 없는 자체 데이터 속성인 경우, 속성에 대해 보고된 값은 대상 객체 속성의 값과 동일해야 합니다.
-- 대상 객체 속성이 `[[Get]]` 특성이 `undefined`인 구성할 수 없는 자체 접근자 속성인 경우, 속성에 대해 보고된 값은 정의되지 않아야 합니다.
+If the following invariants are violated, the trap throws a {{jsxref("TypeError")}} when invoked.
 
-## 예제
+- The value reported for a property must be the same as the value of the corresponding
+  target object property if the target object property is a non-writable,
+  non-configurable own data property.
+- The value reported for a property must be undefined if the corresponding target
+  object property is a non-configurable own accessor property that has
+  `undefined` as its `[[Get]]` attribute.
 
-### 속성 값을 얻기 위한 트랩
+## Examples
 
-다음 코드는 속성 값을 가져오는 것을 트랩합니다.
+### Trap for getting a property value
+
+The following code traps getting a property value.
 
 ```js
-const p = new Proxy({}, {
-  get(target, property, receiver) {
-    console.log(`called: ${property}`);
-    return 10;
+const p = new Proxy(
+  {},
+  {
+    get(target, property, receiver) {
+      console.log(`called: ${property}`);
+      return 10;
+    },
   },
-});
+);
 
-console.log(p.a); // "called: a"
-                  // 10
+console.log(p.a);
+// "called: a"
+// 10
 ```
 
-다음 코드는 불변 조건을 위반합니다.
+The following code violates an invariant.
 
 ```js
 const obj = {};
-Object.defineProperty(obj, 'a', {
+Object.defineProperty(obj, "a", {
   configurable: false,
   enumerable: false,
   value: 10,
@@ -92,16 +100,16 @@ const p = new Proxy(obj, {
 p.a; // TypeError is thrown
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Proxy")}}
-- [`Proxy()` 생성자](/ko/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy)
+- [`Proxy()` constructor](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy)
 - {{jsxref("Reflect.get()")}}

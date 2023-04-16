@@ -1,116 +1,129 @@
 ---
-title: '<br>: 줄바꿈 요소'
+title: "<br>: The Line Break element"
 slug: Web/HTML/Element/br
+page-type: html-element
+browser-compat: html.elements.br
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<br>` 요소**는 텍스트 안에 줄바꿈(캐리지 리턴)을 생성합니다. 주소나 시조 등 줄의 구분이 중요한 내용을 작성할 때 유용합니다.
+The **`<br>`** [HTML](/en-US/docs/Web/HTML) element produces a line break in text (carriage-return). It is useful for writing a poem or an address, where the division of lines is significant.
 
 {{EmbedInteractiveExample("pages/tabbed/br.html", "tabbed-standard")}}
 
-<p class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</p>
+As you can see from the above example, a `<br>` element is included at each point where we want the text to break. The text after the `<br>` begins again at the start of the next line of the text block.
 
-위 예제에서 확인할 수 있듯, `<br>` 요소는 텍스트를 끊고 싶은 지점에 삽입해야 합니다. `<br>` 이후의 텍스트는 텍스트 블록의 다음 줄에서 다시 시작합니다.
+> **Note:** Do not use `<br>` to create margins between paragraphs; wrap them in {{htmlelement("p")}} elements and use the [CSS](/en-US/docs/Web/CSS) {{cssxref('margin')}} property to control their size.
 
-> **참고:** 문단 사이에 여백을 두기 위한 용도로 `<br>`을 사용하지 마세요. 대신 {{htmlelement("p")}} 요소로 감싼 후 [CSS](/ko/docs/Web/CSS)의 {{cssxref("margin")}} 속성으로 여백의 크기를 조절하세요.
+## Attributes
 
-## 특성
+This element's attributes include the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-이 요소는 [전역 특성](/ko/docs/HTML/Global_attributes)만 포함합니다.
+### Deprecated attributes
 
-## CSS 스타일링
+- `clear` {{Deprecated_Inline}}
+  - : Indicates where to begin the next line after the break.
 
-`<br>` 요소는 텍스트 블록에서 줄을 바꾼다는 하나의 명확한 목적만 가지고 있습니다. 따라서 크기도, 외형도 없으므로 스타일을 적용할 것도 거의 없습니다.
+## Styling with CSS
 
-`<br>` 요소에 {{cssxref("margin")}}을 적용하면 줄 간격을 늘릴 수 있겠지만 좋은 방법은 아닙니다. 이런 목적을 위해 만들어진 CSS {{cssxref("line-height")}} 속성을 사용하세요.
+The `<br>` element has a single, well-defined purpose — to create a line break in a block of text. As such, it has no dimensions or visual output of its own, and there is very little you can do to style it.
 
-## 예제
+You can set a {{cssxref("margin")}} on `<br>` elements themselves to increase the spacing between the lines of text in the block, but this is a bad practice — you should use the {{cssxref("line-height")}} property that was designed for that purpose.
+
+## Examples
+
+### Simple br
+
+In the following example we use `<br>` elements to create line breaks between the different lines of a postal address:
 
 ```html
-Mozilla Foundation<br>
-1981 Landings Drive<br>
-Building K<br>
-Mountain View, CA 94043-0801<br>
-USA
+Mozilla<br />
+331 E. Evelyn Avenue<br />
+Mountain View, CA<br />
+94041<br />
+USA<br />
 ```
 
-결과는 다음과 같습니다.
+#### Result
 
-{{EmbedLiveSample("예제", "100%", "90")}}
+{{ EmbedLiveSample('Simple_br', 640, 120) }}
 
-## 접근성 고려사항
+## Accessibility concerns
 
-문단 구분을 `<br>`로 하는건 나쁜 사례일 뿐만 아니라 스크린 리더를 사용해 탐색하는 사용자에게도 문제가 됩니다. 스크린 리더가 요소의 존재는 알려주겠지만, `<br>`에는 아무런 내용도 없기 때문입니다. 따라서 사용자는 내용이 어딨는지 몰라 혼란을 느낄 수 있습니다.
+Creating separate paragraphs of text using `<br>` is not only bad practice, it is problematic for people who navigate with the aid of screen reading technology. Screen readers may announce the presence of the element, but not any content contained within `<br>`s. This can be a confusing and frustrating experience for the person using the screen reader.
 
-{{htmlelement("p")}} 요소와 함께 CSS {{cssxref("margin")}} 속성 등을 조합해 간격을 조절하세요.
+Use `<p>` elements, and use CSS properties like {{cssxref("margin")}} to control their spacing.
 
-## 기술 요약
+## Technical summary
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a
-          href="/ko/docs/Web/Guide/HTML/%EC%BB%A8%ED%85%90%ED%8A%B8_%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC"
-          >콘텐츠 카테고리</a
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
         >
       </th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#플로우_콘텐츠"
-          >플로우 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
         >,
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#구문_콘텐츠"
-          >구문 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
         >.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
+      <td>None; it is a {{Glossary("void element")}}.</td>
+    </tr>
+    <tr>
+      <th scope="row">Tag omission</th>
       <td>
-        없음. {{glossary("empty element", "빈 요소")}}입니다.
+        Must have a start tag, and must not have an end tag. In XHTML documents,
+        write this element as <code>&#x3C;br /></code>.
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
-      <td>여는 태그는 필수입니다. 닫는 태그는 존재해선 안됩니다.</td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Permitted parents</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >를 허용하는 모든 요소.
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >.
       </td>
     </tr>
     <tr>
-      <th scope="row">암시적 ARIA 역할</th>
+      <th scope="row">Implicit ARIA role</th>
       <td>
         <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
-          >대응하는 역할 없음</a
+          >No corresponding role</a
         >
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>모두</td>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/none_role"><code>none</code></a>, <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/presentation_role"><code>presentation</code></a>
+      </td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLBRElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{HTMLElement("address")}} 요소
-- {{HTMLElement("p")}} 요소
+- {{HTMLElement("address")}} element
+- {{HTMLElement("p")}} element
+- {{HTMLElement("wbr")}} element

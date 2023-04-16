@@ -1,10 +1,13 @@
 ---
-title: 자손 결합자
+title: Descendant combinator
 slug: Web/CSS/Descendant_combinator
+page-type: css-combinator
+browser-compat: css.selectors.descendant
 ---
+
 {{CSSRef("Selectors")}}
 
-보통 한 칸의 공백 문자로 표현하는 **자손 결합자**(" ")는 두 개의 선택자를 조합하여, 뒤쪽 선택자 요소의 조상(부모, 부모의 부모, 부모의 부모의 부모...)에 앞쪽 선택자 요소가 존재할 경우 선택합니다. 자손 결합자를 활용하는 선택자를 자손 선택자라고 부릅니다.
+The **descendant combinator** — typically represented by a single space (" ") character — combines two selectors such that elements matched by the second selector are selected if they have an ancestor (parent, parent's parent, parent's parent's parent, etc.) element matching the first selector. Selectors that utilize a descendant combinator are called _descendant selectors_.
 
 ```css
 /* List items that are descendants of the "my-things" list */
@@ -13,17 +16,17 @@ ul.my-things li {
 }
 ```
 
-기술적으로, 자손 결합자는 하나 이상의 {{Glossary("CSS")}} 공백 문자이므로 스페이스 외에도 캐리지 리턴, 폼 피드, 새 줄, 탭 문자도 해당합니다. 또한 결합자를 구성하는 공백 문자는 CSS 주석을 임의의 개수만큼 포함할 수 있습니다.
+The descendant combinator is technically one or more {{Glossary("CSS")}} white space characters — the space character and/or one of four control characters: carriage return, form feed, new line, and tab characters — between two selectors in the absence of another combinator. Additionally, the white space characters of which the combinator is comprised may contain any number of CSS comments.
 
-## 구문
+## Syntax
 
-```
+```css
 selector1 selector2 {
   /* property declarations */
 }
 ```
 
-## 예제
+## Examples
 
 ### CSS
 
@@ -58,18 +61,18 @@ li li {
 </ul>
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample("예제", "100%", 160)}}
+{{EmbedLiveSample("Examples", "100%", 160)}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [자식 결합자](/ko/docs/Web/CSS/Child_combinator)
+- [Child combinator](/en-US/docs/Web/CSS/Child_combinator)

@@ -1,48 +1,80 @@
 ---
 title: Array.prototype.toString()
 slug: Web/JavaScript/Reference/Global_Objects/Array/toString
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Array.toString
 ---
 
 {{JSRef}}
 
-**`toString()`** 메서드는 지정된 배열 및 그 요소를 나타내는 문자열을 반환합니다.
+The **`toString()`** method returns a string representing the
+specified array and its elements.
 
-{{EmbedInteractiveExample("pages/js/array-tostring.html")}}
+{{EmbedInteractiveExample("pages/js/array-tostring.html","shorter")}}
 
-## 구문
+## Syntax
 
-```js
-    arr.toString()
+```js-nolint
+toString()
 ```
 
-### 반환 값
+### Return value
 
-배열을 표현하는 문자열을 반환합니다.
+A string representing the elements of the array.
 
-## 설명
+## Description
 
-{{jsxref("Array")}} 객체는 {{jsxref("Object")}}의 `toString` 메서드를 재정의(override)합니다. Array 객체에 대해, `toString` 메서드는 배열을 합쳐(join) 쉼표로 구분된 각 배열 요소를 포함하는 문자열 하나를 반환합니다. 예를 들어, 다음 코드는 배열을 생성하며 그 배열을 문자열로 변환하기 위해 `toString`을 사용합니다.
+The {{jsxref("Array")}} object overrides the `toString` method of {{jsxref("Object")}}. The `toString` method of arrays calls [`join()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join) internally, which joins the array and returns one string containing each array element separated by commas. If the `join` method is unavailable or is not a function, [`Object.prototype.toString`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString) is used instead, returning `[object Array]`.
 
 ```js
-var monthNames = ['Jan', 'Feb', 'Mar', 'Apr'];
-var myVar = monthNames.toString(); // 'Jan,Feb,Mar,Apr'을 myVar에 할당.
+const arr = [];
+arr.join = 1; // re-assign `join` with a non-function
+console.log(arr.toString()); // [object Array]
+
+console.log(Array.prototype.toString.call({ join: () => 1 })); // 1
 ```
 
-JavaScript는 배열이 텍스트 값으로 표현되거나 배열이 문자열 연결(concatenation)에 참조될 때 자동으로 `toString` 메서드를 호출합니다.
+JavaScript calls the `toString` method automatically when an array is to be represented as a text value or when an array is referred to in a string concatenation.
 
-### ECMAScript 5 의미
+## Examples
 
-JavaScript 1.8.5 (Firefox 4)부터, ECMAScript 제5판 의미(semantics)와 일치하는 `toString()` 메서드는 일반(generic) 메서드이므로 모든 객체에 사용될 수 있습니다. 객체가 `join()` 메서드가 있는 경우, 호출되어 그 값이 반환됩니다. 그렇지 않으면 {{jsxref("Object.prototype.toString()")}}가 호출되어 그 결과값이 반환됩니다.
+### Using toString()
 
-## 명세
+```js
+const array1 = [1, 2, "a", "1a"];
+
+console.log(array1.toString()); // "1,2,a,1a"
+```
+
+### Using toString() on sparse arrays
+
+Following the behavior of `join()`, `toString()` treats empty slots the same as `undefined` and produces an extra separator:
+
+```js
+console.log([1, , 3].toString()); // '1,,3'
+```
+
+### Calling toString() on non-array objects
+
+`toString()` is [generic](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#generic_array_methods). It expects `this` to have a `join()` method; or, failing that, uses `Object.prototype.toString()` instead.
+
+```js
+console.log(Array.prototype.toString.call({ join: () => 1 }));
+// 1; a number
+console.log(Array.prototype.toString.call({ join: () => undefined }));
+// undefined
+console.log(Array.prototype.toString.call({ join: "not function" }));
+// "[object Object]"
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Array.prototype.join()")}}
-- {{jsxref("Object.prototype.toSource()")}}

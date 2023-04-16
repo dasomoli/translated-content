@@ -7,27 +7,29 @@ slug: Learn/JavaScript/Client-side_web_APIs/Client-side_storage
 
 {{PreviousMenu("Learn/JavaScript/Client-side_web_APIs/Video_and_audio_APIs", "Learn/JavaScript/Client-side_web_APIs")}}
 
-현대 웹 브라우저들은 (사용자의 허락 하에) 사용자 컴퓨터에 웹사이트 정보를 저장할 수 있는 다양한 방법을 제공합니다. 그리고 필요한때 그 정보들을 읽어오죠. 이는 당신이 장기간 데이터를 보관할 수 있게 해주고 사이트와 웹문서를 당신이 지정한 설정에 따라 오프라인 상태에서도 사용할수 있게 해줍니다. 이 문서는 이러한 것들이 어떻게 동작하는지에 대한 기본지식들을 설명합니다.
+Modern web browsers support a number of ways for websites to store data on the user's computer — with the user's permission — then retrieve it when necessary. This lets you persist data for long-term storage, save sites or documents for offline use, retain user-specific settings for your site, and more. This article explains the very basics of how these work.
 
-<table class="learn-box standard-table">
+<table>
   <tbody>
     <tr>
-      <th scope="row">필요한 사전 지식:</th>
+      <th scope="row">Prerequisites:</th>
       <td>
-        JavaScript에 대한 기본 (<a href="/ko/docs/Learn/JavaScript/First_steps">첫걸음</a>,
-        <a href="/ko/docs/Learn/JavaScript/Building_blocks"
-          >구성 요소</a
-        >
-        <a href="/en-US/docs/Learn/JavaScript/Objects">JavaScript 객체</a> 참고),
+        JavaScript basics (see
+        <a href="/en-US/docs/Learn/JavaScript/First_steps">first steps</a>,
+        <a href="/en-US/docs/Learn/JavaScript/Building_blocks"
+          >building blocks</a
+        >,
+        <a href="/en-US/docs/Learn/JavaScript/Objects">JavaScript objects</a>),
+        the
         <a href="/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction"
-          >Client-side API의 기본</a
+          >basics of Client-side APIs</a
         >
       </td>
     </tr>
     <tr>
-      <th scope="row">목표:</th>
+      <th scope="row">Objective:</th>
       <td>
-        데이터를 저장하기 위해 client-side storage API를 어떻게 사용하는지 배우기.
+        To learn how to use client-side storage APIs to store application data.
       </td>
     </tr>
   </tbody>
@@ -35,39 +37,39 @@ slug: Learn/JavaScript/Client-side_web_APIs/Client-side_storage
 
 ## Client-side storage?
 
-우리는 다른 MDN 학습영역에서 [정적인 사이트](/ko/docs/Learn/Server-side/First_steps/Client-Server_overview#Static_sites)와 [동적인 사이트](/ko/docs/Learn/Server-side/First_steps/Client-Server_overview#Dynamic_sites)에 대해 이미 설명하였습니다. 현대의 대부분의 웹사이트들은 어떤 데이터베이스(서버의 저장소)를 이용하여 서버에 데이터를 저장하고, 필요한 데이터를 찾아오기 위해 [서버-사이드](/ko/docs/Learn/Server-side) 코드를 돌리고, 정적인 페이지 템플릿에 데이터를 삽입하고, HTML 결과물을 사용자의 브라우저에 표시될 수 있게 제공합니다 - 즉 동적입니다.
+Elsewhere in the MDN learning area, we talked about the difference between [static sites](/en-US/docs/Learn/Server-side/First_steps/Client-Server_overview#static_sites) and [dynamic sites](/en-US/docs/Learn/Server-side/First_steps/Client-Server_overview#dynamic_sites). Most major modern websites are dynamic — they store data on the server using some kind of database (server-side storage), then run [server-side](/en-US/docs/Learn/Server-side) code to retrieve needed data, insert it into static page templates, and serve the resulting HTML to the client to be displayed by the user's browser.
 
-클라이언트-사이드 저장소는 비슷한 원리로 작동하지만, 다르게 쓰입니다. 이것은 개발자가 클라이언트 측(사용자의 컴퓨터 등)에 데이터를 저장할 수 있고 필요할 때 가져올 수 있게 해주는 자바스크립트 API로 구성되어 있습니다. 이것의 다양한 용도는 다음과 같습니다.
+Client-side storage works on similar principles, but has different uses. It consists of JavaScript APIs that allow you to store data on the client (i.e. on the user's machine) and then retrieve it when needed. This has many distinct uses, such as:
 
-- 웹사이트에 대한 선호를 개인화하기(사용자가 선택한 커스텀 위젯, 배색, 폰트 크기로 보여주기)
-- 이전 활동 기록 저장하기(이전 세션에 담았던 장바구니 목록 저장하기, 로그인 유지하기)
-- 사이트 다운로드가 빨라지고(잠재적으로 비용이 적게 들어가고) 네트워크 연결 없이도 사용할 수 있게끔 데이터를 로컬에 저장하기
-- 오프라인 상태에서 사용할 수 있도록 웹 어플리케이션 생성 문서를 로컬에 저장하기
+- Personalizing site preferences (e.g. showing a user's choice of custom widgets, color scheme, or font size).
+- Persisting previous site activity (e.g. storing the contents of a shopping cart from a previous session, remembering if a user was previously logged in).
+- Saving data and assets locally so a site will be quicker (and potentially less expensive) to download, or be usable without a network connection.
+- Saving web application generated documents locally for use offline
 
-클라이언트-사이드 저장소와 서버-사이드 저장소는 대개 함께 사용됩니다. 예를 들면, 당신은 (아마도 웹 게임이나 음악 재생 어플리케이션에서 사용할)음악 파일 여러 개를 다운받아 클라이언트-사이드 데이터베이스에 저장하고 필요할 때 재생할 수 있습니다. 사용자는 음악 파일을 한번만 다운받고, 재방문 시에는 데이터베이스에서 가져오기만 하면 됩니다.
+Often client-side and server-side storage are used together. For example, you could download a batch of music files (perhaps used by a web game or music player application), store them inside a client-side database, and play them as needed. The user would only have to download the music files once — on subsequent visits they would be retrieved from the database instead.
 
-> **참고:** There are limits to the amount of data you can store using client-side storage APIs (possibly both per individual API and cumulatively); the exact limit varies depending on the browser and possibly based on user settings. See [Browser storage limits and eviction criteria](/ko/docs/Web/API/IndexedDB_API/Browser_storage_limits_and_eviction_criteria) for more information.
+> **Note:** There are limits to the amount of data you can store using client-side storage APIs (possibly both per individual API and cumulatively); the exact limit varies depending on the browser and possibly based on user settings. See [Browser storage quotas and eviction criteria](/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria) for more information.
 
-### Old fashioned: cookies
+### Old school: Cookies
 
-클라이언트-사이드 저장소에 대한 개념은 오래전부터 있었습니다. 웹의 태동기 시절, 웹 사이트들은 사용자 경험(UX)을 개인화하는 정보들을 저장하기 위해 [cookies](/ko/docs/Web/HTTP/Cookies)를 사용했습니다. 그것들이 웹에서 보편적으로 사용된 클라이언트-사이드 저장소의 제일 오래된 형태입니다.
+The concept of client-side storage has been around for a long time. Since the early days of the web, sites have used [cookies](/en-US/docs/Web/HTTP/Cookies) to store information to personalize user experience on websites. They're the earliest form of client-side storage commonly used on the web.
 
-오늘날에는 클라이언트 사이드에 데이터를 저장하는 더 쉬운 방법이 있지만, 이 문서에서 cookies를 사용하는 법을 가르쳐 주지는 않습니다. 그러나, 이것이 현대의 웹에서 cookies가 완벽하게 쓸모없다는 것을 뜻하지는 않습니다. cookies는 세션 ID나 access token 같은 사용자 상태와 개인화에 관련된 정보를 저장하는데 여전히 보편적으로 쓰입니다. cookies에 대한 더 자세한 정보는 우리의 [Using HTTP cookies](/ko/docs/Web/HTTP/Cookies) 문서를 참고하세요.
+These days, there are easier mechanisms available for storing client-side data, therefore we won't be teaching you how to use cookies in this article. However, this does not mean cookies are completely useless on the modern-day web — they are still used commonly to store data related to user personalization and state, e.g. session IDs and access tokens. For more information on cookies see our [Using HTTP cookies](/en-US/docs/Web/HTTP/Cookies) article.
 
 ### New school: Web Storage and IndexedDB
 
-현대의 브라우저들은 클라이언트-사이드 데이터를 저장하는 데에 cookies보다 더 쉽고 더 효율적인 API들을 제공합니다.
+The "easier" features we mentioned above are as follows:
 
-- [Web Storage API](/ko/docs/Web/API/Web_Storage_API)는 이름과 대응되는 값으로 이루어진 더 작은 데이터를 저장하고 가져오는 매우 간단한 기능을 제공합니다. 이것은 사용자 이름과 로그인 여부, 스크린 배경색을 어떤 색으로 할지 등등 같은 간단한 데이터를 저장할 필요가 있을 때 유용합니다.
-- [IndexedDB API](/ko/docs/Web/API/IndexedDB_API)는 복잡한 데이터를 저장할 수 있는 완벽한 데이터베이스를 브라우저에서 제공할 수 있게 해줍니다. 이것은 소비자 기록의 복잡한 데이터셋부터 오디오나 비디오 파일같은 더욱 복잡한 데이터까지 저장하는 데에 쓰일 수 있습니다.
+- The [Web Storage API](/en-US/docs/Web/API/Web_Storage_API) provides a mechanism for storing and retrieving smaller, data items consisting of a name and a corresponding value. This is useful when you just need to store some simple data, like the user's name, whether they are logged in, what color to use for the background of the screen, etc.
+- The [IndexedDB API](/en-US/docs/Web/API/IndexedDB_API) provides the browser with a complete database system for storing complex data. This can be used for things from complete sets of customer records to even complex data types like audio or video files.
 
-밑에서 이런 API들을 더 배울 수 있습니다.
+You'll learn more about these APIs below.
 
-### The future: Cache API
+### The Cache API
 
-몇몇 현대적인 브라우저들은 새로운 {{domxref("Cache")}} API를 제공합니다. 이 API는 특정 requests에 대한 HTTP responses를 저장하기 위해 디자인되었고, 웹사이트가 차후에 네트워크 연결 없이도 사용될 수 있도록 사이트 정보를 저장하는 등의 일을 하는데 유용합니다. Cache는 일반적으로 [Service Worker API](/ko/docs/Web/API/Service_Worker_API)와 함께 사용되지만, 꼭 그럴 필요는 없습니다.
+The {{domxref("Cache")}} API is designed for storing HTTP responses to specific requests, and is very useful for doing things like storing website assets offline so the site can subsequently be used without a network connection. Cache is usually used in combination with the [Service Worker API](/en-US/docs/Web/API/Service_Worker_API), although it doesn't have to be.
 
-Cache와 Service Workers의 사용은 심화 주제이므로 이 문서에서는 아래의 [Offline asset storage](#offline_asset_storage) 섹션에서 보여주는 것 이상으로 깊게 다루지는 않을 것입니다.
+The use of Cache and Service Workers is an advanced topic, and we won't be covering it in great detail in this article, although we will show an example in the [Offline asset storage](#offline_asset_storage) section below.
 
 ## Storing simple data — web storage
 
@@ -766,13 +768,3 @@ That's it for now. We hope you've found our rundown of client-side storage techn
 - [Service worker API](/en-US/docs/Web/API/Service_Worker_API)
 
 {{PreviousMenu("Learn/JavaScript/Client-side_web_APIs/Video_and_audio_APIs", "Learn/JavaScript/Client-side_web_APIs")}}
-
-## In this module
-
-- [Introduction to web APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction)
-- [Manipulating documents](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Manipulating_documents)
-- [Fetching data from the server](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Fetching_data)
-- [Third party APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Third_party_APIs)
-- [Drawing graphics](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Drawing_graphics)
-- [Video and audio APIs](/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Video_and_audio_APIs)
-- **Client-side storage**

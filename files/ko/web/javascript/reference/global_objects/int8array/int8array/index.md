@@ -1,15 +1,15 @@
 ---
 title: Int8Array() constructor
 slug: Web/JavaScript/Reference/Global_Objects/Int8Array/Int8Array
+page-type: javascript-constructor
+browser-compat: javascript.builtins.Int8Array.Int8Array
 ---
 
 {{JSRef}}
 
-**`Int8Array()`** 형식화 배열(TypedArray)의 생성자는 2의 보수 8비트의 부호있는 정수의 배열을 생성합니다.
-배열의 내용은 0으로 초기화됩니다. 배열이 생성되면 객체의 메서드를 사용하거나 표준 배열 인덱스 구문(즉, 대괄호 표기법 사용)을 사용하여
-배열의 요소를 참조할 수 있습니다.
+The **`Int8Array()`** constructor creates {{jsxref("Int8Array")}} objects. The contents are initialized to `0`.
 
-## 구문
+## Syntax
 
 ```js-nolint
 new Int8Array()
@@ -22,43 +22,42 @@ new Int8Array(buffer, byteOffset)
 new Int8Array(buffer, byteOffset, length)
 ```
 
-> **참고:** `Int8Array()`는 오직 [`new`](/ko/docs/Web/JavaScript/Reference/Operators/new)
-> 로만 생성할 수 있습니다. `new` 없이 호출을 시도하면 {{jsxref("TypeError")}} 예외가 발생합니다.
+> **Note:** `Int8Array()` can only be constructed with [`new`](/en-US/docs/Web/JavaScript/Reference/Operators/new). Attempting to call it without `new` throws a {{jsxref("TypeError")}}.
 
-### 매개변수
+### Parameters
 
-[`TypedArray`](/ko/docs/Web/JavaScript/Reference/Global_Objects/TypedArray#parameters)를 참고하세요.
+See [`TypedArray`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray#parameters).
 
-### 예외
+### Exceptions
 
-[`TypedArray`](/ko/docs/Web/JavaScript/Reference/Global_Objects/TypedArray#exceptions)를 참고하세요.
+See [`TypedArray`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray#exceptions).
 
-## 예제
+## Examples
 
-### Int8Array를 생성하기 위한 각기 다른 여러 방법
+### Different ways to create an Int8Array
 
 ```js
-// 길이로부터 생성
+// From a length
 const int8 = new Int8Array(2);
 int8[0] = 42;
 console.log(int8[0]); // 42
 console.log(int8.length); // 2
 console.log(int8.BYTES_PER_ELEMENT); // 1
 
-// 배열로부터 생성
+// From an array
 const x = new Int8Array([21, 31]);
 console.log(x[1]); // 31
 
-// 다른 TypedArray로부터 생성
+// From another TypedArray
 const y = new Int8Array(x);
 console.log(y[0]); // 21
 
-// ArrayBuffer로부터 생성
+// From an ArrayBuffer
 const buffer = new ArrayBuffer(8);
 const z = new Int8Array(buffer, 1, 4);
 console.log(z.byteOffset); // 1
 
-// 순회로부터 생성
+// From an iterable
 const iterable = (function* () {
   yield* [1, 2, 3];
 })();
@@ -67,17 +66,17 @@ console.log(int8FromIterable);
 // Int8Array [1, 2, 3]
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [`core-js`에서 `Int8Array` 폴리필](https://github.com/zloirock/core-js#ecmascript-typed-arrays)
-- [JavaScript 형식화 배열](/ko/docs/Web/JavaScript/Typed_arrays)
+- [Polyfill of `Int8Array` in `core-js`](https://github.com/zloirock/core-js#ecmascript-typed-arrays)
+- [JavaScript typed arrays](/en-US/docs/Web/JavaScript/Typed_arrays)
 - {{jsxref("ArrayBuffer")}}
 - {{jsxref("DataView")}}

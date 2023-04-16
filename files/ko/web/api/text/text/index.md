@@ -1,33 +1,45 @@
 ---
-title: Text()
+title: "Text: Text() constructor"
+short-title: Text()
 slug: Web/API/Text/Text
+page-type: web-api-constructor
+browser-compat: api.Text.Text
 ---
 
-{{ Apiref("DOM")}}{{seeCompatTable}}
+{{ APIRef("DOM")}}
 
-**`Text()`** 생성자는 옵션인 파라미터로 주어진 문자형 컨텐츠인 {{domxref("DOMString")}} 으로 새롭게 생성된 {{domxref("Text")}} 객체를 반환합니다.
+The **`Text()`** constructor returns a new {{domxref("Text")}} object
+with the optional string given in parameter as its textual content.
 
-## 문법
+## Syntax
 
-```js
-text1 = new Text(); // 빈 텍스트 노드 생성
-text2 = new Text("텍스트 노드입니다");
+```js-nolint
+new Text()
+new Text(string)
 ```
 
-## 예제
+### Parameters
+
+- `string` {{optional_inline}}
+
+### Return value
+
+A new {{domxref("Text")}} object with the content of the `string` parameter, or the empty string if no parameter was given.
+
+## Example
 
 ```js
-text = new Text("Test");
+let text = new Text("Test");
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 보기
+## See also
 
-- [DOM 인터페이스 목차.](/ko/docs/Gecko_DOM_Reference)
+- The [DOM API](/en-US/docs/Web/API/Document_Object_Model)

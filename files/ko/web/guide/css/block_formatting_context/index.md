@@ -1,44 +1,47 @@
 ---
-title: 블록 서식 맥락
+title: Block formatting context
 slug: Web/Guide/CSS/Block_formatting_context
+spec-urls: https://drafts.csswg.org/css-display/#block-formatting-context
 ---
 
-{{ CSSRef }}
+{{CSSRef}}
 
-**블록 서식 맥락**(block format context)은 웹 페이지를 렌더링하는 시각적 CSS의 일부로서, 블록 박스의 레이아웃이 발생하는 지점과 플로팅 요소의 상호작용 범위를 결정하는 범위입니다.
+A **block formatting context** (BFC) is a part of a visual CSS rendering of a web page. It's the region in which the layout of block boxes occurs and in which floats interact with other elements.
 
-블록 서식 맥락은 다음과 같은 경우에 생성됩니다.
+A block formatting context is created by at least one of the following:
 
-- 문서의 루트 요소({{htmlelement("html")}}).
-- 플로팅 요소({{cssxref("float")}}이 `none`이 아님).
-- 절대 위치를 지정한 요소({{cssxref("position")}}이 `absolute` 또는 `fixed`).
-- 인라인 블록({{cssxref("display")}}가 `inline-block`).
-- 표 칸({{cssxref("display")}}가 `table-cell`, HTML 표 칸의 기본값).
-- 표 주석({{cssxref("display")}}가 `table-caption`, HTML 표 주석의 기본값).
-- {{cssxref("display")}}가 `table`, `table-row`, `table-row-group`, `table-header-group`, `table-footer-group` (HTML 표에서, 각각 표 전체, 행, 본문, 헤더, 푸터의 기본값) 또는 `inline-table`인 요소가 암시적으로 생성한 무명 칸.
-- {{cssxref("overflow")}}가 `visible`이 아닌 블록 요소.
-- {{cssxref("display")}}가 `flow-root`.
-- {{cssxref("contain")}}이 `layout`, `content`, `paint`.
-- 스스로 플렉스, 그리드, 테이블 컨테이너가 아닌 경우의 플렉스 항목({{cssxref("display")}}가 `flex` 또는 `inline-flex`인 요소의 바로 아래 자식)
-- 스스로 플렉스, 그리드, 테이블 컨테이너가 아닌 경우의 그리드 항목({{cssxref("display")}}가 `grid` 또는 `inline-grid`인 요소의 바로 아래 자식)
-- 다열 컨테이너({{cssxref("column-count")}} 또는 ({{cssxref("column-width")}}가 `auto`가 아닌 경우. `column-count: 1` 포함).
-- {{cssxref("column-span")}}이 `all`인 경우. 해당하는 요소가 다열 컨테이너 안에 위치하지 않아도 항상 새로운 블록 서식 맥락을 생성해야 합니다. ([명세 변경](https://github.com/w3c/csswg-drafts/commit/a8634b96900279916bd6c505fda88dda71d8ec51), [Chrome 버그](https://bugs.chromium.org/p/chromium/issues/detail?id=709362))
+- The root element of the document (`<html>`).
+- Floats (elements where {{ cssxref("float") }} isn't `none`).
+- Absolutely positioned elements (elements where {{ cssxref("position") }} is `absolute` or `fixed`).
+- Inline-blocks (elements with {{ cssxref("display") }}`: inline-block`).
+- Table cells (elements with {{ cssxref("display") }}`: table-cell`, which is the default for HTML table cells).
+- Table captions (elements with {{ cssxref("display") }}`: table-caption`, which is the default for HTML table captions).
+- Anonymous table cells implicitly created by the elements with {{ cssxref("display") }}`: table`, `table-row`, `table-row-group`, `table-header-group`, `table-footer-group` (which is the default for HTML tables, table rows, table bodies, table headers, and table footers, respectively), or `inline-table`.
+- Block elements where {{ cssxref("overflow") }} has a value other than `visible` and `clip`.
+- {{ cssxref("display") }}`: flow-root`.
+- Elements with {{ cssxref("contain") }}`: layout`, `content`, or `paint`.
+- Flex items (direct children of the element with {{ cssxref("display") }}`: flex` or `inline-flex`) if they are neither [flex](/en-US/docs/Glossary/Flex_Container) nor [grid](/en-US/docs/Glossary/Grid_Container) nor [table](/en-US/docs/Web/CSS/CSS_Table) containers themselves.
+- Grid items (direct children of the element with {{ cssxref("display") }}`: grid` or `inline-grid`) if they are neither [flex](/en-US/docs/Glossary/Flex_Container) nor [grid](/en-US/docs/Glossary/Grid_Container) nor [table](/en-US/docs/Web/CSS/CSS_Table) containers themselves.
+- Multicol containers (elements where {{ cssxref("column-count") }} or {{ cssxref("column-width") }} isn't `auto`, including elements with `column-count: 1`).
+- {{ cssxref("column-span") }}`: all` should always create a new formatting context, even when the `column-span: all` element isn't contained by a multicol container ([Spec change](https://github.com/w3c/csswg-drafts/commit/a8634b96900279916bd6c505fda88dda71d8ec51), [Chrome bug](https://crbug.com/709362)).
 
-블록 서식 맥락은 레이아웃에 영향을 주지만, 보통 맥락을 생성하는 요소는 아래와 같은 작용을 하기 때문에 위치 설정과 플로팅 해제를 위해 더 많이 사용합니다.
+Formatting contexts affect layout, but typically, we create a new block formatting context for the positioning and clearing floats rather than changing the layout, because an element that establishes a new block formatting context will:
 
-- 내부 플로팅 가두기
-- 외부 플로팅 제외하기
-- [여백 상쇄](/ko/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing) 제거
+- contain internal floats.
+- exclude external floats.
+- suppress [margin collapsing](/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing).
 
-## 예제
+> **Note:** A Flex/Grid container({{ cssxref("display") }}: flex/grid/inline-flex/inline-grid) establishes a new Flex/Grid formatting context, which is similar to block formatting context except layout. There's no floating children available inside a flex/grid container, but exclude external floats and suppress margin collapsing still works.
 
-### 내부 플로팅 가두기
+## Examples
+
+### Contain internal floats
 
 Make float content and alongside content the same height.
 
 Let's have a look at a couple of these in order to see the effect creating a new BFC.
 
-In the following example, we have a floated element inside a `<div>` with a `border` applied. The content of that `<div>` has floated alongside the floated element. As the content of the float is taller than the content alongside it, the border of the `<div>` now runs through the float. As explained in the [guide to in-flow and out of flow elements](/ko/docs/Web/CSS/CSS_Flow_Layout/In_Flow_and_Out_of_Flow), the float has been taken out of flow so the `background` and `border` of the `<div>` only contain the content and not the float.
+In the following example, we have a floated element inside a `<div>` with a `border` applied. The content of that `<div>` has floated alongside the floated element. As the content of the float is taller than the content alongside it, the border of the `<div>` now runs through the float. As explained in the [guide to in-flow and out of flow elements](/en-US/docs/Web/CSS/CSS_Flow_Layout/In_Flow_and_Out_of_Flow), the float has been taken out of flow so the `background` and `border` of the `<div>` only contain the content and not the float.
 
 **using `overflow: auto`**
 
@@ -58,22 +61,22 @@ The value name of `flow-root` makes sense when you understand you are creating s
 
 ```html
 <section>
-    <div class="box">
-        <div class="float">I am a floated box!</div>
-        <p>I am content inside the container.</p>
-    </div>
+  <div class="box">
+    <div class="float">I am a floated box!</div>
+    <p>I am content inside the container.</p>
+  </div>
 </section>
 <section>
-    <div class="box" style="overflow:auto">
-        <div class="float">I am a floated box!</div>
-        <p>I am content inside the <code>overflow:auto</code> container.</p>
-    </div>
+  <div class="box" style="overflow:auto">
+    <div class="float">I am a floated box!</div>
+    <p>I am content inside the <code>overflow:auto</code> container.</p>
+  </div>
 </section>
 <section>
-    <div class="box" style="display:flow-root">
-        <div class="float">I am a floated box!</div>
-        <p>I am content inside the <code>display:flow-root</code> container.</p>
-    </div>
+  <div class="box" style="display:flow-root">
+    <div class="float">I am a floated box!</div>
+    <p>I am content inside the <code>display:flow-root</code> container.</p>
+  </div>
 </section>
 ```
 
@@ -81,31 +84,31 @@ The value name of `flow-root` makes sense when you understand you are creating s
 
 ```css
 section {
-    height:150px;
+  height: 150px;
 }
 .box {
-    background-color: rgb(224, 206, 247);
-    border: 5px solid rebeccapurple;
+  background-color: rgb(224, 206, 247);
+  border: 5px solid rebeccapurple;
 }
 .box[style] {
-    background-color: aliceblue;
-    border: 5px solid steelblue;
+  background-color: aliceblue;
+  border: 5px solid steelblue;
 }
 .float {
-    float: left;
-    width: 200px;
-    height: 100px;
-    background-color: rgba(255, 255, 255, .5);
-    border:1px solid black;
-    padding: 10px;
+  float: left;
+  width: 200px;
+  height: 100px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid black;
+  padding: 10px;
 }
 ```
 
-{{EmbedLiveSample("example1", 200, 450)}}
+{{EmbedLiveSample("Contain_internal_floats", 200, 480)}}
 
 ### Exclude external floats
 
-In the following example, we are using `display:flow-root` and floats to implement double columns layout, beacuse an element in the normal flow that establishes a new BFC must not overlap the margin box of any floats in the same block formatting context as the element itself.
+In the following example, we are using `display:flow-root` and floats to implement double columns layout. We are able to do this because an element in the normal flow that establishes a new BFC does not overlap the margin box of any floats in the same block formatting context as the element itself.
 
 #### HTML
 
@@ -116,7 +119,9 @@ In the following example, we are using `display:flow-root` and floats to impleme
 </section>
 <section>
   <div class="float">Try to resize this outer float</div>
-  <div class="box" style="display:flow-root"><p><code>display:flow-root</code><p></div>
+  <div class="box" style="display:flow-root">
+    <p><code>display:flow-root</code></p>
+  </div>
 </section>
 ```
 
@@ -124,52 +129,51 @@ In the following example, we are using `display:flow-root` and floats to impleme
 
 ```css
 section {
-    height:150px;
+  height: 150px;
 }
 .box {
-    background-color: rgb(224, 206, 247);
-    border: 5px solid rebeccapurple;
+  background-color: rgb(224, 206, 247);
+  border: 5px solid rebeccapurple;
 }
 .box[style] {
-    background-color: aliceblue;
-    border: 5px solid steelblue;
+  background-color: aliceblue;
+  border: 5px solid steelblue;
 }
 .float {
-    float: left;
-    overflow: hidden; /* required by resize:both */
-    resize: both;
-    margin-right:25px;
-    width: 200px;
-    height: 100px;
-    background-color: rgba(255, 255, 255, .75);
-    border: 1px solid black;
-    padding: 10px;
+  float: left;
+  overflow: hidden; /* required by resize:both */
+  resize: both;
+  margin-right: 25px;
+  width: 200px;
+  height: 100px;
+  background-color: rgba(255, 255, 255, 0.75);
+  border: 1px solid black;
+  padding: 10px;
 }
 ```
 
-{{EmbedLiveSample("example2", 200, 300)}}
+{{EmbedLiveSample("Exclude_external_floats", 200, 330)}}
 
 Rather than inline-blocks with width:\<percentage>, in this case we don't have to specify the width of the right div.
 
-Note that flexbox is a more efficient way to implement muti columns layout in morden CSS.
+Note that flexbox is a more efficient way to implement multi-column layout in modern CSS.
 
-### 여백 상쇄
+### Prevent margin collapsing
 
-Creating a new BFC to avoid the [margin collapsing](/ko/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing) between two neighbor div:
+You can create a new BFC to avoid [margin collapsing](/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing) between two neighbor elements.
 
-#### HTML
+#### Margin collapsing example
+
+In this example we have two adjacent {{HTMLElement("div")}} elements, which each have a vertical margin of `10px`. Because of margin collapsing, the vertical gap between them is 10 pixels, not the 20 we might expect.
 
 ```html
 <div class="blue"></div>
-<div class="red-outer">
-  <div class="red-inner">red inner</div>
-</div>
+<div class="red"></div>
 ```
 
-#### CSS
-
 ```css
-.blue, .red-inner {
+.blue,
+.red {
   height: 50px;
   margin: 10px 0;
 }
@@ -178,14 +182,69 @@ Creating a new BFC to avoid the [margin collapsing](/ko/docs/Web/CSS/CSS_Box_Mod
   background: blue;
 }
 
-.red-outer {
-  overflow: hidden;
+.red {
   background: red;
 }
 ```
 
-{{EmbedLiveSample("여백_상쇄", 120, 120)}}
+{{EmbedLiveSample("Margin collapsing example", 120, 170)}}
 
-## 같이 보기
+#### Preventing margin collapsing
+
+In this example we wrap the second `<div>` in an outer one, to create a new BFC and prevent margin collapsing.
+
+```html
+<div class="blue"></div>
+<div class="outer">
+  <div class="red"></div>
+</div>
+```
+
+```css
+.blue,
+.red {
+  height: 50px;
+  margin: 10px 0;
+}
+
+.blue {
+  background: blue;
+}
+
+.red {
+  background: red;
+}
+
+.outer {
+  overflow: hidden;
+  background: transparent;
+}
+```
+
+{{EmbedLiveSample("Preventing margin collapsing", 120, 170)}}
+
+## Specifications
+
+{{Specifications}}
+
+## See also
 
 - {{ cssxref("float") }}, {{ cssxref("clear") }}
+- CSS key concepts:
+  - [CSS syntax](/en-US/docs/Web/CSS/Syntax)
+  - [At-rules](/en-US/docs/Web/CSS/At-rule)
+  - [Comments](/en-US/docs/Web/CSS/Comments)
+  - [Specificity](/en-US/docs/Web/CSS/Specificity)
+  - [Inheritance](/en-US/docs/Web/CSS/Inheritance)
+  - [Box model](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
+  - [Layout modes](/en-US/docs/Web/CSS/Layout_mode)
+  - [Visual formatting models](/en-US/docs/Web/CSS/Visual_formatting_model)
+  - [Margin collapsing](/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)
+  - Values
+    - [Initial values](/en-US/docs/Web/CSS/initial_value)
+    - [Computed values](/en-US/docs/Web/CSS/computed_value)
+    - [Used values](/en-US/docs/Web/CSS/used_value)
+    - [Actual values](/en-US/docs/Web/CSS/actual_value)
+  - [Value definition syntax](/en-US/docs/Web/CSS/Value_definition_syntax)
+  - [Shorthand properties](/en-US/docs/Web/CSS/Shorthand_properties)
+  - [Replaced elements](/en-US/docs/Web/CSS/Replaced_element)

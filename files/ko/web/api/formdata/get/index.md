@@ -1,61 +1,59 @@
 ---
-title: FormData.get()
+title: "FormData: get() method"
+short-title: get()
 slug: Web/API/FormData/get
+page-type: web-api-instance-method
+browser-compat: api.FormData.get
 ---
 
 {{APIRef("XMLHttpRequest")}}
 
-{{domxref("FormData")}} 인터페이스의 **`get()`** 메서드는 `FormData` 객체에서 지정한 키와 연관된 첫 번째 값을 반환합니다. 값이 여러개이고, 모든 값을 원하면 이 메서드 대신 {{domxref("FormData.getAll()","getAll()")}} 메서드를 사용하십시오.
+The **`get()`** method of the {{domxref("FormData")}} interface
+returns the first value associated with a given key from within a `FormData`
+object. If you expect multiple values and want all of them, use the
+{{domxref("FormData.getAll()","getAll()")}} method instead.
 
-> **참고:** 이 메서드는 [Web Worker](/ko/docs/Web/API/Web_Workers_API)에서 사용할 수 있습니다.
+> **Note:** This method is available in [Web Workers](/en-US/docs/Web/API/Web_Workers_API).
 
 ## Syntax
 
-```js
-formData.get(name);
+```js-nolint
+get(name)
 ```
 
 ### Parameters
 
 - `name`
-  - : 검색하고 싶은 키의 이름을 나타내는 {{domxref("USVString")}} 입니다.
+  - : A string representing the name of the key you want to retrieve.
 
 ### Return value
 
-값을 포함하는 {{domxref("FormDataEntryValue")}} 입니다.
+A value whose key matches the specified `name`. Otherwise, [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null).
 
-## Example
+## Examples
 
-다음 코드를 따라 빈 `FormData` 객체를 만듭니다:
-
-```js
-var formData = new FormData();
-```
-
-{{domxref("FormData.append")}}를 사용하여 `username` 에 두 개의 값을 추가합니다:
+If we add two `username` values to a {{domxref("FormData")}} using {{domxref("FormData.append", "append()")}}:
 
 ```js
-formData.append('username', 'Chris');
-formData.append('username', 'Bob');
+formData.append("username", "Chris");
+formData.append("username", "Bob");
 ```
 
-`get()` 함수를 사용하면 `username` 의 첫 번째 value만 반환합니다:
+The following `get()` method will only return the first `username` value:
 
 ```js
-formData.get('username'); // Returns "Chris"
+formData.get("username"); // Returns "Chris"
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- {{domxref("XMLHTTPRequest")}}
-- [Using XMLHttpRequest](/ko/docs/DOM/XMLHttpRequest/Using_XMLHttpRequest)
-- [Using FormData objects](/ko/docs/DOM/XMLHttpRequest/FormData/Using_FormData_Objects)
+- [Using FormData objects](/en-US/docs/Web/API/FormData/Using_FormData_Objects)
 - {{HTMLElement("Form")}}

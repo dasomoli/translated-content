@@ -1,20 +1,30 @@
 ---
-title: Document.referrer
+title: "Document: referrer property"
+short-title: referrer
 slug: Web/API/Document/referrer
+page-type: web-api-instance-property
+browser-compat: api.Document.referrer
 ---
 
-{{APIRef("DOM")}}링크를 통해 현재 페이지로 이동 시킨, 전 페이지의 URI 정보를 반환.
+{{APIRef("DOM")}}
 
-## Syntax
+The **`Document.referrer`** property returns the [URI](https://www.w3.org/Addressing/#background) of the page that linked to
+this page.
 
-```js
-string = document.referrer;
-```
+## Value
 
-## Notes
+The value is an empty string if the user navigated to the page directly (not through a
+link, but, for example, by using a bookmark). Because this property returns only a
+string, it doesn't give you document object model (DOM) access to the referring page.
 
-페이지로 바로 접근하였을 경우 이 값은 빈 문자열을 반환함.(링크를 통해서 온것이 아닌, 예를 들면, 북마크를 통해서 이동했을 경우). 문자열만을 반환하기 때문에, 참조 페이지(referring page)에 대한 DOM 액세스가 제공되지 않음.
+Inside an {{HTMLElement("iframe")}}, the `Document.referrer` will initially
+be set to the same value as the {{domxref("HTMLAnchorElement/href", "href")}} of
+the parent window's {{domxref("Window/location", "Window.location")}}.
 
-## Specification
+## Specifications
 
-- [DOM Level 2: referrer](http://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-95229140)
+{{Specifications}}
+
+## Browser compatibility
+
+{{Compat}}

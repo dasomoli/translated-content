@@ -1,68 +1,56 @@
 ---
-title: 일반적인 CSS 문제 해결하기
+title: Use CSS to solve common problems
 slug: Learn/CSS/Howto
 ---
 
 {{LearnSidebar}}
 
-다음 링크들은 일반적인 CSS 문제들에 대한 해결방법을 제공합니다.
+This page rounds up questions and answers, and other material on the MDN site that can help you to solve common CSS problems.
 
-## 일반적인 사례
+## Styling boxes
 
-### Basics
+- [How do I add a drop-shadow to an element?](/en-US/docs/Learn/CSS/Howto/Add_a_shadow)
+  - : Shadows can be added to boxes with the {{cssxref("box-shadow")}} property. This tutorial explains how it works and shows an example.
+- [How do I fill a box with an image without distorting the image?](/en-US/docs/Learn/CSS/Howto/Fill_a_box_with_an_image)
+  - : The {{cssxref("object-fit")}} property provides different ways to fit an image into a box which has a different aspect ratio, and you can find out how to use them in this tutorial.
+- [Which methods can be used to style boxes?](/en-US/docs/Learn/CSS/Howto/create_fancy_boxes)
+  - : A rundown of the different properties that might be useful when styling boxes using CSS.
+- [How can I make elements semi-transparent?](/en-US/docs/Learn/CSS/Howto/Make_box_transparent)
+  - : The {{cssxref("opacity")}} property and color values with an alpha channel can be used for this; find out which one to use when.
 
-- [How to apply CSS to HTML](/en-US/Learn/CSS/Introduction_to_CSS/How_CSS_works#How_to_apply_your_CSS_to_your_HTML)
-- [How to use whitespace in CSS](/en-US/Learn/CSS/Introduction_to_CSS/Syntax#White_space)
-- [How to write comments in CSS](/en-US/Learn/CSS/Introduction_to_CSS/Syntax#Comments)
-- [How to select elements via element name, class or ID](/en-US/Learn/CSS/Introduction_to_CSS/Selectors#Simple_selectors)
-- [How to select elements via attribute name and content](/en-US/Learn/CSS/Introduction_to_CSS/Selectors#Attribute_selectors)
-- [How to use pseudo-classes](/en-US/Learn/CSS/Introduction_to_CSS/Selectors#Pseudo-classes)
-- [How to use pseudo-elements](/en-US/Learn/CSS/Introduction_to_CSS/Selectors#Pseudo-elements)
-- [How to apply multiple selectors to the same rule](/en-US/Learn/CSS/Introduction_to_CSS/Selectors#Multiple_selectors_on_one_rule)
-- [How to specify colors in CSS](/en-US/Learn/CSS/Introduction_to_CSS/Values_and_units#Colors)
-- [How to debug CSS in the browser](/en-US/Learn/CSS/Introduction_to_CSS/Debugging_CSS#Inspecting_the_DOM_and_CSS)
+### Box styling lessons and guides
 
-### CSS and text
+- [The Box Model](/en-US/docs/Learn/CSS/Building_blocks/The_box_model)
+- [Styling backgrounds and borders](/en-US/docs/Learn/CSS/Building_blocks/Backgrounds_and_borders)
 
-- [How to style text](/ko/docs/Learn/CSS/Styling_text/Fundamentals)
-- [How to customize a list of elements](/ko/docs/Learn/CSS/Styling_text/Styling_lists)
-- [How to style links](/en-US/Learn/CSS/Styling_text/Styling_links)
-- [How to add shadows to text](/en-US/Learn/CSS/Styling_text/Fundamentals#Text_drop_shadows)
+## CSS and text
 
-### Boxes and layouts
+- [How do I add a drop-shadow to text?](/en-US/docs/Learn/CSS/Howto/Add_a_text_shadow)
+  - : Shadows can be added to text with the {{cssxref("text-shadow")}} property. This tutorial explains how it works and shows an example.
+- [How do I highlight the first line of a paragraph?](/en-US/docs/Learn/CSS/Howto/Highlight_first_line)
+  - : Find out how to target the first line of text in a paragraph with the {{cssxref("::first-line")}} pseudo-element.
+- [How do I highlight the first paragraph in an article?](/en-US/docs/Learn/CSS/Howto/Highlight_first_para)
+  - : Find out how to target the first paragraph with the {{cssxref(":first-child")}} pseudo-class.
+- [How do I highlight a paragraph only if it comes right after a heading?](/en-US/docs/Learn/CSS/Howto/Highlight_para_after_h1)
+  - : Combinators can help you to precisely target elements based on where they are in the document; this tutorial explains how to use them to apply CSS to a paragraph only if it immediately follows a heading.
 
-- [How to size CSS boxes](/en-US/Learn/CSS/Introduction_to_CSS/Box_model#Box_properties)
-- [How to control overflowing content](/en-US/Learn/CSS/Introduction_to_CSS/Box_model#Overflow)
-- [How to control the part of a CSS box that the background is drawn under](/en-US/Learn/CSS/Introduction_to_CSS/Box_model#Background_clip)
-- [How do I define inline, block, and inline-block?](/en-US/Learn/CSS/Introduction_to_CSS/Box_model#Types_of_CSS_boxes)
-- [How to create fancy boxes](/ko/docs/Learn/CSS/Howto/create_fancy_boxes) (also see the [Styling boxes](/ko/docs/Learn/CSS/Styling_boxes) module, generally).
-- [How to use `background-clip` to control how much of the box your background image covers](/en-US/Learn/CSS/Introduction_to_CSS/Box_model#Background_clip).
-- [How to change the box model completely using `box-sizing`](/en-US/Learn/CSS/Styling_boxes/Box_model_recap#Changing_the_box_model_completely)
-- [How to control backgrounds](/en-US/Learn/CSS/Styling_boxes/Backgrounds)
-- [How to control borders](/en-US/Learn/CSS/Styling_boxes/Borders)
-- [How to style an HTML table](/en-US/Learn/CSS/Styling_boxes/Styling_tables)
-- [How to add shadows to boxes](/en-US/Learn/CSS/Styling_boxes/Advanced_box_effects#Box_shadows)
+### Text styling lessons and guides
 
-## Uncommon and advanced techniques
+- [How to style text](/en-US/docs/Learn/CSS/Styling_text/Fundamentals)
+- [How to customize a list of elements](/en-US/docs/Learn/CSS/Styling_text/Styling_lists)
+- [How to style links](/en-US/docs/Learn/CSS/Styling_text/Styling_links)
+- [CSS Selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors)
 
-CSS allows very advanced design techniques. These articles help demistify the harder use cases you may face.
+## CSS Layout
 
-### General
+- [How do I center an item?](/en-US/docs/Learn/CSS/Howto/Center_an_item)
+  - : Centering an item inside another box horizontally and vertically used to be tricky, however Flexbox now makes it simple.
 
-- [How to calculate specificity of a CSS selector](/en-US/Learn/CSS/Introduction_to_CSS/Cascade_and_inheritance#Specificity)
-- [How to control inheritance in CSS](/en-US/Learn/CSS/Introduction_to_CSS/Cascade_and_inheritance#Controlling_inheritance)
+### Layout guides
 
-### Advanced effects
+- [Using CSS Flexbox](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox)
+- [Using CSS multi-column layouts](/en-US/docs/Web/CSS/CSS_Columns/Using_multi-column_layouts)
+- [Using CSS Grid Layout](/en-US/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout)
+- [Using CSS generated content](/en-US/docs/Learn/CSS/Howto/Generated_content)
 
-- [How to use filters in CSS](/en-US/Learn/CSS/Styling_boxes/Advanced_box_effects#Filters)
-- [How to use blend modes in CSS](/en-US/Learn/CSS/Styling_boxes/Advanced_box_effects#Blend_modes)
-
-### Layout
-
-- [Using CSS flexible boxes](/ko/docs/Web/Guide/CSS/Flexible_boxes)
-- [Using CSS multi-column layouts](/ko/docs/Web/Guide/CSS/Using_multi-column_layouts)
-- [Using CSS generated content](/ko/docs/Web/Guide/CSS/Getting_started/Content)
-
-## See also
-
-[CSS FAQ](/ko/docs/Learn/CSS/Howto/CSS_FAQ) — A variety of topics: from debugging to selector usage.
+> **Note:** We have a cookbook dedicated to [CSS Layout solutions](/en-US/docs/Web/CSS/Layout_cookbook), with fully working examples and explanations of common layout tasks.

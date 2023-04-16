@@ -1,253 +1,281 @@
 ---
-title: 계단식 및 상속
+title: Cascade, specificity, and inheritance
 slug: Learn/CSS/Building_blocks/Cascade_and_inheritance
 ---
-{{LearnSidebar}}{{NextMenu("Learn/CSS/Building_blocks/Selectors", "Learn/CSS/Building_blocks")}}
 
-이 수업의 목적은 CSS 가 HTML 에 적용되는 방법과 충돌을 해결하는 방법을 제어하는 CSS 의 가장 기본적인 개념인 — 계단식, 우선 순위 및 상속 — 에 대한 이해를 발전시키는 것입니다.
+{{LearnSidebar}}{{PreviousMenuNext("Learn/CSS/Building_blocks/Selectors/Combinators", "Learn/CSS/Building_blocks/Cascade_layers", "Learn/CSS/Building_blocks")}}
 
-이 수업을 통해 작업하면 코스의 다른 부분 보다 관련성이 떨어지고 좀 더 학문적으로 보일 수 있지만, 이러한 사항을 이해하면 나중에 많은 고통을 덜 수 있습니다! 이 섹션을 주의 깊게 살펴보고 계속 진행하기 전에 개념을 이해하는지 확인하십시오.
+The aim of this lesson is to develop your understanding of some of the most fundamental concepts of CSS — the cascade, specificity, and inheritance — which control how CSS is applied to HTML and how conflicts between style declarations are resolved.
 
-<table class="learn-box standard-table">
+While working through this lesson may seem less relevant immediately and a little more academic than some other parts of the course, an understanding of these concepts will save you from a lot of pain later on! We encourage you to work through this section carefully and check that you understand the concepts before moving on.
+
+<table>
   <tbody>
     <tr>
-      <th scope="row">전제조건:</th>
+      <th scope="row">Prerequisites:</th>
       <td>
-        기본 컴퓨터 활용 능력,
+        Basic computer literacy,
         <a
-          href="https://developer.mozilla.org/en-US/Learn/Getting_started_with_the_web/Installing_basic_software"
-          >기본 소프트웨어 설치</a
-        >,
+          href="/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software"
+          >basic software installed</a
+        >, basic knowledge of
         <a
-          href="https://developer.mozilla.org/en-US/Learn/Getting_started_with_the_web/Dealing_with_files"
-          >파일 작업</a
-        >
-        에 대한 기본 지식, HTML 기본 사항 (<a
-          href="/en-US/docs/Learn/HTML/Introduction_to_HTML"
-          >HTML 소개</a
-        >
-        학습) 및 , CSS 작동 방식 이해 (<a
-          href="/en-US/docs/Learn/CSS/First_steps"
-          >CSS 첫 번째 단계</a
-        >
-        학습)
+          href="/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files"
+          >working with files</a
+        >, HTML basics (study
+        <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML"
+          >Introduction to HTML</a
+        >), and an idea of how CSS works (study
+        <a href="/en-US/docs/Learn/CSS/First_steps">CSS first steps</a>.)
       </td>
     </tr>
     <tr>
-      <th scope="row">목적:</th>
-      <td>계단식 및 특수성 과 CSS 에서 상속이 작동하는 방식 배우기.</td>
+      <th scope="row">Objective:</th>
+      <td>
+        To learn about the cascade and specificity, and how inheritance works in
+        CSS.
+      </td>
     </tr>
   </tbody>
 </table>
 
-## 규칙 충돌
+## Conflicting rules
 
-CSS 는 **Cascading Style Sheets** 의 약자이며, CSS 라는 단어를 이해하는 데 있어 첫 번째 단어 _cascading_ 은 매우 중요합니다.
+CSS stands for **Cascading Style Sheets**, and that first word _cascading_ is incredibly important to understand — the way that the cascade behaves is key to understanding CSS.
 
-어느 시점에서, 당신은 프로젝트를 진행할 것이며 요소에 적용해야 할 CSS 가 작동하지 않는다는 것을 알게 될 것입니다. 일반적으로 문제는 동일한 요소에 적용할 수 있는 두 가지 규칙을 작성 했다는 것입니다. **계단식 (cascade)** 과 밀접하게 관련된 **우선 순위 (specificity)** 개념은 그러한 충돌이 있을 때 적용되는 규칙을 제어하는 메커니즘입니다. 어떤 규칙에 따라 요소를 원하는 스타일로 만들지 못할 수도 있으므로 이러한 메커니즘의 작동 방식을 이해해야 합니다.
+At some point, you will be working on a project and you will find that the CSS you thought should be applied to an element is not working. Often, the problem is that you create two rules that apply different values of the same property to the same element. [**Cascade**](/en-US/docs/Web/CSS/Cascade) and the closely-related concept of [**specificity**](/en-US/docs/Web/CSS/Specificity) are mechanisms that control which rule applies when there is such a conflict. The rule that's styling your element may not be the one you expect, so you need to understand how these mechanisms work.
 
-**상속(inheritance)** 개념도 중요합니다. 기본적으로 일부 CSS 속성은 현재 요소의 부모 요소에 설정된 값을 상속하지만, 일부는 그렇지 않습니다. 또한 예상치 못한 일부 동작이 발생할 수 있습니다.
+Also significant here is the concept of [**inheritance**](/en-US/docs/Web/CSS/Inheritance), which means that some CSS properties by default inherit values set on the current element's parent element and some don't. This can also cause some behavior that you might not expect.
 
-우리가 다루고 있는 주요 사항을 간단히 살펴보면서 시작해 봅시다. 차례대로 살펴보고 서로 상호 작용하고 CSS 와 어떻게 상호 작용 하는지 살펴 보겠습니다. 이것은 이해하기 어려운 까다로운 개념으로 보일 수 있습니다. 그러나 CSS 작성에 대한 연습이 많을수록 작동 방식이 더 명확해 집니다.
+Let's start by taking a quick look at the key things we are dealing with, then we'll look at each in turn and see how they interact with each other and your CSS. These can seem like a tricky set of concepts to understand. As you get more practice writing CSS, the way it works will become more obvious to you.
 
-### 계단식 (cascade)
+### Cascade
 
-스타일 시트 **cascade** — 매우 간단한 수준에서 이는 CSS 규칙의 순서가 중요하다는 것을 의미 합니다. 동일한 우선 순위를 갖는 두 규칙이 적용될 때, CSS 에서 마지막에 나오는 규칙이 사용 될 것입니다.
+Stylesheets [**cascade**](/en-US/docs/Web/CSS/Cascade) — at a very simple level, this means that the origin, the cascade layer, and the order of CSS rules matter. When two rules from the same cascade layer apply and both have equal specificity, the one that is defined last in the stylesheet is the one that will be used.
 
-아래 예에서는, `h1` 에 적용할 수 있는 두 가지 규칙이 있습니다. `h1` 은 파란색으로 표시됩니다 — 이러한 규칙에는 동일한 선택자가 있고 동일한 고유성을 가지므로, 소스 순서의 마지막 규칙이 우선합니다.
+In the below example, we have two rules that could apply to the `<h1>` element. The `<h1>` content ends up being colored blue. This is because both the rules are from the same source, have an identical element selector, and therefore, carry the same specificity, but the last one in the source order wins.
 
-{{EmbedGHLiveSample("css-examples/learn/cascade/cascade-simple.html", '100%', 400)}}
+{{EmbedGHLiveSample("css-examples/learn/cascade/cascade-simple.html", '100%', 500)}}
 
-### 우선 순위 (Specificity)
+### Specificity
 
-우선 순위는 여러 규칙에 다른 선택자가 있지만, 여전히 동일한 요소에 적용될 수 있는 경우, 브라우저가 어떤 규칙을 적용할 지 결정하는 방법입니다. 기본적으로 선택자의 선택이 얼마나 구체적인지 측정합니다:
+[Specificity](/en-US/docs/Web/CSS/Specificity) is the algorithm that the browser uses to decide which property value is applied to an element. If multiple style blocks have different selectors that configure the same property with different values and target the same element, specificity decides the property value that gets applied to the element. Specificity is basically a measure of how specific a selector's selection will be:
 
-- 요소 선택자는 덜 구체적입니다 — 페이지에 나타나는 해당 유형의 모든 요소를 선택하므로 — 점수가 낮아집니다.
-- class 선택자는 보다 구체적입니다 — 특정 `class` 속성 값이 있는 페이지의 요소만 선택하므로 — 점수가 높아집니다.
+- An element selector is less specific; it will select all elements of that type that appear on a page, so it has less weight. Pseudo-element selectors have the same specificity as regular element selectors.
+- A class selector is more specific; it will select only the elements on a page that have a specific `class` attribute value, so it has more weight. Attribute selectors and pseudo-classes have the same weight as a class.
 
-시간 예제! 아래에는 `h1` 에 적용할 수 있는 두 가지 규칙이 다시 있습니다. 아래 `h1` 은 빨간색으로 표시 됩니다 — class 선택자는 규칙에 더 높은 우선 순위를 부여하므로 요소 선택자가 있는 규칙은 소스 순서에서 더 아래에 표시 되더라도 적용됩니다.
+Below, we again have two rules that could apply to the `<h1>` element. The `<h1>` content below ends up being colored red because the class selector `main-heading` gives its rule a higher specificity. So even though the rule with the `<h1>` element selector appears further down in the source order, the one with the higher specificity, defined using the class selector, will be applied.
 
-{{EmbedGHLiveSample("css-examples/learn/cascade/specificity-simple.html", '100%', 500)}}
+{{EmbedGHLiveSample("css-examples/learn/cascade/specificity-simple.html", '100%', 600)}}
 
-우선 순위 점수 및 기타 사항에 대해서는 나중에 설명하겠습니다.
+We'll explain the specificity algorithm later on.
 
-### 상속 (Inheritance)
+### Inheritance
 
-상속은 이 맥락에서 이해되어야 합니다 — 부모 요소에서 설정된 일부 CSS 속성 값은 자식 요소에 의해 상속되며, 일부는 그렇지 않습니다.
+Inheritance also needs to be understood in this context — some CSS property values set on parent elements are inherited by their child elements, and some aren't.
 
-예를 들어, 요소에 `color` 및 `font-family` 를 설정하면, 다른 색상 및 글꼴 값을 직접 적용하지 않는 한, 해당 요소 내부의 모든 요소에도 해당 색상 및 글꼴로 스타일이 지정됩니다.
+For example, if you set a `color` and `font-family` on an element, every element inside it will also be styled with that color and font, unless you've applied different color and font values directly to them.
 
-{{EmbedGHLiveSample("css-examples/learn/cascade/inheritance-simple.html", '100%', 550)}}
+{{EmbedGHLiveSample("css-examples/learn/cascade/inheritance-simple.html", '100%', 650)}}
 
-일부 속성은 상속되지 않습니다 — 예를 들어 요소에 {{cssxref("width")}} 를 50% 로 설정하면, 모든 하위 항목의 너비가 부모 너비의 50% 가 되지 않습니다. 이 경우, CSS 는 사용하기가 매우 어려울 것입니다!
+Some properties do not inherit — for example, if you set a {{cssxref("width")}} of 50% on an element, all of its descendants do not get a width of 50% of their parent's width. If this was the case, CSS would be very frustrating to use!
 
-> **참고:** MDN CSS 속성 참조 페이지에서 일반적으로 specifications 섹션의 맨 아래에 기술 정보 박스가 있습니다. 여기에는 해당 속성의 상속 여부를 포함하여 해당 속성에 대한 여러 데이터 요소가 나열되어 있습니다. 예를 들어, [color 속성 Specifications 섹션](/ko/docs/Web/CSS/color#Specifications) 을 참조 하십시오.
+> **Note:** On MDN CSS property reference pages, you can find a technical information box called "Formal definition", which lists a number of data points about that property, including whether it is inherited or not. See the [color property Formal definition section](/en-US/docs/Web/CSS/color#formal_definition) as an example.
 
-## 개념이 함께 작동하는 방식 이해하기
+## Understanding how the concepts work together
 
-이 세 가지 개념은 어떤 CSS 가 어떤 요소에 적용되는지를 함께 제어합니다. 아래 섹션에서 우리는 그들이 어떻게 함께 작동하는지 볼 것입니다. 때로는 약간 복잡해 보일 수 있지만, CSS 에 익숙해지면 기억하기 시작하고 잊어 버린 경우, 항상 세부 정보를 찾을 수 있습니다! 숙련된 개발자 조차도 모든 세부 사항을 기억하지 못합니다.
+These three concepts (cascade, specificity, and inheritance) together control which CSS applies to what element. In the sections below, we'll see how they work together. It can sometimes seem a little bit complicated, but you will start to remember them as you get more experienced with CSS, and you can always look up the details if you forget! Even experienced developers don't remember all the details.
 
-## 상속 이해하기
+The following video shows how you can use the Firefox DevTools to inspect a page's cascade, specificity, and more:
 
-상속부터 시작하겠습니다. 아래 예에서는 {{HTMLElement("ul")}} 이 있으며, 그 안에 순서가 없는 두 가지 수준의 목록이 있습니다. 외부 `<ul>` 에 테두리, 패딩 및 글꼴 색상을 지정했습니다.
+{{EmbedYouTube("Sp9ZfSvpf7A")}}
 
-색상은 직접 자식 항목 뿐만 아니라 간접 자식 항목 (직접 자식 `<li>`) 및 첫 번째 중첩 목록에 있는 자식 항목에도 적용됩니다. 그런 다음 두 번째 중첩 목록에 `special` class 를 추가하고 다른 색상을 적용했습니다. 그런 다음 자식을 통해 상속됩니다.
+## Understanding inheritance
 
-{{EmbedGHLiveSample("css-examples/learn/cascade/inheritance.html", '100%', 700)}}
+We'll start with inheritance. In the example below, we have a {{HTMLElement("ul")}} element with two levels of unordered lists nested inside it. We have given the outer `<ul>` a border, padding, and font color.
 
-너비 (위에서 언급 한 것처럼), 마진, 패딩 및 테두리와 같은 것은 상속되지 않습니다. 만약 우리 목록의 자식들이 테두리를 물려 받았다면, 모든 단일 목록과 목록 항목은 테두리를 얻게 될 것입니다 — 아마도 우리가 원하는 효과는 아닙니다!
+The `color` property is an inherited property. So, the `color` property value is applied to the direct children and also to the indirect children — the immediate child `<li>`s and those inside the first nested list. We have then added the class `special` to the second nested list and applied a different color to it. This then inherits down through its children.
 
-기본적으로 상속되는 속성과 그렇지 않은 속성은 대체로 상식적입니다.
+{{EmbedGHLiveSample("css-examples/learn/cascade/inheritance.html", '100%', 1100)}}
 
-### 상속 제어하기
+Properties like `width` (as mentioned earlier), `margin`, `padding`, and `border` are not inherited properties. If a border were to be inherited by the children in this list example, every single list and list item would gain a border — probably not an effect we would ever want!
 
-CSS 는 상속을 제어하기 위한 4 가지 특수 범용 속성 값을 제공합니다. 모든 CSS 속성은 이러한 값을 허용합니다.
+Though every CSS property page lists whether or not the property is inherited, you can often guess the same intuitively if you know what aspect the property value will style.
+
+### Controlling inheritance
+
+CSS provides five special universal property values for controlling inheritance. Every CSS property accepts these values.
 
 - {{cssxref("inherit")}}
-  - : 선택한 요소에 적용된 속성 값을 부모 요소의 속성 값과 동일하게 설정합니다. 사실상, 이것은 "상속에 영향을 미칩니다".
+  - : Sets the property value applied to a selected element to be the same as that of its parent element. Effectively, this "turns on inheritance".
 - {{cssxref("initial")}}
-  - : 선택한 요소에 적용된 속성 값을 브라우저의 기본 스타일 시트에서 해당 요소의 해당 속성에 설정된 값과 동일하게 설정합니다. 브라우저의 기본 스타일 시트에서 값을 설정하지 않고 속성이 자연스럽게 상속되면 속성 값이 대신 `inherit` 되도록 설정됩니다.
+  - : Sets the property value applied to a selected element to the [initial value](/en-US/docs/Web/CSS/initial_value) of that property.
+- {{cssxref("revert")}}
+  - : Resets the property value applied to a selected element to the browser's default styling rather than the defaults applied to that property. This value acts like {{cssxref("unset")}} in many cases.
+- {{cssxref("revert-layer")}}
+  - : Resets the property value applied to a selected element to the value established in a previous [cascade layer](/en-US/docs/Web/CSS/@layer).
 - {{cssxref("unset")}}
-  - : 속성을 natural 값으로 재설정 합니다. 즉, 속성이 자연적으로 상속되면 `inherit` 된 것처럼 작동하고 그렇지 않으면 `initial` 처럼 작동합니다.
+  - : Resets the property to its natural value, which means that if the property is naturally inherited it acts like `inherit`, otherwise it acts like `initial`.
 
-> **참고:** 브라우저 지원이 제한된 새로운 값인 {{cssxref("revert")}} 도 있습니다.
+> **Note:** See [Origin types](/en-US/docs/Web/CSS/Cascade#origin_types) for more information on each of these and how they work.
 
-> **참고:** 각각에 대한 자세한 내용과 작동 방식에 대한 자세한 내용은 [Origin of CSS declarations](/ko/docs/Web/CSS/Cascade#origin_of_css_declarations) 를 참조하십시오.
+We can look at a list of links and explore how universal values work. The live example below allows you to play with the CSS and see what happens when you make changes. Playing with code really is the best way to better understand HTML and CSS.
 
-우리는 링크 목록을 보고 보편적 가치가 어떻게 작용하는지 탐구할 수 있습니다. 아래의 라이브 예제를 사용하면 CSS 를 사용하여 변경 작업을 수행할 수 있습니다. 코드를 가지고 노는 것이 HTML 과 CSS 를 이해하는 가장 좋은 방법입니다.
+For example:
 
-예를 들면:
+1. The second list item has the class `my-class-1` applied. This sets the color of the `<a>` element nested inside to `inherit`. If you remove the rule, how does it change the color of the link?
+2. Do you understand why the third and fourth links are the color that they are? The third link is set to `initial`, which means it uses the initial value of the property (in this case black) and not the browser default for links, which is blue. The fourth is set to `unset` which means that the link text uses the color of the parent element, green.
+3. Which of the links will change color if you define a new color for the `<a>` element — for example `a { color: red; }`?
+4. After reading the next section on resetting all properties, come back and change the `color` property to `all`. Notice how the second link is on a new line and has a bullet. What properties do you think were inherited?
 
-1. 두 번째 목록 항목에는 `my-class-1` class 가 적용되었습니다. 내부에 중첩된 `<a>` 요소의 색상을 상속하도록 설정합니다. 규칙을 제거하면 링크 색상이 어떻게 변경됩니까?
-2. 왜 세 번째 와 네 번째 링크가 그 색깔인지 이해합니까? 그렇치 않은 경우 위의 값에 대한 설명을 확인하십시오.
-3. `<a>` 요소에 대해 — 예를 들어 `a { color: red; }` 와 같은 새 색상을 정의하는 경우 어떤 링크가 색상이 변경됩니까?
+{{EmbedGHLiveSample("css-examples/learn/cascade/keywords.html", '100%', 800)}}
 
-{{EmbedGHLiveSample("css-examples/learn/cascade/keywords.html", '100%', 700)}}
+### Resetting all property values
 
-### 모든 속성 값 재설정
+The CSS shorthand property [`all`](/en-US/docs/Web/CSS/all) can be used to apply one of these inheritance values to (almost) all properties at once. Its value can be any one of the inheritance values (`inherit`, `initial`, `revert`, `revert-layer`, or `unset`). It's a convenient way to undo changes made to styles so that you can get back to a known starting point before beginning new changes.
 
-CSS 속기 속성을 `all` 로 사용하면 이러한 상속 값 중 하나를 (거의) 모든 속성에 한 번에 적용할 수 있습니다. 이 값은 상속 값 (`inherit`, `initial`, `unset` 또는 `revert`) 중 하나일 수 있습니다. 스타일에 대한 변경 사항을 취소하여 새로운 변경을 시작하기 전에 알려진 시작 지점으로 돌아갈 수 있는 편리한 방법입니다.
+In the below example, we have two blockquotes. The first has styling applied to the blockquote element itself. The second has a class applied to the blockquote, which sets the value of `all` to `unset`.
 
-아래 예제에는 두 개의 인용문이 있습니다. 첫 번째는 인용문 자체에 스타일을 적용하고 두 번째는 `all` 값을 `unset` 하도록 인용문에 적용된 class 를 갖습니다.
+{{EmbedGHLiveSample("css-examples/learn/cascade/all.html", '100%', 800)}}
 
-{{EmbedGHLiveSample("css-examples/learn/cascade/all.html", '100%', 700)}}
+Try setting the value of `all` to some of the other available values and observe what the difference is.
 
-`all` 의 값을 사용 가능한 다른 값 중 일부로 설정하고 차이가 무엇인지 관찰하십시오.
+## Understanding the cascade
 
-## 계단식 (cascade) 이해하기
+We now understand that inheritance is why a paragraph nested deep in the structure of your HTML is the same color as the CSS applied to the body. From the introductory lessons, we have an understanding of how to change the CSS applied to something at any point in the document — whether by assigning CSS to an element or by creating a class. We will now look at how cascade defines which CSS rules apply when more than one style block apply the same property, but with different values, to the same element.
 
-이제 HTML 구조에 깊게 중첩된 단락이 본문에 적용된 CSS 와 동일한 색상인 이유를 이해하고, 소개 수업에서 문서의 어느 시점에서는 CSS 를 변경하는 방법에 대해 이해합니다 — 요소에 CSS 를 할당하거나 class 를 만들지 여부. 이제 여러 요소가 요소를 스타일링 할 수 있는 경우, CSS 에서 적용할 CSS 규칙을 어떻게 정의하는지 계단식 (cascade) 에 대해 올바르게 살펴보겠습니다.
+There are three factors to consider, listed here in increasing order of importance. Later ones overrule earlier ones:
 
-여기에는 중요도의 내림차순으로 나열된 세 가지 요소가 있습니다. 이전의 것들은 다음 것보다 우선합니다:
+1. **Source order**
+2. **Specificity**
+3. **Importance**
 
-1. **Importance**
-2. **우선 순위**
-3. **소스 순서**
+We will look at these to see how browsers figure out exactly what CSS should be applied.
 
-브라우저가 CSS 를 정확히 적용하는 방법을 어떻게 파악하는지 아래부터 위로 살펴보겠습니다.
+### Source order
 
-### 소스 순서
+We have already seen how source order matters to the cascade. If you have more than one rule, all of which have exactly the same weight, then the one that comes last in the CSS will win. You can think of this as: the rule that is nearer the element itself overwrites the earlier ones until the last one wins and gets to style the element.
 
-우리는 이미 소스 순서가 계단식 (cascade) 에 어떻게 중요한지를 보았습니다. 정확히 동일한 가중치를 갖는 규칙이 두 개 이상인 경우, CSS 에서 마지막에 오는 규칙이 우선합니다. 이것을 요소 자체가 마지막 요소가 승리하고 요소를 스타일링 할 때까지 초기 요소를 덮어 쓰는 규칙에 가깝다고 생각할 수 있습니다.
+Source order only matters when the specificity weight of the rules is the same, so let's look at specificity:
 
-### 우선 순위 (Specificity)
+### Specificity
 
-소스 순서가 중요하다는 사실을 이해하면, 어느 시점에서 규칙이 스타일 시트에서 나중에 나오지만 이전의 충돌하는 규칙이 적용되는 상황이 발생합니다. 이는 이전 규칙이 더 **높은 우선 순위**를 갖기 때문입니다 — 보다 구체적이기 때문에, 브라우저에서 요소를 스타일해야 하는 규칙으로 선택하고 있습니다.
+You will often run into a situation where you know that a rule comes later in the stylesheet, but an earlier, conflicting rule is applied. This happens because the earlier rule has a **higher specificity** — it is more specific, and therefore, is being chosen by the browser as the one that should style the element.
 
-이 수업의 앞부분에서 살펴본 것처럼, class 선택자는 요소 선택자보다 가중치가 높으므로, class 에 정의된 속성이 요소에 직접 적용된 속성보다 우선합니다.
+As we saw earlier in this lesson, a class selector has more weight than an element selector, so the properties defined in the class style block will override those defined in the element style block.
 
-여기서 주목할 점은 선택자 및 선택한 항목에 적용되는 규칙에 대해 생각하고 있지만, 덮어 쓰는 전체 규칙이 아니라 동일한 속성일 뿐입니다.
+Something to note here is that although we are thinking about selectors and the rules that are applied to the text or component they select, it isn't the entire rule that is overwritten, only the properties that are declared in multiple places.
 
-이 동작은 CSS 에서 반복을 피하는 데 도움이 됩니다. 일반적인 방법은 기본 요소의 일반 스타일을 정의한 다음, 다른 요소에 대한 class 를 작성하는 것입니다. 예를 들어, 아래 스타일 시트에서 h2 제목에 대한 일반 스타일을 정의한 다음, 일부 속성과 값만 변경하는 class 를 만들었습니다. 처음에 정의된 값은 모든 표제에 적용되며, 보다 구체적인 값은 class 가 있는 표제에 적용됩니다.
+This behavior helps avoid repetition in your CSS. A common practice is to define generic styles for the basic elements, and then create classes for those that are different. For example, in the stylesheet below, we have defined generic styles for level 2 headings, and then created some classes that change only some of the properties and values. The values defined initially are applied to all headings, then the more specific values are applied to the headings with the classes.
 
-{{EmbedGHLiveSample("css-examples/learn/cascade/mixing-rules.html", '100%', 700)}}
+{{EmbedGHLiveSample("css-examples/learn/cascade/mixing-rules.html", '100%', 1000)}}
 
-이제 브라우저가 우선 순위 (specificity) 를 계산하는 방법을 살펴보겠습니다. 우리는 이미 요소 선택자가 우선 순위가 낮으며 class 가 덮어 쓸 수 있음을 알고 있습니다. 기본적으로 포인트 단위의 가치가 다른 유형의 선택자에 부여되며, 이를 합산하면 특정 선택자의 가중치가 부여되며, 이는 다른 잠재적 일치 항목에 대해 평가할 수 있습니다.
+Let's now have a look at how the browser will calculate specificity. We already know that an element selector has low specificity and can be overwritten by a class. Essentially a value in points is awarded to different types of selectors, and adding these up gives you the weight of that particular selector, which can then be assessed against other potential matches.
 
-선택자의 우선 순위는 4개의 다른 값 (또는 구성 요소) 을 사용하여 측정되며, 이는 4개의 열에서 Thousands, Hundreds, Tens 및 Ones 개의 단일 자릿수로 간주될 수 있습니다.
+The amount of specificity a selector has is measured using three different values (or components), which can be thought of as ID, CLASS, and ELEMENT columns in the hundreds, tens, and ones place:
 
-1. **Thousands**: 선언이 인라인 스타일인 {{htmlattrxref("style")}} 속성 안에 있으면, 열에서 1점을 얻습니다. 이러한 선언에는 선택자가 없으므로 그 우선 순위는 항상 1000 입니다.
-2. **Hundreds**: 전체 선택자에 포함된 각 ID 선택자에 대해 이 열에서 1점을 얻습니다.
-3. **Tens**: 이 선택란에서 전체 선택자 내에 포함된 각 class 선택자, 속성 선택자 또는 pseudo-class 에 대해 이 열에서 1점을 얻습니다.
-4. **Ones**: 이 항목에서 각 요소 선택자 또는 전체 선택자 내에 포함된 pseudo-element 에 대해 1점을 얻습니다.
+- **Identifiers**: Score one in this column for each ID selector contained inside the overall selector.
+- **Classes**: Score one in this column for each class selector, attribute selector, or pseudo-class contained inside the overall selector.
+- **Elements**: Score one in this column for each element selector or pseudo-element contained inside the overall selector.
 
-> **참고:** 범용 선택자 (`*`), 결합자 (`+`, `>`, `~`, ' ') 및 부정 pseudo-class (`:not`) 는 우선 순위에 영향을 미치지 않습니다.
+> **Note:** The universal selector ([`*`](/en-US/docs/Web/CSS/Universal_selectors)), [combinators](/en-US/docs/Learn/CSS/Building_blocks//selectors/combinators) (`+`, `>`, `~`, ' '), and specificity adjustment selector ([`:where()`](/en-US/docs/Web/CSS/:where)) along with its parameters, have no effect on specificity.
 
-다음 표는 기분을 전환하기 위해 몇 가지 분리된 예를 보여줍니다. 이것들을 살펴보고 왜 그들이 우리에게 그들에게 주어진 우선 순위를 가지고 있는지 이해하도록 하십시오. 선택자는 아직 자세히 다루지 않았지만, MDN [선택자 참조](/ko/docs/Web/CSS/CSS_Selectors) 에서 각 선택자의 세부 정보를 찾을 수 있습니다.
+The negation ([`:not()`](/en-US/docs/Web/CSS/:not)), relational selector ([`:has()`](/en-US/docs/Web/CSS/:has)), and the matches-any ([`:is()`](/en-US/docs/Web/CSS/:is)) pseudo-classes themselves don't have effect on specificity, but their parameters do. The specificity that each contributes to the specificity algorithm is the specificity of the selector in the parameter that has the greatest weight.
 
-| 선택자                                                                          | Thousands | Hundreds | Tens | Ones | Total specificity |
-| ------------------------------------------------------------------------------- | --------- | -------- | ---- | ---- | ----------------- |
-| `h1`                                                                            | 0         | 0        | 0    | 1    | 0001              |
-| `h1 + p::first-letter`                                                          | 0         | 0        | 0    | 3    | 0003              |
-| `li > a[href*="en-US"] > .inline-warning`                                       | 0         | 0        | 2    | 2    | 0022              |
-| `#identifier`                                                                   | 0         | 1        | 0    | 0    | 0100              |
-| 요소의 {{htmlattrxref("style")}} 속성 안에 규칙이 있는 선택자가 없습니다 | 1         | 0        | 0    | 0    | 1000              |
+The following table shows a few isolated examples to get you in the mood. Try going through these, and make sure you understand why they have the specificity that we have given them. We've not covered selectors in detail yet, but you can find details of each selector on the MDN [selectors reference](/en-US/docs/Web/CSS/CSS_Selectors).
 
-계속 진행하기 전에, 실제 사례를 살펴보겠습니다.
+| Selector                                  | Identifiers | Classes | Elements | Total specificity |
+| ----------------------------------------- | ----------- | ------- | -------- | ----------------- |
+| `h1`                                      | 0           | 0       | 1        | 0-0-1             |
+| `h1 + p::first-letter`                    | 0           | 0       | 3        | 0-0-3             |
+| `li > a[href*="en-US"] > .inline-warning` | 0           | 2       | 2        | 0-2-2             |
+| `#identifier`                             | 1           | 0       | 0        | 1-0-0             |
+| `button:not(#mainBtn, .cta`)              | 1           | 0       | 1        | 1-0-1             |
 
-{{EmbedGHLiveSample("css-examples/learn/cascade/specificity-boxes.html", '100%', 700)}}
+Before we move on, let's look at an example in action.
 
-우선, 우리는 이 예제의 처음 7개 규칙에만 관심이 있으며, 앞으로 알 수 있듯이 각 규칙 앞에 주석에 우선 순위 값을 포함 시켰습니다.
+{{EmbedGHLiveSample("css-examples/learn/cascade/specificity-boxes.html", '100%', 800)}}
 
-- 처음 두 선택자는 링크의 배경색 스타일링을 놓고 경쟁합니다 — 두 번째 선택자는 추가 ID 선택자가 있기 때문에 이기고 배경색을 파란색으로 만듭니다: 우선 순위는 201 vs 101 입니다.
-- 세 번째와 네 번째 선택자는 링크의 텍스트 색상 스타일링을 놓고 경쟁하고 있습니다 — 두 번째 선택자는 이기고 텍스트는 흰색으로 만듭니다. 왜냐하면 한 개의 요소 선택자가 더 적지만, 누락된 선택자는 10배의 가치가 있는 class 선택자로 교체되기 때문입니다. 그래서 승자의 우선 순위는 113 vs 104 입니다.
-- 선택자 5–7 은 마우스를 가져 가면 링크의 테두리 스타일을 놓고 경쟁합니다. 선택자 6은 23 vs 24 의 우선 순위로 5점이 확실히 손실됩니다 — 요소 선택자가 하나 더 적습니다. 선택자 7은 5 와 6을 모두 능가합니다 — 5와 동일한 수의 자식 선택자가 있지만, 한 요소는 class 선택자로 교체되었습니다. 따라서 승자의 우선 순위는 33 vs 23 및 24 입니다.
+So what's going on here? First of all, we are only interested in the first seven rules of this example, and as you'll notice, we have included their specificity values in a comment before each one.
 
-> **참고:** 이것은 이해를 돕기위한 대략적인 예일뿐입니다. 실제로 각 선택자 유형에는 고유한 순위가 있으며, 낮은 우선 순위의 선택자로 덮어쓸 수 없습니다. 예를 들어, _백 만_ 개의 **class** 선택자가 결합되어도 _하나_ 의 **id** 선택자의 규칙을 겹쳐쓸 수 없습니다.
+- The first two selectors are competing over the styling of the link's background color. The second one wins and makes the background color blue because it has an extra ID selector in the chain: its specificity is 2-0-1 vs. 1-0-1.
+- Selectors 3 and 4 are competing over the styling of the link's text color. The second one wins and makes the text white because although it has one less element selector, the missing selector is swapped out for a class selector, which has more weight than infinity element selectors. The winning specificity is 1-1-3 vs. 1-0-4.
+- Selectors 5–7 are competing over the styling of the link's border when hovered. Selector 6 clearly loses to selector 5 with a specificity of 0-2-3 vs. 0-2-4; it has one fewer element selectors in the chain. Selector 7, however, beats both selectors 5 and 6 because it has the same number of sub-selectors in the chain as selector 5, but an element has been swapped out for a class selector. So the winning specificity is 0-3-3 vs. 0-2-3 and 0-2-4.
+
+> **Note:** Each selector type has its own level of specificity that cannot be overwritten by selectors with a lower specificity level. For example, a _million_ **class** selectors combined would not be able to overwrite the specificity of _one_ **id** selector.
 >
-> 우선 순위를 평가하는 보다 정확한 방법은 우선 순위를 개별적으로 최고에서 시작하여 필요할 때 최저로 평가하는 것입니다. 특정 순위 내에서 선별 점수 사이에 동점이 있을 때만 다음 수준을 평가해야 합니다. 그렇지 않으면, 낮은 우선 순위 선택자는 높은 우선 순위를 덮어쓸 수 없으므로 무시할 수 있습니다.
+> The best way to evaluate specificity is to score the specificity levels individually starting from the highest and moving on to the lowest when necessary. Only when there is a tie between selector scores within a specificity column do you need to evaluate the next column down; otherwise, you can disregard the lower specificity selectors since they can never overwrite the higher specificity selectors.
+
+### Inline styles
+
+Inline styles, that is, the style declaration inside a [`style`](/en-US/docs/Web/HTML/Global_attributes#style) attribute, take precedence over all normal styles, no matter the specificity. Such declarations don't have selectors, but their specificity can be construed as 1-0-0-0; always more than any other specificity weight no matter how many IDs are in the selectors.
 
 ### !important
 
-위의 모든 계산을 무효화하는 데 사용할 수 있는 특별한 CSS 가 있지만, 중요하게 사용해야 합니다 — `!important`. 이것은 특정 속성과 가치를 가장 구체적으로 만들어 계단식 (cascade) 의 일반적인 규칙을 무시하는 데 사용됩니다.
+There is a special piece of CSS that you can use to overrule all of the above calculations, even inline styles - the `!important` flag. However, you should be very careful while using it. This flag is used to make an individual property and value pair the most specific rule, thereby overriding the normal rules of the cascade, including normal inline styles.
 
-두 개의 단락이 있고, 하나에 ID 가 있는 이 예를 살펴보십시오.
+> **Note:** It is useful to know that the `!important` flag exists so that you know what it is when you come across it in other people's code. **However, we strongly recommend that you never use it unless you absolutely have to.** The `!important` flag changes the way the cascade normally works, so it can make debugging CSS problems really hard to work out, especially in a large stylesheet.
 
-{{EmbedGHLiveSample("css-examples/learn/cascade/important.html", '100%', 700)}}
+Take a look at this example where we have two paragraphs, one of which has an ID.
 
-이 과정을 통해 어떤 일이 일어나고 있는지 살펴보겠습니다 — 이해하기 어려운 경우 어떤 일이 발생하는지 확인하려면 일부 속성을 제거해 보십시오:
+{{EmbedGHLiveSample("css-examples/learn/cascade/important.html", '100%', 800)}}
 
-1. 세 번째 규칙의 {{cssxref("color")}} 및 {{cssxref("padding")}} 값이 적용되었지만, {{cssxref("background-color")}} 가 적용되었음을 알 수 있습니다. 왜죠? 소스 순서 후반의 규칙은 일반적으로 이전 규칙보다 우선하기 때문에 세 가지 모두가 반드시 적용되어야 합니다.
-2. 그러나, class 선택자는 요소 선택자보다 높은 우선 순위에 있기 때문에 위의 규칙이 우선합니다.
-3. 두 요소 모두 {{htmlattrxref("class")}} 가 **`더 우수`** 하지만, 두 번째 요소는 {{htmlattrxref("id")}} 도 **`이기고`** 있습니다. ID 는 classe 보다 우선 순위가 _더 높기_ 때문에 페이지에서 각 고유 ID 를 가진 요소는 하나만 가질 수 있지만, class 는 같은 요소가 많습니다 — ID 선택자는 대상에 따라 **_매우 다릅니다_.** 빨간색 배경색과 1 px 검은색 테두리를 두 번째 요소에 적용해야 합니다. 첫 번째 요소는 회색 배경색을 가져오고 class 에서 지정한대로 테두리가 없습니다.
-4. 두 번째 요소는 빨간색 배경색을 얻지만, 테두리는 없습니다. 왜일까요? 두 번째 규칙의 `!important` 선언으로 인해 — `border: none` 뒤에 이것을 포함하면 ID 가 더 높은 우선 순위에도 불구하고 이 선언이 이전 규칙의 테두리 값 보다 우선함을 의미합니다.
+Let's walk through this to see what's happening — try removing some of the properties to see what happens if you are finding it hard to understand:
 
-> **참고:** 이 `!important` 선언을 재정의하는 유일한 방법은 소스 순서에서 나중에 같은 우선 순위를 가진 선언에 또는 다른 고유한 선언에 다른 `!important` 선언을 포함시키는 것입니다.
+1. You'll see that the third rule's {{cssxref("color")}} and {{cssxref("padding")}} values have been applied, but the {{cssxref("background-color")}} hasn't. Why? Really, all three should surely apply because rules later in the source order generally override earlier rules.
+2. However, the rules above it win because class selectors have higher specificity than element selectors.
+3. Both elements have a [`class`](/en-US/docs/Web/HTML/Global_attributes#class) of `better`, but the 2nd one has an [`id`](/en-US/docs/Web/HTML/Global_attributes#id) of `winning` too. Since IDs have an _even higher_ specificity than classes (you can only have one element with each unique ID on a page, but many elements with the same class — ID selectors are _very specific_ in what they target), the red background color and the 1px black border should both be applied to the 2nd element, with the first element getting the gray background color, and no border, as specified by the class.
+4. The 2nd element _does_ get the red background color, but no border. Why? Because of the `!important` flag in the second rule. Adding the `!important` flag after `border: none` means that this declaration will win over the `border` value in the previous rule, even though the ID selector has higher specificity.
 
-`!important` 가 존재한다는 것을 아는 것이 도움이 되므로 다른 사람들의 코드에서 그것을 발견할 때 그 의미를 알 수 있습니다. **그러나, 반드시 필요한 경우가 아니면 절대 사용하지 않는 것이 좋습니다.** `!important` 는 계단식이 정상적으로 작동하는 방식을 변경하므로, CSS 스타일 문제를 해결하기가 어렵습니다. 특히 큰 스타일 시트에서.
+> **Note:** The only way to override an important declaration is to include another important declaration with the _same specificity_ later in the source order, or one with higher specificity, or to include an important declaration in a prior cascade layer (we haven't covered cascade layers yet).
 
-핵심 CSS modules 을 편집할 수 없는 CMS 에서 작업할 때, 다른 방법으로는 재정의 할 수 없는 스타일을 재정의 하려는 경우에 사용할 수도 있습니다. 그러나 실제로 피할 수 있다면 사용하지 마십시오.
+One situation in which you may have to use the `!important` flag is when you are working on a CMS where you can't edit the core CSS modules, and you really want to override an inline style or an important declaration that can't be overridden in any other way. But really, don't use it if you can avoid it.
 
-## CSS 위치의 영향
+## The effect of CSS location
 
-마지막으로, CSS 선언의 중요성은 지정된 스타일 시트에 따라 다릅니다 — 사용자가 스타일 시트를 설정하여 개발자의 스타일을 재정의할 수 있습니다. 예를 들어, 사용자가 시각 장애인일 수 있으며, 쉽게 읽을 수 있도록 방문하는 모든 웹 페이지의 글꼴 크기를 일반 크기의 두 배로 설정하려고 합니다.
+Finally, it is important to note that the precedence of a CSS declaration depends on what stylesheet and cascade layer it is specified in.
 
-## 요약하자면
+It is possible for users to set custom stylesheets to override the developer's styles. For example, a visually impaired user might want to set the font size on all web pages they visit to be double the normal size to allow for easier reading.
 
-충돌 선언은 다음 순서로 적용되며, 이후 선언은 이전 선언보다 우선합니다:
+It is also possible to declare developer styles in cascade layers: you can make non-layered styles override styles declared in layers or you can make styles declared in later layers override styles from earlier declared layers. For example, as a developer you may not be able to edit a third-party stylesheet, but you can import the external stylesheet into a cascade layer so that all of your styles easily override the imported styles without worrying about third-party selector specificity.
 
-1. 사용자 에이전트 스타일 시트의 선언 (예: 다른 스타일이 설정되지 않은 경우 사용되는 브라우저의 기본 스타일).
-2. 사용자 스타일 시트의 일반 선언 (사용자가 설정한 사용자 정의 스타일).
-3. 작성자 스타일 시트의 일반적인 선언 (웹 개발자가 설정한 스타일).
-4. 작성자 스타일 목록에서 중요한 선언
-5. 사용자 스타일 시트의 중요한 선언
+### Order of overriding declarations
 
-웹 개발자의 스타일 시트는 사용자 스타일 시트를 재정의 하는것이 합리적이므로 디자인을 의도한대로 유지할 수 있지만, 사용자는 위에서 언급한 것처럼 웹 개발자 스타일을 재정의 해야 할 충분한 이유가 있습니다 — 이는 규칙에서 `important` 를 사용하여 달성할 수 있습니다.
+Conflicting declarations will be applied in the following order, with later ones overriding earlier ones:
 
-## 적극적인 학습: 계단식 게임입니다
+1. Declarations in user agent style sheets (e.g., the browser's default styles, used when no other styling is set).
+2. Normal declarations in user style sheets (custom styles set by a user).
+3. Normal declarations in author style sheets (these are the styles set by us, the web developers).
+4. Important declarations in author style sheets.
+5. Important declarations in user style sheets.
+6. Important declarations in user agent style sheets.
 
-이 적극적인 학습에서는, 기본적으로 링크에 적용한 색상 및 배경색을 재정의하는 새로운 규칙 하나를 작성하여 실험해 보고자 합니다. [상속 제어](#상속_제어) 섹션에서 살펴본 특수값 중 하나를 사용하여 실제 색상값을 사용하지 않고 배경색상을 다시 흰색으로 재설정하는 새 규칙에 선언을 작성할 수 있습니까?
+> **Note:** The order of precedence is inverted for styles flagged with `!important`. It makes sense for web developers' stylesheets to override user stylesheets, so the design can be kept as intended; however, sometimes users have good reasons to override web developer styles, as mentioned above, and this can be achieved by using `!important` in their rules.
 
-실수한 경우 언제든지 _재설정_ 버튼을 사용하여 재설정 할 수 있습니다. 정말로 막힌다면, [여기에서 해결책을 살펴 보십시오](https://github.com/mdn/css-examples/blob/master/learn/solutions.md#the-cascade).
+### Order of cascade layers
 
-{{EmbedGHLiveSample("css-examples/learn/cascade/task.html", '100%', 700)}}
+Even though [cascade layers](/en-US/docs/Web/CSS/@layer) is an advanced topic and you may not use this feature right away, it's important to understand how layers cascade.
 
-## 다음은 뭐죠
+When you declare CSS in cascade layers, the order of precedence is determined by the order in which the layers are declared. CSS styles declared outside of any layer are combined together, in the order in which those styles are declared, into an unnamed layer, as if it were the last declared layer. With competing normal (not important) styles, later layers take precedence over earlier defined layers. For styles flagged with `!important`, however, the order is reversed, with important styles in earlier layers taking precedence over important styles declared in subsequent layers or outside of any layer. Inline styles take precedence over all author styles, no matter the layer.
 
-이 기사의 대부분을 이해했다면, 잘 끝났습니다 — CSS 의 기본 메커니즘에 익숙해지기 시작했습니다. 다음으로 선택자를 자세히 살펴보겠습니다.
+When you have multiple style blocks in different layers providing competing values for a property on a single element, the order in which the layers are declared determines the precedence. Specificity between layers doesn't matter, but specificity within a single layer still does.
 
-계단식, 우선 순위 및 상속을 완전히 이해하지 못했다면, 걱정하지 마십시오! 이것은 지금까지 우리가 다루었던 가장 복잡한 내용이며, 전문 웹 개발자 조차도 까다로워하는 부분입니다. 강의를 계속 진행하면서, 이 기사를 몇 차례 다시 읽고 계속 생각하는 것이 좋습니다.
+{{EmbedGHLiveSample("css-examples/learn/cascade/cascade-layers.html", '100%', 800)}}
 
-스타일이 예상대로 적용되지 않는 이상한 문제가 발생하면 여기를 다시 참조 하십시오. 우선 순위 문제일 수 있습니다.
+Let's discuss a few things from the above example to understand what's happening. Two layers have been declared, `firstLayer` and `secondLayer`, in that order. Even though the specificity in `secondLayer` is the highest, no properties from that declaration are used. Why? Because non-layered normal styles take precedence over layered normal styles, no matter the specificity, and important layered styles take precedence over important styles declared in later layers, again, no matter the specificity.
 
-{{NextMenu("Learn/CSS/Building_blocks/Selectors", "Learn/CSS/Building_blocks")}}
+If you change the first line of CSS in this example to read `@layer secondLayer, firstLayer;`, you will change the layer declaration order, and all the important styles from `firstLayer` will be changed to their respective values in `secondLayer`.
+
+## Test your skills!
+
+You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: The Cascade](/en-US/docs/Learn/CSS/Building_blocks/Cascade_tasks).
+
+## Summary
+
+If you understood most of this article, then well done — you've started getting familiar with the fundamental mechanics of CSS. Next up, we'll take a deeper look at [Cascade Layers](/en-US/docs/Learn/CSS/Building_blocks/Cascade_layers).
+
+If you didn't fully understand the cascade, specificity, and inheritance, then don't worry! This is definitely the most complicated thing we've covered so far in the course and is something that even professional web developers sometimes find tricky. We'd advise that you return to this article a few times as you continue through the course, and keep thinking about it.
+
+Refer back here if you start to come across strange issues with styles not applying as expected. It could be a specificity issue.
+
+{{PreviousMenuNext("Learn/CSS/Building_blocks/Selectors/Combinators", "Learn/CSS/Building_blocks/Cascade_layers", "Learn/CSS/Building_blocks")}}

@@ -1,31 +1,59 @@
 ---
-title: Window.name
+title: "Window: name property"
+short-title: name
 slug: Web/API/Window/name
+page-type: web-api-instance-property
+browser-compat: api.Window.name
 ---
 
 {{APIRef}}
 
-## 요약
+The `Window.name` property
+gets/sets the name of the window's browsing context.
 
-창의 이름을 얻거나/설정합니다.
+## Value
 
-## 문법
+A string.
 
-```js
-string = window.name;
-window.name = string;
+## Description
+
+The name of the window is used primarily for setting targets for hyperlinks and forms.
+Browsing contexts do not need to have names.
+
+Modern browsers will reset `Window.name` to an empty string if a tab loads a
+page from a different domain, and restore the name if the original page is reloaded
+(e.g. by selecting the "back" button). This prevents an untrusted page from accessing
+any information that the previous page might have stored in the property (potentially
+the new page might also modify such data, which might then be read by the original page
+if it was reloaded).
+
+`Window.name` has also been used in some frameworks for providing
+cross-domain messaging
+as a more secure alternative to JSONP. Modern web applications hosting sensitive data
+should, however, not rely on `window.name` for cross-domain messaging — that
+is not its intended purpose and there are safer/better ways of sharing information
+between windows.
+[`Window.postMessage()`](/en-US/docs/Web/API/Window/postMessage)
+is the recommended mechanism.
+
+> **Note:** `window.name` converts all stored values to their
+> string representations using the `toString` method.
+
+## Examples
+
+```html
+<script>
+  // Open a tab with a specific browsing context name
+  const otherTab = window.open("url1", "_blank");
+  if (otherTab) otherTab.name = "other-tab";
+</script>
+<a href="url2" target="other-tab">This link will be opened in the other tab.</a>
 ```
 
-## 예제
+## Specifications
 
-```js
-window.name = "lab_view";
-```
+{{Specifications}}
 
-## 설명
+## Browser compatibility
 
-창의 이름은 주로 하이퍼링크나 폼의 target으로 설정됩니다. 그외엔, 창은 이름을 가지는 것을 거의 필요로 하지 않습니다.
-
-또한 몇몇 프레임워크에서 창의 이름은 cross-domain messaging을 제공하기 위해 사용됩니다. (예를 들면, [SessionVars](http://www.thomasfrank.se/sessionvars.html) 과 Dojo's [dojox.io.windowName](http://www.sitepen.com/blog/2008/07/22/windowname-transport/)) 좀더 보안을 생각한다면 JSONP로 대체 될 수 있습니다. 하지만 최근 의 웹어플리케이션이 호스팅하는 민감한 데이터들은 cross-domain messaging을 이용하기 위해서 `window.name`에 의존해서는 안되며, 대신 [postMessage API](/ko/docs/Web/API/Window/postMessage)를 이용하는 방법이 있습니다.
-
-`window.name`은 `toString` 메소드를 이용해 모든 값을 문자열로 변환합니다.
+{{Compat}}

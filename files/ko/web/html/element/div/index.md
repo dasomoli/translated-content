@@ -1,108 +1,57 @@
 ---
-title: '<div>: 콘텐츠 분할 요소'
+title: "<div>: The Content Division element"
 slug: Web/HTML/Element/div
+page-type: html-element
+browser-compat: html.elements.div
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<div>` 요소**는 플로우 콘텐츠를 위한 통용 컨테이너입니다. {{glossary("CSS")}}로 꾸미기 전에는 콘텐츠나 레이아웃에 어떤 영향도 주지 않습니다.
+The **`<div>`** [HTML](/en-US/docs/Web/HTML) element is the generic container for flow content. It has no effect on the content or layout until styled in some way using {{glossary("CSS")}} (e.g. styling is directly applied to it, or some kind of layout model like [Flexbox](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout) is applied to its parent element).
 
 {{EmbedInteractiveExample("pages/tabbed/div.html","tabbed-standard")}}
 
-The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone [https://github.com/mdn/interactive-examples](https://github.com/mdn/interactive-examples) and send us a pull request.
+As a "pure" container, the `<div>` element does not inherently represent anything. Instead, it's used to group content so it can be easily styled using the [`class`](/en-US/docs/Web/HTML/Global_attributes#class) or [`id`](/en-US/docs/Web/HTML/Global_attributes#id) attributes, marking a section of a document as being written in a different language (using the [`lang`](/en-US/docs/Web/HTML/Global_attributes#lang) attribute), and so on.
 
-`<div>` 요소는 "순수" 컨테이너로서 아무것도 표현하지 않습니다. 대신 다른 요소 여럿을 묶어 {{htmlattrxref("class")}}나 {{htmlattrxref("id")}} 속성으로 꾸미기 쉽도록 돕거나, 문서의 특정 구역이 다른 언어임을 표시({{htmlattrxref("lang")}} 속성 사용)하는 등의 용도로 사용할 수 있습니다.
+## Attributes
 
-<table class="properties">
-  <tbody>
-    <tr>
-      <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
-      </th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >, 뚜렷한 콘텐츠
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 콘텐츠</th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >.<br />또는 ({{glossary("WHATWG")}} HTML에서): 부모가
-        {{HTMLElement("dl")}} 요소라면: 하나 이상의
-        {{HTMLElement("dt")}} 요소, 이후 하나 이상의
-        {{HTMLElement("dd")}} 요소, 선택적으로
-        {{HTMLElement("script")}}와 {{HTMLElement("template")}}
-        요소 혼합 가능.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">태그 생략</th>
-      <td>{{no_tag_omission}}</td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 부모 요소</th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >를 허용하는 아무 요소.<br />또는 ({{glossary("WHATWG")}}
-        HTML에서) {{HTMLElement("dl")}} 요소.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">암시적 ARIA 역할</th>
-      <td>
-        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
-          >대응하는 역할 없음</a
-        >
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>모두</td>
-    </tr>
-    <tr>
-      <th scope="row">DOM 인터페이스</th>
-      <td>{{domxref("HTMLDivElement")}}</td>
-    </tr>
-  </tbody>
-</table>
+This element includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-## 특성
+> **Note:** The `align` attribute is obsolete; do not use it anymore. Instead, you should use CSS properties or techniques such as [CSS Grid](/en-US/docs/Web/CSS/CSS_Grid_Layout) or [CSS Flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox) to align and position `<div>` elements on the page.
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)만 포함합니다.
+## Usage notes
 
-## 사용 일람
+- The `<div>` element should be used only when no other semantic element (such as {{HTMLElement("article")}} or {{HTMLElement("nav")}}) is appropriate.
 
-- `<div>` 요소는 의미를 가진 다른 요소({{htmlelement("article")}}, {{htmlelement("nav")}} 등)가 적절하지 않을 때만 사용해야 합니다.
+## Accessibility concerns
 
-## 예제
+The `<div>` element has [an implicit role of `generic`](https://www.w3.org/TR/wai-aria-1.2/#generic), and not none. This may affect certain ARIA combination declarations that expect a direct descendant element with a certain role to function properly.
 
-### 간단한 예제
+## Examples
+
+### A simple example
 
 ```html
 <div>
-   <p>어떤 콘텐츠든 좋습니다.
-   &lt;p&gt;, &lt;table&gt;같이 말이죠. 써보세요!</p>
+  <p>
+    Any kind of content here. Such as &lt;p&gt;, &lt;table&gt;. You name it!
+  </p>
 </div>
 ```
 
-결과는 다음과 같습니다.
+#### Result
 
-{{ EmbedLiveSample('간단한_예제') }}
+{{EmbedLiveSample("A_simple_example", 650, 60)}}
 
-### 스타일 예제
+### A styled example
 
-다음 예제는 CSS로 \<div>에 그림자를 입힙니다. `<div>`의 {{htmlattrxref("class")}} 속성을 통해 `"shadowbox"` 스타일을 적용한 점에 주목하세요.
+This example creates a shadowed box by applying a style to the `<div>` using CSS. Note the use of the [`class`](/en-US/docs/Web/HTML/Global_attributes#class) attribute on the `<div>` to apply the style named `"shadowbox"` to the element.
 
 #### HTML
 
 ```html
 <div class="shadowbox">
-  <p>Here's a very interesting note displayed in a
-  lovely shadowed box.</p>
+  <p>Here's a very interesting note displayed in a lovely shadowed box.</p>
 </div>
 ```
 
@@ -118,19 +67,81 @@ The source for this interactive example is stored in a GitHub repository. If you
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("스타일_예제", 650, 120)}}
+{{EmbedLiveSample("A_styled_example", 650, 120)}}
 
-## 명세
+## Technical summary
+
+<table class="properties">
+  <tbody>
+    <tr>
+      <th scope="row">
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
+      </th>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
+        >, <a href="/en-US/docs/Web/HTML/Content_categories#palpable_content">palpable content</a>.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted content</th>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
+        >.<br />Or (in {{glossary("WHATWG")}} HTML): If the parent is a
+        {{HTMLElement("dl")}} element: one or more
+        {{HTMLElement("dt")}} elements followed by one or more
+        {{HTMLElement("dd")}} elements, optionally intermixed with
+        {{HTMLElement("script")}} and
+        {{HTMLElement("template")}} elements.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Tag omission</th>
+      <td>{{no_tag_omission}}</td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted parents</th>
+      <td>
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >flow content</a
+        >.<br />Or (in {{glossary("WHATWG")}} HTML):
+        {{HTMLElement("dl")}} element.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
+          >No corresponding role</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>Any</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
+      <td>{{domxref("HTMLDivElement")}}</td>
+    </tr>
+  </tbody>
+</table>
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 의미를 지닌 구획 요소: {{HTMLElement("section")}}, {{HTMLElement("article")}}, {{HTMLElement("nav")}}, {{HTMLElement("header")}}, {{HTMLElement("footer")}}
-- 구문 콘텐츠를 꾸밀 때 사용하는 {{HTMLElement("span")}} 요소
+- Semantic sectioning elements: {{HTMLElement("section")}}, {{HTMLElement("article")}}, {{HTMLElement("nav")}}, {{HTMLElement("header")}}, {{HTMLElement("footer")}}
+- {{HTMLElement("span")}} element for styling of phrasing content

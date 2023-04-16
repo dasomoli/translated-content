@@ -1,26 +1,29 @@
 ---
-title: 일반 형제 결합자
+title: General sibling combinator
 slug: Web/CSS/General_sibling_combinator
+page-type: css-combinator
+browser-compat: css.selectors.general_sibling
 ---
 
 {{CSSRef("Selectors")}}
 
-**일반 형제 결합자**(`~`)는 두 개의 선택자 사이에 위치하여 뒤쪽 선택자의 요소와 앞쪽 선택자 요소의 부모 요소가 같고, 뒤쪽 선택자의 요소가 뒤에 위치할 때 선택합니다. 두 요소가 서로 붙어있을 필요는 없습니다.
+The **general sibling combinator** (`~`) separates two selectors and matches _all iterations_ of the second element, that are following the first element (though not necessarily immediately), and are children of the same parent {{Glossary("element")}}.
 
 ```css
-/* 서로 형제인 문단 중 이미지 뒤쪽인 경우에만 선택 */
+/* Paragraphs that are siblings of and
+   subsequent to any image */
 img ~ p {
   color: red;
 }
 ```
 
-## 구문
+## Syntax
 
-```
+```css
 former_element ~ target_element { style properties }
 ```
 
-## 예제
+## Examples
 
 ### CSS
 
@@ -33,26 +36,30 @@ p ~ span {
 ### HTML
 
 ```html
-<span>이건 빨강이 아닙니다.</span>
-<p>여기 문단이 있습니다.</p>
-<code>그리고 코드도 있습니다.</code>
-<span>이제 빨강입니다!</span>
-<code>더 많은 코드가 있습니다.</code>
-<span>이것도 빨강입니다!</span>
+<span>This is not red.</span>
+<p>Here is a paragraph.</p>
+<code>Here is some code.</code>
+<span>And here is a red span!</span>
+<span>And this is a red span!</span>
+<code>More code…</code>
+<div>How are you?</div>
+<p>Whatever it may be, keep smiling.</p>
+<h1>Dream big</h1>
+<span>And yet again this is a red span!</span>
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample("예제", "100%", 120)}}
+{{EmbedLiveSample("Examples", "auto", 300)}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [인접 형제 결합자](/ko/docs/Web/CSS/인접_형제_선택자)
+- [Adjacent sibling combinator](/en-US/docs/Web/CSS/Adjacent_sibling_combinator)

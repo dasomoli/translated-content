@@ -1,55 +1,67 @@
 ---
 title: ArrayBuffer.prototype.slice()
 slug: Web/JavaScript/Reference/Global_Objects/ArrayBuffer/slice
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.ArrayBuffer.slice
 ---
 
 {{JSRef}}
 
-**`slice()`** 메서드는 현재 `ArrayBuffer`를 주어진 시작과 끝점에 맞춰 자른 새로운 `ArrayBuffer`를 반환합니다.
+The **`slice()`** method returns a new `ArrayBuffer`
+whose contents are a copy of this `ArrayBuffer`'s bytes from
+`begin`, inclusive, up to `end`, exclusive.
 
 {{EmbedInteractiveExample("pages/js/arraybuffer-slice.html")}}
 
-## 구문
+## Syntax
 
-```js
-    arraybuffer.slice(begin[, end])
+```js-nolint
+slice(begin)
+slice(begin, end)
 ```
 
-### 매개변수
+### Parameters
 
 - `begin`
-  - : 자르기 시작할 지점을 나타내는 0 기반 인덱스.
-
+  - : Zero-based byte index at which to begin slicing.
 - `end` {{optional_inline}}
-  - : 자르기 끝낼 지점을 나타내는 바이트 인덱스. 지정하지 않은 경우 새로운 `ArrayBuffer`는 지정한 시작점부터 현재 `ArrayBuffer`의 끝까지 가지게 됩니다.
+  - : Byte index before which to end slicing. If end is unspecified, the new
+    `ArrayBuffer` contains all bytes from begin to the end of this
+    `ArrayBuffer`. If negative, it will make the Byte index begin from the last
+    Byte.
 
-### 반환 값
+### Return value
 
-새로운 {{jsxref("ArrayBuffer")}} 객체.
+A new {{jsxref("ArrayBuffer")}} object.
 
-## 설명
+## Description
 
-`slice()` 메서드는 `end` 매개변수로 지정한 바이트 위치 바로 앞까지 현재 배열 버퍼를 복사합니다. `begin`과 `end`는 음의 값인 경우 배열의 시작부터 위치를 세지 않고 끝에서부터 셉니다.
+The `slice()` method copies up to, but not including, the byte indicated by
+the `end` parameter. If either `begin` or `end` is
+negative, it refers to an index from the end of the array, as opposed to from the
+beginning.
 
-`end` 값이 유효한 범위를 벗어날 경우 버퍼 길이에 맞춰 잘라냅니다. 또한 새로운 ArrayBuffer의 길이가 음의 값이 나올 경우 0으로 처리합니다.
+The range specified by the `begin` and `end` parameters is
+clamped to the valid index range for the current array. If the computed length of the
+new `ArrayBuffer` would be negative, it is clamped to zero.
 
-## 예제
+## Examples
 
-### `ArrayBuffer` 복사하기
+### Copying an ArrayBuffer
 
 ```js
 const buf1 = new ArrayBuffer(8);
 const buf2 = buf1.slice(0);
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("ArrayBuffer")}}

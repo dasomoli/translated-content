@@ -1,13 +1,12 @@
 ---
-title: transform
+title: <xsl:transform>
 slug: Web/XSLT/Element/transform
-original_slug: Web/XSLT/transform
 ---
 
 {{ XsltRef() }}
 
-`<xsl:transform>` 요소는 [`<xsl:stylesheet>`](/ko/XSLT/stylesheet) 요소와 정확히 같습니다.
+The `<xsl:transform>` element is exactly equivalent to the [`<xsl:stylesheet>`](/en-US/docs/Web/XSLT/Element/stylesheet) element.
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

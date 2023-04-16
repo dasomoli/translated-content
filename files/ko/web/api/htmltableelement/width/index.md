@@ -1,29 +1,32 @@
 ---
-title: table.width
+title: "HTMLTableElement: width property"
+short-title: width
 slug: Web/API/HTMLTableElement/width
+page-type: web-api-instance-property
+status:
+  - deprecated
+browser-compat: api.HTMLTableElement.width
 ---
 
-{{ ApiRef() }}
+{{APIRef("HTML DOM")}} {{Deprecated_Header}}
 
-### 요약
+The **`HTMLTableElement.width`** property represents the
+desired width of the table.
 
-**width**는 바라는 테이블의 너비를 지정합니다.
+## Value
 
-### 구문
+A string representing the width in number of pixels or as a percentage value.
 
-```js
-HTMLTableElement.width = width;
-var width = HTMLTableElement.width;
-```
-
-[`width`](http://www.w3.org/TR/1999/REC-html401-19991224/struct/tables.html#adef-width-TABLE)가 픽셀수나 퍼센트 값으로 너비를 나타내는 문자열인 곳.
-
-### 예제
+## Examples
 
 ```js
 mytable.width = "75%";
 ```
 
-## 명세서
+## Specifications
 
-{{Specifications}}
+- W3C DOM 2 HTML Specification [_HTMLTableElement.width_](https://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-77447361)
+
+## Browser compatibility
+
+{{Compat}}

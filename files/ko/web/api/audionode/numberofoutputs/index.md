@@ -1,22 +1,23 @@
 ---
-title: AudioNode.numberOfOutputs
+title: "AudioNode: numberOfOutputs property"
+short-title: numberOfOutputs
 slug: Web/API/AudioNode/numberOfOutputs
+page-type: web-api-instance-property
+browser-compat: api.AudioNode.numberOfOutputs
 ---
+
 {{APIRef("Web Audio API")}}
 
-{{ domxref("AudioNode") }} 인터페이스의 `numberOfOutputs` 속성은 노드에서 나오는 출력의 수를 반환합니다. 목적지 노드 (예: {{domxref("AudioDestinationNode") }}) 는 이 특성에 대해 0의 값을 가집니다.
+The `numberOfOutputs` property of
+the {{ domxref("AudioNode") }} interface returns the number of outputs coming out of
+the node. Destination nodes — like {{domxref("AudioDestinationNode") }} — have
+a value of 0 for this attribute.
 
-## 구문
+## Value
 
-```js
-var numOutputs = audioNode.numberOfOutputs;
-```
+An integer ≥ 0.
 
-### 값
-
-integer ≥ 0.
-
-## 예제
+## Examples
 
 ```js
 const audioCtx = new AudioContext();
@@ -31,15 +32,14 @@ console.log(gainNode.numberOfOutputs); // 1
 console.log(audioCtx.destination.numberOfOutputs); // 0
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Web Audio
-  API 사용하기](/ko/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)
+- [Using the Web Audio API](/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)

@@ -1,33 +1,36 @@
 ---
 title: GeolocationPosition
 slug: Web/API/GeolocationPosition
+page-type: web-api-interface
+browser-compat: api.GeolocationPosition
 ---
+
 {{securecontext_header}}{{APIRef("Geolocation API")}}
 
-**`GeolocationPosition`** 인터페이스는 주어진 시간에 장치가 위치한 지점을 나타냅니다. 지점은 {{domxref("Coordinates")}} 객체로 표현하여, 지구를 나타내는 회전타원체 위의 2D 위치와 더불어 높이와 속도 정보를 담습니다.
+The **`GeolocationPosition`** interface represents the position of the concerned device at a given time. The position, represented by a {{domxref("GeolocationCoordinates")}} object, comprehends the 2D position of the device, on a spheroid representing the Earth, but also its altitude and its speed.
 
-## 속성
+## Instance properties
 
-`GeolocationPosition` 인터페이스는 어떤 속성도 상속하지 않습니다.
+_The `GeolocationPosition` interface doesn't inherit any properties._
 
-- {{domxref("Position.coords")}} {{readonlyInline}} {{securecontext_inline}}
-  - : 주어진 시간의 위치를 나타내는 {{domxref("Coordinates")}} 객체입니다.
-- {{domxref("Position.timestamp")}} {{readonlyInline}} {{securecontext_inline}}
-  - : 위치를 기록한 시간을 나타내는 {{domxref("DOMTimeStamp")}}입니다.
+- {{domxref("GeolocationPosition.coords")}} {{ReadOnlyInline}} {{securecontext_inline}}
+  - : Returns a {{domxref("GeolocationCoordinates")}} object defining the current location.
+- {{domxref("GeolocationPosition.timestamp")}} {{ReadOnlyInline}} {{securecontext_inline}}
+  - : Returns a timestamp, given as [Unix time](/en-US/docs/Glossary/Unix_time) in milliseconds, representing the time at which the location was retrieved.
 
-## 메서드
+## Instance methods
 
-`GeolocationPosition` 인터페이스는 어떤 메서드도 상속하거나 구현하지 않습니다.
+_The `GeolocationPosition` interface neither implements, nor inherits any methods._
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [위치정보 사용하기](/ko/docs/Web/API/Geolocation_API)
-- 이 인터페이스를 사용하는 {{domxref("Geolocation")}} 인터페이스.
+- [Using the Geolocation API](/en-US/docs/Web/API/Geolocation_API/Using_the_Geolocation_API)
+- {{domxref("Geolocation")}}

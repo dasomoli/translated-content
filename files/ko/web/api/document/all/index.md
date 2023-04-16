@@ -1,25 +1,34 @@
 ---
-title: Document.all
+title: "Document: all property"
+short-title: all
 slug: Web/API/Document/all
+page-type: web-api-instance-property
+status:
+  - deprecated
+browser-compat: api.Document.all
 ---
-{{APIRef("DOM")}}{{SeeCompatTable}}
 
-{{DOMxRef("Document")}} 인터페이스의 read-only **`all`** 요소는 document node에 위치한{{DOMxRef("HTMLAllCollection")}} 반환한다. 간단하게 말하면 read-only **`all`** 요소는 페이지의 모든 contents를 반환 해준다.
+{{APIRef("DOM")}}{{Deprecated_Header}}
 
-## Syntax
+The {{DOMxRef("Document")}} interface's read-only **`all`**
+property returns an {{DOMxRef("HTMLAllCollection")}} rooted at the document node. In
+other words, it returns all of the document's elements, accessible by order (like an
+array) and by ID (like a regular object).
 
-```js
-var htmlAllCollection = document.all;
-```
+## Value
 
-### Value
+An {{DOMxRef("HTMLAllCollection")}} which contains every element in the document.
 
-{{DOMxRef("HTMLAllCollection")}}는 문서 내에서 모든 node를 담고 있다.
+## Conversion to boolean
 
-## 명세서
+`document.all` is the only {{Glossary("falsy")}} object accessible to
+JavaScript, because it has the [\[\[IsHTMLDDA\]\] internal
+slot](https://tc39.es/ecma262/#sec-IsHTMLDDA-internal-slot).
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

@@ -1,46 +1,52 @@
 ---
 title: tabindex
 slug: Web/HTML/Global_attributes/tabindex
+page-type: html-attribute
+browser-compat: html.global_attributes.tabindex
 ---
 
 {{HTMLSidebar("Global_attributes")}}
 
-**`tabindex`** [전역 특성](/ko/docs/Web/HTML/Global_attributes)은 요소가 포커스 가능함을 나타내며, 이름에서도 알 수 있듯, 주로 <kbd>Tab</kbd> 키를 사용하는 연속적인 키보드 탐색에서 어느 순서에 위치할지 지정합니다.
+The **`tabindex`** [global attribute](/en-US/docs/Web/HTML/Global_attributes) allows developers to make HTML elements focusable, allow or prevent them from being sequentially focusable (usually with the <kbd>Tab</kbd> key, hence the name) and determine their relative ordering for sequential focus navigation.
 
 {{EmbedInteractiveExample("pages/tabbed/attribute-tabindex.html","tabbed-standard")}}
 
-<p class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</p>
+It accepts an integer as a value, with different results depending on the integer's value:
 
-값으로는 정수를 지정할 수 있으며, 수에 따라 결과가 달라집니다.
+  > **Note:** If an HTML element renders and has `tabindex` attribute with any valid integer value, the element can be focused with JavaScript (by calling the [`focus()`](/en-US/docs/Web/API/HTMLElement/focus) method) or visually by clicking with the mouse. The particular `tabindex` value controls whether the element is `tabbable` (i.e. reachable via sequential keyboard navigation, usually with the <kbd>Tab</kbd> key).
 
-- **음의 정숫값**(보통 `tabindex="-1"`)은 연속 키보드 탐색으로 접근할 수는 없으나 JavaScript나 시각적(마우스 클릭)으로는 포커스 가능함을 뜻합니다. 보통 JavaScript를 사용한 위젯의 접근성 확보를 위해 사용합니다.
+- A _negative value_ (the exact negative value doesn't actually matter, usually `tabindex="-1"`) means that the element is not reachable via sequential keyboard navigation.
 
-  > **참고:** 음의 값은 특정 이벤트에만 나타나는 요소에 유용합니다. 사용자는 키보드를 계속 눌러도 접근할 수 없으나, 스크립트에서는 {{domxref("HTMLOrForeignElement.focus", "focus()")}} 메서드를 호출해 포커스를 부여할 수 있기 때문입니다.
+  > **Note:** `tabindex="-1"` may be useful for elements that should not be navigated to directly using the <kbd>Tab</kbd> key, but need to have keyboard focus set to them. Examples include an off-screen modal window that should be focused when it comes into view, or a form submission error message that should be immediately focused when an errant form is submitted.
 
-- 대화형 콘텐츠는 `tabindex="0"`이 기본값이고, 비 대화형 콘텐츠는 `tabindex="-1"`이 기본값입니다. 연속 키보드 탐색으로 요소에 접근할 수 있으며 문서 소스 코드의 순서에 따른다는 것을 나타냅니다. 양의 정숫값을 가진 요소가 존재할 경우 순서는 그 이후가 됩니다.
-- **양의 정숫값**은 요소를 연속 키보드 탐색으로 접근할 수 있으며, 그 순서는 해당 값으로 지정하겠다는 것을 뜻합니다. 즉, `tabindex="4"`인 요소는 `tabindex="5"`와 `tabindex="0"`인 요소 이전에, 그러나 `tabindex="3"`인 요소 이후에 접근할 수 있습니다. 다수의 요소가 하나의 값을 공유할 경우 그 안에서 문서 소스 코드의 순서를 따릅니다. 최댓값은 `32767`입니다.
+- `tabindex="0"` means that the element should be focusable in sequential keyboard navigation, after any positive `tabindex` values. The focus navigation order of these elements is defined by their order in the document source.
+- A _positive value_ means the element should be focusable in sequential keyboard navigation, with its order defined by the value of the number. That is, `tabindex="4"` is focused before `tabindex="5"` and `tabindex="0"`, but after `tabindex="3"`. If multiple elements share the same positive `tabindex` value, their order relative to each other follows their position in the document source. The maximum value for `tabindex` is 32767.
+- If the `tabindex` attribute is included with no value set, whether the element is focusable is determined by the user agent.
 
-  > **경고:** 0보다 큰 `tabindex` 값을 피하세요. 접근성 보조기술 사용자의 페이지 탐색과 조작에 방해될 수 있습니다. 대신, 문서의 요소 순서를 논리적인 순서대로 배치하세요.
+  > **Warning:** You are recommended to only use `0` and `-1` as `tabindex` values. Avoid using `tabindex` values greater than `0` and CSS properties that can change the order of focusable HTML elements ([Ordering flex items](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Ordering_Flex_Items)). Doing so makes it difficult for people who rely on using keyboard for navigation or assistive technology to navigate and operate page content. Instead, write the document with the elements in a logical sequence.
 
-{{htmlelement("div")}}에 `tabindex`를 설정할 경우, 콘텐츠에도 `tabindex`를 지정하지 않는 한 화살표 키로 스크롤 할 수 없습니다. [fiddle을 방문해 tabindex가 스크롤에 주는 영향을 확인하세요.](https://jsfiddle.net/jainakshay/0b2q4Lgv/)
+Some focusable HTML elements have a default `tabindex` value of `0` set under the hood by the [user agent](/en-US/docs/Glossary/User_agent). These elements are an {{HTMLElement("a")}} or {{HTMLElement("area")}} with `href` attribute, {{HTMLElement("button")}}, {{HTMLElement("frame")}} {{deprecated_inline}}, {{HTMLElement("iframe")}}, {{HTMLElement("input")}}, {{HTMLElement("object")}}, {{HTMLElement("select")}}, {{HTMLElement("textarea")}}, and SVG {{SVGElement("a")}} element, or a {{HTMLElement("summary")}} element that provides summary for a {{HTMLElement("details")}} element. Developers shouldn't add the `tabindex` attribute to these elements unless it changes the default behavior (for example, including a negative value will remove the element from the focus navigation order).
 
-## 접근성 고려사항
+> **Warning:** The tabindex attribute must not be used on the {{HTMLElement("dialog")}} element.
 
-키보드 입력을 통해 포커스 가능한 상호작용 항목을 만들기 위해 비 [대화형 콘텐츠](/ko/docs/Web/Guide/HTML/Content_categories#대화형_콘텐츠)에 `tabindex`를 추가하는 것을 피하세요. 이를테면 버튼을 나타내기 위해 {{htmlelement("button")}} 대신 {{htmlelement("div")}}를 사용하는 것을 말합니다.
+## Accessibility concerns
 
-비 대화형 요소를 사용해 만든 대화형 컴포넌트는 접근성 트리에 나타나지 않으므로, 보조 기술이 해당 컴포넌트로 탐색하거나 조작하는 것을 방지합니다. 상호작용 가능한 항목은 대화형 요소({{htmlelement("a")}}, {{htmlelement("button")}}, {{htmlelement("details")}}, {{htmlelement("input")}}, {{htmlelement("select")}}, {{htmlelement("textarea")}} 등)를 사용해 적절한 의미와 함께 나타내야 합니다. 대화형 콘텐츠 요소는 보통 [ARIA](/ko/docs/Web/Accessibility/ARIA)가 관리하는, 접근성 기술에 알려줄 수 있는 자신의 역할과 상태를 내장하고 있습니다.
+Avoid using the `tabindex` attribute in conjunction with non-[interactive content](/en-US/docs/Web/HTML/Content_categories#interactive_content) to make something intended to be interactive focusable by keyboard input. An example of this would be using a {{HTMLElement("div")}} element to describe a button, instead of the {{HTMLElement("button")}} element.
 
-- [Using the tabindex attribute | The Paciello Group](https://developer.paciellogroup.com/blog/2014/08/using-the-tabindex-attribute/)
+Interactive components authored using non-interactive elements are not listed in the [accessibility tree](/en-US/docs/Learn/Accessibility/What_is_accessibility#accessibility_apis). This prevents assistive technology from being able to navigate to and manipulate those components. The content should be semantically described using interactive elements ({{HTMLElement("a")}}, {{HTMLElement("button")}}, {{HTMLElement("details")}}, {{HTMLElement("input")}}, {{HTMLElement("select")}}, {{HTMLElement("textarea")}}, etc.) instead. These elements have built-in roles and states that communicate status to the accessibility that would otherwise have to be managed by [ARIA](/en-US/docs/Web/Accessibility/ARIA).
 
-## 명세
+- [Using the tabindex attribute | The Paciello Group](https://www.tpgi.com/using-the-tabindex-attribute/)
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 모든 [전역 특성](/ko/docs/Web/HTML/Global_attributes)
-- 이 속성을 나타내는 {{domxref("HTMLElement.tabIndex")}}
+- All [global attributes](/en-US/docs/Web/HTML/Global_attributes)
+- {{domxref("HTMLElement.tabIndex")}} that reflects this attribute
+- Accessibility problems with `tabindex`: see [Don't Use Tabindex Greater than 0](https://adrianroselli.com/2014/11/dont-use-tabindex-greater-than-0.html) by Adrian Roselli

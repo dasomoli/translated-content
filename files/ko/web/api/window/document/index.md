@@ -1,22 +1,29 @@
 ---
-title: Window.document
+title: "Window: document property"
+short-title: document
 slug: Web/API/Window/document
+page-type: web-api-instance-property
+browser-compat: api.Window.document
 ---
 
 {{APIRef}}
 
-**`window.document`** 속성은 창이 포함한 [문서](/ko/docs/Web/API/Document)의 참조를 반환합니다.
+**`window.document`** returns a reference to the [document](/en-US/docs/Web/API/Document) contained in the window.
 
-## 예제
+## Value
+
+A [document](/en-US/docs/Web/API/Document) object.
+
+## Examples
 
 ```js
 console.log(window.document.title);
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

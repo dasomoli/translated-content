@@ -1,37 +1,47 @@
 ---
-title: CSS 첫 번째 단계
+title: CSS first steps overview
 slug: Learn/CSS/First_steps
 ---
+
 {{LearnSidebar}}
 
-CSS (Cascading Style Sheets) 는 콘텐츠의 글꼴, 색상, 크기 및 간격을 변경하거나 여러 열로 분할하거나 애니메이션 및 기타 장식 기능을 추가하는 등의 웹 페이지 스타일 및 레이아웃에 사용됩니다. 이 모듈은 작동 방식, 구문의 모양 및 HTML에 스타일을 추가하기 위해, 이를 사용하는 방법에 대한 기본 사항을 통해 CSS 를 마스터 하는 과정을 부드럽게 시작합니다.
+CSS (Cascading Style Sheets) is used to style and lay out web pages — for example, to alter the font, color, size, and spacing of your content, split it into multiple columns, or add animations and other decorative features. This module provides a gentle beginning to your path towards CSS mastery with the basics of how it works, what the syntax looks like, and how you can start using it to add styling to HTML.
 
-## 전제 조건
+> **Callout:**
+>
+> #### Looking to become a front-end web developer?
+>
+> We have put together a course that includes all the essential information you need to
+> work towards your goal.
+>
+> [**Get started**](/en-US/docs/Learn/Front-end_web_developer)
 
-이 모듈을 시작하기 전에, 다음이 있어야 합니다:
+## Prerequisites
 
-1. 컴퓨터를 사용하고 웹을 수동적으로 사용하는 것에 대한 기본적인 친숙성 (예: 콘텐츠를 보는 것) 입니다.
-2. [기본 소프트웨어 설치](/ko/docs/Learn/Getting_started_with_the_web/Installing_basic_software) 에서 자세히 설명한 대로 설정된 기본 작업 환경과 [파일 다루기](/ko/docs/Learn/Getting_started_with_the_web/Dealing_with_files) 에서 자세히 설명한 대로 파일을 생성하고 관리하는 방법을 이해합니다.
-3. [HTML 소개](/ko/docs/Learn/HTML/Introduction_to_HTML) 에서 설명한 바와 같이 HTML에 대한 기본적인 친숙성입니다.
+Before starting this module, you should have:
 
-> **참고:** 자신의 파일을 만들 수 없는 컴퓨터/태블릿/기타 장치에서 작업하는 경우, [JSBin](http://jsbin.com/) 또는 [Glitch](https://glitch.com/) 와 같은 온라인 코딩 프로그램에서 코드 예제를 시험해 볼 수 있습니다.
+1. Basic familiarity with using computers and using the Web passively (i.e. looking at it, consuming the content.)
+2. A basic work environment set up, as detailed in [Installing basic software](/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software), and an understanding of how to create and manage files, as detailed in [Dealing with files](/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files).
+3. Basic familiarity with HTML, as discussed in the [Introduction to HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML) module.
 
-## 안내
+> **Note:** If you are working on a computer/tablet/other device where you don't have the ability to create your own files, you could try out (most of) the code examples in an online coding program such as [JSBin](https://jsbin.com/) or [Glitch](https://glitch.com/).
 
-이 모듈에서는 CSS 의 모든 기본 이론을 익히고, 몇 가지 기술을 테스트 할 수 있는 기회를 제공하는 다음과 같은 기사가 포함되어 있습니다.
+## Guides
 
-- [CSS 란 무엇인가?](/ko/docs/Learn/CSS/First_steps/What_is_CSS)
-  - **: {{Glossary("CSS")}}** (Cascading Style Sheets) 를 사용하면 멋진 웹 페이지를 만들 수 있지만 어떻게 작동합니까? 이 기사에서는 간단한 구문 예제를 통해 CSS 가 무엇인지 설명하고 언어에 대한 몇 가지 주요 용어를 다룹니다.
-- [CSS 로 시작하기](/ko/docs/Learn/CSS/First_steps/Getting_started)
-  - : 이 기사에서는 간단한 HTML 문서를 가져와서 CSS 를 적용하여 언어에 대한 실질적인 내용을 학습합니다.
-- [CSS 의 구조](/ko/docs/Learn/CSS/First_steps/How_CSS_is_structured)
-  - : CSS 가 무엇인지, 그리고 CSS 의 기본 사용법에 대해 알고 있습니다. 이제 언어 자체의 구조를 조금 더 깊이 살펴볼 차례입니다. 우리는 이미 여기에서 논의된 많은 개념들을 만났습니다. 나중에 헷갈리는 개념을 발견하면 다시 이 개념으로 돌아와서 요약 할 수 있습니다.
-- [CSS 작동 방식](/ko/docs/Learn/CSS/First_steps/How_CSS_works)
-  - : CSS 의 기본 사항, 목적 및 간단한 스타일 시트 작성 방법을 배웠습니다. 이 강의에서는 브라우저가 CSS 와 HTML 을 가져와서 웹 페이지로 만드는 방법을 살펴 봅니다.
-- [새로운 지식 사용](/ko/docs/Learn/CSS/First_steps/Using_your_new_knowledge)
-  - : 지난 몇 단원에서 배운 내용을 통해 CSS 를 사용하여 간단한 텍스트 문서의 서식을 지정하고 자신만의 스타일을 추가 할 수 있다는 것을 알게 될 것입니다. 이 기사는 그렇게 할 수 있는 기회를 제공합니다.
+This module contains the following articles, which will take you through all the basic theory of CSS, and provide opportunities for you to test out some skills.
 
-## 참고 항목
+- [What is CSS?](/en-US/docs/Learn/CSS/First_steps/What_is_CSS)
+  - : **{{Glossary("CSS")}}** (Cascading Style Sheets) allows you to create great-looking web pages, but how does it work under the hood? This article explains what CSS is with a simple syntax example and also covers some key terms about the language.
+- [Getting started with CSS](/en-US/docs/Learn/CSS/First_steps/Getting_started)
+  - : In this article, we will take a simple HTML document and apply CSS to it, learning some practical things about the language along the way.
+- [How CSS is structured](/en-US/docs/Learn/CSS/First_steps/How_CSS_is_structured)
+  - : Now that you have an idea about what CSS is and the basics of using it, it is time to look a little deeper into the structure of the language itself. We have already met many of the concepts discussed here; you can return to this one to recap if you find any later concepts confusing.
+- [How CSS works](/en-US/docs/Learn/CSS/First_steps/How_CSS_works)
+  - : We have learned the basics of CSS, what it is for, and how to write simple stylesheets. In this article, we will take a look at how a browser takes CSS and HTML and turns that into a webpage.
 
-- [중급자 웹 활용 능력 1: CSS 소개](https://teach.mozilla.org/activities/intermediate-web-lit/)
-  - _: CSS 소개_ 모듈에서 이야기 한 많은 기술을 탐구하고 테스트하는 훌륭한 모질라 기초 과정입니다. 웹 페이지, CSS 선택자, 속성 및 값의 HTML 요소 스타일 지정에 대해 학습합니다.
+## Assessments
+
+The following assessment will test your understanding of the CSS basics covered in the guides above.
+
+- [Styling a biography page](/en-US/docs/Learn/CSS/First_steps/Styling_a_biography_page)
+  - : With the things you have learned in the last few articles, you should find that you can format simple text documents using CSS to add your own style to them. This assessment gives you a chance to do that.

@@ -1,47 +1,47 @@
 ---
-title: RTCDataChannelEvent.channel
+title: "RTCDataChannelEvent: channel property"
+short-title: channel
 slug: Web/API/RTCDataChannelEvent/channel
+page-type: web-api-instance-property
+browser-compat: api.RTCDataChannelEvent.channel
 ---
 
-{{APIRef("WebRTC")}}{{SeeCompatTable}}
+{{APIRef("WebRTC")}}
 
-읽기 속성인 **`RTCDataChannelEvent.channel`** 는 {{domxref("RTCDataChannel")}}와 관련이 있는 이벤트를 반환합니다.
+The read-only property **`RTCDataChannelEvent.channel`**
+returns the {{domxref("RTCDataChannel")}} associated with the event.
 
-## Syntax
+## Value
 
-```js
- var channel = RTCDataChannelEvent.channel;
-```
+A {{domxref("RTCDataChannel")}} object representing the data channel linking the
+receiving {{domxref("RTCPeerConnection")}} to its remote peer.
 
-### 값
+## Example
 
-{{domxref("RTCDataChannel")}} 객체는 {{domxref("RTCPeerConnection")}}을 원격 피어와 연결해주는 데이터 채널을 알려줍니다.
-
-## 예시
-
-{{event("datachannel")}} 이벤트 핸들러 안 코드의 첫 줄에서 이벤트 객체의 채널을 가져오고, 이를 데이터 트래픽을 관리하는 코드에 사용 될 수 있도록 지역 변수로 저장합니다.
+The first line of code in the {{DOMxRef("RTCPeerConnection.datachannel_event", "datachannel")}} event handler shown below takes
+the channel from the event object and saves it locally for use by the code handling data
+traffic.
 
 ```js
-pc.ondatachannel = function(event) {
+pc.ondatachannel = (event) => {
   inboundDataChannel = event.channel;
   inboundDataChannel.onmessage = handleIncomingMessage;
   inboundDataChannel.onopen = handleChannelOpen;
   inboundDataChannel.onclose = handleChannelClose;
-}
+};
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- {{event("datachannel")}}
+- {{DOMxRef("RTCPeerConnection.datachannel_event", "datachannel")}}
 - {{domxref("RTCDataChannel")}}
-- {{domxref("RTCPeerConnection.ondatachannel")}}
-- [A simple RTCDataChannel sample](/ko/docs/Web/API/WebRTC_API/Simple_RTCDataChannel_sample)
+- [A simple RTCDataChannel sample](/en-US/docs/Web/API/WebRTC_API/Simple_RTCDataChannel_sample)
 - {{domxref("RTCPeerConnection")}}

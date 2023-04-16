@@ -1,108 +1,112 @@
 ---
-title: <b>
+title: "<b>: The Bring Attention To element"
 slug: Web/HTML/Element/b
+page-type: html-element
+browser-compat: html.elements.b
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<b>` 요소**는 독자의 주의를 요소의 콘텐츠로 끌기 위한 용도로 사용합니다. 그 외의 다른 특별한 중요도는 주어지지 않습니다. 원래는 "굵은 글씨 요소"로 불렸으며, 대부분의 브라우저도 여전히 텍스트를 굵은 글씨체로 강조합니다. 그러나 `<b>`를 사용해 텍스트를 꾸미면 안됩니다. 대신 CSS {{cssxref("font-weight")}}를 사용해 굵은 글씨체를 적용하거나, {{htmlelement("strong")}} 요소를 사용해 특별히 중요한 텍스트를 나타내세요.
+The **`<b>`** [HTML](/en-US/docs/Web/HTML) element is used to draw the reader's attention to the element's contents, which are not otherwise granted special importance. This was formerly known as the Boldface element, and most browsers still draw the text in boldface. However, you should not use `<b>` for styling text or granting importance. If you wish to create boldface text, you should use the CSS {{cssxref("font-weight")}} property. If you wish to indicate an element is of special importance, you should use the {{HTMLElement("strong")}} element.
 
 {{EmbedInteractiveExample("pages/tabbed/b.html", "tabbed-shorter")}}
+
+## Attributes
+
+This element only includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
+
+## Usage notes
+
+- Use the `<b>` for cases like keywords in a summary, product names in a review, or other spans of text whose typical presentation would be boldfaced (but not including any special importance).
+- Do not confuse the `<b>` element with the {{HTMLElement("strong")}}, {{HTMLElement("em")}}, or {{HTMLElement("mark")}} elements. The {{HTMLElement("strong")}} element represents text of certain _importance_, {{HTMLElement("em")}} puts some emphasis on the text and the {{HTMLElement("mark")}} element represents text of certain _relevance_. The `<b>` element doesn't convey such special semantic information; use it only when no others fit.
+- Similarly, do not mark titles and headings using the `<b>` element. For this purpose, use the {{HTMLElement("Heading_Elements", "h1")}} to {{HTMLElement("Heading_Elements", "h6")}} tags. Further, stylesheets can change the default style of these elements, with the result that they are not _necessarily_ displayed in bold.
+- It is a good practice to use the [`class`](/en-US/docs/Web/HTML/Global_attributes#class) attribute on the `<b>` element in order to convey additional semantic information as needed (for example `<b class="lead">` for the first sentence in a paragraph). This makes it easier to manage multiple use cases of `<b>` if your stylistic needs change, without the need to change all of its uses in the HTML.
+- Historically, the `<b>` element was meant to make text boldface. Styling information has been deprecated since HTML4, so the meaning of the `<b>` element has been changed.
+- If there is no semantic purpose to using the `<b>` element, you should use the CSS {{cssxref("font-weight")}} property with the value `"bold"` instead in order to make text bold.
+
+## Examples
+
+```html
+<p>
+  This article describes several <b class="keywords">text-level</b> elements. It
+  explains their usage in an <b class="keywords">HTML</b> document.
+</p>
+Keywords are displayed with the default style of the
+<b>element, likely in bold.</b>
+```
+
+### Result
+
+{{EmbedLiveSample("Examples")}}
+
+## Technical summary
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리">콘텐츠 카테고리</a>
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
       </th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#플로우_콘텐츠"
-          >플로우 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
         >,
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >, 뚜렷한 콘텐츠.
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >, palpable content.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#구문_콘텐츠"
-          >구문 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >Phrasing content</a
         >.
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
+      <th scope="row">Tag omission</th>
       <td>{{no_tag_omission}}</td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Permitted parents</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >를 허용하는 모든 요소.
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >.
       </td>
     </tr>
     <tr>
-      <th scope="row">암시적 ARIA 역할</th>
+      <th scope="row">Implicit ARIA role</th>
       <td>
         <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
-          >대응하는 역할 없음</a
+          >No corresponding role</a
         >
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>모두</td>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>Any</td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
-
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)만 포함합니다.
-
-## 사용 일람
-
-- 요약 키워드, 리뷰의 제품명 등, 특별한 중요성을 가지고 있지는 않지만 굵게 표시할 부분에 `&#x3C;b>`를 사용하세요.
-
-- `&#x3C;b>` 요소와 {{HTMLElement("strong")}}, {{HTMLElement("em")}}, {{HTMLElement("mark")}} 요소를 혼동하지 않도록 주의하세요. {{HTMLElement("strong")}} 요소는 **중요**한 글을, {{HTMLElement("em")}} 요소는 약간의 강조가 필요한 글을, {{HTMLElement("mark")}} 요소는 관련성이 있는 글을 나타냅니다. `&#x3C;b>` 요소는 아무런 의미도 갖지 않으므로 다른 요소가 적합하지 않을 때만 사용하세요.
-
-- 비슷한 이유로 `&#x3C;b>` 요소로만 제목을 만들어선 안됩니다. 제목은 {{HTMLElement("h1")}}에서 {{HTMLElement("h6")}} 태그로 표현하세요. 특히 스타일 시트를 사용해 제목 요소의 스타일을 바꿀 수 있다는 점을 생각해보면, 제목이 꼭 굵은 글씨체일 필요는 없습니다.
-
-  - It is a good practice to use the **class** attribute on the `&#x3C;b>` in order to convey additional semantic information (for example `&#x3C;b class="lede">` for the first sentence in a paragraph). This eases the development of several stylings of a web document, without the need to change its HTML code.
-
-- 과거 `&#x3C;b>` 요소는 굵을 글씨를 만들 때 사용했습니다. HTML4부터 스타일 정보는 사용하지 않으므로 `&#x3C;b>` 요소의 의미도 바뀌었습니다.
-
-- &#x3C;b>의 의미와 관계 없이 굵은 글씨를 사용하고 있다면, CSS {{cssxref("font-weight")}} 속성의 `"bold"` 값을 사용하는 방법을 고려하세요.
-
-## 예제
-
-```html
-<p>
-  This article describes several <b class="keywords">text-level</b> elements.
-  It explains their usage in an <b class="keywords">HTML</b> document.
-</p>
-Keywords are displayed with the default style of the <b>element, likely in bold</b>.
-```
-
-### 결과
-
-{{EmbedLiveSample("예제")}}
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [\<b>와 \<i> 요소 사용하기 (W3C)](http://www.w3.org/International/questions/qa-b-and-i-tags)
+- Other elements conveying text-level semantics: {{HTMLElement("a")}}, {{HTMLElement("em")}}, {{HTMLElement("strong")}}, {{HTMLElement("small")}}, {{HTMLElement("cite")}}, {{HTMLElement("q")}}, {{HTMLElement("dfn")}}, {{HTMLElement("abbr")}}, {{HTMLElement("time")}}, {{HTMLElement("code")}}, {{HTMLElement("var")}}, {{HTMLElement("samp")}}, {{HTMLElement("kbd")}}, {{HTMLElement("sub")}}, {{HTMLElement("sup")}}, {{HTMLElement("i")}}, {{HTMLElement("mark")}}, {{HTMLElement("ruby")}}, {{HTMLElement("rp")}}, {{HTMLElement("rt")}}, {{HTMLElement("bdo")}}, {{HTMLElement("span")}}, {{HTMLElement("br")}}, {{HTMLElement("wbr")}}.
+- [Using \<b> and \<i> elements (W3C)](https://www.w3.org/International/questions/qa-b-and-i-tags)

@@ -1,31 +1,32 @@
 ---
-title: Geolocation API 사용하기
+title: Using the Geolocation API
 slug: Web/API/Geolocation_API/Using_the_Geolocation_API
-original_slug: WebAPI/Using_geolocation
+page-type: guide
 ---
 
-{{securecontext_header}}{{APIRef("Geolocation API")}}
-**Geolocation API**는 사용자의 현재 위치를 가져오는 API로, 지도에 사용자 위치를 표시하는 등 다양한 용도로 사용할 수 있습니다. 이 안내서는 Geolocation API의 기초적 사용법을 설명합니다.
+{{securecontext_header}}{{DefaultAPISidebar("Geolocation API")}}
 
-## `geolocation` 객체
+The Geolocation API is used to retrieve the user's location, so that it can for example be used to display their position using a mapping API. This article explains the basics of how to use it.
 
-[Geolocation API](/ko/docs/Web/API/Geolocation_API)는 {{domxref("navigator.geolocation")}} 객체를 통해 사용할 수 있습니다.
+## The geolocation object
 
-`geolocation` 객체가 존재하는 경우 위치 정보 서비스를 지원하는 것입니다. 존재 여부는 다음과 같이 알아낼 수 있습니다.
+The [Geolocation API](/en-US/docs/Web/API/Geolocation) is available through the {{domxref("navigator.geolocation")}} object.
+
+If the object exists, geolocation services are available. You can test for the presence of geolocation thusly:
 
 ```js
-if('geolocation' in navigator) {
-  /* 위치정보 사용 가능 */
+if ("geolocation" in navigator) {
+  /* geolocation is available */
 } else {
-  /* 위치정보 사용 불가능 */
+  /* geolocation IS NOT available */
 }
 ```
 
-### 현재 위치 가져오기
+### Getting the current position
 
-{{domxref("Geolocation.getCurrentPosition()","getCurrentPosition()")}} 메서드를 호출해서 사용자의 현재 위치를 얻을 수 있습니다. `getCurrentPosition()`은 사용자의 위치를 탐지하는 비동기 요청을 초기화하고, 위치 관련 하드웨어에 최신 정보를 요청합니다. 위치를 알아낸 후에는 지정한 콜백 함수를 호출합니다. 선택적으로, 이 과정 중 오류가 발생하면 호출할 오류 콜백을 두 번째 매개변수로 지정할 수도 있습니다. 세 번째 매개변수 역시 선택 항목이며, 위치 정보의 최대 수명, 요청의 최대 대기시간, 고정밀 위치정보 여부 등의 옵션을 담은 객체입니다.
+To obtain the user's current location, you can call the {{domxref("Geolocation.getCurrentPosition","getCurrentPosition()")}} method. This initiates an asynchronous request to detect the user's position, and queries the positioning hardware to get up-to-date information. When the position is determined, the defined callback function is executed. You can optionally provide a second callback function to be executed if an error occurs. A third, optional, parameter is an options object where you can set the maximum age of the position returned, the time to wait for a request, and if you want high accuracy for the position.
 
-> **참고:** {{domxref("Geolocation.getCurrentPosition", "getCurrentPosition()")}}의 기본값에서는 최대한 빠르게 낮은 정밀도의 응답을 반환합니다. 정확하지 않더라도 빠른 정보가 필요한 상황에서 유용합니다. 예를 들어, GPS 기능을 가진 장비는 보정 과정에 수 분이 걸릴 수도 있으므로 IP 위치와 WiFi 등 정확하지 않은 출처에 기반한 위치 정보를 반환할 수 있습니다.
+> **Note:** By default, {{domxref("Geolocation.getCurrentPosition","getCurrentPosition()")}} tries to answer as fast as possible with a low accuracy result. It is useful if you need a quick answer regardless of the accuracy. Devices with a GPS, for example, can take a minute or more to get a GPS fix, so less accurate data (IP location or Wi-Fi) may be returned to `getCurrentPosition()`.
 
 ```js
 navigator.geolocation.getCurrentPosition((position) => {
@@ -33,13 +34,13 @@ navigator.geolocation.getCurrentPosition((position) => {
 });
 ```
 
-위의 예제는 사용자 위치가 확인되면 `doSomething()` 함수를 실행합니다.
+The above example will cause the `doSomething()` function to execute when the location is obtained.
 
-### 현재 위치 추적하기
+### Watching the current position
 
-장치가 이동했거나 더 정확한 정보를 사용할 수 있어서 위치 정보가 바뀐 경우 호출할 콜백 함수를 {{domxref("Geolocation.watchPosition","watchPosition()")}} 메서드로 설정할 수 있으며, {{domxref("Geolocation.getCurrentPosition","getCurrentPosition()")}}과 같은 매개변수를 받습니다. 콜백은 계속해서 호출될 수 있으므로, 브라우저가 사용자의 이동 시, 또는 고정밀 위치 기술을 사용할 수 있는 시점에 새로운 위치 정보를 제공할 수 있습니다. `getCurrentPosition()`과 마찬가지로 선택 사항인 오류 콜백 역시 여러 번 호출할 수 있습니다.
+If the position data changes (either by device movement or if more accurate geo information arrives), you can set up a callback function that is called with that updated position information. This is done using the {{domxref("Geolocation.watchPosition","watchPosition()")}} function, which has the same input parameters as {{domxref("Geolocation.getCurrentPosition","getCurrentPosition()")}}. The callback function is called multiple times, allowing the browser to either update your location as you move, or provide a more accurate location as different techniques are used to geolocate you. The error callback function, which is optional just as it is for `getCurrentPosition()`, can be called repeatedly.
 
-> **참고:** {{domxref("Geolocation.getCurrentPosition", "getCurrentPosition()")}}을 먼저 호출하지 않고도 {{domxref("Geolocation.watchPosition", "watchPosition()")}}을 사용할 수 있습니다.
+> **Note:** You can use {{domxref("Geolocation.watchPosition","watchPosition()")}} without an initial {{domxref("Geolocation.getCurrentPosition","getCurrentPosition()")}} call.
 
 ```js
 const watchID = navigator.geolocation.watchPosition((position) => {
@@ -47,19 +48,19 @@ const watchID = navigator.geolocation.watchPosition((position) => {
 });
 ```
 
-{{domxref("Geolocation.watchPosition","watchPosition()")}} 메서드는 위치 추적 요청의 고유 식별자를 나타내는 숫자값을 반환합니다. 해당 식별자를 {{domxref("Geolocation.clearWatch","clearWatch()")}} 메서드에 전달해서 추적을 종료할 수 있습니다.
+The {{domxref("Geolocation.watchPosition","watchPosition()")}} method returns an ID number that can be used to uniquely identify the requested position watcher; you use this value in tandem with the {{domxref("Geolocation.clearWatch","clearWatch()")}} method to stop watching the user's location.
 
 ```js
 navigator.geolocation.clearWatch(watchID);
 ```
 
-### 응답 미세 조정
+### Fine tuning the response
 
-{{domxref("Geolocation.getCurrentPosition","getCurrentPosition()")}}과 {{domxref("Geolocation.watchPosition","watchPosition()")}} 둘 다 성공 콜백, 실패 콜백 외에도 [`PositionOptions`](/ko/docs/Web/API/PositionOptions) 객체를 받을 수 있습니다.
+Both {{domxref("Geolocation.getCurrentPosition","getCurrentPosition()")}} and {{domxref("Geolocation.watchPosition","watchPosition()")}} accept a success callback, an optional error callback, and an optional options object.
 
-`PositionsOptions` 객체를 사용하면 고정밀도 활성화 여부, 위치 정보의 캐시 수명(수명이 끝나기 전까지는 이전에 반환한 위치 정보를 저장해뒀다가, 같은 요청을 또 받을 경우 그대로 반환합니다), 그리고 위치 정보 요청의 응답을 대기할 최대 대기시간을 지정할 수 있습니다.
+This object allows you to specify whether to enable high accuracy, a maximum age for the returned position value (up until this age it will be cached and reused if the same position is requested again; after this the browser will request fresh position data), and a timeout value that dictates how long the browser should attempt to get the position data for, before it times out.
 
-옵션 객체를 사용한 {{domxref("Geolocation.watchPosition","watchPosition")}}의 호출 예시는 다음과 같습니다.
+A call to {{domxref("Geolocation.watchPosition","watchPosition")}} could look like:
 
 ```js
 function success(position) {
@@ -67,108 +68,106 @@ function success(position) {
 }
 
 function error() {
-  alert('Sorry, no position available.');
+  alert("Sorry, no position available.");
 }
 
 const options = {
   enableHighAccuracy: true,
   maximumAge: 30000,
-  timeout: 27000
+  timeout: 27000,
 };
 
 const watchID = navigator.geolocation.watchPosition(success, error, options);
 ```
 
-## 위치 표현
+## Describing a position
 
-사용자의 위치는 {{domxref("GeolocationPosition")}} 객체를 담은 {{domxref("GeolocationCoordinates")}} 객체를 사용하여 표현합니다.
+The user's location is described using a {{domxref("GeolocationPosition")}} object instance, which itself contains a {{domxref("GeolocationCoordinates")}} object instance.
 
-`GeolocationPosition`은 단 두 가지만 가집니다. 하나는 `GeolocationCoordinates` 인스턴스를 가진 `coords` 속성이고, 다른 하나는 위치 정보의 기록 시점을 나타내는 {{domxref("DOMTimeStamp")}} 인스턴스입니다.
+The `GeolocationPosition` instance contains only two things, a `coords` property that contains the `GeolocationCoordinates` instance, and a `timestamp` property that contains a timestamp, given as [Unix time](/en-US/docs/Glossary/Unix_time) in milliseconds, at which the position data was retrieved.
 
-GeolocationCoordinates 인스턴스는 다수의 속성을 갖지만, 그 중 가장 많이 쓰게 될 항목은 지도의 지점을 가리킬 때 사용할 `latitude`와 `longitude`입니다. 따라서 대부분의 `Geolocation` 성공 콜백은 아래와 같이 꽤 간단한 형태입니다.
+The `GeolocationCoordinates` instance contains a number of properties, but the two you'll use most commonly are `latitude` and `longitude`, which are what you need to draw your position on a map. Hence many Geolocation success callbacks look fairly simple:
 
 ```js
 function success(position) {
-  const latitude  = position.coords.latitude;
+  const latitude = position.coords.latitude;
   const longitude = position.coords.longitude;
 
   // Do something with your latitude and longitude
 }
 ```
 
-그러나 `GeolocationCoordinates` 객체에서 고도, 속도, 장치의 방향, 위경도와 고도의 정확도 등 다른 다양한 정보도 가져올 수 있습니다.
+You can however get a number of other bits of information from a `GeolocationCoordinates` object, including altitude, speed, what direction the device is facing, and an accuracy measure of the altitude, longitude, and latitude data.
 
-## 오류 처리
+## Handling errors
 
-`getCurrentPosition()` 또는 `watchPosition()`에 오류 콜백을 제공한 경우, 콜백은 첫 번째 매개변수로 [`GeolocationPositionError`](/ko/docs/Web/API/GeolocationPositionError) 객체를 받습니다. 해당 객체는 오류의 유형을 나타내는 `code` 속성과, 사람이 읽을 수 있는 형태로 오류 코드의 뜻을 설명한 `message` 속성을 갖습니다.
+The error callback function, if provided when calling `getCurrentPosition()` or `watchPosition()`, expects a [`GeolocationPositionError`](/en-US/docs/Web/API/GeolocationPositionError) object instance as its first parameter. This object type contains two properties, a `code` indicating what type of error has been returned, and a human-readable `message` that describes what the error code means.
 
-다음 형태로 사용할 수 있습니다.
+You could use it like so:
 
 ```js
 function errorCallback(error) {
   alert(`ERROR(${error.code}): ${error.message}`);
-};
+}
 ```
 
-## 예제
+## Examples
 
-다음 예제는 Geolocation API를 사용해 사용자의 위경도를 가져옵니다. 성공한 경우, 사용자의 위치를 가리키는 `openstreetmap.org` 링크를 생성해 하이퍼링크에 할당합니다.
+In the following example the Geolocation API is used to retrieve the user's latitude and longitude. If successful, the available hyperlink is populated with an `openstreetmap.org` URL that will show their location.
 
 ```css hidden
 body {
   padding: 20px;
-  background-color:#ffffc9
+  background-color: #ffffc9;
 }
 
 button {
-  margin: .5rem 0;
+  margin: 0.5rem 0;
 }
 ```
 
 ### HTML
 
 ```html
-<button id = "find-me">Show my location</button><br/>
-<p id = "status"></p>
-<a id = "map-link" target="_blank"></a>
+<button id="find-me">Show my location</button><br />
+<p id="status"></p>
+<a id="map-link" target="_blank"></a>
 ```
 
 ### JavaScript
 
 ```js
 function geoFindMe() {
+  const status = document.querySelector("#status");
+  const mapLink = document.querySelector("#map-link");
 
-  const status = document.querySelector('#status');
-  const mapLink = document.querySelector('#map-link');
-
-  mapLink.href = '';
-  mapLink.textContent = '';
+  mapLink.href = "";
+  mapLink.textContent = "";
 
   function success(position) {
-    const latitude  = position.coords.latitude;
+    const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
 
-    status.textContent = '';
+    status.textContent = "";
     mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
     mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
   }
 
   function error() {
-    status.textContent = 'Unable to retrieve your location';
+    status.textContent = "Unable to retrieve your location";
   }
 
-  if(!navigator.geolocation) {
-    status.textContent = 'Geolocation is not supported by your browser';
+  if (!navigator.geolocation) {
+    status.textContent = "Geolocation is not supported by your browser";
   } else {
-    status.textContent = 'Locating…';
+    status.textContent = "Locating…";
     navigator.geolocation.getCurrentPosition(success, error);
   }
-
 }
 
-document.querySelector('#find-me').addEventListener('click', geoFindMe);
+document.querySelector("#find-me").addEventListener("click", geoFindMe);
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample('예제', 350, 150)}}
+{{EmbedLiveSample('Examples', 350, 150, "", "", "", "geolocation")}}

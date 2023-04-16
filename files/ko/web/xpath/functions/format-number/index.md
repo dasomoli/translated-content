@@ -2,37 +2,39 @@
 title: format-number
 slug: Web/XPath/Functions/format-number
 ---
+
 {{ XsltRef() }}
 
-`format-number` 함수는 수를 평가하고 제공한 형식으로 그 수를 나타내는 문자열을 반환합니다.
+The `format-number` function evaluates a number and returns a string representing the number in a given format.
 
-### 문법
+### Syntax
 
 ```
-format-number(number ,pattern [,decimal-format] )
+format-number(number, pattern)
+format-number(number, pattern, decimalFormat)
 ```
 
-### 인수
+### Parameters
 
 - `number`
-  - : 형식을 지정할 수
+  - : The number to be formatted
 - `pattern`
-  - : JDK 1.1 [Decimal Format](http://java.sun.com/products/jdk/1.1/docs/api/java.text.DecimalFormat.html) 클래스 형식의 문자열.
-- `decimal-format`(선택사항)
-  - : 쓸 수 형식을 정의하는 [`xsl:decimal-format`](/ko/XSLT/decimal-format) 요소의 이름. 빼면, 기본 decimal-format을 씁니다.
+  - : A string in the format of the Java [DecimalFormat](https://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormat.html) class.
+- `decimalFormat` (optional)
+  - : The name of an [`xsl:decimal-format`](/en-US/docs/Web/XSLT/Element/decimal-format) element that defines the number format to be used. If omitted, the default decimal-format will be used.
 
-### 반환
+### Return value
 
-새 형식으로 수를 나타내는 문자열.
+A string representing the number in the new format.
 
-### 주의
+### Notes
 
-이 함수는 XPath에 더한 XSLT 고유 추가분입니다. 기본 XPath 함수 라이브러리의 일부가 아닙니다.
+This function is an XSLT-specific addition to XPath. It is not a part of the core XPath function library.
 
-### 정의
+### Defined
 
-[XSLT 1.0 12.3](http://www.w3.org/TR/xslt#function-format-number)
+[XSLT 1.0 12.3](https://www.w3.org/TR/1999/REC-xslt-19991116/#function-format-number)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

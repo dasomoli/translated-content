@@ -1,18 +1,25 @@
 ---
-title: CSS Ruby
+title: CSS Ruby Layout
 slug: Web/CSS/CSS_Ruby
+page-type: css-module
+spec-urls: https://drafts.csswg.org/css-ruby/
 ---
+
 {{CSSRef}}
 
-**CSS Ruby**는 행간 주석의 형태로 기본 텍스트와 함께 작게 실행되는 텍스트인 ruby 주석 표시와 관련된 렌더링 모델 및 서식 컨트롤을 제공하는 CSS 모듈입니다.
+**CSS Ruby Layout** is a module of [CSS](/en-US/docs/Web/CSS) that provides the rendering model and formatting controls related to the display of ruby annotation. Ruby annotation is a form of interlinear annotation, consisting of short runs of text alongside the base text. They are typically used in East Asian documents to indicate pronunciation or to provide a short annotation.
 
-## 참고서
+## Reference
 
-### 속성
+### Properties
 
 - {{cssxref("ruby-align")}}
 - {{cssxref("ruby-position")}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
+
+## See Also
+
+- {{HTMLElement('ruby')}}

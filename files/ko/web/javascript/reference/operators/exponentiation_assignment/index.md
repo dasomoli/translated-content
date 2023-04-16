@@ -1,40 +1,49 @@
 ---
-title: 거듭제곱 할당 (**=)
+title: Exponentiation assignment (**=)
 slug: Web/JavaScript/Reference/Operators/Exponentiation_assignment
+page-type: javascript-operator
+browser-compat: javascript.operators.exponentiation_assignment
 ---
+
 {{jsSidebar("Operators")}}
 
-거듭제곱 할당 연산자(`**=`)는 오른쪽 피연산자의 값으로 변수를 거듭제곱한 결과를 다시 변수에 할당합니다.
+The **exponentiation assignment (`**=`)** operator performs [exponentiation](/en-US/docs/Web/JavaScript/Reference/Operators/Exponentiation) on the two operands and assigns the result to the left operand.
 
 {{EmbedInteractiveExample("pages/js/expressions-exponentiation-assignment.html")}}
 
-## 구문
+## Syntax
 
-```js
-x **= y // x = x ** y
+```js-nolint
+x **= y
 ```
 
-## 예제
+## Description
 
-### 거듭제곱 할당 사용하기
+`x **= y` is equivalent to `x = x ** y`.
+
+## Examples
+
+### Using exponentiation assignment
 
 ```js
-// bar = 5
-// 위와 같은 변수를 가정할 때
+let bar = 5;
 
-bar **= 2     // 25
-bar **= 'foo' // NaN
+bar **= 2; // 25
+bar **= "foo"; // NaN
+
+let foo = 3n;
+foo **= 2n; // 9n
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [JavaScript 안내서의 할당 연산자](/ko/docs/Web/JavaScript/Guide/Expressions_and_Operators#할당_연산자)
-- [거듭제곱 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Exponentiation)
+- [Assignment operators in the JS guide](/en-US/docs/Web/JavaScript/Guide/Expressions_and_operators#assignment_operators)
+- [Exponentiation operator](/en-US/docs/Web/JavaScript/Reference/Operators/Exponentiation)

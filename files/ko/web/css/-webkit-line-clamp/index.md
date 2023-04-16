@@ -1,59 +1,66 @@
 ---
-title: '-webkit-line-clamp'
+title: "-webkit-line-clamp"
 slug: Web/CSS/-webkit-line-clamp
+page-type: css-property
+browser-compat: css.properties.-webkit-line-clamp
 ---
 
 {{CSSRef}}
 
-**`-webkit-line-clamp`** CSS 속성은 {{Glossary("block container", "블록 컨테이너")}}의 콘텐츠를 지정한 줄 수만큼으로 제한합니다.
+The **`-webkit-line-clamp`** CSS property allows limiting of the contents of a {{Glossary("block")}} to the specified number of lines.
 
-{{cssxref("display")}} 속성을 `-webkit-box` 또는 `-webkit-inline-box`로, 그리고 {{cssxref("-webkit-box-orient")}} 속성을 `vertical`로 설정한 경우에만 동작합니다.
+It only works in combination with the {{cssxref("display")}} property set to `-webkit-box` or `-webkit-inline-box` and the {{cssxref("box-orient", "-webkit-box-orient")}} property set to `vertical`.
 
-`-webkit-line-clamp`만 사용하는 경우, 말줄임표는 노출되나 넘친 콘텐츠가 숨겨지지 않으므로 대개 {{cssxref("overflow")}} 속성 또한 `hidden`으로 설정해야 합니다.
+In most cases you will also want to set {{cssxref("overflow")}} to `hidden`, otherwise the contents won't be clipped but an ellipsis will still be shown after the specified number of lines.
 
-앵커 요소에 적용한 경우 텍스트의 끝이 아니라 중앙에서 잘리는 경우도 있습니다.
+When applied to anchor elements, the truncating can happen in the middle of the text, not necessarily at the end.
 
-> **참고:** `-webkit-line-clamp`는 원래 WebKit이 구현했었으며 몇몇 문제점을 가지고 있으나 레거시 지원을 위해 표준화를 거쳤습니다. [CSS Overflow Module Level 3](https://www.w3.org/TR/css-overflow-3/#propdef--webkit-line-clamp) 명세의 {{cssxref("line-clamp")}}가 `-webkit-line-clamp`를 대체하기 위해 정의된 속성입니다.
+> **Note:** This property was originally implemented in WebKit and has some issues. It got standardized in [CSS Overflow Module Level 4](https://w3c.github.io/csswg-drafts/css-overflow-4/#propdef--webkit-line-clamp) for legacy support. The [CSS Overflow Module Level 4](https://w3c.github.io/csswg-drafts/css-overflow-4/#propdef-line-clamp) specification also defines a {{cssxref("line-clamp")}} property, which is meant to replace this property and avoid its issues.
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword value */
 -webkit-line-clamp: none;
 
-/* <integer> 값 */
+/* <integer> values */
 -webkit-line-clamp: 3;
 -webkit-line-clamp: 10;
 
-/* 전역 값 */
+/* Global values */
 -webkit-line-clamp: inherit;
 -webkit-line-clamp: initial;
+-webkit-line-clamp: revert;
+-webkit-line-clamp: revert-layer;
 -webkit-line-clamp: unset;
 ```
 
+### Values
+
 - `none`
-  - : 콘텐츠를 자르지 않습니다.
+  - : This value specifies that the content won't be clamped.
 - {{cssxref("integer")}}
-  - : 몇 줄 뒤에 콘텐츠를 자를지 지정합니다. 0보다 커야 합니다.
+  - : This value specifies the number of lines after which the content will be clamped. It must be greater than 0.
 
-## 형식 정의
+## Formal definition
 
-{{cssinfo}}
+{{CSSInfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{CSSSyntax}}
 
-## 예제
+## Examples
 
-### 문단 자르기
+### Truncating a paragraph
 
 #### HTML
 
 ```html
 <p>
-  In this example the <code>-webkit-line-clamp</code> property is set to <code>3</code>, which means the text is clamped after three lines.
-  An ellipsis will be shown at the point where the text is clamped.
+  In this example the <code>-webkit-line-clamp</code> property is set to
+  <code>3</code>, which means the text is clamped after three lines. An ellipsis
+  will be shown at the point where the text is clamped.
 </p>
 ```
 
@@ -69,19 +76,19 @@ p {
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("예제", "100%", "100")}}
+{{EmbedLiveSample("Truncating_a_paragraph", "100%", "130")}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Line Clampin’ (Truncating Multiple Line Text)](https://css-tricks.com/line-clampin/)
+- [Line Clampin' (Truncating Multiple Line Text)](https://css-tricks.com/line-clampin/)
 - {{cssxref("line-clamp")}}

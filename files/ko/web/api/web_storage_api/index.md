@@ -1,65 +1,71 @@
 ---
 title: Web Storage API
 slug: Web/API/Web_Storage_API
+page-type: web-api-overview
+browser-compat:
+  - api.Window.localStorage
+  - api.Window.sessionStorage
 ---
 
 {{DefaultAPISidebar("Web Storage API")}}
 
-**Web Storage API**는 브라우저에서 키/값 쌍을 {{glossary("cookie", "쿠키")}}보다 훨씬 직관적으로 저장할 수 있는 방법을 제공합니다.
+The **Web Storage API** provides mechanisms by which browsers can store key/value pairs, in a much more intuitive fashion than using {{glossary("cookie", "cookies")}}.
 
-## Web Storage 개념과 사용법
+## Web Storage concepts and usage
 
-Web Storage의 두 가지 방식은 다음과 같습니다.
+The two mechanisms within Web Storage are as follows:
 
-- `sessionStorage`는 각각의 {{glossary("origin", "출처")}}에 대해 독립적인 저장 공간을 페이지 세션이 유지되는 동안(브라우저가 열려있는 동안) 제공합니다.
+- `sessionStorage` maintains a separate storage area for each given origin that's available for the duration of the page session (as long as the browser is open, including page reloads and restores).
 
-  - 세션에 한정해, 즉 브라우저 또는 탭이 닫힐 때까지만 데이터를 저장합니다.
-  - 데이터를 절대 서버로 전송하지 않습니다.
-  - 저장 공간이 쿠키보다 큽니다. (최대 5MB)
+  - Stores data only for a session, meaning that the data is stored until the browser (or tab) is closed.
+  - Data is never transferred to the server.
+  - Storage limit is larger than a cookie (at most 5MB).
 
-- `localStorage`도 위와 같지만, 브라우저를 닫았다 열어도 데이터가 남아있습니다.
+- `localStorage` does the same thing, but persists even when the browser is closed and reopened.
 
-  - 유효기간 없이 데이터를 저장하고, JavaScript를 사용하거나 브라우저 캐시 또는 로컬 저장 데이터를 지워야만 사라집니다.
-  - 저장 공간이 셋 중 제일 큽니다.
+  - Stores data with no expiration date, and gets cleared only through JavaScript, or clearing the Browser cache / Locally Stored Data.
+  - Storage limit is the maximum amongst the two.
 
-위의 방식은 {{domxref("Window.sessionStorage")}}와 {{domxref("Window.localStorage")}} 속성을 통해 사용할 수 있습니다. (보다 정확히 말하자면, 지원하는 브라우저에서는 `Window` 객체는 `localStorage` 및 `sessionStorage` 속성을 포함한 `WindowLocalStorage`와 `WindowSessionStorage` 객체를 구현합니다) 두 속성 중 하나에 접근하면 {{domxref("Storage")}} 객체의 인스턴스를 생성하게 되고, 그걸 사용해 데이터 항목을 추가, 회수, 제거할 수 있습니다. `sessionStorage`와 `localStorage`의 `Storage` 객체는 각각의 출처별로 다른 것을 사용하며 서로 독립적으로 기능합니다.
+These mechanisms are available via the {{domxref("Window.sessionStorage")}} and {{domxref("Window.localStorage")}} properties (to be more precise, in supporting browsers the `Window` object implements the `WindowLocalStorage` and `WindowSessionStorage` objects, which the `localStorage` and `sessionStorage` properties hang off) — invoking one of these will create an instance of the {{domxref("Storage")}} object, through which data items can be set, retrieved and removed. A different Storage object is used for the `sessionStorage` and `localStorage` for each origin — they function and are controlled separately.
 
-> **참고:** Firefox 45 이후로는, 과도한 Web Storage 사용으로 인한 메모리 문제를 피하기 위해 브라우저가 충돌하거나 재시작할 때의 출처 당 저장 공간이 10MB로 제한됩니다.
+> **Note:** From Firefox 45 onwards, when the browser crashes/restarts, the amount of data saved per origin is limited to 10MB. This has been done to avoid memory issues caused by excessive usage of web storage.
 
-> **참고:** 사용자가 [서드 파티 쿠키를 비활성화](https://support.mozilla.org/en-US/kb/disable-third-party-cookies)한 경우 서드 파티 IFrame에서 Web Storage에 접근할 수 없습니다. Firefox는 43부터 이 동작을 사용합니다.
+> **Note:** Access to Web Storage from third-party IFrames is denied if the user has [disabled third-party cookies](https://support.mozilla.org/en-US/kb/third-party-cookies-firefox-tracking-protection) (Firefox implements this behavior from [version 43](/en-US/docs/Mozilla/Firefox/Releases/43) onwards).
 
-## Web Storage 인터페이스
+> **Note:** Web Storage is not the same as `mozStorage` (Mozilla's XPCOM interfaces to SQLite) or the `Session store API` (an XPCOM storage utility for use by extensions).
+
+## Web Storage interfaces
 
 - {{domxref("Storage")}}
-  - : 특정 도메인과 저장 유형(세션 또는 로컬)에 대해 데이터를 저장, 회수, 삭제할 수 있습니다.
+  - : Allows you to set, retrieve and remove data for a specific domain and storage type (session or local).
 - {{domxref("Window")}}
-  - : Web Storage API는 {{domxref("Window")}} 객체를 확장합니다. {{domxref("Window.sessionStorage")}}와 {{domxref("Window.localStorage")}} 속성을 추가해 현재 도메인의 세션과 로컬 {{domxref("Storage")}} 객체의 접근을 가능케 하고, 새로운 항목을 추가하는 등 저장 공간이 변경될 때 발생하는 {{domxref("Window.onstorage")}} 이벤트 처리기도 추가합니다.
+  - : The Web Storage API extends the {{domxref("Window")}} object with two new properties — {{domxref("Window.sessionStorage")}} and {{domxref("Window.localStorage")}} — which provide access to the current domain's session and local {{domxref("Storage")}} objects respectively, and a {{domxref("Window/storage_event", "storage")}} event handler that fires when a storage area changes (e.g., a new item is stored).
 - {{domxref("StorageEvent")}}
-  - : `storage` 이벤트는 저장 공간이 변경될 때 `Window` 객체에서 발생합니다.
+  - : The `storage` event is fired on a document's `Window` object when a storage area changes.
 
-## 예제
+## Examples
 
-일반적인 Web Storage 사용법을 설명하기 위한 데모를 만들었습니다. 창의적이게도 [Web Storage Demo](https://github.com/mdn/dom-examples/tree/master/web-storage)라는 이름으로, [랜딩 페이지](https://mdn.github.io/dom-examples/web-storage/)에서 색, 글꼴, 이미지를 바꿀 수 있습니다. 선택지를 바꾸면 페이지가 실시간으로 변함과 동시에 `localStorage`에도 현재 상태를 저장하게 되므로, 페이지를 떠났다가 다시 방문해도 선택지가 그대로 보존됩니다.
+To illustrate some typical web storage usage, we have created a simple example, imaginatively called [Web Storage Demo](https://github.com/mdn/dom-examples/tree/main/web-storage). The [landing page](https://mdn.github.io/dom-examples/web-storage/) provides controls that can be used to customize the color, font and decorative image. When you choose different options, the page is instantly updated; in addition your choices are stored in `localStorage`, so that when you leave the page then load it again later on your choices are remembered.
 
-추가로 이벤트 출력 페이지도 제공 중입니다. 이 페이지를 다른 탭에 열고 랜딩 페이지에서 선택지를 바꾸면 {{domxref("StorageEvent")}}를 통해 업데이트된 저장 정보를 출력하는 것을 볼 수 있습니다.
+In addition, we have provided an [event output page](https://mdn.github.io/dom-examples/web-storage/event.html) — if you load this page in another tab, then make changes to your choices in the landing page, you'll see the updated storage information outputted as the {{domxref("StorageEvent")}} is fired.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 사생활 보호 / 시크릿 모드
+## Private Browsing / Incognito modes
 
-대부분의 최신 브라우저는 탐색 기록과 쿠키를 남기지 않는 "사생활 보호 모드", "시크릿 모드", 또는 비슷한 이름의 기능을 가지고 있습니다. 그리고 정말 분명한 이유로 인해 Web Storage와 호환되지 않습니다. 브라우저 공급자들은 다양한 시나리오에서 이를 해결하기 위해 실험을 진행하고 있습니다.
+Most modern browsers support a privacy option called 'Incognito', 'Private Browsing' or something similar that doesn't store data like history and cookies. This is fundamentally incompatible with Web Storage for obvious reasons. As such, browser vendors are experimenting with different scenarios for how to deal with this incompatibility.
 
-대부분의 브라우저는 Web Storage API에 접근 가능하며 기능하는 것 처럼 보이지만, 큰 차이점으로서, 브라우저를 닫으면 저장한 데이터를 제거하는 전략을 택하고 있습니다. 이런 브라우저 사이에서도, 일반 브라우징 세션에서 저장한 기존 데이터의 처리법에 대해서는 이견이 존재합니다. 사생활 보호 모드에서도 저 데이터에 접근할 수 있어야 할까요? 그런 반면, 마찬가지로 Web Storage API는 존재하지만 최대 용량을 0바이트 할당하여 어떠한 데이터도 입력할 수 없도록 하는 일부 브라우저도 존재하며, 대표적으로 Safari가 있습니다.
+Most browsers have opted for a strategy where storage APIs are still available and seemingly fully functional, with the one big difference that all stored data is wiped after the browser is closed. For these browsers there are still different interpretations of what should be done with existing stored data (from a regular browsing session). Should it be available to read when in Private mode? Then there are some browsers, most notably old versions of Safari, that have opted for a solution where storage is available, but is empty and has a quota of 0 bytes assigned, effectively making it impossible to write data to it.
 
-Web Storage API에 의존하는 웹 사이트를 개발할 때, 개발자는 이러한 구현 차이에 대해 고려해야 합니다. 더 많은 정보는 이 주제를 다루는 [WHATWG 블로그 글](https://blog.whatwg.org/tag/localstorage)을 참고하세요.
+Developers should be aware of these different implementations and take them into account when developing websites depending on Web Storage APIs. For more information please have a look at [this WHATWG blog post](https://blog.whatwg.org/this-week-in-html-5-episode-30) that specifically deals with this topic.
 
-## 같이 보기
+## See also
 
-- [Web Storage API 사용하기](/ko/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API)
-- [브라우저 저장 공간 제한과 정리 기준](/ko/docs/Web/API/IndexedDB_API/Browser_storage_limits_and_eviction_criteria)
+- [Using the Web Storage API](/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API)
+- [Browser storage quotas and eviction criteria](/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria)

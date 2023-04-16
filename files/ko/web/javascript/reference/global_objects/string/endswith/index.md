@@ -1,72 +1,66 @@
 ---
 title: String.prototype.endsWith()
 slug: Web/JavaScript/Reference/Global_Objects/String/endsWith
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.String.endsWith
 ---
+
 {{JSRef}}
 
-The **`endsWith()`** 메서드를 사용하여 어떤 문자열에서 특정 문자열로 끝나는지를 확인할 수 있으며, 그 결과를 `true` 혹은 `false`로 반환한다.
+The **`endsWith()`** method determines whether a string ends with the characters of a specified string, returning `true` or `false` as appropriate.
 
-## 문법
+{{EmbedInteractiveExample("pages/js/string-endswith.html")}}
 
-```js
-str.endsWith(searchString[, length])
+## Syntax
+
+```js-nolint
+endsWith(searchString)
+endsWith(searchString, endPosition)
 ```
 
-### 파라미터들
+### Parameters
 
 - `searchString`
-  - : 이 문자열의 끝이 특정 문자열로 끝나는지를 찾기 원하는 문자열입니다.
-- `length`
-  - : 옵션입니다. 찾고자 하는 문자열의 길이값이며, 기본값은 문자열 전체 길이입니다. 문자열의 길이값은 문자열 전체 길이 안에서만 존재하여야 합니다.
+  - : The characters to be searched for at the end of `str`. Cannot [be a regex](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#special_handling_for_regexes). All values that are not regexes are [coerced to strings](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_coercion), so omitting it or passing `undefined` causes `endsWith()` to search for the string `"undefined"`, which is rarely what you want.
+- `endPosition` {{optional_inline}}
+  - : The end position at which `searchString` is expected to be found (the index of `searchString`'s last character plus 1). Defaults to `str.length`.
 
-### 반환 값
+### Return value
 
-문자열의 끝이 주어진 문자열로 끝나면 **`true`**, 그렇지 않다면 **`false`**
+**`true`** if the given characters are found at the end of the string, including when `searchString` is an empty string; otherwise, **`false`**.
 
-## 설명
+### Exceptions
 
-여러분은 이 메서드를 사용하여 어떤 문자열이 특정 문자열로 끝나는지를 확인할 수 있습니다.
+- {{jsxref("TypeError")}}
+  - : Thrown if `searchString` [is a regex](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#special_handling_for_regexes).
 
-## 예제
+## Description
 
-### `endsWith()` 사용하기
+This method lets you determine whether or not a string ends with another string. This method is case-sensitive.
 
-```js
-var str = 'To be, or not to be, that is the question.';
+## Examples
 
-console.log(str.endsWith('question.')); // true
-console.log(str.endsWith('to be'));     // false
-console.log(str.endsWith('to be', 19)); // true
-```
-
-## Polyfill
-
-이 메서드는 ECMAScript 6 규격에 포함되었습니다만 아직까지는 모든 JavaScrpt가 이 기능을 지원하고 있지는 않습니다. 하지만 여러분은 `String.prototype.endsWith()` 메서드를 다음과 같이 쉽게 [polyfill](https://en.wikipedia.org/wiki/Polyfill) 할 수 있습니다:
+### Using endsWith()
 
 ```js
-if (!String.prototype.endsWith) {
-  String.prototype.endsWith = function(searchString, position) {
-      var subjectString = this.toString();
-      if (typeof position !== 'number' || !isFinite(position) || Math.floor(position) !== position || position > subjectString.length) {
-        position = subjectString.length;
-      }
-      position -= searchString.length;
-      var lastIndex = subjectString.indexOf(searchString, position);
-      return lastIndex !== -1 && lastIndex === position;
-  };
-}
+const str = "To be, or not to be, that is the question.";
+
+console.log(str.endsWith("question.")); // true
+console.log(str.endsWith("to be")); // false
+console.log(str.endsWith("to be", 19)); // true
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 관련문서
+## See also
 
+- [Polyfill of `String.prototype.endsWith` in `core-js`](https://github.com/zloirock/core-js#ecmascript-string-and-regexp)
 - {{jsxref("String.prototype.startsWith()")}}
 - {{jsxref("String.prototype.includes()")}}
 - {{jsxref("String.prototype.indexOf()")}}

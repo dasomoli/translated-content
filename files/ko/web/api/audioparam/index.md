@@ -1,71 +1,73 @@
 ---
 title: AudioParam
 slug: Web/API/AudioParam
+page-type: web-api-interface
+browser-compat: api.AudioParam
 ---
+
 {{APIRef("Web Audio API")}}
 
-Web Audio API의 `AudioParam` 인터페이스는 오디오에 관련된 파라미터를 나타내는데, 보통 ({{ domxref("GainNode.gain") }}과 같은) {{domxref("AudioNode")}}의 파라미터입니다.
+The Web Audio API's `AudioParam` interface represents an audio-related parameter, usually a parameter of an {{domxref("AudioNode")}} (such as {{ domxref("GainNode.gain") }}).
 
-`AudioParam` 은 특정한 값이나 값의 변화로 설정될 수 있고, 특정한 시간에 그리고 특정한 패턴을 따라 일어나도록 예정될 수 있습니다.
+An `AudioParam` can be set to a specific value or a change in value, and can be scheduled to happen at a specific time and following a specific pattern.
 
-각 `AudioParam` 은 이벤트의 리스트를 가지고 있고, 이는 초기적으로는 비어 있습니다. 이 이벤트의 리스트는 값이 언제 그리고 어떻게 변화할지를 정의합니다. 이 리스트가 비어있지 않을 때, `AudioParam.value` 특성을 사용한 변화는 무시됩니다. 이 이벤트의 리스트는 우리가 임의적인 타임라인 기반의 자동화 커브를 사용해 아주 정밀한 시간에 일어나야만 하는 변화들을 예정할 수 있게 합니다. 사용되는 이 시간은 {{domxref("BaseAudioContext/currentTime", "AudioContext.currentTime")}}에 정의된 것입니다.
+Each `AudioParam` has a list of events, initially empty, that define when and how values change. When this list is not empty, changes using the `AudioParam.value` attributes are ignored. This list of events allows us to schedule changes that have to happen at very precise times, using arbitrary timeline-based automation curves. The time used is the one defined in {{domxref("BaseAudioContext/currentTime", "AudioContext.currentTime")}}.
 
-## AudioParam 유형
+## AudioParam types
 
-두 종류의 `AudioParam` 이 있는데, 그것은 _a-rate_ 와 _k-rate_ 파라미터입니다. 각 {{domxref("AudioNode")}}는 명세에서 이것의 파라미터들 중 어떤 것이 _a-rate_ 이고 어떤 것이 _k-rate_ 인지 정의합니다.
+There are two `AudioParam` kinds: _a-rate_ and _k-rate_ parameters. Each {{domxref("AudioNode")}} defines which of its parameters are _a-rate_ or _k-rate_ in the spec.
 
 ### a-rate
 
-_a-rate_ `AudioParam` 은 오디오 신호의 각 [샘플 프레임](/ko/docs/Web/API/Web_Audio_API/Basic_concepts_behind_Web_Audio_API#audio_buffers.3a_frames.2c_samples_and_channels)에 대해 현재의 오디오 파라미터 값을 취합니다.
+An _a-rate_ `AudioParam` takes the current audio parameter value for each [sample frame](/en-US/docs/Web/API/Web_Audio_API/Basic_concepts_behind_Web_Audio_API#audio_buffers.3a_frames.2c_samples_and_channels) of the audio signal.
 
 ### k-rate
 
-_k-rate_ `AudioParam` 은 처리되는 전체 블럭에 대해 같은 초기 오디오 파라미터 값을 사용합니다. 즉, 128 샘플 프레임입니다. 다른 말로 하자면, 오디오가 노드에 의해 처리되는 동안 같은 값이 오디오에 있는 모든 프레임에 적용됩니다.
+A _k-rate_ `AudioParam` uses the same initial audio parameter value for the whole block processed; that is, 128 sample frames. In other words, the same value applies to every frame in the audio as it's processed by the node.
 
-## 속성
+## Instance properties
 
-- {{domxref("AudioParam.defaultValue")}} {{readonlyInline}}
-  - : `AudioParam` 을 생성하는 특정한 {{domxref("AudioNode")}}에 의해 정의되는 특성의 초기 값을 나타냅니다.
-- {{domxref("AudioParam.maxValue")}} {{readonlyInline}}
-  - : 파라미터의 명목상의 (효과적인) 범위에 대한 최대로 가능한 값을 나타냅니다.
-- {{domxref("AudioParam.minValue")}} {{readonlyinline}}
-  - : 파라미터의 명목상의 (효과적인) 범위에 대한 최소로 가능한 값을 나타냅니다.
+- {{domxref("AudioParam.defaultValue")}} {{ReadOnlyInline}}
+  - : Represents the initial value of the attribute as defined by the specific {{domxref("AudioNode")}} creating the `AudioParam`.
+- {{domxref("AudioParam.maxValue")}} {{ReadOnlyInline}}
+  - : Represents the maximum possible value for the parameter's nominal (effective) range.
+- {{domxref("AudioParam.minValue")}} {{ReadOnlyInline}}
+  - : Represents the minimum possible value for the parameter's nominal (effective) range.
 - {{domxref("AudioParam.value")}}
-  - : 현재 시간에 대한 파라미터의 현재 값을 나타냅니다. 초기적으로는 {{domxref("AudioParam.defaultValue", "defaultValue")}}의 값으로 설정됩니다.
+  - : Represents the parameter's current value as of the current time; initially set to the value of {{domxref("AudioParam.defaultValue", "defaultValue")}}.
 
-## 메서드
+## Instance methods
 
 - {{domxref("AudioParam.setValueAtTime()")}}
-  - : 정밀한 시간에서 `AudioParam` 의 값에 즉각적인 변화를 예정합니다. 이 시간은 {{domxref("BaseAudioContext/currentTime", "AudioContext.currentTime")}}과 비교하여 측정됩니다. 새로운 값은 `value` 매개변수에 의해 주어집니다.
+  - : Schedules an instant change to the value of the `AudioParam` at a precise time, as measured against {{domxref("BaseAudioContext/currentTime", "AudioContext.currentTime")}}. The new value is given by the `value` parameter.
 - {{domxref("AudioParam.linearRampToValueAtTime()")}}
-  - : `AudioParam` 의 값에 점진적인 선형적 변화를 예정합니다. 이 변화는 _previous_ 이벤트에 명시된 시간에 시작하고, `value` 매개변수에 주어진 새로운 값까지 선형적인 경사(ramp)를 따라 변경된 후, `endTime` 매개변수에 주어진 시간에서 새로운 값에 도달합니다.
+  - : Schedules a gradual linear change in the value of the `AudioParam`. The change starts at the time specified for the _previous_ event, follows a linear ramp to the new value given in the `value` parameter, and reaches the new value at the time given in the `endTime` parameter.
 - {{domxref("AudioParam.exponentialRampToValueAtTime()")}}
-  - : `AudioParam` 의 값에 점진적인 지수적 변화를 예정합니다. 이 변화는 _previous_ 이벤트에 명시된 시간에 시작하고, `value` 매개변수에 주어진 새로운 값까지 지수적인 경사를 따라 변경된 후, `endTime` 매개변수에 주어진 시간에서 새로운 값에 도달합니다.
+  - : Schedules a gradual exponential change in the value of the `AudioParam`. The change starts at the time specified for the _previous_ event, follows an exponential ramp to the new value given in the `value` parameter, and reaches the new value at the time given in the `endTime` parameter.
 - {{domxref("AudioParam.setTargetAtTime()")}}
-  - : `AudioParam` 의 값에 변화의 시작을 예정합니다. 이 변화는 `startTime` 에 명시된 시간에 시작해 `target` 매개변수에 주어진 값을 향해 지수적으로 움직입니다. 이 지수적인 감소(decay) 비율은 `timeConstant` 매개변수에 의해 정의되는데, 이 값은 초 단위로 측정된 시간입니다.
+  - : Schedules the start of a change to the value of the `AudioParam`. The change starts at the time specified in `startTime` and exponentially moves towards the value given by the `target` parameter. The exponential decay rate is defined by the `timeConstant` parameter, which is a time measured in seconds.
 - {{domxref("AudioParam.setValueCurveAtTime()")}}
-  - : `AudioParam` 의 값들이 주어진 구간에 맞도록 조정된 부동점 숫자들의 배열을 따르게 예정합니다. 수의 구간은 주어진 시작 시간에 시작하고, 주어진 지속 시간에 걸쳐 이어집니다.
+  - : Schedules the values of the `AudioParam` to follow a set of values, defined by an array of floating-point numbers scaled to fit into the given interval, starting at a given start time and spanning a given duration of time.
 - {{domxref("AudioParam.cancelScheduledValues()")}}
-  - : `AudioParam` 에 예정된 모든 미래의 변화들을 취소합니다.
+  - : Cancels all scheduled future changes to the `AudioParam`.
 - {{domxref("AudioParam.cancelAndHoldAtTime()")}}
-  - : `AudioParam` 에 예정된 모든 미래의 변화들을 취소하나 다른 메서드를 사용해 추가적인 변화가 만들어질 때까지 주어진 시간에서 값을 유지합니다.
+  - : Cancels all scheduled future changes to the `AudioParam` but holds its value at a given time until further changes are made using other methods.
 
-## 예제
+## Examples
 
-첫째는 기본적인 예제인데 {{domxref("GainNode")}}가 `gain` 값을 설정하는 것을 보여줍니다. `gain` 은 a-rate AudoParam의 예시인데, 왜냐하면 이 값은 잠재적으로 오디오의 각각의 샘플 프레임에 대해 다르게 설정될 수 있기 때문입니다.
+First, a basic example showing a {{domxref("GainNode")}} having its `gain` value set. `gain` is an example of an _a-rate_ `AudioParam`, as the value can potentially be set differently for each sample frame of the audio.
 
 ```js
-var AudioContext = window.AudioContext || window.webkitAudioContext;
-var audioCtx = new AudioContext();
+const audioCtx = new AudioContext();
 
-var gainNode = audioCtx.createGain();
+const gainNode = audioCtx.createGain();
 gainNode.gain.value = 0;
 ```
 
-다음 예제는 {{ domxref("DynamicsCompressorNode") }}가 몇 개의 파라미터 값들을 조작하는 것을 보여줍니다. 이 값들은 k-rate AudioParam의 예시인데, 왜냐하면 이것들은 한번에 전체 오디오 블럭에 대해 설정되기 때문입니다.
+Next, an example showing a {{ domxref("DynamicsCompressorNode") }} having some param values manipulated. These are examples of _k-rate_ `AudioParam` types, as the values are set for the entire audio block at once.
 
 ```js
-var compressor = audioCtx.createDynamicsCompressor();
+const compressor = audioCtx.createDynamicsCompressor();
 compressor.threshold.setValueAtTime(-50, audioCtx.currentTime);
 compressor.knee.setValueAtTime(40, audioCtx.currentTime);
 compressor.ratio.setValueAtTime(12, audioCtx.currentTime);
@@ -73,14 +75,14 @@ compressor.attack.setValueAtTime(0, audioCtx.currentTime);
 compressor.release.setValueAtTime(0.25, audioCtx.currentTime);
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Web Audio API 사용하기](/ko/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)
+- [Using the Web Audio API](/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)

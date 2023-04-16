@@ -1,95 +1,111 @@
 ---
-title: <dl>
+title: "<dl>: The Description List element"
 slug: Web/HTML/Element/dl
+page-type: html-element
+browser-compat: html.elements.dl
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<dl>` 요소**는 설명 목록을 나타냅니다. `<dl>`은 {{htmlelement("dt")}}로 표기한 용어와 {{htmlelement("dd")}} 요소로 표기한 설명 그룹의 목록을 감싸서 설명 목록을 생성합니다. 주로 용어사전 구현이나 메타데이터(키-값 쌍 목록)를 표시할 때 사용합니다.
+The **`<dl>`** [HTML](/en-US/docs/Web/HTML) element represents a description list. The element encloses a list of groups of terms (specified using the {{HTMLElement("dt")}} element) and descriptions (provided by {{HTMLElement("dd")}} elements). Common uses for this element are to implement a glossary or to display metadata (a list of key-value pairs).
 
 {{EmbedInteractiveExample("pages/tabbed/dl.html", "tabbed-standard")}}
-
-The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone [https://github.com/mdn/interactive-examples](https://github.com/mdn/interactive-examples) and send us a pull request.
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a
-          href="/ko/docs/Web/Guide/HTML/%EC%BB%A8%ED%85%90%ED%8A%B8_%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC"
-          >콘텐츠 카테고리</a
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
         >
       </th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >. <code>&#x3C;dl></code>의 자식 중 이름-값 그룹이 있으면 뚜렷한 콘텐츠.
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
+        >, and if the <code>&#x3C;dl></code> element's children include one
+        name-value group, palpable content.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
       <td>
         <p>
-          하나 이상의 {{htmlelement("dt")}} 요소와 하나 이상의
-          {{htmlelement("dd")}} 요소로 구성한 그룹 0개 이상. 선택적으로
-          {{htmlelement("script")}}와
-          {{htmlelement("template")}}을 혼합 가능.<br />또는, 하나
-          이상의 {{htmlelement("div")}}. 선택적으로
-          {{htmlelement("script")}}, {{htmlelement("template")}}
-          혼합 가능.
+          Either: Zero or more groups each consisting of one or more
+          {{HTMLElement("dt")}} elements followed by one or more
+          {{HTMLElement("dd")}} elements, optionally intermixed with
+          {{HTMLElement("script")}} and
+          {{HTMLElement("template")}} elements.<br />Or: (in
+          {{Glossary("WHATWG")}} HTML, {{Glossary("W3C")}} HTML 5.2
+          and later) One or more {{HTMLElement("div")}} elements,
+          optionally intermixed with {{HTMLElement("script")}} and
+          {{HTMLElement("template")}} elements.
         </p>
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
+      <th scope="row">Tag omission</th>
       <td>{{no_tag_omission}}</td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Permitted parents</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >를 허용하는 모든 요소.
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >flow content</a
+        >.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
+      <th scope="row">Implicit ARIA role</th>
       <td>
-        <a href='/ko/docs/Web/Accessibility/ARIA/Roles/group_role'><code>group</code></a>, <a href='/ko/docs/Web/Accessibility/ARIA/Roles/presentation_role'><code>presentation</code></a>
+        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
+          >No corresponding role</a
+        >
       </td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/group_role"><code>group</code></a>,
+        <code
+          ><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/List_role"
+            >list</a
+          ></code
+        >, <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/none_role"><code>none</code></a>, <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/presentation_role"><code>presentation</code></a>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLDListElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
+## Attributes
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)을 포함합니다.
+This element only includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-## 예제
+## Examples
 
-### 하나의 용어와 하나의 정의
+### Single term and description
 
 ```html
 <dl>
   <dt>Firefox</dt>
   <dd>
-    Mozilla 재단과 수 백명의
-    자원봉사자가 개발한 무료
-    오픈소스 크로스 플랫폼
-    그래픽 웹 브라우저.
+    A free, open source, cross-platform, graphical web browser developed by the
+    Mozilla Corporation and hundreds of volunteers.
   </dd>
 
-  <!-- 다른 용어 및 정의 -->
+  <!-- Other terms and descriptions -->
 </dl>
 ```
 
-{{EmbedLiveSample("하나의_용어와_하나의_정의")}}
+#### Result
 
-### 여러 개의 용어와 하나의 정의
+{{EmbedLiveSample("Single_term_and_description")}}
+
+### Multiple terms, single description
 
 ```html
 <dl>
@@ -97,49 +113,47 @@ The source for this interactive example is stored in a GitHub repository. If you
   <dt>Mozilla Firefox</dt>
   <dt>Fx</dt>
   <dd>
-    Mozilla 재단과 수 백명의
-    자원봉사자가 개발한 무료
-    오픈소스 크로스 플랫폼
-    그래픽 웹 브라우저.
+    A free, open source, cross-platform, graphical web browser developed by the
+    Mozilla Corporation and hundreds of volunteers.
   </dd>
 
-  <!-- 다른 용어 및 정의 -->
+  <!-- Other terms and descriptions -->
 </dl>
 ```
 
-{{EmbedLiveSample("여러_개의_용어와_하나의_정의")}}
+#### Result
 
-### 하나의 용어와 여러 개의 정의
+{{EmbedLiveSample("Multiple_terms_single_description")}}
+
+### Single term, multiple descriptions
 
 ```html
 <dl>
   <dt>Firefox</dt>
   <dd>
-    Mozilla 재단과 수 백명의
-    자원봉사자가 개발한 무료
-    오픈소스 크로스 플랫폼
-    그래픽 웹 브라우저.
+    A free, open source, cross-platform, graphical web browser developed by the
+    Mozilla Corporation and hundreds of volunteers.
   </dd>
   <dd>
-    붉은 판다, 레서 판다, 랫서 판다,
-    혹은 "Firefox"는 초식성 포유류이다.
-    몸 길이는 애완용 고양이보다 약간
-    큰 정도인 60cm다.
+    The Red Panda also known as the Lesser Panda, Wah, Bear Cat or Firefox, is a
+    mostly herbivorous mammal, slightly larger than a domestic cat (60 cm long).
   </dd>
 
-  <!-- 다른 용어 및 정의 -->
+  <!-- Other terms and descriptions -->
 </dl>
 ```
 
-{{EmbedLiveSample("하나의_용어와_여러_개의_정의")}}
+#### Result
 
-### 여러 개의 용어와 여러 개의 정의
+{{EmbedLiveSample("Single_term_multiple_descriptions")}}
 
-위의 예제를 결합하여 여러 용어를 여러 정의와 연결하는 것도 가능합니다.
+### Multiple terms and descriptions
 
-### 메타데이터
+It is also possible to define multiple terms with multiple corresponding descriptions, by combining the examples above.
 
-`<dl>`은 메타데이터를 키-값 쌍으로 표시할 때도 유용합니다.
+### Metadata
+
+Description lists are useful for displaying metadata as a list of key-value pairs.
 
 ```html
 <dl>
@@ -154,19 +168,21 @@ The source for this interactive example is stored in a GitHub repository. If you
 </dl>
 ```
 
-팁: 아래처럼 키-값 구분자를 CSS로 지정하면 편리합니다.
+#### Result
+
+{{EmbedLiveSample('Metadata')}}
+
+Tip: It can be handy to define a key-value separator in the CSS, such as:
 
 ```css
-dt:after {
+dt::after {
   content: ": ";
 }
 ```
 
-{{EmbedLiveSample("메타데이터")}}
+### Wrapping name-value groups in `div` elements
 
-### 이름-값 그룹을 {{htmlelement("div")}}로 감싸기
-
-{{glossary("WHATWG")}} HTML에서는 `<dl>` 안 각각의 이름-값 그룹을 {{htmlelement("div")}}로 감쌀 수 있습니다. 마이크로데이터를 사용할 때, 그룹에 전역 특성을 적용할 때, 아니면 스타일을 적용할 때 유용할 수 있습니다.
+[WHATWG](/en-US/docs/Glossary/WHATWG) HTML allows wrapping each name-value group in a {{HTMLElement("dl")}} element in a {{HTMLElement("div")}} element. This can be useful when using [microdata](/en-US/docs/Web/HTML/Microdata), or when [global attributes](/en-US/docs/Web/HTML/Global_attributes) apply to a whole group, or for styling purposes.
 
 ```html
 <dl>
@@ -189,27 +205,33 @@ dt:after {
 </dl>
 ```
 
-## 참고
+#### Result
 
-페이지에서 들여쓰기를 하기 위한 목적으로 `<dl>` (또는 {{htmlelement("ul")}}) 요소를 사용하지 마세요. 작동할 수는 있으나 좋지 않은 방법이고, 설명 목록의 원래 목적을 흐립니다.
+{{EmbedLiveSample('Wrapping name-value groups in `div` elements')}}
 
-용어의 들여쓰기를 수정하려면 [CSS](/ko/docs/Web/CSS) {{cssxref("margin")}} 속성을 사용하세요.
+## Notes
 
-## 접근성 고려사항
+Do not use this element (nor {{HTMLElement("ul")}} elements) to merely create indentation on a page. Although it works, this is a bad practice and obscures the meaning of description lists.
 
-각각의 스크린 리더는 `<dl>`을 다르게 표현합니다. iOS의 VoiceOver 등 일부 스크린 리더는 `<dl>`의 콘텐츠를 리스트로 표현하지 않습니다. 따라서, 각 아이템의 콘텐츠는 리스트 그룹 내 다른 항목과의 관계를 표현할 수 있는 방식으로 작성해야 합니다.
+To change the indentation of a description term, use the [CSS](/en-US/docs/Web/CSS) {{cssxref("margin")}} property.
 
-- [CodePen - HTML Buddies: dt & dd](https://s.codepen.io/aardrian/debug/NzGaKP)
+## Accessibility concerns
 
-## 명세
+Each screen reader exposes `<dl>` content differently, including total count, terms/definitions context, and navigation methods. These differences are not necessarily bugs.
+As of iOS 14, VoiceOver will announce that `<dl>` content is a list when navigating with the virtual cursor (not via the read-all command). VoiceOver does not support list navigation commands with `<dl>`. Be careful applying ARIA `term` and `definition` roles to `<dl>` constructs as VoiceOver (macOS and iOS) will adjust how they are announced.
+
+- [VoiceOver on iOS 14 Supports Description Lists](https://adrianroselli.com/2020/09/voiceover-on-ios-14-supports-description-lists.html)
+- [Brief Note on Description List Support](https://adrianroselli.com/2022/12/brief-note-on-description-list-support.html)
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{HTMLElement("dt")}} 요소
-- {{HTMLElement("dd")}} 요소
+- {{HTMLElement("dt")}}
+- {{HTMLElement("dd")}}

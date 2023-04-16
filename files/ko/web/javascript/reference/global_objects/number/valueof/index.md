@@ -1,48 +1,52 @@
 ---
 title: Number.prototype.valueOf()
 slug: Web/JavaScript/Reference/Global_Objects/Number/valueOf
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Number.valueOf
 ---
+
 {{JSRef}}
 
-**`valueOf()`** 메서드는 {{jsxref("Number")}} 객체가 감싼(wrapped) {{Glossary("primitive", "원시")}} 값을 반환합니다.
+The **`valueOf()`** method returns the wrapped primitive value
+of a {{jsxref("Number")}} object.
 
 {{EmbedInteractiveExample("pages/js/number-valueof.html")}}
 
-## 구문
+## Syntax
 
-```js
-    numObj.valueOf()
+```js-nolint
+valueOf()
 ```
 
-### 반환 값
+### Return value
 
-{{jsxref("Number")}} 객체의 원시 값.
+A number representing the primitive value of the specified {{jsxref("Number")}} object.
 
-## 설명
+## Description
 
-`valueOf()` 메서드는 보통 JavaScript에 의해 내부적으로 호출되고, 웹 코드에서는 명시적으로 호출하지 않습니다.
+This method is usually called internally by JavaScript and not explicitly in web code.
 
-## 예제
+## Examples
 
-### `valueOf` 사용하기
+### Using valueOf
 
 ```js
-var numObj = new Number(10);
+const numObj = new Number(10);
 console.log(typeof numObj); // object
 
-var num = numObj.valueOf();
-console.log(num);           // 10
-console.log(typeof num);    // number
+const num = numObj.valueOf();
+console.log(num); // 10
+console.log(typeof num); // number
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{jsxref("Number.prototype.toSource()")}}
+- {{jsxref("Object.prototype.valueOf()")}}

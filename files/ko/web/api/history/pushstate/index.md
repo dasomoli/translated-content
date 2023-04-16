@@ -1,57 +1,111 @@
 ---
-title: History.pushState()
+title: "History: pushState() method"
+short-title: pushState()
 slug: Web/API/History/pushState
+page-type: web-api-instance-method
+browser-compat: api.History.pushState
 ---
 
-{{APIRef("DOM")}}
+{{APIRef("History API")}}
 
-[HTML](/ko/docs/Web/HTML) 문서에서, **`history.pushState()`** 메서드는 브라우저의 세션 기록 스택에 상태를 추가합니다.
+In an [HTML](/en-US/docs/Web/HTML) document, the
+**`history.pushState()`** method adds an entry to the browser's
+session history stack.
 
-## 구문
+This method is {{glossary("asynchronous")}}. Add a listener for the {{domxref("Window/popstate_event", "popstate")}} event in order to determine when the navigation has completed. The `state` parameter will be available in it.
 
-```js
-history.pushState(state, title[, url]);
+## Syntax
+
+```js-nolint
+pushState(state, unused)
+pushState(state, unused, url)
 ```
 
-### 매개변수
+### Parameters
 
 - `state`
-  - : 새로운 세션 기록 항목에 연결할 상태 객체. 사용자가 새로운 상태로 이동할 때마다 {{event("popstate")}} 이벤트가 발생하는데, 이 때 이벤트 객체의 `state` 속성에 해당 상태의 복제본이 담겨 있습니다.
 
-    상태 객체는 직렬화 가능한 객체라면 모두 가능합니다.
-- `title`
-  - : [지금은 대부분의 브라우저가 `title` 매개변수를 무시하지만](https://github.com/whatwg/html/issues/2174), 미래에 쓰일 수도 있습니다. 빈 문자열을 지정하면 나중의 변경사항에도 안전할 것입니다. 아니면, 상태에 대한 짧은 제목을 제공할 수도 있습니다.
+  - : The `state` object is a JavaScript object which is associated with the
+    new history entry created by `pushState()`. Whenever the user navigates to
+    the new `state`, a {{domxref("Window/popstate_event", "popstate")}} event is fired, and
+    the `state` property of the event contains a copy of the history entry's
+    `state` object.
+
+    The `state` object can be anything that can be serialized. Because
+    Firefox saves `state` objects to the user's disk so they can be restored
+    after the user restarts the browser, we impose a size limit of 16 MiB on the
+    serialized representation of a `state` object. If you pass a
+    `state` object whose serialized representation is larger than this
+    to `pushState()`, the method will throw an exception. If you need more
+    space than this, you're encouraged to use {{domxref("Window.sessionStorage",
+    "sessionStorage")}} and/or {{domxref("Window.localStorage", "localStorage")}}.
+
+- `unused`
+
+  - : This parameter exists for historical reasons, and cannot be omitted; passing an empty string is safe against future changes to the method.
+
 - `url` {{optional_inline}}
-  - : 새로운 세션 기록 항목의 URL. `pushState()` 호출 이후에 브라우저는 주어진 URL로 탐색하지 않습니다. 그러나 이후, 예컨대 브라우저를 재시작할 경우 탐색을 시도할 수도 있습니다. 상대 URL을 지정할 수 있으며, 이 땐 현재 URL을 기준으로 사용합니다. 새로운 URL은 현재 URL과 같은 {{glossary("origin", "출처")}}를 가져야 하며, 그렇지 않을 경우 예외가 발생합니다. 지정하지 않은 경우 문서의 현재 URL을 사용합니다.
+  - : The new history entry's URL. Note that the browser won't
+    attempt to load this URL after a call to `pushState()`, but it may
+    attempt to load the URL later, for instance, after the user restarts the browser. The
+    new URL does not need to be absolute; if it's relative, it's resolved relative to the
+    current URL. The new URL must be of the same {{glossary("origin")}} as the current
+    URL; otherwise, `pushState()` will throw an exception. If this parameter
+    isn't specified, it's set to the document's current URL.
 
-## 설명
+### Return value
 
-어떤 면에선 `pushState()`와 `window.location = "#foo"`가 비슷합니다. 둘 다 새로운 세션 기록 항목을 생성하고 활성화하기 때문입니다. 그러나 `pushState()`에는 몇 가지 장점이 있습니다.
+None ({{jsxref("undefined")}}).
 
-- 새로운 URL은 같은 출처에 한해서 아무 URL이나 가능합니다. 반면 {{domxref("window.location")}} 설정은 해시만 수정해야 같은 문서에 머무릅니다.
-- 원할 경우 URL을 바꾸지 않을 수도 있습니다. 그러나 `window.location = "#foo"`는 현재 해시가 `#foo`가 아닐 때만 새로운 기록 항목을 생성합니다.
-- `pushState()`는 임의의 데이터를 세션 기록 항목에 연결할 수 있습니다. 해시 기반 방식에서는 필요한 모든 데이터를 인코딩 해 짧은 문자열로 만들어야 합니다.
+## Description
 
-다만 `pushState()`는 이전 URL과 신규 URL의 해시가 다르더라도 절대 {{event("hashchange")}} 이벤트를 유발하지 않습니다.
+In a sense, calling `pushState()` is similar to
+setting `window.location = "#foo"`, in that both will also create and
+activate another history entry associated with the current document.
+But `pushState()` has a few advantages:
 
-HTML 외의 문서에서는 이름공간 URI가 `null`인 요소를 생성합니다.
+- The new URL can be any URL in the same origin as the current URL. In contrast,
+  setting {{domxref("window.location")}} keeps you at the same document only if you
+  modify only the hash.
+- Changing the page's URL is optional. In contrast,
+  setting `window.location = "#foo";` only creates a new history entry if the
+  current hash isn't `#foo`.
+- You can associate arbitrary data with your new history entry. With the hash-based
+  approach, you need to encode all of the relevant data into a short string.
 
-## 예제
+Note that `pushState()` never causes a {{domxref("Window/hashchange_event", "hashchange")}} event to be
+fired, even if the new URL differs from the old URL only in its hash.
 
-다음 코드는 주어진 상태, 제목, URL을 사용해 새로운 세션 기록을 생성합니다.
+## Examples
+
+This creates a new browser history entry setting the _state_ and _url_.
+
+### JavaScript
 
 ```js
-const state = { 'page_id': 1, 'user_id': 5 }
-const title = ''
-const url = 'hello-world.html'
+const state = { page_id: 1, user_id: 5 };
+const url = "hello-world.html";
 
-history.pushState(state, title, url)
+history.pushState(state, "", url);
 ```
 
-## 명세
+### Change a query parameter
+
+```js
+const url = new URL(location);
+url.searchParams.set("foo", "bar");
+history.pushState({}, "", url);
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- [Working with the History API](/en-US/docs/Web/API/History_API/Working_with_the_History_API)
+- [Window: popstate event](/en-US/docs/Web/API/Window/popstate_event)

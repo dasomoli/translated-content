@@ -1,12 +1,12 @@
 ---
 title: WHATWG
 slug: Glossary/WHATWG
+page-type: glossary-definition
 ---
-**WHATWG**(Web Hypertext Application Technology Working Group)은 {{Glossary("DOM")}}, Fetch, {{Glossary("HTML")}} 등 웹 표준을 개발하고 유지하는 단체입니다. 2004년, Apple, Mozilla, Opera의 임직원이 설립했습니다.
 
-## 더 알아보기
+The WHATWG (_Web Hypertext Application Technology Working Group_) is a community that [maintains and develops web standards](https://spec.whatwg.org/), including {{Glossary("DOM")}}, Fetch, and {{Glossary("HTML")}}. Employees of Apple, Mozilla, and Opera established WHATWG in 2004.
 
-### 일반 지식
+## See also
 
-- 위키백과 [WHATWG](https://ko.wikipedia.org/wiki/WHATWG)
-- [WHATWG 웹사이트](https://whatwg.org/)
+- [WHATWG](https://en.wikipedia.org/wiki/WHATWG) on Wikipedia
+- [WHATWG website](https://whatwg.org/)

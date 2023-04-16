@@ -2,85 +2,68 @@
 title: translate
 slug: Web/XPath/Functions/translate
 ---
+
 {{ XsltRef() }}
 
-`translate` 함수는 문자열과 번역할 문자 집합을 평가하고 번역된 문자열을 반환합니다.
+The `translate` function evaluates a string and a set of characters to translate and returns the translated string.
 
-### 구문
+### Syntax
 
+```plain
+translate(string, abc, XYZ)
 ```
-translate(string ,abc ,XYZ )
-```
 
-### 인수
+### Arguments
 
 - `string`
-  - : 평가할 문자열.
+  - : The string to evaluate.
 - `abc`
-  - : 바꿀 문자열.
+  - : The string of characters that will be replaced.
 - `XYZ`
-  - : 교체에 쓰는 문자열.
-    `XYZ`
-    에서 첫 문자는
-    `string`
-    에서 나타나는
-    `abc`
-    의 첫 문자가 나타날 때마다 교체합니다.
+  - : The string of characters used for replacement. The first character in `XYZ` will replace every occurrence of the first character in `abc` that appears in `string`.
 
-### 반환
+### Returns
 
-번역된 문자열.
+The translated string.
 
-### 주의
+### Notes
 
-XPath는 translate 함수가 모든 언어에서 대/소문자 변환에 sufficient solution이 아니다라고 기록합니다. XPath의 future 버전은 대/소문자 변환을 위해 추가 함수를 제공할 지도 모릅니다.
+XPath notes that the translate function is not a sufficient solution for case conversion in all languages. A future version of XPath may provide additional functions for case conversion.
 
-그러나, 이 함수는 현재 문자열을 대/소문자로 변환할 수 있는 함수에 가장 가깝습니다.
+However, this is the closest we have at present to a function that can convert a string to uppercase or lowercase.
 
-예
+Example
 
-```
-<xsl:value-of select="translate('The quick brown fox.', 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
+```xml
+<xsl:value-of select="translate('The quick brown fox.', 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')" />
 ```
 
-출력
+Output
 
-```
+```plain
 THE QUICK BROWN FOX.
 ```
 
-- 만약
-  `abc`
-  가
-  `XYZ`
-  보다 길면,
-  `XYZ`
-  에서 대응하는 문자가 없는
-  `abc`
-  의 문자는 출현 때마다 제거됩니다.
+- If `abc` is longer than `XYZ`, then every occurrence of characters in `abc` that do not have a corresponding character in `XYZ` will be removed.
 
-예
+Example
 
-```
-<xsl:value-of select="translate('The quick brown fox.', 'brown', 'red'" />
+```xml
+<xsl:value-of select="translate('The quick brown fox.', 'brown', 'red')" />
 ```
 
-출력
+Output
 
+```plain
+The quick red fox.
 ```
-The quick red fdx.
-```
 
-- 만약
-  `XYZ`
-  가
-  `abc`
-  보다 더 많은 문자를 포함하면, 여분 문자는 무시됩니다.
+- If `XYZ` contains more characters than `abc`, the extra characters are ignored.
 
-### 정의
+### Defined
 
-[XPath 1.0 4.2](http://www.w3.org/TR/xpath#function-translate)
+[XPath 1.0 4.2](https://www.w3.org/TR/1999/REC-xpath-19991116/#function-translate)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

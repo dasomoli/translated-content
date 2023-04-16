@@ -1,163 +1,177 @@
 ---
-title: <area>
+title: "<area>: The Image Map Area element"
 slug: Web/HTML/Element/area
+page-type: html-element
+browser-compat: html.elements.area
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<area>` 요소**는 이미지의 핫스팟 영역을 정의하고 {{glossary("hyperlink", "하이퍼링크")}}를 추가할 수 있습니다. {{htmlelement("map")}} 요소 안에서만 사용할 수 있습니다.
+The **`<area>`** [HTML](/en-US/docs/Web/HTML) element defines an area inside an image map that has predefined clickable areas. An _image map_ allows geometric areas on an image to be associated with {{Glossary("Hyperlink", "hypertext links")}}.
+
+This element is used only within a {{HTMLElement("map")}} element.
 
 {{EmbedInteractiveExample("pages/tabbed/area.html", "tabbed-taller")}}
 
-<div class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</div>
+## Attributes
+
+This element's attributes include the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
+
+- `alt`
+  - : A text string alternative to display on browsers that do not display images.
+    The text should be phrased so that it presents the user with the same kind of choice as the image would offer when displayed without the alternative text.
+    This attribute is required only if the [`href`](#href) attribute is used.
+- `coords`
+
+  - : The `coords` attribute details the coordinates of the [`shape`](#shape) attribute in size, shape, and placement of an `<area>`.
+    This attribute must not be used if `shape` is set to `default`.
+
+    - `rect`: the value is `x1,y1,x2,y2`.
+      The value specifies the coordinates of the top-left and bottom-right corner of the rectangle.
+      For example, in `<area shape="rect" coords="0,0,253,27" href="#" target="_blank" alt="Mozilla">` the coordinates are `0,0` and `253,27`, indicating the top-left and bottom-right corners of the rectangle, respectively.
+    - `circle`: the value is `x,y,radius`. Value specifies the coordinates of the circle center and the radius.
+      For example: `<area shape="circle" coords="130,136,60" href="#" target="_blank" alt="MDN">`
+    - `poly`: the value is `x1,y1,x2,y2,..,xn,yn`. Value specifies the coordinates of the edges of the polygon.
+      If the first and last coordinate pairs are not the same, the browser will add the last coordinate pair to close the polygon
+
+    The values are numbers of CSS pixels.
+
+- `download`
+  - : This attribute, if present, indicates that the author intends the hyperlink to be used for downloading a resource.
+    See {{HTMLElement("a")}} for a full description of the [`download`](/en-US/docs/Web/HTML/Element/a#download) attribute.
+- `href`
+  - : The hyperlink target for the area.
+    Its value is a valid URL.
+    This attribute may be omitted; if so, the `<area>` element does not represent a hyperlink.
+- `hreflang` {{Deprecated_Inline}}
+  - : Indicates the language of the linked resource. Allowed values are defined by {{RFC(5646, "Tags for Identifying Languages (also known as BCP 47)")}}.
+    Use this attribute only if the [`href`](#href) attribute is present.
+- `ping`
+  - : Contains a space-separated list of URLs to which, when the hyperlink is followed, {{HTTPMethod("POST")}} requests with the body `PING` will be sent by the browser (in the background).
+    Typically used for tracking.
+- `referrerpolicy`
+
+  - : A string indicating which referrer to use when fetching the resource:
+
+    - `no-referrer`: The {{HTTPHeader("Referer")}} header will not be sent.
+    - `no-referrer-when-downgrade`: The {{HTTPHeader("Referer")}} header will not be sent to {{Glossary("origin")}}s without {{Glossary("TLS")}} ({{Glossary("HTTPS")}}).
+    - `origin`: The sent referrer will be limited to the origin of the referring page: its [scheme](/en-US/docs/Learn/Common_questions/Web_mechanics/What_is_a_URL), {{Glossary("host")}}, and {{Glossary("port")}}.
+    - `origin-when-cross-origin`: The referrer sent to other origins will be limited to the scheme, the host, and the port. Navigations on the same origin will still include the path.
+    - `same-origin`: A referrer will be sent for {{Glossary("Same-origin policy", "same origin")}}, but cross-origin requests will contain no referrer information.
+    - `strict-origin`: Only send the origin of the document as the referrer when the protocol security level stays the same (HTTPS→HTTPS), but don't send it to a less secure destination (HTTPS→HTTP).
+    - `strict-origin-when-cross-origin` (default): Send a full URL when performing a same-origin request, only send the origin when the protocol security level stays the same (HTTPS→HTTPS), and send no header to a less secure destination (HTTPS→HTTP).
+    - `unsafe-url`: The referrer will include the origin _and_ the path (but not the [fragment](/en-US/docs/Web/API/HTMLAnchorElement/hash), [password](/en-US/docs/Web/API/HTMLAnchorElement/password), or [username](/en-US/docs/Web/API/HTMLAnchorElement/username)).
+      **This value is unsafe**, because it leaks origins and paths from TLS-protected resources to insecure origins.
+
+- `rel`
+  - : For anchors containing the [`href`](#href) attribute, this attribute specifies the relationship of the target object to the link object.
+    The value is a space-separated list of link types.
+    The values and their semantics will be registered by some authority that might have meaning to the document author.
+    The default relationship, if no other is given, is void. Use this attribute only if the [`href`](#href) attribute is present.
+- `shape`
+  - : The shape of the associated hot spot. The specifications for HTML defines the values `rect`, which defines a rectangular region; `circle`, which defines a circular region; `poly`, which defines a polygon; and `default`, which indicates the entire region beyond any defined shapes.
+- `target`
+
+  - : A keyword or author-defined name of the {{Glossary("browsing context")}} to display the linked resource.
+    The following keywords have special meanings:
+
+    - `_self` (default): Show the resource in the current browsing context.
+    - `_blank`: Show the resource in a new, unnamed browsing context.
+    - `_parent`: Show the resource in the parent browsing context of the current one, if the current page is inside a frame.
+      If there is no parent, acts the same as `_self`.
+    - `_top`: Show the resource in the topmost browsing context (the browsing context that is an ancestor of the current one and has no parent).
+      If there is no parent, acts the same as `_self`.
+
+    Use this attribute only if the [`href`](#href) attribute is present.
+
+    > **Note:** Setting `target="_blank"` on `<area>` elements implicitly provides the same `rel` behavior as setting [`rel="noopener"`](/en-US/docs/Web/HTML/Attributes/rel/noopener) which does not set `window.opener`. See [browser compatibility](#browser_compatibility) for support status.
+
+### Deprecated attributes
+
+- `name` {{deprecated_inline}}
+  - : Define a names for the clickable area so that it can be scripted by older browsers.
+- `nohref` {{deprecated_inline}}
+
+  - : Indicates that no hyperlink exists for the associated area.
+
+    > **Note:** The `nohref` attribute is not necessary, as omitting the `href` attribute is sufficient.
+
+- `type` {{deprecated_inline}}
+  - : Hint for the type of the referenced resource. Ignored by browsers.
+
+## Examples
+
+```html
+<map name="primary">
+  <area
+    shape="circle"
+    coords="75,75,75"
+    href="left.html"
+    alt="Click to go Left" />
+  <area
+    shape="circle"
+    coords="275,75,75"
+    href="right.html"
+    alt="Click to go Right" />
+</map>
+<img
+  usemap="#primary"
+  src="https://via.placeholder.com/350x150"
+  alt="350 x 150 pic" />
+```
+
+### Result
+
+{{ EmbedLiveSample('Examples', 360, 160) }}
+
+## Technical summary
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
+        <a href="/en-US/docs/Web/HTML/Content_categories">Content categories</a>
       </th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >.
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content">Flow content</a>,
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content">phrasing content</a>.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
+      <td>None; it is a {{Glossary("void element")}}.</td>
+    </tr>
+    <tr>
+      <th scope="row">Tag omission</th>
+      <td>Must have a start tag and must not have an end tag.</td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted parents</th>
       <td>
-        없음. {{glossary("empty element", "빈 요소")}}입니다.
+        Any element that accepts <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content">phrasing content</a>. The <code>&#x3C;area></code> element must have an ancestor {{HTMLElement("map")}}, but it need not be a direct parent.
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
-      <td>여는 태그는 존재해야 하며 닫는 태그는 존재해선 안됩니다.</td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Implicit ARIA role</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >를 허용하는 모든 요소. 단, 조상 중 {{htmlelement("map")}} 요소가
-        존재해야 합니다.
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/link_role"><code>link</code></a> when <a href="/en-US/docs/Web/HTML/Element/area#href"><code>href</code></a> attribute is present, otherwise <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role">no corresponding role</a>
       </td>
     </tr>
     <tr>
-      <th scope="row">암시적 ARIA 역할</th>
-      <td>
-        {{htmlattrxref("href", "area")}} 특성이 존재하면
-        <a href='/ko/docs/Web/Accessibility/ARIA/Roles/link_role'><code>link</code></a>, 그 외의 경우
-        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
-          >대응하는 역할 없음</a
-        >
-      </td>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>No <code>role</code> permitted</td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>없음</td>
-    </tr>
-    <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLAreaElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
-
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)을 포함합니다.
-
-- {{htmlattrdef("alt")}}
-  - : 이미지를 출력하지 않는 브라우저에서 대신 표시할 대안 텍스트입니다. 텍스트의 내용은 대안 텍스트 없이 이미지만 표시할 때와 동일한 수준의 선택지를 나타낼 수 있어야 합니다. {{htmlattrxref("href", "area")}} 특성이 존재할 경우 필수 사항입니다.
-
-- {{htmlattrdef("coords")}}
-
-  - : 핫스팟 영역을 지정하는 일련의 좌표입니다. 값의 수와 의미는 `shape` 특성의 값에 따라 달라집니다.
-
-    - `rect`: 좌상단과 우하단을 나타내는 두 개의 x, y 쌍입니다.
-    - `circle`: `x,y,r`로서 `x,y`는 원의 중심 좌표이며 `r`은 반지름입니다.
-    - `poly`: 다각형의 꼭지점을 나타내는 다수의 x, y 쌍(`x1,y1,x2,y2,x3,y3,...`)입니다.
-
-    값의 단위는 CSS 픽셀입니다.
-
-- {{htmlattrdef("download")}}
-
-특성이 존재할 경우, 이 하이퍼링크는 리소스 다운로드 용도로 사용하는 것을 의도했음을 나타냅니다. {{htmlelement("a")}}의 {{htmlattrxref("download", "a")}} 특성 설명에서 전체 설명을 볼 수 있습니다.</dl>
-
-- {{htmlattrdef("href")}}
-  - : `<area>` 하이퍼링크의 대상입니다. 유효한 URL이야 합니다. 생략할 경우, 이 `<area>` 요소는 하이퍼링크를 나타내지 않습니다.
-- {{htmlattrdef("hreflang")}}
-  - : 연결한 리소스의 언어를 나타냅니다. 가능한 값은 [BCP47](https://www.ietf.org/rfc/bcp/bcp47.txt)에 따릅니다. {{htmlattrxref("href", "area")}} 특성이 존재할 때만 사용하세요.
-- {{htmlattrdef("ping")}}
-  - : 하이퍼링크를 따라갈 때, 백그라운드에서 브라우저가 {{HTTPMethod("POST")}} 요청을 본문 `PING`으로 전송할 URL의 목록입니다. 공백으로 구분하며 주로 추적용으로 사용합니다.
-
-- {{htmlattrdef("referrerpolicy")}} {{experimental_inline}}
-
-  - : A string indicating which referrer to use when fetching the resource:
-
-    - `"no-referrer"` meaning that the `Referer:` header will not be sent.
-    - "`no-referrer-when-downgrade`" meaning that no `Referer:` header will be sent when navigating to an origin without TLS (HTTPS). This is a user agent’s default behavior, if no policy is otherwise specified.
-    - `"origin"` meaning that the referrer will be the origin of the page, that is roughly the scheme, the host and the port.
-    - "origin-when-cross-origin" meaning that navigations to other origins will be limited to the scheme, the host and the port, while navigations on the same origin will include the referrer's path.
-    - `"unsafe-url"` meaning that the referrer will include the origin and the path (but not the fragment, password, or username). This case is unsafe because it can leak origins and paths from TLS-protected resources to insecure origins.
-
-- {{htmlattrdef("rel")}}
-  - : For anchors containing the **href** attribute, this attribute specifies the relationship of the target object to the link object. The value is a comma-separated list of [link types values](/ko/docs/Web/HTML/Link_types). The values and their semantics will be registered by some authority that might have meaning to the document author. The default relationship, if no other is given, is void. Use this attribute only if the **href** attribute is present.
-- {{htmlattrdef("shape")}}
-  - : 관련된 핫 스폿의 모양. The specifications for HTML 5 and HTML 4 define the values `rect`, which defines a rectangular region; `circle`, which defines a circular region; `poly`, which defines a polygon; and `default`, which indicates the entire region beyond any defined shapes. Many browsers, notably Internet Explorer 4 and higher, support `circ`, `polygon`, and `rectangle` as valid values for **shape**; these values are {{Non-standard_inline}}.
-
-- {{htmlattrdef("target")}}
-
-  - : 이 속성은 링크된 리소스가 어디에 표시될지 지정합니다. HTML4에서 이것은 프레임의 이름이나 키워드가 될수 있습니다. HTML5에서는, 브라우징 컨텍스트(탭,윈도우,인라인 프레임)의 이름이나 키워드가 될수 있습니다. 다음 키워드들은 특별한 의미를 가지고 있습니다.
-
-    - `_self`: 결과를 현재 HTML4 프레임 또는 HTML5 브라우징 컨텍스트에 로드합니다. 이 target 속성이 정의되어있지 않은경우 이 값이 기본값이 됩니다.
-    - `_blank`: 결과를 이름없는 새로운 HTML4 윈도우나 HTML5 브라우징 컨텍스트에 로드합니다.
-    - `_parent`: 결과를 현재 HTML4 프레임의 부모 프레임셋에 로드하거나 부모 HTML5 브라우징 컨텍스트에 로드합니다. 만약 부모가 없을 경우 \_self와 동일하게 여겨집니다.
-    - `_top`: HTML4에서는, 다른 모든 프레임을 취소하고 결과를 꽉찬 본래의 윈도우에 로드합니다. HTML5에서는, 결과를 최상위 브라우징 컨텍스트에 로드합니다. 만약 부모가 없다면, 이 옵션은 \_self와 같이 행동합니다.
-
-    이 속성은 **href** 속성이 존재할떄만 사용합니다.
-
-### Deprecated attributes
-
-- {{htmlattrdef("name")}} {{deprecated_inline}}
-
-Define a names for the clickable area so that it can be scripted by older browsers.
-
-- {{htmlattrdef("nohref")}} {{deprecated_inline}}
-
-Indicates that no hyperlink exists for the associated area.
-
-> **Note:** Since HTML5, omitting the `href` attribute is sufficient.
-
-- {{htmlattrdef("tabindex")}} {{deprecated_inline}}
-
-A numeric value specifying the position of the defined area in the browser tabbing order. This attribute is global in HTML5.
-
-- {{htmlattrdef("type")}} {{deprecated_inline}}
-
-No effect. Browsers ignore it. (The W3C 5.3 fork of the HTML specification defines it as valid, but [the canonical HTML specification](https://html.spec.whatwg.org/multipage/#the-area-element) doesn’t, and it has no effect in any user agents.)
-
-## 예제
-
-```html
-<map name="primary">
-  <area shape="circle" coords="200,250,25" href="another.htm" />
-  <area shape="default" nohref />
-</map>
-<img usemap="#primary" src="http://placehold.it/350x150" alt="350 x 150 pic">
-```
-
-### 결과
-
-{{EmbedLiveSample('예제', 360, 160)}}
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

@@ -1,21 +1,22 @@
 ---
-title: BatteryManager.charging
+title: "BatteryManager: charging property"
+short-title: charging
 slug: Web/API/BatteryManager/charging
+page-type: web-api-instance-property
+browser-compat: api.BatteryManager.charging
 ---
 
 {{APIRef("Battery API")}}
 
-현재 배터리가 충전중인지를 나타내는 Boolean 값 입니다.
+The **`BatteryManager.charging`** property is a Boolean value indicating whether or not the device's battery is currently being charged. When its value changes, the [`chargingchange`](/en-US/docs/Web/API/BatteryManager/chargingchange_event) event is fired.
 
-## 문법
+If the battery is charging, this value is `true`. Otherwise, it is `false`.
 
-```js
-    var charging = battery.charging
-```
+## Value
 
-`charging` 변수는 배터리가 충전 중인지의 여부를 가져옵니다. 충전중일경우 `true`. 이외에는 `false` 를 가리킵니다.
+A boolean.
 
-## 예제
+## Examples
 
 ### HTML Content
 
@@ -26,25 +27,24 @@ slug: Web/API/BatteryManager/charging
 ### JavaScript Content
 
 ```js
-navigator.getBattery().then(function(battery) {
+navigator.getBattery().then((battery) => {
+  const charging = battery.charging;
 
-    var charging = battery.charging;
-
-    document.querySelector('#charging').textContent = charging ;
+  document.querySelector("#charging").textContent = charging;
 });
 ```
 
-{{ EmbedLiveSample('Example') }}
+{{ EmbedLiveSample('Examples', '100%', 30) }}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("BatteryManager")}}
 - {{domxref("Navigator.getBattery")}}

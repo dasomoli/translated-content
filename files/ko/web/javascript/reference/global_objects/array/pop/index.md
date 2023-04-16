@@ -1,59 +1,122 @@
 ---
 title: Array.prototype.pop()
 slug: Web/JavaScript/Reference/Global_Objects/Array/pop
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Array.pop
 ---
 
 {{JSRef}}
 
-**`pop()`** 메서드는 배열에서 **마지막** 요소를 제거하고 그 요소를 반환합니다.
+The **`pop()`** method removes the **last**
+element from an array and returns that element. This method changes the length of the
+array.
 
 {{EmbedInteractiveExample("pages/js/array-pop.html")}}
 
-## 구문
+## Syntax
 
-```js
-    arr.pop()
+```js-nolint
+pop()
 ```
 
-### 반환 값
+### Return value
 
-배열에서 제거한 요소. 빈 배열의 경우 {{jsxref("undefined")}} 를 반환합니다.
+The removed element from the array; {{jsxref("undefined")}} if the array is empty.
 
-## 설명
+## Description
 
-`pop` 메서드는 배열에서 마지막 요소를 제거하여 그 값을 호출자(caller)에게 반환합니다.
+The `pop()` method removes the last element from an array and returns that value to the caller. If you call `pop()` on an empty array, it returns {{jsxref("undefined")}}.
 
-`pop`은 일부러 일반(generic)입니다; 이 메서드는 배열을 닮은 객체에 {{jsxref("Function.call", "호출", "", 1)}} 또는 {{jsxref("Function.apply", "적용", "", 1)}}될 수 있습니다. 0부터 시작하는 일련의 연속되는 숫자 속성 내 마지막을 반영하는 `length` 속성을 포함하지 않는 객체는 어떤 의미 있는 방식으로도 행동하지 않을 수 있습니다.
+{{jsxref("Array.prototype.shift()")}} has similar behavior to `pop()`, but applied to the first element in an array.
 
-빈 배열에 `pop()`을 호출하면, {{jsxref("undefined")}}를 반환합니다.
+The `pop()` method is a mutating method. It changes the length and the content of `this`. In case you want the value of `this` to be the same, but return a new array with the last element removed, you can use [`arr.slice(0, -1)`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice) instead.
 
-## 예제
+The `pop()` method is [generic](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#generic_array_methods). It only expects the `this` value to have a `length` property and integer-keyed properties. Although strings are also array-like, this method is not suitable to be applied on them, as strings are immutable.
 
-### 배열의 마지막 요소 제거
+## Examples
 
-다음 코드는 요소 넷을 포함하는 `myFish` 배열을 생성하고 그 마지막 요소를 제거합니다.
+### Removing the last element of an array
+
+The following code creates the `myFish` array containing four elements, then
+removes its last element.
 
 ```js
-    var myFish = ['angel', 'clown', 'mandarin', 'sturgeon'];
+const myFish = ["angel", "clown", "mandarin", "sturgeon"];
 
-    var popped = myFish.pop();
+const popped = myFish.pop();
 
-    console.log(myFish); // ['angel', 'clown', 'mandarin' ]
+console.log(myFish); // ['angel', 'clown', 'mandarin' ]
 
-    console.log(popped); // 'sturgeon'
+console.log(popped); // 'sturgeon'
 ```
 
-## 명세
+### Calling pop() on non-array objects
+
+The `pop()` method reads the `length` property of `this`. If the [normalized length](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#normalization_of_the_length_property) is 0, `length` is set to `0` again (whereas it may be negative or `undefined` before). Otherwise, the property at `length - 1` is returned and [deleted](/en-US/docs/Web/JavaScript/Reference/Operators/delete).
+
+```js
+const arrayLike = {
+  length: 3,
+  unrelated: "foo",
+  2: 4,
+};
+console.log(Array.prototype.pop.call(arrayLike));
+// 4
+console.log(arrayLike);
+// { length: 2, unrelated: 'foo' }
+
+const plainObj = {};
+// There's no length property, so the length is 0
+Array.prototype.pop.call(plainObj);
+console.log(plainObj);
+// { length: 0 }
+```
+
+### Using an object in an array-like fashion
+
+`push` and `pop` are intentionally generic, and we can use that to our advantage — as the following example shows.
+
+Note that in this example, we don't create an array to store a collection of objects. Instead, we store the collection on the object itself and use `call` on `Array.prototype.push` and `Array.prototype.pop` to trick those methods into thinking we're dealing with an array.
+
+```js
+const collection = {
+  length: 0,
+  addElements(...elements) {
+    // obj.length will be incremented automatically
+    // every time an element is added.
+
+    // Returning what push returns; that is
+    // the new value of length property.
+    return [].push.call(this, ...elements);
+  },
+  removeElement() {
+    // obj.length will be decremented automatically
+    // every time an element is removed.
+
+    // Returning what pop returns; that is
+    // the removed element.
+    return [].pop.call(this);
+  },
+};
+
+collection.addElements(10, 20, 30);
+console.log(collection.length); // 3
+collection.removeElement();
+console.log(collection.length); // 2
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Array.prototype.push()")}}
 - {{jsxref("Array.prototype.shift()")}}
 - {{jsxref("Array.prototype.unshift()")}}
+- {{jsxref("Array.prototype.concat()")}}
 - {{jsxref("Array.prototype.splice()")}}

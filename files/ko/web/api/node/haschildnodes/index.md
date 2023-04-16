@@ -1,35 +1,50 @@
 ---
-title: Node.hasChildNodes()
+title: "Node: hasChildNodes() method"
+short-title: hasChildNodes()
 slug: Web/API/Node/hasChildNodes
+page-type: web-api-instance-method
+browser-compat: api.Node.hasChildNodes
 ---
 
 {{APIRef("DOM")}}
 
-**`Node.hasChildNodes()`** 메소드는 현재 노드({{domxref("Node")}})에게 자식노드([child nodes](/ko/docs/Web/API/Node.childNodes))가 있는지를 {{jsxref("Boolean")}} 값으로 반환합니다.
+The **`hasChildNodes()`** method of the {{domxref("Node")}} interface
+returns a boolean value indicating
+whether the given {{domxref("Node")}} has [child nodes](/en-US/docs/Web/API/Node/childNodes) or not.
 
-## 구문
+## Syntax
 
-```js
-node.hasChildNodes()
+```js-nolint
+hasChildNodes()
 ```
 
-## 예시
+### Parameters
 
-아래 예시에서는 "foo"라는 id를 가진 요소를 찾고 "foo" 요소에게 자식노드가 있으면 첫번째 자식노드를 제거해줍니다.
+None.
+
+### Return value
+
+A boolean value that is `true` if the node has child nodes, and
+`false` otherwise.
+
+## Example
 
 ```js
-var foo = document.getElementById("foo");
+let foo = document.getElementById("foo");
 
-if ( foo.hasChildNodes() ) {
-  foo.removeChild( foo.childNodes[0] );
+if (foo.hasChildNodes()) {
+  // Do something with 'foo.childNodes'
 }
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 같이 보기
+## Browser compatibility
+
+{{Compat}}
+
+## See also
 
 - {{domxref("Node.childNodes")}}
-- {{domxref("Node.hasAttributes")}}

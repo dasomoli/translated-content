@@ -1,171 +1,182 @@
 ---
 title: throw
 slug: Web/JavaScript/Reference/Statements/throw
+page-type: javascript-statement
+browser-compat: javascript.statements.throw
 ---
 
 {{jsSidebar("Statements")}}
 
-**`throw`**문은 사용자 정의 예외를 발생(throw)할 수 있습니다. 예외가 발생하면 현재 함수의 실행이 중지되고 (`throw` 이후의
-명령문은 실행되지 않습니다.), 제어 흐름은 콜스택의 첫 번째 [`catch`](/ko/docs/Web/JavaScript/Reference/Statements/try...catch)
-블록으로 전달됩니다. 호출자 함수 사이에 `catch` 블록이 없으면 프로그램이 종료됩니다.
+The **`throw`** statement throws a user-defined exception.
+Execution of the current function will stop (the statements after `throw`
+won't be executed), and control will be passed to the first [`catch`](/en-US/docs/Web/JavaScript/Reference/Statements/try...catch)
+block in the call stack. If no `catch` block exists among caller functions,
+the program will terminate.
 
 {{EmbedInteractiveExample("pages/js/statement-throw.html")}}
 
-## 문법
+## Syntax
 
-```js
+```js-nolint
 throw expression;
 ```
 
 - `expression`
-  - : 예외를 발생시킬 표현식
+  - : The expression to throw.
 
-## 설명
+## Description
 
-예외를 발생하기 위해 `throw` 문을 사용하세요. 예외를 발생시키면 `expression`은 예외 값을 지정합니다.
-다음 각각은 예외를 발생시킵니다:
+Use the `throw` statement to throw an exception. When you throw an
+exception, `expression` specifies the value of the exception. Each
+of the following throws an exception:
 
 ```js
-throw 'Error2'; // 문자열 값을 가지는 예외가 발생합니다.
-throw 42;       // 42 값을 가진 예외가 발생합니다.
-throw true;     // true 값을 가지는 예외가 발생합니다.
+throw "Error2"; // generates an exception with a string value
+throw 42; // generates an exception with the value 42
+throw true; // generates an exception with the value true
+throw new Error("Required"); // generates an error object with the message of Required
 ```
 
-또한 `throw` 문은 [자동 세미콜론 삽입](/ko/docs/Web/JavaScript/Reference/Lexical_grammar#automatic_semicolon_insertion) (ASI)에 의해 영향을 받으며 `throw` 키워드와 표현식 사이에 줄 종결자는 허용되지 않으므로 주의해야합니다.
+Also note that the `throw` statement is affected by
+[automatic semicolon insertion (ASI)](/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#automatic_semicolon_insertion)
+as no line terminator between the `throw` keyword and the expression is allowed.
 
-## 예제
+## Examples
 
-### 예외 값으로 객체 사용하기
+### Throw an object
 
-예외를 발생시킬 때 객체를 명시할 수 있습니다. 그러면 `catch` 블록에서 객체의 속성을 참조 할 수 있습니다.
-다음 예제에서는 `UserException` 타입의 객체를 만들고 `throw` 구문에서 이 객체를 사용합니다.
+You can specify an object when you throw an exception. You can then reference the
+object's properties in the `catch` block. The following example creates an
+object of type `UserException` and uses it in a `throw` statement.
 
 ```js
 function UserException(message) {
-   this.message = message;
-   this.name = 'UserException';
+  this.message = message;
+  this.name = "UserException";
 }
 function getMonthName(mo) {
-  mo = mo - 1; // 월 숫자를 배열의 인덱스 값과 맞추기 위해서 입니다.(1 = 1월, 12 = 12월)
-  var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
-    'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  mo--; // Adjust month number for array index (1 = Jan, 12 = Dec)
+  const months = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+  ];
   if (months[mo] !== undefined) {
     return months[mo];
   } else {
-    throw new UserException('InvalidMonthNo');
+    throw new UserException("InvalidMonthNo");
   }
 }
 
+let monthName;
+
 try {
-  // try 문
-  var myMonth = 15; // 15 는 범위를 벗어났기 때문에 예외를 발생시킵니다
-  var monthName = getMonthName(myMonth);
+  // statements to try
+  const myMonth = 15; // 15 is out of bound to raise the exception
+  monthName = getMonthName(myMonth);
 } catch (e) {
-  monthName = 'unknown';
-  console.error(e.message, e.name); // 오류 처리기에 예외 객체를 전달합니다
+  monthName = "unknown";
+  console.error(e.message, e.name); // pass exception object to err handler
 }
 ```
 
-### 예외 값으로 객체 사용하는 다른 예제
+### Another example of throwing an object
 
-다음 예제는 입력 문자열에서 미국 우편 번호를 테스트합니다.
-우편 번호가 잘못된 형식을 사용하는 경우 throw 문은 `ZipCodeFormatException` 타입의 객체를 만들어 예외를 발생시킵니다.
+The following example tests an input string for a U.S. zip code. If the zip code uses
+an invalid format, the throw statement throws an exception by creating an object of type
+`ZipCodeFormatException`.
 
 ```js
 /*
- * ZipCode 객체를 만듭니다.
+ * Creates a ZipCode object.
  *
- * 입력받을 수 있는 우편번호의 형태는 아래와 같습니다:
+ * Accepted formats for a zip code are:
  *    12345
  *    12345-6789
  *    123456789
  *    12345 6789
  *
- * 만약 ZipCode 생성자로 전달된 매개변수가 이 패턴 중 하나도 맞지 않으면,
- * 예외를 발생시킵니다.
+ * If the argument passed to the ZipCode constructor does not
+ * conform to one of these patterns, an exception is thrown.
  */
-
-function ZipCode(zip) {
-   zip = new String(zip);
-   pattern = /[0-9]{5}([- ]?[0-9]{4})?/;
-   if (pattern.test(zip)) {
-      // 우편번호 값은 문자열의 첫 번째 매칭일 것입니다.
-      this.value = zip.match(pattern)[0];
-      this.valueOf = function() {
-         return this.value
-      };
-      this.toString = function() {
-         return String(this.value)
-      };
-   } else {
+class ZipCode {
+  static pattern = /[0-9]{5}([- ]?[0-9]{4})?/;
+  constructor(zip) {
+    zip = String(zip);
+    const match = zip.match(ZipCode.pattern);
+    if (!match) {
       throw new ZipCodeFormatException(zip);
-   }
+    }
+    // zip code value will be the first match in the string
+    this.value = match[0];
+  }
+  valueOf() {
+    return this.value;
+  }
+  toString() {
+    return this.value;
+  }
 }
 
-function ZipCodeFormatException(value) {
-   this.value = value;
-   this.message = 'does not conform to the expected format for a zip code';
-   this.toString = function() {
-      return this.value + this.message;
-   };
+class ZipCodeFormatException extends Error {
+  constructor(zip) {
+    super(`${zip} does not conform to the expected format for a zip code`);
+  }
 }
 
 /*
- * 이것은 미국 주소에 대한 주소 데이터를 검증하는 스크립트에서
- * 발생할 수 있습니다.
+ * This could be in a script that validates address data
+ * for US addresses.
  */
 
 const ZIPCODE_INVALID = -1;
 const ZIPCODE_UNKNOWN_ERROR = -2;
 
 function verifyZipCode(z) {
-   try {
-      z = new ZipCode(z);
-   } catch (e) {
-      if (e instanceof ZipCodeFormatException) {
-         return ZIPCODE_INVALID;
-      } else {
-         return ZIPCODE_UNKNOWN_ERROR;
-      }
-   }
-   return z;
+  try {
+    z = new ZipCode(z);
+  } catch (e) {
+    const isInvalidCode = e instanceof ZipCodeFormatException;
+    return isInvalidCode ? ZIPCODE_INVALID : ZIPCODE_UNKNOWN_ERROR;
+  }
+  return z;
 }
 
-a = verifyZipCode(95060);         // 95060 반환
-b = verifyZipCode(9560);          // -1 반환
-c = verifyZipCode('a');           // -1 반환
-d = verifyZipCode('95060');       // 95060 반환
-e = verifyZipCode('95060 1234');  // 95060 1234 반환
+a = verifyZipCode(95060); // 95060
+b = verifyZipCode(9560); // -1
+c = verifyZipCode("a"); // -1
+d = verifyZipCode("95060"); // 95060
+e = verifyZipCode("95060 1234"); // 95060 1234
 ```
 
-### 예외 다시 발생시키기
+### Rethrow an exception
 
-`throw`를 사용하여 예외를 잡은(catch) 후에 예외를 다시 발생시킬 수 있습니다.
-다음 예제에서는 숫자 값으로 예외를 잡지만 값이 50 이상이면 예외를 다시 발생시킵니다.
-반환된 예외는 둘러싸는 함수 또는 최상위 수준으로 전파되어 사용자가 볼 수 있도록합니다
+You can use `throw` to rethrow an exception after you catch it. The
+following example catches an exception with a numeric value and rethrows it if the value
+is over 50. The rethrown exception propagates up to the enclosing function or to the top
+level so that the user sees it.
 
 ```js
 try {
-   throw n; // 숫자 값으로 예외를 발생시킵니다.
+  throw n; // throws an exception with a numeric value
 } catch (e) {
   if (e <= 50) {
-    // 1-50 사이의 예외를 처리하는 구문
+    // statements to handle exceptions 1-50
   } else {
-    // 이 예외를 처리할 수 없어서, 다시 예외를 발생시킵니다
+    // cannot handle this exception, so rethrow
     throw e;
   }
 }
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Statements/try...catch", "try...catch")}}
 - {{jsxref("Global_Objects/Error", "Error")}}

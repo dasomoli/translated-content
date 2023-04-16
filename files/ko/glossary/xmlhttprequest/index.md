@@ -1,19 +1,14 @@
 ---
-title: XHR (XMLHttpRequest)
+title: XMLHttpRequest (XHR)
 slug: Glossary/XMLHttpRequest
-original_slug: Glossary/XHR_(XMLHttpRequest)
+page-type: glossary-definition
 ---
 
-{{domxref("XMLHttpRequest")}}(XHR)은 {{Glossary("AJAX")}} 요청을 생성하는 {{Glossary("JavaScript")}} {{Glossary("API")}}입니다. XHR의 메서드로 {{Glossary("browser", "브라우저")}}와 {{Glossary("server", "서버")}}간의 네트워크 요청을 전송할 수 있습니다.
+{{domxref("XMLHttpRequest")}} (XHR) is a {{Glossary("JavaScript")}} {{Glossary("API")}} to create {{Glossary("AJAX")}} requests. Its methods provide the ability to send network requests between the {{Glossary("browser")}} and a {{Glossary("server")}}.
 
-## 더 알아보기
+## See also
 
-### 일반 지식
-
-- 위키백과 [XMLHttpRequest](https://ko.wikipedia.org/wiki/XMLHttpRequest)
-- [Synchronous vs. Asynchronous Communications](http://peoplesofttutorial.com/difference-between-synchronous-and-asynchronous-messaging/)
-
-### 기술 정보
-
-- {{domxref("XMLHttpRequest")}} 객체.
-- [XMLHttpRequest를 사용하는 방법에 관한 MDN 문서](/ko/docs/XMLHttpRequest/Using_XMLHttpRequest).
+- [XMLHttpRequest](https://en.wikipedia.org/wiki/XMLHttpRequest) on Wikipedia
+- [Synchronous vs. Asynchronous Communications](https://peoplesofttutorial.com/difference-between-synchronous-and-asynchronous-messaging/)
+- The {{domxref("XMLHttpRequest")}} object
+- The [documentation on MDN about how to use XMLHttpRequest](/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest)

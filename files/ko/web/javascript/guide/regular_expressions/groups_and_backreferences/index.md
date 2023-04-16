@@ -1,12 +1,14 @@
 ---
-title: Groups and Ranges
-slug: Web/JavaScript/Guide/Regular_Expressions/Groups_and_Backreferences
-original_slug: Web/JavaScript/Guide/Regular_Expressions/Groups_and_Ranges
+title: Groups and backreferences
+slug: Web/JavaScript/Guide/Regular_expressions/Groups_and_backreferences
+page-type: guide
 ---
 
 {{jsSidebar("JavaScript Guide")}}
 
-그룹(Groups)과 범위(ranges)는 표현 문자의 그룹과 범위를 나타냅니다.
+Groups group multiple patterns as a whole, and capturing groups provide extra submatch information when using a regular expression pattern to match against a string. Backreferences refer to a previously captured group in the same regular expression.
+
+{{EmbedInteractiveExample("pages/js/regexp-groups-ranges.html")}}
 
 ## Types
 
@@ -18,73 +20,6 @@ original_slug: Web/JavaScript/Guide/Regular_Expressions/Groups_and_Ranges
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>
-        <code><em>x</em>|<em>y</em></code>
-      </td>
-      <td>
-        <p>
-          <code>x</code>또는 <code>y</code>와 매칭되는 경우. 예를들면
-          <code>/green|red/</code> 은 "green apple"의 "green"과 매치되고 "red
-          apple"의 "red"와 매치됩니다.
-        </p>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>[xyz]<br />[a-c]</code>
-      </td>
-      <td>
-        <p>
-          A character set. Matches any one of the enclosed characters. You can
-          specify a range of characters by using a hyphen, but if the hyphen
-          appears as the first or last character enclosed in the square brackets
-          it is taken as a literal hyphen to be included in the character set as
-          a normal character. It is also possible to include a character class
-          in a character set.
-        </p>
-        <p>
-          For example, <code>[abcd]</code> is the same as <code>[a-d]</code>.
-          They match the "b" in "brisket" and the "c" in "chop".
-        </p>
-        <p>
-          For example, [abcd-] and [-abcd] match the "b" in "brisket", the "c"
-          in "chop" and the "-" (hyphen) in "non-profit".
-        </p>
-        <p>
-          For example, [\w-] is the same as [A-Za-z0-9_-]. They match the "b" in
-          "brisket", the "c" in "chop" and the "n" in "non-profit".
-        </p>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <p>
-          <code>[^xyz]<br />[^a-c]</code>
-        </p>
-      </td>
-      <td>
-        <p>
-          A negated or complemented character set. That is, it matches anything
-          that is not enclosed in the brackets. You can specify a range of
-          characters by using a hyphen, but if the hyphen appears as the first
-          or last character enclosed in the square brackets it is taken as a
-          literal hyphen to be included in the character set as a normal
-          character. For example, <code>[^abc]</code> is the same as
-          <code>[^a-c]</code>. They initially match "o" in "bacon" and "h" in
-          "chop".
-        </p>
-        <div class="blockIndicator note">
-          <p>
-            The ^ character may also indicate the
-            <a
-              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Boundaries"
-              >beginning of input</a
-            >.
-          </p>
-        </div>
-      </td>
-    </tr>
     <tr>
       <td><code>(<em>x</em>)</code></td>
       <td>
@@ -99,10 +34,10 @@ original_slug: Web/JavaScript/Guide/Regular_Expressions/Groups_and_Ranges
           the same order as the left parentheses in the capturing group. This is
           usually just the order of the capturing groups themselves. This
           becomes important when capturing groups are nested. Matches are
-          accessed using the index of the the result's elements (<code
-            >[1], ..., [n]</code
+          accessed using the index of the result's elements (<code
+            >[1], …, [n]</code
           >) or from the predefined <code>RegExp</code> object's properties
-          (<code>$1, ..., $9</code>).
+          (<code>$1, …, $9</code>).
         </p>
         <p>
           Capturing groups have a performance penalty. If you don't need the
@@ -113,7 +48,7 @@ original_slug: Web/JavaScript/Guide/Regular_Expressions/Groups_and_Ranges
           <code
             ><a
               href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match"
-              >String.match()</a
+              >String.prototype.match()</a
             ></code
           >
           won't return groups if the <code>/.../g</code> flag is set. However,
@@ -121,11 +56,36 @@ original_slug: Web/JavaScript/Guide/Regular_Expressions/Groups_and_Ranges
           <code
             ><a
               href="/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/matchAll"
-              >String.matchAll()</a
+              >String.prototype.matchAll()</a
             ></code
           >
           to get all matches.
         </p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>(?&#x3C;Name>x)</code></td>
+      <td>
+        <p>
+          <strong>Named capturing group: </strong>Matches "x" and stores it on
+          the groups property of the returned matches under the name specified
+          by <code>&#x3C;Name></code>. The angle brackets (<code>&#x3C;</code>
+          and <code>></code>) are required for group name.
+        </p>
+        <p>
+          For example, to extract the United States area code from a phone
+          number, we could use <code>/\((?&#x3C;area>\d\d\d)\)/</code>. The
+          resulting number would appear under <code>matches.groups.area</code>.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>(?:<em>x</em>)</code></td>
+      <td>
+        <strong>Non-capturing group: </strong>Matches "x" but does not remember
+        the match. The matched substring cannot be recalled from the resulting
+        array's elements (<code>[1], …, [n]</code>) or from the predefined
+        <code>RegExp</code> object's properties (<code>$1, …, $9</code>).
       </td>
     </tr>
     <tr>
@@ -134,55 +94,109 @@ original_slug: Web/JavaScript/Guide/Regular_Expressions/Groups_and_Ranges
       </td>
       <td>
         <p>
-          Where <code><em>n</em></code> is a positive integer. A back reference
-          to the last substring matching the n parenthetical in the regular
-          expression (counting left parentheses). For example,
+          Where "n" is a positive integer. A back reference to the last
+          substring matching the n parenthetical in the regular expression
+          (counting left parentheses). For example,
           <code>/apple(,)\sorange\1/</code> matches "apple, orange," in "apple,
-          orange, cherry, peach". A complete example follows this table.
+          orange, cherry, peach".
         </p>
       </td>
     </tr>
     <tr>
-      <td><code>(?&#x3C;Name>x)</code></td>
+      <td><code>\k&#x3C;Name></code></td>
       <td>
         <p>
-          <strong>Named capturing group: </strong>Matches <code>x</code> and
-          stores it on the groups property of the returned matches under the
-          name specified by <code>&#x3C;Name></code>. The angle brackets
-          ('<code>&#x3C;</code>' and '<code>></code>') are required for group
-          name.
+          A back reference to the last substring matching the
+          <strong>Named capture group</strong> specified by
+          <code>&#x3C;Name></code>.
         </p>
         <p>
-          For example, to extract the United States area code from a phone
-          number, I could use <code>/\((?&#x3C;area>\d\d\d)\)/</code>. The
-          resulting number would appear under <code>matches.groups.area</code>.
+          For example,
+          <code>/(?&#x3C;title>\w+), yes \k&#x3C;title>/</code> matches "Sir,
+          yes Sir" in "Do you copy? Sir, yes Sir!".
         </p>
-      </td>
-    </tr>
-    <tr>
-      <td><code>(?:<em>x</em>)</code></td>
-      <td>
-        <strong>Non-capturing group: </strong>Matches
-        <code><em>x</em></code> but does not remember the match. The matched
-        substring cannot be recalled from the resulting array's elements (<code
-          >[1], ..., [n]</code
-        >) or from the predefined <code>RegExp</code> object's properties (<code
-          >$1, ..., $9</code
-        >).
+        <div class="notecard note">
+          <p>
+            <strong>Note:</strong> <code>\k</code> is used literally here to
+            indicate the beginning of a back reference to a Named capture group.
+          </p>
+        </div>
       </td>
     </tr>
   </tbody>
 </table>
 
+## Examples
+
+### Using groups
+
+```js
+const personList = `First_Name: John, Last_Name: Doe
+First_Name: Jane, Last_Name: Smith`;
+
+const regexpNames = /First_Name: (\w+), Last_Name: (\w+)/gm;
+for (const match of personList.matchAll(regexpNames)) {
+  console.log(`Hello ${match[1]} ${match[2]}`);
+}
+```
+
+### Using named groups
+
+```js
+const personList = `First_Name: John, Last_Name: Doe
+First_Name: Jane, Last_Name: Smith`;
+
+const regexpNames =
+  /First_Name: (?<firstname>\w+), Last_Name: (?<lastname>\w+)/gm;
+for (const match of personList.matchAll(regexpNames)) {
+  console.log(`Hello ${match.groups.firstname} ${match.groups.lastname}`);
+}
+```
+
+### Using groups and back references
+
+```js
+const quote = `Single quote "'" and double quote '"'`;
+const regexpQuotes = /(['"]).*?\1/g;
+for (const match of quote.matchAll(regexpQuotes)) {
+  console.log(match[0]);
+}
+```
+
+### Using groups and match indices
+
+By providing the `d` flag, the indices of each capturing group is returned. This is especially useful if you are correlating each matched group with the original text — for example, to provide compiler diagnostics.
+
+```js
+const code = `function add(x, y) {
+  return x + y;
+}`;
+const functionRegexp =
+  /(function\s+)(?<name>[$_\p{ID_Start}][$\u200c\u200d\p{ID_Continue}]*)/du;
+const match = functionRegexp.exec(code);
+const lines = code.split("\n");
+lines.splice(
+  1,
+  0,
+  " ".repeat(match.indices[1][1] - match.indices[1][0]) +
+    "^".repeat(match.indices.groups.name[1] - match.indices.groups.name[0]),
+);
+console.log(lines.join("\n"));
+// function add(x, y) {
+//          ^^^
+//   return x + y;
+// }
+```
+
 ## See also
 
 - A polyfill of [`RegExp` named capture groups](https://github.com/zloirock/core-js#ecmascript-string-and-regexp) is available in [`core-js`](https://github.com/zloirock/core-js)
-- [Regular expressions guide](/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)
+- [Regular expressions guide](/en-US/docs/Web/JavaScript/Guide/Regular_expressions)
 
-  - [Character classes](/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Character_Classes)
-  - [Assertions](/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Assertions)
-  - [Quantifiers](/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Quantifiers)
-  - [Unicode property escapes](/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Unicode_Property_Escapes)
+  - [Character classes](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Character_classes)
+  - [Assertions](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Assertions)
+  - [Quantifiers](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Quantifiers)
+  - [Unicode property escapes](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Unicode_property_escapes)
 
 - [The `RegExp()` constructor](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp)
 - [ClassRanges in the ECMAScript specification](https://tc39.es/ecma262/multipage/text-processing.html#sec-classranges)

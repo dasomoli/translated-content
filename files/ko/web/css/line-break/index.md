@@ -1,86 +1,120 @@
 ---
 title: line-break
 slug: Web/CSS/line-break
+page-type: css-property
+browser-compat: css.properties.line-break
 ---
 
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`line-break`** 속성은 한중일(CJK) 3개국어의 텍스트 줄을 어디서 바꿀지 지정합니다.
+The **`line-break`** CSS property sets how to break lines of Chinese, Japanese, or Korean (CJK) text when working with punctuation and symbols.
+
+{{EmbedInteractiveExample("pages/css/line-break.html")}}
+
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
 line-break: auto;
 line-break: loose;
 line-break: normal;
 line-break: strict;
 line-break: anywhere;
 
-/* 전역 값 */
+/* Global values */
 line-break: inherit;
 line-break: initial;
+line-break: revert;
+line-break: revert-layer;
 line-break: unset;
 ```
 
-## 구문
-
-### 값
+### Values
 
 - `auto`
-  - : 기본 줄 바꿈 규칙을 사용합니다.
+  - : Break text using the default line break rule.
 - `loose`
-  - : 가장 자유로운 줄 바꿈 규칙을 사용합니다. 보통 신문 등 짧은 줄에서 사용합니다.
+  - : Break text using the least restrictive line break rule. Typically used for short lines, such as in newspapers.
 - `normal`
-  - : 가장 흔한 줄 바꿈 규칙을 사용합니다.
+  - : Break text using the most common line break rule.
 - `strict`
-  - : 가장 엄격한 줄 바꿈 규칙을 사용합니다.
+  - : Break text using the most stringent line break rule.
 - `anywhere`
-  - : 모든 타이포그래피 글자 단위 주위에서 줄을 바꿀 수 있습니다. 줄 바꿈 위치는 모든 문장 부호, 공백, 단어 중간을 포함하며 GL, WJ, ZWJ 문자 클래스가 나타내는 줄 바꿈 제한 및 {{cssxref("word-break")}}가 요구하는 규칙 모두 무시할 수 있습니다. 붙임표는 사용하지 않습니다.
+  - : There is a soft wrap opportunity around every typographic character unit, including around any punctuation character or preserved white spaces, or in the middle of words, disregarding any prohibition against line breaks, even those introduced by characters with the GL, WJ, or ZWJ character class or mandated by the {{cssxref("word-break")}} property. The different wrapping opportunities must not be prioritized. Hyphenation is not applied.
 
-## 형식 정의
+## Formal definition
 
 {{cssinfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 줄 바꿈 지정하기
+### Setting text wrapping
 
-줄 바꿈이 "々", "ぁ", "。"의 주위에서 어떻게 발생하는지 살펴보세요.
+See whether the text is wrapped before "々", "ぁ" and "。".
 
 #### HTML
 
 ```html
 <div lang="ja">
-  <p class="wrapbox auto">auto:<br>そこは湖のほとりで木々が輝いていた。<br>その景色に、美しいなぁと思わずつぶやいた。</p>
-  <p class="wrapbox loose">loose:<br>そこは湖のほとりで木々が輝いていた。<br>その景色に、美しいなぁと思わずつぶやいた。</p>
-  <p class="wrapbox normal">normal:<br>そこは湖のほとりで木々が輝いていた。<br>その景色に、美しいなぁと思わずつぶやいた。</p>
-  <p class="wrapbox strict">strict:<br>そこは湖のほとりで木々が輝いていた。<br>その景色に、美しいなぁと思わずつぶやいた。</p>
-  <p class="wrapbox anywhere">anywhere:<br>そこは湖のほとりで木々が輝いていた。<br>その景色に、美しいなぁと思わずつぶやいた。</p>
+  <p class="wrapbox auto">
+    auto:<br />そこは湖のほとりで木々が輝いていた。<br />その景色に、美しいなぁと思わずつぶやいた。
+  </p>
+  <p class="wrapbox loose">
+    loose:<br />そこは湖のほとりで木々が輝いていた。<br />その景色に、美しいなぁと思わずつぶやいた。
+  </p>
+  <p class="wrapbox normal">
+    normal:<br />そこは湖のほとりで木々が輝いていた。<br />その景色に、美しいなぁと思わずつぶやいた。
+  </p>
+  <p class="wrapbox strict">
+    strict:<br />そこは湖のほとりで木々が輝いていた。<br />その景色に、美しいなぁと思わずつぶやいた。
+  </p>
+  <p class="wrapbox anywhere">
+    anywhere:<br />そこは湖のほとりで木々が輝いていた。<br />その景色に、美しいなぁと思わずつぶやいた。
+  </p>
 </div>
 ```
 
 #### CSS
 
 ```css
-.wrapbox { width: 10em; margin: 0.5em; white-space: normal; vertical-align: top; display: inline-block; }
-.auto { line-break: auto; }
-.loose { line-break: loose; }
-.normal { line-break: normal; }
-.strict { line-break: strict; }
-.anywhere { line-break: anywhere; }
+.wrapbox {
+  width: 10em;
+  margin: 0.5em;
+  white-space: normal;
+  vertical-align: top;
+  display: inline-block;
+}
+.auto {
+  line-break: auto;
+}
+.loose {
+  line-break: loose;
+}
+.normal {
+  line-break: normal;
+}
+.strict {
+  line-break: strict;
+}
+.anywhere {
+  line-break: anywhere;
+}
 ```
 
-#### 결과
+#### Result
 
-{{ EmbedLiveSample('줄_바꿈_지정하기', 200, 400) }}
+{{ EmbedLiveSample('Setting_text_wrapping', 200, 400) }}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+- [CSS and International text](https://www.w3.org/International/articles/css3-text/)

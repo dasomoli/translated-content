@@ -1,28 +1,27 @@
 ---
 title: overflow
 slug: Web/CSS/overflow
+page-type: css-shorthand-property
+browser-compat: css.properties.overflow
 ---
 
 {{CSSRef}}
 
-**`overflow`** [CSS](/ko/docs/Web/CSS) [단축 속성](/ko/docs/Web/CSS/Shorthand_properties)은 요소의 콘텐츠가 너무 커서 요소의 [블록 서식 맥락](/ko/docs/Web/Guide/CSS/Block_formatting_context)에 맞출 수 없을 때의 처리법을 지정합니다. {{cssxref("overflow-x")}}, {{cssxref("overflow-y")}}의 값을 설정합니다.
+The **`overflow`** [CSS](/en-US/docs/Web/CSS) [shorthand property](/en-US/docs/Web/CSS/Shorthand_properties) sets the desired behavior for an element's overflow — i.e. when an element's content is too big to fit in its [block formatting context](/en-US/docs/Web/Guide/CSS/Block_formatting_context) — in both directions.
 
 {{EmbedInteractiveExample("pages/css/overflow.html")}}
 
-적용 가능한 방법은 잘라내기, 스크롤바 노출, 넘친 콘텐츠 그대로 노출 등이 있습니다.
+## Constituent properties
 
-`visible`(기본값)이 아닌 다른 값으로 `overflow` 속성을 사용할 경우 새로운 [블록 서식 문맥](/ko/docs/Web/Guide/CSS/Block_formatting_context)을 생성합니다. 이는 기술적인 요구사항으로, 만약 스크롤하는 요소와 float이 교차한다면, 각 스크롤 단계마다 내용물을 강제적으로 다시 감싸게 될 것입니다. 이는 결국 스크롤 속도를 느리게 할 것입니다.
+This property is a shorthand for the following CSS properties:
 
-`overflow` 속성이 효력을 갖기 위해선 반드시 블록 레벨 컨테이너의 높이(`height` 또는 `max-height`)를 설정하거나, `white-space`를 `nowrap`으로 설정해야 합니다.
+- [`overflow-x`](/en-US/docs/Web/CSS/overflow-x)
+- [`overflow-y`](/en-US/docs/Web/CSS/overflow-y)
 
-> **참고:** 하나의 축을 `visible`(기본값)로 하고, 다른 축에는 다른 값을 지정할 경우 `visible`이 `auto`처럼 동작합니다.
-
-> **참고:** JavaScript {{domxref("Element.scrollTop")}} 속성을 사용하면 요소의 `overflow`가 `hidden`일 때도 스크롤할 수 있습니다.
-
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
 overflow: visible;
 overflow: hidden;
 overflow: clip;
@@ -30,81 +29,161 @@ overflow: scroll;
 overflow: auto;
 overflow: hidden visible;
 
-/* 전역 값 */
+/* Global values */
 overflow: inherit;
 overflow: initial;
+overflow: revert;
+overflow: revert-layer;
 overflow: unset;
 ```
 
-`overflow` 속성은 아래의 키워드 값을 하나 또는 두 개 사용해 지정합니다. 두 개를 사용한 경우 첫 번째 값은 `overflow-x`, 두 번째 값은 `overflow-y`를 지정합니다. 하나만 사용하면 지정한 값을 양 축 모두에 적용합니다.
+The `overflow` property is specified as one or two keywords chosen from the list of values below. If two keywords are specified, the first applies to `overflow-x` and the second to `overflow-y`. Otherwise, both `overflow-x` and `overflow-y` are set to the same value.
 
-### 값
+### Values
 
 - `visible`
-  - : 콘텐츠를 자르지 않으며 안쪽 여백 상자 밖에도 그릴 수 있습니다.
+  - : Content is not clipped and may be rendered outside the padding box.
 - `hidden`
-  - : 콘텐츠를 안쪽 여백 상자에 맞추기 위해 잘라냅니다. 스크롤바를 제공하지 않고, 스크롤할 방법(드래그, 마우스 휠 등)도 지원하지 않습니다. 코드를 사용해 스크롤할 수는 있으므로 ({{domxref("HTMLElement.offsetLeft", "offsetLeft")}} 속성 설정 등), 이 상태의 요소도 스크롤 컨테이너입니다.
-- `clip` {{experimental_inline}}
-  - : `hidden`과 마찬가지로, 콘텐츠를 안쪽 여백 상자에 맞춰 자릅니다. 그러나 `clip`은 코드를 사용한 스크롤링도 방지하므로 어떠한 스크롤도 불가능합니다. 이 상태의 요소는 스크롤 컨테이너가 아니며, 새로운 블록 서식 문맥도 생성하지 않습니다. 서식 문맥이 필요하다면 {{cssxref("display", "display:flow-root", "#flow-root")}}을 사용할 수 있습니다.
+  - : Content is clipped if necessary to fit the padding box. No scrollbars are provided, and no support for allowing the user to scroll (such as by dragging or using a scroll wheel) is allowed. The content _can_ be scrolled programmatically (for example, by setting the value of a property such as {{domxref("Element.scrollLeft", "scrollLeft")}} or the {{domxref("Element.scrollTo", "scrollTo()")}} method), so the element is still a scroll container.
+- `clip`
+  - : Similar to `hidden`, the content is clipped to the element's padding box. The difference between `clip` and `hidden` is that the `clip` keyword also forbids all scrolling, including programmatic scrolling. The box is not a scroll container, and does not start a new formatting context. If you wish to start a new formatting context, you can use {{cssxref("display", "display: flow-root", "#flow-root")}} to do so.
 - `scroll`
-  - : 콘텐츠를 안쪽 여백 상자에 맞추기 위해 잘라냅니다. 브라우저는 콘텐츠를 실제로 잘라냈는지 여부를 따지지 않고 항상 스크롤바를 노출하므로 내용의 변화에 따라 스크롤바가 생기거나 사라지지 않습니다. 프린터는 여전히 넘친 콘텐츠를 출력할 수도 있습니다.
+  - : Content is clipped if necessary to fit the padding box. Browsers always display scrollbars whether or not any content is actually clipped, preventing scrollbars from appearing or disappearing as content changes. Printers may still print overflowing content.
 - `auto`
-  - : {{glossary("user agent", "사용자 에이전트")}}가 결정합니다. 콘텐츠가 안쪽 여백 상자에 들어간다면 `visible`과 동일하게 보이나, 새로운 블록 서식 문맥을 생성합니다. 데스크톱 브라우저의 경우 콘텐츠가 넘칠 때 스크롤바를 노출합니다.
+  - : Depends on the {{Glossary("user agent")}}. If content fits inside the padding box, it looks the same as `visible`, but still establishes a new block formatting context. Desktop browsers provide scrollbars if content overflows.
+- `overlay`
+  - : Behaves the same as `auto`, but with the scrollbars drawn on top of content instead of taking up space.
 
-<!---->
+#### Mozilla extensions
 
-- `overlay` {{deprecated_inline}}
-  - : `auto`와 동일하게 동작하지만, 스크롤바가 공간을 차지하는 대신 콘텐츠 위에 위치합니다. Webkit(Safari 등)과 Blink(Chrome 또는 Opera 등) 기반 브라우저만 지원합니다.
+- `-moz-scrollbars-none` {{deprecated_inline}}
+  - : Use `overflow: hidden` instead.
+- `-moz-scrollbars-horizontal` {{deprecated_inline}}
+  - : Use `{{Cssxref("overflow-x")}}: scroll` and `{{Cssxref("overflow-y")}}: hidden`, or `overflow: scroll hidden` instead.
+- `-moz-scrollbars-vertical` {{deprecated_inline}}
+  - : Use `{{Cssxref("overflow-x")}}: hidden` and `{{Cssxref("overflow-y")}}: scroll`, or `overflow: hidden scroll` instead.
+- `-moz-hidden-unscrollable` {{deprecated_inline}}
+  - : Use `overflow: clip` instead.
 
-### 형식 구문
+As of Firefox 63, `-moz-scrollbars-none`, `-moz-scrollbars-horizontal`, and `-moz-scrollbars-vertical` are behind a feature preference setting. In about:config, set `layout.css.overflow.moz-scrollbars.enabled` to `true`.
 
-{{csssyntax}}
+## Description
 
-## 예제
+Overflow options include clipping, showing scrollbars, or displaying the content flowing out of its container into the surrounding area.
 
-```css
-p {
-     width: 12em;
-     height: 6em;
-     border: dotted;
-     overflow: visible; /* content is not clipped */
-}
-```
+Specifying a value other than `visible` (the default) or `clip` creates a new [block formatting context](/en-US/docs/Web/Guide/CSS/Block_formatting_context). This is necessary for technical reasons — if a float intersected with the scrolling element it would forcibly rewrap the content after each scroll step, leading to a slow scrolling experience.
 
-`visible` (default)
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
+In order for `overflow` to have an effect, the block-level container must have either a set height (`height` or `max-height`) or `white-space` set to `nowrap`.
 
-```css
-p { overflow: hidden; /* no scrollbars are provided */ }
-```
+Setting one axis to `visible` (the default) while setting the other to a _different_ value results in `visible` behaving as `auto`.
 
-`overflow: hidden`
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
+The JavaScript {{domxref("Element.scrollTop")}} property may be used to scroll an HTML element even when `overflow` is set to `hidden`.
 
-```css
-p { overflow: scroll; /* always show scrollbars */ }
-```
-
-`overflow: scroll`
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
-
-```css
-p { overflow: auto; /* append scrollbars if necessary */ }
-```
-
-`overflow: auto`
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
-
-## 명세
-
-{{Specifications}}
+## Formal definition
 
 {{cssinfo}}
 
-## 브라우저 호환성
+## Formal syntax
+
+{{csssyntax}}
+
+## Examples
+
+### Setting different overflow values for text
+
+#### HTML
+
+```html
+<div>
+  <code>visible</code>
+  <p class="visible">
+    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
+    doloremque laudantium.
+  </p>
+</div>
+
+<div>
+  <code>hidden</code>
+  <p class="hidden">
+    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
+    doloremque laudantium.
+  </p>
+</div>
+
+<div>
+  <code>scroll</code>
+  <p class="scroll">
+    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
+    doloremque laudantium.
+  </p>
+</div>
+
+<div>
+  <code>auto</code>
+  <p class="auto">
+    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
+    doloremque laudantium.
+  </p>
+</div>
+```
+
+#### CSS
+
+```css
+body {
+  display: flex;
+  justify-content: space-around;
+}
+
+div {
+  margin: 1em;
+  font-size: 1.2em;
+}
+
+p {
+  width: 8em;
+  height: 5em;
+  border: dotted;
+}
+
+p.visible {
+  overflow: visible;
+}
+
+p.hidden {
+  overflow: hidden;
+}
+
+p.scroll {
+  overflow: scroll;
+}
+
+p.auto {
+  overflow: auto;
+}
+```
+
+#### Result
+
+{{EmbedLiveSample("Setting_different_overflow_values_for_text", "600", "250")}}
+
+### Accessibility Concerns
+
+A scrolling content area cannot be scrolled by a keyboard-only user, with the exception of users on Firefox (which makes the container keyboard focusable by default).
+
+As a developer, to allow non-Firefox keyboard-only users to scroll the container you will need to give it a [`tabindex`](/en-US/docs/Web/HTML/Global_attributes/tabindex) using `tabindex="0"`. Unfortunately, when a screen reader encounters this tab-stop, they will have no context for what it is and their screen reader will likely announce the entirety of its contents. Giving it an appropriate [WAI-ARIA role](/en-US/docs/Web/Accessibility/ARIA/Roles) (`role="region"`, for example) and an accessible name (via [`aria-label`](/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-label) or [`aria-labelledby`](/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-labelledby)) can mitigate this.
+
+- [Keyboard-Only Scrolling Areas](https://adrianroselli.com/2022/06/keyboard-only-scrolling-areas.html)
+
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 관련 CSS 속성: {{cssxref("text-overflow")}}, {{cssxref("white-space")}}, {{Cssxref("overflow-x")}}, {{Cssxref("overflow-y")}}, {{Cssxref("clip")}}, {{Cssxref("display")}}
+- Related CSS properties: {{cssxref("text-overflow")}}, {{cssxref("white-space")}}, {{Cssxref("overflow-x")}}, {{Cssxref("overflow-y")}}, {{Cssxref("overflow-inline")}}, {{Cssxref("overflow-block")}}, {{Cssxref("clip")}}, {{Cssxref("display")}}
+- [CSS Overflow](/en-US/docs/Web/CSS/CSS_Overflow) and [Debug scrollable overflow](https://firefox-source-docs.mozilla.org/devtools-user/page_inspector/how_to/debug_scrollable_overflow/index.html)

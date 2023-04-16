@@ -1,47 +1,45 @@
 ---
 title: 404 Not Found
 slug: Web/HTTP/Status/404
-l10n:
-  sourceCommit: cab15d3616b63a8699e6c0cee0631a48edcec979
+page-type: http-status-code
+browser-compat: http.status.404
 ---
 
 {{HTTPSidebar}}
 
-HTTP **`404 Not Found`** 클라이언트 오류 응답 코드는 서버가 요청받은 리소스를 찾을 수 없다는 것을 의미합니다.
-404 페이지를 띄우는 링크는 대체로 브로큰 링크(broken link) 또는 데드 링크(dead link)라고 부르며,
-[link rot](https://en.wikipedia.org/wiki/Link_rot) 대상일 수도 있습니다.
+The HTTP **`404 Not Found`** response status code indicates that the server cannot find the requested resource.
+Links that lead to a 404 page are often called broken or dead links and can be subject to [link rot](https://en.wikipedia.org/wiki/Link_rot).
 
-404 상태 코드는 리소스가 일시적, 또는 영구적으로 사라졌다는 것을 의미하지는 않습니다. 리소스가 영구적으로 삭제되었다면
-404 상태 코드 대신 {{HTTPStatus(410)}} (Gone) 상태 코드가 쓰여야 합니다.
+A 404 status code only indicates that the resource is missing: not whether the absence is temporary or permanent.
+If a resource is permanently removed, use the {{HTTPStatus("410")}} (Gone) status instead.
 
-## 상태
+## Status
 
 ```http
 404 Not Found
 ```
 
-## 사용자 지정 에러 페이지
+## Custom error pages
 
-많은 웹사이트들이 사용자에게 더 많은 도움을 주기 위해 404 페이지의 모습을 알맞게 재단합니다.
-예를 들어, 아파치 서버는 `.htaccess` 파일에 아래와 같은 코드를 작성해 설정할 수 있습니다.
+You can display a custom 404 page to be more helpful to a user and provide guidance on what to do next. For example, for the Apache server, you can specify a path to a custom 404 page in an `.htaccess` file:
 
 ```
 ErrorDocument 404 /notfound.html
 ```
 
-사용자 지정 404 페이지의 예시로는 [404 page](https://konmari.com/404)을 참고해보세요.
+For an example of a custom 404 page, see this [404 page](https://konmari.com/404).
 
-> **참고:** 적당한 사용자 지정 디자인은 좋습니다. 404 페이지를 재밌게 만들되, 사용자를 혼란스럽게 하지는 마세요.
+> **Note:** Custom design is a good thing, in moderation. Feel free to make your 404 page humorous and human, but don't confuse your users.
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{HTTPStatus(410)}}
-- [HTTP_404](https://ko.wikipedia.org/wiki/HTTP_404)
+- {{HTTPStatus("410")}}
+- [Wikipedia: HTTP 404](https://en.wikipedia.org/wiki/HTTP_404)

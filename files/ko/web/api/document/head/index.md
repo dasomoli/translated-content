@@ -1,40 +1,51 @@
 ---
-title: Document.head
+title: "Document: head property"
+short-title: head
 slug: Web/API/Document/head
+page-type: web-api-instance-property
+browser-compat: api.Document.head
 ---
 
 {{APIRef("DOM")}}
 
-{{domxref("Document")}} 인터페이스의 **`head`** 읽기 전용 속성은 현재 문서의 {{htmlelement("head")}} 요소를 나타냅니다.
+The **`head`** read-only property of
+the {{domxref("Document")}} interface returns the {{HTMLElement("head")}} element of
+the current document.
 
-## 예제
+## Value
+
+An {{domxref("HTMLHeadElement")}}.
+
+## Examples
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <head id="my-document-head">
   <title>Example: using document.head</title>
 </head>
 
 <script>
-  let theHead = document.head;
+  const theHead = document.head;
 
   console.log(theHead.id); // "my-document-head";
+
   console.log(theHead === document.querySelector("head")); // true
 </script>
 ```
 
-## 참고
+## Notes
 
-`Document.head`는 읽기 전용입니다. 값을 할당하려고 시도하면 조용히 실패하거나, [엄격 모드](/ko/docs/Web/JavaScript/Reference/Strict_mode)에서는 {{jsxref("TypeError")}}가 발생합니다.
+`document.head` is read-only. Trying to assign a value to this property will
+fail silently or, in [Strict Mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode), throws a {{jsxref("TypeError")}} .
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("document.body")}}

@@ -1,33 +1,58 @@
 ---
-title: Node.contains()
+title: "Node: contains() method"
+short-title: contains()
 slug: Web/API/Node/contains
+page-type: web-api-instance-method
+browser-compat: api.Node.contains
 ---
 
 {{APIRef("DOM")}}
 
-**`Node.contains()`** 메소드는 주어진 인자가 node 의 자손인지, 아닌지에 대한 {{jsxref("Boolean")}} 값을 리턴합니다.
+The **`contains()`** method of the {{domxref("Node")}} interface
+returns a boolean value indicating
+whether a node is a descendant of a given node, that is the node itself,
+one of its direct children ({{domxref("Node.childNodes", "childNodes")}}),
+one of the children's direct children, and so on.
+
+> **Note:** A node is _contained_ inside itself.
 
 ## Syntax
 
-```js
-node.contains( otherNode )
+```js-nolint
+contains(otherNode)
 ```
+
+### Parameters
+
+- `otherNode`
+  - : The {{domxref("Node")}} to test with.
+    > **Note:** `otherNode` is not optional, but can be set to `null`.
+
+### Return value
+
+A boolean value that is `true` if `otherNode` is contained in the node,
+`false` if not.
+
+If the `otherNode` parameter is `null`,
+`contains()` always returns `false`.
 
 ## Example
 
-이 함수는 요소가 페이지의 body 안에 있는지 검사합니다. `contains` 는 포괄적이므로 node 가 body 자기 자신일 경우에도 true 가 반환됩니다. 만약 이걸 원하지 않는 경우에는 node 가 body 자기 자신인지 검사하여 `false` 를 반환하여 버리면 됩니다.
+This function checks to see if an element is in the page's body. As
+`contains` is inclusive and determining if the body contains itself isn't the
+intention of `isInPage` this case explicitly returns `false`.
 
 ```js
 function isInPage(node) {
-  return (node === document.body) ? false : document.body.contains(node);
+  return node === document.body ? false : document.body.contains(node);
 }
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

@@ -1,43 +1,49 @@
 ---
-title: Window.closed
+title: "Window: closed property"
+short-title: closed
 slug: Web/API/Window/closed
+page-type: web-api-instance-property
+browser-compat: api.Window.closed
 ---
 
 {{APIRef}}
 
-**`Window.closed`** 읽기 전용 속성은 참조한 창이 닫혔는지 여부를 나타냅니다.
+The **`Window.closed`** read-only property indicates whether
+the referenced window is closed or not.
 
-## 구문
+## Value
 
-```js
-const isClosed = windowRef.closed;
-```
+A boolean value. Possible values:
 
-### 값
+- `true`: The window has been closed.
+- `false`: The window is open.
 
-창이 닫혔으면 `true`, 그렇지 않으면 `false`.
+## Examples
 
-## 예제
+### Change the URL of a window from a popup
 
-### 팝업에서 자신을 띄운 창의 URL 바꾸기
-
-다음 예제는 팝업 창에서 자신을 띄운 창의 {{glossary("URL")}}을 바꾸는 예제입니다. URL을 바꾸기 전, 현재 창을 띄운 창의 존재 유무를 {{domxref("window.opener")}} 속성으로 검사하고, `closed` 속성으로 이미 닫히지는 않았는지도 검사합니다.
+The following example demonstrates how a popup window can change the URL of the window
+that opened it. Before attempting to change the URL, it checks that the current window
+has an opener using the {{domxref("window.opener")}} property and that the opener isn't
+closed:
 
 ```js
 // Check that an opener exists and is not closed
 if (window.opener && !window.opener.closed) {
-  window.opener.location.href = 'http://www.mozilla.org';
+  window.opener.location.href = "http://www.mozilla.org";
 }
 ```
 
-> **참고:** 팝업은 자신을 띄운 창에만 접근할 수 있습니다.
+Note that popups can only access the window that opened them.
 
-### 이전에 열었던 팝업 새로고침
+### Refreshing a previously opened popup
 
-이번 예제의 `refreshPopupWindow()`는 팝업의 {{domxref("Location.reload", "reload()")}} 메서드를 호출해 데이터를 다시 불러옵니다. 만약 팝업을 아직 열지 않았거나, 사용자가 이미 닫은 경우 새로운 팝업을 띄웁니다.
+In this example the function `refreshPopupWindow()` calls the
+`reload()` method of the popup's location object to refresh its data. If the
+popup hasn't been opened yet or the user has closed it a new window is opened.
 
 ```js
-const popupWindow = null;
+let popupWindow = null;
 
 function refreshPopupWindow() {
   if (popupWindow && !popupWindow.closed) {
@@ -45,11 +51,15 @@ function refreshPopupWindow() {
     popupWindow.location.reload(true);
   } else {
     // Open a new popup window
-    popupWindow = window.open('popup.html', 'dataWindow');
+    popupWindow = window.open("popup.html", "dataWindow");
   }
 }
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
+
+## Browser compatibility
+
+{{Compat}}

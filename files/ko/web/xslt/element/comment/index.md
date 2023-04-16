@@ -1,37 +1,36 @@
 ---
-title: comment
+title: <xsl:comment>
 slug: Web/XSLT/Element/comment
-original_slug: Web/XSLT/comment
 ---
 
 {{ XsltRef() }}
 
-`<xsl:comment>` 요소는 출력 문서에 주석을 작성합니다. 오직 텍스트만 포함해야 합니다.
+The `<xsl:comment>` element writes a comment to the output document. It must include only text.
 
-### 문법
+### Syntax
 
-```
+```xml
 <xsl:comment>
   TEMPLATE
 </xsl:comment>
 ```
 
-### 필수 속성
+### Required Attributes
 
-없음.
+None.
 
-### 선택 속성
+### Optional Attributes
 
-없음.
+None.
 
-### 타입
+### Type
 
-명령, 템플릿과 함께 나타남.
+Instruction, appears within a template.
 
-### 정의
+### Defined
 
-[XSLT section 7.4, Creating Comments](http://www.w3.org/TR/xslt#section-Creating-Comments)
+XSLT, section 7.4.
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

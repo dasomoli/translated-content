@@ -1,19 +1,31 @@
 ---
 title: CSS Conditional Rules
 slug: Web/CSS/CSS_Conditional_Rules
+page-type: css-module
+browser-compat:
+  - css.at-rules.import
+  - css.at-rules.media
+  - css.at-rules.supports
+  - css.at-rules.document
 ---
+
 {{CSSRef}}
 
-**CSS Conditional Rules**는 프로세서 또는 스타일 시트에 적용되는 문서의 기능에만 기반을 두는 규칙 집합을 정의할 수 있는 CSS 모듈입니다.
+**CSS Conditional Rules** is a CSS module that allows to define a set of rules that will only apply based on the capabilities of the processor or the document the style sheet is being applied to.
 
-## 참고서
+## Reference
 
-### @규칙
+### At-rules
 
 - {{cssxref("@document")}}
 - {{cssxref("@media")}}
 - {{cssxref("@supports")}}
+- {{cssxref("@import")}}
 
-## 명세서
+## Specifications
 
 {{Specifications}}
+
+## Browser compatibility
+
+{{Compat}}

@@ -1,104 +1,182 @@
 ---
 title: <header>
 slug: Web/HTML/Element/header
+page-type: html-element
+browser-compat: html.elements.header
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<header>` 요소**는 소개 및 탐색에 도움을 주는 콘텐츠를 나타냅니다. 제목, 로고, 검색 폼, 작성자 이름 등의 요소도 포함할 수 있습니다.
+The **`<header>`** [HTML](/en-US/docs/Web/HTML) element represents introductory content, typically a group of introductory or navigational aids. It may contain some heading elements but also a logo, a search form, an author name, and other elements.
 
 {{EmbedInteractiveExample("pages/tabbed/header.html", "tabbed-standard")}}
 
-<div class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</div>
+## Usage notes
 
-<table class="properties">
-  <tbody>
-    <tr>
-      <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
-      </th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >, 뚜렷한 콘텐츠.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 콘텐츠</th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >. 단, 다른 <code>&#x3C;header></code> 또는
-        {{htmlelement("footer")}}가 자손으로 올 수 없습니다.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">태그 생략</th>
-      <td>{{no_tag_omission}}</td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 부모 요소</th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >를 허용하는 모든 요소. 단, {{htmlelement("address")}},
-        {{htmlelement("footer")}}, 또는 다른 <code>&#x3C;header></code>의
-        자손으로 사용할 수 없습니다.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>
-        <a href='/ko/docs/Web/Accessibility/ARIA/Roles/group_role'><code>group</code></a>, <a href='/ko/docs/Web/Accessibility/ARIA/Roles/presentation_role'><code>presentation</code></a>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">DOM 인터페이스</th>
-      <td>{{domxref("HTMLElement")}}</td>
-    </tr>
-  </tbody>
-</table>
+The `<header>` element has an identical meaning to the site-wide [`banner`](/en-US/docs/Web/Accessibility/ARIA/Roles/banner_role) landmark role, unless nested within sectioning content. Then, the `<header>` element is not a landmark.
 
-## 특성
+The `<header>` element can define a global site header, described as a `banner` in the accessibility tree. It usually includes a logo, company name, search feature, and possibly the global navigation or a slogan. It is generally located at the top of the page.
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)만 포함합니다.
+Otherwise, it is a `section` in the accessibility tree, and usually contain the surrounding section's heading (an `h1` – `h6` element) and optional subheading, but this is **not** required.
 
-## 사용 일람
+### Historical Usage
 
-`<header>` 요소는 구획 콘텐츠가 아니므로 개요에 구획을 생성하지 않습니다. 대신 주위 구획의 제목({{htmlelement("Heading_Elements", "&lt;h1&gt;-&lt;h6&gt;")}} 요소)을 감싸기 위한 요소지만, 필수 사항은 **아닙니다**.
+The `<header>` element originally existed at the very beginning of HTML for headings. It is seen in [the very first website](http://info.cern.ch/). At some point, headings became [`<h1>` through `<h6>`](/en-US/docs/Web/HTML/Element/Heading_Elements), allowing `<header>` to be free to fill a different role.
 
-### 역사적 사용처
+## Attributes
 
-`<header>`는 {{glossary("HTML5")}}에서야 명세에 포함됐지만, 사실 HTML의 시작부터 존재했습니다. [세계 최초의 웹사이트](http://info.cern.ch/)에서 확인할 수 있듯 원래는 {{htmlelement("head")}}요소로서 사용했지만, 어느 순간부터 다른 이름이 됐습니다. 덕분에 `<header>`는 나중에 다른 역할을 맡을 수 있었습니다.
+This element only includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-## 예제
+## Examples
 
-### 페이지 제목
+### Page Header
 
 ```html
 <header>
   <h1>Main Page Title</h1>
-  <img src="mdn-logo-sm.png" alt="MDN logo">
+  <img src="mdn-logo-sm.png" alt="MDN logo" />
 </header>
 ```
 
-### 글 제목
+#### Result
+
+{{EmbedLiveSample('Page Header')}}
+
+### Article Header
 
 ```html
 <article>
   <header>
     <h2>The Planet Earth</h2>
-    <p>Posted on Wednesday, <time datetime="2017-10-04">4 October 2017</time> by Jane Smith</p>
+    <p>
+      Posted on Wednesday, <time datetime="2017-10-04">4 October 2017</time> by
+      Jane Smith
+    </p>
   </header>
-  <p>We live on a planet that's blue and green, with so many things still unseen.</p>
-  <p><a href="https://janesmith.com/the-planet-earth/">Continue reading....</a></p>
+  <p>
+    We live on a planet that's blue and green, with so many things still unseen.
+  </p>
+  <p><a href="https://example.com/the-planet-earth/">Continue reading…</a></p>
 </article>
 ```
 
-## 명세
+#### Result
+
+{{EmbedLiveSample('Article Header')}}
+
+## Accessibility
+
+The `<header>` element defines a [`banner`](/en-US/docs/Web/Accessibility/ARIA/Roles/banner_role) landmark when its context is the {{HTMLElement('body')}} element. The HTML header element is not considered a banner landmark when it is descendant of an {{HTMLElement('article')}}, {{HTMLElement('aside')}}, {{HTMLElement('main')}}, {{HTMLElement('nav')}}, or {{HTMLElement('section')}} element.
+
+## Technical summary
+
+<table class="properties">
+  <tbody>
+    <tr>
+      <th scope="row">
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
+      </th>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
+        >,
+        <a href="/en-US/docs/Web/HTML/Content_categories#palpable_content"
+          >palpable content</a
+        >.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted content</th>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
+        >, but with no <code>&#x3C;header></code> or
+        {{HTMLElement("footer")}} descendant.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Tag omission</th>
+      <td>{{no_tag_omission}}</td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted parents</th>
+      <td>
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >flow content</a
+        >. Note that a <code>&#x3C;header></code> element must not be a
+        descendant of an {{HTMLElement("address")}},
+        {{HTMLElement("footer")}} or another
+        {{HTMLElement("header")}} element.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/Banner_role">banner</a
+        >, or
+        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
+          >no corresponding role</a
+        >
+        if a descendant of an
+        <code><a href="/en-US/docs/Web/HTML/Element/article">article</a></code
+        >, <code><a href="/en-US/docs/Web/HTML/Element/aside">aside</a></code
+        >, <code><a href="/en-US/docs/Web/HTML/Element/main">main</a></code
+        >, <code><a href="/en-US/docs/Web/HTML/Element/nav">nav</a></code> or
+        <code><a href="/en-US/docs/Web/HTML/Element/section">section</a></code>
+        element, or an element with
+        <code
+          >role=<a href="/en-US/docs/Web/Accessibility/ARIA/Roles/Article_Role"
+            >article</a
+          ></code
+        >,
+        <code
+          ><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/Complementary_role"
+            >complementary</a
+          ></code
+        >,
+        <code
+          ><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/Main_role"
+            >main</a
+          ></code
+        >,
+        <code
+          ><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/Navigation_Role"
+            >navigation</a
+          ></code
+        >
+        or
+        <code
+          ><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/Region_role"
+            >region</a
+          ></code
+        >
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/group_role"><code>group</code></a>, <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/presentation_role"><code>presentation</code></a> or
+        <a href="/en-US/docs/Web/Accessibility/ARIA/Roles/none_role"><code>none</code></a>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
+      <td>{{domxref("HTMLElement")}}</td>
+    </tr>
+  </tbody>
+</table>
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- Other section-related elements: {{HTMLElement("body")}}, {{HTMLElement("nav")}}, {{HTMLElement("article")}}, {{HTMLElement("aside")}}, {{HTMLElement("Heading_Elements", "h1")}}, {{HTMLElement("Heading_Elements", "h2")}}, {{HTMLElement("Heading_Elements", "h3")}}, {{HTMLElement("Heading_Elements", "h4")}}, {{HTMLElement("Heading_Elements", "h5")}}, {{HTMLElement("Heading_Elements", "h6")}}, {{HTMLElement("footer")}}, {{HTMLElement("section")}}, {{HTMLElement("address")}}.

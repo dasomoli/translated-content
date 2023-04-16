@@ -5,66 +5,66 @@ slug: Web/XPath/Functions/current
 
 {{ XsltRef() }}
 
-`current` 함수는 XSLT 명령에서 문맥 노드를 얻는 데 쓸 수 있습니다.
+The `current` function can be used to get the context node in an XSLT instruction.
 
-### 문법
+### Syntax
 
 ```
 current()
 ```
 
-### 반환
+### Returns
 
-오직 현재 노드만을 포함하는 노드 집합.
+A node-set containing only the current node.
 
-### 주의
+### Notes
 
-이 함수는 XPath에 더한 XSLT 고유 추가분입니다. 기본 XPath 함수 라이브러리의 일부가 아닙니다.
+This function is an XSLT-specific addition to XPath. It is not a part of the core XPath function library.
 
-For an outermost expression (an expression not occurring within another expression), the current node is always the same as the context node (which will be returned by the `.` or `self` syntax). The following two are symantically equivalent.
+For an outermost expression (an expression not occurring within another expression), the current node is always the same as the context node (which will be returned by the `.` or `self` syntax). The following two are semantically equivalent.
 
-```
+```xml
 <xsl:value-of select="current()"/>
 ```
 
-```
+```xml
 <xsl:value-of select="."/>
 ```
 
 In an inner expression (e.g. in square brackets), the current node is still the same as it would have been in an outermost expression. Thus within all of the following three expressions the `current` function (not the entire expressions) returns the same node. Moreover, the latter two are semantically equivalent.
 
-```
+```xml
 <xsl:value-of select="current()"/>
 ```
 
-```
+```xml
 <xsl:value-of select="foo/bar[current() = X]"/>
 ```
 
-```
+```xml
 <xsl:variable name="current" select="current()"/>
 <xsl:value-of select="foo/bar[$current = X]"/>
 ```
 
 And the next code is also semantically equivalent to the latter two, since the `.` occurs in an outermost expression.
 
-```
+```xml
 <xsl:variable name="current" select="."/>
 <xsl:value-of select="foo/bar[$current = X]"/>
 ```
 
 But the `.` always relate to the narrowest context. Thus in
 
-```
+```xml
 <xsl:value-of select="foo/bar[. = X]"/>
 ```
 
 the `.` returns the `bar` node, which may be different from the current node.
 
-### 정의
+### Defined
 
-[XSLT 1.0 12.4](http://www.w3.org/TR/xslt#function-current)
+[XSLT 1.0 12.4](https://www.w3.org/TR/1999/REC-xslt-19991116/#function-current)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

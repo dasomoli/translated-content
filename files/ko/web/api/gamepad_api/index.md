@@ -1,31 +1,33 @@
 ---
 title: Gamepad API
 slug: Web/API/Gamepad_API
+page-type: web-api-overview
+browser-compat: api.Gamepad
 ---
 
-{{DefaultAPISidebar("Gamepad API")}}
+{{securecontext_header}}{{DefaultAPISidebar("Gamepad API")}}
 
-**게임패드 API**는 게임패드와 다른 게임 제어장치의 신호에 쉬운 일관된 방식으로 접근하고 응답하는 개발자들을 위한 수단이다. 게임패드 API는 세 가지 인터페이스와연결, 연결 해제되고 게임 패드 자체에 대한 다른 정보에 접근하고 어떤 버튼과 다른 조작 장치들이 현재 눌린 것에 응답하는 두 가지 이벤트 그리고 한 가지 특수 기능이 포함되어 있다.
+The **Gamepad API** is a way for developers to access and respond to signals from gamepads and other game controllers in a simple, consistent way. It contains three interfaces, two events and one specialist function, to respond to gamepads being connected and disconnected, and to access other information about the gamepads themselves, and what buttons and other controls are currently being pressed.
 
-## 인터페이스
+## Interfaces
 
-- {{domxref("Gamepad")}}
-  - : 컴퓨터에 연결된 게임패드나 조작장치를 표현한다.
-- {{domxref("GamepadButton")}}
-  - : 연결된 조작장치들 중 하나에 있는 버튼을 표현한다.
-- {{domxref("GamepadEvent")}}
-  - : 게임 패드와 연관된 이벤트를 나타내는 이벤트 객체이다.
+- [`Gamepad`](/en-US/docs/Web/API/Gamepad)
+  - : Represents a gamepad/controller connected to the computer.
+- [`GamepadButton`](/en-US/docs/Web/API/GamepadButton)
+  - : Represents a button on one of the connected controllers.
+- [`GamepadEvent`](/en-US/docs/Web/API/GamepadEvent)
+  - : The event object representing events fired that are related to gamepads.
 
-### 게임패드 확장기능 실험
+### Experimental Gamepad extensions
 
-- {{domxref("GamepadHapticActuator")}}
+- [`GamepadHapticActuator`](/en-US/docs/Web/API/GamepadHapticActuator)
   - : Represents hardware in the controller designed to provide haptic feedback to the user (if available), most commonly vibration hardware.
-- {{domxref("GamepadPose")}}
-  - : Represents the pose of a controller (e.g. position and orientation in 3D space) in the case of a [WebVR](/ko/docs/Web/API/WebVR_API) controller.
+- [`GamepadPose`](/en-US/docs/Web/API/GamepadPose)
+  - : Represents the pose of a controller (e.g. position and orientation in 3D space) in the case of a [WebVR](/en-US/docs/Web/API/WebVR_API) controller. This is _not_ used by the newer [WebXR](/en-US/docs/Web/API/WebXR_Device_API) standard.
 
-다음 정보를엑세스할 수 있는 [게임패드 인터페이스 확장기능](/ko/docs/Web/API/Gamepad#Experimental_extensions_to_Gamepad) 더보기
+See also the [extensions to the Gamepad interface](/en-US/docs/Web/API/Gamepad#experimental_extensions_to_gamepad), for features that allow you to access the above information.
 
-### 다른 인터페이스로 확장
+### Extensions to other interfaces
 
 #### Navigator
 
@@ -34,25 +36,25 @@ slug: Web/API/Gamepad_API
 
 #### Window events
 
-- {{domxref("Window.ongamepadconnected")}}
-  - : Represents an event handler that will run when a gamepad is connected (when the {{event('gamepadconnected')}} event fires).
-- {{domxref("Window.ongamepaddisconnected")}}
-  - : Represents an event handler that will run when a gamepad is disconnected (when the {{event('gamepaddisconnected')}} event fires).
+- {{domxref("Window.gamepadconnected_event", "gamepadconnected")}}
+  - : An event that will fire when a gamepad is connected.
+- {{domxref("Window.gamepaddisconnected_event", "gamepaddisconnected")}}
+  - : An event that will fire when a gamepad is disconnected.
 
-## 튜토리얼과 가이드
+## Tutorials and guides
 
-- [Using the Gamepad API](/ko/docs/Web/API/Gamepad_API/Using_the_Gamepad_API)
-- [Implementing controls using the Gamepad API](/ko/docs/Games/Techniques/Controls_Gamepad_API)
+- [Using the Gamepad API](/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API)
+- [Implementing controls using the Gamepad API](/en-US/docs/Games/Techniques/Controls_Gamepad_API)
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 더보기
+## See also
 
 - [The Gamepad API](https://hacks.mozilla.org/2013/12/the-gamepad-api/) by Ted Mielczarek and Robert Nyman
-- [Simple API demo page](http://luser.github.io/gamepadtest/) ([source](https://github.com/luser/gamepadtest))
+- [Simple API demo page](https://luser.github.io/gamepadtest/) ([source](https://github.com/luser/gamepadtest))

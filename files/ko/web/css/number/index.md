@@ -1,51 +1,54 @@
 ---
 title: <number>
 slug: Web/CSS/number
+page-type: css-type
+browser-compat: css.types.number
 ---
+
 {{CSSRef}}
 
-**`<number>`** [CSS](/ko/docs/Web/CSS) [자료형](/ko/docs/Web/CSS/CSS_Types)은 숫자, 즉 정수 또는 실수를 표현합니다.
+The **`<number>`** [CSS](/en-US/docs/Web/CSS) [data type](/en-US/docs/Web/CSS/CSS_Types) represents a number, being either an integer or a number with a fractional component.
 
-## 구문
+## Syntax
 
-`<number>` 구문은 {{cssxref("&lt;integer&gt;")}} 구문을 확장합니다. 소수점 이하 값은 `.` 뒤로 한 개 이상의 10진수 숫자를 붙여 표현하며, 정수 뒤에 이어 붙일 수 있습니다. 따로 연관지어야 하는 단위는 없습니다.
+The syntax of `<number>` extends the syntax of {{CSSxRef("&lt;integer&gt;")}}. A fractional value is represented by a `.` followed by one or more decimal digits, and may be appended to an integer. There is no unit associated with numbers.
 
-## 보간
+## Interpolation
 
-애니메이션에서 `<number>` 자료형의 값은 유동소수점 실수를 사용해 보간합니다. 보간의 속도는 애니메이션과 연결된 [timing function](/ko/docs/Web/CSS/single-transition-timing-function)이 결정합니다.
+When animated, values of the `<number>` CSS data type are interpolated as real, floating-point numbers. The speed of the interpolation is determined by the [timing function](/en-US/docs/Web/CSS/easing-function) associated with the animation.
 
-## 예제
+## Examples
 
-### 유효한 숫자
+### Valid numbers
 
-```plain
-12          <integer>는 <number>
-4.01        양의 실수
--456.8      음의 실수
-0.0         0
-+0.0        0, 양의 부호
--0.0        0, 음의 부호
-.60         앞의 0 없는 소수점 이하 값
-10e3        과학적 표기법
--3.4e-2     복잡한 과학적 표기법
+```plain example-good
+12          A raw <integer> is also a <number>.
+4.01        Positive fraction
+-456.8      Negative fraction
+0.0         Zero
++0.0        Zero, with a leading +
+-0.0        Zero, with a leading -
+.60         Fractional number without a leading zero
+10e3        Scientific notation
+-3.4e-2     Complicated scientific notation
 ```
 
-### 유효하지 않은 숫자
+### Invalid numbers
 
-```plain
-12.         소수점 뒤에 최소 하나의 숫자가 존재해야 함
-+-12.2      하나의 +/-만 허용
-12.1.1      하나의 소수점만 허용
+```plain example-bad
+12.         Decimal points must be followed by at least one digit.
++-12.2      Only one leading +/- is allowed.
+12.1.1      Only one decimal point is allowed.
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{cssxref("&lt;integer&gt;")}}
+- {{CSSxRef("&lt;integer&gt;")}}

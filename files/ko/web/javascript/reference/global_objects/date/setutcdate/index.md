@@ -1,57 +1,59 @@
 ---
 title: Date.prototype.setUTCDate()
 slug: Web/JavaScript/Reference/Global_Objects/Date/setUTCDate
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.setUTCDate
 ---
 
 {{JSRef}}
 
-**`setUTCDate()`** 메서드는 UTC 시간을 기준으로 지정된 {{jsxref("Date")}} 인스턴스의 날짜를 변경합니다.
+The **`setUTCDate()`** method changes the day of the month of a given {{jsxref("Date")}} instance, based on UTC time.
 
-표준시 대신 현지 시간을 기준으로 하는 {{jsxref("Date")}} 인스턴스의 날짜를 변경하려면 {{jsxref("Date.prototype.setDate", "setDate()")}} 메소드를 사용하세요.
+To instead change the day of the month for a given {{jsxref("Date")}} instance based on local time, use the {{jsxref("Date.prototype.setDate()", "setDate()")}} method.
 
 {{EmbedInteractiveExample("pages/js/date-setutcdate.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 setUTCDate(dayValue)
 ```
 
-### 매개변수
+### Parameters
 
 - `dayValue`
-  - : 한 달의 날짜를 나타내는 1에서 31 사이의 정수입니다.
+  - : An integer from 1 to 31, representing the day of the month.
 
-### 반환 값
+### Return value
 
-1970년 1월 1일 00:00:00 UTC와 업데이트 된 날짜 사이의 밀리 초 숫자입니다.
+The number of milliseconds between 1 January 1970 00:00:00 UTC and the updated date.
 
-## 설명
+## Description
 
-`dayValue`가 해당 월의 날짜 값 범위를 벗어나면 `setDate()`는 그에 맞춰 {{jsxref("Date")}} 객체를 업데이트합니다.
+If the `dayValue` is outside of the range of date values for the month, `setDate()` will update the {{jsxref("Date")}} object accordingly.
 
-예를 들어 `dayValue`에 0을 입력하면 날짜는 전월 말일로 설정됩니다. `dayValue`에 40을 사용하고 {{jsxref("Date")}} 객체에 저장된 월이 6월이면 날짜는 10으로 변경되고 월은 7월로 증가합니다.
+For example, if 0 is provided for `dayValue`, the date will be set to the last day of the previous month. If you use 40 for `dayValue`, and the month stored in the {{jsxref("Date")}} object is June, the day will be changed to 10 and the month will be incremented to July.
 
-`dayValue`에 음수를 입력하면 전월 말일부터 역순으로 날짜가 설정됩니다. -1을 사용하면 날짜가 이전 달의 마지막 날 1일로 설정됩니다.
+If a negative number is provided for `dayValue`, the date will be set counting backwards from the last day of the previous month. -1 would result in the date being set to 1 day before the last day of the previous month.
 
-## 예제
+## Examples
 
-### `setUTCDate()` 사용하기
+### Using setUTCDate()
 
 ```js
-var theBigDay = new Date();
+const theBigDay = new Date();
 theBigDay.setUTCDate(20);
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Date.prototype.getUTCDate()")}}
 - {{jsxref("Date.prototype.setDate()")}}

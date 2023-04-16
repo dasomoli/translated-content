@@ -1,20 +1,22 @@
 ---
 title: outline-style
 slug: Web/CSS/outline-style
+page-type: css-property
+browser-compat: css.properties.outline-style
 ---
 
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`outline-style`** 속성은 요소 외곽선의 스타일을 설정합니다. 외곽선은 요소의 [테두리](/ko/docs/Web/CSS/border) 바깥에 그려지는 선입니다.
+The **`outline-style`** [CSS](/en-US/docs/Web/CSS) property sets the style of an element's outline. An outline is a line that is drawn around an element, outside the {{cssxref("border")}}.
 
 {{EmbedInteractiveExample("pages/css/outline-style.html")}}
 
-외곽선 외형을 설정할 땐 {{cssxref("outline")}} 단축 속성을 사용하는게 편리한 상황이 많습니다.
+It is often more convenient to use the shorthand property {{cssxref("outline")}} when defining the appearance of an outline.
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
 outline-style: auto;
 outline-style: none;
 outline-style: dotted;
@@ -26,50 +28,52 @@ outline-style: ridge;
 outline-style: inset;
 outline-style: outset;
 
-/* 전역 값 */
+/* Global values */
 outline-style: inherit;
 outline-style: initial;
+outline-style: revert;
+outline-style: revert-layer;
 outline-style: unset;
 ```
 
-`outline-style` 속성은 다음 값 중 하나를 사용해 지정합니다.
+The `outline-style` property is specified as any one of the values listed below.
 
-### 값
+### Values
 
 - `auto`
-  - : 사용자 에이전트가 사용자 지정 외곽선을 그릴 수 있도록 허용합니다.
+  - : Permits the user agent to render a custom outline style.
 - `none`
-  - : 외곽선을 제거합니다. {{cssxref("outline-width")}}가 `0`입니다.
+  - : No outline is used. The {{cssxref("outline-width")}} is `0`.
 - `dotted`
-  - : 외곽선을 점 여러 개로 그립니다.
+  - : The outline is a series of dots.
 - `dashed`
-  - : 외곽선을 짧은 선 여러 개로 그립니다.
+  - : The outline is a series of short line segments.
 - `solid`
-  - : 외곽선을 하나의 선으로 그립니다.
+  - : The outline is a single line.
 - `double`
-  - : 외곽선을 두 개의 선으로 그립니다. {{cssxref("outline-width")}}는 두 선과 그 사이의 간격을 합친 값입니다.
+  - : The outline is two single lines. The {{cssxref("outline-width")}} is the sum of the two lines and the space between them.
 - `groove`
-  - : 외곽선을 마치 파낸 것처럼 그립니다.
+  - : The outline looks as though it were carved into the page.
 - `ridge`
-  - : `groove`의 반대입니다. 외곽선을 마치 튀어나온 것처럼 그립니다.
+  - : The opposite of `groove`: the outline looks as though it were extruded from the page.
 - `inset`
-  - : 요소가 페이지 안에 박힌 것처럼 외곽선을 그립니다.
+  - : The outline makes the box look as though it were embedded in the page.
 - `outset`
-  - : `inset`의 반대입니다. 요소가 페이지 밖으로 나온 것처럼 그립니다.
+  - : The opposite of `inset`: the outline makes the box look as though it were coming out of the page.
 
-## 형식 정의
+## Formal definition
 
 {{cssinfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 외곽선 스타일을 `auto`로 설정하기
+### Setting outline style to auto
 
-`auto` 값은 사용자 지정 스타일을 의미합니다. "일반적으로 플랫폼 기본 사용자 인터페이스 스타일이거나, CSS에서 나타낼 수 있는 것보다 더 풍부한 스타일 (예컨대 둥근 꼭짓점에 바깥쪽 픽셀은 반투명하여 빛나는 것처럼 보이는 외곽선)입니다."
+The `auto` value indicates a custom outline style, described in [the specification](https://www.w3.org/TR/css-ui-3/#outline-style) as "typically a style \[that] is either a user interface default for the platform, or perhaps a style that is richer than can be described in detail in CSS, e.g. a rounded edge outline with semi-translucent outer pixels that appears to glow".
 
 #### HTML
 
@@ -87,14 +91,17 @@ outline-style: unset;
 }
 
 /* To make the Demo clearer */
-* { outline-width: 10px; padding: 15px; }
+* {
+  outline-width: 10px;
+  padding: 15px;
+}
 ```
 
-#### 결과
+#### Result
 
-{{ EmbedLiveSample('외곽선_스타일을_auto로_설정하기') }}
+{{ EmbedLiveSample('Setting_outline_style_to_auto') }}
 
-### 외곽선 스타일을 `dashed`, `dotted`로 설정하기
+### Setting outline style to dashed and dotted
 
 #### HTML
 
@@ -117,14 +124,17 @@ outline-style: unset;
 }
 
 /* To make the Demo clearer */
-* { outline-width: 10px; padding: 15px; }
+* {
+  outline-width: 10px;
+  padding: 15px;
+}
 ```
 
-#### 결과
+#### Result
 
-{{ EmbedLiveSample('외곽선_스타일을_dashed_dotted로_설정하기') }}
+{{ EmbedLiveSample('Setting_outline_style_to_dashed_and_dotted') }}
 
-### 외곽선 스타일을 `solid`, `double`로 설정하기
+### Setting outline style to solid and double
 
 #### HTML
 
@@ -147,14 +157,17 @@ outline-style: unset;
 }
 
 /* To make the Demo clearer */
-* { outline-width: 10px; padding: 15px; }
+* {
+  outline-width: 10px;
+  padding: 15px;
+}
 ```
 
-#### 결과
+#### Result
 
-{{ EmbedLiveSample('외곽선_스타일을_solid_double로_설정하기') }}
+{{ EmbedLiveSample('Setting_outline_style_to_solid_and_double') }}
 
-### 외곽선 스타일을 `groove`, `ridge`로 설정하기
+### Setting outline style to groove and ridge
 
 #### HTML
 
@@ -177,14 +190,17 @@ outline-style: unset;
 }
 
 /* To make the Demo clearer */
-* { outline-width: 10px; padding: 15px; }
+* {
+  outline-width: 10px;
+  padding: 15px;
+}
 ```
 
-#### 결과
+#### Result
 
-{{ EmbedLiveSample('외곽선_스타일을_groove_ridge로_설정하기') }}
+{{ EmbedLiveSample('Setting_outline_style_to_groove_and_ridge') }}
 
-### 외곽선 스타일을 inset, outset으로 설정하기
+### Setting outline style to inset and outset
 
 #### HTML
 
@@ -207,17 +223,26 @@ outline-style: unset;
 }
 
 /* To make the Demo clearer */
-* { outline-width: 10px; padding: 15px; }
+* {
+  outline-width: 10px;
+  padding: 15px;
+}
 ```
 
-#### 결과
+#### Result
 
-{{ EmbedLiveSample('외곽선_스타일을_inset_outset으로_설정하기') }}
+{{ EmbedLiveSample('Setting_outline_style_to_inset_and_outset') }}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- {{cssxref("outline")}}
+- {{cssxref("outline-color")}}
+- {{cssxref("outline-width")}}

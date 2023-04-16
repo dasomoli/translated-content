@@ -1,19 +1,25 @@
 ---
-title: 문서 객체 모델(DOM)
+title: Document Object Model (DOM)
 slug: Web/API/Document_Object_Model
+page-type: web-api-overview
+spec-urls: https://dom.spec.whatwg.org/
 ---
+
 {{DefaultAPISidebar("DOM")}}
 
-**문서 객체 모델**(**DOM**)은 메모리에 웹 페이지 문서 구조를 표현함으로써 스크립트 및 프로그래밍 언어와 페이지를 연결합니다. 이때 스크립트는 주로 JavaScript를 의미하나 HTML, SVG, XML 객체를 문서로 모델링 하는 것은 JavaScript 언어의 일부가 아닙니다.
+The **Document Object Model** (**DOM**) connects web pages to scripts or programming languages by representing the structure of a document—such as the HTML representing a web page—in memory. Usually it refers to JavaScript, even though modeling HTML, SVG, or XML documents as objects are not part of the core JavaScript language.
 
-DOM은 문서를 논리 트리로 표현합니다. 트리의 각 브랜치는 노드에서 끝나며, 각 노드는 객체를 갖습니다. DOM 메서드를 사용하면 프로그래밍적으로 트리에 접근할 수 있습니다. 이를 통해 문서의 구조, 스타일, 콘텐츠를 변경할 수 있습니다.
+The DOM represents a document with a logical tree. Each branch of the tree ends in a node, and each node contains objects. DOM methods allow programmatic access to the tree. With them, you can change the document's structure, style, or content.
 
-노드는 이벤트 처리기도 포함할 수 있습니다. 이벤트가 발생한 순간, 해당 이벤트와 연결한 처리기가 발동합니다.
+Nodes can also have event handlers attached to them. Once an event is triggered, the event handlers get executed.
 
-> **참고:** **더 알아보려면:** [DOM 소개](/ko/docs/Web/API/Document_Object_Model/%EC%86%8C%EA%B0%9C) 문서를 방문해보세요.
+To learn more about what the DOM is and how it represents documents, see our article [Introduction to the DOM](/en-US/docs/Web/API/Document_Object_Model/Introduction).
 
-## DOM 인터페이스
+## DOM interfaces
 
+- {{DOMxRef("AbortController")}}
+- {{DOMxRef("AbortSignal")}}
+- {{DOMxRef("AbstractRange")}}
 - {{DOMxRef("Attr")}}
 - {{DOMxRef("CDATASection")}}
 - {{DOMxRef("CharacterData")}}
@@ -25,8 +31,10 @@ DOM은 문서를 논리 트리로 표현합니다. 트리의 각 브랜치는 �
 - {{DOMxRef("DOMError")}} {{Deprecated_Inline}}
 - {{DOMxRef("DOMException")}}
 - {{DOMxRef("DOMImplementation")}}
-- {{DOMxRef("DOMTimeStamp")}}
-- {{DOMxRef("DOMStringList")}}
+- {{DOMxRef("DOMParser")}}
+- {{DOMxRef("DOMPoint")}}
+- {{DOMxRef("DOMPointReadOnly")}}
+- {{DOMxRef("DOMRect")}}
 - {{DOMxRef("DOMTokenList")}}
 - {{DOMxRef("Element")}}
 - {{DOMxRef("Event")}}
@@ -41,19 +49,17 @@ DOM은 문서를 논리 트리로 표현합니다. 트리의 각 브랜치는 �
 - {{DOMxRef("NodeList")}}
 - {{DOMxRef("ProcessingInstruction")}}
 - {{DOMxRef("Range")}}
+- {{DOMxRef("StaticRange")}}
 - {{DOMxRef("Text")}}
-- {{DOMxRef("TextDecoder")}} {{Experimental_Inline}}
-- {{DOMxRef("TextEncoder")}} {{Experimental_Inline}}
+- {{DOMxRef("TextDecoder")}}
+- {{DOMxRef("TextEncoder")}}
 - {{DOMxRef("TimeRanges")}}
 - {{DOMxRef("TreeWalker")}}
-- {{DOMxRef("URL")}}
-- {{DOMxRef("Window")}}
-- {{DOMxRef("Worker")}}
-- {{DOMxRef("XMLDocument")}} {{Experimental_Inline}}
+- {{DOMxRef("XMLDocument")}}
 
-### 더 이상 사용하지 않는 DOM 인터페이스
+### Obsolete DOM interfaces
 
-문서객체모델 매우 단순하게 변하고 있습니다. 이를 위해 다른 DOM 레벨 3 혹은 이전 사양에 있었던 아래의 인터페이스들을 제거했습니다. 향후에 이 중 일부가 다시 도입될 지는 확실하지 않지만 당분간은 모두 폐기된 것으로 간주하고 사용을 피해야 합니다.
+The Document Object Model has been highly simplified. To achieve this, the following interfaces present in the different DOM level 3 or earlier specifications have been removed. It is uncertain whether some may be reintroduced in the future or not, but for the time being they should be considered obsolete and should be avoided:
 
 - `DOMConfiguration`
 - `DOMErrorHandler`
@@ -74,15 +80,13 @@ DOM은 문서를 논리 트리로 표현합니다. 트리의 각 브랜치는 �
 
 ## HTML DOM
 
-문서는 다양한 HTML 관련 기능들을 포함하는 HTML 명세에 의해 확장된 {{DOMxRef("Document")}} 을 사용해 설명된 HTML 을 포함합니다.
+A document containing HTML is described using the {{DOMxRef("Document")}} interface, which is extended by the HTML specification to include various HTML-specific features. In particular, the {{domxref("Element")}} interface is enhanced to become {{domxref("HTMLElement")}} and various subclasses, each representing one of (or a family of closely related) elements.
 
-HTML 객체는 또한 {{DOMxRef("Window")}} 인터페이스, 이에 관련된 {{DOMxRef("window.style", "Style")}}(보통 CSS), 컨텍스트에 관련된 브라우저의 히스토리인 {{DOMxRef("window.history", "History")}} 를 사용해 페이지가 그려지는 탭이나 창과 같은 브라우저의 다양한 기능들에 접근할 수 있게 해줍니다. 마지막에는, 문서의 {{DOMxRef("Selection")}} 이 완료됩니다.
+The HTML DOM API provides access to various browser features such as tabs and windows, CSS styles and stylesheets, browser history, and so forth. These interfaces are discussed further in [the HTML DOM API](/en-US/docs/Web/API/HTML_DOM_API) documentation.
 
-자세한 내용은 [HTML DOM API](/ko/docs/Web/API/HTML_DOM) 문서를 참고하세요.
+## SVG interfaces
 
-## SVG 인터페이스
-
-### SVG 요소 인터페이스
+### SVG element interfaces
 
 - {{DOMxRef("SVGAElement")}}
 - {{DOMxRef("SVGAltGlyphElement")}} {{Deprecated_Inline}}
@@ -176,11 +180,11 @@ HTML 객체는 또한 {{DOMxRef("Window")}} 인터페이스, 이에 관련된 {{
 - {{DOMxRef("SVGViewElement")}}
 - {{DOMxRef("SVGVKernElement")}} {{Deprecated_Inline}}
 
-### SVG 데이터 타입 인터페이스
+### SVG data type interfaces
 
-다음은 SVG 프로퍼티와 어트리뷰트 정의에 쓰이는 데이터 타입을 위한 DOM API입니다.
+Here are the DOM APIs for data types used in the definitions of SVG properties and attributes.
 
-#### 정적 타입
+#### Static type
 
 - {{DOMxRef("SVGAngle")}}
 - {{DOMxRef("SVGColor")}} {{Deprecated_Inline}}
@@ -189,7 +193,6 @@ HTML 객체는 또한 {{DOMxRef("Window")}} 인터페이스, 이에 관련된 {{
 - {{DOMxRef("SVGElementInstanceList")}}
 - {{DOMxRef("SVGLength")}}
 - {{DOMxRef("SVGLengthList")}}
-- {{DOMxRef("SVGMatrix")}} {{Deprecated_Inline}}
 - {{DOMxRef("SVGNameList")}}
 - {{DOMxRef("SVGNumber")}}
 - {{DOMxRef("SVGNumberList")}}
@@ -223,7 +226,7 @@ HTML 객체는 또한 {{DOMxRef("Window")}} 인터페이스, 이에 관련된 {{
 - {{DOMxRef("SVGTransform")}}
 - {{DOMxRef("SVGTransformList")}}
 
-#### 움직이는(animated) 형
+#### Animated type
 
 - {{DOMxRef("SVGAnimatedAngle")}}
 - {{DOMxRef("SVGAnimatedBoolean")}}
@@ -240,12 +243,12 @@ HTML 객체는 또한 {{DOMxRef("Window")}} 인터페이스, 이에 관련된 {{
 - {{DOMxRef("SVGAnimatedString")}}
 - {{DOMxRef("SVGAnimatedTransformList")}}
 
-### SMIL 관련 인터페이스
+### SMIL-related interfaces
 
 - {{DOMxRef("ElementTimeControl")}}
 - {{DOMxRef("TimeEvent")}}
 
-### 기타 SVG 인터페이스
+### Other SVG interfaces
 
 - {{DOMxRef("GetSVGDocument")}}
 - {{DOMxRef("ShadowAnimation")}}
@@ -261,11 +264,11 @@ HTML 객체는 또한 {{DOMxRef("Window")}} 인터페이스, 이에 관련된 {{
 - {{DOMxRef("SVGViewSpec")}} {{Deprecated_Inline}}
 - {{DOMxRef("SVGZoomEvent")}} {{Deprecated_Inline}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 같이 보기
+## See also
 
-- [DOM 예제](/ko/docs/Web/API/Document_Object_Model/Examples)
-- [CSS 객체 모델 (CSSOM)](/ko/docs/Web/API/CSS_Object_Model)
+- [DOM Examples](/en-US/docs/Web/API/Document_Object_Model/Examples)
+- [CSS Object Model (CSSOM)](/en-US/docs/Web/API/CSS_Object_Model)

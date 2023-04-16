@@ -1,24 +1,30 @@
 ---
-title: XSLT
+title: "XSLT: Extensible Stylesheet Language Transformations"
 slug: Web/XSLT
 ---
 
-**Extensible Stylesheet Language Transformations** (**XSLT**)는 전문 처리 소프트웨어와 함께 XML 문서 변환에 쓰이는 [XML](/ko/XML)에 기반을 둔 언어입니다. 비록 그 처리가 "변환"으로 되어 있더라도, 원 문서는 바뀌지 않습니다. 오히려, 새 XML 문서는 기존 문서의 컨텐트에 바탕을 두고 만듭니다. 그러므로, 새 문서를 표준 XML 문법이나 다른 형식([HTML](/ko/HTML)이나 순수 텍스트 같은)으로 처리기가 결과를 직렬(출력)할 수도 있습니다. XSLT는 다른 XML 스키마 사이에 데이터를 바꾸거나 XML 데이터를 웹 페이지나 PDF 문서로 바꾸는데 가장 자주 쓰입니다.
+{{XSLTRef}}
+
+**Extensible Stylesheet Language Transformations (XSLT)** is an [XML](/en-US/docs/Web/XML/XML_introduction)-based language used, in conjunction with specialized processing software, for the transformation of XML documents.
+
+Although the process is referred to as "transformation," the original document is not changed; rather, a new XML document is created based on the content of an existing document. Then, the new document may be serialized (output) by the processor in standard XML syntax or in another format, such as [HTML](/en-US/docs/Web/HTML) or plain text.
+
+XSLT is most often used to convert data between different XML schemas or to convert XML data into web pages or PDF documents.
 
 ## Documentation
 
 - [XSLT Element Reference](/en-US/docs/Web/XSLT/Element)
   - : Reference.
 - [Transforming XML with XSLT](/en-US/docs/Web/XSLT/Transforming_XML_with_XSLT)
-  - : XSLT는 스타일시트 만든 이가 그러길 바란다면 컨텐트를 모조리 다시 정리하고 다른 형식으로 변환하는 것을 포함하는 컨텐트 조작(manipulating)과 정렬이라는 중요한 두 방식으로 본래 XML 문서를 변환하게 합니다.
+  - : XSLT allows a stylesheet author to transform a primary XML document in two significant ways: manipulating and sorting the content, including a wholesale reordering of it if so desired, and transforming the content into a different format.
 - [Using the Mozilla JavaScript interface to XSL Transformations](/en-US/docs/Web/XSLT/Using_the_Mozilla_JavaScript_interface_to_XSL_Transformations)
-  - : 이 문서는 Mozilla 1.2의 자바스크립트 인터페이스와 XSLT 처리 엔진까지 설명합니다.
+  - : This document describes the JavaScript interface to the XSLT processing engine in Mozilla 1.2 and up.
 - [Specifying parameters using processing instructions](/en-US/docs/Web/XSLT/PI_Parameters)
   - : Firefox allows stylesheet parameters to be specified when using the `<?xml-stylesheet?>` processing instruction. This is done using the `<?xslt-param?>` PI described in this document.
 - [XSLT Tutorial](https://www.w3schools.com/xml/xsl_intro.asp)
-  - : 이 [W3Schools](http://www.w3schools.com) 입문서는 읽는 이에게 XML 문서를 XHTML같은 다른 형식으로 변환하기 위해 어떻게 XSLT를 사용하는지를 가르칩니다.
+  - : This [W3Schools](https://www.w3schools.com) tutorial teaches the reader how to use XSLT to transform XML documents into other formats, like XHTML.
 - [What is XSLT?](https://www.xml.com/pub/a/2000/08/holman/)
-  - : XSLT와 XPath에 대한 이 방대한 해설은 두 기술에 대한 지식이 없다고 가정하고, 배경, 문맥, 구조, 개념, 입문 용어를 통해 읽는 이를 이끕니다.
+  - : This extensive introduction to XSLT and XPath assumes no prior knowledge of the technologies and guides the reader through background, context, structure, concepts and introductory terminology.
 - [Common XSLT Errors](/en-US/docs/Web/XSLT/Common_errors)
   - : This article lists some common problems using XSLT in Firefox.
 

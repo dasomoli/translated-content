@@ -1,45 +1,52 @@
 ---
-title: URLSearchParams.set()
+title: "URLSearchParams: set() method"
+short-title: set()
 slug: Web/API/URLSearchParams/set
+page-type: web-api-instance-method
+browser-compat: api.URLSearchParams.set
 ---
+
 {{ApiRef("URL API")}}
 
-{{domxref("URLSearchParams")}} 인터페이스의 **`set()`** 메서드는 주어진 검색 매개변수의 값을 지정한 값으로 설정합니다. 만약 해당 검색 매개변수에 연관된 값이 여러 개라면, 설정한 값을 제외한 나머지는 모두 제거됩니다. 반대로 검색 매개변수가 존재하지 않으면 새로 생성합니다.
+The **`set()`** method of the {{domxref("URLSearchParams")}}
+interface sets the value associated with a given search parameter to the given value.
+If there were several matching values, this method deletes the others. If the search
+parameter doesn't exist, this method creates it.
 
 {{availableinworkers}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 set(name, value)
 ```
 
-### 매개변수
+### Parameters
 
 - `name`
-  - : 설정할 매개변수의 이름입니다.
+  - : The name of the parameter to set.
 - `value`
-  - : 설정할 매개변수의 값입니다.
+  - : The value of the parameter to set.
 
-### 반환 값
+### Return value
 
-없음 ({{jsxref("undefined")}}).
+None ({{jsxref("undefined")}}).
 
-## 예제
+## Examples
 
 ```js
-let url = new URL('https://example.com?foo=1&bar=2');
+let url = new URL("https://example.com?foo=1&bar=2");
 let params = new URLSearchParams(url.search);
 
-// 세 번째 매개변수 추가
-params.set('baz', 3);
+// Add a third parameter.
+params.set("baz", 3);
 params.toString(); // "foo=1&bar=2&baz=3"
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

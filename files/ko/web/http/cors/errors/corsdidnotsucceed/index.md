@@ -1,22 +1,40 @@
 ---
-title: 'Reason: CORS request did not succeed'
+title: "Reason: CORS request did not succeed"
 slug: Web/HTTP/CORS/Errors/CORSDidNotSucceed
+page-type: http-cors-error
 ---
 
 {{HTTPSidebar}}
 
-## 원인
+## Reason
 
+```plain
+Reason: CORS request did not succeed
 ```
-원인: CORS 요청이 성공하지 못했습니다.
-```
 
-## 무엇이 문제인가요?
+## What went wrong?
 
-네트워크 또는 프로토콜 수준에서 HTTP 연결이 실패했기 때문에 CORS를 사용하는 {{Glossary("HTTP")}} 요청이 실패했습니다. 이 에러는 근본적인 네트워크 에러이거나 그에 준하는 에러로 CORS와 직접적인 연관이 있는 것은 아닙니다.
+The {{Glossary("HTTP")}} request which makes use of CORS failed because the HTTP
+connection failed at either the network or protocol level. The error is not directly
+related to CORS, but is a fundamental network error of some kind.
 
-## 더 보기
+In many cases, it is caused by a browser plugin (e.g. an ad blocker or privacy
+protector) blocking the request.
 
-- [CORS 에러](/ko/docs/Web/HTTP/CORS/Errors)
+Other possible causes include:
+
+- Trying to access an `https` resource that has an invalid certificate will
+  cause this error.
+- Trying to access an `http` resource from a page with an
+  `https` origin will also cause this error.
+- As of Firefox 68, `https` pages are not permitted to access
+  `http://localhost`, although this may be changed by [Bug 1488740](https://bugzil.la/1488740).
+- The server did not respond to the actual request (even if it responded to the
+  {{Glossary("Preflight request")}}). One scenario might be an HTTP service being
+  developed that panicked without returning any data.
+
+## See also
+
+- [CORS errors](/en-US/docs/Web/HTTP/CORS/Errors)
 - Glossary: {{Glossary("CORS")}}
-- [CORS 소개](/ko/docs/Web/HTTP/CORS)
+- [CORS introduction](/en-US/docs/Web/HTTP/CORS)

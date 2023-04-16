@@ -1,59 +1,104 @@
 ---
 title: String.fromCharCode()
 slug: Web/JavaScript/Reference/Global_Objects/String/fromCharCode
+page-type: javascript-static-method
+browser-compat: javascript.builtins.String.fromCharCode
 ---
+
 {{JSRef}}
 
-**`String.fromCharCode()`** 메서드는 UTF-16 코드 유닛의 시퀀스로부터 문자열을 생성해 반환합니다.
+The **`String.fromCharCode()`** static method returns a string
+created from the specified sequence of UTF-16 code units.
 
-{{EmbedInteractiveExample("pages/js/string-fromcharcode.html")}}
+{{EmbedInteractiveExample("pages/js/string-fromcharcode.html","shorter")}}
 
-## 구문
+## Syntax
 
-```js
-String.fromCharCode(num1[, ...[, numN]])
+```js-nolint
+String.fromCharCode(num1)
+String.fromCharCode(num1, num2)
+String.fromCharCode(num1, num2, /* …, */ numN)
 ```
 
-### 매개변수
+### Parameters
 
 - `num1, ..., numN`
-  - : UTF-16 코드 유닛인 숫자 뭉치. 가능한 값의 범위는 0부터 65535(0xFFFF)까지입니다. 0xFFFF를 초과하는 값은 잘립니다. 유효성 검사는 하지 않습니다.
+  - : A sequence of numbers that are UTF-16 code units. The range is between
+    `0` and `65535` (`0xFFFF`). Numbers greater than
+    `0xFFFF` are truncated. No validity checks are performed.
 
-### 반환 값
+### Return value
 
-주어진 UTF-16 코드 유닛 N개로 이루어진 문자열.
+A string of length `N` consisting of the
+`N` specified UTF-16 code units.
 
-## 설명
+## Description
 
-이 메서드는 {{jsxref("String")}} 객체가 아닌 문자열을 반환합니다.
+This method returns a string and not a {{jsxref("String")}} object.
 
-`fromCharCode()`는 {{jsxref("String")}}의 정적 메서드이기 때문에 `String.fromCharCode()`로 사용해야 합니다.
+Because `fromCharCode()` is a static method of {{jsxref("String")}}, you
+always use it as `String.fromCharCode()`, rather than as a method of a
+{{jsxref("String")}} object you created.
 
-## 예제
+### Returning supplementary characters
 
-### `fromCharCode()` 사용하기
+In UTF-16, the most common characters can be represented by a single 16-bit value (i.e.
+a code unit). However, this set of characters, known as the Base Multilingual Plane
+(BMP), is only 1/17th of the total addressable Unicode
+code points. The remaining code points, in the range of `65536`
+(`0x010000`) to `1114111` (`0x10FFFF`) are known as
+supplementary characters. In UTF-16, supplementary characters are represented by two
+16-bit code units, known as surrogates, that were reserved for this purpose. A valid
+combination of two surrogates used to represent a supplementary character is known as a
+surrogate pair.
 
-다음 예제는 문자열 `"ABC"`를 반환합니다..
+Because `fromCharCode()` only works with 16-bit values (same as the
+`\u` escape sequence), a surrogate pair is required in order to return a
+supplementary character. For example, both
+`String.fromCharCode(0xD83C, 0xDF03)` and `\uD83C\uDF03` return
+code point `U+1F303` "Night with Stars".
+
+While there is a mathematical relationship between the supplementary code point value
+(e.g. `0x1F303`) and both surrogate values that represent it
+(e.g., `0xD83C` and `0xDF03`), it does require an extra step to
+either calculate or look up the surrogate pair values every time a supplementary code
+point is to be used. For this reason, it's more convenient to use
+{{jsxref("String.fromCodePoint()")}}, which allows for
+returning supplementary characters based on their actual code point value. For example,
+`String.fromCodePoint(0x1F303)` returns code point `U+1F303`
+"Night with Stars".
+
+## Examples
+
+### Using fromCharCode()
+
+BMP characters, in UTF-16, use a single code unit:
 
 ```js
-String.fromCharCode(65, 66, 67);  // "ABC"
-String.fromCharCode(0x2014)       // "—"
-String.fromCharCode(0x12014)      // 숫자 '1'은 무시해서 "—"
+String.fromCharCode(65, 66, 67); // returns "ABC"
+String.fromCharCode(0x2014); // returns "—"
+String.fromCharCode(0x12014); // also returns "—"; the digit 1 is truncated and ignored
+String.fromCharCode(8212); // also returns "—"; 8212 is the decimal form of 0x2014
 ```
 
-## 더 큰 값과 사용하기
+Supplementary characters, in UTF-16, require two code units (i.e. a surrogate pair):
 
-초기 JavaScript 표준화 과정에서 예상했던 것처럼, 대부분의 흔한 유니코드 값을 16비트 숫자로 표현할 수 있고, `fromCharCode()`가 많은 흔한 값에서 하나의 문자를 반환할 수 있지만, **모든** 유효한 유니코드 값(최대 21비트)을 처리하려면 `fromCharCode()`만으로는 부족합니다. 높은 코드 포인트의 문자는 써로게이트 값 두 개를 합쳐 하나의 문자를 표현하므로,{{jsxref("String.fromCodePoint()")}}(ES2015 표준) 메서드는 그러한 쌍을 높은 값의 문자로 변환할 수 있습니다.
+```js
+String.fromCharCode(0xd83c, 0xdf03); // Code Point U+1F303 "Night with
+String.fromCharCode(55356, 57091); // Stars" === "\uD83C\uDF03"
 
-## 명세
+String.fromCharCode(0xd834, 0xdf06, 0x61, 0xd834, 0xdf07); // "\uD834\uDF06a\uD834\uDF07"
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("String.fromCodePoint()")}}
 - {{jsxref("String.prototype.charAt()")}}

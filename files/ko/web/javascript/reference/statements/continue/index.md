@@ -1,41 +1,47 @@
 ---
 title: continue
 slug: Web/JavaScript/Reference/Statements/continue
+page-type: javascript-statement
+browser-compat: javascript.statements.continue
 ---
 
 {{jsSidebar("Statements")}}
 
-**continue** 문은 현재 또는 레이블이 지정된 루프의 현재 반복에서 명령문의 실행을 종료하고 반복문의 처음으로 돌아가여 루프문의 다음 코드를 실행합니다.
+The **`continue`** statement terminates execution of the statements in the current iteration of the current or labeled loop, and continues execution of the loop with the next iteration.
 
 {{EmbedInteractiveExample("pages/js/statement-continue.html")}}
 
-## 구문
+## Syntax
 
-```js
-    continue [label];
+```js-nolint
+continue;
+continue label;
 ```
 
-- `label`
-  - : 명령문의 레이블과 연관된 식별자.
+- `label` {{optional_inline}}
+  - : Identifier associated with the label of the statement.
 
-## 설명
+## Description
 
-{{jsxref ( "Statements / break", "break")}} 문과 달리 `continue`는 루프의 실행을 완전히 종료하지 않고 `for`, `while`문에서 다음과 같이 동작합니다.
+In contrast to the {{jsxref("Statements/break", "break")}} statement, `continue` does not terminate the execution of the loop entirely, but instead:
 
-- {{jsxref ( "Statements / while", "while")}} 루프에서는 다시 조건으로 점프합니다.
-- {{jsxref ( "Statements / for", "for")}} 루프에서는 업데이트 표현식으로 점프합니다.
+- In a {{jsxref("Statements/while", "while")}} or {{jsxref("Statements/do...while", "do...while")}} loop, it jumps back to the condition.
+- In a {{jsxref("Statements/for", "for")}} loop, it jumps to the update expression.
+- In a {{jsxref("Statements/for...in", "for...in")}}, {{jsxref("Statements/for...of", "for...of")}}, or {{jsxref("Statements/for-await...of", "for await...of")}} loop, it jumps to the next iteration.
 
-`continue` 문에는 현재 루프 대신 레이블이 지정된 루프 문의 다음 반복으로 건너 뛰도록하는 선택적 레이블이 포함될 수 있습니다. 이 경우, `continue` 문은 이 레이블 된 명령문 내에 중첩되어야합니다.
+The `continue` statement can include an optional label that allows the program to jump to the next iteration of a labeled loop statement instead of the innermost loop. In this case, the `continue` statement needs to be nested within this labeled statement.
 
-## 예제
+A `continue` statement, with or without a following label, cannot be used at the top level of a script, module, function's body, or [static initialization block](/en-US/docs/Web/JavaScript/Reference/Classes/Static_initialization_blocks), even when the function or class is further contained within a loop.
 
-### Using `continue` with `while`
+## Examples
 
-다음 예제에서는 `i`의 값이 3일 때 실행되는 `continue`문을 포함하는 {{jsxref("Statements/while", "while")}}을 보여줍니다. 따라서 n은 1, 3, 7 및 12 값을 갖습니다.
+### Using continue with while
+
+The following example shows a {{jsxref("Statements/while", "while")}} loop that has a `continue` statement that executes when the value of `i` is 3. Thus, `n` takes on the values 1, 3, 7, and 12.
 
 ```js
-var i = 0;
-var n = 0;
+let i = 0;
+let n = 0;
 
 while (i < 5) {
   i++;
@@ -48,38 +54,35 @@ while (i < 5) {
 }
 ```
 
-### label과 함께 `continue` 사용하기
+### Using continue with a label
 
-다음 예제에서 `checkiandj`라는 문에는 `checkj`라는 문이 있습니다. `continue`가 발생하면 프로그램은 `checkj` 문의 맨 위에서 계속됩니다. `continue`가 발생할 때마다 `checkj`는 조건이 false를 반환 할 때까지 반복합니다. false가 리턴되면 나머지 `checkiandj` 문이 완료됩니다.
+In the following example, a statement labeled `checkIAndJ` contains a statement labeled `checkJ`. If `continue` is encountered, the program continues at the top of the `checkJ` statement. Each time `continue` is encountered, `checkJ` reiterates until its condition returns false. When false is returned, the remainder of the `checkIAndJ` statement is completed.
 
-`continue`에 `checkiandj` 레이블이 있으면이 프로그램은 `checkiandj` 문 맨 위에서 계속됩니다.
-
-See also {{jsxref("Statements/label", "label")}}.
+If `continue` had a label of `checkIAndJ`, the program would continue at the top of the `checkIAndJ` statement.
 
 ```js
-var i = 0;
-var j = 8;
+let i = 0;
+let j = 8;
 
-checkiandj: while (i < 4) {
-  console.log('i: ' + i);
+checkIAndJ: while (i < 4) {
+  console.log(`i: ${i}`);
   i += 1;
 
-  checkj: while (j > 4) {
-    console.log('j: ' + j);
+  checkJ: while (j > 4) {
+    console.log(`j: ${j}`);
     j -= 1;
 
-    if ((j % 2) == 0)
-      continue checkj;
-    console.log(j + ' is odd.');
+    if (j % 2 === 0) continue checkJ;
+    console.log(`${j} is odd.`);
   }
-  console.log('i = ' + i);
-  console.log('j = ' + j);
+  console.log(`i = ${i}`);
+  console.log(`j = ${j}`);
 }
 ```
 
-출력:
+Output:
 
-```js
+```
 i: 0
 
 // start checkj
@@ -107,15 +110,49 @@ i = 4
 j = 4
 ```
 
-## 명세서
+### Unsyntactic continue statements
+
+`continue` cannot be used within loops across function boundaries.
+
+```js
+for (let i = 0; i < 10; i++) {
+  (() => {
+    continue; // SyntaxError: Illegal continue statement: no surrounding iteration statement
+  })();
+}
+```
+
+When referencing a label, the labeled statement must contain the `continue` statement.
+
+```js
+label: for (let i = 0; i < 10; i++) {
+  console.log(i);
+}
+
+for (let i = 0; i < 10; i++) {
+  continue label; // SyntaxError: Undefined label 'label'
+}
+```
+
+The labeled statement must be a loop.
+
+```js
+label: {
+  for (let i = 0; i < 10; i++) {
+    continue label; // SyntaxError: Illegal continue statement: 'label' does not denote an iteration statement
+  }
+}
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 보기
+## See also
 
 - {{jsxref("Statements/break", "break")}}
-- {{jsxref("Statements/label", "label")}}
+- {{jsxref("Statements/label", "label", "", 1)}}

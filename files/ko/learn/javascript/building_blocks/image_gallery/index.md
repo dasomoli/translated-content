@@ -1,121 +1,130 @@
 ---
-title: 이미지 갤러리
+title: Image gallery
 slug: Learn/JavaScript/Building_blocks/Image_gallery
 ---
+
 {{LearnSidebar}}{{PreviousMenu("Learn/JavaScript/Building_blocks/Events", "Learn/JavaScript/Building_blocks")}}
 
-이제 우리는 JavaScript의 핵심적인 구성 요소를 살펴보았으므로, 우리는 반복문, 함수, 조건문, 그리고 이벤트에 대한 여러분의 이해를 시험할 것입니다. 많은 웹사이트들에서 보게 될 꽤 흔한 아이템인 — JavaScript를 이용하는 이미지 갤러리를 만듦으로써 말이죠.
+Now that we've looked at the fundamental building blocks of JavaScript, we'll test your knowledge of loops, functions, conditionals and events by getting you to build a fairly common item you'll see on a lot of websites — a JavaScript-powered image gallery.
 
-<table class="learn-box standard-table">
+<table>
   <tbody>
     <tr>
-      <th scope="row">필요한 사전 지식:</th>
+      <th scope="row">Prerequisites:</th>
       <td>
-        이 평가를 시도하기 전에 여러분은 이 모듈의 모든 문서를 독파해야만
-        합니다.
+        Before attempting this assessment you should have already worked through
+        all the articles in this module.
       </td>
     </tr>
     <tr>
-      <th scope="row">목표:</th>
+      <th scope="row">Objective:</th>
       <td>
-        JavaScript 반복문, 함수, 조건문, 그리고 이벤트에 대한 이해 시험하기.
+        To test comprehension of JavaScript loops, functions, conditionals, and
+        events.
       </td>
     </tr>
   </tbody>
 </table>
 
-## 시작점
+## Starting point
 
-이 평가를 시작하기 위해, 다음의 링크로 가서 예제에 대한 [ZIP 파일](https://github.com/mdn/learning-area/blob/master/javascript/building-blocks/gallery/gallery-start.zip?raw=true)을 다운로드하고, 압축을 해제한 후 진행하세요.
+To get this assessment started, you should go and [grab the ZIP](https://raw.githubusercontent.com/mdn/learning-area/main/javascript/building-blocks/gallery/gallery-start.zip) file for the example, unzip it somewhere on your computer, and do the exercise locally to begin with.
 
-그 대신에, [JSBin](https://jsbin.com/) 나 [Glitch](https://glitch.com/) 같은 사이트를 이용할 수 있습니다. HTML, CSS 그리고 JavaScript를 이 온라인 에디터 중 하나에 붙여넣기할 수 있습니다. 만약 온라인 에디터가 분리된 JavaScript/CSS 패널을 가지고 있지 않다면, 자유롭게 HTML 페이지 내부의 인라인 `<script>`/`<style>` 요소에 넣으세요.
+Alternatively, you could use a site like [JSBin](https://jsbin.com/) or [Glitch](https://glitch.com/) to do your assessment. You could paste the HTML, CSS and JavaScript into one of these online editors. If the online editor you are using doesn't have separate JavaScript/CSS panels, feel free to put them inline `<script>`/`<style>` elements inside the HTML page.
 
-> **참고:** 만약 막히면, 도움을 요청하세요 — 이 페이지 아래의 [Assessment or further help](#assessment_or_further_help) 섹션을 보세요.
+> **Note:** If you get stuck, then ask us for help — see the [Assessment or further help](#assessment_or_further_help) section at the bottom of this page.
 
-## 프로젝트 개요
+## Project brief
 
-여러분에게 몇몇 HTML, CSS 그리고 이미지 에셋(asset) 그리고 몇 줄의 JavaScript 코드가 제공되었습니다; 여러분은 이것을 작동하는 프로그램으로 만들기 위해 필수적인 JavaScript를 작성할 필요가 있습니다. HTML body는 다음과 같습니다:
+You have been provided with some HTML, CSS and image assets and a few lines of JavaScript code; you need to write the necessary JavaScript to turn this into a working program. The HTML body looks like this:
 
 ```html
 <h1>Image gallery example</h1>
 
 <div class="full-img">
-  <img class="displayed-img" src="images/pic1.jpg">
+  <img
+    class="displayed-img"
+    src="images/pic1.jpg"
+    alt="Closeup of a blue human eye" />
   <div class="overlay"></div>
   <button class="dark">Darken</button>
 </div>
 
-<div class="thumb-bar">
-
-</div>
+<div class="thumb-bar"></div>
 ```
 
-예제는 다음과 같습니다:
+The example looks like this:
 
-![](gallery.png)
+![An image gallery with a large image on top and five thumbnails below](gallery.png)
 
-이 예제의 가장 흥미로운 부분은 CSS 파일입니다:
+The most interesting parts of the example's CSS file:
 
-- 이것은 `full-img <div>` 내부의 세 요소를 절대적으로 위치시킵니다 — 전체 크기의 이미지가 표시되는 `<img>`, `<img>`와 같은 크기이고 이것 바로 위에 놓여지는 비어있는 `<div>` (반투명한 배경색을 통해 이미지에 어두워지는 효과를 적용하기 위해 쓰입니다), 그리고 어두워지는 효과를 제어하기 위해 쓰이는 `<button>`.
-- 이것은 `thumb-bar <div>` (소위 "섬네일" 이미지) 내부의 이미지들의 폭을 20%로 설정하고, 사진들이 한 줄에서 서로의 다음에 오도록 왼쪽으로 부유시킵니다.
+- It absolutely positions the three elements inside the `full-img <div>` — the `<img>` in which the full-sized image is displayed, an empty `<div>` that is sized to be the same size as the `<img>` and put right over the top of it (this is used to apply a darkening effect to the image via a semi-transparent background color), and a `<button>` that is used to control the darkening effect.
+- It sets the width of any images inside the `thumb-bar <div>` (so-called "thumbnail" images) to 20%, and floats them to the left so they sit next to one another on a line.
 
-여러분의 JavaScript는 다음을 하기를 필요로 합니다:
+Your JavaScript needs to:
 
-- 모든 이미지를 순회하고, 각각에 대해 `<img>` 요소를 페이지에 그 이미지를 끼워 넣는 `thumb-bar <div>` 내부에 삽입하기.
-- `onclick` 핸들러를 `thumb-bar <div>` 내부의 각 `<img>`에 부착해 그것들이 클릭되었을 때, 해당하는 이미지가 `displayed-img <img>` 요소에 표시되도록 하기.
-- `onclick` 핸들러를 `<button>`에 부착해 이것이 클릭되었을 때, 어두워지는 효과가 전체 크기 이미지에 적용되도록 하기. 이 버튼이 다시 클릭되었을 때, 어두워지는 효과는 다시 사라집니다.
+- Declare a `const` array listing the filenames of each image, such as `'pic1.jpg'`.
+- Declare a `const` object listing the alternative text for each image.
+- Loop through the array of filenames, and for each one, insert an `<img>` element inside the `thumb-bar <div>` that embeds that image in the page along with its alternative text.
+- Add a click event listener to each `<img>` inside the `thumb-bar <div>` so that, when they are clicked, the corresponding image and alternative text are displayed in the `displayed-img <img>` element.
+- Add a click event listener to the `<button>` so that when it is clicked, a darken effect is applied to the full-size image. When it is clicked again, the darken effect is removed again.
 
-더 많은 생각을 제공 받으려면, [완성된 예제](https://mdn.github.io/learning-area/javascript/building-blocks/gallery/)를 살펴보세요. (소스 코드 훔쳐보기 없기!)
+To give you more of an idea, have a look at the [finished example](https://mdn.github.io/learning-area/javascript/building-blocks/gallery/) (no peeking at the source code!)
 
-## 완료해야할 단계
+## Steps to complete
 
-다음의 섹션들은 무엇을 할 필요가 있는지 설명합니다.
+The following sections describe what you need to do.
 
-### 이미지 순회하기
+## Declare an array of image filenames
 
-우리는 이미 `thumbBar` 상수 내부에 `thumb-bar <div>`에 대한 참조를 저장하고, 새로운 `<img>` 요소를 생성하고, 그것의 `src` 어트리뷰트를 플레이스홀더 값 `xxx`로 설정하고, 그리고 `thumbBar` 내부에 이 새로운 `<img>` 요소를 추가하는 코드를 제공했습니다.
+You need to create an array listing the filenames of all the images to include in the gallery. The array should be declared as a constant.
 
-여러분은 다음을 할 필요가 있습니다:
+### Looping through the images
 
-1. 5개의 모든 이미지를 순회하는 반복문 내부의 "Looping through images" 주석 아래에 코드 섹션 추가하기 — 여러분은 그저 5개의 숫자를 순회할 필요가 있는데, 각 숫자는 각각의 이미지를 나타냅니다.
-2. 각각의 반복에서, `xxx` 플레이스홀더 값을 각 경우의 이미지 경로와 동일한 문자열으로 대체하세요. 우리는 `src` 어트리뷰트의 값을 각 경우에서 이 값으로 설정하고 있습니다. 각 경우에서, 이미지는 이미지 디렉토리 내부에 있고 그것의 이름은 `pic1.jpg`, `pic2.jpg` 등등이라는 것을 기억해 두세요.
+We've already provided you with lines that store a reference to the `thumb-bar <div>` inside a constant called `thumbBar`, create a new `<img>` element, set its `src` and `alt` attributes to a placeholder value `xxx`, and append this new `<img>` element inside `thumbBar`.
 
-### onclick 핸들러를 각 섬네일 이미지에 추가하기
+You need to:
 
-각각의 반복에서, 여러분은 `onclick` 핸들러를 현재의 `newImage`에 추가할 필요가 있습니다 — 이 핸들러는 현재 이미지의 `src` 어트리뷰트의 값을 찾아야만 합니다. `displayed-img <img>`의 `src` 어트리뷰트 값을 매개변수로서 전달된 `src` 값으로 설정하세요.
+1. Put the section of code below the "Looping through images" comment inside a loop that loops through all the filenames in the array.
+2. In each loop iteration, replace the `xxx` placeholder values with a string that will equal the path to the image and alt attributes in each case. Set the value of the `src` and `alt` attributes to these values in each case. Remember that the image is inside the images directory, and its name is `pic1.jpg`, `pic2.jpg`, etc.
 
-그 대신에, 여러분은 섬네일 바에 하나의 이벤트 리스너를 추가할 수 있습니다.
+### Adding a click event listener to each thumbnail image
 
-### 어두워지게/밝게 하는 버튼을 실행하는 핸들러 작성하기
+In each loop iteration, you need to add a click event listener to the current `newImage` — this listener should find the value of the `src` attribute of the current image. Set the `src` attribute value of the `displayed-img <img>` to the `src` value passed in as a parameter. Then do the same for the `alt` attribute.
 
-우리의 어두워지게/밝게 하는 `<button>`은 가만히 있습니다 — 우리는 이미 `btn` 상수에 `<button>`에 대한 참조를 저장하는 코드 라인을 제공했습니다. 여러분은 다음을 수행하는 `onclick`을 추가할 필요가 있습니다:
+Alternatively, you can add one event listener to the thumb bar.
 
-1. `<button>`에 설정된 현재 클래스명을 확인 — 여러분은 다시 이것을 `getAttribute()`를 사용함으로써 달성할 수 있습니다.
-2. 만약 클래스명이 `"dark"`라면, `<button>` 클래스를 `"light"`로 ([`setAttribute()`](/en-US/docs/Web/API/Element/setAttribute)를 사용하여), 이것의 텍스트 콘텐츠를 "Lighten"으로, 그리고 덮어씌운 `<div>`의 {{cssxref("background-color")}}를 `"rgba(0,0,0,0.5)"`로 변경.
-3. 만약 클래스명이 `"dark"`가 아니라면, `<button>` 클래스를 `"dark"`로, 이것의 텍스트 콘텐츠를 다시 "Darken"으로, 덮어씌운 `<div>`의 {{cssxref("background-color")}}를 `"rgba(0,0,0,0)"`로 변경.
+### Writing a handler that runs the darken/lighten button
 
-다음의 코드 라인은 위의 2와 3에서 규정된 변화 달성에 대한 기초를 제공합니다.
+That just leaves our darken/lighten `<button>` — we've already provided a line that stores a reference to the `<button>` in a constant called `btn`. You need to add a click event listener that:
+
+1. Checks the current class name set on the `<button>` — you can again achieve this by using `getAttribute()`.
+2. If the class name is `"dark"`, changes the `<button>` class to `"light"` (using [`setAttribute()`](/en-US/docs/Web/API/Element/setAttribute)), its text content to "Lighten", and the {{cssxref("background-color")}} of the overlay `<div>` to `"rgba(0,0,0,0.5)"`.
+3. If the class name is not `"dark"`, changes the `<button>` class to `"dark"`, its text content back to "Darken", and the {{cssxref("background-color")}} of the overlay `<div>` to `"rgba(0,0,0,0)"`.
+
+The following lines provide a basis for achieving the changes stipulated in points 2 and 3 above.
 
 ```js
-btn.setAttribute('class', xxx);
+btn.setAttribute("class", xxx);
 btn.textContent = xxx;
 overlay.style.backgroundColor = xxx;
 ```
 
-## 힌트와 팁
+## Hints and tips
 
-- 여러분은 어떤 방법으로도 HTML 또는 CSS를 수정할 필요가 없습니다.
+- You don't need to edit the HTML or CSS in any way.
 
-## 평가 혹은 추가적인 도움
+## Assessment or further help
 
-만약 여러분의 작업을 평가받고 싶으시거나 막혀서 도움을 요청하기를 원하신다면:
+If you would like your work assessed, or are stuck and want to ask for help:
 
-1. 여러분의 작업을 [CodePen](https://codepen.io/), [jsFiddle](https://jsfiddle.net/), 또는 [Glitch](https://glitch.com/) 같은 온라인에서 공유 가능한 에디터에 올리세요.
-2. [MDN Discourse forum Learning category](https://discourse.mozilla.org/c/mdn/learn) 에 평가 및/또는 도움을 요청하는 글을 작성하세요. 여러분의 글은 다음을 포함해야만 합니다:
+1. Put your work into an online shareable editor such as [CodePen](https://codepen.io/), [jsFiddle](https://jsfiddle.net/), or [Glitch](https://glitch.com/).
+2. Write a post asking for assessment and/or help at the [MDN Discourse forum Learning category](https://discourse.mozilla.org/c/mdn/learn/250). Your post should include:
 
-    - "이미지 갤러리에 대한 평가 원함"과 같은 서술적인 제목.
-    - 여러분이 이미 무엇을 시도해 봤는지, 그리고 우리가 무엇을 하기를 원하는지에 대한 설명. 예를 들자면, 막혀서 도움이 필요하다거나, 평가를 원한다거나 하는 설명을 포함해야 합니다.
-    - (위의 단계 1에서 언급된) 온라인에서 공유 가능한 에디터에 있는, 여러분이 평가를 원하거나 도움이 필요한 예제의 링크. 이것은 익숙해지기에 좋은 습관입니다. 코딩 문제가 있는 누군가를 도울 때, 그들의 코드를 보지 못한다면 그들을 돕는 것은 몹시 힘듭니다.
-    - 우리가 여러분이 도움을 원하는 문제를 찾을 수 있도록, 실제 과제나 평가 페이지의 링크.
+   - A descriptive title such as "Assessment wanted for Image gallery".
+   - Details of what you have already tried, and what you would like us to do, e.g. if you are stuck and need help, or want an assessment.
+   - A link to the example you want assessed or need help with, in an online shareable editor (as mentioned in step 1 above). This is a good practice to get into — it's very hard to help someone with a coding problem if you can't see their code.
+   - A link to the actual task or assessment page, so we can find the question you want help with.
 
 {{PreviousMenu("Learn/JavaScript/Building_blocks/Events", "Learn/JavaScript/Building_blocks")}}

@@ -1,54 +1,75 @@
 ---
 title: TypedArray.prototype.fill()
 slug: Web/JavaScript/Reference/Global_Objects/TypedArray/fill
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.TypedArray.fill
 ---
+
 {{JSRef}}
 
-**`fill()`** 메서드는 배열의 모든 요소를 지정한 시작 인덱스부터 종료 인덱스까지 정적인 값으로 채웁니다. `fill()`은 {{jsxref("Array.prototype.fill()")}}과 동일한 알고리즘을 가지고 있습니다. TypedArray 는 [typed array types](/ko/docs/Web/JavaScript/Reference/Global_Objects/TypedArray#TypedArray_objects) 이곳에 있는 것 중 하나 입니다.
+The **`fill()`** method fills all the elements of a typed array
+from a start index to an end index with a static value. This method has the same
+algorithm as {{jsxref("Array.prototype.fill()")}}. _TypedArray_ is one of the
+[typed array types](/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray#typedarray_objects) here.
 
-{{EmbedInteractiveExample("pages/js/typedarray-fill.html")}}
+{{EmbedInteractiveExample("pages/js/typedarray-fill.html","shorter")}}
 
-## 구문
+## Syntax
 
-```js
-typedarray.fill(value[, start = 0[, end = this.length]])
+```js-nolint
+fill(value)
+fill(value, start)
+fill(value, start, end)
 ```
 
-### 매개변수
+### Parameters
 
 - `value`
-  - : 배열에 채워넣을 값.
-- `start`
-  - : 선택사항. 시작 위치. 기본값은 0.
-- `end`
-  - : 선택사항. 종료 위치 (종료위치를 포함하지않습니다. 즉, end -1 까지만 해당됩니다.). 기본값 this.length(배열의 길이).
+  - : Value to fill the typed array with.
+- `start` {{optional_inline}}
+  - : Start index. Defaults to 0.
+- `end` {{optional_inline}}
+  - : End index (not included). Defaults to `this.length`.
 
-## 설명
+### Return value
 
-start 와 end 사이에 요소들을 채웁니다.
+The modified array.
 
-**`fill`** 메소드는 value, start 그리고 and 3개의 매개변수를 요구합니다. start 와 end 매개변수는 선택사항이며 기본값은 0 과 지정한 배열객체의 길이값 입니다.
+## Description
 
-만약 start 매개변수가 음수이면, start 의 값은 배열의 길이값을 합한 결과가 시작지점이 되고, 만약 end 가 음수라면, end 매개변수와 배열의 길이값을 합한 결과가 종료지점이 됩니다.
+The elements interval to fill is \[`start`,
+`end`).
 
-## 예제
+The **`fill()`** method takes up to three arguments
+`value`, `start` and `end`. The `start` and
+`end` arguments are optional with default values of `0`
+and the `length` of the `this` object.
+
+If `start` is negative, it is treated as
+`length+start` where `length` is the length of the array. If
+`end` is negative, it is treated as `length+end`.
+
+## Examples
+
+### Using fill()
 
 ```js
-new Uint8Array([1, 2, 3]).fill(4);         // Uint8Array [4, 4, 4]
-new Uint8Array([1, 2, 3]).fill(4, 1);      // Uint8Array [1, 4, 4]
-new Uint8Array([1, 2, 3]).fill(4, 1, 2);   // Uint8Array [1, 4, 3]
-new Uint8Array([1, 2, 3]).fill(4, 1, 1);   // Uint8Array [1, 2, 3]
+new Uint8Array([1, 2, 3]).fill(4); // Uint8Array [4, 4, 4]
+new Uint8Array([1, 2, 3]).fill(4, 1); // Uint8Array [1, 4, 4]
+new Uint8Array([1, 2, 3]).fill(4, 1, 2); // Uint8Array [1, 4, 3]
+new Uint8Array([1, 2, 3]).fill(4, 1, 1); // Uint8Array [1, 2, 3]
 new Uint8Array([1, 2, 3]).fill(4, -3, -2); // Uint8Array [4, 2, 3]
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `TypedArray.prototype.fill` in `core-js`](https://github.com/zloirock/core-js#ecmascript-typed-arrays)
 - {{jsxref("Array.prototype.fill()")}}

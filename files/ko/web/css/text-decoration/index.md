@@ -1,63 +1,66 @@
 ---
 title: text-decoration
 slug: Web/CSS/text-decoration
+page-type: css-shorthand-property
+browser-compat: css.properties.text-decoration
 ---
 
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`text-decoration`** [단축 속성](/ko/docs/Web/CSS/Shorthand_properties)은 텍스트에 장식용 선을 추가합니다. 이 속성은 {{cssxref("text-decoration-line")}}, {{cssxref("text-decoration-color")}}, {{cssxref("text-decoration-style")}}, {{cssxref("text-decoration-thickness")}}의 단축 속성입니다.
+The **`text-decoration`** [shorthand](/en-US/docs/Web/CSS/Shorthand_properties) [CSS](/en-US/docs/Web/CSS) property sets the appearance of decorative lines on text. It is a shorthand for {{cssxref("text-decoration-line")}}, {{cssxref("text-decoration-color")}}, {{cssxref("text-decoration-style")}}, and the newer {{cssxref("text-decoration-thickness")}} property.
 
 {{EmbedInteractiveExample("pages/css/text-decoration.html")}}
 
-텍스트 장식은 모든 자손 텍스트 요소에 걸쳐서 적용됩니다. 달리 말하면, 자식 요소에서는 부모가 적용한 텍스트 장식을 제거할 수 없습니다. 예를 들어 `<p>이 문단에 <em>강조 표시</em>가 있어요.</p>` 마크업에 `p { text-decoration: underline; }` 스타일을 적용하면 전체 문단에 밑줄이 추가됩니다. 그다음 `em { text-decoration: none; }` 스타일 규칙을 추가해도 밑줄은 계속 보입니다. 다만 `em { text-decoration: overline; }` 스타일은 "강조 표시" 텍스트가 윗줄과 밑줄을 모두 갖게 합니다.
+Text decorations are drawn across descendant text elements. This means that if an element specifies a text decoration, then a child element can't remove the decoration. For example, in the markup `<p>This text has <em>some emphasized words</em> in it.</p>`, the style rule `p { text-decoration: underline; }` would cause the entire paragraph to be underlined. The style rule `em { text-decoration: none; }` would not cause any change; the entire paragraph would still be underlined. However, the rule `em { text-decoration: overline; }` would cause a second decoration to appear on "some emphasized words".
 
-## 구성 속성
+## Constituent properties
 
-이 속성은 다음 CSS 속성의 단축 속성입니다.
+This property is a shorthand for the following CSS properties:
 
-- [`text-decoration-color`](/ko/docs/Web/CSS/text-decoration-color)
-- [`text-decoration-line`](/ko/docs/Web/CSS/text-decoration-line)
-- [`text-decoration-style`](/ko/docs/Web/CSS/text-decoration-style)
-- [`text-decoration-thickness`](/ko/docs/Web/CSS/text-decoration-thickness)
+- [`text-decoration-color`](/en-US/docs/Web/CSS/text-decoration-color)
+- [`text-decoration-line`](/en-US/docs/Web/CSS/text-decoration-line)
+- [`text-decoration-style`](/en-US/docs/Web/CSS/text-decoration-style)
+- [`text-decoration-thickness`](/en-US/docs/Web/CSS/text-decoration-thickness)
 
-## 구문
+## Syntax
 
 ```css
 text-decoration: underline;
 text-decoration: overline red;
 text-decoration: none;
 
-/* 전역 값 */
+/* Global values */
 text-decoration: inherit;
 text-decoration: initial;
 text-decoration: revert;
+text-decoration: revert-layer;
 text-decoration: unset;
 ```
 
-`text-decoration` 속성은 한 개 이상의 공백으로 구분한 값으로 지정할 수 있습니다. 각각의 값은 본디 속성에서 사용하는 값과 동일합니다.
+The `text-decoration` property is specified as one or more space-separated values representing the various longhand text-decoration properties.
 
-### 값
+### Values
 
 - {{cssxref("text-decoration-line")}}
-  - : `underline`, `line-through` 등 장식의 종류를 설정합니다.
+  - : Sets the kind of decoration used, such as `underline` or `line-through`.
 - {{cssxref("text-decoration-color")}}
-  - : 장식의 색을 설정합니다.
+  - : Sets the color of the decoration.
 - {{cssxref("text-decoration-style")}}
-  - : `solid`, `wavy`, `dashed` 등 장식에 사용할 선의 스타일을 설정합니다.
+  - : Sets the style of the line used for the decoration, such as `solid`, `wavy`, or `dashed`.
 - {{cssxref("text-decoration-thickness")}}
-  - : 장식에 사용할 선의 두께를 설정합니다.
+  - : Sets the thickness of the line used for the decoration.
 
-## 형식 정의
+## Formal definition
 
 {{CSSInfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### text-decoration 값 시연
+### Demonstration of text-decoration values
 
 ```css
 .under {
@@ -90,31 +93,35 @@ text-decoration: unset;
 ```
 
 ```html
-<p class="under">밑줄을 가지는 텍스트입니다.</p>
-<p class="over">윗줄을 가지는 텍스트입니다.</p>
-<p class="line">취소선을 가지는 텍스트입니다.</p>
-<p>기본 스타일과 달리
-  <a class="plain" href="#">이 링크에는 밑줄이 없을 것입니다.</a>
-  사용자들은 보통 하이퍼링크 여부를 밑줄로 구분하므로, 앵커에서
-  밑줄을 제거할 때는 주의해야 합니다.</p>
-<p class="underover">밑줄과 윗줄 모두 가지는 텍스트입니다.</p>
-<p class="thick">브라우저가 지원하는 경우 아주 두꺼운 보라색
-  밑줄을 가지게 될 텍스트입니다.</p>
-<p class="blink">이 텍스트는 브라우저에 따라서 깜빡일 수 있습니다.</p>
+<p class="under">This text has a line underneath it.</p>
+<p class="over">This text has a line over it.</p>
+<p class="line">This text has a line going through it.</p>
+<p>
+  This <a class="plain" href="#">link will not be underlined</a>, as links
+  generally are by default. Be careful when removing the text decoration on
+  anchors since users often depend on the underline to denote hyperlinks.
+</p>
+<p class="underover">This text has lines above <em>and</em> below it.</p>
+<p class="thick">
+  This text has a really thick purple underline in supporting browsers.
+</p>
+<p class="blink">
+  This text might blink for you, depending on the browser you use.
+</p>
 ```
 
-{{EmbedLiveSample('예제','auto','320')}}
+{{EmbedLiveSample('Examples','auto','320')}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 개별 텍스트 장식 속성은 {{cssxref("text-decoration-line")}}, {{cssxref("text-decoration-color")}}, {{cssxref("text-decoration-style")}}, {{cssxref("text-decoration-thickness")}}입니다.
-- {{cssxref("text-decoration-skip-ink")}}, {{cssxref("text-underline-offset")}}, {{cssxref("text-underline-position")}} 속성은 텍스트 장식에 영향을 주지만 이 단축 속성은 포함하지 않습니다.
-- {{cssxref("list-style")}} 속성은 HTML {{HTMLElement("ol")}}과 {{HTMLElement("ul")}} 목록에서 항목들의 모습을 조절합니다.
+- The individual text-decoration properties are {{cssxref("text-decoration-line")}}, {{cssxref("text-decoration-color")}}, {{cssxref("text-decoration-style")}}, and {{cssxref("text-decoration-thickness")}}.
+- The {{cssxref("text-decoration-skip-ink")}}, {{cssxref("text-underline-offset")}}, and {{cssxref("text-underline-position")}} properties also affect text-decoration, but are not included in the shorthand.
+- The {{cssxref("list-style")}} attribute controls the appearance of items in HTML {{HTMLElement("ol")}} and {{HTMLElement("ul")}} lists.

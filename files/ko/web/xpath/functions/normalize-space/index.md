@@ -5,27 +5,27 @@ slug: Web/XPath/Functions/normalize-space
 
 {{ XsltRef() }}
 
-`normalize-space` 함수는 문자열에서 앞뒤 공백을 빼고(strip) 결과 문자열을 반환합니다.
+The `normalize-space` function strips leading and trailing white-space from a string, replaces sequences of whitespace characters by a single space, and returns the resulting string.
 
-### 구문
+### Syntax
 
 ```
-normalize-space(string )
+normalize-space( [string] )
 ```
 
-### 인수
+### Arguments
 
-- `string`
-  - : nomalize되는 문자열
+- `string` (optional)
+  - : The string to be normalized. If omitted, string used will be the same as the context node converted to a string.
 
-### 반환
+### Returns
 
-nomalize된 문자열.
+The normalized string.
 
-### 정의
+### Defined
 
-[XPath 1.0 4.2](http://www.w3.org/TR/xpath#function-normalize-space)
+[XPath 1.0 4.2](https://www.w3.org/TR/1999/REC-xpath-19991116/#function-normalize-space)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

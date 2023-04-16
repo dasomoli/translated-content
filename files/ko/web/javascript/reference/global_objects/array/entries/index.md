@@ -1,31 +1,35 @@
 ---
 title: Array.prototype.entries()
 slug: Web/JavaScript/Reference/Global_Objects/Array/entries
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Array.entries
 ---
 
 {{JSRef}}
 
-**`entries()`** 메서드는 배열의 각 인덱스에 대한 키/값 쌍을 가지는 새로운 **`Array Iterator`** 객체를 반환합니다.
+The **`entries()`** method returns a new _[array iterator](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator)_ object that contains the key/value pairs for each index in the array.
 
 {{EmbedInteractiveExample("pages/js/array-entries.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 entries()
 ```
 
-### 반환 값
+### Return value
 
-{{jsxref("Array")}} 반복자 인스턴스 객체.
+A new [iterable iterator object](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator).
 
-## 설명
+## Description
 
-sparse arrays와 사용하면 **`entries()`** 메서드가 빈 슬롯을 **`undefined`** 가 있는 것처럼 순회합니다.
+When used on [sparse arrays](/en-US/docs/Web/JavaScript/Guide/Indexed_collections#sparse_arrays), the `entries()` method iterates empty slots as if they have the value `undefined`.
 
-## 예시
+The `entries()` method is [generic](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#generic_array_methods). It only expects the `this` value to have a `length` property and integer-keyed properties.
 
-### 인덱스와 요소 순회하기
+## Examples
+
+### Iterating with index and element
 
 ```js
 const a = ["a", "b", "c"];
@@ -39,7 +43,7 @@ for (const [index, element] of a.entries()) {
 // 2 'c'
 ```
 
-### [for…of](/ko/docs/Web/JavaScript/Reference/Statements/for...of) 루프 사용
+### Using a for...of loop
 
 ```js
 const array = ["a", "b", "c"];
@@ -54,9 +58,9 @@ for (const element of arrayEntries) {
 // [2, 'c']
 ```
 
-### sparse arrays 순회하기
+### Iterating sparse arrays
 
-**`entires()`** 는 빈 슬롯을 `undefined`인 것처럼 접근합니다.
+`entries()` will visit empty slots as if they are `undefined`.
 
 ```js
 for (const element of [, "a"].entries()) {
@@ -64,23 +68,42 @@ for (const element of [, "a"].entries()) {
 }
 // [0, undefined]
 // [1, 'a']
-
 ```
 
-## 명세서
+### Calling entries() on non-array objects
+
+The `entries()` method reads the `length` property of `this` and then accesses each integer index.
+
+```js
+const arrayLike = {
+  length: 3,
+  0: "a",
+  1: "b",
+  2: "c",
+};
+for (const entry of Array.prototype.entries.call(arrayLike)) {
+  console.log(entry);
+}
+// [ 0, 'a' ]
+// [ 1, 'b' ]
+// [ 2, 'c' ]
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `Array.prototype.entries` in `core-js`](https://github.com/zloirock/core-js#ecmascript-array)
 - {{jsxref("Array.prototype.keys()")}}
 - {{jsxref("Array.prototype.values()")}}
 - {{jsxref("Array.prototype.forEach()")}}
 - {{jsxref("Array.prototype.every()")}}
 - {{jsxref("Array.prototype.some()")}}
-- [for...of](/ko/docs/Web/JavaScript/Reference/Statements/for...of)
-- [Iteration protocols](/ko/docs/Web/JavaScript/Reference/Iteration_protocols)
+- [for...of](/en-US/docs/Web/JavaScript/Reference/Statements/for...of)
+- [Iteration protocols](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)

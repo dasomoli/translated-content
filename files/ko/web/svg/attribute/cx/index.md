@@ -1,13 +1,17 @@
 ---
 title: cx
 slug: Web/SVG/Attribute/cx
+page-type: svg-attribute
+spec-urls:
+  - https://svgwg.org/svg2-draft/geometry.html#CX
+  - https://svgwg.org/svg2-draft/pservers.html#RadialGradientElementCXAttribute
 ---
 
 {{SVGRef}}
 
-**`cx`** 속성은 중심점의 x축 좌표를 정의합니다.
+The **`cx`** attribute define the x-axis coordinate of a center point.
 
-다음 SVG 요소와 함께 이 속성을 사용할 수 있습니다:
+You can use this attribute with the following SVG elements:
 
 - {{SVGElement("circle")}}
 - {{SVGElement("ellipse")}}
@@ -16,17 +20,21 @@ slug: Web/SVG/Attribute/cx
 ## Example
 
 ```css hidden
-html,body,svg { height:100% }
+html,
+body,
+svg {
+  height: 100%;
+}
 ```
 
 ```html
 <svg viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
   <radialGradient cx="25%" id="myGradient">
-    <stop offset="0"    stop-color="white" />
+    <stop offset="0" stop-color="white" />
     <stop offset="100%" stop-color="black" />
   </radialGradient>
 
-  <circle cx="50" cy="50" r="45"/>
+  <circle cx="50" cy="50" r="45" />
   <ellipse cx="150" cy="50" rx="45" ry="25" />
   <rect x="205" y="5" width="90" height="90" fill="url(#myGradient)" />
 </svg>
@@ -36,7 +44,7 @@ html,body,svg { height:100% }
 
 ## circle
 
-{{SVGElement('circle')}} 의 경우, `cx`는 모양 중심의 x축 좌표를 정의합니다.
+For {{SVGElement('circle')}}, `cx` defines the x-axis coordinate of the center of the shape.
 
 <table class="properties">
   <tbody>
@@ -55,11 +63,11 @@ html,body,svg { height:100% }
   </tbody>
 </table>
 
-> **Note:** SVG2 `cx`로 시작하는 것은 *기하학적 속성* 입니다. 즉, 이 속성은 circle의 CSS 속성으로도 사용할 수 있습니다.
+> **Note:** Starting with SVG2 `cx`, is a _Geometry Property_, meaning this attribute can also be used as CSS property for circles.
 
 ## ellipse
 
-{{SVGElement('ellipse')}}의 경우, `cx`는 모양 중심의 x축 좌표를 정의합니다.
+For {{SVGElement('ellipse')}}, `cx` defines the x-axis coordinate of the center of the shape.
 
 <table class="properties">
   <tbody>
@@ -78,11 +86,11 @@ html,body,svg { height:100% }
   </tbody>
 </table>
 
-> **Note:** SVG2 `cx`로 시작하는 것은 *기하학적 속성* 입니다. 이는 이 속성이 ellipse의 CSS 속성으로도 사용될 수 있음을 의미합니다.
+> **Note:** Starting with SVG2 `cx`, is a _Geometry Property_, meaning this attribute can also be used as CSS property for ellipses.
 
 ## radialGradient
 
-{{SVGElement('radialGradient')}}의 경우 `cx`는 radial Gradient에 대한 끝 원의 x축 좌표를 정의합니다.
+For {{SVGElement('radialGradient')}}, `cx` defines the x-axis coordinate of the end circle for the radial gradient.
 
 <table class="properties">
   <tbody>
@@ -101,47 +109,69 @@ html,body,svg { height:100% }
   </tbody>
 </table>
 
-#### 예제
+### Example
 
 ```css hidden
-html,body,svg { height:100% }
+html,
+body,
+svg {
+  height: 100%;
+}
 ```
 
 ```html
 <svg viewBox="0 0 34 10" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <radialGradient cx="0" id="myGradient000">
-      <stop offset="0%"   stop-color="gold" />
-      <stop offset="50%"  stop-color="green" />
+      <stop offset="0%" stop-color="gold" />
+      <stop offset="50%" stop-color="green" />
       <stop offset="100%" stop-color="white" />
     </radialGradient>
 
     <radialGradient cx="50%" id="myGradient050">
-      <stop offset="0%"   stop-color="gold" />
-      <stop offset="50%"  stop-color="green" />
+      <stop offset="0%" stop-color="gold" />
+      <stop offset="50%" stop-color="green" />
       <stop offset="100%" stop-color="white" />
     </radialGradient>
 
     <radialGradient cx="100%" id="myGradient100">
-      <stop offset="0%"   stop-color="gold" />
-      <stop offset="50%"  stop-color="green" />
+      <stop offset="0%" stop-color="gold" />
+      <stop offset="50%" stop-color="green" />
       <stop offset="100%" stop-color="white" />
     </radialGradient>
   </defs>
 
-  <rect x="1"  y="1" width="8" height="8" fill="url(#myGradient000)" stroke="black" />
-  <rect x="13" y="1" width="8" height="8" fill="url(#myGradient050)" stroke="black" />
-  <rect x="25" y="1" width="8" height="8" fill="url(#myGradient100)" stroke="black" />
+  <rect
+    x="1"
+    y="1"
+    width="8"
+    height="8"
+    fill="url(#myGradient000)"
+    stroke="black" />
+  <rect
+    x="13"
+    y="1"
+    width="8"
+    height="8"
+    fill="url(#myGradient050)"
+    stroke="black" />
+  <rect
+    x="25"
+    y="1"
+    width="8"
+    height="8"
+    fill="url(#myGradient100)"
+    stroke="black" />
 </svg>
 ```
 
 {{EmbedLiveSample('radialGradient', 150, '100%')}}
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 같이 보기
+## See also
 
-- [cy](/ko/docs/Web/SVG/Attribute/cy)
-- [r](/ko/docs/Web/SVG/Attribute/r)
+- [cy](/en-US/docs/Web/SVG/Attribute/cy)
+- [r](/en-US/docs/Web/SVG/Attribute/r)

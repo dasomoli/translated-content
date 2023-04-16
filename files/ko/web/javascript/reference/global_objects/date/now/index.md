@@ -1,76 +1,67 @@
 ---
 title: Date.now()
 slug: Web/JavaScript/Reference/Global_Objects/Date/now
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Date.now
 ---
+
 {{JSRef}}
 
-**`Date.now()`** 메소드는 UTC 기준으로 1970년 1월 1일 0시 0분 0초부터 현재까지 경과된 밀리초를 반환합니다.
+The **`Date.now()`** static method returns the number of milliseconds elapsed since the [epoch](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#the_ecmascript_epoch_and_timestamps), which is defined as the midnight at the beginning of January 1, 1970, UTC.
 
 {{EmbedInteractiveExample("pages/js/date-now.html")}}
 
-## 문법
+## Syntax
 
-```js
-    var timeInMs = Date.now();
+```js-nolint
+Date.now()
 ```
 
-### 반환 값
+### Return value
 
-1970년 1월 1일 0시 0분 0초부터 현재까지 경과된 밀리초를 나타내는 **숫자**입니다.
+A number representing the number of milliseconds elapsed since the [epoch](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#the_ecmascript_epoch_and_timestamps), which is defined as the midnight at the beginning of January 1, 1970, UTC.
 
-## 설명
+## Examples
 
-now() 메소드는 1970년 1월 1일 0시 0분 0초부터 현재까지 경과된 밀리초를 {{jsxref("Number")}} 형으로 반환합니다.
+### Reduced time precision
 
-now()는 {{jsxref("Date")}}의 정적 메소드이기 때문에, 항상 `Date.now()`처럼 사용하셔야 합니다.
-
-## Polyfill
-
-이 메소드는 ECMA-262 5판에서 표준화되었습니다. 아직 이 메소드를 지원하도록 갱신되지 않은 엔진들은 이 메소드의 미지원에 대한 차선책으로 다음 코드를 활용하실 수 있습니다.
-
-```js
-if (!Date.now) {
-  Date.now = function now() {
-    return new Date().getTime();
-  };
-}
-```
-
-## 예시
-
-### 감소된 시간 정밀도
-
-타이밍 공격 및 핑거 프린팅에 대한 보호를 제공하기 위해 `Date.now ()`의 정밀도는 브라우저 설정에 따라 반올림될 수 있습니다.
-Firefox에서는 `privacy.reduceTimerPrecision` 기본 설정이 기본적으로 활성화되어 있으며 Firefox 59에서는 기본값이 20µs입니다. Firefox 60에서는 2ms가 됩니다.
+To offer protection against timing attacks and [fingerprinting](/en-US/docs/Glossary/Fingerprinting), the precision of
+`Date.now()` might get rounded depending on browser settings.
+In Firefox, the `privacy.reduceTimerPrecision` preference is enabled by
+default and defaults to 20µs in Firefox 59; in 60 it will be 2ms.
 
 ```js
-// Firefox 60에서 시간 정밀도 (2ms) 감소
+// reduced time precision (2ms) in Firefox 60
 Date.now();
 // 1519211809934
 // 1519211810362
 // 1519211811670
-// ...
+// …
 
-
-// `privacy.resistFingerprinting`을 활성화하여 시간 정밀도 감소
+// reduced time precision with `privacy.resistFingerprinting` enabled
 Date.now();
 // 1519129853500
 // 1519129858900
 // 1519129864400
-// ...
+// …
 ```
 
-Firefox에서는 `privacy.resistFingerprinting`을 활성화할 수도 있습니다. 정밀도는 100ms 또는 `privacy.resistFingerprinting.reduceTimerPrecision.microseconds` 중 더 큰 값이 됩니다.
+In Firefox, you can also enable `privacy.resistFingerprinting`, the
+precision will be 100ms or the value of
+`privacy.resistFingerprinting.reduceTimerPrecision.microseconds`, whichever
+is larger.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참고하세요
+## See also
 
-- {{domxref("Performance.now()")}} — provides timestamps with sub-millisecond resolution for use in measuring web page performance
+- [Polyfill of `Date.now` in `core-js`](https://github.com/zloirock/core-js#ecmascript-date)
+- {{domxref("Performance.now()")}} — provides timestamps with sub-millisecond
+  resolution for use in measuring web page performance
 - {{domxref("console.time()")}} / {{domxref("console.timeEnd()")}}

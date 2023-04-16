@@ -1,48 +1,50 @@
 ---
 title: String.prototype.trim()
 slug: Web/JavaScript/Reference/Global_Objects/String/trim
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.String.trim
 ---
 
 {{JSRef}}
 
-**`trim()`** 메서드는 문자열 양 끝의 공백을 제거하고 원본 문자열을 수정하지 않고 새로운 문자열을 반환합니다. 여기서 말하는 공백이란 모든 공백문자(space, tab, NBSP 등)와 모든 개행문자(LF, CR 등)를 의미합니다.
+The **`trim()`** method removes whitespace from both ends of a string and returns a new string, without modifying the original string.
 
-한쪽 끝의 공백만 제거한 새로운 문자열을 반환하려면 {{jsxref("String.prototype.trimStart()", "trimStart()")}} 또는 {{jsxref("String.prototype.trimEnd()" , "trimEnd()")}}를 사용하세요.
+To return a new string with whitespace trimmed from just one end, use {{jsxref("String.prototype.trimStart()", "trimStart()")}} or {{jsxref("String.prototype.trimEnd()", "trimEnd()")}}.
 
 {{EmbedInteractiveExample("pages/js/string-trim.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 trim()
 ```
 
-### 반환 값
+### Return value
 
-시작과 끝에서 공백이 제거된 `str`을 나타내는 새로운 문자열입니다. 공백은 [white space](/ko/docs/Web/JavaScript/Reference/Lexical_grammar#white_space) 문자와 [line terminators](/ko/docs/Web/JavaScript/Reference/Lexical_grammar#line_terminators)로 정의됩니다.
+A new string representing `str` stripped of whitespace from both its beginning and end. Whitespace is defined as [white space](/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#white_space) characters plus [line terminators](/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#line_terminators).
 
-한쪽 끝의 공백만 제거한 문자열을 반환하시려면 {{jsxref("String.prototype.trimStart()", "trimStart()")}} 또는 {{jsxref("String.prototype.trimEnd()", "trimEnd()")}} 메서드를 사용하세요.
+If neither the beginning or end of `str` has any whitespace, a new string is still returned (essentially a copy of `str`).
 
-## 예제
+## Examples
 
-### `trim()` 사용
+### Using trim()
 
-아래 예제는 `str` 양 끝의 공백을 제거합니다.
+The following example trims whitespace from both ends of `str`.
 
 ```js
-var str = '   foo  ';
+const str = "   foo  ";
 console.log(str.trim()); // 'foo'
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("String.prototype.trimStart()")}}
 - {{jsxref("String.prototype.trimEnd()")}}

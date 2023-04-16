@@ -1,31 +1,35 @@
 ---
 title: CSS Paged Media
 slug: Web/CSS/CSS_Pages
+page-type: css-module
+spec-urls:
+  - https://drafts.csswg.org/css-page/
+  - https://drafts.csswg.org/css-break/
 ---
 
 {{CSSRef}}
 
-**CSS Paged Media**는 페이지 전환을 처리하는 방법을 정의하는 CSS 모듈입니다.
+**CSS Paged Media** is a module of CSS that defines how page switches are handled.
 
-## 참고서
+## Reference
 
-### CSS 속성
+### Properties
 
 - {{cssxref("page-break-after")}}
 - {{cssxref("page-break-before")}}
 - {{cssxref("page-break-inside")}}
 
-### @규칙
+### At-rules
 
 - {{cssxref('@page')}}
 
-### 의사 클래스
+### Pseudo-classes
 
 - {{cssxref(':blank')}}
 - {{cssxref(':first')}}
 - {{cssxref(':left')}}
 - {{cssxref(':right')}}
 
-## 명세
+## Specifications
 
 {{Specifications}}

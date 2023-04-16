@@ -1,97 +1,121 @@
 ---
-title: <i>
+title: "<i>: The Idiomatic Text element"
 slug: Web/HTML/Element/i
+page-type: html-element
+browser-compat: html.elements.i
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<i>` 요소**는 텍스트에서 어떤 이유로 주위와 구분해야 하는 부분을 나타냅니다. 기술 용어, 외국어 구절, 등장인물의 생각 등을 예시로 들 수 있습니다. 보통 기울임꼴로 표시합니다.
+The **`<i>`** [HTML](/en-US/docs/Web/HTML) element represents a range of text that is set off from the normal text for some reason, such as idiomatic text, technical terms, taxonomical designations, among others. Historically, these have been presented using italicized type, which is the original source of the `<i>` naming of this element.
 
 {{EmbedInteractiveExample("pages/tabbed/i.html", "tabbed-shorter")}}
+
+## Attributes
+
+This element only includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
+
+## Usage notes
+
+- Use the `<i>` element for text that is set off from the normal prose for readability reasons. This would be a range of text with different semantic meaning than the surrounding text. Among the use cases for the `<i>` element are spans of text representing a different quality or mode of text, such as:
+
+  - Alternative voice or mood
+  - Taxonomic designations (such as the genus and species "_Homo sapiens_")
+  - Idiomatic terms from another language (such as "_et cetera_"); these should include the [`lang`](/en-US/docs/Web/HTML/Global_attributes#lang) attribute to identify the language
+  - Technical terms
+  - Transliterations
+  - Thoughts (such as "She wondered, _What is this writer talking about, anyway?_")
+  - Ship or vessel names in Western writing systems (such as "They searched the docks for the _Empress of the Galaxy_, the ship to which they were assigned.")
+
+- In earlier versions of the HTML specification, the `<i>` element was merely a presentational element used to display text in italics, much like the `<b>` element was used to display text in bold letters. This is no longer true, as these tags now define semantics rather than typographic appearance. A browser will typically still display the contents of the `<i>` element in italic type, but is, by definition, no longer required to do so. To display text in italic type, authors should use the CSS {{cssxref("font-style")}} property.
+- Be sure the text in question is not actually more appropriately marked up with another element.
+
+  - Use {{HTMLElement("em")}} to indicate stress emphasis.
+  - Use {{HTMLElement("strong")}} to indicate importance, seriousness, or urgency.
+  - Use {{HTMLElement("mark")}} to indicate relevance.
+  - Use {{HTMLElement("cite")}} to mark up the name of a work, such as a book, play, or song.
+  - Use {{HTMLElement("dfn")}} to mark up the defining instance of a term.
+
+## Examples
+
+This example demonstrates using the `<i>` element to mark text that is in another language.
+
+```html
+<p>The Latin phrase <i lang="la">Veni, vidi, vici</i> is often mentioned in music, art, and literature.</p>
+```
+
+### Result
+
+{{EmbedLiveSample("Examples")}}
+
+## Technical summary
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
       </th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
         >,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >, 뚜렷한 콘텐츠.
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >, palpable content.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >Phrasing content</a
         >.
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
+      <th scope="row">Tag omission</th>
       <td>{{no_tag_omission}}</td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Permitted parents</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >를 허용하는 모든 요소.
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>모두</td>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
+          >No corresponding role</a
+        >
+      </td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>Any</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
-
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)만 포함합니다.
-
-## 사용 일람
-
-- 일반 산문과 다른 문체를 가진 텍스트에 `<i>` 요소를 사용하세요. 주위 텍스트와 다른 의미를 가진 텍스트에 적용하면 됩니다.
-- 초기 HTML 명세의 `<i>` 요소는, {{htmlelement("b")}} 요소가 굵은 글씨 적용에 그쳤던 것과 마찬가지로, 글자를 기울이기만 하는 단순한 시각적 요소였습니다. 그러나 지금은 글자 외형에 그치지 않고 특정한 의미를 지니는 요소이므로 시각적인 강조에 그치지 않습니다. 보통, 브라우저가 여전히 `<i>` 요소의 글자를 기울이겠지만, 명세에 따르면 꼭 그렇게 표시할 필요는 없습니다.
-- `<i>` 요소가 글자를 기울이기는 하지만, 기울임꼴을 적용하기 위한 용도로 사용해서는 안됩니다. CSS {{cssxref("font-style")}} 속성을 사용하세요.
-- 강조하려는 텍스트가 다른 요소에 더 적합하지 않은지 고려하세요.
-
-  - {{htmlelement("em")}} 요소는 강세를 나타냅니다.
-  - {{htmlelement("strong")}} 요소는 보다 강한 강조를 나타냅니다.
-  - {{htmlelement("mark")}} 요소는 관련성을 나타냅니다.
-  - {{htmlelement("cite")}} 요소는 책, 공연, 음악 등 저작물의 이름을 나타냅니다.
-  - {{htmlelement("dfn")}} 요소는 정의 대상인 용어를 나타냅니다.
-
-## 예제
-
-다음 예제는 외국어를 강조하기 위해 `<i>` 요소를 사용합니다.
-
-```html
-<p>라틴어 문구 <i>Veni, vidi, vici</i>는 음악과 예술, 문학에 자주 등장합니다.</p>
-```
-
-### 결과
-
-{{EmbedLiveSample("예제")}}
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{HTMLElement("em")}}
+- Other italicized elements: {{HTMLElement("var")}}, {{HTMLElement("dfn")}}, {{HTMLElement("cite")}}, {{HTMLElement("address")}}

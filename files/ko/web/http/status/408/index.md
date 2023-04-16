@@ -1,25 +1,34 @@
 ---
 title: 408 Request Timeout
 slug: Web/HTTP/Status/408
+page-type: http-status-code
+spec-urls: https://httpwg.org/specs/rfc9110.html#status.408
 ---
 
 {{HTTPSidebar}}
 
-HyperText Transfer Protocol (HTTP) **`408 Request Timeout`** 응답 상태 코드는 서버가 사용하지 않는 연결을 끊고 싶다는 것을 의미한다. 서버가 클라이언트의 요청 없이도 유휴 상태의 연결에 전송한다.
+The HyperText Transfer Protocol (HTTP)
+**`408 Request Timeout`** response status code means that the
+server would like to shut down this unused connection. It is sent on an idle connection
+by some servers, _even without any previous request by the client_.
 
-`408`은 서버가 계속해서 기다리기보다는 연결을 종료하기로 결정했다는 것을 알려주기 때문에, 서버는 응답에 "close" {{HTTPHeader("Connection")}}헤더 필드를 추가해서 전송해야한다.
+A server should send the "close" {{HTTPHeader("Connection")}} header field in the
+response, since `408` implies that the server has decided to close the
+connection rather than continue waiting.
 
-크롬, 파이어폭스 27+, 그리고 인터넷 익스플로러 9와 같은 브라우저들이 서핑 속도를 높이기 위해 HTTP pre-connection 방식을 사용하기 때문에 이 응답이 더 많이 사용되고 있다.
+This response is used much more since some browsers, like Chrome, Firefox 27+, and IE9,
+use HTTP pre-connection mechanisms to speed up surfing.
 
-> **참고:** **Note: 어떤 서버들은 이 메세지를 전송하지 않고 연결을 종료할 수도 있다**.
+> **Note:** some servers merely shut down the connection without sending
+> this message.
 
 ## Status
 
-```
-408 요청 시간 만료
+```http
+408 Request Timeout
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 

@@ -1,39 +1,69 @@
 ---
 title: Network Information API
 slug: Web/API/Network_Information_API
+page-type: web-api-overview
+status:
+  - experimental
+browser-compat:
+  - api.NetworkInformation
+  - api.Navigator.connection
 ---
 
 {{DefaultAPISidebar("Network Information API")}}{{SeeCompatTable}}
 
-네트워크 정보 API는 사용자 기기의 현재 대역폭이나 과금이 되는 연결인지와 같은 시스템의 연결 정보를 알려줍니다. 이를 이용해서 사용자에게 높은 용량의 콘텐츠를 제공할지 낮은 용량의 콘텐츠를 제공할지 사용자의 연결 상태에 따라서 제공할 수 있습니다. 전체 API는 DOM에 추가된 단일한 객체로 구성되어 있습니다: {{domxref("window.navigator.connection")}}.
+The Network Information API provides information about the system's connection in terms of general connection type (e.g., 'wifi, 'cellular', etc.).
+This can be used to select high definition content or low definition content based on the user's connection.
 
-## 연결상태 변경 감지
+The interface consists of a single {{domxref("NetworkInformation")}} object, an instance of which is returned by the {{domxref("Navigator.connection")}} property.
 
-이 예제는 사용자의 연결상태 변화를 감시합니다. 사용자가 비싼 망에서 싼 망으로 이동할 때 사용자가 추가적인 비용을 지불하지 않게 하기 위해서 전송량을 감소시키는 등과 같은 행동을 할 수 있게 앱이 경고를 하는 일과 비슷합니다.
+{{AvailableInWorkers}}
+
+## Interfaces
+
+- {{domxref("NetworkInformation")}}
+  - : Provides information about the connection a device is using to communicate with the network and provides a means for scripts to be notified if the connection type changes. The `NetworkInformation` interface cannot be instantiated. It is instead accessed through the {{domxref("Navigator")}} interface.
+
+## Examples
+
+### Detect connection changes
+
+This example watches for changes to the user's connection.
 
 ```js
-var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+let type = navigator.connection.effectiveType;
 
 function updateConnectionStatus() {
-  alert("Connection bandwidth: " + connection.bandwidth + " MB/s");
-  if (connection.metered) {
-    alert("The connection is metered!");
-  }
+  console.log(
+    `Connection type changed from ${type} to ${navigator.connection.effectiveType}`
+  );
+  type = navigator.connection.effectiveType;
 }
 
-connection.addEventListener("change", updateConnectionStatus);
-updateConnectionStatus();
+navigator.connection.addEventListener("change", updateConnectionStatus);
 ```
 
-## 명세
+### Preload large resources
+
+The connection object is useful for deciding whether to preload resources that take large amounts of bandwidth or memory. This example would be called soon after page load to check for a connection type where preloading a video may not be desirable. If a cellular connection is found, then the `preloadVideo` flag is set to `false`. For simplicity and clarity, this example only tests for one connection type. A real-world use case would likely use a switch statement or some other method to check all of the possible values of {{domxref("NetworkInformation.type")}}. Regardless of the `type` value you can get an estimate of connection speed through the {{domxref("NetworkInformation.effectiveType")}} property.
+
+```js
+let preloadVideo = true;
+const connection = navigator.connection;
+if (connection) {
+  if (connection.effectiveType === "slow-2g") {
+    preloadVideo = false;
+  }
+}
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Online and offline events](/en/Online_and_offline_events)
-- {{domxref("window.navigator.connection")}}
+- [Online and offline events](/en-US/docs/Web/API/Navigator/onLine)

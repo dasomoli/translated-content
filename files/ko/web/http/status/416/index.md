@@ -1,34 +1,33 @@
 ---
 title: 416 Range Not Satisfiable
 slug: Web/HTTP/Status/416
+page-type: http-status-code
+browser-compat: http.status.416
 ---
 
 {{HTTPSidebar}}
 
-하이퍼텍스트 트랜스퍼 프로토콜(HTTP) **`416 Range Not Satisfiable`** 에러 응답 코드는 서버가 요청받은 범위에
-대해서 서비스 할 수 없음을 알려줍니다. 아마도 이유는 그 문서가 그러한 범위를 지니고 있지 않거나, 또는
-{{HTTPHeader("Range")}} 헤더 값이 문법적으로는 옳지만, 이해가 되지 않을 경우 그럴 수 있습니다.
+The HyperText Transfer Protocol (HTTP) **`416 Range Not Satisfiable`** error response code indicates that a server cannot serve the requested ranges. The most likely reason is that the document doesn't contain such ranges, or that the {{HTTPHeader("Range")}} header value, though syntactically correct, doesn't make sense.
 
-416 응답 메시지는 {{HTTPHeader("Content-Range")}} 를 포함하여 만족할 수 없는 범위(그 경우 `'*'`) 뒤에
-`'/'`와 현재 리소스를 알려줍니다. 예: `Content-Range: */12777`
+The `416` response message contains a {{HTTPHeader("Content-Range")}} indicating an unsatisfied range (that is a `'*'`) followed by a `'/'` and the current length of the resource. E.g. `Content-Range: bytes */12777`
 
-이 에러를 마주하면, 브라우저는 보통 명령을 취소하거나 전체 문서를 다시 요청합니다.
+Faced with this error, browsers usually either abort the operation (for example, a download will be considered as non-resumable) or ask for the whole document again.
 
-## 상태
+## Status
 
 ```http
 416 Range Not Satisfiable
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 참고할 내용
+## See also
 
 - {{HTTPStatus(206)}} `Partial Content`
 - {{HTTPHeader("Content-Range")}}

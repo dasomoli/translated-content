@@ -1,131 +1,232 @@
 ---
-title: WebGL로 3D 객체 만들기
+title: Creating 3D objects using WebGL
 slug: Web/API/WebGL_API/Tutorial/Creating_3D_objects_using_WebGL
+page-type: guide
 ---
 
 {{DefaultAPISidebar("WebGL")}} {{PreviousNext("Web/API/WebGL_API/Tutorial/Animating_objects_with_WebGL", "Web/API/WebGL_API/Tutorial/Using_textures_in_WebGL")}}
 
-이제 우리가 만든 정사각형에 5개의 면을 더해서 3차원 정육면체를 만들어 보겠습니다. 이 작업을 조금 더 효율적으로 하기 위해서 `drawArray()` 메서드를 호출해서 정점을 직접 핸들링하는 대신에, 정점 배열을 인덱스와 값으로 정의된 테이블이라고 생각하고, 각 정점을 인덱스로 참조해서 정육면체 각 면의 정점 위치를 정의하고 `gl.drawElements()`를 호출해서 그려보겠습니다.
+Let's take our square plane into three dimensions by adding five more faces to create a cube. To do this efficiently, we're going to switch from drawing using the vertices directly by calling the {{domxref("WebGLRenderingContext.drawArrays()", "gl.drawArrays()")}} method to using the vertex array as a table, and referencing individual vertices in that table to define the positions of each face's vertices, by calling {{domxref("WebGLRenderingContext.drawElements()", "gl.drawElements()")}}.
 
-고려 사항 : 정육면체의 각 면은 4개의 정점이 필요하고, 정육면체에는 6개의 면이 있으므로 총 24개의 정점이 필요할 것 같지만, 하나의 정점이 세 개의 면에 공통적으로 사용되므로 실제로는 8개의 정점만 있으면 됩니다. 그리고 이 8개의 정점 각각에 인덱스 번호를 매겨서 참조하면 한 개의 정점을 세 개의 면에 재사용할 수 있습니다. 하지만 이번 예제에서는 8개가 아니라 24개의 정점을 사용하는데, 그 이유는 한 꼭지점에서 만나는 세 개의 면마다 다른 색상을 적용할 것이기 때문입니다. 하나의 정점은 한 개의 색상만을 가질 수 있으므로, 세 개의 색상을 표시하려면 세 개의 정점이 필요합니다. 따라서 기하학적으로는 하나의 꼭지점일지라도 세 개의 색상을 표시하기 위해서는 세 개의 정점이 필요 합니다.
+Consider: each face requires four vertices to define it, but each vertex is shared by three faces. We can pass a lot fewer data around by building an array of all 24 vertices, then referring to each vertex by its index into that array instead of moving entire sets of coordinates around. If you wonder why we need 24 vertices, and not just 8, it is because each corner belongs to three faces of different colors, and a single vertex needs to have a single specific color; therefore we will create three copies of each vertex in three different colors, one for each face.
 
-## 정육면체의 정점 위치 정의
+## Define the positions of the cube's vertices
 
-먼저 `initBuffers()` 내부에 있는 코드를 수정해서 정육면체의 정점 버퍼를 만듭니다. 방식은 정사각형을 그릴 때와 거의 비슷하지만, 정점의 수는 하나의 면에 4개 씩, 총 24개로 정사각형보다 더 많습니다:
+First, let's build the cube's vertex position buffer by updating the code in `initBuffers()`. This is pretty much the same as it was for the square plane, but somewhat longer since there are 24 vertices (4 per side).
+
+> **Note:** In the `initPositionBuffer()` function of your "init-buffers.js" module, replace the `positions` declaration with this code:
 
 ```js
-var vertices = [
-  // 앞면(Front face)
-  -1.0, -1.0,  1.0,
-   1.0, -1.0,  1.0,
-   1.0,  1.0,  1.0,
-  -1.0,  1.0,  1.0,
+const positions = [
+  // Front face
+  -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0, 1.0, 1.0, -1.0, 1.0, 1.0,
 
-  // 뒤면(Back face)
-  -1.0, -1.0, -1.0,
-  -1.0,  1.0, -1.0,
-   1.0,  1.0, -1.0,
-   1.0, -1.0, -1.0,
+  // Back face
+  -1.0, -1.0, -1.0, -1.0, 1.0, -1.0, 1.0, 1.0, -1.0, 1.0, -1.0, -1.0,
 
-  // 위면(Top face)
-  -1.0,  1.0, -1.0,
-  -1.0,  1.0,  1.0,
-   1.0,  1.0,  1.0,
-   1.0,  1.0, -1.0,
+  // Top face
+  -1.0, 1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0,
 
-  // 아래면(Bottom face)
-  -1.0, -1.0, -1.0,
-   1.0, -1.0, -1.0,
-   1.0, -1.0,  1.0,
-  -1.0, -1.0,  1.0,
+  // Bottom face
+  -1.0, -1.0, -1.0, 1.0, -1.0, -1.0, 1.0, -1.0, 1.0, -1.0, -1.0, 1.0,
 
-  // 오른쪽면(Right face)
-   1.0, -1.0, -1.0,
-   1.0,  1.0, -1.0,
-   1.0,  1.0,  1.0,
-   1.0, -1.0,  1.0,
+  // Right face
+  1.0, -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0, 1.0, 1.0, -1.0, 1.0,
 
-  // 왼쪽면(Left face)
-  -1.0, -1.0, -1.0,
-  -1.0, -1.0,  1.0,
-  -1.0,  1.0,  1.0,
-  -1.0,  1.0, -1.0
+  // Left face
+  -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, -1.0, 1.0, 1.0, -1.0, 1.0, -1.0,
 ];
 ```
 
-## 정점의 색상 정의
+Since we've added a z-component to our vertices, we need to update the `numComponents` of our `vertexPosition` attribute to 3.
 
-24개 정점의 색상 배열도 만들어야 합니다. 각 면의 색상을 하나의 배열로 정의하고, 반복문을 돌면서 모든 정점의 색상 정보를 하나의 배열로 만듭니다.
+> **Note:** In the `setPositionAttribute()` function of your "draw-scene.js" module, change the `numComponents` constant from `2` to `3`:
 
 ```js
-var colors = [
-  [1.0,  1.0,  1.0,  1.0],    // 앞면 : 흰색
-  [1.0,  0.0,  0.0,  1.0],    // 뒤면 : 빨간색
-  [0.0,  1.0,  0.0,  1.0],    // 위면 : 녹색
-  [0.0,  0.0,  1.0,  1.0],    // 아래면 : 파란색
-  [1.0,  1.0,  0.0,  1.0],    // 오른쪽면 : 노란색
-  [1.0,  0.0,  1.0,  1.0]     // 왼쪽면 : 보라색
+const numComponents = 3;
+```
+
+## Define the vertices' colors
+
+We also need to build an array of colors for each of the 24 vertices. This code starts by defining a color for each face, then uses a loop to assemble an array of all the colors for each of the vertices.
+
+> **Note:** In the `initColorBuffer()` function of your "init-buffers.js" module, replace the `colors` declaration with this code:
+
+```js
+const faceColors = [
+  [1.0, 1.0, 1.0, 1.0], // Front face: white
+  [1.0, 0.0, 0.0, 1.0], // Back face: red
+  [0.0, 1.0, 0.0, 1.0], // Top face: green
+  [0.0, 0.0, 1.0, 1.0], // Bottom face: blue
+  [1.0, 1.0, 0.0, 1.0], // Right face: yellow
+  [1.0, 0.0, 1.0, 1.0], // Left face: purple
 ];
 
-var generatedColors = [];
+// Convert the array of colors into a table for all the vertices.
 
-for (j=0; j<6; j++) {
-  var c = colors[j];
+var colors = [];
 
-  for (var i=0; i<4; i++) {
-    generatedColors = generatedColors.concat(c);
-  }
+for (var j = 0; j < faceColors.length; ++j) {
+  const c = faceColors[j];
+  // Repeat each color four times for the four vertices of the face
+  colors = colors.concat(c, c, c, c);
 }
-
-cubeVerticesColorBuffer = gl.createBuffer();
-gl.bindBuffer(gl.ARRAY_BUFFER, cubeVerticesColorBuffer);
-gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(generatedColors), gl.STATIC_DRAW);
 ```
 
-## 인덱스 배열 정의
+## Define the element array
 
-정점 배열을 만들었으면 인덱스 배열(원문 : element array)을 만들어야 합니다.
+Once the vertex arrays are generated, we need to build the element array.
+
+> **Note:** In your "init-buffer.js" module, add the following function:
 
 ```js
-cubeVerticesIndexBuffer = gl.createBuffer();
-gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVerticesIndexBuffer);
+function initIndexBuffer(gl) {
+  const indexBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
 
-// 인덱스 배열은 하나의 면을 두 개의 삼각형으로 정의합니다.
-// 인덱스 배열의 원소인 각 숫자는 정점 배열에서 한 정점의 위치를 나타냅니다.
-// 즉, 아래의 인덱스 배열에서의 0, 1, 2,   0, 2, 3은
-// 정점 배열에서 0, 1, 2번째의 정점으로 이루어진 삼각형과
-// 0, 2, 3번째 정점으로 이루어진 삼각형 두 개로
-// 하나의 면을 나타낸다는 의미입니다.
+  // This array defines each face as two triangles, using the
+  // indices into the vertex array to specify each triangle's
+  // position.
 
-var cubeVertexIndices = [
-  0,  1,  2,      0,  2,  3,    // front
-  4,  5,  6,      4,  6,  7,    // back
-  8,  9,  10,     8,  10, 11,   // top
-  12, 13, 14,     12, 14, 15,   // bottom
-  16, 17, 18,     16, 18, 19,   // right
-  20, 21, 22,     20, 22, 23    // left
-];
+  const indices = [
+    0,
+    1,
+    2,
+    0,
+    2,
+    3, // front
+    4,
+    5,
+    6,
+    4,
+    6,
+    7, // back
+    8,
+    9,
+    10,
+    8,
+    10,
+    11, // top
+    12,
+    13,
+    14,
+    12,
+    14,
+    15, // bottom
+    16,
+    17,
+    18,
+    16,
+    18,
+    19, // right
+    20,
+    21,
+    22,
+    20,
+    22,
+    23, // left
+  ];
 
-// 인덱스 배열을 GL에 전달
+  // Now send the element array to GL
 
-gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,
-    new Uint16Array(cubeVertexIndices), gl.STATIC_DRAW);
+  gl.bufferData(
+    gl.ELEMENT_ARRAY_BUFFER,
+    new Uint16Array(indices),
+    gl.STATIC_DRAW
+  );
+
+  return indexBuffer;
+}
 ```
 
-`cubeVertexIndices` 배열은 정육면체 정점 배열의 인덱스값을 원소로 가지며, 각 인덱스 값에 해당하는 정점을 순서대로 세 개씩 묶어서 하나의 삼각형을 구성하고, 삼각형 두 개를 순서대로 묶어서 하나의 면으로 정의합니다. 따라서 6개의 면을 가진 정육면체는 12개의 삼각형의 조합으로 표현할 수 있습니다.
+The `indices` array defines each face like a pair of triangles, specifying each triangle's vertices as an index into the cube's vertex arrays. Thus the cube is described as a collection of 12 triangles.
 
-## 정육면체 그리기
+Next, you need to call this new function from `initBuffers()`, and return the buffer it creates.
 
-다음 단계로 정육면체의 인덱스 버퍼를 이용해서 정육면체를 그릴 수 있도록 `drawScene()` 함수 내부에 코드를 추가 합니다. 인덱스 버퍼를 사용하기 위한 `bindBuffer()`와 정육면체를 그리기 위한 `drawElements()` 호출문을 추가합니다:
+> **Note:** At the end of the `initBuffers()` function of your "init-buffers.js" module, add the following code, replacing the existing `return` statement:
 
 ```js
-gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVerticesIndexBuffer);
-setMatrixUniforms();
-gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0);
+const indexBuffer = initIndexBuffer(gl);
+
+return {
+  position: positionBuffer,
+  color: colorBuffer,
+  indices: indexBuffer,
+};
 ```
 
-정육면체의 각 면이 두 개의 삼각형으로 이루어져 있으므로, 한 면에는 6개의 정점이 있으며, 정육면체 전체로는 총 36개의 정점이 존재합니다. 정점 배열에는 24개의 정점이 있었으므로 36개의 정점을 구성하려면 하나의 정점이 여러번 중복되어 사용 되었을 것 입니다. 비효율적이라고 생각될 수도 있지만, 인덱스 배열은 처리가 단순한 정수형 데이터로만 구성되어 있으므로, 36개의 정수형 배열이 하나의 애니메이션 프레임에서 처리하기에 지나치게 많은 수준의 데이터는 아닙니다.
+## Drawing the cube
 
-이제 지금까지 만든 정육면체를 확인 해 보겠습니다. WebGL을 지원하는 브라우저에서는 [여기](/samples/webgl/sample5/index.html)에서 6개의 면이 원색으로 채색된 정육면체를 볼 수 있습니다.
+Next we need to add code to our `drawScene()` function to draw using the cube's index buffer, adding new {{domxref("WebGLRenderingContext.bindBuffer()", "gl.bindBuffer()")}} and {{domxref("WebGLRenderingContext.drawElements()", "gl.drawElements()")}} calls.
+
+> **Note:** In your `drawScene()` function, add the following code just before the `gl.useProgram` line:
+
+```js
+// Tell WebGL which indices to use to index the vertices
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
+```
+
+> **Note:** In the `drawScene()` function of your "draw-scene.js" module, replace the block just after the two `gl.uniformMatrix4fv` calls, that contains the `gl.drawArrays()` line, with the following block:
+
+```js
+{
+  const vertexCount = 36;
+  const type = gl.UNSIGNED_SHORT;
+  const offset = 0;
+  gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
+}
+```
+
+Since each face of our cube is comprised of two triangles, there are 6 vertices per side, or 36 total vertices in the cube, even though many of them are duplicates.
+
+Finally, let's replace our variable `squareRotation` by `cubeRotation` and add a second rotation around the x axis.
+
+> **Note:** At the start of your "webgl-demo.js" file, replace the `squareRotation` declaration with this line:
+
+```js
+let cubeRotation = 0.0;
+```
+
+> **Note:** In your `drawScene()` function declaration, replace the `squareRotation` with `cubeRotation`:
+
+```js-nolint
+function drawScene(gl, programInfo, buffers, cubeRotation) {
+```
+
+> **Note:** In your `drawScene()` function, replace the `mat4.rotate` call with the following code:
+
+```js
+mat4.rotate(
+  modelViewMatrix, // destination matrix
+  modelViewMatrix, // matrix to rotate
+  cubeRotation, // amount to rotate in radians
+  [0, 0, 1]
+); // axis to rotate around (Z)
+mat4.rotate(
+  modelViewMatrix, // destination matrix
+  modelViewMatrix, // matrix to rotate
+  cubeRotation * 0.7, // amount to rotate in radians
+  [0, 1, 0]
+); // axis to rotate around (Y)
+mat4.rotate(
+  modelViewMatrix, // destination matrix
+  modelViewMatrix, // matrix to rotate
+  cubeRotation * 0.3, // amount to rotate in radians
+  [1, 0, 0]
+); // axis to rotate around (X)
+```
+
+> **Note:** In your `main()` function, replace the code that calls `drawScene()` and updates `squareRotation` to pass in and update `cubeRotation` instead:
+
+```js
+drawScene(gl, programInfo, buffers, cubeRotation);
+cubeRotation += deltaTime;
+```
+
+At this point, we now have an animated cube rotating, its six faces rather vividly colored.
+
+{{EmbedGHLiveSample('dom-examples/webgl-examples/tutorial/sample5/index.html', 670, 510) }}
+
+[View the complete code](https://github.com/mdn/dom-examples/tree/main/webgl-examples/tutorial/sample5) | [Open this demo on a new page](https://mdn.github.io/dom-examples/webgl-examples/tutorial/sample5/)
 
 {{PreviousNext("Web/API/WebGL_API/Tutorial/Animating_objects_with_WebGL", "Web/API/WebGL_API/Tutorial/Using_textures_in_WebGL")}}

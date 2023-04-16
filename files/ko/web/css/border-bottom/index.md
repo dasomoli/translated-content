@@ -1,57 +1,85 @@
 ---
 title: border-bottom
 slug: Web/CSS/border-bottom
+page-type: css-shorthand-property
+browser-compat: css.properties.border-bottom
 ---
+
 {{CSSRef}}
 
-**`border-bottom`** [CSS](/ko/docs/Web/CSS) [단축 속성](/ko/docs/Web/CSS/Shorthand_properties)은 요소의 아래쪽 테두리를 설정합니다. {{cssxref("border-bottom-width")}}, {{cssxref("border-bottom-style")}}, {{cssxref("border-bottom-color")}}의 값을 지정합니다.
+The **`border-bottom`** [shorthand](/en-US/docs/Web/CSS/Shorthand_properties) [CSS](/en-US/docs/Web/CSS) property sets an element's bottom [border](/en-US/docs/Web/CSS/border). It sets the values of {{cssxref("border-bottom-width")}}, {{cssxref("border-bottom-style")}} and {{cssxref("border-bottom-color")}}.
 
 {{EmbedInteractiveExample("pages/css/border-bottom.html")}}
 
-다른 단축 속성과 마찬가지로, `border-bottom`는 자신이 포함한 모든 값을 지정하며 사용자가 명시하지 않은 속성도 기본값으로 설정합니다. 즉, 아래 두 코드는 사실 동일합니다.
+As with all shorthand properties, `border-bottom` always sets the values of all of the properties that it can set, even if they are not specified. It sets those that are not specified to their default values. Consider the following code:
 
 ```css
 border-bottom-style: dotted;
 border-bottom: thick green;
 ```
 
+It is actually the same as this one:
+
 ```css
 border-bottom-style: dotted;
 border-bottom: none thick green;
 ```
 
-따라서 `border-bottom`보다 먼저 지정한 {{cssxref("border-bottom-style")}}의 값은 무시됩니다. {{cssxref("border-bottom-style")}}의 기본값은 `none`이므로, `border-style`을 명시하지 않으면 테두리를 만들지 않습니다.
+The value of {{cssxref("border-bottom-style")}} given before `border-bottom` is ignored. Since the default value of {{cssxref("border-bottom-style")}} is `none`, not specifying the `border-style` part results in no border.
 
-## 구문
+## Constituent properties
+
+This property is a shorthand for the following CSS properties:
+
+- {{cssxref("border-bottom-color")}}
+- {{cssxref("border-bottom-style")}}
+- {{cssxref("border-bottom-width")}}
+
+## Syntax
 
 ```css
 border-bottom: 1px;
 border-bottom: 2px dotted;
-border-bottom: medium dashed green;
+border-bottom: medium dashed blue;
+
+/* Global values */
+border-bottom: inherit;
+border-bottom: initial;
+border-bottom: revert;
+border-bottom: revert-layer;
+border-bottom: unset;
 ```
 
-`border-bottom`은 한 개에서 세 개의 값을 사용해 지정할 수 있고, 순서는 상관하지 않습니다.
+The three values of the shorthand property can be specified in any order, and one or two of them may be omitted.
 
-### 값
+### Values
 
 - `<br-width>`
-  - : {{cssxref("border-bottom-width")}}.
+  - : See {{cssxref("border-bottom-width")}}.
 - `<br-style>`
-  - : {{cssxref("border-bottom-style")}}.
+  - : See {{cssxref("border-bottom-style")}}.
 - {{cssxref("&lt;color&gt;")}}
-  - : {{cssxref("border-bottom-color")}}.
+  - : See {{cssxref("border-bottom-color")}}.
 
-### 형식 구문
+## Formal definition
+
+{{CSSInfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
+
+### Applying a bottom border
+
+#### HTML
 
 ```html
-<div>
-  아래쪽 테두리를 가진 요소입니다.
-</div>
+<div>This box has a border on the bottom side.</div>
 ```
+
+#### CSS
 
 ```css
 div {
@@ -64,12 +92,20 @@ div {
 }
 ```
 
-{{EmbedLiveSample('예제')}}
+#### Results
 
-## 명세
+{{EmbedLiveSample('Applying_a_bottom_border')}}
 
-{{Specifications}}{{cssinfo}}
+## Specifications
 
-## 브라우저 호환성
+{{Specifications}}
+
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- {{cssxref("border")}}
+- {{cssxref("border-block")}}
+- {{cssxref("outline")}}

@@ -1,54 +1,66 @@
 ---
-title: Document.createTextNode()
+title: "Document: createTextNode() method"
+short-title: createTextNode()
 slug: Web/API/Document/createTextNode
+page-type: web-api-instance-method
+browser-compat: api.Document.createTextNode
 ---
+
 {{APIRef("DOM")}}
 
-### 요약
+Creates a new {{domxref("Text")}} node. This method can be used to escape HTML
+characters.
 
-텍스트 노드를 생성합니다.
+## Syntax
 
-### 문법
-
-```js
-텍스트 = document.createTextNode(데이터);
+```js-nolint
+createTextNode(data)
 ```
 
-### 매개변수
+### Parameters
 
-- `텍스트` 생성된 텍스트 노드입니다.
-- `데이터` 텍스트 노드에 쓰여지는 문자열입니다.
+- `data`
+  - : A string containing the data to be put in the text node.
 
-### 예제
+### Return value
+
+A {{domxref("Text")}} node.
+
+## Examples
 
 ```html
-<html>
-<head>
-<title>createTextNode 예제</title>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>createTextNode example</title>
+    <script>
+      function addTextNode(text) {
+        const newtext = document.createTextNode(text);
+        const p1 = document.getElementById("p1");
 
-<script type="text/javascript">
+        p1.appendChild(newtext);
+      }
+    </script>
+  </head>
 
-function addTextNode()
-{
-    var newtext = document.createTextNode(" 동적으로 추가되는 텍스트. ");
-    var para = document.getElementById("p1");
-    para.appendChild(newtext);
-}
+  <body>
+    <button onclick="addTextNode('YES! ');">YES!</button>
+    <button onclick="addTextNode('NO! ');">NO!</button>
+    <button onclick="addTextNode('WE CAN! ');">WE CAN!</button>
 
-</script>
-</head>
+    <hr />
 
-<body>
-<div style="border: 1px solid red">
-<p id="p1">단락의 첫번째 줄.<br /></p>
-</div><br />
-
-<button onclick="addTextNode();">TextNode 추가하기.</button>
-
-</body>
+    <p id="p1">First line of paragraph.</p>
+  </body>
 </html>
 ```
 
-### 규약
+{{EmbedLiveSample('Examples')}}
 
-[createTextNode](http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/core.html#ID-1975348127)
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
+
+{{Compat}}

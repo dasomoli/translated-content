@@ -1,69 +1,99 @@
 ---
 title: margin
 slug: Web/CSS/margin
+page-type: css-shorthand-property
+browser-compat: css.properties.margin
 ---
 
 {{CSSRef}}
 
-**`margin`** CSS 속성은 요소의 네 방향 [바깥 여백 영역](/ko/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)을 설정합니다. {{cssxref("margin-top")}}, {{cssxref("margin-right")}}, {{cssxref("margin-bottom")}}, {{cssxref("margin-left")}}의 단축 속성입니다.
+The **`margin`** [CSS](/en-US/docs/Web/CSS) shorthand property sets the [margin area](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model#margin_area) on all four sides of an element.
 
 {{EmbedInteractiveExample("pages/css/margin.html")}}
 
-위와 아래 여백은 [대체 요소](/ko/docs/Web/CSS/Replaced_element)가 아닌 {{HTMLElement("span")}}, {{HTMLElement("code")}} 등 인라인 요소에선 아무 효과도 없습니다.
+## Constituent properties
 
-> **참고:** margin은 요소의 주위에 빈 공간을 추가합니다. 반면 {{cssxref("padding")}}은 요소의 **내부**에 빈 공간을 만듭니다.
+This property is a shorthand for the following CSS properties:
 
-## 구문
+- {{cssxref("margin-top")}}
+- {{cssxref("margin-right")}}
+- {{cssxref("margin-bottom")}}
+- {{cssxref("margin-left")}}
 
-```
-/* 네 면 모두 적용 */
+## Syntax
+
+```css
+/* Apply to all four sides */
 margin: 1em;
 margin: -3px;
 
-/* 세로방향 | 가로방향 */
+/* top and bottom | left and right */
 margin: 5% auto;
 
-/* 위 | 가로방향 | 아래 */
+/* top | left and right | bottom */
 margin: 1em auto 2em;
 
-/* 위 | 오른쪽 | 아래 | 왼쪽 */
+/* top | right | bottom | left */
 margin: 2px 1em 0 auto;
 
-/* 전역 값 */
+/* Global values */
 margin: inherit;
 margin: initial;
+margin: revert;
+margin: revert-layer;
 margin: unset;
 ```
 
-`margin` 속성은 한 개, 두 개, 세 개, 혹은 네 개의 값으로 지정할 수 있습니다. 각 값은 {{cssxref("&lt;length&gt;")}}, {{cssxref("&lt;percentage&gt;")}} 또는 키워드 [`auto`](#auto) 중 하나입니다. 음수 값은 요소와 이웃의 거리가 더 가까워지도록 합니다.
+The `margin` property may be specified using one, two, three, or four values. Each value is a {{cssxref("&lt;length&gt;")}}, a {{cssxref("&lt;percentage&gt;")}}, or the keyword `auto`. Negative values draw the element closer to its neighbors than it would be by default.
 
-- **한 개의 값**은 모든 네 면의 여백을 설정합니다.
-- **두 개의 값**을 지정하면 첫 번째는 **위와 아래**, 두 번째는 **왼쪽과 오른쪽** 여백을 설정합니다.
-- **세 개의 값**을 지정하면 첫 번째는 **위**, 두 번째는 **왼쪽과 오른쪽,** 세 번째 값은 **아래** 여백을 설정합니다.
-- **네 개의 값**을 지정하면 각각 **상, 우, 하, 좌** 순서로 여백을 지정합니다. (시계방향)
+- When **one** value is specified, it applies the same margin to **all four sides**.
+- When **two** values are specified, the first margin applies to the **top and bottom**, the second to the **left and right**.
+- When **three** values are specified, the first margin applies to the **top**, the second to the **right and left**, the third to the **bottom**.
+- When **four** values are specified, the margins apply to the **top**, **right**, **bottom**, and **left** in that order (clockwise).
 
-### 값
+### Values
 
 - {{cssxref("length")}}
-  - : 여백의 크기로 고정값 사용.
-- {{cssxref("&lt;percentage&gt;")}}
-  - : 여백의 크기로 [컨테이닝 블록](/ko/docs/Web/CSS/All_About_The_Containing_Block) 너비의 백분율 사용.
+  - : The size of the margin as a fixed value.
+- {{cssxref("percentage")}}
+  - : The size of the margin as a percentage, relative to the inline size (_width_ in a horizontal language, defined by {{cssxref("writing-mode")}}) of the [containing block](/en-US/docs/Web/CSS/Containing_block).
 - `auto`
-  - : 브라우저가 적절한 여백 크기를 선택. 예를 들어 요소를 중앙 정렬하고 싶을 때 사용할 수 있습니다.
+  - : The browser selects a suitable margin to use. For example, in certain cases this value can be used to center an element.
 
-### 형식 구문
+## Description
+
+This property can be used to set a margin on all four sides of an element. Margins create extra space _around_ an element, unlike {{cssxref("padding")}}, which creates extra space _within_ an element.
+
+The top and bottom margins have no effect on _non-[replaced](/en-US/docs/Web/CSS/Replaced_element)_ inline elements, such as {{HTMLElement("span")}} or {{HTMLElement("code")}}.
+
+### Horizontal centering
+
+To center something horizontally in modern browsers, you can use {{cssxref("display")}}`: flex;` {{cssxref("justify-content")}}`: center;`.
+
+However, in older browsers like IE8-9 that do not support Flexible Box Layout, these are not available. In order to center an element inside its parent, use `margin: 0 auto;`.
+
+### Margin collapsing
+
+Elements' top and bottom margins are sometimes collapsed into a single margin that is equal to the larger of the two margins. See [Mastering margin collapsing](/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing) for more information.
+
+## Formal definition
+
+{{cssinfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 간단한 예제
+### Simple example
 
 #### HTML
 
 ```html
-<div class="center">이 요소는 중앙 정렬입니다.</div>
-<div class="outside">이 요소는 컨테이너 밖으로 빠져 나갔습니다.</div>
+<div class="center">This element is centered.</div>
+
+<div class="outside">This element is positioned outside of its container.</div>
 ```
 
 #### CSS
@@ -82,58 +112,45 @@ margin: unset;
 }
 ```
 
-{{ EmbedLiveSample('간단한_예제') }}
+{{ EmbedLiveSample('Simple_example','100%',120) }}
 
-### 더 많은 예제
+### More examples
 
 ```css
-margin: 5%;                 /* 모두 5% */
+margin: 5%; /* All sides: 5% margin */
 
-margin: 10px;               /* 모두 10px */
+margin: 10px; /* All sides: 10px margin */
 
-margin: 1.6em 20px;         /* 상하: 1.6em */
-                            /* 좌우: 20px  */
+margin: 1.6em 20px; /* top and bottom: 1.6em margin */
+/* left and right: 20px margin */
 
-margin: 10px 3% -1em;       /* 상: 10px */
-                            /* 좌우: 3% */
-                            /* 하: -1em */
+margin: 10px 3% -1em; /* top:            10px margin */
+/* left and right: 3% margin   */
+/* bottom:         -1em margin */
 
-margin: 10px 3px 30px 5px;  /* 상: 10px */
-                            /* 우:  3px */
-                            /* 하: 30px */
-                            /* 좌:  5px */
+margin: 10px 3px 30px 5px; /* top:    10px margin */
+/* right:  3px margin  */
+/* bottom: 30px margin */
+/* left:   5px margin  */
 
-margin: 2em auto;           /* 상하: 2em */
-                            /* 수평 중앙정렬 */
+margin: 2em auto; /* top and bottom: 2em margin   */
+/* Box is horizontally centered */
 
-margin: auto;               /* 상하: 0 */
-                            /* 수평 중앙정렬 */
+margin: auto; /* top and bottom: 0 margin     */
+/* Box is horizontally centered */
 ```
 
-## 참고
-
-### 수평 중앙정렬
-
-현대 브라우저에서 어떤 요소를 중앙에 배치하려면 {{cssxref("display")}}`: flex;` {{cssxref("justify-content")}}`: center;`를 사용하면 됩니다.
-
-하지만 플렉스 박스 레이아웃을 지원하지 않는 Internet Explorer 8-9 등 오래된 브라우저를 지원해야 하면 `margin: 0 auto;`를 대신 사용하세요.
-
-### 여백 상쇄
-
-두 개 요소의 위와 아래 여백은 종종 합쳐져 하나의 여백이 되고, 그 크기는 둘 중 더 큰 여백과 같아집니다. 더 자세한 정보는 [여백 상쇄 정복](/ko/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)을 참고하세요.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-{{cssinfo}}
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [CSS 기본 박스 모델 입문](/ko/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
-- [여백 상쇄 정복](/ko/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)
-- {{cssxref("margin-top")}}, {{cssxref("margin-right")}}, {{cssxref("margin-bottom")}}, {{cssxref("margin-left")}}
+- [Introduction to the CSS basic box model](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
+- [Margin collapsing](/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)
+- {{cssxref("margin-top")}}, {{cssxref("margin-right")}}, {{cssxref("margin-bottom")}}, and {{cssxref("margin-left")}}
+- The mapped logical properties: {{cssxref("margin-block-start")}}, {{cssxref("margin-block-end")}}, {{cssxref("margin-inline-start")}}, and {{cssxref("margin-inline-end")}} and the shorthands {{cssxref("margin-block")}} and {{cssxref("margin-inline")}}

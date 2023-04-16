@@ -1,97 +1,150 @@
 ---
-title: '<var>: 변수 요소'
+title: "<var>: The Variable element"
 slug: Web/HTML/Element/var
+page-type: html-element
+browser-compat: html.elements.var
 ---
 
 {{HTMLSidebar}}
 
-**HTM `<var>` 요소**는 수학 표현 또는 프로그래밍에서 변수의 이름을 나타냅니다. 보통 현재 글씨체의 기울임꼴로 표시하지만, 브라우저마다 다를 수 있습니다.
+The **`<var>`** [HTML](/en-US/docs/Web/HTML) element represents the name of a variable in a mathematical expression or a programming context. It's typically presented using an italicized version of the current typeface, although that behavior is browser-dependent.
 
 {{EmbedInteractiveExample("pages/tabbed/var.html", "tabbed-shorter")}}
+
+## Attributes
+
+This element only includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
+
+## Usage notes
+
+### Related elements
+
+Other elements that are used in contexts in which `<var>` is commonly used include:
+
+- {{HTMLElement("code")}}: The HTML Code element
+- {{HTMLElement("kbd")}}: The HTML Keyboard input element
+- {{HTMLElement("samp")}}: The HTML Sample Output element
+
+If you encounter code that is mistakenly using `<var>` for style purposes rather than semantic purposes, you should either use a {{HTMLElement("span")}} with appropriate CSS or, an appropriate semantic element among the following:
+
+- {{HTMLElement("em")}}
+- {{HTMLElement("i")}}
+- {{HTMLElement("q")}}
+
+### Default style
+
+Most browsers apply {{cssxref("font-style")}} to `"italic"` when rendering `<var>`. This can be overridden in CSS, like this:
+
+```css
+var {
+  font-style: normal;
+}
+```
+
+## Examples
+
+### Basic example
+
+Here's a simple example, using `<var>` to denote variable names in a mathematical equation.
+
+```html
+<p>A simple equation: <var>x</var> = <var>y</var> + 2</p>
+```
+
+#### Result
+
+{{EmbedLiveSample("Basic_example", 650,80)}}
+
+### Overriding the default style
+
+Using CSS, you can override the default style for the `<var>` element. In this example, variable names are rendered using bold Courier if it's available, otherwise it falls back to the default monospace font.
+
+#### CSS
+
+```css
+var {
+  font: bold 15px "Courier", "Courier New", monospace;
+}
+```
+
+#### HTML
+
+```html
+<p>
+  The variables <var>minSpeed</var> and <var>maxSpeed</var> control the minimum
+  and maximum speed of the apparatus in revolutions per minute (RPM).
+</p>
+```
+
+This HTML uses `<var>` to enclose the names of two variables.
+
+#### Result
+
+{{EmbedLiveSample("Overriding_the_default_style", 650, 140)}}
+
+## Technical summary
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
       </th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
         >,
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >, 뚜렷한 콘텐츠.
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >, palpable content.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >Phrasing content</a
         >.
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
+      <th scope="row">Tag omission</th>
       <td>{{no_tag_omission}}</td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Permitted parents</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >를 허용하는 모든 요소.
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>모두</td>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
+          >No corresponding role</a
+        >
+      </td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>Any</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
-
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)만 포함합니다.
-
-## 사용 일람
-
-### 관련 요소
-
-`<var>`와 함께 자주 사용하는 요소는 다음과 같습니다.
-
-- {{htmlelement("code")}}: HTML 코드 요소
-- {{htmlelement("kbd")}}: HTML 키보드 입력 요소
-- {{htmlelement("smap")}}: HTML 출력 예시 요소
-
-`<var>`의 의미에 맞춰 사용하지 않고, 기울임꼴을 적용하기 위해 잘못 사용한 경우, 적절한 CSS와 {{htmlelement("span")}}를 사용해야 합니다. 혹은, 의미에 맞는 요소를 다음 목록에서 골라 사용하세요.
-
-- {{htmlelement("em")}}
-- {{htmlelement("i")}}
-- {{htmlelement("q")}}
-
-## 예제
-
-### 기본 예제
-
-`<var>`를 사용해 수학 등식의 변수명을 나타내는 간단한 예제입니다.
-
-```html
-A simple equation:
-  x = y + 2
-```
-
-{{EmbedLiveSample("기본_예제", 650, 80)}}
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

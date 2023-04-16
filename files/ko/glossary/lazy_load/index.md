@@ -1,12 +1,13 @@
 ---
 title: Lazy load
 slug: Glossary/Lazy_load
+page-type: glossary-definition
 ---
 
-**Lazy Loading**은 사용자의 행동이나 탐색 패턴에 기반해 유저가 필요할 때 일부 자원(이미지 같은)을 지연해서 로드하는 전략입니다. 통상적으로 이 자원들은 스크롤하여 발견될 때 로드됩니다.
+**Lazy loading** is a strategy that delays the loading of some assets (e.g., images) until they are needed by the user based on the user's activity and navigation pattern; typically, these assets are only loaded when they are scrolled into view.
 
-제대로 구현된 경우에는 자원 지연 로딩은 사용자에게 끊김이 없다는 느낌, 페이지가 움직이기 시작할 때까지 필요한 자원 감소, [대화식 시간](/ko/docs/Glossary/Time_to_interactive) 등 초기 로드 성능 향상에 도움이 됩니다.
+If correctly implemented, this delay in asset loading is seamless to the user experience and might help improve initial load performance, including [time to interactive](/en-US/docs/Glossary/Time_to_interactive), as fewer assets are required for the page to start working.
 
-## 같이 보기
+## See also
 
-- [Lazy loading](/ko/docs/Web/Performance/Lazy_loading)
+- [Lazy loading](/en-US/docs/Web/Performance/Lazy_loading)

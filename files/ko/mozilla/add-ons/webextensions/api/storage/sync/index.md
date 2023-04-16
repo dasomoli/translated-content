@@ -1,37 +1,106 @@
 ---
 title: storage.sync
 slug: Mozilla/Add-ons/WebExtensions/API/storage/sync
+page-type: webextension-api-property
+browser-compat: webextensions.api.storage.sync
 ---
+
 {{AddonSidebar()}}
 
-`sync` 저장 공간을 의미합니다. `sync` 저장 공간에 있는 데이터는 브라우저 사이에서 동기화되며 서로 다른 기기 간에 사용자가 브라우저에 로그인 한 경우 언제든지 접근 가능합니다.
+Represents the `sync` storage area. Items in `sync` storage are synced by the browser. The data is then available on all instances of the browser the user is logged into (for example, when using Firefox account on desktop versions of Firefox or a Google account on Chrome) across different devices.
 
-Firefox에서 `sync.storage` 는 고유한 부가기능 ID에 의존성을 갖고 동작합니다. `sync.storage`, 를 사용하신다면 [`어플리케이션`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/applications) manifest.json 파일에 있는 키를 통해 여러분의 부가기능에 고유한 ID를 부여해야 합니다.
+For Firefox, a user must have `Add-ons` checked under the "Sync Settings" options in `"about:preferences"`.
 
-이 API는 주로 여러분의 부가기능에 사용자 설정 정보를 저장하고 서로 다른 프로필 간에 설정을 동기화 할 수 있도록 사용됩니다. 이 API는 100KB까지 저장할 수 있습니다. 이보다 더 큰 데이터를 저장하려고 하는 경우, API 요청은 특정한 에러 메시지를 반환할 것입니다. 이 API는 아쉽게도 현재까지 특정한 성능을 보장하진 않습니다.
+Note that the implementation of `storage.sync` in Firefox relies on the Add-on ID. If you use `storage.sync`, you must set an ID for your extension using the [`browser_specific_settings`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/browser_specific_settings) manifest.json key.
 
-## 메소드
+The main use case of this API is to store preferences about your extension and allow the user to sync them to different profiles.
 
-`sync` 객체는 {{WebExtAPIRef("storage.StorageArea")}} 타입에 정의 된 메소드를 제공합니다:
+## Storage quotas for sync data
 
-- {{WebExtAPIRef("storage.StorageArea.get()")}}
-  - : 저장소 영역에서 하나 이상의 항목을 가져온다.
-- {{WebExtAPIRef("storage.StorageArea.getBytesInUse()")}}
-  - : 저장소의 사용된 크기를 바이트단위로 얻는다.
-- {{WebExtAPIRef("storage.StorageArea.set()")}}
-  - : 저장소에 하나 이상의 항목을 설정한다. 이미 있는 항목은 교체된다.
-- {{WebExtAPIRef("storage.StorageArea.remove()")}}
-  - : 저장소에서 하나 이상의 값을 지운다.
-- {{WebExtAPIRef("storage.StorageArea.clear()")}}
-  - : 저장소의 모든 항목을 지워서 비운다.
+The browser enforces limits on the amount of data each extension is allowed to store in the sync area:
 
-## Browser 호환성
+<table class="standard-table">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Description</th>
+      <th scope="col">Value in bytes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Maximum total size</td>
+      <td>
+        The maximum total amount of data that each extension is allowed to store
+        in the sync storage area, as measured by the JSON stringification of
+        every value plus every key's length.
+      </td>
+      <td>102400</td>
+    </tr>
+    <tr>
+      <td>Maximum item size</td>
+      <td>
+        The maximum size of any one item that each extension is allowed to store
+        in the sync storage area, as measured by the JSON stringification of the
+        item's value plus the length of its key.
+      </td>
+      <td>8192</td>
+    </tr>
+    <tr>
+      <td>Maximum number of items</td>
+      <td>
+        The maximum number of items that each extension can store in the sync storage
+        area.
+      </td>
+      <td><p>512</p></td>
+    </tr>
+  </tbody>
+</table>
 
-{{Compat}}
+If an extension attempts to store items that exceed these limits, calls to {{WebExtAPIRef("storage.StorageArea.set()", "storage.sync.set()")}} are rejected with an error. An extension can use {{WebExtAPIRef("storage.StorageArea.getBytesInUse()", "storage.sync.getBytesInUse()")}} to find out how much of its quota is in use.
+
+## Synchronization process
+
+In Firefox, extension data is synced every 10 minutes or whenever the user selects **Sync Now** in **Settings** > **Sync** or Firefox account. When the browser performs a sync, for each key stored, it:
+
+- compares the value on the server with the value at the last sync; if they are different, the value from the server is written to the key in the browser's sync storage.
+- compares the browser's sync storage values with the value on the server; if they are different, writes the browser's key value to the server.
+
+This means that, for each key, a change on the server takes precedence over a change in the browser's sync storage.
+
+This mechanism is generally OK for data such as user preferences or other global settings changed by the user.
+
+However, a key's value can be updated on one browser and synchronized then updated on a second browser before the second browser is synchronized, resulting in the local update being overwritten during sync. This mechanism is, therefore, not ideal for data aggregated across devices, such as a count of page views or how many times an option is used. To handle such cases, use {{WebExtAPIRef("storage.StorageArea.onChanged", "storage.sync.onChanged")}} to listen for sync updates from the server (for example, a count of page views on another browser instance). Then adjust the value locally to take the remote value into account (for example, update the total views based on the remote count and new local count).
+
+## Methods
+
+The `sync` object implements the methods defined on the {{WebExtAPIRef("storage.StorageArea")}} type:
+
+- {{WebExtAPIRef("storage.StorageArea.get()", "storage.sync.get()")}}
+  - : Retrieves one or more items from the storage area.
+- {{WebExtAPIRef("storage.StorageArea.getBytesInUse()", "storage.sync.getBytesInUse()")}}
+  - : Gets the amount of storage space (in bytes) used for one or more items in the storage area.
+- {{WebExtAPIRef("storage.StorageArea.set()", "storage.sync.set()")}}
+  - : Stores one or more items in the storage area. If the item exists, its value is updated.
+- {{WebExtAPIRef("storage.StorageArea.remove()", "storage.sync.remove()")}}
+  - : Removes one or more items from the storage area.
+- {{WebExtAPIRef("storage.StorageArea.clear()", "storage.sync.clear()")}}
+  - : Removes all items from the storage area.
+
+## Events
+
+The `sync` object implements the events defined on the {{WebExtAPIRef("storage.StorageArea")}} type:
+
+- {{WebExtAPIRef("storage.StorageArea.onChanged", "storage.sync.onChanged")}}
+  - : Fires when one or more items in the storage area change.
 
 {{WebExtExamples}}
 
-> **참고:** **Acknowledgements**This API is based on Chromium's [`chrome.storage`](https://developer.chrome.com/extensions/storage#property-sync) API. This documentation is derived from [`storage.json`](https://chromium.googlesource.com/chromium/src/+/master/extensions/common/api/storage.json) in the Chromium code.Microsoft Edge compatibility data is supplied by Microsoft Corporation and is included here under the Creative Commons Attribution 3.0 United States License.
+## Browser compatibility
+
+{{Compat}}
+
+> **Note:** This API is based on Chromium's [`chrome.storage`](https://developer.chrome.com/docs/extensions/reference/storage/#property-sync) API. This documentation is derived from [`storage.json`](https://chromium.googlesource.com/chromium/src/+/master/extensions/common/api/storage.json) in the Chromium code.
 
 <!--
 // Copyright 2015 The Chromium Authors. All rights reserved.

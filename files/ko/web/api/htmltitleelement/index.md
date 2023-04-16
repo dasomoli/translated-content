@@ -1,33 +1,62 @@
 ---
 title: HTMLTitleElement
 slug: Web/API/HTMLTitleElement
+page-type: web-api-interface
+browser-compat: api.HTMLTitleElement
 ---
 
 {{ APIRef("HTML DOM") }}
 
-**`HTMLTitleElement`** 인터페이스는 문서의 제목을 담습니다. {{domxref("HTMLElement")}} 인터페이스의 속성과 메서드를 상속합니다,
+The **`HTMLTitleElement`** interface is implemented by a document's {{ HTMLElement( "title" )}}. This element inherits all of the properties and methods of the {{domxref("HTMLElement")}} interface.
 
-{{InheritanceDiagram(600, 120)}}
+{{InheritanceDiagram}}
 
-## Properties
+## Instance properties
 
-_부모인 {{domxref("HTMLElement")}}로부터 상속합니다._
+_Inherits properties from its parent, {{domxref("HTMLElement")}}._
 
 - {{domxref("HTMLTitleElement.text")}}
-  - : 문서의 제목을 나타내는 {{domxref("DOMString")}}입니다.
+  - : A string representing the text of the document's title, and only the text part. For example, consider this:
 
-## 메서드
+```html
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>
+      Hello world! <span class="highlight">Isn't this wonderful</span> really?
+    </title>
+  </head>
+  <body></body>
+</html>
+```
 
-_부모인 {{domxref("HTMLElement")}}로부터 상속합니다._
+```js
+const title = document.querySelector("title");
+console.log(title.text); // yield: "Hello world!  really?"
+```
 
-## 명세
+As you can see, the tag `span` and its content were skipped.
+
+## Instance methods
+
+_No specific method; inherits methods from its parent, {{domxref("HTMLElement")}}._
+
+## Example
+
+Do not confuse: `document.title` with `document.querySelector('title')`
+
+The former is just a setter/getter method to set or get the inner text value of the document title, while the latter is the {{domxref("HTMLTitleElement")}} object. So you cannot write: `document.title.text = "Hello world!";`
+
+Instead, you can simply write: `document.title = "Hello world!";` which is an equivalent to `document.querySelector('title').text = "Hello world!";`
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 인터페이스를 구현하는 HTML 요소 {{ HTMLElement("title") }}.
+- The HTML element implementing this interface: {{ HTMLElement("title") }}.

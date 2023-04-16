@@ -1,53 +1,54 @@
 ---
-title: contextMenus
+title: menus
 slug: Mozilla/Add-ons/WebExtensions/API/menus
-original_slug: Mozilla/Add-ons/WebExtensions/API/contextMenus
+page-type: webextension-api
+browser-compat: webextensions.api.menus
 ---
 
 {{AddonSidebar}}
 
-브라우저의 메뉴 시스템에 항목을 추가한다.
+Add items to the browser's menu system.
 
-이 API는 크롬의 ["contextMenus"](https://developer.chrome.com/extensions/contextMenus) API를 모델로 했다. 크롬 확장앱이 브라우저의 콘텍스트 메뉴에 항목을 추가하는 API인데, 파이어폭스의 `browser.menus` API는 여기에 몇 가지 특징을 더했다.
+This API is modeled on Chrome's ["contextMenus"](https://developer.chrome.com/docs/extensions/reference/contextMenus/) API, which enables Chrome extensions to add items to the browser's context menu. The `browser.menus` API adds a few features to Chrome's API.
 
-파이어폭스 55 이전에 이 API의 원래 이름은 `contextMenus`였고, 지금도 이 이름은 별명으로 유지되므로 다른 브라우저에서도 동작하는 코드를 작성한다면 `contextMenus`를 사용할 수 있다.
+Before Firefox 55 this API was also originally named `contextMenus`, and that name has been retained as an alias, so you can use `contextMenus` to write code that works in Firefox and also in other browsers.
 
-이 API를 사용하려면 '`menus`' [권한](/ko/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions)이 필요하다. `menus` 대신에 `contextMenus`를 사용해도 된다. `contextMenus`를 사용했으면 API도 `browser.contextMenus`를 써야 한다.
+To use this API you need to have the `menus` [permission](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions). You may also use the `contextMenus` alias instead of `menus`, but if you do, the APIs must be accessed as `browser.contextMenus` instead.
 
-콘텐트 스크립트에서는 [`menus.getTargetElement()`](/en-US/docs/Mozilla/Add-ons/WebExtensions/API/menus/getTargetElement)만 사용할 수 있다.
+Except for [`menus.getTargetElement()`](/en-US/docs/Mozilla/Add-ons/WebExtensions/API/menus/getTargetElement), this API cannot be used from content scripts.
 
-## 메뉴 항목 만들기
+## Creating menu items
 
-메뉴 항목을 만들려면 {{WebExtAPIRef("contextMenus.create()")}} 메소드를 호출한다. 인수로 항목의 ID, 종류, 어떤 콘텍스트일 때 표시되는지 등이 포함된 객체를 전달한다.
+To create a menu item call the {{WebExtAPIRef("menus.create()")}} method. You pass this method an object containing options for the item, including the item ID, item type, and the contexts in which it should be shown.
 
-항목의 클릭을 처리하려면 {{WebExtAPIRef("contextMenus.onClicked")}} 이벤트에 리스너를 추가한다. 리스너는 상세한 이벤트 정보를 담고 있는{{WebExtAPIRef("contextMenus.OnClickData")}} 객체를 받는다.
+Listen for clicks on your menu item by adding a listener to the {{WebExtAPIRef("menus.onClicked")}} event. This listener will be passed a {{WebExtAPIRef("menus.OnClickData")}} object containing the event's details.
 
-콘텍스트 메뉴는 네 종류다. `create()`에 주어지는 `type` 속성으로 지정한다:
+You can create four different types of menu item, based on the value of the `type` property you supply in the options to `create()`:
 
-- "normal": 그냥 라벨만 표시된다.
-- "checkbox": 라벨 옆에 추가로 체크표시가 있어 두가지 상태를 표현하는 메뉴 항목이다. 클릭할 때마다 라벨표시가 토글된다. 리스너는 두가지 속성을 추가로 받게 된다: "checked"는 현재 체크 상태를 가리키고, "wasChecked"는 클릭 이벤트 전의 체크 상태를 가리킨다.
-- "radio": 여러 선택지 중의 하나라는 것을 표현하는 메뉴 항목이다. 라벨 옆에 체크표시가 있고, "checked"와 "wasChecked" 속성이 있다는 것은 checkbox와 같다. 다른 점은 radio 항목을 하나 이상 만들어 그룹이 되면, 오직 클릭하는 하나만 선택이 된다는 것이다.
-- "separator": 항목을 그룹짓는 구분선이다.
+- "normal": a menu item that just displays a label
+- "checkbox": a menu item that represents a binary state. It displays a checkmark next to the label. Clicking the item toggles the checkmark. The click listener will be passed two extra properties: "checked", indicating whether the item is checked now, and "wasChecked", indicating whether the item was checked before the click event.
+- "radio": a menu item that represents one of a group of choices. Just like a checkbox, this also displays a checkmark next to the label, and its click listener is passed "checked" and "wasChecked". However, if you create more than one radio item, then the items function as a group of radio items: only one item in the group can be checked, and clicking an item makes it the checked item.
+- "separator": a line separating a group of items.
 
-메뉴 항목을 하나 이상 만들면 그 항목들은 서버메뉴로 표시되고, 상위메뉴의 라벨은 확장의 이름이 된다. 예를 들어, "Menu demo"라는 확장이 있고, 그것이 두 개의 콘텍스트 메뉴 항목을 추가했다면:
+If you have created more than one context menu item or more than one tools menu item, then the items will be placed in a submenu. The submenu's parent will be labeled with the name of the extension. For example, here's an extension called "Menu demo" that's added two context menu items:
 
-![](menus-1.png)
+![Context menu with two items labeled click me, and click me too!](menus-1.png)
 
-## 아이콘
+## Icons
 
-["icons" manifest 키](/en-US/Add-ons/WebExtensions/manifest.json/icons)로 확장이 아이콘을 가졌으면, 콘텍스트 메뉴 항목은 라벨 옆에 아이콘을 함께 표시한다. 보통의 경우 16x16 픽셀이 표시되고, 고해상도이면 32x32 픽셀의 아이콘이 표시된다.
+If you've specified icons for your extension using the ["icons" manifest key](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/icons), your menu item will display the specified icon next to its label. The browser will try to choose a 16x16 pixel icon for a normal display or a 32x32 pixel icon for a high-density display:
 
-![](menus-2.png)
+![Context menu with two items labeled click me, and click me too!](menus-2.png)
 
-서버메뉴에 대해서만 {{WebExtAPIRef("menus.create()")}}에 `icons` 옵션을 전달해서 아이콘을 지정할 수 있다.
+Only for items in a submenu, you can specify custom icons by passing the `icons` option to {{WebExtAPIRef("menus.create()")}}:
 
-![](menus-3.png)
+![Context menu with two items labeled click me, and click me too!. The click me option is labeled with a green paint can icon. The click me too option is labeled with a blue paint can icon.](menus-3.png)
 
-## 예제
+## Example
 
-아래 콘텍스트 메뉴에는 4개 항목이 있다: 보통 항목 하나, 위-아래가 구분선인 두 개의 라디오 항목, 그리고 체크박스 항목 하나다. 라디오 항목에는 따로 아이콘이 지정되었다.
+Here's a context menu containing 4 items: a normal item, two radio items with separators on each side, and a checkbox. The radio items are given custom icons.
 
-![](menus-4.png)이 서버메뉴는 아래 코드로 만들 수 있다:
+![Context menu with four items labeled remove me, Greenify, Bluify, and uncheck me. Greenify and Bluify are radio buttons given custom icons.](menus-4.png)You could create a submenu like this using code like:
 
 ```js
 browser.menus.create({
@@ -92,7 +93,7 @@ browser.menus.create({
   contexts: ["all"]
 }, onCreated);
 
-var checkedState = true;
+let checkedState = true;
 
 browser.menus.create({
   id: "check-uncheck",
@@ -103,45 +104,57 @@ browser.menus.create({
 }, onCreated);
 ```
 
-## 타입
+## Types
 
-- {{WebExtAPIRef("contextMenus.ContextType")}}
-  - : 메뉴가 표시되게 하는 여러 콘텍스트. 가능한 값은: "all", "audio", "browser_action", "editable", "frame", "image", "link", "page", "page_action", "password", "selection", "tab", "video".
-- {{WebExtAPIRef("contextMenus.ItemType")}}
-  - : 메뉴 항목의 종류: "normal", "checkbox", "radio", "separator".
-- {{WebExtAPIRef("contextMenus.OnClickData")}}
-  - : 메뉴 항목이 클릭됐을 때 보내지는 정보.
+- {{WebExtAPIRef("menus.ContextType")}}
+  - : The different contexts a menu can appear in.
+- {{WebExtAPIRef("menus.ItemType")}}
+  - : The type of menu item: "normal", "checkbox", "radio", "separator".
+- {{WebExtAPIRef("menus.OnClickData")}}
+  - : Information sent when a menu item is clicked.
 
-## 속성
+## Properties
 
-- {{WebExtAPIRef("contextMenus.ACTION_MENU_TOP_LEVEL_LIMIT")}}
-  - : 최상위에 추가할 수 있는 ContextType이 "browser_action"이나 "page_action"인 메뉴 항목의 최대 수량.
+- {{WebExtAPIRef("menus.ACTION_MENU_TOP_LEVEL_LIMIT")}}
+  - : The maximum number of top level extension items that can be added to a menu item whose ContextType is "browser_action" or "page_action".
 
-## 함수
+## Functions
 
-- {{WebExtAPIRef("contextMenus.create()")}}
-  - : 새 콘텍스트 메뉴 항목을 만든다.
-- {{WebExtAPIRef("contextMenus.update()")}}
-  - : 전에 만든 콘텍스트 메뉴 항목을 갱신한다.
-- {{WebExtAPIRef("contextMenus.remove()")}}
-  - : 콘텍스트 메뉴 항목을 지운다.
-- {{WebExtAPIRef("contextMenus.removeAll()")}}
-  - : 확자앱에 추가된 모든 콘텍스트 메뉴 항목을 지운다.
+- {{WebExtAPIRef("menus.create()")}}
+  - : Creates a new menu item.
+- {{WebExtApiRef("menus.getTargetElement()")}}
+  - : Returns the element for a given `info.targetElementId`.
+- {{WebExtApiRef("menus.overrideContext()")}}
+  - : Hide all default Firefox menu items in favor of providing a custom context menu UI.
+- {{WebExtAPIRef("menus.refresh()")}}
+  - : Update a menu that's currently being displayed.
+- {{WebExtAPIRef("menus.remove()")}}
+  - : Removes a menu item.
+- {{WebExtAPIRef("menus.removeAll()")}}
+  - : Removes all menu items added by this extension.
+- {{WebExtAPIRef("menus.update()")}}
+  - : Updates a previously created menu item.
 
-## 이벤트
+## Events
 
-- {{WebExtAPIRef("contextMenus.onClicked")}}
-  - : 콘텍스트 메뉴 항목이 클릭하면 발생한다.
+- {{WebExtAPIRef("menus.onClicked")}}
+  - : Fired when a menu item is clicked.
+- {{WebExtAPIRef("menus.onHidden")}}
+  - : Fired when the browser hides a menu.
+- {{WebExtAPIRef("menus.onShown")}}
+  - : Fired when the browser shows a menu.
 
-## 브라우저 호환성
-
-{{ Compat("webextensions.api.menus", 1, "true") }}
+## Browser compatibility
 
 {{WebExtExamples("h2")}}
 
-> **참고:** **Acknowledgements**This API is based on Chromium's [`chrome.contextMenus`](https://developer.chrome.com/extensions/contextMenus) API. This documentation is derived from [`context_menus.json`](https://chromium.googlesource.com/chromium/src/+/master/chrome/common/extensions/api/context_menus.json) in the Chromium code.
+{{Compat}}
 
-```
+> **Note:**
+>
+> This API is based on Chromium's [`chrome.contextMenus`](https://developer.chrome.com/docs/extensions/reference/contextMenus/) API. This documentation is derived from [`context_menus.json`](https://chromium.googlesource.com/chromium/src/+/master/chrome/common/extensions/api/context_menus.json) in the Chromium code.
+
+<!--
 // Copyright 2015 The Chromium Authors. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -169,4 +182,4 @@ browser.menus.create({
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-```
+-->

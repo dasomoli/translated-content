@@ -1,58 +1,72 @@
 ---
-title: 단항 부정 (-)
+title: Unary negation (-)
 slug: Web/JavaScript/Reference/Operators/Unary_negation
+page-type: javascript-operator
+browser-compat: javascript.operators.unary_negation
 ---
+
 {{jsSidebar("Operators")}}
 
-단항 부정 연산자(`-`)는 피연산자 앞에 위치하며, 피연산자의 부호를 부정합니다. 즉 양수는 음수로, 음수는 양수로 바꿉니다.
+The **unary negation (`-`)** operator precedes its operand and negates it.
 
 {{EmbedInteractiveExample("pages/js/expressions-unary-negation.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 -x
 ```
 
-## 예제
+## Description
 
-### 숫자 부정하기
+The `-` operator is overloaded for two types of operands: number and [BigInt](/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt). It first [coerces the operand to a numeric value](/en-US/docs/Web/JavaScript/Data_structures#numeric_coercion) and tests the type of it. It performs BigInt negation if the operand becomes a BigInt; otherwise, it performs number negation.
+
+## Examples
+
+### Negating numbers
 
 ```js
 const x = 3;
 const y = -x;
-
-// y = -3
-// x = 3
+// y is -3; x is 3
 ```
 
-### 숫자가 아닌 값을 부정하기
+### Negating non-numbers
 
-단항 부정 연산자는 숫자가 아닌 값을 숫자로 변환할 수 있습니다.
+The unary negation operator can convert a non-number into a number.
 
 ```js
 const x = "4";
 const y = -x;
 
-// y = -4
+// y is -4
 ```
 
-## 명세
+BigInts can be negated using the unary negation operator.
+
+```js
+const x = 4n;
+const y = -x;
+
+// y is -4n
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [더하기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Addition)
-- [빼기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Subtraction)
-- [나누기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Division)
-- [곱하기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Multiplication)
-- [나머지 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Remainder)
-- [지수 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Exponentiation)
-- [증가 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Increment)
-- [감소 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Decrement)
-- [단항 더하기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Unary_plus)
+- [Addition operator](/en-US/docs/Web/JavaScript/Reference/Operators/Addition)
+- [Subtraction operator](/en-US/docs/Web/JavaScript/Reference/Operators/Subtraction)
+- [Division operator](/en-US/docs/Web/JavaScript/Reference/Operators/Division)
+- [Multiplication operator](/en-US/docs/Web/JavaScript/Reference/Operators/Multiplication)
+- [Remainder operator](/en-US/docs/Web/JavaScript/Reference/Operators/Remainder)
+- [Exponentiation operator](/en-US/docs/Web/JavaScript/Reference/Operators/Exponentiation)
+- [Increment operator](/en-US/docs/Web/JavaScript/Reference/Operators/Increment)
+- [Decrement operator](/en-US/docs/Web/JavaScript/Reference/Operators/Decrement)
+- [Unary plus operator](/en-US/docs/Web/JavaScript/Reference/Operators/Unary_plus)

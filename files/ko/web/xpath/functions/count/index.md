@@ -5,27 +5,27 @@ slug: Web/XPath/Functions/count
 
 {{ XsltRef() }}
 
-`count` 함수는 노드 집합의 노드 수를 세고 나서 정수로 반환합니다.
+The `count` function counts the number of nodes in a node-set and returns an integer.
 
-### 문법
+### Syntax
 
 ```
-count(node-set )
+count( node-set )
 ```
 
-### 인수
+### Arguments
 
 - `node-set`
-  - : 셀 노드 집합.
+  - : The node set to be counted.
 
-### 반환
+### Returns
 
-노드 집합의 노드 수를 나타내는 정수.
+An integer representing the number of nodes in a node-set.
 
-### 정의
+### Defined
 
-[1.0 4.1](http://www.w3.org/TR/xpath#function-count)
+[XPath 1.0 4.1](https://www.w3.org/TR/1999/REC-xpath-19991116/#function-count)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

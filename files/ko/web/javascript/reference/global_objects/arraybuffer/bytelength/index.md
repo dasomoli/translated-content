@@ -1,39 +1,37 @@
 ---
 title: ArrayBuffer.prototype.byteLength
 slug: Web/JavaScript/Reference/Global_Objects/ArrayBuffer/byteLength
+page-type: javascript-instance-accessor-property
+browser-compat: javascript.builtins.ArrayBuffer.byteLength
 ---
 
 {{JSRef}}
 
-**`byteLength`** 접근자 속성은 {{jsxref("ArrayBuffer")}}의 길이를 바이트 단위로 반환합니다.
+The **`byteLength`** accessor property of {{jsxref("ArrayBuffer")}} instances returns the length (in bytes) of this array buffer.
 
 {{EmbedInteractiveExample("pages/js/arraybuffer-bytelength.html")}}
 
-## 구문
+## Description
+
+The `byteLength` property is an accessor property whose set accessor function is `undefined`, meaning that you can only read this property. The value is established when the array is constructed and cannot be changed. This property returns 0 if this `ArrayBuffer` has been detached.
+
+## Examples
+
+### Using byteLength
 
 ```js
-    arraybuffer.byteLength
-```
-
-## 설명
-
-`byteLength` 속성은 설정자 속성이 `undefined`인 접근자 속성으로, 오직 읽기만 가능합니다. `byteLength`는 배열 버퍼를 처음 생성할 때 정해지며 바꿀 수 없습니다. `ArrayBuffer`가 분리된 경우 0을 반환합니다.
-
-## 예제
-
-```js
-var buffer = new ArrayBuffer(8);
+const buffer = new ArrayBuffer(8);
 buffer.byteLength; // 8
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("ArrayBuffer")}}

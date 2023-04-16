@@ -1,104 +1,115 @@
 ---
 title: handler.set()
 slug: Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/set
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Proxy.handler.set
 ---
 
 {{JSRef}}
 
-**`handler.set()`** 메서드는 속성 값을 설정을 위한 트랩입니다.
+The **`handler.set()`** method is a trap for the `[[Set]]` [object internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods), which is used by operations such as using [property accessors](/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors) to set a property's value.
 
 {{EmbedInteractiveExample("pages/js/proxyhandler-set.html", "taller")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 new Proxy(target, {
   set(target, property, value, receiver) {
   }
 });
 ```
 
-### 매개 변수
+### Parameters
 
-다음 매개변수는 `set()` 메서드에 전달됩니다. `this`는 처리기에 바인딩됩니다.
+The following parameters are passed to the `set()` method. `this`
+is bound to the handler.
 
 - `target`
-  - : 대상 객체
+  - : The target object.
 - `property`
-  - : 설정할 속성의 이름 또는 {{jsxref("Symbol")}}
+  - : The name or {{jsxref("Symbol")}} of the property to set.
 - `value`
-  - : 설정할 속성의 새 값
+  - : The new value of the property to set.
 - `receiver`
 
-  - : 할당이 지시된 원래 객체입니다. 이것은 일반적으로 프록시 자체입니다.
-    그러나 `set()` 처리기는 프로토타입 체인이나 다양한 다른 방법 등을 통해
-    간접적으로 호출할 수도 있습니다.
+  - : The object to which the assignment was originally directed. This is usually the
+    proxy itself. But a `set()` handler can also be called indirectly, via
+    the prototype chain or various other ways.
 
-    예를 들어, 스크립트가 `obj.name = "jen"`을 수행하는데,
-    `obj`는 프록시가 아니면서 속성 `.name`이 없고,
-    프로토타입 체인에는 프록시가 있다고 가정해봅시다.
-    이떄 해당 프록시의 `set()` 처리기가 호출되고나서 `obj`가 수신자로 전달됩니다.
+    For example, suppose a script does
+    `obj.name = "jen"`, and `obj` is not a
+    proxy, and has no own property `.name`, but it has a proxy on its
+    prototype chain. That proxy's `set()` handler will be called, and
+    `obj` will be passed as the receiver.
 
-### 반환 값
+### Return value
 
-`set()` 메서드는 불리언 값을 반환합니다.
+The `set()` method should return a boolean value.
 
-- 할당이 성공했으면 `true`를 반환합니다.
-- 엄격 모드에서 `set()` 메서드가 `false`를 반환하면 {{jsxref("TypeError")}} 예외가 발생합니다.
+- Return `true` to indicate that assignment succeeded.
+- If the `set()` method returns `false`, and the assignment
+  happened in strict-mode code, a {{jsxref("TypeError")}} will be thrown.
 
-## 설명
+## Description
 
-**`handler.set()`** 메서드는 속성 값을 설정을 위한 트랩입니다.
+### Interceptions
 
-### 가로채기
+This trap can intercept these operations:
 
-이 트랩은 다음 작업을 가로챌 수 있습니다.
-
-- 속성 할당: `proxy[foo] = bar`와 `proxy.foo = bar`
-- 상속된 속성 할당:
-  `Object.create(proxy)[foo] = bar`
+- Property assignment: `proxy[foo] = bar` and `proxy.foo = bar`
 - {{jsxref("Reflect.set()")}}
 
-### 불변 조건
+Or any other operation that invokes the `[[Set]]` [internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods).
 
-다음 불변 조건이 위반되면 프록시에서 {{jsxref("TypeError")}}가 발생합니다.
+### Invariants
 
-- 대상 객체 속성이 쓰기 및 구성할 수 없는 데이터 속성인 경우, 속성 값을 대상 객체 속성의 값과 다르게 변경할 수 없습니다.
-- 대상 객체 속성의 `[[Set]]` 속성이 `undefined` 인 구성 불가능한 접근자 속성인 경우, 속성 값을 설정할 수 없습니다.
-- 엄격 모드에서 `set()` 처리기가 `false`를 반환하면 {{jsxref("TypeError")}} 예외가 발생합니다.
+If the following invariants are violated, the trap throws a {{jsxref("TypeError")}} when invoked.
 
-## 예제
+- Cannot change the value of a property to be different from the value of the
+  corresponding target object property if the corresponding target object property is a
+  non-writable, non-configurable data property.
+- Cannot set the value of a property if the corresponding target object property is a
+  non-configurable accessor property that has `undefined` as its
+  `[[Set]]` attribute.
+- In strict mode, a `false` return value from the `set()`
+  handler will throw a {{jsxref("TypeError")}} exception.
 
-### 속성 값 설정 트랩
+## Examples
 
-다음 코드는 속성 값을 설정하는 것을 트랩합니다.
+### Trap setting of a property value
+
+The following code traps setting a property value.
 
 ```js
-const p = new Proxy({}, {
-  set(target, prop, value, receiver) {
-    target[prop] = value;
-    console.log(`property set: ${prop} = ${value}`);
-    return true;
-  }
-})
+const p = new Proxy(
+  {},
+  {
+    set(target, prop, value, receiver) {
+      target[prop] = value;
+      console.log(`property set: ${prop} = ${value}`);
+      return true;
+    },
+  },
+);
 
-console.log('a' in p);  // false
+console.log("a" in p); // false
 
-p.a = 10;               // "property set: a = 10"
-console.log('a' in p);  // true
-console.log(p.a);       // 10
+p.a = 10; // "property set: a = 10"
+console.log("a" in p); // true
+console.log(p.a); // 10
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Proxy")}}
-- [`Proxy()` 생성자](/ko/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy)
+- [`Proxy()` constructor](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy)
 - {{jsxref("Reflect.set()")}}

@@ -1,81 +1,92 @@
 ---
 title: height
 slug: Web/CSS/height
+page-type: css-property
+browser-compat: css.properties.height
 ---
 
 {{CSSRef}}
 
-**`height`** CSS 속성은 요소의 높이를 지정합니다. 기본값은 콘텐츠 영역의 높이지만, {{cssxref("box-sizing")}}이 `border-box`라면 테두리 영역의 높이를 설정합니다.
+The **`height`** CSS property specifies the height of an element. By default, the property defines the height of the [content area](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model#content_area). If {{cssxref("box-sizing")}} is set to `border-box`, however, it instead determines the height of the [border area](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model#border_area).
 
 {{EmbedInteractiveExample("pages/css/height.html")}}
 
-{{cssxref("min-height")}}와 {{cssxref("max-height")}} 속성은 `height`를 덮어씁니다.
+The {{cssxref("min-height")}} and {{cssxref("max-height")}} properties override `height`.
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 */
-height: auto;
-
-/* <length> */
+/* <length> values */
 height: 120px;
 height: 10em;
+height: 100vh;
 
-/* <percentage> */
+/* <percentage> value */
 height: 75%;
 
-/* 전역 값 */
+/* Keyword values */
+height: max-content;
+height: min-content;
+height: fit-content(20em);
+height: auto;
+
+/* Global values */
 height: inherit;
 height: initial;
+height: revert;
+height: revert-layer;
 height: unset;
 ```
 
-### 값
+### Values
 
 - {{cssxref("&lt;length&gt;")}}
-  - : 높이의 절대값.
+  - : Defines the height as an absolute value.
 - {{cssxref("&lt;percentage&gt;")}}
-  - [: 컨테이닝 블록](/ko/docs/Web/CSS/All_About_The_Containing_Block) 높이의 백분율.
-- `border-box` {{experimental_inline}}
-  - : 앞선 {{cssxref("&lt;length&gt;")}} 또는 {{cssxref("&lt;percentage&gt;")}}가 요소의 보더 박스에 적용.
-- `content-box` {{experimental_inline}}
-  - : 앞선 {{cssxref("&lt;length&gt;")}} 또는 {{cssxref("&lt;percentage&gt;")}}가 요소의 콘텐츠 박스에 적용.
+  - : Defines the height as a percentage of the containing block's height.
 - `auto`
-  - : 브라우저가 요소의 높이를 계산하고 선택.
-- `fill` {{experimental_inline}}
-  - : 글쓰기 방향에 따라 `fill-available` 인라인 크기 또는 `fill-available` 블록 크기를 사용.
-- `max-content` {{experimental_inline}}
-  - : 본질적인 선호 높이.
-- `min-content` {{experimental_inline}}
-  - : 본질적인 최소 높이.
-- `available` {{experimental_inline}}
-  - : 컨테이닝 블록 높이에서 수평 여백, 테두리, 패딩을 제외한 값.
-- `fit-content` {{experimental_inline}}
+  - : The browser will calculate and select a height for the specified element.
+- `max-content`
+  - : The intrinsic preferred height.
+- `min-content`
+  - : The intrinsic minimum height.
+- `fit-content`
+  - : Box will use the available space, but never more than `max-content`
+- `fit-content({{cssxref("&lt;length-percentage&gt;")}})`
+  - : Uses the fit-content formula with the available space replaced by the specified argument, i.e. `min(max-content, max(min-content, <length-percentage>))`
+- {{cssxref("clamp", "clamp()")}}
+  - : Enables selecting a middle value within a range of values between a defined minimum and maximum
 
-  - : 다음 중 더 큰 값.
+## Accessibility concerns
 
-    - 본질적인 최소 높이
-    - 본질적인 선호 높이와 사용 가능한 높이 중 작은 값
+Ensure that elements set with a `height` aren't truncated and/or don't obscure other content when the page is zoomed to increase text size.
 
-### 형식 구문
+- [MDN Understanding WCAG, Guideline 1.4 explanations](/en-US/docs/Web/Accessibility/Understanding_WCAG/Perceivable#guideline_1.4_make_it_easier_for_users_to_see_and_hear_content_including_separating_foreground_from_background)
+- [Understanding Success Criterion 1.4.4 | W3C Understanding WCAG 2.0](https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-scale.html)
+
+## Formal definition
+
+{{CSSInfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### HTML
+### Setting height using pixels and percentages
+
+#### HTML
 
 ```html
-<div id="taller">제 키는 50픽셀입니다.</div>
-<div id="shorter">제 키는 25픽셀입니다.</div>
+<div id="taller">I'm 50 pixels tall.</div>
+<div id="shorter">I'm 25 pixels tall.</div>
 <div id="parent">
-  <div id="child">
-    제 키는 부모의 절반입니다.
-  </div>
+  <div id="child">I'm half the height of my parent.</div>
 </div>
 ```
 
-### CSS
+#### CSS
 
 ```css
 div {
@@ -102,27 +113,22 @@ div {
 }
 ```
 
-### 결과
+#### Result
 
-{{EmbedLiveSample('예제', 'auto', 240)}}
+{{EmbedLiveSample('Setting_height_using_pixels_and_percentages', 'auto', 240)}}
 
-## 접근성 고려사항
-
-페이지를 확대하거나 글꼴 크기를 늘렸을 때 height 속성을 지정한 요소가 잘리거나 다른 내용을 가리지 않도록 확인하세요.
-
-- [MDN Understanding WCAG, Guideline 1.4 explanations](/ko/docs/Web/Accessibility/Understanding_WCAG/Perceivable#Guideline_1.4_Make_it_easier_for_users_to_see_and_hear_content_including_separating_foreground_from_background)
-- [Understanding Success Criterion 1.4.4 | W3C Understanding WCAG 2.0](https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-scale.html)
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-{{cssinfo}}
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [box model](/ko/docs/CSS/box_model), {{cssxref("width")}}, {{cssxref("box-sizing")}}, {{cssxref("min-height")}}, {{cssxref("max-height")}}
+- [The box model](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
+- {{cssxref("width")}}
+- {{cssxref("box-sizing")}}
+- {{cssxref("min-height")}}, {{cssxref("max-height")}}
+- The mapped logical properties: {{cssxref("block-size")}}, {{cssxref("inline-size")}}

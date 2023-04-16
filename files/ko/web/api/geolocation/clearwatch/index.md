@@ -1,66 +1,78 @@
 ---
-title: Geolocation.clearWatch()
+title: "Geolocation: clearWatch() method"
+short-title: clearWatch()
 slug: Web/API/Geolocation/clearWatch
+page-type: web-api-instance-method
+browser-compat: api.Geolocation.clearWatch
 ---
 
 {{securecontext_header}}{{ APIref("Geolocation API") }}
 
-**`Geolocation.clearWatch()`** 메서드는 {{domxref("Geolocation.watchPosition()")}}로 등록한 위치 변화 감지 콜백을 해제합니다.
+The **`Geolocation.clearWatch()`** method is used to unregister
+location/error monitoring handlers previously installed using
+{{domxref("Geolocation.watchPosition()")}}.
 
-## 구문
+## Syntax
 
-```js
-navigator.geolocation.clearWatch(id);
+```js-nolint
+clearWatch(id)
 ```
 
-### 매개변수
+### Parameters
 
 - `id`
-  - : {{domxref("Geolocation.watchPosition()")}} 메서드가 반환하는 콜백 ID.
+  - : The ID number returned by the {{domxref("Geolocation.watchPosition()")}} method when
+    installing the handler you wish to remove.
 
-## 예제
+### Return value
+
+None ({{jsxref("undefined")}}).
+
+## Examples
 
 ```js
-var id, target, option;
+let id;
+let target;
+let options;
 
 function success(pos) {
-  var crd = pos.coords;
+  const crd = pos.coords;
 
   if (target.latitude === crd.latitude && target.longitude === crd.longitude) {
-    console.log('Congratulation, you reach the target');
+    console.log("Congratulations, you've reached the target!");
     navigator.geolocation.clearWatch(id);
   }
-};
+}
 
 function error(err) {
-  console.warn('ERROR(' + err.code + '): ' + err.message);
-};
+  console.error(`ERROR(${err.code}): ${err.message}`);
+}
 
 target = {
-  latitude : 0,
+  latitude: 0,
   longitude: 0,
-}
+};
 
 options = {
   enableHighAccuracy: false,
   timeout: 5000,
-  maximumAge: 0
+  maximumAge: 0,
 };
 
 id = navigator.geolocation.watchPosition(success, error, options);
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Geolocation API 사용하기](/ko/docs/Web/API/Geolocation_API/Using_the_Geolocation_API)
+- [Using geolocation](/en-US/docs/Web/API/Geolocation_API/Using_the_Geolocation_API)
 - {{domxref("Geolocation")}}
 - {{domxref("Geolocation.watchPosition()")}}
 - {{domxref("Geolocation.getCurrentPosition()")}}

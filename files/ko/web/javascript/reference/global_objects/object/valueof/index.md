@@ -1,101 +1,110 @@
 ---
 title: Object.prototype.valueOf()
 slug: Web/JavaScript/Reference/Global_Objects/Object/valueOf
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Object.valueOf
 ---
 
 {{JSRef}}
 
-**`valueOf()`** 메서드는 특정 객체의 원시 값을 반환합니다.
+The **`valueOf()`** method of {{jsxref("Object")}} converts the `this` value [to an object](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#object_coercion). This method is meant to be overridden by derived objects for custom [type conversion](/en-US/docs/Web/JavaScript/Data_structures#type_coercion) logic.
 
 {{EmbedInteractiveExample("pages/js/object-prototype-valueof.html")}}
 
-## 구문
+## Syntax
 
-```js
-object.valueOf()
+```js-nolint
+valueOf()
 ```
 
-### 반환 값
+### Parameters
 
-객체의 원시 값.
+None.
 
-> **참고:** [(단항) 더하기 기호](/ko/docs/Web/JavaScript/Reference/Operators#단항_연산자) 는 가끔 `valueOf` 의 단축 표현으로 사용됩니다. 예를 들면, 다음과 같은 표현을 보세요. `+new Number()`. [단항 더하기 사용하기](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/valueOf#단항_더하기_사용하기).도 참조 하세요.
+### Return value
 
-## 설명
+The `this` value, converted to an object.
 
-JavaScript는 객체를 원시 값으로 변환할 때 `valueOf` 메서드를 호출합니다. 보통 원시 값을 필요로 할 때 알아서 사용하므로 직접 호출해야 하는 경우는 매우 드뭅니다.
+> **Note:** In order for `valueOf` to be useful during type conversion, it must return a primitive. Because all primitive types have their own `valueOf()` methods, calling `aPrimitiveValue.valueOf()` generally does not invoke `Object.prototype.valueOf()`.
 
-기본적으로 {{jsxref("Object")}}의 모든 후손 객체는 `valueOf`를 상속받습니다. 내장된 핵심 객체는 모두 `valueOf`를 재정의해 적합한 값을 반환합니다. 어떤 객체가 원시 값을 가지고 있지 않다면, `valueOf`는 객체 스스로를 반환합니다.
+## Description
 
-여러분의 코드에서 `valueOf`를 호출해 내장 객체를 원시 값으로 변환할 수 있습니다. 사용자 정의 객체를 만들 땐 `valueOf`를 재정의해 {{jsxref("Object")}}의 메서드 대신 다른 행동을 부여할 수도 있습니다.
+JavaScript calls the `valueOf` method to [convert an object to a primitive value](/en-US/docs/Web/JavaScript/Data_structures#type_coercion). You rarely need to invoke the `valueOf` method yourself; JavaScript automatically invokes it when encountering an object where a primitive value is expected.
 
-### 사용자 정의 객체의 valueOf 오버라이딩
+This method is called in priority by [numeric conversion](/en-US/docs/Web/JavaScript/Data_structures#numeric_coercion) and [primitive conversion](/en-US/docs/Web/JavaScript/Data_structures#primitive_coercion), but [string conversion](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_coercion) calls `toString()` in priority, and `toString()` is very likely to return a string value (even for the {{jsxref("Object.prototype.toString()")}} base implementation), so `valueOf()` is usually not called in this case.
 
-기본 `valueOf` 메서드 대신 사용할 함수를 생성할 수 있습니다. 이 때 함수는 매개변수를 받지 않아야 합니다.
+All objects that inherit from `Object.prototype` (that is, all except [`null`-prototype objects](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#null-prototype_objects)) inherit the `toString()` method. The `Object.prototype.valueOf()` base implementation is deliberately useless: by returning an object, its return value will never be used by any [primitive conversion algorithm](/en-US/docs/Web/JavaScript/Data_structures#type_coercion). Many built-in objects override this method to return an appropriate primitive value. When you create a custom object, you can override `valueOf()` to call a custom method, so that your custom object can be converted to a primitive value. Generally, `valueOf()` is used to return a value that is most meaningful for the object — unlike `toString()`, it does not need to be a string. Alternatively, you can add a [`@@toPrimitive`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toPrimitive) method, which allows even more control over the conversion process, and will always be preferred over `valueOf` or `toString` for any type conversion.
 
-`MyNumberType`이라는 객체 형태가 존재하고, 이 객체의 `valueOf` 메서드를 만들고 싶다고 가정하겠습니다. 다음의 코드는 객체의 `valueOf` 메서드에 사용자 정의 함수를 할당합니다.
+## Examples
+
+### Using valueOf()
+
+The base `valueOf()` method returns the `this` value itself, converted to an object if it isn't already. Therefore its return value will never be used by any primitive conversion algorithm.
 
 ```js
-MyNumberType.prototype.valueOf = function() { return customPrimitiveValue; };
+const obj = { foo: 1 };
+console.log(obj.valueOf() === obj); // true
+
+console.log(Object.prototype.valueOf.call("primitive"));
+// [String: 'primitive'] (a wrapper object)
 ```
 
-위의 코드가 활성화된 상태에서 어떤 `MyNumberType` 객체를 원시 값으로 표현해야 하면 JavaScript가 자동으로 저 함수를 실행합니다.
+### Overriding valueOf for custom objects
 
-이 객체의 `valueOf` 메서드는 보통 JavaScript가 호출하겠지만 다음처럼 직접 호출할 수도 있습니다.
+You can create a function to be called in place of the default `valueOf` method. Your function should take no arguments, since it won't be passed any when called during type conversion.
 
-```js
-myNumberType.valueOf()
-```
-
-> **참고:** 문자열 문맥에서 객체-문자열 변환은 {{jsxref("Object.toString", "toString()")}} 메서드를 사용하며, {{jsxref("String")}} 객체의 `valueOf`를 사용해 원시 문자열로 변환하는 것과는 다릅니다. 모든 객체는, 비록 결과가 "`[object type]`" 뿐이라도 문자열 변환 기능을 가지고 있습니다. 그러나 대다수의 객체는 숫자, 불리언, 함수 등으로 변환되지 않습니다.
-
-## 예제
-
-### 커스텀 타입에 valueOf 사용하기
+For example, you can add a `valueOf` method to your custom class `Box`.
 
 ```js
-function MyNumberType(n) {
-    this.number = n;
+class Box {
+  #value;
+  constructor(value) {
+    this.#value = value;
+  }
+  valueOf() {
+    return this.#value;
+  }
 }
-
-MyNumberType.prototype.valueOf = function() {
-    return this.number;
-};
-
-var myObj = new MyNumberType(4);
-myObj + 3; // 7
 ```
 
-### 단항 더하기 사용하기
+With the preceding code in place, any time an object of type `Box` is used in a context where it is to be represented as a primitive value (but not specifically a string), JavaScript automatically calls the function defined in the preceding code.
 
 ```js
-    +"5" // 5 (string to number)
-    +"" // 0 (string to number)
-    +"1 + 2" // NaN (doesn't evaluate)
-    +new Date() // same as (new Date()).getTime()
-    +"foo" // NaN (string to number)
-    +{} // NaN
-    +[] // 0 (toString() returns an empty string list)
-    +[1] // 1
-    +[1,2] // NaN
-    +new Set([1]) // NaN
-    +BigInt(1) // Uncaught TypeError: Cannot convert a BigInt value to a number
-    +undefined // NaN
-    +null // 0
-    +true // 1
-    +false // 0
+const box = new Box(123);
+console.log(box + 456); // 579
+console.log(box == 123); // true
 ```
 
-## 명세
+An object's `valueOf` method is usually invoked by JavaScript, but you can invoke it yourself as follows:
+
+```js
+box.valueOf();
+```
+
+### Using unary plus on objects
+
+[Unary plus](/en-US/docs/Web/JavaScript/Reference/Operators/Unary_plus) performs [number coercion](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number#number_coercion) on its operand, which, for most objects without [`@@toPrimitive`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toPrimitive), means calling its `valueOf()`. However, if the object doesn't have a custom `valueOf()` method, the base implementation will cause `valueOf()` to be ignored and the return value of `toString()` to be used instead.
+
+```js
++new Date(); // the current timestamp; same as new Date().getTime()
++{}; // NaN (toString() returns "[object Object]")
++[]; // 0 (toString() returns an empty string list)
++[1]; // 1 (toString() returns "1")
++[1, 2]; // NaN (toString() returns "1,2")
++new Set([1]); // NaN (toString() returns "[object Set]")
++{ valueOf: () => 42 }; // 42
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 보기
+## See also
 
 - {{jsxref("Object.prototype.toString()")}}
 - {{jsxref("parseInt", "parseInt()")}}
-- {{jsxref("Symbol.toPrimitive()")}}
+- {{jsxref("Symbol.toPrimitive")}}

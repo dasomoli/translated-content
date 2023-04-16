@@ -1,24 +1,45 @@
 ---
-title: HTMLElement.offsetParent
+title: "HTMLElement: offsetParent property"
+short-title: offsetParent
 slug: Web/API/HTMLElement/offsetParent
+page-type: web-api-instance-property
+browser-compat: api.HTMLElement.offsetParent
 ---
+
 {{ APIRef("HTML DOM") }}
 
-**`HTMLElement.offsetParent`** 읽기전용 프라퍼티는 가장 가까운 (포함 계층에서 가장 가까운) 위치가 정해진 포함하는 엘리먼트 객체에 대한 참조를 반환한다. `offsetParent`는 엘리먼트의 위치가 정해지지 않으면 가장 가까운 테이블 또는 테이블 셀, 루트 엘리먼트 (표준 준수 모드에서는 `html`; quirks 렌더링 모드에서는 `body`) 를 반환한다.
-엘리먼트의 `style.display`가 "none"으로 설정되면 null을 반환한다. `offsetParent`는 {{domxref("HTMLElement.offsetTop","offsetTop")}}과 {{domxref("HTMLElement.offsetLeft","offsetLeft")}}가 그것의 패딩 모서리에 상대적이기 때문에 유용하다.
+The **`HTMLElement.offsetParent`** read-only property returns a
+reference to the element which is the closest (nearest in the containment hierarchy)
+positioned ancestor element.
 
-## 문법
+A positioned ancestor is either:
 
-```js
-parentObj = element.offsetParent;
-```
+- an element with a non-static position, or
+- `td`, `th`, `table` in case the element itself is static positioned.
 
-- \_parentObj는 현재 엘리먼트가 그 안에서 offset된 엘리먼트의 객체 참조이다. \_is an object reference to the element in which the current element is offset.
+If there is no positioned ancestor element, the `body` is returned.
 
-## 명세
+> **Note:** `offsetParent` returns `null` in the following
+> situations:
+>
+> - The element or any ancestor has the `display` property set to
+>   `none`.
+> - The element has the `position` property set to `fixed`
+>   (Firefox returns `<body>`).
+> - The element is `<body>` or `<html>`.
+
+`offsetParent` is useful because
+{{domxref("HTMLElement.offsetTop","offsetTop")}} and
+{{domxref("HTMLElement.offsetLeft","offsetLeft")}} are relative to its padding edge.
+
+## Value
+
+An object reference to the element in which the current element is offset.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

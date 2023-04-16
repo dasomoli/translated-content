@@ -1,93 +1,97 @@
 ---
 title: text-align
 slug: Web/CSS/text-align
+page-type: css-property
+browser-compat: css.properties.text-align
 ---
+
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`text-align`** 속성은 블록 요소나 표의 칸 상자의 가로 정렬을 설정합니다. 즉 {{cssxref("vertical-align")}}과 동일하나 세로가 아닌 가로 방향으로 동작합니다.
+The **`text-align`** [CSS](/en-US/docs/Web/CSS) property sets the horizontal alignment of the inline-level content inside a block element or table-cell box. This means it works like {{cssxref("vertical-align")}} but in the horizontal direction.
 
 {{EmbedInteractiveExample("pages/css/text-align.html")}}
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
+text-align: start;
+text-align: end;
 text-align: left;
 text-align: right;
 text-align: center;
 text-align: justify;
 text-align: justify-all;
-text-align: start;
-text-align: end;
 text-align: match-parent;
 
-/* 표 열의 문자 기반 정렬 */
+/* Character-based alignment in a table column */
 text-align: ".";
 text-align: "." center;
 
-/* 블록 정렬 값 (비표준 구문) */
+/* Block alignment values (Non-standard syntax) */
 text-align: -moz-center;
 text-align: -webkit-center;
 
-/* 전역 값 */
+/* Global values */
 text-align: inherit;
 text-align: initial;
+text-align: revert;
+text-align: revert-layer;
 text-align: unset;
 ```
 
-`text-align` 속성은 다음 방법 중 하나를 사용해 지정합니다.
+The `text-align` property is specified in one of the following ways:
 
-- [`start`](#start), [`end`](#end), [`left`](#left), [`right`](#right), [`center`](#center), [`justify`](#justify), [`justify-all`](#justify-all), [`match-parent`](#match-parent) 키워드 중 하나.
-- [`<string>`](#string) 값만 사용. 다른 값은 [`right`](#right)을 사용하게 됩니다.
-- 키워드 값과 [`<string>`](#string) 값 모두 사용.
+- Using the keyword values `start`, `end`, `left`, `right`, `center`, `justify`, `justify-all`, or `match-parent`.
+- Using a `<string>` value only, in which case the other value defaults to `right`.
+- Using both a keyword value and a [`<string>`](#string) value.
 
-### 값
+### Values
 
-- `start` {{experimental_inline}}
-  - : 쓰기 방식이 좌횡서면 `left`와 같고, 우횡서면 `right`과 같습니다.
-- `end` {{experimental_inline}}
-  - : 쓰기 방식이 좌횡서면 `right`과 같고, 우횡서면 `left`와 같습니다.
+- `start`
+  - : The same as `left` if direction is left-to-right and `right` if direction is right-to-left.
+- `end`
+  - : The same as `right` if direction is left-to-right and `left` if direction is right-to-left.
 - `left`
-  - : 인라인 콘텐츠를 줄 상자의 왼쪽 모서리로 정렬합니다.
+  - : The inline contents are aligned to the left edge of the line box.
 - `right`
-  - : 인라인 콘텐츠를 줄 상자의 오른쪽 모서리로 정렬합니다.
+  - : The inline contents are aligned to the right edge of the line box.
 - `center`
-  - : 인라인 콘텐츠를 줄 상자의 가운데로 정렬합니다.
+  - : The inline contents are centered within the line box.
 - `justify`
-  - : 인라인 콘텐츠를 양쪽 정렬합니다. 마지막 줄을 제외하고, 줄 상자의 왼쪽과 오른쪽 끝에 텍스트를 맞추기 위해 사이 공간을 띄웁니다.
+  - : The inline contents are justified. Text should be spaced to line up its left and right edges to the left and right edges of the line box, except for the last line.
 - `justify-all` {{experimental_inline}}
-  - : `justify`와 같지만 마지막 줄에도 적용합니다.
-- `match-parent` {{experimental_inline}}
-  - : `inherit`과 비슷하지만, `start`와 `end` 값을 부모의 {{cssxref("direction")}}에 맞춰 적절한 `left`와 `right` 값으로 치환합니다.
+  - : Same as `justify`, but also forces the last line to be justified.
+- `match-parent`
+  - : Similar to `inherit`, but the values `start` and `end` are calculated according to the parent's {{cssxref("direction")}} and are replaced by the appropriate `left` or `right` value.
 - {{cssxref("&lt;string&gt;")}} {{experimental_inline}}
-  - : 표 칸에 적용할 경우, 칸의 콘텐츠를 해당 문자에 맞춰 정렬합니다.
+  - : When applied to a table cell, specifies the alignment character around which the cell's contents will align.
 
-## 접근성 고려사항
+## Accessibility concerns
 
-양쪽 정렬 적용 시 생기는 불규칙한 여백은 난독증 등 인지력 저하를 겪고 있는 사용자에게 문제가 될 수 있습니다.
+The inconsistent spacing between words created by justified text can be problematic for people with cognitive concerns such as Dyslexia.
 
-- [MDN Understanding WCAG, Guideline 1.4 explanations](/ko/docs/Web/Accessibility/Understanding_WCAG/Perceivable#Guideline_1.4_Make_it_easier_for_users_to_see_and_hear_content_including_separating_foreground_from_background)
+- [MDN Understanding WCAG, Guideline 1.4 explanations](/en-US/docs/Web/Accessibility/Understanding_WCAG/Perceivable#guideline_1.4_make_it_easier_for_users_to_see_and_hear_content_including_separating_foreground_from_background)
 - [Understanding Success Criterion 1.4.8 | Understanding WCAG 2.0](https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-visual-presentation.html)
 
-## 형식 정의
+## Formal definition
 
-{{cssinfo}}
+{{CSSInfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 왼쪽 정렬
+### Start alignment
 
 #### HTML
 
 ```html
 <p class="example">
-  Integer elementum massa at nulla placerat varius.
-  Suspendisse in libero risus, in interdum massa.
-  Vestibulum ac leo vitae metus faucibus gravida ac in neque.
+  Integer elementum massa at nulla placerat varius. Suspendisse in libero risus,
+  in interdum massa. Vestibulum ac leo vitae metus faucibus gravida ac in neque.
   Nullam est eros, suscipit sed dictum quis, accumsan a ligula.
 </p>
 ```
@@ -96,24 +100,23 @@ text-align: unset;
 
 ```css
 .example {
-  text-align: left;
+  text-align: start;
   border: solid;
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("왼쪽_정렬","100%","100%")}}
+{{EmbedLiveSample("Start_alignment","100%","100%")}}
 
-### 가운데 정렬
+### Centered text
 
 #### HTML
 
 ```html
 <p class="example">
-  Integer elementum massa at nulla placerat varius.
-  Suspendisse in libero risus, in interdum massa.
-  Vestibulum ac leo vitae metus faucibus gravida ac in neque.
+  Integer elementum massa at nulla placerat varius. Suspendisse in libero risus,
+  in interdum massa. Vestibulum ac leo vitae metus faucibus gravida ac in neque.
   Nullam est eros, suscipit sed dictum quis, accumsan a ligula.
 </p>
 ```
@@ -127,19 +130,18 @@ text-align: unset;
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("가운데_정렬","100%","100%")}}
+{{EmbedLiveSample("Centered_text","100%","100%")}}
 
-### 양쪽 정렬
+### Example using "justify"
 
 #### HTML
 
 ```html
 <p class="example">
-  Integer elementum massa at nulla placerat varius.
-  Suspendisse in libero risus, in interdum massa.
-  Vestibulum ac leo vitae metus faucibus gravida ac in neque.
+  Integer elementum massa at nulla placerat varius. Suspendisse in libero risus,
+  in interdum massa. Vestibulum ac leo vitae metus faucibus gravida ac in neque.
   Nullam est eros, suscipit sed dictum quis, accumsan a ligula.
 </p>
 ```
@@ -153,41 +155,18 @@ text-align: unset;
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("양쪽_정렬","100%","100%")}}
+{{EmbedLiveSample('Example using "justify"',"100%","100%")}}
 
-### 참고
-
-인라인 콘텐츠를 가운데 정렬하지 않고 자신을 정렬하는 법은 {{cssxref("margin")}}을 `auto`로 설정하는 것입니다.
-
-```css
-.something {
-  margin: auto;
-}
-```
-
-```css
-.something {
-  margin: 0 auto;
-}
-```
-
-```css
-.something {
-  margin-left: auto;
-  margin-right: auto;
-}
-```
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{Cssxref("margin","margin: auto")}}, {{Cssxref("margin-left","margin-left: auto")}}, {{Cssxref("vertical-align")}}

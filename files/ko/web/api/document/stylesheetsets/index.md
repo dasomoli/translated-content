@@ -1,50 +1,56 @@
 ---
-title: Document.styleSheetSets
+title: "Document: styleSheetSets property"
+short-title: styleSheetSets
 slug: Web/API/Document/styleSheetSets
+page-type: web-api-instance-property
+status:
+  - deprecated
+  - non-standard
+browser-compat: api.Document.styleSheetSets
 ---
 
 {{APIRef("DOM")}}{{deprecated_header}}{{Non-standard_header}}
 
-**`styleSheetSets`**의 읽기 전용 속성은 현재 사용 가능한 모든 스타일 시트 세트의 live 리스트를 반환합니다.
+The **`styleSheetSets`** read-only property returns a live list of all of the currently-available style sheet sets.
 
-## 문법
+## Value
 
-```js
-var sets = document.styleSheetSets;
-```
+A list of style sheet sets that are available.
 
-반환시, `sets`는 사용할 수 있는 스타일 시트 세트의 리스트.
+## Examples
 
-## 예시
-
-ID가 "sheetList"인 {{HTMLElement("ul")}} (list) 요소가 주어지면, 사용 가능한 모든 스타일 시트 세트의 이름으로 아래와 같은 코드로 채울 수 있습니다.
+Given an {{HTMLElement("ul")}} (list) element with the ID "sheetList", you can populate
+it with the names of all the available style sheet sets with code like this:
 
 ```js
-let list = document.getElementById('sheetList');
-let sheets = document.styleSheetSets;
+const list = document.getElementById("sheetList");
+const sheets = document.styleSheetSets;
 
-list.innerHTML = '';
+list.textContent = "";
 
-for (let i = 0; i < sheets.length; i++) {
-  let item = document.createElement('li');
-
-  item.innerHTML = sheets[i];
+for (const sheet of sheets) {
+  const item = document.createElement("li");
+  item.textContent = sheet;
   list.appendChild(item);
 }
 ```
 
 ## Notes
 
-사용 가능한 스타일 시트 세트 리스트는 문서에 사용 가능한 모든 스타일 시트를 열거하여 구성되고, {{domxref("document.styleSheets")}} 속성에 나열된 순서대로, 리스트에 제목을 가진 각각의 스타일 시트 `title`을 추가합니다. 중복 항목이 리스트에서 삭제됨. (대소문자 구분 비교 사용).
+The list of available style sheet sets is constructed by enumerating all the style
+sheets available for the document, in the order in which they're listed in the
+{{domxref("Document.styleSheets")}} attribute, adding the `title` of each
+style sheet that has a title to the list. Duplicates are dropped from the list (using a
+case-sensitive comparison).
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 더보기
+## See also
 
 - {{domxref("Stylesheet")}}
-- {{domxref("document.styleSheets")}}
+- {{domxref("Document.styleSheets")}}
 - {{domxref("document.lastStyleSheetSet")}}
 - {{domxref("document.preferredStyleSheetSet")}}
 - {{domxref("document.selectedStyleSheetSet")}}

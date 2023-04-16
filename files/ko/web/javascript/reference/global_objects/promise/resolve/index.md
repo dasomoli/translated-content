@@ -1,124 +1,223 @@
 ---
 title: Promise.resolve()
 slug: Web/JavaScript/Reference/Global_Objects/Promise/resolve
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Promise.resolve
 ---
+
 {{JSRef}}
 
-**`Promise.resolve(value)`** 메서드는 주어진 값으로 이행하는 {{jsxref("Promise.then")}} 객체를 반환합니다. 그 값이 프로미스인 경우, 해당 프로미스가 반환됩니다. 그 값이 thenable(예, {{jsxref("Promise.then", "\"then\" 메소드")}} 가 있음)인 경우, 반환된 프로미스는 그 thenable을 "따르며", 그 최종 상태를 취합니다. 그렇지 않으면 반환된 프로미스는 그 값으로 이행합니다. 이 함수는 프로미스형의 객체(무언가를 결정하는 프로미스를 결정하는 프로미스 등)의 중첩된 레이어를 단일 레이어로 펼칩니다.
+The **`Promise.resolve()`** static method "resolves" a given value to a {{jsxref("Promise")}}. If the value is a promise, that promise is returned; if the value is a [thenable](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#thenables), `Promise.resolve()` will call the `then()` method with two callbacks it prepared; otherwise the returned promise will be fulfilled with the value.
 
-> **경고:** **주의**: 스스로를 결정하는 thenable 에서 `Promise.resolve` 를 호출하면 안됩니다. 이는 무한히 중첩된 프로미스를 펼치려고하므로 무한 재귀를 유발할 것입니다. Angular 에서 `async` Pipe 를 함께 사용한 [예제](https://stackblitz.com/edit/angular-promiseresovle-with-async-pipe?file=src/app/app.component.ts)입니다. 자세한 내용은 [여기](https://angular.io/guide/template-syntax#avoid-side-effects)에서 확인하세요.
+This function flattens nested layers of promise-like objects (e.g. a promise that fulfills to a promise that fulfills to something) into a single layer — a promise that fulfills to a non-thenable value.
 
 {{EmbedInteractiveExample("pages/js/promise-resolve.html")}}
 
-## 구문
+## Syntax
 
-```js
-Promise.resolve(value);
+```js-nolint
+Promise.resolve(value)
 ```
 
-### 파라미터
+### Parameters
 
-- value
-  - : 이 `Promise`에 의해 결정되는 인수. `Promise` 또는 이행할 thenable 일수도 있습니다.
+- `value`
+  - : Argument to be resolved by this `Promise`. Can also be a `Promise` or a thenable to resolve.
 
-### 반환 값
+### Return value
 
-<dl><dd><p>주어진 값으로 이행된 {{jsxref("Promise")}} 또는 값이 promise 객체인 경우, 값으로 전달된 promise.</p></dd></dl>
+A {{jsxref("Promise")}} that is resolved with the given value, or the promise passed as value, if the value was a promise object. A resolved promise can be in any of the states — fulfilled, rejected, or pending. For example, resolving a rejected promise will still result in a rejected promise.
 
-## 설명
+## Description
 
-정적 `Promise.resolve` 함수는 이행된 `Promise` 를 반환합니다.
+`Promise.resolve()` _resolves_ a promise, which is not the same as fulfilling or rejecting the promise. See [Promise description](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#description) for definitions of the terminology. In brief, `Promise.resolve()` returns a promise whose eventual state depends on another promise, thenable object, or other value.
 
-## 예시
+`Promise.resolve()` is generic and supports subclassing, which means it can be called on subclasses of `Promise`, and the result will be a promise of the subclass type. To do so, the subclass's constructor must implement the same signature as the [`Promise()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/Promise) constructor — accepting a single `executor` function that can be called with the `resolve` and `reject` callbacks as parameters.
 
-### 정적 `Promise.resolve` 메소드 사용
+`Promise.resolve()` special-cases native `Promise` instances. If `value` belongs to `Promise` or a subclass, and `value.constructor === Promise`, then `value` is directly returned by `Promise.resolve()`, without creating a new `Promise` instance. Otherwise, `Promise.resolve()` is essentially a shorthand for `new Promise((resolve) => resolve(value))`.
+
+The bulk of the resolving logic is actually implemented by the [resolver function](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/Promise#resolver_function) passed by the `Promise()` constructor. In summary:
+
+- If a non-[thenable](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#thenables) value is passed, the returned promise is already fulfilled with that value.
+- If a thenable is passed, the returned promise will adopt the state of that thenable by calling the `then` method and passing a pair of resolving functions as arguments. (But because native promises directly pass through `Promise.resolve()` without creating a wrapper, the `then` method is not called on native promises.) If the resolver function receives another thenable object, it will be resolved again, so that the eventual fulfillment value of the promise will never be thenable.
+
+## Examples
+
+### Using the static Promise.resolve method
 
 ```js
-Promise.resolve("Success").then(function(value) {
-  console.log(value); // "Success"
-}, function(value) {
-  // 호출되지 않음
-});
+Promise.resolve("Success").then(
+  (value) => {
+    console.log(value); // "Success"
+  },
+  (reason) => {
+    // not called
+  },
+);
 ```
 
-### 배열 이행
+### Resolving an array
 
 ```js
-var p = Promise.resolve([1,2,3]);
-p.then(function(v) {
+const p = Promise.resolve([1, 2, 3]);
+p.then((v) => {
   console.log(v[0]); // 1
 });
 ```
 
-### 또 다른 `Promise` 이행
+### Resolving another Promise
+
+`Promise.resolve()` reuses existing `Promise` instances. If it's resolving a native promise, it returns the same promise instance without creating a wrapper.
 
 ```js
-var original = Promise.resolve(33);
-var cast = Promise.resolve(original);
-cast.then(function(value) {
-  console.log('value: ' + value);
+const original = Promise.resolve(33);
+const cast = Promise.resolve(original);
+cast.then((value) => {
+  console.log(`value: ${value}`);
 });
-console.log('original === cast ? ' + (original === cast));
+console.log(`original === cast ? ${original === cast}`);
 
-// 로그 순서:
+// Logs, in order:
 // original === cast ? true
 // value: 33
 ```
 
-로그의 순서가 반대인 이유는 `then` 핸들러가 비동기로 호출되기 때문입니다. [여기](/ko/docs/Web/JavaScript/Reference/Global_Objects/Promise/then#then_%EB%A9%94%EC%84%9C%EB%93%9C_%EC%82%AC%EC%9A%A9)에서 `then` 이 동작하는 방식에 대해 확인하세요.
+The inverted order of the logs is due to the fact that the `then` handlers are called asynchronously. See the {{jsxref("Promise/then", "then()")}} reference for more information.
 
-### thenable 이행 및 오류 발생
+### Resolving thenables and throwing Errors
 
 ```js
-// thenable 객체 이행
-var p1 = Promise.resolve({
-  then: function(onFulfill, onReject) { onFulfill("fulfilled!"); }
+// Resolving a thenable object
+const p1 = Promise.resolve({
+  then(onFulfill, onReject) {
+    onFulfill("fulfilled!");
+  },
 });
-console.log(p1 instanceof Promise) // true, 객체는 Promise 로 변환됨
+console.log(p1 instanceof Promise); // true, object casted to a Promise
 
-p1.then(function(v) {
+p1.then(
+  (v) => {
     console.log(v); // "fulfilled!"
-  }, function(e) {
-    // 호출되지 않음
-});
+  },
+  (e) => {
+    // not called
+  },
+);
 
-// thenable 이 콜백 이전에 오류를 throw
-// Promise 거부
-var thenable = { then: function(resolve) {
-  throw new TypeError("Throwing");
-  resolve("Resolving");
-}};
+// Thenable throws before callback
+// Promise rejects
+const thenable = {
+  then(onFulfilled) {
+    throw new TypeError("Throwing");
+    onFulfilled("Resolving");
+  },
+};
 
-var p2 = Promise.resolve(thenable);
-p2.then(function(v) {
-  // 호출되지 않음
-}, function(e) {
-  console.log(e); // TypeError: Throwing
-});
+const p2 = Promise.resolve(thenable);
+p2.then(
+  (v) => {
+    // not called
+  },
+  (e) => {
+    console.error(e); // TypeError: Throwing
+  },
+);
 
-// thenable 이 콜백 이후에 오류를 throw
-// Promise 이행
-var thenable = { then: function(resolve) {
-  resolve("Resolving");
-  throw new TypeError("Throwing");
-}};
+// Thenable throws after callback
+// Promise resolves
+const thenable = {
+  then(onFulfilled) {
+    onFulfilled("Resolving");
+    throw new TypeError("Throwing");
+  },
+};
 
-var p3 = Promise.resolve(thenable);
-p3.then(function(v) {
-  console.log(v); // "Resolving"
-}, function(e) {
-  // 호출되지 않음
+const p3 = Promise.resolve(thenable);
+p3.then(
+  (v) => {
+    console.log(v); // "Resolving"
+  },
+  (e) => {
+    // not called
+  },
+);
+```
+
+Nested thenables will be "deeply flattened" to a single promise.
+
+```js
+const thenable = {
+  then(onFulfilled, onRejected) {
+    onFulfilled({
+      // The thenable is fulfilled with another thenable
+      then(onFulfilled, onRejected) {
+        onFulfilled(42);
+      },
+    });
+  },
+};
+
+Promise.resolve(thenable).then((v) => {
+  console.log(v); // 42
 });
 ```
 
-## 명세
+> **Warning:** Do not call `Promise.resolve()` on a thenable that resolves to itself. That leads to infinite recursion, because it attempts to flatten an infinitely-nested promise.
+
+```js example-bad
+const thenable = {
+  then(onFulfilled, onRejected) {
+    onFulfilled(thenable);
+  },
+};
+
+Promise.resolve(thenable); // Will lead to infinite recursion.
+```
+
+### Calling resolve() on a non-Promise constructor
+
+`Promise.resolve()` is a generic method. It can be called on any constructor that implements the same signature as the `Promise()` constructor. For example, we can call it on a constructor that passes it `console.log` as `resolve`:
+
+```js
+class NotPromise {
+  constructor(executor) {
+    // The "resolve" and "reject" functions behave nothing like the
+    // native promise's, but Promise.resolve() calls them in the same way.
+    executor(
+      (value) => console.log("Resolved", value),
+      (reason) => console.log("Rejected", reason),
+    );
+  }
+}
+
+Promise.resolve.call(NotPromise, "foo"); // Logs "Resolved foo"
+```
+
+The ability to flatten nested thenables is implemented by the resolver function of the `Promise()` constructor, so if you call it on another constructor, nested thenables may not be flattened, depending on how that constructor implements its resolver.
+
+```js
+const thenable = {
+  then(onFulfilled, onRejected) {
+    onFulfilled({
+      // The thenable is fulfilled with another thenable
+      then(onFulfilled, onRejected) {
+        onFulfilled(42);
+      },
+    });
+  },
+};
+
+Promise.resolve.call(NotPromise, thenable); // Logs "Resolved { then: [Function: then] }"
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 보기
+## See also
 
 - {{jsxref("Promise")}}

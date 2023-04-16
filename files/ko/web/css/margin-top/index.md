@@ -1,63 +1,84 @@
 ---
 title: margin-top
 slug: Web/CSS/margin-top
+page-type: css-property
+browser-compat: css.properties.margin-top
 ---
 
 {{CSSRef}}
 
-**`margin-top`** [CSS](/ko/docs/Web/CSS) 속성은 요소의 위쪽에 [바깥 여백 영역](/ko/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)margin area을 설정합니다. 양수 값은 인접 요소와 거리를 넓히고, 음수 값은 더 좁힙니다.
+The **`margin-top`** [CSS](/en-US/docs/Web/CSS) property sets the [margin area](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model#margin_area) on the top of an element. A positive value places it farther from its neighbors, while a negative value places it closer.
 
 {{EmbedInteractiveExample("pages/css/margin-top.html")}}
 
-{{HTMLElement("span")}}, {{HTMLElement("code")}} 등 [비대체](/ko/docs/Web/CSS/Replaced_element)non-replaced 인라인 요소에는 효과가 없습니다.
+This property has no effect on _non-[replaced](/en-US/docs/Web/CSS/Replaced_element)_ inline elements, such as {{HTMLElement("span")}} or {{HTMLElement("code")}}.
 
-## 구문
+## Syntax
 
 ```css
-/* <length> 값 */
-margin-top: 10px;  /* 절대 길이 */
-margin-top: 1em;   /* 글씨 크기에 상대적 */
-margin-top: 5%;    /* 가장 가까운 블록 컨테이너의 너비에 상대적 */
+/* <length> values */
+margin-top: 10px; /* An absolute length */
+margin-top: 1em; /* relative to the text size */
+margin-top: 5%; /* relative to the nearest block container's width */
 
-/* 키워드 값 */
+/* Keyword values */
 margin-top: auto;
 
-/* 전역 값 */
+/* Global values */
 margin-top: inherit;
 margin-top: initial;
+margin-top: revert;
+margin-top: revert-layer;
 margin-top: unset;
 ```
 
-`margin-top` 속성은 키워드 `auto`, `<length>`, `<percentage>`를 사용해 설정할 수 있습니다. 값은 양수, 0, 음수가 가능합니다.
+The `margin-top` property is specified as the keyword `auto`, or a `<length>`, or a `<percentage>`. Its value can be positive, zero, or negative.
 
-### 값
+### Values
 
 - {{cssxref("&lt;length&gt;")}}
-  - : 바깥 여백 크기의 고정 값.
+  - : The size of the margin as a fixed value.
 - {{cssxref("&lt;percentage&gt;")}}
-  - : 바깥 여백 크기와 블록 컨테이너 너비의 비율.
+  - : The size of the margin as a percentage, relative to the inline size (_width_ in a horizontal language, defined by {{cssxref("writing-mode")}}) of the [containing block](/en-US/docs/Web/CSS/Containing_block).
 - `auto`
-  - : 브라우저가 적절한 값 선택. {{cssxref("margin")}}을 참고하세요.
+  - : The browser selects a suitable value to use. See {{cssxref("margin")}}.
 
-### 형식 구문
-
-{{csssyntax}}
-
-## 예제
-
-```css
-.content { margin-top:   5%; }
-.sidebox { margin-top: 10px; }
-.logo    { margin-top: -5px; }
-#footer  { margin-top:  1em; }
-```
-
-## 명세
-
-{{Specifications}}
+## Formal definition
 
 {{cssinfo}}
 
-## 브라우저 호환성
+## Formal syntax
+
+{{csssyntax}}
+
+## Examples
+
+### Setting positive and negative top margins
+
+```css
+.content {
+  margin-top: 5%;
+}
+.sidebox {
+  margin-top: 10px;
+}
+.logo {
+  margin-top: -5px;
+}
+#footer {
+  margin-top: 1em;
+}
+```
+
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- {{cssxref("margin-right")}}, {{cssxref("margin-bottom")}}, and {{cssxref("margin-left")}} and the {{cssxref("margin")}} shorthand
+- The mapped logical properties: {{cssxref("margin-block-start")}}, {{cssxref("margin-block-end")}}, {{cssxref("margin-inline-start")}}, and {{cssxref("margin-inline-end")}} and the shorthands {{cssxref("margin-block")}} and {{cssxref("margin-inline")}}

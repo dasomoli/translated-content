@@ -1,11 +1,13 @@
 ---
-title: 클래스 선택자
+title: Class selectors
 slug: Web/CSS/Class_selectors
+page-type: css-selector
+browser-compat: css.selectors.class
 ---
 
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **클래스 선택자**는 요소의 {{htmlattrxref("class")}} 특성에 기반해 요소를 선택합니다.
+The [CSS](/en-US/docs/Web/CSS) **class selector** matches elements based on the contents of their [`class`](/en-US/docs/Web/HTML/Global_attributes#class) attribute.
 
 ```css
 /* All elements with class="spacious" */
@@ -25,19 +27,19 @@ li.spacious.elegant {
 }
 ```
 
-## 구문
+## Syntax
 
-```
+```css
 .class_name { style properties }
 ```
 
-위의 구문은 [특성 선택자](/ko/docs/Web/CSS/Attribute_selectors)를 사용한 다음 구문과 동일합니다.
+Note that this is equivalent to the following {{Cssxref("Attribute_selectors", "attribute selector")}}:
 
-```
+```css
 [class~=class_name] { style properties }
 ```
 
-## 예제
+## Examples
 
 ### CSS
 
@@ -59,20 +61,27 @@ li.spacious.elegant {
 ### HTML
 
 ```html
-<p class="red">빨간 글자색의 문단입니다.</p>
-<p class="red yellow-bg">빨간 글자색과 노란 배경의 문단입니다.</p>
-<p class="red fancy">빨간 글자색과 "멋진" 스타일을 가진 문단입니다.</p>
-<p>이건 그냥 문단이에요.</p>
+<p class="red">This paragraph has red text.</p>
+<p class="red yellow-bg">
+  This paragraph has red text and a yellow background.
+</p>
+<p class="red fancy">This paragraph has red text and "fancy" styling.</p>
+<p>This is just a regular paragraph.</p>
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample('예제')}}
+{{EmbedLiveSample('Examples')}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- [CSS Selectors](/en-US/docs/Web/CSS/CSS_Selectors)
+- [Learn CSS: Selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors)

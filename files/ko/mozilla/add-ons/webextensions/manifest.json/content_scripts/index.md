@@ -1,6 +1,8 @@
 ---
 title: content_scripts
 slug: Mozilla/Add-ons/WebExtensions/manifest.json/content_scripts
+page-type: webextension-manifest-key
+browser-compat: webextensions.manifest.content_scripts
 ---
 
 {{AddonSidebar}}
@@ -188,7 +190,7 @@ Details of all the keys you can include are given in the table below.
           the rest of the <code>content_scripts</code> key.
         </p>
         <p>
-          This is especially useful to run scripts in empty iframes , whose URL
+          This is especially useful to run scripts in empty iframes, whose URL
           is <code>"about:blank"</code>. To do this you should also set the
           <code>all_frames</code> key.
         </p>
@@ -348,6 +350,6 @@ This injects two content scripts into all pages under `mozilla.org` or any of it
 
 The content scripts see the same view of the DOM and are injected in the order they appear in the array, so `borderify.js` can see global variables added by `jquery.js`.
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

@@ -1,35 +1,75 @@
 ---
 title: WebAssembly.Instance
 slug: WebAssembly/JavaScript_interface/Instance
-original_slug: Web/JavaScript/Reference/Global_Objects/WebAssembly/Instance
+browser-compat: javascript.builtins.WebAssembly.Instance
 ---
 
 {{WebAssemblySidebar}}
 
-**`WebAssembly.Instance`** 개체는 [WebAssembly.Module](/ko/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Module)의 상태 저장되고 실행 가능한 인스턴스입니다. `Instance` 객체에는 JavaScript에서 WebAssembly 코드로 호출 할 수있는 모든 [Exported WebAssembly functions](/ko/docs/WebAssembly/Exported_functions)가 포함되어 있습니다.
+A **`WebAssembly.Instance`** object is a stateful, executable instance of a [`WebAssembly.Module`](/en-US/docs/WebAssembly/JavaScript_interface/Module). `Instance` objects contain all the [Exported WebAssembly functions](/en-US/docs/WebAssembly/Exported_functions) that allow calling into WebAssembly code from JavaScript.
 
-주어진 {{jsxref ( "WebAssembly.Module")}} 객체를 동기적으로 인스턴스화하기 위해 `WebAssembly.Instance()` 생성자 함수를 호출 할 수 있습니다. 하지만 `Instance`를 가져 오는 주요 방법은 비동기 {{jsxref ( "WebAssembly.instantiateStreaming ()")}} 함수를 사용하는 것입니다.
+## Constructor
 
-## 생성자
-
-- [`WebAssembly.Instance()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Instance/Instance)
+- [`WebAssembly.Instance()`](/en-US/docs/WebAssembly/JavaScript_interface/Instance/Instance)
   - : Creates a new `Instance` object.
 
-## 인스턴스 속성
+## Instance properties
 
-- {{jsxref("WebAssembly/Instance/exports", "Instance.prototype.exports")}}
+- [`exports`](/en-US/docs/WebAssembly/JavaScript_interface/Instance/exports)
   - : Returns an object containing as its members all the functions exported from the WebAssembly module instance, to allow them to be accessed and used by JavaScript. Read-only.
 
-## 명세
+## Examples
+
+### Synchronously instantiating a WebAssembly module
+
+The `WebAssembly.Instance()` constructor function can be called to synchronously instantiate a given [`WebAssembly.Module`](/en-US/docs/WebAssembly/JavaScript_interface/Module) object, for example:
+
+```js
+const importObject = {
+  imports: {
+    imported_func(arg) {
+      console.log(arg);
+    },
+  },
+};
+
+fetch("simple.wasm")
+  .then((response) => response.arrayBuffer())
+  .then((bytes) => {
+    const mod = new WebAssembly.Module(bytes);
+    const instance = new WebAssembly.Instance(mod, importObject);
+    instance.exports.exported_func();
+  });
+```
+
+The preferred way to get an `Instance` is asynchronously, for example using the [`WebAssembly.instantiateStreaming()`](/en-US/docs/WebAssembly/JavaScript_interface/instantiateStreaming) function like this:
+
+```js
+const importObject = {
+  imports: {
+    imported_func(arg) {
+      console.log(arg);
+    },
+  },
+};
+
+WebAssembly.instantiateStreaming(fetch("simple.wasm"), importObject).then(
+  (obj) => obj.instance.exports.exported_func()
+);
+```
+
+This also demonstrates how the `exports` property is used to access exported functions.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [WebAssembly](/ko/docs/WebAssembly) overview page
-- [WebAssembly concepts](/ko/docs/WebAssembly/Concepts)
-- [Using the WebAssembly JavaScript API](/ko/docs/WebAssembly/Using_the_JavaScript_API)
+- [WebAssembly](/en-US/docs/WebAssembly) overview page
+- [WebAssembly concepts](/en-US/docs/WebAssembly/Concepts)
+- [Using the WebAssembly JavaScript API](/en-US/docs/WebAssembly/Using_the_JavaScript_API)

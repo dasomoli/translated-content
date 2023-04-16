@@ -1,56 +1,68 @@
 ---
-title: URLSearchParams()
+title: "URLSearchParams: URLSearchParams() constructor"
+short-title: URLSearchParams()
 slug: Web/API/URLSearchParams/URLSearchParams
+page-type: web-api-constructor
+browser-compat: api.URLSearchParams.URLSearchParams
 ---
+
 {{ApiRef("URL API")}}
 
-**`URLSearchParams()`** 생성자는 새로운 {{domxref("URLSearchParams")}} 객체를 생성하고 반환합니다.
+The **`URLSearchParams()`** constructor creates and returns a
+new {{domxref("URLSearchParams")}} object.
 
 {{availableinworkers}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 new URLSearchParams()
-new URLSearchParams(init)
+new URLSearchParams(options)
 ```
 
-### 매개변수
+### Parameters
 
-- `init` {{optional_inline}}
-  - : 다음 중 하나입니다.
-    - 문자열. `application/x-www-form-urlencoded` 형식으로 파싱합니다. 선행 `'?'` 문자는 무시합니다.
-    - 이름-값 문자열 쌍을 생성하는 [순회기](/ko/docs/Web/JavaScript/Guide/Iterators_and_Generators#iterators)를 가지는 객체. {{domxref("FormData")}} 등의 객체가 이 범주에 속합니다. 참고로 {{domxref("File")}} 값은 파일 이름이 아니라 `[object File]`로 직렬화됩니다. (`application/x-www-form-urlencoded` 양식에서의 동작과 동일)
-    - 문자열 키와 문자열 값으로 구성된 레코드.
+- `options` {{optional_inline}}
+  - : One of:
+    - A string, which will be parsed from `application/x-www-form-urlencoded` format. A leading `'?'` character is ignored.
+    - A literal sequence of name-value string pairs, or any object — such as a {{domxref("FormData")}} object — with an [iterator](/en-US/docs/Web/JavaScript/Guide/Iterators_and_generators#iterators) that produces a sequence of string pairs. Note that {{domxref("File")}} entries will be serialized as `[object File]` rather than as their filename (as they would in an `application/x-www-form-urlencoded` form).
+    - A record of string keys and string values. Note that nesting is not supported.
 
-### 반환값
+### Return value
 
-{{domxref("URLSearchParams")}} 객체 인스턴스입니다.
+A {{domxref("URLSearchParams")}} object instance.
 
-## 예제
+## Examples
 
-다음 예제는 URL 문자열에서 {{domxref("URLSearchParams")}} 객체를 생성하는 모습입니다.
+The following example shows how to create a {{domxref("URLSearchParams")}} object from
+various inputs.
 
 ```js
-// url 생성자에 전달된 주소를 url.search를 통해 params라는 변수로 검색합니다.
-var url = new URL('https://example.com?foo=1&bar=2');
-var params = new URLSearchParams(url.search);
+// Retrieve params via url.search, passed into ctor
+const url = new URL("https://example.com?foo=1&bar=2");
+const params1 = new URLSearchParams(url.search);
 
-// 문자열 리터럴을 전달합니다.
-var params2 = new URLSearchParams("foo=1&bar=2");
-var params2a = new URLSearchParams("?foo=1&bar=2");
+// Get the URLSearchParams object directly from a URL object
+const params1a = url.searchParams;
 
-// 일련의 쌍으로 전달합니다.
-var params3 = new URLSearchParams([["foo", "1"], ["bar", "2"]]);
+// Pass in a string literal
+const params2 = new URLSearchParams("foo=1&bar=2");
+const params2a = new URLSearchParams("?foo=1&bar=2");
 
-// 레코드로 전달합니다.
-var params4 = new URLSearchParams({"foo": "1", "bar": "2"});
+// Pass in a sequence of pairs
+const params3 = new URLSearchParams([
+  ["foo", "1"],
+  ["bar", "2"],
+]);
+
+// Pass in a record
+const params4 = new URLSearchParams({ foo: "1", bar: "2" });
 ```
 
-다음 예제는 검색 매개변수를 포함한 URL과, 검색 매개변수 객체를 사용해 새로운 URL을 만드는 모습을 보입니다.
+This example shows how to build a new URL with an object of search parameters from an existing URL that has search parameters.
 
 ```js
-const url = new URL('https://example.com/?a=hello&b=world');
+const url = new URL("https://example.com/?a=hello&b=world");
 
 console.log(url.href);
 // https://example.com/?a=hello&b=world
@@ -59,14 +71,14 @@ console.log(url.origin);
 // https://example.com
 
 const add_params = {
-    c: 'a',
-    d: new String(2),
-    e: false.toString(),
-}
+  c: "a",
+  d: new String(2),
+  e: false.toString(),
+};
 
 const new_params = new URLSearchParams([
-    ...Array.from(url.searchParams.entries()), // [["a","hello"],["b","world"]]
-    ...Object.entries(add_params), // [["c","a"],["d","2"],["e","false"]]
+  ...Array.from(url.searchParams.entries()), // [["a","hello"],["b","world"]]
+  ...Object.entries(add_params), // [["c","a"],["d","2"],["e","false"]]
 ]).toString();
 console.log(new_params);
 // a=hello&b=world&c=a&d=2&e=false
@@ -76,20 +88,20 @@ const new_url = new URL(`${url.origin}${url.pathname}?${new_params}`);
 console.log(new_url.href);
 // https://example.com/?a=hello&b=world&c=a&d=2&e=false
 
-// (URL, Record<string, string>)을 받는 함수
+// Here it is as a function that accepts (URL, Record<string, string>)
 const addSearchParams = (url, params = {}) =>
   new URL(
     `${url.origin}${url.pathname}?${new URLSearchParams([
       ...Array.from(url.searchParams.entries()),
       ...Object.entries(params),
-    ]).toString()}`
+    ])}`
   );
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

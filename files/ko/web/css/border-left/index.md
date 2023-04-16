@@ -1,58 +1,85 @@
 ---
 title: border-left
 slug: Web/CSS/border-left
+page-type: css-shorthand-property
+browser-compat: css.properties.border-left
 ---
 
 {{CSSRef}}
 
-**`border-left`** [CSS](/ko/docs/Web/CSS) [단축 속성](/ko/docs/Web/CSS/Shorthand_properties)은 요소의 왼쪽 테두리를 설정합니다. {{cssxref("border-left-width")}}, {{cssxref("border-left-style")}}, {{cssxref("border-left-color")}}의 값을 지정합니다.
+The **`border-left`** [shorthand](/en-US/docs/Web/CSS/Shorthand_properties) [CSS](/en-US/docs/Web/CSS) property sets all the properties of an element's left [border](/en-US/docs/Web/CSS/border).
 
 {{EmbedInteractiveExample("pages/css/border-left.html")}}
 
-다른 단축 속성과 마찬가지로, `border-left`는 자신이 포함한 모든 값을 지정하며 사용자가 명시하지 않은 속성도 기본값으로 설정합니다. 즉, 아래 두 코드는 사실 동일합니다.
+As with all shorthand properties, `border-left` always sets the values of all of the properties that it can set, even if they are not specified. It sets those that are not specified to their default values. Consider the following code:
 
 ```css
 border-left-style: dotted;
 border-left: thick green;
 ```
 
+It is actually the same as this one:
+
 ```css
 border-left-style: dotted;
 border-left: none thick green;
 ```
 
-따라서 `border-left`보다 먼저 지정한 {{cssxref("border-left-style")}}의 값은 무시됩니다. {{cssxref("border-left-style")}}의 기본값은 `none`이므로, `border-style`을 명시하지 않으면 테두리를 만들지 않습니다.
+The value of {{cssxref("border-left-style")}} given before `border-left` is ignored. Since the default value of {{cssxref("border-left-style")}} is `none`, not specifying the `border-style` part results in no border.
 
-## 구문
+## Constituent properties
+
+This property is a shorthand for the following CSS properties:
+
+- {{cssxref("border-left-color")}}
+- {{cssxref("border-left-style")}}
+- {{cssxref("border-left-width")}}
+
+## Syntax
 
 ```css
 border-left: 1px;
 border-left: 2px dotted;
-border-left: medium dashed green;
+border-left: medium dashed blue;
+
+/* Global values */
+border-left: inherit;
+border-left: initial;
+border-left: revert;
+border-left: revert-layer;
+border-left: unset;
 ```
 
-`border-left`은 한 개에서 세 개의 값을 사용해 지정할 수 있고, 순서는 상관하지 않습니다.
+The three values of the shorthand property can be specified in any order, and one or two of them may be omitted.
 
-### 값
+### Values
 
 - `<br-width>`
-  - : {{cssxref("border-left-width")}}.
+  - : See {{cssxref("border-left-width")}}.
 - `<br-style>`
-  - : {{cssxref("border-left-style")}}.
+  - : See {{cssxref("border-left-style")}}.
 - {{cssxref("&lt;color&gt;")}}
-  - : {{cssxref("border-left-color")}}.
+  - : See {{cssxref("border-left-color")}}.
 
-### 형식 구문
+## Formal definition
+
+{{CSSInfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
+
+### Applying a left border
+
+#### HTML
 
 ```html
-<div>
-  왼쪽 테두리를 가진 요소입니다.
-</div>
+<div>This box has a border on the left side.</div>
 ```
+
+#### CSS
 
 ```css
 div {
@@ -65,12 +92,22 @@ div {
 }
 ```
 
-{{EmbedLiveSample('예제')}}
+#### Results
 
-## 명세
+{{EmbedLiveSample('Applying_a_left_border')}}
 
-{{Specifications}}{{cssinfo}}
+## Specifications
 
-## 브라우저 호환성
+{{Specifications}}
+
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- {{cssxref("border")}}
+- {{cssxref("border-block")}}
+- {{cssxref("outline")}}
+- [Backgrounds and borders](/en-US/docs/Web/CSS/CSS_Backgrounds_and_Borders)
+- [Learn CSS: Backgrounds and borders](/en-US/docs/Learn/CSS/Building_blocks/Backgrounds_and_borders)

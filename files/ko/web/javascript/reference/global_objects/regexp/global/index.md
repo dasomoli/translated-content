@@ -1,32 +1,27 @@
 ---
 title: RegExp.prototype.global
 slug: Web/JavaScript/Reference/Global_Objects/RegExp/global
-l10n:
-  sourceCommit: f3df52530f974e26dd3b14f9e8d42061826dea20
+page-type: javascript-instance-accessor-property
+browser-compat: javascript.builtins.RegExp.global
 ---
 
 {{JSRef}}
 
-**`global`** 접근자 속성은 `g` 플래그가 정규표현식에 사용되었는지 여부를 나타냅니다.
+The **`global`** accessor property of {{jsxref("RegExp")}} instances returns whether or not the `g` flag is used with this regular expression.
 
 {{EmbedInteractiveExample("pages/js/regexp-prototype-global.html")}}
 
-## 설명
+## Description
 
-`g` 플래그가 사용된 경우 `RegExp.prototype.global`의 값은 `true`이고, 그렇지 않으면 `false`입니다.
-`g` 플래그는 정규식이 문자열에서 가능한 모든 일치 항목에 대해 테스트되어야 함을 나타냅니다.
-[`exec()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec)를 호출할 때마다
-[`lastIndex`](/ko/docs/Web/JavaScript/Reference/Global_Objects/RegExp/lastIndex) 속성이
-업데이트되므로 다음 `exec()` 호출은 다음 문자에서 시작됩니다.
+`RegExp.prototype.global` has the value `true` if the `g` flag was used; otherwise, `false`. The `g` flag indicates that the regular expression should be tested against all possible matches in a string. Each call to [`exec()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec) will update its [`lastIndex`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/lastIndex) property, so that the next call to `exec()` will start at the next character.
 
-[`String.prototype.matchAll()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/String/matchAll) 및 [`String.prototype.replaceAll()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/String/replaceAll)과 같은 일부 메서드는 매개변수가 정규식인 경우 전역(global)인지 여부를 확인합니다.
-정규식의 [`@@match`](/ko/docs/Web/JavaScript/Reference/Global_Objects/RegExp/@@match) 및 [`@@replace`](/ko/docs/Web/JavaScript/Reference/Global_Objects/RegExp/@@replace) 메서드([`String.prototype.match()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/String/match) 및 [`String.prototype.replace()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/String/replace)에 의해 호출됨)도 정규식이 전역일 때 다른 동작을 갖습니다.
+Some methods, such as [`String.prototype.matchAll()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/matchAll) and [`String.prototype.replaceAll()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replaceAll), will validate that, if the parameter is a regex, it is global. The regex's [`@@match`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/@@match) and [`@@replace`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/@@replace) methods (called by [`String.prototype.match()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match) and [`String.prototype.replace()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace)) would also have different behaviors when the regex is global.
 
-`global`의 set 접근자는 `undefined`, 즉 정의되지 않았습니다. 이 속성은 직접 변경할 수 없습니다.
+The set accessor of `global` is `undefined`. You cannot change this property directly.
 
-## 예제
+## Examples
 
-### global 사용하기
+### Using global
 
 ```js
 const regex = /foo/g;
@@ -37,19 +32,19 @@ const str1 = str.replace(regex, "");
 console.log(str1); // example
 
 const regex1 = /foo/;
-const str2 = str.replace(regex1, '');
-console.log(str2);  // examplefoo
+const str2 = str.replace(regex1, "");
+console.log(str2); // examplefoo
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("RegExp.prototype.lastIndex")}}
 - {{JSxRef("RegExp.prototype.dotAll")}}

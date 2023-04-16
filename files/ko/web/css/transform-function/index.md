@@ -1,60 +1,31 @@
 ---
 title: <transform-function>
 slug: Web/CSS/transform-function
+page-type: css-type
+browser-compat: css.types.transform-function
 ---
+
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`<transform-function>`** [자료형](/ko/docs/Web/CSS/CSS_Types)은 요소의 외형에 영향을 주는 변형을 나타냅니다. 변형 함수는 2D 또는 3D 공간 내에서 요소를 회전하고, 크기를 바꾸고, 왜곡하고, 이동할 수 있습니다. {{cssxref("transform")}} 속성에서 사용합니다.
+The **`<transform-function>`** [CSS](/en-US/docs/Web/CSS) [data type](/en-US/docs/Web/CSS/CSS_Types) represents a transformation that affects an element's appearance. Transformation [functions](/en-US/docs/Web/CSS/CSS_Functions) can rotate, resize, distort, or move an element in 2D or 3D space. It is used in the {{cssxref("transform")}} property.
 
-## 변형을 수학적으로 표현하기
-
-HTML요소의 크기와 형태, 그리고 요소에 가해진 변형을 표현할 땐 다양한 좌표계를 사용할 수 있습니다. 가장 흔히 사용하는건 [직교좌표계](https://ko.wikipedia.org/wiki/%EC%A7%81%EA%B5%90_%EC%A2%8C%ED%91%9C%EA%B3%84)이나, 가끔 [동차좌표계](https://ko.wikipedia.org/wiki/%EB%8F%99%EC%B0%A8%EC%A2%8C%ED%91%9C)도 쓰입니다.
-
-### 직교좌표계
-
-직교좌표계 평면 위의 점은 X 좌표(가로 좌표)와 Y 좌표(세로 좌표)를 사용해 표현하며, 벡터 표현 `(x, y)`를 사용해 나타냅니다.
-
-![직교 좌표계](coord_in_R2.png)
-
-CSS (및 다른 대부분의 컴퓨터 그래픽)에서, 원점 `(0, 0)`은 요소의 좌상단 꼭짓점을 가리킵니다. 양의 좌표는 원점의 오른쪽과 아래로 진행하고, 음의 좌표는 왼쪽과 위로 진행합니다. 따라서 오른쪽으로 2단위, 아래쪽으로 5단위에 위치한 점은 `(2, 5)`이고 왼쪽으로 3단위, 위쪽으로 12단위 나아간 점은 `(-3, -12)`입니다.
-
-### 변형 함수
-
-Transformation functions alter the appearance of an element by manipulating the values of its coordinates. A linear transformation function is described using a 2×2 matrix, like this:
-
-<math><mfenced><mtable><mtr><mtd><mi>a</mi></mtd><mtd><mi>c</mi></mtd></mtr> <mtr><mtd><mi>b</mi></mtd><mtd><mi>d</mi></mtd></mtr></mtable></mfenced></math>
-
-The function is applied to an element by using matrix multiplication. Thus, each coordinate changes based on the values in the matrix:
-
-<math><mfenced><mtable><mtr><mtd><mi>a</mi></mtd><mtd><mi>c</mi></mtd></mtr> <mtr><mtd><mi>b</mi></mtd><mtd><mi>d</mi></mtd></mtr> </mtable></mfenced><mfenced><mtable><mtr><mtd><mi>x</mi></mtd></mtr><mtr><mtd><mi>y</mi></mtd></mtr> </mtable></mfenced><mo>=</mo> <mfenced><mtable><mtr><mtd><mi>a</mi><mi>x</mi><mo>+</mo><mi>c</mi><mi>y</mi></mtd> </mtr><mtr><mtd><mi>b</mi><mi>x</mi><mo>+</mo><mi>d</mi><mi>y</mi></mtd></mtr></mtable></mfenced></math>
-
-It is even possible to apply several transformations in a row:
-
-<math><mfenced><mtable><mtr><mtd><msub><mi>a</mi><mn>1</mn></msub></mtd> <mtd><msub><mi>c</mi><mn>1</mn></msub></mtd> </mtr><mtr><mtd><msub><mi>b</mi><mn>1</mn></msub></mtd> <mtd><msub><mi>d</mi><mn>1</mn></msub></mtd> </mtr></mtable></mfenced><mfenced><mtable><mtr><mtd><msub><mi>a</mi><mn>2</mn></msub></mtd> <mtd><msub><mi>c</mi><mn>2</mn></msub></mtd> </mtr><mtr><mtd><msub><mi>b</mi><mn>2</mn></msub></mtd> <mtd><msub><mi>d</mi><mn>2</mn></msub></mtd> </mtr></mtable></mfenced><mo>=</mo> <mfenced><mtable><mtr><mtd><msub><mi>a</mi><mn>1</mn></msub> <msub><mi>a</mi><mn>2</mn></msub> <mo>+</mo> <msub><mi>c</mi><mn>1</mn></msub> <msub><mi>b</mi><mn>2</mn></msub> </mtd><mtd><msub><mi>a</mi><mn>1</mn></msub> <msub><mi>c</mi><mn>2</mn></msub> <mo>+</mo> <msub><mi>c</mi><mn>1</mn></msub> <msub><mi>d</mi><mn>2</mn></msub> </mtd></mtr><mtr><mtd><msub><mi>b</mi><mn>1</mn></msub> <msub><mi>a</mi><mn>2</mn></msub> <mo>+</mo> <msub><mi>d</mi><mn>1</mn></msub> <msub><mi>b</mi><mn>2</mn></msub> </mtd><mtd><msub><mi>b</mi><mn>1</mn></msub> <msub><mi>c</mi><mn>2</mn></msub> <mo>+</mo> <msub><mi>d</mi><mn>1</mn></msub> <msub><mi>d</mi><mn>2</mn></msub></mtd></mtr></mtable></mfenced></math>
-
-With this notation, it is possible to describe, and therefore compose, most common transformations: rotations, scaling, or skewing. (In fact, all transformations that are linear functions can be described.) Composite transformations are effectively applied in order from right to left.
-
-However, one major transformation is not linear, and therefore must be special-cased when using this notation: translation. The translation vector `(tx, ty)` must be expressed separately, as two additional parameters.
-
-> **참고:** Though trickier than Cartesian coordinates, [homogeneous coordinates](https://en.wikipedia.org/wiki/Homogeneous_coordinates) in [projective geometry](https://en.wikipedia.org/wiki/Projective_geometry) lead to 3×3 transformation matrices, and can simply express translations as linear functions.
-
-## 구문
+## Syntax
 
 The `<transform-function>` data type is specified using one of the transformation functions listed below. Each function applies a geometric operation in either 2D or 3D.
 
-### 행렬 변형
+### Matrix transformation
 
 - [`matrix()`](/en-US/docs/Web/CSS/transform-function/matrix)
   - : Describes a homogeneous 2D transformation matrix.
 - [`matrix3d()`](/en-US/docs/Web/CSS/transform-function/matrix3d)
   - : Describes a 3D transformation as a 4×4 homogeneous matrix.
 
-### 원근
+### Perspective
 
 - [`perspective()`](/en-US/docs/Web/CSS/transform-function/perspective)
   - : Sets the distance between the user and the z=0 plane.
 
-### 회전
+### Rotation
 
 - [`rotate()`](/en-US/docs/Web/CSS/transform-function/rotate)
   - : Rotates an element around a fixed point on the 2D plane.
@@ -67,7 +38,7 @@ The `<transform-function>` data type is specified using one of the transformatio
 - [`rotateZ()`](/en-US/docs/Web/CSS/transform-function/rotateZ)
   - : Rotates an element around the z-axis.
 
-### 크기 조절
+### Scaling (resizing)
 
 - [`scale()`](/en-US/docs/Web/CSS/transform-function/scale)
   - : Scales an element up or down on the 2D plane.
@@ -80,7 +51,7 @@ The `<transform-function>` data type is specified using one of the transformatio
 - [`scaleZ()`](/en-US/docs/Web/CSS/transform-function/scaleZ)
   - : Scales an element up or down along the z-axis.
 
-### 기울이기 (왜곡)
+### Skewing (distortion)
 
 - [`skew()`](/en-US/docs/Web/CSS/transform-function/skew)
   - : Skews an element on the 2D plane.
@@ -89,7 +60,7 @@ The `<transform-function>` data type is specified using one of the transformatio
 - [`skewY()`](/en-US/docs/Web/CSS/transform-function/skewY)
   - : Skews an element in the vertical direction.
 
-### 이동
+### Translation (moving)
 
 - [`translate()`](/en-US/docs/Web/CSS/transform-function/translate)
   - : Translates an element on the 2D plane.
@@ -102,14 +73,190 @@ The `<transform-function>` data type is specified using one of the transformatio
 - [`translateZ()`](/en-US/docs/Web/CSS/transform-function/translateZ)
   - : Translates an element along the z-axis.
 
-## 명세
+## Description
+
+Various coordinate models can be used to describe an HTML element's size and shape, as well as any transformations applied to it. The most common is the [Cartesian coordinate system](https://en.wikipedia.org/wiki/Cartesian_coordinate_system), although [homogeneous coordinates](https://en.wikipedia.org/wiki/Homogeneous_coordinates) are also sometimes used.
+
+### Cartesian coordinates
+
+In the Cartesian coordinate system, a two-dimensional point is described using two values: an x coordinate (abscissa) and a y coordinate (ordinate). This is represented by the vector notation `(x, y)`.
+
+![A cartesian plane showing the negative Y and positive X axis starting from origin with three points P1, P2 and P3 with corresponding X and Y values](coord_in_r2.png)
+
+In CSS (and most computer graphics), the origin `(0, 0)` represents the _top-left_ corner of any element. Positive coordinates are down and to the right of the origin, while negative ones are up and to the left. Thus, a point that's 2 units to the right and 5 units down would be `(2, 5)`, while a point 3 units to the left and 12 units up would be `(-3, -12)`.
+
+### Transformation functions
+
+Transformation functions alter the appearance of an element by manipulating the values of its coordinates. A linear transformation function is described using a 2×2 matrix, like this:
+
+<math><mrow><mo>(</mo><mtable><mtr><mtd><mi>a</mi></mtd><mtd><mi>c</mi></mtd></mtr> <mtr><mtd><mi>b</mi></mtd><mtd><mi>d</mi></mtd></mtr></mtable><mo>)</mo></mrow></math>
+
+The function is applied to an element by using matrix multiplication. Thus, each coordinate changes based on the values in the matrix:
+
+<math><mrow><mo>(</mo><mtable><mtr><mtd><mi>a</mi></mtd><mtd><mi>c</mi></mtd></mtr> <mtr><mtd><mi>b</mi></mtd><mtd><mi>d</mi></mtd></mtr> </mtable><mo>)</mo></mrow><mrow><mo>(</mo><mtable><mtr><mtd><mi>x</mi></mtd></mtr><mtr><mtd><mi>y</mi></mtd></mtr> </mtable><mo>)</mo></mrow><mo>=</mo> <mrow><mo>(</mo><mtable><mtr><mtd><mi>a</mi><mi>x</mi><mo>+</mo><mi>c</mi><mi>y</mi></mtd> </mtr><mtr><mtd><mi>b</mi><mi>x</mi><mo>+</mo><mi>d</mi><mi>y</mi></mtd></mtr></mtable><mo>)</mo></mrow></math>
+
+It is even possible to apply several transformations in a row:
+
+<math><mrow><mo>(</mo><mtable><mtr><mtd><msub><mi>a</mi><mn>1</mn></msub></mtd> <mtd><msub><mi>c</mi><mn>1</mn></msub></mtd> </mtr><mtr><mtd><msub><mi>b</mi><mn>1</mn></msub></mtd> <mtd><msub><mi>d</mi><mn>1</mn></msub></mtd> </mtr></mtable><mo>)</mo></mrow><mrow><mo>(</mo><mtable><mtr><mtd><msub><mi>a</mi><mn>2</mn></msub></mtd> <mtd><msub><mi>c</mi><mn>2</mn></msub></mtd> </mtr><mtr><mtd><msub><mi>b</mi><mn>2</mn></msub></mtd> <mtd><msub><mi>d</mi><mn>2</mn></msub></mtd> </mtr></mtable><mo>)</mo></mrow><mo>=</mo> <mrow><mo>(</mo><mtable><mtr><mtd><msub><mi>a</mi><mn>1</mn></msub> <msub><mi>a</mi><mn>2</mn></msub> <mo>+</mo> <msub><mi>c</mi><mn>1</mn></msub> <msub><mi>b</mi><mn>2</mn></msub> </mtd><mtd><msub><mi>a</mi><mn>1</mn></msub> <msub><mi>c</mi><mn>2</mn></msub> <mo>+</mo> <msub><mi>c</mi><mn>1</mn></msub> <msub><mi>d</mi><mn>2</mn></msub> </mtd></mtr><mtr><mtd><msub><mi>b</mi><mn>1</mn></msub> <msub><mi>a</mi><mn>2</mn></msub> <mo>+</mo> <msub><mi>d</mi><mn>1</mn></msub> <msub><mi>b</mi><mn>2</mn></msub> </mtd><mtd><msub><mi>b</mi><mn>1</mn></msub> <msub><mi>c</mi><mn>2</mn></msub> <mo>+</mo> <msub><mi>d</mi><mn>1</mn></msub> <msub><mi>d</mi><mn>2</mn></msub></mtd></mtr></mtable><mo>)</mo></mrow></math>
+
+With this notation, it is possible to describe, and therefore compose, most common transformations: rotations, scaling, or skewing. (In fact, all transformations that are linear functions can be described.) Composite transformations are effectively applied in order from right to left.
+
+However, one major transformation is not linear, and therefore must be special-cased when using this notation: translation. The translation vector `(tx, ty)` must be expressed separately, as two additional parameters.
+
+> **Note:** Though trickier than Cartesian coordinates, [homogeneous coordinates](https://en.wikipedia.org/wiki/Homogeneous_coordinates) in [projective geometry](https://en.wikipedia.org/wiki/Projective_geometry) lead to 3×3 transformation matrices, and can express translations as linear functions.
+
+> **Note:** Transform functions are used with the `transform` property but not with individual transform properties-{{cssxref("translate")}}, {{cssxref("scale")}}, and {{cssxref("rotate")}}.
+
+## Examples
+
+### Transform function comparison
+
+The following example provides a 3D cube created from DOM elements and transforms, and a select menu allowing you to choose different transform functions to transform the cube with, so you can compare the effects of the different types.
+
+Choose one, and the transform is applied to the cube; after 2 seconds, the cube reverts back to its starting state. The cube's starting state is slightly rotated using `transform3d()`, to allow you to see the effect of all the transforms.
+
+#### HTML
+
+```html
+<main>
+  <section id="example-element">
+    <div class="face front">1</div>
+    <div class="face back">2</div>
+    <div class="face right">3</div>
+    <div class="face left">4</div>
+    <div class="face top">5</div>
+    <div class="face bottom">6</div>
+  </section>
+
+  <div class="select-form">
+    <label for="transfunction">Select a transform function</label>
+    <select id="transfunction">
+      <option selected>Choose a function</option>
+      <option>rotate(360deg)</option>
+      <option>rotateX(360deg)</option>
+      <option>rotateY(360deg)</option>
+      <option>rotateZ(360deg)</option>
+      <option>rotate3d(1, 1, 1, 90deg)</option>
+      <option>scale(1.5)</option>
+      <option>scaleX(1.5)</option>
+      <option>scaleY(1.5)</option>
+      <option>scaleZ(1.5)</option>
+      <option>scale3d(1, 1.5, 1.5)</option>
+      <option>skew(17deg, 13deg)</option>
+      <option>skewX(17deg)</option>
+      <option>skewY(17deg)</option>
+      <option>translate(100px, 100px)</option>
+      <option>translateX(100px)</option>
+      <option>translateY(100px)</option>
+      <option>translateZ(100px)</option>
+      <option>translate3d(50px, 50px, 50px)</option>
+      <option>perspective(200px)</option>
+      <option>matrix(1, 2, -1, 1, 80, 80)</option>
+      <option>matrix3d(1,0,0,0,0,1,3,0,0,0,1,0,50,100,0,1.1)</option>
+    </select>
+  </div>
+</main>
+```
+
+#### CSS
+
+```css
+main {
+  width: 400px;
+  height: 200px;
+  padding: 50px;
+  background-image: linear-gradient(135deg, white, cyan, white);
+}
+
+#example-element {
+  width: 100px;
+  height: 100px;
+  transform-style: preserve-3d;
+  transition: transform 1.5s;
+  transform: rotate3d(1, 1, 1, 30deg);
+}
+
+.face {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  backface-visibility: inherit;
+  font-size: 60px;
+  color: #fff;
+}
+
+.front {
+  background: rgba(90, 90, 90, 0.7);
+  transform: translateZ(50px);
+}
+
+.back {
+  background: rgba(0, 210, 0, 0.7);
+  transform: rotateY(180deg) translateZ(50px);
+}
+
+.right {
+  background: rgba(210, 0, 0, 0.7);
+  transform: rotateY(90deg) translateZ(50px);
+}
+
+.left {
+  background: rgba(0, 0, 210, 0.7);
+  transform: rotateY(-90deg) translateZ(50px);
+}
+
+.top {
+  background: rgba(210, 210, 0, 0.7);
+  transform: rotateX(90deg) translateZ(50px);
+}
+
+.bottom {
+  background: rgba(210, 0, 210, 0.7);
+  transform: rotateX(-90deg) translateZ(50px);
+}
+
+.select-form {
+  margin-top: 50px;
+}
+```
+
+#### JavaScript
+
+```js
+const selectElem = document.querySelector("select");
+const example = document.querySelector("#example-element");
+
+selectElem.addEventListener("change", () => {
+  if (selectElem.value === "Choose a function") {
+    return;
+  } else {
+    example.style.transform = `rotate3d(1, 1, 1, 30deg) ${selectElem.value}`;
+    setTimeout(() => {
+      example.style.transform = "rotate3d(1, 1, 1, 30deg)";
+    }, 2000);
+  }
+});
+```
+
+#### Result
+
+{{EmbedLiveSample('Transform_function_comparison', '100%', 300)}}
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- CSS {{cssxref("transform")}} 속성
+- CSS {{cssxref("transform")}} property
+- Individual transform properties:
+  - {{cssxref("translate")}}
+  - {{cssxref("scale")}}
+  - {{cssxref("rotate")}}

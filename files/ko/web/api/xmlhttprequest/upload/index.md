@@ -1,34 +1,83 @@
 ---
-title: XMLHttpRequest.upload
+title: "XMLHttpRequest: upload property"
+short-title: upload
 slug: Web/API/XMLHttpRequest/upload
+page-type: web-api-instance-property
+browser-compat: api.XMLHttpRequest.upload
 ---
 
 {{APIRef('XMLHttpRequest')}}
 
-{{domxref("XMLHttpRequest")}} `upload` 프로퍼티는 업로드 진행 상황을 모니터링 할 수 있는 {{domxref("XMLHttpRequestUpload")}} 객체를 반환합니다. 불투명한 객체(opaque object)이지만 {{domxref("XMLHttpRequestEventTarget")}} 이기도 하기 때문에 이벤트 리스너를 연결하여 프로세스를 추적할 수 있습니다.
+The {{domxref("XMLHttpRequest")}} `upload` property returns an {{domxref("XMLHttpRequestUpload")}} object that can be observed to monitor an upload's progress.
 
-upload 이벤트에서 다음 이벤트가 트리거되어 업로드를 모니터링하는데 사용할 수 있습니다.
+It is an opaque object, but because it's also an {{domxref("XMLHttpRequestEventTarget")}}, event listeners can be attached to track its process.
 
-| Event                        | Event listener                                                               | Description                                                                                                                                                                                                                       |
-| ---------------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| {{event("loadstart")}} | {{domxref("XMLHttpRequest.onloadstart", "onloadstart")}} | 업로드가 시작되었습니다.                                                                                                                                                                                                          |
-| {{event("progress")}} | {{domxref("XMLHttpRequest.onprogress", "onprogress")}}     | 지금까지 진행된 상태를 정기적으로 제공합니다.                                                                                                                                                                                     |
-| {{event("abort")}}     | {{domxref("XMLHttpRequest.onabort", "onabort")}}             | 업로드가 중단되었습니다.                                                                                                                                                                                                          |
-| {{event("error")}}     | {{domxref("XMLHttpRequest.onerror", "onerror")}}             | 에러로 인해 업로드에 실패했습니다.                                                                                                                                                                                                |
-| {{event("load")}}     | {{domxref("XMLHttpRequest.onload", "onload")}}                 | 업로드가 성공적으로 완료되었습니다.                                                                                                                                                                                               |
-| {{event("timeout")}} | {{domxref("XMLHttpRequest.ontimeout", "ontimeout")}}         | {{domxref("XMLHttpRequest.timeout")}}에 명시되어 있는 시간 간격 내에 응답이 도착하지 않아, 업로드 시간이 초과되었습니다.                                                                                               |
-| {{event("loadend")}} | {{domxref("XMLHttpRequest.onloadend", "onloadend")}}         | 업로드가 완료되었습니다. 이 이벤트는 성공과 실패를 구분하지 않고 결과에 관계없이 업로드가 끝나면 전송됩니다. 이 이벤트 발생 이전에는 전송이 종료된 이유를 나타내기 위해 `load`, `error`, `abort`, `timeout` 중 하나를 전달합니다. |
+> **Note:** Attaching event listeners to this object prevents the request from being a "simple request" and will cause a preflight request to be issued if cross-origin; see [CORS](/en-US/docs/Web/HTTP/CORS). Because of this, event listeners need to be registered before calling {{domxref("XMLHttpRequest.send", "send()")}} or upload events won't be dispatched.
 
-## 명세서
+> **Note:** The spec also seems to indicate that event listeners should be attached after {{domxref("XMLHttpRequest.open", "open()")}}. However, browsers are buggy on this matter, and often need the listeners to be registered _before_ {{domxref("XMLHttpRequest.open", "open()")}} to work.
+
+The following events can be triggered on an upload object and used to monitor the upload:
+
+<table class="no-markdown">
+  <thead>
+    <tr>
+      <th>Event</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{domxref("XMLHttpRequestUpload/loadstart_event", "loadstart")}}</td>
+      <td>The upload has begun.</td>
+    </tr>
+    <tr>
+      <td>{{domxref("XMLHttpRequestUpload/progress_event", "progress")}}</td>
+      <td>
+        Periodically delivered to indicate the amount of progress made so far.
+      </td>
+    </tr>
+    <tr>
+      <td>{{domxref("XMLHttpRequestUpload/abort_event", "abort")}}</td>
+      <td>The upload operation was aborted.</td>
+    </tr>
+    <tr>
+      <td>{{domxref("XMLHttpRequestUpload/error_event", "error")}}</td>
+      <td>The upload failed due to an error.</td>
+    </tr>
+    <tr>
+      <td>{{domxref("XMLHttpRequestUpload/load_event", "load")}}</td>
+      <td>The upload completed successfully.</td>
+    </tr>
+    <tr>
+      <td>{{domxref("XMLHttpRequestUpload/timeout_event", "timeout")}}</td>
+      <td>
+        The upload timed out because a reply did not arrive within the time
+        interval specified by the
+        {{domxref("XMLHttpRequest.timeout")}}.
+      </td>
+    </tr>
+    <tr>
+      <td>{{domxref("XMLHttpRequestUpload/loadend_event", "loadend")}}</td>
+      <td>
+        The upload finished. This event does not differentiate between success
+        or failure, and is sent at the end of the upload regardless of the
+        outcome. Prior to this event, one of <code>load</code>,
+        <code>error</code>, <code>abort</code>, or <code>timeout</code> will
+        already have been delivered to indicate why the upload ended.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- [Using XMLHttpRequest](/ko/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest)
-- [FileHandle API](/ko/docs/Web/API/File_Handle_API)
-- [File and Directory Entries API](/ko/docs/Web/API/File_and_Directory_Entries_API)
+- [Using XMLHttpRequest](/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest)
+- {{domxref("XMLHttpRequestUpload")}}

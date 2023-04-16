@@ -1,71 +1,85 @@
 ---
-title: RTCPeerConnection.canTrickleIceCandidates
+title: "RTCPeerConnection: canTrickleIceCandidates property"
+short-title: canTrickleIceCandidates
 slug: Web/API/RTCPeerConnection/canTrickleIceCandidates
+page-type: web-api-instance-property
+browser-compat: api.RTCPeerConnection.canTrickleIceCandidates
 ---
 
 {{APIRef("WebRTC")}}
 
-읽기 속성인 **{{domxref("RTCPeerConnection")}}** 속성의 **`canTrickleIceCandidates`** 는 원격유저가 [trickled ICE candidates](https://tools.ietf.org/html/draft-ietf-mmusic-trickle-ice)를 승인 할 수 있는지의 여부를 알려주는 {{jsxref("Boolean")}}을 반환합니다.
+The read-only **{{domxref("RTCPeerConnection")}}** property **`canTrickleIceCandidates`**
+returns a boolean value which indicates whether or not the remote peer can accept
+[trickled ICE candidates](https://datatracker.ietf.org/doc/html/draft-ietf-mmusic-trickle-ice).
 
-**ICE trickling** 은 초기 offer 혹은 answer를 다른 유저에게 이미 전달을 했음에도 계속해서 candidate를 보내는 과정을 뜻합니다.
+**ICE trickling** is the process of continuing to send candidates after
+the initial offer or answer has already been sent to the other peer.
 
-이 속성은 {{domxref("RTCPeerConnection.setRemoteDescription()")}}가 호출된 후에만 설정됩니다. Signaling 프로토콜이 trickling 지원을 감지하는 방법을 제공해서 이 속성에 의존 할 필요가 없이 하는 것이 가장 좋은 방법입니다. WebRTC 브라우저는 항상 trickle ICE를 지원하게 되어있습니다. 하지만 몇몇 경우에 trickling이 지원이 되지 않거나 애초에 지원하는지를 알 수 없다면, 이 속성의 값이 이상한지 확인하고, 또한 초기 offer를 생성하고 전달하기 이전에 {{domxref("RTCPeerConnection.iceGatheringState", "iceGatheringState")}}의 값이 `"completed"`로 바뀌기전까지 기다릴 수 있습니다. 이러한 방식으로 offer에 모든 candidate들이 포함되도록 만들 수 있습니다.
+This property is only set after having called
+{{domxref("RTCPeerConnection.setRemoteDescription()")}}. Ideally, your signaling
+protocol provides a way to detect trickling support, so that you don't need to rely on
+this property. A WebRTC browser will always support trickle ICE. If trickling isn't
+supported, or you aren't able to tell, you can check for a falsy value for this
+property and then wait until the value of
+{{domxref("RTCPeerConnection.iceGatheringState", "iceGatheringState")}} changes to
+`"completed"` before creating and sending the initial offer. That way, the
+offer contains all of the candidates.
 
-## Syntax
+## Value
+
+A boolean value that is `true` if the remote peer can accept
+trickled ICE candidates and `false` if it cannot. If no remote peer has
+been established, this value is `null`.
+
+> **Note:** This property's value is determined once the local peer has
+> called {{domxref("RTCPeerConnection.setRemoteDescription()")}}; the provided
+> description is used by the ICE agent to determine whether or not the remote peer
+> supports trickled ICE candidates.
+
+## Examples
 
 ```js
- var canTrickle = RTCPeerConnection.canTrickleIceCandidates;
-```
+const pc = new RTCPeerConnection();
 
-### 값
+function waitToCompleteIceGathering(pc) {
+  return new Promise((resolve) => {
+    pc.addEventListener(
+      "icegatheringstatechange",
+      (e) =>
+        e.target.iceGatheringState === "complete" &&
+        resolve(pc.localDescription)
+    );
+  });
+}
 
-{{jsxref("Boolean")}}는 원격 유저가 trickled ICE candidate를 수용 할 수 있으면 `true` 값이고, 그렇지 않으면 `false` 값 입니다. 이미 원격 유저가 생성되었으면, 이 값은 `null` 입니다.
-
-> **참고:** **참조:** 이 속성의 값은 로컬 피어가 {{domxref("RTCPeerConnection.setRemoteDescription()")}}를 호출하게 되면 결정됩니다.
->
-> 여기에서 제공된 정보를 사용해서 ICE agent가 원격 유저가 trickled ICE candidate를 지원하는지에 대한 여부를 결정해줍니다.
-
-## 예시
-
-```js
-var pc = new RTCPeerConnection();
 // The following code might be used to handle an offer from a peer when
 // it isn't known whether it supports trickle ICE.
-pc.setRemoteDescription(remoteOffer)
-  .then(_ => pc.createAnswer())
-  .then(answer => pc.setLocalDescription(answer))
-  .then(_ =>
-    if (pc.canTrickleIceCandidates) {
-      return pc.localDescription;
-    }
-    return new Promise(r => {
-      pc.addEventListener('icegatheringstatechange', e => {
-        if (e.target.iceGatheringState === 'complete') {
-          r(pc.localDescription);
-        }
-      });
-    });
-  })
-  .then(answer => sendAnswerToPeer(answer)) // signaling message
-  .catch(e => handleError(e));
+async function newPeer(remoteOffer) {
+  await pc.setRemoteDescription(remoteOffer);
+  const offer = await pc.createOffer();
+  await pc.setLocalDescription(offer);
+  if (pc.canTrickleIceCandidates) return pc.localDescription;
+  const answer = await waitToCompleteIceGathering(pc);
+  sendAnswerToPeer(answer); //To peer via signaling channel
+}
+// Handle error with try/catch
 
-pc.addEventListener('icecandidate', e => {
-  if (pc.canTrickleIceCandidates) {
-    sendCandidateToPeer(e.candidate); // signaling message
-  }
-});
+pc.addEventListener(
+  "icecandidate",
+  (e) => pc.canTrickleIceCandidates && sendCandidateToPeer(e.candidate)
+);
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
-- [WebRTC](/ko/docs/Web/Guide/API/WebRTC)
+- [WebRTC](/en-US/docs/Web/API/WebRTC_API)
 - {{domxref("RTCPeerConnection.addIceCandidate()")}}
-- [Lifetime of a WebRTC session](/ko/docs/Web/API/WebRTC_API/Session_lifetime)
+- [Lifetime of a WebRTC session](/en-US/docs/Web/API/WebRTC_API/Session_lifetime)

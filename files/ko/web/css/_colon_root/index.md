@@ -1,28 +1,35 @@
 ---
-title: ':root'
+title: ":root"
 slug: Web/CSS/:root
+page-type: css-pseudo-class
+browser-compat: css.selectors.root
 ---
+
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`:root`** [의사 클래스](/ko/docs/Web/CSS/Pseudo-classes)는 문서 트리의 루트 요소를 선택합니다 HTML의 루트 요소는 {{htmlelement("html")}} 요소이므로, `:root`의 [명시도](/ko/docs/Web/CSS/Specificity)가 더 높다는 점을 제외하면 `html` 선택자와 똑같습니다.
+The **`:root`** [CSS](/en-US/docs/Web/CSS) [pseudo-class](/en-US/docs/Web/CSS/Pseudo-classes) matches the root element of a tree representing the document. In HTML, `:root` represents the {{HTMLElement("html")}} element and is identical to the selector `html`, except that its [specificity](/en-US/docs/Web/CSS/Specificity) is higher.
 
 ```css
-/* 문서의 루트 요소 선택
-   HTML에서는 <html> */
+/* Selects the root element of the document:
+   <html> in the case of HTML */
 :root {
   background: yellow;
 }
 ```
 
-## 구문
+## Syntax
 
-{{csssyntax}}
+```css
+:root {
+  /* ... */
+}
+```
 
-## 예제
+## Examples
 
-### 전역 CSS 변수 선언하기
+### Declaring global CSS variables
 
-`:root`는 전역 [CSS 변수](/ko/docs/Web/CSS/Using_CSS_custom_properties) 선언에 유용하게 사용할 수 있습니다.
+`:root` can be useful for declaring global [CSS variables](/en-US/docs/Web/CSS/Using_CSS_custom_properties):
 
 ```css
 :root {
@@ -31,19 +38,18 @@ slug: Web/CSS/:root
 }
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{htmlelement("html")}}
+- {{HTMLElement("html")}}
 - {{domxref("Document.rootElement")}}
 - {{domxref("Node.getRootNode()")}}
-- {{domxref("Node.rootNode")}}
 - {{domxref("Element.shadowRoot")}}
 - {{domxref("ShadowRoot")}}

@@ -1,45 +1,60 @@
 ---
 title: History
 slug: Web/API/History
+page-type: web-api-interface
+browser-compat: api.History
 ---
-{{APIRef("HTML DOM")}}
 
-**`History`** 인터페이스는 브라우저의 세션 기록, 즉 현재 페이지를 불러온 탭 또는 프레임의 방문 기록을 조작할 수 있는 방법을 제공합니다.
+{{ APIRef("History API") }}
 
-## 속성
+The **`History`** interface allows manipulation of the browser _session history_, that is the pages visited in the tab or frame that the current page is loaded in.
 
-_`History` 인터페이스는 어떤 속성도 상속하지 않습니다._
+There is only one instance of `history` (It is a _singleton_.) accessible via the global object {{domxref("Window.history", "history")}}.
 
-- {{domxref("History.length")}} {{readOnlyInline}}
-  - : 현재 페이지를 포함해, 세션 기록의 길이를 나타내는 정수를 반환합니다.
-- {{domxref("History.scrollRestoration")}}
-  - : 기록 탐색 시 스크롤 위치 복원 여부를 명시할 수 있습니다. 가능한 값은 `auto`와 `manual`입니다.
-- {{domxref("History.state")}} {{readOnlyInline}}
-  - : 기록 스택 최상단의 스테이트를 나타내는 값을 반환합니다. {{event("popstate")}} 이벤트를 기다리지 않고 현재 기록의 스테이트를 볼 수 있는 방법입니다.
+> **Note:** This interface is only available on the main thread ({{domxref("Window")}}). It cannot be accessed in {{domxref("Worker")}} or {{domxref("Worklet")}} contexts.
 
-## 메서드
+## Instance properties
 
-_`History` 인터페이스는 어떤 메서드도 상속하지 않습니다._
+_The `History` interface doesn't inherit any property._
 
-- {{domxref("History.back()")}}
-  - : 세션 기록의 바로 뒤 페이지로 이동하는 비동기 메서드입니다. 브라우저의 <kbd>뒤로 가기</kbd> 버튼을 눌렀을 때, 그리고 `history.go(-1)`을 사용했을 때와 같습니다.> **참고:** 세션 기록의 제일 첫 번째 페이지에서 호출해도 오류는 발생하지 않습니다.
-- {{domxref("History.forward()")}}
-  - : 세션 기록의 바로 앞 페이지로 이동하는 비동기 메서드입니다. 브라우저의 <kbd>앞으로 가기</kbd> 버튼을 눌렀을 때, 그리고 `history.go(1)`을 사용했을 때와 같습니다.> **참고:** 세션 기록의 제일 마지막 페이지에서 호출해도 오류는 발생하지 않습니다.
-- {{domxref("History.go()")}}
-  - : 현재 페이지를 기준으로, 상대적인 위치에 존재하는 세션 기록 내 페이지로 이동하는 비동기 메서드입니다. 예를 들어, 매개변수로 `-1`을 제공하면 바로 뒤로, `1`을 제공하면 바로 앞으로 이동합니다. 세션 기록의 범위를 벗어나는 값을 제공하면 아무 일도 일어나지 않습니다. 매개변수를 제공하지 않거나, `0`을 제공하면 현재 페이지를 다시 불러옵니다.
-- {{domxref("History.pushState()")}}
-  - : 주어진 데이터를 지정한 제목(제공한 경우 URL도)으로 세션 기록 스택에 넣습니다. 데이터는 DOM이 불투명(opaque)하게 취급하므로, 직렬화 가능한 모든 JavaScript 객체를 사용할 수 있습니다. 참고로, Safari를 제외한 모든 브라우저는 `title` 매개변수를 무시합니다.
-- {{domxref("History.replaceState()")}}
-  - : 세션 기록 스택의 제일 최근 항목을 주어진 데이터, 지정한 제목 및 URL로 대체합니다. 데이터는 DOM이 불투명(opaque)하게 취급하므로, 직렬화 가능한 모든 JavaScript 객체를 사용할 수 있습니다. 참고로, Safari를 제외한 모든 브라우저는 `title` 매개변수를 무시합니다.
+- {{domxref("History.length","length")}} {{ReadOnlyInline}}
+  - : Returns an `Integer` representing the number of elements in the session history, including the currently loaded page. For example, for a page loaded in a new tab this property returns `1`.
+- {{domxref("History.scrollRestoration","scrollRestoration")}}
+  - : Allows web applications to explicitly set default scroll restoration behavior on history navigation. This property can be either `auto` or `manual`.
+- {{domxref("History.state","state")}} {{ReadOnlyInline}}
+  - : Returns an `any` value representing the state at the top of the history stack. This is a way to look at the state without having to wait for a {{domxref("Window/popstate_event", "popstate")}} event.
 
-## 명세
+## Instance methods
+
+_The `History`_ _interface doesn't inherit any methods._
+
+- {{domxref("History.back","back()")}}
+
+  - : This asynchronous method goes to the previous page in session history, the same action as when the user clicks the browser's <kbd>Back</kbd> button. Equivalent to `history.go(-1)`.
+
+    Calling this method to go back beyond the first page in the session history has no effect and doesn't raise an exception.
+
+- {{domxref("History.forward","forward()")}}
+
+  - : This asynchronous method goes to the next page in session history, the same action as when the user clicks the browser's <kbd>Forward</kbd> button; this is equivalent to `history.go(1)`.
+
+    Calling this method to go forward beyond the most recent page in the session history has no effect and doesn't raise an exception.
+
+- {{domxref("History.go","go()")}}
+  - : Asynchronously loads a page from the session history, identified by its relative location to the current page, for example `-1` for the previous page or `1` for the next page. If you specify an out-of-bounds value (for instance, specifying `-1` when there are no previously-visited pages in the session history), this method silently has no effect. Calling `go()` without parameters or a value of `0` reloads the current page.
+- {{domxref("History.pushState","pushState()")}}
+  - : Pushes the given data onto the session history stack with the specified title (and, if provided, URL). The data is treated as opaque by the DOM; you may specify any JavaScript object that can be serialized. Note that all browsers but Safari currently ignore the _title_ parameter. For more information, see [Working with the History API](/en-US/docs/Web/API/History_API/Working_with_the_History_API).
+- {{domxref("History.replaceState","replaceState()")}}
+  - : Updates the most recent entry on the history stack to have the specified data, title, and, if provided, URL. The data is treated as opaque by the DOM; you may specify any JavaScript object that can be serialized. Note that all browsers but Safari currently ignore the _title_ parameter. For more information, see [Working with the History API](/en-US/docs/Web/API/History_API/Working_with_the_History_API).
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- `History` 객체 참조를 반환하는 {{domxref("Window.history")}} 속성.
+- {{domxref("Window.history", "history")}} global object

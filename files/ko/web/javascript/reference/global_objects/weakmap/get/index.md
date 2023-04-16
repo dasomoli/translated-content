@@ -1,51 +1,56 @@
 ---
 title: WeakMap.prototype.get()
 slug: Web/JavaScript/Reference/Global_Objects/WeakMap/get
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.WeakMap.get
 ---
 
 {{JSRef}}
 
-**`get()`** 메서드는 `WeakMap` 객체에서 특정 요소를 반환합니다.
+The **`get()`** method returns a specified element from a
+`WeakMap` object.
 
 {{EmbedInteractiveExample("pages/js/weakmap-prototype-get.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 get(key)
 ```
 
-### 매개변수
+### Parameters
 
 - `key`
-  - : 필수로 요구되며,`WeakMap` 객체에서 반환할 요소의 키입니다.
+  - : The key of the element to return from the `WeakMap` object.
 
-### 반환 값
+### Return value
 
-`WeakMap` 객체의 특정 키와 연결된 요소입니다. 키를 찾을 수 없으면 {{jsxref("undefined")}}가 반환됩니다.
+The element associated with the specified key in the `WeakMap` object. If
+the key can't be found, {{jsxref("undefined")}} is returned. Always returns
+`undefined` if `key` is not an object or a [non-registered symbol](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol#shared_symbols_in_the_global_symbol_registry).
 
-## 예제
+## Examples
 
-### get() 메서드 사용하기
+### Using the get() method
 
 ```js
 const wm = new WeakMap();
-wm.set(window, 'foo');
+wm.set(window, "foo");
 
-wm.get(window); // "foo" 반환.
-wm.get('baz');  // undefined 반환.
+wm.get(window); // Returns "foo".
+wm.get("baz"); // Returns undefined.
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("WeakMap")}}
-- {{jsxref("WeakMap.set()")}}
-- {{jsxref("WeakMap.has()")}}
+- {{jsxref("WeakMap.prototype.set()")}}
+- {{jsxref("WeakMap.prototype.has()")}}

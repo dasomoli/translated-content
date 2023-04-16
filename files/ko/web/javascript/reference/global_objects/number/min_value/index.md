@@ -1,26 +1,35 @@
 ---
 title: Number.MIN_VALUE
 slug: Web/JavaScript/Reference/Global_Objects/Number/MIN_VALUE
+page-type: javascript-static-data-property
+browser-compat: javascript.builtins.Number.MIN_VALUE
 ---
+
 {{JSRef}}
 
-**`Number.MIN_VALUE`** 속성은 JavaScript가 표현할 수 있는 제일 작은 양의 숫자 값을 나타냅니다.
+The **`Number.MIN_VALUE`** static data property represents the smallest positive numeric value representable in JavaScript.
 
-{{EmbedInteractiveExample("pages/js/number-min-value.html")}}{{js_property_attributes(0, 0, 0)}}
+{{EmbedInteractiveExample("pages/js/number-min-value.html")}}
 
-## 설명
+## Value
 
-`MIN_VALUE` 속성은 JavaScript에서 표현할 수 있는, 0에 가장 가깝지만 음수는 아닌 수입니다.
+2<sup>-1074</sup>, or `5E-324`.
 
-`MIN_VALUE`의 값은 약 `5e-324`입니다. `MIN_VALUE`보다 작은 값("언더플로우 값")은 0으로 변환됩니다.
+{{js_property_attributes(0, 0, 0)}}
 
-`MIN_VALUE`는 {{jsxref("Number")}}의 정적 속성이기 때문에, 직접 생성한 {{jsxref("Number")}} 객체의 속성이 아니라 `Number.MIN_VALUE` 형식으로 사용해야 합니다.
+## Description
 
-## 예제
+`Number.MIN_VALUE` is the smallest positive number (not the most negative number) that can be represented within float precision — in other words, the number closest to 0. The ECMAScript spec doesn't define a precise value that implementations are required to support — instead the spec says, _"must be the smallest non-zero positive value that can actually be represented by the implementation"_. This is because small IEEE-754 floating point numbers are [denormalized](https://en.wikipedia.org/wiki/Subnormal_number), but implementations are not required to support this representation, in which case `Number.MIN_VALUE` may be larger.
 
-### `MIN_VALUE` 사용하기
+In practice, its precise value in mainstream engines like V8 (used by Chrome, Edge, Node.js), SpiderMonkey (used by Firefox), and JavaScriptCore (used by Safari) is 2<sup>-1074</sup>, or `5E-324`.
 
-다음 코드는 숫자를 두 개의 수를 받아 나누기 연산을 합니다. 만약 결과가 `MIN_VALUE` 보다 크거나 같으면 `func1` 함수를 호출하고, 그렇지 않으면 `func2` 함수를 호출합니다.
+Because `MIN_VALUE` is a static property of {{jsxref("Number")}}, you always use it as `Number.MIN_VALUE`, rather than as a property of a number value.
+
+## Examples
+
+### Using MIN_VALUE
+
+The following code divides two numeric values. If the result is greater than or equal to `MIN_VALUE`, the `func1` function is called; otherwise, the `func2` function is called.
 
 ```js
 if (num1 / num2 >= Number.MIN_VALUE) {
@@ -30,14 +39,14 @@ if (num1 / num2 >= Number.MIN_VALUE) {
 }
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Number.MAX_VALUE")}}

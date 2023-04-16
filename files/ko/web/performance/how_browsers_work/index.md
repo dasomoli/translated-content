@@ -1,68 +1,69 @@
 ---
-title: "웹페이지를 표시한다는 것: 브라우저는 어떻게 동작하는가"
+title: "Populating the page: how browsers work"
 slug: Web/Performance/How_browsers_work
-original_slug: Web/Performance/브라우저는_어떻게_동작하는가
 ---
 
-사용자는 로드가 빠르고 상호작용이 원활한 컨텐츠로 이루어진 웹 경험을 원합니다. 따라서 개발자는 이 두 가지 목표를 달성하기 위해서 부단히 노력해야합니다.
+{{QuickLinksWithSubPages("Web/Performance")}}
 
-실제 성능 및 체감되는 성능을 향상시키는 방법을 이해하기 위해서 브라우저가 어떻게 동작하는지 이해하는 것이 도움이 됩니다.
+Users want web experiences with content that is fast to load and smooth to interact with. Therefore, a developer should strive to achieve these two goals.
 
-## 개요
+To understand how to improve performance and perceived performance, it helps to understand how the browser works.
 
-빠른 사이트는 더 좋은 사용자 경험을 제공합니다. 사용자는 로드가 빠르고 상호작용이 원활한 컨텐츠로 이루어진 웹 경험을 원합니다.
+## Overview
 
-웹 성능에 있어서 두 가지 주요한 문제는 지연시간과 브라우저가 대부분 싱글 쓰레드로 동작한다는 점입니다.
+Fast sites provide better user experiences. Users want and expect web experiences with content that is fast to load and smooth to interact with.
 
-빠른 로딩을 하는데 있어서 지연시간은 이겨내야할 중요한 문제입니다. 빠른 로딩을 위해 신경써야할 것에는 최대한 빠르게 요청하는 것(적어도 체감 상 매우 빠른 수준으로 보내기)도 포함됩니다. 네트워크 지연시간은 네트워크를 통해 컴퓨터로 바이트를 전송하는데 걸리는 시간을 의미합니다. 웹 최적화는 페이지 로드가 최대한 빠르게 이루어 질 수 있도록 하는 것입니다.
+Two major issues in web performance are issues having to do with latency and issues having to do with the fact that for the most part, browsers are single-threaded.
 
-대부분 브라우저는 싱글 쓰레드입니다. 원활한 상호작용을 위한 개발자의 목표는 부드러운 스크롤부터 매우 기민하게 반응하는 터치에 이르기까지 성능이 뛰어난 상호 작용을 보장하는 것입니다. 메인 쓰레드가 요청된 모든 작업을 수행하면서도 유저와의 상호작용에 반응 할 수 있도록 보장하기 위해서는 렌더링 시간이 가장 중요합니다. 브라우저가 싱글 쓰레드로 동작한다는 점을 이해하고 가능한 메인 쓰레드의 책임을 줄여주는 방식으로 웹 성능 향상을 이룰 수 있습니다. 이렇게 하면 렌더링은 부드럽고 상호작용에 대한 응답은 즉각적일 것입니다.
+Latency is the biggest threat to our ability to ensure a fast-loading page. It is the developers' goal to make the site load as fast as possible — or at least _appear_ to load super fast — so the user gets the requested information as quickly as possible. Network latency is the time it takes to transmit bytes over the air to computers. Web performance is what we have to do to make the page load as quickly as possible.
 
-## 탐색(Navigation)
+For the most part, browsers are considered single-threaded. That is, they execute a task from beginning to end before taking up another task. For smooth interactions, the developer's goal is to ensure performant site interactions, from smooth scrolling to being responsive to touch. Render time is key, with ensuring the main thread can complete all the work we throw at it and still always be available to handle user interactions. Web performance can be improved by understanding the single-threaded nature of the browser and minimizing the main thread's responsibilities, where possible and appropriate, to ensure rendering is smooth and responses to interactions are immediate.
 
-_탐색(Navigation)_ 은 웹페이지를 로딩하는 첫 단계입니다. 사용자가 주소창에 URL을 입력하거나, 링크를 클릭하고, 폼(form)을 제출하는 등의 동작을 통해 요청을 보낼 때마다 발생합니다.
+## Navigation
 
-웹 최적화의 목표 중 하나는 탐색이 완료될 때까지의 시간을 최소화 하는 것입니다. 이상적인 조건에서 그다지 오래 걸리는 작업이 아니지만 지연시간과 대역폭은 지연을 일으키는 적입니다.
+_Navigation_ is the first step in loading a web page. It occurs whenever a user requests a page by entering a URL into the address bar, clicking a link, submitting a form, as well as other actions.
 
-### DNS 조회(DNS Lookup)
+One of the goals of web performance is to minimize the amount of time a navigation takes to complete. In ideal conditions, this usually doesn't take too long, but latency and bandwidth are foes which can cause delays.
 
-웹 페이지를 탐색하는 첫 단계는 해당 페이지의 자원이 어디에 위치하는지 찾는 것입니다. 만약 `https://example.com`를 탐색한다면 HTML 페이지는 IP 주소가 `93.184.216.34`인 서버에 위치하고 있습니다. 만약 이 사이트를 한 번도 방문한 적이 없다면 DNS 조회가 필요합니다.
+### DNS Lookup
 
-브라우저는 DNS 조회를 요청합니다. 이는 최종적으로 이름 서버에 의해서 처리되고, IP 주소로 응답합니다. 최초의 요청 이후에, IP는 일정 기간 동안 캐시됩니다. 이름 서버에 다시 연락하는 대신 캐시에서 IP 주소를 검색하여 후속 요청 속도를 높입니다.
+The first step of navigating to a web page is finding where the assets for that page are located. If you navigate to `https://example.com`, the HTML page is located on the server with IP address of `93.184.216.34`. If you've never visited this site, a DNS lookup must happen.
 
-DNS 조회는 보통 호스트 이름 하나당 한 번만 수행됩니다. 하지만 DNS 조회는 요청된 페이지에서 참조하는 다른 호스트 이름에 대해서는 각각 수행해야합니다. 만약 글꼴, 이미지, 스크립트, 광고 그리고 다른 자원들이 서로 다른 호스트 이름을 가지고 있다면, DNS 조회는 각각에 대해서 모두 수행되어야 합니다.
+Your browser requests a DNS lookup, which is eventually fielded by a name server, which in turn responds with an IP address. After this initial request, the IP will likely be cached for a time, which speeds up subsequent requests by retrieving the IP address from the cache instead of contacting a name server again.
+
+DNS lookups usually only need to be done once per hostname for a page load. However, DNS lookups must be done for each unique hostname the requested page references. If your fonts, images, scripts, ads, and metrics all have different hostnames, a DNS lookup will have to be made for each one.
 
 ![Mobile requests go first to the cell tower, then to a central phone company computer before being sent to the internet](latency.jpg)
 
-이는 특히 모바일 네트워크 환경에서 성능에 문제가 될 수 있습니다. 사용자가 모바일 환경에 있을 때, 각각의 DNS 조회는 휴대폰에서 셀 타워에 가야하고, 셀 타워에서 권위 있는 DNS 서버에 도달해야합니다. 휴대폰과 셀 타워, 그리고 이름 서버의 거리에 따라서 상당한 지연시간이 생길 수도 있습니다.
+This can be problematic for performance, particularly on mobile networks. When a user is on a mobile network, each DNS lookup has to go from the phone to the cell tower to reach an authoritative DNS server. The distance between a phone, a cell tower, and the name server can add significant latency.
 
-### TCP 핸드셰이크(TCP Handshake)
+### TCP Handshake
 
-IP 주소를 알고난 후에는, 브라우저는 서버와 {{glossary('TCP handshake','TCP 3방향 핸드셰이크')}}를 통해 연결을 설정합니다. 이 방식은 데이터를 전송하기 전에 (주로 {{glossary('HTTPS')}}를 통해서) 통신하려는 두 주체(이 경우에는 브라우저와 웹 서버)가 TCP 소켓 연결을 위한 매개변수를 주고 받을 수 있도록 만들어졌습니다.
+Once the IP address is known, the browser sets up a connection to the server via a {{glossary('TCP handshake','TCP three-way handshake')}}. This mechanism is designed so that two entities attempting to communicate—in this case the browser and web server—can negotiate the parameters of the network TCP socket connection before transmitting data, often over {{glossary('HTTPS')}}.
 
-TCP의 3방향 핸드셰이크 기술은 "SYN-SYN-ACK" (더 정확히는 SYN, SYN-ACK, ACK)로 불리기도 합니다. 두 컴퓨터 간 TCP 세션을 협상하고 시작하기 위해서 TCP가 3개의 메세지를 전달하기 때문입니다. 이는 요청이 보내지기 전에 3개의 추가적인 메세지가 컴퓨터 사이에 주고받아진다는 의미입니다.
+TCP's three-way handshaking technique is often referred to as "SYN-SYN-ACK"—or more accurately SYN, SYN-ACK, ACK—because there are three messages transmitted by TCP to negotiate and start a TCP session between two computers. Yes, this means three more messages back and forth between each server, and the request has yet to be made.
 
-### TLS 협상(TLS Negotiation)
+### TLS Negotiation
 
-HTTPS를 이용한 보안성있는 연결을 위해서는 또 다른 "핸드셰이크"가 필요합니다. ({{glossary('TLS')}} 협상이라고 할 수 있는) 이 핸드셰이크는 통신 암호화에 쓰일 암호를 결정하고, 서버를 확인하고, 실제 데이터 전송 전에 안전한 연결이 이루어지도록 합니다. 이를 위해서 자원에 대한 실제 요청 전에 클라이언트에서 서버로 3번 더 왕복해야합니다.
+For secure connections established over HTTPS, another "handshake" is required. This handshake, or rather the {{glossary('TLS')}} negotiation, determines which cipher will be used to encrypt the communication, verifies the server, and establishes that a secure connection is in place before beginning the actual transfer of data. This requires three more round trips to the server before the request for content is actually sent.
 
 ![The DNS lookup, the TCP handshake, and 5 steps of the TLS handshake including clienthello, serverhello and certificate, clientkey and finished for both server and client.](ssl.jpg)
 
-연결에 보안성을 더하는 것은 페이지 로딩을 더디게 합니다. 하지만 보안성있는 연결은 지연시간이라는 비용을 낼만큼 충분히 가치가 있습니다. 브라우저와 웹서버 사이에 전송되는 데이터가 제 3자에 의해서 해독될 수 없게 되기 때문입니다.
+While making the connection secure adds time to the page load, a secure connection is worth the latency expense, as the data transmitted between the browser and the web server cannot be decrypted by a third party.
 
-8번의 왕복이 있은 후에, 브라우저는 마침내 요청을 할 수 있습니다.
+After the 8 round trips, the browser is finally able to make the request.
 
-## 응답(Response)
+## Response
 
-웹서버로 한 번 연결이 성립되고 나면, 브라우저는 유저 대신에 초기 [HTTP `GET` request](/ko/docs/Web/HTTP/Methods)를 보냅니다. 웹사이트는 대게 HTML 파일을 요청합니다. 서버가 요청을 받으면, 관련 응답 해더와 함께 HTML의 내용을 응답하게 됩니다.
+Once we have an established connection to a web server, the browser sends an initial [HTTP `GET` request](/en-US/docs/Web/HTTP/Methods) on behalf of the user, which for websites is most often an HTML file. Once the server receives the request, it will reply with relevant response headers and the contents of the HTML.
 
 ```html
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
   <head>
     <meta charset="UTF-8" />
     <title>My simple page</title>
-    <link rel="stylesheet" src="styles.css" />
+    <link rel="stylesheet" href="styles.css" />
     <script src="myscript.js"></script>
   </head>
   <body>
@@ -76,131 +77,131 @@ HTTPS를 이용한 보안성있는 연결을 위해서는 또 다른 "핸드셰�
 </html>
 ```
 
-이 초기 요청에 대한 응답은 수신된 첫 바이트 데이터를 포함하고 있습니다. {{glossary('Time to First Byte')}} (TTFB)는 사용자가 (링크를 클릭하는 등의 방식으로) 요청을 보내고 HTML의 첫 패킷을 받는데 걸린 시간입니다. 첫 번째 컨텐츠 청크는 일반적으로 14kb 크기의 데이터입니다.
+This response for this initial request contains the first byte of data received. {{glossary('Time to First Byte')}} (TTFB) is the time between when the user made the request—say by clicking on a link—and the receipt of this first packet of HTML. The first chunk of content is usually 14KB of data.
 
-위 예제에서, 요청은 확실히 14kb보다 작습니다. 하지만 아래에서 설명하는 것처럼 구문 분석되는 중에 브라우저가 링크를 만날 때까지 링크가 걸린 자원들은 요청되지 않습니다.
+In our example above, the request is definitely less than 14KB, but the linked resources aren't requested until the browser encounters the links during parsing, described below.
 
-### TCP 슬로우 스타트 (TCP Slow Start) / 14kb rule
+### TCP Slow Start / 14KB rule
 
-첫 응답 패킷은 14kb입니다. 이는 네트워크 통신의 속도를 조절하는 알고리즘인 {{glossary('TCP Slow Start', 'TCP 슬로우 스타트')}}에 의해 정해진 것입니다. 슬로우 스타트는 네트워크의 최대 대역폭을 파악할 수 있을 때까지 점진적으로 데이터의 전송량을 증가시킵니다.
+The first response packet will be 14KB. This is part of {{glossary('TCP slow start')}}, an algorithm which balances the speed of a network connection. Slow start gradually increases the amount of data transmitted until the network's maximum bandwidth can be determined.
 
-{{glossary('TCP Slow Start', 'TCP 슬로우 스타트')}} 방식에 따라, 첫 패킷을 받고난 이후에 서버는 다음 패킷의 사이즈를 두 배인 28kb로 늘립니다. 뒤 이은 패킷의 크기도 미리 정의한 임계치에 다다르거나, 혼잡의 징후가 나타나기 전까지 2배씩 커집니다.
+In {{glossary('TCP slow start')}}, after receipt of the initial packet, the server doubles the size of the next packet to around 28KB. Subsequent packets increase in size until a predetermined threshold is reached, or congestion is experienced.
 
 ![TCP slow start](congestioncontrol.jpg)
 
-첫 페이지의 로딩에 관련해서 14kb 법칙을 들어본적이 있나요? TCP의 슬로우 스타트가 초기 응답의 크기가 14kb인 이유입니다. 그리고 웹 최적화를 할 때 초기 14kb 응답을 염두해야하는 것도 이 때문입니다. TCP 슬로우 스타트는 혼잡을 피하기 위해서 네트워크의 용량에 적당한 전송 속도를 찾고자 점진적으로 속도를 높여나갑니다.
+If you've ever heard of the 14KB rule for initial page load, TCP slow start is the reason why the initial response is 14KB, and why web performance optimization calls for focusing optimizations with this initial 14KB response in mind. TCP slow start gradually builds up transmission speeds appropriate for the network's capabilities to avoid congestion.
 
-### 혼잡 제어(Congestion control)
+### Congestion control
 
-서버가 TCP 패킷으로 데이터를 보내면서, 사용자의 클라이언트는 확인 응답(acknowledgements, ACKs)을 보내면서 데이터의 수신을 확인해줍니다. 연결은 하드웨어나 네트워크 상태에 따라서 제한된 용량만을 가지고 있습니다. 만약 서버가 패킷을 너무 빠르게 보내게 되면, 그 패킷들은 무시될 것입니다. 즉 확인 응답이 없을 것입니다. 서버는 이를 누락된 확인 응답으로 파악합니다. 혼잡 제어 알고리즘은 보내진 패킷의 흐름과 확인 응답을 바탕으로 전송 속도를 결정합니다.
+As the server sends data in TCP packets, the user's client confirms delivery by returning acknowledgements, or ACKs. The connection has a limited capacity depending on hardware and network conditions. If the server sends too many packets too quickly, they will be dropped. Meaning, there will be no acknowledgement. The server registers this as missing ACKs. Congestion control algorithms use this flow of sent packets and ACKs to determine a send rate.
 
-## 구문 분석(Parsing)
+## Parsing
 
-브라우저가 첫 번째 데이터의 청크를 받으면, 수신된 정보를 구문 분석하기 시작합니다. {{glossary('speculative parsing', '구문 분석')}}은 브라우저가 네트워크를 통해 받은 데이터를 {{glossary('DOM')}}이나 {{glossary('CSSOM')}}으로 바꾸는 단계입니다. 이는 렌더러가 화면에 페이지를 그리는데 사용됩니다.
+Once the browser receives the first chunk of data, it can begin parsing the information received. {{glossary('parse', 'Parsing')}} is the step the browser takes to turn the data it receives over the network into the {{glossary('DOM')}} and {{glossary('CSSOM')}}, which is used by the renderer to paint a page to the screen.
 
-브라우저는 마크업을 내부적으로 DOM으로 표현합니다. DOM은 공개되어있고 Javascript의 다양한 API를 통해 조작할 수 있습니다.
+The DOM is the internal representation of the markup for the browser. The DOM is also exposed, and can be manipulated through various APIs in JavaScript.
 
-요청된 HTML 페이지의 크기가 초기 패킷의 크기인 14kb 보다 크더라도, 브라우저는 구문 분석을 시작하고 가지고 있는 데이터 수준에서 렌더링을 시도합니다. 이것이 웹 성능 최적화에서 브라우저가 페이지를 렌더링 하는데 필요한 모든 것, 아니면 적어도 페이지의 템플릿(첫 렌더링에 필요한 HTML이나 CSS)만이라도 첫 14kb에 포함해야하는 이유입니다. 하지만 화면에 렌더링하기 전에 HTML, CSS, Javascript를 구문 분석해야 합니다.
+Even if the requested page's HTML is larger than the initial 14KB packet, the browser will begin parsing and attempting to render an experience based on the data it has. This is why it's important for web performance optimization to include everything the browser needs to start rendering a page, or at least a template of the page - the CSS and HTML needed for the first render — in the first 14 kilobytes. But before anything is rendered to the screen, the HTML, CSS, and JavaScript have to be parsed.
 
-### DOM 트리 구축(Building the DOM tree)
+### Building the DOM tree
 
-[중요한 렌더링 경로](/ko/docs/Web/Performance/Critical_rendering_path)를 다섯 가지 단계로 설명합니다.
+We describe five steps in the [critical rendering path](/en-US/docs/Web/Performance/Critical_rendering_path).
 
-첫 단계는 HTML을 처리하여 DOM 트리를 만드는 것입니다. HTML 구문 분석은 [토큰화](/ko/docs/Web/API/DOMTokenList)와 트리 생성을 포함합니다. HTML 토큰은 시작 및 종료 태그 그리고 속성 이름 및 값을 포함합니다. 만약 문서가 잘 구성되어 있다면 구문 분석은 명확하고 빠르게 이루어집니다. 구문 분석기는 토큰화된 입력을 분석하여 DOM 트리를 만듭니다.
+The first step is processing the HTML markup and building the DOM tree. HTML parsing involves [tokenization](/en-US/docs/Web/API/DOMTokenList) and tree construction. HTML tokens include start and end tags, as well as attribute names and values. If the document is well-formed, parsing it is straightforward and faster. The parser parses tokenized input into the document, building up the document tree.
 
-DOM 트리는 문서의 내용을 설명합니다. {{glossary('html')}} 요소는 시작하는 태그이고 DOM 트리의 루트 노드입니다. 트리는 다른 태그간의 관계와 계층을 반영합니다. 다른 태그에 감싸져 있는 태그는 자식 노드입니다. DOM 노드의 개수가 많아질수록, DOM 트리를 만드는데 더 오랜 시간이 걸립니다.
+The DOM tree describes the content of the document. The [`<html>`](/en-US/docs/Web/HTML/Element/html) element is the first tag and root node of the document tree. The tree reflects the relationships and hierarchies between different tags. Tags nested within other tags are child nodes. The greater the number of DOM nodes, the longer it takes to construct the DOM tree.
 
 ![The DOM tree for our sample code, showing all the nodes, including text nodes.](dom.gif)
 
-구문 분석기가 이미지와 같은 논 블로킹 자원을 발견하면, 브라우저는 해당 자원을 요청하고 분석을 계속합니다. 구문 분석은 CSS 파일을 만났을 때도 지속될 수 있습니다. 하지만 [`async`](/ko/docs/Web/JavaScript/Reference/Statements/async_function)나 `defer` 같은 설정이 되어있지 않은 `<script>` 태그는 렌더링을 막고, HTML의 분석을 중지시킵니다. 브라우저의 프리로드 스캐너가 이 작업을 가속화하지만, 과도한 스크립트는 여전히 주요한 병목구간이 될 수 있습니다.
+When the parser finds non-blocking resources, such as an image, the browser will request those resources and continue parsing. Parsing can continue when a CSS file is encountered, but `<script>` tags—particularly those without an [`async`](/en-US/docs/Web/JavaScript/Reference/Statements/async_function) or `defer` attribute—block rendering, and pause the parsing of HTML. Though the browser's preload scanner hastens this process, excessive scripts can still be a significant bottleneck.
 
-### 프리로드 스캐너(Preload scanner)
+### Preload scanner
 
-브라우저가 DOM 트리를 만드는 프로세스는 메인 쓰레드를 차지합니다. 그렇기 때문에, _프리로드 스캐너_ 는 사용 가능한 컨텐츠를 분석하고 CSS나 Javscript, 웹 폰트 같이 우선순위가 높은 자원을 요청합니다. 프리로드 스캐너 덕에 구문 분석기가 외부 자원에 대한 참조를 찾아 요청하기까지 기다리지 않아도 됩니다. 프리로드 스캐너가 자원을 뒤에서 미리 요청합니다. 그래서 구문 분석기가 요청되는 자원에 다다를 때 쯤이면 이미 그 자원들을 전송받고 있거나 이미 전송받은 후일 것입니다. 프리로드 스캐너가 제공하는 최적화는 블록킹을 줄여줍니다.
+While the browser builds the DOM tree, this process occupies the main thread. As this happens, the _preload scanner_ will parse through the content available and request high priority resources like CSS, JavaScript, and web fonts. Thanks to the preload scanner, we don't have to wait until the parser finds a reference to an external resource to request it. It will retrieve resources in the background so that by the time the main HTML parser reaches requested assets, they may already be in flight, or have been downloaded. The optimizations the preload scanner provides reduce blockages.
 
 ```html
-<link rel="stylesheet" src="styles.css" />
+<link rel="stylesheet" href="styles.css" />
 <script src="myscript.js" async></script>
 <img src="myimage.jpg" alt="image description" />
 <script src="anotherscript.js" async></script>
 ```
 
-이 예제에서 메인 쓰레드가 HTML과 CSS를 분석하고 있을 때, 프리로드 스캐너는 스크립트와 이미지를 찾아 다운로드하기 시작할 것입니다. Javascript의 분석과 실행 순서가 중요하지 않고 스크립트가 프로세스를 막지 않도록 하려면 `async` 속성이나 `defer` 속성을 추가하세요.
+In this example, while the main thread is parsing the HTML and CSS, the preload scanner will find the scripts and image, and start downloading them as well. To ensure the script doesn't block the process, add the `async` attribute, or the `defer` attribute if JavaScript parsing and execution order is important.
 
-CSS를 다운로드하는 것은 HTML 분석이나 다운로드를 막지 않습니다. 하지만 Javascript의 실행은 막습니다. Javascript는 종종 요소에 영향을 주는 CSS 속성들을 조작하기 떄문입니다.
+Waiting to obtain CSS doesn't block HTML parsing or downloading, but it does block JavaScript, because JavaScript is often used to query CSS properties' impact on elements.
 
-### CSSOM 구축(Building the CSSOM)
+### Building the CSSOM
 
-중요한 렌더링 경로에서 두 번째 단계는 CSS를 처리하고 CSSOM 트리를 만드는 것입니다. CSS 객체 모델은 DOM과 비슷합니다. DOM과 CSSOM은 둘 다 트리구조입니다. 둘은 각각의 독립적인 자료구조 입니다. 브라우저는 CSS 규칙을 이해할 수 있고 작업을 진행할 수 있도록 스타일 맵으로 변환합니다. 브라우저는 CSS에 있는 각각의 규칙을 읽고, 트리 노드를 만듭니다. CSS 선택기에 기반해서 부모 노드, 자식 노드, 형제 관계의 노드를 만들어집니다.
+The second step in the critical rendering path is processing CSS and building the CSSOM tree. The CSS object model is similar to the DOM. The DOM and CSSOM are both trees. They are independent data structures. The browser converts the CSS rules into a map of styles it can understand and work with. The browser goes through each rule set in the CSS, creating a tree of nodes with parent, child, and sibling relationships based on the CSS selectors.
 
-HTML이 그러한 것처럼, 브라우저는 전송받은 CSS 규칙을 작업 가능한 상태로 변환해야합니다. 따라서 브라우저는 HTML을 객체로 바꾼 프로세스를 CSS에 대해서 다시 한 번 합니다.
+As with HTML, the browser needs to convert the received CSS rules into something it can work with. Hence, it repeats the HTML-to-object process, but for the CSS.
 
-CSSOM 트리는 사용자 에이전트의 스타일 시트를 포함합니다. 브라우저는 노드에 적용 가능한 가장 일반적인 규칙부터 적용합니다. 그리고 재귀적으로 더 구체적으로 적용된 규칙에 따라 계산된 스타일을 수정해갑니다. 다른 말로, 속성 값을 캐스케이드합니다.
+The CSSOM tree includes styles from the user agent style sheet. The browser begins with the most general rule applicable to a node and recursively refines the computed styles by applying more specific rules. In other words, it cascades the property values.
 
-CSSOM을 만드는 것은 매우 매우 빠르고 현재 개발자 도구에서 고유한 색으로 표시되지 않습니다. 개발자 도구에서 "스타일 재계산"에는 CSS를 구문 분석하고, CSSOM 트리를 만들고, 계산된 스타일을 재귀적으로 계산하는데 드는 총 시간이 표시됩니다. CSSOM을 만드는데 드는 시간은 일반적으로 한 번의 DNS 조회를 하는 시간보다 짧기 때문에 웹 성능 최적화의 관점에서 CSSOM는 성능 향상에 큰 기여를 할 수 있는 영역은 아닙니다.
+Building the CSSOM is very, very fast and is not displayed in a unique color in current developer tools. Rather, the "Recalculate Style" in developer tools shows the total time it takes to parse CSS, construct the CSSOM tree, and recursively calculate computed styles. In terms of web performance optimization, there are lower hanging fruit, as the total time to create the CSSOM is generally less than the time it takes for one DNS lookup.
 
-### 다른 작업들(Other Processes)
+### Other Processes
 
-#### Javascript 컴파일(JavaScript Compilation)
+#### JavaScript Compilation
 
-CSS가 분석되고 CSSOM이 생성되는 동안, 프리 스캐너 덕에 Javascript 파일 같은 다른 자원도 다운로드 됩니다. Javascript는 해석, 컴파일, 구문 분석 및 실행됩니다. 스크립트는 추상 구문 트리로 구문 분석됩니다. 일부 브라우저 엔진은 [추상 구문 트리](https://en.wikipedia.org/wiki/Abstract_Syntax_Tree)를 인터프리터에게 넘깁니다. 그 결과 메인 쓰레드에서 실행되는 바이트코드가 생성됩니다. 이것이 Javascript 컴파일 과정입니다.
+While the CSS is being parsed and the CSSOM created, other assets, including JavaScript files, are downloading (thanks to the preload scanner). JavaScript is interpreted, compiled, parsed and executed. The scripts are parsed into abstract syntax trees. Some browser engines take the [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_Syntax_Tree) and pass it into an interpreter, outputting bytecode which is executed on the main thread. This is known as JavaScript compilation.
 
-#### 접근성 트리 구축(Building the Accessibility Tree)
+#### Building the Accessibility Tree
 
-브라우저는 [접근성](/ko/docs/Learn/Accessibility) 트리를 만듭니다. 보조 장치는 이 트리를 이용해 내용을 분석하고 해석합니다. 접근성 객체 모델(AOM)은 DOM의 의미 버전입니다. 브라우저는 DOM이 업데이트 될 때 접근성 트리도 업데이트 합니다. 접근성 트리는 보조 기술 자체적으로 수정될 수는 없습니다.
+The browser also builds an [accessibility](/en-US/docs/Learn/Accessibility) tree that assistive devices use to parse and interpret content. The accessibility object model (AOM) is like a semantic version of the DOM. The browser updates the accessibility tree when the DOM is updated. The accessibility tree is not modifiable by assistive technologies themselves.
 
-AOM이 만들어지기 전까지, [화면 리더기](/ko/docs/Web/Accessibility/ARIA/ARIA_Screen_Reader_Implementors_Guide)는 컨텐츠에 접근할 수 없습니다.
+Until the AOM is built, the content is not accessible to [screen readers](/en-US/docs/Web/Accessibility/ARIA/ARIA_Screen_Reader_Implementors_Guide).
 
-## 렌더(Render)
+## Render
 
-렌더링 과정에는 스타일, 레이아웃, 페인트 그리고 때때로 합성이 포함됩니다. CSSOM과 DOM 트리는 구문 분석되는 과정에서 생성되고 렌더 트리로 합성됩니다. 렌더 트리는 보이는 요소의 레이아웃을 계산을 합니다. 그러고 나서 요소가 화면에 페인트됩니다. 어떤 경우에는 컨텐츠가 자신만의 레이어를 가지도록 조작되고, 나중에 합성됩니다. 화면의 일부분을 CPU 대신 GPU가 그리면서 메인 쓰레드의 부담이 줄고 성능이 향상됩니다.
+Rendering steps include style, layout, paint and, in some cases, compositing. The CSSOM and DOM trees created in the parsing step are combined into a render tree which is then used to compute the layout of every visible element, which is then painted to the screen. In some cases, content can be promoted to their own layers and composited, improving performance by painting portions of the screen on the GPU instead of the CPU, freeing up the main thread.
 
-### 스타일(Style)
+### Style
 
-중요한 렌더링 경로에서 세 번째 단계는 DOM과 CSSOM을 합쳐 렌더 트리를 만드는 것입니다. 계산된 스타일 트리(다른 말로 렌더 트리)는 DOM 트리의 루트부터 시작하여 눈에 보이는 노드를 순회하며 만들어집니다.
+The third step in the critical rendering path is combining the DOM and CSSOM into a render tree. The computed style tree, or render tree, construction starts with the root of the DOM tree, traversing each visible node.
 
-[`<head>`](/ko/docs/Web/HTML/Element/head)와 그 자식 요소 혹은 사용자 정의 스타일 시트에 정의된 `script { display: none; }` 처럼 `display: none` 스타일 속성을 가진 요소와 같이, 화면에 나타나지 않는 태그의 경우 렌더링 결과에 나타나지 않을 것이기 때문에 렌터 트리에 포함되지 않습니다. `visibility: hidden` 속성을 가진 요소는 자리를 차지하기 때문에 렌더 트리에 포함됩니다. 코드 예시에서 사용자 에이전트가 기본으로 설정한 값을 오버라이드하는 정의를 하지 않았기 때문에, `script` 노드는 렌더 트리에 포함되지 않을 것입니다.
+Tags that aren't going to be displayed, like the [`<head>`](/en-US/docs/Web/HTML/Element/head) and its children and any nodes with `display: none`, such as the `script { display: none; }` you will find in user agent stylesheets, are not included in the render tree as they will not appear in the rendered output. Nodes with `visibility: hidden` applied are included in the render tree, as they do take up space. As we have not given any directives to override the user agent default, the `script` node in our code example above will not be included in the render tree.
 
-각각의 보이는 노드는 그 노드에 적용된 CSSOM 규칙이 있습니다. 렌더 트리가 보이는 모든 노드의 내용과 계산된 스타일을 가지고 있습니다. DOM 트리에서 보이는 모든 노드에 관련된 스타일을 모두 맞춰보고, [CSS 캐스케이드](/ko/docs/Web/CSS/Cascade) 방식에 따라서 각 노드의 계산된 스타일이 무엇일지 결정합니다.
+Each visible node has its CSSOM rules applied to it. The render tree holds all the visible nodes with content and computed styles — matching up all the relevant styles to every visible node in the DOM tree, and determining, based on the [CSS cascade](/en-US/docs/Web/CSS/Cascade), what the computed styles are for each node.
 
-### 레이아웃(Layout)
+### Layout
 
-중요한 렌더링 과정에서 네 번째 단계는 렌더 트리를 기반으로 각 노드의 도형 값을 계산하기 위해 레이아웃을 실행하는 것입니다. _레이아웃_ 은 렌더 트리에 있는 모든 노드의 너비, 높이, 위치를 결정하는 프로세스입니다. 추가로 페이지에서 각 객체의 크기와 위치를 계산합니다. _리플로우_ 는 레이아웃 이후에 있는 페이지의 일부분이나 전체 문서에 대한 크기나 위치에 대한 결정입니다.
+The fourth step in the critical rendering path is running layout on the render tree to compute the geometry of each node. _Layout_ is the process by which the width, height, and location of all the nodes in the render tree are determined, plus the determination of the size and position of each object on the page. _Reflow_ is any subsequent size and position determination of any part of the page or the entire document.
 
-렌더 트리가 한 번 만들어지고 나면, 레이아웃이 시작됩니다. 렌더 트리는 (보이지 않더라도) 계산된 스타일과 함께 어떤 노드가 화면에 표시될지 식별합니다. 하지만 각 노드의 위치나 좌표를 알지는 못합니다. 각 객체의 정확한 크기와 위치를 결정하기 위해서, 브라우저는 렌더 트리의 루트부터 시작하여 순회합니다.
+Once the render tree is built, layout commences. The render tree identified which nodes are displayed (even if invisible) along with their computed styles, but not the dimensions or location of each node. To determine the exact size and location of each object, the browser starts at the root of the render tree and traverses it.
 
-웹 페이지에서 대부분은 박스 형태입니다. 다른 기기, 다른 데스크탑 설정은 제한 없이 매우 다양한 뷰 포트 크기를 가집니다. 레이아웃 단계에서 뷰 포트의 크기를 고려합니다. 브라우저는 화면에 표시될 모든 다른 상자의 크기를 결정합니다. 뷰 포트의 크기를 기본으로하며, 레이아웃은 일반적으로 본문에서 시작해 모든 후손의 크기를 각 요소의 박스 모델 속성을 통해 계산합니다. 이미지와 같이 크기를 모르는 요소를 위해서 위치 표시 공간을 남겨둡니다.
+On the web page, almost everything is a box. Different devices and different desktop preferences mean an unlimited number of differing viewport sizes. In this phase, taking the viewport size into consideration, the browser determines what the dimensions of all the different boxes are going to be on the screen. Taking the size of the viewport as its base, layout generally starts with the body, laying out the dimensions of all the body's descendants, with each element's box model properties, providing placeholder space for replaced elements it doesn't know the dimensions of, such as our image.
 
-처음 노드의 사이즈와 위치가 결정되는 것을 _레이아웃_ 이라고 부릅니다. 이후에 노드의 크기와 위치를 다시 계산하는 것은 _리플로우_ 라고 부릅니다. 예제에서, 첫 레이아웃이 이미지가 오기 전에 일어난다고 가정을 해봅시다. 이미지의 크기를 선언하지 않았기 때문에, 이미지 크기를 알게 된 이후 리플로우가 한 번 있을 것입니다.
+The first time the size and position of nodes are determined is called _layout_. Subsequent recalculations of node size and locations are called _reflows_. In our example, suppose the initial layout occurs before the image is returned. Since we didn't declare the size of our image, there will be a reflow once the image size is known.
 
-### 페인트(Paint)
+### Paint
 
-중요한 렌더링 경로에서 마지막 단계는 각 노드를 화면에 페인팅하는 것입니다. 페인팅이 처음 일어나는 것을 {{glossary('first meaningful paint', '첫 번째 의미있는 페인트')}}라고 부릅니다. 페인팅 혹은 레지스터화 단계에서, 브라우저는 레이아웃 단계에서 계산된 각 박스를 실제 화면의 픽셀로 변환합니다. 페인팅에서 텍스트, 색깔, 경계, 그림자 및 버튼이나 이미지 같은 대체 요소를 포함하여 모든 요소의 시각적인 부분을 화면에 그리는 작업이 포함됩니다. 브라우저는 이 작업을 매우 빠르게 해야합니다.
+The last step in the critical rendering path is painting the individual nodes to the screen, the first occurrence of which is called the [first meaningful paint](/en-US/docs/Glossary/First_meaningful_paint). In the painting or rasterization phase, the browser converts each box calculated in the layout phase to actual pixels on the screen. Painting involves drawing every visual part of an element to the screen, including text, colors, borders, shadows, and replaced elements like buttons and images. The browser needs to do this super quickly.
 
-부드러운 스크롤이나 애니메이션을 위해서, 스타일 계산, 리플로우, 페인팅과 같이 메인 쓰레드를 점유하는 모든 작업은 브라우저를 16.67ms 미만만 차지해야만 합니다. 2048 X 1536 화면에서 iPad는 화면에 페인트해야 할 3,145,000 픽셀을 가지고 있습니다. 이는 매우 많은 픽셀이며, 이 픽셀은 매우 빠르게 페인팅되어야 합니다. 첫 페인팅보다 다시 페인팅하는 것이 더 빠르게 마무리되기 위해서, 화면에 그리는 작업은 일반적으로 몇 개의 레이어로 구분됩니다. 이것이 일어나면 합성이 필요합니다.
+To ensure smooth scrolling and animation, everything occupying the main thread, including calculating styles, along with reflow and paint, must take the browser less than 16.67ms to accomplish. At 2048 X 1536, the iPad has over 3,145,000 pixels to be painted to the screen. That is a lot of pixels that have to be painted very quickly. To ensure repainting can be done even faster than the initial paint, the drawing to the screen is generally broken down into several layers. If this occurs, then compositing is necessary.
 
-페인팅은 레이아웃 트리의 요소를 레이어로 분리할 수 있습니다. 컨텐츠를 CPU의 메인 쓰레드에서 GPU 레이어로 격상하는 것은 페인트 및 리페인트 성능을 높입니다. 레이어를 가동시키는 구체적인 속성과 요소가 있습니다. 요소에는 [`<video>`](/ko/docs/Web/HTML/Element/video) 그리고 [`<canvas>`](/ko/docs/Web/HTML/Element/canvas)가 포함되어 있습니다. 구체적인 속성에는 [`opacity`](/ko/docs/Web/CSS/opacity), 3D [`transform`](/ko/docs/Web/CSS/transform), [`will-change`](/ko/docs/Web/CSS/will-change) 등이 있습니다. 자손 노드가 위의 이유 중 하나(혹은 여러 개)로 자신만의 레이어를 필요로 하는 것이 아니라면, 이 노드는 그들의 레이어에서 그들의 자손과 함께 그려집니다.
+Painting can break the elements in the layout tree into layers. Promoting content into layers on the GPU (instead of the main thread on the CPU) improves paint and repaint performance. There are specific properties and elements that instantiate a layer, including [`<video>`](/en-US/docs/Web/HTML/Element/video) and [`<canvas>`](/en-US/docs/Web/HTML/Element/canvas), and any element which has the CSS properties of [`opacity`](/en-US/docs/Web/CSS/opacity), a 3D [`transform`](/en-US/docs/Web/CSS/transform), [`will-change`](/en-US/docs/Web/CSS/will-change), and a few others. These nodes will be painted onto their own layer, along with their descendants, unless a descendant necessitates its own layer for one (or more) of the above reasons.
 
-레이어는 성능을 향상시킵니다. 하지만 메모리 관리 측면에서 봤을 때는 비싼 작업입니다. 따라서 웹 성능 최적화 전략으로 과도하게 쓰이지는 않아야 합니다.
+Layers do improve performance, but are expensive when it comes to memory management, so should not be overused as part of web performance optimization strategies.
 
-### 합성(Compositing)
+### Compositing
 
-문서의 각 섹션이 다른 레이어에서 그려질 때, 섹션을 겹쳐놓으면서 그것들이 올바른 순서로 화면에 그려지는 것과 정확한 렌더링을 보장하기 위해 합성이 필요합니다.
+When sections of the document are drawn in different layers, overlapping each other, compositing is necessary to ensure they are drawn to the screen in the right order and the content is rendered correctly.
 
-페이지가 계속해서 자원을 로드하면, 리플로우가 일어날 수 있습니다(예제에서 이미지가 늦게 도착하는 것을 떠올려보세요). 리플로우는 리페인트와 재합성을 일으킬 수 있습니다. 이미지의 사이즈를 미리 정해놨다면 리플로우는 필요하지 않을 것입니다. 그리고 리페인트 되야할 레이어만 다시 리페인트 하고 필요하다면 합성할 것입니다. 하지만 예제에서는 이미지의 사이즈를 정하지 않았습니다! 이미지가 서버로부터 받아진 후, 렌더링 과정은 레이아웃 단계로 돌아가서 다시 시작됩니다.
+As the page continues to load assets, reflows can happen (recall our example image that arrived late). A reflow sparks a repaint and a re-composite. Had we defined the size of our image, no reflow would have been necessary, and only the layer that needed to be repainted would be repainted, and composited if necessary. But we didn't include the image size! When the image is obtained from the server, the rendering process goes back to the layout steps and restarts from there.
 
-## 상호작용(Interactivity)
+## Interactivity
 
-메인 쓰레드가 페이지를 그리는 것을 완료하면, 모든 것이 준비되었다고 생각할 수도 있습니다. 하지만 꼭 그렇지는 않습니다. 만약 지연된 Javascript를 다운했다면, 그리고 [`onload`](/ko/docs/Web/API/Window/load_event) 이벤트가 발생할 때 코드가 실행된다면, 메인 쓰레드는 여전히 바쁠 것입니다. 그래서 스크롤링, 터치 등 다른 상호작용이 불가능 할 것입니다.
+Once the main thread is done painting the page, you would think we would be "all set." That isn't necessarily the case. If the load includes JavaScript, that was correctly deferred, and only executed after the [`onload`](/en-US/docs/Web/API/Window/load_event) event fires, the main thread might be busy, and not available for scrolling, touch, and other interactions.
 
-{{glossary('Time to Interactive')}} (TTI) 는 DNS 조회와 SSL 연결이 이루어지는 첫 요청부터 페이지가 상호작용할 준비가 될 때까지 얼마나 걸리는지를 측정하는 단위입니다. {{glossary('First contentful paint', '첫 번째 콘텐츠가 포함된 페인트')}} 이후 페이지가 사용자와의 상호작용에 50ms 이내로 응답할 때를 상호작용 가능한 시점으로 봅니다. 만약 메인 쓰레드가 구문 분석, 컴파일, Javascript 실행에 사용되고 있다면, 메인 쓰레드를 사용할 수 없고 따라서 사용자 상호작용에 50ms 이내로 적절하게 반응하지 못합니다.
+{{glossary('Time to Interactive')}} (TTI) is the measurement of how long it took from that first request which led to the DNS lookup and SSL connection to when the page is interactive — interactive being the point in time after the {{glossary('First Contentful Paint')}} when the page responds to user interactions within 50ms. If the main thread is occupied parsing, compiling, and executing JavaScript, it is not available and therefore not able to respond to user interactions in a timely (less than 50ms) fashion.
 
-예제에서, 이미지는 매우 빠르게 로드됩니다. 하지만 만약 `anotherscript.js` 파일이 2MB였고 사용자의 네트워크 연결이 느렸다면 어땠을까요? 이 경우에는 사용자는 페이지는 매우 빠르게 볼 수 있지만 스크립트가 다운로드되고, 분석되고 실행되기 전까지는 버벅이는 스크롤을 할 수 밖에 없을 것입니다. 이는 좋은 사용자 경험이 아닙니다. WebPageTest 예시에서 볼 수 있듯이, 메인 쓰레드를 점유하는 것을 피하세요.
+In our example, maybe the image loaded quickly, but perhaps the `anotherscript.js` file was 2MB and our user's network connection was slow. In this case the user would see the page super quickly, but wouldn't be able to scroll without jank until the script was downloaded, parsed and executed. That is not a good user experience. Avoid occupying the main thread, as demonstrated in this WebPageTest example:
 
-![The main thread is occupied by the downloading, parsing and execution of a javascript file - over a fast connection](visa_network.png)
+![The main thread is occupied by the downloading, parsing and execution of a JavaScript file - over a fast connection](visa_network.png)
 
-이 예시에서, DOM 컨텐츠를 로드하는 프로세스는 1.5초 이상 걸렸습니다. 그리고 클릭이나 화면 탭에 응답하지 못하는 상태로 메인 쓰레드는 그 전체 시간동안 점유되었습니다.
+In this example, JavaScript execution took over 1.5 seconds, and the main thread was fully occupied that entire time, unresponsive to click events or screen taps.
 
-## 같이 보기
+## See also
 
-- [웹 성능](/ko/docs/Web/Performance)
+- [Web Performance](/en-US/docs/Web/Performance)

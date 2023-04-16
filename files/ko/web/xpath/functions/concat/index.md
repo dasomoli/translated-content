@@ -5,27 +5,27 @@ slug: Web/XPath/Functions/concat
 
 {{ XsltRef() }}
 
-`concat` 함수는 둘 또는 둘 이상의 문자열을 연결하고 연결한 문자열을 반환합니다.
+The `concat` function concatenates two or more strings and returns the resulting string.
 
-### 문법
+### Syntax
 
 ```
-concat(string1 ,string2 [,stringn]* )
+concat( string1, string2 [,stringn]* )
 ```
 
-### 인수
+### Arguments
 
 - `stringn`
-  - : 이 함수는 둘 또는 둘 이상의 인수를 받습니다. 각각은 문자열입니다.
+  - : This function accepts two or more arguments. Each of these arguments is a string.
 
-### 반환
+### Returns
 
-함수에 인수로 건넨 모든 문자열을 연결한 단일 문자열.
+A single string that is the concatenation of all the strings passed to the function as arguments.
 
-### 정의
+### Defined
 
-[XPath 1.0 4.2](http://www.w3.org/TR/xpath#function-concat)
+[XPath 1.0 4.2](https://www.w3.org/TR/1999/REC-xpath-19991116/#function-concat)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

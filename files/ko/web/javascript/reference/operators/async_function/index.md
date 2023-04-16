@@ -1,73 +1,94 @@
 ---
-title: async function 표현식
+title: async function expression
 slug: Web/JavaScript/Reference/Operators/async_function
+page-type: javascript-operator
+browser-compat: javascript.operators.async_function
 ---
+
 {{jsSidebar("Operators")}}
 
-**`async function`** 키워드는 표현식 내에서 `async` 함수를 정의하기 위해 사용됩니다.
+The **`async function`** keywords can be used to define an async function inside an expression.
 
-또한 [async function statement](/en-US/docs/Web/JavaScript/Reference/Statements/async_function)을 사용하여 async 함수를 정의할 수 있습니다.
+You can also define async functions using the [`async function` declaration](/en-US/docs/Web/JavaScript/Reference/Statements/async_function) or the [arrow syntax](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions).
 
-## 문법
+## Syntax
 
-```js
-    async function [name]([param1[, param2[, ..., paramN]]]) { statements }
+```js-nolint
+async function (param0) {
+  statements
+}
+async function (param0, param1) {
+  statements
+}
+async function (param0, param1, /* … ,*/ paramN) {
+  statements
+}
+
+async function name(param0) {
+  statements
+}
+async function name(param0, param1) {
+  statements
+}
+async function name(param0, param1, /* … ,*/ paramN) {
+  statements
+}
 ```
 
-ES2015에서와 같이 [arrow functions](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)를 사용해도 됩니다.
+> **Note:** An [expression statement](/en-US/docs/Web/JavaScript/Reference/Statements/Expression_statement) cannot begin with the keywords `async function` to avoid ambiguity with an [`async function` declaration](/en-US/docs/Web/JavaScript/Reference/Statements/async_function). The `async function` keywords only begin an expression when they appear in a context that cannot accept statements.
 
-### 인수
+### Parameters
 
-- `name`
-  - : 함수 이름. 생략가능하며 이경우함수는 _anonymous_ 형식임 이름은 함수 몸체에 대해 지역적으로 사용.
-- `paramN`
-  - : 함수에 전달될 인수의 이름.
-- `statements`
-  - : 함수 몸체를 구성하는 명령문들.
+- `name` {{optional_inline}}
+  - : The function name. Can be omitted, in which case the function is _anonymous_. The name is only local to the function body.
+- `paramN` {{optional_inline}}
+  - : The name of an argument to be passed to the function.
+- `statements` {{optional_inline}}
+  - : The statements which comprise the body of the function.
 
-## 설명
+## Description
 
-`async function` 표현식은 {{jsxref('Statements/async_function', '<code>async function</code> 선언')}} 문법과 유사하며, 거의 동일합니다. `async function` 표현식과 `async function` 선언문의 주요 차이점은 익명함수로써의 사용 여부로, `async function` 표현식은 함수 이름을 생략하면 익명함수를 만듭니다. `async function` 표현식은 {{Glossary("IIFE")}}(즉시실행함수)로 사용할 수 있습니다. [`functions`](/en-US/docs/Web/JavaScript/Reference/Functions)문서를 참고하세요.
+An `async function` expression is very similar to, and has almost the same syntax as, an [`async function` declaration](/en-US/docs/Web/JavaScript/Reference/Statements/async_function). The main difference between an `async function` expression and an `async function` declaration is the _function name_, which can be omitted in `async function` expressions to create _anonymous_ functions. An `async function` expression can be used as an [IIFE](/en-US/docs/Glossary/IIFE) (Immediately Invoked Function Expression) which runs as soon as it is defined, allowing you to mimic [top-level await](/en-US/docs/Web/JavaScript/Guide/Modules#top_level_await). See also the chapter about [functions](/en-US/docs/Web/JavaScript/Reference/Functions) for more information.
 
 ## Examples
 
 ### Simple example
 
 ```js
-    function resolveAfter2Seconds(x) {
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve(x);
-        }, 2000);
-      });
-    };
+function resolveAfter2Seconds(x) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(x);
+    }, 2000);
+  });
+}
 
+// async function expression assigned to a variable
+const add = async function (x) {
+  const a = await resolveAfter2Seconds(20);
+  const b = await resolveAfter2Seconds(30);
+  return x + a + b;
+};
 
-    var add = async function(x) { // async function 표현식을 변수에 할당
-      var a = await resolveAfter2Seconds(20);
-      var b = await resolveAfter2Seconds(30);
-      return x + a + b;
-    };
+add(10).then((v) => {
+  console.log(v); // prints 60 after 4 seconds.
+});
 
-    add(10).then(v => {
-      console.log(v);  // 4초 뒤에 60 출력
-    });
-
-
-    (async function(x) { // async function 표현식을 IIFE로 사용
-      var p_a = resolveAfter2Seconds(20);
-      var p_b = resolveAfter2Seconds(30);
-      return x + await p_a + await p_b;
-    })(10).then(v => {
-      console.log(v);  // 2초 뒤에 60 출력
-    });
+// async function expression used as an IIFE
+(async function (x) {
+  const p1 = resolveAfter2Seconds(20);
+  const p2 = resolveAfter2Seconds(30);
+  return x + (await p1) + (await p2);
+})(10).then((v) => {
+  console.log(v); // prints 60 after 2 seconds.
+});
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

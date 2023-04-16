@@ -1,57 +1,69 @@
 ---
 title: Object.getPrototypeOf()
 slug: Web/JavaScript/Reference/Global_Objects/Object/getPrototypeOf
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Object.getPrototypeOf
 ---
+
 {{JSRef}}
 
-**`Object.getPrototypeOf()`** 메서드는 지정된 객체의 프로토타입(가령 내부 `[[Prototype]]` 속성값)을 반환합니다.
+The **`Object.getPrototypeOf()`** static method returns the prototype
+(i.e. the value of the internal `[[Prototype]]` property) of the specified
+object.
 
-## 구문
+{{EmbedInteractiveExample("pages/js/object-getprototypeof.html", "shorter")}}
 
-```js
+## Syntax
+
+```js-nolint
 Object.getPrototypeOf(obj)
 ```
 
-### 매개변수
+### Parameters
 
 - `obj`
-  - : 자신의 프로토타입이 반환되는 객체.
+  - : The object whose prototype is to be returned.
 
-## 예
+### Return value
+
+The prototype of the given object, which may be [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null).
+
+## Examples
+
+### Using getPrototypeOf
 
 ```js
-var proto = {};
-var obj = Object.create(proto);
+const proto = {};
+const obj = Object.create(proto);
 Object.getPrototypeOf(obj) === proto; // true
 ```
 
-## 주의
+### Non-object coercion
 
-ES5에서, `obj` 매개변수가 객체가 아닌 경우 {{jsxref("TypeError")}} 예외가 발생합니다. ES6에서, 매개변수는 {{jsxref("Object")}}로 강제됩니다.
+In ES5, it will throw a {{jsxref("TypeError")}} exception if the `obj`
+parameter isn't an object. In ES2015, the parameter will be coerced to an
+{{jsxref("Object")}}.
 
 ```js
 Object.getPrototypeOf("foo");
-// TypeError: "foo"는 객체가 아닙니다 (ES5 코드)
+// TypeError: "foo" is not an object (ES5 code)
 Object.getPrototypeOf("foo");
-// String.prototype                  (ES6 코드)
+// String.prototype                  (ES2015 code)
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## Opera 전용 주의사항
+## See also
 
-이전 Opera 버전이 `Object.getPrototypeOf()`를 아직 지원하지 않지만, Opera는 Opera 10.50 이후로 비표준 [`Object.prototype.__proto__`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/proto) 속성을 지원합니다.
-
-## 참조
-
+- [Polyfill of `Object.getPrototypeOf` in `core-js`](https://github.com/zloirock/core-js#ecmascript-object)
 - {{jsxref("Object.prototype.isPrototypeOf()")}}
 - {{jsxref("Object.setPrototypeOf()")}}
-- [`Object.prototype.__proto__`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/proto)
-- John Resig의 [getPrototypeOf](http://ejohn.org/blog/objectgetprototypeof/) 포스트
+- [`Object.prototype.__proto__`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/proto)
+- John Resig's post on [getPrototypeOf](https://johnresig.com/blog/objectgetprototypeof/)
 - {{jsxref("Reflect.getPrototypeOf()")}}

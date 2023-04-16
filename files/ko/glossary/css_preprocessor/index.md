@@ -1,21 +1,24 @@
 ---
-title: CSS 전처리기
+title: CSS preprocessor
 slug: Glossary/CSS_preprocessor
+page-type: glossary-definition
 ---
 
-{{QuickLinksWithSubpages("/ko/docs/Glossary")}}
+A **CSS preprocessor** is a program that lets you generate {{Glossary("CSS")}} from the preprocessor's own unique {{Glossary("syntax")}}.
 
-**CSS 전처리기는** 전처리기의 자신만의 특별한 {{Glossary("syntax")}}를 가지고 {{Glossary("CSS")}}를 생성하도록 하는 프로그램입니다. 선택할 수 있는 많은 CSS 전처기가 있습니다. 그러나 대부분의 CSS 전처리기는 pure CSS에 존재하지 않는 특징을 추가할것 입니다, 믹스인(mixin), 중첩 셀렉터(nesting selector), 상속 셀렉터(inheritance selector), 기타 등등. 이러한 특징은 CSS 구조를 가독성있고 더 유지보수 하기 좋게 합니다.
+There are many CSS preprocessors to choose from, however most CSS preprocessors will add some features that don't exist in pure CSS, such as mixin, nesting selector, inheritance selector, and so on. These features make the CSS structure more readable and easier to maintain.
 
-CSS 전처리기를 사용하기 위해서는, 당신의 웹 web {{Glossary("server")}}에 CSS compiler를 설치해야 한다.
+To use a CSS preprocessor, you must install a CSS compiler on your web {{Glossary("server")}}; Or use the CSS preprocessor to compile on the development environment, and then upload compiled CSS file to the web server.
 
-## Learn more
+## See also
 
-### General knowledge
+- A few of most popular CSS preprocessors:
 
-여기 가장 일반적인 CSS 전처리기들이 있다:
+  - [Sass](https://sass-lang.com/)
+  - [LESS](https://lesscss.org/)
+  - [Stylus](https://stylus-lang.com/)
+  - [PostCSS](https://postcss.org/)
 
-- [SASS](http://sass-lang.com/)
-- [LESS](http://lesscss.org/)
-- [Stylus](http://stylus-lang.com/)
-- [PostCSS](http://postcss.org/)
+- [MDN Web Docs Glossary](/en-US/docs/Glossary)
+
+  - {{Glossary("CSS")}}

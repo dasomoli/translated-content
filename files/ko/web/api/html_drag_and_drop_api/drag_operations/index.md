@@ -1,117 +1,131 @@
 ---
-title: Drag Operations
+title: Drag operations
 slug: Web/API/HTML_Drag_and_Drop_API/Drag_operations
-original_slug: Web/API/HTML_드래그_앤_드롭_API/Drag_operations
+page-type: guide
 ---
+
 {{DefaultAPISidebar("HTML Drag and Drop API")}}
 
-다음은 드래그 & 드랍(drag & drop) 동작 실행 시 각 단계에 대한 설명입니다.
+The following describes the steps that occur during a drag and drop operation.
 
-> **참고:** 이 문서에 설명된 드래그 동작은 {{domxref("DataTransfer")}} 인터페이스를 사용합니다. 이 문서에서는 {{domxref("DataTransferItem")}} 인터페이스나 {{domxref("DataTransferItemList")}} 인터페이스를 사용하지 않습니다.
+The drag operations described in this document use the {{domxref("DataTransfer")}} interface. This document does _not_ use the {{domxref("DataTransferItem")}} interface nor the {{domxref("DataTransferItemList")}} interface.
 
-## Draggable 속성
+## The draggable attribute
 
-웹 페이지 안에서 특정 상황에 기본 드래그(default drag) 행위가 사용될 경우가 있습니다. 선택된 텍스트(text selections), 이미지 또는 링크가 여기에 포함됩니다. 이미지나 링크가 드래그될 때, 이미지나 링크의 URL이 드래그 데이터(drag data)로 설정되고 드래그가 시작됩니다. 다른 요소의 경우, 기본 드래그가 발생할 선택(selections)에 포함되어 있어야 합니다(For other elements, they must be part of a selection for a default drag to occur). 이 효과를 보기 위해서는 웹 페이지의 어떤 영역을 선택하고 마우스를 클릭한 채로 드래그하면 됩니다. 드래그가 발생할 때 마우스 포인터로 선택 영역에 대한 OS별 렌더링이 표시됩니다. 이 행위는 기본 드래그 행위인 경우에만 발생하는 것으로 드래그되는 데이터를 조정할 리스너가 없는 경우에는 작동하지 않습니다.
+In a web page, there are certain cases where a default drag behavior is used. These include text selections, images, and links. When an image or link is dragged, the URL of the image or link is set as the drag data, and a drag begins. For other elements, they must be part of a selection for a default drag to occur. To see this in effect, select an area of a webpage, and then click and hold the mouse and drag the selection. An OS-specific rendering of the selection will appear and follow the mouse pointer as the drag occurs. However, this behavior is only the default drag behavior, if no listeners adjust the data to be dragged.
 
-HTML에서 이미지나 링크 그리고 선택(selections)에 대한 기본 행위를 제외한 나머지 요소는 기본적으로 드래그되지 않습니다. [XUL](/ko/docs/Mozilla/Tech/XUL)에서는 모든 요소가 드래그 가능합니다.
+In HTML, apart from the default behavior for images, links, and selections, no other elements are draggable by default.
 
-다른 HTML 요소를 드래그할 수 있게 하려면 세 가지가 이루어져야 합니다:
+To make other HTML elements draggable, three things must be done:
 
-- 드래그가 가능하도록 만들고자 하는 요소에 대한 `{{htmlattrxref("draggable")}}` 속성이 `true`로 설정되어야 합니다.
-- `{{event("dragstart")}}` 이벤트에 대한 리스너를 추가합니다.
-- 위에서 정의한 리스너에 {{domxref("DataTransfer.setData","Set the drag data")}}를 설정합니다.
+1. Set the [`draggable`](/en-US/docs/Web/HTML/Global_attributes#draggable) attribute to `"true"` on the element that you wish to make draggable.
+2. Add a listener for the {{domxref("HTMLElement/dragstart_event", "dragstart")}} event.
+3. [Set the drag data](/en-US/docs/Web/API/DataTransfer/setData) in the above listener.
 
-컨텐츠의 일부 영역을 드래그할 수 있도록 만드는 예제는 다음과 같습니다.
-
-```html
-<div draggable="true" ondragstart="event.dataTransfer.setData('text/plain', 'This text may be dragged')">
-  This text <strong>may</strong> be dragged.
-</div>
-```
-
-요소를 드래그할 수 있게 하기 위해서는 `{{htmlattrxref("draggable")}}` 속성이 true로 설정되어야 합니다. 이 속성이 생략되거나 false로 설정되면 해당 요소는 드래그할 수 없으며, 대신 텍스트가 선택됩니다. `{{htmlattrxref("draggable")}}` 속성은 이미지나 링크를 포함한 어떤 요소에서도 사용할 수 있습니다. 하지만, 이미지나 링크에 대해서는 기본값이 true로 설정되어 있으므로 이들 요소에 대해 드래깅할 수 없게 만들 경우에만 `{{htmlattrxref("draggable")}}` 속성의 값을 false로 설정하면 됩니다.
-
-어떤 요소가 드래그 가능한 경우, 해당 요소 내의 텍스트나 다른 요소는 마우스를 클릭하고 드래그하는 통상적인 방식으로는 선택할 수 없게 됩니다. 대신, 사용자가 <kbd>alt</kbd> 키를 누른채로 마우스로 텍스트를 선택하거나 키보드를 이용해 선택할 수 있습니다.
-
-XUL 요소에 대해서는 `{{htmlattrxref("draggable")}}` 속성을 사용할 필요가 없으며, 모든 XUL 요소는 드래그가 가능합니다.
+Here is an example which allows a section of content to be dragged.
 
 ```html
-<button label="Drag Me" ondragstart="event.dataTransfer.setData('text/plain', 'Drag Me Button');">
+<p draggable="true">This text <strong>may</strong> be dragged.</p>
 ```
 
-## 드래그 작업 시작
+```js
+const draggableElement = document.querySelector('p[draggable="true"]');
 
-이 예제에서는 `{{domxref("GlobalEventHandlers.ondragstart","ondragstart")}}` 속성을 이용하여 {{event("dragstart")}} 이벤트에 대한 리스너를 추가합니다.
+draggableElement.addEventListener("dragstart", (event) =>
+  event.dataTransfer.setData("text/plain", "This text may be dragged")
+);
+```
+
+The [`draggable`](/en-US/docs/Web/HTML/Global_attributes#draggable) attribute is set to `"true"`, so this element becomes draggable. If this attribute were omitted or set to `"false"`, the element would not be dragged, and instead the text would be selected.
+
+The [`draggable`](/en-US/docs/Web/HTML/Global_attributes#draggable) attribute may be used on any element, including images and links. However, for these last two, the default value is `true`, so you would only use the [`draggable`](/en-US/docs/Web/HTML/Global_attributes#draggable) attribute with a value of `false` to disable dragging of these elements.
+
+> **Note:** When an element is made draggable, text or other elements within it can no longer be selected in the normal way by clicking and dragging with the mouse. Instead, the user must hold down the <kbd>Alt</kbd> key to select text with the mouse, or use the keyboard.
+
+## Starting a drag operation
+
+In this example, we add a listener for the {{domxref("HTMLElement/dragstart_event", "dragstart")}} event by using the `addEventListener()` method.
 
 ```html
-<div draggable="true" ondragstart="event.dataTransfer.setData('text/plain', 'This text may be dragged')">
-  This text <strong>may</strong> be dragged.
-</div>
+<p draggable="true">This text <strong>may</strong> be dragged.</p>
 ```
 
-사용자가 드래그를 시작할 때, {{event("dragstart")}} 이벤트가 발생합니다. 이 예제에서는 드래그할 요소에 {{event("dragstart")}} 리스너가 추가되었습니다; 하지만, 대부분의 다른 이벤트가 그렇듯이 상위 요소에서 드래그 이벤트를 포착할 수 있습니다. {{event("dragstart")}} 이벤트 내에서 아래에서 설명하는 바와 같이 피드백 이미지(feedback image)나 드래그 효과와 그리고 드래그 데이터를 명시할 수 있습니다. 기본 이미지나 드래그 효과는 대부분의 상황에 적합하게 되어 있으며, 드래그 데이터만 필요합니다.
+```js
+const draggableElement = document.querySelector('p[draggable="true"]');
+draggableElement.addEventListener("dragstart", (event) =>
+  event.dataTransfer.setData("text/plain", "This text may be dragged")
+);
+```
 
-## 데이터 드래그
+When a user begins to drag, the {{domxref("HTMLElement/dragstart_event", "dragstart")}} event is fired.
 
-모든 {{domxref("DragEvent","drag events")}}는 드래그 데이터를 가지고 있는 {{domxref("DragEvent.dataTransfer","dataTransfer")}}라는 속성이 존재합니다 (`dataTransfer`는 {{domxref("DataTransfer")}} 객체입니다).
+In this example the {{domxref("HTMLElement/dragstart_event", "dragstart")}} listener is added to the draggable element itself. However, you could listen to a higher ancestor as drag events bubble up as most other events do.
 
-드래그가 발생할 때, 데이터는 어떤 것이 드래그되는지를 구분할 수 있는 드래그와 연관되어야 합니다(When a drag occurs, data must be associated with the drag which identifies _what_ is being dragged). 예를 들어, 선택된 텍스트가 드래그될 경우 드래그 데이터 항목에 연관된 데이터는 텍스트 자체입니다. 이와 유사하게, 웹 페이지 상의 링크가 드래그될 경우에 드래그 데이터 항목은 링크의 URL이됩니다.
+Within the {{domxref("HTMLElement/dragstart_event", "dragstart")}} event, you can specify the **drag data**, the **feedback image**, and the **drag effects**, all of which are described below. However, only the **drag data** is required. (The default image and drag effects are suitable in most situations.)
 
-{{domxref("DataTransfer","drag data")}}는 두 가지 정보를 담고 있는데, 데이터의 유형(또는 형식)과 데이터 값입니다. 형식은 (텍스트 데이터에 해당하는 [text/plain](/ko/docs/DragDrop/Recommended_Drag_Types#text)과 같은) 형식 문자열(type string) 값이고, 값은 텍스트의 문자열입니다. 드래그가 시작되면, 데이터와 형식을 제공하는 데이터를 추가해야 합니다. 드래그되는 동안, `{{event("dragenter")}}` 이벤트와 `{{event("dragover")}}` 이벤트에 대한 이벤트 리스너에서 드래그되는 데이터의 형식을 사용해 드랍이 허용되는지 확인할 수 있습니다. 예를 들어, 링크가 허용되는 드랍 대상(drop target)은 [text/uri-list](/ko/docs/DragDrop/Recommended_Drag_Types#link) 형식의 링크인지 확인합니다. 드랍 이벤트 동안 리스너는 드래그 대상(being dragged)으로부터 데이터를 추출해 드랍되는 위치에 삽입합니다.
+## Drag data
 
-{{domxref("DataTransfer","drag data's")}}의 {{domxref("DataTransfer.types","types")}} 속성은 [text/plain](/ko/docs/DragDrop/Recommended_Drag_Types#text) or [image/jpeg](/ko/docs/DragDrop/Recommended_Drag_Types#image)과 같은 {{domxref("DOMString")}} MIME-type 목록을 반환홥니다. 여러분은 자신만의 형식을 만들 수도 있습니다. 가장 흔하게 사용되는 형식은 권장 드래그 데이터 형식([Recommended Drag Types](/ko/docs/DragDrop/Recommended_Drag_Types))에서 소개하고 있습니다.
+All {{domxref("DragEvent","drag events")}} have a property called {{domxref("DragEvent.dataTransfer","dataTransfer")}} which holds the drag data (`dataTransfer` is a {{domxref("DataTransfer")}} object).
 
-드래그에는 여러 가지 다른 형식의 데이터 항목이 포함될 수 있습니다. 이를 통해 사용자 정의 형식(custom types)과 같은 보다 특정한 형식의 데이터를 주로 제공하지만, 특정한 유형을 지원하지 않는 드롭 대상에 대해 대체 데이터(fallback data)를 제공할 수도 있습니다. [text/plain](/ko/docs/DragDrop/Recommended_Drag_Types#text) 형식의 일반적인 텍스트 데이터가 가장 단순한 형식의 데이터일 것입니다.이 형식의 데이터는 단순히 텍스트 형식으로 표시될 것입니다.
+When a drag occurs, data must be associated with the drag which identifies _what_ is being dragged. For example, when dragging the selected text within a textbox, the data associated with the _drag data item_ is the text itself. Similarly, when dragging a link on a web page, the drag data item is the link's URL.
 
-{{domxref("DragEvent.dataTransfer","dataTransfer")}} 내에 드래그 데이터 항목(drag data item)을 설정하기 위해서는 {{domxref("DataTransfer.setData","setData()")}} 메서드를 이용합니다. 이 메서드는 각각 데이터 형식과 데이터 값인 두 개의 인자가 필요합니다. 예를 들어:
+The {{domxref("DataTransfer","drag data")}} contains two pieces of information, the **type** (or format) of the data, and the data's **value**. The format is a type string (such as [`text/plain`](/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types#text) for text data), and the value is a string of text. When the drag begins, you add data by providing a type and the data. During the drag, in an event listener for the {{domxref("HTMLElement/dragenter_event", "dragenter")}} and {{domxref("HTMLElement/dragover_event", "dragover")}} events, you use the data types of the data being dragged to check whether a drop is allowed. For instance, a drop target that accepts links would check for the type [`text/uri-list`](/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types#link). During a drop event, a listener would retrieve the data being dragged and insert it at the drop location.
+
+The {{domxref("DataTransfer","drag data's")}} {{domxref("DataTransfer.types","types")}} property returns a list of MIME-type like strings, such as [`text/plain`](/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types#text) or [`image/jpeg`](/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types#image). You can also create your own types. The most commonly used types are listed in the article [Recommended Drag Types](/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types).
+
+A drag may include data items of several different types. This allows data to be provided in more specific types, often custom types, yet still provide fallback data for drop targets that do not support more specific types. It is usually the case that the least specific type will be normal text data using the type [`text/plain`](/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types#text). This data will be a simple textual representation.
+
+To set a drag data item within the {{domxref("DragEvent.dataTransfer","dataTransfer")}}, use the {{domxref("DataTransfer.setData","setData()")}} method. It takes two arguments: the type of data and the data value. For example:
 
 ```js
 event.dataTransfer.setData("text/plain", "Text to drag");
 ```
 
-이 경우, 데이터 값은 "Text to drag"이고 형식은 [text/plain](/ko/docs/DragDrop/Recommended_Drag_Types#text)입니다.
+In this case, the data value is "Text to drag" and is of the format [`text/plain`](/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types#text).
 
-여러 형식의 데이터를 제공할 수도 있습니다. 이를 위해서는 서로 다른 형식으로 {{domxref("DataTransfer.setData","setData()")}} 메서드를 여러 번 호출합니다. 이 때, 가장 세부적인 형식에서 덜 세부적인 형식의 순으로 호출해야 합니다.
+You can provide data in multiple formats. To do this, call the {{domxref("DataTransfer.setData","setData()")}} method multiple times with different formats. You should call it with formats in order from most specific to least specific.
 
 ```js
-var dt = event.dataTransfer;
-dt.setData("application/x-bookmark", bookmarkString);
-dt.setData("text/uri-list", "http://www.mozilla.org");
-dt.setData("text/plain", "http://www.mozilla.org");
+const dt = event.dataTransfer;
+dt.setData("application/x.bookmark", bookmarkString);
+dt.setData("text/uri-list", "https://www.mozilla.org");
+dt.setData("text/plain", "https://www.mozilla.org");
 ```
 
-여기서 데이터는 세가지 유형으로 추가됩니다. 첫번째 형식의 'application2x-bookmark'는 사용자 지정 형식입니다. 다른 응용 프로그램에서는 이 형식을 지원하지 않지만 동일한 사이트 또는 응용 프로그램의 영역 간 드래그할 경우, 이 사용자 지정 형식을 사용할 수 있습니다. 또한 다른 형식의 데이터를 제공함으로써 덜 세부적인 형태로 다른 애플리케이션으로의 드래그도 지원할 수 있습니다. 다른 형식이 하나의 URL또는 텍스트 형식만 제공할 때, 'application2x-bookmark' 형식은 해당 어플리케이션 내에서 사용될 경우 더 상세한 데이터를 제공할 수 있습니다
+Here, data is added in three different types. The first type, `application/x.bookmark`, is a custom type. Other applications won't support this type, but you can use a custom type for drags between areas of the same site or application.
 
-이 예제에서 [text/uri-list](/ko/docs/DragDrop/Recommended_Drag_Types#link)와 [text/plain](/ko/docs/DragDrop/Recommended_Drag_Types#text)은 동일한 데이터를 담고있음에 주목하시기 바랍니다. 이렇게 해도 되지만, 꼭 이럴 필요는 없습니다.
+By providing data in other types as well, we can also support drags to other applications in less specific forms. The `application/x.bookmark` type can provide data with more details for use within the application whereas the other types can include just a single URL or text version.
 
-동일한 형식으로 데이터를 두 번 추가하려고 하면 새로운 데이터가 기존 데이터를 대체하지만 형식 목록 내에서 이전 데이터(old data)와 같은 위치에 있게 됩니다.
+Note that both the [`text/uri-list`](/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types#link) and [`text/plain`](/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types#text) contain the same data in this example. This will often be true, but doesn't need to be the case.
 
-{{domxref("DataTransfer.clearData","clearData()")}} 메서드를 이용해 해당 데이터를 지울 수 있는데, 이 메서드는 지우고자 하는 데이터의 형식을 인자로 가집니다.
+If you attempt to add data twice with the same format, the new data will replace the old data, but in the same position within the list of types as the old data.
+
+You can clear the data using the {{domxref("DataTransfer.clearData","clearData()")}} method, which takes one argument: the type of the data to remove.
 
 ```js
 event.dataTransfer.clearData("text/uri-list");
 ```
 
-{{domxref("DataTransfer.clearData","clearData()")}} 메서드에 대한 형식 인자는 선택적입니다. 형식을 지정하지 않으면 모든 형식과 연관된 데이터가 지워집니다. 드래그할 때, 드래그 데이터 항목이 없거나 이후에 모든 항목이 삭제되면 드래그가 발생하지 않습니다.
+The `type` argument to the {{domxref("DataTransfer.clearData","clearData()")}} method is optional. If the `type` is not specified, the data associated with all types is removed. If the drag contains no drag data items, or all of the items have been subsequently cleared, then no drag will occur.
 
-## 드래그 피드백 이미지 설정
+## Setting the drag feedback image
 
-드래그가 발생할 때, 드래그 대상("{{event("dragstart")}}" 이벤트가 발생한 요소)으로부터 반투명한 이미지가 생성되고 드래그 하는 동안 마우스 포인터를 따라 움직입니다. 이 이미지는 자동으로 생성되며, 따로 생성할 필요가 없습니다. 하지만, {{domxref("DataTransfer.setDragImage","setDragImage()")}}를 이용해 사용자 정의 드래그 피드백 이미지를 지정할 수 있습니다.
+When a drag occurs, a translucent image is generated from the drag target (the element the "{{domxref("HTMLElement/dragstart_event", "dragstart")}}" event is fired at), and follows the user's pointer during the drag. This image is created automatically, so you do not need to create it yourself. However, you can use {{domxref("DataTransfer.setDragImage","setDragImage()")}} to specify a custom drag feedback image.
 
 ```js
 event.dataTransfer.setDragImage(image, xOffset, yOffset);
 ```
 
-세 개의 인자는 필수입니다. 첫 번째 인자는 이미지에 대한 참조(reference)입니다. 이 참조는 일반적으로 이미지에 대한 참조이나 캔버스(canvas)나 다른 요소를 지정할 수도 있습니다. 피드백 이미지는 단순하게 화면에 표시된 이미지의 모양으로부터 생성되지만, 이미지의 경우 원래 크기로 그려집니다. {{domxref("DataTransfer.setDragImage","setDragImage()")}} 메서드의 두 번째와 세 번째 인자는 마우스 포인터에 대해 상대적인 옵셋(offsets)으로 이미지가 나타날 위치를 의미합니다.
+Three arguments are necessary. The first is a reference to an image. This reference will typically be to an `<img>` element, but it can also be to a `<canvas>` or any other element. The feedback image will be generated from whatever the image looks like on screen, although for images, they will be drawn at their original size. The second and third arguments to the {{domxref("DataTransfer.setDragImage","setDragImage()")}} method are offsets where the image should appear relative to the mouse pointer.
 
-문서 내에 있지 않은 이미지나 캔버스를 사용하는 것 역시 가능합니다. 이 기법은 다음의 예제와 같이 캔버스 요소를 이용해 드래그 이미지를 사용자 정의 형태로 그리고자 할 때 유용합니다:
+It is also possible to use images and canvases that are not in a document. This technique is useful when drawing custom drag images using the canvas element, as in the following example:
 
 ```js
 function dragWithCustomImage(event) {
-  var canvas = document.createElementNS("http://www.w3.org/1999/xhtml","canvas");
+  const canvas = document.createElement("canvas");
   canvas.width = canvas.height = 50;
 
-  var ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext("2d");
   ctx.lineWidth = 4;
   ctx.moveTo(0, 0);
   ctx.lineTo(50, 50);
@@ -119,214 +133,205 @@ function dragWithCustomImage(event) {
   ctx.lineTo(50, 0);
   ctx.stroke();
 
-  var dt = event.dataTransfer;
-  dt.setData('text/plain', 'Data to Drag');
+  const dt = event.dataTransfer;
+  dt.setData("text/plain", "Data to Drag");
   dt.setDragImage(canvas, 25, 25);
 }
 ```
 
-이 예제에서, 드래그 이미지를 표시할 캔버스를 하나 생성합니다. 캔버스는 너비가 와 높이가 모두 50 픽셀이고, 마우스 포인터가 이미지의 중앙에 위치하도록 옵셋(offsets)을 너비와 높이의 절반(25)으로 설정했습니다.
+In this example, we make one canvas the drag image. As the canvas is `50`×`50` pixels, we use offsets of half of this (`25`) so that the image appears centered on the mouse pointer.
 
-## 드래그 효과
+## Drag effects
 
-드래그할 때, 여러 가지 작업이 수행될 수 있습니다. `copy` 작업은 드래그되는 데이터가 현재 위치에서 드랍되는 위치로 복사될 것임을 나타냅니다. `move` 작업은 드래그되는 데이터가 이동될 것임을 나타내고, `link` 작업은 특정 형태의 관계(relationship)나 연결(connection)이 소스와 드랍되는 위치 사이에 생성될 것임을 나타냅니다.
+When dragging, there are several operations that may be performed. The `copy` operation is used to indicate that the data being dragged will be copied from its present location to the drop location. The `move` operation is used to indicate that the data being dragged will be moved, and the `link` operation is used to indicate that some form of relationship or connection will be created between the source and drop locations.
 
-드래그 소스(drag source)에 대해 `{{event("dragstart")}}` 이벤트 리스너의 {{domxref("DataTransfer.effectAllowed","effectAllowed")}} 속성을 설정함으로써, 이 세 가지 작업 중 어떤 것을 허용할 것인지를 지정할 수 있습니다.
+You can specify which of the three operations are allowed for a drag source by setting the {{domxref("DataTransfer.effectAllowed","effectAllowed")}} property within a {{domxref("HTMLElement/dragstart_event", "dragstart")}} event listener.
 
 ```js
 event.dataTransfer.effectAllowed = "copy";
 ```
 
-이 예제에서는, 복사만 허용됩니다. 다양한 방식으로 값을 조합할 수 있습니다:
+In this example, only a **copy** is allowed.
 
-- none
-  - : 어떤 작업도 허용하지 않음.
-- copy
-  - : 복사만 허용
-- move
-  - : 이동만 허용
-- link
-  - : 연결만 허용
-- copyMove
-  - : 복사 또는 이동만 허용
-- copyLink
-  - : 복사 또는 연결만 허용
-- linkMove
-  - : 연결 또는 이동만 허용
-- all
-  - : 복사, 이동 및 연결 모두 허용
+You can combine the values in various ways:
 
-이 값들은 반드시 위에 나열한 것과 정확하게 일치해야 함에 유의하시기 바랍니다. 예를 들어, {{domxref("DataTransfer.effectAllowed","effectAllowed")}} 속성을 `copyMove`로 설정하면 복사와 이동 작업이 허용되나 연결(link) 작업은 금지됩니다. {{domxref("DataTransfer.effectAllowed","effectAllowed")}} 속성을 변경하지 않으면 'all' 값과 마찬가지로 어떤 작업도 허용됩니다. 따라서, 특정한 유형의 작업을 제외시키고 싶지 않다면 이 속성을 조정할 필요가 없습니다.
+- `none`
+  - : no operation is permitted
+- `copy`
+  - : `copy` only
+- `move`
+  - : `move` only
+- `link`
+  - : `link` only
+- `copyMove`
+  - : `copy` or `move` only
+- `copyLink`
+  - : `copy` or `link` only
+- `linkMove`
+  - : `link` or `move` only
+- `all`
+  - : `copy`, `move`, or `link`
+- uninitialized
+  - : The default value is `all`.
 
-드래그 작업 중에 `{{event("dragenter")}}` 또는 `{{event("dragover")}}` 이벤트에 대한 리스너는 어떤 작업이 허용되어 있는지 알기 위해 {{domxref("DataTransfer.effectAllowed","effectAllowed")}} 속성을 확인할 수 있습니다. 관련된 속성으로, {{domxref("DataTransfer.dropEffect","dropEffect")}}는 이들 이벤트 중 하나에서 수행되어야 하는 단일 작업을 지정하기 위해 설정되어야 할 속성입니다. {{domxref("DataTransfer.dropEffect","dropEffect")}}에 유효한 값은 `none`, `copy`, `move`, 또는 `link`입니다. 이 속성에 값의 조합은 허용되지 않습니다.
+Note that these values must be used exactly as listed above. For example, setting the {{domxref("DataTransfer.effectAllowed","effectAllowed")}} property to `copyMove` allows a copy or move operation but prevents the user from performing a link operation. If you don't change the {{domxref("DataTransfer.effectAllowed","effectAllowed")}} property, then any operation is allowed, just like with the '`all`' value. So you don't need to adjust this property unless you want to exclude specific types.
 
-`{{event("dragenter")}}`나 `{{event("dragover")}}` 이벤트가 발생하면 사용자가 요청하는 효과로 {{domxref("DataTransfer.dropEffect","dropEffect")}} 속성이 초기화됩니다. 사용자는 한정자 키를 눌러 원하는 효과로 수정할 수 있습니다. 플랫폼에 따라 정확한 키가 달라질 수 있지만, 일반적으로 쉬프트(Shift)와 컨트롤(Control) 키가 복사하기, 이동하기, 연결하기 간 전환에 사용됩니다. 마우스 포인터를 원하는 작업을 나타내도록 변경할 수 있습니다; 예를 들어, 복사 작업에 대해서는 마우스 포인터 옆에 더하기 기호가 표시된 커서가 나타날 수 있습니다.
+During a drag operation, a listener for the {{domxref("HTMLElement/dragenter_event", "dragenter")}} or {{domxref("HTMLElement/dragover_event", "dragover")}} events can check the {{domxref("DataTransfer.effectAllowed","effectAllowed")}} property to see which operations are permitted. A related property, {{domxref("DataTransfer.dropEffect","dropEffect")}}, should be set within one of these events to specify which single operation should be performed. Valid values for {{domxref("DataTransfer.dropEffect","dropEffect")}} are `none`, `copy`, `move`, or `link`. The combination values are not used for this property.
 
-`{{event("dragenter")}}` 또는 `{{event("dragover")}}` 이벤트가 발생하는 동안 {{domxref("DataTransfer.dropEffect","dropEffect")}} 속성을 변경할 수 있는데, 예를 들자면, 특정 작업만 지원되는 특수한 드랍 대상(drop target)일 경우가 그렇습니다. {{domxref("DataTransfer.dropEffect","dropEffect")}} 속성을 수정하여 사용자 효과(user effect)를 오버라이드하여 특정한 드랍 작업이 발생하게 할 수 있습니다. 이 효과는 {{domxref("DataTransfer.effectAllowed","effectAllowed")}} 속성에 열거된 것 중의 하나 이어야 함에 유의하시기 바랍니다. 그렇지 않을 경우, 허용되는 대체 값으로 설정되게 됩니다.
+With the {{domxref("HTMLElement/dragenter_event", "dragenter")}} and {{domxref("HTMLElement/dragover_event", "dragover")}} event, the {{domxref("DataTransfer.dropEffect","dropEffect")}} property is initialized to the effect that the user is requesting. The user can modify the desired effect by pressing modifier keys. Although the exact keys used vary by platform, typically the <kbd>Shift</kbd> and <kbd>Control</kbd> keys would be used to switch between copying, moving, and linking. The mouse pointer will change to indicate which operation is desired. For instance, for a `copy`, the cursor might appear with a plus sign next to it.
+
+You can modify the {{domxref("DataTransfer.dropEffect","dropEffect")}} property during the {{domxref("HTMLElement/dragenter_event", "dragenter")}} or {{domxref("HTMLElement/dragover_event", "dragover")}} events, if for example, a particular drop target only supports certain operations. You can modify the {{domxref("DataTransfer.dropEffect","dropEffect")}} property to override the user effect, and enforce a specific drop operation to occur. Note that this effect must be one listed within the {{domxref("DataTransfer.effectAllowed","effectAllowed")}} property. Otherwise, it will be set to an alternate value that is allowed.
 
 ```js
 event.dataTransfer.dropEffect = "copy";
 ```
 
-이 예제에서는 복사가 수행될 효과입니다.
+In this example, copy is the effect that is performed.
 
-이 경우에는 이벤트를 취소하지 않는 것이 좋지만 `none` 값을 사용하여 이 위치에서 드롭이 허용되지 않음을 나타낼 수 있습니다.
+You can use the value `none` to indicate that no drop is allowed at this location, although it is preferred not to cancel the event in this case.
 
-`{{event("drop")}}`와 `{{event("dragend")}}` 이벤트 내에서{{domxref("DataTransfer.dropEffect","dropEffect")}} 속성을 확인하면 최종적으로 어떤 효과가 선택되었는지를 알 수 있습니다. 선택된 효과가 "move"였다면, `{{event("dragend")}}` 이벤트 내에서 드래그 소스의 원본 데이터가 삭제되어야 합니다.
+Within the {{domxref("HTMLElement/drop_event", "drop")}} and {{domxref("HTMLElement/dragend_event", "dragend")}} events, you can check the {{domxref("DataTransfer.dropEffect","dropEffect")}} property to determine which effect was ultimately chosen. If the chosen effect were "`move`", then the original data should be removed from the source of the drag within the {{domxref("HTMLElement/dragend_event", "dragend")}} event.
 
-## 드랍 대상 지정하기
+## Specifying drop targets
 
-`{{event("dragenter")}}`와 `{{event("dragover")}}` 이벤트에 대한 리스너는 유효한 드랍 대상인지, 즉 드래그된 아이템이 드랍될 수 있는 곳인지를 나타내는데 사용할 수 있습니다. 웹 페이지 또는 어플리케이션의 대부분의 영역은 데이터를 드랍할 수 있는 유효한 영역이 아닙니다. 따라서, 이들 이벤트에 대한 기본적인 처리는 드랍을 허용하지 않는 것입니다.
+A listener for the {{domxref("HTMLElement/dragenter_event", "dragenter")}} and {{domxref("HTMLElement/dragover_event", "dragover")}} events are used to indicate valid drop targets, that is, places where dragged items may be dropped. Most areas of a web page or application are not valid places to drop data. Thus, the default handling of these events is not to allow a drop.
 
-드랍을 허용하길 원한다면, 해당 이벤트를 취소하는 기본 처리를 막아야 합니다. 속성 정의(attribute-defined) 이벤트 리스너로부터 `false`를 반환 받거나 해당 이벤트의 {{domxref("Event.preventDefault","preventDefault()")}} 메서드를 호출하면 됩니다. 후자는 별도의 스크립트에 정의된 함수에 더 적합합니다.
+If you want to allow a drop, you must prevent the default behavior by cancelling both the `dragenter` and `dragover` events. You can do this by calling their {{domxref("Event.preventDefault","preventDefault()")}} methods:
 
 ```html
-<div ondragover="return false">
-<div ondragover="event.preventDefault()">
+<div id="drop-target">You can drag and then drop a draggable item here</div>
 ```
 
-`{{event("dragenter")}}` and `{{event("dragover")}}` 두 이벤트 모두에서 {{domxref("Event.preventDefault","preventDefault()")}} 메서드를 호출하는 것은 그 위치에 드랍이 허용되는 것을 나타냅니다. 하지만, 일반적으로 특정한 상황에서만, 예를 들자면 링크가 드래그될 때만 {{domxref("Event.preventDefault","preventDefault()")}} 메서드를 호출하길 원할 것입니다. 이렇게 하기 위해서는 조건을 확인하여 조건이 충족될 때에만 해당 이벤트를 취소하는 함수를 호출합니다. 조건이 충족되지 않을 경우, 이벤트를 취소하지 않으면 사용자가 마우스 버튼을 놓더라도 드랍은 발생하지 않을 것입니다.
+```js
+const dropElement = document.getElementById("drop-target");
 
-data transfer의 드래그 데이터 형식에 따라 드랍을 허용하거나 기각하는 경우가 대부분일 것입니다(예를 들어, 이미지나 링크를 허용하거나 둘 다 허용하는 경우). 이렇게 하기 위해서는 이벤트의 {{domxref("DragEvent.dataTransfer","dataTransfer")}} 속성의 {{domxref("DataTransfer.types","types")}} 속성을 확인합니다. {{domxref("DataTransfer.types","types")}} 속성은 드래그가 시작될 때 추가된 형식 문자열의 배열을 반환하는데, 그 순서는 가장 세부적인 형식에서 가장 덜 세부적인 형식의 순서입니다.
+dropElement.addEventListener("dragenter", (event) => {
+  event.preventDefault();
+});
+
+dropElement.addEventListener("dragover", (event) => {
+  event.preventDefault();
+});
+```
+
+Calling the {{domxref("Event.preventDefault","preventDefault()")}} method during both a {{domxref("HTMLElement/dragenter_event", "dragenter")}} and {{domxref("HTMLElement/dragover_event", "dragover")}} event will indicate that a drop is allowed at that location. However, you will commonly wish to call the {{domxref("Event.preventDefault","preventDefault()")}} method only in certain situations (for example, only if a link is being dragged).
+
+To do this, call a function which checks a condition and only cancels the event when the condition is met. If the condition is not met, don't cancel the event, and a drop will not occur there if the user releases the mouse button.
+
+It is most common to accept or reject a drop based on the type of drag data in the data transfer — for instance, allowing images, or links, or both. To do this, you can check the {{domxref("DataTransfer.types","types")}} property of the event's {{domxref("DragEvent.dataTransfer","dataTransfer")}} (property). The {{domxref("DataTransfer.types","types")}} property returns an array of the string types that were added when the drag began, in the order from most significant to least significant.
 
 ```js
-function contains(list, value) {
-    for( var i = 0; i < list.length; ++i ) {
-        if(list[i] === value) return true;
-    }
-    return false;
-}
-
 function doDragOver(event) {
-  var isLink = contains( event.dataTransfer.types, "text/uri-list");
+  const isLink = event.dataTransfer.types.includes("text/uri-list");
   if (isLink) {
     event.preventDefault();
   }
 }
 ```
 
-이 예제에서 형식 목록 내에 [text/uri-list](/ko/docs/DragDrop/Recommended_Drag_Types#link) 형식이 존재하는지 확인하기 위해 `contains` 메서드를사용합니다. 존재할 경우에는 드랍을 허용하기 위해 이벤트가 취소될 것입니다. 드래그 데이터가 링크를 포함하지 않았다면, 해당 이벤트는 취소되지 않을 것이고 그 위치에 대한 드랍이 발생하지 않을 것입니다.
+In this example, we use the `includes` method to check if the type [`text/uri-list`](/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types#link) is present in the list of types. If it is, we will cancel the event so that a drop may be allowed. If the drag data does not contain a link, the event will not be cancelled, and a drop cannot occur at that location.
 
-수행되어야 하는 작업 형식을 더 세부적으로 설정하길 원한다면, {{domxref("DataTransfer.effectAllowed","effectAllowed")}}나 {{domxref("DataTransfer.dropEffect","dropEffect")}} 속성을 각각 설정하거나 동시에 둘 다를 설정하고 싶을 것입니다. 두 속성을 변경하더라도 해당 이벤트를 취소하지 않으면 아무런 영향이 없을 것입니다.
+You may also wish to set either the {{domxref("DataTransfer.effectAllowed","effectAllowed")}}, {{domxref("DataTransfer.dropEffect","dropEffect")}} property, or both at the same time, if you wish to be more specific about the type of operation that will performed. Naturally, changing either property will have no effect if you do not cancel the event as well.
 
-### Updates to DataTransfer.types
+## Drop feedback
 
-최신 스펙에는 {{domxref("DataTransfer.types")}}이 {{domxref("DOMStringList")}}(이 속성은 Fiirefox 52 이상에서 지원됨)이 아닌 {{domxref("DOMString")}} 형식의 고정배열(fronzen array)을 반환하도록 명시하고 있음에 유의하시기 바랍니다.
+There are several ways in which you can indicate to the user that a drop is allowed at a certain location. The mouse pointer will update as necessary depending on the value of the {{domxref("DataTransfer.dropEffect","dropEffect")}} property.
 
-그 결과로, [contains](/ko/docs/Web/API/Node/contains) 메서드는 해당 속성에 대해 더 이상 동작하지 않으며; 특정 형식의 데이터가 제공되는지 확인하기 위해서는 다음 코드와 같이 [includes](/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/includes) 메서드를 사용해야 합니다:
+Although the exact appearance depends on the user's platform, typically a plus sign icon will appear for a '`copy`' for example, and a 'cannot drop here' icon will appear when a drop is not allowed. This mouse pointer feedback is sufficient in many cases.
 
-```js
-if ([...event.dataTransfer.types].includes('text/html')) {
-  // Do something
-}
-```
+For more complex visual effects, you can perform other operations during the {{domxref("HTMLElement/dragenter_event", "dragenter")}} event. For example, by inserting an element at the location where the drop will occur. This might be an insertion marker, or an element that represents the dragged element in its new location. To do this, you could create an [`<img>`](/en-US/docs/Web/HTML/Element/img) element and insert it into the document during the {{domxref("HTMLElement/dragenter_event", "dragenter")}} event.
 
-일부 특성 검출(feature detection)을 이용해 `types`에 대해 어떤 메서드가 지원되는지를 판별하고 적절하게 코드를 실행할 수 있습니다.
+The {{domxref("HTMLElement/dragover_event", "dragover")}} event will fire at the element the mouse is pointing at. Naturally, you may need to move the insertion marker around a {{domxref("HTMLElement/dragover_event", "dragover")}} event as well. You can use the event's {{domxref("MouseEvent.clientX","clientX")}} and {{domxref("MouseEvent.clientY","clientY")}} properties as with other mouse events to determine the location of the mouse pointer.
 
-## Drop Feedback
+Finally, the {{domxref("HTMLElement/dragleave_event", "dragleave")}} event will fire at an element when the drag leaves the element. This is the time when you should remove any insertion markers or highlighting. You do not need to cancel this event. The {{domxref("HTMLElement/dragleave_event", "dragleave")}} event will always fire, even if the drag is cancelled, so you can always ensure that any insertion point cleanup can be done during this event.
 
-There are several ways in which you can indicate to the user that a drop is allowed at a certain location. The mouse pointer will update as necessary depending on the value of the {{domxref("DataTransfer.dropEffect","dropEffect")}} property. Although the exact appearance depends on the user's platform, typically a plus sign icon will appear for a 'copy' for example, and a 'cannot drop here' icon will appear when a drop is not allowed. This mouse pointer feedback is sufficient in many cases.
+## Performing a drop
 
-However, you can also update the user interface with an insertion point or highlight as needed. For simple highlighting, you can use the `-moz-drag-over` CSS pseudoclass on a drop target.
+When the user releases the mouse, the drag and drop operation ends.
 
-```css
-.droparea:-moz-drag-over {
-  border: 1px solid black;
-}
-```
+If the mouse is released over an element that is a valid drop target, that is, one that cancelled the last {{domxref("HTMLElement/dragenter_event", "dragenter")}} or {{domxref("HTMLElement/dragover_event", "dragover")}} event, then the drop will be successful, and a {{domxref("HTMLElement/drop_event", "drop")}} event will fire at the target. Otherwise, the drag operation is cancelled, and no {{domxref("HTMLElement/drop_event", "drop")}} event is fired.
 
-In this example, the element with the class `droparea` will receive a 1 pixel black border while it is a valid drop target, that is, if the {{domxref("Event.preventDefault","preventDefault()")}} method was called during the `{{event("dragenter")}}` event. Note that you must cancel the `{{event("dragenter")}}` event for this pseudoclass to apply, as this state is not checked for the `{{event("dragover")}}` event.
+During the {{domxref("HTMLElement/drop_event", "drop")}} event, you should retrieve that data that was dropped from the event and insert it at the drop location. You can use the {{domxref("DataTransfer.dropEffect","dropEffect")}} property to determine which drag operation was desired.
 
-For more complex visual effects, you can also perform other operations during the `{{event("dragenter")}}` event, for example, by inserting an element at the location where the drop will occur. For example, this might be an insertion marker or an element that represents the dragged element in its new location. To do this, you could create an [image](/ko/docs/XUL/image) or [separator](/ko/docs/XUL/separator) element, for example, and simply insert it into the document during the `{{event("dragenter")}}` event.
-
-The `{{event("dragover")}}` event will fire at the element the mouse is pointing at. Naturally, you may need to move the insertion marker around a `{{event("dragover")}}` event as well. You can use the event's {{domxref("MouseEvent.clientX","clientX")}} and {{domxref("MouseEvent.clientY","clientY")}} properties as with other mouse events to determine the location of the mouse pointer.
-
-Finally, the `{{event("dragleave")}}` event will fire at an element when the drag leaves the element. This is the time when you should remove any insertion markers or highlighting. You do not need to cancel this event. Any highlighting or other visual effects specified using the `-moz-drag-over` pseudoclass will be removed automatically. The `{{event("dragleave")}}` event will always fire, even if the drag is cancelled, so you can always ensure that any insertion point cleanup can be done during this event.
-
-## Performing a Drop
-
-When the user releases the mouse, the drag and drop operation ends. If the mouse was released over an element that is a valid drop target, that is, one that cancelled the last `{{event("dragenter")}}` or `{{event("dragover")}}` event, and then the drop will be successful, and a `{{event("drop")}}` event will fire at the target. Otherwise, the drag operation is cancelled, and no `{{event("drop")}}` event is fired.
-
-During the `{{event("drop")}}` event, you should retrieve that data that was dropped from the event and insert it at the drop location. You can use the {{domxref("DataTransfer.dropEffect","dropEffect")}} property to determine which drag operation was desired.
-
-As with all drag-related events, the event's `{{domxref("DataTransfer","dataTransfer")}}` property will hold the data that is being dragged. The {{domxref("DataTransfer.getData","getData()")}} method may be used to retrieve the data again.
+As with all drag-related events, the event's {{domxref("DataTransfer","dataTransfer")}} property will hold the data that is being dragged. The {{domxref("DataTransfer.getData","getData()")}} method may be used to retrieve the data again.
 
 ```js
 function onDrop(event) {
-  var data = event.dataTransfer.getData("text/plain");
+  const data = event.dataTransfer.getData("text/plain");
   event.target.textContent = data;
   event.preventDefault();
 }
 ```
 
-The {{domxref("DataTransfer.getData","getData()")}} method takes one argument, the type of data to retrieve. It will return the string value that was set when {{domxref("DataTransfer.setData","setData()")}} was called at the beginning of the drag operation. An empty string will be returned if data of that type does not exist. Naturally, though, you would likely know that the right type of data was available, as it was previously checked during a `{{event("dragover")}}` event.
+The {{domxref("DataTransfer.getData","getData()")}} method takes one argument, the type of data to retrieve. It will return the string value that was set when {{domxref("DataTransfer.setData","setData()")}} was called at the beginning of the drag operation. An empty string will be returned if data of that type does not exist. (Naturally, though, you would likely know that the right type of data was available, as it was previously checked during a {{domxref("HTMLElement/dragover_event", "dragover")}} event.)
 
-In the example here, once we have retrieved the data, we insert the string as the textual content of the target. This has the effect of inserting the dragged text where it was dropped, assuming that the drop target is an area of text such as a `p` or `div` element.
+In the example here, once the data has been retrieved, we insert the string as the textual content of the target. This has the effect of inserting the dragged text where it was dropped, assuming that the drop target is an area of text such as a `p` or `div` element.
 
-In a web page, you should call the {{domxref("Event.preventDefault","preventDefault()")}} method of the event if you have accepted the drop so that the default browser handling does not handle the dropped data as well. For example, when a link is dragged to a web page, Firefox will open the link. By cancelling the event, this behavior will be prevented.
+In a web page, you should call the {{domxref("Event.preventDefault","preventDefault()")}} method of the event if you have accepted the drop, so that the browser's default handling is not triggered by the dropped data as well. For example, when a link is dragged to a web page, Firefox will open the link. By cancelling the event, this behavior will be prevented.
 
-You can retrieve other types of data as well. If the data is a link, it should have the type [text/uri-list](/ko/docs/DragDrop/Recommended_Drag_Types#link). You could then insert a link into the content.
+You can retrieve other types of data as well. If the data is a link, it should have the type [`text/uri-list`](/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types#link). You could then insert a link into the content.
 
 ```js
 function doDrop(event) {
-  var lines = event.dataTransfer.getData("text/uri-list").split("\n");
-  for (let line of lines) {
-    if (line.startsWith("#"))
-      continue;
-
-    let link = document.createElement("a");
-    link.href = line;
-    link.textContent = line;
-    event.target.appendChild(link);
-  }
+  const lines = event.dataTransfer.getData("text/uri-list").split("\n");
+  lines
+    .filter((line) => !line.startsWith("#"))
+    .forEach((line) => {
+      const link = document.createElement("a");
+      link.href = line;
+      link.textContent = line;
+      event.target.appendChild(link);
+    });
   event.preventDefault();
 }
 ```
 
-This example inserts a link from the dragged data. As you might be able to guess from the name, the [text/uri-list](/ko/docs/DragDrop/Recommended_Drag_Types#link) type actually may contain a list of URLs, each on a separate line. In this code, we use the [split](/ko/docs/JavaScript/Reference/Global_Objects/String/split) to split the string into lines, then iterate over the list of lines, inserting each as a link into the document. Note also that we skip links starting with a number sign (#) as these are comments.
+This example inserts a link from the dragged data. As the name implies, the [`text/uri-list`](/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types#link) type actually may contain a list of URLs, each on a separate line. The above code uses [`split`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split) to break the string into lines, then iterates over the list of lines, and inserts each as a link into the document. (Note also that links starting with a number sign (`#`) are skipped, as these are comments.)
 
 For simple cases, you can use the special type `URL` just to retrieve the first valid URL in the list. For example:
 
 ```js
-var link = event.dataTransfer.getData("URL");
+const link = event.dataTransfer.getData("URL");
 ```
 
-This eliminates the need to check for comments or iterate through lines yourself; however, it is limited to only the first URL in the list.
+This eliminates the need to check for comments or iterate through lines yourself. However, it is limited to only the first URL in the list.
 
-The `URL` type is a special type used only as a shorthand, and it does not appear within the list of types specified in the {{domxref("DataTransfer.types","types")}} property.
+The `URL` type is a special type. It is used only as a shorthand, and it does not appear within the list of types specified in the {{domxref("DataTransfer.types","types")}} property.
 
-Sometimes you may support some different formats, and you want to retrieve the data that is most specific that is supported. In this example, three formats are supported by a drop target.
+Sometimes you may support some different formats, and you want to retrieve the data that is most specific that is supported. In the following example, three formats are supported by a drop target.
 
 The following example returns the data associated with the best-supported format:
 
 ```js
 function doDrop(event) {
-  var types = event.dataTransfer.types;
-  var supportedTypes = ["application/x-moz-file", "text/uri-list", "text/plain"];
-  types = supportedTypes.filter((value) => types.includes(value));
-  if (types.length)
-    var data = event.dataTransfer.getData(types[0]);
+  const supportedTypes = [
+    "application/x-moz-file",
+    "text/uri-list",
+    "text/plain",
+  ];
+  const types = event.dataTransfer.types.filter((type) =>
+    supportedTypes.includes(type)
+  );
+  if (types.length) {
+    const data = event.dataTransfer.getData(types[0]);
+    // Use this type of data…
+  }
   event.preventDefault();
 }
 ```
 
-This method relies on JavaScript functionality available in Firefox 3. However, the code could be adjusted to support other platforms.
+## Finishing a drag
 
-## Finishing a Drag
+Once the drag is complete, a {{domxref("HTMLElement/dragend_event", "dragend")}} event is fired at the source of the drag (the same element that received the {{domxref("HTMLElement/dragstart_event", "dragstart")}} event). This event will fire if the drag was successful or if it was cancelled. However, you can use the {{domxref("DataTransfer.dropEffect","dropEffect")}} property to determine which drop operation occurred.
 
-Once the drag is complete, a `{{event("dragend")}}` event is fired at the source of the drag (the same element that received the `{{event("dragstart")}}` event). This event will fire if the drag was successful\[1] or if it was cancelled. However, you can use the {{domxref("DataTransfer.dropEffect","dropEffect")}} property to determine what drop operation occurred.
+If the {{domxref("DataTransfer.dropEffect","dropEffect")}} property has the value `none` during a {{domxref("HTMLElement/dragend_event", "dragend")}}, then the drag was cancelled. Otherwise, the effect specifies which operation was performed. The source can use this information after a `move` operation to remove the dragged item from the old location.
 
-If the {{domxref("DataTransfer.dropEffect","dropEffect")}} property has the value `none` during a `{{event("dragend")}}`, then the drag was cancelled. Otherwise, the effect specifies which operation was performed. The source can use this information after a move operation to remove the dragged item from the old location. The {{domxref("DataTransfer.mozUserCancelled","mozUserCancelled")}} property will be set to true if the user cancelled the drag (by pressing Escape), and false if the drag was cancelled for other reasons such as an invalid drop target, or if it was successful.
+A drop can occur inside the same window or over another application. The {{domxref("HTMLElement/dragend_event", "dragend")}} event will always fire regardless. The event's {{domxref("MouseEvent.screenX","screenX")}} and {{domxref("MouseEvent.screenY","screenY")}} properties will be set to the screen coordinates where the drop occurred.
 
-A drop can occur inside the same window or over another application. The `{{event("dragend")}}` event will always fire regardless. The event's {{domxref("MouseEvent.screenX","screenX")}} and {{domxref("MouseEvent.screenY","screenY")}} properties will be set to the screen coordinate where the drop occurred.
-
-After the `{{event("dragend")}}` event has finished propagating, the drag and drop operation is complete.
-
-\[1] In Gecko, {{event("dragend")}} is not dispatched if the source node is moved or removed during the drag (e.g. on drop or {{event("dragover")}}). [bug 460801](https://bugzilla.mozilla.org/show_bug.cgi?id=460801)
+After the {{domxref("HTMLElement/dragend_event", "dragend")}} event has finished propagating, the drag and drop operation is complete.
 
 ## See also
 
-- [HTML Drag and Drop API (Overview)](/ko/docs/Web/API/HTML_Drag_and_Drop_API)
-- [Dragging and Dropping Multiple Items](/ko/docs/Web/Guide/HTML/Dragging_and_Dropping_Multiple_Items)
-- [Recommended Drag Types](/ko/docs/Web/Guide/HTML/Recommended_Drag_Types)
-- [HTML5 Living Standard: Drag and Drop](https://html.spec.whatwg.org/multipage/interaction.html#dnd)
+- [HTML Drag and Drop API (Overview)](/en-US/docs/Web/API/HTML_Drag_and_Drop_API)
+- [Recommended Drag Types](/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types)
+- [HTML Living Standard: Drag and Drop](https://html.spec.whatwg.org/multipage/interaction.html#dnd)

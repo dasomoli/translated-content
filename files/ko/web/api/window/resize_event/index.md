@@ -1,158 +1,100 @@
 ---
-title: resize
+title: "Window: resize event"
+short-title: resize
 slug: Web/API/Window/resize_event
+page-type: web-api-event
+browser-compat: api.Window.resize_event
 ---
-**`resize`** 이벤트는 document view의 크기가 변경될 때 발생합니다.
 
-`window.onresize` 속성(어트리뷰트)을 사용하거나,`window.addEventListener('resize', ...)`를 사용하여, 이벤트 핸들러에 `resize` 이벤트를 등록할 수 있습니다.
+{{APIRef}}
 
-일부 브라우저의 이전 버전에서는 모든 HTML 요소(엘리먼트)에 `resize` 이벤트 핸들러를 등록 할 수 있었습니다. 여전히 `onresize` 속성을 사용하거나, {{domxref("EventTarget.addEventListener", "addEventListener()")}}를 사용하여 모든 요소에 핸들러를 설정할 수 있습니다. 그러나 `resize` 이벤트는 오직 {{domxref("Window", "window")}}객체({{domxref("document.defaultView")}})에서만 발생합니다(전달합니다). `window` 객체에 등록된 핸들러만 이벤트를 수신합니다.
+The **`resize`** event fires when the document view (window) has been resized.
 
-모든 요소가 resize 변경을 알림받을 수 있도록 하는 새로운 제안(proposal 2017)이 있습니다. 드래프트문서를 읽으려면 [Resize Observer](https://wicg.github.io/ResizeObserver/)를 참조하고, 진행중인 토론을 읽으려면 [Github issues](https://github.com/WICG/ResizeObserver/issues) 문서를 참조하세요.
+This event is not cancelable and does not bubble.
 
-## General info
+In some earlier browsers it was possible to register `resize` event handlers on any HTML element. It is still possible to set `onresize` attributes or use {{domxref("EventTarget.addEventListener", "addEventListener()")}} to set a handler on any element. However, `resize` events are only fired on the {{domxref("Window", "window")}} object (i.e. returned by {{domxref("document.defaultView")}}). Only handlers registered on the `window` object will receive `resize` events.
 
-- Specifications
-  - : [DOM L3](http://www.w3.org/TR/DOM-Level-3-Events/#event-type-resize), [CSSOM View](http://www.w3.org/TR/cssom-view/#resizing-viewports)
-- Interface
-  - : UIEvent
-- Bubbles
-  - : No
-- Cancelable
-  - : No
-- Target
-  - : defaultView (window)
-- Default Action
-  - : None
+While the `resize` event fires only for the window nowadays, you can get resize notifications for other elements using the [ResizeObserver](/en-US/docs/Web/API/ResizeObserver) API.
 
-## Properties
+If the resize event is triggered too many times for your application, see [Optimizing window.onresize](https://web.archive.org/web/20220714020647/https://bencentra.com/code/2015/02/27/optimizing-window-resize.html) to control the time after which the event fires.
 
-| Property                              | Type                                                                                                                                                         | Description                                                                                                                                                                                               |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `target` {{readonlyInline}}     | [`EventTarget`](/ko/docs/Web/API/EventTarget)  | 이벤트 타겟(DOM 트리의 최상위 타겟).                                                                                                                                                                      |
-| `type` {{readonlyInline}}       | [`DOMString`](/ko/docs/Web/API/DOMString) | 이벤트의 타입.                                                                                                                                                                                            |
-| `bubbles` {{readonlyInline}}    | [`Boolean`](/ko/docs/Web/API/Boolean)                                                         | 이벤트가 정상적으로 버블이 발생하는지 여부.                                                                                                                                                               |
-| `cancelable` {{readonlyInline}} | [`Boolean`](/ko/docs/Web/API/Boolean)                                                         | 이벤트 취소 가능 여부.                                                                                                                                                                                    |
-| `view` {{readonlyInline}}       | [`WindowProxy`](/ko/docs/Web/API/WindowProxy)                         | [`document.defaultView`](/ko/docs/Web/API/Document/defaultView) (문서의 `window`) |
-| `detail` {{readonlyInline}}     | `long` (`float`)                                                                                                                                             | 0.                                                                                                                                                                                                        |
+## Syntax
+
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
+
+```js
+addEventListener("resize", (event) => {});
+
+onresize = (event) => {};
+```
+
+## Event type
+
+A {{domxref("UIEvent")}}. Inherits from {{domxref("Event")}}.
+
+{{InheritanceDiagram("UIEvent")}}
+
+## Event properties
+
+_This interface also inherits properties of its parent, {{domxref("Event")}}._
+
+- {{domxref("UIEvent.detail")}} {{ReadOnlyInline}}
+  - : Returns a `long` with details about the event, depending on the event type.
+- {{domxref("UIEvent.sourceCapabilities")}} {{experimental_inline}} {{ReadOnlyInline}}
+  - : Returns an instance of the `InputDeviceCapabilities` interface, which provides information about the physical device responsible for generating a touch event.
+- {{domxref("UIEvent.view")}} {{ReadOnlyInline}}
+  - : Returns a {{glossary("WindowProxy")}} that contains the view that generated the event.
+- {{domxref("UIEvent.which")}} {{deprecated_inline}} {{Non-standard_inline}} {{ReadOnlyInline}}
+  - : Returns the numeric `keyCode` of the key pressed, or the character code (`charCode`) for an alphanumeric key pressed.
 
 ## Examples
 
-`resize` 이벤트는 빈번하게 발생될 수 있기 때문에, 이벤트 핸들러는 DOM 수정과 같은 계산이 많이 필요한 연산을 실행하지 않아야 합니다. 대신에 다음과 같이 [requestAnimationFrame](/ko/docs/DOM/window.requestAnimationFrame), [setTimeout](/ko/docs/Web/API/WindowTimers/setTimeout), [customEvent](/ko/docs/Web/API/CustomEvent)\* 등을 사용해 이벤트를 스로틀(throttle) 하는것이 좋습니다:
+### Window size logger
 
-**\* 주의:** IE11은 제대로 작동하려면 [customEvent](/ko/docs/Web/API/CustomEvent/CustomEvent#Polyfill) 폴리필(polyfill)이 필요합니다.
+The following example reports the window size each time it is resized.
 
-### requestAnimationFrame + customEvent
+#### HTML
 
-```js
-(function() {
-    var throttle = function(type, name, obj) {
-        obj = obj || window;
-        var running = false;
-        var func = function() {
-            if (running) { return; }
-            running = true;
-             requestAnimationFrame(function() {
-                obj.dispatchEvent(new CustomEvent(name));
-                running = false;
-            });
-        };
-        obj.addEventListener(type, func);
-    };
-
-    /* init - you can init any event */
-    throttle("resize", "optimizedResize");
-})();
-
-// handle event
-window.addEventListener("optimizedResize", function() {
-    console.log("Resource conscious resize callback!");
-});
+```html
+<p>Resize the browser window to fire the <code>resize</code> event.</p>
+<p>Window height: <span id="height"></span></p>
+<p>Window width: <span id="width"></span></p>
 ```
 
-### requestAnimationFrame
+#### JavaScript
 
 ```js
-var optimizedResize = (function() {
+const heightOutput = document.querySelector("#height");
+const widthOutput = document.querySelector("#width");
 
-    var callbacks = [],
-        running = false;
+function reportWindowSize() {
+  heightOutput.textContent = window.innerHeight;
+  widthOutput.textContent = window.innerWidth;
+}
 
-    // fired on resize event
-    function resize() {
-
-        if (!running) {
-            running = true;
-
-            if (window.requestAnimationFrame) {
-                window.requestAnimationFrame(runCallbacks);
-            } else {
-                setTimeout(runCallbacks, 66);
-            }
-        }
-
-    }
-
-    // run the actual callbacks
-    function runCallbacks() {
-
-        callbacks.forEach(function(callback) {
-            callback();
-        });
-
-        running = false;
-    }
-
-    // adds callback to loop
-    function addCallback(callback) {
-
-        if (callback) {
-            callbacks.push(callback);
-        }
-
-    }
-
-    return {
-        // public method to add additional callback
-        add: function(callback) {
-            if (!callbacks.length) {
-                window.addEventListener('resize', resize);
-            }
-            addCallback(callback);
-        }
-    }
-}());
-
-// start process
-optimizedResize.add(function() {
-    console.log('Resource conscious resize callback!')
-});
+window.onresize = reportWindowSize;
 ```
 
-### setTimeout
+#### Result
+
+{{EmbedLiveSample("Window_size_logger")}}
+
+> **Note:** The example output here is in an {{HTMLElement("iframe")}}, so the reported width and height values are for the `<iframe>`, not the window that this page is in. In particular, it will be hard to adjust the window size so as to see a difference in the reported height.
+>
+> The effect is easier to see if you [view the example in its own window](https://yari-demos.prod.mdn.mozit.cloud/en-US/docs/Web/API/Window/resize_event/_sample_.window_size_logger.html).
+
+### addEventListener equivalent
+
+You could set up the event handler using the [`addEventListener()`](/en-US/docs/Web/API/EventTarget/addEventListener) method:
 
 ```js
-(function() {
-
-  window.addEventListener("resize", resizeThrottler, false);
-
-  var resizeTimeout;
-  function resizeThrottler() {
-    // ignore resize events as long as an actualResizeHandler execution is in the queue
-    if ( !resizeTimeout ) {
-      resizeTimeout = setTimeout(function() {
-        resizeTimeout = null;
-        actualResizeHandler();
-
-       // The actualResizeHandler will execute at a rate of 15fps
-       }, 66);
-    }
-  }
-
-  function actualResizeHandler() {
-    // handle the resize event
-    ...
-  }
-
-}());
+window.addEventListener("resize", reportWindowSize);
 ```
+
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
+
+{{Compat}}

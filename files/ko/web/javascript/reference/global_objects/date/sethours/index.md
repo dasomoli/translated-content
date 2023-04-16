@@ -1,59 +1,78 @@
 ---
 title: Date.prototype.setHours()
 slug: Web/JavaScript/Reference/Global_Objects/Date/setHours
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.setHours
 ---
 
 {{JSRef}}
 
-setHours () 메서드는 현지 시간에 따라 지정된 날짜의 시간을 설정하고 1970 년 1 월 1 일 00:00:00 UTC 이후 업데이트 된 {{jsxref ( "Date")}}에 의해 표시되는 시간 (밀리 초)을 반환합니다. 예.
+The **`setHours()`** method sets the hours for a specified date
+according to local time, and returns the number of milliseconds since January 1, 1970
+00:00:00 UTC until the time represented by the updated {{jsxref("Date")}} instance.
+
+{{EmbedInteractiveExample("pages/js/date-sethours.html")}}
 
 ## Syntax
 
-```js
-    dateObj.setHours(hoursValue[, minutesValue[, secondsValue[, msValue]]])
-```
-
-### Versions prior to JavaScript 1.3
-
-```js
-    dateObj.setHours(hoursValue)
+```js-nolint
+setHours(hoursValue)
+setHours(hoursValue, minutesValue)
+setHours(hoursValue, minutesValue, secondsValue)
+setHours(hoursValue, minutesValue, secondsValue, msValue)
 ```
 
 ### Parameters
 
 - `hoursValue`
-  - : 시를 나타내는 0에서 23 사이의 정수입니다.
+  - : Ideally, an integer between 0 and 23, representing the hour. If a value greater than
+    23 is provided, the datetime will be incremented by the extra hours.
 - `minutesValue`
-  - : 선택 과목. 분을 나타내는 0에서 59 사이의 정수입니다.
+  - : Optional. Ideally, an integer between 0 and 59, representing the minutes. If a value
+    greater than 59 is provided, the datetime will be incremented by the extra minutes.
 - `secondsValue`
-  - : 선택 과목. 초를 나타내는 0에서 59 사이의 정수입니다. secondsValue 매개 변수를 지정하면 minutesValue도 지정해야합니다.
+  - : Optional. Ideally, an integer between 0 and 59, representing the seconds. If a value
+    greater than 59 is provided, the datetime will be incremented by the extra seconds. If
+    you specify the `secondsValue` parameter, you must also specify
+    the `minutesValue`.
 - `msValue`
-  - : 선택 과목. 밀리 초를 나타내는 0에서 999 사이의 숫자입니다. msValue 매개 변수를 지정하는 경우 minutesValue 및 secondsValue도 지정해야합니다.
+  - : Optional. Ideally, a number between 0 and 999, representing the milliseconds. If a
+    value greater than 999 is provided, the datetime will be incremented by the extra
+    milliseconds. If you specify the `msValue` parameter, you must
+    also specify the `minutesValue` and `secondsValue`.
 
 ### Return value
 
-1970 년 1 월 1 일 00:00:00 UTC와 업데이트 된 날짜 사이의 밀리 초 숫자입니다.
+The number of milliseconds between January 1, 1970 00:00:00 UTC and the updated date.
 
 ## Description
 
-minutesValue, secondsValue 및 msValue 매개 변수를 지정하지 않으면 {{jsxref("Date.prototype.getMinutes()", "getMinutes()")}}에서 반환 된 값, {{jsxref("Date.prototype.getSeconds()","getSeconds()")}} 및 {{jsxref("Date.prototype.getMilliseconds()","getMilliseconds()")}} 메서드가 사용됩니다.
+If you do not specify the `minutesValue`,
+`secondsValue`, and `msValue` parameters,
+the values returned from the {{jsxref("Date.prototype.getMinutes()", "getMinutes()")}},
+{{jsxref("Date.prototype.getSeconds()", "getSeconds()")}}, and
+{{jsxref("Date.prototype.getMilliseconds()", "getMilliseconds()")}} methods are used.
 
-지정한 매개 변수가 예상 범위를 벗어나면 setHours ()는 그에 따라 {{jsxref ("Date")}} 객체의 날짜 정보를 업데이트하려고 시도합니다. 예를 들어 secondsValue에 100을 사용하면 분은 1 (minutesValue + 1)만큼 증가하고 40은 초 단위로 사용됩니다.
+If a parameter you specify is outside of the expected range, `setHours()`
+attempts to update the date information in the {{jsxref("Date")}} object accordingly.
+For example, if you use 100 for `secondsValue`, the minutes will
+be incremented by 1 (`minutesValue + 1`), and 40 will be used for
+seconds.
 
 ## Examples
 
-### Using `setHours()`
+### Using setHours()
 
 ```js
-var theBigDay = new Date();
+const theBigDay = new Date();
 theBigDay.setHours(7);
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

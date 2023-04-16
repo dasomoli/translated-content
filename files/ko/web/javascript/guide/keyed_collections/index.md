@@ -1,60 +1,67 @@
 ---
-title: 키기반의 컬렉션
+title: Keyed collections
 slug: Web/JavaScript/Guide/Keyed_collections
+page-type: guide
 ---
 
-{{jsSidebar("JavaScript Guide")}} {{PreviousNext("Web/JavaScript/Guide/Indexed_Collections", "Web/JavaScript/Guide/Working_with_Objects")}}
+{{jsSidebar("JavaScript Guide")}} {{PreviousNext("Web/JavaScript/Guide/Indexed_Collections", "Web/JavaScript/Guide/Working_with_objects")}}
 
-이번 장에서는 입력된 키값을 기준으로 정렬되는 데이터의 집합(자료 구조)에 대해 소개 할 것이다. Map과 Set은 입력된 순서대로 반복적으로 접근 가능한 요소들을 포함하고 있다.
+This chapter introduces collections of data which are indexed by a key; `Map` and `Set` objects contain elements which are iterable in the order of insertion.
 
 ## Maps
 
-### `Map` 객체
+### Map object
 
-ECMAScript 6에서 값들을 매핑하기 위한 새로운 데이터 구조를 소개 하고 있다. 그중 하나인 Map객체는 간단한 키와 값을 서로 연결(매핑)시켜 저장하며 저장된 순서대로 각 요소들을 반복적으로 접근할 수 있도록 한다.
+A {{jsxref("Map")}} object is a simple key/value map and can iterate its elements in insertion order.
 
-다음 코드는 Map이 제공하는 기본적인 기능들을 보여 주고 있다. 더 많은 예제와 모든 기능에 대한 API를 볼려면 {{jsxref("Map")}} 페이지를 참고하면 된다. Map객체에 저장되어 있는 각 요소들을 \[키, 값] 형태의 배열로 반복적으로 반환해주는 [`for...of`](/en-US/docs/Web/JavaScript/Reference/Statements/for...of) 를 사용할 수 있다.
+The following code shows some basic operations with a `Map`. See also the {{jsxref("Map")}} reference page for more examples and the complete API. You can use a {{jsxref("Statements/for...of","for...of")}} loop to return an array of `[key, value]` for each iteration.
 
 ```js
-var sayings = new Map();
+const sayings = new Map();
 sayings.set("dog", "woof");
 sayings.set("cat", "meow");
 sayings.set("elephant", "toot");
 sayings.size; // 3
+sayings.get("dog"); // woof
 sayings.get("fox"); // undefined
 sayings.has("bird"); // false
 sayings.delete("dog");
+sayings.has("dog"); // false
 
-for (var [key, value] of sayings) {
-  console.log(key + " goes " + value);
+for (const [key, value] of sayings) {
+  console.log(`${key} goes ${value}`);
 }
 // "cat goes meow"
 // "elephant goes toot"
+
+sayings.clear();
+sayings.size; // 0
 ```
 
-### Object와 Map 비교
+### Object and Map compared
 
-전통적으로 {{jsxref("Object", "objects", "", 1)}} 는 문자열을 값에 매핑하는 데 사용되었다. Object는 키를 값으로 설정하고, 값을 검색하고, 키를 삭제하고, 키에 저장된 내용을 검색 할 수 있게 만들어준다. 그러나 Map 객체는 더 나은 맵이 되도록 하는 몇 가지 장점을 가지고 있다.
+Traditionally, {{jsxref("Object", "objects", "", 1)}} have been used to map strings to values. Objects allow you to set keys to values, retrieve those values, delete keys, and detect whether something is stored at a key. `Map` objects, however, have a few more advantages that make them better maps.
 
-- Object의 키는 {{jsxref("Global_Objects/String","Strings")}}이며, Map의 키는 모든 값을 가질 수 있다.
-- Object는 크기를 수동으로 추적해야하지만, Map은 크기를 쉽게 얻을 수 있다.
-- Map은 삽입된 순서대로 반복된다.
-- 객체(Object)에는 prototype이 있어 Map에 기본 키들이 있다. (이것은 map = Object.create(null) 를 사용하여 우회할 수 있다. )
+- The keys of an `Object` are {{jsxref("Global_Objects/String","Strings")}} or {{jsxref("Global_Objects/Symbol","Symbols")}}, where they can be of any value for a `Map`.
+- You can get the `size` of a `Map` easily, while you have to manually keep track of size for an `Object`.
+- The iteration of maps is in insertion order of the elements.
+- An `Object` has a prototype, so there are default keys in the map. (This can be bypassed using `map = Object.create(null)`.)
 
-Object 혹은 Map중에 어느 것을 사용할지를 결정하는데 도움을 줄 두가지 팁이 있다:
+These three tips can help you to decide whether to use a `Map` or an `Object`:
 
-- 실행 시까지 키를 알수 없고, 모든 키가 동일한 type이며 모든 값들이 동일한 type일 경우에는 objects를 대신해서 map을 사용해라.
-- 각 개별 요소에 대해 적용해야 하는 로직이 있을 경우에는 objects를 사용해라.
+- Use maps over objects when keys are unknown until run time, and when all keys are the same type and all values are the same type.
+- Use maps if there is a need to store primitive values as keys because object treats each key as a string whether it's a number value, boolean value or any other primitive value.
+- Use objects when there is logic that operates on individual elements.
 
-### `WeakMap` object
+### WeakMap object
 
-{{jsxref("WeakMap")}}객체는 object만을 키로 허용하고 값은 임의의 값을 허용하는 키/값 형태의 요소의 집합이다. 키가 가지고 있는 객체에 대한 참조는 객체에 대한 참조가 더이상 존재하지 않을 경우 garbage collection(GC)의 수거 대상이 되는 약한 참조를 의미한다. `WeakMap` API는 Map API와 동일하다.
+A {{jsxref("WeakMap")}} is a collection of key/value pairs whose keys must be objects or [non-registered symbols](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol#shared_symbols_in_the_global_symbol_registry), with values of any arbitrary [JavaScript type](/en-US/docs/Web/JavaScript/Data_structures), and which does not create strong references to its keys. That is, an object's presence as a key in a `WeakMap` does not prevent the object from being garbage collected. Once an object used as a key has been collected, its corresponding values in any `WeakMap` become candidates for garbage collection as well — as long as they aren't strongly referred to elsewhere. The only primitive type that can be used as a `WeakMap` key is symbol — more specifically, [non-registered symbols](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol#shared_symbols_in_the_global_symbol_registry) — because non-registered symbols are guaranteed to be unique and cannot be re-created.
 
-단 한가지 Map객체와 다른 점은 WeakMap의 키들은 열거형이 아니라는 점이다. (즉, 키 목록을 제공해 주는 메서드가 없다는 것이다.) 만약에 키 목록을 제공한다면 garbage collection의 상태, 결과에 따라 키 목록이 변하게 될 것이다. 이는 비 결정성을 야기한다.
+The `WeakMap` API is essentially the same as the `Map` API. However, a `WeakMap` doesn't allow observing the liveness of its keys, which is why it doesn't allow enumeration. So there is no method to obtain a list of the keys in a `WeakMap`. If there were, the list would depend on the state of garbage collection, introducing non-determinism.
 
-WeakMap에 대한 더 많은 정보와 예제 코드 그리고 "왜 WeakMap을 사용하지?"를 보고 싶다면 {{jsxref("WeakMap")}} 페이지를 참고하면 된다.
+For more information and example code, see also "Why WeakMap?" on the {{jsxref("WeakMap")}} reference page.
 
-`WeakMap`를 사용하는 한가지 경우는 객체의 사적인 정보를 저장하기 위해서 이거나 상세 구현 내용을 숨기기 위한 것이다. 다음의 예제는 Nick Fitzgerald의 블로그 글- ["Hiding Implementation Details with ECMAScript 6 WeakMaps"](http://fitzgeraldnick.com/weblog/53/)-에서 가져온 것이다. 객체가 가지고 있는 그렇지만 외부에 공개되지 않는(private) 데이터와 메서드들은 `WeakMap`객체인 `privates`에 저장이 된다. 인스턴스를 통해 접근 가능한 모든 것들과 prototype은 public이고 다른 것들은 외부에서는 접근이 불가하다 그 이유는 `privates`는 모듈로부터 내보내기(export)가 되지 않기 때문이다.
+One use case of `WeakMap` objects is to store private data for an object, or to hide implementation details. The following example is from Nick Fitzgerald's blog post ["Hiding Implementation Details with ECMAScript 6 WeakMaps"](https://fitzgeraldnick.com/2014/01/13/hiding-implementation-details-with-e6-weakmaps.html). The private data and methods belong inside the object and are stored in the `privates` object, which is a `WeakMap`. Everything exposed on the instance and prototype is public; everything else is inaccessible from the outside world because `privates` is not exported from the module.
 
 ```js
 const privates = new WeakMap();
@@ -68,7 +75,8 @@ function Public() {
 
 Public.prototype.method = function () {
   const me = privates.get(this);
-  // Do stuff with private data in `me`...
+  // Do stuff with private data in `me`
+  // …
 };
 
 module.exports = Public;
@@ -76,14 +84,14 @@ module.exports = Public;
 
 ## Sets
 
-### `Set` object
+### Set object
 
-{{jsxref("Set")}}객체는 값들의 집합이다. 입력된 순서에따라 저장된 요소를 반복처리할 수 있다. Set은 중복된 값을 허용하지 않는다. 따라서 특정 값은 Set내에서 하나만 존재 하게 된다.
+{{jsxref("Set")}} objects are collections of unique values. You can iterate its elements in insertion order. A value in a `Set` may only occur once; it is unique in the `Set`'s collection.
 
-아래의 코드는 Set의 기본적인 동작들을 보여 준다. 더 많은 예제와 모든 API는 {{jsxref("Set")}} 참조 페이지를 보면 된다.
+The following code shows some basic operations with a `Set`. See also the {{jsxref("Set")}} reference page for more examples and the complete API.
 
 ```js
-var mySet = new Set();
+const mySet = new Set();
 mySet.add(1);
 mySet.add("some text");
 mySet.add("foo");
@@ -92,50 +100,53 @@ mySet.has(1); // true
 mySet.delete("foo");
 mySet.size; // 2
 
-for (let item of mySet) console.log(item);
+for (const item of mySet) {
+  console.log(item);
+}
 // 1
 // "some text"
 ```
 
-### 배열과 Set의 상호 변환
+### Converting between Array and Set
 
-{{jsxref("Array.from")}} 혹은 [spread operator](/en-US/docs/Web/JavaScript/Reference/Operators/Spread_operator)를 통해 Set객체를 가지고 {{jsxref("Array")}}을 생성할 수 있다. 또한 Set 생성자는 배열을 인자로 받을 수 있고 해당 배열을 Set객체의 요소로 저장한다. 한번 더 상기시키면 Set객체는 중복된 값을 저장하지 않기때문에 주어진 배열내의 중복된 요소들을 제거되어 Set으로 변환된다.
+You can create an {{jsxref("Array")}} from a Set using {{jsxref("Array.from")}} or the [spread syntax](/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax). Also, the `Set` constructor accepts an `Array` to convert in the other direction.
+
+> **Note:** `Set` objects store _unique values_—so any duplicate elements from an Array are deleted when converting!
 
 ```js
 Array.from(mySet);
 [...mySet2];
 
-mySet2 = new Set([1,2,3,4]);
+mySet2 = new Set([1, 2, 3, 4]);
 ```
 
-### 배열과 Set비교
+### Array and Set compared
 
-일반적으로 Javascript에선 배열에 특정 요소의 집합을 저장한다. 하지만 Set객체는 몇가지 이점을 제공한다.
+Traditionally, a set of elements has been stored in arrays in JavaScript in a lot of situations. The `Set` object, however, has some advantages:
 
-- {{jsxref("Array.indexOf", "indexOf")}}메서드를 사용하여 배열내에 특정 요소가 존재하는지 확인하는 것은 느리다.
-- 배열에선 해당 요소를 배열에서 잘라내야 하는 반면 Set객체는 요소의 값으로 해당 요소를 삭제하는 기능 제공한다.
-- {{jsxref("NaN")}}은 배열에서 indexOf메서드로 찾을 수 없다.
-- Set객체는 값의 유일성을 보장하기 때문에 직접 요소의 중복성을 확인할 필요가 없다.
+- Deleting Array elements by value (`arr.splice(arr.indexOf(val), 1)`) is very slow.
+- `Set` objects let you delete elements by their value. With an array, you would have to `splice` based on an element's index.
+- The value {{jsxref("NaN")}} cannot be found with `indexOf` in an array.
+- `Set` objects store unique values. You don't have to manually keep track of duplicates.
 
-### `WeakSet` 객체
+### WeakSet object
 
-{{jsxref("WeakSet")}} objects are collections of objects. An object in the `WeakSet` may only occur once; it is unique in the `WeakSet`'s collection and objects are not enumerable.
+{{jsxref("WeakSet")}} objects are collections of garbage-collectable values, including objects and [non-registered symbols](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol#shared_symbols_in_the_global_symbol_registry). A value in the `WeakSet` may only occur once. It is unique in the `WeakSet`'s collection.
 
-{{jsxref("WeakSet")}}객체는 객체를 저장하는 일종의 집합이다. `WeakSet내의 중복된 객체는 없으며 WeakSet내의 요소를 열거할 수는 없다.`
+The main differences to the {{jsxref("Set")}} object are:
 
-{{jsxref("Set")}}과 가장 큰 차이점은 다음과 같다.
+- In contrast to `Sets`, `WeakSets` are **collections of _objects or symbols only_**, and not of arbitrary values of any type.
+- The `WeakSet` is _weak_: References to objects in the collection are held weakly. If there is no other reference to an object stored in the `WeakSet`, they can be garbage collected. That also means that there is no list of current objects stored in the collection.
+- `WeakSets` are not enumerable.
 
-- `Set과는 다르게 WeakSet은 객체의 집합이며 객체만 저장할 수 있다. 특정 type의 값을 저장할 수는 없다.`
-- WeakSet은 약한 참조를 가진다. WeakSet내의 객체에 대한 참조는 약하게 연결이 되어 있다. WeakSet내에 저장되어 있는 객체에 대한 참조가 없게되면 garbage collection 대상이되어 수거 된다. 따라서 현재 저장되어 있는 객체에 대한 목록은 없으며 WeakSet은 열거형이 아니다.
+The use cases of `WeakSet` objects are limited. They will not leak memory, so it can be safe to use DOM elements as a key and mark them for tracking purposes, for example.
 
-`WeakSet객체의 사용 사례는 제한되어 있다. 메모리 누수가 발생되지 않기때문에 안전하게 DOM요소를 키로 저장할 수 있고 예를 들면 추적을 위해 DOM요소들을 WeakSet에 저장할 수 있다.`
+## Key and value equality of Map and Set
 
-## `Map과 Set의 키와 값의 동치성`
+Both the key equality of `Map` objects and the value equality of `Set` objects are based on the [SameValueZero algorithm](/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#same-value-zero_equality):
 
-Map객체의 key에 대한 동치성 비교와 Set객체의 값에 대한 동치성 비교 모두 "[same-value-zero algorithm](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-samevaluezero)"에 근거한다.
+- Equality works like the identity comparison operator `===`.
+- `-0` and `+0` are considered equal.
+- {{jsxref("NaN")}} is considered equal to itself (contrary to `===`).
 
-- 동치성 비교는 `=== 비교 연산과 같이 작동한다.`
-- \-0과 +0은 같다고 간주한다.
-- {{jsxref("NaN")}}는 자기 자신하고 같다고 간주한다. (===와는 반대로)
-
-{{PreviousNext("Web/JavaScript/Guide/Indexed_Collections", "Web/JavaScript/Guide/Working_with_Objects")}}
+{{PreviousNext("Web/JavaScript/Guide/Indexed_Collections", "Web/JavaScript/Guide/Working_with_objects")}}

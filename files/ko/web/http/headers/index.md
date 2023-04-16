@@ -1,357 +1,408 @@
 ---
-title: HTTP 헤더
+title: HTTP headers
 slug: Web/HTTP/Headers
+page-type: landing-page
 ---
 
 {{HTTPSidebar}}
 
-HTTP 헤더는 클라이언트와 서버가 요청 또는 응답으로 부가적인 정보를 전송할 수 있도록 해줍니다. HTTP 헤더는 대소문자를 구분하지 않는 이름과 콜론 '`:`' 다음에 오는 값(줄 바꿈 없이)으로 이루어져있습니다. 값 앞에 붙은 빈 문자열은 무시됩니다.
+**HTTP headers** let the client and the server pass additional information with an HTTP request or response. An HTTP header consists of its case-insensitive name followed by a colon (`:`), then by its value. {{Glossary("Whitespace")}} before the value is ignored.
 
-커스텀 등록 헤더는 'X-'를 앞에 붙여 추가될 수 있지만, 이 관례는 [RFC 6648](https://tools.ietf.org/html/rfc6648)에서 비표준 필드가 표준이 되었을때 불편함을 유발하는 이유로 2012년 6월에 폐기되었습니다. 다른것들은 [IANA 레지스트리](http://www.iana.org/assignments/message-headers/perm-headers.html)에 나열되어 있으며, 원본 컨텐츠는 [RFC 4229](http://tools.ietf.org/html/rfc4229)에서 정의되었습니다. IANA는 또한 [제안된 새로운 메시지 헤더의 레지스트리](http://www.iana.org/assignments/message-headers/prov-headers.html)도 관리합니다.
+Custom proprietary headers have historically been used with an `X-` prefix, but this convention was deprecated in June 2012 because of the inconveniences it caused when nonstandard fields became standard in [RFC 6648](https://datatracker.ietf.org/doc/html/rfc6648); others are listed in an [IANA registry](https://www.iana.org/assignments/message-headers/message-headers.xhtml#perm-headers), whose original content was defined in [RFC 4229](https://datatracker.ietf.org/doc/html/rfc4229). IANA also maintains a [registry of proposed new HTTP headers](https://www.iana.org/assignments/message-headers/message-headers.xhtml#prov-headers).
 
-헤더는 컨텍스트에 따라 그룹핑될 수 있습니다:
+Headers can be grouped according to their contexts:
 
-- {{Glossary("General header")}}: 요청과 응답 모두에 적용되지만 바디에서 최종적으로 전송되는 데이터와는 관련이 없는 헤더.
-- {{Glossary("Request header")}}: 페치될 리소스나 클라이언트 자체에 대한 자세한 정보를 포함하는 헤더.
-- {{Glossary("Response header")}}: 위치 또는 서버 자체에 대한 정보(이름, 버전 등)와 같이 응답에 대한 부가적인 정보를 갖는 헤더.
-- {{Glossary("Entity header")}}: 컨텐츠 길이나 MIME 타입과 같이 엔티티 바디에 대한 자세한 정보를 포함하는 헤더.
+- {{Glossary("Request header", "Request headers")}} contain more information about the resource to be fetched, or about the client requesting the resource.
+- {{Glossary("Response header", "Response headers")}} hold additional information about the response, like its location or about the server providing it.
+- {{Glossary("Representation header", "Representation headers")}} contain information about the body of the resource, like its [MIME type](/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types), or encoding/compression applied.
+- {{Glossary("Payload header","Payload headers")}} contain representation-independent information about payload data, including content length and the encoding used for transport.
 
-헤더는 또한 프록시의 처리 방법에 따라 그룹핑할 수도 있습니다:
+Headers can also be grouped according to how {{Glossary("Proxy_server", "proxies")}} handle them:
 
-- 종단간 헤더
-  - : 이러한 헤더는 반드시 메시지의 최종 수신자에게 전송되어야 합니다. 즉, 요청에 대해서는 서버, 응답에 대해서는 클라이언트입니다. 중간 프록시는 반드시 종단 간 헤더를 수정되지 않은 상태로 재전송해야하며 캐시는 이를 반드시 저장해야합니다.
-- 홉간 헤더
-  - : 이러한 헤더는 단일 전송-레벨 연결에서만 의미가 있으며 프록시에의해 재전송되거나 캐시되어선 안됩니다. 이러한 헤더들은 다음과 같습니다: {{ httpheader("Connection") }}, {{ httpheader("Keep-Alive") }}, {{ httpheader("Proxy-Authenticate") }}, {{ httpheader("Proxy-Authorization") }}, {{ httpheader("TE") }}, {{ httpheader("Trailer") }}, {{ httpheader("Transfer-Encoding") }}, {{ httpheader("Upgrade") }}. 홉간 헤더는 {{ httpheader("Connection") }} 일반 헤더를 사용해 설정될 수도 있음을 유의하세요.
+- {{ httpheader("Connection") }}
+- {{ httpheader("Keep-Alive") }}
+- {{ httpheader("Proxy-Authenticate") }}
+- {{ httpheader("Proxy-Authorization") }}
+- {{ httpheader("TE") }}
+- {{ httpheader("Trailer") }}
+- {{ httpheader("Transfer-Encoding") }}
+- {{ httpheader("Upgrade") }} (see also [Protocol upgrade mechanism](/en-US/docs/Web/HTTP/Protocol_upgrade_mechanism)).
 
-다음은 사용 카테고리에 따라 HTTP 헤더를 요약한 리스트입니다. 알파벳순의 리스트는 왼쪽의 네비게이션을 보세요.
+<!---->
 
-## 인증
+- End-to-end headers
+  - : These headers _must_ be transmitted to the final recipient of the message: the server for a request, or the client for a response. Intermediate proxies must retransmit these headers unmodified and caches must store them.
+- Hop-by-hop headers
+  - : These headers are meaningful only for a single transport-level connection, and _must not_ be retransmitted by proxies or cached. Note that only hop-by-hop headers may be set using the {{httpheader("Connection")}} header.
+
+## Authentication
 
 - {{HTTPHeader("WWW-Authenticate")}}
-  - : 리소스에 대한 접근을 하는데 사용되어야하는 인증 메소드를 정의합니다.
+  - : Defines the authentication method that should be used to access a resource.
 - {{HTTPHeader("Authorization")}}
-  - : 서버와함께 유저 에이전트를 인증하기 위한 자격 증명을 포함합니다.
+  - : Contains the credentials to authenticate a user-agent with a server.
 - {{HTTPHeader("Proxy-Authenticate")}}
-  - : 프록시 서버 뒤에 있는 리소스에 접근하는데 사용되어야하는 인증 메소드를 정의합니다.
+  - : Defines the authentication method that should be used to access a resource behind a proxy server.
 - {{HTTPHeader("Proxy-Authorization")}}
-  - : 프록시 서버와 함께 유저 에이전트를 인증하기 위한 자격 증명을 포함합니다.
+  - : Contains the credentials to authenticate a user agent with a proxy server.
 
-## 캐싱
+## Caching
 
 - {{HTTPHeader("Age")}}
-  - : 객체가 프록시 캐시에 있었던 초 단위의 시간.
+  - : The time, in seconds, that the object has been in a proxy cache.
 - {{HTTPHeader("Cache-Control")}}
-  - : 요청과 응답 모두에서의 캐싱 메커니즘을 명시하는 지시문.
+  - : Directives for caching mechanisms in both requests and responses.
 - {{HTTPHeader("Clear-Site-Data")}}
-  - : 요청하는 웹사이트에 관련된 탐색 데이터(예, 쿠키, 저장소, 캐시)를 제거합니다.
+  - : Clears browsing data (e.g. cookies, storage, cache) associated with the requesting website.
 - {{HTTPHeader("Expires")}}
-  - : 응답이 만료되었다고 고려되는 날짜/시간.
+  - : The date/time after which the response is considered stale.
 - {{HTTPHeader("Pragma")}}
-  - : 요청-응답 체인을 따라 어디든 다양한 영향을 줄 수 있는 구현-관련 헤더. `Cache-Control` 헤더가 존재하지 않는 HTTP/1.0 캐시와의 하위 호환성을 위해 사용됨.
-- {{HTTPHeader("Warning")}}
-  - : 가능한 문제들에 대한 정보를 포함하는 일반 경고 필드.
+  - : Implementation-specific header that may have various effects anywhere along the request-response chain. Used for backwards compatibility with HTTP/1.0 caches where the `Cache-Control` header is not yet present.
+- {{HTTPHeader("Warning")}} {{deprecated_inline}}
+  - : General warning information about possible problems.
 
-## 클라이언트 힌트
+## Client hints
 
-HTTP 클라이언트 힌트는 작업중에 있습니다. 실제 문서는 [HTTP 작업 그룹의 웹사이트](https://httpwg.org/http-extensions/client-hints.html)에서 확인하실 수 있습니다.
+HTTP [Client hints](/en-US/docs/Web/HTTP/Client_hints) are a set of request headers that provide useful information about the client such as device type and network conditions, and allow servers to optimize what is served for those conditions.
+
+Servers proactively requests the client hint headers they are interested in from the client using {{HTTPHeader("Accept-CH")}}. The client may then choose to include the requested headers in subsequent requests.
 
 - {{HTTPHeader("Accept-CH")}} {{experimental_inline}}
-  - : 서버는 Accept-CH 헤더 필드나 http-equiv 어트리뷰트([\[HTML5\]](https://httpwg.org/http-extensions/client-hints.html#HTML5))를 갖는 동등한 HTML meta 엘리먼트를 사용해 클라이언트 힌트에 대한 지원을 알릴 수 있습니다.
-- {{HTTPHeader("Accept-CH-Lifetime")}} {{experimental_inline}}
-  - : 서버는 명시된 시간동안 서버가 지원하는 클라이언트 힌트의 집합을 클라이언트가 기억하도록 요청하여 서버의 오리진으로의 후속 요청에 대한 클라이언트 힌트를 전송할 수 있습니다([\[RFC6454\]](https://httpwg.org/http-extensions/client-hints.html#RFC6454)).
-- {{HTTPHeader("Early-Data")}} {{experimental_inline}}
-  - : 요청이 초기 데이터로 전달되었음을 나타냅니다.
-- {{HTTPHeader("Content-DPR")}} {{experimental_inline}}
-  - : `Content-DPR` 응답 헤더 필드는 선택한 이미지 응답의 CSS px를 통한 물리적 픽셀간의 비율을 나타내는 숫자입니다.
-- {{HTTPHeader("DPR")}} {{experimental_inline}}
-  - : `DPR` 요청 헤더 필드는 레이아웃 뷰포트(Section 9.1.1 of [\[CSS2\]](https://httpwg.org/http-extensions/client-hints.html#CSS2))의 CSS px(Section 5.2 of [\[CSSVAL\]](https://httpwg.org/http-extensions/client-hints.html#CSSVAL))를 통한 물리적 픽셀 비율인 클라이언트의 현재 기기 픽셀 비율(DPR)을 나타내는 숫자입니다.
+  - : Servers can advertise support for Client Hints using the `Accept-CH` header field or an equivalent HTML `<meta>` element with [`http-equiv`](/en-US/docs/Web/HTML/Element/meta#http-equiv) attribute.
+- {{HTTPHeader("Accept-CH-Lifetime")}} {{experimental_inline}} {{deprecated_inline}}
+  - : Servers can ask the client to remember the set of Client Hints that the server supports for a specified period of time, to enable delivery of Client Hints on subsequent requests to the server's origin.
+- {{HTTPHeader("Critical-CH")}} {{experimental_inline}}
+  - : Servers use `Critical-CH` along with {{HttpHeader("Accept-CH")}} to specify that accepted client hints are also [critical client hints](/en-US/docs/Web/HTTP/Client_hints#critical_client_hints).
+
+The different categories of client hints are listed below.
+
+### User agent client hints
+
+The [UA client hints](/en-US/docs/Web/HTTP/Client_hints#user-agent_client_hints) are request headers that provide information about the user agent, the platform/architecture it is running on, and user preferences set on the user agent or platform:
+
+- {{HTTPHeader("Sec-CH-Prefers-Reduced-Motion")}} {{experimental_inline}}
+  - : User agent's reduced motion preference setting.
+- {{HTTPHeader("Sec-CH-UA")}} {{experimental_inline}}
+  - : User agent's branding and version.
+- {{HTTPHeader("Sec-CH-UA-Arch")}} {{experimental_inline}}
+  - : User agent's underlying platform architecture.
+- {{HTTPHeader("Sec-CH-UA-Bitness")}} {{experimental_inline}}
+  - : User agent's underlying CPU architecture bitness (for example "64" bit).
+- {{HTTPHeader("Sec-CH-UA-Full-Version")}} {{deprecated_inline}}
+  - : User agent's full semantic version string.
+- {{HTTPHeader("Sec-CH-UA-Full-Version-List")}} {{experimental_inline}}<!-- chrome intent to ship Nov 2021 -->
+  - : Full version for each brand in the user agent's brand list.
+- {{HTTPHeader("Sec-CH-UA-Mobile")}} {{experimental_inline}}
+  - : User agent is running on a mobile device or, more generally, prefers a "mobile" user experience.
+- {{HTTPHeader("Sec-CH-UA-Model")}} {{experimental_inline}}
+  - : User agent's device model.
+- {{HTTPHeader("Sec-CH-UA-Platform")}} {{experimental_inline}}
+  - : User agent's underlying operation system/platform.
+- {{HTTPHeader("Sec-CH-UA-Platform-Version")}} {{experimental_inline}}
+  - : User agent's underlying operation system version.
+
+### Device client hints
+
+- {{HTTPHeader("Content-DPR")}} {{deprecated_inline}} {{experimental_inline}}
+  - : _Response header_ used to confirm the image device to pixel ratio in requests where the {{HTTPHeader("DPR")}} client hint was used to select an image resource.
+- {{HTTPHeader("Device-Memory")}} {{deprecated_inline}} {{experimental_inline}}
+  - : Approximate amount of available client RAM memory. This is part of the [Device Memory API](/en-US/docs/Web/API/Device_Memory_API).
+- {{HTTPHeader("DPR")}} {{deprecated_inline}} {{experimental_inline}}
+  - : Client device pixel ratio (DPR), which is the number of physical device pixels corresponding to every CSS pixel.
+- {{HTTPHeader("Viewport-Width")}} {{deprecated_inline}} {{experimental_inline}}
+  - : A number that indicates the layout viewport width in CSS pixels. The provided pixel value is a number rounded to the smallest following integer (i.e. ceiling value).
+- {{HTTPHeader("Width")}} {{deprecated_inline}} {{experimental_inline}}
+  - : A number that indicates the desired resource width in physical pixels (i.e. intrinsic size of an image).
+
+### Network client hints
+
+Network client hints allow a server to choose what information is sent based on the user choice and network bandwidth and latency.
+
+- {{HTTPHeader("Downlink")}}
+  - : Approximate bandwidth of the client's connection to the server, in Mbps. This is part of the [Network Information API](/en-US/docs/Web/API/Network_Information_API).
+- {{HTTPHeader("ECT")}}
+  - : The {{Glossary("effective connection type")}} ("network profile") that best matches the connection's latency and bandwidth. This is part of the [Network Information API](/en-US/docs/Web/API/Network_Information_API).
+- {{HTTPHeader("RTT")}}
+  - : Application layer round trip time (RTT) in milliseconds, which includes the server processing time. This is part of the [Network Information API](/en-US/docs/Web/API/Network_Information_API).
 - {{HTTPHeader("Save-Data")}} {{experimental_inline}}
+  - : A boolean that indicates the user agent's preference for reduced data usage.
 
-  - : &#x20;
-
-    <a class="internalDFN" href="https://wicg.github.io/netinfo/#dom-networkinformation-savedata"><code>SaveData</code></a>
-
-    &#x20;\[
-
-    <a class="bibref" href="https://wicg.github.io/netinfo/#bib-client-hints">CLIENT-HINTS</a>
-
-    ] 요청 헤더 필드는 절약한 데이터 사용에 대한 유저 에이전트의 설정을 나타내는 하나 이상의 토큰으로 이루어져있습니다.
-
-- {{HTTPHeader("Viewport-Width")}} {{experimental_inline}}
-
-  - : `Viewport-Width` 요청 헤더 필드는 CSS px 단위의 레이아웃 뷰포트 width를 나타내는 숫자입니다. 제공된 CSS px값은 정수로 반올림된 숫자입니다(예, 올림 값).
-
-    하나 이상의 메시지에서 `Viewport-Width`가 나타난다면, 마지막 값이 모든 이전의 값을 덮어씁니다.
-
-- {{HTTPHeader("Width")}} {{experimental_inline}}
-
-  - : `Width` 요청 헤더 필드는 물리적 px(예, 이미지의 실제 크기) 단위의 원하는 리소스 width를 나타내는 숫자입니다. 제공된 물리적 px 값은 정수로 반올림된 숫자입니다(예, 올림 값).
-
-    원하는 리소스 width를 요청 시점에 알 수 없거나 리소스가 표출 width를 갖지 않을 경우, `Width` 헤더 필드는 생략될 수 있습니다. 하나 이상의 메시지에서 `Width`가 나타난다면, 마지막 값이 모든 이전의 값을 덮어씁니다.
-
-## 조건부
+## Conditionals
 
 - {{HTTPHeader("Last-Modified")}}
-  - : 동일한 리소스의 여러 버전을 비교하는데 사용되는 검사기로, 리소스의 마지막 수정 날짜입니다. {{HTTPHeader("ETag")}}보다 덜 정확하지만, 어떤 환경에서는 계산이 더 쉽습니다. {{HTTPHeader("If-Modified-Since")}}와 {{HTTPHeader("If-Unmodified-Since")}}를 사용하는 조건부 요청은 이 값을 사용하여 요청의 동작을 변경합니다.
+  - : The last modification date of the resource, used to compare several versions of the same resource. It is less accurate than {{HTTPHeader("ETag")}}, but easier to calculate in some environments. Conditional requests using {{HTTPHeader("If-Modified-Since")}} and {{HTTPHeader("If-Unmodified-Since")}} use this value to change the behavior of the request.
 - {{HTTPHeader("ETag")}}
-  - : 리소스의 버전을 식별하는 고유한 문자열 검사기입니다. {{HTTPHeader("If-Match")}}와 {{HTTPHeader("If-None-Match")}}를 사용하는 조건부 요청은 이 값을 사용하여 요청의 동작을 변경합니다.
+  - : A unique string identifying the version of the resource. Conditional requests using {{HTTPHeader("If-Match")}} and {{HTTPHeader("If-None-Match")}} use this value to change the behavior of the request.
 - {{HTTPHeader("If-Match")}}
-  - : 저장된 리소스가 주어진 ETags의 하나와 일치하는 경우에만 요청을 조건부로 만들고 메소드를 적용합니다.
+  - : Makes the request conditional, and applies the method only if the stored resource matches one of the given ETags.
 - {{HTTPHeader("If-None-Match")}}
-  - : 저장된 리소스가 주어진 ETags 모두와 일치하지 않는 경우에만 요청을 조건부로 만들고 메소드를 적용합니다. 캐시(안전 연결용)를 업데이트하거나 이미 존재하는 리소스를 다시 업로드하는 것을 방지하기위해 사용됩니다.
+  - : Makes the request conditional, and applies the method only if the stored resource _doesn't_ match any of the given ETags. This is used to update caches (for safe requests), or to prevent uploading a new resource when one already exists.
 - {{HTTPHeader("If-Modified-Since")}}
-  - : 주어진 날짜 이후에 수정된 경우에만 요청을 조건부로 만들고 엔티티가 전송될 것을 기대합니다. 캐시가 만료되었을 때에만 데이터를 전송하는데 사용됩니다.
+  - : Makes the request conditional, and expects the resource to be transmitted only if it has been modified after the given date. This is used to transmit data only when the cache is out of date.
 - {{HTTPHeader("If-Unmodified-Since")}}
-  - : 주어진 날짜 이후에 수정되지 않은 경우에만 요청을 조건부로 만들고 엔티티가 전송될 것을 기대합니다. 이는 특정 범위의 새로운 프래그먼트와 이전의 것과의 일관성을 보장하거나, 존재하는 다큐먼트를 수정할 때에 낙관적인 제어 시스템을 구현하는데 사용됩니다.
+  - : Makes the request conditional, and expects the resource to be transmitted only if it has not been modified after the given date. This ensures the coherence of a new fragment of a specific range with previous ones, or to implement an optimistic concurrency control system when modifying existing documents.
 - {{HTTPHeader("Vary")}}
-  - : 오리진 서버로부터 새로운 요청을하는 대신 캐시된 응답을 사용할지를 결정하기위한 향후의 요청 헤더를 매칭할 방법을 정합니다.
+  - : Determines how to match request headers to decide whether a cached response can be used rather than requesting a fresh one from the origin server.
 
-## 연결 관리
+## Connection management
 
 - {{HTTPHeader("Connection")}}
-  - : 현재 트랜잭션이 끝난후에 네트워크 연결을 열린 상태로 둘지 여부를 제어합니다.
+  - : Controls whether the network connection stays open after the current transaction finishes.
 - {{HTTPHeader("Keep-Alive")}}
-  - : 지속적인 연결이 열린 상태로 유지할 기간을 제어합니다.
+  - : Controls how long a persistent connection should stay open.
 
-## [컨텐츠 협상](/ko/docs/Web/HTTP/Content_negotiation)
+## Content negotiation
+
+[Content negotiation](/en-US/docs/Web/HTTP/Content_negotiation) headers.
 
 - {{HTTPHeader("Accept")}}
-  - : 돌려줄 데이터 타입에 대해 서버에 알립니다. MIME 타입입니다.
-- {{HTTPHeader("Accept-Charset")}}
-  - : 클라이언트가 이해할 수 있는 문자 집합에 대해 서버에 알립니다.
+  - : Informs the server about the {{Glossary("MIME_type", "types")}} of data that can be sent back.
 - {{HTTPHeader("Accept-Encoding")}}
-  - : 인코딩 알고리즘에 대해 서버에 알립니다. 보통은 돌려줄 리소스에 사용되는 압축 알고리즘입니다.
+  - : The encoding algorithm, usually a [compression algorithm](/en-US/docs/Web/HTTP/Compression), that can be used on the resource sent back.
 - {{HTTPHeader("Accept-Language")}}
-  - : 서버가 돌려주기로 예상된 언어에 대해 서버에 알립니다. 이는 힌트이며 사용자의 모든 제어 아래에서는 필수가 아닙니다: 서버는 명시적인 사용자 선택을 덮어쓰지 않도록 항상 집중해야합니다(드롭 다운 리스트에서 언어를 선택하는 것처럼).
+  - : Informs the server about the human language the server is expected to send back. This is a hint and is not necessarily under the full control of the user: the server should always pay attention not to override an explicit user choice (like selecting a language from a dropdown).
 
-## 제어
+## Controls
 
 - {{HTTPHeader("Expect")}}
-  - : 요청을 적절히 처리하기위해 서버에서 수행되어야하는 기대치를 나타냅니다.
+  - : Indicates expectations that need to be fulfilled by the server to properly handle the request.
 - {{HTTPHeader("Max-Forwards")}}
-  - : ...
+  - : When using [`TRACE`](/en-US/docs/Web/HTTP/Methods/TRACE), indicates the maximum number of hops the request can do before being reflected to the sender.
 
-## 쿠키
+## Cookies
 
 - {{HTTPHeader("Cookie")}}
-  - : {{HTTPHeader("Set-Cookie")}} 헤더와 함께 서버로부터 이전에 전송됐던 저장된 [HTTP 쿠키](/ko/docs/Web/HTTP/Cookies)를 포함합니다.
+  - : Contains stored [HTTP cookies](/en-US/docs/Web/HTTP/Cookies) previously sent by the server with the {{HTTPHeader("Set-Cookie")}} header.
 - {{HTTPHeader("Set-Cookie")}}
-  - : 서버에서 유저 에이전트로 쿠키를 전송합니다.
-- {{HTTPHeader("Cookie2")}} {{deprecated_inline}}
-  - : {{HTTPHeader("Set-Cookie2")}}와 함께 서버에 의해 이전에 전송된 HTTP 쿠키를 포함하는데 사용되었지만, 명세에 의해 사용되지 않게 되었습니다. 대신 {{HTTPHeader("Cookie")}}를 사용하세요.
-- {{HTTPHeader("Set-Cookie2")}} {{deprecated_inline}}
-  - : 서버에서 유저 에이전트로 쿠키를 전송하는데 사용되었지만, 명세에 의해 사용되지 않게 되었습니다. 대신 {{HTTPHeader("Set-Cookie")}}를 사용하세요.
+  - : Send cookies from the server to the user-agent.
 
 ## CORS
 
-_[여기](CORS)에서 CORS에 대해 더 알아보세요._
+_Learn more about CORS [here](/en-US/docs/Glossary/CORS)._
 
 - {{HTTPHeader("Access-Control-Allow-Origin")}}
-  - : 응답이 공유될 수 있는지를 나타냅니다.
+  - : Indicates whether the response can be shared.
 - {{HTTPHeader("Access-Control-Allow-Credentials")}}
-  - : credentials 플래그가 true일 때 요청에 대한 응답이 노출될 수 있는지를 나타냅니다.
+  - : Indicates whether the response to the request can be exposed when the credentials flag is true.
 - {{HTTPHeader("Access-Control-Allow-Headers")}}
-  - : 실제 요청을 만들 때 사용될 수 있는 HTTP 헤더를 나타내는 preflight 요청에 대한 응답으로 사용됩니다.
+  - : Used in response to a {{Glossary("Preflight_request", "preflight request")}} to indicate which HTTP headers can be used when making the actual request.
 - {{HTTPHeader("Access-Control-Allow-Methods")}}
-  - : preflight 요청에 대한 응답으로 리소스에 접근할 때 허용되는 메소드를 명시합니다.
+  - : Specifies the methods allowed when accessing the resource in response to a preflight request.
 - {{HTTPHeader("Access-Control-Expose-Headers")}}
-  - : 헤더의 이름을 나열하여 어떤 헤더가 응답의 일부로 노출될 수 있는지를 나타냅니다.
+  - : Indicates which headers can be exposed as part of the response by listing their names.
 - {{HTTPHeader("Access-Control-Max-Age")}}
-  - : preflight 요청의 결과가 캐시되는 기간을 나타냅니다.
+  - : Indicates how long the results of a preflight request can be cached.
 - {{HTTPHeader("Access-Control-Request-Headers")}}
-  - : 실제 요청이 있을 때 사용될 HTTP 헤더를 서버에 알리기 위한 preflight 요청을 보낼 때 사용됩니다.
+  - : Used when issuing a preflight request to let the server know which HTTP headers will be used when the actual request is made.
 - {{HTTPHeader("Access-Control-Request-Method")}}
-  - : 실제 요청이 있을 때 사용될 [HTTP 메소드](/ko/docs/Web/HTTP/Methods)를 서버에 알리기 위한 preflight 요청을 보낼 때 사용됩니다.
+  - : Used when issuing a preflight request to let the server know which [HTTP method](/en-US/docs/Web/HTTP/Methods) will be used when the actual request is made.
 - {{HTTPHeader("Origin")}}
-  - : 페치가 시작된 위치를 나타냅니다.
+  - : Indicates where a fetch originates from.
 - {{HTTPHeader("Timing-Allow-Origin")}}
-  - : [Resource Timing API](/ko/docs/Web/API/Resource_Timing_API)의 기능을 통해 반환되는 속성을 확인할 수 있게해주는 오리진을 명시합니다. 교차-오리진 제한으로인해 0으로 기록될 수도 있습니다.
-- {{HTTPHeader("X-Permitted-Cross-Domain-Policies")}}
-  - : 교차-도메인 정책 파일(XML)이 허용되었는지를 명시합니다. 해당 파일은 Adobe Flash Player 또는 Adobe Acrobat(예, PDF)과 같은 웹 클라이언트가 도메인을 넘어 데이터를 다룰 수 있도록 허용하는 정책을 정의할수도 있습니다.
+  - : Specifies origins that are allowed to see values of attributes retrieved via features of the [Resource Timing API](/en-US/docs/Web/API/Performance_API/Resource_timing), which would otherwise be reported as zero due to cross-origin restrictions.
 
-## 추적 안함
-
-- {{HTTPHeader("DNT")}}
-  - : 사용자의 추적 설정을 나타내는데 사용됩니다.
-- {{HTTPHeader("Tk")}}
-  - : 해당하는 요청에 적용되는 추적 상태를 나타냅니다.
-
-## 다운로드
+## Downloads
 
 - {{HTTPHeader("Content-Disposition")}}
-  - : 전송된 리소스가 한 줄로 표시되어야하거나(헤더가 존재하지 않을 때는 기본 동작), 다운로드처럼 처리되어야 하고 브라우저가 '다른 이름으로 저장' 창을 표시해야할 때에 대한 응답 헤더입니다.
+  - : Indicates if the resource transmitted should be displayed inline (default behavior without the header), or if it should be handled like a download and the browser should present a "Save As" dialog.
 
-## 메시지 바디 정보
+## Message body information
 
 - {{HTTPHeader("Content-Length")}}
-  - : 수신자에게 전송된 엔티티 바디의 크기를 10진수 바이트 단위로 나타냅니다.
+  - : The size of the resource, in decimal number of bytes.
 - {{HTTPHeader("Content-Type")}}
-  - : 리소스의 미디어 타입을 나타냅니다.
+  - : Indicates the media type of the resource.
 - {{HTTPHeader("Content-Encoding")}}
-  - : 압축 알고리즘을 명시하는데 사용됩니다.
+  - : Used to specify the compression algorithm.
 - {{HTTPHeader("Content-Language")}}
-  - : 사용자를 위한 언어를 설명하여 사용자가 선호하는 언어에 따라 구분할 수 있게해줍니다.
+  - : Describes the human language(s) intended for the audience, so that it allows a user to differentiate according to the users' own preferred language.
 - {{HTTPHeader("Content-Location")}}
-  - : 반환된 데이터를 위한 대체 위치를 나타냅니다.
+  - : Indicates an alternate location for the returned data.
 
-## 프록시
+## Proxies
 
 - {{HTTPHeader("Forwarded")}}
-  - : 프록시가 요청의 경로에 포함될 때 변경되거나 손실되는 프록시 서버의 클라이언트 측면에 대한 정보를 포함합니다.
+  - : Contains information from the client-facing side of proxy servers that is altered or lost when a proxy is involved in the path of the request.
 - {{HTTPHeader("X-Forwarded-For")}} {{non-standard_inline}}
-  - : HTTP 프록시나 로드 밸런서를 통해 웹 서버로 연결하는 클라이언트의 시작 IP 주소를 확인합니다.
+  - : Identifies the originating IP addresses of a client connecting to a web server through an HTTP proxy or a load balancer.
 - {{HTTPHeader("X-Forwarded-Host")}} {{non-standard_inline}}
-  - : 클라이언트가 여러분의 프록시나 로드 밸런서에 접속하기 위해 사용하도록 요청됐던 원본 호스트를 확인합니다.
+  - : Identifies the original host requested that a client used to connect to your proxy or load balancer.
 - {{HTTPHeader("X-Forwarded-Proto")}} {{non-standard_inline}}
-  - : 클라이언트가 여러분의 프록시나 로드 밸런서에 접속하기 위해 사용했던 프로토콜(HTTP 또는 HTTPS)을 확인합니다.
+  - : Identifies the protocol (HTTP or HTTPS) that a client used to connect to your proxy or load balancer.
 - {{HTTPHeader("Via")}}
-  - : 정방향 및 역방향 프록시에 모두에 의해 추가되며, 요청 헤더와 응답 헤더에서 나타날 수 있습니다.
+  - : Added by proxies, both forward and reverse proxies, and can appear in the request headers and the response headers.
 
-## 리다이렉트
+## Redirects
 
 - {{HTTPHeader("Location")}}
-  - : 페이지를 리다이렉트할 URL을 나타냅니다.
+  - : Indicates the URL to redirect a page to.
+- {{HTTPHeader("Refresh")}}
+  - : Directs the browser to reload the page or redirect to another. Takes the same value as the `meta` element with [`http-equiv="refresh"`](/en-US/docs/Web/HTML/Element/meta#http-equiv).
 
-## 요청 컨텍스트
+## Request context
 
 - {{HTTPHeader("From")}}
-  - : 요청하는 유저 에이전트를 제어하는 사용자(사람)의 인터넷 이메일 주소를 포함합니다.
+  - : Contains an Internet email address for a human user who controls the requesting user agent.
 - {{HTTPHeader("Host")}}
-  - : 서버(가상 호스팅용)의 도메인명과 (선택적으로) 서버가 리스닝중인 TCP 포트 번호를 명시합니다.
+  - : Specifies the domain name of the server (for virtual hosting), and (optionally) the TCP port number on which the server is listening.
 - {{HTTPHeader("Referer")}}
-  - : 현재 페이지로 연결되는 링크가 있던 이전 웹 페이지의 주소입니다.
+  - : The address of the previous web page from which a link to the currently requested page was followed.
 - {{HTTPHeader("Referrer-Policy")}}
-  - : 생성된 요청이 {{HTTPHeader("Referer")}} 헤더에서 전송된 referrer 정보에 포함되어야하는지를 관리합니다.
+  - : Governs which referrer information sent in the {{HTTPHeader("Referer")}} header should be included with requests made.
 - {{HTTPHeader("User-Agent")}}
-  - : 네트워크 프로토콜 피어가 요청하는 사용자 에이전트의 애플리케이션 타입, 운영 체제, 소프트웨어 벤더 또는 소프트웨어 버전을 식별할 수 있는 특성 문자열을 포함합니다. [Firefox 유저 에이전트 문자열 레퍼런스](/ko/docs/Web/HTTP/Headers/User-Agent/Firefox) 문서도 참고하세요.
+  - : Contains a characteristic string that allows the network protocol peers to identify the application type, operating system, software vendor or software version of the requesting software user agent. See also the [Firefox user agent string reference](/en-US/docs/Web/HTTP/Headers/User-Agent/Firefox).
 
-## 응답 컨텍스트
+## Response context
 
 - {{HTTPHeader("Allow")}}
-  - : 리소스에 의해 지원되는 HTTP 요청 메소드를 나열합니다.
+  - : Lists the set of HTTP request methods supported by a resource.
 - {{HTTPHeader("Server")}}
-  - : 요청을 처리하기 위해 오리진 서버에 의해 사용되는 소프트웨어에 대한 정보를 포함합니다.
+  - : Contains information about the software used by the origin server to handle the request.
 
-## 범위 요청
+## Range requests
 
 - {{HTTPHeader("Accept-Ranges")}}
-  - : 서버가 범위 요청을 지원하는지를 나타내며, 지원할 경우 범위가 표현될 수 있는 단위를 나타냅니다.
+  - : Indicates if the server supports range requests, and if so in which unit the range can be expressed.
 - {{HTTPHeader("Range")}}
-  - : 서버가 반환해야하는 문서의 부분을 나타냅니다.
+  - : Indicates the part of a document that the server should return.
 - {{HTTPHeader("If-Range")}}
-  - : 주어진 etag 또는 날짜가 원격 리소스와 일치할 경우에만 수행되는 조건적 범위 요청을 생성합니다. 호환되지 않는 범전의 리소스에서 두 가지 범위의 다운로드를 방지하기위해 사용됩니다.
+  - : Creates a conditional range request that is only fulfilled if the given etag or date matches the remote resource. Used to prevent downloading two ranges from incompatible version of the resource.
 - {{HTTPHeader("Content-Range")}}
-  - : 전체 바디 메시지 중 특정 메시지가 포함된 위치를 나타냅니다.
+  - : Indicates where in a full body message a partial message belongs.
 
-## 보안
+## Security
 
-- {{HTTPHeader("Cross-Origin-Resource-Policy")}}
-  - : 이 헤더가 적용된 리소스의 응답을 다른 도메인이 읽는 것을 방지합니다.
+- {{HTTPHeader("Cross-Origin-Embedder-Policy")}} (COEP)
+  - : Allows a server to declare an embedder policy for a given document.
+- {{HTTPHeader("Cross-Origin-Opener-Policy")}} (COOP)
+  - : Prevents other domains from opening/controlling a window.
+- {{HTTPHeader("Cross-Origin-Resource-Policy")}} (CORP)
+  - : Prevents other domains from reading the response of the resources to which this header is applied.
 - {{HTTPHeader("Content-Security-Policy")}} ({{Glossary("CSP")}})
-  - : 주어진 페이지에 대해 유저 에이전트가 로드할 수 있는 리소스를 제어합니다.
+  - : Controls resources the user agent is allowed to load for a given page.
 - {{HTTPHeader("Content-Security-Policy-Report-Only")}}
-  - : 웹 개발자가 정책을 강제로 적용하지 않고도 그 효과를 실험해볼 수 있게 해줍니다. 이러한 위반 보고서는 HTTP `POST` 요청을 통해 지정된 URL로 전송된 {{Glossary("JSON")}} 문서로 구성됩니다.
+  - : Allows web developers to experiment with policies by monitoring, but not enforcing, their effects. These violation reports consist of {{Glossary("JSON")}} documents sent via an HTTP `POST` request to the specified URI.
 - {{HTTPHeader("Expect-CT")}}
-  - : 사이트가 잘못 발급된 인증서의 사용이 눈에 띄지 않게 넘어가는것을 방지해주는 인증서 투명성(Certificate Transparency) 요구 보고 및/또는 시행을 옵트인할 수 있게 해줍니다. 사이트가 Expect-CT 헤더를 사용할 때, 사이트는 공개 CT 로그에 나타난 사이트에 대한 모든 인증서를 Chrome이 확인하도록 요청합니다.
-- {{HTTPHeader("Feature-Policy")}}
-  - : 소유한 프레임 및 내장된 iframe에서 브라우저 기능의 사용을 허용 및 거부하기위한 메커니즘을 제공합니다.
-- {{HTTPHeader("Public-Key-Pins")}} ({{Glossary("HPKP")}})
-  - : 위조된 인증서를 사용한 {{Glossary("MITM")}} 공격의 위험을 줄이기 위해 특정 웹 서버에 특정 암호화 공개 키를 연결합니다.
-- {{HTTPHeader("Public-Key-Pins-Report-Only")}}
-  - : 헤더에 지정된 report-uri로 보고를 전송하고 피닝을 위반하더라도 클라이언트가 서버에 접속하는 것을 계속 허용합니다.
+  - : Allows sites to opt in to reporting and/or enforcement of Certificate Transparency requirements, which prevents the use of misissued certificates for that site from going unnoticed. When a site enables the Expect-CT header, they are requesting that Chrome check that any certificate for that site appears in public CT logs.
+- {{HTTPHeader("Origin-Isolation")}} {{experimental_inline}}
+  - : Provides a mechanism to allow web applications to isolate their origins.
+- {{HTTPHeader("Permissions-Policy")}}
+  - : Provides a mechanism to allow and deny the use of browser features in a website's own frame, and in {{htmlelement("iframe")}}s that it embeds.
 - {{HTTPHeader("Strict-Transport-Security")}} ({{Glossary("HSTS")}})
-  - : HTTP 대신 HTTPS를 사용하여 통신하도록 강제합니다.
+  - : Force communication using HTTPS instead of HTTP.
 - {{HTTPHeader("Upgrade-Insecure-Requests")}}
-  - : 암호화된 응답과 인증된 응답에 대한 클라이언트의 설정을 나타내는 신호를 서버에 전송하며, {{CSP("upgrade-insecure-requests")}} 지시자를 성공적으로 처리할 수 있습니다.
+  - : Sends a signal to the server expressing the client's preference for an encrypted and authenticated response, and that it can successfully handle the {{CSP("upgrade-insecure-requests")}} directive.
 - {{HTTPHeader("X-Content-Type-Options")}}
-  - : MIME 스니핑을 비활성화하고 브라우저가 {{HTTPHeader("Content-Type")}}에 주어진 타입을 사용하도록 강제합니다.
-- {{HTTPHeader("X-Download-Options")}}
-  - : 브라우저(인터넷 익스플로러)가 파일을 통한 피싱 공격을 방지하기 위해 애플리케이션으로부터 다운로드된 파일에 "열기" 옵션을 표시하면 안되는지 여부를 나타냅니다. 피싱 공격을 방지하지 못할 경우 파일을 애플리케이션의 컨텍스트에서 실행할 권한을 얻게됩니다.
+  - : Disables MIME sniffing and forces browser to use the type given in {{HTTPHeader("Content-Type")}}.
+- {{HTTPHeader("X-Frame-Options")}} (XFO)
+  - : Indicates whether a browser should be allowed to render a page in a {{HTMLElement("frame")}}, {{HTMLElement("iframe")}}, {{HTMLElement("embed")}} or {{HTMLElement("object")}}.
+- {{HTTPHeader("X-Permitted-Cross-Domain-Policies")}}
+  - : Specifies if a cross-domain policy file (`crossdomain.xml`) is allowed. The file may define a policy to grant clients, such as Adobe's Flash Player (now obsolete), Adobe Acrobat, Microsoft Silverlight (now obsolete), or Apache Flex, permission to handle data across domains that would otherwise be restricted due to the [Same-Origin Policy](/en-US/docs/Web/Security/Same-origin_policy). See the [Cross-domain Policy File Specification](https://www.adobe.com/devnet-docs/acrobatetk/tools/AppSec/CrossDomain_PolicyFile_Specification.pdf) for more information.
+- {{HTTPHeader("X-Powered-By")}}
+  - : May be set by hosting environments or other frameworks and contains information about them while not providing any usefulness to the application or its visitors. Unset this header to avoid exposing potential vulnerabilities.
+- {{HTTPHeader("X-XSS-Protection")}}
+  - : Enables cross-site scripting filtering.
 
-<dl><dt>{{HTTPHeader("X-Frame-Options")}} (XFO)</dt><dd>브라우저가 {{HTMLElement("frame")}}, {{HTMLElement("iframe")}}, {{HTMLElement("embed")}} 또는 {{HTMLElement("object")}}에서 페이지 렌더링을 허용해야하는지를 나타냅니다.</dd><dt>{{HTTPHeader("X-Powered-By")}}</dt><dd>호스팅 환경이나 다른 프레임워크에 의해 설정 될 수 있으며, 그들에 대한 정보를 포함하지만 애플리케이션이나 방문자에게 유용하지는 않습니다. 잠재적인 취약점 노출을 피하려면 이 헤더를 해제하세요.</dd><dt>{{HTTPHeader("X-XSS-Protection")}}</dt><dd>교차-사이트 스크립팅 필터링을 활성화합니다.</dd><dt></dt></dl>
+### Fetch metadata request headers
 
-## 서버가 전송한 이벤트
+{{Glossary("Fetch metadata request header", "Fetch metadata request headers")}} provides information about the context from which the request originated. This allows a server to make decisions about whether a request should be allowed based on where the request came from and how the resource will be used.
+
+- {{HTTPHeader("Sec-Fetch-Site")}}
+  - : It is a request header that indicates the relationship between a request initiator's origin and its target's origin. It is a Structured Header whose value is a token with possible values `cross-site`, `same-origin`, `same-site`, and `none`.
+- {{HTTPHeader("Sec-Fetch-Mode")}}
+  - : It is a request header that indicates the request's mode to a server. It is a Structured Header whose value is a token with possible values `cors`, `navigate`, `no-cors`, `same-origin`, and `websocket`.
+- {{HTTPHeader("Sec-Fetch-User")}}
+  - : It is a request header that indicates whether or not a navigation request was triggered by user activation. It is a Structured Header whose value is a boolean so possible values are `?0` for false and `?1` for true.
+- {{HTTPHeader("Sec-Fetch-Dest")}}
+  - : It is a request header that indicates the request's destination to a server. It is a Structured Header whose value is a token with possible values `audio`, `audioworklet`, `document`, `embed`, `empty`, `font`, `image`, `manifest`, `object`, `paintworklet`, `report`, `script`, `serviceworker`, `sharedworker`, `style`, `track`, `video`, `worker`, and `xslt`.
+- {{HTTPHeader("Service-Worker-Navigation-Preload")}}
+  - : A request header sent in preemptive request to {{domxref("fetch()")}} a resource during service worker boot.
+    The value, which is set with {{domxref("NavigationPreloadManager.setHeaderValue()")}}, can be used to inform a server that a different resource should be returned than in a normal `fetch()` operation.
+
+## Server-sent events
 
 - {{HTTPHeader("Last-Event-ID")}}
-  - : ...
+  - : TBD
 - {{HTTPHeader("NEL")}} {{experimental_inline}}
-  - : 개발자가 네트워크 에러 보고 정책을 선언할 수 있게하는 메커니즘을 정의합니다.
+  - : Defines a mechanism that enables developers to declare a network error reporting policy.
 - {{HTTPHeader("Ping-From")}}
-  - : ...
+  - : TBD
 - {{HTTPHeader("Ping-To")}}
-  - : ...
+  - : TBD
 - {{HTTPHeader("Report-To")}}
-  - : 브라우저가 경고 및 에러 보고를 전송하기 위한 서버 엔드포인트를 지정하는데 사용됩니다.
+  - : Used to specify a server endpoint for the browser to send warning and error reports to.
 
-## 전송 코딩
+## Transfer coding
 
 - {{HTTPHeader("Transfer-Encoding")}}
-  - : 사용자에게 엔티티를 안전하게 전송하기위해 사용할 인코딩 형식을 지정합니다.
+  - : Specifies the form of encoding used to safely transfer the resource to the user.
 - {{HTTPHeader("TE")}}
-  - : 유저 에이전트가 수락하기로한 전송 인코딩을 지정합니다.
+  - : Specifies the transfer encodings the user agent is willing to accept.
 - {{HTTPHeader("Trailer")}}
-  - : 전송자가 청크 분할된 메시지의 끝에 부가적인 필드를 포함할 수 있게 해줍니다.
+  - : Allows the sender to include additional fields at the end of chunked message.
 
-## 웹소켓
+## WebSockets
 
 - {{HTTPHeader("Sec-WebSocket-Key")}}
-  - : ...
+  - : TBD
 - {{HTTPHeader("Sec-WebSocket-Extensions")}}
-  - : ...
+  - : TBD
 - {{HTTPHeader("Sec-WebSocket-Accept")}}
-  - : ...
+  - : TBD
 - {{HTTPHeader("Sec-WebSocket-Protocol")}}
-  - : ...
+  - : TBD
 - {{HTTPHeader("Sec-WebSocket-Version")}}
-  - : ...
+  - : TBD
 
-## 그 외
+## Other
 
 - {{HTTPHeader("Accept-Push-Policy")}} {{experimental_inline}}
-  - : 클라이언트는 요청에 [`Accept-Push-Policy`](https://tools.ietf.org/html/draft-ruellan-http-accept-push-policy-00#section-3.1) 헤더 필드를 전송하여 요청에 대해 희망하는 푸시 정책을 나타낼 수 있습니다.
+  - : A client can express the desired push policy for a request by sending an [`Accept-Push-Policy`](https://datatracker.ietf.org/doc/html/draft-ruellan-http-accept-push-policy-00#section-3.1) header field in the request.
 - {{HTTPHeader("Accept-Signature")}} {{experimental_inline}}
-  - : 클라이언트는 [`Accept-Signature`](https://wicg.github.io/webpackage/draft-yasskin-http-origin-signed-responses.html#rfc.section.3.7) 헤더 필드를 전송하여 지원하는 서명의 종류와 사용 가능한 모든 서명을 이용할 의도를 나타낼 수 있습니다.
+  - : A client can send the [`Accept-Signature`](https://wicg.github.io/webpackage/draft-yasskin-http-origin-signed-responses.html#rfc.section.3.7) header field to indicate intention to take advantage of any available signatures and to indicate what kinds of signatures it supports.
 - {{HTTPHeader("Alt-Svc")}}
-  - : 이 서비스에 도달할 수 있는 대안을 나열하는데 사용됩니다.
+  - : Used to list alternate ways to reach this service.
 - {{HTTPHeader("Date")}}
-  - : 메시지가 발생한 날짜와 시간을 포함합니다.
-- {{HTTPHeader("Large-Allocation")}}
-  - : 로드되고 있는 페이지가 대규모 할당 작업을 원할 것이라고 브라우저에게 알립니다.
+  - : Contains the date and time at which the message was originated.
+- {{HTTPHeader("Early-Data")}} {{experimental_inline}}
+  - : Indicates that the request has been conveyed in TLS early data.
+- {{HTTPHeader("Large-Allocation")}} {{deprecated_inline}}
+  - : Tells the browser that the page being loaded is going to want to perform a large allocation.
 - {{HTTPHeader("Link")}}
-  - : [`Link`](https://tools.ietf.org/html/rfc5988#section-5) 엔티티 헤더 필드는 HTTP 헤더내의 하나 이상의 링크를 직렬화하기위한 수단을 제공합니다. HTML {{HTMLElement("link")}} 엘리먼트와 의미상으로 동일합니다.
+  - : The [`Link`](https://datatracker.ietf.org/doc/html/rfc5988#section-5) entity-header field provides a means for serializing one or more links in HTTP headers. It is semantically equivalent to the HTML {{HTMLElement("link")}} element.
 - {{HTTPHeader("Push-Policy")}} {{experimental_inline}}
-  - : [`Push-Policy`](https://tools.ietf.org/html/draft-ruellan-http-accept-push-policy-00#section-3.2)는 요청을 처리할 때 푸시에 관련된 서버의 동작을 정의합니다.
+  - : A [`Push-Policy`](https://datatracker.ietf.org/doc/html/draft-ruellan-http-accept-push-policy-00#section-3.2) defines the server behavior regarding push when processing a request.
 - {{HTTPHeader("Retry-After")}}
-  - : 유저 에이전트가 다음 요청을 생성하기전에 얼마나 기다려야하는지를 나타냅니다.
+  - : Indicates how long the user agent should wait before making a follow-up request.
 - {{HTTPHeader("Signature")}} {{experimental_inline}}
-  - : [`Signature`](https://wicg.github.io/webpackage/draft-yasskin-http-origin-signed-responses.html#rfc.section.3.1) 헤더 필드는 교환을 위한 서명의 리스트를 전달하며, 각 서명은 권한을 판별하고 새로고치는 방법에 대한 정보를 수반합니다.
+  - : The [`Signature`](https://wicg.github.io/webpackage/draft-yasskin-http-origin-signed-responses.html#rfc.section.3.1) header field conveys a list of signatures for an exchange, each one accompanied by information about how to determine the authority of and refresh that signature.
 - {{HTTPHeader("Signed-Headers")}} {{experimental_inline}}
-  - : [`Signed-Headers`](https://wicg.github.io/webpackage/draft-yasskin-http-origin-signed-responses.html#rfc.section.5.1.2) 헤더 필드는 서명에서 포함할 응답 헤더 필드의 정렬된 리스트를 식별합니다.
+  - : The [`Signed-Headers`](https://wicg.github.io/webpackage/draft-yasskin-http-origin-signed-responses.html#rfc.section.5.1.2) header field identifies an ordered list of response header fields to include in a signature.
 - {{HTTPHeader("Server-Timing")}}
-  - : 주어진 요청-응답 주기에 대한 하나 이상의 메트릭 및 설명을 전달합니다.
+  - : Communicates one or more metrics and descriptions for the given request-response cycle.
+- {{HTTPHeader("Service-Worker-Allowed")}}
+  - : Used to remove the [path restriction](https://w3c.github.io/ServiceWorker/#path-restriction) by including this header [in the response of the Service Worker script](https://w3c.github.io/ServiceWorker/#service-worker-script-response).
 - {{HTTPHeader("SourceMap")}}
-  - : 생성된 코드를 [source map](/ko/docs/Tools/Debugger/How_to/Use_a_source_map)에 링크합니다.
+  - : Links generated code to a [source map](https://firefox-source-docs.mozilla.org/devtools-user/debugger/how_to/use_a_source_map/index.html).
 - {{HTTPHeader("Upgrade")}}
-  - : [Upgrade 헤더 필드](https://tools.ietf.org/html/rfc7230#section-6.7)에 관련된 RFC 문서는 RFC 7230, section 6.7입니다. 이 표준은 현재 클라이언트, 서버, 전송 프로토콜 연결에서 다른 프로토콜로 업그레이드 또는 변경하기위한 규칙을 정하였습니다. 예를 들면, 이 헤더 표준은 서버가 Upgrade 헤더 필드를 인식하고 구현하도록 결정했다고 가정하여 클라이언트가 HTTP 1.1에서 HTTP 2.0으로 변경하는것을 허용합니다. 어떠한 집단에서도 Upgrade 헤더 필드에서 명시된 용어를 수락할 필요는 없습니다. 이는 클라이언트 및 서버 헤더 모두에서 사용될 수 있습니다. Upgrade 헤더 필드가 명시되었을 경우, 전송자는 반드시 업그레이드 옵션을 지정한 Connection 헤더 필드도 전송해야합니다. Connection 헤더 필드에 대한 자세한 내용은 [앞서 언급한 RFC의 section 6.1](https://tools.ietf.org/html/rfc7230#section-6.1)을 확인하시기 바랍니다..
+  - : The relevant RFC document for the [Upgrade header field is RFC 9110, section 7.8](https://httpwg.org/specs/rfc9110.html#field.upgrade). The standard establishes rules for upgrading or changing to a different protocol on the current client, server, transport protocol connection. For example, this header standard allows a client to change from HTTP 1.1 to [WebSocket](/en-US/docs/Glossary/WebSockets), assuming the server decides to acknowledge and implement the Upgrade header field. Neither party is required to accept the terms specified in the Upgrade header field. It can be used in both client and server headers. If the Upgrade header field is specified, then the sender MUST also send the Connection header field with the upgrade option specified. For details on the Connection header field [please see section 7.6.1 of the aforementioned RFC](https://httpwg.org/specs/rfc9110.html#field.connection).
 - {{HTTPHeader("X-DNS-Prefetch-Control")}}
-  - : 브라우저가 이미지, CSS, JavaScript 등을 포함하여 문서에 의해 참조된 항목을 위한 URL뿐만 아니라 사용자가 따르길 선택한 링크 모두에서 사전에 수행할 도메인 네임 확인을 수행하는 기능인 DNS 프리페칭을 제어합니다.
+  - : Controls DNS prefetching, a feature by which browsers proactively perform domain name resolution on both links that the user may choose to follow as well as URLs for items referenced by the document, including images, CSS, JavaScript, and so forth.
 - {{HTTPHeader("X-Firefox-Spdy")}} {{deprecated_inline}} {{non-standard_inline}}
-  - : ...
+  - : TBD
 - {{HTTPHeader("X-Pingback")}} {{non-standard_inline}}
-  - : ...
+  - : TBD
 - {{HTTPHeader("X-Requested-With")}}
-  - : ...
+  - : TBD
 - {{HTTPHeader("X-Robots-Tag")}}{{non-standard_inline}}
-  - : 공개 검색 엔진 결과에서 웹 페이지가 인덱싱되는 방식을 나타내기 위해 사용됩니다. 이 헤더는 사실상 `<meta name="robots" content="...">`와 동일합니다.
-- {{HTTPHeader("X-UA-Compatible")}} {{non-standard_inline}}
-  - : Internet Explorer에게 사용할 문서 모드를 알리는데 사용됩니다.
+  - : The [`X-Robots-Tag`](https://developers.google.com/search/docs/advanced/robots/robots_meta_tag) HTTP header is used to indicate how a web page is to be indexed within public search engine results. The header is effectively equivalent to `<meta name="robots" content="…">`.
 
-## 기여
+## Contributing
 
-[새로운 항목을 작성](/ko/docs/MDN/Contribute/Howto/Document_an_HTTP_header)하거나 존재하는 항목을 향상하여 도움을 주실 수 있습니다.
+You can help by [writing new entries](/en-US/docs/MDN/Writing_guidelines/Howto/Document_an_HTTP_header) or improving the existing ones.
 
-## 함께 보기
+## See also
 
 - [Wikipedia page on List of HTTP headers](https://en.wikipedia.org/wiki/List_of_HTTP_header_fields)
-- [IANA registry](https://www.iana.org/assignments/message-headers/perm-headers.html)
+- [IANA registry](https://www.iana.org/assignments/message-headers/message-headers.xhtml#perm-headers)
 - [HTTP Working Group](https://httpwg.org/specs/)

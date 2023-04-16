@@ -1,32 +1,44 @@
 ---
-title: Element.removeAttribute()
+title: "Element: removeAttribute() method"
+short-title: removeAttribute()
 slug: Web/API/Element/removeAttribute
+page-type: web-api-instance-method
+browser-compat: api.Element.removeAttribute
 ---
 
-{{APIRef("DOM")}}
+{{ APIRef("DOM") }}
 
-**`Element.removeAttribute()`** 메서드는 요소에서 주어진 이름의 특성을 제거합니다.
+The {{domxref("Element")}} method
+**`removeAttribute()`** removes the attribute with the
+specified name from the element.
 
-## 구문
+## Syntax
 
-```js
-element.removeAttribute(attrName);
+```js-nolint
+removeAttribute(attrName)
 ```
 
-### 매개변수
+### Parameters
 
 - `attrName`
-  - : 요소에서 제거할 특성 이름을 지정하는 {{domxref("DOMString")}}. 지정하지 않으면 오류 없이 아무 동작도 하지 않습니다.
+  - : A string specifying the name of the attribute to remove from the
+    element. If the specified attribute does not exist, `removeAttribute()`
+    returns without generating an error.
 
-### 반환 값
+### Return value
 
-{{jsxref("undefined")}}.
+None ({{jsxref("undefined")}}).
 
-## 사용 일람
+## Usage notes
 
-많은 특성은 {{jsxref("null")}}을 대입했을 때 예상치 못한 동작을 하곤 합니다. 그러므로 특성을 삭제할 때 `null`을 직접 대입하거나, {{domxref("Element.setAttribute", "setAttribute()")}}의 매개변수로 제공하기보단 `removeAttribute()` 메서드를 사용해야 합니다.
+You should use `removeAttribute()` instead of setting the attribute value to
+`null` either directly or using {{domxref("Element.setAttribute",
+  "setAttribute()")}}. Many attributes will not behave as expected if you set them to
+`null`.
 
-## 예제
+{{ DOMAttributeMethods() }}
+
+## Examples
 
 ```js
 // Given: <div id="div1" align="left" width="200px">
@@ -34,10 +46,10 @@ document.getElementById("div1").removeAttribute("align");
 // Now: <div id="div1" width="200px">
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

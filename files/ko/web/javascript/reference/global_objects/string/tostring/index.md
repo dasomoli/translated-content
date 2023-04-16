@@ -1,48 +1,61 @@
 ---
 title: String.prototype.toString()
 slug: Web/JavaScript/Reference/Global_Objects/String/toString
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.String.toString
 ---
 
 {{JSRef}}
 
-**`toString()`** 메서드는 객체의 문자열 표현을 반환합니다.
+The **`toString()`** method returns a string representing the specified string value.
 
 {{EmbedInteractiveExample("pages/js/string-tostring.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 toString()
 ```
 
-### 반환 값
+### Return value
 
-메서드를 호출하는 객체의 문자열 표현.
+A string representing the specified string value.
 
-## 설명
+## Description
 
-{{jsxref("String")}} 객체는 {{jsxref("Object")}} 객체의 `toString()` 메서드를 상속하지 않고 재정의합니다. {{jsxref("String")}} 의 `toString()` 메서드는 객체의 문자열 표현을 반환하며 {{jsxref("String.prototype.valueOf()")}} 메서드와 동일합니다.
+The {{jsxref("String")}} object overrides the `toString` method of {{jsxref("Object")}}; it does not inherit
+{{jsxref("Object.prototype.toString()")}}. For `String` values, the `toString` method returns the string itself (if it's a primitive) or the string that the `String` object wraps. It has the exact same implementation as {{jsxref("String.prototype.valueOf()")}}.
 
-## 예제
+The `toString()` method requires its `this` value to be a `String` primitive or wrapper object. It throws a {{jsxref("TypeError")}} for other `this` values without attempting to coerce them to string values.
 
-### `toString()` 사용하기
-
-{{jsxref("String")}} 객체의 문자열 값을 표시하는 예제입니다.
+Because `String` doesn't have a [`[@@toPrimitive]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toPrimitive) method, JavaScript calls the `toString()` method automatically when a `String` _object_ is used in a context expecting a string, such as in a [template literal](/en-US/docs/Web/JavaScript/Reference/Template_literals). However, String _primitive_ values do not consult the `toString()` method to be [coerced to strings](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_coercion) — since they are already strings, no conversion is performed.
 
 ```js
-var x = new String('Hello world')
-
-console.log(x.toString()) // logs 'Hello world'
+String.prototype.toString = () => "Overridden";
+console.log(`${"foo"}`); // "foo"
+console.log(`${new String("foo")}`); // "Overridden"
 ```
 
-## 명세
+## Examples
+
+### Using toString()
+
+The following example displays the string value of a {{jsxref("String")}} object:
+
+```js
+const x = new String("Hello world");
+
+console.log(x.toString()); // "Hello world"
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("String.prototype.valueOf()")}}

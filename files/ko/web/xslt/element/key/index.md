@@ -1,41 +1,40 @@
 ---
-title: key
+title: <xsl:key>
 slug: Web/XSLT/Element/key
-original_slug: Web/XSLT/key
 ---
 
 {{ XsltRef() }}
 
-`<xsl:key>` 요소는 `key( )` 함수가 있는 스타일시트 어디서나 쓸 수 있는 이름 붙은 키를 선언합니다.
+The `<xsl:key>` element declares a named key which can be used elsewhere in the stylesheet with the `key( )` function.
 
-### 문법
+### Syntax
 
-```
+```xml
 <xsl:key name=NAME match=EXPRESSION
   use=EXPRESSION />
 ```
 
-### 필수 속성
+### Required Attributes
 
 - `name`
-  - : 이 키에 이름을 지정합니다. QName이어야 합니다.
+  - : Specifies a name for this key. Must be a QName.
 - `match`
-  - : 이 키를 적용할 수 있는 노드를 정의합니다.
+  - : Defines the nodes for which this key is applicable.
 - `use`
-  - : 적용가능한 각 노드에 키값을 결정하는데 쓸 수 있는 XPath 식을 지정합니다.
+  - : Specifies an XPath expression that will be used to determine the value of the key for each of the applicable nodes.
 
-### 선택 속성
+### Optional Attributes
 
-없음.
+None.
 
-### 타입
+### Type
 
-최상위, `<xsl:stylesheet>`나 `<xsl:transform>`의 자식이어야 함.
+Top-level, must be the child of `<xsl:stylesheet>` or `<xsl:transform>`.
 
-### 정의
+### Defined
 
-[XSLT section 12.2, Keys](http://www.w3.org/TR/xslt#key)
+XSLT, section 12.2.
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

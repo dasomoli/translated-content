@@ -1,63 +1,69 @@
 ---
 title: Reflect.isExtensible()
 slug: Web/JavaScript/Reference/Global_Objects/Reflect/isExtensible
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Reflect.isExtensible
 ---
+
 {{JSRef}}
 
-**`Reflect.isExtensible()`** 정적 메서드는 객체의 확장 가능 여부, 즉 속성을 추가할 수 있는지 판별합니다. {{jsxref("Object.isExtensible()")}}과 유사하지만 [차이점](#object.isextensible_과의_차이)도 있습니다.
+The **`Reflect.isExtensible()`** static method is like {{jsxref("Object.isExtensible()")}}. It determines if an object is extensible (whether it can have new properties added to it).
 
 {{EmbedInteractiveExample("pages/js/reflect-isextensible.html", "taller")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 Reflect.isExtensible(target)
 ```
 
-### 매개변수
+### Parameters
 
 - `target`
-  - : 확장 가능 여부를 판별할 대상 객체.
+  - : The target object which to check if it is extensible.
 
-### 반환 값
+### Return value
 
-객체의 확장 가능 여부를 나타내는 {{jsxref("Boolean")}}.
+A {{jsxref("Boolean")}} indicating whether or not the target is extensible.
 
-### 예외
+### Exceptions
 
-`target`이 {{jsxref("Object")}}가 아니면 {{jsxref("TypeError")}}.
+- {{jsxref("TypeError")}}
+  - : Thrown if `target` is not an object.
 
-## 설명
+## Description
 
-`Reflect.isExtensible()` 메서드는 {{jsxref("Object.isExtensible()")}}와 유사하게, 객체에 새로운 속성을 추가할 수 있는지 판별합니다.
+`Reflect.isExtensible()` provides the reflective semantic of checking if an object is extensible. The only difference with {{jsxref("Object.isExtensible()")}} is how non-object targets are handled. `Reflect.isExtensible()` throws a {{jsxref("TypeError")}} if the target is not an object, while `Object.isExtensible()` always returns `false` for non-object targets.
 
-## 예제
+`Reflect.isExtensible()` invokes the `[[IsExtensible]]` [object internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods) of `target`.
 
-### `Reflect.isExtensible()` 사용하기
+## Examples
 
-{{jsxref("Object.isExtensible()")}}도 참고하세요.
+### Using Reflect.isExtensible()
+
+See also {{jsxref("Object.isExtensible()")}}.
 
 ```js
-// 새로운 객체는 확장 가능
-var empty = {};
-Reflect.isExtensible(empty); // === true
+// New objects are extensible.
+const empty = {};
+Reflect.isExtensible(empty); // true
 
-// ...하지만 바꿀 수 있음
+// ...but that can be changed.
 Reflect.preventExtensions(empty);
-Reflect.isExtensible(empty); // === false
+Reflect.isExtensible(empty); // false
 
-// 봉인한 객체는 확장 불가능함
-var sealed = Object.seal({});
-Reflect.isExtensible(sealed); // === false
+// Sealed objects are by definition non-extensible.
+const sealed = Object.seal({});
+Reflect.isExtensible(sealed); // false
 
-// 동결한 객체도 확장 불가능함
-var frozen = Object.freeze({});
-Reflect.isExtensible(frozen); // === false
+// Frozen objects are also by definition non-extensible.
+const frozen = Object.freeze({});
+Reflect.isExtensible(frozen); // false
 ```
 
-### `Object.isExtensible()`과의 차이점
+### Difference with Object.isExtensible()
 
-`Reflect.isExtensible()`은 첫 번째 매개변수가 {{glossary("Primitive", "원시값")}}이면 {{jsxref("TypeError")}}를 던집니다. 반면 {{jsxref("Object.isExtensible()")}}은 우선 객체로 변환을 시도합니다.
+If the `target` argument to this method is not an object (a primitive), then it will cause a {{jsxref("TypeError")}}. With {{jsxref("Object.isExtensible()")}}, a non-object `target` will return false without any errors.
 
 ```js
 Reflect.isExtensible(1);
@@ -67,15 +73,17 @@ Object.isExtensible(1);
 // false
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `Reflect.isExtensible` in `core-js`](https://github.com/zloirock/core-js#ecmascript-reflect)
 - {{jsxref("Reflect")}}
 - {{jsxref("Object.isExtensible()")}}
+- [`Proxy`'s `isExtensible` handler](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/isExtensible)

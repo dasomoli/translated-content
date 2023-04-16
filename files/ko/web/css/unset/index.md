@@ -1,15 +1,21 @@
 ---
 title: unset
 slug: Web/CSS/unset
+page-type: css-keyword
+browser-compat: css.types.global_keywords.unset
 ---
 
 {{CSSRef}}
 
-CSS **`unset`** 키워드를 적용한 속성은, 부모로부터 상속할 값이 존재하면 상속값을, 그렇지 않다면 [초깃값](/ko/docs/Web/CSS/initial_value)을 사용합니다. 다르게 표현하자면, 전자일 땐 {{cssxref("inherit")}} 키워드처럼, 후자일 땐 {{cssxref("initial")}} 키워드처럼 동작합니다. {{cssxref("all")}} 단축 속성을 포함한 모든 속성에 사용할 수 있습니다.
+The **`unset`** CSS keyword resets a property to its inherited value if the property naturally inherits from its parent, and to its [initial value](/en-US/docs/Web/CSS/initial_value) if not. In other words, it behaves like the {{cssxref("inherit")}} keyword in the first case, when the property is an [inherited property](/en-US/docs/Web/CSS/Inheritance#inherited_properties), and like the {{cssxref("initial")}} keyword in the second case, when the property is a [non-inherited property](/en-US/docs/Web/CSS/Inheritance#non-inherited_properties).
 
-## 예제
+**`unset`** can be applied to any CSS property, including the CSS shorthand property {{cssxref("all")}}.
 
-### 글자 색
+## Examples
+
+### Color
+
+[`color`](/en-US/docs/Web/CSS/color#formal_definition) is an inherited property.
 
 #### HTML
 
@@ -29,6 +35,7 @@ CSS **`unset`** 키워드를 적용한 속성은, 부모로부터 상속할 값�
 .foo {
   color: blue;
 }
+
 .bar {
   color: green;
 }
@@ -36,16 +43,19 @@ CSS **`unset`** 키워드를 적용한 속성은, 부모로부터 상속할 값�
 p {
   color: red;
 }
+
 .bar p {
   color: unset;
 }
 ```
 
-#### 결과
+#### Result
 
-{{ EmbedLiveSample('글자_색') }}
+{{ EmbedLiveSample('Color') }}
 
-### 테두리
+### Border
+
+[`border`](/en-US/docs/Web/CSS/border#formal_definition) is a non-inherited property.
 
 #### HTML
 
@@ -55,7 +65,7 @@ p {
   <p>This text has a red border.</p>
 </div>
 <div class="bar">
-  <p>This text has has a black border (initial default, not inherited).</p>
+  <p>This text has a black border (initial default, not inherited).</p>
 </div>
 ```
 
@@ -75,21 +85,22 @@ p {
 }
 ```
 
-#### 결과
+#### Result
 
-{{ EmbedLiveSample('테두리', 'auto', 200) }}
+{{ EmbedLiveSample('Border', 'auto', 200) }}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{cssxref("initial")}}을 사용해 속성의 초깃값을 사용하세요.
-- {{cssxref("revert")}}를 사용해 사용자 에이전트가 지정한 값(또는 사용자가 수정한 값)으로 속성을 되돌리세요.
-- {{cssxref("inherit")}}을 사용해 속성의 값이 부모와 같도록 지정하세요.
-- {{cssxref("all")}} 속성을 사용하면 요소의 모든 속성을 한꺼번에 `initial`, `inherit`, `revert`, `unset`할 수 있습니다.
+- Use the {{cssxref("initial")}} keyword to set a property to its initial value.
+- Use the {{cssxref("inherit")}} keyword to make an element's property the same as its parent.
+- Use the {{cssxref("revert")}} keyword to reset a property to the value established by the user-agent stylesheet (or by user styles, if any exist).
+- Use the {{cssxref("revert-layer")}} keyword to reset a property to the value established in a previous cascade layer.
+- The {{cssxref("all")}} property lets you reset all properties to their initial, inherited, reverted, or unset state at once.

@@ -1,71 +1,71 @@
 ---
 title: <blend-mode>
 slug: Web/CSS/blend-mode
+page-type: css-type
+browser-compat: css.types.blend-mode
 ---
 
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`<blend-mode>`** [자료형](/ko/docs/Web/CSS/CSS_Types)은 요소가 겹칠 경우 색상이 어떻게 나타나야 하는지 정의합니다. {{cssxref("background-blend-mode")}}와 {{cssxref("mix-blend-mode")}} 속성에서 사용합니다.
+The **`<blend-mode>`** [CSS](/en-US/docs/Web/CSS) [data type](/en-US/docs/Web/CSS/CSS_Types) describes how colors should appear when elements overlap. It is used in the {{cssxref("background-blend-mode")}} and {{cssxref("mix-blend-mode")}} properties.
 
-최종 색상은 혼합 모드를 적용한 레이어 각각의 픽셀 하나씩에 대해 전경색과 배경색을 취한 후 모드에 따라 계산을 수행하여 나온 새로운 값입니다.
+## Syntax
 
-## 구문
-
-`<blend-mode>` 자료형은 다음 키워드 값 중 하나를 선택해 지정합니다.
+The `<blend-mode>` data type is defined using a keyword value chosen from the list below.
 
 ### Values
 
 - `normal`
-  - : 배경색에 상관하지 않고 최상단 색을 사용합니다.
-      두 장의 불투명한 종이를 겹친 것과 같습니다.
+  - : The final color is the top color, regardless of what the bottom color is.
+    The effect is like two opaque pieces of paper overlapping.
 - `multiply`
-  - : 최종 색은 전경과 배경색을 곱한 값입니다.
-      검은 레이어는 최종 레이어를 검은 색으로 만들고, 하얀 레이어는 아무런 변화도 주지 않습니다.
-      투명한 필름에 프린트한 이미지를 서로 겹친 것과 같습니다.
+  - : The final color is the result of multiplying the top and bottom colors.
+    A black layer leads to a black final layer, and a white layer leads to no change.
+    The effect is like two images printed on transparent film overlapping.
 - `screen`
-  - : 최종 색은 전경과 배경색을 각각 반전한 후 서로 곱해 나온 값을 다시 반전한 값입니다.
-      검은 레이어는 아무런 변화도 주지 않고, 하얀 레이어는 최종 레이어를 하얗게 만듭니다.
-      프로젝터 두 대로 이미지를 겹친 것과 같습니다.
+  - : The final color is the result of inverting the colors, multiplying them, and inverting that value.
+    A black layer leads to no change, and a white layer leads to a white final layer.
+    The effect is like two images shone onto a projection screen.
 - `overlay`
-  - : 배경색이 더 어두운 경우 `multiply`, 더 밝은 경우 `screen`을 적용합니다.
-    `hard-light`와 같지만 배경과 전경을 뒤집은 것입니다.
+  - : The final color is the result of `multiply` if the bottom color is darker, or `screen` if the bottom color is lighter.
+    This blend mode is equivalent to `hard-light` but with the layers swapped.
 - `darken`
-  - : 최종 색은 각각의 색상 채널에 대해 제일 어두운 값을 취한 결과입니다.
+  - : The final color is composed of the darkest values of each color channel.
 - `lighten`
-  - : 최종 색은 각각의 색상 채널에 대해 제일 밝은 값을 취한 결과입니다.
+  - : The final color is composed of the lightest values of each color channel.
 - `color-dodge`
-  - : 최종 색은 배경색을 전경색의 역으로 나눈 결과입니다.
-      검은 전경색은 아무런 변화도 주지 않습니다. 전경색이 배경색의 역인 경우 제일 밝은 색이 됩니다.
-      `screen`과 유사하지만, 전경색의 밝기가 배경색과 동일하기만 해도 최대의 밝기를 가진 색을 반환합니다.
+  - : The final color is the result of dividing the bottom color by the inverse of the top color.
+    A black foreground leads to no change. A foreground with the inverse color of the backdrop leads to a fully lit color.
+    This blend mode is similar to `screen`, but the foreground need only be as light as the inverse of the backdrop to create a fully lit color.
 - `color-burn`
-  - : 최종 색은 배경색을 반전한 후 전경색으로 나누고, 다시 반전한 결과입니다.
-      하얀 전경색은 아무런 변화도 주지 않습니다. 전경색이 배경색의 역인 경우 결과는 검은색입니다.
-      `multiply`와 유사하지만, 전경색의 밝기가 배경색의 역과 동일하기만 해도 검은색을 반환합니다.
+  - : The final color is the result of inverting the bottom color, dividing the value by the top color, and inverting that value.
+    A white foreground leads to no change. A foreground with the inverse color of the backdrop leads to a black final image.
+    This blend mode is similar to `multiply`, but the foreground need only be as dark as the inverse of the backdrop to make the final image black.
 - `hard-light`
-  - : 전경색이 더 어두운 경우 `multiply`, 더 밝은 경우 `screen`을 적용합니다.
-      `overlay`와 같지만 배경과 전경을 뒤집은 것입니다.
-      배경색에 스포트라이트를 "강렬하게" 비춘 효과와 유사합니다.
+  - : The final color is the result of `multiply` if the top color is darker, or `screen` if the top color is lighter.
+    This blend mode is equivalent to `overlay` but with the layers swapped.
+    The effect is similar to shining a _harsh_ spotlight on the backdrop.
 - `soft-light`
-  - : `hard-light`와 유사하지만 더 부드럽습니다.
-      `hard-light`와 비슷하게 동작합니다.
-      배경색에 스포트라이트를 산란시켜 비춘 효과와 유사합니다.
+  - : The final color is similar to `hard-light`, but softer.
+    This blend mode behaves similar to `hard-light`.
+    The effect is similar to shining a _diffused_ spotlight on the backdrop*.*
 - `difference`
-  - : 최종 색은 두 색상 중 더 어두운 색을 밝은 색에서 뺀 결과입니다.
-      검은 레이어는 아무런 변화도 주지 않고, 흰 레이어로는 다른 레이어의 색을 반전한 효과를 냅니다.
+  - : The final color is the result of subtracting the darker of the two colors from the lighter one.
+    A black layer has no effect, while a white layer inverts the other layer's color.
 - `exclusion`
-  - : `difference`와 유사하지만 더 적은 대비를 가진 색을 반환합니다.
-      `difference`와 마찬가지로 검은 레이어는 아무런 변화도 주지 않고, 흰 레이어로는 다른 레이어의 색을 반전한 효과를 냅니다.
+  - : The final color is similar to `difference`, but with less contrast.
+    As with `difference`, a black layer has no effect, while a white layer inverts the other layer's color.
 - `hue`
-  - : 최종 색은 전경색의 색조를 가지며 배경색의 채도와 밝기를 가집니다.
+  - : The final color has the _hue_ of the top color, while using the _saturation_ and _luminosity_ of the bottom color.
 - `saturation`
-  - : 최종 색은 전경색의 채도를 가지며 배경색의 색조와 밝기를 가집니다.
-      색조 없는 순수한 회색 배경으로는 아무런 효과도 없습니다.
+  - : The final color has the _saturation_ of the top color, while using the _hue_ and _luminosity_ of the bottom color.
+    A pure gray backdrop, having no saturation, will have no effect.
 - `color`
-  - : 최종 색은 전경색의 색조와 채도를 가지며 배경색의 밝기를 가집니다.
-      회색조를 유지하므로 전경을 색칠할 때 사용할 수 있습니다.
+  - : The final color has the _hue_ and _saturation_ of the top color, while using the _luminosity_ of the bottom color.
+    The effect preserves gray levels and can be used to colorize the foreground.
 - `luminosity`
-  - : 최종 색은 전경색의 밝기를 가지며 배경색의 색조와 채도를 가집니다.
-      `color`와 동일하지만 배경과 전경을 뒤집은 것입니다.
+  - : The final color has the _luminosity_ of the top color, while using the _hue_ and _saturation_ of the bottom color.
+    This blend mode is equivalent to `color`, but with the layers swapped.
 
 ## Description
 
@@ -89,8 +89,7 @@ Changes between blend modes are not interpolated. Any change occurs immediately.
 #div {
   width: 300px;
   height: 300px;
-  background: url('br.png'),
-              url('tr.png');
+  background: url("br.png"), url("tr.png");
   background-blend-mode: normal;
 }
 ```
@@ -107,8 +106,7 @@ Changes between blend modes are not interpolated. Any change occurs immediately.
 #div {
   width: 300px;
   height: 300px;
-  background: url('br.png'),
-              url('tr.png');
+  background: url("br.png"), url("tr.png");
   background-blend-mode: multiply;
 }
 ```
@@ -125,8 +123,7 @@ Changes between blend modes are not interpolated. Any change occurs immediately.
 #div {
   width: 300px;
   height: 300px;
-  background: url('br.png'),
-              url('tr.png');
+  background: url("br.png"), url("tr.png");
   background-blend-mode: screen;
 }
 ```
@@ -143,8 +140,7 @@ Changes between blend modes are not interpolated. Any change occurs immediately.
 #div {
   width: 300px;
   height: 300px;
-  background: url('br.png'),
-              url('tr.png');
+  background: url("br.png"), url("tr.png");
   background-blend-mode: overlay;
 }
 ```
@@ -161,8 +157,7 @@ Changes between blend modes are not interpolated. Any change occurs immediately.
 #div {
   width: 300px;
   height: 300px;
-  background: url('br.png'),
-              url('tr.png');
+  background: url("br.png"), url("tr.png");
   background-blend-mode: darken;
 }
 ```
@@ -179,8 +174,7 @@ Changes between blend modes are not interpolated. Any change occurs immediately.
 #div {
   width: 300px;
   height: 300px;
-  background: url('br.png'),
-              url('tr.png');
+  background: url("br.png"), url("tr.png");
   background-blend-mode: lighten;
 }
 ```
@@ -197,8 +191,7 @@ Changes between blend modes are not interpolated. Any change occurs immediately.
 #div {
   width: 300px;
   height: 300px;
-  background: url('br.png'),
-              url('tr.png');
+  background: url("br.png"), url("tr.png");
   background-blend-mode: color-dodge;
 }
 ```
@@ -215,8 +208,7 @@ Changes between blend modes are not interpolated. Any change occurs immediately.
 #div {
   width: 300px;
   height: 300px;
-  background: url('br.png'),
-              url('tr.png');
+  background: url("br.png"), url("tr.png");
   background-blend-mode: color-burn;
 }
 ```
@@ -233,8 +225,7 @@ Changes between blend modes are not interpolated. Any change occurs immediately.
 #div {
   width: 300px;
   height: 300px;
-  background: url('br.png'),
-              url('tr.png');
+  background: url("br.png"), url("tr.png");
   background-blend-mode: hard-light;
 }
 ```
@@ -251,8 +242,7 @@ Changes between blend modes are not interpolated. Any change occurs immediately.
 #div {
   width: 300px;
   height: 300px;
-  background: url('br.png'),
-              url('tr.png');
+  background: url("br.png"), url("tr.png");
   background-blend-mode: soft-light;
 }
 ```
@@ -269,8 +259,7 @@ Changes between blend modes are not interpolated. Any change occurs immediately.
 #div {
   width: 300px;
   height: 300px;
-  background: url('br.png'),
-              url('tr.png');
+  background: url("br.png"), url("tr.png");
   background-blend-mode: difference;
 }
 ```
@@ -287,8 +276,7 @@ Changes between blend modes are not interpolated. Any change occurs immediately.
 #div {
   width: 300px;
   height: 300px;
-  background: url('br.png'),
-              url('tr.png');
+  background: url("br.png"), url("tr.png");
   background-blend-mode: exclusion;
 }
 ```
@@ -305,8 +293,7 @@ Changes between blend modes are not interpolated. Any change occurs immediately.
 #div {
   width: 300px;
   height: 300px;
-  background: url('br.png'),
-              url('tr.png');
+  background: url("br.png"), url("tr.png");
   background-blend-mode: hue;
 }
 ```
@@ -323,8 +310,7 @@ Changes between blend modes are not interpolated. Any change occurs immediately.
 #div {
   width: 300px;
   height: 300px;
-  background: url('br.png'),
-              url('tr.png');
+  background: url("br.png"), url("tr.png");
   background-blend-mode: saturation;
 }
 ```
@@ -341,8 +327,7 @@ Changes between blend modes are not interpolated. Any change occurs immediately.
 #div {
   width: 300px;
   height: 300px;
-  background: url('br.png'),
-              url('tr.png');
+  background: url("br.png"), url("tr.png");
   background-blend-mode: color;
 }
 ```
@@ -359,8 +344,7 @@ Changes between blend modes are not interpolated. Any change occurs immediately.
 #div {
   width: 300px;
   height: 300px;
-  background: url('br.png'),
-              url('tr.png');
+  background: url("br.png"), url("tr.png");
   background-blend-mode: luminosity;
 }
 ```
@@ -402,18 +386,18 @@ In the following example, we have a `<div>` with two background images set on it
 div {
   width: 300px;
   height: 300px;
-  background: url(https://media.prod.mdn.mozit.cloud/attachments/2020/07/29/17350/3b4892b7e820122ac6dd7678891d4507/firefox.png) no-repeat center,
-  linear-gradient(to bottom, blue, orange);
+  background: url(https://media.prod.mdn.mozit.cloud/attachments/2020/07/29/17350/3b4892b7e820122ac6dd7678891d4507/firefox.png)
+      no-repeat center, linear-gradient(to bottom, blue, orange);
 }
 ```
 
 #### JavaScript
 
 ```js
-const selectElem = document.querySelector('select');
-const divElem = document.querySelector('div');
+const selectElem = document.querySelector("select");
+const divElem = document.querySelector("div");
 
-selectElem.addEventListener('change', () => {
+selectElem.addEventListener("change", () => {
   divElem.style.backgroundBlendMode = selectElem.value;
 });
 ```
@@ -422,16 +406,17 @@ selectElem.addEventListener('change', () => {
 
 {{EmbedLiveSample('Blend_mode_comparison', '100%', 400)}}
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
+- The [CSS compositing and blending](/en-US/docs/Web/CSS/Compositing_and_Blending) module that defines the `<blend-mode>` values.
 - Properties that use this data type: {{cssxref("background-blend-mode")}}, {{cssxref("mix-blend-mode")}}
 
 Description to various blend modes on other website:

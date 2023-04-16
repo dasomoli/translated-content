@@ -1,69 +1,79 @@
 ---
 title: border-spacing
 slug: Web/CSS/border-spacing
+page-type: css-property
+browser-compat: css.properties.border-spacing
 ---
 
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`border-spacing`** 속성은 인접한 표 칸의 테두리 간격을 지정합니다. {{cssxref("border-collapse")}}가 `separate`여야 적용됩니다.
+The **`border-spacing`** [CSS](/en-US/docs/Web/CSS) property sets the distance between the borders of adjacent cells in a {{htmlelement("table")}}. This property applies only when {{cssxref("border-collapse")}} is `separate`.
 
 {{EmbedInteractiveExample("pages/css/border-spacing.html")}}
 
-`border-spacing` 값은 표 전체의 테두리에도 적용되므로, 표 테두리와 첫 번째 및 마지막 행/열에 속하는 칸 사이 거리는 (가로/세로) `border-spacing` 값과 표에 적용한 (상/우/하/좌) {{cssxref("padding")}} 값의 합이 됩니다.
+The `border-spacing` value is also used along the outside edge of the table, where the distance between the table's border and the cells in the first/last column or row is the sum of the relevant (horizontal or vertical) `border-spacing` and the relevant (top, right, bottom, or left) {{cssxref("padding")}} on the table.
 
-> **참고:** `border-spacing` 속성은 {{htmlelement("table")}}에서 이제 사용하지 않는 `cellspacing` 특성에 대응하지만, 추가로 두 번째 값을 지정해 가로와 세로 값을 각각 설정할 수 있다는 차이점이 있습니다.
+> **Note:** The `border-spacing` property is equivalent to the deprecated `cellspacing` attribute of the `<table>` element, except that `border-spacing` has an optional second value that can be used to set different horizontal and vertical spacing.
 
-## 구문
+## Syntax
 
-```
+```css
 /* <length> */
 border-spacing: 2px;
 
-/* 가로 <length> | 세로 <length> */
+/* horizontal <length> | vertical <length> */
 border-spacing: 1cm 2em;
 
-/* 전역 값 */
+/* Global values */
 border-spacing: inherit;
 border-spacing: initial;
+border-spacing: revert;
+border-spacing: revert-layer;
 border-spacing: unset;
 ```
 
-`border-spacing` 값은 하나 또는 두 개의 값을 사용해 지정합니다.
+The `border-spacing` property may be specified as either one or two values.
 
-- **한 개**의 `<length>` 값을 지정하면 칸 사이의 가로와 세로 두 간격 모두 설정합니다.
-- 두 개의 `<length>` 값을 지정하면, 첫 번째 값은 칸 사이의 가로 간격(각 열의 간격), 두 번째 값은 칸 사이의 세로 간격(각 행의 간격)을 설정합니다.
+- When **one** `<length>` value is specified, it defines both the horizontal and vertical spacings between cells.
+- When **two** `<length>` values are specified, the first value defines the horizontal spacing between cells (i.e., the space between cells in adjacent _columns_), and the second value defines the vertical spacing between cells (i.e., the space between cells in adjacent _rows_).
 
-### 값
+### Values
 
 - {{cssxref("&lt;length&gt;")}}
-  - : 간격의 크기로 지정할 길이입니다.
+  - : The size of the spacing as a fixed value.
 
-## 형식 정의
+## Formal definition
 
-{{cssinfo}}
+{{CSSInfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 칸 간격과 안쪽 여백
+### Spacing and padding table cells
 
-다음 예제는 칸 사이에 세로 간격 `0.5em`과 가로 간격 `1em`을 배치합니다. 표의 테두리를 따라가면서, `padding` 값이 `border-spacing`과 어떻게 작용하는지 살펴보세요.
+This example applies a spacing of `.5em` vertically and `1em` horizontally between a table's cells. Note how, along its outside edges, the table's `padding` values are added to its `border-spacing` values.
 
 #### HTML
 
 ```html
 <table>
   <tr>
-    <td>1</td><td>2</td><td>3</td>
+    <td>1</td>
+    <td>2</td>
+    <td>3</td>
   </tr>
   <tr>
-    <td>4</td><td>5</td><td>6</td>
+    <td>4</td>
+    <td>5</td>
+    <td>6</td>
   </tr>
   <tr>
-    <td>7</td><td>8</td><td>9</td>
+    <td>7</td>
+    <td>8</td>
+    <td>9</td>
   </tr>
 </table>
 ```
@@ -86,19 +96,19 @@ td {
 }
 ```
 
-#### 결과
+#### Result
 
-{{ EmbedLiveSample('예제', 400, 200) }}
+{{ EmbedLiveSample('Spacing_and_padding_table_cells', 400, 200) }}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{cssxref("border-collapse")}}, {{cssxref("border-style")}}
-- `border-spacing` 속성은 {{htmlelement("table")}} HTML 요소의 외관을 수정합니다.
+- The `border-spacing` property alters the appearance of the {{htmlelement("table")}} HTML element.

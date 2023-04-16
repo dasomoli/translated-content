@@ -1,46 +1,232 @@
 ---
-title: Navigator.share
+title: "Navigator: share() method"
+short-title: share()
 slug: Web/API/Navigator/share
+page-type: web-api-instance-method
+browser-compat: api.Navigator.share
 ---
 
-{{APIRef("HTML DOM")}}{{SeeCompatTable}}
+{{APIRef("Web Share API")}}{{securecontext_header}}
 
-**`Navigator.share()`** 메소드는 Web Share API 의 부분으로서 디바이스의 네이티브 공유하기 메커니즘을 작동시킨다. Web Share API 가 지원되지 않는다면, 이 메소드는 `undefined` 일 것이다.
+The **`navigator.share()`** method of the [Web Share API](/en-US/docs/Web/API/Web_Share_API) invokes the native sharing mechanism of the device to share data such as text, URLs, or files. The available _share targets_ depend on the device, but might include the clipboard, contacts and email applications, websites, Bluetooth, etc.
+
+The method resolves a {{jsxref("Promise")}} with `undefined`.
+On Windows this happens when the share popup is launched, while on Android the promise resolves once the data has successfully been passed to the _share target_.
 
 ## Syntax
 
-```js
-var sharePromise = window.navigator.share(data);
+```js-nolint
+navigator.share(data)
 ```
 
 ### Parameters
 
-- _data_
-  - : 공유할 데이터가 담긴 객체. 아래의 필드들 중 적어도 하나는 명시되어야 한다. 사용 가능한 옵션들은:
-- `url`: 공유될 URL을 나타내는 {{domxref("USVString")}}.
-- `text`: 공유될 본문을 나타내는 {{domxref("USVString")}}.
-- `title`: 공유될 제목을 나타내는 {{domxref("USVString")}}.
+- `data`
+
+  - : An object containing data to share.
+
+    Properties that are unknown to the user agent are ignored; share data is only assessed on properties understood by the user agent.
+    All properties are optional but at least one known data property must be specified.
+
+    Possible values are:
+
+    - `url`: A string representing a URL to be shared.
+    - `text`: A string representing text to be shared.
+    - `title`: A string representing a title to be shared. May be ignored by the target.
+    - `files`: An array of {{domxref("File")}} objects representing files to be shared. See [below](#shareable_file_types) for shareable file types.
 
 ### Return value
 
-사용자가 공유하기 액션을 완료하면 resolve 될 {{domxref("Promise")}}. _data_ 파라메터가 정확하게 명시되지 않는다면 즉시 reject 될 것이다.
+A {{jsxref("Promise")}} that resolves with `undefined`, or rejected with one of the [Exceptions](#exceptions) given below.
 
-예를 들어, 안드로이드용 크롬에서 반환되는 `Promise` 는 사용자가 공유할 애플리케이션을 선택한 후에 resolve 될 것이다.
+### Exceptions
+
+The {{jsxref("Promise")}} may be rejected with one of the following `DOMException` values:
+
+- `NotAllowedError` {{domxref("DOMException")}}
+  - : A `web-share` [Permissions Policy](/en-US/docs/Web/HTTP/Permissions_Policy) has been used to block the use of this feature, the window does not have {{Glossary("transient activation")}}, or a file share is being blocked due to security considerations.
+- {{jsxref("TypeError")}}
+
+  - : The specified share data cannot be validated. Possible reasons include:
+
+    - The `data` parameter was omitted completely or only contains properties with unknown values. Note that any properties that are not recognized by the user agent are ignored.
+    - A URL is badly formatted.
+    - Files are specified but the implementation does not support file sharing.
+    - Sharing the specified data would be considered a "hostile share" by the user-agent.
+
+- `AbortError` {{domxref("DOMException")}}
+  - : The user canceled the share operation or there are no share targets available.
+- `DataError` {{domxref("DOMException")}}
+  - : There was a problem starting the share target or transmitting the data.
+
+## Shareable file types
+
+The following is a list of usually shareable file types. However, you should always test with {{domxref("navigator.canShare()")}} if sharing would succeed.
+
+- Application
+  - `.pdf` - `application/pdf`
+- Audio
+  - `.flac` - `audio/flac`
+  - `.m4a` - `audio/x-m4a`
+  - `.mp3` - `audio/mpeg` (also accepts `audio/mp3`)
+  - `.oga` - `audio/ogg`
+  - `.ogg` - `audio/ogg`
+  - `.opus` - `audio/ogg`
+  - `.wav` - `audio/wav`
+  - `.weba` - `audio/webm`
+- Image
+  - `.avif` - `image/avif`
+  - `.bmp` - `image/bmp`
+  - `.gif` - `image/gif`
+  - `.ico` - `image/x-icon`
+  - `.jfif` - `image/jpeg`
+  - `.jpeg` - `image/jpeg`
+  - `.jpg` - `image/jpeg`
+  - `.pjp` - `image/jpeg`
+  - `.pjpeg` - `image/jpeg`
+  - `.png` - `image/png`
+  - `.svg` - `image/svg+xml`
+  - `.svgz` - `image/svg+xml`
+  - `.tif` - `image/tiff`
+  - `.tiff` - `image/tiff`
+  - `.webp` - `image/webp`
+  - `.xbm` - `image/x-xbitmap`
+- Text
+  - `.css` - `text/css`
+  - `.csv` - `text/csv`
+  - `.ehtml` - `text/html`
+  - `.htm` - `text/html`
+  - `.html` - `text/html`
+  - `.shtm` - `text/html`
+  - `.shtml` - `text/html`
+  - `.text` - `text/plain`
+  - `.txt` - `text/plain`
+- Video
+  - `.m4v` - `video/mp4`
+  - `.mp4` - `video/mp4`
+  - `.mpeg` - `video/mpeg`
+  - `.mpg` - `video/mpeg`
+  - `.ogm` - `video/ogg`
+  - `.ogv` - `video/ogg`
+  - `.webm` - `video/webm`
+
+## Security
+
+This method requires that the current document have the [web-share](/en-US/docs/Web/HTTP/Headers/Permissions-Policy/web-share) Permissions Policy and {{Glossary("transient activation")}}. (It must be triggered off a UI event like a button click and cannot be launched at arbitrary points by a script.) Further, the method must specify valid data that is supported for sharing by the native implementation.
 
 ## Examples
 
-```js
-navigator.share({
-  title: document.title,
-  text: 'Hello World',
-  url: 'https://developer.mozilla.org',
-}); // share the URL of MDN
+### Sharing a URL
+
+The example below shows a button click invoking the Web Share API to share MDN's URL.
+This is taken from our [Web share test](https://mdn.github.io/dom-examples/web-share/) ([see the source code](https://github.com/mdn/dom-examples/blob/main/web-share/index.html)).
+
+#### HTML
+
+The HTML just creates a button to trigger the share, and a paragraph in which to display the result of the test.
+
+```html
+<p><button>Share MDN!</button></p>
+<p class="result"></p>
 ```
 
-## 명세서
+#### JavaScript
+
+```js
+const shareData = {
+  title: "MDN",
+  text: "Learn web development on MDN!",
+  url: "https://developer.mozilla.org",
+};
+
+const btn = document.querySelector("button");
+const resultPara = document.querySelector(".result");
+
+// Share must be triggered by "user activation"
+btn.addEventListener("click", async () => {
+  try {
+    await navigator.share(shareData);
+    resultPara.textContent = "MDN shared successfully";
+  } catch (err) {
+    resultPara.textContent = `Error: ${err}`;
+  }
+});
+```
+
+#### Result
+
+Click the button to launch the share dialog on your platform. Text will appear below the button to indicate whether the share was successful or provide an error code.
+
+{{EmbedLiveSample('Sharing a URL')}}
+
+### Sharing files
+
+To share files, first test for and call {{domxref("navigator.canShare()")}}. Then include the list of files in the call to `navigator.share()`.
+
+#### HTML
+
+```html
+<div>
+  <label for="files">Select images to share:</label>
+  <input id="files" type="file" accept="image/*" multiple />
+</div>
+<button id="share" type="button">Share your images!</button>
+<output id="output"></output>
+```
+
+#### JavaScript
+
+Note that the data object passed to the `navigator.canShare()` only includes the `files` property, as the `title` and `text` shouldn't matter.
+
+```js
+const input = document.getElementById("files");
+const output = document.getElementById("output");
+
+document.getElementById("share").addEventListener("click", async () => {
+  const files = input.files;
+
+  if (files.length === 0) {
+    output.textContent = "No files selected.";
+    return;
+  }
+
+  // feature detecting navigator.canShare() also implies
+  // the same for the navigator.share()
+  if (!navigator.canShare) {
+    output.textContent = `Your browser doesn't support the Web Share API.`;
+    return;
+  }
+
+  if (navigator.canShare({ files })) {
+    try {
+      await navigator.share({
+        files,
+        title: "Images",
+        text: "Beautiful images",
+      });
+      output.textContent = "Shared!";
+    } catch (error) {
+      output.textContent = `Error: ${error.message}`;
+    }
+  } else {
+    output.textContent = `Your system doesn't support sharing these files.`;
+  }
+});
+```
+
+#### Result
+
+{{EmbedLiveSample('Sharing files')}}
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- {{domxref("navigator.canShare()")}}
+- <https://wpt.live/web-share/> (web platform tests)

@@ -1,120 +1,158 @@
 ---
-title: AudioNode.connect()
+title: "AudioNode: connect() method"
+short-title: connect()
 slug: Web/API/AudioNode/connect
+page-type: web-api-instance-method
+browser-compat: api.AudioNode.connect
 ---
+
 {{ APIRef("Web Audio API") }}
 
-{{ domxref("AudioNode") }} 인터페이스의 `connect()` 메서드는 노드의 출력 중 하나를 목표에 연결할 수 있게 하는데, 이 목표는 다른 `AudioNode` 일 수도 있고 (이렇게 함으로써 사운드 데이터를 명시된 노드로 향하게 합니다) {{domxref("AudioParam")}} 일 수도 있습니다 (이 경우 노드의 출력 데이터가 자동적으로 시간에 따라 그 파라미터의 값을 변화시키기 위해 사용됩니다).
+The `connect()` method of the {{ domxref("AudioNode") }} interface lets
+you connect one of the node's outputs to a target, which may be either another
+`AudioNode` (thereby directing the sound data to the specified node) or an
+{{domxref("AudioParam")}}, so that the node's output data is automatically used to
+change the value of that parameter over time.
 
-## 구문
+## Syntax
 
-```js
-var destinationNode = AudioNode.connect(destination, outputIndex, inputIndex);
-
-AudioNode.connect(destination, outputIndex);
+```js-nolint
+connect(destination)
+connect(destination, outputIndex)
+connect(destination, outputIndex, inputIndex)
 ```
 
-### 매개변수
+### Parameters
 
 - `destination`
-  - : 연결할 {{domxref("AudioNode")}} 또는 {{domxref("AudioParam")}}.
+  - : The {{domxref("AudioNode")}} or {{domxref("AudioParam")}} to which to connect.
 - `outputIndex` {{optional_inline}}
-  - : 현재 `AudioNode`의 어떤 출력이 목적지에 연결될 지 명시하는 인덱스. 인덱스 숫자는 출력 채널의 수에 따라 정의됩니다 ([오디오 채널](/ko/docs/Web/API/Web_Audio_API/Basic_concepts_behind_Web_Audio_API#audio_channels)을 참고해 보세요). 주어진 출력을 주어진 입력에 단 한 번 연결할 수 있는 반면 (반복된 시도는 무시됩니다), `connect()` 를 반복적으로 호출함으로써 다수의 입력에 하나의 출력을 연결할 수 있습니다. 이는 [팬 아웃](/ko/docs/Web/API/Web_Audio_API/Basic_concepts_behind_Web_Audio_API#fan-in_and_fan-out)을 가능케 합니다. 기본값은 0입니다.
+  - : An index specifying which output of the current `AudioNode` to connect to
+    the destination. The index numbers are defined according to the number of output
+    channels (see [Audio channels](/en-US/docs/Web/API/Web_Audio_API/Basic_concepts_behind_Web_Audio_API#audio_channels)).
+    While you can only connect a given output to a given input once
+    (repeated attempts are ignored), you can connect an output to multiple inputs by
+    calling `connect()` repeatedly. This makes [fan-out](/en-US/docs/Web/API/Web_Audio_API/Basic_concepts_behind_Web_Audio_API#fan-in_and_fan-out)
+    possible. The default value is 0.
 - `inputIndex` {{optional_inline}}
-  - : 현재 `AudioNode`를 목적지의 어떤 입력에 연결할지를 기술하는 인덱스. 기본값은 0입니다. 인덱스 숫자는 입력 채널의 수에 따라 정의됩니다 ([오디오 채널](/ko/docs/Web/API/Web_Audio_API/Basic_concepts_behind_Web_Audio_API#audio_channels)을 참고해 보세요). 한 `AudioNode`를 다른 `AudioNode`에 연결해, 차례로 연결되어 첫번째 `AudioNode`로 돌아오는 사이클을 만드는 것은 가능합니다.
+  - : An index describing which input of the destination you want to connect the current
+    `AudioNode` to; the default is 0. The index numbers are defined according
+    to the number of input channels
+    (see [Audio channels](/en-US/docs/Web/API/Web_Audio_API/Basic_concepts_behind_Web_Audio_API#audio_channels)). It is possible to connect an `AudioNode` to another
+    `AudioNode`, which in turn connects back to the first
+    `AudioNode`, creating a cycle.
 
-### 반환 값
+### Return value
 
-만약 목적지가 노드라면, `connect()` 는 목적지 {{domxref("AudioNode")}} 객체에 대한 참조를 반환하며, 다수의 `connect()` 호출을 연쇄할 수 있게 합니다. 몇몇 브라우저에서, 이 인터페이스의 오래된 구현은 {{jsxref("undefined")}}를 반환합니다.
+If the destination is a node, `connect()` returns a reference to the
+destination {{domxref("AudioNode")}} object, allowing you to chain multiple
+`connect()` calls. In some browsers, older implementations of this interface
+return {{jsxref("undefined")}}.
 
-만약 목적지가 `AudioParam` 이라면, `connect()` 는 `undefined` 를 반환합니다.
+If the destination is an `AudioParam`, `connect()` returns
+`undefined`.
 
-### 예외
+### Exceptions
 
 - `IndexSizeError` {{domxref("DOMException")}}
-  - : 만약 `outputIndex` 혹은 `inputIndex` 로 명시된 값이 존재하는 입력 혹은 출력에 일치하지 않는다면 발생됩니다.
+  - : Thrown if the value specified as `outputIndex` or `inputIndex` doesn't correspond to an existing input or output.
 - `InvalidAccessError` {{domxref("DOMException")}}
-  - : 만약 목적지 노드가 소스 노드로서 같은 오디오 컨텍스트의 일부가 아니라면 발생됩니다.
+  - : Thrown if the destination node is not part of the same audio context as the source node.
 - `NotSupportedError` {{domxref("DOMException")}}
-  - : 만약 명시된 연결이 (오디오가 같은 노드들을 반복적으로 순환하는) 사이클을 형성하고 결과 파형이 같은 오디오 프레임을 무기한으로 생성해 멈추는 일을 방지하기 위한 {{domxref("DelayNode")}} 객체가 사이클에 없다면 발생됩니다. 또한 만약 목적지가 {{domxref("AudioParam")}}일 때 `inputIndex` 매개변수가 사용된 경우 발생됩니다.
+  - : Thrown if the specified connection would create a cycle (in which the audio loops back through
+    the same nodes repeatedly) and there are no {{domxref("DelayNode")}} objects in the cycle to
+    prevent the resulting waveform from getting stuck constructing the same audio frame
+    indefinitely. Also thrown if the `inputIndex` parameter is used while the destination is an {{domxref("AudioParam")}}.
 
-## 예제
+## Examples
 
-### 오디오 입력에 연결하기
+### Connecting to an audio input
 
-`connect()` 메서드의 가장 분명한 용도는 이후의 프로세싱을 위해 하나의 노드로부터 다른 노드의 오디오 입력에 오디오 출력을 보내는 것입니다. 예를 들어, {{domxref("MediaElementAudioSourceNode")}}으로부터, 즉 {{HTMLElement("audio")}}와 같은 HTML 미디어 요소로부터 스피커에 오디오를 보내기 전에 노이즈를 줄이기 위해 {{domxref("BiquadFilterNode")}}를 사용하여 구현된 밴드 패스 필터를 통해 오디오를 전송할 수 있습니다.
+The most obvious use of the `connect()` method is to direct the audio output
+from one node into the audio input of another node for further processing. For example,
+you might send the audio from a {{domxref("MediaElementAudioSourceNode")}}—that is, the
+audio from an HTML media element such as {{HTMLElement("audio")}}—through a band pass
+filter implemented using a {{domxref("BiquadFilterNode")}} to reduce noise before then
+sending the audio along to the speakers.
 
-아래의 예제는 오실레이터를 생성하고, 오실레이터를 gain 노드에 연결해, gain 노드가 오실레이터 노드의 볼륨을 제어하도록 합니다.
+This example creates an oscillator, then links it to a gain node, so that the gain node
+controls the volume of the oscillator node.
 
 ```js
-var AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioContext();
 
-var audioCtx = new AudioContext();
-
-var oscillator = audioCtx.createOscillator();
-var gainNode = audioCtx.createGain();
+const oscillator = audioCtx.createOscillator();
+const gainNode = audioCtx.createGain();
 
 oscillator.connect(gainNode);
 gainNode.connect(audioCtx.destination);
 ```
 
-### AudioParam 예제
+### AudioParam example
 
-이 예제에서, 우리는 낮은 주파수 값을 가진 {{domxref("OscillatorNode")}}를 사용해 {{domxref("GainNode")}}의 gain 값을 변화시킬 것입니다. 이 기법은 **LFO**에 의해 제어되는 파라미터로 알려져 있습니다.
+In this example, we will be altering the gain value of a {{domxref("GainNode")}} using
+an {{domxref("OscillatorNode")}} with a slow frequency value. This technique is know as
+an _LFO_-controlled parameter.
 
 ```js
-var AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioContext();
 
-var audioCtx = new AudioContext();
+// create an normal oscillator to make sound
+const oscillator = audioCtx.createOscillator();
 
-// 소리를 만들기 위해 일반적인 오실레이터를 생성합니다
-var oscillator = audioCtx.createOscillator();
+// create a second oscillator that will be used as an LFO (Low-frequency
+// oscillator), and will control a parameter
+const lfo = audioCtx.createOscillator();
 
-// LFO (Low-frequency oscillator, 저주파 오실레이터) 로써 사용되고,
-// 파라미터를 제어할 두 번째 오실레이터를 생성합니다
-var lfo = audioCtx.createOscillator();
+// set the frequency of the second oscillator to a low number
+lfo.frequency.value = 2.0; // 2Hz: two oscillations per second
 
-// 두 번째 오실레이터의 주파수를 낮은 수로 설정합니다
-lfo.frequency.value = 2.0; // 2Hz: 초당 두 번의 진동
+// create a gain whose gain AudioParam will be controlled by the LFO
+const gain = audioCtx.createGain();
 
-// gain AudioParam이 LFO에 의해 제어될 gain을 생성합니다
-var gain = audioCtx.createGain();
-
-// LFO를 gain AudioParam에 연결합니다. 이는 LFO의 값이 어떠한 오디오도
-// 생성하지 않지만, gain의 값을 대신 변화시킬 것임을 의미합니다
+// connect the LFO to the gain AudioParam. This means the value of the LFO
+// will not produce any audio, but will change the value of the gain instead
 lfo.connect(gain.gain);
 
-// 오디오를 생성할 오실레이터를 gain에 연결합니다
+// connect the oscillator that will produce audio to the gain
 oscillator.connect(gain);
 
-// gain을 목적지에 연결해 소리가 나오게 합니다
+// connect the gain to the destination so we hear sound
 gain.connect(audioCtx.destination);
 
-// 오디오를 생성할 오실레이터를 시작시킵니다
+// start the oscillator that will produce audio
 oscillator.start();
 
-// gain 값을 조정할 오실레이터를 시작시킵니다
+// start the oscillator that will modify the gain value
 lfo.start();
 ```
 
-#### AudioParam 사용 일람
+#### AudioParam notes
 
-`AudioNode` 출력을 하나 이상의 {{
-  domxref("AudioParam") }}에 연결하는 것은 가능하고, 하나 이상의 AudioNode 출력을 하나의 {{
-  domxref("AudioParam") }}에 다수의 `connect()` 호출과 함께 연결하는 것은 가능합니다. 그러므로 [팬 인과 팬 아웃](/ko/docs/Web/API/Web_Audio_API/Basic_concepts_behind_Web_Audio_API#fan-in_and_fan-out)이 지원됩니다.
+It is possible to connect an `AudioNode` output to more than one {{
+  domxref("AudioParam") }}, and more than one AudioNode output to a single {{
+  domxref("AudioParam") }}, with multiple calls to `connect()`. [Fan-in and fan-out](/en-US/docs/Web/API/Web_Audio_API/Basic_concepts_behind_Web_Audio_API#fan-in_and_fan-out) are therefore supported.
 
-{{ domxref("AudioParam") }}은 자신에게 연결된 모든 `AudioNode` 출력으로부터 렌더링된 오디오 데이터를 취하고 그 데이터를 [다운 믹싱](/ko/docs/Web/API/Web_Audio_API/Basic_concepts_behind_Web_Audio_API#up-mixing_and_down-mixing)함으로써 모노로 변환합니다 (만약 데이터가 이미 모노가 아니라면). 다음으로, {{ domxref("AudioParam") }}은 그 데이터를 그러한 다른 출력들과, 고유한 파라미터 값과 함께 섞을 것입니다. (고유한 파라미터 값이란 {{ domxref("AudioParam") }}이 보통 어떠한 오디오 연결 없이 가지는 값이며, 이는 이 파라미터에 예정된 모든 타임라인 변화를 포함합니다.)
+An {{ domxref("AudioParam") }} will take the rendered audio data from any
+`AudioNode` output connected to it and convert it to mono by [down-mixing](/en-US/docs/Web/API/Web_Audio_API/Basic_concepts_behind_Web_Audio_API#up-mixing_and_down-mixing)
+(if it is not already mono). Next, it will mix it together with any other such outputs,
+and the intrinsic parameter value (the value the {{ domxref("AudioParam") }} would
+normally have without any audio connections), including any timeline changes scheduled
+for the parameter.
 
-그러므로, {{domxref("AudioParam")}}의 값을 중심 주파수로 설정함으로써 {{domxref("AudioParam")}}이 변화할 범위를 선택하는 것은 가능하고, {{domxref("AudioParam")}} 변화의 범위를 조정하기 위해 오디오 소스와 {{domxref("AudioParam")}} 사이에서 {{domxref("GainNode")}}를 사용하는 것은 가능합니다.
+Therefore, it is possible to choose the range in which an {{domxref("AudioParam")}}
+will change by setting the value of the {{domxref("AudioParam")}} to the central
+frequency, and to use a {{domxref("GainNode")}} between the audio source and the
+{{domxref("AudioParam")}} to adjust the range of the {{domxref("AudioParam")}} changes.
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Web Audio API 사용하기](/ko/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)
+- [Using the Web Audio API](/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)

@@ -1,13 +1,15 @@
 ---
 title: flex-grow
 slug: Web/CSS/flex-grow
+page-type: css-property
+browser-compat: css.properties.flex-grow
 ---
 
 {{CSSRef}}
 
-**`flex-grow`** [CSS](/ko/docs/Web/CSS) property 는 `flex-item` 요소가, `flex-container` 요소 내부에서 할당 가능한 공간의 정도를 선언합니다. 만약 **형제 요소**로 렌더링 된 모든 `flex-item` 요소들이 동일한 `flex-grow` 값을 갖는다면, `flex-container` 내부에서 동일한 공간을 할당받습니다. 하지만 `flex-grow` 값으로 다른 소수값을 지정한다면, 그에 따라 다른 공간값을 나누어 할당받게 됩니다.
+The **`flex-grow`** [CSS](/en-US/docs/Web/CSS) property sets the flex grow factor, which specifies how much of the flex container's remaining space should be assigned to the flex item's [main size](https://www.w3.org/TR/css-flexbox/#main-size).
 
-보통 `flex-grow`를 사용할땐, {{ Cssxref("flex-shrink") }}, {{ Cssxref("flex-basis") }} 속성을 함께 사용합니다. 그리고 일반적으로는 모든 값이 설정되었음을 보장하기 위하여 {{ Cssxref("flex") }} 속성을 이용해 **축약형**으로 사용합니다.
+When the flex-container's main size is larger than the combined main size's of the flex items, the extra space is distributed among the flex items, with each item growth being their growth factor value as a proportion of the sum total of all the container's items' flex grow factors.
 
 {{EmbedInteractiveExample("pages/css/flex-grow.html")}}
 
@@ -21,38 +23,58 @@ flex-grow: 0.6;
 /* Global values */
 flex-grow: inherit;
 flex-grow: initial;
+flex-grow: revert;
+flex-grow: revert-layer;
 flex-grow: unset;
 ```
 
-`flex-grow` 속성에 대한 값은 [`<number>`](#number) 단독으로 표현합니다.
+The `flex-grow` property is specified as a single `<number>`.
 
 ### Values
 
 - `<number>`
-  - : 관련 링크를 참고하세요. {{cssxref("&lt;number&gt;")}}. 단, 음수값은 허용되지 않습니다.
+  - : See {{cssxref("&lt;number&gt;")}}. Negative values are invalid. Defaults to 0.
 
-### Formal syntax
+## Description
+
+This property specifies how much of the remaining space in the flex container should be assigned to the item (the flex grow factor).
+
+The [main size](https://www.w3.org/TR/css-flexbox/#main-size) is either width or height of the item which is dependent on the {{cssxref("flex-direction")}} value.
+
+The remaining space is the size of the flex container minus the size of all flex items' sizes together. If all sibling items have the same flex grow factor, then all items will receive the same share of remaining space, otherwise it is distributed according to the ratio defined by the different flex grow factors.
+
+`flex-grow` is used alongside the other flex properties {{cssxref("flex-shrink")}} and {{cssxref("flex-basis")}}, and normally defined using the {{cssxref("flex")}} shorthand to ensure all values are set.
+
+## Formal definition
+
+{{cssinfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## Example
+## Examples
 
-### HTML
+### Setting flex item grow factor
+
+In this example, there is a total of 8 growth factors distributed among the 6 flex items, meaning each growth factor is 12.5% of the remaining space.
+
+#### HTML
 
 ```html
 <h4>This is a Flex-Grow</h4>
 <h5>A,B,C and F are flex-grow:1 . D and E are flex-grow:2 .</h5>
 <div id="content">
-  <div class="box" style="background-color:red;">A</div>
-  <div class="box" style="background-color:lightblue;">B</div>
-  <div class="box" style="background-color:yellow;">C</div>
-  <div class="box1" style="background-color:brown;">D</div>
-  <div class="box1" style="background-color:lightgreen;">E</div>
-  <div class="box" style="background-color:brown;">F</div>
+  <div class="small" style="background-color:red;">A</div>
+  <div class="small" style="background-color:lightblue;">B</div>
+  <div class="small" style="background-color:yellow;">C</div>
+  <div class="double" style="background-color:brown;">D</div>
+  <div class="double" style="background-color:lightgreen;">E</div>
+  <div class="small" style="background-color:brown;">F</div>
 </div>
 ```
 
-### CSS
+#### CSS
 
 ```css
 #content {
@@ -63,33 +85,33 @@ flex-grow: unset;
   align-items: stretch;
 }
 
-.box {
+.small {
   flex-grow: 1;
-  border: 3px solid rgba(0,0,0,.2);
+  border: 3px solid rgba(0, 0, 0, 0.2);
 }
 
-.box1 {
+.double {
   flex-grow: 2;
-  border: 3px solid rgba(0,0,0,.2);
+  border: 3px solid rgba(0, 0, 0, 0.2);
 }
 ```
 
-### Result
+#### Result
 
-{{EmbedLiveSample('Example', '700px', '300px', '', 'Web/CSS/flex-grow')}}
+{{EmbedLiveSample('Setting flex item grow factor')}}
 
-## 명세서
+When the six flex items are distributed along the container's main axis, if the sum of the main content of those flex items is less than the size of the container's main axis, the extra space is distributed among the size flex items, with A, B, C, and F, each getting 12.5% of the remaining space and D and E each getting 25% of the extra space.
+
+## Specifications
 
 {{Specifications}}
 
-{{cssinfo}}
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- CSS Flexbox Guide: _[Basic Concepts of Flexbox](/ko/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox)_
-- CSS Flexbox Guide: _[Controlling Ratios of flex items along the main axis](/ko/docs/Web/CSS/CSS_Flexible_Box_Layout/Controlling_Ratios_of_Flex_Items_Along_the_Main_Ax)_
-- [\`flex-grow\` is weird. Or is it?](https://css-tricks.com/flex-grow-is-weird/) article by Manuel Matuzovic on CSS-Tricks, which illustrates how flex-grow works
+- CSS Flexbox Guide: _[Basic Concepts of Flexbox](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox)_
+- CSS Flexbox Guide: _[Controlling Ratios of flex items along the main axis](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Controlling_Ratios_of_Flex_Items_Along_the_Main_Ax)_
+- [`flex-grow` is weird. Or is it?](https://css-tricks.com/flex-grow-is-weird/) article by Manuel Matuzovic on CSS-Tricks, which illustrates how flex-grow works

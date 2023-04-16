@@ -1,51 +1,73 @@
 ---
-title: Storage.removeItem()
+title: "Storage: removeItem() method"
+short-title: removeItem()
 slug: Web/API/Storage/removeItem
+page-type: web-api-instance-method
+browser-compat: api.Storage.removeItem
 ---
 
 {{APIRef("Web Storage API")}}
 
-{{domxref("Storage")}} 인터페이스의 removeItem() 메소드에 키 이름을 파라미터로 전달하면 스토리지에서 해당 키를 삭제합니다.
+The **`removeItem()`** method of the {{domxref("Storage")}}
+interface, when passed a key name, will remove that key from the given
+`Storage` object if it exists.
+The **`Storage`** interface of the [Web Storage API](/en-US/docs/Web/API/Web_Storage_API) provides access to a
+particular domain's session or local storage.
 
-## 문법
+If there is no item associated with the given key, this method will do nothing.
 
-```js
-storage.removeItem(keyName);
+## Syntax
+
+```js-nolint
+removeItem(keyName)
 ```
 
-### 파라미터
+### Parameters
 
-- _**keyName**_
-  - : 삭제하고자 하는 키 이름({{domxref("DOMString")}}).
+- `keyName`
+  - : A string containing the name of the key you want to remove.
 
-### 반환값
+### Return value
 
-_반환값 없음._
+None ({{jsxref("undefined")}}).
 
-## 예제
+## Examples
 
-아래의 함수는 로컬 스토리지에 3 개의 데이터 아이템을 생성한 후 그 중 하나를 삭제합니다.
+The following function creates three data items inside local storage, then removes the
+`image` data item.
 
 ```js
 function populateStorage() {
-  localStorage.setItem('bgcolor', 'red');
-  localStorage.setItem('font', 'Helvetica');
-  localStorage.setItem('image', 'myCat.png');
+  localStorage.setItem("bgcolor", "red");
+  localStorage.setItem("font", "Helvetica");
+  localStorage.setItem("image", "myCat.png");
 
-  localStorage.removeItem('image');
+  localStorage.removeItem("image");
 }
 ```
 
-> **참고:** 실 사용 예제는 [Web Storage Demo](https://github.com/mdn/web-storage-demo)를 참고하시기 바랍니다.
+We can do the same for the session storage.
 
-## 명세서
+```js
+function populateStorage() {
+  sessionStorage.setItem("bgcolor", "red");
+  sessionStorage.setItem("font", "Helvetica");
+  sessionStorage.setItem("image", "myCat.png");
+
+  sessionStorage.removeItem("image");
+}
+```
+
+> **Note:** To see this used within a real-world example, see our [Web Storage Demo](https://mdn.github.io/dom-examples/web-storage/).
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-[Web Storage API 사용하기](/ko/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API)
+[Using the Web Storage API](/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API)

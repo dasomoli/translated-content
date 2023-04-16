@@ -1,124 +1,123 @@
 ---
-title: CSS 에서 항목 크기 조정
+title: Sizing items in CSS
 slug: Learn/CSS/Building_blocks/Sizing_items_in_CSS
 ---
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/CSS/Building_blocks/Values_and_units", "Learn/CSS/Building_blocks/Images_media_form_elements", "Learn/CSS/Building_blocks")}}
 
-지금까지 다양한 수업에서는 CSS 를 사용하여 웹 페이지의 항목 크기를 조정하는 여러가지 방법을 살펴 보았습니다. 디자인의 다양한 기능이 얼마나 큰지 이해하는 것이 중요하며, 이 수업에서는 CSS 를 통해 요소의 크기를 결정하는 다양한 방법을 요약하고 크기 조정과 관련하여 향후 도움이 될 몇 가지 용어를 정의합니다.
+In the various lessons so far, you have come across a number of ways to size items on a web page using CSS. Understanding how big the different features in your design will be is important. So, in this lesson we will summarize the various ways elements get a size via CSS and define a few terms about sizing that will help you in the future.
 
-<table class="learn-box standard-table">
+<table>
   <tbody>
     <tr>
-      <th scope="row">전제조건:</th>
+      <th scope="row">Prerequisites:</th>
       <td>
-        <p>
-          기본 컴퓨터 활용 능력,
-          <a
-            href="https://developer.mozilla.org/en-US/Learn/Getting_started_with_the_web/Installing_basic_software"
-            >기본 소프트웨어 설치</a
-          >,
-          <a
-            href="https://developer.mozilla.org/en-US/Learn/Getting_started_with_the_web/Dealing_with_files"
-            >파일 작업</a
-          >
-          에 대한 기본 지식, HTML 기본 사항 (<a
-            href="/en-US/docs/Learn/HTML/Introduction_to_HTML"
-            >HTML 소개</a
-          >
-          학습) 및 , CSS 작동 방식 이해 (<a
-            href="/en-US/docs/Learn/CSS/First_steps"
-            >CSS 첫 번째 단계</a
-          >
-          학습)
-        </p>
+        Basic computer literacy,
+        <a
+          href="/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software"
+          >basic software installed</a
+        >, basic knowledge of
+        <a
+          href="/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files"
+          >working with files</a
+        >, HTML basics (study
+        <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML"
+          >Introduction to HTML</a
+        >), and an idea of how CSS works (study
+        <a href="/en-US/docs/Learn/CSS/First_steps">CSS first steps</a>.)
       </td>
     </tr>
     <tr>
-      <th scope="row">목적:</th>
-      <td>CSS 로 크기를 조정할 수 있는 다양한 방법 이해하기.</td>
+      <th scope="row">Objective:</th>
+      <td>To understand the different ways we can size things in CSS.</td>
     </tr>
   </tbody>
 </table>
 
-## 사물의 자연적 또는 본질적인 크기
+## The natural or intrinsic size of things
 
-HTML 요소는 CSS 의 영향을 받기 전에 설정한 자연스러운 크기입니다. 간단한 예는 이미지입니다. 이미지는 페이지에 포함된 이미지 파일에 정의된 너비와 높이를 갖습니다. 이 크기는 이미지 자체에서 나오는 — **고유 크기 (intrinsic size)** 로 설명됩니다.
+HTML Elements have a natural size, set before they are affected by any CSS. A straightforward example is an image. An image file contains sizing information, described as its **intrinsic size**. This size is determined by the image _itself_, not by any formatting we happen to apply.
 
-페이지에 이미지를 배치하고 `<img>` 태그 또는 CSS 의 속성을 사용하여 높이와 너비를 변경하지 않으면, 고유 크기를 사용하여 이미지가 표시됩니다. 파일의 범위를 볼 수 있도록 아래 예제의 이미지에 테두리를 지정했습니다.
+If you place an image on a page and do not change its height or width, either by using attributes on the `<img>` tag or else by CSS, it will be displayed using that intrinsic size. We have given the image in the example below a border so that you can see the extent of its size as defined in its file.
 
 {{EmbedGHLiveSample("css-examples/learn/sizing/intrinsic-image.html", '100%', 600)}}
 
-그러나 빈 {{htmlelement("div")}} 에는, 자체 크기가 없습니다. 내용이 없는 HTML 에 {{htmlelement("div")}} 를 추가한 다음 이미지와 마찬가지로 테두리를 지정하면, 페이지에 한 라인이 표시됩니다. 이것은 요소의 접힌 (collapsed) 테두리입니다 — 열려야 할 내용이 없습니다. 아래 예제에서, 이 테두리는 container 의 너비까지 확장됩니다. 이는 블록 레벨 요소이기 때문에 친숙해지기 시작해야 합니다. 내용이 없기 때문에 높이 (또는 블록의 크기) 가 없습니다.
+An empty {{htmlelement("div")}}, on the other hand, has no size of its own. If you add a {{htmlelement("div")}} to your HTML with no content, then give it a border as we did with the image, you will see a line on the page. This is the collapsed border on the element — there is no content to hold it open. In our example below, that border stretches to the width of the container, because it is a block level element, a behavior that should be starting to become familiar to you. It has no height (or size in the block dimension) because there is no content.
 
 {{EmbedGHLiveSample("css-examples/learn/sizing/intrinsic-text.html", '100%', 500)}}
 
-위의 예에서, 빈 요소 안에 텍스트를 추가하십시오. 요소의 높이가 내용에 의해 정의되므로 테두리에 해당 텍스트가 포함됩니다. 따라서 블록 차원에서 이 `<div>` 의 크기는 내용의 크기에서 비롯됩니다. 다시 말하지만, 이것은 요소의 고유 크기입니다 — 크기는 내용에 의해 정의됩니다.
+In the example above, try adding some text inside the empty element. The border now contains that text because the height of the element is defined by the content. Therefore the size of this `<div>` in the block dimension comes from the size of the content. Again, this is the intrinsic size of the element — its size is defined by its content.
 
-## 특정 크기 설정
+## Setting a specific size
 
-물론 디자인의 요소에 특정 크기를 줄 수 있습니다. 요소에 크기가 주어지면 (그리고 그 내용이 그 크기에 맞아야 함) 우리는 이것을 **외적인 크기 (extrinsic size)** 로 지칭합니다. 위의 예에서 `<div>` 를 가져와서 — 구체적인 {{cssxref("width")}} 및 {{cssxref("height")}} 값을 지정할 수 있으며, 이제 어떤 내용이 들어가든 해당 크기를 갖습니다. [overflow 에 대한 이전 수업](/ko/docs/Learn/CSS/Building_blocks/Overflowing_content) 에서 발견한 것처럼 요소에 맞는 공간보다 많은 콘텐츠가 있으면 설정된 높이로 인해 콘텐츠가 overflow 될 수 있습니다.
+We can, of course, give elements in our design a specific size. When a size is given to an element (the content of which then needs to fit into that size) we refer to it as an **extrinsic size**. Take our `<div>` from the example above — we can give it specific {{cssxref("width")}} and {{cssxref("height")}} values, and it will now have that size no matter what content is placed into it. As we discovered in [our previous lesson on overflow](/en-US/docs/Learn/CSS/Building_blocks/Overflowing_content), a set height can cause content to overflow if there is more content than the element has space to fit inside it.
 
 {{EmbedGHLiveSample("css-examples/learn/sizing/height.html", '100%', 600)}}
 
-이 overflow 문제로 인해, 요소의 높이를 길이 또는 백분율로 고정하는 것은 웹에서 매우 신중하게 수행해야 하는 작업입니다.
+Due to this problem of overflow, fixing the height of elements with lengths or percentages is something we need to do very carefully on the web.
 
-### 백분율 사용하기
+### Using percentages
 
-여러 방법으로 백분율은 길이 단위처럼 작동하며, [값과 단위에 대한 수업에서 논의한 것처럼](/ko/docs/Learn/CSS/Building_blocks/Values_and_units#Percentages), 종종 길이와 상호 교환적으로 사용될 수 있습니다. 백분율을 사용하는 경우 백분율이 **_얼마인지_** 알고 있어야 합니다. 다른 container 안에 있는 박스의 경우 자식 박스에 백분율 너비를 지정하면, 부모 container 너비의 백분율이 됩니다.
+In many ways, percentages act like length units, and as we [discussed in the lesson on values and units](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#percentages), they can often be used interchangeably with lengths. When using a percentage you need to be aware what it is a percentage _of_. In the case of a box inside another container, if you give the child box a percentage width it will be a percentage of the width of the parent container.
 
 {{EmbedGHLiveSample("css-examples/learn/sizing/percent-width.html", '100%', 600)}}
 
-백분율을 포함하는 블록의 크기에 대해 결정되기 때문입니다. 백분율이 적용되지 않으면 `<div>` 는 블록 레벨 요소이므로 사용가능한 공간의 100% 를 차지합니다. 너비를 백분율로 지정하면, 일반적으로 채워지는 공간의 백분율이 됩니다.
+This is because percentages resolve against the size of the containing block. With no percentage applied, our `<div>` would take up 100% of the available space, as it is a block level element. If we give it a percentage width, this becomes a percentage of the space it would normally fill.
 
-### 백분율 마진 및 패딩
+### Percentage margins and padding
 
-`margins` 과 `padding` 을 백분율로 설정하면 이상한 동작이 나타날 수 있습니다. 아래 예제에는 박스가 있습니다. 내부 박스에 {{cssxref("margin")}} 을 10% 로, {{cssxref("padding")}} 을 10% 로 지정했습니다. 박스 상단과 하단의 패딩과 마진은 왼쪽과 오른쪽의 마진과 크기가 같습니다.
+If you set `margins` and `padding` as a percentage, you may notice some strange behavior. In the below example we have a box. We have given the inner box a {{cssxref("margin")}} of 10% and a {{cssxref("padding")}} of 10%. The padding and margin on the top and bottom of the box are the same size as the padding and margin on the left and right.
 
-{{EmbedGHLiveSample("css-examples/learn/sizing/percent-mp.html", '100%', 700)}}
+{{EmbedGHLiveSample("css-examples/learn/sizing/percent-mp.html", '100%', 800)}}
 
-예를 들어 상단 및 하단 마진 백분율이 요소 높이의 백분율이고, 왼쪽 및 오른쪽 마진 백분율이 요소 너비의 백분율일 것으로 예상할 수 있습니다. 그러나, 이것은 사실이 아닙니다!
+You might expect for example the percentage top and bottom margins to be a percentage of the element's height, and the percentage left and right margins to be a percentage of the element's width. However, this is not the case!
 
-백분율로 마진 및 패딩을 사용하는 경우, 값은 **인라인 크기 (inline size)** 에서 계산되므로 — horizontal 언어로 작업할 때의 너비입니다. 이 예에서 모든 마진과 패딩은 너비의 10% 입니다. 즉, 박스 전체에 같은 크기의 마진과 패딩을 둘 수 있습니다. 이 방법으로 백분율을 사용하면 기억할 가치가 있습니다.
+When you use margin and padding set in percentages, the value is calculated from the **inline size** of the containing block — therefore the width when working in a horizontal language. In our example, all of the margins and padding are 10% of the width. This means you can have equal-sized margins and padding all around the box. This is a fact worth remembering if you do use percentages in this way.
 
-## min- 및 max- 크기
+## min- and max- sizes
 
-고정된 크기를 주는 것 외에도, CSS 에 요소에 최소 또는 최대 크기를 제공하도록 요청할 수 있습니다. 가변적인 양의 내용을 포함할 수 있는 박스가 있고, **_항상_** 특정 높이 이상이 되도록 하려면, {{cssxref("min-height")}} 속성을 설정할 수 있습니다. 박스는 항상 이 높이 이상이지만, 박스의 최소 높이에 대한 공간보다 더 많은 내용이 있으면 키가 더 커집니다.
+In addition to giving things a fixed size, we can ask CSS to give an element a minimum or a maximum size. If you have a box that might contain a variable amount of content, and you always want it to be _at least_ a certain height, you could set the {{cssxref("min-height")}} property on it. The box will always be at least this height, but will then grow taller if there is more content than the box has space for at its minimum height.
 
-아래 예에서 정의된 높이가 150 픽셀인 두 개의 박스를 볼 수 있습니다. 왼쪽의 박스는 키가 150 픽셀입니다; 오른쪽의 상자에는 더 많은 공간이 필요한 내용이 있으므로, 최소 150 픽셀 이상으로 키가 커졌습니다.
+In the example below you can see two boxes, both with a defined `min-height` of 150 pixels. The box on the left is 150 pixels tall; the box on the right has content that needs more room, and so it has grown taller than 150 pixels.
 
 {{EmbedGHLiveSample("css-examples/learn/sizing/min-height.html", '100%', 800)}}
 
-이는 overflow 를 피하면서 가변적인 양의 콘텐츠를 처리할 때 매우 유용합니다.
+This is very useful for dealing with variable amounts of content while avoiding overflow.
 
-{{cssxref("max-width")}} 의 일반적인 용도는 이미지를 원래 너비로 표시할 공간이 충분하지 않으면 이미지의 크기를 줄이면서, 해당 너비보다 크게되지 않도록 하는것입니다.
+A common use of {{cssxref("max-width")}} is to cause images to scale down if there is not enough space to display them at their intrinsic width while making sure they don't become larger than that width.
 
-예를 들어, 이미지에서 `width: 100%` 를 설정하고 이미지의 고유 (intrinsic) 너비가 container 보다 작으면, 이미지가 강제로 늘어나고 커져 픽셀화되어 나타납니다. 고유 너비가 container 보다 크면 overflow 됩니다. 두 경우 모두 여러분이 원하는 것이 아닙니다.
+As an example, if you were to set `width: 100%` on an image, and its intrinsic width was smaller than its container, the image would be forced to stretch and become larger, causing it to look pixelated.
 
-`max-width: 100%` 를 대신 사용하면, 이미지가 고유 크기보다 작아질 수 있지만, 크기의 100% 에서 멈춥니다.
+If you instead use `max-width: 100%`, and its intrinsic width is smaller than its container, the image will not be forced to stretch and become larger, thus preventing pixelation.
 
-아래 예에서는 동일한 이미지를 두 번 사용했습니다. 첫 번째 이미지에는 `width: 100%` 로 주어졌으며, 그보다 큰 container 에 있으므로 container 너비로 늘어납니다. 두 번째 이미지에는 `max-width: 100%` 로 설정되어 있으므로 container 를 채우기 위해 늘어나지 않습니다. 세 번째 박스에는 동일한 이미지가 다시 포함되며, `max-width: 100%` 로 설정됩니다; 이 경우 박스에 맞게 크기가 어떻게 축소되었는지 확인할 수 있습니다.
+In the example below, we have used the same image three times. The first image has been given `width: 100%` and is in a container which is larger than it, therefore it stretches to the container width. The second image has `max-width: 100%` set on it and therefore does not stretch to fill the container. The third box contains the same image again, also with `max-width: 100%` set; in this case you can see how it has scaled down to fit into the box.
 
 {{EmbedGHLiveSample("css-examples/learn/sizing/max-width.html", '100%', 800)}}
 
-이 기술은 이미지를 반응형으로 만드는 데 사용되므로 더 작은 장치에서 볼 때 이미지가 적절하게 축소됩니다. 그러나 이 기술을 사용하여 실제로 큰 이미지를 로드한 다음 브라우저에서 축소하면 안됩니다. 이미지는 디자인에 표시되는 가장 큰 크기보다 커야합니다. 지나치게 큰 이미지를 다운로드하면, 사이트 속도가 느려질 수 있으며, 데이터 요금제인 경우 더 많은 비용이 발생할 수 있습니다.
+This technique is used to make images _responsive_, so that when viewed on a smaller device they scale down appropriately. You should, however, not use this technique to load really large images and then scale them down in the browser. Images should be appropriately sized to be no larger than they need to be for the largest size they are displayed in the design. Downloading overly large images will cause your site to become slow, and it can cost users more money if they are on a metered connection.
 
-> **참고:** [반응형 이미지 기술](/ko/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images) 에 대해 자세히 알아보십시오.
+> **Note:** Find out more about [responsive image techniques](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images).
 
-## Viewport 단위
+## Viewport units
 
-Viewport — 사이트를 보는 데 사용하는 브라우저에서 페이지의 가시 영역 — 또한 크기가 있습니다. CSS 에는 viewport 의 크기와 관련된 단위가 있습니다 — viewport 너비의 경우 `vw` 단위, viewport 높이의 경우 `vh`. 이 단위를 사용하면 사용자의 viewport 에 상대적인 크기를 지정할 수 있습니다.
+The viewport — which is the visible area of your page in the browser you are using to view a site — also has a size. In CSS we have units which relate to the size of the viewport — the `vw` unit for viewport width, and `vh` for viewport height. Using these units you can size something relative to the viewport of the user.
 
-`1vh` 는 viewport 높이의 1% 와 같고, `1vw` 는 viewport 너비의 1% 와 같습니다. 이 단위를 사용하여 박스 크기 뿐만 아니라, 텍스트도 조정할 수 있습니다. 아래 예에서는 20vh 및 20vw 크기의 박스가 있습니다. 박스에는 문자 `A` 가 포함되어 있으며 {{cssxref("font-size")}} 에 10vh 가 지정되었습니다.
+`1vh` is equal to 1% of the viewport height, and `1vw` is equal to 1% of the viewport width. You can use these units to size boxes, but also text. In the example below we have a box which is sized as 20vh and 20vw. The box contains a letter `A`, which has been given a {{cssxref("font-size")}} of 10vh.
 
 {{EmbedGHLiveSample("css-examples/learn/sizing/vw-vh.html", '100%', 600)}}
 
-**`vh` 및 `vw` 값을 변경하면 박스 또는 글꼴의 크기가 변경됩니다; viewport 크기를 변경하면 viewport 를 기준으로 크기가 조정되므로 크기도 변경됩니다. viewport 크기를 변경할 때 예제 변경 사항을 보려면 크기를 조정할 수 있는 새 브라우저 창에 예제를 로드해야 합니다 (위에 표시된 예제가 포함된 `<iframe>` 이 viewport 임). [예제를 열고](https://mdn.github.io/css-examples/learn/sizing/vw-vh.html), 브라우저 창의 크기를 조정한 후 박스와 텍스트의 크기에 어떤 영향이 있는지 관찰하십시오.**
+**If you change the `vh` and `vw` values this will change the size of the box or font; changing the viewport size will also change their sizes because they are sized relative to the viewport. To see the example change when you change the viewport size you will need to load the example in a new browser window that you can resize (as the embedded `<iframe>` that contains the example shown above is its viewport). [Open the example](https://mdn.github.io/css-examples/learn/sizing/vw-vh.html), resize the browser window, and observe what happens to the size of the box and text.**
 
-viewport 에 따라 크기를 조정하면 디자인에 유용할 수 있습니다. 예를 들어, 전체 콘텐츠 페이지 섹셩을 콘텐츠의 나머지 부분보다 먼저 표시하려면, 페이지의 해당 부분을 100vh 높이로 설정하면 나머지 콘텐츠가 viewport 아래로 밀려서 문서가 스크롤 된 후에만 표시됩니다.
+Sizing things according to the viewport can be useful in your designs. For example, if you want a full-page hero section to show before the rest of your content, making that part of your page 100vh high will push the rest of the content below the viewport, meaning that it will only appear once the document is scrolled.
 
-## 요약
+## Test your skills!
 
-이번 수업에서는 웹에서 크기를 조정할 때 발생할 수 있는 몇 가지 주요 문제에 대해 설명합니다. [CSS 레이아웃](/ko/docs/Learn/CSS/CSS_layout) 으로 이동할 때, 크기 조정은 다양한 레이아웃 방법을 익히는 데 매우 중요하므로 계속 진행하기 전에 여기에서 개념을 이해하는 것이 좋습니다.
+You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Sizing](/en-US/docs/Learn/CSS/Building_blocks/Sizing_tasks).
+
+## Summary
+
+This lesson has given you a rundown of some key issues that you might run into when sizing things on the web. When you move onto [CSS Layout](/en-US/docs/Learn/CSS/CSS_layout), sizing will become very important in mastering the different layout methods, so it is worth understanding the concepts here before moving on.
+
+In the next article, we'll take a look at how [images, media, and form elements](/en-US/docs/Learn/CSS/Building_blocks/Images_media_form_elements) are treated in CSS.
 
 {{PreviousMenuNext("Learn/CSS/Building_blocks/Values_and_units", "Learn/CSS/Building_blocks/Images_media_form_elements", "Learn/CSS/Building_blocks")}}

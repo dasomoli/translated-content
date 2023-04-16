@@ -1,118 +1,212 @@
 ---
 title: <length>
 slug: Web/CSS/length
+page-type: css-type
+browser-compat: css.types.length
 ---
 
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`<length>`** [자료형](/ko/docs/Web/CSS/CSS_Types)은 거리 값을 나타냅니다. {{Cssxref("width")}}, {{Cssxref("height")}}, {{Cssxref("margin")}}, {{Cssxref("padding")}}, {{Cssxref("border-width")}}, {{Cssxref("font-size")}}, {{Cssxref("text-shadow")}} 등 다양한 속성에 사용할 수 있습니다.
+The **`<length>`** [CSS](/en-US/docs/Web/CSS) [data type](/en-US/docs/Web/CSS/CSS_Types) represents a distance value. Lengths can be used in numerous CSS properties, such as {{Cssxref("width")}}, {{Cssxref("height")}}, {{Cssxref("margin")}}, {{Cssxref("padding")}}, {{Cssxref("border-width")}}, {{Cssxref("font-size")}}, and {{Cssxref("text-shadow")}}.
 
-> **참고:** {{cssxref("&lt;percentage&gt;")}} 값을 일부 속성의 `<length>` 값으로 사용할 수는 있지만 `<percentage>`와 `<length>` 는 다릅니다. {{cssxref("&lt;length-percentage&gt;")}}를 참고하세요.
+> **Note:** Although {{cssxref("&lt;percentage&gt;")}} values are usable in some of the same properties that accept `<length>` values, they are not themselves `<length>` values. See {{cssxref("&lt;length-percentage&gt;")}}.
 
-## 구문
+## Syntax
 
-`<length>` 자료형은 {{cssxref("&lt;number&gt;")}} 다음에 아래 나열한 단위 중 하나를 붙여 구성합니다. 다른 CSS 단위와 마찬가지로 숫자와 단위 문자 사이에 공백은 존재하지 않습니다. 숫자 `0` 뒤에는 단위를 붙이지 않아도 됩니다.
+The `<length>` data type consists of a {{cssxref("&lt;number&gt;")}} followed by one of the units listed below. As with all CSS dimensions, there is no space between the number and the unit literal. Specifying the length unit is optional if the number is `0`.
 
-> **참고:** 일부 속성은 음의 `<length>`를 받지만 다른 속성은 그렇지 않습니다.
+> **Note:** Some properties allow negative `<length>` values, while others do not.
 
-### 단위
+The [specified value](/en-US/docs/Web/CSS/specified_value) of a length (_specified length_) is represented by its quantity and unit. The [computed value](/en-US/docs/Web/CSS/computed_value) of a length (_computed length_) is the specified length resolved to an absolute length, and its unit is not distinguished.
 
-#### 상대길이 단위
+The `<length>` units can be relative or absolute. Relative lengths represent a measurement in terms of some other distance. Depending on the unit, this distance can be the size of a specific character, the [line height](/en-US/docs/Web/CSS/line-height), or the size of the {{Glossary("viewport")}}. Style sheets that use relative length units can more easily scale from one output environment to another.
 
-상대길이는 어떤 다른 거리와의 상대적 비율을 표현합니다. 어떤 다른 거리란 단위에 따라 특정 문자, {{cssxref("line-height")}}, 아니면 {{glossary("viewport", "뷰포트")}}일 수 있습니다.
+> **Note:** Child elements do not inherit the relative values as specified for their parent; they inherit the computed values.
 
-##### 글꼴 상대 길이
+The relative length units listed here are based on font and viewport.
 
-글꼴 상대 길이는 `<length>` 값을 특정 문자나 현재 요소가 사용하는 글꼴의 특정 속성을 기준으로 설정합니다.
+### Relative length units based on font
 
-> **참고:** 아래 단위들, 특히 `em`과 `rem`은 사용자가 글꼴 크기를 늘려도 [페이지의 수직 흐름을 유지](https://24ways.org/2006/compose-to-a-vertical-rhythm)하는, 확대 가능한 레이아웃을 만들기 위해 많이 쓰입니다.
+Font lengths define the `<length>` value in terms of the size of a particular character or font attribute in the font currently in effect in an element or its parent.
+
+> **Note:** These units, especially `em` and `rem`, are often used to create scalable layouts, which maintain the vertical rhythm of the page even when the user changes the font size.
 
 - `cap` {{experimental_inline}}
-  - : 요소 {{cssxref("font")}}의 "cap height"(영문 대문자의 평균 높이 값)를 나타냅니다.
+  - : Represents the "cap height" (nominal height of capital letters) of the element's {{Cssxref("font")}}.
 - `ch`
-  - : 요소 {{cssxref("font")}}의 문자 "0"(영, 유니코드 U+0030)의 너비를 나타냅니다.
-    문자 "0"의 너비를 측정하는 것이 불가능하거나 실용적이지 않은 경우 너비 0.5em에 높이 1em이라고 가정해야 합니다.
+  - : Represents the width or more precisely the {{Glossary("advance measure")}} of the glyph `0` (zero, the Unicode character U+0030) in the element's {{Cssxref("font")}}.
+    In cases where it is impossible or impractical to determine the measure of the `0` glyph, it must be assumed to be `0.5em` wide by `1em` tall.
 - `em`
-  - : 요소 {{cssxref("font-size")}}의 계산값. 요소의 {{cssxref("font-size")}} 속성에 사용한다면 상속받는 `font-size` 값을 나타냅니다.
+  - : Represents the calculated {{Cssxref("font-size")}} of the element. If used on the {{Cssxref("font-size")}} property itself, it represents the _inherited_ font-size of the element.
 - `ex`
-  - : 요소 {{cssxref("font")}}의 [x높이](https://ko.wikipedia.org/wiki/X%EB%86%92%EC%9D%B4)를 나타냅니다. "x"문자를 가진 글꼴에서는 보통 소문자 높이와 같습니다. 많은 글꼴에서 `1ex ≈ 0.5em`입니다.
-- `ic` {{experimental_inline}}
-  - : "水" (한중일 한자 "물", U+6C34) 문자를 렌더링할 때 사용하는 글꼴에서의 너비를 나타냅니다.
+  - : Represents the [x-height](https://en.wikipedia.org/wiki/X-height) of the element's {{Cssxref("font")}}. In fonts with the `x` letter, this is generally the height of lowercase letters in the font; `1ex ≈ 0.5em` in many fonts.
+- `ic`
+  - : Equal to the used {{Glossary("advance measure")}} of the "水" glyph (CJK water ideograph, U+6C34), found in the font used to render it.
 - `lh` {{experimental_inline}}
-  - : 요소가 {{cssxref("line-height")}}를 가지고 있는 경우, `line-height`의 계산값을 절대 길이로 변환해 나타냅니다.
+  - : Equal to the computed value of the {{Cssxref("line-height")}} property of the element on which it is used, converted to an absolute length.
 - `rem`
-  - : 루트 요소(보통 {{HTMLElement("html")}})의 {{cssxref("font-size")}}를 나타냅니다. 루트 요소의 `font-size`에 사용할 경우 최초값(보통 브라우저 기본값은 `16px`이나 사용자 설정으로 변할 수 있음)을 나타냅니다.
+  - : Represents the {{Cssxref("font-size")}} of the root element (typically {{HTMLElement("html")}}). When used within the root element {{Cssxref("font-size")}}, it represents its initial value (a common browser default is `16px`, but user-defined preferences may modify this).
 - `rlh` {{experimental_inline}}
-  - : 루트 요소(보통 {{HTMLElement("html")}})의 {{cssxref("line-height")}}를 절대 길이로 변환해 나타냅니다. 루트 요소의 {{cssxref("font-size")}}나 `line-height`에 사용할 경우 최초값을 나타냅니다.
+  - : Equal to the computed value of the {{Cssxref("line-height")}} property on the root element (typically {{HTMLElement("html")}}), converted to an absolute length. When used on the {{Cssxref("font-size")}} or {{Cssxref("line-height")}} properties of the root element, it refers to the properties' initial value.
 
-##### 뷰포트 백분율 길이
+### Relative length units based on viewport
 
-뷰포트 백분율 길이는 `<length>` 값을 {{glossary("viewport", "뷰포트")}}, 즉 문서에서 볼 수 있는 부분의 크기를 기준으로 설정합니다. 뷰포트 길이는 {{cssxref("@page")}} 선언 블록에서는 유효하지 않습니다.
+The viewport-percentage length units are based on four different viewport sizes: small, large, dynamic, and default. The allowance for the different viewport sizes is in response to browser interfaces expanding and retracting dynamically and hiding and showing the content underneath.
+
+- **Small**
+
+  - : When you want the smallest possible viewport in response to browser interfaces expanding dynamically, you should use the small viewport size. The small viewport size allows the content you design to fill the entire viewport when browser interfaces are expanded. Choosing this size might also possibly leave empty spaces when browser interfaces retract.
+
+    For example, an element that is sized using viewport-percentage units based on the small viewport size, the element will fill the screen perfectly without any of its content being obscured when all the dynamic browser interfaces are shown. When those browser interfaces are hidden, however, there might be extra space visible around the element. Therefore, the small viewport-percentage units are "safer" to use in general, but might not produce the most attractive layout after a user starts interacting with the page.
+
+    The small viewport size is represented by the `sv` prefix and results in the `sv*` viewport-percentage length units. The sizes of the small viewport-percentage units are fixed, and therefore stable, unless the viewport itself is resized.
+
+- **Large**
+
+  - : When you want the largest possible viewport in response to browser interfaces retracting dynamically, you should use the large viewport size. The large viewport size allows the content you design to fill the entire viewport when browser interfaces are retracting. You need to be aware though that the content might get hidden when browser interfaces expand.
+
+    For example, on mobile phones where the screen real-estate is at a premium, browsers often hide part or all of the title and address bar after a user starts scrolling the page. When an element is sized using a viewport-percentage unit based on the large viewport size, the content of the element will fill the entire visible page when these browser interfaces are hidden. However, when these retractable browser interfaces are shown, they can hide the content that is sized or positioned using the _large_ viewport-percentage units.
+
+    The large viewport unit is represented by the `lv` prefix and results in the `lv*` viewport-percentage units. The sizes of the large viewport-percentage units are fixed, and therefore stable, unless the viewport itself is resized.
+
+- **Dynamic**
+
+  - : When you want the viewport to be automatically sized in response to browser interfaces dynamically expanding or retracting, you can use the dynamic viewport size. The dynamic viewport size allows the content you design to fit exactly within the viewport, irrespective of the presence of dynamic browser interfaces.
+
+    The dynamic viewport unit is represented by the `dv` prefix and results in the `dv*` viewport-percentage units. The sizes of the dynamic viewport-percentage units are not stable, even when the viewport itself is unchanged.
+
+    > **Note:** While the dynamic viewport size can give you more control and flexibility, using viewport-percentage units based on the dynamic viewport size can cause the content to resize while a user is scrolling a page. This can lead to degradation of the user interface and cause a performance hit.
+
+- **Default**
+
+  - : The default viewport size is defined by the browser. The behavior of the resulting viewport-percentage unit could be equivalent to the viewport-percentage unit based on the small viewport size, the large viewport size, an intermediate size between the two, or the dynamic viewport size.
+
+    > **Note:** For example, a browser might implement the default viewport-percentage unit for height (`vh`) that is equivalent to the large viewport-percentage height unit (`lvh`). If so, this could obscure content on a full-page display while the browser interface is expanded.
+
+Viewport-percentage lengths define `<length>` values in percentage relative to the size of the initial [containing block](/en-US/docs/Web/CSS/Containing_block), which in turn is based on either the size of the {{Glossary("viewport")}} or the page area, i.e., the visible portion of the document. When the height or width of the initial containing block is changed, the elements that are sized based on them are scaled accordingly. There is a viewport-percentage length unit variant corresponding to each of the viewport sizes, as described below.
+
+> **Note:** Viewport lengths are invalid in {{cssxref("@page")}} declaration blocks.
 
 - `vh`
-  - : 뷰포트의 초기 [컨테이닝 블록](/ko/docs/Web/CSS/All_About_The_Containing_Block) 높이 1%와 같습니다.
+
+  - : Represents a percentage of the height of the viewport's initial [containing block](/en-US/docs/Web/CSS/Containing_block). `1vh` is 1% of the viewport height. For example, if the viewport height is `300px`, then a value of `70vh` on a property will be `210px`.
+
+    For small, large, and dynamic viewport sizes, the respective viewport-percentage units are `svh`, `lvh`, and `dvh`. `vh` represents the viewport-percentage length unit based on the browser default viewport size.
+
 - `vw`
-  - : 뷰포트의 초기 [컨테이닝 블록](/ko/docs/Web/CSS/All_About_The_Containing_Block) 너비 1%와 같습니다.
-- `vi` {{experimental_inline}}
-  - : 초기 컨테이닝 블록의 [인라인 축](/ko/docs/Web/CSS/CSS_Logical_Properties#인라인_치수) 크기 1%와 같습니다.
-- `vb` {{experimental_inline}}
-  - : 초기 컨테이닝 블록의 [블록 축](/ko/docs/Web/CSS/CSS_Logical_Properties#블록_치수) 크기 1%와 같습니다.
-- `vmin`
-  - : `vw`와 `vh` 중 작은 것과 같습니다.
+
+  - : Represents a percentage of the width of the viewport's initial [containing block](/en-US/docs/Web/CSS/Containing_block). `1vw` is 1% of the viewport width. For example, if the viewport width is `800px`, then a value of `50vw` on a property will be `400px`.
+
+    For small, large, and dynamic viewport sizes, the respective viewport-percentage units are `svw`, `lvw`, and `dvw`.
+    `vw` represents the viewport-percentage length unit based on the browser default viewport size.
+
 - `vmax`
-  - : `vw`와 `vh` 중 큰 것과 같습니다.
 
-#### 절대길이 단위
+  - : Represents in percentage the largest of `vw` and `vh`.
 
-절대길이 단위는 프린트 등 출력 수단의 크기를 알 수 있을 때의 물리적 측정 거리를 나타냅니다. 구현은 어떤 단위를 물리적인 실제 거리에 맞춰 기준으로 삼고, 나머지 단위를 상대적으로 계산해 설정합니다. 기준 단위는 화면 등 저해상도 장치와 프린터 등 고해상도 장치에서 다릅니다.
+    For small, large, and dynamic viewport sizes, the respective viewport-percentage units are `svmax`, `lvmax`, and `dvmax`.
+    `vmax` represents the viewport-percentage length unit based on the browser default viewport size.
 
-저해상도 장치에서 `px` 단위는 물리적인 픽셀을 의미하며 나머지는 이에 상대적입니다. 따라서 `1in`은 `96px`로 정의하며 이는 `72pt`와 동일합니다. 그러나 인치(`in`), 센티미터(`cm`), 밀리미터(`mm`) 등 이렇게 정의하는 단위가 같은 이름을 가진 물리적인 측정 단위와 일치하지 않을 수 있다는 문제점이 있습니다.
+- `vmin`
 
-고해상도 장치에서 인치(`in`), 센티미터(`cm`), 밀리미터(`mm`)가 기준이 되어 물리적 거리와 동일합니다. 그래서 px 단위도 이에 맞춰 1인치의 1/96로 정의합니다.
+  - : Represents in percentage the smallest of `vw` and `vh`.
 
-> **참고:** 많은 사용자가 {{glossary("user agent", "사용자 에이전트")}}의 기본 글꼴 크기를 늘려 읽기 쉽도록 설정합니다. 절대길이는 사용자 설정을 따르지 않기 때문에 접근성 문제를 유발할 수 있습니다. 따라서 `font-size`를 설정할 땐 `em`, `rem` 등 상대길이를 선택하세요.
+    For small, large, and dynamic viewport sizes, the respective viewport-percentage units are `svmin`, `lvmin`, and `dvmin`.
+    `vmin` represents the viewport-percentage length unit based on the browser default viewport size.
+
+- `vb`
+
+  - : Represents percentage of the size of the initial [containing block](/en-US/docs/Web/CSS/Containing_block), in the direction of the root element's [block axis](/en-US/docs/Web/CSS/CSS_Logical_Properties#block_vs._inline).
+
+    For small, large, and dynamic viewport sizes, the respective viewport-percentage units are `svb`, `lvb`, and `dvb`, respectively.
+    `vb` represents the viewport-percentage length unit based on the browser default viewport size.
+
+- `vi`
+
+  - : Represents a percentage of the size of the initial [containing block](/en-US/docs/Web/CSS/Containing_block), in the direction of the root element's [inline axis](/en-US/docs/Web/CSS/CSS_Logical_Properties#block_vs._inline).
+
+    For small, large, and dynamic viewport sizes, the respective viewport-percentage units are `svi`, `lvi`, and `dvi`.
+    `vi` represents the viewport-percentage length unit based on the browser default viewport size.
+
+### Container query length units
+
+When applying styles to a container using container queries, you can use container query length units.
+These units specify a length relative to the dimensions of a query container.
+Components that use units of length relative to their container are more flexible to use in different containers without having to recalculate concrete length values.
+For more information, see [Container queries](/en-US/docs/Web/CSS/CSS_Container_Queries).
+
+- `cqw`
+
+  - : Represents a percentage of the width of the query container. `1cqw` is 1% of the query container's width. For example, if the query container's width is `800px`, then a value of `50cqw` on a property will be `400px`.
+
+- `cqh`
+
+  - : Represents a percentage of the height of the query container. `1cqh` is 1% of the query container's height. For example, if the query container's height is `300px`, then a value of `10cqh` on a property will be `30px`.
+
+- `cqi`
+
+  - : Represents a percentage of the inline size of the query container. `1cqi` is 1% of the query container's inline size. For example, if the query container's inline size is `800px`, then a value of `50cqi` on a property will be `400px`.
+
+- `cqb`
+
+  - : Represents a percentage of the block size of the query container. `1cqb` is 1% of the query container's block size. For example, if the query container's block size is `300px`, then a value of `10cqb` on a property will be `30px`.
+
+- `cqmin`
+
+  - : Represents a percentage of the smaller value of either the query container's inline size or block size. `1cqmin` is 1% of the smaller value of either the query container's inline size or block size. For example, if the query container's inline size is `800px` and its block size is `300px`, then a value of `50cqmin` on a property will be `150px`.
+
+- `cqmax`
+
+  - : Represents a percentage of the larger value of either the query container's inline size or block size. `1cqmax` is 1% of the larger value of either the query container's inline size or block size. For example, if the query container's inline size is `800px` and its block size is `300px`, then a value of `50cqmax` on a property will be `400px`.
+
+#### Absolute length units
+
+Absolute length units represent a physical measurement when the physical properties of the output medium are known, such as for print layout. This is done by anchoring one of the units to a physical unit and then defining the others relative to it. The anchoring is done differently for low-resolution devices, such as screens, versus high-resolution devices, such as printers.
+
+For low-dpi devices, the unit `px` represents the physical _reference pixel_; other units are defined relative to it. Thus, `1in` is defined as `96px`, which equals `72pt`. The consequence of this definition is that on such devices, dimensions described in inches (`in`), centimeters (`cm`), or millimeters (`mm`) don't necessarily match the size of the physical unit with the same name.
+
+For high-dpi devices, inches (`in`), centimeters (`cm`), and millimeters (`mm`) are the same as their physical counterparts. Therefore, the `px` unit is defined relative to them (1/96 of `1in`).
+
+> **Note:** Many users increase their {{Glossary("user agent")}}'s default font size to make text more legible. Absolute lengths can cause accessibility problems because they are fixed and do not scale according to user settings. For this reason, prefer relative lengths (such as `em` or `rem`) when setting `font-size`.
 
 - `px`
-  - : 1 픽셀. 화면에서는 전통적으로 하나의 장치 픽셀(점)을 의미했지만, 프린터나 고해상도 화면에서는 1/96 `in`을 맞출 수 있도록 여러 개의 장치 픽셀을 의미합니다.
+  - : One pixel. For screen displays, it traditionally represents one device pixel (dot). However, for _printers_ and _high-resolution screens_, one CSS pixel implies multiple device pixels. `1px` = 1/96th of `1in`.
 - `cm`
-  - : 1 센티미터, `1cm` = `96px/2.54`.
+  - : One centimeter. `1cm` = `96px/2.54`.
 - `mm`
-  - : 1 밀리미터, `1mm` = 1/10 `cm`.
-- `Q` {{experimental_inline}}
-  - : 1/4 밀리미터, `1Q` = 1/40 `cm`.
+  - : One millimeter. `1mm` = 1/10th of `1cm`.
+- `Q`
+  - : One quarter of a millimeter. `1Q` = 1/40th of `1cm`.
 - `in`
-  - : 1 인치, `1in` = `2.54cm` = `96px`.
+  - : One inch. `1in` = `2.54cm` = `96px`.
 - `pc`
-  - : 1 피카, `1pc` = `12pt` = 1/6`1in`.
+  - : One pica. `1pc` = `12pt` = 1/6th of `1in`.
 - `pt`
   - : One point. `1pt` = 1/72nd of `1in`.
 
-## 보간
+## Interpolation
 
-애니메이션에서 `<length>` 자료형의 값은 부동소수점 실수로 간주하며 보간은 [계산값](/ko/docs/Web/CSS/computed_value)을 사용합니다. 보간 속도는 애니메이션에 연결된 [타이밍 함수](/ko/docs/Web/CSS/single-transition-timing-function)가 결정합니다.
+When animated, values of the `<length>` data type are interpolated as real, floating-point numbers. The interpolation happens on the calculated value. The speed of the interpolation is determined by the [timing function](/en-US/docs/Web/CSS/easing-function) associated with the animation.
 
-## 예제
+## Examples
 
-### 길이 단위 비교
+### Comparing different length units
 
-아래 데모에서는 주어진 하나의 입력 칸에 `300px`, `50%`, `30vw` 등 `<length>` 값을 입력한 후 <kbd>Return</kbd>을 누르면 그 길이만큼의 막대를 생성합니다.
+The following example provides you with an input field in which you can enter a `<length>` value (e.g. `300px`, `50%`, `30vw`) to set the width of a result bar that will appear below it once you've pressed the <kbd>Enter</kbd> or the <kbd>Return</kbd> key.
 
-서로 다른 길이 단위를 입력하고 비교해보세요.
+This allows you to compare and contrast the effect of different length units.
 
 #### HTML
 
 ```html
 <div class="outer">
   <div class="input-container">
-    <label>길이:</label>
-    <input type="text" id="length">
+    <label for="length">Enter width:</label>
+    <input type="text" id="length" />
   </div>
-  <div class="inner">
-
-  </div>
+  <div class="inner"></div>
 </div>
-<div class="results">
-</div>
+<div class="results"></div>
 ```
 
 #### CSS
@@ -134,15 +228,14 @@ html {
 .inner {
   height: 50px;
   background-color: #999;
-  box-shadow: inset 3px 3px 5px rgba(255,255,255,0.5),
-              inset -3px -3px 5px rgba(0,0,0,0.5);
+  box-shadow: inset 3px 3px 5px rgba(255, 255, 255, 0.5), inset -3px -3px 5px
+      rgba(0, 0, 0, 0.5);
 }
 
 .result {
   height: 20px;
-  background-color: #999;
-  box-shadow: inset 3px 3px 5px rgba(255,255,255,0.5),
-              inset -3px -3px 5px rgba(0,0,0,0.5);
+  box-shadow: inset 3px 3px 5px rgba(255, 255, 255, 0.5), inset -3px -3px 5px
+      rgba(0, 0, 0, 0.5);
   background-color: orange;
   display: flex;
   align-items: center;
@@ -174,32 +267,38 @@ label {
 #### JavaScript
 
 ```js
-const inputDiv = document.querySelector('.inner');
-const inputElem = document.querySelector('input');
-const resultsDiv = document.querySelector('.results');
+const inputDiv = document.querySelector(".inner");
+const inputElem = document.querySelector("input");
+const resultsDiv = document.querySelector(".results");
 
-inputElem.addEventListener('change', () => {
+inputElem.addEventListener("change", () => {
   inputDiv.style.width = inputElem.value;
 
-  const result = document.createElement('div');
-  result.className = 'result';
+  const result = document.createElement("div");
+  result.className = "result";
   result.style.width = inputElem.value;
-  result.innerHTML = `<code>너비: ${inputElem.value}</code>`;
+  result.innerHTML = `<code>width: ${inputElem.value}</code>`;
   resultsDiv.appendChild(result);
 
-  inputElem.value = '';
+  inputElem.value = "";
   inputElem.focus();
-})
+});
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('길이_단위_비교','100%', 700)}}
+{{EmbedLiveSample('Comparing different length units', '100%', 700)}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- [CSS values & units tutorial](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units)
+- [CSS values & units reference](/en-US/docs/Web/CSS/CSS_Values_and_Units)
+- [Box Model](/en-US/docs/Web/CSS/CSS_Box_Model)

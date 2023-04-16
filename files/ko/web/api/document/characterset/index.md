@@ -1,26 +1,45 @@
 ---
-title: Document.characterSet
+title: "Document: characterSet property"
+short-title: characterSet
 slug: Web/API/Document/characterSet
+page-type: web-api-instance-property
+browser-compat: api.Document.characterSet
 ---
+
 {{ ApiRef("DOM") }}
 
-**`Document.characterSet`** 읽기 전용 속성은 현재 문서가 렌더링에 사용하는 [문자 인코딩](/ko/docs/Glossary/character_encoding)을 반환합니다.
+The **`Document.characterSet`**
+read-only property returns the [character encoding](/en-US/docs/Glossary/Character_encoding) of the
+document that it's currently rendered with.
 
-> **참고:** `Document.charset`과 `Document.inputEncoding` 속성은 `Document.characterSet`의 이전 별칭입니다. 더 이상 사용지 마세요.
+> **Note:** A "character set" and a "character encoding" are related, but different. Despite the
+> name of this property, it returns the _encoding_.
 
-## 예제
+Users can override the developer-specified encoding inside the [Content-Type](/en-US/docs/Web/HTTP/Headers/Content-Type) header or inline
+like `<meta charset="utf-8">`, such as with Firefox's <kbd>View → Text
+Encoding</kbd> menu. This override is provided to fix incorrect developer-specified
+encodings that result in [garbled text](https://en.wikipedia.org/wiki/Mojibake).
+
+> **Note:** The properties `document.charset` and `document.inputEncoding`
+> are legacy aliases for `document.characterSet`. Do not use them any more.
+
+## Value
+
+A string.
+
+## Examples
 
 ```html
 <button onclick="console.log(document.characterSet);">
-  콘솔에 인코딩 출력
+  Log character encoding
 </button>
-<!-- "ISO-8859-1"이나 "UTF-8" 등, 문서의 캐릭터 셋 기록 -->
+<!-- displays document's character encoding in the dev console, such as "ISO-8859-1" or "UTF-8" -->
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

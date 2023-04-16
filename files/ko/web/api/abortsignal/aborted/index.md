@@ -1,42 +1,45 @@
 ---
-title: AbortSignal.aborted
+title: "AbortSignal: aborted property"
+short-title: aborted
 slug: Web/API/AbortSignal/aborted
+page-type: web-api-instance-property
+browser-compat: api.AbortSignal.aborted
 ---
-{{APIRef("DOM")}}{{SeeCompatTable}}
 
-**`aborted`** 읽기 전용 프로퍼티는 신호가 통신하는 DOM 요청이 취소되었는지(`true`) 그렇지 않은지(`false`)를 나타내는 {{domxref("Boolean")}}을 반환한다.
+{{APIRef("DOM")}}
 
-## 구문
+The **`aborted`** read-only property returns a value that indicates whether the DOM requests the signal is communicating with are aborted (`true`) or not (`false`).
 
-```js
-var isAborted = abortSignal.aborted;
-```
+## Value
 
-### 값
+`true` (aborted) or `false`
 
-{{domxref("Boolean")}}
+## Examples
 
-## 예제
-
-다음 스니펫에서는 새로운 `AbortController` 객체를 생성하고 {{domxref("AbortSignal")}}를 얻는다(`signal` 프로퍼티에서 가능). 그 다음 `aborted` 프로퍼티를 사용해 신호가 취소되었는지 확인하고 콘솔로 적절한 로그를 전송한다.
+In the following snippet, we create a new `AbortController` object, and get its {{domxref("AbortSignal")}} (available using the `signal` property).
+Later on, using the `aborted` property, we check whether or not the signal has been aborted, and send an appropriate log to the console.
 
 ```js
-var controller = new AbortController();
-var signal = controller.signal;
+const controller = new AbortController();
+const signal = controller.signal;
 
-// ...
+// …
 
-signal.aborted ? console.log('Request has been aborted') : console.log('Request not aborted');
+if (signal.aborted) {
+  console.log("Request has been aborted");
+} else {
+  console.log("Request not aborted");
+}
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- [Fetch API](/ko/docs/Web/API/Fetch_API)
+- [Fetch API](/en-US/docs/Web/API/Fetch_API)

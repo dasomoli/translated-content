@@ -1,38 +1,37 @@
 ---
-title: message
+title: <xsl:message>
 slug: Web/XSLT/Element/message
-original_slug: Web/XSLT/message
 ---
 
 {{ XsltRef() }}
 
-`<xsl:message>` 요소는 (NS에서 자바스크립트 콘솔에) 메시지를 출력하고 선택에 따라 스타일시트 실행을 끝냅니다. 디버깅에 유용할 수 있습니다.
+The `<xsl:message>` element outputs a message (to the JavaScript Console in NS) and optionally terminates execution of the stylesheet. It can be useful for debugging.
 
-### 문법
+### Syntax
 
-```
+```xml
 <xsl:message terminate="yes" | "no" >
   TEMPLATE
 </xsl:message>
 ```
 
-### 필수 속성
+### Required Attributes
 
-없음.
+None.
 
-### 선택 속성
+### Optional Attributes
 
 - `terminate`
-  - : "`yes`"로 설정하면, 실행을 끝마치는 게 좋겠다는 것을 나타냅니다. 기본값은 "`no`"이고 어느 경우에는 메시지가 출력하고 실행을 계속합니다.
+  - : Set to "`yes`", indicates that execution should be terminated. The default value is "`no`", in which case the message is output and execution continues.
 
-### 타입
+### Type
 
-명령, 템플릿 안에 나타남.
+Instruction, appears within a template.
 
-### 정의
+### Defined
 
-[XSLT section 13, Messages](http://www.w3.org/TR/xslt#message)
+XSLT, section 13.
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

@@ -1,138 +1,92 @@
 ---
-title: 반응형 디자인
+title: Responsive design
 slug: Learn/CSS/CSS_layout/Responsive_Design
-original_slug: Learn/CSS/CSS_layout/반응형_디자인
 ---
 
 {{learnsidebar}}{{PreviousMenuNext("Learn/CSS/CSS_layout/Multiple-column_Layout", "Learn/CSS/CSS_layout/Media_queries", "Learn/CSS/CSS_layout")}}
 
-웹디자인 초창기에는 페이지를 구축할 때 매우 구체적인 화면 크기를 공략 대상으로 삼았습니다. 사용자가 웹디자이너가 예상한 것보다 크거나 작은 화면의 기기를 가지고 있다면 원하지 않는 스크롤 막대에서부터 지나치게 긴 길이의 라인, 사용 공간이 부족하게 되는 결과를 낳습니다. 다양한 화면 크기가 등장함에 따라 _responsive web design_ 개념이 등장했습니다. 말하자면 서로 다른 화면 너비와 해상도 등에 맞게 웹 페이지가 레이아웃과 모양을 변경할 수 있는 일련의 실례를 집대성한 것입니다. 이 아이디어가 우리가 멀티 디바이스 웹에 대한 설계 방식을 바꾸게 만든 장본인입니다. 이 문서에서 우리는 그 내용을 숙달하기 위해 당신이 알아야하는 주요 기술을 이해하도록 도울 것입니다.
+_Responsive web design_ (RWD) is a web design approach to make web pages render well on all screen sizes and resolutions while ensuring good usability. It is the way to design for a multi-device web. In this article, we'll help you understand some techniques that can be used to master it.
 
-<table class="learn-box standard-table">
+<table>
   <tbody>
     <tr>
-      <th scope="row">선결 사항:</th>
+      <th scope="row">Prerequisites:</th>
       <td>
-        HTML의 기초인 (<a
-          href="/ko/docs/Learn/HTML/Introduction_to_HTML"
-          >HTML 입문서</a
-        >를 공부하세요), 그리고 CSS의 작동 방식을 파악하기 위해 (<a
-          href="/en-US/docs/Learn/CSS/First_steps"
-          >CSS 첫걸음</a
-        >과
-        <a href="/ko/docs/Learn/CSS/Building_blocks">CSS 구성 블록</a>를
-        공부하세요.)
+        HTML basics (study
+        <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML"
+          >Introduction to HTML</a
+        >), and an idea of how CSS works (study
+        <a href="/en-US/docs/Learn/CSS/First_steps">CSS first steps</a> and
+        <a href="/en-US/docs/Learn/CSS/Building_blocks">CSS building blocks</a
+        >.)
       </td>
     </tr>
     <tr>
-      <th scope="row">목표:</th>
-      <td>반응형 디자인의 역사와 핵심적인 계념 파악하기</td>
+      <th scope="row">Objective:</th>
+      <td>
+        To understand the fundamental purposed and CSS features used to implement responsive designs.
+      </td>
     </tr>
   </tbody>
 </table>
 
-## 웹사이트 레이아웃 역사
+HTML is fundamentally responsive, or _fluid_. If you create a web page containing only HTML, with no CSS, and resize the window, the browser will automatically reflow the text to fit the viewport.
 
-역사의 어느 시점 여러분이 웹 사이트를 디자인할 때 두 가지 옵션이 있었습니다.
+While the default responsive behavior may sound like no solution is needed, long lines of text displayed full screen on a wide monitor can be difficult to read. If wide screen line length is reduced with CSS, such as by creating columns or adding significant padding, the site may look squashed for the user who narrows their browser window or opens the site on a mobile device.
 
-- 여러분은 웹브라우저 창에 요소를 연장하도록 하는 _liquid_(유동) 사이트를 만들 수 있습니다.
-- 픽셀 크기가 고정되어 있는 _fixed width_ 사이트를 만들 수 있었습니다.
+![A layout with two columns squashed into a mobile size viewport.](mdn-rwd-liquid.png)
 
-이러한 두 가지 접근법은 사이트를 디자인하는 사람의 화면에서 가장 보기 좋은 웹 사이트로 귀결되는 경향이 있었습니다! 유동 사이트는 (아래에서 볼 수 있듯이) 디자이너의 화면보다 더 작은 화면에는 찌부러진 디자인이 나오고, 더 큰 화면에는 읽을 수 없을 정도로 길이가 긴 라인을 만들어냅니다.
+Creating a non-resizable web page by setting a fixed width doesn't work either; that leads to scroll bars on narrow devices and too much empty space on wide screens.
 
-![두 개의 열이 있는 레이아웃이 모바일 크기 뷰포트에서 찌부러집니다.](mdn-rwd-liquid.png)
+Responsive web design, or RWD, is a design approach that addresses the range of devices and device sizes, enabling automatic adaption to the screen, whether the content is viewed on a tablet, phone, television, or watch.
 
-> **참고:** **주석**: 여기 간단한 유동 레이아웃을 보세요: [예제](https://mdn.github.io/css-examples/learn/rwd/liquid-width.html), [소스 코드](https://github.com/mdn/css-examples/blob/master/learn/rwd/liquid-width.html). 예제를 보면 브라우저 창을 안팎으로 드래그하여 서로 다른 크기에 반응해 어떻게 보이는지 확인합니다.
+Responsive web design isn't a separate technology — it is an approach. It is a term used to describe a set of best practices used to create a layout that can _respond_ to any device being used to view the content.
 
-고정 폭 사이트는 (아래에서 보듯) 사이트 너비보다 작은 화면상에 수평 스크롤 막대가 생기는 위험이 있고 더 큰 화면상에서는 웹디자인 가장자리에 많은 흰색 공간이 생길 위험이 있습니다.
+The term _responsive design_, [coined by Ethan Marcotte in 2010](https://alistapart.com/article/responsive-web-design/), described using fluid grids, fluid images, and media queries to create responsive content, as discussed in Zoe Mickley Gillenwater's book [Flexible Web Design](http://flexiblewebbook.com/).
 
-![이동 뷰포트에 수평 스크롤 막대가 있는 레이아웃입니다.](mdn-rwd-fixed.png)
+At the time, the recommendation was to use CSS `float` for layout and media queries to query the browser width, creating layouts for different breakpoints. Fluid images are set to not exceed the width of their container; they have their `max-width` property set to `100%`. Fluid images scale down when their containing column narrows but do not grow larger than their intrinsic size when the column grows. This enables an image to scale down to fit its content, rather than overflow it, but not grow larger and become pixelated if the container becomes wider than the image.
 
-> **참고:** **주석**: 여기 간단한 고정 너비 레이아웃을 보세요: [예제](https://mdn.github.io/css-examples/learn/rwd/fixed-width.html), [소스 코드](https://github.com/mdn/css-examples/blob/master/learn/rwd/fixed-width.html). 역시 브라우저 창 크기를 변경할 때 결과를 관찰하세요.
+Modern CSS layout methods are inherently responsive, and, since the publication of Gillenwater's book and Marcotte's article, we have a multitude of features built into the web platform to make designing responsive sites easier.
 
-> **참고:** **주석**: 상단 화면는 파이어폭스 개발툴 안에서 [반응형 디자인 모드](/ko/docs/Tools/Responsive_Design_Mode)을 사용해 갈무리 한 것입니다.
+The rest of this article will point you to the various web platform features you might want to use when creating a responsive site.
 
-모바일 웹이 첫 번째 피처폰의 등장으로 현실화되기 시작하면서 모바일을 수용하고자 하는 회사들은 일반적으로 (종종 _m.example.com_ 또는 _example.mobi_ 이런 식의) 서로 다른 URL를 사용하여 그들의 사이트의 특별한 모바일 버전을 만들게 됩니다. 이는 해당 사이트의 두 가지 별도 버전을 개발하고 최신 상태로 유지해야 한다는 것을 의미했습니다.
+## Media Queries
 
-게다가, 이러한 모바일 사이트들을 경험해보면 종종 매우 축소된 기능을 제공합니다. 모바일 장치가 더욱 강력해지고 전체 웹 사이트를 표시할 수 있게 되면서, 그러한 기능 축소 모바일 버전 사이트에 갖힌 자신을 발견한 모바일 사용자들은 그들이 알고 있는 해당 사이트의 전체 기능이 있는 데스크탑 버전의 정보에 접근할 수 없었기에 좌절감을 안겨주었습니다.
+[Media queries](/en-US/docs/Web/CSS/Media_Queries/Using_media_queries) allow us to run a series of tests (e.g. whether the user's screen is greater than a certain width, or a certain resolution) and apply CSS selectively to style the page appropriately for the user's needs.
 
-## 반응형 디자인의 전신 가변 레이아웃
-
-유동 및 고정 너비의 웹사이트 구축 방법의 단점을 해결하기 위해 여러 가지 접근법이 개발되었습니다. 2004년 카메론 아담스는 다양한 화면 해상도에 적응할 수 있는 디자인을 만드는 방법을 설명하는 [해상도 의존 레이아웃](http://www.themaninblue.com/writing/perspective/2004/09/21/)이라는 제목의 게시물을 작성했습니다. 이 접근방식은 화면 해상도를 감지하고 정확한 CSS를 로드하려면 자바스크립트가 필요했습니다.
-
-조이 미클리 길렌워터는 그녀의 [작업](http://zomigi.com/blog/voices-that-matter-slides-available/)을 통해 화면을 채우는 것과 완전히 고정된 화면 크기 사이를 만족시키는 평균값을 찾으려고 시도하는 등 가변적인 사이트를 만들 수 있는 다양한 방법을 기술하고 공식화하는 데 산파 역할을 했습니다.
-
-## 반응형 디자인
-
-반응형 디자인이라는 용어는 [2010년 이단 마르코트가 만든 신조어로](https://alistapart.com/article/responsive-web-design/) 세 가지 기술을 조합한 용법을 설명하고 있습니다.
-
-1. 첫 번째는 이미 길렌워터에 의해 탐구되고 있던 유동 격자라는 아이디어였으며, 마르코트의 [유동 격자](https://alistapart.com/article/fluidgrids/)란(2009년 `A List Apart`에 발표) 문서에서 읽을 수 있다.
-2. 두 번째 기술은 [유동 이미지](http://unstoppablerobotninja.com/entry/fluid-images)라는 개념이다. `max-width` 속성을 `100%`로 설정하는 매우 간단한 기술을 사용하면 이미지의 포함된 열이 이미지의 고유 크기보다 좁아지면 이미지가 더 작아지지만 더 커지지는 않습니다. 이것은 이미지가 대열이탈이 아니라 가변적인 크기의 열에 맞게 축소될 수 있지만 열이 이미지보다 넓어지면 확대되지 않고 픽셀화될 수 있습니다.
-3. 세 번째 핵심 구성요소는 [미디어 쿼리](/ko/docs/Web/CSS/Media_Queries)였습니다. 미디어 쿼리는카메론 아담스가 앞서 자바스크립의 사용을 탐구했던 레이아웃 전환 유형을 CSS만을 사용하여 실현합니다. 모든 화면 크기마다 하나씩 레이아웃을 부여하기 보다는 레이아웃을 변경할 수 있었다. 사이드바를 작은 화면에 맞게 재배치하거나 대체 탐색 매뉴를 표시할 수 있습니다.
-
-**반응형 웹 디자인은 별도의 기술이 아니다**라는 것을 이해하는 것이 중요합니다. 즉, 웹 디자인에 대한 접근 방식이나 콘텐츠를 보는데 사용되는 장치에 *반응*할 수 있는 레이아웃 생성에 사용되는 모범 사례 집합을 기술하는 데 사용되는 용어다. 마르코트의 원래 연구에서 이것은 (부동체를 사용하는) 가변 격자와 미디어 쿼리를 의미했지만, 그의 문서가 쓰여진지 거의 10년 만에 반응형으로 동작하는 것이 기본값이 되었다. 현대의 CSS 레이아웃 메서드는 본질적으로 반응형이며 반응형 사이트 설계를 쉽게하기 위해 웹 플랫폼에 새로운 요소들이 내장되어 있습니다.
-
-이 문서의 나머지 절에서는 반응형 사이트를 만들 때 사용할 수 있는 다양한 웹 플랫폼 기능에 대해 안내할 것입니다.
-
-## 미디어 쿼리
-
-반응형 디자인은 오롯이 미디어 쿼리 때문에 등장할 수 있었습니다. 미디어 쿼리 수준 3 규격은 2009년 권장사항 후보가 되었으며, 이는 브라우저에서 구현할 준비가 되어 있음을 의미합니다. 미디어 쿼리에서는 일련의 테스트를 실행할 수 있습니다(예로 사용자의 화면이 특정 너비나 특정 해성도보다 큰지 여하에 따라). CSS를 선택적으로 적용하여 사용자의 필요에 따라 페이지를 적절하게 스타일링합니다.
-
-예를 들어, 아래 미디어 쿼리는 현재 웹 페이지가 화면 미디어로 표시되고 있는지(따라서 인쇄된 문서가 아님) 확인하며 뷰포트는 적어도 800픽셀 너비인지 테스트합니다. `.container` 선택기는 CSS는 이 두 가지가 사실인 경우에만 적용됩니다.
+For example, the following media query tests to see if the current web page is being displayed as screen media (therefore not a printed document) and the viewport is at least `80rem` wide. The CSS for the `.container` selector will only be applied if these two things are true.
 
 ```css
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 80rem) {
   .container {
     margin: 1em 2em;
   }
 }
 ```
 
-스타일시트에 여러 미디어 쿼리를 추가하여 다양한 화면 크기에 맞는 최적의 전체 레이아웃 또는 레이아웃의 일부를 조정할 수 있습니다. 미디어 쿼리가 도입되고 레이아웃이 변경된 지점을 _breakpoints_(분기점)라고 합니다.
+You can add multiple media queries within a stylesheet, tweaking your whole layout or parts of it to best suit the various screen sizes. The points at which a media query is introduced, and the layout changed, are known as _breakpoints_.
 
-미디어 쿼리를 사용할 때 일반적인 접근법은 좁은 화면 장치(예: 휴대폰)에 대한 간단한 단일 열 레이아웃을 만든 다음, 큰 화면인지 점검하고, 화면 폭이 충분하다는 것을 알게 될 때 다단 레이아웃을 구현하는 것이다. 이를 **모바일 우선** 디자인이라고 표현하는 경우가 많다.
+A common approach when using Media Queries is to create a simple single-column layout for narrow-screen devices (e.g. mobile phones), then check for wider screens and implement a multiple-column layout when you know that you have enough screen width to handle it. Designing for mobile first is known as **mobile first** design.
 
-[미디어 쿼리](/ko/docs/Web/CSS/Media_Queries)에 대한 MDN 문서를 더 찾아보십시요.
+If using breakpoints, best practices encourage defining media query breakpoints with [relative units](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#relative_length_units) rather than absolute sizes of an individual device.
 
-## 가변 격자
+There are different approaches to the styles defined within a media query block; ranging from using media queries to {{htmlelement("link")}} style sheets based on browser size ranges to only including custom properties variables to store values associated with each breakpoint.
 
-반응형 사이트는 분기점 전후로 자체 레이아웃을 변경할 뿐만 아니라 가변 격자상에도 동일하게 구축됩니다. 가변 격자는 현존하는 모든 장치 크기를 공략 대상으로 삼을 필요가 없으며, 그 대상에 대한 완벽한 픽셀 레이아웃을 구축할 필요가 없다는 것을 의미합니다. 완벽한 픽셀 접근 방식은 존재하는 다양한 크기의 장치들이 엄청나게 많고, 적어도 데스크톱에서는 사람들이 항상 브라우저 창을 최대화하지는 않는다는 사실을 감안할 때 불가능할 것입니다.
+Find out more in the MDN documentation for [Media Queries](/en-US/docs/Web/CSS/Media_Queries).
 
-가변 격자를 사용하면 요소를 분기점에 추가하고, 콘텐츠가 불량으로 보이기 시작하는 지점에서 디자인을 변경할 수 있습니다. 예를 들어, 화면 크기가 커지면 라인 길이가 읽을 수 없게 길어지거나 상자가 좁아질 때 각 라인에 두 단어로 찌브러집니다.
+Media queries can help with RWD, but are not a requirement. Flexible grids, relative units, and minimum and maximum unit values can be used without queries.
 
-반응형 디자인 초창기에는 레이아웃 기능을 수행하는 유일한 옵션은 [부동체](/ko/docs/Learn/CSS/CSS_layout/Floats)를 사용하는 것이 었습니다. 가변 부동 레이아웃은 각 요소에 백분율 너비를 부여하고 레이아웃 전체의 너비가 100%를 넘지 않도록 보장함으로써 달성되었습니다. 마르코트는 유동 격자와 관련 그의 원래 작품에서 픽셀을 사용하여 설계된 레이아웃을 채택하여 백분율로 변환하는 공식을 상세히 설명했습니다.
+## Responsive layout technologies
 
-```
-target / context = result
-```
+Responsive sites are built on flexible grids, meaning you don't need to target every possible device size with pixel perfect layouts.
 
-예를 들어, 목표 열 크기가 60픽셀이고, 거기에 들어갈 상황(혹은 컨테이너)가 이 960픽셀이면, CSS에서 사용할 수 있는 값을 얻기 위해 우선 60픽셀을 960픽셀로 나누고 거기에 소수점을 오른쪽으로 두칸 이동합니다.
+By using a flexible grid, you can change a feature or add in a breakpoint and change the design at the point where the content starts to look bad. For example, to ensure line lengths don't become unreadably long as the screen size increases you can use {{cssxref('columns')}}; if a box becomes squashed with two words on each line as it narrows you can set a breakpoint.
 
-```css
-.col {
-  width: 6.25%; /* 60 / 960 = 0.0625 */
-}
-```
+Several layout methods, including [Multiple-column layout](/en-US/docs/Learn/CSS/CSS_layout/Multiple-column_Layout), [Flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox), and [Grid](/en-US/docs/Learn/CSS/CSS_layout/Grids) are responsive by default. They all assume that you are trying to create a flexible grid and give you easier ways to do so.
 
-이 접근 방식은 오늘날 웹상에 여러 곳에서 발견될 것이며, 여기 우리의 [레거시 레이아웃 메서드](/ko/docs/Learn/CSS/CSS_layout/Legacy_Layout_Methods) 문서의 레이아웃 절에 문서화되어 있습니다. 여러분이 업무 중에 이 접근법을 사용하는 웹 사이트를 발견할 가능성이 높기 때문에 부동 기반의 가변 레이아웃을 사용하여 현대적인 사이트를 구축하지는 않겠지만, 그 내용을 이해할 가치는 있습니다.
+### Multicol
 
-다음 예제에서는 미디어 쿼리와 가변 격자를 사용하여 간단한 반응형 디자인를 보여줍니다. 좁은 화면상에서는 상자가 상대 요소 위해 겹겹이 쌓여지는 레이아웃 형태로 표시됩니다.
-
-![상자 무리가 상대 요소의 상단에 수직으로 겹겹이 쌓이는 모바일뷰 레이아웃입니다.](mdn-rwd-mobile.png)
-
-On wider screens they move to two columns:
-
-![2단 레이아웃이 적용된 데스크탑 뷰입니다.](mdn-rwd-desktop.png)
-
-> **참고:** **주석**: 여러분은 여기서 [실례](https://mdn.github.io/css-examples/learn/rwd/float-based-rwd.html)를 찾아볼 수 있으며, 이 예제에 대한 [소스 코드](https://github.com/mdn/css-examples/blob/master/learn/rwd/float-based-rwd.html)를 깃허브에서 찾을 수 있습니다.
-
-## 현대 레이아웃 기술
-
-[다단 레이아웃](/ko/docs/Learn/CSS/CSS_layout/Multiple-column_Layout)과 [가변상자](/ko/docs/Learn/CSS/CSS_layout/Flexbox)와 [격자](/ko/docs/Learn/CSS/CSS_layout/Grids)와 같은 현대 레이아웃 메서드는 기본값으로 응답형입니다. 그것들은 모두 여러분이 가변 격자를 만들려 한다고 가정하고 그렇게 동작하도록 편리한 방법을 제공합니다.
-
-### 다단
-
-이러한 레이아웃 메서드 중 가장 오래된 것은 다단입니다. 여러분이 `column-count`를 지정하면, 이는 여러분이 콘텐츠를 나누고자 하는 단의 숫자를 나타냅니다. 그런 다음 브라우저는 다단의 크기를 화면 크기에 따라 변경되는 크기로 계산합니다.
+With multicol, you specify a `column-count` to indicate the maximum number of columns you want your content to be split into. The browser then works out the size of these, a size that will change according to the screen size.
 
 ```css
 .container {
@@ -140,7 +94,7 @@ On wider screens they move to two columns:
 }
 ```
 
-`column-width`을 지정하는 대신 _minimum_ 너비를 지정하는 것입니다. 브라우저는 컨테이너에 안착할 수 있는 만큼으로 지정한 해당 너비를 가진 열을 최대한 많이 생성하고 난 뒤에 다음 모든 열 사이에서 나머지 공간을 공유합니다. 따라서 열의 수는 공간이 얼마나 되는지에 따라 달라집니다.
+If you instead specify a `column-width`, you are specifying a _minimum_ width. The browser will create as many columns of that width as will comfortably fit into the container, then share out the remaining space between all the columns. Therefore the number of columns will change according to how much space there is.
 
 ```css
 .container {
@@ -148,11 +102,13 @@ On wider screens they move to two columns:
 }
 ```
 
-### 가변상자
+You can use the {{cssxref('columns')}} shorthand to provide a maximum number of columns and a minimum column width. This can ensure line lengths don't become unreadably long as the screen size increases or too narrow as the screen size decreases.
 
-가변상자에서 가변 항목은 초깃값 동작으로 컨테이너의 공간에 따라 항목 사이의 공간을 축소하고 분배합니다. `flex-grow` 및 `flex-shrink` 값을 변경하면 해당 항목에 주어진 주변 공간이 남거나 모질라게 될 경우 원하는 동작 방식을 표기할 수 있습니다.
+### Flexbox
 
-아래 예제에서 가변 항목은 가변 컨테이너 안에서 각각 동일한 양의 공간을 차지하며, [가변상자: 가변 항목의 가변 크기 조정](/ko/docs/Learn/CSS/CSS_layout/Flexbox#가변_항목의_가변_크기_조정)에서 설명했듯이 `flex: 1`식의 약칭을 사용할 수 있습니다.
+In Flexbox, flex items shrink or grow, distributing space between the items according to the space in their container. By changing the values for `flex-grow` and `flex-shrink` you can indicate how you want the items to behave when they encounter more or less space around them.
+
+In the example below the flex items will each take an equal amount of space in the flex container, using the shorthand of `flex: 1` as described in the layout topic [Flexbox: Flexible sizing of flex items](/en-US/docs/Learn/CSS/CSS_layout/Flexbox#flexible_sizing_of_flex_items).
 
 ```css
 .container {
@@ -164,11 +120,11 @@ On wider screens they move to two columns:
 }
 ```
 
-> **참고:** 예제로써 상기된 간단한 반응형 레이아웃을 재구축했는데 이번에는 가변상자를 사용했습니다. 여러분은 더 이상 낮설은 백분율 값을 사용하여 열의 크기를 계산할 필요가 없는 방법을 보게 됩니다: [예제](https://mdn.github.io/css-examples/learn/rwd/flex-based-rwd.html), [소스 코드](https://github.com/mdn/css-examples/blob/master/learn/rwd/flex-based-rwd.html).
+> **Note:** As an example, we have built a simple responsive layout above using flexbox. We use a breakpoint to switch to multiple columns when the screen grows, and limit the size of the main content with {{cssxref('max-width')}}: [example](https://mdn.github.io/css-examples/learn/rwd/flex-based-rwd.html), [source code](https://github.com/mdn/css-examples/blob/main/learn/rwd/flex-based-rwd.html).
 
-### CSS 격자
+### CSS grid
 
-CSS 격자 레이아웃에서 `fr` 단위는 격자 트랙 전역에 걸쳐 이용할 수 있는 공간을 분배할 수 있습니다. 다음 예에서는 `1fr` 크기의 트랙 3개가 있는 격자 컨테이너를 만듭니다. 이렇게 하면 3개의 열 트랙이 생성되며, 각 트랙은 컨테이너에 있는 사용 가능한 공간\의 한 부분을 차지합니다. 여러분은 [fr 단위를 포함한 가변 격자](/ko/docs/Learn/CSS/CSS_layout/Grids#fr_단위를_포함하는_가변_격자)라는 격자 레이아웃 학습 주제에서 격자를 생성하는 이같은 접근 방식에 대해 자세히 알 수 있습니다.
+In CSS Grid Layout the `fr` unit allows the distribution of available space across grid tracks. The next example creates a grid container with three tracks sized at `1fr`. This will create three column tracks, each taking one part of the available space in the container. You can find out more about this approach to create a grid in the Learn Layout Grids topic, under [Flexible grids with the fr unit](/en-US/docs/Learn/CSS/CSS_layout/Grids#flexible_grids_with_the_fr_unit).
 
 ```css
 .container {
@@ -177,31 +133,37 @@ CSS 격자 레이아웃에서 `fr` 단위는 격자 트랙 전역에 걸쳐 이�
 }
 ```
 
-> **참고:** 격자 레이아웃 버전은 .wrapper [예제](https://mdn.github.io/css-examples/learn/rwd/grid-based-rwd.html)상에 열을 정의할 수 있으므로 더 간단합니다: [소스 코드](https://github.com/mdn/css-examples/blob/master/learn/rwd/grid-based-rwd.html).
+> **Note:** The grid layout version is even simpler as we can define the columns on the .wrapper: [example](https://mdn.github.io/css-examples/learn/rwd/grid-based-rwd.html), [source code](https://github.com/mdn/css-examples/blob/main/learn/rwd/grid-based-rwd.html).
 
-## 반응형 이미지
+## Responsive images
 
-반응 이미지에 대한 가장 간단한 접근법은 반응형 디자인에 관한 마르코트의 초창기 문서에서 설명한 바와 같습니다. 기본적으로 필요한 최대 크기의 이미지를 촬영하여 그것을 축소할 수 있습니다. 이것은 오늘날에도 사용되는 접근법이며 대부분의 스타일 시트에서 다음과 같은 CSS를 어디선가는 발견할 수 있습니다.
+To ensure media is never larger than its responsive container, the following approach can be used:
 
 ```css
-img {
-  max-width: 100%:
+img,
+picture,
+video {
+  max-width: 100%;
 }
 ```
 
-이 접근법에는 명백한 단점이 있습니다. 해당 이미지는 고유 크기보다 훨씬 작게 표시될 수 있어 대역폭 낭비입니다. 다시말해 모바일 사용자는 브라우저 창에서 실제로 보는 것의 몇 배 크기의 이미지를 다운로드하게 되니 낭비입니다. 또한, 데스크톱과 같은 이미지 가로 세로 비율을 모바일에서 원하지 않을 수도 있습니다. 예를 들어, 모바일의 경우 정사각형 이미지가 좋을 수 있지만 데스크톱상에는 같은 이미지를 가로 보기처럼 장면을 보여줍니다. 또는 모바일 상의 이미지의 크기가 작다는 것을 이해하면서도 서로 다른 이미지를 모두 보여주고 싶을 경우가 있습니다. 말하자면 작은 화면 크기에서 더 쉽게 해석될 수 있는 이미지를 말합니다. 이런 것들은 단순히 이미지를 축소해서는 달성할 수 없습니다.
+This scales media to ensure they never overflow their containers. Using a single large image and scaling it down to fit small devices wastes bandwidth by downloading images larger than what is needed.
 
-반응형 이미지는 [`<picture>`](/en-US/docs/Web/HTML/Element/picture) 요소와 [`<img>`](/en-US/docs/Web/HTML/Element/img), `srcset`과 `sizes` 속성은 이러한 문제를 모두 해결합니다. 여러분은 "힌트"(이미지에 가장 적합한 화면 크기와 해상도를 설명하는 메타 데이터)와 함께 여러 크기를 제공할 수 있으며, 브라우저는 각 장치에 가장 적합한 이미지를 선택하며, 사용자가 사용하고 있는 장치에 적합한 이미지 크기를 다운로드할 수 있도록 담보합니다.
+Responsive Images, using the {{htmlelement("picture")}} element and the {{htmlelement("img")}} `srcset` and `sizes` attributes enables serving images targeted to the user's viewport and the device's resolution. For example, you can include a square image for mobile, but show the same scene as a landscape image on desktop.
 
-또한 다른 화면 크기에서 사용되는 이미지를 *art direct*할 수 있으므로 서로 다른 화면 크기에 대해 서로 다른 자르기 또는 완전히 다른 이미지를 제공할 수 있습니다.
+The `<picture>` element enables providing multiple sizes along with "hints" (metadata that describes the screen size and resolution the image is best suited for), and the browser will choose the most appropriate image for each device, ensuring that a user will download an image size appropriate for the device they are using. Using `<picture>` along with `max-width` removes the need for sizing images with media queries. It enables targeting images with different aspect ratios to different viewport sizes.
 
-이곳 MDN 사이트의 HTML 학습 섹션에서 [반응형 이미지](/ko/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)에 대한 자세한 안내서를 찾을 수 있습니다.
+You can also _art direct_ images used at different sizes, thus providing a different crop or completely different image to different screen sizes.
 
-## 반응형 타이포그래피
+You can find a detailed [guide to Responsive Images in the Learn HTML section](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images) here on MDN.
 
-반응형 타이포그래피 개념은 이전 작업에서 다루지 않은 반응형 디자인의 요소입니다. 본질적으로, 이것은 화면 부동산의 크기가 더 작아지거나 더 커지거나하는 것을 반영하기 위해 미디어 쿼리 구문 안에서 폰트 크기를 변경하는 것을 말합니다.
+## Responsive typography
 
-이 예제에서 우리는 수준 1 머리글을 `4rem`로 설정하려고 합니다. 즉, 기본 글꼴 크기의 4배입니다. 정말 큰 제목이네요! 우리는 더 큰 화면 크기상에서만 이 코끼리만한 머리글을 원하기 때문에, 우리는 먼저 더 작은 머리글을 만들고, 미디어 쿼리를 사용해 조건에 맞으면 그것을 더 큰 크기로 덮어쓰기 하면됩니다. 여기서 조건은 사용자가 적어도 1200px의 화면 크기의 기기를 가진 경우가 해당됩니다.
+Responsive typography describes changing font sizes within media queries or using viewport units to reflect lesser or greater amounts of screen real estate.
+
+### Using media queries for responsive typography
+
+In this example, we want to set our level 1 heading to be `4rem`, meaning it will be four times our base font size. That's a really large heading! We only want this jumbo heading on larger screen sizes, therefore we first create a smaller heading then use media queries to overwrite it with the larger size if we know that the user has a screen size of at least `1200px`.
 
 ```css
 html {
@@ -219,23 +181,23 @@ h1 {
 }
 ```
 
-상기한 반응형 격자 예제를 편집했고, 거기에 더해 이미 제시된 메서드를 사용하는 응답형 유형을 포함시켰습니다. 레이아웃이 2개의 열 버전으로 이동함에 따라 머리글 크기가 어떻게 전환하는지 볼 수 있습니다.
+We have edited our responsive grid example above to also include responsive type using the method outlined. You can see how the heading switches sizes as the layout goes to the two column version.
 
-모바일에서는 머리글이 더 작다:
+On mobile the heading is smaller:
 
-![머리글 크기가 작은 스택 모양의 레이아웃입니다.](mdn-rwd-font-mobile.png)
+![A stacked layout with a small heading size.](mdn-rwd-font-mobile.png)
 
-On desktop however we see the larger heading size:
+On desktop, however, we see the larger heading size:
 
-![큰 머리글이 딸린 두개의 열 레이아웃입니다.](mdn-rwd-font-desktop.png)
+![A two column layout with a large heading.](mdn-rwd-font-desktop.png)
 
-> **참고:** 이 예제의 실제 구현 장면: [예제](https://mdn.github.io/css-examples/learn/rwd/type-rwd.html), [소스 코드](https://github.com/mdn/css-examples/blob/master/learn/rwd/type-rwd.html).
+> **Note:** See this example in action: [example](https://mdn.github.io/css-examples/learn/rwd/type-rwd.html), [source code](https://github.com/mdn/css-examples/blob/main/learn/rwd/type-rwd.html).
 
-타이포그래피에 대한 이러한 접근 방식이 보여주듯이, 미디어 쿼리를 제한하여 페이지 레이아웃만 변경할 필요는 없습니다. 그들 접근법을 사용하여 어떤 요소라도 조정해서 대체 화면 크기에 맞는 더 유용하고 매력적인 요소를 만들 수 있다.
+As this approach to typography shows, you do not need to restrict media queries to only changing the layout of the page. They can be used to tweak any element to make it more usable or attractive at alternate screen sizes.
 
-### 반응형 타이포그래피에 대한 뷰포트 단위 사용하기
+### Using viewport units for responsive typography
 
-흥미로운 접근 방식은 반응형 타이포그래피를 사용하기 위해 뷰포트 단위 `vw`를 사용할 수 있다는 점이다. `1vw`는 뷰포트 너비의 1%와 동일하며, `vw`를 사용하여 글꼴 크기를 설정하면 항상 뷰포트 크기와 관련이 있다는 것을 의미한다.
+Viewport units `vw` can also be used to enable responsive typography, without the need for setting breakpoints with media queries. `1vw` is equal to one percent of the viewport width, meaning that if you set your font size using `vw`, it will always relate to the size of the viewport.
 
 ```css
 h1 {
@@ -243,9 +205,9 @@ h1 {
 }
 ```
 
-위의 작업 수행에서의 문제는 사용자가 vw 단위를 사용하여 텍스트 집합을 확대/축소하는 기능을 상실하는 데 있다. **따라서 여러분은 뷰포트 단위만으로 텍스트를 설정해서는 안 된다**.
+The problem with doing the above is that the user loses the ability to zoom any text set using the `vw` unit, as that text is always related to the size of the viewport. **Therefore you should never set text using viewport units alone**.
 
-해결책이 하나 있다. [`calc()`](/en-US/docs/Web/CSS/calc)를 사용하는 것이다. 즉, `em`와 같은 고정된 크기를 사용하여 속성값 집합에 `vw` 단위를 추가하면 텍스트는 여전히 확대/축소할 수 있다. 본질적으로 `vw` 단위는 확대/축소 값에 더해 추가된다.
+There is a solution, and it involves using [`calc()`](/en-US/docs/Web/CSS/calc). If you add the `vw` unit to a value set using a fixed size such as `em`s or `rem`s then the text will still be zoomable. Essentially, the `vw` unit adds on top of that zoomed value:
 
 ```css
 h1 {
@@ -253,44 +215,36 @@ h1 {
 }
 ```
 
-즉, 머리글에 대한 폰트 크기를 한 번만 지정하면 된다. 크기를 모바일용으로 따로 설정할 게 아니라 미디어 쿼리 내에서 크기를 재정의한다는 말이다. 그러면 뷰포트의 크기가 커질수록 글꼴은 점차 커진다.
+This means that we only need to specify the font size for the heading once, rather than set it up for mobile and redefine it in the media queries. The font then gradually increases as you increase the size of the viewport.
 
-> **참고:** 이에 대한 예제의 실현: [예제](https://mdn.github.io/css-examples/learn/rwd/type-vw.html), [소스 코드](https://github.com/mdn/css-examples/blob/master/learn/rwd/type-vw.html).
+> **Note:** See an example of this in action: [example](https://mdn.github.io/css-examples/learn/rwd/type-vw.html), [source code](https://github.com/mdn/css-examples/blob/main/learn/rwd/type-vw.html).
 
-## 뷰포트 메타 테그
+## The viewport meta tag
 
-응답형 페이지의 HTML 소스를 보면 일반적으로 문서의 `<head>`에서 다음과 같은 {{htmlelement("meta")}} 태그를 볼 수 있다.
+If you look at the HTML source of a responsive page, you will usually see the following {{htmlelement("meta")}} tag in the `<head>` of the document.
 
 ```html
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 ```
 
-이 메타 태그는 뷰포트의 너비를 장치의 너비로 설정하여 문서를 의도한 크기의 100%로 확장해야 한다고 모바일 브라우저에게 알려줍니다. 이로써 여러분이 의도한 대로 모바일에 최적화된 크기로 문서를 표시합니다.
+This [viewport](/en-US/docs/Web/HTML/Viewport_meta_tag) meta tag tells mobile browsers that they should set the width of the viewport to the device width, and scale the document to 100% of its intended size, which shows the document at the mobile-optimized size that you intended.
 
-왜 이런 것이 필요할까요? 모바일 브라우저는 뷰포트 너비에 대해 거짓말을 하는 경향이 있기 때문이다.
+Why is this needed? Because mobile browsers tend to lie about their viewport width.
 
-이 메타 태그는 원래 iPhone이 출시되고 사람들이 작은 전화 화면에서 웹 사이트를 보기 시작했을 때 대부분의 사이트가 모바일 최적화되지 않았기 때문에 존재합니다. 따라서 모바일 브라우저는 뷰포트 너비를 960픽셀로 설정하게 됩니다. 해당 너비로 페이지를 렌더링하고, 그 결과를 데스크톱 레이아웃의 확대 버전으로 표시합니다. 다른 모바일 브라우저(예를 들어 구글 안드로이드)도 똑같은 일을 합니다. 사용자들은 웹사이트를 확대하고 이리저리 끌어 옮기며(panning) 그들이 관심을 갖는 부분을 볼 수 있었지만, 모양이 형편 없었습니다. 만약 여러분이 반응형 디자인이 아닌 사이트를 우연히 발견하게 된다면, 여러분은 오늘날에도 이런 걸 보게 될 것입니다.
+This meta tag exists because when smartphones first arrived, most sites were not mobile optimized. The mobile browser would, therefore, set the viewport width to 980 pixels, render the page at that width, and show the result as a zoomed-out version of the desktop layout. Users could zoom in and pan around the website to view the bits they were interested in, but it looked bad.
 
-문제는 분기점과 미디어 쿼리를 포함하는 응답형 디자인이 모바일 브라우저에서 의도한 대로 작동하지 않는다는 점에 있습니다. 여러분이 480px 뷰포트 너비나 그 이하에서 시작하는 좁은 화면 레이아웃을 갖고 있고 뷰포트가 960px로 설정되어 있다면 좁은 화면 레이아웃을 모바일에서 절대 볼 수 없게 된다. `width=device-width`를 설정하면 애플의 기본값인 `width=960px`를 장치의 실재 너비로 재지정하므로 당신의 미디어 쿼리가 의도한 대로 작동합니다.
+By setting `width=device-width` you are overriding a mobile device's default, like Apple's default `width=980px`, with the actual width of the device. Without it, your responsive design with breakpoints and media queries may not work as intended on mobile browsers. If you've got a narrow screen layout that kicks in at 480px viewport width or less, but the device is saying it is 980px wide, that user will not see your narrow screen layout.
 
-따라서 HTML 문서의 헤더 부분에 상기 HTML 라인을 _항상_ 포함해야 합니다.
+**So you should _always_ include the viewport meta tag in the head of your documents.**
 
-뷰포트 메타 태그와 함께 사용할 수 있는 다른 설정이 있지만 일반적으로 상기 HTML 라인이면 여러분이 사용하고자 하는 내용에 해당합니다.
+## Summary
 
-- `initial-scale`: 페이지의 초기 확대/축소 지정은 1로 설정된다.
-- `height`: 뷰포트 높이를 특정값으로 지정합니다.
-- `minimum-scale`: 최소 확대/축소 수준을 설정합니다.
-- `maximum-scale`: 최대 확대/축소 수준을 설정합니다.
-- `user-scalable`: `no`값을 지정하게 되면 확대/축소를 방지합니다.
+Responsive design refers to a site or application design that responds to the environment in which it is viewed. It encompasses a number of CSS and HTML features and techniques and is now essentially just how we build websites by default. Consider the sites that you visit on your phone — it is probably fairly unusual to come across a site that is the desktop version scaled down, or where you need to scroll sideways to find things. This is because the web has moved to this approach of designing responsively.
 
-여러분은 `minimum-scale`와 `maximum-scale` 사용을 피해야하며, 특히 `user-scalable`를 `no`로 설정하는 것도 피해야 합니다. 사용자는 필요한 만큼 확대하거나 축소할 수 있어야 합니다.이를 방지하면 접근성 문제가 발생합니다.
+It has also become much easier to achieve responsive designs with the help of the layout methods you have learned in these lessons. If you are new to web development today you have many more tools at your disposal than in the early days of responsive design. It is therefore worth checking the age of any materials you are using. While the historical articles are still useful, modern use of CSS and HTML makes it far easier to create elegant and useful designs, no matter what device your visitor views the site with.
 
-> **참고:** 뷰포트 메타 태그를 대체하기 위해 고안된 CSS @ 규칙이 있습니다. [@viewport](/ko/docs/Web/CSS/@viewport) 그러나 브라우저 지원이 매우 형편없습니다. 그것은 인터넷 익스플로러와 에지에서 구현되었지만, 일단 크롬 기반 에지가 출시되면 더 이상 에지 브라우저의 일부가 되지 않게 됩니다.
+## See also
 
-## 요약정리
-
-반응형 디자인은 디자인이 보여지는 당해 환경에서 반응하는 사이트 및 애플리케이션 디자인을 말합니다. 그것은 많은 CSS와 HTML 기능과 기술을 망라하며 이제 기본값으로 우리가 웹사이트를 구축할 때 필수적인 방법입니다. 여러분이 휴대폰으로 방문하는 사이트를 생각해보세요. 데스크톱 버전이 축소된 사이트, 또는 사물을 찾기 위해 옆으로 스크롤해야 하는 사이트를 우연히 발견한다는 것은 상당히 이례적인 일일 것입니다. 그렇게 된 것은 웹이 반응형으로 디자인하는 접근방식으로 옮겨갔기 때문입니다.
-
-또한 이번 단원에서 배운 레이아웃 메서드의 도움으로 반응형 디자인을 달성하기가 훨씬 쉬워졌습니다. 여러분이 당대 웹 개발에 신출내기라면, 반응형 디자인 초창기보다 훨씬 많은 도구가 마련되어 있으니 맘껏 이용하십시요. 따라서 당신이 참조하고 있는 어떤 자료의 연혁을 확인할 가치가 있습니다. 역사적 기록 문서로서 여전히 유용하지만, 사이트 방문자가 이용하는 장치가 무엇이건 관계없이 우아하고 유용한 디자인을 훨씬 쉽게 생성하려면 CSS와 HTML의 현대적 용법이 정답입니다.
+- [CSS-Tricks Guide to Media Queries](https://css-tricks.com/a-complete-guide-to-css-media-queries/)
 
 {{PreviousMenuNext("Learn/CSS/CSS_layout/Multiple-column_Layout", "Learn/CSS/CSS_layout/Media_queries", "Learn/CSS/CSS_layout")}}

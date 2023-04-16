@@ -1,25 +1,31 @@
 ---
 title: 415 Unsupported Media Type
 slug: Web/HTTP/Status/415
+page-type: http-status-code
+spec-urls: https://httpwg.org/specs/rfc9110.html#status.415
 ---
 
 {{HTTPSidebar}}
 
-HTTP **'415 지원되지 않는 미디어 유형'** 클라이언트 오류 응답 코드는 클라이언트가 보낸 페이로드가 지원하지 않는 형식이기 때문에 서버가 요청을 수락하지 않음을 나타냅니다.
+The HTTP **`415 Unsupported Media Type`** client error response
+code indicates that the server refuses to accept the request because the payload format
+is in an unsupported format.
 
-형식 문제는 요청에 표시된 {{HTTPHeader("Content-Type")}} 또는 {{HTTPHeader("Content-Encoding")}}으로 인해 발생하거나 데이터를 직접 검사한 결과 발생할 수 있습니다.
+The format problem might be due to the request's indicated
+{{HTTPHeader("Content-Type")}} or {{HTTPHeader("Content-Encoding")}}, or as a result of
+inspecting the data directly.
 
-## 상태
+## Status
 
-```
+```http
 415 Unsupported Media Type
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 같이 보기
+## See also
 
 - {{HTTPHeader("Content-Type")}}
 - {{HTTPHeader("Content-Encoding")}}

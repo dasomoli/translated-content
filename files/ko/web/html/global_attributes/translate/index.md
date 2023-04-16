@@ -1,20 +1,24 @@
 ---
 title: translate
 slug: Web/HTML/Global_attributes/translate
+page-type: html-attribute
+browser-compat: html.global_attributes.translate
 ---
 
 {{HTMLSidebar("Global_attributes")}}
 
-**`translate`** [전역 특성](/ko/docs/Web/HTML/Global_attributes)은 페이지를 지역화할 때 요소의 {{domxref("Text")}} 노드 자식 및 번역 가능한 특성의 값을 번역해야 되는지, 아니면 그대로 유지해야 하는지 나타내는 열거형 속성입니다. 가능한 값은 다음과 같습니다.
+The **`translate`** [global attribute](/en-US/docs/Web/HTML/Global_attributes) is an [enumerated](/en-US/docs/Glossary/Enumerated) attribute that is used to specify whether an element's _translatable attribute_ values and its {{domxref("Text")}} node children should be translated when the page is localized, or whether to leave them unchanged.
 
-- 빈 문자열 또는 `"yes"`는 페이지 지역화 과정에서 요소를 번역해야 함을 나타냅니다.
-- `"no"`는 요소의 내용을 그대로 유지해야 함을 나타냅니다.
+It can have the following values:
 
-비록 모든 브라우저가 `translate` 특성을 인식하는건 아니지만, Google 번역 등의 자동 번역 시스템과 번역가가 사용하는 도구가 값을 존중할 수 있습니다. 그러므로 웹 작성자로서 번역되어선 안될 요소를 표시하는 것이 중요합니다.
+- empty string or `yes`, which indicates that the element should be translated when the page is localized.
+- `no`, which indicates that the element must not be translated.
 
-## 예제
+Although not all browsers recognize this attribute, it is respected by automatic translation systems such as Google Translate, and may also be respected by tools used by human translators. As such it's important that web authors use this attribute to mark content that should not be translated.
 
-다음 예제에서의 `translate` 특성은 푸터에 배치한 회사의 브랜드 이름을 번역하지 말 것을 요청합니다.
+## Examples
+
+In this example, the `translate` attribute is used to ask translation tools not to translate the company's brand name in the footer.
 
 ```html
 <footer>
@@ -22,16 +26,17 @@ slug: Web/HTML/Global_attributes/translate
 </footer>
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 모든 [전역 특성](/ko/docs/Web/HTML/Global_attributes).
-- 이 특성을 반영하는 {{domxref("HTMLElement.translate")}} 속성.
-- [HTML의 translate 특성 사용하기](https://www.w3.org/International/questions/qa-translate-flag)
+- All [global attributes](/en-US/docs/Web/HTML/Global_attributes).
+- The {{domxref("HTMLElement.translate")}} property that reflects this attribute.
+- [Using HTML's translate attribute](https://www.w3.org/International/questions/qa-translate-flag).
+- HTML [`lang`](/en-US/docs/Web/HTML/Global_attributes#lang) attribute

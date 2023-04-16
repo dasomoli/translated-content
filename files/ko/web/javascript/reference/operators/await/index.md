@@ -1,38 +1,58 @@
 ---
 title: await
 slug: Web/JavaScript/Reference/Operators/await
+page-type: javascript-operator
+browser-compat: javascript.operators.await
 ---
 
-{{jsSidebar("Operators")}}`await`연산자는 {{jsxref("Promise")}}를 기다리기 위해 사용됩니다. 연산자는 {{jsxref("Statements/async_function", "async function")}} 내부에서만 사용할 수 있습니다.
+{{jsSidebar("Operators")}}
 
-## 구문
+The **`await`** operator is used to wait for a {{jsxref("Promise")}} and get its fulfillment value. It can only be used inside an [async function](/en-US/docs/Web/JavaScript/Reference/Statements/async_function) or at the top level of a [module](/en-US/docs/Web/JavaScript/Guide/Modules).
 
-```js
-    [rv] = await expression;
+## Syntax
+
+```js-nolint
+await expression
 ```
 
+### Parameters
+
 - `expression`
-  - : {{jsxref("Promise")}} 혹은 기다릴 어떤 값입니다.
-- `rv`
-  - : {{jsxref("Promise")}}에 의해 만족되는 값이 반환됩니다. {{jsxref("Promise")}}가 아닌 경우에는 그 값 자체가 반환됩니다.
+  - : A {{jsxref("Promise")}}, a [thenable object](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#thenables), or any value to wait for.
 
-## 설명
+### Return value
 
-`await` 문은 `Promise`가 fulfill되거나 `reject` 될 때까지 `async` 함수의 실행을 일시 정지하고, `Promise`가 fulfill되면 `async` 함수를 일시 정지한 부분부터 실행합니다. 이때 `await` 문의 반환값은 `Promise` 에서 fulfill된 값이 됩니다.
+The fulfillment value of the promise or thenable object, or, if the expression is not thenable, the expression's own value.
 
-만약 `Promise`가 `reject`되면, `await` 문은 `reject`된 값을 `throw`합니다.
+### Exceptions
 
-`await` 연산자 다음에 나오는 문의 값이 `Promise`가 아니면 해당 값을 [resolved Promise](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/resolve)로 변환시킵니다.
+Throws the rejection reason if the promise or thenable object is rejected.
 
-An `await` can split execution flow, allowing the caller of the `await`'s function to resume execution before the deferred continuation of the `await`'s function. After the `await` defers the continuation of its function, if this is the first `await` executed by the function, immediate execution also continues by returning to the function's caller a pending `Promise` for the completion of the `await`'s function and resuming execution of that caller.
+## Description
 
-## 예제
+`await` is usually used to unwrap promises by passing a {{jsxref("Promise")}} as the `expression`. Using `await` pauses the execution of its surrounding `async` function until the promise is settled (that is, fulfilled or rejected). When execution resumes, the value of the `await` expression becomes that of the fulfilled promise.
 
-만약 `Promise`가 `await`에 넘겨지면, `await`은 `Promise`가 fulfill되기를 기다렸다가, 해당 값을 리턴합니다.
+If the promise is rejected, the `await` expression throws the rejected value. The function containing the `await` expression will [appear in the stack trace](#improving_stack_trace) of the error. Otherwise, if the rejected promise is not awaited or is immediately returned, the caller function will not appear in the stack trace.
+
+The `expression` is resolved in the same way as {{jsxref("Promise.resolve()")}}: it's always converted to a native `Promise` and then awaited. If the `expression` is a:
+
+- Native `Promise` (which means `expression` belongs to `Promise` or a subclass, and `expression.constructor === Promise`): The promise is directly used and awaited natively, without calling `then()`.
+- [Thenable object](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#thenables) (including non-native promises, polyfill, proxy, child class, etc.): A new promise is constructed with the native [`Promise()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/Promise) constructor by calling the object's `then()` method and passing in a handler that calls the `resolve` callback.
+- Non-thenable value: An already-fulfilled `Promise` is constructed and used.
+
+Even when the used promise is already fulfilled, the async function's execution still pauses until the next tick. In the meantime, the caller of the async function resumes execution. [See example below.](#control_flow_effects_of_await)
+
+Because `await` is only valid inside async functions and modules, which themselves are asynchronous and return promises, the `await` expression never blocks the main thread and only defers execution of code that actually depends on the result, i.e. anything after the `await` expression.
+
+## Examples
+
+### Awaiting a promise to be fulfilled
+
+If a `Promise` is passed to an `await` expression, it waits for the `Promise` to be fulfilled and returns the fulfilled value.
 
 ```js
 function resolveAfter2Seconds(x) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve(x);
     }, 2000);
@@ -40,68 +60,288 @@ function resolveAfter2Seconds(x) {
 }
 
 async function f1() {
-  var x = await resolveAfter2Seconds(10);
+  const x = await resolveAfter2Seconds(10);
   console.log(x); // 10
 }
 
 f1();
 ```
 
-{{jsxref("Global_Objects/Promise/then", "Thenable objects")}} will be fulfilled just the same.
+### Thenable objects
+
+[Thenable objects](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#thenables) are resolved just the same as actual `Promise` objects.
 
 ```js
-    async function f2() {
-      const thenable = {
-        then: function(resolve, _reject) {
-          resolve('resolved!')
-        }
-      };
-      console.log(await thenable); // resolved!
-    }
-
-    f2();
-```
-
-만약 값이 `Promise`가 아니라면, 해당 값은 `resolve`된 `Promise`로 변환되며 이를 기다립니다.
-
-```js
-async function f2() {
-  var y = await 20;
-  console.log(y); // 20
+async function f() {
+  const thenable = {
+    then(resolve, _reject) {
+      resolve("resolved!");
+    },
+  };
+  console.log(await thenable); // "resolved!"
 }
-f2();
+
+f();
 ```
 
-만약 `Promise`가 `reject`되면, `reject`된 값이 `throw`됩니다.
+They can also be rejected:
+
+```js
+async function f() {
+  const thenable = {
+    then(resolve, reject) {
+      reject(new Error("rejected!"));
+    },
+  };
+  await thenable; // Throws Error: rejected!
+}
+
+f();
+```
+
+### Conversion to promise
+
+If the value is not a `Promise`, `await` converts the value to a resolved `Promise`, and waits for it. The awaited value's identity doesn't change as long as it doesn't have a `then` property that's callable.
 
 ```js
 async function f3() {
-  try {
-    var z = await Promise.reject(30);
-  } catch(e) {
-    console.log(e); // 30
-  }
+  const y = await 20;
+  console.log(y); // 20
+
+  const obj = {};
+  console.log((await obj) === obj); // true
 }
+
 f3();
 ```
 
-try블럭 없이 rejected `Promise`다루기
+### Handling rejected promises
+
+If the `Promise` is rejected, the rejected value is thrown.
 
 ```js
-    var response = await promisedFunction().catch((err) => { console.error(err); });
-    // response will be undefined if the promise is rejected
+async function f4() {
+  try {
+    const z = await Promise.reject(30);
+  } catch (e) {
+    console.error(e); // 30
+  }
+}
+
+f4();
 ```
 
-## 명세서
+You can handle rejected promises without a `try` block by chaining a [`catch()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch) handler before awaiting the promise.
+
+```js
+const response = await promisedFunction().catch((err) => {
+  console.error(err);
+  return "default response";
+});
+// response will be "default response" if the promise is rejected
+```
+
+This is built on the assumption that `promisedFunction()` never synchronously throws an error, but always returns a rejected promise. This is the case for most properly-designed promise-based functions, which usually look like:
+
+```js
+function promisedFunction() {
+  // Immediately return a promise to minimize chance of an error being thrown
+  return new Promise((resolve, reject) => {
+    // do something async
+  });
+}
+```
+
+However, if `promisedFunction()` does throw an error synchronously, the error won't be caught by the `catch()` handler. In this case, the `try...catch` statement is necessary.
+
+### Top level await
+
+You can use the `await` keyword on its own (outside of an async function) at the top level of a [module](/en-US/docs/Web/JavaScript/Guide/Modules). This means that modules with child modules that use `await` will wait for the child modules to execute before they themselves run, all while not blocking other child modules from loading.
+
+Here is an example of a simple module using the [Fetch API](/en-US/docs/Web/API/Fetch_API) and specifying await within the [`export`](/en-US/docs/Web/JavaScript/Reference/Statements/export) statement. Any modules that include this will wait for the fetch to resolve before running any code.
+
+```js
+// fetch request
+const colors = fetch("../data/colors.json").then((response) => response.json());
+
+export default await colors;
+```
+
+### Control flow effects of await
+
+When an `await` is encountered in code (either in an async function or in a module), the awaited expression is executed, while all code that depends on the expression's value is paused and pushed into the [microtask queue](/en-US/docs/Web/JavaScript/Event_loop). The main thread is then freed for the next task in the event loop. This happens even if the awaited value is an already-resolved promise or not a promise. For example, consider the following code:
+
+```js
+async function foo(name) {
+  console.log(name, "start");
+  console.log(name, "middle");
+  console.log(name, "end");
+}
+
+foo("First");
+foo("Second");
+
+// First start
+// First middle
+// First end
+// Second start
+// Second middle
+// Second end
+```
+
+In this case, the two async functions are synchronous in effect, because they don't contain any `await` expression. The three statements happen in the same tick. In promise terms, the function corresponds to:
+
+```js
+function foo(name) {
+  return new Promise((resolve) => {
+    console.log(name, "start");
+    console.log(name, "middle");
+    console.log(name, "end");
+    resolve();
+  });
+}
+```
+
+However, as soon as there's one `await`, the function becomes asynchronous, and execution of following statements is deferred to the next tick.
+
+```js
+async function foo(name) {
+  console.log(name, "start");
+  await console.log(name, "middle");
+  console.log(name, "end");
+}
+
+foo("First");
+foo("Second");
+
+// First start
+// First middle
+// Second start
+// Second middle
+// First end
+// Second end
+```
+
+This corresponds to:
+
+```js
+function foo(name) {
+  return new Promise((resolve) => {
+    console.log(name, "start");
+    resolve(console.log(name, "middle"));
+  }).then(() => {
+    console.log(name, "end");
+  });
+}
+```
+
+While the extra `then()` handler is not necessary, and the handler can be merged with the executor passed to the constructor, the `then()` handler's existence means the code will take one extra tick to complete. The same happens for `await`. Therefore, make sure to use `await` only when necessary (to unwrap promises into their values).
+
+Other microtasks can execute before the async function resumes. This example uses [`queueMicrotask()`](/en-US/docs/Web/API/queueMicrotask) to demonstrate how the microtask queue is processed when each `await` expression is encountered.
+
+```js
+let i = 0;
+
+queueMicrotask(function test() {
+  i++;
+  console.log("microtask", i);
+  if (i < 3) {
+    queueMicrotask(test);
+  }
+});
+
+(async () => {
+  console.log("async function start");
+  for (let i = 1; i < 3; i++) {
+    await null;
+    console.log("async function resume", i);
+  }
+  await null;
+  console.log("async function end");
+})();
+
+queueMicrotask(() => {
+  console.log("queueMicrotask() after calling async function");
+});
+
+console.log("script sync part end");
+
+// Logs:
+// async function start
+// script sync part end
+// microtask 1
+// async function resume 1
+// queueMicrotask() after calling async function
+// microtask 2
+// async function resume 2
+// microtask 3
+// async function end
+```
+
+In this example, the `test()` function is always called before the async function resumes, so the microtasks they each schedule are always executed in an intertwined fashion. On the other hand, because both `await` and `queueMicrotask()` schedule microtasks, the order of execution is always based on the order of scheduling. This is why the "queueMicrotask() after calling async function" log happens after the async function resumes for the first time.
+
+### Improving stack trace
+
+Sometimes, the `await` is omitted when a promise is directly returned from an async function.
+
+```js
+async function noAwait() {
+  // Some actions...
+
+  return /* await */ lastAsyncTask();
+}
+```
+
+However, consider the case where `lastAsyncTask` asynchronously throws an error.
+
+```js
+async function lastAsyncTask() {
+  await null;
+  throw new Error("failed");
+}
+
+async function noAwait() {
+  return lastAsyncTask();
+}
+
+noAwait();
+
+// Error: failed
+//    at lastAsyncTask
+```
+
+Only `lastAsyncTask` appears in the stack trace, because the promise is rejected after it has already been returned from `noAwait` — in some sense, the promise is unrelated to `noAwait`. To improve the stack trace, you can use `await` to unwrap the promise, so that the exception gets thrown into the current function. The exception will then be immediately wrapped into a new rejected promise, but during error creation, the caller will appear in the stack trace.
+
+```js
+async function lastAsyncTask() {
+  await null;
+  throw new Error("failed");
+}
+
+async function withAwait() {
+  return await lastAsyncTask();
+}
+
+withAwait();
+
+// Error: failed
+//    at lastAsyncTask
+//    at async withAwait
+```
+
+However, there's a little performance penalty coming with `return await` because the promise has to be unwrapped and wrapped again.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
 - {{jsxref("Statements/async_function", "async function")}}
-- {{jsxref("Operators/async_function", "async function expression")}}
-- {{jsxref("AsyncFunction")}} object
+- [`async function` expression](/en-US/docs/Web/JavaScript/Reference/Operators/async_function)
+- {{jsxref("AsyncFunction")}}
+- [Top-level await](https://v8.dev/features/top-level-await) on v8.dev (October 8, 2019)

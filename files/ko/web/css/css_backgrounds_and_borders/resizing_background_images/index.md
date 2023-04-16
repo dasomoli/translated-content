@@ -1,29 +1,28 @@
 ---
-title: 배경 이미지 크기 조정하기
+title: Resizing background images with background-size
 slug: Web/CSS/CSS_Backgrounds_and_Borders/Resizing_background_images
-original_slug: Web/CSS/CSS_Backgrounds_and_Borders/Scaling_background_images
+page-type: guide
 ---
 
-{{cssref}}
+{{CSSRef}}
 
-CSS 배경 이미지의 기본 설정값에서는 원본 이미지가 크기 변화 없이 바둑판식으로 배열됩니다. {{cssxref("background-size")}} 속성에 가로와 세로 크기를 지정해 크기를 바꿀 수 있습니다. 이미지는 원하는대로 확대할 수도, 줄일 수도 있습니다.
+The **{{cssxref("background-size")}}** CSS property lets you resize the background image of an element, overriding the default behavior of tiling the image at its full size by specifying the width and/or height of the image. By doing so, you can scale the image upward or downward as desired.
 
-## 큰 이미지 바둑판식 배열
+## Tiling a large image
 
-2982x2808의 커다란 Firefox 이미지를 가지고 있다고 해보겠습니다. 모종의 이유(끔찍하게 잘못된 사이트 디자인 등)로 300x300 픽셀 요소에 저 이미지 4개를 바둑판식으로 보여야 합니다. `background-size`와 고정값 150 픽셀로 목표를 달성할 수 있습니다.
+Let's consider a large image, a 2982x2808 Firefox logo image. We want (for some reason likely involving horrifyingly bad site design) to tile four copies of this image into a 300x300-pixel element. To do this, we can use a fixed `background-size` value of 150 pixels.
 
 ### HTML
 
 ```html
-<div class="tiledBackground">
-</div>
+<div class="tiledBackground"></div>
 ```
 
 ### CSS
 
 ```css
 .tiledBackground {
-  background-image: url(firefox_logo.png);
+  background-image: url(https://www.mozilla.org/media/img/logos/firefox/logo-quantum.9c5e96634f92.png);
   background-size: 150px;
   width: 300px;
   height: 300px;
@@ -34,25 +33,25 @@ CSS 배경 이미지의 기본 설정값에서는 원본 이미지가 크기 변
 
 ### Result
 
-{{EmbedLiveSample("큰_이미지_바둑판식_배열", 340, 340)}}
+{{EmbedLiveSample("Tiling_a_large_image", 340, 340)}}
 
-## 이미지 늘리기
+## Stretching an image
 
-가로와 세로 크기를 각각 지정할 수도 있습니다.
+You can also specify both the horizontal and vertical sizes of the image, like this:
 
 ```css
 background-size: 300px 150px;
 ```
 
-결과는 다음과 같습니다.
+The result looks like this:
 
-![](ss2.png)
+![New Firefox logo stretched](stretched_firefox_logo.png)
 
-## 작은 이미지 키우기
+## Scaling an image up
 
-반대로 배경 이미지를 키울 수도 있습니다. 다음 코드는 32x32 픽셀 파비콘을 300x300 픽셀로 늘린 결과입니다.
+On the other end of the spectrum, you can scale an image up in the background. Here we scale a 32x32 pixel favicon to 300x300 pixels:
 
-![](ss3.png)
+![MDN Logo scaled](scaled_mdn_logo.png)
 
 ```css
 .square2 {
@@ -66,15 +65,15 @@ background-size: 300px 150px;
 }
 ```
 
-보시다시피 CSS는 이미지 파일 이름을 제외하면 동일합니다.
+As you can see, the CSS is actually essentially identical, save the name of the image file.
 
-## 특별한 값: "contain" 과 "cover"
+## Special values: "contain" and "cover"
 
-길이를 나타내는 {{cssxref("&lt;length&gt;")}} 값 대신, {{ cssxref("background-size") }} CSS 속성에 `contain` 과 `cover` 두개의 특별한 값을 지정할 수 있습니다. 살펴봅시다.
+Besides {{cssxref("&lt;length&gt;")}} values, the {{ cssxref("background-size") }} CSS property offers two special size values, `contain` and `cover`. Let's take a look at these.
 
-### `contain`
+### contain
 
-`contain` 값을 지정하면, 배경 이미지의 가로, 세로 모두 요소보다 작다는 조건하에 가능한 크게 조정됩니다. 이미지의 가로, 세로 비율은 유지됩니다. 따라서 배경 이미지의 크기는 요소의 크기보다 항상 작거나 같습니다. 아래 예제의 크기를 조절해서 실제로 어떻게 동작하는지 확인해보세요.
+The `contain` value specifies that, regardless of the size of the containing box, the background image should be scaled so that each side is as large as possible while not exceeding the length of the corresponding side of the container. Try resizing the example below to see this in action.
 
 #### HTML
 
@@ -88,7 +87,7 @@ background-size: 300px 150px;
 
 ```css
 .bgSizeContain {
-  background-image: url(firefox_logo.png);
+  background-image: url(https://www.mozilla.org/media/img/logos/firefox/logo-quantum.9c5e96634f92.png);
   background-size: contain;
   width: 160px;
   height: 160px;
@@ -99,13 +98,13 @@ background-size: 300px 150px;
 }
 ```
 
-#### 결과
+#### Result
 
 {{ EmbedLiveSample('contain', 250, 250) }}
 
-### `cover`
+### cover
 
-값을 `cover` 로 지정하면 배경이미지의 가로, 세로 길이 모두 요소보다 크다는 조건하에 가능한 배경 이미지를 작게 조정합니다. 가로, 세로 비율은 유지됩니다. 따라서 배경 이미지의 크기는 요소의 크기보다 항상 크거나 같습니다. 아래 예제의 크기를 조절해서 실제로 어떻게 동작하는지 확인해보세요.
+The `cover` value specifies that the background image should be sized so that it is as small as possible while ensuring that both dimensions are greater than or equal to the corresponding size of the container. Try resizing the example below to see this in action.
 
 #### HTML
 
@@ -119,7 +118,7 @@ background-size: 300px 150px;
 
 ```css
 .bgSizeCover {
-  background-image: url(firefox_logo.png);
+  background-image: url(https://www.mozilla.org/media/img/logos/firefox/logo-quantum.9c5e96634f92.png);
   background-size: cover;
   width: 160px;
   height: 160px;
@@ -130,12 +129,12 @@ background-size: 300px 150px;
 }
 ```
 
-#### 결과
+#### Result
 
 {{ EmbedLiveSample('cover', 250, 250) }}
 
-## 같이 보기
+## See also
 
 - {{ cssxref("background-size") }}
 - {{ cssxref("background") }}
-- [Scaling of SVG backgrounds](/ko/docs/Web/CSS/Scaling_of_SVG_backgrounds)
+- [Scaling of SVG backgrounds](/en-US/docs/Web/CSS/Scaling_of_SVG_backgrounds)

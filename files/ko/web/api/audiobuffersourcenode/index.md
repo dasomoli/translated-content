@@ -1,109 +1,127 @@
 ---
 title: AudioBufferSourceNode
 slug: Web/API/AudioBufferSourceNode
+page-type: web-api-interface
+browser-compat: api.AudioBufferSourceNode
 ---
+
 {{APIRef("Web Audio API")}}
 
-**`AudioBufferSourceNode`** 의 오디오 소스는 in-memory 의 {{domxref("AudioNode")}} 상에 저장된 데이터로 구성되어있다. 이는 오디오 소스 그 자체처럼 동작을 한다.
+The **`AudioBufferSourceNode`** interface is an {{domxref("AudioScheduledSourceNode")}} which represents an audio source consisting of in-memory audio data, stored in an {{domxref("AudioBuffer")}}.
 
-`AudioBufferSourceNode` 는 입력정보를 가지지 않고 정확히 하나의 출력정보를 가진다. 출력상의 여러 채널은 `AudioBufferSourceNode.buffer` 프로퍼티로로 동작할 {{domxref("AudioBuffer")}} 의 채널의 수와 일치한다. 만약에 `AudioBufferSourceNode.buffer`가 `null`이라면 출력은 오직 무음으로 출력이된다. {{domxref("AudioBufferSourceNode")}}는 오직 한번만 재생이 된다. 즉 `AudioBufferSourceNode.start()`가 한번만 호출될수 있다. 만약에 한번더 재생하기를 원한다면 또 다른 `AudioBufferSourceNode`를 생성해야 한다. 이 노드는 매우 간편히 생성가능하다. `AudioBuffer`는 다른 곳에서 접근해 재생이 가능하다. `AudioBufferSourceNode`s는 "fire and forget(쓰고 잊자)" 처럼 한번 쓰고 나면 해당노드의 모든 참조들이 없어지고 자동적으로 가비지 콜렉터로 가게된다.
+This interface is especially useful for playing back audio which has particularly stringent timing accuracy requirements, such as for sounds that must match a specific rhythm and can be kept in memory rather than being played from disk or the network. To play sounds which require accurate timing but must be streamed from the network or played from disk, use a {{domxref("AudioWorkletNode")}} to implement its playback.
 
-여러번 실행을 하면 `AudioBufferSourceNode.stop()`을 통해 정지가 가능하다. 가장 최근의 실행된것이 이전의 것으로 대체가 되어 `AudioBufferSourceNode`버퍼의 마지막에 도착하지 않은 상태가 된다.
+{{InheritanceDiagram}}
+
+An `AudioBufferSourceNode` has no inputs and exactly one output, which has the same number of channels as the `AudioBuffer` indicated by its {{domxref("AudioBufferSourceNode.buffer", "buffer")}} property. If there's no buffer set—that is, if `buffer` is `null`—the output contains a single channel of silence (every sample is 0).
+
+An `AudioBufferSourceNode` can only be played once; after each call to {{domxref("AudioScheduledSourceNode.start", "start()")}}, you have to create a new node if you want to play the same sound again. Fortunately, these nodes are very inexpensive to create, and the actual `AudioBuffer`s can be reused for multiple plays of the sound. Indeed, you can use these nodes in a "fire and forget" manner: create the node, call `start()` to begin playing the sound, and don't even bother to hold a reference to it. It will automatically be garbage-collected at an appropriate time, which won't be until sometime after the sound has finished playing.
+
+Multiple calls to {{domxref("AudioScheduledSourceNode/stop", "stop()")}} are allowed. The most recent call replaces the previous one, if the `AudioBufferSourceNode` has not already reached the end of the buffer.
 
 ![The AudioBufferSourceNode takes the content of an AudioBuffer and m](webaudioaudiobuffersourcenode.png)
 
-| Number of inputs  | `0`                                                            |
-| ----------------- | -------------------------------------------------------------- |
-| Number of outputs | `1`                                                            |
-| Channel count     | defined by the associated {{domxref("AudioBuffer")}} |
+<table class="properties">
+  <tbody>
+    <tr>
+      <th scope="row">Number of inputs</th>
+      <td><code>0</code></td>
+    </tr>
+    <tr>
+      <th scope="row">Number of outputs</th>
+      <td><code>1</code></td>
+    </tr>
+    <tr>
+      <th scope="row">Channel count</th>
+      <td>defined by the associated {{domxref("AudioBuffer")}}</td>
+    </tr>
+  </tbody>
+</table>
 
-## Properties
+## Constructor
 
-_{{domxref("AudioNode")}}_ 를 부모로 가지는 프로퍼티.
+- {{domxref("AudioBufferSourceNode.AudioBufferSourceNode", "AudioBufferSourceNode()")}}
+  - : Creates and returns a new `AudioBufferSourceNode` object. As an alternative, you can use the {{domxref("BaseAudioContext.createBufferSource()")}} factory method; see [Creating an AudioNode](/en-US/docs/Web/API/AudioNode#creating_an_audionode).
+
+## Instance properties
+
+_Inherits properties from its parent, {{domxref("AudioScheduledSourceNode")}}_.
 
 - {{domxref("AudioBufferSourceNode.buffer")}}
-  - : {{domxref("AudioBuffer")}} 의 음원이 재생이 되거나 값이 NULL 이라면 채널하나을 무음으로 정의한다.
-- {{domxref("AudioBufferSourceNode.playbackRate")}} {{readOnlyinline}}
-  - : {{domxref("AudioParam")}}에는 두개의 파라메터가 있는 데 그중의 하나인 [a-rate](/ko/docs/Web/API/AudioParam#a-rate)을 재생이될 정보의 속도요소로 정의 한다. 출력에 수정된 음의 보정이 있지않으므로 이 는 샘플의 음을 변경하는데 사용이 가능하다.
+  - : An {{domxref("AudioBuffer")}} that defines the audio asset to be played, or when set to the value `null`, defines a single channel of silence (in which every sample is 0.0).
+- {{domxref("AudioBufferSourceNode.detune")}}
+  - : A [k-rate](/en-US/docs/Web/API/AudioParam#k-rate) {{domxref("AudioParam")}} representing detuning of playback in [cents](https://en.wikipedia.org/wiki/Cent_%28music%29). This value is compounded with `playbackRate` to determine the speed at which the sound is played. Its default value is `0` (meaning no detuning), and its nominal range is -∞ to ∞.
 - {{domxref("AudioBufferSourceNode.loop")}}
-  - : Boolean값으로 음원이 재생되어 {{domxref("AudioBuffer")}}의 끝에 다달했음을 알리는 값이다. false를 기본값으로 가진다.
-- {{domxref("AudioBufferSourceNode.loopStart")}}
-  - : double값으로 {{domxref("AudioBuffer")}}가 재시작이 되는 경우 반드시 발생한다. 기본값은 0이다.
-- {{domxref("AudioBufferSourceNode.loopEnd")}}
-  - : double값으로 {{domxref("AudioBuffer")}}가 다시 재생이 되는 경우 재생을 멈춰야 한다(그리고 결국에는 다시 시작한다). 기본값은 0이다.
+  - : A Boolean attribute indicating if the audio asset must be replayed when the end of the {{domxref("AudioBuffer")}} is reached. Its default value is `false`.
+- {{domxref("AudioBufferSourceNode.loopStart")}} {{optional_inline}}
+  - : A floating-point value indicating the time, in seconds, at which playback of the {{domxref("AudioBuffer")}} must begin when `loop` is `true`. Its default value is `0` (meaning that at the beginning of each loop, playback begins at the start of the audio buffer).
+- {{domxref("AudioBufferSourceNode.loopEnd")}} {{optional_inline}}
+  - : A floating-point number indicating the time, in seconds, at which playback of the {{domxref("AudioBuffer")}} stops and loops back to the time indicated by `loopStart`, if `loop` is `true`. The default value is `0`.
+- {{domxref("AudioBufferSourceNode.playbackRate")}}
+  - : A [k-rate](/en-US/docs/Web/API/AudioParam#k-rate) {{domxref("AudioParam")}} that defines the speed factor at which the audio asset will be played, where a value of 1.0 is the sound's natural sampling rate. Since no pitch correction is applied on the output, this can be used to change the pitch of the sample. This value is compounded with `detune` to determine the final playback rate.
 
-### Event handlers
+## Instance methods
 
-- {{domxref("AudioBufferSourceNode.onended")}}
-  - : event handlers로 ended 이벤트와 연관된 콜백함수를 가진다.
+_Inherits methods from its parent, {{domxref("AudioScheduledSourceNode")}}, and overrides the following method:_.
 
-## Methods
+- {{domxref("AudioBufferSourceNode.start", "start()")}}
+  - : Schedules playback of the audio data contained in the buffer, or begins playback immediately. Additionally allows the start offset and play duration to be set.
 
-_{{domxref("AudioNode")}}_ 를 부모로 가지는 매서드.
+## Event handlers
 
-- {{domxref("AudioBufferSourceNode.start()")}}
-  - : 음원이 재생되는 시작되는 시점.
-- {{domxref("AudioBufferSourceNode.stop()")}}
-  - : 음원이 재생되는 끝나는 시점.
+_Inherits event handlers from its parent, {{domxref("AudioScheduledSourceNode")}}_.
 
 ## Examples
 
-이 예제는 two-second buffer를 생성하여 화이트 노이즈로 채워 이를 `AudioBufferSourceNode을 통해 재생한다.`
+In this example, we create a two-second buffer, fill it with white noise, and then play it using an `AudioBufferSourceNode`. The comments should clearly explain what is going on.
 
-> **참고:** You can also [run the code live](http://mdn.github.io/audio-buffer/), or [view the source](https://github.com/mdn/audio-buffer).
+> **Note:** You can also [run the code live](https://mdn.github.io/webaudio-examples/audio-buffer/), or [view the source](https://github.com/mdn/webaudio-examples/blob/master/audio-buffer/index.html).
 
 ```js
-var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-var button = document.querySelector('button');
-var pre = document.querySelector('pre');
-var myScript = document.querySelector('script');
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-pre.innerHTML = myScript.innerHTML;
+// Create an empty three-second stereo buffer at the sample rate of the AudioContext
+const myArrayBuffer = audioCtx.createBuffer(
+  2,
+  audioCtx.sampleRate * 3,
+  audioCtx.sampleRate
+);
 
-// Stereo
-var channels = 2;
-// Create an empty two-second stereo buffer at the
-// sample rate of the AudioContext
-var frameCount = audioCtx.sampleRate * 2.0;
-
-var myArrayBuffer = audioCtx.createBuffer(2, frameCount, audioCtx.sampleRate);
-
-button.onclick = function() {
-  // Fill the buffer with white noise;
-  //just random values between -1.0 and 1.0
-  for (var channel = 0; channel < channels; channel++) {
-   // This gives us the actual ArrayBuffer that contains the data
-   var nowBuffering = myArrayBuffer.getChannelData(channel);
-   for (var i = 0; i < frameCount; i++) {
-     // Math.random() is in [0; 1.0]
-     // audio needs to be in [-1.0; 1.0]
-     nowBuffering[i] = Math.random() * 2 - 1;
-   }
+// Fill the buffer with white noise;
+//just random values between -1.0 and 1.0
+for (let channel = 0; channel < myArrayBuffer.numberOfChannels; channel++) {
+  // This gives us the actual ArrayBuffer that contains the data
+  const nowBuffering = myArrayBuffer.getChannelData(channel);
+  for (let i = 0; i < myArrayBuffer.length; i++) {
+    // Math.random() is in [0; 1.0]
+    // audio needs to be in [-1.0; 1.0]
+    nowBuffering[i] = Math.random() * 2 - 1;
   }
-
-  // Get an AudioBufferSourceNode.
-  // This is the AudioNode to use when we want to play an AudioBuffer
-  var source = audioCtx.createBufferSource();
-  // set the buffer in the AudioBufferSourceNode
-  source.buffer = myArrayBuffer;
-  // connect the AudioBufferSourceNode to the
-  // destination so we can hear the sound
-  source.connect(audioCtx.destination);
-  // start the source playing
-  source.start();
 }
+
+// Get an AudioBufferSourceNode.
+// This is the AudioNode to use when we want to play an AudioBuffer
+const source = audioCtx.createBufferSource();
+// set the buffer in the AudioBufferSourceNode
+source.buffer = myArrayBuffer;
+// connect the AudioBufferSourceNode to the
+// destination so we can hear the sound
+source.connect(audioCtx.destination);
+// start the source playing
+source.start();
 ```
 
-> **참고:** For a `decodeAudioData` example, see the {{domxref("AudioContext.decodeAudioData")}} page.
+> **Note:** For a `decodeAudioData()` example, see the {{domxref("BaseAudioContext/decodeAudioData", "AudioContext.decodeAudioData()")}} page.
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- [Using the Web Audio API](/ko/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)
+- [Using the Web Audio API](/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)
+- [Web Audio API](/en-US/docs/Web/API/Web_Audio_API)

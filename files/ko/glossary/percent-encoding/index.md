@@ -1,13 +1,14 @@
 ---
-title: Percent-encoding(퍼센트 인코딩)
+title: Percent-encoding
 slug: Glossary/Percent-encoding
+page-type: glossary-definition
 ---
 
-**Percent-encoding** 은 {{Glossary("URL", "URL")}} 맥락에서 특정 의미를 갖는 8비트 문자로 인코딩하는 메커니즘입니다. URL 인코딩이라고도 합니다. 인코딩은 '%' 다음에 변경할 문자를 ASCII 값으로 표현되는 16진수가 위치하는 대체 문자열로 구성됩니다.
+**Percent-encoding** is a mechanism to encode 8-bit characters that have specific meaning in the context of {{Glossary("URL", "URLs")}}. It is sometimes called URL encoding. The encoding consists of substitution: A '%' followed by the hexadecimal representation of the ASCII value of the replace character.
 
-인코딩이 필요한 특수문자는 `':'`, `'/'`, `'?'`, `'#'`, `'['`, `']'`, `'@'`, `'!'`, `'$'`, `'&'`, `"'"`, `'('`, `')'`, `'*'`, `'+'`, `','`, `';'`, `'='` 그리고 `'%'` 그 자체입니다. 다른 문자는 인코딩 할 수 있지만 인코딩을 할 필요는 없습니다.
+Special characters needing encoding are: `':'`, `'/'`, `'?'`, `'#'`, `'['`, `']'`, `'@'`, `'!'`, `'$'`, `'&'`, `"'"`, `'('`, `')'`, `'*'`, `'+'`, `','`, `';'`, `'='`, as well as `'%'` itself. Other characters don't need to be encoded, though they could.
 
-| 문자 | 인코딩     |
+| Character | Encoding     |
 | --------- | ------------ |
 | `':'`     | `%3A`        |
 | `'/'`     | `%2F`        |
@@ -30,9 +31,9 @@ slug: Glossary/Percent-encoding
 | `'%'`     | `%25`        |
 | `' '`     | `%20` or `+` |
 
-문맥에 따라 문자 `' '`는 `application/x-www-form-urlencoded` 메시지에서 사용된 것과 같은 퍼센트 인코딩처럼 `'+'`로 변환되며 URL에서는 `'%20'`으로 변환됩니다.
+Depending on the context, the character `' '` is translated to a `'+'` (like in the percent-encoding version used in an `application/x-www-form-urlencoded` message), or in `'%20'` like on URLs.
 
-## 같이 보기
+## See also
 
-- 위키피디아 [퍼센트 인코딩](https://ko.wikipedia.org/wiki/%ED%8D%BC%EC%84%BC%ED%8A%B8_%EC%9D%B8%EC%BD%94%EB%94%A9)의 정의
+- Definition of [percent-encoding](https://en.wikipedia.org/wiki/Percent-encoding) in Wikipedia.
 - {{RFC(3986)}}, section 2.1, where this encoding is defined.

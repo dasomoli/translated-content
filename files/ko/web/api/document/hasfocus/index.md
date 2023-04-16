@@ -1,80 +1,97 @@
 ---
-title: Document.hasFocus()
+title: "Document: hasFocus() method"
+short-title: hasFocus()
 slug: Web/API/Document/hasFocus
+page-type: web-api-instance-method
+browser-compat: api.Document.hasFocus
 ---
 
-{{ ApiRef("DOM") }}
+{{APIRef}}
 
-**`Document.hasFocus()`** 메소드는 문서 또는 문서 내의 요소(element) 중 어느 하나라도 포커스(focus)를 갖고 있으면 `true`, 그렇지 않으면 `false` 인 {{jsxref("Boolean")}} 값을 반환한다. 이 메소드를 사용하여 문서내 활성화된(active) 요소가 포커스를 갖고 있는지 판단할 수 있다.
+The **`hasFocus()`** method of the {{domxref("Document")}} interface returns a boolean value indicating whether the document or any element inside the document has focus.
+This method can be used to determine whether the active element in a document has focus.
 
-> **참고:** 문서를 볼 때, 포커스를 가진 요소는 언제나 문서상의 활성화된 요소이다. 반면에 활성화된 요소는 꼭 포커스를 갖지 않을 수 도 있다. 예를 들면 전면에 나와있지 않은(not a foreground) 팝업창 내의 활성화된 요소는 포커스를 갖고 있지 않다.
+> **Note:** When viewing a document, an element with focus is always the [active element](/en-US/docs/Web/API/Document/activeElement) in the document, but an active element does not necessarily have focus.
+> For example, an active element within a popup window that is not the foreground doesn't have focus.
 
-## 구문
+## Syntax
 
-```js
-focused = document.hasFocus();
+```js-nolint
+hasFocus()
 ```
 
-### 반환 값
+### Parameters
 
-문서 내의 활성화된 요소가 포커스를 갖고 있지 않으면 `false`를 반환, 포커스를 갖고 있다면 `true`를 반환
+None.
 
-## 예제
+### Return value
+
+`false` if the active element in the document has no focus;
+`true` if the active element in the document has focus.
+
+## Examples
+
+The following example checks whether the document has focus or not.
+A function called `checkPageFocus()` updates a paragraph element depending on the result of `document.hasFocus()`.
+Opening a new window will cause the document to lose focus and switching back to the original window will cause the document to regain focus.
+
+### HTML
 
 ```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<title>TEST</title>
-<style>
-#message { font-weight: bold; }
-</style>
+<p id="log">Focus check results are shown here.</p>
+<button id="newWindow">Open new window</button>
+```
 
-<script>
+```css hidden
+body {
+  padding: 1rem;
+  background: gray;
+  text-align: center;
+  font-size: 1.5rem;
+}
+```
 
-setInterval( CheckPageFocus, 200 );
+### JavaScript
 
-function CheckPageFocus() {
-  var info = document.getElementById("message");
+```js
+const body = document.querySelector("body");
+const log = document.getElementById("log");
 
-  if ( document.hasFocus() ) {
-    info.innerHTML = "The document has the focus.";
+function checkDocumentFocus() {
+  if (document.hasFocus()) {
+    log.textContent = "This document has focus.";
+    body.style.background = "white";
   } else {
-    info.innerHTML = "The document doesn't have the focus.";
+    log.textContent = "This document does not have focus.";
+    body.style.background = "gray";
   }
 }
 
-function OpenWindow() {
-  window.open (
-    "http://developer.mozilla.org/",
-    "mozdev",
-    width=640,
-    height=300,
-    left=150,
-    top=260
+function openWindow() {
+  window.open(
+    "https://developer.mozilla.org/",
+    "MDN",
+    "width=640,height=320,left=150,top=150"
   );
 }
 
-</script>
-</head>
-
-<body>
-  <h1>JavaScript hasFocus example</h1>
-  <div id="message">Waiting for user action</div>
-  <div><button onclick="OpenWindow()">Open a new window</button></div>
-</body>
-</html>
+document.getElementById("newWindow").addEventListener("click", openWindow);
+setInterval(checkDocumentFocus, 300);
 ```
 
-## 명세
+### Result
+
+{{EmbedLiveSample("Examples")}}
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 관련 참고
+## See also
 
-- [페이지 가시성 API 사용하기](/ko/docs/Web/Guide/User_experience/Using_the_Page_Visibility_API)
+- {{domxref("Document.activeElement")}}
+- [Using the Page Visibility API](/en-US/docs/Web/API/Page_Visibility_API)

@@ -1,97 +1,105 @@
 ---
 title: History API
 slug: Web/API/History_API
+page-type: web-api-overview
+browser-compat: api.History
 ---
 
 {{DefaultAPISidebar("History API")}}
 
-DOM의 {{domxref("Window")}} 객체는 {{domxref("Window.history", "history")}} 객체를 통해 브라우저의 세션 기록에 접근할 수 있는 방법을 제공합니다. {{domxref("History", "history")}}는 사용자를 자신의 방문 기록 앞과 뒤로 보내고 기록 스택의 콘텐츠도 조작할 수 있는, 유용한 메서드와 속성을 가집니다.
+The **History API** provides access to the browser's session history (not to be confused with [WebExtensions history](/en-US/docs/Mozilla/Add-ons/WebExtensions/API/history)) through the {{DOMxRef("Window.history","history")}} global object. It exposes useful methods and properties that let you navigate back and forth through the user's history, and manipulate the contents of the history stack.
 
-## 개념과 사용 방법
+> **Note:** This API is only available on the main thread ({{domxref("Window")}}). It cannot be accessed in {{domxref("Worker")}} or {{domxref("Worklet")}} contexts.
 
-사용자 방문 기록에서 앞뒤로 이동할 땐 {{domxref("History.back","back()")}}, {{domxref("History.forward","forward()")}}, {{domxref("History.go","go()")}} 메서드를 사용합니다.
+## Concepts and usage
 
-### 앞으로 가기와 뒤로 가기
+Moving backward and forward through the user's history is done using the {{DOMxRef("History.back","back()")}}, {{DOMxRef("History.forward","forward()")}}, and {{DOMxRef("History.go","go()")}} methods.
 
-방문 기록의 뒤로 이동하려면 다음과 같이 사용합니다.
+### Moving forward and backward
 
-```js
-history.back()
-```
-
-위의 코드는 사용자가 브라우저 도구 모음의 뒤로 가기 버튼을 누른 것과 같습니다.
-
-이와 비슷하게, 기록의 앞으로 (도구 모음의 앞으로 가기 버튼) 가는 것도 할 수 있습니다.
+To move backward through history:
 
 ```js
-history.forward()
+history.back();
 ```
 
-### 기록의 특정 지점으로 이동
+This acts exactly as if the user clicked on the <kbd><strong>Back</strong></kbd> button in their browser toolbar.
 
-{{domxref("History.go", "go()")}} 메서드를 사용하면 세션 기록에서 현재 페이지의 위치를 기준으로, 상대적인 거리에 위치한 특정 지점까지 이동할 수 있습니다.
-
-한 페이지 뒤로 이동하려면 다음과 같이 사용합니다. ({{domxref("History.back", "back()")}}과 동일)
+Similarly, you can move forward (as if the user clicked the <kbd><strong>Forward</strong></kbd> button), like this:
 
 ```js
-history.go(-1)
+history.forward();
 ```
 
-한 페이지 앞으로 이동하려면 다음과 같이 사용합니다. ({{domxref("History.forward", "forward()")}}와 동일)
+### Moving to a specific point in history
+
+You can use the {{DOMxRef("History.go","go()")}} method to load a specific page from session history, identified by its relative position to the current page. (The current page's relative position is `0`.)
+
+To move back one page (the equivalent of calling {{DOMxRef("History.back","back()")}}):
 
 ```js
-history.go(1)
+history.go(-1);
 ```
 
-매개변수로 지정한 숫자를 바꾸면 2 페이지씩 이동하는 것도 가능합니다.
+To move forward a page, just like calling {{DOMxRef("History.forward","forward()")}}:
 
-`go()`의 다른 사용법은 매개변수를 제공하지 않거나 0을 제공해 현재 페이지를 다시 불러오는 것입니다.
+```js
+history.go(1);
+```
+
+Similarly, you can move forward 2 pages by passing `2`, and so forth.
+
+Another use for the `go()` method is to refresh the current page by either passing `0`, or by invoking it without an argument:
 
 ```js
 // The following statements
 // both have the effect of
 // refreshing the page
-history.go(0)
-history.go()
+history.go(0);
+history.go();
 ```
 
-{{domxref("History.length", "length")}} 속성을 사용해 방문 기록 스택의 크기도 알아낼 수 있습니다.
+You can determine the number of pages in the history stack by looking at the value of the `length` property:
 
 ```js
-let numberOfEntries = window.history.length
+const numberOfEntries = history.length;
 ```
 
-## 인터페이스
+## Interfaces
 
 - {{domxref("History")}}
-  - : 브라우저의 세션 기록에 접근할 수 있는 방법을 제공하는 인터페이스입니다.
+  - : Allows manipulation of the browser _session history_ (that is, the pages visited in the tab or frame that the current page is loaded in).
+- {{domxref("PopStateEvent")}}
+  - : The interface of the {{domxref("Window.popstate_event", "popstate")}} event.
 
-## 예제
+## Examples
 
-다음 예제는 {{domxref("window.onpopstate")}} 속성에 이벤트 처리기를 부착한 후, {{domxref("window.history", "history")}} 객체를 사용해 브라우저 방문 기록을 추가하거나 대체한 후 탐색하는 코드입니다.
+The following example assigns a listener for the {{domxref("Window.popstate_event", "popstate")}} event. It then illustrates some of the methods of the history object to add, replace, and move within the browser history for the current tab.
 
 ```js
-window.onpopstate = function(event) {
-  alert(`location: ${document.location}, state: ${JSON.stringify(event.state)}`)
-}
+window.addEventListener("popstate", (event) => {
+  alert(
+    `location: ${document.location}, state: ${JSON.stringify(event.state)}`
+  );
+});
 
-history.pushState({page: 1}, "title 1", "?page=1")
-history.pushState({page: 2}, "title 2", "?page=2")
-history.replaceState({page: 3}, "title 3", "?page=3")
-history.back() // alerts "location: http://example.com/example.html?page=1, state: {"page":1}"
-history.back() // alerts "location: http://example.com/example.html, state: null"
-history.go(2)  // alerts "location: http://example.com/example.html?page=3, state: {"page":3}"
+history.pushState({ page: 1 }, "title 1", "?page=1");
+history.pushState({ page: 2 }, "title 2", "?page=2");
+history.replaceState({ page: 3 }, "title 3", "?page=3");
+history.back(); // alerts "location: http://example.com/example.html?page=1, state: {"page":1}"
+history.back(); // alerts "location: http://example.com/example.html, state: null"
+history.go(2); // alerts "location: http://example.com/example.html?page=3, state: {"page":3}"
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{domxref("window.history")}}
-- {{domxref("window.onpopstate")}}
+- {{domxref("window.history", "history")}} global object
+- {{domxref("Window/popstate_event", "popstate")}} event

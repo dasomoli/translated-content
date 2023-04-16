@@ -1,58 +1,25 @@
 ---
-title: <summary>
+title: "<summary>: The Disclosure Summary element"
 slug: Web/HTML/Element/summary
+page-type: html-element
+browser-compat: html.elements.summary
 ---
 
 {{HTMLSidebar}}
 
-**HTML 공개 요약 요소** (**`<요약>`**) 요소는 ("상세") 요소의 공개 상자에 대한 요약, 캡션 또는 범례를 지정한다. `<요약>` 요소를 클릭하면 부모 `<상세>` 요소의 상태가 열리거나 닫힌다.
+The **`<summary>`** [HTML](/en-US/docs/Web/HTML) element specifies a summary, caption, or legend for a {{HTMLElement("details")}} element's disclosure box. Clicking the `<summary>` element toggles the state of the parent `<details>` element open and closed.
 
 {{EmbedInteractiveExample("pages/tabbed/summary.html","tabbed-shorter")}}
 
-<p class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</p>
-
-<table class="properties">
-  <tbody>
-    <tr>
-      <th scope="row">Permitted content</th>
-      <td>
-        <a href="/en-US/docs/Web/Guide/HTML/Content_categories#Phrasing_content"
-          >Phrasing content</a
-        >
-        or one element of
-        <a href="/en-US/docs/Web/Guide/HTML/Content_categories#Heading_content"
-          >Heading content</a
-        >
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Tag omission</th>
-      <td>None, both the start tag and the end tag are mandatory.</td>
-    </tr>
-    <tr>
-      <th scope="row">Permitted parents</th>
-      <td>The {{HTMLElement("details")}} element.</td>
-    </tr>
-    <tr>
-      <th scope="row">Permitted ARIA roles</th>
-      <td><a href='/ko/docs/Web/Accessibility/ARIA/Roles/button_role'><code>button</code></a></td>
-    </tr>
-    <tr>
-      <th scope="row">DOM interface</th>
-      <td>{{domxref("HTMLElement")}}</td>
-    </tr>
-  </tbody>
-</table>
-
 ## Attributes
 
-This element only includes the [global attributes](/ko/docs/Web/HTML/Global_attributes).
+This element only includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
 ## Usage notes
 
 The `<summary>` element's contents can be any heading content, plain text, or HTML that can be used within a paragraph.
 
-A `<summary>` element may _only_ be used as the first child of a `<details>` element. When the user clicks on the summary, the parent `<details>` element is toggled open or closed, and then a {{event("toggle")}} event is sent to the `<details>` element, which can be used to let you know when this state change occurs.
+A `<summary>` element may _only_ be used as the first child of a `<details>` element. When the user clicks on the summary, the parent `<details>` element is toggled open or closed, and then a {{domxref("HTMLDetailsElement/toggle_event", "toggle")}} event is sent to the `<details>` element, which can be used to let you know when this state change occurs.
 
 ### Default label text
 
@@ -65,6 +32,8 @@ Per the HTML specification, the default style for `<summary>` elements includes 
 You can also change the style to `display: block` to remove the disclosure triangle.
 
 See the [Browser compatibility](#browser_compatibility) section for details, as not all browsers support full functionality of this element yet.
+
+For Webkit-based browsers, such as Safari, it is possible to control the icon display through the non-standard CSS pseudo-element `::-webkit-details-marker`. To remove the disclosure triangle, use `summary::-webkit-details-marker { display: none }`.
 
 ## Examples
 
@@ -85,6 +54,8 @@ A simple example showing the use of `<summary>` in a {{HTMLElement("details")}} 
 </details>
 ```
 
+#### Result
+
 {{EmbedLiveSample("Basic_example", 650, 120)}}
 
 ### Summaries as headings
@@ -94,7 +65,7 @@ You can use heading elements in `<summary>`, like this:
 ```html
 <details open>
   <summary><h4>Overview</h4></summary>
-    <ol>
+  <ol>
     <li>Cash on hand: $500.00</li>
     <li>Current invoice: $75.30</li>
     <li>Due date: 5/6/19</li>
@@ -102,9 +73,13 @@ You can use heading elements in `<summary>`, like this:
 </details>
 ```
 
+#### Result
+
 {{EmbedLiveSample("Summaries_as_headings", 650, 120)}}
 
 This currently has some spacing issues that could be addressed using CSS.
+
+> **Warning:** Because the `<summary>` element has a default role of [button](/en-US/docs/Web/Accessibility/ARIA/Roles/button_role) (which strips all roles from child elements), this example will not work for users of assistive technologies such as screen readers. The `<h4>` will have its role removed and thus will not be treated as a heading for these users.
 
 ### HTML in summaries
 
@@ -121,13 +96,60 @@ This example adds some semantics to the `<summary>` element to indicate the labe
 </details>
 ```
 
+#### Result
+
 {{EmbedLiveSample("HTML_in_summaries", 650, 120)}}
 
-## 명세서
+## Technical summary
+
+<table class="properties">
+  <tbody>
+    <tr>
+      <th scope="row">Permitted content</th>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >Phrasing content</a
+        >
+        or one element of
+        <a href="/en-US/docs/Web/HTML/Content_categories#heading_content"
+          >Heading content</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Tag omission</th>
+      <td>None; both the start tag and the end tag are mandatory.</td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted parents</th>
+      <td>The {{HTMLElement("details")}} element.</td>
+    </tr>
+    <tr>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <code
+          ><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/button_role"
+            >button</a
+          ></code
+        >
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>No <code>role</code> permitted</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
+      <td>{{domxref("HTMLElement")}}</td>
+    </tr>
+  </tbody>
+</table>
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

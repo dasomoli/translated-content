@@ -1,47 +1,48 @@
 ---
-title: CanvasCaptureMediaStreamTrack.canvas
+title: "CanvasCaptureMediaStreamTrack: canvas property"
+short-title: canvas
 slug: Web/API/CanvasCaptureMediaStreamTrack/canvas
+page-type: web-api-instance-property
+browser-compat: api.CanvasCaptureMediaStreamTrack.canvas
 ---
 
 {{APIRef}}
 
-The {{domxref("CanvasCaptureMediaStreamTrack")}} **`canvas`**읽기 전용 속성은 프레임이 캡쳐되는{{domxref("HTMLCanvasElement")}} 를 반환한다.
+The {{domxref("CanvasCaptureMediaStreamTrack")}} **`canvas`**
+read-only property returns the {{domxref("HTMLCanvasElement")}} from which frames are
+being captured.
 
-## 구문
+## Value
 
-```js
-var elt = stream.canvas;
-```
+An `HTMLCanvasElement` indicating the canvas which is the source of the
+frames being captured.
 
-### 값
-
-`캡처되는 프레임의 원본인 canvas를 나타내는 HTMLCanvasElement` .
-
-## 예시
+## Example
 
 ```js
-// 캡처할 canvas 요소 찾기
-var canvasElt = document.getElementsByTagName("canvas")[0];
+// Find the canvas element to capture
+const canvasElt = document.querySelector("canvas");
 
-// stream 얻기
-var stream = canvasElt.captureStream(25); // 25 FPS
+// Get the stream
+const stream = canvasElt.captureStream(25); // 25 FPS
 
-// stream 처리하기
-...
+// Do things to the stream
+// …
 
-// stream과 연결된 canvas 가져오기
-var canvas = stream.canvas;
+// Obtain the canvas associated with the stream
+const canvas = stream.canvas;
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 더 보기
+## See also
 
-- {{domxref("HTMLCanvasElement.captureStream()")}} to create a stream to capture a given canvas element.
+- {{domxref("HTMLCanvasElement.captureStream()")}} to create a stream to capture a
+  given canvas element.
 - {{HTMLElement("canvas")}}

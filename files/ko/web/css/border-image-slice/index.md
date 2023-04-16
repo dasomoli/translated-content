@@ -1,92 +1,180 @@
 ---
 title: border-image-slice
 slug: Web/CSS/border-image-slice
+page-type: css-property
+browser-compat: css.properties.border-image-slice
 ---
 
 {{CSSRef}}
 
-**`border-image-slice`** [CSS](/ko/docs/Web/CSS) 속성은 {{cssxref("border-image-source")}}로 설정한 이미지를 여러 개의 영역으로 나눕니다. 이렇게 나눠진 영역이 요소의 [테두리 이미지](/ko/docs/Web/CSS/border-image)를 이룹니다.
+The **`border-image-slice`** [CSS](/en-US/docs/Web/CSS) property divides the image specified by {{cssxref("border-image-source")}} into regions. These regions form the components of an element's [border image](/en-US/docs/Web/CSS/border-image).
 
 {{EmbedInteractiveExample("pages/css/border-image-slice.html")}}
 
-이미지는 네 개의 꼭지점, 네 개의 모서리, 한 개의 중앙 총 9개의 영역으로 나눠집니다. 상하좌우 각각의 모서리에서 주어진 거리만큼 떨어진 네 개의 분할선이 영역의 크기를 결정합니다.
+The slicing process creates nine regions in total: four corners, four edges, and a middle region. Four slice lines, set a given distance from their respective sides, control the size of the regions.
 
-[![The nine regions defined by the border-image or border-image-slice properties](/files/3814/border-image-slice.png)](/files/3814/border-image-slice.png)
+[![The nine regions defined by the border-image or border-image-slice properties](border-image-slice.png)](/en-US/docs/Web/CSS/border-image-slice/border-image-slice.png)
 
-위의 도표로 구역이 어떻게 나뉘는지 확인할 수 있습니다.
+The above diagram illustrates the location of each region.
 
-- 1-4번 구역은
+- Zones 1-4 are corner regions. Each one is used a single time to form the corners of the final border image.
+- Zones 5-8 are edge regions. These are [repeated, scaled, or otherwise modified](/en-US/docs/Web/CSS/border-image-repeat) in the final border image to match the dimensions of the element.
+- Zone 9 is the middle region. It is discarded by default, but is used like a background image if the keyword `fill` is set.
 
-  꼭지점 영역
+The {{cssxref("border-image-repeat")}}, {{cssxref("border-image-width")}}, and {{cssxref("border-image-outset")}} properties determine how these regions are used to form the final border image.
 
-  입니다. 코너 영역은 최종 테두리 이미지에서도 코너를 이루며 한 번씩만 그려집니다.
-
-- 5-8번 구역은
-
-  모서리 영역
-
-  입니다. 모서리 영역은 최종 테두리 이미지의 크기에 맞도록 [반복하여 그리거나 크기를 조정하는 등 변형](/ko/docs/Web/CSS/border-image-repeat)됩니다.
-
-- 9번 구역은
-
-  중앙 영역
-
-  입니다. 기본값으로는 쓰이지 않지만, `fill` 키워드를 지정한 경우 배경 이미지처럼 사용합니다.
-
-{{cssxref("border-image-repeat")}}, {{cssxref("border-image-width")}}, {{cssxref("border-image-outset")}} 속성이 최종 테두리 이미지에서 각 영역의 사용 방법을 지정합니다.
-
-## 구문
+## Syntax
 
 ```css
-/* 모든 방향 */
+/* All sides */
 border-image-slice: 30%;
 
-/* 세로방향 | 가로방향 */
+/* top and bottom | left and right */
 border-image-slice: 10% 30%;
 
-/* 위 | 가로방향 | 아래 */
+/* top | left and right | bottom */
 border-image-slice: 30 30% 45;
 
-/* 위 | 오른쪽 | 아래 | 왼쪽 */
+/* top | right | bottom | left */
 border-image-slice: 7 12 14 5;
 
-/* `fill` 키워드 */
+/* Using the `fill` keyword */
 border-image-slice: 10% fill 7 12;
 
-/* 전역 값 */
+/* Global values */
 border-image-slice: inherit;
 border-image-slice: initial;
+border-image-slice: revert;
+border-image-slice: revert-layer;
 border-image-slice: unset;
 ```
 
-`border-image-slice` 속성은 한 개에서 네 개의 `<number>` 또는 `<percentage>` 값을 사용해 지정할 수 있습니다. 각각의 숫자는 네 방향 분할선의 위치를 나타냅니다. 음수 값은 유효하지 않고, 최대 크기보다 큰 값은 `100%`로 잘립니다.
+The `border-image-slice` property may be specified using one to four `<number-percentage>` values to represent the position of each image slice. Negative values are invalid; values greater than their corresponding dimension are clamped to `100%`.
 
-- **한 개의 값**을 지정하면, 모든 분할선의 위치가 각각의 기준 모서리에서 동일한 거리만큼 떨어진 곳으로 설정됩니다.
-- **두 개의 값**을 지정하면, 첫 번째 값은 **위와 아래** 분할선, 두 번째 값은 **왼쪽과 오른쪽** 분할선의 위치를 설정합니다.
-- **세 개의 값**을 지정하면, 첫 번째 값은 **위**, 두 번째 값은 **왼쪽과 오른쪽**, 세 번째 값은 **아래** 분할선의 위치를 설정합니다.
-- **네 개의 값**을 지정하면 각각 **상, 우, 하, 좌** 분할선의 거리를 순서대로 지정합니다. (시계방향)
+- When **one** position is specified, it creates all four slices at the same distance from their respective sides.
+- When **two** positions are specified, the first value creates slices measured from the **top and bottom**, the second creates slices measured from the **left and right**.
+- When **three** positions are specified, the first value creates a slice measured from the **top**, the second creates slices measured from the **left and right**, the third creates a slice measured from the **bottom**.
+- When **four** positions are specified, they create slices measured from the **top**, **right**, **bottom**, and **left** in that order (clockwise).
 
-선택적으로 아무데나 `fill` 키워드를 추가할 수 있습니다.
+The optional `fill` value, if used, can be placed anywhere in the declaration.
 
-### 값
+### Values
 
 - {{cssxref("&lt;number&gt;")}}
-  - : 모서리에서 분할선까지의 픽셀 거리(래스터 이미지), 또는 좌표 거리(벡터 이미지). 벡터 이미지에서 숫자는 원본 이미지가 아닌 요소의 크기에 상대적이므로 보통 백분율을 선호합니다.
+  - : Represents an edge offset in _pixels_ for raster images and _coordinates_ for vector images. For vector images, the number is relative to the element's size, not the size of the source image, so percentages are generally preferable in these cases.
 - {{cssxref("&lt;percentage&gt;")}}
-  - : 모서리에서 분할선까지의 백분율 거리. 가로축은 원본 이미지의 너비에, 세로축은 이미지의 높이에 상대적입니다.
+  - : Represents an edge offset as a percentage of the source image's size: the width of the image for horizontal offsets, the height for vertical offsets.
 - `fill`
-  - : 중앙 영역을 보존하여 배경 이미지처럼 사용. 실제 {{cssxref("background")}} 속성보다 위에 그려집니다. 중앙 영역 이미지는 위와 왼쪽 모서리 영역의 크기에 맞도록 늘어납니다.
+  - : Preserves the middle image region and displays it like a background image, but stacked above the actual {{cssxref("background")}}. Its width and height are sized to match the top and left image regions, respectively.
 
-### 형식 구문
+## Formal definition
+
+{{CSSInfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 명세
+## Examples
+
+### Adjustable border width and slice
+
+The following example shows a simple `<div>` with a border image set on it. The source image for the borders is as follows:
+
+![nice multi-colored diamonds](border-diamonds.png)
+
+The diamonds are 30px across, therefore setting 30 pixels as the value for both [`border-width`](/en-US/docs/Web/CSS/border-width) and `border-image-slice` will get you complete and fairly crisp diamonds in your border:
+
+```css
+border-width: 30px;
+border-image-slice: 30;
+```
+
+These are the default values we have used in this example. However, we have also provided two sliders to allow you to dynamically change the values of the above two properties, allowing you to appreciate the effect they have:
+
+`border-image-slice` Changes the size of the image slice sampled for use in each border and border corner (and the content area, if the `fill` keyword is used) — varying this away from 30 causes the border to look somewhat irregular, but can have some interesting effects.
+
+`border-width`: Changes the width of the border. The sampled image size is scaled to fit inside the border, which means that if the width is bigger than the slice, the image can start to look somewhat pixelated (unless of course you use an SVG image).
+
+#### HTML
+
+```html
+<div class="wrapper">
+  <div></div>
+</div>
+
+<ul>
+  <li>
+    <label for="width">slide to adjust <code>border-width</code></label>
+    <input type="range" min="10" max="45" id="width" />
+    <output id="width-output">30px</output>
+  </li>
+  <li>
+    <label for="slice">slide to adjust <code>border-image-slice</code></label>
+    <input type="range" min="10" max="45" id="slice" />
+    <output id="slice-output">30</output>
+  </li>
+</ul>
+```
+
+#### CSS
+
+```css
+.wrapper {
+  width: 400px;
+  height: 300px;
+}
+
+div > div {
+  width: 300px;
+  height: 200px;
+  border-width: 30px;
+  border-style: solid;
+  border-image: url(https://interactive-examples.mdn.mozilla.net/media/examples/border-diamonds.png);
+  border-image-slice: 30;
+  border-image-repeat: round;
+}
+
+li {
+  display: flex;
+  place-content: center;
+}
+```
+
+#### JavaScript
+
+```js
+const widthSlider = document.getElementById("width");
+const sliceSlider = document.getElementById("slice");
+const widthOutput = document.getElementById("width-output");
+const sliceOutput = document.getElementById("slice-output");
+const divElem = document.querySelector("div > div");
+
+widthSlider.addEventListener("input", () => {
+  const newValue = `${widthSlider.value}px`;
+  divElem.style.borderWidth = newValue;
+  widthOutput.textContent = newValue;
+});
+
+sliceSlider.addEventListener("input", () => {
+  const newValue = sliceSlider.value;
+  divElem.style.borderImageSlice = newValue;
+  sliceOutput.textContent = newValue;
+});
+```
+
+#### Result
+
+{{EmbedLiveSample('Adjustable_border_width_and_slice', '100%', 400)}}
+
+## Specifications
 
 {{Specifications}}
 
-{{cssinfo}}
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- [Illustrated description of the 1-to-4-value syntax](/en-US/docs/Web/CSS/Shorthand_properties#tricky_edge_cases)

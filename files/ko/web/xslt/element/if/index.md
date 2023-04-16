@@ -1,38 +1,37 @@
 ---
-title: if
+title: <xsl:if>
 slug: Web/XSLT/Element/if
-original_slug: Web/XSLT/if
 ---
 
 {{ XsltRef() }}
 
-`<xsl:if>` 요소는 test 속성과 템플릿을 포함합니다. test 속성을 참으로 평가하면, 템플릿을 처리합니다. 이것은 다른 언어의 if 문과 비슷합니다. 그러나, `<tt>if-then-else</tt>` 문의 기능을 다하기 위해 `<xsl:when>`과 `<xsl:otherwise>` 자식이 하나씩 있는 `<xsl:choose>` 요소를 씁니다.
+The `<xsl:if>` element contains a test attribute and a template. If the test evaluates to true, the template is processed. In this it is similar to an if statement in other languages. To achieve the functionality of an if-then-else statement, however, use the `<xsl:choose>` element with one `<xsl:when>` and one `<xsl:otherwise>` children.
 
-### 문법
+### Syntax
 
-```
+```xml
 <xsl:if test=EXPRESSION>
   TEMPLATE
 </xsl:if>
 ```
 
-### 필수 속성
+### Required Attributes
 
 - `test`
-  - : Boolean 값으로 (필요하다면 `boolean( )`으로 정의한 규칙을 써서) 평가할 수 있는 XPath 식을 포함합니다. 값이 참이면 템플릿을 처리하고 거짓이면 아무 동작도 하지 않습니다.
+  - : Contains an XPath expression that can be evaluated (using the rules defined for `boolean( )` if necessary) to a Boolean value. If the value is true, the template is processed; if it is not, no action is taken.
 
-### 선택 속성
+### Optional Attributes
 
-없음.
+None.
 
-### 타입
+### Type
 
-명령, 템플릿 안에 나타남.
+Instruction, appears within a template.
 
-### 정의
+### Defined
 
-[XSLT section 9.1, Conditional Processing with xsl:if](http://www.w3.org/TR/xslt#section-Conditional-Processing-with-xsl:if)
+XSL section 9.1.
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported

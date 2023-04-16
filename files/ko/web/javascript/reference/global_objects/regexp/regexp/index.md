@@ -1,79 +1,119 @@
 ---
 title: RegExp() constructor
 slug: Web/JavaScript/Reference/Global_Objects/RegExp/RegExp
+page-type: javascript-constructor
+browser-compat: javascript.builtins.RegExp.RegExp
 ---
+
 {{JSRef}}
 
-**`RegExp`** 생성자는 패턴을 사용해 텍스트를 판별할 때 사용하는 정규 표현식 객체를 생성합니다.
+The **`RegExp()`** constructor creates {{jsxref("RegExp")}} objects.
 
-정규 표현식에 대한 소개는 [JavaScript 안내서의 정규 표현식 장](/ko/docs/Web/JavaScript/Guide/Regular_Expressions)을 참고하세요.
+For an introduction to regular expressions, read the [Regular Expressions chapter](/en-US/docs/Web/JavaScript/Guide/Regular_expressions) in the [JavaScript Guide](/en-US/docs/Web/JavaScript/Guide).
 
 {{EmbedInteractiveExample("pages/js/regexp-constructor.html")}}
 
-## 구문
+## Syntax
 
-리터럴, 생성자, 팩토리 표기법이 가능합니다.
-
+```js-nolint
+new RegExp(pattern)
+new RegExp(pattern, flags)
+RegExp(pattern)
+RegExp(pattern, flags)
 ```
-/pattern/flags
-new RegExp(pattern[, flags])
-RegExp(pattern[, flags])
-```
 
-### 매개변수
+> **Note:** `RegExp()` can be called with or without [`new`](/en-US/docs/Web/JavaScript/Reference/Operators/new), but sometimes with different effects. See [Return value](#return_value).
+
+### Parameters
 
 - `pattern`
-  - : 정규 표현식을 나타내는 텍스트.
-    ES5부터는, 생성자 표기법에 한정하여 다른 `RegExp` 객체 혹은 리터럴을 사용할 수 있습니다. 패턴은 [특수 문자](/ko/docs/Web/JavaScript/Guide/정규식#특수_문자_사용하기)를 포함할 수 있어서 일반적인 문자열 리터럴보다 더 넓은 범위의 값을 판별할 수 있습니다.
-- `flags`
-  - : 정규 표현식에 추가할 플래그.
-  정규 표현식 객체를 패턴으로 제공한 경우 `flags` 문자열은 제공한 객체의 플래그를 모두 대체하며 `lastIndex`를 `0`으로 초기화합니다. (ES2015 이후)
-  `flags`를 지정하지 않았으면서 정규 표현식 객체를 제공한 경우, 해당 객체의 플래그와 `lastIndex`를 복제합니다.
-  `flags`는 다음 문자를 조합하여 지정할 수 있습니다.
-    - `g` (global, 전역 판별)
-      - : 처음 일치에서 중단하지 않고, 문자열 전체를 판별합니다.
-    - `i` (ignore case, 대소문자 무시)
-      - : `u` 플래그까지 활성화된 경우, Unicode 대소문자 폴딩을 사용합니다.
-    - `m` (multiline, 여러 줄)
-      - : 시작과 끝 문자(`^`과 `$`)가 여러 줄에 걸쳐 동작합니다. 즉, 전체 입력 문자열의 맨 처음과 맨 끝 뿐만 아니라 (`\n`이나 `\r`로 구분되는) 각각의 줄의 처음과 끝도 일치합니다.
-    - `s` ("dotAll")
-      - : `.`이 줄 바꿈에도 일치합니다.
-    - `u` (unicode)
-      - : `pattern`을 Unicode 코드 포인트 시퀀스로 처리합니다. ([이진 문자열](/ko/docs/Web/API/DOMString/Binary) 참고)
-    - `y` (sticky, 접착)
-      - : 이 정규 표현식의 `lastIndex` 속성에 명시된 인덱스에서만 판별하고, 이전/이후 인덱스에서 판별을 시도하지 않습니다.
 
-## 예제
+  - : The text of the regular expression. This can also be another `RegExp` object.
 
-### 리터럴 표기법과 생성자
+- `flags` {{optional_inline}}
 
-`RegExp` 객체는 리터럴 표기법과 생성자로써 생성할 수 있습니다.
+  - : If specified, `flags` is a string that contains the flags to add. Alternatively, if a `RegExp` object is supplied for the `pattern`, the `flags` string will replace any of that object's flags (and `lastIndex` will be reset to `0`).
 
-- **리터럴 표기법**의 매개변수는 두 빗금으로 감싸야 하며 따옴표를 사용하지 않습니다.
-- **생성자 함수**의 매개변수는 빗금으로 감싸지 않으나 따옴표를 사용합니다.
+    `flags` may contain any combination of the following characters:
 
-다음의 세 표현식은 모두 같은 정규 표현식을 생성합니다.
+    - [`d` (indices)](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/hasIndices)
+      - : Generate indices for substring matches.
+    - [`g` (global)](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/global)
+      - : Find all matches rather than stopping after the first match.
+    - [`i` (ignore case)](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/ignoreCase)
+      - : When matching, casing differences are ignored.
+    - [`m` (multiline)](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/multiline)
+      - : Treat beginning and end assertions (`^` and `$`) as working over multiple lines. In other words, match the beginning or end of _each_ line (delimited by `\n` or `\r`), not only the very beginning or end of the whole input string.
+    - [`s` (dotAll)](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/dotAll)
+      - : Allows `.` to match newlines.
+    - [`u` (unicode)](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicode)
+      - : Treat `pattern` as a sequence of Unicode code points.
+    - [`y` (sticky)](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/sticky)
+      - : Matches only from the index indicated by the `lastIndex` property of this regular expression in the target string. Does not attempt to match from any later indexes.
+
+### Return value
+
+`RegExp(pattern)` returns `pattern` directly if all of the following are true:
+
+- `RegExp()` is called without [`new`](/en-US/docs/Web/JavaScript/Reference/Operators/new);
+- [`pattern` is a regex](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#special_handling_for_regexes);
+- `pattern.constructor === RegExp` (usually meaning it's not a subclass);
+- `flags` is `undefined`.
+
+In all other cases, calling `RegExp()` with or without `new` both create a new `RegExp` object. If `pattern` is a regex, the new object's [source](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/source) is `pattern.source`; otherwise, its source is `pattern` [coerced to a string](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_coercion). If the `flags` parameter is not `undefined`, the new object's [`flags`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/flags) is the parameter's value; otherwise, its `flags` is `pattern.flags` (if `pattern` is a regex).
+
+### Exceptions
+
+- {{jsxref("SyntaxError")}}
+  - : Thrown if one of the following is true:
+    - `pattern` cannot be parsed as a valid regular expression.
+    - `flags` contains repeated characters or any character outside of those allowed.
+
+## Examples
+
+### Literal notation and constructor
+
+There are two ways to create a `RegExp` object: a _literal notation_ and a _constructor_.
+
+- The _literal notation_ takes a pattern between two slashes, followed by optional flags, after the second slash.
+- The _constructor function_ takes either a string or a `RegExp` object as its first parameter and a string of optional flags as its second parameter.
+
+The following three expressions create the same regular expression:
 
 ```js
-/ab+c/i
-new RegExp(/ab+c/, 'i') // 리터럴
-new RegExp('ab+c', 'i') // 생성자
+/ab+c/i;
+new RegExp(/ab+c/, "i"); // literal notation
+new RegExp("ab+c", "i"); // constructor
 ```
 
-리터럴 표기법은 표현식을 평가할 때 정규 표현식을 컴파일합니다. 정규 표현식이 변하지 않으면 리터럴 표기법을 사용하세요. 예를 들어, 반복문 안에서 사용할 정규 표현식을 리터럴 표기법으로 생성하면 정규 표현식을 매번 다시 컴파일하지 않습니다.
+Before regular expressions can be used, they have to be compiled. This process allows them to perform matches more efficiently. There are two ways to compile and get a `RegExp` object.
 
-정규 표현식 객체의 생성자(`new RegExp('ab+c')`)를 사용하면 정규 표현식이 런타임에 컴파일됩니다. 패턴이 변할 가능성이 있거나, 사용자 입력과 같이 알 수 없는 외부 소스에서 가져오는 정규 표현식의 경우 생성자 함수를 사용하세요.
+The literal notation results in compilation of the regular expression when the expression is evaluated. On the other hand, the constructor of the `RegExp` object, `new RegExp('ab+c')`, results in runtime compilation of the regular expression.
 
-## 명세
+Use a string as the first argument to the `RegExp()` constructor when you want to [build the regular expression from dynamic input](#building_a_regular_expression_from_dynamic_inputs).
+
+### Building a regular expression from dynamic inputs
+
+```js
+const breakfasts = ["bacon", "eggs", "oatmeal", "toast", "cereal"];
+const order = "Let me get some bacon and eggs, please";
+
+order.match(new RegExp(`\\b(${breakfasts.join("|")})\\b`, "g"));
+// Returns ['bacon', 'eggs']
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [JavaScript 안내서의 정규 표현식 장](/ko/docs/Web/JavaScript/Guide/Regular_Expressions)
+- [Polyfill of many modern `RegExp` features (`dotAll`, `sticky` flags, named capture groups, etc.) in `core-js`](https://github.com/zloirock/core-js#ecmascript-string-and-regexp)
+- [Regular Expressions](/en-US/docs/Web/JavaScript/Guide/Regular_expressions) chapter
+  in the [JavaScript Guide](/en-US/docs/Web/JavaScript/Guide)
 - {{jsxref("String.prototype.match()")}}
 - {{jsxref("String.prototype.replace()")}}

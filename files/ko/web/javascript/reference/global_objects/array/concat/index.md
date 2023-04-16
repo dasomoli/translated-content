@@ -1,94 +1,155 @@
 ---
 title: Array.prototype.concat()
 slug: Web/JavaScript/Reference/Global_Objects/Array/concat
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Array.concat
 ---
+
 {{JSRef}}
 
-**`concat()`** 메서드는 인자로 주어진 배열이나 값들을 기존 배열에 합쳐서 새 배열을 반환합니다.
+The **`concat()`** method is used to merge two or more arrays.
+This method does not change the existing arrays, but instead returns a new array.
 
-- 기존배열을 변경하지 않습니다.
-- 추가된 새로운 배열을 반환합니다.
+{{EmbedInteractiveExample("pages/js/array-concat.html","shorter")}}
 
-{{EmbedInteractiveExample("pages/js/array-concat.html")}}
+## Syntax
 
-## 구문
-
-```js
-    array.concat([value1[, value2[, ...[, valueN]]]])
+```js-nolint
+concat()
+concat(value0)
+concat(value0, value1)
+concat(value0, value1, /* … ,*/ valueN)
 ```
 
-### 매개변수
-
-- 배열 또는 값
-- 만약 value1 \~ valueN 인자를 생략하면 기존배열의 얕은 복사본을 반환.
+### Parameters
 
 - `valueN` {{optional_inline}}
-  - : 자세한 내용은 아래 설명을 참고하세요.
+  - : Arrays and/or values to concatenate into a new array. If all
+    `valueN` parameters are omitted, `concat` returns a
+    [shallow copy](/en-US/docs/Glossary/Shallow_copy) of the existing array on which it is called. See the description below
+    for more details.
 
-### 반환값
+### Return value
 
-새로운 {{jsxref("Array")}} 객체.
+A new {{jsxref("Array")}} instance.
 
-## 설명
+## Description
 
-`concat`은 메서드를 호출한 배열 뒤에 각 인수를 순서대로 붙여 새로운 배열을 만듭니다. 인수가 배열이면 그 구성요소가 순서대로 붙고, 배열이 아니면 인수 자체가 붙습니다. 중첩 배열 내부로 재귀하지 않습니다.
+The `concat` method creates a new array. The array will first be populated by the elements in the object on which it is called. Then, for each argument, its value will be concatenated into the array — for normal objects or primitives, the argument itself will become an element of the final array; for arrays or array-like objects with the property [`Symbol.isConcatSpreadable`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/isConcatSpreadable) set to a truthy value, each element of the argument will be independently added to the final array. The `concat` method does not recurse into nested array arguments.
 
-`concat`은 `this`나 인수로 넘겨진 배열의 내용을 바꾸지 않고, 대신 주어진 배열을 합친 뒤 그 얕은 사본을 반환합니다. 새 배열에는 원본 배열의 요소를 다음과 같은 방법으로 복사합니다.
+The `concat()` method is a [copying method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#copying_methods_and_mutating_methods). It does not alter `this` or any of the arrays provided as arguments but instead returns a [shallow copy](/en-US/docs/Glossary/Shallow_copy) that contains the same elements as the ones from the original arrays.
 
-- 실제 객체가 아닌 객체 참조: `concat`은 새 배열에 참조를 복사합니다. 원본 배열과 새 배열에서 같은 객체를 가리키게 됩니다. 즉, 참조하는 객체를 수정하면 그 내용이 새 배열과 원본 배열 둘 다에서 나타납니다.
-- 문자열, 숫자, 불리언 등 자료형({{jsxref("String")}}, {{jsxref("Number")}}, {{jsxref("Boolean")}} 객체 아님): `concat`은 새 배열에 문자열과 수의 값을 복사합니다.
+The `concat()` method preserves empty slots if any of the source arrays is [sparse](/en-US/docs/Web/JavaScript/Guide/Indexed_collections#sparse_arrays).
 
-> **참고:** 배열이나 값을 이어붙여도 원본은 변하지 않으며, 새로운 배열이나 원본 배열을 조작해도 서로 영향을 받지 않습니다.
+The `concat()` method is [generic](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#generic_array_methods). The `this` value is treated in the same way as the other arguments (except it will be converted to an object first), which means plain objects will be directly prepended to the resulting array, while array-like objects with truthy `@@isConcatSpreadable` will be spread into the resulting array.
 
-## 예제
+## Examples
 
-### 배열 두 개 이어붙이기
+### Concatenating two arrays
 
-다음 예제는 두 개의 배열을 이어붙입니다.
+The following code concatenates two arrays:
 
 ```js
-const alpha = ['a', 'b', 'c'];
-const numeric = [1, 2, 3];
+const letters = ["a", "b", "c"];
+const numbers = [1, 2, 3];
 
-alpha.concat(numeric);
-// 결과: ['a', 'b', 'c', 1, 2, 3]
+const alphaNumeric = letters.concat(numbers);
+console.log(alphaNumeric);
+// results in ['a', 'b', 'c', 1, 2, 3]
 ```
 
-### 배열 세 개 이어붙이기
+### Concatenating three arrays
 
-다음 예제는 세 개의 배열을 이어붙입니다.
+The following code concatenates three arrays:
 
 ```js
 const num1 = [1, 2, 3];
 const num2 = [4, 5, 6];
 const num3 = [7, 8, 9];
 
-num1.concat(num2, num3);
-// 결과: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+const numbers = num1.concat(num2, num3);
+
+console.log(numbers);
+// results in [1, 2, 3, 4, 5, 6, 7, 8, 9]
 ```
 
-### 배열에 값 이어붙이기
+### Concatenating values to an array
 
-다음 코드는 배열에 세 개의 값을 이어붙입니다.
+The following code concatenates three values to an array:
 
 ```js
-const alpha = ['a', 'b', 'c'];
+const letters = ["a", "b", "c"];
 
-alpha.concat(1, [2, 3]);
-// 결과: ['a', 'b', 'c', 1, 2, 3]
+const alphaNumeric = letters.concat(1, [2, 3]);
+
+console.log(alphaNumeric);
+// results in ['a', 'b', 'c', 1, 2, 3]
 ```
 
-## 명세
+### Concatenating nested arrays
+
+The following code concatenates nested arrays and demonstrates retention of references:
+
+```js
+const num1 = [[1]];
+const num2 = [2, [3]];
+
+const numbers = num1.concat(num2);
+
+console.log(numbers);
+// results in [[1], 2, [3]]
+
+// modify the first element of num1
+num1[0].push(4);
+
+console.log(numbers);
+// results in [[1, 4], 2, [3]]
+```
+
+### Concatenating array-like objects with Symbol.isConcatSpreadable
+
+`concat` does not treat all array-like objects as arrays by default — only if `Symbol.isConcatSpreadable` is set to a truthy value (e.g. `true`).
+
+```js
+const obj1 = { 0: 1, 1: 2, 2: 3, length: 3 };
+const obj2 = { 0: 1, 1: 2, 2: 3, length: 3, [Symbol.isConcatSpreadable]: true };
+console.log([0].concat(obj1, obj2));
+// [ 0, { '0': 1, '1': 2, '2': 3, length: 3 }, 1, 2, 3 ]
+```
+
+### Using concat() on sparse arrays
+
+If any of the source arrays is sparse, the resulting array will also be sparse:
+
+```js
+console.log([1, , 3].concat([4, 5])); // [1, empty, 3, 4, 5]
+console.log([1, 2].concat([3, , 5])); // [1, 2, 3, empty, 5]
+```
+
+### Calling concat() on non-array objects
+
+If the `this` value is not an array, it is converted to an object and then treated in the same way as the arguments for `concat()`. In this case the return value is always a plain new array.
+
+```js
+console.log(Array.prototype.concat.call({}, 1, 2, 3)); // [{}, 1, 2, 3]
+console.log(Array.prototype.concat.call(1, 2, 3)); // [ [Number: 1], 2, 3 ]
+const arrayLike = { [Symbol.isConcatSpreadable]: true, length: 2, 0: 1, 1: 2 };
+console.log(Array.prototype.concat.call(arrayLike, 3, 4)); // [1, 2, 3, 4]
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{jsxref("Array.push", "push")}} / {{jsxref("Array.pop", "pop")}} — 배열의 뒤에 요소 추가/제거
-- {{jsxref("Array.unshift", "unshift")}} / {{jsxref("Array.shift", "shift")}} — 배열의 앞에 요소 추가/제거
-- {{jsxref("Array.splice", "splice")}} — 배열의 특정 위치에 요소 추가/제거
+- [Polyfill of `Array.prototype.concat` in `core-js` with fixes and implementation of modern behavior like `Symbol.isConcatSpreadable` support](https://github.com/zloirock/core-js#ecmascript-array)
+- {{jsxref("Array/push", "push()")}} / {{jsxref("Array/pop", "pop()")}} — add/remove elements from the end of the array
+- {{jsxref("Array/unshift", "unshift()")}} / {{jsxref("Array/shift", "shift()")}} — add/remove elements from the beginning of the array
+- {{jsxref("Array/splice", "splice()")}} — add/remove elements from the specified location of the array
 - {{jsxref("String.prototype.concat()")}}
+- {{jsxref("Symbol.isConcatSpreadable")}} — control flattening.

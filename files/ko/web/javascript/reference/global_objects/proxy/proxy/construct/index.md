@@ -1,108 +1,113 @@
 ---
 title: handler.construct()
 slug: Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/construct
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Proxy.handler.construct
 ---
 
 {{JSRef}}
 
-**`handler.construct()`** 메서드는 {{jsxref("Operators/new", "new")}} 연산자에 대한 트랩입니다. 결과 Proxy 객체에서 new 연산이 유효하려면 프록시를 초기화하는 데 사용되는 대상 객체 자체에 내부 `[[Construct]]` 메서드가 있어야 합니다(즉, `new target`이 유효해야 함).
+The **`handler.construct()`** method is a trap for the `[[Construct]]` [object internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods), which is used by operations such as the {{jsxref("Operators/new", "new")}} operator. In order for the new operation to be valid on the resulting Proxy object, the target used to initialize the proxy must itself be a valid constructor.
 
 {{EmbedInteractiveExample("pages/js/proxyhandler-construct.html", "taller")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 new Proxy(target, {
   construct(target, argumentsList, newTarget) {
   }
 });
 ```
 
-### 매개변수
+### Parameters
 
-다음 매개변수는 `construct()` 메서드에 전달됩니다. `this`는 처리기에 바인딩됩니다.
+The following parameters are passed to the `construct()` method. `this` is bound to the handler.
 
 - `target`
-  - : 대상 객체.
+  - : The target object.
 - `argumentsList`
-  - : 생성자의 인수 목록.
+  - : The list of arguments for the constructor.
 - `newTarget`
-  - : 원래 호출된 생성자. `p` 위.
+  - : The constructor that was originally called.
 
-### 반환 값
+### Return value
 
-`construct` 메서드는 반드시 객체를 반환합니다.
+The `construct` method must return an object.
 
-## 설명
+## Description
 
-**`handler.construct()`** 메서드는 {{jsxref("Operators/new", "new")}} 연산자에 대한 트랩입니다.
+### Interceptions
 
-### 가로채기
+This trap can intercept these operations:
 
-이 트랩은 다음 작업을 가로챌 수 있습니다.
-
-- `new myFunction(...args)`
+- The [`new`](/en-US/docs/Web/JavaScript/Reference/Operators/new) operator: `new myFunction(...args)`
 - {{jsxref("Reflect.construct()")}}
 
-### 불변 조건
+Or any other operation that invokes the `[[Construct]]` [internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods).
 
-다음 불변 조건이 위반되면 프록시에서 {{jsxref("TypeError")}}가 발생합니다.
+### Invariants
 
-- 결과는 `Object`여야 합니다.
+If the following invariants are violated, the trap throws a {{jsxref("TypeError")}} when invoked.
 
-## 예제
+- The result must be an `Object`.
 
-### new 연산자 트랩하기
+## Examples
 
-다음 코드는 {{jsxref("Operators/new", "new")}} 연산자를 트랩합니다.
+### Trapping the new operator
+
+The following code traps the {{jsxref("Operators/new", "new")}} operator.
 
 ```js
 const p = new Proxy(function () {}, {
   construct(target, argumentsList, newTarget) {
     console.log(`called: ${argumentsList}`);
     return { value: argumentsList[0] * 10 };
-  }
+  },
 });
 
-console.log(new p(1).value); // "호출: 1"
-                             // 10
+console.log(new p(1).value); // "called: 1"
+// 10
 ```
 
-다음 코드는 불변 조건을 위반합니다.
+The following code violates the invariant.
 
 ```js example-bad
 const p = new Proxy(function () {}, {
   construct(target, argumentsList, newTarget) {
     return 1;
-  }
+  },
 });
 
-new p(); // TypeError 예외 발생
+new p(); // TypeError is thrown
 ```
 
-다음 코드는 프록시를 부적절하게 초기화합니다. 프록시 초기화의 `target` 자체는 {{jsxref("Operators/new", "new")}} 연산에 대한 유효한 생성자여야 합니다.
+The following code improperly initializes the proxy. The `target` in Proxy initialization must itself be a valid constructor for the {{jsxref("Operators/new", "new")}} operator.
 
 ```js example-bad
-const p = new Proxy({}, {
-  construct(target, argumentsList, newTarget) {
-    return {};
-  }
-});
+const p = new Proxy(
+  {},
+  {
+    construct(target, argumentsList, newTarget) {
+      return {};
+    },
+  },
+);
 
 new p(); // TypeError is thrown, "p" is not a constructor
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Proxy")}}
-- [`Proxy()` 생성자](/ko/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy)
-- {{jsxref("Operators/new", "new")}} 연산자.
+- [`Proxy()` constructor](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy)
+- {{jsxref("Operators/new", "new")}} operator.
 - {{jsxref("Reflect.construct()")}}

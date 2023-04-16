@@ -1,18 +1,15 @@
 ---
-title: decimal-format
+title: <xsl:decimal-format>
 slug: Web/XSLT/Element/decimal-format
-original_slug: Web/XSLT/decimal-format
 ---
 
 {{ XsltRef() }}
 
-`<xsl:decimal-format>` 요소는
-`format-number( )`
-함수를 써서 숫자를 문자열로 바꿀 때 쓰는 기호와 문자를 정의합니다.
+The `<xsl:decimal-format>` element defines the characters and symbols that are to be used in converting numbers into strings using the `format-number( )` function.
 
-### 문법
+### Syntax
 
-```
+```xml
 <xsl:decimal-format
   name=NAME
   decimal-separator=CHARACTER
@@ -21,49 +18,49 @@ original_slug: Web/XSLT/decimal-format
   minus-sign=CHARACTER
   NaN=STRING
   percent=CHARACTER
-  per-mille=CHARATER
+  per-mille=CHARACTER
   zero-digit=CHARACTER
   digit=CHARACTER
   pattern-separator=CHARACTER />
 ```
 
-### 필수 속성
+### Required Attributes
 
-없음.
+None.
 
-### 선택 속성
+### Optional Attributes
 
 - `name`
-  - : 이 형식에 이름을 지정합니다.
+  - : Specifies a name for this format.
 - `decimal-separator`
-  - : 소숫점 문자를 지정합니다. 기본값은 (`.`)입니다.
+  - : Specifies the decimal point character. The default is (`.`).
 - `grouping-separator`
-  - : 그룹 구분 문자를 지정합니다. 기본값은 (`,`)입니다.
+  - : Specifies the thousands separator character. The default is (`,`).
 - `infinity`
-  - : 무한대(infinity)를 나타내는데 쓰는 문자열을 지정합니다. 기본값은 "`Infinity`" 문자열입니다.
+  - : Specifies the string used to represent infinity. The default is the string "`Infinity`".
 - `minus-sign`
-  - : 빼기 기호 문자를 지정합니다. 기본값은 (`-`)입니다.
+  - : Specifies the minus sign character. The default is the hyphen (`-`).
 - `NaN`
-  - : 값이 숫자가 아닐 때 쓰는 문자열을 지정합니다. 기본값은 "`NaN`" 문자열입니다.
+  - : Specifies the string used when the value is not a number. The default is the string "`NaN`".
 - `percent`
-  - : 백분율(percentage) 기호 문자를 지정합니다. 기본값은 (`%`)입니다.
+  - : Specifies the percentage sign character. The default is (`%`).
 - `per-mille`
-  - : 천분율(per thousand) 문자를 지정합니다. 기본값은 (`‰`)입니다.
+  - : Specifies the per thousand character. The default is (`‰`).
 - `zero-digit`
-  - : 숫자 0으로 쓸 문자를 지정합니다. 기본값은 (`0`)입니다.
+  - : Specifies the digit zero character. The default is (`0`).
 - `digit`
-  - : 형식 패턴에서 숫자(digit)를 나타내는데 쓰는 문자를 지정합니다. 기본값은 (`#`)입니다.
+  - : Specifies the character used in the format pattern to stand for a digit. The default is (`#`).
 - `pattern-separator`
-  - : 형식 패턴에서 양수와 음수 부분패턴을 구분하는 문자를 지정합니다. 기본값은 (`;`)입니다.
+  - : Specifies the character separating positive and negative subpatterns in a format pattern. The default is the semicolon (`;`).
 
-### 타입
+### Type
 
-최상위, `<xsl:stylesheet>`나 `<xsl:transform>`의 자식이어야 함.
+Top-level, must be the child of `<xsl:stylesheet>` or `<xsl:transform>`.
 
-### 정의
+### Defined
 
-[XSLT section 12.3, Number Formatting](http://www.w3.org/TR/xslt#format-number)
+XSLT, section 12.3.
 
-### Gecko 지원
+### Gecko support
 
-Mozilla 1.0과 Netscape 7.0 현재 지원함.
+Supported as of 1.0 (Mozilla 1.0, Netscape 7.0).

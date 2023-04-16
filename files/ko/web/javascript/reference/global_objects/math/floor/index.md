@@ -1,129 +1,124 @@
 ---
 title: Math.floor()
 slug: Web/JavaScript/Reference/Global_Objects/Math/floor
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Math.floor
 ---
 
 {{JSRef}}
 
-**`Math.floor()`** 함수는 주어진 숫자와 같거나 작은 정수 중에서 가장 큰 수를 반환합니다.
+The **`Math.floor()`** static method always rounds down and returns the largest integer less than or equal to a given number.
 
 {{EmbedInteractiveExample("pages/js/math-floor.html")}}
 
-## 구문
+## Syntax
 
-```js
-    Math.floor(x)
+```js-nolint
+Math.floor(x)
 ```
 
-### 매개변수
+### Parameters
 
 - `x`
-  - : 숫자.
+  - : A number.
 
-### 반환 값
+### Return value
 
-주어진 수 이하의 가장 큰 정수.
+The largest integer smaller than or equal to `x`. It's the same value as [`-Math.ceil(-x)`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/ceil).
 
-## 설명
+## Description
 
-`floor()`는 `Math`의 정적 메서드이므로, 사용자가 생성한 `Math` 객체의 메서드로 호출할 수 없고 항상 `Math.floor()`를 사용해야 합니다. (`Math`는 생성자가 아닙니다)
+Because `floor()` is a static method of `Math`, you always use it as `Math.floor()`, rather than as a method of a `Math` object you created (`Math` is not a constructor).
 
-> **참고:** `Math.floor(null)`은 {{jsxref("NaN")}} 대신 0을 반환합니다.
+## Examples
 
-## 예제
-
-### `Math.floor()` 사용하기
+### Using Math.floor()
 
 ```js
-Math.floor( 45.95); //  45
-Math.floor( 45.05); //  45
-Math.floor(  4   ); //   4
-Math.floor(-45.05); // -46
+Math.floor(-Infinity); // -Infinity
 Math.floor(-45.95); // -46
+Math.floor(-45.05); // -46
+Math.floor(-0); // -0
+Math.floor(0); // 0
+Math.floor(4); // 4
+Math.floor(45.05); // 45
+Math.floor(45.95); // 45
+Math.floor(Infinity); // Infinity
 ```
 
-### 십진수 조절
+### Decimal adjustment
+
+In this example, we implement a method called `decimalAdjust()` that is an enhancement method of `Math.floor()`, {{jsxref("Math.ceil()")}}, and {{jsxref("Math.round()")}}. While the three `Math` functions always adjust the input to the units digit, `decimalAdjust` accepts an `exp` parameter that specifies the number of digits to the left of the decimal point to which the number should be adjusted. For example, `-1` means it would leave one digit after the decimal point (as in "× 10<sup>-1</sup>"). In addition, it allows you to select the means of adjustment — `round`, `floor`, or `ceil` — through the `type` parameter.
+
+It does so by multiplying the number by a power of 10, then rounding the result to the nearest integer, then dividing by the power of 10. To better preserve precision, it takes advantage of Number's [`toString()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toString) method, which represents large or small numbers in scientific notation (like `6.02e23`).
 
 ```js
-// Closure
-(function() {
-  /**
-   * 십진수 조절
-   *
-   * @param {String}  type  조정 타입.
-   * @param {Number}  value 숫자.
-   * @param {Integer} exp   지수 (10 로그의 조정값).
-   * @returns {Number} 조정값
-   */
-  function decimalAdjust(type, value, exp) {
-    // exp가 undefined 또는 0인 경우...
-    if (typeof exp === 'undefined' || +exp === 0) {
-      return Math[type](value);
-    }
-    value = +value;
-    exp = +exp;
-    // 값이 숫자가 아니거나 정수형이 아닌 경우...
-    if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
-      return NaN;
-    }
-    // Shift
-    value = value.toString().split('e');
-    value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
-    // Shift back
-    value = value.toString().split('e');
-    return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+/**
+ * Adjusts a number to the specified digit.
+ *
+ * @param {"round" | "floor" | "ceil"} type The type of adjustment.
+ * @param {number} value The number.
+ * @param {number} exp The exponent (the 10 logarithm of the adjustment base).
+ * @returns {number} The adjusted value.
+ */
+function decimalAdjust(type, value, exp) {
+  type = String(type);
+  if (!["round", "floor", "ceil"].includes(type)) {
+    throw new TypeError(
+      "The type of decimal adjustment must be one of 'round', 'floor', or 'ceil'.",
+    );
   }
+  exp = Number(exp);
+  value = Number(value);
+  if (exp % 1 !== 0 || Number.isNaN(value)) {
+    return NaN;
+  } else if (exp === 0) {
+    return Math[type](value);
+  }
+  const [magnitude, exponent = 0] = value.toString().split("e");
+  const adjustedValue = Math[type](`${magnitude}e${exponent - exp}`);
+  // Shift back
+  const [newMagnitude, newExponent = 0] = adjustedValue.toString().split("e");
+  return Number(`${newMagnitude}e${+newExponent + exp}`);
+}
 
-  // 십진수 round
-  if (!Math.round10) {
-    Math.round10 = function(value, exp) {
-      return decimalAdjust('round', value, exp);
-    };
-  }
-  // 십진수 floor
-  if (!Math.floor10) {
-    Math.floor10 = function(value, exp) {
-      return decimalAdjust('floor', value, exp);
-    };
-  }
-  // 십진수 ceil
-  if (!Math.ceil10) {
-    Math.ceil10 = function(value, exp) {
-      return decimalAdjust('ceil', value, exp);
-    };
-  }
-})();
+// Decimal round
+const round10 = (value, exp) => decimalAdjust("round", value, exp);
+// Decimal floor
+const floor10 = (value, exp) => decimalAdjust("floor", value, exp);
+// Decimal ceil
+const ceil10 = (value, exp) => decimalAdjust("ceil", value, exp);
 
 // Round
-Math.round10(55.55, -1);   // 55.6
-Math.round10(55.549, -1);  // 55.5
-Math.round10(55, 1);       // 60
-Math.round10(54.9, 1);     // 50
-Math.round10(-55.55, -1);  // -55.5
-Math.round10(-55.551, -1); // -55.6
-Math.round10(-55, 1);      // -50
-Math.round10(-55.1, 1);    // -60
+round10(55.55, -1); // 55.6
+round10(55.549, -1); // 55.5
+round10(55, 1); // 60
+round10(54.9, 1); // 50
+round10(-55.55, -1); // -55.5
+round10(-55.551, -1); // -55.6
+round10(-55, 1); // -50
+round10(-55.1, 1); // -60
 // Floor
-Math.floor10(55.59, -1);   // 55.5
-Math.floor10(59, 1);       // 50
-Math.floor10(-55.51, -1);  // -55.6
-Math.floor10(-51, 1);      // -60
+floor10(55.59, -1); // 55.5
+floor10(59, 1); // 50
+floor10(-55.51, -1); // -55.6
+floor10(-51, 1); // -60
 // Ceil
-Math.ceil10(55.51, -1);    // 55.6
-Math.ceil10(51, 1);        // 60
-Math.ceil10(-55.59, -1);   // -55.5
-Math.ceil10(-59, 1);       // -50
+ceil10(55.51, -1); // 55.6
+ceil10(51, 1); // 60
+ceil10(-55.59, -1); // -55.5
+ceil10(-59, 1); // -50
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Math.abs()")}}
 - {{jsxref("Math.ceil()")}}

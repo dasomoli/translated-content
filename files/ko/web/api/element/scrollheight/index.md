@@ -1,66 +1,80 @@
 ---
-title: Element.scrollHeight
+title: "Element: scrollHeight property"
+short-title: scrollHeight
 slug: Web/API/Element/scrollHeight
+page-type: web-api-instance-property
+browser-compat: api.Element.scrollHeight
 ---
-{{ APIRef("DOM") }}
 
-**`Element.scrollHeight`** 읽기 전용 속성은 요소 콘텐츠의 총 높이를 나타내며, 바깥으로 넘쳐서 보이지 않는 콘텐츠도 포함합니다.
+{{APIRef("DOM")}}
 
-![사용자의 뷰포트는 패딩 상단, 테두리 상단, 테두리 하단, 패딩 하단의 네 가지 영역을 가진 요소입니다. 스크롤 높이는 컨테이너의 패딩 상단에서 패딩 하단의 끝까지 뷰포트의 상단과 하단을 훨씬 벗어납니다.](scrollheight.png)
+The **`Element.scrollHeight`** read-only property is a
+measurement of the height of an element's content, including content not visible on the
+screen due to overflow.
 
-`scrollHeight` 값은 수직 스크롤바를 사용하지 않고 요소의 콘텐츠를 모두 나타낼 때 필요한 최소 높이의 값과 동일합니다. 높이 측정은 {{domxref("Element.clientHeight", "clientHeight")}}와 동일한 방법을 사용하여 요소의 안쪽 여백은 포함하고, 테두리와 바깥 여백, (존재하는 경우) 수평 스크롤바의 높이는 포함하지 않습니다. 또한 {{cssxref("::before")}}, {{cssxref("::after")}} 등 의사 요소의 높이도 결과에 포함합니다. 요소의 콘텐츠를 수직 스크롤바 없이 모두 보일 수 있는 경우의 `scrollHeight`는 `clientHeight`와 동일합니다.
+![The user's viewport is an element with four regions labeled padding-top, border-top, border-bottom, padding-bottom. The scroll height goes from the container's padding top to the end of the padding bottom, well beyond the top and bottom of the viewport.](scrollheight.png)
 
-> **참고:** `scrollHeight`의 반환 값은 정수로 반올림됩니다. 소수점을 포함한 값이 필요한 경우 {{domxref("Element.getBoundingClientRect()")}}를 사용하세요.
+The `scrollHeight` value is equal to the minimum height the element would
+require in order to fit all the content in the viewport without using a vertical
+scrollbar. The height is measured in the same way as {{domxref("Element.clientHeight",
+  "clientHeight")}}: it includes the element's padding, but not its border, margin or
+horizontal scrollbar (if present). It can also include the height of pseudo-elements
+such as {{cssxref("::before")}} or {{cssxref("::after")}}. If the element's content can
+fit without a need for vertical scrollbar, its `scrollHeight` is equal to
+{{domxref("Element.clientHeight", "clientHeight")}}
 
-## 구문
+> **Note:** This property will round the value to an integer. If you need a fractional value, use
+> {{domxref("Element.getBoundingClientRect()")}}.
 
-```js
-var intElemScrollHeight = element.scrollHeight;
-```
+## Value
 
-*intElemScrollHeight*은 요소 `scrollHeight`의 픽셀 값을 저장하는 정수형 변수입니다.
+An integer corresponding to the scrollHeight pixel value of the element.
 
-## 예제
+## Problems and solutions
 
-padding-top
+### Determine if an element has been totally scrolled
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-padding-bottom
-
-**Left** **Top** **Right** **Bottom** _margin-top_ _margin-bottom_ _border-top_ _border-bottom_
-
-## 문제와 해결책
-
-### 요소를 끝까지 스크롤했는지 판별하기
-
-다음 등식이 참인 경우 요소를 끝까지 스크롤한 것입니다.
+`scrollTop` is a non-rounded number, while `scrollHeight` and `clientHeight` are rounded — so the only way to determine if the scroll area is scrolled to the bottom is by seeing if the scroll amount is close enough to some threshold (in this example `1`):
 
 ```js
-element.scrollHeight - element.scrollTop === element.clientHeight
+Math.abs(element.scrollHeight - element.clientHeight - element.scrollTop) < 1;
 ```
 
-컨테이너가 스크롤 대신 오버플로된 자식을 노출하는 경우, 다음 검사로 컨테이너가 스크롤 가능한지 알아볼 수 있습니다.
+The following will _not_ work all the time because `scrollTop` can contain decimals:
 
 ```js
-window.getComputedStyle(element).overflowY === 'visible'
-window.getComputedStyle(element).overflowY !== 'hidden'
+element.scrollHeight - Math.abs(element.scrollTop) === element.clientHeight;
 ```
 
-## 예제
+### Determine if an element is scrollable
 
-### 텍스트를 다 읽었는지 확인하기
+When the container does not scroll, but has overflowing children, these checks
+determine if the container can scroll:
 
-[`onscroll`](/en-US/docs/DOM/element.onscroll) 이벤트를 함께 사용하여, 내용을 다 읽었는지 확인할 수 있습니다. ([`element.scrollTop`](/ko/docs/DOM/element.scrollTop) 과 [`element.clientHeight`](/ko/docs/DOM/element.clientHeight) 를 참조하세요).
+```js
+window.getComputedStyle(element).overflowY === "visible";
+window.getComputedStyle(element).overflowY !== "hidden";
+```
+
+## Examples
+
+### Checking that the user has read a text
+
+Associated with the {{domxref("Element.scroll_event", "scroll")}} event, this
+equivalence can be useful to determine whether a user has read a text or not (see also
+the {{domxref("element.scrollTop")}} and {{domxref("element.clientHeight")}}
+properties).
+
+The checkbox in the demo below is disabled, and so cannot be checked to show agreement
+until the content of the textarea has been scrolled through.
 
 #### HTML
 
 ```html
 <form name="registration">
   <p>
-    <textarea id="rules">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum at laoreet magna.
+    <textarea id="rules">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum at laoreet magna.
 Aliquam erat volutpat. Praesent molestie, dolor ut eleifend aliquam, mi ligula ultrices sapien, quis cursus
 neque dui nec risus. Duis tincidunt lobortis purus eu aliquet. Quisque in dignissim magna. Aenean ac lorem at
 velit ultrices consequat. Nulla luctus nisi ut libero cursus ultrices. Pellentesque nec dignissim enim. Phasellus
@@ -72,7 +86,7 @@ dictum ipsum aliquet erat eleifend sit amet sollicitudin felis tempus. Aliquam c
 luctus pellentesque placerat. Mauris nisl odio, condimentum sed fringilla a, consectetur id ligula. Praesent sem
 sem, aliquet non faucibus vitae, iaculis nec elit. Nullam volutpat, lectus et blandit bibendum, nulla lorem congue
 turpis, ac pretium tortor sem ut nibh. Donec vel mi in ligula hendrerit sagittis. Donec faucibus viverra fermentum.
-Fusce in arcu arcu. Nullam at dignissim massa. Cras nibh est, pretium sit amet faucibus eget, sollicitudin in
+Fusce in arcu. Nullam at dignissim massa. Cras nibh est, pretium sit amet faucibus eget, sollicitudin in
 ligula. Vivamus vitae urna mauris, eget euismod nunc. Aenean semper gravida enim non feugiat. In hac habitasse
 platea dictumst. Cras eleifend nisl volutpat ante condimentum convallis. Donec varius dolor malesuada erat
 consequat congue. Donec eu lacus ut sapien venenatis tincidunt. Quisque sit amet tellus et enim bibendum varius et
@@ -85,9 +99,9 @@ nascetur ridiculus mus. Cras vulputate libero sed arcu iaculis nec lobortis orci
     </textarea>
   </p>
   <p>
-    <input type="checkbox" name="accept" id="agree" />
-    <label for="agree">동의합니다</label>
-    <input type="submit" id="nextstep" value="다음" />
+    <input type="checkbox" id="agree" name="accept" />
+    <label for="agree">I agree</label>
+    <input type="submit" id="nextstep" value="Next" />
   </p>
 </form>
 ```
@@ -101,14 +115,14 @@ nascetur ridiculus mus. Cras vulputate libero sed arcu iaculis nec lobortis orci
   border-radius: 5px;
   width: 600px;
   padding: 5px;
-  border: 2px #7FDF55 solid;
+  border: 2px #7fdf55 solid;
 }
 
 #rules {
   width: 600px;
   height: 130px;
   padding: 5px;
-  border: #2A9F00 solid 2px;
+  border: #2a9f00 solid 2px;
   border-radius: 5px;
 }
 ```
@@ -116,17 +130,22 @@ nascetur ridiculus mus. Cras vulputate libero sed arcu iaculis nec lobortis orci
 #### JavaScript
 
 ```js
-function checkReading () {
+function checkReading() {
   if (checkReading.read) {
     return;
   }
-  checkReading.read = this.scrollHeight - this.scrollTop === this.clientHeight;
-  document.registration.accept.disabled = document.getElementById("nextstep").disabled = !checkReading.read;
-  checkReading.noticeBox.innerHTML = checkReading.read ? "감사합니다" : "다음 내용을 확인해주십시오";
+  checkReading.read =
+    this.scrollHeight - Math.round(this.scrollTop) === this.clientHeight;
+  document.registration.accept.disabled = document.getElementById(
+    "nextstep"
+  ).disabled = !checkReading.read;
+  checkReading.noticeBox.textContent = checkReading.read
+    ? "Thank you."
+    : "Please, scroll and read the following text.";
 }
 
-onload = function () {
-  var oToBeRead = document.getElementById("rules");
+onload = () => {
+  const oToBeRead = document.getElementById("rules");
   checkReading.noticeBox = document.createElement("span");
   document.registration.accept.checked = false;
   checkReading.noticeBox.id = "notice";
@@ -134,21 +153,21 @@ onload = function () {
   oToBeRead.parentNode.insertBefore(document.createElement("br"), oToBeRead);
   oToBeRead.onscroll = checkReading;
   checkReading.call(oToBeRead);
-}
+};
 ```
 
-{{ EmbedLiveSample('텍스트를_다_읽었는지_확인하기', '640', '400') }}
+{{EmbedLiveSample('Checking_that_the_user_has_read_a_text', '640', '400')}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("Element.clientHeight")}}
-- {{domxref("Element.offsetHeight")}}
-- [Determining the dimensions of elements](/ko/docs/Determining_the_dimensions_of_elements)
+- {{domxref("HTMLElement.offsetHeight")}}
+- [Determining the dimensions of elements](/en-US/docs/Web/API/CSS_Object_Model/Determining_the_dimensions_of_elements)

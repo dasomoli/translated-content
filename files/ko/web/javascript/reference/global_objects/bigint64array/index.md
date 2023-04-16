@@ -1,88 +1,91 @@
 ---
 title: BigInt64Array
 slug: Web/JavaScript/Reference/Global_Objects/BigInt64Array
-l10n:
-  sourceCommit: effd5de5e42bfe045c3bf44b2d7b14f4d6146785
+page-type: javascript-class
+browser-compat: javascript.builtins.BigInt64Array
 ---
 
 {{JSRef}}
 
-**`BigInt64Array`** 형식화 배열(TypedArray)은 플랫폼의 바이트 순서를 따르는 2의 보수 64비트의
-부호있는 정수 배열입니다. 바이트 순서를 제어해야 하는 경우 대신 {{jsxref("DataView")}}를 사용합니다.
-배열의 내용은 `0n`으로 초기화됩니다. 배열이 생성되면 객체의 메서드를 사용하거나 표준 배열 인덱스 구문(즉, 대괄호 표기법 사용)을
-사용하여 배열의 요소를 참조할 수 있습니다.
+The **`BigInt64Array`** typed array represents an array of 64-bit signed integers in the platform byte order. If control over byte order is needed, use {{jsxref("DataView")}} instead. The contents are initialized to `0n`. Once established, you can reference elements in the array using the object's methods, or by using standard array index syntax (that is, using bracket notation).
 
-## 생성자
+`BigInt64Array` is a subclass of the hidden {{jsxref("TypedArray")}} class.
 
-- [`BigInt64Array()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/BigInt64Array/BigInt64Array)
-  - : 새로운 `BigInt64Array` 객체를 생성합니다.
+## Constructor
 
-## 정적 속성
+- {{jsxref("BigInt64Array/BigInt64Array", "BigInt64Array()")}}
+  - : Creates a new `BigInt64Array` object.
 
-부모 {{jsxref("TypedArray")}}에서 정적 속성을 상속합니다.
+## Static properties
 
-- {{jsxref("TypedArray.BYTES_PER_ELEMENT", "BigInt64Array.BYTES_PER_ELEMENT")}}
-  - : 요소 크기를 숫자로 반환합니다. `BigInt64Array`의 경우 `8` 입니다.
-- {{jsxref("TypedArray.name", "BigInt64Array.name")}}
-  - : `BigInt64Array` 타입의 경우 `"BigInt64Array"`입니다.
+_Also inherits static properties from its parent {{jsxref("TypedArray")}}_.
 
-## 정적 메서드
+- {{jsxref("TypedArray/BYTES_PER_ELEMENT", "BigInt64Array.BYTES_PER_ELEMENT")}}
+  - : Returns a number value of the element size. `8` in the case of `BigInt64Array`.
 
-부모 {{jsxref("TypedArray")}}에서 정적 메서드를 상속합니다.
+## Static methods
 
-## 인스턴스 속성
+_Inherits static methods from its parent {{jsxref("TypedArray")}}_.
 
-부모 {{jsxref("TypedArray")}}에서 인스턴스 속성을 상속합니다.
+## Instance properties
 
-- {{jsxref("TypedArray.BYTES_PER_ELEMENT", "BigInt64Array.prototype.BYTES_PER_ELEMENT")}}
-  - : 요소 크기를 숫자로 반환합니다. `BigInt64Array`의 경우 `8` 입니다.
+_Also inherits instance properties from its parent {{jsxref("TypedArray")}}_.
 
-## 인스턴스 메서드
+These properties are defined on `BigInt64Array.prototype` and shared by all `BigInt64Array` instances.
 
-부모 {{jsxref("TypedArray")}}에서 인스턴스 메서드를 상속합니다.
+- {{jsxref("TypedArray/BYTES_PER_ELEMENT", "BigInt64Array.prototype.BYTES_PER_ELEMENT")}}
+  - : Returns a number value of the element size. `8` in the case of a `BigInt64Array`.
+- {{jsxref("Object/constructor", "BigInt64Array.prototype.constructor")}}
+  - : The constructor function that created the instance object. For `BigInt64Array` instances, the initial value is the {{jsxref("BigInt64Array/BigInt64Array", "BigInt64Array")}} constructor.
 
-## 예제
+## Instance methods
 
-### `BigInt64Array`을 생성하기 위한 각기 다른 방법
+_Inherits instance methods from its parent {{jsxref("TypedArray")}}_.
+
+## Examples
+
+### Different ways to create a `BigInt64Array`
 
 ```js
-// 길이로부터
+// From a length
 const bigint64 = new BigInt64Array(2);
 bigint64[0] = 42n;
 console.log(bigint64[0]); // 42n
 console.log(bigint64.length); // 2
 console.log(bigint64.BYTES_PER_ELEMENT); // 8
 
-// 배열로부터
+// From an array
 const x = new BigInt64Array([21n, 31n]);
 console.log(x[1]); // 31n
 
-// 다른 TypedArray로부터
+// From another TypedArray
 const y = new BigInt64Array(x);
 console.log(y[0]); // 21n
 
-// ArrayBuffer로부터
+// From an ArrayBuffer
 const buffer = new ArrayBuffer(64);
 const z = new BigInt64Array(buffer, 8, 4);
 console.log(z.byteOffset); // 8
 
-// 순회로부터
-const iterable = function*() { yield* [1n, 2n, 3n]; }();
+// From an iterable
+const iterable = (function* () {
+  yield* [1n, 2n, 3n];
+})();
 const bigint64FromIterable = new BigInt64Array(iterable);
 console.log(bigint64FromIterable);
 // BigInt64Array [1n, 2n, 3n]
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [JavaScript 형식화 배열](/ko/docs/Web/JavaScript/Typed_arrays)
+- [JavaScript typed arrays](/en-US/docs/Web/JavaScript/Typed_arrays)
 - {{jsxref("BigUint64Array")}}
 - {{jsxref("DataView")}}

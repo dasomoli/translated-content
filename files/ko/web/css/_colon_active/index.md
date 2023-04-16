@@ -1,65 +1,82 @@
 ---
-title: ':active'
+title: ":active"
 slug: Web/CSS/:active
+page-type: css-pseudo-class
+browser-compat: css.selectors.active
 ---
 
 {{CSSRef}}
 
-**`:active`** [CSS](/ko/docs/Web/API/CSS) [의사 클래스](/ko/docs/Web/CSS/Pseudo-classes)는 사용자가 활성화한 요소(버튼 등)를 나타냅니다. 마우스를 사용하는 경우, "활성"이란 보통 마우스 버튼을 누르는 순간부터 떼는 시점까지를 의미합니다.
+The **`:active`** [CSS](/en-US/docs/Web/CSS) [pseudo-class](/en-US/docs/Web/CSS/Pseudo-classes) represents an element (such as a button) that is being activated by the user. When using a mouse, "activation" typically starts when the user presses down the primary mouse button.
+
+{{EmbedInteractiveExample("pages/tabbed/pseudo-class-active.html", "tabbed-shorter")}}
+
+The `:active` pseudo-class is commonly used on {{HTMLElement("a")}} and {{HTMLElement("button")}} elements. Other common targets of this pseudo-class include elements that are _contained in_ an activated element, and form elements that are being activated through their associated {{HTMLElement("label")}}.
+
+Styles defined by the `:active` pseudo-class will be overridden by any subsequent link-related pseudo-class ({{cssxref(":link")}}, {{cssxref(":hover")}}, or {{cssxref(":visited")}}) that has at least equal specificity. To style links appropriately, put the `:active` rule after all other link-related rules, as defined by the _LVHA-order_: `:link` — `:visited` — `:hover` — `:active`.
+
+> **Note:** On systems with multi-button mice, CSS specifies that the `:active` pseudo-class must only apply to the primary button; on right-handed mice, this is typically the leftmost button.
+
+## Syntax
 
 ```css
-/* 활성화된 모든 <a> 태그를 선택 */
-a:active {
-  color: red;
+:active {
+  /* ... */
 }
 ```
 
-`:active` 의사 클래스는 대개 {{HTMLElement("a")}}, {{HTMLElement("button")}}과 함께 사용합니다. 다른 흔한 대상으로는 활성화된 요소를 포함한 다른 요소와, 연결된 {{HTMLElement("label")}}로 선택한 입력 폼 요소 등이 있습니다.
+## Examples
 
-`:active` 의사 클래스로 정의한 스타일은 자신보다 뒤에 위치하고 동등한 명시성을 가진 다른 링크 의사 클래스({{cssxref(":link")}}, {{cssxref(":hover")}}, {{cssxref(":visited")}})가 덮어씁니다. 링크를 적절히 디자인하려면 _LVHA-순서(_`:link` — `:visited` — `:hover` — `:active`)를 따라, `:active` 규칙을 다른 모든 링크 규칙들보다 뒤에 배치하세요.
-
-> **참고:** CSS3 명세에 따르면, 다수의 버튼을 가진 마우스라도 `:active` 의사 클래스는 주 버튼에만 적용돼야 합니다. 오른손잡이 마우스 기준, 주 버튼은 보통 맨 왼쪽 버튼입니다.
-
-## 구문
-
-{{csssyntax}}
-
-## 예제
-
-### 활성화 링크
+### Active links
 
 #### HTML
 
 ```html
-<p>링크를 포함하는 문단입니다.
-  <a href="#">이 링크는 클릭하는 동안 색이 빨갛게 됩니다.</a>
-  이 문단은 클릭하는 동안 배경색이 회색이 됩니다.
+<p>
+  This paragraph contains a link:
+  <a href="#">This link will turn red while you click on it.</a>
+  The paragraph will get a gray background while you click on it or the link.
 </p>
 ```
 
 #### CSS
 
 ```css
-a:link { color: blue; }          /* 방문하지 않은 링크 */
-a:visited { color: purple; }     /* 방문한 링크 */
-a:hover { background: yellow; }  /* 마우스를 올린 링크 */
-a:active { color: red; }         /* 활성화한 링크 */
+/* Unvisited links */
+a:link {
+  color: blue;
+}
+/* Visited links */
+a:visited {
+  color: purple;
+}
+/* Hovered links */
+a:hover {
+  background: yellow;
+}
+/* Active links */
+a:active {
+  color: red;
+}
 
-p:active { background: #eee; }   /* 활성화한 문단 */
+/* Active paragraphs */
+p:active {
+  background: #eee;
+}
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('활성화_링크')}}
+{{EmbedLiveSample('Active_links')}}
 
-### 활성화 폼 요소
+### Active form elements
 
 #### HTML
 
 ```html
 <form>
-  <label for="my-button">내 버튼: </label>
-  <button id="my-button" type="button">제 라벨이나 저를 클릭해보세요!</button>
+  <label for="my-button">My button: </label>
+  <button id="my-button" type="button">Try Clicking Me or My Label!</button>
 </form>
 ```
 
@@ -75,18 +92,18 @@ form button {
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('활성화_폼_요소')}}
+{{EmbedLiveSample('Active_form_elements')}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 링크 관련 의사 클래스: {{cssxref(":link")}}, {{cssxref(":visited")}}, {{cssxref(":hover")}}.
+- Link-related pseudo-classes: {{cssxref(":link")}}, {{cssxref(":visited")}}, and {{cssxref(":hover")}}

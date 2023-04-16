@@ -1,46 +1,59 @@
 ---
 title: menus.create()
 slug: Mozilla/Add-ons/WebExtensions/API/menus/create
-original_slug: Mozilla/Add-ons/WebExtensions/API/contextMenus/create
+page-type: webextension-api-function
+browser-compat: webextensions.api.menus.create
 ---
 
 {{AddonSidebar()}}
 
-주어진 객체대로 새 메뉴 항목을 만든다.
+Creates a new menu item, given an options object defining properties for the item.
 
-이 함수는 다른 비공기 함수들과 달리 promise가 아니라 새 항목의 ID를 반환한다. 성공과 실패에 대한 처리는 필요하면 콜백으로 한다.
+Unlike other asynchronous functions, this one does not return a promise, but uses an optional callback to communicate success or failure. This is because its return value is the ID of the new item.
 
-다른 브라우저와의 호환성을 위해, `menus` 이름공간 뿐 아니라 `contextMenus` 이름공간으로도 이 메소드를 사용할 수 있다. 하지만 `contextMenus`로는 툴 메뉴 항목(`contexts: ["tools_menu"]`)은 만들 수 없다.
+For compatibility with other browsers, Firefox makes this method available via the `contextMenus` namespace as well as the `menus` namespace. Note though that it's not possible to create tools menu items (`contexts: ["tools_menu"]`) using the `contextMenus` namespace.
 
-## 문법
+## Syntax
 
-```js
+```js-nolint
 browser.menus.create(
   createProperties, // object
-  function() {...}  // optional function
+  () => {/* … */}   // optional function
 )
 ```
 
-### 매개변수
+### Parameters
 
 - `createProperties`
-  - : `object`. 새 메뉴 항목의 속성들
+
+  - : `object`. Properties for the new menu item.
+
     - `checked` {{optional_inline}}
-      - : `boolean`. checkbox나 radio 항목의 초기값: 선택은 `true`, 선택이 아니면 `false`. radio 항목이라면 그룹 중에서 하나만 선택된 것으로 할 수 있다.
-    - `command` {{optional_inline}}</dt>
-      - : `string`. 클릭 했을 때 수행할 동작을 기술한다. 가능한 값은:<
-        - `"_execute_browser_action"`: 확장의 브라우저 액션을 클릭한 것처럼 한다. 팝업이 있으면 팝업이 열린다.
-        - `"_execute_page_action"`: 확장의 페이지 액션을 클릭한 것처럼 한다. 팝업이 있으면 팝업이 열린다.
-        - `"_execute_sidebar_action"`: 확장의 사이드바를 연다.
-        - 항목을 클릭하면 여전히 {{WebExtAPIRef("menus.onClicked")}} 이벤트도 발생한다. 어느게 먼저 인지는 보장되지 않지만 `onClicked`이 발생하기 전에 명령이 실행될 것이다.
+      - : `boolean`. The initial state of a checkbox or radio item: `true` for selected and `false` for unselected. Only one radio item can be selected at a time in a given group of radio items.
+    - `command` {{optional_inline}}
+
+      - : `string`. String describing an action that should be taken when the user clicks the item. The recognized values are:
+
+        - `"_execute_browser_action"`: simulate a click on the extension's browser action, opening its popup if it has one (Manifest V2 only)
+        - `"_execute_action"`: simulate a click on the extension's action, opening its popup if it has one (Manifest V3 only)
+        - `"_execute_page_action"`: simulate a click on the extension's page action, opening its popup if it has one
+        - `"_execute_sidebar_action"`: open the extension's sidebar
+
+        See the documentation of special shortcuts in the manifest.json key [`commands`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/commands#special_shortcuts) for details.
+
+        When one of the recognized values is specified, clicking the item does not trigger the {{WebExtAPIRef("menus.onClicked")}} event; instead, the default action triggers, such as opening a pop-up. Otherwise, clicking the item triggers {{WebExtAPIRef("menus.onClicked")}} and the event can be used to implement fallback behavior.
+
     - `contexts` {{optional_inline}}
-      - : `{{WebExtAPIRef('menus.ContextType')}}`의 `배열`. 메뉴 항목이 표시할 콘텍스트의 배열. 생략되면:
-        - 상위 항목에 콘텍스트가 설정되었으면 그걸 물려받는다.
-        - 아니면, 항목은 ["page"]로 설정된다.
+
+      - : `array` of `{{WebExtAPIRef('menus.ContextType')}}`. Array of contexts in which this menu item will appear. If this option is omitted:
+
+        - if the item's parent has contexts set, then this item will inherit its parent's contexts
+        - otherwise, the item is given a context array of \["page"].
+
     - `documentUrlPatterns` {{optional_inline}}
-      - : `string`의 `배열`. 메뉴 항목의 표시를 URL이 주어진 [match patterns](/en-US/docs/Mozilla/Add-ons/WebExtensions/Match_patterns)과 일치하는 문서로 제한한다. 프레임에도 적용된다.
+      - : `array` of `string`. Lets you restrict the item to apply only to documents whose URL matches one of the given [match patterns](/en-US/docs/Mozilla/Add-ons/WebExtensions/Match_patterns). This applies to frames as well.
     - `enabled` {{optional_inline}}
-      - : `boolean`. 메뉴 항목이 사용 가능한지 아닌지를 지정한다. 기본값은 `true`.
+      - : `boolean`. Whether this menu item is enabled or disabled. Defaults to `true`.
     - `icons` {{optional_inline}}
 
       - : `object`. One or more custom icons to display next to the item. Custom icons can only be set for items appearing in submenus. This property is an object with one property for each supplied icon: the property's name should include the icon's size in pixels, and path is relative to the icon from the extension's root directory. The browser tries to choose a 16x16 pixel icon for a normal display or a 32x32 pixel icon for a high-density display. To avoid any scaling, you can specify icons like this:
@@ -62,7 +75,7 @@ browser.menus.create(
 
         > **Note:** The top-level menu item uses the [icons](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/icons) specified in the manifest rather than what is specified with this key.
 
-    - `id` {{optional_inline}}1
+    - `id` {{optional_inline}}
       - : `string`. The unique ID to assign to this item. Is mandatory for non-persistent [background (event) pages](/en-US/docs/Mozilla/Add-ons/WebExtensions/Background_scripts) in Manifest V2 and in Manifest V3. Cannot be the same as another ID for this extension.
     - `onclick` {{optional_inline}}
       - : `function`. A function that will be called when the menu item is clicked. Event pages cannot use this: instead, they should register a listener for {{WebExtAPIRef('menus.onClicked')}}.
@@ -98,15 +111,11 @@ browser.menus.create(
 
 ### Return value
 
-`integer` or `string`. The ID of the newly created item.
+`integer` or `string`. The `ID` of the newly created item.
 
-## 브라우저 호환성
+## Examples
 
-{{Compat}}
-
-## 예제
-
-이 예제는 페이지에 선택된 텍스트가 있을 때 표시되는 콘텍스트 메뉴 항목을 만든다. 동작은 선택된 텍스트를 콘솔에 로그로 남기는 것이다:
+This example creates a context menu item that's shown when the user has selected some text in the page. It just logs the selected text to the console:
 
 ```js
 browser.menus.create({
@@ -115,19 +124,19 @@ browser.menus.create({
   contexts: ["selection"]
 });
 
-browser.menus.onClicked.addListener(function(info, tab) {
-  if (info.menuItemId == "log-selection") {
+browser.menus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === "log-selection") {
     console.log(info.selectionText);
   }
 });
 ```
 
-이 예제는 두 개의 radio 항목을 추가한다. 선택해서 테두리의 색을 녹색이나 청색으로 할 수 있다. 이 예제는 [activeTab 권한](/en-US/Add-ons/WebExtensions/manifest.json/permissions#activeTab_permission)이 필요하다.
+This example adds two radio items, which you can use to choose whether to apply a green or a blue border to the page. Note that this example will need the [activeTab permission](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions#activetab_permission).
 
 ```js
 function onCreated() {
   if (browser.runtime.lastError) {
-    console.log("error creating item:" + browser.runtime.lastError);
+    console.log("error creating item:", browser.runtime.lastError);
   } else {
     console.log("item created successfully");
   }
@@ -149,15 +158,15 @@ browser.menus.create({
   checked: false
 }, onCreated);
 
-var makeItBlue = 'document.body.style.border = "5px solid blue"';
-var makeItGreen = 'document.body.style.border = "5px solid green"';
+let makeItBlue = 'document.body.style.border = "5px solid blue"';
+let makeItGreen = 'document.body.style.border = "5px solid green"';
 
-browser.menus.onClicked.addListener(function(info, tab) {
-  if (info.menuItemId == "radio-blue") {
+browser.menus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === "radio-blue") {
     browser.tabs.executeScript(tab.id, {
       code: makeItBlue
     });
-  } else if (info.menuItemId == "radio-green") {
+  } else if (info.menuItemId === "radio-green") {
     browser.tabs.executeScript(tab.id, {
       code: makeItGreen
     });
@@ -167,9 +176,13 @@ browser.menus.onClicked.addListener(function(info, tab) {
 
 {{WebExtExamples}}
 
-> **참고:** **Acknowledgements**This API is based on Chromium's [`chrome.contextMenus`](https://developer.chrome.com/extensions/contextMenus#method-create) API. This documentation is derived from [`context_menus.json`](https://chromium.googlesource.com/chromium/src/+/master/chrome/common/extensions/api/context_menus.json) in the Chromium code.
+## Browser compatibility
 
-```
+{{Compat}}
+
+> **Note:** This API is based on Chromium's [`chrome.contextMenus`](https://developer.chrome.com/docs/extensions/reference/contextMenus/#method-create) API. This documentation is derived from [`context_menus.json`](https://chromium.googlesource.com/chromium/src/+/master/chrome/common/extensions/api/context_menus.json) in the Chromium code.
+
+<!--
 // Copyright 2015 The Chromium Authors. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -197,4 +210,4 @@ browser.menus.onClicked.addListener(function(info, tab) {
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-```
+-->

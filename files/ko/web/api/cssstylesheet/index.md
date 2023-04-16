@@ -1,61 +1,175 @@
 ---
 title: CSSStyleSheet
 slug: Web/API/CSSStyleSheet
+page-type: web-api-interface
+browser-compat: api.CSSStyleSheet
 ---
 
 {{APIRef("CSSOM")}}
 
-The **`CSSStyleSheet`** interface represents a single [CSS](/ko/docs/Web/CSS) style sheet. It inherits properties and methods from its parent, {{domxref("StyleSheet")}}.
+The **`CSSStyleSheet`** interface represents a single [CSS](/en-US/docs/Web/CSS) stylesheet, and lets you inspect and modify the list of rules contained in the stylesheet. It inherits properties and methods from its parent, {{domxref("StyleSheet")}}.
 
-A style sheet consists of _{{domxref("CSSRule", "rules", "", 1)}}_, such as _{{domxref("CSSStyleRule", "style rules", "", 1)}}_ ("`h1,h2 { font-size: 16pt }"`), various _at-rules_ (`@import`, `@media`, ...), etc. This interface lets you inspect and modify the list of rules in the stylesheet.
+{{InheritanceDiagram}}
 
-See the [Notes](#notes) section for the various ways a CSSStyleSheet object can be obtained.
+A stylesheet consists of a collection of {{domxref("CSSRule")}} objects representing each of the rules in the stylesheet. The rules are contained in a {{domxref("CSSRuleList")}}, which can be obtained from the stylesheet's {{domxref("CSSStyleSheet.cssRules", "cssRules")}} property.
 
-## Properties
+For example, one rule might be a {{domxref("CSSStyleRule")}} object containing a style such as:
+
+```css
+h1,
+h2 {
+  font-size: 16pt;
+}
+```
+
+Another rule might be an _at-rule_ such as {{cssxref("@import")}} or {{cssxref("@media")}}, and so forth.
+
+See the [Obtaining a StyleSheet](#obtaining_a_stylesheet) section for the various ways a `CSSStyleSheet` object can be obtained. A `CSSStyleSheet` object can also be directly constructed. The constructor, and the {{domxref("CSSStyleSheet.replace()")}}, and {{domxref("CSSStyleSheet.replaceSync()")}} methods are newer additions to the specification, enabling _Constructable Stylesheets_.
+
+## Constructor
+
+- {{domxref("CSSStyleSheet.CSSStyleSheet()", "CSSStyleSheet()")}}
+  - : Creates a new `CSSStyleSheet` object.
+
+## Instance properties
 
 _Inherits properties from its parent, {{domxref("StyleSheet")}}._
 
-- {{domxref("CSSStyleSheet.cssRules")}}
-  - : Returns a live {{domxref("CSSRuleList")}}, listing the {{domxref("CSSRule")}} objects in the style sheet.
-    This is normally used to access individual rules like this: styleSheet.cssRules[i] // where i = 0..cssRules.length-1To add or remove items in `cssRules`, use the `CSSStyleSheet`'s `deleteRule()` and `insertRule()` methods, described below.
-- {{domxref("CSSStyleSheet.ownerRule")}}
-  - : If this style sheet is imported into the document using an {{cssxref("@import")}} rule, the `ownerRule` property will return that {{domxref("CSSImportRule")}}, otherwise it returns `null`.
+- {{domxref("CSSStyleSheet.cssRules")}} {{ReadOnlyInline}}
 
-## Methods
+  - : Returns a live {{domxref("CSSRuleList")}} which maintains an up-to-date list of the {{domxref("CSSRule")}} objects that comprise the stylesheet.
 
-_Inherits methods from its parent, {{domxref("Stylesheet")}}._
+    > **Note:** In some browsers, if a stylesheet is loaded from a different domain, accessing `cssRules` results in a `SecurityError`.
+
+- {{domxref("CSSStyleSheet.ownerRule")}} {{ReadOnlyInline}}
+  - : If this stylesheet is imported into the document using an {{cssxref("@import")}} rule, the `ownerRule` property returns the corresponding {{domxref("CSSImportRule")}}; otherwise, this property's value is `null`.
+
+## Instance methods
+
+_Inherits methods from its parent, {{domxref("StyleSheet")}}._
 
 - {{domxref("CSSStyleSheet.deleteRule()")}}
-  - : Deletes a rule at the specified position from the style sheet.
+  - : Deletes the rule at the specified index into the stylesheet's rule list.
 - {{domxref("CSSStyleSheet.insertRule()")}}
-  - : Inserts a new rule at the specified position in the style sheet, given the textual representation of the rule.
+  - : Inserts a new rule at the specified position in the stylesheet, given the textual representation of the rule.
+- {{domxref("CSSStyleSheet.replace()")}}
+  - : Asynchronously replaces the content of the stylesheet and returns a {{jsxref("Promise")}} that resolves with the updated `CSSStyleSheet`.
+- {{domxref("CSSStyleSheet.replaceSync()")}}
+  - : Synchronously replaces the content of the stylesheet.
 
-## Notes
+## Legacy properties
 
-In some browsers, if a stylesheet is loaded from a different domain, calling `cssRules` results in `SecurityError`.
+_These properties are legacy properties as introduced by Microsoft; these are maintained for compatibility with existing sites._
 
-A stylesheet is associated with at most one {{domxref("Document")}}, which it applies to (unless {{domxref("StyleSheet.disabled", "disabled", "", 1)}}). A list of `CSSStyleSheet` objects for a given document can be obtained using the {{domxref("document.styleSheets")}} property. A specific style sheet can also be accessed from its _owner_ object (`Node` or `CSSImportRule`), if any.
+- {{domxref("CSSStyleSheet.rules", "rules")}} {{ReadOnlyInline}} {{Deprecated_Inline}}
+  - : The `rules` property is functionally identical to the standard {{domxref("CSSStyleSheet.cssRules", "cssRules")}} property; it returns a live {{domxref("CSSRuleList")}} which maintains an up-to-date list of all of the rules in the style sheet.
 
-A `CSSStyleSheet` object is created and inserted into the document's `styleSheets` list automatically by the browser, when a style sheet is loaded for a document. As the {{domxref("document.styleSheets")}} list cannot be modified directly, there's no useful way to create a new `CSSStyleSheet` object manually (although [Constructable Stylesheet Objects](https://wicg.github.io/construct-stylesheets/) is coming to the web platform soon and is already supported in Blink). To create a new stylesheet, insert a {{HTMLElement("style")}} or {{HTMLElement("link")}} element into the document.
+## Legacy methods
 
-A (possibly incomplete) list of ways a style sheet can be associated with a document follows:
+_These methods are legacy methods as introduced by Microsoft; these are maintained for compatibility with existing sites._
 
-| Reason for the style sheet to be associated with the document                                  | Appears in `document. styleSheets` list | Getting the owner element/rule given the style sheet object          | The interface for the owner object                                                                                              | Getting the CSSStyleSheet object from the owner                          |
-| ---------------------------------------------------------------------------------------------- | --------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| {{HTMLElement("style")}} and {{HTMLElement("link")}} elements in the document | Yes                                     | {{domxref("StyleSheet.ownerNode", ".ownerNode")}}     | {{domxref("HTMLLinkElement")}}, {{domxref("HTMLStyleElement")}}, or {{domxref("SVGStyleElement")}} | {{domxref("LinkStyle.sheet", ".sheet")}}                     |
-| CSS {{cssxref("@import")}} rule in other style sheets applied to the document            | Yes                                     | {{domxref("CSSStyleSheet.ownerRule", ".ownerRule")}} | {{domxref("CSSImportRule")}}                                                                                            | {{domxref("CSSImportRule.styleSheet", ".styleSheet")}} |
-| `<?xml-stylesheet ?>` processing instruction in the (non-HTML) document                        | Yes                                     | {{domxref("StyleSheet.ownerNode", ".ownerNode")}}     | {{domxref("ProcessingInstruction")}}                                                                                | {{domxref("LinkStyle.sheet", ".sheet")}}                     |
-| HTTP Link Header                                                                               | Yes                                     | _N/A_                                                                | N/A                                                                                                                             | N/A                                                                      |
-| User agent (default) style sheets                                                              | No                                      | N/A                                                                  | N/A                                                                                                                             | N/A                                                                      |
+- {{domxref("CSSStyleSheet.addRule", "addRule()")}} {{Deprecated_Inline}}
 
-## 명세서
+  - : Adds a new rule to the stylesheet given the selector to which the style applies and the style block to apply to the matching elements.
+
+    This differs from {{domxref("CSSStyleSheet.insertRule", "insertRule()")}}, which takes the textual representation of the entire rule as a single string.
+
+- {{domxref("CSSStyleSheet.removeRule", "removeRule()")}} {{Deprecated_Inline}}
+  - : Functionally identical to {{domxref("CSSStyleSheet.deleteRule", "deleteRule()")}}; removes the rule at the specified index from the stylesheet's rule list.
+
+## Obtaining a StyleSheet
+
+A stylesheet is associated with at most one {{domxref("Document")}}, which it applies to (unless {{domxref("StyleSheet.disabled", "disabled", "", 1)}}). A list of `CSSStyleSheet` objects for a given document can be obtained using the {{domxref("Document.styleSheets")}} property. A specific style sheet can also be accessed from its _owner_ object (`Node` or `CSSImportRule`), if any.
+
+A `CSSStyleSheet` object is created and inserted into the document's {{domxref("Document.styleSheets")}} list automatically by the browser, when a stylesheet is loaded for a document.
+
+A (possibly incomplete) list of ways a stylesheet can be associated with a document follows:
+
+<table class="no-markdown">
+  <thead>
+    <tr>
+      <th scope="col">
+        Reason for the style sheet to be associated with the document
+      </th>
+      <th scope="col">
+        Appears in <code>document.<br />styleSheets</code> list
+      </th>
+      <th scope="col">
+        Getting the owner element/rule given the style sheet object
+      </th>
+      <th scope="col">The interface for the owner object</th>
+      <th scope="col">Getting the CSSStyleSheet object from the owner</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        {{HTMLElement("style")}} and {{HTMLElement("link")}}
+        elements in the document
+      </td>
+      <td>Yes</td>
+      <td>{{domxref("StyleSheet.ownerNode", ".ownerNode")}}</td>
+      <td>
+        {{domxref("HTMLLinkElement")}},<br />{{domxref("HTMLStyleElement")}},<br />or
+        {{domxref("SVGStyleElement")}}
+      </td>
+      <td>
+        {{domxref("HTMLLinkElement.sheet")}},<br />{{domxref("HTMLStyleElement.sheet")}},<br />or
+        {{domxref("SVGStyleElement.sheet")}}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        CSS {{cssxref("@import")}} rule in other style sheets applied to
+        the document
+      </td>
+      <td>Yes</td>
+      <td>
+        {{domxref("CSSStyleSheet.ownerRule", ".ownerRule")}}
+      </td>
+      <td>{{domxref("CSSImportRule")}}</td>
+      <td>
+        {{domxref("CSSImportRule.styleSheet", ".styleSheet")}}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>&#x3C;?xml-stylesheet ?></code> processing instruction in the
+        (non-HTML) document
+      </td>
+      <td>Yes</td>
+      <td>{{domxref("StyleSheet.ownerNode", ".ownerNode")}}</td>
+      <td>{{domxref("ProcessingInstruction")}}</td>
+      <td>
+        {{domxref("ProcessingInstruction.sheet", ".sheet")}}
+      </td>
+    </tr>
+    <tr>
+      <td>HTTP Link Header</td>
+      <td>Yes</td>
+      <td><em>N/A</em></td>
+      <td>N/A</td>
+      <td>N/A</td>
+    </tr>
+    <tr>
+      <td>User agent (default) style sheets</td>
+      <td>No</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+    </tr>
+  </tbody>
+</table>
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- [Using dynamic styling information](/ko/docs/Web/API/CSS_Object_Model/Using_dynamic_styling_information)
+- [CSS Object Model](/en-US/docs/Web/API/CSS_Object_Model)
+- [Using dynamic styling information](/en-US/docs/Web/API/CSS_Object_Model/Using_dynamic_styling_information)

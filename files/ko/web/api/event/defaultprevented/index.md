@@ -1,25 +1,28 @@
 ---
-title: Event.defaultPrevented
+title: "Event: defaultPrevented property"
+short-title: defaultPrevented
 slug: Web/API/Event/defaultPrevented
+page-type: web-api-instance-property
+browser-compat: api.Event.defaultPrevented
 ---
 
-{{APIRef("DOM")}}
+{{ APIRef("DOM") }}
 
-{{domxref("Event")}} 인터페이스의 **`defaultPrevented`** 읽기 전용 속성은 {{domxref("Event.preventDefault()")}}로 이 이벤트를 취소했는지 나타내는 불리언 값을 반환합니다.
+The **`defaultPrevented`** read-only property of the {{domxref("Event")}} interface returns a boolean value indicating whether or not the call to {{ domxref("Event.preventDefault()") }} canceled the event.
 
-## 값
+## Value
 
-`true`면 {{glossary("user agent", "사용자 에이전트")}}의 기본 동작을 취소했고, `false`면 취소하지 않았음을 나타내는 불리언 값입니다.
+A boolean value, where `true` indicates that the default {{glossary("user agent")}} action was prevented, and `false` indicates that it was not.
 
-## 예제
+## Example
 
-이 예제는 두 개의 {{htmlelement("a")}} 요소를 사용한 링크 방문 시도를 기록합니다. 두 번째 링크는 JavaScript를 사용해 동작을 막아놨습니다.
+This example logs attempts to visit links from two {{htmlElement("a")}} elements. JavaScript is used to prevent the second link from working.
 
 ### HTML
 
 ```html
-<p><a id="link1" href="#link1">첫 번째 링크 방문</a></p>
-<p><a id="link2" href="#link2">두 번째 링크 방문 시도</a> (사용 불가)</p>
+<p><a id="link1" href="#link1">Visit link 1</a></p>
+<p><a id="link2" href="#link2">Try to visit link 2</a> (you can't)</p>
 <p id="log"></p>
 ```
 
@@ -31,31 +34,28 @@ function stopLink(event) {
 }
 
 function logClick(event) {
-  const log = document.getElementById('log');
+  const log = document.getElementById("log");
 
-  if (event.target.tagName === 'A') {
-    if (event.defaultPrevented) {
-      log.innerText = '죄송합니다. 이 링크는 방문할 수 없습니다.\n' + log.innerText;
-    }
-    else {
-      log.innerText = '링크 방문 중...\n' + log.innerText;
-    }
+  if (event.target.tagName === "A") {
+    log.innerText = event.defaultPrevented
+      ? `Sorry, but you cannot visit this link!\n${log.innerText}`
+      : `Visiting link…\n${log.innerText}`;
   }
 }
 
-const a = document.getElementById('link2');
-a.addEventListener('click', stopLink);
-document.addEventListener('click', logClick);
+const a = document.getElementById("link2");
+a.addEventListener("click", stopLink);
+document.addEventListener("click", logClick);
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample("예제")}}
+{{EmbedLiveSample("Example")}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

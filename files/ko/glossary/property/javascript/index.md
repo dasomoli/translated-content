@@ -1,21 +1,22 @@
 ---
 title: Property (JavaScript)
 slug: Glossary/Property/JavaScript
+page-type: glossary-definition
 ---
 
-**JavaScript 속성**은 키와 값을 연결하는 [객체](/ko/docs/Web/JavaScript/Data_structures#objects)의 구성원입니다. JavaScript 객체는 속성 모음을 저장하는 데이터 구조입니다.
+A **JavaScript property** is a member of an [object](/en-US/docs/Web/JavaScript/Data_structures#objects) that associates a key with a value. A JavaScript object is a data structure that stores a collection of properties.
 
-속성은 다음 부분으로 구성됩니다.
+A property consists of the following parts:
 
-- [문자열](/ko/docs/Web/JavaScript/Reference/Global_Objects/String)이나 [심볼](/ko/docs/Web/JavaScript/Reference/Global_Objects/Symbol)인 _이름_ (_키_ 라고도 불리는).
-- 임의의 JavaScript 값이 될 수 있는 _값_. 함수를 값으로 갖는 속성은 [메서드](/ko/docs/Glossary/Method)라고 할 수 있습니다.
-- 속성을 읽고 쓰는 방법을 지정하는 일부 _속성_. 속성은 `구성 가능한`, `열거 가능한`, 그리고 `쓰기 가능한` 속성을 가질 수 있습니다.
+- A _name_ (also called a _key_), which is either a [string](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) or a [symbol](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol).
+- A _value_, which can be any JavaScript value. A property that has a function as its value may also be called a [method](/en-US/docs/Glossary/Method).
+- Some _attributes_, which specify how the property can be read and written. A property may have the `configurable`, `enumerable`, and `writable` attributes.
 
-[접근자 속성](/ko/docs/Web/JavaScript/Data_structures#accessor_property)에는 실제 "값"이 없습니다. 값은 값을 읽을 때 호출되는 하나 (얻는자), 그리고 값을 설정할 때 호출되는 하나 (설정자)로 한 쌍의 함수를 통해 간접적으로 표현됩니다. 그러나 접근자 속성은 표면의 일반적인 데이터 속성처럼 동작하는데, 얻는자와 설정자 함수가 자동으로 호출되기 때문에, 그리고 형식적으로 JavaScript 코드에 투명하기 때문입니다.
+[Accessor properties](/en-US/docs/Web/JavaScript/Data_structures#accessor_property) do not have an actual "value". The value is represented indirectly through a pair of functions, one (the getter) invoked when reading the value and one (the setter) invoked when setting the value. However, accessor properties behave like regular data properties on the surface, because the getter and setter functions are invoked automatically and are typically transparent to JavaScript code.
 
-속성값 (얻는자와 설정자를 포함하는) 그리고 속성은 _속성 기술자_ 로 불리는 데이터 레코드에 저장됩니다. {{jsxref("Object.getOwnPropertyDescriptor()")}} 와 {{jsxref("Object.defineProperty()")}} 같은 많은 메서드는 속성 기술자와 함께 동작합니다.
+The property's value (including the getter and setter) and its attributes are stored in a data record called the _property descriptor_. Many methods, such as {{jsxref("Object.getOwnPropertyDescriptor()")}} and {{jsxref("Object.defineProperty()")}}, work with property descriptors.
 
-_속성_ 이라는 용어 자체는 모든 JavaScript 값과 일치하는 것은 아닙니다. 이것은 추상적인 개념입니다. 예를 들어, 아래와 같은 코드를 따릅니다.
+The term _property_ itself does not correspond to any JavaScript value — it's an abstract concept. For example, in the following code:
 
 ```js
 const obj = {
@@ -24,15 +25,15 @@ const obj = {
 };
 ```
 
-`obj` 객체는 두 개의 속성을 가집니다. 첫 번째는 키인 `"a"`와 값인 `1`을 가집니다. 두 번째는 키인 `"b"`와 값으로 함수를 가집니다 ([메서드 구문](/ko/docs/Web/JavaScript/Reference/Functions/Method_definitions))를 사용하는). `"a"` – `1`, `"b"` – `function` 조합은 객체의 속성입니다.
+The object `obj` has two properties. The first one has `"a"` as the key and `1` as the value. The second one has `"b"` as the key and a function as the value (using the [method syntax](/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions)). The `"a"` – `1`, `"b"` – `function` associations are the properties of the object.
 
-[클래스](/ko/docs/Web/JavaScript/Reference/Classes) 속성 맥락은 각 인스턴스가 소유하는 _인스턴스 속성_ 과 클래스가 소유하고 모든 인스턴스에 공통 데이터를 보유하는 _정적 속성_ 으로 나눌 수 있습니다. [상속](/ko/docs/Web/JavaScript/Inheritance_and_the_prototype_chain) 맥락에서 속성은 객체 자체가 소유하는 _고유 속성_ 과 객체의 프로토타입 체인에 있는 객체가 소유하는 _상속 속성_ 으로 나눌 수 있습니다.
+In the context of [classes](/en-US/docs/Web/JavaScript/Reference/Classes), properties can be divided into _instance properties_, which are owned by each instance, and _static properties_, which are owned by the class and hold data common to all instances. In the context of [inheritance](/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain), properties can also be divided into _own properties_, which are owned by the object itself, and _inherited properties_, which are owned by objects in the prototype chain of the object.
 
-읽기와 쓰기 속성에 대한 더 많은 정보는 [객체로 작업하기](/ko/docs/Web/JavaScript/Guide/Working_with_Objects)를 참조하세요.
+For more information about reading and writing properties, see [working with objects](/en-US/docs/Web/JavaScript/Guide/Working_with_objects).
 
-## 같이 보기
+## See also
 
-- [속성 (프로그래밍)](<https://en.wikipedia.org/wiki/Property_(programming)>) on Wikipedia
-- [객체 지향 JavaScript 소개](/ko/docs/Learn/JavaScript/Objects)
-- [객체 속성](/ko/docs/Web/JavaScript/Data_structures#properties)
-- [속성의 열거 가능성 및 소유권](/ko/docs/Web/JavaScript/Enumerability_and_ownership_of_properties)
+- [Property (programming)](<https://en.wikipedia.org/wiki/Property_(programming)>) on Wikipedia
+- [Introduction to object-oriented JavaScript](/en-US/docs/Learn/JavaScript/Objects)
+- [Object properties](/en-US/docs/Web/JavaScript/Data_structures#properties)
+- [Enumerability and ownership of properties](/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties)

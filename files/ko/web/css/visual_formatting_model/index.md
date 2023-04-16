@@ -1,235 +1,157 @@
 ---
-title: 시각적 서식 모델
+title: Visual formatting model
 slug: Web/CSS/Visual_formatting_model
+page-type: guide
 ---
+
 {{CSSRef}}
 
-CSS **시각적 서식 모델** (visual formatting model)은 문서를 처리하여 그것을 시각적 매체에 표시하는 알고리즘입니다. 이 모델은 CSS의 기본 개념입니다.
+In CSS The **Visual Formatting Model** describes how user agents take the document tree, and process and display it for visual media. This includes {{glossary("continuous media")}} such as a computer screen and [paged media](/en-US/docs/Web/CSS/Paged_Media) such as a book or document printed by browser print functions. Most of the information applies equally to continuous and paged media.
 
-시각적 서식 모델은 문서의 각 요소를 변환하여, [CSS 상자 모델](/ko/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)에 부합하는 0, 1 또는 여러 상자를 생성합니다. 각 상자의 레이아웃은 다음과 같이 정의됩니다:
+In the visual formatting model, each element in the document tree generates zero or more boxes according to the box model. The layout of these boxes is governed by:
 
-- 상자의 면적: 정확히 정의하거나 제약을 받거나, 아에 정의하지 않습니다.
-- 상자의 유형: 인라인, 인라인수준, 원자 인라인수준, 블록.
-- [위치잡기 기법](/ko/docs/CSS/Box_positioning_scheme): 일반 대열 소속, 부동체, 또는 절대 위치잡기.
-- 트리 구조에 속한 다른 요소 무리: 그것의 자녀와 이웃.
-- {{glossary("viewport")}} 크기와 위치.
-- 컨테이너에 속한 이미지의 고유한 면적.
-- 다른 외부 정보
+- Box dimensions and type.
+- Positioning scheme (normal flow, float, and absolute positioning).
+- Relationships between elements in the document tree.
+- External information (e.g., viewport size, intrinsic dimensions of images, etc.).
 
-동 모델은 컨테이너 블록의 모서리 기준과 비례하여 상자를 렌더링합니다. 보통, 하나의 상자는 자기 자손들을 위한 컨테이너 블록을 수립합니다. 그러나 상자는 자신의 상위 컨테이너 블록에 구속되지 않습니다. 상자 레이아웃이 상위 컨테이너 블록을 벗어나면 **대열이탈** (overflow)했다고 말합니다..
+Much of the information about the visual formatting model is defined in CSS2, however, various level 3 specifications have added to this information. When reading specifications you will often find references to the model as defined in CSS2, so an understanding of the model and the terms used to describe it in CSS2 is valuable when reading other layout specifications.
 
-## 상자 생성
+In this document we define the model and introduce some of the related terms and concepts, linking to more specific pages on MDN for further details.
 
-상자 생성은 해당 문서의 요소로부터 상자를 생성하는 CSS 시각적 서식 모델의 일부입니다. 생성된 상자는 다양한 유형으로, 이 유형은 시각적 서식이 이뤄지는 방식에 영향을 미칩니다. 생성되는 상자 유형은 {{ cssxref("display") }} CSS 속성의 값 여하에 따라 달라집니다.
+## The role of the viewport
 
-### 블록수준 요소와 블록 상자
+In continuous media, the {{glossary("viewport")}} is the viewing area of the browser window. User agents can change the layout of the page when the viewport size changes — for example, if you resize your window, or change the orientation of a mobile device.
 
-어떤 요소를 *블록수준*이라고 말하려면 계산된 {{ cssxref("display") }} CSS 속성값이 `block`, `list-item`, 또는 `table`일 때입니다. 블록수준 요소는 사실상 하나의 블록으로 취급되어 시각적으로 서식되며, 수직적으로 겹겹이 포개집니다.
+If the viewport is smaller than the size of the document then the user agent needs to offer a way to scroll to the parts of the document that are not displayed. We most often see this as scrolling in the **block dimension** — vertically in a horizontal, top-to-bottom language. However, you might design something that requires scrolling in the **inline dimension** too.
 
-각각의 블록수준 상자는 [블록 서식 상황](/ko/docs/CSS/block_formatting_context)에 참여합니다. 각 블록수준 요소는 적어도 하나의 블록수준 상자를 생성하며 이를 일컬어 **수석 블록수준 상자<** (principal block-level box) 라고 합니다. 일부 요소 무리는 목록항목 요소와 같이 목록 항목을 안내하는 글머리표와 서로 다른 타이포그래픽 요소를 처리하기 위한 상자를 추가적으로 생성하듯 더 많은 상자 무리를 생성할 수 있습니다. 대다수는 수석 블록 수준 상자만을 생성합니다.
+## Box generation
 
-수석 블록수준 상자는 자손이 생성한 상자 및 콘텐츠를 포함합니다. 상자는 [위치잡기 기법](/ko/docs/CSS/Positioning_scheme)에도 관여하고 있습니다.
+**Box generation** is the part of the CSS visual formatting model that creates boxes from the document's elements. Generated boxes are of different types, which affect their visual formatting. The type of the box generated depends on the value of the CSS {{cssxref("display")}} property.
 
-블록 수준 상자는 역시 블록 콘테이너 상자도 될 수 있습니다. *블록 컨테이너 상자*는 다른 블록수준 상자만을 포함하고 [인라인 서식 상황](/ko/docs/Web/CSS/Inline_formatting_context)을 생성하므로 인라인 상자 무리만을 포함합니다.
+Initially defined in CSS2, the `display` property is extended in the [CSS Display Module Level 3](https://www.w3.org/TR/css-display-3/). In addition, some of the terminologies around the display have been updated and clarified in the years since CSS2.
 
-중요한 점은 블록수준 상자와 블록 컨테이너 상자의 개념은 별개라는 점에 유의해야 한다는 것입니다. 첫째, 상자가 자기 부모와 형제자매과 함께하는 행동 방식을 설명합니다. 둘째, 상자가 자기 자손과는 어떻게 상호작용하는지 설명합니다. 테이블과 같은 블록 수준의 상자 무리는 블록 컨테이너 상자가 아닙니다. 마찬가지로 **비객원<** (non-replaced) 인라인 블록과 비객원 테이블 셀과 같은 일부 블록 컨테이너 상자는 블록 수준 상자가 아닙니다.
+CSS takes your source document and renders it onto a canvas. To do this, it generates an intermediary structure, the **box tree**, which represents the formatting structure of the rendered document. Each box in the box tree represents its corresponding element (or pseudo-element) in space and/or time on the canvas, while each text run in the box tree likewise represents the contents of its corresponding text nodes.
 
-또한, 블록 컨테이너 상자이며 동시에 블록수준 상자를 일컬어 우리는 **블록 상자<** (block boxes) 라고 부릅니다.
+Then, for each element, CSS generates zero or more boxes as specified by that element's `display` property value.
 
-#### 무명 블록 상자
+> **Note:** Boxes are often referred to by their display type — e.g. a box generated by an element with `display: block` is called a "block box" or just a "block". Note however that block boxes, block-level boxes and box containers are all subtly different; see the [Block boxes](#block_boxes) section below for more details.
 
-경우에 따라서는 시각적 서식 알고리즘은 보충 상자를 추가할 알고리즘도 필요합니다
+### The principal box
 
-CSS 선택기는 해당 상자에 이름을 부여하거나 스타일링을 할 수 없기 때문에 이를 일컬어*무명 상자*라고 합니다.
+When an element generates one or more boxes, one of them is the **principal box**, which contains its descendant boxes and generated content in the box tree, and is also the box involved in any positioning scheme.
 
-선택기는 무명 상자와 협력하지 않기 때문에 스타일시트를 통해 스타일링이 적용될 수 없습니다. 즉, 상속할 수 있는 모든 CSS 속성은 `inherit` 값을 갖고 상속할 수 없는 CSS 속성은 `initial` 값을 가집니다.
+Some elements may generate additional boxes in addition to the principal box, for example `display: list-item` generates more than one box (e.g. a **principal block box** and a **child marker box**). And some values (such as `none` or `contents`) cause the element and/or its descendants to not generate any boxes at all.
 
-상자를 포함하는 블록은 인라인수준 상자 또는 블록수준 상자만을 포함합니다. 그러나 문서는 두 가지 모두를 혼합해 포함합니다. 그 경우 무명 블록 상자는 인접 인라인수준 상자 주변에 생성됩니다.
+### Anonymous boxes
 
-### 예제
+An **anonymous box** is created when there is not an HTML element to use for the box. This situation happens when, for example, you declare `display: flex` on a parent element, and directly inside there is a run of text not contained in another element. In order to fix the box tree, an anonymous box is created around that run of text. It will then behave as a flex item, however, it cannot be targeted and styled like a regular box because there is no element to target.
 
-아래와 같은 ({{ HTMLElement("div") }}와 {{ HTMLElement("p") }}에 기본값 스타일링이 적용된 HTML 코드가 `display: block` 속성을 갖고 있다면:
+{{EmbedGHLiveSample("css-examples/visual-formatting/anonymous-flex.html", '100%', 720)}}
 
-```
-<div>약간의 인라인 텍스트 <p>뒤를 잇는 단락 하나</p> 그 뒤를 잇는 인라인 텍스트.</div>
-```
+The same thing happens when you have text runs interspersed with block elements. In the next example I have a string inside a `<div>`; in the middle of my string is a `<p>` element containing part of the text.
 
-두 개의 무명 블록 상자가 만들어집니다: 하나는 단락 이전 텍스트(`약간의 인라인 텍스트`) 나머지 하나는 단락 이후 텍스트(`그 뒤를 잇는 인라인 텍스트`). 이는 다음과 같은 블록 구조를 구축합니다:
+{{EmbedGHLiveSample("css-examples/visual-formatting/anonymous-block.html", '100%', 720)}}
 
-결과는:
+The string is split into three boxes in the box tree. The part of the string before the paragraph element is wrapped in an anonymous box, then we have the `<p>`, which generates a box, and then another anonymous box.
 
-```
-약간의 인라인 텍스트
-뒤를 잇는 단락 하나
-그 뒤를 잇는 인라인 텍스트.
-```
+Something to consider about these anonymous boxes is that they inherit styles from their direct parent, but you cannot change how they look by targeting the anonymous box. In my examples, I am using a direct child selector to target the children of the container. This does not change the anonymous boxes, as they are not "elements" as such.
 
-{{ HTMLElement("p") }} 요소인 상자와 달리 웹 개발자는 두 개의 무명 상자 스타일을 제어할 수 없습니다. 상속 가능한 속성은 (마치 텍스트의 색상을 정의하기 위한 {{ cssxref("color") }}와 같이) {{ HTMLElement("div") }}의 속성 값에서 값을 취하고, 나머지는 초기(`initial`)값으로 설정합니다. 예를 들어, 무명 상자는 {{ cssxref("background-color") }}를 갖지 않을 것이라, 항상 해당 속성의 초기(`initial`)값을 가지며 투명합니다. 따라서 `<div>`의 배경이 보여집니다. 특정 배경색은 `<p>` 상자에 적용할 수 있습니다. 마찬가지로 두 무명 상자는 항상 같은 색을 텍스트에 사용합니다.
+**Inline anonymous boxes** are created when a string is split by an inline element, for example, a sentence that includes a section wrapped with `<em></em>`. This splits the sentence into three inline boxes — an anonymous inline box before the emphasized section, the section wrapped in the `<em>` element, then a final anonymous inline box. As with the anonymous block boxes, these anonymous inline boxes cannot be styled independently in the way the `<em>` can; they just inherit the styles of their container.
 
-무명 블록 상자를 만드는 또 다른 사례는 하나 또는 여러 개의 블록 상자를 포함하는 인라인 상자입니다. 이 경우 블록 상자가 들어있는 상자는 두 개의 인라인 상자로 쪼개집니다. 하나는 블록 상자 이전에, 다른 하나는 뒤에 옵니다. 블록 상자 이전의 모든 인라인 상자는 *무명 블록 상자*로 포섭되며, 블록 상자 뒤에 있는 인라인 상자도 마찬가지입니다. 따라서 블록 상자는 인라인 요소를 포함하는 두 개의 무명 블록 상자의 형제가 됩니다.
+Other formatting contexts also create anonymous boxes. [Grid Layout](/en-US/docs/Web/CSS/CSS_Grid_Layout) behaves in the same way as the [flexbox](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout) example above, turning strings of text into a grid item with an anonymous box. [Multiple-column](/en-US/docs/Web/CSS/CSS_Columns) layout creates anonymous column boxes around the columns; these also cannot be styled or otherwise targeted. [Table layout](/en-US/docs/Web/CSS/CSS_Table) will add anonymous boxes to create a proper table structure — for example adding an anonymous table row — if there was no box with `display: table-row`.
 
-중간에 인라인 콘텐츠가 없이 여러 블록 상자가 있는 경우 무명 블록 상자가 해당 상자 집합 이전과 이후에 생성됩니다.
+### Line boxes
 
-### 예제
+**Line boxes** are the boxes that wrap each line of text. You can see the difference between line boxes and their containing block if you float an item and then follow it by a block that has a background color.
 
-아래 HTML 코드를 보면 {{ HTMLElement("p") }}는 `display: inline` 속성을 갖고 있고 {{ HTMLElement("span") }}는 `display:block` 속성을 갖고 있습니다:
+In the following example, the line boxes following the floated `<div>` are shortened to wrap around the float. The background of the box runs behind the float, as the floated item has been taken out of flow.
 
-```
-<p>일부 <em>인라인</em> 텍스트 <span>그 뒤를 잇는 단락</span> 그 뒤를 잇는 추가 인라인 텍스트.</p>
-```
+{{EmbedGHLiveSample("css-examples/visual-formatting/line-boxes.html", '100%', 720)}}
 
-두 개의 무명 블록 상자가 생성되었습니다. 스팬 요소 이전의 텍스트(`일부 인라인 텍스트`) 하나와 그 뒤의 텍스트(`그 뒤를 잇는 추가 인라인 텍스트`) 하나가 있는데 이로써 다음과 같은 블록 구조가 주어졌습니다:
+## Positioning schemes and in-flow and out-of-flow elements
 
-![](anonymous_block_box_break.png)
+In CSS, a box may be laid out according to three positioning schemes — **normal flow**, **floats**, or **absolute positioning**.
 
-이 것의 결과는:
+### Normal flow
 
-```
-약간의 인라인 텍스트
-뒤를 잇는 단락 하나
-그 뒤를 잇는 인라인 텍스트.
-```
+In CSS, the normal flow includes block-level formatting of block boxes, inline-level formatting of inline boxes, and also includes relative and sticky positioning of block-level and inline-level boxes.
 
-### 인라인수준 요소와 인라인 상자
+Read more about [flow layout](/en-US/docs/Web/CSS/CSS_Flow_Layout) in CSS.
 
-어떤 요소가 *인라인수준*이라고 말하려면 자신의 계산된 {{ cssxref("display") }} CSS 속성 값이 `inline`, `inline-block` 또는 `inline-table`일 때입니다. 시각적으로는 이것은 콘텐츠로 이뤄진 블록 무리를 구성하지 않고 다른 인라인수준 콘텐츠와 함께 라인의 형태로 배포됩니다. 일반적으로 강조 또는 이미지와 같이 서로 다른 서식을 가진 단락의 콘텐츠는 인라인수준 요소로 만들어집니다.
+### Floats
 
-> **경고:** 이 도식은 구식 용어를 사용합니다: 아래 참조 사항을 보세요. 그것 이외에도 오른쪽의 노란색 타원은 정의에 따르면 왼쪽의 타원형과 동일하거나 그보다 크기 때문에(수학적 상위집합일 수 있어) 그림이 틀렀습니다, 왜냐하면 해당 CSS 스펙을 보면 "인라인수준 요소는 인라인 서식 상황에 참여하는 상자인 인라인수준 상자를 생성한다"라고 쓰여있기 때문입니다. CSS 2.2, 9.2.2장 참조
+In the float model, a box is first laid out according to the normal flow, then taken out of the flow and positioned, typically to the left or right. Content may flow along the side of a float.
 
-인라인 수준 요소는 [인라인 서식 상황](/ko/docs/CSS/Inline_formatting_context)에 참여하는 상자로 정의되는 *인라인수준 상자*를 생성합니다. *인라인 상자*는 상자와 인라인 수준 상자 모두가 해당합니다. 다만 이들 상자의 콘텐츠는 인라인 서식 상황에 참여해야 합니다. 예를 들어, `display: inline` 속성을 가진 모든 비객원 상자의 경우가 인라인입니다. 인라인 서식 상황에 참여하지 않는 인라인수준 상자를 **원자 인라인수준 상자** (atomic inline-level boxes)라고 합니다. 객원 인라인수준 요소 또는 계산된 {{ cssxref("display") }} 값이 `inline-block`인 요소에 의해 생성된 해당 상자 무리는 인라인 상자에서 가능했던 것처럼 여러 상자로 쪼개지지 않습니다.
+Find out more about [floats](/en-US/docs/Learn/CSS/CSS_layout/Floats).
 
-> **참고:** 처음에는 원자 인라인수준 상자를 원자 인라인 상자라고 불렀습니다. 그 명명은 불행한 일입니다. 인라인 상자가 **아니기** 때문입니다. 이건 CSS 규격 상에 오타로 시정된 겁니다. 그렇긴 하지만, 문장 속에서 원자 인라인 상자를 마주칠 때마다 무리없이 원자 인라인 수준 상자로 읽을 수 있습니다. 그냥 이름 변경에 불과하기 때문입니다.
+### Absolute positioning
 
-> **참고:** 원자 일라인 상자는 인라인 서식 상황 속에서 여러 라인에 걸쳐 분할될 수 없습니다.
+In the absolute positioning model (which also includes fixed positioning), a box is removed from the normal flow entirely and assigned a position with respect to a containing block (which is the viewport in the case of fixed positioning).
 
-```html
-<style>
-  span {
-    display:inline; /* default value*/
-  }
-</style>
-<div style="width:20em;">
-   스팬 요소에 포함된 택스트는 <span> 몇 개의 라인으로 분할 될 수
-   있습니다. 왜냐면 </span> 그것이 인라인 상자이기 때문입니다.
-</div>
-```
+An element is called **out of flow** if it is floated, absolutely positioned, or is the root element. An element is called **in-flow** if it is not out of the flow.
 
-이 것의 결과는: The text in the span can be split into several lines as it is an inline box.
+Read about [CSS Positioned Layout](/en-US/docs/Web/CSS/CSS_Positioning).
 
-```html
-<style>
-  span {
-    display:inline-block;
-  }
-</style>
-<div style="width:20em;">
-   스팬 요소에 포함된 텍스트는 <span>몇 라인으로 분할 될 수
-   없 습니다. 왜냐면 </span> 그것이 인라인 블록이기 때문입니다.
-</div>
-```
+## Formatting contexts and the display property
 
- 이 것의 결과는:스팬 요소에 포함된 텍스트는 분할될 수 없습니다. 왜냐면 인라인 블록 상자이기 때문입니다.
+Boxes can be described as having an **outer display type**, which is `block` or `inline`. This outer display type refers to how the box behaves alongside other elements on the page.
 
-#### 무명 인라인 상자
+Boxes also have an inner display type, dictating how their children behave. For normal block and inline layout, or normal flow, this display type is `flow`. This means that the child elements will also be either `block` or `inline`.
 
-블록상자처럼 CSS 엔진에 의해 자동적으로 인라인상자가 생성되는 경우가 몇 개 있습니다. 이들 인라인 상자는 무명으로, 선택기가 이름을 특정할 수 없습니다. 무명 인라인 상자의 속성은, 상속 가능한 것은 상속된 값을, 그 이외는 `initial` 값을 가집니다.
+However, the inner display type might be something like `grid` or `flex`, in which case the direct children will display as a grid, or flex items. In such a case the element is described as creating a grid or flex [formatting context](/en-US/docs/Web/CSS/CSS_Flow_Layout/Intro_to_formatting_contexts). In many ways this is similar to a block formatting context, however, the children behave as flex or grid items rather than items in normal flow.
 
-무명의 인라인 상자가 만들어지는 흔한 경우는 인라인 서식 상황을 만드는 블록상자의 직계 자식 요소로 파악되는 텍스트가 있는 경우입니다. 이 경우, 동 텍스트는 최대한 큰 무명 인라인 상자에 넣을 수 있습니다. 또한, CSS의 {{ cssxref("white-space") }} 속성으로 지정된 동작에 의해 제거되는 공백의 콘텐츠는 결국 공백이 될 것이기 때문에 무명 인라인 상자를 생성하지 않습니다.
+The interactions between block-level and inline-level boxes are described in the MDN documentation for {{cssxref("display")}}.
 
-> **참고:** 예제 TBD
+In addition, the references for specific values of display explain how these formatting contexts work in terms of box layout.
 
-### 다른 유형의 상자
+- [CSS Grid Layout](/en-US/docs/Web/CSS/CSS_Grid_Layout)
+- [CSS Flexible Box Layout](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout)
+- [CSS Table Layout](/en-US/docs/Web/CSS/CSS_Table)
+- [Lists](/en-US/docs/Web/CSS/CSS_Lists_and_Counters)
 
-#### 라인 상자
+### Independent formatting contexts
 
-*라인 상자*는 텍스트 라인을 표현하기 위해 [인라인 서식 상황](/ko/docs/CSS/Inline_formatting_context)에 의해 생성되는 상자입니다. 블록 상자 내부의 라인 상자는 상자의 한쪽 테두리로부터 반대측의 테두리까지 넓어집니다. [부동체](/ko/docs/CSS/float)가 있을 경우 라인 상자 구역은 왼쪽 부동체의 맨우측 테두리에서 시작해 우측 부동체의 맨좌측 테두리에서 끝납니다.
+Elements either participate in the formatting context of their containing block or establish an independent formatting context. A grid container, for example, establishes a new **Grid Formatting Context** for its children.
 
-이들 상자는 기술적인 것으로, 보통 웹 저술가가 이것에 대해 고민할 필요는 없습니다.
+**Independent formatting contexts** contain floats, and margins do not collapse across formatting context boundaries. Therefore, creating a new block formatting context can ensure that floats and margins remain inside a box. To do this, add `display: flow-root` to the box on which you wish to create a new [block formatting context](/en-US/docs/Web/Guide/CSS/Block_formatting_context).
 
-#### 내부진행 상자
+The following example shows the effect of `display: flow-root`. The box with the black background appears to wrap round the floated item and text. If you remove `display: flow-root` from the editable CSS the floated item will poke out of the bottom of the box as it is no longer contained.
 
-`display: run-in`을 사용하도록 정의되는 **내부진행 상자** (Run-in boxes)는 후속 상자의 유형 여하에 따라 블록 상자이거나 인라인 상자입니다. 그들은 가능할 경우 자신의 첫 단락 내부에 진행하는 글 제목을 생성하는 데 사용될 수 있습니다.
+{{EmbedGHLiveSample("css-examples/display/multi-keyword/block-flow-root.html", '100%', 720)}}
 
-> **참고:** 내부진행 상자는 CSS 2.1 규격에서 제외되었다. 상호운용 실현 가능성을 불충분하게 명시했기 때문입니다. 그들이 **CSS 3** (CSS 3)에선 다시 등장할 수도 있지만, 현재로선 *실험 상태*로 간주합니다. 그들을 완성품에선 사용하지 말아야 합니다.
+### Block boxes
 
-#### 모델유인 상자
+In specifications, block boxes, block-level boxes, and block containers are all referred to as **block boxes** in certain places. These things are somewhat different and the term block box should only be used if there is no ambiguity.
 
-인라인 및 블록 서식 상황 외에도 CSS는 요소에 적용할 수 있는 몇 가지 추가 *콘텐츠 모델*을 지정할 수 있습니다. 특정 레이아웃을 설명하는 데 사용되는 이러한 추가 모델은 추가 상자 유형을 정의할 수 있습니다.
+#### Block containers
 
-- [테이블 콘텐츠 모델](/ko/docs/CSS/table-layout)은 *테이블 래퍼 상자*와 *테이블 상자*를 생성할 수 있을뿐만 아니라 *캡션 상자*같은 특정 상자도 생성할 수 있습니다.
-- The [다단 콘텐츠 모델](/ko/docs/CSS/Using_CSS_multi-column_layouts) 은 컨테이너 상자와 컨텐츠 사이에
+A **block container** either contains only inline-level boxes participating in an inline formatting context, or only block-level boxes participating in a block formatting context. For this reason, we see the behavior explained above, where anonymous boxes are introduced to ensure all of the items can participate in a block or inline formatting context. An element is a block container only if it contains block-level or inline-level boxes.
 
-  **열 상자** (column boxes)
+#### Inline-level and block-level boxes
 
-  를 생성할 수 있습니다.
+These are the boxes contained inside the block container that are participating in inline or block layout, respectively.
 
-- 실험적인 격자 또는 가변상자 콘텐츠 모델, 또는 추가적인 유형의 상자를 생성할 수 있습니다.
+#### Block boxes
 
-#### 위치잡기 기법
+A block box is a block-level box that is also a block container. As described in CSS `display`, it is possible for a box to be a block-level box, but not also a block container (it might be a flex or grid container for example).
 
-상자를 생성하고 나면 CSS 엔진은 그것들을 레이아웃에 위치시켜야 합니다. 그렇게 하려면 다음과 같은 알고리즘 중의 하나를 사용합니다.
+## See also
 
-- **일반 대열** (normal flow)
-
-  \- 하나씩 차례대로 상자를 위치시킵니다.
-
-- **부동체** (floats)
-
-  알고리즘 - 일반 대열에서 상자를 빼내어 상위 컨테이너 상자 옆에 놓습니다.
-
-- _절대 위치잡기_ 기법 - 자신의 상위 컨테이너 요소가 수립한 절대 좌표 시스템 내부에 상자를 위치시킵니다. 절대적으로 위치잡기한 요소는 다른 요소를 덮을 수 있습니다.
-
-### 일반 대열
-
-_일반 대열_ 속 상자 무리는 하나씩 차례대로 배치됩니다. 블록 서식 상황 속에서 그들은 수직으로 배치됩니다. 반면에 인라인 서식 상황 속에서 그들은 수평으로 배치됩니다. 일반 대열은 CSS {{ cssxref("position") }}이 `static` 또는 `relative` 값으로 설정될 경우와 {{ cssxref("float") }}가 `none`으로 설정되면 발동됩니다.
-
-### 예제
-
-> **참고:** 일반 대열 속에서는 블록 서식 상황에 포함된 상자는 수직으로 하나씩 차례대로 배치됩니다.
->
-> 일반 대열 속에서는 인라인 서식 상황에 포함된 상자는 수평으로 하나씩 차례대로 배치됩니다.
-
-> **참고:** 일반 대열에는 두 가지 하위 사례가 있습니다. 정적 위치잡기와 상대 위치잡기:
->
-> - *정적 위치잡기*에서는 {{ cssxref("position") }} 속성이 `static` 값일 경우에 발동됩니다. 상자 무리는 일반 대열 레이아웃에 정의된 정확한 위치에 그려집니다.
-> - *상대 위치잡기*에서는 {{ cssxref("position") }} 속성이 `relative` 값일 경우 발동합니다. 상자는 CSS 속성 무리인 {{ cssxref("top") }}, {{ cssxref("bottom") }}과 {{ cssxref("left") }}, {{ cssxref("right") }}에 의해 정의된 간격띄우기 값을 기준으로 그려집니다.
-
-### 부동체
-
-**부동 위치잡기 기법** (float positioning scheme)에서는 특정 상자(부동 상자 또는 단순 부동체라고 일컬음)를 현재 라인의 시작 또는 끝에 위치시킵니다. 이는 텍스트(그리고 더 일반적으로 일반 대열 내의 모든 것)은 부동 상자의 가장자리를 따라 대열을 맞추는 속성으로 귀결됩니다. 다만 CSS {{ cssxref("clear") }} 속성에 의해 다른 예기가 나올 경우는 예외입니다.
-
-상자에 대해 부동 위치잡기 기법을 선택하려면 해당 상대에 대해 CSS {{ cssxref("float") }} 속성을 `none` 이외의 값으로 설정하거나 {{ cssxref("position") }} 속성에 `static`이나 `relative`가 아닌 값으로 설정할 때 이뤄진다. 만일 {{ cssxref("float") }}가 `left`로 설정되면 부동체는 라인 상자의 시작 부분에 위치합니다. 만일 `right`으로 설정되면 동 부동체는 라인 상자의 끝에 위치합니다. 어떤 경우든 라인 상자는 부동체에 들어맞게 축소됩니다.
-
-### 절대 위치잡기
-
-**절대 위치잡기 기법** (absolute positioning scheme)에 포함된 상자는 대열에서 제거되어 대열과는 어떤 상호작용도 하지 않습니다. 그들은 {{ cssxref("top") }}과 {{ cssxref("bottom") }}, {{ cssxref("left") }}와 {{ cssxref("right") }}를 사용해서 [상위 컨테이너 블록](/ko/docs/Web/CSS/All_About_The_Containing_Block) 기준으로 비례해서 위치잡기합니다.
-
-하나의 요소를 절대 위치잡기하려면 {{ cssxref("position") }}이 `absolute` 또는 `fixed`로 설정하면 됩니다.
-
-*고정 위치잡기한 요소*의 경우 상위 컨테이너 블록이 뷰포트입니다. 동 요소의 위치는 뷰포트 내부에서 절대적 위치가 됩니다. 스크롤링은 동 요소의 위치를 변경시키지 않습니다.
-
-## 참조 항목
-
-- CSS 주요 개념
-
-  - [CSS 문법](/ko/docs/Web/CSS/Syntax)
-  - [@규칙](/ko/docs/Web/CSS/At-rule)
-  - [주석](/ko/docs/Web/CSS/Comments)
-  - [명시도](/ko/docs/Web/CSS/Specificity)
-  - [상속](/ko/docs/Web/CSS/inheritance)
-  - [박스 모델](/ko/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
-  - [레이아웃 모드](/ko/docs/Web/CSS/Layout_mode)
-  - [시각적 서식 모델](/ko/docs/Web/CSS/Visual_formatting_model)
-  - [마진 중첩](/ko/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)
-  - 값
-
-    - [초깃값](/ko/docs/Web/CSS/initial_value)
-    - [계산값](/ko/docs/Web/CSS/computed_value)
-    - [결정값](/ko/docs/Web/CSS/resolved_value)
-    - [지정값](/ko/docs/Web/CSS/specified_value)
-    - [사용값](/ko/docs/Web/CSS/used_value)
-    - [실제값](/ko/docs/Web/CSS/actual_value)
-
-  - [값 정의 구문](/ko/docs/Web/CSS/Value_definition_syntax)
-  - [단축 속성](/ko/docs/Web/CSS/Shorthand_properties)
-  - [대체 요소](/ko/docs/Web/CSS/Replaced_element)
+- CSS key concepts:
+  - [CSS syntax](/en-US/docs/Web/CSS/Syntax)
+  - [Comments](/en-US/docs/Web/CSS/Comments)
+  - [Specificity](/en-US/docs/Web/CSS/Specificity)
+  - [Inheritance](/en-US/docs/Web/CSS/Inheritance)
+  - [Box model](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
+  - [Layout modes](/en-US/docs/Web/CSS/Layout_mode)
+  - **Visual formatting models**
+  - [Margin collapsing](/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)
+  - Values
+    - [Initial values](/en-US/docs/Web/CSS/initial_value)
+    - [Computed values](/en-US/docs/Web/CSS/computed_value)
+    - [Used values](/en-US/docs/Web/CSS/used_value)
+    - [Actual values](/en-US/docs/Web/CSS/actual_value)
+  - [Value definition syntax](/en-US/docs/Web/CSS/Value_definition_syntax)
+  - [Shorthand properties](/en-US/docs/Web/CSS/Shorthand_properties)
+  - [Replaced elements](/en-US/docs/Web/CSS/Replaced_element)

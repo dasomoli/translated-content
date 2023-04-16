@@ -1,150 +1,103 @@
 ---
 title: Array.prototype.toLocaleString()
 slug: Web/JavaScript/Reference/Global_Objects/Array/toLocaleString
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Array.toLocaleString
 ---
 
 {{JSRef}}
 
-**`toLocaleString()`** 메서드는 배열의 요소를 나타내는 문자열을 반환합니다. 요소는 `toLocaleString` 메서드를 사용하여 문자열로 변환되고 이 문자열은 locale 고유 문자열(가령 쉼표 “,”)에 의해 분리됩니다.
+The **`toLocaleString()`** method returns a string representing
+the elements of the array. The elements are converted to Strings using their
+`toLocaleString` methods and these Strings are separated by a locale-specific
+String (such as a comma ",").
 
-{{EmbedInteractiveExample("pages/js/array-tolocalestring.html")}}
+{{EmbedInteractiveExample("pages/js/array-tolocalestring.html","shorter")}}
 
-## 구문
+## Syntax
 
-```js
-    arr.toLocaleString([locales[, options]]);
+```js-nolint
+toLocaleString()
+toLocaleString(locales)
+toLocaleString(locales, options)
 ```
 
-### 매개변수
+### Parameters
 
 - `locales` {{optional_inline}}
-  - : A string with a BCP 47 language tag, or an array of such strings. For the general form and interpretation of the `locales` argument, see the {{jsxref("Intl")}} page.
+  - : A string with a BCP 47 language tag, or an array of such strings. For the general form and interpretation of the `locales` argument, see [the parameter description on the `Intl` main page](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#locales_argument).
 - `options` {{optional_inline}}
-  - : An object with configuration properties, for numbers see {{jsxref("Number.prototype.toLocaleString()")}}, and for dates see {{jsxref("Date.prototype.toLocaleString()")}}.
+  - : An object with configuration properties. For numbers, see {{jsxref("Number.prototype.toLocaleString()")}}; for dates, see {{jsxref("Date.prototype.toLocaleString()")}}.
 
-### 반환 값
+### Return value
 
-배열의 요소를 표현하는 문자열.
+A string representing the elements of the array.
 
-## 설명
+## Description
 
-배열의 요소는 `toLocaleString` 메서드를 사용하여 문자열로 변환됩니다:
+The `Array.prototype.toLocaleString` method traverses its content, calling the `toLocaleString` method of every element with the `locales` and `options` parameters provided, and concatenates them with an implementation-defined separator (such as a comma ","). Note that the method itself does not consume the two parameters — it only passes them to the `toLocaleString()` of each element. The choice of the separator string depends on the host's current locale, not the `locales` parameter.
+
+If an element is `undefined`, `null`, it is converted to an empty string instead of the string `"null"` or `"undefined"`.
+
+When used on [sparse arrays](/en-US/docs/Web/JavaScript/Guide/Indexed_collections#sparse_arrays), the `toLocaleString()` method iterates empty slots as if they have the value `undefined`.
+
+The `toLocaleString()` method is [generic](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#generic_array_methods). It only expects the `this` value to have a `length` property and integer-keyed properties.
+
+## Examples
+
+### Using locales and options
+
+The elements of the array are converted to strings using their
+`toLocaleString` methods.
 
 - `Object`: {{jsxref("Object.prototype.toLocaleString()")}}
 - `Number`: {{jsxref("Number.prototype.toLocaleString()")}}
 - `Date`: {{jsxref("Date.prototype.toLocaleString()")}}
 
-## 예제
-
-### `toLocaleString` 사용
-
-```js
-var number = 1337;
-var date = new Date();
-var myArr = [number, date, 'foo'];
-
-var str = myArr.toLocaleString();
-
-console.log(str);
-// '1337,6.12.2013 19:37:35,foo' 출력(log)
-// Europe/Berlin 시간대로 German (de-DE) locale에서 실행하는 경우
-```
-
-## 폴리필
+Always display the currency for the strings and numbers in the `prices`
+array:
 
 ```js
-// https://tc39.github.io/ecma402/#sup-array.prototype.tolocalestring
-if (!Array.prototype.toLocaleString) {
-  Object.defineProperty(Array.prototype, 'toLocaleString', {
-    value: function(locales, options) {
-      // 1. Let O be ? ToObject(this value).
-      if (this == null) {
-        throw new TypeError('"this" is null or not defined');
-      }
+const prices = ["￥7", 500, 8123, 12];
+prices.toLocaleString("ja-JP", { style: "currency", currency: "JPY" });
 
-      var a = Object(this);
-
-      // 2. Let len be ? ToLength(? Get(A, "length")).
-      var len = a.length >>> 0;
-
-      // 3. Let separator be the String value for the
-      //    list-separator String appropriate for the
-      //    host environment's current locale (this is
-      //    derived in an implementation-defined way).
-      // NOTE: In this case, we will use a comma
-      var separator = ',';
-
-      // 4. If len is zero, return the empty String.
-      if (len === 0) {
-        return '';
-      }
-
-      // 5. Let firstElement be ? Get(A, "0").
-      var firstElement = a[0];
-      // 6. If firstElement is undefined or null, then
-      //  a.Let R be the empty String.
-      // 7. Else,
-      //  a. Let R be ?
-      //     ToString(?
-      //       Invoke(
-      //        firstElement,
-      //        "toLocaleString",
-      //        « locales, options »
-      //       )
-      //     )
-      var r = firstElement == null ?
-        '' : firstElement.toLocaleString(locales, options);
-
-      // 8. Let k be 1.
-      var k = 1;
-
-      // 9. Repeat, while k < len
-      while (k < len) {
-        // a. Let S be a String value produced by
-        //   concatenating R and separator.
-        var s = r + separator;
-
-        // b. Let nextElement be ? Get(A, ToString(k)).
-        var nextElement = a[k];
-
-        // c. If nextElement is undefined or null, then
-        //   i. Let R be the empty String.
-        // d. Else,
-        //   i. Let R be ?
-        //     ToString(?
-        //       Invoke(
-        //        nextElement,
-        //        "toLocaleString",
-        //        « locales, options »
-        //       )
-        //     )
-        r = nextElement == null ?
-          '' : nextElement.toLocaleString(locales, options);
-
-        // e. Let R be a String value produced by
-        //   concatenating S and R.
-        r = s + r;
-
-        // f. Increase k by 1.
-        k++;
-      }
-
-      // 10. Return R.
-      return r;
-    }
-  });
-}
+// "￥7,￥500,￥8,123,￥12"
 ```
 
-## 명세
+For more examples, see also the [`Intl.NumberFormat`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) and [`Intl.DateTimeFormat`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat) pages.
+
+### Using toLocaleString() on sparse arrays
+
+`toLocaleString()` treats empty slots the same as `undefined` and produces an extra separator:
+
+```js
+console.log([1, , 3].toLocaleString()); // '1,,3'
+```
+
+### Calling toLocaleString() on non-array objects
+
+The `toLocaleString()` method reads the `length` property of `this` and then accesses each integer index.
+
+```js
+const arrayLike = {
+  length: 3,
+  0: 1,
+  1: 2,
+  2: 3,
+};
+console.log(Array.prototype.toLocaleString.call(arrayLike));
+// 1,2,3
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Array.prototype.toString()")}}
 - {{jsxref("Intl")}}

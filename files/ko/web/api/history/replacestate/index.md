@@ -1,49 +1,77 @@
 ---
-title: History.replaceState()
+title: "History: replaceState() method"
+short-title: replaceState()
 slug: Web/API/History/replaceState
+page-type: web-api-instance-method
+browser-compat: api.History.replaceState
 ---
+
 {{APIRef("History API")}}
 
-**`History.replaceState()`** 메서드는 현재 history를 수정해 메소드의 매개 변수에 전달 된 `stateObj`, `title`, `URL`로 대체합니다. 이 방법은 특히 일부 유저의 동작에 대한 응답으로 history 객체의 상태나 현재 history의 URL을 업데이트하려는 경우에 유용합니다.
+The **`History.replaceState()`** method modifies the current
+history entry, replacing it with the state object and
+URL passed in the method parameters. This method is particularly useful
+when you want to update the state object or URL of the current history entry in response
+to some user action.
 
-## 구문
+This method is {{glossary("asynchronous")}}. Add a listener for the {{domxref("Window/popstate_event", "popstate")}} event in order to determine when the navigation has completed. The `state` parameter will be available in it.
 
-```js
-history.replaceState(stateObj, title[, url])
+## Syntax
+
+```js-nolint
+replaceState(state, unused)
+replaceState(state, unused, url)
 ```
 
 ### Parameters
 
-- `stateObj`
-  - : state 객체는 `replaceState`에 전달된 history 항목과 연관된 JavaScript 객체입니다. state object는 `null`일 수 있습니다.
-- `title`
-  - : 나중에는 사용할 수도 있지만, [대부분의 브라우저는 현재 이 파라미터를 무시하고 있습니다.](https://github.com/whatwg/html/issues/2174) 이 부분에 빈 String을 전달하면 나중에 메소드가 변화하더라도 안전합니다. 또는, state에 짧은 title을 전달할 수도 있습니다.
+- `state`
+  - : An object which is associated with the history entry
+    passed to the `replaceState()` method. The state object can be
+    `null`.
+- `unused`
+  - : This parameter exists for historical reasons, and cannot be omitted; passing the empty string is traditional, and safe against future changes to the method.
 - `url` {{optional_inline}}
-  - : history 항목의 URL 입니다. 새 URL은 현재 URL과 출처가 동일해야(same origin)합니다. 그렇지 않으면 replaceState에서 예외가 발생합니다.
+  - : The URL of the history entry. The new URL must be of the same origin as the current
+    URL; otherwise replaceState throws an exception.
 
-## 예제
+### Return value
 
-`http://www.mozilla.org/` 에서 아래 JavaScript를 실행한다고 가정합시다:
+None ({{jsxref("undefined")}}).
 
-```js
-const stateObj = { foo: 'bar' };
-history.pushState(stateObj, '', 'bar.html');
-```
+## Examples
 
-위 두 줄에 대한 설명은 [Working with the History API](/ko/docs/Web/API/History_API/Working_with_the_History_API) 문서의 [Example of `pushState()` method](/ko/docs/Web/API/History_API/Working_with_the_History_API#Example_of_pushState_method)에서 확인할 수 있습니다. 그 다음, `http://www.mozilla.org/bar.html` 에서 아래와 같은 JavaScript를 실행한다고 가정해보세요:
+Suppose `https://www.mozilla.org/foo.html` executes the following JavaScript:
 
 ```js
-history.replaceState(stateObj, '', 'bar2.html');
+const stateObj = { foo: "bar" };
+history.pushState(stateObj, "", "bar.html");
 ```
 
-이렇게하면 URL 표시줄에 `http://www.mozilla.org/bar2.html` 이라고 표시되지만, 브라우저가 `bar2.html` 을 로드하거나 `bar2.html`파일이 있는지 확인하지는 않습니다.
+On the next page you could then use `history.state` to access the `stateObj` that was just added.
 
-이제 사용자가 `http://www.microsoft.com` 으로 이동한 다음, 뒤로가기 버튼을 누른다고 가정해봅시다. 이 때, URL 표시줄에는 `http://www.mozilla.org/bar2.html` 이 표시됩니다. 사용자가 다시 뒤로가기 버튼을 누르면, URL 표시줄에는 `http://www.mozilla.org/foo.html` 이 표시되고, bar.html은 완전히 무시되어 표시되지 않습니다.
+The explanation of these two lines above can be found in the [Example of `pushState()` method](/en-US/docs/Web/API/History_API/Working_with_the_History_API#example_of_pushstate_method) section of the [Working with the History API](/en-US/docs/Web/API/History_API/Working_with_the_History_API) article. Then suppose
+`https://www.mozilla.org/bar.html` executes the following
+JavaScript:
 
-## 명세
+```js
+history.replaceState(stateObj, "", "bar2.html");
+```
+
+This will cause the URL bar to display
+`https://www.mozilla.org/bar2.html`, but won't cause the browser
+to load `bar2.html` or even check that `bar2.html` exists.
+
+Suppose now that the user navigates to
+`https://www.microsoft.com`, then clicks the Back button. At this
+point, the URL bar will display `https://www.mozilla.org/bar2.html`.
+If the user now clicks Back again, the URL bar will
+display `https://www.mozilla.org/foo.html`, and totally bypass bar.html.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

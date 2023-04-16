@@ -1,84 +1,120 @@
 ---
-title: void
+title: void operator
 slug: Web/JavaScript/Reference/Operators/void
+page-type: javascript-operator
+browser-compat: javascript.operators.void
 ---
+
 {{jsSidebar("Operators")}}
 
-**`void` 연산자**는 주어진 표현식을 평가하고 {{jsxref("undefined")}}를 반환합니다.
+The **`void`** operator evaluates the given
+`expression` and then returns {{jsxref("undefined")}}.
 
-{{EmbedInteractiveExample("pages/js/expressions-voidoperator.html")}}
+{{EmbedInteractiveExample("pages/js/expressions-voidoperator.html", "taller")}}
 
-## 구문
+## Syntax
 
-```js
-    void expression
+```js-nolint
+void expression
 ```
 
-## 설명
+## Description
 
-`void`는 값을 생성하는 표현식을 평가해서 {{jsxref("undefined")}}를 반환합니다.
+This operator allows evaluating expressions that produce a value into places where an
+expression that evaluates to {{jsxref("undefined")}} is desired.
 
-오직 `undefined` 원시값을 얻기 위해 `void 0` 또는 `void(0)`처럼 사용하는 경우도 볼 수 있습니다. 이런 경우 전역 {{jsxref("undefined")}}를 대신 사용해도 됩니다.
+The `void` operator is often used merely to obtain the
+`undefined` primitive value, usually using `void(0)` (which is
+equivalent to `void 0`). In these cases, the global variable
+{{jsxref("undefined")}} can be used.
 
-`void` 연산자의 [우선순위](/ko/docs/Web/JavaScript/Reference/Operators/Operator_Precedence)도 유념해야 합니다. [그룹 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Grouping)(괄호)를 사용하면 `void` 연산자를 사용한 식의 평가 과정을 더 명확하게 보일 수 있습니다.
+It should be noted that [the precedence](/en-US/docs/Web/JavaScript/Reference/Operators/Operator_precedence)
+of the `void` operator should be taken into account and that
+parentheses can help clarify the resolution of the expression following the
+`void` operator:
 
 ```js
-void 2 == '2'; // undefined == '2', false
-void (2 == '2'); // void true, undefined
+void 2 === "2"; // (void 2) === '2', returns false
+void (2 === "2"); // void (2 === '2'), returns undefined
 ```
 
-## IIFE
+## Examples
 
-즉시 실행 함수 표현식({{Glossary("IIFE")}})을 사용할 때 `void`를 사용하면 `function` 키워드를 선언문이 아니라 표현식처럼 간주하도록 강제할 수 있습니다.
+### Immediately Invoked Function Expressions
 
-```js
-void function iife() {
-    var bar = function () {};
-    var baz = function () {};
-    var foo = function () {
-        bar();
-        baz();
-     };
-    var biz = function () {};
+When using an [immediately-invoked function expression](/en-US/docs/Glossary/IIFE), the `function` keyword cannot be at the immediate start of the [statement](/en-US/docs/Web/JavaScript/Reference/Statements/Expression_statement), because that would be parsed as a [function declaration](/en-US/docs/Web/JavaScript/Reference/Statements/function), and would generate a syntax error when the parentheses representing invocation is reached — if the function is unnamed, it would immediately be a syntax error if the function is parsed as a declaration.
 
-    foo();
-    biz();
+```js example-bad
+function iife() {
+  console.log("Executed!");
+}(); // SyntaxError: Unexpected token ')'
+
+function () {
+  console.log("Executed!");
+}(); // SyntaxError: Function statements require a function name
+```
+
+In order for the function to be parsed as an [expression](/en-US/docs/Web/JavaScript/Reference/Operators/function), the `function` keyword has to appear at a position that only accepts expressions, not statements. This can be achieved be prefixing the keyword with a [unary operator](/en-US/docs/Web/JavaScript/Guide/Expressions_and_operators#unary_operators), which only accepts expressions as operands. Function invocation has higher [precedence](/en-US/docs/Web/JavaScript/Reference/Operators/Operator_precedence) than unary operators, so it will be executed first. Its return value (which is almost always `undefined`) will be passed to the unary operator and then immediately discarded.
+
+Of all the unary operators, `void` offers the best semantic, because it clearly signals that the return value of the function invocation should be discarded.
+
+```js-nolint
+void function () {
+  console.log("Executed!");
 }();
+
+// Logs "Executed!"
 ```
 
-## JavaScript URI
+This is a bit longer than wrapping the function expression in parentheses, which has the same effect of forcing the `function` keyword to be parsed as the start of an expression instead of a statement.
 
-`javascript:`로 시작하는 URI를 지원하는 브라우저에서는, URI에 있는 코드의 평가 결과가 {{jsxref("undefined")}}가 아니라면 페이지의 콘텐츠를 반환 값으로 대체합니다. `void` 연산자를 사용하면 `undefined`를 반환할 수 있습니다. 다음 예제를 확인하세요.
+```js
+(function () {
+  console.log("Executed!");
+})();
+```
+
+### JavaScript URIs
+
+When a browser follows a `javascript:` URI, it evaluates the code in the URI
+and then replaces the contents of the page with the returned value, unless the returned
+value is {{jsxref("undefined")}}. The `void` operator can be used to return
+`undefined`. For example:
 
 ```html
-<a href="javascript:void(0);">
-  클릭해도 아무 일도 없음
-</a>
+<a href="javascript:void(0);">Click here to do nothing</a>
+
 <a href="javascript:void(document.body.style.backgroundColor='green');">
-  클릭하면 배경색이 녹색으로
+  Click here for green background
 </a>
 ```
 
-<div class="blockIndicator note"><p><strong>참고</strong>: <code>javascript:</code> 의사 프로토콜보다 이벤트 처리기와 같은 대체재 사용을 권장합니다.</p></div>
+> **Note:** `javascript:` pseudo protocol is discouraged over
+> other alternatives, such as unobtrusive event handlers.
 
-## 새지 않는 화살표 함수
+### Non-leaking Arrow Functions
 
-Arrow functions introduce a short-hand braceless syntax that returns an expression. This can cause unintended side effects by returning the result of a function call that previously returned nothing. To be safe, when the return value of a function is not intended to be used, it can be passed to the void operator to ensure that (for example) changing APIs do not cause arrow functions' behaviors to change.
+Arrow functions introduce a short-hand braceless syntax that returns an expression.
+This can cause unintended side effects by returning the result of a function call that
+previously returned nothing. To be safe, when the return value of a function is not
+intended to be used, it can be passed to the void operator to ensure that (for example)
+changing APIs do not cause arrow functions' behaviors to change.
 
 ```js
 button.onclick = () => void doSomething();
 ```
 
-This ensures the return value of `doSomething` changing from `undefined` to `true` will not change the behavior of this code.
+This ensures the return value of `doSomething` changing from
+`undefined` to `true` will not change the behavior of this code.
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("undefined")}}

@@ -1,27 +1,29 @@
 ---
 title: AnimationTimeline
 slug: Web/API/AnimationTimeline
+page-type: web-api-interface
+browser-compat: api.AnimationTimeline
 ---
 
-{{ SeeCompatTable() }}{{ APIRef("Web Animations") }}
+{{ APIRef("Web Animations") }}
 
-The `AnimationTimeline` interface of the [Web Animations API](/ko/docs/Web/API/Web_Animations_API) represents the timeline of an animation. This interface exists to define timeline features (inherited by {{domxref("DocumentTimeline")}} and future timeline types) and is not itself directly used by developers. Anywhere you see `AnimationTimeline`, you should use `DocumentTimeline` or any other timeline type instead.
+The `AnimationTimeline` interface of the [Web Animations API](/en-US/docs/Web/API/Web_Animations_API) represents the timeline of an animation. This interface exists to define timeline features (inherited by {{domxref("DocumentTimeline")}} and future timeline types) and is not itself directly used by developers. Anywhere you see `AnimationTimeline`, you should use `DocumentTimeline` or any other timeline type instead.
 
-## Properties
+## Instance properties
 
-- {{domxref("AnimationTimeline.currentTime")}} {{readonlyInline}}
+- {{domxref("AnimationTimeline.currentTime")}} {{ReadOnlyInline}}
   - : Returns the time value in milliseconds for this timeline or `null` if this timeline is inactive.
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- [Web Animations API](/ko/docs/Web/API/Web_Animations_API)
+- [Web Animations API](/en-US/docs/Web/API/Web_Animations_API)
 - {{domxref("DocumentTimeline")}}
 - {{domxref("Document.timeline")}}

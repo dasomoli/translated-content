@@ -1,10 +1,12 @@
 ---
-title: Box-shadow 생성기
+title: Box-shadow generator
 slug: Web/CSS/CSS_Backgrounds_and_Borders/Box-shadow_generator
-original_slug: Web/CSS/CSS_Background_and_Borders/Box-shadow_generator
+page-type: guide
 ---
 
-이 도구를 사용해 CSS {{cssxref("box-shadow")}} 효과를 생성할 수 있습니다.
+{{CSSRef}}
+
+This tool lets you construct CSS {{cssxref("box-shadow")}} effects, to add box shadow effects to your CSS objects.
 
 {{EmbedGHLiveSample("css-examples/tools/box-shadow-generator/", '100%', 900)}}
 
@@ -27,3 +29,10 @@ To add another shadow, click "+" again. Now any values you set will apply to thi
 You can add {{cssxref("::before")}} and {{cssxref("::after")}} pseudo-elements to the element, and give them box shadows as well. To switch between the element and its pseudo-elements, use the buttons along the top labeled "element", ":before", and ":after".
 
 The box at the bottom-right contains the CSS for the element and any `before::` or `::after` pseudo-elements.
+
+## See also
+
+- [Border-image generator](/en-US/docs/Web/CSS/CSS_Backgrounds_and_Borders/Border-image_generator)
+  - : This interactive tool lets you visually create border images (the {{cssxref("border-image")}} property).
+- [Border-radius generator](/en-US/docs/Web/CSS/CSS_Backgrounds_and_Borders/Border-radius_generator)
+  - : This interactive tool lets you visually create rounded corners (the {{cssxref("border-radius")}} property).

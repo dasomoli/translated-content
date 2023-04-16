@@ -1,195 +1,375 @@
 ---
 title: JSON.stringify()
 slug: Web/JavaScript/Reference/Global_Objects/JSON/stringify
+page-type: javascript-static-method
+browser-compat: javascript.builtins.JSON.stringify
 ---
 
 {{JSRef}}
 
-**`JSON.stringify()`** 메서드는 JavaScript 값이나 객체를 JSON 문자열로 변환합니다. 선택적으로, `replacer`를 함수로 전달할 경우 변환 전 값을 변형할 수 있고, 배열로 전달할 경우 지정한 속성만 결과에 포함합니다.
+The **`JSON.stringify()`** static method converts a JavaScript value to a JSON string, optionally replacing values if a replacer function is specified or optionally including only the specified properties if a replacer array is specified.
 
 {{EmbedInteractiveExample("pages/js/json-stringify.html")}}
 
-## 구문
+## Syntax
 
-```js
-    JSON.stringify(value[, replacer[, space]])
+```js-nolint
+JSON.stringify(value)
+JSON.stringify(value, replacer)
+JSON.stringify(value, replacer, space)
 ```
 
-### 매개변수
+### Parameters
 
 - `value`
-  - : JSON 문자열로 변환할 값.
+  - : The value to convert to a JSON string.
 - `replacer` {{optional_inline}}
-  - : 문자열화 동작 방식을 변경하는 함수, 혹은 JSON 문자열에 포함될 값 객체의 속성들을 선택하기 위한 화이트리스트(whitelist)로 쓰이는 {{jsxref("String")}} 과 {{jsxref("Number")}} 객체들의 배열. 이 값이 null 이거나 제공되지 않으면, 객체의 모든 속성들이 JSON 문자열 결과에 포함된다.
+  - : A function that alters the behavior of the stringification process, or an array of strings and numbers that specifies properties of `value` to be included in the output. If `replacer` is an array, all elements in this array that are not strings or numbers (either primitives or wrapper objects), including {{jsxref("Symbol")}} values, are completely ignored. If `replacer` is anything other than a function or an array (e.g. [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null) or not provided), all string-keyed properties of the object are included in the resulting JSON string.
 - `space` {{optional_inline}}
-  - : 가독성을 목적으로 JSON 문자열 출력에 공백을 삽입하는데 사용되는 {{jsxref("String")}} 또는 {{jsxref("Number")}} 객체. 이것이 `Number` 라면, 공백으로 사용되는 스페이스(space)의 수를 나타낸다; 이 수가 10 보다 크면 10 으로 제한된다. 1 보다 작은 값은 스페이스가 사용되지 않는 것을 나타낸다. 이것이 `String` 이라면, 그 문자열(만약 길이가 10 보다 길다면, 첫번째 10 개의 문자)이 공백으로 사용된다. 이 매개 변수가 제공되지 않는다면(또는 null 이면), 공백이 사용되지 않는다.
 
-### 반환 값
+  - : A string or number that's used to insert white space (including indentation, line break characters, etc.) into the output JSON string for readability purposes.
 
-주어진 값과 대응하는 JSON 문자열.
+    If this is a number, it indicates the number of space characters to be used as indentation, clamped to 10 (that is, any number greater than `10` is treated as if it were `10`). Values less than 1 indicate that no space should be used.
 
-### 예외
+    If this is a string, the string (or the first 10 characters of the string, if it's longer than that) is inserted before every nested object or array.
 
-순환 참조를 발견할 경우 {{jsxref("TypeError")}}(`cyclic object value`).
+    If `space` is anything other than a string or number (can be either a primitive or a wrapper object) — for example, is [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null) or not provided — no white space is used.
 
-## 설명
+### Return value
 
-`JSON.stringify()`는 값을 JSON 표기법으로 변환한다.
+A JSON string representing the given value, or undefined.
 
-- 배열이 아닌 객체의 속성들은 어떤 특정한 순서에 따라 문자열화 될 것이라고 보장되지 않는다. 같은 객체의 문자열화에 있어서 속성의 순서에 의존하지 않는다.
-- {{jsxref("Boolean")}}, {{jsxref("Number")}}, {{jsxref("String")}} 객체들은 문자열화 될 때 전통적인 변환 의미에 따라 연관된 기본형(primitive) 값으로 변환된다.
-- {{jsxref("undefined")}}, 함수, 심볼(symbol)은 변환될 때 생략되거나(객체 안에 있을 경우) {{jsxref("null")}} 로 변환된다(배열 안에 있을 경우).
-- 심볼을 키로 가지는 속성들은 `replacer` 함수를 사용하더라도 완전히 무시된다.
-- 열거 불가능한 속성들은 무시된다.
+### Exceptions
+
+- {{jsxref("TypeError")}}
+  - : Thrown if one of the following is true:
+    - `value` contains a circular reference.
+    - A {{jsxref("BigInt")}} value is encountered.
+
+## Description
+
+`JSON.stringify()` converts a value to the JSON notation that the value represents. Values are stringified in the following manner:
+
+- {{JSxRef("Boolean")}}, {{JSxRef("Number")}}, {{JSxRef("String")}}, and {{jsxref("BigInt")}} (obtainable via [`Object()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/Object)) objects are converted to the corresponding primitive values during stringification, in accordance with the traditional conversion semantics. {{jsxref("Symbol")}} objects (obtainable via [`Object()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/Object)) are treated as plain objects.
+- Attempting to serialize {{jsxref("BigInt")}} values will throw. However, if the BigInt has a `toJSON()` method (through monkey patching: `BigInt.prototype.toJSON = ...`), that method can provide the serialization result. This constraint ensures that a proper serialization (and, very likely, its accompanying deserialization) behavior is always explicitly provided by the user.
+- {{JSxRef("undefined")}}, {{JSxRef("Function")}}, and {{JSxRef("Symbol")}} values are not valid JSON values. If any such values are encountered during conversion, they are either omitted (when found in an object) or changed to [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null) (when found in an array). `JSON.stringify()` can return `undefined` when passing in "pure" values like `JSON.stringify(() => {})` or `JSON.stringify(undefined)`.
+- The numbers {{JSxRef("Infinity")}} and {{JSxRef("NaN")}}, as well as the value [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null), are all considered `null`. (But unlike the values in the previous point, they would never be omitted.)
+- Arrays are serialized as arrays (enclosed by square brackets). Only array indices between 0 and `length - 1` (inclusive) are serialized; other properties are ignored.
+- For other objects:
+
+  - All {{JSxRef("Symbol")}}-keyed properties will be completely ignored, even when using the [`replacer`](#the_replacer_parameter) parameter.
+
+  - If the value has a `toJSON()` method, it's responsible to define what data will be serialized. Instead of the object being serialized, the value returned by the `toJSON()` method when called will be serialized. `JSON.stringify()` calls `toJSON` with one parameter, the `key`, which has the same semantic as the `key` parameter of the [`replacer`](#the_replacer_parameter) function:
+
+    - if this object is a property value, the property name
+    - if it is in an array, the index in the array, as a string
+    - if `JSON.stringify()` was directly called on this object, an empty string
+
+    {{JSxRef("Date")}} objects implement the [`toJSON()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toJSON) method which returns a string (the same as [`date.toISOString()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)). Thus, they will be stringified as strings.
+
+  - Only [enumerable own properties](/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties) are visited. This means {{JSxRef("Map")}}, {{JSxRef("Set")}}, etc. will become `"{}"`. You can use the [`replacer`](#the_replacer_parameter) parameter to serialize them to something more useful.
+
+    Properties are visited using the same algorithm as [`Object.keys()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys), which has a well-defined order and is stable across implementations. For example, `JSON.stringify` on the same object will always produce the same string, and `JSON.parse(JSON.stringify(obj))` would produce an object with the same key ordering as the original (assuming the object is completely JSON-serializable).
+
+### The replacer parameter
+
+The `replacer` parameter can be either a function or an array.
+
+As an array, its elements indicate the names of the properties in the object that should be included in the resulting JSON string. Only string and number values are taken into account; symbol keys are ignored.
+
+As a function, it takes two parameters: the `key` and the `value` being stringified. The object in which the key was found is provided as the `replacer`'s `this` context.
+
+The `replacer` function is called for the initial object being stringified as well, in which case the `key` is an empty string (`""`). It is then called for each property on the object or array being stringified. Array indices will be provided in its string form as `key`. The current property value will be replaced with the `replacer`'s return value for stringification. This means:
+
+- If you return a number, string, boolean, or `null`, that value is directly serialized and used as the property's value. (Returning a BigInt will throw as well.)
+- If you return a {{JSxRef("Function")}}, {{JSxRef("Symbol")}}, or {{JSxRef("undefined")}}, the property is not included in the output.
+- If you return any other object, the object is recursively stringified, calling the `replacer` function on each property.
+
+> **Note:** When parsing JSON generated with `replacer` functions, you would likely want to use the [`reviver`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse#using_the_reviver_parameter) parameter to perform the reverse operation.
+
+Typically, array elements' index would never shift (even when the element is an invalid value like a function, it will become `null` instead of omitted). Using the `replacer` function allows you to control the order of the array elements by returning a different array.
+
+### The space parameter
+
+The `space` parameter may be used to control spacing in the final string.
+
+- If it is a number, successive levels in the stringification will each be indented by this many space characters.
+- If it is a string, successive levels will be indented by this string.
+
+Each level of indentation will never be longer than 10. Number values of `space` are clamped to 10, and string values are truncated to 10 characters.
+
+## Examples
+
+### Using JSON.stringify
 
 ```js
-JSON.stringify({});                  // '{}'
-JSON.stringify(true);                // 'true'
-JSON.stringify('foo');               // '"foo"'
-JSON.stringify([1, 'false', false]); // '[1,"false",false]'
-JSON.stringify({ x: 5 });            // '{"x":5}'
+JSON.stringify({}); // '{}'
+JSON.stringify(true); // 'true'
+JSON.stringify("foo"); // '"foo"'
+JSON.stringify([1, "false", false]); // '[1,"false",false]'
+JSON.stringify([NaN, null, Infinity]); // '[null,null,null]'
+JSON.stringify({ x: 5 }); // '{"x":5}'
 
-JSON.stringify(new Date(2006, 0, 2, 15, 4, 5))
-// '"2006-01-02T15:04:05.000Z"'
+JSON.stringify(new Date(1906, 0, 2, 15, 4, 5));
+// '"1906-01-02T15:04:05.000Z"'
 
 JSON.stringify({ x: 5, y: 6 });
-// '{"x":5,"y":6}' or '{"y":6,"x":5}'
-JSON.stringify([new Number(1), new String('false'), new Boolean(false)]);
-// '[1,"false",false]'
+// '{"x":5,"y":6}'
+JSON.stringify([new Number(3), new String("false"), new Boolean(false)]);
+// '[3,"false",false]'
+
+// String-keyed array elements are not enumerable and make no sense in JSON
+const a = ["foo", "bar"];
+a["baz"] = "quux"; // a: [ 0: 'foo', 1: 'bar', baz: 'quux' ]
+JSON.stringify(a);
+// '["foo","bar"]'
+
+JSON.stringify({ x: [10, undefined, function () {}, Symbol("")] });
+// '{"x":[10,null,null,null]}'
+
+// Standard data structures
+JSON.stringify([
+  new Set([1]),
+  new Map([[1, 2]]),
+  new WeakSet([{ a: 1 }]),
+  new WeakMap([[{ a: 1 }, 2]]),
+]);
+// '[{},{},{},{}]'
+
+// TypedArray
+JSON.stringify([new Int8Array([1]), new Int16Array([1]), new Int32Array([1])]);
+// '[{"0":1},{"0":1},{"0":1}]'
+JSON.stringify([
+  new Uint8Array([1]),
+  new Uint8ClampedArray([1]),
+  new Uint16Array([1]),
+  new Uint32Array([1]),
+]);
+// '[{"0":1},{"0":1},{"0":1},{"0":1}]'
+JSON.stringify([new Float32Array([1]), new Float64Array([1])]);
+// '[{"0":1},{"0":1}]'
+
+// toJSON()
+JSON.stringify({
+  x: 5,
+  y: 6,
+  toJSON() {
+    return this.x + this.y;
+  },
+});
+// '11'
 
 // Symbols:
-JSON.stringify({ x: undefined, y: Object, z: Symbol('') });
+JSON.stringify({ x: undefined, y: Object, z: Symbol("") });
 // '{}'
-JSON.stringify({ [Symbol('foo')]: 'foo' });
+JSON.stringify({ [Symbol("foo")]: "foo" });
 // '{}'
-JSON.stringify({ [Symbol.for('foo')]: 'foo' }, [Symbol.for('foo')]);
+JSON.stringify({ [Symbol.for("foo")]: "foo" }, [Symbol.for("foo")]);
 // '{}'
-JSON.stringify({ [Symbol.for('foo')]: 'foo' }, function(k, v) {
-  if (typeof k === 'symbol') {
-    return 'a symbol';
+JSON.stringify({ [Symbol.for("foo")]: "foo" }, (k, v) => {
+  if (typeof k === "symbol") {
+    return "a symbol";
   }
 });
-// '{}'
+// undefined
 
 // Non-enumerable properties:
-JSON.stringify( Object.create(null, { x: { value: 'x', enumerable: false }, y: { value: 'y', enumerable: true } }) );
+JSON.stringify(
+  Object.create(null, {
+    x: { value: "x", enumerable: false },
+    y: { value: "y", enumerable: true },
+  }),
+);
 // '{"y":"y"}'
+
+// BigInt values throw
+JSON.stringify({ x: 2n });
+// TypeError: BigInt value can't be serialized in JSON
 ```
 
-### `replacer` 매개 변수
-
-`replacer` 매개변수는 함수 또는 배열이 될 수 있다. 함수일 때는 문자열화 될 key 와 value, 2개의 매개변수를 받는다. key 가 발견된 객체는 리플레이서의 `this` 매개변수로 제공된다. 맨 처음에는 문자열화될 그 객체를 나타내는 비어 있는 key와 함께 호출되고, 그 다음에는 문자열화될 그 객체나 배열의 각 속성에 대해 호출된다. 이것은 JSON 문자열에 추가되어야 하는 값을 반환해야한다:
-
-- {{jsxref("Number")}} 를 반환하면, JSON 문자열에 추가될 때 그 수를 나타내는 문자열이 그 속성의 값으로 사용된다.
-- {{jsxref("String")}} 을 반환하면, 그것이 JSON 문자열에 추가될 때 속성의 값으로 사용된다.
-- {{jsxref("Boolean")}} 을 반환하면, 그것이 JSON 문자열에 추가될 때 "true" 또는 "false" 이 속성의 값으로 사용된다.
-- 다른 객체를 반환하면, 그 객체는 `replacer` 함수를 각각의 속성에 대해 호출하며 순환적으로 JSON 문자열로 문자열화된다. 그 객체가 함수인 경우에는 JSON 문자열에 아무것도 추가되지 않는다.
-- `undefined` 를 반환하면, 그 속성은 JSON 문자열 결과에 포함되지 않는다.
-
-> **참고:** **유의:** `replacer` 함수를 배열로부터 값을 제거하기위해 사용할 수 없다. 만약 `undefined` 나 함수를 반환한다면 `null` 이 대신 사용될 것이다.
-
-#### 함수에 대한 예제
+### Using a function as replacer
 
 ```js
 function replacer(key, value) {
+  // Filtering out properties
   if (typeof value === "string") {
     return undefined;
   }
   return value;
 }
 
-var foo = {foundation: "Mozilla", model: "box", week: 45, transport: "car", month: 7};
-var jsonString = JSON.stringify(foo, replacer);
-```
-
-JSON 문자열 결과는 `{"week":45,"month":7}` 이다.
-
-#### 배열에 대한 예제
-
-`replacer` 가 배열인 경우, 그 배열의 값은 JSON 문자열의 결과에 포함되는 속성의 이름을 나타낸다.
-
-```js
-JSON.stringify(foo, ['week', 'month']);
-// '{"week":45,"month":7}', 단지 "week" 와 "month" 속성을 포함한다
-```
-
-### `space` 매개 변수
-
-`space` 매개변수는 최종 문자열의 간격을 제어한다. 숫자일 경우 최대 10자 만큼의 공백 문자 크기로 들여쓰기되며, 문자열인 경우 해당 문자열 또는 처음 10자 만큼 들여쓰기 된다.
-
-```js
-JSON.stringify({ a: 2 }, null, ' ');
-// '{
-//  "a": 2
-// }'
-```
-
-'\t'를 사용하면 일반적으로 들여쓰기 된 코드스타일과 유사함.
-
-```js
-JSON.stringify({ uno: 1, dos: 2 }, null, '\t');
-// returns the string:
-// '{
-//     "uno": 1,
-//     "dos": 2
-// }'
-```
-
-### `toJSON()` 작동
-
-If an object being stringified has a property named `toJSON` whose value is a function, then the `toJSON()` method customizes JSON stringification behavior: instead of the object being serialized, the value returned by the `toJSON()` method when called will be serialized. For example:
-
-```js
-var obj = {
-  foo: 'foo',
-  toJSON: function() {
-    return 'bar';
-  }
+const foo = {
+  foundation: "Mozilla",
+  model: "box",
+  week: 45,
+  transport: "car",
+  month: 7,
 };
-JSON.stringify(obj);        // '"bar"'
-JSON.stringify({ x: obj }); // '{"x":"bar"}'
+JSON.stringify(foo, replacer);
+// '{"week":45,"month":7}'
 ```
 
-### Example of using `JSON.stringify()` with `localStorage`
+If you wish the `replacer` to distinguish an initial object from a key with an empty string property (since both would give the empty string as key and potentially an object as value), you will have to keep track of the iteration count (if it is beyond the first iteration, it is a genuine empty string key).
 
-In a case where you want to store an object created by your user and allowing it to be restored even after the browser has been closed, the following example is a model for the applicability of `JSON.stringify()`:
+```js
+function makeReplacer() {
+  let isInitial = true;
 
-> **경고:** Functions are not a valid JSON data type so they will not work. However, they can be displayed if first converted to a string (e.g. in the replacer), via the function's toString method. Also, some objects like {{jsxref("Date")}} will be a string after {{jsxref("JSON.parse()")}}.
+  return (key, value) => {
+    if (isInitial) {
+      isInitial = false;
+      return value;
+    }
+    if (key === "") {
+      // Omit all properties with name "" (except the initial object)
+      return undefined;
+    }
+    return value;
+  };
+}
+
+const replacer = makeReplacer();
+console.log(JSON.stringify({ "": 1, b: 2 }, replacer)); // "{"b":2}"
+```
+
+### Using an array as replacer
+
+```js
+const foo = {
+  foundation: "Mozilla",
+  model: "box",
+  week: 45,
+  transport: "car",
+  month: 7,
+};
+
+JSON.stringify(foo, ["week", "month"]);
+// '{"week":45,"month":7}', only keep "week" and "month" properties
+```
+
+### Using the space parameter
+
+Indent the output with one space:
+
+```js
+console.log(JSON.stringify({ a: 2 }, null, " "));
+/*
+{
+ "a": 2
+}
+*/
+```
+
+Using a tab character mimics standard pretty-print appearance:
+
+<!-- markdownlint-disable MD010 -->
+
+```js
+console.log(JSON.stringify({ uno: 1, dos: 2 }, null, "\t"));
+/*
+{
+	"uno": 1,
+	"dos": 2
+}
+*/
+```
+
+<!-- markdownlint-enable MD010 -->
+
+### toJSON() behavior
+
+Defining `toJSON()` for an object allows overriding its serialization behavior.
+
+```js
+const obj = {
+  data: "data",
+
+  toJSON(key) {
+    return key ? `Now I am a nested object under key '${key}'` : this;
+  },
+};
+
+JSON.stringify(obj);
+// '{"data":"data"}'
+
+JSON.stringify({ obj });
+// '{"obj":"Now I am a nested object under key 'obj'"}'
+
+JSON.stringify([obj]);
+// '["Now I am a nested object under key '0'"]'
+```
+
+### Issue with serializing circular references
+
+Since the [JSON format](https://www.json.org/) doesn't support object references (although an [IETF draft exists](https://datatracker.ietf.org/doc/html/draft-pbryan-zyp-json-ref-03)), a {{JSxRef("TypeError")}} will be thrown if one attempts to encode an object with circular references.
+
+```js example-bad
+const circularReference = {};
+circularReference.myself = circularReference;
+
+// Serializing circular references throws "TypeError: cyclic object value"
+JSON.stringify(circularReference);
+```
+
+To serialize circular references, you can use a library that supports them (e.g. [cycle.js](https://github.com/douglascrockford/JSON-js/blob/master/cycle.js) by Douglas Crockford) or implement a solution yourself, which will require finding and replacing (or removing) the cyclic references by serializable values.
+
+If you are using `JSON.stringify()` to deep-copy an object, you may instead want to use [`structuredClone()`](/en-US/docs/Web/API/structuredClone), which supports circular references. JavaScript engine APIs for binary serialization, such as [`v8.serialize()`](https://nodejs.org/api/v8.html#v8serializevalue), also support circular references.
+
+### Using JSON.stringify() with localStorage
+
+In a case where you want to store an object created by your user and allow it to be restored even after the browser has been closed, the following example is a model for the applicability of `JSON.stringify()`:
 
 ```js
 // Creating an example of JSON
-var session = {
-  'screens': [],
-  'state': true
+const session = {
+  screens: [],
+  state: true,
 };
-session.screens.push({ 'name': 'screenA', 'width': 450, 'height': 250 });
-session.screens.push({ 'name': 'screenB', 'width': 650, 'height': 350 });
-session.screens.push({ 'name': 'screenC', 'width': 750, 'height': 120 });
-session.screens.push({ 'name': 'screenD', 'width': 250, 'height': 60 });
-session.screens.push({ 'name': 'screenE', 'width': 390, 'height': 120 });
-session.screens.push({ 'name': 'screenF', 'width': 1240, 'height': 650 });
+session.screens.push({ name: "screenA", width: 450, height: 250 });
+session.screens.push({ name: "screenB", width: 650, height: 350 });
+session.screens.push({ name: "screenC", width: 750, height: 120 });
+session.screens.push({ name: "screenD", width: 250, height: 60 });
+session.screens.push({ name: "screenE", width: 390, height: 120 });
+session.screens.push({ name: "screenF", width: 1240, height: 650 });
 
 // Converting the JSON string with JSON.stringify()
 // then saving with localStorage in the name of session
-localStorage.setItem('session', JSON.stringify(session));
+localStorage.setItem("session", JSON.stringify(session));
 
 // Example of how to transform the String generated through
 // JSON.stringify() and saved in localStorage in JSON object again
-var restoredSession = JSON.parse(localStorage.getItem('session'));
+const restoredSession = JSON.parse(localStorage.getItem("session"));
 
 // Now restoredSession variable contains the object that was saved
 // in localStorage
 console.log(restoredSession);
 ```
 
-## 명세
+### Well-formed JSON.stringify()
+
+Engines implementing the [well-formed JSON.stringify specification](https://github.com/tc39/proposal-well-formed-stringify) will stringify lone surrogates (any code point from U+D800 to U+DFFF) using Unicode escape sequences rather than literally (outputting lone surrogates). Before this change, such strings could not be encoded in valid UTF-8 or UTF-16:
+
+```js
+JSON.stringify("\uD800"); // '"�"'
+```
+
+But with this change `JSON.stringify()` represents lone surrogates using JSON escape sequences that _can_ be encoded in valid UTF-8 or UTF-16:
+
+```js
+JSON.stringify("\uD800"); // '"\\ud800"'
+```
+
+This change should be backwards-compatible as long as you pass the result of `JSON.stringify()` to APIs such as `JSON.parse()` that will accept any valid JSON text, because they will treat Unicode escapes of lone surrogates as identical to the lone surrogates themselves. _Only_ if you are directly interpreting the result of `JSON.stringify()` do you need to carefully handle `JSON.stringify()`'s two possible encodings of these code points.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{jsxref("JSON.parse()")}}
+- [Polyfill of modern `JSON.stringify` behavior (symbol and well-formed unicode) in `core-js`](https://github.com/zloirock/core-js#ecmascript-json)
+- {{JSxRef("JSON.parse()")}}

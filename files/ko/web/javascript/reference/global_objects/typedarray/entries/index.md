@@ -1,29 +1,29 @@
 ---
 title: TypedArray.prototype.entries()
 slug: Web/JavaScript/Reference/Global_Objects/TypedArray/entries
-l10n:
-  sourceCommit: 2eb202adbe3d83292500ed46344d63fbbae410b5
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.TypedArray.entries
 ---
 
 {{JSRef}}
 
-**`entries()`** 메서드는 해당 배열의 각 인덱스에 대한 키/값 쌍을 포함하는 새로운 {{jsxref("Array", "배열")}} 반복자 객체를 반환합니다.
+The **`entries()`** method returns a new _[array iterator](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator)_ that contains the key/value pairs for each index in the array.
 
 {{EmbedInteractiveExample("pages/js/typedarray-entries.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 entries()
 ```
 
-### 반환 값
+### Return value
 
-새로운 배열 반복자 객체.
+A new [iterable iterator object](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator).
 
-## 예제
+## Examples
 
-### for...of 루프를 사용하여 반복하기
+### Iteration using for...of loop
 
 ```js
 const array = new Uint8Array([10, 20, 30, 40, 50]);
@@ -33,7 +33,7 @@ for (const element of arrayEntries) {
 }
 ```
 
-### 다른 반복 방법
+### Alternative iteration
 
 ```js
 const array = new Uint8Array([10, 20, 30, 40, 50]);
@@ -46,19 +46,19 @@ console.log(arrayEntries.next().value); // [3, 40]
 console.log(arrayEntries.next().value); // [4, 50]
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - [Polyfill of `TypedArray.prototype.entries` in `core-js`](https://github.com/zloirock/core-js#ecmascript-typed-arrays)
-- [JavaScript 형식화 배열](/ko/docs/Web/JavaScript/Typed_arrays)
+- [JavaScript typed arrays](/en-US/docs/Web/JavaScript/Typed_arrays)
 - {{jsxref("TypedArray")}}
 - {{jsxref("TypedArray.prototype.keys()")}}
 - {{jsxref("TypedArray.prototype.values()")}}
-- {{jsxref("TypedArray.prototype.@@iterator()", "TypedArray.prototype[@@iterator]()")}}
+- [`TypedArray.prototype[@@iterator]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/@@iterator)

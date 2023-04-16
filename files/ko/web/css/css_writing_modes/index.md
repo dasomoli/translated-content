@@ -1,15 +1,17 @@
 ---
 title: CSS Writing Modes
 slug: Web/CSS/CSS_Writing_Modes
+page-type: css-module
+spec-urls: https://drafts.csswg.org/css-writing-modes/
 ---
 
 {{CSSRef}}
 
-**CSS Writing Modes**는 다양한 국제 쓰기 모드를 정의하는 CSS 모듈입니다, 좌에서 우(가령 Latin 및 Indic 스크립트에 사용됨), 우에서 좌(가령 Hebrew 또는 Arabic 스크립티에 사용됨), 양방향(좌에서 우 및 우에서 좌 스크립트를 섞을 때 사용됨) 및 세로(가령 일부 Asian 스크립트에 사용됨) 등.
+**CSS Writing Modes** is a CSS module that defines various international writing modes, such as left-to-right (e.g. used by Latin and Indic scripts), right-to-left (e.g. used by Hebrew or Arabic scripts), bidirectional (used when mixing left-to-right and right-to-left scripts) and vertical (e.g. used by some Asian scripts).
 
-## 참고서
+## Reference
 
-### 속성
+### Properties
 
 - {{cssxref("direction")}}
 - {{cssxref("glyph-orientation-horizontal")}}
@@ -18,6 +20,6 @@ slug: Web/CSS/CSS_Writing_Modes
 - {{cssxref("unicode-bidi")}}
 - {{cssxref("writing-mode")}}
 
-## 명세
+## Specifications
 
 {{Specifications}}

@@ -1,38 +1,135 @@
 ---
-title: Client hints(클라이언트 힌트)
+title: HTTP Client hints
 slug: Web/HTTP/Client_hints
-original_slug: Glossary/Client_hints
+page-type: guide
 ---
 
-**Client Hints**는 클라이언트 장치 및 에이전트별 기본 설정 목록을 확인할 수 있도록 사전 컨텐츠 체크를 위한 [HTTP request header](/ko/docs/Web/HTTP/Headers) 입니다. [Client Hints](/ko/docs/Web/HTTP/Headers#Client_hints)를 사용하면 이미지 DPR 해상도의 자동 조절과 최적화 된 assets을 자동으로 적용할 수 있습니다.
+{{HTTPSidebar}}
 
-Client Hints는 자동으로 적용되는 것이 아닙니다 : ClientHints를 지원한다고 선언하기 위해서 서버에서 [`Accept-CH`](https://tools.ietf.org/html/draft-grigorik-http-client-hints-03#section-2.2.1) (accept client hints) header 또는 클라이언트에서 HTML Meta 태그의 [`http-equiv`](/en-US/docs/Web/HTML/Element/meta#Attributes) 속성을 사용하여 선언해주어야 합니다.
+**Client hints** are a set of [HTTP request header](/en-US/docs/Web/HTTP/Headers) fields that a server can proactively request from a client to get information about the device, network, user, and user-agent-specific preferences.
+The server can determine which resources to send, based on the information that the client chooses to provide.
 
+The set of "hint" headers are listed in the topic [HTTP Headers](/en-US/docs/Web/HTTP/Headers#client_hints) and [summarized below](#hint_types).
+
+## Overview
+
+A server must announce that it supports client hints, using the {{HTTPHeader("Accept-CH")}} header to specify the hints that it is interested in receiving.
+When a client that supports client hints receives the `Accept-CH` header it can choose to append some or all of the listed client hint headers in its subsequent requests.
+
+For example, following `Accept-CH` in a response below, the client could append {{HTTPHeader("Width")}}, {{HTTPHeader("Downlink")}} and {{HTTPHeader("Sec-CH-UA")}} headers to all subsequent requests.
+
+```http
+Accept-CH: Width, Downlink, Sec-CH-UA
 ```
-Accept-CH: DPR, Width, Viewport-Width, Downlink
+
+This approach is efficient in that the server only requests the information that it is able to usefully handle.
+It is also relatively "privacy-preserving", in that it is up to the client to decide what information it can safely share.
+
+There is a small set of [low entropy client hint headers](#low_entropy_hints) that may be sent by a client even if not requested.
+
+> **Note:** Client hints can also be specified in HTML using the {{HTMLElement("meta")}} element with the [`http-equiv`](/en-US/docs/Web/HTML/Element/meta#http-equiv) attribute.
+>
+> ```html
+> <meta http-equiv="Accept-CH" content="Width, Downlink, Sec-CH-UA" />
+> ```
+
+## Caching and Client Hints
+
+Client hints that determine which resources are sent in responses should generally also be included in the affected response's {{HTTPHeader("Vary")}} header.
+This ensures that a different resource is cached for every different value of the hint header.
+
+```http
+Vary: Accept, Width, ECT
 ```
 
-또는
+You may prefer to omit specifying {{HTTPHeader("Vary")}} or use some other strategy for client hint headers where the value changes a lot, as this effectively makes the resource uncacheable. (A new cache entry is created for every unique value.)
+This applies in particular to network client hints like {{HTTPHeader("Downlink")}} and {{HTTPHeader("RTT")}}.
+For more information see [HTTP Caching > Vary](/en-US/docs/Web/HTTP/Caching#vary).
 
-```html
-<meta http-equiv="Accept-CH" content="DPR, Width, Viewport-Width, Downlink">
+## Hint life-time
+
+A server specifies the client hint headers that it is interested in getting in the `Accept-CH` response header.
+The user agent appends the requested client hint headers, or at least the subset that it wants to share with that server, to all subsequent requests in the current browsing session.
+
+In other words, the request for a specific set of hints does not expire until the browser is shut down.
+
+A server can replace the set of client hints it is interested in receiving by resending the `Accept-CH` response header with a new list.
+For example, to stop requesting any hints it would send `Accept-CH` with an empty list.
+
+## Low entropy hints
+
+Client hints are broadly divided into high and low entropy hints.
+
+The low entropy hints are those that don't give away much information that might be used to create a [fingerprinting](/en-US/docs/Glossary/Fingerprinting) for a user.
+They may be sent by default on every client request, irrespective of the server `Accept-CH` response header, depending on the permission policy.
+These hints include: {{HTTPHeader("Save-Data")}}, {{HTTPHeader("Sec-CH-UA")}}, {{HTTPHeader("Sec-CH-UA-Mobile")}}, {{HTTPHeader("Sec-CH-UA-Platform")}}.
+
+The high entropy hints are those that have the potential to give away more information that can be used for user fingerprinting, and therefore are gated in such a way that the user agent can make a decision whether to provide them.
+The decision might be based on user preferences, a permission request, or the permission policy.
+All client hints that are not low entropy hints are considered high entropy hints.
+
+## Critical client hints
+
+A _critical client hint_ is one where applying the response may significantly change the rendered page, potentially in a way that is jarring or will affect usability, and therefore which must be applied before the content is rendered.
+For example, `Sec-CH-Prefers-Reduced-Motion` is commonly treated as a critical hint, because it might markedly affect the behavior of animations, and because a user who chooses this preference needs it to be set.
+
+A server can use the {{HTTPHeader("Critical-CH")}} response header along with `Accept-CH` to specify that an accepted client hint is also a critical client hint (a header in `Critical-CH` must also appear in `Accept-CH`).
+User agents receiving a response with `Critical-CH` must check if the indicated critical headers were sent in the original request. If not, then the user agent will retry the request rather than render the page.
+This approach ensures that client preferences set using critical client hints are always used, even if not included in the first request, or if the server configuration changes.
+
+For example, in this case, the server tells a client via {{httpheader("Accept-CH")}} that it accepts `Sec-CH-Prefers-Reduced-Motion`, and {{httpheader("Critical-CH")}} is used to specify that `Sec-CH-Prefers-Reduced-Motion` is considered a critical client hint:
+
+```http
+HTTP/1.1 200 OK
+Content-Type: text/html
+Accept-CH: Sec-CH-Prefers-Reduced-Motion
+Vary: Sec-CH-Prefers-Reduced-Motion
+Critical-CH: Sec-CH-Prefers-Reduced-Motion
 ```
 
-클라이언트가 `Accept-CH` header를 전달받게 되면 지원되는 경우, Client Hint header를 추가합니다. 예를 들어 위의 Accept-CH 예제를 기반으로 클라이언트는 모든 후속 요청에 DPR, Width, Viewport-Width 및 Downlink 헤더를 추가 할 수 있습니다.
+> **Note:** We've also specified `Sec-CH-Prefers-Reduced-Motion` in the {{httpheader("Vary")}} header to indicate to the browser that the served content will differ based on this header value, even if the URL stays the same, so the browser shouldn't just use an existing cached response and instead should cache this response separately. Each header listed in the `Critical-CH` header should also be present in the `Accept-CH` and `Vary` headers.
 
-두 번째 예에서 서버는 Accept-CH 메타 태그를 설정하여 브라우저에 힌트를 제공합니다.
+As `Sec-CH-Prefers-Reduced-Motion` is a critical hint that was not in the original request, the client automatically retries the request — this time telling the server via `Sec-CH-Prefers-Reduced-Motion` that it has a user preference for reduced-motion animations.
 
-일반적으로, Client Hints header를 가지고 개발자 또는 어플리케이션은 브라우저에게 장치 픽셀 비율, 뷰포트 너비 및 디스플레이 너비와 같은 서버 자체 정보를 제공하도록 할 수 있습니다. 그러면 클라이언트는 서버에 클라이언트 환경에 대한 정보를 제공할 수 있고, 서버는 해당 정보를 기반으로 전송할 리소스를 결정할 수도 있습니다.
+```http
+GET / HTTP/1.1
+Host: example.com
+Sec-CH-Prefers-Reduced-Motion: "reduce"
+```
 
-## Vary Client Hints
+## Hint types
 
-다른 [Client Hints](/ko/docs/Web/HTTP/Headers#Client_hints)가 응답에 영향을 줄 수 있는 캐시를 전달하기 위해서는, [`Vary`](/en-US/docs/Web/HTTP/Headers/Vary) HTTP header를 사용해야만 합니다.
+### User-agent client hints
 
-응답 예시 :
+User agent (UA) client hint headers allow a server to vary responses based on the user agent (browser), operating system, and device.
+Headers include: {{HTTPHeader("Sec-CH-UA")}}, {{HTTPHeader("Sec-CH-UA-Arch")}}, {{HTTPHeader("Sec-CH-UA-Bitness")}}, {{HTTPHeader("Sec-CH-UA-Full-Version-List")}}, {{HTTPHeader("Sec-CH-UA-Full-Version")}}, {{HTTPHeader("Sec-CH-UA-Mobile")}}, {{HTTPHeader("Sec-CH-UA-Model")}}, {{HTTPHeader("Sec-CH-UA-Platform")}}, and {{HTTPHeader("Sec-CH-UA-Platform-Version")}}.
 
-`Vary: Accept, DPR, Width, Viewport-Width, Downlink`
+Client hints are available to web page JavaScript via the [User Agent Client Hints API](/en-US/docs/Web/API/User-Agent_Client_Hints_API).
 
-## See Also
+> **Note:** Servers currently get most of the same information by parsing the {{HTTPHeader("User-Agent")}} header.
+> For historical reasons this header contains a lot of largely irrelevant information, and information that might be used to identify a _particular user_.
+> UA client hints provide a more efficient and privacy preserving way of getting the desired information.
+> They are eventually expected to replace this older approach.
 
-- [Client Hints headers](/ko/docs/Web/HTTP/Headers#Client_hints)
-- [`Vary` HTTP Header](/ko/docs/Web/HTTP/Headers/Vary)
+### User preference media features client hints
+
+User Preference Media Features Client Hints allow a server to vary responses based on a user agent's preferences for [CSS media features](/en-US/docs/Web/CSS/@media#media_features) such as color scheme or reduced motion.
+Headers include: {{HTTPHeader("Sec-CH-Prefers-Reduced-Motion")}}, {{HTTPHeader("Sec-CH-Prefers-Color-Scheme")}}.
+
+### Device client hints
+
+Device client hints allow a server to vary responses based on device characteristics including available memory and screen properties.
+Headers include: {{HTTPHeader("Device-Memory")}}, {{HTTPHeader("DPR")}}, {{HTTPHeader("Width")}}, {{HTTPHeader("Viewport-Width")}}.
+
+### Network client hints
+
+Network client hints allow a server to vary responses based on the user's choice, network bandwidth, and latency.
+Headers include: {{HTTPHeader("Save-Data")}}, {{HTTPHeader("Downlink")}}, {{HTTPHeader("ECT")}}, {{HTTPHeader("RTT")}}.
+
+## See also
+
+- [Client Hints headers](/en-US/docs/Web/HTTP/Headers#client_hints)
+- [`Vary` HTTP Header](/en-US/docs/Web/HTTP/Headers/Vary)
+- [Client Hints Infrastructure](https://wicg.github.io/client-hints-infrastructure/)
+- [User Agent Client Hints API](/en-US/docs/Web/API/User-Agent_Client_Hints_API)
+- [Improving user privacy and developer experience with User-Agent Client Hints](https://web.dev/user-agent-client-hints/) (web.dev)

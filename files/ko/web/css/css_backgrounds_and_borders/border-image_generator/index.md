@@ -1,9 +1,18 @@
 ---
-title: Border-image 생성기
+title: Border-image generator
 slug: Web/CSS/CSS_Backgrounds_and_Borders/Border-image_generator
-original_slug: Web/CSS/CSS_Background_and_Borders/Border-image_generator
+page-type: guide
 ---
 
-이 도구를 사용해 CSS3 {{cssxref("border-image")}} 값을 생성할 수 있습니다.
+{{CSSRef}}
+
+This tool can be used to generate CSS {{cssxref("border-image")}} values.
 
 {{EmbedGHLiveSample("css-examples/tools/border-image-generator/", '100%', 1200)}}
+
+## See also
+
+- [Border-radius generator](/en-US/docs/Web/CSS/CSS_Backgrounds_and_Borders/Border-radius_generator)
+  - : This interactive tool lets you visually create rounded corners (the {{cssxref("border-radius")}} property).
+- [Box-shadow generator](/en-US/docs/Web/CSS/CSS_Backgrounds_and_Borders/Box-shadow_generator)
+  - : This interactive tool lets you visually create shadows behind elements (the {{cssxref("box-shadow")}} property).

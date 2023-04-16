@@ -1,101 +1,114 @@
 ---
 title: Streams API
 slug: Web/API/Streams_API
+page-type: web-api-overview
+browser-compat:
+  - api.ReadableStream
+  - api.WritableStream
 ---
-{{SeeCompatTable}}{{APIRef("Streams")}}
 
-Streams API는 Javascript를 이용해 네트워크를 통해 전송된 데이터 스트림에 접근하여 원하는 대로 처리가 가능한 API를 제공합니다.
+{{DefaultAPISidebar("Streams")}}
 
-## 개념과 사용법
+The Streams API allows JavaScript to programmatically access streams of data received over the network and process them as desired by the developer.
 
-Streaming은 네트워크를 통해 받은 리소스를 작은 조각으로 나누어, Bit 단위로 처리합니다. 이는 브라우저가 수신한 자원을 웹페이지에 표현할 때 주로 사용하는 방법입니다. — Video buffer는 재생되기 전 천천히 채워지며 가끔 이미지도 천천히 로딩되는 것을 보실 수 있을 겁니다..
+{{AvailableInWorkers}}
 
-하지만 Javascript에서는 지금까지 불가능했습니다. 이전에는 (비디오나 텍스트 파일 등의) 리소스를 처리하기 위해서 우선, 전체 파일을 다운로드 받은 후 알맞은 포맷으로 파싱된 후에야, 전송된 전체 데이터를 처리할 수 있었습니다.
+## Concepts and usage
 
-With Javascript에 Stream이 도입된 후에는 모든 것이 바뀌었는데, 이제 Buffer, String 또는 blob 없이도 Javascript를 통해 Raw Data를 비트 단위로 처리할 수 있습니다.
+Streaming involves breaking a resource that you want to receive over a network down into small chunks, then processing it bit by bit. This is something browsers do anyway when receiving assets to be shown on webpages — videos buffer and more is gradually available to play, and sometimes you'll see images display gradually as more is loaded.
 
-![](concept.png)
+But this has never been available to JavaScript before. Previously, if we wanted to process a resource of some kind (be it a video, or a text file, etc.), we'd have to download the entire file, wait for it to be deserialized into a suitable format, then process the whole lot after it is fully received.
 
-장점은 또 있습니다 — Stream의 시작 또는 종료를 감지할 수 있으며, 여러 stream을 엮어서 에러를 처리하거나 필요한 경우 stream을 취소할 수도 있습니다. 또한 stream이 읽어들이는 속도에 따라 반응할 수도 있지요.
+With Streams being available to JavaScript, this all changes — you can now start processing raw data with JavaScript bit by bit as soon as it is available on the client-side, without needing to generate a buffer, string, or blob.
 
-Stream의 주요한 기본 사용법은 응답 데이터를 stream으로 만드는 것입니다. [fetch request](/ko/docs/Web/API/WindowOrWorkerGlobalScope/fetch)를 통해 정상적으로 전송된 응답 {{domxref("Body")}}는 {{domxref("ReadableStream")}}로 표현 가능합니다. 또한 {{domxref("ReadableStream.getReader()")}}를 통해 Reader 객체를 얻어 데이터를 읽을 수도 있으며, {{domxref("ReadableStream.cancel()")}}로 Stream을 취소하는 것 등이 가능합니다.
+![The basic concept of the stream API is data is fetched from the network in several data packets. The data is processed, and then sent to the browser in a stream of data packets.](concept.png)
 
-조금 더 복잡한 사용법은 {{domxref("ReadableStream.ReadableStream", "ReadableStream()")}} 생성자를 통해 사용자가 직접 Stream을 생성하는 것입니다. 예를 들자면 [service worker](/ko/docs/Web/API/Service_Worker_API)에 전달할 데이터를 Stream으로 만들 수도 있습니다.
+There are more advantages too — you can detect when streams start or end, chain streams together, handle errors and cancel streams as required, and react to the speed the stream is being read at.
 
-{{domxref("WritableStream")}}을 사용하면 Stream에 데이터를 쓰는 것도 가능합니다..
+The basic usage of Streams hinges around making responses available as streams. For example, the response body returned by a successful [fetch request](/en-US/docs/Web/API/fetch) can be exposed as a {{domxref("ReadableStream")}}, and you can then read it using a reader created with {{domxref("ReadableStream.getReader()")}}, cancel it with {{domxref("ReadableStream.cancel()")}}, etc.
 
-> **참고:** [Streams API concepts](/ko/docs/Web/API/Streams_API/Concepts), [Using readable streams](/ko/docs/Web/API/Streams_API/Using_readable_streams), [Using writable streams](/ko/docs/Web/API/Streams_API/Using_writable_streams) — 페이지에서 stream에 관한 더 자세한 이론과 예제를 찾을 수 있습니다.
+More complicated uses involve creating your own stream using the {{domxref("ReadableStream.ReadableStream", "ReadableStream()")}} constructor, for example to process data inside a [service worker](/en-US/docs/Web/API/Service_Worker_API).
 
-## 스트림 인터페이스
+You can also write data to streams using {{domxref("WritableStream")}}.
 
-### 읽기 스트림(Readable streams)
+> **Note:** You can find a lot more details about the theory and practice of streams in our articles — [Streams API concepts](/en-US/docs/Web/API/Streams_API/Concepts), [Using readable streams](/en-US/docs/Web/API/Streams_API/Using_readable_streams), [Using readable byte streams](/en-US/docs/Web/API/Streams_API/Using_readable_byte_streams), and [Using writable streams](/en-US/docs/Web/API/Streams_API/Using_writable_streams).
+
+## Stream interfaces
+
+### Readable streams
 
 - {{domxref("ReadableStream")}}
-  - : 데이터 읽기 스트림을 나타냅니다. [Fetch API](/ko/docs/Web/API/Fetch_API)의 결과 스트림이나 개발자가 정의한 스트림(예, 커스텀 {{domxref("ReadableStream.ReadableStream", "ReadableStream()")}} 클래스)등을 핸들링할 수 있습니다.
+  - : Represents a readable stream of data. It can be used to handle response streams of the [Fetch API](/en-US/docs/Web/API/Fetch_API), or developer-defined streams (e.g. a custom {{domxref("ReadableStream.ReadableStream", "ReadableStream()")}} constructor).
 - {{domxref("ReadableStreamDefaultReader")}}
-  - : 네트워크(예, fetch 요청)등에서 전달된 스트림 데이터를 처리하는 기본 Reader를 반환합니다.
+  - : Represents a default reader that can be used to read stream data supplied from a network (e.g. a fetch request).
 - {{domxref("ReadableStreamDefaultController")}}
-  - : {{domxref("ReadableStream")}}의 상태나 내부 큐를 컨트롤 할 수 있는 기본 컨트롤러를 반환합니다. 기본 컨트롤러는 Byte 스트림 외의 스트림에만 해당합니다.
+  - : Represents a controller allowing control of a {{domxref("ReadableStream")}}'s state and internal queue. Default controllers are for streams that are not byte streams.
 
-### 쓰기 스트림(writable streams)
+### Writable streams
 
 - {{domxref("WritableStream")}}
-  - : 목적지 스트림에 데이터를 쓰기 위한 표준 추상 인터페이스를 제공하는 객체입니다. 이 객체는 내장 백프레셔와 큐잉을 구현하고 있습니다.
+  - : Provides a standard abstraction for writing streaming data to a destination, known as a sink. This object comes with built-in backpressure and queuing.
 - {{domxref("WritableStreamDefaultWriter")}}
-  - : 쓰기 스트림에 데이터 조각들을 쓰기 위한 기본 Writer 객체를 반환한다.
+  - : Represents a default writable stream writer that can be used to write chunks of data to a writable stream.
 - {{domxref("WritableStreamDefaultController")}}
-  - : {{domxref("WritableStream")}} 상태를 컨트롤하는 기본 컨트롤러를 반환한다. `WritableStream`을 생성하면 해당 스트림을 컨트롤 하기 위해 `WritableStreamDefaultController` 인스턴스가 내부적으로 생성된다.
+  - : Represents a controller allowing control of a {{domxref("WritableStream")}}'s state. When constructing a `WritableStream`, the underlying sink is given a corresponding `WritableStreamDefaultController` instance to manipulate.
 
-### 관련 스트림 API와 기능
+### Transform Streams
+
+- {{domxref("TransformStream")}}
+  - : Represents a set of transformable data.
+- {{domxref("TransformStreamDefaultController")}}
+  - : Provides methods to manipulate the {{domxref("ReadableStream")}} and {{domxref("WritableStream")}} associated with a transform stream.
+
+### Related stream APIs and operations
 
 - {{domxref("ByteLengthQueuingStrategy")}}
-  - : 스트림을 생성할 때 기본으로 사용 할 내장 byte length queuing strategy를 제공합니다.
+  - : Provides a built-in byte length queuing strategy that can be used when constructing streams.
 - {{domxref("CountQueuingStrategy")}}
-  - : 스트림을 생성할 때 기본적으로 사용 할 내장 chunk counting queuing strategy를 제공합니다..
+  - : Provides a built-in chunk counting queuing strategy that can be used when constructing streams.
 
-### 외부 API 확장
+### Extensions to other APIs
 
 - {{domxref("Request")}}
-  - : 새 `Request` 객체가 생성될 때 `RequestInit` 딕셔너리의 `body`에 {{domxref("ReadableStream")}} 를 전달할 수 있습니다. 이 `Request`는 {{domxref("WindowOrWorkerGlobalScope.fetch()")}} 에 전달되에서 스트림을 fetch하는데 사용됩니다.
-- {{domxref("Body")}}
-  - : [fetch request](/ko/docs/Web/API/WindowOrWorkerGlobalScope/fetch) 성공 시 기본적으로 {{domxref("Body")}} {{domxref("ReadableStream")}}로 제공되며, reader를 붙여 데이터를 읽어들일 수 있습니다.
+  - : When a new `Request` object is constructed, you can pass it a {{domxref("ReadableStream")}} in the `body` property of its `RequestInit` dictionary. This `Request` could then be passed to a {{domxref("fetch()")}} to commence fetching the stream.
+- {{domxref("Response.body")}}
+  - : The response body returned by a successful [fetch request](/en-US/docs/Web/API/fetch) is exposed by default as a {{domxref("ReadableStream")}}, and can have a reader attached to it, etc.
 
-### ByteStream 관련 인터페이스
-
-> **경고:** **중요**: 아래 항목들은 아직 구현된 곳이 없으며, 스펙의 세부 사항이 구현할 수 있을 만큼 충분한 지 논의가 진행중입니다. 추후 변경될 수 있습니다.
+### ByteStream-related interfaces
 
 - {{domxref("ReadableStreamBYOBReader")}}
-  - : 개발자가 직접 제공하여 stream data를 읽을 수 있는 BYOB ("bring your own buffer") reader를 표현합니다. (예 커스텀 {{domxref("ReadableStream.ReadableStream", "ReadableStream()")}} 생성자).
+  - : Represents a BYOB ("bring your own buffer") reader that can be used to read stream data supplied by the developer (e.g. a custom {{domxref("ReadableStream.ReadableStream", "ReadableStream()")}} constructor).
 - {{domxref("ReadableByteStreamController")}}
-  - : {{domxref("ReadableStream")}}의 상태와 내부 큐를 컨트롤 하는 컨트롤러 객체를 표현합니다. Byte stream 컨트롤러는 byte stream을 위한 컨트롤러입니다.
+  - : Represents a controller allowing control of a {{domxref("ReadableStream")}}'s state and internal queue. Byte stream controllers are for byte streams.
 - {{domxref("ReadableStreamBYOBRequest")}}
-  - : {{domxref("ReadableByteStreamController")}}의 request를 표현합니다.
+  - : Represents a pull into request in a {{domxref("ReadableByteStreamController")}}.
 
-## 예제
+## Examples
 
-Streams API 문서와 참조할 만한 예제를 함께 작성하였습니다 — [mdn/dom-examples/streams](https://github.com/mdn/dom-examples/tree/master/streams) 를 참조하세요. 예제는 아래와 같습니다.:
+We have created a directory of examples to go along with the Streams API documentation — see [mdn/dom-examples/streams](https://github.com/mdn/dom-examples/tree/main/streams). The examples are as follows:
 
-- [Simple stream pump](http://mdn.github.io/dom-examples/streams/simple-pump/): ReadableStream에서 어떻게 데이터를 읽어들여 다른 곳으로 전달하는지 보여줍니다.
-- [Grayscale a PNG](http://mdn.github.io/dom-examples/streams/grayscale-png/): PNG file의 ReadableStream을 통해 grayscale로 변경하는 방법을 보여줍니다.
-- [Simple random stream](http://mdn.github.io/dom-examples/streams/simple-random-stream/): 커스텀 스트림을 통해 무작위 문자열을 생성하고, 데이터 청크로 큐잉한 뒤, 다시 읽어들이는 방법에 대해 설명합니다.
-- [Simple tee example](http://mdn.github.io/dom-examples/streams/simple-tee-example/): 이 예제는 simple random stream 예제를 확장하여, 스트림을 분할하고 각 스트림이 독립적으로 데이터를 읽는 방법을 보여줍니다.
-- [Simple writer](http://mdn.github.io/dom-examples/streams/simple-writer/): Writable stream에 데이터를 쓰는 방법을 설명하고, 스트림 데이터를 디코드하여 UI로 표현하는 방법을 보여줍니다.
-- [Unpack chunks of a PNG](http://mdn.github.io/dom-examples/streams/png-transform-stream/): [`pipeThrough()`](/ko/docs/Web/API/ReadableStream/pipeThrough) 을 통해 PNG file을 PNG 청크 스트림으로 변환하는 방식으로 ReadableStream을 다른 데이터 타입 스트림으로 전환하는 방법을 설명합니다.
+- [Simple stream pump](https://mdn.github.io/dom-examples/streams/simple-pump/): This example shows how to consume a ReadableStream and pass its data to another.
+- [Grayscale a PNG](https://mdn.github.io/dom-examples/streams/grayscale-png/): This example shows how a ReadableStream of a PNG can be turned into grayscale.
+- [Simple random stream](https://mdn.github.io/dom-examples/streams/simple-random-stream/): This example shows how to use a custom stream to generate random strings, enqueue them as chunks, and then read them back out again.
+- [Simple tee example](https://mdn.github.io/dom-examples/streams/simple-tee-example/): This example extends the Simple random stream example, showing how a stream can be teed and both resulting streams can be read independently.
+- [Simple writer](https://mdn.github.io/dom-examples/streams/simple-writer/): This example shows how to write to a writable stream, then decode the stream and write the contents to the UI.
+- [Unpack chunks of a PNG](https://mdn.github.io/dom-examples/streams/png-transform-stream/): This example shows how [`pipeThrough()`](/en-US/docs/Web/API/ReadableStream/pipeThrough) can be used to transform a ReadableStream into a stream of other data types by transforming a data of a PNG file into a stream of PNG chunks.
 
-다른 개발자의 예제:
+Examples from other developers:
 
 - [Progress Indicators with Streams, Service Workers, & Fetch](https://fetch-progress.anthum.com/).
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 더 보기
+## See also
 
-- [Streams API 개](/ko/docs/Web/API/Streams_API/Concepts)념
-- [Readable stream 사용하기](/ko/docs/Web/API/Streams_API/Using_readable_streams)
-- [Writable stream 사용하기](/ko/docs/Web/API/Streams_API/Using_writable_streams)
+- [Streams API concepts](/en-US/docs/Web/API/Streams_API/Concepts)
+- [Using readable streams](/en-US/docs/Web/API/Streams_API/Using_readable_streams)
+- [Using readable byte streams](/en-US/docs/Web/API/Streams_API/Using_readable_byte_streams)
+- [Using writable streams](/en-US/docs/Web/API/Streams_API/Using_writable_streams)

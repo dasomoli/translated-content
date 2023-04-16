@@ -1,126 +1,138 @@
 ---
-title: <cite>
+title: "<cite>: The Citation element"
 slug: Web/HTML/Element/cite
+page-type: html-element
+browser-compat: html.elements.cite
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<cite>` 요소**는 저작물의 출처를 표기할 때 사용하며, 제목을 반드시 포함해야 합니다. 적절한 맥락 아래에서는 출처를 축약해서 표기할 수 있습니다.
+The **`<cite>`** [HTML](/en-US/docs/Web/HTML) element is used to mark up the title of a cited creative work. The reference may be in an abbreviated form according to context-appropriate conventions related to citation metadata.
 
 {{EmbedInteractiveExample("pages/tabbed/cite.html", "tabbed-standard")}}
 
-<p class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</p>
+## Attributes
 
-<table class="properties">
-  <tbody>
-    <tr>
-      <th scope="row">
-        <a
-          href="/ko/docs/Web/Guide/HTML/%EC%BB%A8%ED%85%90%ED%8A%B8_%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC"
-          >콘텐츠 카테고리</a
-        >
-      </th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >,
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >, 뚜렷한 콘텐츠.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 콘텐츠</th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">태그 생략</th>
-      <td>{{no_tag_omission}}</td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 부모 요소</th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >를 허용하는 모든 요소.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>모두</td>
-    </tr>
-    <tr>
-      <th scope="row">DOM 인터페이스</th>
-      <td>{{domxref("HTMLElement")}}</td>
-    </tr>
-  </tbody>
-</table>
+This element only includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-## 특성
+## Usage notes
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)만 포함합니다.
+In the context of the `<cite>` element, a creative work that might be cited could be, for example, one of the following:
 
-## 사용 일람
+- A book
+- A research paper
+- An essay
+- A poem
+- A musical score
+- A song
+- A play or film script
+- A film
+- A television show
+- A game
+- A sculpture
+- A painting
+- A theatrical production
+- A play
+- An opera
+- A musical
+- An exhibition
+- A legal case report
+- A computer program
+- A website
+- A web page
+- A blog post or comment
+- A forum post or comment
+- A tweet
+- A Facebook post
+- A written or oral statement
+- And so forth.
 
-`<cite>` 요소의 저작물로는 다음과 같은 예제를 들 수 있습니다.
+To include a reference to the source of quoted material which is contained within a {{HTMLElement("blockquote")}} or {{HTMLElement("q")}} element, use the [`cite`](/en-US/docs/Web/HTML/Element/blockquote#cite) attribute on the element.
 
-- 책
-- 논문
-- 에세이
-- 시
-- 악보
-- 음악
-- 대본
-- 영화
-- TV 쇼
-- 게임
-- 조각
-- 그림
-- 연극
-- 공연
-- 오페라
-- 뮤지컬
-- 전시회
-- 판례
-- 컴퓨터 프로그램
-- 웹사이트
-- 웹페이지
-- 블로그 글과 댓글
-- 게시판 글과 댓글
-- 트윗
-- Facebook 글
-- 성명서
-- 기타 등등
+Typically, browsers style the contents of a `<cite>` element in italics by default. To avoid this, apply the CSS {{cssxref("font-style")}} property to the `<cite>` element.
 
-W3C 명세는 `<cite>` 요소로 저작물의 출처를 표기할 때 저작자도 표기할 수 있음을 명시하고 있습니다. 그러나 정반대로, WHATWG 명세는 사람 이름을 어떤 상황에서도 **절대** 포함하지 말아야 한다고 적혀있다는 점을 알아두는 것이 좋습니다.
-
-{{htmlelement("blockquote")}}, {{htmlelement("q")}} 요소가 가진 인용문의 출처를 나타내려면 {{htmlattrxref("cite", "blockquote")}} 특성을 사용하세요.
-
-보통 브라우저는 `<cite>` 요소를 그릴 때 기울임꼴로 표현합니다. 기울임꼴을 제거하려면 CSS {{cssxref("font-style")}} 속성을 `<cite>`에 적용하세요.
-
-## 예제
+## Examples
 
 ```html
 <p>More information can be found in <cite>[ISO-0000]</cite>.</p>
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample("예제", 640, 60)}}
+{{EmbedLiveSample("Example", 640, 80)}}
 
-## 명세
+## Technical summary
+
+<table class="properties">
+  <tbody>
+    <tr>
+      <th scope="row">
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
+      </th>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
+        >,
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >, palpable content.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted content</th>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >Phrasing content</a
+        >.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Tag omission</th>
+      <td>{{no_tag_omission}}</td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted parents</th>
+      <td>
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >phrasing content</a
+        >.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
+          >No corresponding role</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>Any</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
+      <td>
+        {{domxref("HTMLElement")}} Up to Gecko 1.9.2 (Firefox 4)
+        inclusive, Firefox implements the
+        {{domxref("HTMLSpanElement")}} interface for this element.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 긴 인용문을 위한 {{HTMLElement("blockquote")}} 요소.
-- 인라인 인용문을 위한 {{HTMLElement("q")}} 요소.
+- The element {{HTMLElement("blockquote")}} for long quotations.
+- The element {{HTMLElement("q")}} for inline quotations and the [`cite`](/en-US/docs/Web/HTML/Element/q#cite) attribute.

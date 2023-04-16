@@ -1,115 +1,116 @@
 ---
-title: Svelte 할 일 목록 앱 시작
+title: Starting our Svelte to-do list app
 slug: >-
-    Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_Todo_list_beginning
-l10n:
-  sourceCommit: 4a5ceb89ac004d087669aeee3c26475c2207787f
+  Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_Todo_list_beginning
 ---
 
 {{LearnSidebar}}
-
 {{PreviousMenuNext("Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started","Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_variables_props", "Learn/Tools_and_testing/Client-side_JavaScript_frameworks")}}
 
-이제 Svelte에서 작동하는 방식에 대한 기본적인 이해가 있으므로 예제 앱인 할 일 목록을 구축할 수 있습니다. 이 글에서는 먼저 앱의 요구되는 기능을 살펴본 다음 `Todos.svelte` 컴포넌트를 만들고 정적 마크업과 스타일을 배치하고 이어지는 문서들에서 진행할 할 일 목록 앱의 기능 개발을 시작 할 수 있는 모든 준비를 마칩니다.
+Now that we have a basic understanding of how things work in Svelte, we can start building our example app: a to-do list. In this article we will first have a look at the desired functionality of our app, and then we'll create a `Todos.svelte` component and put static markup and styles in place, leaving everything ready to start developing our to-do list app features, which we'll go on to in subsequent articles.
 
-우리는 사용자가 작업을 탐색, 추가 및 삭제할 수 있고 작업을 완료로 표시할 수 있기를 바랍니다. 이것이 이 튜토리얼 시리즈에서 개발할 기본 기능이 될 것이며 그 과정에서 몇 가지 고급 개념도 살펴볼 것입니다.
+We want our users to be able to browse, add and delete tasks, and also to mark them as complete. This will be the basic functionality that we'll be developing in this tutorial series, and we'll look at some more advanced concepts along the way too.
 
 <table>
   <tbody>
     <tr>
-      <th scope="row">전제사항:</th>
+      <th scope="row">Prerequisites:</th>
       <td>
         <p>
-          적어도
-          <a href="/ko/docs/Learn/HTML">HTML</a>,
-          <a href="/ko/docs/Learn/CSS">CSS</a>, and
-          <a href="/ko/docs/Learn/JavaScript">JavaScript</a>
-          언어의 사용에 익숙하기를 권장합니다. 그리고
+          At minimum, it is recommended that you are familiar with the core
+          <a href="/en-US/docs/Learn/HTML">HTML</a>,
+          <a href="/en-US/docs/Learn/CSS">CSS</a>, and
+          <a href="/en-US/docs/Learn/JavaScript">JavaScript</a> languages, and
+          have knowledge of the
           <a
-            href="/ko/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line"
-            >터미널/커맨트 라인</a
-          >의 사용법에 대해서도 지식이 있어야합니다.
+            href="/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line"
+            >terminal/command line</a
+          >.
         </p>
         <p>
-        당신은 앱을 컴파일하고 빌드하기 위한 노드와 npm이 설치된 터미널이 필요합니다.
+          You'll need a terminal with node + npm installed to compile and build
+          your app.
         </p>
       </td>
     </tr>
     <tr>
-      <th scope="row">목표:</th>
+      <th scope="row">Objective:</th>
       <td>
-        어떻게 Svelte 컴포넌트를 만드는 방법을 배우기 위해, 다른 컴포넌트 내부에 렌더링하고, props를 사용하여 데이터를 전달하고 state를 저장합니다.
+        To learn how to create a Svelte component, render it inside another
+        component, pass data into it using props, and save its state.
       </td>
     </tr>
   </tbody>
 </table>
 
-## 함께 코드를 작성해봅시다
+## Code along with us
 
 ### Git
 
-Git 레포지토리를 복제하세요(당신이 이미 복제를 한게 아니라면).
+Clone the GitHub repo (if you haven't already done it) with:
 
 ```bash
 git clone https://github.com/opensas/mdn-svelte-tutorial.git
 ```
 
-그런 다음 현재 앱의 상태로 이동하기 위해 다음을 실행하세요.
+Then to get to the current app state, run
 
 ```bash
 cd mdn-svelte-tutorial/02-starting-our-todo-app
 ```
 
-폴더의 내용을 직접 다운로드 할 수도 있습니다.
+Or directly download the folder's content:
 
 ```bash
 npx degit opensas/mdn-svelte-tutorial/02-starting-our-todo-app
 ```
 
-`npm install && npm run dev` 명령어로 실행하여 개발 모드에서 앱을 실행해주세요.
+Remember to run `npm install && npm run dev` to start your app in development mode.
 
 ### REPL
 
-REPL을 사용하여 우리와 함께 코딩하려면 <https://svelte.dev/repl/b7b831ea3a354d3789cefbc31e2ca495?version=3.23.2>에서 시작하세요.
+To code along with us using the REPL, start at
 
-## 할 일 목록 앱의 기능들
+<https://svelte.dev/repl/b7b831ea3a354d3789cefbc31e2ca495?version=3.23.2>
 
-할 일 목록 앱이 준비되면 다음과 같이 표시됩니다.
+## To-do list app features
 
-![일반적인 할 일 목록 앱, '해야 할 일'이라는 제목이 있고 더 많은 할일을 입력할 수 있으며 할 일이 체크 박스와 함께 배열됨](01-todo-list-app.png)
+This is what our to-do list app will look like once it's ready:
 
-이 UI를 사용하여 사용자는 다음을 수행할 수 있습니다.
+![typical to-do list app, with a title of 'what needs to be done', an input to enter more to-dos, and a list of to-dos with checkboxes](01-todo-list-app.png)
 
-- 작업 찾아보기
-- 작업을 삭제하지 않고 완료/보류로 표시
-- 작업 제거
-- 새 작업 추가
-- 상태별로 작업 필터링: 모든 작업, 활성 작업 또는 완료된 작업
-- 작업 편집
-- 모든 작업을 활성/완료로 표시
-- 완료된 모든 작업 제거
+Using this UI our user will be able to:
 
-## 첫 번째 컴포넌트 만들기
+- Browse their tasks
+- Mark tasks as completed/pending without deleting them
+- Remove tasks
+- Add new tasks
+- Filter tasks by status: all tasks, active tasks, or completed tasks
+- Edit tasks
+- Mark all tasks as active/completed
+- Remove all completed tasks
 
-`Todos.svelte` 컴포넌트를 생성해 봅시다. 여기에는 할 일 목록이 포함됩니다.
+## Building our first component
 
-1. 새 폴더 `src/components`를 만듭니다.
+Let's create a `Todos.svelte` component. This will contain our list of to-dos.
 
-    > **참고:** `src` 폴더 안의 아무 곳에나 컴포넌트를 넣을 수 있습니다. 하지만 `components` 폴더는 따라야하는 규칙으로 인정되고 컴포넌트를 쉽게 찾을 수 있습니다.
+1. Create a new folder — `src/components`.
 
-2. 다음 내용을 포함하는 `src/components/Todos.svelte`라는 파일을 만드세요.
+   > **Note:** You can put your components anywhere inside the `src` folder, but the `components` folder is a recognized convention to follow, allowing you to find your components easily.
 
-   ```html
-   <h1>Svelte 할 일 목록</h1>
-   ```
-
-3. `public/index.html`에서 `title` 요소를 변경하여 _Svelte 할 일 목록_라는 텍스트를 포함하도록 합니다.
+2. Create a file named `src/components/Todos.svelte` with the following content:
 
    ```html
-   <title>Svelte 할 일 목록</title>
+   <h1>Svelte to-do list</h1>
    ```
 
-4. `src/App.svelte` 파일을 열고 다음의 내용으로 대체하세요.
+3. Change the `title` element in `public/index.html` to contain the text _Svelte to-do list_:
+
+   ```html
+   <title>Svelte to-do list</title>
+   ```
+
+4. Open `src/App.svelte` and replace its contents with the following:
 
    ```html
    <script>
@@ -119,9 +120,9 @@ REPL을 사용하여 우리와 함께 코딩하려면 <https://svelte.dev/repl/b
    <Todos />
    ```
 
-5. 개발 모드에서 Svelte는 컴포넌트에 존재하지 않는 속성을 지정할 때 브라우저 콘솔에 경고를 표시합니다. 이 경우에는 `App` 내부에서는 사용되지 않지만 `src/main.js` 내부의 `App` 컴포넌트를 인스턴스화할 때 지정되는 `name` 속성이 있습니다. 콘솔은 현재 "\<App>이 알 수 없는 속성 '이름'으로 생성되었습니다"라는 메시지를 표시해야 합니다. 이를 제거하려면 `src/main.js`에서 `name` 속성을 제거하세요. 이제 다음과 같이 표시됩니다.
+5. In development mode, Svelte will issue a warning in the browser console when specifying a prop that doesn't exist in the component; in this case we have a `name` prop being specified when we instantiate the `App` component inside `src/main.js`, which isn't used inside `App`. The console should currently give you a message along the lines of "\<App> was created with unknown prop 'name'". To get rid of this, remove the `name` prop from `src/main.js`; it should now look like so:
 
-    ```js
+   ```js
    import App from "./App.svelte";
 
    const app = new App({
@@ -131,59 +132,59 @@ REPL을 사용하여 우리와 함께 코딩하려면 <https://svelte.dev/repl/b
    export default app;
    ```
 
-이제 테스트 서버 URL을 확인하면 `Todos.svelte` 컴포넌트가 렌더링되는 것을 볼 수 있습니다.
+Now if you check your testing server URL you'll see our `Todos.svelte` component being rendered:
 
 ![basic component rendering which a title that says 'Svelte to-do list'](02-todos-component-rendered.png)
 
-## 정적 마크업 추가
+## Adding static markup
 
-당장은 우리는 앱의 정적 마크업 표현으로 시작할 것이므로 앱이 어떻게 보이는지 확인할 수 있습니다. 다음을 복사하여 `Todos.svelte` 컴포넌트 파일에 붙여넣고 기존 콘텐츠를 대체합니다.
+For the moment we will start with a static markup representation of our app, so you can see what it will look like. Copy and paste the following into our `Todos.svelte` component file, replacing the existing content:
 
 ```html
 <!-- Todos.svelte -->
 <div class="todoapp stack-large">
-  <!-- 새로운 할일 -->
+  <!-- NewTodo -->
   <form>
     <h2 class="label-wrapper">
-      <label for="todo-0" class="label__lg"> 무엇을 해야하나요? </label>
+      <label for="todo-0" class="label__lg"> What needs to be done? </label>
     </h2>
     <input type="text" id="todo-0" autocomplete="off" class="input input__lg" />
     <button type="submit" disabled="" class="btn btn__primary btn__lg">
-      추가
+      Add
     </button>
   </form>
 
-  <!-- 필터 -->
+  <!-- Filter -->
   <div class="filters btn-group stack-exception">
     <button class="btn toggle-btn" aria-pressed="true">
-      <span class="visually-hidden">나타내기</span>
-      <span>모두 보기</span>
-      <span class="visually-hidden">작업</span>
+      <span class="visually-hidden">Show</span>
+      <span>All</span>
+      <span class="visually-hidden">tasks</span>
     </button>
     <button class="btn toggle-btn" aria-pressed="false">
-      <span class="visually-hidden">나타내기</span>
-      <span>활성화</span>
-      <span class="visually-hidden">작업</span>
+      <span class="visually-hidden">Show</span>
+      <span>Active</span>
+      <span class="visually-hidden">tasks</span>
     </button>
     <button class="btn toggle-btn" aria-pressed="false">
-      <span class="visually-hidden">나타내기</span>
-      <span>완료</span>
-      <span class="visually-hidden">작업</span>
+      <span class="visually-hidden">Show</span>
+      <span>Completed</span>
+      <span class="visually-hidden">tasks</span>
     </button>
   </div>
 
-  <!-- 할 일 상태 -->
-  <h2 id="list-heading">3개 항목 중 2개 완료</h2>
+  <!-- TodosStatus -->
+  <h2 id="list-heading">2 out of 3 items completed</h2>
 
-  <!-- 할 일들 -->
+  <!-- Todos -->
   <ul role="list" class="todo-list stack-large" aria-labelledby="list-heading">
-    <!-- 할 일 1 (수정 모드) -->
+    <!-- todo-1 (editing mode) -->
     <li class="todo">
       <div class="stack-small">
         <form class="stack-small">
           <div class="form-group">
             <label for="todo-1" class="todo-label">
-              'Svelte 시작 앱 만들기'의 새 이름
+              New name for 'Create a Svelte starter app'
             </label>
             <input
               type="text"
@@ -193,57 +194,57 @@ REPL을 사용하여 우리와 함께 코딩하려면 <https://svelte.dev/repl/b
           </div>
           <div class="btn-group">
             <button class="btn todo-cancel" type="button">
-              취소
-              <span class="visually-hidden">Svelte 스타터 앱 만들기</span>
+              Cancel
+              <span class="visually-hidden">renaming Create a Svelte starter app</span>
             </button>
             <button class="btn btn__primary todo-edit" type="submit">
-              저장
-              <span class="visually-hidden">Svelte 스타터 앱 만들기의 새 이름</span>
+              Save
+              <span class="visually-hidden">new name for Create a Svelte starter app</span>
             </button>
           </div>
         </form>
       </div>
     </li>
 
-    <!-- 할 일 2 -->
+    <!-- todo-2 -->
     <li class="todo">
       <div class="stack-small">
         <div class="c-cb">
           <input type="checkbox" id="todo-2" checked />
           <label for="todo-2" class="todo-label">
-            첫 번째 컴포넌트 생성
+            Create your first component
           </label>
         </div>
         <div class="btn-group">
           <button type="button" class="btn">
-            수정
-            <span class="visually-hidden">첫 번째 새로운 컴포넌트 생성</span>
+            Edit
+            <span class="visually-hidden">Create your first component</span>
           </button>
           <button type="button" class="btn btn__danger">
-            삭제
-            <span class="visually-hidden">첫 번째 새로운 컴포넌트 생성</span>
+            Delete
+            <span class="visually-hidden">Create your first component</span>
           </button>
         </div>
       </div>
     </li>
 
-    <!-- 할 일 3 -->
+    <!-- todo-3 -->
     <li class="todo">
       <div class="stack-small">
         <div class="c-cb">
           <input type="checkbox" id="todo-3" />
           <label for="todo-3" class="todo-label">
-            나머지 튜토리얼 완료
+            Complete the rest of the tutorial
           </label>
         </div>
         <div class="btn-group">
           <button type="button" class="btn">
-            수정
-            <span class="visually-hidden">나머지 튜토리얼 완료</span>
+            Edit
+            <span class="visually-hidden">Complete the rest of the tutorial</span>
           </button>
           <button type="button" class="btn btn__danger">
-            삭제
-            <span class="visually-hidden">나머지 튜토리얼 완료</span>
+            Delete
+            <span class="visually-hidden">Complete the rest of the tutorial</span>
           </button>
         </div>
       </div>
@@ -252,47 +253,47 @@ REPL을 사용하여 우리와 함께 코딩하려면 <https://svelte.dev/repl/b
 
   <hr />
 
-  <!-- 다른 액션 -->
+  <!-- MoreActions -->
   <div class="btn-group">
-    <button type="button" class="btn btn__primary">모두 체크</button>
-    <button type="button" class="btn btn__primary">완전히 삭제</button>
+    <button type="button" class="btn btn__primary">Check all</button>
+    <button type="button" class="btn btn__primary">Remove completed</button>
   </div>
 </div>
 ```
 
-렌더링된 것을 다시 확인하면 다음과 같이 표시됩니다.
+Check the rendered out again, and you'll see something like this:
 
 ![A to-do list app, but unstyled, with a title of `what needs to be done`, inputs, checkboxes, etc.](03-unstyled-todo-app.png)
 
-위의 HTML 마크업은 스타일이 좋지 않으며 기능적으로도 쓸모가 없습니다. 그렇지만 마크업을 살펴보고 이것이 우리가 원하는 기능과 어떤 관련이 있는지 살펴보겠습니다.
+The HTML markup above is not very nicely styled and it's also functionally useless. Nevertheless, let's have a look at the markup and see how it relates to our desired features:
 
-- 새 작업을 입력하기 위한 레이블 및 텍스트 상자
-- 작업 상태별로 필터링하는 세 개의 버튼
-- 총 작업 수 및 완료된 작업을 표시하는 레이블
-- 각 작업에 대한 항목을 포함하는 정렬되지 않은 목록
-- 작업이 편집 중일 때, 각 항목에는 입력과 수정 사항을 취소하거나 저장하는 두 개의 버튼이 있습니다.
-- 작업이 편집되지 않는 경우, 완료 상태를 설정하는 확인란과 작업을 편집하거나 삭제하는 두 개의 버튼이 있습니다.
-- 마지막으로 모든 작업을 선택/선택 취소하고 완료된 작업을 제거하는 두 개의 버튼이 있습니다.
+- A label and a text box for entering new tasks
+- Three buttons to filter by task status
+- A label showing the total number of tasks and the completed tasks
+- An unordered list, which holds a list item for each task
+- When the task is being edited, the list item has an input and two button to cancel or save modifications
+- If the task is not being edited, there's a checkbox to set the completed status, and two buttons to edit or delete the task
+- Finally there are two buttons to check/uncheck all task and to remove completed tasks
 
-이어지는 문서에는 이러한 모든 기능이 작동하는 것 외에도 더 많은 기능을 얻을 수 있습니다.
+In subsequent articles we'll get all these features working, and more besides.
 
-### 할 일 목록의 접근성 관련 기능
+### Accessibility features of the to-do list
 
-여기에서 몇 가지 특이한 특성을 발견할 수 있습니다. 예를 들어
+You may notice some unusual attributes here. For example:
 
 ```html
 <button class="btn toggle-btn" aria-pressed="true">
-  <span class="visually-hidden">나타내기</span>
-  <span>모두 보기</span>
-  <span class="visually-hidden">작업</span>
+  <span class="visually-hidden">Show</span>
+  <span>All</span>
+  <span class="visually-hidden">tasks</span>
 </button>
 ```
 
-여기서 'aria-pressed'는 버튼이 '누름' 또는 '누르지 않음'의 두 가지 상태 중 하나일 수 있음을 보조 기술(예: Screen Reader)에 알려줍니다. 켜짐과 꺼짐에 대한 아날로그로 생각하십시오. 값을 'true'로 설정하면 기본적으로 버튼을 누른 상태가 됩니다.
+Here, `aria-pressed` tells assistive technology (like screen readers) that the button can be in one of two states: `pressed` or `unpressed`. Think of these as analogs for on and off. Setting a value of `true` means that the button is pressed by default.
 
-CSS를 포함하지 않았기 때문에 `visual-hidden` 클래스는 아직 효과가 없습니다. 하지만 스타일을 적용하면 이 클래스의 모든 요소는 화면을 볼 수 있는 사용자에게는 숨겨지고 Screen Reader 사용자는 계속 사용할 수 있습니다. 이는 볼 수 있는 사용자에게는 이러한 단어(클래스, 마크업)가 필요하지 않기 때문입니다. 추가 시각적 컨텍스트가 없는 Screen Reader 사용자를 위해 버튼이 수행하는 작업에 대한 자세한 정보를 제공하기 위해 존재합니다.
+The class `visually-hidden` has no effect yet, because we have not included any CSS. Once we have put our styles in place, though, any element with this class will be hidden from sighted users and still available to screen reader users — this is because these words are not needed by sighted users; they are there to provide more information about what the button does for screen reader users that do not have the extra visual context to help them.
 
-아래에서 다음 `<ul>` 요소를 찾을 수 있습니다.
+Further down, you can find the following `<ul>` element:
 
 ```html
 <ul
@@ -301,27 +302,27 @@ CSS를 포함하지 않았기 때문에 `visual-hidden` 클래스는 아직 효�
   aria-labelledby="list-heading">
 ```
 
-'role' 속성은 보조 기술이 요소가 어떤 의미론적 가치를 가지고 있는지 또는 그 목적이 무엇인지 설명하는 데 도움이 됩니다. `<ul>`은 기본적으로 목록처럼 취급되지만 추가하려는 스타일로 인해 해당 기능이 중단됩니다. 'role' 속성은 `<ul>` 요소에 대한 "목록" 의미를 복원합니다. 이것이 필요한 이유에 대해 자세히 알아보려면 Scott O'Hara의 기사 "Fixing Lists"를 참조하십시오.
+The `role` attribute helps assistive technology explain what kind of semantic value an element has — or what its purpose is. A `<ul>` is treated like a list by default, but the styles we're about to add will break that functionality. This role will restore the "list" meaning to the `<ul>` element. If you want to learn more about why this is necessary, you can check out Scott O'Hara's article "Fixing Lists".
 
-`aria-labelledby` 속성은 보조 기술에 `id`가 `list-heading`인 `<h2>`를 아래 목록의 목적을 설명하는 레이블로 취급하고 있음을 알려줍니다. 이 연결을 만들면 목록에 더 많은 정보를 제공하여 Screen Reader 사용자가 목록의 목적을 더 잘 이해할 수 있습니다.
+The `aria-labelledby` attribute tells assistive technologies that we're treating our `<h2>` with an `id` of `list-heading` as the label that describes the purpose of the list beneath it. Making this association gives the list a more informative context, which could help screen reader users better understand the purpose of it.
 
-지금은 Svelte가 접근성을 다루는 방법에 대해 이야기하기에 좋은 시간인 것 같습니다. 지금 해봅시다.
+This seems like a good time to talk about how Svelte deals with accessibility; let's do that now.
 
-## Svelte 접근성 지원
+## Svelte accessibility support
 
-Svelte는 접근성을 특별히 강조합니다. 그 의도는 개발자가 "기본적으로" 더 접근하기 쉬운 코드를 작성하도록 장려하는 것입니다. 컴파일러이기 때문에 Svelte는 HTML 템플릿을 정적으로 분석하여 컴포넌트가 컴파일될 때 접근성 경고를 제공할 수 있습니다.
+Svelte has a special emphasis on accessibility. The intention is to encourage developers to write more accessible code "by default". Being a compiler, Svelte can statically analyze our HTML templates to provide accessibility warnings when components are being compiled.
 
-접근성(a11y로 줄임)이 항상 올바른 것은 아니지만 접근할 수 없는 마크업을 작성하면 Svelte가 경고하여 도움을 줍니다.
+Accessibility (shortened to a11y) isn't always easy to get right, but Svelte will help by warning you if you write inaccessible markup.
 
-예를 들어, 해당 `alt` 속성 없이 `<img>` 요소를 `todos.svelte` 컴포넌트에 추가하는 경우.
+For example, if we add an `<img>` element to our `todos.svelte` component without its corresponding `alt` prop:
 
 ```html
-<h1>스벨트 할 일 목록</h1>
+<h1>Svelte To-Do list</h1>
 
 <img height="32" width="88" src="https://www.w3.org/WAI/wcag2A" />
 ```
 
-컴파일러는 다음 경고를 발생시킵니다.
+The compiler will issue the following warning:
 
 ```bash
 (!) Plugin svelte: A11y: <img> element should have an alt attribute
@@ -335,20 +336,20 @@ created public/build/bundle.js in 220ms
 [2020-07-15 04:07:43] waiting for changes...
 ```
 
-편집기는 컴파일러를 호출하기 전에도 이 경고를 표시할 수 있습니다.
+Moreover, our editor can display this warning even before calling the compiler:
 
 ![A code editor window showing an image tag, with a popup error message saying that the element should have an alt attribute](04-svelte-accessibility-support.png)
 
-다음과 같이 `svelte-ignore`로 시작하는 [주석](https://svelte.dev/docs#Comments)을 사용하여 다음 마크업 블록에 대해 이 경고를 무시하도록 Svelte에 지시할 수 있습니다.
+You can tell Svelte to ignore this warning for the next block of markup with a [comment](https://svelte.dev/docs#Comments) beginning with `svelte-ignore`, like this:
 
 ```html
 <!-- svelte-ignore a11y-missing-attribute -->
 <img height="32" width="88" src="https://www.w3.org/WAI/wcag2A" />
 ```
 
-> **참고:** VSCode를 사용하면 _Quick fix…_ 링크를 클릭하거나 <kbd>Ctrl</kbd> + <kbd>.</kbd>를 눌러 무시 주석을 자동으로 추가할 수 있습니다.
+> **Note:** With VSCode you can automatically add this ignore comment by clicking on the _Quick fix…_ link or pressing <kbd>Ctrl</kbd> + <kbd>.</kbd>.
 
-이 경고를 전체적으로 비활성화하려면 다음과 같이 `Svelte` 플러그인 구성 내부의 `rollup.config.js` 파일에 `onwarn` 핸들러를 추가할 수 있습니다.
+If you want to globally disable this warning, you can add this `onwarn` handler to your `rollup.config.js` file inside the configuration for the `Svelte` plugin, like this:
 
 ```js
 plugins: [
@@ -357,15 +358,16 @@ plugins: [
     css: (css) => {
       css.write("public/build/bundle.css");
     },
-    // 경고는 일반적으로 Rollup으로 바로 전달됩니다.
-    // 예를 들어 특정 코드로 경고를 억제하기 위해 여기에서 선택적으로 처리할 수 있습니다.
+    // Warnings are normally passed straight to Rollup. You can
+    // optionally handle them here, for example to squelch
+    // warnings with a particular code
     onwarn: (warning, handler) => {
-      // screen readers에 대해 관심이 없다면 -> 이것은 하지마세요!!!
+      // e.g. I don't care about screen readers -> please DON'T DO THIS!!!
       if (warning.code === "a11y-missing-attribute") {
         return;
       }
 
-      // Rollup이 다른 모든 경고를 정상적으로 처리하도록 합니다.
+      // let Rollup handle all other warnings normally
       handler(warning);
     },
   }),
@@ -374,15 +376,15 @@ plugins: [
 ];
 ```
 
-의도적으로 이러한 경고는 컴파일러 자체에서 구현되며 프로젝트에 추가하도록 선택할 수 있는 플러그인으로 구현되지 않습니다. 아이디어는 기본적으로 마크업에서 a11y 문제를 확인하고 특정 경고를 선택적으로 제외할 수 있도록 하는 것입니다.
+By design, these warnings are implemented in the compiler itself, and not as a plug-in that you may choose to add to your project. The idea is to check for a11y issues in your markup by default and let you opt out of specific warnings.
 
-> **참고:** 예를 들어 빠른 프로토타입을 제작하는 동안과 같이 그럴 만한 이유가 있는 경우에만 이러한 경고를 비활성화해야 합니다. 훌륭한 웹 시민이 되어 최대한 광범위한 사용자 기반이 페이지에 액세스할 수 있도록 하는 것이 중요합니다.
+> **Note:** You should only disable these warnings if you have good reasons to do so, for example while building a quick prototype. It's important to be a good web citizen and make your pages accessible to the broadest possible userbase.
 
-Svelte가 확인하는 접근성 규칙은 JSX 요소에 대한 많은 접근성 규칙에 대한 정적 검사를 제공하는 ESLint용 플러그인[eslint-plugin-jsx-a11y](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y#supported-rules)에서 가져옵니다. Svelte는 컴파일러에서 모두 구현하는 것을 목표로 하며 대부분은 이미 Svelte로 포팅되었습니다. GitHub에서 [여전히 누락된 접근성 검사](https://github.com/sveltejs/svelte/issues/820)를 확인할 수 있습니다. 해당 링크를 클릭하여 각 규칙의 의미를 확인할 수 있습니다.
+The accessibility rules checked by Svelte are taken from [eslint-plugin-jsx-a11y](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y#supported-rules), a plugin for ESLint that provides static checks for many accessibility rules on JSX elements. Svelte aims to implement all of them in its compiler, and most of them have already been ported to Svelte. On GitHub you can see [which accessibility checks are still missing](https://github.com/sveltejs/svelte/issues/820). You can check the meaning of each rule by clicking on its link.
 
-## 마크업 스타일링
+## Styling our markup
 
-할 일 목록을 좀 더 보기 좋게 만들어 봅시다. `public/global.css` 파일의 내용을 다음으로 바꿉니다.
+Let's make the to-do list look a little better. Replace the contents of the file `public/global.css` with the following:
 
 ```css
 /* RESETS */
@@ -685,36 +687,36 @@ body {
 }
 ```
 
-마크업 스타일을 지정하면 이제 모든 것이 더 좋아 보입니다.
+With our markup styled, everything now looks better:
 
-![할 일 목록 앱 스타일 지정, '해야 할 일' 제목, 더 많은 할 일을 추가하기 위한 입력, 체크박스가 있는 할 일 목록](05-styled-todo-app.png)
+![Our to-do list app, styled, with a title of 'what needs to be done', an input to enter more to-dos, and a list of to-dos with checkboxes](05-styled-todo-app.png)
 
-## 지금까지의 코드
+## The code so far
 
 ### Git
 
-이 문서의 끝에서 코드의 상태를 확인하려면 다음과 같이 저장소 사본에 접근하세요.
+To see the state of the code as it should be at the end of this article, access your copy of our repo like this:
 
 ```bash
 cd mdn-svelte-tutorial/03-adding-dynamic-behavior
 ```
 
-또는 폴더의 콘텐츠를 직접 다운로드합니다.
+Or directly download the folder's content:
 
 ```bash
 npx degit opensas/mdn-svelte-tutorial/03-adding-dynamic-behavior
 ```
 
-`npm install && npm run dev` 명령어로 실행하여 개발 모드에서 앱을 실행해주세요.
+Remember to run `npm install && npm run dev` to start your app in development mode.
 
 ### REPL
 
-REPL에서 코드의 현재 상태를 보려면 다음에 방문하십시오.
+To see the current state of the code in a REPL, visit:
 
 <https://svelte.dev/repl/c862d964d48d473ca63ab91709a0a5a0?version=3.23.2>
 
-## 요약
+## Summary
 
-마크업과 스타일 지정을 통해 할 일 목록 앱이 구체화되기 시작했으며 구현해야 하는 기능에 집중할 수 있도록 모든 준비가 완료되었습니다.
+With our markup and styling in place, our to-do list app is starting to take shape, and we have everything ready so that we can start to focus on the features we have to implement.
 
 {{PreviousMenuNext("Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_getting_started","Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_variables_props", "Learn/Tools_and_testing/Client-side_JavaScript_frameworks")}}

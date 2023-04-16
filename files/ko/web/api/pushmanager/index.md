@@ -1,27 +1,29 @@
 ---
 title: PushManager
 slug: Web/API/PushManager
+page-type: web-api-interface
+browser-compat: api.PushManager
 ---
 
 {{ApiRef("Push API")}}
 
-[Push API](/ko/docs/Web/API/Push_API)의 **`PushManager`** 인터페이스는 서드파티 서버에서 알림을 수신하거나, URL에 푸시 알림을 요청하는 방법을 제공합니다.
+The **`PushManager`** interface of the [Push API](/en-US/docs/Web/API/Push_API) provides a way to receive notifications from third-party servers as well as request URLs for push notifications.
 
-`PushManager`는 {{domxref("ServiceWorkerRegistration.pushManager")}} 속성으로 접근할 수 있습니다.
+This interface is accessed via the {{domxref("ServiceWorkerRegistration.pushManager")}} property.
 
-## 속성
+## Instance properties
 
 - {{domxref("PushManager.supportedContentEncodings")}}
-  - : 푸시 메시지의 페이로드를 암호화할 때 지원하는 콘텐츠 인코딩의 목록을 반환합니다.
+  - : Returns an array of supported content codings that can be used to encrypt the payload of a push message.
 
-## 메서드
+## Instance methods
 
 - {{domxref("PushManager.getSubscription()")}}
-  - : 기존의 푸시 구독을 가져옵니다. 해당 구독에 대한 상세 정보를 담은 {{domxref("PushSubscription")}} 객체를 {{jsxref("Promise")}}로 반환합니다. 구독이 존재하지 않으면 프로미스는 `null`로 이행합니다.
+  - : Retrieves an existing push subscription. It returns a {{jsxref("Promise")}} that resolves to a {{domxref("PushSubscription")}} object containing details of an existing subscription. If no existing subscription exists, this resolves to a `null` value.
 - {{domxref("PushManager.permissionState()")}}
-  - : PushManager의 허가 상태로 이행하는 {{jsxref("Promise")}}를 반환합니다. 상태는 `'granted'`, `'denied'`, `'prompt'` 중 하나입니다.
+  - : Returns a {{jsxref("Promise")}} that resolves to the permission state of the current {{domxref("PushManager")}}, which will be one of `'granted'`, `'denied'`, or `'prompt'`.
 - {{domxref("PushManager.subscribe()")}}
-  - : 푸시 서비스에 구독합니다. 해당 구독에 대한 상세 정보를 담은 {{domxref("PushSubscription")}} 객체를 {{jsxref("Promise")}}로 반환합니다. 현재 서비스 워커에 이전 구독이 존재하지 않으면 새로운 푸시 구독을 생성합니다.
+  - : Subscribes to a push service. It returns a {{jsxref("Promise")}} that resolves to a {{domxref("PushSubscription")}} object containing details of a push subscription. A new push subscription is created if the current service worker does not have an existing subscription.
 
 ### Deprecated methods
 
@@ -34,43 +36,41 @@ slug: Web/API/PushManager
 - {{domxref("PushManager.unregister()")}} {{deprecated_inline}}
   - : Unregisters and deletes a specified subscription endpoint. In the updated API, a subscription is unregistered by calling the {{domxref("PushSubscription.unsubscribe()")}} method.
 
-## 예제
+## Example
 
 ```js
-this.onpush = function(event) {
+this.onpush = (event) => {
   console.log(event.data);
   // From here we can write the data to IndexedDB, send it to any open
   // windows, display a notification, etc.
-}
+};
 
-navigator.serviceWorker.register('serviceworker.js').then(
-  function(serviceWorkerRegistration) {
+navigator.serviceWorker
+  .register("serviceworker.js")
+  .then((serviceWorkerRegistration) => {
     serviceWorkerRegistration.pushManager.subscribe().then(
-      function(pushSubscription) {
+      (pushSubscription) => {
         console.log(pushSubscription.endpoint);
         // The push subscription details needed by the application
         // server are now available, and can be sent to it using,
         // for example, an XMLHttpRequest.
-      }, function(error) {
-        // During development it often helps to log errors to the
-        // console. In a production environment it might make sense to
-        // also report information about errors back to the
-        // application server.
-        console.log(error);
+      },
+      (error) => {
+        console.error(error);
       }
     );
   });
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Push API](/ko/docs/Web/API/Push_API)
-- [Service Worker API](/ko/docs/Web/API/Service_Worker_API)
+- [Push API](/en-US/docs/Web/API/Push_API)
+- [Service Worker API](/en-US/docs/Web/API/Service_Worker_API)

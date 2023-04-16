@@ -1,54 +1,77 @@
 ---
 title: AudioDestinationNode
 slug: Web/API/AudioDestinationNode
+page-type: web-api-interface
+browser-compat: api.AudioDestinationNode
 ---
-{{APIRef()}}
 
-`AudioDestinationNode` 은 주어진 컨택스트의 음원의 종착점을 나타냅니다. 보통 스피커를 가리킵니다. 이는 또한 `OfflineAudioContext` 를 사용해 데이터가 녹음되는 노드가 되기도 합니다.
+{{APIRef("Web Audio API")}}
 
-`AudioDestinationNode` has no output (as it _is_ the output, no more `AudioNode` can be linked after it in the audio graph) and one input. 입력받은 음원의 채널의 총 갯수는 반드시 0과 `maxChannelCount값의 사이에 있거나 예외(an exception is raised)가 발생한다.`
+The `AudioDestinationNode` interface represents the end destination of an audio graph in a given context — usually the speakers of your device. It can also be the node that will "record" the audio data when used with an `OfflineAudioContext`.
 
-주어진 `AudioContext` 의 `AudioDestinationNode` 는 {{domxref("AudioContext.destination")}}프로퍼티를 통해 검색이 된다.
+`AudioDestinationNode` has no output (as it _is_ the output, no more `AudioNode` can be linked after it in the audio graph) and one input. The number of channels in the input must be between `0` and the `maxChannelCount` value or an exception is raised.
 
-| Number of inputs       | `1`          |
-| ---------------------- | ------------ |
-| Number of outputs      | `0`          |
-| Channel count mode     | `"explicit"` |
-| Channel count          | `2`          |
-| Channel interpretation | `"speakers"` |
+The `AudioDestinationNode` of a given `AudioContext` can be retrieved using the {{domxref("BaseAudioContext/destination", "AudioContext.destination")}} property.
 
-## Properties
+{{InheritanceDiagram}}
 
-_Inherits properties from its parent,_ _{{domxref("AudioNode")}}_.
+<table class="properties">
+  <tbody>
+    <tr>
+      <th scope="row">Number of inputs</th>
+      <td><code>1</code></td>
+    </tr>
+    <tr>
+      <th scope="row">Number of outputs</th>
+      <td><code>0</code></td>
+    </tr>
+    <tr>
+      <th scope="row">Channel count mode</th>
+      <td><code>"explicit"</code></td>
+    </tr>
+    <tr>
+      <th scope="row">Channel count</th>
+      <td><code>2</code></td>
+    </tr>
+    <tr>
+      <th scope="row">Channel interpretation</th>
+      <td><code>"speakers"</code></td>
+    </tr>
+  </tbody>
+</table>
+
+## Instance properties
+
+_Inherits properties from its parent, {{domxref("AudioNode")}}_.
 
 - {{domxref("AudioDestinationNode.maxChannelCount")}}
-  - : `unsigned long 형의 물리적인 디바이스로 다룰수 있는 최대 채널의 갯수.`
+  - : An `unsigned long` defining the maximum number of channels that the physical device can handle.
 
-## Methods
+## Instance methods
 
-_No specific method; inherits methods from its parent,_ _{{domxref("AudioNode")}}_.
+_No specific method; inherits methods from its parent, {{domxref("AudioNode")}}_.
 
 ## Example
 
-`AudioDestinationNode를 사용하면 복잡한 세팅없이 몇줄의 코드로 오디오 그래프를 확인할 수 있습니다.`
+There is no complex set up for using an `AudioDestinationNode` — by default, this represents the output of the user's system (e.g. their speakers), so you can get it hooked up inside an audio graph using only a few lines of code:
 
 ```js
-var audioCtx = new AudioContext();
-var source = audioCtx.createMediaElementSource(myMediaElement);
+const audioCtx = new AudioContext();
+const source = audioCtx.createMediaElementSource(myMediaElement);
 source.connect(gainNode);
 gainNode.connect(audioCtx.destination);
 ```
 
-To see a more complete implementation, check out one of our MDN Web Audio examples, such as [Voice-change-o-matic](http://mdn.github.io/voice-change-o-matic/) or [Violent Theremin](http://mdn.github.io/violent-theremin/).
+To see a more complete implementation, check out one of our MDN Web Audio examples, such as [Voice-change-o-matic](https://mdn.github.io/webaudio-examples/voice-change-o-matic/) or [Violent Theremin](https://github.com/mdn/webaudio-examples/tree/master/violent-theremin).
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- [Using the Web Audio API](/ko/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)
+- [Using the Web Audio API](/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API)

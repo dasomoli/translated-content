@@ -1,62 +1,79 @@
 ---
-title: History.go()
+title: "History: go() method"
+short-title: go()
 slug: Web/API/History/go
+page-type: web-api-instance-method
+browser-compat: api.History.go
 ---
+
 {{APIRef("History API")}}
 
-**`History.go()`** 메서드는 history 세션에서 특정한 페이지를 로딩합니다. 인자로 전달하는 파라미터 값에 따라 history를 통해서 페이지를 앞 뒤로 이동할 수 있습니다.
+The **`History.go()`** method loads a specific page from the
+session history. You can use it to move forwards and backwards through the history
+depending on the value of a parameter.
 
-이 메서드는 {{glossary("asynchronous")}}(비동기)로 동작합니다. 페이지 앞, 뒤 이동이 언제 이뤄지는지 알려면 {{event("popstate")}} event에 대한 listener를 등록합니다.
+This method is {{glossary("asynchronous")}}. Add a listener for the
+{{domxref("Window/popstate_event", "popstate")}} event in order to determine when the navigation has completed.
 
-## 구문
+## Syntax
 
-```js
-history.go([delta])
+```js-nolint
+go()
+go(delta)
 ```
 
 ### Parameters
 
 - `delta` {{optional_inline}}
-  - : 현재 페이지에서 상대적으로 이동하려고 하는 history의 위치 값. 음수 값은 뒤로 이동하고, 양수 값은 앞으로 이동합니다. 예를 들면 `history.go(2)` 는 현재 페이지에서 2 페이지 앞으로 이동하고, `history.go(-2)` 는 현재 페이지에서 2 페이지 뒤로 이동합니다. 만약 값을 전달하지 않거나, `delta` 값을 0으로 전달한다면, 이는 `location.reload()`를 동작시켰을 때와 동일한 결과를 보입니다. (새로고침)
+  - : The position in the history to which you want to move, relative to the current page.
+    A negative value moves backwards, a positive value moves forwards. So, for example,
+    `history.go(2)` moves forward two pages and `history.go(-2)`
+    moves back two pages. If no value is passed or if `delta` equals 0, it has
+    the same result as calling `location.reload()`.
 
-## 예제
+### Return value
 
-한 페이지 뒤로 가기 ({{domxref("History.back", "back()")}}를 호출한 것과 동일):
+None ({{jsxref("undefined")}}).
+
+## Examples
+
+To move back one page (the equivalent of calling {{domxref("History.back",
+  "back()")}}):
 
 ```js
-history.go(-1)
+history.go(-1);
 ```
 
-{{domxref("History.forward", "forward()")}}와 동일한 한 페이지 앞으로 가기:
+To move forward a page, just like calling {{domxref("History.forward", "forward()")}}:
 
 ```js
-history.go(1)
+history.go(1);
 ```
 
-두 페이지 앞으로 가기:
+To move forward two pages:
 
 ```js
 history.go(2);
 ```
 
-두 페이지 뒤로 가기:
+To move backwards by two pages:
 
 ```js
 history.go(-2);
 ```
 
-마지막으로, 아래 구문들은 현재 페이지를 새로고침 합니다:
+And, finally either of the following statements will reload the current page:
 
 ```js
 history.go();
 history.go(0);
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
@@ -65,5 +82,5 @@ history.go(0);
 - {{domxref("History")}}
 - {{DOMxRef("History.back","back()")}}
 - {{DOMxRef("History.forward","forward()")}}
-- {{event("popstate")}} event
-- [Working with the History API](/ko/docs/Web/API/History_API/Working_with_the_History_API)
+- {{domxref("Window/popstate_event", "popstate")}} event
+- [Working with the History API](/en-US/docs/Web/API/History_API/Working_with_the_History_API)

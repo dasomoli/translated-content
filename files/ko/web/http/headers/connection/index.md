@@ -1,43 +1,70 @@
 ---
 title: Connection
 slug: Web/HTTP/Headers/Connection
+page-type: http-header
+browser-compat: http.headers.Connection
 ---
 
 {{HTTPSidebar}}
 
-**`Connection`** 일반 헤더는 현재의 전송이 완료된 후 네트워크 접속을 유지할지 말지를 제어합니다. 만약 전송된 값이 `keep-alive`면, 연결은 지속되고 끊기지 않으며, 동일한 서버에 대한 후속 요청을 수행할 수 있습니다.
+The **`Connection`** general header controls whether the
+network connection stays open after the current transaction finishes. If the value sent
+is `keep-alive`, the connection is persistent and not closed, allowing for
+subsequent requests to the same server to be done.
 
-> **경고:** {{HTTPHeader("Connection")}} 와 {{HTTPHeader("Keep-Alive")}} 같은 연결-지정(Connection-specific) 헤더 필드들은 [HTTP/2.에서 금지되었습니다](https://tools.ietf.org/html/rfc7540#section-8.1.2.2). 크롬과 파이어폭스는 HTTP/2 응답에서 그들을 무시하지만, 사파리는 HTTP/2 규격 요건에 따라 해당 필드가 포함된 응답은 처리하지 않습니다.
+> **Warning:** Connection-specific header fields such as
+> {{HTTPHeader("Connection")}} and {{HTTPHeader("Keep-Alive")}} are prohibited
+> in [HTTP/2](https://httpwg.org/specs/rfc9113.html#ConnectionSpecific) and
+> [HTTP/3](https://httpwg.org/specs/rfc9114.html#header-formatting). Chrome and
+> Firefox ignore them in HTTP/2 responses, but Safari conforms to the HTTP/2
+> spec requirements and does not load any response that contains them.
 
-표준 홉 간 헤더인 ({{HTTPHeader("Keep-Alive")}}, {{HTTPHeader("Transfer-Encoding")}}, {{HTTPHeader("TE")}}, {{HTTPHeader("Connection")}}, {{HTTPHeader("Trailer")}}, {{HTTPHeader("Upgrade")}}, {{HTTPHeader("Proxy-Authorization")}} 그리고 {{HTTPHeader("Proxy-Authenticate")}})를 제외하고, 메시지에 의해 사용되는 모든 홉 간 헤더들이 `Connection` 헤더 내에 연결되기에, 첫번째 프록시는 자신이 해당 헤더들을 소비해야 하며 포워드해서는 안된다는 것을 알 게 됩니다. 표준 홉 간 헤더들도 나열될 수 있지만(대게 {{HTTPHeader("Keep-Alive")}}의 경우가 그렇습니다), 강제적인 것은 아닙니다.
+All [hop-by-hop headers](/en-US/docs/Web/HTTP/Compression#hop-by-hop_compression) used by the message - including standard hop-by-hop headers ({{HTTPHeader("Keep-Alive")}},
+{{HTTPHeader("Transfer-Encoding")}}, {{HTTPHeader("TE")}}, {{HTTPHeader("Connection")}},
+{{HTTPHeader("Trailer")}}, {{HTTPHeader("Upgrade")}},
+{{HTTPHeader("Proxy-Authorization")}} and {{HTTPHeader("Proxy-Authenticate")}}) - must be listed in the `Connection`
+header, so that the first proxy knows it has to consume them and not forward them
+further.
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">Header type</th>
-      <td>{{Glossary("General header")}}</td>
+      <td>
+        {{Glossary("Request header")}},
+        {{Glossary("Response header")}}
+      </td>
     </tr>
     <tr>
       <th scope="row">{{Glossary("Forbidden header name")}}</th>
-      <td>no</td>
+      <td>yes</td>
     </tr>
   </tbody>
 </table>
 
-## 문법
+## Syntax
 
-```
+```http
 Connection: keep-alive
 Connection: close
 ```
 
-## 디렉티브
+## Directives
 
 - `close`
-  - : 클라이언트 혹은 서버가 연결을 닫으려고 하는 것을 나타냅니다. 이것은 HTTP/1.0 요청에서 기본 값입니다.
-- 쉼표로 구분된 HTTP 헤더 목록 \[보통 `keep-alive` 만 해당]
-  - : 클라이언트가 연결을 열린 상태로 유지하려는 것을 나타냅니다. 영속적인 연결을 가지는 것은 HTTP/1.1 요청의 경우 기본입니다. 헤더 목록은 첫번째 반투명 프록시 혹은 중간 캐시에 의해 제거될 헤더의 이름입니다: 이 헤더들은 목적지 노드가 아닌 (요청) 발행자와 첫번째 개체 사이의 연결을 정의합니다.
+  - : Indicates that either the client or the server would like to close the connection.
+    This is the default on HTTP/1.0 requests.
+- any comma-separated list of HTTP headers \[Usually `keep-alive` only]
+  - : Indicates that the client would like to keep the connection open. Keeping a connection open
+    is the default on HTTP/1.1 requests. The list of headers are the
+    name of the header to be removed by the first non-transparent proxy or cache
+    in-between: these headers define the connection between the emitter and the first
+    entity, not the destination node.
 
-## 브라우저 호환성
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
 
 {{Compat}}

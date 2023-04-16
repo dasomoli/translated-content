@@ -1,79 +1,101 @@
 ---
-title: 동등 연산자(==)
+title: Equality (==)
 slug: Web/JavaScript/Reference/Operators/Equality
+page-type: javascript-operator
+browser-compat: javascript.operators.equality
 ---
+
 {{jsSidebar("Operators")}}
 
-동등 연산자(==)는 두 개의 피연산자가 동일한지 확인하며, Boolean값을 반환합니다. [일치 연산자](/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality)(===)와는 다르게 다른 타입의 피연산자들끼리의 비교를 시도합니다.
+The **equality (`==`)** operator checks whether its two operands are equal,
+returning a Boolean result.
+Unlike the [strict equality](/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality) operator,
+it attempts to convert and compare operands that are of different types.
 
 {{EmbedInteractiveExample("pages/js/expressions-equality.html")}}
 
-## 문법
+## Syntax
 
-```js
-    x == y
+```js-nolint
+x == y
 ```
 
-## 상세 설명
+## Description
 
-동등 연산자 (`==` 와 `!=`)는 두 피연산자를 비교하기 위해 [Abstract Equality Comparison Algorithm](http://www.ecma-international.org/ecma-262/5.1/#sec-11.9.3)를 사용합니다. 다음과 같이 간략히 설명할 수 있습니다:
+The equality operators (`==` and `!=`) provide the [IsLooselyEqual](/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#loose_equality_using) semantic. This can be roughly summarized as follows:
 
-- 두 피연산자가 모두 객체일때, 두 피연산자가 동일한 객체를 참조할때에만 true를 반환합니다.
-- 하나의 피연산자가 `null`이고 다른 하나가 `undefined`일때, `true`를 반환합니다.
-- 두 피연산자의 타입이 다를 경우, 비교하기 전에 동일한 타입으로 변환하도록 합니다:
+1. If the operands have the same type, they are compared as follows:
+   - Object: return `true` only if both operands reference the same object.
+   - String: return `true` only if both operands have the same characters in the same order.
+   - Number: return `true` only if both operands have the same value. `+0` and `-0` are treated as the same value. If either operand is `NaN`, return `false`; so, `NaN` is never equal to `NaN`.
+   - Boolean: return `true` only if operands are both `true` or both `false`.
+   - BigInt: return `true` only if both operands have the same value.
+   - Symbol: return `true` only if both operands reference the same symbol.
+2. If one of the operands is `null` or `undefined`, the other must also be `null` or `undefined` to return `true`. Otherwise return `false`.
+3. If one of the operands is an object and the other is a primitive, [convert the object to a primitive](/en-US/docs/Web/JavaScript/Data_structures#primitive_coercion).
+4. At this step, both operands are converted to primitives (one of String, Number, Boolean, Symbol, and BigInt). The rest of the conversion is done case-by-case.
+   - If they are of the same type, compare them using step 1.
+   - If one of the operands is a Symbol but the other is not, return `false`.
+   - If one of the operands is a Boolean but the other is not, [convert the boolean to a number](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number#number_coercion): `true` is converted to 1, and `false` is converted to 0. Then compare the two operands loosely again.
+   - Number to String: [convert the string to a number](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number#number_coercion). Conversion failure results in `NaN`, which will guarantee the equality to be `false`.
+   - Number to BigInt: compare by their numeric value. If the number is ±Infinity or `NaN`, return `false`.
+   - String to BigInt: convert the string to a BigInt using the same algorithm as the [`BigInt()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt/BigInt) constructor. If conversion fails, return `false`.
 
-  - 숫자와 문자열을 비교할 경우, 문자열을 숫자로 변환하도록 합니다.
-  - 하나의 피연산자가 `Boolean`일 경우, Boolean 피연산자가 true일 경우 1로 변환하고, false일 경우, +0으로 변환합니다.
-  - 하나의 피연산자가 객체이고 다른하나가 숫자나 문자열이면, 객체를 `valueOf()`나`toString()`를 사용해 기본 데이터 타입으로 변환하도록 합니다.
+Loose equality is _symmetric_: `A == B` always has identical semantics to `B == A` for any values of `A` and `B` (except for the order of applied conversions).
 
-- 두개의 피연산자가 동일한 타입일 경우, 다음과 같이 비교됩니다:
+The most notable difference between this operator and the [strict equality](/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality) (`===`) operator is that the strict equality operator does not attempt type conversion. Instead, the strict equality operator always considers operands of different types to be different. The strict equality operator essentially carries out only step 1, and then returns `false` for all other cases.
 
-  - `String`: 두 피연산자가 동일한 문자순서가 동일한 문자열일 경우, `true`를 반환합니다.
-  - `Number`: 두 피연산자가 동일한 값을 가질 경우, `true`을 반환합니다. +0 과 -0 은 동일한 값으로 취급합니다. 어느 한쪽이 `NaN`일 경우, `false`를 반환합니다.
-  - `Boolean`: 두 피연산자가 모두 `true`이거나, 모두 `false`일 경우, `true`를 반환합니다.
+There's a "willful violation" of the above algorithm: if one of the operands is [`document.all`](/en-US/docs/Web/API/Document/all), it is treated as if it's `undefined`. This means that `document.all == null` is `true`, but `document.all === undefined && document.all === null` is `false`.
 
-[일치연산자](/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality) (`===`)와의 가장 두드러지는 차이점은 일치 연산자는 타입변환을 시도하지 않는다는 것입니다. 일치 연산자는 다른 타입을 가진 피연산자는 다르다고 판단합니다.
+## Examples
 
-## 예시
-
-### 타입변환 없이 비교
+### Comparison with no type conversion
 
 ```js
-1 == 1;              // true
-"hello" == "hello";  // true
+1 == 1; // true
+"hello" == "hello"; // true
 ```
 
-### 타입변환을 이용한 비교
+### Comparison with type conversion
 
 ```js
-"1" ==  1;            // true
-1 == "1";             // true
-0 == false;           // true
-0 == null;            // false
-0 == undefined;       // false
-0 == !!null;          // true, look at Logical NOT operator
-0 == !!undefined;     // true, look at Logical NOT operator
-null == undefined;    // true
+"1" == 1; // true
+1 == "1"; // true
+0 == false; // true
+0 == null; // false
+0 == undefined; // false
+0 == !!null; // true, look at Logical NOT operator
+0 == !!undefined; // true, look at Logical NOT operator
+null == undefined; // true
 
 const number1 = new Number(3);
 const number2 = new Number(3);
-number1 == 3;         // true
-number1 == number2;   // false
+number1 == 3; // true
+number1 == number2; // false
 ```
 
-### 객체들 간의 비교
+### Comparison of objects
 
 ```js
-const object1 = {"key": "value"}
-const object2 = {"key": "value"};
+const object1 = {
+  key: "value",
+};
 
-object1 == object2 // false
-object2 == object2 // true
+const object2 = {
+  key: "value",
+};
+
+console.log(object1 == object2); // false
+console.log(object1 == object1); // true
 ```
 
-### String과 String objects의 비교
+### Comparing strings and String objects
 
-`new String()` 을 통해 생성된 문자열들은 객체입니다. 이 객체중 하나를 문자열과 비교한다면, `String` 객체가 문자열로 변환된 후 비교될 것입니다. 그러나 두개의 피연산자 모두 `String` 객체라면, 객체로써 비교가 이루어지기 때문에 같은 값으로 취급될려면 같은 객체를 참조하고 있어야 합니다:
+Note that strings constructed using `new String()` are objects. If you
+compare one of these with a string literal, the `String` object will be
+converted to a string literal and the contents will be compared. However, if both
+operands are `String` objects, then they are compared as objects and must
+reference the same object for comparison to succeed:
 
 ```js
 const string1 = "hello";
@@ -91,16 +113,28 @@ console.log(string4 == string4); // true
 ### Comparing Dates and strings
 
 ```js
-const d = new Date('December 17, 1995 03:24:00');
+const d = new Date("December 17, 1995 03:24:00");
 const s = d.toString(); // for example: "Sun Dec 17 1995 03:24:00 GMT-0800 (Pacific Standard Time)"
-console.log(d == s);    //true
+console.log(d == s); //true
 ```
 
-## 명세서
+### Comparing arrays and strings
+
+```js
+const a = [1, 2, 3];
+const b = "1,2,3";
+a == b; // true, `a` converts to string
+
+const c = [true, 0.5, "hey"];
+const d = c.toString(); // "true,0.5,hey"
+c == d; // true
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

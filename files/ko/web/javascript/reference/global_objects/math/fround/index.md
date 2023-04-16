@@ -1,59 +1,73 @@
 ---
 title: Math.fround()
 slug: Web/JavaScript/Reference/Global_Objects/Math/fround
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Math.fround
 ---
 
 {{JSRef}}
 
-**`Math.fround()`** 함수는 [single precision](https://en.wikipedia.org/wiki/Single-precision_floating-point_format) 포맷으로 표현할 수 있는 실수들 중에서 가장 가까운 숫자를 리턴합니다.
+The **`Math.fround()`** static method returns the nearest [32-bit single precision](https://en.wikipedia.org/wiki/Single-precision_floating-point_format) float representation of a number.
 
-## 문법
+{{EmbedInteractiveExample("pages/js/math-fround.html")}}
 
-```js
-    Math.fround(x)
+## Syntax
+
+```js-nolint
+Math.fround(doubleFloat)
 ```
 
-### 파라메터
+### Parameters
 
-- `x`
-  - : 숫자.
+- `doubleFloat`
+  - : A number.
 
-## 설명
+### Return value
 
-`fround()` 가 `Math` 객체의 정적 메소드이기 때문에, 반드시 `Math.fround()` 같은 형태로 사용해야 합니다. `Math` 객체를 직접 만들어서 호출하는 방식으로 사용하지 않습니다 (`Math` 는 생성자가 아닙니다).
+The nearest [32-bit single precision](https://en.wikipedia.org/wiki/Single-precision_floating-point_format) float representation of `x`.
 
-## 예제
+## Description
 
-### `Math.fround() 사용법`
+JavaScript uses 64-bit double floating-point numbers internally, which offer a very high precision. However, sometimes you may be working with 32-bit floating-point numbers, for example if you are reading values from a {{jsxref("Float32Array")}}. This can create confusion: checking a 64-bit float and a 32-bit float for equality may fail even though the numbers are seemingly identical.
+
+To solve this, `Math.fround()` can be used to cast the 64-bit float to a 32-bit float. Internally, JavaScript continues to treat the number as a 64-bit float, it just performs a "round to even" on the 23rd bit of the mantissa, and sets all following mantissa bits to `0`. If the number is outside the range of a 32-bit float, {{jsxref("Infinity")}} or `-Infinity` is returned.
+
+Because `fround()` is a static method of `Math`, you always use it as `Math.fround()`, rather than as a method of a `Math` object you created (`Math` is not a constructor).
+
+## Examples
+
+### Using Math.fround()
+
+The number 1.5 can be precisely represented in the binary numeral system, and is identical in 32-bit and 64-bit:
 
 ```js
-Math.fround(0);     // 0
-Math.fround(1);     // 1
+Math.fround(1.5); // 1.5
+Math.fround(1.5) === 1.5; // true
+```
+
+However, the number 1.337 cannot be precisely represented in the binary numeral system, so it differs in 32-bit and 64-bit:
+
+```js
 Math.fround(1.337); // 1.3370000123977661
-Math.fround(1.5);   // 1.5
-Math.fround(NaN);   // NaN
+Math.fround(1.337) === 1.337; // false
 ```
 
-## Polyfill
-
-만약 {{jsxref("Float32Array")}} 가 지원된다면, Math.fround() 를 다음 함수로 흉내낼 수 있습니다.
+<math><semantics><msup><mn>2</mn><mn>150</mn></msup><annotation encoding="TeX">2^150</annotation></semantics></math> is too big for a 32-bit float, so `Infinity` is returned:
 
 ```js
-Math.fround = Math.fround || (function (array) {
-  return function(x) {
-    return array[0] = x, array[0];
-  };
-})(Float32Array(1));
+2 ** 150; // 1.42724769270596e+45
+Math.fround(2 ** 150); // Infinity
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
+- [Polyfill of `Math.fround` in `core-js`](https://github.com/zloirock/core-js#ecmascript-math)
 - {{jsxref("Math.round()")}}

@@ -1,47 +1,114 @@
 ---
 title: MessageEvent
 slug: Web/API/MessageEvent
+page-type: web-api-interface
+browser-compat: api.MessageEvent
 ---
+
 {{APIRef("HTML DOM")}}
 
-**`MessageEvent`** 는 {{domxref("WebSocket")}} 또는 WebRTC {{domxref("RTCDataChannel")}} 으로 된 타겟으로 부터 전달받은 메시지를 보여주는 interface 입니다.
+The **`MessageEvent`** interface represents a message received by a target object.
 
-이 이벤트는 {{domxref("WebSocket.onmessage")}} 또는 {{domxref("RTCDataChannel.onmessage")}} 으로 설정된 이벤트 핸들러를 통해 실행이 되게 됩니다.
+This is used to represent messages in:
+
+- [Server-sent events](/en-US/docs/Web/API/Server-sent_events) (see {{domxref("EventSource.message_event")}}).
+- [Web sockets](/en-US/docs/Web/API/WebSockets_API) (see the `onmessage` property of the [WebSocket](/en-US/docs/Web/API/WebSocket) interface).
+- Cross-document messaging (see {{domxref("Window.postMessage()")}} and {{domxref("Window.message_event")}}).
+- [Channel messaging](/en-US/docs/Web/API/Channel_Messaging_API) (see {{domxref("MessagePort.postMessage()")}} and {{domxref("MessagePort.message_event")}}).
+- Cross-worker/document messaging (see the above two entries, but also {{domxref("Worker.postMessage()")}}, {{domxref("Worker.message_event")}}, {{domxref("ServiceWorkerGlobalScope.message_event")}}, etc.)
+- [Broadcast channels](/en-US/docs/Web/API/Broadcast_Channel_API) (see {{domxref("Broadcastchannel.postMessage()")}}) and {{domxref("BroadcastChannel.message_event")}}).
+- WebRTC data channels (see {{domxref("RTCDataChannel.message_event", "onmessage")}}).
+
+The action triggered by this event is defined in a function set as the event handler for the relevant `message` event (e.g. using an `onmessage` handler as listed above).
 
 {{AvailableInWorkers}}
+{{InheritanceDiagram}}
 
-## 생성자
+## Constructor
 
 - {{domxref("MessageEvent.MessageEvent", "MessageEvent()")}}
-  - : 새로운 `MessageEvent를 생성합니다.`
+  - : Creates a new `MessageEvent`.
 
-## 속성
+## Instance properties
 
-_이 interface는 부모 객체인 {{domxref("Event")}}의 속성을 상속받습니다._
+_This interface also inherits properties from its parent, {{domxref("Event")}}._
 
-- {{domxref("MessageEvent.data")}} {{ReadonlyInline}}
-  - : emitter에 의해 보내진 데이터인 {{domxref("DOMString")}}, {{domxref("Blob")}} 또는 {{domxref("ArrayBuffer")}}를 포함합니다.
-- {{domxref("MessageEvent.origin")}}
-  - : {{domxref("DOMString")}} 입니다.…
-- {{domxref("MessageEvent.ports")}}
-  - : …
-- {{domxref("MessageEvent.source")}}
-  - : …
+- {{domxref("MessageEvent.data")}} {{ReadOnlyInline}}
+  - : The data sent by the message emitter.
+- {{domxref("MessageEvent.origin")}} {{ReadOnlyInline}}
+  - : A string representing the origin of the message emitter.
+- {{domxref("MessageEvent.lastEventId")}} {{ReadOnlyInline}}
+  - : A string representing a unique ID for the event.
+- {{domxref("MessageEvent.source")}} {{ReadOnlyInline}}
+  - : A `MessageEventSource` (which can be a {{glossary("WindowProxy")}}, {{domxref("MessagePort")}}, or {{domxref("ServiceWorker")}} object) representing the message emitter.
+- {{domxref("MessageEvent.ports")}} {{ReadOnlyInline}}
+  - : An array of {{domxref("MessagePort")}} objects representing the ports associated with the channel the message is being sent through (where appropriate, e.g. in channel messaging or when sending a message to a shared worker).
 
-## 메서드
+## Instance methods
 
-_이 interface는 부모 객체인 {{domxref("Event")}}의 메서드를 상속받습니다._
+_This interface also inherits methods from its parent, {{domxref("Event")}}._
 
-- {{domxref("MessageEvent.initMessageEvent()")}} {{deprecated_inline}}
-  - : … **더 이상 사용하지 마십시오**
-    : {{domxref("MessageEvent.MessageEvent", "MessageEvent()")}} 생성자를 대신 사용하십시오.
+- {{domxref("MessageEvent.initMessageEvent","initMessageEvent()")}} {{deprecated_inline}}
+  - : Initializes a message event. **Do not use this anymore** — **use the {{domxref("MessageEvent.MessageEvent", "MessageEvent()")}} constructor instead.**
 
-## Browser 호환성
+## Examples
+
+In our [Basic shared worker example](https://github.com/mdn/dom-examples/tree/main/web-workers/simple-shared-worker) ([run shared worker](https://mdn.github.io/dom-examples/web-workers/simple-shared-worker/)), we have two HTML pages, each of which uses some JavaScript to perform a simple calculation. The different scripts are using the same worker file to perform the calculation — they can both access it, even if their pages are running inside different windows.
+
+The following code snippet shows creation of a {{domxref("SharedWorker")}} object using the {{domxref("SharedWorker.SharedWorker", "SharedWorker()")}} constructor. Both scripts contain this:
+
+```js
+const myWorker = new SharedWorker("worker.js");
+```
+
+Both scripts then access the worker through a {{domxref("MessagePort")}} object created using the {{domxref("SharedWorker.port")}} property. If the onmessage event is attached using addEventListener, the port is manually started using its `start()` method:
+
+```js
+myWorker.port.start();
+```
+
+When the port is started, both scripts post messages to the worker and handle messages sent from it using `port.postMessage()` and `port.onmessage`, respectively:
+
+```js
+first.onchange = () => {
+  myWorker.port.postMessage([first.value, second.value]);
+  console.log("Message posted to worker");
+};
+
+second.onchange = () => {
+  myWorker.port.postMessage([first.value, second.value]);
+  console.log("Message posted to worker");
+};
+
+myWorker.port.onmessage = (e) => {
+  result1.textContent = e.data;
+  console.log("Message received from worker");
+};
+```
+
+Inside the worker we use the {{domxref("SharedWorkerGlobalScope.connect_event", "onconnect")}} handler to connect to the same port discussed above. The ports associated with that worker are accessible in the {{domxref("SharedWorkerGlobalScope/connect_event", "connect")}} event's `ports` property — we then use {{domxref("MessagePort")}} `start()` method to start the port, and the `onmessage` handler to deal with messages sent from the main threads.
+
+```js
+onconnect = (e) => {
+  const port = e.ports[0];
+
+  port.addEventListener("message", (e) => {
+    const workerResult = `Result: ${e.data[0] * e.data[1]}`;
+    port.postMessage(workerResult);
+  });
+
+  port.start(); // Required when using addEventListener. Otherwise called implicitly by onmessage setter.
+};
+```
+
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- {{domxref("ExtendableMessageEvent")}}, 와 유사한 interface이며, 개발자에게 더 유연성을 제공하기 위해 사용되는 interface 입니다.
-- [WebSocket API](/ko/docs/Web/API/WebSocket_API)
-- [WebRTC API](/ko/docs/Web/API/WebRTC_API)
+- {{domxref("ExtendableMessageEvent")}} — similar to this interface but used in interfaces that needs to give more flexibility to authors.

@@ -1,64 +1,71 @@
 ---
 title: Atomics.exchange()
 slug: Web/JavaScript/Reference/Global_Objects/Atomics/exchange
-l10n:
-  sourceCommit: 194d3e00cb93a6e5ea44812548f4131cb17f0381
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Atomics.exchange
 ---
 
 {{JSRef}}
 
-**`Atomics.exchange()`** 정적 메서드는 배열의 지정된 위치에 지정된 값을 저장하고 해당 위치의 이전 값을 반환합니다.
-이 아토믹 연산은 이전 값의 읽기와 새 값의 쓰기 사이에 다른 쓰기가 발생하지 않는 것을 보장합니다.
+The **`Atomics.exchange()`** static method stores a given value
+at a given position in the array and returns the old value at that position. This atomic
+operation guarantees that no other write happens between the read of the old value and
+the write of the new value.
 
 {{EmbedInteractiveExample("pages/js/atomics-exchange.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 Atomics.exchange(typedArray, index, value)
 ```
 
-### 매개변수
+### Parameters
 
 - `typedArray`
-  - : 정수 타입의 배열. {{jsxref("Int8Array")}}, {{jsxref("Uint8Array")}},
+  - : An integer typed array. One of {{jsxref("Int8Array")}}, {{jsxref("Uint8Array")}},
     {{jsxref("Int16Array")}}, {{jsxref("Uint16Array")}}, {{jsxref("Int32Array")}},
-    {{jsxref("Uint32Array")}}, {{jsxref("BigInt64Array")}},
-    {{jsxref("BigUint64Array")}} 중 하나.
+    {{jsxref("Uint32Array")}}, {{jsxref("BigInt64Array")}}, or
+    {{jsxref("BigUint64Array")}}.
 - `index`
-  - : `value`를 교환할 `typedArray`의 위치.
+  - : The position in the `typedArray` to exchange a
+    `value`.
 - `value`
-  - : 교환할 숫자.
+  - : The number to exchange.
 
-### 반환 값
+### Return value
 
-해당 위치의 예전 값(`typedArray[index]`).
+The old value at the given position
+(`typedArray[index]`).
 
-### 예외
+### Exceptions
 
-- `typedArray`가 허용하는 정수 타입이 아닐 경우 {{jsxref("TypeError")}}가 발생합니다.
-- `index`가 해당 `typedArray`를 벗어나는 경우 {{jsxref("RangeError")}}가 발생합니다.
+- {{jsxref("TypeError")}}
+  - : Thrown if `typedArray` is not one of the allowed integer types.
+- {{jsxref("RangeError")}}
+  - : Thrown if `index` is out of bounds in the `typedArray`.
 
-## 예제
+## Examples
 
-### exchange() 사용하기
+### Using exchange()
 
 ```js
 const sab = new SharedArrayBuffer(1024);
 const ta = new Uint8Array(sab);
+
 Atomics.exchange(ta, 0, 12); // returns 0, the old value
 Atomics.load(ta, 0); // 12
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Atomics")}}
 - {{jsxref("Atomics.compareExchange()")}}

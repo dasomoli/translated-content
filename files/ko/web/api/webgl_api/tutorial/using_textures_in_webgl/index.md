@@ -1,187 +1,339 @@
 ---
-title: WebGL에서 텍스쳐 사용하기
+title: Using textures in WebGL
 slug: Web/API/WebGL_API/Tutorial/Using_textures_in_WebGL
+page-type: guide
 ---
 
 {{DefaultAPISidebar("WebGL")}} {{PreviousNext("Web/API/WebGL_API/Tutorial/Creating_3D_objects_using_WebGL", "Web/API/WebGL_API/Tutorial/Lighting_in_WebGL")}}
 
-앞 단원의 예제에서 회전하는 3차원 정육면체를 만들어봤습니다. 이번에는 정육면체의 각 면에 단색으로 색을 칠하는 대신에 텍스쳐를 입혀 보겠습니다.
+Now that our sample program has a rotating 3D cube, let's map a texture onto it instead of having its faces be solid colors.
 
-## 텍스쳐 로딩
+## Loading textures
 
-가장 먼저 해야할 일은 텍스쳐를 읽어오는 것입니다. 이번 예제에서는 동일한 하나의 텍스쳐를 회전하는 정육면체의 6개의 면에 입혀볼 것입니다. 여러개의 텍스쳐를 각 면에 입힌다고 해도 하나를 입히는 것과 동일한 방법을 적용하면 됩니다.
+The first thing to do is add code to load the textures. In our case, we'll be using a single texture, mapped onto all six sides of our rotating cube, but the same technique can be used for any number of textures.
 
-> **참고:** 텍스쳐를 외부에서 읽어올 때는 [크로스 도메인 규칙(cross-domain rules)](/ko/docs/HTTP_access_control)에 유의해야 합니다. CORS(Cross Origin Resource Sharing)승인을 받을 수 있는 도메인에 있는 텍스쳐만 읽어올 수 있습니다. 자세한 내용은 [크로스 도메인 텍스쳐(Cross-domain textures)](/ko/docs/Web/WebGL/Cross-Domain_Textures)를 참고하세요.
+> **Note:** It's important to note that the loading of textures follows [cross-domain rules](/en-US/docs/Web/HTTP/CORS); that is, you can only load textures from sites for which your content has CORS approval. See [Cross-domain textures below](#cross-domain_textures) for details.
 
-텍스쳐를 읽어오는 코드는 다음과 같습니다:
+> **Note:** Add these two functions to your "webgl-demo.js" script:
 
 ```js
-function initTextures() {
-  cubeTexture = gl.createTexture();
-  cubeImage = new Image();
-  cubeImage.onload = function() { handleTextureLoaded(cubeImage, cubeTexture); }
-  cubeImage.src = "cubetexture.png";
-}
-
-function handleTextureLoaded(image, texture) {
+//
+// Initialize a texture and load an image.
+// When the image finished loading copy it into the texture.
+//
+function loadTexture(gl, url) {
+  const texture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, texture);
-  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
-  gl.generateMipmap(gl.TEXTURE_2D);
-  gl.bindTexture(gl.TEXTURE_2D, null);
+
+  // Because images have to be downloaded over the internet
+  // they might take a moment until they are ready.
+  // Until then put a single pixel in the texture so we can
+  // use it immediately. When the image has finished downloading
+  // we'll update the texture with the contents of the image.
+  const level = 0;
+  const internalFormat = gl.RGBA;
+  const width = 1;
+  const height = 1;
+  const border = 0;
+  const srcFormat = gl.RGBA;
+  const srcType = gl.UNSIGNED_BYTE;
+  const pixel = new Uint8Array([0, 0, 255, 255]); // opaque blue
+  gl.texImage2D(
+    gl.TEXTURE_2D,
+    level,
+    internalFormat,
+    width,
+    height,
+    border,
+    srcFormat,
+    srcType,
+    pixel
+  );
+
+  const image = new Image();
+  image.onload = () => {
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.texImage2D(
+      gl.TEXTURE_2D,
+      level,
+      internalFormat,
+      srcFormat,
+      srcType,
+      image
+    );
+
+    // WebGL1 has different requirements for power of 2 images
+    // vs. non power of 2 images so check if the image is a
+    // power of 2 in both dimensions.
+    if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
+      // Yes, it's a power of 2. Generate mips.
+      gl.generateMipmap(gl.TEXTURE_2D);
+    } else {
+      // No, it's not a power of 2. Turn off mips and set
+      // wrapping to clamp to edge
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    }
+  };
+  image.src = url;
+
+  return texture;
+}
+
+function isPowerOf2(value) {
+  return (value & (value - 1)) === 0;
 }
 ```
 
-`initTextures()` 루틴은 GL의 `createTexture()` 함수를 호출해서 GL의 텍스쳐 객체인 `cubeTexture`를 생성하는 걸로 시작됩니다. 그리고 `Image` 객체를 생성해서 텍스쳐로 사용하기 위해 로딩한 이미지 파일을 `Image` 객체에 저장합니다. `handleTextureLoaded()` 콜백 루틴은 이미지 로딩이 완료되면 실행됩니다.
+The `loadTexture()` routine starts by creating a WebGL texture object `texture` by calling the WebGL {{domxref("WebGLRenderingContext.createTexture()", "createTexture()")}} function. It then uploads a single blue pixel using {{domxref("WebGLRenderingContext.texImage2D()", "texImage2D()")}}. This makes the texture immediately usable as a solid blue color even though it may take a few moments for our image to download.
 
-텍스쳐를 실질적으로 생성하려면, 앞에서 새로 생성한 텍스쳐 객체를 `gl.TEXTURE_2D`에 바인딩해야 합니다. 그리고 나서 이미지 데이터가 로딩된 이미지 객체를 `texImage2D()`에 전달하여 호출하면, 이미지 데이터가 텍스쳐에 쓰여(write) 집니다.
+To load the texture from the image file, it then creates an `Image` object and assigns the `src` to the URL for our image we wish to use as our texture. The function we assign to `image.onload` will be called once the image has finished downloading. At that point we again call {{domxref("WebGLRenderingContext.texImage2D()", "texImage2D()")}} this time using the image as the source for the texture. After that we setup filtering and wrapping for the texture based on whether or not the image we download was a power of 2 in both dimensions or not.
 
-> **참고:** 텍스쳐의 너비와 높이는 **거의 대부분**의 상황에서 2의 거듭제곱 픽셀(1, 2, 4, 8, 16, 32, ...)이어야 합니다. 예외인 경우에 대해서는 아래의 _"_[크기가 2의 거듭제곱 픽셀이 아닌 텍스쳐](/ko/docs/Web/WebGL/Using_textures_in_WebGL#Non_power-of-two_textures)_"를 참고하세요._
+WebGL1 can only use non power of 2 textures with filtering set to `NEAREST` or `LINEAR` and it can not generate a mipmap for them. Their wrapping mode must also be set to `CLAMP_TO_EDGE`. On the other hand if the texture is a power of 2 in both dimensions then WebGL can do higher quality filtering, it can use mipmap, and it can set the wrapping mode to `REPEAT` or `MIRRORED_REPEAT`.
 
-그 다음 두 라인은 텍스쳐를 위한 필터링을 준비합니다. 이 필터링은 이미지 크기가 변경될 때 이미지가 필터되는 방식을 제어합니다. 여기에서는 이미지를 확대할 때 선형 필터링을 사용하고, 이미지를 축소할 때 mipmap을 사용합니다. generateMipMap()을 호출해서 mipmap이 만들어지면 gl.TEXTURE_2D에 null을 바인딩시켜서, 텍스쳐를 다룰 준비가 끝났다는 것을 WebGL에게 알려줍니다.
+An example of a repeated texture is tiling an image of a few bricks to cover a brick wall.
 
-### 크기가 2의 거듭제곱이 아닌 텍스쳐
-
-일반적으로 너비와 높이가 2의 거듭제곱인 텍스쳐를 사용하는 것이 가장 이상적입니다. 왜냐하면 2의 거듭제곱인 텍스쳐는 비디오 메모리에 효율적으로 저장될 수 있고, 어떤 방식으로 사용되어야만 한다는 제약이 없기 때문입니다. 예술가들이 이미 작성한 텍스쳐는 너비와 높이가 2의 거듭제곱이 되도록 크기를 맞춰줘야 하며, 가능하다면 아예 만들때부터 2의 거듭제곱으로 만드는 것이 좋습니다. 너비와 높이는 2의 거듭제곱인 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 또는 2048 픽셀이어야 합니다. 전부는 아니지만 많은 디바이스가 4096 픽셀도 지원하고 있으며, 어떤 디바이스는 8192 픽셀 이상을 지원하기도 합니다.
-
-2의 거듭제곱인 텍스쳐를 사용하기 곤란한 상황도 있을 수 있습니다. 텍스쳐의 소스가 되는 이미지를 써드파티에서 구한 것이라면, WebGL에 전달하기 전에 HTML5 캔버스를 이용해서 이미지 크기를 2의 거듭제곱으로 수정하는 것이 좋습니다. 이 때 UV 좌표값도 함께 조정해야 합니다.
-
-2의 거듭제곱이 아닌(NPOT, Non Power Of Two) 텍스쳐를 **꼭 써야만 하는** 상황도 있을 것입니다. WebGL은 NPOT 텍스쳐도 제한적으로 지원합니다. 텍스쳐의 크기가 모니터 해상도와 똑같아야만 한다거나, 위의 단락에서 언급한 것처럼 2의 거듭제곱으로 수정하는 일이 단순히 귀찮을 때는 NPOT 텍스쳐가 유용할 수 있습니다. 하지만 NPOT 텍스쳐에는 제약 사항이 있습니다. NPOT 텍스쳐는 **mipmapping을 할 수 없으며**, 타일(tile) 또는 감싸기(wrap) 처럼 **"반복"하는 방식으로 사용할 수 없습니다**.
-
-몇 개의 벽돌 이미지를 타일링 해서 벽돌로 된 벽을 만드는 것이 텍스쳐 반복의 한 사례 입니다.
-
-`bindTexture()`를 이용해서 텍스쳐를 생성할 때, `texParameteri()` 메서드로 mipmapping과 UV 반복을 비활성화 시킬 수 있습니다. 이 비활성화를 통해 mipmapping, UV 감싸기, UV 타일링을 포기하고, 디바이스가 텍스쳐를 어떻게 처리할지 결정할 수 있는 제어권도 포기하는 대신 NPOT 텍스쳐를 사용할 수 있게 됩니다.
+Mipmapping and UV repeating can be disabled with {{domxref("WebGLRenderingContext.texParameter()", "texParameteri()")}}. This will allow non-power-of-two (NPOT) textures at the expense of mipmapping, UV wrapping, UV tiling, and your control over how the device will handle your texture.
 
 ```js
-gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); //gl.LINEAR 대신에 gl.NEAREST도 허용되지만, 둘 다 mipmap 될 수 없다.
-gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); //s좌표계 감싸기(반복) 방지
-gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE); //t좌표계 감싸기(반복) 방지
+// gl.NEAREST is also allowed, instead of gl.LINEAR, as neither mipmap.
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+// Prevents s-coordinate wrapping (repeating).
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+// Prevents t-coordinate wrapping (repeating).
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 ```
 
-`texParameteri()` 메서드에 위와 같은 파라미터를 전달함으로써, WebGL을 지원하는 디바이스는 어떤 해상도의 텍스쳐든 처리할 수 있는 최대한의 해상도까지 자동으로 처리할 수 있게 됩니다. 위와 같은 설정을 해주지 않으면 WebGL은 NPOT 텍스쳐를 처리하지 못하고 `rgba(0, 0, 0, 1)`인 검은색을 반환합니다.
+Again, with these parameters, compatible WebGL devices will automatically accept any resolution for that texture (up to their maximum dimensions). Without performing the above configuration, WebGL requires all samples of NPOT textures to fail by returning transparent black: `rgba(0,0,0,0)`.
 
-## 면에 텍스쳐 입히기
+To load the image, add a call to our `loadTexture()` function within our `main()` function. This can be added after the `initBuffers(gl)` call.
 
-이제 텍스쳐 읽어오기는 완료되었고, 텍스쳐도 사용할 준비가 되어 있습니다. 하지만 텍스쳐를 사용하기 전에 텍스쳐의 좌표와 정육면체의 면의 정점을 매핑 시켜줘야 합니다. 이를 위해 `initBuffers()` 함수 안에 있던 정육면체 각 면의 색상을 설정하는 내용을 모두 아래와 같은 코드로 대체합니다.
+But also note: Browsers copy pixels from the loaded image in top-to-bottom order — from the top-left corner; but WebGL wants the pixels in bottom-to-top order — starting from the bottom-left corner. (For more details, see [Why is my WebGL texture upside-down?](https://jameshfisher.com/2020/10/22/why-is-my-webgl-texture-upside-down/).)
+
+So in order to prevent the resulting image texture from having the wrong orientation when rendered, we also need call [`pixelStorei()`](/en-US/docs/Web/API/WebGLRenderingContext/pixelStorei) with the `gl.UNPACK_FLIP_Y_WEBGL` parameter set to `true` — to cause the pixels to be flipped into the bottom-to-top order that WebGL expects.
+
+> **Note:** Add the following code to your `main()` function, right after the call to `initBuffers()`:
 
 ```js
-cubeVerticesTextureCoordBuffer = gl.createBuffer();
-gl.bindBuffer(gl.ARRAY_BUFFER, cubeVerticesTextureCoordBuffer);
-
-var textureCoordinates = [
-  // 앞
-  0.0,  0.0,
-  1.0,  0.0,
-  1.0,  1.0,
-  0.0,  1.0,
-  // 뒤
-  0.0,  0.0,
-  1.0,  0.0,
-  1.0,  1.0,
-  0.0,  1.0,
-  // 위
-  0.0,  0.0,
-  1.0,  0.0,
-  1.0,  1.0,
-  0.0,  1.0,
-  // 아래
-  0.0,  0.0,
-  1.0,  0.0,
-  1.0,  1.0,
-  0.0,  1.0,
-  // 오른쪽
-  0.0,  0.0,
-  1.0,  0.0,
-  1.0,  1.0,
-  0.0,  1.0,
-  // 왼쪽
-  0.0,  0.0,
-  1.0,  0.0,
-  1.0,  1.0,
-  0.0,  1.0
-];
-
-gl.bufferData(gl.ARRAY_BUFFER, new WebGLFloatArray(textureCoordinates),
-              gl.STATIC_DRAW);
+// Load texture
+const texture = loadTexture(gl, "cubetexture.png");
+// Flip image pixels into the bottom-to-top order that WebGL expects.
+gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 ```
 
-먼저 각 면의 텍스쳐 좌표를 저장할 GL 버퍼를 생성하고, 텍스쳐 좌표 배열에 바인딩 합니다.
+> **Note:** Finally, download the [cubetexture.png](https://raw.githubusercontent.com/mdn/dom-examples/main/webgl-examples/tutorial/sample6/cubetexture.png) file to the same local directory as your JavaScript files.
 
-`textureCoordinates` 배열은 정육면체 각 면의 정점에 해당하는 텍스쳐 좌표를 정의합니다. 텍스쳐 좌표값의 범위는 0.0 에서 1.0 사이라는 점을 기억해 주십시오. 텍스쳐 좌표의 너비값과 높이값은 실제 너비값이나 높이값과 관계 없이 언제나 0.0 에서 1.0 사이의 값으로 정규화(normalize) 됩니다.
+## Mapping the texture onto the faces
 
-텍스쳐 매핑 배열 설정이 끝나고 배열을 버퍼에 전달하면 GL이 텍스쳐 데이터를 사용할 수 있게 됩니다.
+At this point, the texture is loaded and ready to use. But before we can use it, we need to establish the mapping of the texture coordinates to the vertices of the faces of our cube. This replaces all the previously existing code for configuring colors for each of the cube's faces in `initBuffers()`.
 
-> **참고:** Note: WebKit 기반의 브라우저에서는 `WebGLFloatArray` 대신에 `Float32Array를 사용해야 합니다.`
-
-## 셰이더 수정
-
-셰이더 프로그램과 셰이더를 초기화하는 코드들도 단색 색상 대신 텍스쳐를 사용할 수 있도록 수정해야 합니다.
-
-먼저 `initShaders()` 안에 있는 아주 단순한 변경 사항을 알아 봅시다:
+> **Note:** Add this function to your "init-buffer.js" module:
 
 ```js
-textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
-gl.enableVertexAttribArray(textureCoordAttribute);
+function initTextureBuffer(gl) {
+  const textureCoordBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
+
+  const textureCoordinates = [
+    // Front
+    0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+    // Back
+    0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+    // Top
+    0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+    // Bottom
+    0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+    // Right
+    0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+    // Left
+    0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+  ];
+
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array(textureCoordinates),
+    gl.STATIC_DRAW
+  );
+
+  return textureCoordBuffer;
+}
 ```
 
-정점 컬러 attribute 변수를 설정하던 코드가, 각 정점의 텍스쳐 좌표값을 설정하는 코드로 대체 되었습니다.
+First, this code creates a WebGL buffer into which we'll store the texture coordinates for each face, then we bind that buffer as the array we'll be writing into.
 
-### 정점 셰이더
+The `textureCoordinates` array defines the texture coordinates corresponding to each vertex of each face. Note that the texture coordinates range from 0.0 to 1.0; the dimensions of textures are normalized to a range of 0.0 to 1.0 regardless of their actual size, for the purpose of texture mapping.
 
-다음으로 색상 데이터를 읽어오던 정점 셰이더를 텍스쳐 좌표를 읽어오도록 수정해야 합니다.
+Once we've set up the texture mapping array, we pass the array into the buffer, so that WebGL has that data ready for its use.
 
-```html
-<script id="shader-vs" type="x-shader/x-vertex">
-  attribute vec3 aVertexPosition;
-  attribute vec2 aTextureCoord;
+Then we return the new buffer.
 
-  uniform mat4 uMVMatrix;
-  uniform mat4 uPMatrix;
+Next, we need to update `initBuffers()` to create and return the texture coordinates buffer instead of the color buffer.
 
-  varying highp vec2 vTextureCoord;
-
-  void main(void) {
-    gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-    vTextureCoord = aTextureCoord;
-  }
-</script>
-```
-
-정점 색상 정보를 읽어오는 대신에 텍스쳐 좌표값을 읽어와서 설정한다는 점이 키 포인트 입니다. 위와 같이 정점과 텍스쳐 좌표값을 매핑하면, 각 정점이 텍스쳐의 어느 지점에 해당 하는지 알려줄 수 있습니다.
-
-### 프래그먼트 셰이더
-
-마찬가지로 프래그먼트 셰이더도 수정해야 합니다:
-
-```html
-<script id="shader-fs" type="x-shader/x-fragment">
-  varying highp vec2 vTextureCoord;
-
-  uniform sampler2D uSampler;
-
-  void main(void) {
-    gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
-  }
-</script>
-```
-
-이렇게 하면 프래그먼트의 색상을 정하기 위해 직접 프래그먼트에 색상값을 할당하지 않고, 샘플러(sampler)가 판단하기에 프래그먼트의 위치에 가장 잘 맞아 떨어진다고 여겨지는 **텍셀**(**texel, 텍스쳐 내부에 있는 픽셀**)값에 따라서 프래그먼트의 색상값을 계산해냅니다.
-
-## 텍스쳐를 입힌 정육면체 그리기
-
-텍스쳐를 입힌 상태를 더 명확하게 확인할 수 있도록, 앞 단원의 예제에 포함되어 있던 정육면체의 이동을 제거한 것을 제외하면 drawScene() 함수의 수정은 간단합니다.
-
-정점에 색상을 매핑하던 코드를 다음과 같이 면에 텍스쳐를 매핑하는 코드로 대체합니다:
+> **Note:** In the `initBuffers()` function of your "init-buffers.js" module, replace the call to `initColorBuffer()` with the following line:
 
 ```js
+const textureCoordBuffer = initTextureBuffer(gl);
+```
+
+> **Note:** In the `initBuffers()` function of your "init-buffers.js" module, replace the `return` statement with the following:
+
+```js
+return {
+  position: positionBuffer,
+  textureCoord: textureCoordBuffer,
+  indices: indexBuffer,
+};
+```
+
+## Updating the shaders
+
+The shader program also needs to be updated to use the textures instead of solid colors.
+
+### The vertex shader
+
+We need to replace the vertex shader so that instead of fetching color data, it instead fetches the texture coordinate data.
+
+> **Note:** Update the `vsSource` declaration in your `main()` function like this:
+
+```js
+const vsSource = `
+    attribute vec4 aVertexPosition;
+    attribute vec2 aTextureCoord;
+
+    uniform mat4 uModelViewMatrix;
+    uniform mat4 uProjectionMatrix;
+
+    varying highp vec2 vTextureCoord;
+
+    void main(void) {
+      gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+      vTextureCoord = aTextureCoord;
+    }
+  `;
+```
+
+The key change here is that instead of fetching the vertex color, we're fetching the texture coordinates and passing them to the vertex shader; this will indicate the location within the texture corresponding to the vertex.
+
+### The fragment shader
+
+The fragment shader likewise needs to be updated.
+
+> **Note:** Update the `fsSource` declaration in your `main()` function like this:
+
+```js
+const fsSource = `
+    varying highp vec2 vTextureCoord;
+
+    uniform sampler2D uSampler;
+
+    void main(void) {
+      gl_FragColor = texture2D(uSampler, vTextureCoord);
+    }
+  `;
+```
+
+Instead of assigning a color value to the fragment's color, the fragment's color is computed by fetching the {{Glossary("texel")}} (that is, the pixel within the texture) based on the value of `vTextureCoord` which like the colors is interpolated between vertices.
+
+### Attribute and Uniform Locations
+
+Because we changed an attribute and added a uniform we need to look up their locations.
+
+> **Note:** Update the `programInfo` declaration in your `main()` function like this:
+
+```js
+const programInfo = {
+  program: shaderProgram,
+  attribLocations: {
+    vertexPosition: gl.getAttribLocation(shaderProgram, "aVertexPosition"),
+    textureCoord: gl.getAttribLocation(shaderProgram, "aTextureCoord"),
+  },
+  uniformLocations: {
+    projectionMatrix: gl.getUniformLocation(shaderProgram, "uProjectionMatrix"),
+    modelViewMatrix: gl.getUniformLocation(shaderProgram, "uModelViewMatrix"),
+    uSampler: gl.getUniformLocation(shaderProgram, "uSampler"),
+  },
+};
+```
+
+## Drawing the textured cube
+
+The changes to the `drawScene()` function are simple.
+
+> **Note:** In the `drawScene()` function of your "draw-scene.js" module, add the following function:
+
+```js
+// tell webgl how to pull out the texture coordinates from buffer
+function setTextureAttribute(gl, buffers, programInfo) {
+  const num = 2; // every coordinate composed of 2 values
+  const type = gl.FLOAT; // the data in the buffer is 32-bit float
+  const normalize = false; // don't normalize
+  const stride = 0; // how many bytes to get from one set to the next
+  const offset = 0; // how many bytes inside the buffer to start from
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffers.textureCoord);
+  gl.vertexAttribPointer(
+    programInfo.attribLocations.textureCoord,
+    num,
+    type,
+    normalize,
+    stride,
+    offset
+  );
+  gl.enableVertexAttribArray(programInfo.attribLocations.textureCoord);
+}
+```
+
+> **Note:** In the `drawScene()` function of your "draw-scene.js" module, replace the call to `setColorAttribute()` with the following line:
+
+```js
+setTextureAttribute(gl, buffers, programInfo);
+```
+
+Then add code to specify the texture to map onto the faces.
+
+> **Note:** In your `drawScene()` function, just after the two calls to `gl.uniformMatrix4fv()`, add the following code:
+
+```js
+// Tell WebGL we want to affect texture unit 0
 gl.activeTexture(gl.TEXTURE0);
-gl.bindTexture(gl.TEXTURE_2D, cubeTexture);
-gl.uniform1i(gl.getUniformLocation(shaderProgram, "uSampler"), 0);
+
+// Bind the texture to texture unit 0
+gl.bindTexture(gl.TEXTURE_2D, texture);
+
+// Tell the shader we bound the texture to texture unit 0
+gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
 ```
 
-GL은 32개의 텍스쳐 레지스터를 제공합니다. 그 중 첫번째 레지스터는 `gl.TEXTURE0` 입니다. 텍스쳐를 사용하기 위해 전에 읽어온 텍스쳐를 gl.TEXTURE0에 바인딩하고, 셰이더 샘플러를 셰이더 프로그램에 명시되어 있는 `uSampler`로 설정합니다.
+WebGL provides a minimum of 8 texture units; the first of these is `gl.TEXTURE0`. We tell WebGL we want to affect unit 0. We then call {{domxref("WebGLRenderingContext.bindTexture()", "bindTexture()")}} which binds the texture to the `TEXTURE_2D` bind point of texture unit 0. We then tell the shader that for the `uSampler` use texture unit 0.
 
-이제 앞 단원의 예제보다 더 보기 좋게 회전하는 정육면체를 볼 수 있을 것입니다. WebGL을 지원하는 브라우저라면 [여기](/samples/webgl/sample6/index.html)에서 실제 동작하는 예제를 확인할 수 있습니다.
+Lastly, add `texture` as a parameter to the `drawScene()` function, both where it is defined and where it is called.
+
+> **Note:** Update the declaration of your `drawScene()` function to add the new parameter:
+
+```js-nolint
+function drawScene(gl, programInfo, buffers, texture, cubeRotation) {
+```
+
+> **Note:** Update the place in your `main()` function where you call `drawScene()`:
+
+```js
+drawScene(gl, programInfo, buffers, texture, cubeRotation);
+```
+
+At this point, the rotating cube should be good to go.
+
+{{EmbedGHLiveSample('dom-examples/webgl-examples/tutorial/sample6/index.html', 670, 510) }}
+
+[View the complete code](https://github.com/mdn/dom-examples/tree/main/webgl-examples/tutorial/sample6) | [Open this demo on a new page](https://mdn.github.io/dom-examples/webgl-examples/tutorial/sample6/)
+
+## Cross-domain textures
+
+Loading of WebGL textures is subject to cross-domain access controls. In order for your content to load a texture from another domain, CORS approval needs to be obtained. See [HTTP access control](/en-US/docs/Web/HTTP/CORS) for details on CORS.
+
+Because WebGL now requires textures to be loaded from secure contexts, you can't use textures loaded from `file:///` URLs in WebGL. That means that you'll need a secure web server to test and deploy your code. For local testing, see our guide [How do you set up a local testing server?](/en-US/docs/Learn/Common_questions/Tools_and_setup/set_up_a_local_testing_server) for help.
+
+See this [hacks.mozilla.org article](https://hacks.mozilla.org/2011/11/using-cors-to-load-webgl-textures-from-cross-domain-images/) for an explanation of how to use CORS-approved images as WebGL textures.
+
+Tainted (write-only) 2D canvases can't be used as WebGL textures. A 2D {{ HTMLElement("canvas") }} becomes tainted, for example, when a cross-domain image is drawn on it.
 
 {{PreviousNext("Web/API/WebGL_API/Tutorial/Creating_3D_objects_using_WebGL", "Web/API/WebGL_API/Tutorial/Lighting_in_WebGL")}}

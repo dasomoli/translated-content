@@ -1,38 +1,41 @@
 ---
-title: Document.designMode
+title: "Document: designMode property"
+short-title: designMode
 slug: Web/API/Document/designMode
+page-type: web-api-instance-property
+browser-compat: api.Document.designMode
 ---
 
-{{ ApiRef() }}
+{{ApiRef()}}
 
-`document.designMode`는 전체 document의 편집 가능 여부를 제어합니다. 유효한 값은 `"on"` 과 `"off"` 입니다. 명세에 따르면, 이 속성은 기본적으로 `"off"`로 설정되어 있습니다. Firefox는 이 표준 명세를 따릅니다. Chrome과 IE의 초기 버전들에서는 `"inherit"` 로 설정되어 있습니다. IE6-10 브라우저에서는, 값이 대문자로 표기됩니다.
+**`document.designMode`** controls whether the entire document
+is editable. Valid values are `"on"` and `"off"`. According to the
+specification, this property is meant to default to `"off"`. Firefox follows
+this standard. The earlier versions of Chrome and IE default to `"inherit"`.
+Starting in Chrome 43, the default is `"off"` and `"inherit"` is
+no longer supported. In IE6-10, the value is capitalized.
 
-## Syntax
+## Value
 
-```js
-var mode = document.designMode;
-document.designMode = "on";
-document.designMode = "off";
-```
+A string indicating whether `designMode` is (or should be) set to on or off.
+Valid values are `on` and `off`.
 
-## Example
+## Examples
 
-{{HTMLElement("iframe")}}의 document를 편집 가능하게 설정합니다.
+Make an {{HTMLElement("iframe")}}'s document editable:
 
 ```js
 iframeNode.contentDocument.designMode = "on";
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- [Rich-Text Editing in Mozilla](/ko/docs/Rich-Text_Editing_in_Mozilla)
 - {{domxref("HTMLElement.contentEditable")}}
-- [designMode property](<https://msdn.microsoft.com/en-us/library/ms533720(v=vs.85).aspx>) on MSDN

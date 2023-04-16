@@ -1,35 +1,24 @@
 ---
 title: CSS Miscellaneous
 slug: Web/CSS/CSS_Miscellaneous
+page-type: css-module
 ---
 
 {{CSSRef}}
 
-이 페이지는 한참 실험 중이거나 다른 어떤 부류와도 맞지 않은 CSS 속성을 포함합니다.
+These pages contain CSS properties that are supported by browsers but either aren't included in a CSS specification, don't fit into any other CSS categories, or are experimental.
 
-## 참고
+## Reference
 
-### 속성
+### Properties
 
 - {{cssxref("all")}}
-- {{cssxref("clip")}}
-- {{cssxref("clip-path")}}
-- {{cssxref("display")}}
-- {{cssxref("ime-mode")}}
-- {{cssxref("initial-letter")}}
-- {{cssxref("initial-letter-align")}}
-- {{cssxref("mask-type")}}
 - {{cssxref("text-rendering")}}
-- {{cssxref("will-change")}}
 
-## 안내서
+## Specifications
 
-_없음._
+_These properties are mostly unrelated to each other. Consult their individual pages for specifications._
 
-## 스펙
+## Browser compatibility
 
-_이 속성은 서로 거의 관련이 없습니다. 스펙은 개별 페이지를 참조하세요._
-
-## 브라우저 호환성
-
-_이 속성은 서로 거의 관련이 없습니다. 브라우저 내 가용성은 개별 페이지를 참조하세요._
+_These properties are mostly unrelated to each other. Consult their individual pages for availability in browsers._

@@ -1,33 +1,46 @@
 ---
-title: console.count()
+title: "console: count() method"
+short-title: count()
 slug: Web/API/console/count
+page-type: web-api-instance-method
+browser-compat: api.console.count
 ---
 
 {{APIRef("Console API")}}
 
-**`console.count()`** 메서드는 특정 `count()` 호출의 횟수를 세어 출력합니다.
+The **`console.count()`** method logs the number of times that
+this particular call to `count()` has been called.
 
 {{AvailableInWorkers}}
 
-## 구문
+## Syntax
 
-```js
-console.count([label]);
+```js-nolint
+count()
+count(label)
 ```
 
-### 매개변수
+### Parameters
 
 - `label` {{Optional_Inline}}
-  - : {{jsxref("String")}}. 지정한 경우, 이 레이블을 지정한 `count()` 호출의 수를 출력합니다. 누락한 경우 "default"를 지정한 것처럼 동작합니다.
+  - : A string. If supplied, `count()` outputs the number of
+    times it has been called with that label. If omitted, `count()` behaves as
+    though it was called with the "default" label.
 
-## 예제
+### Return value
+
+None ({{jsxref("undefined")}}).
+
+## Examples
+
+For example, given code like this:
 
 ```js
 let user = "";
 
 function greet() {
   console.count();
-  return "hi " + user;
+  return `hi ${user}`;
 }
 
 user = "bob";
@@ -38,7 +51,7 @@ greet();
 console.count();
 ```
 
-위 코드의 출력 결과는 다음과 같습니다.
+Console output will look something like this:
 
 ```
 "default: 1"
@@ -47,16 +60,17 @@ console.count();
 "default: 4"
 ```
 
-레이블을 명시하지 않았기 때문에 `default`로 나타납니다.
+The label is displayed as `default` because no explicit label was supplied.
 
-첫 번째 `count()`의 매개변수에는 문자열 "bob"을 제공하고, 두 번째에는 문자열 "alice"를 제공할 경우...
+If we pass the `user` variable as the `label` argument to the
+first invocation of `count()`, and the string "alice" to the second:
 
 ```js
 let user = "";
 
 function greet() {
   console.count(user);
-  return "hi " + user;
+  return `hi ${user}`;
 }
 
 user = "bob";
@@ -67,7 +81,7 @@ greet();
 console.count("alice");
 ```
 
-다음과 같이 출력합니다.
+We will see output like this:
 
 ```
 "bob: 1"
@@ -76,12 +90,12 @@ console.count("alice");
 "alice: 3"
 ```
 
-이제 `label` 값만으로 별도의 카운트를 유지 관리하고 있습니다.
+We're now maintaining separate counts based only on the value of `label`.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

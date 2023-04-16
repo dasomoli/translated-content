@@ -1,55 +1,56 @@
 ---
 title: Symbol.keyFor()
 slug: Web/JavaScript/Reference/Global_Objects/Symbol/keyFor
-l10n:
-  sourceCommit: f3df52530f974e26dd3b14f9e8d42061826dea20
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Symbol.keyFor
 ---
 
 {{JSRef}}
 
-**`Symbol.keyFor()`** 정적 메서드는 주어진 심볼에 해당하는 공유 심볼의 키를 전역 심볼 레지스트리에서 검색합니다.
+The **`Symbol.keyFor()`** static method retrieves a shared symbol
+key from the global symbol registry for the given symbol.
 
 {{EmbedInteractiveExample("pages/js/symbol-keyfor.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 Symbol.keyFor(sym)
 ```
 
-### 매개변수
+### Parameters
 
 - `sym`
-  - : Symbol, 필수 값. 키를 찾기 위한 Symbol
+  - : Symbol, required. The symbol to find a key for.
 
-### 반환 값
+### Return value
 
-[글로벌 레지스트리](/ko/docs/Web/JavaScript/Reference/Global_Objects/Symbol#shared_symbols_in_the_global_symbol_registry)에 있는 경우
-지정된 심볼의 키를 나타내는 문자열이고, 그렇지 않으면 {{jsxref("undefined")}}입니다.
+A string representing the key for the given symbol if one is found on the [global registry](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol#shared_symbols_in_the_global_symbol_registry); otherwise, {{jsxref("undefined")}}.
 
-## 예제
+## Examples
 
-### keyFor() 사용하기
+### Using keyFor()
 
 ```js
-const globalSym = Symbol.for("foo"); // 새로운 전역 심볼 생성
+const globalSym = Symbol.for("foo"); // create a new global symbol
 Symbol.keyFor(globalSym); // "foo"
 
 const localSym = Symbol();
 Symbol.keyFor(localSym); // undefined
 
-// 잘 알려진 심볼은 글로벌 심볼 레지스트리에 등록되지 않은 심볼입니다.
+// well-known symbols are not symbols registered
+// in the global symbol registry
 Symbol.keyFor(Symbol.iterator); // undefined
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Symbol.for()")}}

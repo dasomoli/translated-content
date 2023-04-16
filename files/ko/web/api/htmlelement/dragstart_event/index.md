@@ -1,57 +1,53 @@
 ---
-title: 'Document: dragstart 이벤트'
+title: "HTMLElement: dragstart event"
+short-title: dragstart
 slug: Web/API/HTMLElement/dragstart_event
-original_slug: Web/API/Document/dragstart_event
+page-type: web-api-event
+browser-compat: api.HTMLElement.dragstart_event
 ---
 
 {{APIRef}}
 
-`dragstart` 이벤트는 사용자가 요소나 선택한 텍스트를 드래그하기 시작할 때 발생합니다.
+The `dragstart` event is fired when the user starts dragging an element or text selection.
 
-<table class="properties">
-  <tbody>
-    <tr>
-      <th scope="row">버블링</th>
-      <td>예</td>
-    </tr>
-    <tr>
-      <th scope="row">취소 가능</th>
-      <td>예</td>
-    </tr>
-    <tr>
-      <th scope="row">기본 동작</th>
-      <td>드래그 앤 드롭 작업 시작을 시작합니다.</td>
-    </tr>
-    <tr>
-      <th scope="row">인터페이스</th>
-      <td>{{domxref("DragEvent")}}</td>
-    </tr>
-    <tr>
-      <th scope="row">이벤트 처리기 속성</th>
-      <td>
-        {{domxref("GlobalEventHandlers/ondragstart", "ondragstart")}}
-      </td>
-    </tr>
-  </tbody>
-</table>
+## Syntax
 
-## 예제
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
 
-### 드래그 시작 시 투명도 설정
+```js
+addEventListener("dragstart", (event) => {});
 
-이 예제에서는 컨테이너 안에 드래그 가능한 요소를 배치했습니다. 이 요소를 잡아 드래그한 후 놓아보세요.
+ondragstart = (event) => {};
+```
 
-`dragstart` 이벤트를 수신해서, 요소가 드래그 되기 시작하면 반투명하게 설정하는 예제입니다.
+## Event type
 
-[`drag`](/ko/docs/Web/API/Document/drag_event) 이벤트 문서에서 드래그 앤 드롭의 더 완전한 예제를 확인할 수 있습니다.
+A {{domxref("DragEvent")}}. Inherits from {{domxref("Event")}}.
+
+{{InheritanceDiagram("DragEvent")}}
+
+## Event properties
+
+_In addition to the properties listed below, properties from the parent interface, {{domxref("Event")}}, are available._
+
+- {{domxref('DragEvent.dataTransfer')}} {{ReadOnlyInline}}
+  - : The data that is transferred during a drag and drop interaction.
+
+## Examples
+
+### Setting opacity on drag start
+
+In this example, we have a draggable element inside a container. Try grabbing the element, dragging it, and then releasing it.
+
+We listen for the `dragstart` event to make the element half transparent while it is being dragged.
+
+For a more complete example of drag and drop, see the page for the [`drag`](/en-US/docs/Web/API/HTMLElement/drag_event) event.
 
 #### HTML
 
 ```html
 <div id="container">
-  <div id="draggable" draggable="true">
-    드래그 가능
-  </div>
+  <div id="draggable" draggable="true">This div is draggable</div>
 </div>
 <div class="dropzone"></div>
 ```
@@ -60,7 +56,7 @@ original_slug: Web/API/Document/dragstart_event
 
 ```css
 body {
-  /* 사용자가 예제의 텍스트를 선택하지 못하도록 */
+  /* Prevent the user selecting text in the example */
   user-select: none;
 }
 
@@ -77,49 +73,50 @@ body {
 }
 
 .dragging {
-  opacity: .5;
+  opacity: 0.5;
 }
 ```
 
 #### JavaScript
 
 ```js
-document.addEventListener("dragstart", event => {
-  // 반투명하게 만들기
+const source = document.getElementById("draggable");
+source.addEventListener("dragstart", (event) => {
+  // make it half transparent
   event.target.classList.add("dragging");
 });
 
-document.addEventListener("dragend", event => {
-  // 불투명하게 초기화
+source.addEventListener("dragend", (event) => {
+  // reset the transparency
   event.target.classList.remove("dragging");
 });
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample('드래그 시작 시 투명도 설정')}}
+{{EmbedLiveSample('Setting opacity on drag start')}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 다른 드래그 앤 드롭 이벤트:
+- Other drag and drop events:
 
-  - {{domxref("Document/drag_event", "drag")}}
-  - {{domxref("Document/dragend_event", "dragend")}}
-  - {{domxref("Document/dragover_event", "dragover")}}
-  - {{domxref("Document/dragenter_event", "dragenter")}}
-  - {{domxref("Document/dragleave_event", "dragleave")}}
-  - {{domxref("Document/drop_event", "drop")}}
+  - {{domxref("HTMLElement/drag_event", "drag")}}
+  - {{domxref("HTMLElement/dragend_event", "dragend")}}
+  - {{domxref("HTMLElement/dragover_event", "dragover")}}
+  - {{domxref("HTMLElement/dragenter_event", "dragenter")}}
+  - {{domxref("HTMLElement/dragleave_event", "dragleave")}}
+  - {{domxref("HTMLElement/drop_event", "drop")}}
 
-- 이 이벤트의 다른 대상:
+- This event on other targets:
 
-  - {{domxref("Window")}}: {{domxref("Window/dragstart_event", "dragstart")}} 이벤트
-  - {{domxref("HTMLElement")}}: {{domxref("HTMLElement/dragstart_event", "dragstart")}} 이벤트
-  - {{domxref("SVGElement")}}: {{domxref("SVGElement/dragstart_event", "dragstart")}} 이벤트
+  - {{domxref("Window")}}: {{domxref("Window/dragstart_event", "dragstart")}} event
+  - {{domxref("Document")}}: {{domxref("Document/dragstart_event", "dragstart")}} event
+  - {{domxref("SVGElement")}}: {{domxref("SVGElement/dragstart_event", "dragstart")}} event

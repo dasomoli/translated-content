@@ -1,37 +1,53 @@
 ---
-title: IntersectionObserver.root
+title: "IntersectionObserver: root property"
+short-title: root
 slug: Web/API/IntersectionObserver/root
+page-type: web-api-instance-property
+browser-compat: api.IntersectionObserver.root
 ---
+
 {{APIRef("Intersection Observer API")}}
 
-{{domxref("IntersectionObserver")}} 인터페이스의 **`root`** 읽기 전용 속성은 {{glossary("bounding box", "바운딩 박스")}}를 주시 대상의 {{glossary("viewport", "뷰포트")}}로 취급하는 {{domxref("Element")}} 또는 {{domxref("Document")}}를 나타냅니다.
+The {{domxref("IntersectionObserver")}} interface's read-only
+**`root`** property identifies the {{domxref("Element")}} or
+{{domxref("Document")}} whose bounds are treated as the {{Glossary("bounding box")}}
+of the {{Glossary("viewport")}} for the element which is the observer's target.
 
-`root`가 `null`이면 문서의 실제 뷰포트 바운딩 박스를 사용합니다.
+If the `root` is `null`, then the bounds of the actual document
+viewport are used.
 
-## 값
+## Value
 
-대상 요소가 얼마나 보이는지 판별할 때, 그 뷰포트 경계로서 바운딩 박스를 가져오는 {{domxref("Element")}} 또는 {{domxref("Document")}} 객체입니다.
+A {{domxref("Element")}} or {{domxref("Document")}} object whose bounding box is used
+as the bounds of the viewport for the purposes of determining how much of the target
+element is visible. The intersection of this bounding rectangle, offset by any margins
+specified in the options passed to the
+{{domxref("IntersectionObserver.IntersectionObserver", "IntersectionObserver()")}}
+constructor, the target element's bounds, minus the bounds of every element or other
+object which overlaps the target element, is considered to be the visible area of the
+target element.
 
-이 뷰포트 경계에 {{domxref("IntersectionObserver.IntersectionObserver", "IntersectionObserver()")}} 생성자로 제공한 여백 설정을 적용한 직사각형 영역과, 대상 요소의 경계에서 그 위에 겹치는 다른 요소의 경계를 뺐을 때의 직사각형 영역을 대상 요소에서 볼 수 있는 영역으로 취급합니다.
+If `root` is `null`, then the owning document is used as the
+root, and the bounds its viewport (that is, the visible area of the document) are used
+as the root bounds.
 
-`root`가 `null`이면 현재 문서를 루트로, 그 뷰포트(문서에서 지금 보이는 영역)를 루트 경계로 사용합니다.
+## Examples
 
-## 예제
-
-CSS {{cssxref("border")}} 속성을 사용해서 교차 감지기의 루트 요소에 2픽셀 초록색 테두리를 추가하는 예제입니다.
+This example sets the {{cssxref("border")}} of the intersection observer's root element
+to be a 2-pixel medium green line.
 
 ```js
 observer.root.style.border = "2px solid #44aa44";
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Intersection Observer API로 요소가 보여진 시간 측정하기](/ko/docs/Web/API/Intersection_Observer_API/Timing_element_visibility)
+- [Timing element visibility with the Intersection Observer API](/en-US/docs/Web/API/Intersection_Observer_API/Timing_element_visibility)

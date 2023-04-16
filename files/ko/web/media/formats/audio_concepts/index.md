@@ -1,244 +1,239 @@
 ---
-title: 디지털 오디오 개요
+title: Digital audio concepts
 slug: Web/Media/Formats/Audio_concepts
 ---
-{{QuickLinksWithSubpages("/ko/docs/Web/Media")}}
 
-디지털 형태로 오디오를 나타내는 데에는 몇 가지의 단계와 과정이 수반되며, 웹에서 실제로 사용되는 인코딩되었거나 압축된 오디오와 가공되지 않은 오디오 양 쪽에서 모두 사용될 수 있는 다수의 포맷들이 있습니다. 이 가이드에서는 어떻게 오디오가 디지털적으로 표현되는지, 그리고 어떻게 코덱이 웹에서의 사용을 위해 오디오를 인코딩하고 디코딩하는지를 고찰합니다.
+{{QuickLinksWithSubpages("/en-US/docs/Web/Media")}}
 
-## 오디오 샘플링하기
+Representing audio in digital form involves a number of steps and processes, with multiple formats available both for the raw audio and the encoded or compressed audio which is actually used on the web. This guide is an overview examining how audio is represented digitally, and how codecs are used to encode and decode audio for use on the web.
 
-오디오는 선천적으로 자연계의 아날로그적 특징입니다. 객체가 진동하며, 객체는 자신 주위의 분자들의 진동을 또한 유발합니다. 이 분자들은 인접한 다음의 분자에 영향을 주는 것을 이어가며, 진동을 음원으로부터 바깥으로 향하는 파동의 형태로 파동의 진폭이 (음량) 파동이 나아가며 사라질 때까지 전파합니다. 그렇다면, 실세계의 오디오 파동의 입도(granularity)는 음파가 이동해 나가는 매질의 각 분자에 대한 것입니다.
+## Sampling audio
 
-지구에서, 대부분의 오디오가 이동해 나가는 매질은 공기입니다. 몇몇 오디오는 물론 물 뿐만이 아니라 심지어 행성 자체를 구성하는 암석을 통해서도 이동하지만 (만약 여러분이 지진의 우르르 소리나 쾅 소리를 들어본 적이 있다면, 여러분은 이 현상을 경험한 것입니다), 여러분이 매일 듣는 거의 모든 소리들은 공기를 통해 여러분의 귀로 이동합니다.
+Audio is an inherently analog feature of the natural world. As an object vibrates, it causes the molecules surrounding it to vibrate as well. These molecules affect the ones adjacent to them, and so forth, propagating the vibration in the form of a wave outward from the source until the amplitude of the wave (its volume) fades away with distance. The granularity of an audio wave in the real world, then, is that of an individual molecule of the medium through which the sound wave is traveling.
 
-사람이 매일 듣는 소리들은, 그렇다면, 실제로는 귀의 내부 작동을 유발하는 공기 중의 진동입니다. 파동의 각 진동에서 공기 분자가 더 멀리 움직일수록, 파동의 진폭은 더 높아지고, 소리의 크기는 더 커집니다. 분자가 더 빨리 진동할수록, 파동의 주파수는 더 높아집니다.
+On Earth, the medium most audio travels through is the air. Some audio does travel through water, or even through the rock comprising the planet itself (if you've ever heard the rumble or boom of an earthquake, you've experienced this phenomenon), but nearly all of the sounds you hear every day travel to your ears through the air.
 
-파동의 진폭(높이)이 높을수록, 그 순간에서의 소리는 더 큽니다. 파장이 더 짧을수록 (파동의 꼭대기들 간의 거리가 가까울수록), 생성되는 소리의 주파수 (혹은 음높이)는 더 높습니다.
+The sounds a person hears every day are, then, actually vibrations in the air which cause the inner workings of the ear. The farther the air molecules move with each pulse of the wave, the higher the amplitude of the wave, and the louder the sound is. The faster the molecules vibrate, the higher the frequency of the wave.
 
-![단순한 소리 파형](audio-waveform.svg)
+The higher the amplitude (height) of the wave, the louder the sound is at that instant. The shorter the wavelength (the closer together the crests of the wave are), the higher the frequency (or pitch) of the sound that's produced.
 
-Amplitude: 진폭<br>Time: 시간
+![A simple sound waveform](audio-waveform.svg)
 
-그러나, 컴퓨터는 디지털적입니다. 컴퓨터가 조작하고 처리할 수 있는 방식으로 음파를 나타내기 위해서는 (네트워크를 통해 전송하는 것은 차치하고), 소리는 디지털 형태로 전환되어야만 합니다. 이 과정을 **아날로그-디지털 변환**(analog to ditigal conversion)이라고 합니다 (줄여서 **A/D**).
+Computers, however, are digital. In order to represent a sound wave in a way computers can manipulate and work with (let alone transmit over a network), the sound has to be converted into a digital form. This process is called **analog to digital conversion** (**A/D** for short).
 
-포착된 오디오의 충실도(fidelity)에 영향을 주는 첫번째 요소는 **오디오 대역폭**(audio bandwidth)입니다. 즉, A/D 변환기가 디지털 형태로 포착하고 변환할 수 있는 오디오 주파수의 범위입니다. 오디오 대역폭은 또한, 만약 코덱이 소리를 인코딩하는 중에 어떠한 주파수 대역을 폐기하기로 선택한다면, 코덱에 의해서도 영향받습니다.
+The first factor affecting the fidelity of the captured audio is the **audio bandwidth**; that is, the range of audio frequencies the A/D converter is capable of capturing and converting into digital form. The audio bandwidth is also affected by the codec, if it chooses to discard any frequency bands while encoding the sound.
 
-소리는 음파의 진폭을 나타내기 위해 전압이 다양한 전자의 흐름의 형태로 마이크나 다른 입력을 통해 컴퓨터로 입력됩니다. 이 아날로그 신호는 그리고 나서 규칙적인 구간마다 들어오는 파동의 진폭을 포착하면서, 그 데이터를 오디오 녹음 시스템에 의해 이해되는 형태의 수로 변환하는 회로에 의해 디지털 형태로 변환됩니다. 이 각각의 포착된 순간들을 **샘플**(sample)이라고 합니다. 이 모든 샘플들을 함께 이음으로써, 아래 사진에서 보이다시피 여러분은 근사적으로 원본 파동을 나타낼 수 있습니다.
+Sound enters the computer through a microphone or other input in the form of a stream of electrons whose voltage varies to represent the amplitude of the sound wave. This analog signal is then converted into digital form by a circuit that captures the incoming wave's amplitude at regular intervals, converting that data into a number in a form that is understood by the audio recording system. Each of these captured moments is a **sample**. By chaining all the samples together, you can approximately represent the original wave, as seen in the diagram below.
 
-![주기적으로 취해진 샘플들을 가지고 있는 오디오 파형](audio-waveform-samples1.svg)
+![An audio waveform with samples taken periodically](audio-waveform-samples1.svg)
 
-Amplitude: 진폭<br>Time: 시간
+In this example, the blue line represents the samples taken from the audio waveform, which is black. At regular intervals, the A/D converter circuitry reads the voltage of the signal as a value between (in this case) -1.0 and +1.0. Since the amplitude varies over the duration of that time slice, the A/D converter must choose a value to represent that slice, whether by taking the value at a particular moment (in the diagram above, the midpoint of each slice is used as the value), or by averaging the amplitude over the duration of each sample. Those sample values are then recorded as the amplitude of the waveform at that time.
 
-이 예제에서, 파란색 선은 오디오 파형(검정색 선)으로부터 취해진 샘플들을 나타냅니다. 정기적인 구간마다, A/D 변환기 회로망은 신호의 전압을 (이 경우) -1.0과 +1.0사이의 값으로써 읽습니다. 진폭은 이 시간 구간동안 다르기 때문에, A/D 변환기는 반드시 이 구간을 나타내는 값을 선택해야만 하는데, 이는 특정한 순간의 값을 취함으로써 (위의 그림에서는, 각 구간의 중간점이 그 값으로써 사용되었습니다), 혹은 각 샘플의 기간 동안의 진폭의 평균을 냄으로써 이루어집니다. 이 샘플 값들은 그리고 나서 그 시간에서의 파형의 진폭으로써 기록됩니다.
+When it comes time to play back that sound later, these amplitudes are used to generate an approximation of the original waveform; instead of playing back an exact duplicate of the original, smooth wave, the rougher, blue wave is played.
 
-후에 이 소리를 재생하게 될 때, 이 진폭들은 원본 파형의 근사치를 생성하기 위해 사용됩니다. 원본의 정확한 복제본(매끄러운 파동)이 재생되는 대신, 거친 파동(파란색 선)이 재생됩니다.
+The more often you take samples of the original audio, the closer to the original you can get. The number of samples taken per second is called the **sample rate**. Consider the wave above, and how much different the blue, digital wave would look if you took samples twice as often. Or ten times as often. The more samples you take, the smoother the wave becomes.
 
-더 자주 원본 오디오의 샘플을 취할수록, 원본에 더욱 가까워집니다. 초당 취해진 샘플의 수를 **샘플 레이트**(sample rate)라고 합니다. 상기의 파동과, 만약 두 배만큼, 혹은 10배만큼 더 샘플을 취했다면 파란색 디지털 파동이 얼마나 다르게 보일지 생각해 보십시오. 더 많이 샘플을 취할수록, 파동은 더욱 매끄러워집니다.
+## Audio data format and structure
 
-## 오디오 데이터 포맷과 구조
+At the most basic level, audio is represented by a stream of samples, each specifying the amplitude of the audio waveform as measured for a given slice of the overall waveform of the audio signal. There are several formats used for the individual samples within an audio file. Most audio files use 16-bit signed integers for each sample, but others use 32-bit floating-point values or 24-bit or 32-bit integers. Some older audio file formats—which you won't find in use on the web—used 8-bit integer samples. In addition, samples may use signed or unsigned values, as well. The size of an individual sample is called the **sample size**.
 
-가장 기본적인 수준에서, 오디오는 샘플의 흐름으로써 표현되어지는데, 각 샘플은 오디오 신호의 전체 파형의 주어진 구간에서 측정된 오디오 파형의 진폭을 명시합니다. 오디오 파일 내부에서 각 샘플들에 대해 사용되는 몇 가지 포맷들이 있습니다. 대부분의 오디오 파일들은 각 샘플에 대해 16비트 signed integer를 사용하나, 다른 것들은 32비트 부동 소수점 값 또는 24비트 혹은 32비트 integer를 사용합니다. (웹에서의 사용을 발견하지 못할) 몇몇 오래된 오디오 파일 포맷들은 8비트 integer 샘플을 사용했습니다. 덧붙여서, 샘플은 signed 혹은 unsigned 값을 또한 사용할 수도 있습니다. 각 샘플의 크기는 **샘플 사이즈**(sample size)라고 합니다.
+The position of each audio source within the audio signal is called a **channel**. Each channel contains a sample indicating the amplitude of the audio being produced by that source at a given moment in time. For instance, in stereo sound, there are two audio sources: one speaker on the left, and one on the right. Each of these is represented by one channel, and the number of channels contained in the audio signal is called the **channel count**.
 
-오디오 신호 내부의 각 오디오 소스(source)의 위치를 **채널**(channel)이라고 합니다. 각 채널은 주어진 순간에서 그 소스에 의해 생성되고 있는 오디오의 진폭을 나타내는 샘플을 포함하고 있습니다. 예를 들어, 스테레오 사운드에는, 두 개의 오디오 소스가 있습니다. 좌측에 있는 스피커와 우측에 있는 스피커입니다. 각 스피커는 하나의 채널로 표현되고, 오디오 신호에 포함되어 있는 채널의 수를 **채널 카운트**(channel count)라고 합니다.
+While recording or generating multi-channel audio files, the channels are assembled into a series of **audio frames**, each consisting of one sample for each of the audio's channels. An individual sample is a numeric value representing the amplitude of the sound [waveform](https://en.wikipedia.org/wiki/Waveform) at a single moment in time, and may be represented in various formats.
 
-다수의 채널을 가진 오디오 파일을 녹음하거나 생성하는 동안, 채널들은 일련의 **오디오 프레임**(audio frame)으로 조립되는데, 각 오디오 프레임은 오디오의 각 채널의 한 샘플로 이루어져 있습니다. 개개의 샘플은 한 순간에서의 소리의 [진폭](https://ko.wikipedia.org/wiki/%EC%A7%84%ED%8F%AD)을 나타내는 수치적 값이고, 다양한 포맷으로 표현될 수 있습니다.
+Stereo audio is probably the most commonly used channel arrangement in web audio, and 16-bit samples are used for the majority of day-to-day audio in use today. For 16-bit stereo audio, each sample taken from the analog signal is recorded as two 16-bit integers, one for the left channel and one for the right. That means each sample requires 32 bits of memory. At the common sample rate of 48 kHz (48,000 samples per second), this means each second of audio occupies 192 kB of memory. Therefore, a typical three-minute song requires about 34.5 MB of memory. That's a lot of storage, but worse, it's an insane amount of network bandwidth to use for a relatively short piece of audio. That's why most digital audio is compressed.
 
-아마도 스테레오 오디오는 웹 오디오에서 가장 일반적으로 사용되는 채널 방식이고, 16비트 샘플이 현재 사용되는 일상적인 오디오의 대다수에 대해 사용됩니다. 16비트 스테레오 오디오에 대해, 아날로그 신호에서 취해지는 각 샘플은 두 개의 16비트 integer로 녹음되는데, 한 개는 좌측 채널이고 나머지 한 개는 우측 채널입니다. 이는 각 샘플은 32비트의 메모리를 요구한다는 것을 의미합니다. 48 kHz(초당 48,000 샘플)의 일반적인 샘플 레이트에서, 이것은 오디오의 매 초는 메모리의 192kB를 점유한다는 것을 의미합니다. 그러므로, 통상적인 3분의 노래는 약 34.5 MB의 메모리를 요구합니다. 이것은 많은 저장 공간이지만, 설상가상으로, 이것은 비교적 짧은 오디오에 대해 사용하기에 대단히 많은 양의 네트워크 대역폭이라는 것입니다. 이것이 왜 대부분의 디지털 오디오가 압축되는지에 대한 이유입니다.
+The process of compressing and decompressing audio is performed by encoding and decoding it using an audio **{{Glossary("codec")}}** (**CO**der/**DE**coder). Over the years, a large variety of codecs have been developed, several of which are commonly used on the web. For details about the most important and useful ones for web developers to be familiar with, see the article [Guide to audio codecs used on the web](/en-US/docs/Web/Media/Formats/Audio_codecs).
 
-오디오를 압축하고 압축 해제하는 과정은 오디오 코덱(**{{Glossary("codec")}}**, **CO**der/**DE**coder)을 사용해 오디오를 인코딩하고 디코딩함에 의해 수행됩니다. 수년 간, 많은 종류의 코덱들이 개발되었고, 그것들 중 몇 가지가 웹에서 일반적으로 사용됩니다. 웹 개발자가 친숙해지기에 가장 중요하고 유용한 코덱들에 대한 자세한 사항에 대해서는, [웹에서 사용되는 오디오 코덱에 대한 가이드](/ko/docs/Web/Media/Formats/Audio_codecs)를 참고해 보세요.
+### Audio channels and frames
 
-### 오디오 채널과 프레임
+There are two types of audio channel. Standard audio channels are used to present the majority of the audible sound. The sound for the left and right main channels, as well as all of your surround sound speakers (center, left and right rear, left and right sides, ceiling channels, and so forth) are all standard audio channels. Special **Low Frequency Enhancement** (**LFE**) channels provide the signal for special speakers designed to produce the low frequency sounds and vibration to create a visceral sensation when listening to the audio. The LFE channels typically drive subwoofers and similar devices.
 
-두 종류의 오디오 채널이 있습니다. 표준 오디오 채널은 대부분의 들을 수 있는 소리를 나타내기 위해 사용됩니다. 주된 좌측과 우측 채널에 대한 소리 뿐만이 아니라, 서라운드 사운드 스피커 (중앙, 후방 좌우측, 좌우측, 천장 채널 등등) 는 모두 표준 오디오 채널입니다. 특별한 **저주파 향상**(Low Frequency Enhancement, **LFE**) 채널은 오디오를 들을 때 감정적인 감각을 생성하기 위해 저주파 소리와 진동을 제공하기 위해 설계된 특별한 스피커에 대한 신호를 제공합니다. 이 LFE 채널은 보통 서브우퍼와 유사한 장치를 추진시킵니다.
+Monophonic audio has one channel, stereo sound has two channels, 5.1 surround sound has 6 channels (five standard and one LFE), and so forth. Each audio frame is a data record that contains the samples for all of the channels available in an audio signal. The size of an audio frame is calculated by multiplying the sample size in bytes by the number of channels, so a single frame of stereo 16-bit audio is 4 bytes long and a single frame of 5.1 floating-point audio is 24 (4 bytes per sample multiplied by 6 channels).
 
-모노 오디오는 한 개의 채널을 가지고 있고, 스테레오 사운드는 두 개의 채널을, 5.1 서라운드 사운드는 6개 (5개의 표준 채널과 한 개의 LFE), 등등입니다. 각 오디오 프레임은 오디오 신호에서 사용 가능한 모든 채널에 대한 샘플을 포함하고 있는 데이터 레코드입니다. 오디오 프레임의 크기는 샘플 사이즈 (단위: 바이트) 를 채널의 수로 곱함으로써 계산되므로, 스테레오 16비트 오디오의 한 프레임은 4바이트 길이이고 5.1 부동소수점 오디오의 한 프레임은 24바이트입니다 (샘플당 4바이트 곱하기 6채널).
+> **Note:** Some codecs will actually separate the left and right channels, storing them in separate blocks within their data structure. However, an audio frame is always comprised of all of the data for all available channels.
 
-> **참고:** 몇몇 코덱은 실제로는 좌측과 우측 채널을 나누며, 코덱의 데이터 구조 내부에 별도의 블럭으로 채널들을 저장할 것입니다. 그러나, 오디오 프레임은 항상 사용 가능한 모든 채널의 모든 데이터로 구성됩니다.
+The number of frames that comprise a single second of audio varies depending on the sample rate used when recording the sound. Since the sample rate corresponds to the number of "slices" a sound wave is divided into for each second of time, it's sometimes thought of as a frequency (in the sense that it's a description of something that repeats periodically, not in terms of actual audio frequency), and the samples per second measurement therefore uses the [Hertz](https://en.wikipedia.org/wiki/Hertz) as its unit.
 
-오디오의 1초를 구성하는 프레임의 수는 사운드를 녹음할 때 사용된 샘플 레이트에 따라 다릅니다. 샘플 레이트는 음파가 각 초 동안 나눠진 구간의 수에 해당하므로, 샘플 레이트는 때때로 주파수로써 생각되고 (주기적으로 반복되는 무언가에 대한 설명으로써의 의미이지, 실제 오디오 주파수의 용어로써의 의미가 아닙니다), 초당 샘플 측정은 그러므로 [헤르츠](https://ko.wikipedia.org/wiki/%ED%97%A4%EB%A5%B4%EC%B8%A0)를 단위로써 사용합니다.
-
-가장 일반적인 샘플 레이트는 다음과 같습니다.
+The most common sample rates are:
 
 - 8000 Hz
-  - : 전화 통신에 사용되는 오디오에 대한 국제 [G.711](https://ko.wikipedia.org/wiki/G.711) 표준은 8000 Hz (8 kHz) 의 샘플 레이트를 사용합니다. 이것은 인간의 말이 이해되기에 충분합니다.
+  - : The international [G.711](https://en.wikipedia.org/wiki/G.711) standard for audio used in telephony uses a sample rate of 8000 Hz (8 kHz). This is enough for human speech to be comprehensible.
 - 44100 Hz
-  - : 44.1 kHz 샘플 레이트는 컴팩트 디스크 (CD) 오디오에 대해 사용됩니다. CD는 압축되지 않은 16비트 스테레오 사운드를 44.1 kHz로 제공합니다. 컴퓨터 오디오도 또한 자주 이 주파수를 기본값으로 사용합니다.
+  - : The 44.1 kHz sample rate is used for compact disc (CD) audio. CDs provide uncompressed 16-bit stereo sound at 44.1 kHz. Computer audio also frequently uses this frequency by default.
 - 48000 Hz
-  - : DVD의 오디오는 48 kHz로 녹음됩니다. 이것은 종종 컴퓨터 오디오에서도 사용됩니다.
+  - : The audio on DVD is recorded at 48 kHz. This is also often used for computer audio.
 - 96000 Hz
-  - : 고해상도 오디오.
+  - : High-resolution audio.
 - 192000 Hz
-  - : 초고해상도 오디오. 아직 일반적으로 쓰이지는 않지만, 이것은 시간이 흐름에 따라 변할 것입니다.
+  - : Ultra-high resolution audio. Not commonly used yet, but this will change over time.
 
-왜 44.1 kHz가 최소 "고 충실도" 샘플링 레이트로 여겨지는지에 대한 이유가 있습니다. [표본화 정리](https://ko.wikipedia.org/wiki/%ED%91%9C%EB%B3%B8%ED%99%94_%EC%A0%95%EB%A6%AC)에 따르면, 소리를 정확히 재현하기 위해서는, 소리는 반드시 소리의 주파수의 두 배의 비율로 샘플링되어야만 합니다. 인간의 가청 범위는 약 20 Hz에서 20,000 Hz까지이므로, 사람들이 일반적으로 들을 수 있는 가장 높은 음높이의 소리를 재현하는 것은 40,000 Hz 이상의 샘플 레이트를 요구합니다.
+There is a reason why 44.1 kHz is considered the minimum "high fidelity" sampling rate. The [Nyquist-Shannon sampling theorem](https://en.wikipedia.org/wiki/Nyquist-Shannon_sampling_theorem) dictates that to reproduce a sound accurately, it must be sampled at twice the rate of the sound's frequency. Since the range of human hearing is from around 20 Hz to 20,000 Hz, reproducing the highest-pitched sounds people can generally hear requires a sample rate of more than 40,000 Hz.
 
-[에일리어싱](https://ko.wikipedia.org/wiki/%EC%97%90%EC%9D%BC%EB%A6%AC%EC%96%B4%EC%8B%B1)에 의해 발생되는 왜곡을 방지하기 위해 [로우패스 필터](https://ko.wikipedia.org/wiki/%EB%A1%9C%EC%9A%B0%ED%8C%A8%EC%8A%A4_%ED%95%84%ED%84%B0)에 대한 추가적인 공간을 제공하기 위해서, 추가적인 2.05 kHz [천이 대역](https://en.wikipedia.org/wiki/Transition_band)이 사전 샘플링 주파수에 추가됩니다 (결과적으로 22,050 Hz). 표본화 정리에 의하여 두 배를 하면 (예측하셨다시피) 44.1 kHz의 최종 최소 주파수가 됩니다.
+To provide additional room for a [low-pass filter](https://en.wikipedia.org/wiki/Low-pass_filter) in order to avoid distortion caused by [aliasing](https://en.wikipedia.org/wiki/Aliasing), an additional 2.05 kHz [transition band](https://en.wikipedia.org/wiki/Transition_band) is added to the pre-sampling frequency (resulting in 22,050 Hz). Doubling that per the Nyquist theorem results in a final minimum frequency of (you guessed it) 44.1 kHz.
 
-고해상도 (96 kHz) 오디오는 몇몇 고급 오디오 시스템에서 사용되고, 이것과 초고해상도 (192 kHz) 오디오는 오디오 마스터링에 유용한데, 여기서는 최종 제품에 사용할 샘플 레이트로 다운샘플링하기 전에 소리를 조작하고 수정하는 동안 가능한 한 뛰어난 품질이 필요로 됩니다. 이것은 사진작가가 고객에게 웹사이트에서의 사용에 적합한 JPEG로 제공하기 전에 고해상도의 이미지를 수정하고 합성하는 방식과 비슷합니다.
+High-resolution (96 kHz) audio is used in some high-end audio systems, and it and ultra-high resolution (192 kHz) audio are useful for audio mastering, where you need as much quality as possible while manipulating and editing the sound before downsampling to the sample rate you will use for the final product. This is similar to how photographers will use high resolution images for editing and compositing before presenting the customer with a JPEG suitable for use on a web site.
 
-### 오디오 파일 크기와 네트워크 대역폭
+### Audio file size and network bandwidth
 
-한 번 하나의 오디오 프레임의 크기와 얼마나 많은 초당 프레임들이 오디오 데이터를 이루는지를 알고 나면, 가공되지 않은 사운드 데이터 그 자체가 얼마나 많은 공간을 차지할지는 (그리고 그러므로 얼마나 많은 대역폭이 네트워크에서 소모될지는) 쉽게 계산될 수 있습니다.
+Once you know the size of a single audio frame and how many frames per second make up your audio data, you can easily calculate how much space the raw sound data itself will occupy (and therefore how much bandwidth it would consume on a network).
 
-예를 들어, 48 kHz로 녹음된 16비트 (2바이트) 의 샘플 사이즈를 가진 스테레오 오디오 클립 (즉, 두 개의 오디오 채널) 을 고려해 보세요.
+For example, consider a stereo audio clip (that is, two audio channels) with a sample size of 16 bits (2 bytes), recorded at 48 kHz:
 
 <math><semantics><mrow><mn>2</mn><mo>×</mo><mn>2</mn><mfrac><mrow><mi>bytes</mi></mrow><mrow><mi>sample</mi></mrow></mfrac><mo>×</mo><mn>48000</mn><mfrac><mrow><mi>samples</mi></mrow><mrow><mi>second</mi></mrow></mfrac><mo>=</mo><mn>192000</mn><mfrac><mrow><mi>bytes</mi></mrow><mrow><mi>second</mi></mrow></mfrac><mo>=</mo><mn>192</mn><mi>kBps</mi></mrow><annotation encoding="TeX">2 \times 2\frac { bytes }{ sample } \times 48000\frac { samples }{ second } = 192000\frac { bytes }{ second } = 192 kBps</annotation></semantics></math>
 
-192 kBps에서, 저품질의 네트워크는 이미 단지 재생되는 하나의 오디오 스트림에 의해 혹사될 것입니다. 만약 네트워크가 또한 다른 것을 하고 있다면, 문제는 심지어 더 높은 대역폭의 네트워크에서도 발생합니다. 네트워크 용량에 대한 아주 많은 경쟁과 함께, 특히 느린 네트워크에서는, 이 양의 데이터는 어떤 종류의 실시간 어플리케이션에서라도 성공적으로 전송하기에는 너무 많을지도 모릅니다.
+At 192 kBps, lower-end networks are already going to be strained just by a single audio stream playing. If the network is also doing other things, the problem strikes even on higher bandwidth networks. With so much competition for network capacity, especially on slower networks, this amount of data may be too much to viably transmit during any kind of real-time applications.
 
-이 문제를 해결하기 위하여, 압축을 사용하여 오디오는 반드시 작게 만들어져야 합니다.
+To solve this problem, the audio must be made smaller using compression.
 
-> **참고:** 네트워크 대역폭은 분명히 (위의 [오디오 샘플링하기](#오디오_샘플링하기)에서 언급된) 오디오 대역폭과는 다른 것입니다.
+> **Note:** Network bandwidth is obviously not the same thing as audio bandwidth, which is discussed in [Sampling audio](#sampling_audio), above.
 
-## 오디오 압축 기본
+## Audio compression basics
 
-텍스트와 다른 많은 종류의 데이터와는 다르게, 오디오 데이터는 **소음이 강한** 경향이 있는데, 이는 오디오 데이터는 좀처럼 일련의 정확히 반복되는 바이트 또는 바이트 시퀸스로 구성되지 않음을 의미합니다. 그 결과로써, 오디오 데이터는 `zip` 같은 다목적 도구에 의해 사용되는 전통적인 알고리즘들을 사용하여 압축하기가 어려운데, 이러한 전통적인 알고리즘들은 보통 반복되는 데이터 시퀸스를 축약 표현으로 대체함으로써 작동합니다.
+Unlike text and many other kinds of data, audio data tends to be **noisy**, meaning the data rarely consists of a series of exactly repeated bytes or byte sequences. As a result, audio data is difficult to compress using traditional algorithms such as those used by general-purpose tools like `zip`, which usually work by replacing repeating sequences of data with a shorthand representation.
 
-오디오를 압축할 때 적용할 수 있는 몇 가지 기법들이 있습니다. 대부분의 코덱들은 이 기법들의 조합을 사용하고, 다른 기법들을 또한 사용할 수도 있습니다.
+There are several techniques which can be applied when compressing audio. Most codecs use a combination of these, and may use other techniques as well.
 
-할 수 있는 가장 단순한 일은 소음과 조용한 소리를 제거하는 필터를 적용하며, 모든 조용한 부분들을 소리가 없는 상태로 전환하고 신호를 매끄럽게 하는 것입니다. 이것은 소리가 없는 상태의 늘임을 생산할 수 있을 뿐만 아니라 다른 반복되거나 축약될 수 있는 거의 반복되는 신호들의 늘임 또한 생산할 수 있습니다.
+The simplest thing you can do is to apply a filter that removes hiss and quiet sounds, converting any quiet sections into silence and smoothing out the signal. This can produce stretches of silence as well as other repeating or nearly repeating signals that can be shortened.
 
-오디오 대역폭을 좁게 하는 필터를 적용하며, 상관하지 않는 모든 오디오 주파수를 제거할 수 있습니다. 이것은 목소리만이 있는 오디오 신호에 특히 유용합니다. 이것을 하는 것은 데이터를 제거하며, 결과 신호를 더욱 압축하기 쉬울 가능성이 있게 만듭니다.
+You can apply a filter that narrows the audio bandwidth, removing any audio frequencies that you don't care about. This is especially useful for voice-only audio signals. Doing this removes data, making the resulting signal more likely to be easy to compress.
 
-### 음향 심리학
+### Psychoacoustics
 
-만약 어떤 종류의 오디오를 가장 다룰 가능성이 높은지 안다면, 인코딩을 최적화할 그 종류의 소리에 특별히 적용가능한 특별한 필터링 기법들을 어쩌면 찾을 수 있습니다.
+If you know what kind of audio you're most likely to handle, you can potentially find special filtering techniques applicable specifically to that kind of sound, that will optimize the encoding.
 
-오디오에 대해 가장 일반적으로 사용되는 압축 방법은 **[음악심리학](https://ko.wikipedia.org/wiki/%EC%9D%8C%EC%95%85%EC%8B%AC%EB%A6%AC%ED%95%99)** 의 과학을 적용합니다. 음향 심리학은 어떻게 인간이 소리를 인지하고, 맥락과 소리의 내용을 고려할 때, 어떻게 우리가 그 소리에 반응하는지에 우리가 듣는 오디오 주파수의 어떤 부분이 가장 중요한지를 연구하는 과학입니다. 소리의 주파수에서의 변화를 감지하는 능력이나, 오디오 신호의 주파수에 비해 인간의 전반적인 가청 범위, 오디오 위치 감지 등등의 요소 모두가 코덱에 의해 고려될 수 있습니다.
+The most commonly-used compression methods for audio apply the science of **[psychoacoustics](https://en.wikipedia.org/wiki/Psychoacoustics)**. This is the science that studies how humans perceive sound, and what parts of the audio frequencies we hear are most important to how we respond to those sounds, given the context and content of the sound. Factors such as the ability to sense the change in frequency of a sound, the overall range of human hearing vs. the frequencies of the audio signal, audio localization, and so forth all can be considered by a codec.
 
-음향심리학의 소리 (말장난 아님) 이해를 사용하여, 인지되는 소리의 충실도를 최대화하면서 오디오의 압축된 크기를 최소화할 압축 방법의 설계는 가능합니다. 음향심리학을 이용한 알고리즘은 여기서 언급된 모든 기법들을 사용할 수도 있고, 거의 분명히 다른 것들 또한 적용할 것입니다.
+By using a sound (no pun intended) understanding of psychoacoustics, it's possible to design a compression method that will minimize the compressed size of the audio while maximizing the perceived fidelity of the sound. An algorithm employing psychoacoustics may use any of the techniques mentioned here, and will almost certainly apply others as well.
 
-이것 모두는 코덱을 선택하기 전에 질문되어야 하고 답변되어야만 하는 근본적인 질문이 있음을 의미합니다. 소리의 내용, 사용 맥락, 목표 청중을 고려할 때, 얼마간의 오디오 충실도를 잃는 것은 수용가능한가? 만약 그렇다면, 얼마나 가능한가? 혹은 데이터를 디코딩함에 있어, 그 결과는 소스 오디오와 동일해야만 함이 필수적인가?
+All of this means there is a fundamental question that has to be asked and answered before choosing a codec: Given the content of the sound, the usage context, and the target audience, is it acceptable to lose some degree of audio fidelity, and if so, how much; or is it necessary that, upon decoding the data, the result be identical to the source audio?
 
-### 손실 대 무손실 압축
+### Lossy vs. lossless compression
 
-만약 디테일과 어쩌면 충실도의 손실이 용인될 수 없고 달갑지 않다면, **무손실**(lossless) 코덱이 선호됩니다. 반면, 오디오 충실도의 어느 정도의 축소가 괜찮다면, **손실**(lossy) 코덱이 사용될 수 있습니다. 일반적으로, 손실 압축은 그 결과로 무손실 압축 방법에 비해 상당히 작은 출력을 낳습니다. 또한, 많은 손실 코덱들은 훌륭한데, 품질과 디테일의 손실이 평균적인 청취자가 알아차리기 힘들거나 심지어 불가능할 정도입니다.
+If loss of detail and potentially fidelity is unacceptable or undesirable, a **lossless** codec is preferred. On the other hand, if some degree of reduction of audio fidelity is okay, a **lossy** codec can be used. Generally, lossy compression results in significantly smaller output than lossless compression methods; also, many lossy codecs are excellent, with the loss in quality and detail being difficult or even impossible for the average listener to discern.
 
-> **참고:** 소리 품질에 대한 고품질 손실 압축 알고리즘의 효과는 평균적인 사람이 감지하기 어려울 수 있는 반면, 일부 사람들은 이례적으로 좋은 청각을 가지고 있거나 손실 압축 기법에 의해 음악에 진행된 변화의 종류를 감지하는 데 특별히 능숙합니다.
+> **Note:** While a high-quality lossy compression algorithm's effect on sound quality may be difficult for the average person to detect, certain people have exceptionally good hearing, or are particularly adept at noticing the kinds of changes introduced to music by lossy compression techniques.
 
-오디오 코덱의 대부분은 손실 압축의 몇몇 형태를 사용하는데, 그 알고리즘들이 제공하는 더 좋은 압축 비율 때문입니다. 무손실 압축 알고리즘은 보통 간신히 원본의 압축되지 않은 사운드 데이터의 40-50% 크기와 다름없으나, 현대의 손실 압축 알고리즘은 오디오의 복잡도에 따라 오디오의 크기를 원본 크기의 5-20% 사이로 줄일 수 있습니다. 손실 압축으로 가능한 대단히 우수한 압축 비율은 보통 선택을 할 수 밖에 없게 만들고, 적절하거나 탁월한 오디오 품질은 잘 선택된 코덱 설정으로 가능합니다.
+The majority of audio codecs use some form of lossy compression, because of the better compression ratio those algorithms offer. Whereas lossless compression algorithms usually manage no better than a 40-50% of the size of the original, uncompressed sound data, modern lossy compression algorithms can reduce the size of the audio to between 5-20% of the original size, depending on the complexity of the audio. The vastly superior compression ratios possible with lossy compression usually make it a compelling choice, and adequate or excellent audio quality is possible with well-chosen codec configurations.
 
-연구자들은 계속하여 오디오를 분석하고 압축하는 더 나은 방법을 창안하고 있어서, 압축 비율에서나 오디오 충실도에서 (혹은 둘 다에서) 다양한 개선을 제공하는 새로운 포맷들이 주기적으로 나옵니다.
+Researchers are continuing to devise better ways to analyze and compress audio, so new formats come out periodically that offer various improvements, either in compression ratio or audio fidelity (or both).
 
-무손실 오디오의 사용 경우는 다음과 같은 시나리오를 포함합니다.
+Use cases for lossless audio include scenarios such as:
 
-- 청취자가 정밀한 오디오 재현을 기대하고 소리에 대해 변화되지 않은 오디오의 복잡한 디테일을 알아듣기에 충분한 귀를 가지고 있을 수 있는 상황
-- 음악과 사운드 이펙트 생산 업무에서 사용되는 오디오 반복과 샘플
-- 오디오 클립 또는 샘플이 리믹스되고 그리고 나서 압축될 수 있는 상황. 마스터링 과정에서 무손실 오디오를 사용하는 것은 사전에 압축된 데이터를 압축해 추가적인 품질 손실을 낳을 수 있는 상황을 방지합니다
+- Any situation in which the listener expects precise audio reproduction and may have an ear for sound that's good enough to make out the intricate details of unaltered audio
+- Audio loops and samples used in music and sound effects production work
+- Situations in which audio clips or samples may be remixed and then compressed; using lossless audio for the mastering process avoids compressing previously compressed data, resulting in additional quality loss
 
-손실 압축의 사용을 추천할 수 있는 요소는 다음을 포함합니다.
+Factors that may recommend the use of lossy compression include:
 
-- 아주 큰 소스 오디오
-- 무리가 가해진 저장소 (저장소 공간이 작기 때문이거나 큰 양의 사운드가 저장되어 있기 때문이거나)
-- 오디오를 방송하기 위해 요구되는 네트워크 대역폭을 제한할 필요. 이것은 특히 라이브 스트림과 화상 회의에 중요합니다.
+- Very large source audio
+- Constrained storage (either because the storage space is small, or because there's a large amount of sound to store into it)
+- A need to constrain the network bandwidth required to broadcast the audio; this is especially important for live streams and teleconferencing
 
-## 음향심리학 개론
+## Psychoacoustics 101
 
-음향심리학의 디테일과 어떻게 오디오 압축이 이루어지는지에 뛰어드는 것은 이 문서의 범위를 아주 멀리 벗어나나, 어떻게 오디오가 일반적인 알고리즘에 의해 압축되는지에 대해 일반적인 개념을 아는 것은 유용하며 오디오 코덱 선택의 이해와 더 나은 선택을 내리는 것을 도울 수 있습니다.
+Diving into the details of psychoacoustics and how audio compression works is far beyond the scope of this article, but it is useful to have a general idea of how audio gets compressed by common algorithms can help understand and make better decisions about audio codec selection.
 
-손실 압축 알고리즘은 일반적으로 음향심리학을 사용하여 목적 청취자에게 잘 들리는 효과를 최소화하는 동시에 압축 비율을 개선할 수 있는 방법으로 오디오 파형의 어떤 요소가 손실될 수 있을지 혹은 억제될 수 있을 지 결정합니다. 파형이 쉽게 압축될 수 있게 만들기 위해 파형을 조작함으로써, 혹은 실제로는 들리지 않는 소리의 요소를 제거함으로써, 파형은 단순해지고, 이는 더욱 일관적이고 따라서 쉽게 압축되는 데이터를 결과로 낳습니다. 인간의 귀가 디코딩된 소리를 해석할 방식에 가장 중요한 주파수들만 포함하기 위해 오디오 대역폭을 제한하는 것은 압축 요소를 또한 향상시킬 수 있습니다.
+Lossy compression algorithms generally use psychoacoustics to determine which components of an audio waveform can be lost or subdued in some way that can improve compression ratios while minimizing the audible effect for the target listeners. By manipulating the waveform to make it easier to compress, or by removing components of the sound that aren't really heard, the waveform becomes simpler, resulting in data which has more consistency and is therefore easier to compress. Restricting the audio bandwidth to include only the frequencies most important to how the human ear will interpret the decoded sound can also improve compression factors.
 
-인코딩되는 내용의 유형은 코덱의 선택에 영향을 미칠 수 있습니다. 특히, 음악의 파형은 거의 항상 오직 인간의 음성만을 포함하는 오디오 샘플의 파형보다 더욱 복잡합니다. 추가적으로, 인간의 음성은 인간의 귀가 감지할 수 있는 오디오 주파수 범위의 작은 부분을 사용합니다.
+The type of content being encoded can affect the choice of codec. In particular, the waveform for music is almost always more complex than that of an audio sample that contains only human voices. In addition, the human voice uses a small portion of the range of audio frequencies the human ear can detect.
 
-> **참고:** 원래 명확히 인간 음성을 전송하기 위해 설계된 전화기 네트워크는 오직 300 Hz에서 3,000 Hz 까지의 주파수 대역 내의 오디오 (혹은 다른 종류의 신호) 를 전달할 수 있습니다. 이것은 낮은 영역에서 인간 회화의 전체 범위를 상당히 다루지 못하지만, 인간의 귀와 뇌가 쉽게 보정하는 파형의 충분한 양을 사용 가능합니다. 이것은 또한 인간은 일반적으로 아주 좁은 오디오 대역폭으로 제한된 회화를 듣는 것에 순응되어 있음을 의미합니다.
+> **Note:** Telephone networks, which were originally designed specifically to transmit human voices, can only carry audio (or any other kind of signal) in the frequency band from 300 Hz to 3,000 Hz. This doesn't quite cover the entire range of human speech at the low end, but enough of the waveform is available that the human ear and brain compensate easily. This also means that humans are generally acclimated to hearing speech constrained to so narrow an audio bandwidth.
 
-인간 회화는 비교적 좁은 주파수 대역을 사용합니다 (300 Hz에서 18,000 Hz 주변, 성별을 포함한 요소에 기인해 정확한 범위는 사람마다 다름). 추가적으로, 인간 회화 소리의 대부분은 500 Hz와 3,000 Hz 쯤 사이에 놓여 있는 경향이 있어, 말해지고 있는 단어를 이해하는 청자의 능력을 타협하는 일 없이 전체 파형의 상당한 부분을 탈락시키는 것을 가능케 합니다. 심지어 각 화자의 목소리의 음높이의 요소로 오디오 대역폭을 조정할 수도 있습니다.
+Human speech uses a relatively narrow frequency band (around 300 Hz to 18,000 Hz, though the exact range varies from person to person due to factors including gender). In addition, the vast majority of human speech sounds tend to lie between 500 Hz and 3,000 Hz or so, making it possible to drop substantial portions of the overall waveform without compromising the listener's ability to understand the words being said. You can even adjust the audio bandwidth to factor in the pitch of the individual speaker's voice.
 
-이 모든 요소들 때문에, 그리고 회화 파형이 보통 음악보다 덜 복잡하기 때문에, 회화의 높은 (더욱 구체적으로는 "충분히 높은") 충실도의 재현이 비교적 적은 비트 레이트에서 달성될 수 있습니다.
+Because of all these factors, and because speech waveforms are typically less complex than music, high (and more specifically "high enough") fidelity reproduction of speech can be achieved at a relatively low bit rate.
 
-일반적인 오디오를 압축하기 위해 고안된 압축 알고리즘이 오디오 파형을 분석할 때, 이것은 인간의 가청 범위 외부의 모든 것을 폐기할 수 있습니다 (아마 심지어는 더, 알고리즘이 얼마나 주파수 대역의 높은 부분 그리고/또는 낮은 부분에서의 디테일을 잃어버릴 위험을 감수하느냐에 따라). 이것은 코덱이 주파수가 약 20 Hz보다 낮거나 약 20,000 Hz (20 kHz) 보다 높은 오디오를 폐기할 수 있다는 것을 의미합니다. 이것은 소리의 오디오 대여곡을 좁히고, 그럼으로써 압축된 형태로 신호를 나타내는 데 요구되는 데이터의 양을 줄입니다. 오디오 대역폭은 회화 전용 코덱만큼 가까이 감소될 수 없지만, 이것은 여전히 도움이 되는 시작점입니다.
+When a compression algorithm designed to compress general audio analyzes an audio waveform, it can discard anything outside the range of human hearing (or possibly even more, depending on how willing the algorithm is willing to risk losing detail at the high and/or low end of the frequency band). That means that the codec can discard audio whose frequency is lower than about 20 Hz or higher than about 20,000 Hz (20 kHz). This narrows the audio bandwidth of the sound, thereby reducing the amount of data required to represent the signal in its compressed form. The audio bandwidth can't be reduced nearly as much as for a speech-only codec, but it is still a helpful start.
 
-몇몇 사람들은 얼마간 이 범위 바깥을 들을 수 있습니다. 더욱 종종, 높은 주파수를 듣는 인간의 능력은 이것보다 꽤 낮습니다. 특히, 중년기에서, 이 주파수 범위의 높은 영역은 보통 20 kHz에서 12 kHz에서 14 kHz 주변으로 떨어진다는 것에 주목할 가치가 있습니다. 이는 소리의 독해성에 많이 영향을 주는 일 없이 높은 주파수는 종종 폐기될 수 있어, 유지할 필요가 있는 오디오 공간의 양을 상당히 줄일 수 있어, 그럼으로써 소리를 단순하고 압축하기 쉽게 만듦을 시사합니다.
+Some people can hear outside this range to some extent. More often, people's ability to hear higher frequencies is rather lower than this; in particular, it's worth noting that by middle age, the high end of that frequency range usually falls from 20 kHz down to around 12 kHz to 14 kHz. This suggests that the higher frequencies can often be discarded without overly affecting comprehensibility of the sound, so you can substantially reduce how much of the audio space you need to retain, thereby making your sound simpler and easier to compress.
 
-이것은 아래의 사진에서 나타납니다. 아래의 사진은 인간의 가청 주파수 범위 (녹색) 를 인간 회화의 주파수 범위 (적색) 그리고 대다수의 인간 발성이 놓여 있는 주파수 범위 (황색) 과 비교합니다.
+This is portrayed in the diagram below. The diagram compares the frequency range of human hearing (green) to the frequency range of human speech (red) and the range of frequencies in which the majority of human vocalizations lie (yellow).
 
-![인간의 회화 범위와 비교된 인간의 가청 범위를 보여주는 그림](human-hearing-range.svg)
+![Diagram showing human hearing range compared to human speech range](human-hearing-range.svg)
 
-Human Speech (Core): 인간 회화 (핵심)<br>Human Speech (Full Range): 인간 회화 (전체 범위)<br>Human Hearing: 인간 가청 범위
+The large differences among these ranges gives us room to lose details in audio data without significantly impacting the ability of the human ear to notice any real change in audio quality. These facts can be taken advantage of when compressing audio.
 
-이 범위 간의 큰 차이는 인간의 귀가 오디오 품질에서의 실제 변화를 감지하는 능력에 중대한 영향을 미치는 일 없이 오디오 데이터에서 디테일을 잃어버릴 공간을 제공합니다. 이 사실은 오디오를 압축할 때 사용될 수 있습니다.
+On top of simplifying the sound through psychoacoustic analysis, codecs use other algorithms and transforms to further simplify and reduce the size of the audio. If you'd like to learn more about the way compression works on audio, take a look at [Audio data compression](https://en.wikipedia.org/wiki/Data_compression#Audio) on Wikipedia.
 
-음향심리학적 분석을 통해 소리를 단순화하는 것 외에, 코덱은 오디오의 크기를 더 단순화하고 감소시키기 위한 다른 알고리즘과 변환을 사용합니다. 만약 압축이 오디오에서 작동하는 방식에 대해 더 알고 싶다면, 위키피디아에서 [오디오 데이터 압축](https://en.wikipedia.org/wiki/Data_compression#Audio)를 살펴 보세요.
+Importantly, codecs do all the hard work for you. It's why so much engineering and scientific study goes into the creation of new algorithms and codecs. All you need to do is consider the options and your use case, then choose the appropriate codec for your needs.
 
-중요한 것은, 코덱은 이 모든 어려운 일들을 대신 한다는 점입니다. 이것이 많은 엔지니어링과 과학적 연구가 새로운 알고리즘과 코덱의 생성을 연구하는 이유입니다. 여러분이 해야 할 하나의 일은 옵션과 여러분의 사용 경우를 고려하고, 필요에 맞는 적절한 코덱을 선택하는 것입니다.
+> **Note:** For a more detailed guide to choosing audio codecs, see [Choosing an audio codec](/en-US/docs/Web/Media/Formats/Audio_codecs#choosing_an_audio_codec).
 
-> **참고:** 오디오 코덱의 선택에 대한 더욱 자세한 가이드에 대해서는, [웹 오디오 코덱 가이드](/ko/docs/Web/Media/Formats/Audio_codecs)의 [오디오 코덱 선택하기](/ko/docs/Web/Media/Formats/Audio_codecs#choosing_an_audio_codec)를 참고해 보세요.
+## Lossless encoder parameters
 
-## 무손실 인코더 파라미터
+Lossless encoders have a lot less room to manipulate the audio to improve the compression rate, given the need to be able to reproduce the original audio, which limits the number of options available to configure these encoders. The options tend to revolve around choosing the method by which the encoder performs the encoding and how much time and processor power it's allowed to consume in order to do so.
 
-원본 오디오를 재현할 수 있는 필요를 고려했을 때 무손실 인코더는 압축률을 향상시키기 위해 오디오를 조작할 공간이 많이 적은데, 이는 이러한 인코더에서 설정할 수 있는 옵션들의 수에 제한이 됩니다. 이 옵션들은 인코더가 인코딩을 수행하고 그렇게 하기 위해 시간과 프로세서 파워를 소모하는 것이 허용되는 방법을 선택하는 데 빙빙 도는 경향이 있습니다.
+These parameters vary depending on the codec, but can include:
 
-이 파라미터들은 코덱에 따라 다양하나, 다음을 포함할 수 있습니다.
+- Specifying specific algorithms to use during particular phases of the encoding process
+- Parameters for those algorithms to use, such as how much predictive depth to use when trying to model the audio
+- The number of passes to make while analyzing the audio, or the number of times given algorithms should be run
 
-- 인코딩 과정의 특정한 단계 동안에 사용할 구체적인 알고리즘 명시하기
-- 사용할 이 알고리즘들에 대한 파라미터들, 예를 들자면 오디오 모델링을 시도할 때 얼마나 깊은 예측 깊이를 사용할 것인지
-- 오디오를 분석하는 동안 만들 검사(pass)의 수, 또는 주어진 알고리즘이 몇 번 실행되어야 하는지
+## Lossy encoder parameters
 
-## 손실 인코더 파라미터
+Most codecs have input values you can tune to optimize the compression in various ways, either for size or for quality. When using a lossy encoder, the higher the quality, the larger the encoded audio will be. Because of this, most options affect both quality and size in some manner.
 
-대부분의 코덱은 압축을 (크기나 품질에 대해서) 다양한 방법으로 최적화하기 위해 조정할 수 있는 입력 값들을 가지고 있습니다. 손실 인코더를 사용할 때, 품질이 높을수록, 인코딩된 오디오는 더 클 것입니다. 이것 때문에, 대부분의 옵션들은 어떠한 방식으로든 품질과 크기에 동시에 영향을 미칩니다.
+You will need to refer to the documentation for the encoding software you use to determine which options are available, which will depend on the codec and the encoding software itself. Some codecs have a number of values you can adjust (some of which may require a deep understanding of both psychoacoustics and of the codec's algorithms), and others offer a simple "quality" parameter you can set, which automatically adjusts various properties of the algorithm.
 
-어떤 옵션들이 가능한지를 결정하기 위해 사용하는 인코딩 소프트웨어의 문서를 참고할 필요가 있는데, 이 옵션들은 코덱과 인코딩 소프트웨어 그 자체에 달려 있을 것입니다. 몇몇 코덱들은 조정할 수 있는 다수의 값들을 가지고 있고 (그 중 일부는 음향심리학과 코덱의 알고리즘에 모두에 대해서 깊은 이해를 요구할 수도 있습니다), 다른 코덱들은 설정할 수 있는 단순한 "품질" 파라미터를 제공하는데, 이는 자동으로 알고리즘의 다양한 프로퍼티들을 조정합니다.
+### Bit rate
 
-### 비트 레이트
+There are two mutually-exclusive ways to control the quality of the compressed audio using the bit rate. The first involves targeting an average bit rate for the encoded data, while the second involves specifying a constant quality value to target while allowing the bit rate to vary.
 
-비트 레이트를 사용해 압축된 오디오의 품질을 제어할 두 개의 상호적으로 독점적인 방법이 있습니다. 첫번째 방법은 인코딩된 데이터의 평균 비트 레이트를 목표로 하는 것을 수반하는 반면, 두번째 방법은 비트 레이트가 다양한 것을 허용하며 목표로 할 일정한 품질 값을 명시하는 것을 수반합니다.
+#### Average bit rate
 
-#### 평균 비트 레이트
+The first method for controlling the quality of the output file is to specify the **Average Bit Rate** (**ABR**) to target when encoding the audio. The encoder will attempt to produce an encoded sound file that, when playing it back, uses, on average, the specified number of bits for each second of audio. This controls quality from the perspective of the encoded audio size; the higher the bit rate, the higher the resulting audio quality will be. The quality of the audio will fluctuate over time as needed in order to meet the targeted bit rate.
 
-출력 파일의 품질을 제어하기 위한 첫번째 방법은 오디오를 인코딩할 때 목표로 삼을 **평균 비트 레이트**(Average Bit Rate, **ABR**)를 명시하는 것입니다. 인코더는 인코딩된 사운드 파일을 재생할 때, 평균적으로, 오디오의 매 초에 대해 명시된 수의 비트를 사용하는 인코딩된 사운드 파일의 생성을 시도할 것입니다. 이것은 인코딩된 오디오 크기의 관점에서 품질을 제어합니다. 비트 레이트가 높을수록, 결과로 나오는 오디오 품질은 더 높을 것입니다. 오디오의 품질은 목표로 삼은 비트 레이트를 맞추기 위해 필요할 때 시간에 따라 변동될 것입니다.
+Somewhat similar to ABR is **CBR** (**Constant Bit Rate**). Where ABR attempts to keep the bit rate on average at a given level, while allowing some fluctuation, CBR uses an actually fixed bit rate for the duration of the audio. CBR is primarily used in codecs designed for voice-only purposes, where the frequency range and variation tends to be minimal, allowing CBR encoding to work without unworkable fluctuations in audio quality.
 
-ABR과 다소 유사한 것은 **CBR** (**일정한 비트 레이트**, Constant Bit Rate) 입니다. 얼마간의 변동을 허용하며 ABR은 주어진 수준에서 평균적으로 비트 레이트를 유지하는 것을 시도하는 반면, CBR은 오디오의 지속 기간 동안 실제로 고정된 비트 레이트를 사용합니다. CBR은 주로 목소리 전용 목적을 위해 설계된 코덱에서 사용되는데, 이러한 목적에서 주파수 범위와 변화는 적은 경향이 있어, CBR 인코딩이 오디오 품질에서의 가공 불가능한 변동 없이 작동할 수 있게 합니다.
+#### Variable bit rate
 
-#### 가변적인 비트 레이트
+**Variable Bit Rate** (**VBR**) encoding works by accepting as an input into the encoder a **constant quality** setting. This indicates a quality level to maintain for the duration of the audio, allowing the bit rate to fluctuate as needed to achieve that quality level. In portions of the sound where compression is easily achieved with minimum impact to quality, the bit rate may be very low, while in areas where compression is more complex, the bit rate will be higher.
 
-**가변적인 비트 레이트** (Variable Bit Rate, **VBR**) 인코딩은 인코더의 입력으로 **일정한 품질** 설정을 허용함으로써 작동합니다. 이는 오디오의 지속 기간 동안 유지할 품질 수준을 시사하며, 비트 레이트가 그 품질 수준을 달성하기 위해 필요할 때 변동할 것을 허용합니다. 품질에 최소의 영향을 주며 압축이 쉽게 달성되는 소리의 부분에서, 비트 레이트는 아주 낮을 수 있는 반면, 압축이 더욱 복잡한 영역에서는, 비트 레이트는 더 높을 것입니다.
+### Audio frequency bandwidth
 
-### 오디오 주파수 대역폭
+Some codecs allow you to configure the audio frequency bandwidth directly, either by specifying the range of frequencies to allow, by establishing upper and/or lower frequency limits, or by specifying an audio source type that determines how to configure the algorithm based on the expected frequency use of the incoming signal.
 
-몇몇 코덱은 오디오 주파수 대역폭을 직접 설정할 수 있게 하는데, 이는 허용할 주파수 범위를 명시함으로써, 상한 그리고/또는 하한 주파수를 설정함으로써, 혹은 들어오는 신호의 기대되는 주파수 사용에 기반한 알고리즘을 어떻게 설정할 지를 결정하는 오디오 소스 유형을 명시함으로써 이루어집니다.
+In addition, some codecs support special limited frequency bandwidth channels, such as the LFE channel, which inherently limit the frequency range available. In the case of LFE, the audio frequency bandwidth is limited to a frequency range suitable for use by a subwoofer or similar audio experience enhancement device.
 
-덧붙여, 몇몇 코덱은 LFE와 같은 특별한 제한된 주파수 대역폭 채널을 지원하는데, 이는 선천적으로 사용 가능한 주파수 범위를 제한합니다. LFE의 경우에, 오디오 주파수 대역폭은 서브우퍼나 유사한 오디오 경험 향상 장치에서의 사용에 적합한 주파수 범위로 제한됩니다.
+Some codecs offer special profiles which are specifically intended for particular usage scenarios, such as VoIP; these profiles may also include by default restrictions to the audio frequency bandwidth.
 
-몇몇 코덱은 특별한 사용 시나리오에 대해 특별히 의도된 특별한 프로파일을 제공하는데, 예를 들자면 VoIP같은 것이 있습니다. 이 프로파일들은 또한 오디오 주파수 대역폭에 기본으로 제한을 포함할 수도 있습니다.
+### Joint stereo
 
-### 조인트 스테레오(joint stereo)
+Stereo sound is typically represented by audio frames containing one sample per channel. This results in audio frames that require 2 times _sampleSize_ bits each, where _sampleSize_ is the number of bits each audio sample takes. Therefore, for a 16-bit stereo audio recording, each sample uses 2 times 16, or 32, bits of space. This is standard left/right (L/R) stereo or **simple stereo**.
 
-보통, 스테레오 사운드는 채널당 하나의 샘플을 포함하고 있는 오디오 프레임에 의해 표현됩니다. 이것은 그 결과로 2⨉*sampleSize* 비트를 각각 요구하는 오디오 프레임을 낳는데, 여기서 _sampleSize_ 는 각 오디오 샘플이 취하는 비트의 수입니다. 그러므로, 16비트 스테레오 오디오 녹음에 대해서, 각 샘플은 2⨉16 즉 32 비트의 공간을 사용합니다. 이것이 표준 좌/우 (L/R) 스테레오 혹은 **심플 스테레오**입니다.
+**Joint stereo** is a method of storing stereo audio samples in a more space-efficient manner by taking into account that usually the sound entering each ear is similar. Thus, rather than storing every bit of each channel's sample, a base amplitude and a per-channel amplitude deviation value are stored, wherein the deviation value may use fewer bits than a complete sample.
 
-**조인트 스테레오**는 보통 소리가 각 귀에 유사하게 입력된다는 것을 고려함으로써 스테레오 오디오 샘플을 더욱 공간 효율적인 방식으로 저장하는 방법입니다. 따라서, 각 채널의 샘플의 모든 비트를 저장하기보다는, 기초 진폭과 채널당 진폭 편차 값이 저장되고, 여기서 편차 값은 완전한 샘플보다 더 적은 비트를 사용할 수도 있습니다.
+There are two types of joint stereo: mid-side and intensity. Over the duration of an audio file, the encoder may change which format is being used to represent the stereo signal over the course of the audio file.
 
-두 유형의 조인트 스테레오가 있습니다. mid-side와 intensity(강도)입니다. 오디오 파일의 지속 기간 동안, 인코더는 오디오 파일의 전개 동안 스테레오 신호를 표현하기 위해 어떤 포맷이 사용되고 있는지를 변경할 수 있습니다.
+#### Mid-side stereo coding
 
-#### Mid-side 스테레오 코딩
+**Mid-side stereo coding** (**MS**) works by recording frames that contain a fundamental **mid channel**, which is the average amplitude of the original left and right audio channels. This is essentially what you would calculate as the amplitude when converting a stereo signal into mono. Then you store the **side channel** value; this value is a number which can be added to the **mid channel** value to determine left channel's original amplitude, and subtracted from the mid channel value to compute the right channel's original value.
 
-**Mid-side 스테레오 코딩** (**MS**) 은 기본적인 **중앙 채널**(mid channel)을 포함하는 프레임을 녹음함으로써 작동하는데, 중앙 채널이란 원본 좌측과 우측 오디오 채널의 평균 진폭입니다. 이것은 본질적으로 스테레오 신호를 모노로 전환할 때 진폭으로 계산해야 하는 것입니다. 그리고 나서 **측면 채널**(side channel) 값을 저장합니다. 이 값은 좌측 채널의 원래 진폭을 결정하기 위해 **중앙 채널**에 더해지고, 우측 채널의 원래 값을 계산하기 위해 중앙 채널에서 빼질 수 있는 숫자입니다.
-
-다른 말로 하자면, 좌측 채널 L과 우측 채널 R이 주어졌을 때, 샘플을 인코딩할 때 다음의 계산을 수행합니다.
+In other words, given a left channel, L, and a right channel, R, you perform the following calculations when encoding a sample:
 
 <math display="block"><semantics><mrow><mi mathvariant="italic">mid</mi><mo>=</mo><mfrac><mrow><mi>L</mi><mo>+</mo><mi>R</mi></mrow><mn>2</mn></mfrac></mrow><annotation encoding="TeX">mid = \frac { L + R }{ 2 } </annotation></semantics></math>
 
 <math display="block"><semantics><mrow><mi mathvariant="italic">side</mi><mo>=</mo><mfrac><mrow><mi>L</mi><mo>-</mo><mi>R</mi></mrow><mn>2</mn></mfrac></mrow><annotation encoding="TeX">side = \frac { L - R }{ 2 }</annotation></semantics></math>
 
-그리고 나서 `mid` 와 `side` 값을 저장합니다. `mid` 는 여전히 (16비트와 같은) 샘플 사이즈와 같은 크기인 반면, `side` 의 값은 아마도 더 작은 수의 비트로 저장될 수 있는데, 왜냐하면 두 채널의 진폭이 아마도 비교적 유사하기 때문입니다. 인코더는 그리고 나서 프레임 당 총 비트의 이 더 작은 수를 취하고 크기를 더 줄이기 위해 추가적인 계산을 수행할 수 있습니다.
+Then you store the values of `mid` and `side`. While `mid` is still the same size as your sample size (such as 16 bits), the value of `side` can probably be stored in a smaller number of bits, since the amplitude of the two channels is probably relatively similar. The encoder can then take this smaller number of total bits per frame and perform additional computations to further reduce the size.
 
-오디오를 디코딩할 때, 완전한 좌측과 우측 채널 값은 다음과 같이 계산됩니다.
+While decoding the audio, the absolute left and right channel values are calculated like this:
 
 <math display="block"><semantics><mrow><mi>L</mi><mo>=</mo><mi mathvariant="italic">mid</mi> <mo>+</mo> <mi mathvariant="italic">side</mi></mrow><annotation encoding="TeX">L\quad =\quad mid\quad +\quad side</annotation></semantics></math>
 
 <math display="block"><semantics><mrow><mi>R</mi><mo>=</mo><mi mathvariant="italic">mid</mi> <mo>-</mo> <mi mathvariant="italic">side</mi></mrow><annotation encoding="TeX">L\quad =\quad mid\quad -\quad side</annotation></semantics></math>
 
-그 자체로, mid-side 스테레오 코딩은 무손실이고, 무손실 그리고 손실 오디오 코덱 전부에서 일반적으로 사용됩니다. 디테일의 손실은 인코딩 과정의 다른 단계에서 옵니다.
+On its own, mid-side stereo coding is lossless, and is commonly used by both lossless and lossy audio codecs. Any loss of detail comes from other steps of the encoding process.
 
-#### Intensity 스테레오 코딩
+#### Intensity stereo coding
 
-**Intensity 스테레오 코딩**은 인간이 공간에서 소리의 위치를 결정하는 방식을 이용함으로써 인코딩된 오디오 비트 레이트를 줄입니다. 이것은 [sound localization](https://en.wikipedia.org/wiki/Sound_localization) (소리 위치 감지) 이라고 합니다. 소리가 어디서 오는지에 따라 우리의 귀는 소리를 다른 시간에서 감지하기 때문에 우리는 스테레오로 듣습니다.
+**Intensity stereo coding** reduces the encoded audio bit rate by taking advantage of the way humans determine the location of sounds in space; this is called [sound localization](https://en.wikipedia.org/wiki/Sound_localization). We hear in stereo because our ears detect a sound at different times depending on where the sound is coming from.
 
-이것은 왜냐하면 우리의 귀는 몇 인치 정도 떨어져 있는데다, 머리의 다른 편에 있는 덕분입니다. 우측에서 오는 소리는 좌측 귀에 도착하기 전에 우측 귀에 도착합니다. 소리가 오고 있는 각도를 알아내기 위해 우리의 뇌는 우리 주변의 공간에서 소리가 어디 있는지를 이 시간 차이를 사용하여 결정합니다. 그러나, 오디오 신호의 주파수가 올라갈수록, 파장 또한 올라갑니다. 결국, 파장은 두 귀 사이의 거리를 넘어서는 데 도달하고, 분명하게 소리의 위치를 알아내는 것은 어렵거나 불가능해집니다.
+This is because our ears are separated by several inches, thanks to being on opposite sides of our heads. A sound coming from our right will arrive at our right ear before it arrives at our left ear. Our brains determine where the sound is in the space around us by using that time difference to figure out the angle from which the sound is coming. However, as the frequency of the audio signal drops, the wavelength goes up. Eventually, the wavelength approaches then exceeds the distance between the ears, and it becomes difficult or impossible to unambiguously localize the sound.
 
-이 정보를 알고 있는 채로, 우리는 하나의 채널 내에서 방향성을 결정하는 데 쓰이지 않는 주파수들을 병합함으로써 스테레오 오디오 신호를 근사적으로 표현할 수 있고, 그리고 나서 소리의 방향성을 나타내는 정보를 포함할 수 있습니다. 이것은 표현하는 데 더 적은 비트를 요구하나, 선천적으로 조금 손실적입니다.
+Armed with this information, we can approximately represent a stereo audio signal by merging the frequencies that aren't used to determine directionality into a single channel, then include information that indicates the directionality of the sound. This requires fewer bits to represent, but is inherently somewhat lossy.
 
-## 같이 보기
+## See also
 
-- [웹에서 사용되는 오디오 코덱에 대한 가이드](/ko/docs/Web/Media/Formats/Audio_codecs)
+- [Guide to audio codecs used on the web](/en-US/docs/Web/Media/Formats/Audio_codecs)

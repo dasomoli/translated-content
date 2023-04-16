@@ -1,98 +1,95 @@
 ---
 title: Map.prototype.forEach()
 slug: Web/JavaScript/Reference/Global_Objects/Map/forEach
-l10n:
-  sourceCommit: 2eb202adbe3d83292500ed46344d63fbbae410b5
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Map.forEach
 ---
 
 {{JSRef}}
 
-**`forEach()`** 메서드는 삽입 순서에 따라 `Map` 객체의 각 키/값 쌍마다 한 번씩 제공된 함수를 실행합니다.
+The **`forEach()`** method executes a provided function once per each key/value
+pair in the `Map` object, in insertion order.
 
 {{EmbedInteractiveExample("pages/js/map-prototype-foreach.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
-// Arrow function
-forEach(() => { /* … */ } )
-forEach((value) => { /* … */ } )
-forEach((value, key) => { /* … */ } )
-forEach((value, key, map) => { /* … */ } )
-
-// Callback function
 forEach(callbackFn)
 forEach(callbackFn, thisArg)
-
-// Inline callback function
-forEach(function() { /* … */ })
-forEach(function(value) { /* … */ })
-forEach(function(value, key) { /* … */ })
-forEach(function(value, key, map) { /* … */ })
-forEach(function(value, key, map) { /* … */ }, thisArg)
 ```
 
-### 매개변수
+### Parameters
 
 - `callbackFn`
-  - : 맵의 각 항목에 대해 실행할 함수입니다. 다음 인자가 필요합니다.
-    - `value` {{Optional_Inline}}
-      - : 각 반복의 값입니다.
-    - `key` {{Optional_Inline}}
-      - : 각 반복의 키입니다.
-    - `map` {{Optional_Inline}}
-      - : 반복되는 map입니다.
-- `thisArg` {{Optional_Inline}}
-  - : `callback`을 실행하고 있을 때 `this`로 사용하는 값
+  - : A function to execute for each entry in the map. The function is called with the following arguments:
+    - `value`
+      - : Value of each iteration.
+    - `key`
+      - : Key of each iteration.
+    - `map`
+      - : The map being iterated.
+- `thisArg` {{optional_inline}}
+  - : A value to use as `this` when executing `callbackFn`.
 
-### 반환 값
+### Return value
 
 {{jsxref("undefined")}}.
 
-## 설명
+## Description
 
-`forEach` 메서드는 실제로 존재하는 맵의 각 키에 대해 제공된 `callback`을 한 번씩 실행합니다. 삭제된 키에 대해서는
-호출되지 않습니다. 그러나 값은 존재하지만 `undefined`값일 경우에는 `callback`이 실행됩니다.
+The `forEach` method executes the provided `callback` once for each key of the
+map which actually exist. It is not invoked for keys which have been deleted.
+However, it is executed for values which are present but have the value
+`undefined`.
 
-`callback`은 **인자 3개**와 함께 호출됩니다.
+`callback` is invoked with **three arguments**:
 
-- 항목의 `value`
-- 항목의 `key`
-- 순회하고 있는 **`Map` 객체**
+- the entry's `value`
+- the entry's `key`
+- the **`Map` object** being traversed
 
-`thisArg`가 `forEach`의 매개 변수로 제공되면 호출 시 `this` 값으로 사용하기 위해 `callback`에 전달됩니다.
-그렇지 않으면 `undefined` 값이 `this` 값으로 사용되도록 전달됩니다. `callback`이 궁극적으로 관찰할 수 있는
-`this` 값은 [함수가 보는 `this`를 결정하기 위한 일반적인 규칙](/ko/docs/Web/JavaScript/Reference/Operators/this)에 따라 결정됩니다.
+If a `thisArg` parameter is provided to `forEach`, it will be passed to
+`callback` when invoked, for use as its `this` value. Otherwise, the value
+`undefined` will be passed for use as its `this` value. The `this` value
+ultimately observable by `callback` is determined according to
+[the usual rules for determining the `this` seen by a function](/en-US/docs/Web/JavaScript/Reference/Operators/this).
 
-`forEach`가 완료되기 전에 삭제했다가 다시 추가한 경우를 제외하고 각 값은 한 번씩 방문합니다. 방문하기 전에 삭제된 값에 대해서는
-`callback`이 호출되지 않습니다. `forEach`가 완료되기 전에 추가된 새 값은 나중에 방문합니다.
+Each value is visited once, except in the case when it was deleted and re-added
+before `forEach` has finished. `callback` is not invoked for values deleted
+before being visited. New values added before `forEach` has finished will be
+visited.
 
-## 예제
+## Examples
 
-### Map 객체의 내용을 출력하기
+### Printing the contents of a Map object
 
-다음 코드는 `Map` 객체에서 각 요소의 내용을 한 줄의 로그로 남깁니다.
+The following code logs a line for each element in an `Map` object:
 
 ```js
 function logMapElements(value, key, map) {
   console.log(`map.get('${key}') = ${value}`);
 }
-new Map([['foo', 3], ['bar', {}], ['baz', undefined]]).forEach(logMapElements);
+new Map([
+  ["foo", 3],
+  ["bar", {}],
+  ["baz", undefined],
+]).forEach(logMapElements);
 // Logs:
 // "map.get('foo') = 3"
 // "map.get('bar') = [object Object]"
 // "map.get('baz') = undefined"
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Array.prototype.forEach()")}}
 - {{jsxref("Set.prototype.forEach()")}}

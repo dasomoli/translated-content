@@ -1,46 +1,52 @@
 ---
 title: Date.prototype.getMinutes()
 slug: Web/JavaScript/Reference/Global_Objects/Date/getMinutes
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.getMinutes
 ---
 
 {{JSRef}}
 
-**`getMinutes()`** 메서드는 `Date` 인스턴스의 분을 현지 시간 기준으로 반환합니다.
+The **`getMinutes()`** method returns the minutes in the
+specified date according to local time.
 
-{{EmbedInteractiveExample("pages/js/date-getminutes.html")}}
+{{EmbedInteractiveExample("pages/js/date-getminutes.html","shorter")}}
 
-## 구문
+## Syntax
 
-```js
-    dateObj.getMinutes()
+```js-nolint
+getMinutes()
 ```
 
-### 반환 값
+### Return value
 
-주어진 날짜의 현지 시간 기준 분을 나타내는 0에서 59 사이의 정수.
+An integer number, between 0 and 59, representing the minutes in the given date
+according to local time.
 
-## 예제
+## Examples
 
-### `getMinutes()` 사용하기
+### Using getMinutes()
 
-다음 예제는 {{jsxref("Date")}} 객체 `Xmas95`의 분을 사용해 변수 `minutes`에 15를 할당합니다.
+The second statement below assigns the value 15 to the variable `minutes`,
+based on the value of the {{jsxref("Global_Objects/Date", "Date")}} object
+`xmas95`.
 
 ```js
-var Xmas95 = new Date('December 25, 1995 23:15:30');
-var minutes = Xmas95.getMinutes();
+const xmas95 = new Date("December 25, 1995 23:15:30");
+const minutes = xmas95.getMinutes();
 
 console.log(minutes); // 15
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Date.prototype.getUTCMinutes()")}}
 - {{jsxref("Date.prototype.setMinutes()")}}

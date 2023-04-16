@@ -1,78 +1,117 @@
 ---
 title: Reflect.set()
 slug: Web/JavaScript/Reference/Global_Objects/Reflect/set
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Reflect.set
 ---
 
 {{JSRef}}
 
-**`Reflect.set()`** 정적 메서드는 객체 속성의 값을 설정합니다.
+The **`Reflect.set()`** static method is like the [property accessor](/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors) and [assignment](/en-US/docs/Web/JavaScript/Reference/Operators/Assignment) syntax, but as a function.
 
 {{EmbedInteractiveExample("pages/js/reflect-set.html")}}
 
-## 구문
+## Syntax
 
-```js
-Reflect.set(target, propertyKey, value[, receiver])
+```js-nolint
+Reflect.set(target, propertyKey, value)
+Reflect.set(target, propertyKey, value, receiver)
 ```
 
-### 매개변수
+### Parameters
 
 - `target`
-  - : 속성의 값을 설정할 대상 객체.
+  - : The target object on which to set the property.
 - `propertyKey`
-  - : 값을 설정할 속성의 이름.
+  - : The name of the property to set.
 - `value`
-  - : 설정할 값.
+  - : The value to set.
 - `receiver` {{optional_inline}}
-  - : 속성이 설정자일 경우, `this`로 사용할 값.
+  - : The value of `this` provided for the call to the setter for `propertyKey` on `target`. If provided and `target` does not have a setter for `propertyKey`, the property will be set on `receiver` instead.
 
-### 반환 값
+### Return value
 
-값 설정의 성공 여부를 나타내는 {{jsxref("Boolean")}}.
+A {{jsxref("Boolean")}} indicating whether or not setting the property was successful.
 
-### 예외
+### Exceptions
 
-`target`이 {{jsxref("Object")}}가 아니면 {{jsxref("TypeError")}}.
+- {{jsxref("TypeError")}}
+  - : Thrown if `target` is not an object.
 
-## 설명
+## Description
 
-`Reflect.set()` 메서드는 객체 속성의 값을 설정할 수 있습니다. 속성 추가도 할 수 있으며, 함수라는 점을 제외하면 동작 방식은 [속성 접근자](/ko/docs/Web/JavaScript/Reference/Operators/Property_Accessors)와 같습니다.
+`Reflect.set()` provides the reflective semantic of a [property access](/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors). That is, `Reflect.set(target, propertyKey, value, receiver)` is semantically equivalent to:
 
-## 예제
+```js
+target[propertyKey] = value;
+```
 
-### `Reflect.set()` 사용하기
+Note that in a normal property access, `target` and `receiver` would observably be the same object.
+
+`Reflect.set()` invokes the `[[Set]]` [object internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods) of `target`.
+
+## Examples
+
+### Using Reflect.set()
 
 ```js
 // Object
-var obj = {};
-Reflect.set(obj, 'prop', 'value'); // true
+let obj = {};
+Reflect.set(obj, "prop", "value"); // true
 obj.prop; // "value"
 
 // Array
-var arr = ['duck', 'duck', 'duck'];
-Reflect.set(arr, 2, 'goose'); // true
+let arr = ["duck", "duck", "duck"];
+Reflect.set(arr, 2, "goose"); // true
 arr[2]; // "goose"
 
-// 배열 자르기
-Reflect.set(arr, 'length', 1); // true
-arr; // ["duck"];
+// It can truncate an array.
+Reflect.set(arr, "length", 1); // true
+arr; // ["duck"]
 
-// 매개변수를 하나만 제공하면 속성 키 이름은 문자열 "undefined", 값은 undefined
-var obj = {};
+// With just one argument, propertyKey and value are "undefined".
+let obj = {};
 Reflect.set(obj); // true
-Reflect.getOwnPropertyDescriptor(obj, 'undefined');
+Reflect.getOwnPropertyDescriptor(obj, "undefined");
 // { value: undefined, writable: true, enumerable: true, configurable: true }
 ```
 
-## 명세
+### Different target and receiver
+
+When the `target` and `receiver` are different, `Reflect.set` will use the property descriptor of `target` (to find the setter or determine if the property is writable), but set the property on `receiver`.
+
+```js
+const target = {};
+const receiver = {};
+Reflect.set(target, "a", 2, receiver); // true
+// target is {}; receiver is { a: 2 }
+
+const target = { a: 1 };
+const receiver = {};
+Reflect.set(target, "a", 2, receiver); // true
+// target is { a: 1 }; receiver is { a: 2 }
+
+const target = {
+  set a(v) {
+    this.b = v;
+  },
+};
+const receiver = {};
+Reflect.set(target, "a", 2, receiver); // true
+// target is { a: [Setter] }; receiver is { b: 2 }
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `Reflect.set` in `core-js`](https://github.com/zloirock/core-js#ecmascript-reflect)
 - {{jsxref("Reflect")}}
-- [속성 접근자](/ko/docs/Web/JavaScript/Reference/Operators/Property_Accessors)
+- [Property accessors](/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors)
+- [`Proxy`'s `set` handler](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/set)

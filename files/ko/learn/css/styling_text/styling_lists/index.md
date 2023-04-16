@@ -1,47 +1,50 @@
 ---
-title: 목록 스타일링
+title: Styling lists
 slug: Learn/CSS/Styling_text/Styling_lists
 ---
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/CSS/Styling_text/Fundamentals", "Learn/CSS/Styling_text/Styling_links", "Learn/CSS/Styling_text")}}
 
-[목록](/en-US/Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals#Lists) 은 대부분 다른 텍스트처럼 작동하지만, 알아야 할 목록과 관련된 몇 가지 CSS 속성과 고려해야 할 모범 사례가 있습니다. 이 기사는 모든 것을 설명합니다.
+[Lists](/en-US/docs/Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals#lists) behave like any other text for the most part, but there are some CSS properties specific to lists that you need to know about, as well as some best practices to consider. This article explains all.
 
-<table class="learn-box standard-table">
+<table>
   <tbody>
     <tr>
-      <th scope="row">전제조건:</th>
+      <th scope="row">Prerequisites:</th>
       <td>
         Basic computer literacy, HTML basics (study
         <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML"
           >Introduction to HTML</a
         >), CSS basics (study
-        <a href="/en-US/docs/Learn/CSS/Introduction_to_CSS"
-          >Introduction to CSS</a
-        >),
+        <a href="/en-US/docs/Learn/CSS/First_steps">Introduction to CSS</a>),
         <a href="/en-US/docs/Learn/CSS/Styling_text/Fundamentals"
           >CSS text and font fundamentals</a
         >.
       </td>
     </tr>
     <tr>
-      <th scope="row">목적:</th>
-      <td>목록 스타일과 관련된 모범 사례 및 속성에 익숙해지기.</td>
+      <th scope="row">Objective:</th>
+      <td>
+        To become familiar with the best practices and properties related to
+        styling lists.
+      </td>
     </tr>
   </tbody>
 </table>
 
-## 간단한 목록 예제
+## A simple list example
 
-우선, 간단한 목록 예제를 봅시다. 이 기사 전체에서 우리는 순서가 없는, 순서가 있는, 설명 목록을 살펴볼 것입니다 — 모두 유사한 스타일링 기능이 있으며, 일부 유형은 목록 유형과 다릅니다. 스타일이 지정되지 않은 예제는 [Github 에서 가능](http://mdn.github.io/learning-area/css/styling-text/styling-lists/unstyled-list.html) 합니다 ([소스 코드](https://github.com/mdn/learning-area/blob/master/css/styling-text/styling-lists/unstyled-list.html) 도 확인하십시오.)
+To begin with, let's look at a simple list example. Throughout this article, we'll look at unordered, ordered, and description lists — all have styling features that are similar, as well as some that are particular to themselves. The unstyled example is [available on GitHub](https://mdn.github.io/learning-area/css/styling-text/styling-lists/unstyled-list.html) (check out the [source code](https://github.com/mdn/learning-area/blob/main/css/styling-text/styling-lists/unstyled-list.html) too.)
 
-목록 예제의 HTML 은 다음과 같습니다:
+The HTML for our list example looks like so:
 
 ```html
 <h2>Shopping (unordered) list</h2>
 
-<p>Paragraph for reference, paragraph for reference, paragraph for reference,
-paragraph for reference, paragraph for reference, paragraph for reference.</p>
+<p>
+  Paragraph for reference, paragraph for reference, paragraph for reference,
+  paragraph for reference, paragraph for reference, paragraph for reference.
+</p>
 
 <ul>
   <li>Hummus</li>
@@ -52,44 +55,56 @@ paragraph for reference, paragraph for reference, paragraph for reference.</p>
 
 <h2>Recipe (ordered) list</h2>
 
-<p>Paragraph for reference, paragraph for reference, paragraph for reference,
-paragraph for reference, paragraph for reference, paragraph for reference.</p>
+<p>
+  Paragraph for reference, paragraph for reference, paragraph for reference,
+  paragraph for reference, paragraph for reference, paragraph for reference.
+</p>
 
 <ol>
   <li>Toast pita, leave to cool, then slice down the edge.</li>
-  <li>Fry the halloumi in a shallow, non-stick pan, until browned on both sides.</li>
+  <li>
+    Fry the halloumi in a shallow, non-stick pan, until browned on both sides.
+  </li>
   <li>Wash and chop the salad.</li>
   <li>Fill pita with salad, hummus, and fried halloumi.</li>
 </ol>
 
 <h2>Ingredient description list</h2>
 
-<p>Paragraph for reference, paragraph for reference, paragraph for reference,
-paragraph for reference, paragraph for reference, paragraph for reference.</p>
+<p>
+  Paragraph for reference, paragraph for reference, paragraph for reference,
+  paragraph for reference, paragraph for reference, paragraph for reference.
+</p>
 
 <dl>
   <dt>Hummus</dt>
-  <dd>A thick dip/sauce generally made from chick peas blended with tahini, lemon juice, salt, garlic, and other ingredients.</dd>
+  <dd>
+    A thick dip/sauce generally made from chick peas blended with tahini, lemon
+    juice, salt, garlic, and other ingredients.
+  </dd>
   <dt>Pita</dt>
   <dd>A soft, slightly leavened flatbread.</dd>
   <dt>Halloumi</dt>
-  <dd>A semi-hard, unripened, brined cheese with a higher-than-usual melting point, usually made from goat/sheep milk.</dd>
+  <dd>
+    A semi-hard, unripened, brined cheese with a higher-than-usual melting
+    point, usually made from goat/sheep milk.
+  </dd>
   <dt>Green salad</dt>
   <dd>That green healthy stuff that many of us just use to garnish kebabs.</dd>
 </dl>
 ```
 
-If you go to the live example now and investigate the list elements using [browser developer tools](/ko/docs/Learn/Common_questions/What_are_browser_developer_tools), you'll notice a couple of styling defaults:
+If you go to the live example now and investigate the list elements using [browser developer tools](/en-US/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools), you'll notice a couple of styling defaults:
 
-- The {{htmlelement("ul")}} and {{htmlelement("ol")}} elements have a top and bottom {{cssxref("margin")}} of `16px` (`1em`) and a {{cssxref("padding-left")}} of `40px` (`2.5em`.)
+- The {{htmlelement("ul")}} and {{htmlelement("ol")}} elements have a top and bottom {{cssxref("margin")}} of `16px` (`1em`) and a {{cssxref("padding-left")}} of `40px` (`2.5em`).
 - The list items ({{htmlelement("li")}} elements) have no set defaults for spacing.
 - The {{htmlelement("dl")}} element has a top and bottom {{cssxref("margin")}} of `16px` (`1em`), but no padding set.
-- The {{htmlelement("dd")}} elements have {{cssxref("margin-left")}} of `40px` (`2.5em`.)
-- The {{htmlelement("p")}} elements we've included for reference have a top and bottom {{cssxref("margin")}} of `16px` (`1em`), the same as the different list types.
+- The {{htmlelement("dd")}} elements have {{cssxref("margin-left")}} of `40px` (`2.5em`).
+- The {{htmlelement("p")}} elements we've included for reference have a top and bottom {{cssxref("margin")}} of `16px` (`1em`) — the same as the different list types.
 
 ## Handling list spacing
 
-When styling lists, you need to adjust their styles so they keep the same vertical spacing as their surrounding elements (such as paragraphs and images; sometimes called vertical rhythm), and the same horizontal spacing as each other (you can see the [finished styled example](http://mdn.github.io/learning-area/css/styling-text/styling-lists/) on Github, and [find the source code](https://github.com/mdn/learning-area/blob/master/css/styling-text/styling-lists/index.html) too.)
+When styling lists, you need to adjust their styles so they keep the same vertical spacing as their surrounding elements (such as paragraphs and images; sometimes called vertical rhythm), and the same horizontal spacing as each other (you can see the [finished styled example](https://mdn.github.io/learning-area/css/styling-text/styling-lists/) on GitHub, and [find the source code](https://github.com/mdn/learning-area/blob/main/css/styling-text/styling-lists/index.html) too).
 
 The CSS used for the text styling and spacing is as follows:
 
@@ -105,46 +120,46 @@ h2 {
   font-size: 2rem;
 }
 
-ul,ol,dl,p {
+ul,
+ol,
+dl,
+p {
   font-size: 1.5rem;
 }
 
-li, p {
+li,
+p {
   line-height: 1.5;
 }
 
 /* Description list styles */
 
-
-dd, dt {
+dd,
+dt {
   line-height: 1.5;
 }
 
 dt {
   font-weight: bold;
 }
-
-dd {
-  margin-bottom: 1.5rem;
-}
 ```
 
 - The first rule sets a sitewide font and a baseline font size of 10px. These are inherited by everything on the page.
 - Rules 2 and 3 set relative font sizes for the headings, different list types (the children of the list elements inherit these), and paragraphs. This means that each paragraph and list will have the same font size and top and bottom spacing, helping to keep the vertical rhythm consistent.
 - Rule 4 sets the same {{cssxref("line-height")}} on the paragraphs and list items — so the paragraphs and each individual list item will have the same spacing between lines. This will also help to keep the vertical rhythm consistent.
-- Rules 5 and 6 apply to the description list — we set the same `line-height` on the description list terms and descriptions as we did with the paragraphs and list items. Again, consistency is good! We also make the description terms have bold font, so they visually stand out easier.
+- Rules 5 and 6 apply to the description list. We set the same `line-height` on the description list terms and descriptions as we did with the paragraphs and list items. Again, consistency is good! We also make the description terms have bold font, so they visually stand out easier.
 
 ## List-specific styles
 
-Now we've looked at general spacing techniques for lists, let's explore some list-specific properties. There are three properties you should know about to start with, which can be set on {{htmlelement("ul")}} or {{htmlelement("ol")}} elements:
+Now that we've looked at general spacing techniques for lists, let's explore some list-specific properties. There are three properties you should know about to start with, which can be set on {{htmlelement("ul")}} or {{htmlelement("ol")}} elements:
 
-- {{cssxref("list-style-type")}}: Sets the type of bullets to use for the list, for example, square or circle bullets for an unordered list, or numbers, letters or roman numerals for an ordered list.
-- {{cssxref("list-style-position")}}: Sets whether the bullets appear inside the list items, or outside them before the start of each item.
+- {{cssxref("list-style-type")}}: Sets the type of bullets to use for the list, for example, square or circle bullets for an unordered list, or numbers, letters, or roman numerals for an ordered list.
+- {{cssxref("list-style-position")}}: Sets whether the bullets, at the start of each item, appear inside or outside the lists.
 - {{cssxref("list-style-image")}}: Allows you to use a custom image for the bullet, rather than a simple square or circle.
 
 ### Bullet styles
 
-As mentioned above, the {{cssxref("list-style-type")}} property allows you to set what type of bullet to use for the bullet points. In our example, we've set the ordered list to use uppercase roman numerals, with:
+As mentioned above, the {{cssxref("list-style-type")}} property allows you to set what type of bullet to use for the bullet points. In our example, we've set the ordered list to use uppercase roman numerals with:
 
 ```css
 ol {
@@ -183,7 +198,7 @@ ul {
 }
 ```
 
-However, this property is a bit limited in terms of controlling the position, size, etc. of the bullets. You are better off using the {{cssxref("background")}} family of properties, which you'll learn a lot more about in the [Styling boxes](/ko/docs/Learn/CSS/Styling_boxes) module. For now, here's a taster!
+However, this property is a bit limited in terms of controlling the position, size, etc. of the bullets. You are better off using the {{cssxref("background")}} family of properties, which you've learned in the [Backgrounds and borders](/en-US/docs/Learn/CSS/Building_blocks/Backgrounds_and_borders) article. For now, here's a taster!
 
 In our finished example, we have styled the unordered list like so (on top of what you've already seen above):
 
@@ -204,7 +219,7 @@ ul li {
 
 Here we've done the following:
 
-- Set the {{cssxref("padding-left")}} of the {{htmlelement("ul")}} down from the default `40px` to `20px`, then set the same amount on the list items. This is so that overall the list items are still lined up with the order list items and the description list descriptions, but the list items have some padding for the background images to sit inside. If we didn't do this, the background images would overlap with the list item text, which would look messy.
+- Set the {{cssxref("padding-left")}} of the {{htmlelement("ul")}} down from the default `40px` to `20px`, then set the same amount on the list items. This is so that, overall, the list items are still lined up with the ordered list items and the description list descriptions, but the list items have some padding for the background images to sit inside. If we didn't do this, the background images would overlap with the list item text, which would look messy.
 - Set the {{cssxref("list-style-type")}} to `none`, so that no bullet appears by default. We're going to use {{cssxref("background")}} properties to handle the bullets instead.
 - Inserted a bullet onto each unordered list item. The relevant properties are as follows:
 
@@ -237,20 +252,22 @@ ul {
 }
 ```
 
-The values can be listed in any order, and you can use one, two or all three (the default values used for the properties that are not included are `disc`, `none`, and `outside`). If both a `type` and an `image` are specified, the type is used as a fallback if the image can't be loaded for some reason.
+The values can be listed in any order, and you can use one, two, or all three (the default values used for the properties that are not included are `disc`, `none`, and `outside`). If both a `type` and an `image` are specified, the type is used as a fallback if the image can't be loaded for some reason.
 
 ## Controlling list counting
 
-Sometimes you might want to count differently on an ordered list — e.g. starting from a number other than 1, or counting backwards, or counting in steps of more than 1. HTML and CSS have some tools to help you here.
+Sometimes you might want to count differently on an ordered list — e.g., starting from a number other than 1, or counting backwards, or counting in steps of more than 1. HTML and CSS have some tools to help you here.
 
 ### start
 
-The {{htmlattrxref("start","ol")}} attribute allows you to start the list counting from a number other than 1. The following example:
+The [`start`](/en-US/docs/Web/HTML/Element/ol#start) attribute allows you to start the list counting from a number other than 1. The following example:
 
 ```html
 <ol start="4">
   <li>Toast pita, leave to cool, then slice down the edge.</li>
-  <li>Fry the halloumi in a shallow, non-stick pan, until browned on both sides.</li>
+  <li>
+    Fry the halloumi in a shallow, non-stick pan, until browned on both sides.
+  </li>
   <li>Wash and chop the salad.</li>
   <li>Fill pita with salad, hummus, and fried halloumi.</li>
 </ol>
@@ -262,12 +279,14 @@ Gives you this output:
 
 ### reversed
 
-The {{htmlattrxref("reversed","ol")}} attribute will start the list counting down instead of up. The following example:
+The [`reversed`](/en-US/docs/Web/HTML/Element/ol#reversed) attribute will start the list counting down instead of up. The following example:
 
 ```html
 <ol start="4" reversed>
   <li>Toast pita, leave to cool, then slice down the edge.</li>
-  <li>Fry the halloumi in a shallow, non-stick pan, until browned on both sides.</li>
+  <li>
+    Fry the halloumi in a shallow, non-stick pan, until browned on both sides.
+  </li>
   <li>Wash and chop the salad.</li>
   <li>Fill pita with salad, hummus, and fried halloumi.</li>
 </ol>
@@ -277,16 +296,18 @@ Gives you this output:
 
 {{ EmbedLiveSample('reversed', '100%', 150) }}
 
-> **참고:** If there are more list items in a reversed list than the value of the `start` attribute, the count will continue to zero and then into negative values.
+> **Note:** If there are more list items in a reversed list than the value of the `start` attribute, the count will continue to zero and then into negative values.
 
 ### value
 
-The {{htmlattrxref("value","ol")}} attribute allows you to set your list items to specific numerical values. The following example:
+The [`value`](/en-US/docs/Web/HTML/Element/li#value) attribute allows you to set your list items to specific numerical values. The following example:
 
 ```html
 <ol>
   <li value="2">Toast pita, leave to cool, then slice down the edge.</li>
-  <li value="4">Fry the halloumi in a shallow, non-stick pan, until browned on both sides.</li>
+  <li value="4">
+    Fry the halloumi in a shallow, non-stick pan, until browned on both sides.
+  </li>
   <li value="6">Wash and chop the salad.</li>
   <li value="8">Fill pita with salad, hummus, and fried halloumi.</li>
 </ol>
@@ -296,23 +317,29 @@ Gives you this output:
 
 {{ EmbedLiveSample('value', '100%', 150) }}
 
-> **참고:** Even if you are using a non-number {{cssxref("list-style-type")}}, you still need to use the equivalent numerical values in the `value` attribute.
+> **Note:** Even if you are using a non-number {{cssxref("list-style-type")}}, you still need to use the equivalent numerical values in the `value` attribute.
 
 ## Active learning: Styling a nested list
 
 In this active learning session, we want you to take what you've learned above and have a go at styling a nested list. We've provided you with the HTML, and we want you to:
 
 1. Give the unordered list square bullets.
-2. Give the unordered list items and the ordered list items a line height of 1.5 of their font-size.
+2. Give the unordered list items and the ordered list items a line-height of 1.5 of their font-size.
 3. Give the ordered list lower alphabetical bullets.
 4. Feel free to play with the list example as much as you like, experimenting with bullet types, spacing, or whatever else you can find.
 
 If you make a mistake, you can always reset it using the _Reset_ button. If you get really stuck, press the _Show solution_ button to see a potential answer.
 
 ```html hidden
-<div class="body-wrapper" style="font-family: 'Open Sans Light',Helvetica,Arial,sans-serif;">
+<div
+  class="body-wrapper"
+  style="font-family: 'Open Sans Light',Helvetica,Arial,sans-serif;">
   <h2>HTML Input</h2>
-  <textarea id="code" class="html-input" style="width: 90%;height: 10em;padding: 10px;border: 1px solid #0095dd;"><ul>
+  <textarea
+    id="code"
+    class="html-input"
+    style="width: 90%;height: 10em;padding: 10px;border: 1px solid #0095dd;">
+<ul>
   <li>First, light the candle.</li>
   <li>Next, open the box.</li>
   <li>Finally, place the three magic items in the box, in this exact order, to complete the spell:
@@ -325,28 +352,41 @@ If you make a mistake, you can always reset it using the _Reset_ button. If you 
 </ul></textarea>
 
   <h2>CSS Input</h2>
-  <textarea id="code" class="css-input" style="width: 90%;height: 10em;padding: 10px;border: 1px solid #0095dd;"></textarea>
+  <textarea
+    id="code"
+    class="css-input"
+    style="width: 90%;height: 10em;padding: 10px;border: 1px solid #0095dd;"></textarea>
 
   <h2>Output</h2>
-  <div class="output" style="width: 90%;height: 12em;padding: 10px;border: 1px solid #0095dd;overflow: auto;"></div>
+  <div
+    class="output"
+    style="width: 90%;height: 12em;padding: 10px;border: 1px solid #0095dd;overflow: auto;"></div>
   <div class="controls">
-    <input id="reset" type="button" value="Reset" style="margin: 10px 10px 0 0;">
-    <input id="solution" type="button" value="Show solution" style="margin: 10px 0 0 10px;">
+    <input
+      id="reset"
+      type="button"
+      value="Reset"
+      style="margin: 10px 10px 0 0;" />
+    <input
+      id="solution"
+      type="button"
+      value="Show solution"
+      style="margin: 10px 0 0 10px;" />
   </div>
 </div>
 ```
 
 ```js hidden
-var htmlInput = document.querySelector(".html-input");
-var cssInput = document.querySelector(".css-input");
-var reset = document.getElementById("reset");
-var htmlCode = htmlInput.value;
-var cssCode = cssInput.value;
-var output = document.querySelector(".output");
-var solution = document.getElementById("solution");
+const htmlInput = document.querySelector(".html-input");
+const cssInput = document.querySelector(".css-input");
+const reset = document.getElementById("reset");
+const htmlCode = htmlInput.value;
+const cssCode = cssInput.value;
+const output = document.querySelector(".output");
+const solution = document.getElementById("solution");
 
-var styleElem = document.createElement('style');
-var headElem = document.querySelector('head');
+const styleElem = document.createElement("style");
+const headElem = document.querySelector("head");
 headElem.appendChild(styleElem);
 
 function drawOutput() {
@@ -354,15 +394,26 @@ function drawOutput() {
   styleElem.textContent = cssInput.value;
 }
 
-reset.addEventListener("click", function() {
+reset.addEventListener("click", () => {
   htmlInput.value = htmlCode;
   cssInput.value = cssCode;
   drawOutput();
 });
 
-solution.addEventListener("click", function() {
+solution.addEventListener("click", () => {
   htmlInput.value = htmlCode;
-  cssInput.value = 'ul {\n  list-style-type: square;\n}\n\nul li, ol li {\n  line-height: 1.5;\n}\n\nol {\n  list-style-type: lower-alpha\n}';
+  cssInput.value = `ul {
+  list-style-type: square;
+}
+
+ul li,
+ol li {
+  line-height: 1.5;
+}
+
+ol {
+  list-style-type: lower-alpha;
+}`;
   drawOutput();
 });
 
@@ -371,7 +422,11 @@ cssInput.addEventListener("input", drawOutput);
 window.addEventListener("load", drawOutput);
 ```
 
-{{ EmbedLiveSample('Playable_code', 700, 800) }}
+{{ EmbedLiveSample('Active_learning_Styling_a_nested_list', 700, 800) }}
+
+## Summary
+
+Lists are relatively easy to get the hang of styling once you know a few associated basic principles and specific properties. In the next article, we'll move on to [link styling techniques](/en-US/docs/Learn/CSS/Styling_text/Styling_links).
 
 ## See also
 
@@ -380,9 +435,5 @@ CSS counters provide advanced tools for customizing list counting and styling, b
 - {{cssxref("@counter-style")}}
 - {{cssxref("counter-increment")}}
 - {{cssxref("counter-reset")}}
-
-## Summary
-
-Lists are relatively easy to get the hang of styling once you know a few associated basic principles and specific properties. In the next article we'll get on to link styling techniques.
 
 {{PreviousMenuNext("Learn/CSS/Styling_text/Fundamentals", "Learn/CSS/Styling_text/Styling_links", "Learn/CSS/Styling_text")}}

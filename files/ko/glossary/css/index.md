@@ -1,37 +1,33 @@
 ---
 title: CSS
 slug: Glossary/CSS
+page-type: glossary-definition
 ---
 
-{{QuickLinksWithSubpages("/ko/docs/Glossary")}}
+**CSS** (Cascading Style Sheets) is a declarative language that controls how webpages look in the {{glossary("browser")}}.
 
-**CSS**(Cascading Style Sheets, 종속형 스타일 시트)는 {{glossary("browser", "브라우저")}}에서 웹페이지의 외형을 결정하는 선언형 언어입니다. 브라우저는 선택한 요소에 CSS 스타일 선언을 적용해 화면에 적절히 표현합니다. 하나의 스타일 선언은 속성과 그 값으로 이루어져 있습니다.
+The browser applies CSS style declarations to selected elements to display them properly. A style declaration contains the properties and their values, which determine how a webpage looks.
 
-CSS는 {{glossary("HTML")}}, {{glossary("JavaScript")}}와 함께 웹의 3대 핵심 기술을 이룹니다. 보통 {{Glossary("Element", "HTML 요소")}}의 스타일을 결정하지만, {{Glossary("SVG")}}와 {{Glossary("XML")}} 등 다른 마크업 언어에도 사용할 수 있습니다.
+CSS is one of the three core Web technologies, along with {{Glossary("HTML")}} and {{Glossary("JavaScript")}}. CSS usually styles {{Glossary("Element","HTML elements")}}, but can be also used with other markup languages like {{Glossary("SVG")}} or {{Glossary("XML")}}.
 
-하나의 CSS 규칙은 {{Glossary("CSS selector", "선택자")}}에 연결된 {{Glossary("CSS Property","속성")}} 세트로 구성됩니다. HTML의 모든 문단을 검은색 배경에 노란색 글자색으로 만드는 예제를 확인해보세요.
+A CSS rule is a set of {{Glossary("property/CSS","properties")}} associated with a {{Glossary("CSS selector", "selector")}}. Here is an example that makes every HTML paragraph yellow against a black background:
 
 ```css
-/* The selector "p" indicate that all paragraphs in the document will be affected by that rule */
+/* The selector "p" indicates that all paragraphs in the document will be affected by that rule */
 p {
   /* The "color" property defines the text color, in this case yellow. */
   color: yellow;
 
   /* The "background-color" property defines the background color, in this case black. */
-  background-color: black
+  background-color: black;
 }
 ```
 
-"종속형"은 페이지의 외형을 결정할 때 선택자의 우선순위를 결정하는 법을 가리킵니다. 복잡한 웹사이트의 CSS 규칙은 수천 개에 달할 수 있으므로 종속은 매우 중요한 특성입니다.
+"Cascading" refers to the rules that govern how selectors are prioritized to change a page's appearance. This is a very important feature, since a complex website can have thousands of CSS rules.
 
-## 더 알아보기
+## See also
 
-### 일반 지식
-
-- [CSS 배우기](/en-US/Learn/CSS)
-- 위키백과의 [CSS](https://ko.wikipedia.org/wiki/CSS)
-
-### 기술 참고서
-
-- [MDN의 CSS 문서](/ko/docs/Web/CSS)
-- [CSS Working Group의 현재 작업사항](http://www.w3.org/Style/CSS/current-work)
+- [Learn CSS](/en-US/docs/Learn/CSS)
+- [CSS](https://en.wikipedia.org/wiki/CSS) on Wikipedia
+- [The CSS documentation on MDN](/en-US/docs/Web/CSS)
+- [The CSS Working Group current work](https://www.w3.org/Style/CSS/current-work)

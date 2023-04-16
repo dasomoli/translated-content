@@ -1,30 +1,81 @@
 ---
 title: <length-percentage>
 slug: Web/CSS/length-percentage
+page-type: css-type
+browser-compat: css.types.length-percentage
 ---
 
 {{CSSRef}}
 
-**`<length-percentage>`** [CSS](/ko/docs/Web/CSS) [자료형](/ko/docs/Web/CSS/CSS_Types)은 {{Cssxref("&lt;length&gt;")}} 또는 {{Cssxref("&lt;percentage&gt;")}}인 값을 나타냅니다.
+The **`<length-percentage>`** [CSS](/en-US/docs/Web/CSS) [data type](/en-US/docs/Web/CSS/CSS_Types) represents a value that can be either a {{Cssxref("length")}} or a {{Cssxref("percentage")}}.
 
-## 구문
+## Syntax
 
-{{Cssxref("&lt;length&gt;")}}와 {{Cssxref("&lt;percentage&gt;")}} 문서에서 각 자료형의 구문을 살펴보세요.
+Refer to the documentation for {{Cssxref("length")}} and {{Cssxref("percentage")}} for details of the individual syntaxes allowed by this type.
 
-## `calc()`에서 사용하기
+## Formal syntax
 
-`<length-percentage>`를 허용한다면 백분율이 길이로 이행한다는 뜻이므로 {{cssxref("calc", "calc()")}}와 함께 사용할 수 있습니다. 따라서 아래의 {{cssxref("width")}} 값 모두 유효합니다.
+{{csssyntax}}
 
-```css
-width: 200px
-width: 20%
-width: calc(100% - 200px)
+## Examples
+
+### length-percentage examples
+
+The following simple example demonstrates several properties that use `<length-percentage>` values.
+
+#### HTML
+
+```html
+<p>You can use percentages and lengths in so many places.</p>
 ```
 
-## 명세
+#### CSS
+
+```css
+p {
+  /* length-percentage examples */
+  width: 75%;
+  height: 200px;
+  margin: 3rem;
+  padding: 1%;
+  border-radius: 10px 10%;
+  font-size: 250%;
+  line-height: 1.5em;
+
+  /* length examples */
+  text-shadow: 1px 1px 1px red;
+  border: 5px solid red;
+  letter-spacing: 3px;
+
+  /* percentage example */
+  text-size-adjust: 20%;
+}
+```
+
+#### Result
+
+{{EmbedLiveSample('length-percentage_examples', '100%', 320)}}
+
+### Use in calc()
+
+Where a `<length-percentage>` is specified as an allowable type, this means that the percentage resolves to a length and therefore can be used in a {{cssxref("calc", "calc()")}} expression. Therefore, all of the following values are acceptable for {{cssxref("width")}}:
+
+```css example-good
+width: 200px;
+width: 20%;
+width: calc(100% - 200px);
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- {{cssxref("&lt;percentage&gt;")}}
+- {{cssxref("&lt;length&gt;")}}
+- [CSS Values and Units](/en-US/docs/Web/CSS/CSS_Values_and_Units)

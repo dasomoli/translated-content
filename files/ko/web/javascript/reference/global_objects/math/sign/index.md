@@ -1,64 +1,67 @@
 ---
 title: Math.sign()
 slug: Web/JavaScript/Reference/Global_Objects/Math/sign
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Math.sign
 ---
+
 {{JSRef}}
 
-**`Math.sign()`** 함수는 주어진 수의 부호를 나타내는 +/-1을 반환합니다. 단, `Math.sign()`에 제공한 수가 0일 경우 부호에 따라 +/-0을 반환합니다.
+The **`Math.sign()`** static method returns 1 or -1, indicating the sign of the number passed as argument. If the input is 0 or -0, it will be returned as-is.
 
 {{EmbedInteractiveExample("pages/js/math-sign.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 Math.sign(x)
 ```
 
-### 매개변수
+### Parameters
 
 - `x`
-  - : 숫자. `number` 자료형이 아닐 경우 자동으로 변환합니다.
+  - : A number.
 
-### 반환 값
+### Return value
 
-주어진 값의 부호를 나타내는 수.
+A number representing the sign of `x`:
 
-- 값이 양의 수일 경우 `1`을 반환합니다.
-- 값이 음의 수일 경우 `-1`을 반환합니다.
-- 값이 양의 0일 경우 `0`을 반환합니다.
-- 값이 음의 0일 경우 `-0`을 반환합니다.
-- 이외의 경우 {{jsxref("NaN")}}을 반환합니다.
+- If `x` is positive, returns `1`.
+- If `x` is negative, returns `-1`.
+- If `x` is positive zero, returns `0`.
+- If `x` is negative zero, returns `-0`.
+- Otherwise, returns {{jsxref("NaN")}}.
 
-## 설명
+## Description
 
-`sign()`은 `Math`의 정적 메서드이므로, 사용자가 생성한 `Math` 객체의 메서드가 아니라 `Math.sign()`으로 호출해야 합니다. (`Math`는 생성자가 아닙니다)
+Because `sign()` is a static method of `Math`, you always use it as `Math.sign()`, rather than as a method of a `Math` object you created (`Math` is not a constructor).
 
-## 예제
+## Examples
 
-### `Math.sign()` 사용하기
+### Using Math.sign()
 
 ```js
-Math.sign(3);     //  1
-Math.sign(-3);    // -1
-Math.sign('-3');  // -1
-Math.sign(0);     //  0
-Math.sign(-0);    // -0
-Math.sign(NaN);   // NaN
-Math.sign('foo'); // NaN
-Math.sign();      // NaN
+Math.sign(3); // 1
+Math.sign(-3); // -1
+Math.sign("-3"); // -1
+Math.sign(0); // 0
+Math.sign(-0); // -0
+Math.sign(NaN); // NaN
+Math.sign("foo"); // NaN
+Math.sign(); // NaN
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- `core-js`의 [`Math.sign` 폴리필](https://github.com/zloirock/core-js#ecmascript-math)
+- [Polyfill of `Math.sign` in `core-js`](https://github.com/zloirock/core-js#ecmascript-math)
 - {{jsxref("Math.abs()")}}
 - {{jsxref("Math.ceil()")}}
 - {{jsxref("Math.floor()")}}

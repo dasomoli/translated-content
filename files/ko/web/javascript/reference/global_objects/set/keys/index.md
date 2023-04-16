@@ -1,31 +1,54 @@
 ---
 title: Set.prototype.keys()
 slug: Web/JavaScript/Reference/Global_Objects/Set/keys
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Set.values
+spec-urls: >-
+  https://tc39.es/ecma262/multipage/keyed-collections.html#sec-set.prototype.keys
 ---
 
 {{JSRef}}
 
-**`keys()`** 메서드는 [`values()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Set/values) 메서드의 별칭입니다.
+The **`keys()`** method is an alias for the [`values()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/values) method.
 
-## 구문
+## Syntax
 
 ```js-nolint
 keys()
 ```
 
-### 반환 값
+### Return value
 
-주어진 `Set`의 각 요소에 대한 값을 포함하는 새로운 반복 객체입니다. 반복은 삽입 순입니다.
+A new [iterable iterator object](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator).
 
-## 명세서
+## Examples
+
+### Using keys()
+
+The `keys()` method is exactly equivalent to the {{jsxref("Set/values", "values()")}} method.
+
+```js
+const mySet = new Set();
+mySet.add("foo");
+mySet.add("bar");
+mySet.add("baz");
+
+const setIter = mySet.keys();
+
+console.log(setIter.next().value); // "foo"
+console.log(setIter.next().value); // "bar"
+console.log(setIter.next().value); // "baz"
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Set.prototype.entries()")}}
 - {{jsxref("Set.prototype.values()")}}

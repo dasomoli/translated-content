@@ -1,87 +1,83 @@
 ---
 title: Vibration API
 slug: Web/API/Vibration_API
-original_slug: Web/Guide/API/Vibration/Vibration
+page-type: web-api-overview
+browser-compat: api.Navigator.vibrate
 ---
+
 {{DefaultAPISidebar("Vibration API")}}
 
-요즘 나오는 대부분은 모바일 디바이스는 바이브레이션 하드웨어를 포함하고 있다. 소프트웨어 코드를 이용해 바이브레이션 하드웨어를 제어하면, 모바일 디바이스를 흔들리게 만들어 사용자에게 물리적인 피드백을 제공할 수 있다.
-
-**Vibration API**는 웹앱들이 기기에 장착된 물리 진동장치를 통해 진동을 전달할 수 있도록 해줍니다. 하지만 대응하는 진동 장치가 없는 기기일 경우 아무일도 일어나지 않습니다.
+Most modern mobile devices include vibration hardware, which lets software code provide physical feedback to the user by causing the device to shake. The **Vibration API** offers Web apps the ability to access this hardware, if it exists, and does nothing if the device doesn't support it.
 
 ## Describing vibrations
 
-바이브레이션은 온오프 펄스들의 패턴이라고 할 수 있는데, 이 펄스들은 아마도 다양한 길이를 가질 것이다. 이 패턴은 아마 하나의 정수값으로 구성될 수 있는데 이 정수값은 진동이 일어날 밀리세컨드 수를 의미한다. 또한 이 패턴은 정수 배열이 될 수도 있는데 이것은 진동과 정지들의 패턴을 의미한다. 바이브레이션은 {{domxref("window.navigator.vibrate()")}} 라는 하나의 메소드로 제어된다.
+Vibration is described as a pattern of on-off pulses, which may be of varying lengths. The pattern may consist of either a single integer, describing the number of milliseconds to vibrate, or an array of integers describing a pattern of vibrations and pauses. Vibration is controlled with a single method: {{DOMxRef("Navigator.vibrate()")}}.
 
-### 한번 진동시키기
+### A single vibration
 
-여러분은 다음과 같이 하나의 값 또는 하나의 값으로 구성된 배열을 명시함으로써 바이브레이션 하드웨어를 1회 진동시킬 수 있을 것이다.
+You may pulse the vibration hardware one time by specifying either a single value or an array consisting of only one value:
 
 ```js
 window.navigator.vibrate(200);
 window.navigator.vibrate([200]);
 ```
 
-이 두 가지 예제들은 디바이스를 200ms 동안 진동시킨다.
+Both of these examples vibrate the device for 200 ms.
 
-### 패턴이 있는 진동 만들기
+### Vibration patterns
 
-배 열에 있는 값들은 다바이스가 진동해야 하는 시간과 진동하지 않아야 하는 시간을 번갈아가며 적어놓은 것이다. 배열에 있는 각 값은 하나의 정수로 변환된 후 차례대로 장치가 진동해야 하는 시간, 장치가 진동하지 않아야 하는 시간으로 해석된다. 다음 예제를 보자.
+An array of values describes alternating periods in which the device is vibrating and not vibrating. Each value in the array is converted to an integer, then interpreted alternately as the number of milliseconds the device should vibrate and the number of milliseconds it should not be vibrating. For example:
 
 ```js
 window.navigator.vibrate([200, 100, 200]);
 ```
 
-이 예제는 장치를 200ms 동안 진동시킨 후 100ms 동안 멈추게 하고 그 후 다시 200ms 동안 장치를 진동시킨다.
+This vibrates the device for 200 ms, then pauses for 100 ms before vibrating the device again for another 200 ms.
 
-여 러분은 여러분이 원하는 진동/정지 페어를 명시할 수 있다. 그리고 배열 내에 홀수 또는 짝수개의 값들을 명시할 수도 있다. 이렇게 하는 이유는 각각의 진동 시간이 끝나면 디바이스의 진동은 자동적으로 멈추게 되므로 배열의 마지막 값이 정지에 해당하는 값이라면 그 값은 아무 의미가 없기 때문이다.
+You may specify as many vibration/pause pairs as you like, and you may provide either an even or odd number of entries; it's worth noting that you don't have to provide a pause as your last entry since the vibration automatically stops at the end of each vibration period.
 
-### 이미 실행중인 진동 캔슬하기
+### Canceling existing vibrations
 
-{{domxref("window.navigator.vibrate()")}} 메소드를 0값을 호출하거나, 빈 배열, 0값으로 구성된 배열로 호출하면 현재 진행중인 진동패턴은 취소될 것이다.
+Calling {{DOMxRef("Navigator.vibrate()")}} with a value of `0`, an empty array, or an array containing all zeros will cancel any currently ongoing vibration pattern.
 
-### 지속적인 진동 내보내기
+### Continued vibrations
 
 Some basic `setInterval` and `clearInterval` action will allow you to create persistent vibration:
 
 ```js
-var vibrateInterval;
+let vibrateInterval;
 
 // Starts vibration at passed in level
 function startVibrate(duration) {
-    navigator.vibrate(duration);
+  navigator.vibrate(duration);
 }
 
 // Stops vibration
 function stopVibrate() {
-    // Clear interval and stop persistent vibrating
-    if(vibrateInterval) clearInterval(vibrateInterval);
-    navigator.vibrate(0);
+  // Clear interval and stop persistent vibrating
+  if (vibrateInterval) clearInterval(vibrateInterval);
+  navigator.vibrate(0);
 }
 
 // Start persistent vibration at given duration and interval
 // Assumes a number value is given
-function startPeristentVibrate(duration, interval) {
-    vibrateInterval = setInterval(function() {
-        startVibrate(duration);
-    }, interval);
+function startPersistentVibrate(duration, interval) {
+  vibrateInterval = setInterval(() => {
+    startVibrate(duration);
+  }, interval);
 }
 ```
 
-Of course the snippet above doesn't take into account the array method of vibration; persistent array-based vibration will require calculating the sum of the array items and creating an interval based on that number (with an additional delay, probably).
+Of course, the snippet above doesn't take into account the array method of vibration; persistent array-based vibration will require calculating the sum of the array items and creating an interval based on that number (with an additional delay, probably).
 
-### Why use Vibration API?
-
-This API is clearly targeted toward mobile devices. The Vibration API would be good for alerts within mobile web applications, and would be especially awesome when used in games or media-heavy applications. Imagine watching a video on your mobile device, and during an explosion scene, your phone got a bit of a shake. Or playing Bomberman and feeling a gentle kick when a block explodes!
-
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{domxref("window.navigator.vibrate()")}}
+- {{DOMxRef("Navigator.vibrate()")}}

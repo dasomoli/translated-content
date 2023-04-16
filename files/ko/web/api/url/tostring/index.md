@@ -1,39 +1,50 @@
 ---
-title: URL.toString()
+title: "URL: toString() method"
+short-title: toString()
 slug: Web/API/URL/toString
+page-type: web-api-instance-method
+browser-compat: api.URL.toString
 ---
 
 {{ApiRef("URL API")}}
 
-**`URL.toString()`** 문자열화 메서드는 전체 URL을 담은 {{domxref("USVString")}}을 반환합니다. 사실상 읽기 전용 {{domxref("URL.href")}}인 셈입니다.
+The **`URL.toString()`** {{Glossary("stringifier")}} method returns a
+string containing the whole URL. It is effectively a read-only version
+of {{domxref("URL.href")}}.
 
 {{AvailableInWorkers}}
 
-## 구문
+## Syntax
 
-```js
-href = url.toString()
+```js-nolint
+toString()
 ```
 
-### 반환 값
+### Parameters
 
-{{domxref("USVString")}}.
+None.
 
-## 예제
+### Return value
+
+A string.
+
+## Examples
 
 ```js
-const url = new URL("https://developer.mozilla.org/ko/docs/Web/API/URL/toString");
+const url = new URL(
+  "https://developer.mozilla.org/en-US/docs/Web/API/URL/toString"
+);
 url.toString(); // should return the URL as a string
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 메서드가 속한 {{domxref("URL")}} 인터페이스.
+- The {{domxref("URL")}} interface it belongs to.

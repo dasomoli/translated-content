@@ -1,76 +1,87 @@
 ---
 title: FileReader
 slug: Web/API/FileReader
+page-type: web-api-interface
+browser-compat: api.FileReader
 ---
+
 {{APIRef("File API")}}
 
-**`FileReader`** 객체는 웹 애플리케이션이 비동기적으로 데이터를 읽기 위하여 읽을 파일을 가리키는{{ domxref("File") }} 혹은 {{ domxref("Blob") }} 객체를 이용해 파일의 내용을(혹은 raw data버퍼로) 읽고 사용자의 컴퓨터에 저장하는 것을 가능하게 해줍니다.
+The **`FileReader`** object lets web applications asynchronously read the contents of files (or raw data buffers) stored on the user's computer, using {{domxref("File")}} or {{domxref("Blob")}} objects to specify the file or data to read.
 
-File 객체는 {{ HTMLElement("input") }} 태그를 이용하여 유저가 선택한 파일들의 결과로 반환된 {{ domxref("FileList") }} 객체, 드래그 앤 드랍으로 반환된 [`DataTransfer`](/ko/docs/DragDrop/DataTransfer) 객체 혹은 {{ domxref("HTMLCanvasElement") }}의 `mozGetAsFile()` API로 부터 얻습니다.
+File objects may be obtained from a {{domxref("FileList")}} object returned as a result of a user selecting files using the {{HTMLElement("input")}} element, or from a drag and drop operation's {{domxref("DataTransfer")}} object.
 
-## 생성자
+`FileReader` can only access the contents of files that the user has explicitly selected, either using an HTML `<input type="file">` element or by drag and drop. It cannot be used to read a file by pathname from the user's file system. To read files on the client's file system by pathname, use the [File System Access API](/en-US/docs/Web/API/File_System_Access_API). To read server-side files, use standard Ajax solutions, with CORS permission if reading cross-domain.
+
+{{AvailableInWorkers}}
+
+{{InheritanceDiagram}}
+
+## Constructor
 
 - {{domxref("FileReader.FileReader", "FileReader()")}}
-  - : Returns a newly constructed `FileReader`.
+  - : Returns a new `FileReader` object.
 
-See [Using files from web applications](/ko/docs/Using_files_from_web_applications) for details and examples.
+See [Using files from web applications](/en-US/docs/Web/API/File_API/Using_files_from_web_applications) for details and examples.
 
-## 속성
+## Instance properties
 
-- {{domxref("FileReader.error")}} {{readonlyinline}}
-  - : {{domxref("DOMError")}} 파일을 읽는 도중에 발생한 에러를 나타냅니다.
-- {{domxref("FileReader.readyState")}} {{readonlyinline}}
+- {{domxref("FileReader.error")}} {{ReadOnlyInline}}
+  - : A {{domxref("DOMException")}} representing the error that occurred while reading the file.
+- {{domxref("FileReader.readyState")}} {{ReadOnlyInline}}
 
-  - : FileReader의 상태를 나타내는 숫자입니다.
+  - : A number indicating the state of the `FileReader`. This is one of the following:
 
-    - `EMPTY` : `0` : 아직 데이터가 로드 되지 않았음.
-    - `LOADING` : `1` : 데이터가 로딩 중.
-    - `DONE` : `2` : 모든 읽기 요청이 완료됨.
+    | Name      | Value | Description                                 |
+    | --------- | ----- | ------------------------------------------- |
+    | `EMPTY`   | `0`   | No data has been loaded yet.                |
+    | `LOADING` | `1`   | Data is currently being loaded.             |
+    | `DONE`    | `2`   | The entire read request has been completed. |
 
-- {{domxref("FileReader.result")}} {{readonlyinline}}
-  - : 파일의 컨텐츠입니다. 이 속성은 읽기 작업이 완료되고 읽기 작업의 초기화에 사용한 방식으로 결정된 데이터의 포맷이 정해진 후에 유효합니다.
+- {{domxref("FileReader.result")}} {{ReadOnlyInline}}
+  - : The file's contents. This property is only valid after the read operation is complete, and the format of the data depends on which of the methods was used to initiate the read operation.
 
-### 이벤트 핸들러
-
-- {{domxref("FileReader.onabort")}}
-  - : {{event("abort")}} 이벤트의 핸들러. 이 이벤트는 읽기 동작이 중단 될 때마다 발생합니다.
-- {{domxref("FileReader.onerror")}}
-  - : {{event("error")}} 이벤트의 핸들러. 이 이벤트는 읽기 동작에 에러가 생길 때마다 발생합니다.
-- {{domxref("FileReader.onload")}}
-  - : {{event("load")}} 이벤트의 핸들러. 이 이벤트는 읽기 동작이 성공적으로 완료 되었을 때마다 발생합니다.
-- {{domxref("FileReader.onloadstart")}}
-  - : {{event("loadstart")}} 이벤트 핸들러. 이 이벤트는 읽기 동작이 실행 될 때마다 발생합니다.
-- {{domxref("FileReader.onloadend")}}
-  - : {{event("loadend")}} 이벤트 핸들러. 이 이벤트는 읽기 동작이 끝났을 때마다 발생합니다. (읽기의 성공이나 실패 여부는 상관 않습니다.)
-- {{domxref("FileReader.onprogress")}}
-  - : {{event("progress")}} 이벤트 핸들러. 이 이벤트는 {{domxref("Blob")}} 컨텐트를 읽는 동안 호출됩니다.
-
-> **참고:** `FileReader`는 {{domxref("EventTarget")}} 으로 부터 상속 받았습니다, 언급된 모든 이벤트들은 {{domxref("EventTarget.addEventListener()","addEventListener")}} 메소드를 사용하여 listen 하게 할 수 있습니다.
-
-## 메서드
+## Instance methods
 
 - {{domxref("FileReader.abort()")}}
-  - : 읽기 요청을 중단시킵니다. 리턴이 되면 readyState 는 DONE이 됩니다.
+  - : Aborts the read operation. Upon return, the `readyState` will be `DONE`.
 - {{domxref("FileReader.readAsArrayBuffer()")}}
-  - : Starts reading the contents of the specified {{ domxref("Blob") }}, once finished, the `result` attribute contains an {{domxref("ArrayBuffer")}} representing the file's data.
+  - : Starts reading the contents of the specified {{domxref("Blob")}}, once finished, the `result` attribute contains an {{jsxref("ArrayBuffer")}} representing the file's data.
 - {{domxref("FileReader.readAsBinaryString()")}}
-  - : Starts reading the contents of the specified {{ domxref("Blob") }}, once finished, the `result` attribute contains the raw binary data from the file as a string.
+  - : Starts reading the contents of the specified {{domxref("Blob")}}, once finished, the `result` attribute contains the raw binary data from the file as a string.
 - {{domxref("FileReader.readAsDataURL()")}}
-  - : Starts reading the contents of the specified {{ domxref("Blob") }}, once finished, the `result` attribute contains a `data:` URL representing the file's data.
+  - : Starts reading the contents of the specified {{domxref("Blob")}}, once finished, the `result` attribute contains a `data:` URL representing the file's data.
 - {{domxref("FileReader.readAsText()")}}
-  - : Starts reading the contents of the specified {{ domxref("Blob") }}, once finished, the `result` attribute contains the contents of the file as a text string.
+  - : Starts reading the contents of the specified {{domxref("Blob")}}, once finished, the `result` attribute contains the contents of the file as a text string. An optional encoding name can be specified.
 
-## 명세
+## Events
+
+Listen to these events using {{domxref("EventTarget/addEventListener", "addEventListener()")}} or by assigning an event listener to the `oneventname` property of this interface. Remove the event listeners with {{domxref("EventTarget.removeEventListener", "removeEventListener()")}}, once `FileReader` is no longer used, to avoid memory leaks.
+
+- {{domxref("FileReader/abort_event", "abort")}}
+  - : Fired when a read has been aborted, for example because the program called {{domxref("FileReader.abort()")}}.
+- {{domxref("FileReader/error_event", "error")}}
+  - : Fired when the read failed due to an error.
+- {{domxref("FileReader/load_event", "load")}}
+  - : Fired when a read has completed successfully.
+- {{domxref("FileReader/loadend_event", "loadend")}}
+  - : Fired when a read has completed, successfully or not.
+- {{domxref("FileReader/loadstart_event", "loadstart")}}
+  - : Fired when a read has started.
+- {{domxref("FileReader/progress_event", "progress")}}
+  - : Fired periodically as data is read.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Using files from web applications](/en/Using_files_from_web_applications)
-- {{ domxref("File") }}
-- {{ domxref("Blob") }}
-- [nsIDOMFileReader \[en-US\]](/ko/docs/nsIDOMFileReader) - For addons/privelaged scope
+- [Using files from web applications](/en-US/docs/Web/API/File_API/Using_files_from_web_applications)
+- {{domxref("File")}}
+- {{domxref("Blob")}}
+- {{domxref("FileReaderSync")}}

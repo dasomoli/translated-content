@@ -5,31 +5,40 @@ slug: Web/XPath/Functions/not
 
 {{ XsltRef() }}
 
-`not` 함수는 불린식을 평가하고 반대값을 반환합니다.
+The `not` function evaluates a boolean expression and returns the opposite value.
 
-### 구문
+### Syntax
 
 ```
-not(expression )
+not( expression )
 ```
 
-### 인수
+### Arguments
 
-- `expression`(선택사항)
-  - : 식은 마치 [boolean()](/ko/XPath/Functions/boolean) 함수에 인수로 넘겨진 것처럼 정확히 평가됩니다.
+- `expression`
+  - : The expression is evaluated exactly as if it were passed as an argument to the [boolean()](/en-US/docs/Web/XPath/Functions/boolean) function.
 
-### 반환
+### Returns
 
-false로 평가한 식은 true; true로 평가한 식은 false.
+True for an expression that evaluates to false; false for an expression that evaluates to true.
 
-### 주의
+### Notes
 
-- 이 함수는 반대값을 반환하는 것을 빼고는 [boolean()](/ko/XPath/Functions/boolean) 함수와 비슷하게 동작합니다.
+- This function should behave similarly to the [boolean()](/en-US/docs/Web/XPath/Functions/boolean) function except that it returns the opposite value.
+- You can test if an element doesn't have some attribute.
 
-### 정의
+  ```xml
+  <xsl:for-each match="//a[not(@name and @name = 'badname')]">
+    <!-- iterates over any <a> element in the document, that
+          either has no 'name' attribute at all, or it has one,
+          but its value is not "badname". -->
+  </xsl:template>
+  ```
 
-[XPath 1.0 4.3](http://www.w3.org/TR/xpath#function-not)
+### Defined
 
-### Gecko 지원
+[XPath 1.0 4.3](https://www.w3.org/TR/1999/REC-xpath-19991116/#function-not)
 
-지원함.
+### Gecko support
+
+Supported.

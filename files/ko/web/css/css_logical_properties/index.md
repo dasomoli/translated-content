@@ -1,98 +1,129 @@
 ---
 title: CSS Logical Properties and Values
 slug: Web/CSS/CSS_Logical_Properties
+page-type: css-module
+spec-urls: https://drafts.csswg.org/css-logical/
 ---
 
 {{CSSRef}}
 
-**CSS Logical Properties and Values**는 레이아웃을 제어하는 물리 속성에 논리 맵핑을 정의하는 CSS 모듈입니다.
+**CSS Logical Properties and Values** is a module of [CSS](/en-US/docs/Web/CSS) introducing logical properties and values that provide the ability to control layout through logical, rather than physical, direction and dimension mappings.
 
-### 블록과 인라인
+The module also defines logical properties and values for properties previously defined in CSS 2.1. Logical properties define direction‐relative equivalents of their corresponding physical properties.
 
-Logical properties and values use the abstract terms _block_ and _inline_ to describe the direction in which they flow. The physical meaning of these terms depends on the [writing mode](/ko/docs/Web/CSS/CSS_Writing_Modes).
+### Block vs. inline
 
-- 블록 치수
+Logical properties and values use the abstract terms _block_ and _inline_ to describe the direction in which they flow. The physical meaning of these terms depends on the [writing mode](/en-US/docs/Web/CSS/CSS_Writing_Modes).
+
+- Block dimension
   - : The dimension perpendicular to the flow of text within a line, i.e., the vertical dimension in horizontal writing modes, and the horizontal dimension in vertical writing modes. For standard English text, it is the vertical dimension.
-- 인라인 치수
+- Inline dimension
   - : The dimension parallel to the flow of text within a line, i.e., the horizontal dimension in horizontal writing modes, and the vertical dimension in vertical writing modes. For standard English text, it is the horizontal dimension.
 
-## 참고서
+## Reference
 
-### 크기 속성
+### Properties for sizing
 
-- {{CSSxRef("block-size")}} {{Experimental_Inline}}
-- {{CSSxRef("inline-size")}} {{Experimental_Inline}}
-- {{CSSxRef("max-block-size")}} {{Experimental_Inline}}
-- {{CSSxRef("max-inline-size")}} {{Experimental_Inline}}
-- {{CSSxRef("min-block-size")}} {{Experimental_Inline}}
-- {{CSSxRef("min-inline-size")}} {{Experimental_Inline}}
+- {{CSSxRef("block-size")}}
+- {{CSSxRef("inline-size")}}
+- {{CSSxRef("max-block-size")}}
+- {{CSSxRef("max-inline-size")}}
+- {{CSSxRef("min-block-size")}}
+- {{CSSxRef("min-inline-size")}}
 
-### 안팎 여백, 테두리 속성
+### Properties for margins, borders, and padding
 
-- {{CSSxRef("border-block")}} {{Experimental_Inline}}
-- {{CSSxRef("border-block-color")}} {{Experimental_Inline}}
-- {{CSSxRef("border-block-end")}} {{Experimental_Inline}}
-- {{CSSxRef("border-block-end-color")}} {{Experimental_Inline}}
-- {{CSSxRef("border-block-end-style")}} {{Experimental_Inline}}
-- {{CSSxRef("border-block-end-width")}} {{Experimental_Inline}}
-- {{CSSxRef("border-block-start")}} {{Experimental_Inline}}
-- {{CSSxRef("border-block-start-color")}} {{Experimental_Inline}}
-- {{CSSxRef("border-block-start-style")}} {{Experimental_Inline}}
-- {{CSSxRef("border-block-start-width")}} {{Experimental_Inline}}
-- {{CSSxRef("border-block-style")}} {{Experimental_Inline}}
-- {{CSSxRef("border-block-width")}} {{Experimental_Inline}}
-- {{CSSxRef("border-color")}} (`logical` {{Experimental_Inline}} keyword)
-- {{CSSxRef("border-inline")}} {{Experimental_Inline}}
-- {{CSSxRef("border-inline-color")}} {{Experimental_Inline}}
-- {{CSSxRef("border-inline-end")}} {{Experimental_Inline}}
-- {{CSSxRef("border-inline-end-color")}} {{Experimental_Inline}}
-- {{CSSxRef("border-inline-end-style")}} {{Experimental_Inline}}
-- {{CSSxRef("border-inline-end-width")}} {{Experimental_Inline}}
-- {{CSSxRef("border-inline-start")}} {{Experimental_Inline}}
-- {{CSSxRef("border-inline-start-color")}} {{Experimental_Inline}}
-- {{CSSxRef("border-inline-start-style")}} {{Experimental_Inline}}
-- {{CSSxRef("border-inline-start-width")}} {{Experimental_Inline}}
-- {{CSSxRef("border-inline-style")}} {{Experimental_Inline}}
-- {{CSSxRef("border-inline-width")}} {{Experimental_Inline}}
-- {{CSSxRef("border-start-start-radius")}} {{Experimental_Inline}}
-- {{CSSxRef("border-start-end-radius")}} {{Experimental_Inline}}
-- {{CSSxRef("border-end-start-radius")}} {{Experimental_Inline}}
-- {{CSSxRef("border-end-end-radius")}} {{Experimental_Inline}}
-- {{CSSxRef("border-style")}} (`logical` {{Experimental_Inline}} keyword)
-- {{CSSxRef("border-width")}} (`logical` {{Experimental_Inline}} keyword)
+- {{CSSxRef("border-block")}}
+- {{CSSxRef("border-block-color")}}
+- {{CSSxRef("border-block-end")}}
+- {{CSSxRef("border-block-end-color")}}
+- {{CSSxRef("border-block-end-style")}}
+- {{CSSxRef("border-block-end-width")}}
+- {{CSSxRef("border-block-start")}}
+- {{CSSxRef("border-block-start-color")}}
+- {{CSSxRef("border-block-start-style")}}
+- {{CSSxRef("border-block-start-width")}}
+- {{CSSxRef("border-block-style")}}
+- {{CSSxRef("border-block-width")}}
+- {{CSSxRef("border-color")}}
+- {{CSSxRef("border-inline")}}
+- {{CSSxRef("border-inline-color")}}
+- {{CSSxRef("border-inline-end")}}
+- {{CSSxRef("border-inline-end-color")}}
+- {{CSSxRef("border-inline-end-style")}}
+- {{CSSxRef("border-inline-end-width")}}
+- {{CSSxRef("border-inline-start")}}
+- {{CSSxRef("border-inline-start-color")}}
+- {{CSSxRef("border-inline-start-style")}}
+- {{CSSxRef("border-inline-start-width")}}
+- {{CSSxRef("border-inline-style")}}
+- {{CSSxRef("border-inline-width")}}
+- {{CSSxRef("border-start-start-radius")}}
+- {{CSSxRef("border-start-end-radius")}}
+- {{CSSxRef("border-end-start-radius")}}
+- {{CSSxRef("border-end-end-radius")}}
+- {{CSSxRef("border-style")}}
+- {{CSSxRef("border-width")}}
 - {{CSSxRef("margin")}} (`logical` {{Experimental_Inline}} keyword)
-- {{CSSxRef("margin-block")}} {{Experimental_Inline}}
-- {{CSSxRef("margin-block-end")}} {{Experimental_Inline}}
-- {{CSSxRef("margin-block-start")}} {{Experimental_Inline}}
-- {{CSSxRef("margin-inline")}} {{Experimental_Inline}}
-- {{CSSxRef("margin-inline-end")}} {{Experimental_Inline}}
-- {{CSSxRef("margin-inline-start")}} {{Experimental_Inline}}
+- {{CSSxRef("margin-block")}}
+- {{CSSxRef("margin-block-end")}}
+- {{CSSxRef("margin-block-start")}}
+- {{CSSxRef("margin-inline")}}
+- {{CSSxRef("margin-inline-end")}}
+- {{CSSxRef("margin-inline-start")}}
 - {{CSSxRef("padding")}} (`logical` {{Experimental_Inline}} keyword)
-- {{CSSxRef("padding-block")}} {{Experimental_Inline}}
-- {{CSSxRef("padding-block-end")}} {{Experimental_Inline}}
-- {{CSSxRef("padding-block-start")}} {{Experimental_Inline}}
-- {{CSSxRef("padding-inline")}} {{Experimental_Inline}}
-- {{CSSxRef("padding-inline-end")}} {{Experimental_Inline}}
-- {{CSSxRef("padding-inline-start")}} {{Experimental_Inline}}
+- {{CSSxRef("padding-block")}}
+- {{CSSxRef("padding-block-end")}}
+- {{CSSxRef("padding-block-start")}}
+- {{CSSxRef("padding-inline")}}
+- {{CSSxRef("padding-inline-end")}}
+- {{CSSxRef("padding-inline-start")}}
 
-### 플로트와 위치 속성
+### Properties for floating and positioning
 
-- {{CSSxRef("clear")}} (`inline-end` {{Experimental_Inline}} and `inline-start` {{Experimental_Inline}} keywords)
-- {{CSSxRef("float")}} (`inline-end` {{Experimental_Inline}} and `inline-start` {{Experimental_Inline}} keywords)
-- {{CSSxRef("inset")}} {{Experimental_Inline}}
-- {{CSSxRef("inset-block")}} {{Experimental_Inline}}
-- {{CSSxRef("inset-block-end")}} {{Experimental_Inline}}
-- {{CSSxRef("inset-block-start")}} {{Experimental_Inline}}
-- {{CSSxRef("inset-inline")}} {{Experimental_Inline}}
-- {{CSSxRef("inset-inline-end")}} {{Experimental_Inline}}
-- {{CSSxRef("inset-inline-start")}} {{Experimental_Inline}}
+- {{CSSxRef("clear")}} (`inline-end` and `inline-start` keywords)
+- {{CSSxRef("float")}} (`inline-end` and `inline-start` keywords)
+- {{CSSxRef("inset")}}
+- {{CSSxRef("inset-block")}}
+- {{CSSxRef("inset-block-end")}}
+- {{CSSxRef("inset-block-start")}}
+- {{CSSxRef("inset-inline")}}
+- {{CSSxRef("inset-inline-end")}}
+- {{CSSxRef("inset-inline-start")}}
 
-### 기타 속성
+### Properties for size containment
 
-- {{CSSxRef("caption-side")}} (`inline-end` {{Experimental_Inline}} and `inline-start` {{Experimental_Inline}} keywords)
-- {{CSSxRef("resize")}} {{Experimental_Inline}} (`block` {{Experimental_Inline}} and `inline` {{Experimental_Inline}} keywords)
-- {{CSSxRef("text-align")}} (`end` {{Experimental_Inline}} and `start` {{Experimental_Inline}} keywords)
+- {{CSSxRef("contain-intrinsic-block-size")}}
+- {{CSSxRef("contain-intrinsic-inline-size")}}
 
-## 명세
+### Other properties
+
+- {{CSSxRef("caption-side")}} (`inline-end` and `inline-start` keywords)
+- {{CSSxRef("overflow-block")}}
+- {{CSSxRef("overflow-inline")}}
+- {{CSSxRef("overscroll-behavior-block")}}
+- {{CSSxRef("overscroll-behavior-inline")}}
+- {{CSSxRef("resize")}} (`block` and `inline` keywords)
+- {{CSSxRef("text-align")}} (`end` and `start` keywords)
+
+### Deprecated properties
+
+- `offset-block-end` {{Non-standard_Inline}} {{Deprecated_Inline}} (now {{CSSxRef("inset-block-end")}})
+- `offset-block-start` {{Non-standard_Inline}} {{Deprecated_Inline}} (now {{CSSxRef("inset-block-start")}})
+- `offset-inline-end` {{Non-standard_Inline}} {{Deprecated_Inline}} (now {{CSSxRef("inset-inline-end")}})
+- `offset-inline-start` {{Non-standard_Inline}} {{Deprecated_Inline}} (now {{CSSxRef("inset-inline-start")}})
+
+## Guides
+
+- [Basic concepts of logical properties and values](/en-US/docs/Web/CSS/CSS_Logical_Properties/Basic_concepts)
+- [Logical properties for sizing](/en-US/docs/Web/CSS/CSS_Logical_Properties/Sizing)
+- [Logical properties for margins, borders, and padding](/en-US/docs/Web/CSS/CSS_Logical_Properties/Margins_borders_padding)
+- [Logical properties for floating and positioning](/en-US/docs/Web/CSS/CSS_Logical_Properties/Floating_and_positioning)
+
+## Specifications
 
 {{Specifications}}
+
+## Browser compatibility
+
+See the individual property pages for full compatibility information.

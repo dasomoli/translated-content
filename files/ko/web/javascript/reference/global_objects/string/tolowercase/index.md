@@ -1,41 +1,50 @@
 ---
 title: String.prototype.toLowerCase()
 slug: Web/JavaScript/Reference/Global_Objects/String/toLowerCase
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.String.toLowerCase
 ---
 
-{{JSRef}}**`toLowerCase()`** 메서드는 문자열을 소문자로 변환해 반환합니다.{{EmbedInteractiveExample("pages/js/string-tolowercase.html")}}
+{{JSRef}}
 
-## 구문
+The **`toLowerCase()`** method returns the calling string value
+converted to lower case.
 
-```js
-str.toLowerCase()
+{{EmbedInteractiveExample("pages/js/string-tolowercase.html","shorter")}}
+
+## Syntax
+
+```js-nolint
+toLowerCase()
 ```
 
-### 반환값
+### Return value
 
-호출 문자열을 소문자로 변환한 새로운 문자열
+A new string representing the calling string converted to lower case.
 
-## 설명
+## Description
 
-`toLowerCase()` 메서드는 호출 문자열을 소문자로 변환해 반환합니다. `toLowerCase()` 는 원래의 `str`에 영향을 주지 않습니다.
+The `toLowerCase()` method returns the value of the string converted to
+lower case. `toLowerCase()` does not affect the value of the string
+`str` itself.
 
-## 예제
+## Examples
 
-### `toLowerCase()`
+### Using `toLowerCase()`
 
 ```js
-console.log('ALPHABET'.toLowerCase()); // 'alphabet'
+console.log("ALPHABET".toLowerCase()); // 'alphabet'
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
 - {{jsxref("String.prototype.toLocaleLowerCase()")}}
 - {{jsxref("String.prototype.toLocaleUpperCase()")}}

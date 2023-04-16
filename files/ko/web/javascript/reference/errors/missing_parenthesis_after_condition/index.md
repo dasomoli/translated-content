@@ -1,23 +1,35 @@
 ---
-title: 'SyntaxError: missing ) after condition'
+title: "SyntaxError: missing ) after condition"
 slug: Web/JavaScript/Reference/Errors/Missing_parenthesis_after_condition
+page-type: javascript-error
 ---
 
 {{jsSidebar("Errors")}}
 
-## 메시지
+The JavaScript exception "missing ) after condition" occurs when there is an error with
+how an
+[`if`](/en-US/docs/Web/JavaScript/Reference/Statements/if...else)
+condition is written. It must appear in parenthesis after the `if` keyword.
+
+## Message
 
 ```
-    SyntaxError: missing ) after condition
+SyntaxError: missing ) after condition (Firefox)
+SyntaxError: Unexpected token '{'. Expected ')' to end an 'if' condition. (Safari)
 ```
 
-## 에러 유형
+## Error type
 
 {{jsxref("SyntaxError")}}
 
-## 무엇이 잘못 된 걸까?
+## What went wrong?
 
-[`if`](/en-US/docs/Web/JavaScript/Reference/Statements/if...else)조건문에 에러가 있습니다. 어떠한 프로그래밍 언어에서든 코드는 입력값에 따라 의사를 결정하고 행동을 수행해야합니다. 지정된 조건이 true이면 if 문이 명령문을 실행합니다. 자바스크립트에서는 이 조건이 [`if`](/en-US/docs/Web/JavaScript/Reference/Statements/if...else)문 다음의 괄호에 있어야 합니다. 다음은 그 예시입니다.
+There is an error with how an
+[`if`](/en-US/docs/Web/JavaScript/Reference/Statements/if...else)
+condition is written. In any programming language, code needs to make decisions and
+carry out actions accordingly depending on different inputs. The if statement executes a
+statement if a specified condition is truthy. In JavaScript, this condition must appear
+in parenthesis after the `if` keyword, like this:
 
 ```js
 if (condition) {
@@ -25,27 +37,32 @@ if (condition) {
 }
 ```
 
-## 예시
+## Examples
 
-실수가 있을 수 있으니, 모든 괄호를 주의깊게 확인하세요.
+### Missing parenthesis
+
+It might just be an oversight, carefully check all you parenthesis in your code.
 
 ```js example-bad
-if (3 > Math.PI {
+if (Math.PI < 3 {
   console.log("wait what?");
 }
 
 // SyntaxError: missing ) after condition
 ```
 
-이 코드를 고치기 위해선, 조건문을 괄호로 닫아야 합니다.
+To fix this code, you would need to add a parenthesis that closes the condition.
 
 ```js example-good
-if (3 > Math.PI) {
+if (Math.PI < 3) {
   console.log("wait what?");
 }
 ```
 
-다른 프로그래밍 언어를 배운 경우, 자바스크립트에서는 다르게 쓰이거나, 쓰이지 않는 키워드를 사용하기 쉽습니다.
+### Misused is keyword
+
+If you are coming from another programming language, it is also easy to add keywords
+that don't mean the same or have no meaning at all in JavaScript.
 
 ```js example-bad
 if (done is true) {
@@ -55,16 +72,25 @@ if (done is true) {
 // SyntaxError: missing ) after condition
 ```
 
-이 경우 올바른 [비교연산자](/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators)를 사용해야 합니다. 그 예시로:
+Instead you need to use a correct [comparison operator](/en-US/docs/Web/JavaScript/Reference/Operators).
+For example:
 
-```js example-good
+```js
 if (done === true) {
- console.log("we are done!");
+  console.log("we are done!");
 }
 ```
 
-## 더 보기
+Or even better:
+
+```js example-good
+if (done) {
+  console.log("we are done!");
+}
+```
+
+## See also
 
 - [`if...else`](/en-US/docs/Web/JavaScript/Reference/Statements/if...else)
-- [Comparison operators](/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators)
+- [Comparison operators](/en-US/docs/Web/JavaScript/Reference/Operators)
 - [Making decisions in your code — conditionals](/en-US/docs/Learn/JavaScript/Building_blocks/conditionals)

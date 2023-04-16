@@ -1,67 +1,146 @@
 ---
 title: Authorization
 slug: Web/HTTP/Headers/Authorization
+page-type: http-header
+browser-compat: http.headers.Authorization
 ---
 
 {{HTTPSidebar}}
 
-HTTP **`Authorization`** 요청 헤더는 서버의 사용자 에이전트임을 증명하는 자격을 포함하여, 보통 서버에서 {{HTTPStatus("401")}} `Unauthorized` 상태를 {{HTTPHeader("WWW-Authenticate")}} 헤더로 알려준 이후에 나옵니다.
+The HTTP **`Authorization`** request header can be used to provide credentials that authenticate a user agent with a server, allowing access to a protected resource.
+
+The **`Authorization`** header is usually, but not always, sent after the user agent first attempts to request a protected resource without credentials.
+The server responds with a {{HTTPStatus("401")}} `Unauthorized` message that includes at least one {{HTTPHeader("WWW-Authenticate")}} header.
+This header indicates what authentication schemes can be used to access the resource (and any additional information needed by the client to use them).
+The user-agent should select the most secure authentication scheme that it supports from those offered, prompt the user for their credentials, and then re-request the resource (including the encoded credentials in the **`Authorization`** header).
+
+This header is stripped from cross-origin redirects.
+
+> **Note:** This header is part of the [General HTTP authentication framework](/en-US/docs/Web/HTTP/Authentication#the_general_http_authentication_framework).
+> It can be used with a number of [authentication schemes](/en-US/docs/Web/HTTP/Authentication#authentication_schemes).
 
 <table class="properties">
   <tbody>
     <tr>
-      <th scope="row">헤더 타입</th>
+      <th scope="row">Header type</th>
       <td>{{Glossary("Request header")}}</td>
     </tr>
     <tr>
       <th scope="row">{{Glossary("Forbidden header name")}}</th>
-      <td>아니오</td>
+      <td>no</td>
     </tr>
   </tbody>
 </table>
 
-## 문법
+## Syntax
 
+```http
+Authorization: <auth-scheme> <authorization-parameters>
 ```
-Authorization: <type> <credentials>
+
+Basic authentication
+
+```http
+Authorization: Basic <credentials>
 ```
 
-## 지시자
+Digest authentication
 
-- \<type>
+```http
+Authorization: Digest username=<username>,
+    realm="<realm>",
+    uri="<url>",
+    algorithm=<algorithm>,
+    nonce="<nonce>",
+    nc=<nc>,
+    cnonce="<cnonce>",
+    qop=<qop>,
+    response="<response>",
+    opaque="<opaque>"
+```
 
-  - : [인증 타입](/ko/docs/Web/HTTP/Authentication#%EC%9D%B8%EC%A6%9D_%EC%8A%A4%ED%82%B4). 보통 타입은 ["Basic"](/ko/docs/Web/HTTP/Authentication#Basic_%EC%9D%B8%EC%A6%9D_%EC%8A%A4%ED%82%B4)이며. 다른 타입으로:
+## Directives
 
-    - [IANA registry of Authentication schemes](http://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml)
-    - [Authentification for AWS servers (`AWS4-HMAC-SHA256`)](http://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html)
+- `<auth-scheme>`
+
+  - : The [Authentication scheme](/en-US/docs/Web/HTTP/Authentication#authentication_schemes) that defines how the credentials are encoded.
+    Some of the more common types are (case-insensitive): [`Basic`](/en-US/docs/Web/HTTP/Authentication#basic_authentication_scheme), `Digest`, `Negotiate` and `AWS4-HMAC-SHA256`.
+
+    > **Note:** For more information/options see [HTTP Authentication > Authentication schemes](/en-US/docs/Web/HTTP/Authentication#authentication_schemes)
+
+Other than `<auth-scheme>` the remaining directives are specific to each [authentication scheme](/en-US/docs/Web/HTTP/Authentication#authentication_schemes).
+Generally you will need to check the relevant specifications for these (keys for a small subset of schemes are listed below).
+
+### Basic
 
 - \<credentials>
 
-  - : 만약 "Basic" 인증 스킴이 사용되었다면, 증명은 다음과 같이 만들어집니다:
+  - : The credentials, encoded according to the specified scheme.
 
-    - 사용자명과 비밀번호가 콜론을 이용하여 합쳐집니다(`aladdin:opensesame`).
-    - 그 결과에 대한 문자열을 [base64](/ko/docs/Web/API/WindowBase64/Base64_encoding_and_decoding) 로 인코딩합니다 (`YWxhZGRpbjpvcGVuc2VzYW1l`).
+    > **Note:** For information about the encoding algorithm, see the examples: below, in {{HTTPHeader("WWW-Authenticate")}}, in [HTTP Authentication](/en-US/docs/Web/HTTP/Authentication), and in the relevant specifications.
 
-    > **참고:** Base64 인코딩은 암호화나 해싱을 의미하지 않습니다! 이 방법은 인증에 대해서 문자를 그대로 보내는 것과 동일하다고 할 수 있습니다 (base64인코딩은 복호화 가능). Basic 인증을 하는 경우 HTTPS로 접속하는 것을 권장합니다.
+### Digest
 
-## 예제
+- \<response>
+  - : A string of the hex digits that proves that the user knows a password.
+    The algorithm encodes the username and password, realm, cnonce, qop, nc, and so on.
+    It is described in detail in the specification.
+- `username`
+  - : A quoted string containing user's name for the specified `realm` in either plain text or the hash code in hexadecimal notation.
+    If the name contains characters that aren't allowed in the field, then `username*` can be used instead (not "as well").
+- `username*`
+  - : The user's name formatted using an extended notation defined in RFC5987.
+    This should be used only if the name can't be encoded in `username` and if `userhash` is set `"false"`.
+- `uri`
+  - : The _Effective Request URI_. See the specification for more information.
+- `realm`
+  - : Realm of the requested username/password (again, should match the value in the corresponding {{HTTPHeader("WWW-Authenticate")}} response for the resource being requested).
+- `opaque`
+  - : The value in the corresponding {{HTTPHeader("WWW-Authenticate")}} response for the resource being requested.
+- `algorithm`
+  - : The algorithm used to calculate the digest. Must be a supported algorithm from the {{HTTPHeader("WWW-Authenticate")}} response for the resource being requested.
+- `qop`
+  - : A token indicating the _quality of protection_ applied to the message.
+    Must match the one value in the set specified in the {{HTTPHeader("WWW-Authenticate")}} response for the resource being requested.
+    - `"auth"`: Authentication
+    - `"auth-int"`: Authentication with integrity protection
+- `cnonce`
+  - : An quoted ASCII-only string value provided by the client.
+    This is used by both the client and server to provide mutual authentication, provide some message integrity protection, and avoid "chosen plaintext
+    attacks".
+    See the specification for additional information.
+- `nc`
+  - : Nonce count. The hexadecimal count of requests in which the client has sent the current `cnonce` value (including the current request).
+    The server can use duplicate `nc` values to recognize replay requests.
+- `userhash` {{optional_inline}}
+  - : `"true"` if the username has been hashed. `"false"` by default.
 
-```
+## Examples
+
+### Basic authentication
+
+For `"Basic"` authentication the credentials are constructed by first combining the username and the password with a colon (`aladdin:opensesame`), and then by encoding the resulting string in [`base64`](/en-US/docs/Glossary/Base64) (`YWxhZGRpbjpvcGVuc2VzYW1l`).
+
+```http
 Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
 ```
 
-HTTP basic 인증을 사용하여 비밀번호를 보호하기 위해 Apache 또는 nginx 서버를 어떻게 설정해야 하는지 예제를 보기 위해서는 [HTTP authentication](/ko/docs/Web/HTTP/Authentication) 를 보시기 바랍니다.
+> **Warning:** {{Glossary("Base64")}}-encoding can easily be reversed to obtain the original name and password, so Basic authentication is completely insecure.
+> {{Glossary("HTTPS")}} is always recommended when using authentication, but is even more so when using `Basic` authentication.
 
-## 기술 사양
+See also [HTTP authentication](/en-US/docs/Web/HTTP/Authentication) for examples on how to configure Apache or Nginx servers to password protect your site with HTTP basic authentication.
 
-| 기술 사양                                            | 제목                                   |
-| ---------------------------------------------------- | -------------------------------------- |
-| {{RFC("7235", "Authorization", "4.2")}} | HTTP/1.1: Authentication               |
-| {{RFC("7617")}}                                 | The 'Basic' HTTP Authentication Scheme |
+## Specifications
 
-## 함께 더 보기
+{{Specifications}}
 
-- [HTTP authentication](/ko/docs/Web/HTTP/Authentication)
+## Browser compatibility
+
+{{Compat}}
+
+## See also
+
+- [HTTP authentication](/en-US/docs/Web/HTTP/Authentication)
 - {{HTTPHeader("WWW-Authenticate")}}
 - {{HTTPHeader("Proxy-Authorization")}}
 - {{HTTPHeader("Proxy-Authenticate")}}

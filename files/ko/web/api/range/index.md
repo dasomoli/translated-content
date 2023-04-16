@@ -1,98 +1,105 @@
 ---
-title: range
+title: Range
 slug: Web/API/Range
+page-type: web-api-interface
+browser-compat: api.Range
 ---
-{{ APIRef("DOM") }}
 
-**`Range`** 객체는 주어진 document 내의 텍스트 노드들의 부분들(parts)과 document의 단편화에 포함된 노드들을 나타내고 있다.
+{{APIRef("DOM")}}
 
-Range 오브젝트는 [`Document`](/ko/DOM/document) 객체에 포함되어 있는 [`createRange`](/ko/DOM/document.createRange) 메소드를 사용하여 생성할 수 있다. 또한 [`selection`](/ko/DOM/Selection) 객체에 포함되어 있는 [`getRangeAt`](/ko/DOM/Selection/getRangeAt) 메소드를 사용하여 추출할 수 있다.
+The **`Range`** interface represents a fragment of a document that can contain nodes and parts of text nodes.
 
-{{domxref("Range.Range()", "Range()")}} 생성자 또한 사용 가능하다.
+A range can be created by using the {{ domxref("Document.createRange()") }} method. Range objects can also be retrieved by using the {{ domxref("Selection/getRangeAt", "getRangeAt()") }} method of the {{ domxref("Selection") }} object or the {{domxref("Document/caretRangeFromPoint", "caretRangeFromPoint()")}} method of the {{domxref("Document")}} object.
 
-## 속성
+There also is the {{domxref("Range.Range()", "Range()")}} constructor available.
 
-- [collapsed](/ko/DOM/range.collapsed)
-  - : Range의 시작점과 끝점이 같인 위치인지를 알 수 있는 boolean 값을 반환한다.
-- [commonAncestorContainer](/ko/DOM/range.commonAncestorContainer)
-  - : startContainer와 endContainer 노드들을 포함한 최상위 노드를 반환한다.
-- [endContainer](/ko/DOM/range.endContainer)
-  - : Range의 끝 위치를 포함하는 Node를 반환한다.
-- [endOffset](/ko/DOM/range.endOffset)
-  - : endContainer 안에 있는 Range 끝을 나타내는 숫자(offset)를 반환한다.
-- [startContainer](/ko/DOM/range.startContainer)
-  - : Range의 시작 위치를 포함하는 Node를 반환한다.
-- [startOffset](/ko/DOM/range.startOffset)
-  - : startContainer 안에 있는 Range 시작을 나타내는 숫자(offset)를 반환한다.
+{{InheritanceDiagram}}
 
-## 생성자
+## Instance properties
 
-- {{ domxref("Range.Range()", "Range()") }} {{experimental_inline}}
-  - : `Range` 객체의 시작과 끝에 따라 전역 {{domxref("Document")}} 와 함께 `Range` 객체를 반환한다.
+_There are no inherited properties._
 
-## 메서드
+- {{domxref("Range.collapsed")}} {{ReadOnlyInline}}
+  - : Returns a boolean value indicating whether the range's start and end points are at the same position.
+- {{domxref("Range.commonAncestorContainer")}} {{ReadOnlyInline}}
+  - : Returns the deepest {{ domxref("Node") }} that contains the `startContainer` and `endContainer` nodes.
+- {{domxref("Range.endContainer")}} {{ReadOnlyInline}}
+  - : Returns the {{ domxref("Node") }} within which the `Range` ends.
+- {{domxref("Range.endOffset")}} {{ReadOnlyInline}}
+  - : Returns a number representing where in the `endContainer` the `Range` ends.
+- {{domxref("Range.startContainer")}} {{ReadOnlyInline}}
+  - : Returns the {{ domxref("Node") }} within which the `Range` starts.
+- {{domxref("Range.startOffset")}} {{ReadOnlyInline}}
+  - : Returns a number representing where in the `startContainer` the `Range` starts.
 
-_상속한 메서드는 없다._
+## Constructor
 
-- {{ domxref("Range.setStart()")}}
-  - : `Range 의 시작 위치를 설정한다`.
-- {{ domxref("Range.setEnd()")}}
-  - : `Range 의 끝 위치를 설정한다`.
-- {{ domxref("Range.setStartBefore()")}}
-  - : 다른 {{ domxref("Node") }} 와 관계가 있는 `Range 의 시작 위치를 설정한다`.
-- {{ domxref("Range.setStartAfter()")}}
-  - : 다른 {{ domxref("Node") }} 와 관계가 있는 `Range 의 시작 위치를 설정한다`.
-- {{ domxref("Range.setEndBefore()")}}
-  - : 다른 {{ domxref("Node") }} 와 관계가 있는 `Range 의 끝 위치를 설정한다`.
-- {{ domxref("Range.setEndAfter()")}}
-  - : 다른 {{ domxref("Node") }} 와 관계가 있는 `Range 의 끝 위치를 설정한다`.
-- {{ domxref("Range.selectNode()")}}
-  - : `Range` 에 {{ domxref("Node") }} 와 그것의 내용물을 포함 시킨`다`.
-- {{ domxref("Range.selectNodeContents()")}}
-  - : `Range` 에 {{ domxref("Node") }} 의 내용물을 포함 시킨`다`.
+- {{ domxref("Range.Range()", "Range()") }}
+  - : Returns a `Range` object with the global {{domxref("Document")}} as its start and end.
+
+## Instance methods
+
+_There are no inherited methods._
+
 - {{ domxref("Range.collapse()")}}
-  - : `Range` 의 경계 지점 중 하나로 영역을 붕괴 시킨다.
-- {{ domxref("Range.cloneContents()")}}
-  - : `Range` 의 노드들을 복사하여 {{ domxref("DocumentFragment") }} 를 반환한다.
-- {{ domxref("Range.deleteContents()")}}
-  - : {{ domxref("Document") }} 로 부터 `Range` 의 컨텐츠들을 삭제한다.
-- {{ domxref("Range.extractContents()")}}
-  - : {{ domxref("Document") }} 트리로 부터 `Range` 의 컨텐츠들을 domxref("DocumentFragment") }} 로 이동시킨다.
-- {{ domxref("Range.insertNode()")}}
-  - : `Range` 의 맨 앞에 {{ domxref("Node") }}를 삽입한다.
-- {{ domxref("Range.surroundContents()")}}
-  - : Moves content of a `Range` into a new {{ domxref("Node") }}.
+  - : Collapses the `Range` to one of its boundary points.
 - {{ domxref("Range.compareBoundaryPoints()")}}
   - : Compares the boundary points of the `Range` with another `Range`.
+- {{ domxref("Range.compareNode()")}} {{Deprecated_Inline}} {{Non-standard_Inline}}
+  - : Returns a constant representing whether the {{domxref("Node")}} is before, after, inside, or surrounding the range.
+- {{ domxref("Range.comparePoint()")}}
+  - : Returns -1, 0, or 1 indicating whether the point occurs before, inside, or after the `Range`.
+- {{ domxref("Range.cloneContents()")}}
+  - : Returns a {{ domxref("DocumentFragment") }} copying the nodes of a `Range`.
 - {{ domxref("Range.cloneRange()")}}
   - : Returns a `Range` object with boundary points identical to the cloned `Range`.
+- {{ domxref("Range.createContextualFragment()")}}
+  - : Returns a {{ domxref("DocumentFragment") }} created from a given string of code.
+- {{ domxref("Range.deleteContents()")}}
+  - : Removes the contents of a `Range` from the {{ domxref("Document") }}.
 - {{ domxref("Range.detach()")}}
-  - : Releases the `Range` from use to improve performance.
+  - : Does nothing. Kept for compatibility.
+- {{ domxref("Range.extractContents()")}}
+  - : Moves contents of a `Range` from the document tree into a {{ domxref("DocumentFragment") }}.
+- {{ domxref("Range.getBoundingClientRect()") }}
+  - : Returns a {{ domxref("DOMRect") }} object which bounds the entire contents of the `Range`; this would be the union of all the rectangles returned by {{ domxref("range.getClientRects()") }}.
+- {{ domxref("Range.getClientRects()") }}
+  - : Returns a list of {{ domxref("DOMRect") }} objects that aggregates the results of {{ domxref("Element.getClientRects()") }} for all the elements in the `Range`.
+- {{ domxref("Range.isPointInRange()")}}
+  - : Returns a `boolean` indicating whether the given point is in the `Range`.
+- {{ domxref("Range.insertNode()")}}
+  - : Insert a {{ domxref("Node") }} at the start of a `Range`.
+- {{ domxref("Range.intersectsNode()")}}
+  - : Returns a `boolean` indicating whether the given node intersects the `Range`.
+- {{ domxref("Range.selectNode()")}}
+  - : Sets the `Range` to contain the {{ domxref("Node") }} and its contents.
+- {{ domxref("Range.selectNodeContents()")}}
+  - : Sets the `Range` to contain the contents of a {{ domxref("Node") }}.
+- {{ domxref("Range.setEnd()")}}
+  - : Sets the end position of a `Range`.
+- {{ domxref("Range.setStart()")}}
+  - : Sets the start position of a `Range`.
+- {{ domxref("Range.setEndAfter()")}}
+  - : Sets the end position of a `Range` relative to another {{ domxref("Node") }}.
+- {{ domxref("Range.setEndBefore()")}}
+  - : Sets the end position of a `Range` relative to another {{ domxref("Node") }}.
+- {{ domxref("Range.setStartAfter()")}}
+  - : Sets the start position of a `Range` relative to another {{ domxref("Node") }}.
+- {{ domxref("Range.setStartBefore()")}}
+  - : Sets the start position of a `Range` relative to another {{ domxref("Node") }}.
+- {{ domxref("Range.surroundContents()")}}
+  - : Moves content of a `Range` into a new {{ domxref("Node") }}.
 - {{ domxref("Range.toString()")}}
   - : Returns the text of the `Range`.
-- {{ domxref("Range.compareNode()")}} {{deprecated_inline }}{{non-standard_inline}}
-  - : Returns a constant representing whether the {{domxref("Node")}} is before, after, inside, or surrounding the range.
-- {{ domxref("Range.comparePoint()")}} {{experimental_inline}}
-  - : Returns -1, 0, or 1 indicating whether the point occurs before, inside, or after the `Range`.
-- {{ domxref("Range.createContextualFragment()")}}{{experimental_inline}}
-  - : Returns a {{ domxref("DocumentFragment") }} created from a given string of code.
-- {{ domxref("Range.getBoundingClientRect()") }} {{experimental_inline}}
-  - : Returns a {{ domxref("ClientRect") }} object which bounds the entire contents of the `Range`; this would be the union of all the rectangles returned by {{ domxref("range.getClientRects()") }}.
-- {{ domxref("Range.getClientRects()") }} {{experimental_inline}}
-  - : Returns a list of {{ domxref("ClientRect") }} objects that aggregates the results of {{ domxref("Element.getClientRects()") }} for all the elements in the `Range`.
-- {{ domxref("Range.intersectsNode()")}} {{experimental_inline}}
-  - : Returns a `boolean` indicating whether the given node intersects the `Range`.
-- {{ domxref("Range.isPointInRange()")}} {{experimental_inline}}
-  - : Returns a `boolean` indicating whether the given point is in the `Range`.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [The DOM interfaces index](/ko/docs/DOM/DOM_Reference)
+- [The DOM interfaces index](/en-US/docs/Web/API/Document_Object_Model)

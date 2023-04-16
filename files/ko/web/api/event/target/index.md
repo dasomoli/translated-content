@@ -1,49 +1,56 @@
 ---
-title: Event.target
+title: "Event: target property"
+short-title: target
 slug: Web/API/Event/target
+page-type: web-api-instance-property
+browser-compat: api.Event.target
 ---
 
 {{ApiRef("DOM")}}
 
-{{domxref("Event")}} 인터페이스의 **`target`** 속성은 이벤트가 발생한 대상 객체를 가리킵니다. 버블링과 캡처링 단계에서는 {{domxref("Event.currentTarget")}}과 다를 수 있습니다.
+The read-only **`target`** property of the
+{{domxref("Event")}} interface is a reference to the object onto which the event was
+dispatched. It is different from {{domxref("Event.currentTarget")}} when the event
+handler is called during the bubbling or capturing phase of the event.
 
-### 값
+## Value
 
-연관된 {{domxref("EventTarget")}}.
+The associated {{domxref("EventTarget")}}.
 
-## 예제
+## Example
 
-`event.target` 속성을 사용하여 **이벤트 위임**을 구현할 수 있습니다.
+The `event.target` property can be used in order to implement **event
+delegation**.
 
 ```js
-// 목록 생성
-const ul = document.createElement('ul');
+// Make a list
+const ul = document.createElement("ul");
 document.body.appendChild(ul);
 
-const li1 = document.createElement('li');
-const li2 = document.createElement('li');
+const li1 = document.createElement("li");
+const li2 = document.createElement("li");
 ul.appendChild(li1);
 ul.appendChild(li2);
 
 function hide(evt) {
-  // e.target은 사용자가 클릭한 <li> 요소를 가리킴
-  // 여기서 e.currentTarget은 부모인 <ul>을 가리킬 것
-  evt.target.style.visibility = 'hidden';
+  // evt.target refers to the clicked <li> element
+  // This is different than evt.currentTarget, which would refer to the parent <ul> in this context
+  evt.target.style.visibility = "hidden";
 }
 
-// 목록에 수신기 부착
-// 각각의 <li>를 클릭할 때 호출됨
-ul.addEventListener('click', hide, false);
+// Attach the listener to the list
+// It will fire when each <li> is clicked
+ul.addEventListener("click", hide, false);
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [이벤트 대상의 비교](/ko/docs/Web/API/Event/Comparison_of_Event_Targets)
+- [Comparison of Event Targets](/en-US/docs/Web/API/Event/Comparison_of_Event_Targets)

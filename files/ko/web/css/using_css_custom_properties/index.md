@@ -1,18 +1,22 @@
 ---
-title: 사용자 지정 CSS 속성 사용하기 (변수)
+title: Using CSS custom properties (variables)
 slug: Web/CSS/Using_CSS_custom_properties
+page-type: guide
 ---
-{{cssref}}
 
-**사용자 지정 속성**(**CSS 변수**, **종속 변수**)은 CSS 저작자가 정의하는 개체로, 문서 전반적으로 재사용할 임의의 값을 담습니다. 사용자 지정 속성은 전용 표기법을 사용해 정의하고, (`--main-color: black;`) {{cssxref("var", "var()")}} 함수를 사용해 접근할 수 있습니다. (`color: var(--main-color);`)
+{{CSSRef}}
 
-복잡한 웹사이트는 어마어마한 양의 CSS를 가지고 있는데, 종종 많은 값을 반복적으로 사용합니다. 예를 들어, 수 백 곳의 서로 다른 위치에서 같은 색상을 사용한다면, 그 색을 바꿔야 할 상황이 왔을 때 대규모 전역 검색 바꾸기를 피할 수 없습니다. 사용자 지정 속성을 사용하면 한 영역에 값을 저장해놓고 다른 여러 곳에서 참조해갈 수 있습니다. 추가로 오는 장점은 의미를 가지는 식별자를 사용한다는 것으로, `#00ff00`보다는 `--main-text-color`가 이해하기 쉽다는 것입니다. 특히 같은 색을 다른 맥락에서 사용할 때 이 장점이 도드라집니다.
+**Custom properties** (sometimes referred to as **CSS variables** or **cascading variables**) are entities defined by CSS authors that contain specific values to be reused throughout a document. They are set using custom property notation (e.g., **`--main-color: black;`**) and are accessed using the {{cssxref("var", "var()")}} function (e.g., `color: var(--main-color);`).
 
-사용자 지정 속성은 종속 대상이며 부모로부터 상속합니다.
+Complex websites have very large amounts of CSS, often with a lot of repeated values. For example, the same color might be used in hundreds of different places, requiring global search and replace if that color needs to change. Custom properties allow a value to be stored in one place, then referenced in multiple other places. An additional benefit is semantic identifiers. For example, `--main-text-color` is easier to understand than `#00ff00`, especially if this same color is also used in other contexts.
 
-## 기본 사용법
+Custom properties are subject to the cascade and inherit their value from their parent.
 
-사용자 지정 속성은 두 개의 붙임표로 시작하는 속성의 이름과 함께, 유효한 CSS 값이라면 아무거나 그 값으로 지정해 선언합니다. 다른 일반적인 속성과 마찬가지로 사용자 지정 속성도 아래와 같이 규칙 집합 내에 작성합니다.
+> **Note:** Variables do not work inside media queries and container queries. The {{cssxref("var", "var()")}} function can be used in place of any part of a value in any property on an element. The {{cssxref("var", "var()")}} function cannot be used as property names, selectors, or anything else besides property values. So, we can't use it in a media query or container query.
+
+## Basic usage
+
+Declaring a custom property is done using a custom property name that begins with a double hyphen (`--`), and a property value that can be any valid CSS value. Like any other property, this is written inside a ruleset, like so:
 
 ```css
 element {
@@ -20,7 +24,7 @@ element {
 }
 ```
 
-규칙 집합의 선택자는 사용자 지정 속성을 사용할 수 있는 범위를 정의합니다. 흔히 보이는 패턴은 {{cssxref(":root")}} 의사 클래스에 선언해서 여러분의 HTML 문서 어디에서나 사용자 지정 속성에 접근할 수 있도록 구성하는 것입니다.
+Note that the selector given to the ruleset defines the scope that the custom property can be used in. A common best practice is to define custom properties on the {{cssxref(":root")}} pseudo-class, so that it can be applied globally across your HTML document:
 
 ```css
 :root {
@@ -28,11 +32,11 @@ element {
 }
 ```
 
-그러나 반드시 이렇게 선언해야 하는 것은 아닙니다. 범위를 제한해야 하는 적절한 이유가 있을 수도 있으니까요.
+However, this doesn't always have to be the case: you maybe have a good reason for limiting the scope of your custom properties.
 
-> **참고:** 사용자 지정 속성의 이름은 대소문자를 구분합니다. 따라서 `--my-color`와 `--My-color`는 서로 다른 속성으로써 처리합니다.
+> **Note:** Custom property names are case sensitive — `--my-color` will be treated as a separate custom property to `--My-color`.
 
-위에서 언급했듯, 사용자 지정 속성의 값을 사용할 때에는 일반적인 값의 자리에 {{cssxref("var()")}} 함수를 지정하고, 그 매개변수로는 사용자 지정 속성의 이름을 제공합니다.
+As mentioned earlier, you use the custom property value by specifying your custom property name inside the {{cssxref("var", "var()")}} function, in place of a regular property value:
 
 ```css
 element {
@@ -40,9 +44,9 @@ element {
 }
 ```
 
-## 사용자 지정 속성 첫 단계
+## First steps with custom properties
 
-동일한 색상을 여러 클래스에 적용하는, 다음의 간단한 예제로 시작하겠습니다.
+Let's start with this CSS that applies the same color to elements of different classes:
 
 ```css
 .one {
@@ -80,24 +84,26 @@ element {
 }
 ```
 
-HTML에 적용해보겠습니다.
+We'll apply it to this HTML:
 
 ```html
 <div>
   <div class="one">1:</div>
   <div class="two">2: Text <span class="five">5 - more text</span></div>
-  <input class="three">
+  <input class="three" />
   <textarea class="four">4: Lorem Ipsum</textarea>
 </div>
 ```
 
-결과는 다음과 같습니다.
+This produces the following result:
 
-{{EmbedLiveSample("사용자_지정_속성_첫_단계",600,180)}}
+{{EmbedLiveSample("First_steps_with_custom_properties",600,180)}}
 
-반복되는 CSS에 주목해보세요. 배경 색을 여러 곳에서 `brown`으로 지정하고 있습니다. 일부 CSS 선언의 경우 더 상위 단계로 반복되는 항목을 옮겨서 CSS의 상속을 통해 자연스럽게 해결할 수도 있습니다. 그러나 보다 복잡한 프로젝트의 경우 항상 이렇게 할 수 있는 것은 아닙니다. 이 때 {{cssxref(":root")}} 의사 클래스에 사용자 지정 속성을 선언하고, 필요한 곳에서 그 속성을 참조함으로써 반복 코드의 필요를 줄일 수 있습니다.
+## Using the :root pseudo-class
 
-```html
+Notice the repetitive CSS in the example above. The background color is set to `brown` in several places. For some CSS declarations, it is possible to declare this higher in the cascade and let CSS inheritance solve this problem naturally. For non-trivial projects, this is not always possible. By declaring a custom property on the {{cssxref(":root")}} pseudo-class and using it where needed throughout the document, a CSS author can reduce the need for repetition:
+
+```css
 :root {
   --main-bg-color: brown;
 }
@@ -137,11 +143,20 @@ HTML에 적용해보겠습니다.
 }
 ```
 
-위의 코드는 이전 예제와 동일한 결과물을 낳지만, 원하는 값에 대한 단 하나의 선언만이 필요합니다. 나중에 페이지 전체에 걸쳐 해당 값을 바꿔야 할 경우 특이 유용해집니다.
+```html hidden
+<div>
+  <div class="one"></div>
+  <div class="two">Text <span class="five">- more text</span></div>
+  <input class="three" />
+  <textarea class="four">Lorem Ipsum</textarea>
+</div>
+```
 
-## 사용자 지정 속성의 상속
+This leads to the same result as the previous example, yet allows for one canonical declaration of the desired property value; very useful if you want to change the value across the entire page later.
 
-사용자 지정 속성은 상속 대상입니다. 그러므로 특정 요소에 사용자 지정 속성 값을 설정하지 않은 경우, 그 부모의 값을 사용합니다. 다음 HTML 코드를 살펴보세요.
+## Inheritance of custom properties
+
+Custom properties do inherit. This means that if no value is set for a custom property on a given element, the value of its parent is used. Take this HTML:
 
 ```html
 <div class="one">
@@ -152,7 +167,7 @@ HTML에 적용해보겠습니다.
 </div>
 ```
 
-아래의 CSS 코드를 적용할 것입니다.
+… with the following CSS:
 
 ```css
 .two {
@@ -164,95 +179,135 @@ HTML에 적용해보겠습니다.
 }
 ```
 
-그러면, `var(--test)`의 결과는 다음과 같습니다.
+In this case, the results of `var(--test)` are:
 
-- `class="two"` 요소: `10px`
-- `class="three"` 요소: `2em`
-- `class="four"` 요소: `10px` (부모로부터 상속)
-- `class="one"` 요소: 유효하지 않음. 모든 사용자 지정 속성의 기본값.
+- For the `class="two"` element: `10px`
+- For the `class="three"` element: `2em`
+- For the `class="four"` element: `10px` (inherited from its parent)
+- For the `class="one"` element: _invalid value_, which is the default value of any custom property
 
-이것들은 실제 CSS변수가 아니라 사용자 지정 속성이라는 것을 염두해 두자. 이 값들은 다른 규칙에서 사용하기 위해 따로 저장되는 것이 아니라, 필요할 때만 계산된다. 예를 들어, 요소의 속성을 설정하거나, 형제의 자손 규칙에서 이 요소를 검색할 수는 없다. 이 속성은 일반적인 CSS와 같이, 선택자가 일치하거나 해당 선택자의 하위 항목일 경우에만 설정된다.
+Keep in mind that these are custom properties, not actual variables like you might find in other programming languages. The value is computed where it is needed, not stored for use in other rules. For instance, you cannot set a property for an element and expect to retrieve it in a sibling's descendant's rule. The property is only set for the matching selector and its descendants, like any normal CSS.
 
-## 사용자 지정 속성 대안 값
+## Custom property fallback values
 
-주어진 변수가 아직 정의되지 않았을 때, [var()](/ko/docs/Web/CSS/var) 를 이용하여 여러 개의 **대체 변수**를 정의할 수 있다. 이는 사용자 정의 요소(Custom Element)및 섀도우 돔(Shadow DOM)으로 작업할 때 유용하게 쓸 수 있다.
+Using the [`var()`](/en-US/docs/Web/CSS/var) function, you can define multiple **fallback values** when the given variable is not yet defined; this can be useful when working with [Custom Elements](/en-US/docs/Web/API/Web_components/Using_custom_elements) and [Shadow DOM](/en-US/docs/Web/API/Web_components/Using_shadow_DOM).
 
-함수에 있어서의 첫번째 논쟁은 대체될 [사용자 속성](https://www.w3.org/TR/css-variables/#custom-property)의 이름이다. 두번째는 아래와 같이 잘못된 [사용자 속성](https://www.w3.org/TR/css-variables/#custom-property)을 참조하였을 때 대신 사용할 수 있는 대체 변수이다:
+> **Note:** Fallback values aren't used to fix the browser compatibility. If the browser doesn't support CSS custom properties, the fallback value won't help. It's just a backup for the browser which supports CSS custom properties to choose a different value if the given variable isn't defined or has an invalid value.
+
+The first argument to the function is the name of the [custom property](https://www.w3.org/TR/css-variables/#custom-property) to be substituted. The second argument to the function, if provided, is a fallback value, which is used as the substitution value when the referenced [custom property](https://www.w3.org/TR/css-variables/#custom-property) is invalid. The function only accepts two parameters, assigning everything following the first comma as the second parameter. If that second parameter is invalid, the fallback will fail. For example:
 
 ```css
 .two {
-  color: var(--my-var, red); /* --my-var가 정의되지 않았을 경우 red로 표시됨 */
+  /* Red if --my-var is not defined */
+  color: var(--my-var, red);
 }
 
 .three {
-  background-color: var(--my-var, var(--my-background, pink)); /* my-var와 --my-background가 정의되지 않았을 경우 pink로 표시됨 */
+  /* pink if --my-var and --my-background are not defined */
+  background-color: var(--my-var, var(--my-background, pink));
 }
 
 .three {
-  background-color: var(--my-var, --my-background, pink); /* 유효하지 않음: "--my-background, pink" */
+  /* Invalid: "--my-background, pink" */
+  background-color: var(--my-var, --my-background, pink);
 }
 ```
 
-> **참고:** [사용자 속성](https://www.w3.org/TR/css-variables/#custom-property)같은 대체 구문은 쉼표를 허용한다. 예를 들어, var(--foo, red, blue)는 빨강, 파랑의 fallback을 정의하고 있다; 즉, 첫번째 쉼표와 함수 마지막 사이에 있는 값들은 모두 대체 변수로 간주한다.
+Including a custom property as a fallback, as seen in the second example above, is the correct way to provide more than one fallback. The technique has been seen to cause performance issues as it takes more time to parse through the variables.
 
-## 유효성과 값
+> **Note:** The syntax of the fallback, like that of [custom properties](https://www.w3.org/TR/css-variables/#custom-property), allows commas. For example, `var(--foo, red, blue)` defines a fallback of `red, blue` — anything between the first comma and the end of the function is considered a fallback value.
 
-_각 속성과 연관된 기본 CSS 개념의 유효성은 사용자 지정 속성과 관련하여 별로 유용하지 않다. 사용자 속성 값을 분석할 때, 브라우저는 그것들이 어디서 사용되는지 모르기 때문에 거의 모든 값을 유효한 것으로 간주할 수 밖에 없다._
+## Handling invalid custom properties
 
-불행히도, 이 유효한 값들은 `var()` 함수 표현을 통하여 이해할 수 없는 문맥 안에서도 사용될 수 있다. 속성 및 사용자 변수로 인해 유효하지 않은 CSS 선언문이 만들어지면 계산된 시간에 유효한 새로운 개념이 생기게 된다*.*
+Each CSS property can be assigned a defined set of values. If you try to assign a value to a property that is outside its set of valid values, it's considered _invalid_.
 
-## 유효하지 않은 변수를 만날 때
+When the browser encounters an invalid value for a normal property, it discards the value, and elements are assigned the values that they would have had if the declaration simply did not exist.
 
-만일 브라우저가 유효하지 않은 `var()` 구문을 만나게 되면, 그 속성의 초기값이나 상속된 값이 사용된다.
+However, when the values of custom properties are parsed, the browser doesn't yet know where they will be used, so it must consider nearly all values as _valid_.
 
-아래의 코드를 보자.
+Unfortunately, these valid values can be used, via the `var()` functional notation, in a context where they might not make sense. Properties and custom variables can lead to invalid CSS statements, leading to the new concept of _valid at computed time._
 
-### HTML
+When the browser encounters an invalid `var()` substitution, then the [initial](/en-US/docs/Web/CSS/initial_value) or [inherited](/en-US/docs/Web/CSS/Inheritance) value of the property is used.
+
+The next two examples illustrate this.
+
+### Invalid normal properties
+
+In this example we attempt to apply a value of `16px` to the {{cssxref("color")}} property. Because this is invalid, the CSS is discarded and the result is as if the rule did not exist, so the previous `color: blue` rule is applied instead, and the paragraph is blue.
+
+#### HTML
 
 ```html
-<p>This paragraph is initial black.</p>
+<p>This paragraph is initially black.</p>
 ```
 
-### CSS
+#### CSS
 
 ```css
-:root { --text-color: 16px; }
-p { color: blue; }
-p { color: var(--text-color); }
+p {
+  color: blue;
+}
+
+p {
+  color: 16px;
+}
 ```
 
-예상대로 브라우저는 `--text-color` 의 값으로 `var(--text-color)` 를 대체했지만 `16px` 는 {{cssxref("color")}}에 유효한 값이 아니다. 대체한 결과, 그 속성은 의미가 통하지 않는다. 브라우저는 이 상황을 두 단계로 처리한다:
+#### Result
 
-1. color 속성이 상속되었는지를 확인한다. 확인, 그런데 `<p>` 가 color 속성과 연관된 부모 엘리먼트가 없다. 그렇다면 다음 단계로 넘어간다.
-2. 값을 **default initial value**,(초기 설정 디폴트값) 즉, black 으로 처리한다.
+{{EmbedLiveSample('Invalid normal properties', 100, 100)}}
 
-### 결과
+### Invalid custom properties
 
-{{EmbedLiveSample('What_happens_with_invalid_variables')}}
+This example is just like the last one, except we use a custom property.
 
-단락의 color 값은 blue가 되지 못한다. 유효하지 않은 값이 폴백 (fallback)이 아닌 초기설정 디포트값으로 대체되었기 때문이다. 만일 사용자가 어떠한 매개변수값 없이 `color: 16px` 를 쓴다면 에러(syntax error)를 받게 될 것이다. 대신 그 전에 지정된 선언이 사용된다.
+As expected, the browser substitutes the value of `--text-color` in place of `var(--text-color)`, but `16px` is not a valid property value for {{cssxref("color")}}. After substitution, the property doesn't make sense. The browser handles this situation in two steps:
 
-> **참고:** CSS 속성/값 쌍에서 에러(syntax error)가 나면 그 라인은 무시되지만 계단식으로 지정된 값, 유효하지 않은 대체적용(substitution) - 유효하지 않은 사용자 지정값을 사용하는 것 - 은 무시되지 않으며, 그 값은 상속된다.
+1. Check if the property {{cssxref("color")}} is inheritable. It is, but this `<p>` doesn't have any parent with the `color` property set. So we move on to the next step.
+2. Set the value to its **default initial value**, which is black.
 
-## JavaScript에서의 값
+#### HTML
 
-JavaScript로 사용자 속성값을 사용하는 것은 표준 속성을 사용하는 것과 같다.
+```html
+<p>This paragraph is initially black.</p>
+```
+
+#### CSS
+
+```css
+:root {
+  --text-color: 16px;
+}
+
+p {
+  color: blue;
+}
+
+p {
+  color: var(--text-color);
+}
+```
+
+#### Result
+
+{{EmbedLiveSample('Invalid custom properties', 100, 100)}}
+
+## Values in JavaScript
+
+To use the values of custom properties in JavaScript, it is just like standard properties.
 
 ```js
-// 인라인 스타일에서 변수 얻기
+// get variable from inline style
 element.style.getPropertyValue("--my-var");
 
-// 어느 곳에서나 변수 얻기
+// get variable from wherever
 getComputedStyle(element).getPropertyValue("--my-var");
 
-// 인라인 스타일에 변수 설정하기
+// set variable on inline style
 element.style.setProperty("--my-var", jsVar + 4);
 ```
 
-## 브라우저 호환성
+## See also
 
-{{Compat}}
-
-## 같이 보기
-
-- {{cssxref("--*", "사용자 지정 속성")}}
+- [Custom property syntax](/en-US/docs/Web/CSS/--*)
+- [`var()`](/en-US/docs/Web/CSS/var)

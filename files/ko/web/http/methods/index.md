@@ -1,39 +1,41 @@
 ---
-title: HTTP 요청 메서드
+title: HTTP request methods
 slug: Web/HTTP/Methods
+page-type: landing-page
+browser-compat: http.methods
 ---
 
 {{HTTPSidebar}}
 
-HTTP는 **요청 메서드**를 정의하여, 주어진 리소스에 수행하길 원하는 행동을 나타냅니다. 간혹 요청 메서드를 "HTTP 동사"라고 부르기도 합니다. 각각의 메서드는 서로 다른 의미를 구현하지만, 일부 기능은 메서드 집합 간에 서로 공유하기도 합니다. 이를테면 응답 메서드는 {{glossary("safe", "안전")}}하거나, {{glossary("cacheable", "캐시 가능")}}하거나, {{glossary("idempotent", "멱등성")}}을 가질 수 있습니다.
+HTTP defines a set of **request methods** to indicate the desired action to be performed for a given resource. Although they can also be nouns, these request methods are sometimes referred to as _HTTP verbs_. Each of them implements a different semantic, but some common features are shared by a group of them: e.g. a request method can be {{glossary("Safe/HTTP", "safe")}}, {{glossary("idempotent")}}, or {{glossary("cacheable")}}.
 
-- {{httpmethod("GET")}}
-  - : `GET` 메서드는 특정 리소스의 표시를 요청합니다. `GET`을 사용하는 요청은 오직 데이터를 받기만 합니다.
-- {{httpmethod("HEAD")}}
-  - : `HEAD` 메서드는 `GET` 메서드의 요청과 동일한 응답을 요구하지만, 응답 본문을 포함하지 않습니다.
-- {{httpmethod("POST")}}
-  - : `POST` 메서드는 특정 리소스에 엔티티를 제출할 때 쓰입니다. 이는 종종 서버의 상태의 변화나 부작용을 일으킵니다.
-- {{httpmethod("PUT")}}
-  - : `PUT` 메서드는 목적 리소스 모든 현재 표시를 요청 payload로 바꿉니다.
-- {{httpmethod("DELETE")}}
-  - : `DELETE` 메서드는 특정 리소스를 삭제합니다.
-- {{httpmethod("CONNECT")}}
-  - : `CONNECT` 메서드는 목적 리소스로 식별되는 서버로의 터널을 맺습니다.
-- {{httpmethod("OPTIONS")}}
-  - : `OPTIONS` 메서드는 목적 리소스의 통신을 설정하는 데 쓰입니다.
-- {{httpmethod("TRACE")}}
-  - : `TRACE` 메서드는 목적 리소스의 경로를 따라 메시지 loop-back 테스트를 합니다.
-- {{httpmethod("PATCH")}}
-  - : `PATCH` 메서드는 리소스의 부분만을 수정하는 데 쓰입니다.
+- [`GET`](/en-US/docs/Web/HTTP/Methods/GET)
+  - : The `GET` method requests a representation of the specified resource. Requests using `GET` should only retrieve data.
+- [`HEAD`](/en-US/docs/Web/HTTP/Methods/HEAD)
+  - : The `HEAD` method asks for a response identical to a `GET` request, but without the response body.
+- [`POST`](/en-US/docs/Web/HTTP/Methods/POST)
+  - : The `POST` method submits an entity to the specified resource, often causing a change in state or side effects on the server.
+- [`PUT`](/en-US/docs/Web/HTTP/Methods/PUT)
+  - : The `PUT` method replaces all current representations of the target resource with the request payload.
+- [`DELETE`](/en-US/docs/Web/HTTP/Methods/DELETE)
+  - : The `DELETE` method deletes the specified resource.
+- [`CONNECT`](/en-US/docs/Web/HTTP/Methods/CONNECT)
+  - : The `CONNECT` method establishes a tunnel to the server identified by the target resource.
+- [`OPTIONS`](/en-US/docs/Web/HTTP/Methods/OPTIONS)
+  - : The `OPTIONS` method describes the communication options for the target resource.
+- [`TRACE`](/en-US/docs/Web/HTTP/Methods/TRACE)
+  - : The `TRACE` method performs a message loop-back test along the path to the target resource.
+- [`PATCH`](/en-US/docs/Web/HTTP/Methods/PATCH)
+  - : The `PATCH` method applies partial modifications to a resource.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [HTTP 헤더](/ko/docs/Web/HTTP/Headers)
+- [HTTP headers](/en-US/docs/Web/HTTP/Headers)

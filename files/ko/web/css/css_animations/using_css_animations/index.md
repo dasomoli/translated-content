@@ -1,56 +1,117 @@
 ---
-title: CSS 애니메이션 사용하기
+title: Using CSS animations
 slug: Web/CSS/CSS_Animations/Using_CSS_animations
+page-type: guide
 ---
 
-{{SeeCompatTable}}{{CSSRef}}
+{{CSSRef}}
 
-**CSS3 애니메이션**은 엘리먼트에 적용되는 CSS 스타일을 다른 CSS 스타일로 부드럽게 전환시켜 줍니다. 애니메이션은 애니메이션을 나타내는 CSS 스타일과 애니메이션의 중간 상태를 나타내는 키프레임들로 이루어집니다.
+**CSS animations** make it possible to animate transitions from one CSS style configuration to another. Animations consist of two components, a style describing the CSS animation and a set of keyframes that indicate the start and end states of the animation's style, as well as possible intermediate waypoints.
 
-CSS 애니메이션은 기존에 사용되던 스크립트를 이용한 애니메이션 보다 다음 세 가지 이유에서 이점을 가집니다.
+There are three key advantages to CSS animations over traditional script-driven animation techniques:
 
-1. 자바스크립트를 모르더라도 간단하게 애니메이션을 만들 수 있습니다.
-2. 자바스크립트를 이용한 애니메이션은 잘 만들어졌더라도 성능이 좋지 못할때가 있습니다. CSS 애니메이션은 frame-skipping 같은 여러 기술을 이용하여 최대한 부드럽게 렌더링됩니다.
-3. 브라우저는 애니메이션의 성능을 효율적으로 최적화할 수 있습니다. 예를 들어 현재 안보이는 엘리먼트에 대한 애니메이션은 업데이트 주기를 줄여 부하를 최소화할 수 있습니다.
+1. They're easy to use for simple animations; you can create them without even having to know JavaScript.
+2. The animations run well, even under moderate system load. Simple animations can often perform poorly in JavaScript. The rendering engine can use frame-skipping and other techniques to keep the performance as smooth as possible.
+3. Letting the browser control the animation sequence lets the browser optimize performance and efficiency by, for example, reducing the update frequency of animations running in tabs that aren't currently visible.
 
-## 애니메이션 적용하기
+## Configuring an animation
 
-CSS 애니메이션을 만드려면 {{ cssxref("animation") }} 속성과 이 속성의 하위 속성을 지정합니다. 애니메이션의 총 시간과 반복 여부등을 지정할 수 있습니다. 이 속성은 애니메이션의 중간상태를 기술하지 않는다는걸 명심하세요. 애니메이션의 중간 상태는 아래에서 다룰 {{ cssxref("@keyframes") }} 규칙을 이용하여 기술합니다.
+To create a CSS animation sequence, you style the element you want to animate with the {{cssxref("animation")}} property or its sub-properties. This lets you configure the timing, duration, and other details of how the animation sequence should progress. This does **not** configure the actual appearance of the animation, which is done using the {{cssxref("@keyframes")}} at-rule as described in the [Defining the animation sequence using keyframes](#defining_the_animation_sequence_using_keyframes) section below.
 
-{{ cssxref("animation") }} 속성의 하위 속성은 다음과 같습니다.
+The sub-properties of the {{cssxref("animation")}} property are:
 
-- {{ cssxref("animation-delay") }}
-  - : 엘리먼트가 로드되고 나서 언제 애니메이션이 시작될지 지정합니다.
-- {{ cssxref("animation-direction") }}
-  - : 애니메이션이 종료되고 다시 처음부터 시작할지 역방향으로 진행할지 지정합니다.
-- {{ cssxref("animation-duration") }}
-  - : 한 싸이클의 애니메이션이 얼마에 걸쳐 일어날지 지정합니다.
-- {{ cssxref("animation-iteration-count") }}
-  - : 애니메이션이 몇 번 반복될지 지정합니다. `infinite`로 지정하여 무한히 반복할 수 있습니다.
-- {{ cssxref("animation-name") }}
-  - : 이 애니메이션의 중간 상태를 지정합니다. 중간 상태는 {{ cssxref("@keyframes") }} 규칙을 이용하여 기술합니다.
-- {{ cssxref("animation-play-state") }}
-  - : 애니메이션을 멈추거나 다시 시작할 수 있습니다.
-- {{ cssxref("animation-timing-function") }}
-  - : 중간 상태들의 전환을 어떤 시간간격으로 진행할지 지정합니다.
-- {{ cssxref("animation-fill-mode") }}
-  - : 애니메이션이 시작되기 전이나 끝나고 난 후 어떤 값이 적용될지 지정합니다.
+<!--
+- {{cssxref("animation-composition")}}
+  - : Specifies the {{Glossary("Composite operation")}} to use when multiple animations affect the same property simultaneously.
+-->
 
-## 키프레임을 이용하여 애니메이션의 중간상태 기술하기
+- {{cssxref("animation-delay")}}
+  - : Specifies the delay between an element loading and the start of an animation sequence and whether the animation should start immediately from its beginning or partway through the animation.
+- {{cssxref("animation-direction")}}
+  - : Specifies whether an animation's first iteration should be forward or backward and whether subsequent iterations should alternate direction on each run through the sequence or reset to the start point and repeat.
+- {{cssxref("animation-duration")}}
+  - : Specifies the length of time in which an animation completes one cycle.
+- {{cssxref("animation-fill-mode")}}
+  - : Specifies how an animation applies styles to its target before and after it runs.
+- {{cssxref("animation-iteration-count")}}
+  - : Specifies the number of times an animation should repeat.
+- {{cssxref("animation-name")}}
+  - : Specifies the name of the {{cssxref("@keyframes")}} at-rule describing an animation's keyframes.
+- {{cssxref("animation-play-state")}}
+  - : Specifies whether to pause or play an animation sequence.
+- {{cssxref("animation-timing-function")}}
+  - : Specifies how an animation transitions through keyframes by establishing acceleration curves.
 
-애니메이션의 중간 상태를 기술해 봅시다. {{ cssxref("@keyframes") }} 규칙을 이용해서 두개 이상의 중간 상태를 기술합니다. 각 중간 상태는 특정 시점에 엘리먼트가 어떻게 보일지 나타냅니다.
+## Defining animation sequence using keyframes
 
-CSS 스타일을 이용해 중간 상태에 어떻게 보일지 정의했다면 이 중간 상태가 전체 애니메이션에서 언제 등장할 지 {{ cssxref("percentage") }} 를 이용해 지정합니다. 0%는 애니메이션이 시작된 시점을 의미하고 100%는 애니메이션이 끝나는 시점을 의미합니다. 최소한 이 두 시점은 기술되어야 브라우저가 언제 애니메이션이 시작되고 끝나는지 알 수 있습니다. 0%와 100% 대신 `from` 과 `to`로 사용할 수도 있습니다.
+After you've configured the animation's timing, you need to define the appearance of the animation. This is done by establishing one or more keyframes using the {{cssxref("@keyframes")}} at-rule. Each keyframe describes how the animated element should render at a given time during the animation sequence.
 
-시작 시점과 종료 시점 사이의 특정 시점에도 중간 상태를 지정할 수 있습니다.
+Since the timing of the animation is defined in the CSS style that configures the animation, keyframes use a {{cssxref("percentage")}} to indicate the time during the animation sequence at which they take place. 0% indicates the first moment of the animation sequence, while 100% indicates the final state of the animation. Because these two times are so important, they have special aliases: `from` and `to`. Both are optional. If `from`/`0%` or `to`/`100%` is not specified, the browser starts or finishes the animation using the computed values of all attributes.
 
-## 예제
+You can optionally include additional keyframes that describe intermediate steps between the start and end of the animation.
 
-> **참고:** **노트:** 다음 예제들은 애니메이션 CSS 속성에 접두어가 사용되지 않았습니다(역자: -webkit-, -moz- 등). 오래된 브라우저는 접두어가 필요합니다.
+## Using the animation shorthand
 
-### 텍스트가 브라우저를 가로질러 움직이게 하기
+The {{cssxref("animation")}} shorthand is useful for saving space. As an example, some of the rules we've been using through this article:
 
-다음 단순한 예제에서 {{ HTMLElement("p") }} 엘리먼트가 브라우저 윈도우 오른쪽에서 왼쪽으로 가로질러 움직이는걸 볼 수 있습니다.
+```css
+p {
+  animation-duration: 3s;
+  animation-name: slidein;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+```
+
+...could be replaced by using the `animation` shorthand.
+
+```css
+p {
+  animation: 3s infinite alternate slidein;
+}
+```
+
+To learn more about the sequence in which different animation property values can be specified using the `animation` shorthand, see the {{cssxref("animation")}} reference page.
+
+## Setting multiple animation property values
+
+The CSS animation longhand properties can accept multiple values, separated by commas. This feature can be used when you want to apply multiple animations in a single rule and set different durations, iteration counts, etc., for each of the animations. Let's look at some quick examples to explain the different permutations.
+
+In this first example, there are three duration and three iteration count values. So each animation is assigned a value of duration and iteration count with the same position as the animation name. The `fadeInOut` animation is assigned a duration of `2.5s` and an iteration count of `2`, and the `bounce` animation is assigned a duration of `1s` and an iteration count of `5`.
+
+```css
+animation-name: fadeInOut, moveLeft300px, bounce;
+animation-duration: 2.5s, 5s, 1s;
+animation-iteration-count: 2, 1, 5;
+```
+
+In this second example, three animation names are set, but there's only one duration and iteration count. In this case, all three animations are given the same duration and iteration count.
+
+```css
+animation-name: fadeInOut, moveLeft300px, bounce;
+animation-duration: 3s;
+animation-iteration-count: 1;
+```
+
+In this third example, three animations are specified, but only two durations and iteration counts. In such cases where there are not enough values in the list to assign a separate one to each animation, the value assignment cycles from the first to the last item in the available list and then cycles back to the first item. So, `fadeInOut` gets a duration of `2.5s`, and `moveLeft300px` gets a duration of `5s`, which is the last value in the list of duration values. The duration value assignment now resets to the first value; `bounce`, therefore, gets a duration of `2.5s`. The iteration count values (and any other property values you specify) will be assigned in the same way.
+
+```css
+animation-name: fadeInOut, moveLeft300px, bounce;
+animation-duration: 2.5s, 5s;
+animation-iteration-count: 2, 1;
+```
+
+If the mismatch in the number of animations and animation property values is inverted, say there are five `animation-duration` values for three `animation-name` values, then the extra or unused animation property values, in this case, two `animation-duration` values, don't apply to any animation and are ignored.
+
+## Examples
+
+> **Note:** Some older browsers (pre-2017) may need prefixes; the live examples you can click to see in your browser include the `-webkit` prefixed syntax.
+
+### Making text slide across the browser window
+
+This simple example styles the {{HTMLElement("p")}} element so that the text slides in from off the right edge of the browser window.
+
+Note that animations like this can cause the page to become wider than the browser window. To avoid this problem put the element to be animated in a container, and set {{cssxref("overflow")}}`:hidden` on the container.
 
 ```css
 p {
@@ -61,7 +122,7 @@ p {
 @keyframes slidein {
   from {
     margin-left: 100%;
-    width: 300%
+    width: 300%;
   }
 
   to {
@@ -71,25 +132,29 @@ p {
 }
 ```
 
-{{ HTMLElement("p") }} 엘리먼트에 지정한 CSS 규칙에서 {{ cssxref("animation-duration") }} 속성을 통해 애니메이션의 총 길이는 3초로 지정했습니다. 또 애니메이션의 중간 상태들을 {{ cssxref("@keyframes") }} 규칙을 사용하여 기술하고 이것들에게 slidein라는 이름을 붙였습니다. 그리고 p 엘리먼트에 slidein이라는 애니메이션을 지정했습니다.
+In this example the style for the {{HTMLElement("p")}} element specifies that the animation should take 3 seconds to execute from start to finish, using the {{cssxref("animation-duration")}} property, and that the name of the {{ cssxref("@keyframes")}} at-rule defining the keyframes for the animation sequence is named "slidein".
 
-CSS 애니메이션을 지원하지 않는 브라우저를 위하여 {{ HTMLElement("p") }} 에 특정 스타일을 지정하고 싶다면 그러셔도 됩니다. 여기서도 그렇게 할 수 있으나 이 예제에서는 애니메이션 효과만을 보기위해 지정하지 않았습니다.
+If we wanted any custom styling on the {{HTMLElement("p")}} element to appear in browsers that don't support CSS animations, we would include it here as well; however, in this case we don't want any custom styling other than the animation effect.
 
-애니메이션의 중간 상태는 {{ cssxref("@keyframes") }} 규칙을 이용하여 기술합니다. 이 경우에서는 두개의 중간 상태를 기술했습니다. 첫 번째 중간 상태는 애니메이션이 시작되고 나서 0% 시점에 (`from`키워드를 사용해도 됩니다) 왼쪽 마진을 100%로 지정하는 것입니다. 왼쪽 마진을 100%로 지정했으므로 애니메이션이 시작된 시점에 브라우저 윈도우 오른쪽 모서리에 엘리먼트가 그려집니다.
+The keyframes are defined using the {{cssxref("@keyframes")}} at-rule. In this case, we have just two keyframes. The first occurs at 0% (using the alias `from`). Here, we configure the left margin of the element to be at 100% (that is, at the far right edge of the containing element), and the width of the element to be 300% (or three times the width of the containing element). This causes the first frame of the animation to have the header drawn off the right edge of the browser window.
 
-두번째 중간 상태는 애니메이션이 시작되고나서 100% (to키워드를 사용해도 됩니다)시점에 왼쪽 마진을 0%으로 지정하는 것입니다. 따라서 애니메이션 마지막에는 엘리먼트가 브라우저 윈도우의 왼쪽 모서리에 그려집니다.
+The second (and final) keyframe occurs at 100% (using the alias `to`). The left margin is set to 0% and the width of the element is set to 100%. This causes the header to finish its animation flush against the left edge of the content area.
 
 ```html
-<p>The Caterpillar and Alice looked at each other for some time in silence:
-at last the Caterpillar took the hookah out of its mouth, and addressed
-her in a languid, sleepy voice.</p>
+<p>
+  The Caterpillar and Alice looked at each other for some time in silence: at
+  last the Caterpillar took the hookah out of its mouth, and addressed her in a
+  languid, sleepy voice.
+</p>
 ```
 
-{{EmbedLiveSample("텍스트가_브라우저를_가로질러_움직이게_하기","100%","250")}}
+> **Note:** Reload page to see the animation.
 
-### 중간 상태 추가하기
+{{EmbedLiveSample("Making_text_slide_across_the_browser_window","100%","250")}}
 
-이전 예제의 애니메이션에서 중간 상태를 추가해 봅시다. 왼쪽에서 오른쪽으로 엘리먼트가 움직일 때 글자 크기가 커지다가 다시 원래대로 줄어들게 해봅시다. 다음과 같은 중간 상태를 추가하면 됩니다.
+### Adding another keyframe
+
+Let's add another keyframe to the previous example's animation. Let's say we want the header's font size to increase as it moves from right to left for a while, then to decrease back to its original size. That's as simple as adding this keyframe:
 
 ```css
 75% {
@@ -99,7 +164,9 @@ her in a languid, sleepy voice.</p>
 }
 ```
 
-```css hidden
+The full code now looks like this:
+
+```css
 p {
   animation-duration: 3s;
   animation-name: slidein;
@@ -111,6 +178,12 @@ p {
     width: 300%;
   }
 
+  75% {
+    font-size: 300%;
+    margin-left: 25%;
+    width: 150%;
+  }
+
   to {
     margin-left: 0%;
     width: 100%;
@@ -118,19 +191,23 @@ p {
 }
 ```
 
-```html hidden
-<p>The Caterpillar and Alice looked at each other for some time in silence:
-at last the Caterpillar took the hookah out of its mouth, and addressed
-her in a languid, sleepy voice.</p>
+```html
+<p>
+  The Caterpillar and Alice looked at each other for some time in silence: at
+  last the Caterpillar took the hookah out of its mouth, and addressed her in a
+  languid, sleepy voice.
+</p>
 ```
 
-애니메이션의 75% 시점에서 엘리먼트의 왼쪽 마진을 25%, 너비를 150%, 글자 크기를 300%로 지정하라는 의미입니다.
+This tells the browser that 75% of the way through the animation sequence, the header should have its left margin at 25% and the width should be 150%.
 
-{{EmbedLiveSample("중간_상태_추가하기","100%","250")}}
+> **Note:** Reload page to see the animation.
 
-### 애니메이션 반복하기
+{{EmbedLiveSample("Adding_another_keyframe","100%","250")}}
 
-애니메이션을 반복하고 싶다면 {{ cssxref("animation-iteration-count") }} 속성을 사용하면 됩니다. 이 속성으로 애니메이션이 몇 번 반복될지 지정할 수 있습니다. 이 예제에서는 `infinite` 라는 값을 지정하여 무한히 반복되게 해 봅시다.
+### Repeating the animation
+
+To make the animation repeat itself, use the {{cssxref("animation-iteration-count")}} property to indicate how many times to repeat the animation. In this case, let's use `infinite` to have the animation repeat indefinitely:
 
 ```css
 p {
@@ -140,7 +217,9 @@ p {
 }
 ```
 
-```css hidden
+Adding it to the existing code:
+
+```css
 @keyframes slidein {
   from {
     margin-left: 100%;
@@ -154,17 +233,19 @@ p {
 }
 ```
 
-```html hidden
-<p>The Caterpillar and Alice looked at each other for some time in silence:
-at last the Caterpillar took the hookah out of its mouth, and addressed
-her in a languid, sleepy voice.</p>
+```html
+<p>
+  The Caterpillar and Alice looked at each other for some time in silence: at
+  last the Caterpillar took the hookah out of its mouth, and addressed her in a
+  languid, sleepy voice.
+</p>
 ```
 
-{{EmbedLiveSample("애니메이션_반복하기","100%","250")}}
+{{EmbedLiveSample("Repeating_the_animation","100%","250")}}
 
-### 앞뒤로 움직이기
+### Making the animation move back and forth
 
-앞에서 애니메이션이 반복되는걸 보셨을 겁니다. 그런데 애니메이션이 끝나고 갑자기 오른쪽 모서리로 돌아가는게 어색합니다. 애니메이션이 끝났을 때 반대방향으로 이동하도록 만들어 봅시다. {{ cssxref("animation-direction") }} 속성을 `alternate`로 지정하면 됩니다.
+That made it repeat, but it's very odd having it jump back to the start each time it begins animating. What we really want is for it to move back and forth across the screen. That's easily accomplished by setting {{cssxref("animation-direction")}} to `alternate`:
 
 ```css
 p {
@@ -175,7 +256,9 @@ p {
 }
 ```
 
-```css hidden
+And the rest of the code:
+
+```css
 @keyframes slidein {
   from {
     margin-left: 100%;
@@ -189,144 +272,119 @@ p {
 }
 ```
 
-```html hidden
-<p>The Caterpillar and Alice looked at each other for some time in silence:
-at last the Caterpillar took the hookah out of its mouth, and addressed
-her in a languid, sleepy voice.</p>
+```html
+<p>
+  The Caterpillar and Alice looked at each other for some time in silence: at
+  last the Caterpillar took the hookah out of its mouth, and addressed her in a
+  languid, sleepy voice.
+</p>
 ```
 
-{{EmbedLiveSample("앞뒤로_움직이기","100%","250")}}
+{{EmbedLiveSample("Making_the_animation_move_back_and_forth","100%","250")}}
 
-### 애니메이션 이벤트 사용하기
+### Using animation events
 
-애니메이션 이벤트를 이용하여 애니메이션을 조종할 수 있습니다. {{ domxref("event/AnimationEvent", "AnimationEvent") }} 로 나타내어지는 애니메이션 이벤트를 사용하여 애니메이션의 시작, 끝, 새로운 반복의 시작등을 감지할 수 있습니다. 이벤트가 발생할 때마다 이벤트의 종류와 어떤 애니메이션에서 발생한 것인지 알 수도 있습니다.
+You can get additional control over animations — as well as useful information about them — by making use of animation events. These events, represented by the {{domxref("AnimationEvent")}} object, can be used to detect when animations start, finish, and begin a new iteration. Each event includes the time at which it occurred as well as the name of the animation that triggered the event.
 
-위의 움직이는 글자 예제를 수정하여 애니메이션 이벤트를 어떻게 사용하는지 알아봅시다.
+We'll modify the sliding text example to output some information about each animation event when it occurs, so we can get a look at how they work.
+
+#### Adding the CSS
+
+We start with creating the CSS for the animation. This animation will last for 3 seconds, be called "slidein", repeat 3 times, and alternate direction each time. In the {{cssxref("@keyframes")}}, the width and margin-left are manipulated to make the element slide across the screen.
 
 ```css
 .slidein {
-  -moz-animation-duration: 3s;
-  -webkit-animation-duration: 3s;
   animation-duration: 3s;
-  -moz-animation-name: slidein;
-  -webkit-animation-name: slidein;
   animation-name: slidein;
-  -moz-animation-iteration-count: 3;
-  -webkit-animation-iteration-count: 3;
   animation-iteration-count: 3;
-  -moz-animation-direction: alternate;
-  -webkit-animation-direction: alternate;
   animation-direction: alternate;
-}
-
-@-moz-keyframes slidein {
-  from {
-    margin-left:100%;
-    width:300%
-  }
-
-  to {
-    margin-left:0%;
-    width:100%;
-  }
-}
-
-@-webkit-keyframes slidein {
-  from {
-    margin-left:100%;
-    width:300%
-  }
-
-  to {
-   margin-left:0%;
-   width:100%;
- }
 }
 
 @keyframes slidein {
   from {
-    margin-left:100%;
-    width:300%
+    margin-left: 100%;
+    width: 300%;
   }
 
   to {
-   margin-left:0%;
-   width:100%;
- }
+    margin-left: 0%;
+    width: 100%;
+  }
 }
 ```
 
-#### 애니메이션 이벤트 리스너 추가하기
+#### Adding the animation event listeners
 
-자바스크립트 코드를 사용하여 위에서 언급한 세개의 이벤트를 감지해 봅시다. `setup()` 함수는 애니메이션 이벤트 리스너를 추가하는 함수입니다. 문서가 로드되었을 때 이 함수를 실행할 것입니다.
+We'll use JavaScript code to listen for all three possible animation events. This code configures our event listeners; we call it when the document is first loaded in order to set things up.
 
 ```js
-function setup() {
-  var e = document.getElementById("watchme");
-  e.addEventListener("animationstart", listener, false);
-  e.addEventListener("animationend", listener, false);
-  e.addEventListener("animationiteration", listener, false);
+const element = document.getElementById("watchme");
+element.addEventListener("animationstart", listener, false);
+element.addEventListener("animationend", listener, false);
+element.addEventListener("animationiteration", listener, false);
 
-  var e = document.getElementById("watchme");
-  e.className = "slidein";
-}
+element.className = "slidein";
 ```
 
-어떻게 동작하는지 더 자세히 알고싶으면 {{ domxref("element.addEventListener()") }} 문서를 참고하세요. setup() 함수의 마지막 줄에서 엘리먼트의 `class` 를 "slidein"으로 지정하는 순간 애니메이션이 시작됩니다.
+This is pretty standard code; you can get details on how it works in the documentation for {{domxref("eventTarget.addEventListener()")}}. The last thing this code does is set the `class` on the element we'll be animating to "slidein"; we do this to start the animation.
 
-왜 이렇게 했을까요? 왜냐하면 `animationstart` 이벤트는 애니메이션이 시작되자마자 발생하므로 우리 코드에서는 이를 감지할 수 없습니다. 애니메이션이 시작될 때는 위의 코드가 실행되기 전이라 이벤트 리스너가 아직 추가되지 않았기 때문이지요. 따라서 이벤트 리스너를 먼저 추가하고 엘리먼트에 class를 지정하여 애니메이션을 시작했습니다.
+Why? Because the `animationstart` event fires as soon as the animation starts, and in our case, that happens before our code runs. So we'll start the animation ourselves by setting the class of the element to the style that gets animated after the fact.
 
-#### 이벤트 받기
+#### Receiving the events
 
-각 이벤트가 발생할 때마다 `listener()` 함수로 넘겨집니다. 이 함수의 코드는 아래와 같습니다.
+The events get delivered to the `listener()` function, which is shown below.
 
 ```js
-function listener(e) {
-  var l = document.createElement("li");
-  switch(e.type) {
+function listener(event) {
+  const l = document.createElement("li");
+  switch (event.type) {
     case "animationstart":
-      l.innerHTML = "Started: elapsed time is " + e.elapsedTime;
+      l.textContent = `Started: elapsed time is ${event.elapsedTime}`;
       break;
     case "animationend":
-      l.innerHTML = "Ended: elapsed time is " + e.elapsedTime;
+      l.textContent = `Ended: elapsed time is ${event.elapsedTime}`;
       break;
     case "animationiteration":
-      l.innerHTML = "New loop started at time " + e.elapsedTime;
+      l.textContent = `New loop started at time ${event.elapsedTime}`;
       break;
   }
   document.getElementById("output").appendChild(l);
 }
 ```
 
-이 코드 역시 굉장히 단순합니다. {{ domxref("event.type") }} 을 보고 어떤 이벤트가 발생했는지 확인합니다. 그리고 {{ HTMLElement("ul") }} (순서 없는 리스트)에 그 이벤트의 로그를 나타내는 엘리먼트를 추가합니다.
+This code, too, is very simple. It looks at the {{domxref("event.type")}} to determine which kind of animation event occurred, then adds an appropriate note to the {{HTMLElement("ul")}} (unordered list) we're using to log these events.
 
-결과는 다음과 같습니다.
+The output, when all is said and done, looks something like this:
 
 - Started: elapsed time is 0
 - New loop started at time 3.01200008392334
 - New loop started at time 6.00600004196167
 - Ended: elapsed time is 9.234000205993652
 
-이벤트가 발생한 시각이 위에서 지정한 애니메이션 시간과 굉장히 가깝지만 정확히 같지는 않다는걸 기억하세요. 또 애니메이션의 반복이 끝나는 순간에는 `animationiteration` 이벤트가 발생하지 않고 `animationend` 이벤트가 발생했다는걸 기억하세요.
+Note that the times are very close to, but not exactly, those expected given the timing established when the animation was configured. Note also that after the final iteration of the animation, the `animationiteration` event isn't sent; instead, the `animationend` event is sent.
 
-#### HTML 코드
-
-완벽을 위해 예제에서 사용한 HTML 코드도 첨부합니다. 여기에는 페이지 내용뿐만 아니라 이벤트 로깅을 위한 ul 엘리먼트도 있습니다.
+Just for the sake of completeness, here's the HTML that displays the page content, including the list into which the script inserts information about the received events:
 
 ```html
-<body onload="setup()">
-  <h1 id="watchme">Watch me move</h1>
-  <p>This example shows how to use CSS animations to make <code>h1</code> elements
-  move across the page.</p>
-  <p>In addition, we output some text each time an animation event fires, so you can see them in action.</p>
-  <ul id="output">
-  </ul>
-</body>
+<h1 id="watchme">Watch me move</h1>
+<p>
+  This example shows how to use CSS animations to make <code>H1</code>
+  elements move across the page.
+</p>
+<p>
+  In addition, we output some text each time an animation event fires, so you
+  can see them in action.
+</p>
+<ul id="output"></ul>
 ```
 
-{{EmbedLiveSample('애니메이션_이벤트_사용하기', '600', '300')}}
+And here's the live output.
 
-## 더 보기
+> **Note:** Reload page to see the animation.
 
-- {{ domxref("AnimationEvent", "AnimationEvent") }}
-- [Detecting CSS animation support](/ko/docs/CSS/CSS_animations/Detecting_CSS_animation_support)
+{{EmbedLiveSample('Using_animation_events', '600', '300')}}
+
+## See also
+
+- {{domxref("AnimationEvent", "AnimationEvent")}}
+- [Using CSS transitions](/en-US/docs/Web/CSS/CSS_Transitions/Using_CSS_transitions)

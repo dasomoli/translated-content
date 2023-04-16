@@ -1,43 +1,50 @@
 ---
-title: Document.getElementById()
+title: "Document: getElementById() method"
+short-title: getElementById()
 slug: Web/API/Document/getElementById
+page-type: web-api-instance-method
+browser-compat: api.Document.getElementById
 ---
 
 {{ ApiRef("DOM") }}
 
-**`Document.getElementById()`** 메서드는 주어진 문자열과 일치하는 {{domxref("Element.id", "id")}} 속성을 가진 요소를 찾고, 이를 나타내는 {{domxref("Element")}} 객체를 반환합니다. ID는 문서 내에서 유일해야 하기 때문에 특정 요소를 빠르게 찾을 때 유용합니다.
+The **`getElementById()`** method of the {{domxref("Document")}} interface returns an {{domxref("Element")}} object representing the element whose {{domxref("Element.id", "id")}} property matches the specified string. Since element IDs are required to be unique if specified, they're a useful way to get access to a specific element quickly.
 
-ID가 없는 요소에 접근하려면 {{domxref("Document.querySelector()")}}를 사용하세요. 모든 {{Glossary("CSS selector", "선택자")}}를 사용할 수 있습니다.
+If you need to get access to an element which doesn't have an ID, you can use {{domxref("Document.querySelector", "querySelector()")}} to find the element using any {{Glossary("CSS selector", "selector")}}.
 
-## 구문
+> **Note:** IDs should be unique inside a document. If two or more elements in a document have the same ID, this method returns the first element found.
 
-```js
-document.getElementById(id);
+## Syntax
+
+```js-nolint
+getElementById(id)
 ```
 
-### 매개변수
+> **Note:** The capitalization of `"Id"` in the name of this method _must_ be correct for the code to function; `getElementByID()` is _not_ valid and will not work, however natural it may seem.
 
-- **`id`**
-  - : 찾으려는 요소 ID. ID는 대소문자를 구분하는 문자열로, 문서 내에서 유일해야 합니다. 즉, 하나의 값은 하나의 요소만 사용할 수 있습니다.
+### Parameters
 
-### 반환 값
+- `id`
+  - : The ID of the element to locate. The ID is a case-sensitive string which is unique within the document; only one element should have any given ID.
 
-주어진 ID와 일치하는 DOM 요소를 나타내는 {{domxref("Element")}} 객체. 문서 내에 주어진 ID가 없으면 `null`.
+### Return value
 
-## 예제
+An {{domxref("Element")}} object describing the DOM element object matching the specified ID, or `null` if no matching element was found in the document.
+
+## Examples
 
 ### HTML
 
 ```html
-<html>
-<head>
-  <title>getElementById 예제</title>
-</head>
-<body>
-  <p id="para">어떤 글</p>
-  <button onclick="changeColor('blue');">blue</button>
-  <button onclick="changeColor('red');">red</button>
-</body>
+<html lang="en">
+  <head>
+    <title>getElementById example</title>
+  </head>
+  <body>
+    <p id="para">Some text here</p>
+    <button onclick="changeColor('blue');">blue</button>
+    <button onclick="changeColor('red');">red</button>
+  </body>
 </html>
 ```
 
@@ -45,69 +52,67 @@ document.getElementById(id);
 
 ```js
 function changeColor(newColor) {
-  var elem = document.getElementById('para');
+  const elem = document.getElementById("para");
   elem.style.color = newColor;
 }
 ```
 
-### 결과
+### Result
 
-{{ EmbedLiveSample('예제', 250, 100) }}
+{{ EmbedLiveSample('Examples', 250, 120) }}
 
-## 용법
+## Usage notes
 
-메서드 이름 중 `"Id"`의 대소문자가 정확해야 합니다. `getElementByID()`가 자연스러워 보일지라도 유효하지 않은 이름이기에 사용할 수 없습니다.
+Unlike some other element-lookup methods such as {{domxref("Document.querySelector()")}} and {{domxref("Document.querySelectorAll()")}}, `getElementById()` is only available as a method of the global `document` object, and _not_ available as a method on all element objects in the DOM. Because ID values must be unique throughout the entire document, there is no need for "local" versions of the function.
 
-{{domxref("Document.querySelector()")}}나 {{domxref("Document.querySelectorAll()")}}과는 달리 `getElementById()`는 전역 `document` 객체의 메서드로만 사용할 수 있고, DOM의 다른 객체는 메서드로 가지고 있지 않습니다. ID 값은 문서 전체에서 유일해야 하며 "국지적"인 버전을 쓸 이유가 없기 때문입니다.
-
-### 예제
+### Example
 
 ```html
-<!doctype html>
-<html>
-<head>
-    <meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <div id="parent-id">
-        <p>hello word1</p>
-        <p id="test1">hello word2</p>
-        <p>hello word3</p>
-        <p>hello word4</p>
+      <p>hello word1</p>
+      <p id="test1">hello word2</p>
+      <p>hello word3</p>
+      <p>hello word4</p>
     </div>
     <script>
-        var parentDOM = document.getElementById('parent-id');
-        var test1=parentDOM.getElementById('test1');
-        //throw error
-        //Uncaught TypeError: parentDOM.getElementById is not a function
+      const parentDOM = document.getElementById("parent-id");
+      const test1 = parentDOM.getElementById("test1");
+      // throw error
+      // Uncaught TypeError: parentDOM.getElementById is not a function
     </script>
-</body>
+  </body>
 </html>
 ```
 
-`id`에 맞는 요소가 없을 때 `getElementById()`는 `null`을 반환합니다. 매개변수 `id`가 대소문자를 구분한다는 점을 기억하세요. `document.getElementById("Main")`는 `<div id="main">` 대신 `null`을 반환하는데 "M"과 "m"을 구분하기 때문입니다.
+If there is no element with the given `id`, this function returns `null`. Note that the `id` parameter is case-sensitive, so `document.getElementById("Main")` will return `null` instead of the element `<div id="main">` because "M" and "m" are different for the purposes of this method.
 
-**문서에 없는 요소**는 `getElementById()`가 팀색하지 않습니다. 요소를 동적으로 생성해서 ID를 부여하더라도, {{domxref("Node.insertBefore()")}}나 비슷한 메서드로 문서 트리에 삽입해야 `getElementById()`로 접근할 수 있습니다.
+Elements not in the document are not searched by `getElementById()`. When creating an element and assigning it an ID, you have to insert the element into the document tree with {{domxref("Node.insertBefore()")}} or a similar method before you can access it with `getElementById()`:
 
 ```js
-var element = document.createElement('div');
-element.id = 'testqq';
-var el = document.getElementById('testqq'); // el이 null!
+const element = document.createElement("div");
+element.id = "testqq";
+const el = document.getElementById("testqq"); // el will be null!
 ```
 
-**HTML이 아닌 문서**. DOM 구현체는 요소의 어떤 속성이 ID인지 알고 있어야 합니다. 문서의 DTD가 정의하고 있지 않으면, 속성명이 "id"라고 해도 ID 유형인건 아닙니다. [XHTML](/ko/docs/XHTML), [XUL](/ko/docs/XUL) 등 자주 쓰이는 문서의 경우 `id` 속성을 ID 유형으로 정의하고 있습니다. ID 유형의 속성이 어떤 것인지 모르는 다른 구현의 경우 `null`을 반환합니다.
+In non-HTML documents, the DOM implementation must have information on which attributes are of type ID. Attributes with the name "id" are not of type ID unless so defined in the document's DTD. The `id` attribute is defined to be of ID type in the common cases of [XHTML](/en-US/docs/Glossary/XHTML), XUL, and others. Implementations that do not know whether attributes are of type ID or not are expected to return `null`.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{domxref("Document")}}는 문서 안의 요소에 접근할 수 있는 다른 메서드와 속성으로의 참조를 가지고 있습니다.
-- {{domxref("Document.querySelector()")}}를 사용하면 `'div.myclass'` 처럼 선택자로 요소를 탐색할 수 있습니다.
-- [xml:id](/ko/docs/xml/xml:id) - `getElementById()`가 (Ajax 호출 등으로 받은) XML 문서에서 "xml:id" 속성 값을 사용할 수 있도록 도와주는 메서드를 가지고 있습니다.
+- {{domxref("Document")}} reference for other methods and properties you can use to get references to elements in the document.
+- {{domxref("Document.querySelector()")}} for selectors via queries like `'div.myclass'`
+- [xml:id](https://www.w3.org/TR/xml-id/) - has a utility method for allowing `getElementById()` to obtain 'xml:id' in XML documents (such as returned by Ajax calls)

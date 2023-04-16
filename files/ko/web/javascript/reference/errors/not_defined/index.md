@@ -1,70 +1,85 @@
 ---
-title: 'ReferenceError: "x" is not defined'
+title: "ReferenceError: \"x\" is not defined"
 slug: Web/JavaScript/Reference/Errors/Not_defined
+page-type: javascript-error
 ---
 
 {{jsSidebar("Errors")}}
 
-## 메시지
+The JavaScript exception "_variable_ is not defined" occurs when there is a
+non-existent variable referenced somewhere.
+
+## Message
 
 ```
-    ReferenceError: "x" is not defined
+ReferenceError: "x" is not defined (V8-based & Firefox)
+ReferenceError: Can't find variable: x (Safari)
 ```
 
-## 에러 타입
+## Error type
 
 {{jsxref("ReferenceError")}}.
 
-## 무엇이 잘못되었을까?
+## What went wrong?
 
-존재하지 않는 변수를 참조하는 곳이 있습니다. 이 변수는 선언되어야 합니다. 또는, 현재 스크립트나 {{Glossary("scope")}} 에서 사용이 가능하도록 해야합니다.
+There is a non-existent variable referenced somewhere. This variable needs to be
+declared, or you need to make sure it is available in your current script or [scope](/en-US/docs/Glossary/Scope).
 
-> **참고:** 라이브러리(예를 들면 jQuery와 같은)의 로딩은, 반드시 코드에서 "$"와 같은 라이브러리 변수에 접근하기 이전에 수행되어야 합니다. 라이브러리를 로딩하는 {{HTMLElement("script")}} 태그가 그 변수를 사용하는 코드보다 앞에 위치하도록 하세요.
+> **Note:** When loading a library (such as jQuery), make sure it is
+> loaded before you access library variables, such as "$". Put the
+> {{HTMLElement("script")}} element that loads the library before your code that uses
+> it.
 
-## 예
+## Examples
 
-### 선언되지 않은 변수
+### Variable not declared
 
 ```js example-bad
 foo.substring(1); // ReferenceError: foo is not defined
 ```
 
-"foo" 변수는 어디에도 선언되지 않았습니다. {{jsxref("String.prototype.substring()")}} 메소드가 작동하도록 하기 위해서는 문자열을 필요로 합니다.
+The "foo" variable isn't defined anywhere. It needs to be some string, so that the
+{{jsxref("String.prototype.substring()")}} method will work.
 
 ```js example-good
-var foo = "bar";
+const foo = "bar";
 foo.substring(1); // "ar"
 ```
 
-### 잘못된 스코프
+### Wrong scope
 
-변수는 현재의 실행 흐름 내에서 이용 가능해야합니다. 함수 내부에 정의된 변수는 다른 외부의 함수에서는 접근할 수 없습니다. 그 때문에, 변수는 함수의 스코프 내부에서만 정의 됩니다.
+A variable needs to be available in the current context of execution. Variables defined
+inside a [function](/en-US/docs/Web/JavaScript/Reference/Functions) cannot be
+accessed from anywhere outside the function, because the variable is defined only in the
+scope of the function
 
 ```js example-bad
-function numbers () {
-  var num1 = 2,
-      num2 = 3;
+function numbers() {
+  const num1 = 2;
+  const num2 = 3;
   return num1 + num2;
 }
 
-console.log(num1); // ReferenceError: num1 is not defined
+console.log(num1); // ReferenceError num1 is not defined.
 ```
 
-그러나, 함수는 모든 변수와 정의된 스코프 안에 정의된 함수에 접근할 수 있습니다. 따라서, 전역으로 정의된 함수는 전역에 정의된 모든 변수에도 접근할 수 있습니다.
+However, a function can access all variables and functions defined inside the scope in
+which it is defined. In other words, a function defined in the global scope can access
+all variables defined in the global scope.
 
 ```js example-good
-var num1 = 2,
-    num2 = 3;
+const num1 = 2;
+const num2 = 3;
 
-function numbers () {
+function numbers() {
   return num1 + num2;
 }
 
-console.log(num1); // 2
+console.log(numbers()); // 5
 ```
 
-## 참조
+## See also
 
-- {{Glossary("Scope")}}
-- [Declaring variables in the JavaScript Guide](/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#Declaring_variables)
-- [Function scope in the JavaScript Guide](/en-US/docs/Web/JavaScript/Guide/Functions#Function_scope/en-US/docs/)
+- [Scope](/en-US/docs/Glossary/Scope)
+- [Declaring variables in the JavaScript Guide](/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#declaring_variables)
+- [Function scope in the JavaScript Guide](/en-US/docs/Web/JavaScript/Guide/Functions#function_scope)

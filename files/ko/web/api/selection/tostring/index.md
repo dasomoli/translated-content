@@ -1,17 +1,25 @@
 ---
-title: Selection.toString()
+title: "Selection: toString() method"
+short-title: toString()
 slug: Web/API/Selection/toString
+page-type: web-api-instance-method
+browser-compat: api.Selection.toString
 ---
 
-{{ ApiRef("DOM") }}{{SeeCompatTable}}
+{{ ApiRef("DOM") }}
 
-**`Selection.toString()`** 메소드는 selection 객체가 현재 나타내는 문자열을 반환합니다. 즉, 현재 선택된 텍스트의 문자열.
+The **`Selection.toString()`** method returns a string
+currently being represented by the selection object, i.e. the currently selected text.
 
 ## Syntax
 
-```js
-str = sel.toString()
+```js-nolint
+toString()
 ```
+
+### Parameters
+
+None.
 
 ### Return value
 
@@ -21,18 +29,19 @@ A string representing the selection.
 
 This method returns the currently selected text.
 
-In [JavaScript](en/JavaScript), this method is called automatically when a function the selection object is passed to requires a string:
+In [JavaScript](/en-US/docs/Web/JavaScript), this method is called automatically when
+a function the selection object is passed to requires a string:
 
 ```js
-alert(window.getSelection()) // What is called
-alert(window.getSelection().toString())  // What is actually being effectively called.
+alert(window.getSelection()); // What is called
+alert(window.getSelection().toString()); // What is actually being effectively called.
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

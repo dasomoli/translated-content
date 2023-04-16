@@ -1,91 +1,118 @@
 ---
 title: Reflect
 slug: Web/JavaScript/Reference/Global_Objects/Reflect
+page-type: javascript-namespace
+browser-compat: javascript.builtins.Reflect
 ---
+
 {{JSRef}}
 
-**`Reflect`** 는 중간에서 가로챌 수 있는 JavaScript 작업에 대한 메서드를 제공하는 내장 객체입니다. 메서드의 종류는 [프록시 처리기](/ko/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler)와 동일합니다. `Reflect`는 함수 객체가 아니므로 생성자로 사용할 수 없습니다.
+The **`Reflect`** namespace object contains static methods for invoking interceptable JavaScript object internal methods. The methods are the same as those of [proxy handlers](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy).
 
-## 설명
+## Description
 
-다른 대부분의 전역 객체와 다르게, `Reflect`는 생성자가 아닙니다. 따라서 함수처럼 호출하거나 [`new` 연산자](/ko/docs/Web/JavaScript/Reference/Operators/new)로 인스턴스를 만들 수 없습니다. {{jsxref("Math")}} 객체처럼, `Reflect`의 모든 속성과 메서드는 정적입니다.
+Unlike most global objects, `Reflect` is not a constructor. You cannot use it with the [`new` operator](/en-US/docs/Web/JavaScript/Reference/Operators/new) or invoke the `Reflect` object as a function. All properties and methods of `Reflect` are static (just like the {{jsxref("Math")}} object).
 
-`Reflect` 객체의 정적 메서드 이름은 [프록시 처리기 메서드](/ko/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler)의 이름과 같습니다.
+The `Reflect` object provides a collection of static functions which have the same names as the [proxy handler methods](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy).
 
-일부 메서드는 {{jsxref("Object")}}에도 존재하는 메서드이지만 [약간의 차이](/ko/docs/Web/JavaScript/Reference/Global_Objects/Reflect/Comparing_Reflect_and_Object_methods)가 있습니다.
+The major use case of `Reflect` is to provide default forwarding behavior in `Proxy` handler traps. A [trap](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#terminology) is used to intercept an operation on an object — it provides a custom implementation for an [object internal method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#object_internal_methods). The `Reflect` API is used to invoke the corresponding internal method. For example, the code below creates a proxy `p` with a [`deleteProperty`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy/deleteProperty) trap that intercepts the `[[Delete]]` internal method. `Reflect.deleteProperty()` is used to invoke the default `[[Delete]]` behavior on `targetObject` directly. You can replace it with [`delete`](/en-US/docs/Web/JavaScript/Reference/Operators/delete), but using `Reflect` saves you from having to remember the syntax that each internal method corresponds to.
 
-## 정적 메서드
+```js
+const p = new Proxy(
+  {},
+  {
+    deleteProperty(targetObject, property) {
+      // Custom functionality: log the deletion
+      console.log("Deleting property:", property);
+
+      // Execute the default introspection behavior
+      return Reflect.deleteProperty(targetObject, property);
+    },
+  },
+);
+```
+
+The `Reflect` methods also allow finer control of how the internal method is invoked. For example, {{jsxref("Reflect.construct()")}} is the only way to construct a target function with a specific [`new.target`](/en-US/docs/Web/JavaScript/Reference/Operators/new.target) value. If you use the [`new`](/en-US/docs/Web/JavaScript/Reference/Operators/new) operator to invoke a function, the `new.target` value is always the function itself. This has important effects with [subclassing](/en-US/docs/Web/JavaScript/Reference/Operators/new.target#new.target_using_reflect.construct). For another example, {{jsxref("Reflect.get()")}} allows you to run a [getter](/en-US/docs/Web/JavaScript/Reference/Functions/get) with a custom `this` value, while [property accessors](/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors) always use the current object as the `this` value.
+
+Nearly every `Reflect` method's behavior can be done with some other syntax or method. Some of these methods have corresponding static methods of the same name on {{jsxref("Object")}}, although they do have some subtle differences. For the exact differences, see the description for each `Reflect` method.
+
+## Static properties
+
+- `Reflect[@@toStringTag]`
+  - : The initial value of the [`@@toStringTag`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toStringTag) property is the string `"Reflect"`. This property is used in {{jsxref("Object.prototype.toString()")}}.
+
+## Static methods
 
 - {{jsxref("Reflect.apply()")}}
-  - : 대상 함수를 주어진 매개변수로 호출합니다. {{jsxref("Function.prototype.apply()")}}도 참고하세요.
+  - : Calls a `target` function with arguments as specified by the `argumentsList` parameter. See also {{jsxref("Function.prototype.apply()")}}.
 - {{jsxref("Reflect.construct()")}}
-  - : 함수로 사용하는 [`new` 연산자](/ko/docs/Web/JavaScript/Reference/Operators/new)입니다. `new target(...args)`을 호출하는 것과 같습니다. 다른 프로토타입을 지정하는 추가 기능도 가지고 있습니다.
+  - : The [`new` operator](/en-US/docs/Web/JavaScript/Reference/Operators/new) as a function. Equivalent to calling `new target(...argumentsList)`. Also provides the option to specify a different prototype.
 - {{jsxref("Reflect.defineProperty()")}}
-  - : {{jsxref("Object.defineProperty()")}}와 비슷합니다. {{jsxref("Boolean")}}을 반환합니다.
+  - : Similar to {{jsxref("Object.defineProperty()")}}. Returns a boolean that is `true` if the property was successfully defined.
 - {{jsxref("Reflect.deleteProperty()")}}
-  - : 함수로 사용하는 [`delete` 연산자](/ko/docs/Web/JavaScript/Reference/Operators/delete)입니다. `delete target[name]`을 호출하는 것과 같습니다.
+  - : The [`delete` operator](/en-US/docs/Web/JavaScript/Reference/Operators/delete) as a function. Equivalent to calling `delete target[propertyKey]`.
 - {{jsxref("Reflect.get()")}}
-  - : 대상 속성의 값을 반환하는 함수입니다.
+  - : Returns the value of the property. Works like getting a property from an object (`target[propertyKey]`) as a function.
 - {{jsxref("Reflect.getOwnPropertyDescriptor()")}}
-  - : {{jsxref("Object.getOwnPropertyDescriptor()")}}와 비슷합니다. 주어진 속성이 대상 객체에 존재하면, 그 속성의 서술자를 반환합니다. 그렇지 않으면 {{jsxref("undefined")}}를 반환합니다.
+  - : Similar to {{jsxref("Object.getOwnPropertyDescriptor()")}}. Returns a property descriptor of the given property if it exists on the object, {{jsxref("undefined")}} otherwise.
 - {{jsxref("Reflect.getPrototypeOf()")}}
-  - : {{jsxref("Object.getPrototypeOf()")}}와 같습니다.
+  - : Same as {{jsxref("Object.getPrototypeOf()")}}.
 - {{jsxref("Reflect.has()")}}
-  - : 함수로 사용하는 [`in` 연산자](/ko/docs/Web/JavaScript/Reference/Operators/in)입니다. 자신의, 혹은 상속한 속성이 존재하는지 나타내는 {{jsxref("Boolean")}}을 반환합니다.
+  - : Returns a boolean indicating whether the target has the property. Either as own or inherited. Works like the [`in` operator](/en-US/docs/Web/JavaScript/Reference/Operators/in) as a function.
 - {{jsxref("Reflect.isExtensible()")}}
-  - : {{jsxref("Object.isExtensible()")}}과 같습니다.
+  - : Same as {{jsxref("Object.isExtensible()")}}. Returns a boolean that is `true` if the target is extensible.
 - {{jsxref("Reflect.ownKeys()")}}
-  - : 대상 객체의 자체 키(상속하지 않은 키) 목록을 배열로 반환합니다.
+  - : Returns an array of the target object's own (not inherited) property keys.
 - {{jsxref("Reflect.preventExtensions()")}}
-  - : {{jsxref("Object.preventExtensions()")}}와 비슷합니다. {{jsxref("Boolean")}}을 반환합니다.
+  - : Similar to {{jsxref("Object.preventExtensions()")}}. Returns a boolean that is `true` if the update was successful.
 - {{jsxref("Reflect.set()")}}
-  - : 속성에 값을 할당하는 함수입니다. 할당 성공 여부를 나타내는 {{jsxref("Boolean")}}을 반환합니다.
+  - : A function that assigns values to properties. Returns a boolean that is `true` if the update was successful.
 - {{jsxref("Reflect.setPrototypeOf()")}}
-  - : 객체의 프로토타입을 지정하는 함수입니다. 지정 성공 여부를 나타내는 {{jsxref("Boolean")}}을 반환합니다.
+  - : A function that sets the prototype of an object. Returns a boolean that is `true` if the update was successful.
 
-## 명세
+## Examples
 
-{{Specifications}}
-
-## 예제
-
-### 객체가 특정 속성을 가지고 있는지 검사하기
+### Detecting whether an object contains certain properties
 
 ```js
 const duck = {
-  name: 'Maurice',
-  color: 'white',
-  greeting: function() {
+  name: "Maurice",
+  color: "white",
+  greeting() {
     console.log(`Quaaaack! My name is ${this.name}`);
-  }
-}
+  },
+};
 
-Reflect.has(duck, 'color');
+Reflect.has(duck, "color");
 // true
-Reflect.has(duck, 'haircut');
+Reflect.has(duck, "haircut");
 // false
 ```
 
-### 객체 자체 키를 반환하기
+### Returning the object's own keys
 
 ```js
 Reflect.ownKeys(duck);
 // [ "name", "color", "greeting" ]
 ```
 
-### 객체에 새로운 속성 추가하기
+### Adding a new property to the object
 
 ```js
-Reflect.set(duck, 'eyes', 'black');
+Reflect.set(duck, "eyes", "black");
 // returns "true" if successful
 // "duck" now contains the property "eyes: 'black'"
 ```
 
-## 브라우저 호환성
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{jsxref("Proxy")}} 전역 객체.
-- {{jsxref("Proxy.handler", "handler")}} 객체.
+- The {{jsxref("Proxy")}} global object
+- The [`Proxy()` constructor](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/Proxy)

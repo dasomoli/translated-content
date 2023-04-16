@@ -1,38 +1,48 @@
 ---
 title: Date.prototype.getUTCHours()
 slug: Web/JavaScript/Reference/Global_Objects/Date/getUTCHours
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.getUTCHours
 ---
 
 {{JSRef}}
 
-getUTCHours () 메서드는 표준시에 따라 지정된 날짜의 시간을 반환합니다.
+The **`getUTCHours()`** method returns the hours in the
+specified date according to universal time.
+
+{{EmbedInteractiveExample("pages/js/date-getutchours.html")}}
 
 ## Syntax
 
-```js
-    dateObj.getUTCHours()
+```js-nolint
+getUTCHours()
 ```
 
 ### Return value
 
-0부터 23까지의 정수로, 표준시에 따라 지정된 날짜의 시간을 나타냅니다.
+A number.
+If the `Date` object represents a valid date, an integer between 0 and 23, representing the hours in the given date according
+to Coordinated Universal Time.
+Otherwise, [`NaN`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/NaN)
+if the `Date` object doesn't represent a valid date.
 
 ## Examples
 
-### Using `getUTCHours()`
+### Using getUTCHours()
 
-다음 예제에서는 현재 시간의 시간 부분을 시간 변수로 지정합니다.
+The following example assigns the hours portion of the current time to the variable
+`hours`.
 
 ```js
-var today = new Date();
-var hours = today.getUTCHours();
+const today = new Date();
+const hours = today.getUTCHours();
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

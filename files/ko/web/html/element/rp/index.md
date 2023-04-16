@@ -1,70 +1,34 @@
 ---
-title: '<rp>: 루비 대체 괄호 요소'
+title: "<rp>: The Ruby Fallback Parenthesis element"
 slug: Web/HTML/Element/rp
+page-type: html-element
+browser-compat: html.elements.rp
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<rp>` 요소**는 {{htmlelement("ruby")}} 요소를 사용한 루비 주석을 지원하지 않는 경우 보여줄 괄호를 제공할 때 사용합니다. {{htmlelement("rt")}} 요소를 감싸는 여는 괄호와 닫는 괄호를 각각의 `<rp>` 요소로 나타내야 합니다.
+The **`<rp>`** [HTML](/en-US/docs/Web/HTML) element is used to provide fall-back parentheses for browsers that do not support display of ruby annotations using the {{HTMLElement("ruby") }} element. One `<rp>` element should enclose each of the opening and closing parentheses that wrap the {{HTMLElement("rt")}} element that contains the annotation's text.
 
 {{EmbedInteractiveExample("pages/tabbed/rp.html", "tabbed-shorter")}}
 
-<table class="properties">
-  <tbody>
-    <tr>
-      <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
-      </th>
-      <td>없음.</td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 콘텐츠</th>
-      <td>텍스트.</td>
-    </tr>
-    <tr>
-      <th scope="row">태그 생략</th>
-      <td>
-        바로 뒤따르는 요소가 {{HTMLElement("rt")}}, 다른
-        <code>&#x3C;rp></code> 요소거나, 자신이 부모의 마지막 요소라면 닫는
-        태그를 생략할 수 있습니다.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 부모 요소</th>
-      <td>
-        {{htmlelement("ruby")}} 요소. <code>&#x3C;rp></code>는
-        {{htmlelement("rt")}} 요소의 바로 앞 또는 바로 뒤에 위치해야
-        합니다.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>모두</td>
-    </tr>
-    <tr>
-      <th scope="row">DOM 인터페이스</th>
-      <td>{{domxref("HTMLElement")}}</td>
-    </tr>
-  </tbody>
-</table>
+## Attributes
 
-## 특성
+This element only includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)만을 포함합니다.
+## Usage notes
 
-## 사용 일람
+- Ruby annotations are for showing pronunciation of East Asian characters, like using Japanese furigana or Taiwanese bopomofo characters. The `<rp>` element is used in the case of lack of {{HTMLElement("ruby")}} element support; the `<rp>` content provides what should be displayed in order to indicate the presence of a ruby annotation, usually parentheses.
 
-- 루비 주석은 일본어 후리가나, 타이완어 주음부호와 같이 동아시아 문자의 발음 표기에 사용합니다. `<rp>` 요소는 {{htmlelement("ruby")}} 요소를 지원하지 않는 브라우저에서 루비 주석을 구분할 수 있는 텍스트(주로 괄호)를 제공합니다.
+## Examples
 
-## 예제
+### Using ruby annotations
 
-다음 예제는 한자료 표기한 "경복궁"의 각 글자에 루비 주석을 적용합니다.
+This example uses ruby annotations to display the [Romaji](https://en.wikipedia.org/wiki/Romaji) equivalents for each character.
 
 ```html
 <ruby>
-  景 <rp>(</rp><rt>경</rt><rp>)</rp>
-  福 <rp>(</rp><rt>복</rt><rp>)</rp>
-  宮 <rp>(</rp><rt>궁</rt><rp>)</rp>
+  漢 <rp>(</rp><rt>Kan</rt><rp>)</rp>
+  字 <rp>(</rp><rt>ji</rt><rp>)</rp>
 </ruby>
 ```
 
@@ -74,14 +38,18 @@ body {
 }
 ```
 
-결과는 다음과 같습니다.
+#### Result
 
-{{EmbedLiveSample("with-ruby", "100%", 60)}}
+{{EmbedLiveSample("Using_ruby_annotations", 600, 60)}}
 
-루비 주석을 지원하지 않는 브라우저에서는 아래와 같이 출력합니다.
+See the article about the {{HTMLElement("ruby")}} element for further examples.
+
+### Without ruby support
+
+If your browser does not support ruby annotations, the result looks like this instead:
 
 ```html hidden
-景 (경) 福 (복) 宮 (궁)
+漢 (Kan) 字 (ji)
 ```
 
 ```css hidden
@@ -90,17 +58,68 @@ body {
 }
 ```
 
-{{EmbedLiveSample("without-ruby", "100%", 60)}}
+{{EmbedLiveSample("Without_ruby_support", 600, 60)}}
 
-## 명세
+## Technical summary
+
+<table class="properties">
+  <tbody>
+    <tr>
+      <th scope="row">
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
+      </th>
+      <td>None.</td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted content</th>
+      <td>Text</td>
+    </tr>
+    <tr>
+      <th scope="row">Tag omission</th>
+      <td>
+        The end tag can be omitted if the element is immediately followed by an
+        {{HTMLElement("rt")}} or another <code>&#x3C;rp></code> element,
+        or if there is no more content in the parent element.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted parents</th>
+      <td>
+        A {{HTMLElement("ruby")}} element. <code>&#x3C;rp></code> must
+        be positioned immediately before or after an
+        {{HTMLElement("rt")}} element.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
+          >No corresponding role</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>Any</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
+      <td>{{domxref("HTMLElement")}}</td>
+    </tr>
+  </tbody>
+</table>
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{HTMLElement("ruby")}}
 - {{HTMLElement("rt")}}

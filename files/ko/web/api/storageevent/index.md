@@ -1,42 +1,57 @@
 ---
 title: StorageEvent
 slug: Web/API/StorageEvent
+page-type: web-api-interface
+browser-compat: api.StorageEvent
 ---
 
 {{APIRef("Web Storage API")}}
 
-**`StorageEvent`** 인터페이스는 {{domxref("Window/storage_event", "storage")}} 이벤트가 구현합니다. `storage` 이벤트는 `window`에서 접근 가능한 저장소가 다른 문서에서 변경될 경우 발생합니다.
+The **`StorageEvent`** interface is implemented by the {{domxref("Window/storage_event", "storage")}} event, which is
+sent to a window
+when a storage area the window has access to is changed within the context of another document.
 
 {{InheritanceDiagram}}
 
-## 생성자
+## Constructor
 
 - {{domxref("StorageEvent.StorageEvent()", "StorageEvent()")}}
-  - : 새로 생성한 `StorageEvent` 객체를 반환합니다.
+  - : Returns a newly constructed `StorageEvent` object.
 
-## 속성
+## Instance properties
 
-부모 인터페이스인 {{domxref("Event")}}의 속성을 상속합니다.
+_In addition to the properties listed below, this interface inherits the properties of its parent interface, {{domxref("Event")}}._
 
 - {{domxref("StorageEvent.key", "key")}} {{ReadOnlyInline}}
-  - : 바뀐 키를 나타내는 {{DOMxRef("DOMString")}}을 반환합니다. `clear()` 메서드에 의해 발생한 이벤트에서는 {{jsxref("null")}}입니다.
+  - : Returns a string that represents the key changed.
+    The `key` attribute is [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null)
+    when the change is caused by the storage `clear()` method.
 - {{domxref("StorageEvent.newValue", "newValue")}} {{ReadOnlyInline}}
-  - : `key`가 가리키는 새로운 값을 나타내는 {{DOMxRef("DOMString")}}을 반환합니다. `clear()` 메서드에 의해, 또는 `key`가 저장소에서 제거되어 발생한 이벤트에서는 {{jsxref("null")}}입니다.
+  - : Returns a string with the new value of the `key`.
+    This value is `null`
+    when the change has been invoked by storage `clear()` method,
+    or the `key` has been removed from the storage.
 - {{domxref("StorageEvent.oldValue", "oldValue")}} {{ReadOnlyInline}}
-  - : `key`가 가리키던 원래 값을 나타내는 {{DOMxRef("DOMString")}}을 반환합니다. 저장소에 `key`를 새로 추가해서 발생한 경우, 이전 값이 존재할 수 없으므로 `oldValue`도 {{jsxref("null")}}입니다.
+  - : Returns a string with the original value of the `key`.
+    This value is `null` when the `key` has been newly added
+    and therefore doesn't have any previous value.
 - {{domxref("StorageEvent.storageArea", "storageArea")}} {{ReadOnlyInline}}
-  - : 영향을 받은 저장소를 나타내는 {{DOMxRef("Storage")}} 객체를 반환합니다.
+  - : Returns a {{DOMxRef("Storage")}} object that represents the storage that was affected.
 - {{domxref("StorageEvent.url", "url")}} {{ReadOnlyInline}}
-  - : `key`를 바꾼 문서의 URL {{DOMxRef("DOMString")}}을 반환합니다.
+  - : Returns string with the URL of the document whose `key` changed.
 
-## 메서드
+## Instance methods
 
-부모 인터페이스인 {{domxref("Event")}}의 메서드를 상속합니다.
+_In addition to the methods listed below, this interface inherits the methods of its parent interface, {{domxref("Event")}}._
 
-## 명세
+- {{domxref("StorageEvent.initStorageEvent", "initStorageEvent()")}} {{deprecated_inline}}
+  - : Initializes the event in a manner analogous to the similarly-named {{domxref("Event.initEvent", "initEvent()")}} method in the DOM
+    Events interfaces. Use the constructor instead.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

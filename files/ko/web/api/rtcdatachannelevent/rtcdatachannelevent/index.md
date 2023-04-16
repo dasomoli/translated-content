@@ -1,52 +1,59 @@
 ---
-title: RTCDataChannelEvent()
+title: "RTCDataChannelEvent: RTCDataChannelEvent() constructor"
+short-title: RTCDataChannelEvent()
 slug: Web/API/RTCDataChannelEvent/RTCDataChannelEvent
+page-type: web-api-constructor
+browser-compat: api.RTCDataChannelEvent.RTCDataChannelEvent
 ---
 
-{{APIRef("WebRTC")}}{{SeeCompatTable}}
+{{APIRef("WebRTC")}}
 
-**`RTCDataChannelEvent()`** 생성자는 새로운 {{domxref("RTCDataChannelEvent")}}를 생성합니다.
+The **`RTCDataChannelEvent()`** constructor
+creates a new {{domxref("RTCDataChannelEvent")}} object.
 
-> **참고:** 이 이벤트는 알아서 WebRTC 레이어에 생성되고 전달되기 때문에, `RTCDataChannelEvent`를 수동으로 생성하는 일은 거의 없습니다.
+> **Note:** You will rarely if ever construct an `RTCDataChannelEvent` by hand; these
+> events are normally created and sent by the WebRTC layer itself.
 
 ## Syntax
 
-```js
-var event = new RTCDataChannelEvent(type, RtcDataChannelEventInit);
+```js-nolint
+new RTCDataChannelEvent(type, options)
 ```
 
-### 패러미터
+### Parameters
 
 - `type`
-  - : 이벤트의 이름을 알려주는 {{domxref("DOMString")}}입니다. 이름은 `RTCDataChannelEvent` 타입의 한 종류인 "datachannel" 딱 한 가지만 존재합니다.
-- `RtcDataChannelEventInit`
-  - : 아래의 필드를 가지는 `RTCDataChannelEventInit` 딕셔너리 입니다:\* `"channel"`은 {domxref("RTCDataChannel")}}의 한 종류로, 이벤트에 의해 데이터 채널이 확인되었다는 것을 알려줍니다.
-    - `"bubbles"`은 옵션으로 설정이 가능하며, `EventInit`에서 상속됩니다. 이는 해당 이벤트가 무조건 `bubble`이 되어야하는지의 여부를 알려줍니다. 기본 값은 `false`입니다
-    - `"cancelable"`은 옵션으로 설정이 가능하며, `EventInit`에서 상속됩니다. 이는 해당 이벤트가 취소 될 수 있는지의 여부를 알려줍니다. 기본 값은 `false`입니다.
+  - : A string with the name of the event.
+    It is case-sensitive and browsers always set it to `datachannel`.
+- `options`
+  - : An object that, _in addition of the properties defined in {{domxref("Event/Event", "Event()")}}_, can have the following properties:
+    - `channel`
+      - : A {{domxref("RTCDataChannel")}}, representing the data channel being associated with the event.
 
-### 값
+### Return value
 
-명시한대로 설정된 신규 {{domxref("RTCDataChannelEvent")}} 입니다.
+A new {{domxref("RTCDataChannelEvent")}} object configured as specified.
 
-## 예시
+## Example
 
-아래 예제는 신규 {{event("datachannel")}}를 생성합니다. `dc`는 이미 존재하는 데이터 채널을 뜻합니다.
+In this example, a new {{DOMxRef("RTCPeerConnection.datachannel_event", "datachannel")}} event is created. `dc` is a
+data channel which already exists.
 
 ```js
-var event = new RTCDataChannelEvent("datachannel", {"channel": dc});
+const event = new RTCDataChannelEvent("datachannel", { channel: dc });
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
-- [WebRTC](/ko/docs/Web/Guide/API/WebRTC)
+- [WebRTC](/en-US/docs/Web/API/WebRTC_API)
 - {{domxref("RTCDataChannel")}}
 - {{domxref("RTCPeerConnection")}}
-- [A simple RTCDataChannel sample](/ko/docs/Web/API/WebRTC_API/Simple_RTCDataChannel_sample)
+- [A simple RTCDataChannel sample](/en-US/docs/Web/API/WebRTC_API/Simple_RTCDataChannel_sample)

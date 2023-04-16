@@ -1,80 +1,116 @@
 ---
-title: Element.getClientRects()
+title: "Element: getClientRects() method"
+short-title: getClientRects()
 slug: Web/API/Element/getClientRects
+page-type: web-api-instance-method
+browser-compat: api.Element.getClientRects
 ---
 
 {{APIRef("DOM")}}
 
-{{domxref("Element")}} 인터페이스의 **`getClientRects()`** 메서드는 클라이언트에 있는 각 [CSS 테두리 박스](/ko/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)에 대한 경계 사각형을 나타내는 {{DOMxRef("DOMRect")}} 객체의 컬렉션을 반환합니다.
+The **`getClientRects()`** method of the {{domxref("Element")}}
+interface returns a collection of {{DOMxRef("DOMRect")}} objects that indicate the
+bounding rectangles for each [CSS border box](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model) in a client.
 
-대부분의 엘리먼트는 각각 하나의 border box만을 갖지만, 여러 줄의 [인라인 엘리먼트](/ko/docs/Web/HTML/Inline_elements)(예를 들면, 여러 줄의 {{HTMLElement("span")}} 엘리먼트)는 각각의 줄을 감싸는 테두리 박스를 갖습니다.
+Most elements only have one border box each, but a multiline [inline element](/en-US/docs/Web/HTML/Inline_elements) (such as a multiline
+{{HTMLElement("span")}} element, by default) has a border box around each line.
 
-## 구문
+## Syntax
 
-```js
-let rectCollection = object.getClientRects();
+```js-nolint
+getClientRects()
 ```
 
-### 반환 값
+### Parameters
 
-반환 값은 각 엘리먼트와 관계된 CSS 테두리 박스인 {{DOMxRef("DOMRect")}} 객체의 컬렉션입니다. 각각의 {{DOMxRef("DOMRect")}} 객체는 뷰포트의 top-left에 상대적인 top-left인 픽셀 단위의 테두리 박스를 나타내는 읽기 전용 `left`, `top`, `right`, `bottom` 프로퍼티를 갖습니다. 캡션이 있는 테이블의 경우, 캡션이 테이블의 테두리 영역 밖에 있더라도 포함됩니다. 외부-`<svg>` 이외의 SVG 엘리먼트에서 호출될 때, 결과 사각형이 상대적인 "뷰포트"는 엘리먼트의 외부-`<svg>`가 설정하는 뷰포트입니다(명확히 하자면, 사각형은 외부-`<svg>`의 `viewBox` transform이 존재할 경우, 이에 의해 변형되기도 합니다).
+None.
 
-원래 Microsoft는 각각의 텍스트 _줄_ 에 대한 `TextRectangle` 객체를 반환하기 위해 이 메서드를 만들었습니다. 하지만 CSSOM 작업 초안은 이 메서드가 각각의 _테두리 박스_ 에 대한 {{DOMxRef("DOMRect")}}를 반환하도록 명세합니다. 인라인 엘리먼트의 경우 두 정의가 동일합니다. 하지만 블록 엘리먼트의 경우 Mozilla는 단 하나의 사각형만 반환합니다.
+### Return value
 
-> **참고:** Firefox 3.5는 `width`와 `height` 속성을 `TextRectangle` 객체에 추가합니다.
+The returned value is a collection of {{DOMxRef("DOMRect")}} objects, one for each CSS
+border box associated with the element. Each {{DOMxRef("DOMRect")}} object describes the border box, in pixels, with the top-left
+relative to the top-left of the viewport. For tables with captions, the caption is
+included even though it's outside the border box of the table. When called on SVG
+elements other than an outer-`<svg>`, the "viewport" that the resulting
+rectangles are relative to is the viewport that the element's
+outer-`<svg>` establishes (and to be clear, the rectangles are also
+transformed by the outer-`<svg>`'s `viewBox` transform, if
+any).
 
-뷰포트 영역(또는 기타 스크롤 가능한 엘리먼트)에서 수행된 스크롤 양은 사각형을 계산할 때 고려됩니다.
+The amount of scrolling that has been done of the viewport area (or any other
+scrollable element) is taken into account when computing the rectangles.
 
-반환된 사각형은 오버플로우가 발생할 수도 있는 모든 하위 엘리먼트의 경계를 포함하지 않습니다.
+The returned rectangles do not include the bounds of any child elements that might
+happen to overflow.
 
-HTML {{HtmlElement("area")}} 엘리먼트, 스스로는 어떠한 것도 렌더링 하지 않는 SVG 엘리먼트, `display:none` 엘리먼트 및 일반적으로 직접 렌더링 되지 않는 엘리먼트의 경우, 빈 목록이 반환됩니다.
+For HTML {{HtmlElement("area")}} elements, SVG elements that do not render anything
+themselves, `display:none` elements, and generally any elements that are not
+directly rendered, an empty list is returned.
 
-테두리 박스가 비어있는 CSS 박스의 경우에도 사각형은 반환됩니다. `left`, `top`, `right`, `bottom` 좌표는 여전히 의미가 있습니다.
+Rectangles are returned even for CSS boxes that have empty border-boxes. The
+`left`, `top`, `right`, and `bottom`
+coordinates can still be meaningful.
 
-소수점 단위의 픽셀 오프셋도 가능합니다.
+Fractional pixel offsets are possible.
 
-## 예제
+## Examples
 
-다음 예제들은 다양한 색상으로 클라이언트 사각형을 그립니다. 클라이언트 사각형을 칠하는 JavaScript 함수는 `withClientRectsOverlay` 클래스를 통해 마크업과 연결되어 있음을 참고하세요.
+These examples draw client rects in various colors. Note that the JavaScript function
+that paints the client rects is connected to the markup via the class
+`withClientRectsOverlay`.
 
 ### HTML
 
-예제 1: 다음 HTML은 세 개의 단락을 생성합니다. 각각은 `<div>` 블록 안에 있고, `<span>`을 안쪽에 포함하고 있습니다. 클라이언트 사각형은 두 번째 블록의 단락과 세 번째 블록의 `<span>` 엘리먼트를 칠합니다.
+Example 1: This HTML creates three paragraphs with a `<span>` inside,
+each embedded in a `<div>` block. Client rects are painted for the
+paragraph in the second block, and for the `<span>` element in the
+third block.
 
 ```html
-<h3>span을 안쪽에 포함하는 단락</h3>
-<p>span과 단락 모두 테두리가 설정되어 있습니다. 클라이언트 사각형은 빨간색입니다. p는 단 하나의 테두리 박스를 갖는 반면 span은 여러 테두리 박스를 갖는다는 점을 유의하세요.</p>
+<h3>A paragraph with a span inside</h3>
+<p>
+  Both the span and the paragraph have a border set. The client rects are in
+  red. Note that the p has only one border box, while the span has multiple
+  border boxes.
+</p>
 
 <div>
-  <strong>원본</strong>
+  <strong>Original</strong>
   <p>
-    <span>여러 줄에 걸쳐있는 단락</span>
+    <span>Paragraph that spans multiple lines</span>
   </p>
 </div>
 
 <div>
-  <strong>p의 사각형</strong>
+  <strong>p's rect</strong>
   <p class="withClientRectsOverlay">
-    <span>여러 줄에 걸쳐있는 단락</span>
+    <span>Paragraph that spans multiple lines</span>
   </p>
 </div>
 
 <div>
-  <strong>span의 사각형</strong>
+  <strong>span's rect</strong>
   <p>
-    <span class="withClientRectsOverlay">여러 줄에 걸쳐있는 단락</span>
+    <span class="withClientRectsOverlay"
+      >Paragraph that spans multiple lines</span
+    >
   </p>
 </div>
 ```
 
-예제 2: 다음 HTML은 세 개의 정렬된 목록을 생성합니다. 클라이언트 사각형은 두 번째 블록의 `<ol>`, 세 번째 블록의 각 `<li>` 엘리먼트를 칠합니다.
+Example 2: This HTML creates three ordered lists. Client rects are painted for the
+`<ol>` in the second block, and for each `<li>`
+element in the third block.
 
 ```html
-<h3>목록</h3>
-<p>테두리 박스는 숫자를 포함하지 않으므로 클라이언트 사각형에 대해서도 숫자를 포함하지 않음을 유의하세요.</p>
+<h3>A list</h3>
+<p>
+  Note that the border box doesn't include the number, so neither do the client
+  rects.
+</p>
 
 <div>
-  <strong>원본</strong>
+  <strong>Original</strong>
   <ol>
     <li>Item 1</li>
     <li>Item 2</li>
@@ -82,7 +118,7 @@ HTML {{HtmlElement("area")}} 엘리먼트, 스스로는 어떠한 것도 렌더�
 </div>
 
 <div>
-  <strong>ol의 사각형</strong>
+  <strong>ol's rect</strong>
   <ol class="withClientRectsOverlay">
     <li>Item 1</li>
     <li>Item 2</li>
@@ -90,7 +126,7 @@ HTML {{HtmlElement("area")}} 엘리먼트, 스스로는 어떠한 것도 렌더�
 </div>
 
 <div>
-  <strong>각 li의 사각형</strong>
+  <strong>each li's rect</strong>
   <ol>
     <li class="withClientRectsOverlay">Item 1</li>
     <li class="withClientRectsOverlay">Item 2</li>
@@ -98,34 +134,50 @@ HTML {{HtmlElement("area")}} 엘리먼트, 스스로는 어떠한 것도 렌더�
 </div>
 ```
 
-예제 3: 다음 HTML은 캡션을 갖는 두 개의 테이블을 생성합니다. 클라이언트 사각형은 두 번째 블록의 `<table>`을 칠합니다.
+Example 3: This HTML creates two tables with captions. Client rects are painted for the
+`<table>` in the second block.
 
 ```html
-<h3>캡션을 갖는 테이블</h3>
-<p>테이블의 테두리 박스가 캡션을 포함하지는 않지만, 클라이언트 사각형은 캡션을 포함합니다.</p>
+<h3>A table with a caption</h3>
+<p>
+  Although the table's border box doesn't include the caption, the client rects
+  do include the caption.
+</p>
 
 <div>
-  <strong>원본</strong>
+  <strong>Original</strong>
   <table>
-    <caption>캡션</caption>
+    <caption>
+      caption
+    </caption>
     <thead>
-      <tr><th>thead</th></tr>
+      <tr>
+        <th>thead</th>
+      </tr>
     </thead>
     <tbody>
-      <tr><td>tbody</td></tr>
+      <tr>
+        <td>tbody</td>
+      </tr>
     </tbody>
   </table>
 </div>
 
 <div>
-  <strong>table의 사각형</strong>
+  <strong>table's rect</strong>
   <table class="withClientRectsOverlay">
-    <caption>캡션</caption>
+    <caption>
+      caption
+    </caption>
     <thead>
-      <tr><th>thead</th></tr>
+      <tr>
+        <th>thead</th>
+      </tr>
     </thead>
     <tbody>
-      <tr><td>tbody</td></tr>
+      <tr>
+        <td>tbody</td>
+      </tr>
     </tbody>
   </table>
 </div>
@@ -133,7 +185,11 @@ HTML {{HtmlElement("area")}} 엘리먼트, 스스로는 어떠한 것도 렌더�
 
 ### CSS
 
-CSS는 첫 번째 예제에서 각 `<div>` 블록 안쪽의 `<span>`과 문단을 감싸는 테두리를, 두 번째 예제에서 `<ol>`과 `<li>`를 감싸는 테두리를, 세 번째 예제에서 `<table>`, `<th>`, `<td>` 엘리먼트를 감싸는 테두리를 그립니다.
+The CSS draws borders around the paragraph and the `<span>` inside
+each `<div>` block for the first example, around the
+`<ol>` and `<li>` for the second example, and around
+`<table>`, `<th>`, and `<td>`
+elements for the third example.
 
 ```css
 strong {
@@ -143,65 +199,74 @@ div {
   display: inline-block;
   width: 150px;
 }
-div p, ol, table {
+div p,
+ol,
+table {
   border: 1px solid blue;
 }
-span, li, th, td {
+span,
+li,
+th,
+td {
   border: 1px solid green;
 }
 ```
 
 ### JavaScript
 
-JavaScript 코드는 `withClientRectsOverlay` CSS 클래스가 할당된 모든 HTML 엘리먼트에 대해 클라이언트 사각형을 그립니다.
+The JavaScript code draws the client rects for all HTML elements that have CSS class
+`withClientRectsOverlay` assigned.
 
 ```js
 function addClientRectsOverlay(elt) {
-  /* 각 클라이언트 사각형에서 div를 절대적으로 배치하였기 때문에 div의 테두리 너비는 사각형의 너비와 동일합니다.
-     Note: 유저가 크기를 조정하거나 확대/축소하는 경우 오버레이가 제 위치를 벗어날 수 있습니다. */
-  var rects = elt.getClientRects();
-  for (var i = 0; i != rects.length; i++) {
-    var rect = rects[i];
-    var tableRectDiv = document.createElement('div');
-    tableRectDiv.style.position = 'absolute';
-    tableRectDiv.style.border = '1px solid red';
-    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    var scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft;
-    tableRectDiv.style.margin = tableRectDiv.style.padding = '0';
-    tableRectDiv.style.top = (rect.top + scrollTop) + 'px';
-    tableRectDiv.style.left = (rect.left + scrollLeft) + 'px';
-    // rect.width가 테두리 너비가 되어야 하므로 콘텐츠 너비는 2px 더 작습니다.
-    tableRectDiv.style.width = (rect.width - 2) + 'px';
-    tableRectDiv.style.height = (rect.height - 2) + 'px';
+  /* Absolutely position a div over each client rect so that its border width
+     is the same as the rectangle's width.
+     Note: the overlays will be out of place if the user resizes or zooms. */
+  const rects = elt.getClientRects();
+  for (const rect of rects) {
+    const tableRectDiv = document.createElement("div");
+    tableRectDiv.style.position = "absolute";
+    tableRectDiv.style.border = "1px solid red";
+    const scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    const scrollLeft =
+      document.documentElement.scrollLeft || document.body.scrollLeft;
+    tableRectDiv.style.margin = tableRectDiv.style.padding = "0";
+    tableRectDiv.style.top = `${rect.top + scrollTop}px`;
+    tableRectDiv.style.left = `${rect.left + scrollLeft}px`;
+    // We want rect.width to be the border width, so content width is 2px less.
+    tableRectDiv.style.width = `${rect.width - 2}px`;
+    tableRectDiv.style.height = `${rect.height - 2}px`;
     document.body.appendChild(tableRectDiv);
   }
 }
 
-(function() {
-  /* "withClientRectsOverlay" 클래스가 할당된 모든 엘리먼트에 대해 addClientRectsOverlay(elt) 함수를 호출합니다 */
-  var elt = document.getElementsByClassName('withClientRectsOverlay');
-  for (var i = 0; i < elt.length; i++) {
-    addClientRectsOverlay(elt[i]);
+(() => {
+  /* Call function addClientRectsOverlay(elt) for all elements with
+     assigned class "withClientRectsOverlay" */
+  const elts = document.getElementsByClassName("withClientRectsOverlay");
+  for (const elt of elts) {
+    addClientRectsOverlay(elt);
   }
 })();
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample('예제', 680, 650)}}
+{{EmbedLiveSample('Examples', 680, 650)}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-### 노트
+### Notes
 
-`getClientRects()`는 MS IE DHTML 객체 모델에서 처음으로 소개되었습니다.
+`getClientRects()` was first introduced in the MS IE DHTML object model.
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{DOMxRef("Element.getBoundingClientRect()")}}

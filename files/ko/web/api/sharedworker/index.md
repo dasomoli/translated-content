@@ -1,90 +1,99 @@
 ---
 title: SharedWorker
 slug: Web/API/SharedWorker
+page-type: web-api-interface
+browser-compat: api.SharedWorker
 ---
+
 {{APIRef("Web Workers API")}}
 
-**`SharedWorker`** 인터페이스는 윈도우 창이나 iframe, 워커등의 다른 브라우징 컨텍스트에서도 접근이 가능한 특정 종류의 워커를 의미합니다. 기존의 다른 종류의 워커들과 다른 전역 스코프를 갖는 인터페이스를 구현합니다. {{domxref("SharedWorkerGlobalScope")}}.
+The **`SharedWorker`** interface represents a specific kind of worker that can be _accessed_ from several browsing contexts, such as several windows, iframes or even workers. They implement an interface different than dedicated workers and have a different global scope, {{domxref("SharedWorkerGlobalScope")}}.
 
-> **참고:** **참고 :** SharedWorker 가 몇개의 다른 브라우징 컨텍스트에서 접근이 가능하면, 그 브라우징 컨텍스트들은 모두 정확히 같은 오리진을 공유해야 합니다. (같은 프로토콜, 호스트, 포트 등)
+> **Note:** If SharedWorker can be accessed from several browsing contexts, all those browsing contexts must share the exact same origin (same protocol, host and port).
 
-## 생성자
+{{InheritanceDiagram}}
+
+## Constructors
 
 - {{domxref("SharedWorker.SharedWorker", "SharedWorker()")}}
-  - : 특정 URL에서 스크립트를 실행하는 shared web worker를 생성합니다.
+  - : Creates a shared web worker that executes the script at the specified URL.
 
-## 속성
+## Instance properties
 
-_{{domxref("EventTarget")}}_ 의 속성들을 상속 받습니다. 그리고 _{{domxref("AbstractWorker")}}_ 의 속성들을 구현할 수 있습니다.
+_Inherits properties from its parent, {{domxref("EventTarget")}}._
 
-- {{domxref("AbstractWorker.onerror")}}
-  - : 워커에서 {{domxref("ErrorEvent")}} 타입의 에러가 발생했을 때 호출되는는 {{domxref("EventListener")}}
-- {{domxref("SharedWorker.port")}} {{readonlyInline}}
-  - : shared worker를 제어하거나 통신하기 위해 사용되는 {{domxref("MessagePort")}} 객체를 반환
+- {{domxref("SharedWorker.port")}} {{ReadOnlyInline}}
+  - : Returns a {{domxref("MessagePort")}} object used to communicate with and control the shared worker.
 
-## 메서드
+## Events
 
-_{{domxref("EventTarget")}}_ 의 속성들을 상속 받습니다. 그리고 _{{domxref("AbstractWorker")}}_ 의 속성들을 구현할 수 있습니다.
+- {{domxref("SharedWorker.error_event", "error")}}
+  - : Fires when an error occurs in the shared worker.
 
-## 예제
+## Instance methods
 
-[Basic shared worker example](https://github.com/mdn/simple-shared-worker) ([run shared worker](http://mdn.github.io/simple-shared-worker/)) 를 보시면 2개의 HTML 페이지가 있습니다. 각각 간단한 계산을 위해 자바스크립트를 사용합니다. 각기 다른 스크립트가 계산을 위해 같은 워커 파일을 사용합니다 — 두 개 페이지가 모두 다른 윈도우창에서 실행되더라도 같은 워커에 접근할 수 있습니다.
+_Inherits methods from its parent, {{domxref("EventTarget")}}._
 
-아래 코드 스니펫은 {{domxref("SharedWorker.SharedWorker", "SharedWorker()")}} 생성자를 이용해 `SharedWorker` 객체를 생성합니다. 두 스크립트 모두 아래를 포함합니다.
+## Example
+
+In our [Basic shared worker example](https://github.com/mdn/dom-examples/tree/main/web-workers/simple-shared-worker) ([run shared worker](https://mdn.github.io/dom-examples/web-workers/simple-shared-worker/)), we have two HTML pages, each of which uses some JavaScript to perform a simple calculation. The different scripts are using the same worker file to perform the calculation — they can both access it, even if their pages are running inside different windows.
+
+The following code snippet shows creation of a `SharedWorker` object using the {{domxref("SharedWorker.SharedWorker", "SharedWorker()")}} constructor. Both scripts contain this:
 
 ```js
-var myWorker = new SharedWorker("worker.js");
+const myWorker = new SharedWorker("worker.js");
 ```
 
-두 스크립트는 {{domxref("SharedWorker.port")}} 속성으로 생성한 {{domxref("MessagePort")}} 객체를 통해 워커에 접근할 수 있습니다. `addEventListener` 를 이용하여 `onmessage` 가 추가되면, port는 `start()` 메서드를 이용하여 수동으로 시작할 수 있습니다.
+> **Note:** Once a shared worker is created, any script running in the same origin can obtain a reference to that worker and communicate with it. The shared worker will be alive as long as its global scope's owner set (a set of `Document` and `WorkerGlobalScope` objects) is not empty (for example, if there is any live page holding a reference to it, maybe through `new SharedWorker()`). To read more about shared worker lifetime, see [The worker's lifetime](https://html.spec.whatwg.org/multipage/workers.html#the-worker's-lifetime) section of the HTML specification.
+
+Both scripts then access the worker through a {{domxref("MessagePort")}} object created using the {{domxref("SharedWorker.port")}} property. If the onmessage event is attached using addEventListener, the port is manually started using its `start()` method:
 
 ```js
 myWorker.port.start();
 ```
 
-포트가 시작되면, 양 스크립트는 워커에 메시지를 보내고 `port.postMessage()`와 `port.onmessage` 를 각각 이용하여 메시지를 처리합니다.
+When the port is started, both scripts post messages to the worker and handle messages sent from it using `port.postMessage()` and `port.onmessage`, respectively:
 
 ```js
-first.onchange = function() {
-    myWorker.port.postMessage([first.value,second.value]);
-    console.log('Message posted to worker');
-  }
+first.onchange = () => {
+  myWorker.port.postMessage([first.value, second.value]);
+  console.log("Message posted to worker");
+};
 
-  second.onchange = function() {
-    myWorker.port.postMessage([first.value,second.value]);
-    console.log('Message posted to worker');
-  }
+second.onchange = () => {
+  myWorker.port.postMessage([first.value, second.value]);
+  console.log("Message posted to worker");
+};
 
-  myWorker.port.onmessage = function(e) {
-    result1.textContent = e.data;
-    console.log('Message received from worker');
-  }
+myWorker.port.onmessage = (e) => {
+  result1.textContent = e.data;
+  console.log("Message received from worker");
+};
 ```
 
-워커에서 {{domxref("SharedWorkerGlobalScope.onconnect")}} 핸들러를 이용하여 위에 언급된 포트에 접속할 수 있습니다. 워커에 연관되어 있는 포트는 {{event("connect")}} 이벤트 포트 속성에 접근할 수 있습니다 — 그리고나서 {{domxref("MessagePort")}} `start()` 메서드로 포트를 시작하고, onmessage 핸들러로 메인쓰레드에서 받은 메시지를 처리합니다.
+Inside the worker we use the {{domxref("SharedWorkerGlobalScope.connect_event", "onconnect")}} handler to connect to the same port discussed above. The ports associated with that worker are accessible in the {{domxref("SharedWorkerGlobalScope/connect_event", "connect")}} event's `ports` property — we then use {{domxref("MessagePort")}} `start()` method to start the port, and the `onmessage` handler to deal with messages sent from the main threads.
 
 ```js
-onconnect = function(e) {
-    var port = e.ports[0];
+onconnect = (e) => {
+  const port = e.ports[0];
 
-    port.addEventListener('message', function(e) {
-      var workerResult = 'Result: ' + (e.data[0] * e.data[1]);
-      port.postMessage(workerResult);
-    });
+  port.addEventListener("message", (e) => {
+    const workerResult = `Result: ${e.data[0] * e.data[1]}`;
+    port.postMessage(workerResult);
+  });
 
-    port.start(); // Required when using addEventListener. Otherwise called implicitly by onmessage setter.
-}
+  port.start(); // Required when using addEventListener. Otherwise called implicitly by onmessage setter.
+};
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("Worker")}}
-- [Using web workers](/ko/docs/Web/Guide/Performance/Using_web_workers)

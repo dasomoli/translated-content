@@ -1,76 +1,77 @@
 ---
-title: HTTP/1.x의 커넥션 관리
+title: Connection management in HTTP/1.x
 slug: Web/HTTP/Connection_management_in_HTTP_1.x
+page-type: guide
 ---
 
 {{HTTPSidebar}}
 
-커넥션 관리는 HTTP의 주요 주제입니다: 대규모로 커넥션을 열고 유지하는 것은 웹 사이트 혹은 웹 애플리케이션의 성능에 많은 영향을 줍니다. HTTP/1.x에는 몇 가지 모델이 존재합니다: 단기 커넥션, 영속적인 커넥션, 그리고 _HTTP 파이프라이닝._
+Connection management is a key topic in HTTP: opening and maintaining connections largely impacts the performance of Web sites and Web applications. In HTTP/1.x, there are several models: _short-lived connections_, _persistent connections_, and _HTTP pipelining._
 
-HTTP는 클라이언트와 서버 사이의 커넥션을 제공하는 TCP를 전송프로토콜로 주로 이용합니다. 초기에는, HTTP는 이런 커넥션들을 다루기 위해 단일 모델을 제공했습니다. 요청이 보내져야 할 때마다 커넥션들은 매번 새롭게 생성되었고 응답이 도착한 이후에 연결을 닫는 형태로 단기로만 유지되었습니다.
+HTTP mostly relies on TCP for its transport protocol, providing a connection between the client and the server. In its infancy, HTTP used a single model to handle such connections. These connections were short-lived: a new one created each time a request needed sending, and closed once the answer had been received.
 
-각각의 TCP 연결을 여는 것은 자원을 소비하기 때문에 이러한 단순한 모델은 선천적으로 성능상의 제약을 발생시킵니다. 몇몇 메시지들은 클라이언트와 서버 사이에서 교환되어야만 하며, 네트워크의 지연과 대역폭은 요청이 전송되어야 할 때마다 성능에 영향을 줍니다. 현대의 웹 페이지들은 필요로 하는 정보를 제공하기 위해 많은 요청(12개 혹은 그 이상)을 필요로 하므로, 이런 초창기 모델이 비효율적인 것은 자명합니다.
+This simple model held an innate limitation on performance: opening each TCP connection is a resource-consuming operation. Several messages must be exchanged between the client and the server. Network latency and bandwidth affect performance when a request needs sending. Modern Web pages require many requests (a dozen or more) to serve the amount of information needed, proving this earlier model inefficient.
 
-HTTP/1.1에서 두 가지 모델이 추가되었습니다. 영속적인 커넥션 모델은 연속적인 요청 사이에 커넥션을 유지하여 새 커넥션을 여는데 필요한 시간을 줄입니다. HTTP 파이프라이닝은 한 단계 더 나아가, 응답조차도 기다리지 않고 연속적인 요청을 보내서 네트워크 지연을 더욱 줄입니다.
+Two newer models were created in HTTP/1.1. The persistent-connection model keeps connections opened between successive requests, reducing the time needed to open new connections. The HTTP pipelining model goes one step further, by sending several successive requests without even waiting for an answer, reducing much of the latency in the network.
 
-![단시간 연결, 영구 연결 및 HTTP 파이프라인의 세 가지 HTTP/1.x 연결 모델의 성능의 비교](http1_x_connections.png)
+![Compares the performance of the three HTTP/1.x connection models: short-lived connections, persistent connections, and HTTP pipelining.](http1_x_connections.png)
 
-> **참고:** HTTP/2는 커넥션 관리의 몇가지 모델을 더 추가합니다.
+> **Note:** HTTP/2 adds additional models for connection management.
 
-명심해야 할 중요한 점은 HTTP 내 커넥션 관리가 [end-to-end](/ko/docs/Web/HTTP/Headers#e2e)가 아닌 [hop-by-hop](/ko/docs/Web/HTTP/Headers#hbh)인 두 개의 연속된 노드 사이의 커넥션에 적용된다는 것입니다. 클라이언트와 첫 번째 프록시 사이의 커넥션 모델은 프록시와 최종 목적 서버(혹은 중간 프록시들) 간의 것과는 다를 수도 있습니다. {{HTTPHeader("Connection")}}와 {{HTTPHeader("Keep-Alive")}}와 같이 커넥션 모델을 정의하는 데 관여하는 HTTP 헤더들은 [hop-by-hop](/ko/docs/Web/HTTP/Headers#hbh) 헤더이며, 중간 노드에 의해 그 값들이 변경될 수 있습니다.
+It's important to note that connection management in HTTP applies to the connection between two consecutive nodes, which is [hop-by-hop](/en-US/docs/Web/HTTP/Headers#hop-by-hop_headers) and not [end-to-end](/en-US/docs/Web/HTTP/Headers#end-to-end_headers). The model used in connections between a client and its first proxy may differ from the model between a proxy and the destination server (or any intermediate proxies). The HTTP headers involved in defining the connection model, like {{HTTPHeader("Connection")}} and {{HTTPHeader("Keep-Alive")}}, are [hop-by-hop](/en-US/docs/Web/HTTP/Headers#hop-by-hop_headers) headers with their values able to be changed by intermediary nodes.
 
-HTTP/1.1 커넥션이 TLS/1.0이나 WebSocket, 혹은 평문 HTTP/2와 같은 다른 프로토콜로 업그레이드 되었다는 점에서 관련된 주제는 HTTP 커넥션 업그레이드의 개념입니다. 이 프로토콜 업그레이드 메커니즘은 다른 곳에서 더 자세히 설명되어 있습니다.
+A related topic is the concept of HTTP connection upgrades, wherein an HTTP/1.1 connection is upgraded to a different protocol, such as TLS/1.0, WebSocket, or even HTTP/2 in cleartext. This [protocol upgrade mechanism](/en-US/docs/Web/HTTP/Protocol_upgrade_mechanism) is documented in more detail elsewhere.
 
-## 단기 커넥션
+## Short-lived connections
 
-HTTP 본래의 모델이자 HTTP/1.0의 기본 커넥션은 *단기 커넥션*입니다. 각각의 HTTP 요청은 각각의 커넥션 상에서 실행됩니다. 이는 TCP 핸드 셰이크는 각 HTTP 요청 전에 발생하고, 이들이 직렬화됨을 의미합니다.
+The original model of HTTP, and the default one in HTTP/1.0, is _short-lived connections_. Each HTTP request is completed on its own connection; this means a TCP handshake happens before each HTTP request, and these are serialized.
 
-TCP 핸드셰이크는 그 자체로 시간을 소모하기는 하지만 TCP 커넥션은 지속적으로 연결되었을 때 부하에 맞춰 더욱 예열되어 더욱 효율적으로 작동합니다. 단기 커넥션들은 TCP의 이러한 효율적인 특성을 사용하지 않게 하며 예열되지 않은 새로운 연결을 통해 지속적으로 전송함으로써 성능이 최적 상태보다 저하됩니다.
+The TCP handshake itself is time-consuming, but a TCP connection adapts to its load, becoming more efficient with more sustained (or warm) connections. Short-lived connections do not make use of this efficiency feature of TCP, and performance degrades from optimum by persisting to transmit over a new, cold connection.
 
-이 모델은 HTTP/1.0에서 사용된 기본 모델입니다({{HTTPHeader("Connection")}} 헤더가 존재하지 않거나, 그것의 값이 `close`로 설정된 경우). HTTP/1.1에서는, 이 모델은 {{HTTPHeader("Connection")}} 헤더가 `close` 값으로 설정되어 전송된 경우에만 사용됩니다.
+This model is the default model used in HTTP/1.0 (if there is no {{HTTPHeader("Connection")}} header, or if its value is set to `close`). In HTTP/1.1, this model is only used when the {{HTTPHeader("Connection")}} header is sent with a value of `close`.
 
-> **참고:** 영속적인 커넥션을 지원하지 않는 매우 낡은 시스템을 다루는 것이 아니라면, 이 모델을 사용하려고 애쓸 필요가 없습니다.
+> **Note:** Unless dealing with a very old system, which doesn't support a persistent connection, there is no compelling reason to use this model.
 
-## 영속적인 커넥션
+## Persistent connections
 
-단기 커넥션은 두 가지 결점을 지니고 있습니다: 새로운 연결을 맺는데 드는 시간이 상당하다는 것과, TCP기반 커넥션의 성능은 오직 커넥션이 예열된 상태일 때만 나아진다는 것입니다. 이런 문제를 완화시키기 위해, HTTP/1.1보다도 앞서 영*속적인 커넥션*의 컨셉이 만들어졌습니다. 이는 *keep-alive 커넥션*이라고 불리기도 합니다.
+Short-lived connections have two major hitches: the time taken to establish a new connection is significant, and performance of the underlying TCP connection gets better only when this connection has been in use for some time (warm connection). To ease these problems, the concept of a _persistent connection_ has been designed, even prior to HTTP/1.1. Alternatively this may be called a _keep-alive connection_.
 
-영속적인 커넥션은 얼마간 연결을 열어놓고 여러 요청에 재사용함으로써, 새로운 TCP 핸드셰이크를 하는 비용을 아끼고, TCP의 성능 향상 기능을 활용할 수 있습니다. 커넥션은 영원히 열려있는지 않으며, 유휴 커넥션들은 얼마 후에 닫힙니다(서버는 {{HTTPHeader("Keep-Alive")}} 헤더를 사용해서 연결이 최소한 얼마나 열려있어야 할지를 설정할 수 있습니다).
+A persistent connection is one which remains open for a period of time, and can be reused for several requests, saving the need for a new TCP handshake, and utilizing TCP's performance enhancing capabilities. This connection will not stay open forever: idle connections are closed after some time (a server may use the {{HTTPHeader("Keep-Alive")}} header to specify a minimum time the connection should be kept open).
 
-물론 영속적인 커넥션도 단점을 가지고 있습니다. 유휴 상태일때에도 서버 리소스를 소비하며, 과부하 상태에서는 {{glossary("DoS attack", "DoS attacks")}}을 당할 수 있습니다. 이런 경우에는 커넥션이 유휴 상태가 되자마자 닫히는 비영속적 커넥션(non-persistent connections)을 사용하는 것이 더 나은 성능을 보일 수 있습니다.
+Persistent connections also have drawbacks; even when idling they consume server resources, and under heavy load, {{glossary("DoS attack", "DoS attacks")}} can be conducted. In such cases, using non-persistent connections, which are closed as soon as they are idle, can provide better performance.
 
-HTTP/1.0 커넥션은 기본적으로 영속적이지 않습니다. {{HTTPHeader("Connection")}}를 `close`가 아닌 다른 것으로, 일반적으로 `retry-after`로 설정하면 영속적으로 동작하게 될 겁니다.
+HTTP/1.0 connections are not persistent by default. Setting {{HTTPHeader("Connection")}} to anything other than `close`, usually `retry-after`, will make them persistent.
 
-반면, HTTP/1.1에서는 기본적으로 영속적이며 헤더도 필요하지 않습니다(그러나 HTTP/1.0으로 동작하는 경우(fallback)에 대비해서 종종 추가하기도 합니다.).
+In HTTP/1.1, persistence is the default, and the header is no longer needed (but it is often added as a defensive measure against cases requiring a fallback to HTTP/1.0).
 
-## HTTP 파이프라이닝
+## HTTP pipelining
 
-> **참고:** HTTP 파이프라이닝은 모던 브라우저에서 기본적으로 활성화되어있지 않습니다:
+> **Note:** HTTP pipelining is not activated by default in modern browsers:
 >
-> - 버그가 있는 [프록시](https://en.wikipedia.org/wiki/Proxy_server)들이 여전히 많은데, 이들은 웹 개발자들이 쉽게 예상하거나 분석하기 힘든 이상하고 오류가 있는 동작을 야기합니다.
-> - 파이프라이닝은 정확히 구현해내기 복잡합니다: 전송 중인 리소스의 크기, 사용될 효과적인 [RTT](https://en.wikipedia.org/wiki/Round-trip_delay_time), 그리고 효과적인 대역폭은 파이프라인이 제공하는 성능 향상에 직접적으로 영향을 미칩니다. 이런 내용을 모른다면, 중요한 메시지가 덜 중요한 메시지에 밀려 지연될 수 있습니다. 중요성에 대한 생각은 페이지 레이아웃 중에도 진전됩니다. 그러므로 파이프라이닝은 대부분의 경우 미미한 수준의 향상만을 가져다 줍니다.
-> - 파이프라이닝은 [HOL](https://en.wikipedia.org/wiki/Head-of-line_blocking) 문제에 영향을 받습니다.
+> - Buggy [proxies](https://en.wikipedia.org/wiki/Proxy_server) are still common and these lead to strange and erratic behaviors that Web developers cannot foresee and diagnose easily.
+> - Pipelining is complex to implement correctly: the size of the resource being transferred, the effective [RTT](https://en.wikipedia.org/wiki/Round-trip_delay_time) that will be used, as well as the effective bandwidth, have a direct incidence on the improvement provided by the pipeline. Without knowing these, important messages may be delayed behind unimportant ones. The notion of important even evolves during page layout! HTTP pipelining therefore brings a marginal improvement in most cases only.
+> - Pipelining is subject to the [HOL](https://en.wikipedia.org/wiki/Head-of-line_blocking) problem.
 >
-> 이런 이유들로, 파이프라이닝은 더 나은 알고리즘인 멀티플렉싱으로 대체되었는데, 이는 HTTP/2에서 사용됩니다.
+> For these reasons, pipelining has been superseded by a better algorithm, _multiplexing_, that is used by HTTP/2.
 
-기본적으로, [HTTP](/ko/docs/Web/HTTP) 요청은 순차적입니다. 현재의 요청에 대한 응답을 받고 나서야 다음 요청을 실시합니다. 네트워크 지연과 대역폭 제한에 걸려 다음 요청을 보내는 데까지 상당한 딜레이가 발생할 수 있습니다.
+By default, [HTTP](/en-US/docs/Web/HTTP) requests are issued sequentially. The next request is only issued once the response to the current request has been received. As they are affected by network latencies and bandwidth limitations, this can result in significant delay before the next request is _seen_ by the server.
 
-파이프라이닝이란 같은 영속적인 커넥션을 통해서, 응답을 기다리지 않고 요청을 연속적으로 보내는 기능입니다. 이것은 커넥션의 지연를 회피하고자 하는 방법입니다. 이론적으로는, 두 개의 HTTP 요청을 하나의 TCP 메시지 안에 채워서(be packed) 성능을 더 향상시킬 수 있습니다. HTTP 요청의 사이즈는 지속적으로 커져왔지만, 일반적인 [MSS](https://en.wikipedia.org/wiki/Maximum_segment_size)(최대 세그먼트 크기)는 몇 개의 간단한 요청을 포함하기에는 충분히 여유있습니다.
+Pipelining is the process to send successive requests, over the same persistent connection, without waiting for the answer. This avoids latency of the connection. Theoretically, performance could also be improved if two HTTP requests were to be packed into the same TCP message. The typical [MSS](https://en.wikipedia.org/wiki/Maximum_segment_size) (Maximum Segment Size), is big enough to contain several simple requests, although the demand in size of HTTP requests continues to grow.
 
-모든 종류의 HTTP 요청이 파이프라인으로 처리될 수 있는 것은 아닙니다: {{HTTPMethod("GET")}}, {{HTTPMethod("HEAD")}}, {{HTTPMethod("PUT")}} 그리고 {{HTTPMethod("DELETE")}} 메서드같은 {{glossary("idempotent")}} 메서드만 가능합니다. 실패가 발생한 경우에는 단순히 파이프라인 컨텐츠를 다시 반복하면 됩니다.
+Not all types of HTTP requests can be pipelined: only {{glossary("idempotent")}} methods, that is {{HTTPMethod("GET")}}, {{HTTPMethod("HEAD")}}, {{HTTPMethod("PUT")}} and {{HTTPMethod("DELETE")}}, can be replayed safely. Should a failure happen, the pipeline content can be repeated.
 
-오늘날, 모든 HTTP/1.1 호환 프록시와 서버들은 파이프라이닝을 지원해야 하지만, 실제로는 많은 프록시와 서버들은 제한을 가지고 있습니다. 모던 브라우저가 이 기능을 기본적으로 활성화하지 않는 이유입니다.
+Today, every HTTP/1.1-compliant proxy and server should support pipelining, though many have limitations in practice: a significant reason no modern browser activates this feature by default.
 
-## 도메인 샤딩
+## Domain sharding
 
-> **참고:** 매우 명확하고 당면해있는 요구사항이 아니라면, 이 제외된(deprecated) 기술을 사용하지 마십시오. 대신 HTTP/2로 전환하시기 바랍니다. HTTP/2에서 도메인 샤딩은 더 이상 유용하지 않습니다. HTTP/2 커넥션은 우선 순위가 없는 병렬 요청들을 매우 잘 다룹니다. 도메인 샤딩은 성능 측면에서도 좋지 못합니다. 대부분의 HTTP/2 구현체는 우발적으로 일어나는 도메인 샤딩을 되돌리기 위해 [커넥션 합치기(connection coalescing)](https://daniel.haxx.se/blog/2016/08/18/http2-connection-coalescing/)라고 불리는 기술을 사용합니다.
+> **Note:** Unless you have a very specific immediate need, don't use this deprecated technique; switch to HTTP/2 instead. In HTTP/2, domain sharding is no longer useful: the HTTP/2 connection is able to handle parallel unprioritized requests very well. Domain sharding is even detrimental to performance. Most HTTP/2 implementations use a technique called [connection coalescing](https://daniel.haxx.se/blog/2016/08/18/http2-connection-coalescing/) to revert eventual domain sharding.
 
-요청 사이에 실제 정렬이 없음에도 HTTP/1.x 커넥션이 요청을 직렬화함으로써, 대역폭이 충분히 큰 경우가 아니고는 효율적이지 못합니다. 이런 단점을 피하기 위해, 브라우저들은 각 도메인에 대한 몇 개의 커넥션을 맺고 병렬로 요청을 보냅니다. 기본값은 한때 2개 혹은 3개였지만, 지금은 이것이 증가하여 일반적으로 병력 커넥션은 6개입니다. 만약 이것보다 많이 시도한다면 서버 측의 [DoS](/ko/docs/Glossary/DOS_attack) 보호 동작을 야기할 위험이 있습니다.
+As an HTTP/1.x connection is serializing requests, even without any ordering, it can't be optimal without large enough available bandwidth. As a solution, browsers open several connections to each domain, sending parallel requests. Default was once 2 to 3 connections, but this has now increased to a more common use of 6 parallel connections. There is a risk of triggering [DoS](/en-US/docs/Glossary/DOS_attack) protection on the server side if attempting more than this number.
 
-서버가 더 빠른 웹 사이트나 애플리케이션 반응을 원한다면, 서버가 더 많은 커넥션을 열도록 강제할 수 있습니다. 예를 들어, `www.example.com` 라는 하나의 도메인에서 모든 리소스를 가져오는 대신, `www1.example.com`, `www2.example.com`, `www3.example.com`와 같이 몇 개의 도메인으로 분할할 수 있습니다. 이런 각각의 도메인들은 동일한 서버로 연결되고, 브라우저는 그런 각각의 도메인마다 6개의 커넥션을 맺을 것입니다(예제에서는 총 18개로 늘어납니다). 이러한 기법을 **도메인 샤딩**이라고 부릅니다.
+If the server wishes a faster Web site or application response, it is possible for the server to force the opening of more connections. For example, instead of having all resources on the same domain, say `www.example.com`, it could split over several domains, `www1.example.com`, `www2.example.com`, `www3.example.com`. Each of these domains resolves to the _same_ server, and the Web browser will open 6 connections to each (in our example, boosting the connections to 18). This technique is called _domain sharding_.
 
-![](httpsharding.png)
+![Without domain sharding, a client requests six images from a domain with a maximum of two requests taking place in parallel. With domain sharding, the images are available from two domains and the client can run four requests in parallel, downloading the images in less time.](httpsharding.png)
 
-## 결론
+## Conclusion
 
-개선된 커넥션 관리는 HTTP 성능을 상당한 수준만큼 향상시킬 수 있습니다. 영속적인 커넥션을 사용하는 HTTP/1.1 혹은 HTTP/1.0는 - 적어도 그 커넥션이 유휴 상태가 될 때까지 - 최상의 성능을 이끌어냅니다. 그러나, 파이프라이닝의 실패로 더 나은 커넥션 관리 모델이 고안되었고, 이는 HTTP/2에 포함되었습니다.
+Improved connection management allows considerable boosting of performance in HTTP. With HTTP/1.1 or HTTP/1.0, using a persistent connection – at least until it becomes idle – leads to the best performance. However, the failure of pipelining has lead to designing superior connection management models, which have been incorporated into HTTP/2.

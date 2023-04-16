@@ -1,25 +1,30 @@
 ---
-title: CSS Lists and Counters
+title: CSS Lists
 slug: Web/CSS/CSS_Lists_and_Counters
+page-type: css-module
+spec-urls: https://drafts.csswg.org/css-lists/
 ---
+
 {{CSSRef}}
 
-**CSS Lists**는 리스트 배치 방법, 리스트 마커를 스타일 할 수 있는 법을 정의하는 CSS 모듈입니다.
+**CSS Lists** is a module of CSS that defines how lists can be laid out and styled.
 
-## 참고서
+## Reference
 
-### 속성
+### Properties
 
 - {{cssxref("list-style-image")}}
 - {{cssxref("list-style-type")}}
 - {{cssxref("list-style-position")}}
 - {{cssxref("list-style")}}
 
-## 안내서
+## Guides
 
-- [일관된 리스트 들여쓰기](/ko/docs/Consistent_List_Indentation)
-  - : 서로 다른 브라우저 사이에 일관된 들여쓰기를 이루는 법을 설명합니다.
+- [Consistent list indentation](/en-US/docs/Web/CSS/CSS_Lists_and_Counters/Consistent_list_indentation)
+  - : Explains how to achieve consistent list indentation across different browsers.
+- [Using CSS Counters](/en-US/docs/Web/CSS/CSS_Counter_Styles/Using_CSS_counters)
+  - : Explains how to use the CSS counter properties to control list counters.
 
-## 명세서
+## Specifications
 
 {{Specifications}}

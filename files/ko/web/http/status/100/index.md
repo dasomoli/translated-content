@@ -1,31 +1,35 @@
 ---
 title: 100 Continue
 slug: Web/HTTP/Status/100
+page-type: http-status-code
+browser-compat: http.status.100
 ---
 
 {{HTTPSidebar}}
 
-HTTP **`100 Continue`** 정보 상태 응답 코드는 클라이언트가 서버로 보낸 요청에 문제가 없으니 다음 요청을
-이어서 보내도 된다는 것을 의미합니다. 만약 클라이언트의 작업이 완료되었다면 이 응답은 무시해도 됩니다.
+The HTTP **`100 Continue`** informational status response code
+indicates that everything so far is OK and that the client should continue with the
+request or ignore it if it is already finished.
 
-클라이언트가 서버로 하여금 이를 검토하게 하려면 첫 번째 요청에서 {{HTTPHeader("Expect")}}`:100-continue`를
-헤더로 보내야 합니다. 이후, 클라이언트는 본문을 보내기 전에 서버가 `100 Continue` 상태 코드로 응답하길 기다려야 합니다.
+To have a server check the request's headers, a client must send
+{{HTTPHeader("Expect")}}`: 100-continue` as a header in its initial request
+and receive a `100 Continue` status code in response before sending the body.
 
-## 상태
+## Status
 
 ```http
 100 Continue
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{HTTPHeader("Expect")}}
 - {{HTTPStatus(417)}}

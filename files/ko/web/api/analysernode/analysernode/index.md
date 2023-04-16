@@ -1,45 +1,64 @@
 ---
-title: AnalyserNode()
+title: "AnalyserNode: AnalyserNode() constructor"
+short-title: AnalyserNode()
 slug: Web/API/AnalyserNode/AnalyserNode
+page-type: web-api-constructor
+browser-compat: api.AnalyserNode.AnalyserNode
 ---
 
 {{APIRef("'Web Audio API'")}}
 
-[Web Audio API](/ko/docs/Web/API/Web_Audio_API)의 **`AnalyserNode()`** 생성자는 새로운 {{domxref("AnalyserNode")}} 객체 인스턴스를 생성합니다.
+The **`AnalyserNode()`** constructor of the [Web Audio API](/en-US/docs/Web/API/Web_Audio_API) creates a new {{domxref("AnalyserNode")}} object instance.
 
-## 구문
+## Syntax
 
-```js
-var analyserNode = new AnalyserNode(context, ?options);
+```js-nolint
+new AnalyserNode(context)
+new AnalyserNode(context, options)
 ```
 
-### 매개변수
+### Parameters
 
-_{{domxref("AudioNodeOptions")}} dictionary로부터 매개변수를 상속받습니다._
+- `context`
+  - : A reference to an {{domxref("AudioContext")}} or {{domxref("OfflineAudioContext")}}.
+- `options` {{optional_inline}}
 
-- _context_
-  - : {{domxref("AudioContext")}} 또는 {{domxref("OfflineAudioContext")}}에의 참조.
-- _options_ {{optional_inline}}
-  - : \* **`fftSize`**: [주파수 영역](https://en.wikipedia.org/wiki/Frequency_domain) 분석에 대한 [FFT](https://en.wikipedia.org/wiki/Fast_Fourier_transform)의 원하는 초기 사이즈.
-    기본값은 `2048`입니다.
-    - **`maxDecibels`**: FFT 분석에 대한 [dB](https://en.wikipedia.org/wiki/Decibel)단위로의 원하는 초기 최대 power.
-      기본값은 `-30`입니다.
-    - **`minDecibels`**: FFT 분석에 대한 dB단위로의 원하는 초기 최소 power.
-      기본값은 `-100`입니다.
-    - **`smoothingTimeConstant`**: FFT 분석에 대한 원하는 초기 smoothing 상수. 기본값은 `0.8`입니다.
+  - : An object with the following properties, all optional:
 
-### 반환 값
+    - `fftSize`
+      - : The desired initial size of the [FFT](https://en.wikipedia.org/wiki/Fast_Fourier_transform) for [frequency-domain](https://en.wikipedia.org/wiki/Frequency_domain) analysis.
+        The default is `2048`.
+    - `maxDecibels`
+      - : The desired initial maximum power in [dB](https://en.wikipedia.org/wiki/Decibel) for FFT analysis.
+        The default is `-30`.
+    - `minDecibels`
+      - : The desired initial minimum power in dB for FFT analysis.
+        The default is `-100`.
+    - `smoothingTimeConstant`
+      - : The desired initial smoothing constant for the FFT analysis. The default is `0.8`.
+    - `channelCount`
+      - : Represents an integer used to determine how many channels are used when [up-mixing and down-mixing](/en-US/docs/Web/API/Web_Audio_API/Basic_concepts_behind_Web_Audio_API#up-mixing_and_down-mixing) connections to any inputs to the node. (See
+        {{domxref("AudioNode.channelCount")}} for more information.) Its usage and precise
+        definition depend on the value of `channelCountMode`.
+    - `channelCountMode`
+      - : Represents an [enumerated](/en-US/docs/Glossary/Enumerated) value describing the way channels must be matched between
+        the node's inputs and outputs. (See {{domxref("AudioNode.channelCountMode")}} for more
+        information including default values.)
+    - `channelInterpretation`
+      - : Represents an enumerated value describing the meaning of the channels. This
+        interpretation will define how audio [up-mixing and down-mixing](/en-US/docs/Web/API/Web_Audio_API/Basic_concepts_behind_Web_Audio_API#up-mixing_and_down-mixing) will happen.
+        The possible values are `"speakers"` or `"discrete"`. (See
+        {{domxref("AudioNode.channelCountMode")}} for more information including default
+        values.)
 
-새로운 {{domxref("AnalyserNode")}} 객체 인스턴스.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{domxref("BaseAudioContext.createAnalyser()")}}, 동등한 팩토리 메서드
+- {{domxref("BaseAudioContext.createAnalyser()")}}, the equivalent factory method

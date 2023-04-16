@@ -1,64 +1,84 @@
 ---
 title: visibility
 slug: Web/CSS/visibility
+page-type: css-property
+browser-compat: css.properties.visibility
 ---
 
 {{CSSRef}}
 
-**`visibility`** CSS 속성은 문서의 레이아웃을 변경하지 않고 요소를 보이거나 숨깁니다. `visibility`로 {{htmlelement("table")}}의 행이나 열을 숨길 수도 있습니다.
+The **`visibility`** CSS property shows or hides an element without changing the layout of a document. The property can also hide rows or columns in a {{HTMLElement("table")}}.
 
 {{EmbedInteractiveExample("pages/css/visibility.html")}}
 
-문서를 숨기고, **레이아웃에서도 제외**하려면, `visibility`를 사용하는 대신 {{cssxref("display")}} 속성을 `none`으로 설정하세요.
+To both hide an element _and remove it from the document layout_, set the {{cssxref("display")}} property to `none` instead of using `visibility`.
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
 visibility: visible;
 visibility: hidden;
 visibility: collapse;
 
-/* 전역 값 */
+/* Global values */
 visibility: inherit;
 visibility: initial;
+visibility: revert;
+visibility: revert-layer;
 visibility: unset;
 ```
 
-### 값
+The `visibility` property is specified as one of the keyword values listed below.
+
+### Values
 
 - `visible`
-  - : 요소가 보임.
+  - : The element box is visible.
 - `hidden`
-  - : 요소가 숨겨짐(그려지지 않음). 레이아웃에는 숨겨지지 않았을 때와 동일한 영향을 줍니다. `visibility`를 `visible`로 설정한 자손은 화면에 보입니다. 숨겨진 요소는 포커스([탭 인덱스](/ko/docs/Web/HTML/Global_attributes/tabindex)로 탐색 등)를 받을 수 없습니다.
-
+  - : The element box is invisible (not drawn), but still affects layout as normal. Descendants of the element will be visible if they have `visibility` set to `visible`. The element cannot receive focus (such as when navigating through [tab indexes](/en-US/docs/Web/HTML/Global_attributes/tabindex)).
 - `collapse`
 
   - : The `collapse` keyword has different effects for different elements:
 
-    - {{HTMLElement("table")}}의 행, 열, 행 그룹과 열 그룹에 적용하면 {{cssxref("display")}}를 `none`으로 설정한 것과 동일하게 요소를 숨기고 차지하던 공간도 제거합니다. 그러나 다른 행(열)의 크기는 `collapse`를 적용한 행(열)이 보이는 것 처럼 취급해 계산합니다. 따라서 표의 너비나 높이의 재계산 없이 빠르게 행이나 열을 제거할 수 있습니다.
-    - 플렉스 아이템에 적용하면 요소를 숨기고 차지하던 공간도 제거합니다.
-    - [XUL](/ko/docs/Mozilla/Tech/XUL) 요소에 적용하면 다른 스타일과 관계 없이 크기의 계산값으로 항상 0을 사용합니다. 그러나 {{cssxref("margin")}}은 바뀌지 않습니다.
-    - 다른 요소에서는 `hidden`과 동일합니다.
+    - For {{HTMLElement("table")}} rows, columns, column groups, and row groups, the row(s) or column(s) are hidden and the space they would have occupied is removed (as if `{{Cssxref("display")}}: none` were applied to the column/row of the table). However, the size of other rows and columns is still calculated as though the cells in the collapsed row(s) or column(s) are present. This value allows for the fast removal of a row or column from a table without forcing the recalculation of widths and heights for the entire table.
+    - Collapsed flex items and ruby annotations are hidden, and the space they would have occupied is removed.
+    - For other elements, `collapse` is treated the same as `hidden`.
 
-### 형식 구문
+## Accessibility concerns
 
-{{csssyntax}}
+Using a `visibility` value of `hidden` on an element will remove it from the [accessibility tree](/en-US/docs/Learn/Accessibility/What_is_accessibility#accessibility_apis). This will cause the element and all its descendant elements to no longer be announced by screen reading technology.
 
-## 보간
+## Interpolation
 
-가시성은 **보여짐**과 **보이지 않음** 사이에서 보간할 수 있습니다. 따라서 시작이나 종료 값이 `visible`이 아니면 보간할 수 없습니다. 가시성 값은 이산값을 사용하며 `0`은 `hidden`, `0` 초과 `1` 이하의 모든 값은 `visible`에 맵핑됩니다. 범위 밖의 값(`cubic-bezier()` 함수의 y값이 \[0, 1]을 벗어날 때만 트랜지션의 시작과 종료 시 발생)은 `0`과 `1` 중 더 가까운 값으로 취급합니다.
+When animated, visibility values are interpolated between _visible_ and _not-visible_. One of the start or ending values must therefore be `visible` or no {{Glossary("interpolation")}} can happen. The value is interpolated as a discrete step, where values of the timing function between `0` and `1` map to `visible` and other values of the timing function (which occur only at the start/end of the transition or as a result of `cubic-bezier()` functions with y values outside of \[0, 1]) map to the closer endpoint.
 
-## 예제
+## Notes
 
-### 기본 예제
+- Support for `visibility: collapse` is missing or partially incorrect in some modern browsers. It may not be correctly treated like `visibility: hidden` on elements other than table rows and columns.
+- `visibility: collapse` may change the layout of a table if the table has nested tables within the cells that are collapsed, unless `visibility: visible` is specified explicitly on nested tables.
+
+## Formal definition
+
+{{CSSInfo}}
+
+## Formal syntax
+
+{{CSSSyntax}}
+
+## Examples
+
+### Basic example
 
 #### HTML
 
 ```html
-<p class="visible">첫 번째 문단은 보입니다.</p>
-<p class="not-visible">두 번째 문단은 보이지 않습니다.</p>
-<p class="visible">세 번째 문단은 보입니다. 두 번째 문단이 여전히 공간을 차지하고 있어요.</p>
+<p class="visible">The first paragraph is visible.</p>
+<p class="not-visible">The second paragraph is NOT visible.</p>
+<p class="visible">
+  The third paragraph is visible. Notice the second paragraph is still occupying
+  space.
+</p>
 ```
 
 #### CSS
@@ -73,9 +93,9 @@ visibility: unset;
 }
 ```
 
-{{EmbedLiveSample('기본_예제')}}
+{{EmbedLiveSample('Basic_example')}}
 
-### 표 예제
+### Table example
 
 #### HTML
 
@@ -115,23 +135,16 @@ td {
 }
 ```
 
-{{EmbedLiveSample('표_예제')}}
+{{EmbedLiveSample('Table_example')}}
 
-## 접근성 고려사항
-
-`visibility` 값을 `hidden`으로 설정한 요소는 [접근성 트리](/ko/docs/Learn/Accessibility/What_is_accessibility#Accessibility_APIs)에서 제외됩니다. 즉 해당 요소와, 그 모든 자손 요소는 스크린 리더가 읽지 않습니다.
-
-## 참고
-
-- 일부 현대 브라우저에서는 `visibility: collapse`를 지원하지 않거나 잘못 지원합니다. 따라서 표의 행과 열이 아닌 요소에 사용했을 때 `visibility: hidden`과 똑같이 취급하지 않을 수도 있습니다.
-- `visibility: collapse`를 적용한 칸에 중첩해서 다른 표가 존재하면 바깥 표의 레이아웃이 바뀔 수도 있습니다. 이를 방지하려면 중첩된 표에 `visibility: visible`을 명시해야 합니다.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-{{cssinfo}}
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- {{cssxref("display")}}

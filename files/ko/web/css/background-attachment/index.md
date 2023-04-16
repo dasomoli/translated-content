@@ -1,59 +1,62 @@
 ---
 title: background-attachment
 slug: Web/CSS/background-attachment
+page-type: css-property
+browser-compat: css.properties.background-attachment
 ---
 
 {{CSSRef}}
 
-[CSS](/ko/docs/CSS) **`background-attachment`** 속성은 배경 이미지를 {{glossary("viewport", "뷰포트")}} 내에서 고정할지, 아니면 자신의 컨테이닝 블록과 함께 스크롤할지 지정합니다.
+The **`background-attachment`** [CSS](/en-US/docs/Web/CSS) property sets whether a background image's position is fixed within the {{glossary("viewport")}}, or scrolls with its containing block.
 
 {{EmbedInteractiveExample("pages/css/background-attachment.html")}}
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
 background-attachment: scroll;
 background-attachment: fixed;
 background-attachment: local;
 
-/* 전역 값 */
+/* Global values */
 background-attachment: inherit;
 background-attachment: initial;
+background-attachment: revert;
+background-attachment: revert-layer;
 background-attachment: unset;
 ```
 
-`background-attachment` 속성은 다음 목록의 키워드 중 하나를 선택해 지정할 수 있습니다.
+The `background-attachment` property is specified as one of the keyword values from the list below.
 
-### 값
+### Values
 
 - `fixed`
-  - : 배경을 뷰포트에 대해 고정합니다. 요소에 스크롤이 존재해도 배경은 함께 스크롤되지 않습니다. 이 값은 {{cssxref("background-clip", "background-clip: text", "#text")}}와 호환되지 않습니다.
+  - : The background is fixed relative to the viewport. Even if an element has a scrolling mechanism, the background doesn't move with the element. (This is not compatible with {{cssxref("background-clip", "background-clip: text", "#values")}}.)
 - `local`
-  - : 배경을 요소 콘텐츠에 대해 고정합니다. 요소에 스크롤이 존재하면 배경은 콘텐츠와 함께 스크롤됩니다. 배경 페인트 영역과 배경 위치 영역은 테두리 틀이 아닌 스크롤 가능 영역을 기준점으로 삼습니다.
+  - : The background is fixed relative to the element's contents. If the element has a scrolling mechanism, the background scrolls with the element's contents, and the background painting area and background positioning area are relative to the scrollable area of the element rather than to the border framing them.
 - `scroll`
-  - : 배경을 요소 자체에 대해 고정합니다. 요소에 스크롤이 존재해도 배경은 함께 스크롤되지 않습니다. 즉 요소의 테두리에 배경 이미지를 부착한 것과 같은 효과입니다.
+  - : The background is fixed relative to the element itself and does not scroll with its contents. (It is effectively attached to the element's border.)
 
-## 형식 정의
+## Formal definition
 
 {{cssinfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 간단한 예제
+### Simple example
 
 #### HTML
 
 ```html
 <p>
-  There were doors all round the hall, but they were all locked; and when
-  Alice had been all the way down one side and up the other, trying every
-  door, she walked sadly down the middle, wondering how she was ever to
-  get out again.
+  There were doors all round the hall, but they were all locked; and when Alice
+  had been all the way down one side and up the other, trying every door, she
+  walked sadly down the middle, wondering how she was ever to get out again.
 </p>
 ```
 
@@ -66,31 +69,29 @@ p {
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("간단한_예제")}}
+{{EmbedLiveSample("Simple_example")}}
 
-### 다중 배경 이미지
+### Multiple background images
 
-`background-attachment`는 다중 배경 이미지를 지원합니다. 각 배경에 대해 `<attachment>`를 지정하려면 쉼표로 구분하여 다수의 값을 제공하세요. 주어진 순서대로 배경에 적용합니다.
+This property supports multiple background images. You can specify a different `<attachment>` for each background, separated by commas. Each image is matched with the corresponding `<attachment>` type, from first specified to last.
 
 #### HTML
 
 ```html
 <p>
-  There were doors all round the hall, but they were all locked; and when
-  Alice had been all the way down one side and up the other, trying every
-  door, she walked sadly down the middle, wondering how she was ever to
-  get out again.
-
-  Suddenly she came upon a little three-legged table, all made of solid
-  glass; there was nothing on it except a tiny golden key, and Alice's
-  first thought was that it might belong to one of the doors of the hall;
-  but, alas! either the locks were too large, or the key was too small,
-  but at any rate it would not open any of them. However, on the second
-  time round, she came upon a low curtain she had not noticed before, and
-  behind it was a little door about fifteen inches high: she tried the
-  little golden key in the lock, and to her great delight it fitted!
+  There were doors all round the hall, but they were all locked; and when Alice
+  had been all the way down one side and up the other, trying every door, she
+  walked sadly down the middle, wondering how she was ever to get out again.
+  Suddenly she came upon a little three-legged table, all made of solid glass;
+  there was nothing on it except a tiny golden key, and Alice's first thought
+  was that it might belong to one of the doors of the hall; but, alas! either
+  the locks were too large, or the key was too small, but at any rate it would
+  not open any of them. However, on the second time round, she came upon a low
+  curtain she had not noticed before, and behind it was a little door about
+  fifteen inches high: she tried the little golden key in the lock, and to her
+  great delight it fitted!
 </p>
 ```
 
@@ -98,25 +99,24 @@ p {
 
 ```css
 p {
-  background-image: url("starsolid.gif"),
-      url("startransparent.gif");
+  background-image: url("starsolid.gif"), url("startransparent.gif");
   background-attachment: fixed, scroll;
   background-repeat: no-repeat, repeat-y;
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("다중_배경_이미지")}}
+{{EmbedLiveSample("Multiple_background_images")}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [한 번에 여러 배경 사용하기](/ko/docs/Web/CSS/CSS_Backgrounds_and_Borders/Using_multiple_backgrounds)
+- [Using multiple backgrounds](/en-US/docs/Web/CSS/CSS_Backgrounds_and_Borders/Using_multiple_backgrounds)

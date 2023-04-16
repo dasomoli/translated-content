@@ -1,34 +1,33 @@
 ---
-title: ServiceWorkerGlobalScope.clients
+title: "ServiceWorkerGlobalScope: clients property"
+short-title: clients
 slug: Web/API/ServiceWorkerGlobalScope/clients
+page-type: web-api-instance-property
+browser-compat: api.ServiceWorkerGlobalScope.clients
 ---
 
 {{APIRef("Service Workers API")}}
 
-{{domxref("ServiceWorkerGlobalScope")}} 인터페이스의 **`clients`** 읽기 전용 속성은 서비스 워커와 관련된 [`Clients`](/ko/docs/Web/API/Clients) 객체를 반환한다.
+The **`clients`** read-only property of the
+{{domxref("ServiceWorkerGlobalScope")}} interface returns the [`Clients`](/en-US/docs/Web/API/Clients)
+object associated with the service worker.
 
-## Syntax
+## Value
 
-```js
-swClients = self.clients
-```
+The {{domxref("Clients")}} object associated with the specific worker.
 
-### Value
-
-특정한 워커와 관련된 {{domxref("Clients")}} 객체.
-
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- [Using Service Workers](/ko/docs/Web/API/ServiceWorker_API/Using_Service_Workers)
-- [Service workers basic code example](https://github.com/mdn/sw-test)
+- [Using Service Workers](/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers)
+- [Service workers basic code example](https://github.com/mdn/dom-examples/tree/main/service-worker/simple-service-worker)
 - [Is ServiceWorker ready?](https://jakearchibald.github.io/isserviceworkerready/)
 - {{jsxref("Promise")}}
-- [Using web workers](/ko/docs/Web/Guide/Performance/Using_web_workers)
+- [Using web workers](/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)

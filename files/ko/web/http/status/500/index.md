@@ -1,31 +1,30 @@
 ---
 title: 500 Internal Server Error
 slug: Web/HTTP/Status/500
+page-type: http-status-code
+browser-compat: http.status.500
 ---
 
 {{HTTPSidebar}}
 
-하이퍼텍스트 전송 프로토콜 (HTTP) **`500 Internal Server Error`** 서버 에러 응답 코드는 요청을 처리하는
-과정에서 서버가 예상하지 못한 상황에 놓였다는 것을 나타냅니다.
+The HyperText Transfer Protocol (HTTP) **`500 Internal Server Error`** server error response code indicates that the server encountered an unexpected condition that prevented it from fulfilling the request.
 
-이 에러 응답은 "서버 에러를 총칭하는"(catch-all) 일반적인 응답입니다. 보통 이는 서버가 응답할 좀 더 좋은 5xx 에러 코드를
-못 찾은 것을 의미합니다. 종종 서버 관리자들은 미래에 같은 에러를 발생하는 것을 방지하기 위해 500 상태 코드 같은 에러 응답들에
-더 많은 자세한 내용을 남겨 둡니다.
+This error response is a generic "catch-all" response. Usually, this indicates the server cannot find a better 5xx error code to response. Sometimes, server administrators log error responses like the 500 status code with more details about the request to prevent the error from happening again in the future.
 
-## 상태
+## Status
 
 ```http
 500 Internal Server Error
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [HTTP/1.1: Status Code Definitions](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
+- [HTTP Status Code Definitions](https://httpwg.org/specs/rfc9110.html#status.500)

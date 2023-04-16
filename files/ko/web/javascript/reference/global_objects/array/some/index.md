@@ -1,75 +1,63 @@
 ---
 title: Array.prototype.some()
 slug: Web/JavaScript/Reference/Global_Objects/Array/some
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Array.some
 ---
 
 {{JSRef}}
 
-**`some()`** 메서드는 배열 안의 어떤 요소라도 주어진 판별 함수를 적어도 하나라도 통과하는지 테스트합니다. 만약 배열에서 주어진 함수가 true을 반환하면 true를 반환합니다. 그렇지 않으면 false를 반환합니다. 이 메서드는 배열을 변경하지 않습니다.
+The **`some()`** method tests whether
+at least one element in the array passes the test implemented by the provided
+function. It returns true if, in the array, it finds an element for which the provided function returns true; otherwise it returns false. It doesn't modify the array.
 
 {{EmbedInteractiveExample("pages/js/array-some.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
-// 화살표 함수
-some((element) => { /* … */ })
-some((element, index) => { /* … */ })
-some((element, index, array) => { /* … */ })
-
-// 콜백 함수
 some(callbackFn)
 some(callbackFn, thisArg)
-
-// 인라인 콜백 함수
-some(function (element) { /* … */ })
-some(function (element, index) { /* … */ })
-some(function (element, index, array) { /* … */ })
-some(function (element, index, array) { /* … */ }, thisArg)
 ```
 
-### 매개변수
+### Parameters
 
 - `callbackFn`
-  - : 배열의 각 요소에 대해 실행할 함수. 이 함수는 요소가 시험을 통과하면 [참 같은 값](/ko/docs/Glossary/Truthy)을 반환하며, 그렇지 않으면 거짓인 값을 반환합니다.
-
-  다음의 인자와 함께 함수를 호출합니다.
-
-  - `element`
-    - : 처리할 배열 내 현재 요소
-  - `index`
-    - : 처리할 현재 요소의 인덱스
-  - `array`
-    - : `some`을 호출한 배열
-
+  - : A function to execute for each element in the array. It should return a [truthy](/en-US/docs/Glossary/Truthy) value to indicate the element passes the test, and a [falsy](/en-US/docs/Glossary/Falsy) value otherwise. The function is called with the following arguments:
+    - `element`
+      - : The current element being processed in the array.
+    - `index`
+      - : The index of the current element being processed in the array.
+    - `array`
+      - : The array `some()` was called upon.
 - `thisArg` {{optional_inline}}
-  - : `callbackFn`을 실행할 때 `this`로 사용하는 값. [반복 메소드](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#iterative_methods)를 참고하세요.
+  - : A value to use as `this` when executing `callbackFn`. See [iterative methods](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#iterative_methods).
 
-### 반환 값
+### Return value
 
-콜백 함수가 적어도 배열 중 하나의 요소에 대해 {{Glossary("truthy", "참인 값")}}을 반환하면 `true`를 반환하며, 그렇지 않으면 `false`를 반환합니다.
+`true` if the callback function returns a {{Glossary("truthy")}} value for at least one element in the array. Otherwise, `false`.
 
-## 설명
+## Description
 
-`some` 메서드는 [반복 메서드](/ko/docs/Web/JavaScript/Reference/Global_Objects/Array#iterative_methods)입니다. 이 메서드는 주어진 `callbackFn`함수가 [참 같은 값](/ko/docs/Glossary/Truthy)을 반환할 때까지 배열 안에 있는 각각의 요소마다 한 번씩 호출합니다. 만약 그러한 요소를 찾았으면 `some()` 메서드는 그 즉시 `true`를 반환하며 배열 순회를 멈춥니다. 그렇지 않고 `callbackFn`이 모든 요소에 대해 [거짓같은 값](/ko/docs/Glossary/Falsy)을 반환하면 `some()`은 `false`를 반환합니다.
+The `some()` method is an [iterative method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#iterative_methods). It calls a provided `callbackFn` function once for each element in an array, until the `callbackFn` returns a [truthy](/en-US/docs/Glossary/Truthy) value. If such an element is found, `some()` immediately returns `true` and stops iterating through the array. Otherwise, if `callbackFn` returns a [falsy](/en-US/docs/Glossary/Falsy) value for all elements, `some()` returns `false`.
 
-`some()`은 수학에서 존재 한정자와 같은 역할을 합니다. 특히 빈 배열의 경우 모든 조건에 대해 `false`를 반환합니다.
+`some()` acts like the "there exists" quantifier in mathematics. In particular, for an empty array, it returns `false` for any condition.
 
-`callbackFn`는 값이 할당된 배열 인덱스에서만 실행됩니다. [희소 배열](/ko/docs/Web/JavaScript/Guide/Indexed_collections#sparse_arrays)의 빈 슬롯에서는 실행되지 않습니다.
+`callbackFn` is invoked only for array indexes which have assigned values. It is not invoked for empty slots in [sparse arrays](/en-US/docs/Web/JavaScript/Guide/Indexed_collections#sparse_arrays).
 
-`some()`은 호출된 배열의 값을 변경하지 않지만, 제공된 `callbackFn`에서는 가능합니다. 그럼에도 배열의 길이는 `callbackFn`의 첫 실행 이전에 저정된다는 점을 명심하시기 바랍니다.
+`some()` does not mutate the array on which it is called, but the function provided as `callbackFn` can. Note, however, that the length of the array is saved _before_ the first invocation of `callbackFn`. Therefore:
 
-- `callbackFn`은 `some()` 호출되어 시작할 당시 배열의 초기 길이를 넘어서는 요소는 방문하지 않습니다.
-- 이미 방문했던 인덱스를 변경해도 `callbackFn`은 해당 인덱스에 대해 `callbackFn`을 다시 실행하지 않습니다
-- 만약 존재하나 아직 방문하지 않은 배열의 요소는 `callbackFn`이 변경시킬 수 있습니다. 이 값은 `callbackFn`이 요소에 방문하는 시점에 `callbackFn`에 넘겨지는 값입니다. [삭제한](/ko/docs/Web/JavaScript/Reference/Operators/delete) 요소는 방문하지 않습니다.
+- `callbackFn` will not visit any elements added beyond the array's initial length when the call to `some()` began.
+- Changes to already-visited indexes do not cause `callbackFn` to be invoked on them again.
+- If an existing, yet-unvisited element of the array is changed by `callbackFn`, its value passed to the `callbackFn` will be the value at the time that element gets visited. [Deleted](/en-US/docs/Web/JavaScript/Reference/Operators/delete) elements are not visited.
 
-`some()` 메서드는 [제너릭](/ko/docs/Web/JavaScript/Reference/Global_Objects/Array#generic_array_methods)입니다. `this` 값에 `length` 속성과 정수 키 속성만 있으면 됩니다.
+The `some()` method is [generic](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#generic_array_methods). It only expects the `this` value to have a `length` property and integer-keyed properties.
 
-## 예제
+## Examples
 
-### 배열의 요소 테스트
+### Testing value of array elements
 
-다음 예제는 배열 내 요소 중 하나라도 10보다 큰지 판별합니다.
+The following example tests whether any element in the array is bigger than 10.
 
 ```js
 function isBiggerThan10(element, index, array) {
@@ -80,18 +68,19 @@ function isBiggerThan10(element, index, array) {
 [12, 5, 8, 1, 4].some(isBiggerThan10); // true
 ```
 
-### 화살표 함수를 사용한 배열의 요소 테스트
+### Testing array elements using arrow functions
 
-[화살표 함수](/ko/docs/Web/JavaScript/Reference/Functions/Arrow_functions)는 같은 테스트에 대해 더 짧은 구문을 제공합니다.
+[Arrow functions](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
+provide a shorter syntax for the same test.
 
 ```js
 [2, 5, 8, 1, 4].some((x) => x > 10); // false
 [12, 5, 8, 1, 4].some((x) => x > 10); // true
 ```
 
-### 값이 배열 내 존재하는지 확인
+### Checking whether a value exists in an array
 
-`includes()` 메서드의 기능을 모방하기 위해 이 사용자 지정 함수는 요소가 배열에 있는 경우 `true` 반환합니다.
+To mimic the function of the `includes()` method, this custom function returns `true` if the element exists in the array:
 
 ```js
 const fruits = ["apple", "banana", "mango", "guava"];
@@ -104,7 +93,7 @@ checkAvailability(fruits, "kela"); // false
 checkAvailability(fruits, "banana"); // true
 ```
 
-### 어떠한 값이건 불리언으로 변환
+### Converting any value to Boolean
 
 ```js
 const TRUTHY_VALUES = [true, "true", 1];
@@ -123,9 +112,9 @@ getBoolean(1); // true
 getBoolean("true"); // true
 ```
 
-### 희소 배열에 some() 사용하기
+### Using some() on sparse arrays
 
-`some()`은 빈 슬롯에 조건자를 실행하지 않습니다.
+`some()` will not run its predicate on empty slots.
 
 ```js
 console.log([1, , 3].some((x) => x === undefined)); // false
@@ -133,9 +122,9 @@ console.log([1, , 1].some((x) => x !== 1)); // false
 console.log([1, undefined, 1].some((x) => x !== 1)); // true
 ```
 
-### 배열이 아닌 객체에 some() 호출하기
+### Calling some() on non-array objects
 
-`some()` 메서드는 `this`의 `length` 속성을 읽고 객체의 마지막에 도달하거나 `callbackFn`이 `true`를 반환할 때 까지 정수 인덱스로 접근합니다.
+The `some()` method reads the `length` property of `this` and then accesses each integer index until the end is reached or `callbackFn` returns `true`.
 
 ```js
 const arrayLike = {
@@ -148,15 +137,15 @@ console.log(Array.prototype.some.call(arrayLike, (x) => typeof x === "number"));
 // false
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - [Polyfill of `Array.prototype.some` in `core-js`](https://github.com/zloirock/core-js#ecmascript-array)
 - {{jsxref("Array.prototype.every()")}}

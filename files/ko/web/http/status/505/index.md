@@ -1,22 +1,26 @@
 ---
 title: 505 HTTP Version Not Supported
 slug: Web/HTTP/Status/505
+page-type: http-status-code
+spec-urls: https://httpwg.org/specs/rfc9110.html#status.505
 ---
 
 {{HTTPSidebar}}
 
-**`505 HTTP Version Not Supported`** 응답 코드는 요청에 사용된 HTTP 버전을 서버가 지원하지 않음을 의미합니다
+The HyperText Transfer Protocol (HTTP)
+**`505 HTTP Version Not Supported`** response status code
+indicates that the HTTP version used in the request is not supported by the server.
 
-## 상태
+## Status
 
 ```http
 505 HTTP Version Not Supported
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 같이 보기
+## See also
 
 - {{HTTPHeader("Upgrade")}}

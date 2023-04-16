@@ -1,332 +1,360 @@
 ---
-title: 연산자 우선순위
-slug: Web/JavaScript/Reference/Operators/Operator_Precedence
+title: Operator precedence
+slug: Web/JavaScript/Reference/Operators/Operator_precedence
+page-type: guide
 ---
+
 {{jsSidebar("Operators")}}
 
-**연산자 우선순위**는 연산자를 실행하는 순서를 결정합니다. 우선순위가 높은 연산자가 먼저 실행됩니다.
+**Operator precedence** determines how operators are parsed concerning each other. Operators with higher precedence become the operands of operators with lower precedence.
 
 {{EmbedInteractiveExample("pages/js/expressions-operatorprecedence.html")}}
 
-## 우선순위와 결합성
+## Precedence And Associativity
 
-아래와 같이 표현할 수 있는 표현식을 생각해 봅시다. 연산자1과 연산자2의 자리에는 아무 연산자를 넣을 수 있습니다.
+Consider an expression describable by the representation below, where both `OP1` and `OP2` are fill-in-the-blanks for OPerators.
 
+```plain
+a OP1 b OP2 c
 ```
-a 연산자1 b 연산자2 c
+
+The combination above has two possible interpretations:
+
+```plain
+(a OP1 b) OP2 c
+a OP1 (b OP2 c)
 ```
 
-두 연산자의 우선순위(아래 표 참조)가 다를 경우, 우선순위가 높은 연산자가 먼저 실행되고 결합성은 영향을 미치지 않습니다. 아래 예제에서는 덧셈이 곱셈보다 먼저 쓰였음에도 곱셈의 우선순위가 높기 때문에 먼저 실행됩니다.
+Which one the language decides to adopt depends on the identity of `OP1` and `OP2`.
+
+If `OP1` and `OP2` have different precedence levels (see the table below), the operator with the higher _precedence_ goes first and associativity does not matter. Observe how multiplication has higher precedence than addition and executed first, even though addition is written first in the code.
+
+```js-nolint
+console.log(3 + 10 * 2); // 23
+console.log(3 + (10 * 2)); // 23, because parentheses here are superfluous
+console.log((3 + 10) * 2); // 26, because the parentheses change the order
+```
+
+Within operators of the same precedence, the language groups them by _associativity_. _Left-associativity_ (left-to-right) means that it is interpreted as `(a OP1 b) OP2 c`, while _right-associativity_ (right-to-left) means it is interpreted as `a OP1 (b OP2 c)`. Assignment operators are right-associative, so you can write:
 
 ```js
-console.log(3 + 10 * 2);   // 23을 출력
-console.log(3 + (10 * 2)); // 23을 출력, 괄호는 불필요함
-console.log((3 + 10) * 2); // 26을 출력, 괄호로 인해 실행 순서가 바뀜
+a = b = 5; // same as writing a = (b = 5);
 ```
 
-좌결합성(왼쪽에서 오른쪽으로)은 표현식이 `(a 연산자1 b) 연산자2 c`와 같이, 우결합성(오른쪽에서 왼쪽으로)은 `a 연산자1 (b 연산자2 c)`와 같이 계산된다는 의미입니다. 대입 연산자는 우결합성이므로 다음과 같은 코드를 작성할 수 있습니다.
+with the expected result that `a` and `b` get the value 5. This is because the assignment operator returns the value that is assigned. First, `b` is set to 5. Then the `a` is also set to 5 — the return value of `b = 5`, a.k.a. right operand of the assignment.
+
+As another example, the unique exponentiation operator has right-associativity, whereas other arithmetic operators have left-associativity.
+
+```js-nolint
+const a = 4 ** 3 ** 2; // Same as 4 ** (3 ** 2); evaluates to 262144
+const b = 4 / 3 / 2; // Same as (4 / 3) / 2; evaluates to 0.6666...
+```
+
+Operators are first grouped by precedence, and then, for adjacent operators that have the same precedence, by associativity. So, when mixing division and exponentiation, the exponentiation always comes before the division. For example, `2 ** 3 / 3 ** 2` results in 0.8888888888888888 because it is the same as `(2 ** 3) / (3 ** 2)`.
+
+For prefix unary operators, suppose we have the following pattern:
+
+```plain
+OP1 a OP2 b
+```
+
+where `OP1` is a prefix unary operator and `OP2` is a binary operator. If `OP1` has higher precedence than `OP2`, then it would be grouped as `(OP1 a) OP2 b`; otherwise, it would be `OP1 (a OP2 b)`.
 
 ```js
-a = b = 5; // a = (b = 5);와 같음
+const a = 1;
+const b = 2;
+typeof a + b; // Equivalent to (typeof a) + b; result is "number2"
 ```
 
-이때 대입 연산자는 대입된 값을 반환하므로 `a`와 `b`의 값이 5가 됨을 예상할 수 있습니다. 우선 `b`의 값이 5로 설정되고, 그 다음에는 `a`의 값이 우변인 `b = 5`의 반환값 5로 설정됩니다.
+If the unary operator is on the second operand:
 
-다른 예시로, 좌결합성인 다른 산술 연산자와 달리 거듭제곱 연산자 (`**`)만은 우결합성입니다. 흥미로운 점으로 표현식의 평가는 결합성과 무관하게 항상 왼쪽에서 오른쪽으로 진행됩니다.
-
-<table class="standard-table">
-  <tbody>
-    <tr>
-      <td>코드</td>
-      <td>출력</td>
-    </tr>
-    <tr>
-      <td>
-        <pre class="brush: js">
-function echo(name, num) {
-    console.log(name + " 항 평가함");
-    return num;
-}
-// 나눗셈 연산자 (/)에 주목
-console.log(echo("첫째", 6) / echo("둘째", 2));
-</pre
-        >
-      </td>
-      <td>
-        <pre>
-첫째 항 평가함
-둘째 항 평가함
-3
-</pre
-        >
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <pre class="brush: js">
-function echo(name, num) {
-    console.log(name + " 항 평가함");
-    return num;
-}
-// 거듭제곱 연산자 (**)에 주목
-console.log(echo("첫째", 2) ** echo("둘째", 3));</pre
-        >
-      </td>
-      <td>
-        <pre>
-첫째 항 평가함
-둘째 항 평가함
-8</pre
-        >
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-여러 연산자의 우선순위가 같을 때는 결합성을 고려합니다. 위에서와 같이 연산자가 하나이거나 연산자끼리 우선순위가 다를 경우에는 결합성이 결과에 영향을 미치지 않습니다. 아래의 예제에서 같은 종류의 연산자를 여러 번 사용했을 때 결합성이 결과에 영향을 미치는 것을 확인할 수 있습니다.
-
-<table class="standard-table">
-  <tbody>
-    <tr>
-      <td>코드</td>
-      <td>출력</td>
-    </tr>
-    <tr>
-      <td>
-        <pre class="brush: js">
-function echo(name, num) {
-    console.log(name + " 항 평가함");
-    return num;
-}
-// 나눗셈 연산자 (/)에 주목
-console.log(echo("첫째", 6) / echo("둘째", 2) / echo("셋째", 3));
-</pre
-        >
-      </td>
-      <td>
-        <pre>
-첫째 항 평가함
-둘째 항 평가함
-셋째 항 평가함
-1
-</pre
-        >
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <pre class="brush: js">
-function echo(name, num) {
-    console.log(name + " 항 평가함");
-    return num;
-}
-// 거듭제곱 연산자 (**)에 주목
-console.log(echo("첫째", 2) ** echo("둘째", 3) ** echo("셋째", 2));
-</pre
-        >
-      </td>
-      <td>
-        <pre>
-첫째 항 평가함
-둘째 항 평가함
-셋째 항 평가함
-512
-</pre
-        >
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <pre class="brush: js">
-function echo(name, num) {
-    console.log(name + " 항 평가함");
-    return num;
-}
-// 첫 번째 거듭제곱 연산자 주변의 괄호에 주목
-console.log((echo("첫째", 2) ** echo("둘째", 3)) ** echo("셋째", 2));</pre
-        >
-      </td>
-      <td>
-        <pre>
-첫째 항 평가함
-둘째 항 평가함
-셋째 항 평가함
-64</pre
-        >
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-위의 예제에서 나눗셈은 좌결합성이므로 `6 / 3 / 2`는 `(6 / 3) / 2`와 같습니다. 한편 거듭제곱은 우결합성이므로 `2 ** 3 ** 2`는 `2 ** (3 ** 2)`와 같습니다. 그러므로 `(2 ** 3) ** 2`는 괄호로 인해 실행 순서가 바뀌기 때문에 위 표와 같이 64로 평가됩니다.
-
-우선순위는 결합성보다 항상 우선하므로, 거듭제곱과 나눗셈을 같이 사용하면 나눗셈보다 거듭제곱이 먼저 계산됩니다. 예를 들어 `2 ** 3 / 3 ** 2`는 `(2 ** 3) / (3 ** 2)`와 같으므로 0.8888888888888888로 계산됩니다.
-
-## 예제
-
-```js
-3 > 2 && 2 > 1
-// true를 반환
-
-3 > 2 > 1
-// 3 > 2는 true인데, 부등호 연산자에서 true는 1로 변환되므로
-// true > 1은 1 > 1이 되고, 이는 거짓이다.
-// 괄호를 추가하면 (3 > 2) > 1과 같다.
+```plain
+a OP2 OP1 b
 ```
 
-## 그룹화와 단락에 대한 참고사항
+Then the binary operator `OP2` must have lower precedence than the unary operator `OP1` for it to be grouped as `a OP2 (OP1 b)`. For example, the following is invalid:
 
-아래 표에서 그룹화는 우선 순위가 가장 높은 것으로 나열됩니다. 그러나 이것이 항상 그룹화 기호`( … )` 내의 표현식이, 특히 단락과 관련하여 먼저 평가된다는 것을 의미하지는 않습니다.
-
-단락은 조건부 평가의 전문 용어입니다. 예를 들어 표현식 `a &&(b + c)`에서 `a`가 {{Glossary("falsy")}}이면 하위 표현식`(b + c)`은 괄호 안에 있어도 평가되지 않습니다. 논리 분리 연산자("OR")가 "단락"되었다고 말할 수 있습니다. 논리적 분리와 함께 다른 단락 연산자에는 논리적 연결("AND"), nullish-coalescing, 선택적 연결 및 조건부 연산자가 포함됩니다. 몇 가지 예가 더 있습니다.
-
-```js
-a || (b * c);  // `a`를 먼저 평가하고, `a`가 "truthy"라면  `a`를 생성합니다.
-a && (b < c);  // `a`를 먼저 평가하고, `a`가 "falsy"라면  `a`를 생성합니다.
-a ?? (b || c); // `a`를 먼저 평가하고, `a`가 `null`과 `undefined`가 아니라면 `a`를 생성합니다. 
-a?.b.c;        // `a`를 먼저 평가하고, `a`가 `null`또는 `undefined`라면 `undefined`를 생성합니다.
+```js example-bad
+function* foo() {
+  a + yield 1;
+}
 ```
 
-## 표
+Because `+` has higher precedence than [`yield`](/en-US/docs/Web/JavaScript/Reference/Operators/yield), this would become `(a + yield) 1` — but because `yield` is a [reserved word](/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#keywords) in generator functions, this would be a syntax error. Luckily, most unary operators have higher precedence than binary operators and do not suffer from this pitfall.
 
-다음 표는 우선순위 내림차순(19부터 1까지)으로 정렬되어 있습니다.
+If we have two prefix unary operators:
+
+```plain
+OP1 OP2 a
+```
+
+Then the unary operator closer to the operand, `OP2`, must have higher precedence than `OP1` for it to be grouped as `OP1 (OP2 a)`. It's possible to get it the other way and end up with `(OP1 OP2) a`:
+
+```js example-bad
+async function* foo() {
+  await yield 1;
+}
+```
+
+Because [`await`](/en-US/docs/Web/JavaScript/Reference/Operators/await) has higher precedence than [`yield`](/en-US/docs/Web/JavaScript/Reference/Operators/yield), this would become `(await yield) 1`, which is awaiting an identifier called `yield`, and a syntax error. Similarly, if you have `new !A;`, because `!` has lower precedence than `new`, this would become `(new !) A`, which is obviously invalid. (This code looks nonsensical to write anyway, since `!A` always produces a boolean, not a constructor function.)
+
+For postfix unary operators (namely, `++` and `--`), the same rules apply. Luckily, both operators have higher precedence than any binary operator, so the grouping is always what you would expect. Moreover, because `++` evaluates to a _value_, not a _reference_, you can't chain multiple increments together either, as you may do in C.
+
+```js example-bad
+let a = 1;
+a++++; // SyntaxError: Invalid left-hand side in postfix operation.
+```
+
+Operator precedence will be handled _recursively_. For example, consider this expression:
+
+```js-nolint
+1 + 2 ** 3 * 4 / 5 >> 6
+```
+
+First, we group operators with different precedence by decreasing levels of precedence.
+
+1. The `**` operator has the highest precedence, so it's grouped first.
+2. Looking around the `**` expression, it has `*` on the right and `+` on the left. `*` has higher precedence, so it's grouped first. `*` and `/` have the same precedence, so we group them together for now.
+3. Looking around the `*`/`/` expression grouped in 2, because `+` has higher precedence than `>>`, the former is grouped.
+
+```js-nolint
+   (1 + ( (2 ** 3) * 4 / 5) ) >> 6
+// │    │ └─ 1. ─┘        │ │
+// │    └────── 2. ───────┘ │
+// └────────── 3. ──────────┘
+```
+
+Within the `*`/`/` group, because they are both left-associative, the left operand would be grouped.
+
+```js-nolint
+   (1 + ( ( (2 ** 3) * 4 ) / 5) ) >> 6
+// │    │ │ └─ 1. ─┘     │    │ │
+// │    └─│─────── 2. ───│────┘ │
+// └──────│───── 3. ─────│──────┘
+//        └───── 4. ─────┘
+```
+
+Note that operator precedence and associativity only affect the order of evaluation of _operators_ (the implicit grouping), but not the order of evaluation of _operands_. The operands are always evaluated from left-to-right. The higher-precedence expressions are always evaluated first, and their results are then composed according to the order of operator precedence.
+
+```js-nolint
+function echo(name, num) {
+  console.log(`Evaluating the ${name} side`);
+  return num;
+}
+// Exponentiation operator (**) is right-associative,
+// but all call expressions (echo()), which have higher precedence,
+// will be evaluated before ** does
+console.log(echo("left", 4) ** echo("middle", 3) ** echo("right", 2));
+// Evaluating the left side
+// Evaluating the middle side
+// Evaluating the right side
+// 262144
+
+// Exponentiation operator (**) has higher precedence than division (/),
+// but evaluation always starts with the left operand
+console.log(echo("left", 4) / echo("middle", 3) ** echo("right", 2));
+// Evaluating the left side
+// Evaluating the middle side
+// Evaluating the right side
+// 0.4444444444444444
+```
+
+If you are familiar with binary trees, think about it as a [post-order traversal](https://en.wikipedia.org/wiki/Tree_traversal#Post-order,_LRN).
+
+```plain
+                /
+       ┌────────┴────────┐
+echo("left", 4)         **
+                ┌────────┴────────┐
+        echo("middle", 3)  echo("right", 2)
+```
+
+After all operators have been properly grouped, the binary operators would form a binary tree. Evaluation starts from the outermost group — which is the operator with the lowest precedence (`/` in this case). The left operand of this operator is first evaluated, which may be composed of higher-precedence operators (such as a call expression `echo("left", 4)`). After the left operand has been evaluated, the right operand is evaluated in the same fashion. Therefore, all leaf nodes — the `echo()` calls — would be visited left-to-right, regardless of the precedence of operators joining them.
+
+## Short-circuiting
+
+In the previous section, we said "the higher-precedence expressions are always evaluated first" — this is generally true, but it has to be amended with the acknowledgement of _short-circuiting_, in which case an operand may not be evaluated at all.
+
+Short-circuiting is jargon for conditional evaluation. For example, in the expression `a && (b + c)`, if `a` is {{Glossary("falsy")}}, then the sub-expression `(b + c)` will not even get evaluated, even if it is grouped and therefore has higher precedence than `&&`. We could say that the logical AND operator (`&&`) is "short-circuited". Along with logical AND, other short-circuited operators include logical OR (`||`), nullish coalescing (`??`), and optional chaining (`?.`).
+
+```js-nolint
+a || (b * c); // evaluate `a` first, then produce `a` if `a` is "truthy"
+a && (b < c); // evaluate `a` first, then produce `a` if `a` is "falsy"
+a ?? (b || c); // evaluate `a` first, then produce `a` if `a` is not `null` and not `undefined`
+a?.b.c; // evaluate `a` first, then produce `undefined` if `a` is `null` or `undefined`
+```
+
+When evaluating a short-circuited operator, the left operand is always evaluated. The right operand will only be evaluated if the left operand cannot determine the result of the operation.
+
+> **Note:** The behavior of short-circuiting is baked in these operators. Other operators would _always_ evaluate both operands, regardless if that's actually useful — for example, `NaN * foo()` will always call `foo`, even when the result would never be something other than `NaN`.
+
+The previous model of a post-order traversal still stands. However, after the left subtree of a short-circuiting operator has been visited, the language will decide if the right operand needs to be evaluated. If not (for example, because the left operand of `||` is already truthy), the result is directly returned without visiting the right subtree.
+
+Consider this case:
+
+```js-nolint
+function A() { console.log('called A'); return false; }
+function B() { console.log('called B'); return false; }
+function C() { console.log('called C'); return true; }
+
+console.log(C() || B() && A());
+
+// Logs:
+// called C
+// true
+```
+
+Only `C()` is evaluated, despite `&&` having higher precedence. This does not mean that `||` has higher precedence in this case — it's exactly _because_ `(B() && A())` has higher precedence that causes it to be neglected as a whole. If it's re-arranged as:
+
+```js-nolint
+console.log(A() && C() || B());
+// Logs:
+// called A
+// called B
+// false
+```
+
+Then the short-circuiting effect of `&&` would only prevent `C()` from being evaluated, but because `A() && C()` as a whole is `false`, `B()` would still be evaluated.
+
+However, note that short-circuiting does not change the final evaluation outcome. It only affects the evaluation of _operands_, not how _operators_ are grouped — if evaluation of operands doesn't have side effects (for example, logging to the console, assigning to variables, throwing an error), short-circuiting would not be observable at all.
+
+The assignment counterparts of these operators ([`&&=`](/en-US/docs/Web/JavaScript/Reference/Operators/Logical_AND_assignment), [`||=`](/en-US/docs/Web/JavaScript/Reference/Operators/Logical_OR_assignment), [`??=`](/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_assignment)) are short-circuited as well. They are short-circuited in a way that the assignment does not happen at all.
+
+## Table
+
+The following table lists operators in order from highest precedence (18) to lowest precedence (1).
+
+Several notes about the table:
+
+1. Not all syntax included here are "operators" in the strict sense. For example, spread `...` and arrow `=>` are typically not regarded as operators. However, we still included them to show how tightly they bind compared to other operators/expressions.
+2. The left operand of an exponentiation `**` (precedence 13) cannot be one of the unary operators with precedence 14 without grouping, or there will be a {{jsxref("SyntaxError")}}. That means, although `-1 ** 2` is technically unambiguous, the language requires you to use `(-1) ** 2` instead.
+3. The operands of nullish coalescing `??` (precedence 3) cannot be a logical OR `||` (precedence 3) or logical AND `&&` (precedence 4). That means you have to write `(a ?? b) || c` or `a ?? (b || c)`, instead of `a ?? b || c`.
+4. Some operators have certain operands that require expressions narrower than those produced by higher-precedence operators. For example, the right-hand side of member access `.` (precedence 17) must be an identifier instead of a grouped expression. The left-hand side of arrow `=>` (precedence 2) must be an arguments list or a single identifier instead of some random expression.
+5. Some operators have certain operands that accept expressions wider than those produced by higher-precedence operators. For example, the bracket-enclosed expression of bracket notation `[ … ]` (precedence 17) can be any expression, even comma (precedence 1) joined ones. These operators act as if that operand is "automatically grouped". In this case we will omit the associativity.
 
 <table class="fullwidth-table">
   <tbody>
     <tr>
-      <th>우선순위</th>
-      <th>연산자 유형</th>
-      <th>결합성</th>
-      <th>연산자</th>
+      <th>Precedence</th>
+      <th>Operator type</th>
+      <th>Associativity</th>
+      <th>Individual operators</th>
     </tr>
     <tr>
-      <td>19</td>
-      <td>{{jsxref("Operators/Grouping", "그룹", "", 1)}}</td>
-      <td>없음</td>
+      <td>18</td>
+      <td>
+        {{jsxref("Operators/Grouping", "Grouping", "", 1)}}
+      </td>
+      <td>n/a</td>
       <td><code>( … )</code></td>
     </tr>
     <tr>
-      <td rowspan="5">18</td>
+      <td rowspan="5">17</td>
       <td>
-        {{jsxref("Operators/Property_Accessors", "멤버 접근", "#점_표기법", 1)}}
+        {{jsxref("Operators/Property_accessors", "Member Access", "#Dot_notation",
+                1)}}
       </td>
-      <td>좌결합성</td>
+      <td rowspan="2">left-to-right</td>
       <td><code>… . …</code></td>
     </tr>
     <tr>
       <td>
-        {{jsxref("Operators/Property_Accessors", "계산된 멤버 접근","#괄호_표기법", "1")}}
+        <a
+          href="/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining"
+          >Optional chaining</a
+        >
       </td>
-      <td>좌결합성</td>
-      <td><code>… [ … ]</code></td>
+      <td><code>… ?. …</code></td>
     </tr>
     <tr>
       <td>
-        {{jsxref("Operators/new","new")}} (인자 리스트 제공)
+        {{jsxref("Operators/Property_accessors", "Computed Member
+                Access","#Bracket_notation", 1)}}
       </td>
-      <td>없음</td>
+      <td rowspan="3">n/a</td>
+      <td><code>… [ … ]</code></td>
+    </tr>
+    <tr>
+      <td>{{jsxref("Operators/new","new")}} (with argument list)</td>
       <td><code>new … ( … )</code></td>
     </tr>
     <tr>
       <td>
-        <a href="/ko/docs/Web/JavaScript/Guide/Functions">함수 호출</a>
+        <a href="/en-US/docs/Web/JavaScript/Guide/Functions">Function Call</a>
       </td>
-      <td>좌결합성</td>
       <td>
-        <code>… ( <var>… </var>)</code>
+        <code>… ( … )</code>
       </td>
     </tr>
     <tr>
+      <td>16</td>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Optional_chaining"
-          >옵셔널 체이닝</a
-        >
+        {{jsxref("Operators/new","new")}} (without argument list)
       </td>
-      <td>좌결합성</td>
-      <td><code>?.</code></td>
-    </tr>
-    <tr>
-      <td>17</td>
-      <td>
-        {{jsxref("Operators/new","new")}} (인자 리스트 생략)
-      </td>
-      <td>우결합성</td>
+      <td>n/a</td>
       <td><code>new …</code></td>
     </tr>
     <tr>
-      <td rowspan="2">16</td>
+      <td rowspan="2">15</td>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Increment"
-          >후위 증가</a
-        >
+        {{jsxref("Operators","Postfix
+                Increment","#increment_and_decrement", 1)}}
       </td>
-      <td rowspan="2">없음</td>
+      <td rowspan="2">n/a</td>
       <td><code>… ++</code></td>
     </tr>
     <tr>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Decrement"
-          >후위 감소</a
-        >
+        {{jsxref("Operators","Postfix
+                Decrement","#increment_and_decrement", 1)}}
       </td>
       <td><code>… --</code></td>
     </tr>
     <tr>
-      <td rowspan="10">15</td>
+      <td rowspan="10">14</td>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Logical_NOT"
-          >논리 NOT</a
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Logical_NOT"
+          >Logical NOT (!)</a
         >
       </td>
-      <td rowspan="10">우결합성</td>
+      <td rowspan="10">n/a</td>
       <td><code>! …</code></td>
     </tr>
     <tr>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Bitwise_NOT"
-          >비트 NOT</a
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Bitwise_NOT"
+          >Bitwise NOT (~)</a
         >
       </td>
       <td><code>~ …</code></td>
     </tr>
     <tr>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Unary_plus"
-          >단항 양부호</a
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Unary_plus"
+          >Unary plus (+)</a
         >
       </td>
       <td><code>+ …</code></td>
     </tr>
     <tr>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Unary_negation"
-          >단항 부정</a
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Unary_negation"
+          >Unary negation (-)</a
         >
       </td>
       <td><code>- …</code></td>
     </tr>
     <tr>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Increment"
-          >전위 증가</a
-        >
+        {{jsxref("Operators","Prefix
+                Increment","#increment_and_decrement", 1)}}
       </td>
       <td><code>++ …</code></td>
     </tr>
     <tr>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Decrement"
-          >전위 감소</a
-        >
+        {{jsxref("Operators","Prefix
+                Decrement","#increment_and_decrement", 1)}}
       </td>
       <td><code>-- …</code></td>
     </tr>
@@ -347,116 +375,109 @@ a?.b.c;        // `a`를 먼저 평가하고, `a`가 `null`또는 `undefined`라
       <td><code>await …</code></td>
     </tr>
     <tr>
-      <td>14</td>
+      <td>13</td>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Exponentiation"
-          >거듭제곱</a
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Exponentiation"
+          >Exponentiation (**)</a
         >
       </td>
-      <td>우결합성</td>
+      <td>right-to-left</td>
       <td><code>… ** …</code></td>
     </tr>
     <tr>
-      <td rowspan="3">13</td>
+      <td rowspan="3">12</td>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Multiplication"
-          >곱하기</a
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Multiplication"
+          >Multiplication (*)</a
         >
       </td>
-      <td colspan="1" rowspan="3">좌결합성</td>
+      <td rowspan="3">left-to-right</td>
       <td><code>… * …</code></td>
     </tr>
     <tr>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Division"
-          >나누기</a
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Division"
+          >Division (/)</a
         >
       </td>
       <td><code>… / …</code></td>
     </tr>
     <tr>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Remainder"
-          >나머지</a
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Remainder"
+          >Remainder (%)</a
         >
       </td>
       <td><code>… % …</code></td>
     </tr>
     <tr>
-      <td rowspan="2">12</td>
+      <td rowspan="2">11</td>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Addition"
-          >더하기</a
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Addition"
+          >Addition (+)</a
         >
       </td>
-      <td rowspan="2">좌결합성</td>
+      <td rowspan="2">left-to-right</td>
       <td><code>… + …</code></td>
     </tr>
     <tr>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Subtraction"
-          >빼기</a
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Subtraction"
+          >Subtraction (-)</a
         >
       </td>
       <td><code>… - …</code></td>
     </tr>
     <tr>
-      <td rowspan="3">11</td>
+      <td rowspan="3">10</td>
       <td>
-        <a href="/ko/docs/Web/JavaScript/Reference/Operators/Left_shift"
-          >비트 왼쪽 시프트</a
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Left_shift"
+          >Bitwise Left Shift (&#x3C;&#x3C;)</a
         >
       </td>
-      <td rowspan="3">좌결합성</td>
+      <td rowspan="3">left-to-right</td>
       <td><code>… &#x3C;&#x3C; …</code></td>
     </tr>
     <tr>
       <td>
-        <a href="/ko/docs/Web/JavaScript/Reference/Operators/Right_shift"
-          >비트 오른쪽 시프트</a
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Right_shift"
+          >Bitwise Right Shift (>>)</a
         >
       </td>
       <td><code>… >> …</code></td>
     </tr>
     <tr>
       <td>
-        <a href="/ko/docs/Web/JavaScript/Reference/Operators/Unsigned_right_shift"
-          >비트 부호 없는 오른쪽 시프트</a
+        <a
+          href="/en-US/docs/Web/JavaScript/Reference/Operators/Unsigned_right_shift"
+          >Bitwise Unsigned Right Shift (>>>)</a
         >
       </td>
       <td><code>… >>> …</code></td>
     </tr>
     <tr>
-      <td rowspan="6">10</td>
+      <td rowspan="6">9</td>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Less_than"
-          >미만</a
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Less_than"
+          >Less Than (&#x3C;)</a
         >
       </td>
-      <td rowspan="6">좌결합성</td>
+      <td rowspan="6">left-to-right</td>
       <td><code>… &#x3C; …</code></td>
     </tr>
     <tr>
       <td>
         <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Less_than_or_equal"
-          >이하</a
+          href="/en-US/docs/Web/JavaScript/Reference/Operators/Less_than_or_equal"
+          >Less Than Or Equal (&#x3C;=)</a
         >
       </td>
       <td><code>… &#x3C;= …</code></td>
     </tr>
     <tr>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Greater_than"
-          >초과</a
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Greater_than"
+          >Greater Than (>)</a
         >
       </td>
       <td><code>… > …</code></td>
@@ -464,8 +485,8 @@ a?.b.c;        // `a`를 먼저 평가하고, `a`가 `null`또는 `undefined`라
     <tr>
       <td>
         <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Greater_than_or_equal"
-          >이상</a
+          href="/en-US/docs/Web/JavaScript/Reference/Operators/Greater_than_or_equal"
+          >Greater Than Or Equal (>=)</a
         >
       </td>
       <td><code>… >= …</code></td>
@@ -479,30 +500,27 @@ a?.b.c;        // `a`를 먼저 평가하고, `a`가 `null`또는 `undefined`라
       <td><code>… instanceof …</code></td>
     </tr>
     <tr>
-      <td rowspan="4">9</td>
+      <td rowspan="4">8</td>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Equality"
-          >동등</a
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Equality"
+          >Equality (==)</a
         >
       </td>
-      <td rowspan="4">좌결합성</td>
+      <td rowspan="4">left-to-right</td>
       <td><code>… == …</code></td>
     </tr>
     <tr>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Inequality"
-          >부등</a
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Inequality"
+          >Inequality (!=)</a
         >
       </td>
       <td><code>… != …</code></td>
     </tr>
     <tr>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Strict_equality"
-          >일치</a
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality"
+          >Strict Equality (===)</a
         >
       </td>
       <td><code>… === …</code></td>
@@ -510,8 +528,8 @@ a?.b.c;        // `a`를 먼저 평가하고, `a`가 `null`또는 `undefined`라
     <tr>
       <td>
         <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Strict_inequality"
-          >불일치</a
+          href="/en-US/docs/Web/JavaScript/Reference/Operators/Strict_inequality"
+          >Strict Inequality (!==)</a
         >
       </td>
       <td><code>… !== …</code></td>
@@ -519,88 +537,71 @@ a?.b.c;        // `a`를 먼저 평가하고, `a`가 `null`또는 `undefined`라
     <tr>
       <td>7</td>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Bitwise_AND"
-          >비트 AND</a
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Bitwise_AND"
+          >Bitwise AND (&#x26;)</a
         >
       </td>
-      <td>좌결합성</td>
+      <td>left-to-right</td>
       <td><code>… &#x26; …</code></td>
-    </tr>
-    <tr>
-      <td>7</td>
-      <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Bitwise_XOR"
-          >비트 XOR</a
-        >
-      </td>
-      <td>좌결합성</td>
-      <td><code>… ^ …</code></td>
     </tr>
     <tr>
       <td>6</td>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Bitwise_OR"
-          >비트 OR</a
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Bitwise_XOR"
+          >Bitwise XOR (^)</a
         >
       </td>
-      <td>좌결합성</td>
-      <td><code>… | …</code></td>
+      <td>left-to-right</td>
+      <td><code>… ^ …</code></td>
     </tr>
     <tr>
       <td>5</td>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Logical_AND"
-          >논리 AND</a
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Bitwise_OR"
+          >Bitwise OR (|)</a
         >
       </td>
-      <td>좌결합성</td>
+      <td>left-to-right</td>
+      <td><code>… | …</code></td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Logical_AND"
+          >Logical AND (&#x26;&#x26;)</a
+        >
+      </td>
+      <td>left-to-right</td>
       <td><code>… &#x26;&#x26; …</code></td>
     </tr>
     <tr>
-      <td rowspan="2">4</td>
+      <td rowspan="2">3</td>
       <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Logical_OR"
-          >논리 OR</a
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Logical_OR"
+          >Logical OR (||)</a
         >
       </td>
-      <td>좌결합성</td>
+      <td rowspan="2">left-to-right</td>
       <td><code>… || …</code></td>
     </tr>
     <tr>
       <td>
         <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_operator"
-          >널 병합 연산자</a
+          href="/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing"
+          >Nullish coalescing operator (??)</a
         >
       </td>
-      <td>좌결합성</td>
       <td><code>… ?? …</code></td>
     </tr>
     <tr>
-      <td>3</td>
-      <td>
-        <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Conditional_Operator"
-          >조건 (삼항)</a
-        >
-      </td>
-      <td>우결합성</td>
-      <td><code>… ? … : …</code></td>
-    </tr>
-    <tr>
-      <td rowspan="18">2</td>
+      <td rowspan="21">2</td>
       <td rowspan="16">
         <a
-          href="/ko/docs/Web/JavaScript/Reference/Operators/Assignment_Operators"
-          >할당</a
+          href="/en-US/docs/Web/JavaScript/Reference/Operators#assignment_operators"
+          >Assignment</a
         >
       </td>
-      <td rowspan="16">우결합성</td>
+      <td rowspan="16">right-to-left</td>
       <td><code>… = …</code></td>
     </tr>
     <tr>
@@ -649,8 +650,28 @@ a?.b.c;        // `a`를 먼저 평가하고, `a`가 `null`또는 `undefined`라
       <td><code>… ??= …</code></td>
     </tr>
     <tr>
+      <td>
+        <a
+          href="/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_operator"
+          >Conditional (ternary) operator</a
+        >
+      </td>
+      <td>right-to-left<br />(Groups on expressions after <code>?</code>)</td>
+      <td><code>… ? … : …</code></td>
+    </tr>
+    <tr>
+      <td>
+        <a
+          href="/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions"
+          >Arrow (=>)</a
+        >
+      </td>
+      <td>right-to-left</td>
+      <td><code>… => …</code></td>
+    </tr>
+    <tr>
       <td>{{jsxref("Operators/yield", "yield")}}</td>
-      <td rowspan="2">우결합성</td>
+      <td rowspan="3">n/a</td>
       <td><code>yield …</code></td>
     </tr>
     <tr>
@@ -658,13 +679,21 @@ a?.b.c;        // `a`를 먼저 평가하고, `a`가 `null`또는 `undefined`라
       <td><code>yield* …</code></td>
     </tr>
     <tr>
-      <td>1</td>
       <td>
-        <a href="/ko/docs/Web/JavaScript/Reference/Operators/Comma_Operator"
-          >쉼표 / 시퀀스</a
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax"
+          >Spread (...)</a
         >
       </td>
-      <td>좌결합성</td>
+      <td><code>... …</code></td>
+    </tr>
+    <tr>
+      <td >1</td>
+      <td>
+        <a href="/en-US/docs/Web/JavaScript/Reference/Operators/Comma_operator"
+          >Comma / Sequence</a
+        >
+      </td>
+      <td>left-to-right</td>
       <td><code>… , …</code></td>
     </tr>
   </tbody>

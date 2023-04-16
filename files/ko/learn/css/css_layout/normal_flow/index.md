@@ -1,66 +1,82 @@
 ---
-title: 일반 대열
+title: Normal Flow
 slug: Learn/CSS/CSS_layout/Normal_Flow
-original_slug: Learn/CSS/CSS_layout/일반_흐름
 ---
 
 {{LearnSidebar}}
 
 {{PreviousMenuNext("Learn/CSS/CSS_layout/Introduction", "Learn/CSS/CSS_layout/Flexbox", "Learn/CSS/CSS_layout")}}
 
-이번 글에서는 normal flow, 다른 말로 만일 당신이 요소의 레이아웃을 변경하지 않을 시 웹페이지 요소가 자기 자신을 배치하는 방법에 관해 설명합니다.
+This article explains normal flow, or the way that webpage elements lay themselves out if you haven't changed their layout.
 
-<table class="learn-box standard-table">
+<table>
   <tbody>
     <tr>
-      <th scope="row">선결 사항:</th>
+      <th scope="row">Prerequisites:</th>
       <td>
-        HTML의 기초 (<a href="/ko/docs/Learn/HTML/Introduction_to_HTML"
-          >HTML에 대한 소개</a
-        >)와 CSS 작동 방식에 대한 개념(<a
-          href="/en-US/docs/Learn/CSS/Introduction_to_CSS"
-          >CSS 소개</a
-        >를 공부하세요.)
+        The basics of HTML (study
+        <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML"
+          >Introduction to HTML</a
+        >), and an idea of How CSS works (study
+        <a href="/en-US/docs/Learn/CSS/First_steps">Introduction to CSS</a>.)
       </td>
     </tr>
     <tr>
-      <th scope="row">목표:</th>
+      <th scope="row">Objective:</th>
       <td>
-        변경이 이뤄지기 전에 브라우저가 웹 페이지를 기본값으로 레이아웃하는
-        방법을 설명하기
+        To explain how browsers layout web pages by default, before we begin to
+        make changes.
       </td>
     </tr>
   </tbody>
 </table>
 
-이전 단원에서 상세히 기술한 바와 같이, 당신이 CSS를 적용하지 않을 경우 웹 페이지의 요소는 normal flow로 배치됩니다. 그리고 normal flow에 포함된 요소의 위치를 조정하거나 요소를 완전히 제거함으로써 요소가 동작하는 방법을 변경할 수 있습니다. 모든 웹 페이지를 시작하는 최상의 방법은 normal flow에서 읽기 가능하며, 견고하고 구조화된 문서로 시작하는 것입니다. 이렇게 하면 제한된 기능을 가진 브라우저를 사용하거나 페이지 콘텐츠를 소리 내 읽는 스크린 리더와 같은 장치를 사용하는 사용자들까지 읽을 수 있는(readable) 콘텐츠로 만들 수 있습니다. 또한, normal flow는 읽기 가능한 문서를 만들도록 마련된 것으로, 이를 출발점으로 삼아 레이아웃을 변경할 때 웹페이지 문서와 대립해 싸울 게 아니라 그것과 협력해서 작업하게 됩니다.
+As detailed in the last lesson introducing layout, elements on a webpage lay out in normal flow if you haven't applied any CSS to change the way they behave. And, as we began to discover, you can change how elements behave either by adjusting their position in normal flow or by removing them from it altogether. Starting with a solid, well-structured document that's readable in normal flow is the best way to begin any webpage. It ensures that your content is readable even if the user's using a very limited browser or a device such as a screen reader that reads out the content of the page. In addition, since normal flow is designed to make a readable document, by starting in this way you're working _with_ the document rather than struggling _against_ it as you make changes to the layout.
 
-서로 다른 레이아웃 메서드를 본격적으로 파헤치기 전에 일반 문서 흐름과 관련하여 이전 모듈에서 학습했던 내용 중의 일부를 복습하는 것도 가치가 있습니다.
+Before digging deeper into different layout methods, it's worth revisiting some of the things you have studied in previous modules with regard to normal document flow.
 
-## 기본값으로 요소들은 어떻게 배치되는가?
+## How are elements laid out by default?
 
-우선 개별 요소인 상자의 배치는 자신의 내용물을 채택하고, 그 주변에 패딩을 더하고, 테두리와 여백을 더하는 식으로 이뤄집니다. 다시 말해 앞서 살펴보았던 박스 모델과 같습니다.
+The process begins as the boxes of individual elements are laid out in such a way that any padding, border, or margin they happen to have is added to their content. This is what we call the **box model**.
 
-기본값으로 [블록 수준 요소](/ko/docs/Web/HTML/Block-level_elements)의 내용물은 자기 부모 요소의 너비 100%와 자체 내용물의 최대 높이가 됩니다. [인라인 요소](/ko/docs/Web/HTML/Inline_elements)는 자체 내용물의 최대 높이를 취하는 동시에 최대 너비를 취합니다. 인라인 요소에 너비나 높이를 설정할 수는 없습니다. 그들은 블록 수준 요소의 콘텐츠 내부에 들어앉았을 뿐입니다. 인라인 요소의 크기를 제어하려면 그것을 `display: block;` 속성값이나 양쪽의 성격이 혼합된 `display: inline-block;`을 가지고 블록 수준 요소처럼 행동하도록 설정할 필요가 있습니다.
+By default, a [block level element](/en-US/docs/Web/HTML/Block-level_elements)'s content fills the available inline space of the parent element containing it and the element grows along the block dimension to accommodate its content. The size of [inline elements](/en-US/docs/Web/HTML/Inline_elements) is just the size of their content. You can't set width or height on inline elements — they just sit inside the content of block level elements — except for images. Unlike other inline elements, images can be resized without changing their `display` property. If you want to control the size of an inline element in this manner, you need to set it to behave like a block level element (e.g., with `display: block;` or `display: inline-block;`, which mixes characteristics from both).
 
-앞서 살펴본 내용에서 개별 요소는 설명되지만, 여러 요소가 서로 상호 작용하는 방법은 어떻게 설명할까요? (레이아웃 입문서에서 언급했던) 일반 레이아웃의 flow는 브라우저의 뷰포트 안에 요소를 배치하는 시스템입니다. 기본값으로 블록 수준 요소의 배치는 부모의 [쓰기 모드](/ko/docs/Web/CSS/writing-mode)(_initial_: horizontal-tb)에 기초해 *블록 flow 방향*에 포함되어 이뤄집니다. 다시 말해 각 블록 요소는 마지막 요소 아래 새 줄에 나타나며, 각 요소에 주어진 margin에 의해 구분됩니다. 그러므로 영어 또는 여타 가로쓰기, 상단에서 하단으로 행갈이 하는 쓰기 모드와 블록 수준 요소는 수직으로 배치됩니다.
+That explains how elements are structured individually, but how about the way they're structured when they interact with one another? The normal layout flow (mentioned in the layout introduction article) is the system by which elements are placed inside the browser's viewport. By default, block-level elements are laid out in the _block flow direction_, which is based on the parent's [writing mode](/en-US/docs/Web/CSS/writing-mode) (_initial_: horizontal-tb). Each element will appear on a new line below the last one, with each one separated by whatever margin that's been specified. In English, for example, (or any other horizontal, top to bottom writing mode) block-level elements are laid out vertically.
 
-인라인 요소는 다르게 동작합니다. 새로운 줄에 나타나는 대신, 다른 요소와 같은 라인에 차례로 자리 잡습니다. 다만 인접(혹은 접힌) 텍스트 콘텐츠는 해당 부모의 블록 수준 요소의 너비 내에서 자신이 자리를 잡을 수 있는 공간이 있는 경우가 해당합니다. 충분한 공간이 없을 경우 overflow되는 텍스트 또는 요소는 새로운 줄에 나타납니다.
+Inline elements behave differently. They don't appear on new lines; instead, they all sit on the same line along with any adjacent (or wrapped) text content as long as there is space for them to do so inside the width of the parent block level element. If there isn't space, then the overflowing content will move down to a new line.
 
-두 개의 인접 요소가 모두 자체 여백이 지정되어 있다면 두 여백은 접촉하고 그중 큰 여백만 남게 되며, 작은 여백은 사라집니다. 이를 마진 축소(margin collapsing)라고 하며 이전에 확인해본 적이 있습니다.
+If two vertically adjacent elements both have a margin set on them and their margins touch, the larger of the two margins remains and the smaller one disappears. This is known as [**margin collapsing**](/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing).
+Collapsing margins is only relevant in the **vertical direction**.
 
-이 모든 것을 설명하는 간단한 예를 살펴봅시다.
+Let's look at a simple example that explains all of this:
 
 ```html
-<h1>기본 문서 flow</h1>
+<h1>Basic document flow</h1>
 
-<p>나는 기본 볼록 수준 요소입니다. 나와 인접한 블록 수준 요소는 내 아래 새 줄에 자리합니다.</p>
+<p>
+  I am a basic block level element. My adjacent block level elements sit on new
+  lines below me.
+</p>
 
-<p>기본값으로 우리는 우리 부모 요소의 너비 100%를 넘나들며, 우리 자녀 콘텐츠의 최대 높이를 취합니다. 우리의 총 너비와 총 높이는 우리의 콘텐츠 + 패딩 + 테두리 너비 및 높이입니다.</p>
+<p>
+  By default we span 100% of the width of our parent element, and we are as tall
+  as our child content. Our total width and height is our content + padding +
+  border width/height.
+</p>
 
-<p>우리는 여백으로 구분됩니다. 여백 축소로 때문에 우리의 여백 중의 하나의 너비로 구분됩니다. 두게의 여백이 아니라.</p>
+<p>
+  We are separated by our margins. Because of margin collapsing, we are
+  separated by the width of one of our margins, not both.
+</p>
 
-<p>인라인 요소 <span>이 것과 같은</span> 그리고 <span>이것이</span> 차례로 같은 라인에, 그리고 같은 라인에 공간이 있을 경우 인접한 텍스트 노드에 자리를 잡게 됩니다. 인라인 요소가 오버플로할 경우 <span>(이 경우와 같이 텍스트를 포함했을 경우) 가능하면 새 줄로 접혀들어갑니다.)</span>, 그렇지 않으면 새로운 라인으로 계속 진행할 것입니다. 이 이미지가 하는 것처럼: <img src="long.jpg"></p>
+<p>
+  Inline elements <span>like this one</span> and <span>this one</span> sit on
+  the same line along with adjacent text nodes, if there is space on the same
+  line. Overflowing inline elements will
+  <span>wrap onto a new line if possible (like this one containing text)</span>,
+  or just go on to a new line if not, much like this image will do:
+  <img src="long.jpg" alt="snippet of cloth" />
+</p>
 ```
 
 ```css
@@ -70,8 +86,8 @@ body {
 }
 
 p {
-  background: rgba(255,84,104,0.3);
-  border: 2px solid rgb(255,84,104);
+  background: rgba(255, 84, 104, 0.3);
+  border: 2px solid rgb(255, 84, 104);
   padding: 10px;
   margin: 10px;
 }
@@ -82,10 +98,12 @@ span {
 }
 ```
 
-{{ EmbedLiveSample('Normal_Flow', '100%', 500) }}
+{{ EmbedLiveSample('How_are_elements_laid_out_by_default', '100%', 600) }}
 
-## 요약정리
+## Summary
 
-이제 당신은 normal flow은 물론, 기본값으로 브라우저가 어떤 방식으로 사물을 배치하는지 이해했습니다. 당신의 디자인 필요에 따라 레이아웃을 만들기 위해 디스플레이 기본값을 변경하는 방법을 배우려면 다음 단계로 이동하세요.
+In this lesson you've learned the basics of normal flow — the default layout for CSS elements. By understanding how inline elements, block elements, and margins behave by default, it'll be easier to modify their behavior in the future.
+
+In the next article, we'll build on this knowledge by making changes to CSS elements using [flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox).
 
 {{PreviousMenuNext("Learn/CSS/CSS_layout/Introduction", "Learn/CSS/CSS_layout/Flexbox", "Learn/CSS/CSS_layout")}}

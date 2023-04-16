@@ -1,34 +1,37 @@
 ---
 title: 200 OK
 slug: Web/HTTP/Status/200
+page-type: http-status-code
+browser-compat: http.status.200
 ---
+
 {{HTTPSidebar}}
 
-HTTP **`200 OK`** 는 요청이 성공했음을 나타내는 성공 응답 상태 코드입니다. 200 응답은 기본적으로 캐시 가능합니다.
+The HTTP **`200 OK`** success status response code indicates that the request has succeeded. A 200 response is cacheable by default.
 
-성공의 의미는 다음과 같이 HTTP 요청 메서드에 따라 나뉩니다.
+The meaning of a success depends on the HTTP request method:
 
-- {{HTTPMethod("GET")}}: 리소스를 가져왔고 메시지 본문으로 전송되었다.
-- {{HTTPMethod("HEAD")}}: 메시지 본문 없이 표현 헤더가 응답에 포함되어 있다
-- {{HTTPMethod("POST")}}: 리소스가 명시하는 행동의 결과가 메시지 본문에 전송되었다.
-- {{HTTPMethod("TRACE")}}: 서버가 요청받은 메시지가 메시지 본문에 포함되어 있다.
+- {{HTTPMethod("GET")}}: The resource has been fetched and is transmitted in the message body.
+- {{HTTPMethod("HEAD")}}: The representation headers are included in the response without any message body
+- {{HTTPMethod("POST")}}: The resource describing the result of the action is transmitted in the message body
+- {{HTTPMethod("TRACE")}}: The message body contains the request message as received by the server.
 
-{{HTTPMethod("PUT")}} 또는 {{HTTPMethod("DELETE")}}의 성공 결과는 종종 `200 OK`가 아니라 {{HTTPStatus("204", "204 No Content")}} (리소스를 새로 생성한 경우 {{HTTPStatus("201", "201 Created")}}) 입니다.
+The successful result of a {{HTTPMethod("PUT")}} or a {{HTTPMethod("DELETE")}} is often not a `200 OK` but a {{HTTPStatus("204")}} `No Content` (or a {{HTTPStatus("201")}} `Created` when the resource is uploaded for the first time).
 
-## 상태
+## Status
 
-```
+```http
 200 OK
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [HTTP 요청 메서드](/ko/docs/Web/HTTP/Methods)
+- [HTTP request methods](/en-US/docs/Web/HTTP/Methods)

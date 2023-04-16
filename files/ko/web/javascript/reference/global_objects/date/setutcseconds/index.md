@@ -1,56 +1,65 @@
 ---
 title: Date.prototype.setUTCSeconds()
 slug: Web/JavaScript/Reference/Global_Objects/Date/setUTCSeconds
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.setUTCSeconds
 ---
 
 {{JSRef}}
 
-**setUTCSeconds()** 메서드는 표준시에 따라 지정된 날짜의 초를 설정합니다.
+The **`setUTCSeconds()`** method sets the seconds for a
+specified date according to universal time.
 
 {{EmbedInteractiveExample("pages/js/date-setutcseconds.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 setUTCSeconds(secondsValue)
 setUTCSeconds(secondsValue, msValue)
 ```
 
-### 매개변수
+### Parameters
 
 - `secondsValue`
-  - : 초를 나타내는 0에서 59 사이의 정수입니다.
+  - : An integer between 0 and 59, representing the seconds.
 - `msValue`
-  - : 선택적 입력 값. 밀리 초를 나타내는 0에서 999 사이의 숫자입니다.
+  - : Optional. A number between 0 and 999, representing the milliseconds.
 
-### 반환값
+### Return value
 
-1970년 1월 1일 00:00:00 UTC와 업데이트 된 날짜 사이의 밀리 초 숫자입니다.
+The number of milliseconds between 1 January 1970 00:00:00 UTC and the updated date.
 
-## 설명
+## Description
 
-`msValue` 매개 변수를 지정하지 않으면 {{jsxref("Date.prototype.getUTCMilliseconds()", "getUTCMilliseconds()")}} 메서드에서 반환 된 값이 사용됩니다.
+If you do not specify the `msValue` parameter, the value returned from the
+{{jsxref("Date.prototype.getUTCMilliseconds()", "getUTCMilliseconds()")}} method is
+used.
 
-지정한 매개 변수가 예상 범위를 벗어나면 `setUTCSeconds()`가 그에 따라 {{jsxref("Date")}} 객체의 날짜 정보를 업데이트하려고 시도합니다. 예를 들어, `secondsValue`에 100을 사용하면 {{jsxref("Date")}} 객체에 저장된 분이 1씩 증가하고 40초 동안 사용됩니다.
+If a parameter you specify is outside of the expected range,
+`setUTCSeconds()` attempts to update the date information in the
+{{jsxref("Date")}} object accordingly. For example, if you use 100 for
+`secondsValue`, the minutes stored in the {{jsxref("Date")}} object will be
+incremented by 1, and 40 will be used for seconds.
 
-## 예제
+## Examples
 
-### `setUTCSeconds()` 사용하기
+### Using setUTCSeconds()
 
 ```js
-var theBigDay = new Date();
+const theBigDay = new Date();
 theBigDay.setUTCSeconds(20);
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Date.prototype.getUTCSeconds()")}}
 - {{jsxref("Date.prototype.setSeconds()")}}

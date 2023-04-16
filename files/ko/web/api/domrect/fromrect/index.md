@@ -1,37 +1,44 @@
 ---
-title: DOMRect.fromRect()
+title: "DOMRect: fromRect() static method"
+short-title: fromRect()
 slug: Web/API/DOMRect/fromRect
+page-type: web-api-static-method
+browser-compat: api.DOMRect.fromRect
 ---
 
 {{APIRef("Geometry Interfaces")}}
 
-{{domxref("DOMRect")}} 객체의 **`fromRect()`** 정적 메서드는 주어진 좌표와 크기를 가진 새로운 `DOMRect` 객체를 반환합니다.
+The **`fromRect()`** static method of the
+{{domxref("DOMRect")}} object creates a new `DOMRect`
+object with a given location and dimensions.
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
+DOMRect.fromRect()
 DOMRect.fromRect(rectangle)
 ```
 
-### 매개변수
+### Parameters
 
 - `rectangle` {{optional_inline}}
 
-  - : 직사각형의 위치와 크기를 지정하는 객체입니다. 모든 속성의 기본 값은 `0`입니다. 포함할 수 있는 속성은 다음과 같습니다.
+  - : An object specifying the location and dimensions of a rectangle. All properties
+    default to `0`. The properties are:
 
-    - `x`: 직사각형 왼쪽 모서리의 좌표입니다.
-    - `y`: 직사각형 위쪽 모서리의 좌표입니다.
-    - `width`: 직사각형의 너비입니다.
-    - `height`: 직사각형의 높이입니다.
+    - `x`: The coordinate of the left side of the rectangle.
+    - `y`: The coordinate of the top side of the rectangle.
+    - `width`: The width of the rectangle.
+    - `height`: The height of the rectangle.
 
-### 반환 값
+### Return value
 
-{{domxref("DOMRect")}} 인스턴스.
+An instance of {{domxref("DOMRect")}}.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

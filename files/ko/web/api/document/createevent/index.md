@@ -1,29 +1,98 @@
 ---
-title: Event.createEvent()
+title: "Document: createEvent() method"
+short-title: createEvent()
 slug: Web/API/Document/createEvent
-original_slug: Web/API/Event/createEvent
+page-type: web-api-instance-method
+browser-compat: api.Document.createEvent
 ---
+
 {{APIRef("DOM")}}
 
-새로운 event를 생성합니다, 새로 만들어진 event는 반드시 자신의 init() method를 호출함으로써 초기화되어야만 합니다.
+> **Warning:** Many methods used with `createEvent`, such as `initCustomEvent`, are deprecated.
+> Use [event constructors](/en-US/docs/Web/API/CustomEvent) instead.
 
-### Syntax
+Creates an [event](/en-US/docs/Web/API/Event) of the type specified. The
+returned object should be first initialized and can then be passed to
+{{domxref("EventTarget.dispatchEvent")}}.
 
-```js
-document.createEvent(type)
+## Syntax
+
+```js-nolint
+createEvent(type)
 ```
+
+### Parameters
 
 - `type`
-  - : A string indicating the event type to create.
+  - : A string that represents the type of event to be created. Possible event types include `"UIEvents"`, `"MouseEvents"`, `"MutationEvents"`, and `"HTMLEvents"`. See [Notes](#notes) section for details.
 
-이 method는 명시된 타입인 새로운 DOM {{ domxref("Event") }} 객체를 반환하며 이는 반드시 사용 전에 초기화되어야만 합니다.
+### Return value
 
-### Example
+An [Event](/en-US/docs/Web/API/Event) object.
+
+## Examples
 
 ```js
-var newEvent = document.createEvent("UIEvents");
+// Create the event.
+const event = document.createEvent("Event");
+
+// Define that the event name is 'build'.
+event.initEvent("build", true, true);
+
+// Listen for the event.
+elem.addEventListener(
+  "build",
+  (e) => {
+    // e.target matches elem
+  },
+  false
+);
+
+// Target can be any Element or other EventTarget.
+elem.dispatchEvent(event);
 ```
 
-### Specification
+## Notes
 
-- [DOM Level 2 Events](http://www.w3.org/TR/DOM-Level-2-Events/events.html#Events-document)
+Event type strings suitable for passing to `createEvent()` are listed in the
+[DOM standard — see the table in step 2](https://dom.spec.whatwg.org/#dom-document-createevent). Bear in mind that most event objects now have constructors, which
+are the modern recommended way to create event object instances.
+
+Gecko supports some non-standard event object aliases, which are listed below.
+
+<table class="fullwidth-table">
+  <tbody>
+    <tr>
+      <th>Event Module</th>
+      <th>Standard event object</th>
+      <th>Gecko also supports</th>
+    </tr>
+    <tr>
+      <td>Text event module</td>
+      <td><code>TextEvent</code></td>
+      <td><code>TextEvents</code></td>
+    </tr>
+    <tr>
+      <td>Keyboard event module</td>
+      <td><code>KeyboardEvent</code></td>
+      <td><code>KeyEvents</code></td>
+    </tr>
+    <tr>
+      <td>Basic events module</td>
+      <td><code>Event</code></td>
+      <td><code>Events</code></td>
+    </tr>
+  </tbody>
+</table>
+
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
+
+{{Compat}}
+
+## See also
+
+- [Creating and triggering events](/en-US/docs/Web/Events/Creating_and_triggering_events)

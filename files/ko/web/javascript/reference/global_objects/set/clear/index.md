@@ -1,47 +1,54 @@
 ---
 title: Set.prototype.clear()
 slug: Web/JavaScript/Reference/Global_Objects/Set/clear
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Set.clear
 ---
 
 {{JSRef}}
 
-**`clear()`** 메서드는 `Set` 객체를 비웁니다.
+The **`clear()`** method removes all elements from a
+`Set` object.
 
 {{EmbedInteractiveExample("pages/js/set-prototype-clear.html")}}
 
-## 구문
+## Syntax
 
-```js
-mySet.clear();
+```js-nolint
+clear()
 ```
 
-## 예제
+### Return value
 
-### `clear()` 사용하기
+{{jsxref("undefined")}}.
+
+## Examples
+
+### Using the clear() method
 
 ```js
-var mySet = new Set();
+const mySet = new Set();
 mySet.add(1);
-mySet.add('foo');
+mySet.add("foo");
 
-mySet.size;       // 2
-mySet.has('foo'); // true
+console.log(mySet.size); // 2
+console.log(mySet.has("foo")); // true
 
 mySet.clear();
 
-mySet.size;       // 0
-mySet.has('bar')  // false
+console.log(mySet.size); // 0
+console.log(mySet.has("bar")); // false
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Set")}}
 - {{jsxref("Set.prototype.delete()")}}

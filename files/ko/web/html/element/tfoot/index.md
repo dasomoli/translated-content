@@ -1,120 +1,135 @@
 ---
-title: '<tfoot>: 표 바닥글 요소'
+title: "<tfoot>: The Table Foot element"
 slug: Web/HTML/Element/tfoot
+page-type: html-element
+browser-compat: html.elements.tfoot
 ---
 
 {{HTMLSidebar}}
 
-[HTML](/ko/docs/Web/HTML) 요소는 테이블의 열을 요약하는 행들의 집합입니다.
+The **`<tfoot>`** [HTML](/en-US/docs/Web/HTML) element defines a set of rows summarizing the columns of the table.
+
 {{EmbedInteractiveExample("pages/tabbed/tfoot.html","tabbed-taller")}}
+
+## Attributes
+
+This element includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
+
+### Deprecated attributes
+
+The following attributes are deprecated and should not be used. They are documented below for reference when updating existing code and for historical interest only.
+
+- `align` {{deprecated_inline}}
+
+  - : This [enumerated](/en-US/docs/Glossary/Enumerated) attribute specifies how horizontal alignment of each cell content will be handled. Possible values are:
+
+    - `left`, aligning the content to the left of the cell
+    - `center`, centering the content in the cell
+    - `right`, aligning the content to the right of the cell
+    - `justify`, inserting spaces into the textual content so that the content is justified in the cell
+    - `char`, aligning the textual content on a special character with a minimal offset, defined by the [`char`](#char) and [`charoff`](#charoff) attributes.
+
+    If this attribute is not set, the `left` value is assumed.
+
+    > **Note:**
+    >
+    > - To achieve the same effect as the `left`, `center`, `right` or `justify` values, use the CSS {{cssxref("text-align")}} property on it.
+    > - To achieve the same effect as the `char` value, in CSS, you can use the value of the [`char`](#char) as the value of the {{cssxref("text-align")}} property.
+
+- `bgcolor` {{Deprecated_inline}}
+
+  - : The background color of the table. It is a [6-digit hexadecimal RGB code](/en-US/docs/Web/CSS/hex-color), prefixed by a '`#`'. One of the predefined [color keywords](/en-US/docs/Web/CSS/named-color) can also be used.
+
+    To achieve a similar effect, use the CSS {{cssxref("background-color")}} property.
+
+- `char` {{deprecated_inline}}
+  - : This attribute specifies the alignment of the content in a column to a character. Typical values for this include a period (.) when attempting to align numbers or monetary values. If [`align`](#align) is not set to `char`, this attribute is ignored.
+- `charoff` {{deprecated_inline}}
+  - : This attribute is used to indicate the number of characters to offset the column data from the alignment characters specified by the `char` attribute.
+- `valign` {{deprecated_inline}}
+
+  - : This attribute specifies the vertical alignment of the text within each row of cells of the table footer. Possible values for this attribute are:
+
+    - `baseline`, which will put the text as close to the bottom of the cell as it is possible, but align it on the [baseline](https://en.wikipedia.org/wiki/Baseline_%28typography%29) of the characters instead of the bottom of them. If characters are all of the size, this has the same effect as `bottom`.
+    - `bottom`, which will put the text as close to the bottom of the cell as it is possible;
+    - `middle`, which will center the text in the cell;
+    - and `top`, which will put the text as close to the top of the cell as it is possible.
+
+    > **Note:** Do not use this attribute as it is obsolete (and not supported) in the latest standard: instead set the CSS {{cssxref("vertical-align")}} property on it.
+
+## Examples
+
+Please see the {{HTMLElement("table")}} page for examples on `<tfoot>`.
+
+## Technical summary
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
       </th>
-      <td>없음.</td>
+      <td>None.</td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
-      <td>0개 이상의 {{HTMLElement("tr")}} 요소.</td>
+      <th scope="row">Permitted content</th>
+      <td>Zero or more {{HTMLElement("tr")}} elements.</td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
+      <th scope="row">Tag omission</th>
       <td>
-        여는 태그는 필수입니다. 부모 {{HTMLElement("table")}} 요소에 더
-        이상의 컨텐츠가 없는 경우에는 닫는 태그를 생략할 수 있습니다.
+        The start tag is mandatory. The end tag may be omitted if there is no
+        more content in the parent {{HTMLElement("table")}} element.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Permitted parents</th>
       <td>
-        {{HTMLElement("table")}}요소. {{HTMLElement("tfoot")}}
-        요소는 무조건 {{HTMLElement("caption")}},
+        A {{HTMLElement("table")}} element. The
+        {{HTMLElement("tfoot")}} must appear after any
+        {{HTMLElement("caption")}},
         {{HTMLElement("colgroup")}}, {{HTMLElement("thead")}},
-        {{HTMLElement("tbody")}}, 또는 {{HTMLElement("tr")}} 요소
-        뒤에 위치해야 합니다. 이것이 HTML5에서의 요구 사항임에 주의해야
-        합니다.<br />HTML4에서는 {{HTMLElement("tfoot")}} 요소는
-        {{HTMLElement("tbody")}} 와 {{HTMLElement("tr")}} 요소의
-        뒤에 배치할 수 없습니다. 이것은 위의 HTML5에서의 요구 사항과 완전히
-        모순된다는 것에 주의해야 합니다.
+        {{HTMLElement("tbody")}}, or {{HTMLElement("tr")}}
+        element. Note that this is the requirement in HTML.<br />Originally, in HTML4, the opposite was true: the {{HTMLElement("tfoot")}} element could not be placed after any
+        {{HTMLElement("tbody")}} or {{HTMLElement("tr")}}
+        element.
       </td>
     </tr>
     <tr>
-      <th scope="row">암시적 ARIA 역할</th>
+      <th scope="row">Implicit ARIA role</th>
       <td>
         <code
-          ><a href="/ko/docs/Web/Accessibility/ARIA/Roles/Rowgroup_Role"
+          ><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/Rowgroup_Role"
             >rowgroup</a
           ></code
         >
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>모두</td>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>Any</td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLTableSectionElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
-
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)만 포함합니다.
-
-### 더 이상 사용하지 않는 특성
-
-다음 특성은 더 이상 사용되지 않으므로 사용해서는 안 됩니다. 이 특성들은 기존 코드를 업데이트할 때 참조하는 용도와, 역사적인 흥미를 위해서만 작성되어 있습니다.
-
-- {{htmlattrdef("align")}} {{deprecated_inline}}
-  - : 아래에 나열된 속성들은 각 셀 컨텐츠의 수평 정렬 방법을 지정합니다. 가능한 값:
-    - `left`, 컨텐츠를 셀의 왼쪽으로 정렬합니다.
-    - `center`, 컨텐츠를 셀의 가운데로 정렬합니다.
-    - `right`, 컨텐츠를 셀의 오른쪽으로 정렬합니다.
-    - `justify`, 컨텐츠가 셀의 양쪽으로 정렬되도록 텍스트 컨텐츠에 공백을 삽입합니다.
-    - `char`, {{htmlattrxref("char", "tbody")}} 와 {{htmlattrxref("charoff", "tbody")}} 특성에 의해 정해지는 최소 오프셋을 가진 특수 문자에 대해 텍스트 컨텐츠를 정렬합니다.
-    만약 값이 따로 할당되어 있지 않다면 `left` 가 기본값으로 지정됩니다.
-
-    > **주의:**
-    >
-    > - `left`, `center`, `right` 또는 `justify` 값과 같은 효과를 내고 싶다면, CSS {{cssxref("text-align")}} 속성을 적용하세요.
-    > - `char` 값과 같은 효과를 내고 싶다면, CSS3에서 {{htmlattrxref("char", "tfoot")}}의 값을 {{cssxref("text-align")}} 속성의 {{unimplemented_inline}} 값으로 사용할 수 있습니다.
-
-- {{htmlattrdef("bgcolor")}} {{Deprecated_inline}}
-  - : 표의 배경 색입니다. '`#`'이 앞에 붙는 [6자리의 16진수 RGB 코드](/ko/docs/Web/CSS/color_value#rgb_colors) 형식으로 작성합니다. 이미 정의되어 있는 [color keywords](/ko/docs/Web/CSS/color_value#color_keywords) 도 사용할 수 있습니다.
-비슷한 효과를 적용하고 싶다면 CSS {{cssxref("background-color")}} 속성을 사용합니다.
-- {{htmlattrdef("char")}} {{deprecated_inline}}
-  - : 이 특성은 열을 특정 문자에 대해 정렬하도록 지정합니다. 숫자 또는 통화 값을 정렬할 때에는 일반적으로 마침표(.)가 포함됩니다. 만약 {{htmlattrxref("align", "tfoot")}} 이 `char`로 설정되어 있지 않으면, 이 특성은 무시됩니다.
-- {{htmlattrdef("charoff")}} {{deprecated_inline}}
-  - : 이 특성은 `char` 특성으로 지정된 정렬 문자에서 열 데이터를 오프셋할 문자의 수를 나타내는 데 사용됩니다.
-- {{htmlattrdef("valign")}} {{deprecated_inline}}
-  - : 이 특성은 표 바닥글의 각 행 내에 있는 텍스트의 수직 정렬 방식을 지정합니다. 이 특성에 사용 가능한 값:
-- `baseline`, 텍스트를 가능한 한 셀의 하단에 가깝게, 하지만 텍스트의 [baseline](https://en.wikipedia.org/wiki/Baseline_%28typography%29) 에 맞춰 배치합니다. 만약 문자들의 크기가 모두 같다면, 이것은 `bottom`과 같은 효과를 가집니다.
-- `bottom`, 텍스트를 가능한 한 셀의 하단에 가깝게 배치합니다.
-- `middle`, 텍스트를 셀의 가운데에 배치합니다.
-- `top`, 텍스트를 가능한 한 셀의 상단에 가깝게 배치합니다.
-
-> **주의:** 이 속성은 최신 표준에서는 사용되지 않으며 지원되지 않으므로 사용하지 마십시오. 대신 CSS의 {{cssxref("vertical-align")}} 속성을 적용하세요.
-
-## 예제
-
-에 대한 예제는 {{HTMLElement("table")}}을 참고해 주세요.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 테이블과 관련된 다른 HTML 요소들: {{HTMLElement("caption")}}, {{HTMLElement("col")}}, {{HTMLElement("colgroup")}}, {{HTMLElement("table")}}, {{HTMLElement("tbody")}}, {{HTMLElement("td")}}, {{HTMLElement("th")}}, {{HTMLElement("thead")}}, {{HTMLElement("tr")}}.
-- `tfoot` 요소에 스타일을 지정할 때 특히 유용할 CSS 속성과 가상 클래스들:
-  - 각 열의 셀들을 정렬할 때 사용하는 {{cssxref(":nth-child")}} 가상 클래스.
-  - '.'같은 동일한 문자에 모든 셀 내용을 정렬할 때 사용하는 {{cssxref("text-align")}} 속성.
+- Other table-related HTML Elements: {{HTMLElement("caption")}}, {{HTMLElement("col")}}, {{HTMLElement("colgroup")}}, {{HTMLElement("table")}}, {{HTMLElement("tbody")}}, {{HTMLElement("td")}}, {{HTMLElement("th")}}, {{HTMLElement("thead")}}, {{HTMLElement("tr")}};
+- CSS properties and pseudo-classes that may be specially useful to style the `<tfoot>` element:
+
+  - the {{cssxref(":nth-child")}} pseudo-class to set the alignment on the cells of the column;
+  - the {{cssxref("text-align")}} property to align all cells content on the same character, like '.'.

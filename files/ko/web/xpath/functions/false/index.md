@@ -1,36 +1,36 @@
 ---
-title: 'false'
+title: "false"
 slug: Web/XPath/Functions/false
 ---
 
 {{ XsltRef() }}
 
-`false` 함수는 boolean false를 반환합니다.
+The `false` function returns boolean false.
 
-### 구문
+### Syntax
 
 ```
 false()
 ```
 
-### 반환
+### Returns
 
 Boolean `false`.
 
-### 주의
+### Notes
 
-이 함수는 비교(comparison)하는 부분에 쓸모가 있습니다.
+This function is useful part of a comparison:
 
-```
+```xml
 <xsl:if test="boolean((1 &gt; 2) = false())">
- The expression evaluates as true
+  The expression evaluates as true
 </xsl:if>
 ```
 
-### 정의
+### Defined
 
-[XPath 1.0 4.3](http://www.w3.org/TR/xpath#function-false)
+[XPath 1.0 4.3](https://www.w3.org/TR/1999/REC-xpath-19991116/#function-false)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

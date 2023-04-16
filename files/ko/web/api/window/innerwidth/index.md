@@ -1,43 +1,57 @@
 ---
-title: Window.innerWidth
+title: "Window: innerWidth property"
+short-title: innerWidth
 slug: Web/API/Window/innerWidth
+page-type: web-api-instance-property
+browser-compat: api.Window.innerWidth
 ---
 
 {{APIRef}}
 
-읽기 전용인 {{domxref("Window")}} 속성 **`innerWidth`** 은 픽셀로 창 내부의 너비를 반환합니다. 하나가 존재하는 경우, 수직 스크롤 막대의 너비를 포함합니다.
+The read-only {{domxref("Window")}} property
+**`innerWidth`** returns the interior width of the window in
+pixels. This includes the width of the vertical scroll bar, if one is present.
 
-더 정확하게는, `innerWidth`은 창의 {{Glossary("layout viewport")}}의 너비를 반환합니다. 창 내부의 높이, 레이아웃 뷰포트의 높이는 {{domxref("Window.innerHeight", "innerHeight")}} 속성으로부터 얻을 수 있습니다.
+More precisely, `innerWidth` returns the width of the window's
+{{Glossary("layout viewport")}}. The interior height of the window—the height of the
+layout viewport—can be obtained from the {{domxref("Window.innerHeight",
+  "innerHeight")}} property.
 
-## 값
+## Value
 
-창의 레이아웃 뷰포트 너비를 픽셀로 나타낸 정수 값입니다. 속성은 읽기 전용이며, 기본 값이 없습니다.
+An integer value indicating the width of the window's layout viewport in pixels. This
+property is read-only, and has no default value.
 
-창의 너비를 변경하려면, {{domxref("Window.resizeBy", "resizeBy()")}}나 {{domxref("Window.resizeTo", "resizeTo()")}}와 같은 크기를 조정하는 메서드 중 하나를 사용해야합니다.
+To change the window's width, use one of the {{domxref("Window")}} methods for resizing
+windows, such as {{domxref("Window.resizeBy", "resizeBy()")}} or
+{{domxref("Window.resizeTo", "resizeTo()")}}.
 
-## 사용 일람
+## Usage notes
 
-스크롤 막대와 테두리를 제외한 창의 너비를 구하려면, 루트 {{HTMLElement("html")}} 요소의 {{domxref("Element.clientWidth", "clientWidth")}} 속성을 대신 사용하십시오.
+If you need to obtain the width of the window minus the scrollbar and borders, use the
+root {{HTMLElement("html")}} element's {{domxref("Element.clientWidth", "clientWidth")}}
+property instead.
 
-`innerWidth` 속성은 탭이나 프레임같은 창처럼 행동하는 모든 창이나 모든 객체에서 사용할 수 있습니다.
+The `innerWidth` property is available on any window or object that behaves
+like a window, such as a frame or tab.
 
-## 예제
+## Examples
 
 ```js
-// 뷰포트의 너비를 기록합니다.
+// This will log the width of the viewport
 console.log(window.innerWidth);
 
-// 프레임셋 내의 프레임 뷰포트의 너비를 기록합니다.
+// This will log the width of the frame viewport within a frameset
 console.log(self.innerWidth);
 
-// 가장 가까운 프레임셋의 뷰포트의 너비를 기록합니다.
+// This will log the width of the viewport of the closest frameset
 console.log(parent.innerWidth);
 
-// 가장 먼 프레임셋의 뷰포트의 너비를 기록합니다.
+// This will log the width of the viewport of the outermost frameset
 console.log(top.innerWidth);
 ```
 
-## 데모
+## Demo
 
 ### HTML
 
@@ -62,21 +76,21 @@ updateSize();
 window.addEventListener("resize", updateSize);
 ```
 
-### 결과
+### Result
 
 {{EmbedLiveSample('Demo')}}
 
-당신은 또한 {{LiveSampleLink('Demo', '별도의 페이지에서 데모 코드의 결과를 볼 수 있습니다')}}.
+You can also {{LiveSampleLink('Demo', 'view the results of the demo code in a separate page')}}.
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("window.outerWidth")}}
 - {{domxref("window.innerHeight")}}

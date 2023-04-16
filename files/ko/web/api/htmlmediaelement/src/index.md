@@ -1,41 +1,45 @@
 ---
-title: HTMLMediaElement.src
+title: "HTMLMediaElement: src property"
+short-title: src
 slug: Web/API/HTMLMediaElement/src
-l10n:
-  sourceCommit: 0230ecc4418a1e52bca6b4d03c4eb794f90d04f1
+page-type: web-api-instance-property
+browser-compat: api.HTMLMediaElement.src
 ---
 
 {{APIRef("HTML DOM")}}
 
-**`HTMLMediaElement.src`** 속성은 요소(element)에서 사용할 미디어 리소스의
-URL을 나타내는 HTML 미디어 요소의 `src` 속성 값을 반영합니다.
+The **`HTMLMediaElement.src`** property reflects the value of
+the HTML media element's `src` attribute, which indicates the URL of a media
+resource to use in the element.
 
-> **참고:** 현재 해당 요소에서 사용 중인 미디어 리소스의 URL을 확인하는
-> 가장 좋은 방법은 {{domxref("HTMLMediaElement.currentSrc", "currentSrc")}}
-> 속성의 값을 살펴보는 것입니다. 이 속성은 {{domxref("HTMLSourceElement")}}
-> ({{HTMLElement("source")}} 요소를 의미합니다)에 제공된 목록에서
-> 최상의 또는 선호하는 미디어 리소스의 선택도 고려합니다.
+> **Note:** The best way to know the URL of the media resource currently
+> in active use in this element is to look at the value of the
+> {{domxref("HTMLMediaElement.currentSrc", "currentSrc")}} attribute, which also takes
+> into account selection of a best or preferred media resource from a list provided in
+> an {{domxref("HTMLSourceElement")}} (which represents a {{HTMLElement("source")}}
+> element).
 
-## 값
+## Value
 
-요소에서 사용할 미디어 리소스의 URL을 포함하는 문자열 객체입니다.
-이 속성은 HTML 요소의 `src` 속성 값을 반영합니다.
+A string object containing the URL of a media resource to use in the
+element; this property reflects the value of the HTML element's `src`
+attribute.
 
-## 예제
+## Examples
 
 ```js
 const obj = document.createElement("video");
 console.log(obj.src); // ""
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- src를 정의하는 인터페이스는 {{domxref("HTMLMediaElement")}}입니다.
+- {{domxref("HTMLMediaElement")}}: Interface used to define the `HTMLMediaElement.src` property

@@ -1,57 +1,65 @@
 ---
-title: Storage.key()
+title: "Storage: key() method"
+short-title: key()
 slug: Web/API/Storage/key
+page-type: web-api-instance-method
+browser-compat: api.Storage.key
 ---
 
 {{APIRef("Web Storage API")}}
 
-{{domxref("Storage")}} 인터페이스의 `key()` 메서드는 숫자 `n`이 전달되면 Storage의 `n`번째 key 이름을 반환합니다. key의 순서는 user-agent에 의해 정의되므로 이 순서에 의존성이 있어서는 안됩니다.
+The **`key()`** method of the {{domxref("Storage")}} interface,
+when passed a number n, returns the name of the nth key in a given `Storage`
+object. The order of keys is user-agent defined, so you should not rely on it.
 
-## 문법
+## Syntax
 
-```js
-var aKeyName = storage.key(index);
+```js-nolint
+key(index)
 ```
 
 ### Parameters
 
-- _index_
-  - : 반환받으려하는 key의 번호를 나타내는 정수. 이 정수는 0부터 시작하는 인덱스입니다.
+- `index`
+  - : An integer representing the number of the key you want to get the name of. This is a
+    zero-based index.
 
 ### Return value
 
-key 이름을 포함한 {{domxref("DOMString")}} 입니다.
+A string containing the name of the key. If the index does not exist,
+`null` is returned.
 
-## 예제
+## Examples
 
-다음 함수는 localStorage 의 key들을 반복합니다.
+The following function iterates over the local storage keys:
 
 ```js
 function forEachKey(callback) {
-  for (var i = 0; i < localStorage.length; i++) {
+  for (let i = 0; i < localStorage.length; i++) {
     callback(localStorage.key(i));
   }
 }
 ```
 
-다음 함수는 localStorage 의 key들을 반복하고 각 key에 설정된 값들을 가져옵니다.
+The following function iterates over the local storage keys and gets the value set for
+each key:
 
 ```js
-for(var i =0; i < localStorage.length; i++){
-   console.log(localStorage.getItem(localStorage.key(i)));
+for (let i = 0; i < localStorage.length; i++) {
+  console.log(localStorage.getItem(localStorage.key(i)));
 }
 ```
 
-> **참고:** 실제로 쓰이는 예제를 보려면 우리의 [Web Storage Demo](https://mdn.github.io/dom-examples/web-storage/) 를 참조하세요.
+> **Note:** For a real-world example, see our [Web Storage Demo](https://mdn.github.io/dom-examples/web-storage/).
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-[Using the Web Storage API](/ko/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API)
+- [Using the Web Storage API](/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API)

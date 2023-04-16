@@ -5,28 +5,27 @@ slug: Web/XPath/Functions/string-length
 
 {{ XsltRef() }}
 
-`string-length` 함수는 인수로 준 문자열의 문자수를 반환합니다.
+The `string-length` function returns a number equal to the number of characters in a given string.
 
-### 구문
+### Syntax
 
 ```
 string-length( [string] )
 ```
 
-### 인수
+### Arguments
 
-- `string`
-  (선택사항)
-  - : 평가할 문자열. 빼면, 쓰는 문자열은 문자열로 변환된 문맥 노드와 같습니다.
+- `string` (optional)
+  - : The string to evaluate. If omitted, string used will be the same as the context node converted to a string.
 
-### 반환
+### Returns
 
-문자열의 문자수와 같은 정수.
+An integer equal to the number of characters in the string.
 
-### 정의
+### Defined
 
-[XPath 1.0 4.2](http://www.w3.org/TR/xpath#function-string-length)
+[XPath 1.0 4.2](https://www.w3.org/TR/1999/REC-xpath-19991116/#function-string-length)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

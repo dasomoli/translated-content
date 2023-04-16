@@ -1,79 +1,130 @@
 ---
 title: Array.prototype.lastIndexOf()
 slug: Web/JavaScript/Reference/Global_Objects/Array/lastIndexOf
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Array.lastIndexOf
 ---
+
 {{JSRef}}
 
-**`lastIndexOf()`** 메서드는 배열에서 주어진 값을 발견할 수 있는 마지막 인덱스를 반환하고, 요소가 존재하지 않으면 -1을 반환합니다. 배열 탐색은 `fromIndex`에서 시작하여 뒤로 진행합니다.
+The **`lastIndexOf()`** method returns the last index at which
+a given element can be found in the array, or -1 if it is not present. The array is
+searched backwards, starting at `fromIndex`.
 
 {{EmbedInteractiveExample("pages/js/array-lastindexof.html")}}
 
-## 구문
+## Syntax
 
-```js
-    arr.lastIndexOf(searchElement[, fromIndex])
+```js-nolint
+lastIndexOf(searchElement)
+lastIndexOf(searchElement, fromIndex)
 ```
 
-### 매개변수
+### Parameters
 
 - `searchElement`
-  - : 배열에서 찾을 요소.
+  - : Element to locate in the array.
 - `fromIndex` {{optional_inline}}
-  - : 역순으로 검색을 시작할 인덱스. 배열의 길이에서 1을 뺀 값(`arr.length - 1`)이 기본값이므로 지정하지 않을 경우 전체 배열을 검색합니다. 주어진 값이 배열의 길이 이상이면 전체 배열을 검색합니다. 값이 음수인 경우, 배열의 마지막부터 시작하는 인덱스로 처리합니다. 다만, 음수를 제공하더라도 검색 순서는 뒤에서 앞입니다. 위의 모든 절차를 거친 최종 계산값이 0 미만인 경우, `lastIndexOf()`는 항상 -1을 반환합니다. 즉, 배열을 탐색하지 않습니다.
+  - : Zero-based index at which to start searching backwards, [converted to an integer](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number#integer_conversion).
+    - Negative index counts back from the end of the array — if `fromIndex < 0`, `fromIndex + array.length` is used.
+    - If `fromIndex < -array.length`, the array is not searched and `-1` is returned. You can think of it conceptually as starting at a nonexistent position before the beginning of the array and going backwards from there. There are no array elements on the way, so `searchElement` is never found.
+    - If `fromIndex >= array.length` or `fromIndex` is omitted, `array.length - 1` is used, causing the entire array to be searched. You can think of it conceptually as starting at a nonexistent position beyond the end of the array and going backwards from there. It eventually reaches the real end position of the array, at which point it starts searching backwards through the actual array elements.
 
-### 반환 값
+### Return value
 
-주어진 값과 일치하는 마지막 요소의 인덱스, 없으면 -1.
+The last index of the element in the array; **-1** if not found.
 
-## 설명
+## Description
 
-`lastIndexOf`는 일치 연산(`===` 연산자와 동일)을 사용해 `searchElement`와 각 요소를 비교합니다.
+The `lastIndexOf()` method compares `searchElement` to elements of the array using [strict equality](/en-US/docs/Web/JavaScript/Reference/Operators/Strict_equality) (the same algorithm used by the `===` operator). [`NaN`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN) values are never compared as equal, so `lastIndexOf()` always returns `-1` when `searchElement` is `NaN`.
 
-## 예제
+The `lastIndexOf()` method skips empty slots in [sparse arrays](/en-US/docs/Web/JavaScript/Guide/Indexed_collections#sparse_arrays).
 
-### `lastIndexOf` 사용하기
+The `lastIndexOf()` method is [generic](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#generic_array_methods). It only expects the `this` value to have a `length` property and integer-keyed properties.
 
-다음 예제에서는 `lastIndexOf`를 사용하여 배열의 값을 찾습니다.
+## Examples
+
+### Using lastIndexOf()
+
+The following example uses `lastIndexOf()` to locate values in an array.
 
 ```js
-var array = [2, 5, 9, 2];
-array.lastIndexOf(2);     // 3
-array.lastIndexOf(7);     // -1
-array.lastIndexOf(2, 3);  // 3
-array.lastIndexOf(2, 2);  // 0
-array.lastIndexOf(2, -2); // 0
-array.lastIndexOf(2, -1); // 3
+const numbers = [2, 5, 9, 2];
+numbers.lastIndexOf(2); // 3
+numbers.lastIndexOf(7); // -1
+numbers.lastIndexOf(2, 3); // 3
+numbers.lastIndexOf(2, 2); // 0
+numbers.lastIndexOf(2, -2); // 0
+numbers.lastIndexOf(2, -1); // 3
 ```
 
-### 요소의 모든 항목 찾기
-
-다음 예제에서는 `lastIndexOf`를 사용하여 {{jsxref("Array.prototype.push", "push")}}를 사용하여 지정된 배열의 요소 색인을 모두 찾아서 다른 배열에 추가합니다.
+You cannot use `lastIndexOf()` to search for `NaN`.
 
 ```js
-var indices = [];
-var array = ['a', 'b', 'a', 'c', 'a', 'd'];
-var element = 'a';
-var idx = array.lastIndexOf(element);
-while (idx != -1) {
+const array = [NaN];
+array.lastIndexOf(NaN); // -1
+```
+
+### Finding all the occurrences of an element
+
+The following example uses `lastIndexOf` to find all the indices of an
+element in a given array, using {{jsxref("Array.prototype.push", "push")}} to add them
+to another array as they are found.
+
+```js
+const indices = [];
+const array = ["a", "b", "a", "c", "a", "d"];
+const element = "a";
+let idx = array.lastIndexOf(element);
+while (idx !== -1) {
   indices.push(idx);
-  idx = (idx > 0 ? array.lastIndexOf(element, idx - 1) : -1);
+  idx = idx > 0 ? array.lastIndexOf(element, idx - 1) : -1;
 }
 
 console.log(indices);
 // [4, 2, 0]
 ```
 
-배열의 첫 번째 요소 인 경우 요소가 fromIndex 매개 변수와 관계없이 항상 발견되므로 idx == 0 사례를 여기에서 개별적으로 처리해야합니다. 이는 {{jsxref ( "Array.prototype.indexOf", "indexOf")}} 메소드와 다릅니다.
+Note that we have to handle the case `idx === 0` separately here because the
+element will always be found regardless of the `fromIndex` parameter if it is
+the first element of the array. This is different from the
+{{jsxref("Array.prototype.indexOf", "indexOf")}} method.
 
-## 명세
+### Using lastIndexOf() on sparse arrays
+
+You cannot use `lastIndexOf()` to search for empty slots in sparse arrays.
+
+```js
+console.log([1, , 3].lastIndexOf(undefined)); // -1
+```
+
+### Calling lastIndexOf() on non-array objects
+
+The `lastIndexOf()` method reads the `length` property of `this` and then accesses each integer index.
+
+```js
+const arrayLike = {
+  length: 3,
+  0: 2,
+  1: 3,
+  2: 2,
+};
+console.log(Array.prototype.lastIndexOf.call(arrayLike, 2));
+// 2
+console.log(Array.prototype.lastIndexOf.call(arrayLike, 5));
+// -1
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `Array.prototype.lastIndexOf` in `core-js`](https://github.com/zloirock/core-js#ecmascript-array)
 - {{jsxref("Array.prototype.indexOf()")}}
 - {{jsxref("TypedArray.prototype.lastIndexOf()")}}

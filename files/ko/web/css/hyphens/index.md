@@ -1,70 +1,77 @@
 ---
 title: hyphens
 slug: Web/CSS/hyphens
+page-type: css-property
+browser-compat: css.properties.hyphens
 ---
+
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`hyphens`** 속성은 여러 줄에 걸치는 텍스트에서 단어에 붙임표를 추가하는 방식을 설정합니다. 붙임표를 아예 방지할 수도 있고, 수동으로 지정한 곳에서만 발생하도록 나타낼 수도 있으며, 브라우저가 자동으로 적절한 곳에 붙임표를 삽입하도록 허용할 수도 있습니다.
+The **`hyphens`** [CSS](/en-US/docs/Web/CSS) property specifies how words should be hyphenated when text wraps across multiple lines. It can prevent hyphenation entirely, hyphenate at manually-specified points within the text, or let the browser automatically insert hyphens where appropriate.
 
 {{EmbedInteractiveExample("pages/css/hyphens.html")}}
 
-<div class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples</a> and send us a pull request.</div>
+> **Note:** In the above demo, the string "An extraordinarily long English word!" contains the hidden `&shy;` (soft hyphen) character: `An extra&shy;ordinarily long English word!`. This character is used to indicate a potential place to insert a hyphen when `hyphens: manual;` is specified.
 
-붙임표 규칙은 언어별로 다릅니다. HTML의 언어는 [`lang`](/ko/docs/Web/HTML/Global_attributes/lang) 특성으로 알아낼 수 있으며, 브라우저는 lang 특성과 해당 언어에 적합한 붙임표 규칙이 모두 사용 가능할 때에만 붙임표를 추가합니다. XML에서는 [`xml:lang`](/ko/docs/Web/SVG/Attribute/xml:lang) 특성을 사용해야 합니다.
+Hyphenation rules are language-specific. In HTML, the language is determined by the [`lang`](/en-US/docs/Web/HTML/Global_attributes/lang) attribute, and browsers will hyphenate only if this attribute is present and the appropriate hyphenation dictionary is available. In XML, the [`xml:lang`](/en-US/docs/Web/SVG/Attribute/xml:lang) attribute must be used.
 
-> **참고:** 명세는 붙임표 규칙을 명시하지 않고 있으므로 동작 방식이 브라우저마다 다를 수 있습니다.
+> **Note:** The rules defining how hyphenation is performed are not explicitly defined by the specification, so the exact hyphenation may vary from browser to browser.
 
-## 구문
+If supported, {{cssxref("hyphenate-character")}} may be used to specify an alternative hyphenation character to use at the end of the line being broken.
+
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword values */
 hyphens: none;
 hyphens: manual;
 hyphens: auto;
 
-/* 전역 값 */
+/* Global values */
 hyphens: inherit;
 hyphens: initial;
+hyphens: revert;
+hyphens: revert-layer;
 hyphens: unset;
 ```
 
-`hyphens` 속성은 아래 목록 중 하나의 키워드를 사용해 지정할 수 있습니다.
+The `hyphens` property is specified as a single keyword value chosen from the list below.
 
-### 값
+### Values
 
 - `none`
-  - : 단어 내의 문자가 줄 바꿈 위치를 나타내더라도 단어를 내에서 줄을 바꾸지 않습니다. 줄 바꿈은 공백 문자에서만 발생합니다.
+  - : Words are not broken at line breaks, even if characters inside the words suggest line break points. Lines will only wrap at whitespace.
 - `manual`
-  - : 단어 내의 줄 바꿈 위치를 나타내는 문자에서는 줄을 바꿀 수 있습니다. 아래의 [줄 바꿈 위치 제안](#줄_바꿈_위치_제안)에서 자세한 정보를 알아보세요.
+  - : Words are broken for line-wrapping only where characters inside the word suggest line break opportunities. See [Suggesting line break opportunities](#suggesting_line_break_opportunities) below for details.
 - `auto`
-  - : 브라우저가 단어 내의 적합한 붙임표 위치를 자유롭게 골라서 줄을 바꿀 수 있습니다. 단, 줄 바꿈 위치를 제안(아래의 [줄 바꿈 위치 제안](#줄_바꿈_위치_제안) 을 보세요)한 경우에는 해당 위치를 사용합니다.
+  - : The browser is free to automatically break words at appropriate hyphenation points, following whatever rules it chooses. However, suggested line break opportunities (see [Suggesting line break opportunities](#suggesting_line_break_opportunities) below) will override automatic break point selection when present.
 
-> **참고:** 적합한 붙임표 규칙을 선택할 수 있도록 언어를 제대로 명시해야 `auto` 값의 동작도 정확해집니다. HTML `lang` 특성을 사용해 해당 언어의 붙임표 규칙을 사용할 것을 확실하게 지정하세요.
+> **Note:** The `auto` setting's behavior depends on the language being properly tagged to select the appropriate hyphenation rules. You must specify a language using the `lang` HTML attribute to guarantee that automatic hyphenation is applied in that language.
 
-## 줄 바꿈 위치 제안
+## Suggesting line break opportunities
 
-아래의 두 가지 Unicode 문자를 사용해서 수동으로 줄 바꿈 위치를 제안할 수 있습니다.
+There are two Unicode characters used to manually specify potential line break points within text:
 
 - U+2010 (HYPHEN)
-  - : 붙임표, "하드" 하이픈 문자는 눈에 보이는 줄 바꿈 위치를 나타냅니다. 실제로 줄이 바뀌지는 않더라도 붙임표를 볼 수 있습니다.
+  - : The "hard" hyphen character indicates a visible line break opportunity. Even if the line is not actually broken at that point, the hyphen is still rendered.
 - U+00AD (SHY)
-  - : 투명한 "소프트" 하이픈("**s**oft" **hy**phen)입니다. 눈에 보이지 않으며, 브라우저가 붙임표를 사용해 단어를 끊을 위치로 선택합니다. HTML에서는 `&shy;`를 사용해 입력하세요.
+  - : An invisible, "**s**oft" **hy**phen. This character is not rendered visibly; instead, it marks a place where the browser should break the word if hyphenation is necessary. In HTML, use `&shy;` to insert a soft hyphen.
 
-> **참고:** HTML {{htmlelement("wbr")}} 요소로 인한 줄 바꿈으로는 붙임표가 추가되지 않습니다.
+> **Note:** When the HTML [`<wbr>`](/en-US/docs/Web/HTML/Element/wbr) element leads to a line break, no hyphen is added.
 
-## 형식 정의
+## Formal definition
 
 {{cssinfo}}
 
-## 형식 구문
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 붙임표 줄 바꿈 지정하기
+### Specifying text hyphenation
 
-다음 예제는 `hyphens` 속성에 사용할 수 있는 세 개 값을 시연합니다.
+This example uses three classes, one for each possible configuration of the `hyphens` property.
 
 #### HTML
 
@@ -72,7 +79,9 @@ hyphens: unset;
 <dl>
   <dt><code>none</code>: no hyphen; overflow if needed</dt>
   <dd lang="en" class="none">An extreme&shy;ly long English word</dd>
-  <dt><code>manual</code>: hyphen only at &amp;hyphen; or &amp;shy; (if needed)</dt>
+  <dt>
+    <code>manual</code>: hyphen only at &amp;hyphen; or &amp;shy; (if needed)
+  </dt>
   <dd lang="en" class="manual">An extreme&shy;ly long English word</dd>
   <dt><code>auto</code>: hyphens where the algorithm decides (if needed)</dt>
   <dd lang="en" class="auto">An extreme&shy;ly long English word</dd>
@@ -85,38 +94,33 @@ hyphens: unset;
 dd {
   width: 55px;
   border: 1px solid black;
- }
+}
 dd.none {
-  -webkit-hyphens: none;
-  -ms-hyphens: none;
   hyphens: none;
 }
 dd.manual {
-  -webkit-hyphens: manual;
-  -ms-hyphens: manual;
   hyphens: manual;
 }
 dd.auto {
-  -webkit-hyphens: auto;
-  -ms-hyphens: auto;
   hyphens: auto;
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("붙임표_줄_바꿈_지정하기", "100%", 490)}}
+{{EmbedLiveSample("Specifying_text_hyphenation", "100%", 490)}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{Cssxref("content")}}
-- {{cssxref("overflow-wrap")}} (이전 이름 `word-wrap`)
+- {{cssxref("content")}}
+- {{cssxref("overflow-wrap")}} (formerly `word-wrap`)
 - {{cssxref("word-break")}}
+- [Guide to wrapping and breaking text](/en-US/docs/Web/CSS/CSS_Text/Wrapping_Text)

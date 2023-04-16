@@ -1,39 +1,61 @@
 ---
 title: Address bar button
 slug: Mozilla/Add-ons/WebExtensions/user_interface/Page_actions
+page-type: guide
 ---
+
 {{AddonSidebar}}
 
-주소줄에 추가되는 버튼으로 사용자가 확장 프로그램과 상호작용하는 일명 [페이지 액션](/ko/docs/Mozilla/Add-ons/WebExtensions/API/pageAction) 을 말한다.
+Commonly referred to as a [page action](/en-US/docs/Mozilla/Add-ons/WebExtensions/API/pageAction) button, this user interface option is a button added to the browser address bar. Users click the button to interact with extensions.
 
-![](address_bar_button.png)
+![Page action button is an icon of a dog paw print](address_bar_button.png)
 
-## 페이지 액션과 브라우저 액션
+## Page actions and browser actions
 
-주소줄 버튼(또는 페이지 액션)은 툴바 버튼(또는 브라우저 액션)과 아주 비슷하다.
+The address bar button (or page action) is similar to the toolbar button (or browser action).
 
-차이점은:
+The differences are:
 
-- 위치:
+- **The button's location:**
 
-  - 페이지 액션은 브라우저의 주소줄에 표시된다.
-  - 브라우저 액션은 주소줄 밖 브라우저의 툴바에 표시된다.
+  - The page action is displayed inside the browser address bar.
+  - The browser action is displayed outside the address bar, in the browser toolbar.
 
-- 보임:
+- **The button's visibility:**
 
-  - 페이지 액션은 평소에는 보통 숨겨지고(show_matches와 hide_matches [매니페스트 항목](/en-US/Add-ons/WebExtensions/manifest.json/page_action)으로 바꿀 수 있다), 해당 탭에 보이거나 숨길 때는 [`pageAction.show()`](/ko/docs/Mozilla/Add-ons/WebExtensions/API/PageAction/show)와 [`pageAction.hide()`](/ko/docs/Mozilla/Add-ons/WebExtensions/API/PageAction/hide) 를 호출한다.
-  - 브라우저 액션은 항상 보인다.
+  - The page action is hidden by default (although this default can be changed via the `show_matches` and `hide_matches` [manifest key](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/page_action) properties), and you call [`pageAction.show()`](/en-US/docs/Mozilla/Add-ons/WebExtensions/API/pageAction/show) and [`pageAction.hide()`](/en-US/docs/Mozilla/Add-ons/WebExtensions/API/pageAction/hide) to show or hide it in specific tabs.
+  - The browser action is always displayed.
 
-하고자 하는 동작이 현재 페이지에 대한 것이면 페이지 액션을 사용하고, 전체 또는 여러 페이지가 대상이라면 브라우저 액션을 사용한다. 예를 들어:
+Use a page action when the action relates to the current page. Use a browser action when the action relates to the browser as a whole or to many pages. For example:
 
-| 유형          | Bookmarks action   | Content action     | Tabs operation     |
-| ------------- | ------------------ | ------------------ | ------------------ |
-| 페이지 액션   | Bookmark this page | Reddit enhancement | Send tab           |
-| 브라우저 액션 | Show all bookmarks | Enable ad-blocking | Sync all open tabs |
+<table class="fullwidth-table standard-table">
+  <thead>
+    <tr>
+      <th scope="row">Type</th>
+      <th scope="col">Bookmarks action</th>
+      <th scope="col">Content action</th>
+      <th scope="col">Tabs operation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">page action</th>
+      <td>Bookmark this page</td>
+      <td>Reddit enhancement</td>
+      <td>Send tab</td>
+    </tr>
+    <tr>
+      <th scope="row">browser action</th>
+      <td>Show all bookmarks</td>
+      <td>Enable ad-blocking</td>
+      <td>Sync all open tabs</td>
+    </tr>
+  </tbody>
+</table>
 
-## 페이지 액션 기술하기
+## Specifying the page action
 
-페이지 액션의 속성은 manifest.json의 [`page_action`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/page_action) 항목에서 정의한다:
+You define the page action's properties using the [`page_action`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/page_action) key in manifest.json:
 
 ```json
 "page_action": {
@@ -46,24 +68,26 @@ slug: Mozilla/Add-ons/WebExtensions/user_interface/Page_actions
 }
 ```
 
-꼭 있어야 하는 항목은 `default_icon`이다.
+The only mandatory key is `default_icon`.
 
-페이지 액션을 기술하는 길은 두 가지다: [팝업](/en-US/Add-ons/WebExtensions/Popups)이 있는가. 없는가. 팝업이 없으면, 사용자 클릭은 [`pageAction.onClicked`](/ko/docs/Mozilla/Add-ons/WebExtensions/API/pageAction/onClicked)을 청취하는 확장 프로그램에 이벤트를 전달된다:
+There are two ways to specify a page action: with or without a [popup](/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Popups).
 
-```js
-browser.pageAction.onClicked.addListener(handleClick);
-```
+- **Without a popup:** When the user clicks the button, an event is dispatched to the extension, which the extension listens for using [`pageAction.onClicked`](/en-US/docs/Mozilla/Add-ons/WebExtensions/API/pageAction/onClicked):
 
-팝업이 있으면, 클릭 이벤트는 없다: 대신, 팝업창이 열린다. 사용자는 팝업으로 일을 하고, 팝업창 바깥을 클릭하면 자동으로 닫힌다. [팝업](/en-US/Add-ons/WebExtensions/Popups) 글에 팝업을 만들고 관리하는 보다 자세한 내용이 있다.
+  ```js
+  browser.pageAction.onClicked.addListener(handleClick);
+  ```
 
-주목! 확장 프로그램은 페이지 액션을 하나만 가질 수 있다.
+- **With a popup:** the `click` event is not dispatched. Instead, the popup appears when the user clicks the button. The user then interacts with the popup. When the user clicks outside of the popup, it closes automatically. See the [Popup](/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Popups) article for more details on creating and managing popups.
 
-페이지 액션의 속성은 [`pageAction`](/en-US/docs/Mozilla/Add-ons/WebExtensions/API/pageAction) API로 프로그램적으로 바꿀 수 있다.
+Note that your extension can have just one page action.
 
-## 아이콘
+You can change any of the page action properties programmatically using the [`pageAction`](/en-US/docs/Mozilla/Add-ons/WebExtensions/API/pageAction) API.
 
-페이지 액션에서 어떻게 아이콘을 만들고 사용하는지에 대한 자세한 내용은 [Photon Design System](https://design.firefox.com/photon/index.html) 문서에서 [Iconography](https://design.firefox.com/photon/visuals/iconography.html)을 보라.
+## Icons
 
-## 예제
+For details on how to create icons to use with your page action, see [Iconography](https://acorn.firefox.com/latest/styles/iconography.html) in the [Acorn Design System](https://acorn.firefox.com/latest/acorn.html) documentation.
 
-GitHub [webextensions-examples](https://github.com/mdn/webextensions-examples) 저장소에 팝업없는 페이지 액션 예제 [chill-out](https://github.com/mdn/webextensions-examples/tree/master/chill-out)가 있다.
+## Examples
+
+The [webextensions-examples](https://github.com/mdn/webextensions-examples) repository on GitHub includes the [chill-out](https://github.com/mdn/webextensions-examples/tree/master/chill-out) example which implements a page action without a popup.

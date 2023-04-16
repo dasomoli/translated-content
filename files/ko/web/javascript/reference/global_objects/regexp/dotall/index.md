@@ -1,33 +1,32 @@
 ---
 title: RegExp.prototype.dotAll
 slug: Web/JavaScript/Reference/Global_Objects/RegExp/dotAll
-l10n:
-  sourceCommit: f3df52530f974e26dd3b14f9e8d42061826dea20
+page-type: javascript-instance-accessor-property
+browser-compat: javascript.builtins.RegExp.dotAll
 ---
+
 {{JSRef}}
 
-**`dotAll`** 속성은 `s` 플래그가 정규식과 함께 사용되는지 여부를 나타냅니다. `dotAll`은 개별 정규식 인스턴스의 읽기 전용 속성입니다.
+The **`dotAll`** accessor property of {{jsxref("RegExp")}} instances returns whether or not the `s` flag is used with this regular expression.
 
 {{EmbedInteractiveExample("pages/js/regexp-prototype-dotall.html")}}
 
-## 설명
+## Description
 
-`dotAll`의 값은 {{JSxRef("Boolean")}}으로 `s` 플래그가 사용된 경우 `true`, 그렇지 않으면 `false`입니다.
-`s` 플래그는 점 특수 문자(`.`)가 문자열의 다음 줄 종결자("newline") 문자와 추가로 일치해야 함을 나타냅니다.
-그렇지 않으면 일치하지 않습니다.
+`RegExp.prototype.dotAll` has the value `true` if the `s` flag was used; otherwise, `false`. The `s` flag indicates that the dot special character (`.`) should additionally match the following line terminator ("newline") characters in a string, which it would not match otherwise:
 
 - U+000A LINE FEED (LF) (`\n`)
 - U+000D CARRIAGE RETURN (CR) (`\r`)
 - U+2028 LINE SEPARATOR
 - U+2029 PARAGRAPH SEPARATOR
 
-이것은 사실상 점이 유니코드 BMP(Basic Multilingual Plane)의 모든 문자와 일치한다는 것을 의미합니다. 별 기호와 일치하도록 하려면 `u`(유니코드) 플래그를 사용해야 합니다. 두 플래그를 함께 사용하면 예외 없이 점이 모든 유니코드 문자와 일치하도록 만들 수 있습니다.
+This effectively means the dot will match any character on the Unicode Basic Multilingual Plane (BMP). To allow it to match astral characters, the `u` (unicode) flag should be used. Using both flags in conjunction allows the dot to match any Unicode character, without exceptions.
 
-`dotAll`의 set 접근자는 `undefined`, 즉 정의되지 않았습니다. 이 속성은 직접 변경할 수 없습니다.
+The set accessor of `dotAll` is `undefined`. You cannot change this property directly.
 
-## 예제
+## Examples
 
-### `dotAll` 사용하기
+### Using dotAll
 
 ```js
 const str1 = "bar\nexample foo example";
@@ -49,18 +48,18 @@ console.log(str2.replace(regex2, ""));
 // example foo example
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이보기
+## See also
 
-- [Polyfill of `dotAll` `RegExp` flag in `core-js`](https://github.com/zloirock/core-js#ecmascript-string-and-regexp)
-- {{JSxRef("RegExp.lastIndex")}}
+- [Polyfill of the `dotAll` flag in `core-js`](https://github.com/zloirock/core-js#ecmascript-string-and-regexp)
+- {{JSxRef("RegExp.prototype.lastIndex")}}
 - {{JSxRef("RegExp.prototype.global")}}
 - {{JSxRef("RegExp.prototype.hasIndices")}}
 - {{JSxRef("RegExp.prototype.ignoreCase")}}

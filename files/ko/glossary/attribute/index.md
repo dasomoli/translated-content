@@ -1,26 +1,51 @@
 ---
-title: 특성
+title: Attribute
 slug: Glossary/Attribute
+page-type: glossary-definition
 ---
-{{QuickLinksWithSubpages("/ko/docs/Glossary")}}
 
-**특성**(attribute)은 {{glossary("tag", "태그")}}를 확장해 동작 방식을 바꾸거나 메타데이터를 제공합니다.
+An **attribute** extends an HTML or XML {{Glossary("element")}}, changing its behavior or providing metadata.
 
-특성은 항상 `name="value"`의 형태를 따릅니다. (특성 식별자 뒤에 특성 값)
+An attribute always has the form `name="value"` (the attribute's identifier followed by its associated value).
 
-등호 또는 값 없는 특성이 보일 때도 있습니다. {{glossary("HTML")}}에서는 빈 문자열을 제공하는 단축 표기법이고, {{glossary("XML")}}에서는 특성 이름을 제공하는 단축 표기법입니다.
+You may see attributes without the equals sign or a value. That is a shorthand for providing the empty string in HTML, or the attribute's name in XML.
 
 ```html
-<input required>
-<!-- 다음과 같음 -->
-<input required="">
-<!-- 다음과 같음 -->
-<input required="required">
+<input required />
+<!-- is the same as… -->
+<input required="" />
+<!-- or -->
+<input required="required" />
 ```
 
-## 더 알아보기
+## Reflection of an attribute
 
-### 기술 참고서
+Attributes may be _reflected_ into a particular property of the specific interface.
+It means that the value of the attribute can be read by accessing the property,
+and can be modified by setting the property to a different value.
 
-- [HTML 특성 참고서](/ko/docs/Web/HTML/Attributes)
-- HTML [전역 특성](/ko/docs/Web/HTML/Global_attributes)
+For example, the `placeholder` below is reflected into {{domxref("HTMLInputElement.placeholder")}}.
+
+Considering the following HTML:
+
+```html
+<input placeholder="Original placeholder" />
+```
+
+We can check the reflection between {{domxref("HTMLInputElement.placeholder")}} and the attribute using:
+
+```js
+const input = document.querySelector("input");
+const attr = input.getAttributeNode("placeholder");
+console.log(attr.value);
+console.log(input.placeholder); // Prints the same value as `attr.value`
+
+// Changing placeholder value will also change the value of the reflected attribute.
+input.placeholder = "Modified placeholder";
+console.log(attr.value); // Prints `Modified placeholder`
+```
+
+## See also
+
+- [HTML attribute reference](/en-US/docs/Web/HTML/Attributes)
+- Information about HTML's [global attributes](/en-US/docs/Web/HTML/Global_attributes)

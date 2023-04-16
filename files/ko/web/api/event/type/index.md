@@ -1,23 +1,31 @@
 ---
-title: Event.type
+title: "Event: type property"
+short-title: type
 slug: Web/API/Event/type
+page-type: web-api-instance-property
+browser-compat: api.Event.type
 ---
+
 {{APIRef}}
 
-{{domxref("Event")}} 인터페이스의 **`type`** 읽기 전용 속성은 이벤트의 유형을 나타내는 문자열을 반환합니다. 이 속성은 이벤트를 생성할 때 설정되며, `click`, `load`, `error`처럼 특정 이벤트를 지칭할 때 사용하는 이름과 같은 값을 반환합니다.
+The **`type`** read-only property of the {{domxref("Event")}}
+interface returns a string containing the event's type. It is set when the event is
+constructed and is the name commonly used to refer to the specific event, such as
+`click`, `load`, or `error`.
 
-## 값
+## Value
 
-{{domxref("Event")}}의 유형을 나타내는 {{jdxref("String")}}입니다.
+A string containing the type of {{domxref("Event")}}.
 
-## 예제
+## Example
 
-이 예제에서는 키보드를 누르거나 마우스를 클릭할 때마다 발생한 이벤트의 유형을 기록합니다.
+This example logs the event type whenever you press a keyboard key or click a mouse
+button.
 
 ### HTML
 
 ```html
-<p>아무 키나 누르거나 마우스를 클릭해서 이벤트 유형을 알아보세요.</p>
+<p>Press any key or click the mouse to get the event type.</p>
 <p id="log"></p>
 ```
 
@@ -25,34 +33,34 @@ slug: Web/API/Event/type
 
 ```js
 function getEventType(event) {
-  const log = document.getElementById('log');
-  log.innerText = event.type + '\n' + log.innerText;
+  const log = document.getElementById("log");
+  log.innerText = `${event.type}\n${log.innerText}`;
 }
 
-// 키보드 이벤트
-document.addEventListener('keydown', getEventType, false);  // 1번
-document.addEventListener('keypress', getEventType, false); // 2번
-document.addEventListener('keyup', getEventType, false);    // 3번
+// Keyboard events
+document.addEventListener("keydown", getEventType, false); // first
+document.addEventListener("keypress", getEventType, false); // second
+document.addEventListener("keyup", getEventType, false); // third
 
-// 마우스 이벤트
-document.addEventListener('mousedown', getEventType, false); // 1번
-document.addEventListener('mouseup', getEventType, false);   // 2번
-document.addEventListener('click', getEventType, false);     // 3번
+// Mouse events
+document.addEventListener("mousedown", getEventType, false); // first
+document.addEventListener("mouseup", getEventType, false); // second
+document.addEventListener("click", getEventType, false); // third
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample('예제')}}
+{{EmbedLiveSample('Example')}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{ domxref("EventTarget.addEventListener()") }}
 - {{ domxref("EventTarget.removeEventListener()") }}

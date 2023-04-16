@@ -1,61 +1,63 @@
 ---
 title: HEAD
 slug: Web/HTTP/Methods/HEAD
+page-type: http-method
+browser-compat: http.methods.HEAD
 ---
 
 {{HTTPSidebar}}
 
-**HTTP `HEAD` 메서드**는 특정 리소스를 {{httpmethod("GET")}} 메서드로 요청했을 때 돌아올 헤더를 요청합니다.
+The **HTTP `HEAD` method** requests the [headers](/en-US/docs/Web/HTTP/Headers) that would be returned if the `HEAD` request's URL was instead requested with the HTTP {{HTTPMethod("GET")}} method. For example, if a URL might produce a large download, a `HEAD` request could read its {{HTTPHeader("Content-Length")}} header to check the filesize without actually downloading the file.
 
-`HEAD` 메서드에 대한 응답은 본문을 가져선 안되며, 본문이 존재하더라도 무시해야 합니다. 그러나, {{httpheader("Content-Length")}}처럼 본문 콘텐츠를 설명하는 {{glossary("entity header", "개체 헤더")}}는 포함할 수 있습니다. 이 때, 개체 헤더는 비어있어야 하는 `HEAD`의 본문과는 관련이 없고, 대신 {{httpmethod("GET")}} 메서드로 동일한 리소스를 요청했을 때의 본문을 설명합니다.
+> **Warning:** A response to a `HEAD` method _should not_ have a body. If it has one anyway, that body **must be** ignored: any {{glossary("Representation header", "representation headers")}} that might describe the erroneous body are instead assumed to describe the response which a similar `GET` request would have received.
 
-`HEAD` 요청의 응답이 캐시했던 이전 {{httpmethod("GET")}} 메서드의 응답을 유효하지 않다고 표시할 경우, 새로운 `GET` 요청을 생성하지 않더라도 캐시를 무효화합니다.
+If the response to a `HEAD` request shows that a cached URL response is now outdated, the cached copy is invalidated even if no `GET` request was made.
 
 <table class="properties">
   <tbody>
     <tr>
-      <th scope="row">요청에 본문 존재</th>
-      <td>아니오</td>
+      <th scope="row">Request has body</th>
+      <td>No</td>
     </tr>
     <tr>
-      <th scope="row">성공 응답에 본문 존재</th>
-      <td>아니오</td>
+      <th scope="row">Successful response has body</th>
+      <td>No</td>
     </tr>
     <tr>
-      <th scope="row">{{Glossary("Safe", "안전함")}}</th>
-      <td>예</td>
+      <th scope="row">{{Glossary("Safe/HTTP", "Safe")}}</th>
+      <td>Yes</td>
     </tr>
     <tr>
-      <th scope="row">{{Glossary("Idempotent", "멱등성")}}</th>
-      <td>예</td>
+      <th scope="row">{{Glossary("Idempotent")}}</th>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <th scope="row">{{Glossary("Cacheable")}}</th>
+      <td>Yes</td>
     </tr>
     <tr>
       <th scope="row">
-        {{Glossary("Cacheable", "캐시 가능")}}
+        Allowed in <a href="/en-US/docs/Learn/Forms">HTML forms</a>
       </th>
-      <td>예</td>
-    </tr>
-    <tr>
-      <th scope="row">HTML 양식에서 사용 가능</th>
-      <td>아니오</td>
+      <td>No</td>
     </tr>
   </tbody>
 </table>
 
-## 구문
+## Syntax
 
-```
+```http
 HEAD /index.html
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{HTTPMethod("GET")}}

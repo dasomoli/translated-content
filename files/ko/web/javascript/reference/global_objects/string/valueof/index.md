@@ -1,48 +1,53 @@
 ---
 title: String.prototype.valueOf()
 slug: Web/JavaScript/Reference/Global_Objects/String/valueOf
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.String.valueOf
 ---
 
 {{JSRef}}
 
-**`valueOf()`** 메서드는 {{jsxref("String")}} 객체의 원시값을 반환합니다.
+The **`valueOf()`** method returns the primitive value of a
+{{jsxref("String")}} object.
 
 {{EmbedInteractiveExample("pages/js/string-valueof.html")}}
 
-## 구문
+## Syntax
 
-```js
-str.valueOf()
+```js-nolint
+valueOf()
 ```
 
-### 반환 값
+### Return value
 
-지정된 {{jsxref("String")}} 객체의 원시 값을 나타내는 문자열.
+A string representing the primitive value of a given {{jsxref("String")}} object.
 
-## 설명
+## Description
 
-{{jsxref("String")}} 의 `valueOf()` 메서드는 {{jsxref("String")}} 객체의 원시 값을 문자열 데이터 타입으로 반환 합니다. 이 값은 {{jsxref("String.prototype.toString()")}}.과 동일합니다.
+The `valueOf()` method of {{jsxref("String")}} returns the primitive value
+of a {{jsxref("String")}} object as a string data type. This value is equivalent to
+{{jsxref("String.prototype.toString()")}}.
 
-이 메서드는 보통 자바스크립트에 의해 내부적으로 호출되며, 코드에서 명시적으로 사용하지는 않습니다.
+This method is usually called internally by JavaScript and not explicitly in code.
 
-## 예제
+## Examples
 
-### `valueOf()` 사용
+### Using `valueOf()`
 
 ```js
-var x = new String('Hello world');
-console.log(x.valueOf()); // 'Hello world' 가 보여집니다.
+const x = new String("Hello world");
+console.log(x.valueOf()); // 'Hello world'
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("String.prototype.toString()")}}
 - {{jsxref("Object.prototype.valueOf()")}}

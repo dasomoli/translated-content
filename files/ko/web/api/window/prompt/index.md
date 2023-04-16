@@ -1,72 +1,91 @@
 ---
-title: Window.prompt()
+title: "Window: prompt() method"
+short-title: prompt()
 slug: Web/API/Window/prompt
+page-type: web-api-instance-method
+browser-compat: api.Window.prompt
 ---
 
 {{ApiRef("Window")}}
 
-`Window.prompt()`는 사용자가 텍스트를 입력할 수 있도록 안내하는 선택적 메세지를 갖고 있는 대화 상자를 띄웁니다.
+`window.prompt()` instructs the browser to display a dialog with an optional message prompting the user to input some text, and to wait until the user either submits the text or cancels the dialog.
 
-## 구문
+Under some conditions — for example, when the user switches tabs — the browser may not actually display a dialog, or may not wait for the user to submit text or to cancel the dialog.
 
-```js
-result = window.prompt(message, default);
+## Syntax
+
+```js-nolint
+prompt()
+prompt(message)
+prompt(message, defaultValue)
 ```
 
-### 매개변수
+### Parameters
 
 - `message` {{optional_inline}}
-  - : 사용자에게 보여줄 문자열. 프롬프트 창에 표시할 메세지가 없으면 생략할 수 있습니다.
-- `default` {{optional_inline}}
-  - : 텍스트 입력 필드에 기본으로 채워 넣을 문자열. Internet Explorer 7과 8에서는 이 인자에 값을 지정하지 않으면 문자열 `"undefined"`가 지정됨에 유의하세요.
+  - : A string of text to display to the user. Can be omitted if there is nothing to show
+    in the prompt window.
+- `defaultValue` {{optional_inline}}
+  - : A string containing the default value displayed in the text input field.
 
-### 반환 값
+### Return value
 
-사용자가 입력한 문자열, 또는 `null`.
+A string containing the text entered by the user, or `null`.
 
-## 예제
+## Examples
 
 ```js
-let sign = prompt("당신의 별자리는 무엇입니까?");
+let sign = prompt("What's your sign?");
 
-if (sign.toLowerCase() === "전갈자리") {
-  alert("와! 저도 전갈자리예요!");
+if (sign.toLowerCase() === "scorpio") {
+  alert("Wow! I'm a Scorpio too!");
 }
 
-// prompt 기능을 쓰는 방법은 다양합니다.
-sign = window.prompt(); // 빈 대화 상자를 엽니다.
-sign = prompt(); // 빈 대화 상자를 엽니다.
-sign = window.prompt("님 지금 기분 좋아요?"); // 안내 문구 "님 지금 기분 좋아요?"가 보이는 창을 띄웁니다.
-sign = window.prompt("님 지금 기분 좋아요?", "네."); // 안내 문구 "님 지금 기분 좋아요?"가 보이는 창을 띄우되 기본적으로 입력되어 있는 값은 "네."로 합니다.
+// there are many ways to use the prompt feature
+sign = window.prompt(); // open the blank prompt window
+sign = prompt(); //  open the blank prompt window
+sign = window.prompt("Are you feeling lucky"); // open the window with Text "Are you feeling lucky"
+sign = window.prompt("Are you feeling lucky", "sure"); // open the window with Text "Are you feeling lucky" and default value "sure"
 ```
 
-사용자가 확인 버튼을 누르면 입력부의 문자열을 반환합니다. 만약 사용자가 아무것도 입력하지 않고 확인 버튼을 누르면 빈 문자열을 반환합니다. 만약 사용자가 취소 버튼을 누르면 `null`을 반환합니다.
+When the user clicks the OK button, text entered in the input field is returned. If the
+user clicks OK without entering any text, an empty string is returned. If the user
+clicks the Cancel button, this function returns `null`.
 
-상기의 대화 상자는 OS X 상의 Chrome에서 다음과 같이 보입니다.
+The above prompt appears as follows (in Chrome on macOS):
 
-[![prompt() dialog in Chrome on OS X](prompt.png)](prompt.png)
+[![prompt() dialog in Chrome on macOS](prompt.png)](prompt.png)
 
-## 비고
+## Notes
 
-대화 상자는 한 줄의 텍스트 상자, 한 개의 취소 버튼과 한 개의 확인 버튼을 갖고, 사용자가 텍스트 상자에 입력한 문자열(빈 문자열일 수 있음)을 반환합니다.
+A prompt dialog contains a single-line textbox, a Cancel button, and an OK button, and
+returns the (possibly empty) text the user entered into that textbox.
 
-대화 상자는 modal window(부모 창으로 돌아가기 전에 사용자의 상호 작용을 요구하는 자식 창)로, 사용자는 대화 상자가 닫힐 때까지 나머지 모든 인터페이스에 접근할 수 없습니다. 따라서 대화 상자(또는 modal window)를 만드는 함수를 남용하면 안 됩니다.
-
-이 함수가 반환하는 값은 문자열이라는 점에 유의하세요. 이는 사용자가 입력한 값을 다른 자료형으로 바꿔야 할 때가 있음을 뜻합니다. 예를 들어, 만약 사용자의 대답이 `Number`가 되어야 한다면 반환 값을 직접 변환해야 합니다.
+Please note that result is a string. That means you should sometimes cast the value
+given by the user. For example, if their answer should be a Number, you should cast the
+value to Number.
 
 ```js
 const aNumber = Number(window.prompt("Type a number", ""));
 ```
 
-## 명세
+Dialog boxes are modal windows; they
+prevent the user from accessing the rest of the program's interface until the dialog box
+is closed. For this reason, you should not overuse any function that creates a dialog
+box (or modal window).
+
+Alternatively {{HTMLElement("dialog")}} element can be used to take user inputs.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 관련 문서
+## See also
 
+- {{HTMLElement("dialog")}} element
 - {{domxref("window.alert", "alert")}}
 - {{domxref("window.confirm", "confirm")}}

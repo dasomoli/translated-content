@@ -1,68 +1,85 @@
 ---
-title: HTMLElement.innerText
+title: "HTMLElement: innerText property"
+short-title: innerText
 slug: Web/API/HTMLElement/innerText
-original_slug: Web/API/Node/innerText
+page-type: web-api-instance-property
+browser-compat: api.HTMLElement.innerText
 ---
+
 {{APIRef("HTML DOM")}}
 
-{{domxref("HTMLElement")}} 인터페이스의 **`innerText`** 속성은 요소와 그 자손의 렌더링 된 텍스트 콘텐츠를 나타냅니다. `innerText`는 사용자가 커서를 이용해 요소의 콘텐츠를 선택하고 클립보드에 복사했을 때 얻을 수 있는 텍스트의 근삿값을 제공합니다.
+The **`innerText`** property of the {{domxref("HTMLElement")}} interface represents the rendered text content of a node and its descendants.
 
-> **참고:** `innerText`는 {{domxref("Node.textContent")}}와 혼동하기 쉬우나 중요한 차이점을 가지고 있습니다. 기본적으로, `innerText`는 텍스트의 렌더링 후 모습을 인식할 수 있지만 `textContent`는 그렇지 않습니다.
+As a getter, it approximates the text the user would get if they highlighted the contents of the element with the cursor and then copied it to the clipboard.
+As a setter this will replace the element's children with the given value, converting any line breaks into {{HTMLElement("br")}} elements.
 
-## 구문
+> **Note:** `innerText` is easily confused with {{domxref("Node.textContent")}}, but there are important differences between the two.
+> Basically, `innerText` is aware of the rendered appearance of text, while `textContent` is not.
 
-```js
-const renderedText = htmlElement.innerText
-htmlElement.innerText = string
-```
+## Value
 
-### 값
+A string representing the rendered text content of an element.
 
-요소의 렌더링 된 텍스트 콘텐츠를 나타내는 {{domxref("DOMString")}}. 요소 자체가 [렌더링 중](https://html.spec.whatwg.org/multipage/rendering.html#being-rendered)이 아니라면 {{domxref("Node.textContent")}} 속성의 값과 동일합니다.
+If the element itself is not [being rendered](https://html.spec.whatwg.org/multipage/rendering.html#being-rendered) (for example, is detached from the document or is hidden from view), the returned value is the same as the {{domxref("Node.textContent")}} property.
 
-## 예제
+> **Warning:** Setting `innerText` on a node removes _all_ of the node's children
+> and replaces them with a single text node with the given string value.
 
-다음 예제는 `innerText`와 {{domxref("Node.textContent")}}를 비교합니다. `innerText`가 {{htmlElement("br")}} 태그를 인식하고, 숨겨진 요소를 무시하는 점에 주목하세요.
+## Examples
+
+This example compares `innerText` with {{domxref("Node.textContent")}}.
+Note how `innerText` is aware of things like {{htmlElement("br")}} elements, and ignores hidden elements.
 
 ### HTML
 
 ```html
-<h3>원본 요소:</h3>
+<h3>Source element:</h3>
 <p id="source">
-  <style>#source { color: red; }</style>
-아래에서<br>이 글을<br>어떻게 인식하는지 살펴보세요.
-  <span style="display:none">숨겨진 글</span>
+  <style>
+    #source {
+      color: red;
+    }
+    #text {
+      text-transform: uppercase;
+    }
+  </style>
+  <span id="text">
+    Take a look at<br />
+    how this text<br />
+    is interpreted below.
+  </span>
+  <span style="display:none">HIDDEN TEXT</span>
 </p>
-<h3>textContent 결과:</h3>
-<textarea id="textContentOutput" rows="6" cols="30" readonly>...</textarea>
-<h3>innerText 결과:</h3>
-<textarea id="innerTextOutput" rows="6" cols="30" readonly>...</textarea>
+<h3>Result of textContent:</h3>
+<textarea id="textContentOutput" rows="6" cols="30" readonly>…</textarea>
+<h3>Result of innerText:</h3>
+<textarea id="innerTextOutput" rows="6" cols="30" readonly>…</textarea>
 ```
 
 ### JavaScript
 
 ```js
-const source = document.getElementById('source');
-const textContentOutput = document.getElementById('textContentOutput');
-const innerTextOutput = document.getElementById('innerTextOutput');
+const source = document.getElementById("source");
+const textContentOutput = document.getElementById("textContentOutput");
+const innerTextOutput = document.getElementById("innerTextOutput");
 
-textContentOutput.innerHTML = source.textContent;
-innerTextOutput.innerHTML = source.innerText;
+textContentOutput.value = source.textContent;
+innerTextOutput.value = source.innerText;
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample("예제", 700, 450)}}
+{{EmbedLiveSample("Examples", 700, 450)}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("HTMLElement.outerText")}}
 - {{domxref("Element.innerHTML")}}

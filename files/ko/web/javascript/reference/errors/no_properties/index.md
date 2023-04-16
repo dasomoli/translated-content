@@ -1,13 +1,16 @@
 ---
-title: 'TypeError: "x" has no properties'
+title: "TypeError: \"x\" has no properties"
 slug: Web/JavaScript/Reference/Errors/No_properties
+page-type: javascript-error
 ---
 
 {{jsSidebar("Errors")}}
 
-[`null`](/ko/docs/Web/JavaScript/Reference/Operators/null) 과 {{jsxref("undefined")}} 라는 속성에 접근하려고 시도할때 “null(혹은 undefined)은 속성이 없습니다”라는 JavaScript 에러가 발생합니다.
+The JavaScript exception "null (or undefined) has no properties" occurs when you
+attempt to access properties of [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null) and {{jsxref("undefined")}}. They
+don't have any.
 
-## 메세지
+## Message
 
 ```
 TypeError: Cannot read properties of undefined (reading 'x') (V8-based)
@@ -16,15 +19,16 @@ TypeError: undefined has no properties (Firefox)
 TypeError: undefined is not an object (evaluating 'undefined.x') (Safari)
 ```
 
-## 에러 타입
+## Error type
 
 {{jsxref("TypeError")}}.
 
-## 무엇이 잘못되었을까?
+## What went wrong?
 
-[`null`](/ko/docs/Web/JavaScript/Reference/Operators/null) 과 {{jsxref("undefined")}} 에 접근 할 수 있는 속성이 없습니다.
+Both [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null) and {{jsxref("undefined")}}, have no properties you could
+access.
 
-## 예제
+## Examples
 
 ### null and undefined have no properties
 
@@ -36,7 +40,7 @@ undefined.bar;
 // TypeError: undefined has no properties
 ```
 
-## 참조
+## See also
 
-- [`null`](/ko/docs/Web/JavaScript/Reference/Operators/null)
+- [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null)
 - {{jsxref("undefined")}}

@@ -1,27 +1,35 @@
 ---
-title: Window.confirm()
+title: "Window: confirm() method"
+short-title: confirm()
 slug: Web/API/Window/confirm
+page-type: web-api-instance-method
+browser-compat: api.Window.confirm
 ---
+
 {{ApiRef("Window")}}
 
-**`Window.confirm()`** 메서드는 확인과 취소 두 버튼을 가지며 메시지를 지정할 수 있는 모달 대화 상자를 띄웁니다.
+`window.confirm()` instructs the browser to display a dialog with an optional message, and to wait until the user either confirms or cancels the dialog.
 
-## 구문
+Under some conditions — for example, when the user switches tabs — the browser may not actually display a dialog, or may not wait for the user to confirm or cancel the dialog.
 
-```js
-result = window.confirm(message);
+## Syntax
+
+```js-nolint
+confirm(message)
 ```
 
 ### Parameters
 
 - `message`
-  - : 경고 대화 상자에 표시할 텍스트 문자열.
+  - : A string you want to display in the confirmation dialog.
 
-### 반환 값
+### Return value
 
-확인 (`true`) 또는 취소 (`false`) 중 사용자가 선택한 값. 브라우저가 페이지 내 대화 상자를 무시하고 있으면 항상 `false`입니다.
+A boolean indicating whether OK (`true`) or Cancel (`false`) was
+selected. If a browser is ignoring in-page dialogs, then the returned value is always
+`false`.
 
-## 예제
+## Examples
 
 ```js
 if (window.confirm("Do you really want to leave?")) {
@@ -29,23 +37,29 @@ if (window.confirm("Do you really want to leave?")) {
 }
 ```
 
-위 코드는 다음 결과를 보입니다.
+Produces:
 
-![firefox confirm](firefox_confirm_dialog.png)
+![Firefox confirm](firefox_confirm_dialog.png)
 
-## 참고
+## Notes
 
-대화 상자는 모달 창(부모 창으로 돌아가기 전에 사용자의 상호 작용을 요구하는 자식 창)으로, 사용자는 대화 상자가 닫힐 때까지 다른 모든 인터페이스에 접근할 수 없습니다. 따라서 대화 상자(또는 모달 창)를 만드는 함수를 남용하면 안 됩니다. 이 뿐만이 아니더라도, [대화 상자로 사용자 확인을 받는 것은 피해야](https://alistapart.com/article/neveruseawarning/) 할 좋은 이유 여럿이 존재합니다.
+Dialog boxes are modal windows — they
+prevent the user from accessing the rest of the program's interface until the dialog box
+is closed. For this reason, you should not overuse any function that creates a dialog
+box (or modal window). Regardless, there are good reasons to [avoid using dialog boxes for confirmation](https://alistapart.com/article/neveruseawarning/).
 
-## 명세
+Alternatively {{HTMLElement("dialog")}} element can be used for confirmations.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- {{HTMLElement("dialog")}} element
 - {{domxref("window.alert()")}}
 - {{domxref("window.prompt()")}}

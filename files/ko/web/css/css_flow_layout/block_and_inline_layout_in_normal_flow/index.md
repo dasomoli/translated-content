@@ -1,107 +1,108 @@
 ---
-title: 일반 대열 속 블록 및 인라인 레이아웃
+title: Block and inline layout in normal flow
 slug: Web/CSS/CSS_Flow_Layout/Block_and_Inline_Layout_in_Normal_Flow
-original_slug: Web/CSS/CSS_Flow_Layout/일반_흐름_속_블록_및_인라인_레이아웃
+page-type: guide
 ---
 
 {{CSSRef}}
 
-이번 안내서에서는 블록 및 인라인 요소가 일반 대열의 일부일 때 어떻게 동작하는지에 대한 기본 사항을 살펴본다.
+In this guide, we will explore the basics of how Block and Inline elements behave when they are part of the normal flow.
 
-일반 대열은 [CSS 2.1규격](https://www.w3.org/TR/CSS2/visuren.html#normal-flow)에 정의되어 있으며, 이는 일반 대열에 소속된 상자가 *서식 상황*의 일부가 된다는 것을 설명한다. 그 상자는 블록 또는 인라인이 될 수 있지만 동시에 양수겸장이 될 수는 없다. 블록 수준 상자는 *블록 서식 상황*에 참여하는 것으로, 인라인 수준 상자는 *인라인 서식 상황*에 참여하는 것으로 기술한다.
+Normal Flow is defined in the [CSS 2.1 specification](https://www.w3.org/TR/CSS2/visuren.html#normal-flow), which explains that any boxes in normal flow will be part of a _formatting context_. They can be either block or inline, but not both at once. We describe block-level boxes as participating in a _block formatting context_, and inline-level boxes as participating in an _inline formatting context_.
 
-블록 또는 인라인 서식 상황에 해당하는 요소의 동작은 이(CSS2.1) 규격에서 정의한다. 블록 형식 상황에 해당하는 요소의 경우 규격은 다음과 같다:
+The behavior of elements which have a block or inline formatting context is also defined in this specification. For elements with a block formatting context, the spec says:
 
-> 블록 서식 상황에서 상자는 컨테이너 블록의 맨 위에서 시작하여 수직으로 하나씩 배치된다. 두 형제(동급) 상자 사이 수직 간격은 '여백' 속성에 의해 결정된다. 블록 서식 상황에 속하는 인접하는 블록 수준 상자 사이 수직 여백은 축소된다.
-> 블록 서식 지정 상황에 속하는 각 상자의 왼쪽 바깥족 가장자리는 콘테이너 블록의 왼쪽 가장자리를 접한다. (오른쪽에서 왼쪽\[아랍어] 방향 서식의 경우는 우측 가장자리를 접한다.)" - 9.4.1
+> "In a block formatting context, boxes are laid out one after the other, vertically, beginning at the top of a containing block. The vertical distance between two sibling boxes is determined by the 'margin' properties. Vertical margins between adjacent block-level boxes in a block formatting context collapse.
+>
+> In a block formatting context, each box's left outer edge touches the left edge of the containing block (for right-to-left formatting, right edges touch)." - 9.4.1
 
-인라인 서식 상황에 해당하는 요소의 경우:
+For elements with an inline formatting context:
 
-> 인라인 서식 상황에서 상자는 콘테이너 블록의 상단에서 하나씩 차례로 수평으로 배치된다. 이 상자들 사이 수평 여백, 테두리 및 패딩은 준수된다. 상자는 다양한 방법으로 수직으로 정렬될 수 있다. 상자의 하단이나 상단에 맞춰 정렬되거나 텍스트의 기준선에 맞춰 정렬될 수 있다. 라인 형태를 띠는 여러 상자를 가두는 직사각형 영역을 라인 상자라고 한다. "- 9.4.2
+> "In an inline formatting context, boxes are laid out horizontally, one after the other, beginning at the top of a containing block. Horizontal margins, borders, and padding are respected between these boxes. The boxes may be aligned vertically in different ways: their bottoms or tops may be aligned, or the baselines of text within them may be aligned. The rectangular area that contains the boxes that form a line is called a line box." - 9.4.2
 
-CSS 2.1 규격은 문서를 가로쓰기와 세로 쓰기 모드로 기술하고 있다. 예를 들어 블록 상자 사이의 수직 거리를 기술한다. 블록 및 인라인 요소의 동작 방식은 세로 쓰기 모드에서 동작할 때와 동일하다. 앞으로 게시될 대열 레이아웃과 쓰기 모드에 관한 안내서에서 세로 쓰기 모드의 경우를 살펴볼 예정이다.
+Note that the CSS 2.1 specification describes documents as being in a horizontal, top to bottom writing mode. For example, by describing vertical distance between block boxes. The behavior on block and inline elements is the same when working in a vertical writing mode, and we will explore this in a future guide on Flow Layout and Writing Modes.
 
-## 블록 서식 상황에 참여하는 요소
+## Elements participating in a block formatting context
 
-영어와 같은 가로쓰기 모드에서 블록 요소는 수직으로 다른 대상 요소 바로 밑에 배치된다.
+Block elements in a horizontal writing mode such as English, layout vertically, one below the other.
 
-![](mdn-horizontal.png)
+![Inline direction is horizontal. Block direction is vertical.](mdn-horizontal.png)
 
-세로 쓰기 모드에서는 수평으로 배치된다.
+In a vertical writing mode then would lay out horizontally.
 
-![](mdn-vertical.png)
+![Inline direction is vertical. Block direction is horizontal.](mdn-vertical.png)
 
-이 안내서에서 우리는 영어로 작업할 것이기 때문에 가로쓰기 모드를 다룬다. 그러나 기술된 내용 전체는 세로 쓰기 모드에서도 당연히 동일한 방식으로 작동한다.
+In this guide, we will be working in English and therefore a horizontal writing mode. However, everything described should work in the same way if your document is in a vertical writing mode.
 
-CSS 규격에 정의된 대로 2개의 블록 상자 사이 여백이 바로 상자 요소 사이를 구분해주는 것이다. 우리는 그점을 눈으로 확인하기 위해 2개의 단락으로 매우 간단한 하나의 레이아웃에 테두리를 추가했다. 기본 브라우저의 스타일시트는 상하 요소에 여백을 더하는 방식으로 단락 사이 간격을 추가한다.
+As defined in the specification, the margins between two block boxes are what creates separation between the elements. We see this with a very simple layout of two paragraphs, to which I have added a border. The default browser stylesheet adds spacing between the paragraphs by way of adding a margin to the top and bottom.
 
 {{EmbedGHLiveSample("css-examples/flow/block-inline/normal-flow.html", '100%', 700)}}
 
-단락 요소의 여백을 `0`으로 설정하면, 테두리는 접촉한다.
+If we set margins on the paragraph element to `0` then the borders will touch.
 
 {{EmbedGHLiveSample("css-examples/flow/block-inline/normal-flow-margin-zero.html", '100%', 700)}}
 
-기본 설정에 따라 블록 요소는 인라인 방향에 포함된 모든 빈공간을 차지하므로 당해 단락은 펼쳐지면서 콘테이너 블록 내부를 최대한 차지할 수 있게 된다. 블록 너비를 적시하게 되면 옆 공간에 나란히 배치될 공간이 있다손치더라도 다른 대상 요소 바로 밑에 배치된다. 각 블록은 콘테이너 블록의 시작 가장자리에 맞춰 시작되며, 그 위치에 맞춰 해당 쓰기 모드에 포함되는 문장이 시작된다.
+By default block elements will consume all of the space in the inline direction, so our paragraphs spread out and get as big as they can inside their containing block. If we give them a width, they will continue to lay out one below the other - even if there would be space for them to be side by side. Each will start against the start edge of the containing block, so the place at which sentences would begin in that writing mode.
 
 {{EmbedGHLiveSample("css-examples/flow/block-inline/normal-flow-width.html", '100%', 700)}}
 
-### 여백 축소
+### Margin collapsing
 
-CSS 규격에 따라 블록 요소 사이의 여백이 *축소*된다. 즉, 하단 여백이 있는 요소 바로 뒤에 상단 여백을 가진 요소가 있으면 두 여백의 합이 전체 공간이 되는게 아니라 여백이 축소되는데, 본질적으로 두 여백 중 더 큰 것으로 갈음한다.
+The spec explains that margins between block elements _collapse_. This means that if you have an element with a top margin immediately after an element with a bottom margin, rather than the total space being the sum of these two margins, the margin collapses, and so will essentially become as large as the larger of the two margins.
 
-아래의 예에 포함된 단락들은 `20px`의 상부 여백과 `40px`의 하부 여백을 갖고 있다. 단락 사이 여백의 크기는 `40px`이다. 왜냐면 두번째 단락의 상대적으로 작은 상부 여백이 첫번째 단락의 상대적으로 큰 하부 여백에 맞춰 축소되었기 때문이다.
+In the example below, the paragraphs have a top margin of `20px` and a bottom margin of `40px`. The size of the margin between the paragraphs is `40px` as the smaller top margin on the second paragraph has collapsed with the larger bottom margin of the first.
 
 {{EmbedGHLiveSample("css-examples/flow/block-inline/normal-flow-collapsing.html", '100%', 500)}}
 
-여백 축소에 관해선 [여백 축소 정복](/ko/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing) 안내서에서 자세한 내용을 파악할 수 있다.
+You can read more about margin collapsing in our article [Mastering Margin Collapsing](/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing).
 
-> **참고:** 참고: 여백의 축소 여부가 불확실할 경우 브라우저 개발툴에 나오는 상자 모델 값을 확인하십시오. 이렇게 하면 현재 일어나고 일을 파악하는 데 도움이 될 수 있는 실제 여백 크기를 알 수 있습니다.
+> **Note:** If you are not sure whether margins are collapsing, check the Box Model values in your browser DevTools. This will give you the actual size of the margin which can help you to identify what is happening.
 >
-> ![](box-model.png)
+> ![Screen shot box model panel in browser dev tools which shows the four values for margin, border, and padding along with height and width in a graphic at top and lists box-sizing, display, float, line-height, position, and z-index below the graphic.](box-model.png)
 
-## 인라인 서식 상황에 참여하는 요소
+## Elements participating in an inline formatting context
 
-인라인 요소는 특정 쓰기 모드에서 문장이 진행하는 방향으로 하나씩 차례대로 표시한다. 인라인 요소를 상자로 간주하지 않는 경향이 있지만 CSS에 속하는 모든 요소처럼 그들도 상자로 간주된다. 이 인라인 상자들은 하나씩 차례대로 배열되어 있다. 컨테이너 블락에 상자 전체를 위한 충분한 공간이 없으면 새 줄로 넘어간다. 생성된 라인은 라인 상자라고 통용된다.
+Inline elements display one after the other in the direction that sentences run in that particular writing mode. While we don't tend to think of inline elements as having a box, as with everything in CSS they do. These inline boxes are arranged one after the other. If there is not enough space in the containing block for all of the boxes a box can break onto a new line. The lines created are known as line boxes.
 
-다음 예에서는 스트롱(strong) 요소를 내부에 포함하는 단락의 형태로 생성된 세개의 인라인 상자가 있다.
+In the following example, we have three inline boxes created by a paragraph with a {{HTMLElement("strong")}} element inside it.
 
 {{EmbedGHLiveSample("css-examples/flow/block-inline/inline.html", '100%', 500)}}
 
-`strong` 요소 전후로 단어를 감싼 상자들은 무명 상자라고 하며 모든 것이 상자로 둘러쳐 있음을 담보하기 위해 상자가 도입된 것이되 직접 대상화할 수 없는 요소이다.
+The boxes around the words before the `<strong>` element and after the `<strong>` element are referred to as anonymous boxes, boxes introduced to ensure that everything is wrapped in a box, but ones that we cannot target directly.
 
-블록 방향의 라인 상자의 크기는(영어 단락 작업시 글 높이의 경우)는 내부에 있는 가장 큰 상자에 의해 정의된다. 다음 예에서 나는 스트롱 요소의 크기를 300%로 만들었고, 이제 그 콘텐츠가 해당 선상의 라인 상자 높이를 정의한다.
+The line box size in the block direction (so the height when working in English) is defined by the tallest box inside it. In the next example, the `<strong>` element is 300%; since that content spans two lines, it now defines the height of the line boxes of those two lines.
 
 {{EmbedGHLiveSample("css-examples/flow/block-inline/line-box.html", '100%', 500)}}
 
-블락과 인라인 상자의 동작 방식에 대해 자세한 내용은 [시각적 서식 모델](/ko/docs/Web/Guide/CSS/Visual_formatting_model) 안내서를 찾아보십시요.
+Find out more about how Block and Inline Boxes behave in our Guide to the [Visual Formatting Model](/en-US/docs/Web/CSS/Visual_formatting_model).
 
-## `display`속성 및 대열 레이아웃
+## The display property and flow layout
 
-CSS 2.1에 존재하는 규칙 외에도 새로운 수준의 CSS는 블록 및 인라인 상자의 동작을 추가로 기술한다. `display` 속성은 상자와 상자 속 상자의 동작 방법을 정의한다. CSS 디스플레이 모델 수준 3 내용을 보면 디스플레이 속성이 상자의 동작과 생성된 상자에 변화를 주는 방법에 대해 더 자세히 알 수 있다.
+In addition to the rules existing in CSS2.1, new levels of CSS further describe the behavior of block and inline boxes. The {{cssxref("display")}} property defines how a box and any boxes inside it behave. In the CSS Display Model Level 3, we can learn more about how the `display` property changes the behavior of boxes and the boxes they generate.
 
-요소의 디스플레이 유형은 외부 디스플레이 유형을 정의하며, 이 외부 디스플레이 유형은 상자가 동일 서식 상황에 속한 다른 요소와 어떻게 병행 표시되는지를 지정한다. 또한, (CSS 디스플레이 모델 수준 3을 보면) 이 요소 내부에 속한 상자가 작동하는 방식을 지정하는 내부 디스플레이 유형도 정의한다. 이런 내용은 가변(flex) 레이아웃를 고려할 때 명확하게 확인할 수 있다. 아래 예제에서 나에게 `display: flex`를 적용한 div 요소 하나가 있다. 가변 컨테이너는 블록 요소처럼 동작한다. 새 줄에 표시되고 인라인 진행 방향에서 차지할 수 있는 모든 공간을을 차지한다. 이것은 `block`의 외부 디스플레이 유형이다.
+The display type of an element defines the outer display type; this dictates how the box displays alongside other elements in the same formatting context. It also defines the inner display type, which dictates how boxes inside this element behave. We can see this very clearly when considering a flex layout. In the example below I have a {{HTMLElement("div")}}, which I have given `display: flex`. The flex container behaves like a block element: it displays on a new line and takes up all of the space it can in the inline direction. This is the outer display type of `block`.
 
-그러나 가변 항목("Flex Item" 문자열 2개)은 가변 서식 상황에 참여하고 있다. 왜냐면 부모(class container)가 display: flex가 지정된 요소이고, 따라서 (상속에 의해) 내부 디스플레이 유형이 가변이므로 직계 자식의 경우 가변 서식 상황이 수립된다.
+The flex items however are participating in a flex formatting context, because their parent is the element with `display: flex`, which has an inner display type of `flex`, establishing the flex formatting context for the direct children.
 
 {{EmbedGHLiveSample("css-examples/flow/block-inline/flex.html", '100%', 500)}}
 
-따라서 CSS에 포함된 모든 상자가 이런 식으로 작동한다고 간주할 수 있다. 상자 자체는 외부 디스플레이 유형도 갖고있기 때문에 다른 상자와 병행 동작하는 방법을 알고 있다. 그리고 상자는 내부 디스플레이 유형도 갖고있어 자식의 동작 방식도 변경한다. 이어 해당 자식은 외부 및 내부 디스플레이 유형도 갖게된다. 앞 예제에서 가변 항목("Flex Item" 문자열 2개)은 가변 수준 상자가 되며, 따라서 그것의 외부 디스플레이 유형은 그것들이 가변 서식 상황의 일부가 되는 방식에 의해 결정된다. 그들 항목은 _대열_ 디스플레이 유형을 갖게 되는데, 그 의미는 자식이 일반 대열에 참여한다는 것을 의미한다. 당해 가변 항목 내부에 중첩된 항목('children' 'are in' 'normal flow')은 디스플레이 유형이 바뀌지 않는한 블록 및 인라인 요소로 배치된다.
+Therefore you can think of every box in CSS working in this way. The box itself has an outer display type, so it knows how to behave alongside other boxes. It then has an inner display type which changes the way its children behave. Those children then have an outer and inner display type too. The flex items in the previous example become flex level boxes, so their outer display type is dictated by way of them being part of the flex formatting context. They have an inner display type of _flow_ however, meaning that their children participate in normal flow. Items nested inside our flex item lay themselves out as block and inline elements unless something changes their display type.
 
-외부 및 내부 디스플레이 유형이란 개념은 Flexbox(`display: flex`)와 Grid Layout(`display: grid`)과 같은 레이아웃 메서드를 사용하는 컨테이너가 해당 메서드의 외부 디스플레이 유형이 `block`인 관계로 블록 및 인라인 레이아웃에 계속해서 참여하고 있다는 것을 알려준다는 점에서 중요하다.
+This concept of the outer and inner display type is important as this tells us that a container using a layout method such as Flexbox (`display: flex`) and Grid Layout (`display: grid`) is still participating in block and inline layout, due to the outer display type of those methods being `block`.
 
-### 하나의 요소가 참여하는 대상의 서식 상황 변경
+### Changing the Formatting Context an element participates in
 
-브라우저는 해당 요소의 통상적 타당성 여하에 따라 항목을 블록 또는 인라인 서식 맥락의 일부로 표시한다. 예들들면 단어를 강조를 강조하기 위해 스트롱 요소를 사용하며, 브라우저에 굵게 표시됩니다. 스트롱 요소가 블록 수준 요소로 표시되어 새 줄로 밀려나는 것은 일반적으로 타당하지 않다. 당신이 모든 스트롱 요소를 블록 요소로 표시하기를 원하면 당신은 `strong` 요소에 `display: block`를 설정함으로써 그렇게 할 수 있다. 즉, 항상 가장 의미론적으로 타당한 HTML 요소를 사용하여 콘텐츠를 표시한 다음 CSS를 사용하여 표시되는 방식을 변경할 수 있다.
+Browsers display items as part of a block or inline formatting context in terms of what normally makes sense for that element. For example, a {{HTMLElement("strong")}} element is used to highlight a word and displays bold in browsers. It would not generally make sense for that `<strong>` element to be displayed as a block level element, breaking onto a new line. If you did want all `<strong>` elements to display as block elements, you could do so by setting `display: block` on `<strong>`. This means that you can always use most of the semantic HTML elements to markup your content, and then change the way it displays using CSS.
 
 {{EmbedGHLiveSample("css-examples/flow/block-inline/change-formatting.html", '100%', 500)}}
 
-## 요약정리
+## Summary
 
-이번 안내서에서 우리는 블록 요소나 인라인 요소일 경우처럼 일반 대열속에서 요소가 어떻게 표시되는지 살펴보았다. 이러한 요소에 정해진 기본 동작이 있는 관계로 CSS 스타일 지정이 전혀 없는 HTML 문서가 읽기 가능한 방식으로 표시된다. 일반 대열의 작동 방식을 이해하면 레이아웃이 더 쉬워지는 데 그 이유는 요소가 표시되는 방식을 변경하는 출발점을 이해하는 것이기 때문이다.
+In this guide, we have looked at how elements display in normal flow, as block and inline elements. Due to the default behavior of these elements, an HTML document with no CSS styling at all, will display in a readable way. By understanding how normal flow works you will find layout easier, as you understand the starting point for making changes to how elements are displayed.
 
-## 참조 항목
+## See also
 
-- [CSS 기본 상자 모델](/ko/docs/Web/CSS/CSS_Box_Model)
-- _[일반 대열](/ko/docs/Learn/CSS/CSS_layout/일반_흐름)_ - 레이아웃 살펴보기
-- [인라인 요소](/ko/docs/Web/HTML/Inline_elements)
-- [블락 수준 요소](/ko/docs/Web/HTML/Block-level_elements)
+- [CSS Basic Box Model](/en-US/docs/Web/CSS/CSS_Box_Model)
+- _[Normal Flow](/en-US/docs/Learn/CSS/CSS_layout/Normal_Flow)_ - Learn Layout
+- [Inline elements](/en-US/docs/Web/HTML/Inline_elements)
+- [Block-level elements](/en-US/docs/Web/HTML/Block-level_elements)

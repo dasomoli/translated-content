@@ -1,29 +1,35 @@
 ---
-title: 'SyntaxError: "x" is a reserved identifier'
+title: "SyntaxError: \"x\" is a reserved identifier"
 slug: Web/JavaScript/Reference/Errors/Reserved_identifier
+page-type: javascript-error
 ---
 
 {{jsSidebar("Errors")}}
 
-## 메세지
+The JavaScript exception "_variable_ is a reserved identifier" occurs
+when [reserved keywords](/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#keywords) are used as identifiers.
+
+## Message
 
 ```
-    SyntaxError: The use of a future reserved word for an identifier is invalid (Edge)
-    SyntaxError: "x" is a reserved identifier (Firefox)
-    SyntaxError: Unexpected reserved word (Chrome)
+SyntaxError: Unexpected reserved word (V8-based)
+SyntaxError: implements is a reserved identifier (Firefox)
+SyntaxError: Cannot use the reserved word 'implements' as a variable name. (Safari)
 ```
 
-## 에러 타입
+## Error type
 
 {{jsxref("SyntaxError")}}
 
-## 무엇이 잘못되었을까?
+## What went wrong?
 
-[예약어](/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#Keywords)가 식별자로 쓰인 경우 발생하는 에러입니다. 이 키워드는 엄격(Strict) 모드와 느슨한(Sloppy) 모드에서 모두 예약어로 취급됩니다.
+[Reserved keywords](/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#keywords) will throw in
+if they are used as identifiers. These are reserved in
+strict mode and sloppy mode:
 
 - `enum`
 
-다음은 엄격 모드의 코드에서만 예약어로 취급됩니다:
+The following are only reserved when they are found in strict mode code:
 
 - `implements`
 - `interface`
@@ -34,44 +40,48 @@ slug: Web/JavaScript/Reference/Errors/Reserved_identifier
 - `public`
 - `static`
 
-## 예제
+## Examples
 
-### 엄격 모드와 엄격하지 않은 모드에서의 예약어
+### Strict and non-strict reserved keywords
 
-`enum` 식별자는 일반적으로 예약되어 있습니다.
+The `enum` identifier is generally reserved.
 
 ```js example-bad
-var enum = { RED: 0, GREEN: 1, BLUE: 2 };
+const enum = { RED: 0, GREEN: 1, BLUE: 2 };
 // SyntaxError: enum is a reserved identifier
 ```
 
-엄격 모드의 코드에선 더 많은 식별자들이 예약되어 있습니다.
+In strict mode code, more identifiers are reserved.
 
 ```js example-bad
 "use strict";
-var package = ["potatoes", "rice", "fries"];
+const package = ["potatoes", "rice", "fries"];
 // SyntaxError: package is a reserved identifier
 ```
 
-이 변수들의 이름을 변경해야 합니다.
+You'll need to rename these variables.
 
 ```js example-good
-var colorEnum = { RED: 0, GREEN: 1, BLUE: 2 };
-var list = ["potatoes", "rice", "fries"];
+const colorEnum = { RED: 0, GREEN: 1, BLUE: 2 };
+const list = ["potatoes", "rice", "fries"];
 ```
 
-### 오래된 브라우저의 업데이트
+### Update older browsers
 
-새로운 구문을 사용하기 위해서는 최근 버전의 브라우저로 업데이트 해야 합니다. 예를 들어, 오래된 브라우저를 사용하고 있다면 [`let`](/en-US/docs/Web/JavaScript/Reference/Statements/let) 또는 [`class`](/en-US/docs/Web/JavaScript/Reference/Statements/class) 구현할 수 없습니다.
+If you are using an older browser that does not yet implement
+[`let`](/en-US/docs/Web/JavaScript/Reference/Statements/let) or
+[`class`](/en-US/docs/Web/JavaScript/Reference/Statements/class),
+for example, you should update to a more recent browser version that does support these
+new language features.
 
 ```js
 "use strict";
 class DocArchiver {}
 
 // SyntaxError: class is a reserved identifier
-// (오래된 버전의 브라우저에서만 에러가 발생합니다. 예) Firefox 44 이하)
+// (throws in older browsers only, e.g. Firefox 44 and older)
 ```
 
-## 같이 보기
+## See also
 
-- [Good variable names](http://wiki.c2.com/?GoodVariableNames)
+- [Good variable names](https://wiki.c2.com/?GoodVariableNames)

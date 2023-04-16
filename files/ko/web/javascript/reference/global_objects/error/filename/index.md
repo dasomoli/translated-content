@@ -1,35 +1,45 @@
 ---
-title: Error.prototype.fileName
+title: "Error: fileName"
 slug: Web/JavaScript/Reference/Global_Objects/Error/fileName
+page-type: javascript-instance-data-property
+status:
+  - non-standard
+browser-compat: javascript.builtins.Error.fileName
 ---
 
 {{JSRef}} {{non-standard_header}}
 
-**`fileName`** 속성은 이 오류가 발생한 파일의 경로를 포함합니다.
+The **`fileName`** data property of an {{jsxref("Error")}} instance contains the path to the file that raised this error.
 
-## 설명
+## Value
 
-이 비표준 속성은 이 오류가 발생한 파일의 경로를 포함합니다. 디버거 컨텍스트(예를 들어 Firefox 개발자 도구)에서 호출할 경우, "debugger eval code" 가 반환됩니다.
+A string.
 
-## 예제
+{{js_property_attributes(1, 0, 1)}}
 
-### fileName 사용하기
+## Description
+
+This non-standard property contains the path to the file that raised this error. If called from a debugger context, the Firefox Developer Tools for example, "debugger eval code" is returned.
+
+## Examples
+
+### Using fileName
 
 ```js
-var e = new Error('Could not parse input');
+const e = new Error("Could not parse input");
 throw e;
 // e.fileName could look like "file:///C:/example.html"
 ```
 
-## 명세
+## Specifications
 
-표준의 일부가 아닙니다.
+Not part of any standard.
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Error.prototype.stack")}}
 - {{jsxref("Error.prototype.columnNumber")}}

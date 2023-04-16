@@ -1,117 +1,136 @@
 ---
-title: <address>
+title: "<address>: The Contact Address element"
 slug: Web/HTML/Element/address
+page-type: html-element
+browser-compat: html.elements.address
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<address>` 요소**는 가까운 HTML 요소의 사람, 단체, 조직 등에 대한 연락처 정보를 나타냅니다.
+The **`<address>`** [HTML](/en-US/docs/Web/HTML) element indicates that the enclosed HTML provides contact information for a person or people, or for an organization.
 
 {{EmbedInteractiveExample("pages/tabbed/address.html", "tabbed-standard")}}
 
-<div class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</div>
+The contact information provided by an `<address>` element's contents can take whatever form is appropriate for the context, and may include any type of contact information that is needed, such as a physical address, URL, email address, phone number, social media handle, geographic coordinates, and so forth. The `<address>` element should include the name of the person, people, or organization to which the contact information refers.
 
-`<address>` 요소의 콘텐츠가 제공하는 연락처 정보는 현재 맥락에 적절한 아무 형태나 취할 수 있으며, 물리적 주소, URL, 이메일 주소, 전화번호, SNS 식별자, 좌표 등 어떠한 정보라도 포함할 수 있습니다. 반드시 포함해야 하는 정보는 연락처가 가리키는 개인, 조직, 단체의 이름입니다.
+`<address>` can be used in a variety of contexts, such as providing a business's contact information in the page header, or indicating the author of an article by including an `<address>` element within the {{HTMLElement("article")}}.
 
-`<address>`는 다양한 맥락에서 사용할 수 있습니다. 사업체 연락 방법을 페이지 헤더에 배치할 때도 쓸 수 있고, {{HTMLElement("article")}} 내부에 배치해서 글의 작성자를 나타낼 수도 있습니다.
+## Attributes
+
+This element only includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
+
+## Usage notes
+
+- The `<address>` element can only be used to represent the contact information for its nearest {{HTMLElement("article")}} or {{HTMLElement("body")}} element ancestor.
+- This element should not contain more information than the contact information, like a publication date (which belongs in a {{HTMLElement("time")}} element).
+- Typically an `<address>` element can be placed inside the {{HTMLElement("footer")}} element of the current section, if any.
+
+## Examples
+
+This example demonstrates the use of `<address>` to demarcate the contact information for an article's author.
+
+```html
+<address>
+  You can contact author at
+  <a href="http://www.somedomain.com/contact"> www.somedomain.com</a>.<br />
+  If you see any bugs, please
+  <a href="mailto:webmaster@somedomain.com"> contact webmaster</a>.<br />
+  You may also want to visit us:<br />
+  Mozilla Foundation<br />
+  331 E Evelyn Ave<br />
+  Mountain View, CA 94041<br />
+  USA
+</address>
+```
+
+### Result
+
+{{EmbedLiveSample("Examples", "300", "200")}}
+
+Although it renders text with the same default styling as the {{HTMLElement("i")}} or {{HTMLElement("em")}} elements, it is more appropriate to use `<address>` when dealing with contact information, as it conveys additional semantic information.
+
+## Technical summary
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
       </th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >, 뚜렷한 콘텐츠.
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
+        >, palpable content.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >. 단, 다음의 요소는 사용할 수 없습니다.<br />다른
-        <code>&#x3C;address></code>, 제목 콘텐츠
-        ({{HTMLElement("hgroup")}}, {{HTMLElement("h1")}},
-        {{HTMLElement("h2")}}, {{HTMLElement("h3")}},
-        {{HTMLElement("h4")}}, {{HTMLElement("h5")}},
-        {{HTMLElement("h6")}}), 구획 콘텐츠
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
+        >, but with no nested <code>&#x3C;address></code> element, no heading
+        content ({{HTMLElement("hgroup")}}, {{HTMLElement("Heading_Elements", "h1")}},
+        {{HTMLElement("Heading_Elements", "h2")}}, {{HTMLElement("Heading_Elements", "h3")}},
+        {{HTMLElement("Heading_Elements", "h4")}}, {{HTMLElement("Heading_Elements", "h5")}},
+        {{HTMLElement("Heading_Elements", "h6")}}), no sectioning content
         ({{HTMLElement("article")}}, {{HTMLElement("aside")}},
-        {{HTMLElement("section")}}, {{HTMLElement("nav")}}),
-        {{HTMLElement("header")}}, {{HTMLElement("footer")}} 요소.
+        {{HTMLElement("section")}}, {{HTMLElement("nav")}}), and
+        no {{HTMLElement("header")}} or {{HTMLElement("footer")}}
+        element.
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
+      <th scope="row">Tag omission</th>
       <td>{{no_tag_omission}}</td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Permitted parents</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >를 허용하는 모든 요소. 단, <code>&#x3C;address></code> 요소 제외.
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >flow content</a
+        >, but always excluding <code>&#x3C;address></code> elements (according
+        to the logical principle of symmetry, if
+        <code>&#x3C;address></code> tag, as a parent, can not have nested
+        <code>&#x3C;address></code> element, then the same
+        <code>&#x3C;address></code> content can not have
+        <code>&#x3C;address></code> tag as its parent).
       </td>
     </tr>
     <tr>
-      <th scope="row">암시적 ARIA 역할</th>
+      <th scope="row">Implicit ARIA role</th>
       <td>
         <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
-          >대응하는 역할 없음</a
+          >No corresponding role</a
         >
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>없음</td>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>Any</td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
-      <td>{{domxref("HTMLElement")}}</td>
+      <th scope="row">DOM interface</th>
+      <td>
+        {{domxref("HTMLElement")}} Prior to Gecko 2.0 (Firefox 4),
+        Gecko implemented this element using the
+        {{domxref("HTMLSpanElement")}} interface
+      </td>
     </tr>
   </tbody>
 </table>
 
-## 특성
-
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)만 포함합니다.
-
-## 사용 일람
-
-- 기존 명세에서의 `<address>` 요소는 문서 작성자의 연락처만 나타내는 요소였습니다. 그러나 최신 명세에서 임의의 연락처를 포함할 수 있도록 수정됐습니다.
-- 연락처 외의 정보(출판일 등)를 담아서는 안됩니다.
-- 보통, 현재 구획에 {{htmlelement("footer")}} 요소가 존재하면 `<address>`를 그 안에 배치할 수 있습니다.
-
-## 예제
-
-다음 예제는 `<address>`를 사용해 글 작성자의 연락처를 구별하는 모습을 보입니다.
-
-```html
-<address>
-  You can contact author at <a href="http://www.somedomain.com/contact">
-  www.somedomain.com</a>.<br>
-  If you see any bugs, please <a href="mailto:webmaster@somedomain.com">
-  contact webmaster</a>.<br>
-  You may also want to visit us:<br>
-  Mozilla Foundation<br>
-  331 E Evelyn Ave<br>
-  Mountain View, CA 94041<br>
-  USA
-</address>
-```
-
-### 결과
-
-{{EmbedLiveSample("예제", "300", "200")}}
-
-비록 겉보기는 {{HTMLElement("i")}}나 {{HTMLElement("em")}} 요소와 같지만, `<address>` 요소는 자체적인 의미를 갖고 있으므로 연락처 표기에는 `<address>`가 더 적합합니다.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- Others section-related elements: {{HTMLElement("body")}}, {{HTMLElement("nav")}}, {{HTMLElement("article")}}, {{HTMLElement("aside")}}, {{HTMLElement("Heading_Elements", "h1")}}, {{HTMLElement("Heading_Elements", "h2")}}, {{HTMLElement("Heading_Elements", "h3")}}, {{HTMLElement("Heading_Elements", "h4")}}, {{HTMLElement("Heading_Elements", "h5")}}, {{HTMLElement("Heading_Elements", "h6")}}, {{HTMLElement("hgroup")}}, {{HTMLElement("footer")}}, {{HTMLElement("section")}}, {{HTMLElement("header")}};
+- [Sections and outlines of an HTML document](/en-US/docs/Web/HTML/Element/Heading_Elements).

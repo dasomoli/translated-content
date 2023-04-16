@@ -1,229 +1,285 @@
 ---
 title: BigInt
 slug: Web/JavaScript/Reference/Global_Objects/BigInt
+page-type: javascript-class
+browser-compat: javascript.builtins.BigInt
 ---
+
 {{JSRef}}
 
-**`BigInt`** 는 {{jsxref("Number")}} 원시 값이 안정적으로 나타낼 수 있는 최대치인 2^53 - 1보다 큰 정수를 표현할 수 있는 내장 객체입니다.
+**`BigInt`** values represent numeric values which are [too large](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER) to be represented by the `number` {{Glossary("Primitive", "primitive")}}.
 
-## 설명
+## Description
 
-`BigInt`는 정수 리터럴의 뒤에 `n`을 붙이거나(`10n`) 함수 `BigInt()`를 호출해 생성할 수 있습니다.
+A **BigInt value**, also sometimes just called a **BigInt**, is a `bigint` {{Glossary("Primitive", "primitive")}}, created by appending `n` to the end of an integer literal, or by calling the {{jsxref("Global_Objects/BigInt/BigInt", "BigInt()")}} function (without the `new` operator) and giving it an integer value or string value.
 
 ```js
-const theBiggestInt = 9007199254740991n;
+const previouslyMaxSafeInteger = 9007199254740991n;
 
 const alsoHuge = BigInt(9007199254740991);
-// ↪ 9007199254740991n
+// 9007199254740991n
 
 const hugeString = BigInt("9007199254740991");
-// ↪ 9007199254740991n
+// 9007199254740991n
 
 const hugeHex = BigInt("0x1fffffffffffff");
-// ↪ 9007199254740991n
+// 9007199254740991n
 
-const hugeBin = BigInt("0b11111111111111111111111111111111111111111111111111111");
-// ↪ 9007199254740991n
+const hugeOctal = BigInt("0o377777777777777777");
+// 9007199254740991n
+
+const hugeBin = BigInt(
+  "0b11111111111111111111111111111111111111111111111111111",
+);
+// 9007199254740991n
 ```
 
-`BigInt`와 {{jsxref("Number")}}는 어떤 면에서 비슷하지만 중요한 차이점이 있습니다. 예컨대 `BigInt`는 내장 {{jsxref("Math")}} 객체의 메서드와 함께 사용할 수 없고, 연산에서 `Number`와 혼합해 사용할 수 없습니다. 따라서 먼저 같은 자료형으로 변환해야 합니다. 그러나, `BigInt`가 `Number`로 바뀌면 정확성을 잃을 수 있으니 주의해야 합니다.
+BigInt values are similar to Number values in some ways, but also differ in a few key matters: A BigInt value cannot be used with methods in the built-in [`Math`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math) object and cannot be mixed with a Number value in operations; they must be coerced to the same type. Be careful coercing values back and forth, however, as the precision of a BigInt value may be lost when it is coerced to a Number value.
 
-### 자료형 정보
+### Type information
 
-`BigInt`의 `typeof` 판별 결과는 `"bigint"`입니다.
+When tested against `typeof`, a BigInt value (`bigint` primitive) will give `"bigint"`:
 
 ```js
-typeof 1n === 'bigint'; // true
-typeof BigInt('1') === 'bigint'; // true
+typeof 1n === "bigint"; // true
+typeof BigInt("1") === "bigint"; // true
 ```
 
-{{jsxref("Object")}}로 감싼 `BigInt`는 일반적인 `object` 자료형으로 취급합니다.
+A BigInt value can also be wrapped in an `Object`:
 
 ```js
-typeof Object(1n) === 'object'; // true
+typeof Object(1n) === "object"; // true
 ```
 
-### 연산자
+### Operators
 
-`+`, `*`, `-`, `**`, `%` 연산자를 `BigInt`나 객체로 감싼 `BigInt`에서 사용할 수 있습니다. [비트 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators)도 사용할 수 있으나, 모든 `BigInt`는 부호를 가져야 하므로 `>>>` (부호 버림 오른쪽 시프트)는 사용할 수 없습니다. [asm.js에서 문제를 일으키지 않도록](https://github.com/tc39/proposal-bigint/blob/master/ADVANCED.md#dont-break-asmjs), 단항 `+` 연산자도 지원하지 않습니다.
+The following operators may be used with BigInt values or object-wrapped BigInt values:
+
+```
++ * - % **
+```
+
+[Bitwise operators](/en-US/docs/Web/JavaScript/Reference/Operators) are supported as well, except `>>>` (zero-fill right shift), as every BigInt value is signed.
+
+Also unsupported is the unary operator (`+`), [in order to not break asm.js](https://github.com/tc39/proposal-bigint/blob/master/ADVANCED.md#dont-break-asmjs).
 
 ```js
 const previousMaxSafe = BigInt(Number.MAX_SAFE_INTEGER);
-// ↪ 9007199254740991
+// 9007199254740991n
 
 const maxPlusOne = previousMaxSafe + 1n;
-// ↪ 9007199254740992n
+// 9007199254740992n
 
 const theFuture = previousMaxSafe + 2n;
-// ↪ 9007199254740993n, this works now!
+// 9007199254740993n, this works now!
 
 const multi = previousMaxSafe * 2n;
-// ↪ 18014398509481982n
+// 18014398509481982n
 
-const subtr = multi – 10n;
-// ↪ 18014398509481972n
+const subtr = multi - 10n;
+// 18014398509481972n
 
 const mod = multi % 10n;
-// ↪ 2n
+// 2n
 
 const bigN = 2n ** 54n;
-// ↪ 18014398509481984n
+// 18014398509481984n
 
-bigN * -1n
-// ↪ –18014398509481984n
+bigN * -1n;
+// -18014398509481984n
 ```
 
-`/` 연산자도 정수 연산에서 예상할 수 있는 결과를 동일하게 도출합니다. 그러나 `BigInt`는 `BigDecimal`이 아니므로, 연산의 결과는 언제나 소수점 이하를 버립니다. 즉, 정수가 아닌 결과는 나오지 않습니다.
-
-> **경고:** 소수점 결과를 포함하는 연산을 `BigInt`와 사용하면 소수점 이하는 사라집니다.
+The `/` operator also works as expected with whole numbers — but operations with a fractional result will be truncated when used with a BigInt value — they won't return any fractional digits.
 
 ```js
 const expected = 4n / 2n;
-// ↪ 2n
+// 2n
 
-const rounded = 5n / 2n;
-// ↪ 2.5n이 아니라 2n
+const truncated = 5n / 2n;
+// 2n, not 2.5n
 ```
 
-### 비교
+### Comparisons
 
-`BigInt`는 {{jsxref("Number")}}와 일치하지 않지만 동등합니다.
+A BigInt value is not strictly equal to a Number value, but it _is_ loosely so:
 
 ```js
-0n === 0
-// ↪ false
-
-0n == 0
-// ↪ true
+0n === 0; // false
+0n == 0; // true
 ```
 
-`Number`와 `BigInt`는 일반적인 방법으로 비교할 수 있습니다.
+A Number value and a BigInt value may be compared as usual:
 
 ```js
-1n < 2
-// ↪ true
-
-2n > 1
-// ↪ true
-
-2 > 2
-// ↪ false
-
-2n > 2
-// ↪ false
-
-2n >= 2
-// ↪ true
+1n < 2; // true
+2n > 1; // true
+2 > 2; // false
+2n > 2; // false
+2n >= 2; // true
 ```
 
-배열의 요소로 함께 사용했을 땐 정렬도 가능합니다.
+BigInt values and Number values may be mixed in arrays and sorted:
 
 ```js
 const mixed = [4n, 6, -12n, 10, 4, 0, 0n];
-// ↪  [4n, 6, -12n, 10, 4, 0, 0n]
+// [4n, 6, -12n, 10, 4, 0, 0n]
 
-mixed.sort();
-// ↪ [-12n, 0, 0n, 10, 4n, 4, 6]
+mixed.sort(); // default sorting behavior
+// [ -12n, 0, 0n, 10, 4n, 4, 6 ]
+
+mixed.sort((a, b) => a - b);
+// won't work since subtraction will not work with mixed types
+// TypeError: can't convert BigInt value to Number value
+
+// sort with an appropriate numeric comparator
+mixed.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+// [ -12n, 0, 0n, 4n, 4, 6, 10 ]
 ```
 
-{{jsxref("Object")}}로 감싼 `BigInt`의 경우 다른 객체와 마찬가지로 자기 자신과 비교했을 때만 일치합니다.
+Note that comparisons with `Object`-wrapped BigInt values act as with other objects, only indicating equality when the same object instance is compared:
 
 ```js
-0n === Object(0n); // false
+Object(0n) === 0n; // false
 Object(0n) === Object(0n); // false
 
 const o = Object(0n);
-o === o // true
+o === o; // true
 ```
 
-### 조건
+Because coercing between Number values and BigInt values can lead to loss of precision, the following are recommended:
 
-`BigInt`는 다음의 상황에서는 {{jsxref("Number")}}처럼 행동합니다.
+- Only use a BigInt value when values greater than 2<sup>53</sup> are reasonably expected.
+- Don't coerce between BigInt values and Number values.
 
-- {{jsxref("Boolean")}} 함수를 사용해 Boolean 객체로 변환
-- [논리 연산자](</ko/docs/Web/JavaScript/Reference/Operators/%EB%85%BC%EB%A6%AC_%EC%97%B0%EC%82%B0%EC%9E%90(Logical_Operators)>) `||`, `&&`, `!`와 함께 사용
-- {{jsxref("Statements/if...else", "if")}}문 등 조건 판별 시
+### Conditionals
+
+A BigInt value follows the same conversion rules as Numbers when:
+
+- it is converted to a [`Boolean`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean): via the [`Boolean`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean) function;
+- when used with [logical operators](/en-US/docs/Web/JavaScript/Reference/Operators) `||`, `&&`, and `!`; or
+- within a conditional test like an [`if`](/en-US/docs/Web/JavaScript/Reference/Statements/if...else) statement.
+
+Namely, only `0n` is [falsy](/en-US/docs/Glossary/Falsy); everything else is [truthy](/en-US/docs/Glossary/Truthy).
 
 ```js
 if (0n) {
-  console.log('if에서 안녕!');
+  console.log("Hello from the if!");
 } else {
-  console.log('else에서 안녕!');
+  console.log("Hello from the else!");
 }
+// "Hello from the else!"
 
-// ↪ "else에서 안녕!"
-
-0n || 12n
-// ↪ 12n
-
-0n && 12n
-// ↪ 0n
-
-Boolean(0n)
-// ↪ false
-
-Boolean(12n)
-// ↪ true
-
-!12n
-// ↪ false
-
-!0n
-// ↪ true
+0n || 12n; // 12n
+0n && 12n; // 0n
+Boolean(0n); // false
+Boolean(12n); // true
+!12n; // false
+!0n; // true
 ```
 
-## 생성자
+### Cryptography
 
-- {{jsxref("BigInt.BigInt", "BigInt()")}}
-  - : `BigInt` 객체를 생성합니다.
+The operations supported on BigInt values are not constant-time and are thus open to [timing attacks](https://en.wikipedia.org/wiki/Timing_attack). JavaScript BigInts therefore could be dangerous for use in cryptography without mitigating factors. As a very generic example, an attacker could measure the time difference between `101n ** 65537n` and `17n ** 9999n`, and deduce the magnitude of secrets, such as private keys, based on the time elapsed. If you still have to use BigInts, take a look at the [Timing attack FAQ](https://timing.attacks.cr.yp.to/programming.html) for general advice regarding the issue.
 
-## 정적 메서드
+### Use within JSON
+
+Using [`JSON.stringify()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) with any BigInt value will raise a `TypeError`, as BigInt values aren't serialized in JSON by default. However, `JSON.stringify()` specifically leaves a backdoor for BigInt values: it would try to call the BigInt's `toJSON()` method. (It doesn't do so for any other primitive values.) Therefore, you can implement your own `toJSON()` method (which is one of the few cases where patching built-in objects is not explicitly discouraged):
+
+```js
+BigInt.prototype.toJSON = function () {
+  return this.toString();
+};
+```
+
+Instead of throwing, `JSON.stringify()` now produces a string like this:
+
+```js
+console.log(JSON.stringify({ a: 1n }));
+// {"a":"1"}
+```
+
+If you do not wish to patch `BigInt.prototype`, you can use the [`replacer`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#the_replacer_parameter) parameter of `JSON.stringify` to serialize BigInt values:
+
+```js
+const replacer = (key, value) =>
+  typeof value === "bigint" ? value.toString() : value;
+
+const data = {
+  number: 1,
+  big: 18014398509481982n,
+};
+const stringified = JSON.stringify(data, replacer);
+
+console.log(stringified);
+// {"number":1,"big":"18014398509481982"}
+```
+
+If you have JSON data containing values you know will be large integers, you can use the [`reviver`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse#using_the_reviver_parameter) parameter of `JSON.parse` to handle them:
+
+```js
+const reviver = (key, value) => (key === "big" ? BigInt(value) : value);
+
+const payload = '{"number":1,"big":"18014398509481982"}';
+const parsed = JSON.parse(payload, reviver);
+
+console.log(parsed);
+// { number: 1, big: 18014398509481982n }
+```
+
+> **Note:** While it's possible to make the replacer of `JSON.stringify()` generic and properly serialize BigInt values for all objects, the reviver of `JSON.parse()` must be specific to the payload shape you expect, because the serialization is _lossy_: it's not possible to distinguish between a string that represents a BigInt and a normal string.
+
+### BigInt coercion
+
+Many built-in operations that expect BigInts first coerce their arguments to BigInts. [The operation](https://tc39.es/ecma262/#sec-tobigint) can be summarized as follows:
+
+- BigInts are returned as-is.
+- [`undefined`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined) and [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null) throw a {{jsxref("TypeError")}}.
+- `true` turns into `1n`; `false` turns into `0n`.
+- Strings are converted by parsing them as if they contain an integer literal. Any parsing failure results in a {{jsxref("SyntaxError")}}. The syntax is a subset of [string numeric literals](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number#number_coercion), where decimal points or exponent indicators are not allowed.
+- [Numbers](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number) throw a {{jsxref("TypeError")}} to prevent unintended implicit coercion causing loss of precision.
+- [Symbols](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol) throw a {{jsxref("TypeError")}}.
+- Objects are first [converted to a primitive](/en-US/docs/Web/JavaScript/Data_structures#primitive_coercion) by calling their [`[@@toPrimitive]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toPrimitive) (with `"number"` as hint), `valueOf()`, and `toString()` methods, in that order. The resulting primitive is then converted to a BigInt.
+
+The best way to achieve nearly the same effect in JavaScript is through the [`BigInt()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt/BigInt) function: `BigInt(x)` uses the same algorithm to convert `x`, except that [Numbers](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number) don't throw a {{jsxref("TypeError")}}, but are converted to BigInts if they are integers.
+
+Note that built-in operations expecting BigInts often truncate the BigInt to a fixed width after coercion. This includes {{jsxref("BigInt.asIntN()")}}, {{jsxref("BigInt.asUintN()")}}, and methods of {{jsxref("BigInt64Array")}} and {{jsxref("BigUint64Array")}}.
+
+## Constructor
+
+- {{jsxref("BigInt/BigInt", "BigInt()")}}
+  - : Creates a new BigInt value.
+
+## Static methods
 
 - {{jsxref("BigInt.asIntN()")}}
-  - : 주어진 `BigInt`를 `-2^(width - 1)`과 `2^(width - 1) - 1`의 범위로 자릅니다.
+  - : Clamps a BigInt value to a signed integer value, and returns that value.
 - {{jsxref("BigInt.asUintN()")}}
-  - : 주어진 `BigInt`를 `0`과 `2^width - 1`의 범위로 자릅니다.
+  - : Clamps a BigInt value to an unsigned integer value, and returns that value.
 
-## 인스턴스 메서드
+## Instance properties
+
+These properties are defined on `BigInt.prototype` and shared by all `BigInt` instances.
+
+- {{jsxref("Object/constructor", "BigInt.prototype.constructor")}}
+  - : The constructor function that created the instance object. For `BigInt` instances, the initial value is the {{jsxref("BigInt/BigInt", "BigInt")}} constructor.
+- `BigInt.prototype[@@toStringTag]`
+  - : The initial value of the [`@@toStringTag`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toStringTag) property is the string `"BigInt"`. This property is used in {{jsxref("Object.prototype.toString()")}}. However, because `BigInt` also has its own [`toString()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt/toString) method, this property is not used unless you call [`Object.prototype.toString.call()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call) with a BigInt as `thisArg`.
+
+## Instance methods
 
 - {{jsxref("BigInt.prototype.toLocaleString()")}}
-  - : BigInt를 주어진 언어에 적합한 형태를 가진 문자열로 변환해 반환합니다. {{jsxref("Object.prototype.toLocaleString()")}} 메서드를 재정의합니다.
+  - : Returns a string with a language-sensitive representation of this BigInt value. Overrides the [`Object.prototype.toLocaleString()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toLocaleString) method.
 - {{jsxref("BigInt.prototype.toString()")}}
-  - : `BigInt`의 값을 주어진 진수로 표현한 문자열을 반환합니다. {{jsxref("Object.prototype.toString()")}} 메서드를 재정의합니다.
+  - : Returns a string representing this BigInt value in the specified radix (base). Overrides the [`Object.prototype.toString()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString) method.
 - {{jsxref("BigInt.prototype.valueOf()")}}
-  - : `BigInt` 객체의 원시 값 표현을 반환합니다. {{jsxref("Object.prototype.valueOf()")}} 메서드를 재정의합니다.
+  - : Returns this BigInt value. Overrides the [`Object.prototype.valueOf()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/valueOf) method.
 
-## 권장사항
+## Examples
 
-### 변환
-
-`BigInt`를 {{jsxref("Number")}}로 변환하는 과정에서 정확도를 유실할 수 있으므로, 2^53보다 큰 값을 예상할 수 있는 경우 `BigInt`만 사용하는 것이 좋습니다.
-
-### 암호화
-
-`BigInt`가 지원하는 연산의 소요시간은 상수 시간이 아니기 때문에 [암호화에 적합하지 않습니다](https://www.chosenplaintext.ca/articles/beginners-guide-constant-time-cryptography.html).
-
-### JSON과 함께 사용하기
-
-`BigInt`는 직렬화할 수 없기 때문에, {{jsxref("JSON.stringify()")}}에 `BigInt`를 포함한 값을 전달한다면 `TypeError`가 발생합니다. 대신, 필요한 경우 자신만의 `toJSON` 메서드를 만들 수 있습니다.
+### Calculating Primes
 
 ```js
-BigInt.prototype.toJSON = function() { return this.toString(); }
-```
-
-이제 아래 코드가 오류를 던지지 않고 문자열을 반환합니다.
-
-```js
-JSON.stringify(BigInt(1));
-// '"1"'
-```
-
-## 예제
-
-### 소수 구하기
-
-```js
-// 주어진 BigInt가 소수이면 true 반환
+// Returns true if the passed BigInt value is a prime number
 function isPrime(p) {
   for (let i = 2n; i * i <= p; i++) {
     if (p % i === 0n) return false;
@@ -231,34 +287,35 @@ function isPrime(p) {
   return true;
 }
 
-// BigInt를 받아, n번째 소수를 BigInt로 반환
+// Takes a BigInt value as an argument, returns nth prime number as a BigInt value
 function nthPrime(nth) {
   let maybePrime = 2n;
   let prime = 0n;
 
   while (nth >= 0n) {
     if (isPrime(maybePrime)) {
-      nth -= 1n;
+      nth--;
       prime = maybePrime;
     }
-    maybePrime += 1n;
+    maybePrime++;
   }
 
   return prime;
 }
 
-nthPrime(20n)
-// ↪ 73n
+nthPrime(20n);
+// 73n
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{jsxref("Number")}}
+- [`Number`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)
+- [`Number.MAX_SAFE_INTEGER`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER)

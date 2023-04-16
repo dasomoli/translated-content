@@ -1,20 +1,29 @@
 ---
 title: Expect
 slug: Web/HTTP/Headers/Expect
+page-type: http-header
+browser-compat: http.headers.Expect
 ---
 
 {{HTTPSidebar}}
 
-**`Expect`** HTTP 요청 헤더는 요청을 적절하게 처리하기 위해 서버가 반환할 기대값을 나타냅니다.
+The **`Expect`** HTTP request header indicates expectations
+that need to be met by the server to handle the request successfully.
 
-명세에 정의된 유일한 기대값인 `Expect: 100-continue`에 대해, 서버는 다음과 같이 응답합니다:
+Upon `Expect: 100-continue`, the server responds with:
 
-- {{HTTPStatus("100")}} 헤더에 포함된 정보가, 즉시 성공으로 응답하기 충분할 때
-- {{HTTPStatus("417")}} (Expectation Failed) 기대값을 충족하지 못했거나; 어쨌든 4xx 상태일 때
+- {{HTTPStatus("100")}} (Continue) if the information from the request header is insufficient to
+  resolve the response and the client should proceed with sending the body.
+- {{HTTPStatus("417")}} (Expectation Failed) if the server cannot meet the expectation
 
-예를들어, 요청의 {{HTTPHeader("Content-Length")}} 값이 너무 크다면 서버는 이를 거절할 수도 있습니다.
+or any other status otherwise (e.g. a 4xx status for a client error, or a 2xx status if the
+request can be resolved successfully without further processing).
 
-일반적인 브라우저는 `Expect` 헤더를 전송하지 않지만, cURL과 같은 몇가지 클라이언트들은 전송하는 것이 기본값입니다.
+For example, the server may reject a request if its {{HTTPHeader("Content-Length")}} is
+too large.
+
+No common browsers send the `Expect` header, but some other clients such as
+cURL do so by default.
 
 <table class="properties">
   <tbody>
@@ -24,31 +33,34 @@ slug: Web/HTTP/Headers/Expect
     </tr>
     <tr>
       <th scope="row">{{Glossary("Forbidden header name")}}</th>
-      <td>no</td>
+      <td>yes</td>
     </tr>
   </tbody>
 </table>
 
 ## Syntax
 
-현재는 "100-continue" 를 제외하고 어떤 기대값도 정의되어있지 않습니다.
-
-```
+```http
 Expect: 100-continue
 ```
 
 ## Directives
 
-- 100-continue
-  - : Informs recipients that the client is about to send a (presumably large) message body in this request and wishes to receive a {{HTTPStatus("100")}} (Continue) interim response.
+There is only one defined expectation:
+
+- `100-continue`
+  - : Informs recipients that the client is about to send a (presumably large) message
+    body in this request and wishes to receive a {{HTTPStatus("100")}} (Continue) interim
+    response.
 
 ## Examples
 
 ### Large message body
 
-클라이언트는 `Expect` 헤더가 포함된 요청을 전송하고 메시지 바디를 전송하기 이전에 서버의 응답을 기다립니다.
+A client sends a request with `Expect` header and waits for the server to respond
+before sending the message body.
 
-```
+```http
 PUT /somewhere/fun HTTP/1.1
 Host: origin.example.com
 Content-Type: video/h264
@@ -56,17 +68,18 @@ Content-Length: 1234567890987
 Expect: 100-continue
 ```
 
-이제 서버는 요청 헤더를 확인하고 {HTTPStatus("100")}} (Continue) 상태를 응답하여 클라이언트가 계속해서 메시지 바디를 전송하도록 안내하거나, {{HTTPStatus("417")}} (Expectation Failed) 상태를 응답하여 어떠한 기대값도 충족되지 않도록 합니다.
+The server checks the headers and generates the response.
+The server sends {{HTTPStatus("100")}} (Continue), which instructs the client to send the message body.
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
 ## Browser compatibility
 
-No common browsers are known to send this header.
+{{Compat}}
 
 ## See also
 
-- {{HTTPStatus("417")}} `Expectation Failed`
-- {{HTTPStatus("100")}} `Continue`
+- {{HTTPStatus("417", "417 Expectation Failed")}}
+- {{HTTPStatus("100", "100 Continue")}}

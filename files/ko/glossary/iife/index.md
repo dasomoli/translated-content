@@ -1,46 +1,157 @@
 ---
 title: IIFE
 slug: Glossary/IIFE
+page-type: glossary-definition
 ---
 
-**즉시 실행 함수 표현**(**IIFE, Immediately Invoked Function Expression**)은 정의되자마자 즉시 실행되는 {{glossary("Javascript")}} {{glossary("Function")}} 를 말한다.
+An **IIFE** (Immediately Invoked Function Expression) is a {{glossary("JavaScript")}} {{glossary("function")}} that runs as soon as it is defined.
+The name IIFE is promoted by Ben Alman in [his blog](https://web.archive.org/web/20171201033208/http://benalman.com/news/2010/11/immediately-invoked-function-expression/#iife).
 
 ```js
 (function () {
-    statements
+  // …
+})();
+
+(() => {
+  // …
+})();
+
+(async () => {
+  // …
 })();
 ```
 
-이는 {{glossary("Self-Executing Anonymous Function")}} 으로 알려진 디자인 패턴이고 크게 두 부분으로 구성된다. 첫 번째는 괄호(`()`, Grouping Operator)로 둘러싸인 익명함수(Anonymous Function)이다. 이는 전역 스코프에 불필요한 변수를 추가해서 오염시키는 것을 방지할 수 있을 뿐 아니라 IIFE 내부안으로 다른 변수들이 접근하는 것을 막을 수 있는 방법이다.
+It is a design pattern which is also known as a {{glossary("Self-Executing Anonymous Function")}} and contains two major parts:
 
-두 번째 부분은 즉시 실행 함수를 생성하는 괄호`()`이다. 이를 통해 자바스크립트 엔진은 함수를 즉시 해석해서 실행한다.
+1. The first is the anonymous function with lexical scope enclosed within the {{jsxref("Operators/Grouping", "Grouping Operator")}} `()`. This prevents accessing variables within the IIFE idiom as well as polluting the global scope.
+2. The second part creates the immediately invoked function expression `()` through which the JavaScript engine will directly interpret the function.
 
-## 예제
+## Use cases
 
-아래 함수는 즉시 실행되는 함수 표현이다. 표현 내부의 변수는 외부로부터의 접근이 불가능하다.
+### Avoid polluting the global namespace
+
+Because our application could include many functions and global variables from different source files, it's
+important to limit the number of global variables. If we have some initiation code that we don't need to use
+again, we could use the IIFE pattern. As we will not reuse the code again, using IIFE in this case is better than
+using a function declaration or a function expression.
 
 ```js
-(function () {
-    var aName = "Barry";
+(() => {
+  // some initiation code
+  let firstVariable;
+  let secondVariable;
 })();
-// IIFE 내부에서 정의된 변수는 외부 범위에서 접근이 불가능하다.
-aName // throws "Uncaught ReferenceError: aName is not defined"
+
+// firstVariable and secondVariable will be discarded after the function is executed.
 ```
 
-IIFE를 변수에 할당하면 IIFE 자체는 저장되지 않고, 함수가 실행된 결과만 저장된다.
+### Execute an async function
+
+An [`async`](/en-US/docs/Web/JavaScript/Reference/Operators/async_function) IIFE allows you to use [`await`](/en-US/docs/Web/JavaScript/Reference/Operators/await) and [`for-await`](/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of) even in older browsers and JavaScript runtimes that have no [top-level await](/en-US/docs/Web/JavaScript/Reference/Operators/await#top_level_await):
 
 ```js
-var result = (function () {
-    var name = "Barry";
-    return name;
+const getFileStream = async (url) => {
+  // implementation
+};
+
+(async () => {
+  const stream = await getFileStream("https://domain.name/path/file.ext");
+  for await (const chunk of stream) {
+    console.log({ chunk });
+  }
 })();
-// 즉시 결과를 생성한다.
-result; // "Barry"
 ```
 
-## 같이 보기
+### The module pattern
 
-- [Quick example](/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript#functions) (at the end of the "Functions" section, right before "Custom objects")
+We would also use IIFE to create private and public variables and methods. For a more sophisticated use of the module
+pattern and other use of IIFE, you could see the book Learning JavaScript Design Patterns by Addy Osmani.
+
+```js
+const makeWithdraw = (balance) =>
+  ((copyBalance) => {
+    let balance = copyBalance; // This variable is private
+    const doBadThings = () => {
+      console.log("I will do bad things with your money");
+    };
+    doBadThings();
+    return {
+      withdraw(amount) {
+        if (balance >= amount) {
+          balance -= amount;
+          return balance;
+        }
+        return "Insufficient money";
+      },
+    };
+  })(balance);
+
+const firstAccount = makeWithdraw(100); // "I will do bad things with your money"
+console.log(firstAccount.balance); // undefined
+console.log(firstAccount.withdraw(20)); // 80
+console.log(firstAccount.withdraw(30)); // 50
+console.log(firstAccount.doBadThings); // undefined; this method is private
+const secondAccount = makeWithdraw(20); // "I will do bad things with your money"
+console.log(secondAccount.withdraw(30)); // "Insufficient money"
+console.log(secondAccount.withdraw(20)); // 0
+```
+
+### For loop with var before ES6
+
+We could see the following use of IIFE in some old code, before the introduction of the statements **let** and **const**
+in **ES6** and the block scope. With the statement **var**, we have only function scopes and the global scope.
+Suppose we want to create 2 buttons with the texts Button 0 and Button 1 and when we click
+them, we would like them to alert 0 and 1. The following code doesn't work:
+
+```js
+for (var i = 0; i < 2; i++) {
+  const button = document.createElement("button");
+  button.innerText = `Button ${i}`;
+  button.onclick = function () {
+    console.log(i);
+  };
+  document.body.appendChild(button);
+}
+console.log(i); // 2
+```
+
+When clicked, both Button 0 and Button 1 alert 2 because `i` is global,
+with the last value 2. To fix this problem before ES6, we could use the IIFE pattern:
+
+```js
+for (var i = 0; i < 2; i++) {
+  const button = document.createElement("button");
+  button.innerText = `Button ${i}`;
+  button.onclick = (function (copyOfI) {
+    return function () {
+      console.log(copyOfI);
+    };
+  })(i);
+  document.body.appendChild(button);
+}
+console.log(i); // 2
+```
+
+When clicked, Buttons 0 and 1 alert 0 and 1.
+The variable `i` is globally defined.
+Using the statement **let**, we could simply do:
+
+```js
+for (let i = 0; i < 2; i++) {
+  const button = document.createElement("button");
+  button.innerText = `Button ${i}`;
+  button.onclick = function () {
+    console.log(i);
+  };
+  document.body.appendChild(button);
+}
+console.log(i); // Uncaught ReferenceError: i is not defined.
+```
+
+When clicked, these buttons alert 0 and 1.
+
+## See also
+
 - [IIFE](https://en.wikipedia.org/wiki/Immediately-invoked_function_expression) (Wikipedia)
 - [Glossary](/en-US/docs/Glossary)
 

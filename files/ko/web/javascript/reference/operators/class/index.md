@@ -1,74 +1,81 @@
 ---
-title: class 식
+title: class expression
 slug: Web/JavaScript/Reference/Operators/class
+page-type: javascript-operator
+browser-compat: javascript.operators.class
 ---
 
 {{jsSidebar("Operators")}}
 
-**class 표현식**은 ECMAScript 2015 (ES6)에서 클래스를 정의하는 한 방법입니다. [function 식](/ko/docs/Web/JavaScript/Reference/Operators/function)과 비슷하게, class 식은 기명(named) 또는 익명(unnamed)일 수 있습니다. 기명인 경우, 클래스명은 클래스 본체(body)에서만 지역(local)입니다. JavaScript 클래스는 프로토타입(원형) 기반 상속을 사용합니다.
+The **`class`** keyword can be used to define a class inside an expression.
+
+You can also define classes using the [`class` declaration](/en-US/docs/Web/JavaScript/Reference/Statements/class).
 
 {{EmbedInteractiveExample("pages/js/expressions-classexpression.html")}}
 
-## 구문
+## Syntax
 
-```js
-    var MyClass = class [className] [extends] {
-      // class body
-    };
+```js-nolint
+class {
+  // class body
+}
+class name {
+  // class body
+}
 ```
 
-## 설명
+> **Note:** An [expression statement](/en-US/docs/Web/JavaScript/Reference/Statements/Expression_statement) cannot begin with the keyword `class` to avoid ambiguity with a [`class` declaration](/en-US/docs/Web/JavaScript/Reference/Statements/class). The `class` keyword only begins an expression when it appears in a context that cannot accept statements.
 
-class 식은 [class 문](/ko/docs/Web/JavaScript/Reference/Statements/class)과 구문이 비슷합니다. 그러나, class 식의 경우 클래스명("binding identifier")을 생략할 수 있는데 class 문으로는 할 수 없습니다.
+## Description
 
-class 문과 같이, class 식의 본체는 [엄격 모드](/ko/docs/Web/JavaScript/Reference/Strict_mode)에서 실행됩니다.
+A `class` expression is very similar to, and has almost the same syntax as, a [`class` declaration](/en-US/docs/Web/JavaScript/Reference/Statements/class). As with `class` declarations, the body of a `class` expression is executed in [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode). The main difference between a `class` expression and a `class` declaration is the _class name_, which can be omitted in `class` expressions to create _anonymous_ classes. Class expressions allow you to redefine classes, while redeclaring a class using `class` declarations throws a {{jsxref("SyntaxError")}}. See also the chapter about [classes](/en-US/docs/Web/JavaScript/Reference/Classes) for more information.
 
-## 예제
+## Examples
 
-### 간단한 class 식
+### A simple class expression
 
-이게 바로 변수 "Foo"를 사용하여 참조할 수 있는 간단한 익명 class 식입니다.
+This is just a simple anonymous class expression which you can refer to using the variable `Foo`.
 
 ```js
-var Foo = class {
+const Foo = class {
   constructor() {}
   bar() {
     return "Hello World!";
   }
 };
 
-var instance = new Foo();
+const instance = new Foo();
 instance.bar(); // "Hello World!"
-Foo.name; // ""
+Foo.name; // "Foo"
 ```
 
-### Named class 식
+### Named class expressions
 
-당신이 클래스 몸통 내에서 현재 클래스를 참조하고 싶다면, 유명 class 식을 만들 수 있습니다. 이 이름은 오직 class 식 자체 범위에서만 볼 수 있습니다.
+If you want to refer to the current class inside the class body, you can create a _named class expression_. The name is only visible within the scope of the class expression itself.
 
 ```js
-var Foo = class NamedFoo {
+const Foo = class NamedFoo {
   constructor() {}
   whoIsThere() {
     return NamedFoo.name;
   }
-}
-var bar = new Foo();
+};
+const bar = new Foo();
 bar.whoIsThere(); // "NamedFoo"
-NamedFoo.name; // ReferenceError: NamedFoo가 정의되지 않음
+NamedFoo.name; // ReferenceError: NamedFoo is not defined
 Foo.name; // "NamedFoo"
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [`function` 식](/ko/docs/Web/JavaScript/Reference/Operators/function)
-- [`class` 문](/ko/docs/Web/JavaScript/Reference/Statements/class)
-- [Classes](/ko/docs/Web/JavaScript/Reference/Classes)
+- {{jsxref("Operators/function", "function")}} expression
+- {{jsxref("Statements/class", "class")}} declaration
+- {{jsxref("Classes", "Classes", "", "true")}}

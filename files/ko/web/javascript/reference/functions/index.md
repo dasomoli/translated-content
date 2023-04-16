@@ -1,416 +1,282 @@
 ---
-title: 함수
+title: Functions
 slug: Web/JavaScript/Reference/Functions
+page-type: guide
+browser-compat: javascript.functions
 ---
+
 {{jsSidebar("Functions")}}
 
-보통 **함수**란 자신의 외부(재귀 함수의 경우 스스로) 코드가 '호출'할 수 있는 하위 프로그램입니다. 프로그램과 마찬가지로, 함수 역시 명령문의 시퀀스로 구성된 함수 본문을 가집니다. 함수에 값을 '전달'하면, 함수는 값을 '반환'할 것입니다.
+Generally speaking, a function is a "subprogram" that can be _called_ by code external (or internal, in the case of recursion) to the function. Like the program itself, a function is composed of a sequence of statements called the _function body_. Values can be _passed_ to a function as parameters, and the function will _return_ a value.
 
-JavaScript의 함수는 다른 모든 객체처럼 속성과 메서드를 가질 수 있으므로 일급(first-class) 객체입니다. 다른 객체와 함수를 구별하는 것은, 함수는 호출할 수 있다는 점입니다. 간단히 말해, 함수는 {{jsxref("Function")}} 객체입니다.
+In JavaScript, functions are [first-class objects](/en-US/docs/Glossary/First-class_Function), because they can be passed to other functions, returned from functions, and assigned to variables and properties. They can also have properties and methods just like any other object. What distinguishes them from other objects is that functions can be called.
 
-[JavaScript 함수 안내서](/ko/docs/Web/JavaScript/Guide/Functions)에서 더 많은 예제와 설명을 확인하세요.
+For more examples and explanations, see the [JavaScript guide about functions](/en-US/docs/Web/JavaScript/Guide/Functions).
 
-## 설명
+## Description
 
-JavaScript에서 모든 함수는 `Function` 객체입니다. {{jsxref("Function")}} 문서에서 속성과 메서드 정보를 확인하세요.
+Function values are typically instances of [`Function`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function). See {{jsxref("Function")}} for information on properties and methods of `Function` objects. Callable values cause [`typeof`](/en-US/docs/Web/JavaScript/Reference/Operators/typeof) to return `"function"` instead of `"object"`.
 
-함수가 기본 값 외의 원하는 값을 반환하도록 하려면 [`return`](/ko/docs/Web/JavaScript/Reference/Statements/return) 문으로 반환할 값을 지정해야 합니다. 반환문 없는 함수는 기본 값을 반환합니다. [`new`](/ko/docs/Web/JavaScript/Reference/Operators/new) 키워드로 호출하는 [생성자](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/constructor)의 경우, 기본 반환 값은 함수의 `this`가 가리키는 값입니다. 그 외의 모든 함수의 경우, 기본 반환 값은 {{jsxref("undefined")}}입니다.
+> **Note:** Not all callable values are `instanceof Function`. For example, the `Function.prototype` object is callable but not an instance of `Function`. You can also manually set the [prototype chain](/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain) of your function so it no longer inherits from `Function.prototype`. However, such cases are extremely rare.
 
-함수 호출의 매개변수는 함수의 인수(arguments)입니다. 인수는 함수에 값으로서 전달되므로, 함수가 인수의 값을 바꿔도 이 변화는 전역적 또는 호출한 함수에 반영되지 않습니다. 그러나, 객체 참조 역시 (특별한) 값입니다. 함수 내에서 참조된 객체의 속성을 바꾸면, 아래 예제와 같이 이 변화는 함수 밖에서도 확인할 수 있습니다.
+### Return value
 
-```js
-/* 함수 'myFunc' 선언 */
-function myFunc(theObject) {
-   theObject.brand = "쌍용";
- }
+By default, if a function's execution doesn't end at a [`return`](/en-US/docs/Web/JavaScript/Reference/Statements/return) statement, or if the `return` keyword doesn't have an expression after it, then the return value is {{jsxref("undefined")}}. The `return` statement allows you to return an arbitrary value from the function. One function call can only return one value, but you can simulate the effect of returning multiple values by returning an object or array and [destructuring](/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) the result.
 
- /*
-  * 변수 'mycar' 선언;
-  * 새 객체를 만들고 초기화;
-  * 'mycar'에 객체 참조를 할당
-  */
- var mycar = {
-   brand: "현대",
-   model: "엑셀",
-   year: 1994
- };
+> **Note:** Constructors called with [`new`](/en-US/docs/Web/JavaScript/Reference/Operators/new) have a different set of logic to determine their return values.
 
- /* '현대' 기록 */
- console.log(mycar.brand);
+### Passing arguments
 
- /* 객체 참조를 함수에 전달 */
- myFunc(mycar);
-
- /*
-  * 함수가 객체의 'brand' 속성을 바꿨으므로
-  * '쌍용' 출력.
-  */
- console.log(mycar.brand);
-```
-
-[`this` 키워드](/ko/docs/Web/JavaScript/Reference/Operators/this)는 현재 실행 중인 함수를 참조하는 것이 아닙니다. 그러므로 함수 본문 내에서도 `Function` 객체를 참조할 땐 이름을 사용해야 합니다.
-
-## 함수 정의하기
-
-함수를 정의하는 방법에는 여러 가지가 있습니다.
-
-### 함수 선언 (`function` 명령문)
-
-함수 선언에 사용할 수 있는 특별한 구문이 있습니다. (자세한 정보는 [함수 선언](/ko/docs/Web/JavaScript/Reference/Statements/function)을 참고하세요)
+[Parameters and arguments](<https://en.wikipedia.org/wiki/Parameter_(computer_programming)#Parameters_and_arguments>) have slightly different meanings, but in MDN web docs, we often use them interchangeably. For a quick reference:
 
 ```js
-function name([param[, param[, ... param]]]) {
-   statements
-}
-```
-
-- `name`
-  - : 함수의 이름.
-- `param`
-  - : 함수에 전달할 인수의 이름.
-- `statements`
-  - : 함수 본문을 구성할 명령문.
-
-### 함수 표현식 (`function` 표현식)
-
-함수 표현식은 함수 선언과 비슷하고 구문도 같습니다. (자세한 정보는 [함수 표현식](/ko/docs/Web/JavaScript/Reference/Operators/function)을 참고하세요) 함수 표현식은 더 큰 표현식의 일부로 사용할 수 있습니다. 함수 표현식을 사용하면 이름이 붙은 '유명 함수' 표현식(이름이 호출 스택 등에 표시됨)과, 이름이 없는 '익명 함수' 표현식을 정의할 수 있습니다. 함수 표현식은 스코프의 상단으로 {{glossary("hoisting", "호이스팅")}} 되지 않으므로, 코드 내에 나타나기 전에 먼저 사용할 수 없습니다.
-
-```js
-function [name]([param[, param[, ... param]]]) {
-   statements
-}
-```
-
-- `name`
-  - : 함수 이름. 생략할 경우 익명 함수가 됩니다.
-- `param`
-  - : 함수에 전달할 인수의 이름.
-- `statements`
-  - : 함수 본문을 구성할 명령문.
-
-다음은 `name`을 사용하지 않은 **익명** 함수 표현식의 예시입니다.
-
-```js
-var myFunction = function() {
-    statements
-}
-```
-
-선언 시에 이름을 제공해서 **유명** 함수 표현식을 생성하는 것도 가능합니다.
-
-```js
-var myFunction = function namedFunction(){
-    statements
-}
-```
-
-함수 표현식에 이름을 붙여주는 것의 장점 중 하나는, 오류가 발생했을 때 스택 추적에 함수의 이름이 나타나므로 원인을 찾기 쉽다는 것입니다.
-
-위의 두 코드 조각 모두 `function` 키워드가 맨 앞에 오지 않는 것을 볼 수 있습니다. 함수를 선언하지만 `function`이 맨 처음이 아닌 경우가 함수 표현식입니다.
-
-한 번만 사용하는 함수의 경우 자주 사용하는 패턴으로 {{glossary("IIFE")}}(Immediately Invokable Function Expression, 즉시 실행 함수 표현식)가 있습니다.
-
-```js
-(function() {
-    statements
-})();
-```
-
-IIFE는 선언 즉시 실행하는 함수 표현식입니다.
-
-### 생성기 함수 선언 (`function*` 명령문)
-
-생성기 함수 선언에 사용할 수 있는 특별한 구문이 있습니다. (자세한 정보는 [`function*` 명령문](/ko/docs/Web/JavaScript/Reference/Statements/function*)을 참고하세요)
-
-```js
-function* name([param[, param[, ... param]]]) {
-   statements
-}
-```
-
-- `name`
-  - : 함수의 이름.
-- `param`
-  - : 함수에 전달할 인수의 이름.
-- `statements`
-  - : 함수 본문을 구성할 명령문.
-
-### 생성기 함수 표현식 (`function*` 표현식)
-
-생성기 함수 표현식은 생성기 함수 선언과 비슷하고 구문도 같습니다. (자세한 정보는 [`function*` 표현식](/ko/docs/Web/JavaScript/Reference/Operators/function*)을 참고하세요)
-
-```js
-function* [name]([param[, param[, ... param]]]) {
-   statements
-}
-```
-
-- `name`
-  - : 함수 이름. 생략할 경우 익명 함수가 됩니다.
-- `param`
-  - : 함수에 전달할 인수의 이름.
-- `statements`
-  - : 함수 본문을 구성할 명령문.
-
-### 화살표 함수 표현식 (=>)
-
-화살표 함수 표현식은 구문이 더 짧으며, `this` 값을 어휘적으로 바인딩합니다. (자세한 정보는 [화살표 함수](/ko/docs/Web/JavaScript/Reference/Functions/Arrow_functions)를 참고하세요)
-
-```js
-([param[, param]]) => {
-   statements
+function formatNumber(num) {
+  return num.toFixed(2);
 }
 
-param => expression
+formatNumber(2);
 ```
 
-- `param`
-  - : 인수의 이름. 인수를 하나도 받지 않을 경우 `()`로 표시해야 합니다. 하나의 인수만 받는 경우 `foo => 1`과 같이 괄호를 생략할 수 있습니다.
-- `statements` 또는 `expression`
-  - : 함수 본문. 다수의 명령문으로 구성할 경우 중괄호로 묶어야 합니다. 단일 표현식만으로 구성할 경우 중괄호로 묶지 않아도 되며, 이 때는 해당 표현식을 함수 반환 시 사용합니다.
+In this example, the `num` variable is called the function's _parameter_: it's declared in the bracket-enclosed list of the function's definition. The function expects the `num` parameter to be a number — although this is not enforceable in JavaScript without writing runtime validation code. In the `formatNumber(2)` call, the number `2` is the function's _argument_: it's the value that is actually passed to the function in the function call. The argument value can be accessed inside the function body through the corresponding parameter name or the [`arguments`](/en-US/docs/Web/JavaScript/Reference/Functions/arguments) object.
 
-### `Function` 생성자
-
-> **참고:** `Function` 생성자를 사용해 함수를 생성하면 일부 JavaScript 엔진 최적화를 적용할 수 없으며, 그 외에도 다른 여러 문제가 발생하므로 권장하지 않습니다.
-
-다른 모든 객체처럼, `new` 연산자를 사용해서 {{jsxref("Function")}} 객체를 생성할 수 있습니다.
+Arguments are always [_passed by value_](https://en.wikipedia.org/wiki/Evaluation_strategy#Call_by_reference) and never _passed by reference_. This means that if a function reassigns a parameter, the value won't change outside the function. More precisely, object arguments are [_passed by sharing_](https://en.wikipedia.org/wiki/Evaluation_strategy#Call_by_sharing), which means if the object's properties are mutated, the change will impact the outside of the function. For example:
 
 ```js
-new Function (arg1, arg2, ... argN, functionBody)
-```
+function updateBrand(obj) {
+  // Mutating the object is visible outside the function
+  obj.brand = "Toyota";
+  // Try to reassign the parameter, but this won't affect
+  // the variable's value outside the function
+  obj = null;
+}
 
-- `arg1, arg2, ... argN`
-  - : 함수가 형식 매개변수로 사용할 0개 이상의 이름. 모두 올바른 JavaScript 식별자, 또는 쉼표로 구분한 식별자 목록이어야 합니다. ("`x`", "`theValue`", "`a,b`" 등)
-- `functionBody`
-  - : 함수 본문으로 사용할 JavaScript 명령문을 담은 문자열.
-
-`Function` 생성자를 함수로 호출(`new` 연산자 없이 호출)하는 것도 동일하게 동작합니다.
-
-### `GeneratorFunction` 생성자
-
-> **참고:** `GeneratorFunction`은 전역 객체가 아니며, 다른 생성기 함수 인스턴스에서 가져와야 합니다. {{jsxref("GeneratorFunction")}} 문서에서 자세한 정보를 확인하세요.
-
-> **참고:** `GeneratorFunction` 생성자를 사용해 함수를 생성하면 일부 JavaScript 엔진 최적화를 적용할 수 없으며, 그 외에도 다른 여러 문제가 발생하므로 권장하지 않습니다.
-
-다른 모든 객체처럼, `new` 연산자를 사용해서 {{jsxref("GeneratorFunction")}} 객체를 생성할 수 있습니다.
-
-```js
-new GeneratorFunction (arg1, arg2, ... argN, functionBody)
-```
-
-- `arg1, arg2, ... argN`
-  - : 함수가 형식 매개변수로 사용할 0개 이상의 이름. 모두 올바른 JavaScript 식별자, 또는 쉼표로 구분한 식별자 목록이어야 합니다. ("`x`", "`theValue`", "`a,b`" 등)
-- `functionBody`
-  - : 함수 본문으로 사용할 JavaScript 명령문을 담은 문자열.
-
-`GeneratorFunction` 생성자를 함수로 호출(`new` 연산자 없이 호출)하는 것도 동일하게 동작합니다.
-
-## 함수 매개변수
-
-### 매개변수 기본 값
-
-매개변수 기본 값을 사용하면, 값을 전달하지 않았거나 `undefined`를 전달한 경우 형식 매개변수를 기본 값으로 초기화할 수 있습니다. [매개변수 기본 값](/ko/docs/Web/JavaScript/Reference/Functions/Default_parameters)에서 자세한 정보를 확인하세요.
-
-### 나머지 매개변수
-
-나머지 매개변수 구문은 정해지지 않은 임의 수의 매개변수를 배열로서 나타낼 수 있습니다. [나머지 매개변수](/ko/docs/Web/JavaScript/Reference/Functions/rest_parameters)에서 자세한 정보를 확인하세요.
-
-## `arguments` 객체
-
-함수 본문 내에서 `arguments` 객체를 사용해서 함수의 인수를 참조할 수 있습니다. [`arguments`](/ko/docs/Web/JavaScript/Reference/Functions/arguments) 문서를 참고하세요.
-
-- [`arguments`](/ko/docs/Web/JavaScript/Reference/Functions/arguments): 현재 실행 중인 함수에 전달된 인수를 담은 유사 배열 객체입니다.
-- [`arguments.callee`](/ko/docs/Web/JavaScript/Reference/Functions/arguments/callee): 현재 실행 중인 함수입니다.
-- [`arguments.caller`](/ko/docs/Web/JavaScript/Reference/Functions/arguments/caller): 현재 실행 중인 함수를 호출한 함수입니다.
-- [`arguments.length`](/ko/docs/Web/JavaScript/Reference/Functions/arguments/length): 함수에 전달한 인수의 수입니다.
-
-## 메서드 함수 정의하기
-
-### 접근자와 설정자 함수
-
-속성 추가를 지원하는 객체라면 내장 객체와 사용자 정의 객체 양쪽 모두에 접근자 메서드와 설정자 메서드를 정의할 수 있습니다. 접근자와 설정자 정의 구문은 객체 리터럴 구문을 사용합니다.
-
-- [`get`](/ko/docs/Web/JavaScript/Reference/Functions/get)
-  - : 객체의 속성에 접근하면 호출할 함수를 바인딩합니다.
-- [`set`](/ko/docs/Web/JavaScript/Reference/Functions/set)
-  - : 객체의 속성에 할당을 시도하면 호출할 함수를 바인딩합니다.
-
-### 메서드 정의 구문
-
-ECMAScript 2015부터는 메서드 역시 접근자/설정자와 유사한 짧은 구문으로 정의할 수 있습니다. [메서드 정의](/ko/docs/Web/JavaScript/Reference/Functions/Method_definitions) 문서를 참고하세요.
-
-```js
-var obj = {
-  foo() {},
-  bar() {}
+const car = {
+  brand: "Honda",
+  model: "Accord",
+  year: 1998,
 };
+
+console.log(car.brand); // Honda
+
+// Pass object reference to the function
+updateBrand(car);
+
+// updateBrand mutates car
+console.log(car.brand); // Toyota
 ```
 
-## 생성자 vs. 선언문 vs. 표현식
+The [`this`](/en-US/docs/Web/JavaScript/Reference/Operators/this) keyword refers to the object that the function is accessed on — it does not refer to the currently executing function, so you must refer to the function value by name, even within the function body.
 
-아래의 세 코드 조각을 비교해보세요.
+### Defining functions
 
-`multiply` 변수에 `Function` 생성자로 정의한 함수를 할당하는 코드입니다.
+Broadly speaking, JavaScript has four kinds of functions:
+
+- Regular function: can return anything; always runs to completion after invocation
+- Generator function: returns a [`Generator`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) object; can be paused and resumed with the [`yield`](/en-US/docs/Web/JavaScript/Reference/Operators/yield) operator
+- Async function: returns a [`Promise`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise); can be paused and resumed with the [`await`](/en-US/docs/Web/JavaScript/Reference/Operators/await) operator
+- Async generator function: returns an [`AsyncGenerator`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncGenerator) object; both the `await` and `yield` operators can be used
+
+For every kind of function, there are three ways to define it:
+
+- Declaration
+  - : [`function`](/en-US/docs/Web/JavaScript/Reference/Statements/function), [`function*`](/en-US/docs/Web/JavaScript/Reference/Statements/function*), [`async function`](/en-US/docs/Web/JavaScript/Reference/Statements/async_function), [`async function*`](/en-US/docs/Web/JavaScript/Reference/Statements/async_function*)
+- Expression
+  - : [`function`](/en-US/docs/Web/JavaScript/Reference/Operators/function), [`function*`](/en-US/docs/Web/JavaScript/Reference/Operators/function*), [`async function`](/en-US/docs/Web/JavaScript/Reference/Operators/async_function), [`async function*`](/en-US/docs/Web/JavaScript/Reference/Operators/async_function*)
+- Constructor
+  - : [`Function()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/Function), [`GeneratorFunction()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction/GeneratorFunction), [`AsyncFunction()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncFunction/AsyncFunction), [`AsyncGeneratorFunction()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncGeneratorFunction/AsyncGeneratorFunction)
+
+In addition, there are special syntaxes for defining [arrow functions](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions) and [methods](/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions), which provide more precise semantics for their usage. [Classes](/en-US/docs/Web/JavaScript/Reference/Classes) are conceptually not functions (because they throw an error when called without `new`), but they also inherit from `Function.prototype` and have `typeof MyClass === "function"`.
 
 ```js
-var multiply = new Function('x', 'y', 'return x * y');
-```
+// Constructor
+const multiply = new Function("x", "y", "return x * y");
 
-`multiply`라는 이름의 함수를 선언하는 선언문입니다.
-
-```js
+// Declaration
 function multiply(x, y) {
-   return x * y;
-}
-```
+  return x * y;
+} // No need for semicolon here
 
-`multiply` 변수에 익명 함수 표현식을 할당하는 코드입니다.
+// Expression; the function is anonymous but assigned to a variable
+const multiply = function (x, y) {
+  return x * y;
+};
+// Expression; the function has its own name
+const multiply = function funcName(x, y) {
+  return x * y;
+};
 
-```js
-var multiply = function(x, y) {
-   return x * y;
+// Arrow function
+const multiply = (x, y) => x * y;
+
+// Method
+const obj = {
+  multiply(x, y) {
+    return x * y;
+  },
 };
 ```
 
-`multiply` 변수에 이름이 `func_name`인 함수 표현식을 할당하는 코드입니다.
+All syntaxes do approximately the same thing, but there are some subtle behavior differences.
+
+- The `Function()` constructor, `function` expression, and `function` declaration syntaxes create full-fledged function objects, which can be constructed with [`new`](/en-US/docs/Web/JavaScript/Reference/Operators/new). However, arrow functions and methods cannot be constructed. Async functions, generator functions, and async generator functions are not constructible regardless of syntax.
+- The `function` declaration creates functions that are [_hoisted_](/en-US/docs/Web/JavaScript/Guide/Functions#function_hoisting). Other syntaxes do not hoist the function and the function value is only visible after the definition.
+- The arrow function and `Function()` constructor always create _anonymous_ functions, which means they can't easily call themselves recursively. One way to call an arrow function recursively is by assigning it to a variable.
+- The arrow function syntax does not have access to `arguments` or `this`.
+- The `Function()` constructor cannot access any local variables — it only has access to the global scope.
+- The `Function()` constructor causes runtime compilation and is often slower than other syntaxes.
+
+For `function` expressions, there is a distinction between the function name and the variable the function is assigned to. The function name cannot be changed, while the variable the function is assigned to can be reassigned. The function name can be different from the variable the function is assigned to — they have no relation to each other. The function name can be used only within the function's body. Attempting to use it outside the function's body results in an error (or gets another value, if the same name is declared elsewhere). For example:
 
 ```js
-var multiply = function func_name(x, y) {
-   return x * y;
-};
+const y = function x() {};
+console.log(x); // ReferenceError: x is not defined
 ```
 
-### 차이
+On the other hand, the variable the function is assigned to is limited only by its scope, which is guaranteed to include the scope in which the function is declared.
 
-세 코드 모두 비슷한 일을 하지만, 몇 가지 작은 차이가 존재합니다.
+A function declaration also creates a variable with the same name as the function name. Thus, unlike those defined by function expressions, functions defined by function declarations can be accessed by their name in the scope they were defined in, as well as in their own body.
 
-우선, 함수의 이름과 함수를 할당한 변수는 서로 다릅니다. 함수의 이름은 바꿀 수 없으나, 함수를 할당한 변수는 다시 할당할 수 있습니다. 또한 (함수 표현식의 경우) 함수의 이름은 자신의 본문에서만 사용할 수 있습니다. 외부에서 사용하려고 시도하면, 이전에 함수 이름과 같은 변수를 `var`로 선언한 경우 `undefined`, 그 외의 경우 오류가 발생합니다. 예를 들면...
+A function defined by `new Function` will dynamically have its source assembled, which is observable when you serialize it. For example, `console.log(new Function().toString())` gives:
 
-```js
-var y = function x() {};
-alert(x); // 오류 발생
-```
+```js-nolint
+function anonymous(
+) {
 
-함수 이름은 함수가 [`Function`의 `toString()` 메서드](/ko/docs/Web/JavaScript/Reference/Global_Objects/Function/toString)를 통해 직렬화되는 경우에도 보입니다.
-
-함수 이름과 달리, 함수를 할당한 변수는 자신의 스코프에 의해서만 제한되며 이 스코프는 함수 선언의 스코프를 반드시 포함합니다.
-
-네 번째 코드 조각에서 볼 수 있듯, 함수의 이름과 함수를 할당한 변수의 이름은 서로 다를 수 있으며 둘 사이에는 아무 관계도 없습니다. 그런데 함수 선언의 경우 함수 이름과 동일한 이름의 변수 또한 생성합니다. 따라서, 함수 표현식으로 정의하는 함수와 달리, 함수 선언으로 정의한 함수는 자신의 스코프 내에서 이름으로 접근할 수 있습니다.
-
-`new Function`으로 정의한 함수는 이름을 갖지 않습니다.
-
-함수 표현식이나 `Function` 생성자로 정의한 함수와 달리, 함수 선언으로 정의한 함수는 자신의 선언보다 앞서 먼저 호출하는 것이 가능합니다. 예를 들면...
-
-```js
-foo(); // 안녕! 경고창 등장
-function foo() {
-   alert('안녕!');
 }
 ```
 
-함수 표현식과 함수 선언으로 정의하는 함수는 현재 스코프를 상속합니다. 즉, 함수가 클로저를 형성합니다. 반면 `Function` 생성자로 정의한 함수는 (다른 모든 함수가 상속하는) 전역 스코프를 제외하면 어떠한 스코프도 상속하지 않습니다.
+This is the actual source used to compile the function. However, although the `Function()` constructor will create the function with name `anonymous`, this name is not added to the scope of the body. The body only ever has access to global variables. For example, the following would result in an error:
 
 ```js
-/*
- * Declare and initialize a variable 'p' (global)
- * and a function 'myFunc' (to change the scope) inside which
- * declare a varible with same name 'p' (current) and
- * define three functions using three different ways:-
- *     1. function declaration
- *     2. function expression
- *     3. function constructor
- * each of which will log 'p'
- */
-var p = 5;
+new Function("alert(anonymous);")();
+```
+
+A function defined by a function expression or by a function declaration inherits the current scope. That is, the function forms a closure. On the other hand, a function defined by a `Function` constructor does not inherit any scope other than the global scope (which all functions inherit).
+
+```js
+// p is a global variable
+globalThis.p = 5;
 function myFunc() {
-    var p = 9;
+  // p is a local variable
+  const p = 9;
 
-    function decl() {
-        console.log(p);
-    }
-    var expr = function() {
-        console.log(p);
-    };
-    var cons = new Function('\tconsole.log(p);');
+  function decl() {
+    console.log(p);
+  }
+  const expr = function () {
+    console.log(p);
+  };
+  const cons = new Function("\tconsole.log(p);");
 
-    decl();
-    expr();
-    cons();
+  decl();
+  expr();
+  cons();
 }
 myFunc();
 
-/*
- * Logs:-
- * 9  - for 'decl' by function declaration (current scope)
- * 9  - for 'expr' by function expression (current scope)
- * 5  - for 'cons' by Function constructor (global scope)
- */
+// Logs:
+// 9 (for 'decl' by function declaration (current scope))
+// 9 (for 'expr' by function expression (current scope))
+// 5 (for 'cons' by Function constructor (global scope))
 ```
 
-함수 표현식과 함수 선언으로 정의한 함수에 대해서는 한 번만 구문 분석을 수행하지만, `Function` 생성자로 정의한 함수의 경우 아닙니다. `Function` 생성자로 정의한 함수를 호출하면 매번 함수 본문 문자열을 새로 파싱해야 합니다. 함수 표현식의 경우 매번 새로운 클로저를 생성하지만, 함수 본문을 다시 파싱하지는 않습니다. 따라서 함수 표현식 역시 "`new Function(...)`"보다 빠릅니다. 그러니 가능하다면 `Function` 생성자를 피해야 합니다.
+Functions defined by function expressions and function declarations are parsed only once, while a function defined by the `Function` constructor parses the string passed to it each and every time the constructor is called. Although a function expression creates a closure every time, the function body is not reparsed, so function expressions are still faster than `new Function(...)`. Therefore the `Function` constructor should generally be avoided whenever possible.
 
-단, 함수 표현식의 본문 문자열 내에서 정의하는 함수 표현식과 선언 본문은 다시 파싱하지 않습니다. 예를 들면...
+A function declaration may be unintentionally turned into a function expression when it appears in an expression context.
 
 ```js
-var foo = (new Function("var bar = \'FOO!\';\nreturn(function() {\n\talert(bar);\n});"))();
-foo(); // 함수 본문 문자열의 "function() {\n\talert(bar);\n}" 부분은 다시 파싱하지 않음
+// A function declaration
+function foo() {
+  console.log("FOO!");
+}
+
+doSomething(
+  // A function expression passed as an argument
+  function foo() {
+    console.log("FOO!");
+  },
+);
 ```
 
-함수 선언은 아주 쉽게 (때로는 무심코) 함수 표현식으로 바꿀 수 있습니다. 다음 두 가지 중 하나라도 만족할 경우 함수 선언이 아니라 함수 표현식이 됩니다.
+On the other hand, a function expression may also be turned into a function declaration. An [expression statement](/en-US/docs/Web/JavaScript/Reference/Statements/Expression_statement) cannot begin with the `function` or `async function` keywords, which is a common mistake when implementing [IIFEs](/en-US/docs/Glossary/IIFE) (Immediately Invoked Function Expressions).
 
-- 표현식의 일부가 될 때
-- 함수나 스크립트의 '본 요소'가 아닌 경우. '본 요소'는 함수나 스크립트 본문의, 중첩되지 않은 명령문을 의미합니다.
+```js example-bad
+function () { // SyntaxError: Function statements require a function name
+  console.log("FOO!");
+}();
 
-```js
-var x = 0;               // 본 요소
-if (x == 0) {            // 본 요소
-   x = 10;               // 본 요소가 아님
-   function boo() {}     // 본 요소가 아님
-}
-function foo() {         // 본 요소
-   var y = 20;           // 본 요소
-   function bar() {}     // 본 요소
-   while (y == 10) {     // 본 요소
-      function blah() {} // 본 요소가 아님
-      y++;               // 본 요소가 아님
-   }
-}
+function foo() {
+  console.log("FOO!");
+}(); // SyntaxError: Unexpected token ')'
 ```
 
-### 예제
+Instead, start the expression statement with something else, so that the `function` keyword unambiguously starts a function expression. Common options include [grouping](/en-US/docs/Web/JavaScript/Reference/Operators/Grouping) and using [`void`](/en-US/docs/Web/JavaScript/Reference/Operators/void).
+
+```js-nolint example-good
+(function () {
+  console.log("FOO!");
+})();
+
+void function () {
+  console.log("FOO!");
+}();
+```
+
+### Function parameters
+
+Each function parameter is a simple identifier that you can access in the local scope.
 
 ```js
-// 함수 선언
-function foo() {}
-
-// 함수 표현식
-(function bar() {})
-
-// 함수 표현식
-x = function hello() {}
-
-if (x) {
-   // 함수 표현식
-   function world() {}
-}
-
-// 함수 선언
-function a() {
-   // 함수 선언
-   function b() {}
-   if (0) {
-      // 함수 표현식
-      function c() {}
-   }
+function myFunc(a, b, c) {
+  // You can access the values of a, b, and c here
 }
 ```
 
-## 블록 레벨 함수
+There are three special parameter syntaxes:
 
-ES2015부터, [엄격 모드](/ko/docs/Web/JavaScript/Reference/Strict_mode)에서는 블록 내의 함수 범위가 해당 블록으로 제한됩니다. ES2015 이전에는 블록 레벨 함수를 엄격 모드에서 사용할 수 없었습니다.
+- [_Default parameters_](/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters) allow formal parameters to be initialized with default values if no value or `undefined` is passed.
+- The [_rest parameter_](/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters) allows representing an indefinite number of arguments as an array.
+- [_Destructuring_](/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) allows unpacking elements from arrays, or properties from objects, into distinct variables.
 
 ```js
-'use strict';
+function myFunc({ a, b }, c = 1, ...rest) {
+  // You can access the values of a, b, c, and rest here
+}
+```
+
+There are some consequences if one of the above non-simple parameter syntaxes is used:
+
+- You cannot apply `"use strict"` to the function body — this causes a [syntax error](/en-US/docs/Web/JavaScript/Reference/Errors/Strict_non_simple_params).
+- Even if the function is not in [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode), the [`arguments`](/en-US/docs/Web/JavaScript/Reference/Functions/arguments) object stops syncing with the named parameters, and [`arguments.callee`](/en-US/docs/Web/JavaScript/Reference/Functions/arguments/callee) throws an error when accessed.
+
+### The arguments object
+
+You can refer to a function's arguments within the function by using the [`arguments`](/en-US/docs/Web/JavaScript/Reference/Functions/arguments) object.
+
+- [`arguments`](/en-US/docs/Web/JavaScript/Reference/Functions/arguments)
+  - : An array-like object containing the arguments passed to the currently executing function.
+- [`arguments.callee`](/en-US/docs/Web/JavaScript/Reference/Functions/arguments/callee)
+  - : The currently executing function.
+- [`arguments.length`](/en-US/docs/Web/JavaScript/Reference/Functions/arguments/length)
+  - : The number of arguments passed to the function.
+
+### Getter and setter functions
+
+You can define accessor properties on any standard built-in object or user-defined object that supports the addition of new properties. Within [object literals](/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer) and [classes](/en-US/docs/Web/JavaScript/Reference/Classes), you can use special syntaxes to define the getter and setter of an accessor property.
+
+- [get](/en-US/docs/Web/JavaScript/Reference/Functions/get)
+  - : Binds an object property to a function that will be called when that property is looked up.
+- [set](/en-US/docs/Web/JavaScript/Reference/Functions/set)
+  - : Binds an object property to a function to be called when there is an attempt to set that property.
+
+Note that these syntaxes create an _object property_, not a _method_. The getter and setter functions themselves can only be accessed using reflective APIs such as {{jsxref("Object.getOwnPropertyDescriptor()")}}.
+
+### Block-level functions
+
+In [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode), functions inside blocks are scoped to that block. Prior to ES2015, block-level functions were forbidden in strict mode.
+
+```js
+"use strict";
 
 function f() {
   return 1;
@@ -424,98 +290,92 @@ function f() {
 
 f() === 1; // true
 
-// 엄격 모드가 아닐 경우 f() === 2
+// f() === 2 in non-strict mode
 ```
 
-### 비엄격 모드의 블록 레벨 함수
+### Block-level functions in non-strict code
 
-한 마디로, 안 됩니다.
+In a word: **Don't.**
 
-비엄격 모드에서의 블록 내 함수 선언은 이상하게 동작합니다. 예를 들어,
+In non-strict code, function declarations inside blocks behave strangely. For example:
 
 ```js
 if (shouldDefineZero) {
-   function zero() { // 위험: 호환성 위험
-      console.log("zero입니다.");
-   }
+  function zero() {
+    // DANGER: compatibility risk
+    console.log("This is zero.");
+  }
 }
 ```
 
-ES2015에 따르면 `shouldDefineZero`가 거짓인 경우, `zero`를 정의해선 안된다고 합니다. 조건문의 블록을 실행하지 않기 때문입니다. 그러나 이는 새롭게 명세에 추가된 부분으로, 이전엔 동작을 정의하지 않았습니다. 따라서 일부 브라우저에서는 블록의 실행 유무에 관계 없이 `zero`를 정의할 수 있습니다.
+The semantics of this in strict mode are well-specified — `zero` only ever exists within that scope of the `if` block. If `shouldDefineZero` is false, then `zero` should never be defined, since the block never executes. However, historically, this was left unspecified, so different browsers implemented it differently in non-strict mode. For more information, see the [`function` declaration](/en-US/docs/Web/JavaScript/Reference/Statements/function#block-level_function_declaration) reference.
 
-[엄격 모드](/ko/docs/Web/JavaScript/Reference/Strict_mode) 아래에서는 ES2015를 지원하는 브라우저라면 모두 `shouldDefineZero`가 참일 때, `if` 블록 스코프에 한정해 `zero`를 정의할 것입니다.
-
-함수를 조건적으로 정의하는 더 안전한 방법은 함수 표현식을 변수에 할당하는 것입니다.
+A safer way to define functions conditionally is to assign a function expression to a variable:
 
 ```js
+// Using a var makes it available as a global variable,
+// with closer behavior to a top-level function declaration
 var zero;
-if (0) {
-   zero = function() {
-      console.log("zero입니다.");
-   };
+if (shouldDefineZero) {
+  zero = function () {
+    console.log("This is zero.");
+  };
 }
 ```
 
-## 예제
+## Examples
 
-### 숫자 서식화
+### Returning a formatted number
 
-다음 예제는 주어진 숫자에 선행 0을 추가해 원하는 길이로 맞추는 함수입니다.
+The following function returns a string containing the formatted representation of a number padded with leading zeros.
 
 ```js
+// This function returns a string padded with leading zeros
 function padZeros(num, totalLen) {
-   var numStr = num.toString();             // 반환 값을 문자열로 초기화
-   var numZeros = totalLen - numStr.length; // 필요한 0의 수 계산
-   for (var i = 1; i <= numZeros; i++) {
-      numStr = "0" + numStr;
-   }
-   return numStr;
+  let numStr = num.toString(); // Initialize return value as string
+  const numZeros = totalLen - numStr.length; // Calculate no. of zeros
+  for (let i = 1; i <= numZeros; i++) {
+    numStr = `0${numStr}`;
+  }
+  return numStr;
 }
 ```
 
-다음 명령문에서 `padZeros` 함수를 호출합니다.
+The following statements call the `padZeros` function.
 
 ```js
-var result;
-result = padZeros(42,4); // "0042"
-result = padZeros(42,2); // "42"
-result = padZeros(5,4);  // "0005"
+let result;
+result = padZeros(42, 4); // returns "0042"
+result = padZeros(42, 2); // returns "42"
+result = padZeros(5, 4); // returns "0005"
 ```
 
-### 함수 존재 여부 판단
+### Determining whether a function exists
 
-`typeof` 연산자를 사용하면 함수의 존재 여부를 판단할 수 있습니다. 아래 예제에서는 `window` 객체의 `noFunc`라는 속성이 함수인지 확인합니다. 그 후, 함수라면 호출하고, 함수가 아니면 임의의 다른 동작을 수행합니다.
+You can determine whether a function exists by using the [`typeof`](/en-US/docs/Web/JavaScript/Reference/Operators/typeof) operator. In the following example, a test is performed to determine if the `window` object has a property called `noFunc` that is a function. If so, it is used; otherwise, some other action is taken.
 
 ```js
- if ('function' == typeof window.noFunc) {
-   // noFunc() 사용
- } else {
-   // 다른 동작 수행
- }
+if (typeof window.noFunc === "function") {
+  // use noFunc()
+} else {
+  // do something else
+}
 ```
 
-`if` 조건에 `noFunc`의 참조를 사용한 것에 주의하세요. 이름 뒤에 괄호 "()"를 붙이지 않았으므로 함수를 실제로 호출한 것은 아닙니다.
+Note that in the `if` test, a reference to `noFunc` is used — there are no brackets `()` after the function name so the actual function is not called.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [`function` 명령문](/ko/docs/Web/JavaScript/Reference/Statements/function)
-- [`function` 표현식](/ko/docs/Web/JavaScript/Reference/Operators/function)
-- [`function*` 명령문](/ko/docs/Web/JavaScript/Reference/Statements/function*)
-- [`function*` 표현식](/ko/docs/Web/JavaScript/Reference/Operators/function*)
+- [Functions guide](/en-US/docs/Web/JavaScript/Guide/Functions)
+- [Classes](/en-US/docs/Web/JavaScript/Reference/Classes)
+- {{jsxref("Statements/function", "function")}}
+- [`function` expression](/en-US/docs/Web/JavaScript/Reference/Operators/function)
 - {{jsxref("Function")}}
-- {{jsxref("GeneratorFunction")}}
-- {{jsxref("Functions/Arrow_functions", "화살표 함수", "", 1)}}
-- {{jsxref("Functions/Default_parameters", "매개변수 기본 값", "", 1)}}
-- {{jsxref("Functions/rest_parameters", "나머지 매개변수", "", 1)}}
-- [`arguments` 객체](/ko/docs/Web/JavaScript/Reference/Functions/arguments)
-- {{jsxref("Functions/get", "접근자", "", 1)}}
-- {{jsxref("Functions/set", "설정자", "", 1)}}
-- {{jsxref("Functions/Method_definitions", "메서드 정의", "", 1)}}

@@ -1,171 +1,215 @@
 ---
 title: WebRTC API
 slug: Web/API/WebRTC_API
+page-type: web-api-overview
+spec-urls:
+  - https://w3c.github.io/webrtc-pc/
+  - https://w3c.github.io/mediacapture-main/
+  - https://w3c.github.io/mediacapture-fromelement/
 ---
-{{APIRef("WebRTC")}}
 
-**WebRTC**(Web Real-Time Communication)은 웹 애플리케이션과 사이트가 중간자 없이 브라우저 간에 오디오나 영상 미디어를 포착하고 마음대로 스트림할 뿐 아니라, 임의의 데이터도 교환할 수 있도록 하는 기술입니다. WebRTC를 구성하는 일련의 표준들은 플러그인이나 제 3자 소프트웨어 설치 없이 종단 간 데이터 공유와 화상 회의를 가능하게 합니다.
+{{DefaultAPISidebar("WebRTC")}}
 
-이를 위하여 WebRTC는 상호 연관된 API와 프로토콜로 구성되어 함께 작동합니다. 이 문서에서는 WebRTC의 기본을 이해하고, 설정하며, 데이터와 미디어 연결을 위해 사용할 수 있게 도와줄 것입니다.
+**WebRTC** (Web Real-Time Communication) is a technology that enables Web applications and sites to capture and optionally stream audio and/or video media, as well as to exchange arbitrary data between browsers without requiring an intermediary. The set of standards that comprise WebRTC makes it possible to share data and perform teleconferencing peer-to-peer, without requiring that the user install plug-ins or any other third-party software.
 
-## 상호 운용성
+WebRTC consists of several interrelated APIs and protocols which work together to achieve this. The documentation you'll find here will help you understand the fundamentals of WebRTC, how to set up and use both data and media connections, and more.
 
-WebRTC의 구현이 계속 진화하고 있으며 각 브라우저마다 다른 코덱 및 기타 미디어 기능에 대한 지원 수준이 다르기 때문에, 코드 작성을 시작하기 전에 Google에서 제공하는 [Adapter.js 라이브러리](https://github.com/webrtcHacks/adapter)를 사용하는 것을 강력하게 고려해보아야합니다.
+## WebRTC concepts and usage
 
-Adapter.js는 shim 및 polyfill을 사용하여 다양한 플랫폼에서 WebRTC 구현 간의 다양한 차이점을 없애줍니다. 또한 WebRTC 개발 프로세스를 전체적으로 쉽게 수행 할 수 있도록 접두사와 다른 이름 지정의 차이점을 처리하며보다 광범위하게 호환되는 결과를 제공합니다. 라이브러리는 [NPM 패키지](https://www.npmjs.com/package/webrtc-adapter)로도 제공됩니다.
+WebRTC serves multiple purposes; together with the [Media Capture and Streams API](/en-US/docs/Web/API/Media_Capture_and_Streams_API), they provide powerful multimedia capabilities to the Web, including support for audio and video conferencing, file exchange, screen sharing, identity management, and interfacing with legacy telephone systems including support for sending {{Glossary("DTMF")}} (touch-tone dialing) signals. Connections between peers can be made without requiring any special drivers or plug-ins, and can often be made without any intermediary servers.
 
-Adapter.js에 대한 자세한 내용은 [Improving compatibility using WebRTC adapter.js](/ko/docs/Web/API/WebRTC_API/adapter.js)를 참조하십시오.
+Connections between two peers are represented by the {{DOMxRef("RTCPeerConnection")}} interface. Once a connection has been established and opened using `RTCPeerConnection`, media streams ({{DOMxRef("MediaStream")}}s) and/or data channels ({{DOMxRef("RTCDataChannel")}}s) can be added to the connection.
 
-## WebRTC 개념 및 사용법
+Media streams can consist of any number of tracks of media information; tracks, which are represented by objects based on the {{DOMxRef("MediaStreamTrack")}} interface, may contain one of a number of types of media data, including audio, video, and text (such as subtitles or even chapter names). Most streams consist of at least one audio track and likely also a video track, and can be used to send and receive both live media or stored media information (such as a streamed movie).
 
-WebRTC는 여러가지 목적으로 사용될 수 있으며, Media Capture and Streams API 와 상당히 많은 부분이 겹친다. 이 둘은 서로 상호작용을 하면서 웹에 강력한 멀티미디어 기능을 제공한다. 예를들어 음성, 화상 회의, 파일 교환, ~~계정 관리~~, ~~DTMF 시그널을 이용해 legacy telephone 시스템 interfacing~~ 등이 있다. 피어들 간의 커넥션이 만들어지는데 어떤 드라이버나 플러그인도 필요하지 않는다. ~~그리고 가끔은 중개 서버 없이도 만들어질 수 있다.~~
+You can also use the connection between two peers to exchange arbitrary binary data using the {{DOMxRef("RTCDataChannel")}} interface. This can be used for back-channel information, metadata exchange, game status packets, file transfers, or even as a primary channel for data transfer.
 
-두 피어 간의 커넥션은 [`RTCPeerConnection`](/ko/docs/Web/API/RTCPeerConnection)인터페이스를 통해 이루어진다. 커넥션이 이루어지고 열리면, 미디어 스트림들 ([`MediaStream`](https://www.gitbook.com/book/gustnxodjs/webrtc-mdn-kor/edit#)) 과 데이터 채널([`RTCDataChannel`](https://www.gitbook.com/book/gustnxodjs/webrtc-mdn-kor/edit#))들을 커넥션에 연결할 수 있다.
+### Interoperability
 
-미디어 스트림들은 미디어 정보를 가지는 다수의 트랙들로 구성될 수 있다. [`MediaStreamTrack`](/ko/docs/Web/API/MediaStreamTrack)인터페이스 object를 베이스로 하는 트랙은 음성, 영상 및 텍스트(제목 또는 챕터 이름 조차도 포함 가능하다)를 포함하는 다양한 미디어 데이터의 타입 중 하나를 포함 할 수 있다. 대부분의 스트림들은 적어도 한 개 이상의 음성(영상) 트랙으로 구성되어 있고, live 미디어(웹 캠 등)나 저장된(스트리밍) 미디어들을 전송하고 받을 수 있다.
+WebRTC is in general well supported in modern browsers, but some incompatibilities remain. The [adapter.js](https://github.com/webrtcHacks/adapter) library is a shim to insulate apps from these incompatibilities.
 
-또한, 임의의 바이너리 데이터(이미지든 텍스트든 파일이든 모두 가능하다는 뜻)를 [`RTCDataChannel`](/ko/docs/Web/API/RTCDataChannel)인터페이스를 통해 피어들 간에 교환할 수 있다. 이것은 ~~back-channel 정보들~~, 메타데이터 교환, 게임 status 패킷들, 파일 교환, ~~데이터 교환을 위한 primary channel~~ 등에 쓰일 수 있다.
+## WebRTC reference
 
-_**더 자세한 내용은 밑에 guide와 tutorial을 참조하길 바란다**_
+Because WebRTC provides interfaces that work together to accomplish a variety of tasks, we have divided up the reference by category. Please see the sidebar for an alphabetical list.
 
-## WebRTC 인터페이스
+### Connection setup and management
 
-WebRTC는 다양한 작업을 수행하기 위해 함께 동작하는 인터페이스를 제공하기때문에 아래 목록의 인터페이스들을 카테고리별로 나누었다. 알파벳 순으로 정리된 목록은 사이드 바를 참조하라.
+These interfaces, dictionaries, and types are used to set up, open, and manage WebRTC connections. Included are interfaces representing peer media connections, data channels, and interfaces used when exchanging information on the capabilities of each peer in order to select the best possible configuration for a two-way media connection.
 
-### 연결 설정 및 관리
+#### Interfaces
 
-이 인터페이스들을 사용하여 WebRTC 연결을 설정할 수 있고, 연결을 맺을 수 있으며 WebRTC 연결을 관리할 수 있다.
-
-- {{domxref("RTCPeerConnection")}}
-  - : 로컬 컴퓨터와 원격 피어 간의 WebRTC 연결을 나타낸다. 두 피어 간의 효율적인 데이터 스트리밍을 처리하는데 사용된다.
-- {{domxref("RTCDataChannel")}}
-  - : 연결된 두 피어간의 양방향 데이터 채널을 나타낸다.
-- {{domxref("RTCDataChannelEvent")}}
-  - : {{domxref("RTCDataChannel")}}을 {{domxref("RTCPeerConnection")}}에 연결하는 동안 발생하는 이벤트를 나타낸다. 이 인터페이스와 함께 전송되는 유일한 이벤트는 {{event("datachannel")}}이다.
-- {{domxref("RTCSessionDescription")}}
-  - : 세션의 매개 변수를 나타냅니다. 각 `RTCSessionDescription`는 세션의 {{Glossary("SDP")}} 기술자(descriptor)의 기술 제안 / 응답 협상 과정의 일부를 나타내는 설명 {{DOMxRef("RTCSessionDescription.type", "type")}}으로 구성되어 있습니다.
-- {{domxref("RTCStatsReport")}}
-  - : 연결 또는 연결의 개별 트랙에 대한 통계를 자세히 설명하는 정보를 제공합니다. {{domxref("RTCPeerConnection.getStats()")}}를 호출하여 보고서를 얻을 수 있습니다.
-- {{domxref("RTCIceCandidate")}}
-  - : {{domxref("RTCPeerConnection")}} 설정을 위한 후보 인터넷 연결 설정 (ICE; internet connectivity establishment) 서버를 나타냅니다.
-- {{domxref("RTCIceTransport")}}
-  - : 인터넷 연결 설정 (ICE) 전송에 대한 정보를 나타냅니다.
-- {{domxref("RTCPeerConnectionIceEvent")}}
-  - : 대상이있는 ICE 후보와 관련하여 발생하는 이벤트 (일반적으로 {{domxref("RTCPeerConnection")}})를 나타냅니다. {{event ( "icecandidate")}} 유형의 이벤트 만 있습니다.
-- {{domxref("RTCRtpSender")}}
-  - : {{domxref ( "RTCPeerConnection")}}에서 {{domxref ( "MediaStreamTrack")}}의 데이터 인코딩 및 전송을 관리합니다.
-- {{domxref("RTCRtpReceiver")}}
-  - : {{domxref ( "RTCPeerConnection")}}에서 {{domxref ( "MediaStreamTrack")}}의 데이터 수신 및 디코딩을 관리합니다.
-- {{domxref("RTCTrackEvent")}}
-  - : 새롭게 수신된 {{domxref ( "MediaStreamTrack")}}이 생성되고 관련 {{domxref ( "RTCRtpReceiver")}} 개체가 {{domxref ( "RTCPeerConnection")}} 개체에 추가되었음을 나타냅니다.
+- {{DOMxRef("RTCPeerConnection")}}
+  - : Represents a WebRTC connection between the local computer and a remote peer. It is used to handle efficient streaming of data between the two peers.
+- {{DOMxRef("RTCDataChannel")}}
+  - : Represents a bi-directional data channel between two peers of a connection.
+- {{DOMxRef("RTCDataChannelEvent")}}
+  - : Represents events that occur while attaching a {{DOMxRef("RTCDataChannel")}} to a {{DOMxRef("RTCPeerConnection")}}. The only event sent with this interface is {{domxref("RTCPeerConnection.datachannel_event", "datachannel")}}.
+- {{DOMxRef("RTCSessionDescription")}}
+  - : Represents the parameters of a session. Each `RTCSessionDescription` consists of a description {{DOMxRef("RTCSessionDescription.type", "type")}} indicating which part of the offer/answer negotiation process it describes and of the {{Glossary("SDP")}} descriptor of the session.
+- {{DOMxRef("RTCStatsReport")}}
+  - : Provides information detailing statistics for a connection or for an individual track on the connection; the report can be obtained by calling {{DOMxRef("RTCPeerConnection.getStats()")}}. Details about using WebRTC statistics can be found in [WebRTC Statistics API](/en-US/docs/Web/API/WebRTC_Statistics_API).
+- {{DOMxRef("RTCIceCandidate")}}
+  - : Represents a candidate Interactive Connectivity Establishment ({{Glossary("ICE")}}) server for establishing an {{DOMxRef("RTCPeerConnection")}}.
+- {{DOMxRef("RTCIceTransport")}}
+  - : Represents information about an {{Glossary("ICE")}} transport.
+- {{DOMxRef("RTCPeerConnectionIceEvent")}}
+  - : Represents events that occur in relation to ICE candidates with the target, usually an {{DOMxRef("RTCPeerConnection")}}. Only one event is of this type: {{domxref("RTCPeerConnection.icecandidate_event", "icecandidate")}}.
+- {{DOMxRef("RTCRtpSender")}}
+  - : Manages the encoding and transmission of data for a {{DOMxRef("MediaStreamTrack")}} on an {{DOMxRef("RTCPeerConnection")}}.
+- {{DOMxRef("RTCRtpReceiver")}}
+  - : Manages the reception and decoding of data for a {{DOMxRef("MediaStreamTrack")}} on an {{DOMxRef("RTCPeerConnection")}}.
+- {{DOMxRef("RTCTrackEvent")}}
+  - : The interface used to represent a {{domxref("RTCPeerConnection.track_event", "track")}} event, which indicates that an {{DOMxRef("RTCRtpReceiver")}} object was added to the {{DOMxRef("RTCPeerConnection")}} object, indicating that a new incoming {{DOMxRef("MediaStreamTrack")}} was created and added to the `RTCPeerConnection`.
 - {{DOMxRef("RTCSctpTransport")}}
-  - : 스트림 제어 전송 프로토콜(_Stream Control Transmission Protocol,_ **{{Glossary("SCTP")}}**) 전송을 설명하는 정보를 제공하고, 모든 [`RTCPeerConnection`](/en-US/docs/Web/API/RTCPeerConnection) 데이터 채널에 대한 SCTP 패킷이 송수신되는 기본 데이터그램 전송 보안 계층 프로토콜(Datagram Transport Layer Security, **{{Glossary("DTLS")}}**) 전송에 접근하기 위한 방법을 제공합니다.
+  - : Provides information which describes a Stream Control Transmission Protocol (**{{Glossary("SCTP")}}**) transport and also provides a way to access the underlying Datagram Transport Layer Security (**{{Glossary("DTLS")}}**) transport over which SCTP packets for all of an [`RTCPeerConnection`](/en-US/docs/Web/API/RTCPeerConnection)'s data channels are sent and received.
 
 #### Dictionaries
 
-- {{DOMxRef("RTCConfiguration")}}
-  - : [`RTCPeerConnection`](/ko/docs/Web/API/RTCPeerConnection) 구성 옵션을 제공하는데 사용됩니다.
 - {{DOMxRef("RTCIceServer")}}
   - : Defines how to connect to a single {{Glossary("ICE")}} server (such as a {{Glossary("STUN")}} or {{Glossary("TURN")}} server).
 - {{DOMxRef("RTCRtpContributingSource")}}
   - : Contains information about a given contributing source (CSRC) including the most recent time a packet that the source contributed was played out.
 
+#### Events
+
+- {{domxref("RTCDataChannel.bufferedamountlow_event", "bufferedamountlow")}}
+  - : The amount of data currently buffered by the data channel—as indicated by its {{domxref("RTCDataChannel.bufferedAmount", "bufferedAmount")}} property—has decreased to be at or below the channel's minimum buffered data size, as specified by {{domxref("RTCDataChannel.bufferedAmountLowThreshold", "bufferedAmountLowThreshold")}}.
+- {{domxref("RTCDataChannel.close_event", "close")}}
+  - : The data channel has completed the closing process and is now in the `closed` state. Its underlying data transport is completely closed at this point. You can be notified _before_ closing completes by watching for the `closing` event instead.
+- {{domxref("RTCDataChannel.closing_event", "closing")}}
+  - : The `RTCDataChannel` has transitioned to the `closing` state, indicating that it will be closed soon. You can detect the completion of the closing process by watching for the `close` event.
+- {{domxref("RTCPeerConnection.connectionstatechange_event", "connectionstatechange")}}
+  - : The connection's state, which can be accessed in {{domxref("RTCPeerConnection.connectionState", "connectionState")}}, has changed.
+- {{domxref("RTCPeerConnection.datachannel_event", "datachannel")}}
+  - : A new {{domxref("RTCDataChannel")}} is available following the remote peer opening a new data channel. This event's type is {{domxref("RTCDataChannelEvent")}}.
+- {{domxref("RTCDataChannel.error_event", "error")}}
+  - : An {{domxref("RTCErrorEvent")}} indicating that an error occurred on the data channel.
+- {{domxref("RTCDtlsTransport.error_event", "error")}}
+  - : An {{domxref("RTCErrorEvent")}} indicating that an error occurred on the {{domxref("RTCDtlsTransport")}}. This error will be either `dtls-failure` or `fingerprint-failure`.
+- {{domxref("RTCIceTransport.gatheringstatechange_event", "gatheringstatechange")}}
+  - : The {{domxref("RTCIceTransport")}}'s gathering state has changed.
+- {{domxref("RTCPeerConnection.icecandidate_event", "icecandidate")}}
+  - : An {{domxref("RTCPeerConnectionIceEvent")}} which is sent whenever the local device has identified a new ICE candidate which needs to be added to the local peer by calling {{domxref("RTCPeerConnection.setLocalDescription", "setLocalDescription()")}}.
+- {{domxref("RTCPeerConnection.icecandidateerror_event", "icecandidateerror")}}
+  - : An {{domxref("RTCPeerConnectionIceErrorEvent")}} indicating that an error has occurred while gathering ICE candidates.
+- {{domxref("RTCPeerConnection.iceconnectionstatechange_event", "iceconnectionstatechange")}}
+  - : Sent to an {{domxref("RTCPeerConnection")}} when its ICE connection's state—found in the {{domxref("RTCPeerConnection.iceconnectionstate", "iceconnectionstate")}} property—changes.
+- {{domxref("RTCPeerConnection.icegatheringstatechange_event", "icegatheringstatechange")}}
+  - : Sent to an {{domxref("RTCPeerConnection")}} when its ICE gathering state—found in the {{domxref("RTCPeerConnection.icegatheringstate", "icegatheringstate")}} property—changes.
+- {{domxref("RTCDataChannel.message_event", "message")}}
+  - : A message has been received on the data channel. The event is of type {{domxref("MessageEvent")}}.
+- {{domxref("RTCPeerConnection.negotiationneeded_event", "negotiationneeded")}}
+  - : Informs the `RTCPeerConnection` that it needs to perform session negotiation by calling {{domxref("RTCPeerConnection.createOffer", "createOffer()")}} followed by {{domxref("RTCPeerConnection.setLocalDescription", "setLocalDescription()")}}.
+- {{domxref("RTCDataChannel.open_event", "open")}}
+  - : The underlying data transport for the `RTCDataChannel` has been successfully opened or re-opened.
+- {{domxref("RTCIceTransport.selectedcandidatepairchange_event", "selectedcandidatepairchange")}}
+  - : The currently-selected pair of ICE candidates has changed for the `RTCIceTransport` on which the event is fired.
+- {{domxref("RTCPeerConnection.track_event", "track")}}
+  - : The `track` event, of type {{domxref("RTCTrackevent")}} is sent to an {{domxref("RTCPeerConnection")}} when a new track is added to the connection following the successful negotiation of the media's streaming.
+- {{domxref("RTCPeerConnection.signalingstatechange_event", "signalingstatechange")}}
+  - : Sent to the peer connection when its {{domxref("RTCPeerConnection.signalingstate", "signalingstate")}} has changed. This happens as a result of a call to either {{domxref("RTCPeerConnection.setLocalDescription", "setLocalDescription()")}} or {{domxref("RTCPeerConnection.setRemoteDescription", "setRemoteDescription()")}}.
+- {{domxref("RTCDtlsTransport.statechange_event", "statechange")}}
+  - : The state of the `RTCDtlsTransport` has changed.
+- {{domxref("RTCIceTransport.statechange_event", "statechange")}}
+  - : The state of the `RTCIceTransport` has changed.
+- {{domxref("RTCSctpTransport.statechange_event", "statechange")}}
+  - : The state of the `RTCSctpTransport` has changed.
+
 #### Types
 
-- {{DOMxRef("RTCSctpTransportState")}}
+- {{DOMxRef("RTCSctpTransport.state")}}
   - : Indicates the state of an {{DOMxRef("RTCSctpTransport")}} instance.
-- {{DOMxRef("RTCSessionDescriptionCallback")}}
-  - : The RTCSessionDescriptionCallback is passed into the {{DOMxRef("RTCPeerConnection")}} object when requesting it to create offers or answers.
 
-### 식별자와 보안
+### Identity and security
 
-WebRTC API에는 보안 및 식별자를 관리하기위한 여러 인터페이스가 포함되어 있습니다.
+These APIs are used to manage user identity and security, in order to authenticate the user for a connection.
 
-- {{domxref("RTCIdentityProvider")}}
-  - : 사용자 에이전트가 Identity Assertion을 생성 또는 검증을 요청할수 있도록합니다.
-- {{domxref("RTCIdentityAssertion")}}
-  - : Represents the identity of the a remote peer of the current connection. If no peer has yet been set and verified this interface returns `null`. Once set it can't be changed.
-- {{domxref("RTCIdentityProviderRegistrar")}}
-  - : 식별자 공급자(idP; identity provider)를 제공합니다.
-- {{domxref("RTCIdentityEvent")}}
-  - : Represents an identity assertion generated by an identity provider (idP). This is usually for an {{domxref("RTCPeerConnection")}}. The only event sent with this type is {{event("identityresult")}}.
-- {{domxref("RTCIdentityErrorEvent")}}
-  - : Represents an error associated with the identity provider (idP). This is usually for an {{domxref("RTCPeerConnection")}}. Two events are sent with this type: {{event("idpassertionerror")}} and {{event("idpvalidationerror")}}.
-- {{domxref("RTCCertificate")}}
-  - : Represents a certificate that an {{domxref("RTCPeerConnection")}} uses to authenticate.
+- {{DOMxRef("RTCIdentityProvider")}}
+  - : Enables a user agent is able to request that an identity assertion be generated or validated.
+- {{DOMxRef("RTCIdentityAssertion")}}
+  - : Represents the identity of the remote peer of the current connection. If no peer has yet been set and verified this interface returns `null`. Once set it can't be changed.
+- {{DOMxRef("RTCIdentityProviderRegistrar")}}
+  - : Registers an identity provider (idP).
+- {{DOMxRef("RTCCertificate")}}
+  - : Represents a certificate that an {{DOMxRef("RTCPeerConnection")}} uses to authenticate.
 
 ### Telephony
 
-이러한 인터페이스들은 공중 전화망 (PTSN; public-switched telephone networks)과의 상호 작용과 관련이 있습니다
+These interfaces and events are related to interactivity with Public-Switched Telephone Networks (PTSNs). They're primarily used to send tone dialing sounds—or packets representing those tones—across the network to the remote peer.
 
-- {{domxref("RTCDTMFSender")}}
-  - : Manages the encoding and transmission of dual-tone multi-frequency (DTMF) signaling for an {{domxref("RTCPeerConnection")}}.
-- {{domxref("RTCDTMFToneChangeEvent")}}
-  - : Indicates an occurrence of a of dual-tone multi-frequency (DTMF). This event does not bubble (except where otherwise stated) and is not cancelable (except where otherwise stated).
+#### Interfaces
+
+- {{DOMxRef("RTCDTMFSender")}}
+  - : Manages the encoding and transmission of Dual-Tone Multi-Frequency ({{Glossary("DTMF")}}) signaling for an {{DOMxRef("RTCPeerConnection")}}.
+- {{DOMxRef("RTCDTMFToneChangeEvent")}}
+  - : Used by the {{domxref("RTCDTMFSender.tonechange_event", "tonechange")}} event to indicate that a DTMF tone has either begun or ended. This event does not bubble (except where otherwise stated) and is not cancelable (except where otherwise stated).
+
+#### Events
+
+- {{domxref("RTCDTMFSender.tonechange_event", "tonechange")}}
+  - : Either a new {{Glossary("DTMF")}} tone has begun to play over the connection, or the last tone in the `RTCDTMFSender`'s {{domxref("RTCDTMFSender.toneBuffer", "toneBuffer")}} has been sent and the buffer is now empty. The event's type is {{domxref("RTCDTMFToneChangeEvent")}}.
 
 ## Guides
 
-- [Introduction to WebRTC protocols](/ko/docs/Web/API/WebRTC_API/Protocols)
-  - : 이 문서는 WebRTC API가 구축된 기반이 되는 프로토콜을 소개한다.
-- [WebRTC connectivity](/ko/docs/Web/API/WebRTC_API/Connectivity)
-  - : WebRTC 커넥션의 작동 방식 및 다양한 프로토콜과 인터페이스를 함께 사용하여 강력한 커뮤니케이션 앱을 만드는 방법에 대한 가이드이다.
-- [Lifetime of a WebRTC session](/ko/docs/Web/API/WebRTC_API/Session_lifetime)
-  - : WebRTC는 임의 데이터, 오디오, 비디오 또는 이들의 모든 조합에 대한 피어 투 피어 커뮤니케이션을 브라우저 어플리케이션으로 구축하도록 해준다. 이 문서에서는, 모든 방법으로 커넥션을 설정하는 것에서 부터 더 이상 필요하지 않을 때 커넥션을 닫는 것까지 WebRTC 세션의 수명에 대해 살펴볼 것이다.
-- [Signaling and two-way video calling](/ko/docs/Web/API/WebRTC_API/Signaling_and_video_calling)
-  - : 여러 사용자들 간의 화상통화를 할 수 있는 Websocket을 기반으로한 튜토리얼 및 예제이다. 채팅 서버의 웹소켓 커넥션은 WebRTC의 시그널링을 위해 사용된다.
-- [Codecs used by WebRTC](/ko/docs/Web/Media/Formats/WebRTC_codecs)
+- [Introduction to WebRTC protocols](/en-US/docs/Web/API/WebRTC_API/Protocols)
+  - : This article introduces the protocols on top of which the WebRTC API is built.
+- [WebRTC connectivity](/en-US/docs/Web/API/WebRTC_API/Connectivity)
+  - : A guide to how WebRTC connections work and how the various protocols and interfaces can be used together to build powerful communication apps.
+- [Lifetime of a WebRTC session](/en-US/docs/Web/API/WebRTC_API/Session_lifetime)
+  - : WebRTC lets you build peer-to-peer communication of arbitrary data, audio, or video—or any combination thereof—into a browser application. In this article, we'll look at the lifetime of a WebRTC session, from establishing the connection all the way through closing the connection when it's no longer needed.
+- [Establishing a connection: The perfect negotiation pattern](/en-US/docs/Web/API/WebRTC_API/Perfect_negotiation)
+  - : **Perfect negotiation** is a design pattern which is recommended for your signaling process to follow, which provides transparency in negotiation while allowing both sides to be either the offerer or the answerer, without significant coding needed to differentiate the two.
+- [Signaling and two-way video calling](/en-US/docs/Web/API/WebRTC_API/Signaling_and_video_calling)
+  - : A tutorial and example which turns a WebSocket-based chat system created for a previous example and adds support for opening video calls among participants. The chat server's WebSocket connection is used for WebRTC signaling.
+- [Codecs used by WebRTC](/en-US/docs/Web/Media/Formats/WebRTC_codecs)
   - : A guide to the codecs which WebRTC requires browsers to support as well as the optional ones supported by various popular browsers. Included is a guide to help you choose the best codecs for your needs.
-- [Using WebRTC data channels](/ko/docs/Web/API/WebRTC_API/Using_data_channels)
-  - : 이 가이드는 두 피어 사이의 임의의 데이터를 교환하기 위해 피어 커넥션와 관련된 {{domxref("RTCDataChannel")}}을 사용할 수 있는 방법을 다룬다.
-- [Using DTMF with WebRTC](/ko/docs/Web/API/WebRTC_API/Using_DTMF)
-  - : 구식 전화 시스템에 연결되는 게이트웨이와 상호 작용하기 위한 WebRTC의 지원에는 {{domxref("RTCDTMFSender")}} 인터페이스를 사용하여 DTMF 톤을 보내는 기능이 포함된다. 이 가이드는 어떻게 그렇게 하는지 보여준다.
+- [Using WebRTC data channels](/en-US/docs/Web/API/WebRTC_API/Using_data_channels)
+  - : This guide covers how you can use a peer connection and an associated {{DOMxRef("RTCDataChannel")}} to exchange arbitrary data between two peers.
+- [Using DTMF with WebRTC](/en-US/docs/Web/API/WebRTC_API/Using_DTMF)
+  - : WebRTC's support for interacting with gateways that link to old-school telephone systems includes support for sending DTMF tones using the {{DOMxRef("RTCDTMFSender")}} interface. This guide shows how to do so.
 
 ## Tutorials
 
-- [Improving compatibility using WebRTC adapter.js](/ko/docs/Web/API/WebRTC_API/adapter.js)
+- [Improving compatibility using WebRTC adapter.js](/en-US/docs/Web/API/WebRTC_API/adapter.js)
   - : The WebRTC organization [provides on GitHub the WebRTC adapter](https://github.com/webrtc/adapter/) to work around compatibility issues in different browsers' WebRTC implementations. The adapter is a JavaScript shim which lets your code to be written to the specification so that it will "just work" in all browsers with WebRTC support.
-- [Taking still photos with WebRTC](/ko/docs/Web/API/WebRTC_API/Taking_still_photos)
-  - : This article shows how to use WebRTC to access the camera on a computer or mobile phone with WebRTC support and take a photo with it.
-- [A simple RTCDataChannel sample](/ko/docs/Web/API/WebRTC_API/Simple_RTCDataChannel_sample)
-  - : The {{domxref("RTCDataChannel")}} interface is a feature which lets you open a channel between two peers over which you may send and receive arbitrary data. The API is intentionally similar to the [WebSocket API](/ko/docs/Web/API/WebSocket_API), so that the same programming model can be used for each.
+- [A simple RTCDataChannel sample](/en-US/docs/Web/API/WebRTC_API/Simple_RTCDataChannel_sample)
+  - : The {{DOMxRef("RTCDataChannel")}} interface is a feature which lets you open a channel between two peers over which you may send and receive arbitrary data. The API is intentionally similar to the [WebSocket API](/en-US/docs/Web/API/WebSockets_API), so that the same programming model can be used for each.
+- [Building an internet connected phone with Peer.js](/en-US/docs/Web/API/WebRTC_API/Build_a_phone_with_peerjs)
+  - : This tutorial is a step-by-step guide on how to build a phone using Peer.js
 
-## Resources
-
-### Protocols
-
-#### WebRTC-proper protocols
-
-- [Application Layer Protocol Negotiation for Web Real-Time Communications](http://datatracker.ietf.org/doc/draft-ietf-rtcweb-alpn/)
-- [WebRTC Audio Codec and Processing Requirements](http://datatracker.ietf.org/doc/draft-ietf-rtcweb-audio/)
-- [RTCWeb Data Channels](http://datatracker.ietf.org/doc/draft-ietf-rtcweb-data-channel/)
-- [RTCWeb Data Channel Protocol](http://datatracker.ietf.org/doc/draft-ietf-rtcweb-data-protocol/)
-- [Web Real-Time Communication (WebRTC): Media Transport and Use of RTP](http://datatracker.ietf.org/doc/draft-ietf-rtcweb-rtp-usage/)
-- [WebRTC Security Architecture](http://datatracker.ietf.org/doc/draft-ietf-rtcweb-security-arch/)
-- [Transports for RTCWEB](http://datatracker.ietf.org/doc/draft-ietf-rtcweb-transports/)
-
-#### Related supporting protocols
-
-- [Interactive Connectivity Establishment (ICE): A Protocol for Network Address Translator (NAT) Traversal for Offer/Answer Protocol](https://tools.ietf.org/html/rfc5245)
-- [Session Traversal Utilities for NAT (STUN)](https://tools.ietf.org/html/rfc5389)
-- [URI Scheme for the Session Traversal Utilities for NAT (STUN) Protocol](https://tools.ietf.org/html/rfc7064)
-- [Traversal Using Relays around NAT (TURN) Uniform Resource Identifiers](https://tools.ietf.org/html/rfc7065)
-- [An Offer/Answer Model with Session Description Protocol (SDP)](https://tools.ietf.org/html/rfc3264)
-- [Session Traversal Utilities for NAT (STUN) Extension for Third Party Authorization](https://datatracker.ietf.org/doc/draft-ietf-tram-turn-third-party-authz/)
-
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-In additions to these specifications defining the API needed to use WebRTC, there are several protocols, listed under [resources](#Protocols).
+### WebRTC-proper protocols
 
-<h2 class="Related_Topics" id="See_also">See also</h2>
+- [Application Layer Protocol Negotiation for Web Real-Time Communications](https://datatracker.ietf.org/doc/rfc8833/)
+- [WebRTC Audio Codec and Processing Requirements](https://datatracker.ietf.org/doc/rfc7874/)
+- [RTCWeb Data Channels](https://datatracker.ietf.org/doc/rfc8831/)
+- [RTCWeb Data Channel Protocol](https://datatracker.ietf.org/doc/rfc8832/)
+- [Web Real-Time Communication (WebRTC): Media Transport and Use of RTP](https://datatracker.ietf.org/doc/rfc8834/)
+- [WebRTC Security Architecture](https://datatracker.ietf.org/doc/rfc8827/)
+- [Transports for RTCWEB](https://datatracker.ietf.org/doc/rfc8835/)
 
-- {{domxref("MediaDevices")}}
-- {{domxref("MediaStreamEvent")}}
-- {{domxref("MediaStreamConstraints")}}
-- {{domxref("MediaStreamTrack")}}
-- {{domxref("MessageEvent")}}
-- {{domxref("MediaStream")}}
+### Related supporting protocols
+
+- [Interactive Connectivity Establishment (ICE): A Protocol for Network Address Translator (NAT) Traversal for Offer/Answer Protocol](https://datatracker.ietf.org/doc/html/rfc5245)
+- [Session Traversal Utilities for NAT (STUN)](https://datatracker.ietf.org/doc/html/rfc5389)
+- [URI Scheme for the Session Traversal Utilities for NAT (STUN) Protocol](https://datatracker.ietf.org/doc/html/rfc7064)
+- [Traversal Using Relays around NAT (TURN) Uniform Resource Identifiers](https://datatracker.ietf.org/doc/html/rfc7065)
+- [An Offer/Answer Model with Session Description Protocol (SDP)](https://datatracker.ietf.org/doc/html/rfc3264)
+- [Session Traversal Utilities for NAT (STUN) Extension for Third Party Authorization](https://datatracker.ietf.org/doc/rfc7635/)
+
+## See also
+
+- {{DOMxRef("MediaDevices")}}
+- {{DOMxRef("MediaStreamEvent")}}
+- {{DOMxRef("MediaStreamTrack")}}
+- {{DOMxRef("MessageEvent")}}
+- {{DOMxRef("MediaStream")}}
+- [Media Capture and Streams API](/en-US/docs/Web/API/Media_Capture_and_Streams_API)
 - [Firefox multistream and renegotiation for Jitsi Videobridge](https://hacks.mozilla.org/2015/06/firefox-multistream-and-renegotiation-for-jitsi-videobridge/)
 - [Peering Through the WebRTC Fog with SocketPeer](https://hacks.mozilla.org/2015/04/peering-through-the-webrtc-fog-with-socketpeer/)
 - [Inside the Party Bus: Building a Web App with Multiple Live Video Streams + Interactive Graphics](https://hacks.mozilla.org/2014/04/inside-the-party-bus-building-a-web-app-with-multiple-live-video-streams-interactive-graphics/)
+- [Web media technologies](/en-US/docs/Web/Media)
+- [WebRTC Statistics API](/en-US/docs/Web/API/WebRTC_Statistics_API)

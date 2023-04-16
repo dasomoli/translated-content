@@ -1,69 +1,68 @@
 ---
-title: CSS 작동 방식
+title: How CSS works
 slug: Learn/CSS/First_steps/How_CSS_works
 ---
 
 {{LearnSidebar}}
-{{PreviousMenuNext("Learn/CSS/First_steps/How_CSS_is_structured", "Learn/CSS/First_steps/Using_your_new_knowledge", "Learn/CSS/First_steps")}}
+{{PreviousMenuNext("Learn/CSS/First_steps/How_CSS_is_structured", "Learn/CSS/First_steps/Styling_a_biography_page", "Learn/CSS/First_steps")}}
 
-CSS 기본 사항, CSS 의 목적 및 간단한 스타일 시트 작성 방법을 배웠습니다. 이 강의에서는 브라우저가 CSS 와 HTML 을 가져와서 웹 페이지로 만드는 방법을 살펴 봅니다.
+We have learned the basics of CSS, what it is for and how to write simple stylesheets. In this lesson we will take a look at how a browser takes CSS and HTML and turns that into a webpage.
 
-<table class="learn-box standard-table">
+<table>
   <tbody>
     <tr>
-      <th scope="row">전제조건:</th>
+      <th scope="row">Prerequisites:</th>
       <td>
-        기본적인 컴퓨터 활용능력,
+        Basic computer literacy,
         <a
-          href="https://developer.mozilla.org/en-US/Learn/Getting_started_with_the_web/Installing_basic_software"
-          >기본 소프트웨어 설치</a
-        >,
+          href="/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software"
+          >basic software installed</a
+        >, basic knowledge of
         <a
-          href="https://developer.mozilla.org/en-US/Learn/Getting_started_with_the_web/Dealing_with_files"
-          >파일 작업</a
-        >의 기본 지식 및 HTML 기본 사항 (<a
-          href="/en-US/docs/Learn/HTML/Introduction_to_HTML"
-          >HTML 소개</a
-        >
-        학습.)
+          href="/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files"
+          >working with files</a
+        >, and HTML basics (study
+        <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML"
+          >Introduction to HTML</a
+        >.)
       </td>
     </tr>
     <tr>
-      <th scope="row">목적:</th>
+      <th scope="row">Objective:</th>
       <td>
-        브라우저에서 CSS 와 HTML 을 구문 분석하는 방법의 기본 사항과
-        브라우저에서 CSS 를 이해하지 못할 경우 어떻게 되는지 이해하기.
+        To understand the basics of how CSS and HTML are parsed by the browser,
+        and what happens when a browser encounters CSS it does not understand.
       </td>
     </tr>
   </tbody>
 </table>
 
-## CSS 는 실제로 어떻게 작동합니까?
+## How does CSS actually work?
 
-브라우저가 문서를 표시할 때, 문서의 콘텐츠와 해당 스타일 정보를 결합해야 합니다. 아래 나열된 여러 단계로 문서를 처리합니다. 이것은 브라우저가 웹 페이지를 로드할 때 발생하는 작업의 매우 단순화된 버전이며, 다른 브라우저가 다른 방식으로 작업을 처리한다는 점을 명심하십시오. 그러나 이것은 대략 일어나는 일입니다.
+When a browser displays a document, it must combine the document's content with its style information. It processes the document in a number of stages, which we've listed below. Bear in mind that this is a very simplified version of what happens when a browser loads a webpage, and that different browsers will handle the process in different ways. But this is roughly what happens.
 
-1. 브라우저는 HTML (예: 네트워크에서 HTML 을 수신) 을 로드합니다.
-2. {{Glossary("HTML")}} 을 {{Glossary("DOM")}} (_Document Object Model_) 로 변환합니다. DOM 은 컴퓨터 메모리의 문서를 나타냅니다. DOM 은 다음 섹션에서 좀 더 자세히 설명됩니다.
-3. 그런 다음 브라우저는 포함된 이미지 및 비디오와 같은 HTML 문서에 연결된 대부분의 리소스와 연결된 CSS 를 가져옵니다! JavaScript 는 작업에서 나중에 처리되므로 더 간단하게 하기위해 여기에서는 다루지 않습니다.
-4. 브라우저는 가져온 CSS 를 구문 분석하고 선택자 유형별로 다른 규칙을 다른 "buckets" 으로 정렬합니다. 예: 요소, class, ID 등 찾은 선택자를 기반으로 DOM 의 어느 노드에 어떤 규칙을 적용해야 하는지 결정하고, 필요에 따라 스타일을 첨부합니다 (이 중간 단계를 render tree 라고 합니다).
-5. render tree 는 규칙이 적용된 후에 표시되어야 하는 구조로 배치됩니다.
-6. 페이지의 시각적 표시가 화면에 표시됩니다 (이 단계를 painting 이라고 함).
+1. The browser loads the HTML (e.g. receives it from the network).
+2. It converts the {{Glossary("HTML")}} into a {{Glossary("DOM")}} (_Document Object Model_). The DOM represents the document in the computer's memory. The DOM is explained in a bit more detail in the next section.
+3. The browser then fetches most of the resources that are linked to by the HTML document, such as embedded images, videos, and even linked CSS! JavaScript is handled a bit later on in the process, and we won't talk about it here to keep things simpler.
+4. The browser parses the fetched CSS, and sorts the different rules by their selector types into different "buckets", e.g. element, class, ID, and so on. Based on the selectors it finds, it works out which rules should be applied to which nodes in the DOM, and attaches style to them as required (this intermediate step is called a render tree).
+5. The render tree is laid out in the structure it should appear in after the rules have been applied to it.
+6. The visual display of the page is shown on the screen (this stage is called painting).
 
-다음 그림은 작업의 간단한 보기를 제공합니다.
+The following diagram also offers a simple view of the process.
 
-![](rendering.svg)
+![Rendering process overview](rendering.svg)
 
-## DOM 정보
+## About the DOM
 
-DOM 은 트리와 같은 구조를 가지고 있습니다. 마크 업 언어의 각 요소, 속성 및 텍스트는 트리 구조에서 {{Glossary("Node/DOM","DOM node")}} 가 됩니다. 노드는 다른 DOM 노드와의 관계에 의해 정의됩니다. 일부 요소는 자식 노드의 부모이고 자식 노드에는 형제가 있습니다.
+A DOM has a tree-like structure. Each element, attribute, and piece of text in the markup language becomes a {{Glossary("Node/DOM","DOM node")}} in the tree structure. The nodes are defined by their relationship to other DOM nodes. Some elements are parents of child nodes, and child nodes have siblings.
 
-DOM 은 CSS 와 문서의 내용이 만나는 곳이기 때문에 DOM 을 이해하면 CSS 를 설계, 디버그 및 유지 관리하는 데 도움이 됩니다. 브라우저 DevTools 로 작업을 시작하면, 적용할 규칙을 보기 위해 항목을 선택할 때 DOM 을 탐색하게 됩니다.
+Understanding the DOM helps you design, debug and maintain your CSS because the DOM is where your CSS and the document's content meet up. When you start working with browser DevTools you will be navigating the DOM as you select items in order to see which rules apply.
 
-## 실제 DOM 표현
+## A real DOM representation
 
-길고 지루한 설명이 아니라 실제 HTML 이 DOM 으로 변환되는 방법을 보여주는 예제를 살펴 보겠습니다.
+Rather than a long, boring explanation, let's look at an example to see how a real HTML snippet is converted into a DOM.
 
-다음 HTML 코드를 사용하십시오:
+Take the following HTML code:
 
 ```html
 <p>
@@ -74,7 +73,7 @@ DOM 은 CSS 와 문서의 내용이 만나는 곳이기 때문에 DOM 을 이해
 </p>
 ```
 
-DOM 에서, `<p>` 요소에 해당하는 노드는 부모입니다. 자식은 텍스트 노드이고 `<span>` 요소에 해당하는 세 개의 노드입니다. `SPAN` 노드는 부모이며, 텍스트 노드는 자식입니다:
+In the DOM, the node corresponding to our `<p>` element is a parent. Its children are a text node and the three nodes corresponding to our `<span>` elements. The `SPAN` nodes are also parents, with text nodes as their children:
 
 ```
 P
@@ -84,20 +83,22 @@ P
 ├─ SPAN
 |  └─ "Style"
 └─ SPAN
-   └─ "Sheets"
+    └─ "Sheets"
 ```
 
-브라우저가 이전 HTML 을 해석하는 방법입니다 — 위의 DOM 트리를 렌더링 한 다음 브라우저에서 다음과 같이 출력합니다:
+This is how a browser interprets the previous HTML snippet — it renders the above DOM tree and then outputs it in the browser like so:
 
 {{EmbedLiveSample('A_real_DOM_representation', '100%', 55)}}
 
 ```css hidden
-p {margin:0;}
+p {
+  margin: 0;
+}
 ```
 
-## DOM 에 CSS 적용하기
+## Applying CSS to the DOM
 
-CSS 를 문서에 추가하여 스타일을 지정했다고 가정해 봅시다. 다시 한 번, HTML 은 다음과 같습니다:
+Let's say we add some CSS to our document, to style it. Again, the HTML is as follows:
 
 ```html
 <p>
@@ -108,7 +109,7 @@ CSS 를 문서에 추가하여 스타일을 지정했다고 가정해 봅시다.
 </p>
 ```
 
-다음 CSS 를 적용한다고 가정해 봅시다:
+Let's suppose we apply the following CSS to it:
 
 ```css
 span {
@@ -117,43 +118,43 @@ span {
 }
 ```
 
-브라우저는 HTML 을 구문 분석하고 그로부터 DOM 을 작성한 다음, CSS 를 구문 분석합니다. CSS 에서 사용할 수 있는 유일한 규칙에는 `span` 선택자가 있으므로, 브라우저는 CSS 를 매우 빠르게 정렬할 수 있습니다! 이 규칙을 세 개의 `<span>` 각각에 적용한 다음 최종 시각적 표현을 화면에 표시합니다.
+The browser parses the HTML and creates a DOM from it. Next, it parses the CSS. Since the only rule available in the CSS has a `span` selector, the browser sorts the CSS very quickly! It applies that rule to each one of the three `<span>`s, then paints the final visual representation to the screen.
 
-업데이트 된 출력은 다음과 같습니다:
+The updated output is as follows:
 
-{{EmbedLiveSample('Applying_CSS_to_the_DOM', '100%', 55)}}
+{{EmbedLiveSample('Applying_CSS_to_the_DOM', '100%', 90)}}
 
-다음 과목의 [CSS 디버깅](/ko/docs/Learn/CSS/Building_blocks/Debugging_CSS) 기사에서 브라우저 DevTools 를 사용하여, CSS 문제를 디버깅하고 브라우저가 CSS 를 해석하는 방법에 대해 자세히 알아 봅니다.
+In our [Debugging CSS](/en-US/docs/Learn/CSS/Building_blocks/Debugging_CSS) article in the next module we will be using browser DevTools to debug CSS problems, and will learn more about how the browser interprets CSS.
 
-## 브라우저에서 인식하지 못하는 CSS 를 발견하면 어떻게 됩니까?
+## What happens if a browser encounters CSS it doesn't understand?
 
-[이전 수업](/ko/docs/Learn/CSS/First_steps/What_is_CSS#Browser_support) 에서 브라우저가 모두 동시에 새로운 CSS 를 구현하는 것은 아니라고 언급했습니다. 또한 많은 사람들이 최신 버전의 브라우저를 사용하지 않습니다. CSS 가 항상 개발되고 있으므로 브라우저가 인식할 수 있는 것보다 앞서 있기 때문에 브라우저가 CSS 선택자 또는 인식하지 못하는 선언을 발견하면 어떻게 될지 궁금할 수 있습니다.
+The ["Browser support information" section in the "What is CSS" article](/en-US/docs/Learn/CSS/First_steps/What_is_CSS#browser_support_information) mentioned that browsers do not necessarily implement new CSS features at the same time. In addition, many people are not using the latest version of a browser. Given that CSS is being developed all the time, and is therefore ahead of what browsers can recognize, you might wonder what happens if a browser encounters a CSS selector or declaration it doesn't recognize.
 
-대답은 아무것도 하지 않으며, CSS 의 다음 단계로 넘어갑니다!
+The answer is that it does nothing, and just moves on to the next bit of CSS!
 
-브라우저가 규칙을 구문 분석하고 이해하지 못하는 속성 이나 값을 발견하면, 이를 무시하고 다음 선언으로 넘어갑니다. 오류가 발생하여 속성 또는 값의 철자가 틀렸거나 속성 또는 값이 너무 새롭고 브라우저가 아직 이를 지원하지 않는 경우, 이 작업을 수행합니다.
+If a browser is parsing your rules, and encounters a property or value that it doesn't understand, it ignores it and moves on to the next declaration. It will do this if you have made an error and misspelled a property or value, or if the property or value is just too new and the browser doesn't yet support it.
 
-마찬가지로, 브라우저가 이해하지 못하는 선택자를 만나면, 전체 규칙을 무시하고 다음 규칙으로 넘어갑니다.
+Similarly, if a browser encounters a selector that it doesn't understand, it will just ignore the whole rule and move on to the next one.
 
-아래 예에서 나는 영국 영어 철자를 색상에 사용했는데, 그 속성은 인식되지 않기 때문에 유효하지 않습니다. 그래서 내 단락은 파란색으로 표시되지 않았습니다. 그러나 다른 모든 CSS 가 적용 되었습니다. 유효하지 않은 라인만 무시됩니다.
+In the example below I have used the British English spelling for color, which makes that property invalid as it is not recognized. So my paragraph has not been colored blue. All of the other CSS have been applied however; only the invalid line is ignored.
 
 ```html
-<p> 나는 이 텍스트를 크고 굵은 파란색으로 표시하고 싶습니다.</p>
+<p>I want this text to be large, bold and blue.</p>
 ```
 
 ```css
 p {
   font-weight: bold;
-  colour: blue; /* color 속성의 잘못된 철자 */
+  colour: blue; /* incorrect spelling of the color property */
   font-size: 200%;
 }
 ```
 
-{{EmbedLiveSample('Skipping_example', '100%', 200)}}
+{{EmbedLiveSample('What_happens_if_a_browser_encounters_CSS_it_doesnt_understand', '100%', 200)}}
 
-이 동작은 매우 유용합니다. 이는 새로운 CSS 를 향상된 기능으로 사용할 수 있음을 의미하며, 새 기능을 이해하지 못할 경우 오류가 발생하지 않습니다 — 브라우저는 새로운 기능을 얻거나 얻지 못합니다. cascade 작동 방식 및 브라우저가 스타일이 동일한 마지막 CSS 를 사용한다는 사실과 동일한 특성을 가진 두 규칙이 있을 경우, 새 CSS 를 지원하지 않는 브라우저에 대한 대안을 제공할 수도 있습니다.
+This behavior is very useful. It means that you can use new CSS as an enhancement, knowing that no error will occur if it is not understood — the browser will either get the new feature or not. This enables basic fallback styling.
 
-이것은 새롭고 모든 곳에서 지원되지 않는 값을 사용하려는 경우 특히 효과적입니다. 예를 들어, 구형 브라우저는 `calc()` 를 값으로 지원하지 않습니다. 박스에 대해 대체 너비를 픽셀 단위로 지정한 다음, `calc()` 값을 `100% - 50px` 로 너비를 지정하십시오. 오래된 브라우저는 픽셀 버전을 사용하지만, 이해하지 못하는 `calc()` 에 대한 라인은 무시합니다. 새로운 브라우저는 픽셀을 사용하여 라인을 해석하지만, 나중에 cascade 에서 나타날 때 `calc()` 를 사용하여 라인을 재정의 합니다.
+This works particularly well when you want to use a value that is quite new and not supported everywhere. For example, some older browsers do not support `calc()` as a value. I might give a fallback width for a box in pixels, then go on to give a width with a `calc()` value of `100% - 50px`. Old browsers will use the pixel version, ignoring the line about `calc()` as they don't understand it. New browsers will interpret the line using pixels, but then override it with the line using `calc()` as that line appears later in the cascade.
 
 ```css
 .box {
@@ -162,10 +163,10 @@ p {
 }
 ```
 
-우리는 이후 수업에서 다양한 브라우저를 지원하는 더 많은 방법을 다룰 것입니다.
+We will look at many more ways to support various browsers in later lessons.
 
-## 마지막으로
+## Summary
 
-이 강의를 거의 끝냈습니다; 할 일이 하나 더 있습니다. 다음 기사에서는 [새로운 지식을 사용](/ko/docs/Learn/CSS/First_steps/Using_your_new_knowledge) 하여 예제의 스타일을 변경하여 작업의 일부 CSS 를 테스트 합니다.
+You've nearly finished this module — we only have one more thing to do. In the [Styling a biography page assessment](/en-US/docs/Learn/CSS/First_steps/Styling_a_biography_page) you'll use your new knowledge to restyle an example, testing out some CSS in the process.
 
-{{PreviousMenuNext("Learn/CSS/First_steps/How_CSS_is_structured", "Learn/CSS/First_steps/Using_your_new_knowledge", "Learn/CSS/First_steps")}}
+{{PreviousMenuNext("Learn/CSS/First_steps/How_CSS_is_structured", "Learn/CSS/First_steps/Styling_a_biography_page", "Learn/CSS/First_steps")}}

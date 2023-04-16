@@ -1,15 +1,16 @@
 ---
-title: 동기(Synchronous)
+title: Synchronous
 slug: Glossary/Synchronous
+page-type: glossary-definition
 ---
 
-**동기**란 각 참여자가 즉시(또는 가능한 한 즉시) 메시지를 수신(필요시 처리 및 회신)하는 실시간 통신을 말합니다.
+**Synchronous** refers to real-time communication where each party receives (and if necessary, processes and replies to) messages instantly (or as near to instantly as possible).
 
-사람으로 예를 들면 전화가 있습니다. 전화 통화 중에는 상대방에게 즉시 응답하는 경우가 많습니다.
+A human example is the telephone — during a telephone call you tend to respond to another person immediately.
 
-많은 프로그래밍 명령어도 동기적입니다. 예를 들어, 계산을 입력하면 환경은 즉시 결과를 반환합니다. 당신이 그렇게 프로그래밍 하지 않는 한 말이죠.
+Many programming commands are also synchronous — for example when you type in a calculation, the environment will return the result to you instantly, unless you program it not to.
 
-## 같이 보기
+## See also
 
-- [비동기(Asynchronous)]({{glossary("Asynchronous")}})
-- [XMLHttpRequest()](/ko/docs/Web/API/XMLHttpRequest) {{glossary("API")}} 를 활용한 [동기, 비동기 요청](/ko/docs/Web/API/XMLHttpRequest/Synchronous_and_Asynchronous_Requests)
+- {{glossary("Asynchronous")}}
+- [Synchronous and asynchronous requests](/en-US/docs/Web/API/XMLHttpRequest/Synchronous_and_Asynchronous_Requests) using the [XMLHttpRequest()](/en-US/docs/Web/API/XMLHttpRequest) {{glossary("API")}}

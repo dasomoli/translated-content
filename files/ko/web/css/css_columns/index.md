@@ -1,18 +1,28 @@
 ---
 title: CSS Multi-column Layout
 slug: Web/CSS/CSS_Columns
+page-type: css-module
+spec-urls: https://drafts.csswg.org/css-multicol/
 ---
-{{CSSRef}}
 
-**CSS Multi-column Layout**은 다단 레이아웃을 정의하는 CSS 모듈입니다. 레이아웃에서 단의 숫자와 콘텐츠가 하나의 단에서 다른 단으로 흐르는 방식, 단 사이의 간격, 구분선과 구분선의 모양 등의 지원을 포함하고 있습니다.
+{{CSSRef("CSS3 Multicol")}}
 
-## 참고
+**CSS Multi-column Layout** is a module of CSS that adds support for multi-column layouts. Support is included for establishing the number of columns in a layout, as well as how content should flow from column to column, gap sizes between columns, and column dividing lines (known as column rules) along with their appearance.
 
-### CSS 속성
+## Basic example
 
-- {{cssxref("break-after")}}
-- {{cssxref("break-before")}}
-- {{cssxref("break-inside")}}
+In the following example, the {{cssxref("column-count")}} property has been applied to the `<div>` element with the class `container`. As the value of `column-count` is `3`, the content is arranged into three columns of the same size.
+
+{{EmbedGHLiveSample("css-examples/multicol/basics/column-count.html", '100%', 550)}}
+
+## Relationship to fragmentation
+
+Multiple-column layout is closely related to [Paged Media](/en-US/docs/Web/CSS/CSS_Pages), in that each column box becomes a fragment, much like a printed page becomes a fragment of an overall document. Therefore, the properties now defined in the [CSS Fragmentation](/en-US/docs/Web/CSS/CSS_Fragmentation) specification are required to control how content breaks between columns.
+
+## Reference
+
+### Properties for multi-column layout
+
 - {{cssxref("column-count")}}
 - {{cssxref("column-fill")}}
 - {{cssxref("column-gap")}}
@@ -24,7 +34,7 @@ slug: Web/CSS/CSS_Columns
 - {{cssxref("column-width")}}
 - {{cssxref("columns")}}
 
-### 관련 CSS Fragmentation 속성
+### Properties related to CSS fragmentation
 
 - {{cssxref("break-after")}}
 - {{cssxref("break-before")}}
@@ -32,24 +42,26 @@ slug: Web/CSS/CSS_Columns
 - {{cssxref("orphans")}}
 - {{cssxref("widows")}}
 
-## 안내서
+## Guides
 
-- [다단 레이아웃 기초 개념](/ko/docs/Web/CSS/CSS_Columns/Basic_Concepts_of_Multicol)
-  - : 다단 레이아웃 명세를 훑어봅니다.
-- [단 꾸미기](/ko/docs/Web/CSS/CSS_Columns/Styling_Columns)
-  - : 구분선과 단 사이 간격을 조절합니다.
-- [폭과 균형](/ko/docs/Web/CSS/CSS_Columns/Spanning_Columns)
-  - : 요소가 모든 단에 걸쳐있도록 만들고, 한 단이 채워지는 방식을 조정합니다.
-- [다단에서 오버플로 다루기](/ko/docs/Web/CSS/CSS_Columns/Handling_Overflow_in_Multicol)
-  - : 어떤 요소가 자신의 단을 넘쳤을 때 일어나는 일과, 컨테이너 너비에 맞추기에는 너무 많은 단이 들어있을 때 발생하는 일을 배웁니다.
-- [다단에서 콘텐츠 끊기](/ko/docs/Web/CSS/CSS_Columns/Handling_content_breaks_in_multicol)
-  - : CSS Fragmentation 명세의 소개와 함께 단 콘텐츠를 끊는 법을 배웁니다.
+- [Basic concepts of multi-column layout](/en-US/docs/Web/CSS/CSS_Columns/Basic_Concepts_of_Multicol)
+  - : An overview of the Multiple-column Layout specification
+- [Styling columns](/en-US/docs/Web/CSS/CSS_Columns/Styling_Columns)
+  - : How to use column rules and manage the spacing between columns.
+- [Spanning and balancing](/en-US/docs/Web/CSS/CSS_Columns/Spanning_Columns)
+  - : How to make elements span across all columns and controlling the way columns are filled.
+- [Handling overflow in multi-column layout](/en-US/docs/Web/CSS/CSS_Columns/Handling_Overflow_in_Multicol)
+  - : What happens when an item overflows the column it is in and what happens when there is too much columned content to fit a container.
+- [Handling content breaks in multi-column layout](/en-US/docs/Web/CSS/CSS_Columns/Handling_content_breaks_in_multicol)
+  - : Introduction to the Fragmentation specification and how to control where column content breaks.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 같이 보기
+## See also
 
-- [CSS Flexible Box Layout](/ko/docs/Web/CSS/CSS_Flexible_Box_Layout) (CSS 플렉스박스)
-- [CSS Grid Layout](/ko/docs/Web/CSS/CSS_Grid_Layout)
+Other CSS layout technologies include:
+
+- [CSS Flexible Box Layout](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout) (CSS flexbox)
+- [CSS Grid Layout](/en-US/docs/Web/CSS/CSS_Grid_Layout)

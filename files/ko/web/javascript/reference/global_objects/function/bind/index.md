@@ -1,135 +1,198 @@
 ---
 title: Function.prototype.bind()
 slug: Web/JavaScript/Reference/Global_Objects/Function/bind
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Function.bind
 ---
 
 {{JSRef}}
 
-**`bind()`** 메소드가 호출되면 새로운 함수를 생성합니다. 받게되는 첫 인자의 value로는 `this` 키워드를 설정하고, 이어지는 인자들은 바인드된 함수의 인수에 제공됩니다.
+The **`bind()`** method creates a new function that, when called, has its `this` keyword set to the provided value, with a given sequence of arguments preceding any provided when the new function is called.
 
 {{EmbedInteractiveExample("pages/js/function-bind.html", "taller")}}
 
-## 구문
+## Syntax
 
-```js
-    func.bind(thisArg[, arg1[, arg2[, ...]]])
+```js-nolint
+bind(thisArg)
+bind(thisArg, arg1)
+bind(thisArg, arg1, arg2)
+bind(thisArg, arg1, arg2, /* …, */ argN)
 ```
 
-### 매개변수
+### Parameters
 
 - `thisArg`
-  - : 바인딩 함수가 대상 함수(target function)의 `this`에 전달하는 값입니다. 바인딩 함수를 {{jsxref("Operators/new", "new")}} 연산자로 생성한 경우 무시됩니다. `bind`를 사용하여 `setTimeout` 내에 콜백 함수를 만들 때, `thisArg`로 전달된 원시 값은 객체로 변환됩니다. `bind`할 인수(argument)가 제공되지 않으면 실행 스코프 내의 `this`는 새로운 함수의 `thisArg`로 처리됩니다.
-- `arg1, arg2, ...`
-  - : 대상 함수의 인수 앞에 사용될 인수.
+  - : The value to be passed as the `this` parameter to the target function `func` when the bound function is called. If the function is not in [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode), [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null) and [`undefined`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined) will be replaced with the global object, and primitive values will be converted to objects. The value is ignored if the bound function is constructed using the {{jsxref("Operators/new", "new")}} operator.
+- `arg1, …, argN` {{optional_inline}}
+  - : Arguments to prepend to arguments provided to the bound function when invoking `func`.
 
-### 반환 값
+### Return value
 
-지정한 `this` 값 및 초기 인수를 사용하여 변경한 원본 함수의 복제본.
+A copy of the given function with the specified `this` value, and initial arguments (if provided).
 
-## 설명
+## Description
 
-`bind()` 함수는 새로운 바인딩한 함수를 만듭니다. 바인딩한 함수는 원본 함수 객체를 감싸는 함수로, ECMAScript 2015에서 말하는 특이 함수 객체(exotic function object)입니다. 바인딩한 함수를 호출하면 일반적으로 래핑된 함수가 호출 됩니다.
+The `bind()` function creates a new _bound function_. Calling the bound function generally results in the execution of the function it wraps, which is also called the _target function_. The bound function will store the parameters passed — which include the value of `this` and the first few arguments — as its internal state. These values are stored in advance, instead of being passed at call time. You can generally see `const boundFn = fn.bind(thisArg, arg1, arg2)` as being equivalent to `const boundFn = (...restArgs) => fn.call(thisArg, arg1, arg2, ...restArgs)` for the effect when it's called (but not when `boundFn` is constructed).
 
-바인딩한 함수는 다음과 같은 내부 속성을 가지고 있습니다.
-
-- **`[[BoundTargetFunction]]`** - 바인딩으로 감싼(wrapped) 원본 함수 객체.
-- **`[[BoundThis]]`** - 감싸진 함수를 호출했을 때 항상 전달되는 값.
-- **`[[BoundArguments]]`** - 감싸진 함수가 호출될 때 첫 번째 인수로 사용되는 값들의 목록.
-- **`[[Call]]`** - 이 객체와 관련된 코드 실행. 함수 호출 식을 통해 호출됨. 내부 메소드의 인수는 this 값 및 호출 식으로 함수에 전달되는 인수를 포함하는 목록입니다.
-
-바인딩된 함수가 호출될 때 `[[BoundTargetFunction]]`의 내부 메소드 `[[Call]]`을 호출합니다. `[[Call]]` 은 `Call(boundThis, args)`와 같은 인자를 가집니다. 이 때, `boundThis`는 `[[BoundThis]]`이고, `args`는 함수가 호출될 때 전달되어 따라오는 `[[BoundArguments]]` 입니다.
-
-바인딩된 함수는 {{jsxref("Operators/new", "new")}} 연산자를 사용하여 생성될 수도 있습니다: 그렇게 하면 대상 함수가 마치 대신 생성된 것처럼 행동합니다. 제공된 `this` 값은 무시됩니다, 앞에 붙인(prepend) 인수는 에뮬레이트된 함수에 제공되지만.
-
-## 예제
-
-### 바인딩된 함수 생성
-
-`bind()`의 가장 간단한 사용법은 호출 방법과 관계없이 특정 `this` 값으로 호출되는 함수를 만드는 겁니다. 초보 JavaScript 프로그래머로서 흔한 실수는 객체로부터 메소드를 추출한 뒤 그 함수를 호출할때, 원본 객체가 그 함수의 `this`로 사용될 것이라 기대하는 겁니다(예시 : 콜백 기반 코드에서 해당 메소드 사용). 그러나 특별한 조치가 없으면, 대부분의 경우 원본 객체는 손실됩니다. 원본 객체가 바인딩 되는 함수를 생성하면, 이러한 문제를 깔끔하게 해결할 수 있습니다.
+A bound function can be further bound by calling `boundFn.bind(thisArg, /* more args */)`, which creates another bound function `boundFn2`. The newly bound `thisArg` value is ignored, because the target function of `boundFn2`, which is `boundFn`, already has a bound `this`. When `boundFn2` is called, it would call `boundFn`, which in turn calls `fn`. The arguments that `fn` ultimately receives are, in order: the arguments bound by `boundFn`, arguments bound by `boundFn2`, and the arguments received by `boundFn2`.
 
 ```js
-this.x = 9;
-var module = {
-  x: 81,
-  getX: function() { return this.x; }
-};
+"use strict"; // prevent `this` from being boxed into the wrapper object
 
-module.getX(); // 81
-
-var retrieveX = module.getX;
-retrieveX();
-// 9 반환 - 함수가 전역 스코프에서 호출됐음
-
-// module과 바인딩된 'this'가 있는 새로운 함수 생성
-// 신입 프로그래머는 전역 변수 x와
-// module의 속성 x를 혼동할 수 있음
-var boundGetX = retrieveX.bind(module);
-boundGetX(); // 81
+function log(...args) {
+  console.log(this, ...args);
+}
+const boundLog = log.bind("this value", 1, 2);
+const boundLog2 = boundLog.bind("new this value", 3, 4);
+boundLog2(5, 6); // "this value", 1, 2, 3, 4, 5, 6
 ```
 
-### 부분 적용 함수
-
-`bind()`의 다음으로 간단한 사용법은 미리 지정된 초기 인수가 있는 함수를 만드는 겁니다. 지정될 초기 인수가 있다면 제공된 `this` 값을 따르고, 바인딩 된 함수에 전달되어 바인딩 된 함수가 호출될 때마다 대상 함수의 인수 앞에 삽입됩니다.
+A bound function may also be constructed using the {{jsxref("Operators/new", "new")}} operator if its target function is constructable. Doing so acts as though the target function had instead been constructed. The prepended arguments are provided to the target function as usual, while the provided `this` value is ignored (because construction prepares its own `this`, as seen by the parameters of {{jsxref("Reflect.construct")}}). If the bound function is directly constructed, [`new.target`](/en-US/docs/Web/JavaScript/Reference/Operators/new.target) will be the target function instead. (That is, the bound function is transparent to `new.target`.)
 
 ```js
-    function list() {
-      return Array.prototype.slice.call(arguments);
-    }
-
-    var list1 = list(1, 2, 3); // [1, 2, 3]
-
-    // 선행될 인수를 설정하여 함수를 생성합니다.
-    var leadingThirtysevenList = list.bind(null, 37);
-
-    var list2 = leadingThirtysevenList();  // [37]
-
-    var list3 = leadingThirtysevenList(1, 2, 3);  // [37, 1, 2, 3]
-
-
-    function addArguments(arg1, arg2) {
-        return arg1 + arg2
-    }
-
-    var result1 = addArguments(1, 2); // 3
-
-    // 첫 번째 인수를 지정하여 함수를 생성합니다.
-    var addThirtySeven = addArguments.bind(null, 37);
-
-    var result2 = addThirtySeven(5); // 37 + 5 = 42
-
-    // 두 번째 인수는 무시됩니다.
-    var result3 = addThirtySeven(5, 10); // 37 + 5 = 42
-```
-
-### `setTimeout`과 함께 사용
-
-{{domxref("window.setTimeout()")}} 내에서 기본으로, `this` 키워드는 {{ domxref("window") }} (또는 `global`) 객체로 설정됩니다. 클래스 인스턴스를 참조하는 `this`를 필요로 하는 클래스 메소드로 작업하는 경우, 명시해서 `this`를 콜백 함수에 바인딩할 수 있습니다, 인스턴스를 유지하기 위해.
-
-```js
-function LateBloomer() {
-  this.petalCount = Math.ceil(Math.random() * 12) + 1;
+class Base {
+  constructor(...args) {
+    console.log(new.target === Base);
+    console.log(args);
+  }
 }
 
-// 1초 지체 후 bloom 선언
-LateBloomer.prototype.bloom = function() {
-  window.setTimeout(this.declare.bind(this), 1000);
-};
+const BoundBase = Base.bind(null, 1, 2);
 
-LateBloomer.prototype.declare = function() {
-  console.log('I am a beautiful flower with ' +
-    this.petalCount + ' petals!');
-};
-
-var flower = new LateBloomer();
-flower.bloom();
-// 1초 뒤, 'declare' 메소드 유발
+new BoundBase(3, 4); // true, [1, 2, 3, 4]
 ```
 
-### 생성자로 쓰이는 바인딩된 함수
+However, because a bound function does not have the [`prototype`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/prototype) property, it cannot be used as a base class for [`extends`](/en-US/docs/Web/JavaScript/Reference/Classes/extends).
 
-> **경고:** 이 부분은 JavaScript 능력을 보이고 `bind()` 메소드의 일부 극단 상황(edge case)을 기록합니다. 아래 보이는 메소드는 일을 하는 가장 좋은 방법은 아니며 아마도 상용 환경에서 전혀 사용되지 않을 겁니다.
+```js example-bad
+class Derived extends class {}.bind(null) {}
+// TypeError: Class extends value does not have valid prototype property undefined
+```
 
-바인딩된 함수는 자동으로 대상 함수에 의해 생성되는 새로운 인스턴스를 생성하는 {{jsxref("Operators/new", "new")}} 연산자와 함께 쓰기에 적합합니다. 바인딩된 함수가 값을 생성하는 데 쓰이는 경우, 제공된 `this`는 무시됩니다. 그러나, 제공된 인수는 여전히 생성자 호출에 (인수부) 앞에 붙습니다:
+When using a bound function as the right-hand side of [`instanceof`](/en-US/docs/Web/JavaScript/Reference/Operators/instanceof), `instanceof` would reach for the target function (which is stored internally in the bound function) and read its `prototype` instead.
+
+```js
+class Base {}
+const BoundBase = Base.bind(null, 1, 2);
+console.log(new Base() instanceof BoundBase); // true
+```
+
+The bound function has the following properties:
+
+- [`length`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/length)
+  - : The `length` of the target function minus the number of arguments being bound (not counting the `thisArg` parameter), with 0 being the minimum value.
+- [`name`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name)
+  - : The `name` of the target function plus a `"bound "` prefix.
+
+The bound function also inherits the [prototype chain](/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain) of the target function. However, it doesn't have other own properties of the target function (such as [static properties](/en-US/docs/Web/JavaScript/Reference/Classes/static) if the target function is a class).
+
+## Examples
+
+### Creating a bound function
+
+The simplest use of `bind()` is to make a function that, no matter how it is called, is called with a particular `this` value.
+
+A common mistake for new JavaScript programmers is to extract a method from an object, then to later call that function and expect it to use the original object as its `this` (e.g., by using the method in callback-based code).
+
+Without special care, however, the original object is usually lost. Creating a bound function from the function, using the original object, neatly solves this problem:
+
+```js
+this.x = 9; // 'this' refers to the global object (e.g. 'window') in non-strict mode
+const module = {
+  x: 81,
+  getX() {
+    return this.x;
+  },
+};
+
+console.log(module.getX()); // 81
+
+const retrieveX = module.getX;
+console.log(retrieveX()); // 9; the function gets invoked at the global scope
+
+// Create a new function with 'this' bound to module
+// New programmers might confuse the
+// global variable 'x' with module's property 'x'
+const boundGetX = retrieveX.bind(module);
+console.log(boundGetX()); // 81
+```
+
+> **Note:** If you run this example in [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode) (e.g. in ECMAScript modules, or through the `"use strict"` directive), the global `this` value will be undefined, causing the `retrieveX` call to fail.
+>
+> If you run this in a Node CommonJS module, the top-scope `this` will be pointing to `module.exports` instead of `globalThis`, regardless of being in strict mode or not. However, in functions, the reference of unbound `this` still follows the rule of "`globalThis` in non-strict, `undefined` in strict". Therefore, in non-strict mode (default), `retrieveX` will return `undefined` because `this.x = 9` is writing to a different object (`module.exports`) from what `getX` is reading from (`globalThis`).
+
+In fact, some built-in "methods" are also getters that return bound functions — one notable example being [`Intl.NumberFormat.prototype.format()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/format#using_format_with_map), which, when accessed, returns a bound function that you can directly pass as a callback.
+
+### Partially applied functions
+
+The next simplest use of `bind()` is to make a function with pre-specified initial arguments.
+
+These arguments (if any) follow the provided `this` value and are then inserted at the start of the arguments passed to the target function, followed by whatever arguments are passed to the bound function at the time it is called.
+
+```js
+function list(...args) {
+  return args;
+}
+
+function addArguments(arg1, arg2) {
+  return arg1 + arg2;
+}
+
+console.log(list(1, 2, 3)); // [1, 2, 3]
+
+console.log(addArguments(1, 2)); // 3
+
+// Create a function with a preset leading argument
+const leadingThirtySevenList = list.bind(null, 37);
+
+// Create a function with a preset first argument.
+const addThirtySeven = addArguments.bind(null, 37);
+
+console.log(leadingThirtySevenList()); // [37]
+console.log(leadingThirtySevenList(1, 2, 3)); // [37, 1, 2, 3]
+console.log(addThirtySeven(5)); // 42
+console.log(addThirtySeven(5, 10)); // 42
+// (the last argument 10 is ignored)
+```
+
+### With setTimeout()
+
+By default, within {{domxref("setTimeout()")}}, the `this` keyword will be set to [`globalThis`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis), which is {{domxref("window")}} in browsers. When working with class methods that require `this` to refer to class instances, you may explicitly bind `this` to the callback function, in order to maintain the instance.
+
+```js
+class LateBloomer {
+  constructor() {
+    this.petalCount = Math.floor(Math.random() * 12) + 1;
+  }
+  bloom() {
+    // Declare bloom after a delay of 1 second
+    setTimeout(this.declare.bind(this), 1000);
+  }
+  declare() {
+    console.log(`I am a beautiful flower with ${this.petalCount} petals!`);
+  }
+}
+
+const flower = new LateBloomer();
+flower.bloom();
+// After 1 second, calls 'flower.declare()'
+```
+
+You can also use [arrow functions](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions) for this purpose.
+
+```js
+class LateBloomer {
+  bloom() {
+    // Declare bloom after a delay of 1 second
+    setTimeout(() => this.declare(), 1000);
+  }
+}
+```
+
+### Bound functions used as constructors
+
+Bound functions are automatically suitable for use with the {{jsxref("Operators/new", "new")}} operator to construct new instances created by the target function. When a bound function is used to construct a value, the provided `this` is ignored. However, provided arguments are still prepended to the constructor call.
 
 ```js
 function Point(x, y) {
@@ -137,126 +200,99 @@ function Point(x, y) {
   this.y = y;
 }
 
-Point.prototype.toString = function() {
-  return this.x + ',' + this.y;
+Point.prototype.toString = function () {
+  return `${this.x},${this.y}`;
 };
 
-var p = new Point(1, 2);
-p.toString(); // '1,2'
+const p = new Point(1, 2);
+p.toString();
+// '1,2'
 
-// 아래 폴리필에서는 지원되지 않음,
+// The thisArg's value doesn't matter because it's ignored
+const YAxisPoint = Point.bind(null, 0 /*x*/);
 
-// 원 bind와는 잘 작동:
-
-var YAxisPoint = Point.bind(null, 0/*x*/);
-
-
-var emptyObj = {};
-var YAxisPoint = Point.bind(emptyObj, 0/*x*/);
-
-var axisPoint = new YAxisPoint(5);
+const axisPoint = new YAxisPoint(5);
 axisPoint.toString(); // '0,5'
 
 axisPoint instanceof Point; // true
 axisPoint instanceof YAxisPoint; // true
-new Point(17, 42) instanceof YAxisPoint; // true
+new YAxisPoint(17, 42) instanceof Point; // true
 ```
 
-{{jsxref("Operators/new", "new")}}와 함께 쓰기 위한 바인딩된 함수를 만들기 위해 특별한 일을 할 필요가 없음을 주의하세요. 그 결과 분명히 호출되는 바인딩된 함수를 만들기 위해 특별히 아무것도 할 필요가 없습니다, 오히려 {{jsxref("Operators/new", "new")}}를 사용해서만 호출되는 바인딩된 함수를 요구하는 경우에도.
+Note that you need not do anything special to create a bound function for use with {{jsxref("Operators/new", "new")}}. [`new.target`](/en-US/docs/Web/JavaScript/Reference/Operators/new.target), [`instanceof`](/en-US/docs/Web/JavaScript/Reference/Operators/instanceof), [`this`](/en-US/docs/Web/JavaScript/Reference/Operators/this) etc. all work as expected, as if the constructor was never bound. The only difference is that it can no longer be used for [`extends`](/en-US/docs/Web/JavaScript/Reference/Classes/extends).
+
+The corollary is that you need not do anything special to create a bound function to be called plainly, even if you would rather require the bound function to only be called using {{jsxref("Operators/new", "new")}}. If you call it without `new`, the bound `this` is suddenly not ignored.
 
 ```js
-// 예는 JavaScript 콘솔에서 직접 실행될 수 있음
-// ...위에서부터 이어짐
+const emptyObj = {};
+const YAxisPoint = Point.bind(emptyObj, 0 /*x*/);
 
-// 여전히 일반 함수로서 호출될 수 있음
-// (보통 이를 원하지 않더라도)
+// Can still be called as a normal function
+// (although usually this is undesirable)
 YAxisPoint(13);
 
-emptyObj.x + ',' + emptyObj.y;
-// >  '0,13'
+// The modifications to `this` is now observable from the outside
+console.log(emptyObj); // { x: 0, y: 13 }
 ```
 
-오로지 {{jsxref("Operators/new", "new")}}를 사용하거나 호출해서만 바인딩된 함수의 사용을 지원하고 싶은 경우, 대상 함수는 그 제한을 강제해야 합니다.
+If you wish to restrict a bound function to only be callable with {{jsxref("Operators/new", "new")}}, or only be callable without `new`, the target function must enforce that restriction, such as by checking `new.target !== undefined` or using a [class](/en-US/docs/Web/JavaScript/Reference/Classes) instead.
 
-### 바로 가기 생성
+### Binding classes
 
-`bind()`는 특정 `this` 값을 필요로 하는 함수의 바로 가기(shortcut)를 만들고 싶은 경우에도 도움이 됩니다.
-
-가령, 배열 같은 객체를 실제 배열로 변환하는 데 사용하고 싶은 {{jsxref("Array.prototype.slice")}}를 취하세요. 이와 같은 바로 가기를 만들 수 있습니다:
+Using `bind()` on classes preserves most of the class's semantics, except that all static own properties of the current class are lost. However, because the prototype chain is preserved, you can still access static properties inherited from the parent class.
 
 ```js
-var slice = Array.prototype.slice;
+class Base {
+  static baseProp = "base";
+}
+
+class Derived extends Base {
+  static derivedProp = "derived";
+}
+
+const BoundDerived = Derived.bind(null);
+console.log(BoundDerived.baseProp); // "base"
+console.log(BoundDerived.derivedProp); // undefined
+console.log(new BoundDerived() instanceof Derived); // true
+```
+
+### Transforming methods to utility functions
+
+`bind()` is also helpful in cases where you want to transform a method which requires a specific `this` value to a plain utility function that accepts the previous `this` parameter as a normal parameter. This is similar to how general-purpose utility functions work: instead of calling `array.map(callback)`, you use `map(array, callback)`, which avoids mutating `Array.prototype`, and allows you to use `map` with array-like objects that are not arrays (for example, [`arguments`](/en-US/docs/Web/JavaScript/Reference/Functions/arguments)).
+
+Take {{jsxref("Array.prototype.slice()")}}, for example, which you want to use for converting an array-like object to a real array. You could create a shortcut like this:
+
+```js
+const slice = Array.prototype.slice;
 
 // ...
 
-slice.apply(arguments);
+slice.call(arguments);
 ```
 
-`bind()`로, 이는 단순화될 수 있습니다. 다음 조각 코드에서, `slice`는 {{jsxref("Function.prototype")}}의 {{jsxref("Function.prototype.apply()", "apply()")}} 함수에 바인딩된 함수입니다, `this` 값을 {{jsxref("Array.prototype")}}의 {{jsxref("Array.prototype.slice()", "slice()")}} 함수로 설정한 채. 이는 추가 `apply()` 호출은 삭제될 수 있음을 뜻합니다:
+Note that you can't save `slice.call` and call it as a plain function, because the `call()` method also reads its `this` value, which is the function it should call. In this case, you can use `bind()` to bind the value of `this` for `call()`. In the following piece of code, `slice()` is a bound version of {{jsxref("Function.prototype.call()")}}, with the `this` value bound to {{jsxref("Array.prototype.slice()")}}. This means that additional `call()` calls can be eliminated:
 
 ```js
-// 이전 예에서 "slice"와 같음
-var unboundSlice = Array.prototype.slice;
-var slice = Function.prototype.apply.bind(unboundSlice);
+// Same as "slice" in the previous example
+const unboundSlice = Array.prototype.slice;
+const slice = Function.prototype.call.bind(unboundSlice);
 
 // ...
 
 slice(arguments);
 ```
 
-## 폴리필
-
-`bind` 함수는 ECMA-262 제5판에 추가되었습니다; 그러하기에 모든 브라우저에 없을 수 있습니다. 스크립트 시작 부분에 다음 코드를 삽입함으로써 이 문제를 부분적으로 해결할수 있으며, bind() 지원하지 않는 구현에서도 대부분의 기능을 사용할 수 있습니다.
-
-```js
-if (!Function.prototype.bind) {
-  Function.prototype.bind = function(oThis) {
-    if (typeof this !== 'function') {
-      // ECMAScript 5 내부 IsCallable 함수와
-      // 가능한 가장 가까운 것
-      throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
-    }
-
-    var aArgs   = Array.prototype.slice.call(arguments, 1),
-        fToBind = this,
-        fNOP    = function() {},
-        fBound  = function() {
-          return fToBind.apply(this instanceof fNOP
-                 ? this
-                 : oThis,
-                 aArgs.concat(Array.prototype.slice.call(arguments)));
-        };
-
-    if (this.prototype) {
-      // Function.prototype은 prototype 속성이 없음
-      fNOP.prototype = this.prototype;
-    }
-    fBound.prototype = new fNOP();
-
-    return fBound;
-  };
-}
-```
-
-이 알고리즘과 스펙화된 알고리즘 간 많은 차이(충분히 다른 차이가 있을 수 있습니다, 이 목록은 정말 철저히 하지 않았기에) 중 일부는 다음입니다:
-
-- 부분 구현은 {{jsxref("Array.prototype.slice()")}}, {{jsxref("Array.prototype.concat()")}}, {{jsxref("Function.prototype.call()")}} 및 {{jsxref("Function.prototype.apply()")}}, 원래 값을 갖는 내장 메소드에 의존합니다.
-- 부분 구현은 불변(immutable) "poison pill" {{jsxref("Function.caller", "caller")}} 및 get, set 또는 삭제 시 {{jsxref("Global_Objects/TypeError", "TypeError")}}가 발생하는 `arguments` 속성이 없는 함수를 만듭니다. (이는 구현이 {{jsxref("Object.defineProperty")}}를 지원하는 경우 추가 또는 구현이 [`Object.prototype.__defineGetter__()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/__defineGetter__) 및 [`Object.prototype.__defineSetter__()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/__defineSetter__) 메소드를 지원하는 경우 \[삭제 시 오류 발생(throw-on-delete) 동작(behavior) 없이] 부분 구현될 수 있습니다.)
-- 부분 구현은 `prototype` 속성이 있는 함수를 만듭니다. (고유 바인딩된 함수는 없습니다.)
-- 부분 구현은 {{jsxref("Function.length", "length")}} 속성이 ECMA-262에 의해 부여된(mandated) 그것과 일치하지 않는 바인딩된 함수를 만듭니다: 길이 0인 함수를 만듭니다, 반면에 전체 구현은 대상 함수의 길이 및 미리 지정된 인수의 수에 따라 0이 아닌 길이를 반환할 수 있습니다.
-
-이 부분 구현을 쓰기로 고른 경우, **동작이 ECMA-262 제5판을 벗어난 경우에 의존하지 않아야 합니다!** 그러나 주의 약간(과 아마도 특정 요구에 맞추기 위한 추가 수정)으로, 이 부분 구현은 `bind()`가 스펙에 따라 널리 구현될 때까지 적당한 다리가 될 수 있습니다.
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
+- [Polyfill of `Function.prototype.bind` in `core-js`](https://github.com/zloirock/core-js#ecmascript-function)
 - {{jsxref("Function.prototype.apply()")}}
 - {{jsxref("Function.prototype.call()")}}
-- {{jsxref("Functions", "함수", "", 1)}}
+- {{jsxref("Functions", "Functions", "", 1)}}

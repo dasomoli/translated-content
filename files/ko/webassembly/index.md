@@ -1,82 +1,96 @@
 ---
-title: 웹어셈블리
+title: WebAssembly
 slug: WebAssembly
+browser-compat: javascript.builtins.WebAssembly
 ---
+
 {{WebAssemblySidebar}}
 
-WebAssembly는 최신 웹 브라우저에서 실행할 수 있는 새로운 유형의 코드입니다. 네이티브에 가까운 성능으로 동작하며 컴팩트한 바이너리 포맷을 제공하는 저수준 어셈블리 언어로, C/C++, Rust 등과 같은 언어의 컴파일 타겟으로써 그런 언어로 작성된 프로그램을 웹에서 사용할 수 있게 해줍니다. 또한 JavaScript와 함께 실행되며 서로를 보완할 수 있도록 설계되었습니다.
+WebAssembly is a new type of code that can be run in modern web browsers — it is a low-level assembly-like language with a compact binary format that runs with near-native performance and provides languages such as C/C++, C# and Rust with a compilation target so that they can run on the web. It is also designed to run alongside JavaScript, allowing both to work together.
 
-## 간단히 말해서
+## In a Nutshell
 
-웹어셈블리는 웹 플랫폼에 있어서 상당히 큰 의의를 갖습니다 — 여러 언어로 작성된 코드들을 네이티브에 가까운 속도로 웹에서 돌릴 수 있는 길을 제공하며, 이전까지는 웹에서 돌려볼 수 없었던 클라이언트 앱들을 웹에서 돌릴 수 있도록 만들어주기 때문입니다.
+WebAssembly has huge implications for the web platform — it provides a way to run code written in multiple languages on the web at near native speed, with client apps running on the web that previously couldn't have done so.
 
-WebAssembly는 JavaScript와 함께 보완되고 실행되도록 설계되었습니다. WebAssembly JavaScript API를 사용하여 WebAssembly 모듈을 JavaScript 앱에 불러와 둘 사이의 기능을 공유 할 수 있습니다. 따라서 WebAssembly 코드를 작성하는 방법을 몰라도 WebAssembly의 성능과 JavaScript의 편리함 및 유연성을 하나의 응용 프로그램에서 활용할 수 있습니다.
+WebAssembly is designed to complement and run alongside JavaScript — using the WebAssembly JavaScript APIs, you can load WebAssembly modules into a JavaScript app and share functionality between the two. This allows you to take advantage of WebAssembly's performance and power and JavaScript's expressiveness and flexibility in the same apps, even if you don't know how to write WebAssembly code.
 
-더 훌륭한 점은, 주요 브라우저 벤더의 적극적인 참여를 통해 [W3C 웹어셈블리 워킹 그룹](https://www.w3.org/wasm/) 및 [Community Group](https://www.w3.org/community/webassembly/)에서 웹 표준으로 개발되고있다는 것입니다.
+And what's even better is that it is being developed as a web standard via the [W3C WebAssembly Working Group](https://www.w3.org/wasm/) and [Community Group](https://www.w3.org/community/webassembly/) with active participation from all major browser vendors.
 
-## 가이드
+## Guides
 
-- [WebAssembly concepts](/ko/docs/WebAssembly/Concepts)
-  - : 웹 어셈블리가 무엇인지, 왜 그렇게 유용한지, 어떻게 기존의 웹 플랫폼(혹은 그 이상)에 적응시켜 사용할 수 있는지 기본 개념을 알아봅시다.
-- [Compiling a New C/C++ Module to WebAssembly](/ko/docs/WebAssembly/C_to_wasm)
-  - : [Emscripten](https://emscripten.org/) 같은 도구를 사용해서 C/C++ 로 작성된 코드를 .wasm으로 컴파일할 수 있습니다. 어떻게 컴파일할 수 있는지 알아봅시다.
-- [Compiling an Existing C Module to WebAssembly](/ko/docs/WebAssembly/existing_C_to_wasm)
-  - : WebAssembly의 핵심 기능은 기존의 C 라이브러리 개발 생태계을 활용해 개발자가 웹에서 사용할 수 있도록하는 것입니다.
-- [Compiling from Rust to WebAssembly](/ko/docs/WebAssembly/rust_to_wasm)
-  - : Rust 코드를 작성했다면 WebAssembly로 컴파일 할 수 있습니다! 이 튜토리얼은 Rust 프로젝트를 컴파일하여 기존 웹 애플리케이션에서 사용하기 위해 알아야 할 모든 것을 설명합니다.
-- [Loading and running WebAssembly code](/ko/docs/WebAssembly/Loading_and_running)
-  - : 본 글에서는 .wasm 파일을 만든 후에 [Fetch](/ko/docs/Web/API/Fetch_API) 나 [XHR](/ko/docs/Web/API/XMLHttpRequest) API를 이용하여 [WebAssembly Javascript](/ko/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly) API와 결합한 후 .wasm 파일을 브라우저로 가져오는 방법, 컴파일하고 초기화 하는 방법에 대해서 다룹니다.
-- [Using the WebAssembly JavaScript API](/ko/docs/WebAssembly/Using_the_JavaScript_API)
-  - : .wasm 모듈을 브라우저로 불러왔으면, 사용해야겠지요? 본 글에서는 웹어셈블리 자바스크립트 API를 이용하여 웹어셈블리를 어떻게 사용하는지를 설명합니다.
-- [Exported WebAssembly functions](/ko/docs/WebAssembly/Exported_functions)
-  - : 익스포트 된 웹어셈블리 함수는 자바스크립트에서의 웹어셈블리 함수의 반영이며, 자바스크립트에서 웹어셈블리 코드를 호출할 수 있도록 해줍니다. 본 글에서는 익스포트 된 웹어셈블리 함수가 무엇인지에 대해 설명합니다.
-- [Understanding WebAssembly text format](/ko/docs/WebAssembly/Understanding_the_text_format)
-  - : 본 글에서는 웹어셈블리의 텍스트 포맷에 대해 설명합니다. 텍스트 포맷은 브라우저에서 개발자 도구를 이용하여 디버깅 할 때 보여지는 .wasm 모듈의 저수준(Low-level) 문자형 표현입니다.
-- [Converting WebAssembly text format to wasm](/ko/docs/WebAssembly/Text_format_to_wasm)
-  - : 본 글에서는 텍스트 포맷으로 작성된 웹어셈블리 모듈을 .wasm 바이너리로 변환하는 방법을 제시합니다.
+- [WebAssembly concepts](/en-US/docs/WebAssembly/Concepts)
+  - : Get started by reading the high-level concepts behind WebAssembly — what it is, why it is so useful, how it fits into the web platform (and beyond), and how to use it.
+- [Compiling a New C/C++ Module to WebAssembly](/en-US/docs/WebAssembly/C_to_wasm)
+  - : When you've written code in C/C++, you can then compile it into .wasm using a tool like [Emscripten](https://emscripten.org/). Let's look at how it works.
+- [Compiling an Existing C Module to WebAssembly](/en-US/docs/WebAssembly/existing_C_to_wasm)
+  - : A core use-case for WebAssembly is to take the existing ecosystem of C libraries and allow developers to use them on the web.
+- [Compiling from Rust to WebAssembly](/en-US/docs/WebAssembly/Rust_to_wasm)
+  - : If you've written some Rust code, you can compile it into WebAssembly! This tutorial takes you through all you need to know to compile a Rust project to wasm and use it in an existing web app.
+- [Loading and running WebAssembly code](/en-US/docs/WebAssembly/Loading_and_running)
+  - : After you have a .wasm, this article covers how to fetch, compile and instantiate it, combining the [WebAssembly JavaScript](/en-US/docs/WebAssembly/JavaScript_interface) API with the [Fetch](/en-US/docs/Web/API/Fetch_API) or [XHR](/en-US/docs/Web/API/XMLHttpRequest) APIs.
+- [Using the WebAssembly JavaScript API](/en-US/docs/WebAssembly/Using_the_JavaScript_API)
+  - : Once you've loaded a .wasm module, you'll want to use it. In this article we show you how to use WebAssembly via the WebAssembly JavaScript API.
+- [Exported WebAssembly functions](/en-US/docs/WebAssembly/Exported_functions)
+  - : Exported WebAssembly functions are the JavaScript reflections of WebAssembly functions which allow calling WebAssembly code from JavaScript. This article describes what they are.
+- [Understanding WebAssembly text format](/en-US/docs/WebAssembly/Understanding_the_text_format)
+  - : This article explains the wasm text format. This is the low-level textual representation of a .wasm module shown in browser developer tools when debugging.
+- [Converting WebAssembly text format to wasm](/en-US/docs/WebAssembly/Text_format_to_wasm)
+  - : This article provides a guide on how to convert a WebAssembly module written in the text format into a .wasm binary.
 
-## API 참조
+## API reference
 
-- {{jsxref("Global_objects/WebAssembly", "WebAssembly")}}
-  - : 이 객체는 모든 웹어셈블리와 관련된 기능의 네임스페이스로서 역할합니다.
-- {{jsxref("Global_objects/WebAssembly/Global", "WebAssembly.Global()")}}
-  - : `WebAssembly.Global` 객체는 전역 변수 인스턴스를 나타내며 JavaScript 및 하나 이상의 {{jsxref("WebAssembly.Module")}} 인스턴스에서 가져 오거나 내보낼 수 있습니다. 이렇게하면 여러 모듈을 동적으로 연결할 수 있습니다.
-- {{jsxref("Global_objects/WebAssembly/Module", "WebAssembly.Module()")}}
-  - : `WebAssembly.Module` 객체는 이미 브라우저에 의해 컴파일된 상태없는 웹어셈블리 코드를 담고있습니다. 게다가 여러번 인스턴스화 시킬 수 있고 효과적으로 합니다.
-    WebAssembly.Module 객체는 브라우저에서 이미 컴파일 된 상태의stateless WebAssembly 코드를 포함하며 [Worker와 효율적으로 공유](/ko/docs/Web/API/Worker/postMessage)하고 여러 번 인스턴스화 할 수 있습니다.
-- {{jsxref("Global_objects/WebAssembly/Instance", "WebAssembly.Instance()")}}
-  - : `WebAssembly.Instance` 객체는 상태를 가지며, 실행가능한 `Module`의 인스턴스입니다. `Instance` 객체는 웹어셈블리 코드를 자바스크립트에서 부를 수 있도록 [익스포트된 모든 웹어셈블리 함수](/ko/docs/WebAssembly/Exported_functions)를 포함하고있습니다.
-- {{jsxref("Global_objects/WebAssembly/instantiateStreaming", "WebAssembly.instantiateStreaming()")}}
-  - : `WebAssembly.instantiateStreaming ()` 함수는 WebAssembly 코드를 컴파일하고 인스턴스화하여 `모듈`과 첫 번째 `인스턴스`를 반환하는 기본 API입니다.
-- {{jsxref("Global_objects/WebAssembly/Memory", "WebAssembly.Memory()")}}
-  - : `WebAssembly.Memory` 객체는 사이즈 조절 가능한 {{jsxref("Global_objects/ArrayBuffer", "ArrayBuffer")}}로, `Instance`가 접근하는 메모리를 로우(raw) 바이트들로 들고있습니다.
-- {{jsxref("Global_objects/WebAssembly/Table", "WebAssembly.Table()")}}
-  - : `WebAssembly.Table` 객체는 `Instance` 에 의해 접근되는 불투명한 값(함수 레퍼런스 등)들의 사이즈 조절 가능한, 형식지정된 배열입니다.
-- {{jsxref("WebAssembly.CompileError()")}}
-  - : 새 웹어셈블리 `CompileError` 객체를 생성합니다.
-- {{jsxref("WebAssembly.LinkError()")}}
-  - : 새 웹어셈블리 `LinkError` 객체를 생성합니다.
-- {{jsxref("WebAssembly.RuntimeError()")}}
-  - : 새 웹어셈블리 `RuntimeError` 객체를 생성합니다.
+- [WebAssembly instruction reference](/en-US/docs/WebAssembly/Reference)
+  - : Reference documentation with interactive samples for the set of WebAssembly operators.
+- [WebAssembly JavaScript interface](/en-US/docs/WebAssembly/JavaScript_interface)
+  - : This object acts as the namespace for all WebAssembly related functionality.
+- [`WebAssembly.Global()`](/en-US/docs/WebAssembly/JavaScript_interface/Global)
+  - : A `WebAssembly.Global` object represents a global variable instance, accessible from both JavaScript and importable/exportable across one or more [`WebAssembly.Module`](/en-US/docs/WebAssembly/JavaScript_interface/Module) instances. This allows dynamic linking of multiple modules.
+- [`WebAssembly.Module()`](/en-US/docs/WebAssembly/JavaScript_interface/Module)
+  - : A `WebAssembly.Module` object contains stateless WebAssembly code that has already been compiled by the browser and can be efficiently [shared with Workers](/en-US/docs/Web/API/Worker/postMessage), and instantiated multiple times.
+- [`WebAssembly.Instance()`](/en-US/docs/WebAssembly/JavaScript_interface/Instance)
+  - : A `WebAssembly.Instance` object is a stateful, executable instance of a `Module`. `Instance` objects contain all the [Exported WebAssembly functions](/en-US/docs/WebAssembly/Exported_functions) that allow calling into WebAssembly code from JavaScript.
+- [`WebAssembly.compile()`](/en-US/docs/WebAssembly/JavaScript_interface/compile)
+  - : The `WebAssembly.compile()` function compiles WebAssembly binary code into a `WebAssembly.Module` object.
+- [`WebAssembly.compileStreaming()`](/en-US/docs/WebAssembly/JavaScript_interface/compileStreaming)
+  - : The `WebAssembly.compileStreaming()` function compiles a `WebAssembly.Module` directly from a streamed underlying source.
+- [`WebAssembly.instantiate()`](/en-US/docs/WebAssembly/JavaScript_interface/instantiate)
+  - : The `WebAssembly.instantiate()` function allows you to compile and instantiate WebAssembly code.
+- [`WebAssembly.instantiateStreaming()`](/en-US/docs/WebAssembly/JavaScript_interface/instantiateStreaming)
+  - : The `WebAssembly.instantiateStreaming()` function is the primary API for compiling and instantiating WebAssembly code, returning both a `Module` and its first `Instance`.
+- [`WebAssembly.validate()`](/en-US/docs/WebAssembly/JavaScript_interface/validate)
+  - : The `WebAssembly.validate()` function validates a given typed array of WebAssembly binary code.
+- [`WebAssembly.Memory()`](/en-US/docs/WebAssembly/JavaScript_interface/Memory)
+  - : A `WebAssembly.Memory` object is a resizable {{jsxref("Global_objects/ArrayBuffer", "ArrayBuffer")}} that holds the raw bytes of memory accessed by an `Instance`.
+- [`WebAssembly.Table()`](/en-US/docs/WebAssembly/JavaScript_interface/Table)
+  - : A `WebAssembly.Table` object is a resizable typed array of opaque values, like function references, that are accessed by an `Instance`.
+- [`WebAssembly.Tag()`](/en-US/docs/WebAssembly/JavaScript_interface/Tag)
+  - : The `WebAssembly.Tag` object defines a type of WebAssembly exception that can be thrown to/from WebAssembly code.
+- [`WebAssembly.Exception()`](/en-US/docs/WebAssembly/JavaScript_interface/Exception)
+  - : The `WebAssembly.Exception` object represents a runtime exception thrown from WebAssembly to JavaScript, or thrown from JavaScript to a WebAssembly exception handler.
+- [`WebAssembly.CompileError()`](/en-US/docs/WebAssembly/JavaScript_interface/CompileError)
+  - : Creates a new WebAssembly `CompileError` object.
+- [`WebAssembly.LinkError()`](/en-US/docs/WebAssembly/JavaScript_interface/LinkError)
+  - : Creates a new WebAssembly `LinkError` object.
+- [`WebAssembly.RuntimeError()`](/en-US/docs/WebAssembly/JavaScript_interface/RuntimeError)
+  - : Creates a new WebAssembly `RuntimeError` object.
 
-## 예제
+## Examples
 
 - [WASMSobel](https://github.com/JasonWeathersby/WASMSobel)
-- [webassembly-examples](https://github.com/mdn/webassembly-examples/) 저장소에서 다른 예제들도 구경해보세요.
+- See our [webassembly-examples](https://github.com/mdn/webassembly-examples/) repo for a number of other examples.
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 바깥 고리
+## See also
 
-- [WebAssembly on Mozilla Research](https://research.mozilla.org/webassembly/)
-- [webassembly.org](http://webassembly.org/)
+- [WebAssembly on Mozilla Research](https://research.mozilla.org/)
+- [webassembly.org](https://webassembly.org/)
 - [WebAssembly articles on Mozilla Hacks blog](https://hacks.mozilla.org/category/webassembly/)
 - [W3C WebAssembly Community Group](https://www.w3.org/community/webassembly/)
-- [Large-Allocation HTTP header](/ko/docs/Web/HTTP/Headers/Large-Allocation)
-- [Emscripting a C Library to Wasm](https://developers.google.com/web/updates/2018/03/emscripting-a-c-library)
+- [Emscripting a C Library to Wasm](https://web.dev/emscripting-a-c-library/)

@@ -1,57 +1,66 @@
 ---
 title: Date.prototype.getDay()
 slug: Web/JavaScript/Reference/Global_Objects/Date/getDay
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.getDay
 ---
 
 {{JSRef}}
 
-**`getDay()`** 메서드는 주어진 날짜의 현지 시간 기준 요일을 반환합니다. 0은 일요일을 나타냅니다. 현재의 일을 반환하려면 {{jsxref("Date.prototype.getDate()")}}를 사용하세요.
+The **`getDay()`** method returns the
+day of the week for the specified date according to local time, where 0 represents
+Sunday. For the day of the month, see {{jsxref("Date.prototype.getDate()")}}.
 
-{{EmbedInteractiveExample("pages/js/date-getday.html")}}
+{{EmbedInteractiveExample("pages/js/date-getday.html", "shorter")}}
 
-## 구문
+## Syntax
 
-```js
-    dateObj.getDay()
+```js-nolint
+getDay()
 ```
 
-### 반환 값
+### Return value
 
-현지 시간에 따라, 주어진 날짜의 요일에 해당하는 0 이상 6 이하의 정수. (일요일은 0, 월요일은 1, 화요일은 2, ...)
+An integer number, between 0 and 6, corresponding to the day of the week for the given
+date, according to local time: 0 for Sunday, 1 for Monday, 2 for Tuesday, and so on.
 
-## 예제
+## Examples
 
-### `getDay()` 사용하기
+### Using getDay()
 
-1995년 12월 25일은 월요일입니다. 따라서 아래 코드의 두 번째 명령문은 `Xmas95`의 값에 기반하여 `weekday`에 1을 할당합니다.
+The second statement below assigns the value 1 to `weekday`, based on the
+value of the [`Date`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) object `xmas95`. December 25, 1995, is a
+Monday.
 
 ```js
-var Xmas95 = new Date('December 25, 1995 23:15:30');
-var weekday = Xmas95.getDay();
+const xmas95 = new Date("December 25, 1995 23:15:30");
+const weekday = xmas95.getDay();
 
 console.log(weekday); // 1
 ```
 
-> **참고:** **참고:** 필요하다면, 요일의 이름(`"월요일"` 등)을 {{jsxref("DateTimeFormat", "Intl.DateTimeFormat")}}과 `options` 매개변수를 사용해 얻을 수 있습니다. 이 방법을 사용하면 국제화도 더 쉬워집니다.```js
-> var options = { weekday: 'long'};
-> console.log(new Intl.DateTimeFormat('en-US', options).format(Xmas95));
+> **Note:** If needed, the full name of a day (`"Monday"` for
+> example) can be obtained by using [`Intl.DateTimeFormat`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat)
+> with an `options` parameter. Using this method, the internationalization is
+> made easier:
+>
+> ```js
+> const options = { weekday: "long" };
+> console.log(new Intl.DateTimeFormat("en-US", options).format(Xmas95));
 > // Monday
-> console.log(new Intl.DateTimeFormat('ko-KR', options).format(Xmas95));
-> // 월요일
->
-> ```
->
+> console.log(new Intl.DateTimeFormat("de-DE", options).format(Xmas95));
+> // Montag
 > ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Date.prototype.getUTCDate()")}}
 - {{jsxref("Date.prototype.getUTCDay()")}}

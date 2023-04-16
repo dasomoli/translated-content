@@ -1,299 +1,413 @@
 ---
 title: eval()
 slug: Web/JavaScript/Reference/Global_Objects/eval
+page-type: javascript-function
+browser-compat: javascript.builtins.eval
 ---
+
 {{jsSidebar("Objects")}}
 
-> **경고:** **주의:** 문자열로부터 **`eval()`**을 실행하는 것은 엄청나게 위험합니다. **`eval()`**을 사용하면 해커가 위험한 코드를 사용할 수 있습니다. 아래에 [eval을 절대 사용하지 말 것!](<#eval을 절대 사용하지 말 것!>)을 확인하세요.
+> **Warning:** Executing JavaScript from a string is an enormous security risk. It is far too easy for a bad actor to run arbitrary code when you use `eval()`. See [Never use eval()!](#never_use_eval!), below.
 
-**`eval()`**은 문자로 표현된 JavaScript 코드를 실행하는 함수입니다.
+The **`eval()`** function evaluates JavaScript code represented as a string and returns its completion value. The source is parsed as a script.
 
 {{EmbedInteractiveExample("pages/js/globalprops-eval.html")}}
 
-## 구문
+## Syntax
 
-```js
-    eval(string)
+```js-nolint
+eval(script)
 ```
 
-### 매개변수
+### Parameters
 
-- `string`
-  - : 자바스크립트 표현식, 명령문, 또는 연속되는 다수의 명령문을 나타내는 문자열. 표현식은 이미 존재하는 객체의 변수나 속성을 포함할 수 있습니다.
+- `script`
+  - : A string representing a JavaScript expression, statement, or sequence of statements. The expression can include variables and properties of existing objects. It will be parsed as a script, so [`import`](/en-US/docs/Web/JavaScript/Reference/Statements/import) declarations (which can only exist in modules) are not allowed.
 
-### 반환값
+### Return value
 
-주어진 코드를 평가하여 얻은 값. 값이 없다면 {{jsxref("undefined")}}를 반환합니다.
+The completion value of evaluating the given code. If the completion value is empty, {{jsxref("undefined")}} is returned. If `script` is not a string primitive, `eval()` returns the argument unchanged.
 
-## 설명
+### Exceptions
 
-`eval()`은 전역 객체의 함수 속성입니다.
+Throws any exception that occurs during evaluation of the code, including {{jsxref("SyntaxError")}} if `script` fails to be parsed as a script.
 
-`eval()`의 인자는 문자열입니다. 인자가 표현식을 나타낸다면 `eval()`은 표현식을 평가합니다. 인자가 하나 이상의 JavaScript 명령문을 나타낸다면 모두 실행합니다. 연산식을 계산하기 위해 `eval()`을 호출하지 마세요. 자바스크립트는 연산식을 알아서 계산합니다.
+## Description
 
-문자열로 연산식을 구성하면 나중에 `eval()`로 계산할 수 있습니다. `x` 라는 변수가 있다고 가정하면 `x`가 포함된 연산식을 문자열로, 예를 들어 "`3 * x + 2`"로 나타내고 나중에 `eval()`을 호출해서 계산을 연기할 수 있습니다.
+`eval()` is a function property of the global object.
 
-`eval()`의 인자가 문자열이 아니면 `eval()`은 인자를 그대로 반환합니다. 다음 예시에서, `String` 생성자가 명시된 경우 문자열을 계산하는 대신 `String` 객체를 반환합니다.
+The argument of the `eval()` function is a string. It will evaluate the source string as a script body, which means both statements and expressions are allowed. It returns the completion value of the code. For expressions, it's the value the expression evaluates to. Many statements and declarations have completion values as well, but the result may be surprising (for example, the completion value of an assignment is the assigned value, but the completion value of [`let`](/en-US/docs/Web/JavaScript/Reference/Statements/let) is undefined), so it's recommended to not rely on statements' completion values.
 
-```js
-eval(new String("2 + 2")); // "2 + 2"를 포함한 String 객체를 반환
-eval("2 + 2");             // 4를 반환
+In strict mode, declaring a variable named `eval` or re-assigning `eval` is a {{jsxref("SyntaxError")}}.
+
+```js example-bad
+"use strict";
+
+const eval = 1; // SyntaxError: Unexpected eval or arguments in strict mode
 ```
 
-`toString()`을 사용하는 일반적인 방식으로 제약을 피할 수 있습니다.
+If the argument of `eval()` is not a string, `eval()` returns the argument unchanged. In the following example, passing a `String` object instead of a primitive causes `eval()` to return the `String` object rather than evaluating the string.
 
 ```js
-var expression = new String("2 + 2");
-eval(expression.toString());            // 4를 반환
+eval(new String("2 + 2")); // returns a String object containing "2 + 2"
+eval("2 + 2"); // returns 4
 ```
 
-`eval`을 직접 호출하지 않고 참조를 통해 _간접적으로_ 사용한다면 [ECMAScript 5부터는](http://www.ecma-international.org/ecma-262/5.1/#sec-10.4.2) 지역 범위가 아니라 전역 범위에서 동작합니다. 예를 들어 `eval()`로 함수를 선언하면 전역 함수가 되고, 실행되는 코드는 실행되는 위치의 지역 범위에 접근할 수 없습니다.
+To work around the issue in a generic fashion, you can [coerce the argument to a string](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_coercion) yourself before passing it to `eval()`.
 
 ```js
-    function test() {
-      var x = 2, y = 4;
-      console.log(eval('x + y'));  // 직접 호출, 지역 범위 사용, 결과값은 6
-      var geval = eval; // eval을 전역 범위로 호출하는 것과 같음
-      console.log(geval('x + y')); // 간접 호출, 전역 범위 사용, `x`가 정의되지 않았으므로 ReferenceError 발생
-      (0, eval)('x + y'); // 다른 방식으로 간접 호출
-    }
+const expression = new String("2 + 2");
+eval(String(expression)); // returns 4
 ```
 
-## `eval`을 절대 사용하지 말 것!
+### Direct and indirect eval
 
-`eval()`은 인자로 받은 코드를 caller의 권한으로 수행하는 위험한 함수입니다. 악의적인 영향을 받았을 수 있는 문자열을 `eval()`로 실행한다면, 당신의 웹페이지나 확장 프로그램의 권한으로 사용자의 기기에서 악의적인 코드를 수행하는 결과를 초래할 수 있습니다. 또한, 제3자 코드가 `eval()`이 호출된 위치의 스코프를 볼 수 있으며, 이를 이용해 비슷한 함수인 {{jsxref("Global_Objects/Function", "Function")}}으로는 실현할 수 없는 공격이 가능합니다.
-
-또한 최신 JS 엔진에서 여러 코드 구조를 최적화하는 것과 달리 `eval()`은 JS 인터프리터를 사용해야 하기 때문에 다른 대안들보다 느립니다.
-
-추가로, 최신 JavaScript 인터프리터는 자바스크립트를 기계 코드로 변환합니다. 즉, 변수명의 개념이 완전히 없어집니다. 그러나 `eval`을 사용하면 브라우저는 기계 코드에 해당 변수가 있는지 확인하고 값을 대입하기 위해 길고 무거운 변수명 검색을 수행해야 합니다. 또한 `eval()`을 통해 자료형 변경 등 변수에 변화가 일어날 수 있으며, 브라우저는 이에 대응하기 위해 기계 코드를 재작성해야 합니다. 그러나, (다행히) [window.Function](/ko/docs/Web/JavaScript/Reference/Global_Objects/Function)이라는 `eval`보다 훨씬 나은 대안이 있습니다. `eval()`을 사용하는 코드를 `Function()`으로 바꾸는 방법에 대해서는 아래를 참조하세요.
-
-`eval`을 사용하는 나쁜 코드:
+There are two modes of `eval()` calls: _direct_ eval and _indirect_ eval. Direct eval only has one form: `eval( )` (the invoked function's name is `eval` and its value is the global `eval` function). Everything else, including invoking it via an aliased variable, via a member access or other expression, or through the optional chaining [`?.`](/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining) operator, is indirect.
 
 ```js
-function looseJsonParse(obj){
-    return eval(obj);
+// Indirect call using the comma operator to return eval
+(0, eval)("x + y");
+
+// Indirect call through optional chaining
+eval?.("x + y");
+
+// Indirect call using a variable to store and return eval
+const geval = eval;
+geval("x + y");
+
+// Indirect call through member access
+const obj = { eval };
+obj.eval("x + y");
+```
+
+Indirect eval can be seen as if the code is evaluated within a separate `<script>` tag. This means:
+
+- Indirect eval works in the global scope rather than the local scope, and the code being evaluated doesn't have access to local variables within the scope where it's being called.
+
+  ```js
+  function test() {
+    const x = 2;
+    const y = 4;
+    // Direct call, uses local scope
+    console.log(eval("x + y")); // Result is 6
+    console.log(eval?.("x + y")); // Uses global scope, throws because x is undefined
+  }
+  ```
+
+- Indirect `eval` would not inherit the strictness of the surrounding context, and would only be in [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode) if the source string itself has a `"use strict"` directive.
+
+  ```js
+  function strictContext() {
+    "use strict";
+    eval?.(`with (Math) console.log(PI);`);
+  }
+  function strictContextStrictEval() {
+    "use strict";
+    eval?.(`"use strict"; with (Math) console.log(PI);`);
+  }
+  strictContext(); // Logs 3.141592653589793
+  strictContextStrictEval(); // Throws a SyntaxError because the source string is in strict mode
+  ```
+
+  On the other hand, direct eval inherits the strictness of the invoking context.
+
+  ```js
+  function nonStrictContext() {
+    eval(`with (Math) console.log(PI);`);
+  }
+  function strictContext() {
+    "use strict";
+    eval(`with (Math) console.log(PI);`);
+  }
+  nonStrictContext(); // Logs 3.141592653589793
+  strictContext(); // Throws a SyntaxError because it's in strict mode
+  ```
+
+- `var`-declared variables and [function declarations](/en-US/docs/Web/JavaScript/Reference/Statements/function) would go into the surrounding scope if the source string is not interpreted in strict mode — for indirect eval, they become global variables. If it's a direct eval in a strict mode context, or if the `eval` source string itself is in strict mode, then `var` and function declarations do not "leak" into the surrounding scope.
+
+  ```js
+  // Neither context nor source string is strict,
+  // so var creates a variable in the surrounding scope
+  eval("var a = 1;");
+  console.log(a); // 1
+  // Context is not strict, but eval source is strict,
+  // so b is scoped to the evaluated script
+  eval("'use strict'; var b = 1;");
+  console.log(b); // ReferenceError: b is not defined
+
+  function strictContext() {
+    "use strict";
+    // Context is strict, but this is indirect and the source
+    // string is not strict, so c is still global
+    eval?.("var c = 1;");
+    // Direct eval in a strict context, so d is scoped
+    eval("var d = 1;");
+  }
+  strictContext();
+  console.log(c); // 1
+  console.log(d); // ReferenceError: d is not defined
+  ```
+
+  [`let`](/en-US/docs/Web/JavaScript/Reference/Statements/let) and [`const`](/en-US/docs/Web/JavaScript/Reference/Statements/const) declarations within the evaluated string are always scoped to that script.
+
+- Direct eval may have access to additional contextual expressions. For example, in a function's body, one can use [`new.target`](/en-US/docs/Web/JavaScript/Reference/Operators/new.target):
+
+  ```js
+  function Ctor() {
+    eval("console.log(new.target)");
+  }
+  new Ctor(); // [Function: Ctor]
+  ```
+
+### Never use eval()!
+
+Using direct `eval()` suffers from multiple problems:
+
+- `eval()` executes the code it's passed with the privileges of the caller. If you run `eval()` with a string that could be affected by a malicious party, you may end up running malicious code on the user's machine with the permissions of your webpage / extension. More importantly, allowing third-party code to access the scope in which `eval()` was invoked (if it's a direct eval) can lead to possible attacks that reads or changes local variables.
+- `eval()` is slower than the alternatives, since it has to invoke the JavaScript interpreter, while many other constructs are optimized by modern JS engines.
+- Modern JavaScript interpreters convert JavaScript to machine code. This means that any concept of variable naming gets obliterated. Thus, any use of `eval()` will force the browser to do long expensive variable name lookups to figure out where the variable exists in the machine code and set its value. Additionally, new things can be introduced to that variable through `eval()`, such as changing the type of that variable, forcing the browser to re-evaluate all of the generated machine code to compensate.
+- Minifiers give up on any minification if the scope is transitively depended on by `eval()`, because otherwise `eval()` cannot read the correct variable at runtime.
+
+There are many cases where the use of `eval()` or related methods can be optimized or avoided altogether.
+
+#### Using indirect eval()
+
+Consider this code:
+
+```js
+function looseJsonParse(obj) {
+  return eval(`(${obj})`);
 }
-console.log(looseJsonParse(
-   "{a:(4-1), b:function(){}, c:new Date()}"
-))
+console.log(looseJsonParse("{ a: 4 - 1, b: function () {}, c: new Date() }"));
 ```
 
-`eval`이 없는 코드:
+Simply using indirect eval and forcing strict mode can make the code much better:
 
 ```js
-function looseJsonParse(obj){
-    return Function('"use strict";return (' + obj + ')')();
+function looseJsonParse(obj) {
+  return eval?.(`"use strict";(${obj})`);
 }
-console.log(looseJsonParse(
-   "{a:(4-1), b:function(){}, c:new Date()}"
-))
+console.log(looseJsonParse("{ a: 4 - 1, b: function () {}, c: new Date() }"));
 ```
 
-위의 두 코드는 얼핏 보면 같은 방식으로 실행되는 것처럼 보이지만, `eval`이 있는 코드가 훨씬 느립니다. 평가되는 객체의 `c: new Date()`를 주목하세요. `eval`이 없는 함수의 경우 이 객체는 전역 범위에서 평가되기 때문에 브라우저에서는 `Date`를 같은 이름의 지역 변수가 아니라 `window.Date`로 취급할 수 있습니다. 그러나 `eval()`을 사용하는 코드에서는 아래와 같은 경우도 존재할 수 있기 때문에 `Date`를 이렇게 취급할 수 없습니다.
+The two code snippets above may seem to work the same way, but they do not; the first one using direct eval suffers from multiple problems.
+
+- It is a great deal slower, due to more scope inspections. Notice `c: new Date()` in the evaluated string. In the indirect eval version, the object is being evaluated in the global scope, so it is safe for the interpreter to assume that `Date` refers to the global `Date()` constructor instead of a local variable called `Date`. However, in the code using direct eval, the interpreter cannot assume this. For example, in the following code, `Date` in the evaluated string doesn't refer to `window.Date()`.
+
+  ```js
+  function looseJsonParse(obj) {
+    function Date() {}
+    return eval(`(${obj})`);
+  }
+  console.log(looseJsonParse(`{ a: 4 - 1, b: function () {}, c: new Date() }`));
+  ```
+
+  Thus, in the `eval()` version of the code, the browser is forced to make the expensive lookup call to check to see if there are any local variables called `Date()`.
+
+- If not using strict mode, `var` declarations within the `eval()` source becomes variables in the surrounding scope. This leads to hard-to-debug issues if the string is acquired from external input, especially if there's an existing variable with the same name.
+- Direct eval can read and mutate bindings in the surrounding scope, which may lead to external input corrupting local data.
+- When using direct `eval`, especially when the eval source cannot be proven to be in strict mode, the engine — and build tools — have to disable all optimizations related to inlining, because the `eval()` source can depend on any variable name in its surrounding scope.
+
+However, using indirect `eval()` does not allow passing extra bindings other than existing global variables for the evaluated source to read. If you need to specify additional variables that the evaluated source should have access to, consider using the `Function()` constructor.
+
+#### Using the Function() constructor
+
+The [`Function()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function) constructor is very similar to the indirect eval example above: it also evaluates the JavaScript source passed to it in the global scope without reading or mutating any local bindings, and therefore allows engines to do more optimizations than direct `eval()`.
+
+The difference between `eval()` and `Function()` is that the source string passed to `Function()` is parsed as a function body, not as a script. There are a few nuances — for example, you can use `return` statements at the top level of a function body, but not in a script.
+
+The `Function()` constructor is useful if you wish to create local bindings within your eval source, by passing the variables as parameter bindings.
 
 ```js
-function Date(n){
-    return ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"][n%7 || 0];
+function Date(n) {
+  return [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ][n % 7 || 0];
 }
-function looseJsonParse(obj){
-    return eval(obj);
+function runCodeWithDateFunction(obj) {
+  return Function("Date", `"use strict";return (${obj});`)(Date);
 }
-console.log(looseJsonParse(
-   "{a:(4-1), b:function(){}, c:new Date()}"
-))
+console.log(runCodeWithDateFunction("Date(5)")); // Saturday
 ```
 
-그러므로 `eval()`이 있는 코드의 경우 브라우저는 `Date()`라는 지역 변수의 존재를 확인하기 위해 무거운 변수명 탐색을 수행해야 하며, 이는 `Function()`과 비교하면 매우 느립니다.
+Both `eval()` and `Function()` implicitly evaluate arbitrary code, and are forbidden in strict [CSP](/en-US/docs/Web/HTTP/CSP) settings. There are also additional safer (and faster!) alternatives to `eval()` or `Function()` for common use-cases.
 
-만약 위의 상황에서 실제로 새로 선언한 `Date` 함수를 `Function()`에서 실행해야 하는 상황을 생각해 봅시다. 이렇게 되면 `eval()`로 돌아가야 할까요? 물론 아닙니다. 아래의 접근을 시도해 보세요.
+#### Using bracket accessors
+
+You should not use `eval()` to access properties dynamically. Consider the following example where the property of the object to be accessed is not known until the code is executed. This can be done with `eval()`:
 
 ```js
-function Date(n){
-    return ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"][n%7 || 0];
+const obj = { a: 20, b: 30 };
+const propName = getPropName(); // returns "a" or "b"
+
+const result = eval(`obj.${propName}`);
+```
+
+However, `eval()` is not necessary here — in fact, it's more error-prone, because if `propName` is not a valid identifier, it leads to a syntax error. Moreover, if `getPropName` is not a function you control, this may lead to execution of arbitrary code. Instead, use the [property accessors](/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors), which are much faster and safer:
+
+```js
+const obj = { a: 20, b: 30 };
+const propName = getPropName(); // returns "a" or "b"
+const result = obj[propName]; // obj["a"] is the same as obj.a
+```
+
+You can even use this method to access descendant properties. Using `eval()`, this would look like:
+
+```js
+const obj = { a: { b: { c: 0 } } };
+const propPath = getPropPath(); // suppose it returns "a.b.c"
+
+const result = eval(`obj.${propPath}`); // 0
+```
+
+Avoiding `eval()` here could be done by splitting the property path and looping through the different properties:
+
+```js
+function getDescendantProp(obj, desc) {
+  const arr = desc.split(".");
+  while (arr.length) {
+    obj = obj[arr.shift()];
+  }
+  return obj;
 }
-function runCodeWithDateFunction(obj){
-    return Function('"use strict";return (' + obj + ')')()(
-        Date
-    );
+
+const obj = { a: { b: { c: 0 } } };
+const propPath = getPropPath(); // suppose it returns "a.b.c"
+const result = getDescendantProp(obj, propPath); // 0
+```
+
+Setting a property that way works similarly:
+
+```js
+function setDescendantProp(obj, desc, value) {
+  const arr = desc.split(".");
+  while (arr.length > 1) {
+    obj = obj[arr.shift()];
+  }
+  return (obj[arr[0]] = value);
 }
-console.log(runCodeWithDateFunction(
-   "function(Date){ return Date(5) }"
-))
+
+const obj = { a: { b: { c: 0 } } };
+const propPath = getPropPath(); // suppose it returns "a.b.c"
+const result = setDescendantProp(obj, propPath, 1); // obj.a.b.c is now 1
 ```
 
-위 코드는 삼중 중첩 함수를 사용하기 때문에 매우 비효율적으로 보일 수 있지만, 이 방법의 이점을 우선 살펴봅시다.
+However, beware that using bracket accessors with unconstrained input is not safe either — it may lead to [object injection attacks](https://github.com/nodesecurity/eslint-plugin-security/blob/main/docs/the-dangers-of-square-bracket-notation.md).
 
-1\. `runCodeWithDateFunction`에 문자열로 전달된 코드를 최소화할 수 있다.
+#### Using callbacks
 
-2\. Function call overhead is minimal, making the far smaller code size well worth the benefit
-
-3\. `Function()`은 `"use strict";`를 사용함으로써 코드의 성능을 최적화할 수 있다.
-
-4\. `eval()`을 사용하지 않으므로 실행 속도가 훨씬 빠르다.
-
-마지막으로 코드 최소화의 측면에서 살펴보면, 위와 같이 `Function()`을 사용했을 때는 아래의 최소화된 코드와 같이 함수의 인자 이름 역시 짧게 줄일 수 있으므로 runCodeWithDateFunction에 전달하는 코드 문자열을 더욱 효율적으로 줄일 수 있습니다.
+JavaScript has [first-class functions](/en-US/docs/Glossary/First-class_Function), which means you can pass functions as arguments to other APIs, store them in variables and objects' properties, and so on. Many DOM APIs are designed with this in mind, so you can (and should) write:
 
 ```js
-console.log(Function('"use strict";return(function(a){return a(5)})')()(function(a){
-return"Monday Tuesday Wednesday Thursday Friday Saturday Sunday".split(" ")[a%7||0]}));
+// Instead of setTimeout("…", 1000) use:
+setTimeout(() => {
+  // …
+}, 1000);
+
+// Instead of elt.setAttribute("onclick", "…") use:
+elt.addEventListener("click", () => {
+  // …
+});
 ```
 
-자주 쓰이는 용례에 대해서는 `eval()`이나 `Function()`보다 안전하고 빠른 대안도 존재합니다.
+[Closures](/en-US/docs/Web/JavaScript/Closures) are also helpful as a way to create parameterized functions without concatenating strings.
 
-### 객체의 속성에 접근하기
+#### Using JSON
 
-속성명으로 속성을 찾는 데 `eval()`을 사용해서는 안 됩니다. 다음 예제와 같이 코드를 실행하기 전까지는 접근할 속성을 알 수 없는 상황을 생각해 봅시다. 이 상황은 `eval`로 처리할 수 있습니다.
+If the string you're calling `eval()` on contains data (for example, an array: `"[1, 2, 3]"`), as opposed to code, you should consider switching to {{Glossary("JSON")}}, which allows the string to use a subset of JavaScript syntax to represent data.
+
+Note that since JSON syntax is limited compared to JavaScript syntax, many valid JavaScript literals will not parse as JSON. For example, trailing commas are not allowed in JSON, and property names (keys) in object literals must be enclosed in quotes. Be sure to use a JSON serializer to generate strings that will be later parsed as JSON.
+
+Passing carefully constrained data instead of arbitrary code is a good idea in general. For example, an extension designed to scrape contents of web-pages could have the scraping rules defined in [XPath](/en-US/docs/Web/XPath) instead of JavaScript code.
+
+## Examples
+
+### Using eval()
+
+In the following code, both of the statements containing `eval()` return 42.
+The first evaluates the string `"x + y + 1"`; the second evaluates the string
+`"42"`.
 
 ```js
-var obj = { a: 20, b: 30 };
-var propname = getPropName();  // "a" 또는 "b"를 반환
-
-eval( "var result = obj." + propname );
+const x = 2;
+const y = 39;
+const z = "42";
+eval("x + y + 1"); // 42
+eval(z); // 42
 ```
 
-그러나 여기에서 `eval()`을 쓸 필요가 없고, 지양되어야 합니다. 그 대신 훨씬 빠르고 안전한 [속성 접근자](/ko/docs/Web/JavaScript/Reference/Operators/Property_Accessors)를 사용하여야 합니다.
+### eval() returns the completion value of statements
+
+`eval()` returns the completion value of statements. For `if`, it would be the last expression or statement evaluated.
 
 ```js
-var obj = { a: 20, b: 30 };
-var propname = getPropName();  // "a" 또는 "b"를 반환
-var result = obj[ propname ];  //  obj[ "a" ]는 obj.a와 동일함
-```
+const str = "if (a) { 1 + 1 } else { 1 + 2 }";
+let a = true;
+let b = eval(str);
 
-이 방법으로 더 깊은 속성에도 접근할 수 있습니다. `eval()`을 사용한다면 다음과 같을 것입니다.
-
-```js
-    var obj = {a: {b: {c: 0}}};
-    var propPath = getPropPath();  // "a.b.c"를 반환한다고 가정
-
-    eval( 'var result = obj.' + propPath );
-```
-
-여기서 `eval()`의 사용을 피하려면 속성 경로를 [`split`](/ko/docs/Web/JavaScript/Reference/Global_Objects/String/split)한 다음 순서대로 접근할 수도 있습니다.
-
-```js
-    function getDescendantProp(obj, desc) {
-      var arr = desc.split('.');
-      while (arr.length) {
-        obj = obj[arr.shift()];
-      }
-      return obj;
-    }
-
-    var obj = {a: {b: {c: 0}}};
-    var propPath = getPropPath();  // "a.b.c"를 반환한다고 가정
-    var result = getDescendantProp(obj, propPath);
-```
-
-속성에 값을 대입하는 것도 비슷하게 할 수 있습니다.
-
-```js
-    function setDescendantProp(obj, desc, value) {
-      var arr = desc.split('.');
-      while (arr.length > 1) {
-        obj = obj[arr.shift()];
-      }
-      return obj[arr[0]] = value;
-    }
-
-    var obj = {a: {b: {c: 0}}};
-    var propPath = getPropPath();  // "a.b.c"를 반환한다고 가정
-    var result = setDescendantProp(obj, propPath, 1);  // test.a.b.c의 값은 1로 지정됨
-```
-
-### 단편적인 코드 수행 대신 함수 사용하기
-
-JavaScript의 [함수는 1급 객체](http://en.wikipedia.org/wiki/First-class_function)이므로 다른 API에 함수를 인자로 전달할 수도 있고, 변수나 객체의 속성으로 대입할 수도 있습니다. 다수의 DOM API는 이 점을 염두에 두고 설계되므로, 다음과 같이 코드를 짜야 합니다.
-
-```js
-// setTimeout(" ... ", 1000) 대신에
-setTimeout(function() { ... }, 1000);
-
-// elt.setAttribute("onclick", "...") 대신에
-elt.addEventListener("click", function() { ... } , false);
-```
-
-또한 [클로저](/ko/docs/Web/JavaScript/Closures)를 이용해 문자열을 합치는 등의 연산 없이 매개변수화된 함수를 생성할 수 있습니다.
-
-### JSON 파싱 (문자열을 JavaScript 객체로 변환)
-
-`eval()`을 호출하려는 문자열에 코드가 아니라 데이터가 포함되어 있다면(예를 들어 `"[1, 2, 3]"`과 같은 배열), 대신 JavaScript의 문법 일부를 이용해 문자열로 데이터를 표현할 수 있는 [JSON](/ko/docs/Web/JavaScript/Reference/Global_Objects/JSON)을 사용하는 것을 고려해 보세요. [Downloading JSON and JavaScript in extensions](/ko/docs/Downloading_JSON_and_JavaScript_in_extensions)도 참고해 보세요.
-
-JSON 문법은 JavaScript 문법에 비해 제약이 있기 때문에, 유효한 JavaScript 리터럴이 JSON으로 변환되지 않는 경우도 있습니다. 예를 들어, JSON에서는 배열이나 객체를 콤마로 끝낼 수 없고, 객체 리터럴에서 속성명(키)은 반드시 따옴표로 감싸야 합니다. 나중에 JSON으로 파싱할 문자열을 생성할 때는 JSON 직렬 변환기를 사용하여야 합니다.
-
-### 코드 대신 데이터 전달하기
-
-예를 들어, 웹 페이지의 내용을 추출하는 확장 프로그램은 JavaScript 코드 대신 [XPath](/ko/docs/XPath)에 스크랩 규칙을 정의할 수 있습니다.
-
-### 제한된 권한으로 코드 실행하기
-
-제3자 코드를 실행해야 할 때는 제한된 권한으로 실행하는 것을 고려해야 합니다. 이는 주로 확장 프로그램이나 XUL 어플리케이션에 적용되며, 이때 [Components.utils.evalInSandbox](/ko/docs/Components.utils.evalInSandbox)를 사용할 수 있습니다.
-
-## 예제
-
-### `eval` 사용하기
-
-아래 코드에서 `eval()`를 포함하는 문장은 모두 42를 반환합니다. 전자는 문자열 "`x + y + 1`"을, 후자는 문자열 "`42`"를 평가합니다.
-
-```js
-var x = 2;
-var y = 39;
-var z = "42";
-eval("x + y + 1"); // 42를 반환
-eval(z);           // 42를 반환
-```
-
-### `eval`을 사용해서 JavaScript 코드 문자열 평가하기
-
-다음 예제에서는 `eval()`을 사용하여 `str` 문자열을 평가합니다. 이 문자열은 `x`가 5이면 로그를 출력한 다음 `z`에 42를 할당하고, 그렇지 않으면 `z`에 0 을 할당하는 JavaScript 코드입니다. 두 번째 문장이 실행되면, `eval()`은 이 문장의 집합을 수행하고, `z`에 할당된 값을 반환합니다.
-
-```js
-var x = 5;
-var str = "if (x == 5) {console.log('z is 42'); z = 42;} else z = 0; ";
-
-console.log("z is ", eval(str));
-```
-
-여러 값을 정의할 경우 마지막 값을 반환합니다.
-
-```js
-    var x = 5;
-    var str = "if (x == 5) {console.log('z is 42'); z = 42; x = 420; } else z = 0;";
-
-    console.log('x is ', eval(str)); // z는 42, x는 420
-```
-
-### 마지막 표현식이 수행된다
-
-`eval()` 은 마지막 표현식의 평가값을 반환합니다.
-
-```js
-var str = "if ( a ) { 1+1; } else { 1+2; }";
-var a = true;
-var b = eval(str);  // 2를 반환
-
-console.log("b is : " + b);
+console.log(`b is: ${b}`); // b is: 2
 
 a = false;
-b = eval(str);  // 3을 반환
+b = eval(str);
 
-console.log("b is : " + b);
+console.log(`b is: ${b}`); // b is: 3
 ```
 
-### 함수 정의 문자열로서의 `eval` 은 앞뒤를 "("와 ")"로 감싸야 한다
+The following example uses `eval()` to evaluate the string `str`. This string consists of JavaScript statements that assign `z` a value of 42 if `x` is five, and assign 0 to `z` otherwise. When the second statement is executed, `eval()` will cause these statements to be performed, and it will also evaluate the set of statements and return the value that is assigned to `z`, because the completion value of an assignment is the assigned value.
 
 ```js
-var fctStr1 = "function a() {}"
-var fctStr2 = "(function a() {})"
-var fct1 = eval(fctStr1)  // undefined를 반환
-var fct2 = eval(fctStr2)  // 함수를 반환
+const x = 5;
+const str = `if (x === 5) {
+  console.log("z is 42");
+  z = 42;
+} else {
+  z = 0;
+}`;
+
+console.log("z is ", eval(str)); // z is 42  z is 42
 ```
 
-## 브라우저 호환성
+If you assign multiple values then the last value is returned.
+
+```js
+let x = 5;
+const str = `if (x === 5) {
+  console.log("z is 42");
+  z = 42;
+  x = 420;
+} else {
+  z = 0;
+}`;
+
+console.log("x is", eval(str)); // z is 42  x is 420
+```
+
+### eval() as a string defining function requires "(" and ")" as prefix and suffix
+
+```js
+// This is a function declaration
+const fctStr1 = "function a() {}";
+// This is a function expression
+const fctStr2 = "(function b() {})";
+const fct1 = eval(fctStr1); // return undefined, but `a` is available as a global function now
+const fct2 = eval(fctStr2); // return the function `b`
+```
+
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
 
 {{Compat}}
 
-## 참고
+## See also
 
-- {{jsxref("Global_Objects/uneval", "uneval()")}}
-- [속성 접근자](/ko/docs/Web/JavaScript/Reference/Operators/Property_Accessors)
-- [WebExtensions: Using eval in content scripts](<https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Content_scripts#Using_eval()_in_content_scripts>)
+- [Property accessors](/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors)
+- [WebExtensions: Using eval in content scripts](/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts#using_eval_in_content_scripts)

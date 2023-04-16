@@ -1,25 +1,26 @@
 ---
-title: AudioParam.maxValue
+title: "AudioParam: maxValue property"
+short-title: maxValue
 slug: Web/API/AudioParam/maxValue
+page-type: web-api-instance-property
+browser-compat: api.AudioParam.maxValue
 ---
 
 {{APIRef("Web Audio API")}}
 
-{{domxref("AudioParam")}} 인터페이스의 읽기 전용 **`maxValue`** 속성은 파라미터의 명목상의 (효과적인) 범위에 대해 최대로 가능한 값을 나타냅니다.
+The **`maxValue`**
+read-only property of the {{domxref("AudioParam")}} interface represents the maximum
+possible value for the parameter's nominal (effective) range.
 
-## 구문
+## Value
 
-```js
-var maxVal = audioParam.maxValue;
-```
+A floating-point {{jsxref("Number")}} indicating the maximum value permitted for the
+parameter's nominal range.
 
-### 값
+The default value of `maxValue` is the maximum positive single-precision
+floating-point value (+340,282,346,638,528,859,811,704,183,484,516,925,440).
 
-매개변수의 명목상의 범위에 대해 허용되는 최대 값을 나타내는 부동점 {{jsxref("Number")}}.
-
-`maxValue` 의 기본 값은 최대 양수 단일 정밀도 부동점 값(+340,282,346,638,528,859,811,704,183,484,516,925,440)입니다.
-
-## 예제
+## Examples
 
 ```js
 const audioCtx = new AudioContext();
@@ -27,14 +28,14 @@ const gainNode = audioCtx.createGain();
 console.log(gainNode.gain.maxValue); // 3.4028234663852886e38
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("AudioParam.minValue")}}

@@ -1,26 +1,25 @@
 ---
-title: ServiceWorkerRegistration.navigationPreload
+title: "ServiceWorkerRegistration: navigationPreload property"
+short-title: navigationPreload
 slug: Web/API/ServiceWorkerRegistration/navigationPreload
+page-type: web-api-instance-property
+browser-compat: api.ServiceWorkerRegistration.navigationPreload
 ---
 
-{{SeeCompatTable}}{{APIRef("Service Workers API")}}
+{{APIRef("Service Workers API")}}
 
-{{domxref("ServiceWorkerRegistration")}} 인터페이스의 **`navigationPreload`** 읽기 전용 속성은 현재의 서비스 워커 등록와 관련된 {{domxref("NavigationPreloadManager")}} 를 반환한다.
+The **`navigationPreload`** read-only property of the {{domxref("ServiceWorkerRegistration")}} interface returns the {{domxref("NavigationPreloadManager")}} associated with the current service worker registration.
 
-## Syntax
+The returned object allows resources managed by a service worker to be preemptively downloaded in parallel with service worker boot up.
 
-```js
-var navigationPreloadManager = serviceWorkerRegistration.navigationPreload
-```
+## Value
 
-### Value
+An instance of {{domxref("NavigationPreloadManager")}}.
 
-{{domxref("NavigationPreloadManager")}} 의 객체.
-
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

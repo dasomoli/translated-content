@@ -1,95 +1,105 @@
 ---
 title: Object.getOwnPropertyDescriptors()
 slug: Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptors
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Object.getOwnPropertyDescriptors
 ---
+
 {{JSRef}}
 
-**`Object.getOwnPropertyDescriptors()`** 메서드는 주어진 객체의 모든 속성들의 설명자(descriptor)들을 반환합니다.
+The **`Object.getOwnPropertyDescriptors()`** static method returns all
+own property descriptors of a given object.
 
 {{EmbedInteractiveExample("pages/js/object-getownpropertydescriptors.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 Object.getOwnPropertyDescriptors(obj)
 ```
 
-### 매개변수
+### Parameters
 
 - `obj`
-  - : 가지고 있는 모든 속성들의 설명자를 반환받고 싶은 객체
+  - : The object for which to get all own property descriptors.
 
-### 반환 값
+### Return value
 
-객체의 모든 속성의 설명자를 가지는 객체를 반환합니다. 매개변수 객체에 속성이 없다면, 빈 객체가 반환됩니다.
+An object containing all own property descriptors of an object. Might be an empty
+object, if there are no properties.
 
-## 설명
+## Description
 
-이 메서드를 사용하면, 객체의 모든 속성들에 대한 설명자를 정확하게 확인할 수 있습니다.
-자바스크립트의 *속성*은 문자열로된 이름 또는 심볼, 그리고 속성 설명자로 이루어져 있습니다.
-속성 설명자 종류와 특성에 대한 자세한 정보는 {{jsxref("Object.defineProperty()")}}에 있습니다..
+This method permits examination of the precise description of all own properties of an
+object. A _property_ in JavaScript consists of either a string-valued name or a
+{{jsxref("Symbol")}} and a property descriptor. Further information about property
+descriptor types and their attributes can be found in
+{{jsxref("Object.defineProperty()")}}.
 
-_속성 설명자_ 는 다음과 같은 특징들을 가진 레코드입니다.
+A _property descriptor_ is a record with some of the following attributes:
 
 - `value`
-  - : 속성과 관련된 값입니다. (데이터 설명자만 해당됨)
+  - : The value associated with the property (data descriptors only).
 - `writable`
-  - : `참(true)`인 경우, 속성과 관련된 값이 변경될 수 있는 상태입니다. (데이터 설명자만 해당됨)
+  - : `true` if and only if the value associated with the property may be
+    changed (data descriptors only).
 - `get`
-  - : 속성에 대한 getter 역할을 하는 함수거나, getter가 정의되지 않은 경우에는 {{jsxref("undefined")}} 입니다.
-    (접근자 설명자만 해당됨)
+  - : A function which serves as a getter for the property, or {{jsxref("undefined")}} if
+    there is no getter (accessor descriptors only).
 - `set`
-  - : 속성에 대한 setter 역할을 하는 함수거나, setter 정의되지 않은 경우에는 {{jsxref("undefined")}} 입니다.
-    (접근자 설명자만 해당됨)
+  - : A function which serves as a setter for the property, or {{jsxref("undefined")}} if
+    there is no setter (accessor descriptors only).
 - `configurable`
-  - : `참(true)`인 경우, 객체로 부터 속성 설명자가 변경 및 삭제될 수 있는 상태입니다.
+  - : `true` if and only if the type of this property descriptor may be changed
+    and if the property may be deleted from the corresponding object.
 - `enumerable`
-  - : `true`인 경우, 열거 가능한 상태의 속성입니다.
+  - : `true` if and only if this property shows up during enumeration of the
+    properties on the corresponding object.
 
-## 예시
+## Examples
 
-### 얕은 복사하기
+### Creating a shallow copy
 
-{{jsxref("Object.assign()")}} 메서드는 원본 객체에서 목표 객체로 열거 가능한 속성과 객체의 속성들만 복사하는 반면,
-이 메서드와 {{jsxref("Object.create()")}} 를 사용하면 어느 두 객체를 얕은 복사에 사용할 수 있습니다.
+Whereas the {{jsxref("Object.assign()")}} method will only copy enumerable and own
+properties from a source object to a target object, you are able to use this method and
+{{jsxref("Object.create()")}} for a [shallow copy](/en-US/docs/Glossary/Shallow_copy) between two unknown objects:
 
 ```js
 Object.create(
   Object.getPrototypeOf(obj),
-  Object.getOwnPropertyDescriptors(obj)
+  Object.getOwnPropertyDescriptors(obj),
 );
 ```
 
-### 서브클래스 만들기
+### Creating a subclass
 
-서브클래스를 만드는 일반적인 방법은 서브클래스를 정의하고, 프로토타입을 슈퍼 클래스의 인스턴스로 설정한 다음, 그 인스턴스에 속성을 정의하는 것입니다.
-이 방법은 게터와 세터의 경우 굉장히 불편합니다. 대신, 다음 코드를 사용하여 프로토타입을 설정할 수 있습니다.
+A typical way of creating a subclass is to define the subclass, set its prototype to an
+instance of the superclass, and then define properties on that instance. This can get
+awkward especially for getters and setters. Instead, you can use this code to set the
+prototype:
 
 ```js
 function superclass() {}
 superclass.prototype = {
-  // 여기에 슈퍼 클래스의 생성자, 매서드, 속성을 정의합니다.
+  // Define the superclass constructor, methods, and properties here
 };
 function subclass() {}
-subclass.prototype = Object.create(
-  superclass.prototype,
-  {
-    // 여기에 서브클래스의 생성자, 매서드, 속성을 정의합니다.
-  }
-);
+subclass.prototype = Object.create(superclass.prototype, {
+  // Define the subclass constructor, methods, and properties here
+});
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- `Object.getOwnPropertyDescriptors`의 폴리필은 다음에서 확인 할 수 있습니다. [`core-js`](https://github.com/zloirock/core-js#ecmascript-object)
+- [Polyfill of `Object.getOwnPropertyDescriptors` in `core-js`](https://github.com/zloirock/core-js#ecmascript-object)
 - {{jsxref("Object.getOwnPropertyDescriptor()")}}
 - {{jsxref("Object.defineProperty()")}}
 - [Polyfill](https://github.com/tc39/proposal-object-getownpropertydescriptors)

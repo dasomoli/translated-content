@@ -5,27 +5,27 @@ slug: Web/XPath/Functions/element-available
 
 {{ XsltRef() }}
 
-`element-available` 함수는 요소가 이용 가능한 지를 결정하고 true나 false를 반환합니다.
+The `element-available` function determines if an element is available and returns true or false.
 
-### 구문
+### Syntax
 
+```plain
+element-available( QName )
 ```
-element-available(QName )
-```
 
-### 인수
+### Arguments
 
 - `QName`
-  - : 유효한 QName으로 평가해야 합니다. QName은 식 범위(scope)에서 이름공간 선언을 써서 확장 이름으로 확장됩니다.
+  - : Must evaluate to a valid QName. The QName is expanded into an expanded-name using the namespace declarations in scope for the expression.
 
-### 반환
+### Returns
 
-만약 확장 이름이 명령 이름이면 true를 반환합니다. 만약 확장 이름에 XSLT 이름공간 URI와 같은 이름공간 URI이 있으면, XSLT로 정의된 요소를 참조합니다. 그렇지 않으면, extension 요소를 참조합니다. 만약 확장 이름에 null 이름공간 URI가 있으면, element-available 함수는 false를 반환합니다.
+Returns true if and only if the expanded-name is the name of an instruction. If the expanded-name has a namespace URI equal to the XSLT namespace URI, then it refers to an element defined by XSLT. Otherwise, it refers to an extension element. If the expanded-name has a null namespace URI, the element-available function will return false.
 
-### 정의
+### Defined
 
-[XSLT 1.0 15](http://www.w3.org/TR/xslt#function-element-available)
+[XSLT 1.0 15](https://www.w3.org/TR/1999/REC-xslt-19991116/#function-element-available)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

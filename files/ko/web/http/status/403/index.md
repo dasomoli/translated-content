@@ -1,36 +1,38 @@
 ---
 title: 403 Forbidden
 slug: Web/HTTP/Status/403
+page-type: http-status-code
+browser-compat: http.status.403
 ---
 
 {{HTTPSidebar}}
 
-HTTP **`403 Forbidden`** 클라이언트 오류 상태 응답 코드는 서버에 요청이 전달되었지만, 권한 때문에 거절되었다는 것을 의미합니다.
+The HTTP **`403 Forbidden`** response status code indicates that the server understands the request but refuses to authorize it.
 
-이 상태는 {{HTTPStatus("401")}}과 비슷하지만, 로그인 로직(틀린 비밀번호로 로그인 행위)처럼 반응하여 재인증(re-authenticating)을 하더라도 지속적으로 접속을 거절합니다.
+This status is similar to {{HTTPStatus("401")}}, but for the **`403 Forbidden`** status code, re-authenticating makes no difference. The access is tied to the application logic, such as insufficient rights to a resource.
 
-## 상태
+## Status
 
 ```http
 403 Forbidden
 ```
 
-## 응답 예시
+## Example response
 
 ```http
 HTTP/1.1 403 Forbidden
 Date: Wed, 21 Oct 2015 07:28:00 GMT
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{HTTPStatus("401")}}
-- [HTTP/1.1: Status Code Definitions](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
+- [HTTP Status Code Definitions](https://httpwg.org/specs/rfc9110.html#status.403)

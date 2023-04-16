@@ -1,24 +1,34 @@
 ---
 title: <angle-percentage>
 slug: Web/CSS/angle-percentage
+page-type: css-type
+browser-compat: css.types.angle-percentage
 ---
 
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`<angle-percentage>`** [자료형](/ko/docs/Web/CSS/CSS_Types)은 {{cssxref("&lt;angle&gt;")}}과 {{cssxref("&lt;percentage&gt;")}} 모두 가능한 값을 나타냅니다.
+The **`<angle-percentage>`** [CSS](/en-US/docs/Web/CSS) [data type](/en-US/docs/Web/CSS/CSS_Types) represents a value that can be either a {{Cssxref("angle")}} or a {{Cssxref("percentage")}}.
 
-## 구문
+Where an `<angle-percentage>` is specified as an allowable type, this means that the percentage resolves to an angle and therefore can be used in a {{Cssxref("calc", "calc()")}} expression.
 
-{{cssxref("&lt;angle&gt;")}}과 {{cssxref("&lt;percentage&gt;")}} 문서에서 각 자료형의 구문을 살펴보세요.
+## Syntax
 
-## `calc()`에서 사용하기
+Refer to the documentation for {{Cssxref("angle")}} and {{Cssxref("percentage")}} for details of the individual syntaxes allowed by this type.
 
-`<angle-percentage>` 를 사용할 수 있는 곳이라면 백분율이 각도로 계산되므로, 이 자료형도 {{cssxref("calc()")}}표현식에서 사용할 수 있습니다.
+## Formal syntax
 
-## 명세
+{{csssyntax}}
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- [CSS data types](/en-US/docs/Web/CSS/CSS_Types)
+- [Using CSS gradients](/en-US/docs/Web/CSS/CSS_Images/Using_CSS_gradients)
+- [`conic-gradient()`](/en-US/docs/Web/CSS/gradient/conic-gradient) and [`repeating-conic-gradient()`](/en-US/docs/Web/CSS/gradient/repeating-conic-gradient)

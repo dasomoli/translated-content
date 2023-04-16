@@ -1,86 +1,92 @@
 ---
 title: for...in
 slug: Web/JavaScript/Reference/Statements/for...in
+page-type: javascript-statement
+browser-compat: javascript.statements.for_in
 ---
 
 {{jsSidebar("Statements")}}
 
-`for...in`문은 상속된 열거 가능한 속성들을 포함하여 객체에서 문자열로 키가 지정된 모든 열거 가능한 속성에 대해 반복합니다. ([Symbol](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol)로 키가 지정된 속성은 무시합니다.)
+The **`for...in`** statement iterates over all [enumerable string properties](/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties) of an object (ignoring properties keyed by [symbols](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol)), including inherited enumerable properties.
 
 {{EmbedInteractiveExample("pages/js/statement-forin.html")}}
 
-## 문법
+## Syntax
 
-```js
-for (const variable in object) {
+```js-nolint
+for (variable in object)
   statement
-}
 ```
 
-### 파라미터
+### Parameters
 
 - `variable`
-  - : 매번 반복마다 다른 속성이름(Value name)이 `변수(variable)`로 지정됩니다.
+  - : Receives a string property name on each iteration. May be either a declaration with [`const`](/en-US/docs/Web/JavaScript/Reference/Statements/const), [`let`](/en-US/docs/Web/JavaScript/Reference/Statements/let), or [`var`](/en-US/docs/Web/JavaScript/Reference/Statements/var), or an [assignment](/en-US/docs/Web/JavaScript/Reference/Operators/Assignment) target (e.g. a previously declared variable or an object property).
 - `object`
-  - : 반복작업을 수행할 객체로 열거형 속성을 가지고 있는 객체.
+  - : Object whose non-symbol enumerable properties are iterated over.
+- `statement`
+  - : A statement to be executed on every iteration. May reference `variable`. You can use a [block statement](/en-US/docs/Web/JavaScript/Reference/Statements/block) to execute multiple statements.
 
-## 설명
+## Description
 
-`for...in`문은 열거 가능한 non-Symbol 속성에 대해서만 반복합니다.
+The loop will iterate over all enumerable properties of the object itself and those the object inherits from its prototype chain (properties of nearer prototypes take precedence over those of prototypes further away from the object in its prototype chain).
 
- `Array`나 `Object` 등 내장 constructor를 통해 만들어진 객체는 {{jsxref("String")}}의 {{jsxref("String.indexOf", "indexOf()")}}, {{jsxref("Object")}}의 {{jsxref("Object.toString", "toString()")}}와 같이 `Object.prototype`, `String.prototype` 로부터 열거가 가능하지 않은 속성들을 상속해왔습니다. `for...in`문은 객체 자체의 모든 열거 가능한 속성들과 프로토타입 체인으로부터 상속받은 속성들에 대해 반복할 것입니다. (더 가까운 프로토타입의 속성들이 프로토타입 체인 객체로부터 더 멀리 떨어진 프로토 타입의 속성보다 더 우선합니다.)
+A `for...in` loop only iterates over enumerable, non-symbol properties. Objects created from built–in constructors like `Array` and `Object` have inherited non–enumerable properties from `Array.prototype` and `Object.prototype`, such as {{jsxref("Array")}}'s {{jsxref("Array/indexOf", "indexOf()")}} method or {{jsxref("Object")}}'s {{jsxref("Object/toString", "toString()")}} method, which will not be visited in the `for...in` loop.
 
-### 속성의 삭제, 추가, 수정
+The traversal order, as of modern ECMAScript specification, is well-defined and consistent across implementations. Within each component of the prototype chain, all non-negative integer keys (those that can be array indices) will be traversed first in ascending order by value, then other string keys in ascending chronological order of property creation.
 
-<code>for..in</code> 문은 임의의 순서로 객체의 속성들에 대해 반복합니다. (적어도 <code>cross-browser</code> 설정에서는 왜 표면적으로 보이는 반복의 순서를 따를 수 없는지에 대해서 {{jsxref("Operators/delete", "delete")}} 를 참고하십시오.)
+The `variable` part of `for...in` accepts anything that can come before the `=` operator. You can use {{jsxref("Statements/const", "const")}} to declare the variable as long as it's not reassigned within the loop body (it can change between iterations, because those are two separate variables). Otherwise, you can use {{jsxref("Statements/let", "let")}}. You can use [destructuring](/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) or an object property like `for (x.y in iterable)` as well.
 
-만약 한 반복으로 속성이 수정된 후에 방문하는 경우, 반복문에서의 그 값은 나중의 값으로 정해집니다. 방문하기 전에 삭제된 속성에 대해서는 이후에 방문하지 않습니다. 반복이 발생하는 객체에 추가된 속성은 방문하거나 반복에서 생략할 수 있습니다.
+A [legacy syntax](/en-US/docs/Web/JavaScript/Reference/Deprecated_and_obsolete_features#statements) allows `var` declarations of the loop variable to have an initializer. This throws a [syntax error](/en-US/docs/Web/JavaScript/Reference/Errors/Invalid_for-in_initializer) in strict mode and is ignored in non–strict mode.
 
-일반적으로 현재 방문 중인 속성 외에는 반복하는 동안 객체의 속성을 추가, 수정, 제거하지 않는 것이 가장 좋습니다. 추가된 속성을 방문할 것인지, 수정된 속성(현재의 속성 제외)을 수정 이전 혹은 이후에 방문할 것인지, 삭제된 속성을 삭제 이전에 방문할 것인지에 대해서는 보장할 수 없습니다.
+### Deleted, added, or modified properties
 
-### 배열의 반복과 for...in
+If a property is modified in one iteration and then visited at a later time, its value in the loop is its value at that later time. A property that is deleted before it has been visited will not be visited later. Properties added to the object over which iteration is occurring may either be visited or omitted from iteration.
 
-> **Note:** `for...in`은 인덱스의 순서가 중요한 {{jsxref("Array")}}에서 반복을 위해 사용할 수 없습니다.
+In general, it is best not to add, modify, or remove properties from the object during iteration, other than the property currently being visited. There is no guarantee whether an added property will be visited, whether a modified property (other than the current one) will be visited before or after it is modified, or whether a deleted property will be visited before it is deleted.
 
-배열 인덱스는 정수로 된 열거 가능한 속성이며, 일반적인 객체의 속성들과 같습니다. `for...in`은 특정 순서에 따라 인덱스를 반환하는 것을 보장할 수 없습니다. `for...in`반복문은 정수가 아닌 이름을 가진 속성, 상속된 모든 열거 가능한 속성들을 반환합니다.
+### Array iteration and for...in
 
-반복되는 순서는 구현에 따라 다르기 때문에, 배열의 반복이 일관된 순서로 요소를 방문하지 못할 수도 있습니다. 그러므로 방문의 순서가 중요한 배열의 반복시에는 숫자 인덱스를 사용할 수 있는 `for` 반복문을 사용하는 것이 좋습니다.(또는 {{jsxref("Array.prototype.forEach()")}}, {{jsxref("Statements/for...of", "for...of")}}를 권장합니다.)
+Array indexes are just enumerable properties with integer names and are otherwise identical to general object properties. The `for...in` loop will traverse all integer keys before traversing other keys, and in strictly increasing order, making the behavior of `for...in` close to normal array iteration. However, the `for...in` loop will return all enumerable properties, including those with non–integer names and those that are inherited. Unlike `for...of`, `for...in` uses property enumeration instead of the array's iterator. In [sparse arrays](/en-US/docs/Web/JavaScript/Guide/Indexed_collections#sparse_arrays), `for...of` will visit the empty slots, but `for...in` will not.
 
-### 자체 속성만 반복
+It is better to use a {{jsxref("Statements/for", "for")}} loop with a numeric index, {{jsxref("Array.prototype.forEach()")}}, or the {{jsxref("Statements/for...of", "for...of")}} loop, because they will return the index as a number instead of a string, and also avoid non-index properties.
 
-만약 당신이 객체의 프로토타입이 아닌 객체 자체에 연결된 속성만 고려한다면 {{jsxref("Object.getOwnPropertyNames", "getOwnPropertyNames()")}}나 {{jsxref("Object.prototype.hasOwnProperty", "hasOwnProperty()")}}를 사용하십시오.({{jsxref("Object.prototype.propertyIsEnumerable", "propertyIsEnumerable()")}} 또한 가능합니다.) 또는 외부적인 코드 간섭이 없다면 체크 메서드로 내장 프로토타입을 확장할 수 있습니다.
+### Iterating over own properties only
 
-## 왜 for...in을 사용합니까?
+If you only want to consider properties attached to the object itself, and not its prototypes, you can use one of the following techniques:
 
-`for...in`이 객체의 반복을 위해 만들어졌지만, 배열의 반복을 위해서는 추천되지 않고, `Array.prototype.forEach()`, `for...of`가 이미 존재합니다. 그러면 for...in은 어떻게 사용하는 것이 좋을까요?
+- {{jsxref("Object.keys", "Object.keys(myObject)")}}
+- {{jsxref("Object.getOwnPropertyNames", "Object.getOwnPropertyNames(myObject)")}}
 
-이것은 쉽게 객체의 속성을 확인(콘솔이나 다른 방법으로 출력)할 수 있기 때문에 실질적으로 디버깅을 위해 사용될 수 있습니다. 배열이 데이터의 저장에 있어서는 더 실용적이지만, 키-값 쌍이 선호되는 데이터의 경우(속성이 "key"의 역할을 함) 특정 값을 가진 키가 있는지 확인하려는 경우에 for...in을 사용할 수 있습니다.
+`Object.keys` will return a list of enumerable own string properties, while `Object.getOwnPropertyNames` will also contain non-enumerable ones.
 
-## 예제
+Many JavaScript style guides and linters recommend against the use of `for...in`, because it iterates over the entire prototype chain which is rarely what one wants, and may be a confusion with the more widely-used `for...of` loop. `for...in` is most practically used for debugging purposes, being an easy way to check the properties of an object (by outputting to the console or otherwise). In situations where objects are used as ad hoc key-value pairs, `for...in` allows you check if any of those keys hold a particular value.
 
-### for...in의 사용
+## Examples
 
-아래의 예는 열거 가능한 non-Symbol속성들을 반복해서 속성의 이름과 그 값을 기록합니다.
+### Using for...in
+
+The `for...in` loop below iterates over all of the object's enumerable, non-symbol properties and logs a string of the property names and their values.
 
 ```js
-var obj = {a: 1, b: 2, c: 3};
+const obj = { a: 1, b: 2, c: 3 };
 
 for (const prop in obj) {
   console.log(`obj.${prop} = ${obj[prop]}`);
 }
 
-// Output:
+// Logs:
 // "obj.a = 1"
 // "obj.b = 2"
 // "obj.c = 3"
 ```
 
-### 자체 속성 반복
+### Iterating own properties
 
-아래는 {{jsxref("Object.prototype.hasOwnProperty", "hasOwnProperty()")}} 를 사용하는 예를 보여주고 있습니다. 상속된 속성은 표시되지 않습니다.
+The following function illustrates the use of {{jsxref("Object.hasOwn", "Object.hasOwn()")}}: the inherited properties are not displayed.
 
 ```js
-var triangle = {a:1, b:2, c:3};
+const triangle = { a: 1, b: 2, c: 3 };
 
 function ColoredTriangle() {
   this.color = "red";
@@ -88,56 +94,30 @@ function ColoredTriangle() {
 
 ColoredTriangle.prototype = triangle;
 
-function show_own_props(obj, objName) {
-  var result = "";
+const obj = new ColoredTriangle();
 
-  for (var prop in obj) {
-    if( obj.hasOwnProperty( prop ) ) {
-      result += objName + "." + prop + " = " + obj[prop] + "\n";
-    }
+for (const prop in obj) {
+  if (Object.hasOwn(obj, prop)) {
+    console.log(`obj.${prop} = ${obj[prop]}`);
   }
-
-  return result;
 }
 
-o = new ColoredTriangle();
-alert(show_own_props(o, "o")); /* alerts: o.color = red */
+// Logs:
+// "obj.color = red"
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-### Compatibility: Initializer expressions in strict mode
-
-Prior to Firefox 40, it was possible to use an initializer expression
-(`i=0`) in a `for...in` loop:
-
-```js example-bad
-const obj = { a: 1, b: 2, c: 3 };
-for (var i = 0 in obj) {
-  console.log(obj[i]);
-}
-// 1
-// 2
-// 3
-```
-
-This nonstandard behavior is now ignored in version 40 and later, and will present a {{jsxref("SyntaxError")}} ("[for-in loop head declarations may not have initializers](/en-US/docs/Web/JavaScript/Reference/Errors/Invalid_for-in_initializer)") error in [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode) ([bug 748550](https://bugzilla.mozilla.org/show_bug.cgi?id=748550) and [bug 1164741](https://bugzilla.mozilla.org/show_bug.cgi?id=1164741)).
-
-Other engines such as v8 (Chrome), Chakra (IE/Edge), and JSC (WebKit/Safari) are
-investigating whether to remove the nonstandard behavior as well.
-
 ## See also
 
-- {{jsxref("Statements/for...of", "for...of")}} – a similar statement that iterates
-  over the property _values_
+- {{jsxref("Statements/for...of", "for...of")}}
 - {{jsxref("Statements/for", "for")}}
-- [Iterators and Generator functions](/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators) (usable with `for...of` syntax)
 - [Enumerability and ownership of properties](/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties)
 - {{jsxref("Object.getOwnPropertyNames()")}}
 - {{jsxref("Object.hasOwn()")}}

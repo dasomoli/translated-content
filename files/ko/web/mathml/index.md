@@ -1,43 +1,52 @@
 ---
 title: MathML
 slug: Web/MathML
+page-type: landing-page
+browser-compat: mathml.elements.math
 ---
 
-**MathML**(**Mathematical Markup Language**)은 수학 표기를 기술하고 그 구조와 내용을 모두 담고 있는 [XML](/ko/docs/XML) 마크 업 언어이다. 여기에는 이 강력한 기술을 사용하게 해주는 문서와 예제, 도구에 대한 링크를 제공하고 있다.
+{{MathMLRef}}
 
-## MathML 레퍼런스
+**Mathematical Markup Language (MathML)** is an [XML](/en-US/docs/Web/XML)-based language for describing mathematical notation.
 
-- [MathML 요소 레퍼런스](/ko/docs/Web/MathML/Element)
-  - : MathML 요소에 대한 상세 내용과 데스크톱 및 모바일 브라우저에 대한 호환성 정보를 담고 있다.
-- [MathML 속성 레퍼런스](/ko/docs/Web/MathML/Attribute)
-  - : 요소의 모양이나 동작을 변경하는 MathML 속성에 대한 정보를 제공한다.
-- [MathML 예제](/ko/docs/Web/MathML/Examples)
-  - : MathML 작동 방식에 대한 이해를 돕는 샘플과 예제를 소개한다.
-- [MathML 작성](/ko/docs/Web/MathML/Authoring)
-  - : MathML 편집기와 결과를 웹에 적용하는 방법이 포함된 MathML을 작성하는데 도움이 되는 추천과 팁을 소개한다.
+[MathML](https://w3c.github.io/mathml/) was originally designed as a general-purpose specification for browsers, office suites, [computer algebra systems](https://en.wikipedia.org/wiki/Computer_algebra_system), [EPUB](https://www.w3.org/publishing/epub32/) readers, [LaTeX](https://en.wikipedia.org/wiki/LaTeX)-based generators. However, this approach was not very adapted to the Web: the [subset focusing on semantics](https://w3c.github.io/mathml/#contm) has never been implemented in browsers while the [subset focusing on math layout](https://w3c.github.io/mathml/#presm) led to incomplete and inconsistent browser implementations.
 
-## 커뮤니티
+[MathML Core](https://w3c.github.io/mathml-core/) is a subset with increased implementation details based on rules from [LaTeX](https://en.wikipedia.org/wiki/LaTeX) and the [Open Font Format](https://docs.microsoft.com/typography/opentype/spec/math). It is tailored for browsers and designed specifically to work well with other web standards including [HTML](/en-US/docs/Web/HTML), [CSS](/en-US/docs/Web/CSS), [DOM](/en-US/docs/Web/API/Document_Object_Model), [JavaScript](/en-US/docs/Web/JavaScript).
 
-- [IRC 채널](irc://irc.mozilla.org/%23mathml)
-- [Wiki used by Mozilla 공헌자 위키](https://wiki.mozilla.org/MathML:Home_Page)
-- [W3C Math Home](http://www.w3.org/Math/)
-- [www-math w3.org 메일 아카이브](http://lists.w3.org/Archives/Public/www-math/)
+Below you will find links to documentation, examples, and tools to work with MathML. MDN uses [MathML Core](https://w3c.github.io/mathml-core/) as a reference specification but, due to an erratic standardization history, legacy MathML features may still show up in existing implementations and web content.
 
-## 도구
+> **Note:** It is highly recommended that developers and authors switch to MathML Core, perhaps relying on other web technologies to cover missing use cases. The Math WG is maintaining a set of [MathML polyfills](https://github.com/mathml-refresh/mathml-polyfills) to facilitate that transition.
 
-- [W3C Validator](http://validator.w3.org)
-- [FireMath Firefox 부가기능](https://addons.mozilla.org/de/firefox/addon/8969/)
-- [Mathzilla Firefox 부가기능 모음](https://addons.mozilla.org/firefox/collections/fred_wang/mathzilla/)
-- [LaTeXML](http://dlmf.nist.gov/LaTeXML/) - Convert LaTeX 문서를 HTML+MathML 웹페이지로 변경
-- [Web Equation](http://webdemo.visionobjects.com/equation.html) - 손으로 작성한 공식을 MathML이나 LaTeX로 변환
-- [MathJax](http://www.mathjax.org/) - 크로스 브라우징 JavaScript 수학 출력 엔진. See also the [MathJax Native MathML add-on](https://addons.mozilla.org/en-US/firefox/addon/mathjax-native-mathml/).
+## MathML reference
 
-## 관련 항목
+- [MathML element reference](/en-US/docs/Web/MathML/Element)
+  - : Details about each MathML element and compatibility information for desktop and mobile browsers.
+- [MathML attribute reference](/en-US/docs/Web/MathML/Attribute)
+  - : Information about MathML attributes that modify the appearance or behavior of elements.
+- [MathML examples](/en-US/docs/Web/MathML/Examples)
+  - : MathML samples and examples to help you understand how it works.
+- [Authoring MathML](/en-US/docs/Web/MathML/Authoring)
+  - : Suggestions and tips for writing MathML, including suggested MathML editors and how to integrate their output into Web content.
+- [MathML tutorial](/en-US/docs/Learn/MathML)
+  - : A gentle introduction to MathML.
 
-- [CSS](/ko/docs/Web/CSS)
-- [HTML](/ko/docs/Web/HTML)
-- [SVG](/ko/docs/Web/SVG)
+## Getting help from the community
 
-## 브라우저 호환성
+- [W3C Math Home](https://www.w3.org/Math/)
+- [Raise issues on GitHub w3c/mathml repository](https://github.com/w3c/mathml/issues)
+- [www-math w3.org mail archive](https://lists.w3.org/Archives/Public/www-math/)
+
+## Tools
+
+- [W3C Validator](https://validator.w3.org)
+- [W3C's wiki page](https://www.w3.org/wiki/Math_Tools)
+
+## Related topics
+
+- [CSS](/en-US/docs/Web/CSS)
+- [HTML](/en-US/docs/Web/HTML)
+- [SVG](/en-US/docs/Web/SVG)
+
+## Browser compatibility
 
 {{Compat}}

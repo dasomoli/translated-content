@@ -1,31 +1,44 @@
 ---
-title: 'InternalError: too much recursion'
+title: "InternalError: too much recursion"
 slug: Web/JavaScript/Reference/Errors/Too_much_recursion
+page-type: javascript-error
 ---
 
 {{jsSidebar("Errors")}}
 
-## 메시지
+The JavaScript exception "too much recursion" or "Maximum call stack size exceeded"
+occurs when there are too many function calls, or a function is missing a base case.
+
+## Message
 
 ```
-    InternalError: too much recursion
+RangeError: Maximum call stack size exceeded (Chrome)
+InternalError: too much recursion (Firefox)
+RangeError: Maximum call stack size exceeded. (Safari)
 ```
 
-## 에러 형식
+## Error type
 
-[`InternalError`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError).
+{{jsxref("InternalError")}} in Firefox; {{jsxref("RangeError")}} in Chrome and Safari.
 
-## 무엇이 잘못되었을까?
+## What went wrong?
 
-자신을 호출하는 함수를 재귀 함수라고 합니다. 어떤 면에서, 재귀는 반복과 유사합니다. 둘 다 같은 코드를 여러 번 실행하며, 조건(무한 반복 피하기, 더 정확히 여기서 말하는 무한 재귀)이 있습니다. 너무 많거나 무한 번의 재귀가 발생할 경우, JavaScript는 이 에러를 던질 것입니다.
+A function that calls itself is called a _recursive function_. Once a condition
+is met, the function stops calling itself. This is called a _base case_.
 
-## 예
+In some ways, recursion is analogous to a loop. Both execute the same code multiple
+times, and both require a condition (to avoid an infinite loop, or rather, infinite
+recursion in this case). When there are too many function calls, or a function is
+missing a base case, JavaScript will throw this error.
 
-이 재귀 함수는 exit 조건에 따라 10번을 실행합니다.
+## Examples
+
+This recursive function runs 10 times, as per the exit condition.
 
 ```js
 function loop(x) {
-  if (x >= 10) // "x >= 10" is the exit condition
+  if (x >= 10)
+    // "x >= 10" is the exit condition
     return;
   // do stuff
   loop(x + 1); // the recursive call
@@ -33,12 +46,11 @@ function loop(x) {
 loop(0);
 ```
 
-이 조건에 대하여 너무 높은 값을 설정 하면 작동하지 않게 됩니다.
+Setting this condition to an extremely high value, won't work:
 
 ```js example-bad
 function loop(x) {
-  if (x >= 1000000000000)
-    return;
+  if (x >= 1000000000000) return;
   // do stuff
   loop(x + 1);
 }
@@ -47,7 +59,69 @@ loop(0);
 // InternalError: too much recursion
 ```
 
-## 참조
+This recursive function is missing a base case. As there is no exit condition, the
+function will call itself infinitely.
+
+```js example-bad
+function loop(x) {
+  // The base case is missing
+  loop(x + 1); // Recursive call
+}
+
+loop(0);
+
+// InternalError: too much recursion
+```
+
+### Class error: too much recursion
+
+```js example-bad
+class Person {
+  constructor() {}
+  set name(name) {
+    this.name = name; // Recursive call
+  }
+}
+
+const tony = new Person();
+tony.name = "Tonisha"; // InternalError: too much recursion
+```
+
+When a value is assigned to the property name (this.name = name;) JavaScript needs to
+set that property. When this happens, the setter function is triggered.
+
+In this example when the setter is triggered, it is told to do the same thing again: _to set the same property that it is meant to handle._ This causes the function to call itself, again and again, making it infinitely recursive.
+
+This issue also appears if the same variable is used in the getter.
+
+```js example-bad
+class Person {
+  get name() {
+    return this.name; // Recursive call
+  }
+}
+```
+
+To avoid this problem, make sure that the property being assigned to inside the setter
+function is different from the one that initially triggered the setter. The same goes
+for the getter.
+
+```js
+class Person {
+  constructor() {}
+  set name(name) {
+    this._name = name;
+  }
+  get name() {
+    return this._name;
+  }
+}
+const tony = new Person();
+tony.name = "Tonisha";
+console.log(tony);
+```
+
+## See also
 
 - {{Glossary("Recursion")}}
-- [Recursive functions](/en-US/docs/Web/JavaScript/Guide/Functions#Recursion)
+- [Recursive functions](/en-US/docs/Web/JavaScript/Guide/Functions#recursion)

@@ -1,23 +1,27 @@
 ---
 title: ":last-child"
 slug: Web/CSS/:last-child
+page-type: css-pseudo-class
+browser-compat: css.selectors.last-child
 ---
 
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`:last-child`** [의사 클래스](/ko/docs/Web/CSS/Pseudo-classes)는 형제 요소 중 제일 마지막 요소를 나타냅니다.
+The **`:last-child`** [CSS](/en-US/docs/Web/CSS) [pseudo-class](/en-US/docs/Web/CSS/Pseudo-classes) represents the last element among a group of sibling elements.
 
 {{EmbedInteractiveExample("pages/tabbed/pseudo-class-last-child.html", "tabbed-shorter")}}
 
-## 구문
+## Syntax
 
+```css
+:last-child {
+  /* ... */
+}
 ```
-:last-child
-```
 
-## 예제
+## Examples
 
-### 기본 예제
+### Basic example
 
 #### HTML
 
@@ -43,11 +47,11 @@ p:last-child {
 }
 ```
 
-#### 결과
+#### Result
 
 {{EmbedLiveSample('Basic_example', 500, 200)}}
 
-### 목록 스타일링
+### Styling a list
 
 #### HTML
 
@@ -79,19 +83,19 @@ ul li:last-child {
 }
 ```
 
-#### 결과
+#### Result
 
 {{EmbedLiveSample('Styling_a_list')}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이보기
+## See also
 
 - {{CSSxRef(":-moz-last-node")}} {{Non-standard_Inline}}
 - {{CSSxRef(":last-of-type")}}

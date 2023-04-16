@@ -1,32 +1,39 @@
 ---
-title: console.groupEnd()
+title: "console: groupEnd() method"
+short-title: groupEnd()
 slug: Web/API/console/groupEnd
+page-type: web-api-instance-method
+browser-compat: api.console.groupEnd
 ---
 
 {{APIRef("Console API")}}
 
-**`console.groupEnd()`** 메서드는 [웹 콘솔](https://firefox-source-docs.mozilla.org/devtools-user/web_console/index.html) 로그의 현재 인라인 그룹에서 나옵니다. 자세한 내용과 예제는 {{domxref("console")}} 문서의 [콘솔 그룹 사용하기](/ko/docs/Web/API/console#콘솔_그룹_사용하기)를 참고하세요.
+The **`console.groupEnd()`** method exits the current inline group in the [Web console](https://firefox-source-docs.mozilla.org/devtools-user/web_console/index.html). See [Using groups in the console](/en-US/docs/Web/API/console#using_groups_in_the_console) in the {{domxref("console")}} documentation for details and examples.
 
 {{AvailableInWorkers}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 groupEnd()
 ```
 
-### 매개변수
+### Parameters
 
-없음.
+None.
 
-## 명세
+### Return value
+
+None ({{jsxref("undefined")}}).
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("console.group()")}}

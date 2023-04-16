@@ -1,25 +1,44 @@
 ---
-title: Event.stopPropagation()
+title: "Event: stopPropagation() method"
+short-title: stopPropagation()
 slug: Web/API/Event/stopPropagation
+page-type: web-api-instance-method
+browser-compat: api.Event.stopPropagation
 ---
+
 {{APIRef("DOM")}}
 
-{{domxref("Event")}} 인터페이스의 **`stopPropagation()`** 메서드는 현재 이벤트가 캡처링/버블링 단계에서 더 이상 전파되지 않도록 방지합니다. 전파를 방지해도 이벤트의 기본 동작은 실행되므로, `stopPropagation()`이 링크나 버튼의 클릭을 막는 것은 아닙니다. 이런 기본 동작을 방지하려면 {{domxref("Event.preventDefault()", "preventDefault()")}} 메서드를 사용하세요. 또한, `stopPropagation()`은 같은 이벤트 대상에 부착한 다른 수신기까지 막지는 않습니다. 이것까지 막으려면 {{domxref("Event.stopImmediatePropagation", "stopImmediatePropagation()")}}를 사용하세요.
+The **`stopPropagation()`** method of the {{domxref("Event")}}
+interface prevents further propagation of the current event in the capturing and
+bubbling phases. It does not, however, prevent any default behaviors from occurring; for
+instance, clicks on links are still processed. If you want to stop those behaviors, see
+the {{domxref("Event.preventDefault", "preventDefault()")}} method. It also does not
+prevent propagation to other event-handlers of the current element. If you want to stop those,
+see {{domxref("Event.stopImmediatePropagation", "stopImmediatePropagation()")}}.
 
-## 구문
+## Syntax
 
-```js
-event.stopPropagation();
+```js-nolint
+event.stopPropagation()
 ```
 
-## 예제
+### Parameters
 
-[이벤트 전파](/ko/docs/Web/API/Document_Object_Model/Examples#example_5_event_propagation)를 확인하세요.
+None.
 
-## 명세
+### Return value
+
+None.
+
+## Examples
+
+See [Event Propagation](/en-US/docs/Web/API/Document_Object_Model/Examples#example_5_event_propagation).
+Also see the example at {{domxref("Event.stopImmediatePropagation", "stopImmediatePropagation()")}}
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

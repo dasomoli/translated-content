@@ -1,114 +1,116 @@
 ---
-title: '<blockquote>: 인용 블록 요소'
+title: "<blockquote>: The Block Quotation element"
 slug: Web/HTML/Element/blockquote
+page-type: html-element
+browser-compat: html.elements.blockquote
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<blockquote>` 요소**는 안쪽의 텍스트가 긴 인용문임을 나타냅니다. 주로 들여쓰기를 한 것으로 그려집니다. (외형을 바꾸는 법은 [사용 일람](#사용_일람)을 참고하세요) 인용문의 출처 URL은 {{htmlattrxref("cite", "blockquote")}} 특성으로, 출처 텍스트는 {{htmlelement("cite")}} 요소로 제공할 수 있습니다.
+The **`<blockquote>`** [HTML](/en-US/docs/Web/HTML) element indicates that the enclosed text is an extended quotation. Usually, this is rendered visually by indentation (see [Notes](#usage_notes) for how to change it). A URL for the source of the quotation may be given using the `cite` attribute, while a text representation of the source can be given using the {{HTMLElement("cite")}} element.
 
 {{EmbedInteractiveExample("pages/tabbed/blockquote.html","tabbed-standard")}}
 
-<p class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</p>
+## Attributes
+
+This element's attributes include the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
+
+- `cite`
+  - : A URL that designates a source document or message for the information quoted. This attribute is intended to point to information explaining the context or the reference for the quote.
+
+## Usage notes
+
+To change the indentation applied to the quoted text, use the {{Glossary("CSS")}} {{cssxref("margin-left")}} and/or {{cssxref("margin-right")}} properties, or the {{cssxref("margin")}} shorthand property.
+
+To include shorter quotes inline rather than in a separate block, use the {{HTMLElement("q")}} (Quotation) element.
+
+## Example
+
+This example demonstrates the use of the `<blockquote>` element to quote a passage from {{RFC(1149)}}, _A Standard for the Transmission of IP Datagrams on Avian Carriers_.
+
+```html
+<blockquote cite="https://datatracker.ietf.org/doc/html/rfc1149">
+  <p>
+    Avian carriers can provide high delay, low throughput, and low altitude
+    service. The connection topology is limited to a single point-to-point path
+    for each carrier, used with standard carriers, but many carriers can be used
+    without significant interference with each other, outside early spring.
+    This is because of the 3D ether space available to the carriers, in contrast
+    to the 1D ether used by IEEE802.3. The carriers have an intrinsic collision
+    avoidance system, which increases availability.
+  </p>
+</blockquote>
+```
+
+The output from this HTML snippet looks like this:
+
+{{EmbedLiveSample("Example", 640, 180)}}
+
+## Technical summary
 
 <table class="properties">
   <tbody>
     <tr>
       <th scope="row">
-        <a
-          href="/ko/docs/Web/Guide/HTML/%EC%BB%A8%ED%85%90%ED%8A%B8_%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC"
-          >콘텐츠 카테고리</a
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
         >
       </th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >, 구획 루트, 뚜렷한 콘텐츠.
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
+        >, sectioning root, palpable content.
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 콘텐츠</th>
+      <th scope="row">Permitted content</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#플로우_콘텐츠"
-          >플로우 콘텐츠</a
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >Flow content</a
         >.
       </td>
     </tr>
     <tr>
-      <th scope="row">태그 생략</th>
+      <th scope="row">Tag omission</th>
       <td>{{no_tag_omission}}</td>
     </tr>
     <tr>
-      <th scope="row">가능한 부모 요소</th>
+      <th scope="row">Permitted parents</th>
       <td>
-        <a href="/ko/docs/Web/Guide/HTML/컨텐트_카테고리#플로우_콘텐츠"
-          >플로우 콘텐츠</a
-        >를 허용하는 모든 요소
+        Any element that accepts
+        <a href="/en-US/docs/Web/HTML/Content_categories#flow_content"
+          >flow content</a
+        >.
       </td>
     </tr>
     <tr>
-      <th scope="row">암시적 ARIA 역할</th>
+      <th scope="row">Implicit ARIA role</th>
       <td>
         <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
-          >대응하는 역할 없음</a
+          >No corresponding role</a
         >
       </td>
     </tr>
     <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>모두</td>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>Any</td>
     </tr>
     <tr>
-      <th scope="row">DOM 인터페이스</th>
+      <th scope="row">DOM interface</th>
       <td>{{domxref("HTMLQuoteElement")}}</td>
     </tr>
   </tbody>
 </table>
 
-## 특성
-
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)을 포함합니다.
-
-- {{htmlattrdef("cite")}}
-  - : 인용문의 출처 문서나 메시지를 가리키는 URL. 인용문의 맥락 혹은 출처 정보를 가리킬 용도입니다.
-
-## 사용 일람
-
-인용문의 들여쓰기를 바꾸려면 {{glossary("CSS")}} {{cssxref("margin-left")}}와 {{cssxref("margin-right")}}, 혹은 {{cssxref("margin")}} 단축 속성을 사용하세요.
-
-별도의 블록을 쓰지 않아도 될 짧은 인용문은 {{htmlelement("q")}} 요소를 사용하세요.
-
-## 예제
-
-다음 예제는 `<blockquote>` 요소를 사용해 {{RFC(1149)}} A Standard for the Transmission of IP Datagrams on Avian Carriers의 문단을 인용합니다.
-
-```html
-<blockquote cite="https://tools.ietf.org/html/rfc1149">
-  <p>Avian carriers can provide high delay, low
-  throughput, and low altitude service.  The
-  connection topology is limited to a single
-  point-to-point path for each carrier, used with
-  standard carriers, but many carriers can be used
-  without significant interference with each other,
-  outside of early spring.  This is because of the 3D
-  ether space available to the carriers, in contrast
-  to the 1D ether used by IEEE802.3.  The carriers
-  have an intrinsic collision avoidance system, which
-  increases availability.</p>
-</blockquote>
-```
-
-{{EmbedLiveSample("예제", 640, 180)}}
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 인라인 인용문을 위한 {{HTMLElement("q")}} 요소.
-- 인용문 출처 표기를 위한 {{HTMLElement("cite")}} 요소.
+- The {{HTMLElement("q")}} element for inline quotations.
+- The {{HTMLElement("cite")}} element for source citations.

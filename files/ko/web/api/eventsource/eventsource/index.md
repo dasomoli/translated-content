@@ -1,49 +1,61 @@
 ---
-title: EventSource()
+title: "EventSource: EventSource() constructor"
+short-title: EventSource()
 slug: Web/API/EventSource/EventSource
+page-type: web-api-constructor
+browser-compat: api.EventSource.EventSource
 ---
 
 {{APIRef('WebSockets API')}}
 
-**`EventSource()`** 생성자는 원격 자원을 나타내는 새롭게 생성된 {{domxref("EventSource")}} 를 반환합니다.
+The **`EventSource()`**
+constructor returns a newly-created {{domxref("EventSource")}}, which represents a
+remote resource.
 
-## 구문
+## Syntax
 
-```js
-eventSource = new EventSource(url, configuration);
+```js-nolint
+new EventSource(url)
+new EventSource(url, options)
 ```
 
-### 파라미터
+### Parameters
 
 - `url`
-  - : 이벤트/메시지를 제공하는 원격 자원의 위치를 나타내는 {{domxref("USVString")}} 입니다.
-- `configuration` {{optional_inline}}
-  - : 새 연결 구성을 위한 옵션을 제공합니다. 가능한 항목은 다음과 같습니다.\* `withCredentials`. 기본값은 `false` 이며, CORS 가 자격을 `포함`하도록 설정되어야하는지를 나타냅니다.
+  - : A string that represents the location of the remote resource
+    serving the events/messages.
+- `options` {{optional_inline}}
 
-## 예시
+  - : Provides options to configure the new connection. The possible entries are:
+
+    - `withCredentials` {{optional_inline}}
+      - : A boolean value, defaulting to `false`, indicating
+        if CORS should be set to `include` credentials.
+
+## Examples
 
 ```js
-var evtSource = new EventSource('sse.php');
-var eventList = document.querySelector('ul');
+const evtSource = new EventSource("sse.php");
+const eventList = document.querySelector("ul");
 
-evtSource.onmessage = function(e) {
-  var newElement = document.createElement("li");
+evtSource.onmessage = (e) => {
+  const newElement = document.createElement("li");
 
-  newElement.textContent = "message: " + e.data;
+  newElement.textContent = `message: ${e.data}`;
   eventList.appendChild(newElement);
-}
+};
 ```
 
-> **참고:** GitHub 에서 전체 예시를 확인할 수 있습니다 — [Simple SSE demo using PHP를 사용하는 간단한 SSE 데모](https://github.com/mdn/dom-examples/tree/master/server-sent-events)를 보세요.
+> **Note:** You can find a full example on GitHub — see [Simple SSE demo using PHP](https://github.com/mdn/dom-examples/tree/main/server-sent-events).
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 보기
+## See also
 
 - {{domxref("EventSource")}}

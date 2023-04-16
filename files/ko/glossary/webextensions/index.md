@@ -1,11 +1,11 @@
 ---
 title: WebExtensions
 slug: Glossary/WebExtensions
+page-type: glossary-definition
 ---
-WebExtensions은 Firefox에서 브라우저 Extension을 개발하기위한 크로스 브라우저 시스템입니다. 이 시스템은 Mozilla Firefox, Google Chrome, Opera Browser 및 Microsoft Edge와 같은 다양한 브라우저에서 지원되는 API를 제공합니다.
 
-## Learn more
+WebExtensions is a cross-browser system for developing browser extensions in Firefox. This system provides APIs, which to a large extent are supported across different browsers like Mozilla Firefox, Google Chrome, Opera Browser, Microsoft Edge, or Apple Safari.
 
-### Technical reference
+## See also
 
-- [Browser extensions](/ko/docs/Mozilla/Add-ons/WebExtensions) on MDN
+- [Browser extensions](/en-US/docs/Mozilla/Add-ons/WebExtensions) on MDN

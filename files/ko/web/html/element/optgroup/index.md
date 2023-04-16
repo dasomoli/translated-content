@@ -1,63 +1,28 @@
 ---
-title: <optgroup>
+title: "<optgroup>: The Option Group element"
 slug: Web/HTML/Element/optgroup
+page-type: html-element
+browser-compat: html.elements.optgroup
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<optgroup>` 요소**는 {{HTMLElement("select")}} 요소의 옵션을 묶을 수 있습니다.
+The **`<optgroup>`** [HTML](/en-US/docs/Web/HTML) element creates a grouping of options within a {{HTMLElement("select")}} element.
 
 {{EmbedInteractiveExample("pages/tabbed/optgroup.html", "tabbed-standard")}}
 
-<p class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</p>
+> **Note:** Optgroup elements may not be nested.
 
-<table class="properties">
-  <tbody>
-    <tr>
-      <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
-      </th>
-      <td>없음.</td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 콘텐츠</th>
-      <td>0개 이상의 {{htmlelement("option")}} 요소.</td>
-    </tr>
-    <tr>
-      <th scope="row">태그 생략</th>
-      <td>
-        여는 태그는 필수입니다. 바로 뒤따르는 요소가 다른
-        <code>&#x3C;optgroup></code>이거나, 자신이 부모의 마지막 자식이라면 닫는
-        태그를 생략할 수 있습니다.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 부모 요소</th>
-      <td>{{HTMLElement("select")}} 요소.</td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>없음</td>
-    </tr>
-    <tr>
-      <th scope="row">DOM 인터페이스</th>
-      <td>{{domxref("HTMLOptGroupElement")}}</td>
-    </tr>
-  </tbody>
-</table>
+## Attributes
 
-> **참고:** `<optgroup>` 요소는 중첩할 수 없습니다.
+This element includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-## 특성
+- `disabled`
+  - : If this Boolean attribute is set, none of the items in this option group is selectable. Often browsers grey out such control and it won't receive any browsing events, like mouse clicks or focus-related ones.
+- `label`
+  - : The name of the group of options, which the browser can use when labeling the options in the user interface. This attribute is mandatory if this element is used.
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)을 포함합니다.
-
-- {{htmlattrdef("disabled")}}
-  - : 지정한 경우 모든 하위 옵션을 선택할 수 없습니다. 브라우저에서, 비활성화 옵션은 주로 회색으로 보이며, 클릭과 포커스 등 모든 이벤트를 받지 않습니다.
-- {{htmlattrdef("label")}}
-  - : 옵션 그룹의 이름. 브라우저가 그룹의 이름을 표시할 때 사용할 수 있습니다. 필수로 지정해야 합니다.
-
-## 예제
+## Examples
 
 ```html
 <select>
@@ -76,14 +41,61 @@ slug: Web/HTML/Element/optgroup
 </select>
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample("예제")}}
+{{EmbedLiveSample("Examples")}}
 
-## 명세
+## Technical summary
+
+<table class="properties">
+  <tbody>
+    <tr>
+      <th scope="row">
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
+      </th>
+      <td>None.</td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted content</th>
+      <td>Zero or more {{HTMLElement("option")}} elements.</td>
+    </tr>
+    <tr>
+      <th scope="row">Tag omission</th>
+      <td>
+        The start tag is mandatory. The end tag is optional if this element is
+        immediately followed by another <code>&#x3C;optgroup></code> element, or
+        if the parent element has no more content.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted parents</th>
+      <td>A {{HTMLElement("select")}} element.</td>
+    </tr>
+    <tr>
+      <th scope="row">Implicit ARIA role</th>
+      <td><a href="/en-US/docs/Web/Accessibility/ARIA/Roles/group_role"><code>group</code></a></td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>No <code>role</code> permitted</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
+      <td>{{domxref("HTMLOptGroupElement")}}</td>
+    </tr>
+  </tbody>
+</table>
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- Other form-related elements: {{HTMLElement("form")}}, {{HTMLElement("legend")}}, {{HTMLElement("label")}}, {{HTMLElement("button")}}, {{HTMLElement("select")}}, {{HTMLElement("datalist")}}, {{HTMLElement("option")}}, {{HTMLElement("fieldset")}}, {{HTMLElement("textarea")}}, {{HTMLElement("keygen")}}, {{HTMLElement("input")}}, {{HTMLElement("output")}}, {{HTMLElement("progress")}} and {{HTMLElement("meter")}}.

@@ -1,172 +1,178 @@
 ---
-title: 나의 웹사이트를 설계하기 위해서는?
+title: How do I start to design my website?
 slug: Learn/Common_questions/Design_and_accessibility/Thinking_before_coding
-original_slug: Learn/Common_questions/Thinking_before_coding
 ---
 
-이 글은 모든 프로젝트에서 중요한 첫 단계 - 프로젝트를 통해 달성하고 싶은 것을 정의하기 - 를 다룬다.
+{{QuicklinksWithSubPages("Learn/Common_questions")}}
 
-<table class="learn-box standard-table">
+This article covers the all-important first step of every project: define what you want to accomplish with it.
+
+<table>
   <tbody>
     <tr>
-      <th scope="row">선이수:</th>
-      <td>없음</td>
+      <th scope="row">Prerequisites:</th>
+      <td>None</td>
     </tr>
     <tr>
-      <th scope="row">목표:</th>
-      <td>웹 프로젝트 방향 설정을 위해 목적을 정하는 법을 배운다.</td>
+      <th scope="row">Objective:</th>
+      <td>Learn to define goals to give direction to your web project.</td>
     </tr>
   </tbody>
 </table>
 
-## 요약
+## Summary
 
-웹 프로젝트를 시작할 때, 많은 사람들은 기술적인 면에 집중한다. 물론 자기 분야의 기술에 익숙해야한다. 그러나 정말 중요한건 무엇을 달성하고 싶은가이다. 당연한 이야기같지만, 생각보다 많은 프로젝트들이 기술적 방법의 부족이 아닌, 목적과 전망의 부족으로 실패한다.
+When starting with a web project, many people focus on the technical side. Of course you must be familiar with the technique of your craft, but what really matters is _what you want to accomplish_. Yes, it seems obvious, but too many projects fail not from a lack of technical know-how, but from lack of goals and vision.
 
-따라서 아이디어를 얻고, 그것을 웹 사이트로 만들고 싶을 때, 다른 것보다 먼저 대답해야할 질문이 있다.
+So when you get an idea and want to turn it into a website, there are a few questions you should answer before anything else:
 
-- 내가 달성하고 싶은 것은 정확히 무엇인가?
-- 내 목적 달성을 웹사이트가 어떻게 돕는가?
-- 목적 달성을 위해 무엇을, 어떤 순서로 해야할까?
+- What exactly do I want to accomplish?
+- How will a website help me reach my goals?
+- What needs to be done, and in what order, to reach my goals?
 
-이러한 것들을 프로젝트 관념(ideation)이라 한다. 당신이 초보자든 숙련된 개발자든 목표에 도달하기 위해 반드시 거쳐야 할 첫 단계이다.
+All of this is called _project ideation_ and is a necessary first step to reach your goal, whether you are a beginner or an experienced developer.
 
-## 능동 학습
+## Active Learning
 
-_아직 가능한 능동 학습이 없다. [기여를 고민해보라](/ko/docs/MDN/Getting_started)._
+_There is no active learning available yet. [Please, consider contributing](/en-US/docs/MDN/Community/Contributing/Getting_started)._
 
-## 깊게 들어가기
+## Deeper dive
 
-프로젝트는 절대 기술에서 시작하지 않는다. 음악가는 무엇을 연주할 지 정하기 전엔 어떤 음악도 만들지 않는다. 화가, 작가, 그리고 웹 개발자도 마찬가지다. 기술은 다음이다.
+A project never starts with the technical side. Musicians will never make any music unless they first have an idea of what they want to play—and the same is true for painters, writers, and web developers. Technique comes second.
 
-기술은 분명히 중요하다. 음악가는 기악을 완성해야 한다. 그러나 좋은 음악가는 절대 생각없이 좋은 음악을 만들수 없다. 그러므로 코드와 툴같은 기술로 뛰어들기 전에, 한 걸음 물러서서 하고 싶은 것을 상세히 결정해야 한다.
+Technique is obviously critical. Musicians must master their instrument. But good musicians can never produce good music without an idea. Therefore, before jumping into the technical side — for example, code and tools—you must first step back and decide in detail what you want to do.
 
-친구와 함께하는 한 시간의 토론은 좋은 시작이지만 부족하다. 생각을 현실로 만들 길의 탁 트인 전망을 얻으려면 앉아서 생각을 구조화해야한다. 이것을 하기 위해서, 오직 펜과 종이 그리고 적어도 다음 질문에 대한 답할 시간이 필요하다.
+An hour's discussion with friends is a good start, but inadequate. You must sit down and structure your ideas to get a clear view of what path you must take to make your ideas a reality. To do this, you need only pen and paper and some time to answer at least the following questions.
 
-> **참고:** **메모:** 프로젝트 관념화를 수행하기 위한 셀 수 없는 방법들이 있다. 우리는 여기에 그것들을 모두 제시할 수는 없다. (책 전체로는 충분하지 않을 것이다). 이 곳에 주는 것은 전문가들이 [Project Ideation(관념화)](<http://en.wikipedia.org/wiki/Ideation_(idea_generation)>), [Project Planning(계획)](http://en.wikipedia.org/wiki/Project_planning) 그리고 [Project Management(관리)](http://en.wikipedia.org/wiki/Project_management) 라고 부르는 것을 다루는 단순한 방법이다.
+> **Note:** There are countless ways to carry out project ideation. We cannot lay them all out here (a whole book wouldn't be enough). What we will present here is a simple method to handle what professionals call [Project Ideation](<https://en.wikipedia.org/wiki/Ideation_(idea_generation)>), [Project Planning](https://en.wikipedia.org/wiki/Project_planning), and [Project Management](https://en.wikipedia.org/wiki/Project_management).
 
-### 내가 정확히 달성하고 싶은 것은 무엇인가?
+### What exactly do I want to accomplish?
 
-이것은 대답해야 하는 가장 중요한 질문이다. 왜냐하면, 이것이 다른 모든 것을 만들기 때문이다. 도달하고 싶은 모든 목표를 목록화해라. 그것은 무엇일 수도 있다: 돈을 벌기 위해 물건 팔기, 정치적인 의견 표현하기, 새로운 친구 만들기, 음악가들과 공연하기, 고양이 사진 모으기, 또는 원하는 무엇이든.
+This is the most important question to answer, since it drives everything else. List all the goals you want to reach. It can be anything: selling goods to make money, expressing political opinions, meeting new friends, gigging with musicians, collecting cat pictures, or whatever you want.
 
-당신이 음악가라고 생각해보자. 이런걸 원할 수 있다.
+Suppose you are a musician. You could wish to:
 
-- 다른 사람들이 내 음악을 듣게 하기
-- 관련 상품 팔기
-- 다른 음악가들과 만나기
-- 내 음악에 대해 이야기하기
-- 동영상으로 음악 가르치기
-- 내 고양이 사진 출판하기
-- 새로운 애인 찾기
+- Let people hear your music.
+- Sell goodies.
+- Meet other musicians.
+- Talk about your music.
+- Teach music through videos.
+- Publish photos of your cats.
+- Find a new girl/boyfriend.
 
-일단 이런 리스트를 만들고 나면, 우선순위를 정하는 것이 필요하다. 가장 중요한 것부터 덜 중요한 것까지 목표를 정렬해라.
+Once you have such a list, you need to prioritize. Order the goals from most important to least important:
 
-1. 새로운 애인 찾기
-2. 다른 사람들이 내 음악을 듣게 하기
-3. 내 음악에 대해 이야기하기
-4. 다른 음악가들과 만나기
-5. 관련 상품 팔기
-6. 동영상으로 음악 가르치기
-7. 내 고양이 사진 출판하기
+1. Find a new girl/boyfriend.
+2. Let people hear your music.
+3. Talk about your music.
+4. Meet other musicians.
+5. Sell goodies.
+6. Teach music through videos.
+7. Publish photos of your cats.
 
-단순한 목표 쓰기와 순위 정하기가 만들고 싶은 것을 결정할 때, 도움이 될 것이다. (내가 이런 특징을 구현해야할까, 이런 서비스를 사용해야할까, 이런 디자인을 만들어야할까?)
+Doing this simple exercise—writing goals and sorting them—will help you out when you have decisions to make. (Should I implement these features, use these services, create these designs?)
 
-우선순위가 정리된 목적 기록부가 생겼으니, 다음 질문으로 이동하자.
+So now that you have a prioritized list of goals, let's move on to the next question.
 
-### 어떻게 웹사이트가 나를 목적지로 데려다 줄 수 있을까?
+### How could a website bring me to my goals?
 
-그래서 당신은 목표 리스트를 가지고 있고, 그 목표들을 이루기위해 웹사이트가 필요하다고 느낍니다. 확실합니까?
+So you have a list of goals and you feel you need a website to reach those goals. Are you sure?
 
-우리의 예를 다시 봅시다. 우리는 음악에 관련된 5개의 목표, 개인 삶(소중한 사람 찾기)에 관련된 하나의 목표 그리고, 완전히 상관없는 고양이 사진을 가지고 있습니다. 이 모든 목표들을 다루기 위한 하나의 웹사이트를 만드는 것이 합리적입니까? 그것이 필요할까요? 결국에, 많은 기존의 웹 서비스는 새로운 웹사이트를 만들지 않고 당신의 목표를 가져다 줄 지 모릅니다.
+Let's look back at our example. We have five goals connected to music, one goal related to personal life (finding your significant other), and the completely unrelated cat photos. Is it reasonable to build a single website to cover all those goals? Is it even necessary? After all, scores of existing web services might bring you to your goals without building a new website.
 
-애인을 찾는 것은 새로운 웹사이트를 구축하는 것보다 기존의 자원을 사용하는 것이 더 알맞다는 점에서 중요한 케이스입니다. 왜? 왜냐하면 우리가 실제로 애인을 찾는 것보다 웹사이트를 구축하고 유지하는 데 더 많은 시간을 소비하기 때문입니다. 우리의 목표가 가장 중요하기 때문에, 우리는 처음부터 시작하는 것보다는 기존의 툴을 레버리징(leveraging )하는 것에 에너지를 써야합니다. 다시, 사진을 보여주기 위해 이용할 수 있는 이미 너무 많은 웹서비스가 있습니다 그래서 우리의 고양이가 얼마나 귀여운 지에 대한 것을 퍼뜨리기 위해 새로운 사이트를 구축하는 데 노력할 가치가 없습니다.
+Finding a girl/boyfriend is a prime case where it makes more sense to use existing resources rather than build a whole new site. Why? Because we'll spend more time building and maintaining the website rather than actually searching for a girl/boyfriend. Since our goal is what matters most, we should spend our energy on leveraging existing tools rather than starting from scratch. Again, there are so many web services already available for showcasing photos that it isn't worth the effort to build a new site just to spread the word about how cute our cats are.
 
-음악과 연관된 다른 5개의 목표가 있습니다. 물론, 이런 목표들을 다룰 수 있는 많은 웹서비스가 있습니다. 그러나, 우리만을 위한 웹사이트를 구축하는 경우에는 이해가 됩니다. 그런 웹사이트는 하나의 공간에 퍼블리싱하고 싶은 모든 항목을 합치는 것과 (목표 3, 5, 6에 적합) 그리고 우리와 대중 사이에 상호작용을 장려하는 것에 (목표 2, 4) 가장 좋은 방법입니다. 다시 말해서, 이런 목표들이 같은 주제를 중심으로 돌기 때문에, 한 곳에 모든 것을 가지는 것이 우리의 목표를 충족하고, 팔로어들과 연결하는 데 도움이 될 것입니다.
+The other five goals are all connected to music. There are, of course, many web services that could handle these goals, but it makes sense in this case to build a dedicated website of our own. Such a website is the best way to _aggregate_ all the stuff we want to publish in a single place (good for goals 3, 5, and 6) and promote _interaction_ between us and the public (good for goals 2 and 4). In short, since these goals all revolve around the same topic, having everything in one place will help us meet our goals and help our followers connect with us.
 
-어떻게 웹사이트가 나의 목표를 달성하는 데 도움이 될까요? 그것에 답함으로써, 우리는 우리의 목표를 달성하는 데 가장 좋은 방법을 찾을 것이고, 노력이 낭비되지 않도록 할 것입니다.
+How can a website help me reach my goals? By answering that, you'll find the best way to reach your goals and save yourself from wasted effort.
 
-### 내 목표를 달성하기 위해, 무엇을, 어떤 순서로 해야할까?
+### What needs to be done, and in what order, to reach my goals?
 
-이제 우리가 달성하고 싶은 것을 알고 있으므로, 그 목표들을 실행가능한 단계로 바꿀 시간입니다.
+Now that you know what you want to accomplish, it's time to turn those goals into actionable steps. As a side note, your goals are not necessarily set in stone. They evolve over time even in the course of the project, especially if you run across unexpected obstacles or just change your mind.
 
-긴 설명을 하기 보다는 이 표로 우리의 예제를 돌아봅시다:
+Rather than go through a long explanation, let's go back to our example with this table:
 
 <table class="standard-table">
   <thead>
     <tr>
-      <th scope="col">목표</th>
-      <th scope="col">해야할 것</th>
+      <th scope="col">Goals</th>
+      <th scope="col">Things to do</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td style="vertical-align: top">사람들이 당신의 음악을 듣게 하기</td>
+      <td>Let people hear your music</td>
       <td>
         <ol>
-          <li>음악을 녹음한다.</li>
+          <li>Record music</li>
           <li>
-            온라인에서 사용할 수 있는 몇몇의 오디오 파일을 준비힌다. (기존의
-            웹서비스로 이것을 할 수 있을까?)
+            Prepare some audio files usable online (Could you do this with
+            existing web services?)
+          </li>
+          <li>Give people access to your music on some part of your website</li>
+        </ol>
+      </td>
+    </tr>
+    <tr>
+      <td>Talk about your music</td>
+      <td>
+        <ol>
+          <li>Write a few articles to start the discussion</li>
+          <li>Define how articles should look</li>
+          <li>Publish those articles on the website (How to do this?)</li>
+        </ol>
+      </td>
+    </tr>
+    <tr>
+      <td>Meet other musicians</td>
+      <td>
+        <ol>
+          <li>
+            Provide ways for people to contact you (Email? Facebook? Phone?
+            Mail?)
           </li>
           <li>
-            사람들에게 당신의 웹사이트의 일부에서 당신의 음악에 접근하게 한다.
+            Define how people will find those contact channels from your website
           </li>
         </ol>
       </td>
     </tr>
     <tr>
-      <td style="vertical-align: top">음악에 대해 이야기하기</td>
+      <td>Sell goodies</td>
       <td>
         <ol>
-          <li>토의를 시작하기 위한 몇몇의 글을 쓴다.</li>
-          <li>어떻게 글이 보여야 하는 지 정해라.</li>
-          <li>웹사이트에 이 글을 게시해라 (어떻게 이것을 할까?)</li>
+          <li>Create the goodies</li>
+          <li>Store the goodies</li>
+          <li>Find a way to handle shipping</li>
+          <li>Find a way to handle payment</li>
+          <li>Make a mechanism on your site for people to place orders</li>
         </ol>
       </td>
     </tr>
     <tr>
-      <td style="vertical-align: top">다른 음악가들 만나기</td>
+      <td>Teach music through videos</td>
       <td>
         <ol>
-          <li>사람들이 너와 연락할 방법을 제공해라.</li>
-          <li>너의 웹사이트에서 어떻게 사람들이 연락 채널을 찾을 지 정해라.</li>
-        </ol>
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top">goodies 팔기</td>
-      <td>
-        <ol>
-          <li>goodies 만든다.</li>
-          <li>goodies 저장한다.</li>
-          <li>쇼핑을 하는 방식 찾는다.</li>
-          <li>결제 방식 찾는다.</li>
-          <li>사이트에서 사람들의 주문 메카니즘 만든다.</li>
-        </ol>
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top">동영상을 통해 음악 가르치기</td>
-      <td>
-        <ol>
-          <li>동영상 강의 녹화한다.</li>
+          <li>Record video lessons</li>
           <li>
-            온라인에서 볼 수 있는 동영상 파일 준비한다. (다시, 기존의
-            웹사이트에서 할 수 있을까?)
+            Prepare video files viewable online (Again, could you do this with
+            existing web services?)
           </li>
-          <li>웹사이트의 한 부분에서 비디오 접근 가능하게 한다.</li>
+          <li>
+            Give people access to your videos on some part of your website
+          </li>
         </ol>
       </td>
     </tr>
   </tbody>
 </table>
 
-공지할 것이 두 개가 있다. 첫째, 이런 아이템 중 몇몇은 웹과 상관이 없다. (예를 들어, 음악 녹음, 글 쓰기) 종종 그런 오프라인 활동이 프로젝트의 웹 부분보다 훨씬 더 중요하다. 예를 들어, 판매의 경우에, 공급, 결제, 배달에 시간을 쓰는 것이 사람들이 주문할 수 있는 웹사이트를 만드는 것보다 훨씬 더 중요하다.
+Two things to notice. First, some of these items are not web-related (e.g., record music, write articles). Often those offline activities matter even more than the web side of the project. In sales, for instance, it's far more important and time-consuming to handle supply, payment, and shipment than to build a website where people can place orders.
 
-둘째, 실행가능한 단계를 설정하는 것은 우리가 답할 필요가 있는 새로운 질문을 이끌어 낸다. 종종 우리가 본래 생각했던 것보다 더 많은 질문으로 변한다. (예를 들어, 내가 혼자서 어떻게 이것을 배워야할까? 누군가에게 이것을 부탁할까? 서드파티(제 3의) 서비스를 사용해야할까?)
+Second, setting out actionable steps leads to new questions you'll need to answer. Usually there turn out to be more questions than we originally thought. (For example, should I learn how to do all this myself, ask someone to do it for me, or use third-party services?)
 
-## 결론
+## Conclusion
 
-당신이 본 것 처럼, "나는 웹사이트를 만들고 싶다" 라는 단순한 생각이 긴 해야할 목록을 만들었다. 그리고 그것은 생각하면 할 수록 더 길어진다. 금방 그것은 압도적으로 보일 것이다. 그러나 겁먹지 마라. 당신은 모든 질문에 대답할 필요는 없다. 그리고 당신은 리스트에 모든 것을 할 필요는 없다. 중요한 것은 원하는 것과 도달하는 법에 대한 비전을 가지고 있어야하는 것이다. 일단 분명한 비전이 있다면, 당신은 해야할 때와 하는 방법을 결정할 필요가 있다. 큰 일을 작은 실행할 수 있는 단계로 부숴라. 그리고 그 작은 단계를 거대한 성과로 합쳐라.
+As you can see, the simple idea "I want to make a website" generates a long to-do list, which only grows longer as you think about it. Soon it may look overwhelming, but don't panic. You don't need to answer all the questions and you don't need to do everything on your list. What matters is to have a vision of what you want and how to get there. Once you have that clear vision, you need to decide how and when to do it. Break down big tasks into small, actionable steps. And those small steps will add up to great achievements.
 
-이 글에서, 당신은 웹사이트를 만들기 위한 개략적인 계획을 지금 세울 수 있어야 한다. 다음 단계는 [how the Internet works(인터넷이 작동하는 법)](/ko/docs/Learn/Common_questions/How_does_the_Internet_work) 을 읽어야 할 것이다.
+From this article, you should now be able to make a rough plan for creating a website. A next step might be to read [how the Internet works](/en-US/docs/Learn/Common_questions/Web_mechanics/How_does_the_Internet_work).

@@ -1,15 +1,21 @@
 ---
 title: Generator
 slug: Web/JavaScript/Reference/Global_Objects/Generator
+page-type: javascript-class
+browser-compat: javascript.builtins.Generator
 ---
 
 {{JSRef}}
 
-**`Generator`** 객체는 {{JSxRef("Statements/function*", "generator function", "", 1)}} 으로부터 반환되며, [반복 가능한 프로토콜](/ko/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterable_protocol)과 [반복자 프로토콜](/ko/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterator_protocol)을 모두 준수합니다.
+The **`Generator`** object is returned by a {{JSxRef("Statements/function*", "generator function", "", 1)}} and it conforms to both the [iterable protocol](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterable_protocol) and the [iterator protocol](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterator_protocol).
+
+`Generator` is a subclass of the hidden {{jsxref("Iterator")}} class.
+
+{{EmbedInteractiveExample("pages/js/expressions-functionasteriskexpression.html", "taller")}}
 
 ## Constructor
 
-이 객체는 바로 인스턴스화할 될 수 없습니다. 대신 [제너레이터 함수](/ko/docs/Web/JavaScript/Reference/Statements/function*)를 통해 `Generator` 인스턴스를 반환할 수 있습니다.
+The `Generator` constructor is not available globally. Instances of `Generator` must be returned from [generator functions](/en-US/docs/Web/JavaScript/Reference/Statements/function*):
 
 ```js
 function* generator() {
@@ -25,20 +31,37 @@ console.log(gen.next().value); // 2
 console.log(gen.next().value); // 3
 ```
 
-## 인스턴스 메서드
+In fact, there's no JavaScript entity that corresponds to the `Generator` constructor. There's only a hidden object which is the prototype object shared by all objects created by generator functions. This object is often stylized as `Generator.prototype` to make it look like a class, but it should be more appropriately called [`GeneratorFunction.prototype.prototype`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction), because `GeneratorFunction` is an actual JavaScript entity.
 
-- {{JSxRef("Generator.prototype.next()")}}
-  - : {{JSxRef("Operators/yield", "yield")}} 표현식을 통해 yield된 값을 반환합니다.
-- {{JSxRef("Generator.prototype.return()")}}
-  - : 주어진 값을 반환하고 제너레이터를 종료합니다.
-- {{JSxRef("Generator.prototype.throw()")}}
-  - : 제너레이터에 오류를 발생시킵니다. (해당 제너레이터 내에서 오류가 발생한 경우가 아닌 한 제너레이터도 완료)
+## Instance properties
 
-## 예제
+These properties are defined on `Generator.prototype` and shared by all `Generator` instances.
 
-### 무한 제너레이터
+- {{jsxref("Object/constructor", "Generator.prototype.constructor")}}
 
-제너레이터 함수를 사용하면 값은 필요할 때까지 계산되지 않습니다. 따라서 제너레이터는 잠재적으로 무한한 데이터 구조를 정의할 수 있습니다.
+  - : The constructor function that created the instance object. For `Generator` instances, the initial value is [`GeneratorFunction.prototype`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction).
+
+    > **Note:** `Generator` objects do not store a reference to the generator function that created them.
+
+- `Generator.prototype[@@toStringTag]`
+  - : The initial value of the [`@@toStringTag`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toStringTag) property is the string `"Generator"`. This property is used in {{jsxref("Object.prototype.toString()")}}.
+
+## Instance methods
+
+_Also inherits instance methods from its parent {{jsxref("Iterator")}}_.
+
+- {{jsxref("Generator.prototype.next()")}}
+  - : Returns a value yielded by the {{JSxRef("Operators/yield", "yield")}} expression.
+- {{jsxref("Generator.prototype.return()")}}
+  - : Acts as if a `return` statement is inserted in the generator's body at the current suspended position, which finishes the generator and allows the generator to perform any cleanup tasks when combined with a [`try...finally`](/en-US/docs/Web/JavaScript/Reference/Statements/try...catch#the_finally-block) block.
+- {{jsxref("Generator.prototype.throw()")}}
+  - : Acts as if a `throw` statement is inserted in the generator's body at the current suspended position, which informs the generator of an error condition and allows it to handle the error, or perform cleanup and close itself.
+
+## Examples
+
+### An infinite iterator
+
+With a generator function, values are not evaluated until they are needed. Therefore a generator allows us to define a potentially infinite data structure.
 
 ```js
 function* infinite() {
@@ -54,20 +77,20 @@ const generator = infinite(); // "Generator { }"
 console.log(generator.next().value); // 0
 console.log(generator.next().value); // 1
 console.log(generator.next().value); // 2
-// ...
+// …
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{JSxRef("Statements/function*", "function*")}}
-- {{JSxRef("Operators/function*", '<code>function*</code> expression', "", 1)}}
+- [`function*` expression](/en-US/docs/Web/JavaScript/Reference/Operators/function*)
 - {{JSxRef("GeneratorFunction")}}
-- [반복자 프로토콜](/ko/docs/Web/JavaScript/Reference/Iteration_protocols)
+- [The Iterator protocol](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)

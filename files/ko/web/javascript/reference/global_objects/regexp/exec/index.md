@@ -1,137 +1,98 @@
 ---
 title: RegExp.prototype.exec()
 slug: Web/JavaScript/Reference/Global_Objects/RegExp/exec
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.RegExp.exec
 ---
 
 {{JSRef}}
 
-**`exec()`** 메서드는 주어진 문자열에서 일치 탐색을 수행한 결과를 배열 혹은 {{jsxref("null")}}로 반환합니다.
-
-JavaScript {{jsxref("RegExp")}} 객체는 {{jsxref("RegExp.global", "global")}} 또는 {{jsxref("RegExp.sticky", "sticky")}} 플래그를 설정(`/foo/g`, `/foo/y` 등)한 경우 이전 일치의 인덱스를 저장하므로 **상태를 가지고**(stateful) 있습니다. 이를 내부적으로 사용하여, {{jsxref("String.prototype.match()")}}와는 다르게 (캡처 그룹을 포함한) 문자열 내의 일치 다수를 반복해 순회할 수 있습니다.
-
-(캡처 그룹을 포함한) 문자열 내의 다수 일치를 수행할 수 있는 보다 간편한 신규 메서드, {{jsxref("String.prototype.matchAll()")}}이 제안된 상태입니다.
-
-단순히 `true`/`false`가 필요한 경우 {{jsxref("RegExp.prototype.test()")}} 메서드 혹은 {{jsxref("String.prototype.search()")}}를 사용하세요.
+The **`exec()`** method executes a search for a match in a specified string and returns a result array, or [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null).
 
 {{EmbedInteractiveExample("pages/js/regexp-prototype-exec.html")}}
 
-## 구문
+## Syntax
 
-```js
-regexObj.exec(str)
+```js-nolint
+exec(str)
 ```
 
-### 매개변수
+### Parameters
 
 - `str`
-  - : 정규 표현식 검색을 수행할 대상 문자열.
+  - : The string against which to match the regular expression. All values are [coerced to strings](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_coercion), so omitting it or passing `undefined` causes `exec()` to search for the string `"undefined"`, which is rarely what you want.
 
-### 반환 값
+### Return value
 
-정규 표현식이 일치하면, `exec()` 메서드는 배열(추가 속성 `index`와 `input` 포함, 아래 설명을 참고하세요)을 반환하고, 정규 표현식 객체의 {{jsxref("RegExp.lastIndex", "lastIndex")}} 속성을 업데이트합니다. 반환하는 배열은 일치한 텍스트를 첫 번째 원소로, 각각의 괄호 캡처 그룹을 이후 원소로 포함합니다.
+If the match fails, the `exec()` method returns [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null), and sets the regex's [`lastIndex`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/lastIndex) to `0`.
 
-정규표현식 검색에 실패하면, `exec()` 메서드는 {{jsxref("null")}}을 반환하고 {{jsxref("RegExp.lastIndex", "lastIndex")}}를 `0`으로 설정합니다.
+If the match succeeds, the `exec()` method returns an array and updates the [`lastIndex`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/lastIndex) property of the regular expression object. The returned array has the matched text as the first item, and then one item for each capturing group of the matched text. The array also has the following additional properties:
 
-## 설명
+- `index`
+  - : The 0-based index of the match in the string.
+- `input`
+  - : The original string that was matched against.
+- `groups`
+  - : A [`null`-prototype object](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#null-prototype_objects) of named capturing groups, whose keys are the names, and values are the capturing groups, or {{jsxref("undefined")}} if no named capturing groups were defined. See [capturing groups](/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Groups_and_backreferences) for more information.
+- `indices` {{optional_inline}}
 
-다음과 같은 예제를 고려해보세요.
+  - : This property is only present when the [`d`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/hasIndices) flag is set. It is an array where each entry represents the bounds of a substring match. The index of each element in this array corresponds to the index of the respective substring match in the array returned by `exec()`. In other words, the first `indices` entry represents the entire match, the second `indices` entry represents the first capturing group, etc. Each entry itself is a two-element array, where the first number represents the match's start index, and the second number, its end index.
+
+    The `indices` array additionally has a `groups` property, which holds a [`null`-prototype object](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#null-prototype_objects) of all named capturing groups. The keys are the names of the capturing groups, and each value is a two-element array, with the first number being the start index, and the second number being the end index of the capturing group. If the regular expression doesn't contain any named capturing groups, `groups` is `undefined`.
+
+## Description
+
+JavaScript {{jsxref("RegExp")}} objects are _stateful_ when they have the [global](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/global) or [sticky](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/sticky) flags set (e.g. `/foo/g` or `/foo/y`). They store a [`lastIndex`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/lastIndex) from the previous match. Using this internally, `exec()` can be used to iterate over multiple matches in a string of text (with capture groups), as opposed to getting just the matching strings with {{jsxref("String.prototype.match()")}}.
+
+When using `exec()`, the global flag has no effect when the sticky flag is set — the match is always sticky.
+
+`exec()` is the primitive method of regexps. Many other regexp methods call `exec()` internally — including those called by string methods, like [`@@replace`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/@@replace). While `exec()` itself is powerful (and is the most efficient), it often does not convey the intent most clearly.
+
+- If you only care whether the regex matches a string, but not what is actually being matched, use {{jsxref("RegExp.prototype.test()")}} instead.
+- If you are finding all occurrences of a global regex and you don't care about information like capturing groups, use {{jsxref("String.prototype.match()")}} instead. In addition, {{jsxref("String.prototype.matchAll()")}} helps to simplify matching multiple parts of a string (with capture groups) by allowing you to iterate over the matches.
+- If you are executing a match to find its index position in the string, use the {{jsxref("String.prototype.search()")}} method instead.
+
+## Examples
+
+### Using exec()
+
+Consider the following example:
 
 ```js
 // Match "quick brown" followed by "jumps", ignoring characters in between
 // Remember "brown" and "jumps"
 // Ignore case
-let re = /quick\s(brown).+?(jumps)/ig;
-let result = re.exec('The Quick Brown Fox Jumps Over The Lazy Dog');
+const re = /quick\s(?<color>brown).+?(jumps)/dgi;
+const result = re.exec("The Quick Brown Fox Jumps Over The Lazy Dog");
 ```
 
-다음의 표는 이 스크립트의 결과에 대해 보여줍니다.
+The following table shows the state of `result` after running this script:
 
-<table class="fullwidth-table standard-table">
-  <thead>
-    <tr>
-      <th scope="row">객체</th>
-      <th scope="col">속성/인덱스</th>
-      <th scope="col">설명</th>
-      <th scope="col">예제</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th colspan="1" rowspan="4" scope="row" style="vertical-align: top">
-        <code>result</code>
-      </th>
-      <td><code>[0]</code></td>
-      <td>일치한 전체 문자.</td>
-      <td><code>"Quick Brown Fox Jumps"</code></td>
-    </tr>
-    <tr>
-      <td><code>[1], ...[<var>n</var>]</code></td>
-      <td>
-        <p>(존재하는 경우) 괄호로 감싼 부분문자열.</p>
-        <p>괄호로 감싼 부분문자열 숫자의 제한은 없습니다.</p>
-      </td>
-      <td>
-        <p><code>result[1] === "Brown"</code></p>
-        <p><code>result[2] === "Jumps"</code></p>
-      </td>
-    </tr>
-    <tr>
-      <td><code>index</code></td>
-      <td>일치가 문자열에서 위치하는 인덱스. (0 시작)</td>
-      <td><code>4</code></td>
-    </tr>
-    <tr>
-      <td><code>input</code></td>
-      <td>원본 문자열.</td>
-      <td><code>"The Quick Brown Fox Jumps Over The Lazy Dog"</code></td>
-    </tr>
-    <tr>
-      <th colspan="1" rowspan="5" scope="row" style="vertical-align: top">
-        <code>re</code>
-      </th>
-      <td><code>lastIndex</code></td>
-      <td>
-        <p>다음 일치를 시작할 인덱스.</p>
-        <p><code>g</code>를 누락하면 항상 <code>0</code>입니다.</p>
-      </td>
-      <td><code>25</code></td>
-    </tr>
-    <tr>
-      <td><code>ignoreCase</code></td>
-      <td><code>i</code> 플래그로 대소문자를 무시했는지 여부.</td>
-      <td><code>true</code></td>
-    </tr>
-    <tr>
-      <td><code>global</code></td>
-      <td><code>g</code> 플래그로 전역 일치를 수행하는지 여부.</td>
-      <td><code>true</code></td>
-    </tr>
-    <tr>
-      <td><code>multiline</code></td>
-      <td><code>m</code> 플래그로 여러 줄에 걸친 탐색을 수행하는지 여부.</td>
-      <td><code>false</code></td>
-    </tr>
-    <tr>
-      <td><code>source</code></td>
-      <td>패턴 문자열.</td>
-      <td><code>"quick\s(brown).+?(jumps)"</code></td>
-    </tr>
-  </tbody>
-</table>
+| Property  | Value                                                              |
+| --------- | ------------------------------------------------------------------ |
+| `[0]`     | `"Quick Brown Fox Jumps"`                                          |
+| `[1]`     | `"Brown"`                                                          |
+| `[2]`     | `"Jumps"`                                                          |
+| `index`   | `4`                                                                |
+| `indices` | `[[4, 25], [10, 15], [20, 25]]`<br />`groups: { color: [10, 15 ]}` |
+| `input`   | `"The Quick Brown Fox Jumps Over The Lazy Dog"`                    |
+| `groups`  | `{ color: "brown" }`                                               |
 
-## 예제
+In addition, `re.lastIndex` will be set to `25`, due to this regex being global.
 
 ### Finding successive matches
 
-If your regular expression uses the "`g`" flag, you can use the `exec()` method multiple times to find successive matches in the same string. When you do so, the search starts at the substring of `str` specified by the regular expression's {{jsxref("RegExp.lastIndex", "lastIndex")}} property ({{jsxref("RegExp.prototype.test()", "test()")}} will also advance the {{jsxref("RegExp.lastIndex", "lastIndex")}} property). For example, assume you have this script:
+If your regular expression uses the [`g`](/en-US/docs/Web/JavaScript/Guide/Regular_expressions#advanced_searching_with_flags) flag, you can use the `exec()` method multiple times to find successive matches in the same string. When you do so, the search starts at the substring of `str` specified by the regular expression's {{jsxref("RegExp/lastIndex", "lastIndex")}} property ({{jsxref("RegExp.prototype.test()", "test()")}} will also advance the {{jsxref("RegExp/lastIndex", "lastIndex")}} property). Note that the {{jsxref("RegExp/lastIndex", "lastIndex")}} property will not be reset when searching a different string, it will start its search at its existing {{jsxref("RegExp/lastIndex", "lastIndex")}}.
+
+For example, assume you have this script:
 
 ```js
-var myRe = /ab*/g;
-var str = 'abbcdefabh';
-var myArray;
+const myRe = /ab*/g;
+const str = "abbcdefabh";
+let myArray;
 while ((myArray = myRe.exec(str)) !== null) {
-  var msg = 'Found ' + myArray[0] + '. ';
-  msg += 'Next match starts at ' + myRe.lastIndex;
+  let msg = `Found ${myArray[0]}. `;
+  msg += `Next match starts at ${myRe.lastIndex}`;
   console.log(msg);
 }
 ```
@@ -143,28 +104,35 @@ Found abb. Next match starts at 3
 Found ab. Next match starts at 9
 ```
 
-Note: Do not place the regular expression literal (or {{jsxref("RegExp")}} constructor) within the `while` condition or it will create an infinite loop if there is a match due to the {{jsxref("RegExp.lastIndex", "lastIndex")}} property being reset upon each iteration. Also be sure that the global flag is set or a loop will occur here also.
+> **Warning:** There are many pitfalls that can lead to this becoming an infinite loop!
+>
+> - Do _not_ place the regular expression literal (or {{jsxref("RegExp")}} constructor) within the `while` condition — it will recreate the regex for every iteration and reset {{jsxref("RegExp/lastIndex", "lastIndex")}}.
+> - Be sure that the [global (`g`) flag](/en-US/docs/Web/JavaScript/Guide/Regular_expressions#advanced_searching_with_flags) is set, or `lastIndex` will never be advanced.
+> - If the regex may match zero-length characters (e.g. `/^/gm`), increase its {{jsxref("RegExp/lastIndex", "lastIndex")}} manually each time to avoid being stuck in the same place.
 
-### Using `exec()` with `RegExp` literals
+You can usually replace this kind of code with {{jsxref("String.prototype.matchAll()")}} to make it less error-prone.
 
-You can also use `exec()` without creating a {{jsxref("RegExp")}} object:
+### Using exec() with RegExp literals
+
+You can also use `exec()` without creating a {{jsxref("RegExp")}} object
+explicitly:
 
 ```js
-var matches = /(hello \S+)/.exec('This is a hello world!');
+const matches = /(hello \S+)/.exec("This is a hello world!");
 console.log(matches[1]);
 ```
 
-This will log a message containing 'hello world!'.
+This will log a message containing `'hello world!'`.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Regular Expressions](/ko/docs/Web/JavaScript/Guide/Regular_Expressions) chapter in the [JavaScript Guide](/ko/docs/Web/JavaScript/Guide)
+- [Regular Expressions](/en-US/docs/Web/JavaScript/Guide/Regular_expressions) chapter in the [JavaScript Guide](/en-US/docs/Web/JavaScript/Guide)
 - {{jsxref("RegExp")}}

@@ -1,65 +1,87 @@
 ---
 title: ArrayBuffer
 slug: Web/JavaScript/Reference/Global_Objects/ArrayBuffer
+page-type: javascript-class
+browser-compat: javascript.builtins.ArrayBuffer
 ---
 
 {{JSRef}}
 
-**`ArrayBuffer`** 객체는 일반적인 고정 길이 원시 이진 데이터 버퍼를 나타냅니다.
+The **`ArrayBuffer`** object is used to represent a generic raw binary data buffer.
 
-ArrayBuffer는 바이트로 구성된 배열로, 다른 언어에서는 종종 "바이트 배열"이라고 부릅니다. `ArrayBuffer`에 담긴 정보를 직접 수정하는 것은 불가능하지만, 대신 [형식화 배열](/ko/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)이나 {{jsxref("DataView")}} 객체를 통해 버퍼를 특정 형식으로 나타내고, 이를 통해 버퍼의 내용을 읽거나 쓸 수 있습니다.
+It is an array of bytes, often referred to in other languages as a "byte array". You cannot directly manipulate the contents of an `ArrayBuffer`; instead, you create one of the [typed array objects](/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) or a {{jsxref("DataView")}} object which represents the buffer in a specific format, and use that to read and write the contents of the buffer.
 
-{{jsxref("ArrayBuffer.ArrayBuffer", "ArrayBuffer()")}} 생성자는 주어진 길이(바이트)를 가진 새로운 `ArrayBuffer`를 생성합니다. [Base64](/ko/docs/Glossary/Base64) 문자열이나 [로컬 파일](/ko/docs/Web/API/FileReader/readAsArrayBuffer)과 같은 기존 데이터에서도 배열 버퍼를 생성할 수 있습니다.
+The [`ArrayBuffer()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer/ArrayBuffer) constructor creates a new `ArrayBuffer` of the given length in bytes. You can also get an array buffer from existing data, for example, from a [Base64](/en-US/docs/Glossary/Base64) string or [from a local file](/en-US/docs/Web/API/FileReader/readAsArrayBuffer).
 
-`ArrayBuffer`는 {{glossary("Transferable objects")}}입니다.
+`ArrayBuffer` is a [transferable object](/en-US/docs/Web/API/Web_Workers_API/Transferable_objects).
 
-## 생성자
+## Description
 
-- {{jsxref("ArrayBuffer.ArrayBuffer", "ArrayBuffer()")}}
-  - : 새로운 `ArrayBuffer` 객체를 생성합니다.
+### Resizing ArrayBuffers
 
-## 정적 속성
+`ArrayBuffer` objects can be made resizable by including the `maxByteLength` option when calling the {{jsxref("ArrayBuffer/ArrayBuffer", "ArrayBuffer()")}} constructor. You can query whether an `ArrayBuffer` is resizable and what its maximum size is by accessing its {{jsxref("ArrayBuffer/resizable", "resizable")}} and {{jsxref("ArrayBuffer/maxByteLength", "maxByteLength")}} properties, respectively. You can assign a new size to a resizable `ArrayBuffer` with a {{jsxref("ArrayBuffer/resize", "resize()")}} call. New bytes are initialized to 0.
 
-- {{jsxref("ArrayBuffer.@@species", "get ArrayBuffer[@@species]")}}
-  - : 파생 개체를 만드는 데 사용되는 생성자 함수입니다.
+These features make resizing `ArrayBuffer`s more efficient — otherwise, you have to make a copy of the buffer with a new size. It also gives JavaScript parity with WebAssembly in this regard (WASM linear memory can be resized with [`WebAssembly.Memory.prototype.grow()`](/en-US/docs/WebAssembly/JavaScript_interface/Memory/grow)).
 
-## 정적 메서드
+## Constructor
 
-- {{jsxref("ArrayBuffer.isView", "ArrayBuffer.isView(<var>arg</var>)")}}
-  - : `arg` 유형이 [형식화 배열 객체](/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)이거나 {{jsxref("DataView")}}와 같은 ArrayBuffer 중 하나인 경우, `true`를 반환합니다. 그렇지 않으면 `false`를 반환합니다.
+- {{jsxref("ArrayBuffer/ArrayBuffer", "ArrayBuffer()")}}
+  - : Creates a new `ArrayBuffer` object.
 
-## 인스턴스 속성
+## Static properties
+
+- {{jsxref("ArrayBuffer/@@species", "ArrayBuffer[@@species]")}}
+  - : The constructor function that is used to create derived objects.
+
+## Static methods
+
+- {{jsxref("ArrayBuffer.isView()")}}
+  - : Returns `true` if `arg` is one of the ArrayBuffer views, such as [typed array objects](/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) or a {{jsxref("DataView")}}. Returns `false` otherwise.
+
+## Instance properties
+
+These properties are defined on `ArrayBuffer.prototype` and shared by all `ArrayBuffer` instances.
 
 - {{jsxref("ArrayBuffer.prototype.byteLength")}}
-  - : ArrayBuffer의 읽기 전용 크기(바이트)입니다. 배열리 구성될 때 설정되며 변경할 수 없습니다.
+  - : The size, in bytes, of the `ArrayBuffer`. This is established when the array is constructed and can only be changed using the {{jsxref("ArrayBuffer.prototype.resize()")}} method if the `ArrayBuffer` is resizable.
+- {{jsxref("Object/constructor", "ArrayBuffer.prototype.constructor")}}
+  - : The constructor function that created the instance object. For `ArrayBuffer` instances, the initial value is the {{jsxref("ArrayBuffer/ArrayBuffer", "ArrayBuffer")}} constructor.
+- {{jsxref("ArrayBuffer.prototype.maxByteLength")}}
+  - : The read-only maximum length, in bytes, that the `ArrayBuffer` can be resized to. This is established when the array is constructed and cannot be changed.
+- {{jsxref("ArrayBuffer.prototype.resizable")}}
+  - : Read-only. Returns `true` if the `ArrayBuffer` can be resized, or `false` if not.
+- `ArrayBuffer.prototype[@@toStringTag]`
+  - : The initial value of the [`@@toStringTag`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toStringTag) property is the string `"ArrayBuffer"`. This property is used in {{jsxref("Object.prototype.toString()")}}.
 
-## 인스턴스 메서드
+## Instance methods
 
+- {{jsxref("ArrayBuffer.prototype.resize()")}}
+  - : Resizes the `ArrayBuffer` to the specified size, in bytes.
 - {{jsxref("ArrayBuffer.prototype.slice()")}}
-  - : 컨탠츠의 `begin`(포함)부터 `end`(제외)까지 해당 `ArrayBuffer`의 바이트 복사본인 새 `ArrayBuffer`를 반환합니다. `begin` 또는 `end`가 음수이면 처음부터가 아니라 배열 끝에서 인덱스를 참조합니다.
+  - : Returns a new `ArrayBuffer` whose contents are a copy of this `ArrayBuffer`'s bytes from `begin` (inclusive) up to `end` (exclusive). If either `begin` or `end` is negative, it refers to an index from the end of the array, as opposed to from the beginning.
 
-## 예제
+## Examples
 
-### ArrayBuffer 만들기
+### Creating an ArrayBuffer
 
-이 예에서는 버퍼를 참조하는 {{jsxref("Int32Array")}} 뷰가 있는 8바이트 버퍼를 만듭니다.
+In this example, we create a 8-byte buffer with a {{jsxref("Int32Array")}} view referring to the buffer:
 
 ```js
 const buffer = new ArrayBuffer(8);
 const view = new Int32Array(buffer);
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - [Polyfill of `ArrayBuffer` in `core-js`](https://github.com/zloirock/core-js#ecmascript-typed-arrays)
-- [JavaScript 형식화 배열](/ko/docs/Web/JavaScript/Typed_arrays)
+- [JavaScript typed arrays](/en-US/docs/Web/JavaScript/Typed_arrays)
 - {{jsxref("SharedArrayBuffer")}}
-- [RangeError: invalid array length](/ko/docs/Web/JavaScript/Reference/Errors/Invalid_array_length)
+- [RangeError: invalid array length](/en-US/docs/Web/JavaScript/Reference/Errors/Invalid_array_length)

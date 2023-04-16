@@ -1,11 +1,13 @@
 ---
 title: SourceMap
 slug: Web/HTTP/Headers/SourceMap
+page-type: http-header
+browser-compat: http.headers.SourceMap
 ---
 
 {{HTTPSidebar}}
 
-**`SourceMap`** [HTTP](/ko/docs/Web/HTTP) 응답 헤더는 생성된 코드를 [소스맵](https://firefox-source-docs.mozilla.org/devtools-user/debugger/how_to/use_a_source_map/index.html)에 연결해서, 브라우저가 원본 소스를 재구성하여 디버거에서 재구성된 원본을 표시할 수 있도록 합니다.
+The **`SourceMap`** [HTTP](/en-US/docs/Web/HTTP) response header links generated code to a [source map](https://firefox-source-docs.mozilla.org/devtools-user/debugger/how_to/use_a_source_map/index.html), enabling the browser to reconstruct the original source and present the reconstructed original in the debugger.
 
 <table class="properties">
   <tbody>
@@ -20,32 +22,32 @@ slug: Web/HTTP/Headers/SourceMap
   </tbody>
 </table>
 
-## 문법
+## Syntax
 
 ```http
 SourceMap: <url>
 X-SourceMap: <url> (deprecated)
 ```
 
-### 지시자
+### Directives
 
 - \<url>
-  - : 소스 맵 파일을 가리키는 상대적인 URL(요청한 URL 기준) 또는 절대 URL입니다.
+  - : A relative (to the request URL) or absolute URL pointing to a source map file.
 
-## 예제
+## Examples
 
 ```http
 SourceMap: /path/to/file.js.map
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - [Firefox Developer Tools: using a source map](https://firefox-source-docs.mozilla.org/devtools-user/debugger/how_to/use_a_source_map/index.html)

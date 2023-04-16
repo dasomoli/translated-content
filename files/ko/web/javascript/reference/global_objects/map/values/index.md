@@ -1,34 +1,35 @@
 ---
 title: Map.prototype.values()
 slug: Web/JavaScript/Reference/Global_Objects/Map/values
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Map.values
 ---
 
 {{JSRef}}
 
-**`values()`** 메서드는 `Map`객체에 삽입한 순서대로 요소의 값을 가지는 새로운
-[반복자](/ko/docs/Web/JavaScript/Guide/Iterators_and_Generators) 객체를 반환합니다.
+The **`values()`** method returns a new _[map iterator](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator)_ object that contains the values for each element in the `Map` object in insertion order.
 
 {{EmbedInteractiveExample("pages/js/map-prototype-values.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 values()
 ```
 
-### 반환 값
+### Return value
 
-새로운 {{jsxref("Map")}}의 반복자 객체
+A new [iterable iterator object](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator).
 
-## 예제
+## Examples
 
-### values() 사용하기
+### Using values()
 
 ```js
 const myMap = new Map();
-myMap.set('0', 'foo');
-myMap.set(1, 'bar');
-myMap.set({}, 'baz');
+myMap.set("0", "foo");
+myMap.set(1, "bar");
+myMap.set({}, "baz");
 
 const mapIter = myMap.values();
 
@@ -37,15 +38,15 @@ console.log(mapIter.next().value); // "bar"
 console.log(mapIter.next().value); // "baz"
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Map.prototype.entries()")}}
 - {{jsxref("Map.prototype.keys()")}}

@@ -1,30 +1,29 @@
 ---
 title: Map.prototype.keys()
 slug: Web/JavaScript/Reference/Global_Objects/Map/keys
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Map.keys
 ---
 
 {{JSRef}}
 
-**`keys()`** 메서드는 객체의 각 요소에 대한 키를 삽입한 순서대로 가지고 있는 새
-[반복자](/ko/docs/Web/JavaScript/Guide/Iterators_and_Generators) 객체를 반환합니다.
-특별한 경우에 이 반복자 객체도 반복 가능하므로
-[for...of](/ko/docs/Web/JavaScript/Reference/Statements/for...of) 루프를 사용할 수 있습니다.
+The **`keys()`** method returns a new _[map iterator](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator)_ object that contains the keys for each element in the `Map` object in insertion order.
 
 {{EmbedInteractiveExample("pages/js/map-prototype-keys.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 keys()
 ```
 
-### 반환 값
+### Return value
 
-새로운 {{jsxref("Map")}} 반복자 객체.
+A new [iterable iterator object](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator).
 
-## 예제
+## Examples
 
-### keys() 사용하기
+### Using keys()
 
 ```js
 const myMap = new Map();
@@ -39,15 +38,15 @@ console.log(mapIter.next().value); // 1
 console.log(mapIter.next().value); // {}
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Map.prototype.entries()")}}
 - {{jsxref("Map.prototype.values()")}}

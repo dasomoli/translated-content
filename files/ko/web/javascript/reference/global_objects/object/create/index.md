@@ -1,195 +1,186 @@
 ---
 title: Object.create()
 slug: Web/JavaScript/Reference/Global_Objects/Object/create
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Object.create
 ---
+
 {{JSRef}}
 
-**`Object.create()`** 메서드는 지정된 프로토타입 객체 및 속성(property)을 갖는 새 객체를 만듭니다.
+The **`Object.create()`** static method creates a new object, using an existing object as the prototype of the newly created object.
 
-## 구문
+{{EmbedInteractiveExample("pages/js/object-create.html", "taller")}}
 
-```js
-Object.create(proto[, propertiesObject])
+## Syntax
+
+```js-nolint
+Object.create(proto)
+Object.create(proto, propertiesObject)
 ```
 
-### 매개변수
+### Parameters
 
 - `proto`
-  - : 새로 만든 객체의 프로토타입이어야 할 객체.
-- `propertiesObject`
-  - : 선택사항. 지정되고 {{jsxref("undefined")}}가 아니면, 자신의 속성(즉, 자체에 정의되어 그 프로토타입 체인에서 열거가능하지 _않은_ 속성)이 열거가능한 객체는 해당 속성명으로 새로 만든 객체에 추가될 속성 설명자(descriptor)를 지정합니다. 이러한 속성은 {{jsxref("Object.defineProperties()")}}의 두 번째 인수에 해당합니다.
+  - : The object which should be the prototype of the newly-created object.
+- `propertiesObject` {{Optional_inline}}
+  - : If specified and not {{jsxref("undefined")}}, an object whose [enumerable own properties](/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties) specify property descriptors to be added to the newly-created object, with the corresponding property names. These properties correspond to the second argument of {{jsxref("Object.defineProperties()")}}.
 
-### 반환값
+### Return value
 
-지정된 프로토타입 개체와 속성을 갖는 새로운 개체.
+A new object with the specified prototype object and properties.
 
-### 예외
+### Exceptions
 
-`proto` 매개변수가 {{jsxref("null")}} 또는 객체가 아닌 경우 {{jsxref("TypeError")}} 예외가 발생(throw).
+- {{jsxref("TypeError")}}
+  - : Thrown if `proto` is neither [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null) nor an {{jsxref("Object")}}.
 
-## 예
+## Examples
 
-### `Object.create()`를 사용한 고전적인 상속방법
+### Classical inheritance with Object.create()
 
-아래는 고전적인 상속방법으로 사용된 `Object.create()` 사용 예입니다. 이는 단일 상속 용으로, JavaScript가 지원하는 전부입니다.
+Below is an example of how to use `Object.create()` to achieve classical inheritance. This is for a single inheritance, which is all that JavaScript supports.
 
 ```js
-// Shape - 상위클래스
+// Shape - superclass
 function Shape() {
   this.x = 0;
   this.y = 0;
 }
 
-// 상위클래스 메서드
-Shape.prototype.move = function(x, y) {
+// superclass method
+Shape.prototype.move = function (x, y) {
   this.x += x;
   this.y += y;
-  console.info('Shape moved.');
+  console.info("Shape moved.");
 };
 
-// Rectangle - 하위클래스
+// Rectangle - subclass
 function Rectangle() {
-  Shape.call(this); // super 생성자 호출.
+  Shape.call(this); // call super constructor.
 }
 
-// 하위클래스는 상위클래스를 확장
-Rectangle.prototype = Object.create(Shape.prototype);
-Rectangle.prototype.constructor = Rectangle;
-
-var rect = new Rectangle();
-
-console.log('Is rect an instance of Rectangle?', rect instanceof Rectangle); // true
-console.log('Is rect an instance of Shape?', rect instanceof Shape); // true
-rect.move(1, 1); // Outputs, 'Shape moved.'
-```
-
-여러 객체에서 상속하고 싶은 경우엔 mixin이 사용가능합니다.
-
-```js
-function MyClass() {
-  SuperClass.call(this);
-  OtherSuperClass.call(this);
-}
-
-MyClass.prototype = Object.create(SuperClass.prototype); // 상속
-mixin(MyClass.prototype, OtherSuperClass.prototype); // mixin
-
-MyClass.prototype.myMethod = function() {
-  // 기능 수행
-};
-```
-
-`mixin` 함수는 상위(super)클래스 프로토타입에서 하위(sub)클래스 프로토타입으로 함수를 복사하고, mixin 함수는 사용자에 의해 공급될 필요가 있습니다. mixin 같은 함수의 예는 [jQuery.extend()](https://api.jquery.com/jQuery.extend/)입니다.
-
-### `Object.create()`와 함께 `propertiesObject` 인수 사용하기
-
-```js
-var o;
-
-// 프로토타입이 null인 객체 생성
-o = Object.create(null);
-
-
-o = {};
-// 위는 아래와 같습니다:
-o = Object.create(Object.prototype);
-
-
-// 샘플 속성 두개를 갖는 객체를 만드는 예.
-// (두 번째 매개변수는 키를 *속성 설명자*에 맵핑함을 주의하세요.)
-o = Object.create(Object.prototype, {
-  // foo는 정규 '값 속성'
-  foo: { writable: true, configurable: true, value: 'hello' },
-  // bar는 접근자(accessor, getter-및-setter) 속성
-  bar: {
-    configurable: false,
-    get: function() { return 10; },
-    set: function(value) { console.log('Setting `o.bar` to', value); }
-/* ES5 접근자로 코드는 이렇게 할 수 있습니다
-    get function() { return 10; },
-    set function(value) { console.log('setting `o.bar` to', value); } */
-  }
+// subclass extends superclass
+Rectangle.prototype = Object.create(Shape.prototype, {
+  // If you don't set Rectangle.prototype.constructor to Rectangle,
+  // it will take the prototype.constructor of Shape (parent).
+  // To avoid that, we set the prototype.constructor to Rectangle (child).
+  constructor: {
+    value: Rectangle,
+    enumerable: false,
+    writable: true,
+    configurable: true,
+  },
 });
 
+const rect = new Rectangle();
 
-function Constructor() {}
-o = new Constructor();
-// 위는 아래와 같습니다:
-o = Object.create(Constructor.prototype);
-// 물론, 생성자 함수에 실제 초기화 코드가 있다면
-// Object.create()는 그것을 반영할 수 없습니다
+console.log("Is rect an instance of Rectangle?", rect instanceof Rectangle); // true
+console.log("Is rect an instance of Shape?", rect instanceof Shape); // true
+rect.move(1, 1); // Logs 'Shape moved.'
+```
 
+Note that there are caveats to watch out for using `create()`, such as re-adding the [`constructor`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/constructor) property to ensure proper semantics. Although `Object.create()` is believed to have better performance than mutating the prototype with {{jsxref("Object.setPrototypeOf()")}}, the difference is in fact negligible if no instances have been created and property accesses haven't been optimized yet. In modern code, the [class](/en-US/docs/Web/JavaScript/Reference/Classes) syntax should be preferred in any case.
 
-// 빈 새 객체가 프로토타입인 새 객체를 만들고
-// 값이 42인 단일 속성 'p' 추가.
+### Using propertiesObject argument with Object.create()
+
+`Object.create()` allows fine-tuned control over the object creation process. The [object initializer syntax](/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer) is, in fact, a syntax sugar of `Object.create()`. With `Object.create()`, we can create objects with a designated prototype and also some properties. Note that the second parameter maps keys to _property descriptors_ — this means you can control each property's enumerability, configurability, etc. as well, which you can't do in object initializers.
+
+```js
+o = {};
+// Is equivalent to:
+o = Object.create(Object.prototype);
+
+o = Object.create(Object.prototype, {
+  // foo is a regular data property
+  foo: {
+    writable: true,
+    configurable: true,
+    value: "hello",
+  },
+  // bar is an accessor property
+  bar: {
+    configurable: false,
+    get() {
+      return 10;
+    },
+    set(value) {
+      console.log("Setting `o.bar` to", value);
+    },
+  },
+});
+
+// Create a new object whose prototype is a new, empty
+// object and add a single property 'p', with value 42.
 o = Object.create({}, { p: { value: 42 } });
+```
 
-// 기본으로 writable, enumerable 또는 configurable 속성은 false:
-o.p = 24;
-o.p;
-// 42
+With `Object.create()`, we can create an object [with `null` as prototype](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#null-prototype_objects). The equivalent syntax in object initializers would be the [`__proto__`](/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer#prototype_setter) key.
+
+```js
+o = Object.create(null);
+// Is equivalent to:
+o = { __proto__: null };
+```
+
+By default properties are _not_ writable, enumerable or configurable.
+
+```js
+o.p = 24; // throws in strict mode
+o.p; // 42
 
 o.q = 12;
-for (var prop in o) {
+for (const prop in o) {
   console.log(prop);
 }
 // 'q'
 
 delete o.p;
-// false
-
-// ES3 속성을 지정하기 위해
-o2 = Object.create({}, {
-  p: {
-    value: 42,
-    writable: true,
-    enumerable: true,
-    configurable: true
-  }
-});
+// false; throws in strict mode
 ```
 
-## 폴리필
-
-이 폴리필에서는 새 개체에 대한 프로토타입이 선택되었지만 두번째 인수가 없이 개체를 생성하는 사례를 보여줍니다.
-
-`[[Prototype]]`에 `null` 을 설정하는 것이 실제 ES5 `Object.create`에서는 지원되지만, ECMAScript 5 보다 낮은 버전에서는 상속에 제한이 있기 때문에 이 폴리필에서는 지원할 수 없음에 주의하세요.
+To specify a property with the same attributes as in an initializer, explicitly specify `writable`, `enumerable` and `configurable`.
 
 ```js
-if (typeof Object.create != 'function') {
-  Object.create = (function(undefined) {
-    var Temp = function() {};
-    return function (prototype, propertiesObject) {
-      if(prototype !== Object(prototype) && prototype !== null) {
-        throw TypeError('Argument must be an object, or null');
-      }
-      Temp.prototype = prototype || {};
-      if (propertiesObject !== undefined) {
-        Object.defineProperties(Temp.prototype, propertiesObject);
-      }
-      var result = new Temp();
-      Temp.prototype = null;
-      // Object.create(null)인 경우 모방
-      if(prototype === null) {
-         result.__proto__ = null;
-      }
-      return result;
-    };
-  })();
-}
+o2 = Object.create(
+  {},
+  {
+    p: {
+      value: 42,
+      writable: true,
+      enumerable: true,
+      configurable: true,
+    },
+  },
+);
+// This is not equivalent to:
+// o2 = Object.create({ p: 42 })
+// which will create an object with prototype { p: 42 }
 ```
 
-## 명세
+You can use `Object.create()` to mimic the behavior of the [`new`](/en-US/docs/Web/JavaScript/Reference/Operators/new) operator.
+
+```js
+function Constructor() {}
+o = new Constructor();
+// Is equivalent to:
+o = Object.create(Constructor.prototype);
+```
+
+Of course, if there is actual initialization code in the `Constructor` function, the `Object.create()` method cannot reflect it.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
+- [Polyfill of `Object.create` in `core-js`](https://github.com/zloirock/core-js#ecmascript-object)
 - {{jsxref("Object.defineProperty()")}}
 - {{jsxref("Object.defineProperties()")}}
 - {{jsxref("Object.prototype.isPrototypeOf()")}}
-- John Resig의 [getPrototypeOf()](http://ejohn.org/blog/objectgetprototypeof/) 포스트
+- {{jsxref("Reflect.construct()")}}
+- John Resig's post on [getPrototypeOf()](https://johnresig.com/blog/objectgetprototypeof/)

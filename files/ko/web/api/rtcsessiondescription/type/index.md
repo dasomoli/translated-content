@@ -1,45 +1,52 @@
 ---
-title: RTCSessionDescription.type
+title: "RTCSessionDescription: type property"
+short-title: type
 slug: Web/API/RTCSessionDescription/type
+page-type: web-api-instance-property
+browser-compat: api.RTCSessionDescription.type
 ---
-{{APIRef("WebRTC")}}{{SeeCompatTable}}
 
-읽기 전용 값인 **`RTCSessionDescription.type`**은 세션 설명의 타입을 알려주는 `RTCSdpType`타입의 값입니다.
+{{APIRef("WebRTC")}}
+
+The property **`RTCSessionDescription.type`** is a read-only
+string value which describes the description's type.
 
 ## Syntax
 
-```js
-var value = sessionDescription.type;
-sessionDescription.type = value;
+```js-nolint
+const value = sessionDescription.type
+sessionDescription.type = value
 ```
 
-### 값
+### Value
 
-`RTCSdpType` 타입의 열거체에 사용 가능한 값들이 정의되어 있습니다.
+The possible values are:
 
-아래는 사용 가능한 값들입니다:
-
-- `"offer"`, offer 혹은 answer 교환 과정에서 처음으로 제안된 세션 설명입니다.
-- `"answer"`, offer 혹은 answer 교환 과정에서 채택한 세션 설명입니다.
-- `"pranswer"`, 임시로 지정한 answer 입니다. 이 세션 설명 값은 채택한 값이 존재하면 변할 수도 있습니다.
-- "`rollback`", 가장 최근의 안정적인 상태의 offer 혹은 answer 상태로 되돌아가라는 세션 설명입니다.
+- `"answer"`
+  - : The SDP contained in the {{domxref("RTCSessionDescription.sdp", "sdp")}} property is the definitive choice in the exchange. In other words, this session description describes the agreed-upon configuration, and is being sent to finalize negotiation.
+- `"offer"`
+  - : The session description object describes the initial proposal in an offer/answer exchange. The session negotiation process begins with an offer being sent from the caller to the callee.
+- `"pranswer"`
+  - : The session description object describes a provisional answer; that is, a response to a previous offer that is not the final answer. It is usually employed by legacy hardware.
+- `"rollback"`
+  - : This special type with an empty session description is used to roll back to the previous stable state.
 
 ## Example
 
 ```js
-// The remote description has been set previously on pc, a RTCPeerconnection
+// The remote description has been set previously on pc, a RTCPeerConnection
 
 alert(pc.remoteDescription.type);
 ```
 
-## 사양서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
-- [WebRTC](/ko/docs/Web/Guide/API/WebRTC)
+- [WebRTC](/en-US/docs/Web/API/WebRTC_API)

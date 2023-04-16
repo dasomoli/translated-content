@@ -1,11 +1,13 @@
 ---
 title: Access-Control-Request-Headers
 slug: Web/HTTP/Headers/Access-Control-Request-Headers
+page-type: http-header
+browser-compat: http.headers.Access-Control-Request-Headers
 ---
 
 {{HTTPSidebar}}
 
-요청 헤더 **`Access-Control-Request-Headers`** 는 실제 요청이 만들어질 때 클라이언트가 보낼 수도 있는 [HTTP headers](/ko/docs/Web/HTTP/Headers)를 서버에게 알리기 위해 브라우저가 {{glossary("preflight request")}}를 발급(issue)할 때 사용됩니다.
+The **`Access-Control-Request-Headers`** request header is used by browsers when issuing a {{glossary("preflight request")}} to let the server know which [HTTP headers](/en-US/docs/Web/HTTP/Headers) the client might send when the actual request is made (such as with {{domxref("XMLHttpRequest.setRequestHeader()","setRequestHeader()")}}). The complementary server-side header of {{HTTPHeader("Access-Control-Allow-Headers")}} will answer this browser-side header.
 
 <table class="properties">
   <tbody>
@@ -20,31 +22,31 @@ slug: Web/HTTP/Headers/Access-Control-Request-Headers
   </tbody>
 </table>
 
-## 구문
+## Syntax
 
+```http
+Access-Control-Request-Headers: <header-name>, <header-name>, …
 ```
-Access-Control-Request-Headers: <header-name>, <header-name>, ...
-```
 
-## 지시어
+## Directives
 
-- `<header-name>`
-  - : 요청에 포함 된 [HTTP headers](/ko/docs/Web/HTTP/Headers)의 쉼표로 구분 한 목록.
+- \<header-name>
+  - : A comma-delimited list of [HTTP headers](/en-US/docs/Web/HTTP/Headers) that are included in the request.
 
-## 예제
+## Examples
 
-```
+```http
 Access-Control-Request-Headers: X-PINGOTHER, Content-Type
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 더보기
+## See also
 
 - {{HTTPHeader("Access-Control-Request-Method")}}

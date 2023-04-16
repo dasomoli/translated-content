@@ -1,65 +1,32 @@
 ---
-title: '<rt>: 루비 텍스트 요소'
+title: "<rt>: The Ruby Text element"
 slug: Web/HTML/Element/rt
+page-type: html-element
+browser-compat: html.elements.rt
 ---
 
 {{HTMLSidebar}}
 
-**HTML `<rt>` 요소**는 동아시아 문자의 루비 주석에서 발음, 번역 등을 나타내는 텍스트 부분을 지정합니다.
+The **`<rt>`** [HTML](/en-US/docs/Web/HTML) element specifies the ruby text component of a ruby annotation, which is used to provide pronunciation, translation, or transliteration information for East Asian typography. The `<rt>` element must always be contained within a {{HTMLElement("ruby")}} element.
 
 {{EmbedInteractiveExample("pages/tabbed/rt.html", "tabbed-shorter")}}
 
-<table class="properties">
-  <tbody>
-    <tr>
-      <th scope="row">
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories">콘텐츠 카테고리</a>
-      </th>
-      <td>없음.</td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 콘텐츠</th>
-      <td>
-        <a href="/ko/docs/Web/Guide/HTML/Content_categories#구문_콘텐츠"
-          >구문 콘텐츠</a
-        >.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">태그 생략</th>
-      <td>
-        바로 뒤따르는 요소가 {{htmlelement("rp")}}, 다른
-        <code>&#x3C;rt></code> 요소거나 자신이 부모의 마지막 요소라면 닫는
-        태그를 생략할 수 있습니다.
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 부모 요소</th>
-      <td>{{htmlelement("ruby")}} 요소.</td>
-    </tr>
-    <tr>
-      <th scope="row">가능한 ARIA 역할</th>
-      <td>모두</td>
-    </tr>
-    <tr>
-      <th scope="row">DOM 인터페이스</th>
-      <td>{{domxref("HTMLElement")}}</td>
-    </tr>
-  </tbody>
-</table>
+See the article about the {{HTMLElement("ruby")}} element for more examples.
 
-## 특성
+## Attributes
 
-이 요소는 [전역 특성](/ko/docs/Web/HTML/Global_attributes)만 포함합니다.
+This element only includes the [global attributes](/en-US/docs/Web/HTML/Global_attributes).
 
-## 예제
+## Examples
 
-다음 예제는 {{htmlelement("ruby")}} 요소를 사용해 한자의 발음을 표기합니다.
+### Using ruby annotations
+
+This simple example provides Romaji transliteration for the kanji characters within the {{HTMLElement("ruby")}} element:
 
 ```html
 <ruby>
-  漢 <rt>한</rt>
-  字 <rt>자</rt>
+  漢 <rt>Kan</rt>
+  字 <rt>ji</rt>
 </ruby>
 ```
 
@@ -69,35 +36,74 @@ body {
 }
 ```
 
-결과는 다음과 같습니다.
+#### Result
 
-{{EmbedLiveSample("with-ruby", 600, 60)}}
+{{EmbedLiveSample("Using_ruby_annotations", 600, 60)}}
 
-브라우저가 루비를 지원하지 않는 경우엔 다음처럼 보일 것입니다.
+## Technical summary
 
-```html hidden
-漢 한 字 자
-```
+<table class="properties">
+  <tbody>
+    <tr>
+      <th scope="row">
+        <a href="/en-US/docs/Web/HTML/Content_categories"
+          >Content categories</a
+        >
+      </th>
+      <td>None.</td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted content</th>
+      <td>
+        <a href="/en-US/docs/Web/HTML/Content_categories#phrasing_content"
+          >Phrasing content</a
+        >.
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Tag omission</th>
+      <td>
+        The end tag may be omitted if the <code>&#x3C;rt></code> element is
+        immediately followed by an <code>&#x3C;rt></code> or
+        {{HTMLElement("rp")}} element, or if there is no more content in
+        the parent element
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted parents</th>
+      <td>A {{HTMLElement("ruby")}} element.</td>
+    </tr>
+    <tr>
+      <th scope="row">Implicit ARIA role</th>
+      <td>
+        <a href="https://www.w3.org/TR/html-aria/#dfn-no-corresponding-role"
+          >No corresponding role</a
+        >
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Permitted ARIA roles</th>
+      <td>Any</td>
+    </tr>
+    <tr>
+      <th scope="row">DOM interface</th>
+      <td>{{domxref("HTMLElement")}}</td>
+    </tr>
+  </tbody>
+</table>
 
-```css hidden
-body {
-  font-size: 22px;
-}
-```
-
-{{EmbedLiveSample("without-ruby", 600, 60)}}
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{HTMLElement("ruby")}}
 - {{HTMLElement("rp")}}
 - {{HTMLElement("rb")}}
 - {{HTMLElement("rtc")}}
+- {{CSSXRef("text-transform", "text-transform: full-size-kana")}}

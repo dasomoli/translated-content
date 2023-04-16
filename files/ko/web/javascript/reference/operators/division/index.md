@@ -1,57 +1,79 @@
 ---
-title: 나누기 (/)
+title: Division (/)
 slug: Web/JavaScript/Reference/Operators/Division
+page-type: javascript-operator
+browser-compat: javascript.operators.division
 ---
+
 {{jsSidebar("Operators")}}
 
-나누기 연산자(`/`)는 왼쪽 피연산자를 피제수, 오른쪽 피연산자를 제수로 하여 몫을 구합니다.
+The **division (`/`)** operator produces the quotient of its operands where the left operand is the dividend and the right operand is the divisor.
 
 {{EmbedInteractiveExample("pages/js/expressions-division.html")}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 x / y
 ```
 
-## 예제
+## Description
 
-### 기본 나눗셈
+The `/` operator is overloaded for two types of operands: number and [BigInt](/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt). It first [coerces both operands to numeric values](/en-US/docs/Web/JavaScript/Data_structures#numeric_coercion) and tests the types of them. It performs BigInt division if both operands becomes BigInts; otherwise, it performs number division. A {{jsxref("TypeError")}} is thrown if one operand becomes a BigInt but the other becomes a number.
 
-```js
-1 / 2             // 0.5
+For BigInt division, the result is the quotient of the two operands truncated towards zero, and the remainder is discarded. A {{jsxref("RangeError")}} is thrown if the divisor `y` is `0n`. This is because number division by zero returns `Infinity` or `-Infinity`, but BigInt has no concept of infinity.
 
-Math.floor(3 / 2) // 1
+## Examples
 
-1.0 / 2.0         // 0.5
-```
-
-### 0으로 나누기
+### Basic division
 
 ```js
-2.0 / 0     // Infinity
+1 / 2; // 0.5
 
-2.0 / 0.0   // Infinity, 0.0 === 0이기 때문
+Math.floor(3 / 2); // 1
 
-2.0 / -0.0  // -Infinity
+1.0 / 2.0; // 0.5
+
+1n / 2n; // 0n
+5n / 3n; // 1n
+-1n / 3n; // 0n
+1n / -3n; // 0n
+
+2n / 2; // TypeError: Cannot mix BigInt and other types, use explicit conversions
+
+// To do division with a BigInt and a non-BigInt, convert either operand
+2n / BigInt(2); // 1n
+Number(2n) / 2; // 1
 ```
 
-## 명세
+### Division by zero
+
+```js
+2.0 / 0; // Infinity
+
+2.0 / 0.0; // Infinity, because 0.0 === 0
+
+2.0 / -0.0; // -Infinity
+
+2n / 0n; // RangeError: Division by zero
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [더하기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Addition)
-- [빼기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Subtraction)
-- [곱하기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Multiplication)
-- [나머지 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Remainder)
-- [거듭제곱 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Exponentiation)
-- [증가 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Increment)
-- [감소 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Decrement)
-- [단항 부정 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Unary_negation)
-- [단항 플러스 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Unary_plus)
+- [Addition operator](/en-US/docs/Web/JavaScript/Reference/Operators/Addition)
+- [Subtraction operator](/en-US/docs/Web/JavaScript/Reference/Operators/Subtraction)
+- [Multiplication operator](/en-US/docs/Web/JavaScript/Reference/Operators/Multiplication)
+- [Remainder operator](/en-US/docs/Web/JavaScript/Reference/Operators/Remainder)
+- [Exponentiation operator](/en-US/docs/Web/JavaScript/Reference/Operators/Exponentiation)
+- [Increment operator](/en-US/docs/Web/JavaScript/Reference/Operators/Increment)
+- [Decrement operator](/en-US/docs/Web/JavaScript/Reference/Operators/Decrement)
+- [Unary negation operator](/en-US/docs/Web/JavaScript/Reference/Operators/Unary_negation)
+- [Unary plus operator](/en-US/docs/Web/JavaScript/Reference/Operators/Unary_plus)

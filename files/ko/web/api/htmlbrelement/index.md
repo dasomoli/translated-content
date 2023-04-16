@@ -1,33 +1,35 @@
 ---
 title: HTMLBRElement
 slug: Web/API/HTMLBRElement
+page-type: web-api-interface
+browser-compat: api.HTMLBRElement
 ---
 
 {{APIRef("HTML DOM")}}
 
-**`HTMLBRElement`** 인터페이스는 HTML 줄바꿈 요소({{htmlelement("br")}})를 나타냅니다. {{domxref("HTMLElement")}}를 상속합니다.
+The **`HTMLBRElement`** interface represents an HTML line break element ({{htmlelement("br")}}). It inherits from {{domxref("HTMLElement")}}.
 
-{{InheritanceDiagram(600, 120)}}
+{{InheritanceDiagram}}
 
-## 속성
+## Instance properties
 
-_부모인 {{domxref("HTMLElement")}}로부터 상속합니다._
+_Inherits properties from its parent, {{domxref("HTMLElement")}}._
 
 - {{domxref("HTMLBRElement.clear")}} {{deprecated_inline}}
-  - : 떠있는 요소 주변 텍스트의 흐름을 나타내는 {{domxref("DOMString")}}입니다.
+  - : A string indicating the flow of text around floating objects.
 
-## 메서드
+## Instance methods
 
-_부모인 {{domxref("HTMLElement")}}로부터 상속합니다._
+_No specific method; inherits methods from its parent, {{domxref("HTMLElement")}}_.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 인터페이스를 구현하는 HTML 요소 {{HTMLElement("br")}}.
+- HTML element implementing this interface: {{HTMLElement("br")}}

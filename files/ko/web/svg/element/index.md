@@ -1,40 +1,38 @@
 ---
 title: SVG element reference
 slug: Web/SVG/Element
+page-type: landing-page
 ---
 
-« [SVG](/ko/docs/SVG) / [SVG Attribute reference](/ko/docs/SVG/Attribute) »
+{{SVGRef}}
 
-## SVG 엘리먼트들
+SVG drawings and images are created using a wide array of elements which are dedicated to the construction, drawing, and layout of vector images and diagrams. Here you'll find reference documentation for each of the SVG elements.
 
-A
+## SVG elements A to Z
+
+### A
 
 - {{SVGElement("a")}}
-- {{SVGElement("altGlyph")}}
-- {{SVGElement("altGlyphDef")}}
-- {{SVGElement("altGlyphItem")}}
 - {{SVGElement("animate")}}
-- {{SVGElement("animateColor")}}
 - {{SVGElement("animateMotion")}}
 - {{SVGElement("animateTransform")}}
 
-B C
+### C
 
 - {{SVGElement("circle")}}
 - {{SVGElement("clipPath")}}
-- {{SVGElement("color-profile")}}
-- {{SVGElement("cursor")}}
 
-D
+### D
 
 - {{SVGElement("defs")}}
 - {{SVGElement("desc")}}
+- {{SVGElement("discard")}}
 
-E
+### E
 
 - {{SVGElement("ellipse")}}
 
-F
+### F
 
 - {{SVGElement("feBlend")}}
 - {{SVGElement("feColorMatrix")}}
@@ -44,6 +42,7 @@ F
 - {{SVGElement("feDiffuseLighting")}}
 - {{SVGElement("feDisplacementMap")}}
 - {{SVGElement("feDistantLight")}}
+- {{SVGElement("feDropShadow")}}
 - {{SVGElement("feFlood")}}
 - {{SVGElement("feFuncA")}}
 - {{SVGElement("feFuncB")}}
@@ -61,54 +60,46 @@ F
 - {{SVGElement("feTile")}}
 - {{SVGElement("feTurbulence")}}
 - {{SVGElement("filter")}}
-- {{SVGElement("font")}}
-- {{SVGElement("font-face")}}
-- {{SVGElement("font-face-format")}}
-- {{SVGElement("font-face-name")}}
-- {{SVGElement("font-face-src")}}
-- {{SVGElement("font-face-uri")}}
 - {{SVGElement("foreignObject")}}
 
-G
+### G
 
 - {{SVGElement("g")}}
-- {{SVGElement("glyph")}}
-- {{SVGElement("glyphRef")}}
 
-H
+### H
 
-- {{SVGElement("hkern")}}
+- {{SVGElement("hatch")}}
+- {{SVGElement("hatchpath")}}
 
-I
+### I
 
 - {{SVGElement("image")}}
 
-J K L
+### L
 
 - {{SVGElement("line")}}
 - {{SVGElement("linearGradient")}}
 
-M
+### M
 
 - {{SVGElement("marker")}}
 - {{SVGElement("mask")}}
 - {{SVGElement("metadata")}}
-- {{SVGElement("missing-glyph")}}
 - {{SVGElement("mpath")}}
 
-N O P
+### P
 
 - {{SVGElement("path")}}
 - {{SVGElement("pattern")}}
 - {{SVGElement("polygon")}}
 - {{SVGElement("polyline")}}
 
-Q R
+### R
 
 - {{SVGElement("radialGradient")}}
 - {{SVGElement("rect")}}
 
-S
+### S
 
 - {{SVGElement("script")}}
 - {{SVGElement("set")}}
@@ -118,77 +109,139 @@ S
 - {{SVGElement("switch")}}
 - {{SVGElement("symbol")}}
 
-T
+### T
 
 - {{SVGElement("text")}}
 - {{SVGElement("textPath")}}
 - {{SVGElement("title")}}
-- {{SVGElement("tref")}}
 - {{SVGElement("tspan")}}
 
-U
+### U
 
 - {{SVGElement("use")}}
 
-V — Z
+### V
 
 - {{SVGElement("view")}}
-- {{SVGElement("vkern")}}
 
-## 범주들
+> **Note:** The [SVG 2 spec requires](https://www.w3.org/TR/SVG2/struct.html#UnknownElement) that any unknown elements be treated as {{SVGElement("g")}} for the purpose of rendering.
 
-### 애니메이션 엘리먼트들
+## SVG elements by category
 
-{{SVGElement("animate")}}, {{SVGElement("animateColor")}}, {{SVGElement("animateMotion")}}, {{SVGElement("animateTransform")}}, {{SVGElement("mpath")}}, {{SVGElement("set")}}
+### Animation elements
 
-### 기본 모양들
+{{SVGElement("animate")}}, {{SVGElement("animateMotion")}}, {{SVGElement("animateTransform")}}, {{SVGElement("discard")}}, {{SVGElement("mpath")}}, {{SVGElement("set")}}
+
+### Basic shapes
 
 {{SVGElement("circle")}}, {{SVGElement("ellipse")}}, {{SVGElement("line")}}, {{SVGElement("polygon")}}, {{SVGElement("polyline")}}, {{SVGElement("rect")}}
 
-### 컨테이너 엘리먼트들
+### Container elements
 
-{{SVGElement("a")}}, {{SVGElement("defs")}}, {{SVGElement("glyph")}}, {{SVGElement("g")}}, {{SVGElement("marker")}}, {{SVGElement("mask")}}, {{SVGElement("missing-glyph")}}, {{SVGElement("pattern")}}, {{SVGElement("svg")}}, {{SVGElement("switch")}}, {{SVGElement("symbol")}}
+{{SVGElement("a")}}, {{SVGElement("defs")}}, {{SVGElement("g")}}, {{SVGElement("marker")}}, {{SVGElement("mask")}}, {{SVGElement("missing-glyph")}}, {{SVGElement("pattern")}}, {{SVGElement("svg")}}, {{SVGElement("switch")}}, {{SVGElement("symbol")}}
 
-### 기술하는 엘리먼트들
+### Descriptive elements
 
 {{SVGElement("desc")}}, {{SVGElement("metadata")}}, {{SVGElement("title")}}
 
-### 기본 필터 엘리먼트들
+### Filter primitive elements
 
-{{SVGElement("feBlend")}}, {{SVGElement("feColorMatrix")}}, {{SVGElement("feComponentTransfer")}}, {{SVGElement("feComposite")}}, {{SVGElement("feConvolveMatrix")}}, {{SVGElement("feDiffuseLighting")}}, {{SVGElement("feDisplacementMap")}}, {{SVGElement("feFlood")}},{{SVGElement("feFuncA")}}, {{SVGElement("feFuncB")}}, {{SVGElement("feFuncG")}}, {{SVGElement("feFuncR")}},{{SVGElement("feGaussianBlur")}}, {{SVGElement("feImage")}}, {{SVGElement("feMerge")}}, {{SVGElement("feMergeNode")}}, {{SVGElement("feMorphology")}}, {{SVGElement("feOffset")}}, {{SVGElement("feSpecularLighting")}}, {{SVGElement("feTile")}}, {{SVGElement("feTurbulence")}}
+{{SVGElement("feBlend")}}, {{SVGElement("feColorMatrix")}}, {{SVGElement("feComponentTransfer")}}, {{SVGElement("feComposite")}}, {{SVGElement("feConvolveMatrix")}}, {{SVGElement("feDiffuseLighting")}}, {{SVGElement("feDisplacementMap")}}, {{SVGElement("feDropShadow")}}, {{SVGElement("feFlood")}}, {{SVGElement("feFuncA")}}, {{SVGElement("feFuncB")}}, {{SVGElement("feFuncG")}}, {{SVGElement("feFuncR")}}, {{SVGElement("feGaussianBlur")}}, {{SVGElement("feImage")}}, {{SVGElement("feMerge")}}, {{SVGElement("feMergeNode")}}, {{SVGElement("feMorphology")}}, {{SVGElement("feOffset")}}, {{SVGElement("feSpecularLighting")}}, {{SVGElement("feTile")}}, {{SVGElement("feTurbulence")}}
 
-### 폰트 엘리먼트들
+### Font elements
 
 {{SVGElement("font")}}, {{SVGElement("font-face")}}, {{SVGElement("font-face-format")}}, {{SVGElement("font-face-name")}}, {{SVGElement("font-face-src")}}, {{SVGElement("font-face-uri")}}, {{SVGElement("hkern")}}, {{SVGElement("vkern")}}
 
-### 구배(경사) 엘리먼트들
+### Gradient elements
 
 {{SVGElement("linearGradient")}}, {{SVGElement("radialGradient")}}, {{SVGElement("stop")}}
 
-### 그래픽 엘리먼트들
+### Graphics elements
 
 {{SVGElement("circle")}}, {{SVGElement("ellipse")}}, {{SVGElement("image")}}, {{SVGElement("line")}}, {{SVGElement("path")}}, {{SVGElement("polygon")}}, {{SVGElement("polyline")}}, {{SVGElement("rect")}}, {{SVGElement("text")}}, {{SVGElement("use")}}
 
-### 가벼운 소스 엘리먼트들
+### Graphics referencing elements
+
+{{SVGElement("use")}}
+
+### Light source elements
 
 {{SVGElement("feDistantLight")}}, {{SVGElement("fePointLight")}}, {{SVGElement("feSpotLight")}}
 
-### 모양 엘리먼트들
+### Never-rendered elements
+
+{{SVGElement("clipPath")}}, {{SVGElement("defs")}}, {{SVGElement("hatch")}}, {{SVGElement("linearGradient")}}, {{SVGElement("marker")}}, {{SVGElement("mask")}}, {{SVGElement("metadata")}}, {{SVGElement("pattern")}}, {{SVGElement("radialGradient")}}, {{SVGElement("script")}}, {{SVGElement("style")}}, {{SVGElement("symbol")}}, {{SVGElement("title")}}
+
+### Paint server elements
+
+{{SVGElement("hatch")}}, {{SVGElement("linearGradient")}}, {{SVGElement("pattern")}}, {{SVGElement("radialGradient")}}, {{SVGElement("solidcolor")}}
+
+### Renderable elements
+
+{{SVGElement("a")}}, {{SVGElement("circle")}}, {{SVGElement("ellipse")}}, {{SVGElement("foreignObject")}}, {{SVGElement("g")}}, {{SVGElement("image")}}, {{SVGElement("line")}}, {{SVGElement("path")}}, {{SVGElement("polygon")}}, {{SVGElement("polyline")}}, {{SVGElement("rect")}}, {{SVGElement("svg")}}, {{SVGElement("switch")}}, {{SVGElement("symbol")}}, {{SVGElement("text")}}, {{SVGElement("textPath")}}, {{SVGElement("tspan")}}, {{SVGElement("use")}}
+
+> **Note:** The [SVG 2 spec requires](https://www.w3.org/TR/SVG2/struct.html#UnknownElement) that any unknown elements be treated as {{SVGElement("g")}} for the purpose of rendering.
+
+### Shape elements
 
 {{SVGElement("circle")}}, {{SVGElement("ellipse")}}, {{SVGElement("line")}}, {{SVGElement("path")}}, {{SVGElement("polygon")}}, {{SVGElement("polyline")}}, {{SVGElement("rect")}}
 
-### 구조적인 엘리먼트들
+### Structural elements
 
 {{SVGElement("defs")}}, {{SVGElement("g")}}, {{SVGElement("svg")}}, {{SVGElement("symbol")}}, {{SVGElement("use")}}
 
-### 텍스트 컨텍스트 엘리먼트들
+### Text content elements
 
 {{SVGElement("altGlyph")}}, {{SVGElement("altGlyphDef")}}, {{SVGElement("altGlyphItem")}}, {{SVGElement("glyph")}}, {{SVGElement("glyphRef")}}, {{SVGElement("textPath")}}, {{SVGElement("text")}}, {{SVGElement("tref")}}, {{SVGElement("tspan")}}
 
-### 텍스트 컨텍스트 하위 엘리먼트들
+### Text content child elements
 
 {{SVGElement("altGlyph")}}, {{SVGElement("textPath")}}, {{SVGElement("tref")}}, {{SVGElement("tspan")}}
 
-### 범주화 되지 않은 엘리먼트들
+### Uncategorized elements
 
-{{SVGElement("clipPath")}}, {{SVGElement("color-profile")}}, {{SVGElement("cursor")}}, {{SVGElement("filter")}}, {{SVGElement("foreignObject")}}, {{SVGElement("script")}}, {{SVGElement("style")}}, {{SVGElement("view")}}
+{{SVGElement("clipPath")}}, {{SVGElement("cursor")}}, {{SVGElement("filter")}}, {{SVGElement("foreignObject")}}, {{SVGElement("hatchpath")}}, {{SVGElement("script")}}, {{SVGElement("style")}}, {{SVGElement("view")}}
+
+## Obsolete and deprecated elements
+
+> **Warning:** These are old SVG elements which are deprecated and should not be used. **You should never use them in new projects, and should replace them in old projects as soon as you can.** They are listed here for informational purposes only.
+
+### A
+
+{{SVGElement("altGlyph")}}, {{SVGElement("altGlyphDef")}}, {{SVGElement("altGlyphItem")}}
+
+### C
+
+{{SVGElement("cursor")}}
+
+### F
+
+{{SVGElement("font")}}, {{SVGElement("font-face")}}, {{SVGElement("font-face-format")}}, {{SVGElement("font-face-name")}}, {{SVGElement("font-face-src")}}, {{SVGElement("font-face-uri")}}
+
+### G
+
+{{SVGElement("glyph")}}, {{SVGElement("glyphRef")}}
+
+### H
+
+{{SVGElement("hkern")}}
+
+### M
+
+{{SVGElement("missing-glyph")}}
+
+### T
+
+{{SVGElement("tref")}}
+
+### V
+
+{{SVGElement("vkern")}}
+
+## See also
+
+- [SVG attribute reference](/en-US/docs/Web/SVG/Attribute)
+- [SVG Tutorial](/en-US/docs/Web/SVG/Tutorial)
+- [SVG interface reference](/en-US/docs/Web/API/Document_Object_Model#svg_interfaces)
+
+{{SVGRef}}

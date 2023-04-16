@@ -1,13 +1,15 @@
 ---
 title: TypeError() constructor
 slug: Web/JavaScript/Reference/Global_Objects/TypeError/TypeError
+page-type: javascript-constructor
+browser-compat: javascript.builtins.TypeError.TypeError
 ---
 
 {{JSRef}}
 
-**`TypeError`** 생성자는 객체는 일반적으로 값이 기대하던 자료형이 아니라서 연산을 할 수 없을 때 발생하는 오류를 생성합니다.
+The **`TypeError()`** constructor creates {{jsxref("TypeError")}} objects.
 
-## 구문
+## Syntax
 
 ```js-nolint
 new TypeError()
@@ -23,64 +25,64 @@ TypeError(message, fileName)
 TypeError(message, fileName, lineNumber)
 ```
 
-> **참고:** `TypeError()` [`new`](/ko/docs/Web/JavaScript/Reference/Operators/new)를 사용하거나 혹은 사용하지 않고 호출이 사용합니다. 두 방법 모두 새로운 `TypeError`를 생성합니다.
+> **Note:** `TypeError()` can be called with or without [`new`](/en-US/docs/Web/JavaScript/Reference/Operators/new). Both create a new `TypeError` instance.
 
-### 매개변수
+### Parameters
 
 - `message` {{optional_inline}}
-  - : 사람이 읽을 수 있는 오류에 대한 설명
+  - : Human-readable description of the error
 - `options` {{optional_inline}}
-  - : 다음의 속성을 가지는 객체.
+  - : An object that has the following properties:
     - `cause` {{optional_inline}}
-      - : 오류의 특정 원인을 가리키는 속성.
-        오류를 잡아서 좀 더 상세하거나 유용한 오류 메시지와 함께 예외를 다시 발생시킬 때 이 속성을 원래 오류를 전달하는데 사용할 수 있습니다.
+      - : A property indicating the specific cause of the error.
+        When catching and re-throwing an error with a more-specific or useful error message, this property can be used to pass the original error.
 - `fileName` {{optional_inline}} {{non-standard_inline}}
-  - : 예외가 발생한 코드를 담고 있는 파일 이름
+  - : The name of the file containing the code that caused the exception
 - `lineNumber` {{optional_inline}} {{non-standard_inline}}
-  - : 예외가 발상한 코드의 줄 수
+  - : The line number of the code that caused the exception
 
-## 예제
+## Examples
 
-### TypeError 처리하기
-
-```js
-try {
-  null.f()
-} catch (e) {
-  console.log(e instanceof TypeError)  // true
-  console.log(e.message)               // "null has no properties"
-  console.log(e.name)                  // "TypeError"
-  console.log(e.fileName)              // "Scratchpad/1"
-  console.log(e.lineNumber)            // 2
-  console.log(e.columnNumber)          // 2
-  console.log(e.stack)                 // "@Scratchpad/2:2:3\n"
-}
-```
-
-### TypeError 생성하기
+### Catching a TypeError
 
 ```js
 try {
-  throw new TypeError('Hello', "someFile.js", 10)
+  null.f();
 } catch (e) {
-  console.log(e instanceof TypeError)  // true
-  console.log(e.message)               // "Hello"
-  console.log(e.name)                  // "TypeError"
-  console.log(e.fileName)              // "someFile.js"
-  console.log(e.lineNumber)            // 10
-  console.log(e.columnNumber)          // 0
-  console.log(e.stack)                 // "@Scratchpad/2:2:9\n"
+  console.log(e instanceof TypeError); // true
+  console.log(e.message); // "null has no properties"
+  console.log(e.name); // "TypeError"
+  console.log(e.fileName); // "Scratchpad/1"
+  console.log(e.lineNumber); // 2
+  console.log(e.columnNumber); // 2
+  console.log(e.stack); // "@Scratchpad/2:2:3\n"
 }
 ```
 
-## 명세서
+### Creating a TypeError
+
+```js
+try {
+  throw new TypeError("Hello", "someFile.js", 10);
+} catch (e) {
+  console.log(e instanceof TypeError); // true
+  console.log(e.message); // "Hello"
+  console.log(e.name); // "TypeError"
+  console.log(e.fileName); // "someFile.js"
+  console.log(e.lineNumber); // 10
+  console.log(e.columnNumber); // 0
+  console.log(e.stack); // "@Scratchpad/2:2:9\n"
+}
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Error")}}

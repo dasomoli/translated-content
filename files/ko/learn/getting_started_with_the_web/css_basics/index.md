@@ -1,16 +1,15 @@
 ---
-title: CSS 기초
+title: CSS basics
 slug: Learn/Getting_started_with_the_web/CSS_basics
-original_slug: Learn/Getting_started_with_the_web/CSS_기본
 ---
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/Getting_started_with_the_web/HTML_basics", "Learn/Getting_started_with_the_web/JavaScript_basics", "Learn/Getting_started_with_the_web")}}
 
-CSS (Cascading Style Sheets)는 웹페이지를 꾸미려고 작성하는 코드입니다. _CSS 기초_ 에서 여러분이 처음 시작하며 필요한 내용을 익히도록 도와드립니다. 저희는 다음과 같은 질문에 관한 답을 드리겠습니다. 어떻게 하면 글자색을 검정이나 빨갛게 할 수 있을까? 어떻게 하면 콘텐츠를 화면의 이런 저런 곳에 보이게 할 수 있을까? 어떻게 하면 배경 이미지와 색상들로 웹페이지를 꾸밀 수 있을까?
+CSS (Cascading Style Sheets) is the code that styles web content. _CSS basics_ walks through what you need to get started. We'll answer questions like: How do I make text red? How do I make content display at a certain location in the (webpage) layout? How do I decorate my webpage with background images and colors?
 
-## 그래서 CSS가 뭔가요?
+## What is CSS?
 
-HTML와 같이 CSS는 실제로 프로그래밍 언어는 아닙니다. _마크업(markup) 언어_ 도 아닙니다. _Style sheet 언어_ 입니다. HTML 문서에 있는 요소들에 선택적으로 스타일을 적용할 수 있다는 말입니다. 예를 들면, HTML 페이지에서 **모든** 문단 요소들을 선택하고 그 문단 요소들 안에 있는 텍스트를 빨갛게 바꾸려고 한다면 다음과 같이 CSS를 작성할 것입니다.
+Like HTML, CSS is not a programming language. It's not a markup language either. **CSS is a style sheet language.** CSS is what you use to selectively style HTML elements. For example, this CSS selects paragraph text, setting the color to red:
 
 ```css
 p {
@@ -18,44 +17,44 @@ p {
 }
 ```
 
-한 번 해봅시다. 텍스트 에디터의 새 파일에 위의 CSS 3줄을 복사해 붙여넣으세요. 그다음에 `styles` 디렉토리에 `style.css`로 파일을 저장하세요.
+Let's try it out! Using a text editor, paste the three lines of CSS (above) into a new file. Save the file as `style.css` in a directory named `styles`.
 
-아직 여러분의 HTML 문서에 CSS를 적용하는 것이 남아 있습니다. 그렇지 않으면 CSS 스타일은 그 HTML 문서가 브라우저에 표시될 때 아무 영향도 주지 않을 것입니다. (여러분이 우리 프로젝트를 따라오지 않으셨다면, [파일 다루기](/en-US/Learn/Getting_started_with_the_web/Dealing_with_files)와 [HTML 기본](/ko/Learn/Getting_started_with_the_web/HTML_basics)을 읽고 무엇이 먼저 필요한지를 알아보시기 바랍니다.)
+To make the code work, we still need to apply this CSS (above) to your HTML document. Otherwise, the styling won't change the appearance of the HTML. (If you haven't been following our project, pause here to read [Dealing with files](/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files) and [HTML basics](/en-US/docs/Learn/Getting_started_with_the_web/HTML_basics).)
 
-1. `index.html` 파일을 열고 head의 안쪽 어딘가(즉, `<head>`와 `</head>` 태그 사이)에 아래의 코드를 붙여 넣으세요:
+1. Open your `index.html` file. Paste the following line in the head (between the {{HTMLElement("head")}} and `</head>` tags):
 
-    ```html
-    <link href="styles/style.css" rel="stylesheet" type="text/css">
-    ```
+   ```html
+   <link href="styles/style.css" rel="stylesheet" />
+   ```
 
-2. `index.html`을 저장하고 브라우저에서 불러오세요. 여러분은 다음과 같은 것을 보게 되실겁니다:
+2. Save `index.html` and load it in your browser. You should see something like this:
 
-![A mozilla logo and some paragraphs. The paragraph text has been styled red by our css.](website-screenshot-styled.png)문단의 글자가 빨간색이라면 축하드립니다! 지금 여러분은 첫번째 CSS 를 성공적으로 작성하셨습니다!
+![A Mozilla logo and some paragraphs. The paragraph text has been styled red by our css.](website-screenshot-styled.png)If your paragraph text is red, congratulations! Your CSS is working.
 
-### CSS의 ruleset 해부
+### Anatomy of a CSS ruleset
 
-위의 CSS를 좀 더 자세히 살펴 봅시다:
+Let's dissect the CSS code for red paragraph text to understand how it works:
 
-![](css-declaration-small.png)
+![CSS p declaration color red](css-declaration-small.png)
 
-전체 구조는 **rule set** 라 불립니다 (하지만 종종 줄여서 "rule"이라고 합니다). 각 부분의 이름에도 주목하세요:
+The whole structure is called a **ruleset**. (The term _ruleset_ is often referred to as just _rule_.) Note the names of the individual parts:
 
-- 선택자(selector)
-  - : rule set의 맨 앞에 있는 HTML 요소 이름. 이것은 꾸밀 요소(들)을 선택합니다 (이 예에서는 p 요소). 다른 요소를 꾸미기 위해서는 선택자만 바꿔주세요.
-- 선언
-  - : `color: red`와 같은 단일 규칙; 여러분이 꾸미기 원하는 요소의 속성을 명시합니다.
-- 속성(property)
-  - : 주어진 HTML 요소를 꾸밀 수 있는 방법입니다. (이 예에서, `color`는 p 요소의 속성입니다.) CSS에서, rule 내에서 영향을 줄 속성을 선택합니다.
-- 속성 값
-  - : 속성의 오른쪽에, 콜론 뒤에, 주어진 속성을 위한 많은 가능한 결과중 하나를 선택하기 위해 속성 값을 갖습니다 (`color` 의 값에는 `red` 외에 많은 것이 있습니다).
+- Selector
+  - : This is the HTML element name at the start of the ruleset. It defines the element(s) to be styled (in this example, {{HTMLElement("p")}} elements). To style a different element, change the selector.
+- Declaration
+  - : This is a single rule like `color: red;`. It specifies which of the element's **properties** you want to style.
+- Properties
+  - : These are ways in which you can style an HTML element. (In this example, `color` is a property of the {{htmlelement("p")}} elements.) In CSS, you choose which properties you want to affect in the rule.
+- Property value
+  - : To the right of the property—after the colon—there is the **property value**. This chooses one out of many possible appearances for a given property. (For example, there are many `color` values in addition to `red`.)
 
-구문의 다른 중요한 부분들도 주목하세요:
+Note the other important parts of the syntax:
 
-- 각각의 rule set (셀렉터로 구분) 은 반드시 (`{}`) 로 감싸져야 합니다.
-- 각각의 선언 안에, 각 속성을 해당 값과 구분하기 위해 콜론 (:)을 사용해야만 합니다.
-- 각각의 rule set 안에, 각 선언을 그 다음 선언으로부터 구분하기 위해 세미콜론 (;)을 사용해야만 합니다.
+- Apart from the selector, each ruleset must be wrapped in curly braces. (`{}`)
+- Within each declaration, you must use a colon (`:`) to separate the property from its value or values.
+- Within each ruleset, you must use a semicolon (`;`) to separate each declaration from the next one.
 
-그러니까 여러 속성 값들을 한번에 수정하기 위해서는, 세미콜론으로 구분해서 작성해야 합니다, 이렇게요:
+To modify multiple property values in one ruleset, write them separated by semicolons, like this:
 
 ```css
 p {
@@ -65,150 +64,213 @@ p {
 }
 ```
 
-### 여러 요소 선택하기
+### Selecting multiple elements
 
-여러분은 요소의 여러 타입을 선택하고 모두에게 하나의 rule set 을 적용할 수도 있습니다. 여러 선택자는 콤마로 구분합니다. 예를 들면:
+You can also select multiple elements and apply a single ruleset to all of them. Separate multiple selectors by commas. For example:
 
 ```css
-p,li,h1 {
+p,
+li,
+h1 {
   color: red;
 }
 ```
 
-### 선택자의 여러 종류
+### Different types of selectors
 
-선택자는 여러 종류가 있습니다. 위에서, 우리는 주어진 HTML 문서안에 주어진 타입의 모든 요소를 선택하는 **요소 선택자**만 보았습니다. 하지만 이것보다 더 구체적인 선택을 만들 수 있습니다. 이것은 선택자의 일반적인 종류들입니다:
+There are many different types of selectors. The examples above use **element selectors**, which select all elements of a given type. But we can make more specific selections as well. Here are some of the more common types of selectors:
 
-| 선택자 이름                                       | 선택하는 것                                                                                      | 예시                                                                     |
-| ------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
-| 요소 선택자 (때때로 태그 또는 타입 선택자라 불림) | 특정 타입의 모든 HTML 요소.                                                                      | `p` `<p> 를 선택`                                                        |
-| 아이디 선택자                                     | 특정 아이디를 가진 페이지의 요소 (주어진 HTML 페이지에서, 아이디당 딱 하나의 요소만 허용됩니다). | `#my-id` `<p id="my-id">` 또는 `<a id="my-id">` 를 선택                  |
-| 클래스 선택자                                     | 특정 클래스를 가진 페이지의 요소 (한 페이지에 클래스가 여러번 나타날 수 있습니다).               | `.my-class` `<p class="my-class">` 와 `<a class="my-class">` 를 선택     |
-| 속성 선택자                                       | 특정 속성을 갖는 페이지의 요소.                                                                  | `img[src]` `<img src="myimage.png">` 를 선택하지만 `<img>` 는 선택 안함  |
-| 수도(Pseudo) 클래스 선택자                        | 특정 요소이지만 특정 상태에 있을 때만, 예를 들면, hover over 상태일 때.                          | `a:hover` `<a>` 를 선택하지만, 마우스 포인터가 링크위에 있을 때만 선택함 |
+<table class="standard-table no-markdown">
+  <thead>
+    <tr>
+      <th scope="col">Selector name</th>
+      <th scope="col">What does it select</th>
+      <th scope="col">Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Element selector (sometimes called a tag or type selector)</td>
+      <td>All HTML elements of the specified type.</td>
+      <td><code>p</code><br />selects <code>&#x3C;p></code></td>
+    </tr>
+    <tr>
+      <td>ID selector</td>
+      <td>
+        The element on the page with the specified ID. On a given HTML page,
+        each id value should be unique.
+      </td>
+      <td>
+        <code>#my-id</code><br />selects <code>&#x3C;p id="my-id"></code> or
+        <code>&#x3C;a id="my-id"></code>
+      </td>
+    </tr>
+    <tr>
+      <td>Class selector</td>
+      <td>
+        The element(s) on the page with the specified class. Multiple instances
+        of the same class can appear on a page.
+      </td>
+      <td>
+        <code>.my-class</code><br />selects
+        <code>&#x3C;p class="my-class"></code> and
+        <code>&#x3C;a class="my-class"></code>
+      </td>
+    </tr>
+    <tr>
+      <td>Attribute selector</td>
+      <td>The element(s) on the page with the specified attribute.</td>
+      <td>
+        <code>img[src]</code><br />selects
+        <code>&#x3C;img src="myimage.png"></code> but not
+        <code>&#x3C;img></code>
+      </td>
+    </tr>
+    <tr>
+      <td>Pseudo-class selector</td>
+      <td>
+        The specified element(s), but only when in the specified state. (For
+        example, when a cursor hovers over a link.)
+      </td>
+      <td>
+        <code>a:hover</code><br />selects <code>&#x3C;a></code>, but only when
+        the mouse pointer is hovering over the link.
+      </td>
+    </tr>
+  </tbody>
+</table>
 
-탐구할 더 많은 선택자가 있습니다. 더 자세한 목록은 [선택자 가이드](/ko/docs/Web/Guide/CSS/Getting_started/Selectors)에서 찾아보세요.
+There are many more selectors to discover. To learn more, see the MDN [Selectors guide](/en-US/docs/Learn/CSS/Building_blocks/Selectors).
 
-## 글꼴과 문자
+## Fonts and text
 
-지금까지 약간의 CSS 기본에 대해 살펴보았습니다, 우리의 예제가 멋있게 보이도록 `style.css` 파일에 더 많은 rule 과 정보를 추가해 봅시다. 우선, 글꼴과 문자가 조금 더 나아보이도록 해보죠.
+Now that we've explored some CSS fundamentals, let's improve the appearance of the example by adding more rules and information to the `style.css` file.
 
-> **참고:** "px" 가 무슨 뜻인지 설명하는 주석을 추가해 두었습니다. CSS 문서의 /\* 와 \*/ 사이에 있는 것은 브라우저가 코드를 표현할 때 무시하는 **CSS 주석**입니다. 여러분이 하고 있는 것에 대한 유용한 메모를 작성하기 위한 공간입니다.
+1. First, find the [output from Google Fonts](/en-US/docs/Learn/Getting_started_with_the_web/What_will_your_website_look_like#font) that you previously saved from [What will your website look like?](/en-US/docs/Learn/Getting_started_with_the_web/What_will_your_website_look_like). Add the {{htmlelement("link")}} element somewhere inside your `index.html`'s head (anywhere between the {{HTMLElement("head")}} and `</head>` tags). It looks something like this:
 
-1. 먼저, 돌아가서 여러분이 안전한 어딘가에 저장해 두었던 [구글 글꼴의 결과물](/ko/docs/Learn/Getting_started_with_the_web/What_should_your_web_site_be_like#Font)을 찾으세요. `index.html` 의 head 안 어딘가에 `<link>` 요소를 추가하세요 (다시 말해서, `<head>` 와 `</head>` 태그 사이 어디에나). 이런식이 될 겁니다:
+   ```html
+   <link
+     href="https://fonts.googleapis.com/css?family=Open+Sans"
+     rel="stylesheet" />
+   ```
 
-    ```html
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-    ```
+   This code links your page to a style sheet that loads the Open Sans font family with your webpage.
 
-2. 다음으로, `style.css` 파일에 이미 존재하는 rule 을 지우세요. 좋은 테스트였지만, 빨간색의 글자가 정말 좋아 보이지는 않습니다.
-3. 아래의 코드를 해당 위치에 추가하고, 구글 폰트로부터 얻은 `font-family` 코드를 placeholder 줄에 덮어쓰세요. (`font-family` 는 여러분이 글자를 위해 사용하길 원하는 글꼴을 의미합니다.) 이 rule 은 먼저 전체 페이지의 글자 크기와 기본 글꼴을 설정합니다. (`html`이 전체 페이지의 부모 요소일 때, 이 안의 모든 요소는 같은 `font-size` 와 `font-family` 를 물려 받습니다):
+2. Next, delete the existing rule you have in your `style.css` file. It was a good test, but let's not continue with lots of red text.
+3. Add the following lines (shown below), replacing the `font-family` assignment with your `font-family` selection from [What will your website look like?](/en-US/docs/Learn/Getting_started_with_the_web/What_will_your_website_look_like#font). The property `font-family` refers to the font(s) you want to use for text. This rule defines a global base font and font size for the whole page. Since {{HTMLElement("html")}} is the parent element of the whole page, all elements inside it inherit the same `font-size` and `font-family`.
 
-    ```css
-    html {
-      font-size: 10px; /* px 은 'pixels' 를 의미합니다: 기본 글자 크기는 현재 10 pixels 높이입니다. */
-      font-family: placeholder: 구글 폰트로부터 여러분이 얻은 마지막 결과가 있어야합니다.
-    }
-    ```
+   ```css
+   html {
+     font-size: 10px; /* px means "pixels": the base font size is now 10 pixels high */
+     font-family: "Open Sans", sans-serif; /* this should be the rest of the output you got from Google Fonts */
+   }
+   ```
 
-4. 이제 HTML body 안에 문자를 포함하는 요소 `h1`, `li` 및 `p` 를 위해 글자 크기를 설정할 것입니다. 또한 조금 더 읽기 좋게 하기 위해 body 콘텐츠의 제목을 가운데 정렬하고 줄의 높이(line-height)와 자간(lettet-spacing)도 설정할 것입니다:
+   > **Note:** Anything in CSS between `/*` and `*/` is a **CSS comment**. The browser ignores comments as it renders the code. CSS comments are a way for you to write helpful notes about your code or logic.
 
-    ```css
-    h1 {
-      font-size: 60px;
-      text-align: center;
-    }
+4. Now let's set font sizes for elements that will have text inside the HTML body ({{htmlelement("Heading_Elements", "h1")}}, {{htmlelement("li")}}, and {{htmlelement("p")}}). We'll also center the heading. Finally, let's expand the second ruleset (below) with settings for line height and letter spacing to make body content more readable.
 
-    p, li {
-      font-size: 16px;
-      line-height: 2;
-      letter-spacing: 1px;
-    }
-    ```
+   ```css
+   h1 {
+     font-size: 60px;
+     text-align: center;
+   }
 
-`px(픽셀)` 값들은 여러분이 원하는대로 조정할 수 있지만, 여러분이 원하는 디자인을 얻도록, 여러분의 디자인은 이런식으로 보여야 합니다:
+   p,
+   li {
+     font-size: 16px;
+     line-height: 2;
+     letter-spacing: 1px;
+   }
+   ```
 
-![a mozilla logo and some paragraphs. a sans-serif font has been set, the font sizes, line height and letter spacing are adjusted, and the main page heading has been centered](website-screenshot-font-small.png)
+Adjust the `px` values as you like. Your work-in-progress should look similar to this:
 
-## 박스, 박스, 박스의 모든 것
+![A Mozilla logo and some paragraphs. A sans-serif font has been set, the font sizes, line height and letter spacing are adjusted, and the main page heading has been centered](website-screenshot-font-small.png)
 
-CSS 작성에서 여러분이 알게 될 한 가지는 많은 것들이 박스에 관한 것이라는 겁니다 — 그들의 크기, 색상, 위치 등을 설정하는 것. 여러분의 페이지에 있는 대부분의 HTML 요소들은 서로의 위에 놓여있는 박스로 생각해볼 수 있습니다.
+## CSS: all about boxes
 
-![a big stack of boxes or crates sat on top of one another](boxes.jpg)
+Something you'll notice about writing CSS: a lot of it is about boxes. This includes setting size, color, and position. Most HTML elements on your page can be thought of as boxes sitting on top of other boxes.
 
-놀랍지 않게도, CSS 레이아웃은 _박스모델_ 을 주 기반으로 하고 있습니다. 여러분의 페이지의 공간을 차지하고 있는 각각의 블록들은 이와 같은 속성들을 가집니다:
+![A big stack of boxes or crates sat on top of one another](boxes.jpg)
 
-- `padding`, 컨텐트 주위의 공간 (예, 문단 글자의 주위)
-- `border`, padding 의 바깥쪽에 놓인 실선
-- `margin`, 요소의 바깥쪽을 둘러싼 공간
+Photo from [https://www.geograph.org.uk/photo/3418115](https://www.geograph.org.uk/photo/3418115) Copyright © [Jim Barton](https://www.geograph.org.uk/profile/26362) [cc-by-sa/2.0](https://creativecommons.org/licenses/by-sa/2.0/)
 
-![three boxes sat inside one another. From outside to in they are labelled margin, border and padding](box-model.png)
+CSS layout is mostly based on the _box model._ Each box taking up space on your page has properties like:
 
-여기서 이런 것도 사용합니다:
+- `padding`, the space around the content. In the example below, it is the space around the paragraph text.
+- `border`, the solid line that is just outside the padding.
+- `margin`, the space around the outside of the border.
 
-- `width` (한 요소의 너비)
-- `background-color`, 요소의 콘텐츠와 padding 의 배경 색
-- `color`, 한 요소의 콘텐츠 색 (일반적으로 글자색)
-- `text-shadow`: 한 요소 안의 글자에 그림자를 적용
-- `display`: 요소의 표시 형식을 설정합니다 (이것에 대해선 아직 걱정하지마세요)
+![Three boxes sat inside one another. From outside to in they are labelled margin, border and padding](box-model.png)
 
-그럼, 우리의 페이지에 더 많은 CSS를 추가해봅시다! 페이지의 아래에 이러한 새로운 rule 을 계속 추가하세요, 그리고 값을 바꾸는 실험을 통해 이것이 어떤 결과가 나타나는지 보는것을 두려워하지 마세요.
+In this section we also use:
 
-### 페이지 색 바꾸기
+- `width` (of an element).
+- `background-color`, the color behind an element's content and padding.
+- `color`, the color of an element's content (usually text).
+- `text-shadow` sets a drop shadow on the text inside an element.
+- `display` sets the display mode of an element. (keep reading to learn more)
+
+To continue, let's add more CSS. Keep adding these new rules at the bottom of `style.css`. Experiment with changing values to see what happens.
+
+### Changing the page color
 
 ```css
 html {
-  background-color: #00539F;
+  background-color: #00539f;
 }
 ```
 
-이 rule 은 전체 페이지를 위한 배경색을 설정합니다. 위의 색상 코드를 [여러분의 사이트를 계획할 때 선택했던](/en-US/Learn/Getting_started_with_the_web/What_should_your_web_site_be_like#Theme_color) 색으로 변경하세요.
+This rule sets a background color for the entire page. Change the color code to [the color you chose in What will my website look like?](/en-US/docs/Learn/Getting_started_with_the_web/What_will_your_website_look_like#theme_color).
 
-### body 외부 정렬하기
+### Styling the body
 
 ```css
 body {
   width: 600px;
   margin: 0 auto;
-  background-color: #FF9500;
+  background-color: #ff9500;
   padding: 0 20px 20px 20px;
   border: 5px solid black;
 }
 ```
 
-이제는 body 요소를 위한 것입니다. 여기 적지 않은 선언들이 있습니다. 하나 하나 모두 살펴 봅시다:
+There are several declarations for the {{htmlelement("body")}} element. Let's go through these line-by-line:
 
-- `width: 600px;` — 이것은 body가 항상 600 pixels 의 너비를 갖도록 강제합니다.
-- `margin: 0 auto;` — 여러분이 `margin` 또는 `padding` 처럼 한 속성에 두개의 값을 설정할 때, 첫 번째 값은 요소의 상단과 하단 (이 예시에서는 0입니다) 에 영향을 주고, 두 번째 값은 좌측 **과** 우측 (여기서, `auto` 는 가능한 수평공간의 왼쪽과 오른쪽을 같게 나눠주는 특별한 값입니다) 에 영향을 줍니다. 여러분은 또한 하나, 셋, 또는 네개의 값을 사용할 수도 있습니다. [여기](/ko/docs/Web/CSS/margin#Values)에 문서화 되어 있습니다.
-- `background-color: #FF9500;` — 전과 같이, 이것은 요소의 배경색을 설정합니다. `html` 요소를 위한 짙은 파란색에 반대되도록 body 에는 붉은 빛을 띄는 오렌지색 같은 것을 사용했었습니다. 한번 시험해보세요. 흰색이나 여러분이 원하는 어떤 색이든 편하게 사용해보세요.
-- `padding: 0 20px 20px 20px;` — padding 에는 콘텐츠의 주위에 약간의 공간을 주기 위한 네 개의 값이 있습니다. 이번엔 body의 상단에 no padding, 그리고 왼쪽, 아래 그리고 오른쪽에 20 pixels 을 설정하고 있습니다. 상단, 우측, 하단, 좌측 순서로 값을 설정합니다.(12시부터 시계방향)
-- `border: 5px solid black;` — 이것은 간단하게 body 모든 면의 border 를 5 pixels 두깨의 실선으로 설정합니다.
+- `width: 600px;` This forces the body to always be 600 pixels wide.
+- `margin: 0 auto;` When you set two values on a property like `margin` or `padding`, the first value affects the element's top _and_ bottom side (setting it to `0` in this case); the second value affects the left _and_ right side. (Here, `auto` is a special value that divides the available horizontal space evenly between left and right). You can also use one, two, three, or four values, as documented in [Margin Syntax](/en-US/docs/Web/CSS/margin#syntax).
+- `background-color: #FF9500;` This sets the element's background color. This project uses a reddish orange for the body background color, as opposed to dark blue for the {{htmlelement("html")}} element. (Feel free to experiment.)
+- `padding: 0 20px 20px 20px;` This sets four values for padding. The goal is to put some space around the content. In this example, there is no padding on the top of the body, and 20 pixels on the right, bottom and left. The values set top, right, bottom, left, in that order. As with `margin`, you can use one, two, three, or four values, as documented in [Padding Syntax](/en-US/docs/Web/CSS/padding#syntax).
+- `border: 5px solid black;` This sets values for the width, style and color of the border. In this case, it's a five-pixel–wide, solid black border, on all sides of the body.
 
-### 메인 페이지 제목 배치하고 꾸미기
+### Positioning and styling the main page title
 
 ```css
 h1 {
   margin: 0;
   padding: 20px 0;
-  color: #00539F;
+  color: #00539f;
   text-shadow: 3px 3px 1px black;
 }
 ```
 
-여러분은 바디의 상단에 끔찍한 틈이 있다는 것을 알아차리셨을 겁니다. 브라우저가 `h1` 요소에 (다른 것들 사이에서) 어떤 **초기 스타일링**을 적용하기 때문에 발생합니다, 심지어 여러분이 아무런 CSS 를 적용하지 않았을 때도요! 안좋은 아이디어로 들릴수도 있지만, 우리는 꾸며지지 않은 웹사이트일지라도 기본적인 가독성을 갖기를 원합니다. `margin: 0;`.설정에 의해 초기 스타일링을 덮어쓰는 것으로 그 틈을 제거할 수 있습니다.
+You may have noticed there's a horrible gap at the top of the body. That happens because browsers apply default styling to the {{htmlelement("Heading_Elements", "h1")}} element (among others). That might seem like a bad idea, but the intent is to provide basic readability for unstyled pages. To eliminate the gap, we overwrite the browser's default styling with the setting `margin: 0;`.
 
-다음으로, 제목의 상단과 하단 padding 을 20 pixels로 설정하고, 제목 글자 색을 html 배경색과 같게 만들었습니다.
+Next, we set the heading's top and bottom padding to 20 pixels.
 
-여기서 사용했던 꽤 흥미로운 속성 하나는 `text-shadow` 문자로, 요소의 문자 콘텐츠에 그림자를 적용해줍니다. 네 개의 값들은 다음과 같습니다:
+Following that, we set the heading text to be the same color as the HTML background color.
 
-- 첫 번째 pixel 값은 그림자의 **수평 오프셋**을 설정합니다 — 얼마나 옆으로 이동시킬 것인지.
-- 두 번째 pixel 값은 그림자의 **수직 오프셋**을 설정합니다 — 얼마나 아래로 이동시킬 것인지.
-- 세 번째 pixel 값은 그림자의 **흐림 반경**을 설정합니다 — 큰 값은 더 흐릿한 그림자를 의미합니다.
-- 네 번째 pixel 값은 그림자의 기본 색상을 설정합니다.
+Finally, `text-shadow` applies a shadow to the text content of the element. Its four values are:
 
-다시, 여러분이 무엇을 확인해 볼 수 있는지 다른 값으로 실험을 해보세요.
+- The first pixel value sets the **horizontal offset** of the shadow from the text: how far it moves across.
+- The second pixel value sets the **vertical offset** of the shadow from the text: how far it moves down.
+- The third pixel value sets the **blur radius** of the shadow. A larger value produces a more fuzzy-looking shadow.
+- The fourth value sets the base color of the shadow.
 
-### 이미지 가운데 정렬
+Try experimenting with different values to see how it changes the appearance.
+
+### Centering the image
 
 ```css
 img {
@@ -217,20 +279,22 @@ img {
 }
 ```
 
-마지막으로, 이미지를 더 나아보이도록 가운데로 둘 것입니다. 전에 body 에서 했듯이 다시 `margin: 0 auto` 트릭을 사용해 볼 수 있지만, 무언가 더 해야할 필요가 있습니다. `body` 요소는 **block level** 입니다. 이것은 페이지의 공간을 차지하고, margin 과 여기에 적용된 다른 여백값을 가질 수 있다는 것을 의미합니다. 반면에 이미지는 **inline** 요소 입니다. 이것은 그렇지 못함을 의미합니다. 따라서 이미지에 margin 을 적용하기 위해서는, `display: block;` 을 사용해 이미지에 block-level 성질을 주어야 합니다.
+Next, we center the image to make it look better. We could use the `margin: 0 auto` trick again as we did for the body. But there are differences that require an additional setting to make the CSS work.
 
-> **참고:** 노트: 위의 지침에서는 body에 설정된 너비(600 픽셀) 보다 작은 이미지를 사용한다고 가정합니다. 이미지가 더 크면 body가 넘쳐 페이지의 나머지 부분으로 유출됩니다. 이 문제를 해결하려면 1) [그래픽 편집기](https://ko.wikipedia.org/wiki/%EA%B7%B8%EB%9E%98%ED%94%BD_%EC%86%8C%ED%94%84%ED%8A%B8%EC%9B%A8%EC%96%B4)를 사용하여 이미지의 너비를 줄이거나 2) 더 작은 값(예: `400px`) 으로 `<img>` 요소에 width 속성을 설정하고 CSS를 사용하여 이미지 크기를 조정할 수 있습니다.
+The {{htmlelement("body")}} is a **block** element, meaning it takes up space on the page. The margin applied to a block element will be respected by other elements on the page. In contrast, images are **inline** elements, for the auto margin trick to work on this image, we must give it block-level behavior using `display: block;`.
 
-> **참고:** 아직 `display: block;` 과 block-level/inline 차이를 이해하지 못하였더라도 걱정하시마세요. CSS 를 더 깊게 공부하면 이해하실 수 있을것입니다. display 의 여러 값들에 대한 더 많은 정보는 [display 참조](/ko/docs/Web/CSS/display) 페이지에서 찾아보세요.
+> **Note:** The instructions above assume that you're using an image smaller than the width set on the body. (600 pixels) If your image is larger, it will overflow the body, spilling into the rest of the page. To fix this, you can either: 1) reduce the image width using a [graphics editor](https://en.wikipedia.org/wiki/Raster_graphics_editor), or 2) use CSS to size the image by setting the {{cssxref("width")}} property on the `<img>` element with a smaller value.
 
-## 마무리
+> **Note:** Don't be too concerned if you don't completely understand `display: block;` or the differences between a block element and an inline element. It will make more sense as you continue your study of CSS. You can find more information about different display values on MDN's [display reference page](/en-US/docs/Web/CSS/display).
 
-이 글의 모든 설명을 따라오셨다면, 이와 같이 보이는 페이지가 되실 겁니다. ([여기서](http://mdn.github.io/beginner-html-site-styled/) 확인하실 수도 있습니다):
+## Conclusion
 
-![a mozilla logo, centered, and a header and paragraphs. It now looks nicely styled, with a blue background for the whole page and orange background for the centered main content strip.](website-screenshot-final.png)
+If you followed all the instructions in this article, you should have a page that looks similar to this one:
 
-혹시 막히셨다면, 여러분의 코드와 Github에 있는 우리의 [예제 코드](https://github.com/mdn/beginner-html-site-styled/blob/gh-pages/styles/style.css)와 항상 비교해보세요.
+![A Mozilla logo, centered, and a header and paragraphs. It now looks nicely styled, with a blue background for the whole page and orange background for the centered main content strip.](website-screenshot-final.png)
 
-여기서, 우리는 CSS의 겉만 살짝 맛봤습니다. 더 많은 것이 알고 싶으시면 [CSS 배우기](/en-US/Learn/CSS) 페이지로 가보세요.
+(You can [view our version here](https://mdn.github.io/beginner-html-site-styled/).) If you get stuck, you can always compare your work with our [finished example code on GitHub](https://github.com/mdn/beginner-html-site-styled/blob/gh-pages/styles/style.css).
+
+In this exercise, we have just scratched the surface of CSS. To go further, see [Learning to style HTML using CSS](/en-US/docs/Learn/CSS).
 
 {{PreviousMenuNext("Learn/Getting_started_with_the_web/HTML_basics", "Learn/Getting_started_with_the_web/JavaScript_basics", "Learn/Getting_started_with_the_web")}}

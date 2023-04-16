@@ -1,41 +1,50 @@
 ---
-title: HTML
+title: Structuring the web with HTML
 slug: Learn/HTML
 ---
 
 {{LearnSidebar}}
 
-웹사이트를 만들기 위해서는 웹 페이지 구조 정의의 토대가 되는 기술인 {{Glossary('HTML')}}에 대해 알아야 합나다. HTML은 작성하고자 하는 웹 콘텐츠가 문단인지, 리스트인지, 헤드라인인지, 링크인지, 이미지인지, 멀티미디어 플레이어인지, 폼 요소인지 아니면 기타 사용 가능한 다른 요소들 중의 하나인지, 혹은 새롭게 정의한 요소인지를 명확하기 인지할 수 있도록 하는데 사용됩니다.
+To build websites, you should know about {{Glossary('HTML')}} — the fundamental technology used to define the structure of a webpage. HTML is used to specify whether your web content should be recognized as a paragraph, list, heading, link, image, multimedia player, form, or one of many other available elements or even a new element that you define.
 
-## 학습 방향
+> **Callout:**
+>
+> #### Looking to become a front-end web developer?
+>
+> We have put together a course that includes all the essential information you need to
+> work towards your goal.
+>
+> [**Get started**](/en-US/docs/Learn/Front-end_web_developer)
 
-HTML을 배우면서 시작하는 것이 가장 이상적입니다. [HTML에 대한 소개](/ko/docs/Learn/HTML/Introduction_to_HTML)를 읽는 것부터 시작하세요. 그러면, 아래와 같은 고급 주제에 대해 배울 수 있게 될 것입니다.
+## Prerequisites
 
-- [CSS](/ko/docs/Learn/CSS), 그리고 HTML에 스타일을 적용하는 방법 (예를 들어, 사용된 텍스트 크기나 폰트를 변경하고, 테두리 선, 그림자 효과를 추가하고, 페이지의 레이아웃을 다단으로 편집하고, 애니메이션이나 다른 시각적인 효과를 추가할 수 있습니다.)
-- [JavaScript](/ko/docs/Learn/JavaScript), 그리고 웹 페이지에 동적인 기능을 추가하는 방법 (예를 들어, 현재 위치를 찾아 지도 위에 표시하고, 버튼을 누를 때 마다 UI 요소를 노출하거나 숨길 수 있고, 사용자의 데이터를 로컬 시스템에 저장하는 것 등의 방법을 알 수 있습니다.)
+Before starting this topic, you should have at least basic familiarity with using computers and using the web passively (i.e., just looking at it, consuming the content). You should have a basic work environment set up as detailed in [Installing basic software](/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software), and understand how to create and manage files, as detailed in [Dealing with files](/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files) — both are parts of our [Getting started with the web](/en-US/docs/Learn/Getting_started_with_the_web) complete beginner's module.
 
-이 주제를 학습하기에 앞서, 최소한 콘텐츠를 보면서 웹서핑하는 정도의 기초적인 컴퓨터 사용에 익숙해야 합니다. [기본적인 소프트웨어를 설치](/ko/docs/Learn/Getting_started_with_the_web/기본_소프트웨어_설치하기)하여 작업환경의 기초를 설정하고, [파일을 다뤄보면서](/ko/docs/Learn/Getting_started_with_the_web/파일들_다루기) 파일을 생성하고 관리하는 방법을 이해해야 합니다. 이 두 가지가 모두 초보자가 [웹을 정복하기 위한 기본](/ko/docs/Learn/Getting_started_with_the_web)이 됩니다.
+It is recommended that you work through [Getting started with the web](/en-US/docs/Learn/Getting_started_with_the_web) before attempting this topic. However, this isn't absolutely necessary; much of what is covered in the [HTML basics](/en-US/docs/Learn/Getting_started_with_the_web/HTML_basics) article is also covered in our [Introduction to HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML) module, albeit in a lot more detail.
 
-이 주제를 공부하기 전에 [웹에 대한 기본 학습](/ko/docs/Learn/Getting_started_with_the_web)을 추천하지만, 필수는 아닙니다. [HTML의 기본](/ko/docs/Learn/Getting_started_with_the_web/HTML_기본)에서 다루는 대부분의 내용이 우리가 배우게 될 [HTML 소개](/ko/docs/Learn/HTML/Introduction_to_HTML)에도 포함되어 있기는 하지만 좀 더 자세하게 다루고 있습니다.
+After learning HTML, you can then move on to learning about more advanced topics such as:
 
-## 구성
+- [CSS](/en-US/docs/Learn/CSS), and how to use it to style HTML (for example, alter your text size and fonts used, add borders and drop shadows, layout your page with multiple columns, add animations and other visual effects).
+- [JavaScript](/en-US/docs/Learn/JavaScript), and how to use it to add dynamic functionality to web pages (for example, find your location and plot it on a map, make UI elements appear/disappear when you toggle a button, save users' data locally on their computers, and much more).
 
-이 주제는 각 단계를 통해 배울 수 있도록 미리 마련해 둔 아래와 같은 순서로 구성되어 있습니다. 첫 단계부터 순서대로 진행하길 바랍니다.
+## Modules
 
-- [HTML 소개](/ko/docs/Learn/HTML/Introduction_to_HTML)
-  - : 이 과정은 중요한 컨셉과 구문을 배우게 되는 단계로 텍스트에 HTML을 적용하고, 파이퍼 링크를 추가하는 방법, HTML을 이용하여 웹 페이지의 구조를 작성하는 방법을 알아봅니다.
-- [멀티미디어 요소 추가하기(embedding)](/ko/docs/Learn/HTML/Multimedia_and_embedding)
-  - : 이 과정은 웹페이지에 HTML을 이용하여 멀티미디어 요소를 추가하는 방법, 이미지를 추가할 수 있는 다른 방법들, 그리고 비디오, 오디오, 혹은 다른 웹페이지를 삽입하는 방법을 살펴봅니다.
-- [HTML 폼 요소](/ko/docs/Learn/HTML/Forms)
-  - : 폼 요소는 웹에서 굉장히 중요합니다. 폼 요소는 회원가입, 로그인, 피드백 보내기, 물건 구입과 같이 웹사이트와 상호작용하는데 필요한 굉장히 많은 기능을 제공합니다. 이 과정은 폼 요소의 클라이언트 측 요소를 만드는 것으로 시작됩니다.
-- [HTML 테이블](/ko/docs/Learn/HTML/Tables)
-  - : 웹페이지에 표 형태의 데이터를 이해 가능하고, {{glossary("Accessibility", "접근")}}할 수 있는 방법으로 표현하는 것은 도전이 될 수 있습니다. 이 과정은 좀 더 세부적인 기능인 캡션(caption)과 요약(summary)를 적용하는 방법과 함께 테이블 마크업의 기본을 다룹니다.
+This topic contains the following modules, in a suggested order for working through them. You should definitely start with the first one.
 
-## 일반적인 HTML 문제 해결하기
+- [Introduction to HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML)
+  - : This module sets the stage, getting you used to important concepts and syntax, looking at applying HTML to text, how to create hyperlinks, and how to use HTML to structure a webpage.
+- [Multimedia and embedding](/en-US/docs/Learn/HTML/Multimedia_and_embedding)
+  - : This module explores how to use HTML to include multimedia in your web pages, including the different ways that images can be included, and how to embed video, audio, and even entire other webpages.
+- [HTML tables](/en-US/docs/Learn/HTML/Tables)
+  - : Representing tabular data on a webpage in an understandable, {{glossary("Accessibility", "accessible")}} way can be a challenge. This module covers basic table markup, along with more complex features such as implementing captions and summaries.
 
-타이틀 다루기, 이미지, 비디오 강조된 콘텐츠, 기본 폼 요소 만들기 등 웹페이지를 만들때 생기는 [일반적인 문제들을 해결하기 위해 HTML을 이용](/ko/docs/Learn/HTML/Howto)하는 방법을 설명하고 있는 콘텐츠 링크를 제공합니다.
+## Solving common HTML problems
 
-## 함께 보기
+[Use HTML to solve common problems](/en-US/docs/Learn/HTML/Howto) provides links to sections of content explaining how to use HTML to solve very common problems when creating a webpage: dealing with titles, adding images or videos, emphasizing content, creating a basic form, etc.
 
-- [MDN HTML (HyperText Markup Language)](/ko/docs/Web/HTML)
-  - : 요소와 속성에 대한 상세한 설명을 담고 있는 MDN의 HTML 문서를 참고하는 것은 좋은 출발점입니다. 요소가 어떤 속성을 가지고 있는지, 어떤 값과 속성을 사용할 수 있는지를 알고 싶다면, 큰 도움이 될 것입니다.
+## See also
+
+- [Web forms](/en-US/docs/Learn/Forms)
+  - : This module provides a series of articles that will help you master the essentials of web forms. Web forms are a very powerful tool for interacting with users — most commonly they are used for collecting data from users, or allowing them to control a user interface. However, for historical and technical reasons it's not always obvious how to use them to their full potential. We'll cover all the essential aspects of Web forms including marking up their HTML structure, styling form controls, validating form data, and submitting data to the server.
+- [HTML (HyperText Markup Language) on MDN](/en-US/docs/Web/HTML)
+  - : The main entry point for HTML reference documentation on MDN, including detailed element and attribute references — if you want to know what attributes an element has or what values an attribute has, for example, this is a great place to start.

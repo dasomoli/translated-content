@@ -1,143 +1,188 @@
 ---
 title: Intl.DateTimeFormat
 slug: Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat
+page-type: javascript-class
+browser-compat: javascript.builtins.Intl.DateTimeFormat
 ---
 
 {{JSRef}}
 
-**`Intl.DateTimeFormat`**은 언어에 맞는 날짜 및 시간 서식을 적용하기 위한 객체입니다.
+The **`Intl.DateTimeFormat`** object enables language-sensitive date and time formatting.
 
-{{EmbedInteractiveExample("pages/js/intl-datetimeformat.html")}}
+{{EmbedInteractiveExample("pages/js/intl-datetimeformat.html", "taller")}}
 
-## 생성자
+## Constructor
 
 - {{jsxref("Intl/DateTimeFormat/DateTimeFormat", "Intl.DateTimeFormat()")}}
-  - : 새로운 `Intl.DateTimeFormat` 객체를 생성합니다.
+  - : Creates a new `Intl.DateTimeFormat` object.
 
-## 정적 메서드
+## Static methods
 
 - {{jsxref("Intl/DateTimeFormat/supportedLocalesOf", "Intl.DateTimeFormat.supportedLocalesOf()")}}
-  - : 매개변수로 제공한 로케일 목록 중, 런타임이 현재 지원하는 로케일 항목을 배열로 반환합니다.
+  - : Returns an array containing those of the provided locales that are supported without having to fall back to the runtime's default locale.
 
-## 인스턴스 메서드
+## Instance properties
+
+These properties are defined on `Intl.DateTimeFormat.prototype` and shared by all `Intl.DateTimeFormat` instances.
+
+- {{jsxref("Object/constructor", "Intl.DateTimeFormat.prototype.constructor")}}
+  - : The constructor function that created the instance object. For `Intl.DateTimeFormat` instances, the initial value is the {{jsxref("Intl/DateTimeFormat/DateTimeFormat", "Intl.DateTimeFormat")}} constructor.
+- `Intl.DateTimeFormat.prototype[@@toStringTag]`
+  - : The initial value of the [`@@toStringTag`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toStringTag) property is the string `"Intl.DateTimeFormat"`. This property is used in {{jsxref("Object.prototype.toString()")}}.
+
+## Instance methods
 
 - {{jsxref("Intl/DateTimeFormat/format", "Intl.DateTimeFormat.prototype.format()")}}
-  - : `DateTimeFormat` 객체의 로케일과 서식 옵션에 맞춰 날짜를 서식화해 반환합니다.
-- {{jsxref("Intl/DateTimeFormat/formatToParts", "Intl.DateTimeFormat.prototype.formatToParts()")}}
-  - : 날짜 서식 문자열의 각 부분을 분해하여 토큰 객체로 만들고 {{jsxref("Array")}}로 반환합니다. 로케일에 따라 다른 사용자 지정 서식을 적용할 때 사용할 수 있습니다.
-- {{jsxref("Intl/DateTimeFormat/resolvedOptions", "Intl.DateTimeFormat.prototype.resolvedOptions()")}}
-  - : `DateTimeFormat` 객체를 초기화할 때 할당된 로케일 및 서식 옵션의 계산 값을 나타내는 객체를 반환합니다.
+  - : Getter function that formats a date according to the locale and formatting options of this {{jsxref("Intl/DateTimeFormat", "DateTimeFormat")}} object.
 - {{jsxref("Intl/DateTimeFormat/formatRange", "Intl.DateTimeFormat.prototype.formatRange()")}}
-  - : 두 개의 [Dates](/ko/docs/Web/JavaScript/Reference/Global_Objects/Date)를 받은 후, 현재 할당된 로케일과 옵션 내에서 가장 간결한 형태로 두 날짜의 범위를 나타내는 문자열을 반환합니다.
+  - : This method receives two [Dates](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) and formats the date range in the most concise way based on the locale and options provided when instantiating {{jsxref("Intl/DateTimeFormat", "DateTimeFormat")}}.
 - {{jsxref("Intl/DateTimeFormat/formatRangeToParts", "Intl.DateTimeFormat.prototype.formatRangeToParts()")}}
-  - : 두 개의 [Dates](/ko/docs/Web/JavaScript/Reference/Global_Objects/Date)를 받은 후, 현재 할당된 로케일과 옵션 내에서 가장 간결한 형태로 두 날짜의 범위를 나타내는 문자열을 생성합니다. 문자열의 각 부분을 분해하여 토큰 객체로 만들고 {{jsxref("Array")}}로 반환합니다.
+  - : This method receives two [Dates](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) and returns an Array of objects containing the locale-specific tokens representing each part of the formatted date range.
+- {{jsxref("Intl/DateTimeFormat/formatToParts", "Intl.DateTimeFormat.prototype.formatToParts()")}}
+  - : Returns an {{jsxref("Array")}} of objects representing the date string in parts that can be used for custom locale-aware formatting.
+- {{jsxref("Intl/DateTimeFormat/resolvedOptions", "Intl.DateTimeFormat.prototype.resolvedOptions()")}}
+  - : Returns a new object with properties reflecting the locale and formatting options computed during initialization of the object.
 
-## 예제
+## Examples
 
-### `DateTimeFormat` 사용하기
+### Using DateTimeFormat
 
-로케일을 지정하지 않고 사용하면 기본 로케일과 기본 옵션의 서식을 적용한 문자열을 반환합니다.
+In basic use without specifying a locale, `DateTimeFormat` uses the default locale and default options.
 
 ```js
-var date = new Date(Date.UTC(2012, 11, 20, 3, 0, 0));
+const date = new Date(Date.UTC(2012, 11, 20, 3, 0, 0));
 
-// 매개변수 없이 toLocaleString()을 호출한 결과는
-// 구현체, 기본 로케일, 기본 시간대에 다라 달라짐
+// toLocaleString without arguments depends on the implementation,
+// the default locale, and the default time zone
 console.log(new Intl.DateTimeFormat().format(date));
-// → ko-KR 로케일(언어)과 Asia/Seoul 시간대(UTC+0900)에서 "2012. 12. 20."
+// "12/19/2012" if run with en-US locale (language) and time zone America/Los_Angeles (UTC-0800)
 ```
 
-### 로케일 지정하기
+### Using locales
 
-다음 예제는 지역화된 숫자 서식 방법을 보여줍니다. 사용자의 언어에 적합한 서식을 적용하려면 `locales` 매개변수로 해당 언어(필요한 경우 대체 언어까지)를 제공하는 걸 잊지 마세요.
+This example shows some of the variations in localized date and time formats. In order to get the format of the language used in the user interface of your application, make sure to specify that language (and possibly some fallback languages) using the `locales` argument:
 
 ```js
-var date = new Date(Date.UTC(2012, 11, 20, 3, 0, 0));
+const date = new Date(Date.UTC(2012, 11, 20, 3, 0, 0));
 
-// 아래 결과는 모두 Asia/Seoul 시간대를 사용한 결과 (UTC+0900, 한국 표준시)
+// Results below use the time zone of America/Los_Angeles (UTC-0800, Pacific Standard Time)
 
-// 한국어에서 날짜 표기는 연월일 순서
-console.log(new Intl.DateTimeFormat('ko-KR').format(date));
-// → "2012. 12. 20."
+// US English uses month-day-year order
+console.log(new Intl.DateTimeFormat("en-US").format(date));
+// "12/19/2012"
 
-// 미국 영어에서 날짜 표기는 월일년 순서
-console.log(new Intl.DateTimeFormat('en-US').format(date));
-// → "12/20/2012"
+// British English uses day-month-year order
+console.log(new Intl.DateTimeFormat("en-GB").format(date));
+// "19/12/2012"
 
-// 영국 영어에서 날짜 표기는 일월년 순서
-console.log(new Intl.DateTimeFormat('en-GB').format(date));
-// → "20/12/2012"
+// Korean uses year-month-day order
+console.log(new Intl.DateTimeFormat("ko-KR").format(date));
+// "2012. 12. 19."
 
-// 대부분의 아랍어 국가에서는 진짜 아라비아 숫자 사용
-console.log(new Intl.DateTimeFormat('ar-EG').format(date));
-// → "٢٠‏/١٢‏/٢٠١٢"
+// Arabic in most Arabic speaking countries uses real Arabic digits
+console.log(new Intl.DateTimeFormat("ar-EG").format(date));
+// "١٩‏/١٢‏/٢٠١٢"
 
-// 일본어의 경우 어플리케이션에 연호를 사용해야 할 수도 있음
-// 2012년은 헤이세이 24년
-console.log(new Intl.DateTimeFormat('ja-JP-u-ca-japanese').format(date));
-// → "24/12/20"
+// for Japanese, applications may want to use the Japanese calendar,
+// where 2012 was the year 24 of the Heisei era
+console.log(new Intl.DateTimeFormat("ja-JP-u-ca-japanese").format(date));
+// "24/12/19"
 
-// 발리어와 같이 지원되지 않을 수도 있는 언어를 지정할 때는
-// 다음과 같이 대체 언어를 지정할 수 있음. 아래의 경우 대체 언어는 인도어
-console.log(new Intl.DateTimeFormat(['ban', 'id']).format(date));
-// → "20/12/2012"
+// when requesting a language that may not be supported, such as
+// Balinese, include a fallback language, in this case Indonesian
+console.log(new Intl.DateTimeFormat(["ban", "id"]).format(date));
+// "19/12/2012"
 ```
 
-### 옵션 지정하기
+### Using options
 
-`options` 매개변수를 지정하면 날짜와 시간 서식 결과를 원하는 형태로 바꿀 수 있습니다.
+The date and time formats can be customized using the `options` argument:
 
 ```js
-var date = new Date(Date.UTC(2012, 11, 20, 3, 0, 0));
+const date = new Date(Date.UTC(2012, 11, 20, 3, 0, 0, 200));
 
-// 긴 날짜 서식에 더해 요일 요청
-var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-console.log(new Intl.DateTimeFormat('de-DE', options).format(date));
-// → "Donnerstag, 20. Dezember 2012"
-
-// 어플리케이션이 GMT를 사용해야 하고, 그 점을 명시해야 할 때
-options.timeZone = 'UTC';
-options.timeZoneName = 'short';
-console.log(new Intl.DateTimeFormat('en-US', options).format(date));
-// → "Thursday, December 20, 2012, GMT"
-
-// 좀 더 자세한 설정이 필요하면
-options = {
-  hour: 'numeric', minute: 'numeric', second: 'numeric',
-  timeZone: 'Australia/Sydney',
-  timeZoneName: 'short'
+// request a weekday along with a long date
+let options = {
+  weekday: "long",
+  year: "numeric",
+  month: "long",
+  day: "numeric",
 };
-console.log(new Intl.DateTimeFormat('en-AU', options).format(date));
-// → "2:00:00 pm AEDT"
+console.log(new Intl.DateTimeFormat("de-DE", options).format(date));
+// "Donnerstag, 20. Dezember 2012"
 
-// 미국에서도 24시간제가 필요할 때
+// an application may want to use UTC and make that visible
+options.timeZone = "UTC";
+options.timeZoneName = "short";
+console.log(new Intl.DateTimeFormat("en-US", options).format(date));
+// "Thursday, December 20, 2012, GMT"
+
+// sometimes you want to be more precise
 options = {
-  year: 'numeric', month: 'numeric', day: 'numeric',
-  hour: 'numeric', minute: 'numeric', second: 'numeric',
+  hour: "numeric",
+  minute: "numeric",
+  second: "numeric",
+  timeZone: "Australia/Sydney",
+  timeZoneName: "short",
+};
+console.log(new Intl.DateTimeFormat("en-AU", options).format(date));
+// "2:00:00 pm AEDT"
+
+// sometimes you want to be very precise
+options.fractionalSecondDigits = 3; //number digits for fraction-of-seconds
+console.log(new Intl.DateTimeFormat("en-AU", options).format(date));
+// "2:00:00.200 pm AEDT"
+
+// sometimes even the US needs 24-hour time
+options = {
+  year: "numeric",
+  month: "numeric",
+  day: "numeric",
+  hour: "numeric",
+  minute: "numeric",
+  second: "numeric",
   hour12: false,
-  timeZone: 'America/Los_Angeles'
+  timeZone: "America/Los_Angeles",
 };
-console.log(new Intl.DateTimeFormat('en-US', options).format(date));
-// → "12/19/2012, 19:00:00"
+console.log(new Intl.DateTimeFormat("en-US", options).format(date));
+// "12/19/2012, 19:00:00"
 
-// 옵션을 지정하면서 로케일은 브라우저 기본값을 사용하고 싶을 땐 'default' 지정
-console.log(new Intl.DateTimeFormat('default', options).format(date));
-// → "2012. 12. 19. 19시 0분 0초"
+// to specify options but use the browser's default locale, use undefined
+console.log(new Intl.DateTimeFormat(undefined, options).format(date));
+// "12/19/2012, 19:00:00"
 
-// 오전/오후 시간 표시가 필요할 때
-options = {hour: "numeric", dayPeriod: "short"};
-console.log(new Intl.DateTimeFormat('en-US', options).format(date));
-// → 10 at night
+// sometimes it's helpful to include the period of the day
+options = { hour: "numeric", dayPeriod: "short" };
+console.log(new Intl.DateTimeFormat("en-US", options).format(date));
+// 10 at night
 ```
 
-## 명세
+The used calendar and numbering formats can also be set independently via `options` arguments:
+
+```js
+const options = { calendar: "chinese", numberingSystem: "arab" };
+const dateFormat = new Intl.DateTimeFormat(undefined, options);
+const usedOptions = dateFormat.resolvedOptions();
+
+console.log(usedOptions.calendar);
+// "chinese"
+
+console.log(usedOptions.numberingSystem);
+// "arab"
+
+console.log(usedOptions.timeZone);
+// "America/New_York" (the users default timezone)
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Intl")}}
+- [A polyfill of `Intl.DateTimeFormat` in FormatJS](https://formatjs.io/docs/polyfills/intl-datetimeformat/)

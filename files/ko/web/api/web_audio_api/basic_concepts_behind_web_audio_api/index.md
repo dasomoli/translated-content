@@ -1,137 +1,154 @@
 ---
-title: Web Audio API의 기본 개념
+title: Basic concepts behind Web Audio API
 slug: Web/API/Web_Audio_API/Basic_concepts_behind_Web_Audio_API
+page-type: guide
 ---
 
-오디오가 어떻게 여러분의 앱을 통해서 전송(route)되는지를 설계하는 동안 여러분이 적절한 결정을 내리는 것을 돕기 위해, 이 문서는 Web Audio API의 기능이 어떻게 동작하는가를 뒷받침하는 얼마간의 오디오 이론을 설명합니다. 이 문서를 읽는다고 해서 여러분이 숙련된 사운드 엔지니어가 될 수는 없지만, 왜 Web Audio API가 이렇게 동작하는지를 이해하기에 충분한 배경지식을 줄 것입니다.
+{{DefaultAPISidebar("Web Audio API")}}
 
-## 오디오 그래프
+This article explains some of the audio theory behind how the features of the Web Audio API work to help you make informed decisions while designing how your app routes audio. If you are not already a sound engineer, it will give you enough background to understand why the Web Audio API works as it does.
 
-[Web Audio API](/ko/docs/Web/API/Web_Audio_API)는 [오디오 컨텍스트](/ko/docs/Web/API/AudioContext)(audio context) 내의 오디오 연산을 다루는 것을 포함하고, **모듈러 라우팅**(modular routing)을 허용하도록 설계되었습니다. 기본적인 오디오 연산은 **오디오 노드**(audio node)와 함께 수행되는데, 이는 **오디오 라우팅 그래프**를 형성하기 위해 함께 연결되어 있습니다. 다른 유형의 채널 레이아웃을 가진 몇몇의 소스(source)들은 심지어 하나의 컨텍스트 내에서 지원됩니다. 이 모듈식의(modular) 디자인은 역동적인 효과를 가진 복잡한 오디오 기능을 만드는 데 있어 유연함을 제공합니다.
+## Audio graphs
 
-하나 또는 더 많은 소스에서 시작하고, 하나 또는 더 많은 노드를 통과하고, 그리고서 도착지(destination)에서 끝나는 체인(chain)을 형성하며, 오디오 노드는 입력과 출력을 통해 연결되어 있습니다. 그러나, 예를 들어 여러분이 단지 오디오 데이터를 시각화하기를 원한다면 도착지를 반드시 제공할 필요는 없습니다. 웹 오디오의 단순하고, 일반적인 작업 흐름은 다음과 같습니다:
+The [Web Audio API](/en-US/docs/Web/API/Web_Audio_API) involves handling audio operations inside an [audio context](/en-US/docs/Web/API/AudioContext), and has been designed to allow _modular routing_. Each [audio node](/en-US/docs/Web/API/AudioNode) performs a basic audio operation and is linked with one more other audio nodes to form an [audio routing graph](/en-US/docs/Web/API/AudioNode#the_audio_routing_graph). Several sources with different channel layouts are supported, even within a single context. This modular design provides the flexibility to create complex audio functions with dynamic effects.
 
-1. 오디오 컨텍스트를 생성합니다.
-2. 컨텍스트 내에서, 다음과 같이 소스를 생성합니다 — {{HTMLElement("audio")}}, oscillator, 또는 stream.
-3. 효과 노드를 생성하는데, 예를 들자면 reverb, biquad filter, panner, 또는 compressor가 있습니다.
-4. 사용자의 컴퓨터 스피커와 같이, 오디오의 최종 도착지를 선택합니다.
-5. 오디오 소스로부터 0 또는 더 많은 효과를 거쳐 연결(connection)을 확립하는데, 마지막으로는 앞서 선택된 도착지에서 끝납니다.
+Audio nodes are linked via their inputs and outputs, forming a chain that starts with one or more sources, goes through one or more nodes, then ends up at a destination (although you don't have to provide a destination if you only want to visualize some audio data). A simple, typical workflow for web audio would look something like this:
 
-> **참고:** 한 신호에서 사용 가능한 오디오 채널의 숫자는 종종 숫자 형식으로 표현되는데, 예를 들자면 2.0 또는 5.1과 같습니다. 이것은 [채널 표기법](https://en.wikipedia.org/wiki/Surround_sound#Channel_notation)이라고 불립니다. 첫번째 숫자는 신호가 포함하는 전체 주파수 범위 오디오 채널의 숫자입니다. 마침표 뒤의 숫자는 저주파 효과(LFE) 출력에 대해 비축된 채널의 수를 나타냅니다; 이 숫자는 종종 **서브 우퍼**(subwoofer)로 불립니다.
+1. Create the audio context.
+2. Create audio sources inside the context (such as {{HTMLElement("audio")}}, an oscillator, or stream).
+3. Create audio effects (such as the reverb, biquad filter, panner, or compressor nodes).
+4. Choose the final destination for the audio (such as the user's computer speakers).
+5. Connect the source nodes to zero or more effect nodes and then to the chosen destination.
 
-![오디오 컨텍스트라고 써진 외부 상자와 소스, 효과, 목적지라고 써진 세 개의 내부 상자를 가진 하나의 간단한 도표. 세 개의 내부 상자는 좌에서 우를 향하는 화살표를 사이에 가지고 있는데, 이는 오디오 정보의 흐름을 나타냅니다.](webaudioapi_en.svg)
+> **Note:** The [channel notation](https://en.wikipedia.org/wiki/Surround_sound#Channel_notation) is a numeric value, such as _2.0_ or _5.1_, representing the number of audio channels available on a signal. The first number is the number of full frequency range audio channels the signal includes. The number appearing after the period indicates the number of those channels reserved for low-frequency effect (LFE) outputs; these are often called **subwoofers**.
 
-각각의 입력 또는 출력은 몇몇의 **채널**으로 구성되어 있는데, 이는 특정한 오디오 레이아웃을 나타냅니다. _모노_, _스테레오_, _quad_, _5.1_ 등등을 포함하는, 어떠한 별개의 채널 구조든 지원됩니다.
+![A simple box diagram with an outer box labeled Audio context and three inner boxes labeled Sources, Effects, and Destination. The three inner boxes have arrows between them pointing from left to right, indicating the flow of audio information.](webaudioapi_en.svg)
 
-![입력과 출력 그리고 이 입력/출력 내부의 채널을 통해 연결하는 AudioNode의 능력을 보여줍니다.](mdn.png)
+Each input or output is composed of one or more audio **channels**, which together represent a specific audio layout. Any discrete channel structure is supported, including _mono_, _stereo_, _quad_, _5.1_, and so on.
 
-오디오 소스는 다양한 방법으로 얻어질 수 있습니다:
+![Show the ability of audio nodes to connect via their inputs and outputs and the channels inside these inputs/outputs.](mdn.png)
 
-- 소리는 JavaScript에서 (oscillator처럼) 오디오 노드에 의해 직접적으로 생성될 수 있습니다.
-- 가공되지 않은(raw) PCM 데이터로부터 생성될 수 있습니다 (오디오 컨텍스트는 지원되는 오디오 포맷을 디코드하는 메서드를 가지고 있습니다).
-- ({{HTMLElement("video")}} 또는 {{HTMLElement("audio")}}처럼) HTML 미디어 요소로부터 취해질 수 있습니다.
-- (웹캠이나 마이크처럼) [WebRTC](/ko/docs/Web/API/WebRTC_API) {{domxref("MediaStream")}}로부터 직접적으로 취해질 수 있습니다.
+You have several ways to obtain audio:
 
-## 오디오 데이터: 무엇이 샘플 속에 들어있는가
+- Sound can be generated directly in JavaScript by an audio node (such as an oscillator).
+- It can be created from raw [PCM](https://en.wikipedia.org/wiki/Pulse-code_modulation) data (such as .WAV files or other formats supported by {{domxref("BaseAudioContext/decodeAudioData", "decodeAudioData()")}}).
+- It can be generated from HTML media elements, such as {{HTMLElement("video")}} or {{HTMLElement("audio")}}.
+- It can be obtained from a [WebRTC](/en-US/docs/Web/API/WebRTC_API) {{domxref("MediaStream")}}, such as a webcam or microphone.
 
-오디오 신호가 처리될 때, **샘플링**이란 [연속 신호](https://en.wikipedia.org/wiki/Continuous_signal)(continuous signal)의 [불연속 신호](https://en.wikipedia.org/wiki/Discrete_signal)(discrete signal)로의 전환을 의미합니다; 또는 달리 말하면, 라이브로 연주하고 있는 밴드와 같이, 연속적인 음파를 컴퓨터가 오디오를 구별되는 단위로 다룰 수 있게 허용하는 일련의 샘플들로 전환하는 것을 의미합니다.
+## Audio data: what's in a sample
 
-더 많은 정보는 위키피디아 문서 [샘플링 (신호 처리)](https://en.wikipedia.org/wiki/Sampling_%28signal_processing%29)에서 찾을 수 있습니다.
+When an audio signal is processed, sampling happens. **Sampling** is the conversion of a [continuous signal](https://en.wikipedia.org/wiki/Continuous_signal) to a [discrete signal](https://en.wikipedia.org/wiki/Discrete_signal). Put another way, a continuous sound wave, such as a band playing live, is converted into a sequence of digital samples (a discrete-time signal) that allows a computer to handle the audio in distinct blocks.
 
-## 오디오 버퍼: 프레임, 샘플, 그리고 채널
+You'll find more information on the Wikipedia page [_Sampling (signal processing)_](https://en.wikipedia.org/wiki/Sampling_%28signal_processing%29).
 
-{{ domxref("AudioBuffer") }}는 매개변수로서 채널의 수 (1은 모노, 2는 스테레오 등), 버퍼 내부의 샘플 프레임의 수를 의미하는 길이, 그리고 초당 재생되는 샘플 프레임의 수인 샘플 레이트를 취합니다.
+## Audio buffers: frames, samples, and channels
 
-샘플은 특정한 채널(스테레오의 경우, 왼쪽 또는 오른쪽)에서, 각각의 특정한 시점에의 오디오 스트림의 값을 표현하는 단일의 float32 값입니다. 프레임 또는 샘플 프레임은, 특정한 시점에 재생될 모든 채널의 모든 값들의 집합입니다: 즉 같은 시간에 재생되는 모든 채널의 모든 샘플 (스테레오 사운드의 경우 2개, 5.1의 경우 6개 등)입니다.
+An {{domxref("AudioBuffer")}} is defined with three parameters:
 
-샘플 레이트는 Hz로 측정되는, 1초에 재생될 이 샘플들 (또는 프레임들, 왜냐하면 한 프레임의 모든 샘플들이 같은 시간에 재생되므로) 의 수입니다. 샘플 레이트가 높을수록 음질이 더 좋습니다.
+- the number of channels (1 for mono, 2 for stereo, etc.),
+- its length, meaning the number of sample frames inside the buffer,
+- and the sample rate, the number of sample frames played per second.
 
-모노와 스테레오 오디오 버퍼를 살펴봅시다, 각각 1초 길이고, 44100Hz로 재생됩니다:
+A _sample_ is a single 32-bit floating point value representing the value of the audio stream at each specific moment in time within a particular channel (left or right, if in the case of stereo). A _frame_, or _sample frame_, is the set of all values for all channels that will play at a specific moment in time: all the samples of all the channels that play at the same time (two for a stereo sound, six for 5.1, etc.).
 
-- 모노 버퍼는 44100 샘플과, 44100 프레임을 가질 것입니다. `length` 프로퍼티는 44100이 될 것입니다.
-- 스테레오 버퍼는 88200 샘플을 가질 것이나, 여전히 44100 프레임입니다. `length` 프로퍼티는 프레임의 수와 동일하므로 여전히 44100일 것입니다.
+The _sample rate_ is the quantity of those samples (or frames, since all samples of a frame play at the same time) that will play in one second, measured in Hz. The higher the sample rate, the better the sound quality.
 
-![긴 줄에서 오디오 버퍼의 몇몇 프레임을 보여주는 도표인데, 각각은 두 개의 샘플을 포함하고 있습니다. 버퍼가 두 개의 채널을 가지고 있으므로, 이것은 스테레오입니다.](sampleframe-english.png)
+Let's look at a _mono_ and a _stereo_ audio buffer, each one second long at a rate of 44100Hz:
 
-버퍼가 재생될 때, 여러분은 제일 왼쪽의 샘플 프레임을 들을 것이고, 그리고서 다음에 있는 제일 오른쪽의 샘플 프레임 등등을 들을 것입니다. 스테레오의 경우에, 여러분은 양 채널을 동시에 들을 것입니다. 샘플 프레임은 대단히 유용한데, 왜냐하면 샘플 프레임은 채널의 수에 독립적이고, 정밀한 오디오 조작을 함에 있어 유용한 방법으로 시간을 나타내기 때문입니다.
+- The _mono_ buffer will have 44,100 samples and 44,100 frames. The `length` property will be 44,100.
+- The _stereo_ buffer will have 88,200 samples but still 44,100 frames. The `length` property will still be 44100 since it equals the number of frames.
 
-> **참고:** 프레임 카운트로부터 초로 시간을 얻기 위해서는, 프레임의 수를 샘플 레이트로 나누십시오. 샘플의 수로부터 프레임의 수를 얻기 위해서는, 채널 카운트로 나누십시오.
+![A diagram showing several frames in an audio buffer in a long line, each one containing two samples, as the buffer has two channels, it is stereo.](sampleframe-english.png)
 
-두 개의 간단한 예제입니다:
+When a buffer plays, you will first hear the leftmost sample frame, then the one right next to it, then the next, _and so on_, until the end of the buffer. In the case of stereo, you will hear both channels simultaneously. Sample frames are handy because they are independent of the number of channels and represent time in an ideal way for precise audio manipulation.
 
-```js
-var context = new AudioContext();
-var buffer = context.createBuffer(2, 22050, 44100);
-```
+> **Note:** To get a time in seconds from a frame count, divide the number of frames by the sample rate. To get the number of frames from the number of samples, you only need to divide the latter value by the channel count.
 
-> **참고:** [디지털 오디오](https://en.wikipedia.org/wiki/Digital_audio)에서, **44,100 [Hz](https://en.wikipedia.org/wiki/Hertz)** (또한 **44.1 kHz**로 표현되어짐) 은 일반적인 [샘플링 주파수](https://en.wikipedia.org/wiki/Sampling_frequency)입니다. 왜 44.1kHz일까요?
->
-> 첫째로, 왜냐하면 인간의 [가청 범위](https://en.wikipedia.org/wiki/Hearing_range)(hearing range)는 대략적으로 20 Hz에서 20,000 Hz이기 때문입니다. [표본화 정리](https://en.wikipedia.org/wiki/Nyquist%E2%80%93Shannon_sampling_theorem)(Nyquist–Shannon sampling theorem)에 의하여, 샘플링 주파수는 반드시 재생하기를 원하는 최대 주파수의 2배보다 커야 합니다. 그러므로, 샘플링 레이트는 40 kHz보다 커야만 합니다.
->
-> 둘째로, 신호는 반드시 샘플링 전에 [저주파 통과 필터](https://en.wikipedia.org/wiki/Low-pass_filter)(low-pass filter)를 거쳐야만 합니다, 그렇지 않으면 [에일리어싱](https://en.wikipedia.org/wiki/Aliasing)(aliasing)이 발생합니다. 이상적인 저주파 통과 필터는 완벽히 20 kHz 아래의 주파수들을 (약화시키는 일 없이) 통과시키고 완벽히 20 kHz 위의 주파수들을 잘라낼 것이지만, 실제로는 [천이 대역](https://en.wikipedia.org/wiki/Transition_band)(transition band)이 필수적인데, 여기서 주파수들은 부분적으로 약화됩니다. 천이 대역이 넓을수록, [주파수 중복방지 필터](https://en.wikipedia.org/wiki/Anti-aliasing_filter)(anti-aliasing filter)를 만들기 쉽고 경제적입니다. 44.1 kHz 샘플링 주파수는 2.05 kHz 천이 대역을 감안합니다.
-
-만약 위의 이 호출을 사용한다면, 여러분은 44100Hz (아주 일반적입니다, 대부분의 보통 사운드 카드는 이 레이트에서 실행됩니다) 에서 실행되는 AudioContext에서 재생될 때 0.5초동안 지속될 두 개의 채널을 가진 스테레오 버퍼를 얻을 것입니다. (22050 프레임 / 44100Hz = 0.5초)
+Here are a couple of simple examples:
 
 ```js
-var context = new AudioContext();
-var buffer = context.createBuffer(1, 22050, 22050);
+const context = new AudioContext();
+const buffer = new AudioBuffer(context, {
+  numberOfChannels: 2,
+  length: 22050,
+  sampleRate: 44100,
+});
 ```
 
-만약 이 호출을 사용한다면, 여러분은 44100Hz에서 실행되는 AudioContext에서 재생될 때 자동적으로 44100Hz로 _리샘플_(resample)되고 1.0초동안 지속될 단지 하나의 채널을 가진 모노 버퍼를 얻을 것입니다. (44100 프레임 / 44100Hz = 1초)
+> **Note:** In [digital audio](https://en.wikipedia.org/wiki/Digital_audio), **44,100 [Hz](https://en.wikipedia.org/wiki/Hertz)** (alternately represented as **44.1 kHz**) is a common [sampling frequency](https://en.wikipedia.org/wiki/Sampling_frequency). Why 44.1 kHz?
+>
+> Firstly, because the [hearing range](https://en.wikipedia.org/wiki/Hearing_range) of human ears is roughly 20 Hz to 20,000 Hz. Via the [Nyquist–Shannon sampling theorem](https://en.wikipedia.org/wiki/Nyquist%E2%80%93Shannon_sampling_theorem), the sampling frequency must be greater than twice the maximum frequency one wishes to reproduce. Therefore, the sampling rate has to be _greater_ than 40,000 Hz.
+>
+> Secondly, signals must be [low-pass filtered](https://en.wikipedia.org/wiki/Low-pass_filter) before sampling, otherwise [aliasing](https://en.wikipedia.org/wiki/Aliasing) occurs. While an ideal low-pass filter would perfectly pass frequencies below 20 kHz (without attenuating them) and perfectly cut off frequencies above 20 kHz, in practice, a [transition band](https://en.wikipedia.org/wiki/Transition_band) is necessary, where frequencies are partly attenuated. The wider this transition band is, the easier and more economical it is to make an [anti-aliasing filter](https://en.wikipedia.org/wiki/Anti-aliasing_filter). The 44.1 kHz sampling frequency allows for a 2.05 kHz transition band.
 
-> **참고:** 오디오 리샘플링은 이미지 리사이징과 몹시 유사합니다. 예를 들어 여러분이 16 x 16 이미지를 가지고 있지만 32 x 32 영역을 채우고 싶다고 가정해 봅시다. 당신은 리사이즈 (또는 리샘플) 합니다. 결과는 더 낮은 품질을 가지지만 (리사이징 알고리즘에 따라서, 흐릿하거나 각질 수 있습니다), 리사이즈된 이미지가 더 적은 공간을 차지한 채로 작동은 합니다. 리샘플된 오디오는 정확히 동일합니다: 여러분은 공간을 저장하지만, 실제로는 높은 주파수의 콘텐츠 또는 고음의 소리를 적절히 재생할 수 없을 것입니다.
+If you use this call above, you will get a stereo buffer with two channels that, when played back on an {{domxref("AudioContext")}} running at 44100 Hz (very common, most normal sound cards run at this rate), will last for 0.5 seconds: 22,050 frames/44,100 Hz = 0.5 seconds.
 
-### 평면(planar) 대 인터리브(interleaved) 버퍼
-
-Web Audio API는 평면 버퍼 포맷을 사용합니다. 왼쪽과 오른쪽 채널은 다음과 같이 저장됩니다:
-
-```
-LLLLLLLLLLLLLLLLRRRRRRRRRRRRRRRR (16 프레임의 버퍼에 대해)
-```
-
-이것은 오디오 프로세싱에서 아주 일반적입니다: 이것은 각 채널을 독립적으로 처리하기 쉽게 만들어줍니다.
-
-대안은 인터리브 버퍼 포맷을 사용하는 것입니다:
-
-```
-LRLRLRLRLRLRLRLRLRLRLRLRLRLRLRLR (16 프레임의 버퍼에 대해)
+```js
+const context = new AudioContext();
+const buffer = new AudioBuffer(context, {
+  numberOfChannels: 1,
+  length: 22050,
+  sampleRate: 22050,
+});
 ```
 
-이 포맷은 많은 프로세싱 없이 오디오를 저장하고 재생하는 데 아주 일반적인데, 예를 들자면 디코드된 MP3 스트림이 있습니다.
+If you use this call, you will get a mono buffer (single-channel buffer) that, when played back on an {{domxref("AudioContext")}} running at 44,100 Hz, will be automatically _resampled_ to 44,100 Hz (and therefore yield 44,100 frames), and last for 1.0 second: 44,100 frames/44,100 Hz = 1 second.
 
-Web Audio API는 **오직** 평면 버퍼만을 드러내는데, 왜냐하면 프로세싱을 위해 만들어졌기 때문입니다. 이것은 평면으로 동작하나, 오디오가 재생을 위해 사운드 카드에 전달되었을 때 인터리브로 전환합니다. 역으로, MP3가 디코드되었을 때, 이것은 인터리브 포맷으로 시작하나, 프로세싱을 위해 평면으로 전환됩니다.
+> **Note:** Audio resampling is very similar to image resizing. Say you've got a 16 x 16 image but want it to fill a 32 x 32 area. You resize (or resample) it. The result has less quality (it can be blurry or edgy, depending on the resizing algorithm), but it works, with the resized image taking up less space. Resampled audio is the same: you save space, but, in practice, you cannot correctly reproduce high-frequency content or treble sound.
 
-## 오디오 채널
+### Planar versus interleaved buffers
 
-다른 오디오 버퍼는 다른 수의 채널을 포함합니다: 간단한 모노(오직 한 개의 채널)와 스테레오(왼쪽과 오른쪽 채널)에서부터, 각 채널에 포함된 다른 사운드 샘플을 가지고 있어 더욱 풍부한 소리 경험을 가능케 하는 quad와 5.1과 같은 더욱 복잡한 것들까지 있습니다. 채널들은 보통 아래의 테이블에 상세히 설명된 표준 약어에 의해 표현됩니다:
+The Web Audio API uses a planar buffer format. The left and right channels are stored like this:
 
-| _Mono_   | `0: M: mono`                                                                                       |
+```
+LLLLLLLLLLLLLLLLRRRRRRRRRRRRRRRR (for a buffer of 16 frames)
+```
+
+This structure is widespread in audio processing, making it easy to process each channel independently.
+
+The alternative is to use an interleaved buffer format:
+
+```
+LRLRLRLRLRLRLRLRLRLRLRLRLRLRLRLR (for a buffer of 16 frames)
+```
+
+This format is prevalent for storing and playing back audio without much processing, for example: .WAV files or a decoded MP3 stream.
+
+Because the Web Audio API is designed for processing, it exposes _only_ planar buffers. It uses the planar format but converts the audio to the interleaved format when it sends it to the sound card for playback. Conversely, when the API decodes an MP3, it starts with the interleaved format and converts it to the planar format for processing.
+
+## Audio channels
+
+Each audio buffer may contain different numbers of channels. Most modern audio devices use the basic _mono_ (only one channel) and _stereo_ (left and right channels) settings. Some more complex sets support _surround sound_ settings (like _quad_ and _5.1_), which can lead to a richer sound experience thanks to their high channel count. We usually represent the channels with the standard abbreviations detailed in the table below:
+
+| Name     | Channels                                                                                           |
 | -------- | -------------------------------------------------------------------------------------------------- |
+| _Mono_   | `0: M: mono`                                                                                       |
 | _Stereo_ | `0: L: left 1: R: right`                                                                           |
 | _Quad_   | `0: L: left 1: R: right 2: SL: surround left 3: SR: surround right`                                |
 | _5.1_    | `0: L: left 1: R: right 2: C: center 3: LFE: subwoofer 4: SL: surround left 5: SR: surround right` |
 
-### 업믹싱(up-mixing)과 다운믹싱(down-mixing)
+### Up-mixing and down-mixing
 
-채널의 수가 입력과 출력 사이에서 맞지 않을 때, 업 또는 다운 믹싱이 다음의 규칙에 따라 발생합니다. 이는 {{domxref("AudioNode.channelInterpretation")}} 프로퍼티를 `speakers` 또는 `discrete`로 설정함으로써 어느 정도 제어될 수 있습니다.
+When the numbers of channels of the input and the output don't match, up-mixing, or down-mixing, must be done. The following rules, controlled by setting the {{domxref("AudioNode.channelInterpretation")}} property to `speakers` or `discrete`, apply:
 
 <table class="standard-table">
   <thead>
     <tr>
-      <th scope="row">해석</th>
-      <th scope="col">입력 채널</th>
-      <th scope="col">출력 채널</th>
-      <th scope="col">믹싱 규칙</th>
+      <th scope="row">Interpretation</th>
+      <th scope="col">Input channels</th>
+      <th scope="col">Output channels</th>
+      <th scope="col">Mixing rules</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th rowspan="13" scope="row"><code>스피커</code></th>
+      <th rowspan="13" scope="row"><code>speakers</code></th>
       <td><code>1</code> <em>(Mono)</em></td>
       <td><code>2</code> <em>(Stereo)</em></td>
       <td>
-        <em>모노에서 스테레오로 업믹스</em><br /><code>M</code> 입력 채널이 양
-        출력 채널 (<code>L</code>와 <code>R</code>)에 대해 사용됩니다.<br /><code
+        <em>Up-mix from mono to stereo</em>.<br />The <code>M</code> input
+        channel is used for both output channels (<code>L</code> and
+        <code>R</code>).<br /><code
           >output.L = input.M<br />output.R = input.M</code
         >
       </td>
@@ -140,10 +157,10 @@ Web Audio API는 **오직** 평면 버퍼만을 드러내는데, 왜냐하면 �
       <td><code>1</code> <em>(Mono)</em></td>
       <td><code>4</code> <em>(Quad)</em></td>
       <td>
-        <em>모노에서 quad로 업믹스</em><br /><code>M</code> 입력 채널이 비
-        서라운드(non-surround) 출력 채널에 대해 사용됩니다 (<code>L</code> 과
-        <code>R</code>). 서라운드 출력 채널 (<code>SL</code> 과
-        <code>SR</code>)은 작동하지 않습니다(silent).<br /><code
+        <em>Up-mix from mono to quad.</em><br />The <code>M</code> input channel
+        is used for non-surround output channels (<code>L</code> and
+        <code>R</code>). Surround output channels (<code>SL</code> and
+        <code>SR</code>) are silent.<br /><code
           >output.L = input.M<br />output.R = input.M<br />output.SL = 0<br />output.SR
           = 0</code
         >
@@ -153,10 +170,10 @@ Web Audio API는 **오직** 평면 버퍼만을 드러내는데, 왜냐하면 �
       <td><code>1</code> <em>(Mono)</em></td>
       <td><code>6</code> <em>(5.1)</em></td>
       <td>
-        <em>모노에서 5.1로 업믹스</em><br /><code>M</code> 입력 채널이 센터 출력
-        채널 (<code>C</code>)에 대해 사용됩니다. 모든 다른
-        채널들(<code>L</code>, <code>R</code>, <code>LFE</code>,
-        <code>SL</code>, 그리고 <code>SR</code>)은 작동하지 않습니다.<br /><code
+        <em>Up-mix from mono to 5.1.</em><br />The <code>M</code> input channel
+        is used for the center output channel (<code>C</code>). All the others
+        (<code>L</code>, <code>R</code>, <code>LFE</code>, <code>SL</code>, and
+        <code>SR</code>) are silent.<br /><code
           >output.L = 0<br />output.R = 0</code
         ><br /><code
           >output.C = input.M<br />output.LFE = 0<br />output.SL = 0<br />output.SR
@@ -168,9 +185,11 @@ Web Audio API는 **오직** 평면 버퍼만을 드러내는데, 왜냐하면 �
       <td><code>2</code> <em>(Stereo)</em></td>
       <td><code>1</code> <em>(Mono)</em></td>
       <td>
-        <em>스테레오에서 모노로 다운믹스</em><br />양 출력 채널 (<code>L</code>
-        과 <code>R</code>)은 고유한 출력 채널 (<code>M</code>)을 생산하기 위해
-        동등하게 결합됩니다.<br /><code
+        <em>Down-mix from stereo to mono</em>.<br />Both input channels (<code
+          >L</code
+        >
+        and <code>R</code>) are equally combined to produce the unique output
+        channel (<code>M</code>).<br /><code
           >output.M = 0.5 * (input.L + input.R)</code
         >
       </td>
@@ -179,12 +198,10 @@ Web Audio API는 **오직** 평면 버퍼만을 드러내는데, 왜냐하면 �
       <td><code>2</code> <em>(Stereo)</em></td>
       <td><code>4</code> <em>(Quad)</em></td>
       <td>
-        <em>스테레오에서 quad로 업믹스</em><br /><code>L</code> 과
-        <code>R </code>입력 채널이 각자의 비 서라운드 출력 채널 (<code>L</code>
-        과 <code>R</code>)에 대해 사용됩니다. 서라운드 출력 채널 (<code
-          >SL</code
-        >
-        과 <code>SR</code>) 은 작동하지 않습니다.<br /><code
+        <em>Up-mix from stereo to quad.</em><br />The <code>L</code> and
+        <code>R </code>input channels are used for their non-surround respective
+        output channels (<code>L</code> and <code>R</code>). Surround output
+        channels (<code>SL</code> and <code>SR</code>) are silent.<br /><code
           >output.L = input.L<br />output.R = input.R<br />output.SL = 0<br />output.SR
           = 0</code
         >
@@ -194,13 +211,12 @@ Web Audio API는 **오직** 평면 버퍼만을 드러내는데, 왜냐하면 �
       <td><code>2</code> <em>(Stereo)</em></td>
       <td><code>6</code> <em>(5.1)</em></td>
       <td>
-        <em>스테레오에서 5.1로 업믹스</em><br /><code>L</code> 과
-        <code>R </code>입력 채널이 각자의 비 서라운드 출력 채널 (<code>L</code>
-        과 <code>R</code>) 에 대해 사용됩니다. 서라운드 출력 채널 (<code
-          >SL</code
-        >
-        과 <code>SR</code>), 그리고 센터 (<code>C</code>) 와 서브우퍼
-        (<code>LFE</code>) 채널은 작동하지 않습니다.<br /><code
+        <em>Up-mix from stereo to 5.1.</em><br />The <code>L</code> and
+        <code>R </code>input channels are used for their non-surround respective
+        output channels (<code>L</code> and <code>R</code>). Surround output
+        channels (<code>SL</code> and <code>SR</code>), as well as the center
+        (<code>C</code>) and subwoofer (<code>LFE</code>) channels, are left
+        silent.<br /><code
           >output.L = input.L<br />output.R = input.R<br />output.C = 0<br />output.LFE
           = 0<br />output.SL = 0<br />output.SR = 0</code
         >
@@ -210,10 +226,11 @@ Web Audio API는 **오직** 평면 버퍼만을 드러내는데, 왜냐하면 �
       <td><code>4</code> <em>(Quad)</em></td>
       <td><code>1</code> <em>(Mono)</em></td>
       <td>
-        <em>quad에서 모노로 다운믹스</em><br />모든 네 개의 입력 채널
+        <em>Down-mix from quad to mono</em>.<br />All four input channels
         (<code>L</code>, <code>R</code>, <code>SL</code>, and <code>SR</code>)
-        이 고유한 출력 채널 (<code>M</code>)을 생산하기 위해 동등하게
-        결합됩니다.<br /><code>output.M = 0.25 * (input.L + input.R + </code
+        are equally combined to produce the unique output channel
+        (<code>M</code>).<br /><code
+          >output.M = 0.25 * (input.L + input.R + </code
         ><code>input.SL + input.SR</code><code>)</code>
       </td>
     </tr>
@@ -221,13 +238,11 @@ Web Audio API는 **오직** 평면 버퍼만을 드러내는데, 왜냐하면 �
       <td><code>4</code> <em>(Quad)</em></td>
       <td><code>2</code> <em>(Stereo)</em></td>
       <td>
-        <em>quad에서 스테레오로 다운믹스</em><br />왼쪽 입력 채널 (<code
-          >L</code
-        >
-        과 <code>SL</code>) 둘 다 고유한 왼쪽 출력 채널 (<code>L</code>)을
-        생산하기 위해 동등하게 결합됩니다. 그리고 유사하게, 오른쪽 입력 채널
-        (<code>R</code> 과 <code>SR</code>) 둘 다 고유한 오른쪽 출력 채널을
-        생산하기 위해 동등하게 결합됩니다.<br /><code
+        <em>Down-mix from quad to stereo</em>.<br />Both left input channels
+        (<code>L</code> and <code>SL</code>) are equally combined to produce the
+        unique left output channel (<code>L</code>). And similarly, both right
+        input channels (<code>R</code> and <code>SR</code>) are equally combined
+        to produce the unique right output channel (<code>R</code>).<br /><code
           >output.L = 0.5 * (input.L + input.SL</code
         ><code>)</code><br /><code>output.R = 0.5 * (input.R + input.SR</code
         ><code>)</code>
@@ -237,11 +252,11 @@ Web Audio API는 **오직** 평면 버퍼만을 드러내는데, 왜냐하면 �
       <td><code>4</code> <em>(Quad)</em></td>
       <td><code>6</code> <em>(5.1)</em></td>
       <td>
-        <em>quad에서 5.1로 업믹스</em><br /><code>L</code>, <code>R</code>,
-        <code>SL</code>, 그리고 <code>SR</code> 입력 채널이 각각의 출력 채널
-        (<code>L</code> 과 <code>R</code>)에 대해 사용됩니다. 센터
-        (<code>C</code>)와 서브우퍼 (<code>LFE</code>) 채널은 작동하지 않은 채로
-        남아있습니다.<br /><code
+        <em>Up-mix from quad to 5.1.</em><br />The <code>L</code>,
+        <code>R</code>, <code>SL</code>, and <code>SR</code> input channels are
+        used for their respective output channels (<code>L</code> and
+        <code>R</code>). Center (<code>C</code>) and subwoofer
+        (<code>LFE</code>) channels are left silent.<br /><code
           >output.L = input.L<br />output.R = input.R<br />output.C = 0<br />output.LFE
           = 0<br />output.SL = input.SL<br />output.SR = input.SR</code
         >
@@ -251,12 +266,12 @@ Web Audio API는 **오직** 평면 버퍼만을 드러내는데, 왜냐하면 �
       <td><code>6</code> <em>(5.1)</em></td>
       <td><code>1</code> <em>(Mono)</em></td>
       <td>
-        <em>5.1에서 모노로 다운믹스</em><br />왼쪽 (<code>L</code> 과
-        <code>SL</code>), 오른쪽 (<code>R</code> 과 <code>SR</code>) 그리고 중앙
-        채널이 모두 함께 믹스됩니다. 서라운드 채널은 약간 약화되고 regular
-        lateral 채널은 하나의 채널로 카운트되도록 <code>√2/2</code>를 곱함으로써
-        파워가 보정(power-compensated)됩니다. 서브우퍼 (<code>LFE</code>) 채널은
-        손실됩니다.<br /><code
+        <em>Down-mix from 5.1 to mono.</em><br />The left (<code>L</code> and
+        <code>SL</code>), right (<code>R</code> and <code>SR</code>) and central
+        channels are all mixed together. The surround channels are slightly
+        attenuated, and the regular lateral channels are power-compensated to
+        make them count as a single channel by multiplying by <code>√2/2</code>.
+        The subwoofer (<code>LFE</code>) channel is lost.<br /><code
           >output.M = 0.7071 * (input.L + input.R) + input.C + 0.5 * (input.SL +
           input.SR)</code
         >
@@ -266,12 +281,14 @@ Web Audio API는 **오직** 평면 버퍼만을 드러내는데, 왜냐하면 �
       <td><code>6</code> <em>(5.1)</em></td>
       <td><code>2</code> <em>(Stereo)</em></td>
       <td>
-        <em>5.1에서 스테레오로 다운믹스</em><br />중앙 채널 (<code>C</code>)이
-        각각의 측면 서라운드 채널(<code>SL</code> 또는 <code>SR</code>)과
-        합계되고 각각의 측면 채널로 믹스됩니다. 두 개의 채널로
-        다운믹스되었으므로, 더 낮은 파워로 믹스되었습니다: 각각의 경우에
-        <code>√2/2</code>가 곱해집니다. 서브우퍼 (<code>LFE</code>) 채널은
-        손실됩니다.<br /><code
+        <em>Down-mix from 5.1 to stereo.</em><br />The central channel
+        (<code>C</code>) is summed with each lateral surround channel (<code
+          >SL</code
+        >
+        or <code>SR</code>) and mixed to each lateral channel. As it is mixed
+        down to two channels, it is mixed at a lower power: in each case, it is
+        multiplied by <code>√2/2</code>. The subwoofer (<code>LFE</code>)
+        channel is lost.<br /><code
           >output.L = input.L + 0.7071 * (input.C + input.SL)<br />output.R =
           input.R </code
         ><code>+ 0.7071 * (input.C + input.SR)</code>
@@ -281,11 +298,12 @@ Web Audio API는 **오직** 평면 버퍼만을 드러내는데, 왜냐하면 �
       <td><code>6</code> <em>(5.1)</em></td>
       <td><code>4</code> <em>(Quad)</em></td>
       <td>
-        <em>5.1에서 quad로 다운믹스</em><br />중앙 (<code>C</code>) 채널이
-        측면의 비 서라운드 채널 (<code>L</code> 과 <code>R</code>)과 믹스됩니다.
-        두 채널로 다운믹스되었으므로, 더 낮은 파워로 믹스되었습니다: 각각의
-        경우에 <code>√2/2</code>가 곱해집니다. 서라운드 채널은 변경되지 않은
-        채로 전달됩니다. 서브우퍼 (<code>LFE</code>) 채널은 손실됩니다.<br /><code
+        <em>Down-mix from 5.1 to quad.</em><br />The central (<code>C</code>) is
+        mixed with the lateral non-surround channels (<code>L</code> and
+        <code>R</code>). As it is mixed down to two channels, it is mixed at a
+        lower power: in each case, it is multiplied by <code>√2/2</code>. The
+        surround channels are passed unchanged. The subwoofer (<code>LFE</code>)
+        channel is lost.<br /><code
           >output.L = input.L + 0.7071 * input.C<br />output.R = input.R +
           0.7071 * input.C<br />output.SL = input.SL<br />output.SR =
           input.SR</code
@@ -293,76 +311,74 @@ Web Audio API는 **오직** 평면 버퍼만을 드러내는데, 왜냐하면 �
       </td>
     </tr>
     <tr>
-      <td colspan="2">기타 비표준 레이아웃</td>
+      <td colspan="2">Other, non-standard layouts</td>
       <td>
-        비표준 채널 레이아웃은 <code>channelInterpretation</code>이
-        <code>discrete</code>로 설정된 것처럼 다뤄집니다.<br />사양(specification)은
-        분명히 새로운 스피커 레이아웃의 미래의 정의를 허용합니다. 특정한 수의
-        채널에 대한 브라우저의 행동이 미래에 달라질지도 모르므로 이 대비책은
-        그러므로 미래에도 사용할 수 있는 (future proof) 것이 아닙니다.
+        Non-standard channel layouts behave as if
+        <code>channelInterpretation</code> is set to
+        <code>discrete</code>.<br />The specification explicitly allows the future definition of new speaker layouts. Therefore, this fallback is not future-proof as the behavior of the browsers for a specific number of channels may change in the future.
       </td>
     </tr>
     <tr>
       <th rowspan="2" scope="row"><code>discrete</code></th>
       <td>any (<code>x</code>)</td>
-      <td><code>x&#x3C;y</code>인 any (<code>y</code>)</td>
+      <td>any (<code>y</code>) where <code>x&#x3C;y</code></td>
       <td>
-        <em>discrete 채널의 업믹스</em><br />대응하는 입력 채널을 가지고 있는
-        각각의 출력 채널을 채웁니다, 즉 같은 인덱스를 가진 입력 채널입니다.
-        해당하는 입력 채널이 없는 채널은 작동하지 않은 채로 남아있습니다.
+        <em>Up-mix discrete channels.</em><br />Fill each output channel with
+        its input counterpart &mdash; that is, the input channel with the same index.
+        Channels with no corresponding input channels are left silent.
       </td>
     </tr>
     <tr>
       <td>any (<code>x</code>)</td>
-      <td><code>x>y</code>인 any (<code>y</code>)</td>
+      <td>any (<code>y</code>) where <code>x>y</code></td>
       <td>
-        <em>discrete 채널의 다운믹스</em><br />대응하는 입력 채널을 가지고 있는
-        각각의 출력 채널을 채웁니다, 즉 같은 인덱스를 가진 입력 채널입니다.
-        해당하는 출력 채널을 가지고 있지 않은 입력 채널은 탈락됩니다.
+        <em>Down-mix discrete channels.</em><br />Fill each output channel with
+        its input counterpart &mdash; that is, the input channel with the same index.
+        Input channels with no corresponding output channels are dropped.
       </td>
     </tr>
   </tbody>
 </table>
 
-## 시각화
+## Visualizations
 
-일반적으로, 오디오 시각화는 보통 진폭 이득(gain) 또는 주파수 데이터인, 시간에 대한 오디오 데이터의 출력에 접근함으로써, 그리고서 그것을 그래프와 같이 시각적 결과로 바꾸기 위해 그래픽 기술을 사용함으로써 성취됩니다. Web Audio API는 통과하는 오디오 신호를 변경하지 않는 {{domxref("AnalyserNode")}}를 가지고 있습니다. 대신 이것은 {{htmlelement("canvas")}}와 같은 시각화 기술로 전달될 수 있는 오디오 데이터를 출력합니다.
+In general, we get the output over time to produce audio visualizations, usually reading its gain or frequency data. Then, using a graphical tool, we turn the obtained data into a visual representation, such as a graph. The Web Audio API has an {{domxref("AnalyserNode")}} available that doesn't alter the audio signal passing through it. Additionally, it outputs the audio data, allowing us to process it via a technology such as {{htmlelement("canvas")}}.
 
-![오디오 스트림을 수정하는 일 없이, FFT를 사용하여, 노드가 주파수와 그것에 관련된 시간 영역(time-domain) 데이터를 얻을 수 있게 허용합니다.](fttaudiodata_en.svg)
+![Without modifying the audio stream, the node allows to get the frequency and time-domain data associated with it, using an FFT.](fttaudiodata_en.svg)
 
-여러분은 다음의 메서드들을 사용해 데이터를 얻을 수 있습니다:
+You can grab data using the following methods:
 
 - {{domxref("AnalyserNode.getFloatFrequencyData()")}}
-  - : 현재 주파수 데이터를 이것 안으로 전달된 {{jsxref("Float32Array")}} 배열 안으로 복사합니다.
+  - : Copies the current frequency data into a {{jsxref("Float32Array")}} array passed into it.
 - {{domxref("AnalyserNode.getByteFrequencyData()")}}
-  - : 현재 주파수 데이터를 이것 안으로 전달된 {{jsxref("Uint8Array")}} (unsigned byte array) 안으로 복사합니다.
+  - : Copies the current frequency data into a {{jsxref("Uint8Array")}} (unsigned byte array) passed into it.
 - {{domxref("AnalyserNode.getFloatTimeDomainData()")}}
-  - : 현재 파형, 또는 시간 영역(time-domain), 데이터를 이것 안으로 전달된 {{jsxref("Float32Array")}} 안으로 복사합니다.
+  - : Copies the current waveform, or time-domain, data into a {{jsxref("Float32Array")}} array passed into it.
 - {{domxref("AnalyserNode.getByteTimeDomainData()")}}
-  - : 현재 파형, 또는 시간 영역, 데이터를 이것 안으로 전달된 {{jsxref("Uint8Array")}} (unsigned byte array) 안으로 복사합니다.
+  - : Copies the current waveform, or time-domain, data into a {{jsxref("Uint8Array")}} (unsigned byte array) passed into it.
 
-> **참고:** 더 많은 정보를 보시려면, [Web Audio API로 시각화](/ko/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API) 문서를 참조하세요.
+> **Note:** For more information, see our [Visualizations with Web Audio API](/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API) article.
 
-## 공간화
+## Spatializations
 
-(Web Audio API의 {{domxref("PannerNode")}} 와 {{domxref("AudioListener")}} 노드에 의해 다뤄지는) 오디오 공간화는 공간의 어떤 점에서의 오디오 신호의 위치와 행동을 나타내고(model), 청자(listener)가 그 오디오를 들을 수 있게 허용합니다.
+Audio spatialization allows us to model the position and behavior of an audio signal at a certain point in physical space, simulating the listener hearing that audio. In the Web Audio API, spatialization is handled by the {{domxref("PannerNode")}} and the {{domxref("AudioListener")}}.
 
-panner의 위치는 right-hand 데카르트 좌표 (Cartesian coordinate)로 기술됩니다; 이것의 움직임은 도플러 효과를 생성하는데 필수적인 속도 벡터를 사용하고, 이것의 방향성(directionality)은 방향성 원뿔을 사용합니다. 이 원뿔은 아주 클 수 있는데, 예를 들자면 전방향의 소스(omnidirectional source)에 대한 것일 수 있습니다.
+The panner uses right-hand Cartesian coordinates to describe the audio source's _position_ as a vector and its _orientation_ as a 3D directional cone. The cone can be pretty large, for example, for omnidirectional sources.
 
-![PannerNode는 공간 위치와 속도와 주어진 신호에 대한 방향성을 제공합니다.](pannernode_en.svg)
+![The PannerNode defines a spatial position and orientation for a given signal.](pannernode_en.svg)
 
-청자의 위치는 right-hand 데카르트 좌표를 사용해 기술됩니다; 이것의 움직임은 속도 벡터를 사용하고 청자의 머리가 향하고 있는 방향은 위와 앞의 두 개의 방향 벡터를 사용합니다. 이것들은 각각 청자의 머리의 위의 방향과, 청자의 코가 가리키고 있는 방향을 정의하며, 서로 직각에 있습니다.
+Similarly, the Web Audio API describes the listener using right-hand Cartesian coordinates: their _position_ as one vector and their _orientation_ as two direction vectors, _up_ and _front_. These vectors define the direction of the top of the listener's head and the direction the listener's nose is pointing. The vectors are perpendicular to one another.
 
-![AudioListener의 위와 앞의 벡터 위치를 보고 있는데, 위와 앞 벡터는 서로 90°에 있습니다.](webaudiolistenerreduced.png)
+![We see the position, up, and front vectors of an AudioListener, with the up and front vectors at 90° from the other.](webaudiolistenerreduced.png)
 
-> **참고:** 더 많은 정보를 보시려면, [Web audio 공간화 기본](/ko/docs/Web/API/Web_Audio_API/Web_audio_spatialization_basics) 문서를 참조하세요.
+> **Note:** For more information, see our [Web audio spatialization basics](/en-US/docs/Web/API/Web_Audio_API/Web_audio_spatialization_basics) article.
 
-## 팬 인(fan-in)과 팬 아웃(fan-out)
+## Fan-in and Fan-out
 
-오디오 용어에서, **팬 인**은 {{domxref("ChannelMergerNode")}}가 일련의 모노 입력 소스를 취하고 단일의 다수 채널 신호를 출력하는 과정을 설명합니다:
+In audio terms, **fan-in** describes the process by which a {{domxref("ChannelMergerNode")}} takes a series of _mono_ input sources and outputs a single multi-channel signal:
 
-![](fanin.svg)
+![Fan-in process diagram. Multiple point-less arrows representing mono-input sources combine to output a single pointed arrow representing a single multi-channel signal](fanin.svg)
 
-**팬 아웃**은 반대 과정을 설명하는데, {{domxref("ChannelSplitterNode")}}가 다수 채널 입력 소스를 취하고 다수의 모노 출력 신호를 출력합니다.
+**Fan-out** describes the opposite process, whereby a {{domxref("ChannelSplitterNode")}} takes a multi-channel input source and outputs multiple _mono_ output signals:
 
-![](fanout.svg)
+![Fan-out process diagram. A single point-less arrow representing a multi-channel input source splits to output multiple pointed arrows representing multiple mono output signals](fanout.svg)

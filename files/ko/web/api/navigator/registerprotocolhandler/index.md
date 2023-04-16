@@ -1,62 +1,97 @@
 ---
-title: Navigator.registerProtocolHandler()
+title: "Navigator: registerProtocolHandler() method"
+short-title: registerProtocolHandler()
 slug: Web/API/Navigator/registerProtocolHandler
+page-type: web-api-instance-method
+browser-compat: api.Navigator.registerProtocolHandler
 ---
 
 {{APIRef("HTML DOM")}}{{securecontext_header}}
 
-**`Navigator.registerProtocolHandler()`** 메서드는 웹 사이트가 특정 {{glossary("URL")}} 스킴("프로토콜")을 열거나 처리할 수 있도록 등록합니다. 이를테면, 이메일 사이트가 `mailto:` URL에, VoIP 사이트가 `tel:` URL에 자신을 등록할 때 사용할 수 있습니다.
+The **{{domxref("Navigator")}}** method **`registerProtocolHandler()`** lets websites register their ability to open or handle particular URL schemes (aka protocols).
 
-## 구문
+For example, this API lets webmail sites open `mailto:` URLs, or VoIP sites open `tel:` URLs.
 
-```js
-navigator.registerProtocolHandler(protocol, url, title);
+## Syntax
+
+```js-nolint
+registerProtocolHandler(scheme, url)
+registerProtocolHandler(scheme, url, title)
 ```
 
-### 매개변수
+> **Note:** The version with the deprecated `title` argument is recommended for compatibility reasons (see parameter information below).
 
-- `protocol`
-  - : 웹 사이트가 처리하고자 하는 프로토콜 문자열. 예컨대 SMS 문자 메시지를 처리하고자 한다면 `"sms"`를 전달하세요.
+### Parameters
+
+- `scheme`
+
+  - : A string containing the [permitted scheme](#permitted_schemes) for the protocol that the site wishes to handle.
+    For example, you can register to handle SMS text message links by passing the `"sms"` scheme.
+
 - `url`
-  - : 처리기의 URL. **플레이스홀더로 사용할 `%s`를 반드시 포함**해야 합니다. 실제 사용 시, `%s`에는 처리 대상 URL을 [이스케이프 처리](/ko/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent)해 대입합니다.> **참고:** 처리기의 URL은 반드시 `http` 또는 `https` 스킴을 필요로 합니다. 일부 브라우저는 보안상 `https`를 요구하므로 `https`를 사용하는 편이 좋습니다.
-- `title`
-  - : 사람이 읽을 수 있는 형태의 처리기 이름. 브라우저 설정 등 처리기 목록에서 **사용자에게 보이는 이름**입니다.
 
-### 예외
+  - : A string containing the URL of the handler.
+    **This URL must include `%s`**, as a placeholder that will be replaced with the [escaped](/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) URL to be handled.
 
-- `SecurityError`
-  - : {{glossary("user agent", "사용자 에이전트")}}가 등록을 막았습니다. 다음 상황에서 발생할 수 있습니다.\* 등록하려는 스킴(프로토콜)이 유효하지 않습니다. 브라우저가 직접 처리하는 스킴을 등록하려 하면 발생합니다. (`https:`, `about:`, ...)
-    - 처리기 URL의 {{glossary("출처")}}가 API를 호출한 페이지 출처와 일치하지 않습니다.
-    - 브라우저가 보안 맥락에서의 `registerProtocolHandler()` 호출을 요구합니다.
-    - 브라우저가 처리기 URL의 HTTPS 사용을 요구합니다.
-- `SyntaxError`
-  - : 처리기 URL에 `%s` 플레이스홀더가 없습니다.
+    > **Note:** The handler URL must use the `https` scheme. Older browsers also supported `http`.
 
-## 가능한 스킴
+- `title` {{deprecated_inline}}
 
-보안상의 이유로, `registerProtocolHandler()`가 등록할 수 있는 스킴은 제한적입니다.
+  - : A human-readable title string for the handler.
+    **This will be displayed to the user**, such as prompting "Allow this site to handle \[scheme] links?" or listing registered handlers in the browser's settings.
 
-**사용자 지정 스킴**은 다음 조건을 만족해야 합니다.
+    > **Note:** The title has been removed from the spec due to spoofing concerns.
+    > The `title` should still be set because some browsers **still require it** (see the [compatibility table below](#browser_compatibility)).
+    > Browsers that support the updated spec most likely will be accept but ignore the title.
 
-- 스킴이 `web+`로 시작합니다.
-- `web+` 접두사 뒤에 다른 글자가 최소 하나 존재해야 합니다.
-- 소문자 ASCII 문자로만 구성해야 합니다.
+### Return value
 
-아래 [예제](#예제)에서 사용한 `web+burger`는 제약조건을 만족하는 사용자 지정 스킴입니다.
+None ({{jsxref("undefined")}}).
 
-그 외에는 다음 스킴을 등록할 수 있습니다.
+### Exceptions
+
+- `SecurityError` {{domxref("DOMException")}}
+
+  - : The user agent blocked the registration.
+    This might happen if:
+
+    - The registered scheme (protocol) is invalid, such as a scheme the browser handles itself (`https:`, `about:`, etc.)
+    - The handler URL's {{Glossary("origin")}} does not match the origin of the page calling this API.
+    - The browser requires that this function is called from a secure context.
+    - The browser requires that the handler's URL be over HTTPS.
+
+- `SyntaxError` {{domxref("DOMException")}}
+  - : The `%s` placeholder is missing from the handler URL.
+
+## Permitted schemes
+
+For security reasons, `registerProtocolHandler()` restricts which schemes can be registered.
+
+A **custom scheme** may be registered as long as:
+
+- The custom scheme's name begins with `web+`
+- The custom scheme's name includes at least 1 letter after the `web+` prefix
+- The custom scheme has only lowercase ASCII letters in its name.
+
+For example, `web+burger`, as shown in the [Example](#examples) below.
+
+Otherwise, the scheme must be one of the following:
 
 - `bitcoin`
+- `ftp`
+- `ftps`
 - `geo`
 - `im`
 - `irc`
 - `ircs`
 - `magnet`
 - `mailto`
+- `matrix`
 - `mms`
 - `news`
 - `nntp`
 - `openpgp4fpr`
+- `sftp`
 - `sip`
 - `sms`
 - `smsto`
@@ -67,24 +102,37 @@ navigator.registerProtocolHandler(protocol, url, title);
 - `wtai`
 - `xmpp`
 
-## 예제
+<!-- This must match: https://html.spec.whatwg.org/multipage/system-state.html#safelisted-scheme -->
 
-사이트 주소가 `burgers.example.com`인 경우, 아래 코드로 `web+burger:` 스킴에 대한 처리기를 등록할 수 있습니다.
+## Examples
+
+If your site is `burgers.example.com`, you can register a protocol handler for it to handle `web+burger:` links, like so:
 
 ```js
-navigator.registerProtocolHandler("web+burger",
-                                  "https://burgers.example.com/?burger=%s",
-                                  "Burger handler");
+navigator.registerProtocolHandler(
+  "web+burger",
+  "https://burgers.example.com/?burger=%s",
+  "Burger handler"
+); // last title arg included for compatibility
 ```
 
-이제, `web+burger:` 링크는 사용자를 `burgers.example.com`로 보내고, 자신의 URL을 `%s` 위치에 삽입합니다.
+This creates a handler that lets `web+burger:` links send the user to your site, inserting the accessed burger URL into the `%s` placeholder.
 
-이때, 예제 코드는 처리기 URL과 같은 {{glossary("출처")}}를 가져야 하므로 `https://burgers.example.com`의 페이지 안에서 호출해야 하며, 처리기 URL은 `http`/`https`를 사용해야 합니다.
+This script must be run from the same origin as the handler URL (so any page at `https://burgers.example.com`), and the handler URL must be `http` or `https`.
 
-## 명세
+The user will be notified that your code asked to register the protocol handler, so that they can decide whether or not to allow it. See the screenshot below for an example on `google.co.uk`:
+
+![A browser notification reads "Add Burger handler (www.google.co.uk) as an application for burger links?", and offers an "Add Application" button and a close to ignore the handler request.](protocolregister.png)
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- [Web-based protocol handlers](/en-US/docs/Web/API/Navigator/registerProtocolHandler/Web-based_protocol_handlers)
+- [RegisterProtocolHandler Enhancing the Federated Web](https://blog.mozilla.org/webdev/2010/07/26/registerprotocolhandler-enhancing-the-federated-web/) (Mozilla Webdev)

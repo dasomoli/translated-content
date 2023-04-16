@@ -1,75 +1,130 @@
 ---
 title: Object.prototype.isPrototypeOf()
 slug: Web/JavaScript/Reference/Global_Objects/Object/isPrototypeOf
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Object.isPrototypeOf
 ---
+
 {{JSRef}}
 
-**`isPrototypeOf()`** 메소드는 해당 객체가 다른 객체의 프로토타입 체인에 속한 객체인지 확인하기 위해 사용됩니다.
+The **`isPrototypeOf()`** method checks if an object exists in another object's prototype chain.
 
-> **참고:** `isPrototypeOf` 는 {{jsxref("Operators/instanceof", "instanceof")}} 연산자와 다릅니다. "`object instanceof AFunction`" 표현식에서는 `object` 의 프로토타입 체인을 AFunction 자체가 아니라 `AFunction.prototype` 에 대해 확인을 합니다.
+> **Note:** `isPrototypeOf()` differs from the [`instanceof`](/en-US/docs/Web/JavaScript/Reference/Operators/instanceof) operator. In the expression `object instanceof AFunction`, `object`'s prototype chain is checked against `AFunction.prototype`, not against `AFunction` itself.
 
-## 구문
+{{EmbedInteractiveExample("pages/js/object-prototype-isprototypeof.html")}}
 
-```js
-prototypeObj.isPrototypeOf(obj)
+## Syntax
+
+```js-nolint
+isPrototypeOf(object)
 ```
 
-### 매개변수
+### Parameters
 
 - `object`
-  - : 프로토타입 체인을 가지고 있는 객체가 검색될 것 입니다.
+  - : The object whose prototype chain will be searched.
 
-## 설명
+### Return value
 
-`isPrototypeOf` 메소드는 또 다른 객체의 프로토타입 체인에 해당 객체가 존재하는지 여부를 확인할수 있습니다.
+A boolean indicating whether the calling object (`this`) lies in the prototype chain of `object`. Directly returns `false` when `object` is not an object (i.e. a primitive).
 
-예를들어, 다음의 프로토타입체인을 고려해봅시다.
+### Errors thrown
+
+- {{jsxref("TypeError")}}
+  - : Thrown if `this` is `null` or `undefined` (because it can't be [converted to an object](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#object_coercion)).
+
+## Description
+
+All objects that inherit from `Object.prototype` (that is, all except [`null`-prototype objects](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#null-prototype_objects)) inherit the `isPrototypeOf()` method. This method allows you to check whether or not the object exists within another object's prototype chain. If the `object` passed as the parameter is not an object (i.e. a primitive), the method directly returns `false`. Otherwise, the `this` value is [converted to an object](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object#object_coercion), and the prototype chain of `object` is searched for the `this` value, until the end of the chain is reached or the `this` value is found.
+
+## Examples
+
+### Using isPrototypeOf()
+
+This example demonstrates that `Baz.prototype`, `Bar.prototype`, `Foo.prototype` and `Object.prototype` exist in the prototype chain for object `baz`:
 
 ```js
-function Fee() {
-  // ...
-}
+class Foo {}
+class Bar extends Foo {}
+class Baz extends Bar {}
 
-function Fi() {
-  // ...
-}
-Fi.prototype = new Fee();
+const foo = new Foo();
+const bar = new Bar();
+const baz = new Baz();
 
-function Fo() {
-  // ...
-}
-Fo.prototype = new Fi();
-
-function Fum() {
-  // ...
-}
-Fum.prototype = new Fo();
+// prototype chains:
+// foo: Foo --> Object
+// bar: Bar --> Foo --> Object
+// baz: Baz --> Bar --> Foo --> Object
+console.log(Baz.prototype.isPrototypeOf(baz)); // true
+console.log(Baz.prototype.isPrototypeOf(bar)); // false
+console.log(Baz.prototype.isPrototypeOf(foo)); // false
+console.log(Bar.prototype.isPrototypeOf(baz)); // true
+console.log(Bar.prototype.isPrototypeOf(foo)); // false
+console.log(Foo.prototype.isPrototypeOf(baz)); // true
+console.log(Foo.prototype.isPrototypeOf(bar)); // true
+console.log(Object.prototype.isPrototypeOf(baz)); // true
 ```
 
-실행되고 나면 **Fum** 인스턴스의 프로토타입체인이 **Fi**의 프로토타입과 연결되어있는지를 확인할 필요가 있습니다. 다음과 같은 방법으로 확인할 수 있습니다:
+The `isPrototypeOf()` method — along with the {{jsxref("Operators/instanceof", "instanceof")}} operator — comes in particularly handy if you have code that can only function when dealing with objects descended from a specific prototype chain; e.g., to guarantee that certain methods or properties will be present on that object.
+
+For example, to execute some code that's only safe to run if a `baz` object has `Foo.prototype` in its prototype chain, you can do this:
 
 ```js
-var fum = new Fum();
-// ...
-
-if (Fi.prototype.isPrototypeOf(fum)) {
+if (Foo.prototype.isPrototypeOf(baz)) {
   // do something safe
 }
 ```
 
-이 메소드는 {{jsxref("Operators/instanceof", "instanceof")}} 연산자와 함께 특정 프로토타입으로부터 상속된 객체만 작동하게 하려는(예를 들어 특정 메소드나 속성이 객체에 있다는걸 보장하려는 때) 코드에서 특히 쓸모가 많다.
+However, `Foo.prototype` existing in `baz`'s prototype chain doesn't imply `baz` was created using `Foo` as its constructor. For example, `baz` could be directly assigned with `Foo.prototype` as its prototype. In this case, if your code reads [private fields](/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields) of `Foo` from `baz`, it would still fail:
 
-## 명세
+```js
+class Foo {
+  #value = "foo";
+  static getValue(x) {
+    return x.#value;
+  }
+}
+
+const baz = { __proto__: Foo.prototype };
+
+if (Foo.prototype.isPrototypeOf(baz)) {
+  console.log(Foo.getValue(baz)); // TypeError: Cannot read private member #value from an object whose class did not declare it
+}
+```
+
+The same applies to [`instanceof`](/en-US/docs/Web/JavaScript/Reference/Operators/instanceof). If you need to read private fields in a secure way, offer a branded check method using [`in`](/en-US/docs/Web/JavaScript/Reference/Operators/in) instead.
+
+```js
+class Foo {
+  #value = "foo";
+  static getValue(x) {
+    return x.#value;
+  }
+  static isFoo(x) {
+    return #value in x;
+  }
+}
+
+const baz = { __proto__: Foo.prototype };
+
+if (Foo.isFoo(baz)) {
+  // Doesn't run, because baz is not a Foo
+  console.log(Foo.getValue(baz));
+}
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Operators/instanceof", "instanceof")}}
 - {{jsxref("Object.getPrototypeOf()")}}
 - {{jsxref("Object.setPrototypeOf()")}}
-- [`Object.prototype.__proto__`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/proto)
+- [Inheritance and the prototype chain](/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain)

@@ -1,61 +1,62 @@
 ---
 title: Math.imul()
 slug: Web/JavaScript/Reference/Global_Objects/Math/imul
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Math.imul
 ---
 
 {{JSRef}}
 
-**`Math.imul()`** 함수는 C 언어와 같은 양식으로 2개 파라메터의 32-bit 곱셈 결과를 리턴합니다.
+The **`Math.imul()`** static method returns the result of the C-like 32-bit multiplication of the two parameters.
 
-## 문법
+{{EmbedInteractiveExample("pages/js/math-imul.html")}}
 
-```js
-    Math.imul(a, b)
+## Syntax
+
+```js-nolint
+Math.imul(a, b)
 ```
 
-### 파라메터
+### Parameters
 
 - `a`
-  - : 첫 번째 숫자.
+  - : First number.
 - `b`
-  - : 두 번째 숫자.
+  - : Second number.
 
-## 설명
+### Return value
 
-`Math.imul()` 를 쓰면 C 언어와 같은 양식의 빠른 32-bit 정수 곱셈이 가능합니다. 이 기능은 [Emscripten](http://en.wikipedia.org/wiki/Emscripten) 같은 프로젝트에 유용합니다. `imul()` 이 `Math` 객체의 정적 메소드이기 때문에, `Math 객체를 직접 만들어서 사용하지 않고 (Math 는 생성자가 아닙니다), Math.imul()` 같은 형태로 사용합니다.
+The result of the C-like 32-bit multiplication of the given arguments.
 
-## 예제
+## Description
 
-### `Math.imul() 사용법`
+`Math.imul()` allows for 32-bit integer multiplication with C-like semantics. This feature is useful for projects like [Emscripten](https://en.wikipedia.org/wiki/Emscripten).
+
+Because `imul()` is a static method of `Math`, you always use it as `Math.imul()`, rather than as a method of a `Math` object you created (`Math` is not a constructor).
+
+If you use normal JavaScript floating point numbers in `imul()`, you will experience a degrade in performance. This is because of the costly conversion from a floating point to an integer for multiplication, and then converting the multiplied integer back into a floating point. However, with [asm.js](/en-US/docs/Games/Tools/asm.js), which allows JIT-optimizers to more confidently use integers in JavaScript, multiplying two numbers stored internally as integers (which is only possible with asm.js) with `imul()` could be potentially more performant.
+
+## Examples
+
+### Using Math.imul()
 
 ```js
-Math.imul(2, 4);          // 8
-Math.imul(-1, 8);         // -8
-Math.imul(-2, -2);        // 4
+Math.imul(2, 4); // 8
+Math.imul(-1, 8); // -8
+Math.imul(-2, -2); // 4
 Math.imul(0xffffffff, 5); // -5
 Math.imul(0xfffffffe, 5); // -10
 ```
 
-## Polyfill
-
-다음과 같은 함수로 Math.imul() 을 흉내낼 수 있습니다.
-
-```js
-Math.imul = Math.imul || function(a, b) {
-  var ah = (a >>> 16) & 0xffff;
-  var al = a & 0xffff;
-  var bh = (b >>> 16) & 0xffff;
-  var bl = b & 0xffff;
-  // the shift by 0 fixes the sign on the high part
-  // the final |0 converts the unsigned value into a signed value
-  return ((al * bl) + (((ah * bl + al * bh) << 16) >>> 0)|0);
-};
-```
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- [Polyfill of `Math.imul` in `core-js`](https://github.com/zloirock/core-js#ecmascript-math)
+- [Emscripten](https://en.wikipedia.org/wiki/Emscripten)

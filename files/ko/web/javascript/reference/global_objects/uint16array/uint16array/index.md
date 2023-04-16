@@ -1,14 +1,15 @@
 ---
 title: Uint16Array() constructor
 slug: Web/JavaScript/Reference/Global_Objects/Uint16Array/Uint16Array
+page-type: javascript-constructor
+browser-compat: javascript.builtins.Uint16Array.Uint16Array
 ---
 
 {{JSRef}}
 
-**`Uint16Array`** 형식화 배열(TypedArray)의 생성자는 플랫폼의 바이트 순서를 따르는 16비트 부호 없는 정수
-배열을 생성합니다.
+The **`Uint16Array()`** constructor creates {{jsxref("Uint16Array")}} objects. The contents are initialized to `0`.
 
-## 문법
+## Syntax
 
 ```js-nolint
 new Uint16Array()
@@ -21,42 +22,42 @@ new Uint16Array(buffer, byteOffset)
 new Uint16Array(buffer, byteOffset, length)
 ```
 
-> **참고:** `Uint16Array()`는 오직 [`new`](/ko/docs/Web/JavaScript/Reference/Operators/new)로만 생성할 수 있습니다. `new` 없이 호출을 시도하면 {{jsxref("TypeError")}} 예외가 발생합니다.
+> **Note:** `Uint16Array()` can only be constructed with [`new`](/en-US/docs/Web/JavaScript/Reference/Operators/new). Attempting to call it without `new` throws a {{jsxref("TypeError")}}.
 
-### 매개변수
+### Parameters
 
-[`TypedArray`](/ko/docs/Web/JavaScript/Reference/Global_Objects/TypedArray#parameters)를 참고하세요.
+See [`TypedArray`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray#parameters).
 
-### 예외
+### Exceptions
 
-[`TypedArray`](/ko/docs/Web/JavaScript/Reference/Global_Objects/TypedArray#exceptions)를 참고하세요.
+See [`TypedArray`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray#exceptions).
 
-## 예제
+## Examples
 
-### Uint16Array를 생성하기 위한 각기 다른 여러 방법
+### Different ways to create a Uint16Array
 
 ```js
-// 길이로부터 생성
+// From a length
 const uint16 = new Uint16Array(2);
 uint16[0] = 42;
 console.log(uint16[0]); // 42
 console.log(uint16.length); // 2
 console.log(uint16.BYTES_PER_ELEMENT); // 2
 
-// 배열로부터
+// From an array
 const x = new Uint16Array([21, 31]);
 console.log(x[1]); // 31
 
-// 다른 TypedArray로부터
+// From another TypedArray
 const y = new Uint16Array(x);
 console.log(y[0]); // 21
 
-// ArrayBuffer로부터
+// From an ArrayBuffer
 const buffer = new ArrayBuffer(16);
 const z = new Uint16Array(buffer, 2, 4);
 console.log(z.byteOffset); // 2
 
-// 순회로부터
+// From an iterable
 const iterable = (function* () {
   yield* [1, 2, 3];
 })();
@@ -65,17 +66,17 @@ console.log(uint16FromIterable);
 // Uint16Array [1, 2, 3]
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [`core-js`에서 `Uint16Array` 폴리필](https://github.com/zloirock/core-js#ecmascript-typed-arrays)
-- [JavaScript 형식화 배열](/ko/docs/Web/JavaScript/Typed_arrays)
+- [Polyfill of `Uint16Array` in `core-js`](https://github.com/zloirock/core-js#ecmascript-typed-arrays)
+- [JavaScript typed arrays](/en-US/docs/Web/JavaScript/Typed_arrays)
 - {{jsxref("ArrayBuffer")}}
 - {{jsxref("DataView")}}

@@ -1,33 +1,37 @@
 ---
-title: console.dirxml()
+title: "console: dirxml() method"
+short-title: dirxml()
 slug: Web/API/console/dirxml
+page-type: web-api-instance-method
+browser-compat: api.console.dirxml
 ---
 
 {{APIRef("Console API")}}
 
-**`console.dirxml()`** 메서드는 주어진 XML/HTML 요소의 자손 요소를 인터랙티브한 트리로 표시합니다.
-요소를 표시하는 것이 불가능한 경우에는 JavaScript 객체 보기가 대신 보여집니다.
-출력된 결과는 자식 노드의 내용을 볼 수 있는 여닫을 수 있는 노드의 계층적인 목록으로 나타납니다.
+The **`console.dirxml()`** method displays an interactive tree of the descendant elements of the specified XML/HTML
+element. If it is not possible to display as an element the JavaScript Object view is
+shown instead. The output is presented as a hierarchical listing of expandable nodes
+that let you see the contents of child nodes.
 
-## 구문
+## Syntax
 
 ```js-nolint
 dirxml(object)
 ```
 
-### 매개변수
+### Parameters
 
 - `object`
-  - : 출력할 속성을 포함한 JavaScript 객체
+  - : A JavaScript object whose properties should be output.
 
-### 반환 값
+### Return value
 
-없음 ({{jsxref("undefined")}}).
+None ({{jsxref("undefined")}}).
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

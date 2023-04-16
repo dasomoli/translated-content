@@ -1,61 +1,56 @@
 ---
-title: FormData.getAll()
+title: "FormData: getAll() method"
+short-title: getAll()
 slug: Web/API/FormData/getAll
+page-type: web-api-instance-method
+browser-compat: api.FormData.getAll
 ---
 
 {{APIRef("XMLHttpRequest")}}
 
-{{domxref("FormData")}} 인터페이스의 **`getAll()`** 메서드는 `FormData` 객체에서 지정된 키와 연관된 모든 값을 반환합니다.
+The **`getAll()`** method of the {{domxref("FormData")}} interface returns all the values associated with a given key from within a `FormData` object.
 
-> **참고:** 이 메서드는 [Web Worker](/ko/docs/Web/API/Web_Workers_API)에서 사용할 수 있습니다.
+> **Note:** This method is available in [Web Workers](/en-US/docs/Web/API/Web_Workers_API).
 
 ## Syntax
 
-```js
-formData.getAll(name);
+```js-nolint
+getAll(name)
 ```
 
 ### Parameters
 
 - `name`
-  - : 검색하고 싶은 키의 이름을 나타내는 {{domxref("USVString")}} 입니다.
+  - : A string representing the name of the key you want to retrieve.
 
-### Returns
+### Return value
 
-{{domxref("FormDataEntryValue")}}의 배열입니다.
+An array of values whose key matches the specified `name`. Otherwise, an empty list.
 
-## Example
+## Examples
 
-다음 코드를 따라 빈 `FormData` 객체를 만듭니다:
-
-```js
-var formData = new FormData();
-```
-
-{{domxref("FormData.append")}}를 사용하여 `username` 에 두 개의 값을 추가합니다:
+If we add two `username` values to a {{domxref("FormData")}} using {{domxref("FormData.append", "append()")}}:
 
 ```js
-formData.append('username', 'Chris');
-formData.append('username', 'Bob');
+formData.append("username", "Chris");
+formData.append("username", "Bob");
 ```
 
-`getAll()` 함수는 `username` 의 값들을 배열로 반환합니다:
+The following `getAll()` method will return both `username` values in an array:
 
 ```js
-formData.getAll('username'); // Returns ["Chris", "Bob"]
+formData.getAll("username"); // Returns ["Chris", "Bob"]
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- {{domxref("XMLHTTPRequest")}}
-- [Using XMLHttpRequest](/ko/docs/DOM/XMLHttpRequest/Using_XMLHttpRequest)
-- [Using FormData objects](/ko/docs/DOM/XMLHttpRequest/FormData/Using_FormData_Objects)
+- [Using FormData objects](/en-US/docs/Web/API/FormData/Using_FormData_Objects)
 - {{HTMLElement("Form")}}

@@ -1,114 +1,190 @@
 ---
 title: Object.prototype.hasOwnProperty()
 slug: Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Object.hasOwnProperty
 ---
+
 {{JSRef}}
 
-**`hasOwnProperty()`** 메소드는 객체가 특정 프로퍼티를 가지고 있는지를 나타내는 불리언 값을 반환한다.
+The **`hasOwnProperty()`** method returns a boolean indicating whether the
+object has the specified property as its own property (as opposed to inheriting
+it).
+
+> **Note:** {{jsxref("Object.hasOwn()")}} is recommended over
+> `hasOwnProperty()`, in browsers where it is supported.
 
 {{EmbedInteractiveExample("pages/js/object-prototype-hasownproperty.html")}}
 
-## 구문
+## Syntax
 
-```js
-obj.hasOwnProperty(prop)
+```js-nolint
+hasOwnProperty(prop)
 ```
 
-### 매개변수
+### Parameters
 
 - `prop`
-  - : 테스트하려는 프로퍼티의 명칭
+  - : The {{jsxref("String")}} name or [Symbol](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol) of the property to test.
 
-## 설명
+### Return value
 
-모든 객체는 `hasOwnProperty` 를 상속하는 {{jsxref("Object")}}의 자식이다. 이 메소드는 객체가 특정 프로퍼티를 자기만의 직접적인 프로퍼티로서 소유하고 있는지를 판단하는데 사용된다. {{jsxref("Operators/in", "in")}} 연산과는 다르게, 이 메소드는 객체의 프로토타입 체인을 확인하지는 않는다.
+Returns `true` if the object has the specified property as own property; `false`
+otherwise.
 
-## 예제
+## Description
 
-### 프로퍼티의 존재 여부를 테스트하기 위한 `hasOwnProperty`의 사용
+The **`hasOwnProperty()`** method returns `true` if the specified property is a
+direct property of the object — even if the value is `null` or `undefined`. The
+method returns `false` if the property is inherited, or has not been declared at
+all. Unlike the {{jsxref("Operators/in", "in")}} operator, this
+method does not check for the specified property in the object's prototype
+chain.
 
-다음은 o 객체가 prop라는 명칭을 지닌 프로퍼티를 포함하는지를 판단하는 예제이다.
+The method can be called on _most_ JavaScript objects, because most objects
+descend from {{jsxref("Object")}}, and hence inherit its methods. For
+example {{jsxref("Array")}} is an {{jsxref("Object")}}, so you can
+use `hasOwnProperty()` method to check whether an index exists:
 
 ```js
-o = new Object();
-o.prop = 'exists';
-
-function changeO() {
-  o.newprop = o.prop;
-  delete o.prop;
-}
-
-o.hasOwnProperty('prop');   // returns true
-changeO();
-o.hasOwnProperty('prop');   // returns false
+const fruits = ["Apple", "Banana", "Watermelon", "Orange"];
+fruits.hasOwnProperty(3); // true ('Orange')
+fruits.hasOwnProperty(4); // false - not defined
 ```
 
-### 직접 프로퍼티와 상속된 프로퍼티의 비교
+The method will not be available in objects where it is reimplemented, or on
+objects created using `Object.create(null)` (as these don't inherit from
+`Object.prototype`). Examples for these cases are given below.
 
-다음은 직접 프로퍼티와 프로토타입 체인에서 상속된 프로퍼티 간의 차이점을 비교하는 예제이다.
+## Examples
+
+### Using hasOwnProperty to test for an own property's existence
+
+The following code shows how to determine whether the `example` object contains a property named `prop`.
 
 ```js
-o = new Object();
-o.prop = 'exists';
-o.hasOwnProperty('prop');             // returns true
-o.hasOwnProperty('toString');         // returns false
-o.hasOwnProperty('hasOwnProperty');   // returns false
+const example = {};
+example.hasOwnProperty("prop"); // false
+
+example.prop = "exists";
+example.hasOwnProperty("prop"); // true - 'prop' has been defined
+
+example.prop = null;
+example.hasOwnProperty("prop"); // true - own property exists with value of null
+
+example.prop = undefined;
+example.hasOwnProperty("prop"); // true - own property exists with value of undefined
 ```
 
-### 객체의 프로퍼티들을 순환하기
+### Direct vs. inherited properties
 
-The following example shows how to iterate over the properties of an object without executing on inherit properties. Note that the {{jsxref("Statements/for...in", "for...in")}} loop is already only iterating enumerable items, so one should not assume based on the lack of non-enumerable properties shown in the loop that `hasOwnProperty` itself is confined strictly to enumerable items (as with {{jsxref("Object.getOwnPropertyNames()")}}).
+The following example differentiates between direct properties and properties inherited through the prototype chain:
 
 ```js
-var buz = {
-  fog: 'stack'
+const example = {};
+example.prop = "exists";
+
+// `hasOwnProperty` will only return true for direct properties:
+example.hasOwnProperty("prop"); // true
+example.hasOwnProperty("toString"); // false
+example.hasOwnProperty("hasOwnProperty"); // false
+
+// The `in` operator will return true for direct or inherited properties:
+"prop" in example; // true
+"toString" in example; // true
+"hasOwnProperty" in example; // true
+```
+
+### Iterating over the properties of an object
+
+The following example shows how to iterate over the enumerable properties of an
+object without executing on inherited properties.
+
+```js
+const buz = {
+  fog: "stack",
 };
 
-for (var name in buz) {
+for (const name in buz) {
   if (buz.hasOwnProperty(name)) {
-    console.log('this is fog (' + name + ') for sure. Value: ' + buz[name]);
-  }
-  else {
+    console.log(`this is fog (${name}) for sure. Value: ${buz[name]}`);
+  } else {
     console.log(name); // toString or something else
   }
 }
 ```
 
-### 프로퍼티의 명칭으로서 `hasOwnProperty` 를 사용하기
+Note that the {{jsxref("Statements/for...in", "for...in")}} loop
+only iterates enumerable items: the absence of non-enumerable properties emitted
+from the loop does not imply that `hasOwnProperty` itself is confined strictly
+to enumerable items (as with
+{{jsxref("Object.getOwnPropertyNames()")}}).
 
-자바스크립트는 프로퍼티 명칭으로서 `hasOwnProperty`를 보호하지 않습니다. 그러므로, 이 명칭을 사용하는 프로퍼티를 가지는 객체가 존재하려면, 올바른 결과들을 얻기 위해서는 외부 `hasOwnProperty` 를 사용해야합니다.
+### Using hasOwnProperty as a property name
+
+JavaScript does not protect the property name `hasOwnProperty`; an object that
+has a property with this name may return incorrect results:
 
 ```js
-var foo = {
-  hasOwnProperty: function() {
+const foo = {
+  hasOwnProperty() {
     return false;
   },
-  bar: 'Here be dragons'
+  bar: "Here be dragons",
 };
 
-foo.hasOwnProperty('bar'); // always returns false
-
-// Use another Object's hasOwnProperty and call it with 'this' set to foo
-({}).hasOwnProperty.call(foo, 'bar'); // true
-
-// It's also possible to use the hasOwnProperty property from the Object prototype for this purpose
-Object.prototype.hasOwnProperty.call(foo, 'bar'); // true
+foo.hasOwnProperty("bar"); // re-implementation always returns false
 ```
 
-Note that in the last case there are no newly created objects.
+The recommended way to overcome this problem is to instead use
+{{jsxref("Object.hasOwn()")}} (in browsers that support it). Other
+alternatives include using an _external_ `hasOwnProperty`:
 
-## 명세
+```js
+const foo = { bar: "Here be dragons" };
+
+// Use Object.hasOwn() method - recommended
+Object.hasOwn(foo, "bar"); // true
+
+// Use the hasOwnProperty property from the Object prototype
+Object.prototype.hasOwnProperty.call(foo, "bar"); // true
+
+// Use another Object's hasOwnProperty
+// and call it with 'this' set to foo
+({}.hasOwnProperty.call(foo, "bar")); // true
+```
+
+Note that in the first two cases there are no newly created objects.
+
+### Objects created with Object.create(null)
+
+Objects created using
+{{jsxref("Object.create()","Object.create(null)")}} do not
+inherit from `Object.prototype`, making `hasOwnProperty()` inaccessible.
+
+```js
+const foo = Object.create(null);
+foo.prop = "exists";
+foo.hasOwnProperty("prop"); // Uncaught TypeError: foo.hasOwnProperty is not a function
+```
+
+The solutions in this case are the same as for the previous section: use
+{{jsxref("Object.hasOwn()")}} by preference, otherwise use an
+external object's `hasOwnProperty()`.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Enumerability and ownership of properties](/ko/docs/Enumerability_and_ownership_of_properties)
+- {{jsxref("Object.hasOwn()")}}
+- [Enumerability and ownership of properties](/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties)
 - {{jsxref("Object.getOwnPropertyNames()")}}
 - {{jsxref("Statements/for...in", "for...in")}}
 - {{jsxref("Operators/in", "in")}}
-- [JavaScript Guide: Inheritance revisited](/ko/docs/Web/JavaScript/Guide/Inheritance_Revisited)
+- [JavaScript Guide: Inheritance revisited](/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain)

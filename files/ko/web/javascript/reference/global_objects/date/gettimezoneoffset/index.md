@@ -1,46 +1,91 @@
 ---
 title: Date.prototype.getTimezoneOffset()
 slug: Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.getTimezoneOffset
 ---
 
 {{JSRef}}
 
-**getTimezoneOffset()** 메소드는 현재 로케일 (즉, 호스트 시스템 설정)에 대한 시간대 오프셋 (UTC)을 분 단위로 반환합니다.
+The **`getTimezoneOffset()`** method returns the difference, in minutes, between a date as evaluated in the UTC time zone, and the same date as evaluated in the local time zone.
+
+{{EmbedInteractiveExample("pages/js/date-gettimezoneoffset.html")}}
 
 ## Syntax
 
-```js
-    dateObj.getTimezoneOffset()
+```js-nolint
+getTimezoneOffset()
 ```
 
 ### Return value
 
-현재 호스트 설정을 기반으로하는 날짜에 대한 시간대 오프셋 (UTC) (분)을 나타내는 숫자입니다.
+The difference, in minutes, between the date as evaluated in the UTC time zone and as evaluated in the local time zone. The actual local time algorithm is implementation-defined, and the return value is allowed to be zero in runtimes without appropriate data.
 
 ## Description
 
-시간대 오프셋은 UTC와 현지 시간의 차이 (분)입니다. 이것은 로컬 시간대가 UTC보다 뒤떨어져 있으면 오프셋이 양수이고 앞에있을 경우 음수임을 의미합니다. 예를 들어, 시간대 UTC + 10 : 00 (오스트레일리아 동부 표준시, 블라디보스토크 시간, 차모로 표준시)의 경우 -600이 반환됩니다.
+`date.getTimezoneOffset()` returns the difference, in minutes, between `date` as evaluated in the UTC time zone and as evaluated in the local time zone — that is, the time zone of the host system in which the browser is being used (if the code is run from the Web in a browser), or otherwise the host system of whatever JavaScript runtime (for example, a Node.js environment) the code is executed in.
 
-반환 된 표준 시간대 오프셋은 호출 된 날짜에 적용되는 오프셋입니다. 호스트 시스템이 일광 절약 시간으로 구성된 경우 오프셋은 Date가 나타내는 날짜와 시간에 따라 변경되고 일광 절약 시간이 적용됩니다.
+### Negative values and positive values
+
+The number of minutes returned by `getTimezoneOffset()` is positive if the local time zone is behind UTC, and negative if the local time zone is ahead of UTC. For example, for UTC+10, `-600` will be returned.
+
+| Current time zone | Return value |
+| ----------------- | ------------ |
+| UTC-8             | 480          |
+| UTC               | 0            |
+| UTC+3             | -180         |
+
+### Varied results in Daylight Saving Time (DST) regions
+
+In a region that annually shifts in and out of Daylight Saving Time (DST), as `date` varies, the number of minutes returned by calling `getTimezoneOffset()` can be non-uniform.
+
+> **Note:** `getTimezoneOffset()`'s behavior will never differ based on the time when the code is run — its behavior is always consistent when running in the same region. Only the value of `date` affects the result.
+
+In most implementations, the [IANA time zone database](https://en.wikipedia.org/wiki/Daylight_saving_time#IANA_time_zone_database) (tzdata) is used to precisely determine the offset of the local timezone at the moment of the `date`. However, if such information is unavailable, an implementation may return zero.
 
 ## Examples
 
-### Using `getTimezoneOffset()`
+### Using getTimezoneOffset()
 
 ```js
-// 호스트 장치의 현재 시간대 오프셋 가져 오기
-var x = new Date();
-var currentTimeZoneOffsetInHours = x.getTimezoneOffset() / 60;
-
-// 2016 년 국제 노동절 (5 월 1 일)에 대한 시간대 오프셋 가져 오기
-var labourDay = new Date(2016,4,1)
-var labourDayOffset = labourDay.getTimezoneOffset() / 60;
+// Create a Date instance for the current time
+const currentLocalDate = new Date();
+// Create a Date instance for 03:24 GMT-0200 on May 1st in 2016
+const laborDay2016at0324GMTminus2 = new Date("2016-05-01T03:24:00-02:00");
+currentLocalDate.getTimezoneOffset() ===
+  laborDay2016at0324GMTminus2.getTimezoneOffset();
+// true, always, in any timezone that doesn't annually shift in and out of DST
+// false, sometimes, in any timezone that annually shifts in and out of DST
 ```
 
-## 명세
+### getTimezoneOffset() and DST
+
+In regions that use DST, the return value may change based on the time of the year `date` is in. Below is the output in a runtime in New York, where the timezone is UTC-05:00.
+
+```js
+const nyOffsetSummer = new Date("2022-02-01").getTimezoneOffset(); // 300
+const nyOffsetWinter = new Date("2022-08-01").getTimezoneOffset(); // 240
+```
+
+### getTimezoneOffset() and historical data
+
+Due to historical reasons, the timezone a region is in can be constantly changing, even disregarding DST. For example, below is the output in a runtime in Shanghai, where the timezone is UTC+08:00.
+
+```js
+const shModernOffset = new Date("2022-01-27").getTimezoneOffset(); // -480
+const shHistoricalOffset = new Date("1943-01-27").getTimezoneOffset(); // -540
+```
+
+This is because during the [Sino-Japanese War](https://en.wikipedia.org/wiki/Second_Sino-Japanese_War) when Shanghai was under Japanese control, the timezone was changed to UTC+09:00 to align with Japan's (in effect, it was a "year-round DST"), and this was recorded in the IANA database.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- {{jsxref("Date")}}

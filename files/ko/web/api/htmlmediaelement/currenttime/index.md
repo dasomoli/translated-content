@@ -1,59 +1,64 @@
 ---
-title: HTMLMediaElement.currentTime
+title: "HTMLMediaElement: currentTime property"
+short-title: currentTime
 slug: Web/API/HTMLMediaElement/currentTime
-l10n:
-  sourceCommit: 80d4cfb4515b339111e175dbeb8d2b91fd3ee1a0
+page-type: web-api-instance-property
+browser-compat: api.HTMLMediaElement.currentTime
 ---
 
 {{APIRef("HTML DOM")}}
 
-{{domxref("HTMLMediaElement")}} 인터페이스의 **`currentTime`** 속성은
-현재 재생 시간을 초 단위로 지정합니다.
+The {{domxref("HTMLMediaElement")}} interface's
+**`currentTime`** property specifies the current playback time
+in seconds.
 
-`currentTime`의 값을 변경하면 미디어를 새로운 시간으로 찾습니다.
+Changing the value of `currentTime` seeks the media to
+the new time.
 
-## 값
+## Value
 
-현재 재생 시간을 초 단위로 나타내는 배정밀도 부동 소수점 값입니다.
+A double-precision floating-point value indicating the current playback time in
+seconds.
 
-미디어가 아직 재생되지 않은 경우 `currentTime` 값은 {{domxref("HTMLMediaElement.play", "play()")}}
-메서드가 호출된 후 재생이 시작되는 미디어 내의 시간 위치를 나타냅니다.
+If the media is not yet playing, the value of `currentTime` indicates the
+time position within the media at which playback will begin once the
+{{domxref("HTMLMediaElement.play", "play()")}} method is called.
 
-`currentTime`을 새 값으로 설정하면 미디어를 사용할 수 있는 경우
-지정된 시간으로 미디어를 찾습니다.
+Setting `currentTime` to a new value seeks the media to the given time, if
+the media is available.
 
-라이브로 스트리밍되는 미디어와 같이 지속 시간(duration)이 없는 미디어의 경우
-브라우저가 미디어 버퍼에서 만료된 미디어의 일부를 가져오지 못할 수 있습니다.
-또한 타임라인이 0초에서 시작하지 않는 미디어는 해당 타임라인의 가장 빠른 시간
-이전으로 검색할 수 없습니다.
+For media without a known duration—such as media being streamed live—it's possible that
+the browser may not be able to obtain parts of the media that have expired from the
+media buffer. Also, media whose timeline doesn't begin at 0 seconds cannot be seeked to
+a time before its timeline's earliest time.
 
-미디어의 길이(초)는 {{domxref("HTMLMediaElement.duration", "duration")}} 속성을
-사용하여 결정할 수 있습니다.
+The length of the media in seconds can be determined using the
+{{domxref("HTMLMediaElement.duration", "duration")}} property.
 
-## 예제
+## Examples
 
 ```js
 const video = document.createElement("video");
 console.log(video.currentTime);
 ```
 
-## 사용 일람
+## Usage notes
 
-### 시간 정밀도 감소
+### Reduced time precision
 
-타이밍 공격 및 [핑거프린팅](/ko/docs/Glossary/Fingerprinting)으로부터 보호하기 위해 브라우저는 `currentTime`에서
-반환된 값을 반올림하거나 조정할 수 있습니다.
+To offer protection against timing attacks and [fingerprinting](/en-US/docs/Glossary/Fingerprinting), browsers may round or
+otherwise adjust the value returned by `currentTime`.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- currentTime을 정의하는 인터페이스는 {{domxref("HTMLMediaElement")}}입니다
-- 시간을 설정하는 또 다른 방법은 {{domxref("HTMLMediaElement.fastSeek()")}}를 참고하세요
-- 미디어 재생 시간(초)는 {{domxref("HTMLMediaElement.duration")}}를 참고하세요
+- {{domxref("HTMLMediaElement")}}: Interface used to define the `HTMLMediaElement.currentTime` property
+- {{domxref("HTMLMediaElement.fastSeek()")}}: Another way to set the time
+- {{domxref("HTMLMediaElement.duration")}}: The duration of the media in seconds

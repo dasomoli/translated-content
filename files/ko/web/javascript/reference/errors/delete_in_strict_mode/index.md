@@ -3,42 +3,47 @@ title: >-
   SyntaxError: applying the 'delete' operator to an unqualified name is
   deprecated
 slug: Web/JavaScript/Reference/Errors/Delete_in_strict_mode
+page-type: javascript-error
 ---
 
 {{jsSidebar("Errors")}}
 
-## 메세지
+The JavaScript [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode)-only exception "applying the 'delete' operator to an unqualified name is deprecated" occurs when variables are attempted to be deleted using the [`delete`](/en-US/docs/Web/JavaScript/Reference/Operators/delete) operator.
+
+## Message
 
 ```
-  SyntaxError: Calling delete on expression not allowed in strict mode (Edge)
-  SyntaxError: applying the 'delete' operator to an unqualified name is deprecated (Firefox)
-  SyntaxError: Delete of an unqualified identifier in strict mode. (Chrome)
+SyntaxError: Delete of an unqualified identifier in strict mode. (V8-based)
+SyntaxError: applying the 'delete' operator to an unqualified name is deprecated (Firefox)
+SyntaxError: Cannot delete unqualified property 'a' in strict mode. (Safari)
 ```
 
-## 에러 타입
+## Error type
 
-엄격(Strict) 모드에서의 {{jsxref("SyntaxError")}}
+{{jsxref("SyntaxError")}} in [strict mode](/en-US/docs/Web/JavaScript/Reference/Strict_mode) only.
 
-## 무엇이 잘못되었을까?
+## What went wrong?
 
-자바스크립트에서 일반 변수는 [`delete`](/en-US/docs/Web/JavaScript/Reference/Operators/delete) 연산자를 사용하여 삭제할 수 없습니다. 엄격 모드에서 변수를 삭제하는 접근은 허용되지 않으므로 에러가 발생합니다.
+Normal variables in JavaScript can't be deleted using the [`delete`](/en-US/docs/Web/JavaScript/Reference/Operators/delete) operator. In strict mode, an attempt to delete a variable will throw an error and is not allowed.
 
-`delete` 연산자는 오직 객체의 속성만을 삭제할 수 있습니다. 객체 속성은 설정할 수 있는 경우 "수식"될 수 있습니다.
+The `delete` operator can only delete properties on an object. Object properties are "qualified" if they are configurable.
 
-일반적인 생각과 다르게 `delete` 연산자는 메모리 해제와 직접적인 연관이 없습니다. 메모리 관리는 참조가 깨짐에 따라 간접적으로 수행됩니다. 자세한 내용은 [메모리 관리](/ko/docs/Web/JavaScript/Memory_Management) 페이지와 [`delete`](/en-US/docs/Web/JavaScript/Reference/Operators/delete) 연산자 페이지를 참조하십시오.
+Unlike what common belief suggests, the `delete` operator has **nothing** to do with directly freeing memory. Memory management is done indirectly via breaking references, see the [memory management](/en-US/docs/Web/JavaScript/Memory_management) page and the [`delete`](/en-US/docs/Web/JavaScript/Reference/Operators/delete) operator page for more details.
 
-이 에러는 오직 [엄격 모드 코드](/ko/docs/Web/JavaScript/Reference/Strict_mode)에서만 발생합니다. 엄격하지 않은 모드에서 해당 연산자는 단순히 `false` 를 반환합니다.
+This error only happens in [strict mode code](/en-US/docs/Web/JavaScript/Reference/Strict_mode). In non-strict code, the operation just returns `false`.
 
-## 예제
+## Examples
 
-자바스크립트에서 일반 변수를 삭제하려고 하면 동작하지 않습니다. 그리고 엄격 모드에서는 에러가 발생합니다:
+### Freeing the contents of a variable
+
+Attempting to delete a plain variable, doesn't work in JavaScript and it throws an error in strict mode:
 
 ```js example-bad
-'use strict';
+"use strict";
 
 var x;
 
-// ...
+// …
 
 delete x;
 
@@ -46,22 +51,22 @@ delete x;
 // is deprecated
 ```
 
-변수의 내용을 비우려면 {{jsxref("null")}}을 설정하면 됩니다:
+To free the contents of a variable, you can set it to [`null`](/en-US/docs/Web/JavaScript/Reference/Operators/null):
 
 ```js example-good
-'use strict';
+"use strict";
 
 var x;
 
-// ...
+// …
 
 x = null;
 
-// x는 가비지 컬렉터에 의해 메모리에서 해제됩니다
+// x can be garbage collected
 ```
 
-## 같이 보기
+## See also
 
 - [`delete`](/en-US/docs/Web/JavaScript/Reference/Operators/delete)
-- [메모리 관리](/en-US/docs/Web/JavaScript/Memory_Management)
+- [Memory management](/en-US/docs/Web/JavaScript/Memory_management)
 - [TypeError: property "x" is non-configurable and can't be deleted](/en-US/docs/Web/JavaScript/Reference/Errors/Cant_delete)

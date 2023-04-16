@@ -1,156 +1,154 @@
 ---
 title: Array.prototype.every()
 slug: Web/JavaScript/Reference/Global_Objects/Array/every
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Array.every
 ---
+
 {{JSRef}}
 
-**`every()`** 메서드는 배열 안의 모든 요소가 주어진 판별 함수를 통과하는지 테스트합니다. Boolean 값을 반환합니다.
+The **`every()`** method tests whether
+all elements in the array pass the test implemented by the provided function. It
+returns a Boolean value.
 
-{{EmbedInteractiveExample("pages/js/array-every.html", 'shorter')}}
+{{EmbedInteractiveExample("pages/js/array-every.html","shorter")}}
 
-## 구문
+## Syntax
 
-```js
-// 화살표 함수
-every((element) => { ... } )
-every((element, index) => { ... } )
-every((element, index, array) => { ... } )
-
-// 콜백 함수
+```js-nolint
 every(callbackFn)
 every(callbackFn, thisArg)
-
-// 인라인 콜백 함수
-every(function callbackFn(element) { ... })
-every(function callbackFn(element, index) { ... })
-every(function callbackFn(element, index, array){ ... })
-every(function callbackFn(element, index, array) { ... }, thisArg)
 ```
 
-### 매개변수
+### Parameters
 
 - `callbackFn`
-  - : 각 요소를 시험할 함수. 다음 세 가지 인수를 받습니다.
+  - : A function to execute for each element in the array. It should return a [truthy](/en-US/docs/Glossary/Truthy) value to indicate the element passes the test, and a [falsy](/en-US/docs/Glossary/Falsy) value otherwise. The function is called with the following arguments:
     - `element`
-      - : 배열에서 처리되는 현재 요소
+      - : The current element being processed in the array.
     - `index`
-      - : 처리할 현재 요소의 인덱스
+      - : The index of the current element being processed in the array.
     - `array`
-      - : `every`를 호출한 배열
-- `thisArg` {{Optional_inline}}
-  - : `callbackFn`을 실행할 때 `this`로 사용하는 값.
+      - : The array `every()` was called upon.
+- `thisArg` {{optional_inline}}
+  - : A value to use as `this` when executing `callbackFn`. See [iterative methods](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#iterative_methods).
 
-### 반환 값
+### Return value
 
-`callbackFn`이 모든 배열 요소에 대해 참({{Glossary("truthy")}})인 값을 반환하는 경우
-**`true`**, 그 외엔 **`false`** 를 반환합니다.
+`true` if `callbackFn` returns a {{Glossary("truthy")}} value for every array element. Otherwise, `false`.
 
-## 설명
+## Description
 
-`every`는 `callbackFn`이 {{glossary("falsy", "거짓")}}을 반환하는 요소를 찾을때까지 배열에 있는 각 요소에 대해 한 번씩 `callbackFn` 함수를 실행합니다. 해당하는 요소를 발견한 경우 `every`는 즉시 `false`를 반환합니다. 그렇지 않으면, 즉 모든 값에서 참을 반환하면 `true`를 반환합니다.
+The `every()` method is an [iterative method](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#iterative_methods). It calls a provided `callbackFn` function once for each element in an array, until the `callbackFn` returns a [falsy](/en-US/docs/Glossary/Falsy) value. If such an element is found, `every()` immediately returns `false` and stops iterating through the array. Otherwise, if `callbackFn` returns a [truthy](/en-US/docs/Glossary/Truthy) value for all elements, `every()` returns `true`.
 
-할당한 값이 있는 인덱스에서만 `callbackFn`을 호출합니다. [희소 배열](/ko/docs/Web/JavaScript/Guide/Indexed_collections#sparse_arrays)의 빈 슬롯에서는 호출되지 않습니다.
+`every` acts like the "for all" quantifier in mathematics. In particular, for an empty array, it returns `true`. (It is [vacuously true](https://en.wikipedia.org/wiki/Vacuous_truth) that all elements of the [empty set](https://en.wikipedia.org/wiki/Empty_set#Properties) satisfy any given condition.)
 
-`callbackFn`은 요소의 값, 해당 요소의 인덱스 및 순회하고 있는 배열 세 가지 인수와 함께 호출됩니다.
+`callbackFn` is invoked only for array indexes which have assigned values. It is not invoked for empty slots in [sparse arrays](/en-US/docs/Web/JavaScript/Guide/Indexed_collections#sparse_arrays).
 
-`thisArg` 매개변수를 `every`에 제공한 경우 `callbackFn`의 `this`로 사용됩니다. 그 외엔 {{jsxref("undefined")}}값을 사용합니다. 최종적으로 `callbackFn`이 볼 수 있는 `this`의 값은 [함수가 볼 수 있는 `this`를 결정하는 평소 규칙](/ko/docs/Web/JavaScript/Reference/Operators/this)을 따릅니다.
+`every()` does not mutate the array on which it is called, but the function provided as `callbackFn` can. Note, however, that the length of the array is saved _before_ the first invocation of `callbackFn`. Therefore:
 
-`every`는 호출한 배열을 변형하지 않습니다.
+- `callbackFn` will not visit any elements added beyond the array's initial length when the call to `every()` began.
+- Changes to already-visited indexes do not cause `callbackFn` to be invoked on them again.
+- If an existing, yet-unvisited element of the array is changed by `callbackFn`, its value passed to the `callbackFn` will be the value at the time that element gets visited. [Deleted](/en-US/docs/Web/JavaScript/Reference/Operators/delete) elements are not visited.
 
-`every`가 처리하는 요소의 범위는 `callbackFn`의 첫 호출 전에 설정됩니다. `every` 호출 이후로 배열에 추가하는 요소는 `callbackFn`이 방문하지 않습니다. 배열에 존재하는 요소가 변경된 경우, `callbackFn`에 `every`가 방문하는 시점의 값을 전달합니다. 삭제한 요소는 방문하지 않습니다.
+> **Warning:** Concurrent modifications of the kind described above frequently lead to hard-to-understand code and are generally to be avoided (except in special cases).
 
-`every`는 (이산)수학에서 전칭(∀) 정량자(quantifier, 한정자)처럼 행동합니다.
-특히, 빈 배열에 대해서는 `true`를 반환합니다. (이는 [공집합](http://en.wikipedia.org/wiki/Empty_set#Common_problems)의 모든 요소가 어떠한 주어진 조건도 만족하는 [공허한 참](http://en.wikipedia.org/wiki/Vacuous_truth#Vacuous_truths_in_mathematics)입니다.)
+The `every()` method is [generic](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#generic_array_methods). It only expects the `this` value to have a `length` property and integer-keyed properties.
 
-## 예제
+## Examples
 
-### 모든 배열 요소의 크기 테스트
+### Testing size of all array elements
 
-다음 예는 배열의 모든 요소가 10보다 더 큰지 테스트합니다.
+The following example tests whether all elements in the array are bigger than 10.
 
 ```js
 function isBigEnough(element, index, array) {
   return element >= 10;
 }
-[12, 5, 8, 130, 44].every(isBigEnough);   // false
+[12, 5, 8, 130, 44].every(isBigEnough); // false
 [12, 54, 18, 130, 44].every(isBigEnough); // true
 ```
 
-### 하나의 배열이 다른 배열의 부분 집합인지 체크하기
+### Check if one array is a subset of another array
 
-다음은 어떤 배열의 모든 요소가 또 다른 배열에 존재하는지 테스트를 하는 예제입니다.
+The following example tests if all the elements of an array are present in another array.
 
 ```js
-const isSubset = (array1, array2) => array2.every((element) => array1.includes(element));
+const isSubset = (array1, array2) =>
+  array2.every((element) => array1.includes(element));
+
 console.log(isSubset([1, 2, 3, 4, 5, 6, 7], [5, 7, 6])); // true
 console.log(isSubset([1, 2, 3, 4, 5, 6, 7], [5, 8, 7])); // false
 ```
 
-### 희소 배열에 every() 사용하기
+### Using every() on sparse arrays
 
-`every()` 는 빈 슬롯에 콜백 함수를 실행하지 않습니다.
+`every()` will not run its predicate on empty slots.
 
 ```js
 console.log([1, , 3].every((x) => x !== undefined)); // true
 console.log([2, , 2].every((x) => x === 2)); // true
 ```
 
-### 초기 배열에 영향주기(수정, 추가, 삭제)
+### Affecting Initial Array (modifying, appending, and deleting)
 
-아래 예제는 배열이 수정될 때 `every` 메서드의 행위를 테스트합니다.
+The following examples tests the behavior of the `every` method when the
+array is modified.
 
 ```js
 // ---------------
-// 요소 수정
+// Modifying items
 // ---------------
 let arr = [1, 2, 3, 4];
-arr.every( (elem, index, arr) => {
-  arr[index+1] -= 1
-  console.log(`[${arr}][${index}] -> ${elem}`)
-  return elem < 2
-})
+arr.every((elem, index, arr) => {
+  arr[index + 1]--;
+  console.log(`[${arr}][${index}] -> ${elem}`);
+  return elem < 2;
+});
 
-// 3회 순회하지만 앞선 2회의 순회는 수정이 일어나지 않습니다.
+// Loop runs for 3 iterations, but would
+// have run 2 iterations without any modification
 //
 // 1st iteration: [1,1,3,4][0] -> 1
 // 2nd iteration: [1,1,2,4][1] -> 1
 // 3rd iteration: [1,1,2,3][2] -> 2
 
 // ---------------
-// 요소 추가
+// Appending items
 // ---------------
 arr = [1, 2, 3];
-arr.every( (elem, index, arr) => {
-  arr.push('new')
-  console.log(`[${arr}][${index}] -> ${elem}`)
-  return elem < 4
-})
+arr.every((elem, index, arr) => {
+  arr.push("new");
+  console.log(`[${arr}][${index}] -> ${elem}`);
+  return elem < 4;
+});
 
-// 새로운 요소가 추가된 후에도 3회 순회합니다.
+// Loop runs for 3 iterations, even after appending new items
 //
 // 1st iteration: [1, 2, 3, new][0] -> 1
 // 2nd iteration: [1, 2, 3, new, new][1] -> 2
 // 3rd iteration: [1, 2, 3, new, new, new][2] -> 3
 
 // ---------------
-// 요소 삭제
+// Deleting items
 // ---------------
 arr = [1, 2, 3, 4];
-arr.every( (elem, index, arr) => {
-  arr.pop()
-  console.log(`[${arr}][${index}] -> ${elem}`)
-  return elem < 4
-})
+arr.every((elem, index, arr) => {
+  arr.pop();
+  console.log(`[${arr}][${index}] -> ${elem}`);
+  return elem < 4;
+});
 
-// 기존 요소가 `pop()` 됨에 따라 2회만 순회합니다.
+// Loop runs for 2 iterations only, as the remaining
+// items are `pop()`ed off
 //
 // 1st iteration: [1,2,3][0] -> 1
 // 2nd iteration: [1,2][1] -> 2
 ```
 
-### 배열이 아닌 객체에서 every() 호출하기
+### Calling every() on non-array objects
 
-`every()` 메서드는 `this`의 `length` 속성을 읽고 마지막 혹은 `callbackFn`이 `false`를 리턴할때까지 정수 인덱스에 접근합니다.
+The `every()` method reads the `length` property of `this` and then accesses each integer index until the end is reached or `callbackFn` returns `false`.
 
 ```js
 const arrayLike = {
@@ -164,18 +162,17 @@ console.log(
 ); // true
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- `Array.prototype.every`의 폴리필은
-  [`core-js`](https://github.com/zloirock/core-js#ecmascript-array)에서 가능합니다
+- [Polyfill of `Array.prototype.every` in `core-js`](https://github.com/zloirock/core-js#ecmascript-array)
 - {{jsxref("Array.prototype.forEach()")}}
 - {{jsxref("Array.prototype.some()")}}
 - {{jsxref("Array.prototype.find()")}}

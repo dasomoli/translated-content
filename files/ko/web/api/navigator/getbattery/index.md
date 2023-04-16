@@ -1,30 +1,68 @@
 ---
-title: window.navigator.battery
+title: "Navigator: getBattery() method"
+short-title: getBattery()
 slug: Web/API/Navigator/getBattery
-original_slug: Web/API/Navigator/battery
+page-type: web-api-instance-method
+browser-compat: api.Navigator.getBattery
 ---
-{{ Apiref() }}
 
-`battery` 객체는 시스템의 배터리 충전 상태에 대한 정보를 제공합니다. 배터리의 충전 상태가 변화할때 발생하는 이벤트에 대한 처리도 가능 합니다. 이 객체는 [Battery Status API](/ko/docs/Web/API/Battery_Status_API) 의 구현입니다. 보다 자세한 내용, API, 샘플 코드 등은 문서를 참고 해 주세요.
+{{ ApiRef("Battery API") }}
 
-## 문법
+The **`getBattery()`** method provides information about the system's battery.
+It returns a battery promise, which is resolved in a {{domxref("BatteryManager")}} object providing also some new events you can handle to monitor the battery status.
+This implements the [Battery Status API](/en-US/docs/Web/API/Battery_Status_API); see that documentation for additional details, a guide to using the API, and sample code.
 
-```js
-var battery = window.navigator.battery;
+> **Note:** Access to this feature may be controlled by the {{HTTPHeader("Permissions-Policy")}} directive {{HTTPHeader("Permissions-Policy/battery","battery")}}.
+
+## Syntax
+
+```js-nolint
+getBattery()
 ```
 
-## 값
+### Parameters
 
-`navigator.battery` 는 {{domxref("BatteryManager")}} 객체 입니다.
+None.
 
-## 브라우저 호환성
+### Return value
+
+A {{JSxRef("Promise")}} that fulfills with a {{DOMxRef("BatteryManager")}} object which you can use to get information about the battery's state.
+
+### Exceptions
+
+- `NotAllowedError` {{domxref("DOMException")}}
+  - : Use of this feature was blocked by a [Permissions Policy](/en-US/docs/Web/HTTP/Permissions_Policy).
+
+- `SecurityError`
+  - : The User Agent does not expose battery information to insecure contexts and this method was called from an insecure context.
+
+## Examples
+
+This example fetches the current charging state of the battery and establishes a handler for the {{domxref("BatteryManager/chargingchange_event", "chargingchange")}} event, so that the charging state is recorded whenever it changes.
+
+```js
+let batteryIsCharging = false;
+
+navigator.getBattery().then((battery) => {
+  batteryIsCharging = battery.charging;
+
+  battery.addEventListener("chargingchange", () => {
+    batteryIsCharging = battery.charging;
+  });
+});
+```
+
+For more examples and details, see [Battery Status API](/en-US/docs/Web/API/Battery_Status_API).
+
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{domxref("BatteryManager")}}
-- [Battery Status API](/ko/docs/Web/API/Battery_Status_API) 문서
-- [블로그 - Using the Battery API](https://hacks.mozilla.org/2012/02/using-the-battery-api-part-of-webapi/)
-- [David Walsh 가 쓴 the JavaScript Battery Api](https://davidwalsh.name/battery-api)
-- [battery.js - 경량의 크로스 브라우저 랩퍼(wrapper)](https://github.com/pstadler/battery.js)
+- [Battery Status API](/en-US/docs/Web/API/Battery_Status_API)
+- `Permissions-Policy` {{HTTPHeader("Permissions-Policy/battery", "battery")}} feature

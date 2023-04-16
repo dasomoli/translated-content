@@ -1,86 +1,114 @@
 ---
 title: matrix()
 slug: Web/CSS/transform-function/matrix
-original_slug: Web/CSS/transform-function/matrix()
+page-type: css-function
+browser-compat: css.types.transform-function.matrix
 ---
 
 {{CSSRef}}
 
-**`matrix()`** [CSS](/ko/docs/Web/CSS) 함수는 2D 변형 동차 행렬을 선언합니다. 결과는 {{cssxref("&lt;transform-function&gt;")}} 데이터 타입입니다.
+The **`matrix()`** [CSS](/en-US/docs/Web/CSS) [function](/en-US/docs/Web/CSS/CSS_Functions) defines a homogeneous 2D transformation matrix. Its result is
+a {{cssxref("&lt;transform-function&gt;")}} data type.
 
-> **참고:** **주의:** `matrix(a, b, c, d, tx, ty)` 는 `matrix3d(a, b, 0, 0, c, d, 0, 0, 0, 0, 1, 0, tx, ty, 0, 1)` 를 짧게 쓴 것입니다.
+{{EmbedInteractiveExample("pages/css/function-matrix.html")}}
+
+> **Note:** `matrix(a, b, c, d, tx, ty)` is a shorthand for
+> `matrix3d(a, b, 0, 0, c, d, 0, 0, 0, 0, 1, 0, tx, ty, 0, 1)`.
 
 ## Syntax
 
-`matrix()` 함수는 6개의 값을 지정합니다. 상수 값은 묵시적이며, 매개변수(parameter)로 전달하지 않습니다. 다른 매개 변수는 column-major 순서로 설명됩니다.
+The `matrix()` function is specified with six values. The constant values are implied and not passed as
+parameters; the other parameters are described in the column-major order.
 
-> **참고:** **주의:** 파이어폭스 16까지, Gecko(엔진) `tx`, `ty` 에{{cssxref("&lt;length&gt;")}} 값을 허용했습니다.
-
-```
+```css
 matrix(a, b, c, d, tx, ty)
 ```
 
 ### Values
 
-- `a` `b` `c` `d`
-  - : {{cssxref("&lt;number&gt;")}}는 선형 변환(linear transformation)을 설명합니다.
-- `tx` `ty`
-  - : {{cssxref("&lt;number&gt;")}}는 적용 할 이동(translation)을 설명합니다.
+- _a_ _b_ _c_ _d_
+  - : Are {{cssxref("&lt;number&gt;")}}s describing the linear transformation.
+- _tx_ _ty_
+  - : Are {{cssxref("&lt;number&gt;")}}s describing the translation to apply.
 
 <table class="standard-table">
   <thead>
     <tr>
-      <th scope="col">Cartesian coordinates on ℝ<sup>2</sup></th>
-      <th scope="col">Homogeneous coordinates on ℝℙ<sup>2</sup></th>
-      <th scope="col">Cartesian coordinates on ℝ<sup>3</sup></th>
-      <th scope="col">Homogeneous coordinates on ℝℙ<sup>3</sup></th>
+      <th scope="col">Cartesian coordinates on ℝ^2</th>
+      <th scope="col">Homogeneous coordinates on ℝℙ^2</th>
+      <th scope="col">Cartesian coordinates on ℝ^3</th>
+      <th scope="col">Homogeneous coordinates on ℝℙ^3</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td colspan="1" rowspan="2">
+      <td rowspan="2">
         <math
-          ><mfenced
+          ><mrow><mo>(</mo
             ><mtable
-              ><mtr><mtd>a</mtd><mtd>c</mtd></mtr>
-              <mtr><mtd>b</mtd><mtd>d</mtd></mtr></mtable
-            ></mfenced
+              ><mtr
+                ><mtd><mi>a</mi> </mtd><mtd><mi>c</mi> </mtd></mtr
+              ><mtr
+                ><mtd><mi>b</mi> </mtd><mtd><mi>d</mi></mtd></mtr
+              ></mtable
+            ><mo>)</mo></mrow
           ></math
         >
       </td>
       <td>
         <math
-          ><mfenced
+          ><mrow><mo>(</mo
             ><mtable
-              ><mtr><mtd>a</mtd><mtd>c</mtd><mtd>tx</mtd></mtr
-              ><mtr><mtd>b</mtd><mtd>d</mtd><mtd>ty</mtd></mtr
-              ><mtr><mtd>0</mtd><mtd>0</mtd><mtd>1</mtd></mtr></mtable
-            ></mfenced
-          ></math
-        >
-      </td>
-      <td colspan="1" rowspan="2">
-        <math
-          ><mfenced
-            ><mtable
-              ><mtr><mtd>a</mtd><mtd>c</mtd><mtd>tx</mtd></mtr
-              ><mtr><mtd>b</mtd><mtd>d</mtd><mtd>ty</mtd></mtr
-              ><mtr><mtd>0</mtd><mtd>0</mtd><mtd>1</mtd></mtr></mtable
-            ></mfenced
-          ></math
-        >
-      </td>
-      <td colspan="1" rowspan="2">
-        <math
-          ><mfenced
-            ><mtable
-              ><mtr><mtd>a</mtd><mtd>c</mtd><mtd>0</mtd><mtd>tx</mtd></mtr
-              ><mtr><mtd>b</mtd><mtd>d</mtd><mtd>0</mtd><mtd>ty</mtd></mtr
-              ><mtr><mtd>0</mtd><mtd>0</mtd><mtd>1</mtd><mtd>0</mtd></mtr
               ><mtr
-                ><mtd>0</mtd><mtd>0</mtd><mtd>0</mtd><mtd>1</mtd></mtr
+                ><mtd><mi>a</mi> </mtd><mtd><mi>c</mi> </mtd
+                ><mtd><mi>tx</mi> </mtd></mtr
+              ><mtr
+                ><mtd><mi>b</mi> </mtd><mtd><mi>d</mi> </mtd
+                ><mtd><mi>ty</mi> </mtd></mtr
+              ><mtr
+                ><mtd><mn>0</mn> </mtd><mtd><mn>0</mn> </mtd
+                ><mtd><mn>1</mn></mtd></mtr
               ></mtable
-            ></mfenced
+            ><mo>)</mo></mrow
+          ></math
+        >
+      </td>
+      <td rowspan="2">
+        <math
+          ><mrow><mo>(</mo
+            ><mtable
+              ><mtr
+                ><mtd><mi>a</mi> </mtd><mtd><mi>c</mi> </mtd
+                ><mtd><mi>tx</mi> </mtd></mtr
+              ><mtr
+                ><mtd><mi>b</mi> </mtd><mtd><mi>d</mi> </mtd
+                ><mtd><mi>ty</mi> </mtd></mtr
+              ><mtr
+                ><mtd><mn>0</mn> </mtd><mtd><mn>0</mn> </mtd
+                ><mtd><mn>1</mn></mtd></mtr
+              ></mtable
+            ><mo>)</mo></mrow
+          ></math
+        >
+      </td>
+      <td rowspan="2">
+        <math
+          ><mrow><mo>(</mo
+            ><mtable
+              ><mtr
+                ><mtd><mi>a</mi> </mtd><mtd><mi>c</mi> </mtd
+                ><mtd><mn>0</mn> </mtd><mtd><mi>tx</mi> </mtd></mtr
+              ><mtr
+                ><mtd><mi>b</mi> </mtd><mtd><mi>d</mi> </mtd
+                ><mtd><mn>0</mn> </mtd><mtd><mi>ty</mi> </mtd></mtr
+              ><mtr
+                ><mtd><mn>0</mn> </mtd><mtd><mn>0</mn> </mtd
+                ><mtd><mn>1</mn> </mtd><mtd><mn>0</mn> </mtd></mtr
+              ><mtr
+                ><mtd><mn>0</mn> </mtd><mtd><mn>0</mn> </mtd
+                ><mtd><mn>0</mn> </mtd><mtd><mn>1</mn></mtd></mtr
+              ></mtable
+            ><mo>)</mo></mrow
           ></math
         >
       </td>
@@ -90,6 +118,9 @@ matrix(a, b, c, d, tx, ty)
     </tr>
   </tbody>
 </table>
+
+The values represent the following functions:
+`matrix(scaleX(), skewY(), skewX(), scaleY(), translateX(), translateY())`
 
 ## Examples
 
@@ -119,13 +150,21 @@ div {
 
 {{EmbedLiveSample("Examples", 350, 350)}}
 
+## Specifications
+
+{{Specifications}}
+
 ## Browser compatibility
 
-호환성 정보는 [`<transform-function>`](/ko/docs/Web/CSS/transform-function#Browser_compatibility) 데이터 타입을 확인하세요.
+{{Compat}}
 
 ## See also
 
 - {{cssxref("transform")}}
+- Individual transform properties:
+  - {{cssxref("translate")}}
+  - {{cssxref("scale")}}
+  - {{cssxref("rotate")}}
 - {{cssxref("&lt;transform-function&gt;")}}
 - [`matrix3d()`](/en-US/docs/Web/CSS/transform-function/matrix3d)
 - [Understanding the CSS Transforms Matrix](https://dev.opera.com/articles/understanding-the-css-transforms-matrix/)

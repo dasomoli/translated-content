@@ -2,50 +2,49 @@
 title: Functions
 slug: Web/XPath/Functions
 ---
-{{ XsltRef() }} 다음은 설명, 문법, 인수 목록, 결과형, 해당 W3C 권고안 소스, 현 [Gecko](/ko/Gecko) 지원 정도를 포함하는 기본 [XPath](/ko/XPath) 함수와 XPath에 더해진 [XSLT](/ko/XSLT) 고유의 추가분에 주석을 단 목록입니다. XPath/XSLT 함수 사용에 관한 추가 정보는, [For Further Reading](/ko/Transforming_XML_with_XSLT/For_Further_Reading) 페이지를 봐 주세요.
 
-- [boolean()](Functions/boolean)
-- [ceiling()](Functions/ceiling)
-- [concat()](Functions/concat)
-- [contains()](Functions/contains)
-- [count()](Functions/count)
-- [current()](Functions/current)
-  _XSLT 고유_
-- [document()](/ko/Functions/document)
-  _XSLT 고유_
-- [element-available()](Functions/element-available)
-- [false()](Functions/false)
-- [floor()](Functions/floor)
-- [format-number()](Functions/format-number)
-  _XSLT 고유_
-- [function-available()](Functions/function-available)
-- [generate-id()](Functions/generate-id)
-  _XSLT 고유_
-- [id()](Functions/id)
-  _(부분 지원함)_
-- [key()](Functions/key)
-  _XSLT 고유_
-- [lang()](Functions/lang)
-- [last()](Functions/last)
-- [local-name()](Functions/local-name)
-- [name()](Functions/name)
-- [namespace-uri()](Functions/namespace-uri)
-- [normalize-space()](Functions/normalize-space)
-- [not()](Functions/not)
-- [number()](Functions/number)
-- [position()](Functions/position)
-- [round()](Functions/round)
-- [starts-with()](Functions/starts-with)
-- [string()](Functions/string)
-- [string-length()](Functions/string-length)
-- [substring()](Functions/substring)
-- [substring-after()](Functions/substring-after)
-- [substring-before()](Functions/substring-before)
-- [sum()](Functions/sum)
-- [system-property()](Functions/system-property)
-  _XSLT 고유_
-- [translate()](Functions/translate)
-- [true()](Functions/true)
-- [unparsed-entity-url()](Functions/unparsed-entity-url)
-  _XSLT 고유_
-  _(지원 안 함)_
+<section id="Quick_links">
+  {{ListSubpagesForSidebar("/en-US/docs/Web/XPath")}}
+</section>
+
+The following is an annotated list of core [XPath](/en-US/docs/Web/XPath) functions and [XSLT](/en-US/docs/Web/XSLT)-specific additions to XPath, including a description, syntax, a list of arguments, result-type, source in the appropriate W3C Recommendation. For further information on using XPath/XSLT functions, please see the [For Further Reading](/en-US/docs/Web/XSLT/Transforming_XML_with_XSLT) page.
+
+- [boolean()](/en-US/docs/Web/XPath/Functions/boolean)
+- [ceiling()](/en-US/docs/Web/XPath/Functions/ceiling)
+- [choose()](/en-US/docs/Web/XPath/Functions/choose)
+- [concat()](/en-US/docs/Web/XPath/Functions/concat)
+- [contains()](/en-US/docs/Web/XPath/Functions/contains)
+- [count()](/en-US/docs/Web/XPath/Functions/count)
+- [current()](/en-US/docs/Web/XPath/Functions/current) _XSLT-specific_
+- [document()](/en-US/docs/Web/XPath/Functions/document) _XSLT-specific_
+- [element-available()](/en-US/docs/Web/XPath/Functions/element-available)
+- [false()](/en-US/docs/Web/XPath/Functions/false)
+- [floor()](/en-US/docs/Web/XPath/Functions/floor)
+- [format-number()](/en-US/docs/Web/XPath/Functions/format-number) _XSLT-specific_
+- [function-available()](/en-US/docs/Web/XPath/Functions/function-available)
+- [generate-id()](/en-US/docs/Web/XPath/Functions/generate-id) _XSLT-specific_
+- [id()](/en-US/docs/Web/XPath/Functions/id)
+- [key()](/en-US/docs/Web/XPath/Functions/key) _XSLT-specific_
+- [lang()](/en-US/docs/Web/XPath/Functions/lang)
+- [last()](/en-US/docs/Web/XPath/Functions/last)
+- [local-name()](/en-US/docs/Web/XPath/Functions/local-name)
+- [name()](/en-US/docs/Web/XPath/Functions/name)
+- [namespace-uri()](/en-US/docs/Web/XPath/Functions/namespace-uri)
+- [normalize-space()](/en-US/docs/Web/XPath/Functions/normalize-space)
+- [not()](/en-US/docs/Web/XPath/Functions/not)
+- [number()](/en-US/docs/Web/XPath/Functions/number)
+- [position()](/en-US/docs/Web/XPath/Functions/position)
+- [round()](/en-US/docs/Web/XPath/Functions/round)
+- [starts-with()](/en-US/docs/Web/XPath/Functions/starts-with)
+- [string()](/en-US/docs/Web/XPath/Functions/string)
+- [string-length()](/en-US/docs/Web/XPath/Functions/string-length)
+- [substring()](/en-US/docs/Web/XPath/Functions/substring)
+- [substring-after()](/en-US/docs/Web/XPath/Functions/substring-after)
+- [substring-before()](/en-US/docs/Web/XPath/Functions/substring-before)
+- [sum()](/en-US/docs/Web/XPath/Functions/sum)
+- [system-property()](/en-US/docs/Web/XPath/Functions/system-property) _XSLT-specific_
+- [translate()](/en-US/docs/Web/XPath/Functions/translate)
+- [true()](/en-US/docs/Web/XPath/Functions/true)
+- [unparsed-entity-url()](/en-US/docs/Web/XPath/Functions/unparsed-entity-url) _XSLT-specific_
+
+{{QuickLinksWithSubpages("/en-US/docs/Web/XPath")}}

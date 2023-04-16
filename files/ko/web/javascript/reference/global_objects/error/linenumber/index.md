@@ -1,43 +1,55 @@
 ---
-title: Error.prototype.lineNumber
+title: "Error: lineNumber"
 slug: Web/JavaScript/Reference/Global_Objects/Error/lineNumber
+page-type: javascript-instance-data-property
+status:
+  - non-standard
+browser-compat: javascript.builtins.Error.lineNumber
 ---
 
 {{JSRef}} {{non-standard_header}}
 
-**`lineNumber`** 속성은 이 오류가 발생한 파일의 행 번호를 포함합니다.
+The **`lineNumber`** data property of an {{jsxref("Error")}} instance contains the line number in the file that raised this error.
 
-## 예제
+## Value
 
-### lineNumber 사용하기
+A positive integer.
+
+{{js_property_attributes(1, 0, 1)}}
+
+## Examples
+
+### Using lineNumber
 
 ```js
-var e = new Error('Could not parse input');
-throw e;
-console.log(e.lineNumber) // 2
+try {
+  throw new Error("Could not parse input");
+} catch (err) {
+  console.log(err.lineNumber); // 2
+}
 ```
 
-### 오류 이벤트를 사용하는 또 다른 예제
+### Alternative example using error event
 
 ```js
-window.addEventListener('error', function(e) {
+window.addEventListener("error", (e) => {
   console.log(e.lineNumber); // 5
 });
-var e = new Error('Could not parse input');
+const e = new Error("Could not parse input");
 throw e;
 ```
 
-이는 표준 기능이 아니며 광범위하게 지원되지 않습니다. 아래 브라우저 호환성 표를 참고하십시오.
+This is not a standard feature and lacks widespread support. See the browser compatibility table below.
 
-## 명세
+## Specifications
 
-표준의 일부가 아닙니다.
+Not part of any standard.
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Error.prototype.stack")}}
 - {{jsxref("Error.prototype.columnNumber")}}

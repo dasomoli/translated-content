@@ -1,28 +1,63 @@
 ---
-title: HTMLElement.outerText
+title: "HTMLElement: outerText property"
+short-title: outerText
 slug: Web/API/HTMLElement/outerText
+page-type: web-api-instance-property
+browser-compat: api.HTMLElement.outerText
 ---
+
 {{APIRef("DOM")}}
 
-{{ Non-standard_header() }}
+The **`outerText`** property of the {{domxref("HTMLElement")}} interface returns the same value as {{domxref("HTMLElement.innerText")}}.
+When used as a setter it replaces the whole current node with the given text (this differs from `innerText`, which replaces the content _inside_ the current node).
 
-**`HTMLElement.outerText`** 는 비표준 속성(property)입니다. getter로써{{domxref("Node.innerText")}}의 값을 반환합니다. setter로써는 현재 노드를 삭제하고 주어진 텍스트값으로 대체합니다.
+See {{domxref("HTMLElement.innerText")}} for more information and examples showing how both properties are used as getters.
 
-## Example
+## Value
 
-[StackOverflow의 이 답변을 보세요.](http://stackoverflow.com/a/18481435)
+A string representing the rendered text content of an element and its descendants.
 
-## Specification
+If the element itself is not [being rendered](https://html.spec.whatwg.org/multipage/rendering.html#being-rendered) (for example, is detached from the document or is hidden from view), the returned value is the same as the {{domxref("Node.textContent")}} property.
 
-표준이 아니므로 스펙이 없습니다. 표준 논의가 다음에서 진행중입니다: [whatwg/html#668](https://github.com/whatwg/html/issues/668).
+When used as a setter it replaces the current node with the given text, converting any line breaks into {{HTMLElement("br")}} elements.
 
-Microsoft [has a description on MSDN](<https://msdn.microsoft.com/en-us/library/ms534311(v=vs.85).aspx>).
+## Examples
 
-## 브라우저 호환성
+This example highlights the fundamental difference between `outerText` and `innerText` when used as setters (they are the same when used by getters).
+
+> **Note:** The example is a modified version of [What is the difference between innerText and outerText?](https://stackoverflow.com/questions/18481382/what-is-the-difference-between-innertext-and-outertext/18481435#18481435) (Stack overflow) by [codingintrigue](https://stackoverflow.com/users/571194/codingintrigue), is licensed under [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/).
+
+Consider a page that contains the following HTML:
+
+```html
+<div>
+  <p>Original content</p>
+</div>
+```
+
+`outerText` replaces the whole selected element, so the JavaScript `p.outerText = "Whole element replaced"` replaces the whole selected `p` element:
+
+```html
+<div>Whole element replaced</div>
+```
+
+By contrast, `p.innerText = "Content inside element replaced"` replaces the content _inside_ the selected `p` element:
+
+```html
+<div>
+  <p>Content inside element replaced</p>
+</div>
+```
+
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- {{domxref("Node.innerText")}}
+- {{domxref("HTMLElement.innerText")}}
 - {{domxref("Element.outerHTML")}}

@@ -1,74 +1,137 @@
 ---
-title: 'ServiceWorkerGlobalScope: notificationclick event'
+title: "ServiceWorkerGlobalScope: notificationclick event"
+short-title: notificationclick
 slug: Web/API/ServiceWorkerGlobalScope/notificationclick_event
+page-type: web-api-event
+browser-compat: api.ServiceWorkerGlobalScope.notificationclick_event
 ---
+
 {{APIRef}}
 
-`notificationclick` 이벤트는 {{domxref("ServiceWorkerRegistration.showNotification()")}} 에 의해 발생한 시스템 notification 이 클릭되었음을 나타내기 위해 발생된다.
+The **`notificationclick`** event is fired to indicate that a system notification spawned by {{domxref("ServiceWorkerRegistration.showNotification()")}} has been clicked.
 
-|               | No                                                                                        |
-| ------------- | ----------------------------------------------------------------------------------------- |
-| Cancelable    | No                                                                                        |
-| Interface     | {{domxref("NotificationEvent")}}                                              |
-| Event handler | [`onnotificationclick`](/en-US/docs/Web/API/ServiceWorkerGlobalScope/onnotificationclick) |
+This event is not cancelable and does not bubble.
+
+## Syntax
+
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
+
+```js
+addEventListener("notificationclick", (event) => {});
+
+onnotificationclick = (event) => {};
+```
+
+## Event type
+
+A {{domxref("NotificationEvent")}}. Inherits from {{domxref("Event")}}.
+
+{{InheritanceDiagram("NotificationEvent")}}
+
+## Event properties
+
+_Inherits properties from its ancestor, {{domxref("Event")}}_.
+
+- {{domxref("NotificationEvent.notification")}} {{ReadOnlyInline}}
+  - : Returns a {{domxref("Notification")}} object representing the notification that was clicked to fire the event.
+- {{domxref("NotificationEvent.action")}} {{ReadOnlyInline}}
+  - : Returns the string ID of the notification button the user clicked. This value returns an empty string if the user clicked the notification somewhere other than an action button, or the notification does not have a button.
 
 ## Examples
 
-[`addEventListener`](/en-US/docs/Web/API/EventTarget/addEventListener) 메소드 내에서 `notificationclick` 이벤트를 사용할 수 있다:
+You can use the `notificationclick` event in an {{domxref("EventTarget/addEventListener", "addEventListener")}} method:
 
 ```js
-self.addEventListener('notificationclick', function(event) {
-  console.log('On notification click: ', event.notification.tag);
+self.addEventListener("notificationclick", (event) => {
+  console.log("On notification click: ", event.notification.tag);
   event.notification.close();
 
   // This looks to see if the current is already open and
   // focuses if it is
-  event.waitUntil(clients.matchAll({
-    type: "window"
-  }).then(function(clientList) {
-    for (var i = 0; i < clientList.length; i++) {
-      var client = clientList[i];
-      if (client.url == '/' && 'focus' in client)
-        return client.focus();
-    }
-    if (clients.openWindow)
-      return clients.openWindow('/');
-  }));
+  event.waitUntil(
+    clients
+      .matchAll({
+        type: "window",
+      })
+      .then((clientList) => {
+        for (const client of clientList) {
+          if (client.url === "/" && "focus" in client) return client.focus();
+        }
+        if (clients.openWindow) return clients.openWindow("/");
+      })
+  );
 });
 ```
 
-또는 [`onnotificationclick`](/en-US/docs/Web/API/ServiceWorkerGlobalScope/onnotificationclick) 이벤트 핸들러 속성을 사용할 수 있다:
+Or use the `onnotificationclick` event handler property:
 
 ```js
-self.onnotificationclick = function(event) {
-  console.log('On notification click: ', event.notification.tag);
+self.onnotificationclick = (event) => {
+  console.log("On notification click: ", event.notification.tag);
   event.notification.close();
 
   // This looks to see if the current is already open and
   // focuses if it is
-  event.waitUntil(clients.matchAll({
-    type: "window"
-  }).then(function(clientList) {
-    for (var i = 0; i < clientList.length; i++) {
-      var client = clientList[i];
-      if (client.url == '/' && 'focus' in client)
-        return client.focus();
-    }
-    if (clients.openWindow)
-      return clients.openWindow('/');
-  }));
+  event.waitUntil(
+    clients
+      .matchAll({
+        type: "window",
+      })
+      .then((clientList) => {
+        for (const client of clientList) {
+          if (client.url === "/" && "focus" in client) return client.focus();
+        }
+        if (clients.openWindow) return clients.openWindow("/");
+      })
+  );
 };
 ```
 
-## 명세서
+You can handle event actions using `event.action` within a {{domxref("ServiceWorkerGlobalScope.notificationclick_event", "notificationclick")}} event handler:
+
+```js
+navigator.serviceWorker.register("sw.js");
+Notification.requestPermission((result) => {
+  if (result === "granted") {
+    navigator.serviceWorker.ready.then((registration) => {
+      // Show a notification that includes an action titled Archive.
+      registration.showNotification("New mail from Alice", {
+        actions: [
+          {
+            action: "archive",
+            title: "Archive",
+          },
+        ],
+      });
+    });
+  }
+});
+
+self.addEventListener(
+  "notificationclick",
+  (event) => {
+    event.notification.close();
+    if (event.action === "archive") {
+      // User selected the Archive action.
+      archiveEmail();
+    } else {
+      // User selected (e.g., clicked in) the main body of notification.
+      clients.openWindow("/inbox");
+    }
+  },
+  false
+);
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- [Service Worker API](/ko/docs/Web/API/Service_Worker_API)
-- [Notifications API](/ko/docs/Web/API/Notifications_API)
+- [Service Worker API](/en-US/docs/Web/API/Service_Worker_API)
+- [Notifications API](/en-US/docs/Web/API/Notifications_API)

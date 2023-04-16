@@ -1,40 +1,40 @@
 ---
-title: element
+title: <xsl:element>
 slug: Web/XSLT/Element/element
 ---
 
 {{ XsltRef() }}
 
-`<xsl:element>` 요소는 출력 문서에 요소를 만듭니다.
+The `<xsl:element>` element creates an element in the output document.
 
-### 문법
+### Syntax
 
-```
+```xml
 <xsl:element name=NAME namespace=URI use-attribute-sets=LIST-OF-NAMES >
   TEMPLATE
-</xsl:template>
+</xsl:element>
 ```
 
-### 필수 속성
+### Required Attributes
 
 - `name`
-  - : 출력 요소에 바라는 이름을 지정합니다. 이름은 유효한 QName이어야 합니다.
+  - : Specifies the desired name of the output element. The name must be a valid QName.
 
-### 선택 속성
+### Optional Attributes
 
 - `namespace`
-  - : 출력 요소에 이름공간을 지정합니다.
+  - : Specifies the namespace of the output element.
 - `use-attribute-sets`
-  - : 출력 요소에 쓸 이름 붙인 속성 집합을 나열합니다. 이름은 공백 문자로 구분해야 합니다.
+  - : A whitespace‐separated list of [`attribute-set` element](/en-US/docs/Web/XSLT/Element/attribute-set) names to be applied to the `element` element's output element. Applied attributes can be overridden via nested `attribute` elements.
 
-### 타입
+### Type
 
-명령, 템플릿 안에 나타남.
+Instruction, appears within a template.
 
-### 정의
+### Defined
 
-[XSLT section 7.1.2, Creating Elements with xsl:element](http://www.w3.org/TR/xslt#section-Creating-Elements-with-xsl:element)
+XSLT, section 7.1.2.
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

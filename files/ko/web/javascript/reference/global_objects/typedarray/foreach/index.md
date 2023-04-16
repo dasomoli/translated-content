@@ -1,88 +1,82 @@
 ---
 title: TypedArray.prototype.forEach()
 slug: Web/JavaScript/Reference/Global_Objects/TypedArray/forEach
-l10n:
-  sourceCommit: 1c70095257ba7f6d1195d1d33340e234dfc80b3e
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.TypedArray.forEach
 ---
 
 {{JSRef}}
 
-**`forEach()`** 메서드는 주어진 함수을 형식화 배열에 있는 각 요소에 대해 한 번씩 실행합니다.
-이 메서드는 {{jsxref("Array.prototype.forEach()")}}와 동일한 알고리즘으로 동작합니다.
-형식화 배열은 [형식화 배열 타입](/ko/docs/Web/JavaScript/Reference/Global_Objects/TypedArray#typedarray_objects) 중 하나입니다.
+The **`forEach()`** method executes a provided function once
+per array element. This method has the same algorithm as
+{{jsxref("Array.prototype.forEach()")}}. _TypedArray_ is one of the
+[typed array types](/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray#typedarray_objects) here.
 
 {{EmbedInteractiveExample("pages/js/typedarray-foreach.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
-// Arrow function
-forEach((element) => { /* ... */ } )
-forEach((element, index) => { /* ... */ } )
-forEach((element, index, array) => { /* ... */ } )
-
-// Callback function
 forEach(callbackFn)
 forEach(callbackFn, thisArg)
-
-// Inline callback function
-forEach(function(element) { /* ... */ })
-forEach(function(element, index) { /* ... */ })
-forEach(function(element, index, array){ /* ... */ })
-forEach(function(element, index, array) { /* ... */ }, thisArg)
 ```
 
-### 매개변수
+### Parameters
 
 - `callbackFn`
-
-  - : 각 요소에 대해 실행할 함수.
-
-    다음 세 가지 매개변수를 받습니다.
-
+  - : A function to execute for each element in the typed array. Its return value is discarded. The function is called with the following arguments:
     - `element`
-      - : 현재 처리할 현재 요소.
+      - : The current element being processed in the typed array.
     - `index`
-      - : 처리할 현재 요소의 인덱스.
+      - : The index of the current element being processed in the typed array.
     - `array`
-      - : `forEach()` 를 호출한 배열.
-
+      - : The typed array `forEach()` was called upon.
 - `thisArg` {{optional_inline}}
-  - : `callbackFn`을 실행할 때 `this`로 사용할 값.
+  - : A value to use as `this` when executing `callbackFn`. See [iterative methods](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#iterative_methods).
 
-### 반환 값
+### Return value
 
 {{jsxref("undefined")}}.
 
-## 설명
+## Description
 
-`forEach()`는 주어진 `callbackFn`을 형식화 배열에 있는 각 요소에 대해 한 번씩 실행합니다.
-삭제했거나 초기화하지 않은 인덱스에 대해서는 실행하지 않습니다. 그러나 {{jsxref("undefined")}}값을 가진, 존재하는
-요소에 대해서는 실행합니다.
+The `forEach()` method executes the provided
+`callbackFn` once for each element present in the typed array in
+ascending order. It is not invoked for indexes that have been deleted or elided.
+However, it is executed for elements that are present and have the value
+{{jsxref("undefined")}}.
 
-`callbackFn`은 다음 **세 인수**와 함께 호출됩니다.
+`callbackFn` is invoked with **three arguments**:
 
-- **요소 값**
-- **요소 인덱스**
-- **순회 중인 배열**
+- the **element value**
+- the **element index**
+- the **typed array being traversed**
 
-`thisArg` 매개변수를 `forEach()`에 제공한 경우 `callbackFn`을 호출할 때 전달해 `this`의 값으로 쓰입니다. 전달하지 않으면 {{jsxref("undefined")}}를 `this` 값으로 사용합니다. `callbackFn`이 최종적으로 관찰할 수 있는 `this` 값은 [함수의 `this`를 결정하는 일반적인 규칙](/ko/docs/Web/JavaScript/Reference/Operators/this)에 따라 결정됩니다.
+If a `thisArg` parameter is provided to `forEach()`,
+it will be passed to `callbackFn` when invoked, for use as its
+`this` value. Otherwise, the value {{jsxref("undefined")}} will be passed
+for use as its `this` value. The `this` value ultimately
+observable by `callbackFn` is determined according to
+[the usual rules for determining the `this` seen by a function](/en-US/docs/Web/JavaScript/Reference/Operators/this).
 
-`forEach()`로 처리할 요소의 범위는 최초 `callbackFn` 호출 전에 설정됩니다. `forEach()` 호출을 시작한 뒤
-배열에 추가한 요소는 `callbackFn`이 방문하지 않습니다. 형식화 배열의 기존 요소값이 바뀐 경우,
-`callbackFn`에 전달하는 값은 `forEach()`가 요소를 방문한 시점의 값을 사용합니다.
-방문하기 전에 삭제한 요소는 방문하지 않습니다.
+The range of elements processed by `forEach()` is set before the first
+invocation of `callbackFn`. Elements that are appended to the typed array after
+the call to `forEach()` begins will not be visited by
+`callbackFn`. If the values of existing elements of the typed array
+are changed, the value passed to `callbackFn` will be the value at
+the time `forEach()` visits them; elements that are deleted before being
+visited are not visited.
 
-`forEach()`는 각 형식화 배열 요소에 대해 한 번씩 `callbackFn` 함수를 실행합니다.
-{{jsxref("TypedArray.prototype.every()", "every()")}}과
-{{jsxref("TypedArray.prototype.some()", "some()")}}와는
-달리 {{jsxref("undefined")}}를 반환합니다.
+`forEach()` executes the `callbackFn` function once for each typed
+array element; unlike {{jsxref("TypedArray.prototype.every()", "every()")}} and
+{{jsxref("TypedArray.prototype.some()", "some()")}} it, always returns the value
+{{jsxref("undefined")}}.
 
-## 예제
+## Examples
 
-### 형식화 배열의 컨텐츠 기록하기
+### Logging the contents of a typed array
 
-아래 코드는 형식화 배열의 각 요소당 한 줄의 로그를 남깁니다.
+The following code logs a line for each element in a typed array:
 
 ```js
 function logArrayElements(element, index, array) {
@@ -97,15 +91,15 @@ new Uint8Array([0, 1, 2, 3]).forEach(logArrayElements);
 // a[3] = 3
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - [Polyfill of `TypedArray.prototype.forEach` in `core-js`](https://github.com/zloirock/core-js#ecmascript-typed-arrays)
 - {{jsxref("TypedArray.prototype.map()")}}

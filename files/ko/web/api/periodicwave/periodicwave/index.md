@@ -1,58 +1,86 @@
 ---
-title: PeriodicWave()
+title: "PeriodicWave: PeriodicWave() constructor"
+short-title: PeriodicWave()
 slug: Web/API/PeriodicWave/PeriodicWave
+page-type: web-api-constructor
+browser-compat: api.PeriodicWave.PeriodicWave
 ---
 
 {{APIRef("Web Audio API")}}
 
-[Web Audio API](/ko/docs/Web/API/Web_Audio_API)의 **`PeriodicWave()`** 생성자는 새로운 {{domxref("PeriodicWave")}} 객체 인스턴스를 생성합니다.
+The **`PeriodicWave()`** constructor of the [Web Audio API](/en-US/docs/Web/API/Web_Audio_API) creates a new
+{{domxref("PeriodicWave")}} object instance.
 
-## 구문
+## Syntax
 
-```js
-var myWave = new PeriodicWave(context, options);
+```js-nolint
+new PeriodicWave(context)
+new PeriodicWave(context, options)
 ```
 
-### 매개변수
-
-_{{domxref("AudioNodeOptions")}} dictionary로부터 매개변수를 상속받습니다_.
+### Parameters
 
 - `context`
-  - : 여러분이 노드가 관련되기를 바라는 오디오 컨텍스트를 나타내는 {{domxref("BaseAudioContext")}}
+  - : A {{domxref("BaseAudioContext")}} representing the audio context you want the node
+    to be associated with.
 - `options` {{optional_inline}}
-  - : 여러분이 `PeriodicWave`가 가지기를 바라는 속성들을 정의하는 [`PeriodicWaveOptions`](https://webaudio.github.io/web-audio-api/#idl-def-PeriodicWaveOptions) dictionary 객체 (이것은 또한 [PeriodicWaveConstraints](https://webaudio.github.io/web-audio-api/#idl-def-PeriodicWaveConstraints)
-    dictionary에 정의된 옵션들도 상속받습니다.):\* `real`: 여러분이 파동을 형성하기 위해 사용하기를 원하는 코사인 항을 포함하는 {{domxref("Float32Array")}} ({{domxref("BaseAudioContext.createPeriodicWave")}}의 `real` 매개변수와 동일)
-    - `imag`: 여러분이 파동을 형성하기 위해 사용하기를 원하는 사인 항을 포함하는 {{domxref("Float32Array")}} ({{domxref("BaseAudioContext.createPeriodicWave")}}의 `imag` 매개변수와 동일)
 
-### 반환 값
+  - : A
+    [`PeriodicWaveOptions`](https://webaudio.github.io/web-audio-api/#idl-def-PeriodicWaveOptions)
+    dictionary object defining the properties you want the `PeriodicWave` to
+    have (It also inherits the options defined in the [PeriodicWaveConstraints](https://webaudio.github.io/web-audio-api/#idl-def-PeriodicWaveConstraints)
+    dictionary.):
 
-새로운 {{domxref("PeriodicWave")}} 객체 인스턴스.
+    - `real`
+      - : A {{jsxref("Float32Array")}} containing the cosine terms
+        that you want to use to form the wave (equivalent to the `real`
+        parameter of {{domxref("BaseAudioContext.createPeriodicWave")}}).
+    - `imag`
+      - : A {{jsxref("Float32Array")}} containing the sine terms that
+        you want to use to form the wave (equivalent to the `imag` parameter of
+        {{domxref("BaseAudioContext.createPeriodicWave")}}).
+    - `channelCount`
+      - : Represents an integer used to determine how many channels are used when [up-mixing and down-mixing](/en-US/docs/Web/API/Web_Audio_API/Basic_concepts_behind_Web_Audio_API#up-mixing_and_down-mixing) connections to any inputs to the node. (See
+        {{domxref("AudioNode.channelCount")}} for more information.) Its usage and precise
+        definition depend on the value of `channelCountMode`.
+    - `channelCountMode`
+      - : Represents an enumerated value describing the way channels must be matched between
+        the node's inputs and outputs. (See {{domxref("AudioNode.channelCountMode")}} for more
+        information including default values.)
+    - `channelInterpretation`
+      - : Represents an enumerated value describing the meaning of the channels. This
+        interpretation will define how audio [up-mixing and down-mixing](/en-US/docs/Web/API/Web_Audio_API/Basic_concepts_behind_Web_Audio_API#up-mixing_and_down-mixing) will happen.
+        The possible values are `"speakers"` or `"discrete"`. (See
+        {{domxref("AudioNode.channelCountMode")}} for more information including default
+        values.)
 
-## 예제
+### Return value
+
+A new {{domxref("PeriodicWave")}} object instance.
+
+## Examples
 
 ```js
-var real = new Float32Array(2);
-var imag = new Float32Array(2);
-var ac = new AudioContext();
+const real = new Float32Array(2);
+const imag = new Float32Array(2);
+const ac = new AudioContext();
 
 real[0] = 0;
 imag[0] = 0;
 real[1] = 1;
 imag[1] = 0;
 
-var options = {
-  real : real,
-  imag : imag,
-  disableNormalization : false
-}
-
-var wave = new PeriodicWave(ac, options);
+const wave = new PeriodicWave(ac, {
+  real,
+  imag,
+  disableNormalization: false,
+});
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

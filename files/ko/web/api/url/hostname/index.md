@@ -1,39 +1,39 @@
 ---
-title: URL.hostname
+title: "URL: hostname property"
+short-title: hostname
 slug: Web/API/URL/hostname
+page-type: web-api-instance-property
+browser-compat: api.URL.hostname
 ---
+
 {{ApiRef("URL API")}}
 
-{{domxref("URL")}} 인터페이스의 **`hostname`** 속성은 URL의 {{glossary("domain name", "도메인 이름")}}을 담은 {{domxref("USVString")}}을 반환합니다.
+The **`hostname`** property of the {{domxref("URL")}} interface
+is a string containing the {{glossary("domain name")}} of the URL.
 
 {{AvailableInWorkers}}
 
-## 구문
+## Value
+
+A string.
+
+## Examples
 
 ```js
-const domain = url.hostname
-url.hostname = domain
-```
-
-### 값
-
-{{domxref("USVString")}},
-
-## 예제
-
-```js
-const url = new URL('https://developer.mozilla.org/ko/docs/Web/API/URL/hostname');
+const url = new URL(
+  "https://developer.mozilla.org/en-US/docs/Web/API/URL/hostname"
+);
 console.log(url.hostname); // Logs: 'developer.mozilla.org'
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 속성이 속한 {{domxref("URL")}} 인터페이스.
+- The {{domxref("URL")}} interface it belongs to.

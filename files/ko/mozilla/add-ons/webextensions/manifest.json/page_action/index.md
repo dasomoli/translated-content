@@ -1,6 +1,8 @@
 ---
 title: page_action
 slug: Mozilla/Add-ons/WebExtensions/manifest.json/page_action
+page-type: webextension-manifest-key
+browser-compat: webextensions.manifest.page_action
 ---
 
 {{AddonSidebar}}
@@ -38,49 +40,236 @@ slug: Mozilla/Add-ons/WebExtensions/manifest.json/page_action
   </tbody>
 </table>
 
-페이지 액션은 브라우저의 URL 바 안에 추가되는 아이콘이다.
+A page action is an icon that your extension adds inside the browser's URL bar.
 
-필요하면 HTML, CSS, 그리고 자바스크립트를 사용하는 팝업을 띄울 수 있다.
+Your extension may optionally also supply an associated popup whose content is specified using HTML, CSS, and JavaScript.
 
-팝업이 있으면, 아이콘을 클릭할 때 팝업이 열리고, 팝업 안의 자바스크립트가 사용자와의 상호작업을 처리할 수 있다. 팝업이 없으면, 아이콘을 클릭할 때 확장의 [background 스크립트](/en-US/Add-ons/WebExtensions/Anatomy_of_a_WebExtension#Background_pages)에 click 이벤트가 전달된다.
+If you supply a popup, then the popup is opened when the user clicks the icon, and your JavaScript running in the popup can handle the user's interaction with it. If you don't supply a popup, then a click event is dispatched to your extension's [background scripts](/en-US/docs/Mozilla/Add-ons/WebExtensions/Anatomy_of_a_WebExtension#background_pages) when the user clicks the icon.
 
-[pageAction API](/en-US/Add-ons/WebExtensions/API/pageAction)을 사용하면 프로그램적으로 페이지 액션을 만들고 관리할 수 있다.
+You can also create and manipulate page actions programmatically using the {{WebExtAPIRef("pageAction", "pageAction API")}}.
 
-페이지 액션은 브라우저 액션과 비슷하다. 단지 브라우저 전체가 아니라 특정 웹페이지와만 연관된다는 점이 다르다. 액션의 대상 페이지가 분명하다면 그 페이지에서만 표시되는 페이지 액션을 사용해야 한다. 액션이 모든 페이지를 대상으로 하거나 브라우저 그 자체가 대상이라면 브라우저 액션을 사용하라.
+Page actions are like browser actions, except that they are associated with particular web pages rather than with the browser as a whole. If an action is only relevant on certain pages, then you should use a page action and display it only on relevant pages. If an action is relevant to all pages or to the browser itself, use a browser action.
 
-브라우저 액션은 기본이 표시되는 것이지만 페이지 액션은 기본적으로 숨겨진다. 탭에 [`pageAction.show()`](/en-US/Add-ons/WebExtensions/API/pageAction/show)를 호출하거나, `show_matches` 속성을 줘야 표시할 수 있다.
+While browser actions are displayed by default, page actions are hidden by default. They can be shown for a particular tab by calling {{WebExtAPIRef("pageAction.show()")}}, passing in the tab's `id`. You can also change this default behavior using the `show_matches` property.
 
-## 문법
+## Syntax
 
-`page_action`은 세 가지 속성들 중에 몇 가지를 가지는 객체다(역주: 파이어폭스 외의 브라우저에서도 지원되는 속성은 세가지 뿐이다). 모두 선택사항이다:
+The `page_action` key is an object that may have any of three properties, all optional:
 
-| Name                                                                                       | Type                                           | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| ------------------------------------------------------------------------------------------ | ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`browser_style`](/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Browser_styles) | `Boolean`                                      | 선택, 기본값은 `false`.사용하면, 팝업과 브라우저의 UI와 `browser_style`을 사용하는 다른 확장의 모습이 일관되게 보이게 하는 스타일시트를 포함한다. 기본값은 `false`지만 팝업이 브라우저의 다른 UI와 일관되게 하려면, 스타일시트가 포함될 수 있도록 `true`로 하는 것이 권장한다.파이어폭스에서, 이 스타일시트는 chrome://browser/content/extension.css에서 볼 수 있다. OS X에서는 chrome://browser/content/extension-mac.css다.[파이어폭스 스타일 가이드](https://firefoxux.github.io/StyleGuide/#/controls)는 팝업의 요소가 특정 스타일을 갖게하는 클래스들에 대해 설명한다.[최종-다운로드](https://github.com/mdn/webextensions-examples/tree/master/latest-download) 예제 확장 프로그램은 팝업에 `browser_style`을 사용한다.                                                                                                                    |
-| `default_icon`                                                                             | `Object` or `String`                           | 액션이 사용하는 아이콘.권장은 19x19 픽셀과 38x38 픽셀 두 종류가 제공되는 것이다. 아래처럼 각각 "19" 와 "38"이라는 속성 이름을 사용한다:
-<pre class="brush: json">
+<table class="fullwidth-table standard-table">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Type</th>
+      <th scope="col">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code
+          ><a
+            href="/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Browser_styles"
+            >browser_style</a
+          ></code
+        >
+      </td>
+      <td><code>Boolean</code></td>
+      <td>
+        <p>Optional. Defaults to <code>false</code>.</p>
+        <p>
+          Use this to include a stylesheet in your popup that will make it look
+          consistent with the browser's UI and with other extensions that use
+          the <code>browser_style</code> property. Although this key defaults to
+          <code>false</code>, it's recommended that you include it and set it to
+          <code>true</code> in order to make your popups consistent with the
+          look of the rest of the browser user interface.
+        </p>
+        <p>
+          In Firefox, the stylesheet can be seen at
+          <code>chrome://browser/content/extension.css</code>, or
+          <code>chrome://browser/content/extension-mac.css</code> on macOS.
+        </p>
+        <p>
+          The
+          <a href="https://firefoxux.github.io/StyleGuide/#/controls"
+            >Firefox Style Guide</a
+          >
+          describes the classes you can apply to elements in the popup in order
+          to get particular styles.
+        </p>
+        <p>
+          The
+          <a
+            href="https://github.com/mdn/webextensions-examples/tree/master/latest-download"
+            >latest-download</a
+          >
+          example extension uses <code>browser_style</code> in its popup.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>default_icon</code></td>
+      <td><code>Object</code> or <code>String</code></td>
+      <td>
+        <p>Use this to specify an icon for the action.</p>
+        <p>
+          It's recommended that you supply two icons here (19×19 pixels and
+          38×38 pixels), and specify them in an object with properties named
+          <code>"19"</code> and <code>"38"</code>, like this:
+        </p>
+        <pre class="brush: json">
+    "default_icon": {
+      "19": "geo-19.png",
+      "38": "geo-38.png"
+    }</pre
+        >
+        <p>
+          If you do this, then the browser will pick the right size icon for the
+          screen's pixel density.
+        </p>
+        <p>You can just supply a string here:</p>
+        <pre class="brush: json">"default_icon": "geo.png"</pre>
+        <p>
+          If you do this, then the icon will be scaled to fit the toolbar, and
+          may appear blurry.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>default_popup</code></td>
+      <td><code>String</code></td>
+      <td>
+        <p>
+          The path to an HTML file containing the specification of the popup.
+        </p>
+        <p>
+          The HTML file may include CSS and JavaScript files using
+          <code
+            ><a href="/en-US/docs/Web/HTML/Element/link">&#x3C;link></a></code
+          >
+          and
+          <code
+            ><a href="/en-US/docs/Web/HTML/Element/script"
+              >&#x3C;script></a
+            ></code
+          >
+          elements, just like a normal web page. However, don't use
+          <code
+            ><a href="/en-US/docs/Web/HTML/Element/script"
+              >&#x3C;script></a
+            ></code
+          >
+          with embedded code, because you'll get a Content Violation Policy
+          error. Instead,
+          <code
+            ><a href="/en-US/docs/Web/HTML/Element/script"
+              >&#x3C;script></a
+            ></code
+          >
+          must use the
+          <code><a href="/en-US/docs/Web/HTML/Element/script">src</a></code>
+          attribute to load a separate script file.
+        </p>
+        <p>
+          Unlike a normal web page, JavaScript running in the popup can access
+          all the
+          <a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/API"
+            >WebExtension APIs</a
+          >
+          (subject, of course, to the extension having the appropriate
+          <a
+            href="/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions"
+            >permissions</a
+          >).
+        </p>
+        <p>
+          This is a
+          <a
+            href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Internationalization#internationalizing_manifest.json"
+            >localizable property</a
+          >.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>default_title</code></td>
+      <td><code>String</code></td>
+      <td>
+        <p>
+          Tooltip for the icon, displayed when the user moves their mouse over
+          it.
+        </p>
+        <p>
+          This is a
+          <a
+            href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Internationalization#internationalizing_manifest.json"
+            >localizable property</a
+          >.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>hide_matches</code></td>
+      <td>
+        <code>Array</code> of <code>Match Pattern</code> except
+        <code>&#x3C;all_urls></code>
+      </td>
+      <td>
+        <p>
+          Hide the page action by default for pages whose URLs match any of the
+          given
+          <a href="/en-US/docs/Mozilla/Add-ons/WebExtensions/Match_patterns"
+            >match patterns</a
+          >.
+        </p>
+        <p>
+          Note that page actions are always hidden by default unless
+          <code>show_matches</code> is given. Therefore, it only makes sense to
+          include this property if <code>show_matches</code> is also given, and
+          will override the patterns in <code>show_matches</code>.
+        </p>
+        <p>For example, consider a value like:</p>
+        <pre class="brush: json">
 "page_action": {
-  "browser_style": true,
-  "default_icon": {
-    "19": "button/geo-19.png",
-    "38": "button/geo-38.png"
-  },
-  "default_title": "Whereami?",
-  "default_popup": "popup/geo.html"
-}</pre>
-이렇게 하면 화면 해상도에 따라 적절한 크기를 사용하게 된다.아래처럼 하나의 문자열로 할 수도 있다:```json
-"default_icon": "geo.png"
+  "show_matches": ["https://*.mozilla.org/*"],
+  "hide_matches": ["https://developer.mozilla.org/*"]
+}</pre
+        >
+        <p>
+          This shows the page action by default for all HTTPS URLs under the
+          <code>"mozilla.org"</code> domain, except for pages under
+          <code>"developer.mozilla.org"</code>.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>show_matches</code></td>
+      <td><code>Array</code> of <code>Match Pattern</code></td>
+      <td>
+        <p>
+          Show the page action by default for pages whose URLs match any of the
+          given patterns.
+        </p>
+        <p>See also <code>hide_matches</code>.</p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>pinned</code> {{deprecated_inline}}</td>
+      <td><code>Boolean</code></td>
+      <td>
+        <p>Optional. Defaults to <code>true</code>.</p>
+        <p>
+          Controls whether or not the page action should appear in the location
+          bar by default when the user installs the extension. This property is
+          no longer supported since Firefox 89.
+        </p>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
-```이렇게 하면 툴바에 맞게 크기가 조정될 것이다. 흐릿해질 수 있다.                                                                                                                                                                                                                                                                                                                                       |
-| `default_popup`                                                                            | `String`                                       | 팝업으로 띄울 HTML 파일의 경로.HTML 파일은 일반 웹 페이지처럼 [`<link>`](/en-US/docs/Web/HTML/Element/link)와 [`<script>`](/en-US/docs/Web/HTML/Element/script) 요소를 사용해서 CSS와 자바스크립트를 포함할 수 있다. 하지만 [`<script>`](/en-US/docs/Web/HTML/Element/script) 사이에 코드를 직접 포함하면 Content Violation Policy 에러가 발생하므로, [`src`](/en-US/docs/Web/HTML/Element/script) 속성으로 분리된 스크립트 파일을 올려야 한다.보통의 웹페이지와 달리, 팝업에서 실행되는 자바스크립트는 모든 [WebExtension API](/en-US/Add-ons/WebExtensions/API)를 사용할 수 있다(당연히 필요한 [권한](/ko/docs/Mozilla/Add-ons/WebExtensions/manifest.json/permissions)을 가져야 한다).이것은 [지역화 가능 속성](/en-US/Add-ons/WebExtensions/Internationalization#Internationalizing_manifest.json)이다. |
-| `default_title`                                                                            | `String`                                       | 아이콘에 마우스가 올려지면 표시되는 툴팁.이것은 [지역화 가능 속성](/en-US/Add-ons/WebExtensions/Internationalization#Internationalizing_manifest.json)이다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `hide_matches`                                                                             | `Array` of `Match Pattern` except `<all_urls>` | 주어진 [선별식](/en-US/Add-ons/WebExtensions/match_patterns)에 맞는 URL에 대해 페이지 액션을 숨긴다.하지만 페이지 액션은 기본적으로 숨겨지고 `show_matches`와 맞아야만 보이기 때문에, `반드시 show_matches`가 있어야 의미가 있다. 이 값은 `show_matches` 일부를 제외하는 역할을 한다. 예를 들어 값이 다음과 같다면:```json
-"page_action": {   "show_matches": ["https://*.mozilla.org/*"],   "hide_matches": ["https://developer.mozilla.org/*"] }
-```기본은 "mozilla.org"인 모든 HTTPS URL에 대해 페이지 액션이 표시되는 것이지만, "developer.mozilla.org"인 경우는 제외라 표시되지 않는다.                                                                                                                                                                                            |
-| `show_matches`                                                                             | `Array` of `Match Pattern`                     | 주어진 패턴에 일치하는 URL에 대해 페이지 액션을 보인다.`hide_matches`도 보기.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `pinned`                                                                                   | `Boolean`                                      | 선택, 기본값은 `true`.주소창에 페이지 액션이 기본적으로 나타나는지를 결정한다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-
-## 예제
+## Example
 
 ```json
 "page_action": {
@@ -89,9 +278,9 @@ slug: Mozilla/Add-ons/WebExtensions/manifest.json/page_action
     "38": "button/geo-38.png"
   }
 }
-````
+```
 
-그냥 아이콘만 있는 페이지 액션으로 아이콘을 누르면 확장의 background 스크립트는 아래처럼 해서 click 이벤트를 받을 수 있다:
+A page action with just an icon, specified in 2 different sizes. The extension's background scripts can receive click events when the user clicks the icon using code like this:
 
 ```js
  browser.pageAction.onClicked.addListener(handleClick);
@@ -108,9 +297,9 @@ slug: Mozilla/Add-ons/WebExtensions/manifest.json/page_action
 }
 ```
 
-아이콘, 제목, 팝업이 있는 페이지 액션으로 아이콘을 누르면 팝업이 보일 것이다.
+A page action with an icon, a title, and a popup. The popup will be shown when the user clicks the icon.
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
@@ -118,4 +307,4 @@ slug: Mozilla/Add-ons/WebExtensions/manifest.json/page_action
 
 - [`browser_action`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/browser_action)
 - [`sidebar_action`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/sidebar_action)
-- [Browser styles](/ko/docs/Mozilla/Add-ons/WebExtensions/user_interface/Browser_styles)
+- [Browser styles](/en-US/docs/Mozilla/Add-ons/WebExtensions/user_interface/Browser_styles)

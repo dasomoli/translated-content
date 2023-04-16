@@ -1,24 +1,28 @@
 ---
-title: File.name
+title: "File: name property"
+short-title: name
 slug: Web/API/File/name
+page-type: web-api-instance-property
+browser-compat: api.File.name
 ---
 
 {{APIRef("File API")}}
 
-**`name`** 속성은 {{domxref("File")}} 객체가 나타내는 파일의 이름을 반환합니다. 보안상의 이유로 경로는 이름에서 제외됩니다.
+Returns the name of the file represented by a {{domxref("File")}} object. For security
+reasons, the path is excluded from this property.
 
-## 값
+## Value
 
-`"My Resume.rtf"`와 같이, 경로 없는 파일 이름을 포함하는 문자열입니다.
+A string, containing the name of the file without path, such as "My Resume.rtf".
 
-## 예제
+## Examples
 
 ### HTML
 
 ```html
-<input type="file" id="filepicker" multiple>
+<input type="file" id="filepicker" multiple />
 <div>
-  <p>선택한 파일 목록:</p>
+  <p>List of selected files:</p>
   <ul id="output"></ul>
 </div>
 ```
@@ -26,33 +30,33 @@ slug: Web/API/File/name
 ### JavaScript
 
 ```js
-const output = document.getElementById('output');
-const filepicker = document.getElementById('filepicker');
+const output = document.getElementById("output");
+const filepicker = document.getElementById("filepicker");
 
-filepicker.addEventListener('change', (event) => {
+filepicker.addEventListener("change", (event) => {
   const files = event.target.files;
-  output.textContent = '';
+  output.textContent = "";
 
   for (const file of files) {
-    const li = document.createElement('li');
+    const li = document.createElement("li");
     li.textContent = file.name;
     output.appendChild(li);
   }
-})
+});
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample('예제')}}
+{{EmbedLiveSample('Examples')}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [웹 어플리케이션에서 파일 사용하기](/ko/docs/Web/API/File/Using_files_from_web_applications)
+- [Using files from web applications](/en-US/docs/Web/API/File_API/Using_files_from_web_applications)

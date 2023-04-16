@@ -1,27 +1,31 @@
 ---
-title: '@media'
+title: "@media"
 slug: Web/CSS/@media
+page-type: css-at-rule
+browser-compat: css.at-rules.media
 ---
 
 {{CSSRef}}
 
-**`@media`** [CSS](/ko/docs/Web/CSS) [@규칙](/ko/docs/Web/CSS/At-rule)은 스타일 시트의 일부를 하나 이상의 [미디어 쿼리](/ko/docs/Web/Guide/CSS/Media_queries) 결과에 따라 적용할 때 사용할 수 있습니다. `@media`를 사용해 미디어 쿼리를 지정하면 해당 쿼리를 만족하는 장치에서만 CSS 블록을 적용할 수 있습니다.
+The **`@media`** [CSS](/en-US/docs/Web/CSS) [at-rule](/en-US/docs/Web/CSS/At-rule) can be used to apply part of a style sheet based on the result of one or more [media queries](/en-US/docs/Web/CSS/Media_Queries/Using_media_queries). With it, you specify a media query and a block of CSS to apply to the document if and only if the media query matches the device on which the content is being used.
 
-> **참고:** JavaScript에서는 `@media`를 {{domxref("CSSMediaRule")}} CSS 객체 모델 인터페이스로 접근할 수 있습니다.
+> **Note:** In JavaScript, the rules created using `@media` can be accessed with the {{domxref("CSSMediaRule")}} CSS object model interface.
 
-## 구문
+{{EmbedInteractiveExample("pages/tabbed/at-rule-media.html", "tabbed-standard")}}
 
-`@media` @규칙은 최상위 코드나, 아무 [조건부 그룹 @규칙](/ko/docs/Web/CSS/At-rule#조건부_그룹_규칙) 안에 중첩해 작성할 수 있습니다.
+## Syntax
+
+The `@media` at-rule may be placed at the top level of your code or nested inside any other [conditional group at-rule](/en-US/docs/Web/CSS/At-rule#conditional_group_rules).
 
 ```css
-/* 최상위 코드 레벨 */
+/* At the top level of your code */
 @media screen and (min-width: 900px) {
   article {
     padding: 1rem 3rem;
   }
 }
 
-/* 다른 조건부 @규칙 내에 중첩 */
+/* Nested within another conditional at-rule */
 @supports (display: flex) {
   @media screen and (min-width: 900px) {
     article {
@@ -31,76 +35,211 @@ slug: Web/CSS/@media
 }
 ```
 
-미디어 쿼리 구문에 관한 내용은 [미디어 쿼리 사용하기](/ko/docs/Web/Guide/CSS/Media_queries#구문) 문서를 참고하세요.
+For a discussion of media query syntax, please see [Using media queries](/en-US/docs/Web/CSS/Media_Queries/Using_media_queries#syntax).
 
-## 접근성 고려사항
+## Description
 
-글씨 크기를 조절한 사용자를 위해서, 미디어 쿼리의 {{cssxref("&lt;length&gt;")}} 자리에는 [`em`](/ko/docs/Web/CSS/length#em)을 사용하는게 좋습니다.
+### Media types
 
-`em`과 [`px`](/ko/docs/Web/CSS/length#px) 모두 유효한 단위지만, 사용자가 브라우저의 글씨 크기를 변경했다면 `em`이 더 자연스럽게 동작합니다.
+_Media types_ describe the general category of a device.
+Except when using the `not` or `only` logical operators, the media type is optional and the `all` type is implied.
 
-Level 4 미디어 쿼리를 통한 사용자 경험 향상도 고려해보세요. 예컨대 `prefers-reduced-motion` 쿼리를 사용하면 [사용자가 시스템에 애니메이션을 최소로 줄여달라고 요청했는지 알 수 있습니다](/ko/docs/Web/CSS/@media/prefers-reduced-motion).
+- `all`
+  - : Suitable for all devices.
+- `print`
+  - : Intended for paged material and documents viewed on a screen in print preview mode. (Please see [paged media](/en-US/docs/Web/CSS/Paged_Media) for information about formatting issues that are specific to these formats.)
+- `screen`
+  - : Intended primarily for screens.
 
-## 보안
+> **Note:** CSS2.1 and [Media Queries 3](https://drafts.csswg.org/mediaqueries-3/#background) defined several additional media types (`tty`, `tv`, `projection`, `handheld`, `braille`, `embossed`, and `aural`), but they were deprecated in [Media Queries 4](https://drafts.csswg.org/mediaqueries/#media-types) and shouldn't be used.
 
-미디어 쿼리는 사용자의 장치와 더 나아가 기능과 디자인에 대한 통찰을 제공하므로, "핑거프린팅"을 통해 장치 고유 식별자로 활용하거나, 그보단 덜 해도 사용자가 원하지 않을 수준의 분류를 하기 위해 오용할 가능성이 있습니다.
+### Media features
 
-그러므로 브라우저는 기기의 특정을 방지하기 위해 일부 반환 값을 모호하게 할 수 있습니다. 또한 사용자에게 추가 설정을 제공할 수도 있는데, 예를 들어 Firefox의 "핑거프린터 차단" 기능을 활성화하면 많은 수의 미디어 쿼리는 실제 장치 상태 대신 기본 값을 보고하게 됩니다.
+_Media features_ describe specific characteristics of the {{glossary("user agent")}}, output device, or environment.
+Media feature expressions test for their presence or value, and are entirely optional. Each media feature expression must be surrounded by parentheses.
 
-## 형식 구문
+- {{cssxref("@media/any-hover", "any-hover")}}
+  - : Does any available input mechanism allow the user to hover over elements?
+    Added in Media Queries Level 4.
+- {{cssxref("@media/any-pointer", "any-pointer")}}
+  - : Is any available input mechanism a pointing device, and if so, how accurate is it?
+    Added in Media Queries Level 4.
+- {{cssxref("@media/aspect-ratio", "aspect-ratio")}}
+  - : Width-to-height aspect ratio of the viewport
+- {{cssxref("@media/color", "color")}}
+  - : Number of bits per color component of the output device, or zero if the device isn't color
+- {{cssxref("@media/color-gamut", "color-gamut")}}
+  - : Approximate range of colors that are supported by the user agent and output device.
+    Added in Media Queries Level 4.
+- {{cssxref("@media/color-index", "color-index")}}
+  - : Number of entries in the output device's color lookup table, or zero if the device does not use such a table
+- {{cssxref("@media/device-aspect-ratio", "device-aspect-ratio")}} {{deprecated_inline}}
+  - : Width-to-height aspect ratio of the output device.
+    Deprecated in Media Queries Level 4.
+- {{cssxref("@media/device-height", "device-height")}} {{deprecated_inline}}
+  - : Height of the rendering surface of the output device.
+    Deprecated in Media Queries Level 4.
+- {{cssxref("@media/device-width", "device-width")}} {{deprecated_inline}}
+  - : Width of the rendering surface of the output device. Deprecated in Media Queries Level 4.
+- {{cssxref("@media/display-mode", "display-mode")}}
+  - : The display mode of the application, as specified in the web app manifest's [`display`](/en-US/docs/Web/Manifest#display) member.
+    Defined in the [Web App Manifest spec](https://w3c.github.io/manifest/#the-display-mode-media-feature).
+- {{cssxref("@media/dynamic-range", "dynamic-range")}}
+  - : Combination of brightness, contrast ratio, and color depth that are supported by the user agent and the output device. Added in Media Queries Level 5.
+- {{cssxref("@media/forced-colors", "forced-colors")}}
+  - : Detect whether user agent restricts color palette.
+    Added in Media Queries Level 5.
+- {{cssxref("@media/grid", "grid")}}
+  - : Does the device use a grid or bitmap screen?
+- {{cssxref("@media/height", "height")}}
+  - : Height of the viewport.
+- {{cssxref("@media/hover", "hover")}}
+  - : Does the primary input mechanism allow the user to hover over elements?
+    Added in Media Queries Level 4.
+- {{cssxref("@media/inverted-colors", "inverted-colors")}}
+  - : Is the user agent or underlying OS inverting colors?
+    Added in Media Queries Level 5.
+- {{cssxref("@media/monochrome", "monochrome")}}
+  - : Bits per pixel in the output device's monochrome frame buffer, or zero if the device isn't monochrome.
+- {{cssxref("@media/orientation", "orientation")}}
+  - : Orientation of the viewport.
+- {{cssxref("@media/overflow-block", "overflow-block")}}
+  - : How does the output device handle content that overflows the viewport along the block axis?
+    Added in Media Queries Level 4.
+- {{cssxref("@media/overflow-inline", "overflow-inline")}}
+  - : Can content that overflows the viewport along the inline axis be scrolled?
+    Added in Media Queries Level 4.
+- {{cssxref("@media/pointer", "pointer")}}
+  - : Is the primary input mechanism a pointing device, and if so, how accurate is it?
+    Added in Media Queries Level 4.
+- {{cssxref("@media/prefers-color-scheme", "prefers-color-scheme")}}
+  - : Detect if the user prefers a light or dark color scheme.
+    Added in Media Queries Level 5.
+- {{cssxref("@media/prefers-contrast", "prefers-contrast")}}
+  - : Detects if the user has requested the system increase or decrease the amount of contrast between adjacent colors.
+    Added in Media Queries Level 5.
+- {{cssxref("@media/prefers-reduced-motion", "prefers-reduced-motion")}}
+  - : The user prefers less motion on the page.
+    Added in Media Queries Level 5.
+- {{cssxref("@media/resolution", "resolution")}}
+  - : Pixel density of the output device.
+- {{cssxref("@media/scripting", "scripting")}}
+  - : Detects whether scripting (i.e. JavaScript) is available.
+    Added in Media Queries Level 5.
+- {{cssxref("@media/update-frequency", "update")}}
+  - : How frequently the output device can modify the appearance of content.
+    Added in Media Queries Level 4.
+- {{cssxref("@media/video-dynamic-range", "video-dynamic-range")}}
+  - : Combination of brightness, contrast ratio, and color depth that are supported by the video plane of user agent and the output device. Added in Media Queries Level 5.
+- {{cssxref("@media/width", "width")}}
+  - : Width of the viewport including width of scrollbar.
+
+### Logical operators
+
+The _logical operators_ `not`, `and`, `only`, and `or` can be used to compose a complex media query.
+You can also combine multiple media queries into a single rule by separating them with commas.
+
+- `and`
+  - : Used for combining multiple media features together into a single media query, requiring each chained feature to return `true` for the query to be `true`.
+    It is also used for joining media features with media types.
+- `not`
+
+  - : Used to negate a media query, returning `true` if the query would otherwise return `false`.
+    If present in a comma-separated list of queries, it will only negate the specific query to which it is applied.
+    If you use the `not` operator, you _must also_ specify a media type.
+
+    > **Note:** In Level 3, the `not` keyword can't be used to negate an individual media feature expression, only an entire media query.
+
+- `only`
+  - : Applies a style only if an entire query matches.
+    It is useful for preventing older browsers from applying selected styles.
+    When not using `only`, older browsers would interpret the query `screen and (max-width: 500px)` as `screen`, ignoring the remainder of the query, and applying its styles on all screens.
+    If you use the `only` operator, you _must also_ specify a media type.
+- `,` (comma)
+  - : Commas are used to combine multiple media queries into a single rule.
+    Each query in a comma-separated list is treated separately from the others
+    Thus, if any of the queries in a list is `true`, the entire media statement returns `true`.
+    In other words, lists behave like a logical `or` operator.
+- `or`
+  - : Equivalent to the `,` operator. Added in Media Queries Level 4.
+
+## Accessibility concerns
+
+To best accommodate people who adjust a site's text size, use [`em`](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#numeric_values)s when you need a {{cssxref("&lt;length&gt;")}} for your [media queries](/en-US/docs/Web/CSS/Media_Queries/Using_media_queries).
+
+Both [`em`](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#numeric_values) and [`px`](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#numeric_values) are valid units, but [`em`](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#numeric_values) works better if the user changes the browser text size.
+
+Also consider using Level 4 media queries to improve the user's experience. For example, `prefers-reduced-motion` to [detect if the user has requested that the system minimize the amount of animation](/en-US/docs/Web/CSS/@media/prefers-reduced-motion) or motion it uses.
+
+## Security
+
+Because media queries provide insights into the capabilities—and by extension, the features and design—of the device the user is working with, there is the potential that they could be abused to construct a ["fingerprint"](/en-US/docs/Glossary/Fingerprinting) which identifies the device, or at least categorizes it to some degree of detail that may be undesirable to users.
+
+Because of this potential, a browser may opt to fudge the returned values in some manner in order to prevent them from being used to precisely identify a computer. A browser might also offer additional measures in this area; for example, if Firefox's "Resist Fingerprinting" setting is enabled, many media queries report default values rather than values representing the actual device state.
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 출력과 화면 미디어 타입 판별
+### Testing for print and screen media types
 
 ```css
 @media print {
-  body { font-size: 10pt; }
+  body {
+    font-size: 10pt;
+  }
 }
 
 @media screen {
-  body { font-size: 13px; }
+  body {
+    font-size: 13px;
+  }
 }
 
 @media screen, print {
-  body { line-height: 1.2; }
+  body {
+    line-height: 1.2;
+  }
 }
 
-@media only screen
-  and (min-width: 320px)
-  and (max-width: 480px)
-  and (resolution: 150dpi) {
-    body { line-height: 1.4; }
+@media only screen and (min-width: 320px) and (max-width: 480px) and (resolution: 150dpi) {
+  body {
+    line-height: 1.4;
+  }
 }
 ```
 
-Media Queries Level 4부터는 새로운 범위 표현 구문을 사용해 더 간결한 미디어 쿼리를 작성할 수 있습니다.
+Introduced in Media Queries Level 4 is a new range syntax that allows for less verbose media queries when testing for any feature accepting a range, as shown in the below examples:
 
 ```css
 @media (height > 600px) {
-    body { line-height: 1.4; }
+  body {
+    line-height: 1.4;
+  }
 }
 
 @media (400px <= width <= 700px) {
-    body { line-height: 1.4; }
+  body {
+    line-height: 1.4;
+  }
 }
 ```
 
-더 많은 예제는 [미디어 쿼리 사용하기](/ko/docs/Web/CSS/Media_Queries/Using_media_queries)를 참고하세요.
+For more examples, please see [Using media queries](/en-US/docs/Web/CSS/Media_Queries/Using_media_queries).
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [미디어 쿼리 사용하기](/ko/docs/Web/CSS/Media_Queries/Using_media_queries)
-- JavaScript에서 `@media`에 접근할 때 사용할 수 있는 CSS 객체 모델 인터페이스 {{domxref("CSSMediaRule")}}
-- [Mozilla 미디어 특성 확장](/ko/docs/Web/CSS/Mozilla_Extensions#Media_features)
-- [WebKit 미디어 특성 확장](/ko/docs/Web/CSS/Webkit_Extensions#Media_features)
+- [Using media queries](/en-US/docs/Web/CSS/Media_Queries/Using_media_queries)
+- In JavaScript, `@media` can be accessed via the CSS object model interface {{domxref("CSSMediaRule")}}.
+- [Extended Mozilla media features](/en-US/docs/Web/CSS/Mozilla_Extensions#media_features)
+- [Extended WebKit media features](/en-US/docs/Web/CSS/WebKit_Extensions#media_features)

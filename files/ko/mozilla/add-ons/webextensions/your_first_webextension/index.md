@@ -1,19 +1,20 @@
 ---
 title: Your first extension
 slug: Mozilla/Add-ons/WebExtensions/Your_first_WebExtension
+page-type: guide
 ---
+
 {{AddonSidebar}}
 
-이 글에서 우리는 "mozilla.org"와 그 하위 도메인 페이지에서 불러온 페이지에 붉은 테두리를 추가하는 확장 기능을 만들게 됩니다. 이를 통해 어떻게 Firefox를 위한 확장 기능을 만들 수 있는지 알아보고자 합니다.
+> **Note:** If you're familiar with the basic concepts of browser extensions, skip this section to [see how extension files are put together](/en-US/docs/Mozilla/Add-ons/WebExtensions/Anatomy_of_a_WebExtension). Then, use the [reference documentation](/en-US/docs/Mozilla/Add-ons/WebExtensions#reference) to start building your extension. Visit [Firefox Extension Workshop](https://extensionworkshop.com/?utm_source=developer.mozilla.org&utm_medium=documentation&utm_campaign=your-first-extension) to learn more about the workflow for testing, publishing, and extensions for Firefox.
 
-이 예제의 소스코드는 GitHub에서 받을 수 있습니다.
-<https://github.com/mdn/webextensions-examples/tree/master/borderify>
+This article walks through creating an extension for Firefox, from start to finish. The extension adds a red border to any pages loaded from "`mozilla.org`" or any of its subdomains.
 
-우선, 파이어폭스의 버전이 45 이상이여야 합니다.
+The source code for this example is on GitHub: <https://github.com/mdn/webextensions-examples/tree/master/borderify>.
 
-## 확장기능 만들기
+## Writing the extension
 
-새 디렉토리를 만들고 그 디렉토리 안으로 들어갑니다.
+In a suitable location, such as in the `Documents` directory, create a new directory called `borderify` and navigate to it. You can do this using your computer's file explorer or [command line terminal](/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line). Understanding how to use the command line terminal is a handy skill, as it helps with your more advanced extension development. Using the terminal, you create the directory like this:
 
 ```bash
 mkdir borderify
@@ -22,7 +23,7 @@ cd borderify
 
 ### manifest.json
 
-이제 "borderify" 폴더 안에 "manifest.json" 파일을 만들어야 합니다. 아래 내용을 작성해 주세요.
+Using a suitable [text editor](/en-US/docs/Learn/Common_questions/Tools_and_setup/Available_text_editors), create a new file called "manifest.json" directly under the "borderify" directory. Give it the following contents:
 
 ```json
 {
@@ -47,33 +48,32 @@ cd borderify
 }
 ```
 
-- [`manifest_version`](/en-US/Add-ons/WebExtensions/manifest.json/manifest_version), [`name`](/en-US/Add-ons/WebExtensions/manifest.json/name), [`version`](/en-US/Add-ons/WebExtensions/manifest.json/version), 이 세가지 키는 반드시 필요합니다. 확장의 기본 메타 데이터를 담고 있습니다.
-- [`description`](/en-US/Add-ons/WebExtensions/manifest.json/description)은 없어도 괜찮지만 포함하는 게 좋습니다. 확장 관리자 화면에서 볼 수 있습니다.
-- [`icons`](/en-US/Add-ons/WebExtensions/manifest.json/icons)은 없어도 괜찮지만 역시 포함하는 편이 좋습니다. 이는 확장의 아이콘을 결정하며 확장 관리자 화면에서 볼 수 있습니다.
+- The first three keys: [`manifest_version`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/manifest_version), [`name`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/name), and [`version`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/version), are mandatory and contain basic metadata for the extension.
+- [`description`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/description) is optional, but recommended: it's displayed in the Add-ons Manager.
+- [`icons`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/icons) is optional, but recommended: it allows you to specify an icon for the extension, that will be shown in the Add-ons Manager.
 
-가장 재밌는 키는 [`content_scripts`](/en-US/Add-ons/WebExtensions/manifest.json/content_scripts) 입니다. 이 키는 URL이 패턴과 일치하는 페이지에 스크립트를 주입하도록 Firefox에 요청하는 역할을 합니다. 이 예제의 경우, "mozilla.org"와 그 하위 도메인에서 제공되는 모든 HTTP와 HTTPS 페이지에 "borderify.js" 스크립트를 주입하도록 Firefox에 요청합니다.
+The most interesting key here is [`content_scripts`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/content_scripts), which tells Firefox to load a script into Web pages whose URL matches a specific pattern. In this case, we're asking Firefox to load a script called "borderify.js" into all HTTP or HTTPS pages served from "mozilla.org" or any of its subdomains.
 
-- [content scripts에 대해 더 알아보기](/en-US/Add-ons/WebExtensions/Content_scripts)
-- [match patterns에 대해 더 알아보기](/en-US/Add-ons/WebExtensions/Match_patterns)
+- [Learn more about content scripts.](/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts)
+- [Learn more about match patterns](/en-US/docs/Mozilla/Add-ons/WebExtensions/Match_patterns).
 
-> **경고:** [확장에 ID를 지정해야 할 수도 있습니다](/en-US/Add-ons/WebExtensions/WebExtensions_and_the_Add-on_ID#When_do_you_need_an_Add-on_ID). 애드온 ID를 지정해야 한다면, `manifest.json` 파일에 `application` 키를 작성한 다음 gecko.id 프로퍼티를 설정하면 됩니다.```json
-> "applications": {
-> "gecko": {
-> "id": "borderify@example.com"
-> }
-> }
+> **Warning:** [In some situations you need to specify an ID for your extension](https://extensionworkshop.com/documentation/develop/extensions-and-the-add-on-id/#when_do_you_need_an_add-on_id). If you do need to specify an add-on ID, include the [`browser_specific_settings`](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/browser_specific_settings) key in `manifest.json` and set its `gecko.id` property:
 >
-> ```
->
+> ```json
+> "browser_specific_settings": {
+>   "gecko": {
+>     "id": "borderify@example.com"
+>   }
+> }
 > ```
 
 ### icons/border-48.png
 
-확장기능에는 아이콘이 필요합니다. 이 아이콘은 확장 관리자의 목록에 나타납니다. 우리의 manifest.json은 "icons/border-48.png"를 아이콘으로 사용하겠다고 정했습니다.
+The extension should have an icon. This will be shown next to the extension's listing in the Add-ons Manager. Our manifest.json promised that we would have an icon at "icons/border-48.png".
 
-borderify 디렉토리 안에 icons 디렉토리를 만들고, "border-48.png"라는 이름으로 아이콘을 저장합니다. [예제에 포함된 아이콘](https://github.com/mdn/webextensions-examples/blob/master/borderify/icons/border-48.png)이나, [Creative Commons Attribution-ShareAlike](https://creativecommons.org/licenses/by-sa/3.0/) 라이선스로 배포되는 Google Material Design 아이콘 세트에서 골라도 좋습니다.
+Create the "icons" directory directly under the "borderify" directory. Save an icon there named "border-48.png". You could use [the one from our example](https://raw.githubusercontent.com/mdn/webextensions-examples/master/borderify/icons/border-48.png), which is taken from the Google Material Design iconset, and is used under the terms of the [Creative Commons Attribution-ShareAlike](https://creativecommons.org/licenses/by-sa/3.0/) license.
 
-사용할 아이콘은 48픽셀 정사각형이여야 합니다. 원한다면 고해상도 디스플레이를 위해서 96x96 픽셀의 아이콘과 같이 제공할 수도 있습니다. 만약 그렇게 한다면 manifest.json의 icons 객체에 `96` 프로퍼티로 지정해줘야 합니다.
+If you choose to supply your own icon, It should be 48x48 pixels. You could also supply a 96x96 pixel icon, for high-resolution displays, and if you do this it will be specified as the `96` property of the `icons` object in manifest.json:
 
 ```json
 "icons": {
@@ -82,66 +82,66 @@ borderify 디렉토리 안에 icons 디렉토리를 만들고, "border-48.png"�
 }
 ```
 
-대신 SVG 파일을 사용할 수도 있습니다. 그러면 자동으로 딱 맞게 조절되어 적용됩니다. (만약 SVG에 텍스트가 포함되어 있다면 사용하는 툴에서 "패스로 변환하기" 기능을 사용해 텍스트를 패스로 변경해주세요. 그래야 원하는 위치와 크기로 확대/축소가 이뤄집니다.)
+Alternatively, you could supply an SVG file here, and it will be scaled correctly. (Though: if you're using SVG and your icon includes text, you may want to use your SVG editor's "convert to path" tool to flatten the text, so that it scales with a consistent size/position.)
 
-- [아이콘을 지정하는 방법에 대해 더 알아보기](/en-US/Add-ons/WebExtensions/manifest.json/icons)
+- [Learn more about specifying icons.](/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/icons)
 
 ### borderify.js
 
-마지막으로 borderify.js 파일을 borderify 디렉토리에 만들고 아래 내용으로 저장해주세요.
+Finally, create a file called "borderify.js" directly under the "borderify" directory. Give it this content:
 
 ```js
 document.body.style.border = "5px solid red";
 ```
 
-이 스크립트는 manifest.json의 `content_scripts`키로 주어진 패턴에 매칭 될 때 페이지에 삽입됩니다. 스크립트는 원래 페이지에 포함되어 있던 스크립트처럼, 문서 자체에 직접 접근할 수 있게 됩니다.
+This script will be loaded into the pages that match the pattern given in the `content_scripts` manifest.json key. The script has direct access to the document, just like scripts loaded by the page itself.
 
-- [content scripts에 대해 더 알아보기](/en-US/Add-ons/WebExtensions/Content_scripts)
+- [Learn more about content scripts.](/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts)
 
-## 사용해보기
+## Trying it out
 
-우선 파일들이 원하는 위치에 있는지 다시 확인 해보세요.
+First, double check that you have the right files in the right places:
 
 ```
-    borderify/
-        icons/
-            border-48.png
-        borderify.js
-        manifest.json
+borderify/
+    icons/
+        border-48.png
+    borderify.js
+    manifest.json
 ```
 
-### 설치
+### Installing
 
-Firefox로 "about:debugging" 페이지에 들어갑니다. "임시 확장기능 로드"를 클릭해 확장기능 디렉토리를 선택합니다.
+In Firefox: Open the [about:debugging](https://firefox-source-docs.mozilla.org/devtools-user/about_colon_debugging/index.html) page, click the This Firefox option, click the Load Temporary Add-on button, then select any file in your extension's directory.
 
-{{EmbedYouTube("cer9EUKegG4")}}
+The extension now installs, and remains installed until you restart Firefox.
 
-이제 확장기능이 설치될 것이고, Firefox가 재시작 되더라도 유지될 것입니다.
+Alternatively, you can run the extension from the command line using the [web-ext](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/) tool.
 
-대신 [web-ext](/ko/docs/Mozilla/Add-ons/WebExtensions/Getting_started_with_web-ext) 툴을 사용해 커맨드라인에서 확장기능을 실행할 수도 있습니다.
+### Testing
 
-### 테스트
+> **Note:** By default [extensions don't work in private browsing](https://support.mozilla.org/en-US/kb/extensions-private-browsing). If you want to test this extension in private browsing open "`about:addons`", click on the extension, and select the Allow radio button for Run in Private Windows.
 
-이제 "mozilla.org" 페이지에 들어가 봅시다. 페이지 전체를 둘러싸고 있는 붉은 색의 테두리를 볼 수 있습니다.
+Now visit a page under "`https://www.mozilla.org/en-US/`", and you should see the red border round the page.
 
-{{EmbedYouTube("rxBQl2Z9IBQ")}}
+![Border displayed on mozilla.org](border_on_mozilla_org.png)
 
-> **참고:** addons.mozilla.org에 들어가서 테스트 하지 마세요! Content script는 현재 이 도메인에 사용할 수 없도록 차단됩니다.
+> **Note:** Don't try it on "`addons.mozilla.org`", though! Content scripts are currently blocked on that domain.
 
-좀 더 파고들어 봅시다. 테두리의 색을 변경하거나, 페이지 컨텐츠에 다른 것들을 해볼 수 있겠죠. content script를 저장하고 about:debugging 페이지에서 Reload 버튼을 눌러 확장기능 파일을 새로고침 할 수 있습니다. 그리고 나서는 곧바로 변경된 기능을 확인할 수 있죠.
+Try experimenting a bit. Edit the content script to change the color of the border, or do something else to the page content. Save the content script, then reload the extension's files by clicking the Reload button in "`about:debugging`". You can see the changes right away.
 
-{{EmbedYouTube("NuajE60jfGY")}}
+- [Learn more about loading extensions](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/)
 
-- [확장기능을 불러오는 것에 대해 더 알아보기](/en-US/Add-ons/WebExtensions/Temporary_Installation_in_Firefox)
+## Packaging and publishing
 
-## 패키징과 배포
+For other people to use your extension, you need to package it and submit it to Mozilla for signing. To learn more about that, see ["Publishing your extension"](https://extensionworkshop.com/documentation/publish/package-your-extension/).
 
-다른 사람들이 확장기능을 사용할 수 있게 하려면, 확장을 패키징하고 Mozilla에 제출해 서명을 받아야 합니다. [확장기능 배포에 대해 더 알아보기.](/ko/docs/Mozilla/Add-ons/WebExtensions/Publishing_your_WebExtension)
+## What's next?
 
-## 다음으로
+Now you've had an introduction to the process of developing a WebExtension for Firefox:
 
-이제 어떻게 Firefox용 WebExtension을 개발해야 하는지 알게 되었습니다. 다음 글들을 읽고 시도해 보세요.
-
-- [확장기능의 구조에 대해 더 자세히 알아보기](/en-US/Add-ons/WebExtensions/Anatomy_of_a_WebExtension)
-- [좀 더 복잡한 확장기능을 만들기](/en-US/Add-ons/WebExtensions/Your_second_WebExtension)
-- [확장기능에서 사용할 수 있는 JavaScript API 문서](/en-US/Add-ons/WebExtensions/API)
+- [write a more complex extension](/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_second_WebExtension)
+- [read more about the anatomy of an extension](/en-US/docs/Mozilla/Add-ons/WebExtensions/Anatomy_of_a_WebExtension)
+- [explore the extension examples](/en-US/docs/Mozilla/Add-ons/WebExtensions/Examples)
+- [find out what you need to develop, test, and publish your extension](/en-US/docs/Mozilla/Add-ons/WebExtensions/What_next_)
+- [take your learning further](/en-US/docs/Mozilla/Add-ons/WebExtensions/What_next_#continue_your_learning_experience).

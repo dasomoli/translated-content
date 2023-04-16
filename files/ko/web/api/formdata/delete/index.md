@@ -1,54 +1,49 @@
 ---
-title: FormData.delete()
+title: "FormData: delete() method"
+short-title: delete()
 slug: Web/API/FormData/delete
+page-type: web-api-instance-method
+browser-compat: api.FormData.delete
 ---
 
 {{APIRef("XMLHttpRequest")}}
 
-{{domxref("FormData")}} 인터페이스의 **`delete()`** 메서드는 `FormData` 객체에서 key와 그 값에 해당하는 것을 지웁니다.
+The **`delete()`** method of the {{domxref("FormData")}} interface deletes a key and its value(s) from a `FormData` object.
 
-> **참고:** 이 메서드는 [Web Worker](/ko/docs/Web/API/Web_Workers_API)에서 사용할 수 있습니다.
+> **Note:** This method is available in [Web Workers](/en-US/docs/Web/API/Web_Workers_API).
 
 ## Syntax
 
-```js
-formData.delete(name);
+```js-nolint
+delete(name)
 ```
 
 ### Parameters
 
 - `name`
-  - : 삭제할 key의 이름 입니다.
+  - : The name of the key you want to delete.
 
-### Returns
+### Return value
 
-Void.
+None ({{jsxref("undefined")}}).
 
-## Example
+## Examples
 
-다음 코드를 따라 빈 `FormData` 객체를 만들고, form의 key/value 쌍을 미리 채웁니다:
-
-```js
-var formData = new FormData(myForm);
-```
-
-`delete()`를 사용하여 키와 값을 삭제할 수 있습니다:
+You can delete a key and its values using `delete()`:
 
 ```js
-formData.delete('username');
+formData.delete("username");
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- {{domxref("XMLHTTPRequest")}}
-- [Using XMLHttpRequest](/ko/docs/DOM/XMLHttpRequest/Using_XMLHttpRequest)
-- [Using FormData objects](/ko/docs/DOM/XMLHttpRequest/FormData/Using_FormData_Objects)
+- [Using FormData objects](/en-US/docs/Web/API/FormData/Using_FormData_Objects)
 - {{HTMLElement("Form")}}

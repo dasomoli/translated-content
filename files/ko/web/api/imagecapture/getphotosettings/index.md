@@ -1,64 +1,85 @@
 ---
-title: ImageCapture.getPhotoSettings()
+title: "ImageCapture: getPhotoSettings() method"
+short-title: getPhotoSettings()
 slug: Web/API/ImageCapture/getPhotoSettings
+page-type: web-api-instance-method
+status:
+  - experimental
+browser-compat: api.ImageCapture.getPhotoSettings
 ---
 
-{{APIRef("MediaStream Image")}}
+{{APIRef("MediaStream Image")}}{{SeeCompatTable}}
 
-{{domxref("ImageCapture")}} 인터페이스의 **`getPhotoSettings()`** 메서드는 현재 촬영 설정을 담은 {{domxref("PhotoSettings")}} 객체로 이행하는 {{jsxref("Promise")}}를 반환합니다.
+The **`getPhotoSettings()`** method of
+the {{domxref("ImageCapture")}} interface returns a {{jsxref("Promise")}} that
+resolves with an object containing the current photo
+configuration settings.
 
-## 구문
+## Syntax
 
-```js
-const settingsPromise = imageCapture.getPhotoSettings()
+```js-nolint
+getPhotoSettings()
 ```
 
-### 반환 값
+### Parameters
 
-다음의 속성으로 구성된 {{domxref("PhotoSettings")}} 객체로 이행하는 {{jsxref("Promise")}}.
+None.
 
-- `fillLightMode`: 캡처 장치의 플래시 설정. `"auto"`, `"off"`, `"flash"` 중 하나를 사용할 수 있습니다.
-- `imageHeight`: 원하는 이미지 크기의 높이를 나타내는 정숫값. 일련의 정해진 크기만 지원하는 경우, {{glossary("user agent", "사용자 에이전트")}}는 이 값과 제일 가까운 높이를 사용합니다.
-- `imageWidth`: 원하는 이미지 크기의 너비를 나타내는 정숫값. 일련의 정해진 크기만 지원하는 경우, 사용자 에이전트는 이 값과 제일 가까운 너비를 사용합니다.
-- `redEyeReduction`: 적목 현상 감소 기능이 존재하는 경우, 사용할지 나타내는 불리언 값.
+### Return value
 
-## 예제
+A {{jsxref("Promise")}} that resolves with an object
+containing the following properties:
 
-다음 예제는 [Chrome의 Image Capture / Photo Resolution Sample](https://googlechrome.github.io/samples/image-capture/photo-resolution.html)에서 가져온 코드로, `getPhotoCapabilities()`를 사용해 범위 입력 칸의 크기를 수정합니다. 또한 장치의 {{domxref("MediaStream")}}에서 가져온 {{domxref("MediaStreamTrack")}} 객체를 사용해 {{domxref("ImageCapture")}} 객체를 생성하는 부분도 포함하고 있습니다.
+- `fillLightMode`
+  - : The flash setting of the capture device, one of `"auto"`, `"off"`, or `"on"`.
+- `imageHeight`
+  - : The desired image height as an integer. The browser selects the closest width value to this setting if it only supports discrete heights.
+- `imageWidth`
+  - : The desired image width as an integer. The browser selects the closest width value to this setting if it only supports discrete widths.
+- `redEyeReduction`
+  - : A boolean indicating whether the red-eye reduction should be used if it is available.
+
+## Examples
+
+The following example, extracted from [Chrome's Image Capture / Photo Resolution Sample](https://googlechrome.github.io/samples/image-capture/photo-resolution.html), uses the results from
+`getPhotoSettings()` to modify the size of an input range. This example also
+shows how the {{domxref("ImageCapture")}} object is created using a
+{{domxref("MediaStreamTrack")}} retrieved from a device's {{domxref("MediaStream")}}.
 
 ```js
 const input = document.querySelector('input[type="range"]');
 
-var imageCapture;
+let imageCapture;
 
-navigator.mediaDevices.getUserMedia({video: true})
-.then(mediaStream => {
-  document.querySelector('video').srcObject = mediaStream;
+navigator.mediaDevices
+  .getUserMedia({ video: true })
+  .then((mediaStream) => {
+    document.querySelector("video").srcObject = mediaStream;
 
-  const track = mediaStream.getVideoTracks()[0];
-  imageCapture = new ImageCapture(track);
+    const track = mediaStream.getVideoTracks()[0];
+    imageCapture = new ImageCapture(track);
 
-  return imageCapture.getPhotoCapabilities();
-})
-.then(photoCapabilities => {
-  const settings = imageCapture.track.getSettings();
+    return imageCapture.getPhotoCapabilities();
+  })
+  .then((photoCapabilities) => {
+    const settings = imageCapture.track.getSettings();
 
-  input.min = photoCapabilities.imageWidth.min;
-  input.max = photoCapabilities.imageWidth.max;
-  input.step = photoCapabilities.imageWidth.step;
+    input.min = photoCapabilities.imageWidth.min;
+    input.max = photoCapabilities.imageWidth.max;
+    input.step = photoCapabilities.imageWidth.step;
 
-  return imageCapture.getPhotoSettings();
-})
-.then(photoSettings => {
-  input.value = photoSettings.imageWidth;
-})
-.catch(error => console.log('Argh!', error.name || error));
+    return imageCapture.getPhotoSettings();
+  })
+  .then((photoSettings) => {
+    input.value = photoSettings.imageWidth;
+  })
+  .catch((error) => console.error("Argh!", error.name || error));
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

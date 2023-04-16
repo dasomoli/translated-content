@@ -1,46 +1,52 @@
 ---
 title: Date.prototype.valueOf()
 slug: Web/JavaScript/Reference/Global_Objects/Date/valueOf
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.valueOf
 ---
 
 {{JSRef}}
 
-**`valueOf()`** 함수는 {{jsxref("Date")}} 객체의 원시값을 반환합니다.
+The **`valueOf()`** method returns the primitive value of a
+{{jsxref("Date")}} object.
 
 {{EmbedInteractiveExample("pages/js/date-valueof.html")}}
 
 ## Syntax
 
-```js
-    dateObj.valueOf()
+```js-nolint
+valueOf()
 ```
 
 ### Return value
 
-반환되는 milliseconds 값은 1 January 1970 00:00:00 UTC 와 주어진 일시 사이의 값입니다.
+The number of milliseconds between 1 January 1970 00:00:00 UTC and the given date, or {{jsxref("NaN")}} in case of an invalid date.
 
 ## Description
 
-`valueOf()` 함수는 01 January, 1970 UTC 이후의 milliseconds 단위의 자연수 타입인 {{jsxref("Date")}} 객체의 원시값을 반환합니다.
+The `valueOf()` method returns the primitive value of a {{jsxref("Date")}}
+object as a number data type, the number of milliseconds since midnight 01 January, 1970
+UTC.
 
-이 함수는 {{jsxref("Date.prototype.getTime()")}} 함수와 동일한 결과값을 반환합니다.
+This method is functionally equivalent to the {{jsxref("Date.prototype.getTime()")}}
+method.
 
-이 함수는 사용자 코드에 명시된 것이 아닌, JavaScript 자체에 포함되어 있습니다.
+This method is usually called internally by JavaScript and not explicitly in code.
 
 ## Examples
 
-### Using `valueOf()`
+### Using valueOf()
 
 ```js
-var x = new Date(56, 6, 17);
-var myVar = x.valueOf();      // myVar에 -424713600000를 할당합니다.
+const x = new Date(56, 6, 17);
+const myVar = x.valueOf(); // assigns -424713600000 to myVar
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

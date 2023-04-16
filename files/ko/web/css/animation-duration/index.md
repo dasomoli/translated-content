@@ -1,11 +1,19 @@
 ---
 title: animation-duration
 slug: Web/CSS/animation-duration
+page-type: css-property
+browser-compat: css.properties.animation-duration
 ---
 
-{{CSSRef}} {{SeeCompatTable}}
+{{CSSRef}}
 
-**`animation-duration`** [CSS](/ko/docs/CSS) 속성은 애니메이션이 한 사이클을 완료하는 데 걸리는 시간을 지정합니다.
+The **`animation-duration`** [CSS](/en-US/docs/Web/CSS) property sets the length of time that an animation takes to complete one cycle.
+
+{{EmbedInteractiveExample("pages/css/animation-duration.html")}}
+
+It is often convenient to use the shorthand property {{ cssxref("animation") }} to set all animation properties at once.
+
+## Syntax
 
 ```css
 /* Single animation */
@@ -15,40 +23,94 @@ animation-duration: 120ms;
 /* Multiple animations */
 animation-duration: 1.64s, 15.22s;
 animation-duration: 10s, 35s, 230ms;
+
+/* Global values */
+animation-duration: inherit;
+animation-duration: initial;
+animation-duration: revert;
+animation-duration: revert-layer;
+animation-duration: unset;
 ```
-
-축약 속성 {{ cssxref("animation") }}를 사용하여 모든 애니메이션 속성을 한꺼번에 설정하는 것이 편리합니다.
-
-{{cssinfo}}
-
-## 문법(Syntax)
 
 ### Values
 
 - `{{cssxref("&lt;time&gt;")}}`
-  - : 애니메이션이 한 사이클을 완료하는 데 걸리는 지속 시간입니다. 이것은 초(s) 또는 밀리 초 (ms)로 지정 될 수 있습니다. 값은 양수 또는 0이어야하며 단위는 필수입니다. 기본값인 0의 값은 애니메이션이 작동하지 않아야 함을 나타냅니다.
 
-> **참고:** 음수 값은 유효하지 않으므로 선언이 무시됩니다. 접두사가 붙은 구현은 그것들을 0과 동일하게 간주 할 수 있습니다.
+  - : The time that an animation takes to complete one cycle. This may be specified in either seconds (`s`) or milliseconds (`ms`). The value must be positive or zero and the unit is required.
 
-> **참고:** animation- \* 속성에 여러 개의 쉼표로 구분 된 값을 지정하면 {{cssxref ( "animation-name")}} 속성에 지정된 애니메이션에 얼마나 많은 값이 있는지에 따라 다른 방식으로 지정됩니다. 자세한 내용은 [Setting multiple animation property values](/ko/docs/Web/CSS/CSS_Animations/Using_CSS_animations#Setting_multiple_animation_property_values)를 참조하십시오.
+    If no value is provided, the default value of `0s` is used, in which case the animation still executes (the [`animationStart`](/en-US/docs/Web/API/Element/animationstart_event) and [`animationEnd`](/en-US/docs/Web/API/Element/animationend_event) events are fired). Whether or not the animation will be visible when the duration is `0s` will depend on the value of [`animation-fill-mode`](/en-US/docs/Web/CSS/animation-fill-mode), as explained below:
 
-### Formal syntax
+    - If `animation-fill-mode` is set to `backwards` or `both`, the first frame of the animation as defined by `animation-direction` will be displayed during [`animation-delay`](/en-US/docs/Web/CSS/animation-delay) countdown.
+    - If `animation-fill-mode` is set to `forwards` or `both`, the last frame of the animation will be displayed, as defined by `animation-direction`, after the `animation-delay` expires.
+    - If `animation-fill-mode` is set to `none`, the animation will have no visible effect.
+
+> **Note:** Negative values are invalid, causing the declaration to be ignored. Some early, prefixed, implementations may consider them as identical to `0s`.
+
+> **Note:** When you specify multiple comma-separated values on an `animation-*` property, they are applied to the animations in the order in which the {{cssxref("animation-name")}}s appear. For situations where the number of animations and `animation-*` property values do not match, see [Setting multiple animation property values](/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations#setting_multiple_animation_property_values).
+
+## Formal definition
+
+{{cssinfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제(Examples)
+## Examples
 
-[CSS 애니메이션 예제](/en/CSS/CSS_animations)를 참조하십시오.
+### Setting animation duration
 
-## 명세
+This animation has an animation-duration of 0.7 seconds.
+
+#### HTML
+
+```html
+<div class="box"></div>
+```
+
+#### CSS
+
+```css
+.box {
+  background-color: rebeccapurple;
+  border-radius: 10px;
+  width: 100px;
+  height: 100px;
+}
+
+.box:hover {
+  animation-name: rotate;
+  animation-duration: 0.7s;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+```
+
+#### Result
+
+Hover over the rectangle to start the animation.
+
+{{EmbedLiveSample("Setting animation duration","100%","250")}}
+
+See [CSS animations](/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations) for more examples.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성(Browser compatibility)
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기(See also)
+## See also
 
-- [Using CSS animations](/ko/docs/Web/CSS/CSS_Animations/Using_CSS_animations)
+- [Using CSS animations](/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations)
 - JavaScript {{domxref("AnimationEvent")}} API
+- Other related animation properties: {{cssxref("animation")}}, {{cssxref("animation-composition")}}, {{cssxref("animation-delay")}}, {{cssxref("animation-direction")}}, {{cssxref("animation-fill-mode")}}, {{cssxref("animation-iteration-count")}}, {{cssxref("animation-name")}}, {{cssxref("animation-play-state")}}, {{cssxref("animation-timeline")}}, {{cssxref("animation-timing-function")}}

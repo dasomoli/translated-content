@@ -1,63 +1,65 @@
 ---
 title: IntersectionObserver
 slug: Web/API/IntersectionObserver
+page-type: web-api-interface
+browser-compat: api.IntersectionObserver
 ---
 
 {{APIRef("Intersection Observer API")}}
 
-[Intersection Observer API](/ko/docs/Web/API/Intersection_Observer_API)의 **`IntersectionObserver`** 인터페이스는 대상 요소와 상위 요소, 또는 대상 요소와 최상위 문서의 {{Glossary("viewport", "뷰포트")}}가 서로 교차하는 영역이 달라지는 경우 이를 비동기적으로 감지할 수 있는 수단을 제공합니다.
+The **`IntersectionObserver`** interface of the [Intersection Observer API](/en-US/docs/Web/API/Intersection_Observer_API) provides a way to asynchronously observe changes in the intersection of a target element with an ancestor element or with a top-level document's {{Glossary('viewport')}}. The ancestor element or viewport is referred to as the root.
 
-`IntersectionObserver`가 생성되면 루트 내에서 설정된 가시성 비율이 자신의 주시 대상 중에서 나타나는지 감지하기 시작합니다. 한 번 생성한 이후에는 설정을 변경할 수 없으므로, 이미 생성된 감지기 객체는 지정했던 가시성 비율의 감지에만 사용할 수 있습니다. 그래도 하나의 감지기가 다수의 대상을 한꺼번에 주시할 수 있습니다.
+When an `IntersectionObserver` is created, it's configured to watch for given ratios of visibility within the root. The configuration cannot be changed once the `IntersectionObserver` is created, so a given observer object is only useful for watching for specific changes in degree of visibility; however, you can watch multiple target elements with the same observer.
 
-## 생성자
+## Constructor
 
-- {{domxref("IntersectionObserver.IntersectionObserver()")}}
-  - : `IntersectionObserver` 객체를 생성합니다. `IntersectionObserver` 객체는 대상 요소의 가시성 비율이 설정한 역치 값을 넘어가는 것을 감지하면 지정한 콜백을 호출합니다.
+- {{domxref("IntersectionObserver.IntersectionObserver", "IntersectionObserver()")}}
+  - : Creates a new `IntersectionObserver` object which will execute a specified callback function when it detects that a target element's visibility has crossed one or more thresholds.
 
-## 속성
+## Instance properties
 
-- {{domxref("IntersectionObserver.root")}} {{readonlyinline}}
-  - : 교차 영역 계산에 사용하는 바운딩 박스의 기준이 되는 {{domxref("Element")}} 또는 {{domxref("Document")}}입니다. `root` 설정을 생성자에 제공하지 않았거나, `root`의 값이 `null`인 경우 최상위 문서의 뷰포트를 사용합니다.
-- {{domxref("IntersectionObserver.rootMargin")}} {{readonlyinline}}
-  - : 교차 영역을 계산할 때 루트의 {{glossary("bounding box", "바운딩 박스")}}에 적용할 오프셋입니다. 즉, 필요에 따라 계산 용도로 루트 영역을 늘리거나 줄일 수 있습니다. 생성자 설정에 지정한 값은 생성자 내에서 내부 조건에 맞도록 조정 과정을 거치므로, 이 속성의 반환 값이 설정 값과 다를 수도 있습니다. 각각의 오프셋에는 픽셀(`px`)과 퍼센트(`%`)를 사용할 수 있으며, 기본 값은 `0px 0px 0px 0px`입니다.
-- {{domxref("IntersectionObserver.thresholds")}} {{readonlyinline}}
-  - : 오름차순으로 정렬된 역치 리스트입니다. 각각의 역치는 대상의 바운딩 박스 영역과 교차 영역 사이의 비율에 대한 역치입니다. 대상에 대한 교차 알림(콜백 호출)은 이 역치 값 중 하나라도 넘어갈 때 발생합니다. 아무 값도 생성자에 지정하지 않은 경우의 기본 값은 0입니다.
+- {{domxref("IntersectionObserver.root")}} {{ReadOnlyInline}}
+  - : The {{domxref("Element")}} or {{domxref("Document")}} whose bounds are used as the bounding box when testing for intersection. If no `root` value was passed to the constructor or its value is `null`, the top-level document's viewport is used.
+- {{domxref("IntersectionObserver.rootMargin")}} {{ReadOnlyInline}}
+  - : An offset rectangle applied to the root's {{Glossary('bounding box')}} when calculating intersections, effectively shrinking or growing the root for calculation purposes. The value returned by this property may not be the same as the one specified when calling the constructor as it may be changed to match internal requirements. Each offset can be expressed in pixels (`px`) or as a percentage (`%`). The default is "0px 0px 0px 0px".
+- {{domxref("IntersectionObserver.thresholds")}} {{ReadOnlyInline}}
+  - : A list of thresholds, sorted in increasing numeric order, where each threshold is a ratio of intersection area to bounding box area of an observed target. Notifications for a target are generated when any of the thresholds are crossed for that target. If no value was passed to the constructor, 0 is used.
 
-## 메서드
+## Instance methods
 
 - {{domxref("IntersectionObserver.disconnect()")}}
-  - : 모든 대상의 주시를 해제합니다.
+  - : Stops the `IntersectionObserver` object from observing any target.
 - {{domxref("IntersectionObserver.observe()")}}
-  - : 주어진 대상 요소를 주시합니다.
+  - : Tells the `IntersectionObserver` a target element to observe.
 - {{domxref("IntersectionObserver.takeRecords()")}}
-  - : 모든 주시 대상에 대한 {{domxref("IntersectionObserverEntry")}} 배열을 반환합니다.
+  - : Returns an array of {{domxref("IntersectionObserverEntry")}} objects for all observed targets.
 - {{domxref("IntersectionObserver.unobserve()")}}
-  - : 특정 대상 요소에 대한 주시를 해제합니다.
+  - : Tells the `IntersectionObserver` to stop observing a particular target element.
 
-## 예제
+## Examples
 
 ```js
-var intersectionObserver = new IntersectionObserver(function(entries) {
-  // intersectionRatio가 0이라는 것은 대상을 볼 수 없다는 것이므로
-  // 아무것도 하지 않음
+const intersectionObserver = new IntersectionObserver((entries) => {
+  // If intersectionRatio is 0, the target is out of view
+  // and we do not need to do anything.
   if (entries[0].intersectionRatio <= 0) return;
 
   loadItems(10);
-  console.log('새 항목 불러옴');
+  console.log("Loaded new items");
 });
-// 주시 시작
-intersectionObserver.observe(document.querySelector('.scrollerFooter'));
+// start observing
+intersectionObserver.observe(document.querySelector(".scrollerFooter"));
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref('MutationObserver')}}
 - {{domxref('PerformanceObserver')}}

@@ -1,78 +1,84 @@
 ---
-title: 서식 상황 입문서
+title: Introduction to formatting contexts
 slug: Web/CSS/CSS_Flow_Layout/Intro_to_formatting_contexts
+page-type: guide
 ---
+
 {{CSSRef}}
 
-이 문서는 서식 상황의 개념을 소개합니다. 서식 상황에는 블록 서식 상황과 인라인 서식 상황, 가변 서식 상황을 포함한 여러 유형이 있습니다. 그들이 어떻게 동작하고 어떻게 그러한 동작을 활용할 수 있는지에 대한 기본 사항도 소개합니다.
+This article introduces the concept of formatting contexts, of which there are several types, including block formatting contexts, inline formatting contexts, and flex formatting contexts. The basics of how they behave and how you can make use of these behaviors are also introduced.
 
-페이지의 모든 것은 서식 상황(**formatting context**)의 일부이거나 특정 방식으로 콘텐츠를 배치하도록 정의된 영역입니다. 블록 서식 상황(**block formatting context**)은 블록 레이아웃 규칙에 따라 자식 요소를 배치하고, 가변 서식 상황(**flex formatting context**)은 자식을 {{Glossary("flex item", "flex items")}}로 취급해 배치합니다. 각 서식 상황은 해당 상황에 속했을 때 레이아웃이 어떻게 동작하는지에 대한 특정 규칙을 가지고 있습니다.
+Everything on a page is part of a **formatting context**, or an area which has been defined to lay out content in a particular way. A **block formatting context** (BFC) will lay child elements out according to block layout rules, a **flex formatting context** will lay its children out as {{Glossary("flex item", "flex items")}}, etc. Each formatting context has specific rules about how layout behaves when in that context.
 
-## 블록 서식 상황
+## Block formatting contexts
 
-문서의 최외각 요소는 우선 블록 레이아웃 규칙을 수립합니다. 이를 일컬어 초기 블록 서식 상황(**initial block formatting context**)이라고 합니다. 이는 `<html>` 요소 블록 내부의 모든 요소는 블록 및 인라인 레이아웃 규칙을 따르는 일반 대열에 따라 배치됨을 의미합니다. 블록 서식 상황(BFC)에 참여하는 요소는 CSS 상자 모델에 의해 윤곽이 제시된 규칙을 사용합니다. 이 모델은 요소의 여백, 테두리 및 패딩이 동일한 서식 상황에서 서로 다른 블록과 상호 작용하는 방법을 정의합니다.
+The outermost element in a document that uses block layout rules establishes the first, or **initial block formatting context**. This means that every element inside the `<html>` element's block is laid out according to normal flow following the rules for block and inline layout. Elements participating in a BFC use the rules outlined by the CSS Box Model, which defines how an element's margins, borders, and padding interact with other blocks in the same context.
 
-### 새로운 블록 서식 상황 생성하기
+### Creating a new block formatting context
 
-단지 {{HTMLElement("html")}} 요소만이 블록 서식 상황을 생성할 능력을 갖춘 것은 아닙니다. 기본값으로 블록 레이아웃인 모든 요소는 역시 자기 자손 요소에 대한 블록 서식 상황을 생성합니다. 또한 기본값으로 주어지지 않아도 블록 서식 상황을 생성하도록 할 수 있는 CSS 속성이 있습니다. 동 속성이 유용한 까닭은 새로운 블록 서식 상황이 자체적으로 주 레이아웃 내부의 소형 레이아웃이 된다는 점에서 최외곽 문서와 매우 유사하게 작동하기 때문입니다. 블록 서식 상황은 그 내부에 모든 요소를 포함하고, {{cssxref("float")}} 및 {{cssxref("clear")}}는 동일한 서식 상황에 속한 항목에만 적용되며, 여백 축소는 동일한 서식 상황 요소 사이에만 이뤄집니다.
+The {{HTMLElement("html")}} element is not the only element capable of creating a block formatting context. Any block-level element can be made to create a BFC by the application of certain CSS properties.
 
-우리 문서의 뿌리 요소인 ({{HTMLElement("html")}}) 이 외에도 새로운 블록 서식 상황은 다음과 같은 경우에 생성됩니다.
+A new BFC is created in the following situations:
 
-- {{cssxref("float")}}를 사용으로 요소가 부동체가 되는 경우
-- 절대 위치잡기한 요소, 여기에는 {{cssxref("position", "position: fixed", "#fixed")}} 혹은 {{cssxref("position", "position: sticky", "#sticky")}}가 포함됩니다.
-- {{cssxref("display", "display: inline-block", "#inline-block")}}이 적용된 요소
-- `display: table-cell`이 적용된 테이블 셀 또는 요소, 여기에는 `display: table-*` 속성 무리를 사용한 익명 테이블 셀도 포함됩니다.
-- `display: table-caption`이 적용된 테이블 캡션이나 요소
-- `visible`이외의 대열이탈 값을 갖는 블록 요소
-- `display: flow-root` 혹은 `display: flow-root list-item` 가 적용된 요소
-- {{cssxref("contain", "contain: layout", "#layout")}}, `content`, 또는 `strict`가 적용된 요소
+- elements made to float using {{cssxref("float")}}
+- [absolutely positioned](/en-US/docs/Web/CSS/position#types_of_positioning) elements
+- elements with {{cssxref("display", "display: inline-block", "#inline-block")}}
+- table cells or elements with `display: table-cell`, including anonymous table cells created when using the `display: table-*` properties
+- table captions or elements with `display: table-caption`
+- block elements where `overflow` has a value other than `visible`
+- elements with `display: flow-root` or `display: flow-root list-item`
+- elements with {{cssxref("contain", "contain: layout", "#layout")}}, `content`, or `strict`
 - {{Glossary("flex item", "flex items")}}
-- 격자 항목
-- [다단 컨테이너](/ko/docs/Web/CSS/CSS_Columns/Basic_Concepts_of_Multicol)
-- {{cssxref("column-span")}}이 `all`로 설정된 요소
+- grid items
+- [multicol containers](/en-US/docs/Web/CSS/CSS_Columns/Basic_Concepts_of_Multicol)
+- elements with {{cssxref("column-span")}} set to `all`
 
-블록 서식 상황(BFC)을 생성하는 효과를 확인하기 위해 이들 중 몇 가지를 살펴봅시다.
+This is useful because a new BFC will behave much like the outermost document in that it becomes a mini-layout inside the main layout. A BFC contains everything inside it, {{cssxref("float")}} and {{cssxref("clear")}} only apply to items inside the same formatting context, and margins only collapse between elements in the same formatting context.
 
-아래 예제에서, 우리는 테두리가 적용된 `<div>` 내부에 부동체 요소 하나를 가지고 있습니다. 해당 `div`의 콘텐츠는 부동체 요소와 나란히 부동해왔습니다. 동 부동체의 콘텐츠가 자기 옆에 있는 콘텐츠보다 키가 크기 때문에 하위 `<div>`의 테두리는 이제 부동체에 전체에 걸쳐 진행하고 있습니다. [대열 요소와 탈대열 요소에 관한 안내서](/ko/docs/Web/CSS/CSS_Flow_Layout/대열과_탈대열)에서 설명했듯이, 동 부동체는 대열에서 제외되어 `<div>` 요소의 배경과 테두리는 콘텐츠만 포함하지 부동체는 포함하지 않습니다.
+### BFC creation examples
+
+Let's have a look at a couple of these in order to see the effect creating a new BFC.
+
+In the example below, we have a floated element inside a `<div>` with a border applied. The content of that `<div>` has floated alongside the floated element. As the content of the float is taller than the content alongside it, the border of the `<div>` now runs through the float. As explained in the [guide to in-flow and out of flow elements](/en-US/docs/Web/CSS/CSS_Flow_Layout/In_Flow_and_Out_of_Flow), the float has been taken out of flow so the background and border of the div only contain the content and not the float.
 
 {{EmbedGHLiveSample("css-examples/flow/formatting-contexts/float.html", '100%', 720)}}
 
-새로운 블록 서식 상황(BFC)을 생성하면 동 부동체를 포함할 겁니다. 그러려면 전형적인 방법은 `overflow: auto`를 설정하거나, 초깃값인 `overflow: visible` 이외의 다른 값을 설정하는 식이었습니다.
+Creating a new BFC would contain the float. A typical way to do this in the past has been to set `overflow: auto` or set other values than the initial value of `overflow: visible`.
 
 {{EmbedGHLiveSample("css-examples/flow/formatting-contexts/bfc-overflow.html", '100%', 720)}}
 
-`overflow: auto`를 지정하여 동 부동체를 포함하는 새로운 블록 서식 상황(BFC)을 생성했습니다. 우리의 `div`가 이제는 우리 레이아웃 내부에 소형 레이아웃이 되었습니다. 모든 자식 요소는 소형 레이아웃 내부에 포함되게 됩니다.
+Setting `overflow: auto` created a new BFC containing the float. Our `<div>` now becomes a mini-layout inside our layout. Any child element will be contained inside it.
 
-대열이탈(`overflow`)을 사용하여 새로운 블록 서식 상황(BFC)을 생성하는 것이 문제가 되는 것은 대열이탈(`overflow`) 속성이 대열이탈 콘텐츠를 어떻게 다루고 싶은지 브라우저에 알려주기 위한 것입니다. 이 속성을 순수하게 블록 서식 상황을 생성할 목적으로 사용할 경우 원치 않는 스크롤 막대 또는 잘려 나간 그림자를 생기는 경우도 있습니다. 또한, 그 경우는 후진 개발자가 왔을 때 판독의 여지가 많지 않을 수 있습니다. 왜냐면 대열이탈을 무슨 목적으로 사용했는지 이유가 분명하지 않을 수 있기 때문입니다. 다음과 같이 하면 코드를 설명하는 데 좋은 아이디어가 될 것입니다.
+The problem with using `overflow` to create a new BFC is that the `overflow` property is meant for telling the browser how you wish to deal with overflowing content. There are some occasions in which you will find you get unwanted scrollbars or clipped shadows when you use this property purely to create a BFC. In addition, it is potentially not very readable for a future developer, as it may not be obvious why you used `overflow` for this purpose. If you do this, it would be a good idea to comment the code to explain.
 
-### display: flow-root을 사용하며 명시적으로 블록 서식 상황을 생성하기
+### Explicitly creating a BFC using display: flow-root
 
-`display: flow-root` (또는 `display: flow-root list-item)`)를 컨테이너 블록상에 사용하면 잠재적인 문제가 될 수 있는 여타 부작용 없이 새로운 블록 서식 상황(BFC)을 생성합니다.
+Using `display: flow-root` (or `display: flow-root list-item`) on the containing block will create a new BFC without any other potentially problematic side-effects.
 
 {{EmbedGHLiveSample("css-examples/flow/formatting-contexts/bfc-flow-root.html", '100%', 720)}}
 
-{{HTMLElement("div")}}에 요소상에 `display: flow-root`을 적용하면, 컨테이너 내부의 모든 요소는 해당 컨테이너의 블록 서식 상황에 참여하게 되며, 부동체 무리는 동 요소 밑으로 돌출하지 않게 됩니다.
+With `display: flow-root` on the {{HTMLElement("div")}}, everything inside that container participates in the block formatting context of that container, and floats will not poke out of the bottom of the element.
 
-대열뿌리(`flow-root`)라는 키워드 명명은 (마치 {{HTMLElement("html")}}의 경우처럼) 본질적으로 새로운 뿌리 요소와 같은 기능하는 어떤 것을 생성한다는 사실을 말해줍니다. 새로운 상황이 어떻게 생성되었으며 어떻게 해당 대열 레이아웃이 기능하는지를 고려하면 그렇습니다.
+The name of the `flow-root` keyword refers to the fact that you're creating something that serves, in essence, like a new root element (like {{HTMLElement("html")}} does), given how the new context is created and its flow layout functions.
 
-## 인라인 서식 상황
+## Inline formatting contexts
 
-인라인 서식 상황은 다른 서식 상황 내부에 존재하며 하나의 단락 상황처럼 생각될 수 있습니다. 단락은 텍스트상에 사용되는 {{HTMLElement("strong")}}, {{HTMLElement("a")}} 또는 {{HTMLElement("span")}} 등이 내부적으로 사용되는 인라인 서식 상황을 생성합니다.
+Inline formatting contexts exist inside other formatting contexts and can be thought of as the context of a paragraph. The paragraph creates an inline formatting context inside which such things as {{HTMLElement("strong")}}, {{HTMLElement("a")}}, or {{HTMLElement("span")}} elements are used on text.
 
-상자 모델은 인라인 서식 상황에 참여하는 항목에 100% 적용되지 않습니다. 가로쓰기 모드 라인에서 수평 패딩, 테두리 및 여백이 요소에 적용되고 텍스트를 왼쪽과 오른쪽으로 밀어냅니다. 그러나, 해당 요소 위와 아래에 여백은 적용되지 않습니다. 수직 패딩 및 테두리는 적용되지만 인라인 서식 상황에서 라인 상자가 패딩 및 테두리에 의해 밀려나지 않음으로 위와 아래에 내용이 겹칠 수 있습니다.
+The box model does not fully apply to items participating in an inline formatting context. In a horizontal writing mode line, horizontal padding, borders and margin will be applied to the element and push the text away left and right. However, margins above and below the element will not be applied. Vertical padding and borders will be applied but may overlap content above and below as, in the inline formatting context, the line boxes will not be pushed apart by padding and borders.
 
 {{EmbedGHLiveSample("css-examples/flow/formatting-contexts/inline.html", '100%', 720)}}
 
-## 기타 서식 상황
+## Other formatting contexts
 
-이 안내서는 대열 레이아웃을 다루므로 여타 가능한 서식 상황을 참조하지 않습니다. 따라서 어떤 유형의 서식 상황을 만드는 것이 서식 상황 속에 포함된 요소 무리가 작동하는 방식을 변화시킬 것인지 파악하는 것이 유용합니다. 이런 동작은 항상 HTML 규격에 기술되어 있고, 또한 이곳 모질라 개발자 네트워크(MDN)에도 기술되어 있습니다.
+This guide covers flow layout and is therefore not referring to other possible formatting contexts. As such, it is useful to understand that creating any kind of formatting context will change the way elements inside that formatting context behave. This behavior is always described in the specification and also here on MDN.
 
-## 요약정리
+## Summary
 
-이번 안내서에서는 블록 및 인라인 서식 상황과 블록 서식 상황(BFC)을 생성하는 중요한 주제를 자세히 살펴보았습니다. 다음 안내서에서는 [어떻게 일반 대열과 서로 다른 쓰기 모드가 상호 작용](/ko/docs/Web/CSS/CSS_Flow_Layout/%ED%9D%90%EB%A6%84_%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83%EA%B3%BC_%EC%93%B0%EA%B8%B0_%EB%AA%A8%EB%93%9C)하는지에 대해 알아보겠습니다.
+In this guide, we have looked in more detail at the block and Inline formatting contexts and the important subject of creating a block formatting context (BFC). In the next guide, we will find out [how normal flow interacts with different writing modes](/en-US/docs/Web/CSS/CSS_Flow_Layout/Flow_Layout_and_Writing_Modes).
 
-## 참조 항목
+## See also
 
-- [불록 서식 상황](/ko/docs/Web/Guide/CSS/Block_formatting_context)
-- [시각적 서식 모델](/ko/docs/Web/Guide/CSS/Visual_formatting_model)
-- [CSS 기본 상자 모델](/ko/docs/Web/CSS/CSS_Box_Model)
+- [Block formatting context](/en-US/docs/Web/Guide/CSS/Block_formatting_context)
+- [Visual Formatting Model](/en-US/docs/Web/CSS/Visual_formatting_model)
+- [CSS Box Model](/en-US/docs/Web/CSS/CSS_Box_Model)

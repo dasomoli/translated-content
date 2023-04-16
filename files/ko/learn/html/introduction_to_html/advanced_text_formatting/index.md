@@ -5,31 +5,28 @@ slug: Learn/HTML/Introduction_to_HTML/Advanced_text_formatting
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/HTML/Introduction_to_HTML/Creating_hyperlinks", "Learn/HTML/Introduction_to_HTML/Document_and_website_structure", "Learn/HTML/Introduction_to_HTML")}}
 
-텍스트 서식에 있어서 [HTML text fundamentals](/ko/docs/Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals) 에서 이야기 하지 않은 수많은 요소들이 있습니다. 이 글에서 설명하는 요소들은 비교적 많이 알려져 있지않지만 여전히 유용합니다. (그리고 이것은 완전한 목록이 아닙니다.). 이 글에서 여러분은 인용구, 서술문, 컴퓨터 코드 및 관력 텍스트, 첨자, 위첨자, 연락처 정보 등을 표시하는 방법에 대해 알아봅시다.
+There are many other elements in HTML for formatting text, which we didn't get to in the [HTML text fundamentals](/en-US/docs/Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals) article. The elements described in this article are less known, but still useful to know about (and this is still not a complete list by any means). Here you'll learn about marking up quotations, description lists, computer code and other related text, subscript and superscript, contact information, and more.
 
-<table class="learn-box standard-table">
+<table>
   <tbody>
     <tr>
-      <th scope="row">요구 기술:</th>
+      <th scope="row">Prerequisites:</th>
       <td>
+        Basic HTML familiarity, as covered in
         <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started"
           >Getting started with HTML</a
-        >
-        에 설명된 기본적인 HTML 숙련도.
+        >. HTML text formatting, as covered in
         <a
           href="/en-US/docs/Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals"
           >HTML text fundamentals</a
-        >
-        에서 설명하는 텍스트 포맷팅에 대한 지식.
+        >.
       </td>
     </tr>
     <tr>
-      <th scope="row">목표:</th>
+      <th scope="row">Objective:</th>
       <td>
-        <p>
-          비교적 알려지지 않은 HTML 요소들을 사용하여 고급 시맨틱 기능을
-          사용하여 HTML을 구성하는 방법을 학습합니다.
-        </p>
+        To learn how to use lesser-known HTML elements to mark up advanced
+        semantic features.
       </td>
     </tr>
   </tbody>
@@ -37,7 +34,7 @@ slug: Learn/HTML/Introduction_to_HTML/Advanced_text_formatting
 
 ## Description lists
 
-[HTML text fundamentals](/ko/docs/Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals) 에서 [mark up basic lists](/en-US/Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals#Lists) 를 볼 수 있습니다. 하지만 해당 글에는 여러분이 앞으로 종종 마주할 세 번째 리스트 타입인 **description lists**에 대해선 언급하지 않았습니다. 이 리스트의 목적은 용어 및 정의, 질문 및 답변과 같은 일련의 항목 및 관련 설명을 표시하는 것입니다. 아래의 예시를 살펴봅시다.
+In HTML text fundamentals, we walked through how to [mark up basic lists](/en-US/docs/Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals#lists) in HTML, but we didn't mention the third type of list you'll occasionally come across — **description lists**. The purpose of these lists is to mark up a set of items and their associated descriptions, such as terms and definitions, or questions and answers. Let's look at an example of a set of terms and definitions:
 
 ```
 soliloquy
@@ -48,149 +45,251 @@ aside
 In drama, where a character shares a comment only with the audience for humorous or dramatic effect. This is usually a feeling, thought or piece of additional background information
 ```
 
-Description lists 는 다른 타입의 리스트와 다르게 {{htmlelement("dl")}} 태그를 사용합니다. 용어, 질문과 같은 상위 항목은 {{htmlelement("dt")}} (description term) 요소를 사용하고,\ 정의, 답변과 같은 하위 항목은 {{htmlelement("dd")}} (description definition) 요소를 사용합니다. 이해를 돕기위해 아래의 마크업 예시가 준비되어 있습니다.
+Description lists use a different wrapper than the other list types — {{htmlelement("dl")}}; in addition each term is wrapped in a {{htmlelement("dt")}} (description term) element, and each description is wrapped in a {{htmlelement("dd")}} (description definition) element.
+
+### Description list example
+
+Let's finish marking up our example:
 
 ```html
 <dl>
   <dt>soliloquy</dt>
-  <dd>In drama, where a character speaks to themselves, representing their inner thoughts or feelings and in the process relaying them to the audience (but not to other characters.)</dd>
+  <dd>
+    In drama, where a character speaks to themselves, representing their inner
+    thoughts or feelings and in the process relaying them to the audience (but
+    not to other characters.)
+  </dd>
   <dt>monologue</dt>
-  <dd>In drama, where a character speaks their thoughts out loud to share them with the audience and any other characters present.</dd>
+  <dd>
+    In drama, where a character speaks their thoughts out loud to share them
+    with the audience and any other characters present.
+  </dd>
   <dt>aside</dt>
-  <dd>In drama, where a character shares a comment only with the audience for humorous or dramatic effect. This is usually a feeling, thought or piece of additional background information.</dd>
+  <dd>
+    In drama, where a character shares a comment only with the audience for
+    humorous or dramatic effect. This is usually a feeling, thought, or piece of
+    additional background information.
+  </dd>
 </dl>
 ```
 
-브라우저에서 제공하는 기본 스타일에 의해서 정의, 답변과 같은 하위 항목에 대해서 들여쓰기가 적용됩니다. 현재 보고계시는 description list 는 MDN에서 제공하는 스타일이 적용되어 있습니다. 이는 브라우저에서 제공하는 기본 스타일과 매우 유사하게 정의 되어 있습니다만, 추가적으로 정의된 스타일입니다.
+The browser default styles will display description lists with the descriptions indented somewhat from the terms.
 
-<dl><dt>soliloquy</dt><dd>In drama, where a character speaks to themselves, representing their inner thoughts or feelings and in the process relaying them to the audience (but not to other characters.)</dd><dt>monologue</dt><dd>In drama, where a character speaks their thoughts out loud to share them with the audience and any other characters present.</dd><dt>aside</dt><dd>In drama, where a character shares a comment only with the audience for humorous or dramatic effect. This is usually a feeling, thought or piece of additional background information.</dd><dt></dt></dl>
+{{EmbedLiveSample('Description_list_example', '100%', '285px')}}
 
-아래의 예시와 같이 하나의 `<dt>` 에는 여러개의 `<dd>` 가 존재할 수 있습니다.
+### Multiple descriptions for one term
 
-```
+Note that it is permitted to have a single term with multiple descriptions, for example:
+
+```html
 <dl>
   <dt>aside</dt>
-  <dd>In drama, where a character shares a comment only with the audience for humorous or dramatic effect. This is usually a feeling, thought, or piece of additional background information.</dd>
-  <dd>In writing, a section of content that is related to the current topic, but doesn't fit directly into the main flow of content so is presented nearby (often in a box off to the side.)</dd>
+  <dd>
+    In drama, where a character shares a comment only with the audience for
+    humorous or dramatic effect. This is usually a feeling, thought, or piece of
+    additional background information.
+  </dd>
+  <dd>
+    In writing, a section of content that is related to the current topic, but
+    doesn't fit directly into the main flow of content so is presented nearby
+    (often in a box off to the side.)
+  </dd>
 </dl>
 ```
 
-<dl><dt>aside</dt><dd>In drama, where a character shares a comment only with the audience for humorous or dramatic effect. This is usually a feeling, thought or piece of additional background information.</dd><dd>In writing, a section of content that is related to the current topic, but doesn't fit directly into the main flow of content so is presented nearby (often in a box off to the side.)</dd><dt></dt></dl>
+{{EmbedLiveSample('Multiple_descriptions_for_one_term', '100%', '193px')}}
 
-### 추가학습: 일련의 정의 표시
+### Active learning: Marking up a set of definitions
 
-description list 를 직접 시도해볼 시간입니다. input 필드에 요소들을 추가하여 output 필드에 description list 로 표시되도록 하십시오. 원하시는 경우에 추가적인 요소들을 추가하셔도 좋습니다.
+It's time to try your hand at description lists; add elements to the raw text in the _Input_ field so that it appears as a description list in the _Output_ field. You could try using your own terms and descriptions if you like.
 
-실수를 하셨을 경우에는, _Reset_ 버튼을 통해서 재시작하실 수 있습니다. 해답을 찾지 못하셨을 경우에 _Show solution_ 버튼을 통해서 해답을 보실 수 있습니다.
+If you make a mistake, you can always reset it using the _Reset_ button. If you get really stuck, press the _Show solution_ button to see the answer.
 
 ```html hidden
-<h2>Input</h2>
-<textarea id="code" class="input">Bacon
+<h2>Live output</h2>
+
+<div class="output" style="min-height: 50px;"></div>
+
+<h2>Editable code</h2>
+<p class="a11y-label">
+  Press Esc to move focus away from the code area (Tab inserts a tab character).
+</p>
+
+<textarea id="code" class="input" style="min-height: 100px; width: 95%">
+Bacon
 The glue that binds the world together.
 Eggs
 The glue that binds the cake together.
 Coffee
 The drink that gets the world running in the morning.
-A light brown color.</textarea>
-<h2>Output</h2>
-<div class="output"></div>
-<div class="controls">
+A light brown color.
+</textarea>
+
+<div class="playable-buttons">
   <input id="reset" type="button" value="Reset" />
   <input id="solution" type="button" value="Show solution" />
 </div>
 ```
 
 ```css hidden
+html {
+  font-family: sans-serif;
+}
+
+h2 {
+  font-size: 16px;
+}
+
+.a11y-label {
+  margin: 0;
+  text-align: right;
+  font-size: 0.7rem;
+  width: 98%;
+}
+
 body {
-  font-family: 'Open Sans Light',Helvetica,Arial,sans-serif;
-}
-
-.input, .output {
-  width: 90%;
-  height: 10em;
-  padding: 10px;
-  border: 1px solid #0095dd;
-  overflow: auto;
-}
-
-button {
-  padding: 10px 10px 10px 0;
+  margin: 10px;
+  background: #f5f9fa;
 }
 ```
 
 ```js hidden
-var textarea = document.getElementById("code");
-var reset = document.getElementById("reset");
-var code = textarea.value;
-var output = document.querySelector(".output");
-var solution = document.getElementById("solution");
+const textarea = document.getElementById('code');
+const reset = document.getElementById('reset');
+const solution = document.getElementById('solution');
+const output = document.querySelector('.output');
+const code = textarea.value;
+let userEntry = textarea.value;
 
-function drawOutput() {
+function updateCode() {
   output.innerHTML = textarea.value;
 }
 
-reset.addEventListener("click", function() {
+const htmlSolution = '<dl>\n <dt>Bacon</dt>\n <dd>The glue that binds the world together.</dd>\n <dt>Eggs</dt>\n <dd>The glue that binds the cake together.</dd>\n <dt>Coffee</dt>\n <dd>The drink that gets the world running in the morning.</dd>\n <dd>A light brown color.</dd>\n</dl>';
+let solutionEntry = htmlSolution;
+
+reset.addEventListener('click', () => {
   textarea.value = code;
-  drawOutput();
+  userEntry = textarea.value;
+  solutionEntry = htmlSolution;
+  solution.value = 'Show solution';
+  updateCode();
 });
 
-solution.addEventListener("click", function() {
-textarea.value = '<dl>\n  <dt>Bacon</dt>\n  <dd>The glue that binds the world together.</dd>\n  <dt>Eggs</dt>\n  <dd>The glue that binds the cake together.</dd>\n  <dt>Coffee</dt>\n  <dd>The drink that gets the world running in the morning.</dd>\n  <dd>A light brown color.</dd>\n</dl>';
-  drawOutput();
+solution.addEventListener('click', () => {
+  if (solution.value === 'Show solution') {
+    textarea.value = solutionEntry;
+    solution.value = 'Hide solution';
+  } else {
+    textarea.value = userEntry;
+    solution.value = 'Show solution';
+  }
+  updateCode();
 });
 
-textarea.addEventListener("input", drawOutput);
-window.addEventListener("load", drawOutput);
+textarea.addEventListener('input', updateCode);
+window.addEventListener('load', updateCode);
+
+// stop tab key tabbing out of textarea and
+// make it write a tab at the caret position instead
+
+textarea.onkeydown = (e) => {
+  if (e.keyCode === 9) {
+    e.preventDefault();
+    insertAtCaret('\t');
+  }
+
+  if (e.keyCode === 27) {
+    textarea.blur();
+  }
+};
+
+function insertAtCaret(text) {
+  const scrollPos = textarea.scrollTop;
+  let caretPos = textarea.selectionStart;
+
+  const front = textarea.value.substring(0, caretPos);
+  const back = textarea.value.substring(textarea.selectionEnd, textarea.value.length);
+  textarea.value = front + text + back;
+  caretPos += text.length;
+  textarea.selectionStart = caretPos;
+  textarea.selectionEnd = caretPos;
+  textarea.focus();
+  textarea.scrollTop = scrollPos;
+}
+
+// Update the saved userCode every time the user updates the text area code
+
+textarea.onkeyup = () => {
+  // We only want to save the state when the user code is being shown,
+  // not the solution, so that solution is not saved over the user code
+  if (solution.value === 'Show solution') {
+    userEntry = textarea.value;
+  } else {
+    solutionEntry = textarea.value;
+  }
+
+  updateCode();
+};
 ```
 
-{{ EmbedLiveSample('Playable_code', 700, 500) }}
+{{ EmbedLiveSample('Active_learning_Marking_up_a_set_of_definitions', 700, 350) }}
 
-## 인용구
+## Quotations
 
-HTML에는 인용구 표시에 사용할 수 있는 요소가 존재합니다. 해당 요소는 블록 또는 인라인 요소인지에 따라서 다르게 표시됩니다.
+HTML also has features available for marking up quotations; which element you use depends on whether you are marking up a block or inline quotation.
 
 ### Blockquotes
 
-블록 레벨 컨텐츠의 섹션(문단, 여러 단락, 리스트등)이 인용된 경우, 이를 나타내는 `<blockquote>`요소로 감싸야합니다. 그리고 `cite` 속성에 출처를 표기합니다. 아래의 예시는 MDN `<blockquote>` 요소 페이지를 인용한 것 입니다.
+If a section of block level content (be it a paragraph, multiple paragraphs, a list, etc.) is quoted from somewhere else, you should wrap it inside a {{htmlelement("blockquote")}} element to signify this, and include a URL pointing to the source of the quote inside a [`cite`](/en-US/docs/Web/HTML/Element/blockquote#cite) attribute. For example, the following markup is taken from the MDN `<blockquote>` element page:
 
 ```html
 <p>The <strong>HTML <code>&lt;blockquote&gt;</code> Element</strong> (or <em>HTML Block
 Quotation Element</em>) indicates that the enclosed text is an extended quotation.</p>
 ```
 
-이것을 block quote 로 변경하기 위해서 아래와 같이 할 수 있습니다.
+To turn this into a block quote, we would just do this:
 
 ```html
-<blockquote cite="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/blockquote">
-  <p>The <strong>HTML <code>&lt;blockquote&gt;</code> Element</strong> (or <em>HTML Block
-  Quotation Element</em>) indicates that the enclosed text is an extended quotation.</p>
+<p>Here is a blockquote:</p>
+<blockquote
+  cite="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/blockquote">
+  <p>
+    The <strong>HTML <code>&lt;blockquote&gt;</code> Element</strong> (or
+    <em>HTML Block Quotation Element</em>) indicates that the enclosed text is
+    an extended quotation.
+  </p>
 </blockquote>
 ```
 
-브라우저 기본 스타일은 인용구를 표현할 때, 들여쓰기 된 단락으로 나타냅니다. MDN은 추가적인 스타일링과 함께 이를 나타냅니다.
+Browser default styling will render this as an indented paragraph, as an indicator that it is a quote; the paragraph above the quotation is there to demonstrate that.
 
-> The **HTML `<blockquote>` Element** (or _HTML Block Quotation Element_) indicates that the enclosed text is an extended quotation.
+{{EmbedLiveSample('Blockquotes', '100%', '200px')}}
 
 ### Inline quotations
 
-인라인 인용구는 `<q>` 요소를 사용한다는 점만 제외하면 블럭 인용구와 동일하게 동작합니다. 아래의 마크업 예시는 MDN `<q>` 페이지의 인용문을 포함합니다.
+Inline quotations work in exactly the same way, except that they use the {{htmlelement("q")}} element. For example, the below bit of markup contains a quotation from the MDN `<q>` page:
 
 ```html
 <p>The quote element — <code>&lt;q&gt;</code> — is <q cite="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/q">intended
 for short quotations that don't require paragraph breaks.</q></p>
 ```
 
-브라우저 기본 스타일은 인라인 인용구를 따옴표로 묶은 일반 텍스트로 표현합니다.
+Browser default styling will render this as normal text put in quotes to indicate a quotation, like so:
 
-The quote element — `<q>` — is "intended for short quotations that don't require paragraph breaks."
+{{EmbedLiveSample('Inline_quotations', '100%', '78px')}}
 
 ### Citations
 
-{{htmlattrxref("cite","blockquote")}}요소의 컨텐츠는 유용하게 보이지만 안타깝게도 브라우저, 스크린 리더 등은 이를 이용해서 할 수 있는 것이 많지 않습니다. 브라우저는 javascript나 CSS로 여러분이 직접 해결책을 제시하지 않는다면 `cite` 컨텐츠를 화면에 표시할 방법이 없습니다. 페이지에서 인용 출처를 화면에 나타나게 하고 싶다면 `<cite>` 요소를 사용하는 것이 더 좋습니다. 이는 이름 그대로 출처를 포함하기 위해서 사용됩니다. — `<cite>` 요소 안에 있는 출처에 대한 링크를 연결할 수 있습니다.
+The content of the [`cite`](/en-US/docs/Web/HTML/Element/blockquote#cite) attribute sounds useful, but unfortunately browsers, screen readers, etc. don't really do much with it. There is no way to get the browser to display the contents of `cite`, without writing your own solution using JavaScript or CSS. If you want to make the source of the quotation available on the page you need to make it available in the text via a link or some other appropriate way.
+
+There is a {{htmlelement("cite")}} element, but this is meant to contain the title of the resource being quoted, e.g. the name of the book. There is no reason, however, why you couldn't link the text inside `<cite>` to the quote source in some way:
 
 ```html
-<p>According to the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/blockquote">
-<cite>MDN blockquote page</cite></a>:
+<p>
+  According to the
+  <a href="/en-US/docs/Web/HTML/Element/blockquote">
+    <cite>MDN blockquote page</cite></a>:
 </p>
 
 <blockquote cite="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/blockquote">
@@ -199,222 +298,391 @@ The quote element — `<q>` — is "intended for short quotations that don't req
 </blockquote>
 
 <p>The quote element — <code>&lt;q&gt;</code> — is <q cite="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/q">intended
-for short quotations that don't require paragraph breaks.</q> -- <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/q">
+for short quotations that don't require paragraph breaks.</q> — <a href="/en-US/docs/Web/HTML/Element/q">
 <cite>MDN q page</cite></a>.</p>
 ```
 
-Citations are styled in italic font by default. You can see this code at work in our [quotations.html](https://github.com/mdn/learning-area/blob/master/html/introduction-to-html/advanced-text-formatting/quotations.html) example.
+Citations are styled in italic font by default.
 
-### 추가학습: 누가 말했어?
+{{EmbedLiveSample('Citations', '100%', '179px')}}
 
-다른 실습 과제를 할 시간입니다! 이번 예제에서는 아래 항목을 수행하고자 합니다.
+### Active learning: Who said that?
 
-1. 중간에 위치한 문단을 `cite` 속성을 지닌 블럭 인용구로 변경하십시오.
-2. 세 번째 문단의 일부를 `cite` 속성을 지닌 인라인 인용구로 변경하십시오.
-3. 각 링크에 \<cite> 요소를 포함시키십시오.
+Time for another active learning example! In this example we'd like you to:
 
-적절한 출처를 찾기 위해서 온라인 검색을 이용하십시오.
+1. Turn the middle paragraph into a blockquote, which includes a `cite` attribute.
+2. Turn "The Need To Eliminate Negative Self Talk" in the third paragraph into an inline quote, and include a `cite` attribute.
+3. Wrap the title of each source in `<cite>` tags and turn each one into a link to that source.
 
-실수를 하셨을 경우에는, _Reset_ 버튼을 통해서 재시작하실 수 있습니다. 해답을 찾지 못하셨을 경우에 _Show solution_ 버튼을 통해서 해답을 보실 수 있습니다.
+The citation sources you need are:
+
+- `http://www.brainyquote.com/quotes/authors/c/confucius.html` for the Confucius quote
+- `http://example.com/affirmationsforpositivethinking` for "The Need To Eliminate Negative Self Talk".
+
+If you make a mistake, you can always reset it using the _Reset_ button. If you get really stuck, press the _Show solution_ button to see the answer.
 
 ```html hidden
-<h2>Input</h2>
-<textarea id="code" class="input"><p>Hello and welcome to my motivation page. As Confucius once said:</p>
+<h2>Live output</h2>
 
+<div class="output" style="min-height: 50px;"></div>
+
+<h2>Editable code</h2>
+<p class="a11y-label">
+  Press Esc to move focus away from the code area (Tab inserts a tab character).
+</p>
+
+<textarea id="code" class="input" style="min-height: 150px; width: 95%">
+<p>Hello and welcome to my motivation page. As Confucius' quotes site says:</p>
 <p>It does not matter how slowly you go as long as you do not stop.</p>
+<p>I also love the concept of positive thinking, and The Need To Eliminate Negative Self Talk (as mentioned in Affirmations for Positive Thinking.)</p>
+</textarea>
 
-<p>I also love the concept of positive thinking, and The Need To Eliminate Negative Self Talk
-(as mentioned in Affirmations for Positive Thinking.)</p></textarea>
-<h2>Output</h2>
-<div class="output"></div>
-<div class="controls">
+<div class="playable-buttons">
   <input id="reset" type="button" value="Reset" />
   <input id="solution" type="button" value="Show solution" />
 </div>
 ```
 
 ```css hidden
+html {
+  font-family: sans-serif;
+}
+
+h2 {
+  font-size: 16px;
+}
+
+.a11y-label {
+  margin: 0;
+  text-align: right;
+  font-size: 0.7rem;
+  width: 98%;
+}
+
 body {
-  font-family: 'Open Sans Light',Helvetica,Arial,sans-serif;
-}
-
-.input, .output {
-  width: 90%;
-  height: 10em;
-  padding: 10px;
-  border: 1px solid #0095dd;
-  overflow: auto;
-}
-
-button {
-  padding: 10px 10px 10px 0;
+  margin: 10px;
+  background: #f5f9fa;
 }
 ```
 
 ```js hidden
-var textarea = document.getElementById("code");
-var reset = document.getElementById("reset");
-var code = textarea.value;
-var output = document.querySelector(".output");
-var solution = document.getElementById("solution");
+const textarea = document.getElementById('code');
+const reset = document.getElementById('reset');
+const solution = document.getElementById('solution');
+const output = document.querySelector('.output');
+const code = textarea.value;
+let userEntry = textarea.value;
 
-function drawOutput() {
+function updateCode() {
   output.innerHTML = textarea.value;
 }
 
-reset.addEventListener("click", function() {
+const htmlSolution = '<p>Hello and welcome to my motivation page. As <a href="http://www.brainyquote.com/quotes/authors/c/confucius.html"><cite>Confucius\' quotes site</cite></a> says:</p>\n\n<blockquote cite="http://www.brainyquote.com/quotes/authors/c/confucius.html">\n <p>It does not matter how slowly you go as long as you do not stop.</p>\n</blockquote>\n\n<p>I also love the concept of positive thinking, and <q cite="http://example.com/affirmationsforpositivethinking">The Need To Eliminate Negative Self Talk</q> (as mentioned in <a href="http://example.com/affirmationsforpositivethinking"><cite>Affirmations for Positive Thinking</cite></a>.)</p>';
+let solutionEntry = htmlSolution;
+
+reset.addEventListener('click', () => {
   textarea.value = code;
-  drawOutput();
+  userEntry = textarea.value;
+  solutionEntry = htmlSolution;
+  solution.value = 'Show solution';
+  updateCode();
 });
 
-solution.addEventListener("click", function() {
-textarea.value = '<p>Hello and welcome to my motivation page. As <a href="http://www.brainyquote.com/quotes/authors/c/confucius.html"><cite>Confucius</cite></a> once said:</p>\n\n<blockquote cite="http://www.brainyquote.com/quotes/authors/c/confucius.html">\n  <p>It does not matter how slowly you go as long as you do not stop.</p>\n</blockquote>\n\n<p>I also love the concept of positive thinking, and <q cite="http://www.affirmationsforpositivethinking.com/index.htm">The Need To Eliminate Negative Self Talk</q> (as mentioned in <a href="http://www.affirmationsforpositivethinking.com/index.htm"><cite>Affirmations for Positive Thinking</cite></a>.)</p>';
-  drawOutput();
+solution.addEventListener('click', () => {
+
+  if (solution.value === 'Show solution') {
+    textarea.value = solutionEntry;
+    solution.value = 'Hide solution';
+  } else {
+    textarea.value = userEntry;
+    solution.value = 'Show solution';
+  }
+  updateCode();
 });
 
-textarea.addEventListener("input", drawOutput);
-window.addEventListener("load", drawOutput);
+textarea.addEventListener('input', updateCode);
+window.addEventListener('load', updateCode);
+
+// stop tab key tabbing out of textarea and
+// make it write a tab at the caret position instead
+
+textarea.onkeydown = (e) => {
+  if (e.keyCode === 9) {
+    e.preventDefault();
+    insertAtCaret('\t');
+  }
+
+  if (e.keyCode === 27) {
+    textarea.blur();
+  }
+};
+
+function insertAtCaret(text) {
+  const scrollPos = textarea.scrollTop;
+  let caretPos = textarea.selectionStart;
+
+  const front = textarea.value.substring(0, caretPos);
+  const back = textarea.value.substring(textarea.selectionEnd, textarea.value.length);
+  textarea.value = front + text + back;
+  caretPos += text.length;
+  textarea.selectionStart = caretPos;
+  textarea.selectionEnd = caretPos;
+  textarea.focus();
+  textarea.scrollTop = scrollPos;
+}
+
+// Update the saved userCode every time the user updates the text area code
+textarea.onkeyup = () => {
+  // We only want to save the state when the user code is being shown,
+  // not the solution, so that solution is not saved over the user code
+  if (solution.value === 'Show solution') {
+    userEntry = textarea.value;
+  } else {
+    solutionEntry = textarea.value;
+  }
+
+  updateCode();
+};
 ```
 
-{{ EmbedLiveSample('Playable_code_2', 700, 500) }}
+{{ EmbedLiveSample('Active_learning_Who_said_that', 700, 450) }}
 
-## 약어
+## Abbreviations
 
-웹을 둘러 볼 때 `<abbr>` 요소를 꽤 많이 볼 수 있습니다. 이는 머리 글자 또는 약어를 나타내는데 사용됩니다. title 속성을 통해 원래의 용어를 나태날 수 있습니다. 몇가지 예제를 살펴 보겠습니다.
+Another fairly common element you'll meet when looking around the Web is {{htmlelement("abbr")}} — this is used to wrap around an abbreviation or acronym. When including either, provide a full expansion of the term in plain text on first use, along with the `<abbr>` to mark up the abbreviation. This provides a hint to user agents on how to announce/display the content while informing all users what the abbreviation means.
 
+If providing the expansion in addition to the abbreviation makes little sense, and the abbreviation or acronym is a fairly shortened term, provide the full expansion of the term as the value of [`title`](/en-US/docs/Web/HTML/Global_attributes#title) attribute:
+
+### Abbreviation example
+
+Let's look at an example.
+
+```html
+<p>
+  We use <abbr>HTML</abbr>, Hypertext Markup Language, to structure our web
+  documents.
+</p>
+
+<p>
+  I think <abbr title="Reverend">Rev.</abbr> Green did it in the kitchen with
+  the chainsaw.
+</p>
 ```
-<p>We use <abbr title="Hypertext Markup Language">HTML</abbr> to structure our web documents.</p>
 
-<p>I think <abbr title="Reverend">Rev.</abbr> Green did it in the kitchen with the chainsaw.</p>
-```
+These will come out looking something like this:
 
-위의 코드는 아래와 같이 보입니다. 용어의 전체 뜻은 마우스를 올려 놓으면 툴팁에 표시됩니다.
+{{EmbedLiveSample('Abbreviation_example', '100%', '150')}}
 
-We use HTML to structure our web documents.
+> **Note:** Earlier versions of html also included support for the {{htmlelement("acronym")}} element, but it was removed from the HTML spec in favor of using `<abbr>` to represent both abbreviations and acronyms. `<acronym>` should not be used.
 
-I think Rev. Green did it in the kitchen with the chainsaw.
+### Active learning: marking up an abbreviation
 
-> **참고:** 약어를 나타내기 위해 \<abbr> 과 동일하게 사용할 수 있는 `<acronym>` 가 존재합니다. 이는 사용중지 되었으며 브라우저에서도 호환되지 않는 경우가 있습니다. 따라서 `<abbr>` 을 대신 사용하는 것을 추천드립니다.
-
-### 추가학습: 약어 만들기
-
-아래의 간단한 실습 과제를 통해 약어 사용에 대한 학습을 하고자 합니다. 아래의 샘플을 그대로 사용하시거나 여러분의 샘플로 교체 하실 수 있습니다.
+For this simple active learning assignment, we'd like you to mark up an abbreviation. You can use our sample below, or replace it with one of your own.
 
 ```html hidden
-<h2>Input</h2>
-<textarea id="code" class="input"><p>NASA sure does some exciting work.</p></textarea>
-<h2>Output</h2>
-<div class="output"></div>
-<div class="controls">
+<h2>Live output</h2>
+
+<div class="output" style="min-height: 50px;"></div>
+
+<h2>Editable code</h2>
+<p class="a11y-label">
+  Press Esc to move focus away from the code area (Tab inserts a tab character).
+</p>
+
+<textarea id="code" class="input" style="min-height: 50px; width: 95%">
+<p>NASA, the National Aeronautics and Space Administration, sure does some exciting work.</p>
+</textarea>
+
+<div class="playable-buttons">
   <input id="reset" type="button" value="Reset" />
   <input id="solution" type="button" value="Show solution" />
 </div>
 ```
 
 ```css hidden
+html {
+  font-family: sans-serif;
+}
+
+h2 {
+  font-size: 16px;
+}
+
+.a11y-label {
+  margin: 0;
+  text-align: right;
+  font-size: 0.7rem;
+  width: 98%;
+}
+
 body {
-  font-family: 'Open Sans Light',Helvetica,Arial,sans-serif;
-}
-
-.input, .output {
-  width: 90%;
-  height: 5em;
-  padding: 10px;
-  border: 1px solid #0095dd;
-  overflow: auto;
-}
-
-button {
-  padding: 10px 10px 10px 0;
+  margin: 10px;
+  background: #f5f9fa;
 }
 ```
 
 ```js hidden
-var textarea = document.getElementById("code");
-var reset = document.getElementById("reset");
-var code = textarea.value;
-var output = document.querySelector(".output");
-var solution = document.getElementById("solution");
+const textarea = document.getElementById('code');
+const reset = document.getElementById('reset');
+const solution = document.getElementById('solution');
+const output = document.querySelector('.output');
+const code = textarea.value;
+let userEntry = textarea.value;
 
-function drawOutput() {
+function updateCode() {
   output.innerHTML = textarea.value;
 }
 
-reset.addEventListener("click", function() {
+const htmlSolution = '<p><abbr>NASA</abbr>, the National Aeronautics and Space Administration, sure does some exciting work.</p>';
+let solutionEntry = htmlSolution;
+
+reset.addEventListener('click', () => {
   textarea.value = code;
-  drawOutput();
+  userEntry = textarea.value;
+  solutionEntry = htmlSolution;
+  solution.value = 'Show solution';
+  updateCode();
 });
 
-solution.addEventListener("click", function() {
-textarea.value = '<p><abbr title="National Aeronautics and Space Administration">NASA</abbr> sure does some exciting work.</p>';
-  drawOutput();
+solution.addEventListener('click', () => {
+  if (solution.value === 'Show solution') {
+    textarea.value = solutionEntry;
+    solution.value = 'Hide solution';
+  } else {
+    textarea.value = userEntry;
+    solution.value = 'Show solution';
+  }
+  updateCode();
 });
 
-textarea.addEventListener("input", drawOutput);
-window.addEventListener("load", drawOutput);
+textarea.addEventListener('input', updateCode);
+window.addEventListener('load', updateCode);
+
+// stop tab key tabbing out of textarea and
+// make it write a tab at the caret position instead
+
+textarea.onkeydown = (e) => {
+  if (e.keyCode === 9) {
+    e.preventDefault();
+    insertAtCaret('\t');
+  }
+
+  if (e.keyCode === 27) {
+    textarea.blur();
+  }
+};
+
+function insertAtCaret(text) {
+  const scrollPos = textarea.scrollTop;
+  let caretPos = textarea.selectionStart;
+
+  const front = textarea.value.substring(0, caretPos);
+  const back = textarea.value.substring(textarea.selectionEnd, textarea.value.length);
+  textarea.value = front + text + back;
+  caretPos += text.length;
+  textarea.selectionStart = caretPos;
+  textarea.selectionEnd = caretPos;
+  textarea.focus();
+  textarea.scrollTop = scrollPos;
+}
+
+// Update the saved userCode every time the user updates the text area code
+textarea.onkeyup = () => {
+  // We only want to save the state when the user code is being shown,
+  // not the solution, so that solution is not saved over the user code
+  if (solution.value === 'Show solution') {
+    userEntry = textarea.value;
+  } else {
+    solutionEntry = textarea.value;
+  }
+
+  updateCode();
+};
 ```
 
-{{ EmbedLiveSample('Playable_code_3', 700, 350) }}
+{{ EmbedLiveSample('Active_learning_marking_up_an_abbreviation', 700, 300) }}
 
-## 연락처 세부 사항 표시
+## Marking up contact details
 
-HTML 에서 `<address>` 태그를 이용해서 연락처 세부 정보를 표시할 수 있습니다. 이것은 단순히 연락처 정보를 표시하는 것입니다.
+HTML has an element for marking up contact details — {{htmlelement("address")}}. This wraps around your contact details, for example:
+
+```html
+<address>Chris Mills, Manchester, The Grim North, UK</address>
+```
+
+It could also include more complex markup, and other forms of contact information, for example:
 
 ```html
 <address>
-  <p>Chris Mills, Manchester, The Grim North, UK</p>
+  <p>
+    Chris Mills<br />
+    Manchester<br />
+    The Grim North<br />
+    UK
+  </p>
+
+  <ul>
+    <li>Tel: 01234 567 890</li>
+    <li>Email: me@grim-north.co.uk</li>
+  </ul>
 </address>
 ```
 
-그러나 기억해야 할 것은 \<address> 요소는 HTML 문서를 작성한 사람의 연락처 정보를 표시하기 위해서 사용되어야 한다는 것입니다. 따라서 Chris 가 마크 업이 표시된 문서를 작성한 경우에만 위의 예제가 정상입니다. 아래와 같은 예제도 괜찮습니다.
+Note that something like this would also be OK, if the linked page contained the contact information:
 
 ```html
 <address>
-  <p>Page written by <a href="../authors/chris-mills/">Chris Mills</a>.</p>
+  Page written by <a href="../authors/chris-mills/">Chris Mills</a>.
 </address>
 ```
 
-## 위첨자와 아래 첨자
+> **Note:** The {{htmlelement("address")}} element should only be used to provide contact information for the document contained with the nearest {{htmlelement("article")}} or {{htmlelement("body")}} element. It would be correct to use it in the footer of a site to include the contact information of the entire site, or inside an article for the contact details of the author, but not to mark up a list of addresses unrelated to the content of that page.
 
-여러분은 종종 날짜, 화학 공식 및 수학 방적식과 같은 항목을 표시 할 때 올바른 의미를 갖도록 위첨자 아래 첨자를 사용해야 할 수도 있습니다. `<sup>` 과 `<sub>` 요소들은 이를 위해 사용할 수 있습니다.
+## Superscript and subscript
+
+You will occasionally need to use superscript and subscript when marking up items like dates, chemical formulae, and mathematical equations so they have the correct meaning. The {{htmlelement("sup")}} and {{htmlelement("sub")}} elements handle this job. For example:
 
 ```html
 <p>My birthday is on the 25<sup>th</sup> of May 2001.</p>
-<p>Caffeine's chemical formula is C<sub>8</sub>H<sub>10</sub>N<sub>4</sub>O<sub>2</sub>.</p>
+<p>
+  Caffeine's chemical formula is
+  C<sub>8</sub>H<sub>10</sub>N<sub>4</sub>O<sub>2</sub>.
+</p>
 <p>If x<sup>2</sup> is 9, x must equal 3 or -3.</p>
 ```
 
-표시될 결과는 아래와 같습니다.
+The output of this code looks like so:
 
-My birthday is on the 25th of May 2001.
+{{ EmbedLiveSample('Superscript_and_subscript', '100%', 160) }}
 
-Caffeine's chemical formula is C8H10N4O2.
+## Representing computer code
 
-If x2 is 9, x must equal 3 or -3.
+There are a number of elements available for marking up computer code using HTML:
 
-## 컴퓨터 코드를 나타내기
+- {{htmlelement("code")}}: For marking up generic pieces of computer code.
+- {{htmlelement("pre")}}: For retaining whitespace (generally code blocks) — if you use indentation or excess whitespace inside your text, browsers will ignore it and you will not see it on your rendered page. If you wrap the text in `<pre></pre>` tags however, your whitespace will be rendered identically to how you see it in your text editor.
+- {{htmlelement("var")}}: For specifically marking up variable names.
+- {{htmlelement("kbd")}}: For marking up keyboard (and other types of) input entered into the computer.
+- {{htmlelement("samp")}}: For marking up the output of a computer program.
 
-HTML 을 이용해 컴퓨터 코드를 나타낼 때 아래와 같은 많은 요소들을 사용할 수 있습니다.
-
-- {{htmlelement("code")}}: 일반적인 컴퓨터 코드를 표시합니다.
-- {{htmlelement("pre")}}: 공백(일반적으로 코드 블록)을 유지하기 위해 사용합니다. 택스트 내에서 들여 쓰기 또는 초과 공백을 사용하면 브라우저가 이를 무시하고 렌더링 된 페이지에 공백을 표시하지 않습니다. 그러나 `<pre></pre>` 태그로 텍스트를 감싸면 공백이 텍스트 편집기에서 보는 것과 동일하게 렌더링 됩니다.
-- {{htmlelement("var")}}: 변수이름을 특별하게 표시합니다.
-- {{htmlelement("kbd")}}: 컴퓨터에 입력 된 키보드 (및 기타 유형) 입력을 표시합니다.
-- {{htmlelement("samp")}}: 컴퓨터 프로그램의 출력을 표시합니다.
-
-몇 가지 예를 살펴 보겠습니다. 이 예제들을 통해서 자유롭게 학습해보십시오. (다른 [other-semantics.html](https://github.com/mdn/learning-area/blob/master/html/introduction-to-html/advanced-text-formatting/other-semantics.html) 샘플 파일의 사본을 사용하실 수 있습니다).
+Let's look at a few examples. You should try having a play with these (try grabbing a copy of our [other-semantics.html](https://github.com/mdn/learning-area/blob/main/html/introduction-to-html/advanced-text-formatting/other-semantics.html) sample file):
 
 ```html
-<pre><code>var para = document.querySelector('p');
+<pre><code>const para = document.querySelector('p');
 
 para.onclick = function() {
   alert('Owww, stop poking me!');
 }</code></pre>
 
-<p>You shouldn't use presentational elements like <code>&lt;font&gt;</code> and <code>&lt;center&gt;</code>.</p>
+<p>
+  You shouldn't use presentational elements like <code>&lt;font&gt;</code> and
+  <code>&lt;center&gt;</code>.
+</p>
 
-<p>In the above JavaScript example, <var>para</var> represents a paragraph element.</p>
-
+<p>
+  In the above JavaScript example, <var>para</var> represents a paragraph
+  element.
+</p>
 
 <p>Select all the text with <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>A</kbd>.</p>
 
@@ -423,33 +691,37 @@ para.onclick = function() {
 64 bytes from 63.245.215.20: icmp_seq=0 ttl=40 time=158.233 ms</samp></pre>
 ```
 
-위의 코드는 아래와 같이 표시됩니다.
+The above code will look like so:
 
-{{ EmbedLiveSample('Representing_computer_code','100%',300, "", "", "hide-codepen-jsfiddle") }}
+{{ EmbedLiveSample('Representing_computer_code','100%',350) }}
 
-## 시간과 날짜 표시
+## Marking up times and dates
 
-HTML 은 기계가 읽을 수 있는 형식(machine-readable)으로 시간과 날짜를 표시하기 위한 `<time>` 요소를 제공합니다. 예를 들면 아래와 같습니다.
+HTML also provides the {{htmlelement("time")}} element for marking up times and dates in a machine-readable format. For example:
 
 ```html
 <time datetime="2016-01-20">20 January 2016</time>
 ```
 
-이것이 왜 유용할까요? 인간이 날짜를 기록하는 방법에는 여러 가지가 있습니다. 위 날짜는 아래와 같이 나타낼 수 있습니다.
+Why is this useful? Well, there are many different ways that humans write down dates. The above date could be written as:
+
+<!-- markdownlint-disable MD033 -->
 
 - 20 January 2016
 - 20th January 2016
 - Jan 20 2016
-- 20/06/16
-- 06/20/16
+- 20/01/16
+- 01/20/16
 - The 20th of next month
-- 20e Janvier 2016
-- 2016 年 1 月 20 日
+- <span lang="fr">20e Janvier 2016</span>
+- <span lang="ja">2016 年 1 月 20 日</span>
 - And so on
 
-그러나 이러한 다른 형식들은 컴퓨터가 쉽게 인식할 수 없습니다. 페이지의 모든 이벤트 날짜를 자동으로 인식하여 캘린더에 삽입하려면 어떻게 해야합니까? `<time>` 요소를 사용하면 기계가 읽을 수 있는 명확한 시간 / 날짜를 첨부 할 수 있습니다.
+<!-- markdownlint-enable MD033 -->
 
-아래의 기본 예지는 간단한 기계 판독 가능 날짜를 제공하지만 사용 가능한 다른 많은 옵션들이 존재합니다.
+But these different forms cannot be easily recognized by computers — what if you wanted to automatically grab the dates of all events in a page and insert them into a calendar? The {{htmlelement("time")}} element allows you to attach an unambiguous, machine-readable time/date for this purpose.
+
+The basic example above just provides a simple machine readable date, but there are many other options that are possible, for example:
 
 ```html
 <!-- Standard simple date -->
@@ -464,14 +736,20 @@ HTML 은 기계가 읽을 수 있는 형식(machine-readable)으로 시간과 �
 <time datetime="19:30:01.856">19:30:01.856</time>
 <!-- Date and time -->
 <time datetime="2016-01-20T19:30">7.30pm, 20 January 2016</time>
-<!-- Date and time with timezone offset-->
-<time datetime="2016-01-20T19:30+01:00">7.30pm, 20 January 2016 is 8.30pm in France</time>
-<!-- Calling out a specific week number-->
+<!-- Date and time with timezone offset -->
+<time datetime="2016-01-20T19:30+01:00">
+  7.30pm, 20 January 2016 is 8.30pm in France
+</time>
+<!-- Calling out a specific week number -->
 <time datetime="2016-W04">The fourth week of 2016</time>
 ```
 
-## 요약
+## Test your skills!
 
-HTML 텍스트 시맨틱에 대한 스터디가 끝났습니다. 이 과정에서 학습한 내용이 HTML 텍스트 요소의 전부가 아님을 명심하십시오. 우리는 필수 요소를 위주로 다루고 싶었고, 여러분이 일반적인 상황에서 보거나 적어도 흥미롭게 다가올 수 있는 더 일반적인 것들 중 일부를 다루려고 했습니다. 더 많은 HTML 요소를 찾으려면 [HTML element reference](/ko/docs/Web/HTML/Element) 를 살펴보십시오.([Inline text semantics](/ko/docs/Web/HTML/Element#Inline_text_semantics) 섹션은 시작하기에 좋은 장소입니다.). 다음 문서에서는 HTML 문서의 다른 부분을 구성하는 데 사용할 HTML 요소를 살펴 보겠습니다.
+You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Advanced HTML text](/en-US/docs/Learn/HTML/Introduction_to_HTML/Test_your_skills:_Advanced_HTML_text).
+
+## Summary
+
+That marks the end of our study of HTML text semantics. Bear in mind that what you have seen during this course is not an exhaustive list of HTML text elements — we wanted to try to cover the essentials, and some of the more common ones you will see in the wild, or at least might find interesting. To find way more HTML elements, you can take a look at our [HTML element reference](/en-US/docs/Web/HTML/Element) (the [Inline text semantics](/en-US/docs/Web/HTML/Element#inline_text_semantics) section would be a great place to start). In the next article, we'll look at the HTML elements you'd use to [structure the different parts of an HTML document](/en-US/docs/Learn/HTML/Introduction_to_HTML/Document_and_website_structure).
 
 {{PreviousMenuNext("Learn/HTML/Introduction_to_HTML/Creating_hyperlinks", "Learn/HTML/Introduction_to_HTML/Document_and_website_structure", "Learn/HTML/Introduction_to_HTML")}}

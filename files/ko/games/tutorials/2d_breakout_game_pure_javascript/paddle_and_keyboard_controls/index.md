@@ -1,132 +1,127 @@
 ---
-title: Paddle과 키보드 컨트롤
+title: Paddle and keyboard controls
 slug: Games/Tutorials/2D_Breakout_game_pure_JavaScript/Paddle_and_keyboard_controls
-original_slug: Games/Tutorials/순수한_자바스크립트를_이용한_2D_벽돌깨기_게임/Paddle_and_keyboard_controls
 ---
 
 {{GamesSidebar}}
 
-{{PreviousNext("Games/Tutorials/순수한_자바스크립트를_이용한_2D_벽돌깨기_게임/Bounce_off_the_walls", "Games/Tutorials/순수한_자바스크립트를_이용한_2D_벽돌깨기_게임/Game_over")}}
+{{PreviousNext("Games/Workflows/2D_Breakout_game_pure_JavaScript/Bounce_off_the_walls", "Games/Workflows/2D_Breakout_game_pure_JavaScript/Game_over")}}
 
-이 글은 [Gamedev Canvas tutorial](/ko/docs/Games/Workflows/Breakout_game_from_scratch)의 10단계 중 4단계 입니다. 이 글을 다 읽고 난 뒤 완성된 소스코드는 [Gamedev-Canvas-workshop/lesson4.html](https://github.com/end3r/Gamedev-Canvas-workshop/blob/gh-pages/lesson04.html) 에서 확인할 수 있습니다.
+This is the **4th step** out of 10 of the [Gamedev Canvas tutorial](/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript). You can find the source code as it should look after completing this lesson at [Gamedev-Canvas-workshop/lesson4.html](https://github.com/end3r/Gamedev-Canvas-workshop/blob/gh-pages/lesson04.html).
 
-공이 계속해서 벽을 튕기며 이동하는 모습을 볼 수 있지만, 현재로서는 그것을 컨트롤 할 방법이 없습니다. 컨트롤 할 수 없으면 게임이 아니죠! paddle을 컨트롤 할 수 있는 몇가지 상호작용을 추가해 봅시다.
+The ball is bouncing off the walls freely and you can watch it indefinitely, but currently there's no interactivity. It's not a game if you cannot control it! So let's add some user interaction: a controllable paddle.
 
-**공을 치기 위한 paddle 정의**
+## Defining a paddle to hit the ball
 
-먼저, 우리는 공을 치기 위한 paddle이 필요합니다. 이를 위해 몇가지 변수들을 정의합시다. 코드 상단에 다른 변수들과 함께 아래 변수들을 추가하세요:
+So, we need a paddle to hit the ball. Let's define a few variables for that. Add the following variables near the top of your code, beside your other variables:
 
 ```js
-var paddleHeight = 10;
-var paddleWidth = 75;
-var paddleX = (canvas.width-paddleWidth)/2;
+const paddleHeight = 10;
+const paddleWidth = 75;
+let paddleX = (canvas.width - paddleWidth) / 2;
 ```
 
-여기에서 paddle의 높이와 너비, 그리고 `x` 축 위에 시작 지점을 정의합니다. paddle을 스크린에 그리는 함수를 만듭시다. `drawBall()` 함수 아래에 다음 코드를 추가하세요:
+Here we're defining the height and width of the paddle and its starting point on the `x` axis for use in calculations further on down the code. Let's create a function that will draw the paddle on the screen. Add the following just below your `drawBall()` function:
 
 ```js
 function drawPaddle() {
-    ctx.beginPath();
-    ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
-    ctx.fillStyle = "#0095DD";
-    ctx.fill();
-    ctx.closePath();
+  ctx.beginPath();
+  ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+  ctx.fillStyle = "#0095DD";
+  ctx.fill();
+  ctx.closePath();
 }
 ```
 
-**유저의 paddle 컨트롤**
+## Allowing the user to control the paddle
 
-paddle은 우리가 원하는 곳 어디든 그릴 수 있지만, 사용자의 컨트롤에 반응해야 합니다. — 키보드 컨트롤을 구현합시다. 다음 내용이 필요합니다.:
+We can draw the paddle wherever we want, but it should respond to the user's actions. It's time to implement some keyboard controls. We will need the following:
 
-- 왼쪽 혹은 오른쪽 컨트롤 버튼이 눌렸는지 확인하는 두개의 변수
-- `keydown` 과 `keyup` 이벤트 리스너 — 버튼이 눌렸을 때 paddle의 움직임을 조종할 수 있는 코드가 실행되어야 합니다.
-- 버튼이 눌렸을 때 `keydown` 과 `keyup` 이벤트를 핸들링하는 두개의 함수
-- paddle이 왼쪽 혹은 오른쪽으로 움직이는 기능
+- Two variables for storing information on whether the left or right control button is pressed.
+- Two event listeners for `keydown` and `keyup` events. We want to run some code to handle the paddle movement when the buttons are pressed.
+- Two functions handling the `keydown` and `keyup` events the code that will be run when the buttons are pressed.
+- The ability to move the paddle left and right
 
-버튼을 누르는 것은 boolean 변수로 정의하고 초기화 합니다. 아래 코드를 변수 선언 부분에 추가하세요. :
+Pressed buttons can be defined and initialized with boolean variables like in the example. Add these lines somewhere near the rest of your variables:
 
 ```js
-var rightPressed = false;
-var leftPressed = false;
+let rightPressed = false;
+let leftPressed = false;
 ```
 
-처음에는 컨트롤 버튼이 눌려지지 않은 상태이므로 두개의 기본값은 false 입니다. 키가 눌렸음을 인식하기 위해, 이벤트 리스너를 설정합니다. 자바스크립트 하단에 `setInterval()` 바로 위에 아래 코드를 추가합니다.:
+The default value for both is `false` because at the beginning the control buttons are not pressed. To listen for key presses, we will set up two event listeners. Add the following lines just above the `setInterval()` line at the bottom of your JavaScript:
 
 ```js
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 ```
 
-키보드 중 어떤 키 하나가 눌려서 `keydown` 이벤트가 발생하면, `keyDownHandler()` 함수가 실행됩니다. 두번째 리스너에도 같은 패턴이 적용됩니다: 키에서 손을 때면 `keyup` 이벤트가 `keyUpHandler()` 함수를 실행합니다 . `addEventListener()` 아래에 다음 코드를 추가하세요:
+When the `keydown` event is fired on any of the keys on your keyboard (when they are pressed), the `keyDownHandler()` function will be executed. The same pattern is true for the second listener: `keyup` events will fire the `keyUpHandler()` function (when the keys stop being pressed). Add these to your code now, below the `addEventListener()` lines:
 
 ```js
 function keyDownHandler(e) {
-    if(e.keyCode == 39) {
-        rightPressed = true;
-    }
-    else if(e.keyCode == 37) {
-        leftPressed = true;
-    }
+  if (e.key === "Right" || e.key === "ArrowRight") {
+    rightPressed = true;
+  } else if (e.key === "Left" || e.key === "ArrowLeft") {
+    leftPressed = true;
+  }
 }
 
 function keyUpHandler(e) {
-    if(e.keyCode == 39) {
-        rightPressed = false;
-    }
-    else if(e.keyCode == 37) {
-        leftPressed = false;
-    }
+  if (e.key === "Right" || e.key === "ArrowRight") {
+    rightPressed = false;
+  } else if (e.key === "Left" || e.key === "ArrowLeft") {
+    leftPressed = false;
+  }
 }
 ```
 
-키를 누르면 변수에 정보가 저장됩니다. 각 경우에 관련된 변수가 `true` 로 설정됩니다. 키에서 손을 때면, 변수값은 `false`로 되돌아갑니다.
+When we press a key down, this information is stored in a variable. The relevant variable in each case is set to `true`. When the key is released, the variable is set back to `false`.
 
-두 함수 모두 e 변수로 표시되는 이벤트를 파라미터로 사용합니다. 이것으로 유용한 정보를 얻을 수 있습니다: `keyCode` 는 눌려진 키에 대한 정보를 가지고 있습니다. 예를 들어 키 코드 37 은 왼쪽 방향키이고 39 는 오른쪽 방향키 입니다. 만약에 왼쪽 방향키를 누르면, `leftPressed` 변수가 `true` 로 설정되고, 왼쪽 방향키에서 손을 때면 `leftPressed` 변수가 `false`로 설정됩니다. 오른쪽 방향키와 `rightPressed` 변수에도 동일한 패턴이 적용됩니다.
+Both functions take an event as a parameter, represented by the `e` variable. From that you can get useful information: the `key` holds the information about the key that was pressed. Most browsers use `ArrowRight` and `ArrowLeft` for the left/right cursor keys, but we need to also include `Right` and `Left` checks to support IE/Edge browsers. If the left cursor is pressed, then the `leftPressed` variable is set to `true`, and when it is released, the `leftPressed` variable is set to `false`. The same pattern follows with the right cursor and the `rightPressed` variable.
 
-### Paddle 이동 로직
+### The paddle moving logic
 
-이제 우리는 눌려진 키, 이벤트 리스너, 관련된 함수에 대한 정보를 저장할 변수를 가지고 있습니다. 이제 실제 코드를 사용하여 이것들을 사용하고 paddle을 화면에서 움직여봅시다. `draw()` 함수에서, 각각의 프레임이 렌더링 될때마다 왼쪽이나 오른쪽 방향키가 눌려졌는지 확인합니다. 코드는 아래와 같습니다:
+We've now set up the variables for storing the info about the pressed keys, event listeners, and relevant functions. Next we'll get into the code to use all the things we just set up and to move the paddle on the screen. Inside the `draw()` function, we will check if the left or right cursor keys are pressed when each frame is rendered. Our code might look like this:
 
 ```js
-if(rightPressed) {
-    paddleX += 7;
-}
-else if(leftPressed) {
-    paddleX -= 7;
+if (rightPressed) {
+  paddleX += 7;
+} else if (leftPressed) {
+  paddleX -= 7;
 }
 ```
 
-만약 왼쪽 방향키를 누르면, paddle은 좌측으로 7픽셀 움직이고, 오른쪽 방향키를 누르면, 우측으로 7픽셀 움직입니다. 잘 작동하지만, 키를 너무 오래 누르고 있으면 paddle이 캔버스 밖으로 사라집니다. 아래처럼 코드를 수정해서 paddle이 캔버스 안에서만 움직이도록 개선합니다:
+If the left cursor is pressed, the paddle will move seven pixels to the left, and if the right cursor is pressed, the paddle will move seven pixels to the right. This currently works, but the paddle disappears off the edge of the canvas if we hold either key for too long. We could improve that and move the paddle only within the boundaries of the canvas by changing the code like this:
 
 ```js
-if(rightPressed && paddleX < canvas.width-paddleWidth) {
-    paddleX += 7;
-}
-else if(leftPressed && paddleX > 0) {
-    paddleX -= 7;
+if (rightPressed) {
+  paddleX = Math.min(paddleX + 7, canvas.width - paddleWidth);
+} else if (leftPressed) {
+  paddleX = Math.max(paddleX - 7, 0);
 }
 ```
 
-`paddleX` 의 위치는 캔버스 왼쪽 끝 `0` 위치와 오른쪽 `canvas.width-paddleWidth` 에서 움직입니다.
+The `paddleX` position we're using will move between `0` on the left side of the canvas and `canvas.width-paddleWidth` on the right-hand side, which will work exactly as we want it to.
 
-위의 코드를 `draw()` 함수 아래쪽에 추가합니다.
+Add the above code block into the `draw()` function at the bottom, just above the closing curly brace.
 
-이제 paddle이 화면에서 실제로 그려지도록 `draw()` 함수 안에서 `drawPaddle()` 을 호출합니다. `draw()` 함수 안에 `drawBall()` 아래에 다음 코드를 추가합니다:
+The only thing left to do now is call the `drawPaddle()` function from within the `draw()` function, to actually print it on the screen. Add the following line inside your `draw()` function, just below the line that calls `drawBall()`:
 
 ```js
 drawPaddle();
 ```
 
-## 여러분의 코드와 비교해보세요
+## Compare your code
 
-여기 움직이는 코드를 확인해보세요:
+Here's the working code for you to compare yours against:
 
-{{JSFiddleEmbed("https://jsfiddle.net/end3r/tgn3zscj/","","395")}}
+{{JSFiddleEmbed("https://jsfiddle.net/L9xfn4up/1/","","395")}}
 
-> **참고:** **Exercise**: paddle의 움직임을 빠르거나 느리게, 혹은 사이즈를 변경해보세요.
+> **Note:** Try making the paddle move faster or slower, or change its size.
 
-## 다음 단계
+## Next steps
 
-게임과 비슷해지긴 했지만 한가지 문제는 게임이 끝나지 않는다는 것입니다. 5단계에서 [Game over](/ko/docs/Games/Workflows/Breakout_game_from_scratch/Game_over)를 추가할 것입니다.
+Now we have something resembling a game. The only trouble now is that you can just continue hitting the ball with the paddle forever. This will all change in the fifth chapter, [Game over](/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/Game_over), when we start to add in an endgame state for our game.
 
-{{PreviousNext("Games/Tutorials/순수한_자바스크립트를_이용한_2D_벽돌깨기_게임/Bounce_off_the_walls", "Games/Tutorials/순수한_자바스크립트를_이용한_2D_벽돌깨기_게임/Game_over")}}
+{{PreviousNext("Games/Workflows/2D_Breakout_game_pure_JavaScript/Bounce_off_the_walls", "Games/Workflows/2D_Breakout_game_pure_JavaScript/Game_over")}}

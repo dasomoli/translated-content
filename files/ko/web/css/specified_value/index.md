@@ -1,29 +1,36 @@
 ---
-title: 지정값
+title: Specified value
 slug: Web/CSS/specified_value
+page-type: guide
+spec-urls: https://www.w3.org/TR/CSS22/cascade.html#specified-value
 ---
+
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) 속성의 **지정값**은 세 가지 방법 중 하나로 설정됩니다.
+The **specified value** of a [CSS](/en-US/docs/Web/CSS) property is the value it receives from the document's style sheet. The specified value for a given property is determined according to the following rules:
 
-1. 문서의 스타일시트가 속성값을 지정했다면 그러면 그 값이 사용됩니다. 예를 들어, {{cssxref("color")}} 속성이 `green` 으로 설정된 경우 대응하는 요소(element)의 텍스트 색은 녹색이 됩니다.
-2. 문서의 스타일시트가 값을 지정하지 않은 경우 부모 요소로부터 상속됩니다(가능하다면). 예를 들어, {{HTMLElement("div")}} 내부에 단락({{HTMLElement("p")}})이 있고 {{HTMLElement("div")}}의 CSS `font` 속성값이 "Arial", {{HTMLElement("p")}}가 정의된 `font` 속성이 없다면 Arial font가 상속됩니다.
-3. 위 중 어느 것도 이용할 수 없는 경우, CSS 스펙에 지정된 대로 요소의 초기값이 적용됩니다.
+1. If the document's style sheet explicitly specifies a value for the property, the given value will be used.
+2. If the document's style sheet doesn't specify a value but it is an inherited property, the value will be taken from the parent element.
+3. If none of the above pertain, the element's [initial value](/en-US/docs/Web/CSS/initial_value) will be used.
 
-## 예제
+## Examples
 
 ### HTML
 
 ```html
 <p>My specified color is given explicitly in the CSS.</p>
 
-<div>The specified values of all my properties default to their
-    initial values, because none of them are given in the CSS.</div>
+<div>
+  The specified values of all my properties default to their initial values,
+  because none of them are given in the CSS.
+</div>
 
 <div class="fun">
-  <p>The specified value of my font family is not given explicitly
-      in the CSS, so it is inherited from my parent. However,
-      the border is not an inheriting property.</p>
+  <p>
+    The specified value of my font family is not given explicitly in the CSS, so
+    it is inherited from my parent. However, the border is not an inheriting
+    property.
+  </p>
 </div>
 ```
 
@@ -40,10 +47,31 @@ p {
 }
 ```
 
-### 결과
+### Result
 
-{{EmbedLiveSample("예제", 500, 220)}}
+{{EmbedLiveSample("Examples", 500, 220)}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
+
+## See also
+
+- CSS key concepts:
+  - [CSS syntax](/en-US/docs/Web/CSS/Syntax)
+  - [At-rules](/en-US/docs/Web/CSS/At-rule)
+  - [Comments](/en-US/docs/Web/CSS/Comments)
+  - [Specificity](/en-US/docs/Web/CSS/Specificity)
+  - [Inheritance](/en-US/docs/Web/CSS/Inheritance)
+  - [Box model](/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model)
+  - [Layout modes](/en-US/docs/Web/CSS/Layout_mode)
+  - [Visual formatting models](/en-US/docs/Web/CSS/Visual_formatting_model)
+  - [Margin collapsing](/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)
+  - Values
+    - [Initial values](/en-US/docs/Web/CSS/initial_value)
+    - [Computed values](/en-US/docs/Web/CSS/computed_value)
+    - [Used values](/en-US/docs/Web/CSS/used_value)
+    - [Actual values](/en-US/docs/Web/CSS/actual_value)
+  - [Value definition syntax](/en-US/docs/Web/CSS/Value_definition_syntax)
+  - [Shorthand properties](/en-US/docs/Web/CSS/Shorthand_properties)
+  - [Replaced elements](/en-US/docs/Web/CSS/Replaced_element)

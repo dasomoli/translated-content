@@ -1,31 +1,28 @@
 ---
-title: document.applets
+title: "Document: applets property"
+short-title: applets
 slug: Web/API/Document/applets
+page-type: web-api-instance-property
+status:
+  - deprecated
+browser-compat: api.Document.applets
 ---
 
 {{APIRef("DOM")}} {{Deprecated_Header}}
 
-## 요약
+The **`applets`** property of the {{domxref("Document")}} returns an empty {{domxref("HTMLCollection")}}. This property is kept only for compatibility reasons; in older versions of browsers, it returned a list of the applets within a document.
 
-`applets` document 내의 정렬된 애플릿 목록을 리턴합니다.
+> **Note:** Support for the {{htmlelement("applet")}} element has been removed by all browsers. Therefore, calling `document.applets` always
+> returns an empty collection.
 
-## 문법
+## Value
 
-```js
-nodeList = document.applets
-```
+An empty {{domxref("HTMLCollection")}}.
 
-## 예제
-
-```js
-// ( 여러분이 원하는 두 번째 애플릿을 알고 있을 때 )
-my_java_app = document.applets[1];
-```
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}

@@ -1,23 +1,26 @@
 ---
 title: CSS Scroll Snap Points
 slug: Web/CSS/CSS_Scroll_Snap_Points
+page-type: css-module
+spec-urls: https://drafts.csswg.org/css-scroll-snap/
 ---
-{{CSSRef}}{{deprecated_header}}
 
-**CSS Scroll Snap Points**는 물리보다는 논리상 방향과 차원 맵핑을 통해 레이아웃을 제어하는 능력을 제공하는 속성 및 값을 정의하는 CSS 모듈입니다.
+{{CSSRef}} {{deprecated_header}}
 
-> **참고:** 같은 기능을 정의하는 최신 명세는 [CSS Scroll Snap](/ko/docs/Web/CSS/CSS_Scroll_Snap)입니다.
+**CSS Scroll Snap Points** is a module of CSS that introduces scroll snap positions. These determine the specific positions that a container's scrollport may end at after a scrolling operation has completed.
 
-## 참고
+> **Note:** [CSS Scroll Snap](/en-US/docs/Web/CSS/CSS_Scroll_Snap) is the modern specification that defines this functionality.
 
-### CSS 속성
+## Reference
 
-- {{cssxref("scroll-snap-coordinate")}}
-- {{cssxref("scroll-snap-destination")}}
-- {{cssxref("scroll-snap-points-x")}}
-- {{cssxref("scroll-snap-points-y")}}
+### Properties
+
+- {{cssxref("scroll-snap-coordinate")}} {{Deprecated_Inline}}
+- {{cssxref("scroll-snap-destination")}} {{Deprecated_Inline}}
+- {{cssxref("scroll-snap-points-x")}} {{Deprecated_Inline}}
+- {{cssxref("scroll-snap-points-y")}} {{Deprecated_Inline}}
 - {{cssxref("scroll-snap-type")}}
 
-## 명세
+## Specifications
 
 {{Specifications}}

@@ -1,75 +1,110 @@
 ---
 title: yield
 slug: Web/JavaScript/Reference/Operators/yield
+page-type: javascript-operator
+browser-compat: javascript.operators.yield
 ---
 
 {{jsSidebar("Operators")}}
 
-`yield` 키워드는 제너레이터 함수 ({{jsxref("Statements/function*", "function*")}} 또는 [레거시 generator](/en-US/docs/Web/JavaScript/Reference/Statements/Legacy_generator_function) 함수)를 중지하거나 재개하는데 사용됩니다.
+The **`yield`** operator is used to pause and resume a [generator function](/en-US/docs/Web/JavaScript/Reference/Statements/function*).
 
-## 문법
+{{EmbedInteractiveExample("pages/js/expressions-yield.html", "taller")}}
 
-```js
-    [rv] = yield [expression];
+## Syntax
+
+```js-nolint
+yield
+yield expression
 ```
 
-- `expression`
-  - : 제너레이터 함수에서 [제너레이터 프로토콜](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterator)을 통해 반환할 값을 정의합니다. 값이 생략되면, `undefined를 반환합니다.`
-- `rv`
-  - : 제너레이터 실행을 재개 하기 위해서, optional value을 제너레이터의 `next()` 메서드로 전달하여 반환합니다.
+### Parameters
 
-## 설명
+- `expression` {{optional_inline}}
+  - : The value to yield from the generator function via [the iterator protocol](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterator_protocol). If omitted, `undefined` is yielded.
 
-`yield 키워드`는 제너레이터 함수의 실행을 중지시키거나 그리고 `yield` 키워드 뒤에오는 표현식\[expression]의 값은 제너레이터의 caller로 반환된다. 제너레이터 버전의 `return` 키워드로 생각 할 수 있다.
+### Return value
 
-`yield` 키워드는 실질적으로 value 와 done 이라는 두 개의 속성을 가진 `IteratorResult` 객체를 반환한다. `value` 속성은 `yield` 표현(expression)의 실행 결과를 나타내고, `done` 속성은 제너레이터 함수가 완전히 종료되었는지 여부를 불린(Boolean) 형태로 보여줍니다.
+Returns the optional value passed to the generator's `next()` method to resume its execution.
 
-yield 표현식에서 중지되면 ,제너레이터의 next()가 메서드가 호출될 때까지 제너레이터의 코드 실행이 중지된다. 제너레이터의 next()메서드를 호출할 때마다 제너레이터는 실행을 재개하며 그리고 다음의 같은 경우에 진행될 때 실행된다:
+> **Note:** This means `next()` is asymmetric: it always sends a value to the currently suspended `yield`, but returns the operand of the next `yield`. The argument passed to the first `next()` call cannot be retrieved because there's no currently suspended `yield`.
 
-- `yield 는` 제너레이터가 한번 멈추게 하고 제너레이터의 새로운 값을 반환한다. 다음번의 next()가 호출된 후, yield 이후에 선언된 코드가 바로 실행된다.
-- {{jsxref("Statements/throw", "throw")}}는 제네레이터에서 예외를 설정할 때 사용된다. 예외가 발생할 경우 제너레이터의 전체적으로 실행이 중지되고, 그리고 다시 켜는 것이 일반적으로 실행됩니다.
-- 제너레이터 함수가 종료가 되었다; 이 경우, 제너레이터 실행이 종료되고 `IteratorResult` 는 `caller` 로 값이 {{jsxref("undefined")}}이고 done의 값이 true 로 리턴한다.
-- {{jsxref("Statements/return", "return")}} 문에 도달했다. 이 경우에는, 이 값이 종료되고 `IteratorResult` 는 `caller` 로 `return` 문에 의해 반환되는 값과 done의 값이 true 로 리턴한다.
+## Description
 
-만약에 optional value가 제너레이터의 next() 메서드로 전달되면, optional value는 제너레이터의 현재 yield의 연산으로 반환되는 값이 된다.
+The `yield` keyword pauses generator function execution and the value of the expression following the `yield` keyword is returned to the generator's caller. It can be thought of as a generator-based version of the `return` keyword.
 
-generator 코드 경로, yield연산자, {{jsxref("Generator.prototype.next()")}}에 이르기까지 새로운 시작 값을 지정할 수 있는 능력과 제네레이터는 커다란 힘과 제어를 제공한다.
+`yield` can only be used directly within the generator function that contains it. It cannot be used within nested functions.
 
-## 예시
+Calling a generator function constructs a {{jsxref("Generator")}} object. Each time the generator's {{jsxref("Generator/next", "next()")}} method is called, the generator resumes execution, and runs until it reaches one of the following:
 
-다음 코드는 제너레이터 함수의 선언의 예시이다.
+- A `yield` expression. In this case, the generator pauses, and the `next()` method return an [iterator result](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterator_protocol) object with two properties: `value` and `done`. The `value` property is the value of the expression after the `yield` operator, and `done` is `false`, indicating that the generator function has not fully completed.
+- The end of the generator function. In this case, execution of the generator ends, and the `next()` method returns an iterator result object where the `value` is {{jsxref("undefined")}} and `done` is `true`.
+- A {{jsxref("Statements/return", "return")}} statement. In this case, execution of the generator ends, and the `next()` method returns an iterator result object where the `value` is the specified return value and `done` is `true`.
+- A {{jsxref("Statements/throw", "throw")}} statement. In this case, execution of the generator halts entirely, and the `next()` method throws the specified exception.
+
+Once paused on a `yield` expression, the generator's code execution remains paused until the generator's `next()` method is called again. If an optional value is passed to the generator's `next()` method, that value becomes the value returned by the generator's current `yield` operation. The first `next()` call does not have a corresponding suspended `yield` operation, so there's no way to get the argument passed to the first `next()` call.
+
+If the generator's {{jsxref("Generator/return", "return()")}} or {{jsxref("Generator/throw", "throw()")}} method is called, it acts as if a {{jsxref("Statements/return", "return")}} or {{jsxref("Statements/throw", "throw")}} statement was executed at the paused `yield` expression. You can use {{jsxref("Statements/try...catch", "try...catch...finally")}} within the generator function body to handle these early completions. If the `return()` or `throw()` method is called but there's no suspended `yield` expression (because `next()` has not been called yet, or because the generator has already completed), then the early completions cannot be handled and always terminate the generator.
+
+## Examples
+
+### Using yield
+
+The following code is the declaration of an example generator function.
 
 ```js
-function* foo(){
-  var index = 0;
-  while (index <= 2) // when index reaches 3,
-                     // yield's done will be true
-                     // and its value will be undefined;
-    yield index++;
+function* countAppleSales() {
+  const saleList = [3, 7, 5];
+  for (let i = 0; i < saleList.length; i++) {
+    yield saleList[i];
+  }
 }
 ```
 
-제너레이터 함수가 정의되면 , 아래 코드와 보여지는 것처럼 iterator로 만들어 사용할 수 있다.
+Once a generator function is defined, it can be used by constructing an iterator as shown.
 
 ```js
-var iterator = foo();
-console.log(iterator.next()); // { value: 0, done: false }
-console.log(iterator.next()); // { value: 1, done: false }
-console.log(iterator.next()); // { value: 2, done: false }
-console.log(iterator.next()); // { value: undefined, done: true }
+const appleStore = countAppleSales(); // Generator { }
+console.log(appleStore.next()); // { value: 3, done: false }
+console.log(appleStore.next()); // { value: 7, done: false }
+console.log(appleStore.next()); // { value: 5, done: false }
+console.log(appleStore.next()); // { value: undefined, done: true }
 ```
 
-## 명세
+You can also send a value with `next(value)` into the generator. `step` evaluates as a return value of the `yield` expression — although the value passed to the generator's `next()` method the first time `next()` is called is ignored.
+
+```js
+function* counter(value) {
+  while (true) {
+    const step = yield value++;
+
+    if (step) {
+      value += step;
+    }
+  }
+}
+
+const generatorFunc = counter(0);
+console.log(generatorFunc.next().value); // 0
+console.log(generatorFunc.next().value); // 1
+console.log(generatorFunc.next().value); // 2
+console.log(generatorFunc.next().value); // 3
+console.log(generatorFunc.next(10).value); // 14
+console.log(generatorFunc.next().value); // 15
+console.log(generatorFunc.next(10).value); // 26
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
 ## See also
 
-- [The Iterator protocol](/en-US/docs/Web/JavaScript/Guide/The_Iterator_protocol)
+- [The Iterator protocol](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)
 - {{jsxref("Statements/function*", "function*")}}
-- {{jsxref("Operators/function*", "function* expression")}}
+- [`function*` expression](/en-US/docs/Web/JavaScript/Reference/Operators/function*)
 - {{jsxref("Operators/yield*", "yield*")}}

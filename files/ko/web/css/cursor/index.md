@@ -1,222 +1,246 @@
 ---
 title: cursor
 slug: Web/CSS/cursor
+page-type: css-property
+browser-compat: css.properties.cursor
 ---
+
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`cursor`** 속성은 요소 위에 마우스 커서가 올라갔을 때 보여줄 모양을 지정합니다.
+The **`cursor`** [CSS](/en-US/docs/Web/CSS) property sets the mouse cursor, if any, to show when the mouse pointer is over an element.
+
+The cursor setting should inform users of the mouse operations that can be performed at the current location, including: text selection, activating help or context menus, copying content, resizing tables, and so on.
+You can specify either the _type_ of cursor using a keyword, or load a specific icon to use (with optional fallback images and mandatory keyword as a final fallback).
 
 {{EmbedInteractiveExample("pages/css/cursor.html")}}
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
-cursor: pointer;
+/* Keyword value */
 cursor: auto;
+cursor: pointer;
+/* … */
+cursor: zoom-out;
 
-/* URL, 대체용 키워드 */
+/* URL with mandatory keyword fallback */
 cursor: url(hand.cur), pointer;
 
-/* URL과 좌표 및 대체 키워드
-crsor: url(cursor1.png) 4 12, auto;
-cursor: url(cursor2.png) 2 2, pointer;
+/* URL and coordinates, with mandatory keyword fallback */
+cursor: url(cursor_1.png) 4 12, auto;
+cursor: url(cursor_2.png) 2 2, pointer;
 
-/* 전역 값 */
+/* URLs and fallback URLs (some with coordinates), with mandatory keyword fallback */
+cursor: url(cursor_1.svg) 4 5, url(cursor_2.svg), /* … ,*/ url(cursor_n.cur) 5 5,
+  progress;
+
+/* Global values */
 cursor: inherit;
 cursor: initial;
+cursor: revert;
+cursor: revert-layer;
 cursor: unset;
 ```
 
-`cursor` 속성은 쉼표로 구분한 0개 이상의 [`<url>`](#url)과, 필수로 지정해야 하는 키워드 값으로 이루어집니다. 각각의 `<url>`은 이미지 파일을 가리켜야 합니다. 브라우저는 첫 번째 이미지를 불러오려 시도하고, 실패했을 땐 다음 이미지를, 모두 실패하거나 지정한 이미지가 처음부터 없었다면 키워드 값을 사용합니다.
+The `cursor` property is specified as zero or more `<url>` values, separated by commas, followed by a single mandatory keyword value.
+Each `<url>` should point to an image file.
+The browser will try to load the first image specified, falling back to the next if it can't, and falling back to the keyword value if no images could be loaded (or if none were specified).
 
-`<url>`은 공백으로 구분한 숫자 쌍을 받을 수 있습니다. 두 숫자는 이미지의 좌상단 모서리를 기준으로, 커서가 상호작용하는 부분의 [x, y 좌표](#xy)를 나타냅니다.
+Each `<url>` may be optionally followed by a pair of space-separated numbers, which set the `<x>` and `<y>` coordinates of the cursor's hotspot relative to the top-left corner of the image.
 
-아래 예제는 `<url>` 값으로 이미지 두 개를 지정했고, 두 번째 이미지는 `<x><y>` 좌표도 설정했으며 모두 불러올 수 없으면 `progress` 키워드를 사용합니다.
+### Values
 
-```css
-cursor: url(one.svg), url(two.svg) 5 5, progress;
-```
+- `<url>` {{optional_inline}}
+  - : A `url()` or a comma separated list `url(), url(), …`, pointing to an image file.
+    More than one {{cssxref("url", "url()")}} may be provided as fallbacks, in case some cursor image types are not supported.
+    A non-URL fallback (one or more of the keyword values) _must_ be at the end of the fallback list.
+- `<x>`, `<y>` {{optional_inline}}
 
-### 값
+  - : Optional x- and y-coordinates indicating the cursor hotspot; the precise position within the cursor that is being pointed to.
 
-- `<url>`
-  - : 이미지 파일을 가리키는 `url(…)`, 또는 쉼표로 구분한 `url(…), url(…), …` 목록. 일부 커서 이미지를 사용할 수 없을 때를 대비해 여러 이미지를 지정할 수 있습니다. 이미지를 사용할 경우 URL이 아닌 값(하나 이상의 키워드 값)을 목록의 맨 뒤에 붙여야 합니다. [`cursor` 속성값으로 URL 사용하기](/ko/docs/Web/CSS/CSS_Basic_User_Interface/Using_URL_values_for_the_cursor_property)를 참고하세요.
-- `<x>` `<y>` {{experimental_inline}}
-  - : xy 좌표. 32 미만의 {{cssxref("&lt;number&gt;")}}여야 합니다.
+    The numbers are in units of image pixels.
+    They are relative to the top left corner of the image, which corresponds to "`0 0`", and are clamped within the boundaries of the cursor image.
+    If these values are not specified, they may be read from the file itself, and will otherwise default to the top-left corner of the image.
 
-- 키워드 값
+- `keyword`
 
-  - : _행 위로 마우스를 올리면 현재 브라우저에서 보이는 모습을 확인할 수 있습니다._
+  - : A keyword value _must_ be specified, indicating either the type of cursor to use, or the fallback cursor to use if all specified icons fail to load.
+
+    The available keywords are listed in the table below. Other than `none`, which means no cursor, there is an image showing how the cursors used to be rendered. You can hover your mouse over the table rows to see the effect of the different cursor keyword values on your browser today.
 
     <table class="standard-table">
       <thead>
         <tr>
-          <th scope="col">카테고리</th>
-          <th scope="col">CSS 값</th>
-          <th scope="col" style="width: 7.5em">예제</th>
-          <th scope="col">설명</th>
+          <th scope="col">Category</th>
+          <th scope="col">Keyword</th>
+          <th scope="col">Example</th>
+          <th scope="col">Description</th>
         </tr>
       </thead>
       <tbody>
         <tr style="cursor: auto">
-          <th rowspan="3" scope="row">일반</th>
+          <th rowspan="3" scope="row">General</th>
           <td><code>auto</code></td>
           <td></td>
           <td>
-            사용자 에이전트가 현재 맥락에 맞춰 표시할 커서를 결정. 예를 들어 글씨
-            위에서는 <code>text</code>를 사용합니다.
+            The UA will determine the cursor to display based on the current context. E.g., equivalent to <code>text</code> when hovering text.
           </td>
         </tr>
         <tr style="cursor: default">
           <td><code>default</code></td>
-          <td><img alt="default.gif" src="default.gif" /></td>
-          <td>플랫폼에 따라 다른 기본 커서. 보통 화살표입니다.</td>
+          <td><img src="default.gif" alt="wide arrow pointing up and to the left" /></td>
+          <td>The platform-dependent default cursor. Typically an arrow.</td>
         </tr>
         <tr style="cursor: none">
           <td><code>none</code></td>
           <td></td>
-          <td>커서 없음.</td>
+          <td>No cursor is rendered.</td>
         </tr>
         <tr style="cursor: context-menu">
-          <th rowspan="5" scope="row" style="cursor: auto">링크와 상태</th>
+          <th rowspan="5" scope="row" style="cursor: auto">Links &#x26; status</th>
           <td><code>context-menu</code></td>
-          <td><img alt="context-menu.png" src="context-menu.png" /></td>
-          <td>콘텍스트 메뉴 사용 가능.</td>
+          <td><img alt="wide arrow pointing up and to the left slightly obscuring a menu icon" src="context-menu.png" /></td>
+          <td>A context menu is available.</td>
         </tr>
         <tr style="cursor: help">
           <td><code>help</code></td>
-          <td><img alt="help.gif" src="help.gif" /></td>
-          <td>도움말 사용 가능.</td>
+          <td><img src="help.gif" alt="wide arrow pointing up and to the left next to a question mark" /></td>
+          <td>Help information is available.</td>
         </tr>
         <tr style="cursor: pointer">
           <td><code>pointer</code></td>
-          <td><img alt="pointer.gif" src="pointer.gif" /></td>
-          <td>링크를 나타내는 포인터. 보통 한 쪽을 가리키는 손입니다.</td>
+          <td><img src="pointer.gif" alt="right hand with an index finger pointing up" /></td>
+          <td>
+            The cursor is a pointer that indicates a link. Typically an image of a pointing hand.
+          </td>
         </tr>
         <tr style="cursor: progress">
           <td><code>progress</code></td>
-          <td><img alt="progress.gif" src="progress.gif" /></td>
+          <td><img src="progress.gif" alt="wide arrow and hour glass" /></td>
           <td>
-            프로그램이 백그라운드에서 작업 중이지만, 사용자가 인터페이스와
-            상호작용할 수 있음. (<code>wait</code>과 반대)
+            The program is busy in the background, but the user can still interact
+            with the interface (in contrast to <code>wait</code>).
           </td>
         </tr>
         <tr style="cursor: wait">
           <td><code>wait</code></td>
-          <td><img alt="wait.gif" src="wait.gif" /></td>
+          <td><img src="wait.gif" alt="hour glass" /></td>
           <td>
-            프로그램이 작업 중이고, 사용자가 인터페이스와 상호작용할 수 없음.
-            (<code>progress</code>와 반대) 간혹 모래시계나 시계모양 그림을
-            사용합니다.
+            The program is busy, and the user can't interact with the interface (in contrast to <code>progress</code>).
+            Sometimes an image of an hourglass or a watch.
           </td>
         </tr>
         <tr style="cursor: cell">
-          <th rowspan="4" scope="row" style="cursor: auto">선택</th>
+          <th rowspan="4" scope="row" style="cursor: auto">Selection</th>
           <td><code>cell</code></td>
-          <td><img alt="cell.gif" src="cell.gif" /></td>
-          <td>표의 칸이나 여러 칸을 선택할 수 있음.</td>
+          <td><img src="cell.gif" alt="wide plus symbol" /></td>
+          <td>The table cell or set of cells can be selected.</td>
         </tr>
         <tr style="cursor: crosshair">
           <td><code>crosshair</code></td>
-          <td><img alt="crosshair.gif" src="crosshair.gif" /></td>
-          <td>십자 커서. 종종 비트맵 선택에 사용합니다.</td>
+          <td><img src="crosshair.gif" alt="plus symbol composed of two thing lines." /></td>
+          <td>Cross cursor, often used to indicate selection in a bitmap.</td>
         </tr>
         <tr style="cursor: text">
           <td><code>text</code></td>
-          <td><img alt="text.gif" class="default" src="text.gif" /></td>
-          <td>글씨 선택 가능. 보통 I빔 모양입니다.</td>
+          <td><img class="default" src="text.gif" alt="vertical i-beam" /></td>
+          <td>The text can be selected. Typically the shape of an I-beam.</td>
         </tr>
         <tr style="cursor: vertical-text">
           <td><code>vertical-text</code></td>
-          <td><img alt="vertical-text.gif" src="vertical-text.gif" /></td>
-          <td>세로쓰기 글씨 선택 가능. 보통 옆으로 누운 I빔 모양입니다.</td>
+          <td><img alt="horizontal i-beam" src="vertical-text.gif" /></td>
+          <td>
+            The vertical text can be selected. Typically the shape of a sideways I-beam.
+          </td>
         </tr>
         <tr style="cursor: alias">
-          <th rowspan="7" scope="row" style="cursor: auto">드래그 앤 드롭</th>
+          <th rowspan="7" scope="row" style="cursor: auto">Drag &#x26; drop</th>
           <td><code>alias</code></td>
-          <td><img alt="alias.gif" src="alias.gif" /></td>
-          <td>별칭이나 바로가기를 만드는 중.</td>
+          <td><img src="alias.gif" alt="wide arrow pointing up and to the left partially obscuring a smaller folder icon with a curved arrow pointing up and to the right"/></td>
+          <td>An alias or shortcut is to be created.</td>
         </tr>
         <tr style="cursor: copy">
           <td><code>copy</code></td>
-          <td><img alt="copy.gif" class="default" src="copy.gif" /></td>
-          <td>복사하는 중.</td>
+          <td><img class="default" src="copy.gif" alt="wide arrow pointing up and to the left partially obscuring a smaller folder icon with a plus sign" /></td>
+          <td>Something is to be copied.</td>
         </tr>
         <tr style="cursor: move">
           <td><code>move</code></td>
-          <td><img alt="move.gif" src="move.gif" /></td>
-          <td>움직이는 중.</td>
+          <td><img src="move.gif" alt="plus sign made of two thin lines. The four points are small arrows facing out" /></td>
+          <td>Something is to be moved.</td>
         </tr>
         <tr style="cursor: no-drop">
           <td><code>no-drop</code></td>
-          <td><img alt="no-drop.gif" class="lwrap" src="no-drop.gif" /></td>
           <td>
-            현재 위치에 놓을 수 없음.<br />[Firefox bug 275173](https://bugzil.la/275173): Windows와 Mac
-            OS X에서 <code>no-drop</code>은 <code>not-allowed</code>와 같습니다.
+            <img src="no-drop.gif" alt="pointer icon and a not allowed icon" />
+          </td>
+          <td>
+            An item may not be dropped at the current location.<br />[Firefox bug 275173](https://bugzil.la/275173):
+            On Windows and macOS, <code>no-drop</code> is the same as <code>not-allowed</code>.
           </td>
         </tr>
         <tr style="cursor: not-allowed">
           <td><code>not-allowed</code></td>
-          <td><img alt="not-allowed.gif" src="not-allowed.gif" /></td>
-          <td>요청한 행동을 수행할 수 없음.</td>
+          <td><img alt="Not allowed icon, which is a circle with a line through it" src="not-allowed.gif" /></td>
+          <td>The requested action will not be carried out.</td>
         </tr>
-        <tr id="grab" style="cursor: grab">
+        <tr style="cursor: grab">
           <td><code>grab</code></td>
-          <td><img alt="grab.gif" class="default" src="grab.gif" /></td>
-          <td>잡을 수 있음. (잡아서 이동)</td>
+          <td><img class="default" src="grab.gif" alt="fully opened hand icon" /></td>
+          <td>Something can be grabbed (dragged to be moved).</td>
         </tr>
         <tr style="cursor: grabbing">
           <td><code>grabbing</code></td>
-          <td><img alt="grabbing.gif" class="default" src="grabbing.gif" /></td>
-          <td>잡고 있음. (잡아서 이동)</td>
+          <td><img class="default" src="grabbing.gif" alt="closed hand icon, of the back of the hand"/></td>
+          <td>Something is being grabbed (dragged to be moved).</td>
         </tr>
         <tr style="cursor: all-scroll">
-          <th rowspan="15" scope="row" style="cursor: auto">크기 조절과 스크롤</th>
+          <th rowspan="15" scope="row" style="cursor: auto">
+            Resizing &#x26; scrolling
+          </th>
           <td><code>all-scroll</code></td>
-          <td><img alt="all-scroll.gif" src="all-scroll.gif" /></td>
+          <td><img alt="icon of a medium size dot with four triangles around it." src="all-scroll.gif" /></td>
           <td>
-            모든 방향으로 이동 가능. (패닝)<br />[Firefox bug 275174](https://bugzil.la/275174):
-            Windows에서 <code>all-scroll</code>은 <code>move</code>와 같습니다.
+            Something can be scrolled in any direction (panned).<br />[Firefox bug 275174](https://bugzil.la/275174):
+            On Windows, <code>all-scroll</code> is the same as <code>move</code>.
           </td>
         </tr>
         <tr style="cursor: col-resize">
           <td><code>col-resize</code></td>
-          <td><img alt="col-resize.gif" src="col-resize.gif" /></td>
+          <td><img alt="col-resize.gif" src="col-resize.gif" alt="two narrow parallel vertical lines with a small arrow pointing left and another pointing right" /></td>
           <td>
-            항목/행의 크기를 좌우로 조절할 수 있음. 종종 좌우 화살표의 가운데를
-            세로로 분리한 모양을 사용합니다.
+            The item/column can be resized horizontally.
+            Often rendered as arrows pointing left and right with a vertical bar separating them.
           </td>
         </tr>
         <tr style="cursor: row-resize">
           <td><code>row-resize</code></td>
-          <td><img alt="row-resize.gif" src="row-resize.gif" /></td>
+          <td><img src="row-resize.gif" alt="two narrow parallel horizontal lines with a small arrow pointing up and another pointing down" /></td>
           <td>
-            항목/열의 크기를 상하로 조절할 수 있음. 종종 상하 화살표의 가운데를
-            가로로 분리한 모양을 사용합니다.
+            The item/row can be resized vertically.
+            Often rendered as arrows pointing up and down with a horizontal bar separating them.
           </td>
         </tr>
         <tr style="cursor: n-resize">
           <td><code>n-resize</code></td>
           <td>
             <img
-              alt="Example of a resize towards the top cursor"
+              alt="thin long arrow pointing towards the top"
               src="n-resize.gif"
               style="border-style: solid; border-width: 0px"
             />
           </td>
           <td rowspan="8" style="cursor: auto">
-            움직일 수 있는 모서리. 예를 들어, <code>se-resize</code> 커서는 움직임이
-            사각형의 동남쪽에서 시작할 때 사용합니다. 어떤 환경에선 동일한 방향의
-            양방향 화살표를 대신 보여줍니다. 즉 <code>n-resize</code>와
-            <code>s-resize</code>는 <code>ns-resize</code>와 같습니다.
+            Some edge is to be moved. For example, the <code>se-resize</code> cursor is used when the movement starts from the <em>south-east</em> corner of the box.<br />
+            In some environments, an equivalent bidirectional resize cursor is shown.
+            For example, <code>n-resize</code> and <code>s-resize</code> are the same as <code>ns-resize</code>.
           </td>
         </tr>
         <tr style="cursor: e-resize">
           <td><code>e-resize</code></td>
           <td>
             <img
-              alt="Example of a resize towards the right cursor"
+              alt="thin long arrow pointing towards the right"
               src="e-resize.gif"
             />
           </td>
@@ -225,7 +249,7 @@ cursor: url(one.svg), url(two.svg) 5 5, progress;
           <td><code>s-resize</code></td>
           <td>
             <img
-              alt="Example of a resize towards the bottom cursor "
+              alt="thin long arrow pointing down"
               src="s-resize.gif"
             />
           </td>
@@ -234,7 +258,7 @@ cursor: url(one.svg), url(two.svg) 5 5, progress;
           <td><code>w-resize</code></td>
           <td>
             <img
-              alt="Example of a resize towards the left cursor"
+              alt="thin long arrow pointing towards the left"
               src="w-resize.gif"
             />
           </td>
@@ -243,7 +267,7 @@ cursor: url(one.svg), url(two.svg) 5 5, progress;
           <td><code>ne-resize</code></td>
           <td>
             <img
-              alt="Example of a resize towards the top-right corner cursor"
+              alt="thin long arrow pointing top-right"
               src="ne-resize.gif"
             />
           </td>
@@ -252,7 +276,7 @@ cursor: url(one.svg), url(two.svg) 5 5, progress;
           <td><code>nw-resize</code></td>
           <td>
             <img
-              alt="Example of a resize towards the top-left corner cursor"
+              alt="thin long arrow pointing top-left"
               src="nw-resize.gif"
             />
           </td>
@@ -261,7 +285,7 @@ cursor: url(one.svg), url(two.svg) 5 5, progress;
           <td><code>se-resize</code></td>
           <td>
             <img
-              alt="Example of a resize towards the bottom-right corner cursor"
+              alt="thin long arrow pointing bottom-right"
               src="se-resize.gif"
             />
           </td>
@@ -270,52 +294,73 @@ cursor: url(one.svg), url(two.svg) 5 5, progress;
           <td><code>sw-resize</code></td>
           <td>
             <img
-              alt="Example of a resize towards the bottom-left corner cursor"
+              alt="thin long arrow pointing bottom-left"
               src="sw-resize.gif"
             />
           </td>
         </tr>
         <tr style="cursor: ew-resize">
           <td><code>ew-resize</code></td>
-          <td><img alt="3-resize.gif" class="default" src="3-resize.gif" /></td>
-          <td rowspan="4" style="cursor: auto">양방향 크기 조절 커서.</td>
+          <td><img alt="thin long arrow pointing left and right" class="default" src="3-resize.gif" /></td>
+          <td rowspan="4" style="cursor: auto">Bidirectional resize cursor.</td>
         </tr>
         <tr style="cursor: ns-resize">
           <td><code>ns-resize</code></td>
-          <td><img alt="6-resize.gif" class="default" src="6-resize.gif" /></td>
+          <td><img alt="thin long arrow pointing up and down" class="default" src="6-resize.gif" /></td>
         </tr>
         <tr style="cursor: nesw-resize">
           <td><code>nesw-resize</code></td>
-          <td><img alt="1-resize.gif" class="default" src="1-resize.gif" /></td>
+          <td><img alt="thin long arrow pointing both to the top-right and bottom-left" class="default" src="1-resize.gif" /></td>
         </tr>
         <tr style="cursor: nwse-resize">
           <td><code>nwse-resize</code></td>
-          <td><img alt="4-resize.gif" class="default" src="4-resize.gif" /></td>
+          <td><img alt="thin long arrow pointing both to the top-left and bottom-right" class="default" src="4-resize.gif" /></td>
         </tr>
         <tr style="cursor: zoom-in">
-          <th rowspan="2" scope="row" style="cursor: auto">확대와 축소</th>
+          <th rowspan="2" scope="row" style="cursor: auto">Zooming</th>
           <td><code>zoom-in</code></td>
-          <td><img alt="zoom-in.gif" class="default" src="zoom-in.gif" /></td>
-          <td rowspan="2" style="cursor: auto"><p>확대/축소할 수 있음.</p></td>
+          <td><img alt="magnifying glass with a plus sign" class="default" src="zoom-in.gif" /></td>
+          <td rowspan="2" style="cursor: auto">
+            <p>Something can be zoomed (magnified) in or out.</p>
+          </td>
         </tr>
         <tr style="cursor: zoom-out">
           <td><code>zoom-out</code></td>
-          <td><img alt="zoom-out.gif" class="default" src="zoom-out.gif" /></td>
+          <td><img alt="magnifying glass with a minus sign" class="default" src="zoom-out.gif" /></td>
         </tr>
       </tbody>
     </table>
 
-### 형식 구문
+## Formal definition
+
+{{cssinfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 사용 일람
+## Usage notes
 
-비록 명세에 cursor의 크기 제한은 정해져있지 않지만, 각각의 {{Glossary("user agent", "사용자 에이전트")}}가 별도로 최대 크기를 규정할 수도 있습니다. 이 때, 크기를 넘어가는 이미지를 사용할 경우, 보통 사용자 에이전트는 해당 이미지를 완전히 무시합니다.
+### Icon size limits
 
-[브라우저 호환성](#브라우저_호환성) 항목에서 커서 크기 제한을 찾아보세요.
+While the specification does not limit the `cursor` image size, {{Glossary("user agent", "user agents")}} commonly restrict them to avoid potential misuse.
+For example, on Firefox and Chromium cursor images are restricted to 128x128 pixels by default, but it is recommended to limit the cursor image size to 32x32 pixels. Cursor changes using images that are larger than the user-agent maximum supported size will generally just be ignored.
 
-## 예제
+### Supported image file formats
+
+User agents are required by the specification to support PNG files, SVG v1.1 files in secure static mode that contain a natural size, and any other non-animated image file formats that they support for images in other properties.
+Desktop browsers also broadly support the `.cur` file format.
+
+The specification further indicates that user agents _should_ also support SVG v1.1 files in secure animated mode that contain a natural size, along with any other animated images file formats they support for images in other properties.
+User agents _may_ support both static and animated SVG images that do not contain a natural size.
+
+### Other notes
+
+Cursor changes that intersect toolbar areas are commonly blocked to avoid spoofing.
+
+## Examples
+
+### Setting cursor types
 
 ```css
 .foo {
@@ -326,23 +371,21 @@ cursor: url(one.svg), url(two.svg) 5 5, progress;
   cursor: zoom-in;
 }
 
-/* URL을 쓸 땐 키워드 값 필수 */
+/* A fallback keyword value is required when using a URL */
 .baz {
   cursor: url("hyper.cur"), auto;
 }
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-{{cssinfo}}
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [`cursor` 속성값으로 URL 사용하기](/ko/docs/Web/CSS/CSS_Basic_User_Interface/Using_URL_values_for_the_cursor_property)
 - {{cssxref("pointer-events")}}
+- {{cssxref("url", "url()")}} function

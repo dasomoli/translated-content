@@ -1,44 +1,49 @@
 ---
 title: Date.prototype.getMilliseconds()
 slug: Web/JavaScript/Reference/Global_Objects/Date/getMilliseconds
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.getMilliseconds
 ---
 
 {{JSRef}}
 
-**`getMilliseconds()`** 메서드는 `Date` 인스턴스의 밀리초를 현지 시간 기준으로 반환합니다.
+The **`getMilliseconds()`** method returns the milliseconds in
+the specified date according to local time.
 
-{{EmbedInteractiveExample("pages/js/date-getmilliseconds.html")}}
+{{EmbedInteractiveExample("pages/js/date-getmilliseconds.html","shorter")}}
 
-## 구문
+## Syntax
 
-```js
-    dateObj.getMilliseconds()
+```js-nolint
+getMilliseconds()
 ```
 
-### 반환 값
+### Return value
 
-주어진 날짜의 현지 시간 기준 밀리초를 나타내는 0에서 999 사이의 정수.
+A number, between 0 and 999, representing the milliseconds for the given date according
+to local time.
 
-## 예제
+## Examples
 
-### `getMilliseconds()` 사용하기
+### Using getMilliseconds()
 
-다음 예제에서는 현재 시간의 밀리초를 변수 `milliseconds`에 할당합니다.
+The following example assigns the milliseconds portion of the current time to the
+variable `milliseconds`:
 
 ```js
-var today = new Date();
-var milliseconds = today.getMilliseconds();
+const today = new Date();
+const milliseconds = today.getMilliseconds();
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Date.prototype.getUTCMilliseconds()")}}
 - {{jsxref("Date.prototype.setMilliseconds()")}}

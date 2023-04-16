@@ -1,19 +1,36 @@
 ---
 title: Access-Control-Allow-Credentials
 slug: Web/HTTP/Headers/Access-Control-Allow-Credentials
+page-type: http-header
+browser-compat: http.headers.Access-Control-Allow-Credentials
 ---
 
 {{HTTPSidebar}}
 
-응답헤더 **`Access-Control-Allow-Credentials`** 는 요청의 자격증명 모드({{domxref("Request.credentials")}})가 "`include`" 일때, 브라우저들이 응답을 프로트엔드 자바스트립트 코드에 노출할지에 대해 알려줍니다.
+The **`Access-Control-Allow-Credentials`** response header
+tells browsers whether to expose the response to the frontend JavaScript code when the
+request's credentials mode ({{domxref("Request.credentials")}}) is `include`.
 
-요청의 자격증명 모드가 ({{domxref("Request.credentials")}})가 "`include`" 일 때, `Access-Control-Allow-Credentials` 값이 `true` 일 경우에만 브라우저들은 프로트엔드 자바스트립트에 응답을 노출 할 것입니다.
+When a request's credentials mode ({{domxref("Request.credentials")}}) is
+`include`, browsers will only expose the response to the frontend JavaScript code
+if the `Access-Control-Allow-Credentials` value is `true`.
 
-자격증명들은 쿠키, authorization 헤더들 또는 TLS 클라이언트 인증서입니다.
+Credentials are cookies, authorization headers, or TLS client certificates.
 
-사전 요청의 응답으로 사용할 때, 실제 요청에서 자격증명을 이용할 수 있는지에 대해서 알려줍니다. 심플한 {{HTTPMethod("GET")}} 요청은 사전 요청하지 않으므로, 자격증명과 함께 리소스에 대한 요청이 만들어 지고, 응답에서 리소스와 함께 이 헤더가 없다면 브라우저는 응답을 무시하고 웹 콘텐츠가 전달 되지 않습니다.
+When used as part of a response to a preflight request, this indicates whether or not
+the actual request can be made using credentials. Note that simple {{HTTPMethod("GET")}}
+requests are not preflighted. So, if a request is made for a resource with
+credentials, and if this header is not returned with the resource, the response is ignored
+by the browser and not returned to the web content.
 
-`Access-Control-Allow-Credentials` 헤더는 {{domxref("XMLHttpRequest.withCredentials")}} 속성이나 Fetch API 생성자의{{domxref("Request.Request()", "Request()")}}의 `credentials` 옵션과 함께 작동합니다. 자격 증명이 있는 CORS 요청의 경우, 브라우저가 프런트엔드 JavaScript 코드에 대한 응답을 노출하기 위해서는 서버(Access-Control-Allow-Credentials 헤더 사용)와 클라이언트(XHR, Fetch 또는 Ajax 요청에 대한 자격 증명 모드를 설정하여)가 자격 증명 포함을 선택하고 있음을 표시해야 합니다.
+The `Access-Control-Allow-Credentials` header works in conjunction with the
+{{domxref("XMLHttpRequest.withCredentials")}} property or with the
+`credentials` option in the {{domxref("Request.Request()", "Request()")}}
+constructor of the Fetch API. For a CORS request with credentials, for browsers
+to expose the response to the frontend JavaScript code, both the server (using the
+`Access-Control-Allow-Credentials` header) and the client (by setting the
+credentials mode for the XHR, Fetch, or Ajax request) must indicate that they're opting
+into including credentials.
 
 <table class="properties">
   <tbody>
@@ -28,47 +45,49 @@ slug: Web/HTTP/Headers/Access-Control-Allow-Credentials
   </tbody>
 </table>
 
-## 구문
+## Syntax
 
-```
+```http
 Access-Control-Allow-Credentials: true
 ```
 
-## 디렉티브
+## Directives
 
 - true
-  - : 이 해더에 유일하게 유효한 값은 `true`(대소문자 구분)입니다. 자격증명이 필요하지 않으면 값을 `false`로 설정하지 말고 이 해더 전체를 생략하세요.
+  - : The only valid value for this header is `true` (case-sensitive). If you
+    don't need credentials, omit this header entirely (rather than setting its value to
+    `false`).
 
-## 예제
+## Examples
 
 Allow credentials:
 
-```
+```http
 Access-Control-Allow-Credentials: true
 ```
 
-Using [XHR](/ko/docs/Web/API/XMLHttpRequest) with credentials:
+Using [XHR](/en-US/docs/Web/API/XMLHttpRequest) with credentials:
 
 ```js
-var xhr = new XMLHttpRequest();
-xhr.open('GET', 'http://example.com/', true);
+const xhr = new XMLHttpRequest();
+xhr.open("GET", "http://example.com/", true);
 xhr.withCredentials = true;
 xhr.send(null);
 ```
 
-Using [Fetch](/ko/docs/Web/API/Fetch_API) with credentials:
+Using [Fetch](/en-US/docs/Web/API/Fetch_API) with credentials:
 
 ```js
 fetch(url, {
-  credentials: 'include'
-})
+  credentials: "include",
+});
 ```
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

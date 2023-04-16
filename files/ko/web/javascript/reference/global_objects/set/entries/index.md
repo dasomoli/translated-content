@@ -1,50 +1,52 @@
 ---
 title: Set.prototype.entries()
 slug: Web/JavaScript/Reference/Global_Objects/Set/entries
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Set.entries
 ---
 
 {{JSRef}}
 
-**`entries()`** 메소드는 `Set` 객체의 각각의 요소를 삽입순서대로 **`[값, 값]`의 형태로 가진 배열**의 새로운 [Iterator](/ko/docs/Web/JavaScript/Guide/Iterators_and_Generators) 객체를 반환합니다. `Set`객체에는 `Map`객체의 `key`가 없습니다. 그러나, `Map` 객체의 API와 비슷하게 유지하기 위해, 각각의 "요소"는 "키"와 "값" 자리에 같은 값을 가지게 됩니다. 결과적으로 `[값, 값]` 형태의 배열이 반환되게 됩니다.
+The **`entries()`** method returns a new _[set iterator](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator)_ object that contains **an array of `[value, value]`** for each element in the `Set` object, in insertion order. For `Set` objects there is no `key` like in `Map` objects. However, to keep the API similar to the `Map` object, each _entry_ has the same value for its _key_ and _value_ here, so that an array `[value, value]` is returned.
 
 {{EmbedInteractiveExample("pages/js/set-prototype-entries.html")}}
 
-## 구문
+## Syntax
 
-```js
-entries();
+```js-nolint
+entries()
 ```
 
-### 반환 값
+### Return value
 
-주어진 `Set`의 요소를 삽입순서대로 `[값, 값]`의 형태로 포함한 배열의 새로운 `iterator` 객체를 반환합니다.
+A new [iterable iterator object](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator).
 
-## 예제
+## Examples
 
-### `entries()` 사용하기
+### Using entries()
 
 ```js
-var mySet = new Set();
-mySet.add('foobar');
+const mySet = new Set();
+mySet.add("foobar");
 mySet.add(1);
-mySet.add('baz');
+mySet.add("baz");
 
-var setIter = mySet.entries();
+const setIter = mySet.entries();
 
 console.log(setIter.next().value); // ["foobar", "foobar"]
 console.log(setIter.next().value); // [1, 1]
 console.log(setIter.next().value); // ["baz", "baz"]
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Set.prototype.keys()")}}
 - {{jsxref("Set.prototype.values()")}}

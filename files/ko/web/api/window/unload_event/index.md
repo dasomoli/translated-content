@@ -1,45 +1,84 @@
 ---
-title: 'Window: unload 이벤트'
+title: "Window: unload event"
+short-title: unload
 slug: Web/API/Window/unload_event
+page-type: web-api-event
+browser-compat: api.Window.unload_event
 ---
 
 {{APIRef}}
 
-**`unload`** 이벤트는 문서나 하위 리소스가 언로딩 중일 때 발생합니다.
+> **Warning:** Developers should avoid using this event. See "Usage notes" below.
 
-| 확산               | 아니오                                                                   |
-| ------------------ | ------------------------------------------------------------------------ |
-| 취소 가능          | 아니오                                                                   |
-| 인터페이스         | {{domxref("Event")}}                                             |
-| 이벤트 처리기 속성 | {{domxref("WindowEventHandlers/onunload", "onunload")}} |
+The **`unload`** event is fired when the document or a child resource is being unloaded.
 
-`unload`는 다음 이벤트 이후 발생합니다.
+It is fired after:
 
-- {{domxref("Window/beforeunload_event", "beforeunload")}} (취소 가능한 이벤트)
+- {{domxref("Window/beforeunload_event", "beforeunload")}} (cancelable event)
 - {{domxref("Window/pagehide_event", "pagehide")}}
 
-`unload` 시점의 문서는 다음과 같은 상태입니다.
+The document is in the following state:
 
-- 이미지, IFrame 등 모든 리소스는 여전히 존재합니다.
-- 최종 사용자는 아무것도 볼 수 없습니다.
-- UI 상호작용은 아무 효과도 없습니다. ({{domxref("window.open()")}}, {{domxref("window.alert()")}}, {{domxref("window.confirm()")}}, 등등)
-- 오류가 발생해도 언로딩 절차는 중단되지 않습니다.
+- All the resources still exist (img, iframe etc.)
+- Nothing is visible anymore to the end user
+- UI interactions are ineffective ({{domxref("window.open")}}, {{domxref("window.alert", "alert")}}, {{domxref("window.confirm", "confirm")}}, etc.)
+- An error won't stop the unloading workflow
 
-참고로 `unload` 이벤트 역시 문서 트리의 순서를 따라갑니다. 즉 부모 프레임의 `unload`가 자식 프레임의 `unload` **이전에** 발생합니다. 아래 예제를 확인하세요
+Please note that the unload event also follows the document tree: parent frame unload will happen **before** child frame `unload` (see example below).
 
-## 예제
+## Syntax
+
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
+
+```js
+addEventListener("unload", (event) => {});
+onunload = (event) => {};
+```
+
+## Event type
+
+A generic {{domxref("Event")}}.
+
+## Event handler aliases
+
+In addition to the `Window` interface, the event handler property `onunload` is also available on the following targets:
+
+- {{domxref("HTMLBodyElement")}}
+- {{domxref("HTMLFrameSetElement")}}
+- {{domxref("SVGSVGElement")}}
+
+## Usage notes
+
+Developers should avoid using this event.
+
+Especially on mobile, the `unload` event is not reliably fired. For example, the `unload` event is not fired at all in the following scenario:
+
+1. A mobile user visits your page.
+2. The user then switches to a different app.
+3. Later, the user closes the browser from the app manager.
+
+Also, the `unload` event is not compatible with the [back/forward cache](https://web.dev/bfcache/) (bfcache), because many pages using this event assume that the page will not continue to exist after the event is fired. To combat this, some browsers (such as Firefox) will not place pages in the bfcache if they have unload listeners, and this is bad for performance. Others, such as Chrome, will not fire the `unload` when a user navigates away.
+
+The best event to use to signal the end of a user's session is the [`visibilitychange`](/en-US/docs/Web/API/Document/visibilitychange_event) event. In browsers that don't support `visibilitychange` the next-best alternative is the [`pagehide`](/en-US/docs/Web/API/Window/pagehide_event) event, which is also not fired reliably, but which is bfcache-compatible.
+
+If you're specifically trying to detect page unload events, it's best to listen for the `pagehide` event.
+
+See the [Page Lifecycle API](https://developer.chrome.com/blog/page-lifecycle-api/#the-unload-event) guide for more information about the problems associated with the `unload` event.
+
+## Examples
 
 ```html
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
   <head>
+    <meta charset="UTF-8" />
     <title>Parent Frame</title>
     <script>
-      window.addEventListener('beforeunload', function(event) {
-        console.log('I am the 1st one.');
+      window.addEventListener("beforeunload", (event) => {
+        console.log("I am the 1st one.");
       });
-      window.addEventListener('unload', function(event) {
-        console.log('I am the 3rd one.');
+      window.addEventListener("unload", (event) => {
+        console.log("I am the 3rd one.");
       });
     </script>
   </head>
@@ -49,39 +88,48 @@ slug: Web/API/Window/unload_event
 </html>
 ```
 
-아래는 `child-frame.html`의 내용입니다.
+Below, the content of `child-frame.html`:
 
 ```html
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
   <head>
+    <meta charset="UTF-8" />
     <title>Child Frame</title>
     <script>
-      window.addEventListener('beforeunload', function(event) {
-        console.log('I am the 2nd one.');
+      window.addEventListener("beforeunload", (event) => {
+        console.log("I am the 2nd one.");
       });
-      window.addEventListener('unload', function(event) {
-        console.log('I am the 4th and last one…');
+      window.addEventListener("unload", (event) => {
+        console.log("I am the 4th and last one…");
       });
     </script>
   </head>
   <body>
-      ☻
+    ☻
   </body>
 </html>
 ```
 
-부모 프레임이 언로딩 될 때, `console.log()` 메시지를 통해 순서를 확인할 수 있습니다.
+When the parent frame is unloaded, events will be fired in the order described by the `console.log()` messages.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 관련 이벤트: {{domxref("Window/DOMContentLoaded_event", "DOMContentLoaded")}}, {{domxref("Document/readystatechange_event", "readystatechange")}}, {{domxref("Window/load_event", "load")}}
+- Related events: {{domxref("Window/DOMContentLoaded_event", "DOMContentLoaded")}}, {{domxref("Document/readystatechange_event", "readystatechange")}}, {{domxref("Window/load_event", "load")}}
 - [Unloading Documents — unload a document](https://html.spec.whatwg.org/multipage/browsers.html#unloading-documents)
+- The [`visibilitychange`](/en-US/docs/Web/API/Document/visibilitychange_event) event.
+- [Don't lose user and app state, use Page Visibility](https://www.igvita.com/2015/11/20/dont-lose-user-and-app-state-use-page-visibility/) explains in
+  detail why you should use `visibilitychange`, not
+  `beforeunload`/`unload`.
+- [Page Lifecycle API](https://developer.chrome.com/blog/page-lifecycle-api/#developer-recommendations-for-each-state) gives best-practices guidance on handling
+  page lifecycle behavior in your web applications.
+- [PageLifecycle.js](https://github.com/GoogleChromeLabs/page-lifecycle): a JavaScript library that deals with cross-browser inconsistencies in page lifecycle behavior.
+- [Back/forward cache](https://web.dev/bfcache/) explains what the back/forward cache is, and its implications for various page lifecycle events.

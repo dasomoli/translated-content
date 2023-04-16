@@ -1,49 +1,59 @@
 ---
 title: Boolean.prototype.toString()
 slug: Web/JavaScript/Reference/Global_Objects/Boolean/toString
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Boolean.toString
 ---
 
 {{JSRef}}
 
-**`toString()`** 메서드는 {{jsxref("Boolean")}} 객체를 나타내는 문자열을 반환합니다.
+The **`toString()`** method returns a string representing the specified boolean value.
 
 {{EmbedInteractiveExample("pages/js/boolean-tostring.html")}}
 
-## 구문
+## Syntax
 
-```js
-    bool.toString()
+```js-nolint
+toString()
 ```
 
-### 반환 값
+### Return value
 
-{{jsxref("Boolean")}} 객체를 나타내는 문자열.
+A string representing the specified boolean value.
 
-## 설명
+## Description
 
-{{jsxref("Boolean")}} 객체는 {{jsxref("Object.prototype.toString()")}} 메서드를 상속받지 않고 재정의합니다. `Boolean` 객체에서 `toString()` 메서드는 객체의 문자열 표현을 반환합니다.
+The {{jsxref("Boolean")}} object overrides the `toString` method of {{jsxref("Object")}}; it does not inherit
+{{jsxref("Object.prototype.toString()")}}. For `Boolean` values, the `toString` method returns a string representation of the boolean value, which is either `"true"` or `"false"`.
 
-JavaScript는 {{jsxref("Boolean")}}을 문자열로 표현해야 할 때나 문자열 결합에 사용할 때 `toString()`을 자동으로 호출합니다.
+The `toString()` method requires its `this` value to be a `Boolean` primitive or wrapper object. It throws a {{jsxref("TypeError")}} for other `this` values without attempting to coerce them to boolean values.
 
-`toString()`은 불리언 객체의 값에 따라 문자열 "`true`" 또는 "`false`"를 반환합니다.
-
-## 예제
-
-### `toString()` 사용하기
+Because `Boolean` doesn't have a [`[@@toPrimitive]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toPrimitive) method, JavaScript calls the `toString()` method automatically when a `Boolean` _object_ is used in a context expecting a string, such as in a [template literal](/en-US/docs/Web/JavaScript/Reference/Template_literals). However, boolean _primitive_ values do not consult the `toString()` method to be [coerced to strings](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_coercion) — rather, they are directly converted using the same algorithm as the initial `toString()` implementation.
 
 ```js
-var flag = new Boolean(true);
-flag.toString(); // false
+Boolean.prototype.toString = () => "Overridden";
+console.log(`${true}`); // "true"
+console.log(`${new Boolean(true)}`); // "Overridden"
 ```
 
-## 명세
+## Examples
+
+### Using toString()
+
+```js
+const flag = new Boolean(true);
+console.log(flag.toString()); // "true"
+console.log(false.toString()); // "false"
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Object.prototype.toString()")}}

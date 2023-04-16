@@ -1,22 +1,24 @@
 ---
 title: vertical-align
 slug: Web/CSS/vertical-align
+page-type: css-property
+browser-compat: css.properties.vertical-align
 ---
 
 {{CSSRef}}
 
-**`vertical-align`** [CSS](/ko/docs/Web/CSS) 속성은 inline 또는 table-cell box에서의 수직 정렬을 지정합니다.
+The **`vertical-align`** [CSS](/en-US/docs/Web/CSS) property sets vertical alignment of an inline, inline-block or table-cell box.
 
 {{EmbedInteractiveExample("pages/css/vertical-align.html")}}
 
-vertical-align 속성은 두 가지 상황에서 사용할 수 있습니다.
+The vertical-align property can be used in two contexts:
 
-- 인라인 요소의 상자를 선 상자를 포함해 자기 자신 안에 수직으로 정렬합니다. 예를 들어, 텍스트 줄에 이미지를 세로로 배치하는 데 사용할 수 있습니다.
-- 테이블 셀 내용을 정렬합니다.
+- To vertically align an inline element's box inside its containing line box. For example, it could be used to [vertically position an image in a line of text](#vertical_alignment_in_a_line_box).
+- To vertically align [the content of a cell in a table](#vertical_alignment_in_a_table_cell).
 
-`vertical-align`은 인라인, 인라인 블록 및 테이블 셀 요소에만 적용되므로 블록 레벨 요소를 수직으로 정렬하는 데 사용할 수 없습니다.
+Note that `vertical-align` only applies to inline, inline-block and table-cell elements: you can't use it to vertically align [block-level elements](/en-US/docs/Web/HTML/Block-level_elements).
 
-## 구문
+## Syntax
 
 ```css
 /* Keyword values */
@@ -44,108 +46,129 @@ vertical-align: revert-layer;
 vertical-align: unset;
 ```
 
-`vertical-align` 속성은 아래 나열된 값 중 하나로 지정됩니다.
+The `vertical-align` property is specified as one of the values listed below.
 
-### 인라인 요소의 값
+### Values for inline elements
 
-#### 부모-상대 값
+#### Parent-relative values
 
-다음 값은 요소를 부모 요소에 대해 수직으로 정렬합니다.
+These values vertically align the element relative to its parent element:
 
 - `baseline`
-  - : 부모의 baseline에 맞추어 해당 엘리먼트의 baseline 을 정렬합니다. 몇몇 [replaced elements](/en-US/docs/Web/CSS/Replaced_element)의 베이스라인은 예를들면{{HTMLElement("textarea")}}은 HTML 명세에 정의되어 있지 않으므로, 이 키워드는 브라우저마다 다른 결과를 보여줍니다.
+  - : Aligns the baseline of the element with the baseline of its parent. The baseline of some [replaced elements](/en-US/docs/Web/CSS/Replaced_element), like {{HTMLElement("textarea")}}, is not specified by the HTML specification, meaning that their behavior with this keyword may vary between browsers.
 - `sub`
-  - : 해당 엘리먼트의 baseline을 부모의 subscript-baseline으로 정렬합니다.
+  - : Aligns the baseline of the element with the subscript-baseline of its parent.
 - `super`
-  - : 해당 엘리먼트의 baseline을 부모의 superscript-baseline으로 정렬합니다.
+  - : Aligns the baseline of the element with the superscript-baseline of its parent.
 - `text-top`
-  - : 해당 엘리먼트의 top을 부모 엘리먼트 폰트의 top으로 정렬합니다.
+  - : Aligns the top of the element with the top of the parent element's font.
 - `text-bottom`
-  - : 해당 엘리먼트의 bottom을 부모 엘리먼트 폰트의 bottom으로 정렬합니다.
+  - : Aligns the bottom of the element with the bottom of the parent element's font.
 - `middle`
-  - : 해당 엘리먼트의 middle을 부모의 baseline + x-height / 2 로 정렬합니다.
+  - : Aligns the middle of the element with the baseline plus half the x-height of the parent.
 - {{cssxref("&lt;length&gt;")}}
-  - : 해당 엘리먼트의 baseline을 부모의 baseline에서 주어진 길이만큼 위로 정렬합니다.
+  - : Aligns the baseline of the element to the given length above the baseline of its parent. A negative value is allowed.
 - {{cssxref("&lt;percentage&gt;")}}
-  - : \<length> value와 마찬가지로 해당 엘리먼트의 baseline을 부모의 baseline에서 {{Cssxref("line-height")}}의 퍼센트로 주어진 퍼센트만큼 위로 정렬합니다.
+  - : Aligns the baseline of the element to the given percentage above the baseline of its parent, with the value being a percentage of the {{Cssxref("line-height")}} property. A negative value is allowed.
 
-#### 선-상대 값
+#### Line-relative values
 
-다음 값은 요소를 전체 선을 기준으로 수직으로 정렬합니다.
+The following values vertically align the element relative to the entire line:
 
 - `top`
-  - : 해당 엘리먼트의 top과 이것의 자손들의 top을 전체 라인의 top으로 정렬합니다.
+  - : Aligns the top of the element and its descendants with the top of the entire line.
 - `bottom`
-  - : 해당 엘리먼트의 bottom과 이것의 자손들의 bottom을 전체 라인의 bottom으로 정렬합니다.
+  - : Aligns the bottom of the element and its descendants with the bottom of the entire line.
 
-Baseline이 없는 엘리먼트에 대해서는 bottom margin edge가 baseline을 대신하여 사용됩니다.
+For elements that do not have a baseline, the bottom margin edge is used instead.
 
-### 테이블 셀 값
+### Values for table cells
 
-- `baseline` (`sub`, `super`, `text-top`, `text-bottom`, `<length>`, `<percentage>`)
-  - : 셀의 baseline을 같은 행의 다른 cell들의 baseline과 정렬합니다.
+- `baseline` (and `sub`, `super`, `text-top`, `text-bottom`, `<length>`, and `<percentage>`)
+  - : Aligns the baseline of the cell with the baseline of all other cells in the row that are baseline-aligned.
 - `top`
-  - : 셀의 top padding edge를 행의 top으로 정렬합니다.
+  - : Aligns the top padding edge of the cell with the top of the row.
 - `middle`
-  - : 셀의 padding box의 중심을 행에서 중앙 정렬합니다.
+  - : Centers the padding box of the cell within the row.
 - `bottom`
-  - : 셀의 bottom padding edge를 행의 bottom으로 정렬합니다.
+  - : Aligns the bottom padding edge of the cell with the bottom of the row.
 
-음수 값이 허용됩니다.
+Negative values are allowed.
 
-## 형식 정의
+## Formal definition
 
 {{CSSInfo}}
 
-### 형식 구문
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### 기본 예제
+### Basic example
 
 #### HTML
 
 ```html
-<div>An <img src="frame_image.svg" alt="link" width="32" height="32" /> image with a default alignment.</div>
-<div>An <img class="top" src="frame_image.svg" alt="link" width="32" height="32" /> image with a text-top alignment.</div>
-<div>An <img class="bottom" src="frame_image.svg" alt="link" width="32" height="32" /> image with a text-bottom alignment.</div>
-<div>An <img class="middle" src="frame_image.svg" alt="link" width="32" height="32" /> image with a middle alignment.</div>
+<div>
+  An <img src="frame_image.svg" alt="link" width="32" height="32" /> image with
+  a default alignment.
+</div>
+<div>
+  An
+  <img class="top" src="frame_image.svg" alt="link" width="32" height="32" />
+  image with a text-top alignment.
+</div>
+<div>
+  An
+  <img class="bottom" src="frame_image.svg" alt="link" width="32" height="32" />
+  image with a text-bottom alignment.
+</div>
+<div>
+  An
+  <img class="middle" src="frame_image.svg" alt="link" width="32" height="32" />
+  image with a middle alignment.
+</div>
 ```
 
 #### CSS
 
 ```css
-img.top { vertical-align: text-top; }
-img.bottom { vertical-align: text-bottom; }
-img.middle { vertical-align: middle; }
+img.top {
+  vertical-align: text-top;
+}
+img.bottom {
+  vertical-align: text-bottom;
+}
+img.middle {
+  vertical-align: middle;
+}
 ```
 
-### 결과
+#### Result
 
-{{EmbedLiveSample("기본_예제")}}
+{{EmbedLiveSample("Basic_example")}}
 
-### 선 상자의 수직 정렬
+### Vertical alignment in a line box
 
 #### HTML
 
-```html
+```html-nolint
 <p>
-top:         <img style="vertical-align: top" src="star.png"/>
-middle:      <img style="vertical-align: middle" src="star.png"/>
-bottom:      <img style="vertical-align: bottom" src="star.png"/>
-super:       <img style="vertical-align: super" src="star.png"/>
-sub:         <img style="vertical-align: sub" src="star.png"/>
+top:         <img style="vertical-align: top" src="star.png" alt="star"/>
+middle:      <img style="vertical-align: middle" src="star.png" alt="star"/>
+bottom:      <img style="vertical-align: bottom" src="star.png" alt="star"/>
+super:       <img style="vertical-align: super" src="star.png" alt="star"/>
+sub:         <img style="vertical-align: sub" src="star.png" alt="star"/>
 </p>
 
 <p>
-text-top:    <img style="vertical-align: text-top" src="star.png"/>
-text-bottom: <img style="vertical-align: text-bottom" src="star.png"/>
-0.2em:       <img style="vertical-align: 0.2em" src="star.png"/>
--1em:        <img style="vertical-align: -1em" src="star.png"/>
-20%:         <img style="vertical-align: 20%" src="star.png"/>
--100%:       <img style="vertical-align: -100%" src="star.png"/>
+text-top:    <img style="vertical-align: text-top" src="star.png" alt="star"/>
+text-bottom: <img style="vertical-align: text-bottom" src="star.png" alt="star"/>
+0.2em:       <img style="vertical-align: 0.2em" src="star.png" alt="star"/>
+-1em:        <img style="vertical-align: -1em" src="star.png" alt="star"/>
+20%:         <img style="vertical-align: 20%" src="star.png" alt="star"/>
+-100%:       <img style="vertical-align: -100%" src="star.png" alt="star"/>
 </p>
 ```
 
@@ -160,7 +183,7 @@ img {
 
 p {
   height: 3em;
-  padding: 0 .5em;
+  padding: 0 0.5em;
   font-family: monospace;
   text-decoration: underline overline;
   margin-left: auto;
@@ -169,11 +192,11 @@ p {
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("선_상자의_수직_정렬", '100%', 160, "", "")}}
+{{EmbedLiveSample("Vertical_alignment_in_a_line_box", '100%', 160, "", "")}}
 
-### 테이블 셀의 수직 정렬
+### Vertical alignment in a table cell
 
 #### HTML
 
@@ -185,10 +208,14 @@ p {
     <td style="vertical-align: middle">middle</td>
     <td style="vertical-align: bottom">bottom</td>
     <td>
-      <p>There is a theory which states that if ever anyone discovers exactly
-      what the Universe is for and why it is here, it will instantly disappear and
-      be replaced by something even more bizarre and inexplicable.</p>
-      <p>There is another theory which states that this has already happened.</p>
+      <p>
+        There is a theory which states that if ever anyone discovers exactly
+        what the Universe is for and why it is here, it will instantly disappear
+        and be replaced by something even more bizarre and inexplicable.
+      </p>
+      <p>
+        There is another theory which states that this has already happened.
+      </p>
     </td>
   </tr>
 </table>
@@ -203,7 +230,9 @@ table {
   width: 80%;
 }
 
-table, th, td {
+table,
+th,
+td {
   border: 1px solid black;
 }
 
@@ -213,21 +242,21 @@ td {
 }
 ```
 
-#### 결과
+#### Result
 
-{{EmbedLiveSample("테이블_셀의_수직_정렬", '100%', 230, "", "")}}
+{{EmbedLiveSample("Vertical_alignment_in_a_table_cell", '100%', 230, "", "")}}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [Typical use cases of Flexbox, section "Center item"](/ko/docs/Web/CSS/CSS_Flexible_Box_Layout/Typical_Use_Cases_of_Flexbox#center_item)
+- [Typical use cases of Flexbox, section "Center item"](/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Typical_Use_Cases_of_Flexbox#center_item)
 - {{Cssxref("line-height")}}, {{Cssxref("text-align")}}, {{Cssxref("margin")}}
 - [Understanding `vertical-align`, or "How (Not) To Vertically Center Content"](http://phrogz.net/css/vertical-align/index.html)
 - [Vertical-Align: All You Need To Know](https://christopheraue.net/design/vertical-align)

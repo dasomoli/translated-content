@@ -1,78 +1,143 @@
 ---
 title: Array.prototype.push()
 slug: Web/JavaScript/Reference/Global_Objects/Array/push
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Array.push
 ---
 
 {{JSRef}}
 
-**`push()`** 메서드는 배열의 끝에 하나 이상의 요소를 추가하고, 배열의 새로운 길이를 반환합니다.
+The **`push()`** method adds the specified elements to the end of
+an array and returns the new length of the array.
 
 {{EmbedInteractiveExample("pages/js/array-push.html")}}
 
-## 구문
+## Syntax
 
-```js
-    arr.push(element1[, ...[, elementN]])
+```js-nolint
+push()
+push(element0)
+push(element0, element1)
+push(element0, element1, /* … ,*/ elementN)
 ```
 
-### 매개변수
+### Parameters
 
 - `elementN`
-  - : 배열의 끝에 추가할 요소.
+  - : The element(s) to add to the end of the array.
 
-### 반환 값
+### Return value
 
-호출한 배열의 새로운 {{jsxref("Array.length", "length")}} 속성.
+The new {{jsxref("Array/length", "length")}} property of the object upon which the method was called.
 
-## 설명
+## Description
 
-`push` 메서드는 배열 끝에 여러 값을 추가합니다.
+The `push()` method appends values to an array.
 
-`push`는 의도적으로 [제네릭](https://en.wikipedia.org/wiki/Generic_programming)합니다. 배열을 닯은 객체에 {{jsxref("Function.call", "call()")}} 또는 {{jsxref("Function.apply", "apply()")}}로 사용될 수 있다. `push` 메서드는 주어진 값을 입력하는 것을 어디에 시작할 것인지를 결정하기 위해 `length` 속성에 의존한다. 만약 `length` 속성이 숫자로 변환 될 수 없다면 인덱스는 0을 사용한다. `length` 가 생성되게 될 경우에 길이 값이 존재하지 않을 가능성을 포함한다.
+{{jsxref("Array.prototype.unshift()")}} has similar behavior to `push()`, but applied to the start of an array.
 
-String(문자열)이 변경할 수 없는 것처럼 비록 이 명령어의 어플리케이션들이 적합하지 않다고 할지라도 단지 원래 배열 같은 객체는 {{jsxref("Global_Objects/String", "strings", "", 1)}}이다.
+The `push()` method is a mutating method. It changes the length and the content of `this`. In case you want the value of `this` to be the same, but return a new array with elements appended to the end, you can use [`arr.concat([element0, element1, /* ... ,*/ elementN])`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat) instead. Notice that the elements are wrapped in an extra array — otherwise, if the element is an array itself, it would be spread instead of pushed as a single element due to the behavior of `concat()`.
 
-## 예시
+The `push()` method is [generic](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#generic_array_methods). It only expects the `this` value to have a `length` property and integer-keyed properties. Although strings are also array-like, this method is not suitable to be applied on them, as strings are immutable.
 
-### 배열에 엘리먼트를 추가 하기
+## Examples
 
-다음 코드는 두가지 엘리먼트를 포함하는 스포츠 배열을 생성하고 두개의 엘리먼트를 추가 한다. `total` 변수는 추가한 배열의 새 길이 값을 포함한다.
+### Adding elements to an array
 
-```js
-var sports = ['축구', '야구'];
-var total = sports.push('미식축구', '수영');
-
-console.log(sports); // ['축구', '야구', '미식축구', '수영']
-console.log(total);  // 4
-```
-
-### 두개의 배열을 합치기
-
-이 예제는 두번째 배열의 모든 엘리먼트를 push 하기 위해 {{jsxref("Function.apply", "apply()")}}를 사용한다.
-
-만약 두번째 배열( 아래 예제에서는 moreVegs )이 매우 클 경우, 이 메소드를 사용하지 말아야 한다. 실제로 한 함수가 사용가능한 매개변수의 최대 개수에는 제한이 있기 때문이다. 더 자세한 사항은 {{jsxref("Function.apply", "apply()")}} 에서 찾아볼 수 있다.
+The following code creates the `sports` array containing two elements, then
+appends two elements to it. The `total` variable contains the new length of
+the array.
 
 ```js
-var vegetables = ['설탕당근', '감자'];
-var moreVegs = ['셀러리', '홍당무'];
+const sports = ["soccer", "baseball"];
+const total = sports.push("football", "swimming");
 
-// 첫번째 배열에 두번째 배열을 합친다.
-// vegetables.push('셀러리', '홍당무'); 하는 것과 동일하다.
-Array.prototype.push.apply(vegetables, moreVegs);
-
-console.log(vegetables); // ['설탕당근', '감자', '셀러리', '홍당무']
+console.log(sports); // ['soccer', 'baseball', 'football', 'swimming']
+console.log(total); // 4
 ```
 
-## 명세
+### Merging two arrays
+
+This example uses {{jsxref("Operators/Spread_syntax", "spread syntax", "", "1")}} to push all elements from a
+second array into the first one.
+
+```js
+const vegetables = ["parsnip", "potato"];
+const moreVegs = ["celery", "beetroot"];
+
+// Merge the second array into the first one
+vegetables.push(...moreVegs);
+
+console.log(vegetables); // ['parsnip', 'potato', 'celery', 'beetroot']
+```
+
+Merging two arrays can also be done with the {{jsxref("Array.prototype.concat()", "concat()")}} method.
+
+### Calling push() on non-array objects
+
+The `push()` method reads the `length` property of `this`. It then sets each index of `this` starting at `length` with the arguments passed to `push()`. Finally, it sets the `length` to the previous length plus the number of pushed elements.
+
+```js
+const arrayLike = {
+  length: 3,
+  unrelated: "foo",
+  2: 4,
+};
+Array.prototype.push.call(arrayLike, 1, 2);
+console.log(arrayLike);
+// { '2': 4, '3': 1, '4': 2, length: 5, unrelated: 'foo' }
+
+const plainObj = {};
+// There's no length property, so the length is 0
+Array.prototype.push.call(plainObj, 1, 2);
+console.log(plainObj);
+// { '0': 1, '1': 2, length: 2 }
+```
+
+### Using an object in an array-like fashion
+
+As mentioned above, `push` is intentionally generic, and we can use that to
+our advantage. `Array.prototype.push` can work on an object just fine, as
+this example shows.
+
+Note that we don't create an array to store a collection of objects. Instead, we store
+the collection on the object itself and use `call` on
+`Array.prototype.push` to trick the method into thinking we are dealing with
+an array—and it just works, thanks to the way JavaScript allows us to establish the
+execution context in any way we want.
+
+```js
+const obj = {
+  length: 0,
+
+  addElem(elem) {
+    // obj.length is automatically incremented
+    // every time an element is added.
+    [].push.call(this, elem);
+  },
+};
+
+// Let's add some empty objects just to illustrate.
+obj.addElem({});
+obj.addElem({});
+console.log(obj.length); // 2
+```
+
+Note that although `obj` is not an array, the method `push`
+successfully incremented `obj`'s `length` property just like if we
+were dealing with an actual array.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
+- [Polyfill of `Array.prototype.push` in `core-js` with fixes of this method](https://github.com/zloirock/core-js#ecmascript-array)
 - {{jsxref("Array.prototype.pop()")}}
 - {{jsxref("Array.prototype.shift()")}}
 - {{jsxref("Array.prototype.unshift()")}}

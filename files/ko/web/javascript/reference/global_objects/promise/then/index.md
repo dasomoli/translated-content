@@ -1,283 +1,314 @@
 ---
 title: Promise.prototype.then()
 slug: Web/JavaScript/Reference/Global_Objects/Promise/then
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Promise.then
 ---
 
 {{JSRef}}
 
-**`then()`** 메서드는 {{domxref("Promise")}}를 리턴하고 두 개의 콜백 함수를 인수로 받습니다. 하나는 `Promise`가 **이행**했을 때, 다른 하나는 **거부**했을 때를 위한 콜백 함수입니다.
+The **`then()`** method of a {{jsxref("Promise")}} object takes up to two arguments: callback functions for the fulfilled and rejected cases of the `Promise`. It immediately returns an equivalent {{jsxref("Promise")}} object, allowing you to [chain](/en-US/docs/Web/JavaScript/Guide/Using_promises#chaining) calls to other promise methods.
 
 {{EmbedInteractiveExample("pages/js/promise-then.html")}}
 
-> **참고:** 매개변수 중 하나 이상을 생략했거나 함수가 아닌 값을 전달한 경우, `then`은 핸들러가 없는 것이 되지만 오류를 발생하지는 않습니다. `then` 바로 이전의 `Promise`가 `then`에 핸들러가 없는 상태로 완료(이행이나 거부)했을 경우, 추가 핸들러가 없는 `Promise`가 생성되며, 원래 `Promise`의 마지막 상태를 그대로 물려받습니다.
+## Syntax
 
-## 구문
-
-```JS
-p.then(onFulfilled, onRejected);
-
-p.then(function(value) {
-  // 이행
-}, function(reason) {
-  // 거부
-});
+```js-nolint
+then(onFulfilled)
+then(onFulfilled, onRejected)
 ```
 
-### 매개변수
+### Parameters
 
-- `onFulfilled`
-  - : `Promise`가 수행될 때 호출되는 {{jsxref("Function")}}으로, **이행 값(fulfillment value)** 하나를 인수로 받습니다.
-- `onRejected`
-  - : `Promise`가 거부될 때 호출되는 {{jsxref("Function")}}으로, **거부 이유(rejection reason)** 하나를 인수로 받습니다.
+- `onFulfilled` {{optional_inline}}
+  - : A function to asynchronously execute when this promise becomes fulfilled. Its return value becomes the fulfillment value of the promise returned by `then()`. The function is called with the following arguments:
 
-### 반환값
+    - `value`
+      - : The value that the promise was fulfilled with.
 
-{{jsxref("Promise")}}가 이행하거나 거부했을 때, 각각에 해당하는 핸들러 함수(`onFulfilled`나 `onRejected`)가 **비동기적으로** 실행됩니다. 핸들러 함수는 다음 규칙을 따라 실행됩니다.
+    If it is not a function, it is internally replaced with an _identity_ function (`(x) => x`) which simply passes the fulfillment value forward.
+- `onRejected` {{optional_inline}}
+  - : A function to asynchronously execute when this promise becomes rejected. Its return value becomes the fulfillment value of the promise returned by `catch()`. The function is called with the following arguments:
 
-- 함수가 값을 반환할 경우, `then`에서 반환한 프로미스는 그 반환값을 자신의 결과값으로 하여 이행합니다.
-- 값을 반환하지 않을 경우, `then`에서 반환한 프로미스는 `undefined`를 결과값으로 하여 이행합니다.
-- 오류가 발생할 경우, `then`에서 반환한 프로미스는 그 오류를 자신의 결과값으로 하여 거부합니다.
-- 이미 이행한 프로미스를 반환할 경우, `then`에서 반환한 프로미스는 그 프로미스의 결과값을 자신의 결과값으로 하여 이행합니다.
-- 이미 거부한 프로미스를 반환할 경우, `then`에서 반환한 프로미스는 그 프로미스의 결과값을 자신의 결과값으로 하여 거부합니다.
-- **대기 중**인 프로미스를 반환할 경우, `then`에서 반환한 프로미스는 그 프로미스의 이행 여부와 결과값을 따릅니다.
+    - `reason`
+      - : The value that the promise was rejected with.
 
-다음 예제에서 `then` 메서드의 비동기성을 확인할 수 있습니다.
+    If it is not a function, it is internally replaced with a _thrower_ function (`(x) => { throw x; }`) which throws the rejection reason it received.
+
+### Return value
+
+Returns a new {{jsxref("Promise")}} immediately. This new promise is always pending when returned, regardless of the current promise's status.
+
+One of the `onFulfilled` and `onRejected` handlers will be executed to handle the current promise's fulfillment or rejection. The call always happens asynchronously, even when the current promise is already settled. The behavior of the returned promise (call it `p`) depends on the handler's execution result, following a specific set of rules. If the handler function:
+
+- returns a value: `p` gets fulfilled with the returned value as its value.
+- doesn't return anything: `p` gets fulfilled with `undefined` as its value.
+- throws an error: `p` gets rejected with the thrown error as its value.
+- returns an already fulfilled promise: `p` gets fulfilled with that promise's value as its value.
+- returns an already rejected promise: `p` gets rejected with that promise's value as its value.
+- returns another pending promise: `p` is pending and becomes fulfilled/rejected with that promise's value as its value immediately after that promise becomes fulfilled/rejected.
+
+## Description
+
+The `then()` method schedules callback functions for the eventual completion of a Promise — either fulfillment or rejection. It is the primitive method of promises: the [thenable](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#thenables) protocol expects all promise-like objects to expose a `then()` method, and the {{jsxref("Promise/catch", "catch()")}} and {{jsxref("Promise/finally", "finally()")}} methods both work by invoking the object's `then()` method.
+
+For more information about the `onRejected` handler, see the {{jsxref("Promise/catch", "catch()")}} reference.
+
+`then()` returns a new promise object. If you call the `then()` method twice on the same promise object (instead of chaining), then this promise object will have two pairs of settlement handlers. All handlers attached to the same promise object are always called in the order they were added. Moreover, the two promises returned by each call of `then()` start separate chains and do not wait for each other's settlement.
+
+[Thenable](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#thenables) objects that arise along the `then()` chain are always [resolved](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/Promise#resolver_function) — the `onFulfilled` handler never receives a thenable object, and any thenable returned by either handler are always resolved before being passed to the next handler. This is because when constructing the new promise, the `resolve` and `reject` functions passed by the `executor` are saved, and when the current promise settles, the respective function will be called with the fulfillment value or rejection reason. The resolving logic comes from the resolver function passed by the {{jsxref("Promise/Promise", "Promise()")}} constructor.
+
+`then()` supports subclassing, which means it can be called on instances of subclasses of `Promise`, and the result will be a promise of the subclass type. You can customize the type of the return value through the [`@@species`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/@@species) property.
+
+## Examples
+
+### Using the then() method
 
 ```js
-// 이행한 프로미스를 받으면 'then' 블록도 바로 실행되지만,
-// 핸들러는 아래 console.log에서와 같이 비동기적으로 실행됨
-const resolvedProm = Promise.resolve(33);
-
-let thenProm = resolvedProm.then(value => {
-    console.log("이 부분은 호출 스택 이후에 실행됩니다. 전달받은 값이자 반환값은 " + value + "입니다.");
-    return value;
-});
-// thenProm의 값을 즉시 기록
-console.log(thenProm);
-
-// setTimeout으로 함수 실행을 호출 스택이 빌 때까지 미룰 수 있음
-setTimeout(() => {
-    console.log(thenProm);
+const p1 = new Promise((resolve, reject) => {
+  resolve("Success!");
+  // or
+  // reject(new Error("Error!"));
 });
 
-
-// 로그 출력 결과 (순서대로):
-// Promise {[[PromiseStatus]]: "pending", [[PromiseValue]]: undefined}
-// "이 부분은 호출 스택 이후에 실행됩니다. 전달받은 값이자 반환값은 33입니다."
-// Promise {[[PromiseStatus]]: "resolved", [[PromiseValue]]: 33}
+p1.then(
+  (value) => {
+    console.log(value); // Success!
+  },
+  (reason) => {
+    console.error(reason); // Error!
+  },
+);
 ```
 
-## 설명
-
-`then`과 {{jsxref("Promise.prototype.catch()")}} 메서드는 프로미스를 반환하기 때문에, 체이닝이 가능합니다. 이를 *합성*이라고도 합니다.
-
-## 예제
-
-### `then` 메서드 사용
+### Having a non-function as either parameter
 
 ```js
-var p1 = new Promise(function(resolve, reject) {
-  resolve("성공!");
-  // 또는
-  // reject("오류!");
-});
-
-p1.then(function(value) {
-  console.log(value); // 성공!
-}, function(reason) {
-  console.log(reason); // 오류!
-});
+Promise.resolve(1).then(2).then(console.log); // 1
+Promise.reject(1).then(2, 2).then(console.log, console.log); // 1
 ```
 
-### 체이닝
+### Chaining
 
-`then` 메서드는 `Promise`를 리턴하기 때문에, 이어지는 `then` 호출들을 손쉽게 연결할 수 있습니다.
+The `then` method returns a new `Promise`, which allows for method chaining.
 
-`then`에 핸들러로 전달된 함수가 프로미스를 반환할 경우, 이와 동등한 프로미스가 메서드 체인의 그다음 `then`에 노출됩니다. 아래 예제에서는 `setTimeout` 함수로 비동기 코드를 흉내냅니다.
+If the function passed as handler to `then` returns a `Promise`, an equivalent `Promise` will be exposed to the subsequent `then` in the method chain. The below snippet simulates asynchronous code with the `setTimeout` function.
 
 ```js
-Promise.resolve('foo')
-  // 1. "foo"를 받고 "bar"를 추가한 다음 그 값으로 이행하여 다음 then에 넘겨줌
-  .then(function(string) {
-    return new Promise(function(resolve, reject) {
-      setTimeout(function() {
-        string += 'bar';
-        resolve(string);
-      }, 1);
-    });
-  })
-  // 2. "foobar"를 받고 그대로 다음 then에 넘겨준 뒤,
-  // 나중에 콜백 함수에서 가공하고 콘솔에 출력
-  .then(function(string) {
-    setTimeout(function() {
-      string += 'baz';
-      console.log(string);
-    }, 1)
+Promise.resolve("foo")
+  // 1. Receive "foo", concatenate "bar" to it, and resolve that to the next then
+  .then(
+    (string) =>
+      new Promise((resolve, reject) => {
+        setTimeout(() => {
+          string += "bar";
+          resolve(string);
+        }, 1);
+      }),
+  )
+  // 2. receive "foobar", register a callback function to work on that string
+  // and print it to the console, but not before returning the unworked on
+  // string to the next then
+  .then((string) => {
+    setTimeout(() => {
+      string += "baz";
+      console.log(string); // foobarbaz
+    }, 1);
     return string;
   })
-  // 3. 이 부분의 코드는 이전의 then 블록 안의 (가짜) 비동기 코드에서
-  // 실제로 문자열을 가공하기 전에 실행됨
-  .then(function(string) {
-    console.log("마지막 Then: 앗... 방금 then에서 프로미스 만들고 반환하는 걸 까먹어서 " +
-                "출력 순서가 좀 이상할지도 몰라요");
+  // 3. print helpful messages about how the code in this section will be run
+  // before the string is actually processed by the mocked asynchronous code in the
+  // previous then block.
+  .then((string) => {
+    console.log(
+      "Last Then: oops... didn't bother to instantiate and return a promise in the prior then so the sequence may be a bit surprising",
+    );
 
-    // 'baz' 부분은 setTimeout 함수로 비동기적으로 실행되기 때문에
-    // 이곳의 string에는 아직 'baz' 부분이 없음
-    console.log(string);
+    // Note that `string` will not have the 'baz' bit of it at this point. This
+    // is because we mocked that to happen asynchronously with a setTimeout function
+    console.log(string); // foobar
   });
 
-// 로그 출력 결과 (순서대로):
-// 마지막 Then: 앗... 방금 then에서 프로미스 만들고 반환하는 걸 까먹어서 출력 순서가 좀 이상할지도 몰라요
+// Logs, in order:
+// Last Then: oops... didn't bother to instantiate and return a promise in the prior then so the sequence may be a bit surprising
 // foobar
 // foobarbaz
 ```
 
-`then` 핸들러에서 값을 그대로 반환한 경우에는 `Promise.resolve(<핸들러에서 반환한 값>)`을 반환하는 것과 같습니다.
+The value returned from `then()` is resolved in the same way as {{jsxref("Promise.resolve()")}}. This means [thenable objects](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#thenables) are supported, and if the return value is not a promise, it's implicitly wrapped in a `Promise` and then resolved.
 
 ```js
-var p2 = new Promise(function(resolve, reject) {
+const p2 = new Promise((resolve, reject) => {
   resolve(1);
 });
 
-p2.then(function(value) {
+p2.then((value) => {
   console.log(value); // 1
   return value + 1;
-}).then(function(value) {
-  console.log(value + ' - 동기적으로 짜도 돌아감');
+}).then((value) => {
+  console.log(value, "- A synchronous value works"); // 2 - A synchronous value works
 });
 
-p2.then(function(value) {
+p2.then((value) => {
   console.log(value); // 1
 });
 ```
 
-함수에서 오류가 발생하거나 거부한 프로미스를 반환한 경우 `then`에서는 거부한 프로미스를 반환합니다.
+A `then` call returns a promise that eventually rejects if the function throws an error or returns a rejected Promise.
 
 ```js
 Promise.resolve()
   .then(() => {
-    // .then()에서 거부한 프로미스를 반환함
-    throw new Error('으악!');
+    // Makes .then() return a rejected promise
+    throw new Error("Oh no!");
+  })
+  .then(
+    () => {
+      console.log("Not called.");
+    },
+    (error) => {
+      console.error(`onRejected function called: ${error.message}`);
+    },
+  );
+```
+
+In practice, it is often desirable to [`catch()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch) rejected promises rather than `then()`'s two-case syntax, as demonstrated below.
+
+```js
+Promise.resolve()
+  .then(() => {
+    // Makes .then() return a rejected promise
+    throw new Error("Oh no!");
+  })
+  .catch((error) => {
+    console.error(`onRejected function called: ${error.message}`);
   })
   .then(() => {
-    console.log('실행되지 않는 코드');
-  }, error => {
-    console.error('onRejected 함수가 실행됨: ' + error.message);
+    console.log("I am always called even if the prior then's promise rejects");
   });
 ```
 
-이외의 모든 경우에는 곧 이행할(비동기적으로 실행되는) 프로미스를 반환합니다. 다음 예제에서는 바로 이전의 프로미스가 거부했음에도 첫 번째 `then`에서는 `42`의 값을 갖는 곧 이행할 프로미스를 반환합니다.
+In all other cases, the returned promise eventually fulfills. In the following example, the first `then()` returns `42` wrapped in a fulfilled Promise, even though the previous Promise in the chain was rejected.
 
 ```js
 Promise.reject()
-  .then(() => 99, () => 42) // onRejected에서는 42를 곧 이행할 프로미스로 감싸서 반환함
-  .then(solution => console.log(solution + '로 이행함')); // 42로 이행함
+  .then(
+    () => 99,
+    () => 42,
+  ) // onRejected returns 42 which is wrapped in a fulfilled Promise
+  .then((solution) => console.log(`Resolved with ${solution}`)); // Fulfilled with 42
 ```
 
-실제 개발 시에는 아래와 같이 거부한 프로미스를 `then`의 2단 핸들러보다는 `catch`를 사용해 처리하는 경우가 많습니다.
-
-```js
-Promise.resolve()
-  .then(() => {
-    // .then()에서 거부한 프로미스를 반환함
-    throw new Error('으악!');
-  })
-  .catch(error => {
-    console.error('onRejected 함수가 실행됨: ' + error.message);
-  })
-  .then(() => {
-    console.log("처음 then의 프로미스가 거부했지만 그래도 이 코드는 실행됨");
-  });
-```
-
-체이닝을 이용해 프로미스 기반 함수 위에 다른 프로미스 기반 함수를 구현할 수도 있습니다.
-
-```js
-function fetch_current_data() {
-  // fetch() API는 프로미스를 반환합니다. 이 함수도
-  // API가 비슷하지만, 이 함수의 프로미스는
-  // 추가 작업을 거친 이후에 이행값을 반환합니다.
-  return fetch('current-data.json').then(response => {
-    if (response.headers.get('content-type') != 'application/json') {
-      throw new TypeError();
-    }
-    var j = response.json();
-    // j 가공하기
-    return j; // fetch_current_data().then()을 통해
-              // 이행값을 사용할 수 있음
-  });
-}
-```
-
-`onFulfilled`가 프로미스를 반환할 경우, `then`의 반환값 역시 그 프로미스에 의해 이행/거부합니다.
+If `onFulfilled` returns a promise, the return value of `then` will be fulfilled/rejected based on the eventual state of that promise.
 
 ```js
 function resolveLater(resolve, reject) {
-  setTimeout(function() {
+  setTimeout(() => {
     resolve(10);
   }, 1000);
 }
 function rejectLater(resolve, reject) {
-  setTimeout(function() {
-    reject(new Error('오류'));
+  setTimeout(() => {
+    reject(new Error("Error"));
   }, 1000);
 }
 
-var p1 = Promise.resolve('foo');
-var p2 = p1.then(function() {
-  // 1초 뒤에 10으로 이행할 프로미스 반환
+const p1 = Promise.resolve("foo");
+const p2 = p1.then(() => {
+  // Return promise here, that will be resolved to 10 after 1 second
   return new Promise(resolveLater);
 });
-p2.then(function(v) {
-  console.log('이행', v);  // "이행", 10
-}, function(e) {
-  // 실행되지 않음
-  console.log('거부', e);
-});
+p2.then(
+  (v) => {
+    console.log("resolved", v); // "resolved", 10
+  },
+  (e) => {
+    // not called
+    console.error("rejected", e);
+  },
+);
 
-var p3 = p1.then(function() {
-  // 1초 뒤에 '오류'로 거부할 프로미스 반환
+const p3 = p1.then(() => {
+  // Return promise here, that will be rejected with 'Error' after 1 second
   return new Promise(rejectLater);
 });
-p3.then(function(v) {
-  // 실행되지 않음
-  console.log('이행', v);
-}, function(e) {
-  console.log('거부', e); // "거부", '오류'
-});
+p3.then(
+  (v) => {
+    // not called
+    console.log("resolved", v);
+  },
+  (e) => {
+    console.error("rejected", e); // "rejected", 'Error'
+  },
+);
 ```
 
-### {{domxref("window.setImmediate")}}의 프로미스 기반 폴리필
-
-{{jsxref("Function.prototype.bind()")}} `Reflect.apply` ({{jsxref("Reflect.apply()")}}) 메서드를 사용하여 (취소할 수 없는) setImmedate와 비슷한 함수를 생성합니다.
+You can use chaining to implement one function with a Promise-based API on top of another such function.
 
 ```js
-const nextTick = (() => {
-  const noop = () => {}; // literally
-  const nextTickPromise = () => Promise.resolve().then(noop);
+function fetchCurrentData() {
+  // The fetch() API returns a Promise. This function
+  // exposes a similar API, except the fulfillment
+  // value of this function's Promise has had more
+  // work done on it.
+  return fetch("current-data.json").then((response) => {
+    if (response.headers.get("content-type") !== "application/json") {
+      throw new TypeError();
+    }
+    const j = response.json();
+    // maybe do something with j
 
-  const rfab = Reflect.apply.bind; // (thisArg, fn, thisArg, [...args])
-  const nextTick = (fn, ...args) => (
-    fn !== undefined
-    ? Promise.resolve(args).then(rfab(null, fn, null))
-    : nextTickPromise(),
-    undefined
-  );
-  nextTick.ntp = nextTickPromise;
-
-  return nextTick;
-})();
+    // fulfillment value given to user of
+    // fetchCurrentData().then()
+    return j;
+  });
+}
 ```
 
-## 명세서
+### Asynchronicity of then()
+
+The following is an example to demonstrate the asynchronicity of the `then` method.
+
+```js
+// Using a resolved promise 'resolvedProm' for example,
+// the function call 'resolvedProm.then(...)' returns a new promise immediately,
+// but its handler '(value) => {...}' will get called asynchronously as demonstrated by the console.logs.
+// the new promise is assigned to 'thenProm',
+// and thenProm will be resolved with the value returned by handler
+const resolvedProm = Promise.resolve(33);
+console.log(resolvedProm);
+
+const thenProm = resolvedProm.then((value) => {
+  console.log(
+    `this gets called after the end of the main stack. the value received is: ${value}, the value returned is: ${
+      value + 1
+    }`,
+  );
+  return value + 1;
+});
+console.log(thenProm);
+
+// Using setTimeout, we can postpone the execution of a function to the moment the stack is empty
+setTimeout(() => {
+  console.log(thenProm);
+});
+
+// Logs, in order:
+// Promise {[[PromiseStatus]]: "resolved", [[PromiseResult]]: 33}
+// Promise {[[PromiseStatus]]: "pending", [[PromiseResult]]: undefined}
+// "this gets called after the end of the main stack. the value received is: 33, the value returned is: 34"
+// Promise {[[PromiseStatus]]: "resolved", [[PromiseResult]]: 34}
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
 - {{jsxref("Promise")}}
 - {{jsxref("Promise.prototype.catch()")}}

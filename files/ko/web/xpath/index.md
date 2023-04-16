@@ -3,37 +3,6 @@ title: XPath
 slug: Web/XPath
 ---
 
-XPath는 XML Path Language를 나타내고 [XML](/ko/XML) 문서의 다른 부분을 주소 지정하는(가리키는) 유연한 방법을 제공하는 비XML 문법을 씁니다. 이와 동시에, 또한 패턴과 일치하는지 알아보기 위해 문서 안에 주소 지정된 노드를 검사하는데도 쓰일 수 있습니다.
-
-XPath는 주로 [XSLT](/ko/XSLT)에서 쓰입니다. 하지만 또한 [getElementById](/ko/DOM/document.getElementById) 메소드, [childNodes](/ko/DOM/element.childNodes) 특성들에 의존하는 대신 HTML과 [XUL](/ko/XUL) 같은 다른 XML에 기반을 둔 언어 문서를 [DOM](/ko/DOM)을 통해 항해하는 더 나은 강력한 방법으로도 쓰입니다. 다음은 모호합니다: 이는 확장기능 안에서 특히 쓸모 있습니다, 특히 [overlays](/ko/XUL_Overlays)를 고려하면.
-
-XPath는 XML 문서의 계층 구조를 항해하기 위해 경로 표기법(URL의 경우와 같이)을 씁니다. [URI](/ko/URI)와 XML 속성값에 쓰일 수 있도록 비XML 문법을 씁니다.
-
-## 문서
-
-- [Introduction to using XPath in JavaScript](/ko/docs/Web/XPath/Introduction_to_using_XPath_in_JavaScript)
-  - : XPath의 비XSLT 사용을 기술합니다.
-- [XPath:Axes](/ko/docs/Web/XPath/Axes)
-  - : XPath 명세에 정의된 축의 정의와 목록. 축은 노드 사이의 관계를 기술하는데 씁니다.
-- [XPath:Functions](/ko/docs/Web/XPath/Functions)
-  - : 기본 XPath 함수와 XPath에 더해진 XSLT 고유의 추가분 설명과 나열.
-- [Transforming XML with XSLT](/ko/docs/Web/XSLT/Transforming_XML_with_XSLT)
-  - : XSLT는 변환하고 싶은 XML 문서 내의 코드 조각(segment)을 주소지정하기 위해 XPath를 씁니다.
-- [XPath snippets](/ko/docs/Web/XPath/Snippets)
-  - : These are JavaScript utility functions, that can be used in your own code, based on [DOM Level 3 XPath](https://www.w3.org/TR/DOM-Level-3-XPath/) APIs.
-- [What is XSLT?](https://www.xml.com/pub/a/2000/08/holman/)
-  - : XSLT와 XPath에 관한 이 광범위한 소개는 두 기술 사이에 우선순위가 없다 보고 읽는 이를 배경, 문맥, 구조, 개념, 입문 용어로 안내합니다.
-
-## Tools
-
-- [XPath tester](https://extendsclass.com/xpath-tester.html)
-  - : 온라인 XPath 작성기/디버거
-
-## Related Topics
-
-- [XSLT](/ko/docs/Web/XSLT), [XML](/ko/docs/Web/XML), [DOM](/ko/docs/Web/API/Document_Object_Model)
-- [Comparison of CSS Selectors and XPath](/ko/docs/Web/XPath/Comparison_with_CSS_selectors)
-
 <section id="Quick_links">
   <ol>
     <li><strong><a href="/en-US/docs/Web/XSLT">XSLT</a></strong></li><li><strong><a href="/en-US/docs/Web/EXSLT">EXSLT</a></strong></li>
@@ -41,6 +10,7 @@ XPath는 XML 문서의 계층 구조를 항해하기 위해 경로 표기법(URL
     <li class="toggle"><details open><summary>Guides</summary>
       <ol>
         <li><a href="/en-US/docs/Web/XPath/Comparison_with_CSS_selectors">Comparison of CSS Selectors and XPath</a></li>
+        <li><a href="/en-US/docs/Web/XPath/Introduction_to_using_XPath_in_JavaScript">Introduction to using XPath in JavaScript</a></li>
         <li><a href="/en-US/docs/Web/XPath/Snippets">XPath snippets</a></li>
       </ol></details>
     </li>
@@ -48,3 +18,36 @@ XPath는 XML 문서의 계층 구조를 항해하기 위해 경로 표기법(URL
     <li class="toggle"><details open><summary><a href="/en-US/docs/Web/XPath/Functions">XPath Functions</a></summary>{{ListSubpagesForSidebar("/en-US/docs/Web/XPath/Functions")}}</details></li>
   </ol>
 </section>
+
+XPath stands for XML Path Language. It uses a non-XML syntax to provide a flexible way of addressing (pointing to) different parts of an [XML](/en-US/docs/Web/XML/XML_introduction) document. It can also be used to test addressed nodes within a document to determine whether they match a pattern or not.
+
+XPath is mainly used in [XSLT](/en-US/docs/Web/XSLT), but can also be used as a much more powerful way of navigating through the [DOM](/en-US/docs/Web/API/Document_Object_Model) of any XML-like language document using {{DOMxRef("XPathExpression")}}, such as [HTML](/en-US/docs/Web/HTML) and [SVG](/en-US/docs/Web/SVG), instead of relying on the {{DOMxRef("Document.getElementById()")}} or {{DOMxRef("Document.querySelectorAll()")}} methods, the {{DOMxRef("Node.childNodes")}} properties, and other DOM Core features.
+
+XPath uses a path notation (as in URLs) for navigating through the hierarchical structure of an XML document. It uses a non-XML syntax so that it can be used in URIs and XML attribute values.
+
+> **Note:** Support for XPath varies widely; it's supported reasonably well in Firefox (although there are no plans to improve support further), while other browsers implement it to a lesser extent, if at all. If you need a polyfill, you may consider [js-xpath](https://sourceforge.net/projects/js-xpath/files/js-xpath/1.0.0/xpath.js/download) or [wicked-good-xpath](https://github.com/google/wicked-good-xpath).
+
+## Documentation
+
+- [Introduction to using XPath in JavaScript](/en-US/docs/Web/XPath/Introduction_to_using_XPath_in_JavaScript)
+  - : Describes a non-XSLT use of XPath.
+- [XPath:Axes](/en-US/docs/Web/XPath/Axes)
+  - : List and definition of the axes defined in the XPath specification. Axes are used to describe the relationships between nodes.
+- [XPath:Functions](/en-US/docs/Web/XPath/Functions)
+  - : List and description of the core XPath functions and XSLT-specific additions to XPath.
+- [Transforming XML with XSLT](/en-US/docs/Web/XSLT/Transforming_XML_with_XSLT)
+  - : XSLT uses XPath to address code segments in an XML document that it wishes to transform.
+- [XPath snippets](/en-US/docs/Web/XPath/Snippets)
+  - : These are JavaScript utility functions, that can be used in your own code, based on [DOM Level 3 XPath](https://www.w3.org/TR/DOM-Level-3-XPath/) APIs.
+- [What is XSLT?](https://www.xml.com/pub/a/2000/08/holman/)
+  - : This extensive introduction to XSLT and XPath assumes no prior knowledge of the technologies, and guides the reader through background, context, structure, concepts, and introductory terminology.
+
+## Tools
+
+- [XPath tester](https://extendsclass.com/xpath-tester.html)
+  - : An online XPath Builder/Debugger.
+
+## Related Topics
+
+- [XSLT](/en-US/docs/Web/XSLT), [XML](/en-US/docs/Web/XML), [DOM](/en-US/docs/Web/API/Document_Object_Model)
+- [Comparison of CSS Selectors and XPath](/en-US/docs/Web/XPath/Comparison_with_CSS_selectors)

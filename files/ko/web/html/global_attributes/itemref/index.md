@@ -1,35 +1,25 @@
 ---
 title: itemref
 slug: Web/HTML/Global_attributes/itemref
+page-type: html-attribute
+browser-compat: html.global_attributes.itemref
 ---
 
 {{HTMLSidebar("Global_attributes")}}
 
-**`itemref`** [전역 특성](/ko/docs/Web/HTML/Global_attributes)을 사용하면 {{htmlattrxref("itemscope")}} 특성을 가진 요소 바깥의 속성도 아이템과 연결할 수 있습니다.
+Properties that are not descendants of an element with the [`itemscope`](/en-US/docs/Web/HTML/Global_attributes/itemscope) attribute can be associated with an item using the [global attribute](/en-US/docs/Web/HTML/Global_attributes) **`itemref`**.
 
-`itemref` 특성에는 문서 내 다른 요소의 {{htmlattrxref("id")}} 목록({{htmlattrxref("itemid")}} 아님)을 제공해야 합니다.
+`itemref` provides a list of element IDs (not `itemid`s) elsewhere in the document, with additional properties
 
-`itemref` 특성은 `itemscope` 특성을 지정한 요소에만 추가할 수 있습니다.
+The `itemref` attribute can only be specified on elements that have an `itemscope` attribute specified.
 
-> **참고:**`itemref` 특성은 마이크로데이터 데이터 모델의 일부가 아니며, 트리 구조를 따르지 않는 데이터에 웹 작성자가 주석을 추가하는 것을 돕는 구문 구조에 불과합니다. 예를 들어, 표의 열이 별개의 아이템인데 데이터 속성은 열을 구성하는 칸에 포함하고 싶은 경우 사용할 수 있습니다.
+> **Note:** The `itemref` attribute is not part of the microdata data model. It is merely a syntactic construct to aid authors in adding annotations to pages where the data to be annotated does not follow a convenient tree structure. For example, it allows authors to mark up data in a table so that each column defines a separate item while keeping the properties in the cells.
 
-## 예제
+## Examples
 
-### HTML
+### Representing structured data for a band
 
-```html
-<div itemscope id="amanda" itemref="a b"></div>
-<p id="a">Name: <span itemprop="name">Amanda</span> </p>
-<div id="b" itemprop="band" itemscope itemref="c"></div>
-<div id="c">
-    <p>Band: <span itemprop="name">Jazz Band</span> </p>
-    <p>Size: <span itemprop="size">12</span> players</p>
-</div>
-```
-
-### 구조화 데이터
-
-([JSON-LD](https://json-ld.org/) 형식)
+This example uses microdata attributes to represent the following structured data (in [JSON-LD](https://json-ld.org/) format):
 
 ```json
 {
@@ -43,24 +33,36 @@ slug: Web/HTML/Global_attributes/itemref
 }
 ```
 
-### 결과
+#### HTML
 
-{{EmbedLiveSample('예제')}}
+```html
+<div itemscope id="amanda" itemref="a b"></div>
+<p id="a">Name: <span itemprop="name">Amanda</span></p>
+<div id="b" itemprop="band" itemscope itemref="c"></div>
+<div id="c">
+  <p>Band: <span itemprop="name">Jazz Band</span></p>
+  <p>Size: <span itemprop="size">12</span> players</p>
+</div>
+```
 
-## 명세
+#### Result
+
+{{EmbedLiveSample('Representing structured data for a band')}}
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 다른 [전역 특성](/ko/docs/Web/HTML/Global_attributes).
-- 마이크로데이터 관련 다른 전역 특성
+- [Other different global attributes](/en-US/docs/Web/HTML/Global_attributes)
+- Other microdata related global attributes:
 
-  - {{htmlattrxref("itemid")}}
-  - {{htmlattrxref("itemprop")}}
-  - {{htmlattrxref("itemref")}}
-  - {{htmlattrxref("itemtype")}}
+  - [`itemid`](/en-US/docs/Web/HTML/Global_attributes/itemid)
+  - [`itemprop`](/en-US/docs/Web/HTML/Global_attributes/itemprop)
+  - [`itemscope`](/en-US/docs/Web/HTML/Global_attributes/itemscope)
+  - [`itemtype`](/en-US/docs/Web/HTML/Global_attributes/itemtype)

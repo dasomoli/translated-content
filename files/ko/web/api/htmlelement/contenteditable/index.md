@@ -1,29 +1,40 @@
 ---
-title: HTMLElement.contentEditable
+title: "HTMLElement: contentEditable property"
+short-title: contentEditable
 slug: Web/API/HTMLElement/contentEditable
+page-type: web-api-instance-property
+browser-compat: api.HTMLElement.contentEditable
 ---
+
 {{APIRef("HTML DOM")}}
 
-{{domxref("HTMLElement")}} 요소의 **`contenteditable`** 속성은 요소의 편집 가능 여부를 나타냅니다. 열거형 속성으로, 다음 중 하나의 값을 가질 수 있습니다.
+The **`contentEditable`** property of
+the {{domxref("HTMLElement")}} interface specifies whether or not the element is
+editable.
 
-- `'true'`는 요소가 `contenteditable`임을 의미합니다.
-- `'false'`는 요소를 편집할 수 없음을 의미합니다.
-- `'inherit'`은 요소가 부모의 편집 가능 여부를 상속함을 의미합니다.
+This enumerated attribute can have the following values:
 
-{{domxref("HTMLElement.isContentEditable")}} 속성으로 이 속성의 {{jsxref("Boolean")}} 계산값을 얻을 수 있습니다.
+- '`true`' indicates that the element is `contenteditable`.
+- '`false`' indicates that the element cannot be edited.
+- '`inherit`' indicates that the element inherits its parent's editable
+  status.
 
-## 명세
+You can use the {{domxref("HTMLElement.isContentEditable")}} property to test the
+computed boolean value of this property.
+
+## Value
+
+A string.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-Internet Explorer에서 `contenteditable`은 {{htmlelement("table")}}, {{htmlelement("col")}}, {{htmlelement("colgroup")}}, {{htmlelement("tbody")}}, {{htmlelement("td")}}, {{htmlelement("tfoot")}}, {{htmlelement("th")}}, {{htmlelement("thead")}}, {{htmlelement("tr")}} 요소에 바로 적용할 수 없습니다. 대신 편집 가능한 {{htmlelement("span")}} 또는 {{htmlelement("div")}} 요소를 표의 각 칸에 배치할 수 있습니다.
+## See also
 
-## 같이 보기
-
-- [콘텐츠를 편집 가능하게 만들기](/ko/docs/Web/Guide/HTML/Editable_content)
 - {{domxref("HTMLElement.isContentEditable")}}
-- {{htmlattrxref("contenteditable")}} 전역 속성
+- The [`contenteditable`](/en-US/docs/Web/HTML/Global_attributes#contenteditable) global attribute.

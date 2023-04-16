@@ -1,113 +1,196 @@
 ---
-title: Window.postMessage()
+title: "Window: postMessage() method"
+short-title: postMessage()
 slug: Web/API/Window/postMessage
+page-type: web-api-instance-method
+browser-compat: api.Window.postMessage
 ---
 
 {{ApiRef("HTML DOM")}}
 
-**`window.postMessage()`** 메소드는 {{domxref("Window")}} 오브젝트 사이에서 안전하게 cross-origin 통신을 할 수 있게 합니다. 예시로, 페이지와 생성된 팝업 간의 통신이나, 페이지와 페이지 안의 iframe 간의 통신에 사용할 수 있습니다.
+The **`window.postMessage()`** method safely enables
+cross-origin communication between {{domxref("Window")}} objects; _e.g.,_ between
+a page and a pop-up that it spawned, or between a page and an iframe embedded within it.
 
-일반적으로, 다른 페이지 간의 스크립트는 각 페이지가 같은 프로토콜, 포트 번호와 호스트을 공유하고 있을 때에("[동일 출처 정책](/ko/docs/Web/Security/Same-origin_policy)"으로도 불려 집니다.) 서로 접근할 수 있습니다. **`window.postMessage()`** 는 이 제약 조건을 안전하게 우회하는 기능을 제공합니다.
+Normally, scripts on different pages are allowed to access each other if and only if
+the pages they originate from share the same protocol, port number, and host (also known
+as the "[same-origin policy](/en-US/docs/Web/Security/Same-origin_policy)").
+`window.postMessage()` provides a controlled mechanism to securely circumvent this restriction (if used properly).
 
-대체로, 한 window는 다른 window를 참조할 수 있고(_예시,_ `targetWindow = window.opener`), `targetWindow.postMessage()`를 통해 다른 window에 {{domxref("MessageEvent")}}를 전송할 수 있습니다. 이벤트를 받는 window는 이를 통해 필요에 따라 [이벤트를 처리](/ko/docs/Web/Guide/Events)할 수 있습니다. **`window.postMessage()`** 를 통해 전달된 인자(예시, "message")는 [이벤트 객체를 통해 이벤트를 받는 window에서 사용](#The_dispatched_event)할 수 있습니다.
+Broadly, one window may obtain a reference to another (_e.g.,_ via
+`targetWindow = window.opener`), and then dispatch a
+{{domxref("MessageEvent")}} on it with `targetWindow.postMessage()`. The
+receiving window is then free to [handle this event](/en-US/docs/Web/Events/Event_handlers) as needed. The arguments passed to `window.postMessage()`
+(_i.e.,_ the "message") are [exposed to the receiving window through the event object](#the_dispatched_event).
 
-## 문법
+## Syntax
 
-```js
-targetWindow.postMessage(message, targetOrigin, [transfer]);
+```js-nolint
+postMessage(message, targetOrigin)
+postMessage(message, targetOrigin, transfer)
 ```
 
-- `targetWindow`
-  - : 메세지를 전달 받을 window의 참조. 참조를 취득할 방법으로는 다음과 같은 것이 있습니다:\* {{domxref("Window.open")}} (새 창을 만들고 새 창을 참조할 때),
-    - {{domxref("Window.opener")}} (새 창을 만든 window를 참조할 때),
-    - {{domxref("HTMLIFrameElement.contentWindow")}} (부모 window에서 임베디드된 {{HTMLElement("iframe")}}을 참조할 때),
-    - {{domxref("Window.parent")}} (임베디드된 {{HTMLElement("iframe")}}에서 부모 window를 참조할 때),
-    - {{domxref("Window.frames")}} + an index value (named or numeric).
+### Parameters
+
 - `message`
-  - : 다른 window에 보내질 데이터. 데이터는 [the structured clone algorithm](/ko/docs/DOM/The_structured_clone_algorithm)을 이용해 직렬화됩니다. 이를 통해 직렬화를 직접할 필요 없이 대상 window에 다양한 데이터 객체를 안전하게 전송할 수 있습니다. \[[1](/ko/docs/)]
+  - : Data to be sent to the other window. The data is serialized using
+    {{domxref("Web_Workers_API/Structured_clone_algorithm", "the structured clone
+    algorithm", "", 1)}}. This means you can pass a broad variety of data objects safely to the
+    destination window without having to serialize them yourself.
 - `targetOrigin`
-  - : `targetWindow`의 origin을 지정합니다. 이는 전송되는 이벤트에서 사용되며, 문자열 `"*"`(별도로 지정하지 않음을 나타냄) 혹은 URI이어야 합니다. 이벤트를 전송하려 할 때에 `targetWindow`의 스키마, 호스트 이름, 포트가 `targetOrigin`의 정보와 맞지 않다면, 이벤트는 전송되지 않습니다. 세 가지 모두 일치해야 이벤트가 전송됩니다. 이는 메세지를 보내는 곳을 제안하기 위함입니다. 예를 들어, `postMessage()`를 통해 비밀번호가 전송된다면, 악의적인 제 3자가 가로채지 못하도록, `targetOrigin`을 반드시 지정한 수신자와 동일한 URI를 가지도록 설정하는 것이 정말 중요합니다. **다른 window의 document의 위치를 알고 있다면, 항상 `targetOrigin`에 `*` 말고 특정한 값을 설정하세요. 특정한 대상을 지정하지 않으면 악의적인 사이트에 전송하는 데이터가 공개되어 버립니다.**
+  - : Specifies what the origin of this window must be for the event to be
+    dispatched, either as the literal string `"*"` (indicating no preference)
+    or as a URI. If at the time the event is scheduled to be dispatched the scheme,
+    hostname, or port of this window's document does not match that provided
+    in `targetOrigin`, the event will not be dispatched; only if all three
+    match will the event be dispatched. This mechanism provides control over where
+    messages are sent; for example, if `postMessage()` was used to transmit a
+    password, it would be absolutely critical that this argument be a URI whose origin is
+    the same as the intended receiver of the message containing the password, to prevent
+    interception of the password by a malicious third party. **Always provide a
+    specific `targetOrigin`, not `*`, if you know where the other
+    window's document should be located. Failing to provide a specific target discloses
+    the data you send to any interested malicious site.**
 - `transfer` {{optional_Inline}}
-  - : 일련의 {{Glossary("transferable objects", "transfer 객체")}}. 메세지와 함께 전송됩니다. 이 객체들의 소유권은 수신 측에게 전달되며, 더 이상 송신 측에서 사용할 수 없습니다.
+  - : A sequence of [transferable objects](/en-US/docs/Web/API/Web_Workers_API/Transferable_objects) that are transferred with the message.
+    The ownership of these objects is given to the destination side and they are no longer usable on the sending side.
 
-## 디스페치 이벤트(The dispatched event)
+### Return value
 
-이하의 JavaScript를 실행하면 `otherWindow` 에서 전달된 메시지를 받을 수 있습니다:
+None ({{jsxref("undefined")}}).
+
+## The dispatched event
+
+A `window` can listen for dispatched messages by executing the following
+JavaScript:
 
 ```js
-window.addEventListener("message", receiveMessage, false);
+window.addEventListener(
+  "message",
+  (event) => {
+    if (event.origin !== "http://example.org:8080") return;
 
-function receiveMessage(event)
-{
-  if (event.origin !== "http://example.org:8080")
-    return;
+    // …
+  },
+  false
+);
+```
 
-  // ...
+The properties of the dispatched message are:
+
+- `data`
+  - : The object passed from the other window.
+- `origin`
+  - : The {{Glossary("origin")}} of the window that sent the message at the time
+    `postMessage` was called. This string is the concatenation of the protocol
+    and "://", the host name if one exists, and ":" followed by a port number if a port is
+    present and differs from the default port for the given protocol. Examples of typical
+    origins are `https://example.org` (implying port
+    `443`), `http://example.net` (implying port
+    `80`), and `http://example.com:8080`. Note that
+    this origin is _not_ guaranteed to be the current or future origin of that
+    window, which might have been navigated to a different location since
+    `postMessage` was called.
+- `source`
+  - : A reference to the {{domxref("window")}} object that sent the message; you can use
+    this to establish two-way communication between two windows with different origins.
+
+## Security concerns
+
+**If you do not expect to receive messages from other sites, _do not_ add
+any event listeners for `message` events.** This is a completely
+foolproof way to avoid security problems.
+
+If you do expect to receive messages from other sites, **always verify the
+sender's identity** using the `origin` and possibly
+`source` properties. Any window (including, for example,
+`http://evil.example.com`) can send a message to any other window,
+and you have no guarantees that an unknown sender will not send malicious messages.
+Having verified identity, however, you still should **always verify the syntax of
+the received message**. Otherwise, a security hole in the site you trusted to
+send only trusted messages could then open a cross-site scripting hole in your site.
+
+**Always specify an exact target origin, not `*`, when you use
+`postMessage` to send data to other windows.** A malicious site can
+change the location of the window without your knowledge, and therefore it can intercept
+the data sent using `postMessage`.
+
+### Secure shared memory messaging
+
+If `postMessage()` throws when used with {{jsxref("SharedArrayBuffer")}}
+objects, you might need to make sure you cross-site isolated your site properly. Shared
+memory is gated behind two HTTP headers:
+
+- {{HTTPHeader("Cross-Origin-Opener-Policy")}} with `same-origin` as value
+  (protects your origin from attackers)
+- {{HTTPHeader("Cross-Origin-Embedder-Policy")}} with `require-corp` or
+  `credentialless` as value (protects victims from your origin)
+
+```http
+Cross-Origin-Opener-Policy: same-origin
+Cross-Origin-Embedder-Policy: require-corp
+```
+
+To check if cross origin isolation has been successful, you can test against the
+{{domxref("crossOriginIsolated")}}
+property available to window and worker contexts:
+
+```js
+const myWorker = new Worker("worker.js");
+
+if (crossOriginIsolated) {
+  const buffer = new SharedArrayBuffer(16);
+  myWorker.postMessage(buffer);
+} else {
+  const buffer = new ArrayBuffer(16);
+  myWorker.postMessage(buffer);
 }
 ```
 
-전달된 메시지의 프로퍼티는 다음과 같습니다:
-
-- `data`
-  - : 다른 윈도우에서 온 오브젝트.
-- `origin`
-  - : `postMessage` 가 호출될 때 메시지를 보내는 윈도우의 [origin](/ko/docs/Origin).
-    이 문자열은 프로토콜과 "://", 호스트 명(존재할 경우), 그리고 ":"의 뒤에 이어 지는 포트 번호가 연결된 것입니다. (포트 번호는 포트 번호가 명기되었거나 주어진 프로토콜의 디폴트 포트와 다를 경우). 전형적인 origin의 예로 `https://example.org` (이 경우 port `443`), `http://example.net` (이 경우 port `80`), and `http://example.com:8080` 가 있습니다. 이 origin은 `postMessage` 호출 이후 다른 위치로 이동되었을 수 있는 해당 윈도우의 현재 또는 미래의 origin 이 보장되지 *않는다*는 점에 주의하세요.
-- `source`
-  - : 메시지를 보낸 [`window`](/en-US/docs/DOM/window) 오브젝트에 대한 참조.
-    이것을 사용함으로 다른 orign에 있는 두 개의 윈도우에서 쌍방향 통신을 확립할 수 있습니다.
-
-## 보안 문제(Security concerns)
-
-**다른 사이트로부터 메시지를 받고 싶지 않다면, `message` 이벤트를 위해 어떠한 이벤트 리스너도 추가하지 _마세요_.** 이것은 보안 문제를 피할 수 있는 단순명료한 방법입니다.
-
-다른 사이트로부터 메시지를 받고자 한다면, `origin`과 추가로 `source` 프로퍼티를 이용해 **항상 보내는 쪽의 신원을 확인하세요**. 임의의 어떤 윈도우(예: `http://evil.example.com` 를 포함)는 다른 윈도우에 메시지를 보낼 수 있으며, 알 수 없는 발신자가 악의적인 메시지를 보내지 않는다는 보장이 없습니다. 그러나 신원을 확인했더라도 **수신된 메시지의 구문을 항상 확인해야 합니다**. 그렇지 않으면 신뢰할 수 있는 메시지만 전송할 것으로 기대한 사이트의 보안 구멍으로 인해 크로스 사이트 스크립트 빈틈이 생길 수 있습니다.
-
-**`postMessage` 를 이용해 다른 윈도우로 데이터를 보낼 때, 항상 정확한 타겟 origin (`*`가 아니라) 을 지정하세요.** 악의적인 사이트는 당신이 모르는 사이에 윈도우의 위치를 변경할 수 있고, 따라서 `postMessage`를 사용하여 전송된 데이터를 가로챌 수 있습니다.
-
-## Example
+## Examples
 
 ```js
 /*
- * <http://example.com:8080>에 있는 윈도우 A의 스크립트:
+ * In window A's scripts, with A being on http://example.com:8080:
  */
 
-var popup = window.open(...popup details...);
+const popup = window.open(/* popup details */);
 
-// 팝업이 완전히 로드되었을 때:
+// When the popup has fully loaded, if not blocked by a popup blocker:
 
 // This does nothing, assuming the window hasn't changed its location.
-popup.postMessage("The user is 'bob' and the password is 'secret'",
-                  "https://secure.example.net");
+popup.postMessage(
+  "The user is 'bob' and the password is 'secret'",
+  "https://secure.example.net"
+);
 
 // This will successfully queue a message to be sent to the popup, assuming
 // the window hasn't changed its location.
 popup.postMessage("hello there!", "http://example.com");
 
-function receiveMessage(event)
-{
-  // Do we trust the sender of this message?  (might be
-  // different from what we originally opened, for example).
-  if (event.origin !== "http://example.com")
-    return;
+window.addEventListener(
+  "message",
+  (event) => {
+    // Do we trust the sender of this message?  (might be
+    // different from what we originally opened, for example).
+    if (event.origin !== "http://example.com") return;
 
-  // event.source is popup
-  // event.data is "hi there yourself!  the secret response is: rheeeeet!"
-}
-window.addEventListener("message", receiveMessage, false);
+    // event.source is popup
+    // event.data is "hi there yourself!  the secret response is: rheeeeet!"
+  },
+  false
+);
 ```
 
 ```js
 /*
- * In the popup's scripts, running on <http://example.com>:
+ * In the popup's scripts, running on http://example.com:
  */
 
 // Called sometime after postMessage is called
-function receiveMessage(event)
-{
+window.addEventListener("message", (event) => {
   // Do we trust the sender of this message?
-  if (event.origin !== "http://example.com:8080")
-    return;
+  if (event.origin !== "http://example.com:8080") return;
 
   // event.source is window.opener
   // event.data is "hello there!"
@@ -116,43 +199,75 @@ function receiveMessage(event)
   // you must do in any case), a convenient idiom for replying to a
   // message is to call postMessage on event.source and provide
   // event.origin as the targetOrigin.
-  event.source.postMessage("hi there yourself!  the secret response " +
-                           "is: rheeeeet!",
-                           event.origin);
-}
-
-window.addEventListener("message", receiveMessage, false);
+  event.source.postMessage(
+    "hi there yourself!  the secret response " + "is: rheeeeet!",
+    event.origin
+  );
+});
 ```
 
 ### Notes
 
-윈도우 document의 장소와 무관하게, 임의의 윈도우는 언제든지 메시지를 보내기 위해 임의의 다른 윈도우에 있는 함수에 접근할 수도 있습니다. 그래서 이벤트 리스너는 메시지를 취득할 때, `origin` 또는 `source` 프로퍼티를 이용해, 먼저 메시지 송신자의 식별 정보를 **체크해야만 합니다**. 이것은 아무리 강조해도 지나치지 않습니다. 왜냐하면, **`origin` 또는 `source` 프로퍼티의 체크 실패는 크로스 사이트 스크립팅 공격을 가능하게 하기 때문입니다.**
+Any window may access this method on any other window, at any time, regardless of the
+location of the document in the window, to send it a message. Consequently, any event
+listener used to receive messages **must** first check the identity of the
+sender of the message, using the `origin` and possibly `source`
+properties. This cannot be overstated: **Failure to check the `origin`
+and possibly `source` properties enables cross-site scripting
+attacks.**
 
-비동기로 전달된 스크립트(타임아웃, 유저 생성 이벤트)에서, `postMessage`의 호출자의 판별이 불가능할 때, `postMessage`에 의해 보내진 이벤트를 기다리는 이벤트 핸들러는 예외를 발생시킵니다.
+As with any asynchronously-dispatched script (timeouts, user-generated events), it is
+not possible for the caller of `postMessage` to detect when an event handler
+listening for events sent by `postMessage` throws an exception.
 
-`postMessage()`는 _보류 중인 모든 실행 컨텍스트가 완료된 후에만_ {{domxref("MessageEvent")}}을 발송하도록 스케줄합니다. 예를 들어, 이벤트 핸들러에서 `postMessage()`가 호출되는 경우, {{domxref("MessageEvent")}}가 발송되기 전에 해당 이벤트에 대한 나머지 핸들러와 마찬가지로 이벤트 핸들러는 완료까지 실행됩니다.
+After `postMessage()` is called, the {{domxref("MessageEvent")}} will be
+dispatched _only after all pending execution contexts have finished_.
+For example, if `postMessage()` is invoked in an event handler, that event
+handler will run to completion, as will any remaining handlers for that same event,
+before the {{domxref("MessageEvent")}} is dispatched.
 
-전달된 이벤트의 `origin` 프로퍼티의 값은 호출하는 윈도우의 `document.domain` 현재 값에 영향을 받지 않습니다.
+The value of the `origin` property of the dispatched event is not affected
+by the current value of `document.domain` in the calling window.
 
-IDN 호스트 명에 한하여, `origin` 프로퍼티 값은 일관되게 Unicode 또는 punycode가 아닙니다. 그래서, IDN 사이트로 부터 메시지를 기대하는 경우 최상의 호환성 체크를 하기위해, IDN과 Punycode의 값 모두를 체크하세요. 이 값은 결국 일관되게 IDN이 될 것이지만, 현재로서는 IDN과 Punycode 양식을 모두 처리해야 합니다.
+For IDN host names only, the value of the `origin` property is not
+consistently Unicode or punycode; for greatest compatibility check for both the IDN and
+punycode values when using this property if you expect messages from IDN sites. This
+value will eventually be consistently IDN, but for now you should handle both IDN and
+punycode forms.
 
-송신 창에 `javascript:` 또는`data:` URL이 있을 때의 `origin` 프로퍼티의 값은 URL을 로드한 스크립트의 origin입니다.
+The value of the `origin` property when the sending window contains a
+`javascript:` or `data:` URL is the origin of the script that
+loaded the URL.
 
 ### Using window\.postMessage in extensions {{Non-standard_inline}}
 
-`window.postMessage`는 크롬 코드(예: 확장 코드 및 권한 코드)로 실행되는 JavaScript에서 사용할 수 있지만, 발송된 이벤트의 `source` 프로퍼티는 보안 제한으로 항상 `null`입니다. (다른 프로퍼티에는 예상 값이 있습니다.)
+`window.postMessage` is available to JavaScript running in chrome code
+(e.g., in extensions and privileged code), but the `source` property of the
+dispatched event is always `null` as a security restriction. (The other
+properties have their expected values.)
 
-콘텐츠 또는 웹 컨텍스트 스크립트가 `targetOrigin`을 지정하여 확장 스크립트(백그라운드 스크립트 또는 콘텐츠 스크립트)와 직접 통신하는 것은 불가능합니다. 웹 또는 콘텐츠 스크립트는 `"*"`의 `targetOrigin`이 포함된 `window.postMessage`를 사용하여 모든 리스너에게 브로드캐스트할 수 있지만, 확장은 이러한 메시지의 발신지를 확인할 수 없고 다른 리스너(제어하지 않는 수신자 포함)가 수신할 수 있기 때문에 이 작업은 중지됩니다.
+It is not possible for content or web context scripts to specify a
+`targetOrigin` to communicate directly with an extension (either the
+background script or a content script). Web or content scripts _can_ use
+`window.postMessage` with a `targetOrigin` of `"*"` to
+broadcast to every listener, but this is discouraged, since an extension cannot be
+certain the origin of such messages, and other listeners (including those you do not
+control) can listen in.
 
-컨텐츠 스크립트는 [runtime.sendMessage](/en-US/Add-ons/WebExtensions/API/runtime) 를 사용하여 백그라운드 스크립트와 통신해야 합니다. 웹 컨텍스트 스크립트는 사용자 지정 이벤트를 사용하여 컨텐츠 스크립트(필요한 경우 게스트 페이지에서 스누핑을 방지하기 위해 임의로 생성된 이벤트 이름 포함)와 통신할 수 있습니다.
+Content scripts should use {{WebExtAPIRef("runtime.sendMessage")}} to communicate with
+the background script. Web context scripts can use custom events to communicate with
+content scripts (with randomly generated event names, if needed, to prevent snooping
+from the guest page).
 
-마지막으로, `file:` URL의 페이지의 메시지를 보낼 경우 `targetOrigin` 파라미터를 `"*"`로 할 필요가 있습니다. `file://` 은 보안 제한으로 사용할 수 없으며 이 제한은 향후 수정될 수 있습니다.
+Lastly, posting a message to a page at a `file:` URL currently requires that
+the `targetOrigin` argument be `"*"`. `file://` cannot
+be used as a security restriction; this restriction may be modified in the future.
 
-## 명세서
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
@@ -160,4 +275,4 @@ IDN 호스트 명에 한하여, `origin` 프로퍼티 값은 일관되게 Unicod
 
 - {{domxref("Document.domain")}}
 - {{domxref("CustomEvent")}}
-- [Interaction between privileged and non-privileged pages](/ko/docs/Code_snippets/Interaction_between_privileged_and_non-privileged_pages)
+- {{domxref("BroadcastChannel")}} - For same-origin communication.

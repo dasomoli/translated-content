@@ -1,49 +1,53 @@
 ---
-title: CustomEvent.detail
+title: "CustomEvent: detail property"
+short-title: detail
 slug: Web/API/CustomEvent/detail
+page-type: web-api-instance-property
+browser-compat: api.CustomEvent.detail
 ---
 
 {{APIRef("DOM")}}
 
-{{domxref("CustomEvent")}} 인터페이스의 **`detail`** 읽기 전용 속성은 이벤트를 초기화할 때 제공한 데이터를 반환합니다.
+The read-only **`detail`** property of the {{domxref("CustomEvent")}} interface
+returns any data passed when initializing the event.
 
-## 값
+## Value
 
-이벤트를 초기화할 때 제공한 데이터입니다.
+Whatever data the event was initialized with.
 
-## 예제
+## Example
 
 ```js
-// CustomEvent 생성
-const catFound = new CustomEvent('animalfound', {
+// create custom events
+const catFound = new CustomEvent("animalfound", {
   detail: {
-    name: 'cat'
-  }
+    name: "cat",
+  },
 });
-const dogFound = new CustomEvent('animalfound', {
+const dogFound = new CustomEvent("animalfound", {
   detail: {
-    name: 'dog'
-  }
+    name: "dog",
+  },
 });
 
-// 적합한 이벤트 수신기 부착
-obj.addEventListener('animalfound', (e) => console.log(e.detail.name));
+// add an appropriate event listener
+obj.addEventListener("animalfound", (e) => console.log(e.detail.name));
 
-// 이벤트 발송
+// dispatch the events
 obj.dispatchEvent(catFound);
 obj.dispatchEvent(dogFound);
 
-// 콘솔에 "cat"과 "dog"가 기록됨
+// "cat" and "dog" logged in the console
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("CustomEvent")}}

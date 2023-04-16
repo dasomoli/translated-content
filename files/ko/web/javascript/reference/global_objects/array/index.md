@@ -1,442 +1,773 @@
 ---
 title: Array
 slug: Web/JavaScript/Reference/Global_Objects/Array
+page-type: javascript-class
+browser-compat: javascript.builtins.Array
 ---
+
 {{JSRef}}
 
-JavaScript **`Array`** 클래스는 리스트 형태의 고수준 객체인 배열을 생성할 때 사용하는 전역 객체입니다.
+The **`Array`** object, as with arrays in other programming languages, enables [storing a collection of multiple items under a single variable name](/en-US/docs/Learn/JavaScript/First_steps/Arrays), and has members for [performing common array operations](#examples).
 
-## 설명
+## Description
 
-배열은 리스트와 비슷한 객체로서 순회와 변형 작업을 수행하는 메서드를 갖습니다. JavaScript 배열은 길이도, 각 요소의 자료형도 고정되어 있지 않습니다. 배열의 길이가 언제든지 늘어나거나 줄어들 수 있고 데이터를 연속적이지 않은 곳에 저장할 수 있으므로, JavaScript 배열은 밀집성을 보장하지 않습니다. 보통 이런 성질들은 편리하지만, 사용하려는 목적에 맞지 않으면 형식화 배열(typed array)을 사용하는 것을 고려해보세요.
+In JavaScript, arrays aren't [primitives](/en-US/docs/Glossary/Primitive) but are instead `Array` objects with the following core characteristics:
 
-배열은 ([연관 배열](https://ko.wikipedia.org/wiki/연관_배열)과 달리) 요소 인덱스로 문자열을 사용할 수 없으며 무조건 정수만 허용합니다. [대괄호 구문](/ko/docs/Web/JavaScript/Guide/Working_with_Objects#객체와_속성) 또는 [속성 접근자](/ko/docs/Web/JavaScript/Reference/Operators/Property_Accessors)를 사용해 정수가 아닌 키에 접근할 경우 배열의 요소가 아니라 배열의 [객체 속성 컬렉션](/ko/docs/Web/JavaScript/Data_structures#속성)에 연결된 변수를 바라보게 됩니다. [순회 및 변형 작업](/ko/docs/Web/JavaScript/Guide/Indexed_collections#배열_객체의_메서드) 또한 이런 속성에 적용할 수 없습니다.
+- **JavaScript arrays are resizable** and **can contain a mix of different [data types](/en-US/docs/Web/JavaScript/Data_structures)**. (When those characteristics are undesirable, use [typed arrays](/en-US/docs/Web/JavaScript/Typed_arrays) instead.)
+- **JavaScript arrays are not associative arrays** and so, array elements cannot be accessed using arbitrary strings as indexes, but must be accessed using nonnegative integers (or their respective string form) as indexes.
+- **JavaScript arrays are [zero-indexed](https://en.wikipedia.org/wiki/Zero-based_numbering)**: the first element of an array is at index `0`, the second is at index `1`, and so on — and the last element is at the value of the array's {{jsxref("Array/length", "length")}} property minus `1`.
+- **JavaScript [array-copy operations](#copy_an_array) create [shallow copies](/en-US/docs/Glossary/Shallow_copy)**. (All standard built-in copy operations with _any_ JavaScript objects create shallow copies, rather than [deep copies](/en-US/docs/Glossary/Deep_copy)).
 
-### 자주 사용하는 연산
+### Array indices
 
-**배열 만들기**
+`Array` objects cannot use arbitrary strings as element indexes (as in an [associative array](https://en.wikipedia.org/wiki/Associative_array)) but must use nonnegative integers (or their respective string form). Setting or accessing via non-integers will not set or retrieve an element from the array list itself, but will set or access a variable associated with that array's [object property collection](/en-US/docs/Web/JavaScript/Data_structures#properties). The array's object properties and list of array elements are separate, and the array's [traversal and mutation operations](/en-US/docs/Web/JavaScript/Guide/Indexed_collections#array_methods) cannot be applied to these named properties.
+
+Array elements are object properties in the same way that `toString` is a property (to be specific, however, `toString()` is a method). Nevertheless, trying to access an element of an array as follows throws a syntax error because the property name is not valid:
+
+```js example-bad
+console.log(arr.0); // a syntax error
+```
+
+JavaScript syntax requires properties beginning with a digit to be accessed using [bracket notation](/en-US/docs/Web/JavaScript/Guide/Working_with_objects#objects_and_properties) instead of [dot notation](/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors). It's also possible to quote the array indices (e.g., `years['2']` instead of `years[2]`), although usually not necessary.
+
+The `2` in `years[2]` is coerced into a string by the JavaScript engine through an implicit `toString` conversion. As a result, `'2'` and `'02'` would refer to two different slots on the `years` object, and the following example could be `true`:
 
 ```js
-let fruits = ['사과', '바나나']
+console.log(years["2"] !== years["02"]);
+```
 
-console.log(fruits.length)
+Only `years['2']` is an actual array index. `years['02']` is an arbitrary string property that will not be visited in array iteration.
+
+### Relationship between length and numerical properties
+
+A JavaScript array's {{jsxref("Array/length", "length")}} property and numerical properties are connected.
+
+Several of the built-in array methods (e.g., {{jsxref("Array/join", "join()")}}, {{jsxref("Array/slice", "slice()")}}, {{jsxref("Array/indexOf", "indexOf()")}}, etc.) take into account the value of an array's {{jsxref("Array/length", "length")}} property when they're called.
+
+Other methods (e.g., {{jsxref("Array/push", "push()")}}, {{jsxref("Array/splice", "splice()")}}, etc.) also result in updates to an array's {{jsxref("Array/length", "length")}} property.
+
+```js
+const fruits = [];
+fruits.push("banana", "apple", "peach");
+console.log(fruits.length); // 3
+```
+
+When setting a property on a JavaScript array when the property is a valid array index and that index is outside the current bounds of the array, the engine will update the array's {{jsxref("Array/length", "length")}} property accordingly:
+
+```js
+fruits[5] = "mango";
+console.log(fruits[5]); // 'mango'
+console.log(Object.keys(fruits)); // ['0', '1', '2', '5']
+console.log(fruits.length); // 6
+```
+
+Increasing the {{jsxref("Array/length", "length")}}.
+
+```js
+fruits.length = 10;
+console.log(fruits); // ['banana', 'apple', 'peach', empty x 2, 'mango', empty x 4]
+console.log(Object.keys(fruits)); // ['0', '1', '2', '5']
+console.log(fruits.length); // 10
+console.log(fruits[8]); // undefined
+```
+
+Decreasing the {{jsxref("Array/length", "length")}} property does, however, delete elements.
+
+```js
+fruits.length = 2;
+console.log(Object.keys(fruits)); // ['0', '1']
+console.log(fruits.length); // 2
+```
+
+This is explained further on the {{jsxref("Array/length")}} page.
+
+### Array methods and empty slots
+
+Empty slots in [sparse arrays](/en-US/docs/Web/JavaScript/Guide/Indexed_collections#sparse_arrays) behave inconsistently between array methods. Generally, the older methods will skip empty slots, while newer ones treat them as `undefined`.
+
+Among methods that iterate through multiple elements, the following do an [`in`](/en-US/docs/Web/JavaScript/Reference/Operators/in) check before accessing the index and do not conflate empty slots with `undefined`:
+
+- {{jsxref("Array/concat", "concat()")}}
+- {{jsxref("Array/copyWithin", "copyWithin()")}}
+- {{jsxref("Array/every", "every()")}}
+- {{jsxref("Array/filter", "filter()")}}
+- {{jsxref("Array/flat", "flat()")}}
+- {{jsxref("Array/flatMap", "flatMap()")}}
+- {{jsxref("Array/forEach", "forEach()")}}
+- {{jsxref("Array/indexOf", "indexOf()")}}
+- {{jsxref("Array/lastIndexOf", "lastIndexOf()")}}
+- {{jsxref("Array/map", "map()")}}
+- {{jsxref("Array/reduce", "reduce()")}}
+- {{jsxref("Array/reduceRight", "reduceRight()")}}
+- {{jsxref("Array/reverse", "reverse()")}}
+- {{jsxref("Array/slice", "slice()")}}
+- {{jsxref("Array/some", "some()")}}
+- {{jsxref("Array/sort", "sort()")}}
+- {{jsxref("Array/splice", "splice()")}}
+
+For exactly how they treat empty slots, see the page for each method.
+
+These methods treat empty slots as if they are `undefined`:
+
+- {{jsxref("Array/entries", "entries()")}}
+- {{jsxref("Array/fill", "fill()")}}
+- {{jsxref("Array/find", "find()")}}
+- {{jsxref("Array/findIndex", "findIndex()")}}
+- {{jsxref("Array/findLast", "findLast()")}}
+- {{jsxref("Array/findLastIndex", "findLastIndex()")}}
+- {{jsxref("Array/group", "group()")}} {{Experimental_Inline}}
+- {{jsxref("Array/groupToMap", "groupToMap()")}} {{Experimental_Inline}}
+- {{jsxref("Array/includes", "includes()")}}
+- {{jsxref("Array/join", "join()")}}
+- {{jsxref("Array/keys", "keys()")}}
+- {{jsxref("Array/toLocaleString", "toLocaleString()")}}
+- {{jsxref("Array/values", "values()")}}
+
+### Copying methods and mutating methods
+
+Some methods do not mutate the existing array that the method was called on, but instead return a new array. They do so by first constructing a new array and then populating it with elements. The copy always happens [_shallowly_](/en-US/docs/Glossary/Shallow_copy) — the method never copies anything beyond the initially created array. Elements of the original array(s) are copied into the new array as follows:
+
+- Objects: the object reference is copied into the new array. Both the original and new array refer to the same object. That is, if a referenced object is modified, the changes are visible to both the new and original arrays.
+- Primitive types such as strings, numbers and booleans (not {{jsxref("Global_Objects/String", "String")}}, {{jsxref("Global_Objects/Number", "Number")}}, and {{jsxref("Global_Objects/Boolean", "Boolean")}} objects): their values are copied into the new array.
+
+Other methods mutate the array that the method was called on, in which case their return value differs depending on the method: sometimes a reference to the same array, sometimes the length of the new array.
+
+The following methods create new arrays by accessing [`this.constructor[Symbol.species]`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/@@species) to determine the constructor to use:
+
+- {{jsxref("Array/concat", "concat()")}}
+- {{jsxref("Array/filter", "filter()")}}
+- {{jsxref("Array/flat", "flat()")}}
+- {{jsxref("Array/flatMap", "flatMap()")}}
+- {{jsxref("Array/map", "map()")}}
+- {{jsxref("Array/slice", "slice()")}}
+- {{jsxref("Array/splice", "splice()")}} (to construct the array of removed elements that's returned)
+
+The following methods always create new arrays with the `Array` base constructor:
+
+- {{jsxref("Array/toReversed", "toReversed()")}}
+- {{jsxref("Array/toSorted", "toSorted()")}}
+- {{jsxref("Array/toSpliced", "toSpliced()")}}
+- {{jsxref("Array/with", "with()")}}
+
+{{jsxref("Array/group", "group()")}} and {{jsxref("Array/groupToMap", "groupToMap()")}} do not use `@@species` to create new arrays for each group entry, but always use the plain `Array` constructor. Conceptually, they are not copying methods either.
+
+The following table lists the methods that mutate the original array, and the corresponding non-mutating alternative:
+
+| Mutating method                                | Non-mutating alternative                              |
+| ---------------------------------------------- | ----------------------------------------------------- |
+| {{jsxref("Array/copyWithin", "copyWithin()")}} | No one-method alternative                                |
+| {{jsxref("Array/fill", "fill()")}}             | No one-method alternative                                |
+| {{jsxref("Array/pop", "pop()")}}               | {{jsxref("Array/slice", "slice(0, -1)")}}             |
+| {{jsxref("Array/push", "push(v1, v2)")}}       | {{jsxref("Array/concat", "concat([v1, v2])")}}        |
+| {{jsxref("Array/reverse", "reverse()")}}       | {{jsxref("Array/toReversed", "toReversed()")}}        |
+| {{jsxref("Array/shift", "shift()")}}           | {{jsxref("Array/slice", "slice(1)")}}                 |
+| {{jsxref("Array/sort", "sort()")}}             | {{jsxref("Array/toSorted", "toSorted()")}}            |
+| {{jsxref("Array/splice", "splice()")}}         | {{jsxref("Array/toSpliced", "toSpliced()")}}          |
+| {{jsxref("Array/unshift", "unshift(v1, v2)")}} | {{jsxref("Array/concat", "toSpliced(0, 0, v1, v2)")}} |
+
+An easy way to change a mutating method into a non-mutating alternative is to use the [spread syntax](/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) or {{jsxref("Array/slice", "slice()")}} to create a copy first:
+
+```js-nolint
+arr.copyWithin(0, 1, 2); // mutates arr
+const arr2 = arr.slice().copyWithin(0, 1, 2); // does not mutate arr
+const arr3 = [...arr].copyWithin(0, 1, 2); // does not mutate arr
+```
+
+### Iterative methods
+
+Many array methods take a callback function as an argument. The callback function is called sequentially and at most once for each element in the array, and the return value of the callback function is used to determine the return value of the method. They all share the same signature:
+
+```js-nolint
+method(callbackFn, thisArg)
+```
+
+Where `callbackFn` takes three arguments:
+
+- `element`
+  - : The current element being processed in the array.
+- `index`
+  - : The index of the current element being processed in the array.
+- `array`
+  - : The array that the method was called upon.
+
+What `callbackFn` is expected to return depends on the array method that was called.
+
+The `thisArg` argument (defaults to `undefined`) will be used as the `this` value when calling `callbackFn`. The `this` value ultimately observable by `callbackFn` is determined according to [the usual rules](/en-US/docs/Web/JavaScript/Reference/Operators/this): if `callbackFn` is [non-strict](/en-US/docs/Web/JavaScript/Reference/Strict_mode#no_this_substitution), primitive `this` values are wrapped into objects, and `undefined`/`null` is substituted with [`globalThis`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis). The `thisArg` argument is irrelevant for any `callbackFn` defined with an [arrow function](/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions), as arrow functions don't have their own `this` binding.
+
+All iterative methods are [copying](#copying_methods_and_mutating_methods) and [generic](#generic_array_methods), although they behave differently with [empty slots](#array_methods_and_empty_slots).
+
+The following methods are iterative:
+
+- {{jsxref("Array/every", "every()")}}
+- {{jsxref("Array/filter", "filter()")}}
+- {{jsxref("Array/find", "find()")}}
+- {{jsxref("Array/findIndex", "findIndex()")}}
+- {{jsxref("Array/findLast", "findLast()")}}
+- {{jsxref("Array/findLastIndex", "findLastIndex()")}}
+- {{jsxref("Array/flatMap", "flatMap()")}}
+- {{jsxref("Array/forEach", "forEach()")}}
+- {{jsxref("Array/group", "group()")}}
+- {{jsxref("Array/groupToMap", "groupToMap()")}}
+- {{jsxref("Array/map", "map()")}}
+- {{jsxref("Array/some", "some()")}}
+
+In particular, {{jsxref("Array/every", "every()")}}, {{jsxref("Array/find", "find()")}}, {{jsxref("Array/findIndex", "findIndex()")}}, {{jsxref("Array/findLast", "findLast()")}}, {{jsxref("Array/findLastIndex", "findLastIndex()")}}, and {{jsxref("Array/some", "some()")}} do not always invoke `callbackFn` on every element — they stop iteration as soon as the return value is determined.
+
+There are two other methods that take a callback function and run it at most once for each element in the array, but they have slightly different signatures from typical iterative methods (for example, they don't accept `thisArg`):
+
+- {{jsxref("Array/reduce", "reduce()")}}
+- {{jsxref("Array/reduceRight", "reduceRight()")}}
+
+The {{jsxref("Array/sort", "sort()")}} method also takes a callback function, but it is not an iterative method. It mutates the array in-place, doesn't accept `thisArg`, and may invoke the callback multiple times on an index.
+
+### Generic array methods
+
+Array methods are always generic — they don't access any internal data of the array object. They only access the array elements through the `length` property and the indexed elements. This means that they can be called on array-like objects as well.
+
+```js
+const arrayLike = {
+  0: "a",
+  1: "b",
+  length: 2,
+};
+console.log(Array.prototype.join.call(arrayLike, "+")); // 'a+b'
+```
+
+#### Normalization of the length property
+
+The `length` property is [converted to an integer](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number#integer_conversion) and then clamped to the range between 0 and 2<sup>53</sup> - 1. `NaN` becomes `0`, so even when `length` is not present or is `undefined`, it behaves as if it has value `0`.
+
+The language avoids setting `length` to an [unsafe integer](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER). All built-in methods will throw a {{jsxref("TypeError")}} if `length` will be set to a number greater than 2<sup>53</sup> - 1. However, because the {{jsxref("Array/length", "length")}} property of arrays throws an error if it's set to greater than 2<sup>32</sup>, the safe integer threshold is usually not reached unless the method is called on a non-array object.
+
+```js
+Array.prototype.flat.call({}); // []
+```
+
+Some array methods set the `length` property of the array object. They always set the value after normalization, so `length` always ends as an integer.
+
+```js
+const a = { length: 0.7 };
+Array.prototype.push.call(a);
+console.log(a.length); // 0
+```
+
+#### Array-like objects
+
+The term [_array-like object_](/en-US/docs/Web/JavaScript/Guide/Indexed_collections#working_with_array-like_objects) refers to any object that doesn't throw during the `length` conversion process described above. In practice, such object is expected to actually have a `length` property and to have indexed elements in the range `0` to `length - 1`. (If it doesn't have all indices, it will be functionally equivalent to a [sparse array](#array_methods_and_empty_slots).)
+
+Many DOM objects are array-like — for example, [`NodeList`](/en-US/docs/Web/API/NodeList) and [`HTMLCollection`](/en-US/docs/Web/API/HTMLCollection). The [`arguments`](/en-US/docs/Web/JavaScript/Reference/Functions/arguments) object is also array-like. You can call array methods on them even if they don't have these methods themselves.
+
+```js
+function f() {
+  console.log(Array.prototype.join.call(arguments, "+"));
+}
+
+f("a", "b"); // 'a+b'
+```
+
+## Constructor
+
+- {{jsxref("Array/Array", "Array()")}}
+  - : Creates a new `Array` object.
+
+## Static properties
+
+- {{jsxref("Array/@@species", "Array[@@species]")}}
+  - : Returns the `Array` constructor.
+
+## Static methods
+
+- {{jsxref("Array.from()")}}
+  - : Creates a new `Array` instance from an iterable or array-like object.
+- {{jsxref("Array.fromAsync()")}} {{Experimental_Inline}}
+  - : Creates a new `Array` instance from an async iterable, iterable, or array-like object.
+- {{jsxref("Array.isArray()")}}
+  - : Returns `true` if the argument is an array, or `false` otherwise.
+- {{jsxref("Array.of()")}}
+  - : Creates a new `Array` instance with a variable number of arguments, regardless of number or type of the arguments.
+
+## Instance properties
+
+These properties are defined on `Array.prototype` and shared by all `Array` instances.
+
+- {{jsxref("Object/constructor", "Array.prototype.constructor")}}
+  - : The constructor function that created the instance object. For `Array` instances, the initial value is the {{jsxref("Array/Array", "Array")}} constructor.
+- {{jsxref("Array/@@unscopables", "Array.prototype[@@unscopables]")}}
+  - : Contains property names that were not included in the ECMAScript standard prior to the ES2015 version and that are ignored for [`with`](/en-US/docs/Web/JavaScript/Reference/Statements/with) statement-binding purposes.
+
+These properties are own properties of each `Array` instance.
+
+- {{jsxref("Array/length", "length")}}
+  - : Reflects the number of elements in an array.
+
+## Instance methods
+
+- {{jsxref("Array.prototype.at()")}}
+  - : Returns the array item at the given index. Accepts negative integers, which count back from the last item.
+- {{jsxref("Array.prototype.concat()")}}
+  - : Returns a new array that is the calling array joined with other array(s) and/or value(s).
+- {{jsxref("Array.prototype.copyWithin()")}}
+  - : Copies a sequence of array elements within an array.
+- {{jsxref("Array.prototype.entries()")}}
+  - : Returns a new [_array iterator_](/en-US/docs/Web/JavaScript/Guide/Iterators_and_generators) object that contains the key/value pairs for each index in an array.
+- {{jsxref("Array.prototype.every()")}}
+  - : Returns `true` if every element in the calling array satisfies the testing function.
+- {{jsxref("Array.prototype.fill()")}}
+  - : Fills all the elements of an array from a start index to an end index with a static value.
+- {{jsxref("Array.prototype.filter()")}}
+  - : Returns a new array containing all elements of the calling array for which the provided filtering function returns `true`.
+- {{jsxref("Array.prototype.find()")}}
+  - : Returns the value of the first element in the array that satisfies the provided testing function, or `undefined` if no appropriate element is found.
+- {{jsxref("Array.prototype.findIndex()")}}
+  - : Returns the index of the first element in the array that satisfies the provided testing function, or `-1` if no appropriate element was found.
+- {{jsxref("Array.prototype.findLast()")}}
+  - : Returns the value of the last element in the array that satisfies the provided testing function, or `undefined` if no appropriate element is found.
+- {{jsxref("Array.prototype.findLastIndex()")}}
+  - : Returns the index of the last element in the array that satisfies the provided testing function, or `-1` if no appropriate element was found.
+- {{jsxref("Array.prototype.flat()")}}
+  - : Returns a new array with all sub-array elements concatenated into it recursively up to the specified depth.
+- {{jsxref("Array.prototype.flatMap()")}}
+  - : Returns a new array formed by applying a given callback function to each element of the calling array, and then flattening the result by one level.
+- {{jsxref("Array.prototype.forEach()")}}
+  - : Calls a function for each element in the calling array.
+- {{jsxref("Array.prototype.group()")}} {{Experimental_Inline}}
+  - : Groups the elements of an array into an object according to the strings returned by a test function.
+- {{jsxref("Array.prototype.groupToMap()")}} {{Experimental_Inline}}
+  - : Groups the elements of an array into a {{jsxref("Map")}} according to values returned by a test function.
+- {{jsxref("Array.prototype.includes()")}}
+  - : Determines whether the calling array contains a value, returning `true` or `false` as appropriate.
+- {{jsxref("Array.prototype.indexOf()")}}
+  - : Returns the first (least) index at which a given element can be found in the calling array.
+- {{jsxref("Array.prototype.join()")}}
+  - : Joins all elements of an array into a string.
+- {{jsxref("Array.prototype.keys()")}}
+  - : Returns a new [_array iterator_](/en-US/docs/Web/JavaScript/Guide/Iterators_and_generators) that contains the keys for each index in the calling array.
+- {{jsxref("Array.prototype.lastIndexOf()")}}
+  - : Returns the last (greatest) index at which a given element can be found in the calling array, or `-1` if none is found.
+- {{jsxref("Array.prototype.map()")}}
+  - : Returns a new array containing the results of invoking a function on every element in the calling array.
+- {{jsxref("Array.prototype.pop()")}}
+  - : Removes the last element from an array and returns that element.
+- {{jsxref("Array.prototype.push()")}}
+  - : Adds one or more elements to the end of an array, and returns the new `length` of the array.
+- {{jsxref("Array.prototype.reduce()")}}
+  - : Executes a user-supplied "reducer" callback function on each element of the array (from left to right), to reduce it to a single value.
+- {{jsxref("Array.prototype.reduceRight()")}}
+  - : Executes a user-supplied "reducer" callback function on each element of the array (from right to left), to reduce it to a single value.
+- {{jsxref("Array.prototype.reverse()")}}
+  - : Reverses the order of the elements of an array _in place_. (First becomes the last, last becomes first.)
+- {{jsxref("Array.prototype.shift()")}}
+  - : Removes the first element from an array and returns that element.
+- {{jsxref("Array.prototype.slice()")}}
+  - : Extracts a section of the calling array and returns a new array.
+- {{jsxref("Array.prototype.some()")}}
+  - : Returns `true` if at least one element in the calling array satisfies the provided testing function.
+- {{jsxref("Array.prototype.sort()")}}
+  - : Sorts the elements of an array in place and returns the array.
+- {{jsxref("Array.prototype.splice()")}}
+  - : Adds and/or removes elements from an array.
+- {{jsxref("Array.prototype.toLocaleString()")}}
+  - : Returns a localized string representing the calling array and its elements. Overrides the {{jsxref("Object.prototype.toLocaleString()")}} method.
+- {{jsxref("Array.prototype.toReversed()")}}
+  - : Returns a new array with the elements in reversed order, without modifying the original array.
+- {{jsxref("Array.prototype.toSorted()")}}
+  - : Returns a new array with the elements sorted in ascending order, without modifying the original array.
+- {{jsxref("Array.prototype.toSpliced()")}}
+  - : Returns a new array with some elements removed and/or replaced at a given index, without modifying the original array.
+- {{jsxref("Array.prototype.toString()")}}
+  - : Returns a string representing the calling array and its elements. Overrides the {{jsxref("Object.prototype.toString()")}} method.
+- {{jsxref("Array.prototype.unshift()")}}
+  - : Adds one or more elements to the front of an array, and returns the new `length` of the array.
+- {{jsxref("Array.prototype.values()")}}
+  - : Returns a new [_array iterator_](/en-US/docs/Web/JavaScript/Guide/Iterators_and_generators) object that contains the values for each index in the array.
+- {{jsxref("Array.prototype.with()")}}
+  - : Returns a new array with the element at the given index replaced with the given value, without modifying the original array.
+- [`Array.prototype[@@iterator]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/@@iterator)
+  - : An alias for the [`values()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/values) method by default.
+
+## Examples
+
+This section provides some examples of common array operations in JavaScript.
+
+> **Note:** If you're not yet familiar with array basics, consider first reading [JavaScript First Steps: Arrays](/en-US/docs/Learn/JavaScript/First_steps/Arrays), which [explains what arrays are](/en-US/docs/Learn/JavaScript/First_steps/Arrays#what_is_an_array), and includes other examples of common array operations.
+
+### Create an array
+
+This example shows three ways to create new array: first using [array literal notation](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Array#array_literal_notation), then using the [`Array()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Array) constructor, and finally using [`String.prototype.split()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split) to build the array from a string.
+
+```js
+// 'fruits' array created using array literal notation.
+const fruits = ["Apple", "Banana"];
+console.log(fruits.length);
+// 2
+
+// 'fruits2' array created using the Array() constructor.
+const fruits2 = new Array("Apple", "Banana");
+console.log(fruits2.length);
+// 2
+
+// 'fruits3' array created using String.prototype.split().
+const fruits3 = "Apple, Banana".split(", ");
+console.log(fruits3.length);
 // 2
 ```
 
-**인덱스로 배열의 항목에 접근하기**
+### Create a string from an array
+
+This example uses the [`join()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join) method to create a string from the `fruits` array.
 
 ```js
-let first = fruits[0]
-// 사과
-
-let last = fruits[fruits.length - 1]
-// 바나나
+const fruits = ["Apple", "Banana"];
+const fruitsString = fruits.join(", ");
+console.log(fruitsString);
+// "Apple, Banana"
 ```
 
-**배열의 항목들을 순환하며 처리하기**
+### Access an array item by its index
+
+This example shows how to access items in the `fruits` array by specifying the index number of their position in the array.
 
 ```js
-fruits.forEach(function (item, index, array) {
-  console.log(item, index)
-})
-// 사과 0
-// 바나나 1
+const fruits = ["Apple", "Banana"];
+
+// The index of an array's first element is always 0.
+fruits[0]; // Apple
+
+// The index of an array's second element is always 1.
+fruits[1]; // Banana
+
+// The index of an array's last element is always one
+// less than the length of the array.
+fruits[fruits.length - 1]; // Banana
+
+// Using an index number larger than the array's length
+// returns 'undefined'.
+fruits[99]; // undefined
 ```
 
-**배열 끝에 항목 추가하기**
+### Find the index of an item in an array
+
+This example uses the [`indexOf()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf) method to find the position (index) of the string `"Banana"` in the `fruits` array.
 
 ```js
-let newLength = fruits.push('오렌지')
-// ["사과", "바나나", "오렌지"]
-```
-
-**배열 끝에서부터 항목 제거하기**
-
-```js
-let last = fruits.pop() // 끝에있던 '오렌지'를 제거
-// ["사과", "바나나"]
-```
-
-**배열 앞에서부터 항목 제거하기**
-
-```js
-let first = fruits.shift() // 제일 앞의 '사과'를 제거
-// ["바나나"]
-```
-
-**배열 앞에 항목 추가하기**
-
-```js
-let newLength = fruits.unshift('딸기') // 앞에 추가
-// ["딸기", "바나나"]
-```
-
-**배열 안 항목의 인덱스 찾기**
-
-```js
-fruits.push('망고')
-// ["딸기", "바나나", "망고"]
-
-let pos = fruits.indexOf("바나나")
+const fruits = ["Apple", "Banana"];
+console.log(fruits.indexOf("Banana"));
 // 1
 ```
 
-**인덱스 위치에 있는 항목 제거하기**
+### Check if an array contains a certain item
+
+This example shows two ways to check if the `fruits` array contains `"Banana"` and `"Cherry"`: first with the [`includes()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes) method, and then with the [`indexOf()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf) method to test for an index value that's not `-1`.
 
 ```js
-let removedItem = fruits.splice(pos, 1) // 항목을 제거하는 방법
+const fruits = ["Apple", "Banana"];
 
-// ["딸기", "망고"]
+fruits.includes("Banana"); // true
+fruits.includes("Cherry"); // false
+
+// If indexOf() doesn't return -1, the array contains the given item.
+fruits.indexOf("Banana") !== -1; // true
+fruits.indexOf("Cherry") !== -1; // false
 ```
 
-**인덱스 위치에서부터 여러개의 항목 제거하기**
+### Append an item to an array
+
+This example uses the [`push()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push) method to append a new string to the `fruits` array.
 
 ```js
-let vegetables = ['양배추', '순무', '무', '당근']
-console.log(vegetables)
-// ["양배추", "순무", "무", "당근"]
-
-let pos = 1
-let n = 2
-
-let removedItems = vegetables.splice(pos, n)
-// 배열에서 항목을 제거하는 방법
-// pos 인덱스부터 n개의 항목을 제거함
-
-console.log(vegetables)
-// ["양배추", "당근"] (원 배열 vegetables의 값이 변함)
-
-console.log(removedItems)
-// ["순무", "무"]
+const fruits = ["Apple", "Banana"];
+const newLength = fruits.push("Orange");
+console.log(fruits);
+// ["Apple", "Banana", "Orange"]
+console.log(newLength);
+// 3
 ```
 
-**배열 복사하기**
+### Remove the last item from an array
+
+This example uses the [`pop()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/pop) method to remove the last item from the `fruits` array.
 
 ```js
-let shallowCopySpread = [...fruits]
-// ["딸기", "망고"]
+const fruits = ["Apple", "Banana", "Orange"];
+const removedItem = fruits.pop();
+console.log(fruits);
+// ["Apple", "Banana"]
+console.log(removedItem);
+// Orange
 ```
 
-위 코드는 [전개 구문](/ko/docs/Web/JavaScript/Reference/Operators/Spread_syntax)을 사용해 배열의 얕은 복사를 만드는 방법입니다. 배열을 복사하는 다른 방법은 아래의 [배열 복사하기](#배열_복사하기)에서 논의합니다.
+> **Note:** `pop()` can only be used to remove the last item from an array. To remove multiple items from the end of an array, see the next example.
 
-### 배열 요소에 접근하기
+### Remove multiple items from the end of an array
 
-JavaScript 배열의 인덱스는 0부터 시작합니다. 즉, 배열 첫 번째 요소의 인덱스는 0이고, 마지막 요소의 인덱스는 배열의 {{jsxref("Array.length", "length")}} 속성에서 1을 뺀 것과 같습니다.
-
-잘못된 인덱스를 사용하면 `undefined`를 반환합니다.
+This example uses the [`splice()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice) method to remove the last 3 items from the `fruits` array.
 
 ```js
-let arr = ['첫 번째 요소입니다', '두 번째 요소입니다', '마지막 요소입니다']
-console.log(arr[0])              // '첫 번째 요소입니다'를 기록
-console.log(arr[1])              // '두 번째 요소입니다'를 기록
-console.log(arr[arr.length - 1]) // '마지막 요소입니다'를 기록
+const fruits = ["Apple", "Banana", "Strawberry", "Mango", "Cherry"];
+const start = -3;
+const removedItems = fruits.splice(start);
+console.log(fruits);
+// ["Apple", "Banana"]
+console.log(removedItems);
+// ["Strawberry", "Mango", "Cherry"]
 ```
 
-`toString`이 속성인 것과 마찬가지로 (정확히 하자면, `toString()`은 메서드입니다) 배열의 요소도 속성입니다. 하지만 배열 요소에 아래 코드처럼 접근하려고 하면, 속성 이름이 유효하지 않기 때문에 구문 오류가 발생합니다.
+### Truncate an array down to just its first N items
+
+This example uses the [`splice()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice) method to truncate the `fruits` array down to just its first 2 items.
 
 ```js
-console.log(arr.0) // 구문 오류
+const fruits = ["Apple", "Banana", "Strawberry", "Mango", "Cherry"];
+const start = 2;
+const removedItems = fruits.splice(start);
+console.log(fruits);
+// ["Apple", "Banana"]
+console.log(removedItems);
+// ["Strawberry", "Mango", "Cherry"]
 ```
 
-이 현상은 JavaScript 배열과 그 속성에 어떤 특별한 점이 있어서 그런 것이 아닙니다. 모든 JavaScript 속성은 이름이 숫자로 시작할 경우 마침표 표기법으로 접근할 수 없고, 대괄호 표기법을 사용해야 합니다.
+### Remove the first item from an array
 
-예를 들면, 어떤 객체에 `'3d'`라는 이름의 속성이 있다면, 이 속성에 접근할 땐 대괄호 표기법을 사용해야만 합니다.
+This example uses the [`shift()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/shift) method to remove the first item from the `fruits` array.
 
 ```js
-let years = [1950, 1960, 1970, 1980, 1990, 2000, 2010]
-console.log(years.0)   // 구문 오류
-console.log(years[0])  // 정상 작동
+const fruits = ["Apple", "Banana"];
+const removedItem = fruits.shift();
+console.log(fruits);
+// ["Banana"]
+console.log(removedItem);
+// Apple
 ```
 
+> **Note:** `shift()` can only be used to remove the first item from an array. To remove multiple items from the beginning of an array, see the next example.
+
+### Remove multiple items from the beginning of an array
+
+This example uses the [`splice()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice) method to remove the first 3 items from the `fruits` array.
+
 ```js
-renderer.3d.setTexture(model, 'character.png')     // 구문 오류
-renderer['3d'].setTexture(model, 'character.png')  // 정상 작동
+const fruits = ["Apple", "Strawberry", "Cherry", "Banana", "Mango"];
+const start = 0;
+const deleteCount = 3;
+const removedItems = fruits.splice(start, deleteCount);
+console.log(fruits);
+// ["Banana", "Mango"]
+console.log(removedItems);
+// ["Apple", "Strawberry", "Cherry"]
 ```
 
-`3d` 예시에서 `'3d'`를 따옴표로 감싸야 함에 유의하세요. JavaScript 배열 인덱스도 `years[2]` 대신에 `years['2']`를 사용하듯 따옴표로 둘러쌀 수 있습니다. 그러나 굳이 그럴 필요는 없습니다.
+### Add a new first item to an array
 
-`years[2]`의 `2`는 JavaScript 엔진이 암시적인 `toString` 변환을 사용해 문자열로 변환합니다. 그 결과로서 `'2'`와 `'02'`는 `years` 객체에서 서로 다른 칸을 가리키며, 다음 코드는 `true`가 될 수 있습니다.
+This example uses the [`unshift()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift) method to add, at index `0`, a new item to the `fruits` array — making it the new first item in the array.
 
 ```js
-console.log(years['2'] != years['02']);
+const fruits = ["Banana", "Mango"];
+const newLength = fruits.unshift("Strawberry");
+console.log(fruits);
+// ["Strawberry", "Banana", "Mango"]
+console.log(newLength);
+// 3
 ```
 
-### 배열 길이와 숫자형 속성의 관계
+### Remove a single item by index
 
-JavaScript 배열의 {{jsxref("Array.length", "length")}} 속성과 숫자형 속성은 연결되어 있습니다.
-
-몇몇 배열 내장 메서드({{jsxref("Array.join", "join")}}, {{jsxref("Array.slice", "slice")}}, {{jsxref("Array.indexOf", "indexOf")}} 등)은 호출했을 때 배열의 {{jsxref("Array.length", "length")}} 속성의 값을 참고합니다.
-
-다른 메서드({{jsxref("Array.push", "push")}}, {{jsxref("Array.splice", "splice")}} 등) 또한 배열의 {{jsxref("Array.length", "length")}} 속성을 바꾸는 결과를 낳습니다.
+This example uses the [`splice()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice) method to remove the string `"Banana"` from the `fruits` array — by specifying the index position of `"Banana"`.
 
 ```js
-const fruits = []
-fruits.push('바나나', '사과', '복숭아')
-
-console.log(fruits.length) // 3
-```
-
-배열 인덱스로 유효한 속성을 JavaScript 배열에 설정할 때, 그 인덱스가 현재 배열의 경계 바깥에 있는 경우, JavaScript 엔진은 배열의 {{jsxref("Array.length", "length")}} 속성을 그에 맞춰 업데이트 합니다.
-
-```js
-fruits[5] = 'mango'
-console.log(fruits[5])           // '망고'
-console.log(Object.keys(fruits)) // ['0', '1', '2', '5']
-console.log(fruits.length)       // 6
-```
-
-{{jsxref("Array.length", "length")}}를 직접 늘려도 요소에 변화는 없습니다.
-
-```js
-fruits.length = 10
-console.log(fruits)              // ['바나나', '사과', '복숭아', 비어 있음 x 2, '망고', 비어 있음 x 4]
-console.log(Object.keys(fruits)) // ['0', '1', '2', '5']
-console.log(fruits.length)       // 10
-console.log(fruits[8])           // undefined
-```
-
-하지만, {{jsxref("Array.length", "length")}} 속성을 감소시키면 요소가 지워집니다.
-
-```js
-fruits.length = 2
-console.log(Object.keys(fruits)) // ['0', '1']
-console.log(fruits.length)       // 2
-```
-
-{{jsxref("Array.length")}} 문서에 더 자세한 설명이 있습니다.
-
-### 정규표현식 일치 결과를 이용한 배열 생성
-
-{{jsxref("RegExp")}}와 문자열 사이의 일치 결과는 JavaScript 배열을 반환합니다. 이 배열은 일치 결과에 대한 정보를 포함하는 속성과 요소가 담겨있습니다. {{jsxref("RegExp.exec()")}}, {{jsxref("String.match()")}}의 반환 값에서 이런 배열을 볼 수 있습니다.
-
-다음 예제와 표에서 배열의 속성과 요소에 대한 설명을 확인하세요.
-
-```js
-// 하나의 d와 하나 이상의 b에 하나의 d가 뒤따라 일치해야 함
-// 일치한 b와 다음 d를 기억할 것
-// 대소문자 구분 없음
-
-const myRe = /d(b+)(d)/i
-const myArray = myRe.exec('cdbBdbsbz')
-```
-
-반환된 `myArray` 배열의 속성과 요소는 다음과 같습니다.
-
-<table class="fullwidth-table standard-table">
-  <tbody>
-    <tr>
-      <th class="header" scope="col">속성/요소</th>
-      <th class="header" scope="col">설명</th>
-      <th class="header" scope="col">예시</th>
-    </tr>
-    <tr>
-      <td><code>input</code><br />{{ReadOnlyInline}}</td>
-      <td>정규표현식 일치 대상이 된 원본 문자열입니다.</td>
-      <td><code>"cdbBdbsbz"</code></td>
-    </tr>
-    <tr>
-      <td><code>index</code><br />{{ReadOnlyInline}}</td>
-      <td>일치가 위치한 원본 문자열에서의 인덱스입니다.</td>
-      <td><code>1</code></td>
-    </tr>
-    <tr>
-      <td><code>[0]</code><br />{{ReadOnlyInline}}</td>
-      <td>마지막으로 일치한 텍스트입니다.</td>
-      <td><code>"dbBd"</code></td>
-    </tr>
-    <tr>
-      <td><code>[1], ...[n]</code><br />{{ReadOnlyInline}}</td>
-      <td>
-        존재할 경우, 정규표현식에서 괄호로 지정한 부분문자열 일치에 대응하는 요소입니다. 가능한 수의 제한은 없습니다.
-      </td>
-      <td>
-        <code>[1]: "bB"<br />[2]: "d"</code>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-### 배열 복사하기
-
-배열을 새로운 변수에 할당해도 배열이 복사되지는 않습니다. 새로운 변수에는 원본 배열을 가리키는 참조만 할당되며, 원본 배열의 값을 바꾸면 새 변수에서도 그 변경점이 반영됩니다.
-
-```js
-let array1 = [1,2,3]
-let array1Reference = array1;
-array1[1] = 9;
-console.log(array1Reference);
-// Array [1,9,3] - array1의 변화가 array1Reference에도 나타남 - 복사본이 아님
-```
-
-배열의 복사본을 만들기 위해서는 새 배열을 위한 변수를 생성하고, 원본 배열 각각의 원시 요소에 대해서도 새로운 변수를 생성해야 합니다. (변수를 원시 값으로 초기화하면 참조를 할당하지 않고 값을 복사합니다.) JavaScript에서는 이를 위해 다음과 같은 방법을 사용할 수 있습니다.
-
-[전개 구문](/ko/docs/Web/JavaScript/Reference/Operators/Spread_syntax):
-
-```js
-let shallowCopySpread = [...fruits]
+const fruits = ["Strawberry", "Banana", "Mango"];
+const start = fruits.indexOf("Banana");
+const deleteCount = 1;
+const removedItems = fruits.splice(start, deleteCount);
+console.log(fruits);
 // ["Strawberry", "Mango"]
+console.log(removedItems);
+// ["Banana"]
 ```
 
-{{jsxref("Array.slice()")}}:
+### Remove multiple items by index
+
+This example uses the [`splice()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice) method to remove the strings `"Banana"` and `"Strawberry"` from the `fruits` array — by specifying the index position of `"Banana"`, along with a count of the number of total items to remove.
 
 ```js
-let shallowCopySlice = fruits.slice()
-// ["Strawberry", "Mango"]
+const fruits = ["Apple", "Banana", "Strawberry", "Mango"];
+const start = 1;
+const deleteCount = 2;
+const removedItems = fruits.splice(start, deleteCount);
+console.log(fruits);
+// ["Apple", "Mango"]
+console.log(removedItems);
+// ["Banana", "Strawberry"]
 ```
 
-{{jsxref("Array.from()")}}:
+### Replace multiple items in an array
+
+This example uses the [`splice()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice) method to replace the last 2 items in the `fruits` array with new items.
 
 ```js
-let shallowCopyFrom = Array.from(fruits)
-// ["Strawberry", "Mango"]
+const fruits = ["Apple", "Banana", "Strawberry"];
+const start = -2;
+const deleteCount = 2;
+const removedItems = fruits.splice(start, deleteCount, "Mango", "Cherry");
+console.log(fruits);
+// ["Apple", "Mango", "Cherry"]
+console.log(removedItems);
+// ["Banana", "Strawberry"]
 ```
 
-위의 세 코드는 모두 '얕은 복사'를 생성합니다. 얕은 복사란 배열의 최상위 요소가 원시 값일 경우 복사하지만, 중첩 배열이나 객체 요소일 경우에는 원본 배열의 요소를 참조하게 됩니다.
+### Iterate over an array
 
-모든 요소의 '깊은 복사', 즉 중첩 배열과 객체 요소 또한 동일한 형태로 복사하는 방법 중 하나는 {{jsxref("JSON.stringify()")}}를 사용해 배열을 JSON 문자열로 변환한 후, {{jsxref("JSON.parse()")}}로 다시 배열을 구성하는 것입니다.
-
-```js
-let deepCopy = JSON.parse(JSON.stringify(fruits));
-// ["Strawberry", "Mango"]
-```
-
-## 생성자
-
-- {{jsxref("Array.Array", "Array()")}}
-  - : `Array` 객체를 생성합니다.
-
-## 정적 속성
-
-- {{jsxref("Array.@@species", "get Array[@@species]")}}
-  - : 파생 객체를 생성하는데 사용하는 생성자 함수입니다.
-
-## 정적 메서드
-
-- {{jsxref("Array.from()")}}
-  - : 유사 배열 또는 반복 가능한 객체로부터 새로운 `Array` 인스턴스를 생성합니다.
-- {{jsxref("Array.isArray()")}}
-  - : 만약 매개변수가 배열이면 참을, 아니면 거짓을 반환합니다.
-- {{jsxref("Array.of()")}}
-  - : 매개변수의 수와 자료형에 제한 없이, 지정한 값을 사용해 새 `Array` 인스턴스를 생성합니다.
-
-## 인스턴스 속성
-
-- {{jsxref("Array.prototype.length")}}
-  - : 배열의 원소 수를 나타냅니다.
-- {{jsxref("Array.@@unscopables", "Array.prototype[@@unscopables]")}}
-  - : {{jsxref("Statements/with", "with")}} 결속 범위로부터 제외하려는 속성 이름이 들어있는 기호입니다.
-
-## 인스턴스 메서드
-
-- {{jsxref("Array.prototype.at()")}} {{Experimental_Inline}}
-  - : 주어진 인덱스의 요소를 반환합니다. 음수 값을 지정할 경우 인덱스를 배열의 끝부터 셉니다.
-- {{jsxref("Array.prototype.concat()")}}
-  - : 배열과 배열/값 매개변수를 이어붙인 새로운 배열을 반환합니다.
-- {{jsxref("Array.prototype.copyWithin()")}}
-  - : 배열 내의 지정된 요소들을 동일한 배열 내에서 복사합니다.
-- {{jsxref("Array.prototype.entries()")}}
-  - : 배열의 각 인덱스에 대한 키/값 쌍을 가지는 새로운 배열 반복자 객체를 반환합니다.
-- {{jsxref("Array.prototype.every()")}}
-  - : 배열의 모든 요소가 주어진 판별 함수를 만족할 경우 `true`를 반환합니다.
-- {{jsxref("Array.prototype.fill()")}}
-  - : 배열을 시작 인덱스부터 끝 인덱스까지의 지정한 값으로 채웁니다.
-- {{jsxref("Array.prototype.filter()")}}
-  - : 지정한 필터 함수의 반환 결과가 `true`인 요소만 모아서 새로운 배열을 반환합니다.
-- {{jsxref("Array.prototype.find()")}}
-  - : 주어진 판별 함수를 만족하는 첫 번째 요소를 반환합니다. 만족하는 요소가 없으면 `undefined`를 반환합니다.
-- {{jsxref("Array.prototype.findIndex()")}}
-  - : 주어진 판별 함수를 만족하는 첫 번째 요소의 인덱스를 반환합니다. 만족하는 요소가 없으면 `-1`를 반환합니다.
-- {{jsxref("Array.prototype.flat()")}}
-  - : 배열 내의 모든 중첩 배열을 지정한 깊이까지 재귀적으로 이어붙인 새로운 배열을 반환합니다.
-- {{jsxref("Array.prototype.flatMap()")}}
-  - : 배열의 모든 요소 각각에 대해 주어진 콜백 함수를 호출하고, 그 반환 값을 모아 새로운 배열을 생성한 후, 모든 중첩 배열을 이어붙여 평탄화해 반환합니다.
-- {{jsxref("Array.prototype.forEach()")}}
-  - : 배열의 각각의 요소에 대해 함수를 호출합니다.
-- {{jsxref("Array.prototype.includes()")}}
-  - : 배열이 주어진 값을 포함하는지 판별해 `true` 또는 `false`를 반환합니다.
-- {{jsxref("Array.prototype.indexOf()")}}
-  - : 배열에서 주어진 값과 일치하는 제일 앞의 인덱스를 반환합니다. 없으면 `-1`을 반환합니다.
-- {{jsxref("Array.prototype.join()")}}
-  - : 배열의 모든 요소를 문자열로 합칩니다.
-- {{jsxref("Array.prototype.keys()")}}
-  - : 배열의 각 인덱스에 대한 키를 가지는 새로운 배열 반복자 객체를 반환합니다.
-- {{jsxref("Array.prototype.lastIndexOf()")}}
-  - : 배열에서 주어진 값과 일치하는 제일 뒤의 인덱스를 반환합니다. 없으면 `-1`을 반환합니다.
-- {{jsxref("Array.prototype.map()")}}
-  - : 배열의 모든 요소 각각에 대하여 주어진 콜백 함수를 호출하고, 그 반환 값을 모은 새로운 배열을 반환합니다.
-- {{jsxref("Array.prototype.pop()")}}
-  - : 배열에서 마지막 요소를 뽑아내고, 그 요소를 반환합니다.
-- {{jsxref("Array.prototype.push()")}}
-  - : 배열의 끝에 하나 이상의 요소를 추가하고, 배열의 변경된 `length`를 반환합니다.
-- {{jsxref("Array.prototype.reduce()")}}
-  - : 주어진 콜백 함수를 가산기와 요소 각각에 대해 (왼쪽에서 오른쪽으로) 호출하여 하나의 값으로 줄인 결과를 반환합니다.
-- {{jsxref("Array.prototype.reduceRight()")}}
-  - : 주어진 콜백 함수를 가산기와 요소 각각에 대해 (오른쪽에서 왼쪽으로) 호출하여 하나의 값으로 줄인 결과를 반환합니다.
-- {{jsxref("Array.prototype.reverse()")}}
-  - : 배열의 요소 순서를 뒤집습니다. 즉 첫 번째 요소가 마지막이 되고 마지막이 첫 번째가 됩니다.
-- {{jsxref("Array.prototype.shift()")}}
-  - : 배열에서 첫 번째 요소를 삭제하고, 그 요소를 반환합니다.
-- {{jsxref("Array.prototype.slice()")}}
-  - : 배열의 일부를 추출한 새 배열을 반환합니다.
-- {{jsxref("Array.prototype.some()")}}
-  - : 배열의 어떤 요소가 주어진 판별 함수를 만족할 경우 `true`를 반환합니다.
-- {{jsxref("Array.prototype.sort()")}}
-  - : 배열의 요소를 정렬하고 그 배열을 반환합니다.
-- {{jsxref("Array.prototype.splice()")}}
-  - : 배열에서 요소를 추가하거나 삭제합니다.
-- {{jsxref("Array.prototype.toLocaleString()")}}
-  - : 배열과 그 요소를 나타내는 지역화된 문자열을 반환합니다. {{jsxref("Object.prototype.toLocaleString()")}} 메서드를 재정의합니다.
-- {{jsxref("Array.prototype.toString()")}}
-  - : 배열과 그 요소를 나타내는 문자열을 반환합니다. {{jsxref("Object.prototype.toString()")}} 메서드를 재정의합니다.
-- {{jsxref("Array.prototype.unshift()")}}
-  - : 배열의 앞에 하나 이상의 요소를 추가하고, 배열의 변경된 `length`를 반환합니다.
-- {{jsxref("Array.prototype.values()")}}
-  - : 배열의 각 인덱스에 대한 값을 가지는 새로운 배열 반복자 객체를 반환합니다.
-- {{jsxref("Array.prototype.@@iterator()", "Array.prototype[@@iterator]()")}}
-  - : 배열의 각 인덱스에 대한 값을 가지는 새로운 배열 반복자 객체를 반환합니다.
-
-## 예제
-
-### 배열 생성
-
-아래 예제에서는 길이 0의 배열 `msgArray` 을 생성하고, `msgArray[0]` 와 `msgArray[99]` 에 값을 할당하여 배열의 길이를 100으로 변경합니다.
+This example uses a [`for...of`](/en-US/docs/Web/JavaScript/Reference/Statements/for...of) loop to iterate over the `fruits` array, logging each item to the console.
 
 ```js
-let msgArray = []
-msgArray[0] = 'Hello'
-msgArray[99] = 'world'
-
-if (msgArray.length === 100) {
-  console.log('길이가 100입니다.')
+const fruits = ["Apple", "Mango", "Cherry"];
+for (const fruit of fruits) {
+  console.log(fruit);
 }
+// Apple
+// Mango
+// Cherry
 ```
 
-### 2차원 배열 생성
+But `for...of` is just one of many ways to iterate over any array; for more ways, see [Loops and iteration](/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration), and see the documentation for the [`every()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every), [`filter()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter), [`flatMap()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap), [`map()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map), [`reduce()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce), and [`reduceRight()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduceRight) methods — and see the next example, which uses the [`forEach()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach) method.
 
-아래의 예제는 2차원 문자열 배열로 체스판을 생성합니다. 첫 번째 이동은 `board[6][4]`의 `'p'`를 `board[4][4]`로 복사하여 이루어집니다. 그 후 이전 위치 `[6][4]`는 빈 공간으로 만듭니다.
+### Call a function on each element in an array
+
+This example uses the [`forEach()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach) method to call a function on each element in the `fruits` array; the function causes each item to be logged to the console, along with the item's index number.
 
 ```js
-let board = [
-  ['R','N','B','Q','K','B','N','R'],
-  ['P','P','P','P','P','P','P','P'],
-  [' ',' ',' ',' ',' ',' ',' ',' '],
-  [' ',' ',' ',' ',' ',' ',' ',' '],
-  [' ',' ',' ',' ',' ',' ',' ',' '],
-  [' ',' ',' ',' ',' ',' ',' ',' '],
-  ['p','p','p','p','p','p','p','p'],
-  ['r','n','b','q','k','b','n','r'] ]
-
-console.log(board.join('\n') + '\n\n')
-
-// 폰을 앞으로 두 칸 전진
-board[4][4] = board[6][4]
-board[6][4] = ' '
-console.log(board.join('\n'))
+const fruits = ["Apple", "Mango", "Cherry"];
+fruits.forEach((item, index, array) => {
+  console.log(item, index);
+});
+// Apple 0
+// Mango 1
+// Cherry 2
 ```
 
-결과는 다음과 같습니다.
+### Merge multiple arrays together
 
+This example uses the [`concat()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat) method to merge the `fruits` array with a `moreFruits` array, to produce a new `combinedFruits` array. Notice that `fruits` and `moreFruits` remain unchanged.
+
+```js
+const fruits = ["Apple", "Banana", "Strawberry"];
+const moreFruits = ["Mango", "Cherry"];
+const combinedFruits = fruits.concat(moreFruits);
+console.log(combinedFruits);
+// ["Apple", "Banana", "Strawberry", "Mango", "Cherry"]
+
+// The 'fruits' array remains unchanged.
+console.log(fruits);
+// ["Apple", "Banana", "Strawberry"]
+
+// The 'moreFruits' array also remains unchanged.
+console.log(moreFruits);
+// ["Mango", "Cherry"]
 ```
+
+### Copy an array
+
+This example shows three ways to create a new array from the existing `fruits` array: first by using [spread syntax](/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax), then by using the [`from()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from) method, and then by using the [`slice()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice) method.
+
+```js
+const fruits = ["Strawberry", "Mango"];
+
+// Create a copy using spread syntax.
+const fruitsCopy = [...fruits];
+// ["Strawberry", "Mango"]
+
+// Create a copy using the from() method.
+const fruitsCopy2 = Array.from(fruits);
+// ["Strawberry", "Mango"]
+
+// Create a copy using the slice() method.
+const fruitsCopy3 = fruits.slice();
+// ["Strawberry", "Mango"]
+```
+
+All built-in array-copy operations ([spread syntax](/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax), [`Array.from()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from), [`Array.prototype.slice()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice), and [`Array.prototype.concat()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat)) create [shallow copies](/en-US/docs/Glossary/Shallow_copy). If you instead want a [deep copy](/en-US/docs/Glossary/Deep_copy) of an array, you can use {{jsxref("JSON.stringify()")}} to convert the array to a JSON string, and then {{jsxref("JSON.parse()")}} to convert the string back into a new array that's completely independent from the original array.
+
+```js
+const fruitsDeepCopy = JSON.parse(JSON.stringify(fruits));
+```
+
+You can also create deep copies using the [`structuredClone()`](/en-US/docs/Web/API/structuredClone) method, which has the advantage of allowing [transferable objects](/en-US/docs/Web/API/Web_Workers_API/Transferable_objects) in the source to be _transferred_ to the new copy, rather than just cloned.
+
+Finally, it's important to understand that assigning an existing array to a new variable doesn't create a copy of either the array or its elements. Instead the new variable is just a reference, or alias, to the original array; that is, the original array's name and the new variable name are just two names for the exact same object (and so will always evaluate as [strictly equivalent](/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#strict_equality_using)). Therefore, if you make any changes at all either to the value of the original array or to the value of the new variable, the other will change, too:
+
+```js
+const fruits = ["Strawberry", "Mango"];
+const fruitsAlias = fruits;
+// 'fruits' and 'fruitsAlias' are the same object, strictly equivalent.
+fruits === fruitsAlias; // true
+// Any changes to the 'fruits' array change 'fruitsAlias' too.
+fruits.unshift("Apple", "Banana");
+console.log(fruits);
+// ['Apple', 'Banana', 'Strawberry', 'Mango']
+console.log(fruitsAlias);
+// ['Apple', 'Banana', 'Strawberry', 'Mango']
+```
+
+### Grouping the elements of an array
+
+The {{jsxref("Array.prototype.group()")}} methods can be used to group the elements of an array, using a test function that returns a string indicating the group of the current element.
+
+Here we have a simple inventory array that contains "food" objects that have a `name` and a `type`.
+
+```js
+const inventory = [
+  { name: "asparagus", type: "vegetables" },
+  { name: "bananas", type: "fruit" },
+  { name: "goat", type: "meat" },
+  { name: "cherries", type: "fruit" },
+  { name: "fish", type: "meat" },
+];
+```
+
+To use `group()`, you supply a callback function that is called with the current element, and optionally the current index and array, and returns a string indicating the group of the element.
+
+The code below uses an arrow function to return the `type` of each array element (this uses [object destructuring syntax for function arguments](/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#unpacking_properties_from_objects_passed_as_a_function_parameter) to unpack the `type` element from the passed object).
+The result is an object that has properties named after the unique strings returned by the callback.
+Each property is assigned an array containing the elements in the group.
+
+```js
+const result = inventory.group(({ type }) => type);
+console.log(result.vegetables);
+// [{ name: "asparagus", type: "vegetables" }]
+```
+
+Note that the returned object references the _same_ elements as the original array (not {{glossary("deep copy","deep copies")}}).
+Changing the internal structure of these elements will be reflected in both the original array and the returned object.
+
+If you can't use a string as the key, for example, if the information to group is associated with an object that might change, then you can instead use {{jsxref("Array.prototype.groupToMap()")}}.
+This is very similar to `group` except that it groups the elements of the array into a {{jsxref("Map")}} that can use an arbitrary value ({{Glossary("object")}} or {{Glossary("primitive")}}) as a key.
+
+### Creating a two-dimensional array
+
+The following creates a chessboard as a two-dimensional array of strings. The first move is made by copying the `'p'` in `board[6][4]` to `board[4][4]`. The old position at `[6][4]` is made blank.
+
+```js
+const board = [
+  ["R", "N", "B", "Q", "K", "B", "N", "R"],
+  ["P", "P", "P", "P", "P", "P", "P", "P"],
+  [" ", " ", " ", " ", " ", " ", " ", " "],
+  [" ", " ", " ", " ", " ", " ", " ", " "],
+  [" ", " ", " ", " ", " ", " ", " ", " "],
+  [" ", " ", " ", " ", " ", " ", " ", " "],
+  ["p", "p", "p", "p", "p", "p", "p", "p"],
+  ["r", "n", "b", "q", "k", "b", "n", "r"],
+];
+
+console.log(`${board.join("\n")}\n\n`);
+
+// Move King's Pawn forward 2
+board[4][4] = board[6][4];
+board[6][4] = " ";
+console.log(board.join("\n"));
+```
+
+Here is the output:
+
+```plain
 R,N,B,Q,K,B,N,R
 P,P,P,P,P,P,P,P
  , , , , , , ,
@@ -456,23 +787,20 @@ p,p,p,p, ,p,p,p
 r,n,b,q,k,b,n,r
 ```
 
-### 배열을 사용하여 일련의 값을 테이블처럼 표시하기
+### Using an array to tabulate a set of values
 
 ```js
-const values = []
-for (let x = 0; x < 10; x++){
- values.push([
-  2 ** x,
-  2 * x ** 2
- ])
+const values = [];
+for (let x = 0; x < 10; x++) {
+  values.push([2 ** x, 2 * x ** 2]);
 }
-console.table(values)
+console.table(values);
 ```
 
-결과는 다음과 같습니다.
+Results in
 
-```
-// 첫 번째 열은 인덱스
+```plain
+// The first column is the index
 0  1    0
 1  2    2
 2  4    8
@@ -485,18 +813,41 @@ console.table(values)
 9  512  162
 ```
 
-## 명세
+### Creating an array using the result of a match
+
+The result of a match between a {{jsxref("RegExp")}} and a string can create a JavaScript array that has properties and elements which provide information about the match. Such an array is returned by {{jsxref("RegExp.prototype.exec()")}} and {{jsxref("String.prototype.match()")}}.
+
+For example:
+
+```js
+// Match one d followed by one or more b's followed by one d
+// Remember matched b's and the following d
+// Ignore case
+
+const myRe = /d(b+)(d)/i;
+const execResult = myRe.exec("cdbBdbsbz");
+
+console.log(execResult.input); // 'cdbBdbsbz'
+console.log(execResult.index); // 1
+console.log(execResult); // [ "dbBd", "bB", "d" ]
+```
+
+For more information about the result of a match, see the {{jsxref("RegExp.prototype.exec()")}} and {{jsxref("String.prototype.match()")}} pages.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- JavaScript 안내서:
-  - [객체 속성 인덱싱](/ko/docs/Web/JavaScript/Guide/Working_with_Objects#객체_속성_인덱싱)
-  - [인덱스 컬렉션: `Array` 객체](/ko/docs/Web/JavaScript/Guide/Indexed_collections#array_객체)
-- [형식화 배열](/ko/docs/Web/JavaScript/Typed_arrays)
-- [RangeError: invalid array length](/ko/docs/Web/JavaScript/Reference/Errors/Invalid_array_length)
+- From the JavaScript Guide:
+
+  - [Accessing properties](/en-US/docs/Web/JavaScript/Guide/Working_with_objects#accessing_properties)
+  - [Indexed collections](/en-US/docs/Web/JavaScript/Guide/Indexed_collections)
+
+- [Typed Arrays](/en-US/docs/Web/JavaScript/Typed_arrays)
+- [RangeError: invalid array length](/en-US/docs/Web/JavaScript/Reference/Errors/Invalid_array_length)

@@ -1,46 +1,77 @@
 ---
 title: Battery Status API
 slug: Web/API/Battery_Status_API
-original_slug: WebAPI/Battery_Status
+page-type: web-api-overview
+browser-compat: api.BatteryManager
 ---
+
 {{DefaultAPISidebar("Battery API")}}
 
-**Battery API** 만큼이나 자주 언급되는 **Battery Status API**는 시스템의 배터리 충전 상태에 대한 정보를 제공하고, 배터리 상태에 따라 발생하는 이벤트를 다룰 수 있도록 해 줍니다. 배터리가 얼마남지 않은 상황에서, 앱에서 배터리의 소모를 줄인다거나 배터리가 방전되기 전에 데이터를 저장하거나 하는 것들이 가능합니다.
+The **Battery Status API**, more often referred to as the **Battery API**, provides information about the system's battery charge level and lets you be notified by events that are sent when the battery level or charging status change. This can be used to adjust your app's resource usage to reduce battery drain when the battery is low, or to save changes before the battery runs out in order to prevent data loss.
 
-Battery Status API 는 {{domxref("window.navigator.battery")}} 를 제공 합니다. 이는 {{domxref("BatteryManager")}} 객체이며 배터리 상태를 감시하고 전달받아 처리할 수 있는 이벤트를 가지고 있습니다.
+> **Note:** This API is _not available_ in [Web Workers](/en-US/docs/Web/API/Web_Workers_API) (not exposed via {{domxref("WorkerNavigator")}}).
 
-## 예제
+## Interfaces
 
-아래 예제에서는 배터리가 충전중인 상태 (전원 케이블을 연결하여 충전 중인지) 와 배터리 수준의 변화를 감시합니다. 각각 {{domxref("BatteryManager.chargingchange_event", "chargingchange")}} 와 {{domxref("BatteryManager.levelchange_event", "levelchange")}} 이벤트가 발생하면 완료 됩니다.
+- {{domxref("BatteryManager")}}
+  - : Provides information about the system's battery charge level.
+- {{domxref("navigator.getBattery()")}} {{ReadOnlyInline}}
+  - : Returns a {{JSxRef("Promise")}} that resolves with a {{DOMxRef("BatteryManager")}} object.
+
+## Example
+
+In this example, we watch for changes both to the charging status (whether or not we're plugged in and charging) and for changes to the battery level and timing. This is done by listening for the {{domxref("BatteryManager.chargingchange_event", "chargingchange")}}, {{domxref("BatteryManager.levelchange_event", "levelchange")}}, {{domxref("BatteryManager.chargingtimechange_event", "chargingtimechange")}}, {{domxref("BatteryManager.dischargingtimechange_event", "dischargingtimechange")}} events.
 
 ```js
-var battery = navigator.battery || navigator.mozBattery || navigator.webkitBattery;
-
-function updateBatteryStatus() {
-  console.log("Battery status: " + battery.level * 100 + " %");
-
-  if (battery.charging) {
-    console.log("Battery is charging");
+navigator.getBattery().then((battery) => {
+  function updateAllBatteryInfo() {
+    updateChargeInfo();
+    updateLevelInfo();
+    updateChargingInfo();
+    updateDischargingInfo();
   }
-}
+  updateAllBatteryInfo();
 
-battery.addEventListener("chargingchange", updateBatteryStatus);
-battery.addEventListener("levelchange", updateBatteryStatus);
-updateBatteryStatus();
+  battery.addEventListener("chargingchange", () => {
+    updateChargeInfo();
+  });
+  function updateChargeInfo() {
+    console.log(`Battery charging? ${battery.charging ? "Yes" : "No"}`);
+  }
+
+  battery.addEventListener("levelchange", () => {
+    updateLevelInfo();
+  });
+  function updateLevelInfo() {
+    console.log(`Battery level: ${battery.level * 100}%`);
+  }
+
+  battery.addEventListener("chargingtimechange", () => {
+    updateChargingInfo();
+  });
+  function updateChargingInfo() {
+    console.log(`Battery charging time: ${battery.chargingTime} seconds`);
+  }
+
+  battery.addEventListener("dischargingtimechange", () => {
+    updateDischargingInfo();
+  });
+  function updateDischargingInfo() {
+    console.log(`Battery discharging time: ${battery.dischargingTime} seconds`);
+  }
+});
 ```
 
-명세서의 예제도 [**확인**](http://dev.w3.org/2009/dap/system-info/battery-status.html#introduction)해보세요.
+See also [the example in the specification](https://www.w3.org/TR/battery-status/#examples).
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 더보기
+## See also
 
-- [Hacks blog post - Using the Battery API](http://hacks.mozilla.org/2012/02/using-the-battery-api-part-of-webapi/)
-- {{domxref("BatteryManager")}}
-- {{domxref("window.navigator.battery","navigator.battery")}}
+- [Hacks blog post - Using the Battery API](https://hacks.mozilla.org/2012/02/using-the-battery-api-part-of-webapi/)

@@ -1,39 +1,43 @@
 ---
 title: ClipboardEvent
 slug: Web/API/ClipboardEvent
+page-type: web-api-interface
+browser-compat: api.ClipboardEvent
 ---
 
-{{APIRef("Clipboard API")}} {{SeeCompatTable}}
+{{APIRef("Clipboard API")}}
 
-**`ClipboardEvent`** 인터페이스는 {{domxref("Element/cut_event", "cut")}}, {{domxref("Element/copy_event", "copy")}}, {{domxref("Element/paste_event", "paste")}} 이벤트처럼 클립보드 조작에 대한 정보를 제공하는 이벤트를 나타냅니다.
+The **`ClipboardEvent`** interface represents events providing information related to modification of the clipboard, that is {{domxref("Element/cut_event", "cut")}}, {{domxref("Element/copy_event", "copy")}}, and {{domxref("Element/paste_event", "paste")}} events.
 
-## 생성자
+{{InheritanceDiagram}}
+
+## Constructor
 
 - {{domxref("ClipboardEvent.ClipboardEvent", "ClipboardEvent()")}}
-  - : 주어진 매개변수로 `ClipboardEvent`를 생성합니다.
+  - : Creates a `ClipboardEvent` event with the given parameters.
 
-## 속성
+## Instance properties
 
-{{domxref("Event")}} 인터페이스의 속성을 상속합니다.
+_Also inherits properties from its parent {{domxref("Event")}}_.
 
-- {{domxref("ClipboardEvent.clipboardData")}} {{readonlyInline}}
-  - : 사용자가 실행한 {{domxref("Element/cut_event", "cut")}}, {{domxref("Element/copy_event", "copy")}}, {{domxref("Element/paste_event", "paste")}} 작업에서 영향을 받은 데이터를 담은 {{domxref("DataTransfer")}} 객체입니다. 데이터의 MIME 유형도 포함합니다.
+- {{domxref("ClipboardEvent.clipboardData")}} {{ReadOnlyInline}}
+  - : A {{domxref("DataTransfer")}} object containing the data affected by the user-initiated {{domxref("Element/cut_event", "cut")}}, {{domxref("Element/copy_event", "copy")}}, or {{domxref("Element/paste_event", "paste")}} operation, along with its MIME type.
 
-## 메서드
+## Instance methods
 
-{{domxref("Event")}} 인터페이스의 메서드를 상속합니다.
+_No specific methods; inherits methods from its parent {{domxref("Event")}}_.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 복사 관련 이벤트: {{domxref("Element/cut_event", "cut")}}, {{domxref("Element/copy_event", "copy")}}, {{domxref("Element/paste_event", "paste")}}
-- [Clipboard API](/ko/docs/Web/API/Clipboard_API)
-- [Async Clipboard API 데모 (Glitch)](https://async-clipboard-api.glitch.me/)
-- [web.dev의 Async Clipboard API](https://web.dev/image-support-for-async-clipboard/)
+- Copy-related events: {{domxref("Element/copy_event", "copy")}}, {{domxref("Element/cut_event", "cut")}}, {{domxref("Element/paste_event", "paste")}}
+- [Clipboard API](/en-US/docs/Web/API/Clipboard_API)
+- [Async Clipboard API demo on Glitch](https://async-clipboard-api.glitch.me/)
+- [Image support for Async Clipboard article](https://web.dev/async-clipboard/)

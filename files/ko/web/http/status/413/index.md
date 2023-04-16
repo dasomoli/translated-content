@@ -1,23 +1,27 @@
 ---
-title: 413 Payload Too Large
+title: 413 Content Too Large
 slug: Web/HTTP/Status/413
+page-type: http-status-code
+spec-urls: https://httpwg.org/specs/rfc9110.html#status.413
 ---
 
-{{HTTPSidebar}}HTTP 413 Payload Too Large 응답 상태 코드는 요청 엔터티가 서버에 의해 정의된 제한보다 크다는 것을 나타낸다. 서버가 연결을 닫거나 헤더 필드({{HTTPHeader("Retry-After")}})를 반환할 수 있다.
+{{HTTPSidebar}}
 
-## 상태
+The HTTP **`413 Content Too Large`** response status code indicates that the request entity is larger than limits defined by server; the server might close the connection or return a {{HTTPHeader("Retry-After")}} header field.
 
+Prior to RFC 9110 the response phrase for the status was **`Payload Too Large`**. That name is still widely used.
+
+## Status
+
+```http
+413 Content Too Large
 ```
-413 Payload Too Large
-```
 
-## 정의
+## Specifications
 
-| 정의                                                                 | 제목                                                          |
-| -------------------------------------------------------------------- | ------------------------------------------------------------- |
-| {{RFC("7231", "413 Payload Too Large" , "6.5.11")}} | Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content |
+{{Specifications}}
 
-## 참조
+## See also
 
 - {{HTTPHeader("Connection")}}
 - {{HTTPHeader("Retry-After")}}

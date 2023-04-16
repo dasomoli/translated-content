@@ -1,17 +1,17 @@
 ---
-title: 요소
+title: Element
 slug: Glossary/Element
+page-type: glossary-definition
 ---
 
-{{QuickLinksWithSubpages("/ko/docs/Glossary")}}
+An **element** is a part of a webpage. In {{glossary("XML")}} and {{glossary("HTML")}}, an element may contain a data item or a chunk of text or an image, or perhaps nothing. A typical element includes an opening tag with some {{glossary("attribute", "attributes")}}, enclosed text content, and a closing tag.
 
-**요소**(element)는 웹 페이지를 구성합니다. {{glossary("XML")}}과 {{glossary("HTML")}}에서, 요소는 데이터 항목, 텍스트 한 묶음, 이미지를 담을 수 있고, 아무것도 담지 않을 수도 있습니다. 일반적인 요소는 여는 태그와 몇 가지 {{glossary("attribute", "특성")}}, 내부의 텍스트 콘텐츠, 닫는 태그로 구성됩니다.
 ![Example: in <p class="nice">Hello world!</p>, '<p class="nice">' is an opening tag, 'class="nice"' is an attribute and its value, 'Hello world!' is enclosed text content, and '</p>' is a closing tag.](anatomy-of-an-html-element.png)
 
-요소와 {{glossary("tag", "태그")}}는 **같지 않습니다**. 태그는 소스 코드에서 요소의 시작과 끝을 표시하고, 요소는 {{glossary("browser", "브라우저")}}가 페이지를 표시할 때 사용하는 문서 모델인 {{glossary("DOM")}}의 일부입니다.
+Elements and {{glossary("tag", "tags")}} are _not_ the same things. Tags begin or end an element in source code, whereas elements are part of the {{Glossary("DOM")}}, the document model for displaying the page in the {{glossary("browser")}}.
 
-## 같이 보기
+## See also
 
-- [HTML 시작하기](/ko/docs/Learn/HTML/Introduction_to_HTML/Getting_started)
-- [사용자 지정 요소 정의하기](/ko/docs/Web/Web_Components/Using_custom_elements)
-- DOM의 요소를 나타내는 {{domxref("Element")}} 인터페이스
+- [Getting started with HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started)
+- [Defining custom elements](/en-US/docs/Web/API/Web_components/Using_custom_elements)
+- The {{domxref("Element")}} interface, representing an element in the DOM.

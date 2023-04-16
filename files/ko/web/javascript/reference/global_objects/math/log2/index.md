@@ -1,85 +1,65 @@
 ---
 title: Math.log2()
 slug: Web/JavaScript/Reference/Global_Objects/Math/log2
+page-type: javascript-static-method
+browser-compat: javascript.builtins.Math.log2
 ---
+
 {{JSRef}}
 
-**`Math.log2()`** 함수는 숫자를 log2(숫자)로 반환합니다.
+The **`Math.log2()`** static method returns the base 2 logarithm of a number. That is
 
-<math display="block"><semantics><mrow><mo>∀</mo><mi>x</mi><mo>></mo><mn>0</mn><mo>,</mo><mstyle mathvariant="monospace"><mrow><mo lspace="0em" rspace="thinmathspace">Math.log2</mo><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow></mstyle><mo>=</mo><msub><mo lspace="0em" rspace="0em">log</mo><mn>2</mn></msub><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mtext>the unique</mtext><mspace width="thickmathspace"></mspace><mi>y</mi><mspace width="thickmathspace"></mspace><mtext>such that</mtext><mspace width="thickmathspace"></mspace><msup><mn>2</mn><mi>y</mi></msup><mo>=</mo><mi>x</mi></mrow><annotation encoding="TeX">\forall x > 0, \mathtt{\operatorname{Math.log2}(x)} = \log_2(x) =
-\text{the unique} \; y \; \text{such that} \; 2^y = x</annotation></semantics></math>
+<math display="block"><semantics><mrow><mo>∀</mo><mi>x</mi><mo>&gt;</mo><mn>0</mn><mo>,</mo><mspace width="0.2777777777777778em"></mspace><mrow><mo lspace="0em" rspace="0.16666666666666666em">𝙼𝚊𝚝𝚑.𝚕𝚘𝚐𝟸</mo><mo stretchy="false">(</mo><mi>𝚡</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><msub><mo lspace="0em" rspace="0em">log</mo><mn>2</mn></msub><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mtext>the unique&nbsp;</mtext><mi>y</mi><mtext>&nbsp;such that&nbsp;</mtext><msup><mn>2</mn><mi>y</mi></msup><mo>=</mo><mi>x</mi></mrow><annotation encoding="TeX">\forall x &gt; 0,\;\mathtt{\operatorname{Math.log2}(x)} = \log_2(x) = \text{the unique } y \text{ such that } 2^y = x</annotation></semantics></math>
 
 {{EmbedInteractiveExample("pages/js/math-log2.html")}}
 
-## 문법
+## Syntax
 
-```js
-    Math.log2(x)
+```js-nolint
+Math.log2(x)
 ```
 
-### 매개변수
+### Parameters
 
 - `x`
-  - : 숫자.
+  - : A number greater than or equal to 0.
 
-### 반환 값
+### Return value
 
-주어진 숫자를 진수로, 2를 밑으로 하는 로그 계산 결과입니다. 만약 숫자가
-음수라면 {{jsxref("NaN")}}를 반환합니다.
+The base 2 logarithm of `x`. If `x < 0`, returns {{jsxref("NaN")}}.
 
-## 설명
+## Description
 
-만약 `x` 의 값이 0보다 작다면(음수) 값은 항상 {{jsxref("NaN")}}로
-반환합니다.
+Because `log2()` is a static method of `Math`, you always use it as `Math.log2()`, rather than as a method of a `Math` object you created (`Math` is not a constructor).
 
-`log2()`는 `Math`의 정적 메서드이므로
-만든 `Math` 객체의 메서드가
-아니라 항상 `Math.log2()`함수를
-사용해야합니다. (`Math`는 생성자가 없습니다.)
+This function is the equivalent of `Math.log(x) / Math.log(2)`. For `log2(e)`, use the constant {{jsxref("Math.LOG2E")}}, which is 1 / {{jsxref("Math.LN2")}}.
 
-이 함수는 Math.log(x) / Math.log(2)와 같습니다.
+## Examples
 
-따라서 `log2(e)`는 {{jsxref("Math.LOG2E")}}와 같습니다.
-
-그리고 위 함수는 1 / {{jsxref("Math.LN2")}}과 같습니다.
-
-## 폴리 필
-
-폴리 필은 `Math.log2`함수를 모방합니다. 일부 입력(예: 1 <<
-29\)에 대해 부정확한 값을 반환할 수 있습니다. 만약 비트마스크로 작업할 경우
-{{jsxref("Math.round()")}} 로 감싸주어야 합니다.
+### Using Math.log2()
 
 ```js
-if (!Math.log2) Math.log2 = function(x) {
-  return Math.log(x) * Math.LOG2E;
-};
-```
-
-## 예제
-
-### `Math.log2()`
-
-```js
-Math.log2(3);    // 1.584962500721156
-Math.log2(2);    // 1
-Math.log2(1);    // 0
-Math.log2(0);    // -Infinity
-Math.log2(-2);   // NaN
+Math.log2(-2); // NaN
+Math.log2(-0); // -Infinity
+Math.log2(0); // -Infinity
+Math.log2(1); // 0
+Math.log2(2); // 1
+Math.log2(3); // 1.584962500721156
 Math.log2(1024); // 10
+Math.log2(Infinity); // Infinity
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- `Math.log2`의 폴리 필은
-  [`core-js`](https://github.com/zloirock/core-js#ecmascript-math)에 존재합니다.
+- [Polyfill of `Math.log2` in `core-js`](https://github.com/zloirock/core-js#ecmascript-math)
 - {{jsxref("Math.exp()")}}
 - {{jsxref("Math.log()")}}
 - {{jsxref("Math.log10()")}}

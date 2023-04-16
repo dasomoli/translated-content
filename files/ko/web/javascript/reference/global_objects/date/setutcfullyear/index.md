@@ -1,15 +1,18 @@
 ---
 title: Date.prototype.setUTCFullYear()
 slug: Web/JavaScript/Reference/Global_Objects/Date/setUTCFullYear
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.setUTCFullYear
 ---
 
 {{JSRef}}
 
-**`setUTCFullYear()`** 메서드는 지정된 날짜의 전체 연도를 표준시에 따라 설정합니다.
+The **`setUTCFullYear()`** method sets the full year for a
+specified date according to universal time.
 
 {{EmbedInteractiveExample("pages/js/date-setutcfullyear.html")}}
 
-## 구문
+## Syntax
 
 ```js-nolint
 setUTCFullYear(yearValue)
@@ -17,43 +20,53 @@ setUTCFullYear(yearValue, monthValue)
 setUTCFullYear(yearValue, monthValue, dayValue)
 ```
 
-### 매개변수
+### Parameters
 
 - `yearValue`
-  - : 연도의 숫자 값을 지정하는 정수입니다 (예 : 1995).
+  - : An integer specifying the numeric value of the year, for example, 1995.
 - `monthValue`
-  - : 선택적 입력값. 1월에서 12월까지의 월을 나타내는 0에서 11 사이의 정수입니다.
+  - : Optional. An integer between 0 and 11 representing the months January through
+    December.
 - `dayValue`
-  - : 선택적 입력값. 한 달의 날짜를 나타내는 1부터 31사이의 정수입니다. `dayValue` 매개 변수를 지정하는 경우 `monthValue`도 지정해야합니다.
+  - : Optional. An integer between 1 and 31 representing the day of the month. If you
+    specify the `dayValue` parameter, you must also specify the
+    `monthValue`.
 
-### 반환값
+### Return value
 
-1970년 1월 1일 00:00:00 UTC와 업데이트 된 날짜 사이의 밀리 초 숫자입니다.
+The number of milliseconds between 1 January 1970 00:00:00 UTC and the updated date.
 
-## 설명
+## Description
 
-`monthValue` 및 `dayValue` 매개 변수를 지정하지 않으면 {{jsxref("Date.prototype.getUTCMonth", "getUTCMonth()")}} 및 {{jsxref("Date.prototype.getUTCDate()","getUTCDate()")}} 메소드가 사용됩니다.
+If you do not specify the `monthValue` and
+`dayValue` parameters, the values returned from the
+{{jsxref("Date.prototype.getUTCMonth()", "getUTCMonth()")}} and
+{{jsxref("Date.prototype.getUTCDate()", "getUTCDate()")}} methods are used.
 
-지정한 매개 변수가 예상 범위를 벗어난 경우 `setUTCFullYear()`는 다른 매개 변수와 {{jsxref("Date")}} 객체의 날짜 정보를 그에 따라 업데이트하려고 시도합니다. 예를 들어, `monthValue`에 15를 지정하면 연도가 1(`yearValue + 1`)만큼 증가하고 3은 해당 월에 사용됩니다.
+If a parameter you specify is outside of the expected range,
+`setUTCFullYear()` attempts to update the other parameters and the date
+information in the {{jsxref("Date")}} object accordingly. For example, if you specify 15
+for `monthValue`, the year is incremented by 1
+(`yearValue + 1`), and 3 is used for the month.
 
-## 예제
+## Examples
 
-### `setUTCFullYear()` 사용하기
+### Using setUTCFullYear()
 
 ```js
-var theBigDay = new Date();
+const theBigDay = new Date();
 theBigDay.setUTCFullYear(1997);
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{jsxref("Date.prototype.getUTCFullYear()")}}
 - {{jsxref("Date.prototype.setFullYear()")}}

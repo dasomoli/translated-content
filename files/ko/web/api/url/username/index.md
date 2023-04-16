@@ -1,39 +1,39 @@
 ---
-title: URL.username
+title: "URL: username property"
+short-title: username
 slug: Web/API/URL/username
+page-type: web-api-instance-property
+browser-compat: api.URL.username
 ---
+
 {{ApiRef("URL API")}}
 
-{{domxref("URL")}} 인터페이스의 **`username`** 속성은 도메인 이전의 사용자 이름을 담은 {{domxref("USVString")}}을 반환합니다.
+The **`username`** property of the {{domxref("URL")}} interface
+is a string containing the username specified before the domain name.
 
 {{AvailableInWorkers}}
 
-## 구문
+## Value
+
+A string.
+
+## Examples
 
 ```js
-const usernameString = url.username
-url.username = newUsername
+const url = new URL(
+  "https://anonymous:flabada@developer.mozilla.org/en-US/docs/Web/API/URL/username"
+);
+console.log(url.username); // Logs "anonymous"
 ```
 
-### 값
-
-{{domxref("USVString")}}.
-
-## 예제
-
-```js
-const url = new URL('https://anonymous:flabada@developer.mozilla.org/en-US/docs/Web/API/URL/username');
-console.log(url.username) // Logs "anonymous"
-```
-
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 속성이 속한 {{domxref("URL")}} 인터페이스.
+- The {{domxref("URL")}} interface it belongs to.

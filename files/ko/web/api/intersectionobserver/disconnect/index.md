@@ -1,31 +1,40 @@
 ---
-title: IntersectionObserver.disconnect()
+title: "IntersectionObserver: disconnect() method"
+short-title: disconnect()
 slug: Web/API/IntersectionObserver/disconnect
+page-type: web-api-instance-method
+browser-compat: api.IntersectionObserver.disconnect
 ---
 
 {{APIRef("Intersection Observer API")}}
 
-{{domxref("IntersectionObserver")}}의 **`disconnect()`** 메서드는 감지기의 모든 가시성 변화 주시 대상을 해제합니다.
+The {{domxref("IntersectionObserver")}} method
+**`disconnect()`** stops watching all of its target elements
+for visibility changes.
 
-## 구문
+## Syntax
 
-```js
-intersectionObserver.disconnect();
+```js-nolint
+disconnect()
 ```
 
-### 반환 값
+### Parameters
 
-`undefined`.
+None.
 
-## 명세
+### Return value
+
+None ({{jsxref("undefined")}}).
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
 - {{domxref("IntersectionObserver.observe", "observe()")}}
 - {{domxref("IntersectionObserver.unobserve", "unobserve()")}}

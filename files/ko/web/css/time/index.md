@@ -1,51 +1,59 @@
 ---
 title: <time>
 slug: Web/CSS/time
+page-type: css-type
+browser-compat: css.types.time
 ---
+
 {{CSSRef}}
 
-**`<time>`** [CSS](/ko/docs/Web/CSS) [자료형](/ko/docs/Web/CSS/CSS_Types)은 시간 값을 초나 밀리초 단위로 나타냅니다. {{cssxref("animation")}}, {{cssxref("transition")}}과 관련 속성에서 사용합니다.
+The **`<time>`** [CSS](/en-US/docs/Web/CSS) [data type](/en-US/docs/Web/CSS/CSS_Types) represents a time value expressed in seconds or milliseconds. It is used in {{cssxref("animation")}}, {{cssxref("transition")}}, and related properties.
 
-## 구문
+## Syntax
 
-`<time>` 자료형은 {{cssxref("&lt;number&gt;")}}와, 그 뒤에 붙는 아래 단위 중 하나로 이루어져 있습니다. 선택 사항으로 하나의 `+` 또는 `-` 기호를 맨 앞에 붙일 수 있습니다. 다른 모든 수치와 마찬가지로 단위와 숫자 사이에는 공백이 없습니다.
+The `<time>` data type consists of a {{cssxref("&lt;number&gt;")}} followed by one of the units listed below. Optionally, it may be preceded by a single `+` or `-` sign. As with all dimensions, there is no space between the unit literal and the number.
 
-> **참고:** `0`은 단위와 상관 없이 언제나 동일하지만 시간 단위를 생략할 수 없습니다. 즉 `0`은 유효하지 않은 구문이며 `0s`나 `0ms`를 나타내지 않습니다.
+> **Note:** Although the number `0` is always the same regardless of unit, the unit may not be omitted. In other words, `0` is invalid and does not represent `0s` or `0ms`.
 
-### 단위
+### Units
 
-- **`s`**
-  - : 시간을 초 단위로 나타냅니다. 예시: `0s`, `1.5s`, `-60s`.
-- **`ms`**
-  - : 시간을 밀리초 단위로 나타냅니다. 예시: `0ms`, `150.25ms`, `-60000ms`.
+- `s`
+  - : Represents a time in seconds. Examples: `0s`, `1.5s`, `-60s`.
+- `ms`
+  - : Represents a time in milliseconds. Examples: `0ms`, `150.25ms`, `-60000ms`.
 
-> **참고:** `s`와 `ms`의 변환은 `1s` = `1000ms`를 따릅니다.
+> **Note:** Conversion between `s` and `ms` follows the logical `1s` = `1000ms`.
 
-## 예제
+## Examples
 
-### 유효한 시간
+### Valid times
 
+```plain example-good
+12s         Positive integer
+-456ms      Negative integer
+4.3ms       Non-integer
+14mS        The unit is case-insensitive, although capital letters are not recommended.
++0s         Zero with a leading + and a unit
+-0ms        Zero with a leading - and a unit
 ```
-12s         양의 정수
--456ms      음의 정수
-4.3ms       정수 아닌 실수
-14mS        단위는 대소문자 구분을 하지 않지만, 대문자는 추천하지 않음
-+0s         + 뒤의 0과 단위
--0ms        - 뒤의 0과 단위
-```
 
-### 유효하지 않은 시간
+### Invalid times
 
 ```plain example-bad
-0           <length>는 단위 없는 0을 받을 수 있지만, <time>은 불가능
-12.0        단위가 없으므로 <number>지만 <time>이 아님
-7 ms        수와 단위 사이에 공백은 불허
+0           Although unitless zero is allowed for <length>s, it's invalid for <time>s.
+12.0        This is a <number>, not a <time>, because it's missing a unit.
+7 ms        No space is allowed between the number and the unit.
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
+
+## See also
+
+- {{cssxref("&lt;time-percentage&gt;")}}
+- [CSS Values and Units](/en-US/docs/Web/CSS/CSS_Values_and_Units)

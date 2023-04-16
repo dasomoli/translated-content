@@ -1,38 +1,146 @@
 ---
 title: lang
 slug: Web/HTML/Global_attributes/lang
+page-type: html-attribute
+browser-compat: html.global_attributes.lang
 ---
 
 {{HTMLSidebar("Global_attributes")}}
 
-**`lang`** [전역 특성](/ko/docs/Web/HTML/Global_attributes)은 요소 내의 수정 불가한 텍스트의 언어와, 수정 가능한 텍스트가 사용해야 하는 언어를 정의합니다. 특성의 값은 [Tags for Identifying Languages (BCP47)](https://www.ietf.org/rfc/bcp/bcp47.txt)에 정의된 형식의 "언어 태그" 한 개입니다.
+The **`lang`** [global attribute](/en-US/docs/Web/HTML/Global_attributes) helps define the language of an element: the language that non-editable elements are written in, or the language that the editable elements should be written in by the user. The attribute contains a single "language tag" in the format defined in {{RFC(5646, "Tags for Identifying Languages (also known as BCP 47)")}}.
 
-> **참고:** `lang`의 기본값은 "알 수 없음"이므로 항상 적절한 값을 지정하는 것이 좋습니다.
+> **Note:** The default value of `lang` is `unknown`, therefore it is recommended to always specify this attribute with the appropriate value.
 
 {{EmbedInteractiveExample("pages/tabbed/attribute-lang.html","tabbed-shorter")}}
 
-<p class="hidden">The source for this interactive example is stored in a GitHub repository. If you'd like to contribute to the interactive examples project, please clone <a href="https://github.com/mdn/interactive-examples">https://github.com/mdn/interactive-examples </a>and send us a pull request.</p>
+If the attribute value is the _empty string_ (`lang=""`), the language is set to _unknown_; if the language tag is not valid according to BCP47, it is set to _invalid_.
 
-특성의 값이 빈 문자열(`lang=""`)일 때의 값은 "알 수 없음"(unknown)이며, 지정한 값이 BCP47의 유효한 값이 아닌 경우 "유효하지 않음"(invalid)입니다.
+Even if the **lang** attribute is set, it may not be taken into account, as the [**xml:lang**](/en-US/docs/Web/HTML/Global_attributes#lang) attribute has priority.
 
-> **참고:** ## 언어 태그 구문BCP47의 전체 구문은 매우 상세하여 어떤 언어의 세세한 방언을 나타낼 수도 있지만, 대부분의 사용법은 훨씬 단순합니다.언어 태그는 붙임표로 구분하는 "언어 하위태그"로 구성하며, 각각의 하위태그가 언어의 특정 속성을 나타냅니다. 가장 흔히 쓰이는 세 개의 하위 태그는 다음과 같습니다.- 언어 하위태그 - : 필수. 두 세 글자로 구성된 코드로 기본 언어를 정의하며, 보통 모두 소문자로 표기합니다. 예를 들어 영어의 언어 태그는 `en`이고, 한국어의 언어 태그는 `ko`입니다.
->
-> - 활자 하위태그
->   - : 선택사항. 언어의 문자 체계를 나타내며 항상 네 글자이고, 첫 글자는 대문자입니다. 예를 들어, 점자로 쓴 프랑스어는 `fr-Brai`이고, 일본어 가타카나는 `ja-Kana`입니다. 라틴 알파벳으로 작성한 영어와 같이 굉장히 흔히 쓰이는 체계의 경우 활자 하위태그를 지정할 필요가 없습니다.
-> - 지역 하위태그
->   - : 선택사항. 기본 언어 안에서 특정 지역의 방언을 정의하며, 국가 코드와 일치하는 전체 대문자의 두 글자이거나, 국가 외 지역과 일치하는 세 글자 숫자로 구성됩니다. `es-ES`는 스페인에서 사용하는 스페인어, `es-013`은 중앙 아메리카에서 사용하는 스페인어이며 "국제 스페인어"는 짧게 `es`가 됩니다.활자와 지역 하위태그가 모두 존재할 경우 활자 태그가 더 앞에 배치됩니다. 예를 들어, `ru-Cyrl-BY`는 키릴 문자로 작성한 벨라루스의 러시아어입니다.언어에 적합한 하위태그를 찾아보시려면 [Language Subtag Lookup](https://r12a.github.io/app-subtags/)을 사용해보세요.
+For the CSS pseudo-class {{cssxref(":lang")}}, two invalid language names are different if their names are different. So while `:lang(es)` matches both `lang="es-ES"` and `lang="es-419"`, `:lang(xyzzy)` would _not_ match `lang="xyzzy-Zorp!"`.
 
-CSS {{cssxref(":lang")}} 의사 클래스에서는 유효하지 않은 언어의 이름 두 가지가 이 서로 다르다면 별도로 취급합니다. 예컨대, `:lang(es)` `lang="es-ES"`와 `lang="es-419"` 모두 선택하지만, `:lang(xyzzy)`는 `lang="xyzzy-Zorp!"`를 선택하지 못합니다.
+## Language tag syntax
 
-## 명세
+The full BCP47 syntax is in-depth enough to mark extremely specific language dialects, but most usage is much simpler.
+
+A language tag is made of hyphen-separated _language subtags_, where each subtag indicates a certain property of the language. The 3 most common subtags are:
+
+- Language subtag
+  - : Required. A 2-or-3-character code that defines the basic language, typically written in all lowercase. For example, the language code for English is `en`, and the code for Badeshi is `bdz`.
+- Script subtag
+  - : Optional. This subtag defines the writing system used for the language, and is always 4 characters long, with the first letter capitalized. For example, French-in-Braille is `fr-Brai` and `ja-Kana` is Japanese written with the Katakana alphabet. If the language is written in a highly typical way, like English in the Latin alphabet, there is no need to use this subtag.
+- Region subtag
+  - : Optional. This subtag defines a dialect of the base language from a particular location, and is either 2 letters in ALLCAPS matching a country code, or 3 numbers matching a non-country area. For example, `es-ES` is for Spanish as spoken in Spain, and `es-013` is Spanish as spoken in Central America. "International Spanish" would just be `es`.
+
+The script subtag precedes the region subtag if both are present — `ru-Cyrl-BY` is Russian, written in the Cyrillic alphabet, as spoken in Belarus.
+
+To find the correct subtag codes for a language, try [the Language Subtag Lookup](https://r12a.github.io/app-subtags/).
+
+## Accessibility
+
+WCAG Success Criterion 3.1.1 **requires** that a page language is specified in a way which may be 'programmatically determined' (i.e. via the **`lang`** attribute).
+
+WCAG Success Criterion 3.1.2 requires that pages with **parts** in different languages have the languages of those parts specified too. Again, the **`lang`** attribute is the correct mechanism for this.
+
+The purpose of these requirements is primarily to allow assistive technologies such as screen readers to invoke the correct pronunciation.
+
+For example, the language menu on this site (MDN) includes a **`lang`** attribute for each entry:
+
+```html
+<div class="dropdown-container language-menu">
+  <button
+    id="header-language-menu"
+    type="button"
+    class="dropdown-menu-label"
+    aria-haspopup="true"
+    aria-owns="language-menu"
+    aria-label="Current language is English. Choose your preferred language.">
+    English
+    <span class="dropdown-arrow-down" aria-hidden="true">▼</span>
+  </button>
+  <ul
+    id="language-menu"
+    class="dropdown-menu-items right show"
+    aria-expanded="true"
+    role="menu">
+    <li lang="ca" role="menuitem">
+      <a href="/ca/docs/Web/HTML/Global_attributes/lang" title="Catalan">
+        <bdi>Català</bdi>
+      </a>
+    </li>
+    <li lang="de" role="menuitem">
+      <a href="/de/docs/Web/HTML/Globale_Attribute/lang" title="German">
+        <bdi>Deutsch</bdi>
+      </a>
+    </li>
+    <li lang="es" role="menuitem">
+      <a href="/es/docs/Web/HTML/Atributos_Globales/lang" title="Spanish">
+        <bdi>Español</bdi>
+      </a>
+    </li>
+    <li lang="fr" role="menuitem">
+      <a href="/fr/docs/Web/HTML/Attributs_universels/lang" title="French">
+        <bdi>Français</bdi>
+      </a>
+    </li>
+    <li lang="ja" role="menuitem">
+      <a href="/ja/docs/Web/HTML/Global_attributes/lang" title="Japanese">
+        <bdi>日本語</bdi>
+      </a>
+    </li>
+    <li lang="ko" role="menuitem">
+      <a href="/ko/docs/Web/HTML/Global_attributes/lang" title="Korean">
+        <bdi>한국어</bdi>
+      </a>
+    </li>
+    <li lang="pt-BR" role="menuitem">
+      <a
+        href="/pt-BR/docs/Web/HTML/Global_attributes/lang"
+        title="Portuguese (Brazilian)">
+        <bdi>Português (do&nbsp;Brasil)</bdi>
+      </a>
+    </li>
+    <li lang="ru" role="menuitem">
+      <a href="/ru/docs/Web/HTML/Global_attributes/lang" title="Russian">
+        <bdi>Русский</bdi>
+      </a>
+    </li>
+    <li lang="uk" role="menuitem">
+      <a
+        href="/uk/docs/Web/HTML/%D0%97%D0%B0%D0%B3%D0%B0%D0%BB%D1%8C%D0%BD%D1%96_%D0%B0%D1%82%D1%80%D0%B8%D0%B1%D1%83%D1%82%D0%B8/lang"
+        title="Ukrainian">
+        <bdi>Українська</bdi>
+      </a>
+    </li>
+    <li lang="zh-Hans" role="menuitem">
+      <a
+        href="/zh-CN/docs/Web/HTML/Global_attributes/lang"
+        title="Chinese (Simplified)">
+        <bdi>中文 (简体)</bdi>
+      </a>
+    </li>
+    <li>
+      <a
+        href="/en-US/docs/Web/HTML/Global_attributes/lang$locales"
+        rel="nofollow"
+        id="translations-add">
+        Add a translation
+      </a>
+    </li>
+  </ul>
+</div>
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 모든 [전역 특성](/ko/docs/Web/HTML/Global_attributes).
-- [`Content-Language` HTTP 헤더](/ko/docs/Web/HTTP/Headers/Content-Language)
+- All [global attributes](/en-US/docs/Web/HTML/Global_attributes).
+- [`Content-Language` HTTP Header](/en-US/docs/Web/HTTP/Headers/Content-Language)
+- HTML [`translate`](/en-US/docs/Web/HTML/Global_attributes#translate) attribute

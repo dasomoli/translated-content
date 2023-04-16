@@ -1,97 +1,96 @@
 ---
-title: 텍스트 서식
+title: Text formatting
 slug: Web/JavaScript/Guide/Text_formatting
+page-type: guide
 ---
 
-{{jsSidebar("JavaScript Guide")}} {{PreviousNext("Web/JavaScript/Guide/Numbers_and_dates", "Web/JavaScript/Guide/Regular_Expressions")}}
+{{jsSidebar("JavaScript Guide")}} {{PreviousNext("Web/JavaScript/Guide/Numbers_and_dates", "Web/JavaScript/Guide/Regular_expressions")}}
 
-이 장에서는 JavaScript에서 문자열과 텍스트로 작업하는 방법을 소개합니다.
+This chapter introduces how to work with strings and text in JavaScript.
 
-## 문자열
+## Strings
 
-JavaScript의 {{Glossary("문자열")}} 유형은 원문의 데이터를 나타내는데 사용됩니다. 이는 16비트 부호 없는 정수 값(UTF-16 code units)의 "요소" 집합입니다. String의 각 요소(문자)는 String에서 하나의 위치를 차지합니다. 첫 번째 요소는 인덱스 0 다음은 인덱스 1 등등... 문자열의 길이는 요소의 수와 같습니다. 문자열 리터럴 또는 문자열 객체를 사용하여 문자열을 만들 수 있습니다.
+JavaScript's [String](/en-US/docs/Glossary/String) type is used to represent textual data. It is a set of "elements" of 16-bit unsigned integer values (UTF-16 code units). Each element in the String occupies a position in the String. The first element is at index 0, the next at index 1, and so on. The length of a String is the number of elements in it. You can create strings using string literals or string objects.
 
-주의 : 이페이지를 수정한다면 MDN bug 857438이 해결될 때 까지 U+FFFF이상의 문자를 포함하지 마세요. ( <https://bugzilla.mozilla.org/show_bug.cgi?id=857438> ).
+### String literals
 
-### 문자열 리터럴
+You can create simple strings using either single or double quotes:
 
-작은따옴표나 큰따옴표를 사용하여 간단한 문자열을 만들 수 있습니다:
-
-```js
+```js-nolint
 'foo'
 "bar"
 ```
 
-보다 많은 문자열을 이스케이프 시퀀스를 사용하여 만들 수 있습니다
+More advanced strings can be created using escape sequences:
 
-#### 16진수 이스케이프 시퀀스
+#### Hexadecimal escape sequences
 
-\x 뒤에 수는 [16진수](https://en.wikipedia.org/wiki/Hexadecimal)로 해석(interpreted)됩니다.
+The number after \x is interpreted as a [hexadecimal](https://en.wikipedia.org/wiki/Hexadecimal) number.
 
-```js
-'\xA9' // "©"
+```js-nolint
+"\xA9" // "©"
 ```
 
-#### 유니코드 이스케이프 시퀀스
+#### Unicode escape sequences
 
-유니코드 이스케이프 시퀀스는 \u 다음에 적어도 네 개의 16진수 숫자(digit)를 필요로 합니다.
+The Unicode escape sequences require at least four hexadecimal digits following `\u`.
 
-```js
-'\u00A9' // "©"
+```js-nolint
+"\u00A9" // "©"
 ```
 
-#### 유니코드 코드 포인트 이스케이프
+#### Unicode code point escapes
 
-ECMAScript 6의 새로운 기능. 유니 코드 포인트 이스케이프를 사용하면 16 진수를 사용하여 모든 문자를 이스케이프 처리 할 수 있으므로 최대 `0x10FFFF`의 유니 코드 코드 포인트를 사용할 수 있습니다. 간단한 유니 코드 이스케이프를 사용하면 동일한 결과를 얻기 위해서 서로 게이트를 별도로 작성해야하는 경우가 있습니다.
+With Unicode code point escapes, any character can be escaped using hexadecimal numbers so that it is possible to use Unicode code points up to `0x10FFFF`. With simple Unicode escapes it is often necessary to write the surrogate halves separately to achieve the same result.
 
-{{jsxref("String.fromCodePoint()")}} 나 {{jsxref("String.prototype.codePointAt()")}}를 참고하세요.
+See also {{jsxref("String.fromCodePoint()")}} or {{jsxref("String.prototype.codePointAt()")}}.
 
-```js
-'\u{2F804}'
+```js-nolint
+"\u{2F804}"
 
 // the same with simple Unicode escapes
-'\uD87E\uDC04'
+"\uD87E\uDC04"
 ```
 
-### 문자열 개체
+### String objects
 
-{{jsxref("문자열")}} 개체는 문자열 기본 데이터 형식의 래퍼입니다.
+The {{jsxref("String")}} object is a wrapper around the string primitive data type.
 
 ```js
-var s = new String("foo"); // Creates a String object
-console.log(s); // Displays: { '0': 'f', '1': 'o', '2': 'o'}
-typeof s; // Returns 'object'
+const foo = new String("foo"); // Creates a String object
+console.log(foo); // [String: 'foo']
+typeof foo; // 'object'
 ```
 
-여러분은 문자열 리터럴 값에 문자열 개체의 방법 중 하나를 호출 할 수 있습니다.—JavaScript가 자동으로 문자열 리터럴을 임시 문자열 개체로 변환하고, 메서드를 호출하고, 그리고나서 임시 문자열 개체를 삭제합니다. 또한, `String.length` 속성을 문자열 리터럴과 함께 사용할 수 있습니다.
+You can call any of the methods of the `String` object on a string literal value—JavaScript automatically converts the string literal to a temporary `String` object, calls the method, then discards the temporary `String` object. You can also use the `length` property with a string literal.
 
-특별히 `String` 개체를 사용할 필요가 없지 않는 한, `String` 개체는 직관에 반하는 행동을 할 수 있기 때문에 여러분은 string 리터럴을 사용해야합니다. 예를들어:
+You should use string literals unless you specifically need to use a `String` object, because `String` objects can have counterintuitive behavior. For example:
 
 ```js
-var s1 = "2 + 2"; // Creates a string literal value
-var s2 = new String("2 + 2"); // Creates a String object
-eval(s1); // Returns the number 4
-eval(s2); // Returns the string "2 + 2"
+const firstString = "2 + 2"; // Creates a string literal value
+const secondString = new String("2 + 2"); // Creates a String object
+eval(firstString); // Returns the number 4
+eval(secondString); // Returns a String object containing "2 + 2"
 ```
 
-문자열 개체는 문자열의 문자 수를 나타내는 하나의 속성, 길이를 갖습니다. 예를 들어, "Hello, World!"가 13자 이므로 다음 코드는 x를 값 13으로 할당합니다. `String` 객체는 문자열에있는 UTF-16 코드 단위의 수를 나타내는 길이가 하나의 속성을 가집니다. 예를 들어, 다음 코드에서는 "Hello, World!"가 UTF-16 코드 단위로 표현되는 13개의 문자를 가지고 있기 때문에 x 값이 13이 됩니다. 배열 브래킷 스타일을 사용하여 각 코드 단위에 액세스 할 수 있습니다. 문자열은 변경 불가능한 배열과 같은 객체이기 때문에 개별 문자를 변경할 수 없습니다.
+A `String` object has one property, `length`, that indicates the number of UTF-16 code units in the string. For example, the following code assigns `helloLength` the value 13, because "Hello, World!" has 13 characters, each represented by one UTF-16 code unit. You can access each code unit using an array bracket style. You can't change individual characters because strings are immutable array-like objects:
 
 ```js
-var mystring = 'Hello, World!';
-var x = mystring.length;
-mystring[0] = 'L'; // This has no effect, because strings are immutable
-mystring[0]; // This returns "H"
+const hello = "Hello, World!";
+const helloLength = hello.length;
+hello[0] = "L"; // This has no effect, because strings are immutable
+hello[0]; // This returns "H"
 ```
 
-유니 코드 스칼라 값이 U + FFFF (희귀 한 중국어 / 일본어 / 한국어 / 베트남어 문자 및 일부 이모티콘)보다 큰 문자는 각각 서로 다른 두 개의 코드 단위로 UTF-16에 저장됩니다. 예를 들어, 단일 문자 U + 1F600 "Emoji grinning face"를 포함하는 문자열은 길이가 2입니다. 대괄호를 사용하여 이러한 문자열의 개별 코드 단위에 액세스하면 일치하지 않는 대리 코드 단위가있는 문자열이 만들어지는 등의 바람직하지 않은 결과가 발생할 수 있습니다. 유니 코드 표준 위반 MDN 버그 857438이 수정 된 후에 예제가 이 페이지에 추가되어야합니다. {{jsxref ( "String.fromCodePoint ()")}} 또는 {{jsxref ( "String.prototype.codePointAt ()")}}도 참조하십시오.
+Characters whose Unicode scalar values are greater than U+FFFF (such as some rare Chinese/Japanese/Korean/Vietnamese characters and some emoji) are stored in UTF-16 with two surrogate code units each. For example, a string containing the single character U+1F600 "Emoji grinning face" will have length 2. Accessing the individual code units in such a string using brackets may have undesirable consequences such as the formation of strings with unmatched surrogate code units, in violation of the Unicode standard. (Examples should be added to this page after MDN bug 857438 is fixed.) See also {{jsxref("String.fromCodePoint()")}} or {{jsxref("String.prototype.codePointAt()")}}.
 
-`String` 객체는 다양한 메서드가 있습니다: 문자열 자체의 변경된 결과를 반환하는 `substring`과 `toUpperCase`가 그것!
+A `String` object has a variety of methods: for example those that return a variation on the string itself, such as `substring` and `toUpperCase`.
 
-다음 표는 {{jsxref("문자열")}} 개체의 메서드를 요약한 것입니다.
+The following table summarizes the methods of {{jsxref("String")}} objects.
 
 <table class="standard-table">
   <caption>
-    <h4 id="문자열_메서드">문자열 메서드</h4>
+    <h4 id="Methods_of_String">Methods of <code>String</code></h4>
   </caption>
   <thead>
     <tr>
@@ -102,129 +101,119 @@ mystring[0]; // This returns "H"
   <tbody>
     <tr>
       <td>
-        {{jsxref("String.charAt", "charAt")}},
-        {{jsxref("String.charCodeAt", "charCodeAt")}},
-        {{jsxref("String.codePointAt", "codePointAt")}}
+        {{jsxref("String/charAt", "charAt()")}}, {{jsxref("String/charCodeAt", "charCodeAt()")}},
+        {{jsxref("String/codePointAt", "codePointAt()")}}
       </td>
       <td>
-        <p>문자열에서 지정된 위치에 있는 문자나 문자 코드를 반환합니다.</p>
+        Return the character or character code at the specified position in
+        string.
       </td>
     </tr>
     <tr>
       <td>
-        {{jsxref("String.indexOf", "indexOf")}},
-        {{jsxref("String.lastIndexOf", "lastIndexOf")}}
+        {{jsxref("String/indexOf", "indexOf()")}},
+        {{jsxref("String/lastIndexOf", "lastIndexOf()")}}
+      </td>
+      <td>
+        Return the position of specified substring in the string or last
+        position of specified substring, respectively.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{jsxref("String/startsWith", "startsWith()")}},
+        {{jsxref("String/endsWith", "endsWith()")}},
+        {{jsxref("String/includes", "includes()")}}
+      </td>
+      <td>
+        Returns whether or not the string starts, ends or contains a specified
+        string.
+      </td>
+    </tr>
+    <tr>
+      <td>{{jsxref("String/concat", "concat()")}}</td>
+      <td>Combines the text of two strings and returns a new string.</td>
+    </tr>
+    <tr>
+      <td>{{jsxref("String/split", "split()")}}</td>
+      <td>
+        Splits a <code>String</code> object into an array of strings by
+        separating the string into substrings.
+      </td>
+    </tr>
+    <tr>
+      <td>{{jsxref("String/slice", "slice()")}}</td>
+      <td>Extracts a section of a string and returns a new string.</td>
+    </tr>
+    <tr>
+      <td>
+        {{jsxref("String/substring", "substring()")}},
+        {{jsxref("String/substr", "substr()")}}
+      </td>
+      <td>
+        Return the specified subset of the string, either by specifying the
+        start and end indexes or the start index and a length.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {{jsxref("String/match", "match()")}}, {{jsxref("String/matchAll", "matchAll()")}},
+        {{jsxref("String/replace", "replace()")}}, {{jsxref("String/replaceAll", "replaceAll()")}},
+        {{jsxref("String/search", "search()")}}
+      </td>
+      <td>Work with regular expressions.</td>
+    </tr>
+    <tr>
+      <td>
+        {{jsxref("String/toLowerCase", "toLowerCase()")}},
+        {{jsxref("String/toUpperCase", "toUpperCase()")}}
       </td>
       <td>
         <p>
-          문자열에서 지정된 부분 문자열의 위치나 지정된 부분 문자열의 마지막
-          위치를 각각 반환합니다.
+          Return the string in all lowercase or all uppercase, respectively.
         </p>
       </td>
     </tr>
     <tr>
+      <td>{{jsxref("String/normalize", "normalize()")}}</td>
       <td>
-        {{jsxref("String.startsWith", "startsWith")}},
-        {{jsxref("String.endsWith", "endsWith")}},
-        {{jsxref("String.includes", "includes")}}
-      </td>
-      <td>
-        <p>
-          문자열 시작하고, 끝나고, 지정된 문자열을 포함하는지의 여부를
-          반환합니다.
-        </p>
+        Returns the Unicode Normalization Form of the calling string value.
       </td>
     </tr>
     <tr>
-      <td>{{jsxref("String.concat", "concat")}}</td>
-      <td><p>두 문자열의 텍스트를 결합하고 새로운 문자열을 반환합니다.</p></td>
-    </tr>
-    <tr>
+      <td>{{jsxref("String/repeat", "repeat()")}}</td>
       <td>
-        {{jsxref("String.fromCharCode", "fromCharCode")}},
-        {{jsxref("String.fromCodePoint", "fromCodePoint")}}
-      </td>
-      <td>
-        <p>
-          유니코드 값의 지정된 시퀀스로부터 문자열을 구축합니다. 문자열
-          인스턴스가 아닌 문자열 클래스의 메서드입니다.
-        </p>
+        Returns a string consisting of the elements of the object repeated the
+        given times.
       </td>
     </tr>
     <tr>
-      <td>{{jsxref("String.split", "split")}}</td>
-      <td>
-        <p>
-          부분 문자열로 문자열을 분리하여 문자열 배열로 문자열 개체를
-          분할합니다.
-        </p>
-      </td>
-    </tr>
-    <tr>
-      <td>{{jsxref("String.slice", "slice")}}</td>
-      <td><p>문자열의 한 부분을 추출하고 새 문자열을 반환합니다.</p></td>
-    </tr>
-    <tr>
-      <td>
-        {{jsxref("String.substring", "substring")}},
-        {{jsxref("String.substr", "substr")}}
-      </td>
-      <td>
-        <p>
-          어느 시작 및 종료 인덱스 또는 시작 인덱스 및 길이를 지정하여, 문자열의
-          지정된 일부를 반환합니다.
-        </p>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        {{jsxref("String.match", "match")}},
-        {{jsxref("String.replace", "replace")}},
-        {{jsxref("String.search", "search")}}
-      </td>
-      <td><p>정규 표현식으로 작업합니다.</p></td>
-    </tr>
-    <tr>
-      <td>
-        {{jsxref("String.toLowerCase", "toLowerCase")}},<br />{{jsxref("String.toUpperCase", "toUpperCase")}}
-      </td>
-      <td><p>.모든 소문자 또는 대문자에서 각각 문자열을 반환합니다.</p></td>
-    </tr>
-    <tr>
-      <td>{{jsxref("String.normalize", "normalize")}}</td>
-      <td>호출 문자열 값의 유니 코드 표준화 양식을 반환합니다.</td>
-    </tr>
-    <tr>
-      <td>{{jsxref("String.repeat", "repeat")}}</td>
-      <td>
-        <p>주어진 회를 반복하는 개체 요소로 이루어진 문자열을 반환합니다.</p>
-      </td>
-    </tr>
-    <tr>
-      <td>{{jsxref("String.trim", "trim")}}</td>
-      <td>문자열의 시작과 끝에서 공백을 자릅니다.</td>
+      <td>{{jsxref("String/trim", "trim()")}}</td>
+      <td>Trims whitespace from the beginning and end of the string.</td>
     </tr>
   </tbody>
 </table>
 
-### 다중 선 템플릿 문자열
+### Multi-line template literals
 
-[템플릿 문자열](/en-US/docs/Web/JavaScript/Reference/template_strings)은 포함 식을 용납하는 문자열 리터럴입니다. 여러분은 그것들과 함께 다중 선 문자열 및 문자열 보간 기능을 사용할 수 있습니다.
+[Template literals](/en-US/docs/Web/JavaScript/Reference/Template_literals) are string literals allowing embedded expressions. You can use multi-line strings and string interpolation features with them.
 
-템플릿 문자열은 작은따옴표나 큰따옴표 대신에 back-tick (\` \`) ([grave accent](https://en.wikipedia.org/wiki/Grave_accent))문자로 묶습니다. 템플릿 문자열은 자리 표시자를 포함 할 수 있습니다. 이들은 달러 기호와 중괄호로 표시됩니다. (`${expression}`)
+Template literals are enclosed by backtick ([grave accent](https://en.wikipedia.org/wiki/Grave_accent)) characters (`` ` ``) instead of double or single quotes. Template literals can contain placeholders. These are indicated by the dollar sign and curly braces (`${expression}`).
 
-#### 다중 선
+#### Multi-lines
 
-소스에 삽입하는 새로운 선 문자는 템플릿 문자열의 일부입니다. 정상적인 문자열을 사용하면, 여러분은 다중 선 문자열을 얻기 위해 다음과 같은 구문을 사용해야합니다:
+Any new line characters inserted in the source are part of the template literal. Using normal strings, you would have to use the following syntax in order to get multi-line strings:
 
 ```js
-console.log("string text line 1\n\
-string text line 2");
+console.log(
+  "string text line 1\n\
+string text line 2",
+);
 // "string text line 1
 // string text line 2"
 ```
 
-다중 선 문자열과 같은 효과를 얻기 위해, 여러분은 이제 쓸 수 있습니다:
+To get the same effect with multi-line strings, you can now write:
 
 ```js
 console.log(`string text line 1
@@ -233,94 +222,105 @@ string text line 2`);
 // string text line 2"
 ```
 
-#### 포함식
+#### Embedded expressions
 
-일반 문자열 내에서 표현식을 포함하기 위해, 다음과 같은 구문을 사용합니다:
+In order to embed expressions within normal strings, you would use the following syntax:
 
 ```js
-var a = 5;
-var b = 10;
-console.log("Fifteen is " + (a + b) + " and\nnot " + (2 * a + b) + ".");
-// "Fifteen is 15 and
-// not 20."
+const five = 5;
+const ten = 10;
+console.log(
+  "Fifteen is " + (five + ten) + " and not " + (2 * five + ten) + ".",
+);
+// "Fifteen is 15 and not 20."
 ```
 
-이제, 템플릿 문자열을 가지고, 여러분은 읽기와 같이 대체를 만드는 syntactic sugar의 사용을 할 수 있습니다:
+Now, with template literals, you are able to make use of the syntactic sugar making substitutions like this more readable:
 
 ```js
-var a = 5;
-var b = 10;
-console.log(`Fifteen is ${a + b} and\nnot ${2 * a + b}.`);
-// "Fifteen is 15 and
-// not 20."
+const five = 5;
+const ten = 10;
+console.log(`Fifteen is ${five + ten} and not ${2 * five + ten}.`);
+// "Fifteen is 15 and not 20."
 ```
 
-자세한 내용은 [JavaScript 참조](/en-US/docs/Web/JavaScript/Reference)에서 [템플릿 문자열](/en-US/docs/Web/JavaScript/Reference/template_strings)에 대해 읽어보세요.
+For more information, read about [Template literals](/en-US/docs/Web/JavaScript/Reference/Template_literals) in the [JavaScript reference](/en-US/docs/Web/JavaScript/Reference).
 
-## 국제화
+## Internationalization
 
-{{jsxref("Intl")}} 개체는 ECMA스크립트 국제 API에 언어와 문자열과 숫자서식과 날짜와 시간서식을 제공하는 명칭공간입니다. {{jsxref("Collator")}}, {{jsxref("NumberFormat")}}, 와 {{jsxref("DateTimeFormat")}} 개체들을 위한 생성자들은 `Intl` 개체의 특성들입니다.
+The {{jsxref("Intl")}} object is the namespace for the ECMAScript Internationalization API, which provides language sensitive string comparison, number formatting, and date and time formatting. The constructors for {{jsxref("Intl.Collator")}}, {{jsxref("Intl.NumberFormat")}}, and {{jsxref("Intl.DateTimeFormat")}} objects are properties of the `Intl` object.
 
-### 날짜와 시간서식
+### Date and time formatting
 
-{{jsxref("DateTimeFormat")}} 개체는 날짜와 시간을 서식하기에 유용합니다. 다음 코드는 미국에서 쓰이는 영어로 날짜를 서식합니다. (결과는 다른 시간대와 다릅니다)
+The {{jsxref("Intl.DateTimeFormat")}} object is useful for formatting date and time. The following formats a date for English as used in the United States. (The result is different in another time zone.)
 
 ```js
-var msPerDay = 24 * 60 * 60 * 1000;
+// July 17, 2014 00:00:00 UTC:
+const july172014 = new Date("2014-07-17");
 
-// July 17, 2014 00:00:00 UTC.
-var july172014 = new Date(msPerDay * (44 * 365 + 11 + 197));
+const options = {
+  year: "2-digit",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  timeZoneName: "short",
+};
+const americanDateTime = new Intl.DateTimeFormat("en-US", options).format;
 
-var options = { year: "2-digit", month: "2-digit", day: "2-digit",
-                hour: "2-digit", minute: "2-digit", timeZoneName: "short" };
-var americanDateTime = new Intl.DateTimeFormat("en-US", options).format;
-
-console.log(americanDateTime(july172014)); // 07/16/14, 5:00 PM PDT
+// Local timezone vary depending on your settings
+// In CEST, logs: 07/17/14, 02:00 AM GMT+2
+// In PDT, logs: 07/16/14, 05:00 PM GMT-7
+console.log(americanDateTime(july172014));
 ```
 
-### 숫자 서식
+### Number formatting
 
-{{jsxref("NumberFormat")}}개체는 통화를 위해 숫자를 서식하는것에 대해 유용하다.
+The {{jsxref("Intl.NumberFormat")}} object is useful for formatting numbers, for example currencies.
 
 ```js
-var gasPrice = new Intl.NumberFormat("en-US",
-                        { style: "currency", currency: "USD",
-                          minimumFractionDigits: 3 });
+const gasPrice = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  minimumFractionDigits: 3,
+});
 
 console.log(gasPrice.format(5.259)); // $5.259
 
-var hanDecimalRMBInChina = new Intl.NumberFormat("zh-CN-u-nu-hanidec",
-                        { style: "currency", currency: "CNY" });
+const hanDecimalRMBInChina = new Intl.NumberFormat("zh-CN-u-nu-hanidec", {
+  style: "currency",
+  currency: "CNY",
+});
 
 console.log(hanDecimalRMBInChina.format(1314.25)); // ￥ 一,三一四.二五
 ```
 
-### 조합
+### Collation
 
-{{jsxref("Collator")}}개체는 문자열을 비교하고 구분하는 것에 대해 유용합니다.
+The {{jsxref("Intl.Collator")}} object is useful for comparing and sorting strings.
 
-예를 들어, 실제로 독일에선 phonebook과 dictionary라는 2개의 다른 종류의 명령어들이 있습니다. 전화기록부류는 소리를 강조합니다. 그리고 구분에 앞서 다른것들은 “ä”, “ö”인것처럼 "ae", "oe"로 확장됐습니다.
+For example, there are actually two different sort orders in German, _phonebook_ and _dictionary_. Phonebook sort emphasizes sound, and it's as if "ä", "ö", and so on were expanded to "ae", "oe", and so on prior to sorting.
 
 ```js
-var names = ["Hochberg", "Hönigswald", "Holzman"];
+const names = ["Hochberg", "Hönigswald", "Holzman"];
 
-var germanPhonebook = new Intl.Collator("de-DE-u-co-phonebk");
+const germanPhonebook = new Intl.Collator("de-DE-u-co-phonebk");
 
 // as if sorting ["Hochberg", "Hoenigswald", "Holzman"]:
 console.log(names.sort(germanPhonebook.compare).join(", "));
-// logs "Hochberg, Hönigswald, Holzman"
+// "Hochberg, Hönigswald, Holzman"
 ```
 
-어떤 독일말들은 여분의 변모음과 함께 활용한다. 그래서 사전안에서 이것은 변모음을 무시하라고 명령하기에 실용적이다.
+Some German words conjugate with extra umlauts, so in dictionaries it's sensible to order ignoring umlauts (except when ordering words differing _only_ by umlauts: _schon_ before _schön_).
 
 ```js
-var germanDictionary = new Intl.Collator("de-DE-u-co-dict");
+const germanDictionary = new Intl.Collator("de-DE-u-co-dict");
 
 // as if sorting ["Hochberg", "Honigswald", "Holzman"]:
 console.log(names.sort(germanDictionary.compare).join(", "));
-// logs "Hochberg, Holzman, Hönigswald"
+// "Hochberg, Holzman, Hönigswald"
 ```
 
-{{jsxref("Intl")}}API에 대한 자세한 내용은 [Introducing the JavaScript Internationalization API](https://hacks.mozilla.org/2014/12/introducing-the-javascript-internationalization-api/)를 참조하세요.
+For more information about the {{jsxref("Intl")}} API, see also [Introducing the JavaScript Internationalization API](https://hacks.mozilla.org/2014/12/introducing-the-javascript-internationalization-api/).
 
-{{PreviousNext("Web/JavaScript/Guide/Numbers_and_dates", "Web/JavaScript/Guide/Regular_Expressions")}}
+{{PreviousNext("Web/JavaScript/Guide/Numbers_and_dates", "Web/JavaScript/Guide/Regular_expressions")}}

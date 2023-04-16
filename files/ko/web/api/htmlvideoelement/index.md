@@ -1,81 +1,79 @@
 ---
 title: HTMLVideoElement
 slug: Web/API/HTMLVideoElement
+page-type: web-api-interface
+browser-compat: api.HTMLVideoElement
 ---
+
 {{APIRef("HTML DOM")}}
 
-**`HTMLVideoElement`** 인터페이스는 Video object를 조작하는데 필요한 프로퍼티와 메소드를 제공합니다. {{domxref("HTMLMediaElement")}}와 {{domxref("HTMLElement")}}를 상속합니다.
+Implemented by the {{HTMLElement("video")}} element, the **`HTMLVideoElement`** interface provides special properties and methods for manipulating video objects. It also inherits properties and methods of {{domxref("HTMLMediaElement")}} and {{domxref("HTMLElement")}}.
 
-[지원하는 미디어 포맷](/ko/docs/HTML/Supported_media_formats) 목록은 브라우저마다 다릅니다. 여러분은 적절한 범위의 브라우저에서 지원하는 한가지 비디어 포맷을 제공하던가, 지원할 모든 브라우저를 위한 여러 종류의 미디어 포맷을 제공해야 합니다.
+The list of [supported media formats](/en-US/docs/Web/Media/Formats) varies from one browser to the other. You should either provide your video in a single format that all the relevant browsers supports, or provide multiple video sources in enough different formats that all the browsers you need to support are covered.
 
-{{InheritanceDiagram(600, 140)}}
+{{InheritanceDiagram}}
 
-## 속성(Properties)
+## Instance properties
 
-_{{domxref("HTMLMediaElement")}}와_ _{{domxref("HTMLElement")}}의 속성들도 상속 받습니다._
+_Inherits properties from its ancestor interfaces, {{domxref("HTMLMediaElement")}}, and {{domxref("HTMLElement")}}._
 
 - {{domxref("HTMLVideoElement.height")}}
-  - : 표시 영역의 높이를 나타내는 HTML Attribute {{htmlattrxref("height", "video")}}의 값을 {{domxref("DOMString")}}으로 반환합니다. 단위는 pixel입니다.
+  - : A string that reflects the [`height`](/en-US/docs/Web/HTML/Element/video#height) HTML attribute, which specifies the height of the display area, in CSS pixels.
 - {{domxref("HTMLVideoElement.poster")}}
-  - : 비디오 데이터가 없을 때 보여줄 이미지를 지정하는 HTML Attribute {{htmlattrxref("poster", "video")}}의 값을 {{domxref("DOMString")}}로 반환합니다.
-- {{domxref("HTMLVideoElement.videoHeight")}} {{readonlyInline}}
-  - : 비디오의 height를 부호 없는 정수로 나타낸 값을 반환합니다. 비디오가 없는 경우 0을 반환합니다.
-- {{domxref("HTMLVideoElement.videoWidth")}} {{readonlyInline}}
-  - : 비디오의 width를 부호 없는 정수로 나타낸 값을 반환합니다. 비디오가 없는 경우 0을 반환합니다.
+  - : A string that reflects the [`poster`](/en-US/docs/Web/HTML/Element/video#poster) HTML attribute, which specifies an image to show while no video data is available.
+- {{domxref("HTMLVideoElement.videoHeight")}} {{ReadOnlyInline}}
+  - : Returns an unsigned integer value indicating the intrinsic height of the resource in CSS pixels, or 0 if no media is available yet.
+- {{domxref("HTMLVideoElement.videoWidth")}} {{ReadOnlyInline}}
+  - : Returns an unsigned integer value indicating the intrinsic width of the resource in CSS pixels, or 0 if no media is available yet.
 - {{domxref("HTMLVideoElement.width")}}
-  - : 표시 영역의 높이를 나타내는 HTML Attribute {{htmlattrxref("width", "video")}}의 값을 {{domxref("DOMString")}}으로 반환합니다. 단위는 pixel입니다.
+  - : A string that reflects the [`width`](/en-US/docs/Web/HTML/Element/video#width) HTML attribute, which specifies the width of the display area, in CSS pixels.
+- {{DOMxRef("HTMLVideoElement.autoPictureInPicture")}}
+  - : The `autoPictureInPicture` attribute will automatically enter and leave the picture-in-picture mode for a video element when the user switches tab and/or applications
+- {{DOMxRef("HTMLVideoElement.disablePictureInPicture")}}
+  - : The `disablePictureInPicture` property will hint the user agent to not suggest the picture-in-picture to users or to request it automatically
 
-### Gecko 전용 속성
+### Gecko-specific properties
 
-- {{domxref("HTMLVideoElement.mozParsedFrames")}} {{Non-standard_Inline}}{{ReadOnlyInline}}
-  - : 미디어 소스에서 파싱된 비디오 프레임 수를 `unsigned long` 값으로 반환합니다.
-- {{domxref("HTMLVideoElement.mozDecodedFrames")}} {{Non-standard_Inline}}{{ReadOnlyInline}}
-  - : 화상으로 디코딩 된 비디오 프레임 수를 `unsigned long` 값으로 반환합니다.
-- {{domxref("HTMLVideoElement.mozPresentedFrames")}} {{Non-standard_Inline}}{{ReadOnlyInline}}
-  - : 렌더링 파이프 라인을 통해 출력된 디코드 프레임 수를 `unsigned long` 값으로 반환합니다.
-- {{domxref("HTMLVideoElement.mozPaintedFrames")}} {{Non-standard_Inline}}{{ReadOnlyInline}}
-  - : 화면에 그려진 프레임 수를 `unsigned long` 값으로 반환합니다.
-- {{domxref("HTMLVideoElement.mozFrameDelay")}} {{Non-standard_Inline}}{{ReadOnlyInline}}
-  - : 지연 출력된 비디오 프레임을 초 단위로 `double` 값으로 반환한다.
-- {{domxref("HTMLVideoElement.mozHasAudio")}} {{Non-standard_Inline}}{{ReadOnlyInline}}
-  - : 비디오와 연관된 오디오 존재 여부를 {{JSxRef("Boolean","boolean")}} 값으로 반환한다.
+- {{domxref("HTMLVideoElement.mozParsedFrames")}} {{Non-standard_Inline}} {{ReadOnlyInline}} {{deprecated_inline}}
+  - : Returns an `unsigned long` with the count of video frames that have been parsed from the media resource.
+- {{domxref("HTMLVideoElement.mozDecodedFrames")}} {{Non-standard_Inline}} {{ReadOnlyInline}} {{deprecated_inline}}
+  - : Returns an `unsigned long` with the count of parsed video frames that have been decoded into images.
+- {{domxref("HTMLVideoElement.mozPresentedFrames")}} {{Non-standard_Inline}} {{ReadOnlyInline}} {{deprecated_inline}}
+  - : Returns an `unsigned long` with the count of decoded frames that have been presented to the rendering pipeline for painting.
+- {{domxref("HTMLVideoElement.mozPaintedFrames")}} {{Non-standard_Inline}} {{ReadOnlyInline}} {{deprecated_inline}}
+  - : Returns an `unsigned long` with the count of presented frames which were painted on the screen.
+- {{domxref("HTMLVideoElement.mozFrameDelay")}} {{Non-standard_Inline}} {{ReadOnlyInline}} {{deprecated_inline}}
+  - : Returns an `double` with the time which the last painted video frame was late by, in seconds.
+- {{domxref("HTMLVideoElement.mozHasAudio")}} {{Non-standard_Inline}} {{ReadOnlyInline}} {{deprecated_inline}}
+  - : Returns a boolean indicating if there is some audio associated with the video.
 
-### Microsoft 확장 속성
+## Instance methods
 
-- {{DOMxRef("HTMLVideoElement.msFrameStep()")}} {{Non-standard_Inline}}
-  - : 프레임 단위로 앞/뒤로 이동합니다.
-- {{DOMxRef("HTMLVideoElement.msHorizontalMirror")}} {{Non-standard_Inline}}
-  - : 비디오의 좌/우 반전 시키거나 반전된 상태를 반환합니다.
-- {{DOMxRef("HTMLVideoElement.msInsertVideoEffect()")}} {{Non-standard_Inline}}
-  - : 미디어 파이프라인에 특정 비디오 효과를 추가합니다.
-- {{DOMxRef("HTMLVideoElement.msIsLayoutOptimalForPlayback")}} {{Non-standard_Inline}}{{ReadOnlyInline}}
-  - : 더 효과적인 비디오 렌더링이 가능하면 true를 반환합니다.
-- {{DOMxRef("HTMLVideoElement.msIsStereo3D")}} {{Non-standard_Inline}}{{ReadOnlyInline}}
-  - : 시스템이 비디오를 stereo 3-D로 판단하였는지 여부를 반환합니다. 값을 true로 지정한다면 video를 stereo 3-D로 인식합니다..
-- {{DOMxRef("HTMLVideoElement.msZoom")}} {{Non-standard_Inline}}
-  - : 비디오 프레임을 출력부에 딱 맞게 트림합니다.
+_Inherits methods from its parent, {{domxref("HTMLMediaElement")}}, and from its ancestor {{domxref("HTMLElement")}}._
 
-## 메소드
-
-_{{domxref("HTMLMediaElement")}}와 {{domxref("HTMLElement")}}의 메소드도 상속 받습니다._
-
-- {{domxref("HTMLVideoElement.getVideoPlaybackQuality()")}} {{experimental_inline}}
-  - : 현재 재생 결과를 담고 있는 {{domxref("VideoPlaybackQuality")}} 객체를 반환합니다. 전체 프레임 중 drop 되거나 손실된 프레임 등 재생 정보를 포함합니다.
+- {{domxref("HTMLVideoElement.getVideoPlaybackQuality()")}}
+  - : Returns a {{domxref("VideoPlaybackQuality")}} object that contains the current playback metrics. This information includes things like the number of dropped or corrupted frames, as well as the total number of frames.
+- {{DOMxRef("HTMLVideoElement.requestPictureInPicture()")}}
+  - : Requests that the user agent make video enters picture-in-picture mode
 
 ## Events
 
-_{{domxref("HTMLMediaElement")}}와 {{domxref("HTMLElement")}}의 이벤트를 상속합니다._ [`addEventListener()`](/en-US/docs/Web/API/EventTarget/addEventListener) 메소드 또는 `oneventname` 프로퍼티에 리스너를 전달하여 이벤트를 수신합니다.
+_Inherits events from its parent, {{domxref("HTMLMediaElement")}}, and from its ancestor {{domxref("HTMLElement")}}._ Listen to these events using [`addEventListener()`](/en-US/docs/Web/API/EventTarget/addEventListener) or by assigning an event listener to the `oneventname` property of this interface.
 
-## 명세
+- {{DOMxRef("HTMLVideoElement.enterpictureinpicture_event", "enterpictureinpicture")}}
+  - : Sent to a {{DOMxRef("HTMLVideoElement")}} when it enters Picture-in-Picture mode.
+- {{DOMxRef("HTMLVideoElement.leavepictureinpicture_event", "leavepictureinpicture")}}
+  - : Sent to a {{DOMxRef("HTMLVideoElement")}} when it leaves Picture-in-Picture mode.
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 더 보기
+## See also
 
-- HTML 엘리먼트 구현체: {{HTMLElement("video")}}.
-- [Demo of video paint statistics](http://people.mozilla.org/~cpearce/paint-stats-demo.html)(링크 소멸)
-- [지원하는 미디어 포맷](/ko/docs/HTML/Supported_media_formats)
+- HTML element implementing this interface: {{HTMLElement("video")}}.
+- [Supported media formats](/en-US/docs/Web/Media/Formats)

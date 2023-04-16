@@ -1,12 +1,20 @@
 ---
-title: CSS 객체 모델 (CSSOM)
+title: CSS Object Model (CSSOM)
 slug: Web/API/CSS_Object_Model
+page-type: web-api-overview
+spec-urls:
+  - https://drafts.csswg.org/cssom/
+  - https://drafts.csswg.org/cssom-view/
+  - https://drafts.css-houdini.org/css-typed-om/
 ---
-{{DefaultAPISidebar('CSSOM')}}
 
-**CSS Object Model**은 JavaScript에서 CSS를 조작할 수 있는 API 집합입니다. HTML 대신 CSS가 대상인 DOM이라고 생각할 수 있으며, 사용자가 CSS 스타일을 동적으로 읽고 수정할 수 있는 방법입니다.
+{{DefaultAPISidebar("CSSOM")}}
 
-## 참고서
+The **CSS Object Model** is a set of APIs allowing the manipulation of CSS from JavaScript. It is much like the DOM, but for the CSS rather than the HTML. It allows users to read and modify CSS style dynamically.
+
+The values of CSS are represented untyped, that is using {{JSxRef("String")}} objects.
+
+## Reference
 
 - {{DOMxRef("AnimationEvent")}}
 - {{DOMxRef("CaretPosition")}}
@@ -45,9 +53,9 @@ slug: Web/API/CSS_Object_Model
 - {{DOMxRef("StyleSheetList")}}
 - {{DOMxRef("TransitionEvent")}}
 
-여러 다른 인터페이스도 CSSOM-related 규격에 의해 확장됩니다 : {{domxref("Document")}}, {{domxref("Window")}}, {{domxref("Element")}}, {{domxref("HTMLElement")}}, {{domxref("HTMLImageElement")}}, {{domxref("Range")}}, {{domxref("MouseEvent")}}, and {{domxref("SVGElement")}}.
+Several other interfaces are also extended by the CSSOM-related specifications: {{DOMxRef("Document")}}, {{DOMxRef("Window")}}, {{DOMxRef("Element")}}, {{DOMxRef("HTMLElement")}}, {{DOMxRef("HTMLImageElement")}}, {{DOMxRef("Range")}}, {{DOMxRef("MouseEvent")}}, and {{DOMxRef("SVGElement")}}.
 
-### CSS 자료형 객체 모델 {{experimental_inline}}
+### CSS Typed Object Model {{Experimental_Inline}}
 
 {{SeeCompatTable}}
 
@@ -80,15 +88,28 @@ slug: Web/API/CSS_Object_Model
 - {{DOMxRef("StylePropertyMap")}} {{Experimental_Inline}}
 - {{DOMxRef("StylePropertyMapReadOnly")}} {{Experimental_Inline}}
 
-## 자습서
+### Obsolete CSSOM interfaces {{deprecated_inline}}
 
-- [화면 방향 관리](/ko/docs/WebAPI/Managing_screen_orientation)
+{{deprecated_header}}
 
-## 명세서
+- {{DOMxRef("CSSPrimitiveValue")}} {{deprecated_inline}}
+- {{DOMxRef("CSSValue")}} {{deprecated_inline}}
+- {{DOMxRef("CSSValueList")}} {{deprecated_inline}}
+
+## Tutorials
+
+- [Determining the dimensions of elements](/en-US/docs/Web/API/CSS_Object_Model/Determining_the_dimensions_of_elements) (it needs some updating as it was made in the DHTML/Ajax era)
+- [Managing screen orientation](/en-US/docs/Web/API/CSS_Object_Model/Managing_screen_orientation)
+
+## Specifications
 
 {{Specifications}}
 
-## 같이 보기
+## Browser compatibility
 
-- [문서 객체 모델 (DOM)](/ko/docs/Web/API/Document_Object_Model)
-- [CSS Houdini](/ko/docs/Web/Houdini/)
+All these features have been added little by little over the years to the different browsers: it was a quite complex process that can't be summarized in a simple table. Please refer to the specific interfaces for its availability.
+
+## See also
+
+- [Document Object Model (DOM)](/en-US/docs/Web/API/Document_Object_Model)
+- [Houdini](/en-US/docs/Web/Guide/Houdini)

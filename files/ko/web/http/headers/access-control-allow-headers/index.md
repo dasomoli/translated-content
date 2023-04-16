@@ -1,13 +1,17 @@
 ---
 title: Access-Control-Allow-Headers
 slug: Web/HTTP/Headers/Access-Control-Allow-Headers
+page-type: http-header
+browser-compat: http.headers.Access-Control-Allow-Headers
 ---
 
 {{HTTPSidebar}}
 
-**`Access-Control-Allow-Headers`** 는 {{HTTPHeader("Access-Control-Request-Headers")}}를 포함하는 {{glossary("preflight request")}}의 응답에 사용되는 헤더로, 실제 요청때 사용할 수 있는 HTTP 헤더의 목록을 나열합니다.
+The **`Access-Control-Allow-Headers`** response header is used in response to a {{glossary("preflight request")}} which includes the {{HTTPHeader("Access-Control-Request-Headers")}} to indicate which HTTP headers can be used during the actual request.
 
-요청에 {{HTTPHeader("Access-Control-Request-Headers")}} 헤더가 포함되어 있을 경우, 이 헤더를 포함하여야 합니다.
+This header is required if the request has an {{HTTPHeader("Access-Control-Request-Headers")}} header.
+
+> **Note:** {{glossary("CORS-safelisted_request_header", "CORS-safelisted request headers")}} are always allowed and usually aren't listed in `Access-Control-Allow-Headers` (unless there is a need to circumvent the safelist [additional restrictions](/en-US/docs/Glossary/CORS-safelisted_request_header#additional_restrictions)).
 
 <table class="properties">
   <tbody>
@@ -22,77 +26,88 @@ slug: Web/HTTP/Headers/Access-Control-Allow-Headers
   </tbody>
 </table>
 
-## 구문
+## Syntax
 
-```
-Access-Control-Allow-Headers: <header-name>[, <header-name>]*
+```http
+Access-Control-Allow-Headers: [<header-name>[, <header-name>]*]
 Access-Control-Allow-Headers: *
 ```
 
-## 지시자
+## Directives
 
 - `<header-name>`
-  - : 지원하는 헤더의 이름입니다. 쉼표로 구분하여 원하는 만큼 헤더를 나열할 수 있습니다.
-- `*` (와일드카드)
-  - : "`*`" 값은 자격 증명이 없는 요청([쿠키](/ko/docs/Web/HTTP/Cookies) 혹은 HTTP 인증 정보가 없는 요청)일 경우 특수한 와일드 카드로 처리됩니다. 자격증명을 포함하는 경우 단순히 "`*`"라는 이름을 갖는 특별한 의미가 없는 헤더로 취급됩니다. 단, {{HTTPHeader("Authorization")}} 헤더는 와일드카드에 포함되지 않으며 명시적으로 나열해야 합니다.
+  - : The name of a supported request header. The header may list any number of headers, separated by commas.
+- `*` (wildcard)
+  - : The value "`*`" only counts as a special wildcard value for requests without credentials (requests without [HTTP cookies](/en-US/docs/Web/HTTP/Cookies) or HTTP authentication information). In requests with credentials, it is treated as the literal header name "`*`" without special semantics. Note that the {{HTTPHeader("Authorization")}} header can't be wildcarded and always needs to be listed explicitly.
 
-## 예제
+## Examples
 
-### 사용자 정의 헤더
+### A custom header
 
-다음은 `Access-Control-Allow-Headers` 헤더가 어떤 식으로 작성되는지에 대한 예시입니다. {{glossary("CORS-safelisted_request_header", "CORS에서 안전한 헤더")}}외에도 X-Custom-Header라는 사용자 정의 헤더가 서버에 대한 CORS 요청에 의해 지원됨을 나타냅니다.
+Here's an example of what an `Access-Control-Allow-Headers` header might look like. It indicates that a custom header named `X-Custom-Header` is supported by CORS requests to the server (in addition to the {{glossary("CORS-safelisted_request_header", "CORS-safelisted request headers")}}).
 
-```
+```http
 Access-Control-Allow-Headers: X-Custom-Header
 ```
 
-### 여러 개의 헤더
+### Multiple headers
 
-이 예시는 여러 개의 헤더를 지정할 때 Access-Control-Allow-Headers가 어떤 식으로 작성되는지 보여줍니다.
+This example shows `Access-Control-Allow-Headers` when it specifies support for multiple headers.
 
-```
+```http
 Access-Control-Allow-Headers: X-Custom-Header, Upgrade-Insecure-Requests
 ```
 
-### Preflight 요청 예시
+### Bypassing additional restrictions
 
-사전 요청에서 `Access-Control-Allow-Headers` 이 사용된 경우의 예제를 보도록 합시다.
+Although {{glossary("CORS-safelisted_request_header", "CORS-safelisted request headers")}} are always allowed and don't usually need to be listed in `Access-Control-Allow-Headers`, listing them anyway will circumvent the [additional restrictions](/en-US/docs/Glossary/CORS-safelisted_request_header#additional_restrictions) that apply.
 
-#### 요청
-
-이 Preflight 요청은 Preflight 요청 헤더인 {{HTTPHeader("Access-Control-Request-Method")}}, {{HTTPHeader("Access-Control-Request-Headers")}} 및 {{HTTPHeader("Origin")}}, 이 세가지 Preflight 요청 헤더를 포함하는 {{HTTPMethod("OPTIONS")}} 요청입니다.
-
+```http
+Access-Control-Allow-Headers: Accept
 ```
+
+### Example preflight request
+
+Let's look at an example of a {{glossary("preflight request")}} involving `Access-Control-Allow-Headers`.
+
+#### Request
+
+First, the request. The preflight request is an {{HTTPMethod("OPTIONS")}} request that includes some combination of the three preflight request headers: {{HTTPHeader("Access-Control-Request-Method")}}, {{HTTPHeader("Access-Control-Request-Headers")}}, and {{HTTPHeader("Origin")}}.
+
+The preflight request below tells the server that we want to send a CORS `GET` request with the headers listed in {{HTTPHeader("Access-Control-Request-Headers")}} ({{HTTPHeader("Content-Type")}} and `x-requested-with`).
+
+```http
 OPTIONS /resource/foo
-Access-Control-Request-Method: DELETE
-Access-Control-Request-Headers: origin, x-requested-with
+Access-Control-Request-Method: GET
+Access-Control-Request-Headers: Content-Type, x-requested-with
 Origin: https://foo.bar.org
 ```
 
-#### 응답
+#### Response
 
-만약 서버가 {{HTTPMethod("DELETE")}} 메소드에 CORS 요청을 허용한다면 {{HTTPHeader("Access-Control-Allow-Methods")}}에 DELETE, 그리고 다른 지원하는 메소드를 포함하여 응답합니다.
+If the CORS request indicated by the preflight request is authorized, the server will respond to the preflight request with a message that indicates the allowed origin, methods, and headers. Below we see that {{HTTPHeader("Access-Control-Allow-Headers")}} includes the headers that were requested.
 
-```
+```http
 HTTP/1.1 200 OK
 Content-Length: 0
 Connection: keep-alive
 Access-Control-Allow-Origin: https://foo.bar.org
 Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE
+Access-Control-Allow-Headers: Content-Type, x-requested-with
 Access-Control-Max-Age: 86400
 ```
 
-요청된 메소드가 지원되지 않으면 서버는 오류로 응답합니다.
+If the requested method isn't supported, the server will respond with an error.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 함께 보기
+## See also
 
 - {{HTTPHeader("Access-Control-Allow-Origin")}}
 - {{HTTPHeader("Access-Control-Expose-Headers")}}

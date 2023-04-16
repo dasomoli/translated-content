@@ -1,26 +1,26 @@
 ---
-title: 문자열 제대로 다루기
+title: Useful string methods
 slug: Learn/JavaScript/First_steps/Useful_string_methods
 ---
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/JavaScript/First_steps/Strings", "Learn/JavaScript/First_steps/Arrays", "Learn/JavaScript/First_steps")}}
 
-이제까지 문자열의 기초를 살펴보았습니다. 이제부터 - 텍스트 문자열의 길이 찾기, 문자열 합치기 및 쪼개기 등과 같은- 내장된 메서드를 사용하여 문자열에서 수행할 수 있는 유용한 작업에 대해 생각해 봅시다. 문자열의 한 문자를 다른 문자로 대체하는 등의 작업을 수행합니다.
+Now that we've looked at the very basics of strings, let's move up a gear and start thinking about what useful operations we can do on strings with built-in methods, such as finding the length of a text string, joining and splitting strings, substituting one character in a string for another, and more.
 
 <table>
   <tbody>
     <tr>
-      <th scope="row">필요한 사전 지식:</th>
+      <th scope="row">Prerequisites:</th>
       <td>
-        기본 컴퓨터 활용 능력, HTML 및 CSS에 대한 기본적인 이해,
-        JavaScript가 무엇인지 이해합니다.
+        Basic computer literacy, a basic understanding of HTML and CSS, an
+        understanding of what JavaScript is.
       </td>
     </tr>
     <tr>
-      <th scope="row">목표:</th>
+      <th scope="row">Objective:</th>
       <td>
-        문자열이 객체임을 이해하고, 해당 객체에서 사용할 수있는 몇 가지
-        기본 메서드를 사용하여 문자열을 조작하는 방법을 배웁니다.
+        To understand that strings are objects, and learn how to use some of the
+        basic methods available on those objects to manipulate strings.
       </td>
     </tr>
   </tbody>
@@ -28,138 +28,211 @@ slug: Learn/JavaScript/First_steps/Useful_string_methods
 
 ## Strings as objects
 
-이전에 말했지만, 다시 말하면 - JavaScript의 모든 것이 객체입니다. 문자열을 만들 때, 예를 들면
+Most things are objects in JavaScript. When you create a string, for example by using
 
 ```js
-var string = 'This is my string';
+const string = 'This is my string';
 ```
 
-변수가 문자열 객체 인스턴스되면, 결과적으로 수많은 속성과 메서드가 사용 가능하게 됩니다. <a href="/ko/docs/Web/JavaScript/Reference/Global_Objects/String">String</a> 객체 페이지로 이동하여 페이지 측면의 목록을 내려다 보면 이것을 볼 수 있습니다!
+your variable becomes a string object instance, and as a result has a large number of properties and methods available to it. You can see this if you go to the {{jsxref("String")}} object page and look down the list on the side of the page!
 
-이제 뇌가 녹기 시작하기 전에, 걱정하지 마십시오! 학습 여행 중에 초기에 대부분을 알 필요가 없습니다. 그러나 여기에서 살펴볼 몇 가지 사항을 자주 사용하게 될 것입니다.
+**Now, before your brain starts melting, don't worry!** You really don't need to know about most of these early on in your learning journey. But there are a few that you'll potentially use quite often that we'll look at here.
 
-콘솔에 예제를 작성해 보세요. 아래의 한 가지를 제공합니다(새 탭이나 새 창에서 콘솔을 열 수 있고, 브라우저의 개발자 콘솔을 사용할 수도 있습니다).
+Let's enter some examples into the [browser developer console](/en-US/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools).
 
-### 문자열의 길이 찾기
+## Finding the length of a string
 
-간단합니다 — 간단하게 {{jsxref("String.prototype.length", "length")}} 프로퍼티를 사용할 수 있습니다. 다음 코드를 입력해 보세요.
+This is easy — you use the {{jsxref("String.prototype.length", "length")}} property. Try entering the following lines:
 
 ```js
-var browserType = 'mozilla';
+const browserType = 'mozilla';
 browserType.length;
 ```
 
-결과는 7을 리턴해야 합니다. 'mozilla'는 7글자이기 때문입니다. 이것은 여러 가지 이유로 유용합니다. 예를 들어 이름의 길이에 따라 이름의 순서를 정렬해야 하던가, 유저가 작성한 이름이 특정 길이 이상일 때 너무 길다는 것을 알려줘야 하는 경우에 사용할 수 있습니다.
+This should return the number 7, because "mozilla" is 7 characters long. This is useful for many reasons; for example, you might want to find the lengths of a series of names so you can display them in order of length, or let a user know that a username they have entered into a form field is too long if it is over a certain length.
 
-### 특정 문자열 찾기
+## Retrieving a specific string character
 
-관련하여, 대괄호 표기법을 이용해서 문자열 안의 문자를 구할 수 있습니다. 대괄호 표기법은 변수명 끝에 대괄호를 포함합니다. 대괄호 안에는 구하고 싶은 문자의 숫자를 포함시키면 되며, 예를 들어 아래의 경우 첫 번째 문자를 구할 수 있습니다:
+On a related note, you can return any character inside a string by using **square bracket notation** — this means you include square brackets (`[]`) on the end of your variable name. Inside the square brackets, you include the number of the character you want to return, so for example to retrieve the first letter you'd do this:
 
 ```js
 browserType[0];
 ```
 
-컴퓨터는 1이 아니라 0부터 숫자를 셉니다! 문자열의 마지막 문자를 구하기 위해서, 우리는 다음 코드를 사용할 수 있으며, 기술적인 `length` 프로퍼티과 같이 사용하면 아래와 같습니다:
+Remember: computers count from 0, not 1!
+
+To retrieve the last character of _any_ string, we could use the following line, combining this technique with the `length` property we looked at above:
 
 ```js
-browserType[browserType.length - 1];
+browserType[browserType.length-1];
 ```
 
-"mozilla"는 7글자이지만, 숫자는 0부터 시작하기 때문에 글자의 위치는 6입니다. 그렇기 때문에 `length-1`을 사용합니다. 예를 들어, 여러 문자열 중 첫 번째 문자를 찾아 알파벳순으로 정렬해야 할 경우에 사용할 수 있습니다.
+The length of the string "mozilla" is 7, but because the count starts at 0, the last character's position is 6; using `length-1` gets us the last character.
 
-### 문자열 내부의 하위 문자열 찾기 및 추출
+## Testing if a string contains a substring
 
-1. 때때로 큰 문자열 안의 작은 문자열(우리는 이것을 하위 문자열이라고 이야기 한다.)을 찾고 싶을 것입니다. 이 작업은 {{jsxref("String.prototype.indexOf()", "indexOf()")}}를 사용하여 완료할 수 있습니다, which takes a single {{glossary("parameter")}} — 찾기 원하는 하위 문자열을 찾을 수 있습니다. 시도해 봅시다:
+Sometimes you'll want to find if a smaller string is present inside a larger one (we generally say _if a substring is present inside a string_). This can be done using the {{jsxref("String.prototype.includes()", "includes()")}} method, which takes a single {{glossary("parameter")}} — the substring you want to search for.
 
-    ```js
-    browserType.indexOf('zilla');
-    ```
-
-    결과는 2입니다. 하위 문자열인 "zilla"는 "mozilla'의 2번 위치(0, 1, 2— 그러므로 3번째 문자열)에서 시작합니다. 이러한 코드는 문자열을 필터링하는 데 사용될 수 있습니다. 예를 들어 웹 주소 목록에서 "mozilla"가 포함된 주소만 인쇄하고 싶은 경우입니다.
-
-2. 다른 방법으로도 할 수 있으며, 더욱 효율적일 수 있습니다. 다음 예제를 따라해 봅시다:
-
-    ```js
-    browserType.indexOf('vanilla');
-    ```
-
-    이렇게 하면 -1( 하위 문자열 (이 경우 'vanilla')이 기본 문자열에서 발견되지 않으면 반환한다.)의 결과를 얻을 수 있습니다.
-
-    하위 문자열 'mozilla'가 포함되지 않은 문자열의 모든 인스턴스를 찾으려면 이 연산자를 사용하고 아래에 표시된 것처럼 부정 연산자를 사용해서 작업을 수행할 수 있습니다. 다음과 같이 할 수 있습니다:
-
-    ```js
-    if (browserType.indexOf('mozilla') !== -1) {
-      // do stuff with the string
-    }
-    ```
-
-3. 문자열 내에서 부분 문자열이 어디에서 시작되고 어떤 문자로 끝나는지 알고 싶으면 {{jsxref("String.prototype.slice()", "slice()")}}를 사용하여 문자열을 추출할 수 있습니다. 다음을 시도해 봅시다:
-
-    ```js
-    browserType.slice(0, 3);
-    ```
-
-    "moz"를 반환합니다 - 첫 번째 파라메터는 추출을 시작할 문자 위치이고 두 번째 파라메터는 추출할 문자의 갯수입니다. 따라서 슬라이스는 첫 번째 위치에서부터 세 번째 위치까지 포함됩니다.
-
-4. 또한 특정 문자 뒤에 문자열의 나머지 문자를 모두 추출하려는 경우 두 번째 매개 변수를 포함하지 않고 문자열에서 나머지 문자를 추출할 위치의 문자 위치만 포함하면 됩니다. 다음을 시도해보십시오.
-
-    ```js
-    browserType.slice(2);
-    ```
-
-    이렇게 하면 "zilla"가 반환됩니다. 문자의 2번째 위치는 "z"이고 두 번째 매개 변수를 포함하지 않았기 때문에 반환된 하위 문자열은 문자열의 나머지 문자 모두입니다.
-
-> **참고:** `slice()` has other options too; study the {{jsxref("String.prototype.slice()", "slice()")}} page to see what else you can find out.
-
-### 대/소문자 변경
-
-문자열 메소드 {{jsxref("String.prototype.toLowerCase()", "toLowerCase()")}} 와{{jsxref("String.prototype.toUpperCase()", "toUpperCase()")}} 는 문자열을 가져와 그것을 모두 각각 대문자나 소문자로 바꿉니다. 이는 데이터베이스에 저장하기 전에 모든 사용자 입력 데이터를 표준화하려는 경우 유용합니다.
-
-다음 행을 입력하여 어떻게 되는지 살펴보겠습니다.
+It returns `true` if the string contains the substring, and `false` otherwise.
 
 ```js
-var radData = 'My NaMe Is MuD';
-radData.toLowerCase();
-radData.toUpperCase();
+const browserType = 'mozilla';
+
+if (browserType.includes('zilla')) {
+  console.log('Found zilla!');
+} else {
+  console.log('No zilla here!');
+}
 ```
 
-### 문자열의 일부를 변경하기
-
-문자열 내의 한 하위 문자열을 {{jsxref("String.prototype.replace()", "replace()")}} 를 통해 다른 하위 문자열로 바꿀 수 있습니다. 이 작업은 기본적인 수준에서 매우 간단하게 작동합니다. 하지만 아직 시도해보지 않은 고급 작업도 있습니다.
-
-그것은 2개의 매개변수를 가집니다. — 바뀜을 당하는 문자와 바꾸려는 문자입니다. 다음 예제를 따라해보세요.:
+Often you'll want to know if a string starts or ends with a particular substring. This is a common enough need that there are two special methods for this: {{jsxref("String.prototype.startsWith()", "startsWith()")}} and {{jsxref("String.prototype.endsWith()", "endsWith()")}}:
 
 ```js
-browserType.replace('moz', 'van');
+const browserType = 'mozilla';
+
+if (browserType.startsWith('zilla')) {
+  console.log('Found zilla!');
+} else {
+  console.log('No zilla here!');
+}
 ```
 
-## 예제
+```js
+const browserType = 'mozilla';
 
-이 섹션에서는 문자열을 다루는 방법을 설명합니다. 아래의 각 실습에서는 문자열로 이루어진 배열을 루프문을 사용해 bullet list(불릿 리스트)로 표현하였습니다. 지금 배열이나 루프를 이해할 필요가 없습니다. - 이러한 내용은 추후에 설명합니다. 중요한것은 각각의 문자열이 우리가 원하는 형식으로 출력하는 코드를 작성하는 것입니다.
+if (browserType.endsWith('zilla')) {
+  console.log('Found zilla!');
+} else {
+  console.log('No zilla here!');
+}
+```
 
-각 예제에는 리셋 버튼이 있고, 리셋 버튼은 실수를 했거나 코드가 작동하지 않아서 재설정하는데 사용할 수 있습니다. 해결 방법을 모를 때, 해답 버튼(solution button)을 누르면 해답을 볼 수 있습니다.
+## Finding the position of a substring in a string
 
-### 인사말 필터링 하기
+You can find the position of a substring inside a larger string using the {{jsxref("String.prototype.indexOf()", "indexOf()")}} method. This method takes two {{glossary("parameter", "parameters")}} – the substring that you want to search for, and an optional parameter that specifies the starting point of the search.
 
-첫 번째 예제는 간단히 시작해봅시다. 우리는 배열에 들어있는 크리스마스 인사말 메시지를 정렬하려고 합니다. if(...)을 사용해 각 문자열을 비교하고 크리스마스 메시지인 경우의 목록만 인쇄하려고 합니다.
+If the string contains the substring, `indexOf()` returns the index of the first occurrence of the substring. If the string does not contain the substring, `indexOf()` returns `-1`.
 
-1. 먼저 각 메시지가 크리스마스 메시지인지 여부를 테스트할 수 있는 방법을 생각해봅시다. 메시지들은 어떤 문자열이 있고, 존재하는지 테스트하기 위해 어떤 방법을 사용할 수 있을까요?
-2. 연산자와 피연산자를 사용해 조건문을 만들어야 합니다. 연산자 왼쪽에 있는것과 연산자 오른쪽에 있는 것이 동등한가요? 또는 이 경우 왼쪽 메서드가 오른쪽으로 결과값을 전달합니까?
-3. 힌트 : 이 경우 메서드 호출이 결과값과 같지 않은지 테스트하는 것이 더 유용할 수 있습니다.
+```js
+const tagline = 'MDN - Resources for developers, by developers';
+console.log(tagline.indexOf('developers')); // 20
+```
+
+Starting at `0`, if you count the number of characters (including the whitespace) from the beginning of the string, the first occurrence of the substring `"developers"` is at index `20`.
+
+```js
+console.log(tagline.indexOf('x')); // -1
+```
+
+This, on the other hand, returns `-1` because the character `x` is not present in the string.
+
+So now that you know how to find the first occurrence of a substring, how do you go about finding subsequent occurrences? You can do that by passing in a value that's greater than the index of the previous occurrence as the second parameter to the method.
+
+```js
+const firstOccurrence = tagline.indexOf('developers');
+const secondOccurrence = tagline.indexOf('developers', firstOccurrence + 1);
+
+console.log(firstOccurrence); // 20
+console.log(secondOccurrence); // 35
+```
+
+Here we're telling the method to search for the substring `"developers"` starting at index `21` (`firstOccurrence + 1`), and it returns the index `35`.
+
+## Extracting a substring from a string
+
+You can extract a substring from a string using the {{jsxref("String.prototype.slice()", "slice()")}} method. You pass it:
+
+- the index at which to start extracting
+- the index at which to stop extracting. This is exclusive, meaning that the character at this index is not included in the extracted substring.
+
+For example:
+
+```js
+const browserType = 'mozilla';
+console.log(browserType.slice(1, 4)); // "ozi"
+```
+
+The character at index `1` is `"o"`, and the character at index 4 is `"l"`. So we extract all characters starting at `"o"` and ending just before `"l"`, giving us `"ozi"`.
+
+If you know that you want to extract all of the remaining characters in a string after a certain character, you don't have to include the second parameter. Instead, you only need to include the character position from where you want to extract the remaining characters in a string. Try the following:
+
+```js
+browserType.slice(2); // "zilla"
+```
+
+This returns `"zilla"` — this is because the character position of 2 is the letter `"z"`, and because you didn't include a second parameter, the substring that was returned was all of the remaining characters in the string.
+
+> **Note:** `slice()` has other options too; study the {{jsxref("String.prototype.slice()", "slice()")}} page to see what else you can find out.
+
+## Changing case
+
+The string methods {{jsxref("String.prototype.toLowerCase()", "toLowerCase()")}} and {{jsxref("String.prototype.toUpperCase()", "toUpperCase()")}} take a string and convert all the characters to lower- or uppercase, respectively. This can be useful for example if you want to normalize all user-entered data before storing it in a database.
+
+Let's try entering the following lines to see what happens:
+
+```js
+const radData = 'My NaMe Is MuD';
+console.log(radData.toLowerCase());
+console.log(radData.toUpperCase());
+```
+
+## Updating parts of a string
+
+You can replace one substring inside a string with another substring using the {{jsxref("String.prototype.replace()", "replace()")}} method.
+
+In this example, we're providing two parameters — the string we want to replace, and the string we want to replace it with:
+
+```js
+const browserType = 'mozilla';
+const updated = browserType.replace('moz','van');
+
+console.log(updated);      // "vanilla"
+console.log(browserType);  // "mozilla"
+```
+
+Note that `replace()`, like many string methods, doesn't change the string it was called on, but returns a new string. If you want to update the original `browserType` variable, you would have to do something like this:
+
+```js
+let browserType = 'mozilla';
+browserType = browserType.replace('moz','van');
+
+console.log(browserType);  // "vanilla"
+```
+
+Also note that we now have to declare `browserType` using `let`, not `const`, because we are reassigning it.
+
+Be aware that `replace()` in this form only changes the first occurrence of the substring. If you want to change all occurrences, you can use {{jsxref("String.prototype.replaceAll()", "replaceAll()")}}:
+
+```js
+let quote = 'To be or not to be';
+quote = quote.replaceAll('be','code');
+
+console.log(quote);  // "To code or not to code"
+```
+
+## Active learning examples
+
+In this section, we'll get you to try your hand at writing some string manipulation code. In each exercise below, we have an array of strings, and a loop that processes each value in the array and displays it in a bulleted list. You don't need to understand arrays or loops right now — these will be explained in future articles. All you need to do in each case is write the code that will output the strings in the format that we want them in.
+
+Each example comes with a "Reset" button, which you can use to reset the code if you make a mistake and can't get it working again, and a "Show solution" button you can press to see a potential answer if you get really stuck.
+
+### Filtering greeting messages
+
+In the first exercise, we'll start you off simple — we have an array of greeting card messages, but we want to sort them to list just the Christmas messages. We want you to fill in a conditional test inside the `if ()` structure to test each string and only print it in the list if it is a Christmas message.
+
+Think about how you could test whether the message in each case is a Christmas message. What string is present in all of those messages, and what method could you use to test whether it is present?
 
 ```html hidden
 <h2>Live output</h2>
 
 <div class="output" style="min-height: 125px;">
-
-<ul>
-
-</ul>
-
+  <ul></ul>
 </div>
 
 <h2>Editable code</h2>
-<p class="a11y-label">Press Esc to move focus away from the code area (Tab inserts a tab character).</p>
+<p class="a11y-label">
+  Press Esc to move focus away from the code area (Tab inserts a tab character).
+</p>
 
 <textarea id="code" class="playable-code" style="height: 290px; width: 95%">
 const list = document.querySelector('.output ul');
@@ -170,7 +243,7 @@ const greetings = ['Happy Birthday!',
                  'You\'re all I want for Christmas',
                  'Get well soon'];
 
-for (let greeting of greetings) {
+for (const greeting of greetings) {
   // Your conditional test needs to go inside the parentheses
   // in the line below, replacing what's currently there
   if (greeting) {
@@ -182,8 +255,8 @@ for (let greeting of greetings) {
 </textarea>
 
 <div class="playable-buttons">
-  <input id="reset" type="button" value="Reset">
-  <input id="solution" type="button" value="Show solution">
+  <input id="reset" type="button" value="Reset" />
+  <input id="solution" type="button" value="Show solution" />
 </div>
 ```
 
@@ -220,7 +293,7 @@ function updateCode() {
   eval(textarea.value);
 }
 
-reset.addEventListener('click', function() {
+reset.addEventListener('click', () => {
   textarea.value = code;
   userEntry = textarea.value;
   solutionEntry = jsSolution;
@@ -228,8 +301,8 @@ reset.addEventListener('click', function() {
   updateCode();
 });
 
-solution.addEventListener('click', function() {
-  if(solution.value === 'Show solution') {
+solution.addEventListener('click', () => {
+  if (solution.value === 'Show solution') {
     textarea.value = solutionEntry;
     solution.value = 'Hide solution';
   } else {
@@ -241,13 +314,15 @@ solution.addEventListener('click', function() {
 
 const jsSolution = `const list = document.querySelector('.output ul');
 list.innerHTML = '';
-const greetings = ['Happy Birthday!',
-                 'Merry Christmas my love',
-                 'A happy Christmas to all the family',
-                 'You\\\'re all I want for Christmas',
-                 'Get well soon'];
+const greetings = [
+  'Happy Birthday!',
+  'Merry Christmas my love',
+  'A happy Christmas to all the family',
+  'You\\'re all I want for Christmas',
+  'Get well soon',
+];
 
-for (let greeting of greetings) {
+for (const greeting of greetings) {
   // Your conditional test needs to go inside the parentheses
   // in the line below, replacing what's currently there
   if (greeting.includes('Christmas')) {
@@ -265,7 +340,7 @@ window.addEventListener('load', updateCode);
 // stop tab key tabbing out of textarea and
 // make it write a tab at the caret position instead
 
-textarea.onkeydown = function(e){
+textarea.onkeydown = (e) => {
   if (e.keyCode === 9) {
     e.preventDefault();
     insertAtCaret('\t');
@@ -279,11 +354,11 @@ textarea.onkeydown = function(e){
 function insertAtCaret(text) {
   const scrollPos = textarea.scrollTop;
   let caretPos = textarea.selectionStart;
-  const front = (textarea.value).substring(0, caretPos);
-  const back = (textarea.value).substring(textarea.selectionEnd, textarea.value.length);
+  const front = textarea.value.substring(0, caretPos);
+  const back = textarea.value.substring(textarea.selectionEnd, textarea.value.length);
 
   textarea.value = front + text + back;
-  caretPos = caretPos + text.length;
+  caretPos += text.length;
   textarea.selectionStart = caretPos;
   textarea.selectionEnd = caretPos;
   textarea.focus();
@@ -292,10 +367,10 @@ function insertAtCaret(text) {
 
 // Update the saved userCode every time the user updates the text area code
 
-textarea.onkeyup = function(){
+textarea.onkeyup = () => {
   // We only want to save the state when the user code is being shown,
   // not the solution, so that solution is not saved over the user code
-  if(solution.value === 'Show solution') {
+  if (solution.value === 'Show solution') {
     userEntry = textarea.value;
   } else {
     solutionEntry = textarea.value;
@@ -305,39 +380,37 @@ textarea.onkeyup = function(){
 };
 ```
 
-{{ EmbedLiveSample('인사말_필터링_하기', '100%', 600) }}
+{{ EmbedLiveSample('Filtering_greeting_messages', '100%', 600) }}
 
-### 대/소문자 맞게 수정하기
+### Fixing capitalization
 
-이 예제에는 영국 도시의 이름들을 모아놨습니다만 대/소문자가 잘못되어 있습니다. 우리는 이 문자들을 첫 번째 문자를 제외하고 모두 소문자로 변경해야 합니다. 이것은 다음과 같은 방식으로 할 수 있습니다:
+In this exercise, we have the names of cities in the United Kingdom, but the capitalization is all messed up. We want you to change them so that they are all lowercase, except for a capital first letter. A good way to do this is to:
 
-1. `input` 변수에 담긴 문자열 전체를 소문자로 변환한 후 새로운 변수에 저장하세요.
-2. 새로운 변수에 저장된 문자열의 첫 문자를 다른 변수에 저장하세요
-3. Using this latest variable as a substring, replace the first letter of the lowercase string with the first letter of the lowercase string changed to upper case. Store the result of this replace procedure in another new variable.
-4. Change the value of the `result` variable to equal to the final result, not the `input`.
+1. Convert the whole of the string contained in the `city` variable to lowercase and store it in a new variable.
+2. Grab the first letter of the string in this new variable and store it in another variable.
+3. Using this latest variable as a substring, replace the first letter of the lowercase string with the first letter of the lowercase string changed to upper case. Store the result of this replacement procedure in another new variable.
+4. Change the value of the `result` variable to equal to the final result, not the `city`.
 
-> **참고:** A hint — the parameters of the string methods don't have to be string literals; they can also be variables, or even variables with a method being invoked on them.
+> **Note:** A hint — the parameters of the string methods don't have to be string literals; they can also be variables, or even variables with a method being invoked on them.
 
 ```html hidden
 <h2>Live output</h2>
 
 <div class="output" style="min-height: 125px;">
-
-<ul>
-
-</ul>
-
+  <ul></ul>
 </div>
 
 <h2>Editable code</h2>
-<p class="a11y-label">Press Esc to move focus away from the code area (Tab inserts a tab character).</p>
+<p class="a11y-label">
+  Press Esc to move focus away from the code area (Tab inserts a tab character).
+</p>
 
 <textarea id="code" class="playable-code" style="height: 250px; width: 95%">
 const list = document.querySelector('.output ul');
 list.innerHTML = '';
 const cities = ['lonDon', 'ManCHESTer', 'BiRmiNGHAM', 'liVERpoOL'];
 
-for (let city of cities) {
+for (const city of cities) {
   // write your code just below here
 
   const result = city;
@@ -348,8 +421,8 @@ for (let city of cities) {
 </textarea>
 
 <div class="playable-buttons">
-  <input id="reset" type="button" value="Reset">
-  <input id="solution" type="button" value="Show solution">
+  <input id="reset" type="button" value="Reset" />
+  <input id="solution" type="button" value="Show solution" />
 </div>
 ```
 
@@ -395,7 +468,7 @@ reset.addEventListener('click', function() {
 });
 
 solution.addEventListener('click', function() {
-  if(solution.value === 'Show solution') {
+  if (solution.value === 'Show solution') {
     textarea.value = solutionEntry;
     solution.value = 'Hide solution';
   } else {
@@ -409,7 +482,7 @@ const jsSolution = `const list = document.querySelector('.output ul');
 list.innerHTML = '';
 const cities = ['lonDon', 'ManCHESTer', 'BiRmiNGHAM', 'liVERpoOL'];
 
-for (let city of cities) {
+for (const city of cities) {
   // write your code just below here
   const lower = city.toLowerCase();
   const firstLetter = lower.slice(0,1);
@@ -442,11 +515,11 @@ textarea.onkeydown = function(e){
 function insertAtCaret(text) {
   const scrollPos = textarea.scrollTop;
   let caretPos = textarea.selectionStart;
-  const front = (textarea.value).substring(0, caretPos);
-  const back = (textarea.value).substring(textarea.selectionEnd, textarea.value.length);
+  const front = textarea.value.substring(0, caretPos);
+  const back = textarea.value.substring(textarea.selectionEnd, textarea.value.length);
 
   textarea.value = front + text + back;
-  caretPos = caretPos + text.length;
+  caretPos += text.length;
   textarea.selectionStart = caretPos;
   textarea.selectionEnd = caretPos;
   textarea.focus();
@@ -458,7 +531,7 @@ function insertAtCaret(text) {
 textarea.onkeyup = function(){
   // We only want to save the state when the user code is being shown,
   // not the solution, so that solution is not saved over the user code
-  if(solution.value === 'Show solution') {
+  if (solution.value === 'Show solution') {
     userEntry = textarea.value;
   } else {
     solutionEntry = textarea.value;
@@ -468,11 +541,11 @@ textarea.onkeyup = function(){
 };
 ```
 
-{{ EmbedLiveSample('대/소문자_맞게_수정하기', '100%', 450) }}
+{{ EmbedLiveSample('Fixing_capitalization', '100%', 570) }}
 
 ### Making new strings from old parts
 
-In this last exercise the array contains a bunch of strings containing information about train stations in the North of England. The strings are data items that contain the three letter station code, followed by some machine-readable data, followed by a semi-colon, followed by the human-readable station name. For example:
+In this last exercise, the array contains a bunch of strings containing information about train stations in the North of England. The strings are data items that contain the three-letter station code, followed by some machine-readable data, followed by a semicolon, followed by the human-readable station name. For example:
 
 ```
 MAN675847583748sjt567654;Manchester Piccadilly
@@ -487,24 +560,22 @@ MAN: Manchester Piccadilly
 We'd recommend doing it like this:
 
 1. Extract the three-letter station code and store it in a new variable.
-2. Find the character index number of the semi-colon.
-3. Extract the human-readable station name using the semi-colon character index number as a reference point, and store it in a new variable.
+2. Find the character index number of the semicolon.
+3. Extract the human-readable station name using the semicolon character index number as a reference point, and store it in a new variable.
 4. Concatenate the two new variables and a string literal to make the final string.
-5. Change the value of the `result` variable to equal to the final string, not the `input`.
+5. Change the value of the `result` variable to the final string, not the `station`.
 
 ```html hidden
 <h2>Live output</h2>
 
 <div class="output" style="min-height: 125px;">
-
-<ul>
-
-</ul>
-
+  <ul></ul>
 </div>
 
 <h2>Editable code</h2>
-<p class="a11y-label">Press Esc to move focus away from the code area (Tab inserts a tab character).</p>
+<p class="a11y-label">
+  Press Esc to move focus away from the code area (Tab inserts a tab character).
+</p>
 
 <textarea id="code" class="playable-code" style="height: 285px; width: 95%">
 const list = document.querySelector('.output ul');
@@ -515,7 +586,7 @@ const stations = ['MAN675847583748sjt567654;Manchester Piccadilly',
                   'SYB4f65hf75f736463;Stalybridge',
                   'HUD5767ghtyfyr4536dh45dg45dg3;Huddersfield'];
 
-for (let station of stations) {
+for (const station of stations) {
   // write your code just below here
 
   const result = station;
@@ -526,8 +597,8 @@ for (let station of stations) {
 </textarea>
 
 <div class="playable-buttons">
-  <input id="reset" type="button" value="Reset">
-  <input id="solution" type="button" value="Show solution">
+  <input id="reset" type="button" value="Reset" />
+  <input id="solution" type="button" value="Show solution" />
 </div>
 ```
 
@@ -573,7 +644,7 @@ reset.addEventListener('click', function() {
 });
 
 solution.addEventListener('click', function() {
-  if(solution.value === 'Show solution') {
+  if (solution.value === 'Show solution') {
     textarea.value = solutionEntry;
     solution.value = 'Hide solution';
   } else {
@@ -591,7 +662,7 @@ const stations = ['MAN675847583748sjt567654;Manchester Piccadilly',
                   'SYB4f65hf75f736463;Stalybridge',
                   'HUD5767ghtyfyr4536dh45dg45dg3;Huddersfield'];
 
-for (let station of stations) {
+for (const station of stations) {
   // write your code just below here
   const code = station.slice(0,3);
   const semiColon = station.indexOf(';');
@@ -624,11 +695,11 @@ textarea.onkeydown = function(e){
 function insertAtCaret(text) {
   const scrollPos = textarea.scrollTop;
   let caretPos = textarea.selectionStart;
-  const front = (textarea.value).substring(0, caretPos);
-  const back = (textarea.value).substring(textarea.selectionEnd, textarea.value.length);
+  const front = textarea.value.substring(0, caretPos);
+  const back = textarea.value.substring(textarea.selectionEnd, textarea.value.length);
 
   textarea.value = front + text + back;
-  caretPos = caretPos + text.length;
+  caretPos += text.length;
   textarea.selectionStart = caretPos;
   textarea.selectionEnd = caretPos;
   textarea.focus();
@@ -640,7 +711,7 @@ function insertAtCaret(text) {
 textarea.onkeyup = function(){
   // We only want to save the state when the user code is being shown,
   // not the solution, so that solution is not saved over the user code
-  if(solution.value === 'Show solution') {
+  if (solution.value === 'Show solution') {
     userEntry = textarea.value;
   } else {
     solutionEntry = textarea.value;
@@ -652,8 +723,12 @@ textarea.onkeyup = function(){
 
 {{ EmbedLiveSample('Making_new_strings_from_old_parts', '100%', 600) }}
 
-## 결론
+## Test your skills!
 
-자바스크립트에서 문장과 단어들을 다룰 수 있는 프로그래밍 능력이 매우 중요하다. 웹사이트는 사람들과 소통하는 공간이기 때문이다. 이 문서는 문자열을 다룰 수 있는 기초적인 내용에 대해 다루었다. 이 내용은 앞으로 배우게 될 심화 과정에 도움이 될 것이다. 다음으로 배열에 대해 알아보겠다.
+You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Strings](/en-US/docs/Learn/JavaScript/First_steps/Test_your_skills:_Strings).
+
+## Conclusion
+
+You can't escape the fact that being able to handle words and sentences in programming is very important — particularly in JavaScript, as websites are all about communicating with people. This article has given you the basics that you need to know about manipulating strings for now. This should serve you well as you go into more complex topics in the future. Next, we're going to look at the last major type of data we need to focus on in the short term — arrays.
 
 {{PreviousMenuNext("Learn/JavaScript/First_steps/Strings", "Learn/JavaScript/First_steps/Arrays", "Learn/JavaScript/First_steps")}}

@@ -1,68 +1,74 @@
 ---
 title: DELETE
 slug: Web/HTTP/Methods/DELETE
+page-type: http-method
+browser-compat: http.methods.DELETE
 ---
 
 {{HTTPSidebar}}
 
-**HTTP `DELETE` 메서드**는 지정한 리소스를 삭제합니다.
+The **HTTP `DELETE` request method** deletes the specified
+resource.
 
 <table class="properties">
   <tbody>
     <tr>
-      <th scope="row">요청에 본문 존재</th>
+      <th scope="row">Request has body</th>
       <td>May</td>
     </tr>
     <tr>
-      <th scope="row">성공 응답에 본문 존재</th>
+      <th scope="row">Successful response has body</th>
       <td>May</td>
     </tr>
     <tr>
-      <th scope="row">{{Glossary("Safe", "안전함")}}</th>
+      <th scope="row">{{Glossary("Safe/HTTP", "Safe")}}</th>
       <td>No</td>
     </tr>
     <tr>
-      <th scope="row">{{Glossary("Idempotent", "멱등성")}}</th>
+      <th scope="row">{{Glossary("Idempotent")}}</th>
       <td>Yes</td>
     </tr>
     <tr>
-      <th scope="row">
-        {{Glossary("Cacheable", "캐시 가능")}}
-      </th>
+      <th scope="row">{{Glossary("Cacheable")}}</th>
       <td>No</td>
     </tr>
     <tr>
       <th scope="row">
-        <a href="/ko/docs/Learn/HTML/Forms">HTML 양식</a>에서 사용 가능
+        Allowed in <a href="/en-US/docs/Learn/Forms">HTML forms</a>
       </th>
       <td>No</td>
     </tr>
   </tbody>
 </table>
 
-## 구문
+## Syntax
 
-```
+```http
 DELETE /file.html HTTP/1.1
 ```
 
-## 예제
+## Example
 
-### 요청
+### Request
 
-```
+```http
 DELETE /file.html HTTP/1.1
+Host: example.com
 ```
 
-### 응답
+### Responses
 
-`DELETE` 메서드를 성공적으로 적용한 후에 사용할 수 있는 응답 상태 코드는 다음과 같이 몇 가지가 있습니다.
+If a `DELETE` method is successfully applied, there are several response
+status codes possible:
 
-- 아마도 명령을 성공적으로 수행할 것 같으나 아직은 실행하지 않은 경우 {{HTTPStatus("202")}} (`Accepted`) 상태 코드.
-- 명령을 수행했고 더 이상 제공할 정보가 없는 경우 {{HTTPStatus("204")}} (`No Content`) 상태 코드.
-- 명령을 수행했고 응답 메시지가 이후의 상태를 설명하는 경우 {{HTTPStatus("200")}} (`OK`) 상태 코드.
+- A {{HTTPStatus("202")}} (`Accepted`) status code if the action will
+  likely succeed but has not yet been enacted.
+- A {{HTTPStatus("204")}} (`No Content`) status code if the action has been
+  enacted and no further information is to be supplied.
+- A {{HTTPStatus("200")}} (`OK`) status code if the action has been enacted
+  and the response message includes a representation describing the status.
 
-```
+```http
 HTTP/1.1 200 OK
 Date: Wed, 21 Oct 2015 07:28:00 GMT
 
@@ -73,14 +79,14 @@ Date: Wed, 21 Oct 2015 07:28:00 GMT
 </html>
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- HTTP 상태: {{HTTPStatus("200")}}, {{HTTPStatus("202")}}, {{HTTPStatus("204")}}
+- HTTP status: {{HTTPStatus("200")}}, {{HTTPStatus("202")}}, {{HTTPStatus("204")}}

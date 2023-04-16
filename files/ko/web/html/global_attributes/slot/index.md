@@ -1,22 +1,24 @@
 ---
 title: slot
 slug: Web/HTML/Global_attributes/slot
+page-type: html-attribute
+browser-compat: html.global_attributes.slot
 ---
 
 {{HTMLSidebar("Global_attributes")}}
 
-**`slot`** [전역 특성](/ko/docs/Web/HTML/Global_attributes)은 요소에 [섀도우 DOM](/ko/docs/Web/Web_Components/Using_shadow_DOM) 섀도우 트리를 할당합니다. `slot` 특성을 지정한 요소는 {{htmlattrxref("name", "slot")}} 특성의 값이 요소의 `slot` 값과 일치하는 {{htmlelement("slot")}} 요소에 할당됩니다.
+The **`slot`** [global attribute](/en-US/docs/Web/HTML/Global_attributes) assigns a slot in a [shadow DOM](/en-US/docs/Web/API/Web_components/Using_shadow_DOM) shadow tree to an element: An element with a `slot` attribute is assigned to the slot created by the {{HTMLElement("slot")}} element whose [`name`](/en-US/docs/Web/HTML/Element/slot#name) attribute's value matches that `slot` attribute's value.
 
-예제는 [템플릿과 슬롯 사용하기](/ko/docs/Web/Web_Components/Using_templates_and_slots) 안내서에서 확인할 수 있습니다.
+For examples, see our [Using templates and slots](/en-US/docs/Web/API/Web_components/Using_templates_and_slots) guide.
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 모든 [전역 특성](/ko/docs/Web/HTML/Global_attributes).
+- All [global attributes](/en-US/docs/Web/HTML/Global_attributes).

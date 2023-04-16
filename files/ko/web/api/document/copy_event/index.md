@@ -1,52 +1,61 @@
 ---
-title: 'Document: copy 이벤트'
+title: "Document: copy event"
+short-title: copy
 slug: Web/API/Document/copy_event
+page-type: web-api-event
+browser-compat: api.Element.copy_event
 ---
+
 {{APIRef}}
 
-**`copy`** 이벤트는 사용자가 브라우저의 사용자 인터페이스를 통해 복사했을 때 발생합니다.
+The **`copy`** event fires when the user initiates a copy action through the browser's user interface.
 
-<table class="properties">
-  <tbody>
-    <tr>
-      <th scope="row">버블링</th>
-      <td>예</td>
-    </tr>
-    <tr>
-      <th scope="row">취소 가능</th>
-      <td>예</td>
-    </tr>
-    <tr>
-      <th scope="row">인터페이스</th>
-      <td>{{domxref("ClipboardEvent")}}</td>
-    </tr>
-    <tr>
-      <th scope="row">이벤트 처리기 속성</th>
-      <td>{{domxref("HTMLElement/oncopy", "oncopy")}}</td>
-    </tr>
-  </tbody>
-</table>
+The original target for this event is the {{domxref("Element")}} that was the intended target of the copy action. You can listen for this event on the {{domxref("Document")}} interface to handle it in the capture or bubbling phases. For full details on this event please see the page on the [Element: copy event](/en-US/docs/Web/API/Element/copy_event).
 
-`copy` 이벤트의 원 대상은 복사 동작의 대상인 {{domxref("Element")}}입니다. {{domxref("Document")}}에서 수신할 경우 캡처 또는 버블링 단계의 이벤트를 받게 됩니다. 이벤트에 대한 자세한 정보는 [Element: copy 이벤트](/ko/docs/Web/API/Element/copy_event)에서 확인하세요.
+## Syntax
 
-## 예제
+Use the event name in methods like {{domxref("EventTarget.addEventListener", "addEventListener()")}}, or set an event handler property.
 
 ```js
-document.addEventListener('copy', (event) => {
-    console.log('복사 동작 실행')
+addEventListener("copy", (event) => {});
+
+oncopy = (event) => {};
+```
+
+## Event type
+
+A {{domxref("ClipboardEvent")}}. Inherits from {{domxref("Event")}}.
+
+{{InheritanceDiagram("ClipboardEvent")}}
+
+## Examples
+
+To be informed when a user copies data from the webpage to their clipboard, you can add a handler to your {{domxref("Document")}} instance using {{domxref("EventTarget.addEventListener", "addEventListener()")}}, like this:
+
+```js
+document.addEventListener("copy", (event) => {
+  /* the session has shut down */
 });
 ```
 
-## 명세
+Alternatively, you can use the `Document.oncopy` event handler property to establish a handler for the `copy` event:
+
+```js
+document.oncopy = (event) => {
+  /* the session has shut down */
+};
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 관련 이벤트: {{domxref("Document/cut_event", "cut")}}, {{domxref("Document/paste_event", "paste")}}
-- {{domxref("Element")}}를 대상으로 한 같은 이벤트: {{domxref("Element/copy_event", "copy")}}
-- {{domxref("Window")}}를 대상으로 한 같은 이벤트: {{domxref("Window/copy_event", "copy")}}
+- Related events: {{domxref("Document/cut_event", "cut")}}, {{domxref("Document/paste_event", "paste")}}
+- This event on {{domxref("Element")}} targets: {{domxref("Element/copy_event", "copy")}}
+- This event on {{domxref("Window")}} targets: {{domxref("Window/copy_event", "copy")}}

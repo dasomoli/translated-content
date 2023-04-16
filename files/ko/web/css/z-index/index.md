@@ -1,64 +1,79 @@
 ---
 title: z-index
 slug: Web/CSS/z-index
+page-type: css-property
+browser-compat: css.properties.z-index
 ---
 
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`z-index`** 속성은 [위치 지정 요소](/ko/docs/Web/CSS/position)와, 그 자손 또는 하위 플렉스 아이템의 Z축 순서를 지정합니다. 더 큰 `z-index` 값을 가진 요소가 작은 값의 요소 위를 덮습니다.
+The **`z-index`** CSS property sets the z-order of a [positioned](/en-US/docs/Web/CSS/position) element and its descendants or flex items. Overlapping elements with a larger z-index cover those with a smaller one.
 
 {{EmbedInteractiveExample("pages/css/z-index.html")}}
 
-위치 지정 요소(`position`이 `static` 외의 다른 값인 요소)의 박스에 대해, `z-index` 속성은 다음 항목을 지정합니다.
+For a positioned box (that is, one with any `position` other than `static`), the `z-index` property specifies:
 
-1. 현재 [쌓임 맥락](/ko/docs/Web/CSS/Understanding_z-index/The_stacking_context)에서 자신의 위치.
-2. 자신만의 쌓임 맥락 생성 여부.
+1. The stack level of the box in the current [stacking context](/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context).
+2. Whether the box establishes a local stacking context.
 
-## 구문
+## Syntax
 
 ```css
-/* 키워드 값 */
+/* Keyword value */
 z-index: auto;
 
-/* <integer> 값 */
+/* <integer> values */
 z-index: 0;
 z-index: 3;
 z-index: 289;
-z-index: -1; /* 음수 값으로 우선순위를 낮출 수 있음 */
+z-index: -1; /* Negative values to lower the priority */
 
-/* 전역 값 */
+/* Global values */
 z-index: inherit;
 z-index: initial;
+z-index: revert;
+z-index: revert-layer;
 z-index: unset;
 ```
 
-z-index 속성은 [`auto`](#auto) 키워드 또는 [`<integer>`](#integer) 값을 사용해 지정할 수 있습니다.
+The `z-index` property is specified as either the keyword `auto` or an `<integer>`.
 
-### 값
+### Values
 
 - `auto`
-  - : 박스가 새로운 쌓임 맥락을 생성하지 않습니다. 현재 쌓임 맥락에서의 위치는 부모 요소와 동일합니다.
-- {{cssxref("&lt;integer&gt;")}}
-  - : 현재 쌓임 맥락에서의 위치로 이 값을 사용합니다. 또한 자신만의 쌓임 맥락을 생성하고, 해당 맥락에서 자신의 위치를 `0`으로 설정합니다. 이로 인해 자손의 `z-index`를 자기 외의 바깥 요소와 비교하지 않습니다.
+  - : The box does not establish a new local stacking context. The stack level of the generated box in the current stacking context is `0`.
+- `<integer>`
+  - : This {{cssxref("&lt;integer&gt;")}} is the stack level of the generated box in the current stacking context. The box also establishes a local stacking context. This means that the z-indexes of descendants are not compared to the z-indexes of elements outside this element.
 
-### 형식 구문
+## Formal definition
+
+{{cssinfo}}
+
+## Formal syntax
 
 {{csssyntax}}
 
-## 예제
+## Examples
 
-### HTML
+### Visually layering elements
+
+#### HTML
 
 ```html
-<div class="dashed-box">Dashed box
-  <span class="gold-box">Gold box</span>
-  <span class="green-box">Green box</span>
+<div class="wrapper">
+  <div class="dashed-box">Dashed box</div>
+  <div class="gold-box">Gold box</div>
+  <div class="green-box">Green box</div>
 </div>
 ```
 
-### CSS
+#### CSS
 
 ```css
+.wrapper {
+  position: relative;
+}
+
 .dashed-box {
   position: relative;
   z-index: 1;
@@ -87,21 +102,19 @@ z-index 속성은 [`auto`](#auto) 키워드 또는 [`<integer>`](#integer) 값�
 }
 ```
 
-### 결과
+#### Result
 
-{{ EmbedLiveSample('예제', '550', '200', '') }}
+{{ EmbedLiveSample('Visually_layering_elements', '550', '200', '') }}
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-{{cssinfo}}
-
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- CSS {{ Cssxref("position") }} 속성
-- [CSS z-index 이해하기](/ko/docs/Web/CSS/Understanding_z-index)
+- CSS {{Cssxref("position")}} property
+- [Understanding CSS z-indexes](/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index)

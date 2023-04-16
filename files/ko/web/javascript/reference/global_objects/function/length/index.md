@@ -1,42 +1,33 @@
 ---
-title: Function.prototype.length
+title: "Function: length"
 slug: Web/JavaScript/Reference/Global_Objects/Function/length
+page-type: javascript-instance-data-property
+browser-compat: javascript.builtins.Function.length
 ---
 
 {{JSRef}}
 
-{{jsxref("Function", "함수")}} 인스턴스의 **`length`** 데이터 속성은 함수가 기대하는 인자의 수를 나타냅니다.
+The **`length`** data property of a {{jsxref("Function")}} instance indicates the number of parameters expected by the function.
 
 {{EmbedInteractiveExample("pages/js/function-length.html")}}
 
-## 값
+## Value
 
-숫자
+A number.
 
 {{js_property_attributes(0, 0, 1)}}
 
-## 설명
+## Description
 
-`length`는 함수 객체의 속성으로, 함수가 얼마나 많은 인수를 기대하는지 나타냅니다, 즉 형식 매개변수의 수.
-이 수는 {{jsxref("Functions/rest_parameters", "나머지 매개변수", "", 1)}}를 포함하지 않습니다.
-그에 반해, {{jsxref("Functions/arguments/length", "arguments.length")}}는 함수에
-지역(local)이고 실제로 함수에 전달된 인수의 수를 제공합니다.
+A {{jsxref("Function")}} object's `length` property indicates how many arguments the function expects, i.e. the number of formal parameters. This number excludes the {{jsxref("Functions/rest_parameters", "rest parameter", "", 1)}} and only includes parameters before the first one with a default value. By contrast, {{jsxref("Functions/arguments/length", "arguments.length")}} is local to a function and provides the number of arguments actually passed to the function.
 
-{{jsxref("Function")}} 객체의 `length` 속성은 함수가 얼마나 많은 인수를 기대하는지 나타냅니다. 이는 형식 매개변수의
-수 입니다. 이 숫자는 {{jsxref("Functions/rest_parameters", "나머지 매개변수", "", 1)}}를 포함하지
-않으며 기본 값을 가진 첫 번째 매개변수 이전의 매개 변수만 포함합니다. 반면
-{{jsxref("Functions/arguments/length", "arguments.length")}}는 하나의 함수에 국한되어
-실제로 함수에 전달된 인수의 수를 제공합니다.
+The {{jsxref("Function")}} constructor is itself a `Function` object. Its `length` data property has a value of `1`.
 
-{{jsxref("Function")}} 생성자는 그 자체로 `function` 객체입니다. 그 `length` 데이터 속성은 값이
-`1`입니다.
+Due to historical reasons, `Function.prototype` is a callable itself. The `length` property of `Function.prototype` has a value of `0`.
 
-역사적인 이유로 인해 `Function.prototype`은 호출 가능한 자체입니다. `Function.prototype`의
-`length`속성 값은 `0`입니다.
+## Examples
 
-## 예제
-
-### 함수 length 사용하기
+### Using function length
 
 ```js
 console.log(Function.length); // 1
@@ -46,20 +37,21 @@ console.log(((a) => {}).length); // 1
 console.log(((a, b) => {}).length); // 2 etc.
 
 console.log(((...args) => {}).length);
-// 0, 나머지 매개변수는 세지 않습니다
+// 0, rest parameter is not counted
 
 console.log(((a, b = 1, c) => {}).length);
-// 1, 기본값을 가진 매개변수 이전의 매개변수만 셉니다
+// 1, only parameters before the first one with
+// a default value are counted
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 참조
+## See also
 
 - {{jsxref("Function")}}

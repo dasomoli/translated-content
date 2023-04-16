@@ -1,10 +1,13 @@
 ---
-title: ':defined'
+title: ":defined"
 slug: Web/CSS/:defined
+page-type: css-pseudo-class
+browser-compat: css.selectors.defined
 ---
+
 {{CSSRef}}
 
-[CSS](/ko/docs/Web/CSS) **`:defined`** [의사 클래스](/ko/docs/Web/CSS/Pseudo-classes)는 정의된 요소를 선택합니다. 정의된 요소란 브라우저에 내장된 표준 요소와, 성공적으로 정의({{domxref("CustomElementRegistry.define()")}} 메서드 등)한 사용자 지정 요소를 의미합니다.
+The **`:defined`** [CSS](/en-US/docs/Web/CSS) [pseudo-class](/en-US/docs/Web/CSS/Pseudo-classes) represents any element that has been defined. This includes any standard element built in to the browser, and custom elements that have been successfully defined (i.e. with the {{domxref("CustomElementRegistry.define()")}} method).
 
 ```css
 /* Selects any defined element */
@@ -18,34 +21,39 @@ simple-custom:defined {
 }
 ```
 
-## 구문
+## Syntax
 
-{{csssyntax}}
+```css
+:defined {
+  /* ... */
+}
+```
 
-## 예제
+## Examples
 
-### 정의되기 전까지 요소 숨기기
+### Hiding elements until they are defined
 
-다음 코드는 저희의 [defined-pseudo-class](https://github.com/mdn/web-components-examples/tree/master/defined-pseudo-class) 데모에서 발췌한 것입니다. ([동작 모습 보기](https://mdn.github.io/web-components-examples/defined-pseudo-class/))
+The following snippets are taken from our [defined-pseudo-class](https://github.com/mdn/web-components-examples/tree/main/defined-pseudo-class) demo ([see it live also](https://mdn.github.io/web-components-examples/defined-pseudo-class/)).
 
-이 데모에서는 아주 간단한 사용자 지정 요소를 정의합니다.
+In this demo we define a very simple trivial custom element:
 
 ```js
-customElements.define('simple-custom',
+customElements.define(
+  "simple-custom",
   class extends HTMLElement {
     constructor() {
       super();
 
-      let divElem = document.createElement('div');
-      divElem.textContent = this.getAttribute('text');
+      let divElem = document.createElement("div");
+      divElem.textContent = this.getAttribute("text");
 
-      let shadowRoot = this.attachShadow({mode: 'open'})
-        .appendChild(divElem);
+      let shadowRoot = this.attachShadow({ mode: "open" }).appendChild(divElem);
+    }
   }
-})
+);
 ```
 
-그 후, 위의 요소를 표준 `<p>`와 함께 문서에 넣습니다.
+Then insert a copy of this element into the document, along with a standard `<p>`:
 
 ```html
 <simple-custom text="Custom element example text"></simple-custom>
@@ -53,10 +61,10 @@ customElements.define('simple-custom',
 <p>Standard paragraph example text</p>
 ```
 
-CSS에는 다음의 스타일을 작성합니다.
+In the CSS we first include the following rules:
 
 ```css
-// Give the two elements distinctive backgrounds
+/* Give the two elements distinctive backgrounds */
 p {
   background: yellow;
 }
@@ -65,13 +73,13 @@ simple-custom {
   background: cyan;
 }
 
-// Both the custom and the built-in element are given italic text
+/* Both the custom and the built-in element are given italic text */
 :defined {
   font-style: italic;
 }
 ```
 
-그리고 아래의 두 규칙을 통해, 정의되지 않은 사용자 지정 요소는 숨기고, 정의가 성공적으로 된 경우에는 블록 레벨 요소로 표시합니다.
+Then provide the following two rules to hide any instances of our custom element that are not defined, and display instances that are defined as block level elements:
 
 ```css
 simple-custom:not(:defined) {
@@ -83,16 +91,16 @@ simple-custom:defined {
 }
 ```
 
-위의 데모는 페이지에 불러올 때 꽤 시간이 걸릴 수 있는 복잡한 사용자 지정 요소 스타일링에 유용하게 쓸 수 있습니다. 로딩이 아직 진행 중일 때, 스타일을 입히지 않은는 못생긴 요소가 페이지에 노출되는 것을 막을 수 있으니까요.
+This is useful if you have a complex custom element that takes a while to load into the page — you might want to hide instances of the element until definition is complete, so that you don't end up with flashes of ugly unstyled elements on the page
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [웹 컴포넌트](/ko/docs/Web/Web_Components)
+- [Web components](/en-US/docs/Web/API/Web_components)

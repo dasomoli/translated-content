@@ -1,49 +1,58 @@
 ---
-title: URLSearchParams.toString()
+title: "URLSearchParams: toString() method"
+short-title: toString()
 slug: Web/API/URLSearchParams/toString
+page-type: web-api-instance-method
+browser-compat: api.URLSearchParams.toString
 ---
+
 {{ApiRef("URL API")}}
 
-{{domxref("URLSearchParams")}} 인터페이스의 **`toString()`** 메서드는 URL에 사용할 수 있는 쿼리 문자열을 반환합니다.
+The **`toString()`** method of the
+{{domxref("URLSearchParams")}} interface returns a query string suitable for use in a
+URL.
 
-> **참고:** 이 메서드는 선행 `'?'`를 붙이지 않은 쿼리 문자열을 반환합니다. 이 동작은 `'?'`를 포함한 값을 반환하는 [`window.location.search`](/ko/docs/Web/API/HTMLHyperlinkElementUtils/search)와 다릅니다.
+> **Note:** This method returns the query string without the question
+> mark. This is different from [window.location.search](/en-US/docs/Web/API/HTMLAnchorElement/search),
+> which includes it.
 
 {{availableinworkers}}
 
-## 구문
+## Syntax
 
-```js
+```js-nolint
 toString()
 ```
 
-### 매개변수
+### Parameters
 
-없음.
+None.
 
-### 반환 값
+### Return value
 
-물음표 없는 문자열입니다. 아무런 검색 매개변수도 설정하지 않은 경우에는 빈 문자열을 반환합니다.
+A string, without the question mark. (Returns an empty string if no
+search parameters have been set.)
 
-## 예제
+## Examples
 
 ```js
-const url = new URL('https://example.com?foo=1&bar=2');
+const url = new URL("https://example.com?foo=1&bar=2");
 const params = new URLSearchParams(url.search);
 
-// 두 번째 foo 매개변수 추가
-params.append('foo', 4);
-console.log(params.toString()); // 'foo=1&bar=2&foo=4' 출력
+// Add a second foo parameter.
+params.append("foo", 4);
+console.log(params.toString()); // Prints 'foo=1&bar=2&foo=4'
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{domxref("URL")}} 인터페이스.
-- [Google Developers: Easy URL manipulation with URLSearchParams](https://developers.google.com/web/updates/2016/01/urlsearchparams?hl=en)
+- The {{domxref("URL")}} interface.
+- [Google Developers: Easy URL manipulation with URLSearchParams](https://developer.chrome.com/blog/urlsearchparams/)

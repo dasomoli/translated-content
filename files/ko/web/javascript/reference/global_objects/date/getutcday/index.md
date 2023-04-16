@@ -1,38 +1,49 @@
 ---
 title: Date.prototype.getUTCDay()
 slug: Web/JavaScript/Reference/Global_Objects/Date/getUTCDay
+page-type: javascript-instance-method
+browser-compat: javascript.builtins.Date.getUTCDay
 ---
 
 {{JSRef}}
 
-**getUTCDay()** 메서드는 지정된 날짜의 요일을 표준시에 따라 반환합니다. 여기서 0은 일요일을 나타냅니다.
+The **`getUTCDay()`** method returns the day of the week in the
+specified date according to universal time, where 0 represents Sunday.
+
+{{EmbedInteractiveExample("pages/js/date-getutcday.html")}}
 
 ## Syntax
 
-```js
-    dateObj.getUTCDay()
+```js-nolint
+getUTCDay()
 ```
 
 ### Return value
 
-지정된 날짜의 요일에 해당하는 표준시에 따른 정수입니다 (일요일은 0, 월요일은 1, 화요일은 2 등).
+A number.
+If the `Date` object represents a valid date, an integer number corresponding to the day
+of the week for the given date, according to universal time: 0 for Sunday, 1 for Monday,
+2 for Tuesday, and so on.
+Otherwise, [`NaN`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/NaN)
+if the `Date` object doesn't represent a valid date.
 
 ## Examples
 
-### Using `getUTCDay()`
+### Using getUTCDay()
 
-다음 예제에서는 현재 날짜의 평일 부분을 weekday 변수에 할당합니다.
+The following example assigns the weekday portion of the current date to the variable
+`weekday`.
 
 ```js
-var today = new Date();
-var weekday = today.getUTCDay();
+const today = new Date();
+const weekday = today.getUTCDay();
 ```
 
-## 명세
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 

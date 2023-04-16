@@ -1,58 +1,79 @@
 ---
-title: 더하기 할당 (+=)
+title: Addition assignment (+=)
 slug: Web/JavaScript/Reference/Operators/Addition_assignment
+page-type: javascript-operator
+browser-compat: javascript.operators.addition_assignment
 ---
+
 {{jsSidebar("Operators")}}
 
-더하기 할당 연산자(`+=`)는 오른쪽 피연산자의 값을 변수에 더한 결과를 다시 변수에 할당합니다. 두 피연산자의
-타입이 더하기 할당 연산자의 동작을 결정하며, 덧셈 또는 문자열 연결이 가능합니다.
+The **addition assignment (`+=`)** operator performs [addition](/en-US/docs/Web/JavaScript/Reference/Operators/Addition) (which is either numeric addition or string concatenation) on the two operands and assigns the result to the left operand.
 
 {{EmbedInteractiveExample("pages/js/expressions-addition-assignment.html")}}
 
-## 구문
+## Syntax
 
-```js
-x += y // x = x + y
+```js-nolint
+x += y
 ```
 
-## 예제
+## Description
 
-### 더하기 할당 사용하기
+`x += y` is equivalent to `x = x + y`.
+
+## Examples
+
+### Using addition assignment
 
 ```js
-// foo = 'foo'
-// bar = 5
-// baz = true
-// 위와 같은 변수를 가정할 때
+let baz = true;
 
-// Number + Number -> 덧셈
-bar += 2 // 7
+// Boolean + Number -> addition
+baz += 1; // 2
 
-// Boolean + Number -> 덧셈
-baz += 1 // 2
-
-// Boolean + Boolean -> 덧셈
-baz += false // 1
-
-// Number + String -> 연결
-bar += 'foo' // "5foo"
-
-// String + Boolean -> 연결
-foo += false // "foofalse"
-
-// String + String -> 연결
-foo += 'bar' // "foobar"
+// Number + Boolean -> addition
+baz += false; // 2
 ```
 
-## 명세
+```js
+let foo = "foo";
+
+// String + Boolean -> concatenation
+foo += false; // "foofalse"
+
+// String + String -> concatenation
+foo += "bar"; // "foofalsebar"
+```
+
+```js
+let bar = 5;
+
+// Number + Number -> addition
+bar += 2; // 7
+
+// Number + String -> concatenation
+bar += "foo"; // "7foo"
+```
+
+```js
+let x = 1n;
+
+// BigInt + BigInt -> addition
+x += 2n; // 3n
+
+// BigInt + Number -> throws TypeError
+x += 1; // TypeError: Cannot mix BigInt and other types, use explicit conversions
+```
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- [JavaScript 안내서의 할당 연산자](/ko/docs/Web/JavaScript/Guide/Expressions_and_Operators#할당_연산자)
-- [더하기 연산자](/ko/docs/Web/JavaScript/Reference/Operators/Addition)
+- [Assignment operators in the JS guide](/en-US/docs/Web/JavaScript/Guide/Expressions_and_operators#assignment_operators)
+- [Addition operator](/en-US/docs/Web/JavaScript/Reference/Operators/Addition)

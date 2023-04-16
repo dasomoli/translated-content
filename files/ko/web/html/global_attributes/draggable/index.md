@@ -1,29 +1,34 @@
 ---
 title: draggable
 slug: Web/HTML/Global_attributes/draggable
+page-type: html-attribute
+browser-compat: html.global_attributes.draggable
 ---
 
 {{HTMLSidebar("Global_attributes")}}
 
-**`draggable`** [전역 특성](/ko/docs/Web/HTML/Global_attributes)은 요소의 드래그 가능 여부를 나타내는 열거형 특성으로, 네이티브 브라우저 동작 방식과 [HTML Drag and Drop API](/ko/docs/Web/API/HTML_Drag_and_Drop_API) 모두 통제합니다.
+The **`draggable`** [global attribute](/en-US/docs/Web/HTML/Global_attributes) is an [enumerated](/en-US/docs/Glossary/Enumerated) attribute that indicates whether the element can be dragged, either with native browser behavior or the [HTML Drag and Drop API](/en-US/docs/Web/API/HTML_Drag_and_Drop_API).
 
-`draggable`은 다음 두 값 중 하나를 가질 수 있습니다.
+The `draggable` attribute may be applied to elements that strictly fall under the [HTML namespace](/en-US/docs/Glossary/Namespace), which means that it cannot be applied to [SVGs](/en-US/docs/Web/SVG).
+For more information about what namespace declarations look like, and what they do, see [Namespace crash course](/en-US/docs/Web/SVG/Namespaces_Crash_Course).
 
-- `true`: 요소를 드래그 할 수 있습니다.
-- `false`: 요소를 드래그 할 수 없습니다.
+`draggable` can have the following values:
 
-> **경고:** `draggable` 특성은 불리언이 아니고 열거형 특성이므로, `true` 또는 `false`의 지정 또한 필수입니다. 그러므로 `<img draggable>`처럼 사용할 수 없고, 올바른 사용법은 `<img draggable="false">`입니다.
+- `true`: the element can be dragged.
+- `false`: the element cannot be dragged.
 
-`draggable`을 지정하지 않은 경우의 기본값은 `auto`로, 브라우저 기본 동작을 따릅니다. 즉, 텍스트 선택 영역, 이미지, 링크 외에는 드래그가 불가능합니다. [종합 예제](/ko/docs/Web/API/HTML_Drag_and_Drop_API/Drag_operations)에서 볼 수 있듯, 다른 요소에 드래그 앤 드롭을 적용하려면 {{domxref('GlobalEventHandlers.ondragstart', 'ondragstart')}} 이벤트 처리기가 필요합니다.
+> **Warning:** This attribute is _[enumerated](/en-US/docs/Glossary/Enumerated)_ and not _Boolean_. A value of `true` or `false` is mandatory, and shorthand like `<img draggable>` is forbidden. The correct usage is `<img draggable="false">`.
 
-## 명세
+If this attribute is not set, its default value is `auto`, which means drag behavior is the default browser behavior: only text selections, images, and links can be dragged. For other elements, the event {{domxref('HTMLElement.dragstart_event', 'ondragstart')}} must be set for drag and drop to work, as shown in this [comprehensive example](/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Drag_operations).
+
+## Specifications
 
 {{Specifications}}
 
-## 브라우저 호환성
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- 모든 [전역 특성](/ko/docs/Web/HTML/Global_attributes).
+- All [global attributes](/en-US/docs/Web/HTML/Global_attributes).

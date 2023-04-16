@@ -1,26 +1,26 @@
 ---
-title: 'true'
+title: "true"
 slug: Web/XPath/Functions/true
 ---
 
 {{ XsltRef() }}
 
-`true` 함수는 불린값 true를 반환합니다.
+The `true` function returns a boolean value of true.
 
-### 구문
+### Syntax
 
 ```
 true()
 ```
 
-### 반환
+### Returns
 
-불린 `true`.
+Boolean `true`.
 
-### 정의
+### Defined
 
-[XPath 1.0 4.3](http://www.w3.org/TR/xpath#function-true)
+[XPath 1.0 4.3](https://www.w3.org/TR/1999/REC-xpath-19991116/#function-true)
 
-### Gecko 지원
+### Gecko support
 
-지원함.
+Supported.

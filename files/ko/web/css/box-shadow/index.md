@@ -1,20 +1,26 @@
 ---
 title: box-shadow
 slug: Web/CSS/box-shadow
+page-type: css-property
+browser-compat: css.properties.box-shadow
 ---
-{{ CSSRef }}
 
-`box-shadow` CSS 속성은 요소의 테두리를 감싼 그림자 효과를 추가합니다. 쉼표로 구문해서 여러 그림자 효과를 입힐 수 있습니다. 박스 그림자는 요소에서의 수평수직 거리(오프셋), 흐릿함과 확산 정도, 색상으로 이루어집니다.
+{{CSSRef}}
+
+The **`box-shadow`** [CSS](/en-US/docs/Web/CSS) property adds shadow effects around an element's frame. You can set multiple effects separated by commas. A box shadow is described by X and Y offsets relative to the element, blur and spread radius, and color.
 
 {{EmbedInteractiveExample("pages/css/box-shadow.html")}}
 
-`box-shadow` 속성은 거의 모든 요소의 테두리에서 그림자를 드리울 수 있도록 도와줍니다. {{cssxref("border-radius")}}가 요소에 함께 적용됐다면 박스 그림자의 모서리도 똑같이 둥근 모서리를 갖게 됩니다. 여러 그림자의 z축 순서는 {{cssxref("text-shadow")}}와 동일하게 처음 그림자일수록 위로 올라옵니다.
+The `box-shadow` property enables you to cast a drop shadow from the frame of almost any element. If a {{cssxref("border-radius")}} is specified on the element with a box shadow, the box shadow takes on the same rounded corners. The z-ordering of multiple box shadows is the same as multiple [text shadows](/en-US/docs/Web/CSS/text-shadow) (the first specified shadow is on top).
 
-[박스 그림자 생성기](/ko/docs/Web/CSS/CSS_Background_and_Borders/Box-shadow_generator)는 상호작용형 도구로, 쉽게 `box-shadow`의 값을 생성할 수 있습니다.
+[Box-shadow generator](/en-US/docs/Web/CSS/CSS_Backgrounds_and_Borders/Box-shadow_generator) is an interactive tool allowing you to generate a `box-shadow`.
 
-## 구문
+## Syntax
 
 ```css
+/* Keyword values */
+box-shadow: none;
+
 /* offset-x | offset-y | color */
 box-shadow: 60px -16px teal;
 
@@ -30,70 +36,139 @@ box-shadow: inset 5em 1em gold;
 /* Any number of shadows, separated by commas */
 box-shadow: 3px 3px red, -1em 0 0.4em olive;
 
-/* Global keywords */
+/* Global values */
 box-shadow: inherit;
 box-shadow: initial;
+box-shadow: revert;
+box-shadow: revert-layer;
 box-shadow: unset;
 ```
 
-하나의 `box-shadow`는 다음 구성요소로 지정할 수 있습니다.
+Specify a single box-shadow using:
 
-- 두 개에서 네 개의 {{cssxref("&lt;length&gt;")}} 값.
+- Two, three, or four [`<length>`](/en-US/docs/Web/CSS/length) values.
 
-  - 두 개의 값을 사용하면 `<offset-x><offset-y>`로 분석합니다.
-  - 세 번째 값이 주어지면 `<blur-radius>`로 분석합니다.
-  - 네 번째 값이 주어지면 `<spread-radius>`로 분석합니다.
+  - If only two values are given, they are interpreted as `<offset-x>` and `<offset-y>` values.
+  - If a third value is given, it is interpreted as a `<blur-radius>`.
+  - If a fourth value is given, it is interpreted as a `<spread-radius>`.
 
-- 선택사항으로 `inset` 키워드.
-- 선택사항으로 {{cssxref("&lt;color&gt;")}} 값.
+- Optionally, the `inset` keyword.
+- Optionally, a [`<color>`](#color) value.
 
-### 값
+To specify multiple shadows, provide a comma-separated list of shadows.
+
+### Values
 
 - `inset`
-  - : 값을 지정하지 않으면(기본값) 요소가 공중에 떠있는 것처럼 밖에 드리우는 그림자가 됩니다.
+  - : If not specified (default), the shadow is assumed to be a drop shadow (as if the box were raised above the content).
+    The presence of the `inset` keyword changes the shadow to one inside the frame (as if the content was debossed inside the box). Inset shadows are drawn inside the border (even transparent ones), above the background, but below content.
+- `<offset-x>`
+  - : The {{cssxref("&lt;length&gt;")}} value specifies the horizontal distance. Negative values place the shadow to the left of the element.
+- `<offset-y>`
 
-    `inset` 키워드가 존재하면 요소가 움푹 들어간 것처럼 그림자가 요소의 테두리 안, 배경색 위, 내부 콘텐츠 밑에 그려집니다.
-- `<offset-x>` `<offset-y>`
-  - : 그림자의 위치를 설정하는 두 개의 {{cssxref("&lt;length&gt;")}} 값입니다. `<offset-x>`는 수평 거리를 의미하며 음수 값은 그림자를 요소의 왼쪽에 표시합니다. `<offset-y>`는 수직 거리를 의미하며 음수 값은 그림자를 요소의 위쪽에 표시합니다. 가능한 단위는 {{cssxref("&lt;length&gt;")}}를 참고하세요.
+  - : The {{cssxref("&lt;length&gt;")}} values specifies the vertical distance. Negative values place the shadow above the element.
 
-  두 값이 모두 `0`이면 그림자가 요소 바로 뒤쪽에 위치하며, `<blur-radius>` 또는 `<spread-radius>`가 존재하면 흐려지는 효과를 볼 수 있습니다.
+    If both `<offset-x>` and `<offset-y>` are set to `0`, the shadow is placed behind the element (and may generate a blur effect if `<blur-radius>` and/or `<spread-radius>` is set).
+
 - `<blur-radius>`
-  - : 세 번째 {{cssxref("&lt;length&gt;")}} 값입니다. 크면 클 수록 그림자 테두리가 흐려지므로 크기는 더 커지고 색은 더 밝아집니다. 음수 값은 사용할 수 없습니다. 값을 설정하지 않으면 `0`이 되어 테두리가 선명해집니다. 명세는 흐림 효과의 지름을 어떻게 계산해야 하는지 정확한 알고리즘은 명시하지 않았지만 대신 다음과 같이 설명하고 있습니다.
 
-  …for a long, straight shadow edge, this should create a color transition the length of the blur distance that is perpendicular to and centered on the shadow’s edge, and that ranges from the full shadow color at the radius endpoint inside the shadow to fully transparent at the endpoint outside it.
+  - : This is a third {{cssxref("&lt;length&gt;")}} value. The larger this value, the bigger the blur, so the shadow becomes bigger and lighter. Negative values are not allowed. If not specified, it will be `0` (the shadow's edge is sharp). The specification does not include an exact algorithm for how the blur radius should be calculated, however, it does elaborate as follows:
+
+    > …for a long, straight shadow edge, this should create a color transition the length of the blur distance that is perpendicular to and centered on the shadow's edge, and that ranges from the full shadow color at the radius endpoint inside the shadow to fully transparent at the endpoint outside it.
 
 - `<spread-radius>`
-  - : 네 번째 {{cssxref("&lt;length&gt;")}} 값입니다. 양수 값은 그림자가 더 커지고 확산하며, 음수 값은 그림자가 줄어듭니다. 기본값은 `0`(그림자와 요소 크기 동일)입니다.
+  - : This is a fourth {{cssxref("&lt;length&gt;")}} value. Positive values will cause the shadow to expand and grow bigger, negative values will cause the shadow to shrink. If not specified, it will be `0` (the shadow will be the same size as the element).
 - `<color>`
-  - : 가능한 키워드와 표기법은 {{cssxref("&lt;color&gt;")}}를 참고하세요.
+  - : See {{cssxref("&lt;color&gt;")}} values for possible keywords and notations.
+    If not specified, it defaults to {{cssxref("&lt;color&gt;","currentcolor","#currentcolor_keyword")}}.
 
-    기본값은 브라우저에 따라 다릅니다. 보통 {{cssxref("color")}} 속성의 값을 사용하지만, Safari는 투명한 그림자가 기본값입니다.
+### Interpolation
 
-### 보간
+When animating shadows, such as when multiple shadow values on a box transition to new values on hover, the values are interpolated. {{Glossary("Interpolation")}} determines intermediate values of properties, such as the blur radius, spread radius, and color, as shadows transition. For each shadow in a list of shadows, the color, x, y, blur, and spread transition; the color as [`<color>`](/en-US/docs/Web/CSS/color_value), and the other values as [`<length>`](/en-US/docs/Web/CSS/length)s.
 
-Each shadow in the list (treating `none` as a 0-length list) is interpolated via the color (as color) component, and x, y, blur, and (when appropriate) spread (as length) components. For each shadow, if both input shadows are or are not `inset`, then the interpolated shadow must match the input shadows in that regard. If any pair of input shadows has one `inset` and the other not `inset`, the entire shadow list is uninterpolable. If the lists of shadows have different lengths, then the shorter list is padded at the end with shadows whose color is `transparent`, all lengths are `0`, and whose `inset` (or not) matches the longer list.
+In interpolating multiple shadows between two comma-separated lists of multiple box shadows, the shadows are paired, in order, with interpolation occurring between paired shadows. If the lists of shadows have different lengths, then the shorter list is padded at the end with shadows whose color is `transparent`, and X, Y, and blur are `0`, with the inset, or lack of inset, being set to match. If, in any pair of shadows, one has `inset` set and the other is does not, the entire shadow list is uninterpolated; the shadows will change to the new values without an animating effect.
 
-### 형식 구문
-
-{{csssyntax}}
-
-## 예제
-
-- [box-shadow test](http://www.elektronotdienst-nuernberg.de/bugs/box-shadow_inset.html)
-- [box-shadow tutorial and examples](http://markusstange.wordpress.com/2009/02/15/fun-with-box-shadows/)
-
-## 명세
-
-{{Specifications}}
+## Formal definition
 
 {{cssinfo}}
 
-## 브라우저 호환성
+## Formal syntax
+
+{{csssyntax}}
+
+## Examples
+
+### Setting three shadows
+
+In this example, we include three shadows: an inset shadow, a regular drop shadow, and a 2px shadow that creates a border effect (we could have used an {{cssxref('outline')}} instead for that third shadow).
+
+#### HTML
+
+```html
+<blockquote>
+  <q>
+    You may shoot me with your words,<br />
+    You may cut me with your eyes,<br />
+    You may kill me with your hatefulness,<br />
+    But still, like air, I'll rise.
+  </q>
+  <p>&mdash; Maya Angelou</p>
+</blockquote>
+```
+
+#### CSS
+
+```css
+blockquote {
+  padding: 20px;
+  box-shadow: inset 0 -3em 3em rgba(0, 0, 0, 0.1), 0 0 0 2px rgb(255, 255, 255),
+    0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+}
+```
+
+#### Result
+
+{{EmbedLiveSample('Setting_three_shadows', '300', '300')}}
+
+### Setting zero for offset and blur
+
+When the `x-offset`, `y-offset`, and `blur` are all zero, the box shadow will be a solid-colored outline of equal-size on all sides. The shadows are drawn back to front, so the first shadow sits on top of subsequent shadows. When the `border-radius` is set to 0, as is the default, the corners of the shadow will be, well, corners. Had we put in a `border-radius` of any other value, the corners would have been rounded.
+
+We added a margin the size of the widest box-shadow to ensure the shadow doesn't overlap adjacent elements or go beyond the border of the containing box. A box-shadow does not impact [box model](/en-US/docs/Web/CSS/CSS_Box_Model) dimensions.
+
+#### HTML
+
+```html
+<div><p>Hello World</p></div>
+```
+
+#### CSS
+
+```css
+p {
+  box-shadow: 0 0 0 2em #f4aab9, 0 0 0 4em #66ccff;
+  margin: 4em;
+  padding: 1em;
+}
+```
+
+<!-- these colors are intentionally pink and blue. WCAG requires color contrast between text and background, not between border colors. -->
+
+#### Result
+
+{{EmbedLiveSample('Setting_zero_for_offset_and_blur', '300', '300')}}
+
+## Specifications
+
+{{Specifications}}
+
+## Browser compatibility
 
 {{Compat}}
 
-## 같이 보기
+## See also
 
-- {{cssxref("&lt;color&gt;")}} 자료형
-- Other color-related properties: {{cssxref("color")}}, {{cssxref("background-color")}}, {{cssxref("border-color")}}, {{cssxref("outline-color")}}, {{cssxref("text-decoration-color")}}, {{cssxref("text-emphasis-color")}}, {{cssxref("caret-color")}}, and {{cssxref("column-rule-color")}}
-- [Applying color to HTML elements using CSS](/ko/docs/Web/HTML/Applying_color)
+- The {{cssxref("&lt;color&gt;")}} data type (for specifying the shadow color)
+- {{cssxref("text-shadow")}}
+- {{cssxref("filter-function/drop-shadow", "drop-shadow()")}}
+- [Applying color to HTML elements using CSS](/en-US/docs/Web/CSS/CSS_Colors/Applying_color)
