@@ -1,5 +1,5 @@
 ---
-title: JavaScript object basics
+title: JavaScript 객체 기본 사항
 slug: Learn/JavaScript/Objects/Basics
 ---
 
@@ -10,18 +10,17 @@ slug: Learn/JavaScript/Objects/Basics
 <table>
   <tbody>
     <tr>
-      <th scope="row">Prerequisites:</th>
+      <th scope="row">사전 요구 사항:</th>
       <td>
-        Basic computer literacy, a basic understanding of HTML and CSS,
-        familiarity with JavaScript basics (see
-        <a href="/ko/docs/Learn/JavaScript/First_steps">First steps</a> and
-        <a href="/ko/docs/Learn/JavaScript/Building_blocks">Building blocks</a>).
+        기본적인 컴퓨터 활용 능력, HTML 및 CSS에 대한 기본적인 이해, JavaScript 기본 사항에 대한 숙지
+        (<a href="/ko/docs/Learn/JavaScript/First_steps">첫 번째 단계</a> 및
+        <a href="/ko/docs/Learn/JavaScript/Building_blocks">빌딩 블록</a> 참조).
       </td>
     </tr>
     <tr>
-      <th scope="row">Objective:</th>
+      <th scope="row">목표:</th>
       <td>
-        To understand the basics of working with objects in JavaScript: creating objects, accessing and modifying object properties, and using constructors.
+        객체 생성, 객체 속성 액세스 및 수정, 생성자 사용 등 JavaScript에서 객체 작업의 기본을 이해합니다.
       </td>
     </tr>
   </tbody>
@@ -31,7 +30,7 @@ slug: Learn/JavaScript/Objects/Basics
 
 객체는 관련 데이터 및/또는 기능의 모음입니다. 일반적으로 여러 변수와 함수(객체 내부에 있는 경우 프로퍼티 및 메서드라고 함)로 구성됩니다. 예제를 통해 객체가 어떻게 생겼는지 이해해 보겠습니다.
 
-먼저 [oojs.html](https://github.com/mdn/learning-area/blob/main/javascript/oojs/introduction/oojs.html) 파일의 로컬 복사본을 만듭니다. 여기에는 소스 코드를 작성하기 위한 {{HTMLElement("script")}} 요소만 포함되어 있습니다. 이 파일을 기본 객체 구문을 살펴보기 위한 기초로 사용할 것입니다. 이 예제를 작업하는 동안 개발자 도구 JavaScript 콘솔](/ko/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools#the_javascript_console) 을 열고 몇 가지 명령을 입력할 준비가 되어 있어야 합니다.
+먼저 [oojs.html](https://github.com/mdn/learning-area/blob/main/javascript/oojs/introduction/oojs.html) 파일의 로컬 복사본을 만듭니다. 여기에는 소스 코드를 작성하기 위한 {{HTMLElement("script")}} 요소만 포함되어 있습니다. 이 파일을 기본 객체 구문을 살펴보기 위한 기초로 사용할 것입니다. 이 예제를 작업하는 동안 [개발자 도구 JavaScript 콘솔](/ko/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools#the_javascript_console)을 열고 몇 가지 명령을 입력할 준비가 되어 있어야 합니다.
 
 자바스크립트의 다른 많은 작업과 마찬가지로 객체 생성은 변수를 정의하고 초기화하는 것으로 시작하는 경우가 많습니다. 파일에 이미 있는 JavaScript 코드 아래에 다음 줄을 입력한 다음 저장하고 새로고침하세요:
 
@@ -39,7 +38,7 @@ slug: Learn/JavaScript/Objects/Basics
 const person = {};
 ```
 
-이제 브라우저의 [JavaScript 콘솔](/ko/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools#the_javascript_console) 을 열고 `person` 을 입력한 다음 <kbd>Enter</kbd>/<kbd>Return</kbd> 키를 누릅니다. 아래 줄 중 하나와 유사한 결과가 표시됩니다:
+이제 브라우저의 [JavaScript 콘솔](/ko/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools#the_javascript_console)을 열고 `person` 을 입력한 다음 <kbd>Enter</kbd>/<kbd>Return</kbd> 키를 누릅니다. 아래 줄 중 하나와 유사한 결과가 표시됩니다:
 
 ```
 [object Object]
@@ -165,7 +164,7 @@ name.last;
 
 ## 대괄호 표기법
 
-대괄호 표기법은 객체 속성에 액세스하는 다른 방법을 제공합니다. 다음과 같이 [점 표기법](#dot_notation) 을 사용하는 대신:
+대괄호 표기법은 객체 속성에 액세스하는 다른 방법을 제공합니다. 다음과 같이 [점 표기법](#dot_notation)을 사용하는 대신:
 
 ```js
 person.age;
@@ -392,7 +391,7 @@ const myVideo = document.querySelector("video");
 
 [`Array`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Array), [`Math`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Math) 등 기존에 사용하던 거의 모든 내장 객체나 API도 마찬가지입니다.
 
-기본 제공 객체와 API가 항상 객체 인스턴스를 자동으로 생성하는 것은 아닙니다. 예를 들어 최신 브라우저에서 시스템 알림을 실행할 수 있는 [Notifications API](/ko/docs/Web/API/Notifications_API) 의 경우, 실행하려는 각 알림에 대해 생성자를 사용하여 새 객체 인스턴스를 인스턴스화해야 합니다. 자바스크립트 콘솔에 다음을 입력해 보세요:
+기본 제공 객체와 API가 항상 객체 인스턴스를 자동으로 생성하는 것은 아닙니다. 예를 들어 최신 브라우저에서 시스템 알림을 실행할 수 있는 [Notifications API](/ko/docs/Web/API/Notifications_API)의 경우, 실행하려는 각 알림에 대해 생성자를 사용하여 새 객체 인스턴스를 인스턴스화해야 합니다. 자바스크립트 콘솔에 다음을 입력해 보세요:
 
 ```js
 const myNotification = new Notification("Hello!");
@@ -400,7 +399,7 @@ const myNotification = new Notification("Hello!");
 
 ## 실력을 테스트해 보세요!
 
-이 글을 끝까지 읽었지만 가장 중요한 정보를 기억할 수 있나요? 계속 진행하기 전에 이 정보를 잘 기억하고 있는지 확인할 수 있는 몇 가지 추가 테스트가 있으니, [실력을 테스트해 보세요!: 객체 기초](/ko/docs/Learn/JavaScript/Objects/Test_your_skills:_Object_basics) 를 참조하세요.
+이 글을 끝까지 읽었지만 가장 중요한 정보를 기억할 수 있나요? 계속 진행하기 전에 이 정보를 잘 기억하고 있는지 확인할 수 있는 몇 가지 추가 테스트가 있으니, [실력을 테스트해 보세요!: 객체 기초](/ko/docs/Learn/JavaScript/Objects/Test_your_skills:_Object_basics)를 참조하세요.
 
 ## 요약
 
