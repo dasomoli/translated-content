@@ -5,96 +5,93 @@ slug: Learn/JavaScript/First_steps/A_first_splash
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/JavaScript/First_steps/What_is_JavaScript", "Learn/JavaScript/First_steps/What_went_wrong", "Learn/JavaScript/First_steps")}}
 
-Now you've learned something about the theory of JavaScript and what you can do with it, we are going to give you an idea of what the process of creating a simple JavaScript program is like, by guiding you through a practical tutorial. Here you'll build up a simple "Guess the number" game, step by step.
+이제 자바스크립트의 이론과 자바스크립트로 무엇을 할 수 있는지에 대해 배웠으니 이제 간단한 자바스크립트 프로그램을 만드는 과정을 실습 튜토리얼을 통해 안내해 드리겠습니다. 여기서는 간단한 "숫자 맞추기" 게임을 단계별로 만들 것입니다.
 
 <table>
   <tbody>
     <tr>
-      <th scope="row">Prerequisites:</th>
+      <th scope="row">전제 조건:</th>
       <td>
-        Basic computer literacy, a basic understanding of HTML and CSS, an
-        understanding of what JavaScript is.
+        기본적인 컴퓨터 활용 능력, HTML과 CSS에 대한 기본적인 이해, 자바스크립트가 무엇인지에 대한 이해가 필요합니다.
       </td>
     </tr>
     <tr>
-      <th scope="row">Objective:</th>
+      <th scope="row">목표:</th>
       <td>
-        To have a first bit of experience at writing some JavaScript, and gain
-        at least a basic understanding of what writing a JavaScript program
-        involves.
+        약간의 자바스크립트 작성 경험을 쌓고, 자바스크립트 프로그램 작성에 대해 최소한 기본적인 이해가 필요합니다.
       </td>
     </tr>
   </tbody>
 </table>
 
-We want to set really clear expectations here: You won't be expected to learn JavaScript by the end of this article, or even understand all the code we are asking you to write. Instead, we want to give you an idea of how JavaScript's features work together, and what writing JavaScript feels like. In subsequent articles you'll revisit all the features shown here in a lot more detail, so don't worry if you don't understand it all immediately!
+여기서 정말 명확한 기대치를 설정하고 싶습니다: 이 글이 끝날 때까지 JavaScript를 배우거나 작성하라는 코드를 모두 이해해야 하는 것은 아닙니다. 대신 자바스크립트의 기능들이 어떻게 함께 작동하는지, 자바스크립트를 작성하는 것이 어떤 느낌인지에 대한 아이디어를 제공하고자 합니다. 다음 글에서는 여기에 소개된 모든 기능을 훨씬 더 자세히 살펴볼 예정이니 당장 이해가 되지 않더라도 걱정하지 마세요!
 
-> **Note:** Many of the code features you'll see in JavaScript are the same as in other programming languages — functions, loops, etc. The code syntax looks different, but the concepts are still largely the same.
+> **참고:** JavaScript에서 볼 수 있는 코드 기능의 대부분은 함수, 루프 등 다른 프로그래밍 언어와 동일합니다. 코드 구문은 달라 보이지만 개념은 거의 동일합니다.
 
-## Thinking like a programmer
+## 프로그래머처럼 생각하기
 
-One of the hardest things to learn in programming is not the syntax you need to learn, but how to apply it to solve real-world problems. You need to start thinking like a programmer — this generally involves looking at descriptions of what your program needs to do, working out what code features are needed to achieve those things, and how to make them work together.
+프로그래밍에서 가장 배우기 어려운 것 중 하나는 구문을 배우는 것이 아니라 실제 문제를 해결하기 위해 구문을 적용하는 방법입니다. 프로그래머처럼 생각하기 시작해야 합니다. 여기에는 일반적으로 프로그램이 수행해야 하는 작업에 대한 설명을 살펴보고, 이를 달성하기 위해 필요한 코드 기능과 이를 함께 작동시키는 방법을 알아내는 작업이 포함됩니다.
 
-This requires a mixture of hard work, experience with the programming syntax, and practice — plus a bit of creativity. The more you code, the better you'll get at it. We can't promise that you'll develop "programmer brain" in five minutes, but we will give you plenty of opportunities to practice thinking like a programmer throughout the course.
+이를 위해서는 노력, 프로그래밍 구문에 대한 경험, 연습과 함께 약간의 창의력이 필요합니다. 코딩을 많이 할수록 더 잘할 수 있습니다. 5분 만에 '프로그래머의 두뇌'를 개발할 수 있다고 약속할 수는 없지만, 교육 과정 내내 프로그래머처럼 생각하는 연습을 할 수 있는 기회를 충분히 제공할 것입니다.
 
-With that in mind, let's look at the example we'll be building up in this article, and review the general process of dissecting it into tangible tasks.
+이를 염두에 두고 이 글에서 구축할 예제를 살펴보고 이를 실제 작업으로 분해하는 일반적인 프로세스를 검토해 보겠습니다.
 
-## Example — Guess the number game
+## 예시 — 숫자 게임 맞추기
 
-In this article we'll show you how to build up the simple game you can see below:
+이 문서에서는 아래에서 볼 수 있는 간단한 게임을 구축하는 방법을 보여드리겠습니다:
 
 {{EmbedGHLiveSample("learning-area/javascript/introduction-to-js-1/first-splash/number-guessing-game", 900, 300)}}
 
-Have a go at playing it — familiarize yourself with the game before you move on.
+게임을 플레이해 보세요. 게임을 시작하기 전에 게임에 익숙해지세요.
 
-Let's imagine your boss has given you the following brief for creating this game:
+상사가 이 게임을 만들기 위해 다음과 같은 간단한 지시를 내렸다고 가정해 보겠습니다:
 
-> I want you to create a simple guess the number type game. It should choose a random number between 1 and 100, then challenge the player to guess the number in 10 turns. After each turn, the player should be told if they are right or wrong, and if they are wrong, whether the guess was too low or too high. It should also tell the player what numbers they previously guessed. The game will end once the player guesses correctly, or once they run out of turns. When the game ends, the player should be given an option to start playing again.
+> 간단한 숫자 맞추기 게임을 만들어 달라는 것입니다. 이 게임은 1에서 100 사이의 난수를 선택한 다음 플레이어가 10턴 동안 숫자를 맞히도록 도전해야 합니다. 각 턴이 끝날 때마다 플레이어에게 맞았는지 틀렸는지, 틀렸다면 추측이 너무 낮았는지 너무 높았는지 알려줘야 합니다. 또한 플레이어가 이전에 어떤 숫자를 추측했는지도 알려줘야 합니다. 플레이어가 정답을 맞히거나 턴이 다 떨어지면 게임이 종료됩니다. 게임이 종료되면 플레이어에게 다시 게임을 시작할 수 있는 옵션이 제공되어야 합니다.
 
-Upon looking at this brief, the first thing we can do is to start breaking it down into simple actionable tasks, in as much of a programmer mindset as possible:
+이 개요를 살펴본 후 가장 먼저 할 수 있는 일은 가능한 한 프로그래머의 사고방식으로 간단한 실행 가능한 작업으로 세분화하는 것입니다:
 
-1. Generate a random number between 1 and 100.
-2. Record the turn number the player is on. Start it on 1.
-3. Provide the player with a way to guess what the number is.
-4. Once a guess has been submitted first record it somewhere so the user can see their previous guesses.
-5. Next, check whether it is the correct number.
-6. If it is correct:
+1. 1에서 100 사이의 난수를 생성합니다.
+2. 플레이어가 켜져 있는 턴 번호를 기록합니다. 1에서 시작합니다.
+3. 플레이어에게 숫자가 무엇인지 추측할 수 있는 방법을 제공합니다.
+4. 추측이 제출되면 먼저 사용자가 이전 추측을 볼 수 있도록 어딘가에 기록합니다.
+5. 그런 다음 올바른 번호인지 확인합니다.
+6. 정답이면:
 
-   1. Display congratulations message.
-   2. Stop the player from being able to enter more guesses (this would mess the game up).
-   3. Display control allowing the player to restart the game.
+   1. 축하 메시지를 표시합니다.
+   2. 플레이어가 더 이상 추측을 입력할 수 없도록 차단합니다(게임이 엉망이 될 수 있음).
+   3. 플레이어가 게임을 다시 시작할 수 있도록 디스플레이 컨트롤을 표시합니다.
 
-7. If it is wrong and the player has turns left:
+7. 틀렸고 플레이어가 왼쪽으로 돌아간 경우::
 
-   1. Tell the player they are wrong and whether their guess was too high or too low.
-   2. Allow them to enter another guess.
-   3. Increment the turn number by 1.
+   1. 플레이어에게 틀린 점과 추측이 너무 높거나 낮은 이유를 알려줍니다.
+   2. 다른 추측을 입력할 수 있도록 합니다.
+   3. 턴 수를 1씩 늘립니다.
 
-8. If it is wrong and the player has no turns left:
+8. 틀렸고 플레이어에게 남은 턴이 없는 경우:
 
-   1. Tell the player it is game over.
-   2. Stop the player from being able to enter more guesses (this would mess the game up).
-   3. Display control allowing the player to restart the game.
+   1. 플레이어에게 게임 오버라고 말합니다.
+   2. 플레이어가 더 이상 추측을 입력할 수 없도록 합니다(게임이 엉망이 될 수 있습니다).
+   3. 플레이어가 게임을 다시 시작할 수 있도록 컨트롤을 표시합니다.
 
-9. Once the game restarts, make sure the game logic and UI are completely reset, then go back to step 1.
+9. 게임이 다시 시작되면 게임 로직과 UI가 완전히 리셋되었는지 확인한 다음 1단계로 돌아갑니다.
 
-Let's now move forward, looking at how we can turn these steps into code, building up the example, and exploring JavaScript features as we go.
+이제 이 단계를 코드로 전환하는 방법을 살펴보고 예제를 구축하며 자바스크립트 기능을 살펴보면서 앞으로 나아가겠습니다.
 
-### Initial setup
+### 초기 설정
 
-To begin this tutorial, we'd like you to make a local copy of the [number-guessing-game-start.html](https://github.com/mdn/learning-area/blob/main/javascript/introduction-to-js-1/first-splash/number-guessing-game-start.html) file ([see it live here](https://mdn.github.io/learning-area/javascript/introduction-to-js-1/first-splash/number-guessing-game-start.html)). Open it in both your text editor and your web browser. At the moment you'll see a simple heading, paragraph of instructions and form for entering a guess, but the form won't currently do anything.
+이 튜토리얼을 시작하려면 [number-guessing-game-start.html](https://github.com/mdn/learning-area/blob/main/javascript/introduction-to-js-1/first-splash/number-guessing-game-start.html) 파일의 로컬 복사본을 만드세요([여기에서 라이브 보기](https://mdn.github.io/learning-area/javascript/introduction-to-js-1/first-splash/number-guessing-game-start.html)). 텍스트 편집기와 웹 브라우저 모두에서 파일을 엽니다. 지금은 간단한 제목과 지침 단락, 추측을 입력하는 양식이 표시되지만, 현재 이 양식은 아무 기능도 수행하지 않습니다.
 
-The place where we'll be adding all our code is inside the {{htmlelement("script")}} element at the bottom of the HTML:
+모든 코드를 추가할 위치는 HTML 하단의 {{htmlelement("script")}} 요소 안에 있습니다:
 
 ```html
 <script>
-  // Your JavaScript goes here
+  // 자바스크립트는 여기에 둡니다.
 </script>
 ```
 
-### Adding variables to store our data
+### 데이터를 저장할 변수 추가하기
 
-Let's get started. First of all, add the following lines inside your {{htmlelement("script")}} element:
+이제 시작하겠습니다. 먼저 {{htmlelement("script")}} 요소 안에 다음 줄을 추가합니다:
 
 ```js
 let randomNumber = Math.floor(Math.random() * 100) + 1;
@@ -110,18 +107,18 @@ let guessCount = 1;
 let resetButton;
 ```
 
-This section of the code sets up the variables and constants we need to store the data our program will use.
+이 코드 섹션에서는 프로그램에서 사용할 데이터를 저장하는 데 필요한 변수와 상수를 설정합니다.
 
-Variables are basically names for values (such as numbers, or strings of text). You create a variable with the keyword `let` followed by a name for your variable.
+변수는 기본적으로 숫자나 텍스트 문자열과 같은 값의 이름입니다. `let` 키워드로 변수를 만들고 그 뒤에 변수 이름을 지정합니다.
 
-Constants are also used to name values, but unlike variables, you can't change the value once set. In this case, we are using constants to store references to parts of our user interface. The text inside some of these elements might change, but each constant always references the same HTML element that it was initialized with. You create a constant with the keyword `const` followed by a name for the constant.
+상수도 값의 이름을 지정하는 데 사용되지만 변수와 달리 한 번 설정한 값은 변경할 수 없습니다. 이 경우 상수를 사용하여 사용자 인터페이스의 일부에 대한 참조를 저장하고 있습니다. 이러한 요소 중 일부의 텍스트는 변경될 수 있지만 각 상수는 항상 초기화된 것과 동일한 HTML 요소를 참조합니다. 상수를 생성하려면 키워드 `const` 뒤에 상수의 이름을 지정합니다.
 
-You can assign a value to your variable or constant with an equals sign (`=`) followed by the value you want to give it.
+변수나 상수에 등호 기호(=) 뒤에 원하는 값을 지정하여 값을 할당할 수 있습니다.
 
-In our example:
+이 예제에서는
 
-- The first variable — `randomNumber` — is assigned a random number between 1 and 100, calculated using a mathematical algorithm.
-- The first three constants are each made to store a reference to the results paragraphs in our HTML, and are used to insert values into the paragraphs later on in the code (note how they are inside a `<div>` element, which is itself used to select all three later on for resetting, when we restart the game):
+- 첫 번째 변수인 `randomNumber`에는 수학적 알고리즘을 사용하여 계산된 1에서 100 사이의 난수가 할당됩니다.
+- 처음 세 개의 상수는 각각 HTML의 결과 단락에 대한 참조를 저장하기 위해 만들어졌으며, 코드의 뒷부분에서 단락에 값을 삽입하는 데 사용됩니다(`<div>` 요소 안에 있는 것을 주목하세요. 나중에 게임을 다시 시작할 때 재설정을 위해 세 개 모두를 선택하는 데 사용됨):
 
   ```html
   <div class="resultParas">
@@ -131,7 +128,7 @@ In our example:
   </div>
   ```
 
-- The next two constants store references to the form text input and submit button and are used to control submitting the guess later on.
+- 다음 두 상수는 양식 텍스트 입력 및 제출 버튼에 대한 참조를 저장하고 나중에 추측을 제출하는 것을 제어하는 데 사용됩니다.
 
   ```html
   <label for="guessField">Enter a guess: </label>
@@ -139,13 +136,13 @@ In our example:
   <input type="submit" value="Submit guess" class="guessSubmit" />
   ```
 
-- Our final two variables store a guess count of 1 (used to keep track of how many guesses the player has had), and a reference to a reset button that doesn't exist yet (but will later).
+- 마지막 두 변수는 플레이어가 얼마나 많은 추측을 했는지 추적하는 데 사용되는 추측 횟수 1과 아직 존재하지 않지만 나중에 생성될 재설정 버튼에 대한 참조를 저장합니다.
 
-> **Note:** You'll learn a lot more about variables and constants later on in the course, starting with the [next article](/en-US/docs/Learn/JavaScript/First_steps/Variables).
+> **참고:** 변수와 상수에 대해서는 [다음 글](/ko/docs/Learn/JavaScript/First_steps/Variables)부터 강좌의 뒷부분에서 더 자세히 배우게 될 것입니다.
 
-### Functions
+### 함수
 
-Next, add the following below your previous JavaScript:
+다음으로 이전 자바스크립트 아래에 다음을 추가합니다:
 
 ```js
 function checkGuess() {
@@ -153,27 +150,27 @@ function checkGuess() {
 }
 ```
 
-Functions are reusable blocks of code that you can write once and run again and again, saving the need to keep repeating code all the time. This is really useful. There are a number of ways to define functions, but for now we'll concentrate on one simple type. Here we have defined a function by using the keyword `function`, followed by a name, with parentheses put after it. After that, we put two curly braces (`{ }`). Inside the curly braces goes all the code that we want to run whenever we call the function.
+함수는 한 번 작성하고 반복해서 실행할 수 있는 재사용 가능한 코드 블록으로, 코드를 계속 반복할 필요가 없습니다. 정말 유용한 기능입니다. 함수를 정의하는 방법에는 여러 가지가 있지만 여기서는 간단한 유형 하나에 집중하겠습니다. 여기서는 `function`라는 키워드를 사용하여 함수를 정의하고 그 뒤에 괄호로 묶은 이름을 붙였습니다. 그 뒤에 중괄호(`{ }`) 두 개를 넣습니다. 중괄호 안에는 함수를 호출할 때마다 실행하려는 모든 코드가 들어갑니다.
 
-When we want to run the code, we type the name of the function followed by the parentheses.
+코드를 실행하려면 함수 이름과 괄호를 입력합니다.
 
-Let's try that now. Save your code and refresh the page in your browser. Then go into the [developer tools JavaScript console](/en-US/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools), and enter the following line:
+이제 실행해 봅시다. 코드를 저장하고 브라우저에서 페이지를 새로고침합니다. 그런 다음 [개발자 도구 JavaScript 콘솔](/ko/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools)로 이동하여 다음 줄을 입력합니다:
 
 ```js
 checkGuess();
 ```
 
-After pressing <kbd>Return</kbd>/<kbd>Enter</kbd>, you should see an alert come up that says `I am a placeholder`; we have defined a function in our code that creates an alert whenever we call it.
+<kbd>Return</kbd>/<kbd>Enter</kbd>를 누르면 `I am a placeholder`라는 경고가 표시될 것입니다. 코드에서 함수를 호출할 때마다 경고를 생성하는 함수를 정의했습니다.
 
-> **Note:** You'll learn a lot more about functions [later in the course](/en-US/docs/Learn/JavaScript/Building_blocks/Functions).
+> **참고:** [강좌 뒷부분](/ko/docs/Learn/JavaScript/Building_blocks/Functions)에서 함수에 대해 자세히 알아볼 것입니다.
 
-### Operators
+### 연산자
 
-JavaScript operators allow us to perform tests, do math, join strings together, and other such things.
+자바스크립트 연산자를 사용하면 테스트를 수행하고, 연산을 수행하고, 문자열을 결합하는 등의 작업을 수행할 수 있습니다.
 
-If you haven't already done so, save your code, refresh the page in your browser, and open the [developer tools JavaScript console](/en-US/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools). Then we can try typing in the examples shown below — type in each one from the "Example" columns exactly as shown, pressing <kbd>Return</kbd>/<kbd>Enter</kbd> after each one, and see what results they return.
+아직 코드를 저장하지 않았다면 코드를 저장하고 브라우저에서 페이지를 새로고침한 다음 [개발자 도구 JavaScript 콘솔](/ko/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools)을 엽니다. 그런 다음 아래에 표시된 예제를 입력해 볼 수 있습니다. "예제" 열에 표시된 대로 각 예제를 정확히 입력하고 각 예제 뒤에 <kbd>Return</kbd>/<kbd>Enter</kbd>를 누른 다음 어떤 결과가 반환되는지 확인합니다.
 
-First let's look at arithmetic operators, for example:
+먼저 산술 연산자를 예로 들어 보겠습니다:
 
 | Operator | Name           | Example   |
 | -------- | -------------- | --------- |
@@ -182,7 +179,7 @@ First let's look at arithmetic operators, for example:
 | `*`      | Multiplication | `3 * 7`   |
 | `/`      | Division       | `10 / 5`  |
 
-You can also use the `+` operator to join text strings together (in programming, this is called _concatenation_). Try entering the following lines, one at a time:
+`+` 연산자를 사용하여 텍스트 문자열을 서로 연결할 수도 있습니다(프로그래밍에서는 이를 연결이라고 합니다). 다음 줄을 한 번에 하나씩 입력해 보세요:
 
 ```js
 const name = 'Bingo';
@@ -193,21 +190,21 @@ const greeting = name + hello;
 greeting;
 ```
 
-There are also some shortcut operators available, called augmented [assignment operators](/en-US/docs/Web/JavaScript/Reference/Operators#assignment_operators). For example, if you want to add a new text string to an existing one and return the result, you could do this:
+[assignment operators](/ko/docs/Web/JavaScript/Reference/Operators#assignment_operators)라고 하는 바로가기 연산자도 사용할 수 있습니다. 예를 들어 기존 문자열에 새 텍스트 문자열을 추가하고 결과를 반환하려는 경우 이렇게 할 수 있습니다:
 
 ```js
 let name1 = 'Bingo';
 name1 += ' says hello!';
 ```
 
-This is equivalent to
+이것은 다음과 같습니다.
 
 ```js
 let name2 = 'Bingo';
 name2 = name2 + ' says hello!';
 ```
 
-When we are running true/false tests (for example inside conditionals — see [below](#conditionals)) we use [comparison operators](/en-US/docs/Web/JavaScript/Reference/Operators). For example:
+참/거짓 테스트를 실행할 때(예: 조건부 내부 - [아래](#conditionals) 참조) [비교 연산자](/ko/docs/Web/JavaScript/Reference/Operators)를 사용합니다. 예를 들어
 
 <table class="standard-table">
   <thead>
@@ -265,11 +262,11 @@ When we are running true/false tests (for example inside conditionals — see [b
   </thead>
 </table>
 
-### Conditionals
+### 조건부
 
-Returning to our `checkGuess()` function, I think it's safe to say that we don't want it to just spit out a placeholder message. We want it to check whether a player's guess is correct or not, and respond appropriately.
+`checkGuess()` 함수로 돌아가서, 플레이스홀더 메시지를 그냥 뱉어내는 함수는 원하지 않는다고 해도 무방할 것 같습니다. 플레이어의 추측이 맞는지 아닌지 확인하고 적절하게 응답하기를 원합니다.
 
-At this point, replace your current `checkGuess()` function with this version instead:
+이 시점에서 현재 `checkGuess()` 함수를 이 버전으로 대체하세요:
 
 ```js
 function checkGuess() {
@@ -304,43 +301,43 @@ function checkGuess() {
 }
 ```
 
-This is a lot of code — phew! Let's go through each section and explain what it does.
+코드가 많네요 - 휴! 각 섹션을 살펴보고 각 섹션이 무엇을 하는지 설명해 보겠습니다.
 
-- The first line declares a variable called `userGuess` and sets its value to the current value entered inside the text field. We also run this value through the built-in `Number()` constructor, just to make sure the value is definitely a number. Since we're not changing this variable, we'll declare it using `const`.
-- Next, we encounter our first conditional code block. A conditional code block allows you to run code selectively, depending on whether a certain condition is true or not. It looks a bit like a function, but it isn't. The simplest form of conditional block starts with the keyword `if`, then some parentheses, then some curly braces. Inside the parentheses, we include a test. If the test returns `true`, we run the code inside the curly braces. If not, we don't, and move on to the next bit of code. In this case, the test is testing whether the `guessCount` variable is equal to `1` (i.e. whether this is the player's first go or not):
+- 첫 번째 줄은 `userGuess`이라는 변수를 선언하고 그 값을 텍스트 필드에 입력한 현재 값으로 설정합니다. 또한 값이 확실히 숫자인지 확인하기 위해 내장된 `Number()` 생성자를 통해 이 값을 실행합니다. 이 변수는 변경하지 않으므로 `const`를 사용해 선언하겠습니다.
+- 다음으로 첫 번째 조건부 코드 블록을 만나게 됩니다. 조건부 코드 블록을 사용하면 특정 조건이 참인지 아닌지에 따라 코드를 선택적으로 실행할 수 있습니다. 함수처럼 보이지만 함수는 아닙니다. 가장 간단한 형태의 조건부 블록은 `if`라는 키워드로 시작하여 괄호, 중괄호, 중괄호로 구성됩니다. 괄호 안에는 테스트가 포함됩니다. 테스트가 `true`을 반환하면 중괄호 안에 있는 코드를 실행합니다. 그렇지 않으면 실행하지 않고 다음 코드로 넘어갑니다. 이 경우 테스트는 `guessCount` 변수가 `1`과 같은지(즉, 플레이어의 첫 번째 게임인지 아닌지) 테스트합니다:
 
   ```js
   guessCount === 1
   ```
 
-  If it is, we make the guesses paragraph's text content equal to `Previous guesses:`. If not, we don't.
+  일치하면 추측 단락의 텍스트 콘텐츠를 `Previous guesses:`과 동일하게 만듭니다. 그렇지 않으면 그러지 않습니다.
 
-- Line 6 appends the current `userGuess` value onto the end of the `guesses` paragraph, plus a blank space so there will be a space between each guess shown.
-- The next block does a few checks:
+- 6행은 `guesses` 단락의 끝에 현재 `userGuess` 값을 추가하고 빈 공간을 추가하여 표시되는 각 추측 사이에 공백이 생기도록 합니다.
+- 다음 블록은 몇 가지 검사를 수행합니다:
 
-  - The first `if (){ }` checks whether the user's guess is equal to the `randomNumber` set at the top of our JavaScript. If it is, the player has guessed correctly and the game is won, so we show the player a congratulations message with a nice green color, clear the contents of the Low/High guess information box, and run a function called `setGameOver()`, which we'll discuss later.
-  - Now we've chained another test onto the end of the last one using an `else if (){ }` structure. This one checks whether this turn is the user's last turn. If it is, the program does the same thing as in the previous block, except with a game over message instead of a congratulations message.
-  - The final block chained onto the end of this code (the `else { }`) contains code that is only run if neither of the other two tests returns true (i.e. the player didn't guess right, but they have more guesses left). In this case we tell them they are wrong, then we perform another conditional test to check whether the guess was higher or lower than the answer, displaying a further message as appropriate to tell them higher or lower.
+  - 첫 번째 `if (){ }`는 사용자의 추측이 자바스크립트 상단에 설정된 `randomNumber`와 같은지 여부를 확인합니다. 일치하면 플레이어가 올바르게 추측했고 게임에 승리한 것이므로 플레이어에게 멋진 녹색으로 축하 메시지를 표시하고 낮음/높음 추측 정보 상자의 내용을 지운 다음 나중에 설명할 `setGameOver()`라는 함수를 실행합니다.
+  - 이제 `else if (){ }` 구조를 사용하여 마지막 테스트의 끝에 다른 테스트를 연결했습니다. 이 테스트는 이번 턴이 사용자의 마지막 턴인지 여부를 확인합니다. 만약 그렇다면 프로그램은 이전 블록에서와 동일한 작업을 수행하지만 축하 메시지 대신 게임 오버 메시지를 표시합니다.
+  - 이 코드 끝에 연결된 마지막 블록`else { }`)에는 다른 두 테스트 중 어느 것도 참을 반환하지 않는 경우에만 실행되는 코드가 포함되어 있습니다(즉, 플레이어가 맞히지 못했지만 남은 추측이 더 있는 경우). 이 경우 플레이어에게 틀렸다고 말한 다음 다른 조건부 테스트를 수행하여 추측이 정답보다 높았는지 낮았는지 확인하고, 더 높거나 낮은 경우 적절한 추가 메시지를 표시합니다.
 
-- The last three lines in the function (lines 26–28 above) get us ready for the next guess to be submitted. We add 1 to the `guessCount` variable so the player uses up their turn (`++` is an incrementation operation — increment by 1), and empty the value out of the form text field and focus it again, ready for the next guess to be entered.
+- 함수의 마지막 세 줄(위의 26~28줄)은 다음 추측을 제출할 수 있도록 준비합니다. `guessCount` 변수에 1을 추가하여 플레이어가 자신의 차례를 다 사용하도록 하고(`++`는 증분 연산으로 1씩 증가), 양식 텍스트 필드에서 값을 비우고 다시 초점을 맞춰 다음 추측을 입력할 수 있도록 준비합니다.
 
 ### Events
 
-At this point, we have a nicely implemented `checkGuess()` function, but it won't do anything because we haven't called it yet. Ideally, we want to call it when the "Submit guess" button is pressed, and to do this we need to use an **event**. Events are things that happen in the browser — a button being clicked, a page loading, a video playing, etc. — in response to which we can run blocks of code. **Event listeners** observe specific events and call **event handlers**, which are blocks of code that run in response to an event firing.
+이 시점에서는 멋지게 구현된 `checkGuess()` 함수가 있지만 아직 호출하지 않았기 때문에 아무 일도 하지 않습니다. 이상적으로는 "Submit guess" 버튼을 눌렀을 때 함수를 호출하고 싶지만, 이를 위해서는 **이벤트**를 사용해야 합니다. 이벤트는 버튼 클릭, 페이지 로딩, 동영상 재생 등 브라우저에서 일어나는 일로, 이에 대한 응답으로 코드 블록을 실행할 수 있습니다. **이벤트 리스너**는 특정 이벤트를 관찰하고 이벤트 발생에 대한 응답으로 실행되는 코드 블록인 **이벤트 핸들러**를 호출합니다.
 
-Add the following line below your `checkGuess()` function:
+`checkGuess()` 함수 아래에 다음 줄을 추가합니다:
 
 ```js
 guessSubmit.addEventListener('click', checkGuess);
 ```
 
-Here we are adding an event listener to the `guessSubmit` button. This is a method that takes two input values (called _arguments_) — the type of event we are listening out for (in this case `click`) as a string, and the code we want to run when the event occurs (in this case the `checkGuess()` function). Note that we don't need to specify the parentheses when writing it inside {{domxref("EventTarget.addEventListener", "addEventListener()")}}.
+여기서는 `guessSubmit` 버튼에 이벤트 리스너를 추가하고 있습니다. 이 메서드는 두 개의 입력 값(인자라고 함)을 받는데, 이 값은 문자열로 수신 중인 이벤트 유형(이 경우 클릭)과 이벤트가 발생할 때 실행할 코드(이 경우 `checkGuess()` 함수)를 받습니다. {{domxref("EventTarget.addEventListener", "addEventListener()")}} 안에 작성할 때 괄호를 지정할 필요가 없다는 점에 유의하세요.
 
-Try saving and refreshing your code now, and your example should work — to a point. The only problem now is that if you guess the correct answer or run out of guesses, the game will break because we've not yet defined the `setGameOver()` function that is supposed to be run once the game is over. Let's add our missing code now and complete the example functionality.
+이제 코드를 저장하고 새로고침하면 예제가 어느 정도 작동할 것입니다. 이제 유일한 문제는 정답을 추측하거나 추측이 부족할 경우 게임이 종료된 후 실행되어야 하는 `setGameOver()` 함수를 아직 정의하지 않았기 때문에 게임이 중단된다는 것입니다. 이제 누락된 코드를 추가하여 예제 기능을 완성해 보겠습니다.
 
-### Finishing the game functionality
+### 게임 기능 완성하기
 
-Let's add that `setGameOver()` function to the bottom of our code and then walk through it. Add this now, below the rest of your JavaScript:
+코드 하단에 `setGameOver()` 함수를 추가한 다음 살펴봅시다. 이제 나머지 자바스크립트 아래에 추가하세요:
 
 ```js
 function setGameOver() {
@@ -353,11 +350,11 @@ function setGameOver() {
 }
 ```
 
-- The first two lines disable the form text input and button by setting their disabled properties to `true`. This is necessary, because if we didn't, the user could submit more guesses after the game is over, which would mess things up.
-- The next three lines generate a new {{htmlelement("button")}} element, set its text label to "Start new game", and add it to the bottom of our existing HTML.
-- The final line sets an event listener on our new button so that when it is clicked, a function called `resetGame()` is run.
+- 처음 두 줄은 비활성화 속성을 `true`로 설정하여 폼 텍스트 입력과 버튼을 비활성화합니다. 그렇지 않으면 게임이 끝난 후 사용자가 더 많은 추측을 제출할 수 있고, 그러면 상황이 엉망이 될 수 있기 때문에 이 작업이 필요합니다.
+- 다음 세 줄은 새 {{htmlelement("button")}} 요소를 생성하고 텍스트 레이블을 "Start new game" 으로 설정한 다음 기존 HTML의 맨 아래에 추가합니다.
+- 마지막 줄은 새 버튼에 이벤트 리스너를 설정하여 버튼이 클릭될 때 `resetGame()`이라는 함수가 실행되도록 합니다.
 
-Now we need to define this function too! Add the following code, again to the bottom of your JavaScript:
+이제 이 함수도 정의해야 합니다! 자바스크립트 하단에 다음 코드를 다시 추가합니다:
 
 ```js
 function resetGame() {
@@ -381,24 +378,24 @@ function resetGame() {
 }
 ```
 
-This rather long block of code completely resets everything to how it was at the start of the game, so the player can have another go. It:
+이 다소 긴 코드 블록은 모든 것을 게임 시작 시점으로 완전히 초기화하여 플레이어가 다시 시도할 수 있도록 합니다. 이는:
 
-- Puts the `guessCount` back down to 1.
-- Empties all the text out of the information paragraphs. We select all paragraphs inside `<div class="resultParas"></div>`, then loop through each one, setting their `textContent` to `''` (an empty string).
-- Removes the reset button from our code.
-- Enables the form elements, and empties and focuses the text field, ready for a new guess to be entered.
-- Removes the background color from the `lastResult` paragraph.
-- Generates a new random number so that you are not just guessing the same number again!
+- `guessCount`를 1로 되돌립니다.
+- 정보 단락에서 모든 텍스트를 비웁니다.  `<div class="resultParas"></div>` 내의 모든 단락을 선택한 다음 각 단락을 반복하여 `textContent`를 `''`(빈 문자열)로 설정합니다.
+- 코드에서 reset 버튼을 제거합니다
+- 양식 요소를 활성화하고 텍스트 필드를 비우고 초점을 맞춰 새로운 추측을 입력할 수 있도록 준비합니다.
+- `lastResult` 단락에서 배경색을 제거합니다.
+- 같은 숫자를 다시 추측하지 않도록 새로운 난수를 생성합니다!
 
-**At this point, you should have a fully working (simple) game — congratulations!**
+**이 시점에서 완전히 작동하는 (간단한) 게임이 생겼습니다 - 축하합니다!**
 
-All we have left to do now in this article is to talk about a few other important code features that you've already seen, although you may have not realized it.
+이제 이 글에서 남은 것은 여러분이 미처 깨닫지 못했을 수도 있지만 이미 보셨던 몇 가지 중요한 코드 기능에 대해 이야기하는 것뿐입니다.
 
-### Loops
+### 루프
 
-One part of the above code that we need to take a more detailed look at is the [for...of](/en-US/docs/Web/JavaScript/Reference/Statements/for...of) loop. Loops are a very important concept in programming, which allow you to keep running a piece of code over and over again, until a certain condition is met.
+위 코드에서 좀 더 자세히 살펴봐야 할 부분은 [for...of](/ko/docs/Web/JavaScript/Reference/Statements/for...of) 루프입니다. 루프는 프로그래밍에서 매우 중요한 개념으로, 특정 조건이 충족될 때까지 코드를 계속 반복해서 실행할 수 있게 해줍니다.
 
-To start with, go to your [browser developer tools JavaScript console](/en-US/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools) again, and enter the following:
+먼저 [브라우저 개발자 도구 JavaScript 콘솔](/ko/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools)로 다시 이동하여 다음을 입력합니다:
 
 ```js
 const fruits = ['apples', 'bananas', 'cherries'];
@@ -407,19 +404,19 @@ for (const fruit of fruits) {
 }
 ```
 
-What happened? The strings `'apples', 'bananas', 'cherries'` were printed out in your console.
+무슨 일이 일어났을까요? 콘솔에 `'apples', 'bananas', 'cherries'` 문자열이 출력되었습니다.
 
-This is because of the loop. The line `const fruits = ['apples', 'bananas', 'cherries'];` creates an array. We will work through [a complete Arrays guide](/en-US/docs/Learn/JavaScript/First_steps/Arrays) later in this module, but for now: an array is a collection of items (in this case strings).
+이는 루프 때문입니다. `const fruits = ['apples', 'bananas', 'cherries'];` 줄은 배열을 만듭니다. 이 모듈의 뒷부분에서 [배열에 대한 전체 가이드](/ko/docs/Learn/JavaScript/First_steps/Arrays)를 살펴보겠지만, 지금은 배열은 항목(이 경우 문자열)의 모음입니다.
 
-A `for...of` loop gives you a way to get each item in the array and run some JavaScript on it. The line `for (const fruit of fruits)` says:
+`for...of` 루프는 배열의 각 항목을 가져와서 자바스크립트를 실행할 수 있는 방법을 제공합니다.`for (const fruit of fruits)` 줄은 다음과 같습니다:
 
-1. Get the first item in `fruits`.
-2. Set the `fruit` variable to that item, then run the code between the `{}` brackets.
-3. Get the next item in `fruits`, and repeat 2, until you reach the end of `fruits`.
+1. `fruits`의 첫 번째 항목을 가져옵니다.
+2. `fruit` 변수를 해당 항목으로 설정한 다음 `{}` 괄호 사이의 코드를 실행합니다.
+3. `fruits`의 다음 항목을 가져오고 `fruits`의 끝에 도달할 때까지 2번을 반복합니다.
 
-In this case, the code inside the brackets is writing out `fruit` to the console.
+이 경우 괄호 안의 코드가 콘솔에 `fruit`을 출력합니다.
 
-Now let's look at the loop in our number guessing game — the following can be found inside the `resetGame()` function:
+이제 숫자 맞추기 게임의 루프를 살펴보겠습니다. 다음은 `resetGame()` 함수 내부에서 찾을 수 있습니다:
 
 ```js
 const resetParas = document.querySelectorAll('.resultParas p');
@@ -428,69 +425,69 @@ for (const resetPara of resetParas) {
 }
 ```
 
-This code creates a variable containing a list of all the paragraphs inside `<div class="resultParas">` using the {{domxref("Document.querySelectorAll", "querySelectorAll()")}} method, then it loops through each one, removing the text content of each.
+이 코드는 {{domxref("Document.querySelectorAll", "querySelectorAll()")}} 메서드를 사용하여 `<div class="resultParas">` 내의 모든 단락 목록이 포함된 변수를 생성한 다음 각 단락을 반복하여 각 단락의 텍스트 콘텐츠를 제거합니다.
 
-Note that even though `resetPara` is a constant, we can change its internal properties like `textContent`.
+`resetPara`가 상수이긴 하지만 `textContent`와 같은 내부 속성을 변경할 수 있다는 점에 유의하세요.
 
-### A small discussion on objects
+### 객체에 대한 간단한 논의
 
-Let's add one more final improvement before we get to this discussion. Add the following line just below the `let resetButton;` line near the top of your JavaScript, then save your file:
+이 논의에 들어가기 전에 마지막으로 개선 사항을 하나 더 추가하겠습니다. 자바스크립트 상단의 `let resetButton;` 줄 바로 아래에 다음 줄을 추가한 다음 파일을 저장합니다:
 
 ```js
 guessField.focus();
 ```
 
-This line uses the {{domxref("HTMLElement/focus", "focus()")}} method to automatically put the text cursor into the {{htmlelement("input")}} text field as soon as the page loads, meaning that the user can start typing their first guess right away, without having to click the form field first. It's only a small addition, but it improves usability — giving the user a good visual clue as to what they've got to do to play the game.
+이 줄은 {{domxref("HTMLElement/focus", "focus()")}} 메서드를 사용하여 페이지가 로드되는 즉시 텍스트 커서를 {{htmlelement("input")}} 텍스트 필드에 자동으로 배치하므로 사용자가 양식 필드를 먼저 클릭할 필요 없이 바로 첫 번째 추측을 입력할 수 있습니다. 사소한 추가 기능이지만 사용성을 개선하여 사용자에게 게임을 플레이하기 위해 무엇을 해야 하는지 시각적으로 알려줍니다.
 
-Let's analyze what's going on here in a bit more detail. In JavaScript, most of the items you will manipulate in your code are objects. An object is a collection of related functionality stored in a single grouping. You can create your own objects, but that is quite advanced and we won't be covering it until much later in the course. For now, we'll just briefly discuss the built-in objects that your browser contains, which allow you to do lots of useful things.
+여기서 무슨 일이 일어나고 있는지 좀 더 자세히 분석해 보겠습니다. 자바스크립트에서 코드에서 조작하는 대부분의 항목은 객체입니다. 객체는 단일 그룹에 저장된 관련 기능의 모음입니다. 객체를 직접 생성할 수도 있지만 이는 상당히 고급이므로 강좌의 후반부에서 다루지 않을 것입니다. 지금은 브라우저에 포함된 기본 제공 객체를 통해 여러 가지 유용한 작업을 수행할 수 있는 방법에 대해서만 간략하게 설명하겠습니다.
 
-In this particular case, we first created a `guessField` constant that stores a reference to the text input form field in our HTML — the following line can be found amongst our declarations near the top of the code:
+이 특별한 경우, 먼저 HTML에 텍스트 입력 양식 필드에 대한 참조를 저장하는 `guessField` 상수를 만들었습니다. 코드 상단 근처의 선언에서 다음 줄을 찾을 수 있습니다:
 
 ```js
 const guessField = document.querySelector('.guessField');
 ```
 
-To get this reference, we used the {{domxref("document.querySelector", "querySelector()")}} method of the {{domxref("document")}} object. `querySelector()` takes one piece of information — a [CSS selector](/en-US/docs/Learn/CSS/Building_blocks/Selectors) that selects the element you want a reference to.
+이 참조를 얻기 위해 {{domxref("document")}} 객체의 {{domxref("document.querySelector", "querySelector()")}} 메서드를 사용했습니다. `querySelector()`는 참조를 원하는 요소를 선택하는 [CSS 선택자](/ko/docs/Learn/CSS/Building_blocks/Selectors)라는 한 가지 정보를 받습니다.
 
-Because `guessField` now contains a reference to an {{htmlelement("input")}} element, it now has access to a number of properties (basically variables stored inside objects, some of which can't have their values changed) and methods (basically functions stored inside objects). One method available to input elements is `focus()`, so we can now use this line to focus the text input:
+이제 `guessField`에 {{htmlelement("input")}} 요소에 대한 참조가 포함되어 있으므로 여러 속성(기본적으로 객체 내부에 저장된 변수, 일부는 값을 변경할 수 없음)과 메서드(기본적으로 객체 내부에 저장된 함수)에 액세스할 수 있습니다. 입력 요소에 사용할 수 있는 메서드 중 하나는 `focus()`이므로 이제 이 줄을 사용하여 텍스트 입력에 초점을 맞출 수 있습니다:
 
 ```js
 guessField.focus();
 ```
 
-Variables that don't contain references to form elements won't have `focus()` available to them. For example, the `guesses` constant contains a reference to a {{htmlelement("p")}} element, and the `guessCount` variable contains a number.
+양식 요소에 대한 참조가 포함되지 않은 변수는 `focus()`를 사용할 수 없습니다. 예를 들어 `guesses` 상수에는 {{htmlelement("p")}} 요소에 대한 참조가 포함되어 있고 `guessCount` 변수에는 숫자가 포함되어 있습니다.
 
-### Playing with browser objects
+### 브라우저 객체 가지고 놀기
 
-Let's play with some browser objects a bit.
+몇 가지 브라우저 객체를 가지고 놀아 보겠습니다.
 
-1. First of all, open up your program in a browser.
-2. Next, open your [browser developer tools](/en-US/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools), and make sure the JavaScript console tab is open.
-3. Type `guessField` into the console and the console shows you that the variable contains an {{htmlelement("input")}} element. You'll also notice that the console autocompletes the names of objects that exist inside the execution environment, including your variables!
-4. Now type in the following:
+1. 먼저 브라우저에서 프로그램을 엽니다
+2. 그런 다음 [브라우저 개발자 도구](/ko/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools)를 열고 자바스크립트 콘솔 탭이 열려 있는지 확인합니다.
+3. 콘솔에 `guessField`를 입력하면 변수에 {{htmlelement("input")}} 요소가 포함되어 있음을 콘솔에 표시합니다. 또한 변수를 포함하여 실행 환경 내에 존재하는 객체의 이름이 콘솔에 자동 완성되는 것을 확인할 수 있습니다!
+4. 이제 다음을 입력합니다:
 
    ```js
    guessField.value = 2;
    ```
 
-   The `value` property represents the current value entered into the text field. You'll see that by entering this command, we've changed the text in the text field!
+   `value` 속성은 텍스트 필드에 입력된 현재 값을 나타냅니다. 이 명령을 입력하면 텍스트 필드의 텍스트가 변경된 것을 볼 수 있습니다!
 
-5. Now try typing `guesses` into the console and pressing return. The console shows you that the variable contains a {{htmlelement("p")}} element.
-6. Now try entering the following line:
+5. 이제 콘솔에 `guesses`을 입력하고 Return 키를 눌러 보세요. 콘솔에 변수에 {{htmlelement("p")}} 요소가 포함되어 있음을 알 수 있습니다.
+6. 이제 다음 줄을 입력해 보세요:
 
    ```js
    guesses.value
    ```
 
-   The browser returns `undefined`, because paragraphs don't have the `value` property.
+   단락에 `value` 속성이 없기 때문에 브라우저가 `undefined`를 반환됩니다.
 
-7. To change the text inside a paragraph, you need the {{domxref("Node.textContent", "textContent")}} property instead. Try this:
+7. 단락 내부의 텍스트를 변경하려면 대신 {{domxref("Node.textContent", "textContent")}} 속성이 필요합니다. 이렇게 해 보세요:
 
    ```js
    guesses.textContent = 'Where is my paragraph?';
    ```
 
-8. Now for some fun stuff. Try entering the below lines, one by one:
+8. 이제 재미있는 게임을 해보겠습니다. 아래 줄을 하나씩 입력해 보세요:
 
    ```js
    guesses.style.backgroundColor = 'yellow';
@@ -499,10 +496,10 @@ Let's play with some browser objects a bit.
    guesses.style.boxShadow = '3px 3px 6px black';
    ```
 
-   Every element on a page has a `style` property, which itself contains an object whose properties contain all the inline CSS styles applied to that element. This allows us to dynamically set new CSS styles on elements using JavaScript.
+   페이지의 모든 요소에는 `style` 프로퍼티가 있으며, 이 프로퍼티에는 해당 요소에 적용된 모든 인라인 CSS 스타일이 포함된 객체가 포함되어 있습니다. 이를 통해 JavaScript를 사용하여 요소에 새로운 CSS 스타일을 동적으로 설정할 수 있습니다.
 
-## Finished for now…
+## 여기까지...
 
-So that's it for building the example. You got to the end — well done! Try your final code out, or [play with our finished version here](https://mdn.github.io/learning-area/javascript/introduction-to-js-1/first-splash/number-guessing-game.html). If you can't get the example to work, check it against the [source code](https://github.com/mdn/learning-area/blob/main/javascript/introduction-to-js-1/first-splash/number-guessing-game.html).
+예제 빌드는 여기까지입니다. 끝까지 해내셨습니다! 최종 코드를 사용해 보거나 [여기에서 완성된 버전을 사용](https://mdn.github.io/learning-area/javascript/introduction-to-js-1/first-splash/number-guessing-game.html)해 보세요. 예제가 작동하지 않는다면 [소스 코드](https://github.com/mdn/learning-area/blob/main/javascript/introduction-to-js-1/first-splash/number-guessing-game.html)와 비교해 보세요.
 
 {{PreviousMenuNext("Learn/JavaScript/First_steps/What_is_JavaScript", "Learn/JavaScript/First_steps/What_went_wrong", "Learn/JavaScript/First_steps")}}
