@@ -1,5 +1,5 @@
 ---
-title: A first splash into JavaScript
+title: 자바스크립트에 대한 첫걸음
 slug: Learn/JavaScript/First_steps/A_first_splash
 ---
 
