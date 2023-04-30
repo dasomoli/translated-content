@@ -7,7 +7,7 @@ browser-compat: javascript.statements.for_of
 
 {{jsSidebar("Statements")}}
 
-The **`for...of`** statement executes a loop that operates on a sequence of values sourced from an [iterable object](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterable_protocol). Iterable objects include instances of built-ins such as {{jsxref("Array")}}, {{jsxref("String")}}, {{jsxref("TypedArray")}}, {{jsxref("Map")}}, {{jsxref("Set")}}, {{domxref("NodeList")}} (and other DOM collections), as well as the {{jsxref("Functions/arguments", "arguments")}} object, [generators](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator) produced by [generator functions](/en-US/docs/Web/JavaScript/Reference/Statements/function*), and user-defined iterables.
+**`for...of`** 문은 [이터러블 객체](/ko/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterable_protocol)에서 가져온 값의 시퀀스에 대해 연산하는 루프를 실행합니다. 이터러블 객체에는 {{jsxref("Array")}}, {{jsxref("String")}}, {{jsxref("TypedArray")}}, {{jsxref("Map")}}, {{jsxref("Set")}}, {{domxref("NodeList")}}(및 기타 DOM 컬렉션)와 같은 내장 객체의 인스턴스와 {{jsxref("Functions/arguments", "arguments")}} 객체, [Generator function](/ko/docs/Web/JavaScript/Reference/Statements/function*)에 의해 생성된 [Generator](/ko/docs/Web/JavaScript/Reference/Global_Objects/Generator), 사용자 정의 이터러블이 포함됩니다.
 
 {{EmbedInteractiveExample("pages/js/statement-forof.html")}}
 
@@ -19,23 +19,23 @@ for (variable of iterable)
 ```
 
 - `variable`
-  - : Receives a value from the sequence on each iteration. May be either a declaration with [`const`](/en-US/docs/Web/JavaScript/Reference/Statements/const), [`let`](/en-US/docs/Web/JavaScript/Reference/Statements/let), or [`var`](/en-US/docs/Web/JavaScript/Reference/Statements/var), or an [assignment](/en-US/docs/Web/JavaScript/Reference/Operators/Assignment) target (e.g. a previously declared variable or an object property).
+  - : 각 반복마다 시퀀스에서 값을 받습니다. [`const`](/ko/docs/Web/JavaScript/Reference/Statements/const), [`let`](/ko/docs/Web/JavaScript/Reference/Statements/let), [`var`](/ko/docs/Web/JavaScript/Reference/Statements/var)가 포함된 선언이거나 [할당](/ko/docs/Web/JavaScript/Reference/Operators/Assignment) 대상(예: 이전에 선언된 변수 또는 객체 프로퍼티)일 수 있습니다.
 - `iterable`
-  - : An iterable object. The source of the sequence of values on which the loop operates.
+  - : 이터러블 객체입니다. 루프가 작동하는 값 시퀀스의 소스입니다.
 - `statement`
-  - : A statement to be executed on every iteration. May reference `variable`. You can use a [block statement](/en-US/docs/Web/JavaScript/Reference/Statements/block) to execute multiple statements.
+  - : 모든 반복에서 실행할 문입니다. `variable`을 참조할 수 있습니다. [블록 문](/ko/docs/Web/JavaScript/Reference/Statements/block)을 사용하여 여러 문을 실행할 수 있습니다.
 
-## Description
+## 설명
 
-A `for...of` loop operates on the values sourced from an iterable one by one in sequential order. Each operation of the loop on a value is called an _iteration_, and the loop is said to _iterate over the iterable_. Each iteration executes statements that may refer to the current sequence value.
+`for...of` 루프는 이터러블에서 가져온 값에 대해 순차적으로 하나씩 연산합니다. 값에 대한 루프의 각 연산을 이터레이션이라고 하며, 루프는 이터러블을 반복한다고 합니다. 각 반복은 현재 시퀀스 값을 참조할 수 있는 문을 실행합니다.
 
-When a `for...of` loop iterates over an iterable, it first calls the iterable's [`[@@iterator]()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/iterator) method, which returns an [iterator](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterator_protocol), and then repeatedly calls the resulting iterator's [`next()`](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterator_protocol) method to produce the sequence of values to be assigned to `variable`.
+`for...of` 루프가 이터러블을 반복할 때는 먼저 이터러블의 [`[@@iterator]()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Symbol/iterator) 메서드를 호출하여 [iterator](/ko/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterator_protocol)를 반환한 다음 결과 iterator의 [`next()`](/ko/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterator_protocol) 메서드를 반복적으로 호출하여 `variable`에 할당할 값의 시퀀스를 생성합니다.
 
-A `for...of` loop exits when the iterator has completed (the iterator's `next()` method returns an object containing `done: true`). You may also use control flow statements to change the normal control flow. [`break`](/en-US/docs/Web/JavaScript/Reference/Statements/break) exits the loop and goes to the first statement after the loop body, while [`continue`](/en-US/docs/Web/JavaScript/Reference/Statements/continue) skips the rest of the statements of the current iteration and proceeds to the next iteration.
+iterator가 완료되면 `for...of` 루프가 종료됩니다(iterator의 `next()` 메서드는 `done: true`를 포함하는 객체를 반환합니다). 제어 흐름 문을 사용하여 일반적인 제어 흐름을 변경할 수도 있습니다. [`break`](/ko/docs/Web/JavaScript/Reference/Statements/break)는 루프를 종료하고 루프 본문 뒤의 첫 번째 문으로 이동하며, [`continue`](/ko/docs/Web/JavaScript/Reference/Statements/continue)는 현재 반복의 나머지 문을 건너뛰고 다음 반복으로 진행합니다.
 
-If the `for...of` loop exited early (e.g. a `break` statement is encountered or an error is thrown), the [`return()`](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterator_protocol) method of the iterator is called to perform any cleanup.
+`for...of` 루프가 일찍 종료되는 경우(예: `break` 문이 발생하거나 오류가 발생하는 경우) iterator의 [`return()`](/ko/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterator_protocol) 메서드가 호출되어 정리를 수행합니다.
 
-The `variable` part of `for...of` accepts anything that can come before the `=` operator. You can use {{jsxref("Statements/const", "const")}} to declare the variable as long as it's not reassigned within the loop body (it can change between iterations, because those are two separate variables). Otherwise, you can use {{jsxref("Statements/let", "let")}}.
+`for...of` 의 `variable` 부분은 `=` 연산자 앞에 올 수 있는 모든 것을 허용합니다. 변수가 루프 본문 내에서 재할당되지 않는 한 {{jsxref("Statements/const", "const")}}를 사용하여 변수를 선언할 수 있습니다(두 변수는 별개의 변수이므로 반복 사이에 변경될 수 있습니다). 그렇지 않으면 {{jsxref("Statements/let", "let")}}을 사용할 수 있습니다.
 
 ```js
 const iterable = [10, 20, 30];
@@ -49,22 +49,22 @@ for (let value of iterable) {
 // 31
 ```
 
-> **Note:** Each iteration creates a new variable. Reassigning the variable inside the loop body does not affect the original value in the iterable (an array, in this case).
+> **참고:** 반복할 때마다 새 변수가 생성됩니다. 루프 본문 내에서 변수를 재할당해도 이터러블(이 경우 배열)의 원래 값에는 영향을 주지 않습니다.
 
-You can use [destructuring](/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment) or an object property like `for (x.y of iterable)` as well.
+[destructuring](/ko/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)이나 `for (x.y of iterable)`과 같은 객체 프로퍼티를 사용할 수도 있습니다.
 
-However, a special rule forbids using `async` as the variable name. This is invalid syntax:
+그러나 특수 규칙에 따라 변수 이름으로 `async`를 사용하는 것은 금지되어 있습니다. 이는 잘못된 구문입니다:
 
 ```js example-bad
 let async;
 for (async of [1, 2, 3]); // SyntaxError: The left-hand side of a for-of loop may not be 'async'.
 ```
 
-This is to avoid syntax ambiguity with the valid code `for (async of => {};;)`, which is a [`for`](/en-US/docs/Web/JavaScript/Reference/Statements/for) loop.
+이는 [`for`](/ko/docs/Web/JavaScript/Reference/Statements/for) 루프인 `for (async of => {};;)`의 유효한 코드와의 구문 모호성을 피하기 위한 것입니다.
 
-## Examples
+## 예제
 
-### Iterating over an Array
+### 배열 반복하기
 
 ```js
 const iterable = [10, 20, 30];
@@ -77,9 +77,9 @@ for (const value of iterable) {
 // 30
 ```
 
-### Iterating over a string
+### 문자열 반복하기
 
-Strings are [iterated by Unicode code points](/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/@@iterator).
+Strings are [iterated by Unicode code points](/ko/docs/Web/JavaScript/Reference/Global_Objects/String/@@iterator).
 
 ```js
 const iterable = "boo";
@@ -92,7 +92,7 @@ for (const value of iterable) {
 // "o"
 ```
 
-### Iterating over a TypedArray
+### TypedArray 반복하기
 
 ```js
 const iterable = new Uint8Array([0x00, 0xff]);
@@ -104,7 +104,7 @@ for (const value of iterable) {
 // 255
 ```
 
-### Iterating over a Map
+### 맵 반복하기
 
 ```js
 const iterable = new Map([
@@ -128,7 +128,7 @@ for (const [key, value] of iterable) {
 // 3
 ```
 
-### Iterating over a Set
+### Set 반복하기
 
 ```js
 const iterable = new Set([1, 1, 2, 2, 3, 3]);
@@ -141,9 +141,9 @@ for (const value of iterable) {
 // 3
 ```
 
-### Iterating over the arguments object
+### arguments 객체 반복하기
 
-You can iterate over the {{jsxref("Functions/arguments", "arguments")}} object to examine all parameters passed into a function.
+{{jsxref("Functions/arguments", "arguments")}} 객체를 반복하여 함수에 전달된 모든 매개변수를 검사할 수 있습니다.
 
 ```js
 function foo() {
@@ -158,9 +158,9 @@ foo(1, 2, 3);
 // 3
 ```
 
-### Iterating over a NodeList
+### NodeList 반복하기
 
-The following example adds a `read` class to paragraphs that are direct descendants of the [`<article>`](/en-US/docs/Web/HTML/Element/article) element by iterating over a [`NodeList`](/en-US/docs/Web/API/NodeList) DOM collection.
+다음 예는 [`NodeList`](/ko/docs/Web/API/NodeList) DOM 컬렉션을 반복하여 [`<article>`](/ko/docs/Web/HTML/Element/article) 요소의 직계 자손인 paragraph들에 `read` 클래스를 추가하는 예제입니다.
 
 ```js
 const articleParagraphs = document.querySelectorAll("article > p");
@@ -169,9 +169,9 @@ for (const paragraph of articleParagraphs) {
 }
 ```
 
-### Iterating over a user-defined iterable
+### 사용자 정의 이터러블 반복하기
 
-Iterating over an object with an `@@iterator` method that returns a custom iterator:
+사용자 정의 이터레이터를 반환하는 `@@iterator` 메서드를 사용하여 객체를 반복합니다:
 
 ```js
 const iterable = {
@@ -196,7 +196,7 @@ for (const value of iterable) {
 // 3
 ```
 
-Iterating over an object with an `@@iterator` generator method:
+`@@iterator` generator 메서드를 사용하여 객체를 이터레이션합니다:
 
 ```js
 const iterable = {
@@ -215,7 +215,7 @@ for (const value of iterable) {
 // 3
 ```
 
-_Iterable iterators_ (iterators with a `[@@iterator]()` method that returns `this`) are a fairly common technique to make iterators usable in syntaxes expecting iterables, such as `for...of`.
+반복 가능한 이터레이터(`this`를 반환하는 `[@@iterator]()` 메서드가 있는 이터레이터)는 `for...of`와 같이 이터러블을 기대하는 구문에서 이터레이터를 사용할 수 있도록 하는 매우 일반적인 기법입니다.
 
 ```js
 let i = 1;
@@ -240,7 +240,7 @@ for (const value of iterator) {
 // 3
 ```
 
-### Iterating over a generator
+### generator 반복하기
 
 ```js
 function* source() {
@@ -259,9 +259,9 @@ for (const value of generator) {
 // 3
 ```
 
-### Early exiting
+### 조기 종료
 
-Execution of the `break` statement in the first loop causes it to exit early. The iterator is not finished yet, so the second loop will continue from where the first one stopped at.
+첫 번째 루프에서 `break` 문을 실행하면 루프가 조기 종료됩니다. iterator가 아직 완료되지 않았으므로 두 번째 루프는 첫 번째 루프가 중지된 지점에서 계속됩니다.
 
 ```js
 const source = [1, 2, 3];
@@ -293,7 +293,7 @@ for (const value of iterator) {
 // [No output]
 ```
 
-Generators implement the [`return()`](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator/return) method, which causes the generator function to early return when the loop exits. This makes generators not reusable between loops.
+제너레이터는 [`return()`](/ko/docs/Web/JavaScript/Reference/Global_Objects/Generator/return) 메서드를 구현하여 루프가 종료될 때 제너레이터 함수가 조기에 반환되도록 합니다. 따라서 루프 간에 제너레이터를 재사용할 수 없습니다.
 
 ```js example-bad
 function* source() {
@@ -321,13 +321,13 @@ for (const value of generator) {
 // [No output]
 ```
 
-### Difference between for...of and for...in
+### for...of와 for...in의 차이점
 
-Both `for...in` and `for...of` statements iterate over something. The main difference between them is in what they iterate over.
+`for...in`과 `for...of` 문은 모두 어떤 대상을 반복합니다. 이 둘의 주요 차이점은 반복하는 대상에 있습니다.
 
-The {{jsxref("Statements/for...in", "for...in")}} statement iterates over the [enumerable string properties](/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties) of an object, while the `for...of` statement iterates over values that the [iterable object](/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterable_protocol) defines to be iterated over.
+{{jsxref("Statements/for...in", "for...in")}} 문은 객체의 [열거 가능한 문자열 속성](/ko/docs/Web/JavaScript/Enumerability_and_ownership_of_properties)을 반복하는 반면, `for...of` 문은 [이터러블 객체](/ko/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterable_protocol)가 반복하도록 정의한 값에 대해 반복합니다.
 
-The following example shows the difference between a `for...of` loop and a `for...in` loop when used with an {{jsxref("Array")}}.
+다음 예제는 {{jsxref("Array")}}와 함께 사용할 때 `for...of` 루프와 `for...in` 루프의 차이점을 보여줍니다.
 
 ```js
 Object.prototype.objCustom = function () {};
@@ -354,13 +354,13 @@ for (const i of iterable) {
 // 3 5 7
 ```
 
-The object `iterable` inherits the properties `objCustom` and `arrCustom` because it contains both `Object.prototype` and `Array.prototype` in its [prototype chain](/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain).
+객체 `iterable`은 [prototype chain](/ko/docs/Web/JavaScript/Inheritance_and_the_prototype_chain)에 `Object.prototype`과 `Array.prototype`을 모두 포함하므로 객체 이터러블은 `objCustom`과 `arrCustom` 속성을 상속합니다.
 
-The `for...in` loop logs only [enumerable properties](/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties) of the `iterable` object. It doesn't log array _elements_ `3`, `5`, `7` or `"hello"` because those are not _properties_ — they are _values_. It logs array _indexes_ as well as `arrCustom` and `objCustom`, which are actual properties. If you're not sure why these properties are iterated over, there's a more thorough explanation of how [array iteration and `for...in`](/en-US/docs/Web/JavaScript/Reference/Statements/for...in#array_iteration_and_for...in) work.
+`for...in` 루프는 `iterable` 객체의 [enumerable 속성](/ko/docs/Web/JavaScript/Enumerability_and_ownership_of_properties)만 로깅합니다. 배열 요소 `3`, `5`, `7` 또는 `"hello"`는 프로퍼티가 아니라 값이기 때문에 로깅하지 않습니다. 배열 인덱스는 물론 실제 프로퍼티인 arrCustom과 objCustom도 기록합니다. 이러한 프로퍼티가 왜 반복되는지 잘 모르겠다면 [배열 반복과 `for...in`](/ko/docs/Web/JavaScript/Reference/Statements/for...in#array_iteration_and_for...in)이 어떻게 작동하는지에 대한 자세한 설명이 나와 있습니다.
 
-The second loop is similar to the first one, but it uses {{jsxref("Object.hasOwn()")}} to check if the found enumerable property is the object's own, i.e. not inherited. If it is, the property is logged. Properties `0`, `1`, `2` and `foo` are logged because they are own properties. Properties `arrCustom` and `objCustom` are not logged because they are inherited.
+두 번째 루프는 첫 번째 루프와 비슷하지만, 찾은 열거 가능한 프로퍼티가 객체 자체의 프로퍼티인지, 즉 상속되지 않았는지 확인하기 위해 O{{jsxref("Object.hasOwn()")}}을 사용합니다. 만약 그렇다면 프로퍼티가 기록됩니다. 속성 `0`, `1`, `2` 및 `foo`는 자체 속성이므로 로깅됩니다. `arrCustom` 및 `objCustom` 속성은 상속되었기 때문에 기록되지 않습니다.
 
-The `for...of` loop iterates and logs _values_ that `iterable`, as an array (which is [iterable](/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/@@iterator)), defines to be iterated over. The object's _elements_ `3`, `5`, `7` are shown, but none of the object's _properties_ are.
+`for...of` 루프는 반복할 수 있는 배열([iterable](/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/@@iterator))로 정의된 값을 반복하고 기록합니다. 객체의 "요소" `3`, `5`, `7`은 표시되지만 객체의 "속성"은 표시되지 않습니다.
 
 ## Specifications
 
