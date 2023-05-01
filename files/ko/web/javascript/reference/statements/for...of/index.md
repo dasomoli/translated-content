@@ -57,7 +57,7 @@ for (let value of iterable) {
 
 ```js example-bad
 let async;
-for (async of [1, 2, 3]); // SyntaxError: The left-hand side of a for-of loop may not be 'async'.
+for (async of [1, 2, 3]); // SyntaxError: for-of 루프의 왼쪽은 'async'가 아닐 겁니다.
 ```
 
 이는 [`for`](/ko/docs/Web/JavaScript/Reference/Statements/for) 루프인 `for (async of => {};;)`의 유효한 코드와의 구문 모호성을 피하기 위한 것입니다.
@@ -79,7 +79,7 @@ for (const value of iterable) {
 
 ### 문자열 반복하기
 
-Strings are [iterated by Unicode code points](/ko/docs/Web/JavaScript/Reference/Global_Objects/String/@@iterator).
+문자열은 [유니코드 코드 포인트별로 반복](/ko/docs/Web/JavaScript/Reference/Global_Objects/String/@@iterator)됩니다.
 
 ```js
 const iterable = "boo";
@@ -273,20 +273,20 @@ for (const value of iterator) {
   if (value === 1) {
     break;
   }
-  console.log("This string will not be logged.");
+  console.log("이 문자열은 로그에 기록되지 않습니다.");
 }
 // 1
 
-// Another loop using the same iterator
-// picks up where the last loop left off.
+// 동일한 반복자를 사용하는 다른 루프는
+// 마지막 루프가 중단된 지점에서 시작됩니다.
 for (const value of iterator) {
   console.log(value);
 }
 // 2
 // 3
 
-// The iterator is used up.
-// This loop will execute no iterations.
+// iterator가 모두 사용됩니다.
+// 이 루프는 반복을 실행하지 않습니다.
 for (const value of iterator) {
   console.log(value);
 }
@@ -309,12 +309,12 @@ for (const value of generator) {
   if (value === 1) {
     break;
   }
-  console.log("This string will not be logged.");
+  console.log("이 문자열은 로그에 기록되지 않습니다.");
 }
 // 1
 
-// The generator is used up.
-// This loop will execute no iterations.
+// generator가 모두 사용됩니다.
+// 이 루프는 반복을 실행하지 않습니다.
 for (const value of generator) {
   console.log(value);
 }
